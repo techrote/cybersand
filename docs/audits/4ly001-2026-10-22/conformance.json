@@ -1,0 +1,1434 @@
+{
+  "assessed_base": "da5112c066416346d6fe3984d4161cd162611e50",
+  "checks": {
+    "ci_provider": {
+      "errors": [],
+      "policy": {
+        "external_provider_config": "forbidden unless policy is explicitly changed",
+        "routine_provider": "GitHub-hosted Actions",
+        "runner_indirection": "forbidden"
+      },
+      "scope": "active CI provider and runner routing",
+      "status": "passed"
+    },
+    "documentation_final": {
+      "canonical_claims": 206,
+      "documents": 104,
+      "errors": [],
+      "heading_anchors": 202,
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ],
+      "local_links": 2318,
+      "navigation_link_documents": 8,
+      "questions": 32,
+      "status": "passed",
+      "warnings": []
+    },
+    "historical_m11": {
+      "compare_working_tree": false,
+      "errors": [],
+      "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+      "records_checked": 18,
+      "scope": "historical M11 integrity; no current runtime acceptance",
+      "source_hashes_checked": 28,
+      "status": "passed",
+      "working_tree_differences": []
+    },
+    "repository": {
+      "documentation": {
+        "canonical_claims": 206,
+        "documents": 104,
+        "errors": [],
+        "heading_anchors": 202,
+        "limitations": [
+          "Does not verify source semantics or runtime claims",
+          "Does not fetch external URLs",
+          "Does not rewrite or reattest historical audits",
+          "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+        ],
+        "local_links": 2316,
+        "navigation_link_documents": 8,
+        "questions": 32,
+        "status": "passed",
+        "warnings": []
+      },
+      "errors": [],
+      "limitations": [
+        "Identity is not execution evidence; read the dated runtime acceptance report",
+        "Retained vendor binaries and platform execution have separate dated provenance",
+        "Historical M11 integrity is checked separately by check_m11_consistency.py"
+      ],
+      "materialized_runtime_files": [
+        "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+      ],
+      "scope": "current source/documentation and artifact identity",
+      "status": "passed",
+      "unmaterialized_runtime_files": []
+    }
+  },
+  "controller_hash": "fb86190c68c6a87e7d2ef7e845b1fb97305f188723a326f67f07caa6971cc8ae",
+  "date_utc": "2026-10-22",
+  "exact_checkpoint_flight": {
+    "cases": [
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_flight_physics.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_flight_physics.log",
+        "log_sha256": "166595b4a81d2b0ad077103f6ee62b8d3e75c99cdc5e76d5f8897505685f252a",
+        "name": "test_physical_flight_physics",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "exact-checkpoint-4ly001",
+        "script_sha256": "3e8fe465dab0a65024357fb027ced96bfb49cc240cd3d3e1f79e1e3b0fad2e67",
+        "seconds": 1.069,
+        "skip_messages": [],
+        "status": "passed",
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_flight_profile.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_flight_profile.log",
+        "log_sha256": "738d3c6f677167848ef59c117ed06441f63aef15792bdbbe8370b36b3d15fb88",
+        "name": "test_physical_flight_profile",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "exact-checkpoint-4ly001",
+        "script_sha256": "f4929464da2de87e9dcf620108cc30422baaf8b57f8290c102f7b97ed1669327",
+        "seconds": 0.265,
+        "skip_messages": [],
+        "status": "passed",
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_flight_session.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_flight_session.log",
+        "log_sha256": "9c1ee18af4427fd943c33d4dfeec88355b36ed0a3ce78fa39dab8c16a61ccd7b",
+        "name": "test_physical_flight_session",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "exact-checkpoint-4ly001",
+        "script_sha256": "fabfd0d74cc4b3a98b18793a56aa1c29e1dac3ac729865c7653fadc0b3527553",
+        "seconds": 0.667,
+        "skip_messages": [],
+        "status": "passed",
+        "timeout_seconds": 180
+      }
+    ],
+    "source_commit": "d7e66d8a94c1641c4ff03f484ed3d0c8af7be574"
+  },
+  "focused_suite": {
+    "cases": [
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_act004_body_capacity.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_act004_body_capacity.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "348967c9fdbcf3bfc500ff80a5969fc64894ce072aba2df18109af554f2bc867",
+        "name": "test_act004_body_capacity",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "c1ff9b8eb6ff39345e465c1daac393a9846bec3eb9d2220d4f2c2ec4bf12d0e4",
+        "seconds": 1.318,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_actor_actuator_session.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_actor_actuator_session.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "840da9b95a21a4fb3cdaccbc62afec625e4c25660f3b6669a8e281793a805b71",
+        "name": "test_actor_actuator_session",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "cf4d17960dbb848630d6614a1987e4557ba37ac9941c8385c04d8527e61e1c66",
+        "seconds": 0.767,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "Actor actuator session: 157 assertions, 0 failures."
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_actor_prototype_integration.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_actor_prototype_integration.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "b5e81678e265633e41c928b0cff89b8d112ddd723ca0d28a7fe835260051ee33",
+        "name": "test_actor_prototype_integration",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "42d560eaae52e77ce80ba5bbda120e4d708b1f9bd7ddd787777f1d9224cf03cc",
+        "seconds": 3.94,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "ACTOR_INTEGRATION: 157 assertions; 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_actor_prototype_session.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_actor_prototype_session.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "647c8835fd6199d1de18b9edffea283a21b942bb4338c58c83d66c9d40ecf277",
+        "name": "test_actor_prototype_session",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "a2e443d1b3ab8c6a2cdd2723693892074ab5aa5f406d060862cc5a584d369c9d",
+        "seconds": 0.666,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "ACTOR_SESSION: 626 assertions; 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_actor_prototypes.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_actor_prototypes.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "27fe92ac06be1435db85d1f4ee4e52c09ffa21ae1764b90e66f2838191f91b5b",
+        "name": "test_actor_prototypes",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "a1af3bedca1f04fe4c515c8d0efedd05dacffd73dc8615893a66b4806a3d6ae5",
+        "seconds": 0.566,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "ACTOR_PROTOTYPES {\"assertions\":12293,\"failures\":0,\"peak_occupancy_queries\":13,\"timing\":[{\"maximum_occupancy_queries\":7,\"mean_microseconds\":8.69333333333333,\"model\":\"runner\",\"scope\":\"headless host / mock occupancy / informational timing\",\"steps\":6000},{\"maximum_occupancy_queries\":6,\"mean_microseconds\":7.36766666666667,\"model\":\"skimmer\",\"scope\":\"headless host / mock occupancy / informational timing\",\"steps\":6000},{\"maximum_occupancy_queries\":6,\"mean_microseconds\":8.69333333333333,\"model\":\"crawler\",\"scope\":\"headless host / mock occupancy / informational timing\",\"steps\":6000}]}"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_actor_rig_actuation.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_actor_rig_actuation.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "6389dae470127f0f3445f5a33826762f140d277d6afa5c86981c8986058946d2",
+        "name": "test_actor_rig_actuation",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "7c0d694c346273657858347678fef3517c298236217ac1658f93a7d775eb4039",
+        "seconds": 0.365,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "Actor rig actuation: 24338 assertions, 0 failures; peak occupancy 22/96; zero material reads/writes."
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_actor_rig_integration.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_actor_rig_integration.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "902fb7fda322679fcd73d279034666af6124423e3601a60a38ed99b45c666621",
+        "name": "test_actor_rig_integration",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "e3cbffee4c5ea15928a0d066e3943e83d649be214b02ec9a0c2b3f44e697ce90",
+        "seconds": 4.427,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "ACTOR_RIG_INTEGRATION: 693 assertions; 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_actor_rig_session.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_actor_rig_session.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "d0882fbd882daac2e2e4475bdaee12c1569801ec1aff070d3d1a65023eceed2f",
+        "name": "test_actor_rig_session",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "14cfc4ad084dbde13f75f94f351be72e9efe253fc3d9a6a2db9fafb9981a6f66",
+        "seconds": 1.017,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "ACTOR_RIG_SESSION: 8425 assertions; 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_actor_rigs.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_actor_rigs.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "99a5633105564963d7177dac7fd58c4f3bfa5315c833941efd0fb97321806fce",
+        "name": "test_actor_rigs",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "76699df7ba54cfc7e1f6025f21cdfd2ed396f2f1f32c1efa2a12a3925e396851",
+        "seconds": 1.017,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "ACTOR_RIGS {\"assertions\":61932,\"failures\":0,\"peak_effect_reads\":49,\"peak_effect_writes\":29,\"peak_occupancy_queries\":19,\"peak_ray_queries\":57,\"timings\":[{\"maximum_material_reads\":0,\"maximum_occupancy_queries\":11,\"mean_microseconds\":19.2666666666667,\"rig\":\"scout\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":0,\"maximum_occupancy_queries\":14,\"mean_microseconds\":27.8066666666667,\"rig\":\"scrabbler\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":39,\"maximum_occupancy_queries\":14,\"mean_microseconds\":30.2233333333333,\"rig\":\"ripper\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":23,\"maximum_occupancy_queries\":11,\"mean_microseconds\":44.8283333333333,\"rig\":\"groundeffect\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":53,\"maximum_occupancy_queries\":10,\"mean_microseconds\":19.9333333333333,\"rig\":\"digger\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":0,\"maximum_occupancy_queries\":14,\"mean_microseconds\":26.0133333333333,\"rig\":\"copter\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":0,\"maximum_occupancy_queries\":14,\"mean_microseconds\":30.3166666666667,\"rig\":\"pouncer\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":38,\"maximum_occupancy_queries\":13,\"mean_microseconds\":25.5566666666667,\"rig\":\"dropbot\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":65,\"maximum_occupancy_queries\":10,\"mean_microseconds\":19.7116666666667,\"rig\":\"lineshank\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":0,\"maximum_occupancy_queries\":10,\"mean_microseconds\":24.25,\"rig\":\"walljumper\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":0,\"maximum_occupancy_queries\":15,\"mean_microseconds\":23.7933333333333,\"rig\":\"clamberer\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":45,\"maximum_occupancy_queries\":10,\"mean_microseconds\":19.6966666666667,\"rig\":\"swinger\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":15,\"maximum_occupancy_queries\":14,\"mean_microseconds\":32.05,\"rig\":\"rocketjumper\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":0,\"maximum_occupancy_queries\":11,\"mean_microseconds\":22.09,\"rig\":\"springjack\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":0,\"maximum_occupancy_queries\":13,\"mean_microseconds\":30.5133333333333,\"rig\":\"gyrocrate\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":0,\"maximum_occupancy_queries\":10,\"mean_microseconds\":18.8683333333333,\"rig\":\"bellows\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":45,\"maximum_occupancy_queries\":10,\"mean_microseconds\":20.0633333333333,\"rig\":\"winchbug\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":37,\"maximum_occupancy_queries\":10,\"mean_microseconds\":23.245,\"rig\":\"magpie\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":0,\"maximum_occupancy_queries\":11,\"mean_microseconds\":22.895,\"rig\":\"skatesail\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":0,\"maximum_occupancy_queries\":11,\"mean_microseconds\":20.06,\"rig\":\"astra\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":0,\"maximum_occupancy_queries\":10,\"mean_microseconds\":20.0083333333333,\"rig\":\"claude\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":0,\"maximum_occupancy_queries\":10,\"mean_microseconds\":20.1416666666667,\"rig\":\"luna\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":0,\"maximum_occupancy_queries\":14,\"mean_microseconds\":31.0533333333333,\"rig\":\"qwen\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":0,\"maximum_occupancy_queries\":15,\"mean_microseconds\":20.6483333333333,\"rig\":\"bonsai\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":0,\"maximum_occupancy_queries\":14,\"mean_microseconds\":31.2216666666667,\"rig\":\"jev\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600},{\"maximum_material_reads\":0,\"maximum_occupancy_queries\":12,\"mean_microseconds\":28.615,\"rig\":\"gemini\",\"scope\":\"headless host / mock World / informational motor timing\",\"steps\":600}]}"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_actor_usables_integration.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_actor_usables_integration.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "9b19bf7130602b30c1a48fc23256a0ee5010fe4633a18df81370992fbfd61a24",
+        "name": "test_actor_usables_integration",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "7e8683120633de3af752cfd54f4144fa3dc14d492b4de9cc973498a7202bdefc",
+        "seconds": 2.07,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "ACTOR_USABLE_INTEGRATION: 29 assertions; 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_exploratory_actor_selection.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_exploratory_actor_selection.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "3590667e1a7988aab8da69dd6cfcfeff8bd9566724db5c544fc5f10e8fdfeed7",
+        "name": "test_exploratory_actor_selection",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "ee2aa2ab86746bf6d1a673769a56d7fd88e5fc8432fb70e9be6ab1ab4590ab64",
+        "seconds": 57.116,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "Exploratory actor selection: 479 assertions, 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_feature_launch_arguments.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_feature_launch_arguments.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "1190e4cb01c27066182d9337c2d59a2373169c6fffad7cf494c28387eec8aa25",
+        "name": "test_feature_launch_arguments",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "24d180f6097c93b4bee312cf74d106104cd6a3ad3646a40a134a989cdbd26c94",
+        "seconds": 0.267,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_feature_launcher.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_feature_launcher.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "94652df92d3ded2166877155994fb4684c5d5521899c917c457d1d007bb1938c",
+        "name": "test_feature_launcher",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "84974fe231c44f838c94573030475a7ad3bb148d205f670188c12d5a19b8028a",
+        "seconds": 7.185,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "Feature launcher: 43 assertions, 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_actor_actuation.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_actor_actuation.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "02521ef6c39864bbe6bc4cc307909a0bbf689cb229476c00da9ad243adb4947d",
+        "name": "test_physical_actor_actuation",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "213ef4515bd6a7dfd4c21e99437e2213f437296ed2ad0cd35bb7554005b673c7",
+        "seconds": 1.118,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "Physical actor actuation: 86 assertions, 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_actor_arena.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_actor_arena.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "589671c36b65b7d0840200d37a717c1999637d058dff6d2b19921e43598ded39",
+        "name": "test_physical_actor_arena",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "340bd18ec36bcf36bcce4eb8fd27d68f9cca489ad25cd4deec6f8f7a040140cf",
+        "seconds": 16.671,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "PHYSICAL_ARENA_RESULT assertions=915 failures=0 elapsed_ms=15972.67"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_actor_catalog.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_actor_catalog.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "ef72a66a07a3e9d8030f345c2682585c1ebbfa699a5854e56c261df690040088",
+        "name": "test_physical_actor_catalog",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "5738ee801ad5dd41867db38d595db86e7de75de94df5014bfd0cab50ea174d4f",
+        "seconds": 0.365,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "PHYSICAL_ACTOR_CATALOG: 6267 assertions, 0 failures; 46 definitions, retained feedback and player controls"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_actor_effect_admission.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_actor_effect_admission.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "17d014885df14155fe24ec23eb6fc7ea984e3d965772b0e8cdbfb318d7823e67",
+        "name": "test_physical_actor_effect_admission",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "0a35da022349290d8652d0f42e80700b24a59c8437e846b65cae1f40bf621a3b",
+        "seconds": 0.967,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "Physical actor effect admission: 32 assertions, 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_actor_effects.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_actor_effects.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "8c3b16544734bcc75b200034f83f9237b70698e114fd27a3a0ee7b85f8e7b9a5",
+        "name": "test_physical_actor_effects",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "7fca9309f6aad538c1aa281807c10c3f8da7c891da81735ddf0a1efca0138098",
+        "seconds": 0.365,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_actor_integration.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_actor_integration.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "926df4e46e74333cf754a02ae584493a2025a16eda7bc4de35f5d2b0b7c6f1bd",
+        "name": "test_physical_actor_integration",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "387bc84f68740e05ac71cb9c581764febe755cd77e4864624513555ae5f1ad0f",
+        "seconds": 16.024,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "Physical actor integration: 389 assertions, 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_actor_rigs.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_actor_rigs.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "59ded552c727f0ea6fae7a4d1c9c06f4ab181b591f86eea9e28b84427770ac1a",
+        "name": "test_physical_actor_rigs",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "efdf6e1765639e56d9e7f9ace7e1e1049c220bc1110ac921f3c0088ef87cc13f",
+        "seconds": 23.653,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_actor_script.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_actor_script.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "5758b5fe2d596dc8eedd95cc4524d876bec4d2a2ae8905a44ae7193adab0e4a7",
+        "name": "test_physical_actor_script",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "b591d591e72925b02339987fa818a5a9320398f3337aa720b1714f2c5b4f2544",
+        "seconds": 0.415,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "PHYSICAL_ACTOR_SCRIPT: 57 assertions, 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_actor_session.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_actor_session.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "9d8f422c231aca0af0e647c18285cb07554afca1de70b00c02c2561d7d28dd84",
+        "name": "test_physical_actor_session",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "c747179c776ffe77fde97e541644a3c8d978e3937b736addcae00bd7bedf6004",
+        "seconds": 0.566,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "Physical actor session: 113 assertions, 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_actor_trial.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_actor_trial.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "f7d224c4dd9a2d8ccb2e81bcf99de726c051224998b7b9cd4cf806d6b876c8eb",
+        "name": "test_physical_actor_trial",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "11baffcde96549f15c6ed87ddad4ca17fbaa39c0232eb41dd4699943df858017",
+        "seconds": 5.787,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "Physical actor trial: 56 assertions, 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_flight_physics.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_flight_physics.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "166595b4a81d2b0ad077103f6ee62b8d3e75c99cdc5e76d5f8897505685f252a",
+        "name": "test_physical_flight_physics",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "3e8fe465dab0a65024357fb027ced96bfb49cc240cd3d3e1f79e1e3b0fad2e67",
+        "seconds": 0.917,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "4LY physical flight physics: 9892 assertions, 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_flight_profile.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_flight_profile.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "738d3c6f677167848ef59c117ed06441f63aef15792bdbbe8370b36b3d15fb88",
+        "name": "test_physical_flight_profile",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "f4929464da2de87e9dcf620108cc30422baaf8b57f8290c102f7b97ed1669327",
+        "seconds": 0.265,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "Physical flight profile: 845 assertions, 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_flight_session.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_flight_session.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "9c1ee18af4427fd943c33d4dfeec88355b36ed0a3ce78fa39dab8c16a61ccd7b",
+        "name": "test_physical_flight_session",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "fabfd0d74cc4b3a98b18793a56aa1c29e1dac3ac729865c7653fadc0b3527553",
+        "seconds": 0.666,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "4LY physical flight session: 273 assertions, 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_usable_course.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_usable_course.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "74896a21992db26907ac8ddea016dedff662b4a7133afc54b00195e776c217b6",
+        "name": "test_physical_usable_course",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "6c14368d00f1acf45bc7b32268814e3a0f92c5e4ff27f90b0e22f03ae6e1017f",
+        "seconds": 15.818,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "PHYSICAL_USABLE_COURSE_RESULT assertions=71 failures=0"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_usable_equipment.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_usable_equipment.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "9a05ec55192c60ff3c59635de81a35948a603e9b973cfce5a2b4ba21876659bc",
+        "name": "test_physical_usable_equipment",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "4b26aeb3c312ee33a6737644e6ad21e25773b20aa55a1d6a1df49342629ba2cf",
+        "seconds": 0.666,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "Physical usable equipment: 307 assertions, 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_usable_lifecycle.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_usable_lifecycle.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "62e13d8ae6a6c07cc96705c9c560d5651b8c0f43d267410185945a53338f6ac1",
+        "name": "test_physical_usable_lifecycle",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "246a6a0de7c3f546a5b68800eeaf10140da29769e0aa718c4fafcd3091e7e589",
+        "seconds": 0.666,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "Physical usable lifecycle: 39 assertions, 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_usable_script.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_usable_script.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "6d12744acc2a036d862145c51c03cea4f2becee6af04c34f3593e7d0e8951253",
+        "name": "test_physical_usable_script",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "53212c7a90ec26b14d4f27d3599fb747c132ffc5c34f2a36fb5a1cd5874414bf",
+        "seconds": 0.566,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "PHYSICAL_USABLE_SCRIPT assertions=4460 failures=0"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_usables_admission.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_usables_admission.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "c3000dcf134a28cb1bf39eeae39b7bfd8ec4b3b75d7debffca9236f7ec22ef7c",
+        "name": "test_physical_usables_admission",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "0ca46e3b9a8aaf08c769665bf9d95f7dedcc89e581aa2c2a31d7e7b2bbf97925",
+        "seconds": 0.867,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "USABLE002_ADMISSION checks=35 failures=0 native=executed"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_usables_desktop.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_usables_desktop.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "7914b7f9cdbd9ddadaadacc53ebb69f01667111c7d8df25ae25089e6f7cdbb69",
+        "name": "test_physical_usables_desktop",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "5fa1fd7772866213494eeb32b70c60fbbe87e98a68f27834424a043a3d60bb8d",
+        "seconds": 2.722,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "PHYSICAL_USABLE_DESKTOP_RESULT assertions=28 failures=0"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_physical_usables_runtime.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_physical_usables_runtime.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "2e25934313d27706fa095fec619fc40503fc9722d29b948db7bb931b592f5c0b",
+        "name": "test_physical_usables_runtime",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "fa277c9a73790e55ead8f29fc9765159bfec1184aca70cb2400bcc047e046a0d",
+        "seconds": 0.867,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "USABLE002_NATIVE checks=243 failures=0 native=executed catalogue=32"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_player_acrobat.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_player_acrobat.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "6ccd1e53d794f29b0610c44e63be731fc7cb98d452fde8d97c80172e3a3ed48d",
+        "name": "test_player_acrobat",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "f743c972dda049714b3e92b83dc59fb0ce24bd3bd4121eccf26b11bdab5e9948",
+        "seconds": 0.315,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "PLAYER_ACROBAT: 304 assertions, 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_player_acrobat_physics.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_player_acrobat_physics.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "601cc7d9b6e57ec8e7c212e920d938e6f7bf4fe2e00f427cd412653162674f82",
+        "name": "test_player_acrobat_physics",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "432bffad8f356b54acd428302bda3c62db25467f283c439cb41faa5bffca572f",
+        "seconds": 0.767,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "PLAYER_ACROBAT_PHYSICS: 36 assertions, 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_player_material_field.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_player_material_field.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "8768eebe57406a79633b2cdf02b462a8a9ec8874df7f16cbe473b7d73e934d9f",
+        "name": "test_player_material_field",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "4845b686cc352700b26a573d02f3d47dd118145b6849339e540acffba1f5faee",
+        "seconds": 0.465,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "PLAYER_MATERIAL_FIELD: 56 assertions; 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_player_playground_course.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_player_playground_course.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "45de40a0480735ba0b82ddee3f66c41aa84ad7ead9d3cb68f7236228942af6c5",
+        "name": "test_player_playground_course",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "b62b36a09442950059725d73977e3815dc357888291f353c8c198eef20329c00",
+        "seconds": 3.274,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "PLAYER_COURSE: 1446 assertions, 0 failures"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_player_playground_runtime.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_player_playground_runtime.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "70ed2f66f56bfc50b27eb032823dcdc7185533afd0e091fc741cf97115b7a26d",
+        "name": "test_player_playground_runtime",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "3733384d78259aff7c894a5835a68bacc38b1e900b20f8021a5411fc49320264",
+        "seconds": 4.175,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "PLAYER_PLAYGROUND_RUNTIME: 1329 assertions, 0 failures; scope=all-seven-native-and-Rapier"
+        ],
+        "timeout_seconds": 180
+      },
+      {
+        "command": [
+          "/tmp/cybersand205-tools/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/c828bfecc3d9/cybersand-205/godot",
+          "--script",
+          "res://tests/test_player_vehicle_controls.gd"
+        ],
+        "diagnostic_error": false,
+        "launch_error": null,
+        "log": "test_player_vehicle_controls.log",
+        "log_retention": "temporary local log; digest retained; reproducible fixture is committed",
+        "log_sha256": "b4a82fe8c933ab9cbe4e3410d2d7ee515ab3afe55814b0d9c200d35463da6358",
+        "name": "test_player_vehicle_controls",
+        "requires_display": false,
+        "returncode": 0,
+        "role": "4ly001-focused-conformance-and-retained-contracts",
+        "script_sha256": "7990f1f9811cd399b48024fc2d3bdd4bb585cef0b01a25d1d40312e304212245",
+        "seconds": 0.919,
+        "skip_messages": [],
+        "status": "passed",
+        "summary": [
+          "Player vehicle controls: 79 assertions, 0 failures"
+        ],
+        "timeout_seconds": 180
+      }
+    ],
+    "passed": 39,
+    "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+    "total": 39
+  },
+  "godot": "4.7.stable.official.5b4e0cb0f",
+  "godot_archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+  "implementation_tree": "00d962153ba3956544701e7d5a7ddd56332077f8",
+  "implemented_checkpoint": "d7e66d8a94c1641c4ff03f484ed3d0c8af7be574",
+  "issue": "https://github.com/techrote/cybersand/issues/205",
+  "limitations": [
+    "Headless Linux conformance, not human feel or pixel inspection.",
+    "No local Windows, macOS, mobile or browser execution. Hosted Windows evidence must be read at its recorded scope.",
+    "No per-profile calibration, learner execution or navigation qualification.",
+    "Force receipts account only for this actuator; no passive-force or total-energy decomposition.",
+    "Raw local logs are not committed. Final exact-head hosted outcomes are retained on PR #209."
+  ],
+  "local_suite_scope": "39 focused cases during final integration; last gravity-representation admission guard landed during the sweep. All three new fixtures rerun at the exact published checkpoint; final hosted gates bind the final PR head.",
+  "physical_metrics": [
+    {
+      "ascent": 61.043212890625,
+      "braking_distance": 12.5398254394531,
+      "case": "unsupported_hover_translation",
+      "descent": 81.7864379882812,
+      "final_speed": 4.38605911767809e-06,
+      "grounded_ticks": 0,
+      "horizontal_speed": 47.4065551757812,
+      "hover_final_speed": 3.36815583068528e-06,
+      "hover_final_y": 402.081939697266,
+      "hover_ticks": 600,
+      "hover_trace": [
+        {
+          "tick": 60,
+          "vy": 0.0471236631274223,
+          "y": 402.075469970703
+        },
+        {
+          "tick": 120,
+          "vy": 5.31093974132091e-05,
+          "y": 402.081939697266
+        },
+        {
+          "tick": 180,
+          "vy": -4.77902040074696e-06,
+          "y": 402.081939697266
+        },
+        {
+          "tick": 240,
+          "vy": -4.54602832178352e-06,
+          "y": 402.081939697266
+        },
+        {
+          "tick": 300,
+          "vy": -4.32439583164523e-06,
+          "y": 402.081939697266
+        },
+        {
+          "tick": 360,
+          "vy": -4.11356859331136e-06,
+          "y": 402.081939697266
+        },
+        {
+          "tick": 420,
+          "vy": -3.91302091884427e-06,
+          "y": 402.081939697266
+        },
+        {
+          "tick": 480,
+          "vy": -3.72224985767389e-06,
+          "y": 402.081939697266
+        },
+        {
+          "tick": 540,
+          "vy": -3.54077928932384e-06,
+          "y": 402.081939697266
+        },
+        {
+          "tick": 600,
+          "vy": -3.36815583068528e-06,
+          "y": 402.081939697266
+        }
+      ],
+      "late_hover_displacement": 0.0,
+      "peak_spool_drop": 2.08193969726562,
+      "upward_velocity": -35.555347442627
+    },
+    {
+      "after_omega": 34.9264640808105,
+      "after_vx": 499.454345703125,
+      "before_omega": 34.9999961853027,
+      "before_vx": 500.0,
+      "case": "external_impulse_accounting_zero_gravity_drag",
+      "force": [
+        -39.2906494140625,
+        0.0
+      ],
+      "torque": -60.0
+    },
+    {
+      "case": "attitude_recovery",
+      "final_angle": 1.30412913801337e-09,
+      "final_omega": -1.10612345949335e-08,
+      "peak_angle": 0.953035414218903,
+      "peak_torque": 300.0
+    },
+    {
+      "case": "power_off",
+      "fall": 77.0880126953125,
+      "maximum_force": 0.0,
+      "ticks": 60,
+      "velocity_y": 152.147003173828
+    },
+    {
+      "case": "underpowered_saturation",
+      "fall": 72.1546936035156,
+      "maximum_force": 150.0,
+      "peak_force": 149.999969482422,
+      "saturated_ticks": 120,
+      "velocity_y": 64.8799362182617
+    },
+    {
+      "case": "native_wall",
+      "contact_ticks": 162,
+      "desired_vx": 48.0,
+      "final_vx": -9.77074421371071e-09,
+      "maximum_x": 445.063262939453
+    }
+  ],
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "pull_request": "https://github.com/techrote/cybersand/pull/209",
+  "rapier": "0.35.2",
+  "retrieval": {
+    "frozen": {
+      "report_sha256": "8430c4e6edcffe003702bd13aaed88ac34e65f0ebea1d33727421feffb1e2f0a",
+      "report_summary": {
+        "chunk_count": 1158,
+        "corpus_manifest_sha256": "78c8b7946917f8a9bc24cbf4d38ff4cd7264dc3f512f9e60a131598f692ba195",
+        "corpus_root": "/workspace/scratch/c828bfecc3d9/cybersand-205",
+        "created_utc": "2026-10-22T20:49:08.200756+00:00",
+        "document_count": 104,
+        "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+        "fixture_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+        "method": {
+          "b": 0.75,
+          "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded",
+          "embeddings": false,
+          "k": 5,
+          "k1": 1.2,
+          "maximum_body_words": 420,
+          "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+          "name": "heading-chunk BM25 lexical development baseline",
+          "overlap_words": 0,
+          "query_expansion": false,
+          "reranker": false,
+          "stemming": false
+        },
+        "summary": {
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+          "canonical_hit_at_1": 21,
+          "canonical_hit_at_k": 32,
+          "mrr_at_k": 0.7953,
+          "questions": 32
+        }
+      }
+    },
+    "supplementary": {
+      "report_sha256": "3607182d1c8bd50938eb874f981e4d3efdc5898c6e46dc84a35589e7b39c5e37",
+      "report_summary": {
+        "chunk_count": 1158,
+        "corpus_manifest_sha256": "78c8b7946917f8a9bc24cbf4d38ff4cd7264dc3f512f9e60a131598f692ba195",
+        "corpus_root": "/workspace/scratch/c828bfecc3d9/cybersand-205",
+        "created_utc": "2026-10-22T20:49:08.947645+00:00",
+        "document_count": 104,
+        "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+        "fixture_sha256": "d425553cce55122dedcc34616459e6b9284332e7ddd1cf519671411304a9ce44",
+        "method": {
+          "b": 0.75,
+          "corpus_policy": "explicit retrieval-corpus.json documents if present; otherwise frozen focused-directory policy plus navigation README/AGENTS; historical audit/uppercase legacy excluded",
+          "embeddings": false,
+          "k": 5,
+          "k1": 1.2,
+          "maximum_body_words": 420,
+          "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+          "name": "heading-chunk BM25 lexical development baseline",
+          "overlap_words": 0,
+          "query_expansion": false,
+          "reranker": false,
+          "stemming": false
+        },
+        "summary": {
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+          "canonical_hit_at_1": 92,
+          "canonical_hit_at_k": 114,
+          "mrr_at_k": 0.8863,
+          "questions": 114
+        }
+      }
+    }
+  },
+  "runtime_sha256": {
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "e6d9ec7d0847287c4c6b1acaffd52dc2807fe43e9dccfc36123ffa117fb6045f",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "28f99172da4256acc34bcd932b113dacabe52bdb459fd0ee4883f741e41bd8e5",
+    "godot/addons/cybersand_native/runtime-provenance.json": "1f13eb716a86f1824da4b8d4e77d0ed4ff81a7122b5fd5f07bebf4c9ff1d88e1",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json": "c337b3d55f566358d332e75f114f235430a9fb4cb09cf4364e674029ef6f84f6",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831"
+  },
+  "schema": "4ly001-conformance-evidence/v1",
+  "source_sha256": {
+    "godot/scripts/main.gd": "531a2d801bf4af5bd0efb68a01354a74a239991f64704d8bbd69744620ac3e53",
+    "godot/scripts/physical_actor_catalog.gd": "bebdc9465d0db62160bd3cbb1bdbe1e55bac83282b3db94f8617782adee339c9",
+    "godot/scripts/physical_actor_rig.gd": "4e3fe63b46a5db3365d77c9c055a032b704f70ea2265ad0f0013574b785e692e",
+    "godot/scripts/physical_actor_script.gd": "50eb5f452f28ae6c4d56cc0bded4d01d64eb56a95c2bc8a694f39ebf2f684da1",
+    "godot/scripts/physical_actor_session.gd": "d6210af2e4847ba33edc4134e763ef25d9b3ab608884270e2a1935a23b368797",
+    "godot/scripts/physical_flight_controller.gd": "47ce24b4253d8e4f7aee2d79bc329d2589fa416d258125c540a999e0151e7b4d",
+    "godot/scripts/physical_flight_profile.gd": "1eca3eecf34c90308c3a305d2ef3f6e10337ca5fb0683330360bdf2a66c1c097",
+    "godot/scripts/physical_usable_equipment.gd": "5804fbda0a5ba055eae5e0bbecbb18fb2949bc844ed58988560095cde0352deb",
+    "godot/scripts/physical_usable_loadouts.gd": "f09afeabae2aea9abbc033b721bfa3d11f6dcadb110c0079c991d2f908826bcc",
+    "godot/tests/test_physical_flight_physics.gd": "3e8fe465dab0a65024357fb027ced96bfb49cc240cd3d3e1f79e1e3b0fad2e67",
+    "godot/tests/test_physical_flight_profile.gd": "f4929464da2de87e9dcf620108cc30422baaf8b57f8290c102f7b97ed1669327",
+    "godot/tests/test_physical_flight_session.gd": "fabfd0d74cc4b3a98b18793a56aa1c29e1dac3ac729865c7653fadc0b3527553"
+  }
+}

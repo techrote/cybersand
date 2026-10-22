@@ -36,6 +36,9 @@ Implementation, measured handling, useful learned navigation and owner feel
 acceptance are separate claims. Source presence does not qualify a policy or
 certify an unmeasured platform. Focused reproduction commands are in the
 [build guide](../operations/local-build-and-validation.md#physical-free-flight-checks).
+The [dated conformance audit](../audits/2026-10-22-4ly001-physical-free-flight.md)
+records the actual Linux measurements, corrected failures and exact-head hosted
+gate handoff separately from the contract.
 
 ## Who owns the chassis, contacts and equipment?
 

@@ -21,6 +21,8 @@ For the internal **4LY** single-chassis drone family, use the
 velocity outputs, bounded assistance, profile identity and passive cancellation.
 Trainer conformance tuning and three uncalibrated placeholders share one plant;
 ordinary-game selection and measured handling differences belong to 4LY-002.
+The [4LY-001 conformance audit](audits/2026-10-22-4ly001-physical-free-flight.md)
+records actual Rapier measurements, lifecycle negatives and source/runtime identity.
 
 For seven human movement presets, use the [player control playground](systems/player-control-playground.md): buggy, trials bike, momentum acrobat, arcade lander, native Sand cloud, native Water blob and jetpack barrel. The guide owns keyboard/gamepad controls, acrobat chains, reset/focus rules and bounded material-field ownership. The five mechanical presets also appear in F5 SetP.
 
