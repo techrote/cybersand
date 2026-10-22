@@ -275,7 +275,7 @@
     "production carrier selection",
     "GEN-006 streaming acceptance"
   ],
-  "registration_version": 2,
+  "registration_version": 3,
   "source_context_qualification": {
     "admitted": true,
     "timed": false,
@@ -286,7 +286,26 @@
   "candidate_twin_qualification": {
     "admitted": true,
     "timed": false,
-    "arms": "all 17 registered S1 arms",
+    "source_reference": "C64-E8-source is built in both modes but has no injected dispatch hooks; C64-E8-word is the source-matched bridge for actual worker observation.",
+    "arms": [
+      "C64-E8-source",
+      "C64-E8-word",
+      "C64-E16-word",
+      "C64-E8-padded",
+      "C64-E16-padded",
+      "C72-E8-packed",
+      "C72-E16-packed",
+      "C80-E8-packed",
+      "C80-E16-packed",
+      "C72-E8-aligned",
+      "C72-E16-aligned",
+      "C80-E8-aligned",
+      "C80-E16-aligned",
+      "C72-E8-split",
+      "C72-E16-split",
+      "C80-E8-split",
+      "C80-E16-split"
+    ],
     "observer_modes": [
       "observed",
       "timing-twin"
@@ -294,23 +313,59 @@
     "anchors": [
       {
         "id": "active-512-w4",
-        "purpose": "all E8 physical/capacity arms and source-vs-word S2A anchor"
+        "side": 512,
+        "scenario": "active",
+        "workers": 4,
+        "purpose": "S2A E8 physical/capacity anchor and actual background-worker evidence"
       },
       {
         "id": "quiet-2048-w1",
-        "purpose": "all E8/E16 within-representation S2A anchor plus source reference"
+        "side": 2048,
+        "scenario": "quiet",
+        "workers": 1,
+        "purpose": "S2A E8/E16 within-representation anchor and wide-resident quiescent equivalence"
       }
     ],
-    "requirements": [
-      "both binaries derive from one immutable per-arm overlay and differ only by registered observer compile definition",
-      "observer-on proves actual candidate pool dispatch/background-worker execution where workers=4",
-      "observer-on and observer-off untimed runs match content hash, work arrays, input ledger, reactive ledger and declared semantic summary",
-      "binary, overlay, compiler, flags, fixture and registration hashes sealed before execution",
-      "independent reject-by-default readback validates all arms and both modes",
-      "no timing arrays may be emitted or interpreted"
-    ]
+    "warmup_ticks": 120,
+    "sample_ticks": 256,
+    "seed": 204,
+    "build_contract": {
+      "immutable_overlay": "one hash-guarded per-arm overlay generated from frozen S1 apparatus/native bytes",
+      "observed_define": "MAT003_TWIN_OBSERVERS=1",
+      "timing_twin_define": "MAT003_TWIN_OBSERVERS=0",
+      "allowed_binary_difference": "observer compile definition only; all source/overlay bytes and optimization flags identical",
+      "timing_arrays": "forbidden in both qualification modes"
+    },
+    "evidence_requirements": [
+      "both modes match representation-independent content hash, visit/job arrays, input ledger and final material/water summary for the same arm/context",
+      "all candidate arms match the C64-E8-source semantic reference at active-512-w4 and quiet-2048-w1 where epoch-inclusive state hashes may legitimately differ",
+      "observed 4-worker candidate runs record nonzero dispatch calls, dispatched tasks and executed worker tasks; source control is exempt because its bytes remain uninstrumented",
+      "observer-off timing twins report zero observer counters and remain untimed during qualification",
+      "compiler, flags, overlay hashes, twin-patch hash, fixture hash and both binary hashes are sealed before fixture execution",
+      "independent verifier rejects missing arms, mode/context duplication, source drift, nonempty timing arrays, semantic mismatch or fabricated worker evidence"
+    ],
+    "execution": {
+      "compiler": "g++-13",
+      "flags": [
+        "-std=c++20",
+        "-O2",
+        "-DNDEBUG",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-pthread"
+      ],
+      "maximum_arm_builds": 34,
+      "maximum_fixture_processes": 68,
+      "compile_timeout_seconds": 180,
+      "fixture_timeout_seconds": 120,
+      "total_wall_budget_seconds": 2400,
+      "concurrent_processes": 1,
+      "stop_rule": "any compile/run/readback mismatch or budget exhaustion leaves candidate twins unqualified and timing held"
+    }
   },
   "amendments": [
-    "Registration v2 admits only full 24-context untimed source qualification and untimed 17-arm observer-on/off candidate twins. Paired S2A/S2B timing remains explicitly unadmitted."
+    "Registration v2 admits only full 24-context untimed source qualification and untimed 17-arm observer-on/off candidate twins. Paired S2A/S2B timing remains explicitly unadmitted.",
+    "Registration v3 freezes candidate-twin matrix/budgets and source-control worker-observation exemption before twin apparatus is added."
   ]
 }
