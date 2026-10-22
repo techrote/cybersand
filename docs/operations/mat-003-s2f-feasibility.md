@@ -110,3 +110,8 @@ in new commits/artifacts, then complete the 18 remaining source contexts
 and correctness-observed twins before requesting separate S2A timing admission.
 Keep #204 and G-final open, GEN-006 persistence unimplemented, and the
 production 64-bit E8 carrier unchanged.
+
+
+## Actual hosted preflight readback — 2026-10-22
+
+[CI run 39867638084](https://github.com/techrote/cybersand/actions/runs/39867638084) passed six of six untimed source-control fixtures and all eight preflight evidence tests. The independent verifier passed 57 raw file size/hash checks. [Documentation run 39867638180](https://github.com/techrote/cybersand/actions/runs/39867638180) also passed for the apparatus source. The [dated evidence report](../audits/2026-10-22-mat003-s2f-preflight.md) and [compact machine index](../audits/mat003-s2f-2026-10-22/hosted-summary.json) retain source/binary/artifact identities and earlier failures. The first non-vacuous active scene failed and was corrected to alternate Water/Sand sources; its raw failure artifact remains independent. Work tallies and process RSS are not speed measurements. The remaining 18 source contexts and all S2A/paired performance comparisons stay held.
