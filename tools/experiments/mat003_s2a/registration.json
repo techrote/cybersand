@@ -267,5 +267,11 @@
     "E24/E32",
     "production carrier selection or migration",
     "GEN-006 persistence/streaming"
+  ],
+  "registration_version": 2,
+  "baseline_native_commit": "da5112c066416346d6fe3984d4161cd162611e50",
+  "s1_registration": "tools/experiments/mat003_prepass/world_registration.json",
+  "amendments": [
+    "v2 explicitly binds the frozen S1 native baseline and registration path before any S2A compile or execution; contrasts, process order, horizons, budgets and timing admission remain unchanged."
   ]
 }
