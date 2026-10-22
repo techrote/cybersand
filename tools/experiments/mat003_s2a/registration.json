@@ -256,7 +256,10 @@
       "process_peak_rss"
     ],
     "clear_interpretation": "E8 sample includes its registered natural clear when it falls in the 120+256 horizon; E16 does not naturally clear in this horizon. Do not infer E16 long-run maintenance from S2A; separately measured wide-epoch clear latency remains required before final epoch-width selection.",
-    "zero_visit": "report absolute tick latency; never divide by zero visits"
+    "zero_visit": "report absolute tick latency; never divide by zero visits",
+    "primary_metric": "mean tick_ns across all 256 registered sample ticks per process; each pair ratio is B_mean/A_mean; retain seven ratios and report their median",
+    "percentile_method": "nearest-rank on sorted tick_ns: rank=ceil(p*N), 1-indexed, for p50/p95/p99; max is literal maximum",
+    "ratio_spread": "minimum, maximum and median absolute deviation of the seven process-level B/A ratios; raw ratios always retained"
   },
   "deferred": [
     "all timing until apparatus qualification and separate admission amendment",
@@ -268,10 +271,11 @@
     "production carrier selection or migration",
     "GEN-006 persistence/streaming"
   ],
-  "registration_version": 2,
+  "registration_version": 3,
   "baseline_native_commit": "da5112c066416346d6fe3984d4161cd162611e50",
   "s1_registration": "tools/experiments/mat003_prepass/world_registration.json",
   "amendments": [
-    "v2 explicitly binds the frozen S1 native baseline and registration path before any S2A compile or execution; contrasts, process order, horizons, budgets and timing admission remain unchanged."
+    "v2 explicitly binds the frozen S1 native baseline and registration path before any S2A compile or execution; contrasts, process order, horizons, budgets and timing admission remain unchanged.",
+    "v3 freezes the primary paired ratio metric and percentile/spread definitions before any S2A compile or execution; admission remains false."
   ]
 }
