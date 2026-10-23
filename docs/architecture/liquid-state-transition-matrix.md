@@ -86,20 +86,71 @@ related-documents: [liquid-solver-family-policy.md, lcb-pressure-inertial-handof
 
 ## 5. Velocity and momentum (IN; PF flow)
 
-| Operation | Rule (Proposed) |
+**Inertial update `inertial-update-v1` (Proposed, #212; correction 2026-10-23).**
+The earlier rows were inconsistent ([re-review finding 2](https://github.com/techrote/cybersand/pull/226#issuecomment-6362824493)):
+- a per-component ledger with only non-negative losses could not represent a
+  deflection that creates `vx > 0`, nor damping of a negative `vx`;
+- gravity before deflection could push a supported cell at rest sideways;
+- "blocked travel zeroes velocity" contradicted "same-family blocking
+  preserves velocity".
+
+They are replaced by one ordered update per inertial cell per tick. The
+executable specification is the standalone oracle
+[`inertial_contract.py`](../../tools/lcb/inertial_contract.py), with its
+[tests](../../tools/lcb/test_inertial_contract.py). Its worked examples are
+embedded in the [contract registry](../../godot/tests/fixtures/lcb/lcb-physics-contracts.json)
+(contract `inertial-update`). It is a contract model on static neighbourhoods:
+**no World, scheduler or inertial family has executed.**
+
+Units: velocity and accumulators are signed integers in `q` units per cell. The
+illustrative values are `q = 16`, `g = 4` and `vmax = 64`. Fractions are
+`turn 1/8`, `deflect 3/4`, `damping 1/16` and `drag 1/4`; the rest threshold is
+`1`. These values are recorded in the receipt and are **not frozen**. `vy ≥ 0`
+always, because v1 has no upward impulse source.
+
+| Step | Rule |
 |---|---|
-| Gravity | adds a fixed-point increment to vy each tick, saturating at the frozen bound |
-| **Lateral source A: diagonal move** | When the straight-down target is blocked and a diagonal target is taken (the existing gravity order: down, then both diagonals in `deterministic_direction` order), the velocity is re-aimed along the move. The speed is `|v| + g` minus a registered turn loss, split equally into ±vx and vy in fixed point; the loss is booked. A cell at rest that falls diagonally gains only the gravity increment, along the diagonal. |
-| **Lateral source B: blocked-fall deflection** | When down and both diagonals are blocked, `vy > 0`, and a lateral neighbour is Empty, a fraction `f_deflect` (family parameter) of `vy` becomes vx toward the free side (deterministic order when both are free). vy is zeroed and `(1−f_deflect)·vy` is booked as dissipation. A cell with `vy = 0` gains nothing. |
-| **No other lateral source** | There is no column-height scan, pressure or neighbour push. A head-like term would make the family a pressure solver, and that is `pressure_flow_v1`'s role. A static, fully supported cell therefore stays at exactly zero velocity. |
-| Momentum ledger | Per tick and component, in exact fixed-point integers: `p_after = p_before + gravity_input − (turn + deflection + blocked + damping + drag losses)`. All losses are non-negative and recorded; the identity must close every tick. |
-| Travel | accumulator += velocity; the cell moves one step per whole unit, re-checking each target. A blocked target leaves the cell in place, zeroes that velocity component and books the lost impulse. |
-| Collision with Wall/solid/body mask | the normal component is zeroed (no bounce in v1) and the impulse is booked as dissipation; no Rapier force is applied |
-| Same-family collision | each cell's velocity is preserved (no exchange in v1). A blocked cell waits. |
-| Displacing a lighter liquid (vertical swap) | the mover keeps its velocity minus a registered drag fraction, booked; the displaced cell keeps its own (or zero) state |
-| Damping | per-tick multiplicative fixed-point damping (family parameter) plus a rest threshold that zeroes residual velocity |
-| Split/merge (PF partial flux) | outgoing flux carries the source's updated velocity (#200 defect fix); the receiver mass-weights it; rounding remainders are booked |
-| Rest | zero velocity and an empty accumulator ⇒ the cell is eligible to sleep under the ordinary block rules |
+| U1 support | `supported` := the cell below is **not enterable**, evaluated before any velocity change. Only Empty and a lighter liquid (by vertical density swap) are enterable. Wall, solid, transient body mask and an occupied same-family cell are all non-enterable, under one contact rule. |
+| U2 gravity | `vy += g`, **exactly once per tick**, booked as the only speed-adding entry. |
+| U3a diagonal re-aim (lateral source A) | If supported and a diagonal-below target is enterable: the `sign(vx)` side first, else `deterministic_direction` order. Then `S = |vx| + vy` (including this tick's `g`), `turn = trunc(S·1/8)`, `S' = S − turn`, `|vx| = S' // 2` toward the diagonal, `vy = S' − |vx|`. A cell at rest gains only `g` along the diagonal. |
+| U3b support and deflection (lateral source B) | If supported and both diagonals are blocked, a **support** impulse `−g` first cancels this tick's gravity. It is a constraint, not dissipation. Only the velocity `vy_in` **carried in from earlier ticks** may deflect: `d = trunc(vy_in·3/4)` toward a free side (`sign(vx)` side first, else deterministic order), `vx += ±d`, `vy −= vy_in`, booked loss `vy_in − d`. With no free side, `vy −= vy_in` is a pure contact loss. **A supported cell at rest has `vy_in = 0`, so it never gains `vx`.** |
+| U4 saturation | Clamp each component to `±vmax`. The clamped amount is a signed impulse with a non-negative loss. It is applied again after a travel landing. |
+| U5 damping | `v_c −= trunc(v_c·1/16)` per component, truncated toward zero. For a negative `vx` the impulse is **positive**: `−40` becomes `−38`, with impulse `+2`. |
+| U6 travel | `a += v`; whole steps `n = trunc(a / q)`, `a −= n·q`, so `|a| < q` and at most `vmax / q` = 4 cells per axis per tick. Unit moves follow a DDA, vertical first unless the vertical target is blocked while a horizontal move is due. **Every target is rechecked.** A lighter liquid swaps, and the mover loses `trunc(v·1/4)` per component (drag). **The first contact ends travel.** A vertical contact applies the U3b landing rule (deflection of the remaining `vy`, then saturation). A horizontal contact zeroes `vx` and `ax` as a booked contact impulse. |
+| U7 rest and sleep | If supported, `vy = 0` and `|vx| ≤ rest`, then `vx = 0`. Any accumulator residue is reset and recorded as a travel note; it is not momentum. The cell is **sleep-eligible** iff `v = 0`, `a = 0` and it is supported. |
+| Momentum ledger | Per component, exactly: `v_after = v_before + gravity + Σ signed impulses`, where gravity is `(0, g)` and the impulses are support, re-aim, deflect, contact, saturate, damping, drag and rest. **Signed impulses are distinct from loss.** |
+| Speed-loss ledger | Separate, with L1 speed `S = |vx| + |vy|`: `S_after = S_before + g − Σ loss`, and every non-gravity loss ≥ 0. `support` is booked as a constraint, the rest as dissipation. The quadratic energy is not claimed. |
+| Rounding | Every rational product truncates toward zero. The signed remainder numerator is audited per entry and never stored. |
+| Collision with Wall/solid/body mask/same family | **One rule for all non-enterable targets**: vertical = the U3b landing, horizontal = zero `vx`. Same-family contact is **inelastic** in v1: no velocity exchange, and the occupied cell is unchanged. This resolves the earlier "preserves velocity" row, which would have stored unbounded pending motion. No Rapier force is applied. |
+| No other lateral source | There is no column-height scan, pressure or neighbour push; that is `pressure_flow_v1`'s role. |
+| Displacing a lighter liquid (vertical swap) | Drag is booked per U6. The displaced cell keeps its own (or zero) state, and no velocity is written into a foreign family. |
+| Split/merge (PF partial flux) | Outgoing flux carries the source's updated velocity (the #200 defect fix); the receiver mass-weights it; rounding remainders are booked. |
+
+**Worked examples** (exact, in the registry):
+
+| Example | Start (x, y, vx, vy, ax, ay) | End | Ledger entries |
+|---|---|---|---|
+| deflect right (left side blocked) | (2,1, 0,32, 0,0) | (3,1, 23,0, 7,0) | gravity +4y; support −4y; deflect +24x −32y, loss 8; damping −1x, loss 1, remainder 8 |
+| deflect left | (2,1, 0,32, 0,0) | (1,1, −23,0, −7,0) | mirror of the above |
+| damp negative vx | (2,1, −40,0, 0,0) | (0,1, −38,0, −6,0) | gravity +4y; support −4y; damping **+2x**, loss 2, remainder −8 |
+| supported rest, free side | (2,1, 0,0, 0,0) | unchanged, sleep-eligible | gravity +4y; support −4y |
+| blocked by same family | (2,1, 0,20, 0,0) | (2,1, 0,0, 0,0), sleep-eligible | gravity +4y; support −4y; contact −20y, loss 20 |
+| re-aim from rest | (2,1, 0,0, 0,0) | (2,1, 2,2, 2,2) | gravity +4y; re-aim +2x −2y, loss 0, remainder 4 |
+| re-aim carried | (2,1, 0,40, 0,0) | (3,2, 18,19, 2,3) | re-aim +19x −24y, loss 5 (44 → 39); damping −1x −1y |
+| saturation and bounds | (2,1, 0,62, 0,15) | (2,5, 0,60, 0,11), 4 cells | saturate −2y; damping −4y |
+| contact mid-travel | (0,1, 48,0, 0,0) | (1,1, 0,0, 0,0), sleep-eligible | damping −3x; horizontal contact −45x |
+| body-mask landing | as deflect right, with a mask below | identical to deflect right | identical: one contact rule |
+| density swap drag | (2,1, 0,20, 0,0) | (2,2, 0,18, 0,7) | damping −1y; drag −5y, loss 5, remainder 3 |
+
+An exhaustive regression covers every 3×3 Empty/Wall/lighter neighbourhood
+across a velocity and accumulator grid (393,660 updates). It asserts:
+- both ledgers close;
+- every non-gravity loss is ≥ 0;
+- exactly one gravity entry;
+- bounds `|v| ≤ vmax`, `|a| < q`, and ≤ 8 unit moves;
+- `vx` leaves 0 only through a re-aim or deflect entry;
+- a supported, diagonally blocked cell at rest stays exactly at rest and is
+  sleep-eligible.
 
 ## 6. Reactions and material conversion
 

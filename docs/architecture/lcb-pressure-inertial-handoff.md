@@ -170,24 +170,45 @@ report §E).
 - saturation at a declared maximum (≤ the bounded write radius per tick);
 - default 0, and reset to 0 on product, paint or reconstruction.
 
-**Laws** (transition matrix §5):
-- gravity increment to vy;
-- **horizontal momentum from rest comes only from**:
-  - **(A) diagonal moves**, which re-aim the speed along the move;
-  - **(B) blocked-fall deflection**, which turns `f_deflect·vy` into vx toward a
-    free side.
+**Laws:** one ordered update, `inertial-update-v1`
+([transition matrix §5](liquid-state-transition-matrix.md#5-velocity-and-momentum-in-pf-flow);
+executable contract model `tools/lcb/inertial_contract.py`). Per tick:
+1. U1: the support test runs before any velocity change.
+2. U2: exactly one gravity application.
+3. U3: for a supported cell, either diagonal re-aim **(A)**, or support
+   cancellation of this tick's gravity followed by blocked-fall deflection
+   **(B)** of the velocity *carried in* from earlier ticks.
+4. U4: saturation.
+5. U5: damping, truncated toward zero.
+6. U6: accumulator travel with a recheck of every target. The first contact
+   ends travel. One contact rule covers Wall, body mask and same-family
+   cells; same-family contact is inelastic in v1.
+7. U7: rest and sleep eligibility.
 
-  There is no pressure or column-height term. At a released dam, face cells
-  whose diagonal target becomes Empty fall diagonally and gain vx. Cells that
-  fall farther carry more speed into the turn, so depth dependence *can*
-  emerge kinematically, but it is not guaranteed;
-- a per-tick momentum ledger that closes exactly;
-- travel by accumulator, one step per whole unit, re-checking each target;
-- blocked travel zeroes the normal component and books the impulse;
-- damping is multiplicative per tick, with a rest threshold;
-- vertical density swaps keep the mover's velocity minus registered drag;
+Properties of this update:
+- **Horizontal momentum from rest comes only from (A) and (B).** There is no
+  pressure or column-height term.
+- **A supported cell at rest carries no `vy`, so it never drifts sideways.**
+- At a released dam, face cells whose diagonal target becomes Empty re-aim
+  and gain vx. Cells that fall farther carry more speed into the turn or the
+  landing, so depth dependence *can* emerge kinematically, but it is not
+  guaranteed.
+
+Ledgers:
+- the **signed per-component momentum** ledger `v_after = v_before + g + Σ
+  impulses` closes exactly;
+- a **separate non-negative L1 speed-loss** ledger books dissipation and the
+  support constraint;
+- truncation remainders are audited.
+
+Also:
 - no velocity is written into foreign families;
 - no Rapier force.
+
+The worked examples (right/left deflection, negative-velocity damping,
+supported rest with a free side, same-family contact, re-aim, saturation,
+mid-travel contact, body-mask landing and drag) are #212's native
+registrations. They are a contract model, not an executed inertial World.
 
 **Distinguishing evidence** (must show what CellularYield cannot):
 

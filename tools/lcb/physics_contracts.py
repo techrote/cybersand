@@ -24,6 +24,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import inertial_contract as inertial  # noqa: E402
 import scenario_catalogue as cat  # noqa: E402
 
 OUT = ROOT / "godot/tests/fixtures/lcb/acceptance"
@@ -227,9 +228,10 @@ SURGE = {
                  "Characterization screens allow dissipation and are deliberately loose: they are recorded per "
                  "arm, are NOT admission criteria, and passing one is not owner feel acceptance. Admission "
                  "criteria are the correctness invariants listed separately.",
-    "inertial_lateral_sources": "horizontal momentum arises only from diagonal moves (speed re-aimed along "
-        "the move, turn loss booked) and blocked-fall deflection (f_deflect*vy to vx toward a free side, "
-        "remainder booked); no pressure or column-height term; a static supported cell stays at zero velocity",
+    "inertial_lateral_sources": "inertial-update-v1 (contract 'inertial-update'): horizontal momentum arises "
+        "only from diagonal re-aim (A) and blocked-fall deflection of velocity carried in from earlier ticks (B); "
+        "support cancels the current tick's gravity first, so a supported cell at rest never drifts; no pressure "
+        "or column-height term",
 }
 
 
@@ -345,15 +347,29 @@ def contracts(fx: list[cat.Scenario]) -> dict:
                        "steam-expiry": "current main writes Water at maximum() (#160 amplification; PR #162 unmerged)"},
              "arms": [{"arm": "M1", **IN}, {"arm": "M2", "family": "pressure_flow_v1 + inertial_cellular_v1",
                                            "depends_on": ["#213 LCB-000 PASS", "#200", "#212"]}]},
+            {"id": "inertial-update", "scenarios": [],
+             "purpose": "One ordered, bounded, exact-integer inertial cell update with a signed per-component "
+                        "momentum ledger and a separate non-negative speed-loss ledger (re-review finding 2).",
+             "current_control": {"status": "contract-model",
+                                 "test": "tools/lcb/test_inertial_contract.py (standalone oracle; no World)"},
+             "contract": inertial.registry(),
+             "native_registrations_for_212": [
+                 "reproduce every worked example on a single inertial cell in a native World fixture",
+                 "per-tick signed momentum and speed-loss ledgers close on the dam ladder and lock exchanges",
+                 "static closed pool and a supported cell with a free side keep every velocity exactly 0",
+                 "Wall, body mask and same-family contacts produce identical ledgers for identical geometry",
+                 "1/4-worker identical velocity/accumulator state in the physical-state hash"],
+             "arms": [{"arm": "W-IN", **IN}, {"arm": "BRINE-IN", **IN}]},
             {"id": "cross-family-ownership", "scenarios": [],
              "purpose": "State tuples move with their cells; no ghost or copied family state.",
              "current_control": {"status": "executable", "test": "test_lcb_physics_contracts.gd::ownership",
                                  "case": "Brine (state_b tag 77) sinks through partial Water (mass 200); both "
                                          "tuples arrive intact"},
              "blocked_cases": ["inertial static closed pool: every velocity exactly 0, physical hash constant (#212)",
-                               "inertial momentum ledger closes every tick on the dam ladder (#212)",
-                               "inertial dam release: vx nonzero only in cells that moved diagonally or "
-                               "deflected (#212)",
+                               "inertial-update-v1 signed momentum and speed-loss ledgers close every tick "
+                               "on the dam ladder (#212)",
+                               "inertial dam release: vx becomes nonzero only through a re-aim or deflection "
+                               "ledger entry (#212)",
                                "inertial velocity follows its cell through a density swap (#212)",
                                "pressure overfill follows Water through moves and retires on conversion (#200)",
                                "no optional state remains on an Empty vacancy (#200/#212)"],

@@ -50,6 +50,7 @@ jobs:
           timeout 2m python3 tools/lcb/lcb_registry.py reledger --check
           timeout 2m python3 -m unittest discover -s tools/lcb -p test_lcb_registry.py
           timeout 2m python3 tools/lcb/physics_contracts.py --check
+          timeout 2m python3 -m unittest discover -s tools/lcb -p test_inertial_contract.py
       - name: Validate current documentation
         run: timeout 5m python3 tools/ci/check_docs.py
       - name: Validate dependency pins and published runtime provenance

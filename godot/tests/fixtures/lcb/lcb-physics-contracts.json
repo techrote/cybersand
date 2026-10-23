@@ -80,7 +80,7 @@
           }
         },
         "rationale": "Shallow-water dam-break fronts advance ballistically at ~2*sqrt(g*h); sqrt(160/48)=1.83. Characterization screens allow dissipation and are deliberately loose: they are recorded per arm, are NOT admission criteria, and passing one is not owner feel acceptance. Admission criteria are the correctness invariants listed separately.",
-        "inertial_lateral_sources": "horizontal momentum arises only from diagonal moves (speed re-aimed along the move, turn loss booked) and blocked-fall deflection (f_deflect*vy to vx toward a free side, remainder booked); no pressure or column-height term; a static supported cell stays at zero velocity"
+        "inertial_lateral_sources": "inertial-update-v1 (contract 'inertial-update'): horizontal momentum arises only from diagonal re-aim (A) and blocked-fall deflection of velocity carried in from earlier ticks (B); support cancels the current tick's gravity first, so a supported cell at rest never drifts; no pressure or column-height term"
       },
       "arms": [
         {
@@ -360,6 +360,667 @@
       ]
     },
     {
+      "id": "inertial-update",
+      "scenarios": [],
+      "purpose": "One ordered, bounded, exact-integer inertial cell update with a signed per-component momentum ledger and a separate non-negative speed-loss ledger (re-review finding 2).",
+      "current_control": {
+        "status": "contract-model",
+        "test": "tools/lcb/test_inertial_contract.py (standalone oracle; no World)"
+      },
+      "contract": {
+        "rule": "inertial-update-v1",
+        "status": "Proposed #212 contract model (tools/lcb/inertial_contract.py). Exact-integer worked examples of one cell update against a static neighbourhood; no World, scheduler or inertial family has executed.",
+        "illustrative_parameters": {
+          "q": 16,
+          "gravity": 4,
+          "vmax": 64,
+          "turn": [
+            1,
+            8
+          ],
+          "deflect": [
+            3,
+            4
+          ],
+          "damping": [
+            1,
+            16
+          ],
+          "drag": [
+            1,
+            4
+          ],
+          "rest": 1
+        },
+        "order": [
+          "U1 support detection (below enterable?) before any velocity change",
+          "U2 gravity: vy += g exactly once",
+          "U3 supported cell: diagonal re-aim (A) if a diagonal is enterable; otherwise support cancels this tick's g, then blocked-fall deflection (B) of the vy carried in from earlier ticks",
+          "U4 per-component saturation to +-vmax",
+          "U5 per-component damping, truncated toward zero",
+          "U6 accumulator travel: whole-cell unit moves, target recheck each; a lighter liquid swaps with drag; the first contact ends travel (vertical contact = rule B then saturation, horizontal = zero vx)",
+          "U7 rest: supported, vy == 0, |vx| <= rest -> vx = 0 and accumulators reset; sleep-eligible iff v == 0, a == 0 and supported"
+        ],
+        "ledgers": {
+          "momentum": "per component: v_after = v_before + gravity + sum(signed impulses)",
+          "speed_loss": "L1: |v_after| = |v_before| + g - sum(loss); every non-gravity loss >= 0; support cancellation is a constraint, not dissipation",
+          "rounding": "products truncate toward zero; the signed remainder numerator is audited, never stored"
+        },
+        "examples": [
+          {
+            "name": "deflect-right",
+            "neighbourhood": [
+              "#####",
+              "##W..",
+              "#####"
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 32,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 3,
+              "y": 1,
+              "vx": 23,
+              "vy": 0,
+              "ax": 7,
+              "ay": 0
+            },
+            "moves": [
+              [
+                3,
+                1
+              ]
+            ],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "support",
+                "jy": -4,
+                "loss": 4
+              },
+              {
+                "stage": "deflect",
+                "jx": 24,
+                "jy": -32,
+                "loss": 8,
+                "note": "carried vy 32 -> +24 vx"
+              },
+              {
+                "stage": "damping",
+                "jx": -1,
+                "loss": 1,
+                "remainder": 8
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          },
+          {
+            "name": "deflect-left",
+            "neighbourhood": [
+              "#####",
+              "..W##",
+              "#####"
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 32,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 1,
+              "y": 1,
+              "vx": -23,
+              "vy": 0,
+              "ax": -7,
+              "ay": 0
+            },
+            "moves": [
+              [
+                1,
+                1
+              ]
+            ],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "support",
+                "jy": -4,
+                "loss": 4
+              },
+              {
+                "stage": "deflect",
+                "jx": -24,
+                "jy": -32,
+                "loss": 8,
+                "note": "carried vy 32 -> -24 vx"
+              },
+              {
+                "stage": "damping",
+                "jx": 1,
+                "loss": 1,
+                "remainder": -8
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          },
+          {
+            "name": "damp-negative-vx",
+            "neighbourhood": [
+              "#####",
+              "..W..",
+              "#####"
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": -40,
+              "vy": 0,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 0,
+              "y": 1,
+              "vx": -38,
+              "vy": 0,
+              "ax": -6,
+              "ay": 0
+            },
+            "moves": [
+              [
+                1,
+                1
+              ],
+              [
+                0,
+                1
+              ]
+            ],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "support",
+                "jy": -4,
+                "loss": 4
+              },
+              {
+                "stage": "damping",
+                "jx": 2,
+                "loss": 2,
+                "remainder": -8
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          },
+          {
+            "name": "supported-rest-free-side",
+            "neighbourhood": [
+              "#####",
+              "#.W..",
+              "#####"
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 0,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 0,
+              "ax": 0,
+              "ay": 0
+            },
+            "moves": [],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "support",
+                "jy": -4,
+                "loss": 4
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": true
+          },
+          {
+            "name": "blocked-same-family",
+            "neighbourhood": [
+              "WWWWW",
+              "WWWWW",
+              "WWWWW"
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 20,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 0,
+              "ax": 0,
+              "ay": 0
+            },
+            "moves": [],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "support",
+                "jy": -4,
+                "loss": 4
+              },
+              {
+                "stage": "contact",
+                "jy": -20,
+                "loss": 20,
+                "note": "vertical contact; no free side"
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": true
+          },
+          {
+            "name": "reaim-from-rest",
+            "neighbourhood": [
+              "#####",
+              "#.W..",
+              "###.."
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 0,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 2,
+              "y": 1,
+              "vx": 2,
+              "vy": 2,
+              "ax": 2,
+              "ay": 2
+            },
+            "moves": [],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "reaim",
+                "jx": 2,
+                "jy": -2,
+                "remainder": 4,
+                "note": "diagonal +1"
+              },
+              {
+                "stage": "damping",
+                "remainder": 4
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          },
+          {
+            "name": "reaim-carried",
+            "neighbourhood": [
+              "#####",
+              "#.W..",
+              "###.."
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 40,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 3,
+              "y": 2,
+              "vx": 18,
+              "vy": 19,
+              "ax": 2,
+              "ay": 3
+            },
+            "moves": [
+              [
+                3,
+                1
+              ],
+              [
+                3,
+                2
+              ]
+            ],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "reaim",
+                "jx": 19,
+                "jy": -24,
+                "loss": 5,
+                "remainder": 4,
+                "note": "diagonal +1"
+              },
+              {
+                "stage": "damping",
+                "jx": -1,
+                "jy": -1,
+                "loss": 2,
+                "remainder": 7
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          },
+          {
+            "name": "saturate-free-fall",
+            "neighbourhood": [
+              ".....",
+              "..W..",
+              ".....",
+              ".....",
+              ".....",
+              "....."
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 62,
+              "ax": 0,
+              "ay": 15
+            },
+            "end": {
+              "x": 2,
+              "y": 5,
+              "vx": 0,
+              "vy": 60,
+              "ax": 0,
+              "ay": 11
+            },
+            "moves": [
+              [
+                2,
+                2
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                2,
+                5
+              ]
+            ],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "saturate",
+                "jy": -2,
+                "loss": 2
+              },
+              {
+                "stage": "damping",
+                "jy": -4,
+                "loss": 4
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          },
+          {
+            "name": "contact-mid-travel",
+            "neighbourhood": [
+              "#####",
+              "W.#..",
+              "#####"
+            ],
+            "start": {
+              "x": 0,
+              "y": 1,
+              "vx": 48,
+              "vy": 0,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 1,
+              "y": 1,
+              "vx": 0,
+              "vy": 0,
+              "ax": 0,
+              "ay": 0
+            },
+            "moves": [
+              [
+                1,
+                1
+              ]
+            ],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "support",
+                "jy": -4,
+                "loss": 4
+              },
+              {
+                "stage": "damping",
+                "jx": -3,
+                "loss": 3
+              },
+              {
+                "stage": "contact",
+                "jx": -45,
+                "loss": 45,
+                "note": "horizontal contact with '#'"
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": true
+          },
+          {
+            "name": "body-mask-landing",
+            "neighbourhood": [
+              "#####",
+              "##W.M",
+              "##M##"
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 32,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 3,
+              "y": 1,
+              "vx": 23,
+              "vy": 0,
+              "ax": 7,
+              "ay": 0
+            },
+            "moves": [
+              [
+                3,
+                1
+              ]
+            ],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "support",
+                "jy": -4,
+                "loss": 4
+              },
+              {
+                "stage": "deflect",
+                "jx": 24,
+                "jy": -32,
+                "loss": 8,
+                "note": "carried vy 32 -> +24 vx"
+              },
+              {
+                "stage": "damping",
+                "jx": -1,
+                "loss": 1,
+                "remainder": 8
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          },
+          {
+            "name": "drag-density-swap",
+            "neighbourhood": [
+              ".....",
+              "..W..",
+              "..o..",
+              "..o..",
+              "#####"
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 20,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 2,
+              "y": 2,
+              "vx": 0,
+              "vy": 18,
+              "ax": 0,
+              "ay": 7
+            },
+            "moves": [
+              [
+                2,
+                2
+              ]
+            ],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "damping",
+                "jy": -1,
+                "loss": 1,
+                "remainder": 8
+              },
+              {
+                "stage": "drag",
+                "jy": -5,
+                "loss": 5,
+                "remainder": 3,
+                "note": "density swap"
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          }
+        ]
+      },
+      "native_registrations_for_212": [
+        "reproduce every worked example on a single inertial cell in a native World fixture",
+        "per-tick signed momentum and speed-loss ledgers close on the dam ladder and lock exchanges",
+        "static closed pool and a supported cell with a free side keep every velocity exactly 0",
+        "Wall, body mask and same-family contacts produce identical ledgers for identical geometry",
+        "1/4-worker identical velocity/accumulator state in the physical-state hash"
+      ],
+      "arms": [
+        {
+          "arm": "W-IN",
+          "family": "inertial_cellular_v1",
+          "depends_on": [
+            "#200 per-material policy",
+            "#212"
+          ]
+        },
+        {
+          "arm": "BRINE-IN",
+          "family": "inertial_cellular_v1",
+          "depends_on": [
+            "#200 per-material policy",
+            "#212"
+          ]
+        }
+      ]
+    },
+    {
       "id": "cross-family-ownership",
       "scenarios": [],
       "purpose": "State tuples move with their cells; no ghost or copied family state.",
@@ -370,8 +1031,8 @@
       },
       "blocked_cases": [
         "inertial static closed pool: every velocity exactly 0, physical hash constant (#212)",
-        "inertial momentum ledger closes every tick on the dam ladder (#212)",
-        "inertial dam release: vx nonzero only in cells that moved diagonally or deflected (#212)",
+        "inertial-update-v1 signed momentum and speed-loss ledgers close every tick on the dam ladder (#212)",
+        "inertial dam release: vx becomes nonzero only through a re-aim or deflection ledger entry (#212)",
         "inertial velocity follows its cell through a density swap (#212)",
         "pressure overfill follows Water through moves and retires on conversion (#200)",
         "no optional state remains on an Empty vacancy (#200/#212)"
