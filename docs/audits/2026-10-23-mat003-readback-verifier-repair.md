@@ -122,8 +122,14 @@ The focused verifier-only command is:
 
 It exercises 32 rejection fixtures, the positive mixed-history fixture and all
 704 independent decoder cross-check records without executing a candidate. The
-first v2-focused run failed on fixture isolation as recorded below; v3 exact-head
-qualification is required and no success is claimed until that run is green.
+first v2-focused run failed on fixture isolation as recorded below. After the
+isolated fixture correction, v3 verifier run
+[39989952813](https://github.com/techrote/cybersand/actions/runs/39989952813)
+passed at PR head `95d999b7fa62ada7ebdbd046524e0e5cb2dc9a61`; provider-policy validation also
+passed. Documentation/provenance run 39989952723 passed at the same head. Native
+and Godot jobs remained intentionally skipped for the draft PR. This qualifies
+the focused verifier contracts only; it is not a full archive readback or Windows
+correctness acceptance.
 
 # Readback-only registration
 
@@ -182,7 +188,7 @@ rerun is permitted.
 # Current disposition
 
 - Verifier defect: **repaired in isolated experimental source**.
-- Positive/negative contract suite: **registered for focused CI qualification**.
+- Positive/negative contract suite: **focused v3 CI qualification PASSED (run 39989952813)**.
 - Immutable archive sufficiency: **YES, conditionally for readback-only use**.
 - Independent source/protocol admission: **PENDING**.
 - Owner authorization of changed readback: **ABSENT**.
