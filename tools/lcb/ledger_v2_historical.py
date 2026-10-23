@@ -1,9 +1,12 @@
 """FROZEN historical reducer for the lcb-signed-ledger-v2 record.
 
-Verbatim copy of `signed_ledger`, `_salt_species_ledger` and `reledger` from
-tools/lcb/lcb_registry.py at 54a8d62 (LF SHA-256 56293fc9...6583), kept only
-so docs/reference/lcb-scenario-ledger-2026-10-23.v2.json stays verifiable
-against the code that produced it. Do not edit; current accounting is
+`signed_ledger` and `_salt_species_ledger` are verbatim copies from
+tools/lcb/lcb_registry.py at 54a8d62 (file LF SHA-256 56293fc9...6583).
+`reledger` is a faithful compatibility adapter, not literally verbatim: its
+dependencies are injected and its recorded reducer hash is pinned to the
+historical file hash. It exists only so
+docs/reference/lcb-scenario-ledger-2026-10-23.v2.json stays verifiable against
+the code that produced it. Do not edit; current accounting is
 lcb-signed-ledger-v3 in lcb_registry.py. Known defects (re-review N3/N4) are
 preserved deliberately.
 """
