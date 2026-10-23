@@ -172,8 +172,11 @@ func test_live_chain() -> void:
 	expect(session.ik_observe(0, old_grant_id).is_empty(),
 		"cancelled grant cannot issue a fresh observation")
 	expect(not bool(session.ik_submit(input).accepted), "old packet cannot revive through a fresh client")
-	expect(session.ik_receipts(0, old_grant_id, 0).size() == 4,
-		"old receipts remain inspectable without renewing the target")
+	var final_receipts: Array = session.ik_receipts(0, old_grant_id, 0)
+	expect(final_receipts.size() == 5 and final_receipts[-1].operation == "ik_terminal"
+		and final_receipts[-1].integrity.terminal_boundary == "owner_cancelled"
+		and bool(final_receipts[-1].integrity.cancel_confirmed),
+		"original consumption remains traceable with an explicit confirmed no-step terminal")
 	step()
 	expect(session._rigs[0]._joints[2].node.motor_enabled == false
 		and session._rigs[0]._joints[3].node.motor_enabled == false,
@@ -188,23 +191,27 @@ func test_authority_fences() -> void:
 	var good: Dictionary = packet(issued_grant, original, 0)
 	for mutation: Dictionary in [
 		{"source_id": "another-source"}, {"grant_id": "foreign-grant"},
-		{"grant_generation": 100}, {"policy_sha256": "f".repeat(64)},
-		{"goal_id": "swapped-goal"}, {"goal_deadline_tick": 19},
-		{"observation_sha256": "0".repeat(64)},
-		{"control_generation": 99}, {"epoch": 9}, {"incarnation": 44},
+		{"policy_sha256": "f".repeat(64)}, {"control_generation": 99},
+		{"epoch": 9}, {"incarnation": 44},
 		{"producer": "human"}, {"run_id": "foreign-run"}]:
 		var bad: Dictionary = good.duplicate(true)
 		bad.merge(mutation, true)
 		expect(not bool(session.ik_submit(bad).get("accepted", false)),
-			"actual owner refuses modified identity: " + str(mutation.keys()))
-	expect(session.accepted_commands == 0,
-		"no malformed or alien action earns an accepted motor lease")
+			"foreign identity cannot consume or revoke the real owner: " + str(mutation.keys()))
+	expect(session.accepted_commands == 0 and not session._joint_grants[0].is_empty(),
+		"untrusted foreign packets do not create action or revoke a legitimate source")
+	expect(bool(session.ik_submit(good).accepted),
+		"valid original packet remains admissible after foreign attempts")
 	var future: Dictionary = good.duplicate(true)
+	future.sequence = 1
 	future.observed_tick = 1
 	expect(not bool(session.ik_submit(future).accepted),
-		"client may not invent an observation frame ahead of the bridge")
-	expect(bool(session.ik_submit(good).accepted),
-		"valid original packet remains admissible after rejected foreign attempts")
+		"fresh generation cannot be forged by stamping a new observed tick")
+	expect(session._joint_grants[0].is_empty()
+		and session._joint_targets[0].is_empty(),
+		"malformed current-owner packet fail-closes its outstanding motor lease")
+	expect(not bool(session.ik_submit(good).get("accepted", false)),
+		"old owner cannot reclaim a malformed-target cancellation")
 	var old_observation: Dictionary = original.duplicate(true)
 	var replacements: Dictionary = grant("numerical-reference", 35)
 	expect(not replacements.is_empty() and replacements.grant_id != issued_grant.grant_id,
@@ -236,6 +243,10 @@ func test_expiry() -> void:
 	expect(session._joint_targets[0].is_empty() and session._joint_grants[0].is_empty()
 		and session._rigs[0]._joints[2].node.motor_enabled == false,
 		"tick twelve may never start interval 12-13; old generation revoked")
+	var terminal: Array = session.ik_receipts(0, issued_grant.grant_id, 0)
+	expect(terminal.size() == 14 and terminal[-1].operation == "ik_terminal"
+		and bool(terminal[-1].integrity.cancel_confirmed),
+		"earliest-exclusive expiry emits an explicit terminal no-physics-consumption boundary")
 	expect(not bool(session.ik_submit(action).get("accepted", false)),
 		"old observation never becomes eligible through lookup or delayed arrival")
 	await close_fixture()
