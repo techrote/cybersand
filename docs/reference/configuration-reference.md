@@ -782,16 +782,18 @@ Usable lifecycle, gyro/play semantics and producer limits belong to the
 
 ## Physical free-flight values
 
-**Current experimental 4LY-001:**
+**Current experimental 4LY-001 controller + 4LY-002 candidate profiles:**
 [`physical_flight_profile.gd`](../../godot/scripts/physical_flight_profile.gd)
-owns the complete closed schema and its validation.
+owns all four complete validated parameter sets.
 [`physical_flight_controller.gd`](../../godot/scripts/physical_flight_controller.gd)
-owns the pure local assistance. These are authored adapter quantities; the
-[4LY contract](../systems/physical-free-flight.md) owns behavior and follow-up
-qualification. All four IDs share these initial numbers. Trainer is
-`conformance_only`; Hauler, Drifter and Dart are `uncalibrated_placeholder`.
+owns one pure goal-blind local assistance implementation for every profile.
+These are authored game-unit quantities, not SI propulsion constants.
+The [4LY contract](../systems/physical-free-flight.md) owns behavior, supported
+ordinary-game hosts and evidence boundaries. The table below retains Trainer's
+4LY-001 conformance baseline as the schema reference, not as values shared
+by the four new candidate plants.
 
-| Profile field | Initial value | Admitted schema-1 bound or meaning |
+| Profile field | Trainer 4LY-001 baseline | Admitted schema-1 bound or meaning |
 |---|---|---|
 | `version`, `family`, `topology` | `1`, `4ly`, `single_rectangle` | Exact declared identities |
 | `id` | One of the four stable `4ly_*` IDs | `4ly_trainer`, `4ly_hauler`, `4ly_drifter`, `4ly_dart` |
@@ -813,7 +815,62 @@ qualification. All four IDs share these initial numbers. Trainer is
 | `max_torque` | 300 authored mass·cell²/s² | 0.001–1,400,000, also at most `inertia * 100` |
 | `max_torque_slew` | 3,600 torque units/s | 0.001–10,000,000; actual torque change is bounded each physical step |
 | `resource_mode` | `continuous_authored_power` | No fuel timer or reserve drain; explicit host power-off disables both force and torque |
-| `calibration` | Profile-specific status above | `conformance_only` or `uncalibrated_placeholder`; does not assert measured handling or learned-policy qualification |
+| `calibration` | Profile-specific status above | `conformance_only`, `uncalibrated_placeholder`, `candidate_4ly002` or `measured_4ly002`; candidate status explicitly does **not** establish measured acceptance or learned-policy qualification |
+
+**Authored 4LY-002 candidate values, resolved at the 60 Hz physical cadence**
+
+| Parameter (unit) | Trainer | Hauler | Drifter | Dart |
+|---|---:|---:|---:|---:|
+| Body rectangle (cells) | 10 × 6 | 16 × 10 | 12 × 7 | 6 × 4 |
+| Mass (authored units) | 1.20 | 3.60 | 1.55 | 0.55 |
+| Planar inertia (mass·cell²) | 13.600 | 106.800 | 24.929167 | 2.383333 |
+| Desired X/Y speed (cells/s) | 48 / 36 | 27 / 23 | 50 / 33 | 84 / 58 |
+| Acceleration (cells/s²) | 90 | 38 | 64 | 250 |
+| Braking (cells/s²) | 135 | 55 | 48 | 320 |
+| Max total thrust (mass·cell/s²) | 360 | 1100 | 460 | 235 |
+| Hover force, mass × gravity (force units) | 187.2 | 561.6 | 241.8 | 85.8 |
+| Vertical force margin over hover (force units) | 172.8 | 538.4 | 218.2 | 149.2 |
+| Velocity response (s) | 0.250 | 0.600 | 0.450 | 0.135 |
+| Force response (s) | 0.060 | 0.180 | 0.100 | 0.035 |
+| Max force slew (force units/s) | 2400 | 4800 | 2600 | 4600 |
+| Passive linear / angular drag (s⁻¹) | 0.05 / 0.25 | 0.035 / 0.30 | 0.012 / 0.27 | 0.09 / 0.32 |
+| Upright attitude Kp / Kd | 18 / 8 | 14 / 7 | 20 / 9 | 25 / 9 |
+| Max stabilizing torque (mass·cell²/s²) | 300 | 3000 | 470 | 135 |
+| Max torque slew (torque units/s) | 3600 | 16000 | 3800 | 2400 |
+
+All four use gravity = **156 cells/s²** (world +y downward), friction
+**0.82**, bounce **0.04**, identical `4ly_velocity_v1` command semantics and
+`continuous_authored_power`: no fuel or reserve drain. All four have
+`calibration = "candidate_4ly002"`. Inertia is computed exactly from the
+selected mass and rectangle rather than rounding the input. Higher total
+Hauler force largely compensates its higher mass; acceleration, response,
+slew, braking and target speed **also** differ. Dart is not merely a
+lighter collider, and Drifter retains bounded upright stabilization.
+
+`Profile.descriptor` returns a **copied static `capabilities` subobject**:
+collision dimensions, mass/inertia, axis desired-speed limits,
+acceleration/braking, force budget, gravity, hover margin, response/slew,
+passive drag and attitude authority. It carries no actor-name evaluator label,
+world position, privileged goal or reward; the surrounding descriptor retains
+the separately declared `id`, `profile_hash` and `controller_hash`.
+Dynamic force saturation, propulsion/lease mode, applied assistance and
+resource state remain separate observation fields. `profile_hash` is
+SHA-256 of validated full-precision resolved profile JSON (sorted keys);
+the controller's normalized source SHA-256 is
+`fb86190c68c6a87e7d2ef7e845b1fb97305f188723a326f67f07caa6971cc8ae`.
+Use actual observation hashes, runtime/physics identities and committed
+source SHA in evidence; no static profile name is a compatibility token.
+
+The [prospective thresholds](../../godot/tests/fixtures/4ly002_handling_thresholds.json)
+were registered before the four-profile actual-Rapier run. The
+[measured envelopes](../audits/2026-10-23-4ly002-measured-handling-qualification.md)
+**passed** on Linux and Windows using exactly the source profile hashes published
+in that record. The literal `candidate_4ly002` marker **must not be changed**
+without new profile hash/plant compatibility qualification. This is a
+source-bound measured physical candidate, **not** owner-feel, target-PC,
+Web or downstream learning approval. The updated PR head's new visual
+capture/test scope remains separately gated; do not silently treat the
+earlier implementation-only checks as its final-head tests.
 
 All fields are required. Unknown fields, wrong types, nonfinite numbers,
 out-of-range values, inconsistent rectangular inertia and plant-envelope
@@ -837,7 +894,9 @@ ordinary enabled slew bounds do not delay revocation.
 The no-equipment preparation is explicit (`equipment_preparation = "none"`,
 empty loadout, one part and no joints/mounts). Session population/body limits
 remain those of the shared physical owner. `Catalog.has_rig`/`entry` recognize
-the four IDs, while ordinary `RIG_IDS`/`SET_IDS` remain 46/eight until 4LY-002.
+the four IDs, while ordinary `RIG_IDS` remains exactly 46. `SET_IDS` appends `set4LY`
+after the original eight sets, exposing the four separate flight choices in
+F5; former IDs and set indices (including SetP) retain their meaning.
 Wire envelope version 2, one-through-eighteen-tick observation-relative leases
 and six-tick demo decisions are retained. The separate profile cadence does not
 redefine the legacy physical actor delta clamp above.

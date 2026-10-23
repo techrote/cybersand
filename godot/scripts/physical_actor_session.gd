@@ -646,14 +646,21 @@ func render_parts() -> Array:
 	for index: int in range(_rigs.size()):
 		var parts: Array = _catalogue[index].parts
 		var actor_bodies: Array[RigidBody2D] = _rigs[index].bodies()
+		var flight: Dictionary = _view(index, false).get("flight", {}) if is_flight_actor(index) else {}
 		for part_index: int in range(actor_bodies.size()):
 			var body: RigidBody2D = actor_bodies[part_index]
 			var shape: Shape2D = body.get_child(0).shape
 			var dimensions: Vector2 = Vector2(shape.radius * 2.0, shape.radius * 2.0) if shape is CircleShape2D else shape.size
-			result.append({"actor_id": index, "part_id": str(parts[part_index].id),
+			var presented: Dictionary = {"actor_id": index, "part_id": str(parts[part_index].id),
 				"transform": bridge.body_transform(_body_offsets[index] + part_index),
 				"size": dimensions, "color": parts[part_index].color,
-				"shape": "circle" if shape is CircleShape2D else "rectangle"})
+				"shape": "circle" if shape is CircleShape2D else "rectangle"}
+			if not flight.is_empty() and part_index == 0:
+				var controller: Dictionary = flight.get("controller", {})
+				presented["flight_force"] = controller.get("applied_force", Vector2.ZERO)
+				presented["flight_intent"] = controller.get("desired_velocity", Vector2.ZERO)
+				presented["flight_live"] = bool(flight.get("command_live", false))
+			result.append(presented)
 	return result
 
 
