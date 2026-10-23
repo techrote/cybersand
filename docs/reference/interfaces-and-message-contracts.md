@@ -764,6 +764,66 @@ it to revoke the worker's queued and already-copied, not-yet-admitted effects fo
 that actor. Other actors retain their own command/effect generations. A fresh
 observation immediately reports the cleared charge, grip, rope and action state.
 
+### Runner point-IK joint-target actions
+
+**Current experimental ACT-IK-001 source; not yet NCA physically admitted:**
+[`physical_joint_target.gd`](../../godot/scripts/physical_joint_target.gd)
+and [the canonical IK pilot contract](../systems/physical-joint-targets.md)
+define `nca-host/1` and opt-in `physical_joint_target/v1`, distinct from
+`physical_wire_action/v2`. The actor must be explicitly installed as
+`{model: "runner", ik_pilot: true, usable_index: -1}`: it has exactly five
+physical parts, four pinned joints, no equipment body and only the right
+`[hip_1, ankle_1]` reference chain. `ik_capabilities(actor_id)`
+refuses to advertise without an owner-supplied actual source revision and
+runtime SHA-256. A dummy fixture fingerprint is not an admitted native build.
+
+The trusted main-thread owner calls `ik_grant(actor_id, producer,
+source_id, policy_sha256, goal_id, goal_deadline_tick)`. Only that host may
+issue a random `grant_id`, with new `control_generation`, actor/run/
+epoch/incarnation and current source ownership. A client asks
+`ik_observe(actor_id, grant_id)` for the original root pose and active/observed
+right-joint angles. No client-supplied root override is accepted.
+
+The exact `ik_submit` request has the following keys; every field is
+required, any unknown field is refused:
+
+```json
+{
+  "protocol": "nca-host/1", "operation": "ik_submit", "version": 1,
+  "run_id": "issued-run", "actor_id": 0, "epoch": 1, "incarnation": 1,
+  "control_generation": 2, "source_id": "source-A",
+  "policy_sha256": "64-lowercase-hex-digest",
+  "grant_id": "host-issued-grant", "grant_generation": 2,
+  "goal_id": "goal-A", "goal_deadline_tick": 80, "sequence": 0,
+  "observed_tick": 0, "observation_id": "host-issued-observation",
+  "observation_sha256": "64-lowercase-hex-host-binding",
+  "profile_sha256": "6cb15832e240f82f4bcd582d2c26015ef986e44f335da683abaf9746e31503c4",
+  "topology_sha256": "41834423020c4dda28c425e695124dc743419b90b05426efc3f087238df71b32",
+  "effector_id": "right_sole", "joint_ids": ["hip_1", "ankle_1"],
+  "joint_values": [0.2, -0.1], "target_mode": "joint_position",
+  "lease_ticks": 12, "producer": "policy"
+}
+```
+
+Hex strings above marked as examples are not literal valid digests; use actual
+issued records. `joint_delta` means each value is added to the **original**
+observed joint angles, never to a later body state. All absolute resolved
+references must remain inside ±0.72/±0.27 radians; deltas must independently
+remain inside ±0.25 radians. No requested effort, torque, other body motor,
+wire action or equipment operation is admitted through this lane. Original
+freshness (12 ticks), packet lease (1–18 ticks) and goal deadline are
+exclusive, and the earliest expires the source-bound request.
+
+`ik_receipts(actor_id, grant_id[, sequence])` returns read-only copies
+of admission and genuine per-physics-step records. Requested, resolved,
+limited, motor, completed-body-motion and integrity data retain the same
+source reference; estimated per-joint torque/force is unavailable. A
+confirmed `ik_cancel(actor_id, grant_id, source_id)` disarms outstanding
+motor commands without clearing Rapier momentum. A duplicate lookup is
+read-only and may not move the actor again. NCA #55 has not yet accepted
+the final source-matched wire adapter, and Godot CI/physical tracking proof
+are separate gates.
+
 ### Physical free-flight actions
 
 **Current experimental 4LY-001:** a session-installed `4ly_*` actor declares
