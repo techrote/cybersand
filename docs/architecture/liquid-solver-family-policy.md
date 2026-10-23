@@ -192,7 +192,7 @@ receipt component except the compared family/variant is equal.
 
 ## Material hooks versus motion (Gate C correction, 2026-10-23)
 
-Correction requested by the [independent review](https://github.com/techrote/cybersand/pull/216).
+Correction requested by the [independent review](../audits/2026-10-23-lcb000-independent-admission-review.md).
 Source anchors are `world.cpp` at `9012425`; that file is unchanged at main
 `4caa2c3`.
 
@@ -392,7 +392,7 @@ or Solid by default. Family-specific rules:
 ## State and quantity boundaries (Gate C correction, 2026-10-23)
 
 Normative summary. The operation-by-operation
-[state-transition matrix](https://github.com/techrote/cybersand/pull/217) for
+[state-transition matrix](https://github.com/techrote/cybersand/pull/226) for
 #200/#212 refines it in the LCB physics prepass and does not override it.
 
 1. **Current transfer laws (source).**
