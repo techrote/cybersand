@@ -2,7 +2,7 @@
 title: MAT-003PREPASS S2A apparatus qualification and paired-timing admission
 status: Current
 document-kind: evidence
-scope: S2A timing-apparatus qualification and narrow admission; no S2A timing execution or performance result
+scope: S2A timing apparatus admission and first incomplete timing dispatch; no valid S2A performance result
 canonical-for: []
 last-reviewed: 2026-10-23
 related-documents: [../operations/mat-003-s2f-feasibility.md, ../operations/mat-003prepass-registration.md, 2026-10-23-mat003-s2f-full-and-twins.md, 2026-10-22-mat003-world-correctness.md]
@@ -156,3 +156,47 @@ samples do not naturally clear in the 376-tick total horizon. That asymmetry is
 deliberate and explicitly bounded: S2A may measure the registered short-horizon
 contrast, but final epoch-width selection still requires separately measured
 wide-epoch clear latency.
+
+## First dispatched S2A campaign: preserved transport failure
+
+The first manually dispatched timing campaign,
+[run 39875052969](https://github.com/techrote/cybersand/actions/runs/39875052969),
+checked out `c50d01fea636dc97cdec081e6225e936bcf9742f` and succeeded at
+all registration, runner/fixture hash, exact apparatus download, ZIP digest and
+three apparatus evidence hash checks. It failed before any timing sample at
+**process 001/224**, `A01-source-word-e8`, pair 0, arm A,
+`C64-E8-source`: the subprocess launcher received
+`[Errno 13] Permission denied` on the sealed executable after
+`actions/download-artifact` extraction. No paired contrast completed and
+there is **no valid S2A performance observation**.
+
+- Raw **incomplete**, non-admitted timing artifact:
+  [12468335746](https://github.com/techrote/cybersand/actions/runs/39875052969/artifacts/12468335746),
+  3,891 bytes, `sha256:fe25368f702485c03a4b0bd5298cc301681704ced804abf9cbdd6084e3578d67`;
+  retains `run.json`, empty process stdout, first-process stderr, and failed
+  independent readback. Expiry recorded as 2026-11-21 23:57:06 UTC.
+- The measurement runner correctly recorded `status=incomplete`,
+  attempted-process count 1 and completed-contrast count 0, and stopped;
+  the independent verifier rejected the incomplete collection with zero
+  independently checked processes.
+- No process was replaced, omitted, silently retried, or counted as a valid
+  paired measurement. This failed run **must remain incomplete**.
+
+A narrowly scoped **artifact-transport executable-mode correction** was made
+to `.github/workflows/mat003-s2a.yml` on the S2A PR branch
+(commit `561761700d7de2dfb83b8dc1f58a94bc66d21188`), mirrored to the
+default branch (commit `b6222d7c961caea2a4304377929d47cd76af235a`).
+After verifying the exact downloaded admitted apparatus evidence, the workflow
+identifies all **17/17** registered binary paths from `sealed-binaries.json`,
+checks each file's SHA-256, restores only the user-executable mode bit, and
+checks executability and every SHA-256 again. No binary bytes, compiled
+candidate, compiler flags, runner/fixture/verifier sources, apparatus
+identities, registered contrasts, process order, sample protocol or budget
+were changed. This operation is not a rebuild or substitute apparatus.
+
+Any subsequent execution must be a **new, complete, independently verified
+224-process run from process 1**, never a selective rerun of the failed
+process, and must preserve the failed run and raw artifact separately.
+The original admission contract, including deliberate E8/E16 clear asymmetry
+and all held scopes, remains unchanged. This transport fix alone does not
+supply performance evidence or authorize a carrier selection.
