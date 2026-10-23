@@ -5,6 +5,13 @@ from dataclasses import replace
 
 budget_hook=lambda:None
 
+def small_boundary(pos,record,side):
+    """Independent fixed two-cell moat contract; epoch may clear normally."""
+    x,y=pos
+    if x<2 or y<2 or x>=side-2 or y>=side-2:
+        if (record.material,record.a,record.b,record.r,record.unused)!=(1,0,0,0,0):
+            raise ValueError('small fixture containment wall corrupted')
+
 def decode_world(arm,data):
     # Independent mathematical ranges; storage admission still uses bit enumeration.
     capacity,epoch_positions,r_positions=POSITIONS[arm]

@@ -10,7 +10,7 @@ from matrix import cases,ARMS,LIMITS
 
 budget_hook=lambda:None
 from storage_oracle import expected,apply
-from world_oracle import metadata,cells,registry,Transitions,compare
+from world_oracle import metadata,cells,registry,Transitions,compare,small_boundary
 
 def digest(path):
     h=hashlib.sha256()
@@ -142,6 +142,8 @@ def world(path,case):
             sentinels={(7,7):(0x8001,-1234),(8,7):(0xffff,-32768),(9,7):(0x8000,32767),(10,7):(0x7fff,200),(11,7):(0x100,200)}
             endpoint_owners(root,{(x,y) for x,y,n,base in reg},case['arm'],reg)
             for pos,r,temp,present,address in cells(root,case['arm']):
+                if case['suite']=='small':
+                    small_boundary(pos,r,case['side'])
                 chunk=pos[0]//128,pos[1]//128;counts[chunk]=counts.get(chunk,0)+(r.material!=0)
                 water+=r.a if r.material==3 else 0;sand+=r.material==2
                 if pos in sentinels and (r.material,r.a,temp)!=(0,*sentinels[pos]):raise ValueError('nonzero Empty/high-state/temperature lost')

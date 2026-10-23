@@ -20,6 +20,16 @@ int main(int argc,char** argv) {
             config.maximum_chunk_count=side*side/(128*128);config.initial_chunk_reserve=config.maximum_chunk_count;config.active_core_capacity=128;config.active_chunk_capacity=64;
             config.settled_discovery_enabled=false;config.physics_diagnostics.enabled=true;
             World world(config);world.reserve_region({0,0,side,side});world.reserve_temperature_region({0,0,128,128});
+            // Keep moving cells outside the scheduler's outer write-radius strip.
+            // A simulation-interest rectangle alone does not bound destinations.
+            if(suite=="small") {
+                fixture::require(side==256,"unreviewed containment extent");
+                fixture::require(config.maximum_rule_radius==2,"unreviewed containment radius");
+                const unsigned border=static_cast<unsigned>(config.maximum_rule_radius);
+                for(unsigned y=0;y<side;++y)for(unsigned x=0;x<side;++x)
+                    if(x<border||y<border||x>=side-border||y>=side-border)
+                        world.set(x,y,Material::Wall);
+            }
             if(suite=="resident")world.set_simulation_region(RectI64{0,0,side/2,side});
             // Excluded walls retain nonempty resident chunks without unbounded selected work.
             if(suite=="resident")for(unsigned y=0;y<128;y+=128)for(unsigned x=side/2;x<side;x+=128)world.set(x+3,y+3,Material::Wall);

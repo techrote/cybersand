@@ -67,6 +67,13 @@ def exercise(output):
         result=dict(status='collected-not-verified',cases=cases()[:-1],timing=False)
         (p/'result.json').write_text(json.dumps(result),encoding='utf-8');matrix_contract(result)
     rejects('missing-process-matrix',manifest,'incomplete/changed campaign')
+    from world_oracle import small_boundary
+    rejects('missing-outer-containment-wall',lambda p:small_boundary((0,128),Record(),256),'containment wall')
+    rejects('active-inner-containment-strip',lambda p:small_boundary((1,128),Record(material=3,a=255),256),'containment wall')
+    rejects('corrupted-containment-neutral',lambda p:small_boundary((255,255),Record(material=1,r=1),256),'containment wall')
+    for point in ((0,0),(1,128),(128,1),(254,128),(128,254),(255,255)):
+        small_boundary(point,Record(material=1,epoch=255),256)
+    small_boundary((2,128),Record(material=3,a=255),256)
     from world_oracle import decode_world
     from oracle import POSITIONS
     with (output/'decoder-crosscheck.jsonl').open('x',encoding='utf-8') as stream:
