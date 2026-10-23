@@ -70,4 +70,3 @@ For illustration only, fresh E8 clears at256 and then every255 completed ticks; 
 4. Only after identifying a specific unanswered performance question may a separate timing registration/admission/owner-execution process be proposed. No new campaign is started by this review.
 
 Current source, runtime identities and accepted raw evidence are unchanged. This review is a documentation checkpoint; the schema/ADR corrections and owner worksheet are recoverable through the existing draft PR221. It claims no new runtime validation or owner/product sign-off.
-
