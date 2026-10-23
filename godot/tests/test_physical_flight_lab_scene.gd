@@ -31,9 +31,9 @@ func _run() -> void:
 	if file == null:
 		quit(1)
 		return
-	var game: Control = file.instantiate()
+	var game: Variant = file.instantiate()
 	root.add_child(game)
-	expect(game is Screen, "flight lab is the actual in-game frontend")
+	expect(game.get_script() == Screen, "flight lab is the actual in-game frontend")
 	expect(game.profile_choice.item_count == 4, "all four actual 4LY profiles selectable")
 	expect(game.scenario_choice.item_count >= 14, "scenarios available via real game UI")
 	var live: CyberPhysicalFlightEpisode = game.episode
