@@ -208,4 +208,21 @@ headless in that run.
   - the NC-1/2/3/4/5/6/8/9/10 family and UI contracts (see the
     [catalogue](../operations/lcb-scenario-catalogue.md#negative-contracts));
   - three-family execution;
-  - LCB-000 PASS (Gates A and B lack accepted evidence).
+  - LCB-000 PASS. At writing, Gates A and B lacked accepted evidence.
+
+## Addendum — CI and gate status (2026-10-23, later)
+
+- **Gate status.** Main now records Gate A PASS and Gate B bounded PASS
+  ([refresh](2026-10-23-lcb000-admission-gatea-gateb-refresh.md)). Gates C–E
+  are still under review, so LCB-000 remains NOT PASS.
+- **Dispatched GDExtension run 39879178132 at `91f093a`.**
+  - All three LCB tests passed on Windows CI: fixture manifests 26/0,
+    negative contracts 74/0, catalogue 523/0.
+  - Negative contracts also passed on Linux (74/0).
+  - The run failed on two **timeouts in untouched physical-actor tests**:
+    Linux shard 1 `test_physical_usable_course` (180 s), and Windows
+    `test_physical_actor_arena` (180 s). Both passed in PR #215's run
+    39875771737.
+  - The aggregate `linux x86_64` gate failed as a consequence.
+- **Next step.** The run is retained as a failure, not counted as green. A
+  fresh dispatch at the updated head requalifies it.
