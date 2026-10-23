@@ -13,15 +13,41 @@ const REG = "res://tests/fixtures/4ly003_qualification_registration.json"
 const TEACHER_SOURCE = "res://scripts/physical_flight_teacher.gd"
 const FINAL_ADMISSION = "user://4ly003_final_admission.json"
 const MAX_EPISODES: int = 240
+const MAX_EPISODE_EVIDENCE_BYTES: int = 8 * 1024 * 1024
+const MAX_TOTAL_EVIDENCE_BYTES: int = 512 * 1024 * 1024
 
 var episode: CyberPhysicalFlightEpisode
-var records: Array = []
+var evidence_inventory: Array = []
+var evidence_bytes: int = 0
+var evidence_directory: String = ""
 var pass_counts: Dictionary = {}
 var faults: Array = []
 
 
 func _init() -> void:
 	_run.call_deferred()
+
+
+func _save_episode(record: Dictionary, filename: String) -> Dictionary:
+	# Write each complete trace immediately. Never aggregate hundreds of
+	# real-physics transitions into an unbounded in-memory JSON list.
+	var full: String = evidence_directory.path_join(filename)
+	var serialized: String = JSON.stringify(Arena.json_value(record))
+	var size: int = serialized.to_utf8_buffer().size()
+	if size > MAX_EPISODE_EVIDENCE_BYTES or evidence_bytes + size > MAX_TOTAL_EVIDENCE_BYTES:
+		return {"ok": false, "reason": "retained_evidence_capacity"}
+	var file: FileAccess = FileAccess.open(full, FileAccess.WRITE)
+	if file == null:
+		return {"ok": false, "reason": "retained_episode_write"}
+	file.store_string(serialized)
+	file.close()
+	if FileAccess.get_file_as_string(full) != serialized:
+		return {"ok": false, "reason": "retained_episode_self_readback"}
+	evidence_bytes += size
+	return {"ok": true, "name": filename, "sha256": serialized.sha256_text(),
+		"bytes": size}
+
+
 
 
 func _run() -> void:
@@ -53,6 +79,14 @@ func _run() -> void:
 			return
 	if not ClassDB.class_exists(&"CyberNativeCellWorld") or not ClassDB.class_exists(&"RapierPhysicsServer2D"):
 		push_error("4LY003_QUALIFICATION: actual native/Rapier host unavailable")
+		quit(1)
+		return
+	var output_root: String = OS.get_environment("CYBERSAND_PRESENTATION_EVIDENCE")
+	if output_root.is_empty():
+		output_root = ProjectSettings.globalize_path("user://")
+	evidence_directory = output_root.path_join("4ly003-qualified-" + split)
+	if DirAccess.make_dir_recursive_absolute(evidence_directory) != OK:
+		push_error("4LY003_QUALIFICATION: cannot retain full physical evidence")
 		quit(1)
 		return
 	var parent := Node2D.new()
@@ -107,7 +141,15 @@ func _run() -> void:
 					faults.append("negative_control_navigation_credit: " + str(model) + "/" + id)
 				if not no_authority_violation:
 					faults.append("failed_step_did_not_complete: " + str(model) + "/" + id)
-				records.append(record)
+				var filename: String = str(model) + "_" + id + "_" + str(seed) + ".json"
+				var receipt: Dictionary = _save_episode(record, filename)
+				if not bool(receipt.get("ok", false)):
+					faults.append("retention:" + str(model) + "/" + id + "/" + str(seed)
+						+ ":" + str(receipt.get("reason", "unknown")))
+				else:
+					evidence_inventory.append({"model": str(model), "scenario": id,
+						"seed": int(seed), "metrics": metrics.duplicate(true),
+						"navigation_credit": credited, "artifact": receipt})
 				trials += 1
 			if trials >= MAX_EPISODES:
 				break
@@ -132,24 +174,38 @@ func _run() -> void:
 		"split": split, "disposition": disposition, "profile_count": Profile.IDS.size(),
 		"teacher_sha256": frozen_teacher,
 		"registered_gate": registration.teacher_gate, "trials": trials,
+		"retained_episode_count": evidence_inventory.size(),
+		"evidence_bytes": evidence_bytes,
+		"prospective_limits": {"max_episodes": MAX_EPISODES,
+			"max_per_episode_bytes": MAX_EPISODE_EVIDENCE_BYTES,
+			"max_total_bytes": MAX_TOTAL_EVIDENCE_BYTES},
+		"sealed_suite_sha256": FileAccess.get_file_as_string("user://4ly003_sealed_final_suite.json").sha256_text() if split == "final" else null,
 		"counts": pass_counts, "faults": faults, "godot":
 		str(Engine.get_version_info().get("string", "")), "os": OS.get_name(),
 		"processor": OS.get_processor_name(), "github_sha": OS.get_environment("GITHUB_SHA"),
 		"elapsed_wall_seconds": float(Time.get_ticks_usec() - start_usec) / 1000000.0}
 	var evidence: Dictionary = {"summary": summary,
-		"full_physical_episode_records": records}
-	var path: String = "user://4ly003_qualification_" + split + ".json"
+		"complete_episode_sha256_inventory": evidence_inventory}
+	var serialized_summary: String = JSON.stringify(Arena.json_value(evidence))
+	var path: String = evidence_directory.path_join("summary.json")
 	var out: FileAccess = FileAccess.open(path, FileAccess.WRITE)
-	if out != null:
-		out.store_string(JSON.stringify(Arena.json_value(evidence)))
+	if out == null:
+		faults.append("summary_artifact_write")
+	else:
+		out.store_string(serialized_summary)
 		out.close()
-	var retained_dir: String = OS.get_environment("CYBERSAND_PRESENTATION_EVIDENCE")
-	if not retained_dir.is_empty():
-		DirAccess.make_dir_recursive_absolute(retained_dir)
-		var archive: FileAccess = FileAccess.open(retained_dir.path_join("4ly003_qualification_" + split + ".json"), FileAccess.WRITE)
-		if archive != null:
-			archive.store_string(JSON.stringify(Arena.json_value(evidence)))
-			archive.close()
+		if FileAccess.get_file_as_string(path) != serialized_summary:
+			faults.append("summary_artifact_self_readback")
+	if not faults.is_empty():
+		summary["disposition"] = "failed" if split == "final" else "developer_split_physical_failure"
+		summary["faults"] = faults.duplicate(true)
+		serialized_summary = JSON.stringify(Arena.json_value({"summary": summary,
+			"complete_episode_sha256_inventory": evidence_inventory}))
+		var corrected: FileAccess = FileAccess.open(path, FileAccess.WRITE)
+		if corrected != null:
+			corrected.store_string(serialized_summary)
+			corrected.close()
+
 	print("4LY003_QUALIFICATION ", JSON.stringify(Arena.json_value(summary)))
 	episode.close()
 	parent.free()
