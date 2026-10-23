@@ -1,0 +1,41 @@
+{
+  "schema": 2,
+  "seed": 19004,
+  "chunk_size": 16,
+  "candidate": "district_grammar",
+  "parameters": {"surface_y": -128, "relief": 0, "detail": 0.1, "room_size": 48},
+  "themes": {"weights": {"industrial": 1}},
+  "spatial": {
+    "subgraphs": [
+      {
+        "id": "decay",
+        "parameters": [
+          {"id": "scale", "type": "scalar", "unit_power": 1, "default": {"type": "scalar", "x": 48}},
+          {"id": "strength", "type": "normalized", "default": {"type": "normalized", "x": 0.8}}
+        ],
+        "nodes": [
+          {"id": "texture", "kind": "noise", "sampling_scale": 4, "parameter_bindings": {"scale": "scale"}, "parameters": {"salt": 7}},
+          {"id": "weather", "kind": "to_mask", "inputs": ["texture"], "parameters": {"low": 0.35, "high": 0.72}},
+          {"id": "strength", "kind": "parameter", "reference": "strength"},
+          {"id": "coverage", "kind": "multiply", "inputs": ["weather", "strength"]}
+        ],
+        "outputs": {"mask": "coverage"}
+      },
+      {
+        "id": "panel_decay",
+        "parameters": [{"id": "panel_scale", "type": "scalar", "unit_power": 1, "default": {"type": "scalar", "x": 48}}],
+        "instances": [{"id": "brush", "subgraph": "decay", "parameter_bindings": {"scale": "panel_scale"}}],
+        "outputs": {"mask": "brush.mask"}
+      }
+    ],
+    "instances": [
+      {"id": "north", "subgraph": "panel_decay", "bindings": {"panel_scale": {"type": "scalar", "x": 80}}},
+      {"id": "south", "subgraph": "panel_decay", "bindings": {"panel_scale": {"type": "scalar", "x": 24}}}
+    ]
+  },
+  "aggregates": [{"id": "decay_materials", "components": [{"material": 65, "weight": 3}, {"material": 54, "weight": 1}, {"material": 97, "weight": 1}], "grain_size": 3}],
+  "modifiers": [
+    {"id": "north_decay", "application": "spatial:north.mask", "bounds": [-256, 0, 512, 112], "context": "solid", "aggregate": "decay_materials"},
+    {"id": "south_decay", "application": "spatial:south.mask", "bounds": [-256, 112, 512, 112], "context": "solid", "aggregate": "decay_materials"}
+  ]
+}

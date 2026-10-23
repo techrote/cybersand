@@ -6,6 +6,12 @@ func _ready() -> void:
 	# Keep existing direct-launch arguments compatible with the desktop wrapper.
 	var first_launch: bool = not get_tree().has_meta("cybersand_launch_args_consumed")
 	get_tree().set_meta("cybersand_launch_args_consumed", true)
+	if first_launch and "--semantic-depth" in OS.get_cmdline_user_args():
+		get_tree().change_scene_to_file.call_deferred("res://semantic_depth.tscn")
+		return
+	if first_launch and "--player-playground" in OS.get_cmdline_user_args():
+		get_tree().change_scene_to_file.call_deferred("res://player_playground.tscn")
+		return
 	if first_launch and "--deepworks" in OS.get_cmdline_user_args():
 		get_tree().change_scene_to_file.call_deferred("res://deepworks.tscn")
 		return
@@ -32,16 +38,18 @@ func _ready() -> void:
 	column.add_theme_constant_override("separation", 10)
 	scroll.add_child(column)
 	_label(column, "CYBERSAND / PLAY & EXPERIMENT", 30)
-	_label(column, "Choose a feature. F2 returns here; returning closes the current session. Showcase maps start paused. F5 selects 41 articulated Rapier actors or sampled references in the sandbox and showcase maps.", 18)
+	_label(column, "Choose a feature. F2 returns here; returning closes the current session. Showcase maps start paused. F5 selects 46 articulated Rapier actors or sampled references in the sandbox and showcase maps.", 18)
+	_button(column, "Player playground — stunt buggy, trials bike, acrobat, spacecraft, material swarms and jet barrel", "player_playground")
 	_button(column, "Deepworks — 1024 × 1024 multilayer material exhibition", "deepworks")
 	_button(column, "Blacksite Nine — connected industrial complex", "blacksite")
 	_button(column, "Neon Reliquary — four showcase districts", "showcase")
-	_button(column, "Actor sandbox — 41 articulated Rapier rigs / F5", "actors")
+	_button(column, "Actor sandbox — 46 articulated Rapier rigs / F5", "actors")
 	_button(column, "Materials sandbox / Experiment Tower — F9", "sandbox")
 	_button(column, "Thunderbowl — actor control arena", "thunderbowl")
 	_button(column, "Physical Thunderbowl — articulated actors, tools and scripted pilots", "physical_actors")
 	_button(column, "Physical usable course — 32 tools, payloads and processors", "physical_usables")
 	_button(column, "World generation workbench — terrain authoring preview", "worldgen")
+	_button(column, "Semantic depth — refinery service gallery and flooded cavern", "semantic_depth")
 	_button(column, "Strata Theatre — layering and parallax depth lab", "depth")
 	_label(column, "BLACKSITE COMPARISONS / fresh reset for each arm", 22)
 	_label(column, "Original single-hull Rapier barrel and Ripper reference trials: A/D drive, Q/E torque, Space short upward pulse. The articulated actor versions and scripted pilots are available through F5 and Physical Thunderbowl.", 17)
@@ -67,7 +75,9 @@ func launch(destination: String) -> void:
 	if destination == "thunderbowl": scene = "res://examples/thunderbowl/thunderbowl.tscn"
 	elif destination in ["physical_actors", "physical_usables"]: scene = "res://examples/thunderbowl/physical_thunderbowl.tscn"
 	elif destination == "worldgen": scene = "res://worldgen_workbench.tscn"
+	elif destination == "semantic_depth": scene = "res://semantic_depth.tscn"
 	elif destination == "depth": scene = "res://depth_lab.tscn"
 	elif destination == "deepworks": scene = "res://deepworks.tscn"
+	elif destination == "player_playground": scene = "res://player_playground.tscn"
 	get_tree().set_meta("cybersand_feature", destination)
 	get_tree().change_scene_to_file(scene)

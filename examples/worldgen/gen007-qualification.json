@@ -1,0 +1,153 @@
+{
+  "schema": 1,
+  "recipe": "gen007-deepworks.json",
+  "reference_seed": 19301,
+  "variant_seeds": [
+    19317,
+    19337,
+    19361
+  ],
+  "map_bounds": [
+    0,
+    0,
+    1024,
+    1024
+  ],
+  "region_rule_ids": [
+    "copper-choir",
+    "frost-observatory",
+    "ember-terraces",
+    "basalt-archive"
+  ],
+  "subregions": [
+    {
+      "district": "copper-choir",
+      "rule": "upper-gallery",
+      "name": "Intake Choir"
+    },
+    {
+      "district": "copper-choir",
+      "rule": "lower-gallery",
+      "name": "Copper Service Cloister"
+    },
+    {
+      "district": "frost-observatory",
+      "rule": "upper-gallery",
+      "name": "Meltwater Lens"
+    },
+    {
+      "district": "frost-observatory",
+      "rule": "lower-gallery",
+      "name": "Frosted Survey Vault"
+    },
+    {
+      "district": "ember-terraces",
+      "rule": "upper-gallery",
+      "name": "Firing Terrace"
+    },
+    {
+      "district": "ember-terraces",
+      "rule": "lower-gallery",
+      "name": "Ember Transit Gallery"
+    },
+    {
+      "district": "basalt-archive",
+      "rule": "upper-gallery",
+      "name": "Geothermal Registry"
+    },
+    {
+      "district": "basalt-archive",
+      "rule": "lower-gallery",
+      "name": "Basalt Memory Hall"
+    }
+  ],
+  "exhibits": [
+    {
+      "rule": "brine-retort",
+      "substrate": 23,
+      "feed": 3,
+      "product": 24,
+      "title": "Salt + falling Water \u2192 Brine"
+    },
+    {
+      "rule": "snow-lens",
+      "substrate": 105,
+      "feed": 6,
+      "product": 3,
+      "title": "Packed Snow + Fire \u2192 meltwater"
+    },
+    {
+      "rule": "clay-kiln",
+      "substrate": 103,
+      "feed": 8,
+      "product": 48,
+      "title": "Raw Clay + falling Lava \u2192 Terracotta Tile"
+    },
+    {
+      "rule": "geothermal-well",
+      "substrate": 8,
+      "feed": 3,
+      "product": 13,
+      "title": "Lava + falling Water \u2192 Stone"
+    }
+  ],
+  "vessel": {
+    "width": 76,
+    "height": 92,
+    "rear_offset": 84,
+    "wall_material": 131
+  },
+  "structural_minima": {
+    "major_regions": 4,
+    "named_subregions": 8,
+    "micro_features": 24,
+    "cross_chunk_structures": 2,
+    "optional_loops": 2,
+    "paired_exhibits": 4
+  },
+  "bounds": {
+    "recipe_bytes": 131072,
+    "whole_map_operations": 4000000000,
+    "generic_final_raster_operations": 16000000000,
+    "plane_cells": 1048576,
+    "trace_cells": 4096,
+    "publication_bytes": 67108864,
+    "host_rectangles_per_plane": 4096,
+    "native_prepared_bytes": 16777216,
+    "qualification_process_peak_rss_bytes": 2147483648,
+    "graphical_process_peak_rss_bytes": 4294967296
+  },
+  "manual_placements": {
+    "district_anchors": 4,
+    "shared_gallery_definitions": 2,
+    "optional_loop_definition": 1,
+    "unique_exhibit_definitions": 4,
+    "authored_candidate_boxes": 43,
+    "projection_relative_rectangles": 83,
+    "fixture_relative_rectangles": 8,
+    "hard_material_overrides": 0,
+    "per_cell_material_list": false,
+    "imported_raster": false
+  },
+  "reused_definitions": [
+    "upper-gallery",
+    "lower-gallery",
+    "service-module",
+    "lower-service-module",
+    "cabinet-window",
+    "gauge",
+    "shelf",
+    "signal",
+    "service-rail",
+    "optional-loop",
+    "optical-core",
+    "optical-aperture",
+    "optical-brace",
+    "vault-lock",
+    "vessel-pilot",
+    "vessel-foot",
+    "play-inlet-post",
+    "rear-inlet-post"
+  ],
+  "visual_intent": "Copper organ/manifold assemblies, framed frost lenses, refractory furnaces and basalt archive vaults establish different regional focal forms. Upper cabinet lines and staggered lower service bays frame that machinery. Two outboard courtyard rings supplement the primary circulation. Enlarged foreground and rear vessels remain separately contained."
+}

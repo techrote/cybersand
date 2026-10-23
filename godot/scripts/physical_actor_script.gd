@@ -6,6 +6,7 @@ extends RefCounted
 # moves a body, reads World, fills energy or claims global pathfinding.
 const Catalog = preload("res://scripts/physical_actor_catalog.gd")
 const UsablePilot = preload("res://scripts/physical_usable_script.gd")
+const Flight = preload("res://scripts/physical_flight_profile.gd")
 const MAX_DELTA: float = 0.25
 const PROGRESS_WINDOW: float = 0.65
 
@@ -119,10 +120,15 @@ func diagnostics() -> Dictionary:
 		"payload_swing": _payload_swing, "payload_swing_speed": _payload_swing_speed,
 		"payload_correction": _payload_correction,
 		"equipment": _usable_pilot.diagnostics(),
-		"controller_id": "local-feedback/" + str(rig_id) + "/v1"}
+		"controller_id": "4ly-neutral-producer/v1" if rig_id in Flight.IDS else "local-feedback/" + str(rig_id) + "/v1"}
 
 
 func next_action(observation: Dictionary, delta: float) -> Dictionary:
+	if rig_id in Flight.IDS:
+		# Conformance producer only. Goal-seeking flight teaching belongs to
+		# 4LY-003; the neutral request traverses the same lease and actuator path.
+		_last_action = {"move": Vector2.ZERO}
+		return _last_action.duplicate(true)
 	if _profile.is_empty() or not is_finite(delta) or delta <= 0.0 or delta > MAX_DELTA:
 		return neutral_action()
 	var centre: Vector2 = observation.get("centre", observation.get("position", Vector2.INF))
@@ -168,6 +174,13 @@ func next_action(observation: Dictionary, delta: float) -> Dictionary:
 	if grounded:
 		_air_jump_used = false
 	_update_route(centre, velocity, grounded or gripped, blocked, left, right, delta, observation)
+	if _profile.has("player_controller"):
+		var player_action: Dictionary = _player_feedback(observation, centre, velocity,
+			rotation, angular_velocity, grounded, blocked)
+		_last_centre = centre
+		_last_grounded = grounded
+		_last_action = player_action.duplicate(true)
+		return player_action
 	var recovering: bool = _recovery_remaining > 0.0
 	var energy: float = float(observation.get("energy", 1.0))
 	if energy < 0.15:
@@ -292,6 +305,55 @@ func next_action(observation: Dictionary, delta: float) -> Dictionary:
 	_last_grounded = grounded
 	action = _usable_pilot.apply(observation, action, delta)
 	_last_action = action.duplicate(true)
+	return action
+
+
+func _player_feedback(observation: Dictionary, centre: Vector2, velocity: Vector2,
+		rotation: float, angular_velocity: float, grounded: bool, blocked: bool) -> Dictionary:
+	# Optional demonstrations use exactly the human channels. In particular,
+	# vehicle Y is throttle and X is lean; it is not the older ground-rig mapping.
+	var action: Dictionary = neutral_action()
+	action.effort = 0.82
+	action.aim = Vector2(_direction, -0.65).normalized()
+	var target_x: float = home.x + _direction * float(_style.radius)
+	var tilt: float = wrapf(rotation, -PI, PI)
+	if rig_id in [&"stuntbuggy", &"trialsbike"]:
+		var throttle: float = clampf((target_x - centre.x) * 0.08 - velocity.x * 0.012, -1.0, 1.0)
+		var lean: float = clampf(-tilt * 0.7 - angular_velocity * 0.22, -0.8, 0.8)
+		action.move = Vector2(lean, -throttle).limit_length(1.0)
+		action.auxiliary = grounded and absf(tilt) > 1.1
+		action.secondary = grounded and absf(target_x - centre.x) < 7.0 and absf(velocity.x) > 15.0
+		if rig_id == &"stuntbuggy":
+			if grounded and not action.auxiliary and (blocked or _clock >= _next_pulse):
+				_start_pulse(1.8)
+			action.primary = _clock < _pulse_until
+		else:
+			if _charge_holding and (not grounded or _clock - _charge_started >= 0.38):
+				_charge_holding = false
+				_next_pulse = _clock + 1.7
+			elif not _charge_holding and grounded and not action.auxiliary and _clock >= _next_pulse:
+				_charge_holding = true
+				_charge_started = _clock
+			action.primary = _charge_holding
+	elif rig_id == &"acrobat":
+		action.move = Vector2(clampf((target_x - centre.x) * 0.06 - velocity.x * 0.008, -1.0, 1.0), 0)
+		if grounded and (blocked or _clock >= _next_pulse):
+			_start_pulse(1.5)
+		action.primary = _clock < _pulse_until
+		action.secondary = grounded and fmod(_clock + _phase_offset, 3.4) < 0.35
+		action.auxiliary = not grounded and velocity.y > 10.0 and absf(target_x - centre.x) > 14.0
+	else:
+		var target_y: float = home.y - float(_style.altitude)
+		var gravity: float = float(observation.get("gravity", _profile.gravity))
+		var desired: Vector2 = Vector2(clampf((target_x - centre.x) * 2.4 - velocity.x * 4.0, -140.0, 140.0),
+			clampf((target_y - centre.y) * 3.2 - velocity.y * 4.0 - gravity, -260.0, 60.0))
+		var target_angle: float = desired.angle() + PI * 0.5
+		var lean: float = clampf(wrapf(target_angle - tilt, -PI, PI) * 0.9 - angular_velocity * 0.25, -1.0, 1.0)
+		var throttle: float = clampf(desired.length() / (float(_profile.thrust) * float(action.effort)), 0.0, 0.85)
+		if cos(wrapf(target_angle - tilt, -PI, PI)) < 0.3:
+			throttle = 0.0
+		action.move = Vector2(lean, -throttle).limit_length(1.0)
+		action.auxiliary = rig_id == &"jetbarrel" and grounded and absf(tilt) > 1.2
 	return action
 
 

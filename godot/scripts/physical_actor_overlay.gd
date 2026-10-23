@@ -1,7 +1,7 @@
 class_name CyberPhysicalActorOverlay
 extends Control
 
-# Filled polygons use the actual rectangle collision shape and the bridge's
+# Filled polygons use the actual rectangle or circle shape and the bridge's
 # authoritative physics transform. This node owns no gameplay or collision.
 var outlines: bool = true
 var _parts: Array = []
@@ -28,8 +28,14 @@ func polygon(part: Dictionary) -> PackedVector2Array:
 	var result := PackedVector2Array()
 	var half: Vector2 = part.size * 0.5
 	var transform: Transform2D = part.transform
-	for corner: Vector2 in [Vector2(-half.x, -half.y), Vector2(half.x, -half.y),
-			Vector2(half.x, half.y), Vector2(-half.x, half.y)]:
+	var corners := PackedVector2Array()
+	if str(part.get("shape", "rectangle")) == "circle":
+		for index: int in range(24):
+			corners.append(Vector2.from_angle(float(index) * TAU / 24.0) * half.x)
+	else:
+		corners = PackedVector2Array([Vector2(-half.x, -half.y), Vector2(half.x, -half.y),
+			Vector2(half.x, half.y), Vector2(-half.x, half.y)])
+	for corner: Vector2 in corners:
 		result.append((transform * corner - _origin) * size / _view_size)
 	return result
 

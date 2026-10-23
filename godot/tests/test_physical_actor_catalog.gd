@@ -38,8 +38,9 @@ func _observation(rig_id: StringName) -> Dictionary:
 
 
 func _run() -> void:
-	_expect(Catalog.RIG_IDS.size() == 41, "expected all 29 existing and 12 additional rigs")
+	_expect(Catalog.RIG_IDS.size() == 46, "expected all 41 retained and five player rigs")
 	_expect(Catalog.rigs_in_set(&"setX").size() == 12, "extra roster must contain twelve entries")
+	_expect(Catalog.rigs_in_set(&"setP") == [&"stuntbuggy", &"trialsbike", &"acrobat", &"arcadelander", &"jetbarrel"], "player roster identities")
 	var seen: Dictionary = {}
 	var geometry_signatures: Dictionary = {}
 	var mechanisms: Dictionary = {}
@@ -71,7 +72,7 @@ func _run() -> void:
 	_expect(Catalog.entry(&"unknown").is_empty(), "unknown rig silently becomes an actor")
 	_test_feedback()
 	_test_lifetimes()
-	print("PHYSICAL_ACTOR_CATALOG: %d assertions, %d failures; 41 definitions and local feedback producers" % [assertions, failures])
+	print("PHYSICAL_ACTOR_CATALOG: %d assertions, %d failures; 46 definitions, retained feedback and player controls" % [assertions, failures])
 	quit(1 if failures else 0)
 
 
@@ -88,8 +89,11 @@ func _validate_definition(rig_id: StringName, data: Dictionary) -> void:
 		_expect(not ids.has(part.id), str(rig_id) + " duplicates a physical part id")
 		ids[part.id] = true
 		_expect(part.offset.is_finite() and part.size.is_finite() and is_finite(float(part.angle)), "nonfinite geometry")
-		_expect(part.shape == "rectangle" and part.size.x > 0.0 and part.size.y > 0.0 \
+		_expect(part.shape in ["rectangle", "circle"] and part.size.x > 0.0 and part.size.y > 0.0 \
 			and part.size.x <= 32.0 and part.size.y <= 32.0, "unsupported collider dimensions")
+		if part.shape == "circle":
+			_expect(rig_id in [&"stuntbuggy", &"trialsbike"] and is_equal_approx(part.size.x, part.size.y) \
+				and str(part.get("native_mask", "")) == "circumscribed_rectangle", "circle approximation requires explicit player wheel scope")
 		_expect(is_finite(float(part.mass)) and part.mass > 0.0, "invalid part mass")
 		var transform := Transform2D(part.angle, part.offset)
 		var half: Vector2 = part.size * 0.5

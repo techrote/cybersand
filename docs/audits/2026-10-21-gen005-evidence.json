@@ -1,0 +1,1117 @@
+{
+  "schema_version": 1,
+  "issue": 192,
+  "pull_request": 197,
+  "recorded_utc": "2026-10-21T19:58:29.231085+00:00",
+  "source_commit": "3070f97a8172ff7be8950520dcf1ac09e1a7d04c",
+  "source_tree": "20d9b2e4b6c09287265f3ea67b4eba4d606febff",
+  "local_checkpoint": "0be15ab462a3ddb54033551fe7abb9f94eb8b44a",
+  "checkpoint_relation": "The Git API publication and original local commit have identical Git trees; no ancestry equivalence is asserted.",
+  "local_platform": {
+    "os": "Linux x86_64",
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+    "native_sha256": "1d6df5e188da2ad1d0de759784cadba6298a1cb0d404aa6f642548d0782cd0c4",
+    "native_size": 3237424
+  },
+  "native": {
+    "optimized": {
+      "assertions": 217773,
+      "failures": 0,
+      "command": "make -j2 build/test_generation_planes && ./build/test_generation_planes"
+    },
+    "asan_ubsan": {
+      "assertions": 217773,
+      "failures": 0,
+      "elapsed_seconds": 30.89,
+      "command": "ASAN_OPTIONS=detect_leaks=0 UBSAN_OPTIONS=halt_on_error=1 ./build/test_generation_planes_sanitized",
+      "qualification": "LeakSanitizer enabled execution was blocked by local ptrace; this is ASan/UBSan evidence with leak detection disabled."
+    }
+  },
+  "adapter": {
+    "assertions": 606,
+    "failures": 0,
+    "completed_sections": [
+      "semantic-refinery",
+      "semantic-flooded-cavern",
+      "rejections",
+      "incremental-retry",
+      "ordinary-chunk-revisions"
+    ],
+    "timeout_seconds": 180
+  },
+  "runtime": {
+    "assertions": 1108,
+    "completed": {
+      "actors": true,
+      "admission": true,
+      "clocks": true,
+      "events": true,
+      "lifecycle": true,
+      "reactions": true
+    },
+    "failures": 0,
+    "mechanism_controls": {
+      "atmosphere_drain_active": {
+        "completed": true,
+        "drain_fired": 1,
+        "initial_steam": 0,
+        "initial_water": 4,
+        "native_ticks": 2,
+        "source_fired": 1,
+        "steam": 3,
+        "water": 0
+      },
+      "atmosphere_drain_inactive": {
+        "completed": true,
+        "drain_fired": 0,
+        "initial_steam": 0,
+        "initial_water": 4,
+        "native_ticks": 2,
+        "source_fired": 1,
+        "steam": 3,
+        "water": 4
+      },
+      "inactive_source": {
+        "completed": true,
+        "expected_fired": 4,
+        "initial_product": 0,
+        "initial_salt": 80,
+        "native_ticks": 180,
+        "product_painted": false,
+        "products": 0,
+        "source_fired": 0,
+        "transported": 0
+      },
+      "missing_salt": {
+        "completed": true,
+        "expected_fired": 4,
+        "initial_product": 0,
+        "initial_salt": 0,
+        "native_ticks": 180,
+        "product_painted": false,
+        "products": 0,
+        "source_fired": 4,
+        "transported": 8
+      },
+      "productive": {
+        "completed": true,
+        "expected_fired": 4,
+        "initial_product": 0,
+        "product_painted": false,
+        "products": 64,
+        "source_fired": 4,
+        "transported": 14
+      }
+    }
+  },
+  "examples": {
+    "assertions": 1391,
+    "examples": {
+      "semantic-flooded-cavern": {
+        "applications": 544,
+        "cleanup_cell_writes": 448,
+        "complete": true,
+        "fixture_cell_writes": 9664,
+        "fixtures": {
+          "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/fixture/reactor-water": {
+            "adapter": "reactor-water",
+            "downstream": "[P: (81, 88), S: (30, 19)]",
+            "initial": {
+              "24": 0
+            },
+            "maximum": {
+              "24": 54
+            },
+            "observation": "[P: (80, 80), S: (32, 28)]",
+            "oracle_assertions": 6,
+            "oracle_completed": true,
+            "plane": "scripted",
+            "transport_initial": 0,
+            "transport_max": 405,
+            "verified": true
+          },
+          "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/fixture/local-vent": {
+            "adapter": "local-vent",
+            "downstream": "[P: (94, 48), S: (16, 9)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (93, 34), S: (18, 24)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/vent/0/fixture/vent-drain": {
+            "adapter": "vent-drain",
+            "downstream": "[P: (94, 39), S: (16, 18)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (93, 34), S: (18, 24)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed": {
+            "adapter": "waterfall-feed",
+            "downstream": "[P: (19, 29), S: (18, 68)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (18, 22), S: (20, 76)]",
+            "oracle_assertions": 3,
+            "oracle_completed": true,
+            "plane": "play",
+            "transport_initial": 112,
+            "transport_max": 530,
+            "verified": true
+          },
+          "drowned-vault/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray": {
+            "adapter": "waterfall-spray",
+            "downstream": "[P: (19, 75), S: (18, 22)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (18, 22), S: (20, 76)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/reactor/0/fixture/reactor-water": {
+            "adapter": "reactor-water",
+            "downstream": "[P: (81, 216), S: (30, 19)]",
+            "initial": {
+              "24": 0
+            },
+            "maximum": {
+              "24": 48
+            },
+            "observation": "[P: (80, 208), S: (32, 28)]",
+            "oracle_assertions": 6,
+            "oracle_completed": true,
+            "plane": "scripted",
+            "transport_initial": 0,
+            "transport_max": 408,
+            "verified": true
+          },
+          "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/fixture/local-vent": {
+            "adapter": "local-vent",
+            "downstream": "[P: (94, 176), S: (16, 9)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (93, 162), S: (18, 24)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/vent/0/fixture/vent-drain": {
+            "adapter": "vent-drain",
+            "downstream": "[P: (94, 167), S: (16, 18)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (93, 162), S: (18, 24)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed": {
+            "adapter": "waterfall-feed",
+            "downstream": "[P: (19, 157), S: (18, 68)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (18, 150), S: (20, 76)]",
+            "oracle_assertions": 3,
+            "oracle_completed": true,
+            "plane": "play",
+            "transport_initial": 112,
+            "transport_max": 528,
+            "verified": true
+          },
+          "drowned-vault/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray": {
+            "adapter": "waterfall-spray",
+            "downstream": "[P: (19, 203), S: (18, 22)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (18, 150), S: (20, 76)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/reactor/0/fixture/reactor-water": {
+            "adapter": "reactor-water",
+            "downstream": "[P: (209, 88), S: (30, 19)]",
+            "initial": {
+              "24": 0
+            },
+            "maximum": {
+              "24": 54
+            },
+            "observation": "[P: (208, 80), S: (32, 28)]",
+            "oracle_assertions": 6,
+            "oracle_completed": true,
+            "plane": "scripted",
+            "transport_initial": 0,
+            "transport_max": 405,
+            "verified": true
+          },
+          "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/fixture/local-vent": {
+            "adapter": "local-vent",
+            "downstream": "[P: (222, 48), S: (16, 9)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (221, 34), S: (18, 24)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/vent/0/fixture/vent-drain": {
+            "adapter": "vent-drain",
+            "downstream": "[P: (222, 39), S: (16, 18)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (221, 34), S: (18, 24)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed": {
+            "adapter": "waterfall-feed",
+            "downstream": "[P: (147, 29), S: (18, 68)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (146, 22), S: (20, 76)]",
+            "oracle_assertions": 3,
+            "oracle_completed": true,
+            "plane": "play",
+            "transport_initial": 112,
+            "transport_max": 529,
+            "verified": true
+          },
+          "drowned-vault/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray": {
+            "adapter": "waterfall-spray",
+            "downstream": "[P: (147, 75), S: (18, 22)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (146, 22), S: (20, 76)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "drowned-vault/grid128/region(0,0)/district/0/gallery/0/reactor/0/fixture/reactor-water": {
+            "adapter": "reactor-water",
+            "downstream": "[P: (209, 216), S: (30, 19)]",
+            "initial": {
+              "24": 0
+            },
+            "maximum": {
+              "24": 54
+            },
+            "observation": "[P: (208, 208), S: (32, 28)]",
+            "oracle_assertions": 6,
+            "oracle_completed": true,
+            "plane": "scripted",
+            "transport_initial": 0,
+            "transport_max": 405,
+            "verified": true
+          },
+          "drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/fixture/local-vent": {
+            "adapter": "local-vent",
+            "downstream": "[P: (222, 176), S: (16, 9)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (221, 162), S: (18, 24)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "drowned-vault/grid128/region(0,0)/district/0/gallery/0/vent/0/fixture/vent-drain": {
+            "adapter": "vent-drain",
+            "downstream": "[P: (222, 167), S: (16, 18)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (221, 162), S: (18, 24)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "drowned-vault/grid128/region(0,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed": {
+            "adapter": "waterfall-feed",
+            "downstream": "[P: (147, 157), S: (18, 68)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (146, 150), S: (20, 76)]",
+            "oracle_assertions": 3,
+            "oracle_completed": true,
+            "plane": "play",
+            "transport_initial": 112,
+            "transport_max": 530,
+            "verified": true
+          },
+          "drowned-vault/grid128/region(0,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray": {
+            "adapter": "waterfall-spray",
+            "downstream": "[P: (147, 203), S: (18, 22)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (146, 150), S: (20, 76)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          }
+        },
+        "play_effects_ticks": 240,
+        "reaction_controls": 4,
+        "rear_ticks": 220,
+        "revision": "94b7ebaa1329d946",
+        "waterfall_controls": 4
+      },
+      "semantic-refinery": {
+        "applications": 544,
+        "cleanup_cell_writes": 448,
+        "complete": true,
+        "fixture_cell_writes": 9664,
+        "fixtures": {
+          "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/reactor/0/fixture/reactor-water": {
+            "adapter": "reactor-water",
+            "downstream": "[P: (81, 84), S: (30, 23)]",
+            "initial": {
+              "24": 0
+            },
+            "maximum": {
+              "24": 48
+            },
+            "observation": "[P: (80, 76), S: (32, 32)]",
+            "oracle_assertions": 6,
+            "oracle_completed": true,
+            "plane": "scripted",
+            "transport_initial": 0,
+            "transport_max": 408,
+            "verified": true
+          },
+          "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/fixture/local-vent": {
+            "adapter": "local-vent",
+            "downstream": "[P: (94, 28), S: (16, 9)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (93, 14), S: (18, 24)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/vent/0/fixture/vent-drain": {
+            "adapter": "vent-drain",
+            "downstream": "[P: (94, 19), S: (16, 18)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (93, 14), S: (18, 24)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed": {
+            "adapter": "waterfall-feed",
+            "downstream": "[P: (19, 77), S: (18, 34)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (18, 70), S: (20, 42)]",
+            "oracle_assertions": 3,
+            "oracle_completed": true,
+            "plane": "play",
+            "transport_initial": 112,
+            "transport_max": 528,
+            "verified": true
+          },
+          "refinery-galleries/grid128/region(-1,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray": {
+            "adapter": "waterfall-spray",
+            "downstream": "[P: (19, 93), S: (18, 18)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (18, 70), S: (20, 42)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/reactor/0/fixture/reactor-water": {
+            "adapter": "reactor-water",
+            "downstream": "[P: (81, 212), S: (30, 23)]",
+            "initial": {
+              "24": 0
+            },
+            "maximum": {
+              "24": 56
+            },
+            "observation": "[P: (80, 204), S: (32, 32)]",
+            "oracle_assertions": 6,
+            "oracle_completed": true,
+            "plane": "scripted",
+            "transport_initial": 0,
+            "transport_max": 404,
+            "verified": true
+          },
+          "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/fixture/local-vent": {
+            "adapter": "local-vent",
+            "downstream": "[P: (94, 156), S: (16, 9)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (93, 142), S: (18, 24)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/vent/0/fixture/vent-drain": {
+            "adapter": "vent-drain",
+            "downstream": "[P: (94, 147), S: (16, 18)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (93, 142), S: (18, 24)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed": {
+            "adapter": "waterfall-feed",
+            "downstream": "[P: (19, 205), S: (18, 34)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (18, 198), S: (20, 42)]",
+            "oracle_assertions": 3,
+            "oracle_completed": true,
+            "plane": "play",
+            "transport_initial": 112,
+            "transport_max": 527,
+            "verified": true
+          },
+          "refinery-galleries/grid128/region(-1,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray": {
+            "adapter": "waterfall-spray",
+            "downstream": "[P: (19, 221), S: (18, 18)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (18, 198), S: (20, 42)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/reactor/0/fixture/reactor-water": {
+            "adapter": "reactor-water",
+            "downstream": "[P: (209, 84), S: (30, 23)]",
+            "initial": {
+              "24": 0
+            },
+            "maximum": {
+              "24": 54
+            },
+            "observation": "[P: (208, 76), S: (32, 32)]",
+            "oracle_assertions": 6,
+            "oracle_completed": true,
+            "plane": "scripted",
+            "transport_initial": 0,
+            "transport_max": 405,
+            "verified": true
+          },
+          "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/fixture/local-vent": {
+            "adapter": "local-vent",
+            "downstream": "[P: (222, 28), S: (16, 9)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (221, 14), S: (18, 24)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/vent/0/fixture/vent-drain": {
+            "adapter": "vent-drain",
+            "downstream": "[P: (222, 19), S: (16, 18)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (221, 14), S: (18, 24)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed": {
+            "adapter": "waterfall-feed",
+            "downstream": "[P: (147, 77), S: (18, 34)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (146, 70), S: (20, 42)]",
+            "oracle_assertions": 3,
+            "oracle_completed": true,
+            "plane": "play",
+            "transport_initial": 112,
+            "transport_max": 527,
+            "verified": true
+          },
+          "refinery-galleries/grid128/region(0,-1)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray": {
+            "adapter": "waterfall-spray",
+            "downstream": "[P: (147, 93), S: (18, 18)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (146, 70), S: (20, 42)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/reactor/0/fixture/reactor-water": {
+            "adapter": "reactor-water",
+            "downstream": "[P: (209, 212), S: (30, 23)]",
+            "initial": {
+              "24": 0
+            },
+            "maximum": {
+              "24": 52
+            },
+            "observation": "[P: (208, 204), S: (32, 32)]",
+            "oracle_assertions": 6,
+            "oracle_completed": true,
+            "plane": "scripted",
+            "transport_initial": 0,
+            "transport_max": 406,
+            "verified": true
+          },
+          "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/fixture/local-vent": {
+            "adapter": "local-vent",
+            "downstream": "[P: (222, 156), S: (16, 9)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (221, 142), S: (18, 24)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/vent/0/fixture/vent-drain": {
+            "adapter": "vent-drain",
+            "downstream": "[P: (222, 147), S: (16, 18)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (221, 142), S: (18, 24)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          },
+          "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-feed": {
+            "adapter": "waterfall-feed",
+            "downstream": "[P: (147, 205), S: (18, 34)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (146, 198), S: (20, 42)]",
+            "oracle_assertions": 3,
+            "oracle_completed": true,
+            "plane": "play",
+            "transport_initial": 112,
+            "transport_max": 516,
+            "verified": true
+          },
+          "refinery-galleries/grid128/region(0,0)/district/0/gallery/0/waterfall/0/fixture/waterfall-spray": {
+            "adapter": "waterfall-spray",
+            "downstream": "[P: (147, 221), S: (18, 18)]",
+            "initial": {},
+            "maximum": {},
+            "observation": "[P: (146, 198), S: (20, 42)]",
+            "oracle_assertions": 2,
+            "oracle_completed": true,
+            "plane": "effects",
+            "transport_initial": 0,
+            "transport_max": 0,
+            "verified": true
+          }
+        },
+        "play_effects_ticks": 240,
+        "reaction_controls": 4,
+        "rear_ticks": 220,
+        "revision": "a9ae4e7ecad92a14",
+        "waterfall_controls": 4
+      }
+    },
+    "failures": 0,
+    "verified_fixtures": 40
+  },
+  "render": {
+    "assertions": 104,
+    "failures": 0,
+    "examples_completed": 2,
+    "requires_actual_display": true,
+    "engine_errors": 0,
+    "image_count": 22,
+    "historical_manifest_path": "../images/semantic-depth/capture-manifest.json",
+    "historical_manifest_sha256": "d1d98f078d26de61c171c2dbc807e27762bc858ed58083493a58658548c17c88",
+    "qualification": "Original local capture and pixel evidence for source_commit and local_platform.native_sha256; this does not certify the corrected source or current published capture package."
+  },
+  "other_local_controls": {
+    "launcher_assertions": 43,
+    "launcher_failures": 0,
+    "direct_semantic_argument_return": "passed",
+    "base_depth_checks": 83,
+    "publisher_adversarial_tests": 19,
+    "documentation": "passed",
+    "historical_M11": "passed",
+    "ci_provider_policy": "passed"
+  },
+  "retrieval": {
+    "frozen": {
+      "created_utc": "2026-10-21T21:01:20.707397+00:00",
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 21,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7953,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "fixture_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "corpus_manifest_sha256": "a3f9bf75d3b6b84f10dc1ccbfd39d7d3108ba8ee7c1ee02370ba255376a1b0f5",
+      "document_count": 101,
+      "chunk_count": 1109,
+      "new_question_ranks": {}
+    },
+    "challenges": {
+      "created_utc": "2026-10-21T21:01:21.096555+00:00",
+      "summary": {
+        "questions": 105,
+        "canonical_hit_at_1": 84,
+        "canonical_hit_at_k": 105,
+        "mrr_at_k": 0.8813,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "fixture_sha256": "28f41f4cced0f9044590d10b3850e51a47f111a54789e408d4c14f27f25dd927",
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "corpus_manifest_sha256": "a3f9bf75d3b6b84f10dc1ccbfd39d7d3108ba8ee7c1ee02370ba255376a1b0f5",
+      "document_count": 101,
+      "chunk_count": 1109,
+      "new_question_ranks": {
+        "GEN005-1": 1,
+        "GEN005-2": 1,
+        "GEN005-3": 1
+      }
+    },
+    "source_binding": {
+      "source_commit": "720e51e2b6bdaa1fdf20a06d732892fdbeb736fe",
+      "local_delta": "Recovered documentation and frozen/supplemental retrieval correction evaluated before publication; fixture/corpus hashes bind the exact evaluated files. No native source delta.",
+      "semantic_depth_authoring_sha256": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6"
+    }
+  },
+  "retrieval_qualification": "The frozen 32-query fixture is byte-identical to base bc6af48. All 102 prior supplementary objects are unchanged; three GEN-005 questions are separate additions. Metrics qualify lexical routing, not answer correctness.",
+  "fixture_qualification": "All 40 example fixtures have complete schedule/cleanup accounting; 8 rear reactors and 8 waterfalls have individual material observations. The 24 atmosphere example fixtures have accounting controls. Separate actual native source/drain counterfactuals observe atmosphere effects.",
+  "hosted": {
+    "previous_runtime_publication_attempts": [
+      {
+        "run_id": 39665646472,
+        "url": "https://github.com/techrote/cybersand/actions/runs/39665646472",
+        "source_commit": "3070f97a8172ff7be8950520dcf1ac09e1a7d04c",
+        "state": "failed",
+        "linux": "Build passed; GLIBCXX_3.4.31 exceeded retained ceiling GLIBCXX_3.4.30; target-OS functional cases were not admitted.",
+        "windows": "Cross-build and actual Windows execution passed all 14 focused cases.",
+        "publication": "Skipped because Linux failed; neither runtime was published."
+      }
+    ],
+    "runtime_publication": {
+      "run_id": 39674901695,
+      "url": "https://github.com/techrote/cybersand/actions/runs/39674901695",
+      "source_commit": "720e51e2b6bdaa1fdf20a06d732892fdbeb736fe",
+      "state": "passed",
+      "publication_commit": "4925e4349fa221507a754c091887fbc3044ef63a",
+      "linux_runtime_sha256": "f3dd574268d1f4cf01167faf7e9d0e1ccbdf4f0a219051fdbbb6e0a76b9ed326",
+      "windows_runtime_sha256": "83967708c71936a1f51c07be2e509497a1e2355f9ae5c1b099782d6cd25f97eb",
+      "windows_execution": {
+        "state": "passed",
+        "import_passed": true,
+        "case_count": 14,
+        "case_passes": 14,
+        "skip_count": 0,
+        "diagnostic_errors": 0,
+        "scope": "Import plus three GEN-005, six player and five legacy/typed/grammar generation headless cases; full ready-PR CI is separate",
+        "validation_report": "2026-10-21-gen005-windows-publication.json",
+        "validation_report_sha256": "962dc7363c03f931cb1f57168a4899bf8d7f0a5428a097dd97ece284256a7060",
+        "validated_log_hashes": 15,
+        "runtime_size": 3819520,
+        "semantic_assertions": {
+          "adapter": 606,
+          "runtime": 1107,
+          "examples": 1390,
+          "failures": 0,
+          "verified_fixtures": 40
+        }
+      },
+      "jobs_passed": 4,
+      "publication_tree": "9dd175d4dc3feb6f8ca223d9b5fabe92d8a232a8",
+      "publication_parent": "720e51e2b6bdaa1fdf20a06d732892fdbeb736fe",
+      "publication_paths": [
+        "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "godot/addons/cybersand_native/runtime-provenance.json",
+        "godot/addons/cybersand_native/runtime-provenance.linux.json"
+      ],
+      "linux_execution": {
+        "state": "passed",
+        "import_passed": true,
+        "case_count": 14,
+        "case_passes": 14,
+        "skip_count": 0,
+        "diagnostic_errors": 0,
+        "scope": "Import plus three GEN-005, six player and five legacy/typed/grammar generation headless cases; full ready-PR CI is separate",
+        "validation_report": "2026-10-21-gen005-linux-publication.json",
+        "validation_report_sha256": "5949df0bd16aee05d23f5cdf885c4d2f21a90c7626321f20d301241c2c00310b",
+        "validated_log_hashes": 15,
+        "runtime_size": 3237264,
+        "semantic_assertions": {
+          "adapter": 606,
+          "runtime": 1107,
+          "examples": 1390,
+          "failures": 0,
+          "verified_fixtures": 40
+        }
+      },
+      "assertion_count_qualification": "The original local runtime and examples counts (1108/1391) include one optional JSON destination-open assertion each. Hosted runs omit that optional output and report 1107/1390 while completing all functional sections and all 40 fixture checks.",
+      "verification": "Both immutable validation reports, all 15 log hashes per platform and both runtime payload digests verified; publication commit has built source as its sole parent and changes only four runtime/provenance paths."
+    },
+    "exact_head_acceptance": {
+      "tracking": "external_acceptance_receipt",
+      "receipt_url": "https://github.com/techrote/cybersand/pull/197#issuecomment-6326437084",
+      "checks_url": "https://github.com/techrote/cybersand/pull/197/checks",
+      "required_scopes": [
+        "Documentation/provenance",
+        "Native C++",
+        "Linux GDExtension/Godot including graphical tests",
+        "Windows applicable headless Godot",
+        "Applicable scoped Water apparatus"
+      ],
+      "acceptance_condition": "Every applicable required check must succeed against the final PR head. The linked receipt records the actual head SHA and workflow run outcomes after execution.",
+      "qualification": "This committed requirements record makes no advance pass claim and avoids a self-referential commit hash."
+    },
+    "merge": {
+      "tracking": "external_acceptance_receipt",
+      "receipt_url": "https://github.com/techrote/cybersand/pull/197#issuecomment-6326437084",
+      "required_evidence": [
+        "Successful final-head acceptance for every applicable required scope",
+        "Exact tested-head merge identity",
+        "Landed-main verification",
+        "Issue #192 disposition"
+      ],
+      "acceptance_condition": "Merge and closure are contingent on all required acceptance gates. The external receipt records the actual completed operations and their identities."
+    }
+  },
+  "limits": [
+    "Finite whole-bundle replacement; no GEN-006 persistence, eviction or durable mutation rebasing.",
+    "Play actors use the existing sampled owner; no non-play physics owner or generalized traversal guarantee.",
+    "Local software OpenGL captures do not establish browser or target-PC performance."
+  ],
+  "record_scope": "Source/runtime sections retain original 3070f97 implementation evidence. Retrieval is separately bound to fixture and corpus hashes, including the disclosed recovered documentation delta. Corrected-source runtime publication, refreshed captures and final-head acceptance are recorded in corrected_source, hosted and published_capture.",
+  "updated_utc": "2026-10-21T21:16:48.859808+00:00",
+  "corrected_source": {
+    "commit": "720e51e2b6bdaa1fdf20a06d732892fdbeb736fe",
+    "tree": "8867a7638dc542c83087a5f67c5f7d2a1e3213d0",
+    "recovered_local_checkpoint": "a74f64f4f27c9a56573d25e8b29e6b58dfa93139",
+    "checkpoint_relation": "Identical Git trees; no ancestry equivalence is asserted.",
+    "change": "Three known-empty C-string assignments use appends, with explicit error-buffer clearing in the catch-all path, to preserve the pinned GLIBCXX_3.4.30 floor. Compiler pins, floor and publication checks are unchanged."
+  },
+  "published_capture": {
+    "state": "passed",
+    "recorded_at_utc": "2026-10-21T21:10:42.755015+00:00",
+    "manifest": "../images/semantic-depth/capture-manifest.json",
+    "manifest_sha256": "233f7a6fbfc531ed1e613874cb2716e65e17f5ba67c2462f2b872b0321eb5520",
+    "source_commit": "4925e4349fa221507a754c091887fbc3044ef63a",
+    "native_build_source": "720e51e2b6bdaa1fdf20a06d732892fdbeb736fe",
+    "native_build_tree": "8867a7638dc542c83087a5f67c5f7d2a1e3213d0",
+    "runtime_sha256": "f3dd574268d1f4cf01167faf7e9d0e1ccbdf4f0a219051fdbbb6e0a76b9ed326",
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "engine": {
+      "build": "official",
+      "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (official)",
+      "timestamp": 0
+    },
+    "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+    "display": "X11",
+    "method": "gl_compatibility",
+    "required_image_count": 22,
+    "verified_image_count": 22,
+    "image_dimensions": [
+      {
+        "width": 1024,
+        "height": 1024,
+        "count": 20
+      },
+      {
+        "width": 1440,
+        "height": 1000,
+        "count": 2
+      }
+    ],
+    "execution": {
+      "import": {
+        "started_at_utc": "2026-10-21T21:10:42.755046+00:00",
+        "elapsed_seconds": 6.093,
+        "exit_code": 0,
+        "log_sha256": "a59903e67357be24a099f71ba67efb1cdef33dfef74fb4e4922f8cb8f22fbbb3",
+        "error_lines": [],
+        "state": "passed"
+      },
+      "render_oracle": {
+        "started_at_utc": "2026-10-21T21:10:48.848672+00:00",
+        "elapsed_seconds": 68.472,
+        "exit_code": 0,
+        "log_sha256": "6c90985b893d1f858bd7c6990ce4f0cffea629cd4c83c67631b39713c72a04d9",
+        "error_lines": [],
+        "state": "passed",
+        "assertions": 104,
+        "failures": 0,
+        "examples_completed": 2,
+        "script": "res://tests/test_semantic_depth_render.gd"
+      },
+      "capture": {
+        "started_at_utc": "2026-10-21T21:11:57.320722+00:00",
+        "elapsed_seconds": 43.368,
+        "exit_code": 0,
+        "log_sha256": "98b64b0e1306b78b77b9792e1fbb96c048473f2f138e4b7e84e84d6a42934f3a",
+        "error_lines": [],
+        "state": "passed",
+        "image_count": 22,
+        "script": "res://tools/capture_semantic_depth.gd"
+      }
+    },
+    "examples": [
+      {
+        "example": "semantic-refinery",
+        "bundle_revision": "a9ae4e7ecad92a14",
+        "fixtures": 20,
+        "ticks": 240,
+        "material_surface_nonempty_pixels": {
+          "background": 21076,
+          "effects": 1310,
+          "play": 14485,
+          "scripted": 16090
+        },
+        "oracle_completed": true
+      },
+      {
+        "example": "semantic-flooded-cavern",
+        "bundle_revision": "94b7ebaa1329d946",
+        "fixtures": 20,
+        "ticks": 240,
+        "material_surface_nonempty_pixels": {
+          "background": 23040,
+          "effects": 1323,
+          "play": 22039,
+          "scripted": 17184
+        },
+        "oracle_completed": true
+      }
+    ],
+    "fixture_accounting": [
+      {
+        "example": "semantic-refinery",
+        "recipe_sha256": "e6872ef1bf8a8919a195cf9d4670a1a346e7ce09ab23c6abe94cf53a1b8ba52d",
+        "fixtures": 20,
+        "ticks": 240,
+        "applications": 544,
+        "fixture_cell_writes": 9664,
+        "cleanup_cell_writes": 448
+      },
+      {
+        "example": "semantic-flooded-cavern",
+        "recipe_sha256": "5c191c90c3c6daf61a0bff00806ae0c99340d339ae5de4e0fdac8370da8fb370",
+        "fixtures": 20,
+        "ticks": 240,
+        "applications": 544,
+        "fixture_cell_writes": 9664,
+        "cleanup_cell_writes": 448
+      }
+    ],
+    "identity_validation": {
+      "checked_source_and_runtime_input_count": 300,
+      "source_unchanged": true,
+      "copied_source_unchanged": true,
+      "bound_input_hashes": {
+        "examples/worldgen/semantic-refinery.json": "e6872ef1bf8a8919a195cf9d4670a1a346e7ce09ab23c6abe94cf53a1b8ba52d",
+        "examples/worldgen/semantic-flooded-cavern.json": "5c191c90c3c6daf61a0bff00806ae0c99340d339ae5de4e0fdac8370da8fb370",
+        "godot/semantic_depth.tscn": "effcdb6291bce39afc975341e5a695287bda219075aee5fb0a0ef68083629410",
+        "godot/scripts/depth/semantic_depth_demo.gd": "19b799d9496c67fe03916199df54c2f801b51bfee699ad9cd27bdd6786e549d4",
+        "godot/scripts/depth/semantic_plane_runtime.gd": "2d53fb1167289433385899566956cc3653768efee06b8648a688902edc0d524d",
+        "godot/tools/capture_semantic_depth.gd": "51ac4dbb1a975c122b4110c7061817caf70bf3d6d2c8cd4ba6ebbc7789ec9a45",
+        "godot/tests/test_semantic_depth_render.gd": "842f31c00886a37b8d974cdbbee24ea741241e5dde5ef80a62e53be8822eb8a3",
+        "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "f3dd574268d1f4cf01167faf7e9d0e1ccbdf4f0a219051fdbbb6e0a76b9ed326"
+      }
+    },
+    "visual_review": {
+      "inspected": [
+        "refinery-guide.png",
+        "flooded-cavern-composite.png",
+        "refinery-scripted.png",
+        "flooded-cavern-background.png"
+      ],
+      "result": "pass",
+      "findings": [
+        "Guide text and controls are legible and the four regions are completely framed.",
+        "Shared structural geometry corresponds across composite and isolated layers.",
+        "Refinery uses a warm industrial palette; flooded cavern uses a distinct cool stone/water palette.",
+        "No empty required layer or unintended blank capture was observed."
+      ],
+      "scope": "Representative visual inspection plus complete 22-image hash/dimension/manifest validation; not owner aesthetic approval or golden-image equality."
+    },
+    "initial_attempt": {
+      "status": "environment-blocked",
+      "reason": "Restricted execution denied the editor local TCP sockets. Strict import-log validation rejected the zero-exit process; no graphical acceptance was admitted from that attempt.",
+      "import_log_sha256": "503af3896d32e80499ca2b32775fcf3f308191c377bbddb8caec714967e81f53",
+      "summary_log_sha256": "c1837aaf3dc22808f0757d4982aa2e9577f3c4f783ef9f07b18d155ffe2e2a4a",
+      "resolution": "Repeated the same isolated, pinned workflow with approved local-execution escalation; import, oracle and capture logs then contained zero errors."
+    },
+    "qualifications": [
+      "Linux x86_64 / X11 / software Mesa OpenGL only.",
+      "Expected unsupported-VSync warning retained; no script/runtime errors in accepted logs.",
+      "Fresh image hashes supersede original capture hashes; no bitwise cross-run image equality is claimed.",
+      "No browser, hardware-GPU performance, Windows graphical, actor traversal or GEN-006 streaming qualification."
+    ],
+    "log_availability": "Log hashes identify checked local execution records; the raw local logs are not published as repository files. This compact record retains execution results, while the linked manifest and PNGs provide the durable rendered artifacts."
+  },
+  "historical_retrieval": {
+    "frozen": {
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 21,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7953,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "fixture_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "corpus_manifest_sha256": "a3f9bf75d3b6b84f10dc1ccbfd39d7d3108ba8ee7c1ee02370ba255376a1b0f5",
+      "document_count": 101,
+      "chunk_count": 1108
+    },
+    "challenges": {
+      "summary": {
+        "questions": 105,
+        "canonical_hit_at_1": 84,
+        "canonical_hit_at_k": 105,
+        "mrr_at_k": 0.8813,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "fixture_sha256": "28f41f4cced0f9044590d10b3850e51a47f111a54789e408d4c14f27f25dd927",
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "corpus_manifest_sha256": "a3f9bf75d3b6b84f10dc1ccbfd39d7d3108ba8ee7c1ee02370ba255376a1b0f5",
+      "document_count": 101,
+      "chunk_count": 1108
+    }
+  },
+  "corrected_source_validation": {
+    "source_commit": "720e51e2b6bdaa1fdf20a06d732892fdbeb736fe",
+    "source_tree": "8867a7638dc542c83087a5f67c5f7d2a1e3213d0",
+    "native_optimized": {
+      "state": "passed",
+      "assertions": 217773,
+      "failures": 0,
+      "command": "./build/test_generation_planes",
+      "executable_sha256": "4678107f2fbcf9a41fa4f05b1afe0c14330d267fd4c04198e712602c4acd385e",
+      "generation_planes_cpp_sha256": "55bb115341df14f538e9b7e0cff9ad282309130bb4b021b1f73f6415ddd3d123"
+    },
+    "publication_guard_tests": {
+      "state": "passed",
+      "tests": 19
+    },
+    "ci_provider_policy": {
+      "state": "passed"
+    },
+    "historical_m11": {
+      "status": "passed",
+      "scope": "historical M11 integrity; no current runtime acceptance",
+      "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+      "records_checked": 18,
+      "source_hashes_checked": 28,
+      "compare_working_tree": false,
+      "working_tree_differences": [],
+      "errors": []
+    },
+    "documentation_preflight": {
+      "state": "passed",
+      "documents": 101,
+      "canonical_claims": 198,
+      "local_links": 2150,
+      "heading_anchors": 176,
+      "frozen_questions": 32,
+      "errors": [],
+      "warnings": []
+    },
+    "runtime_provenance": "Guarded source-matched Linux/Windows publication completed and its immutable runtime/report/log identities were verified; final-head repository provenance acceptance remains required.",
+    "repository_provenance": {
+      "state": "passed",
+      "require_materialized": true,
+      "verified_runtime_files": 18,
+      "qualification": "Local prepublication repository check; final-head hosted Documentation/provenance remains required."
+    },
+    "git_lfs_fsck": {
+      "state": "passed"
+    },
+    "whitespace": {
+      "state": "passed"
+    }
+  }
+}

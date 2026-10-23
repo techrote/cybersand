@@ -1,0 +1,2932 @@
+{
+  "schema": 3,
+  "seed": 19301,
+  "chunk_size": 64,
+  "candidate": "strata",
+  "parameters": {
+    "surface_y": -1024,
+    "relief": 0,
+    "detail": 0,
+    "cave_threshold": 0.8,
+    "district_size": 128
+  },
+  "themes": {
+    "weights": {
+      "industrial": 3,
+      "ruins": 1
+    }
+  },
+  "spatial": {
+    "nodes": [
+      {
+        "id": "exposure",
+        "kind": "noise",
+        "sampling_scale": 4,
+        "parameters": {
+          "scale": 38,
+          "salt": 193
+        }
+      },
+      {
+        "id": "weathering",
+        "kind": "to_mask",
+        "inputs": [
+          "exposure"
+        ],
+        "parameters": {
+          "low": 0.35,
+          "high": 0.7
+        }
+      },
+      {
+        "id": "wind",
+        "kind": "constant",
+        "value": {
+          "type": "vector2",
+          "x": 0.9,
+          "y": -0.25
+        }
+      }
+    ]
+  },
+  "grammar": {
+    "schema": 1,
+    "id": "deepworks-procedural",
+    "region_window": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "region_size": 1024,
+    "roots": [
+      "copper-choir",
+      "frost-observatory",
+      "ember-terraces",
+      "basalt-archive"
+    ],
+    "curve": "hilbert",
+    "curve_order": 2,
+    "route_width": 15,
+    "limits": {
+      "max_raster_operations": 16000000000
+    },
+    "clearance": 7,
+    "secondary_loop": true,
+    "service_trunk": false,
+    "liquid_trunk": false,
+    "rules": [
+      {
+        "id": "copper-choir",
+        "kind": "district",
+        "count": 1,
+        "material": 119,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "major-region",
+          "copper-choir"
+        ],
+        "candidates": [
+          {
+            "id": "anchor",
+            "bounds": [
+              16,
+              16,
+              480,
+              480
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ],
+        "children": [
+          "upper-gallery",
+          "lower-gallery",
+          "brine-retort",
+          "optional-loop"
+        ],
+        "themes": [
+          {
+            "id": "copper-choir",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "id": "frost-observatory",
+        "kind": "district",
+        "count": 1,
+        "material": 121,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "major-region",
+          "frost-observatory"
+        ],
+        "candidates": [
+          {
+            "id": "anchor",
+            "bounds": [
+              528,
+              16,
+              480,
+              480
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ],
+        "children": [
+          "upper-gallery",
+          "lower-gallery",
+          "snow-lens",
+          "optical-core"
+        ],
+        "themes": [
+          {
+            "id": "frost-observatory",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "id": "ember-terraces",
+        "kind": "district",
+        "count": 1,
+        "material": 104,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "major-region",
+          "ember-terraces"
+        ],
+        "candidates": [
+          {
+            "id": "anchor",
+            "bounds": [
+              16,
+              528,
+              480,
+              480
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ],
+        "children": [
+          "upper-gallery",
+          "lower-gallery",
+          "clay-kiln",
+          "optional-loop"
+        ],
+        "themes": [
+          {
+            "id": "ember-terraces",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "id": "basalt-archive",
+        "kind": "district",
+        "count": 1,
+        "material": 100,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "major-region",
+          "basalt-archive"
+        ],
+        "candidates": [
+          {
+            "id": "anchor",
+            "bounds": [
+              528,
+              528,
+              480,
+              480
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ],
+        "children": [
+          "upper-gallery",
+          "lower-gallery",
+          "geothermal-well",
+          "vault-lock"
+        ],
+        "themes": [
+          {
+            "id": "basalt-archive",
+            "weight": 1
+          }
+        ]
+      },
+      {
+        "id": "optical-core",
+        "kind": "apparatus",
+        "count": 2,
+        "material": 122,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "regional-focal",
+          "optical-instrument"
+        ],
+        "candidates": [
+          {
+            "id": "upper",
+            "bounds": [
+              232,
+              52,
+              162,
+              118
+            ],
+            "order_x": 0,
+            "order_y": 0
+          },
+          {
+            "id": "lower",
+            "bounds": [
+              76,
+              310,
+              162,
+              118
+            ],
+            "order_x": 1,
+            "order_y": 0
+          }
+        ],
+        "children": [
+          "optical-aperture",
+          "optical-brace"
+        ]
+      },
+      {
+        "id": "optical-aperture",
+        "kind": "detail",
+        "count": 1,
+        "material": 72,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "micro-detail",
+          "optical-aperture"
+        ],
+        "candidates": [
+          {
+            "id": "anchor",
+            "bounds": [
+              46,
+              22,
+              70,
+              74
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "optical-brace",
+        "kind": "detail",
+        "count": 4,
+        "material": 114,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "micro-detail",
+          "optical-support"
+        ],
+        "candidates": [
+          {
+            "id": "brace-0",
+            "bounds": [
+              12,
+              50,
+              12,
+              18
+            ],
+            "order_x": 0,
+            "order_y": 0
+          },
+          {
+            "id": "brace-1",
+            "bounds": [
+              138,
+              50,
+              12,
+              18
+            ],
+            "order_x": 1,
+            "order_y": 0
+          },
+          {
+            "id": "brace-2",
+            "bounds": [
+              72,
+              12,
+              18,
+              12
+            ],
+            "order_x": 2,
+            "order_y": 0
+          },
+          {
+            "id": "brace-3",
+            "bounds": [
+              72,
+              94,
+              18,
+              12
+            ],
+            "order_x": 3,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "vault-lock",
+        "kind": "detail",
+        "count": 2,
+        "material": 119,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "micro-detail",
+          "vault-lock"
+        ],
+        "candidates": [
+          {
+            "id": "upper",
+            "bounds": [
+              306,
+              102,
+              14,
+              18
+            ],
+            "order_x": 0,
+            "order_y": 0
+          },
+          {
+            "id": "lower",
+            "bounds": [
+              151,
+              357,
+              14,
+              18
+            ],
+            "order_x": 1,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "upper-gallery",
+        "kind": "room",
+        "count": 1,
+        "material": 58,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "named-subregion",
+          "upper-gallery"
+        ],
+        "candidates": [
+          {
+            "id": "anchor",
+            "bounds": [
+              16,
+              24,
+              448,
+              176
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ],
+        "children": [
+          "service-module",
+          "service-rail"
+        ],
+        "sockets": [
+          {
+            "id": "entry",
+            "type": "passage",
+            "direction": "east",
+            "offset": 84,
+            "width": 11,
+            "required": true,
+            "attach_to_route": true
+          }
+        ]
+      },
+      {
+        "id": "lower-gallery",
+        "kind": "room",
+        "count": 1,
+        "material": 70,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "named-subregion",
+          "lower-gallery"
+        ],
+        "candidates": [
+          {
+            "id": "anchor",
+            "bounds": [
+              16,
+              276,
+              448,
+              176
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ],
+        "children": [
+          "lower-service-module",
+          "service-rail"
+        ],
+        "sockets": [
+          {
+            "id": "entry",
+            "type": "passage",
+            "direction": "east",
+            "offset": 84,
+            "width": 11,
+            "required": true,
+            "attach_to_route": true
+          }
+        ]
+      },
+      {
+        "id": "service-module",
+        "kind": "apparatus",
+        "count": 2,
+        "material": 62,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "micro-feature",
+          "service-cabinet"
+        ],
+        "candidates": [
+          {
+            "id": "bay-0",
+            "bounds": [
+              24,
+              20,
+              76,
+              58
+            ],
+            "order_x": 0,
+            "order_y": 0
+          },
+          {
+            "id": "bay-1",
+            "bounds": [
+              128,
+              20,
+              76,
+              58
+            ],
+            "order_x": 1,
+            "order_y": 0
+          },
+          {
+            "id": "bay-2",
+            "bounds": [
+              232,
+              20,
+              76,
+              58
+            ],
+            "order_x": 2,
+            "order_y": 0
+          },
+          {
+            "id": "bay-3",
+            "bounds": [
+              336,
+              20,
+              76,
+              58
+            ],
+            "order_x": 3,
+            "order_y": 0
+          }
+        ],
+        "children": [
+          "cabinet-window",
+          "gauge",
+          "shelf",
+          "signal"
+        ],
+        "preferences": [
+          {
+            "id": "quiet-service-bay",
+            "kind": "route",
+            "weight": -1
+          }
+        ]
+      },
+      {
+        "id": "lower-service-module",
+        "kind": "apparatus",
+        "count": 2,
+        "material": 62,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "micro-feature",
+          "service-cabinet"
+        ],
+        "candidates": [
+          {
+            "id": "bay-0",
+            "bounds": [
+              24,
+              20,
+              76,
+              58
+            ],
+            "order_x": 0,
+            "order_y": 1
+          },
+          {
+            "id": "bay-1",
+            "bounds": [
+              328,
+              94,
+              76,
+              58
+            ],
+            "order_x": 1,
+            "order_y": 1
+          },
+          {
+            "id": "bay-2",
+            "bounds": [
+              128,
+              20,
+              76,
+              58
+            ],
+            "order_x": 2,
+            "order_y": 1
+          },
+          {
+            "id": "bay-3",
+            "bounds": [
+              328,
+              20,
+              76,
+              58
+            ],
+            "order_x": 3,
+            "order_y": 1
+          }
+        ],
+        "children": [
+          "cabinet-window",
+          "gauge",
+          "shelf",
+          "signal"
+        ],
+        "preferences": [
+          {
+            "id": "quiet-lower-service-bay",
+            "kind": "route",
+            "weight": -1
+          }
+        ]
+      },
+      {
+        "id": "cabinet-window",
+        "kind": "detail",
+        "count": 1,
+        "material": 72,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "micro-detail",
+          "inspection-window"
+        ],
+        "candidates": [
+          {
+            "id": "anchor",
+            "bounds": [
+              8,
+              7,
+              60,
+              30
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "gauge",
+        "kind": "detail",
+        "count": 1,
+        "material": 121,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "micro-detail",
+          "instrument"
+        ],
+        "candidates": [
+          {
+            "id": "anchor",
+            "bounds": [
+              10,
+              40,
+              14,
+              10
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "shelf",
+        "kind": "detail",
+        "count": 1,
+        "material": 66,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "micro-detail",
+          "specimen-shelf"
+        ],
+        "candidates": [
+          {
+            "id": "anchor",
+            "bounds": [
+              30,
+              40,
+              36,
+              4
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "signal",
+        "kind": "detail",
+        "count": 1,
+        "material": 77,
+        "interior": 0,
+        "wall_thickness": 0,
+        "tags": [
+          "micro-detail",
+          "signal"
+        ],
+        "candidates": [
+          {
+            "id": "anchor",
+            "bounds": [
+              44,
+              47,
+              22,
+              2
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "service-rail",
+        "kind": "apparatus",
+        "count": 1,
+        "material": 69,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "micro-feature",
+          "service-network"
+        ],
+        "candidates": [
+          {
+            "id": "anchor",
+            "bounds": [
+              16,
+              148,
+              416,
+              4
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "optional-loop",
+        "kind": "complex",
+        "count": 1,
+        "material": 100,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "optional-loop",
+          "secondary-passage"
+        ],
+        "candidates": [
+          {
+            "id": "anchor",
+            "bounds": [
+              48,
+              368,
+              192,
+              80
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "brine-retort",
+        "kind": "apparatus",
+        "count": 1,
+        "material": 131,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "paired-native-exhibit",
+          "brine-retort"
+        ],
+        "candidates": [
+          {
+            "id": "anchor",
+            "bounds": [
+              48,
+              164,
+              168,
+              96
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ],
+        "children": [
+          "vessel-pilot",
+          "vessel-foot",
+          "play-inlet-post",
+          "rear-inlet-post"
+        ]
+      },
+      {
+        "id": "snow-lens",
+        "kind": "apparatus",
+        "count": 1,
+        "material": 131,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "paired-native-exhibit",
+          "snow-lens"
+        ],
+        "candidates": [
+          {
+            "id": "anchor",
+            "bounds": [
+              280,
+              164,
+              168,
+              96
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ],
+        "children": [
+          "vessel-pilot",
+          "vessel-foot",
+          "play-inlet-post",
+          "rear-inlet-post"
+        ]
+      },
+      {
+        "id": "clay-kiln",
+        "kind": "apparatus",
+        "count": 1,
+        "material": 131,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "paired-native-exhibit",
+          "clay-kiln"
+        ],
+        "candidates": [
+          {
+            "id": "anchor",
+            "bounds": [
+              48,
+              164,
+              168,
+              96
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ],
+        "children": [
+          "vessel-pilot",
+          "vessel-foot",
+          "play-inlet-post",
+          "rear-inlet-post"
+        ]
+      },
+      {
+        "id": "geothermal-well",
+        "kind": "apparatus",
+        "count": 1,
+        "material": 131,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "paired-native-exhibit",
+          "geothermal-well"
+        ],
+        "candidates": [
+          {
+            "id": "anchor",
+            "bounds": [
+              280,
+              164,
+              168,
+              96
+            ],
+            "order_x": 0,
+            "order_y": 0
+          }
+        ],
+        "children": [
+          "vessel-pilot",
+          "vessel-foot",
+          "play-inlet-post",
+          "rear-inlet-post"
+        ]
+      },
+      {
+        "id": "vessel-pilot",
+        "kind": "detail",
+        "count": 2,
+        "material": 79,
+        "interior": 0,
+        "wall_thickness": 0,
+        "tags": [
+          "micro-detail",
+          "vessel-pilot"
+        ],
+        "candidates": [
+          {
+            "id": "pilot-0",
+            "bounds": [
+              4,
+              87,
+              68,
+              1
+            ],
+            "order_x": 0,
+            "order_y": 0
+          },
+          {
+            "id": "pilot-1",
+            "bounds": [
+              88,
+              87,
+              68,
+              1
+            ],
+            "order_x": 1,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "vessel-foot",
+        "kind": "detail",
+        "count": 4,
+        "material": 62,
+        "interior": 0,
+        "wall_thickness": 1,
+        "tags": [
+          "micro-detail",
+          "vessel-support"
+        ],
+        "candidates": [
+          {
+            "id": "foot-0",
+            "bounds": [
+              2,
+              92,
+              16,
+              4
+            ],
+            "order_x": 0,
+            "order_y": 0
+          },
+          {
+            "id": "foot-1",
+            "bounds": [
+              58,
+              92,
+              16,
+              4
+            ],
+            "order_x": 1,
+            "order_y": 0
+          },
+          {
+            "id": "foot-2",
+            "bounds": [
+              86,
+              92,
+              16,
+              4
+            ],
+            "order_x": 2,
+            "order_y": 0
+          },
+          {
+            "id": "foot-3",
+            "bounds": [
+              142,
+              92,
+              16,
+              4
+            ],
+            "order_x": 3,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "play-inlet-post",
+        "kind": "detail",
+        "count": 2,
+        "material": 68,
+        "interior": 0,
+        "wall_thickness": 0,
+        "tags": [
+          "micro-detail",
+          "native-inlet"
+        ],
+        "candidates": [
+          {
+            "id": "post-0",
+            "bounds": [
+              10,
+              2,
+              2,
+              16
+            ],
+            "order_x": 0,
+            "order_y": 0
+          },
+          {
+            "id": "post-1",
+            "bounds": [
+              64,
+              2,
+              2,
+              16
+            ],
+            "order_x": 1,
+            "order_y": 0
+          }
+        ]
+      },
+      {
+        "id": "rear-inlet-post",
+        "kind": "detail",
+        "count": 2,
+        "material": 68,
+        "interior": 0,
+        "wall_thickness": 0,
+        "tags": [
+          "micro-detail",
+          "native-inlet"
+        ],
+        "candidates": [
+          {
+            "id": "post-0",
+            "bounds": [
+              94,
+              2,
+              2,
+              16
+            ],
+            "order_x": 0,
+            "order_y": 0
+          },
+          {
+            "id": "post-1",
+            "bounds": [
+              148,
+              2,
+              2,
+              16
+            ],
+            "order_x": 1,
+            "order_y": 0
+          }
+        ]
+      }
+    ]
+  },
+  "semantic_planes": {
+    "schema": 1,
+    "id": "deepworks-procedural",
+    "revision": 1,
+    "policies": [
+      {
+        "plane": "play",
+        "material": 0,
+        "base_generator": false,
+        "rate": 30,
+        "omission": "Readable passage air between stable structure and separately contained native apparatus."
+      },
+      {
+        "plane": "scripted",
+        "material": 0,
+        "base_generator": false,
+        "rate": 20,
+        "omission": "Independent rear service void; real reagents run only inside their own vessels."
+      },
+      {
+        "plane": "effects",
+        "material": 0,
+        "base_generator": false,
+        "rate": 15,
+        "omission": "Clear air outside local haze and native fixture exhaust is intentional."
+      },
+      {
+        "plane": "background",
+        "material": 0,
+        "base_generator": false,
+        "rate": 0,
+        "omission": "Frozen monumental silhouettes with deliberate negative sky between masses."
+      }
+    ],
+    "projections": [
+      {
+        "id": "copper-choir-frame",
+        "rule": "copper-choir",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 2,
+        "material": 119,
+        "interior": 0,
+        "wall_thickness": 4
+      },
+      {
+        "id": "copper-choir-sky",
+        "rule": "copper-choir",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 1,
+        "material": 119,
+        "bounds": [
+          22,
+          10,
+          436,
+          460
+        ],
+        "interior": 0,
+        "wall_thickness": 14
+      },
+      {
+        "id": "copper-choir-header",
+        "rule": "copper-choir",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 5,
+        "material": 69,
+        "bounds": [
+          16,
+          12,
+          448,
+          5
+        ]
+      },
+      {
+        "id": "copper-choir-name-light",
+        "rule": "copper-choir",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 6,
+        "material": 77,
+        "bounds": [
+          32,
+          19,
+          80,
+          2
+        ]
+      },
+      {
+        "id": "copper-choir-organ-0",
+        "rule": "copper-choir",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 6,
+        "material": 69,
+        "bounds": [
+          42,
+          30,
+          27,
+          400
+        ],
+        "interior": 65,
+        "wall_thickness": 3
+      },
+      {
+        "id": "copper-choir-organ-1",
+        "rule": "copper-choir",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 6,
+        "material": 69,
+        "bounds": [
+          146,
+          42,
+          27,
+          378
+        ],
+        "interior": 65,
+        "wall_thickness": 3
+      },
+      {
+        "id": "copper-choir-organ-2",
+        "rule": "copper-choir",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 6,
+        "material": 69,
+        "bounds": [
+          250,
+          54,
+          27,
+          356
+        ],
+        "interior": 65,
+        "wall_thickness": 3
+      },
+      {
+        "id": "copper-choir-organ-3",
+        "rule": "copper-choir",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 6,
+        "material": 69,
+        "bounds": [
+          354,
+          66,
+          27,
+          334
+        ],
+        "interior": 65,
+        "wall_thickness": 3
+      },
+      {
+        "id": "copper-choir-organ-chest",
+        "rule": "copper-choir",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 7,
+        "material": 119,
+        "bounds": [
+          202,
+          38,
+          224,
+          132
+        ],
+        "interior": 72,
+        "wall_thickness": 6
+      },
+      {
+        "id": "copper-choir-upper-manifold",
+        "rule": "copper-choir",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 10,
+        "material": 69,
+        "bounds": [
+          214,
+          58,
+          198,
+          92
+        ],
+        "interior": 66,
+        "wall_thickness": 4
+      },
+      {
+        "id": "copper-choir-lower-manifold",
+        "rule": "copper-choir",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 7,
+        "material": 69,
+        "bounds": [
+          258,
+          308,
+          168,
+          132
+        ],
+        "interior": 72,
+        "wall_thickness": 6
+      },
+      {
+        "id": "frost-observatory-frame",
+        "rule": "frost-observatory",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 2,
+        "material": 121,
+        "interior": 0,
+        "wall_thickness": 4
+      },
+      {
+        "id": "frost-observatory-sky",
+        "rule": "frost-observatory",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 1,
+        "material": 121,
+        "bounds": [
+          22,
+          10,
+          436,
+          460
+        ],
+        "interior": 0,
+        "wall_thickness": 14
+      },
+      {
+        "id": "frost-observatory-header",
+        "rule": "frost-observatory",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 5,
+        "material": 114,
+        "bounds": [
+          16,
+          12,
+          448,
+          5
+        ]
+      },
+      {
+        "id": "frost-observatory-name-light",
+        "rule": "frost-observatory",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 6,
+        "material": 80,
+        "bounds": [
+          32,
+          19,
+          80,
+          2
+        ]
+      },
+      {
+        "id": "frost-observatory-upper-lens-cradle",
+        "rule": "frost-observatory",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 6,
+        "material": 114,
+        "bounds": [
+          198,
+          30,
+          230,
+          160
+        ],
+        "interior": 72,
+        "wall_thickness": 8
+      },
+      {
+        "id": "frost-observatory-lower-lens-cradle",
+        "rule": "frost-observatory",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 6,
+        "material": 114,
+        "bounds": [
+          42,
+          296,
+          232,
+          142
+        ],
+        "interior": 72,
+        "wall_thickness": 8
+      },
+      {
+        "id": "frost-observatory-optical-spine",
+        "rule": "frost-observatory",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 7,
+        "material": 114,
+        "bounds": [
+          292,
+          192,
+          30,
+          108
+        ],
+        "interior": 72,
+        "wall_thickness": 4
+      },
+      {
+        "id": "ember-terraces-frame",
+        "rule": "ember-terraces",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 2,
+        "material": 104,
+        "interior": 0,
+        "wall_thickness": 4
+      },
+      {
+        "id": "ember-terraces-sky",
+        "rule": "ember-terraces",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 1,
+        "material": 104,
+        "bounds": [
+          22,
+          10,
+          436,
+          460
+        ],
+        "interior": 0,
+        "wall_thickness": 14
+      },
+      {
+        "id": "ember-terraces-header",
+        "rule": "ember-terraces",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 5,
+        "material": 51,
+        "bounds": [
+          16,
+          12,
+          448,
+          5
+        ]
+      },
+      {
+        "id": "ember-terraces-name-light",
+        "rule": "ember-terraces",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 6,
+        "material": 79,
+        "bounds": [
+          32,
+          19,
+          80,
+          2
+        ]
+      },
+      {
+        "id": "ember-terraces-upper-furnace",
+        "rule": "ember-terraces",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 6,
+        "material": 104,
+        "bounds": [
+          194,
+          32,
+          236,
+          160
+        ],
+        "interior": 100,
+        "wall_thickness": 12
+      },
+      {
+        "id": "ember-terraces-upper-refractory",
+        "rule": "ember-terraces",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 7,
+        "material": 131,
+        "bounds": [
+          218,
+          56,
+          188,
+          112
+        ],
+        "interior": 72,
+        "wall_thickness": 8
+      },
+      {
+        "id": "ember-terraces-lower-furnace",
+        "rule": "ember-terraces",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 6,
+        "material": 104,
+        "bounds": [
+          246,
+          298,
+          184,
+          142
+        ],
+        "interior": 100,
+        "wall_thickness": 10
+      },
+      {
+        "id": "ember-terraces-lower-refractory",
+        "rule": "ember-terraces",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 7,
+        "material": 131,
+        "bounds": [
+          268,
+          320,
+          140,
+          98
+        ],
+        "interior": 72,
+        "wall_thickness": 7
+      },
+      {
+        "id": "ember-terraces-flue",
+        "rule": "ember-terraces",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 7,
+        "material": 51,
+        "bounds": [
+          290,
+          192,
+          46,
+          108
+        ],
+        "interior": 0,
+        "wall_thickness": 5
+      },
+      {
+        "id": "ember-terraces-upper-fire-window",
+        "rule": "ember-terraces",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 8,
+        "material": 79,
+        "bounds": [
+          250,
+          84,
+          124,
+          56
+        ],
+        "interior": 66,
+        "wall_thickness": 4
+      },
+      {
+        "id": "ember-terraces-lower-fire-window",
+        "rule": "ember-terraces",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 8,
+        "material": 79,
+        "bounds": [
+          292,
+          342,
+          92,
+          54
+        ],
+        "interior": 66,
+        "wall_thickness": 4
+      },
+      {
+        "id": "basalt-archive-frame",
+        "rule": "basalt-archive",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 2,
+        "material": 100,
+        "interior": 0,
+        "wall_thickness": 4
+      },
+      {
+        "id": "basalt-archive-sky",
+        "rule": "basalt-archive",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 1,
+        "material": 100,
+        "bounds": [
+          22,
+          10,
+          436,
+          460
+        ],
+        "interior": 0,
+        "wall_thickness": 14
+      },
+      {
+        "id": "basalt-archive-header",
+        "rule": "basalt-archive",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 5,
+        "material": 122,
+        "bounds": [
+          16,
+          12,
+          448,
+          5
+        ]
+      },
+      {
+        "id": "basalt-archive-name-light",
+        "rule": "basalt-archive",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 6,
+        "material": 78,
+        "bounds": [
+          32,
+          19,
+          80,
+          2
+        ]
+      },
+      {
+        "id": "basalt-archive-upper-vault",
+        "rule": "basalt-archive",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 6,
+        "material": 122,
+        "bounds": [
+          196,
+          30,
+          234,
+          162
+        ],
+        "interior": 100,
+        "wall_thickness": 8
+      },
+      {
+        "id": "basalt-archive-upper-vault-door",
+        "rule": "basalt-archive",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 7,
+        "material": 119,
+        "bounds": [
+          244,
+          54,
+          138,
+          114
+        ],
+        "interior": 72,
+        "wall_thickness": 6
+      },
+      {
+        "id": "basalt-archive-lower-register",
+        "rule": "basalt-archive",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 6,
+        "material": 122,
+        "bounds": [
+          42,
+          296,
+          234,
+          144
+        ],
+        "interior": 100,
+        "wall_thickness": 8
+      },
+      {
+        "id": "basalt-archive-lower-register-door",
+        "rule": "basalt-archive",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 7,
+        "material": 119,
+        "bounds": [
+          68,
+          318,
+          182,
+          100
+        ],
+        "interior": 72,
+        "wall_thickness": 5
+      },
+      {
+        "id": "basalt-archive-register-shelf-0",
+        "rule": "basalt-archive",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 8,
+        "material": 66,
+        "bounds": [
+          84,
+          336,
+          150,
+          5
+        ]
+      },
+      {
+        "id": "basalt-archive-register-shelf-1",
+        "rule": "basalt-archive",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 8,
+        "material": 66,
+        "bounds": [
+          84,
+          362,
+          150,
+          5
+        ]
+      },
+      {
+        "id": "basalt-archive-register-shelf-2",
+        "rule": "basalt-archive",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 8,
+        "material": 66,
+        "bounds": [
+          84,
+          388,
+          150,
+          5
+        ]
+      },
+      {
+        "id": "optical-core",
+        "rule": "optical-core",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 7,
+        "material": 122,
+        "interior": 121,
+        "wall_thickness": 12
+      },
+      {
+        "id": "optical-aperture",
+        "rule": "optical-aperture",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 8,
+        "material": 66,
+        "interior": 72,
+        "wall_thickness": 3
+      },
+      {
+        "id": "optical-brace",
+        "rule": "optical-brace",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 9,
+        "material": 114
+      },
+      {
+        "id": "vault-lock",
+        "rule": "vault-lock",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 9,
+        "material": 119,
+        "interior": 78,
+        "wall_thickness": 3
+      },
+      {
+        "id": "upper-gallery-floor",
+        "rule": "upper-gallery",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 8,
+        "material": 58,
+        "interior": 0,
+        "wall_thickness": 3
+      },
+      {
+        "id": "upper-gallery-rear",
+        "rule": "upper-gallery",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 8,
+        "material": 64,
+        "bounds": [
+          5,
+          5,
+          438,
+          166
+        ],
+        "interior": 0,
+        "wall_thickness": 2
+      },
+      {
+        "id": "upper-gallery-lintel",
+        "rule": "upper-gallery",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 9,
+        "material": 62,
+        "bounds": [
+          4,
+          8,
+          440,
+          3
+        ]
+      },
+      {
+        "id": "upper-gallery-toe",
+        "rule": "upper-gallery",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 9,
+        "material": 76,
+        "bounds": [
+          12,
+          164,
+          424,
+          2
+        ]
+      },
+      {
+        "id": "upper-gallery-distant",
+        "rule": "upper-gallery",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 5,
+        "material": 72,
+        "bounds": [
+          8,
+          8,
+          432,
+          160
+        ],
+        "interior": 0,
+        "wall_thickness": 8
+      },
+      {
+        "id": "upper-gallery-atmosphere",
+        "rule": "upper-gallery",
+        "plane": "effects",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 2,
+        "material": 22,
+        "bounds": [
+          202,
+          18,
+          40,
+          4
+        ]
+      },
+      {
+        "id": "lower-gallery-floor",
+        "rule": "lower-gallery",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 8,
+        "material": 70,
+        "interior": 0,
+        "wall_thickness": 3
+      },
+      {
+        "id": "lower-gallery-rear",
+        "rule": "lower-gallery",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 8,
+        "material": 64,
+        "bounds": [
+          5,
+          5,
+          438,
+          166
+        ],
+        "interior": 0,
+        "wall_thickness": 2
+      },
+      {
+        "id": "lower-gallery-lintel",
+        "rule": "lower-gallery",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 9,
+        "material": 62,
+        "bounds": [
+          4,
+          8,
+          440,
+          3
+        ]
+      },
+      {
+        "id": "lower-gallery-toe",
+        "rule": "lower-gallery",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 9,
+        "material": 76,
+        "bounds": [
+          12,
+          164,
+          424,
+          2
+        ]
+      },
+      {
+        "id": "lower-gallery-distant",
+        "rule": "lower-gallery",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 5,
+        "material": 72,
+        "bounds": [
+          8,
+          8,
+          432,
+          160
+        ],
+        "interior": 0,
+        "wall_thickness": 8
+      },
+      {
+        "id": "lower-gallery-atmosphere",
+        "rule": "lower-gallery",
+        "plane": "effects",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 2,
+        "material": 22,
+        "bounds": [
+          202,
+          18,
+          40,
+          4
+        ]
+      },
+      {
+        "id": "service-module-frame",
+        "rule": "service-module",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 15,
+        "material": 62,
+        "interior": 0,
+        "wall_thickness": 2
+      },
+      {
+        "id": "service-module-rear",
+        "rule": "service-module",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 15,
+        "material": 69,
+        "bounds": [
+          3,
+          3,
+          70,
+          52
+        ],
+        "interior": 0,
+        "wall_thickness": 3
+      },
+      {
+        "id": "lower-service-module-frame",
+        "rule": "lower-service-module",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 15,
+        "material": 62,
+        "interior": 0,
+        "wall_thickness": 2
+      },
+      {
+        "id": "lower-service-module-rear",
+        "rule": "lower-service-module",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 15,
+        "material": 69,
+        "bounds": [
+          3,
+          3,
+          70,
+          52
+        ],
+        "interior": 0,
+        "wall_thickness": 3
+      },
+      {
+        "id": "cabinet-window-play",
+        "rule": "cabinet-window",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 16,
+        "material": 0
+      },
+      {
+        "id": "cabinet-window-rear",
+        "rule": "cabinet-window",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 16,
+        "material": 74,
+        "interior": 72,
+        "wall_thickness": 2
+      },
+      {
+        "id": "gauge-frame",
+        "rule": "gauge",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 17,
+        "material": 119,
+        "interior": 121,
+        "wall_thickness": 2,
+        "application": "spatial:weathering"
+      },
+      {
+        "id": "shelf-play",
+        "rule": "shelf",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 17,
+        "material": 66
+      },
+      {
+        "id": "signal-play",
+        "rule": "signal",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 18,
+        "material": 77
+      },
+      {
+        "id": "rail-play",
+        "rule": "service-rail",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 20,
+        "material": 69
+      },
+      {
+        "id": "rail-rear",
+        "rule": "service-rail",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 20,
+        "material": 68
+      },
+      {
+        "id": "loop-clearance",
+        "rule": "optional-loop",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 25,
+        "material": 0,
+        "interior": 100,
+        "wall_thickness": 13
+      },
+      {
+        "id": "loop-inner-trim",
+        "rule": "optional-loop",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 26,
+        "material": 69,
+        "bounds": [
+          16,
+          16,
+          160,
+          48
+        ],
+        "interior": 72,
+        "wall_thickness": 2
+      },
+      {
+        "id": "loop-backdrop",
+        "rule": "optional-loop",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 12,
+        "material": 119,
+        "bounds": [
+          20,
+          20,
+          152,
+          40
+        ]
+      },
+      {
+        "id": "loop-status-band",
+        "rule": "optional-loop",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 27,
+        "material": 77,
+        "bounds": [
+          30,
+          23,
+          132,
+          2
+        ]
+      },
+      {
+        "id": "loop-access-grille",
+        "rule": "optional-loop",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 27,
+        "material": 66,
+        "bounds": [
+          30,
+          34,
+          132,
+          17
+        ]
+      },
+      {
+        "id": "loop-foot-rail",
+        "rule": "optional-loop",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 27,
+        "material": 69,
+        "bounds": [
+          30,
+          55,
+          132,
+          2
+        ]
+      },
+      {
+        "id": "copper-choir-loop-exit",
+        "rule": "copper-choir",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 80,
+        "material": 0,
+        "bounds": [
+          234,
+          405,
+          230,
+          11
+        ]
+      },
+      {
+        "id": "copper-choir-secondary-shaft",
+        "rule": "copper-choir",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 80,
+        "material": 0,
+        "bounds": [
+          452,
+          100,
+          11,
+          322
+        ]
+      },
+      {
+        "id": "frost-observatory-secondary-shaft",
+        "rule": "frost-observatory",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 80,
+        "material": 0,
+        "bounds": [
+          452,
+          100,
+          11,
+          322
+        ]
+      },
+      {
+        "id": "ember-terraces-loop-exit",
+        "rule": "ember-terraces",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 80,
+        "material": 0,
+        "bounds": [
+          234,
+          405,
+          230,
+          11
+        ]
+      },
+      {
+        "id": "ember-terraces-secondary-shaft",
+        "rule": "ember-terraces",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 80,
+        "material": 0,
+        "bounds": [
+          452,
+          100,
+          11,
+          322
+        ]
+      },
+      {
+        "id": "basalt-archive-secondary-shaft",
+        "rule": "basalt-archive",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 80,
+        "material": 0,
+        "bounds": [
+          452,
+          100,
+          11,
+          322
+        ]
+      },
+      {
+        "id": "brine-retort-play-vessel",
+        "rule": "brine-retort",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 30,
+        "material": 131,
+        "bounds": [
+          0,
+          0,
+          76,
+          92
+        ],
+        "interior": 0,
+        "wall_thickness": 2
+      },
+      {
+        "id": "brine-retort-play-specimen",
+        "rule": "brine-retort",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 31,
+        "material": 23,
+        "bounds": [
+          7,
+          60,
+          62,
+          7
+        ]
+      },
+      {
+        "id": "brine-retort-scripted-vessel",
+        "rule": "brine-retort",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 30,
+        "material": 131,
+        "bounds": [
+          84,
+          0,
+          76,
+          92
+        ],
+        "interior": 0,
+        "wall_thickness": 2
+      },
+      {
+        "id": "brine-retort-scripted-specimen",
+        "rule": "brine-retort",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 31,
+        "material": 23,
+        "bounds": [
+          91,
+          60,
+          62,
+          7
+        ]
+      },
+      {
+        "id": "brine-retort-rear-window",
+        "rule": "brine-retort",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 33,
+        "material": 0,
+        "bounds": [
+          82,
+          0,
+          86,
+          92
+        ]
+      },
+      {
+        "id": "brine-retort-mist",
+        "rule": "brine-retort",
+        "plane": "effects",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 32,
+        "material": 22,
+        "bounds": [
+          84,
+          2,
+          72,
+          4
+        ]
+      },
+      {
+        "id": "snow-lens-play-vessel",
+        "rule": "snow-lens",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 30,
+        "material": 131,
+        "bounds": [
+          0,
+          0,
+          76,
+          92
+        ],
+        "interior": 0,
+        "wall_thickness": 2
+      },
+      {
+        "id": "snow-lens-play-specimen",
+        "rule": "snow-lens",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 31,
+        "material": 105,
+        "bounds": [
+          7,
+          60,
+          62,
+          7
+        ]
+      },
+      {
+        "id": "snow-lens-scripted-vessel",
+        "rule": "snow-lens",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 30,
+        "material": 131,
+        "bounds": [
+          84,
+          0,
+          76,
+          92
+        ],
+        "interior": 0,
+        "wall_thickness": 2
+      },
+      {
+        "id": "snow-lens-scripted-specimen",
+        "rule": "snow-lens",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 31,
+        "material": 105,
+        "bounds": [
+          91,
+          60,
+          62,
+          7
+        ]
+      },
+      {
+        "id": "snow-lens-rear-window",
+        "rule": "snow-lens",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 33,
+        "material": 0,
+        "bounds": [
+          82,
+          0,
+          86,
+          92
+        ]
+      },
+      {
+        "id": "snow-lens-mist",
+        "rule": "snow-lens",
+        "plane": "effects",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 32,
+        "material": 22,
+        "bounds": [
+          84,
+          2,
+          72,
+          4
+        ]
+      },
+      {
+        "id": "clay-kiln-play-vessel",
+        "rule": "clay-kiln",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 30,
+        "material": 131,
+        "bounds": [
+          0,
+          0,
+          76,
+          92
+        ],
+        "interior": 0,
+        "wall_thickness": 2
+      },
+      {
+        "id": "clay-kiln-play-specimen",
+        "rule": "clay-kiln",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 31,
+        "material": 103,
+        "bounds": [
+          7,
+          60,
+          62,
+          7
+        ]
+      },
+      {
+        "id": "clay-kiln-scripted-vessel",
+        "rule": "clay-kiln",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 30,
+        "material": 131,
+        "bounds": [
+          84,
+          0,
+          76,
+          92
+        ],
+        "interior": 0,
+        "wall_thickness": 2
+      },
+      {
+        "id": "clay-kiln-scripted-specimen",
+        "rule": "clay-kiln",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 31,
+        "material": 103,
+        "bounds": [
+          91,
+          60,
+          62,
+          7
+        ]
+      },
+      {
+        "id": "clay-kiln-rear-window",
+        "rule": "clay-kiln",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 33,
+        "material": 0,
+        "bounds": [
+          82,
+          0,
+          86,
+          92
+        ]
+      },
+      {
+        "id": "clay-kiln-mist",
+        "rule": "clay-kiln",
+        "plane": "effects",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 32,
+        "material": 22,
+        "bounds": [
+          84,
+          2,
+          72,
+          4
+        ]
+      },
+      {
+        "id": "geothermal-well-play-vessel",
+        "rule": "geothermal-well",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 30,
+        "material": 131,
+        "bounds": [
+          0,
+          0,
+          76,
+          92
+        ],
+        "interior": 0,
+        "wall_thickness": 2
+      },
+      {
+        "id": "geothermal-well-play-specimen",
+        "rule": "geothermal-well",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 31,
+        "material": 8,
+        "bounds": [
+          7,
+          60,
+          62,
+          7
+        ]
+      },
+      {
+        "id": "geothermal-well-scripted-vessel",
+        "rule": "geothermal-well",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "shell",
+        "priority": 30,
+        "material": 131,
+        "bounds": [
+          84,
+          0,
+          76,
+          92
+        ],
+        "interior": 0,
+        "wall_thickness": 2
+      },
+      {
+        "id": "geothermal-well-scripted-specimen",
+        "rule": "geothermal-well",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 31,
+        "material": 8,
+        "bounds": [
+          91,
+          60,
+          62,
+          7
+        ]
+      },
+      {
+        "id": "geothermal-well-rear-window",
+        "rule": "geothermal-well",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 33,
+        "material": 0,
+        "bounds": [
+          82,
+          0,
+          86,
+          92
+        ]
+      },
+      {
+        "id": "geothermal-well-mist",
+        "rule": "geothermal-well",
+        "plane": "effects",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 32,
+        "material": 22,
+        "bounds": [
+          84,
+          2,
+          72,
+          4
+        ]
+      },
+      {
+        "id": "vessel-pilot-play",
+        "rule": "vessel-pilot",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 32,
+        "material": 79
+      },
+      {
+        "id": "vessel-pilot-rear",
+        "rule": "vessel-pilot",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 32,
+        "material": 77
+      },
+      {
+        "id": "vessel-foot",
+        "rule": "vessel-foot",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 34,
+        "material": 62
+      },
+      {
+        "id": "play-inlet-post",
+        "rule": "play-inlet-post",
+        "plane": "play",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 32,
+        "material": 68
+      },
+      {
+        "id": "rear-inlet-post",
+        "rule": "rear-inlet-post",
+        "plane": "scripted",
+        "geometry": "feature",
+        "shape": "fill",
+        "priority": 32,
+        "material": 68
+      },
+      {
+        "id": "regional-effects-negative-space",
+        "rule": "$region",
+        "plane": "effects",
+        "geometry": "feature",
+        "shape": "omit",
+        "priority": 0,
+        "omission": "Deliberate unfilled circulation and deep void around the four feature-owned districts; each named gallery has local treatment."
+      },
+      {
+        "id": "regional-background-negative-space",
+        "rule": "$region",
+        "plane": "background",
+        "geometry": "feature",
+        "shape": "omit",
+        "priority": 0,
+        "omission": "Deliberate unfilled circulation and deep void around the four feature-owned districts; each named gallery has local treatment."
+      },
+      {
+        "id": "primary-route",
+        "rule": "$region",
+        "plane": "play",
+        "geometry": "routes",
+        "shape": "fill",
+        "priority": 90,
+        "material": 0,
+        "route_type": "passage"
+      }
+    ],
+    "fixtures": [
+      {
+        "id": "brine-retort-play-feed",
+        "rule": "brine-retort",
+        "plane": "play",
+        "material": 3,
+        "bounds": [
+          12,
+          5,
+          52,
+          2
+        ],
+        "mode": "source",
+        "first_tick": 1,
+        "period": 12,
+        "repeat": 16,
+        "expected_products": [
+          24
+        ]
+      },
+      {
+        "id": "brine-retort-scripted-feed",
+        "rule": "brine-retort",
+        "plane": "scripted",
+        "material": 3,
+        "bounds": [
+          96,
+          5,
+          52,
+          2
+        ],
+        "mode": "source",
+        "first_tick": 1,
+        "period": 12,
+        "repeat": 16,
+        "expected_products": [
+          24
+        ]
+      },
+      {
+        "id": "snow-lens-play-feed",
+        "rule": "snow-lens",
+        "plane": "play",
+        "material": 6,
+        "bounds": [
+          10,
+          59,
+          56,
+          1
+        ],
+        "mode": "source",
+        "first_tick": 1,
+        "period": 12,
+        "repeat": 16,
+        "expected_products": [
+          3
+        ]
+      },
+      {
+        "id": "snow-lens-scripted-feed",
+        "rule": "snow-lens",
+        "plane": "scripted",
+        "material": 6,
+        "bounds": [
+          94,
+          59,
+          56,
+          1
+        ],
+        "mode": "source",
+        "first_tick": 1,
+        "period": 12,
+        "repeat": 16,
+        "expected_products": [
+          3
+        ]
+      },
+      {
+        "id": "clay-kiln-play-feed",
+        "rule": "clay-kiln",
+        "plane": "play",
+        "material": 8,
+        "bounds": [
+          12,
+          5,
+          52,
+          2
+        ],
+        "mode": "source",
+        "first_tick": 1,
+        "period": 12,
+        "repeat": 16,
+        "expected_products": [
+          48
+        ]
+      },
+      {
+        "id": "clay-kiln-scripted-feed",
+        "rule": "clay-kiln",
+        "plane": "scripted",
+        "material": 8,
+        "bounds": [
+          96,
+          5,
+          52,
+          2
+        ],
+        "mode": "source",
+        "first_tick": 1,
+        "period": 12,
+        "repeat": 16,
+        "expected_products": [
+          48
+        ]
+      },
+      {
+        "id": "geothermal-well-play-feed",
+        "rule": "geothermal-well",
+        "plane": "play",
+        "material": 3,
+        "bounds": [
+          12,
+          5,
+          52,
+          2
+        ],
+        "mode": "source",
+        "first_tick": 1,
+        "period": 12,
+        "repeat": 16,
+        "expected_products": [
+          13
+        ]
+      },
+      {
+        "id": "geothermal-well-scripted-feed",
+        "rule": "geothermal-well",
+        "plane": "scripted",
+        "material": 3,
+        "bounds": [
+          96,
+          5,
+          52,
+          2
+        ],
+        "mode": "source",
+        "first_tick": 1,
+        "period": 12,
+        "repeat": 16,
+        "expected_products": [
+          13
+        ]
+      }
+    ],
+    "links": [
+      {
+        "id": "service-correspondence",
+        "rule": "service-rail",
+        "family": "pipe",
+        "classification": "static",
+        "source_plane": "play",
+        "target_plane": "scripted",
+        "effect": "correspondence",
+        "bounds": [
+          0,
+          0,
+          416,
+          4
+        ]
+      },
+      {
+        "id": "brine-retort-pair",
+        "rule": "brine-retort",
+        "family": "machinery",
+        "classification": "static",
+        "source_plane": "play",
+        "target_plane": "scripted",
+        "effect": "correspondence",
+        "bounds": [
+          84,
+          0,
+          76,
+          92
+        ]
+      },
+      {
+        "id": "snow-lens-pair",
+        "rule": "snow-lens",
+        "family": "machinery",
+        "classification": "static",
+        "source_plane": "play",
+        "target_plane": "scripted",
+        "effect": "correspondence",
+        "bounds": [
+          84,
+          0,
+          76,
+          92
+        ]
+      },
+      {
+        "id": "clay-kiln-pair",
+        "rule": "clay-kiln",
+        "family": "machinery",
+        "classification": "static",
+        "source_plane": "play",
+        "target_plane": "scripted",
+        "effect": "correspondence",
+        "bounds": [
+          84,
+          0,
+          76,
+          92
+        ]
+      },
+      {
+        "id": "geothermal-well-pair",
+        "rule": "geothermal-well",
+        "family": "machinery",
+        "classification": "static",
+        "source_plane": "play",
+        "target_plane": "scripted",
+        "effect": "correspondence",
+        "bounds": [
+          84,
+          0,
+          76,
+          92
+        ]
+      }
+    ],
+    "limits": {
+      "max_templates": 128,
+      "max_operations": 4000000000,
+      "max_projections": 2048,
+      "max_prepared_bytes": 16777216,
+      "max_publication_bytes": 67108864
+    }
+  }
+}

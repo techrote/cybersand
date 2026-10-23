@@ -6,7 +6,7 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-22
 ---
 
 # Data ownership and lifetimes
@@ -26,6 +26,57 @@ on the main thread. Copied effect requests cross to the cellular owner, which
 validates and applies them; only copied receipts return. Reset/close retires the
 old run, command leases, effects and joint graph. See the
 [physical actor contract](../systems/physical-actor-rigs.md).
+
+## Player playground ownership
+
+**Current experimental source:** the dedicated
+[player playground](../systems/player-control-playground.md) serializes calls on
+its main-thread owner. Its mechanical lane reuses `CyberPhysicalActorArena` and
+the physical session. Its material lane owns a separate native World and calls
+`apply_player_material_field` only between ordinary ticks, under a current
+observation-relative input lease. No operation borrows the sandbox worker's World.
+
+The material field snapshots a bounded local selection and moves complete native
+cells through existing relocation/wake bookkeeping. It stores no cohort, actor
+identity, persistent velocity or control state in cell storage. The scene owns
+the centre, command generation and lease; cancellation stops future field calls
+and ordinary material rules continue. Reset stages a candidate before retiring
+the old owner, commands and observations. Rendering receives copied packets
+tagged with the new reset generation. This API adds no thread-safety or general
+worker forwarding capability; the caller must already own serialized access.
+
+## Generated semantic depth ownership
+
+**Current GEN-005:** immutable `PlanePlan` retains the existing `Generator`,
+hierarchy and typed spatial graph. Its jobs own four private material arrays and
+copied registration/provenance records. They have no World, actor, Rapier,
+camera or engine-clock input. Cancellation/failure discards unpublished work;
+native receipts bind Ready values to the exact plan and requested rectangle.
+
+The main-thread serialized `CyberWorldGenerator` copies a complete proposal.
+`CyberSemanticPlaneRuntime` validates it, constructs four candidate native
+Worlds privately and prepares a sampled actor session through the existing
+play-plane actor owner. Its inherited `_prepare_candidate_owners` hook runs
+before the four-World publication, so a failed actor model or placement retains
+the previous Worlds and session. One synchronous commit installs materials,
+registries, clocks and actor identity together. The compositor consumes only
+subsequent copied packets and retains the existing generation/serial checks.
+
+Fixtures and links belong to stable semantic features and canonical regions.
+Each fixture advances only on its declared plane clock. Completed feeds remain
+spent; an identical bundle retry leaves native state and clocks untouched.
+Explicit reset constructs fresh Worlds and invalidates old observations and
+actor actions. A differing replacement needs the current owner generation;
+the bounded retired-revision ledger prevents old bundle resurrection.
+
+Runtime observations are copied, owner-issued, one-use values. Registered
+play→scripted blast and scripted→effects burst routes are the only interlayer
+writes. Static service/machinery links, presentation window links and pixel overlap carry no write
+authority. Background is frozen; generation never creates a non-play physics
+owner. The [semantic contract](../systems/procedural-semantic-planes.md) and
+[message reference](../reference/interfaces-and-message-contracts.md#semantic-plane-proposals-and-owner-admission)
+own packet/lifecycle details. Persistent residency and mutation rebasing remain
+GEN-006.
 
 ## Opt-in depth exhibition ownership
 
@@ -66,6 +117,8 @@ but must not touch live scene-tree or Rapier objects.
 | Desktop world, sampled character and optional actor prototypes | Godot pacing Thread after startup handoff | Worker lifetime; stopped/joined before destruction; actor session reset invalidates old input epochs |
 | Live body nodes, RIDs and physics state | Main-thread Rapier bridge and PhysicsServer2D | Scene/bridge lifetime; never passed to cellular workers |
 | Physical actor rigs, joints and local controllers | Main-thread `CyberPhysicalActorSession`; at most eight rigs/eight total parts each | Run/actor/epoch-bound command leases; cancel discards future work, close retires bodies/joints |
+| 4LY profile and local force/torque response | Validated copied profile and a main-thread pure controller under the same physical session; own velocity/attitude inputs only | Single chassis with explicit absent equipment; cancellation/expiry reset response state and select passive fallback without changing body momentum; see [free-flight contract](../systems/physical-free-flight.md) |
+| Player material field commands and centre | Dedicated main-thread `CyberPlayerPlaygroundRuntime`; native World alone relocates selected Sand/Water cells | One current command, at most six ticks from its issued observation; reset/cancel retires authority, while native material remains ordinary World state |
 | Physical usable effect requests | Copied by the physical owner; exclusively validated/consumed by the native-world owner | Epoch/sequence/source-bound, bounded per actor and batch; consumed refusals cannot replay after an obstacle disappears |
 | Physical equipment chassis and mount | Main-thread `CyberPhysicalUsableEquipment` through its actor rig; the same part/body ID is held, released, fixed, deployed and picked up | At most one equipment part per actor within the eight-part limit; equipment epochs invalidate superseded use and deployment authority without deleting velocity |
 | Physical usable frame, request and receipt mailbox | Main thread supplies copied physical poses/identity; the serialized cellular owner admits and applies usable work, then publishes copied results | Eight pending requests globally, one per actor including extracted work; run/actor/generation/equipment/body/request identity fences cancellation and recoil |
@@ -73,6 +126,10 @@ but must not touch live scene-tree or Rapier objects.
 | Body samples and observations | Adapter owns copied samples and native transient occupancy; results are copied into publication | Mask rebuilt at coupling preparation; sample IDs identify result application |
 | Godot CPU image and textures | Main thread validates patches and updates resources | Application lifetime; upload never borrows mutable World bytes |
 | Compiled procedural recipe, field graph and prepared modules | Immutable `generation::Generator`, independent of World | Jobs retain shared ownership; replacing the caller's recipe cannot mutate existing jobs |
+| Typed spatial graph, geometry and prepared region assignment | Immutable `generation::SpatialGraph`; copied typed parameters, routes and bounded complete solver results | No per-cell context or mutable World access; transforms and derivatives resample absolute-coordinate functions |
+| Semantic hierarchy, sockets, routes and constraint receipts | Immutable `generation::GrammarPlan`, prepared before rasterization for a finite world-anchored region window | Stable owner/rule/slot identities are separate from recipe revisions; chunks query complete plans without resident-neighbor negotiation |
+| Hierarchy raster qualification and cell provenance | `generation::Generator` owns the complete final-cell route/support report; callers own copied inspection data | Hard overrides remain authoritative and may produce explicit blocked-route or missing-contact reports; neither report changes World admission authority |
+| Typed spatial sampling cache | One caller/job/worker owns bounded `SpatialScratch` | 256 entries keyed by transitive node identity, exact coordinate and sampling mode; cold/warm behavior has identical values |
 | Procedural sample context | Copied initial candidate material, surface and route values | Captured before fields/modules/material changes; every mask for that cell sees the same values |
 | Procedural chunk staging | One `GenerationJob` owns private material/optional diagnostic arrays and cursor | Allocated before incremental advance; pending bytes stay private, failure/cancel discards both payloads |
 | World-generation workbench previews | One main-thread `CyberWorldGenerator` owner plus copied material/texture cache | Accepted recipe changes retire old preview work; cache eviction regenerates previews, never evicts simulation chunks |
@@ -117,6 +174,18 @@ cells. Diagnostic floats are job-owned and receipt-bound, then copied into the
 workbench cache; changing inspection channels retires that cache. The
 [field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md)
 owns this immutable-context and diagnostic lifecycle.
+
+GEN-003 schema-2 [`SpatialGraph`](../../native/include/cybersand/generation_typed_fields.hpp)
+adds immutable typed functions beside that retained context graph. It never
+resamples `FieldContext` as if it contained neighboring observations. Route and
+feature geometry is copied; finite region assignments finish preparation before
+publication. Each caller or job owns its bounded sampling scratch. Typed
+diagnostics preserve signed values, vector components and exact categorical
+identities; the chunk receipt binds both payload and type/unit metadata, and
+failure/cancellation publishes neither materials nor diagnostics. The
+[typed contract](../systems/procedural-typed-spatial-fields.md) owns these
+lifetimes and cache identities. Future grammar, authoring and streaming owners
+may consume the interfaces without gaining mutable cell access.
 
 ## When can a render payload be reused?
 
@@ -282,6 +351,13 @@ they are not live unsynchronized descriptor edits or representation handoffs.
 
 [Tower controls](../operations/experiment-tower.md) use a copied latest pending command on desktop. The existing exclusive worker constructs and installs the native candidate outside ticks. Web uses its synchronous owner. Copied lab context accompanies snapshots; no mutable tables are shared with jobs.
 
+Desktop Water exits additionally bind each pending controller request to the
+worker's copied serial/outcome receipt. A stale snapshot cannot retire a newer
+exit or end its blind session; matching rejection preserves that session. The
+[receipt contract](../reference/interfaces-and-message-contracts.md#desktop-water-exit-receipts)
+owns the fields and commit conditions. The existing one-slot command bound and
+native World owner remain unchanged.
+
 
 ## Opt-in transport profiles
 
@@ -352,3 +428,18 @@ changes Current owners. Production hooks, barriers, queues and payload transitio
 remain separately gated; the source reader must stay serialized and read-only.
 
 The desktop [physical actor trial](../operations/physical-actor-programme.md) uses one main-thread Rapier rectangle and the existing immutable body-value publication. It disables the sampled owner, adds no worker-side Rapier access and does not attach the generation preview to live cell storage.
+
+## Generation Workbench 2 ownership
+
+The [GEN-007 authoring owner](../systems/generation-workbench-2.md) holds no live
+simulation World or Rapier object. Native compiled generators and semantic/plane
+plans are immutable; jobs own private output until complete. Provenance is a
+bounded deterministic replay of those plans. Copied cells and records are the
+only inputs to diagnostic drawing.
+
+Candidate preparation has an exclusive private adapter owner. A successful
+main-thread commit retires the previous preview jobs and diagnostics; rejected
+candidates preserve the accepted recipe, cache and history. Undo/redo restores
+recipe content with fresh session/request identities so old results cannot be
+readmitted. Auxiliary seed/comparison owners are private, finite and cancelled
+on identity changes. This is authoring isolation, not world mutation rebasing.

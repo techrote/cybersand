@@ -4,11 +4,144 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-22
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
 # Development handover
+
+## 4LY single-chassis flight contract — 2026-10-22
+
+Start with the [physical free-flight contract](../systems/physical-free-flight.md)
+for 4LY-001 / #205, its [strict action/publication interface](../reference/interfaces-and-message-contracts.md#physical-free-flight-actions),
+[profile values](../reference/configuration-reference.md#physical-free-flight-values)
+and [focused checks](local-build-and-validation.md#physical-free-flight-checks).
+The shared main-thread physical owner installs exactly one rectangular chassis;
+explicit no-equipment preparation must survive normal session installation.
+Do not replace that with a legacy empty usable, which can retain a jointed
+equipment body.
+
+The pure controller accepts own velocity/attitude and the admitted two-output
+request, with no position, goal, terrain, reward or World access. Keep gravity
+compensation inside total thrust, retain response/slew and torque bounds, and
+do not append legacy extreme-motion forces. Admitted zero movement means bounded
+braking/hover; cancellation, expiry, takeover and power changes retire command
+and filter state while preserving momentum. The copied profile/controller hashes
+and requested/admitted/applied records identify the actual control path.
+Sustained thrust uses an owned force channel for one actual Rapier step. Retain
+the prepare/bridge-step/complete protocol, immutable original receipt attribution
+and replacement requirement after a sticky step-order fault.
+
+All four stable IDs resolve, but only Trainer has initial conformance tuning;
+the others are identical uncalibrated placeholders. Ordinary `RIG_IDS` stays at
+46 until 4LY-002 authors and measures the profiles and adds selection. 4LY-003
+final flight-lab/teacher evidence must use those frozen profiles. Companion
+4LY-004 Trainer learning must pass independently before 4LY-005 family learning.
+No training run, compute allocation, generic physics acceptance or closure of
+long-lived #132 follows from this source checkpoint.
+
+## GEN-007 Workbench 2 qualification — 2026-10-21
+
+Issue [#193](https://github.com/techrote/cybersand/issues/193) now has an implemented workbench, four-seed procedural qualification, native exhibit controls, actual rendered evidence and source-matched Linux/Windows runtime publication. [PR #198](https://github.com/techrote/cybersand/pull/198) owns the final exact-head acceptance/merge receipt. Read the [workbench contract](../systems/generation-workbench-2.md), [qualification guide](procedural-qualification.md) and [dated gate ledger](../audits/2026-10-21-gen007-workbench-qualification.md). Preserve accepted native identity, genuine sampler stages, bounded trace output and fresh authoring/session tokens. Graph/rule/plane/brush changes share one transaction; invalid edits cannot retire the prior valid preview or history.
+
+Native grammar/projection candidate indices preserve canonical ordering and original geometry/mask decisions. Their preparation and raster work/memory remain explicitly charged. The four declared seeds fit the unchanged four-billion bundle-work limit; the worst has only 0.80% headroom. Graphical process RSS uses an explicit revised 4 GiB envelope after the original 2 GiB cold-renderer failure. Authoring measurements retain the observed 171 ms frame gap; no target-hardware or 60 fps claim follows. The visual disposition is a qualified approach to Deepworks, with remaining composition/detail limits. Local captures use the source-matched development binary, while the separate published Linux/Windows artifacts have their own execution identities. Programme order remains GEN-003 → GEN-004 → GEN-005 → GEN-007 → GEN-006.
+
+The [2026-10-22 post-merge correction record](../audits/2026-10-22-water-exit-acknowledgement.md)
+preserves a subsequent Windows Water Feel controller failure on the unchanged
+accepted tree. Desktop Water exits now require matching request/outcome receipts;
+follow that record for correction validation, separately from GEN-007's retained
+scene and runtime qualification.
+
+## Semantic plane generation checkpoint — 2026-10-21
+
+GEN-005 / [#192](https://github.com/techrote/cybersand/issues/192) projects a single
+GEN-004 semantic hierarchy into play, scripted, effects and background. Read the
+[contract](../systems/procedural-semantic-planes.md),
+[ADR-014](../decisions/ADR-014-semantic-plane-admission.md) and
+[authoring guide](semantic-depth-authoring.md) before changing schema, fixture
+lifecycle, event admission, actor placement or complete-bundle replacement.
+
+The optional `semantic_planes` schema-1 member preserves retained recipe schemas.
+The new launcher/`--semantic-depth` opens the refinery and flooded-cavern examples.
+The existing sampled actor session receives play-only placements. Native kernels
+produce fixture products; no cross-plane event is inferred from pixel overlap.
+Preserve the complete candidate staging boundary, stale observation rejection,
+finite registration/receipt bounds, independent clocks and frozen background.
+
+Run the focused native and Godot cases routed in
+[local validation](local-build-and-validation.md#semantic-plane-generation-and-native-fixtures).
+[The dated ledger](../audits/2026-10-21-gen005-semantic-planes.md) records the
+current checkpoint and remaining hosted/source-matched platform gates. The next
+programme stages are GEN-007 then GEN-006; this finite host is not streaming.
+
+## Player control playground — 2026-10-20
+
+Start with the [player control contract](../systems/player-control-playground.md)
+for seven presets, launch arguments, keyboard/gamepad controls and acrobat chains.
+The five new mechanical IDs form F5 SetP; the current physical roster is 46.
+Their circles use actual Rapier contact but conservative rectangular native
+masks. The two material modes belong only to the dedicated synchronous scene;
+native World relocates complete Sand/Water cells between ordinary ticks.
+
+Preserve observation-relative leases, rearm after focus/reset, cancelled preload
+and landing-gated acrobat inventory. Swarm input moves material near its observed
+centroid, not a cursor or persistent seed cohort. It must not become erase/repaint
+or per-cell Rapier control. See [field interfaces](../reference/interfaces-and-message-contracts.md#player-material-field-control)
+and [focused checks](local-build-and-validation.md#player-playground-checks).
+The [original checkpoint](../audits/2026-10-20-player-control-playground.md)
+preserves local source/runtime identities and Linux execution. The
+[PR #189 completion record](../audits/2026-10-21-player-playground-pr189-completion.md)
+adds original-head hosted Linux/Windows results, including 107/107 Windows
+headless cases, and tracks the GEN-003 integration and later GEN-004 reintegration.
+Combined-source runtime publication and final exact-head evidence are routed through that
+record and PR #189's description and Checks; local passes retain their own scope.
+Admitted quick button taps start the course clock even when released before
+the next physics tick; elapsed time still counts simulation ticks only.
+Target-PC feel, physical controller/window interaction, complete timed routes
+and browser qualification remain separate from headless execution.
+
+## Hierarchical generation checkpoint — 2026-10-21
+
+GEN-004 / [#191](https://github.com/techrote/cybersand/issues/191) adds opt-in
+schema-3 [semantic places and structural routes](../systems/procedural-hierarchical-generation.md).
+Read its canonical-region ownership and [ADR-013](../decisions/ADR-013-canonical-semantic-generation.md)
+before changing hierarchy IDs, boundary sockets, priority constraints, finite
+curve tours or final-raster clearance. Region windows are finite authored plans;
+they do not implement the later streaming/reconciliation owner.
+
+`hierarchy-multi-district.json` exercises four regions, nested cross-chunk
+foundries, service/detail children, loops, finite assignment and typed geometry
+exports. The Workbench adds a hierarchy example and copied cell inspection.
+`make worldgen-test` / `worldgen-sanitize` include native hierarchy controls;
+`test_worldgen_grammar.gd` exercises the adapter and accepted profile. The
+[dated audit](../audits/2026-10-21-gen004-hierarchical-generation.md) separates
+those tests from matching Linux/Windows runtime publication and required hosted
+gates. A blocked final route report preserves the authored hard override and must
+remain visible. Final `supports_passed` separately qualifies retained solid
+contact on each declared support edge; route success alone does not imply it.
+GEN-005, GEN-007 and GEN-006 retain their programme scope/order.
+
+## Typed spatial generation checkpoint — 2026-10-20
+
+GEN-003 / [#190](https://github.com/techrote/cybersand/issues/190) adds opt-in
+schema-2 [typed spatial graphs](../systems/procedural-typed-spatial-fields.md).
+Read that contract and the [operator inventory](../reference/procedural-spatial-operators.md)
+before changing numeric domains, transform/derivative sampling, category IDs,
+subgraph expansion, prepared geometry/assignments or cache identity. Schema-1
+GEN-001/002 recipes retain their scalar context and material contracts. Typed
+spatial functions never resample that per-cell context or resident World data.
+
+`make worldgen-test` includes independent analytical typed tests and bounded
+structured-mapping/solver tests; its sanitizer target covers the same native
+scope. The Workbench's Typed spatial graphs page and five `typed-*.json` profiles
+exercise authoring and copied typed diagnostics. Source-matched runtimes and
+hosted exact-head gates remain separate from local source tests. Do not infer
+merge/platform acceptance from this implementation description.
+
+Programme order is GEN-003 → GEN-004 hierarchical grammar → GEN-005 semantic
+depth → GEN-007 authoring/quality tools → GEN-006 streaming/reconciliation.
+GEN-004 consumes the immutable geometry and finite assignment interfaces;
+it should not introduce a duplicate solver or reverse field-to-grammar dependency.
 
 ## Deepworks exhibition and depth dimensions — 2026-10-20
 
@@ -494,6 +627,22 @@ different physical control.
 The current affected route is therefore
 `#49 corrected apparatus + #91/#92 hybrid evidence + #93 optional gas evidence -> #95 -> #45 disposition -> #18 admission/no-go`.
 #28/#29 remain independently runnable.
+
+## WEX-005 / LCB-000 Gate A handoff, 2026-10-23
+
+The [WEX-005 synthesis](../audits/2026-10-23-wex005-water-evidence-synthesis.md)
+records the #95 disposition: **#45 NARROW** (admission/design only, under a
+vented/shared atmosphere, with deep-release surge registered as its own fixture
+family). The deep-release deficit remains unresolved, #92 is still blocked, #93
+is research only, #94 is narrow-use and #18 is held. Before any #45 candidate,
+read that record and the current-main #49 v2 rerun it cites.
+
+The owner-approved opt-in Liquid Comparison Build (#200) is a separate
+experimental lane. Its pressure family is bounded by the
+[LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
+**LCB-000 (#213) is not PASS.** Gates B–E (#204 storage handoff, family policy,
+Water comparison contract, Dam Break/mixed fixtures) remain open, so do not port
+the `7ef2aac` pressure prototype or freeze LCB state/schema yet.
 
 
 ## PENV-001 player/environment tuning handoff

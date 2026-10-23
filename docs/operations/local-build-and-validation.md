@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-22
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
@@ -224,7 +224,7 @@ The focused regression groups are:
 |---|---|
 | Physical mount and lifecycle | [`test_physical_usable_equipment.gd`](../../godot/tests/test_physical_usable_equipment.gd), [`test_physical_usable_lifecycle.gd`](../../godot/tests/test_physical_usable_lifecycle.gd): real part/body identity, joint-driven aim, equipment epochs, receipt fencing, release/settle/fix and explicit nearby pickup |
 | Native usable work and worker admission | [`test_physical_usables_runtime.gd`](../../godot/tests/test_physical_usables_runtime.gd), [`test_physical_usables_admission.gd`](../../godot/tests/test_physical_usables_admission.gd): physical source/target masks, bounded actual-cell work, processor lifecycle, atomic queue capacity and stale/cancelled requests |
-| Scripted loadouts | [`test_physical_usable_script.gd`](../../godot/tests/test_physical_usable_script.gd): all 41 explicit loadout policies and bounded, observation-driven equipment intent |
+| Scripted loadouts | [`test_physical_usable_script.gd`](../../godot/tests/test_physical_usable_script.gd): all 46 explicit loadout policies, including five empty SetP mounts, and bounded, observation-driven equipment intent |
 | Integrated hosts | [`test_physical_usable_course.gd`](../../godot/tests/test_physical_usable_course.gd), [`test_physical_usables_desktop.gd`](../../godot/tests/test_physical_usables_desktop.gd): the standalone usable course and desktop physical-owner handoff |
 | Retained sampled compatibility | [`test_usables.gd`](../../godot/tests/test_usables.gd), [`test_usable_session.gd`](../../godot/tests/test_usable_session.gd), [`test_actor_usables_integration.gd`](../../godot/tests/test_actor_usables_integration.gd): the original catalogue, sampled command/session and sampled owner integration |
 
@@ -253,10 +253,108 @@ source/runtime identities, local results, remaining limitations and exact-head
 hosted gates. Earlier ACT-004 or sampled USABLE-001 results do not certify this
 changed physical integration.
 
+## Semantic plane generation and native fixtures
+
+GEN-005 adds [`test_generation_planes.cpp`](../../native/tests/test_generation_planes.cpp)
+to both existing generation targets. Its oracle compares all four material
+arrays and canonical registration unions across reversed negative-coordinate
+tiles, worker counts and bounded slices, including shared typed masks and
+actor proposals. Run it with the ordinary generation suite:
+
+```sh
+make worldgen-test
+ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 make worldgen-sanitize
+godot --headless --path godot --script res://tests/test_worldgen_planes.gd
+godot --headless --path godot --script res://tests/test_semantic_planes_runtime.gd
+godot --headless --path godot --script res://tests/test_semantic_planes_examples.gd
+```
+
+The runtime test requires every transaction, lifecycle, event, native reaction,
+cleanup and actor section to complete. The actual-example runner loads both
+checked-in recipes, requires all 40 fixture IDs and verifies every scheduled
+application/cleanup. Rear-only ticks must produce native Brine and transport
+while play/effects/background bytes stay unchanged. Separate play/effects
+ticks verify Water transport and complete the finite programmes. Inactive and
+missing-partner controls must fail the positive product/transport predicates.
+Any script error or required skip fails even if the process exits zero.
+
+The graphical oracle requires a real rendering backend:
+
+```sh
+xvfb-run -a godot --path godot --rendering-method gl_compatibility --display-driver x11 --audio-driver Dummy --script res://tests/test_semantic_depth_render.gd
+```
+
+It compares rendered pixels while camera pan/zoom/parallax leave generation,
+semantic records and live ownership unchanged. The [authoring guide](semantic-depth-authoring.md)
+documents reproducible composites, isolated planes, region details and capture
+manifests. Headless rendering does not substitute for those captures.
+
+The scoped [GEN-005 publisher](../../.github/workflows/gen005-runtime-publication.yml)
+builds source-matched Linux and Windows runtimes, runs all retained player and
+generation admission checks plus the three GEN-005 headless suites on each
+target OS, and accepts only complete positive-count error-free evidence before
+publishing the four runtime/provenance paths. Its independent
+[`unittest` suite](../../tools/ci/test_gen005_runtime_publication.py) exercises
+missing, malformed and tampered evidence. Exact-head documentation/provenance,
+native, full Godot and applicable scoped apparatus gates remain required for
+implementation acceptance. The [GEN-005 audit](../audits/2026-10-21-gen005-semantic-planes.md)
+records actual platform/source results and any environment qualification.
+
+## Hierarchical generation example and acceptance
+
+GEN-004 extends the existing generation targets with
+[`test_generation_grammar.cpp`](../../native/tests/test_generation_grammar.cpp).
+Its controls cover stable semantic IDs, canonical shared ports, finite region
+partitions, nested cross-chunk structures, constraints/fallbacks, socket geometry,
+bounded solving and final raster routes. Run the focused native target while
+iterating, then the combined generation and sanitizer targets:
+
+```sh
+make worldgen-test
+ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 make worldgen-sanitize
+godot --headless --path godot --script res://tests/test_worldgen_grammar.gd
+```
+
+The native targets reuse generation objects within each existing compiler flag
+set under `$(BUILD_DIR)/worldgen-objects`: normal/sanitized and
+threaded/non-threaded variants stay separate. Source, shared-header and Makefile
+changes invalidate those objects. This avoids recompiling the same generation
+sources for each test while retaining all eight executables and the five-minute
+normal and ten-minute sanitizer CI bounds. The
+[dated audit](../audits/2026-10-21-gen004-hierarchical-generation.md)
+retains the cold-build timeout that motivated this change and subsequent results.
+
+Godot execution requires a source-matched extension and the exact pinned editor.
+The [hierarchy profile](../../examples/worldgen/hierarchy-multi-district.json)
+is an executable schema-3 recipe; the
+[grammar schema](../../examples/worldgen/schemas/grammar-v1.schema.json)
+documents its `grammar` member. Load it with the Workbench's hierarchy control
+to inspect four canonical districts. It uses 64-cell chunks so its complete
+256×256-cell window occupies sixteen preview cache entries.
+
+The adapter test checks copied semantic records, accepted recipe roundtrips,
+cell provenance, final route/support reporting and failed configuration retention.
+The [canonical contract](../systems/procedural-hierarchical-generation.md)
+qualifies region-contained buildings, explicit cross-region routes, semantic
+support, final static solid contact and the floating-square clearance profile.
+Require both `passed` and `supports_passed` for the authored example; their
+profiles establish distinct geometric facts. A hard blocker may
+produce a valid material proposal with a failed route report; test and report
+both facts without silently erasing the override.
+
+Implementation acceptance additionally requires the repository's exact-head
+Documentation/provenance, Native, GDExtension Linux/Windows and applicable scoped
+apparatus gates. The [dated audit](../audits/2026-10-21-gen004-hierarchical-generation.md)
+records actual commands, source/runtime identities, failures and limits. A
+successful abstract route graph, native compile or inherited runtime binary
+alone does not satisfy these gates.
+
 ## Procedural generation candidates and workbench
 
 GEN-001/GEN-002 provide native-only comparison, field/modifier regressions and
-focused fresh-chunk admission checks:
+focused fresh-chunk admission checks. GEN-003 adds independent typed analytical,
+multiresolution/cache/worker, bounded seed/mapping and finite solver regressions
+to the same native targets:
 
 ```sh
 make worldgen-test
@@ -281,6 +379,7 @@ regression script using the pinned Godot executable:
 godot --path godot res://worldgen_workbench.tscn
 godot --headless --path godot --script res://tests/test_worldgen_workbench.gd
 godot --headless --path godot --script res://tests/test_worldgen_fields.gd
+godot --headless --path godot --script res://tests/test_worldgen_typed.gd
 ```
 
 The generation workbench is separate from the ordinary sandbox and its optional
@@ -296,6 +395,35 @@ module registration, receipt ownership and the separate fresh-chunk installer.
 Native generator/binding changes require rebuilt runtimes before these Godot
 commands establish source-matched evidence. Merely importing an old extension
 does not register `CyberWorldGenerator`.
+
+The [typed contract](../systems/procedural-typed-spatial-fields.md) and
+[operator inventory](../reference/procedural-spatial-operators.md) own GEN-003
+numerical/type guarantees. The Workbench's Typed spatial graphs page selects
+five executable schema-2 profiles: `typed-industrial-structure.json`,
+`typed-vector-utilities.json`, `typed-categorical-districts.json`,
+`typed-reusable-decay.json` and `typed-multiscale-seeds.json`. They exercise
+transforms, vector guidance, exact districts, nested parameterized authoring and
+world-aligned coarse sampling. Typed Godot validation checks configuration
+roundtrips, typed diagnostics, malformed/refused inputs and Workbench integration;
+native analytical tests remain the numeric oracle. New native tests do not
+replace source-matched Linux/Windows runtime publication and ready-PR gates.
+
+To reproduce the five GEN-003 material/typed-diagnostic pairs, use the typed
+renderer with an absolute script path from the repository root:
+
+```sh
+GENERATION_ROOT="$PWD"
+godot --headless --path "$GENERATION_ROOT/godot" --script "$GENERATION_ROOT/tools/render_worldgen_typed.gd" -- --output "$GENERATION_ROOT/build/worldgen-typed"
+```
+
+It samples a 256×192-cell region at `[-128,0]` from each checked-in profile and
+writes ten PNGs plus `render-manifest.json`. The manifest records the actual
+platform/Godot version, runtime and source SHA-256 values, recipe SHA-256,
+accepted graph fingerprint, typed diagnostic metadata and per-chunk material
+and receipt hashes. Colour mapping is the Workbench's presentation mapping;
+the native diagnostic payload retains signed numbers, vector components and
+exact categorical identity. These panels show generated proposals, with no
+simulation ticks or claim of visual throughput.
 
 To reproduce the three GEN-002 material/mask panels, run the checked-in renderer
 with an absolute script path. From the repository root:
@@ -394,6 +522,46 @@ describes the bounded native-only JSON runner. Its result is not a Windows or
 browser run merely because it exercises the synchronous controller on Linux.
 Use actual platform artifacts and retain their identities for platform acceptance.
 
+## Player playground checks
+
+Use the pinned Godot 4.7/Rapier runtime and a rebuilt source-matched native
+extension. The new field method must exist; a preceding retained binary cannot
+exercise the material presets. On Linux provide writable XDG data/config/cache
+directories if the environment's defaults are read-only.
+
+```text
+make build/tests
+./build/tests "player material field"
+godot --headless --path godot --script res://tests/test_player_material_field.gd
+godot --headless --path godot --script res://tests/test_player_vehicle_controls.gd
+godot --headless --path godot --script res://tests/test_player_acrobat.gd
+godot --headless --path godot --script res://tests/test_player_acrobat_physics.gd
+godot --headless --path godot --script res://tests/test_player_playground_runtime.gd
+godot --headless --path godot --script res://tests/test_player_playground_course.gd
+```
+
+The native executable accepts an optional name substring; no match fails and
+omitting the filter runs the complete suite. Its field groups check complete
+stored-state/temperature/partial-Water preservation, collisions, invalid inputs,
+work bounds, distinct modes and deterministic ordering. The binding runner
+checks actual native admission and nonmutation; mechanical runners exercise
+bounded control plans and actual Rapier motion. The integrated runner covers
+seven owners, issued observations, replay/refusal, expiry, cancellation, pause,
+reset and UI rearm. It also verifies that an admitted press/release between
+physics ticks starts the course clock and counts subsequent neutral/coasting
+ticks. The course runner checks mounted spawns and actual short traversal
+routes. Counts and outcomes belong to the
+[original local audit](../audits/2026-10-20-player-control-playground.md) and
+[PR #189 completion record](../audits/2026-10-21-player-playground-pr189-completion.md),
+which separates original-head hosted passes from pending combined-source gates.
+
+Changed shared catalogue/session/loadout behavior also uses the existing
+physical regressions below. Focused execution is not a complete suite, human
+play or platform result. Run the normal applicable native/Godot gates before
+publication; dynamic Godot discovery includes the new `test_*.gd` files.
+Controls and manual course entry are in the
+[player guide](../systems/player-control-playground.md).
+
 ## Actor control prototype checks
 
 ### ACT-004 articulated actors and physical Thunderbowl v2
@@ -435,6 +603,42 @@ records what ran, failures corrected during tuning and remaining platform limits
 The [physical Thunderbowl reference](../systems/thunderbowl-control-reference.md#physical-thunderbowl-v2)
 contains scene and headless runner examples. Its version-2 command and observation
 contract is separate from the sampled control lab below.
+
+### Physical free-flight checks
+
+The internal [4LY family](../systems/physical-free-flight.md) uses the same
+pinned Godot 4.7, Rapier 0.35.2 and source-matched native runtime. Import the
+project first, then run these automatically discovered fixtures from the source
+root:
+
+```text
+godot --headless --path godot --script res://tests/test_physical_flight_profile.gd
+godot --headless --path godot --script res://tests/test_physical_flight_session.gd
+godot --headless --path godot --script res://tests/test_physical_flight_physics.gd
+```
+
+The profile fixture checks the closed schema, numerical limits, canonical
+profile/controller hashes, force/torque response and goal-blind pure controller.
+The session fixture checks the one-body/no-equipment topology for all four IDs,
+strict two-output input, copied observations, producer parity and lifecycle
+fences, including actual-step receipt attribution and rejection of incorrect
+host step ordering. The physical fixture requires actual Rapier and native World: unsupported
+hover, ascent/descent, neutral braking, attitude recovery, explicit power-off
+fall, underpowered gravity saturation, high-momentum bounded actuation and native
+body/hard-contact integration. A skipped backend or script error is not a pass.
+
+Run the existing physical catalogue/session/rig/equipment, sampled reference and
+protected scientific-fixture regressions when changing shared owners. The three
+new cases join the existing applicable Linux and Windows Godot discovery; no
+separate provider or external runner is required. Draft-skipped expensive checks
+do not qualify the implementation. Before merge, follow the
+[exact-head release gates](github-development-and-release.md) and record source,
+runtime, commands, outcomes and unmeasured platforms separately.
+
+These are reproduction instructions and fixture scopes, not a statement that
+the current checkout has passed. Trainer conformance does not establish four
+distinct handling profiles, a qualified teacher, learned navigation, target-PC
+human feel or new Web runtime support; those have their own 4LY follow-up gates.
 
 ### Thunderbowl controls and native arena
 
@@ -648,3 +852,26 @@ Existing Set A/rig, physical-trial, Blacksite/showcase and controller tests rema
 required. The [physical actor programme](physical-actor-programme.md) owns controls
 and the full-roster Rapier conversion requirement; these tests do not validate
 articulated actors or broad granular contact fidelity.
+
+## Generation Workbench 2 and procedural qualification
+
+Read the [workbench contract](../systems/generation-workbench-2.md),
+[scene qualification guide](procedural-qualification.md) and
+[dated GEN-007 ledger](../audits/2026-10-21-gen007-workbench-qualification.md).
+Native source changes require rebuilt runtimes before executing these scripts.
+
+```sh
+make worldgen-test
+make worldgen-sanitize
+godot --headless --path godot --script res://tests/test_gen007_inspection.gd
+godot --headless --path godot --script res://tests/test_gen007_workbench.gd
+godot --headless --path godot --script res://tests/test_gen007_qualification.gd
+godot --headless --path godot --script res://tests/test_gen007_reactions.gd
+```
+
+Run the additional `test_gen007_*_render.gd` cases through the existing regression
+runner on a display-backed renderer. The `_render` suffix prevents a headless
+no-frame shortcut. `capture_gen007.gd` retains real scene views and identities;
+its successful completion and each required output image must be checked.
+The scoped GEN-007 publisher binds Linux/Windows execution to exact source and
+runtime bytes; the ready-for-review full repository gates remain separate.

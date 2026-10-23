@@ -5,6 +5,7 @@ extends Control
 # owner. These copied recipes/cells never access the live sandbox's World.
 const Preview = preload("res://scripts/worldgen_preview.gd")
 const Palette = preload("res://scripts/material_appearance_lut.gd")
+const WorkbenchTools = preload("res://scripts/worldgen_workbench_tools.gd")
 const MAX_CACHE_CHUNKS: int = 32
 const MAX_QUEUED_CHUNKS: int = 24
 const MAX_UNDO: int = 16
@@ -32,6 +33,10 @@ const MODULE_DEFAULTS: Dictionary = {
 	"vault": {"cell_size": 32, "wall": 2, "door_width": 8},
 	"aqueduct": {"span": 64, "deck_height": 24, "wall": 3, "channel_depth": 6},
 }
+const SPATIAL_EXAMPLES: Array[String] = [
+	"typed-industrial-structure", "typed-vector-utilities", "typed-categorical-districts",
+	"typed-reusable-decay", "typed-multiscale-seeds",
+]
 # Presentation names for the existing native material IDs, matching main.gd.
 # The reserved invalid slot 10 is never offered by an authoring picker.
 const MATERIAL_LABELS: Array[String] = [
@@ -48,6 +53,15 @@ const MATERIAL_LABELS: Array[String] = [
 	"pine planks", "birch log", "rough oak log", "walnut panel", "mahogany panel", "bamboo", "plywood", "driftwood", "cedar shingles", "charred timber", "cork", "wicker", "cardboard", "paper screen", "tar block", "acrylic sheet", "moss wall", "marble", "chalk block", "basalt columns", "obsidian", "adobe brick", "raw clay", "firebrick", "packed snow", "rock salt block", "gypsum board", "quicklime block", "rammed earth", "sandbag", "terrazzo", "gabion", "galvanised zinc sheet", "aluminium panel", "magnesium plate", "thermite brick", "bare iron plate", "gold leaf", "brass panel", "glass block", "frosted glass", "quartz crystal", "uranium glass", "sugar glass", "wax block", "sulfur block", "phosphor panel", "polymer panel", "solar panel", "carbon fibre", "heat-shield tile",
 ]
 
+var tools2: RefCounted
+var _redo: Array[Dictionary] = []
+var _interactive_edit: bool = false
+var _edit_serial: int = 0
+var _edit_thread: Thread
+var _pending_edit: Dictionary = {}
+var _active_edit: Dictionary = {}
+var last_prepare_usec: int = 0
+var last_adopt_usec: int = 0
 var generator: Variant
 var active_recipe: Dictionary = {}
 var active_revision: int = -1
@@ -84,6 +98,7 @@ var profile_editor: TextEdit
 var profile_status: Label
 var status_label: Label
 var identity_label: Label
+var inspect_toggle: CheckButton
 var pointer_label: Label
 var marks_label: Label
 var origin_x: SpinBox
@@ -100,6 +115,7 @@ var _syncing_controls: bool = false
 var _dirty_controls: Dictionary = {}
 var page_picker: OptionButton
 var diagnostic_picker: OptionButton
+var diagnostic_legend: Label
 var diagnostic_channel: String = ""
 var _view_token: int = 0
 var _active_view_token: int = 0
@@ -115,6 +131,17 @@ var field_context: OptionButton
 var field_parameter_box: VBoxContainer
 var field_parameter_inputs: Dictionary = {}
 var field_help: Label
+var spatial_specs: Dictionary = {}
+var spatial_nodes: Dictionary = {}
+var spatial_editor: TextEdit
+var spatial_kind: OptionButton
+var spatial_scale: OptionButton
+var spatial_id: LineEdit
+var spatial_choice: OptionButton
+var spatial_help: Label
+var spatial_example: OptionButton
+var semantic_feature_count: int = 0
+var semantic_route_report: Dictionary = {}
 var aggregate_choice: OptionButton
 var aggregate_id: LineEdit
 var aggregate_grain: SpinBox
@@ -166,7 +193,7 @@ static func default_recipe() -> Dictionary:
 func _ready() -> void:
 	_build_ui()
 	_connect_control_tracking()
-	profile_editor.text = JSON.stringify(default_recipe(), "  ", true)
+	profile_editor.text = JSON.stringify(default_recipe(), "  ", true, true)
 	if not ClassDB.class_exists(&"CyberWorldGenerator"):
 		_set_error("The current native generator is unavailable. Build the GDExtension for this source, then reopen this scene.")
 		return
@@ -185,6 +212,7 @@ func _ready() -> void:
 	apply_recipe(default_recipe(), false)
 
 func _build_ui() -> void:
+	tools2 = WorkbenchTools.new(self)
 	var background := ColorRect.new()
 	background.color = Color(0.035, 0.047, 0.067)
 	background.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -200,12 +228,14 @@ func _build_ui() -> void:
 	margin.add_child(layout)
 	var heading := HBoxContainer.new()
 	layout.add_child(heading)
-	var title: Label = _label(heading, "CYBERSAND / WORLD GENERATION", 25)
+	var title: Label = _label(heading, "CYBERSAND / GENERATION WORKBENCH 2", 23)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_button(heading, "Examples…", func() -> void: _open_profile(); _choose_load_profile(true))
 	_button(heading, "Profile JSON…", _open_profile)
 	_button(heading, "Apply controls", apply_controls)
 	_button(heading, "Undo", undo_authoring)
+	_button(heading, "Redo", redo_authoring)
+	_button(heading, "Cancel edit", cancel_pending_edit)
 	_label(layout, "Native procedural preview · globally addressed chunks · generation only", 15, Color(0.62, 0.8, 0.85))
 	var body := HBoxContainer.new()
 	body.add_theme_constant_override("separation", 16)
@@ -215,7 +245,7 @@ func _build_ui() -> void:
 	sidebar.custom_minimum_size = Vector2(390, 450)
 	sidebar.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	body.add_child(sidebar)
-	page_picker = _options(sidebar, ["Generator", "Brushes / contextual sculpt", "Modules", "Fields & masks", "Aggregates", "Modifiers"])
+	page_picker = _options(sidebar, ["Generator", "Brushes / contextual sculpt", "Modules", "Fields & masks", "Aggregates", "Modifiers", "Typed spatial graphs", "Graph canvas", "Hierarchy / planes", "Why is this here?", "Quality / comparisons"])
 	var tabs := TabContainer.new()
 	tabs.tabs_visible = false
 	tabs.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -227,6 +257,11 @@ func _build_ui() -> void:
 	_build_field_tab(_tab(tabs, "Fields"))
 	_build_aggregate_tab(_tab(tabs, "Aggregates"))
 	_build_modifier_tab(_tab(tabs, "Modifiers"))
+	_build_spatial_tab(_tab(tabs, "Spatial"))
+	tools2.build_graph_tab(_tab(tabs, "Graph"))
+	tools2.build_hierarchy_tab(_tab(tabs, "Hierarchy"))
+	tools2.build_inspector_tab(_tab(tabs, "Inspector"))
+	tools2.build_quality_tab(_tab(tabs, "Quality"))
 	var viewer := VBoxContainer.new()
 	viewer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	viewer.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -244,16 +279,28 @@ func _build_ui() -> void:
 	grid.text = "Chunks"
 	grid.button_pressed = true
 	navigation.add_child(grid)
+	inspect_toggle = CheckButton.new()
+	inspect_toggle.text = "Inspect"
+	inspect_toggle.button_pressed = true
+	inspect_toggle.toggled.connect(func(enabled: bool) -> void:
+		preview.inspection_only = enabled
+		preview.cancel_gesture())
+	navigation.add_child(inspect_toggle)
 	var guides := CheckButton.new()
 	guides.text = "Guides"
 	guides.button_pressed = true
 	navigation.add_child(guides)
+	tools2.build_view_controls(viewer)
 	preview = Preview.new()
+	preview.inspection_only = true
 	preview.custom_minimum_size = Vector2(380, 320)
 	preview.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	preview.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	viewer.add_child(preview)
-	preview.stroke_finished.connect(add_gesture)
+	preview.stroke_finished.connect(func(points: PackedVector2Array) -> void:
+		_interactive_edit = true
+		add_gesture(points)
+		_interactive_edit = false)
 	preview.pan_requested.connect(func(delta: Vector2) -> void: set_camera_origin(camera_origin + delta))
 	preview.zoom_requested.connect(zoom_view)
 	preview.point_inspected.connect(_inspect_point)
@@ -263,12 +310,12 @@ func _build_ui() -> void:
 	diagnostic_picker = _options(inspection, ["Materials"])
 	diagnostic_picker.set_item_metadata(0, "")
 	diagnostic_picker.item_selected.connect(func(index: int) -> void: select_diagnostic(str(diagnostic_picker.get_item_metadata(index))))
-	var opacity: SpinBox = _labelled_spin(inspection, "Mask opacity", 0, 1, 0.1, 1)
+	var opacity: SpinBox = _labelled_spin(inspection, "Overlay", 0, 1, 0.1, 1)
 	opacity.value_changed.connect(func(value: float) -> void: preview.diagnostic_opacity = value; preview.queue_redraw())
-	_label(inspection, "0 dark · 1 bright", 13)
+	diagnostic_legend = _label(inspection, "Material colours", 13)
 	grid.toggled.connect(func(enabled: bool) -> void: preview.grid_visible = enabled; preview.queue_redraw())
 	guides.toggled.connect(func(enabled: bool) -> void: preview.guides_visible = enabled; preview.queue_redraw())
-	pointer_label = _label(viewer, "Drag to author · right/middle drag to pan · wheel to zoom · Esc cancels a stroke", 14, Color(0.65, 0.77, 0.81))
+	pointer_label = _label(viewer, "Inspect click / Ctrl-click · turn Inspect off to paint · right/middle drag to pan · wheel to zoom", 14, Color(0.65, 0.77, 0.81))
 	pointer_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	marks_label = _label(viewer, "", 14)
 	marks_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -334,6 +381,7 @@ func _build_brush_tab(box: VBoxContainer) -> void:
 		if preview != null:
 			preview.cancel_gesture()
 			preview.tool_mode = index
+			if inspect_toggle != null: inspect_toggle.button_pressed = false
 			_refresh_brush_preview())
 	var note: Label = _label(box, "Drag in the preview, then release to validate and regenerate. Brush edits use the accepted profile; Apply generator controls first to keep any pending numeric edits.", 14)
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -424,6 +472,103 @@ func _build_field_tab(box: VBoxContainer) -> void:
 	_button(box, "Delete selected field", func() -> void: delete_entry("fields", _reference(field_choice)))
 	_button(box, "Inspect accepted field", func() -> void: select_diagnostic("field:" + _reference(field_choice)))
 	_note(box, "SFC ranks describe finite tiles. Hilbert adjacency holds within a tile; tile borders and Morton ranks do not guarantee connected routes. Use the existing route tools for navigation guidance.")
+
+func _build_spatial_tab(box: VBoxContainer) -> void:
+	_note(box, "Schema 2 adds typed, immutable spatial functions. Edit nodes, named subgraphs, instances, geometry and finite adjacency assignments here. Only explicit normalized outputs can drive material masks.")
+	spatial_example = _options(box, SPATIAL_EXAMPLES)
+	_button(box, "Load complete spatial example", func() -> void: load_spatial_example(spatial_example.get_item_text(spatial_example.selected)))
+	_button(box, "Load four foundries hierarchy", load_hierarchy_example)
+	_note(box, "The hierarchy profile creates four districts with nested rooms, apparatus, shared passages and utilities. Edit its grammar in the full profile JSON; inspect a cell for ancestry and material decisions.")
+	spatial_choice = _field_reference(box, "Accepted typed output")
+	spatial_choice.item_selected.connect(func(_index: int) -> void: _refresh_spatial_help())
+	_button(box, "Inspect typed output", func() -> void: select_diagnostic("spatial:" + _reference(spatial_choice)))
+	spatial_help = _note(box, "Choose an accepted output to inspect its type, units, sampling scale and native work declaration.")
+	spatial_id = _text_input(box, "New node ID", "spatial-node")
+	spatial_kind = _options(box, ["coordinate_x"])
+	spatial_scale = _options(box, ["1", "4", "16", "64"])
+	_button(box, "Insert operator draft into JSON", _insert_spatial_node)
+	spatial_editor = TextEdit.new()
+	spatial_editor.custom_minimum_size = Vector2(0, 300)
+	spatial_editor.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+	spatial_editor.text = JSON.stringify({"nodes":[]}, "  ", true, true)
+	box.add_child(spatial_editor)
+	_button(box, "Apply spatial JSON", apply_spatial_json)
+	_button(box, "Restore accepted graph text", func() -> void: spatial_editor.text = JSON.stringify(active_recipe.get("spatial", {"nodes":[]}), "  ", true, true))
+	_note(box, "Draft input_1 / input_2 references must be replaced with real node IDs. Full profile JSON also edits material modifiers. Category addresses stay exact; colours and signed-value ramps are display mappings only.")
+
+func load_spatial_example(name: String) -> bool:
+	if not name in SPATIAL_EXAMPLES:
+		_set_error("Unknown typed spatial example.")
+		return false
+	var path: String = ProjectSettings.globalize_path("res://../examples/worldgen/" + name + ".json")
+	var parser := JSON.new()
+	if parser.parse(FileAccess.get_file_as_string(path)) != OK or not parser.data is Dictionary:
+		_set_error("Cannot read typed spatial example: " + name)
+		return false
+	return apply_recipe(parser.data)
+
+func load_hierarchy_example() -> bool:
+	var path: String = ProjectSettings.globalize_path("res://../examples/worldgen/hierarchy-multi-district.json")
+	var parser := JSON.new()
+	if parser.parse(FileAccess.get_file_as_string(path)) != OK or not parser.data is Dictionary:
+		_set_error("Cannot read the four foundries hierarchy example.")
+		return false
+	if not apply_recipe(parser.data):
+		return false
+	camera_origin = Vector2(-128, -128)
+	view_size = Vector2(256, 256)
+	_sync_preview()
+	return true
+
+func apply_spatial_json() -> bool:
+	if spatial_editor.text.to_utf8_buffer().size() > MAX_PROFILE_BYTES:
+		_set_error("Spatial JSON exceeds the 1 MiB profile limit.")
+		return false
+	var parser := JSON.new()
+	if parser.parse(spatial_editor.text) != OK or not parser.data is Dictionary:
+		_set_error("Spatial JSON must be a valid object: " + parser.get_error_message())
+		return false
+	var recipe: Dictionary = active_recipe.duplicate(true)
+	recipe.schema = maxi(2, int(recipe.get("schema", 1)))
+	recipe.spatial = parser.data
+	return apply_recipe(recipe)
+
+func _insert_spatial_node() -> void:
+	var parser := JSON.new()
+	if parser.parse(spatial_editor.text) != OK or not parser.data is Dictionary:
+		_set_error("Fix spatial JSON before inserting a node.")
+		return
+	var definition: Dictionary = parser.data
+	if definition.has("nodes") and not definition.nodes is Array:
+		_set_error("Spatial nodes must be an array.")
+		return
+	var kind: String = spatial_kind.get_item_text(spatial_kind.selected)
+	var spec: Dictionary = spatial_specs.get(kind, {})
+	var node: Dictionary = {"id":spatial_id.text.strip_edges(), "kind":kind, "sampling_scale":int(spatial_scale.get_item_text(spatial_scale.selected))}
+	var inputs: Array[String] = []
+	for index: int in range(int(spec.get("input_count", 0))): inputs.append("input_%d" % (index + 1))
+	if not inputs.is_empty(): node.inputs = inputs
+	var parameters: Dictionary = {}
+	for parameter: Dictionary in spec.get("parameters", []): parameters[str(parameter.name)] = parameter.default_value
+	if not parameters.is_empty(): node.parameters = parameters
+	if kind == "constant": node.value = {"type":"scalar", "x":0}
+	if kind == "category_is": node.value = {"type":"category", "category":{"x":"0","y":"0","domain":"0000000000000000"}}
+	if kind in ["parameter", "geometry_distance", "assigned_region"]: node.reference = "replace-reference"
+	var nodes: Array = definition.get("nodes", [])
+	nodes.append(node)
+	definition.nodes = nodes
+	spatial_editor.text = JSON.stringify(definition, "  ", true, true)
+
+func _refresh_spatial_help() -> void:
+	if spatial_help == null: return
+	var id: String = _reference(spatial_choice)
+	if not spatial_nodes.has(id):
+		spatial_help.text = "Choose an accepted output to inspect its type, units, sampling scale and native work declaration."
+		return
+	var info: Dictionary = spatial_nodes[id]
+	spatial_help.text = "%s · %s · cells^%d · sample every %d cells\nBounds [%s, %s] · %d declared operations\nIdentity %s" % [id, str(info.type), int(info.unit_power), int(info.sampling_scale), str(info.minimum), str(info.maximum), int(info.operations), str(info.fingerprint)]
+	if str(info.type) == "signed_distance":
+		spatial_help.text += "\nDistance factors [%s, %s]" % [str(info.distance_min_factor), str(info.distance_max_factor)]
 
 func _build_aggregate_tab(box: VBoxContainer) -> void:
 	_note(box, "An aggregate distributes existing materials in spatial grains. Weights describe preferences; physics and material rules remain unchanged.")
@@ -602,7 +747,7 @@ func _load_modifier() -> void:
 	modifier_context_material.select(modifier_context_material.get_item_index(int(item.get("context_material", 0))))
 	modifier_bounds.text = JSON.stringify(item.bounds) if item.has("bounds") else ""
 	modifier_action.select(0)
-	modifier_json.text = JSON.stringify(item if not item.is_empty() else {"material":0}, "  ", true)
+	modifier_json.text = JSON.stringify(item if not item.is_empty() else {"material":0}, "  ", true, true)
 
 func _modifier_parameter_range() -> void:
 	var spec: Array = PARAMETER_SPECS[modifier_parameter.get_item_text(modifier_parameter.selected)]
@@ -728,8 +873,14 @@ func _refresh_extension_lists() -> void:
 	var ids: Dictionary = {"fields":[], "aggregates":[], "modifiers":[]}
 	for section: String in ids:
 		for item: Dictionary in active_recipe.get(section, []): ids[section].append(str(item.id))
-	for picker: OptionButton in [field_choice, field_warp_x, field_warp_y, aggregate_variation, modifier_application, modifier_exclusion, modifier_mapping_field, brush_application, brush_exclusion, module_application, module_exclusion]:
+	for picker: OptionButton in [field_choice, field_warp_x, field_warp_y]:
 		_set_references(picker, ids.fields)
+	var mask_ids: Array = ids.fields.duplicate()
+	for id: String in spatial_nodes:
+		if str(spatial_nodes[id].type) == "normalized": mask_ids.append("spatial:" + id)
+	for picker: OptionButton in [aggregate_variation, modifier_application, modifier_exclusion, modifier_mapping_field, brush_application, brush_exclusion, module_application, module_exclusion]:
+		_set_references(picker, mask_ids)
+	_set_references(spatial_choice, spatial_nodes.keys())
 	for picker: OptionButton in [aggregate_choice, modifier_aggregate, brush_aggregate]: _set_references(picker, ids.aggregates)
 	_set_references(modifier_choice, ids.modifiers)
 	var module_ids: Array = []
@@ -739,6 +890,7 @@ func _refresh_extension_lists() -> void:
 	for section: String in ["fields", "modifiers", "modules"]:
 		var prefix: String = {"fields":"field", "modifiers":"modifier", "modules":"module"}[section]
 		for item: Dictionary in active_recipe.get(section, []): channels.append(prefix+":"+str(item.id))
+	for id: String in spatial_nodes: channels.append("spatial:" + id)
 	diagnostic_picker.clear()
 	diagnostic_picker.add_item("Materials")
 	diagnostic_picker.set_item_metadata(0, "")
@@ -747,6 +899,7 @@ func _refresh_extension_lists() -> void:
 		diagnostic_picker.set_item_metadata(diagnostic_picker.item_count-1, channel)
 	if not diagnostic_channel in channels: diagnostic_channel = ""
 	_select_reference(diagnostic_picker, diagnostic_channel)
+	_refresh_spatial_help()
 
 func _pick_context_material() -> void:
 	if _inspected_material < 0:
@@ -757,7 +910,7 @@ func _pick_context_material() -> void:
 
 func _build_profile_dialog() -> void:
 	profile_dialog = Window.new()
-	profile_dialog.title = "World generation / schema 1 profile"
+	profile_dialog.title = "World generation / schema 1, 2 and 3 profiles"
 	profile_dialog.size = Vector2i(960, 740)
 	profile_dialog.min_size = Vector2i(620, 460)
 	profile_dialog.visible = false
@@ -771,7 +924,7 @@ func _build_profile_dialog() -> void:
 		margin.add_theme_constant_override("margin_" + side, 12)
 	var box := VBoxContainer.new()
 	margin.add_child(box)
-	var note: Label = _label(box, "Complete recipe: hierarchy/blends, fields, aggregates, masked modifiers, strokes, paths, exact overrides and module dependencies. Apply validates before replacing the accepted generation plan.", 14)
+	var note: Label = _label(box, "Complete recipe: themes, scalar or typed spatial fields, reusable subgraphs, immutable geometry, aggregates, modifiers, routes and modules. Apply validates before replacing the accepted generation plan.", 14)
 	note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	profile_editor = TextEdit.new()
 	profile_editor.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -782,7 +935,7 @@ func _build_profile_dialog() -> void:
 	_button(actions, "Apply JSON", apply_json)
 	_button(actions, "Load JSON…", _choose_load_profile)
 	_button(actions, "Save accepted…", _choose_save_profile)
-	_button(actions, "Restore accepted text", func() -> void: profile_editor.text = JSON.stringify(active_recipe, "  ", true))
+	_button(actions, "Restore accepted text", func() -> void: profile_editor.text = JSON.stringify(active_recipe, "  ", true, true))
 	_button(actions, "Close", profile_dialog.hide)
 	profile_status = _label(box, "", 14)
 	profile_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -820,23 +973,83 @@ func _populate_catalogue(catalogue: Dictionary) -> void:
 			field_kind.add_item(str(spec.id))
 		_select_text(field_kind, prior_kind)
 		_refresh_field_parameters(values)
+	spatial_specs.clear()
+	var prior_spatial_kind: String = spatial_kind.get_item_text(spatial_kind.selected)
+	spatial_kind.clear()
+	for spec: Dictionary in catalogue.get("spatial_kinds", []):
+		spatial_specs[str(spec.id)] = spec.duplicate(true)
+		spatial_kind.add_item(str(spec.id))
+	if spatial_kind.item_count > 0: _select_text(spatial_kind, prior_spatial_kind)
+	spatial_nodes.clear()
+	for info: Dictionary in catalogue.get("spatial_nodes", []): spatial_nodes[str(info.id)] = info.duplicate(true)
 	_refresh_extension_lists()
 
 func apply_recipe(recipe: Dictionary, record_undo: bool = true) -> bool:
 	if generator == null:
 		_set_error("Native generation is unavailable; the profile cannot be applied.")
 		return false
-	var checked: Dictionary = generator.configure(recipe.duplicate(true))
+	if _interactive_edit:
+		return request_recipe(recipe, record_undo)
+	cancel_pending_edit()
+	var candidate: Variant = ClassDB.instantiate(&"CyberWorldGenerator")
+	var size: int = int(recipe.get("chunk_size", 128))
+	if size <= 0: size = 128 # Native parsing owns the diagnostic for invalid size.
+	var coordinate := Vector2i(floori(camera_origin.x / size), floori(camera_origin.y / size))
+	var prepared: Dictionary = _prepare_candidate(candidate, recipe.duplicate(true), coordinate)
+	if not prepared.get("ok", false):
+		_set_error(str(prepared.get("error", "Candidate preparation failed.")))
+		return false
+	return _commit_prepared(candidate, prepared, record_undo)
+
+static func _prepare_candidate(candidate: Variant, recipe: Dictionary, coordinate: Vector2i) -> Dictionary:
+	# This function runs either on the caller or one exclusive GDScript worker.
+	# It never accesses a scene node, live World, shared app state or native pool.
+	var started: int = Time.get_ticks_usec()
+	if JSON.stringify(recipe, "", true, true).to_utf8_buffer().size() > MAX_PROFILE_BYTES:
+		return {"ok":false, "error":"Profile exceeds the 1 MiB authoring limit."}
+	var checked: Dictionary = candidate.configure(recipe)
+	if not bool(checked.get("ok", false)): return checked
+	var sampled: Dictionary = candidate.generate_chunk(coordinate)
+	if not bool(sampled.get("ok", false)):
+		return {"ok":false, "error":"Candidate work budget failed before commit: " + str(sampled.get("error", "unavailable"))}
+	if recipe.has("semantic_planes"):
+		var candidate_planes: Dictionary = candidate.get_plane_plan()
+		var bounds: Rect2i = candidate_planes.get("bounds", Rect2i())
+		var patch := Rect2i(bounds.position, Vector2i(mini(bounds.size.x, 16), mini(bounds.size.y, 16)))
+		var sampled_planes: Dictionary = candidate.generate_plane_region(patch)
+		if not bool(sampled_planes.get("ok", false)):
+			return {"ok":false, "error":"Candidate plane budget failed before commit: " + str(sampled_planes.get("error", "unavailable"))}
+	checked["prepare_usec"] = Time.get_ticks_usec() - started
+	return checked
+
+func _commit_prepared(candidate: Variant, prepared: Dictionary, record_undo: bool = true) -> bool:
+	var started: int = Time.get_ticks_usec()
+	var checked: Dictionary
+	if generator.has_method(&"adopt_configuration"):
+		checked = generator.adopt_configuration(candidate, maxi(active_revision, 0))
+		if prepared.has("route_validation"): checked["route_validation"] = prepared.route_validation.duplicate(true)
+	else:
+		# Old runtimes may still open the retained GEN-001 surface while new
+		# diagnostics clearly refuse. Source-matched GEN-007 uses adoption.
+		checked = generator.configure(candidate.get_configuration())
+	last_prepare_usec = int(prepared.get("prepare_usec", 0))
+	last_adopt_usec = Time.get_ticks_usec() - started
 	if not bool(checked.get("ok", false)):
 		_set_error(str(checked.get("error", "Native profile validation failed.")))
 		return false
 	if record_undo and active_revision >= 0:
+		_redo.clear()
 		_undo.append(active_recipe.duplicate(true))
 		if _undo.size() > MAX_UNDO:
 			_undo.pop_front()
 	active_recipe = generator.get_configuration().duplicate(true)
 	active_revision = int(checked.revision)
 	active_fingerprint = str(checked.fingerprint)
+	semantic_feature_count = 0
+	semantic_route_report = checked.get("route_validation", {}).duplicate(true)
+	if active_recipe.has("grammar"):
+		var plan: Dictionary = generator.get_semantic_plan()
+		semantic_feature_count = plan.get("features", []).size()
 	_view_token += 1
 	_has_active_chunk = false
 	_job_completed = 0
@@ -852,13 +1065,81 @@ func apply_recipe(recipe: Dictionary, record_undo: bool = true) -> bool:
 	view_size.x = clampf(view_size.x, chunk_size, chunk_size * 4)
 	view_size.y = view_size.x * 2.0 / 3.0
 	_populate_catalogue(generator.get_catalogue())
+	tools2.on_recipe_accepted()
 	_sync_controls()
 	_sync_preview()
 	_update_requests()
-	profile_editor.text = JSON.stringify(active_recipe, "  ", true)
+	profile_editor.text = JSON.stringify(active_recipe, "  ", true, true)
+	spatial_editor.text = JSON.stringify(active_recipe.get("spatial", {"nodes":[]}), "  ", true, true)
 	profile_status.text = "Accepted revision %d · %s" % [active_revision, active_fingerprint]
 	_refresh_status()
 	return true
+
+func request_recipe(recipe: Dictionary, record_undo: bool = true, history_action: String = "") -> bool:
+	if JSON.stringify(recipe, "", true, true).to_utf8_buffer().size() > MAX_PROFILE_BYTES:
+		_set_error("Profile exceeds the 1 MiB authoring limit.")
+		return false
+	_edit_serial += 1
+	_pending_edit = {"serial":_edit_serial, "recipe":recipe.duplicate(true), "record_undo":record_undo, "history":history_action, "base_revision":active_revision, "before":active_recipe.duplicate(true)}
+	_set_status("Validating a candidate on its private generation owner; the accepted preview remains available…")
+	service_editor_transaction()
+	return true
+
+func cancel_pending_edit() -> void:
+	var had_pending: bool = _edit_thread != null or not _pending_edit.is_empty()
+	_edit_serial += 1
+	_pending_edit.clear()
+	# Cancellation retires identity immediately. At most one bounded native
+	# preparation may finish in the background; its result cannot be admitted.
+	if had_pending:
+		last_error = ""
+		_set_status("Edit cancelled; accepted recipe and preview retained.")
+
+func service_editor_transaction() -> void:
+	if _edit_thread != null:
+		if _edit_thread.is_alive(): return
+		var prepared: Dictionary = _edit_thread.wait_to_finish()
+		_edit_thread = null
+		var job: Dictionary = _active_edit
+		_active_edit = {}
+		if int(job.get("serial", -1)) == _edit_serial and int(job.get("base_revision", -1)) == active_revision:
+			if not prepared.get("ok", false):
+				_set_error(str(prepared.get("error", "Candidate validation failed.")))
+			elif _commit_prepared(job.owner, prepared, bool(job.record_undo)):
+				if str(job.history) == "undo":
+					_undo.pop_back()
+					_redo.append(job.before)
+				elif str(job.history) == "redo":
+					_redo.pop_back()
+					_undo.append(job.before)
+				while _undo.size() > MAX_UNDO: _undo.pop_front()
+				while _redo.size() > MAX_UNDO: _redo.pop_front()
+		_refresh_status()
+	if _pending_edit.is_empty(): return
+	_active_edit = _pending_edit
+	_pending_edit = {}
+	if int(_active_edit.base_revision) != active_revision:
+		_active_edit.clear()
+		return
+	var candidate: Variant = ClassDB.instantiate(&"CyberWorldGenerator")
+	_active_edit.owner = candidate
+	var recipe: Dictionary = _active_edit.recipe
+	var size: int = maxi(int(recipe.get("chunk_size", 128)), 1)
+	var coordinate := Vector2i(floori(camera_origin.x / size), floori(camera_origin.y / size))
+	_edit_thread = Thread.new()
+	var error: Error = _edit_thread.start(_prepare_candidate.bind(candidate, recipe, coordinate))
+	if error != OK:
+		_edit_thread = null
+		_active_edit.clear()
+		_set_error("Could not start the private recipe validator: " + error_string(error))
+
+func _exit_tree() -> void:
+	cancel_pending_edit()
+	if _edit_thread != null:
+		_edit_thread.wait_to_finish()
+		_edit_thread = null
+	_active_edit.clear()
+	if tools2 != null: tools2.shutdown()
 
 func apply_controls() -> void:
 	var recipe: Dictionary = active_recipe.duplicate(true) if active_revision >= 0 else default_recipe()
@@ -900,13 +1181,13 @@ func _sync_controls() -> void:
 	_syncing_controls = true
 	candidate_picker.select(maxi(CANDIDATES.find(str(active_recipe.get("candidate", "strata"))), 0))
 	seed_input.value = int(active_recipe.get("seed", 1))
-	var chunk_text: String = str(active_recipe.get("chunk_size", 128))
+	var chunk_text: String = str(int(active_recipe.get("chunk_size", 128)))
 	var known_chunk: bool = false
 	for index: int in range(chunk_picker.item_count):
 		known_chunk = known_chunk or chunk_picker.get_item_text(index) == chunk_text
 	if not known_chunk:
 		chunk_picker.add_item(chunk_text)
-	_select_text(chunk_picker, str(active_recipe.get("chunk_size", 128)))
+	_select_text(chunk_picker, chunk_text)
 	var parameters: Dictionary = active_recipe.get("parameters", {})
 	for key: String in parameter_inputs:
 		parameter_inputs[key].value = float(parameters.get(key, PARAMETER_SPECS[key][4]))
@@ -1001,7 +1282,7 @@ func _load_module_instance() -> void:
 	if item.is_empty(): return
 	_select_text(module_picker, str(item.module))
 	_refresh_module_editor()
-	module_parameters.text = JSON.stringify(item.get("parameters", {}), "  ", true)
+	module_parameters.text = JSON.stringify(item.get("parameters", {}), "  ", true, true)
 	_select_reference(module_application, str(item.get("application", "")))
 	_select_reference(module_exclusion, str(item.get("exclusion", "")))
 	module_strength.value = float(item.get("strength", 1))
@@ -1073,8 +1354,27 @@ func undo_authoring() -> void:
 	if _undo.is_empty():
 		_set_status("No earlier accepted profile in this workbench session.")
 		return
+	if _interactive_edit:
+		request_recipe(_undo[-1], false, "undo")
+		return
+	var previous: Dictionary = active_recipe.duplicate(true)
 	if apply_recipe(_undo[-1], false):
 		_undo.pop_back()
+		_redo.append(previous)
+		if _redo.size() > MAX_UNDO: _redo.pop_front()
+
+func redo_authoring() -> void:
+	if _redo.is_empty():
+		_set_status("No later accepted profile in this workbench session.")
+		return
+	if _interactive_edit:
+		request_recipe(_redo[-1], false, "redo")
+		return
+	var previous: Dictionary = active_recipe.duplicate(true)
+	if apply_recipe(_redo[-1], false):
+		_redo.pop_back()
+		_undo.append(previous)
+		if _undo.size() > MAX_UNDO: _undo.pop_front()
 
 func clear_authoring() -> void:
 	if active_revision < 0:
@@ -1140,18 +1440,27 @@ func _update_requests() -> void:
 	preview.queue_redraw()
 
 func _process(_delta: float) -> void:
+	service_editor_transaction()
 	service_generation()
+	tools2.service_auxiliary()
 
 func select_diagnostic(channel: String) -> bool:
 	var found: bool = false
 	for index: int in range(diagnostic_picker.item_count):
 		found = found or str(diagnostic_picker.get_item_metadata(index)) == channel
 	if not found:
-		_set_error("Select an accepted field, modifier or module before inspecting its mask.")
+		_set_error("Select an accepted diagnostic output before inspecting it.")
 		return false
 	if channel == diagnostic_channel: return true
 	diagnostic_channel = channel
+	reset_view_jobs()
+	return true
+
+func reset_view_jobs() -> void:
 	_view_token += 1
+	tools2.retire_trace("The plane, stage or diagnostic changed. Click a ready cell to inspect this view.")
+	pointer_label.text = "Click a ready cell to inspect this view."
+	pointer_label.tooltip_text = ""
 	_has_active_chunk = false
 	_job_completed = 0
 	_job_compute_us = 0
@@ -1162,11 +1471,10 @@ func select_diagnostic(channel: String) -> bool:
 	last_packet.clear()
 	last_error = ""
 	_inspected_material = -1
-	_select_reference(diagnostic_picker, channel)
+	_select_reference(diagnostic_picker, diagnostic_channel)
 	_sync_preview()
 	_update_requests()
 	_refresh_status()
-	return true
 
 func service_generation() -> void:
 	if generator == null or active_revision < 0:
@@ -1176,7 +1484,7 @@ func service_generation() -> void:
 			return
 		_active_chunk = pending_chunks.pop_front()
 		_active_view_token = _view_token
-		var started: Dictionary = generator.begin_chunk(_active_chunk, diagnostic_channel)
+		var started: Dictionary = tools2.begin_preview(_active_chunk)
 		if not bool(started.get("ok", false)):
 			_blocked_chunks[_active_chunk] = true
 			_set_error(str(started.get("error", "Chunk request rejected.")))
@@ -1185,7 +1493,7 @@ func service_generation() -> void:
 		_job_completed = 0
 		_job_compute_us = 0
 	var start_us: int = Time.get_ticks_usec()
-	var packet: Dictionary = generator.advance(CELL_BUDGET)
+	var packet: Dictionary = tools2.advance_preview(CELL_BUDGET)
 	_job_compute_us += Time.get_ticks_usec() - start_us
 	_job_completed = int(packet.get("completed_cells", 0))
 	var state: String = str(packet.get("state", "failed"))
@@ -1195,11 +1503,88 @@ func service_generation() -> void:
 		_set_error(str(packet.get("error", "Native chunk generation failed.")))
 	elif state == "ready":
 		_has_active_chunk = false
+		packet = tools2.normalize_plane_packet(packet, _active_chunk)
 		packet["compute_usec"] = _job_compute_us
 		if not accept_chunk(packet, _active_chunk, _active_view_token):
 			_blocked_chunks[_active_chunk] = true
 		_update_requests()
 	_refresh_status()
+
+static func _canonical_signed_integer(text: String) -> bool:
+	return text.is_valid_int() and str(text.to_int()) == text
+
+static func _canonical_hex_identity(text: String) -> bool:
+	if text.length() != 16: return false
+	for index: int in range(16):
+		if not text.substr(index, 1) in "0123456789abcdef": return false
+	return true
+
+func _typed_diagnostic_error(packet: Dictionary, count: int) -> String:
+	var id: String = diagnostic_channel.substr(8)
+	if not spatial_nodes.has(id): return "Typed output is not part of the accepted graph."
+	if not packet.get("diagnostic_info") is Dictionary: return "Typed diagnostic metadata is missing."
+	var info: Dictionary = packet.diagnostic_info
+	var expected: Dictionary = spatial_nodes[id]
+	for key: String in expected:
+		if key != "id" and info.get(key) != expected[key]: return "Typed diagnostic metadata differs from the accepted output: " + key
+	if not packet.get("diagnostics") is PackedFloat32Array or not packet.diagnostics.is_empty(): return "Typed diagnostics cannot contain a legacy normalized payload."
+	if not packet.get("diagnostic_values") is PackedFloat64Array or not packet.get("diagnostic_categories") is PackedStringArray:
+		return "Typed diagnostics require copied double and exact-category arrays."
+	var values: PackedFloat64Array = packet.diagnostic_values
+	var categories: PackedStringArray = packet.diagnostic_categories
+	var type: String = str(info.type)
+	if type == "category":
+		if not values.is_empty() or categories.size() != count * 3: return "Exact category diagnostic shape is invalid."
+		for index: int in range(count):
+			if not _canonical_signed_integer(categories[index * 3]) or not _canonical_signed_integer(categories[index * 3 + 1]) or not _canonical_hex_identity(categories[index * 3 + 2]):
+				return "Category diagnostic address is not exact canonical integer text."
+		return ""
+	var components: int = 2 if type == "vector2" else 1
+	if values.size() != count * components or not categories.is_empty(): return "Typed numeric diagnostic shape is invalid."
+	for value: float in values:
+		if not is_finite(value): return "Typed diagnostic contains a nonfinite value."
+		if value < float(info.minimum) or value > float(info.maximum): return "Typed diagnostic exceeds its declared component bounds."
+		if type == "normalized" and (value < 0 or value > 1): return "Normalized typed diagnostic is outside 0..1."
+		if type == "boolean" and value != 0 and value != 1: return "Boolean typed diagnostic is not exactly zero or one."
+		if type == "distance" and value < 0: return "Unsigned distance diagnostic is negative."
+	return ""
+
+# These are display-only mappings. Raw doubles and categorical addresses remain
+# unchanged in the copied packet and are shown by point inspection.
+static func spatial_diagnostic_color(packet: Dictionary, index: int) -> Color:
+	var type: String = str(packet.diagnostic_info.type)
+	if type == "category":
+		var address: String = "%s:%s:%s" % [packet.diagnostic_categories[index * 3 + 2], packet.diagnostic_categories[index * 3], packet.diagnostic_categories[index * 3 + 1]]
+		# Mix every address bit before choosing a display hue, so neighbouring
+		# integer identities do not collapse to nearly indistinguishable colours.
+		var colour_key: int = address.hash() & 0xffffffff
+		for _round: int in range(2): colour_key = (((colour_key >> 16) ^ colour_key) * 0x45d9f3b) & 0xffffffff
+		colour_key = (colour_key >> 16) ^ colour_key
+		return Color.from_hsv(float(colour_key & 0xffffff) / 16777216.0, 0.65, 0.92)
+	var values: PackedFloat64Array = packet.diagnostic_values
+	if type == "vector2":
+		# Keep double components out of Godot's single-precision Vector2 carrier.
+		var x: float = values[index * 2]
+		var y: float = values[index * 2 + 1]
+		var hue: float = fposmod(atan2(y, x) / TAU, 1.0)
+		var magnitude: float = sqrt(x * x + y * y)
+		var brightness: float = 0.2 + 0.8 * (1.0 - exp(-magnitude / 16.0))
+		return Color.from_hsv(hue, 0.75, brightness)
+	var value: float = values[index]
+	if type in ["normalized", "boolean"]: return Color(value, value, value, 1)
+	if type == "distance":
+		var level: float = 1.0 - exp(-value / 24.0)
+		return Color(level, level, level, 1)
+	var intensity: float = 2.0 * atan(absf(value) / 16.0) / PI
+	return Color(0.15, 0.18, 0.22).lerp(Color(0.15, 0.65, 1.0) if value < 0 else Color(1.0, 0.55, 0.16), intensity)
+
+static func spatial_diagnostic_text(packet: Dictionary, index: int) -> String:
+	var info: Dictionary = packet.diagnostic_info
+	var type: String = str(info.type)
+	if type == "category": return "category (%s, %s; %s)" % [packet.diagnostic_categories[index * 3], packet.diagnostic_categories[index * 3 + 1], packet.diagnostic_categories[index * 3 + 2]]
+	if type == "boolean": return "true" if packet.diagnostic_values[index] == 1 else "false"
+	if type == "vector2": return "(%s, %s) cells^%d" % [str(packet.diagnostic_values[index * 2]), str(packet.diagnostic_values[index * 2 + 1]), int(info.unit_power)]
+	return "%s cells^%d (%s)" % [str(packet.diagnostic_values[index]), int(info.unit_power), type]
 
 func accept_chunk(packet: Dictionary, expected_coordinate: Variant = null, expected_view_token: int = -1) -> bool:
 	if not bool(packet.get("ok", false)) or str(packet.get("state", "ready")) != "ready":
@@ -1211,7 +1596,9 @@ func accept_chunk(packet: Dictionary, expected_coordinate: Variant = null, expec
 	if expected_view_token >= 0 and expected_view_token != _view_token:
 		_set_error("Discarded a chunk from an older inspection request.")
 		return false
-	if str(packet.get("diagnostic", "")) != diagnostic_channel:
+	var expected_channel: String = diagnostic_channel
+	if expected_channel.is_empty() and tools2.selected_stage != "final" and not tools2.uses_plane_preview(): expected_channel = "stage:" + tools2.selected_stage
+	if str(packet.get("diagnostic", "")) != expected_channel:
 		_set_error("Native diagnostic channel does not match the current inspection.")
 		return false
 	for key: String in ["chunk_x", "chunk_y"]:
@@ -1230,8 +1617,31 @@ func accept_chunk(packet: Dictionary, expected_coordinate: Variant = null, expec
 	if cells.size() != chunk_size * chunk_size:
 		_set_error("Native chunk byte count does not match its dimensions.")
 		return false
+	if packet.has("stage_cells") and tools2.selected_stage == "final":
+		_set_error("Unrequested stage cells cannot replace the final preview.")
+		return false
+	if packet.has("stage") and str(packet.stage) != tools2.selected_stage:
+		_set_error("Native stage does not match the selected intermediate view.")
+		return false
+	var shown: PackedByteArray = packet.get("stage_cells", cells)
+	if not shown is PackedByteArray or shown.size() != cells.size():
+		_set_error("Native generation stage has an invalid material extent.")
+		return false
+	for material: int in shown:
+		if material == 10 or material >= Palette.MATERIAL_COUNT:
+			_set_error("Native stage contains an invalid material ID.")
+			return false
 	var diagnostics := PackedFloat32Array()
-	if not diagnostic_channel.is_empty():
+	var typed: bool = diagnostic_channel.begins_with("spatial:")
+	if typed:
+		var error: String = _typed_diagnostic_error(packet, cells.size())
+		if not error.is_empty():
+			_set_error(error)
+			return false
+	elif packet.has("diagnostic_info") or packet.has("diagnostic_values") or packet.has("diagnostic_categories"):
+		_set_error("Unrequested typed payload cannot enter the material or scalar preview.")
+		return false
+	elif not diagnostic_channel.is_empty():
 		if not packet.get("diagnostics") is PackedFloat32Array:
 			_set_error("Native diagnostic values are missing.")
 			return false
@@ -1259,13 +1669,22 @@ func accept_chunk(packet: Dictionary, expected_coordinate: Variant = null, expec
 		rgba[index * 4 + 2] = (packed >> 8) & 255
 		rgba[index * 4 + 3] = 255
 	var copied: Dictionary = packet.duplicate(true)
-	copied["texture"] = ImageTexture.create_from_image(Image.create_from_data(chunk_size, chunk_size, false, Image.FORMAT_RGBA8, rgba))
-	if not diagnostics.is_empty():
+	copied["texture"] = tools2.display_texture(packet)
+	if copied.texture == null:
+		_set_error("Native plane/stage display payload is malformed.")
+		return false
+	if typed or not diagnostics.is_empty():
 		var pixels := PackedByteArray()
 		pixels.resize(cells.size() * 4)
-		for index: int in range(diagnostics.size()):
-			var level: int = roundi(diagnostics[index] * 255.0)
-			for component: int in range(3): pixels[index * 4 + component] = level
+		for index: int in range(cells.size()):
+			if typed:
+				var color: Color = spatial_diagnostic_color(packet, index)
+				pixels[index * 4] = color.r8
+				pixels[index * 4 + 1] = color.g8
+				pixels[index * 4 + 2] = color.b8
+			else:
+				var level: int = roundi(diagnostics[index] * 255.0)
+				for component: int in range(3): pixels[index * 4 + component] = level
 			pixels[index * 4 + 3] = 255
 		copied["diagnostic_texture"] = ImageTexture.create_from_image(Image.create_from_data(chunk_size, chunk_size, false, Image.FORMAT_RGBA8, pixels))
 	cache[coordinate] = copied
@@ -1281,6 +1700,14 @@ func accept_chunk(packet: Dictionary, expected_coordinate: Variant = null, expec
 func _sync_preview() -> void:
 	if preview == null:
 		return
+	if diagnostic_legend != null:
+		diagnostic_legend.text = "Material colours" if diagnostic_channel.is_empty() else "0 dark · 1 bright"
+		if diagnostic_channel.begins_with("spatial:"):
+			match str(spatial_nodes.get(diagnostic_channel.substr(8), {}).get("type", "")):
+				"vector2": diagnostic_legend.text = "Hue: direction · light: length"
+				"category": diagnostic_legend.text = "Colour: exact category"
+				"scalar", "signed_distance": diagnostic_legend.text = "Blue: negative · orange: positive"
+				"distance": diagnostic_legend.text = "Dark: near · light: far"
 	preview.camera_origin = camera_origin
 	preview.view_size = view_size
 	preview.chunk_size = int(active_recipe.get("chunk_size", 128))
@@ -1308,7 +1735,7 @@ func _refresh_module_editor() -> void:
 	if module_parameters == null:
 		return
 	var id: String = module_picker.get_item_text(module_picker.selected)
-	module_parameters.text = JSON.stringify(MODULE_DEFAULTS.get(id, {}), "  ", true)
+	module_parameters.text = JSON.stringify(MODULE_DEFAULTS.get(id, {}), "  ", true, true)
 	match id:
 		"arcology": module_help.text = "Multistory rooms around a shared service shaft. Draw bounds across several chunks."
 		"vault": module_help.text = "Connected maze prepared once per module. Placement width and height snap to cell_size; at most 64 × 64 maze nodes."
@@ -1327,16 +1754,24 @@ func _inspect_point(point: Vector2) -> void:
 		var id: int = int(cache[coordinate].cells[index])
 		text += " · %d / %s" % [id, _material_label(id)]
 		_inspected_material = id
-		if not diagnostic_channel.is_empty() and cache[coordinate].has("diagnostics"):
+		if diagnostic_channel.begins_with("spatial:") and cache[coordinate].has("diagnostic_info"):
+			text += " · %s = %s" % [diagnostic_channel, spatial_diagnostic_text(cache[coordinate], index)]
+		elif not diagnostic_channel.is_empty() and cache[coordinate].has("diagnostics"):
 			text += " · %s = %.5f" % [diagnostic_channel, float(cache[coordinate].diagnostics[index])]
+	var provenance: Dictionary = tools2.inspect_point(Vector2i(x, y))
+	if provenance.get("ok", false):
+		text += " · native replay · accepted revision %d" % active_revision
+		pointer_label.tooltip_text = "Full bounded provenance is in Why is this here?"
 	pointer_label.text = text
 
 func _refresh_status() -> void:
 	if active_revision < 0:
 		return
-	identity_label.text = "%s · seed %s · revision %d · %s" % [str(active_recipe.get("candidate", "strata")), str(active_recipe.get("seed", 1)), active_revision, active_fingerprint]
+	identity_label.text = "%s · seed %s · revision %d · %s" % [str(active_recipe.get("candidate", "strata")), str(int(active_recipe.get("seed", 1))), active_revision, active_fingerprint]
 	marks_label.text = "%d theme/parameter strokes · %d routes · %d hard overrides · %d modules" % [active_recipe.get("strokes", []).size(), active_recipe.get("paths", []).size(), active_recipe.get("overrides", []).size(), active_recipe.get("modules", []).size()]
 	marks_label.text += " · %d fields · %d aggregates · %d modifiers" % [active_recipe.get("fields", []).size(), active_recipe.get("aggregates", []).size(), active_recipe.get("modifiers", []).size()]
+	if not spatial_nodes.is_empty(): marks_label.text += " · %d typed nodes" % spatial_nodes.size()
+	if semantic_feature_count > 0: marks_label.text += " · %d semantic features" % semantic_feature_count
 	if not last_error.is_empty():
 		status_label.text = last_error
 		return
@@ -1346,8 +1781,16 @@ func _refresh_status() -> void:
 		text += " · generating %d, %d: %d / %d cells" % [_active_chunk.x, _active_chunk.y, _job_completed, chunk_size * chunk_size]
 	elif pending_chunks.is_empty():
 		text += " · visible region ready"
+	if not _pending_edit.is_empty() or (_edit_thread != null and int(_active_edit.get("serial", -1)) == _edit_serial):
+		text += " · validating candidate (accepted preview retained)"
+	elif _edit_thread != null:
+		text += " · cancelled edit retiring privately (accepted preview retained)"
 	if not last_packet.is_empty():
 		text += " · last chunk %s · %s operations · %.2f ms native work" % [str(last_packet.get("hash", "")), str(last_packet.get("operations", 0)), float(last_packet.get("compute_usec", 0)) / 1000.0]
+	if not semantic_route_report.is_empty() and not semantic_route_report.get("passed", false):
+		text += " · base-generator route clearance conflict (before semantic-plane projection): inspect validate_routes()"
+	if not semantic_route_report.get("supports_passed", true):
+		text += " · base-generator support contact conflict: inspect material contributions"
 	_set_status(text)
 
 func _set_error(message: String) -> void:
@@ -1429,7 +1872,7 @@ func save_profile(path: String) -> bool:
 	if file == null:
 		_set_error("Cannot save profile: %s" % error_string(FileAccess.get_open_error()))
 		return false
-	file.store_string(JSON.stringify(active_recipe, "  ", true) + "\n")
+	file.store_string(JSON.stringify(active_recipe, "  ", true, true) + "\n")
 	file.flush()
 	var error: Error = file.get_error()
 	file.close()
@@ -1504,7 +1947,10 @@ func _button(parent: Node, text: String, action: Callable) -> Button:
 	var button := Button.new()
 	button.text = text
 	button.focus_mode = Control.FOCUS_NONE
-	button.pressed.connect(action)
+	button.pressed.connect(func() -> void:
+		_interactive_edit = true
+		action.call()
+		_interactive_edit = false)
 	parent.add_child(button)
 	return button
 

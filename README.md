@@ -6,12 +6,29 @@ CyberSand is a C++20 cellular simulation engine hosted by Godot, with a material
 lab and bounded Rapier2D/cellular coupling proof. The longer-term product intent
 is a reusable foundation for cyberpunk RPG and exploration games.
 
-F5 selects from **41 articulated Rapier actors** in the sandbox, Blacksite and all
+F5 selects from **46 articulated Rapier actors** in the sandbox, Blacksite and all
 four showcase districts, with keyboard, scripted-demo or external-policy control.
 Applying restores the selected map and starts paused; R retains the actor.
 WASD moves, mouse aims, Q/E trims, Z/X reels and Space/Shift/C invoke the selected
 rig's abilities. M uses its tool, N releases a held item and U reattaches a nearby
 item. Sampled rigs and the original physical hull trials remain reference choices.
+
+## Player playground
+
+Choose **Player playground** in the launcher or pass **`--player-playground`**
+for seven human movement presets: a loose-jointed stunt buggy, trials bike,
+momentum acrobat, arcade lander, real Sand cloud, real Water blob and jetpack
+barrel. The shared course has a ramp, low tunnel, air slalom, landing decks and
+material sieve. **1–7** selects, **Tab** cycles, **R** restarts, **P** pauses and
+**F** switches overview/follow. A standard gamepad can supply movement and actions.
+
+The acrobat chains slides, rolls, bullet jumps, double jumps, jump cancels and a
+finite airglide. The material presets steer native cells through a bounded local
+field; normal material simulation continues. The five mechanical presets also
+appear in **F5 → SetP**. See the [player control guide](docs/systems/player-control-playground.md)
+for every preset's controls, gamepad mapping, focus/reset behavior and current
+qualification. `--player=acrobat` selects a preset at launch. These are experimental
+controls; headless regressions do not establish target-PC human feel acceptance.
 
 ## Deepworks — the exhibition below
 
@@ -108,12 +125,13 @@ exact 4.7 pin. Desktop has an asynchronous simulation owner; Web ticks are
 synchronous even with internal pthreads. Rapier objects stay on the main thread.
 The GDScript fallback has different material semantics.
 
-The desktop sandbox includes 41 experimental
-[articulated actors](docs/systems/physical-actor-rigs.md) in seven sets: the original **SetA**
+The desktop sandbox includes 46 experimental
+[articulated actors](docs/systems/physical-actor-rigs.md) in eight sets: the original **SetA**
 Runner/Skimmer/Crawler controls, **SetB** ground machines, **SetF** flight and
 descent, **SetY** contact/rope/impulse traversal, **SetU** salvage-tool movers and
 **SetV** fictional interface personas, plus twelve **SetX** machines including
-multirotors, a suspended payload, a rocket blade and a concertina crawler.
+multirotors, a suspended payload, a rocket blade and a concertina crawler, and
+the five human movement presets in **SetP**.
 Actual collider parts, joints and copied transforms define their appearance and
 motion. Bounded gyro assistance and controlled joint play serve plausible game
 behaviour; finite gyro momentum accounting is not required. Open **F5** to choose a rig and a keyboard,
@@ -124,11 +142,19 @@ inference is a future consumer. The [sampled rig](docs/systems/actor-rigs.md) an
 [SetA contracts](docs/systems/actor-control-prototypes.md) retain their original
 motor and policy compatibility details.
 
+The internal [4LY free-flight family](docs/systems/physical-free-flight.md)
+adds a single-chassis training plant with two desired-velocity outputs and
+bounded physical assistance. Trainer has initial conformance tuning; Hauler,
+Drifter and Dart are uncalibrated placeholders. Their ordinary-game selection
+and measured handling differences are follow-up work, so the F5 roster remains
+46 actors.
+
 The [32-item usable catalogue](docs/systems/actor-usables.md) supplies material
 tools, ballistic payloads and processors for the physical roster. Actors carry a
 jointed chassis with bounded aim, recoil, release and nearby pickup. Processors
 are placed as physical world objects with explicit blocked-output results. Every
-rig has a default loadout and equipment demonstration policy; keyboard, scripts
+rig has a default loadout and equipment policy; SetP starts with an empty mount.
+Keyboard, scripts
 and future policies share the same observed-identity action path. The
 [ACT-005 checkpoint](docs/audits/2026-10-19-act005-physical-usables.md) records
 integration progress and acceptance separately from the source feature list.
@@ -151,3 +177,20 @@ the sampled arena's model-link examples retain their version-1 scope.
 ran and which artifacts/platforms it covers. CYSD1 restores levels, not exact
 replay continuation. Review [license status](LICENSE_STATUS.md) and
 [third-party notices](THIRD_PARTY_NOTICES.md) before distribution.
+
+## Semantic depth examples
+
+The Semantic depth launcher entry / `--semantic-depth` opens two generated places: refinery service galleries and a flooded cavern. A single semantic hierarchy owns matching play, rear, atmosphere and frozen far projections, finite native-material fixtures and play-only actor placements. See the [authoring and controls guide](docs/operations/semantic-depth-authoring.md), [native contract](docs/systems/procedural-semantic-planes.md) and [dated validation ledger](docs/audits/2026-10-21-gen005-semantic-planes.md).
+
+## Generation Workbench 2
+
+The opt-in generation workbench adds a native **Why is this here?** inspector,
+actual generation stages, typed graph and semantic hierarchy editing, four-plane
+views and bounded seed/recipe comparison. Invalid changes preserve the accepted
+preview; undo/redo restores recipe content with fresh request identities. See the
+[workbench contract](docs/systems/generation-workbench-2.md) and
+[procedural qualification guide](docs/operations/procedural-qualification.md).
+The 61,845-byte qualification recipe generates four regions and eight galleries
+across a 1024 × 1024 map. Retained captures, native reaction observations and the
+candid Deepworks comparison are linked from the guide. Final acceptance is tracked in
+[PR #198](https://github.com/techrote/cybersand/pull/198).

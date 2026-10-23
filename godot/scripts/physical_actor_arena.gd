@@ -10,6 +10,7 @@ const Effects = preload("res://scripts/physical_actor_effects.gd")
 const UsableRuntime = preload("res://scripts/physical_usable_runtime.gd")
 const UsableCatalog = preload("res://scripts/usable_catalog.gd")
 const UsableCourse = preload("res://scripts/physical_usable_course.gd")
+const PlayerCourse = preload("res://scripts/player_playground_course.gd")
 const VERSION: int = 2
 const PHYSICS_HZ: int = 60
 const MAX_TICKS: int = 36000
@@ -67,7 +68,7 @@ func _validated_config(value: Variant) -> Dictionary:
 	for key: Variant in value:
 		if str(key) not in ["version", "seed", "max_ticks", "actors", "local_patch_radius", "course"]:
 			return {}
-	if not value.get("course", "manoeuvre") is String or str(value.get("course", "manoeuvre")) not in ["manoeuvre", UsableCourse.ID]:
+	if not value.get("course", "manoeuvre") is String or str(value.get("course", "manoeuvre")) not in ["manoeuvre", UsableCourse.ID, PlayerCourse.ID]:
 		return {}
 	if not Session._integer(value.get("version", VERSION), VERSION, VERSION) \
 		or not Session._integer(value.get("seed", 0), 0, 2147483647) \
@@ -124,7 +125,12 @@ func configure(value: Variant) -> bool:
 		return false
 	world.set_simulation_window_enabled(false)
 	world.set_cadence_lod_enabled(false)
-	for rectangle: Dictionary in (UsableCourse.layout() if validated.course == UsableCourse.ID else layout(int(validated.seed))):
+	var rectangles: Array = layout(int(validated.seed))
+	if validated.course == UsableCourse.ID:
+		rectangles = UsableCourse.layout()
+	elif validated.course == PlayerCourse.ID:
+		rectangles = PlayerCourse.layout()
+	for rectangle: Dictionary in rectangles:
 		if not world.diagnostic_fill_rect(rectangle.origin, rectangle.size, rectangle.material):
 			last_error = "native_layout"
 			return false
@@ -442,6 +448,12 @@ func course_processor_fixture(actor_id: int, operation: String = "feed") -> Dict
 	result["instance_id"] = str(object.instance_id)
 	_course_fixture_result = result
 	return result.duplicate(true)
+
+
+func presentation_snapshot(force: bool = false) -> Dictionary:
+	# The playground reuses native immutable RG8 publication, avoiding a scripted
+	# per-cell palette loop while its actors and materials are moving.
+	return _world.take_render_snapshot(force) if _world != null else {}
 
 
 func presentation_cells(view: Rect2i = ARENA_RECT) -> PackedByteArray:

@@ -1,0 +1,57 @@
+{
+  "control_kind": "reverted-reconciler mutation control: verbatim pre-fix consumer conditional transplanted into new helper; context assigned to tower_context before exact block",
+  "baseline_head": "90a5bfc9a0664ca6eb78c00a18619aa4409619b1",
+  "baseline_block_sha256": "2a1af7ce9f8721eb3fc6e8325fbb042a345568042ffe95ad894de2a50cf38ad3",
+  "fixed_helper_sha256": "fc9d282700dfe6b6325d3536715d615d364ae77013fe002537f85af2da1f8473",
+  "control_helper_sha256": "c2841ee969fb31141ba4ca48c6c9ac92c0b6581b47f71c695a0f853cf1247226",
+  "fixed_main_sha256": "b119f569f684fe79a1ef06f17f1593f02d9d5dc8a76dc6eee42916b7bbc3c663",
+  "control_main_sha256": "fb1b6e442712e115f575da6c7b91f6c5ecad5add24484b992ce8e14e033c8ef0",
+  "test_sha256": "554edbbafdaf2c801d29bf34b7991dab6b2bdee77978b355c6335fdfb232834c",
+  "steps": [
+    {
+      "name": "control_import",
+      "command": [
+        "/workspace/scratch/20964ae84be4/jolt-host/godot/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/4a3785415b5a/review-notes/water-exit-reverted-reconciler-control/godot",
+        "--editor",
+        "--quit"
+      ],
+      "timeout_seconds": 240,
+      "returncode": 0,
+      "elapsed_seconds": 3.931,
+      "log": "/workspace/scratch/4a3785415b5a/review-notes/water-exit-control-import.log",
+      "log_sha256": "b8024426502e77477987f09456e906cd0f4e33c007ac361110e5404b0be0380c"
+    },
+    {
+      "name": "control_test",
+      "command": [
+        "/workspace/scratch/20964ae84be4/jolt-host/godot/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/4a3785415b5a/review-notes/water-exit-reverted-reconciler-control/godot",
+        "--script",
+        "res://tests/test_water_feel_controller.gd"
+      ],
+      "timeout_seconds": 180,
+      "returncode": 7,
+      "elapsed_seconds": 7.043,
+      "log": "/workspace/scratch/4a3785415b5a/review-notes/water-exit-control-test.log",
+      "log_sha256": "43a282c7c36ecf2d7be05e83b23f263a7a47309ed49842112b8511c5d793ed0c"
+    }
+  ],
+  "environment": {
+    "XDG_DATA_HOME": "/workspace/scratch/4a3785415b5a/review-notes/water-exit-reverted-reconciler-control/user-data"
+  },
+  "preflight_qualification": "The initial control import exited 0 but logged sandbox-only XDG config/cache and local-socket errors; it is not claimed as a clean import gate. The control test loaded and executed, failed exactly seven semantic assertions, and had no parser or helper errors. The separate fixed checkout import later passed cleanly with scratch XDG directories and local loopback access.",
+  "semantic_failures": [
+    "desktop Water exit receipt mishandled missing receipt",
+    "desktop Water exit receipt mishandled older rejection",
+    "desktop Water exit receipt mishandled older success",
+    "desktop Water exit receipt mishandled different newer success",
+    "desktop Water exit receipt mishandled matching receipt without outcome",
+    "desktop Water exit receipt mishandled matching success without Water state",
+    "desktop Water exit receipt mishandled matching rejection"
+  ]
+}

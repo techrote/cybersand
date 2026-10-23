@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-10-20",
+  "reviewed": "2026-10-22",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -96,7 +96,18 @@
     "operations/physical-actor-programme.md",
     "systems/depth-layers-and-parallax.md",
     "systems/physical-actor-rigs.md",
-    "operations/deepworks-exhibition.md"
+    "systems/physical-free-flight.md",
+    "operations/deepworks-exhibition.md",
+    "systems/player-control-playground.md",
+    "systems/procedural-typed-spatial-fields.md",
+    "reference/procedural-spatial-operators.md",
+    "systems/procedural-hierarchical-generation.md",
+    "decisions/ADR-013-canonical-semantic-generation.md",
+    "systems/procedural-semantic-planes.md",
+    "operations/semantic-depth-authoring.md",
+    "decisions/ADR-014-semantic-plane-admission.md",
+    "systems/generation-workbench-2.md",
+    "operations/procedural-qualification.md"
   ],
   "navigation": [
     "README.md",
@@ -352,7 +363,23 @@
     {
       "path": "audits/2026-10-20-deepworks-exhibition.md",
       "reason": "Dated Deepworks source/runtime, native apparatus, preserved failures and actual rendered-image evidence; retrieve explicitly through the exhibition guide or validation ledger, not as the default Current map or depth contract."
+    },
+    {
+      "path": "audits/2026-10-20-player-control-playground.md",
+      "reason": "Dated player playground source/runtime, native field and actual Linux mechanical/lifecycle evidence; retrieve explicitly with its platform and human acceptance limits. Current controls and ownership belong to the player playground contract."
+    },
+    {
+      "path": "audits/2026-10-21-player-playground-pr189-completion.md",
+      "reason": "Dated PR #189 original-head and first-completion hosted evidence, GEN-003/GEN-004 integrations, quick-tap timing correction and separately tracked final gates. Retrieve explicitly through the player playground contract or validation ledger with its source/artifact/platform qualifications; prior green results do not certify a later combined tree."
+    },
+    {
+      "path": "audits/2026-10-21-gen004-hierarchical-generation.md",
+      "reason": "Dated GEN-004 source, semantic/raster validation, runtime publication and acceptance evidence; retrieve explicitly with its platform and source scope, not as a default Current contract"
+    },
+    {
+      "path": "audits/2026-10-22-water-exit-acknowledgement.md",
+      "reason": "Dated post-merge Windows Water controller failure and scoped correction evidence; retrieve explicitly through the Tower contract or validation ledger, not as a default current message contract."
     }
   ],
-  "integration_note": "Retains scene, generation, actor, sampled and physical actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions remain separately scoped. Deepworks routes cover full-size four-plane exhibitions, independent native source schedules and parameterized depth dimensions; its dated audit remains explicitly scoped."
+  "integration_note": "Retains scene, generation, actor, sampled and physical actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions remain separately scoped. Deepworks routes cover full-size four-plane exhibitions, independent native source schedules and parameterized depth dimensions; its dated audit remains explicitly scoped. Player playground adds seven human movement presets, native material-field authority and circular-wheel approximation routes; dated execution remains separately scoped. GEN-003 typed-spatial and operator-reference routes from main are retained alongside player playground routes. GEN-004 hierarchy and ADR-013 canonical routes coexist with the player and GEN-003 routes; both GEN-004 and player completion audits remain explicitly excluded from ordinary retrieval."
 }

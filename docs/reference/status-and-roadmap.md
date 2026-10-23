@@ -4,11 +4,62 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-22
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
 # Status and foundational roadmap
+
+## 4LY shared physical free-flight — 2026-10-22
+
+**Current experimental source, 4LY-001 / #205:** the
+[free-flight contract](../systems/physical-free-flight.md) adds a shared single
+rectangular Rapier chassis, validated versioned profile schema and two-output
+desired-velocity controller. Gravity compensation, response/slew and braking
+share finite thrust authority; attitude assistance has its own bounded torque.
+The stabilizer has no goal, terrain or evaluator input. Authorized neutral
+brakes/hovers; cancellation and expiry select explicit passive fallback.
+
+The four stable `4ly_*` IDs are available to explicit physical-session lookup,
+with no automatic equipment body. Trainer has initial conformance tuning;
+Hauler, Drifter and Dart share those numbers as uncalibrated placeholders. The
+ordinary 46-actor F5 roster remains unchanged. Fixture source and hash identity
+do not themselves prove runtime/platform or learned-policy qualification.
+
+Next are [4LY-002 #206](https://github.com/techrote/cybersand/issues/206) for
+authored differentiation and selection and [4LY-003 #207](https://github.com/techrote/cybersand/issues/207)
+for the actual-host flight lab and teacher. Their independent preparation may
+overlap after this interface is fixed, but final host evidence uses frozen
+4LY-002 profiles. Companion 4LY-004/005 own Trainer-first and family learning,
+with a passing Trainer result required before family learning. Parent #132 and
+generic physical/Jolt/morphology gates remain separate.
+
+## GEN-007 authoring and qualification — 2026-10-21
+
+**Current implementation with scoped qualification:** [Generation Workbench 2](../systems/generation-workbench-2.md) adds native provenance replay and true stages, transactional visual authoring, graph/hierarchy/plane diagnostics, undo/redo and bounded seed/recipe comparison. The [procedural qualification scene](../operations/procedural-qualification.md) supplies one compact 1024 × 1024 four-plane map: four declared seeds pass final-raster structural and equivalence checks, eight paired-plane native exhibits pass mechanism controls, and retained display captures receive a qualified visual pass for approaching Deepworks. Broad negative spaces, repeated service cabinets and less varied fine machinery remain explicit. Source-matched Linux and Windows publication passed; the [dated ledger](../audits/2026-10-21-gen007-workbench-qualification.md) retains source/runtime identities, the revised 4 GiB graphical envelope and observed authoring hitches. [PR #198](https://github.com/techrote/cybersand/pull/198) records final exact-head repository acceptance and merge verification. GEN-006 remains the subsequent streaming/persistence owner.
+
+## Player control playground — 2026-10-20
+
+**Current experimental source:** the [player playground](../systems/player-control-playground.md)
+adds seven human movement presets and a dedicated course. Five mechanical
+presets form F5 SetP, bringing the physical catalogue to 46 rigs across eight
+sets; dry Sand and liquid Water remain separate native material-field modes.
+Acrobat chains, sprung vehicles, damped lander flight and strong barrel torque
+use the shared leased physical owner. Circular wheels keep conservative square
+native material masks. The material lane relocates bounded local native cells
+without repainting or changing Water kernels.
+
+The [original evidence](../audits/2026-10-20-player-control-playground.md) preserves
+local Linux execution and desktop builds. The
+[PR #189 completion record](../audits/2026-10-21-player-playground-pr189-completion.md)
+records original-head hosted success, including actual Windows headless
+execution of 107/107 applicable cases. Integration with GEN-003 main and the
+quick-tap course-clock correction require combined-source runtimes and fresh
+final-head gates. That record owns their status and routes exact final-head
+outcomes to PR #189's description and Checks. Physical gamepad/window
+interaction, target-PC human feel, complete timed routes and new browser
+execution remain separate qualifications. Generic granular, soliding and Water
+successor work retains its own gates.
 
 ## Exploratory actor integration and physical migration — 2026-10-18
 
@@ -109,7 +160,9 @@ It is an aesthetic showcase; existing physics programmes retain their own gates.
 | Procedural generation candidates | Opt-in Strata, Flow Network and District Grammar; theme/brush/override/module recipes plus bounded scalar fields, masked context guidance and aggregate materials; copied chunk proposals and explicit fresh-chunk admission; [generation contract](../systems/procedural-world-generation.md), [field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md) |
 | Materials | Bounded adapted kernels, mass-conserving native Water, discrete fallback, secondary interaction lanes; 51 MAT-002 building materials (IDs 81–131) with combustion and 42 versioned pair reactions; [materials](../systems/materials-and-rule-kernels.md), [building catalogue](../systems/building-material-catalogue.md), [Water](../systems/water-design.md). Source/runtime publication and completed-test scope are recorded in the [MAT-002 review](../audits/2026-10-19-mat002-review-and-validation.md). |
 | Field storage and events | Optional temperature storage and bounded explosions; no general heat/pressure/wind solver; [field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
-| Bodies and character | Main-thread Rapier, 64-ID rectangular coupling, static terrain packets, 41 articulated [physical actors](../systems/physical-actor-rigs.md), shared keyboard/demo/policy control and usables; sampled and single-hull references remain available |
+| Bodies and character | Main-thread Rapier, 64-ID rectangular native coupling, static terrain packets, 46 articulated [physical actors](../systems/physical-actor-rigs.md), shared keyboard/demo/policy control and usables; SetP circles retain conservative square native masks; sampled and single-hull references remain available |
+| Human movement playground | Seven [player presets](../systems/player-control-playground.md), keyboard/gamepad sampler, acrobat chains and separate leased native Sand/Water fields; course checkpoints and focused tests are not human feel or route-completion acceptance |
+| Assisted physical free flight | Internal [4LY single-chassis family](../systems/physical-free-flight.md), strict two-output velocity profile, bounded goal-blind assistance and passive revocation; initial Trainer conformance numbers only, with normal selection and differentiated handling owned by 4LY-002 |
 | Actor control and battle experiments | Separate physical Thunderbowl v2 plus retained sampled [Thunderbowl v1](../systems/thunderbowl-control-reference.md); physical wire control does not silently inherit sampled metal/NCA/message semantics; trained policies and general actor damage remain Planned |
 | Rendering | Immutable native snapshots, copied dirty RG8 patches, full finite GPU texture update and derived material appearance; [bridges](../architecture/rendering-and-gameplay-bridges.md) |
 | Persistence | Fixed CYSD1 demo levels; complete resumed replay absent; [save contract](level-saves-and-replay.md) |
@@ -154,6 +207,76 @@ source/runtime results and remaining publication/platform gates belong to the
 [GEN-002 evidence](../audits/2026-10-18-gen002-fields-and-aggregates.md), independently
 of the older GEN-001 checkpoint.
 
+## Typed spatial generation checkpoint — 2026-10-20
+
+**Current source implementation, GEN-003 / [#190](https://github.com/techrote/cybersand/issues/190):**
+explicit schema 2 adds signed scalar/distance, vector, exact category and boolean
+fields; affine/polar/repeat/warp resampling; analytical finite-difference
+derivatives; ternary Peano and bounded Voronoi/Delaunay/Poisson controls; immutable
+route/feature geometry; a bounded finite adjacency solver; reusable typed
+subgraphs; and absolute-world multiresolution sampling with caller-owned cache.
+The [typed contract](../systems/procedural-typed-spatial-fields.md) and
+[operator inventory](procedural-spatial-operators.md) own types, units, numerical
+qualifications and declared costs. Schema 1 retains generator algorithm 2;
+schema 2 uses generator algorithm 3/spatial algorithm 1. Source/runtime execution
+and completion remain distinct gates.
+
+The Workbench offers minimal typed JSON authoring, catalogue metadata, raw typed
+inspection and executable profiles. This is the native field/interface stage,
+not completion of hierarchical places or runtime streaming. The approved order
+continues with [GEN-004 #191](https://github.com/techrote/cybersand/issues/191),
+[GEN-005 #192](https://github.com/techrote/cybersand/issues/192),
+[GEN-007 #193](https://github.com/techrote/cybersand/issues/193), then
+[GEN-006 #194](https://github.com/techrote/cybersand/issues/194). GEN-004 reuses
+the immutable geometry/assignment interfaces and the existing bounded solver.
+
+## Hierarchical places checkpoint — 2026-10-21
+
+**Current source implementation, GEN-004 / [#191](https://github.com/techrote/cybersand/issues/191):**
+schema 3 adds a finite canonical regional hierarchy with stable rule/slot IDs,
+bounded candidate placement, exact multiplicities and occupancy ranges,
+support/neighbor/family requirements, matched sockets, shared boundary ports,
+explicit loops/service trunks and finite-curve structural tours. Geometry exports
+feed GEN-003 typed fields; the shared finite assignment solver owns district
+categories. The existing candidates/modules/masks/aggregates rasterize the
+semantic plan and preserve final hard material authority.
+
+The [hierarchy contract](../systems/procedural-hierarchical-generation.md) and
+[ADR-013](../decisions/ADR-013-canonical-semantic-generation.md) own semantics and
+ownership. The executable four-district profile contains cross-chunk foundries,
+rooms, apparatus and nested detail. Copied inspection exposes semantic ancestry,
+constraints, field inputs and material contributions. Final raster route reports
+qualify an explicit floating-square clearance profile; they do not establish
+actor/controller or gravity traversal. Source/runtime acceptance is separately
+recorded in the [GEN-004 audit](../audits/2026-10-21-gen004-hierarchical-generation.md).
+
+This stage adds no persistent resident-world streaming, automatic player-edit
+reconciliation or semantic depth projection. The next programme stages remain
+GEN-005 → GEN-007 → GEN-006, subject to this issue's explicit acceptance gates.
+
+## Semantic depth checkpoint — 2026-10-21
+
+**Current source implementation, GEN-005 / [#192](https://github.com/techrote/cybersand/issues/192):**
+[one semantic hierarchy projects into four planes](../systems/procedural-semantic-planes.md)
+with explicit geometry, per-plane material intent and omissions, six typed link
+families, finite source/drain/setup fixtures, copied provenance and optional
+play-only actor placements. Native output is private until complete; the existing
+depth owner stages all four Worlds and existing sampled actor owner before one
+configuration commit. Camera/parallax never enters generation.
+
+The two executable [refinery/cavern examples](../operations/semantic-depth-authoring.md)
+cover four canonical regions and multiple negative-coordinate chunks. Runtime
+authority is limited to existing play-to-rear blast and rear-to-effects burst;
+background remains frozen. Identical bundle retries are idempotent and old
+observations/revisions cannot replay into a new generation. Native reaction
+controls measure actual transport/products and complete fixture application counts.
+
+The [dated evidence](../audits/2026-10-21-gen005-semantic-planes.md) and
+implementation PR separately record final native/sanitized, Godot/rendered,
+Linux/Windows runtime publication and hosted acceptance. Pending gates do not
+count as passes. GEN-007 #193 is the next authoring/quality stage after acceptance;
+GEN-006 #194 retains persistent streaming and durable mutation reconciliation.
+
 ## Decisions and defects to resolve
 
 Rows distinguish **Current fixes**, remaining defects and open decisions; dated
@@ -181,7 +304,7 @@ enforced; [invariants](invariants.md) identifies that gap.
 general world/configuration/replay persistence; field equations and units; production
 body-shape/CCD/force policy; GPU subregion writes; an optional Water flow render
 plane and opt-in seam-fix presentation ([proposal](../research/water-flow-render-channel.md);
-the flow plane is gated by #45); authored appearance schema/tooling;
+the flow plane needs admitted Water velocity state, #45 or LCB); authored appearance schema/tooling;
 a user-facing material-presentation quality tier with weaker-GPU and browser cost
 measurement ([effects register](material-effects-register.md#planned));
 remaining platform/LeakSanitizer and production performance acceptance. Current
@@ -434,10 +557,18 @@ investigation before any new #45 pressure/head mechanism is treated as inevitabl
 - [#94](https://github.com/techrote/cybersand/issues/94) completed as
   [NARROW-USE local decompression research](../audits/2026-09-24-wex004-decompression-disposition.md);
   no general routed/room-scale atmosphere feature is admitted.
-- [#95](https://github.com/techrote/cybersand/issues/95) now has all prerequisites
-  in their allowed form (#92 explicitly blocked) and is the next WEX action. It
-  synthesizes WEX evidence with merged #49 controls and decides whether #45 should
-  proceed, narrow, recharter, defer or no-go.
+- [#95](https://github.com/techrote/cybersand/issues/95) synthesis is recorded in
+  the [2026-10-23 WEX-005 record](../audits/2026-10-23-wex005-water-evidence-synthesis.md):
+  the deep-release deficit is unresolved (on current `main` deep and medium outlets
+  deliver identical discharge; sheets untested), and **#45 is NARROW** —
+  admission/design only, under shared/vented-atmosphere assumptions, with a
+  separately registered surge fixture. No production mechanism is selected.
+- The opt-in Liquid Comparison Build pressure lane
+  ([#200](https://github.com/techrote/cybersand/issues/200)) is reconciled
+  separately by the
+  [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
+  [#213](https://github.com/techrote/cybersand/issues/213) is **not PASS**:
+  Gates B–E remain open, so LCB-001 pressure implementation stays blocked.
 
 Water FreeMass and other-liquid CellularYield remain separate; no unification or
 production solver change is selected. Equal-level communicating-head fixtures are

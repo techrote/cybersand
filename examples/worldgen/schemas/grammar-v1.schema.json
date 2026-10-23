@@ -1,0 +1,774 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/techrote/cybersand/tree/main/examples/worldgen/schemas/grammar-v1.schema.json",
+  "title": "CyberSand GEN-004 grammar version 1",
+  "description": "Schema for the grammar property of a schema-3 generation recipe. Native GrammarPlan compilation additionally validates all cross-field, exact geometry, domain, cycle, constraint, capacity and deterministic solver requirements. This schema is an authoring aid, not permission to publish an unvalidated plan.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": 1
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "region_window": {
+      "$ref": "#/$defs/bounds"
+    },
+    "region_size": {
+      "type": "integer",
+      "minimum": 64,
+      "maximum": 2048
+    },
+    "roots": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/id"
+      },
+      "minItems": 1,
+      "maxItems": 32
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/rule"
+      },
+      "minItems": 1,
+      "maxItems": 64
+    },
+    "curve": {
+      "enum": [
+        "hilbert",
+        "morton",
+        "peano"
+      ]
+    },
+    "curve_order": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 6
+    },
+    "route_width": {
+      "enum": [
+        1,
+        3,
+        5,
+        7,
+        9,
+        11,
+        13,
+        15,
+        17,
+        19,
+        21,
+        23,
+        25,
+        27,
+        29,
+        31
+      ]
+    },
+    "clearance": {
+      "enum": [
+        1,
+        3,
+        5,
+        7,
+        9,
+        11,
+        13,
+        15,
+        17,
+        19,
+        21,
+        23,
+        25,
+        27,
+        29,
+        31
+      ]
+    },
+    "secondary_loop": {
+      "type": "boolean"
+    },
+    "service_trunk": {
+      "type": "boolean"
+    },
+    "liquid_trunk": {
+      "type": "boolean"
+    },
+    "service_material": {
+      "$ref": "#/$defs/material"
+    },
+    "liquid_material": {
+      "$ref": "#/$defs/material"
+    },
+    "district_assignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "specification": {
+          "$ref": "#/$defs/assignment"
+        },
+        "limits": {
+          "$ref": "#/$defs/assignmentLimits"
+        }
+      },
+      "required": [
+        "specification"
+      ]
+    },
+    "district_themes": {
+      "type": "object",
+      "maxProperties": 16,
+      "additionalProperties": {
+        "$ref": "#/$defs/themes"
+      },
+      "propertyNames": {
+        "pattern": "^[0-9a-f]{16}$"
+      }
+    },
+    "geometry_exports": {
+      "type": "object",
+      "maxProperties": 16,
+      "additionalProperties": {
+        "$ref": "#/$defs/reference"
+      },
+      "propertyNames": {
+        "$ref": "#/$defs/id"
+      }
+    },
+    "limits": {
+      "$ref": "#/$defs/limits"
+    },
+    "curve_services": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "roots",
+    "rules"
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+$",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "material": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 131
+    },
+    "bounds": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "integer",
+          "minimum": -1099511627776,
+          "maximum": 1099511627776
+        },
+        {
+          "type": "integer",
+          "minimum": -1099511627776,
+          "maximum": 1099511627776
+        },
+        {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1099511627776
+        },
+        {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1099511627776
+        }
+      ],
+      "items": false,
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "themes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/id"
+          },
+          "weight": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "maximum": 1000000
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "minItems": 0,
+      "maxItems": 16
+    },
+    "typedValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": [
+            "normalized",
+            "scalar",
+            "signed_distance",
+            "distance",
+            "vector2",
+            "category",
+            "boolean"
+          ]
+        },
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "category": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "type": [
+                "integer",
+                "string"
+              ]
+            },
+            "y": {
+              "type": [
+                "integer",
+                "string"
+              ]
+            },
+            "domain": {
+              "type": [
+                "integer",
+                "string"
+              ]
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "domain"
+          ]
+        }
+      },
+      "required": [
+        "type"
+      ]
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "bounds": {
+          "$ref": "#/$defs/bounds"
+        },
+        "order_x": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        },
+        "order_y": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000000
+        }
+      },
+      "required": [
+        "id",
+        "bounds"
+      ]
+    },
+    "socket": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "type": {
+          "enum": [
+            "passage",
+            "service",
+            "liquid"
+          ]
+        },
+        "direction": {
+          "enum": [
+            "west",
+            "east",
+            "north",
+            "south"
+          ]
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16384
+        },
+        "width": {
+          "enum": [
+            1,
+            3,
+            5,
+            7,
+            9,
+            11,
+            13,
+            15,
+            17,
+            19,
+            21,
+            23,
+            25,
+            27,
+            29,
+            31
+          ]
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "attach_to_route": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "intersects_route": {
+          "type": "boolean"
+        },
+        "minimum_separation": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 16384
+        },
+        "floor": {
+          "type": "boolean"
+        },
+        "ceiling": {
+          "type": "boolean"
+        },
+        "wall": {
+          "type": "boolean"
+        },
+        "open_volume": {
+          "type": "boolean"
+        },
+        "service": {
+          "enum": [
+            "",
+            "service",
+            "liquid"
+          ]
+        },
+        "required_neighbors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "forbidden_neighbors": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "neighbor_distance": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 16384
+        },
+        "exclusive_family": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "minimum_sockets": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16
+        },
+        "maximum_sockets": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16
+        },
+        "connected": {
+          "type": "boolean"
+        },
+        "occupancy_min": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "occupancy_max": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "preference": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "enum": [
+            "route",
+            "theme_boundary",
+            "floor",
+            "ceiling",
+            "wall",
+            "curve_density"
+          ]
+        },
+        "weight": {
+          "type": "number",
+          "minimum": -1000000,
+          "maximum": 1000000
+        },
+        "themes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0,
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "id",
+        "kind"
+      ]
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "max_regions": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16
+        },
+        "max_rules": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64
+        },
+        "max_depth": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "max_children": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32
+        },
+        "max_candidates": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64
+        },
+        "max_features": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2048
+        },
+        "max_sockets": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4096
+        },
+        "max_routes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4096
+        },
+        "max_work": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16000000
+        },
+        "max_prepared_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16777216
+        },
+        "max_raster_cells": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4194304
+        },
+        "max_raster_operations": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16000000000
+        }
+      }
+    },
+    "assignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "width": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16
+        },
+        "cell_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4096
+        },
+        "origin_x": {
+          "type": "number"
+        },
+        "origin_y": {
+          "type": "number"
+        },
+        "seed": {
+          "type": [
+            "integer",
+            "string"
+          ]
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": [
+              "integer",
+              "string"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 16
+        },
+        "adjacency": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 65535
+            },
+            "minItems": 1,
+            "maxItems": 16
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "domains": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65535
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "wrap_x": {
+          "type": "boolean"
+        },
+        "wrap_y": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "categories",
+        "adjacency"
+      ]
+    },
+    "assignmentLimits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "max_work": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64000000
+        },
+        "max_scratch_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 262144
+        }
+      }
+    },
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "enum": [
+            "region",
+            "district",
+            "complex",
+            "room",
+            "apparatus",
+            "detail"
+          ]
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": -1000000,
+          "maximum": 1000000
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "themes": {
+          "$ref": "#/$defs/themes"
+        },
+        "parameters": {
+          "type": "object",
+          "maxProperties": 32,
+          "additionalProperties": {
+            "$ref": "#/$defs/typedValue"
+          }
+        },
+        "allowed_materials": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/material"
+          },
+          "minItems": 0,
+          "maxItems": 132
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/candidate"
+          },
+          "minItems": 1,
+          "maxItems": 64
+        },
+        "children": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "minItems": 0,
+          "maxItems": 32
+        },
+        "sockets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/socket"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "constraints": {
+          "$ref": "#/$defs/constraints"
+        },
+        "preferences": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/preference"
+          },
+          "minItems": 0,
+          "maxItems": 16
+        },
+        "fallback": {
+          "enum": [
+            "reject",
+            "omit"
+          ]
+        },
+        "material": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/material"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "interior": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/material"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "wall_thickness": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 64
+        },
+        "aggregate": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "application": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "exclusion": {
+          "type": "string",
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "id",
+        "candidates"
+      ]
+    },
+    "reference": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    }
+  }
+}

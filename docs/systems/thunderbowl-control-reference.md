@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Thunderbowl actuation, decision and perception distinctions; prototype control schemas and bounded battle/training experiments, with explicit limits on neural, swarm and model-link claims
 canonical-for: [thunderbowl-control-reference, thunderbowl-control-topologies, thunderbowl-training-design]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-20
 related-documents: [actor-rigs.md, actor-control-prototypes.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../reference/validation-evidence.md, ../audits/2026-10-18-act003-thunderbowl-control-lab.md]
 ---
 
@@ -41,13 +41,19 @@ from having executable examples.
 
 ## Physical Thunderbowl v2
 
-**Current experimental ACT-004/ACT-005:** the separate physical lab uses all 41
+**Current experimental ACT-004/ACT-005:** the separate physical lab uses all 46
 [articulated Rapier actors](physical-actor-rigs.md), their actual jointed parts,
 native materials and the same human/demo/policy session as F5. It owns a native
 world and an isolated Rapier space. Its purpose is manoeuvre, recovery and usable
 testing. It has no virtual tag score, damage/reward system, metal lane, oracle
 team, NCA controller or live model service. Those sampled v1 examples remain
 independently runnable below.
+
+The five SetP entries are human movement presets with explicitly empty starting
+mounts; the original ACT-005 41-rig tool loadouts remain defined. Their separate
+[seven-preset playground](player-control-playground.md) also includes Sand/Water
+fields that are not physical Thunderbowl actors. Earlier dated lab results retain
+their original roster and source scope.
 
 Run the physical scene from the launcher or directly:
 
@@ -118,7 +124,7 @@ this lab. Dated source/platform evidence is in the
 The launcher entry **Physical usable course — 32 tools, payloads and processors**
 opens the same physical scene in its **Usable course** mode. The scene's
 **Manoeuvre / Usable course** selector resets the environment into the selected
-authored layout. All 41 rigs retain their catalogue loadout and the same
+authored layout. All 46 rigs retain their catalogue loadout and the same
 human/demo/policy admission path; the course does not provide a separate actor
 controller with direct material access.
 

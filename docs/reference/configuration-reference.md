@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-22
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md]
 ---
 
@@ -49,6 +49,150 @@ are exposed by native `field_kind_specs()` and copied by `get_catalogue`.
 The [field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md)
 owns these values, context meaning, masks and diagnostic bounds; these scalar
 authoring fields do not allocate optional simulation temperature/pressure storage.
+
+**Current GEN-003 opt-in schema 2:** the separate typed `spatial` graph uses
+generator algorithm 3 and spatial algorithm 1. Schema 1 retains the preceding
+algorithm and scalar contracts. `spatial_limits` defaults to 64 expanded nodes,
+dependency depth 16, 1,000,000 logical operations per sample, 16,000,000 preparation
+operations and 16 MiB preparation storage. Nodes declare scales 1/4/16/64 cells;
+sampling uses a fixed 256-entry caller-owned cache. Subgraphs/instances have
+bounded expansion and parameter counts; recursive definitions are rejected.
+
+Internal resampling admits the bounded ±`2^44` footprint while public cells
+remain in `[-2^40,2^40)`. Continuous component bounds stay within ±`1e100`;
+unit exponents stay within −8..8. Derivative spacing is 1..64 cells and warp
+displacement 0..4096 cells. Exact category IDs retain integer components.
+Geometry has at most 256 points. Region assignment has at most 16×16 cells and
+16 categories, a default 1,000,000-operation preparation budget, hard work
+ceiling 64,000,000 and fixed bounded solver scratch. Repeated tiles require
+explicit wrap constraints for cross-tile adjacency guarantees. The
+[typed contract](../systems/procedural-typed-spatial-fields.md) and
+[operator inventory](procedural-spatial-operators.md) own exact family ranges,
+recursive cost composition, distance qualification and invalid-input behavior.
+
+## Hierarchical generation limits
+
+**Current GEN-004 opt-in schema 3:** generator algorithm 4 adds grammar schema 1,
+algorithm 1. [`GrammarDefinition` and `GrammarLimits`](../../native/include/cybersand/generation_grammar.hpp)
+are compiled before material rasterization. Schema-1/2 recipes retain their
+previous algorithm identities. The JSON adapter normally permits lowering default limits. GEN-007 also exposes
+the already supported native `max_raster_operations` ceiling of 16,000,000,000;
+its default remains 1,000,000,000. Other native C++ increases remain bounded by
+the hard ceilings below.
+
+| Setting | Native default / JSON cap | Native hard ceiling or admitted range |
+|---|---:|---:|
+| `region_size` | 256 cells | Integer 64–2048 |
+| `region_window` | `[0,0,1,1]` region addresses | Positive finite rectangle; at most 64 per axis and `max_regions` total |
+| `max_regions` | 16 | 64 |
+| `max_rules` | 64 | 128 |
+| `max_depth` | 8 | 12 |
+| `max_children` | 32 | 64 expanded children per parent |
+| `max_candidates` | 64 | 256 per rule |
+| `max_features` | 2,048 | 8,192 |
+| `max_sockets` / `max_routes` | 4,096 each | 16,384 each |
+| `max_work` | 16,000,000 logical planning operations | 1,000,000,000 |
+| `max_prepared_bytes` | 16 MiB | 256 MiB |
+| `max_raster_cells` | 4,194,304 | 16,777,216 |
+| `max_raster_operations` | 1,000,000,000 | 16,000,000,000 |
+| `curve` / `curve_order` | Hilbert / 2 | Hilbert, Morton or Peano; order 1–6 |
+| `route_width` / `clearance` | 7 / 3 cells | Odd integers 1–31, route width ≥ clearance and ≤ region size/4 |
+| `secondary_loop` / `service_trunk` / `liquid_trunk` | true / true / false | Explicit booleans |
+| `curve_services` | false | Requires `service_trunk`; selected finite curve has at most 16 sites |
+| `geometry_exports` | Empty map | At most 16 exact semantic route/feature aliases |
+
+Planning coordinates preserve the generator's signed ±`2^40` domain with room
+for canonical boundary geometry. Candidate rectangles have positive dimensions
+through 16,384 cells and must fit their declared parent. Candidate finite-curve
+addresses must lie in the selected order's domain. Semantic IDs use 1–64 ASCII
+letters/digits/underscore/hyphen/dot per authored component; full generated paths
+are distinct from those components.
+
+Rules carry exact positive counts, priority within ±1,000,000, at most 16 tags,
+16 theme entries, 32 typed parameters, 16 sockets and 16 preferences. Theme weights
+are finite positive values through 1,000,000 and normalize canonically. Preference
+weights are finite within ±1,000,000; negative weights invert a preference while
+hard constraints remain mandatory. Separation and neighbor radii are 0–16,384
+cells; inclusive occupancy fractions are within `[0,1]`. Socket aperture widths
+are odd 1–31 and must fit the selected edge; passage widths also meet clearance.
+The JSON adapter caps wall thickness at 64 while native declarations admit 128;
+the selected rectangle must retain a nonempty interior for any positive shell.
+
+`max_raster_operations` covers full final-cell sampling, square-clearance and
+route connectivity work, plus scans along every declared floor/ceiling/wall
+contact edge. `max_prepared_bytes` includes final-cell scratch and retained
+route/support records. `static-solid-contact-v1` requires at least one surviving
+solid contact on each declared side; it introduces no gravity or full-footprint
+support threshold. Inspect `supports_passed` separately from route `passed`.
+
+`district_assignment` reuses GEN-003's bounded finite solver and scratch contract.
+`district_themes` is keyed by exact unsigned category IDs represented as sixteen
+lowercase hexadecimal digits in JSON. Neither assignment nor feature metadata
+allocates live World fields. The
+[hierarchy contract](../systems/procedural-hierarchical-generation.md) owns
+priority, fallback, semantic identity, canonical boundary ownership and geometric
+traversal qualifications; the
+[interfaces](interfaces-and-message-contracts.md#native-semantic-plans-and-copied-hierarchy-inspection)
+own returned records.
+
+## Semantic plane generation limits
+
+**Current GEN-005 opt-in extension:** a schema-3 recipe may include
+`semantic_planes` schema 1 / algorithm 1. It composes the existing hierarchy and
+typed graph; it does not change the retained generator algorithms. Values below
+come from [`PlaneLimits`](../../native/include/cybersand/generation_planes.hpp),
+the [JSON adapter](../../godot/native_extension/generation_planes_adapter.inc)
+and the [semantic owner](../../godot/scripts/depth/semantic_plane_runtime.gd).
+
+| Limit | Native default | Godot JSON maximum | Native hard maximum |
+|---|---:|---:|---:|
+| Templates across projections, fixtures, links and actors | 128 | 128 | 512 |
+| Expanded projections | 8,192 | 8,192 | 16,384 |
+| Expanded fixtures | 1,024 | 1,024 | 4,096 |
+| Expanded links | 2,048 | 2,048 | 8,192 |
+| Play actors | 8 | 8 | 8 |
+| Cells per plane | 1,048,576 | 1,048,576 | 4,194,304 |
+| Logical preparation/raster operations | 250,000,000 | 4,000,000,000 | 4,000,000,000 |
+| Prepared storage | 16 MiB | 64 MiB | 64 MiB |
+| Publication storage | 64 MiB | 256 MiB | 256 MiB |
+| Diagnostic storage | 4 MiB | 16 MiB | 16 MiB |
+| Aggregate declared runtime event rate | 256 | 256 | 256 |
+| Scheduled fixture cell writes over lifetime | 4,194,304 | 4,194,304 | 67,108,864 |
+
+The retained GEN-005 examples explicitly request 2,000,000,000 logical operations.
+GEN-007 replaces whole-list sample scans with bounded spatial candidate indices
+and conservative maximum local-candidate charges. Raster work includes generator work
+when play uses it, the shared typed graph once per affected plane/sample, and
+final registration/receipt scans. `max_operations` independently bounds semantic
+preparation and each requested raster/publication, not cumulative session work
+or elapsed time. Prepared storage reports additional plane-compiler allocations;
+the shared GEN-003/004 generator retains its own existing budgets.
+Native declaration acceptance does not waive
+the stricter host limits below.
+
+| Host or authored bound | Admitted value |
+|---|---|
+| Complete finite world | Each axis 8–1024 cells; signed Godot `Rect2i` coordinates; all four planes required |
+| Native material rectangles | At most 4,096 nonempty merged runs per plane; payload must exactly reconstruct copied material bytes |
+| Complete copied packet | 64 MiB and 262,144 metadata nodes |
+| Features / projections / fixtures / links / actors | 8,192 / 8,192 / 1,024 / 2,048 / 8 |
+| Fixture rectangle | At most 512 cells, contained in its feature and plane |
+| Simultaneous fixture writes | At most 8,192 cells per plane tick, including cleanup |
+| Schedule / repeat | Through tick 360,000; 1–10,000 repetitions; positive period; cleanup after final application |
+| Expected native products | At most 16 valid nonempty material IDs, distinct from the fixture's feed |
+| Outstanding observations / queued commands | 32 each through the retained depth boundary |
+| Runtime event radius / rate | At most 32 cells; 256 events per target-plane tick, additionally constrained by each link |
+| Retired bundle revisions | 128; further replacement fails explicitly rather than evicting stale-admission history |
+| Dynamic rates | 0–60 Hz; example play/rear/effects rates 30/20/15 Hz |
+| Frozen background | Zero ticks, fixtures, actors and runtime event writes |
+| Projection density / wall thickness / route width | Finite 0–1 / 0–128 cells / zero or odd 1–63 cells, with valid contained geometry |
+| Projection masks | Optional `application`/`exclusion` `spatial:<expanded.id>`; normalized or boolean dimensionless output |
+
+Lifecycle reset constructs a new bounded incarnation; it is not persistent
+mutation rebasing. The [semantic contract](../systems/procedural-semantic-planes.md)
+owns interpretation and [interfaces](interfaces-and-message-contracts.md#semantic-plane-proposals-and-owner-admission)
+own copied packet fields. The [authoring guide](../operations/semantic-depth-authoring.md)
+owns example controls and reproducible captures.
 
 ## Depth host and Deepworks configuration
 
@@ -216,7 +360,9 @@ These are gameplay tuning/bounds, not calibrated physical units.
 
 The retained three reference rectangles are 8×14. ACT-004 admits up to eight
 physical rigs with eight total parts each, including held parts, through the
-same 64-ID bound. The current catalogue uses two through seven parts.
+same 64-ID bound. Current authored rigs use one through seven parts before an
+optional equipment chassis; prepared assemblies remain within eight. SetP
+circle wheels use conservative square native samples with the same diameter.
 Sweep truncation/sample limits and unresolved
 overlap semantics belong to the [coupling contract](../architecture/rigid-body-and-cellular-coupling.md);
 these numbers do not guarantee continuous collision detection.
@@ -398,7 +544,7 @@ for field bounds, material-response ownership and traversal semantics.
 
 ## Exploratory actor selection
 
-**Current desktop:** F5 exposes all 41 articulated Rapier rigs, 29 sampled rigs,
+**Current desktop:** F5 exposes all 46 articulated Rapier rigs, 29 sampled rigs,
 the sampled baseline and the two retained single-body hull trials in the ordinary
 sandbox and five authored exploratory maps. Physical sessions admit at most eight
 actors and 64 parts, with up to eight rigs in a set comparison. Sampled session
@@ -610,8 +756,8 @@ limits, not calibrated real-world actuator specifications.
 
 | Value | Current bound or default |
 |---|---|
-| Catalogue | 41 rigs in seven sets; all 29 existing IDs plus twelve SetX IDs |
-| Assembly | At most eight parts, fourteen authored joints and three mounts per rig; catalogue definitions use two through seven parts, and ACT-005 adds a chassis only where no held part exists |
+| Catalogue | 46 rigs in eight sets; all 29 original IDs plus twelve SetX and five SetP IDs |
+| Assembly | At most eight parts, fourteen authored joints and three mounts per rig; current authored definitions use one through seven parts, and ACT-005 adds a chassis only where no held part exists |
 | Population | One through eight actors and at most 64 total coupled parts; held/released objects retain their part slot |
 | Physics / demo cadence | 60 Hz physical owner; demo decisions every six ticks, or 10 Hz |
 | Command lease | One through eighteen ticks from the issued observation; helper/demo default twelve, desktop human six; nineteen issuance-history slots |
@@ -634,6 +780,140 @@ observations and version-2 commands are separate from sampled actor packed rows.
 Usable lifecycle, gyro/play semantics and producer limits belong to the
 [physical actor contract](../systems/physical-actor-rigs.md).
 
+## Physical free-flight values
+
+**Current experimental 4LY-001:**
+[`physical_flight_profile.gd`](../../godot/scripts/physical_flight_profile.gd)
+owns the complete closed schema and its validation.
+[`physical_flight_controller.gd`](../../godot/scripts/physical_flight_controller.gd)
+owns the pure local assistance. These are authored adapter quantities; the
+[4LY contract](../systems/physical-free-flight.md) owns behavior and follow-up
+qualification. All four IDs share these initial numbers. Trainer is
+`conformance_only`; Hauler, Drifter and Dart are `uncalibrated_placeholder`.
+
+| Profile field | Initial value | Admitted schema-1 bound or meaning |
+|---|---|---|
+| `version`, `family`, `topology` | `1`, `4ly`, `single_rectangle` | Exact declared identities |
+| `id` | One of the four stable `4ly_*` IDs | `4ly_trainer`, `4ly_hauler`, `4ly_drifter`, `4ly_dart` |
+| `action_profile` | `4ly_velocity_v1` | Exactly two normalized desired-velocity components in `move` |
+| `fixed_delta` | 1/60 s | Requires the fixed 60 Hz physical cadence within an absolute 1e-9 s tolerance; a different cadence is refused |
+| `collider_size` | `[10, 6]` cells | Two numeric dimensions, each 0.5–64 cells |
+| `mass` | 1.2 authored mass units | 0.02–20 |
+| `inertia` | 13.6 authored mass·cell² | 0.0001–14,000; must equal `mass * (width² + height²) / 12` within the declared numeric tolerance |
+| `gravity` | 156 cells/s² downward | 0–500; declared compensation reference, implemented by per-body gravity scale |
+| `friction`, `bounce` | 0.82, 0.04 | 0–1 and 0–0.6 respectively; real collider contact material, included in profile identity |
+| `desired_speed` | `[48, 36]` cells/s | Each axis 0.1–240; unit-disk `move` is multiplied componentwise |
+| `acceleration`, `braking` | 90, 135 cells/s² | Each 0.1–1,200; the opposed-velocity braking component and remaining drive share one normalized effort ellipse |
+| `max_force` | 360 authored mass·cell/s² | 0.001–24,000, also at most `mass * 1200`; gravity compensation shares this total cap |
+| `velocity_response_seconds` | 0.25 s | 1/600–5; velocity error divided by this time requests acceleration |
+| `thrust_response_seconds` | 0.06 s | 1/600–5; first-order response toward already-saturated total force |
+| `max_force_slew` | 2,400 force units/s | 0.001–1,000,000; actual force change per step is bounded by this value times `fixed_delta` |
+| `linear_drag`, `angular_drag` | 0.05, 0.25 | 0–3 and 0–8 respectively; replace-mode passive Rapier damping |
+| `attitude_kp`, `attitude_kd` | 18, 8 | 0–100 and 0–40; upright angular PD request scaled by chassis inertia |
+| `max_torque` | 300 authored mass·cell²/s² | 0.001–1,400,000, also at most `inertia * 100` |
+| `max_torque_slew` | 3,600 torque units/s | 0.001–10,000,000; actual torque change is bounded each physical step |
+| `resource_mode` | `continuous_authored_power` | No fuel timer or reserve drain; explicit host power-off disables both force and torque |
+| `calibration` | Profile-specific status above | `conformance_only` or `uncalibrated_placeholder`; does not assert measured handling or learned-policy qualification |
+
+All fields are required. Unknown fields, wrong types, nonfinite numbers,
+out-of-range values, inconsistent rectangular inertia and plant-envelope
+violations are refused before installation. No implicit clamping resolves an
+invalid profile. Resolved numeric values and sorted full-precision JSON define
+the profile hash; identity and calibration status participate in that hash even
+when numerical dynamics match.
+
+Installation requires a finite positive project default gravity, exactly
+downward default gravity direction and a 60 Hz project physics cadence. Both
+the default gravity and the resulting per-body scale must remain representable
+by the physics backend; otherwise installation is refused before allocation. The
+profile supplies the controller's gravity reference; the controller does not
+query local gravity areas or change its budget in response to environmental
+fields. At fresh-step admission, zero, negative and nonfinite runtime deltas
+revoke flight input, as does a positive delta outside the fixed-step tolerance.
+
+Reset/cancellation/power cutoff clears force and torque response immediately;
+ordinary enabled slew bounds do not delay revocation.
+
+The no-equipment preparation is explicit (`equipment_preparation = "none"`,
+empty loadout, one part and no joints/mounts). Session population/body limits
+remain those of the shared physical owner. `Catalog.has_rig`/`entry` recognize
+the four IDs, while ordinary `RIG_IDS`/`SET_IDS` remain 46/eight until 4LY-002.
+Wire envelope version 2, one-through-eighteen-tick observation-relative leases
+and six-tick demo decisions are retained. The separate profile cadence does not
+redefine the legacy physical actor delta clamp above.
+
+## Player playground values
+
+**Current experimental source:** [course](../../godot/scripts/player_playground_course.gd),
+[runtime](../../godot/scripts/player_playground_runtime.gd),
+[input](../../godot/scripts/player_playground_input.gd),
+[vehicle](../../godot/scripts/player_vehicle_controller.gd),
+[acrobat](../../godot/scripts/player_acrobat_controller.gd) and
+[native field](../../native/include/cybersand/world.hpp) own these values. The
+[player guide](../systems/player-control-playground.md) owns controls and scope.
+
+| Value | Current bound or default |
+|---|---|
+| Scene / presets | `res://player_playground.tscn`; seven, of which five mechanical entries also form F5 SetP; dry/liquid remain scene-only |
+| Native world / course view | 1024 × 1024 cells; `Rect2i(128,128,512,256)` course view; follow view 256 × 128 |
+| Local owner | One native worker, synchronous calls, simulation window and cadence LOD disabled for the dedicated course |
+| Material seed | 16 × 16 = 256 cells centred near (178,304); Sand count 256 or full Water mass 65,280 at construction |
+| Human material lease | 1–6 ticks from issued observation; seven issuance-history slots; sequence 0–9,007,199,254,740,991 and strictly increasing |
+| Gamepad | First connected pad; left-stick radial deadzone 0.18; combined movement length capped at one |
+| Field source scan | Fixed radius 32; 65 × 65 = 4,225 attempted positions per call, circle and domain filtered |
+| Field source budget | At most 512 original parcels; phase-rotated scan then deterministic priority order; `truncated` if more observed |
+| Field movement | At most four axis-adjacent steps per parcel, 2,048 attempts total; outer write reach at most radius 36, clipped to domain |
+| Field storage | No missing chunk or thermal-storage allocation; unavailable storage refuses the step and increments its receipt counter |
+| Field input | Finite direction components in −1..1 and squared length ≤1.000001; Sand/Water only; mode 0–3; phase 0–2,147,483,647 |
+| Native C++ domain | Each span 1–4,096; origin in ±1,000,000,000; centre inside domain; Godot adapter fixes domain to 0..1,023 on each axis |
+| Material centre following | At most four cells per owner step toward observed quantity-weighted centroid |
+| Vehicle hop | Buggy requires support; bike preload reaches full at 0.42 s and requires supported release; 0.5 s hop cooldown |
+| Acrobat jump timing | 0.11 s coyote; 0.14 s buffer; 0.05 s confirmed support; 0.14 s launch lock |
+| Acrobat roll / glide | Roll 0.28 s; cooldown 0.32 s; grounded tap at most 0.15 s; glide reserve 1.6 s per confirmed landing |
+| Acrobat airborne inventory | One extra jump, one bullet jump and one air roll per confirmed landing; cancel does not reload them |
+| Acrobat control delta | At most 96 cells/s requested delta velocity per controller call; physical session's finite delta/impulse bounds still apply |
+| Course timing | Four ordered checkpoints, reach radius 15 cells; simulation ticks divided by 60; best times last only for the scene |
+| Mechanical course lifetime | Existing physical arena limit 36,000 ticks; restart creates a fresh owner; material lane does not reuse that arena limit |
+
+No field receipt is a persistent parcel inventory. Native temperature/compact
+state and partial Water mass survive each relocation, while the following
+ordinary material tick retains its normal chemistry/transport semantics. Exact
+receipt and admission fields are in
+[interfaces](interfaces-and-message-contracts.md#player-material-field-control).
+
 ## Initial physical Blacksite trial
 
 The [physical actor programme](../operations/physical-actor-programme.md) owns the reset-scoped barrel/Ripper control bounds, hull sizes, cooldown and desktop-only scope. Existing reference controls and registered definitions retain their defaults.
+
+## Generation Workbench 2 limits
+
+The [workbench owner](../../godot/scripts/worldgen_workbench.gd),
+[tool controller](../../godot/scripts/worldgen_workbench_tools.gd),
+[preview](../../godot/scripts/worldgen_preview.gd) and native adapter own these
+finite authoring limits. They do not enlarge native recipe or live World caps.
+
+| Resource | Bound |
+|---|---:|
+| Canonical authoring recipe | 1 MiB UTF-8 |
+| Edit preparation | One exclusive worker and one newest pending candidate |
+| Undo / redo | 16 canonical recipe entries in each direction |
+| Preview cache / queue | 32 cached chunks / 24 queued chunks |
+| Preview generation slice | 2,048 cells per owner service call |
+| Auxiliary seed/comparison requests | At most 4; one active native owner |
+| Auxiliary preparation | One exclusive worker; retirement cannot admit stale results |
+| Auxiliary rectangle / slice | At most 128 × 128 cells per plane / 256 cells |
+| Serialized UI trace | 256 KiB; overflow explicitly reported |
+| Semantic comparison records | 4,096; counts cover retained records and truncation is explicit |
+| Detailed semantic comparison changes | 64; retained-record counts reported separately |
+| Graph canvas | 256 nodes; complete supported recipe remains in JSON |
+| Vector arrows | 256 |
+| Streamlines | 24 lines, at most 64 integration steps each |
+| Native trace collection | 256 entries; omitted count and truncation reported |
+| Native stage-region output | At most 256 × 256 cells; pending output remains private |
+
+Grammar and projection sample indices use 64-cell bins. Candidate membership,
+container capacity and index construction are charged to the existing prepared
+memory/work limits. A conservative maximum local candidate charge bounds each
+raster sample. Real geometry/mask checks and canonical ordering still select
+materials. Measured index checks and local chunk durations are distinct from
+these declared logical charges.

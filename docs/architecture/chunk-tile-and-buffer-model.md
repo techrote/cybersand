@@ -6,7 +6,7 @@ status: Current
 scope: Native storage, activity, scheduling and write-domain geometry; explicit fallback and buffered distinctions
 keywords: [128x128 chunk, 32x32 activity, 64x64 core, radius two, four phases, Buffered]
 related-documents: [data-ownership-and-lifetimes.md, determinism-and-boundary-transfers.md, ../systems/activity-dirty-regions-and-waking.md]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-21
 ---
 
 # Chunk, tile, and buffer model
@@ -58,6 +58,15 @@ tile or grain. Consecutive Hilbert ranks connect only within one finite tile,
 while Morton ranks are not a continuous route. Neither substitutes for the
 generator's macrocell port network or the simulation scheduler's write domains.
 See the [field/curve contract](../systems/procedural-generation-fields-and-modifiers.md).
+
+GEN-004 adds a finite authored window of canonical world-zero region addresses.
+Its `region_size` defines semantic ownership independently of output chunks;
+changing that grid size intentionally changes the semantic identity namespace.
+A region-owned building can span many storage chunks. Neighboring regions
+derive the same shared boundary socket without observing chunk residency, and
+explicit passages and utility routes carry the cross-region connection. The
+[hierarchy contract](../systems/procedural-hierarchical-generation.md) distinguishes
+these finite plans from future persistent-world streaming.
 
 ## How are writes into a neighboring tile made safe?
 

@@ -10,6 +10,7 @@ const Rig = preload("res://scripts/physical_actor_rig.gd")
 const Scripted = preload("res://scripts/physical_actor_script.gd")
 const Equipment = preload("res://scripts/physical_usable_equipment.gd")
 const Loadouts = preload("res://scripts/physical_usable_loadouts.gd")
+const Flight = preload("res://scripts/physical_flight_profile.gd")
 const MAX_ACTORS: int = 8
 const MAX_PARTS: int = 8
 const MAX_LEASE: int = 18
@@ -36,6 +37,15 @@ var _sequences: PackedInt64Array = PackedInt64Array()
 var _deadlines: PackedInt64Array = PackedInt64Array()
 var _generations: PackedInt64Array = PackedInt64Array()
 var _commands: Array = []
+var _flight_commands: Array = []
+var _flight_applied: Array = []
+var _flight_last_step: Array = []
+var _has_flight: bool = false
+var _flight_completed_step: int = 0
+var _flight_prepared: bool = false
+var _flight_step_fault: String = ""
+var _flight_pause_step: int = 0
+var _fallback_reasons: Array[String] = []
 var _button_edges: Array = []
 var _accepted_buttons: Array = []
 var _applied_buttons: Array = []
@@ -64,6 +74,8 @@ static func valid_definitions(definitions: Array) -> bool:
 		var prepared: Dictionary = Equipment.definition(Catalog.entry(model), Loadouts.entry(model))
 		if prepared.is_empty() or not _integer(value.get("usable_index", Loadouts.entry(model).get("usable_index", -1)), -1, 31):
 			return false
+		if model in Flight.IDS and int(value.get("usable_index", -1)) != -1:
+			return false
 		var count: int = prepared.parts.size()
 		if count < 1 or count > MAX_PARTS:
 			return false
@@ -78,6 +90,9 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 	epoch = new_epoch
 	tick = 0
 	_suspended = false
+	_has_flight = false
+	_flight_prepared = false
+	_flight_step_fault = ""
 	accepted_commands = 0
 	rejected_commands = 0
 	last_error = ""
@@ -87,6 +102,7 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 	var sizes := PackedVector2Array()
 	for index: int in range(definitions.size()):
 		var definition: Dictionary = definitions[index]
+		_has_flight = _has_flight or StringName(str(definition.model)) in Flight.IDS
 		var loadout: Dictionary = Loadouts.entry(StringName(str(definition.model)))
 		var data: Dictionary = Equipment.definition(Catalog.entry(StringName(str(definition.model))), loadout)
 		_catalogue.append(data)
@@ -111,6 +127,10 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 		pilot.configure(StringName(str(definition.model)), definition.position, index)
 		_scripts.append(pilot)
 		_commands.append({})
+		_flight_commands.append({})
+		_flight_applied.append({})
+		_flight_last_step.append({})
+		_fallback_reasons.append("not_commanded")
 		_button_edges.append([])
 		_accepted_buttons.append({})
 		_applied_buttons.append({})
@@ -129,12 +149,41 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 	_deadlines.fill(-1)
 	_generations.resize(_rigs.size())
 	_generations.fill(0)
+	_flight_completed_step = bridge.manual_step_count()
+	_flight_pause_step = _flight_completed_step
 	_active = true
 	return true
 
 
 func active() -> bool:
 	return _active
+
+
+func is_flight_actor(actor_id: int) -> bool:
+	return actor_id >= 0 and actor_id < _definitions.size() \
+		and StringName(str(_definitions[actor_id].model)) in Flight.IDS
+
+
+func set_propulsion_enabled(actor_id: int, enabled: bool) -> bool:
+	# Main-thread host/fixture switch, never an extra learned-policy output.
+	if not _active or not is_flight_actor(actor_id):
+		return false
+	cancel_input(actor_id, epoch, StringName(str(_definitions[actor_id].producer)))
+	_fallback_reasons[actor_id] = "power_changed"
+	return _rigs[actor_id].set_propulsion_enabled(enabled)
+
+
+func takeover(actor_id: int, expected_epoch: int, producer: StringName) -> bool:
+	# Ownership changes revoke issued observations before the replacement source
+	# can request a fresh lease. Physical state is not reconstructed here.
+	if not _active or actor_id < 0 or actor_id >= _rigs.size() or expected_epoch != epoch \
+		or producer not in PRODUCERS:
+		return false
+	if not cancel_input(actor_id, expected_epoch, StringName(str(_definitions[actor_id].producer))):
+		return false
+	_definitions[actor_id].producer = producer
+	_fallback_reasons[actor_id] = "takeover"
+	return true
 
 
 func bodies() -> Array[RigidBody2D]:
@@ -164,7 +213,19 @@ func _view(actor_id: int, issue: bool) -> Dictionary:
 	result["pending_input_edges"] = _button_edges[actor_id].size()
 	result["equipment"] = _equipment[actor_id].observation()
 	result["cell_patch"] = result.equipment.get("cell_patch", {}).duplicate(true)
-	if issue and not faulted:
+	if is_flight_actor(actor_id):
+		result["action_profile"] = Flight.ACTION_PROFILE
+		result["profile_version"] = Flight.VERSION
+		result["control_mode"] = Flight.ACTION_PROFILE
+		result.flight["command"] = _flight_commands[actor_id].duplicate(true)
+		result.flight["applied"] = _flight_applied[actor_id].duplicate(true)
+		result.flight["last_step"] = _flight_last_step[actor_id].duplicate(true)
+		result.flight["command_live"] = not _suspended and not faulted and not _commands[actor_id].is_empty() and tick < _deadlines[actor_id]
+		result.flight["fallback_reason"] = _fallback_reasons[actor_id]
+		result.flight["step_fault"] = _flight_step_fault
+		if _suspended or faulted:
+			result.flight["mode"] = "suspended"
+	if issue and not faulted and not _suspended:
 		_issued[actor_id][tick % (MAX_LEASE + 1)] = tick
 	return result.duplicate(true)
 
@@ -237,6 +298,24 @@ static func normalized_action(value: Variant) -> Dictionary:
 	return result
 
 
+static func normalized_flight_action(value: Variant) -> Dictionary:
+	# This new profile is deliberately closed to legacy effort, trim and ability
+	# outputs. Its version-2 envelope retains the original ownership fences.
+	if not value is Dictionary or value.size() != 1 or not value.has("move"):
+		return {}
+	var move: Variant = value.move
+	if move is Array and move.size() == 2:
+		if not (move[0] is int or move[0] is float) or not (move[1] is int or move[1] is float):
+			return {}
+		for component: Variant in move:
+			if not is_finite(float(component)) or absf(float(component)) > 1.0:
+				return {}
+		move = Vector2(float(move[0]), float(move[1]))
+	if not move is Vector2 or not move.is_finite() or absf(move.x) > 1.0 or absf(move.y) > 1.0:
+		return {}
+	return {"move": move.limit_length(1.0)}
+
+
 func submit(command: Variant, producer: StringName = &"policy") -> bool:
 	if not _active or _suspended or not command is Dictionary or command.size() != COMMAND_KEYS.size():
 		return _reject("command_schema_or_suspended")
@@ -266,36 +345,43 @@ func submit(command: Variant, producer: StringName = &"policy") -> bool:
 	if _issued[actor_id][observed % (MAX_LEASE + 1)] != observed \
 		or command.get("observation_id") != _observation_id(actor_id, observed):
 		return _reject("observation_not_issued")
-	var action: Dictionary = normalized_action(command.get("action"))
+	var flight: bool = is_flight_actor(actor_id)
+	var action: Dictionary = normalized_flight_action(command.get("action")) if flight else normalized_action(command.get("action"))
 	if action.is_empty():
 		return _reject("action")
-	if not action.equipment.is_empty():
+	var equipment_action: Dictionary = action.get("equipment", {})
+	if not equipment_action.is_empty():
 		if not _equipment[actor_id].matches(action.equipment):
 			return _reject("equipment_epoch_or_instance")
 		if not _equipment[actor_id].can_select(int(action.equipment.usable_index)):
 			return _reject("selection_requires_held_body")
-	elif bool(action.tool) or bool(action.release_usable) or bool(action.attach_usable):
+	elif bool(action.get("tool", false)) or bool(action.get("release_usable", false)) or bool(action.get("attach_usable", false)):
 		return _reject("equipment_identity_required")
 	var edges: Array = []
 	for button: String in BUTTON_KEYS:
 		if button in ["tool", "release_usable", "attach_usable"]:
 			continue
-		if bool(action[button]) != bool(_accepted_buttons[actor_id].get(button, false)):
-			edges.append({"button": button, "pressed": bool(action[button])})
+		if bool(action.get(button, false)) != bool(_accepted_buttons[actor_id].get(button, false)):
+			edges.append({"button": button, "pressed": bool(action.get(button, false))})
 	for button: String in Equipment.BUTTON_KEYS:
 		var key: String = "equipment_" + button
-		if bool(action.equipment.get(button, false)) != bool(_accepted_buttons[actor_id].get(key, false)):
-			edges.append({"button": key, "pressed": bool(action.equipment.get(button, false))})
+		if bool(equipment_action.get(button, false)) != bool(_accepted_buttons[actor_id].get(key, false)):
+			edges.append({"button": key, "pressed": bool(equipment_action.get(button, false))})
 	if _button_edges[actor_id].size() + edges.size() > MAX_BUTTON_EDGES:
 		return _reject("button_edge_capacity")
 	_button_edges[actor_id].append_array(edges)
 	for button: String in BUTTON_KEYS:
-		_accepted_buttons[actor_id][button] = action[button]
+		_accepted_buttons[actor_id][button] = action.get(button, false)
 	for button: String in Equipment.BUTTON_KEYS:
-		_accepted_buttons[actor_id]["equipment_" + button] = bool(action.equipment.get(button, false))
+		_accepted_buttons[actor_id]["equipment_" + button] = bool(equipment_action.get(button, false))
 	_sequences[actor_id] = int(command.sequence)
 	_deadlines[actor_id] = observed + int(command.lease_ticks)
 	_commands[actor_id] = action
+	if flight:
+		_flight_commands[actor_id] = {"requested_action": command.action.duplicate(true),
+			"admitted_action": action.duplicate(true), "sequence": int(command.sequence),
+			"observed_tick": observed, "admitted_tick": tick}
+		_fallback_reasons[actor_id] = "none"
 	accepted_commands += 1
 	return true
 
@@ -317,7 +403,11 @@ func cancel_input(actor_id: int, expected_epoch: int, producer: StringName) -> b
 	if not _active or actor_id < 0 or actor_id >= _rigs.size() or expected_epoch != epoch \
 		or producer != StringName(str(_definitions[actor_id].producer)):
 		return false
+	_capture_flight_step(actor_id)
 	_commands[actor_id] = {}
+	_flight_commands[actor_id] = {}
+	_flight_applied[actor_id] = {}
+	_fallback_reasons[actor_id] = "cancelled"
 	_button_edges[actor_id].clear()
 	_accepted_buttons[actor_id].clear()
 	_applied_buttons[actor_id].clear()
@@ -338,16 +428,48 @@ func cancel_input(actor_id: int, expected_epoch: int, producer: StringName) -> b
 func set_suspended(value: bool) -> void:
 	if value == _suspended:
 		return
+	if not value and _has_flight:
+		if not _flight_step_fault.is_empty():
+			return
+		if bridge.manual_step_count() != _flight_pause_step:
+			_fault_flight_step("flight_physics_advanced_while_suspended")
+			return
+		# Paused views cannot become authority merely because the tick stayed
+		# unchanged. A fresh post-resume observation gets a new generation.
+		for index: int in range(_rigs.size()):
+			if is_flight_actor(index):
+				cancel_input(index, epoch, StringName(str(_definitions[index].producer)))
+				_fallback_reasons[index] = "resumed"
 	_suspended = value
 	if value:
+		_flight_pause_step = bridge.manual_step_count()
 		_effects.clear()
 		for index: int in range(_rigs.size()):
 			cancel_input(index, epoch, StringName(str(_definitions[index].producer)))
+			_fallback_reasons[index] = "suspended"
+		if _flight_pause_step == _flight_completed_step:
+			_flight_prepared = false
 
 
 func advance(delta: float) -> void:
-	if not _active or _suspended or not is_finite(delta) or delta <= 0.0:
+	if not _active or _suspended:
 		return
+	if _has_flight:
+		if bridge.manual_step_count() != _flight_completed_step:
+			_fault_flight_step("flight_requires_completion_before_advance")
+			return
+		if _flight_prepared:
+			last_error = "flight_step_already_prepared"
+			return
+	if not is_finite(delta) or delta <= 0.0:
+		for index: int in range(_rigs.size()):
+			if is_flight_actor(index):
+				cancel_input(index, epoch, StringName(str(_definitions[index].producer)))
+				_fallback_reasons[index] = "invalid_cadence"
+				last_error = "flight_requires_fixed_60_hz"
+		return
+	if _has_flight:
+		_flight_prepared = true
 	# Collect every scripted view before admitting outputs or advancing any body.
 	var script_actions: Array = []
 	if tick % DECISION_TICKS == 0:
@@ -359,11 +481,17 @@ func advance(delta: float) -> void:
 		submit_local(int(output.id), output.action, &"demo", 12)
 	_effects.clear()
 	for index: int in range(_rigs.size()):
+		if is_flight_actor(index) and absf(delta - Flight.FIXED_DELTA) > 0.000000001:
+			cancel_input(index, epoch, StringName(str(_definitions[index].producer)))
+			_fallback_reasons[index] = "invalid_cadence"
+			last_error = "flight_requires_fixed_60_hz"
+			continue
 		if not str(_rigs[index].fault).is_empty() or _deadlines[index] < tick + 1:
 			if not _commands[index].is_empty():
 				cancel_input(index, epoch, StringName(str(_definitions[index].producer)))
+				_fallback_reasons[index] = "fault" if not str(_rigs[index].fault).is_empty() else "expired"
 		var command: Dictionary = _commands[index].duplicate(true)
-		if not command.is_empty():
+		if not command.is_empty() and not is_flight_actor(index):
 			# Preserve a quick press and release across physical samples. Each
 			# button changes at most once per tick; cancellation never drains it.
 			var changed: Dictionary = {}
@@ -381,6 +509,14 @@ func advance(delta: float) -> void:
 					command.equipment[button] = bool(_applied_buttons[index].get("equipment_" + button, false))
 		_equipment[index].pre_advance(command.get("equipment", {}), command.get("aim", Vector2.ZERO), not command.is_empty())
 		_rigs[index].advance(command, delta, not command.is_empty())
+		if is_flight_actor(index):
+			var view: Dictionary = _rigs[index].observation()
+			_flight_applied[index] = {"run_id": run_id, "epoch": epoch, "actor_id": index,
+				"producer": str(_definitions[index].producer), "control_generation": _generations[index],
+				"sequence": _sequences[index], "observed_tick": _flight_commands[index].get("observed_tick", -1),
+				"step_tick": tick, "physics_step": _flight_completed_step + 1,
+				"controller": view.flight.controller.duplicate(true), "action": view.action.duplicate(true)} \
+				if not command.is_empty() and str(view.fault).is_empty() and bool(view.flight.controller.valid) else {}
 		_equipment[index].advance(command.get("equipment", {}), delta, tick, _generations[index],
 			_deadlines[index], not command.is_empty() and str(_rigs[index].fault).is_empty())
 		for request: Dictionary in _rigs[index].drain_effects():
@@ -391,15 +527,61 @@ func advance(delta: float) -> void:
 			_effects.append(effect)
 
 
+func _capture_flight_step(actor_id: int) -> void:
+	# Cancellation after the native step must retain the consumed command's
+	# identity, even if a new producer or generation takes over before completion.
+	if is_flight_actor(actor_id) and not _flight_applied[actor_id].is_empty() \
+		and bridge.manual_step_count() == int(_flight_applied[actor_id].physics_step):
+		_flight_last_step[actor_id] = _flight_applied[actor_id].duplicate(true)
+
+
+func _fault_flight_step(reason: String) -> void:
+	_flight_step_fault = reason
+	last_error = reason
+	set_suspended(true)
+	for index: int in range(_rigs.size()):
+		if is_flight_actor(index):
+			cancel_input(index, epoch, StringName(str(_definitions[index].producer)))
+			_fallback_reasons[index] = "step_fault"
+
+
 func complete_step() -> void:
-	if _active and not _suspended:
+	if not _active:
+		return
+	if _has_flight:
+		if not _flight_step_fault.is_empty():
+			return
+		var actual_step: int = bridge.manual_step_count()
+		if _suspended and actual_step != _flight_pause_step:
+			_fault_flight_step("flight_physics_advanced_while_suspended")
+			return
+		if actual_step == _flight_completed_step:
+			last_error = "flight_step_not_completed"
+			return
+		if actual_step != _flight_completed_step + 1 or not _flight_prepared:
+			_fault_flight_step("flight_unexpected_physics_step")
+			return
+	elif _suspended:
+		return
+	if _active:
 		tick += 1
 		for index: int in range(_rigs.size()):
+			_capture_flight_step(index)
+			_rigs[index].complete_step()
 			_rigs[index].refresh_observation()
 			# Fault quarantine retires both unconsumed input and copied tool work.
 			# Healthy actors keep their separate leases and continue the session.
 			if not str(_rigs[index].fault).is_empty() and not _commands[index].is_empty():
 				cancel_input(index, epoch, StringName(str(_definitions[index].producer)))
+				_fallback_reasons[index] = "fault"
+			elif is_flight_actor(index) and not _commands[index].is_empty() and tick >= _deadlines[index]:
+				# Retire at the completed lease boundary, before a queued reply can
+				# extend a pre-expiry observation into a new period of authority.
+				cancel_input(index, epoch, StringName(str(_definitions[index].producer)))
+				_fallback_reasons[index] = "expired"
+		if _has_flight:
+			_flight_completed_step = bridge.manual_step_count()
+			_flight_prepared = false
 
 
 func drain_effects() -> Array:
@@ -417,8 +599,10 @@ func equipment_frame() -> Dictionary:
 			for part: Dictionary in _rigs[index].observation().get("parts", []):
 				parts.append({"body_id": _body_offsets[index] + int(part.index) + 1,
 					"position": part.position, "rotation": part.rotation, "half_extents": Vector2(part.size) * 0.5})
-			actors.append(_equipment[index].frame(_generations[index], tick, _deadlines[index],
-				not _suspended and str(_rigs[index].fault).is_empty(), parts))
+			var frame: Dictionary = _equipment[index].frame(_generations[index], tick, _deadlines[index],
+				not _suspended and str(_rigs[index].fault).is_empty(), parts)
+			if not frame.is_empty():
+				actors.append(frame)
 			var device: Dictionary = _equipment[index].device_frame()
 			if not device.is_empty():
 				devices.append(device)
@@ -464,10 +648,12 @@ func render_parts() -> Array:
 		var actor_bodies: Array[RigidBody2D] = _rigs[index].bodies()
 		for part_index: int in range(actor_bodies.size()):
 			var body: RigidBody2D = actor_bodies[part_index]
-			var shape: RectangleShape2D = body.get_child(0).shape
+			var shape: Shape2D = body.get_child(0).shape
+			var dimensions: Vector2 = Vector2(shape.radius * 2.0, shape.radius * 2.0) if shape is CircleShape2D else shape.size
 			result.append({"actor_id": index, "part_id": str(parts[part_index].id),
 				"transform": bridge.body_transform(_body_offsets[index] + part_index),
-				"size": shape.size, "color": parts[part_index].color})
+				"size": dimensions, "color": parts[part_index].color,
+				"shape": "circle" if shape is CircleShape2D else "rectangle"})
 	return result
 
 
@@ -499,6 +685,13 @@ func close() -> void:
 	_deadlines.clear()
 	_generations.clear()
 	_commands.clear()
+	_flight_commands.clear()
+	_flight_applied.clear()
+	_flight_last_step.clear()
+	_has_flight = false
+	_flight_prepared = false
+	_flight_step_fault = ""
+	_fallback_reasons.clear()
 	_button_edges.clear()
 	_accepted_buttons.clear()
 	_applied_buttons.clear()

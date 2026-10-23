@@ -4,11 +4,17 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-22
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
 # Retrieval question index
+
+## Generation Workbench 2 and procedural quality
+
+- [Workbench inspection and transactions](../systems/generation-workbench-2.md): accepted native identities, bounded deterministic replay, actual stage meanings, invalid-edit preservation, graph/hierarchy/plane editing, undo/redo, seeds and comparison.
+- [Procedural qualification](../operations/procedural-qualification.md): compact 1024-square recipe, final projected-material clearance, complete native mechanism receipts, display-backed captures and candid Deepworks comparison.
+
 
 Use this navigation page to select focused documents. Default machine retrieval
 uses [retrieval-corpus.json](retrieval-corpus.json), not this index's repeated
@@ -18,16 +24,20 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 
 | Question family | Canonical route |
 |---|---|
+| Are Trainer, Hauler, Drifter and Dart four calibrated drones, and can I select them in ordinary play yet? | [4LY implementation scope and programme](../systems/physical-free-flight.md#what-does-4ly-001-implement-and-which-drones-are-ready), [profile values](configuration-reference.md#physical-free-flight-values) |
+| How can two desired-velocity outputs control a real flying chassis without hidden goal navigation, unlimited hover or velocity clipping? | [4LY control and goal blindness](../systems/physical-free-flight.md), [strict action interface](interfaces-and-message-contracts.md#physical-free-flight-actions) |
+| Does releasing a drone's velocity request mean hover, and what happens on cancellation, lease expiry, power-off or replacement? | [4LY neutral and lifecycle modes](../systems/physical-free-flight.md#how-do-neutral-cancellation-power-off-and-suspension-differ), [copied publications](interfaces-and-message-contracts.md#physical-free-flight-actions) |
+| Which profile/controller hashes, applied assistance and actual motion belong in 4LY flight evidence, and what gates Trainer learning? | [4LY identity and programme](../systems/physical-free-flight.md), [focused conformance tests](../operations/local-build-and-validation.md#physical-free-flight-checks) |
 | Can IDs 81–131 survive CYSD1 saves and construction, diagnostic histograms and sampled-rig digging occlusion? | [Building integration](../systems/building-material-catalogue.md#which-integration-boundaries-use-the-expanded-catalogue), [save format](level-saves-and-replay.md), and [review evidence](../audits/2026-10-19-mat002-review-and-validation.md) |
 | Did graphical tests actually render, and can a headless skip or exit-zero script error pass CI? | [Required rendered-test execution](../operations/testing-validation-and-replay.md#ci-execution-sharding), [Linux invocation](../operations/local-build-and-validation.md#linux-gdextension-ci-sharding), and [review evidence](../audits/2026-10-19-mat002-review-and-validation.md) |
 | Can the standalone physics CLI safely count building materials, and which executable regression checks its JSON output? | [CLI admission and sample accounting](../operations/physics-characterisation.md#which-checks-guard-the-measurement-path), [build commands](../operations/local-build-and-validation.md#how-is-the-physics-baseline-rebuilt) |
 | Does current CI actually execute the retained Windows DLL, and what source and test coverage does that prove? | [Windows execution gate](../operations/local-build-and-validation.md#windows-retained-runtime-execution), [test acceptance](../operations/testing-validation-and-replay.md#ci-execution-sharding), and [dated runtime evidence](../audits/2026-10-19-mat002-review-and-validation.md) |
-| How do I choose all 41 articulated Rapier actors in Blacksite/showcase maps, retain sampled references, and use the same scripted or policy controls? | [Physical actor contract](../systems/physical-actor-rigs.md), [physical actor programme](../operations/physical-actor-programme.md) |
+| How do I choose all 46 articulated Rapier actors in Blacksite/showcase maps, retain sampled references, and use the same scripted or policy controls? | [Physical actor contract](../systems/physical-actor-rigs.md), [physical actor programme](../operations/physical-actor-programme.md) |
 | Do gyros track finite momentum, what flex/play is intentional, and which joints or held tools are actual bodies? | [Physical mechanics and usables](../systems/physical-actor-rigs.md), [physical limits](configuration-reference.md#physical-actor-values) |
 | How does physical Thunderbowl v2 differ from the sampled v1 control lab and its metal/NCA examples? | [Physical Thunderbowl v2](../systems/thunderbowl-control-reference.md#physical-thunderbowl-v2) |
 | How do all 32 usables share real physical mounts, independent aim/power, accepted recoil and the same human/demo/policy command path? | [Physical equipment](../systems/actor-usables.md), [equipment actions and results](interfaces-and-message-contracts.md#physical-equipment-actions-and-results) |
 | Can a stale receipt fire a dropped tool, can pickup refill a processor, and who owns a deployed device's native ports? | [Physical equipment lifecycle](../systems/actor-usables.md), [physical ownership](../architecture/data-ownership-and-lifetimes.md), [equipment interface](interfaces-and-message-contracts.md#physical-equipment-actions-and-results) |
-| How do I run the physical usable course, test a processor jam and inspect useful default loadouts for all 41 actors? | [Physical usable course](../systems/thunderbowl-control-reference.md#physical-usable-course), [scripted loadouts](../systems/physical-actor-rigs.md#how-do-the-scripted-actors-use-their-loadouts), [focused validation](../operations/local-build-and-validation.md#physical-usable-validation) |
+| How do I run the physical usable course, test a processor jam and inspect useful default loadouts for all 46 actors? | [Physical usable course](../systems/thunderbowl-control-reference.md#physical-usable-course), [scripted loadouts](../systems/physical-actor-rigs.md#how-do-the-scripted-actors-use-their-loadouts), [focused validation](../operations/local-build-and-validation.md#physical-usable-validation) |
 | How do I enter Blacksite Nine, follow the route through its connected 3×3 districts, use the camera map, and preserve or reset edits across shared boundaries? | [Blacksite Nine connected-complex guide](../operations/blacksite-nine-demo.md) |
 | How do I open Neon Reliquary, descend through Middle Cyberberbia, Sewertech Alley and Industrial Underswamp, inspect viewpoints, or capture all four tiles? | [Neon Reliquary scene guide](../operations/neon-reliquary-demo.md) |
 
@@ -37,6 +47,12 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Do Hilbert/Morton fields form one infinite connected path, and how do signed tiles or aggregate grains cross chunk boundaries? | [Generation fields and finite curves](../systems/procedural-generation-fields-and-modifiers.md), [chunk geometry](../architecture/chunk-tile-and-buffer-model.md) |
 | How do masks, noncyclic sidechains, context predicates and hard controls combine for procedural sculpting? | [Generation fields and masked modifiers](../systems/procedural-generation-fields-and-modifiers.md) |
 | Do aggregate definitions create new physics materials, and what does a copied field/modifier diagnostic prove? | [Generation aggregates and diagnostics](../systems/procedural-generation-fields-and-modifiers.md), [GEN-002 evidence](../audits/2026-10-18-gen002-fields-and-aggregates.md) |
+| How do signed distance, vector and exact categorical generation fields convert to masks without silent clamping or float IDs? | [Typed values and compatibility](../systems/procedural-typed-spatial-fields.md), [typed interfaces](interfaces-and-message-contracts.md) |
+| What do affine/polar/repeat/warp transforms, gradient/curl/curvature and their distance qualifications mean? | [Spatial transforms and derivatives](../systems/procedural-typed-spatial-fields.md), [operator inventory](procedural-spatial-operators.md) |
+| Can Peano traversal, Voronoi/Delaunay structure, Poisson-style seeds or finite adjacency assignments promise continuous world routes? | [Structured spatial mappings](../systems/procedural-typed-spatial-fields.md) |
+| How are typed subgraph parameters, namespaces, multiresolution lattices and warm-cache identities bounded? | [Reusable graphs and sampling](../systems/procedural-typed-spatial-fields.md), [configuration](configuration-reference.md) |
+| How can independently generated neighboring districts share semantic feature identities, boundary ports and explicit routes? | [Hierarchical generation and region ownership](../systems/procedural-hierarchical-generation.md) |
+| Which hierarchy placement constraints are hard, how are fallbacks reported, and does a route graph prove raster clearance? | [Hierarchical constraints and structural-route qualification](../systems/procedural-hierarchical-generation.md), [configuration](configuration-reference.md) |
 | Is a closed/completed development claim actually implemented, integrated, verified and owner-accepted now? | [Development-claims remediation programme](../operations/development-claims-remediation-programme.md); use the [2026-09-20 audit](../audits/2026-09-20-development-claims-closure-audit.md) for the frozen intake findings |
 | How do Play/Inspect/Benchmark share a definition, and is a scenario capture replay? | [MicroScenario contract](../operations/microscenarios.md) |
 | Actual version, commits, local changes, recovery | [Source checkpoint](../operations/source-checkpoint-and-recovery.md) |
@@ -70,6 +86,8 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Why can deep connected Water keep unequal levels, what did #26 reject, and what comes next? | [Water design](../systems/water-design.md), [architecture programme](../operations/architecture-programme.md), [#26 evidence](../audits/2026-09-19-issue-26-water-leveling.md) |
 | Why test hybrid Water sheets before adding another pressure solver, and why is WEX-002 currently blocked? | [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md), [WEX-002 blocked disposition](../audits/2026-09-24-wex002-water-sheet-blocked-disposition.md), [Water design](../systems/water-design.md), [soliding programme](../operations/soliding-programme.md) |
 | Is the barrel a special physics object, and was its historical support result owner-accepted? | [Product intent](product-intent-and-priorities.md), [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md), [remediation programme](../operations/development-claims-remediation-programme.md) |
+| What did WEX-005 (#95) decide for #45, and when are equal communicating levels a valid target? | [WEX-005 synthesis](../audits/2026-10-23-wex005-water-evidence-synthesis.md), [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md#wex-005-disposition-2026-10-23), [Water design](../systems/water-design.md#wex-005-disposition-and-the-opt-in-lcb-lane-2026-10-23) |
+| Does the opt-in Liquid Comparison Build pressure solver change production Water or #45, and has LCB-000 passed? | [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md), [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md#lcb-experimental-pressure-lane-reconciliation-2026-10-23), [Water design](../systems/water-design.md#wex-005-disposition-and-the-opt-in-lcb-lane-2026-10-23) |
 | How could trapped gas, sealed rooms or vacuum be approximated without cellular gas CFD? | [WEX-003 feasibility research](../research/lumped-gas-region-pressure-bookkeeping.md), [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md), [field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
 | How could Water velocity/overfill reach the renderer (currents, foam), what would it cost, and how is the Water seam line hidden? | [Planned flow render channel proposal](../research/water-flow-render-channel.md), [render bridges](../architecture/rendering-and-gameplay-bridges.md), [appearance](../systems/material-appearance-and-rendering.md), [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md) |
 | Heat/pressure/wind and Smoke limits | [Field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
@@ -93,6 +111,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Meaning of a term or unexplained symptom | [Glossary](glossary.md), [troubleshooting](../operations/troubleshooting.md) |
 | Why #17 does not make mass8 the perceptual minimum | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [#17 evidence](../audits/2026-09-11-issue-17-state-precision.md) |
 | What #19 delivers, and whether the Water Feel Lab is ready for a formal blind human study | [Experiment Tower](../operations/experiment-tower.md), [policy registration](../operations/water-feel-lab-experiment.md), [completion evidence](../audits/2026-09-12-issue-19-water-feel-lab.md), then [REM-001 current qualification](../operations/development-claims-remediation-programme.md) |
+| Can a stale Water snapshot end a blind session or acknowledge a newer Tower reset? | [Tower exit ownership](../operations/experiment-tower.md#how-is-a-desktop-water-exit-acknowledged), [receipt fields](interfaces-and-message-contracts.md#desktop-water-exit-receipts), then [dated correction](../audits/2026-10-22-water-exit-acknowledgement.md) |
 | Why #18 remains held after G-P | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [compact-motion prompt](../operations/architecture-programme-prompts/compact-motion.md) |
 | What is the actual #24/#27-#30 development order, and may MicroScenarios run before G-final? | [Canonical MicroScenarios/interactions programme](../operations/microscenarios-programme.md), [roadmap](status-and-roadmap.md) |
 | What interaction schema/rule/provenance is authoritative now, and how do we avoid a destructive N² matrix? | [Current interaction substrate](../systems/intermaterial-interactions.md), [canonical programme](../operations/microscenarios-programme.md) |
@@ -206,7 +225,21 @@ separate; the programme graph owns admission.
 
 - Blocked falling/torque/coherent-child motion fixture: [macro-fracture preregistration](../operations/soliding-macro-fracture-fixture.md).
 
-Integrated launch and retained hull comparisons route to the [physical actor programme](../operations/physical-actor-programme.md). Current articulation, the 41-rig roster, scripted feedback, command freshness and usable lifecycle route to the [physical actor contract](../systems/physical-actor-rigs.md).
+Integrated launch and retained hull comparisons route to the [physical actor programme](../operations/physical-actor-programme.md). Current articulation, the 46-rig roster, scripted feedback, command freshness and usable lifecycle route to the [physical actor contract](../systems/physical-actor-rigs.md).
+
+## Human player controls, acrobat chains and material swarms
+
+Use the [player playground](../systems/player-control-playground.md) for all seven
+presets, `--player-playground` / `--player=ID`, F5 SetP, keyboard/gamepad mapping,
+slide/roll/bullet-jump chains, quick reset and focus rearm. It distinguishes five
+Rapier actors from native Sand/Water fields and their local selection, ordinary
+material behavior and lease cancellation. Exact fields/receipts belong to
+[interfaces](interfaces-and-message-contracts.md#player-material-field-control);
+limits belong to [configuration](configuration-reference.md#player-playground-values).
+Circle hard contact versus square native masks belongs to
+[coupling](../architecture/rigid-body-and-cellular-coupling.md#circular-player-wheels-retain-rectangular-native-occupancy).
+Execution and human/platform qualification route to the
+[dated evidence](../audits/2026-10-20-player-control-playground.md).
 
 Layered material worlds, Strata Theatre, quantized relief and explicit interlayer event questions route to the [depth prototype contract](../systems/depth-layers-and-parallax.md).
 
@@ -222,3 +255,7 @@ and stale-packet rejection, use the
 [depth contract](../systems/depth-layers-and-parallax.md). Exact budgets belong
 to [configuration](configuration-reference.md#depth-host-and-deepworks-configuration);
 executed results belong to the [dated Deepworks audit](../audits/2026-10-20-deepworks-exhibition.md).
+
+## Semantic four-plane generation and authoring
+
+GEN-005 projection, typed link, fixture lifecycle, atomic admission and frozen-background questions route to the [semantic-plane contract](../systems/procedural-semantic-planes.md). Refinery/cavern JSON, source programmes, controls, actor placements, actual captures and provenance inspection route to the [authoring guide](../operations/semantic-depth-authoring.md).

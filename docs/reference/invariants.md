@@ -6,7 +6,7 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-22
 ---
 
 # Architectural and simulation invariants
@@ -54,6 +54,28 @@ Sources: [World](../../native/include/cybersand/world.hpp),
 | MOD-001 | Approved, incomplete extraction: scheduler coordinates work rather than owning material policy |
 | MOD-002 | Current descriptors; Approved execution separation: immutable rule data owns no threads/per-cell object containers |
 | MOD-003 | Approved, partial: storage owns chunk/field lifetime and capacity; general serialization is Planned |
+
+## Semantic generation invariants
+
+Contract: [four-plane generation](../systems/procedural-semantic-planes.md).
+Sources: [native plan](../../native/src/generation_planes.cpp),
+[owner](../../godot/scripts/depth/semantic_plane_runtime.gd).
+Fixtures: [native determinism](../../native/tests/test_generation_planes.cpp),
+[adapter](../../godot/tests/test_worldgen_planes.gd),
+[owner rejection/lifecycle](../../godot/tests/test_semantic_planes_runtime.gd),
+[actual example reactions](../../godot/tests/test_semantic_planes_examples.gd)
+and [render isolation](../../godot/tests/test_semantic_depth_render.gd).
+
+| ID | Status and narrow claim |
+|---|---|
+| GEN-PLANE-001 | Current: all four planes reference one immutable semantic hierarchy, canonical geometry and shared typed fields; absolute coordinates and semantic IDs do not depend on camera or request order |
+| GEN-PLANE-002 | Current: pending/failed/cancelled generation publishes no partial plane arrays; complete host replacement stages four Worlds, registries and the existing play actor owner before one commit |
+| GEN-PLANE-003 | Current: play, scripted and effects own separate native clocks; background has no runtime ticks, source/drain, actor or event writes |
+| GEN-PLANE-004 | Current: only copied identity-checked play→scripted blast and scripted→effects burst observations authorize bounded interlayer commands; static/presentation links and pixel overlap confer no authority |
+| GEN-PLANE-005 | Current: finite source/drain/setup declarations feed ordinary materials; expected products remain diagnostics produced by native kernels |
+| GEN-PLANE-006 | Current: canonical anchors yield one tiled registration union; identical validated admission is idempotent, reset retires old commands, and retired revisions cannot replace current state |
+| GEN-PLANE-007 | Current: all expansion, material, diagnostic, publication, schedule and observation budgets fail explicitly; native acceptance does not waive stricter host caps |
+| GEN-PLANE-008 | Current finite-preview scope: no streaming eviction, durable mutation reconciliation, implicit Z physics or direct generation-worker Rapier access is introduced |
 
 ## Timing and threading invariants
 
@@ -161,7 +183,7 @@ listed boundaries; execution evidence remains separately dated.
 | ID | Status and narrow claim |
 |---|---|
 | RIG-001 | Current: main-thread Rapier owns every live part/joint; the cellular owner receives copied values and alone writes native materials |
-| RIG-002 | Current: physical actor polygons use actual rectangular collider dimensions and published transforms; authored leg, rotor and held parts are physical bodies |
+| RIG-002 | Current: physical actor graphics use actual declared rectangle/circle collider dimensions and published transforms; authored leg, rotor and held parts are physical bodies; SetP circles explicitly retain conservative square native masks |
 | RIG-003 | Current: installation checks at most eight actors, eight parts per actor including held objects, and 64 total coupled bodies before activation |
 | RIG-004 | Current: human, demo and policy producers use one normalized action path; run/actor/epoch/sequence/issued-observation leases prevent stale authority from controlling a replacement |
 | RIG-005 | Current: cancellation clears stored launch intent and pending effects without interpreting it as charged release or deleting physical velocity |
@@ -175,6 +197,76 @@ listed boundaries; execution evidence remains separately dated.
 | RIG-013 | Current: the cellular owner accounts accepted usable work; only a matching accepted, consumed receipt can apply bounded physical recoil once, and cancellation, expiry, rearm, selection and reset fence stale results |
 | RIG-014 | Current: physical processors must settle and fix their real body before worker admission; rotated nonoverlapping exterior ports preflight complete batches, and blocked outputs consume no input |
 | RIG-015 | Current: bounded per-actor/per-processor history preserves stock, age, cycles and cooldown across pickup, redeployment and selection; an exhausted physical device remains observable and inert until its physical owner retires it |
+
+### Physical free-flight invariants
+
+Contract: [4LY single-chassis flight](../systems/physical-free-flight.md).
+Sources: [profile](../../godot/scripts/physical_flight_profile.gd),
+[pure controller](../../godot/scripts/physical_flight_controller.gd),
+[rig](../../godot/scripts/physical_actor_rig.gd) and
+[session](../../godot/scripts/physical_actor_session.gd).
+
+| ID | Status and narrow claim |
+|---|---|
+| FLY-001 | Current: the explicit no-equipment profile installs one rectangular body, no joints/mounts and no hidden held chassis through the ordinary physical owner |
+| FLY-002 | Current: `4ly_velocity_v1` admits exactly two finite in-range `move` components under the retained version-2 observation-relative lease; legacy profile meanings are unchanged |
+| FLY-003 | Current: the stabilizer receives only requested velocity and sampled own velocity/attitude, with no position, goal, terrain, route, reward or World authority |
+| FLY-004 | Current: gravity compensation shares bounded total thrust; acceleration/braking, force response/slew and torque bounds are explicit, without an integral or extra extreme-motion actuator |
+| FLY-005 | Current: desired speed limits do not overwrite collision momentum; cancellation/expiry discard command/filter state and select passive assistance without deleting physical velocity |
+| FLY-006 | Current: copied capabilities and resolved profile/controller hashes identify tuning and controller code separately from requested/admitted/applied input and actual sampled motion |
+| FLY-007 | Current scope: four stable IDs share initial conformance numbers; three are uncalibrated placeholders, and neither profile identity nor a fixture supplies four-profile handling or learned-policy acceptance |
+| FLY-008 | Current: a flight session binds immutable prepared receipts to the actual bridge step counter; cancellation cannot invent consumption or reattribute a completed step to a later producer, and unexpected physical steps require replacement |
+
+### Player material field invariants
+
+Contract: [player playground](../systems/player-control-playground.md) and
+[native field interface](interfaces-and-message-contracts.md#player-material-field-control).
+Sources: [World relocation](../../native/src/world.cpp) and
+[dedicated owner](../../godot/scripts/player_playground_runtime.gd).
+
+| ID | Status and narrow claim |
+|---|---|
+| PLAY-001 | Current: a serialized between-tick native field selects local Sand/Water and moves complete stored cells; no per-cell Rapier object, repaint, hidden cohort or material-kernel replacement |
+| PLAY-002 | Current: source scan, parcel count and axis-adjacent relocation are bounded; invalid input or a failed/in-tick World refuses mutation; occupied destinations and unavailable storage retain the source |
+| PLAY-003 | Current: per-call relocation preserves compact state, temperature and exact Water quantity; subsequent ordinary chemistry/transport is outside that field-only conservation claim |
+| PLAY-004 | Current: material command leases bind issued observations to run/epoch/generation/sequence; expiry/cancel stops field calls, while normal native material stepping may continue |
+
+## Typed procedural generation invariants
+
+Contract: [typed spatial fields](../systems/procedural-typed-spatial-fields.md).
+Sources/tests: [typed API](../../native/include/cybersand/generation_typed_fields.hpp),
+[analytical regressions](../../native/tests/test_generation_typed.cpp),
+[structured primitives](../../native/include/cybersand/generation_spatial.hpp).
+
+| ID | Status and narrow claim |
+|---|---|
+| FIELD-001 | Current: retained schema-1 normalized fields/material fixtures keep their semantics; schema-2 typed spatial computation is explicit |
+| FIELD-002 | Current: signed values and exact category tuples are not silently clamped/interpolated into masks; normalized mask conversion is explicit |
+| FIELD-003 | Current: derivatives/transforms/coarse samples use immutable absolute-world functions, with no resident-neighbor or per-cell-context dependency |
+| FIELD-004 | Current: nonuniform/warped/coarse distance fields carry qualified/general output instead of an unsupported exact Euclidean-distance claim |
+| FIELD-005 | Current: compilation validates unused declarations, namespaces, cycles, bounds and bounded preparation; a failed finite solver exposes no partial assignment |
+| FIELD-006 | Current: caller-owned bounded cache identity includes transitive source/parameter/scale identity and coordinates; cache warmth cannot alter results |
+| FIELD-007 | Current: pending chunk materials and typed diagnostics stay private; failure/cancellation clears payloads and hashes before publication |
+| FIELD-008 | Current: finite curve traversal is not an infinite physical route; finite region assignment has cross-tile guarantees only for explicit wrap constraints |
+
+## Hierarchical generation invariants
+
+Contract: [hierarchical places and routes](../systems/procedural-hierarchical-generation.md).
+Source: [semantic API](../../native/include/cybersand/generation_grammar.hpp),
+[planner](../../native/src/generation_grammar.cpp), and
+[generator](../../native/src/world_generation.cpp).
+
+| ID | Status and narrow claim |
+|---|---|
+| GRAMMAR-001 | Current: semantic region/rule/slot identities exclude storage-chunk size, request order, recipe revision and finite window; a region-grid-size change explicitly changes identity |
+| GRAMMAR-002 | Current: region-contained features may cross storage chunks; canonical boundary/socket ownership and explicit routes do not require either owning chunk to have been generated |
+| GRAMMAR-003 | Current: hard layout requirements precede preferences; bounded priority search may reject a feasible alternative rather than silently relaxing a constraint |
+| GRAMMAR-004 | Current: omitted features require authored fallback receipts; required neighbors and support are rechecked after omission |
+| GRAMMAR-005 | Current: finite curve order controls placement/inspection but never substitutes for explicit route edges, matching sockets or final-cell clearance |
+| GRAMMAR-006 | Current: exported geometry is immutable declared context; semantic planning and typed fields do not read partial raster output or live World state |
+| GRAMMAR-007 | Current: final hard material overrides preserve authority and can fail a route report; geometric clearance is qualified for the declared floating square profile, not an actor/controller |
+| GRAMMAR-008 | Current: compile/budget failure publishes no partial plan, material or diagnostic packet; semantic inspection does not grant World admission or streaming authority |
+| GRAMMAR-009 | Current: final support qualification is separate from route success; each declared floor/ceiling/wall check needs at least one final Solid contact and reports partial missing contacts without claiming gravity stability or apparatus preservation |
 
 ## Capacity and allocation invariants
 
@@ -262,3 +354,19 @@ state/eligibility table; the standalone model tests logical transitions only.
 | SOL-002 | Approved: summary and stationary eligibility never manufacture dynamic granular cohesion |
 | SOL-003 | Current standalone journal: bounded complete tile publication, ABA revision, explicit capacity/failure and starvation protection; real producer completeness remains Planned |
 | SOL-004 | Approved future fracture: partition exact membership into coherent children and only genuinely loose cells; account inherited momentum/rotation and any motion loss |
+
+## Generation authoring invariants
+
+The [Workbench 2 contract](../systems/generation-workbench-2.md) requires truthful
+bounded native replay tied to accepted identity and explicit unavailable/truncated
+detail. Actual intermediate stage cells must agree with the normal native sampler;
+turning off controls in a separate final recipe is not a stage implementation.
+Invalid candidates preserve accepted recipe, preview and undo/redo history.
+Successful edits, including history navigation and seed changes, invalidate old
+preview/trace/comparison jobs through fresh session/revision identity.
+
+Generated four-plane scene clearance is checked on the final projected play
+materials after overrides. Native fixture feeds never paint their expected
+reaction products; every required helper must complete and no-op/aborted cases
+must fail. Counts, logical work, local timing, actual rendered pixels and visual
+quality judgments remain separately labelled evidence.

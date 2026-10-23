@@ -66,6 +66,13 @@ the corrected #49 apparatus and the #95 WEX synthesis (or its explicit
 blocked/no-go disposition). Equal liquid levels are a vented/shared-pressure
 control, not a universal sealed-room target.
 
+The [2026-10-23 WEX-005 synthesis](docs/audits/2026-10-23-wex005-water-evidence-synthesis.md)
+routes **#45 to NARROW**: admission/design only, under shared/vented-atmosphere
+assumptions, with deep-release surge registered as its own fixture family. The
+opt-in Liquid Comparison Build pressure family (#200) is a separate experimental
+lane bounded by the [LCB-000 Gate A record](docs/audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
+It is not #45 selection, and it may not be ported until all five #213 gates pass.
+
 Do not freeze #45 numeric thresholds from apparatus-v1 settling/U-tube metrics,
 rewrite old #26 artifacts, duplicate #49/#12 ownership, silently unify Water
 FreeMass with other-liquid CellularYield, or start #18 compact history merely to

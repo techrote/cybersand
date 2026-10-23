@@ -1,0 +1,41 @@
+{
+  "schema": 2,
+  "seed": 19002,
+  "chunk_size": 16,
+  "candidate": "strata",
+  "parameters": {"surface_y": 1000000, "relief": 0, "detail": 0},
+  "themes": {"weights": {"industrial": 1}},
+  "spatial": {
+    "geometries": [{"id": "utility_route", "points": [[-256, 40], [-128, 40], [-80, 128], [48, 128], [112, 56], [256, 56]], "closed": false}],
+    "nodes": [
+      {"id": "hub_distance", "kind": "circle_distance", "parameters": {"x": 0, "y": 96, "radius": 48}},
+      {"id": "normal", "kind": "gradient", "inputs": ["hub_distance"]},
+      {"id": "tangent", "kind": "transform_vector", "inputs": ["normal"], "parameters": {"angle": 1.5707963267948966}},
+      {"id": "east", "kind": "constant", "value": {"type": "vector2", "x": 1, "y": 0}},
+      {"id": "alignment", "kind": "dot", "inputs": ["tangent", "east"]},
+      {"id": "direction_variation", "kind": "to_mask", "inputs": ["alignment"], "parameters": {"low": -1, "high": 1}},
+      {"id": "route_distance", "kind": "geometry_distance", "reference": "utility_route"},
+      {"id": "route_width", "kind": "constant", "unit_power": 1, "value": {"type": "scalar", "x": 5}},
+      {"id": "on_route", "kind": "less", "inputs": ["route_distance", "route_width"]},
+      {"id": "route_mask", "kind": "to_mask", "inputs": ["on_route"]},
+      {"id": "divergence", "kind": "divergence", "inputs": ["tangent"]},
+      {"id": "curl", "kind": "curl", "inputs": ["tangent"]},
+      {"id": "slope", "kind": "slope", "inputs": ["hub_distance"]},
+      {"id": "aspect", "kind": "aspect", "inputs": ["hub_distance"]},
+      {"id": "curvature", "kind": "curvature", "inputs": ["hub_distance"], "parameters": {"spacing": 2}},
+      {"id": "variation", "kind": "noise", "sampling_scale": 4, "parameters": {"scale": 16}},
+      {"id": "ridge", "kind": "ridge", "inputs": ["variation"], "parameters": {"spacing": 4}},
+      {"id": "valley", "kind": "valley", "inputs": ["variation"], "parameters": {"spacing": 4}},
+      {"id": "minimum", "kind": "local_minimum", "inputs": ["variation"], "parameters": {"spacing": 4}},
+      {"id": "maximum", "kind": "local_maximum", "inputs": ["variation"], "parameters": {"spacing": 4}},
+      {"id": "polar_pattern", "kind": "polar", "inputs": ["variation"], "parameters": {"origin_y": 96, "angular_scale": 0.03}},
+      {"id": "log_polar_pattern", "kind": "log_polar", "inputs": ["variation"], "parameters": {"origin_y": 96, "radial_scale": 8, "angular_scale": 0.03, "min_radius": 1}}
+    ]
+  },
+  "aggregates": [{"id": "conduits", "variation": "spatial:direction_variation", "components": [{"material": 68, "weight": 1}, {"material": 69, "weight": 1}, {"material": 74, "weight": 1}]}],
+  "modifiers": [
+    {"id": "utility_run", "application": "spatial:route_mask", "aggregate": "conduits"},
+    {"id": "hub", "application": "spatial:polar_pattern", "bounds": [-40, 56, 80, 80], "material": 71},
+    {"id": "service_glow", "priority": 10, "application": "spatial:log_polar_pattern", "bounds": [-16, 80, 32, 32], "material": 77}
+  ]
+}

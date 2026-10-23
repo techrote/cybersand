@@ -6,7 +6,7 @@ status: Current
 scope: Current execution paths and authority map; routes to the contracts that govern changes
 keywords: [architecture, native authority, Godot, Rapier, desktop, Web]
 related-documents: [module-boundaries.md, data-ownership-and-lifetimes.md, simulation-tick-and-threading.md, ../reference/status-and-roadmap.md]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-10-20
 ---
 
 # Architecture overview
@@ -28,6 +28,12 @@ Source identity and platform execution evidence have separate homes in the
 [validation ledger](../reference/validation-evidence.md). A Current source
 description is not an all-platform acceptance claim.
 
+The opt-in [player control playground](../systems/player-control-playground.md)
+uses an exclusive synchronous owner. Mechanical presets reuse the physical
+arena; Sand/Water presets call a bounded native material field before normal
+ticks. That scene requires the matching native extension and does not attach a
+second owner to the ordinary sandbox World.
+
 ## Who owns each kind of truth?
 
 | State | Current authority | Boundary |
@@ -35,6 +41,8 @@ description is not an all-platform acceptance claim.
 | Materials, compact state, optional temperature, activity | Native World, or the selected desktop fallback | Godot receives copies and bulk query results |
 | External rigid-body transforms and velocity | Rapier2D through Godot PhysicsServer2D | Packed samples become a separate cellular obstacle mask |
 | Sampled character | Desktop pacing owner; Web main-thread controller | Reads cellular occupancy; it is not a Rapier body |
+| Articulated player presets | Main-thread physical session and Rapier | Leased actions request bounded forces and joint targets |
+| Sand/Water player field | Dedicated serialized playground owner invoking native World | Native cells remain authoritative; copied receipts describe local relocation |
 | Images, textures, UI, input, shaders | Godot main thread | Presentation never mutates cellular storage |
 
 Rapier is the sole current rigid-body backend, behind

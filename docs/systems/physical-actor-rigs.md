@@ -2,18 +2,19 @@
 title: Articulated Rapier actors and shared physical control
 status: Current
 document-kind: contract
-scope: ACT-004 articulated desktop roster with ACT-005 physical equipment, authored mechanics, local scripted control and leased input; sampled references and scientific material acceptance remain separate
+scope: Articulated desktop roster with ACT-005 physical equipment and SetP human movement presets, authored mechanics, local scripted control and leased input; sampled references and scientific material acceptance remain separate
 canonical-for: [physical-actor-rigs, physical-actor-control-v2, physical-actor-usables]
-last-reviewed: 2026-10-19
-related-documents: [actor-usables.md, actor-rigs.md, thunderbowl-control-reference.md, ../operations/physical-actor-programme.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../operations/local-build-and-validation.md, ../audits/2026-10-19-act005-physical-usables.md]
+last-reviewed: 2026-10-22
+related-documents: [physical-free-flight.md, actor-usables.md, actor-rigs.md, thunderbowl-control-reference.md, ../operations/physical-actor-programme.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../operations/local-build-and-validation.md, ../audits/2026-10-19-act005-physical-usables.md]
 ---
 
 # Articulated Rapier actors and shared physical control
 
 ## Which actors are physical?
 
-**Current experimental desktop source, ACT-004 / #178:** all 29 existing actor
-identities have articulated Rapier definitions, plus twelve examples in SetX.
+**Current experimental desktop source:** all 29 original actor identities have
+articulated Rapier definitions, plus twelve ACT-004 examples in SetX and five
+human movement presets in SetP: 46 rigs across eight sets.
 The old sampled motors remain explicit reference choices with their original
 contracts. Physical actors use the following independent catalogue:
 
@@ -26,21 +27,34 @@ contracts. Physical actors use the following independent catalogue:
 | SetU | Springjack, Gyrocrate, Bellows, Winchbug, Magpie, Skatesail | Guided pogo piston; flywheel; sliding bellows plate; winch; clamp; two-hinge sail |
 | SetV | Astra / Vector, Claude / Contour, Luna / Pulse, Qwen / Switchboard, Bonsai / Root, Jev / Jolt, Gemini / Duet | Vector bursts; contour motion; brief pulses; ground/flight modes; compact coil; rebound pads; independent thruster pods |
 | SetX | Monowheel, Inchworm, Pendulum, Rocker, Hammerhead, Rocketblade, Tandem, Tricopter, Tiltrotor, Heavylift, Needlejet, Gyrosled | Eccentric cab, concertina spine, moving counterweight, rocker feet, held hammer, propelled blade, four distinct multirotor layouts, fast dart and tall gyro sled |
+| SetP | Loose Cannon, Trials Rat, Afterimage, Vector Rush, Barrel Rocket | Sprung stunt buggy, trials bike, momentum acrobat with folding joints, arcade lander and jetpack barrel |
 
 The stable SetV IDs remain `astra`, `claude`, `luna`, `qwen`, `bonsai`, `jev`
 and `gemini`. They are fictional interface personas; selecting a name does not
 call a corresponding model or make a claim about its abilities.
 
 [`physical_actor_catalog.gd`](../../godot/scripts/physical_actor_catalog.gd)
-owns the copied part, joint, profile, mount and script definitions. Each part is
-an actual rectangular collider with its own mass, offset and orientation. Filled
-polygons use that collider's dimensions and published transform. A part drawn
+owns the copied part, joint, profile, mount and script definitions, with SetP
+authored in [the player catalogue](../../godot/scripts/player_actor_catalog.gd).
+Each part has an actual rectangular or declared circular collider with its own
+mass, offset and orientation. Graphics use its shape, dimensions and published
+transform. Circular wheels retain conservative circumscribed rectangular native
+material masks; they do not change the body-sample ABI. A part drawn
 as a leg, rotor pod, slider or held object is a live body, rather than a cosmetic
 articulation over a sampled hull. One through eight total parts are allowed;
-the ACT-004 catalogue definitions use two through seven. ACT-005 reuses each
+the current authored definitions use one through seven. ACT-005 reuses each
 existing held part or adds one permanent jointed equipment chassis during session
 preparation, still within eight parts. Held and released equipment keeps its
 coupling slot for the lifetime of the actor session.
+
+The internal [4LY free-flight family](physical-free-flight.md) adds four explicit
+lookup IDs through this same owner, outside the 46-entry ordinary roster. Its
+single rectangular chassis has no joints, mounts or equipment; its explicit
+no-equipment preparation bypasses the usual ACT-005 chassis insertion.
+Trainer has initial conformance tuning and the other three IDs remain identical,
+uncalibrated placeholders until 4LY-002. Its strict two-output velocity profile
+has a separately declared action interpretation; it does not alter the legacy
+controls below.
 
 ## How do I select and control them?
 
@@ -63,6 +77,13 @@ displayed from the selected profile. These map to `tool`, `release_usable` and
 `attach_usable` in the shared API. These are bounded gameplay
 requests; no command writes a transform or assigns velocity as locomotion.
 Focus loss, pause, replacement and input cancellation revoke pending actions.
+
+SetP supplies five distinct human movement controllers through the same action
+path. Its buggy/bike use vertical movement for throttle and horizontal movement
+for lean; the acrobat supplies slides, rolls, bullet/double jumps, cancels and
+glide. Full controls and the separate seven-preset keyboard/gamepad course are in
+the [player control playground](player-control-playground.md). Its dry/liquid
+presets are native material fields and are not members of the Rapier roster.
 
 The retained single-body barrel/Ripper comparison is described separately in
 the [physical programme](../operations/physical-actor-programme.md). The current
@@ -164,8 +185,9 @@ service. Exact envelope and step boundaries are linked from
 [U01-U32 catalogue](actor-usables.md) is selectable on physical equipment. Every
 rig has a defined default loadout in
 [`physical_usable_loadouts.gd`](../../godot/scripts/physical_usable_loadouts.gd).
-Each loadout names its usable, power, demonstration strategy and purpose; no
-existing physical actor is left with an unspecified equipment policy.
+Each loadout names its usable, power, strategy and purpose; no physical actor
+is left with an unspecified equipment policy. SetP explicitly starts with an
+empty mount and human movement strategy; F5 can still select ordinary equipment.
 
 Mount definitions bind a specific host/held part, grip, joint, aiming limits and
 clearance. The equipment owner aims the actual configured joint when it supports
@@ -232,6 +254,9 @@ scope in the [Thunderbowl reference](thunderbowl-control-reference.md#physical-t
 The [ACT-005 checkpoint](../audits/2026-10-19-act005-physical-usables.md) separately
 records full-catalogue integration, lifecycle/controller tests and its acceptance
 status; ACT-004's earlier results do not certify changed equipment code.
+The [player playground record](../audits/2026-10-20-player-control-playground.md)
+separately scopes the five added rigs, controllers, circle approximation and
+native material fields; earlier 41-rig evidence does not qualify those additions.
 Headless fixture success is not owner feel acceptance or a Windows/browser play
 result. Generic granular behaviour remains with #83, reversible soliding with
 #12, and the Water successor programme retains its independent evidence gates.

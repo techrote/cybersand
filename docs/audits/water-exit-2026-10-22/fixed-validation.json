@@ -1,0 +1,50 @@
+{
+  "platform": "Linux x86_64 headless",
+  "environment": {
+    "XDG_DATA_HOME": "/workspace/scratch/4a3785415b5a/review-notes/water-exit-fixed-runtime-state/data",
+    "XDG_CONFIG_HOME": "/workspace/scratch/4a3785415b5a/review-notes/water-exit-fixed-runtime-state/config",
+    "XDG_CACHE_HOME": "/workspace/scratch/4a3785415b5a/review-notes/water-exit-fixed-runtime-state/cache"
+  },
+  "source_head": "90a5bfc9a0664ca6eb78c00a18619aa4409619b1",
+  "local_delta_sha256": {
+    "godot/scripts/main.gd": "b119f569f684fe79a1ef06f17f1593f02d9d5dc8a76dc6eee42916b7bbc3c663",
+    "godot/scripts/simulation_worker.gd": "a65b063a01a40ebd7d05a84b9af3e8716acb02972f818ee0a7310f0fd4e88b3a",
+    "godot/tests/test_water_feel_controller.gd": "554edbbafdaf2c801d29bf34b7991dab6b2bdee77978b355c6335fdfb232834c"
+  },
+  "steps": [
+    {
+      "name": "fixed_import",
+      "command": [
+        "/workspace/scratch/20964ae84be4/jolt-host/godot/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/4a3785415b5a/cybersand-acceptance-fix/godot",
+        "--editor",
+        "--quit"
+      ],
+      "timeout_seconds": 240,
+      "returncode": 0,
+      "elapsed_seconds": 4.983,
+      "log": "/workspace/scratch/4a3785415b5a/review-notes/water-exit-fixed-import.log",
+      "log_sha256": "d64b8bd889158289d89c05759cea5df8218e69d87797ed7cb0883be2fe4a3b51",
+      "errors": []
+    },
+    {
+      "name": "fixed_test",
+      "command": [
+        "/workspace/scratch/20964ae84be4/jolt-host/godot/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/4a3785415b5a/cybersand-acceptance-fix/godot",
+        "--script",
+        "res://tests/test_water_feel_controller.gd"
+      ],
+      "timeout_seconds": 180,
+      "returncode": 0,
+      "elapsed_seconds": 6.537,
+      "log": "/workspace/scratch/4a3785415b5a/review-notes/water-exit-fixed-test.log",
+      "log_sha256": "ececb88b2ddcda73486d5d908b7f269193236a590c7bf675840016c3fe60c23d",
+      "errors": []
+    }
+  ]
+}

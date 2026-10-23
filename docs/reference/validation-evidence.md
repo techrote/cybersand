@@ -4,11 +4,65 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-22
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md]
 ---
 
 # Validation evidence ledger
+
+## GEN-005 semantic four-plane generation — 2026-10-21
+
+The [GEN-005 audit](../audits/2026-10-21-gen005-semantic-planes.md) records the
+implementation source, source-matched runtime publication, native deterministic
+projection tests, transactional owner controls, all 40 actual-example fixture
+receipts and graphical captures. The
+[semantic contract](../systems/procedural-semantic-planes.md) owns the finite
+four-plane and permitted-route claims; the audit distinguishes executed local
+checks from hosted exact-head acceptance. Source presence or a previous
+generation-stage pass does not establish this stage's acceptance.
+
+## Player control playground — 2026-10-20
+
+The [original playground audit](../audits/2026-10-20-player-control-playground.md)
+preserves recoverable source identity, rebuilt runtime hashes, Linux execution
+and integration failures. Its focused checks cover native complete-cell/Water
+quantity preservation and bounded field admission, actual Rapier vehicle/acrobat
+movement, and seven-preset input/lease/pause/reset lifetime.
+
+The [PR #189 completion record](../audits/2026-10-21-player-playground-pr189-completion.md)
+adds hosted results for original head `6663d8e`, including successful Native,
+Linux/Godot, Documentation/provenance, Water and actual Windows execution of
+107/107 applicable headless cases. It separately tracks the GEN-003 main merge,
+the later GEN-004 reintegration, fast-tap course-clock correction, combined-source
+runtime rebuild and final exact-head gates. The record distinguishes completed local validation from
+hosted publication and routes final outcomes to PR #189's description and Checks.
+Headless tests do not
+establish human feel, complete timed routes, physical gamepad/window interaction
+or browser qualification. Current mechanics and controls live in the
+[player contract](../systems/player-control-playground.md); the
+[build guide](../operations/local-build-and-validation.md#player-playground-checks)
+routes reproducible fixtures. Prior ACT-004/ACT-005 results retain their scope.
+
+## GEN-004 hierarchical places — 2026-10-21
+
+The [GEN-004 audit](../audits/2026-10-21-gen004-hierarchical-generation.md)
+records issue #191's canonical ownership design, semantic/raster constraints,
+independent partition/boundary controls, declarative example and documentation
+retrieval results. It distinguishes source inspection and local native/Godot
+execution from matching Linux/Windows runtime publication and exact-head hosted
+acceptance. Required skips, stale manifests and script errors do not pass those
+gates. The [hierarchy contract](../systems/procedural-hierarchical-generation.md)
+owns current semantics and explicit geometry/platform qualifications.
+
+## GEN-003 typed spatial computation — 2026-10-20
+
+The [GEN-003 audit](../audits/2026-10-20-gen003-typed-fields.md) records issue #190's
+typed graph, independent numerical/structural controls, legacy material oracle,
+full-rectangle invariance matrix, exact categorical transport and executable
+examples. It separates iterative local checks from source-matched Linux/Windows
+runtime publication and final exact-head repository gates in
+[PR #195](https://github.com/techrote/cybersand/pull/195). A draft-skipped job,
+stale runtime manifest or required script error does not count as acceptance.
 
 ## Deepworks exhibition and depth dimensions — 2026-10-20
 
@@ -399,6 +453,17 @@ This evidence establishes a technically safe, reproducible H-ready apparatus.
 It is not a human preference study, a production precision/packing selection,
 #18 admission, #20 admission, representative GPU performance result or G-final.
 
+### Water exit acknowledgement correction, 2026-10-22
+
+PR #198's pre-merge gates passed, including all 116 Windows headless cases, and
+its merge retained the tested tree. A subsequent Windows run on that same tree
+failed the Water Feel controller case: a stale rejection snapshot could retire
+a later exit before the blind session was cleared. The
+[dated failure/correction record](../audits/2026-10-22-water-exit-acknowledgement.md)
+retains the failed artifact identity, the explicit request/outcome correction
+and its separate local/hosted validation status. Original GEN-007 scene/runtime
+evidence and qualified visual/resource limits retain their recorded scope.
+
 ## 2026-09-19 MS-000 harness extraction
 
 The [MS-000 checkpoint](../audits/2026-09-19-issue-27-microscenarios.md) records the
@@ -453,3 +518,15 @@ owner visual acceptance.
 The [combined-feature audit](../audits/2026-10-18-combined-features-and-physical-trial.md) records Windows focused launcher/physical-body checks, the broad sweep and repaired entry premise, actual NVIDIA render inspection, source/runtime hashes and preserved failures. Final hosted exact-head gates and merge disposition are separately recorded in PRs #164/#173/#175/#176.
 
 The [fresh reconstructed-depth audit](../audits/2026-10-18-depth-integration-validation.md) records Windows 83/13/17 focused checks and actual NVIDIA material-surface pixel checks, separately from original local depth evidence. Final exact-head gates belong to PR #169.
+
+## GEN-007 authoring and qualification — 2026-10-21
+
+The [GEN-007 ledger](../audits/2026-10-21-gen007-workbench-qualification.md)
+records implementation checkpoints and all required acceptance gates for
+[issue #193](https://github.com/techrote/cybersand/issues/193) /
+[PR #198](https://github.com/techrote/cybersand/pull/198). Native replay, stage and
+candidate-index controls; transactional editing/history; final-plane structural
+and reaction oracles; actual rendered captures; cost/memory and source-matched
+Linux/Windows publication each retain their own scope. Pending or skipped gates
+do not establish completion. Retained Deepworks evidence is the visual reference,
+not a substituted result for the new procedural scene.

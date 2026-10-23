@@ -4,7 +4,7 @@ document-kind: design
 canonical-for: [water-flow-render-channel-proposal, water-seam-fix-presentation-proposal]
 status: Planned
 scope: Proposed optional render-snapshot flow plane carrying prototype Water velocity/overfill, its upload cost, the shader effects it enables, and an opt-in Water seam-fix presentation flag; no production Water semantics, cell layout or renderer change
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-23
 related-documents: [../architecture/rendering-and-gameplay-bridges.md, ../systems/material-appearance-and-rendering.md, ../reference/interfaces-and-message-contracts.md, ../systems/water-design.md, ../operations/water-hybrid-pressure-extension-programme.md, ../decisions/ADR-003-godot-bridge-and-immutable-snapshots.md, ../operations/configuration-and-capacity-budgets.md]
 ---
 
@@ -21,14 +21,18 @@ shader.
 The flow data exists only in a 2026-10-19/20 scratch "snapshot head" Water
 prototype (pressure + overfill + lateral velocity + trapped-air pockets), kept
 outside this repository with its own README, diff and sandboxes. Adopting that
-prototype is head transmission and therefore a #45 decision, gated by the
-corrected #49 apparatus and the #95 synthesis per the
-[Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md).
+prototype is head transmission. The
+[WEX-005 synthesis](../audits/2026-10-23-wex005-water-evidence-synthesis.md)
+routes production #45 to **NARROW** (admission/design only, shared/vented
+atmosphere), and the opt-in Liquid Comparison Build pressure lane (#200) stays
+blocked until all five #213 gates pass per the
+[LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
 **Current production Water has no velocity or overfill state, so the flow plane
-below would be all-neutral until that decision lands.** The proposal is split so
+below would be all-neutral until velocity/overfill state is admitted, either in
+production through #45 or behind the LCB build.** The proposal is split so
 the parts that work on Current data can be judged separately:
 
-| Stage | Needs #45 integration? | Content |
+| Stage | Needs velocity/overfill state (#45 or LCB)? | Content |
 |---|---|---|
 | 0 | No | Seam-fix presentation flag; shader-derived depth tint |
 | 1 | Yes | Optional flow plane; streaks, foam, current-aware ripple/refraction |

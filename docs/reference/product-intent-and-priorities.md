@@ -169,6 +169,25 @@ per-pixel gas CFD, and treat pressure as a boundary condition rather than assumi
 it automatically solves saturated Water transmission. Space/vacuum decompression
 is an optional later proof, not current production scope.
 
+### Water approximation and liquid comparison, 2026-10-22
+
+**Owner direction (dated, additive):** Water and air work should aim for a
+performant, game-grade approximation. Small residual units, thin films or hidden
+transient overfill are acceptable when the result is visually settled and cheap.
+This is recorded in the archived `claude/water-pressure-prototype` README at
+`7ef2aac`. The owner also approved an **opt-in Liquid Comparison Build** for manual
+feel testing: four distinct liquid families with Water as a common controlled
+test material, unchanged production defaults, and no preference yet among
+algorithms ([#200](https://github.com/techrote/cybersand/issues/200) amendment,
+[#213](https://github.com/techrote/cybersand/issues/213)).
+
+This shapes tolerance choices at preregistration; it does not waive measurement
+or select a production solver. The
+[WEX-005 synthesis](../audits/2026-10-23-wex005-water-evidence-synthesis.md)
+keeps #45 as the production owner (NARROW). The
+[LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md)
+keeps the comparison opt-in and experimental.
+
 ## Exploratory MicroScenario workflow, 2026-09-18
 
 **Approved owner direction:** use interesting playable MicroScenario worlds as an

@@ -51,6 +51,16 @@ const LOADOUTS: Dictionary = {
 
 
 static func entry(rig_id: StringName) -> Dictionary:
+	if rig_id in [&"4ly_trainer", &"4ly_hauler", &"4ly_drifter", &"4ly_dart"]:
+		return {"version": VERSION, "usable_index": -1, "usable_id": "none",
+			"preparation": "none", "strategy": "none", "power": 0.0,
+			"reason": "4LY training topology is one chassis with no equipment body or mount.",
+			"category": "none", "none_reason": "Equipment changes the frozen physical plant.", "transport_seconds": 0.0}
+	if rig_id in [&"stuntbuggy", &"trialsbike", &"acrobat", &"arcadelander", &"jetbarrel"]:
+		return {"version": VERSION, "usable_index": -1, "usable_id": "none",
+			"strategy": "human", "power": 0.8,
+			"reason": "Player movement preset; its compact equipment mount starts empty.",
+			"category": "none", "none_reason": "Human movement is the default focus.", "transport_seconds": 1.4}
 	if not LOADOUTS.has(rig_id):
 		return {}
 	var row: Array = LOADOUTS[rig_id]
@@ -64,5 +74,7 @@ static func entry(rig_id: StringName) -> Dictionary:
 static func all() -> Dictionary:
 	var result: Dictionary = {}
 	for rig_id: StringName in LOADOUTS:
+		result[rig_id] = entry(rig_id)
+	for rig_id: StringName in [&"stuntbuggy", &"trialsbike", &"acrobat", &"arcadelander", &"jetbarrel"]:
 		result[rig_id] = entry(rig_id)
 	return result

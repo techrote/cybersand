@@ -36,6 +36,17 @@ its original default dimensions and controls.
 None of the presentation-only modes creates authoritative Z coordinates,
 colliders, hidden material mass or a second owner of the play world.
 
+## Generated semantic-depth host
+
+[GEN-005](procedural-semantic-planes.md) adds a separate opt-in semantic depth
+scene using the same four-World and compositor owners. One native hierarchy
+produces all four proposals, typed links, finite fixtures and play-only actor
+placements. Its subclass validates complete copied bundles and owner-issued
+runtime observations; the original Strata/Deepworks commands retain their
+existing scopes. The base reset has a candidate-owner preparation hook before
+its commit, allowing the existing actor session to stage against candidate play
+without exposing a partly replaced World set. See [ADR-014](../decisions/ADR-014-semantic-plane-admission.md).
+
 ## Four material planes
 
 The prototype owns four separate CyberNativeCellWorld objects through

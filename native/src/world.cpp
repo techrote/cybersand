@@ -12,6 +12,7 @@
 #include <atomic>
 #include <bit>
 #include <condition_variable>
+#include <cmath>
 #include <limits>
 #include <mutex>
 #include <stdexcept>
@@ -1846,6 +1847,181 @@ bool World::relocate_stored_cell(std::int64_t from_x, std::int64_t from_y,
     }
     move_cell(from_x, from_y, to_x, to_y, false, nullptr);
     return true;
+}
+
+PlayerMaterialFieldResult World::apply_player_material_field(
+    const PlayerMaterialFieldCommand& command) {
+    PlayerMaterialFieldResult result;
+    if (tick_failed_) {
+        result.outcome = PlayerMaterialFieldOutcome::WorldFailed;
+        return result;
+    }
+    if (tick_in_progress_) {
+        result.outcome = PlayerMaterialFieldOutcome::TickInProgress;
+        return result;
+    }
+    // Deliberately finite gameplay envelope, with ample room for signed/core/
+    // chunk-seam fixtures. Validation precedes all mutations and narrowing.
+    constexpr std::int64_t coordinate_limit = 1'000'000'000;
+    const auto& bounds = command.bounds;
+    if ((command.material != Material::Sand && command.material != Material::Water) ||
+        command.mode > 3U || command.phase > 2'147'483'647ULL ||
+        !std::isfinite(command.move_x) || !std::isfinite(command.move_y) ||
+        std::abs(command.move_x) > 1.0 || std::abs(command.move_y) > 1.0 ||
+        command.move_x * command.move_x + command.move_y * command.move_y > 1.000001 ||
+        bounds.width < 1 || bounds.height < 1 || bounds.width > 4096 || bounds.height > 4096 ||
+        bounds.x < -coordinate_limit || bounds.x > coordinate_limit ||
+        bounds.y < -coordinate_limit || bounds.y > coordinate_limit ||
+        command.center_x < bounds.x || command.center_x >= bounds.x + bounds.width ||
+        command.center_y < bounds.y || command.center_y >= bounds.y + bounds.height) {
+        return result;
+    }
+    constexpr auto radius = PlayerMaterialFieldCommand::kRadius;
+    constexpr auto side = radius * 2 + 1;
+    constexpr auto scan_limit = static_cast<std::uint32_t>(side * side);
+    struct Parcel {
+        std::int64_t x = 0;
+        std::int64_t y = 0;
+        std::uint16_t quantity = 0;
+        double priority = 0.0;
+    };
+    std::array<Parcel, PlayerMaterialFieldCommand::kMaximumParcels> parcels{};
+    std::size_t parcel_count = 0;
+    double weighted_x = 0.0;
+    double weighted_y = 0.0;
+    const bool water = command.material == Material::Water;
+    const auto inside = [&bounds](std::int64_t x, std::int64_t y) {
+        return x >= bounds.x && y >= bounds.y &&
+               x < bounds.x + bounds.width && y < bounds.y + bounds.height;
+    };
+    // Rotate the bounded snapshot scan so saturation does not permanently
+    // favour one corner. Original nonempty source coordinates are captured once;
+    // a moved parcel can never occupy an unprocessed, still-nonempty source.
+    const auto start = static_cast<std::uint32_t>((command.phase * 997U) % scan_limit);
+    for (std::uint32_t index = 0; index < scan_limit; ++index) {
+        const auto offset = (start + index) % scan_limit;
+        const auto dx = static_cast<std::int32_t>(offset % side) - radius;
+        const auto dy = static_cast<std::int32_t>(offset / side) - radius;
+        ++result.scanned_cells;
+        if (dx * dx + dy * dy > radius * radius) continue;
+        const auto x = command.center_x + dx;
+        const auto y = command.center_y + dy;
+        if (!inside(x, y) || stored_material(x, y) != command.material) continue;
+        const auto quantity = water ? liquid_mass(x, y) : std::uint16_t{1};
+        ++result.observed_cells;
+        result.quantity += quantity;
+        weighted_x += static_cast<double>(x) * quantity;
+        weighted_y += static_cast<double>(y) * quantity;
+        if (parcel_count == parcels.size()) continue;
+        // Front-first translation opens vacancies for the following cells.
+        // Radial spread similarly moves its outer boundary first.
+        const double priority = command.mode == 2U && !water
+            ? static_cast<double>(dx * dx + dy * dy)
+            : command.move_x * dx + (command.move_y - 0.75) * dy;
+        parcels[parcel_count++] = {x, y, quantity, priority};
+    }
+    result.controlled_cells = static_cast<std::uint32_t>(parcel_count);
+    result.truncated = result.observed_cells > parcels.size();
+    std::sort(parcels.begin(), parcels.begin() + static_cast<std::ptrdiff_t>(parcel_count),
+              [](const Parcel& a, const Parcel& b) {
+                  if (a.priority != b.priority) return a.priority > b.priority;
+                  if (a.y != b.y) return a.y < b.y;
+                  return a.x < b.x;
+              });
+    for (std::size_t index = 0; index < parcel_count; ++index) {
+        const auto& parcel = parcels[index];
+        if (stored_material(parcel.x, parcel.y) != command.material ||
+            transient_obstacle_at(parcel.x, parcel.y) != 0U) {
+            ++result.blocked_steps;
+            continue;
+        }
+        const double dx = static_cast<double>(parcel.x - command.center_x);
+        const double dy = static_cast<double>(parcel.y - command.center_y);
+        const double distance = std::sqrt(dx * dx + dy * dy);
+        const double normal_x = distance > 0.01 ? dx / distance : 0.0;
+        const double normal_y = distance > 0.01 ? dy / distance : -1.0;
+        double drive_x = command.move_x;
+        double drive_y = command.move_y;
+        if (command.mode == 1U && drive_x * drive_x + drive_y * drive_y < 0.01) {
+            drive_y = -1.0;
+        }
+        const double speed = command.mode == 1U ? 2.6 : 1.35;
+        double vx = drive_x * speed;
+        double vy = drive_y * speed - 1.0; // authored loft counters ordinary gravity
+        if (command.mode == 2U && !water) {
+            const double spread = distance < 23.0 ? 1.4 : -1.3;
+            vx += normal_x * spread;
+            vy += normal_y * spread;
+        } else if (command.mode == 2U && water) {
+            // Squeeze across travel: a low stream for horizontal passage, a
+            // narrow column for vertical passage. Actual walls still block it.
+            const bool vertical = std::abs(drive_y) > std::abs(drive_x);
+            vx -= std::clamp(dx * (vertical ? 0.35 : 0.045), -1.7, 1.7);
+            vy -= std::clamp(dy * (vertical ? 0.045 : 0.35), -1.7, 1.7);
+        } else {
+            const double core = water ? 4.0 : 8.0;
+            const double pull = command.mode == 3U ? 1.6
+                : std::clamp((distance - core) * (water ? 0.12 : 0.09), -0.25, 1.2);
+            vx -= normal_x * pull;
+            vy -= normal_y * pull;
+        }
+        // Fixed-point dithering keeps subcell steering alive without storing
+        // per-cell velocity or attaching any hidden actor ownership to cells.
+        const auto random = mix64(static_cast<std::uint64_t>(parcel.x) * 0x9e3779b185ebca87ULL ^
+                                  std::rotl(static_cast<std::uint64_t>(parcel.y), 23) ^
+                                  command.phase * 0xd6e8feb86659fd93ULL);
+        const auto quantize = [](double value, std::uint16_t sample) {
+            const double magnitude = std::min(4.0, std::abs(value));
+            auto amount = static_cast<std::int32_t>(magnitude);
+            if (static_cast<double>(sample) / 65536.0 < magnitude - amount) ++amount;
+            return value < 0.0 ? -amount : amount;
+        };
+        auto remaining_x = quantize(vx, static_cast<std::uint16_t>(random));
+        auto remaining_y = quantize(vy, static_cast<std::uint16_t>(random >> 16U));
+        auto x = parcel.x;
+        auto y = parcel.y;
+        bool moved = false;
+        for (std::uint32_t step = 0;
+             step < PlayerMaterialFieldCommand::kMaximumStepsPerParcel &&
+             (remaining_x != 0 || remaining_y != 0); ++step) {
+            const bool horizontal = remaining_x != 0 &&
+                (remaining_y == 0 || std::abs(remaining_x) > std::abs(remaining_y) ||
+                 (std::abs(remaining_x) == std::abs(remaining_y) && ((random + step) & 1U) != 0U));
+            const auto sx = horizontal ? (remaining_x > 0 ? 1 : -1) : 0;
+            const auto sy = horizontal ? 0 : (remaining_y > 0 ? 1 : -1);
+            if (horizontal) remaining_x -= sx; else remaining_y -= sy;
+            const auto target_x = x + sx;
+            const auto target_y = y + sy;
+            if (!inside(target_x, target_y) ||
+                stored_material(target_x, target_y) != Material::Empty ||
+                transient_obstacle_at(target_x, target_y) != 0U) {
+                ++result.blocked_steps;
+                continue;
+            }
+            const auto target_address = address(target_x, target_y);
+            const auto* destination = find_chunk(target_address.chunk);
+            if (destination == nullptr ||
+                (temperature(x, y) != config_.ambient_temperature && destination->temperatures == nullptr)) {
+                ++result.storage_refusals;
+                continue;
+            }
+            if (relocate_stored_cell(x, y, target_x, target_y)) {
+                weighted_x += static_cast<double>(sx) * parcel.quantity;
+                weighted_y += static_cast<double>(sy) * parcel.quantity;
+                x = target_x;
+                y = target_y;
+                moved = true;
+                ++result.movement_steps;
+            }
+        }
+        if (moved) ++result.moved_cells;
+    }
+    result.centroid_x = result.quantity == 0U ? static_cast<double>(command.center_x)
+        : weighted_x / static_cast<double>(result.quantity);
+    result.centroid_y = result.quantity == 0U ? static_cast<double>(command.center_y)
+        : weighted_y / static_cast<double>(result.quantity);
+    result.outcome = PlayerMaterialFieldOutcome::Applied;
+    return result;
 }
 
 std::uint64_t World::transient_contact_count(std::uint16_t body_id) const noexcept {

@@ -246,6 +246,7 @@ var water_blind_index: int = 0
 var water_active_blind_label: String = ""
 var pending_water_apply: Dictionary = {}
 var pending_water_exit: Dictionary = {}
+var _water_exit_request_serial: int = 0
 var water_policy_available: bool = true
 
 var brush_shape: String = "circle"
@@ -661,7 +662,8 @@ func tower_floor_select(index: int) -> void:
 func tower_reset() -> void:
 	_force_sampled_player_for_lab()
 	pending_microscenario_apply.clear()
-	pending_water_exit={"kind":"fresh"}
+	_water_exit_request_serial += 1
+	pending_water_exit={"kind":"fresh","request_serial":_water_exit_request_serial}
 	pending_water_apply.clear()
 	tower_active = true
 	current_view_size = Vector2i(480,270)
@@ -672,7 +674,8 @@ func tower_reset() -> void:
 	for i: int in range(3): world_shader.set_shader_parameter("rigid_body_data_%d" % i,Vector4(-1000,-1000,0,0))
 	$Layout/Title.text = "CYBERSAND / EXPERIMENT TOWER"
 	var resolved: Dictionary = CyberTransportProfiles.resolve(tower_profile)
-	tower_command({"reset":true,"floor":tower_floor,"profile":resolved})
+	tower_command({"reset":true,"floor":tower_floor,"profile":resolved,
+		"water_exit_request_serial":_water_exit_request_serial})
 	camera_follow_enabled = false
 	camera_origin = Vector2(0,CyberExperimentTower.floor_y(tower_floor))
 
@@ -690,10 +693,12 @@ func tower_focus_tube(index: int) -> void:
 
 func tower_apply_profile(resolved: Dictionary) -> void:
 	pending_microscenario_apply.clear()
-	pending_water_exit={"kind":"profile"}
+	_water_exit_request_serial += 1
+	pending_water_exit={"kind":"profile","request_serial":_water_exit_request_serial}
 	pending_water_apply.clear()
 	paused = true
-	tower_command({"reset":true,"floor":tower_floor,"profile":resolved})
+	tower_command({"reset":true,"floor":tower_floor,"profile":resolved,
+		"water_exit_request_serial":_water_exit_request_serial})
 
 func tower_observation() -> void:
 	var report: Dictionary = {"recipe_version":CyberExperimentTower.VERSION,"seed":0,"floor":tower_floor,"context":tower_context,"platform":OS.get_name(),"utc":Time.get_datetime_string_from_system(true)}
@@ -732,6 +737,21 @@ func _water_end_blind_session() -> void:
 	water_blind_set.clear()
 	water_blind_index=0
 	water_active_blind_label=""
+
+func _reconcile_water_exit(context: Dictionary) -> void:
+	if pending_water_exit.is_empty(): return
+	var request_serial: int = int(pending_water_exit.get("request_serial",0))
+	if (request_serial <= 0
+		or int(context.get("water_exit_request_serial",0)) != request_serial
+		or not context.has("water_exit_request_applied")):
+		return
+	# Status text can persist in later snapshots of an older rejected request.
+	# Only this request's owner receipt may retire it or end the blind session.
+	if not bool(context.water_exit_request_applied):
+		pending_water_exit.clear()
+	elif not bool(context.get("water_active",true)) and context.has("profile"):
+		_water_end_blind_session()
+		pending_water_exit.clear()
 
 func water_runtime_identity() -> Dictionary:
 	var path: String=(
@@ -2075,13 +2095,7 @@ func consume_worker_snapshot() -> void:
 	if capture_serial > microscenario_capture_seen and not tower_context.get("micro_capture", {}).is_empty():
 		microscenario_capture_seen = capture_serial
 		_write_microscenario_capture(tower_context.micro_capture)
-	if not pending_water_exit.is_empty():
-		if (not tower_context.get("water_active",false)
-			and tower_context.has("profile")):
-			_water_end_blind_session()
-			pending_water_exit.clear()
-		elif "rejected" in str(tower_context.get("status","")).to_lower():
-			pending_water_exit.clear()
+	_reconcile_water_exit(tower_context)
 	if not pending_water_apply.is_empty():
 		if tower_context.get("water_active",false) and str(
 			tower_context.get("water_policy_hash",""))==str(pending_water_apply.hash):
@@ -2427,6 +2441,9 @@ func _publish_physical_keyboard_input(trigger_override: Variant = null, alternat
 			"alternate": alternate and not _actor_usable_transition_pending,
 			"drop": Input.is_key_pressed(KEY_N), "attach": Input.is_key_pressed(KEY_U)},
 	}
+	if physical_actor_session.is_flight_actor(0):
+		# The reserved 4LY interpretation has exactly two velocity outputs.
+		action = {"move": action.move}
 	physical_actor_session.submit_local(0, action, &"human", 6)
 
 

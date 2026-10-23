@@ -14,7 +14,7 @@ func _initialize() -> void:
 	run.call_deferred()
 
 func run() -> void:
-	for destination: String in ["blacksite", "showcase", "actors", "sandbox", "thunderbowl", "worldgen", "depth", "deepworks", "experimental/blacksite/ripper"]:
+	for destination: String in ["blacksite", "showcase", "actors", "sandbox", "thunderbowl", "worldgen", "semantic_depth", "depth", "deepworks", "player_playground", "experimental/blacksite/ripper"]:
 		var menu: Control = Launcher.instantiate()
 		root.add_child(menu)
 		current_scene = menu
@@ -31,9 +31,11 @@ func run() -> void:
 			expect(not scene.microscenario_definition.is_empty(), "Scene must acknowledge selected world: " + destination)
 		if destination == "actors": expect(scene.actor_prototype_panel.visible, "Actor selector must open")
 		if destination == "worldgen": expect(scene.scene_file_path == "res://worldgen_workbench.tscn", "Worldgen must stay a separate scene")
+		if destination == "semantic_depth": expect(scene.scene_file_path == "res://semantic_depth.tscn" and not scene.faulted and not scene.bundle.is_empty(), "Semantic depth must install its complete four-plane bundle")
 		if destination == "thunderbowl": expect(scene.scene_file_path.ends_with("thunderbowl.tscn"), "Arena must stay a separate scene")
 		if destination == "depth": expect(scene.scene_file_path == "res://depth_lab.tscn" and not scene.faulted, "Depth must open its isolated four-world host")
 		if destination == "deepworks": expect(scene.scene_file_path == "res://deepworks.tscn" and not scene.faulted, "Deepworks must open its complete four-world exhibition")
+		if destination == "player_playground": expect(scene.scene_file_path == "res://player_playground.tscn" and scene.runtime.active() and not scene.runtime.failed, "Player playground must own its live native and physical session")
 		var event := InputEventKey.new()
 		event.keycode = KEY_F2
 		event.pressed = true

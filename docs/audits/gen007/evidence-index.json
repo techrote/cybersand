@@ -1,0 +1,119 @@
+{
+  "local_log_sha256": [
+    {
+      "bytes": 4039,
+      "file": "native-worldgen-tests-final.log",
+      "sha256": "163bc36790c64c713690c312b94a4ae4457de4c2be8e8419f6c097b95ac2a77e"
+    },
+    {
+      "bytes": 10823,
+      "file": "native-worldgen-sanitize-final.log",
+      "sha256": "e2841899f09e456f37d45d666e8969149764667e173de50614e8f1c973679b0a"
+    },
+    {
+      "bytes": 19863,
+      "file": "native-worldgen-sanitize.log",
+      "sha256": "e86971e88e81150ac15837af6f06a1e3d5e5f8f161afb23c548556cc0522170a"
+    },
+    {
+      "bytes": 288,
+      "file": "native-abi-object-control.log",
+      "sha256": "9b1388844aa6b0c97a98592117668c2a73dbe3a72c3a6bbf986706b2161e20b1"
+    },
+    {
+      "bytes": 19178,
+      "file": "native-extension-build-5.log",
+      "sha256": "729e33254a2d10e47790cde9acc99a215664c0ec72e87552945aeb2a22e3542d"
+    },
+    {
+      "bytes": 120,
+      "file": "native-abi-floor-build5.log",
+      "sha256": "03231ceef99b45c3afc35b2ac492d3f8259714ad53433ca4be7a8d09fe59145c"
+    },
+    {
+      "bytes": 41,
+      "file": "native-abi-grammar-test.log",
+      "sha256": "70e6739699d3e6fb4bc9d33939117d74d2714e1a218fa6fc53680f8b502b42ef"
+    },
+    {
+      "bytes": 361,
+      "file": "gen007-inspection-build5.log",
+      "sha256": "0348fe47d3da8ae49c8268834ed08bd4a3c1d46a5825c9dc7bb150e6e5c1e04e"
+    },
+    {
+      "bytes": 394,
+      "file": "gen007-workbench.log",
+      "sha256": "719b582461dda465f8f84507b5ffabf40c09b3784942c393a5650a29168bd74c"
+    },
+    {
+      "bytes": 717,
+      "file": "gen007-workbench-render.log",
+      "sha256": "c738da4b462ae99f6277d8bcf2c762636cc853b23211ab13af2af6dbd02f3164"
+    },
+    {
+      "bytes": 238,
+      "file": "independent-ci-abi-floor.log",
+      "sha256": "af37adc37b0d67bc9ee4b492b31d59f10ed475b4430edb4bbd435edd52e2ce57"
+    },
+    {
+      "bytes": 2802,
+      "file": "independent-runtime-readback.log",
+      "sha256": "bb8776aed45187b4200d65fdaedf18653e7ab68562fcfedced5c298289c46ce2"
+    },
+    {
+      "bytes": 870,
+      "file": "gen007-isolated-qualification.log",
+      "sha256": "9e20d99b603313ab2942222fcaef64e7391ae8a215eb49d466a0e91453ce9b30"
+    },
+    {
+      "bytes": 2464,
+      "file": "gen007-isolated-reactions.log",
+      "sha256": "91dd7adbcbf87bebcb3180d4fb3f5842b9d0f2b23c8b3ab0581ff18994cd1f5e"
+    },
+    {
+      "bytes": 651,
+      "file": "gen007-canonical-render-cold.log",
+      "sha256": "83892c0067a9332c5bf33b476020f49a873d29eff7c058477635a1fced6a069c"
+    },
+    {
+      "bytes": 651,
+      "file": "gen007-canonical-render-warm.log",
+      "sha256": "83892c0067a9332c5bf33b476020f49a873d29eff7c058477635a1fced6a069c"
+    },
+    {
+      "bytes": 599,
+      "file": "gen007-canonical-capture.log",
+      "sha256": "8b7e06447f4c3bcfb65f90ae88d7e29fdc60881ef06d6db4eabcb04279e77c86"
+    }
+  ],
+  "retained_file_sha256": {
+    "docs/audits/gen007/capture-memory.json": "a5a0ec02021fff137e424ebd14abf911a721ed0596febf2612a95e7650848876",
+    "docs/audits/gen007/documentation-validation.json": "2fdbd439bfabee78325940e53195f52bc6603641be8e9a1b2bfd0c9c8a4adafb",
+    "docs/audits/gen007/independent-runtime-readback.json": "e989fdf775f146128d9053753c43691e2f901e3fbfab4b5462a2e1b8079fe06c",
+    "docs/audits/gen007/linux-publication-validation.json": "75a52dba6728be596fcd702d88d3c9a51016193e159f3a1b5bbd1c056d73d021",
+    "docs/audits/gen007/local-environment.json": "a6ab8582909054caa506b02ce91478b981f5f2ec370ec4b173fd2b21ec6bf0ec",
+    "docs/audits/gen007/m11-validation.json": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+    "docs/audits/gen007/measure-process.py": "5a1a9a418639341383fed922d72858903edbe360c7cd3ae4a1d15d351d7dde0c",
+    "docs/audits/gen007/plan-identities.json": "89b276536355b20951628758cb6a39cbd7c8f5c9a28204a97aaeae86803e3781",
+    "docs/audits/gen007/qualification-memory.json": "e13a8f529c42f3e2eb85a4a70eb4101ba79f0e625a757abd54cfb637021855e7",
+    "docs/audits/gen007/qualification.json": "501dd5faa51b2c8882ab4be409bbbc9d42043da525816a3aea8920857fea787e",
+    "docs/audits/gen007/reactions-memory.json": "4b9942244d5eb7b348e3d49d89ea037be27abeca2732d65639c9ea17f66da08c",
+    "docs/audits/gen007/reactions.json": "4a556ddb598420d2cea167e01e492e4e5f87c655f84b77694fce905b6d0b748b",
+    "docs/audits/gen007/recipe-reproduction.json": "e20adfcf92e3668a9518779b01f5fa335291910b63263e86c8ce22c6febe96e6",
+    "docs/audits/gen007/render-cold-memory.json": "5a2d1543639372f363bb81eb1a1592215561c2c5547a8c621e056cf1f5f216ae",
+    "docs/audits/gen007/render-warm-memory.json": "6cb889a3622ecc848429e0dbc3ccf8e9c0b103348c7774c050c7f20fa6308be6",
+    "docs/audits/gen007/repository-validation.json": "2d1687cbeae39e1e93c51eb97bcbcbbfdea55683b80992a0b502c0aed1863275",
+    "docs/audits/gen007/retrieval.json": "e5da3c74e3ffb33b3142a53a3a0e12ce3a7341b8403f5d426130b49096df018b",
+    "docs/audits/gen007/scene-numeric-report.json": "61c1e175d3ae72e2c8b1a67e8df7dc497d3e74b12a766e29f7483dfcac4ee41a",
+    "docs/audits/gen007/source-bindings.json": "2f4dcbaaea431f29e06d5d7770a2bb9f5ead206749f452e783e62031fdb87495",
+    "docs/audits/gen007/windows-publication-validation.json": "7899cb9b21bee684c167a197b586ebd75eaf3bdd52adf5bc0e9a9f6f66376a58",
+    "docs/audits/gen007/workbench-latency-probe.gd": "3a533ca91170766bfe2b1f1ab4e62c4314a18eb7e41f485a92f52fcddc61b3a3",
+    "docs/audits/gen007/workbench-latency.json": "3eaf944f73e266a8067db3405906d9a8dd6b16ec68f8e0667e018cb3722dde5c",
+    "docs/audits/gen007/workbench-memory-wrapper.py": "4272ea6b86fe7f4f4be21f09db853e2ff598e22700fe7db9d08788d6bdd71165",
+    "docs/audits/gen007/workbench-memory.json": "44f0728fa91269fba5ca82ac4e9149792aff5a9ec637cd64e0b76283aed31e6a",
+    "docs/audits/gen007/workbench-rss-latency.json": "98a575df2819574e1e2c555a7a9c5b243ca2fdd573c2bf2d741d911975b54388"
+  },
+  "schema": 1,
+  "scope": "Hashes preserve the identities of local raw logs without committing logs. Historical failures remain failures. Earlier full native suites precede the equivalent ABI string construction fix; final hosted native CI is separately required.",
+  "source_commit": "2f7f65bf6e80c7258f2bdda19f949760d211b59e"
+}

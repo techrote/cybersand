@@ -1,0 +1,690 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/techrote/cybersand/blob/main/examples/worldgen/schemas/semantic-planes-v1.schema.json",
+  "title": "GEN-005 semantic plane projections, fixtures, links and play actors",
+  "description": "Schema for semantic_planes in a schema-3 recipe. Native validation additionally checks feature references, per-plane endpoint existence, finite schedule arithmetic, compatible family/class/direction/effect, containment, deterministic ownership and aggregate work/memory budgets. Relative projection/fixture/link bounds reference their owning semantic feature; absolute feature geometry comes from GEN-004. A static link into background grants no runtime write authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [],
+  "properties": {
+    "schema": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9_.-]+$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "policies": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "$ref": "#/$defs/policy"
+      }
+    },
+    "projections": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "$ref": "#/$defs/projection"
+      }
+    },
+    "fixtures": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "$ref": "#/$defs/fixture"
+      }
+    },
+    "links": {
+      "type": "array",
+      "maxItems": 128,
+      "items": {
+        "$ref": "#/$defs/link"
+      }
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {
+        "max_templates": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 128
+        },
+        "max_projections": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8192
+        },
+        "max_fixtures": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1024
+        },
+        "max_links": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2048
+        },
+        "max_cells_per_plane": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1048576
+        },
+        "max_operations": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4000000000
+        },
+        "max_prepared_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 67108864
+        },
+        "max_publication_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 268435456
+        },
+        "max_diagnostic_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 16777216
+        },
+        "max_events_per_tick": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 256
+        },
+        "max_fixture_cell_writes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4194304
+        },
+        "max_actors": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        }
+      }
+    },
+    "actors": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "$ref": "#/$defs/actor"
+      }
+    }
+  },
+  "$defs": {
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "plane"
+      ],
+      "properties": {
+        "plane": {
+          "enum": [
+            "play",
+            "scripted",
+            "effects",
+            "background"
+          ]
+        },
+        "material": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 131,
+          "not": {
+            "const": 10
+          }
+        },
+        "base_generator": {
+          "type": "boolean"
+        },
+        "rate": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 60
+        },
+        "omission": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        }
+      }
+    },
+    "projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "rule",
+        "plane"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9_.-]+$"
+        },
+        "rule": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            },
+            {
+              "const": "$region"
+            }
+          ]
+        },
+        "plane": {
+          "enum": [
+            "play",
+            "scripted",
+            "effects",
+            "background"
+          ]
+        },
+        "geometry": {
+          "enum": [
+            "feature",
+            "routes"
+          ]
+        },
+        "route_type": {
+          "enum": [
+            "",
+            "passage",
+            "service",
+            "liquid"
+          ]
+        },
+        "bounds": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "integer",
+              "minimum": 1
+            }
+          ],
+          "items": false
+        },
+        "shape": {
+          "enum": [
+            "fill",
+            "shell",
+            "omit"
+          ]
+        },
+        "material": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 131,
+              "not": {
+                "const": 10
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "interior": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 131,
+              "not": {
+                "const": 10
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "wall_thickness": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 128
+        },
+        "route_width": {
+          "enum": [
+            0,
+            1,
+            3,
+            5,
+            7,
+            9,
+            11,
+            13,
+            15,
+            17,
+            19,
+            21,
+            23,
+            25,
+            27,
+            29,
+            31,
+            33,
+            35,
+            37,
+            39,
+            41,
+            43,
+            45,
+            47,
+            49,
+            51,
+            53,
+            55,
+            57,
+            59,
+            61,
+            63
+          ]
+        },
+        "density": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": -100000,
+          "maximum": 100000
+        },
+        "omission": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "application": {
+          "type": "string",
+          "minLength": 9,
+          "maxLength": 520,
+          "pattern": "^spatial:[A-Za-z0-9_.-]+$",
+          "description": "An existing shared GEN-003 normalized or boolean field. Evaluated at absolute canonical world coordinates; scalar, vector and category values need an explicit typed conversion."
+        },
+        "exclusion": {
+          "type": "string",
+          "minLength": 9,
+          "maxLength": 520,
+          "pattern": "^spatial:[A-Za-z0-9_.-]+$",
+          "description": "An existing shared GEN-003 normalized or boolean field. Evaluated at absolute canonical world coordinates; scalar, vector and category values need an explicit typed conversion."
+        }
+      }
+    },
+    "fixture": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "rule",
+        "plane",
+        "bounds",
+        "material"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9_.-]+$"
+        },
+        "rule": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            },
+            {
+              "const": "$region"
+            }
+          ]
+        },
+        "plane": {
+          "enum": [
+            "play",
+            "scripted",
+            "effects"
+          ]
+        },
+        "bounds": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "integer",
+              "minimum": 1
+            }
+          ],
+          "items": false
+        },
+        "material": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 131,
+          "not": {
+            "const": 10
+          }
+        },
+        "mode": {
+          "enum": [
+            "source",
+            "drain",
+            "setup"
+          ]
+        },
+        "first_tick": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 360000
+        },
+        "period": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 360000
+        },
+        "repeat": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10000
+        },
+        "cleanup_tick": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 360000
+        },
+        "expected_products": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 131,
+            "not": {
+              "const": 10
+            }
+          },
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "setup"
+              }
+            },
+            "required": [
+              "mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "first_tick": {
+                "const": 0
+              },
+              "repeat": {
+                "const": 1
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "first_tick": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 360000
+              }
+            }
+          }
+        }
+      ]
+    },
+    "link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "rule",
+        "family",
+        "classification",
+        "source_plane",
+        "target_plane",
+        "bounds"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9_.-]+$"
+        },
+        "rule": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            },
+            {
+              "const": "$region"
+            }
+          ]
+        },
+        "target_rule": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            },
+            {
+              "const": "$region"
+            }
+          ]
+        },
+        "target_slot": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2047
+        },
+        "family": {
+          "enum": [
+            "explosion",
+            "vent",
+            "window",
+            "pipe",
+            "waterfall",
+            "machinery"
+          ]
+        },
+        "classification": {
+          "enum": [
+            "static",
+            "presentation",
+            "runtime"
+          ]
+        },
+        "source_plane": {
+          "enum": [
+            "play",
+            "scripted",
+            "effects",
+            "background"
+          ]
+        },
+        "target_plane": {
+          "enum": [
+            "play",
+            "scripted",
+            "effects",
+            "background"
+          ]
+        },
+        "effect": {
+          "enum": [
+            "correspondence",
+            "blast",
+            "burst",
+            "source",
+            "drain",
+            "visibility",
+            "source_and_spray"
+          ]
+        },
+        "bounds": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "prefixItems": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "integer",
+              "minimum": 1
+            }
+          ],
+          "items": false
+        },
+        "material": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 131,
+          "not": {
+            "const": 10
+          }
+        },
+        "radius": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 32
+        },
+        "max_events_per_tick": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 32
+        },
+        "fixture": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9_.-]+$"
+        }
+      }
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "rule",
+        "model",
+        "x",
+        "y"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[A-Za-z0-9_.-]+$"
+        },
+        "rule": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64,
+              "pattern": "^[A-Za-z0-9_.-]+$"
+            },
+            {
+              "const": "$region"
+            }
+          ]
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "producer": {
+          "enum": [
+            "policy",
+            "demo"
+          ]
+        },
+        "plane": {
+          "const": "play"
+        },
+        "x": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16383
+        },
+        "y": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 16383
+        }
+      }
+    }
+  }
+}

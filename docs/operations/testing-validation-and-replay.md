@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Executable test selection and future gates; dated results and save format live in separate references
 canonical-for: [test-inventory, test-selection, future-validation-gates]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-22
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md, ../reference/level-saves-and-replay.md]
 ---
 
@@ -21,6 +21,7 @@ Counts identify this inspected source inventory, not a pass for a later revision
 
 | Change | Focused executable coverage |
 |---|---|
+| Semantic hierarchy and procedural routes | `make worldgen-test` / `worldgen-sanitize` include grammar ownership, identity, constraints, negative-region partitions, socket compatibility and final material clearance; `test_worldgen_grammar.gd` validates the copied Godot interface and declarative example. Source-matched Linux/Windows runtime and hosted acceptance remain separate. |
 | Scheduler, storage, activity | Native geometry/non-overlap, signed/core/chunk crossings, stamps, repeat and one/four-worker parity, sleep/wake and capacity tests |
 | Materials, Water and INT-000 interaction substrate | Native catalogue/radius, frozen pair-oracle equivalence, layer precedence/conflict validation, chemistry/state machines, Smoke lifetime/Fire exclusion, density exchange, generated schema-2 interaction fixtures, conserved leveling/rest and one/four-worker fixtures |
 | Explosion or optional fields | Native bounded event validation/queue/hash/parity, static-to-granular conversion and temperature allocation/movement |
@@ -30,6 +31,7 @@ Counts identify this inspected source inventory, not a pass for a later revision
 | Standalone physics CLI | `make physics-characterisation-test` / `physics-characterisation-sanitize`: actual executable admission and parsed sample accounting for all 51 building IDs in both layers, old controls and invalid wide inputs; [measurement-path contract](physics-characterisation.md#which-checks-guard-the-measurement-path) |
 | Fallback cells/player | `test_cell_world.gd` has nine groups including Smoke, Water, body mask/sweep and vertical scan continuity; these are one runner |
 | Rapier or coupling | Preflight, automatic drop-in, manual-step and `test_web_rapier.gd`; see [Rapier procedure](rapier-2d-migration-runbook.md) |
+| Player movement and material fields | Native `player material field` groups plus binding, vehicle, acrobat planner/real-physics and seven-preset runtime/UI runners; [focused commands](local-build-and-validation.md#player-playground-checks) separate material conservation/admission from physical motion and input lifecycle |
 | Save, Web worker selection or benchmark | Demo-save, setup, Web worker parity, Auto and worker-benchmark runners; actual Web export must additionally execute in browser |
 
 Use the test filenames in [godot/tests](../../godot/tests) for the exact current
@@ -257,6 +259,18 @@ selection surfaces/provenance, all 35 recipes, deterministic reset/actions,
 owner-boundary transaction/rejection, blind lifecycle, RG8 authority and eight
 presentation-model groups. The rendered-pixel runner must execute non-headless
 because headless scene success is not visual evidence.
+
+The existing [controller regression](../../godot/tests/test_water_feel_controller.gd)
+also exercises desktop Water exit receipt ordering: a previous rejection or
+success must not acknowledge a newer reset, and a matching rejection must preserve
+the blind session. The deterministic receipt control complements the live
+desktop worker and synchronous Web-controller cases in that runner. Execute it
+with the pinned Godot runtime using
+`--headless --path godot --script res://tests/test_water_feel_controller.gd`;
+the hosted case timeout is 180 seconds. Record script errors and nonzero exits
+as failures. The [2026-10-22 correction evidence](../audits/2026-10-22-water-exit-acknowledgement.md)
+preserves the Windows scheduling failure rather than treating a later rerun as
+proof that no defect existed.
 
 Actual Web acceptance requires exported compatibility and threaded builds served
 with cross-origin isolation, then

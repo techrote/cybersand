@@ -4,11 +4,26 @@ status: Approved design
 document-kind: design
 scope: Owner-authorized ACT-004 integration, retained Blacksite hull comparison and preserved 2026-10-18 actor preferences; not broad physics acceptance
 canonical-for: [physical-actor-programme, combined-feature-launcher, physical-blacksite-comparison]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-22
 related-documents: [blacksite-nine-demo.md, ../systems/actor-rigs.md, ../systems/thunderbowl-control-reference.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/product-intent-and-priorities.md]
 ---
 
 # Physical actors and combined feature trials
+
+## Shared free-flight training family
+
+The [4LY contract and dependency chain](../systems/physical-free-flight.md)
+owns the single-chassis Trainer/Hauler/Drifter/Dart lane under long-lived parent
+#132. 4LY-001 reuses the physical session and native coupling, with strict
+two-output desired-velocity input and bounded goal-blind assistance. It supplies
+initial Trainer conformance tuning; the other three profiles remain identical
+uncalibrated placeholders. The ordinary 46-actor roster is unchanged.
+
+4LY-002 owns distinct authored handling and normal-game selection, then 4LY-003
+owns the flight lab, actual-host episodes and qualified teacher. Trainer learning
+and subsequent family learning belong to the companion repository's 4LY-004/005
+gates. None of these stages closes #132, generic granular/soliding acceptance or
+the separate Jolt/morphology programme by implication.
 
 ## What is the approved direction for the complete actor roster?
 
@@ -40,7 +55,7 @@ remaining limits are in the [ACT-004 record](../audits/2026-10-18-act004-articul
 
 **Current desktop implementation:** F5 is available in the ordinary sandbox,
 Blacksite Nine and all four showcase districts (Neon Reliquary, Middle Cyberberbia,
-Sewertech Alley and Industrial Underswamp). F5 lists all 41 **Rapier** rigs, plus
+Sewertech Alley and Industrial Underswamp). F5 lists all 46 **Rapier** rigs, plus
 the **Sampled** baseline/rig references and original barrel/Ripper hull trials.
 Keyboard, scripted-demo and external-policy producers use the same physical
 session and action vocabulary. Applying restores the
@@ -51,6 +66,11 @@ the choice to the destination's own spawn. The ordinary actor sandbox supports t
 same physical choices. Only the retained single-body hull arms remain
 keyboard-only. Physical comparisons admit up to eight actors from the selected
 set; SetX's twelve entries therefore require more than one simultaneous view.
+
+The later [player playground](../systems/player-control-playground.md) adds five
+human movement presets as SetP. Its separate seven-preset course also supplies
+native Sand/Water player fields, which are not F5 physical rigs. ACT-004's dated
+41-definition evidence retains its original scope.
 
 The worker configures sampled sessions at the scenario-install boundary. The
 main thread installs physical sessions for the selected reset and keeps them
@@ -81,6 +101,12 @@ The native generation workbench remains an isolated authoring preview, without
 live material simulation or attachment to the sandbox's World.
 Deepworks uses its own four-world native material owner and camera/painting
 controls; it has no ordinary physical actor session or F5 picker.
+
+**Player playground** or `-- --player-playground` opens the separate human
+movement course; optional `--player=ID` selects a preset. It reuses physical
+actors for five choices and exclusively owns a native material field for two.
+Its controls, lifecycle and qualification are in the
+[player guide](../systems/player-control-playground.md).
 
 The launcher also offers four complete, reset-scoped definitions:
 `experimental/blacksite/sampled-baseline`, `sampled-burial-safe`, `barrel` and

@@ -6,7 +6,7 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-22
 ---
 
 # Interfaces and message contracts
@@ -64,6 +64,140 @@ shape. The [field contract](../systems/procedural-generation-fields-and-modifier
 owns scalar DAG/context semantics and catalogue descriptors.
 The [generation contract](../systems/procedural-world-generation.md) owns exact
 schema and packet fields, module trust and source/runtime limits.
+
+**Current schema-2 / GEN-003 extension:** recipes may additionally contain
+`spatial` (`nodes`, `subgraphs`, `instances`, `geometries`, `assignments`) and
+`spatial_limits`. Native `SpatialGraph` returns a typed `SpatialValues` array
+with per-output `SpatialInfo`; its evaluation takes absolute coordinates and
+optional caller-owned bounded `SpatialScratch`, with no initial-context or live
+World input. `Generator::spatial_graph()` exposes const compiled metadata.
+
+`spatial:<expanded.id>` requests a typed diagnostic. Native results store
+`diagnostic_info` and `typed_diagnostics` exclusively from the legacy float
+diagnostic array. The adapter copies numeric values to `PackedFloat64Array`
+`diagnostic_values` (one scalar or interleaved x/y vector components per cell).
+Exact category tuples use `PackedStringArray` `diagnostic_categories`: signed
+decimal x, signed decimal y and a 16-digit hexadecimal domain per cell.
+`diagnostic_info` identifies type, unit exponent, component bounds, distance
+factors, scale, fingerprint and declared work. The receipt binds those values
+and rejects malformed/mismatched payloads before adapter publication.
+
+The same `spatial:<id>` reference in a modifier, module, mapping or aggregate
+accepts only an explicitly `normalized` output. This is distinct from selecting
+a diagnostic of any type. Workbench colours are presentation; raw signed,
+vector and exact category data remain inspectable. `get_catalogue` adds
+`spatial_kinds` and accepted `spatial_nodes`. Complete configuration roundtrips
+retain subgraphs, typed bindings, immutable inputs and explicit schema selection.
+GDScript JSON writers must request `full_precision=true`, for example
+`JSON.stringify(recipe, "  ", true, true)`, to preserve accepted double values
+and `get_catalogue().spatial_fingerprint`. Reconfiguration advances the adapter
+revision and overall recipe fingerprint even when the spatial graph is unchanged.
+See the [typed graph contract](../systems/procedural-typed-spatial-fields.md) and
+[operator inventory](procedural-spatial-operators.md) for exact semantics.
+
+### Native semantic plans and copied hierarchy inspection
+
+**Current schema-3 / GEN-004 extension:** `Recipe::grammar` is a versioned
+`GrammarDefinition`. `GrammarPlan::compile(definition, seed)` returns immutable
+features, sockets, routes and constraint receipts, with finite `bounds()`,
+`fingerprint()`, work/storage metadata, ID lookup, bounded rectangle `query()`
+and `ancestry()` APIs. Feature IDs include the world namespace, region grid size,
+signed region address, parent path, rule ID and stable numeric slot. Content
+revision, recipe revision and receipt identity are separate values.
+
+`Generator::semantic_plan()` exposes the const plan. `validate_routes()` returns
+the complete retained report for final material cells and the declared odd square
+clearance profile. `RouteValidation::passed` records the aggregate required-route
+result; `supports_passed` independently records final solid contact for declared
+floor/ceiling/wall constraints. The named profiles are `floating-square-v1` and
+`static-solid-contact-v1`. `SupportOutcome` carries `feature_id`, `constraint`,
+`passed`, `checked_cells`, `missing_cells`, `first_missing_x/y` and `detail`.
+One surviving contact suffices for a support check; the wall check scans both
+vertical sides. The report records success/failure per required explicit route;
+intentional final hard material blockers remain in the material output and fail
+their route checks. `explain(x,y)` returns a bounded `CellProvenance` value with
+final material, semantic ancestry, constraint receipts, stage contributions and
+scalar/typed field values. Native query pointers borrow only their immutable
+plan, so callers must retain that plan's lifetime.
+
+Godot adds `get_semantic_plan()`, `inspect_cell(Vector2i)` and
+`validate_routes()` to the separate `CyberWorldGenerator`. They return copied
+dictionaries/arrays; no live World or feature pointer crosses the adapter.
+The copied report includes `support_profile`, `supports_passed` and a `supports`
+array using those same outcome fields. `configure` includes this report for accepted grammar recipes, while
+`get_configuration` preserves the authored `grammar` declaration. The grammar's
+`district_assignment` wraps GEN-003 `specification` and optional `limits`, and
+`district_themes` uses exact 16-digit lowercase hexadecimal keys. Typed feature
+parameters use the existing `SpatialValue` JSON encoding. Unknown fields and
+malformed inputs reject transactionally, preserving the previous configuration.
+The [hierarchy contract](../systems/procedural-hierarchical-generation.md) and
+[grammar JSON schema](../../examples/worldgen/schemas/grammar-v1.schema.json)
+own exact semantic meaning and relational checks.
+
+### Semantic plane proposals and owner admission
+
+**Current GEN-005 extension:**
+[`PlanePlan::compile`](../../native/include/cybersand/generation_planes.hpp)
+takes shared immutable ownership of one `Generator` plus a versioned
+`PlaneDefinition`. It exposes copied/value features, projections, fixtures,
+links and actors through the adapter, together with `bounds`, `fingerprint`,
+`preparation_work`, `operations_per_cell` and `storage_bytes`. Native const
+record references borrow the plan lifetime. `sample`/`explain` use absolute
+world coordinates; projection records retain geometry references, application
+and exclusion fields, transitive field fingerprints and semantic feature IDs.
+
+`begin(RectI64)` produces a private `PlaneGenerationJob`;
+`advance(cell_budget)` counts staged plane cells. Pending, Cancelled and Failed
+states expose no material arrays. Ready results include bounds, revision, plan
+fingerprint, four content hashes, four row-major material arrays, operation
+accounting, fixture/link/actor registration IDs and a receipt hash.
+`accepts(result)` checks the complete current plan/result binding. Canonical
+registration anchors give disjoint requested tiles exactly one union of IDs.
+
+The serialized `CyberWorldGenerator` adds `get_plane_plan`,
+`generate_plane_bundle`, `generate_plane_region(Rect2i)`,
+`begin_plane_region(Rect2i)`, `advance_plane_region(cell_budget)`,
+`cancel_plane_region` and `inspect_plane_cell(plane, Vector2i)`.
+`semantic_planes` configuration remains transactional. Its explicit authored
+revision keeps identical retries stable; `adapter_serial` separately records
+the monotonic configuration request. Accepted reconfiguration retires pending
+jobs, while validation failure preserves the last valid plan.
+Ordinary `generate_chunk`/`begin_chunk`/`advance` packets retain the monotonic
+adapter revision returned by `configure`, including for semantic recipes, so
+the existing workbench's current-request check remains compatible.
+
+A complete copied dictionary has `ok`, `schema`, `algorithm`, `id`, hexadecimal
+`revision`/`definition_revision`/`fingerprint`, `bounds`, `plan_bounds`, rates,
+budgets, policies, feature/projection/fixture/link/actor arrays, copied
+`materials` (`PackedByteArray` per plane), `hashes`, registration ID arrays and
+`receipt_hash`. Only whole-bundle output has `complete=true` and `layers`
+(`PackedInt32Array` local `x,y,width,height,material` rectangles). Tile output
+has `complete=false` and cannot be submitted as a host replacement. Inspection
+returns copied material and feature→projection→fixture/link/actor provenance;
+no mutable native World or Godot object is exported.
+
+[`CyberSemanticPlaneRuntime`](../../godot/scripts/depth/semantic_plane_runtime.gd)
+validates a complete packet, reconstructs and checks its materials, then stages
+all four Worlds plus the existing play actor session before one synchronous
+publication boundary. `install_bundle(candidate, expected_generation)` returns
+false with `last_error` on rejection. A differing replacement requires the
+current generation; an identical fully validated retry is idempotent. Reset,
+activate and retire calls return copied identity-bound lifecycle receipts.
+`lifecycle_stats()` exports per-fixture applications, cleanup, active/retired
+state and aggregate accounting. `actor_snapshot()` copies the existing session
+with semantic IDs and bundle/reset identity; actor commands use its existing
+leased mailbox, exclusively on play.
+
+`event_observation(link_id)` issues a copied one-use observation with bundle,
+generation, link and endpoint revisions, planes, source tick, serial, bounded
+cell/radius and permitted material. `submit_event` checks those identities;
+only center/radius may vary within the registered zone. Accepted commands use
+the retained play→scripted `blast` or scripted→effects `burst` owner routes.
+Static/presentation links issue no runtime authority. Reset or retirement
+invalidates observations; raw painting/event bypass methods reject on this
+owner. See the [semantic contract](../systems/procedural-semantic-planes.md)
+for classification and the [limits](configuration-reference.md#semantic-plane-generation-limits)
+for finite capacity outcomes.
 
 ### Native C API
 
@@ -269,6 +403,9 @@ field or nonpositive size/mass, ignores trailing partial records and retains
 the first duplicate. Accepted full sizes clamp to at least one cell and mass to
 0.001. The same finite-record predicate is used by the fallback and bridge.
 The physical session rejects a complete assembly beyond capacity before spawning.
+SetP circular wheels supply their diameter as a circumscribed square in this
+unchanged rectangle layout. Rapier hard contact and graphics use circles;
+native masks and displacement retain the explicit conservative approximation.
 General contours and cellular torque feedback remain Planned; these private
 packed records are not an unrestricted public network protocol. Numerical response and sample-age policy belong in
 [coupling](../architecture/rigid-body-and-cellular-coupling.md).
@@ -398,6 +535,29 @@ owns modes and limits. Body messages and saves retain their existing schemas.
 
 `CyberSimulationWorker.queue_lab(Dictionary)` is a developer-lab command boundary: reset/floor, single-step, release and a two-release schedule. `CyberSimulationSnapshot.lab_context` publishes copied status/input metadata. [Tower controls](../operations/experiment-tower.md) own semantics; this is separate from CYSD1 and the C ABI.
 
+### Desktop Water exit receipts
+
+**Current:** [main.gd](../../godot/scripts/main.gd) records a fresh positive
+per-controller serial in `pending_water_exit.request_serial` for both Fresh tower
+and ordinary profile resets. The reset command and copied
+`CyberSimulationSnapshot.lab_context` use the following fields:
+
+| Field | Producer and meaning |
+|---|---|
+| Command `water_exit_request_serial` | Controller-issued identity of this reset/Water-exit request |
+| Context `water_exit_request_serial` | Worker echo of the reset it actually processed; zero is untracked |
+| Context `water_exit_request_applied` | Worker initializes false before any reset failure path and sets true only after successful native candidate installation |
+
+[Worker `_apply_lab` and `_publish_snapshot`](../../godot/scripts/simulation_worker.gd)
+publish the outcome through the existing snapshot copy. Controller
+`_reconcile_water_exit` requires an exact positive serial match and a present
+outcome. A matching false result clears the pending request while preserving
+blind state; a matching true result also requires `water_active=false` and a
+`profile` before ending/restoring the blind session. Missing or stale receipts
+leave the pending request intact. Human-readable `status` is never an exit
+acknowledgement. This is a desktop control message; native ABI, saves, Water
+policy schema and the synchronous Web path are unchanged.
+
 
 ## Opt-in transport profiles
 
@@ -475,6 +635,67 @@ witnesses and cross-owner queues remain Planned.
 
 The [physical Blacksite experiment](../operations/physical-actor-programme.md) reuses the current body input/result ABI with one rectangle. `apply_trial_impulses` is a main-thread bridge method; no native field layout or sampled actor action/observation stride changes.
 
+## Player material field control
+
+**Current experimental, dedicated playground:** the GDExtension method is
+`apply_player_material_field(center: Vector2i, direction: Vector2,
+material_id: int, mode: int, phase: int) -> Dictionary`.
+Only the exclusive native-World owner may call it, outside native ticks. It is
+not forwarded through the ordinary desktop worker. The
+[playground contract](../systems/player-control-playground.md) owns user behavior;
+[configuration](configuration-reference.md#player-playground-values) owns limits.
+
+`center` must lie inside the adapter's 1024² domain. Direction must be finite and
+unit-bounded; material is Sand (2) or Water (3), mode is 0–3, and phase is an
+integer from 0 through 2,147,483,647. Modes are normal cohesion/loft (0), surge
+(1), dry spread/liquid squeeze (2), and gather (3). The owner uses the current
+tick as phase. Invalid commands, failed Worlds and in-tick calls refuse mutation.
+The native C++ command additionally carries an explicitly validated finite domain.
+
+Every receipt includes `accepted` and `reason`; reasons are `applied`,
+`invalid_command`, `world_failed` or `tick_in_progress`. Once native validation
+is reached, it also returns `scanned_cells`, `observed_cells`,
+`controlled_cells`, `moved_cells`, `movement_steps`, `blocked_steps`,
+`storage_refusals`, `quantity`, `centroid`, `truncated` and `radius`.
+An applied call may move zero cells. `quantity` counts all matching material
+observed in the starting circle: one per Sand cell, raw mass units per Water
+cell. The quantity-weighted centroid includes this call's successful moves,
+including the unmoved observed material when control is truncated. It is a
+per-call receipt, not a global inventory or a post-tick query.
+
+The native operation moves the complete stored tuple through existing relocation
+and wake bookkeeping. It never exchanges with an occupied destination, allocates
+missing chunks/thermal storage, or creates a persistent cohort or new material
+kernel. After the call, normal simulation proceeds under its existing rules.
+
+The separate scene command is version 1 with exactly ten fields:
+
+```json
+{
+  "version": 1, "kind": "player_material_field_action",
+  "run_id": "issued-run-id", "epoch": 1, "actor_id": 0, "sequence": 1,
+  "observed_tick": 0, "observation_id": "issued-observation-id",
+  "lease_ticks": 6,
+  "action": {"move": [1, 0], "primary": true}
+}
+```
+
+`CyberPlayerPlaygroundRuntime.make_command` copies an issued observation. Submit
+checks run/epoch/actor, exact finite integer identities, a newer sequence, issued
+observation token and an unexpired observation-relative lease of one through six
+ticks. Cancellation changes control generation and retires issuance history;
+replacement additionally changes the run and epoch. Actions admit only `move`,
+`aim`, `effort`, `trim`, `primary`, `secondary` and `auxiliary`, normalized by
+the shared physical session. Move and buttons drive this fixed-strength field;
+aim, effort and trim are compatibility values without field effects. Mode
+priority is auxiliary, secondary, primary, neutral. Lease expiry removes the
+command, so even neutral hover assistance stops until fresh input is admitted.
+
+Sources: [native command and result](../../native/include/cybersand/world.hpp),
+[World operation](../../native/src/world.cpp),
+[adapter binding](../../godot/native_extension/cyber_native_cell_world.cpp) and
+[scene owner](../../godot/scripts/player_playground_runtime.gd).
+
 ## Physical actor control and effects
 
 **Current experimental ACT-004 / ACT-005:**
@@ -505,7 +726,7 @@ Lease expiry is `observed_tick + lease_ticks`, never receipt time; future,
 invented, stale and misaddressed views are refused. A queued model response cannot
 extend its authority by arriving late. See the [configuration bounds](configuration-reference.md#physical-actor-values).
 
-Actions admit `move`, `aim`, `effort`, `trim`, `reel`, `primary`, `secondary`,
+Legacy physical profiles admit `move`, `aim`, `effort`, `trim`, `reel`, `primary`, `secondary`,
 `auxiliary`, `tool`, `release_usable`, `attach_usable` and the optional
 `equipment` dictionary described below. Unknown keys, wrong
 types and nonfinite values are refused. Vectors accept `Vector2` or two numeric
@@ -513,6 +734,10 @@ array values and are length-clamped to one; effort is clamped to zero through
 one, trim/reel to minus one through one. Missing action fields receive neutral
 defaults; buttons must be Booleans. All producers reach the same normalized
 action and bounded physical actuator path.
+
+The additive [4LY velocity profile](#physical-free-flight-actions) retains this
+envelope and ownership fence but admits only its declared `move` field. Existing
+actor IDs and their action meanings are unchanged.
 
 `observation(actor_id)` returns copied identity, tick, selected profile,
 pose/velocity, contacts and local rays, resource/charge/cooldown, part and joint
@@ -538,6 +763,113 @@ session's `input_cancelled(actor_id, epoch)` notification. The desktop host uses
 it to revoke the worker's queued and already-copied, not-yet-admitted effects for
 that actor. Other actors retain their own command/effect generations. A fresh
 observation immediately reports the cleared charge, grip, rope and action state.
+
+### Physical free-flight actions
+
+**Current experimental 4LY-001:** a session-installed `4ly_*` actor declares
+`action_profile = "4ly_velocity_v1"`, `control_mode = "4ly_velocity_v1"` and
+`profile_version = 1` in its copied observation. Its command still uses the
+version-2 `physical_wire_action` envelope above. The action object must contain
+exactly one field:
+
+```json
+{"move": [0.6, -0.8]}
+```
+
+The two finite numeric components must individually lie in `[-1, 1]` before
+unit-disk normalization. `Vector2` is also accepted by the in-process API. A
+finite oversized request is rejected in this profile; the retained legacy
+normalizer still clamps its own vectors. Arrays of the wrong length, booleans,
+NaN/infinity, missing movement and extra fields such as `effort`, `trim`,
+abilities, goals or equipment are refused. Existing run/actor/epoch/producer,
+sequence, issued-observation and lease checks apply before actuation.
+
+The admitted vector is world-relative: `+x` right, `+y` down. Componentwise
+multiplication by the resolved `desired_speed` gives cells/second. Diagonal
+normalization precedes this mapping; unequal axis limits therefore describe an
+ellipse of possible desired velocities. Desired speed is not an enforced cap
+on physical motion after collisions or external impulses.
+
+`Session.set_propulsion_enabled(actor_id, enabled)` is an explicit host/fixture
+switch, outside the two-output action. It revokes existing input before changing
+power. `Session.takeover(actor_id, expected_epoch, producer)` revokes old
+capabilities before assigning a new authorized source; neither operation
+reconstructs the body or deletes momentum. Suspension, cancellation, expiry and
+reset retain their existing lifetime fences. The
+[4LY lifecycle table](../systems/physical-free-flight.md#how-do-neutral-cancellation-power-off-and-suspension-differ)
+distinguishes an authorized neutral request from passive fallback.
+
+The resolved profile descriptor carries `profile_hash`, `controller_id`, units,
+axes, speed mapping, empty default loadout, fallback, neutral and resource
+semantics. Controller receipts add `controller_hash` and `fixed_delta`.
+`profile_hash` is SHA-256 of the validated resolved profile serialized with
+sorted keys and full float precision. `controller_hash` is the embedded SHA-256
+of checked-in UTF-8 controller source with the `SOURCE_SHA256` value replaced
+by the literal `<CONTROLLER_HASH>`; its conformance test checks the digest. The
+embedded digest remains available when exported scripts omit source text.
+Keep repository/runtime identity alongside these hashes; they are not an
+attestation of the physics engine or a learned-policy result.
+
+Controller receipts distinguish `requested_move`, `admitted_move`,
+`desired_velocity`, `requested_acceleration`, `bounded_acceleration`,
+`gravity_compensation`, `requested_force`, `target_force`, `applied_force`,
+`requested_torque`, `target_torque` and `applied_torque`. Saturation and slew
+flags expose the active bounds. The requested force already includes
+acceleration limiting and gravity compensation; the target force additionally
+includes total-thrust saturation, and applied force includes response/slew.
+The session retains the raw requested action separately from its admitted
+normalized action, plus accepted sequence/source/admission tick and the physical
+step's consumed sequence/tick. A newly admitted command and the last applied
+step are therefore distinguishable.
+
+| Copied observation field | Meaning |
+|---|---|
+| `flight.mode` | `velocity`, `neutral`, `passive_no_lease`, `power_off` or `suspended` |
+| `flight.propulsion_enabled` | Explicit host power state; distinct from possession of a live command |
+| `flight.capabilities` | Resolved profile, units/semantics and profile/controller identities |
+| `flight.controller` | Current pure controller response/receipt with requested/bounded/applied force and torque, saturation/slew flags and reason; cleared on revocation |
+| `flight.command` | Raw `requested_action`, normalized `admitted_action`, `sequence`, `observed_tick` and `admitted_tick` for the accepted command; empty after revocation |
+| `flight.command_live` | A current unexpired command exists and the actor is neither suspended nor faulted; host propulsion may still be disabled |
+| `flight.applied` | Prepared actuator snapshot: `run_id`, `epoch`, `actor_id`, `producer`, `control_generation`, `sequence`, `observed_tick`, `step_tick`, expected `physics_step`, admitted `action` and `controller`; separate from a newly accepted command and cleared on revocation |
+| `flight.last_step` | The same snapshot after the bridge counter proves its physical step occurred; retains the original source attribution across later cancellation/takeover and is cleared by close/replacement |
+| `flight.fallback_reason` | Explicit lifecycle reason such as `not_commanded`, `cancelled`, `expired`, `suspended`, `resumed`, `power_changed`, `takeover`, `invalid_cadence`, `step_fault` or `fault`; `none` for an admitted command |
+| `flight.step_fault` | Empty in a healthy session; a sticky physical-step ordering fault requires session replacement |
+
+Top-level run/actor/epoch/tick, `control_generation`, `last_sequence`,
+`lease_remaining` and pose/velocity retain the existing session meanings.
+For 4LY, `applied_impulse` and `applied_torque_impulse` are the bounded actuator
+force/torque multiplied by the admitted physical step duration. Sustained
+assistance uses an owned constant-force/torque channel during Rapier integration;
+the host clears that channel after each step or on cancellation. These fields
+do not decompose passive damping, gravity, contact or native material impulses.
+Preparing force does not itself prove that physics consumed it; use completed
+`flight.last_step` attribution and sampled motion for completed-step evidence.
+Expiry revokes the command at the completed deadline tick, before a delayed
+reply can extend an old observation's authority. Passive assistance is not
+represented as a synthetic fresh external command. The pure controller source
+digest does not cover rig/session integration, plant construction or Rapier
+itself; retain their source/runtime identities separately.
+
+A session containing 4LY requires one `advance` preparation, one actual bridge
+step and one `complete_step` accounting call in that order. The bridge's
+`manual_step_count` binds prepared and completed receipts. Duplicate preparation
+sets `last_error = "flight_step_already_prepared"`; completion without physics
+sets `flight_step_not_completed`. Neither advances the flight clock. Unprepared
+or extra physical steps, preparing before accounting for a step, or physics
+advancing while suspended instead set a sticky step fault and suspend the
+session. Cancellation before the native step discards pending force without
+creating history; cancellation after it preserves the original completed
+snapshot before clearing current authority. Paused views do not issue command
+capabilities, and resume increments the flight control generation before a
+fresh observation can be used.
+
+Every descriptor, observation and receipt is copied. `equipment` reports
+explicit absence (`preparation = "none"`, `usable_index = -1`, `body_id = 0`,
+`available = false`); no equipment body or worker request is synthesized. The
+[canonical 4LY contract](../systems/physical-free-flight.md) owns goal blindness,
+neutral/fallback behavior, initial calibration scope and follow-up order. The
+[configuration reference](configuration-reference.md#physical-free-flight-values)
+owns numerical defaults and profile constraints.
 
 ### Retained direct physical effects
 
@@ -667,3 +999,35 @@ A released body retains its physical velocity, and collision grace continues to
 age when physical stepping resumes. Exact catalogue effects and processor
 semantics remain with [actor usables](../systems/actor-usables.md); execution and
 merge acceptance remain with the [ACT-005 audit](../audits/2026-10-19-act005-physical-usables.md).
+
+## Workbench replay and genuine stage interfaces
+
+[GEN-007](../systems/generation-workbench-2.md) adds
+`inspect_generation(position, plane, expected_revision, expected_fingerprint)`
+to `CyberWorldGenerator`. The method rejects stale caller identities and returns
+copied deterministic replay with native material, initial context, effective
+parameters, scalar/typed values, ordered masks/modifiers/aggregate decisions,
+semantic ancestry/constraints, plane projections, fixtures/links, precedence,
+proposal identity and explicit truncation/unavailable metadata. It does not
+read a live simulation World or imply a stored historical execution log.
+
+`stage:<name>` chunk diagnostics keep final `cells` and actual intermediate
+`stage_cells` separately and bind them in the native receipt. The six base names
+are `candidate`, `guided_candidate`, `grammar`, `modifiers`, `connectivity` and
+`final`. `begin_stage_region(bounds, plane, stage)`, `advance_stage_region(budget)`
+and `cancel_stage_region()` supply bounded private finite-region stage jobs.
+Plane stages also include `policy`, `base` and `projections`; a plane without the
+base generator rejects its unavailable source stages. Stages are sampled from
+the real pipeline, never from a modified final recipe.
+
+Adapter revision, native recipe/plane fingerprint, UI session/view token and
+owner World generation are distinct identities. Workbench comparison binds the
+same seed and coordinates for both recipes and rejects stale result serials.
+`adopt_configuration(prepared_owner, expected_revision)` transfers immutable
+plans only after the caller has joined the private preparation worker. It rejects
+null, self, unconfigured, pending or stale owners. The receiving adapter serial
+advances; the native recipe revision and its material/diagnostic receipt remain
+unchanged and are reported separately. Subsequent changes to the private owner
+cannot mutate the adopted plans.
+Neither explanation nor stage output supplies authority to install or mutate a
+World; existing material/semantic admission interfaces keep that responsibility.

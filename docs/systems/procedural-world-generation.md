@@ -5,7 +5,7 @@ document-kind: contract
 scope: GEN-001/GEN-002 native procedural proposals, theme and field guidance, trusted feature modules, bounded jobs, fresh chunk admission and isolated Godot preview
 canonical-for: [procedural-chunk-generation, generation-theme-authoring, generation-module-contract]
 keywords: [world generation, procgen, chunks, strata, flow network, district grammar, themes, blends, brushstroke, overrides, arcology, vault, aqueduct]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-21
 related-documents: [procedural-generation-fields-and-modifiers.md, world-storage-and-interest-region.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../operations/local-build-and-validation.md, ../audits/2026-10-18-gen001-procedural-generation.md, ../audits/2026-10-18-gen002-fields-and-aggregates.md]
 ---
 
@@ -28,6 +28,22 @@ masked context-aware guidance and sculpting, aggregate material recipes and
 paced diagnostic channels. The focused
 [fields and modifiers contract](procedural-generation-fields-and-modifiers.md)
 owns those controls, immutable initial context and finite Hilbert/Morton scope.
+
+GEN-003 / [#190](https://github.com/techrote/cybersand/issues/190) adds explicit
+schema-2 [typed spatial functions](procedural-typed-spatial-fields.md): signed
+distance/vector/category values, transformed/derived geometry, reusable parameter
+subgraphs, structured seeds, finite adjacency assignments and world-aligned
+multiresolution sampling. The retained scalar graph remains separately defined;
+typed spatial functions have no per-cell initial-context input. Only explicit
+normalized `spatial:<id>` outputs may drive existing masks and mappings.
+
+GEN-004 / [#191](https://github.com/techrote/cybersand/issues/191) adds explicit
+schema-3 [hierarchical semantic plans](procedural-hierarchical-generation.md).
+Finite canonical regions own nested places and cross-chunk structures; stable
+rule/slot IDs, placement constraints, matched sockets, explicit loops/service
+trunks and final-raster route reports precede ordinary chunk publication.
+Selected immutable semantic geometries may feed the typed graph. The hierarchy
+does not add World streaming or replace final hard material authority.
 
 | Candidate | Generated structure | Suitable starting point |
 |---|---|---|
@@ -135,6 +151,14 @@ Later values win. Moving an item in a JSON array is not a hidden priority contro
 | 9 | Shared network and explicit guide paths | Reserve connective space after modules/modifiers; a guide may carve Empty or paint another material |
 | 10 | Hard material overrides | Force the final material, including intentionally blocking a route |
 
+Schema 3 inserts accepted semantic shell/interior/aggregate proposals between
+steps 6 and 7 and restores explicit semantic passages after step 9. Existing
+native modules and material modifiers can therefore contribute to semantic
+places, while final hard material overrides still win. The hierarchy's final-cell
+route report observes that complete stack and reports any blocked passage;
+it does not reinterpret a hard override as optional. Recipes without grammar
+retain the table's preceding behavior.
+
 The [field/modifier contract](procedural-generation-fields-and-modifiers.md)
 defines the two guidance stages, mapping endpoints and immutable context.
 No earlier modifier can change the context observed by a later modifier. Recipes
@@ -185,8 +209,11 @@ The default seed is 1 and chunk size is 128. Native seeds are unsigned 64-bit;
 Godot accepts nonnegative signed-64 values, while JSON numeric values are restricted
 to exactly representable integers through 2^53-1. Use modest numeric JSON seeds
 for portable profile roundtrips. `configure` owns its revision; `revision` is not
-an accepted user JSON field. Schema version remains 1; generator algorithm version
-is 2. Field/aggregate/modifier declarations are optional additions to that schema.
+an accepted user JSON field. Schema 1 retains generator algorithm 2 and its
+optional field/aggregate/modifier declarations. Schema 2 explicitly adds `spatial`
+and `spatial_limits`, using generator algorithm 3 and spatial algorithm 1.
+Legacy scalar semantics/material output remain independently tested; selecting
+schema 2 changes recipe/receipt identity deliberately.
 
 ## How do chunks connect without generating neighbors?
 
@@ -296,6 +323,13 @@ working values, not per-cell container growth. Diagnostic `sample` and
 | Parameters per instance | 32 numeric named values |
 | Logical charge per chunk | Default 64,000,000; native configurable through 1,000,000,000; Godot may only tighten its default |
 
+That diagnostic row describes retained scalar channels. Schema-2
+`spatial:<id>` channels instead own one typed value per cell plus metadata;
+signed doubles, vector pairs and exact category tuples retain their meaning.
+Typed graph/preparation/cache capacities and conservative recursive sampling
+costs are specified by the [typed contract](procedural-typed-spatial-fields.md)
+and [operator inventory](../reference/procedural-spatial-operators.md).
+
 The logical charge is a conservative accounting bound derived from the configured
 controls and each factory's declared per-cell cost. All declared fields, modifier
 work, aggregate components and module charges are included even under zero masks
@@ -312,6 +346,10 @@ completion-slot, coordinate or inspection-channel mixups. These
 non-cryptographic hashes are integrity/reproducibility checks, not authentication.
 `Generator::accepts` validates identity, size, bounds, materials, optional normalized
 diagnostics and both hashes.
+For typed channels, the receipt also binds the declared type, units, distance
+qualification and exact typed payload; malformed, nonfinite, wrong-type or
+wrong-sized data rejects. Typed and legacy diagnostic arrays are mutually
+exclusive. Inspection colours never replace raw diagnostic values.
 Changing a recipe even with the same manually supplied native revision changes its
 fingerprint. Custom factories must bump their version when their implementation
 changes; function machine code is not hashed by the registry.
@@ -387,3 +425,14 @@ The [GEN-001 evidence](../audits/2026-10-18-gen001-procedural-generation.md) and
 their actual native, sanitizer, Godot, source/runtime and publication results separately.
 Visual preference, production tuning and target-device performance remain owner
 evaluation rather than conclusions inferred from passing software tests.
+
+## Generation Workbench 2 inspection and quality
+
+The [GEN-007 workbench contract](generation-workbench-2.md) extends the existing
+opt-in scene with native identity-bound provenance, actual sampler-stage views,
+typed graph and semantic hierarchy editing, four-plane inspection, bounded
+seed/recipe comparisons and transactional undo/redo. All editing paths retain
+complete supported recipe data and native validation. The
+[procedural qualification guide](../operations/procedural-qualification.md)
+owns the complete 1024-square scene and distinguishes final projected-material
+checks and actual visual review from a generation preview or base route report.

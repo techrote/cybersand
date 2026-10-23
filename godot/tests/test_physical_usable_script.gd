@@ -39,9 +39,14 @@ func _locomotion() -> Dictionary:
 
 func _run() -> void:
 	var used: Dictionary = {}
-	_check(Loadouts.all().size() == 41, "all 41 physical actors have an explicit equipment policy")
+	_check(Loadouts.all().size() == 46, "all 41 retained and five player actors have explicit equipment policies")
+	var legacy_count: int = 0
 	for id: StringName in Actors.RIG_IDS:
 		var loadout: Dictionary = Loadouts.entry(id)
+		if Actors.set_for(id) == &"setP":
+			_check_player_loadout(id, loadout)
+			continue
+		legacy_count += 1
 		_check(not loadout.is_empty() and Usables.has_usable(StringName(loadout.usable_id)), str(id) + " keeps a real U01-U32 identity")
 		_check(not str(loadout.reason).is_empty() and float(loadout.power) > 0 and float(loadout.power) <= 1,
 			str(id) + " has authored rationale and bounded equipment power")
@@ -61,13 +66,27 @@ func _run() -> void:
 		var snapshot: Dictionary = Loadouts.entry(id)
 		snapshot.reason = "mutated"
 		_check(Loadouts.entry(id).reason != "mutated", str(id) + " loadout readback is copied")
-	_check(used.size() == 32, "the 41 default loadouts demonstrate all32 usables")
+	_check(legacy_count == 41 and used.size() == 32, "the 41 retained default loadouts demonstrate all32 usables")
 	_negative_control()
 	_deployment_control()
 	_existing_payload_control()
 	_target_control()
 	print("PHYSICAL_USABLE_SCRIPT assertions=", assertions, " failures=", failures)
 	quit(1 if failures else 0)
+
+
+func _check_player_loadout(id: StringName, loadout: Dictionary) -> void:
+	_check(int(loadout.get("usable_index", -2)) == -1 and str(loadout.get("usable_id", "")) == "none",
+		str(id) + " starts explicitly unequipped")
+	_check(not str(loadout.get("none_reason", "")).is_empty(), str(id) + " records why its mount is empty")
+	var pilot := Pilot.new()
+	_check(pilot.configure(id, Vector2(100, 80)), str(id) + " neutral equipment policy configures")
+	var view: Dictionary = _view(id)
+	for installed: int in [-1, 0]:
+		view.equipment.usable_index = installed
+		for tick: int in range(45):
+			var action: Dictionary = pilot.apply(view, _locomotion(), 0.1)
+			_check(action == _locomotion() and not action.has("equipment"), str(id) + " never adds autonomous tool use")
 
 
 func _negative_control() -> void:

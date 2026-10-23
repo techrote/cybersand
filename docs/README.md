@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-10-20
+last-reviewed: 2026-10-22
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -12,7 +12,19 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
-Choose all 41 [articulated Rapier actors](systems/physical-actor-rigs.md) with F5 in the sandbox and exploratory maps, using keyboard, local scripted or external-policy control. Sampled references and the initial hull arms remain available; [the physical actor programme](operations/physical-actor-programme.md) preserves owner intent and integration scope.
+For **Generation Workbench 2**, use the [inspection and authoring contract](systems/generation-workbench-2.md): truthful native replay, actual intermediate stages, graph/hierarchy tools, transactional undo/redo and bounded seed/recipe comparisons. The [procedural qualification guide](operations/procedural-qualification.md) routes the 1024 × 1024 scene, final-raster paths, native exhibits and visual evidence.
+
+Choose all 46 [articulated Rapier actors](systems/physical-actor-rigs.md) with F5 in the sandbox and exploratory maps, using keyboard, local scripted or external-policy control. Sampled references and the initial hull arms remain available; [the physical actor programme](operations/physical-actor-programme.md) preserves owner intent and integration scope.
+
+For the internal **4LY** single-chassis drone family, use the
+[physical free-flight contract](systems/physical-free-flight.md): two desired
+velocity outputs, bounded assistance, profile identity and passive cancellation.
+Trainer conformance tuning and three uncalibrated placeholders share one plant;
+ordinary-game selection and measured handling differences belong to 4LY-002.
+The [4LY-001 conformance audit](audits/2026-10-22-4ly001-physical-free-flight.md)
+records actual Rapier measurements, lifecycle negatives and source/runtime identity.
+
+For seven human movement presets, use the [player control playground](systems/player-control-playground.md): buggy, trials bike, momentum acrobat, arcade lander, native Sand cloud, native Water blob and jetpack barrel. The guide owns keyboard/gamepad controls, acrobat chains, reset/focus rules and bounded material-field ownership. The five mechanical presets also appear in F5 SetP.
 
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).
 
@@ -34,10 +46,15 @@ moving Above/Below, choosing viewpoints, editing native cells and capturing imag
 
 | Need | Start here |
 |---|---|
+| Implement or test Trainer, Hauler, Drifter and Dart without giving the stabilizer goal or world access | [4LY free-flight contract and programme](systems/physical-free-flight.md), [action interface](reference/interfaces-and-message-contracts.md#physical-free-flight-actions), [profile values](reference/configuration-reference.md#physical-free-flight-values), and [focused checks](operations/local-build-and-validation.md#physical-free-flight-checks) |
+| Play the stunt buggy, trials bike, acrobat chains, lander, material swarms or jetpack barrel | [Player control playground](systems/player-control-playground.md), [field API](reference/interfaces-and-message-contracts.md#player-material-field-control), and [focused checks](operations/local-build-and-validation.md#player-playground-checks) |
 | Explore Deepworks, replay a foreground/rear reaction or understand complete multilayer coverage | [Exhibition guide](operations/deepworks-exhibition.md), [depth contract](systems/depth-layers-and-parallax.md), and [dated source/runtime evidence](audits/2026-10-20-deepworks-exhibition.md) |
 | Review MAT-002 save/diagnostic integration, real rendered tests and matching runtime publication | [Building catalogue](systems/building-material-catalogue.md), [test acceptance](operations/testing-validation-and-replay.md#ci-execution-sharding), and [PR review evidence](audits/2026-10-19-mat002-review-and-validation.md) |
 | Generate and blend procedural chunk themes, paint broad guidance, impose exact overrides or add structured modules | [Procedural generation contract and workbench](systems/procedural-world-generation.md), then [GEN-001 source and validation evidence](audits/2026-10-18-gen001-procedural-generation.md) |
 | Compose Hilbert/Morton or noise fields, sidechain masks, sculpt with initial context, author aggregate materials or inspect modifier influence | [Generation fields and masked modifiers](systems/procedural-generation-fields-and-modifiers.md), then [GEN-002 source and validation evidence](audits/2026-10-18-gen002-fields-and-aggregates.md) |
+| Author signed distances, vector/category fields, reusable transformed subgraphs, multiscale seeds or finite adjacency assignments | [Typed spatial graph contract](systems/procedural-typed-spatial-fields.md), [operator inventory](reference/procedural-spatial-operators.md) |
+| Author nested districts, cross-chunk buildings, constrained apparatus and explicit structural routes | [Hierarchical generation contract](systems/procedural-hierarchical-generation.md) |
+| Generate one place across four material planes, bounded fixtures and explicit semantic links | [Semantic-plane contract](systems/procedural-semantic-planes.md) and [authoring guide](operations/semantic-depth-authoring.md) |
 | Distinguish generated previews, fresh native chunk admission and general world streaming | [Procedural generation](systems/procedural-world-generation.md), [World storage](systems/world-storage-and-interest-region.md), and [ownership](architecture/data-ownership-and-lifetimes.md) |
 | Reconcile a completed/closed claim, broad gameplay acceptance, or remediation owner | [Development-claims remediation programme](operations/development-claims-remediation-programme.md), then the [dated REM-001 audit](audits/2026-09-20-development-claims-closure-audit.md) for intake evidence |
 | Explore the MS-001 Materials Lab / Flood / Stress pack or compare generated definitions | [Reference pack and controls](operations/microscenario-reference-pack.md), [MS-001 evidence](audits/2026-09-19-issue-28-ms001.md) |
@@ -57,7 +74,7 @@ moving Above/Below, choosing viewpoints, editing native cells and capturing imag
 | Find a building material's ID, reactions or finish (IDs 81+) | [Building material catalogue](systems/building-material-catalogue.md), [interaction substrate](systems/intermaterial-interactions.md#mat-002-building-material-pass) |
 | Design a material's look or a procedural/generative fill | [Material visual pattern library](systems/material-visual-pattern-library.md), [effects register](reference/material-effects-register.md), [appearance contract](systems/material-appearance-and-rendering.md) |
 | Understand the persistent-reaction and body-mask wake repair | [Material cadence](systems/materials-and-rule-kernels.md#how-do-persistent-reactions-survive-sleep), [activity lifecycle](systems/activity-dirty-regions-and-waking.md), [MAT-001 evidence](audits/2026-10-18-mat001-material-reaction-progress.md) |
-| Investigate deep Water surge, hybrid Water sheets, trapped gas or decompression | [Water hybrid/pressure extension](operations/water-hybrid-pressure-extension-programme.md), [WEX-002 blocked disposition](audits/2026-09-24-wex002-water-sheet-blocked-disposition.md), [WEX-003 gas-region feasibility](research/lumped-gas-region-pressure-bookkeeping.md), [WEX-004 narrow-use disposition](audits/2026-09-24-wex004-decompression-disposition.md), [Planned Water flow render channel / seam-fix proposal](research/water-flow-render-channel.md), then [Water Current semantics](systems/water-design.md) and [soliding programme](operations/soliding-programme.md) |
+| Investigate deep Water surge, hybrid Water sheets, trapped gas or decompression | [Water hybrid/pressure extension](operations/water-hybrid-pressure-extension-programme.md), [WEX-002 blocked disposition](audits/2026-09-24-wex002-water-sheet-blocked-disposition.md), [WEX-003 gas-region feasibility](research/lumped-gas-region-pressure-bookkeeping.md), [WEX-004 narrow-use disposition](audits/2026-09-24-wex004-decompression-disposition.md), [WEX-005 synthesis and #45 NARROW disposition](audits/2026-10-23-wex005-water-evidence-synthesis.md), [LCB-000 Gate A pressure-experiment admission](audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md), [Planned Water flow render channel / seam-fix proposal](research/water-flow-render-channel.md), then [Water Current semantics](systems/water-design.md) and [soliding programme](operations/soliding-programme.md) |
 | Investigate powder penetration, barrel sinking or soliding | [Measured baseline tooling](operations/physics-characterisation.md), [dated results](audits/2026-09-09-physics-characterisation.md), [future soliding plan](operations/physics-characterisation-plan.md) |
 | Build or validate | [Build guide](operations/local-build-and-validation.md), [test selection](operations/testing-validation-and-replay.md), [dated evidence](reference/validation-evidence.md) |
 | Understand intent | [Product priorities](reference/product-intent-and-priorities.md), [principles](architecture/principles-and-non-goals.md), [ADRs](decisions) |
