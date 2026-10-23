@@ -678,13 +678,17 @@ navigation, target-PC human feel and new Web runtime support have separate
 [flight-lab contract](../systems/physical-flight-lab.md),
 [prospective criteria](../../godot/tests/fixtures/4ly003_qualification_registration.json)
 and [checkpoint/gaps](../audits/2026-10-23-4ly003-checkpoint.md).
-The existing Godot GDExtension suite auto-discovers both additional
-headless tests by wildcard. The pinned runtime must include real
-`CyberNativeCellWorld` and `RapierPhysicsServer2D`.
+The existing Godot GDExtension suite auto-discovers the development
+episode, gameplay scene, bounded throughput and two scored-family
+development fixtures by wildcard. The pinned runtime must include real
+`CyberNativeCellWorld` and `RapierPhysicsServer2D`, never mocks.
 
 ```sh
 godot --headless --path godot --script res://tests/test_physical_flight_lab.gd
 godot --headless --path godot --script res://tests/test_physical_flight_pilot.gd
+godot --headless --path godot --script res://tests/test_physical_flight_lab_scene.gd
+godot --headless --path godot --script res://tests/test_physical_flight_teacher_dev_free.gd
+godot --headless --path godot --script res://tests/test_physical_flight_teacher_dev_obstacle.gd
 ```
 
 The first validates frozen 4LY profile/controller digests, actual
@@ -694,10 +698,18 @@ hover and power-off negative controls. It is deliberately
 **development-only**; the separately registered final split must
 remain sealed until the teacher implementation is frozen. The second
 measures at most 960 physical ticks from one actual host, along with
-decision/reset/JSON-serialization/memory counters. Neither test
-implies complete teacher admission, learned-policy success or
-desktop real-time throughput. Retain positive *and failed* episodes,
-and use final-head GitHub-hosted CI rather than mock-based tests.
+decision/reset/JSON-serialization/memory counters. The scored development
+fixtures retain separate native/Rapier JSON traces and their SHA-256
+inventory under `CYBERSAND_PRESENTATION_EVIDENCE`; the
+[separate Python readback](../../tools/ci/readback_4ly003_development.py)
+is required **after** Godot exits in the Linux sharded and serial
+workflows. The original public final geometry is retired and superseded
+by [v3 sealed external geometry](../../godot/tests/fixtures/4ly003_split_amendment_v3.json).
+It cannot be accessed without independent admission of a separately
+held suite. None of these tests implies final teacher acceptance,
+learned-policy success or desktop real-time throughput. Do not run
+neural training in routine PR CI. Keep failed episodes and the exact
+tested checkout and runtime identities.
 
 ### Thunderbowl controls and native arena
 
