@@ -56,9 +56,24 @@ There are no typed unaligned pointer dereferences, compiler bitfields, extra
 overreads or aliasing casts. Little-endian hosts use `memcpy`; other endian
 hosts fall back to the accepted explicit little-endian byte reconstruction.
 
-**Diagnostic hypotheses, pending compiler/artifact qualification:** repeated
-head reconstruction and read/modify/write work are the strongest source-level
-mechanisms. Register pressure, surviving accessor calls and temporary values
+**Current GCC13.3 compiler-output diagnosis:** the [source-bound assembly summary](../audits/mat003-continuation-2026-10-23/s2p-assembly-summary.json) retains actual instruction sequences and hashes from the first hosted attempt. WCLEAR failed in that attempt; its failure does not turn these compiler-output diagnostics into timing evidence.
+
+| Emitted wrapper, including entry/return | P1 packed9/10 static instructions | P2 compact9/10 | C64 word |
+|---|---:|---:|---:|
+| material getter | 12 | 3 | 3 |
+| state_a getter | 12 | 4 | 4 |
+| state_a setter | 26 | 9 | 9 |
+| epoch clear | 21 | 4 | 4 |
+| whole-cell copy | 6 | 6 | 4 |
+| whole-cell swap | 19 | 19 | 6 |
+
+P1 state_a getter retains an eight-iteration `movzbl`, variable shift, OR and loop branch. Its setter retains that reconstruction plus a second eight-iteration byte-scatter loop. P2 state_a reads emit `movq (%rdi), %rax; shrl $16, %eax` and its partial setter matches the word control's load/mask/store sequence. These are ordinary x86-64 word instructions emitted from defined `memcpy`, even though P2's compiler-visible alignment remains1. P1's head getters use byte loads rather than a misaligned 64-bit load; its whole-cell copies/swaps can still contain unaligned word accesses.
+
+Full generated World code supports the same mechanism: for C72 E8, hot `update_cell` is 107 static instructions for P1 versus 80 for P2; `scan_rect`291 versus 246; `transfer_water`862 versus 621; `move_cell`732 versus 662. These whole-function static counts include branches that may not execute and omit dynamic call frequency. They are not tick-time ratios. P1/P2 `tick_phased` coordinator counts are both 368, and their worker trampolines both 40; that narrows the changed code to cell work without measuring barrier/cache effects.
+
+**Ranked explanation:** (1) surviving byte reconstruction/scatter loops and repeated read/modify/write are directly demonstrated and avoidable; (2) increased live loop temporaries/register demand is visible in wrappers, but World spill/runtime share remains unmeasured; (3) 9/10-byte stride and compact whole-record copy costs persist in P2 and may impose residual costs; (4) cache misses, false sharing, vectorization limits and actual unaligned penalties remain unquantified. There are no hardware counters or source profiles from which to assign fractions of the accepted 50% overhead. The implementation-specific instruction penalty is established; the size of the residual intrinsic compact-layout penalty remains unresolved until separately admitted P2 timing.
+
+Repeated head reconstruction and read/modify/write work are the strongest observed mechanisms. Register pressure, surviving accessor calls and temporary values
 must be evaluated in the generated World output. Compact stride changes address
 arithmetic and crossing opportunities, but neither source inspection nor elapsed
 S2A times establish cache-miss, bandwidth or unaligned-access causality. The
@@ -113,9 +128,10 @@ allocation happens to begin at a more aligned address.
 ## WCLEAR-001 exact proposal and correctness boundary
 
 **Current experimental apparatus / Planned admission:**
-[`wclear-registration-v2.json`](../../tools/experiments/mat003_continuation/wclear-registration-v2.json)
-is the active untimed qualification registration. The original proposal remains
-immutable; v2 corrects its inaccurate label-swap description. Formal timing and
+[`wclear-registration-v3.json`](../../tools/experiments/mat003_continuation/wclear-registration-v3.json)
+is the active timing-capable apparatus qualification registration. The original
+proposals remain immutable: v2 corrects the inaccurate label-swap description;
+v3 freezes the optional measure path and its explicit memory precondition. Formal timing and
 execution-authorized fields are both false. The proposed performance matrix is
 four widths × three resident sides (512/1024/2048) × two scenes × workers1/4 =
 48 contexts. Seven alternating AB/BA fresh-process pairs of ordinary/event
@@ -128,7 +144,7 @@ E8/E16 retain their accepted low-word maps. E24 uses bits40–63 and an actual
 and first tail byte. Both preserve material16/state_a16/state_b8. E24 can
 arithmetically fit C64; E32 requires at least C72. This implementation restricts
 wide-cell prototypes to a two-byte tail and tests C80-aligned for every width,
-holding stride at16. It does not qualify every width/carrier combination.
+holding stride at 16. It does not qualify every width/carrier combination.
 
 Preparation takes place between successful ticks at global tick255. Natural
 E8 events keep every raw stamp unchanged. A prepared wide event maps stamps
@@ -146,16 +162,16 @@ cannot alias a stale stamp. A correctness-observed twin counts real clear entry
 and checks all resident stamps are zero immediately after the real loop, before
 events or simulation restamp cells. The observer-off twin compiles the hook out.
 Both retain full post-event records and four interest-reentry ticks. Additional
-128² cases run uninterrupted to65535: E16 naturally clears first at65536, while
+128² cases run uninterrupted to 65535: E16 naturally clears first at 65536, while
 E8 naturally clears there because `256 + 256×255 = 65536`. Prepared E24/E32
 events at that same global clock are compared with those natural controls.
-The qualifier has eight builds, 192 large-resident cases and16 small controls;
-all208 must pass independent readback. None is a timing observation.
+The qualifier has eight builds, 192 large-resident cases and 16 small controls;
+all 208 must pass independent readback. None is a timing observation.
 
 Formal registration must still pin the reviewed source/fixtures, binaries,
 compiler/linker, observer qualification, process order, independent verifier,
 immutable artifact and readback, then obtain independent admission and explicit
-execution authority. No timing workflow exists at this checkpoint. After that
+execution authority. The observer-off binary has an optional `--measure` path, but qualifiers never invoke it and emit no timing observations. `timing.py` rejects before clocks/subprocesses unless a separately admitted registration and exact owner authority are supplied. `verify_timing.py` checks the complete 672-process matrix, immutable apparatus, every measured semantic stream against its qualified twin, and descriptive statistics. No timing workflow exists at this checkpoint. After that
 gate, a separately reviewed `workflow_dispatch` workflow must execute only the
 registered schedule. Do not infer a dispatch command for a nonexistent admitted
 workflow or repurpose S2A's workflow.
@@ -167,23 +183,33 @@ nearest-rank event p50/p95/p99/max across seven independent processes per contex
 Retain RSS, resident cells and physical arrays, actual clear counts/completed
 tick identities, visits, phase jobs and qualified background participation.
 Do not discard spikes or treat events within a process as independent samples.
+With seven event values, nearest-rank p95 and p99 both equal the observed maximum;
+these are descriptive extrema, not reliable population-tail estimates. Pre-scans
+and stamp rewriting establish a specific warm-resident/memory-ownership condition.
+Natural E8 and prepared wide events differ in prior stamp writes; independent
+admission must approve that scope or amend conditioning before timing. No general
+cold-gameplay hitch bound is implied. RNG is the frozen stateless coordinate,
+global-tick and stream mix in `World::deterministic_random`, not a rebased seed.
 No actual clear-cost observations are published here.
 
 For a later validated normal cost N and incremental clear cost D, the conditional
-steady average is `N + D/(2^E−1)`. The first clear is at2^E; in T ticks the count
+steady average is `N + D/(2^E−1)`. The first clear is at 2^E; in T ticks the count
 is zero below that threshold, otherwise `1 + floor((T−2^E)/(2^E−1))`.
 Finite-horizon projected average is `N + D×count/T`. Candidate-specific normal
 access and footprint costs must remain in N. Always report the worst observed
 clear hitch separately. Wider epochs reduce frequency; individual clear cost
 may differ through emitted stores and need not decrease. E24/E32 projections
-would not be directly observed natural long-run measurements.
+would not be directly observed natural long-run measurements. A wider candidate
+only wins the conditional steady model when its added normal cost is below the
+measured narrow-clear maintenance minus wide-clear maintenance; each width needs
+its own measured D and the footprint tradeoff remains separate.
 
 ## C128 feasibility and GEN-006 consequences
 
 **Current experimental source / Planned qualification:** U128 uses GCC's
 `unsigned __int128` only under `__SIZEOF_INT128__`; DUAL64 has two explicit
 `uint64_t` members and is the fallback strategy. Both expose the original low64
-E8/E16 semantic maps and a neutral high64 lane. This is128 total logical bits,
+E8/E16 semantic maps and a neutral high64 lane. This is 128 total logical bits,
 not a128-bit epoch. No extra material/solver meaning is assigned. Low-lane
 partial writes preserve the whole high lane; whole-record moves copy it and
 material replacement resets it. The inherited S1 neutral API observes its low16;
@@ -195,11 +221,21 @@ large forced clears, Water ledgers, nonzero Empty/high-state boundaries,
 temperature and lifecycle checks. Full semantic traces must match an
 independently verified C64-word control. C128 E24/E32 remain separately gated;
 the WCLEAR aligned-carrier result cannot qualify them. Native128 availability,
-ABI and code generation are target-specific. Neither these source operations
+ABI and code generation are target-specific; GCC documents the target integer-mode
+requirement in its [128-bit integer reference](https://gcc.gnu.org/onlinedocs/gcc/_005f_005fint128.html). Neither these source operations
 nor a16-byte size establish atomic128-bit updates or a shared ABI with DUAL64.
+
+**Inspected GCC13.3 lowering:** the [C128 assembly summary](../audits/mat003-continuation-2026-10-23/c128-assembly-summary.json) shows current U128 partial state_a writes at 15 static instructions versus 9 for DUAL64, and epoch clears at 11 versus 4; whole-copy wrappers are4 for both. The current native wrapper's low64 abstraction lowers through extra high-lane/register work. The raw 16-bit span crossing bit64 lowers to 15 instructions for U128 (including shifts/`shldq` and two lane stores) versus 13 for DUAL64 (a SIMD mask/merge sequence). No library call occurs in those wrappers. This span is a storage diagnostic overlapping epoch bits, never a World/material field. These observations establish neither a hardware128-bit instruction guarantee nor tick superiority. An alternative direct native field mask may optimize differently and would require its own qualification.
+
+Compared with the existing split World arm, either C128 representation keeps neutral extension in the cell value: no second chunk-owned allocation/index and no separate tail-transfer patches are required. That is a concrete ownership/surface-area simplification, not a measured total complexity or speed result. DUAL64 also avoids the native scalar extension. If a 16-byte stride were chosen independently, C128 would turn the aligned C72/C80 control's otherwise nonsemantic 56/48 padding bits into neutral storage without additional cell-array bytes. This does not justify doubling C64 arrays or assigning future material semantics before a schema proposal.
 
 **Decision:** retain both C128 candidates for untimed qualification and propose
 a separate bounded paired-performance registration only after complete readback.
+The unadmitted [C128 proposal](mat003-continuation-proposals/c128.json) has five
+E8 contrasts and 70 primary processes; the [S2P proposal](mat003-continuation-proposals/s2p.json)
+has four contrasts and 56 processes. Both require new actual-workload observer/off
+qualification, sealed inputs and independent admission; they are proposals, not
+frozen timing registrations or authority to dispatch.
 Comparable tick speed, lower total complexity than sidecars and predictable
 memory behavior are questions for that registration, not conclusions from
 `sizeof`. C128 matches aligned C72/C80 array footprint while offering more
@@ -214,6 +250,19 @@ receipts. The [existing handoff](mat-003prepass-gen006-handoff.md) remains the
 contract proposal; persistence/streaming and physics are unchanged.
 
 ## Evidence, confidence and next gate
+
+| Claim | Confidence and practical limit |
+|---|---|
+| Accepted packed ~1.50× S2A ratios | Accepted evidence for the exact registered Linux active-512-w4 workload; unchanged. |
+| Avoidable reconstruction/scatter work | High confidence from inspected GCC13.3 P1/P2 wrappers and generated World assembly; no dynamic share of slowdown assigned. |
+| Cache/unaligned/vectorization causality | Unresolved without counters/profiles or controlled admitted timing; geometry alone is insufficient. |
+| P2 and C128 correctness | Source review and untimed fixtures; exact-current immutable readback is owned by the dated audit. Full new-World sanitizers are a gap; storage UBSan is separate. |
+| Wide prepared-event equivalence | Bounded to the frozen scenes, populations, current predicates, equality-only consumers and immediate-clear schedule; natural E24/E32 history is unobserved. |
+| Actual wide clear cost and amortized benefit | Unmeasured; only the conditional frequency/model is derived. No new cost ranking exists. |
+| C128 versus aligned tick cost | Unmeasured; ABI and instruction counts cannot answer tick-time comparability. |
+| Physical arrays and state capacity | Exact arithmetic/tested ABI within stated platforms; allocator/World/process totals require component accounting. |
+| Other platforms and future state semantics | Windows diagnostics, Wasm/Godot, durable state and future high64 schema are separately unqualified. |
+
 
 The [dated audit](../audits/2026-10-23-mat003-continuation.md) owns actual command,
 source, platform, artifact and independent-review outcomes. Source mechanisms,

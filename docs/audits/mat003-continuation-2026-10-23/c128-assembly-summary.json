@@ -1,0 +1,463 @@
+{
+  "scope": "static C128 diagnostic from completed fixtures but failed recursive evidence readback; no timing/acceptance",
+  "run_id": 39883050638,
+  "artifact_id": 12471563260,
+  "artifact_sha256": "9e25399cac0903a0ab365f2821941f3f29fd7a04718bee029ed8559dc3565bdb",
+  "source_commit": "0140174489d0e3bb93ef3f8978bdeee54021d33d",
+  "branch_commit": "86a8ddcab092c03010b4bb86e48eb6a1f581ee59",
+  "compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "arms": {
+    "dual64-e16-x2": {
+      "wrappers": {
+        "get_material": {
+          "static_instruction_count": 3,
+          "instructions": [
+            "endbr64",
+            "movzbl\t(%rdi), %eax",
+            "ret"
+          ]
+        },
+        "set_a": {
+          "static_instruction_count": 9,
+          "instructions": [
+            "endbr64",
+            "movq\t(%rdi), %rax",
+            "movzwl\t%si, %esi",
+            "salq\t$16, %rsi",
+            "xorq\t%rax, %rsi",
+            "andl\t$4294901760, %esi",
+            "xorq\t%rax, %rsi",
+            "movq\t%rsi, (%rdi)",
+            "ret"
+          ]
+        },
+        "get_a": {
+          "static_instruction_count": 4,
+          "instructions": [
+            "endbr64",
+            "movq\t(%rdi), %rax",
+            "shrl\t$16, %eax",
+            "ret"
+          ]
+        },
+        "get_epoch": {
+          "static_instruction_count": 4,
+          "instructions": [
+            "endbr64",
+            "movq\t(%rdi), %rax",
+            "shrq\t$48, %rax",
+            "ret"
+          ]
+        },
+        "clear_epoch": {
+          "static_instruction_count": 4,
+          "instructions": [
+            "endbr64",
+            "movabsq\t$281474976710655, %rax",
+            "andq\t%rax, (%rdi)",
+            "ret"
+          ]
+        },
+        "copy_cell": {
+          "static_instruction_count": 4,
+          "instructions": [
+            "endbr64",
+            "movdqu\t(%rsi), %xmm0",
+            "movups\t%xmm0, (%rdi)",
+            "ret"
+          ]
+        },
+        "swap_cell": {
+          "static_instruction_count": 6,
+          "instructions": [
+            "endbr64",
+            "movdqu\t(%rdi), %xmm0",
+            "movdqu\t(%rsi), %xmm1",
+            "movups\t%xmm1, (%rdi)",
+            "movups\t%xmm0, (%rsi)",
+            "ret"
+          ]
+        },
+        "raw_cross_lane16": {
+          "static_instruction_count": 13,
+          "instructions": [
+            "endbr64",
+            "movq\t%rsi, %rax",
+            "shrw\t$4, %si",
+            "movdqu\t(%rdi), %xmm0",
+            "pand\t.LC0(%rip), %xmm0",
+            "salq\t$60, %rax",
+            "movzwl\t%si, %esi",
+            "movq\t%rax, %xmm1",
+            "movq\t%rsi, %xmm2",
+            "punpcklqdq\t%xmm2, %xmm1",
+            "por\t%xmm1, %xmm0",
+            "movups\t%xmm0, (%rdi)",
+            "ret"
+          ]
+        }
+      },
+      "world": {
+        "_ZN9cybersand5World10begin_tickERNS_9TickStatsE": 466,
+        "_ZN9cybersand5World10begin_tickERNS_9TickStatsE.cold": 24,
+        "_ZN9cybersand5World9move_cellEllllbPNS0_10JobEffectsENS_12PhysicsEventE": 656,
+        "_ZN9cybersand5World9move_cellEllllbPNS0_10JobEffectsENS_12PhysicsEventE.cold": 23,
+        "_ZN9cybersand5World14transfer_waterElllltPNS0_10JobEffectsE": 601,
+        "_ZN9cybersand5World11update_cellEllPNS0_10JobEffectsE": 81,
+        "_ZN9cybersand5World9scan_rectENS_8CellRectERNS_9TickStatsEPNS0_10JobEffectsE": 246,
+        "_ZZN9cybersand5World11tick_phasedEvENUlPvmE_4_FUNES1_m": 40,
+        "_ZN9cybersand5World11tick_phasedEv": 368,
+        "_ZN9cybersand5World11tick_phasedEv.cold": 36
+      }
+    },
+    "dual64-e8-x2": {
+      "wrappers": {
+        "get_material": {
+          "static_instruction_count": 3,
+          "instructions": [
+            "endbr64",
+            "movzbl\t(%rdi), %eax",
+            "ret"
+          ]
+        },
+        "set_a": {
+          "static_instruction_count": 9,
+          "instructions": [
+            "endbr64",
+            "movq\t(%rdi), %rax",
+            "movzwl\t%si, %esi",
+            "salq\t$16, %rsi",
+            "xorq\t%rax, %rsi",
+            "andl\t$4294901760, %esi",
+            "xorq\t%rax, %rsi",
+            "movq\t%rsi, (%rdi)",
+            "ret"
+          ]
+        },
+        "get_a": {
+          "static_instruction_count": 4,
+          "instructions": [
+            "endbr64",
+            "movq\t(%rdi), %rax",
+            "shrl\t$16, %eax",
+            "ret"
+          ]
+        },
+        "get_epoch": {
+          "static_instruction_count": 4,
+          "instructions": [
+            "endbr64",
+            "movq\t(%rdi), %rax",
+            "shrq\t$56, %rax",
+            "ret"
+          ]
+        },
+        "clear_epoch": {
+          "static_instruction_count": 4,
+          "instructions": [
+            "endbr64",
+            "movabsq\t$72057594037927935, %rax",
+            "andq\t%rax, (%rdi)",
+            "ret"
+          ]
+        },
+        "copy_cell": {
+          "static_instruction_count": 4,
+          "instructions": [
+            "endbr64",
+            "movdqu\t(%rsi), %xmm0",
+            "movups\t%xmm0, (%rdi)",
+            "ret"
+          ]
+        },
+        "swap_cell": {
+          "static_instruction_count": 6,
+          "instructions": [
+            "endbr64",
+            "movdqu\t(%rdi), %xmm0",
+            "movdqu\t(%rsi), %xmm1",
+            "movups\t%xmm1, (%rdi)",
+            "movups\t%xmm0, (%rsi)",
+            "ret"
+          ]
+        },
+        "raw_cross_lane16": {
+          "static_instruction_count": 13,
+          "instructions": [
+            "endbr64",
+            "movq\t%rsi, %rax",
+            "shrw\t$4, %si",
+            "movdqu\t(%rdi), %xmm0",
+            "pand\t.LC0(%rip), %xmm0",
+            "salq\t$60, %rax",
+            "movzwl\t%si, %esi",
+            "movq\t%rax, %xmm1",
+            "movq\t%rsi, %xmm2",
+            "punpcklqdq\t%xmm2, %xmm1",
+            "por\t%xmm1, %xmm0",
+            "movups\t%xmm0, (%rdi)",
+            "ret"
+          ]
+        }
+      },
+      "world": {
+        "_ZN9cybersand5World10begin_tickERNS_9TickStatsE": 465,
+        "_ZN9cybersand5World10begin_tickERNS_9TickStatsE.cold": 24,
+        "_ZN9cybersand5World9move_cellEllllbPNS0_10JobEffectsENS_12PhysicsEventE": 657,
+        "_ZN9cybersand5World9move_cellEllllbPNS0_10JobEffectsENS_12PhysicsEventE.cold": 23,
+        "_ZN9cybersand5World14transfer_waterElllltPNS0_10JobEffectsE": 607,
+        "_ZN9cybersand5World11update_cellEllPNS0_10JobEffectsE": 81,
+        "_ZN9cybersand5World9scan_rectENS_8CellRectERNS_9TickStatsEPNS0_10JobEffectsE": 246,
+        "_ZZN9cybersand5World11tick_phasedEvENUlPvmE_4_FUNES1_m": 40,
+        "_ZN9cybersand5World11tick_phasedEv": 368,
+        "_ZN9cybersand5World11tick_phasedEv.cold": 36
+      }
+    },
+    "u128-e16-x2": {
+      "wrappers": {
+        "get_material": {
+          "static_instruction_count": 3,
+          "instructions": [
+            "endbr64",
+            "movzbl\t(%rdi), %eax",
+            "ret"
+          ]
+        },
+        "set_a": {
+          "static_instruction_count": 15,
+          "instructions": [
+            "endbr64",
+            "movq\t(%rdi), %rdx",
+            "movzwl\t%si, %eax",
+            "movq\t8(%rdi), %r9",
+            "xorl\t%r8d, %r8d",
+            "salq\t$16, %rax",
+            "xorq\t%rdx, %rax",
+            "andl\t$4294901760, %eax",
+            "xorq\t%rdx, %rax",
+            "xorl\t%edx, %edx",
+            "orq\t%r8, %rax",
+            "orq\t%r9, %rdx",
+            "movq\t%rax, (%rdi)",
+            "movq\t%rdx, 8(%rdi)",
+            "ret"
+          ]
+        },
+        "get_a": {
+          "static_instruction_count": 4,
+          "instructions": [
+            "endbr64",
+            "movq\t(%rdi), %rax",
+            "shrl\t$16, %eax",
+            "ret"
+          ]
+        },
+        "get_epoch": {
+          "static_instruction_count": 4,
+          "instructions": [
+            "endbr64",
+            "movq\t(%rdi), %rax",
+            "shrq\t$48, %rax",
+            "ret"
+          ]
+        },
+        "clear_epoch": {
+          "static_instruction_count": 11,
+          "instructions": [
+            "endbr64",
+            "movq\t8(%rdi), %r9",
+            "xorl\t%r8d, %r8d",
+            "xorl\t%edx, %edx",
+            "movabsq\t$281474976710655, %rax",
+            "andq\t(%rdi), %rax",
+            "orq\t%r8, %rax",
+            "orq\t%r9, %rdx",
+            "movq\t%rax, (%rdi)",
+            "movq\t%rdx, 8(%rdi)",
+            "ret"
+          ]
+        },
+        "copy_cell": {
+          "static_instruction_count": 4,
+          "instructions": [
+            "endbr64",
+            "movdqa\t(%rsi), %xmm0",
+            "movaps\t%xmm0, (%rdi)",
+            "ret"
+          ]
+        },
+        "swap_cell": {
+          "static_instruction_count": 6,
+          "instructions": [
+            "endbr64",
+            "movdqa\t(%rdi), %xmm0",
+            "movdqa\t(%rsi), %xmm1",
+            "movaps\t%xmm1, (%rdi)",
+            "movaps\t%xmm0, (%rsi)",
+            "ret"
+          ]
+        },
+        "raw_cross_lane16": {
+          "static_instruction_count": 15,
+          "instructions": [
+            "endbr64",
+            "movq\t%rdi, %rcx",
+            "movzwl\t%si, %esi",
+            "movabsq\t$1152921504606846975, %rax",
+            "movq\t$-4096, %rdx",
+            "andq\t(%rdi), %rax",
+            "andq\t8(%rdi), %rdx",
+            "xorl\t%edi, %edi",
+            "shldq\t$60, %rsi, %rdi",
+            "salq\t$60, %rsi",
+            "orq\t%rsi, %rax",
+            "orq\t%rdi, %rdx",
+            "movq\t%rax, (%rcx)",
+            "movq\t%rdx, 8(%rcx)",
+            "ret"
+          ]
+        }
+      },
+      "world": {
+        "_ZN9cybersand5World10begin_tickERNS_9TickStatsE": 464,
+        "_ZN9cybersand5World10begin_tickERNS_9TickStatsE.cold": 24,
+        "_ZN9cybersand5World9move_cellEllllbPNS0_10JobEffectsENS_12PhysicsEventE": 666,
+        "_ZN9cybersand5World9move_cellEllllbPNS0_10JobEffectsENS_12PhysicsEventE.cold": 23,
+        "_ZN9cybersand5World14transfer_waterElllltPNS0_10JobEffectsE": 630,
+        "_ZN9cybersand5World11update_cellEllPNS0_10JobEffectsE": 81,
+        "_ZN9cybersand5World9scan_rectENS_8CellRectERNS_9TickStatsEPNS0_10JobEffectsE": 246,
+        "_ZZN9cybersand5World11tick_phasedEvENUlPvmE_4_FUNES1_m": 40,
+        "_ZN9cybersand5World11tick_phasedEv": 368,
+        "_ZN9cybersand5World11tick_phasedEv.cold": 36
+      }
+    },
+    "u128-e8-x2": {
+      "wrappers": {
+        "get_material": {
+          "static_instruction_count": 3,
+          "instructions": [
+            "endbr64",
+            "movzbl\t(%rdi), %eax",
+            "ret"
+          ]
+        },
+        "set_a": {
+          "static_instruction_count": 15,
+          "instructions": [
+            "endbr64",
+            "movq\t(%rdi), %rdx",
+            "movzwl\t%si, %eax",
+            "movq\t8(%rdi), %r9",
+            "xorl\t%r8d, %r8d",
+            "salq\t$16, %rax",
+            "xorq\t%rdx, %rax",
+            "andl\t$4294901760, %eax",
+            "xorq\t%rdx, %rax",
+            "xorl\t%edx, %edx",
+            "orq\t%r8, %rax",
+            "orq\t%r9, %rdx",
+            "movq\t%rax, (%rdi)",
+            "movq\t%rdx, 8(%rdi)",
+            "ret"
+          ]
+        },
+        "get_a": {
+          "static_instruction_count": 4,
+          "instructions": [
+            "endbr64",
+            "movq\t(%rdi), %rax",
+            "shrl\t$16, %eax",
+            "ret"
+          ]
+        },
+        "get_epoch": {
+          "static_instruction_count": 4,
+          "instructions": [
+            "endbr64",
+            "movq\t(%rdi), %rax",
+            "shrq\t$56, %rax",
+            "ret"
+          ]
+        },
+        "clear_epoch": {
+          "static_instruction_count": 11,
+          "instructions": [
+            "endbr64",
+            "movq\t8(%rdi), %r9",
+            "xorl\t%r8d, %r8d",
+            "xorl\t%edx, %edx",
+            "movabsq\t$72057594037927935, %rax",
+            "andq\t(%rdi), %rax",
+            "orq\t%r8, %rax",
+            "orq\t%r9, %rdx",
+            "movq\t%rax, (%rdi)",
+            "movq\t%rdx, 8(%rdi)",
+            "ret"
+          ]
+        },
+        "copy_cell": {
+          "static_instruction_count": 4,
+          "instructions": [
+            "endbr64",
+            "movdqa\t(%rsi), %xmm0",
+            "movaps\t%xmm0, (%rdi)",
+            "ret"
+          ]
+        },
+        "swap_cell": {
+          "static_instruction_count": 6,
+          "instructions": [
+            "endbr64",
+            "movdqa\t(%rdi), %xmm0",
+            "movdqa\t(%rsi), %xmm1",
+            "movaps\t%xmm1, (%rdi)",
+            "movaps\t%xmm0, (%rsi)",
+            "ret"
+          ]
+        },
+        "raw_cross_lane16": {
+          "static_instruction_count": 15,
+          "instructions": [
+            "endbr64",
+            "movq\t%rdi, %rcx",
+            "movzwl\t%si, %esi",
+            "movabsq\t$1152921504606846975, %rax",
+            "movq\t$-4096, %rdx",
+            "andq\t(%rdi), %rax",
+            "andq\t8(%rdi), %rdx",
+            "xorl\t%edi, %edi",
+            "shldq\t$60, %rsi, %rdi",
+            "salq\t$60, %rsi",
+            "orq\t%rsi, %rax",
+            "orq\t%rdi, %rdx",
+            "movq\t%rax, (%rcx)",
+            "movq\t%rdx, 8(%rcx)",
+            "ret"
+          ]
+        }
+      },
+      "world": {
+        "_ZN9cybersand5World10begin_tickERNS_9TickStatsE": 463,
+        "_ZN9cybersand5World10begin_tickERNS_9TickStatsE.cold": 24,
+        "_ZN9cybersand5World9move_cellEllllbPNS0_10JobEffectsENS_12PhysicsEventE": 674,
+        "_ZN9cybersand5World9move_cellEllllbPNS0_10JobEffectsENS_12PhysicsEventE.cold": 23,
+        "_ZN9cybersand5World14transfer_waterElllltPNS0_10JobEffectsE": 642,
+        "_ZN9cybersand5World11update_cellEllPNS0_10JobEffectsE": 81,
+        "_ZN9cybersand5World9scan_rectENS_8CellRectERNS_9TickStatsEPNS0_10JobEffectsE": 246,
+        "_ZZN9cybersand5World11tick_phasedEvENUlPvmE_4_FUNES1_m": 40,
+        "_ZN9cybersand5World11tick_phasedEv": 368,
+        "_ZN9cybersand5World11tick_phasedEv.cold": 36
+      }
+    }
+  },
+  "assembly_sha256": {
+    "assembly/dual64-e16-x2/access.s": "bfff014699b35f77e4d544c68a7158132e8178df075dee470ba0741159de105e",
+    "assembly/dual64-e16-x2/world.s": "51ea02014d1f11bbe66871b7667c55c1b11a9f93f813e3f1804fbffc0d759483",
+    "assembly/dual64-e8-x2/access.s": "3a14a4c5610e5a2d0aa28079170360c0531a97bb68562222bbeb7c4443059955",
+    "assembly/dual64-e8-x2/world.s": "87d8ab1dcdf11bc8c015e1cf85eb88eea536bfa77d7fed83cb72b86fd926a189",
+    "assembly/u128-e16-x2/access.s": "c025fde903517672c0e06a8b7b2c88c24df618abfc490d8fc453305b06300941",
+    "assembly/u128-e16-x2/world.s": "83e7f6ce2737831ac236811a6d2761ccbc85a20cea2dd0584c498746ed8195aa",
+    "assembly/u128-e8-x2/access.s": "18040c7681fc6e4e8a4a0ce88d22a0e5e0880ea7cb93e8b67def0d05a38cccf1",
+    "assembly/u128-e8-x2/world.s": "68e264cdc2660c3104493526c7997f3f37ff46914edb6c9fb018c8e6d792777b"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "status": "proposal-not-timing-registration",
+  "formal_timing_admitted": false,
+  "execution_authorized": false,
+  "candidate_source_commit": "c7d7bf6f3c085f68332c30384c9742dd0ca55f93",
+  "prerequisites": [
+    "complete untimed qualification and independent readback",
+    "new actual-workload observed/off twins",
+    "frozen compiler/source/binaries/fixtures/hash-sealed apparatus",
+    "independent source-bound admission",
+    "explicit owner execution authority",
+    "manual-only timing workflow"
+  ],
+  "platform": "GitHub-hosted Ubuntu24.04 x86_64 GCC13.3 ld2.42",
+  "warmup_ticks": 120,
+  "sample_ticks": 256,
+  "seed": 204,
+  "pairs": [
+    "AB",
+    "BA",
+    "AB",
+    "BA",
+    "AB",
+    "BA",
+    "AB"
+  ],
+  "primary": "seven B/A ratios of process mean World::tick ns, retain all256 samples per process",
+  "source_qualification": "S2A definitions may be reused prospectively but no old datasets merged or relabeled",
+  "limits": "No production ranking or selected layout; all timings held",
+  "track": "C128-performance-proposal",
+  "issue": 220,
+  "contrasts": [
+    {
+      "anchor": "active-512-w4",
+      "a": "C80-E8-aligned",
+      "b": "C128-E8-u128"
+    },
+    {
+      "anchor": "active-512-w4",
+      "a": "C80-E8-aligned",
+      "b": "C128-E8-dual64"
+    },
+    {
+      "anchor": "quiet-2048-w1",
+      "a": "C80-E8-aligned",
+      "b": "C128-E8-u128"
+    },
+    {
+      "anchor": "quiet-2048-w1",
+      "a": "C80-E8-aligned",
+      "b": "C128-E8-dual64"
+    },
+    {
+      "anchor": "active-512-w4",
+      "a": "C128-E8-dual64",
+      "b": "C128-E8-u128"
+    }
+  ],
+  "primary_processes": 70,
+  "epoch_scope": "E8 first; no epoch-width benefit inferred",
+  "payload_scope": "common material/state and neutral-zero upper capacity only; future full-high64 authoritative field access has no schema or timed workload",
+  "budget_proposal": {
+    "compile_seconds": 180,
+    "process_seconds": 120,
+    "wall_seconds": 1800,
+    "concurrency": 1
+  }
+}
