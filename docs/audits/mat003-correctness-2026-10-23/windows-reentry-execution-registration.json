@@ -1,0 +1,3214 @@
+{
+  "R16_T1": "conditional, opaque neutral test payload only",
+  "authority_derivation": "After explicit owner authorization of this registration hash, copy all fields unchanged except owner_execution_authorized=true and owner_authority_reference=exact human authorization reference. Retain both registration and derived authority hashes. No other change allowed.",
+  "binary_admission_certificate_sha256": "39a79616bc9446ffba30bcc11a0b70ffaa501cf3f8fac4d5199a49c2e53d1512",
+  "binary_admission_sha256": "39a79616bc9446ffba30bcc11a0b70ffaa501cf3f8fac4d5199a49c2e53d1512",
+  "build_authority_sha256": "6a1d4b017ff457f37a920bb60aa93ef05437640bf403ee1731e0bf12faba137f",
+  "build_inventory_sha256": "00ca78d5c1e1cf32498b61a799965c693a594ddce5a18884647b98b1f9701646",
+  "built_sha256": "8d2c2022dc0a21a31bd99d3c10579c4080701e5e1b9e743f425bd0f01e1fea30",
+  "compiler": "C:\\Users\\_\\.codex\\tmp\\mat003-build-5380c76-20261023\\toolchain\\llvm-mingw-20260826-ucrt-x86_64\\bin\\clang++.exe",
+  "compiler_sha256": "bf58cf0e544a308660645aad1fe65ae9cbc44b0871e4010278f3d9551f86a690",
+  "evidence_root": "C:\\Users\\_\\mat003-evidence-20261023\\windows-reentry-replacement",
+  "execution_scope": "Windows152-case correctness only; execution not authorized",
+  "fixture_revision": {
+    "changed_resident_cases": 64,
+    "chunk_capacity": "16/256 resident chunks",
+    "core_capacity": 256,
+    "initial_interest": [
+      0,
+      0,
+      256,
+      512
+    ],
+    "reentry_interest": [
+      0,
+      0,
+      512,
+      512
+    ],
+    "revision": "bounded-reentry-v2"
+  },
+  "independent_admission": "admitted",
+  "independent_review_reference": "docs/audits/2026-10-23-mat003-reentry-build-admission.md",
+  "linker": "C:\\Users\\_\\.codex\\tmp\\mat003-build-5380c76-20261023\\toolchain\\llvm-mingw-20260826-ucrt-x86_64\\bin\\ld.lld.exe",
+  "linker_selection_flags": [
+    "--ld-path=C:\\Users\\_\\.codex\\tmp\\mat003-build-5380c76-20261023\\toolchain\\llvm-mingw-20260826-ucrt-x86_64\\bin\\ld.lld.exe"
+  ],
+  "linker_sha256": "284daba5d41833c41d164d3b8b4715a41a11f0c8fd22c19eabc0929cbf081db8",
+  "normal_flags": [
+    "-std=c++20",
+    "-O2",
+    "-DNDEBUG",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-pthread"
+  ],
+  "ordered_cases": [
+    {
+      "arm": "K64-E8",
+      "id": "storage-000",
+      "operations": 65536,
+      "records": 1024,
+      "sanitized": false,
+      "suite": "storage",
+      "timeout": 300
+    },
+    {
+      "arm": "K64-E8",
+      "backend": "serial",
+      "id": "small-001",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K64-E8",
+      "backend": "phased",
+      "id": "small-002",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K64-E8",
+      "backend": "phased",
+      "id": "small-003",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 4
+    },
+    {
+      "arm": "K64-E8",
+      "chunks": 4,
+      "id": "refusal-004",
+      "operations": 256,
+      "sanitized": false,
+      "suite": "refusal",
+      "timeout": 300
+    },
+    {
+      "arm": "K64-E8",
+      "id": "storage-005",
+      "operations": 65536,
+      "records": 1024,
+      "sanitized": true,
+      "suite": "storage",
+      "timeout": 300
+    },
+    {
+      "arm": "K64-E8",
+      "backend": "serial",
+      "id": "small-006",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K64-E8",
+      "backend": "phased",
+      "id": "small-007",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K64-E8",
+      "backend": "phased",
+      "id": "small-008",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 4
+    },
+    {
+      "arm": "K64-E8",
+      "chunks": 4,
+      "id": "refusal-009",
+      "operations": 256,
+      "sanitized": true,
+      "suite": "refusal",
+      "timeout": 300
+    },
+    {
+      "arm": "K64-E16",
+      "id": "storage-010",
+      "operations": 65536,
+      "records": 1024,
+      "sanitized": false,
+      "suite": "storage",
+      "timeout": 300
+    },
+    {
+      "arm": "K64-E16",
+      "backend": "serial",
+      "id": "small-011",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K64-E16",
+      "backend": "phased",
+      "id": "small-012",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K64-E16",
+      "backend": "phased",
+      "id": "small-013",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 4
+    },
+    {
+      "arm": "K64-E16",
+      "backend": "serial",
+      "id": "natural-014",
+      "roles": [
+        "ordinary",
+        "prepared"
+      ],
+      "sanitized": false,
+      "side": 128,
+      "suite": "natural",
+      "ticks": 65540,
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K64-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-015",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K64-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-016",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K64-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-017",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K64-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-018",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K64-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-019",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K64-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-020",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K64-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-021",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K64-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-022",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "arm": "K64-E16",
+      "chunks": 4,
+      "id": "refusal-023",
+      "operations": 256,
+      "sanitized": false,
+      "suite": "refusal",
+      "timeout": 300
+    },
+    {
+      "arm": "K64-E16",
+      "id": "storage-024",
+      "operations": 65536,
+      "records": 1024,
+      "sanitized": true,
+      "suite": "storage",
+      "timeout": 300
+    },
+    {
+      "arm": "K64-E16",
+      "backend": "serial",
+      "id": "small-025",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K64-E16",
+      "backend": "phased",
+      "id": "small-026",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K64-E16",
+      "backend": "phased",
+      "id": "small-027",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 4
+    },
+    {
+      "arm": "K64-E16",
+      "backend": "serial",
+      "id": "natural-028",
+      "roles": [
+        "ordinary",
+        "prepared"
+      ],
+      "sanitized": true,
+      "side": 128,
+      "suite": "natural",
+      "ticks": 65540,
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K64-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-029",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K64-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-030",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K64-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-031",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K64-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-032",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K64-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-033",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K64-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-034",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K64-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-035",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K64-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-036",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "arm": "K64-E16",
+      "chunks": 4,
+      "id": "refusal-037",
+      "operations": 256,
+      "sanitized": true,
+      "suite": "refusal",
+      "timeout": 300
+    },
+    {
+      "arm": "K72-E8",
+      "id": "storage-038",
+      "operations": 65536,
+      "records": 1024,
+      "sanitized": false,
+      "suite": "storage",
+      "timeout": 300
+    },
+    {
+      "arm": "K72-E8",
+      "backend": "serial",
+      "id": "small-039",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K72-E8",
+      "backend": "phased",
+      "id": "small-040",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K72-E8",
+      "backend": "phased",
+      "id": "small-041",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 4
+    },
+    {
+      "arm": "K72-E8",
+      "chunks": 4,
+      "id": "refusal-042",
+      "operations": 256,
+      "sanitized": false,
+      "suite": "refusal",
+      "timeout": 300
+    },
+    {
+      "arm": "K72-E8",
+      "id": "storage-043",
+      "operations": 65536,
+      "records": 1024,
+      "sanitized": true,
+      "suite": "storage",
+      "timeout": 300
+    },
+    {
+      "arm": "K72-E8",
+      "backend": "serial",
+      "id": "small-044",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K72-E8",
+      "backend": "phased",
+      "id": "small-045",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K72-E8",
+      "backend": "phased",
+      "id": "small-046",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 4
+    },
+    {
+      "arm": "K72-E8",
+      "chunks": 4,
+      "id": "refusal-047",
+      "operations": 256,
+      "sanitized": true,
+      "suite": "refusal",
+      "timeout": 300
+    },
+    {
+      "arm": "K72-E16",
+      "id": "storage-048",
+      "operations": 65536,
+      "records": 1024,
+      "sanitized": false,
+      "suite": "storage",
+      "timeout": 300
+    },
+    {
+      "arm": "K72-E16",
+      "backend": "serial",
+      "id": "small-049",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K72-E16",
+      "backend": "phased",
+      "id": "small-050",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K72-E16",
+      "backend": "phased",
+      "id": "small-051",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 4
+    },
+    {
+      "arm": "K72-E16",
+      "backend": "serial",
+      "id": "natural-052",
+      "roles": [
+        "ordinary",
+        "prepared"
+      ],
+      "sanitized": false,
+      "side": 128,
+      "suite": "natural",
+      "ticks": 65540,
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K72-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-053",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K72-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-054",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K72-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-055",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K72-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-056",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K72-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-057",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K72-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-058",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K72-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-059",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K72-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-060",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "arm": "K72-E16",
+      "chunks": 4,
+      "id": "refusal-061",
+      "operations": 256,
+      "sanitized": false,
+      "suite": "refusal",
+      "timeout": 300
+    },
+    {
+      "arm": "K72-E16",
+      "id": "storage-062",
+      "operations": 65536,
+      "records": 1024,
+      "sanitized": true,
+      "suite": "storage",
+      "timeout": 300
+    },
+    {
+      "arm": "K72-E16",
+      "backend": "serial",
+      "id": "small-063",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K72-E16",
+      "backend": "phased",
+      "id": "small-064",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K72-E16",
+      "backend": "phased",
+      "id": "small-065",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 4
+    },
+    {
+      "arm": "K72-E16",
+      "backend": "serial",
+      "id": "natural-066",
+      "roles": [
+        "ordinary",
+        "prepared"
+      ],
+      "sanitized": true,
+      "side": 128,
+      "suite": "natural",
+      "ticks": 65540,
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K72-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-067",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K72-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-068",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K72-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-069",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K72-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-070",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K72-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-071",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K72-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-072",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K72-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-073",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K72-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-074",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "arm": "K72-E16",
+      "chunks": 4,
+      "id": "refusal-075",
+      "operations": 256,
+      "sanitized": true,
+      "suite": "refusal",
+      "timeout": 300
+    },
+    {
+      "arm": "K80-E8",
+      "id": "storage-076",
+      "operations": 65536,
+      "records": 1024,
+      "sanitized": false,
+      "suite": "storage",
+      "timeout": 300
+    },
+    {
+      "arm": "K80-E8",
+      "backend": "serial",
+      "id": "small-077",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K80-E8",
+      "backend": "phased",
+      "id": "small-078",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K80-E8",
+      "backend": "phased",
+      "id": "small-079",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 4
+    },
+    {
+      "arm": "K80-E8",
+      "chunks": 4,
+      "id": "refusal-080",
+      "operations": 256,
+      "sanitized": false,
+      "suite": "refusal",
+      "timeout": 300
+    },
+    {
+      "arm": "K80-E8",
+      "id": "storage-081",
+      "operations": 65536,
+      "records": 1024,
+      "sanitized": true,
+      "suite": "storage",
+      "timeout": 300
+    },
+    {
+      "arm": "K80-E8",
+      "backend": "serial",
+      "id": "small-082",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K80-E8",
+      "backend": "phased",
+      "id": "small-083",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K80-E8",
+      "backend": "phased",
+      "id": "small-084",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 4
+    },
+    {
+      "arm": "K80-E8",
+      "chunks": 4,
+      "id": "refusal-085",
+      "operations": 256,
+      "sanitized": true,
+      "suite": "refusal",
+      "timeout": 300
+    },
+    {
+      "arm": "K80-E16",
+      "id": "storage-086",
+      "operations": 65536,
+      "records": 1024,
+      "sanitized": false,
+      "suite": "storage",
+      "timeout": 300
+    },
+    {
+      "arm": "K80-E16",
+      "backend": "serial",
+      "id": "small-087",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K80-E16",
+      "backend": "phased",
+      "id": "small-088",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K80-E16",
+      "backend": "phased",
+      "id": "small-089",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 4
+    },
+    {
+      "arm": "K80-E16",
+      "backend": "serial",
+      "id": "natural-090",
+      "roles": [
+        "ordinary",
+        "prepared"
+      ],
+      "sanitized": false,
+      "side": 128,
+      "suite": "natural",
+      "ticks": 65540,
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K80-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-091",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K80-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-092",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K80-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-093",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K80-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-094",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K80-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-095",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K80-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-096",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K80-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-097",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K80-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-098",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "arm": "K80-E16",
+      "chunks": 4,
+      "id": "refusal-099",
+      "operations": 256,
+      "sanitized": false,
+      "suite": "refusal",
+      "timeout": 300
+    },
+    {
+      "arm": "K80-E16",
+      "id": "storage-100",
+      "operations": 65536,
+      "records": 1024,
+      "sanitized": true,
+      "suite": "storage",
+      "timeout": 300
+    },
+    {
+      "arm": "K80-E16",
+      "backend": "serial",
+      "id": "small-101",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K80-E16",
+      "backend": "phased",
+      "id": "small-102",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "K80-E16",
+      "backend": "phased",
+      "id": "small-103",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 4
+    },
+    {
+      "arm": "K80-E16",
+      "backend": "serial",
+      "id": "natural-104",
+      "roles": [
+        "ordinary",
+        "prepared"
+      ],
+      "sanitized": true,
+      "side": 128,
+      "suite": "natural",
+      "ticks": 65540,
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K80-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-105",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K80-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-106",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K80-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-107",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "K80-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-108",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K80-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-109",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K80-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-110",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K80-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-111",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "K80-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-112",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "arm": "K80-E16",
+      "chunks": 4,
+      "id": "refusal-113",
+      "operations": 256,
+      "sanitized": true,
+      "suite": "refusal",
+      "timeout": 300
+    },
+    {
+      "arm": "D128-E8",
+      "id": "storage-114",
+      "operations": 65536,
+      "records": 1024,
+      "sanitized": false,
+      "suite": "storage",
+      "timeout": 300
+    },
+    {
+      "arm": "D128-E8",
+      "backend": "serial",
+      "id": "small-115",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "D128-E8",
+      "backend": "phased",
+      "id": "small-116",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "D128-E8",
+      "backend": "phased",
+      "id": "small-117",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 4
+    },
+    {
+      "arm": "D128-E8",
+      "chunks": 4,
+      "id": "refusal-118",
+      "operations": 256,
+      "sanitized": false,
+      "suite": "refusal",
+      "timeout": 300
+    },
+    {
+      "arm": "D128-E8",
+      "id": "storage-119",
+      "operations": 65536,
+      "records": 1024,
+      "sanitized": true,
+      "suite": "storage",
+      "timeout": 300
+    },
+    {
+      "arm": "D128-E8",
+      "backend": "serial",
+      "id": "small-120",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "D128-E8",
+      "backend": "phased",
+      "id": "small-121",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "D128-E8",
+      "backend": "phased",
+      "id": "small-122",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 4
+    },
+    {
+      "arm": "D128-E8",
+      "chunks": 4,
+      "id": "refusal-123",
+      "operations": 256,
+      "sanitized": true,
+      "suite": "refusal",
+      "timeout": 300
+    },
+    {
+      "arm": "D128-E16",
+      "id": "storage-124",
+      "operations": 65536,
+      "records": 1024,
+      "sanitized": false,
+      "suite": "storage",
+      "timeout": 300
+    },
+    {
+      "arm": "D128-E16",
+      "backend": "serial",
+      "id": "small-125",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "D128-E16",
+      "backend": "phased",
+      "id": "small-126",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "D128-E16",
+      "backend": "phased",
+      "id": "small-127",
+      "sanitized": false,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 4
+    },
+    {
+      "arm": "D128-E16",
+      "backend": "serial",
+      "id": "natural-128",
+      "roles": [
+        "ordinary",
+        "prepared"
+      ],
+      "sanitized": false,
+      "side": 128,
+      "suite": "natural",
+      "ticks": 65540,
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "D128-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-129",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "D128-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-130",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "D128-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-131",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "D128-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-132",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "D128-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-133",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "D128-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-134",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "D128-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-135",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "D128-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-136",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": false,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "arm": "D128-E16",
+      "chunks": 4,
+      "id": "refusal-137",
+      "operations": 256,
+      "sanitized": false,
+      "suite": "refusal",
+      "timeout": 300
+    },
+    {
+      "arm": "D128-E16",
+      "id": "storage-138",
+      "operations": 65536,
+      "records": 1024,
+      "sanitized": true,
+      "suite": "storage",
+      "timeout": 300
+    },
+    {
+      "arm": "D128-E16",
+      "backend": "serial",
+      "id": "small-139",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "D128-E16",
+      "backend": "phased",
+      "id": "small-140",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 1
+    },
+    {
+      "arm": "D128-E16",
+      "backend": "phased",
+      "id": "small-141",
+      "sanitized": true,
+      "side": 256,
+      "suite": "small",
+      "ticks": 2048,
+      "timeout": 300,
+      "workers": 4
+    },
+    {
+      "arm": "D128-E16",
+      "backend": "serial",
+      "id": "natural-142",
+      "roles": [
+        "ordinary",
+        "prepared"
+      ],
+      "sanitized": true,
+      "side": 128,
+      "suite": "natural",
+      "ticks": 65540,
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "D128-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-143",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "D128-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-144",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "D128-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-145",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 16,
+      "active_core_capacity": 256,
+      "arm": "D128-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-146",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 512,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "D128-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-147",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "D128-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-148",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "sleeping-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "D128-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-149",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 1
+    },
+    {
+      "active_chunk_capacity": 256,
+      "active_core_capacity": 256,
+      "arm": "D128-E16",
+      "backend": "phased",
+      "fixture_revision": "bounded-reentry-v2",
+      "id": "resident-150",
+      "initial_interest": [
+        0,
+        0,
+        256,
+        512
+      ],
+      "reentry": 4,
+      "reentry_interest": [
+        0,
+        0,
+        512,
+        512
+      ],
+      "roles": [
+        "event",
+        "reference"
+      ],
+      "sanitized": true,
+      "scene": "active-window-excluded",
+      "setup": 255,
+      "side": 2048,
+      "suite": "resident",
+      "timeout": 600,
+      "workers": 4
+    },
+    {
+      "arm": "D128-E16",
+      "chunks": 4,
+      "id": "refusal-151",
+      "operations": 256,
+      "sanitized": true,
+      "suite": "refusal",
+      "timeout": 300
+    }
+  ],
+  "owner_authority_reference": "Pending explicit authorization of this new registration hash; preparation only",
+  "owner_build_authorized": true,
+  "owner_execution_authorized": false,
+  "platform_identity": {
+    "machine": "AMD64",
+    "python": "3.12.10",
+    "python_executable_sha256": "0b471133e110cfb53a061cad528ce8e517d7b9ac41a0a396c39ad795a487fc14",
+    "release": "11",
+    "system": "Windows",
+    "version": "10.0.26300"
+  },
+  "prior_failed_registration_sha256": "863457032bb1b5fb1bafd268c3f7fd15899d7ce8cfc55d3fccfeca8d603f1884",
+  "psutil_source_sha256": {
+    "__init__.py": "96f6567584375b47e5719796d6f6cde50828487baaa1f5c19ccc4764bcf082b5",
+    "_common.py": "b4f13b615cc2d19201859cd8773a8e16787e81e25500b6f2058dd3480c00497c",
+    "_psaix.py": "08504bc148bc0d1e4ab030b4c82b348e52ed2dfd9d861c8602b0211bfb9da8af",
+    "_psbsd.py": "51777e41751593f1ffc1b1475addafb21702856c41acfc27dfc3d7d077985dfa",
+    "_pslinux.py": "c0a4f57371d7f1786767cb03357d6188a45b563ee9e7701227a55a9e229ac6ce",
+    "_psosx.py": "2f014fe80b4aa768733564526922da58707a9e1d4288a48cbbf2af3f9d34f481",
+    "_psposix.py": "009c726913dfd61f1dc93f6b9ec17c73ea6c1f05c46caa9a344b7738e9b866e9",
+    "_pssunos.py": "079f056382636df9ddadd99b115ed0197ea5562d2ffbe57e83f1f1b20f79f0c3",
+    "_psutil_windows.pyd": "9c7fc855d9d1614e70705c7dcc6f4ac3cdcab5adfeb6a67d382f5ade09eadc15",
+    "_pswindows.py": "8acfc2ab7c8cb859ea1947e939e894f285b365035698affe5ededab1bf180aee",
+    "tests/__init__.py": "b457dad51aa73c93fd52e55ef8937bb006af1d5a07966aa2374a72937238288d",
+    "tests/__main__.py": "0100f012bad214fb01192639c082a687b2f38aa593000458284ab3ff3ad73137",
+    "tests/test_aix.py": "33ce197ccd447920d1cb3adfe34e091aee73cbf12b467e4c2b7b77c93d75973d",
+    "tests/test_bsd.py": "1916f382e7a057b2b69be3b87502655091a1ecced41fd7c8f23bc4d948c53a4b",
+    "tests/test_connections.py": "d43e0711097f6d97d96e4ff883e85ce2b9eb0ea503eeae36adbf5a2282750267",
+    "tests/test_contracts.py": "f1e9e8ad2d4a98e7ed2b20b85d320d5ed9d63679a1d7ca8511874b1cab6b9276",
+    "tests/test_linux.py": "19aa7e180e81bfd4df29b46ea69878f4dc190b4be3bf55798ac6b997e120dd56",
+    "tests/test_memleaks.py": "c861214ce3a5956d8d57e4764b99726c3d92f223bd0a24bbfbe343d84f6b6536",
+    "tests/test_misc.py": "79052642a9e1ee7334688343ff23ad80ee3e2f0caca70ded82ddda5a37b404f6",
+    "tests/test_osx.py": "63f36e6e3332940f3c03b5807a98839184d9978616bf082d09116fbb6dd19bc0",
+    "tests/test_posix.py": "c8a2fd37a8b188550f366bf9bfb7014b539aa0e665f9b9bb84675fee6dbf3341",
+    "tests/test_process.py": "966543f453ba189a78199a92c51d23e16b2bedd706f0fcb6a96b22bfe7eeadb6",
+    "tests/test_process_all.py": "31f29cd81a4bde91412aa76692ae602751830f8099cf152f7ac43bb209f3cc98",
+    "tests/test_scripts.py": "6b7cf8bc5741365b68ff6a4a7b7ee438f2bacd57a77d6cc2b226ddbb3c9e3b57",
+    "tests/test_sunos.py": "1712008480b787272f26181d54af3ff7c026995d694d9817b68bc1803983f510",
+    "tests/test_system.py": "822e4c722fe92f9cdae90d56a779cebf827a063ecbf8878cefaad1e7ed6b1599",
+    "tests/test_testutils.py": "21473798c1c62867673e97ff9a13166c3ab45032bdb172380d9676770ba34bb0",
+    "tests/test_unicode.py": "907d3c4861668b46f19cbf8b1c403b257d1fc1ab863ef63d5b7cdf910ba6813c",
+    "tests/test_windows.py": "669838124f4a1e4968607a601ed1c8ad80435c88127fc1e9a5259c8168288161"
+  },
+  "registration_status": "independently-reviewed-execution-registration-owner-authorization-pending",
+  "resource_limits": {
+    "compile_seconds": 180,
+    "concurrency": 1,
+    "normal_rss_bytes": 2147483648,
+    "platform_builds": 32,
+    "platform_processes": 152,
+    "platform_wall_seconds": 21600,
+    "qualification_admitted": false,
+    "sanitized_rss_bytes": 3221225472,
+    "timing_admitted": false,
+    "total_output_bytes": 68719476736
+  },
+  "sanitizer_environment": {
+    "ASAN_OPTIONS": "detect_leaks=0:halt_on_error=1",
+    "PATH": "C:\\Users\\_\\.codex\\tmp\\mat003-build-5380c76-20261023\\toolchain\\llvm-mingw-20260826-ucrt-x86_64\\bin;C:\\Users\\_\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell;C:\\Users\\_\\.codex\\tmp\\arg0-windows\\codex-arg0QE0aMP;C:\\Users\\_\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\libheif\\libheif\\bin;C:\\Users\\_\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\jxrlib\\jxrlib\\bin;C:\\Users\\_\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\poppler\\Library\\bin;C:\\Users\\_\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\bin\\override;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\Git\\cmd;C:\\Program Files\\GitHub CLI\\;C:\\Program Files\\nodejs\\;C:\\Program Files\\dotnet\\;C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\Scripts\\;C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\;C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Launcher\\;C:\\Users\\_\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell;C:\\Users\\_\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\_\\.lmstudio\\bin;C:\\Users\\_\\AppData\\Roaming\\npm;C:\\Users\\_\\.dotnet\\tools;C:\\Users\\_\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.2-full_build\\bin;C:\\Users\\_\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\bin\\fallback;C:\\Users\\_\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\node\\bin;C:\\Users\\_\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\git\\cmd;C:\\Users\\_\\AppData\\Local\\OpenAI\\Codex\\bin\\2d8a5d5756dbf318;C:\\Users\\_\\AppData\\Local\\OpenAI\\Codex\\bin\\37f54d68e5533a51",
+    "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+  },
+  "sanitizer_flags": [
+    "-std=c++20",
+    "-O1",
+    "-g",
+    "-fno-omit-frame-pointer",
+    "-fsanitize=address,undefined",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-pthread"
+  ],
+  "sanitizer_preflight_reference": "preflight.json SHA256 c03bb8c6d7c09365a44094a14dc335cb4ec18dac06a95783a8cda4f3f0aa8eb6",
+  "source_commit": "e655166989661617cd8d6cb4d58a71b9d88c9467",
+  "source_sha256": {
+    "docs/research/mat003-correctness-only-plan.md": "f134267c2304cc03974605595089cced53f03a09918e097681ae3f6bf11c0b23",
+    "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+    "native/include/cybersand/c_api.h": "d39b153e42111e2b5696c04832f64d1d69f401799236372ca8b690c7d0e1d429",
+    "native/include/cybersand/demo_snapshot.hpp": "98b1f397f48d61c2fabc454b2f8fda7634b64cadd8fb6503655c96c5edc6e172",
+    "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+    "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+    "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+    "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+    "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+    "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+    "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+    "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+    "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+    "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+    "native/include/cybersand/material_rules.hpp": "647931176804ffe3d5c31aa62fbeb5ed3f39b643e8bbecde0d4cfb6719d5ca0e",
+    "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+    "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+    "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+    "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+    "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+    "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+    "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+    "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+    "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+    "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+    "native/include/cybersand/world.hpp": "8280e968fe161305a7dbb57704e057d9755232037ea91ba20a4d17a547989c4f",
+    "native/include/cybersand/world_generation.hpp": "28007e89dc009d68af125e2c04d77a5fb6aec48ec9758a4079affa016f3dca5c",
+    "native/src/c_api.cpp": "9e70906c5489bd10ec2fd00663328c818fe8b281d5199e6a01d756b2cd9b6274",
+    "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+    "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+    "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+    "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+    "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+    "native/src/material_rules.cpp": "31db093d2c48bfc1306f4a365b967ab3fac66b557fbe7a6f072f6b8e18b241e8",
+    "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+    "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+    "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+    "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+    "native/src/world.cpp": "e8b6cb70de10aad958920b4ba795a62eeed6b2c2b07a5350b7f7ffa03df8fec9",
+    "native/src/world_generation.cpp": "cf9eb2efef6ac9a9e49bd40eb9fac1915fd967071920816100703d1ae306b535",
+    "third_party/native-toolchain.lock.json": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414",
+    "tools/experiments/mat003_continuation/assembly_report.py": "b13c331ab36630db59786b66c0afaab12d595de8bea8b77042d7947cd09457ce",
+    "tools/experiments/mat003_continuation/c128-registration.json": "cf278731fafe76b0d63ce334ab808ce9c1f0ef4eb34b05960530d811921cdfa7",
+    "tools/experiments/mat003_continuation/candidates.hpp": "c62ecf0948ab6f31074ddd65fc95409c3a58d54e8f2bcbcc6996142d43f6ab4b",
+    "tools/experiments/mat003_continuation/overlay.py": "0b3da467496e18ea935028a876105dea43a1e4c17a17a4bc395e2db8b732aba4",
+    "tools/experiments/mat003_continuation/qualify.py": "43222cf86ca65d008c9c3de8ca0306abc7292b31a7c26732b7adbfa12ff961e1",
+    "tools/experiments/mat003_continuation/s2p-registration.json": "79d2e8d2f2cd5fa46ae360017d125bce4dd610b7d760b6b020db81a622c49078",
+    "tools/experiments/mat003_continuation/storage.cpp": "fac58a987866ee1d2fec3a2f07bfffcd96ceb20745101b7b809f557dc498ca59",
+    "tools/experiments/mat003_continuation/test_contracts.py": "0450e6543a79fc40b4d649b3804422f571ae72ccd42ea24df71783bb2db64f96",
+    "tools/experiments/mat003_continuation/timing.py": "52ee2ae651e9cc67ec74bed301f1cb0d34f8341ad4dfc66207376e4d5566f236",
+    "tools/experiments/mat003_continuation/verify.py": "38f05365daf8314a77bf7efc8d6be3dc798fe79bfd7a4bf2506cbee900c209ce",
+    "tools/experiments/mat003_continuation/verify_timing.py": "ad3a53c856662408e931437cc14db6309b56add7192ad8928a02304396d069d2",
+    "tools/experiments/mat003_continuation/wclear-admitted-registration.json": "a207d988098f75b6d1921ec817d11322f001b2e85ea9977b04448cf14732a3e1",
+    "tools/experiments/mat003_continuation/wclear-registration-v2.json": "80ae5058e21083187d5748213824c4c9d53a7282c8df88cf68dadbcf98e9b815",
+    "tools/experiments/mat003_continuation/wclear-registration-v3.json": "f619f53e0503e9dd91ef0937b54680a87c6c7c78d0af80019c6d1f12392a5aac",
+    "tools/experiments/mat003_continuation/wclear-registration.json": "86d0820fd3422da98b72a9e4ca01ba881071ceffa605358d62d57bf9572e3150",
+    "tools/experiments/mat003_continuation/wclear.cpp": "f644cdfc647e7462100f67667d6e67392922654aae9140f369d2084e039a04d5",
+    "tools/experiments/mat003_correctness/README.md": "08633e1b6b5adf7a107a68c7cf263345eb8091d98a748dd94d2f6fd451a1955f",
+    "tools/experiments/mat003_correctness/apparatus-contract.json": "b76dca3adcf572b0d6092284f80fe31753bf312df2043a7b198c6a09912a7b71",
+    "tools/experiments/mat003_correctness/collect.py": "f42774d0ed01c04912d93df68d5e7e07450b8c6e64466385798f39642f63c1ce",
+    "tools/experiments/mat003_correctness/lifecycle.hpp": "5259a105e11ec36c527cbdec30d047c752b7bdf79fdb1e88c99500cc55306acb",
+    "tools/experiments/mat003_correctness/maps.hpp": "19383d1fd4b33b612d718b41661cfc04da23a0ccb66c77b3761b0e1283972dd5",
+    "tools/experiments/mat003_correctness/matrix.py": "a3cf8ce4a8141f01b8a3aec3fb3bcc7107e924f8d0fb999a596feb98080d30b0",
+    "tools/experiments/mat003_correctness/negative.py": "184abf33b4cd9fa98c7bb78a3795b6b1c9922b0342f32e710a3c60c371935b60",
+    "tools/experiments/mat003_correctness/oracle.py": "5e02d9d0192f60e173ee301dcb6606d619aad591dfd9b5153a9118b74733e8ee",
+    "tools/experiments/mat003_correctness/overlay.py": "9224858d773221127c0830f4fcc9b8550ad60f19dafa15d791a353318e584489",
+    "tools/experiments/mat003_correctness/probe.inc": "6372921c0252072698f595b816012b4e4fdaa85d2221fa5ee30963ba3e841131",
+    "tools/experiments/mat003_correctness/provenance.py": "5c1fdfe77b6cab9bc574f1679e3c37066d528cb3c51778689251b4610e8ad9b8",
+    "tools/experiments/mat003_correctness/readback.py": "e1dfa359e1d83e0c4797a53a3007476d1e72780596f4393aa376c107a4207a62",
+    "tools/experiments/mat003_correctness/requirements.txt": "b6c8d86768d07e1dae4fb734c2e93997445a318d43290b307bfc1c800a0b1e52",
+    "tools/experiments/mat003_correctness/resource.hpp": "3a714674e874beab816ffed677fa5e2483e78f47a44f2258b655648a1e715a2e",
+    "tools/experiments/mat003_correctness/schedule.hpp": "36ca5e798fa2c801c4bccc4553e03c671bf4624a110614297bc9d74fd8c76110",
+    "tools/experiments/mat003_correctness/storage.cpp": "7b5956f40f03d54274d6e60b4a58af661e999c12d8f4bfe335a0edf3ec262ecf",
+    "tools/experiments/mat003_correctness/storage_oracle.py": "396704351fc507b009bab20029b2b5b162664eeda70933f5b31730b88984f761",
+    "tools/experiments/mat003_correctness/trace.hpp": "97f7696334d7d100bca50ba6427b20112f259bda8c323750b5cc34c3921d949a",
+    "tools/experiments/mat003_correctness/windows_job.py": "4d0086077a2bb6c02e2852b458cc78f4398973b76734c7ed020fc2f59add859e",
+    "tools/experiments/mat003_correctness/world.cpp": "f8281c76f051527645d1516b7d05d981d8fe88a580160895fc7934ac70b83fc2",
+    "tools/experiments/mat003_correctness/world_adapter.hpp": "faa3e7078ee84cf12c67c56b9541bf16577b9385fd4b02ca44aeaae6e704d38d",
+    "tools/experiments/mat003_correctness/world_oracle.py": "466e97cc4416c61875cd82d91bdc14824834b539c333d4a340c30b419dd02f86",
+    "tools/experiments/mat003_prepass/carriers.hpp": "542f35323ad97e385424fec8f69d143dddeb5fc41350140d917756d3d739dc81",
+    "tools/experiments/mat003_prepass/registration.json": "4e4ffb9825617d8c0f98b5cfe28ff42a6d52ccf9802c4206e831618160be4d5a",
+    "tools/experiments/mat003_prepass/run.py": "a92ba224937af286227ff85a5b7879b60139bdc876874c8d5bb0c8827a326526",
+    "tools/experiments/mat003_prepass/test_carriers.cpp": "bf4260950c119cbbf0a3fd69f9114cb276a2f4a1effb99610797c5749951ab5e",
+    "tools/experiments/mat003_prepass/test_evidence.py": "b0504d7670c00592937ac3de859d9831b6de0924b36933045f1c5ce5c9f355b8",
+    "tools/experiments/mat003_prepass/test_world.cpp": "14fd0c6fe7d51ea944370abee99892a0e32bbdfb85b1ce56e72d720a77bff3d0",
+    "tools/experiments/mat003_prepass/test_world_evidence.py": "f231ef7613baac40e23841638a59c8de5477bd9468bebf0b59b0838647096133",
+    "tools/experiments/mat003_prepass/test_world_overlay.py": "ab242bfbca8ecfc942d3628421707c30184d510b38a8dddf7c49e37d35e7b3a2",
+    "tools/experiments/mat003_prepass/verify.py": "b9b904cc213043c213a6ed361b6158577e6f7ed4c35044cff84650356ff3e0cb",
+    "tools/experiments/mat003_prepass/world_adapter.hpp": "14fe715fb40ca09431c51cb3ac82a283fe0b25d428d97f9f23046d7718d539a8",
+    "tools/experiments/mat003_prepass/world_overlay.py": "bc3b0646a7150424836c56f03779f216c2d1328110eda7d81f5c7933a4cfcbff",
+    "tools/experiments/mat003_prepass/world_registration.json": "d4d78f2ae3ca64edc4639bacf2a973c7354647040eac635bf63ad5a0a2dae9bf",
+    "tools/experiments/mat003_prepass/world_run.py": "eac271fa31264bac76e75076d15d75d29db4c5ddfd0b8d9aa19f390193143778",
+    "tools/experiments/mat003_prepass/world_verify.py": "8845d2df81e77cfad374e203d8ae68b94ed8c5436bd77773fd25c7419ad73452"
+  },
+  "source_tree": "c302420be202ac05f393c556375bf4acf7686089",
+  "stop_rules": [
+    "No retries, subsets, dropping failures or reconstructed evidence",
+    "152 sequential processes; retain all failures; incomplete matrix is not accepted",
+    "Independent reader runs retained negative fixtures and full raw semantic readback; no timing",
+    "Before execution recheck exact tools/platform/monitor/binary/generated/source seals and at least36GiB free output capacity; refusal means stop",
+    "New actual build duration must be frozen/count within6h budget before execution admission; no reuse of prior binary certificates"
+  ],
+  "timing_authorized": false,
+  "toolchain_proof_file": "C:\\Users\\_\\.codex\\tmp\\mat003-build-5380c76-20261023\\toolchain-proof-qualified.json",
+  "toolchain_proof_sha256": "a4e83a2a4ca0a8b65902146caf499399dcb1aa5c4cd96aaa486f1d3b7a32cd1a",
+  "verification_output": "C:\\Users\\_\\mat003-evidence-20261023\\windows-reentry-replacement-readback"
+}

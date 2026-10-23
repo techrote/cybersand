@@ -1,0 +1,26 @@
+{
+  "source_commit": "e655166989661617cd8d6cb4d58a71b9d88c9467",
+  "status": "built-execution-held",
+  "builds": 32,
+  "independent_binary_admission": "admitted",
+  "certificate_sha256": "39a79616bc9446ffba30bcc11a0b70ffaa501cf3f8fac4d5199a49c2e53d1512",
+  "build_authority_sha256": "6a1d4b017ff457f37a920bb60aa93ef05437640bf403ee1731e0bf12faba137f",
+  "built_sha256": "8d2c2022dc0a21a31bd99d3c10579c4080701e5e1b9e743f425bd0f01e1fea30",
+  "inventory_sha256": "00ca78d5c1e1cf32498b61a799965c693a594ddce5a18884647b98b1f9701646",
+  "registration_sha256": "9b1dbfb70d90102b1a95a9fedb360daab7e1d14036b13757bbeb05d1cc5dc59e",
+  "owner_execution_authorized": false,
+  "timing_authorized": false,
+  "raw_archive": {
+    "path": "C:\\Users\\_\\mat003-evidence-20261023\\reentry-build-evidence.zip",
+    "bytes": 23192758,
+    "entries": 756,
+    "sha256": "551c5e69ec67eeb55ef71094aac346ccda0864954cbc13d660b6eaa3ce3910c1"
+  },
+  "prior_failures_preserved": true,
+  "R16_T1": "conditional",
+  "production_changed": false,
+  "execution_registration_independent_admission": "admitted-preparation-only",
+  "execution_registration_review_sha256": "6b06f54b93f87a5f044671d1485dc8e1476a2cc9126f04d12743ce924f91557e",
+  "execution_registration_review_path": "C:/Users/_/mat003-evidence-20261023/reentry-build-control/execution-registration-review.json",
+  "maintenance": "docs/repository/historicalM11/diff passed; frozen32:21rank1/32top5/MRR0.7937;133supplementary107rank1/132top5/MRR0.8831;MATSCHEMA14rank1,C09miss"
+}

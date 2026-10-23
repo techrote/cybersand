@@ -233,3 +233,5 @@ Macro-dynamics and coherent-child fracture remain first-class later goals; disco
 stays read-only with respect to material authority.
 
 MAT-003 design continuation: [semantic state-schema proposal](research/mat003-state-schema-proposal.md) and [ADR-015 carrier adoption gates](decisions/ADR-015-material-state-schema-and-carrier-gates.md) remain Planned; production and timing authority are unchanged.
+
+Latest [resident reentry Windows build and replacement execution gate](audits/2026-10-23-mat003-reentry-build-admission.md):32 clean builds; no qualification cases or timing.

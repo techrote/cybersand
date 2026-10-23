@@ -280,3 +280,5 @@ Containment source a3f4e37 now has [32 independently admitted Windows build arti
 Latest authorized containment correctness disposition: [resident-015 reentry/scratch failure and independent refusal](../audits/2026-10-23-mat003-containment-correctness-attempt.md). Fifteen exit0 observations precede failure on attempted257 after clear256; the pre-dedup scratch bound does not prove128 distinct cores. No full correctness or timing acceptance.
 
 Resident reentry scratch capacity, exact grid and paused/resumed witness repair: [source-only repair audit](../audits/2026-10-23-mat003-resident-reentry-repair.md), linked from the [current continuation report](../research/mat003-continuation.md#resident-reentry-source-repair-and-held-rebuild). Prior build/execution routes above describe historical stages; changed source requires fresh admission.
+
+Fresh e655166 binaries and exact replacement registration: [resident reentry build/admission](../audits/2026-10-23-mat003-reentry-build-admission.md). Source review/build success does not supply runtime qualification or owner case authorization.
