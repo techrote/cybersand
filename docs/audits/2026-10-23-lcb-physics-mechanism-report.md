@@ -44,7 +44,7 @@ Labels used below:
 | **G** | missing measurement |
 | **I** | impact on solver design |
 
-## A. Deep Water releases weakly, independent of depth
+## A. Deep Water releases weakly, with a weak depth response
 
 **M.**
 - **Front distance** from the gate face (x=240) on the floor row, from
@@ -57,11 +57,13 @@ Labels used below:
   | 160 | 6 | 20 | 34 | 49 | 71 | 100 | 140 | 191 |
 
 - **Growth law:** between t120 and t1800 the front grows as t^0.478, t^0.491
-  and t^0.502 for depths 48, 96 and 160. That is **diffusive** (t^½), not
-  ballistic.
+  and t^0.502 for depths 48, 96 and 160. That is **approximately diffusive**
+  (close to t^½) on these fixtures, not ballistic.
 - **Released mass per reservoir row at t1800:** 7,870 (48), 7,801 (96) and
-  7,306 (160). Release scales with the number of rows, so the retained fraction
-  is depth-independent (0.839, 0.841, 0.851).
+  7,306 (160). Release is roughly proportional to the number of rows, so the
+  retained fraction has only a **weak depth response** (0.839, 0.841, 0.851) on
+  these three fixtures. That is not exact depth independence; the retained
+  fraction rises slightly with depth.
 - **Surfaces:**
   - the reservoir surface at x=100 drops only 1 row (depth 48) to 9 rows
     (depth 160) in 1800 ticks;
@@ -80,10 +82,13 @@ Labels used below:
   down or diagonally only into capacity (`transfer_water` caps at
   `maximum()−destination`, L2516–L2519). A full column therefore cannot
   accelerate the cells beneath it.
-- **Consequence:** each exposed row of the reservoir face leaks into the
-  runout by row-local diffusion. Total discharge grows linearly with depth, so
-  the retained fraction stays constant, and the front speed carries no √h
-  dependence.
+- **Consequence** (inference from the source above and the three measured
+  depths; not a general proof): each exposed row of the reservoir face leaks
+  into the runout by row-local diffusion. Total discharge therefore grows
+  roughly in proportion to depth, so the retained fraction responds only
+  weakly to depth. The front grows approximately diffusively, with a weak depth
+  response (t240 fronts 67/70/71), rather than the ~√h scaling of a ballistic
+  dam-break front.
 
 **H (tested, rejected).** The supported-film adhesion threshold
 (L2689–L2695) was suspected of stalling the thin runout front. Turning
@@ -101,12 +106,20 @@ columns. Its effect on front shape is unmeasured.
 - No comparison with a dam-break analytic profile.
 
 **I.**
-- A candidate fixes deep release only by adding a head/pressure term
-  (`pressure_flow_v1`) or retained velocity (`inertial_cellular_v1`) that
-  converts column height into lateral acceleration.
-- The frozen screens therefore test depth response and front distance, not
-  mass alone (see `lcb-physics-contracts.json`).
-- Mass conservation by itself is satisfied by the immobile Current behaviour.
+- The frozen screens test depth response and front distance, not mass alone
+  (see `lcb-physics-contracts.json`).
+- Mass conservation by itself is satisfied by the nearly immobile Current
+  behaviour.
+
+**H (not tested).**
+- A head/pressure term (`pressure_flow_v1`) and retained velocity
+  (`inertial_cellular_v1`) are the two mechanisms that LCB registers for
+  turning column height into lateral motion.
+- They are **not** shown to be the only ways to improve deep release. Other
+  rule changes could also alter it, and none was ablated. Examples:
+  - a different lateral relaxation fraction or tolerance;
+  - lateral reach of more than one cell per update;
+  - different gravity/diagonal capacity rules.
 
 ## B. Vented communicating limbs never move
 
@@ -256,14 +269,33 @@ per-cell sleeping status as unavailable.
 | Fractional pairwise transfer, ¾ relaxation, coherence, adhesion | Water only | `update_water` L2650 |
 | Generic whole-cell yielding with a **viscosity roll**: mobility `(256−viscosity)/256` per update, both lateral sides tried | Paste (240), Slush (192), Brine (32), Toxic Sludge (64), Mercury (96, diagnostic override) | `flow_as_yielding_liquid` L2779–L2795 |
 | Same yielding motion after a lifecycle | Cement (176), Molten Glass (224) | L3062, L3114 |
-| Whole-cell lateral move with **no viscosity roll**, one side only, kernel chemistry first | Oil (burn/extinguish), Lava, Acid | L3191–L3230, L3117–L3190 |
+| Whole-cell lateral move with **no viscosity roll**; the lateral probe is one-sided (`try_lateral` → `x + direction`, L2644–L2648). Order per kernel below | Oil, Lava, Acid | L3191–L3230, L3117–L3134, L3151–L3176 |
 | Density exchange only with a vertical delta (no sideways swap); Oil never swaps with powders | all liquids | `MaterialRules::can_density_exchange` |
+
+**Dispatch order for the specialized kernels (S).** Generic pair chemistry runs
+for every liquid **before** the `RuleKernel` switch (`has_pair_reactions`
+block, L2797–L2826). Inside the switch:
+
+| Kernel | Order after the generic pair chemistry |
+|---|---|
+| Oil (L3191–L3230) | kernel ignition/burn, then extinguish/burn-down lifecycle; then down, both diagonals, one-sided lateral; never density-swaps (`swap = false`) |
+| Lava (L3117–L3134) | kernel contact sample (Ice → Water, or ignite); then down, both diagonals, one-sided lateral (`swap = true`) |
+| Acid (L3151–L3176) | **movement first**: down, a single diagonal (`x + direction`), one-sided lateral. The corrosion lifecycle runs only after every movement attempt has failed, because a successful move returns |
+
+The earlier wording "kernel chemistry first" was wrong for Acid; it is
+corrected here (re-review finding 5).
 
 - The measured lane ordering among the yielding liquids is monotone in
   mobility: Brine 224 > Mercury 160 > Slush 64 > Paste 16.
-- Oil's `viscosity_index` of 160 is **not consulted** by the Oil kernel. Its
-  slower spread than Brine comes from its one-sided lateral attempt, not from
-  viscosity.
+- **S:** Oil's `viscosity_index` of 160 is **not consulted** by the Oil kernel.
+- **H (no ablation run):** Oil spreads more slowly than Brine (0.354 vs 0.486
+  runout). Its one-sided lateral attempt is the leading hypothesis. That was
+  not isolated from the other differences:
+  - Brine tries both sides with mobility 224/256;
+  - Oil never density-swaps;
+  - the two have different densities and different kernel lifecycles.
+
+  An ablation, the same geometry with a two-sided Oil probe, is **missing**.
 - Baseline transport's Mercury `permeability: 30` is a powder→liquid pair
   period, not Mercury's lateral cadence.
 
@@ -290,7 +322,7 @@ swaps) per material.
 
 | Finding | Mechanism | Blocks LCB? |
 |---|---|---|
-| A | No head term; row-local diffusion | No. It motivates W-PF/W-IN screens. |
+| A | No head term; row-local diffusion; approximately diffusive front with a weak depth response on these fixtures | No. It motivates W-PF/W-IN screens. |
 | B | Saturation removes all legal moves | No. Vented and sealed targets are pressure-family contracts. |
 | C | Interest-edge retained flags, zero work | No. Dormancy must use work counters. |
 | D | Whole-cell reaction products; #160 amplification still on main | No. Requires signed ledgers; #162 not assumed. |
@@ -298,3 +330,24 @@ swaps) per material.
 
 None of these findings is a Current regression, and none changes a frozen
 PR #217 golden.
+
+## Addendum — re-review corrections (2026-10-23)
+
+Responds to the [independent re-review](https://github.com/techrote/cybersand/pull/226#issuecomment-6362824493)
+of `31e4ef4`. The measurements above are unchanged. Only the claims and
+contracts are corrected.
+
+| Finding | Correction | Evidence class |
+|---|---|---|
+| 2 (P1) inertial ledger/order | One ordered update, `inertial-update-v1`, is defined in [transition matrix §5](../architecture/liquid-state-transition-matrix.md#5-velocity-and-momentum-in-pf-flow). It carries signed per-component impulses and a separate non-negative L1 speed-loss ledger. Support cancels this tick's gravity before deflection, so a supported cell at rest never drifts. One inelastic contact rule covers Wall, body mask and same family. | Standalone contract model (`tools/lcb/inertial_contract.py`, 13 tests, 393,660-case sweep). **No inertial World executed.** |
+| 4 (P2) gas phases | `completed(N)` and `post_event(N)` phases are defined. Every expectation and `inspect_at_completed` value now uses completed ticks. Each event rectangle is checked at completed N and N+1 at 1 and 4 workers. Geometry and amounts are unchanged. | Current geometry control, executed locally (`test_lcb_physics_contracts.gd` 174/0). A mutation using the old `<=` reading fails 10 checks. |
+| 5 (P3) qualifications | Section A now says "approximately diffusive" and "weak depth response". Pressure and retained velocity are no longer claimed to be the only possible deep-release fixes; that is a hypothesis with no ablation. The Oil-vs-Brine attribution is a hypothesis, and its missing ablation is named. The kernel dispatch order now covers Oil, Lava and Acid; for Acid, movement comes first and corrosion follows movement attempts (L3151–L3176). | Source reading at `e5baca0` (`world.cpp`) |
+
+Gas-phase observations (Current geometry, completed ticks):
+- compression fill indexed t1: Empty at t1, Water at t2;
+- vent erase indexed t5: Wall at t5, Empty at t6;
+- reseal fill indexed t9: Empty at t9, Water at t10;
+- split fill indexed t3: Empty at t3, Water at t4;
+- merge erase indexed t1: Wall at t1, Empty at t2.
+
+These match the reviewer's independent probe for the first four.

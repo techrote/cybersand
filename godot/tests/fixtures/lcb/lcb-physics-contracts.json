@@ -42,7 +42,7 @@
             "depth-160": 0.851
           },
           "depth_response_t240": 1.06,
-          "note": "Current spreads diffusively (front ~ t^0.5) with almost no depth dependence; adhesion-off diagnostic changed nothing material."
+          "note": "Current spreads approximately diffusively (front ~ t^0.48-0.50) with a weak depth response on these fixtures; adhesion-off diagnostic changed nothing material."
         },
         "admission_criteria": {
           "pressure_flow_v1": [

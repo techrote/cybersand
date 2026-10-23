@@ -53,8 +53,8 @@ requirements.
 
 **What it must change.** Current Water has no head term:
 
-- deep release is row-local diffusion, with front ∝ t^½ and no depth
-  dependence;
+- deep release is row-local diffusion, with an approximately diffusive front
+  (t^0.48–0.50) and only a weak depth response on the dam ladder;
 - saturated connected Water has no legal move, so vented limbs never level
   (mechanism report §A, §B).
 

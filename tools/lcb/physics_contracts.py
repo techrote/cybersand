@@ -225,7 +225,8 @@ SURGE = {
         "front_growth_exponent_t120_t1800": {"depth-48": 0.48, "depth-160": 0.50},
         "retained_fraction_t1800": {"depth-48": 0.839, "depth-96": 0.841, "depth-160": 0.851},
         "depth_response_t240": 1.06,
-        "note": "Current spreads diffusively (front ~ t^0.5) with almost no depth dependence; adhesion-off "
+        "note": "Current spreads approximately diffusively (front ~ t^0.48-0.50) with a weak depth response "
+                "on these fixtures; adhesion-off "
                 "diagnostic changed nothing material.",
     },
     "admission_criteria": {
