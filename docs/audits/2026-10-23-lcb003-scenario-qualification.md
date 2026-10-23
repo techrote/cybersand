@@ -571,6 +571,12 @@ Every earlier counterexample keeps its outcome:
 
 ## Addendum — signed campaign ledger v5 correction (2026-10-23)
 
+*Superseded in part by the
+[v6 and registry corrections](#addendum--signed-campaign-ledger-v6-and-registry-corrections-2026-10-23).
+This section is retained as the historical v5 record. Its statement that the
+horizon check was "unchanged" from v4 did not hold on the active-Salt route
+(F4/G6).*
+
 This responds to independent re-review findings
 [F1 (P2) and F2 (P3)](https://github.com/techrote/cybersand/pull/226#issuecomment-6368165810),
 raised against `b2d5222`. The governing author handoff is
@@ -658,3 +664,73 @@ test_lcb_registry.py` → 62 OK. The new tests are:
 
 All earlier R1–R4, N3/N4 and original Salt counterexamples keep their
 outcomes.
+
+## Addendum — signed campaign ledger v6 and registry corrections (2026-10-23)
+
+This responds to findings against `3248bf3`:
+- F3 and F4 from the [independent F1/F2 re-review](https://github.com/techrote/cybersand/pull/226#issuecomment-6369840825);
+- G1–G6 from the [second-opinion audit](https://github.com/techrote/cybersand/pull/226#issuecomment-6370541150);
+- H1–H4 from the [third-pass audit](https://github.com/techrote/cybersand/pull/226#issuecomment-6371154338).
+
+Every finding below also reproduces in the frozen v4 code or earlier. None is
+a regression introduced by v5.
+
+| Finding | Defect at `3248bf3` | Correction |
+|---|---|---|
+| F3 (P2) | `events` = `{}`, `false` or `0` raised inside `signed_ledger` and could abort `reduce_cmd`; `""` closed eligible | A present `events` must be a list. Explicit `null`, objects, strings, numbers and booleans are `MALFORMED_EVIDENCE`. Omitted means aggregate-only. `[]` is valid only with zero totals |
+| F4 (P3) | The active-Salt closure returned before the horizon check, so a future zero-amount event closed eligible | The horizon check runs after initial binding and before any route, reaction closures included. A zero event at the horizon tick is `UNVERIFIED_INCOMPLETE_HORIZON`; at the horizon tick − 1 the reaction still closes |
+| G1 (P2) | Root containers, checkpoint items and material/species keys were not type-checked: `null` inventory, ledger, water_ledger or checkpoint items raised; integer keys could close | Inventory and ledger must be objects, checkpoints a list of objects, cells and species objects keyed by `str`. A present `species: null` is malformed. `reduce_cmd` passes a missing or `null` water_ledger through as malformed instead of indexing it |
+| G2 (P3) | `inventory.water_integer` accepted `true`, `1.0` and `null` | When present it must be a non-boolean, non-negative integer; absent stays optional |
+| G3 (P2) | 1/4-worker parity compared outputs only, so different runs could be "identical" and measured | `report_identity` binds both reports to the scenario id, workers 1/4, the pinned definition hash (manifest or CI-pinned registry hash), the expected horizon and the `--source-sha` revision. It also requires equal `native_sha256`, `godot`, `script_set_sha256` and `platform`. Any mismatch is `IDENTITY_MISMATCH`: a problem, and never measured |
+| G4 (P3) | Duplicate JSON names were last-value-wins | `load()` rejects duplicate names. In `reduce_cmd` a malformed report becomes a `malformed_report` case, never an abort |
+| G5 (P3) | The problem and unverified summary lists were mutually exclusive | The lists are orthogonal, and a complete `ineligible_for_acceptance` list is added |
+| G6 (P3) | The catalogue and audit implied the horizon check applied universally | Qualified here and in the catalogue (F4 history), and the historical v5 section is annotated. No historical text or hash is rewritten |
+| H1 (P2) | A protected arm became executable when its manifest label read `measured` | `current_default_mapping` provides one availability rule: only a measured Current-default mapping is executable. Candidate protected arms are `blocked` and keep `manifest_status` (`proposed`, `proposed_alternate`) and `depends_on`. The catalogue Godot test adds an independent mapping check |
+| H2 (P3) | The catalogue inventory assertion scanned only the supplied region and keys | `_check_inventory` scans the whole 1024² frame once, excluding Empty and Wall. It compares every native material against the derived inventory in both directions, plus the occupied bounding box. The 523-assertion figure above predates this |
+| H3 (P3) | `inventory_of` ignored Water-rectangle mass, painted zero-mass fills and assumed mass8 | A Water rectangle holds maximum(). A fill's mass is `(2m·max + 255) // 510`, and a zero-mass fill is a no-op, as in the native bridge. Non-mass8 semantics and uncatalogued materials raise. The derived inventories of all 27 scenarios are unchanged |
+| H4 (P3) | The frozen v2–v4 accounting functions were verbatim, but their adapters consumed live inventories, loader and catalogue/manifest hashes. A comment-only catalogue edit broke the v3/v4 checks | `verify_historical` checks two things. First, the record is byte-identical to the copy committed at its producer's revision (v2 `13747d4`, v3 `b9b36c9`, v4 `b2d5222`, v5 `3248bf3`). Second, that revision's own `reledger --check` passes in an isolated `git archive` snapshot of `tools/lcb`, `docs/reference` and `godot/tests/fixtures/lcb`. The in-repo frozen modules are retired. The check needs full Git history; the Documentation job uses `fetch-depth: 0` |
+
+**Corrections to earlier statements in this audit.** All earlier sections are
+retained as recorded:
+- "verified against its own frozen reducer" (v3/v4/v5 addenda): the
+  accounting functions were frozen, but not their input environment.
+  Verification is now revision replay, as described under H4.
+- "the Python-derived material inventory … against native tick 0" (catalogue
+  test checks): until v6 this covered only the supplied keys and region.
+- The v5 statement that the horizon check was unchanged: the active-Salt route
+  skipped it, both in v4 and in v5.
+
+**Records:**
+- The historical controls `989ff70d…` and the v2 `5688e26f…`, v3 `b70f3257…`,
+  v4 `0cc6d6df…` and v5 `6f7b294e…` records are unchanged.
+- Each replays successfully with `reledger --version vN --check`; historical
+  write mode is refused.
+- New re-reduction:
+  [`lcb-scenario-ledger-2026-10-23.v6.json`](../reference/lcb-scenario-ledger-2026-10-23.v6.json).
+  It records input hashes (controls, v2–v5, reducer, catalogue tool,
+  protected manifest), the superseded controls/v2–v5 states and the evidence
+  limits.
+- **No classification change from v5:** 20 closed, 4
+  `UNVERIFIED_SOURCE_SINK_TIMING`, 3 `UNVERIFIED_REACTION_AMOUNT`; none open
+  or malformed. The retained campaign never supplied the malformed containers,
+  species evidence, timed events or identity variations these findings
+  concern.
+- The registry routes to v6. Its `sources` block now also hashes the
+  registry builder.
+- Arm changes: the 7 protected candidate arms are now `blocked`, where they
+  were previously `proposed` or `proposed_alternate` with
+  `executable_today: false`.
+- Goldens, definitions and derived inventories are unchanged.
+
+**Regressions.** `tools/lcb/test_lcb_registry.py` adds:
+- `EventContainerF3`, `ReactionHorizonF4`, `RootContainersG1G2`;
+- `ReducerPipeline`: synthetic `reduce_cmd` report pairs for identity
+  mismatches, a `null` water_ledger, bad `events` containers, duplicate JSON
+  names and orthogonal summaries;
+- `ArmAvailabilityH1`, `InventoryModelH3`;
+- revision-replay and altered-record checks for v2–v5;
+- the v6 record check.
+
+The catalogue Godot test adds the H1 mapping check and the H2 whole-frame
+inventory. Synthetic mutations confirm both now fail: the third-pass Sodium
+omission with a shrunken region, and a W-CY arm relabelled `measured`.

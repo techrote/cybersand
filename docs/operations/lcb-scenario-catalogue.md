@@ -17,9 +17,13 @@ regressions on this page exist in source and run against the unchanged native
 World. Every *executed* result is a **Current-defaults** control: Water
 `freemass_v1`, other liquids `cellular_yield_v1`.
 
-**Campaign accounting** uses the signed rule `lcb-signed-ledger-v5`. It
-superseded v2 (re-review N3/N4), v3 (re-review R1–R4) and v4 (re-review
-F1/F2).
+**Campaign accounting** uses the signed rule `lcb-signed-ledger-v6`. It
+superseded v2 (re-review N3/N4), v3 (re-review R1–R4), v4 (re-review F1/F2)
+and v5 (re-review F3/F4, G1/G2).
+- Every root, item and key is type-checked before use. A malformed container
+  is `MALFORMED_EVIDENCE` and never raises. A present `events` value must be a
+  list, and an explicit `null` is malformed. Omitting `events` means
+  aggregate-only evidence.
 - Every quantity is bound to the declared initial ledger and inventory.
 - The species domain covers the inventory and every observed key, plus Brine
   whenever Salt is declared or observed. Each key is observed at every
@@ -28,14 +32,24 @@ F1/F2).
   and only Salt-only reactions have a complete signed ledger.
 - A reactive species never explains a Water discrepancy.
 - Explicit sources and sinks close only against timed per-event amounts. Each
-  event carries exactly one `source` or `sink` key. The events must lie inside
-  the observed horizon and keep a non-negative chronological balance.
+  event carries exactly one `source` or `sink` key. On **every** route, reaction
+  closures included (v6; v4/v5 skipped it for active Salt), the events must lie
+  inside the observed horizon. They must also keep a non-negative chronological
+  balance.
+- Campaign reduction binds each 1/4-worker report pair to its scenario id,
+  worker count, pinned definition hash, horizon, source revision and shared
+  runtime identity. A mismatch is never "identical" or measured. Duplicate JSON
+  names make a report malformed.
+- Superseded records (v2–v5) are verified by replaying each record's own
+  producer at its recorded revision. The record must also be byte-identical
+  there. Current catalogue, loader or manifest changes cannot alter or break
+  that check.
 
 Gains, out-of-bound losses, impossible directions, exceeded budgets and
 negative event balances fail. Where the retained data cannot establish the
 reaction amount, the source/sink timing or the event horizon, the case is
 `UNVERIFIED_*` and ineligible for acceptance. See the
-[ledger correction](../audits/2026-10-23-lcb003-scenario-qualification.md#addendum--signed-campaign-ledger-v5-correction-2026-10-23).
+[ledger correction](../audits/2026-10-23-lcb003-scenario-qualification.md#addendum--signed-campaign-ledger-v6-and-registry-corrections-2026-10-23).
 
 **Accepted evidence** is the CI-re-executed prefix: canonical hash, initial
 inventory, tick-30 hashes and 1/4-worker parity for all 27 scenarios. The
@@ -129,7 +143,7 @@ The UI reads `res://tests/fixtures/lcb/lcb-scenario-registry.json` (schema
 | `camera` | origin, overview rectangle, bookmarks (named regions) |
 | `manual` | `free_play` suitability and note. Any manual input makes a session exploratory |
 | `liquids`, `compatibility` | liquids present and their capability-matrix family cells |
-| `arms` | `id`, material→`family/variant` mapping, `status` (`measured`, `measured_not_a_sealed_control`, `blocked`, `failed`, `unmeasured`), `executable_today`, `depends_on`, `reason` |
+| `arms` | `id`, material→`family/variant` mapping, `status` (`measured`, `measured_not_a_sealed_control`, `blocked`, `failed`, `unmeasured`), `executable_today`, `depends_on`, `reason`; protected arms also carry `manifest_status`. One availability rule covers every arm: only a measured Current-default mapping is executable, and a candidate mapping is `blocked` whatever its manifest label |
 | `qualification` | Windows local native result, Linux CI route, and Web/Rapier/render status (not executed) |
 | `goldens` | initial Water quantity and tick-30 content/state hashes used by the regression |
 
