@@ -12,6 +12,8 @@ import subprocess
 import sys
 import time
 
+import godot_timeout_diagnostics as diagnostics
+
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_UNKNOWN_WEIGHT_SECONDS = 5.0
 
@@ -176,17 +178,28 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str) -> tuple[dict,
     launch_error = None
     with log_path.open("w", encoding="utf-8") as log:
         try:
-            result = subprocess.run(
-                command,
-                cwd=ROOT,
-                stdout=log,
-                stderr=subprocess.STDOUT,
-                timeout=case.timeout,
-            )
-            returncode = result.returncode
-        except subprocess.TimeoutExpired:
-            timed_out = True
-            log.write(f"\nTIMEOUT after {case.timeout}s\n")
+            with subprocess.Popen(command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT) as child:
+                # Capture the live process before the original deadline kills it.
+                # At most 16s of bounded probes fit inside the 30s reserve.
+                try:
+                    child.wait(timeout=max(0.001, case.timeout - 30))
+                except subprocess.TimeoutExpired:
+                    log.flush()
+                    before = log_path.read_text(encoding="utf-8", errors="replace")
+                    print(f"{case.name}: elapsed={time.perf_counter() - started:.3f}s "
+                          f"pid={child.pid} last_progress={diagnostics.last_progress(before)}\n"
+                          + before[-8192:], flush=True)
+                    diagnostics.snapshot(child.pid, output_dir / (case.name + "-diagnostics"))
+                    remaining = max(0.001, case.timeout - (time.perf_counter() - started))
+                    try:
+                        child.wait(timeout=remaining)
+                    except subprocess.TimeoutExpired:
+                        timed_out = True
+                        child.kill()
+                        child.wait(timeout=10)
+                returncode = None if timed_out else child.returncode
+            if timed_out:
+                log.write(f"\nTIMEOUT after {case.timeout}s\n")
         except OSError as error:
             launch_error = str(error)
             log.write(f"\nLAUNCH ERROR: {launch_error}\n")
@@ -222,6 +235,8 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str) -> tuple[dict,
         "requires_display": case.requires_display,
         "command": command,
         "log": log_path.name,
+        "last_progress": diagnostics.last_progress(output),
+        "diagnostics": case.name + "-diagnostics" if (output_dir / (case.name + "-diagnostics")).exists() else None,
     }
     if failed:
         print(

@@ -173,6 +173,29 @@ Current build jobs set `SCONS_JOBS=2` directly; the
 [repository provider policy](github-development-and-release.md) owns the runner
 and provider-routing boundary.
 
+## Physical actor timeout investigation
+
+**Current tooling:** both platform runners use `run_godot_regressions.run_case`.
+A live process/thread snapshot, elapsed time, PID and the last fixture progress
+marker are captured 30 seconds before the original per-case deadline. Linux
+captures `/proc` wait channels and attempts all-thread GDB stacks when available;
+Windows attempts DbgHelp minidumps for the console wrapper and engine child.
+Capture is bounded and best-effort; unavailable stacks are explicitly recorded.
+The ordinary artifact uploads retain these diagnostics with each test log.
+The three suspect fixtures print `CYBERSAND_PROGRESS` at setup, bounded tick
+intervals, teardown/frame waits and quit. Assertions and physics settings retain
+their original meaning; a timeout, error, skip or nonzero exit still fails.
+
+The manual [physical actor stress workflow](../../.github/workflows/physical-actor-stress.yml)
+uses only GitHub-hosted Windows/Linux runners. Five isolated batches each execute
+ten independent trials of arena, rigs and usable course (50 per test/platform).
+It builds Linux from that checkout and verifies the retained Windows native input
+manifest and pinned Godot/Rapier bytes. `stress.json` is saved after every trial;
+the aggregate requires all 300 trials and reports failures and hangs by last phase.
+These experiments do not retry failed tests. The
+[dated investigation](../audits/2026-10-23-physical-actor-timeouts.md) owns run
+identities, observed frequencies and the root-cause disposition.
+
 ## Windows retained-runtime execution
 
 **Current:** the GDExtension workflow also executes the retained Windows DLL on a
