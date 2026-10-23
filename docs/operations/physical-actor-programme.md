@@ -18,9 +18,13 @@ owns the single-chassis Trainer/Hauler/Drifter/Dart lane under long-lived parent
 two-output desired-velocity input and bounded goal-blind assistance.
 **4LY-002 candidate source** supplies four distinct physical parameter sets
 and the additive F5 `set4LY` family. The 46 pre-existing actor IDs and SetP
-indices remain unchanged. The profiles remain candidates pending actual-Rapier
-measured manoeuvre thresholds and human feel evidence; a selectable name
-is not an accepted learning plant.
+indices remain unchanged. The [measured 4LY-002 audit](../audits/2026-10-23-4ly002-measured-handling-qualification.md)
+records a real-Rapier pass of prospective motion/distinguishability thresholds
+on Linux and Windows plus exact-source native and documentation gates. The
+source calibration marker stays `candidate_4ly002` because its exact bytes
+participate in the passing profile hashes. Owner handling/visual review,
+final-head validation and the #207 host/teacher gate remain separate; a
+selectable name or passing manoeuvre metric is not an accepted learning plant.
 
 4LY-003 subsequently owns the flight lab, actual-host episodes and qualified teacher. Trainer learning
 and subsequent family learning belong to the companion repository's 4LY-004/005
