@@ -177,12 +177,36 @@ receipt component except the compared family/variant is equal.
   for the other ten). It **must be bit-identical in behaviour to today**:
   golden hashes, the #49 v2 control and the LCB Dam Break reference stay
   unchanged.
-- **Packed transport.** The policy crosses the C API, GDExtension and Web as a
-  `PackedInt32Array` header plus triples:
-  `[version, count, (material_id, family_code, variant_code) × count]`, with the
-  family-parameter blobs as a separate packed array. This mirrors
-  `water_semantics`/`TransportPolicy::unpack`. No strings, parsing or allocation
-  happen in native jobs.
+- **Packed transport (corrected after the #226 review).** Every hashed
+  component crosses the C API, GDExtension and Web in one versioned packed form.
+  Nothing hashed is left without a wire representation. This mirrors
+  `water_semantics`/`TransportPolicy::unpack`, and no strings, parsing or
+  allocation happen in native jobs. The form is three `PackedInt32Array`
+  sections:
+
+  ```text
+  assignments: [wire_version, count, (material_id, family_code, variant_code) × count]
+  family:      [count, (family_code, block_version, length, words…) × count]
+  material:    [count, (material_id, block_version, length, words…) × count]
+  ```
+
+  - Assignments are ascending, complete over liquid descriptors, and have no
+    duplicates.
+  - Family and material blocks are ascending by code or ID, unique, and typed
+    by `(owner, block_version)`.
+  - Validation of the blocks:
+    - **Known blocks:** each `(owner, block_version)` must be known.
+    - **Lengths:** each length must match that block's schema.
+    - **Fields:** every field must be in range.
+    - **Ownership:** a material block is allowed only for a material whose
+      applied family declares that block. The W-CY Water flow-rate block, for
+      example, is valid only when Water maps to `cellular_yield_v1`.
+    - **Mandatory blocks:** any missing mandatory block, and any extra block,
+      is refused (`unknown_parameter` / `malformed_policy`) before
+      construction.
+  - The `policy_hash` byte form above is computed from exactly these three
+    sections, so two policies are equal on the wire if and only if they hash
+    equal.
 - **Kernel dispatch.** The family owns **only motion and quantity transport**.
   Material identity, chemistry, lifecycle, temperature, density and coupling
   stay with the material. That split is defined against the real dispatch
@@ -294,7 +318,7 @@ fallback reports every non-default assignment as `platform_unsupported`.
 - C API: `cybersand_world_liquid_policy_v1(world, out_packed, capacity)` plus
   `policy_hash`;
 - GDExtension: `CyberNativeCellWorld.get_liquid_solver_policy()` →
-  `{version, policy_hash, catalogue_digest, capability_matrix_digest, source_revision, native_binary_sha256, platform, assignments:[{material, requested_family, applied_family, applied_variant}], normalization:{rule, receipt_hash, signed_delta}|null, refusal:null|{code, material, detail}}`;
+  `{version, wire_version, policy_hash, catalogue_digest, capability_matrix_digest, source_revision, native_binary_sha256, platform, assignments:[{material, requested_family, applied_family, applied_variant}], family_blocks:[{family, block_version, values}], material_blocks:[{material, block_version, values}], normalization:{rule, receipt_hash, signed_delta}|null, refusal:null|{code, material, detail}}`;
 - desktop worker and Web bridge, which forward the native dictionary
   unchanged.
 
