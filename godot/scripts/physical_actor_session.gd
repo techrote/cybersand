@@ -11,6 +11,7 @@ const Scripted = preload("res://scripts/physical_actor_script.gd")
 const Equipment = preload("res://scripts/physical_usable_equipment.gd")
 const Loadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const Flight = preload("res://scripts/physical_flight_profile.gd")
+const JointTargets = preload("res://scripts/physical_joint_target.gd")
 const MAX_ACTORS: int = 8
 const MAX_PARTS: int = 8
 const MAX_LEASE: int = 18
@@ -45,6 +46,19 @@ var _flight_completed_step: int = 0
 var _flight_prepared: bool = false
 var _flight_step_fault: String = ""
 var _flight_pause_step: int = 0
+var _joint_host_identity: Dictionary = {}
+var _joint_pilots: Array[bool] = []
+var _joint_grants: Array = []
+var _joint_targets: Array = []
+var _joint_observations: Array = []
+var _joint_receipts: Array = []
+var _joint_last_rejection: Array = []
+var _joint_sequences: PackedInt64Array = PackedInt64Array()
+var _joint_pending_steps: Array = []
+var _has_joint_pilot: bool = false
+var _joint_completed_step: int = 0
+var _joint_prepared: bool = false
+var _joint_step_fault: String = ""
 var _fallback_reasons: Array[String] = []
 var _button_edges: Array = []
 var _accepted_buttons: Array = []
@@ -55,6 +69,27 @@ var _active: bool = false
 var _suspended: bool = false
 var accepted_commands: int = 0
 var rejected_commands: int = 0
+
+
+static func _prepared_definition(value: Dictionary) -> Dictionary:
+	var model := StringName(str(value.get("model", "")))
+	var base: Dictionary = Catalog.entry(model)
+	var loadout: Dictionary = Loadouts.entry(model)
+	if not value.has("ik_pilot"):
+		return Equipment.definition(base, loadout)
+	if typeof(value.ik_pilot) != TYPE_BOOL:
+		return {}
+	if not bool(value.ik_pilot):
+		return Equipment.definition(base, loadout)
+	if model != &"runner" or value.get("usable_index", -1) != -1:
+		return {}
+	# This is a new assembly, not a switch disabling a sixth equipment body.
+	base["mounts"] = []
+	base["equipment_preparation"] = "none"
+	base["equipment_managed"] = true
+	base["joint_target_profile"] = JointTargets.PROFILE_ID
+	var prepared: Dictionary = Equipment.definition(base, {"preparation": "none", "usable_index": -1})
+	return prepared if JointTargets.compatible_assembly(prepared) else {}
 
 
 static func valid_definitions(definitions: Array) -> bool:
@@ -71,8 +106,9 @@ static func valid_definitions(definitions: Array) -> bool:
 			return false
 		if value.position.x < 0.0 or value.position.y < 0.0 or value.position.x >= 1024.0 or value.position.y >= 1024.0:
 			return false
-		var prepared: Dictionary = Equipment.definition(Catalog.entry(model), Loadouts.entry(model))
-		if prepared.is_empty() or not _integer(value.get("usable_index", Loadouts.entry(model).get("usable_index", -1)), -1, 31):
+		var prepared: Dictionary = _prepared_definition(value)
+		var initial_usable: Variant = value.get("usable_index", -1 if bool(value.get("ik_pilot", false)) else Loadouts.entry(model).get("usable_index", -1))
+		if prepared.is_empty() or not _integer(initial_usable, -1, 31):
 			return false
 		if model in Flight.IDS and int(value.get("usable_index", -1)) != -1:
 			return false
@@ -83,12 +119,17 @@ static func valid_definitions(definitions: Array) -> bool:
 	return parts <= CyberRigidBodyCoupling.MAX_BODIES
 
 
-func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
+func configure(definitions: Array, space: RID, new_epoch: int = 1,
+		host_identity: Dictionary = {}) -> bool:
 	if _active or not is_inside_tree() or not valid_definitions(definitions) or new_epoch < 1:
 		last_error = "Invalid physical actor configuration or live owner"
 		return false
 	epoch = new_epoch
 	tick = 0
+	_joint_host_identity = host_identity.duplicate(true)
+	_has_joint_pilot = false
+	_joint_prepared = false
+	_joint_step_fault = ""
 	_suspended = false
 	_has_flight = false
 	_flight_prepared = false
@@ -104,7 +145,20 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 		var definition: Dictionary = definitions[index]
 		_has_flight = _has_flight or StringName(str(definition.model)) in Flight.IDS
 		var loadout: Dictionary = Loadouts.entry(StringName(str(definition.model)))
-		var data: Dictionary = Equipment.definition(Catalog.entry(StringName(str(definition.model))), loadout)
+		var data: Dictionary = _prepared_definition(definition)
+		if data.is_empty():
+			last_error = "Pilot assembly incompatible with immutable profile"
+			close()
+			return false
+		var is_joint: bool = bool(definition.get("ik_pilot", false))
+		_has_joint_pilot = _has_joint_pilot or is_joint
+		_joint_pilots.append(is_joint)
+		_joint_grants.append({})
+		_joint_targets.append({})
+		_joint_observations.append({})
+		_joint_receipts.append([])
+		_joint_last_rejection.append({})
+		_joint_pending_steps.append({})
 		_catalogue.append(data)
 		var rig = Rig.new()
 		add_child(rig)
@@ -116,7 +170,7 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 			return false
 		var item = Equipment.new()
 		if not item.configure(rig, run_id, epoch, index, _body_offsets[index],
-			int(definition.get("usable_index", loadout.get("usable_index", -1)))):
+			int(definition.get("usable_index", -1 if is_joint else loadout.get("usable_index", -1)))):
 			last_error = "Physical equipment refused: " + str(definition.model)
 			close()
 			return false
@@ -149,6 +203,9 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 	_deadlines.fill(-1)
 	_generations.resize(_rigs.size())
 	_generations.fill(0)
+	_joint_sequences.resize(_rigs.size())
+	_joint_sequences.fill(-1)
+	_joint_completed_step = bridge.manual_step_count()
 	_flight_completed_step = bridge.manual_step_count()
 	_flight_pause_step = _flight_completed_step
 	_active = true
@@ -157,6 +214,10 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 
 func active() -> bool:
 	return _active
+
+
+func is_joint_pilot(actor_id: int) -> bool:
+	return actor_id >= 0 and actor_id < _joint_pilots.size() and _joint_pilots[actor_id]
 
 
 func is_flight_actor(actor_id: int) -> bool:
@@ -213,6 +274,14 @@ func _view(actor_id: int, issue: bool) -> Dictionary:
 	result["pending_input_edges"] = _button_edges[actor_id].size()
 	result["equipment"] = _equipment[actor_id].observation()
 	result["cell_patch"] = result.equipment.get("cell_patch", {}).duplicate(true)
+	if is_joint_pilot(actor_id):
+		result["control_mode"] = JointTargets.MODE if not _joint_grants[actor_id].is_empty() else "passive_no_grant"
+		result["ik"] = {
+			"capability": JointTargets.capability(_joint_host_identity, _catalogue[actor_id]),
+			"last_rejection": _joint_last_rejection[actor_id].duplicate(true),
+			"grant_active": not _joint_grants[actor_id].is_empty(),
+			"target_live": not _joint_targets[actor_id].is_empty()
+		}
 	if is_flight_actor(actor_id):
 		result["action_profile"] = Flight.ACTION_PROFILE
 		result["profile_version"] = Flight.VERSION
@@ -327,6 +396,8 @@ func submit(command: Variant, producer: StringName = &"policy") -> bool:
 	if not _integer(command.get("actor_id"), 0, _rigs.size() - 1):
 		return _reject("actor_id")
 	var actor_id: int = int(command.actor_id)
+	if is_joint_pilot(actor_id):
+		return _reject("ik_pilot_wire_disabled")
 	if producer != StringName(str(_definitions[actor_id].producer)):
 		return _reject("producer")
 	if command.get("run_id") != run_id or not _integer(command.get("epoch"), epoch, epoch):
@@ -404,6 +475,10 @@ func cancel_input(actor_id: int, expected_epoch: int, producer: StringName) -> b
 		or producer != StringName(str(_definitions[actor_id].producer)):
 		return false
 	_capture_flight_step(actor_id)
+	if is_joint_pilot(actor_id):
+		_joint_grants[actor_id] = {}
+		_joint_targets[actor_id] = {}
+		_joint_pending_steps[actor_id] = {}
 	_commands[actor_id] = {}
 	_flight_commands[actor_id] = {}
 	_flight_applied[actor_id] = {}
@@ -688,6 +763,18 @@ func close() -> void:
 	_flight_commands.clear()
 	_flight_applied.clear()
 	_flight_last_step.clear()
+	_joint_host_identity.clear()
+	_joint_pilots.clear()
+	_joint_grants.clear()
+	_joint_targets.clear()
+	_joint_observations.clear()
+	_joint_receipts.clear()
+	_joint_last_rejection.clear()
+	_joint_pending_steps.clear()
+	_joint_sequences.clear()
+	_has_joint_pilot = false
+	_joint_prepared = false
+	_joint_step_fault = ""
 	_has_flight = false
 	_flight_prepared = false
 	_flight_step_fault = ""
