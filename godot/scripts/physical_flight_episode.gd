@@ -115,9 +115,11 @@ func reference_action() -> Dictionary:
 
 
 func active_goal() -> Vector2:
-	if scenario.is_empty() or _waypoint >= scenario.goals.size():
+	if scenario.is_empty() or scenario.goals.is_empty():
 		return Vector2.INF
-	return Vector2(scenario.goals[_waypoint])
+	# Preserve the final *real* target even after the evaluator has completed
+	# its last waypoint; never synthesize a zero-error terminal observation.
+	return Vector2(scenario.goals[mini(_waypoint, scenario.goals.size() - 1)])
 
 
 func _publish_observation() -> Dictionary:
