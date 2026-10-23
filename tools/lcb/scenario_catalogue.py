@@ -26,6 +26,7 @@ SIDE = 1024
 MAX_OBS, MAX_EVENTS, MAX_TICK = 24, 24, 3600
 
 EMPTY, WALL, SAND, WATER, SMOKE, FIRE = 0, 1, 2, 3, 4, 6
+WATER_SEMANTICS = [1, 8, 12, 0]  # version 1, mass8, coherence 12, flags 0
 OIL, PASTE, SLUSH, STEAM, SALT, BRINE, SODIUM, MERCURY = 16, 20, 21, 22, 23, 24, 25, 33
 NAMES = {WALL: "wall", SAND: "sand", WATER: "water", SMOKE: "smoke", FIRE: "fire", OIL: "oil",
          PASTE: "paste", SLUSH: "slush", STEAM: "steam", SALT: "salt", BRINE: "brine",
@@ -42,26 +43,44 @@ EROSION = {"families": {"liquid": {"cadence": 1, "carrying": 0, "erosion": 0, "h
 BOUNDS = [0, 0, SIDE, 1, WALL, 0, 0, 1, SIDE, WALL, SIDE - 1, 0, 1, SIDE, WALL, 0, SIDE - 1, SIDE, 1, WALL]
 
 
-def inventory_of(rects: list, fills: list) -> dict:
-    """Paint rectangles then Water fills in cybersand::demo::construct order."""
+def inventory_of(rects: list, fills: list, water_semantics: list) -> dict:
+    """Paint rectangles then Water fills in cybersand::demo::construct order (H3).
+
+    Models the native constructor exactly for the supported domain:
+    - a Water rectangle cell holds maximum() mass; any other rectangle clears it;
+    - a fill's mass is (2 * m * maximum() + 255) // 510, and a zero-mass fill is a
+      no-op (the native bridge skips it), leaving the underlying material;
+    - only mass8 Water semantics (maximum() = 255) and catalogued material IDs are
+      supported; anything else raises instead of deriving a wrong inventory.
+    """
+    if not isinstance(water_semantics, list) or len(water_semantics) < 2 or water_semantics[1] != 8:
+        raise ValueError(f"inventory_of supports mass8 Water semantics only, got {water_semantics!r}")
+    maximum = 255
     grid = bytearray(SIDE * SIDE)
     mass = {}
     for i in range(0, len(rects), 5):
         x, y, w, h, m = rects[i:i + 5]
+        if m != EMPTY and m not in NAMES:
+            raise ValueError(f"inventory_of has no catalogued name for material id {m}")
         for yy in range(y, y + h):
             grid[yy * SIDE + x: yy * SIDE + x + w] = bytes([m]) * w
             for xx in range(x, x + w):
-                mass.pop(yy * SIDE + xx, None)
+                if m == WATER:
+                    mass[yy * SIDE + xx] = maximum
+                else:
+                    mass.pop(yy * SIDE + xx, None)
     for i in range(0, len(fills), 6):
         x, y, w, h, nm, _ = fills[i:i + 6]
-        value = (2 * nm * 255 + 255) // (2 * 255)
+        value = (2 * nm * maximum + 255) // (2 * 255)
+        if value == 0:
+            continue
         for yy in range(y, y + h):
             grid[yy * SIDE + x: yy * SIDE + x + w] = bytes([WATER]) * w
             for xx in range(x, x + w):
                 mass[yy * SIDE + xx] = value
     counts, xs, ys = {}, [], []
     for value in set(grid) - {EMPTY, WALL}:
-        counts[NAMES.get(value, str(value))] = grid.count(value)
+        counts[NAMES[value]] = grid.count(value)
     for y in range(SIDE):
         row = grid[y * SIDE:(y + 1) * SIDE]
         if row.count(EMPTY) + row.count(WALL) != SIDE:
@@ -108,7 +127,7 @@ class Scenario:
         return self
 
     def inventory(self):
-        return inventory_of(self.rects, self.fills)
+        return inventory_of(self.rects, self.fills, WATER_SEMANTICS)
 
     def definition(self):
         self.obs.sort(key=lambda o: o["tick"])
@@ -120,7 +139,7 @@ class Scenario:
         return {
             "schema_version": 2, "id": self.id, "recipe_version": 1, "seed": 0, "maturity": "reference",
             "rectangles": self.rects, "partial_water_fills": self.fills, "transport_profile": self.transport,
-            "water_semantics": [1, 8, 12, 0], "player_start": [24, 222], "camera_origin": [0, 0],
+            "water_semantics": WATER_SEMANTICS, "player_start": [24, 222], "camera_origin": [0, 0],
             "player_enabled": False, "body_enabled": False, "tools": [],
             "interest": {"policy": "fixed", "region": list(self.interest)},
             "execution": {"policy": "fixed", "cadence_lod_enabled": False, "liquid_surface_adhesion_enabled": True},

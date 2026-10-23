@@ -5,10 +5,11 @@ Standard-library only.
 
   reduce  --w1 DIR --w4 DIR --out FILE   reduce one campaign into a dated controls
                                           file (refuses to overwrite: evidence is immutable)
-  reledger [--check] [--version v5|v4|v3|v2]
+  reledger [--check] [--version v6|v5|v4|v3|v2]
                                           re-reduce the retained 2026-10-23 controls into the
-                                          versioned v5 record; v2-v4 are check-only against
-                                          their frozen historical reducers (ledger_v*_historical.py)
+                                          versioned v6 record; v2-v5 are check-only: each is
+                                          replayed by its own producer at its recorded revision
+                                          in an isolated snapshot (H4)
   build   [--check]                       write/check godot/tests/fixtures/lcb/lcb-scenario-registry.json
 
 The registry is consumed by the LCB-003 UI (Claude D / #202) and by
@@ -19,16 +20,17 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import json
 import re
+import subprocess
 import sys
+import tarfile
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import ledger_v2_historical  # noqa: E402
-import ledger_v3_historical  # noqa: E402
-import ledger_v4_historical  # noqa: E402
 import scenario_catalogue as catalogue  # noqa: E402
 
 FIXTURES = ROOT / "godot/tests/fixtures/lcb"
@@ -40,7 +42,18 @@ LEDGER_V2 = ROOT / "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
 LEDGER_V3 = ROOT / "docs/reference/lcb-scenario-ledger-2026-10-23.v3.json"
 LEDGER_V4 = ROOT / "docs/reference/lcb-scenario-ledger-2026-10-23.v4.json"
 LEDGER_V5 = ROOT / "docs/reference/lcb-scenario-ledger-2026-10-23.v5.json"
-LEDGER_RULE = "lcb-signed-ledger-v5"
+LEDGER_V6 = ROOT / "docs/reference/lcb-scenario-ledger-2026-10-23.v6.json"
+LEDGER_RULE = "lcb-signed-ledger-v6"
+# Each superseded record and the revision whose own producer wrote it (H4).
+# Verification replays that producer in an isolated snapshot of its revision,
+# so current catalogue, loader or manifest changes cannot alter or break it.
+HISTORICAL_LEDGERS = {
+    "v2": ("13747d494dea43dcf259dc910ec0b1404e958a43", LEDGER_V2),
+    "v3": ("b9b36c9d3de60f9241f5dc3eb09783fe0743f79c", LEDGER_V3),
+    "v4": ("b2d522299db1664548b82046b9dec8b63cc08bae", LEDGER_V4),
+    "v5": ("3248bf3b076f06a76d50582afdf1b95fe04a82dd", LEDGER_V5),
+}
+SNAPSHOT_PATHS = ("tools/lcb", "docs/reference", "godot/tests/fixtures/lcb")
 # Declared reactions that may change the Water integer, per reactive species.
 # Salt: Water+Salt -> Brine+Brine removes one Water cell of mass m in 1..255
 # per consumed Salt cell and adds two Brine cells. Sodium: products include
@@ -67,12 +80,56 @@ def lf_sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
 
 
+def _unique_pairs(pairs: list) -> dict:
+    names = [k for k, _ in pairs]
+    duplicates = sorted({k for k in names if names.count(k) > 1})
+    if duplicates:
+        raise ValueError(f"duplicate JSON object names {duplicates}")
+    return dict(pairs)
+
+
 def load(path: Path):
-    return json.loads(path.read_text(encoding="utf-8"))
+    """Strict JSON: duplicate object names are rejected, never last-value-wins (G4)."""
+    return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=_unique_pairs)
+
+
+def load_report(path: Path) -> tuple[dict, str]:
+    """A campaign report, or a structured refusal; a malformed report never aborts the reduction."""
+    try:
+        report = load(path)
+    except (OSError, ValueError) as error:
+        return {"status": "malformed_report"}, f"{path.name}: {error}"
+    if not isinstance(report, dict):
+        return {"status": "malformed_report"}, f"{path.name}: report is not an object"
+    return report, ""
+
+
+def capture_of(result: dict) -> dict:
+    capture = result.get("capture")
+    return capture if isinstance(capture, dict) else {}
 
 
 def observations(result: dict) -> dict:
-    return {o["id"]: o["value"] for o in result.get("capture", {}).get("observations", [])}
+    items = capture_of(result).get("observations", [])
+    return {o["id"]: o["value"] for o in items if isinstance(o, dict) and "id" in o} if isinstance(items, list) else {}
+
+
+def report_identity(sid: str, w1: dict, w4: dict, expected_hash, expected_horizon, source_sha: str) -> dict:
+    """Bind a 1/4-worker report pair to the requested scenario, definition, horizon and source (G3)."""
+    checks = {}
+    identities = {}
+    for name, report, workers in (("w1", w1, 1), ("w4", w4, 4)):
+        identity = capture_of(report).get("runtime_identity")
+        identities[name] = identity if isinstance(identity, dict) else {}
+        checks[f"{name}_id"] = report.get("id") == sid
+        checks[f"{name}_workers"] = report.get("workers") == workers
+        checks[f"{name}_definition_hash"] = expected_hash is not None and report.get("definition_hash") == expected_hash
+        checks[f"{name}_horizon"] = expected_horizon is not None and report.get("horizon") == expected_horizon
+        checks[f"{name}_source_revision"] = identities[name].get("source_revision") == source_sha
+    for key in ("native_sha256", "godot", "script_set_sha256", "platform"):
+        value = identities["w1"].get(key)
+        checks[f"runtime_{key}_equal"] = value not in (None, "", "unavailable") and value == identities["w4"].get(key)
+    return {"ok": all(checks.values()), "failed": sorted(k for k, v in checks.items() if not v)}
 
 
 def derived(meta: dict, obs: dict) -> dict:
@@ -99,7 +156,14 @@ def derived(meta: dict, obs: dict) -> dict:
 
 
 def signed_ledger(inventory: dict, ledger: dict, checkpoints: list) -> dict:
-    """Signed per-species Water accounting (lcb-signed-ledger-v5).
+    """Signed per-species Water accounting (lcb-signed-ledger-v6).
+
+    Structure (F3/G1/G2): inventory and ledger must be objects and checkpoints a
+    list of objects; cells/species are objects keyed by material name; a present
+    inventory water_integer is a non-negative integer; a present events value is a
+    list (an explicit null is malformed; omit the key for aggregate-only
+    evidence); a present species value is an object. Malformed inputs return
+    MALFORMED_EVIDENCE and never raise.
 
     Every quantity is bound to the declared initial ledger and inventory; the
     first checkpoint is validated against them, never substituted for them.
@@ -124,12 +188,11 @@ def signed_ledger(inventory: dict, ledger: dict, checkpoints: list) -> dict:
     stay non-negative after every event. Aggregate-only totals reject impossible
     directions and gross budgets but cannot establish closure.
 
-    A closed state always has a zero final signed delta. Only CLOSED_STATES are
-    eligible for acceptance.
+    The event horizon applies on every route, reaction closures included (F4).
+    A closed source/sink state always has a zero final signed delta. Only
+    CLOSED_STATES are eligible for acceptance.
     """
-    cells = inventory.get("cells", {})
-    w0, src, sink = ledger.get("initial_integer"), ledger.get("explicit_source"), ledger.get("explicit_sink")
-    base = {"rule": LEDGER_RULE, "initial": w0, "explicit_source": src, "explicit_sink": sink}
+    base = {"rule": LEDGER_RULE}
 
     def result(state, reason, **extra):
         if state in ("closed", "closed_timed_source_sink"):
@@ -140,13 +203,24 @@ def signed_ledger(inventory: dict, ledger: dict, checkpoints: list) -> dict:
     def nonneg(v):
         return isinstance(v, int) and not isinstance(v, bool) and v >= 0
 
-    # 1. Structure.
+    # 1. Structure: every root, item and key is type-checked before use (F3/G1/G2).
+    if not isinstance(inventory, dict) or not isinstance(ledger, dict) or not isinstance(checkpoints, list):
+        return result("MALFORMED_EVIDENCE", "inventory and ledger must be objects and checkpoints a list")
+    w0, src, sink = ledger.get("initial_integer"), ledger.get("explicit_source"), ledger.get("explicit_sink")
+    base.update(initial=w0, explicit_source=src, explicit_sink=sink)
+    cells = inventory.get("cells", {})
+    if not isinstance(cells, dict) or not all(isinstance(k, str) for k in cells):
+        return result("MALFORMED_EVIDENCE", "inventory cells must be an object keyed by material name")
+    if "water_integer" in inventory and not nonneg(inventory["water_integer"]):
+        return result("MALFORMED_EVIDENCE", "inventory water_integer, when present, must be a non-negative integer")
     if not (nonneg(w0) and nonneg(src) and nonneg(sink)):
         return result("MALFORMED_EVIDENCE", "initial, source and sink must be non-negative integers")
     if not all(nonneg(v) for v in cells.values()):
         return result("MALFORMED_EVIDENCE", "inventory cell counts must be non-negative integers")
     if not checkpoints:
         return result("MALFORMED_EVIDENCE", "no checkpoints")
+    if not all(isinstance(c, dict) for c in checkpoints):
+        return result("MALFORMED_EVIDENCE", "every checkpoint must be an object")
     ticks = [c.get("tick") for c in checkpoints]
     if not all(nonneg(t) for t in ticks) or ticks[0] != 0 or any(b <= a for a, b in zip(ticks, ticks[1:])):
         return result("MALFORMED_EVIDENCE", "checkpoint ticks must start at 0 and strictly increase")
@@ -156,7 +230,11 @@ def signed_ledger(inventory: dict, ledger: dict, checkpoints: list) -> dict:
     horizon, final = series[-1]
     base.update(final_world_water=final, signed_delta=final - (w0 + src - sink))
 
-    events = ledger.get("events")
+    events = ledger["events"] if "events" in ledger else None
+    if "events" in ledger and not isinstance(events, list):
+        return result("MALFORMED_EVIDENCE", "ledger events, when present, must be a list (null, objects, strings, "
+                                            "numbers and booleans are malformed; omit the key for aggregate-only "
+                                            "evidence)")
     if events is not None:
         for e in events:
             if not isinstance(e, dict) or set(e) - {"tick", "source", "sink"}:
@@ -174,9 +252,12 @@ def signed_ledger(inventory: dict, ledger: dict, checkpoints: list) -> dict:
             return result("MALFORMED_EVIDENCE", "timed source/sink events do not sum to the declared totals")
 
     species = [c.get("species") for c in checkpoints]
-    if any(s is not None for s in species):
+    if any("species" in c for c in checkpoints):
         if any(not isinstance(s, dict) for s in species):
-            return result("MALFORMED_EVIDENCE", "species counts are present at some checkpoints but not all")
+            return result("MALFORMED_EVIDENCE", "species counts must be an object at every checkpoint (absent at "
+                                                "some checkpoints, or null)")
+        if not all(isinstance(k, str) for s in species for k in s):
+            return result("MALFORMED_EVIDENCE", "species counts must be keyed by material name")
         if any("water" in s for s in species):
             return result("MALFORMED_EVIDENCE", "Water is accounted by water_integer, not as a species count")
         observed = set().union(*(set(s) for s in species))
@@ -206,6 +287,15 @@ def signed_ledger(inventory: dict, ledger: dict, checkpoints: list) -> dict:
         if off:
             return result("OPEN_UNEXPLAINED", "tick-0 species counts differ from the declared inventory "
                           "(a species absent from the inventory is declared 0)", initial_species_discrepancy=off)
+
+    # 2b. Every counted event must be observed, on every route (F4): an event
+    # indexed N is first observed at completed tick N+1.
+    if events is not None:
+        beyond = [e for e in events if e["tick"] >= horizon]
+        if beyond:
+            return result("UNVERIFIED_INCOMPLETE_HORIZON", f"{len(beyond)} counted event(s) at or after the last "
+                          f"completed checkpoint t{horizon} are not observed (an event indexed N is first observed "
+                          "at completed N+1); the declared totals cannot be reconciled", unobserved_events=beyond)
 
     # 3. Active reactions. With species evidence, a reactive species is active
     # only if its observed count changes; without it, if its declared count is
@@ -351,42 +441,58 @@ def reduce_cmd(args) -> int:
         return 1
     metas = {s.id: s.metadata() for s in catalogue.build()}
     protected = {f["id"]: f for f in load(PROTECTED_MANIFEST)["fixtures"]}
-    cases, problems, unverified = {}, [], []
+    pinned = {e["id"]: e["definition"]["canonical_hash"] for e in load(REGISTRY)["scenarios"]} \
+        if REGISTRY.exists() else {}
+    cases, problems, unverified, ineligible = {}, [], [], []
     for path in sorted(Path(args.w1).glob("*-w1.json")):
         sid = path.name[:-len("-w1.json")]
         if sid.startswith("summary"):
             continue
-        w1, w4path = load(path), Path(args.w4) / f"{sid}-w4.json"
-        w4 = load(w4path) if w4path.exists() else {"status": "missing"}
+        w4path = Path(args.w4) / f"{sid}-w4.json"
+        w1, w1_error = load_report(path)
+        w4, w4_error = load_report(w4path) if w4path.exists() else ({"status": "missing"}, "")
         both = w1.get("status") == "completed" and w4.get("status") == "completed"
-        parity = (both and observations(w1) == observations(w4)
-                  and [(c["tick"], c["content_hash"], c["state_hash"]) for c in w1["checkpoints"]]
-                  == [(c["tick"], c["content_hash"], c["state_hash"]) for c in w4["checkpoints"]])
+
+        def hashes(report):
+            points = report.get("checkpoints")
+            return [(c.get("tick"), c.get("content_hash"), c.get("state_hash")) for c in points
+                    if isinstance(c, dict)] if isinstance(points, list) else None
         if sid in metas:
             meta = metas[sid]
-        else:
+            expected_hash, expected_horizon = pinned.get(sid), meta.get("horizon_ticks")
+        elif sid in protected:
             definition = load(ROOT / protected[sid]["path"])
             meta = {"id": sid, "category": "protected-reference",
-                    "initial_inventory": catalogue.inventory_of(definition["rectangles"], definition["partial_water_fills"])}
+                    "initial_inventory": catalogue.inventory_of(definition["rectangles"], definition["partial_water_fills"],
+                                                                definition["water_semantics"])}
+            expected_hash, expected_horizon = protected[sid]["definition_hash"], protected[sid]["horizon_ticks"]
+        else:
+            meta, expected_hash, expected_horizon = {"id": sid, "initial_inventory": {}}, None, None
+        identity = report_identity(sid, w1, w4, expected_hash, expected_horizon, args.source_sha)
+        same = both and observations(w1) == observations(w4) and hashes(w1) is not None and hashes(w1) == hashes(w4)
+        parity = ("identical" if same and identity["ok"] else "IDENTITY_MISMATCH" if same
+                  else "MISMATCH" if both else "not_comparable")
         case = {
             "status": {"w1": w1.get("status"), "w4": w4.get("status")},
-            "errors": {k: v.get("error", "") for k, v in (("w1", w1), ("w4", w4)) if v.get("error")},
-            "parity_1_vs_4_workers": "identical" if parity else ("MISMATCH" if both else "not_comparable"),
+            "errors": {k: v for k, v in (("w1", w1_error or w1.get("error", "")), ("w4", w4_error or w4.get("error", "")))
+                       if v},
+            "parity_1_vs_4_workers": parity,
+            "report_identity": identity,
             "definition_hash": w1.get("definition_hash"),
             "horizon": w1.get("horizon"),
-            "outcome": w1.get("capture", {}).get("outcome"),
+            "outcome": capture_of(w1).get("outcome"),
             "observations": observations(w1),
-            "checkpoints": w1.get("checkpoints", []),
+            "checkpoints": w1.get("checkpoints", []) if isinstance(w1.get("checkpoints"), list) else [],
             "work": {"w1": w1.get("work"), "w4": w4.get("work")},
             "timing_ms_characterization_only": {
-                k: {m: v.get("capture", {}).get("timing", {}).get(m) for m in ("p50_ms", "p95_ms", "max_ms")}
+                k: {m: (capture_of(v).get("timing") or {}).get(m) for m in ("p50_ms", "p95_ms", "max_ms")}
                 for k, v in (("w1", w1), ("w4", w4))},
             "report_sha256": {"w1": hashlib.sha256(path.read_bytes()).hexdigest(),
                               "w4": hashlib.sha256(w4path.read_bytes()).hexdigest() if w4path.exists() else None},
         }
         if w1.get("status") == "completed":
-            case["ledger"] = signed_ledger(meta.get("initial_inventory", {}), w1["capture"]["water_ledger"],
-                                           w1["checkpoints"])
+            case["ledger"] = signed_ledger(meta.get("initial_inventory", {}), capture_of(w1).get("water_ledger"),
+                                           w1.get("checkpoints"))
             case["derived"] = derived(meta, case["observations"])
         if sid in protected:
             accepted = protected[sid]["arms"][0]["control"]
@@ -396,29 +502,33 @@ def reduce_cmd(args) -> int:
                 "final_hashes_match": (accepted["final"]["content_hash"], accepted["final"]["state_hash"])
                 == (case["checkpoints"][-1]["content_hash"], case["checkpoints"][-1]["state_hash"]) if case["checkpoints"] else False,
             }
-        if not parity or case.get("ledger", {}).get("state") in PROBLEM_STATES or w1.get("status") != "completed":
+        # Orthogonal summaries (G5): a case can be a problem and also unverified.
+        state = case.get("ledger", {}).get("state")
+        if parity != "identical" or state in PROBLEM_STATES or w1.get("status") != "completed":
             problems.append(sid)
-        elif case["ledger"]["state"] in UNVERIFIED_STATES:
+        if state in UNVERIFIED_STATES:
             unverified.append(sid)
+        if not case.get("ledger", {}).get("eligible_for_acceptance"):
+            ineligible.append(sid)
         cases[sid] = case
-    identity = next(iter(cases.values()))
-    any_w1 = load(next(Path(args.w1).glob("*-w1.json")))
+    loaded = [load_report(p)[0] for p in sorted(Path(args.w1).glob("*-w1.json"))]
+    any_w1 = next((r for r in loaded if isinstance(capture_of(r).get("runtime_identity"), dict)),
+                  {"capture": {"runtime_identity": {}}})
     result = {
         "schema": "lcb-scenario-controls-v1",
         "date": args.date,
         "scope": "Current native defaults only; controlled fixed-tick native-only runs; no player, Rapier, render or Web",
         "platform": args.platform,
         "source_commit": args.source_sha,
-        "runtime": {"native_sha256": any_w1["capture"]["runtime_identity"]["native_sha256"],
-                    "godot": any_w1["capture"]["runtime_identity"]["godot"],
-                    "script_set_sha256": any_w1["capture"]["runtime_identity"].get("script_set_sha256")},
+        "runtime": {k: capture_of(any_w1)["runtime_identity"].get(k)
+                    for k in ("native_sha256", "godot", "script_set_sha256")},
         "runner": "godot/tests/run_lcb_scenario_suite.gd + godot/tests/lcb_scenario_runner.gd",
         "ledger_rule": LEDGER_RULE,
         "problems": problems,
         "accounting_unverified_ineligible_for_acceptance": unverified,
+        "ineligible_for_acceptance": ineligible,
         "cases": cases,
     }
-    del identity
     out.write_bytes((json.dumps(result, indent=2) + "\n").encode("utf-8"))
     print(f"wrote {out} with {len(cases)} cases; problems={problems}")
     return 0
@@ -428,31 +538,54 @@ def inventories() -> dict:
     out = {s.id: s.metadata()["initial_inventory"] for s in catalogue.build()}
     for fixture in load(PROTECTED_MANIFEST)["fixtures"]:
         definition = load(ROOT / fixture["path"])
-        out[fixture["id"]] = catalogue.inventory_of(definition["rectangles"], definition["partial_water_fills"])
+        out[fixture["id"]] = catalogue.inventory_of(definition["rectangles"], definition["partial_water_fills"],
+                                                     definition["water_semantics"])
     return out
 
 
-def reledger_v2() -> dict:
-    """The historical v2 record, regenerated only by its frozen reducer (check-only)."""
-    return ledger_v2_historical.reledger(CONTROLS, ROOT, load, lf_sha256, inventories)
+def verify_historical(version: str) -> tuple[bool, list]:
+    """Verify a superseded record against its own producer at its recorded revision (H4).
 
+    1. The current file must equal, byte for byte after LF normalization, the
+       record as committed at that revision.
+    2. That revision's own `lcb_registry.py reledger --check` is replayed in an
+       isolated snapshot of its tools, references and fixtures, so the producer,
+       inventories, loader and manifests are all historical. Nothing is written
+       to the working tree. Requires full Git history.
+    """
+    commit, path = HISTORICAL_LEDGERS[version]
+    rel = path.relative_to(ROOT).as_posix()
+    notes = []
 
-def reledger_v3() -> dict:
-    """The historical v3 record, regenerated only by its frozen reducer (check-only)."""
-    return ledger_v3_historical.reledger(CONTROLS, LEDGER_V2, PROTECTED_MANIFEST, ROOT, load, lf_sha256,
-                                         inventories, catalogue.__file__)
-
-
-def reledger_v4() -> dict:
-    """The historical v4 record, regenerated only by its frozen reducer (check-only)."""
-    return ledger_v4_historical.reledger(CONTROLS, LEDGER_V2, LEDGER_V3, PROTECTED_MANIFEST, ROOT, load,
-                                         lf_sha256, inventories, catalogue.__file__)
+    def git(*args, **kw):
+        return subprocess.run(["git", "-C", str(ROOT), *args], capture_output=True, timeout=120, **kw)
+    if git("cat-file", "-e", f"{commit}^{{commit}}").returncode != 0:
+        return False, [f"revision {commit} unavailable (full Git history is required)"]
+    published = git("show", f"{commit}:{rel}")
+    if published.returncode != 0:
+        return False, [f"{rel} absent at {commit}"]
+    if published.stdout.replace(b"\r\n", b"\n") != path.read_bytes().replace(b"\r\n", b"\n"):
+        return False, [f"{rel} differs from the record published at {commit[:7]}"]
+    notes.append(f"{rel} equals the record published at {commit[:7]}")
+    archive = git("archive", "--format=tar", commit, "--", *SNAPSHOT_PATHS)
+    if archive.returncode != 0:
+        return False, notes + [f"git archive failed at {commit[:7]}"]
+    with tempfile.TemporaryDirectory(prefix=f"lcb-ledger-{version}-") as tmp:
+        with tarfile.open(fileobj=io.BytesIO(archive.stdout)) as tar:
+            tar.extractall(tmp, filter="data")
+        replay = subprocess.run([sys.executable, "-B", "tools/lcb/lcb_registry.py", "reledger", "--check"],
+                                cwd=tmp, capture_output=True, text=True, timeout=120)
+    if replay.returncode != 0:
+        return False, notes + [f"producer replay at {commit[:7]} failed: {(replay.stderr or replay.stdout).strip()}"]
+    notes.append(f"producer replay at {commit[:7]} passed: {replay.stdout.strip()}")
+    return True, notes
 
 
 def reledger() -> dict:
-    """Re-reduce the retained (immutable) 2026-10-23 controls with lcb-signed-ledger-v5."""
+    """Re-reduce the retained (immutable) 2026-10-23 controls with lcb-signed-ledger-v6."""
     controls = load(CONTROLS)
-    v2, v3, v4 = load(LEDGER_V2)["cases"], load(LEDGER_V3)["cases"], load(LEDGER_V4)["cases"]
+    v2, v3, v4, v5 = (load(LEDGER_V2)["cases"], load(LEDGER_V3)["cases"], load(LEDGER_V4)["cases"],
+                      load(LEDGER_V5)["cases"])
     inv = inventories()
     cases = {}
     for sid, case in controls["cases"].items():
@@ -465,20 +598,23 @@ def reledger() -> dict:
         cases[sid] = {"superseded_states": {"controls_2026_10_23": old["state"],
                                             "lcb-signed-ledger-v2": v2[sid]["state"],
                                             "lcb-signed-ledger-v3": v3[sid]["state"],
-                                            "lcb-signed-ledger-v4": v4[sid]["state"]}, **new}
+                                            "lcb-signed-ledger-v4": v4[sid]["state"],
+                                            "lcb-signed-ledger-v5": v5[sid]["state"]}, **new}
     return {
-        "schema": "lcb-scenario-ledger-v5",
+        "schema": "lcb-scenario-ledger-v6",
         "date": "2026-10-23",
         "rule": LEDGER_RULE,
-        "status": "Corrected accounting reduction of retained characterization data (re-review F1/F2). The "
-                  "historical controls file and the v2/v3/v4 records are preserved unchanged and stay verifiable "
-                  "against their frozen reducers; this record supersedes only their ledger classification. "
+        "status": "Corrected accounting reduction of retained characterization data (re-review F3/F4, G1/G2, "
+                  "H3). The historical controls file and the v2-v5 records are preserved unchanged and stay "
+                  "verifiable by replaying each record's own producer at its recorded revision; this record "
+                  "supersedes only their ledger classification. "
                   "Characterization only: accepted evidence remains the CI-re-executed prefixes.",
         "input": {"controls_file": CONTROLS.relative_to(ROOT).as_posix(), "controls_sha256_lf": lf_sha256(CONTROLS),
                   "controls_source_commit": controls["source_commit"],
                   "superseded_records": {LEDGER_V2.relative_to(ROOT).as_posix(): lf_sha256(LEDGER_V2),
                                          LEDGER_V3.relative_to(ROOT).as_posix(): lf_sha256(LEDGER_V3),
-                                         LEDGER_V4.relative_to(ROOT).as_posix(): lf_sha256(LEDGER_V4)},
+                                         LEDGER_V4.relative_to(ROOT).as_posix(): lf_sha256(LEDGER_V4),
+                                         LEDGER_V5.relative_to(ROOT).as_posix(): lf_sha256(LEDGER_V5)},
                   "reducer": "tools/lcb/lcb_registry.py::signed_ledger",
                   "reducer_sha256_lf": lf_sha256(Path(__file__)),
                   "catalogue_tool_sha256_lf": lf_sha256(Path(catalogue.__file__)),
@@ -486,33 +622,39 @@ def reledger() -> dict:
         "evidence_limits": "The campaign retained world Water integers per checkpoint, aggregate explicit "
                            "source/sink totals and windowed observations. It retained no world-wide per-species "
                            "counts, no per-reaction log and no per-event source/sink timing, so reactive cases "
-                           "and cases with explicit sources/sinks cannot be closed from this record. R1-R4 and "
-                           "F1/F2 concern species and timed-event evidence that this campaign did not supply.",
+                           "and cases with explicit sources/sinks cannot be closed from this record. R1-R4, "
+                           "F1-F4 and G1/G2 concern species, timed-event and container evidence that this campaign "
+                           "did not supply.",
         "open_unexplained_or_malformed": sorted(s for s, c in cases.items() if c["state"] in PROBLEM_STATES),
         "accounting_unverified_ineligible_for_acceptance": sorted(
             s for s, c in cases.items() if c["state"] in UNVERIFIED_STATES),
-        "changed_from_v4": sorted(s for s, c in cases.items()
-                                  if c["state"] != c["superseded_states"]["lcb-signed-ledger-v4"]),
+        "changed_from_v5": sorted(s for s, c in cases.items()
+                                  if c["state"] != c["superseded_states"]["lcb-signed-ledger-v5"]),
         "cases": cases,
     }
 
 
 def reledger_cmd(args) -> int:
-    path, build = {"v2": (LEDGER_V2, reledger_v2), "v3": (LEDGER_V3, reledger_v3),
-                   "v4": (LEDGER_V4, reledger_v4), "v5": (LEDGER_V5, reledger)}[args.version]
-    text = json.dumps(build(), indent=2) + "\n"
-    if args.check:
-        current = path.read_text(encoding="utf-8").replace("\r\n", "\n") if path.exists() else ""
-        if current != text:
-            print(f"stale or altered ledger record {path.relative_to(ROOT)}", file=sys.stderr)
+    if args.version in HISTORICAL_LEDGERS:
+        if not args.check:
+            print(f"refusing to write historical record {args.version}; use --check", file=sys.stderr)
             return 1
-        print(f"{path.name} matches the retained controls and its reducer")
+        ok, notes = verify_historical(args.version)
+        print("\n".join(notes), file=sys.stdout if ok else sys.stderr)
+        return 0 if ok else 1
+    text = json.dumps(reledger(), indent=2) + "\n"
+    if args.check:
+        current = LEDGER_V6.read_text(encoding="utf-8").replace("\r\n", "\n") if LEDGER_V6.exists() else ""
+        if current != text:
+            print(f"stale or altered ledger record {LEDGER_V6.relative_to(ROOT)}", file=sys.stderr)
+            return 1
+        print(f"{LEDGER_V6.name} matches the retained controls and its reducer")
         return 0
-    if args.version != "v5" or path.exists():
-        print(f"refusing to overwrite dated evidence {path.relative_to(ROOT)}", file=sys.stderr)
+    if LEDGER_V6.exists():
+        print(f"refusing to overwrite dated evidence {LEDGER_V6.relative_to(ROOT)}", file=sys.stderr)
         return 1
-    path.write_bytes(text.encode("utf-8"))
-    print(f"wrote {path.relative_to(ROOT)}")
+    LEDGER_V6.write_bytes(text.encode("utf-8"))
+    print(f"wrote {LEDGER_V6.relative_to(ROOT)}")
     return 0
 
 
@@ -549,6 +691,18 @@ def arms_for(sid: str, liquids: list, control: dict | None, sealed: bool) -> lis
     return arms
 
 
+def current_default_mapping(mapping: dict, rows: dict) -> bool:
+    """True only if every material maps to its current_default family with the reference variant.
+
+    An empty mapping (a scenario with no liquids) selects nothing and is trivially Current."""
+    for material, value in mapping.items():
+        family, _, variant = str(value).partition("/")
+        cell = rows.get(material, {}).get("families", {}).get(family)
+        if cell is None or cell.get("status") != "current_default" or variant not in ("", "reference"):
+            return False
+    return True
+
+
 def entry(sid, meta, definition_path, control, matrix, protected_fixture=None, ledger_v2=None) -> dict:
     ledger_v2 = ledger_v2 or {}
     definition = load(definition_path)
@@ -559,9 +713,22 @@ def entry(sid, meta, definition_path, control, matrix, protected_fixture=None, l
     sealed = sid == "lcb.head.sealed-two-limb.v1"
     arms = arms_for(sid, liquids, control, sealed)
     if protected_fixture:
-        arms = [{"id": a["id"], "mapping": a["policy"], "status": a["status"],
-                 "executable_today": a["status"] == "measured", **({"depends_on": a["blocked_by"]} if "blocked_by" in a else {})}
-                for a in protected_fixture["arms"]]
+        # One availability rule for protected and generic arms (H1): only a
+        # measured Current-default mapping is executable. A candidate mapping is
+        # blocked whatever its manifest label, until native admission exists.
+        arms = []
+        for a in protected_fixture["arms"]:
+            current = current_default_mapping(a["policy"], rows)
+            measured = current and a["status"] == "measured"
+            arm = {"id": a["id"], "mapping": a["policy"], "status": "measured" if measured else "blocked",
+                   "executable_today": measured, "manifest_status": a["status"]}
+            if not measured:
+                arm["depends_on"] = a.get("blocked_by") or ["#213 LCB-000 PASS", "#200"]
+                arm["reason"] = ("candidate mapping; not executable until its family is natively admitted" if not current
+                                 else "Current mapping without a measured control")
+            arms.append(arm)
+    for arm in arms:
+        assert not arm["executable_today"] or current_default_mapping(arm["mapping"], rows), arm
     rel = definition_path.relative_to(ROOT).as_posix()
     return {
         "id": sid, "version": 1, "category": meta["category"], "title": pres.get("title", sid),
@@ -591,7 +758,7 @@ def entry(sid, meta, definition_path, control, matrix, protected_fixture=None, l
                                       "ledger_eligible_for_acceptance": ledger_v2.get("eligible_for_acceptance"),
                                       "ledger_rule": LEDGER_RULE,
                                       "controls_file": CONTROLS.relative_to(ROOT).as_posix(),
-                                      "ledger_file": LEDGER_V5.relative_to(ROOT).as_posix()}
+                                      "ledger_file": LEDGER_V6.relative_to(ROOT).as_posix()}
                                      if control else {"status": "unmeasured"}),
             "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
             "web": "not executed", "rapier_player_render": "not executed (native-only runner)",
@@ -607,13 +774,14 @@ def entry(sid, meta, definition_path, control, matrix, protected_fixture=None, l
 def build() -> dict:
     matrix = load(MATRIX)
     controls = load(CONTROLS)["cases"] if CONTROLS.exists() else {}
-    ledgers = load(LEDGER_V5)["cases"] if LEDGER_V5.exists() else {}
+    ledgers = load(LEDGER_V6)["cases"] if LEDGER_V6.exists() else {}
     manifest = load(PROTECTED_MANIFEST)
     entries = []
     for fixture in manifest["fixtures"]:
         path = ROOT / fixture["path"]
         definition = load(path)
-        inventory = catalogue.inventory_of(definition["rectangles"], definition["partial_water_fills"])
+        inventory = catalogue.inventory_of(definition["rectangles"], definition["partial_water_fills"],
+                                           definition["water_semantics"])
         # Cross-check against the accepted PR #215 measured initial state; never rewrite it.
         for key, value in fixture["initial"].items():
             derived_value = inventory["water_integer"] if key == "water_integer" else \
@@ -635,8 +803,9 @@ def build() -> dict:
         "status": "LCB-003 preparation. Only arms with status starting 'measured' have executed; every blocked arm names its dependency.",
         "sources": {"capability_matrix": lf_sha256(MATRIX), "protected_manifest": lf_sha256(PROTECTED_MANIFEST),
                     "controls": lf_sha256(CONTROLS) if CONTROLS.exists() else None,
-                    "ledger_v5": lf_sha256(LEDGER_V5) if LEDGER_V5.exists() else None,
-                    "catalogue_tool": lf_sha256(Path(catalogue.__file__))},
+                    "ledger_v6": lf_sha256(LEDGER_V6) if LEDGER_V6.exists() else None,
+                    "catalogue_tool": lf_sha256(Path(catalogue.__file__)),
+                    "registry_builder": lf_sha256(Path(__file__))},
         "integration_requirements": [
             "#200: LiquidSolverPolicy, refusal codes and effective readback so blocked arms can execute",
             "#212: inertial_cellular_v1 and Brine qualification (M1, BRINE-IN, W-IN)",
@@ -674,7 +843,7 @@ def main() -> int:
     r.add_argument("--source-sha", required=True)
     g = sub.add_parser("reledger")
     g.add_argument("--check", action="store_true")
-    g.add_argument("--version", choices=["v5", "v4", "v3", "v2"], default="v5")
+    g.add_argument("--version", choices=["v6", "v5", "v4", "v3", "v2"], default="v6")
     b = sub.add_parser("build")
     b.add_argument("--check", action="store_true")
     args = parser.parse_args()

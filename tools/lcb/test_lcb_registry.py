@@ -1,12 +1,18 @@
-"""Synthetic regressions for the signed campaign ledger (lcb-signed-ledger-v5).
+"""Synthetic regressions for the signed campaign ledger (lcb-signed-ledger-v6).
 
 These exercise the reducer only. They do not touch protected fixture bytes or
 the retained 2026-10-23 controls file.
 """
 from __future__ import annotations
 
+import argparse
+import contextlib
+import copy
+import io
 import json
+import tempfile
 import unittest
+from pathlib import Path
 
 import lcb_registry as reg
 
@@ -434,48 +440,279 @@ class EventShapeF2(unittest.TestCase):
                          "closed_timed_source_sink")
 
 
+_DEFAULT = object()
+
+
+def direct(inventory=_DEFAULT, ledger=_DEFAULT, checkpoints=_DEFAULT):
+    inventory = {"water_integer": 0, "cells": {}} if inventory is _DEFAULT else inventory
+    ledger = {"initial_integer": 0, "explicit_source": 0, "explicit_sink": 0} if ledger is _DEFAULT else ledger
+    if checkpoints is _DEFAULT:
+        checkpoints = [{"tick": 0, "water_integer": 0}, {"tick": 10, "water_integer": 0}]
+    return reg.signed_ledger(inventory, ledger, checkpoints)
+
+
+ZERO = {"initial_integer": 0, "explicit_source": 0, "explicit_sink": 0}
+
+
+class EventContainerF3(unittest.TestCase):
+    """Re-review F3: the events value itself is validated; malformed containers never raise or close."""
+
+    def test_malformed_containers(self):
+        for events in ({}, False, 0, "", "x", None, 1.5, {"tick": 1, "source": 0}):
+            r = direct(ledger={**ZERO, "events": events})
+            self.assertEqual(r["state"], "MALFORMED_EVIDENCE", repr(events))
+            self.assertFalse(r["eligible_for_acceptance"])
+
+    def test_omitted_list_and_empty_list_semantics(self):
+        self.assertEqual(direct(ledger=dict(ZERO))["state"], "closed")
+        self.assertEqual(direct(ledger={**ZERO, "events": []})["state"], "closed")
+        empty_with_totals = direct(ledger={**ZERO, "explicit_source": 100, "events": []},
+                                   checkpoints=[{"tick": 0, "water_integer": 0}, {"tick": 10, "water_integer": 100}])
+        self.assertEqual(empty_with_totals["state"], "MALFORMED_EVIDENCE")
+        self.assertEqual(direct(ledger={**ZERO, "events": [{"tick": 1, "source": 0}]})["state"],
+                         "closed_timed_source_sink")
+
+
+class ReactionHorizonF4(unittest.TestCase):
+    """Re-review F4: the event horizon applies before any reaction closure."""
+
+    def salt(self, event_tick):
+        return reg.signed_ledger(
+            {"water_integer": 255, "cells": {"salt": 1}},
+            {"initial_integer": 255, "explicit_source": 0, "explicit_sink": 0,
+             "events": [{"tick": event_tick, "source": 0}]},
+            [{"tick": 0, "water_integer": 255, "species": {"salt": 1, "brine": 0}},
+             {"tick": 30, "water_integer": 0, "species": {"salt": 0, "brine": 2}}])
+
+    def test_future_zero_event_blocks_reaction_closure(self):
+        r = self.salt(30)
+        self.assertEqual(r["state"], "UNVERIFIED_INCOMPLETE_HORIZON")
+        self.assertFalse(r["eligible_for_acceptance"])
+
+    def test_observed_zero_event_allows_reaction_closure(self):
+        self.assertEqual(self.salt(29)["state"], "closed_signed_reaction_ledger")
+
+
+class RootContainersG1G2(unittest.TestCase):
+    """Re-review G1/G2: roots, items, keys and water_integer are type-checked; nothing raises."""
+
+    def test_root_and_item_containers(self):
+        cases = [dict(inventory=None), dict(inventory=[]), dict(inventory={"cells": None}),
+                 dict(inventory={"cells": []}), dict(inventory={"cells": {1: 0}}), dict(ledger=None),
+                 dict(ledger=[]), dict(checkpoints={}), dict(checkpoints=[None]),
+                 dict(checkpoints=[{"tick": 0, "water_integer": 0}, 7]),
+                 dict(checkpoints=[{"tick": 0, "water_integer": 0, "species": {1: 0}},
+                                   {"tick": 10, "water_integer": 0, "species": {1: 0}}]),
+                 dict(checkpoints=[{"tick": 0, "water_integer": 0, "species": None},
+                                   {"tick": 10, "water_integer": 0, "species": None}]),
+                 dict(checkpoints=[{"tick": 0, "water_integer": 0, "species": {"oil": 1, 2: 0}},
+                                   {"tick": 10, "water_integer": 0, "species": {"oil": 1, 2: 0}}])]
+        for kw in cases:
+            r = direct(**kw)
+            self.assertEqual(r["state"], "MALFORMED_EVIDENCE", kw)
+            self.assertFalse(r["eligible_for_acceptance"])
+
+    def test_inventory_water_integer_type(self):
+        for value in (True, 1.0, None, -1, "1"):
+            r = direct(inventory={"water_integer": value, "cells": {}},
+                       ledger={**ZERO, "initial_integer": 1},
+                       checkpoints=[{"tick": 0, "water_integer": 1}, {"tick": 10, "water_integer": 1}])
+            self.assertEqual(r["state"], "MALFORMED_EVIDENCE", repr(value))
+        absent = direct(inventory={"cells": {}}, ledger={**ZERO, "initial_integer": 1},
+                        checkpoints=[{"tick": 0, "water_integer": 1}, {"tick": 10, "water_integer": 1}])
+        self.assertEqual(absent["state"], "closed")
+
+
+QUIET = "lcb.rest.deep-quiet-pool.v1"
+
+
+class ReducerPipeline(unittest.TestCase):
+    """reduce_cmd on synthetic report pairs (G1/G3/G4/G5): never aborts; identity binds parity."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.meta = {s.id: s.metadata() for s in reg.catalogue.build()}[QUIET]
+        cls.pinned = next(e for e in reg.load(reg.REGISTRY)["scenarios"] if e["id"] == QUIET)["definition"][
+            "canonical_hash"]
+
+    def report(self, workers, overrides=None, **override):
+        override = {**(overrides or {}), **override}
+        water = self.meta["initial_inventory"]["water_integer"]
+        identity = {"source_revision": "abc123", "native_sha256": "n", "godot": "g", "script_set_sha256": "s",
+                    "platform": "Windows"}
+        r = {"status": "completed", "id": QUIET, "workers": workers, "horizon": self.meta["horizon_ticks"],
+             "definition_hash": self.pinned,
+             "checkpoints": [{"tick": 0, "water_integer": water, "content_hash": "c0", "state_hash": "s0"},
+                             {"tick": 30, "water_integer": water, "content_hash": "c1", "state_hash": "s1"}],
+             "capture": {"observations": [], "outcome": "complete", "runtime_identity": identity,
+                         "water_ledger": {"initial_integer": water, "explicit_source": 0, "explicit_sink": 0}}}
+        for path, value in override.items():
+            node = r
+            keys = path.split("__")
+            for k in keys[:-1]:
+                node = node[k]
+            node[keys[-1]] = value
+        return r
+
+    def reduce(self, w1, w4, raw_w1=None):
+        with tempfile.TemporaryDirectory() as tmp:
+            d1, d4, out = Path(tmp, "w1"), Path(tmp, "w4"), Path(tmp, "out.json")
+            d1.mkdir(), d4.mkdir()
+            Path(d1, f"{QUIET}-w1.json").write_text(raw_w1 if raw_w1 is not None else json.dumps(w1), encoding="utf-8")
+            Path(d4, f"{QUIET}-w4.json").write_text(json.dumps(w4), encoding="utf-8")
+            args = argparse.Namespace(w1=str(d1), w4=str(d4), out=str(out), date="2026-10-23", platform="test",
+                                      source_sha="abc123")
+            with contextlib.redirect_stdout(io.StringIO()):
+                self.assertEqual(reg.reduce_cmd(args), 0)
+            return json.loads(out.read_text(encoding="utf-8"))
+
+    def test_valid_pair_is_identical(self):
+        out = self.reduce(self.report(1), self.report(4))
+        case = out["cases"][QUIET]
+        self.assertEqual(case["parity_1_vs_4_workers"], "identical")
+        self.assertEqual(case["ledger"]["state"], "closed")
+        self.assertEqual(out["problems"], [])
+
+    def test_identity_mismatch_is_never_identical_or_measured(self):
+        for override in ({"definition_hash": "f" * 64}, {"capture__runtime_identity__native_sha256": "other"},
+                         {"horizon": 1}, {"id": "lcb.other.v1"}, {"workers": 1},
+                         {"capture__runtime_identity__source_revision": "zzz"}):
+            out = self.reduce(self.report(1), self.report(4, overrides=override))
+            case = out["cases"][QUIET]
+            self.assertEqual(case["parity_1_vs_4_workers"], "IDENTITY_MISMATCH", override)
+            self.assertIn(QUIET, out["problems"])
+            arms = reg.arms_for(QUIET, ["water"], case, False)
+            self.assertNotEqual(arms[0]["status"], "measured", override)
+
+    def test_null_water_ledger_and_bad_checkpoints_do_not_abort(self):
+        out = self.reduce(self.report(1, capture__water_ledger=None), self.report(4, capture__water_ledger=None))
+        self.assertEqual(out["cases"][QUIET]["ledger"]["state"], "MALFORMED_EVIDENCE")
+        self.assertIn(QUIET, out["problems"])
+        for events in (False, {}, ""):
+            ledger = {"initial_integer": self.meta["initial_inventory"]["water_integer"], "explicit_source": 0,
+                      "explicit_sink": 0, "events": events}
+            out = self.reduce(self.report(1, capture__water_ledger=ledger), self.report(4))
+            self.assertEqual(out["cases"][QUIET]["ledger"]["state"], "MALFORMED_EVIDENCE", repr(events))
+
+    def test_duplicate_json_names_are_a_malformed_report(self):
+        raw = json.dumps(self.report(1)).replace('"status": "completed"', '"status": "completed", "status": "x"')
+        out = self.reduce(None, self.report(4), raw_w1=raw)
+        case = out["cases"][QUIET]
+        self.assertEqual(case["status"]["w1"], "malformed_report")
+        self.assertIn("duplicate JSON object names", case["errors"]["w1"])
+        self.assertIn(QUIET, out["problems"])
+        with self.assertRaises(ValueError):
+            json.loads('{"a": 1, "a": 2}', object_pairs_hook=reg._unique_pairs)
+
+    def test_summary_lists_are_orthogonal(self):
+        water = self.meta["initial_inventory"]["water_integer"]
+        unverified = {"initial_integer": water, "explicit_source": 10, "explicit_sink": 10}
+        w1 = self.report(1, capture__water_ledger=unverified)
+        w4 = self.report(4, capture__observations=[{"id": "x", "value": 1}])
+        out = self.reduce(w1, w4)
+        self.assertEqual(out["cases"][QUIET]["ledger"]["state"], "UNVERIFIED_SOURCE_SINK_TIMING")
+        self.assertIn(QUIET, out["problems"])
+        self.assertIn(QUIET, out["accounting_unverified_ineligible_for_acceptance"])
+        self.assertIn(QUIET, out["ineligible_for_acceptance"])
+
+
+class ArmAvailabilityH1(unittest.TestCase):
+    """Re-review H1: a manifest status label never makes a candidate mapping executable."""
+
+    def test_relabelled_protected_candidate_stays_blocked(self):
+        manifest = reg.load(reg.PROTECTED_MANIFEST)
+        for fixture in manifest["fixtures"]:
+            f = copy.deepcopy(fixture)
+            for arm in f["arms"]:
+                arm["status"] = "measured"
+            meta = {"category": "protected-reference", "horizon_ticks": f["horizon_ticks"],
+                    "initial_inventory": reg.inventories()[f["id"]]}
+            e = reg.entry(f["id"], meta, reg.ROOT / f["path"], None, reg.load(reg.MATRIX), f)
+            for arm in e["arms"]:
+                current = reg.current_default_mapping(arm["mapping"], {r["name"]: r for r in
+                                                                       reg.load(reg.MATRIX)["liquid_rows"]})
+                self.assertEqual(arm["executable_today"], current, (f["id"], arm["id"]))
+                if not current:
+                    self.assertEqual(arm["status"], "blocked")
+                    self.assertTrue(arm["depends_on"])
+
+    def test_registry_has_no_executable_candidate(self):
+        rows = {r["name"]: r for r in reg.load(reg.MATRIX)["liquid_rows"]}
+        for s in reg.load(reg.REGISTRY)["scenarios"]:
+            for arm in s["arms"]:
+                if not reg.current_default_mapping(arm["mapping"], rows):
+                    self.assertFalse(arm["executable_today"], (s["id"], arm["id"]))
+                    self.assertEqual(arm["status"], "blocked", (s["id"], arm["id"]))
+
+
+class InventoryModelH3(unittest.TestCase):
+    """Re-review H3: inventory_of models the native constructor exactly or refuses."""
+
+    M8 = [1, 8, 12, 0]
+
+    def test_water_rectangle_holds_maximum(self):
+        inv = reg.catalogue.inventory_of([100, 100, 1, 1, 3], [], self.M8)
+        self.assertEqual((inv["cells"], inv["water_integer"]), ({"water": 1}, 255))
+
+    def test_zero_fill_is_a_noop(self):
+        inv = reg.catalogue.inventory_of([100, 100, 1, 1, 2], [100, 100, 1, 1, 0, 0], self.M8)
+        self.assertEqual((inv["cells"], inv["water_integer"]), ({"sand": 1}, 0))
+        over_water = reg.catalogue.inventory_of([100, 100, 1, 1, 3], [100, 100, 1, 1, 0, 0], self.M8)
+        self.assertEqual(over_water["water_integer"], 255)
+
+    def test_overlaps_and_repeated_fills(self):
+        inv = reg.catalogue.inventory_of([100, 100, 2, 1, 2, 101, 100, 1, 1, 16],
+                                         [101, 100, 1, 1, 255, 0, 101, 100, 1, 1, 17, 0], self.M8)
+        self.assertEqual((inv["cells"], inv["water_integer"]), ({"sand": 1, "water": 1}, 17))
+
+    def test_unsupported_semantics_and_materials_refuse(self):
+        with self.assertRaises(ValueError):
+            reg.catalogue.inventory_of([], [100, 100, 1, 1, 128, 0], [1, 4, 12, 0])
+        with self.assertRaises(ValueError):
+            reg.catalogue.inventory_of([100, 100, 1, 1, 99], [], self.M8)
+
+
 class RetainedRecords(unittest.TestCase):
     def test_historical_controls_preserved(self):
         self.assertEqual(reg.lf_sha256(reg.CONTROLS),
                          "989ff70dba646285991a2a5e8ca5c3b0aa94b9381dc44c849528518e4238fac1")
 
-    def test_v2_verifies_against_its_frozen_reducer(self):
-        expected = json.dumps(reg.reledger_v2(), indent=2) + "\n"
-        self.assertEqual(reg.LEDGER_V2.read_text(encoding="utf-8").replace("\r\n", "\n"), expected)
-        self.assertEqual(json.loads(expected)["input"]["reducer_sha256_lf"],
-                         "56293fc96c243423f90b2381d98c5b54f5aff83b06fcfd8bad8d32befa3e6583")
+    def test_superseded_records_replay_at_their_own_revisions(self):
+        expected = {"v2": "5688e26f19c5514ac2ece0ab1acde2ebda2077603bc85575245a4203b353d8fa",
+                    "v3": "b70f325739035e943e27a8b36273757e054db4092fda0ed113d1db89485d399b",
+                    "v4": "0cc6d6dfa5da907c981f954e19ed2858f573a7e12996017b293872bf84030e13",
+                    "v5": "6f7b294e54534d92d434320b724dff6552095f993f5a3ce13b518e9f9c786084"}
+        for version, digest in expected.items():
+            self.assertEqual(reg.lf_sha256(reg.HISTORICAL_LEDGERS[version][1]), digest, version)
+            ok, notes = reg.verify_historical(version)
+            self.assertTrue(ok, (version, notes))
 
-    def test_v3_verifies_against_its_frozen_reducer(self):
-        self.assertEqual(reg.lf_sha256(reg.LEDGER_V3),
-                         "b70f325739035e943e27a8b36273757e054db4092fda0ed113d1db89485d399b")
-        expected = json.dumps(reg.reledger_v3(), indent=2) + "\n"
-        self.assertEqual(reg.LEDGER_V3.read_text(encoding="utf-8").replace("\r\n", "\n"), expected)
-        self.assertEqual(json.loads(expected)["input"]["reducer_sha256_lf"],
-                         "23dcb9a25649d1560ce2b319dd24402fabc6ef7415ee66ff2ccb484a15734355")
+    def test_altered_historical_record_fails(self):
+        commit, path = reg.HISTORICAL_LEDGERS["v4"]
+        with tempfile.TemporaryDirectory(dir=reg.ROOT / "docs/reference") as tmp:
+            altered = Path(tmp, path.name)
+            altered.write_bytes(path.read_bytes().replace(b'"closed"', b'"OPEN"', 1))
+            saved = reg.HISTORICAL_LEDGERS["v4"]
+            reg.HISTORICAL_LEDGERS["v4"] = (commit, altered)
+            try:
+                ok, notes = reg.verify_historical("v4")
+            finally:
+                reg.HISTORICAL_LEDGERS["v4"] = saved
+        self.assertFalse(ok)
 
-    def test_v4_verifies_against_its_frozen_reducer(self):
-        self.assertEqual(reg.lf_sha256(reg.LEDGER_V4),
-                         "0cc6d6dfa5da907c981f954e19ed2858f573a7e12996017b293872bf84030e13")
-        expected = json.dumps(reg.reledger_v4(), indent=2) + "\n"
-        self.assertEqual(reg.LEDGER_V4.read_text(encoding="utf-8").replace("\r\n", "\n"), expected)
-        self.assertEqual(json.loads(expected)["input"]["reducer_sha256_lf"],
-                         "69a48fa557e0219811f1ba88dadca61685f0f5a2cf323862568874d6367a43d2")
-
-    def test_v5_current_and_classifications(self):
+    def test_v6_current_and_classifications(self):
         expected = json.dumps(reg.reledger(), indent=2) + "\n"
-        self.assertEqual(reg.LEDGER_V5.read_text(encoding="utf-8").replace("\r\n", "\n"), expected)
-        v5 = json.loads(expected)
-        self.assertEqual(v5["rule"], "lcb-signed-ledger-v5")
-        self.assertEqual(v5["open_unexplained_or_malformed"], [])
-        self.assertEqual(v5["changed_from_v4"], [])
+        self.assertEqual(reg.LEDGER_V6.read_text(encoding="utf-8").replace("\r\n", "\n"), expected)
+        v6 = json.loads(expected)
+        self.assertEqual(v6["rule"], "lcb-signed-ledger-v6")
+        self.assertEqual(v6["open_unexplained_or_malformed"], [])
+        self.assertEqual(v6["changed_from_v5"], [])
         timing = ["lcb.mixed.repeated-openings.v1", "lcb.rest.remote-disturbance.v1",
                   "lcb.rest.two-pool-partial-activity.v1", "lcb.shallow.stream-steps.v1"]
         reaction = ["lcb.granular.salt-dissolution.v1", "lcb.mixed.sodium-oil-fire.v1",
                     "lcb.mixed.water-oil-brine.v1"]
-        self.assertEqual(v5["accounting_unverified_ineligible_for_acceptance"], sorted(timing + reaction))
-        self.assertTrue(all(v5["cases"][s]["state"] == "UNVERIFIED_SOURCE_SINK_TIMING" for s in timing))
-        self.assertTrue(all(v5["cases"][s]["state"] == "UNVERIFIED_REACTION_AMOUNT" for s in reaction))
-        self.assertEqual(sum(c["state"] == "closed" for c in v5["cases"].values()), 20)
+        self.assertEqual(v6["accounting_unverified_ineligible_for_acceptance"], sorted(timing + reaction))
+        self.assertEqual(sum(c["state"] == "closed" for c in v6["cases"].values()), 20)
 
 
 if __name__ == "__main__":
