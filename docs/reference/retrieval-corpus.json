@@ -14,6 +14,8 @@
     "architecture/rendering-and-gameplay-bridges.md",
     "architecture/rigid-body-and-cellular-coupling.md",
     "architecture/liquid-solver-family-policy.md",
+    "architecture/liquid-state-transition-matrix.md",
+    "architecture/lcb-pressure-inertial-handoff.md",
     "architecture/simulation-tick-and-threading.md",
     "decisions/ADR-001-native-simulation-core.md",
     "decisions/ADR-002-double-buffered-tile-jobs.md",

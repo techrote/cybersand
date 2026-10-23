@@ -1,0 +1,214 @@
+{
+  "schema_version": 2,
+  "id": "lcb.accept.gas.unequal-merge.v1",
+  "recipe_version": 1,
+  "seed": 0,
+  "maturity": "reference",
+  "rectangles": [
+    0,
+    0,
+    1024,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1024,
+    1,
+    1023,
+    0,
+    1,
+    1024,
+    1,
+    0,
+    1023,
+    1024,
+    1,
+    1,
+    8,
+    8,
+    12,
+    1,
+    1,
+    8,
+    20,
+    12,
+    1,
+    1,
+    8,
+    8,
+    1,
+    13,
+    1,
+    19,
+    8,
+    1,
+    13,
+    1,
+    19,
+    8,
+    14,
+    1,
+    1,
+    19,
+    20,
+    14,
+    1,
+    1,
+    32,
+    8,
+    1,
+    13,
+    1
+  ],
+  "partial_water_fills": [
+    9,
+    19,
+    10,
+    1,
+    255,
+    0,
+    20,
+    19,
+    12,
+    1,
+    255,
+    0
+  ],
+  "transport_profile": {
+    "families": {
+      "liquid": {
+        "cadence": 1,
+        "carrying": 0,
+        "erosion": 0,
+        "horizontal": 2,
+        "permeability": 1
+      },
+      "powder": {
+        "mixing": 0,
+        "packing": 8,
+        "pickup": 64
+      }
+    },
+    "materials": {
+      "33": {
+        "permeability": 30
+      }
+    },
+    "name": "Baseline",
+    "pairs": [],
+    "version": 1
+  },
+  "water_semantics": [
+    1,
+    8,
+    12,
+    0
+  ],
+  "player_start": [
+    24,
+    222
+  ],
+  "camera_origin": [
+    0,
+    0
+  ],
+  "player_enabled": false,
+  "body_enabled": false,
+  "tools": [],
+  "interest": {
+    "policy": "fixed",
+    "region": [
+      0,
+      0,
+      64,
+      32
+    ]
+  },
+  "execution": {
+    "policy": "fixed",
+    "cadence_lod_enabled": false,
+    "liquid_surface_adhesion_enabled": true
+  },
+  "events": [
+    {
+      "tick": 1,
+      "kind": "erase",
+      "x": 19,
+      "y": 13,
+      "width": 1,
+      "height": 1,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    }
+  ],
+  "observations": [
+    {
+      "id": "water-t0",
+      "tick": 0,
+      "metric": "water_integer",
+      "region": [
+        8,
+        8,
+        25,
+        13
+      ],
+      "material": 3
+    },
+    {
+      "id": "water-t10",
+      "tick": 10,
+      "metric": "water_integer",
+      "region": [
+        8,
+        8,
+        25,
+        13
+      ],
+      "material": 3
+    }
+  ],
+  "conditions": [],
+  "source_recipe": "LCB-003 scenario catalogue v1: gas-acceptance",
+  "source_recipe_hash": "",
+  "presentation": {
+    "title": "Unequal pocket merge",
+    "instructions": "#200 reproducer: 100- and 120-cell pockets share wall x=19; the wall cell (19,13) opens at tick 1. The archived candidate kept 120; W-PF must merge the amounts once to 220.",
+    "duration_ticks": 10,
+    "baseline": "Current native defaults; controlled fixed-tick run",
+    "profile": "Baseline",
+    "regions": [
+      {
+        "id": "pocket-a",
+        "label": "100-cell pocket",
+        "region": [
+          9,
+          9,
+          10,
+          10
+        ]
+      },
+      {
+        "id": "pocket-b",
+        "label": "120-cell pocket",
+        "region": [
+          20,
+          9,
+          12,
+          10
+        ]
+      },
+      {
+        "id": "opening",
+        "label": "Opening at (19,13)",
+        "region": [
+          19,
+          13,
+          1,
+          1
+        ]
+      }
+    ]
+  }
+}
