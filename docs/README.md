@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-23
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -62,6 +62,7 @@ moving Above/Below, choosing viewpoints, editing native cells and capturing imag
 | Author signed distances, vector/category fields, reusable transformed subgraphs, multiscale seeds or finite adjacency assignments | [Typed spatial graph contract](systems/procedural-typed-spatial-fields.md), [operator inventory](reference/procedural-spatial-operators.md) |
 | Author nested districts, cross-chunk buildings, constrained apparatus and explicit structural routes | [Hierarchical generation contract](systems/procedural-hierarchical-generation.md) |
 | Generate one place across four material planes, bounded fixtures and explicit semantic links | [Semantic-plane contract](systems/procedural-semantic-planes.md) and [authoring guide](operations/semantic-depth-authoring.md) |
+| Design GEN-006 durable state, same-value edits, Empty tombstones, safe epochs and schema refusals without assuming a carrier or implemented streaming | [Proposed semantic-state contract](architecture/gen006-semantic-state-and-persistence.md), [MAT-003PREPASS D source/fixture handoff](operations/mat003prepass-gen006-state-handoff.md) |
 | Distinguish generated previews, fresh native chunk admission and general world streaming | [Procedural generation](systems/procedural-world-generation.md), [World storage](systems/world-storage-and-interest-region.md), and [ownership](architecture/data-ownership-and-lifetimes.md) |
 | Reconcile a completed/closed claim, broad gameplay acceptance, or remediation owner | [Development-claims remediation programme](operations/development-claims-remediation-programme.md), then the [dated REM-001 audit](audits/2026-09-20-development-claims-closure-audit.md) for intake evidence |
 | Explore the MS-001 Materials Lab / Flood / Stress pack or compare generated definitions | [Reference pack and controls](operations/microscenario-reference-pack.md), [MS-001 evidence](audits/2026-09-19-issue-28-ms001.md) |

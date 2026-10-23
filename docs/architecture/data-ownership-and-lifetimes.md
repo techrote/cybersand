@@ -148,6 +148,8 @@ installs a tile nor queries the desktop worker's mutable cells. Its backdrop and
 exposure use the accepted current/previous textures. Initial launch and whole-map
 reset retain the existing owner-local MicroScenario replacement boundary.
 
+**Planned GEN-006 boundary (MAT-003PREPASS D):** [carrier-neutral semantic persistence](gen006-semantic-state-and-persistence.md) proposes immutable owner snapshots, generation-checked asynchronous saves, new incarnation on reload, explicit cross-boundary mutation and sidecar ownership. This adds no implemented eviction or restore interface. Read the [handoff gates](../operations/mat003prepass-gen006-state-handoff.md) before attempting to turn the fresh chunk installer into replacement.
+
 ## How may generated content enter cell authority?
 
 **Current GEN-001/GEN-002 source:** the generation job API and supplied module context

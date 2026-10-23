@@ -48,6 +48,8 @@ jobs:
         run: timeout 2m python3 -m unittest discover -s tools/ci -p test_validation_contracts.py
       - name: Test soliding evidence integrity contracts
         run: timeout 2m python3 -m unittest discover -s tools/experiments -p test_soliding_baseline_reduction.py
+      - name: Exercise MAT-003PREPASS D experimental codec refusal contracts
+        run: timeout 2m python3 tools/experiments/mat003_gen006_codec_fixture.py
       - name: Evaluate current retrieval routes
         id: retrieval
         run: |

@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Current CYSD1 finite-level format, exclusive ownership, import failure and omitted continuation state
 canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-23
 related-documents: [interfaces-and-message-contracts.md, ../architecture/determinism-and-boundary-transfers.md, validation-evidence.md]
 ---
 
@@ -90,7 +90,7 @@ checked with `1e-5` tolerance; exact floating-point trajectory replay is not cla
 
 **Planned:** versioned general sparse-world persistence, replay input capture,
 complete state/configuration identity, migration, I/O pressure policy and an
-explicit strict-mode implementation. Do not infer those contracts from CYSD1.
+explicit strict-mode implementation. Do not infer those contracts from CYSD1. The [MAT-003PREPASS D planned GEN-006 schema](../architecture/gen006-semantic-state-and-persistence.md) separates baseline, explicit Empty/same-value mutation intent, optional state, activity/deadlines, and job/incarnation identity from CYSD1 and raw Cell layout; its [handoff](../operations/mat003prepass-gen006-state-handoff.md) states implementation/refusal gates and experimental test limits.
 
 ## Which evidence applies?
 
