@@ -81,6 +81,9 @@ def main():
     report = dict(status='incomplete', track=args.track, formal_timing_admitted=False,
                   source_head=subprocess.check_output(['git','rev-parse','HEAD'], cwd=ROOT, text=True).strip(),
                   commands=[], cases=[], builds=[], errors=[], source_sha256={})
+    active_registration={'s2p':'s2p-registration.json','wclear':'wclear-registration-v3.json','c128':'c128-registration.json'}[args.track]
+    report['registration_path']=(HERE/active_registration).as_posix()
+    report['registration_sha256']=digest(ROOT/HERE/active_registration)
     flags = json.loads((ROOT / HERE / 's2p-registration.json').read_text())['flags']
     compiler = shutil.which(args.compiler)
     if not compiler:

@@ -1,0 +1,161 @@
+{
+  "schema_version": 1,
+  "track": "WCLEAR-001",
+  "issue": 219,
+  "parent": 204,
+  "base_commit": "2b2a1dd64f16dc46d5e812b757de73f47df0fb2b",
+  "status": "preregistered-untimed-apparatus-qualification-only",
+  "formal_timing_admitted": false,
+  "execution_authorized": false,
+  "candidate_carrier": "C80-aligned, identical 16-byte stride for E8/E16/E24/E32",
+  "fields": {
+    "material": [
+      0,
+      16
+    ],
+    "state_a": [
+      16,
+      16
+    ],
+    "state_b": [
+      32,
+      8
+    ],
+    "epoch8": [
+      56,
+      8
+    ],
+    "epoch16": [
+      48,
+      16
+    ],
+    "epoch24": [
+      40,
+      24
+    ],
+    "epoch32": [
+      40,
+      32
+    ]
+  },
+  "resident_sides": [
+    512,
+    1024,
+    2048
+  ],
+  "optional_4096": "excluded; separate memory/runtime feasibility and amendment required",
+  "workers": [
+    1,
+    4
+  ],
+  "scenes": [
+    "sleep-excluded",
+    "active-window-excluded"
+  ],
+  "epoch_bits": [
+    8,
+    16,
+    24,
+    32
+  ],
+  "event_generation": "At completed global tick 255: retain all raw E8 natural stamps; wide arms map current stamps to maximum, all noncurrent stamps to zero; verify every current predicate and complete non-epoch/scheduling/support record; next real World::tick clears. Matched ordinary maps current to128 and noncurrent0, avoiding next-epoch aliases.",
+  "reference": "separate identically initialized fresh process; matched global tick/input/RNG schedule with counter rebased to 128 instead of maximum; no clear",
+  "natural_validation": "Additional side128 sleep-excluded w1 at global tick65536: E8 (256+256*255) and E16 first clear both naturally reached without stamp writes; prepared E24/E32 and matched ordinary twins must match exact pre/post/reentry records. S1 E16 two-wrap evidence remains accepted and unchanged.",
+  "qualification": "exact pre/post semantic records, temperature, support, activity/deadlines, Water ledgers and work; observed/off twins; stamps checked immediately after clear before simulation by correctness observer only",
+  "proposed_process_matrix": {
+    "contexts": 48,
+    "alternating_pair_orders": [
+      "AB",
+      "BA",
+      "AB",
+      "BA",
+      "AB",
+      "BA",
+      "AB"
+    ],
+    "processes_per_pair": 2,
+    "events_per_process": 1,
+    "primary_processes": 672,
+    "A": "matched-ordinary",
+    "B": "prepared-clear",
+    "order": "epoch,side,scene,workers,pair,AB-or-BA"
+  },
+  "statistics": {
+    "primary_unit": "independent process pair",
+    "latency": "observer-off steady_clock nanoseconds around World::tick only",
+    "summary": "seven process values: median/min/max/MAD for clear,ordinary,paired excess and B/A; nearest-rank p50/p95/p99/max over seven event values per context explicitly descriptive",
+    "replicates": "one event per process; never treat events within a process as independent",
+    "retention": "all spikes/failures; no reruns or partial acceptance"
+  },
+  "required_receipts": [
+    "frozen-source-and-binary-sha256",
+    "compiler-linker-flags",
+    "fixtures",
+    "seal-before-execution",
+    "pair-order",
+    "tick_ns",
+    "startup-input-ns-separate",
+    "clear-count",
+    "completed-tick",
+    "resident-cells",
+    "physical-array-bytes",
+    "RSS",
+    "visits",
+    "phase-jobs",
+    "worker-participation",
+    "independent-readback",
+    "frozen-independent-verifier"
+  ],
+  "budgets": {
+    "qualification_wall_seconds": 3600,
+    "compile_seconds": 180,
+    "qualification_process_seconds": 300,
+    "timing_process_seconds": 120,
+    "timing_wall_seconds": 7200,
+    "concurrency": 1
+  },
+  "admission_requirements": [
+    "all arms pass correctness",
+    "observer-off twins match",
+    "immutable qualified artifact and binaries",
+    "independent source-bound review",
+    "explicit independent admission",
+    "explicit owner execution authority",
+    "new workflow_dispatch-only timing workflow"
+  ],
+  "amortized_model": "normal_ns + measured_incremental_clear_ns/(2^E-1) after first clear at 2^E; finite horizon clears = 0 if T<2^E else 1+floor((T-2^E)/(2^E-1)); add carrier normal access/footprint separately; report observed hitch separately; E24/E32 projections are not natural measurements",
+  "review_triggers": [
+    "any semantic/readback mismatch blocks admission",
+    "historical >1ms excess is a review trigger, not an acceptance limit",
+    "unqualified background participation excludes worker claim"
+  ],
+  "manual_dispatch": "gh workflow run mat003-continuation.yml --repo techrote/cybersand --ref codex/mat003-continuation (UNTIMED qualification only). Formal timing still needs a separately reviewed manual-only workflow and exact admitted artifact/ref.",
+  "registration_version": 3,
+  "supersedes_proposal": "v1 and v2 remain immutable; v3 freezes timing-capable apparatus qualification without timing admission",
+  "qualification_matrix": {
+    "builds": 8,
+    "resident_cases": 192,
+    "small_natural_cases": 16,
+    "total_processes": 208,
+    "observers": [
+      0,
+      1
+    ],
+    "side128_setup_ticks": 65535,
+    "primary_setup_ticks": 255,
+    "record_files_per_case": 6,
+    "compression": "lossless gzip immediately after each process to bound disk use"
+  },
+  "timing_implementation": {
+    "fixture": "wclear.cpp optional --measure after setup-ticks; requires explicit collector authority hash and observers=0",
+    "collector": "timing.py rejects before clocks/subprocesses unless independent admission plus exact owner authority",
+    "independent_verifier": "verify_timing.py; full672-process inventory, all raw streams versus qualified twins, nearest-rank descriptive reduction; no self-acceptance",
+    "qualification": "same binary invoked without --measure, no Clock::now calls or timing fields emitted",
+    "startup": "after CLI/authority checks through World construction, fixture residency and initial edits",
+    "setup": "all255 setup ticks plus external input, retained separately from event tick",
+    "input": "bounds around each setup-tick input preparation including empty schedule branch/clock overhead; excluded from primary tick_ns",
+    "peak_rss": "whole process including full semantic records, not cell-only allocation",
+    "memory_precondition": "complete semantic pre-scan before/after stamp rebase, then counter resets; identical order frozen; preparation dirty-cache differences and warm-resident scope require independent admission review",
+    "cold_gameplay": "not measured; no universal cold-cache or worst-case guarantee"
+  }
+}

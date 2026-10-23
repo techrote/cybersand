@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 import os
 import shutil
+import stat
 import subprocess
 import time
 
@@ -74,6 +75,12 @@ def main():
         p=(root/name).resolve()
         require(p.is_relative_to(root) and not p.is_symlink() and sha(p)==digest,'apparatus file drift: '+name)
     binaries={b['id']:b for b in load(root/'binary-seal.json')}
+    for bits in (8,16,24,32):
+        b=binaries[f'aligned-e{bits}-x2-o0']; binary=root/b['binary']
+        require(not binary.is_symlink() and binary.resolve().parent==(root/'bin').resolve() and
+                sha(binary)==b['sha256'],'unsafe or mismatched executable')
+        binary.chmod(binary.stat().st_mode|stat.S_IXUSR)
+        require(sha(binary)==b['sha256'],'executable-mode restoration changed binary bytes')
     out.mkdir(parents=True)
     shutil.copyfile(args.admission,out/'admission.json'); shutil.copyfile(args.authority,out/'authority.json')
     dump(out/'schedule.json',schedule())
