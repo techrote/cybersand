@@ -5,7 +5,9 @@
     "upstream_4ly002_merge": "1f9336388f11be39abaae340a781a5eef52115d4",
     "implementation_pr": "https://github.com/techrote/cybersand/pull/229",
     "actual_4ly003_merge_sha": null,
-    "final_head_sha": null
+    "final_head_sha": null,
+    "retired_public_final_scenario_rules": true,
+    "external_sealed_final_required": true
   },
   "runtime_scope": {
     "godot": "4.7",
@@ -24,7 +26,8 @@
     "action": "4ly-action/v1",
     "physical_action_profile": "4ly_velocity_v1",
     "producer_session": "physical_wire_action-v2",
-    "course": "4ly-flight-course/v1"
+    "course": "4ly-flight-course/v1",
+    "split_geometry_version": 3
   },
   "decision": {
     "decision_interval_ticks": 6,
@@ -48,7 +51,10 @@
     "reason": "Not qualified: source/actual-host final teacher score and exact runtimes pending",
     "final_split_scored": false,
     "throughput_measured": false,
-    "policy_success_claim": false
+    "policy_success_claim": false,
+    "throughput_interpretation": "Not yet accepted at frozen exact-final-head source; preliminary native/Rapier throughput measured at an earlier source",
+    "sealed_final_suite_status": "Unprovided; initial public geometry and v2 exposure invalidated by prospective v3 amendment",
+    "evaluator_reward": "Implemented task-only bounded terms; not policy observation"
   },
   "acceptance_preconditions": [
     "Exact current host source+runtime readback",
@@ -58,5 +64,22 @@
     "Final geometry separated from development",
     "Reproducible terminal-first stepping",
     "Exact-head Godot/Native/docs/retrieval validation"
-  ]
+  ],
+  "historical_source_bound_pilot": {
+    "tested_implementation_pr_head": "689ed94b0c0fb5ab05481d14eb1008cf35a6e23c",
+    "tested_synthetic_merge": "095ff8c3f7565062b3fcfaf77bd948881aa1d02f",
+    "github_actions_url": "https://github.com/techrote/cybersand/actions/runs/39940305048",
+    "platform": "GitHub hosted Ubuntu, AMD EPYC 7763 / 4 logical processors, Godot 4.7 / Rapier 0.35.2",
+    "physical_ticks": 906,
+    "wall_seconds": 1.761273,
+    "physics_ticks_per_sec": 514.400663610922,
+    "policy_decisions": 151,
+    "policy_decisions_per_sec": 85.7334439351537,
+    "host_count": 1,
+    "reset_time_total_us": 111321,
+    "observation_json_serialization_us": 43327,
+    "peak_static_memory_bytes": 73041849,
+    "transport_inference_overhead_us": null,
+    "admission": "historical development pilot only; newer episode/reward/split source needs independent exact-head rerun"
+  }
 }
