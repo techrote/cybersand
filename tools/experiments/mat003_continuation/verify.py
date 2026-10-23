@@ -219,6 +219,7 @@ def verify(root, expected_source=None):
             expected=({'word-e8-x0'}|{f'memcpy-e{e}-x{x}' for e in (8,16) for x in (1,2)}) if track=='s2p' else {f'{r}-e{e}-x2' for r in ('u128','dual64') for e in (8,16)}
             require({c['id'] for c in report['cases']}==expected,'incomplete candidate correctness set')
             controls={}
+            decoded_controls={}
             if track=='c128':
                 source_control=root.parent/'s2p'
                 control_review=verify(source_control,expected_source)
@@ -252,15 +253,20 @@ def verify(root, expected_source=None):
                 require(not errors,'independent S1 contract: '+str(errors))
                 for trace in r['ordinary']+[r['natural']]:
                     raw=gzip.decompress((root/'cases'/name/(trace['file']+'.gz')).read_bytes())
-                    # Decode the complete delta stream using the frozen reader.
-                    with tempfile.TemporaryDirectory() as directory:
-                        p=Path(directory)/'trace.bin'; p.write_bytes(raw)
-                        summary=reader.decode_trace(p,trace['ticks'])
-                    errors=reader.validate_trace_summary(trace,summary,arm)
-                    require(not errors,'independent trace contract: '+str(errors))
                     key=trace['name']
+                    # Compare every retained byte before reusing a decoded
+                    # control. Identical complete lossless streams necessarily
+                    # have identical decoded fields/stats; no hash substitutes
+                    # for equality and every arm's metadata is still checked.
                     if key in controls: require(raw==controls[key],'candidate semantic trace differs: '+name+'/'+key)
                     else: controls[key]=raw
+                    if key not in decoded_controls:
+                        with tempfile.TemporaryDirectory() as directory:
+                            p=Path(directory)/'trace.bin'; p.write_bytes(raw)
+                            decoded_controls[key]=reader.decode_trace(p,trace['ticks'])
+                    summary=decoded_controls[key]
+                    errors=reader.validate_trace_summary(trace,summary,arm)
+                    require(not errors,'independent trace contract: '+str(errors))
                 result['cases']+=1
         else: raise ValueError('unknown track')
         result['status']='qualification-readback-passed-timing-held'
