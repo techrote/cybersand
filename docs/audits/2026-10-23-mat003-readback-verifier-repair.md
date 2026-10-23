@@ -18,7 +18,7 @@ performance registrations, LCB and GEN-006 remain unchanged.
 The repair branch is based exactly on PR #221 head
 `7648e94fd8954d235ffd2723dc67b290dfe2e9e3`. The revised verifier source was
 frozen before registration at commit
-`20e6647e9d05b0ed9837b8ca37feb3b1b9712c63`.
+`2df156468931ae9d7abdd088a99376b450004a6d`.
 
 The original campaign remains immutable:
 
@@ -95,13 +95,13 @@ This is a sufficiency determination, not correctness acceptance.
 # Isolated verifier changes
 
 Exact canonical-LF SHA-256 values for the frozen verifier source at
-`20e6647e9d05b0ed9837b8ca37feb3b1b9712c63`:
+`2df156468931ae9d7abdd088a99376b450004a6d`:
 
 | File | SHA-256 |
 |---|---|
 | `tools/experiments/mat003_correctness/world_oracle.py` | `b007036867c1fc2d03a224373e331561e8487fef59f1e7bfbac4ad279d6156c4` |
 | `tools/experiments/mat003_correctness/readback.py` | `3224f005be4b2630139e773d7f1c80b041f7a69c9752431dcc783a04e6a8f9f2` |
-| `tools/experiments/mat003_correctness/negative.py` | `be47679bea3b9ecc1532b29cd187d0031fa5c3d7c3171cddc3092b5c7f8736b1` |
+| `tools/experiments/mat003_correctness/negative.py` | `88303f04dc0d5fd6556f004e679353e23c61e31c85d46e5d57758d6f5c18f0cd` |
 | `tools/experiments/mat003_correctness/test_verifier_contracts.py` | `a53ca86913df5b5572523d5db21fb9e5920294536d985cd2ab1e550148ea8791` |
 
 The focused fixture set preserves every prior negative contract and adds:
@@ -121,16 +121,28 @@ The focused verifier-only command is:
 `python3 -B tools/experiments/mat003_correctness/test_verifier_contracts.py`
 
 It exercises 32 rejection fixtures, the positive mixed-history fixture and all
-704 independent decoder cross-check records without executing a candidate.
+704 independent decoder cross-check records without executing a candidate. The
+first v2-focused run failed on fixture isolation as recorded below; v3 exact-head
+qualification is required and no success is claimed until that run is green.
 
 # Readback-only registration
 
-The versioned proposal is
-`docs/audits/mat003-correctness-2026-10-23/windows-reentry-readback-registration-v2.json`.
+The first v2 proposal, SHA-256
+`130dc475363585dd7d14095305d398d7cfcbb0cccd722b0ee5e802181b11ee7f`,
+was **not admitted**. Focused verifier-only run
+[39989589419](https://github.com/techrote/cybersand/actions/runs/39989589419)
+exposed a synthetic-fixture isolation error: the prepared-clear negative also
+caused a later counter regression, so it was rejected by the wrong guard. No
+candidate/readback evidence ran. The v2 bytes are preserved and its refusal is
+recorded in
+`windows-reentry-readback-registration-v2-disposition.json`.
 
-Canonical-LF registration SHA-256:
+The current versioned proposal is
+`docs/audits/mat003-correctness-2026-10-23/windows-reentry-readback-registration-v3.json`.
 
-`130dc475363585dd7d14095305d398d7cfcbb0cccd722b0ee5e802181b11ee7f`
+Canonical-LF v3 registration SHA-256:
+
+`4869725932a59bdaad7ede819e520a352c8b9764bbffa019a8e000009add0344`
 
 It binds the original archive/execution identity, revised verifier hashes,
 complete 152-case/full-record coverage, semantic and cross-arm obligations,
