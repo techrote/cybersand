@@ -20,11 +20,13 @@ For the **4LY** single-chassis drone family, open the ordinary F5
 **set4LY** selection group and consult the
 [physical free-flight contract](systems/physical-free-flight.md): two desired
 velocity outputs, bounded assistance, profile identity and passive cancellation.
-The four distinct Trainer, Hauler, Drifter and Dart handling parameters are
-**4LY-002 candidates**, not yet accepted measurements. The
-[4LY-002 admission ledger](audits/2026-10-23-4ly002-handling-candidate-admission.md)
-tracks prospective Rapier thresholds, new gameplay regression cases and
-unresolved runtime/feel gates. The
+The four distinct Trainer, Hauler, Drifter and Dart plants have now passed
+the prospectively registered [real-Rapier handling measurements](audits/2026-10-23-4ly002-measured-handling-qualification.md)
+on Linux and Windows; their source calibration marker remains
+`candidate_4ly002` until a separately authorized acceptance transition.
+The original [pre-execution ledger](audits/2026-10-23-4ly002-handling-candidate-admission.md)
+retains the earlier PENDING status and the new record preserves negative
+Windows evidence and explicit owner-feel limitations. The
 [4LY-001 conformance audit](audits/2026-10-22-4ly001-physical-free-flight.md)
 retains the original actual Rapier Trainer data, lifecycle negatives and
 source/runtime identity.
