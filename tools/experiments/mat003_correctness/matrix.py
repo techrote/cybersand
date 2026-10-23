@@ -15,7 +15,8 @@ def cases():
                 for side in (512,2048):
                     for scene in ('sleeping-excluded','active-window-excluded'):
                         for workers in (1,4):
-                            add('resident',arm,sanitized,backend='phased',workers=workers,side=side,scene=scene,setup=255,reentry=4,roles=['event','reference'],timeout=600)
+                            add('resident',arm,sanitized,backend='phased',workers=workers,side=side,scene=scene,setup=255,reentry=4,roles=['event','reference'],timeout=600,
+                                fixture_revision='bounded-reentry-v2',initial_interest=[0,0,256,512],reentry_interest=[0,0,512,512],active_core_capacity=256,active_chunk_capacity=(side//128)**2)
             add('refusal',arm,sanitized,chunks=4,operations=256,timeout=300)
     return rows
 

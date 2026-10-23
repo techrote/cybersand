@@ -1,7 +1,8 @@
 {
   "schema_version": 1,
-  "status": "implemented-unexecuted-source-review-closed",
-  "source_review_disposition": "no remaining definite implementation blocker identified; not runtime-qualified or apparatus-admitted",
+  "status": "resident-reentry-source-repair-build-and-execution-held",
+  "source_review_disposition": "independent source review closed with no definite remaining blocker; prior incomplete attempts retained; no new binary or runtime admission",
+  "resident_fixture": {"revision": "bounded-reentry-v2", "initial_interest": [0,0,256,512], "reentry_interest": [0,0,512,512], "maximum_unique_cores": 64, "maximum_pre_dedup_entries": 256, "active_core_capacity": 256, "active_chunk_capacity": "all resident chunks: 16 or 256", "full_world_reentry": "512 only; 2048 retains excluded residents", "clear_traversal": "all resident cells"},
   "reviewed_plan_commit": "1bbbec9580f9a3e9e6a6f9136503f873ede0f254",
   "reviewed_plan_lf_sha256": "f134267c2304cc03974605595089cced53f03a09918e097681ae3f6bf11c0b23",
   "logical_fields": {"material": [0,15], "state_a": [16,31], "state_b": [32,39]},

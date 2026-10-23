@@ -8,10 +8,11 @@ supersedes the earlier partial implementation disposition without rewriting it.
 Production has no include/build route into this directory. No new workflow is
 installed. R16 is opaque neutral storage; R16-T1 is conditional and unimplemented.
 
-**Source implementation is complete for review. It has not been compiled,
-imported for qualification, run or admitted for qualification execution.** Source
-review establishes no platform feasibility, sanitizer success or runtime
-correctness. There is no tick-timing apparatus or production adoption here.
+**Current: resident reentry repair is source-only; new builds and execution are
+held.** Earlier Windows builds and two incomplete correctness attempts remain
+retained in the [latest failure audit](../../../docs/audits/2026-10-23-mat003-containment-correctness-attempt.md).
+They do not qualify this changed source. Source review establishes no runtime
+success for the repair. There is no tick-timing apparatus or production adoption.
 
 ## Exact maps and independent checks
 
@@ -78,8 +79,22 @@ single600s process budget. Ordinary reaches natural clear65536; prepared reaches
 the same prestate65535, rebases through128 back to65535, then clears and advances4
 ticks. Exact B/Q/R joins to natural and B/P predicate/owner checks constrain the
 method. Resident processes have sequential event/reference roles:255 setup
- ticks, prepared P, real Q, then4 full-interest reentry ticks R. Exactly eight
+ ticks, prepared P, real Q, then4 bounded reentry ticks R. Exactly eight
 large full endpoints B/P/Q/R per process are retained.
+
+The resident `bounded-reentry-v2` fixture uses initial interest256x512 and
+reentry512x512 at origin for both512/2048 sizes. Reentry is full-world only for512;
+all resident cells still take the actual clear for both sizes. At32-cell blocks,
+64-cell cores and128-cell chunks, initial work has at most32 unique cores/128
+append entries and reentry64/256. `gather_active_cores` checks capacity BEFORE
+deduplication; core scratch is256. `begin_tick` lists active excluded chunks too;
+chunk scratch is the full16/256 resident count. Source guards and independent
+literal geometry/config/grid/interest checks bind these bounds. This is apparatus
+provisioning, not a change to production scheduling or the64-unique-core target.
+Inputs stop at x<256. Sand at504,8 remains excluded throughQ and must move during
+four reentry ticks; B/P/Q must include sleeping block/chunk witnesses (quiet>=3)
+and an active excluded chunk. Nine new rejection fixtures are retained as source
+only, alongside the earlier18; none has run at this repair checkpoint.
 
 ## Bounds and staged authority
 

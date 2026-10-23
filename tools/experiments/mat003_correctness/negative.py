@@ -74,6 +74,37 @@ def exercise(output):
     for point in ((0,0),(1,128),(128,1),(254,128),(128,254),(255,255)):
         small_boundary(point,Record(material=1,epoch=255),256)
     small_boundary((2,128),Record(material=3,a=255),256)
+    # Source-only fixtures until a new verifier/case authority is issued.
+    from world_oracle import resident_endpoint,resident_sand_witness
+    from readback import resident_grid
+    def resident_mutation(p,kind):
+        rows={'config':(128,3,200,256,1,32,64,2,1,1,256,256,256,1024,64,0,4096,0,0,0),
+              'interest':(1,0,0,256,512),'selected':(1,0,0,3,7),'applied':(1,0,0,3,7),'chunk:3:0':(4,1,1)}
+        rows.update({f'block:{x}:{y}:{i}':(0,3,0,0) for y in range(4) for x in range(2) for i in range(16)})
+        rows.update({f'chunk:{x}:{y}':(4,0,0,0,3) for y in range(4) for x in range(2)})
+        if kind in ('core','chunk'):
+            c=list(rows['config']);c[10 if kind=='core' else 11]=128 if kind=='core' else 64;rows['config']=tuple(c)
+        elif kind=='interest':rows['interest']=(1,0,0,2048,2048)
+        elif kind=='applied':rows['applied']=(1,0,0,7,7)
+        elif kind=='sleep':
+            for k in list(rows):
+                if k.startswith('block:'):rows[k]=(0,0,1,0)
+        elif kind=='unaged':
+            for k in list(rows):
+                if k.startswith('block:'):rows[k]=(0,0,0,0)
+        (p/'input.json').write_text(json.dumps(rows)+'\n',encoding='utf-8')
+        resident_endpoint(rows,2048,'Q')
+    for kind in ('core','chunk','interest','applied','sleep','unaged'):
+        rejects('resident-'+kind+'-drift',lambda p,k=kind:resident_mutation(p,k))
+    def shifted_grid(p):
+        reg=[(x+1,y,16384,100+16384*8*(y*4+x)) for y in range(4) for x in range(4)]
+        (p/'input.json').write_text(json.dumps(reg)+'\n',encoding='utf-8');resident_grid(reg,512)
+    rejects('shifted-resident-grid',shifted_grid,'unregistered resident grid')
+    def sand(p,endpoint,positions):
+        (p/'input.json').write_text(json.dumps(dict(endpoint=endpoint,positions=positions))+'\n',encoding='utf-8')
+        resident_sand_witness(positions,endpoint)
+    rejects('excluded-sand-simulated-early',lambda p:sand(p,'Q',[(504,9)]),'Sand/reentry witness')
+    rejects('excluded-sand-never-reentered',lambda p:sand(p,'R',[(504,8)]),'Sand/reentry witness')
     from world_oracle import decode_world
     from oracle import POSITIONS
     with (output/'decoder-crosscheck.jsonl').open('x',encoding='utf-8') as stream:

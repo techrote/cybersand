@@ -12,6 +12,41 @@ def small_boundary(pos,record,side):
         if (record.material,record.a,record.b,record.r,record.unused)!=(1,0,0,0,0):
             raise ValueError('small fixture containment wall corrupted')
 
+
+def resident_endpoint(rows,side,endpoint):
+    """Independent literal geometry/list contract; no fixture constant imports."""
+    if side not in (512,2048) or endpoint not in ('B','P','Q','R'):
+        raise ValueError('unreviewed resident endpoint')
+    chunks=(side//128)**2
+    c=rows['config']
+    if (c[0],c[1],c[3],c[4],c[5],c[6],c[7],c[9],c[10],c[11],c[12])!=(128,3,chunks,1,32,64,2,1,256,chunks,chunks):
+        raise ValueError('resident scratch/geometry provisioning drift')
+    width=512 if endpoint=='R' else 256
+    region=(1,0,0,width//64-1,7)
+    if rows['interest']!=(1,0,0,width,512) or rows['selected']!=region or rows['applied']!=region:
+        raise ValueError('resident interest/reentry coverage drift')
+    # Worst case, including transition wakes: every selected 32-square block
+    # contributes once; four such blocks alias each unique aligned64 core.
+    raw=(width//32)*(512//32);unique=(width//64)*8
+    if raw>c[10] or unique>64 or chunks>c[11]:
+        raise ValueError('resident append/job/chunk bound exceeded')
+    if endpoint!='R':
+        sleeping=False
+        for y in range(4):
+            for x in range(2):
+                chunk=rows[f'chunk:{x}:{y}']
+                blocks=[rows[f'block:{x}:{y}:{i}'] for i in range(16)]
+                sleeping|=chunk[2]==0 and chunk[4]>=3 and all(b[2]==0 and b[1]>=3 for b in blocks)
+        if not sleeping or not rows['chunk:3:0'][2]:
+            raise ValueError('resident sleep/exclusion witness absent')
+
+
+def resident_sand_witness(positions,endpoint):
+    # Only one Sand starts outside the initial x<256 interest; bounded inputs
+    # stay inside it. Reentry must actually resume this previously excluded cell.
+    if len(positions)!=1 or (endpoint!='R' and positions!=[(504,8)]) or (endpoint=='R' and (positions==[(504,8)] or not (256<=positions[0][0]<512 and 8<positions[0][1]<512))):
+        raise ValueError('resident excluded Sand/reentry witness mismatch')
+
 def decode_world(arm,data):
     # Independent mathematical ranges; storage admission still uses bit enumeration.
     capacity,epoch_positions,r_positions=POSITIONS[arm]

@@ -18,6 +18,17 @@ int main(int argc,char** argv) {
             WorldConfig config;config.worker_threads=workers;config.parallel_job_threshold=1;
             config.backend=backend=="serial"?SimulationBackend::SerialInPlace:SimulationBackend::PhasedInPlace;
             config.maximum_chunk_count=side*side/(128*128);config.initial_chunk_reserve=config.maximum_chunk_count;config.active_core_capacity=128;config.active_chunk_capacity=64;
+            if(suite=="resident") {
+                fixture::require((side==512||side==2048)&&backend=="phased"&&
+                    (scene=="sleeping-excluded"||scene=="active-window-excluded"),"unreviewed resident fixture");
+                // begin_tick retains active excluded chunks. gather_active_cores
+                // appends up to four aligned 32-cell blocks per 64-cell core
+                // BEFORE deduplication. Provision both lists, not just jobs.
+                fixture::require(config.chunk_size==128&&config.activity_block_size==32&&
+                    config.scheduling_core_size==64&&config.maximum_rule_radius==2,"unreviewed resident geometry");
+                config.active_chunk_capacity=config.maximum_chunk_count;
+                config.active_core_capacity=256; // 64 unique cores * 4 block entries
+            }
             config.settled_discovery_enabled=false;config.physics_diagnostics.enabled=true;
             World world(config);world.reserve_region({0,0,side,side});world.reserve_temperature_region({0,0,128,128});
             // Keep moving cells outside the scheduler's outer write-radius strip.
@@ -30,10 +41,10 @@ int main(int argc,char** argv) {
                     if(x<border||y<border||x>=side-border||y>=side-border)
                         world.set(x,y,Material::Wall);
             }
-            if(suite=="resident")world.set_simulation_region(RectI64{0,0,side/2,side});
+            if(suite=="resident")world.set_simulation_region(RectI64{0,0,256,512});
             // Excluded walls retain nonempty resident chunks without unbounded selected work.
-            if(suite=="resident")for(unsigned y=0;y<128;y+=128)for(unsigned x=side/2;x<side;x+=128)world.set(x+3,y+3,Material::Wall);
-            if(suite=="resident")world.set(side-8,8,Material::Sand);
+            if(suite=="resident")for(unsigned x=256;x<side;x+=128)world.set(x+3,3,Material::Wall);
+            if(suite=="resident")world.set(504,8,Material::Sand);
             world.set(3,3,Material::Wall);world.set(20,20,Material::Sand);world.set(40,40,Material::Water);
             for(unsigned x=0;x<side;++x)world.set(x,side-4,Material::Wall);
             if(suite=="natural"||suite=="resident"){
@@ -70,7 +81,7 @@ int main(int argc,char** argv) {
                     if(suite=="small"&&tick==1)fixture::operations(world,output/role/"operations.txt");
                     // Bounded eight input pulses; later ticks test retention/sleep/reentry.
                     if((suite=="small"&&tick<=8)||(suite=="resident"&&scene=="active-window-excluded"&&tick>=248))
-                        for(unsigned x=16;x<side/2;x+=64){fixture::input(world,tick,x,8,Material::Water,inputs);fixture::input(world,tick,x+8,8,Material::Sand,inputs);}
+                        for(unsigned x=16;x<(suite=="resident"?256:side/2);x+=64){fixture::input(world,tick,x,8,Material::Water,inputs);fixture::input(world,tick,x+8,8,Material::Sand,inputs);}
                     advance();
                 }
                 if(suite!="resident" && role!="prepared" && (tick==0||tick==1||tick==255||tick==256||tick==257||tick==horizon||tick==65534||tick==65535||tick==65536||tick==65537))
@@ -82,7 +93,9 @@ int main(int argc,char** argv) {
                 PrecisionProbe::prepare_clear(world,role=="event"||role=="prepared"?65535:128);
                 PrecisionProbe::canonical_endpoint(world,stats,output/role/"P");
                 advance();PrecisionProbe::canonical_endpoint(world,stats,output/role/"Q");
-                if(suite=="resident")world.set_simulation_region(RectI64{0,0,side,side});
+                // Bounded reentry: full interest for 512, a 512-square window
+                // for 2048. All resident cells still take the actual clear.
+                if(suite=="resident")world.set_simulation_region(RectI64{0,0,512,512});
                 for(unsigned i=0;i<4;++i)advance();
                 PrecisionProbe::canonical_endpoint(world,stats,output/role/"R");
             }

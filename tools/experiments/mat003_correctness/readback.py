@@ -10,7 +10,7 @@ from matrix import cases,ARMS,LIMITS
 
 budget_hook=lambda:None
 from storage_oracle import expected,apply
-from world_oracle import metadata,cells,registry,Transitions,compare,small_boundary
+from world_oracle import metadata,cells,registry,Transitions,compare,small_boundary,resident_endpoint,resident_sand_witness
 
 def digest(path):
     h=hashlib.sha256()
@@ -95,12 +95,19 @@ def endpoints(case,role="ordinary"):
     if case['suite']=='natural':ticks|={65534,65535,65536,65537,65540}
     return {'tick-'+str(t):t for t in sorted(ticks)}
 
+
+def resident_grid(reg,side):
+    expected={(x,y) for y in range(side//128) for x in range(side//128)}
+    actual=[(x,y) for x,y,_,_ in reg]
+    if len(actual)!=len(expected) or set(actual)!=expected:raise ValueError('unregistered resident grid')
+
 def world(path,case):
     roles=('event','reference') if case['suite']=='resident' else ('ordinary','prepared') if case['suite']=='natural' else ('ordinary',)
     if {p.name for p in path.iterdir()}!=set(roles):raise ValueError('wrong role inventory')
     for name in roles:
         role=path/name;reg=registry(role/'registry.txt',case['arm'])
-        if len(reg)*16384!=case.get('side',256)**2:raise ValueError('unregistered resident population')
+        side=case.get('side',256)
+        resident_grid(reg,side)
         snapshots=endpoints(case,name)
         expected_dirs=set(snapshots)|({f'attempt-{i}-{phase}' for i in range(256) for phase in ('pre','post')} if case['suite']=='refusal' else set())
         if {p.name for p in role.iterdir() if p.is_dir()}!=expected_dirs:raise ValueError('missing/extra endpoint dataset')
@@ -124,6 +131,7 @@ def world(path,case):
                     model.feed(pending[1]);pending=next(transitions,None)
             cursor=tick
             root=role/endpoint;m=metadata(root)
+            if case['suite']=='resident':resident_endpoint(m,case['side'],endpoint)
             if set(p.name for p in root.iterdir())!={'cells.bin','chunks.txt','metadata.txt'}:raise ValueError('endpoint inventory')
             if m['clock'][:2]!=(tick,tick):raise ValueError('attempt/completed tick checkpoint mismatch')
             cap=POSITIONS[case['arm']][0];alignment=1 if cap in (72,80) else 8
@@ -138,7 +146,7 @@ def world(path,case):
             if m['clears']!=((0,0) if tick==0 else (receipts[tick-1][17],receipts[tick-1][18])):raise ValueError('endpoint clear receipt mismatch')
             model.check(root)
             # Derive material totals from every retained cell rather than collector reductions.
-            water=sand=0;counts={}
+            water=sand=0;counts={};excluded_sand=[]
             sentinels={(7,7):(0x8001,-1234),(8,7):(0xffff,-32768),(9,7):(0x8000,32767),(10,7):(0x7fff,200),(11,7):(0x100,200)}
             endpoint_owners(root,{(x,y) for x,y,n,base in reg},case['arm'],reg)
             for pos,r,temp,present,address in cells(root,case['arm']):
@@ -146,10 +154,12 @@ def world(path,case):
                     small_boundary(pos,r,case['side'])
                 chunk=pos[0]//128,pos[1]//128;counts[chunk]=counts.get(chunk,0)+(r.material!=0)
                 water+=r.a if r.material==3 else 0;sand+=r.material==2
+                if case['suite']=='resident' and r.material==2 and pos[0]>=256:excluded_sand.append(pos)
                 if pos in sentinels and (r.material,r.a,temp)!=(0,*sentinels[pos]):raise ValueError('nonzero Empty/high-state/temperature lost')
             for (x,y),count in counts.items():
                 if m[f'chunk:{x}:{y}'][1]!=count:raise ValueError('nonempty count mismatch')
             if tick and (water,sand)!=(receipts[tick-1][12],receipts[tick-1][13]):raise ValueError('endpoint ledger reduction mismatch')
+            if case['suite']=='resident':resident_sand_witness(excluded_sand,endpoint)
         if pending is not None:raise ValueError('unbound transition records')
         if case['suite']=='small':operations(role/'operations.txt',case['arm'])
     if case['suite']=='natural':
@@ -313,7 +323,7 @@ def input_ledger(role,case,receipts):
     schedule=[]
     for tick in range(1,len(receipts)+1):
         if (case['suite']=='small' and tick<=8) or (case['suite']=='resident' and case['scene']=='active-window-excluded' and 248<=tick<=255):
-            for x in range(16,case['side']//2,64):schedule.extend(((tick,x,8,3),(tick,x+8,8,2)))
+            for x in range(16,256 if case['suite']=='resident' else case['side']//2,64):schedule.extend(((tick,x,8,3),(tick,x+8,8,2)))
     stream=(role/'inputs.txt').read_text(encoding='ascii').splitlines()
     if len(stream)!=len(schedule):raise ValueError('input schedule length')
     deltas={}
