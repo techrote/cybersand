@@ -105,6 +105,6 @@
     "tick_percentiles": "per-process nearest-rank p50/p95/p99 and literalmax; processsamplesnotindependentreplicates",
     "retention": "allraw256tickandinputtimes,work,ledgers,RSS,startup; no omissions/reruns/partial acceptance"
   },
-  "scope": "prospective S2A fixture semantics reused; no dataset merge; sampleincludesnaturalE8clear256. Diagnostics-enabled fixture, no production/cold-gameplay claim. FullS1carriertraces prerequisite; actualworkload compares finalhashes/ledgers andper-tickwork, notfullsemantictraces.",
+  "scope": "prospective S2A fixture semantics reused; no dataset merge; sampleincludesnaturalE8clear256. Diagnostics-disabled fixture, no production/cold-gameplay claim. FullS1carriertraces prerequisite; actualworkload compares finalhashes/ledgers andper-tickwork, notfullsemantictraces.",
   "authority": "independent exact-artifact admission and owner exactregistration/executioncommit authority required before formal timing"
 }
