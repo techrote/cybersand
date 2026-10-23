@@ -199,3 +199,7 @@ Hosted Documentation/provenance passed at docs-only checkpoint21fe0f4 in
 The final publication checkpoint must retain its own exact-head CI status; the
 source-sensitive untimed result above remains bound to its exact hosted checkout.
 Draft-only Native/GDExtension gates are skipped, not runtime acceptance.
+
+## Subsequent WCLEAR admission
+
+The [separate independent admission](2026-10-23-wclear-admission.md) supersedes this checkpoint's WCLEAR timing-admission/workflow-pending state only. The new manual-only workflow and exact admitted registration are prepared; owner execution authority is still pending. No timing has been dispatched. Other track and performance-acceptance boundaries remain unchanged.

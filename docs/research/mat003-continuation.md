@@ -272,3 +272,7 @@ derived physical arithmetic, unregistered local diagnostics and admitted S2A
 ratios have deliberately different evidential status. Optimized-packed and C128
 World timing, wide clear cost, counters/profile attribution, Windows performance,
 Wasm/Godot and production acceptance remain unqualified until separately admitted.
+
+## WCLEAR timing admission checkpoint
+
+**Approved conditional experiment / execution pending:** the [independent admission](../audits/2026-10-23-wclear-admission.md) admits only the exact 672-process prepared-resident WCLEAR protocol. Its separately sealed registration sets formal timing admission true while execution authority remains false. The manual-only workflow requires an owner-established receipt for the exact registration hash and execution commit. No dispatch or timing has occurred. This supersedes the earlier WCLEAR admission-pending checkpoint; packed/C128 timing and performance acceptance remain held.

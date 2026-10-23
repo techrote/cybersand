@@ -31,7 +31,13 @@ class EvidenceContracts(unittest.TestCase):
 
     def test_admission_held_in_each_registration(self):
         for p in Path(__file__).parent.glob('*registration*.json'):
-            self.assertIs(json.loads(p.read_text())['formal_timing_admitted'],False)
+            r=json.loads(p.read_text())
+            if p.name=='wclear-admitted-registration.json':
+                self.assertIs(r['formal_timing_admitted'],True)
+                self.assertEqual(r['independent_review']['decision'],'admitted')
+                self.assertIs(r['execution_authorized'],False)
+            else:
+                self.assertIs(r['formal_timing_admitted'],False)
 
     def test_instruction_accounting_excludes_labels_directives(self):
         s='\t.type get_a, @function\nget_a:\n\t.cfi_startproc\n\tmovq (%rdi), %rax\n\tret\n\t.size get_a, .-get_a\n'
