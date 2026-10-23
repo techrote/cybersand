@@ -17,6 +17,11 @@ regressions on this page exist in source and run against the unchanged native
 World. Every *executed* result is a **Current-defaults** control: Water
 `freemass_v1`, other liquids `cellular_yield_v1`.
 
+**Accepted evidence** is the CI-re-executed prefix: canonical hash, initial
+inventory, tick-30 hashes and 1/4-worker parity for all 27 scenarios. The
+full-length values are author-reported characterization; see the
+[evidence scope](../audits/2026-10-23-lcb003-scenario-qualification.md#accepted-evidence-scope-stated-2026-10-23-for-the-gate-e-review).
+
 **Planned arms.** Every `pressure_flow_v1`, `inertial_cellular_v1` and Water
 `cellular_yield_v1` arm is registered but **blocked**. Each one names its
 owning dependency (#200, #201, #212). No arm runs on a fallback solver.
