@@ -5,10 +5,12 @@ document-kind: reference
 scope: Source-bound S2P packed diagnosis, WCLEAR-001 apparatus and C128-001 feasibility; timing and production selection remain separately held
 canonical-for: [mat003-continuation-decisions, mat003-packed-diagnosis, mat003-wide-clear-admission, mat003-c128-feasibility]
 last-reviewed: 2026-10-23
-related-documents: [../operations/mat-003prepass-registration.md, mat-003prepass-epoch-consumers.md, mat-003prepass-gen006-handoff.md, ../architecture/chunk-tile-and-buffer-model.md, ../operations/architecture-programme.md]
+related-documents: [../operations/mat-003prepass-registration.md, mat-003prepass-epoch-consumers.md, mat-003prepass-gen006-handoff.md, ../architecture/chunk-tile-and-buffer-model.md, ../operations/architecture-programme.md, ../audits/2026-10-23-mat003-independent-carrier-audit.md, ../decisions/ADR-016-mat003-carrier-evidence-synthesis.md]
 ---
 
 # MAT-003 continuation decisions and admission boundary
+
+**Current independent architecture synthesis (2026-10-23):** [Original S2A/S2P/WCLEAR/C128 raw-archive audit](../audits/2026-10-23-mat003-independent-carrier-audit.md) verifies the accepted, separate campaigns without retiming or merging their ratios. [Conditional carrier ADR-016](../decisions/ADR-016-mat003-carrier-evidence-synthesis.md) retains C64-E8 for production, prioritizes compact safe-memcpy / DUAL64 only as experimental schema-dependent candidates, and identifies the still-open Windows 152-case and high-state adoption gates. **Those two new documents are the current comparison/decision route.** Historical preparation/held-admission sections below remain their original dated checkpoints and do not supersede later accepted S2P, WCLEAR and C128 evidence. PR211/221 remain draft, no migration, #204 open.
 
 ## Scope and preserved evidence
 
