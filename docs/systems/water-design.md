@@ -143,6 +143,35 @@ research and admits only a non-production #94 decompression proof. It remains a
 surface/boundary-pressure model: it does not transmit head through saturated Water
 or change Current Water semantics.
 
+## WEX-005 disposition and the opt-in LCB lane (2026-10-23)
+
+**Current Water semantics are unchanged.** The
+[WEX-005 synthesis](../audits/2026-10-23-wex005-water-evidence-synthesis.md)
+records #95's answers:
+
+- **Deep release:** the slow-slope deficit is real and unresolved. On current
+  `main` (#49 v2 rerun 39739371203), deep and medium outlets deliver
+  byte-identical discharge, so depth above saturated outlet cells adds no drive.
+  Water sheets (#92) were never tested. No surge fixture is registered yet.
+- **#45: NARROW.** Bounded head-transmission research continues to its
+  admission/design phase only, under a shared/vented atmosphere, with a separately
+  registered surge fixture family. No mechanism is selected.
+- **Boundary assumption:** Current Water has no gas state; `Empty` acts as one
+  shared atmosphere. Equal levels are a valid target only for vented/shared
+  headspaces. Sealed headspaces settle at `Δh = (p_A − p_B)/(ρ·g)`, and
+  vacuum/low-pressure boundaries have no Current target.
+- #93 is research only, #94 is narrow-use, #18 stays held, and FreeMass and
+  CellularYield stay separate.
+
+The owner-approved **Liquid Comparison Build** (#200, gated by #213) may later add
+an opt-in, version-identified `pressure_flow_v1` family and other experimental
+families with Water as a common test material. The
+[LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md)
+bounds that lane: unchanged defaults, no hidden fallback, no production #45
+selection, no new pressure-to-Rapier forces, and the Current fixtures and #49 v2
+controls held fixed. Nothing in this section is implemented, and LCB-000 has not
+passed.
+
 ## Coherent emission and surface adhesion
 
 Coherent/calm emission is a command flag on Water, not a second material ID.

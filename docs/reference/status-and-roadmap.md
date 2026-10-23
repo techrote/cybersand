@@ -555,10 +555,19 @@ investigation before any new #45 pressure/head mechanism is treated as inevitabl
 - [#94](https://github.com/techrote/cybersand/issues/94) completed as
   [NARROW-USE local decompression research](../audits/2026-09-24-wex004-decompression-disposition.md);
   no general routed/room-scale atmosphere feature is admitted.
-- [#95](https://github.com/techrote/cybersand/issues/95) now has all prerequisites
-  in their allowed form (#92 explicitly blocked) and is the next WEX action. It
-  synthesizes WEX evidence with merged #49 controls and decides whether #45 should
-  proceed, narrow, recharter, defer or no-go.
+- [#95](https://github.com/techrote/cybersand/issues/95) synthesis is recorded in
+  the [2026-10-23 WEX-005 record](../audits/2026-10-23-wex005-water-evidence-synthesis.md):
+  the deep-release deficit is unresolved (on current `main` deep and medium outlets
+  deliver identical discharge; sheets untested), and **#45 is NARROW** —
+  admission/design only, under shared/vented-atmosphere assumptions, with a
+  separately registered surge fixture. No production mechanism is selected.
+- The opt-in Liquid Comparison Build pressure lane
+  ([#200](https://github.com/techrote/cybersand/issues/200)) is reconciled
+  separately by the
+  [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
+  [#213](https://github.com/techrote/cybersand/issues/213) is **not PASS**:
+  Gate A passed and Gate B passed in bounded form ([refresh](../audits/2026-10-23-lcb000-admission-gatea-gateb-refresh.md)); Gates C–E remain
+  open, so LCB-001 pressure implementation stays blocked.
 
 Water FreeMass and other-liquid CellularYield remain separate; no unification or
 production solver change is selected. Equal-level communicating-head fixtures are
@@ -583,8 +592,8 @@ The protected `lcb.dam.water.freemass.reference.v1` Dam Break and the
 with measured Current-default controls (local Windows, 1/4-worker identical).
 The mixed control runs **two** families today; three need
 [#212](https://github.com/techrote/cybersand/issues/212). LCB-000 is **not
-PASS**: Gate A (#95/#45) and Gate B (#204 storage) lack accepted evidence, so
-LCB-001 implementation stays blocked.
+PASS**: Gate A passed and Gate B passed in bounded form ([refresh](../audits/2026-10-23-lcb000-admission-gatea-gateb-refresh.md)), but
+Gates C–E are still awaiting acceptance, so LCB-001 implementation stays blocked.
 
 The [LCB scenario catalogue v1](../operations/lcb-scenario-catalogue.md) adds 25
 controlled current-source scenarios (dam depth ladder, shallow flow, vented
