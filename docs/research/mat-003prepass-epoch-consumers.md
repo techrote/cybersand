@@ -12,6 +12,8 @@ related-documents: [../architecture/chunk-tile-and-buffer-model.md, ../architect
 
 ## Source and evidence boundary
 
+**2026-10-23 continuation:** [WCLEAR-001](mat003-continuation.md#wclear-001-exact-proposal-and-correctness-boundary) prepares actual wide clear events with the equality-predicate audit below, explicit natural/prepared labels and separate observer/off qualification. Its timing remains unadmitted; accepted S2A E8 clear inclusion and E16 no-clear horizon remain unchanged.
+
 **Current source inspection, 2026-10-22:** this inventory is bound to
 `da5112c066416346d6fe3984d4161cd162611e50`, the planning and execution baseline
 for [issue #204](https://github.com/techrote/cybersand/issues/204). It describes

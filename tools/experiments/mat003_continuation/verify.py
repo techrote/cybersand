@@ -172,8 +172,16 @@ def verify(root, expected_source=None):
             expected=({'word-e8-x0'}|{f'memcpy-e{e}-x{x}' for e in (8,16) for x in (1,2)}) if track=='s2p' else {f'{r}-e{e}-x2' for r in ('u128','dual64') for e in (8,16)}
             require({c['id'] for c in report['cases']}==expected,'incomplete candidate correctness set')
             controls={}
+            if track=='c128':
+                source_control=root.parent/'s2p'
+                control_review=verify(source_control,expected_source)
+                require(control_review['status']=='qualification-readback-passed-timing-held','C128 requires separately verified S2P C64 control')
+                for trace_name in ('ordinary-serial','ordinary-phased-1','ordinary-phased-4','natural'):
+                    controls[trace_name]=gzip.decompress((source_control/'cases/word-e8-x0'/(trace_name+'.bin.gz')).read_bytes())
             for row in report['cases']:
                 r=row['result']; name=row['id']; rep=name.split('-')[0]
+                require(commands['execute/'+name]['argv'][0]==commands['compile/'+name]['argv'][-1],'executed candidate differs from compiler output')
+                require(commands['execute/'+name]['argv'][1]=='--output' and Path(commands['execute/'+name]['argv'][2]).name==name,'candidate output argument mismatch')
                 require(r==load(root/'cases'/name/'result.json'),'result readback mismatch')
                 require(r['status']=='passed' and r['assertions']>0,'unsuccessful correctness fixture')
                 expected_stride=16 if rep in ('u128','dual64') else (8 if rep=='word' else 8+int(name[-1]))

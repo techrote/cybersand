@@ -93,6 +93,8 @@ introduce unintended seams; intended scan/phase order can still affect results.
 
 ## What is stored per cell and per chunk?
 
+**Experimental continuation, 2026-10-23:** [MAT-003 S2P/WCLEAR/C128](../research/mat003-continuation.md#physical-storage-and-cache-footprint-accounting) compares packed, aligned, split and 16-byte neutral-capacity prototypes in generated World copies. Production remains the 8-byte carrier below; arithmetic array footprints are separate from process RSS and no new layout is selected.
+
 **Current source at `da5112c`, checked 2026-10-22:** `World::Chunk::Cell` aliases
 [`detail::PrecisionStorage`](../../native/include/cybersand/precision_storage.hpp),
 whose enforced physical size/alignment is **8/8 bytes**. It retains material identity,

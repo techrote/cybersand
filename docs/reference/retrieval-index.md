@@ -10,6 +10,8 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+For packed overhead, actual wide-epoch clearing, 128-total-bit feasibility and separate admission, use the [MAT-003 continuation report](../research/mat003-continuation.md). Its [dated audit](../audits/2026-10-23-mat003-continuation.md) owns executed evidence; S2A acceptance does not admit these new tracks.
+
 ## Generation Workbench 2 and procedural quality
 
 - [Workbench inspection and transactions](../systems/generation-workbench-2.md): accepted native identities, bounded deterministic replay, actual stage meanings, invalid-edit preservation, graph/hierarchy/plane editing, undo/redo, seeds and comparison.

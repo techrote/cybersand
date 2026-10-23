@@ -12,6 +12,8 @@ related-documents: [../research/mat-003prepass-state-inventory.md, ../research/m
 
 ## Scope and source identity
 
+**2026-10-23 continuation:** the accepted S2A campaign remains immutable. [S2P, WCLEAR-001 and C128-001](../research/mat003-continuation.md) have separate machine registrations, untimed qualification and independent admission boundaries; this original staged registration does not admit their timing.
+
 **Planned experimental programme; S0 storage and registered S1 native Linux
 World correctness checkpoints passed.**
 Issue [#204](https://github.com/techrote/cybersand/issues/204) supplies evidence

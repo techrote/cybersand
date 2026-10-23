@@ -10,11 +10,15 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## MAT-003 continuation — 2026-10-23
+
+**Current accepted S2A / Planned independent continuation admission:** [PR #211](https://github.com/techrote/cybersand/pull/211) remains draft and stacked; accepted manual [run 39876455400](https://github.com/techrote/cybersand/actions/runs/39876455400) completed 224 processes and 16 contrasts. The [continuation report](../research/mat003-continuation.md) separates packed diagnosis (#218), actual wide-clear apparatus (#219) and 128-bit feasibility (#220). Optimized packed speed, E16/E24/E32 clear latency, C128 performance, S2B, production migration and GEN-006 remain unadmitted. The [dated continuation audit](../audits/2026-10-23-mat003-continuation.md) owns new execution status; prior 22 October next-step statements below are historical planning state.
+
 ## MAT-003PREPASS S1 World apparatus — 2026-10-22
 
 **Current registered Linux S1 correctness; broader qualification open:** [#204](https://github.com/techrote/cybersand/issues/204) retains the [S0 isolated-storage pass](../audits/2026-10-22-mat003-prepass-foundation.md), source inventory, epoch consumer audit and [proposed GEN-006 semantic handoff](../research/mat-003prepass-gen006-handoff.md). The [registered S1 apparatus](../operations/mat-003prepass-registration.md) adds seventeen real World arms using generated source copies, typed 8/16-bit counters, full semantic and conservation checks, and a gate covering two natural sixteen-bit rollovers. The registered normal/sanitized collection and independent readback passed at apparatus source `e31d296`; this qualifies the declared native Linux fixtures. The [World report](../audits/2026-10-22-mat003-world-correctness.md) owns execution status and limits. Production source and 64-bit/epoch8 storage remain unchanged.
 
-Next: the [S2F source-only preflight](../audits/2026-10-22-mat003-s2f-preflight.md) passes six untimed Linux developer scenes and independent evidence readback. The remaining 18 source contexts, candidate observed twins and separately registered S2A/S2B paired measurements are unqualified; the S2 proposal remains unadmitted as a timing campaign. #204 remains open. Programme order is GEN-007 → MAT-003PREPASS → GEN-006 → full MAT-003; GEN-006 architecture can continue, but durable state contracts must consume this prepass. #14/G-final and unrelated Water/soliding gates remain open.
+Historical 2026-10-22 next step: the [S2F source-only preflight](../audits/2026-10-22-mat003-s2f-preflight.md) passes six untimed Linux developer scenes and independent evidence readback. The remaining 18 source contexts, candidate observed twins and separately registered S2A/S2B paired measurements are unqualified; the S2 proposal remains unadmitted as a timing campaign. #204 remains open. Programme order is GEN-007 → MAT-003PREPASS → GEN-006 → full MAT-003; GEN-006 architecture can continue, but durable state contracts must consume this prepass. #14/G-final and unrelated Water/soliding gates remain open.
 
 ## GEN-007 authoring and qualification — 2026-10-21
 

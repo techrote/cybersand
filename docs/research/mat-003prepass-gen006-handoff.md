@@ -13,6 +13,8 @@ related-documents: [mat-003prepass-state-inventory.md, mat-003prepass-epoch-cons
 
 ## Decision and source boundary
 
+**2026-10-23 continuation:** [S2P/WCLEAR/C128](mat003-continuation.md#c128-feasibility-and-gen-006-consequences) adds access, clear-frequency and 128-total-bit feasibility questions. Its neutral high64 has no authoritative material schema. No ABI, padding, raw epoch or future-state meaning is added to this proposed durable contract.
+
 **Planned proposal from MAT-003PREPASS / [#204](https://github.com/techrote/cybersand/issues/204):**
 give [GEN-006 / #194](https://github.com/techrote/cybersand/issues/194) a versioned
 semantic persistence boundary independent of the selected in-memory carrier.

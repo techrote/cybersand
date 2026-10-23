@@ -27,6 +27,7 @@ int main(int argc, char** argv) {
             for (unsigned x = 0; x < side; x += 128) world.set(x + 3, y + 3, Material::Wall);
         world.set(side - 8, 8, Material::Sand); // excluded granular sentinel
         const std::vector<fixture::Point> support{{side - 8, 8}, {20, 20}};
+        TickStats setup_stats;
         for (unsigned t = 1; t <= setup_ticks; ++t) {
             if (active && t >= setup_ticks - 119) {
                 // Multiple disjoint phased cores; controlled external input is
@@ -36,13 +37,14 @@ int main(int argc, char** argv) {
                 }
             }
             const auto stats = world.tick();
+            setup_stats = stats;
             fixture::require(stats.tick == t && world.completed_tick_index() == t, "setup tick failed");
         }
-        const auto before = PrecisionProbe::snapshot(world, {}, support);
+        const auto before = PrecisionProbe::snapshot(world, setup_stats, support);
         const auto limit = (std::uint64_t{1} << MAT003_EPOCH_BITS) - 1;
         const bool naturally_reached = PrecisionProbe::epoch(world) == limit;
         const auto stamps = PrecisionProbe::prepare_clear(world, event ? limit : 128);
-        const auto prepared = PrecisionProbe::snapshot(world, {}, support);
+        const auto prepared = PrecisionProbe::snapshot(world, setup_stats, support);
         fixture::require(before.bytes == prepared.bytes, "stamp preparation changed semantic/support/scheduling state");
         const auto write = [&](const char* name, const fixture::Bytes& bytes) {
             std::ofstream f(out / name, std::ios::binary);
