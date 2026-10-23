@@ -48,7 +48,7 @@ func nonblank_samples(image: Image) -> int:
 	var h: int = image.get_height()
 	for iy: int in range(12):
 		for ix: int in range(16):
-			var colour: Color = image.get_pixeli(clampi((ix * 2 + 1) * w / 32, 0, w - 1),
+			var colour: Color = image.get_pixel(clampi((ix * 2 + 1) * w / 32, 0, w - 1),
 				clampi((iy * 2 + 1) * h / 24, 0, h - 1))
 			var rounded := Vector3i(roundi(colour.r * 31.0), roundi(colour.g * 31.0), roundi(colour.b * 31.0))
 			unique[rounded] = true
