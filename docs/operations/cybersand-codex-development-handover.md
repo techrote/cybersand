@@ -4,11 +4,15 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-23
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
 # Development handover
+
+## MAT-003 readback verifier repair — 2026-10-23
+
+The [readback verifier repair and v2 admission proposal](../audits/2026-10-23-mat003-readback-verifier-repair.md) corrects only the independently diagnosed resident sleep/exclusion oracle. The complete 152-case archive is assessed sufficient for a future readback-only requalification; no candidate rerun is needed. The revised protocol is **not independently admitted**, owner authority for the changed reader is **absent**, and no full revised readback has run. Keep #204/#221 open/draft, production unchanged and Windows correctness refused until both gates close.
 
 ## MAT-003 latest correctness disposition — 2026-10-23
 
