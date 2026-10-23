@@ -129,6 +129,10 @@ problems `[]`.
 
 - **"Ledger closed"** means the final world Water equals the initial amount
   plus explicit scheduled sources minus explicit sinks.
+- The **Ledger** column is the historical reducer classification, retained as
+  recorded. "Open by declared reaction" was an escape that excused any
+  discrepancy when Salt or Sodium was present. It is **superseded** by the
+  [signed ledger correction](#addendum--signed-campaign-ledger-correction-2026-10-23).
 - **"No condition"** means that scenario preregistered observations only.
 
 ## What the Current controls show
@@ -268,3 +272,82 @@ headless in that run.
   - The aggregate `linux x86_64` gate failed as a consequence.
 - **Next step.** The run is retained as a failure, not counted as green. A
   fresh dispatch at the updated head requalifies it.
+
+## Addendum — signed campaign ledger correction (2026-10-23)
+
+This responds to [re-review finding 3](https://github.com/techrote/cybersand/pull/226#issuecomment-6362824493).
+At `5cd81ba`, `ledger_state` returned `open_by_declared_reaction` for any
+mismatch whenever the inventory held Salt or Sodium, and the problem predicate
+did not reject that state. The reviewer reproduced it: with initial Water
+10,000, Salt present and no source/sink, both a final value of 10,001 and a
+final value of 1 were "explained".
+
+**Correction.** `signed_ledger` in `tools/lcb/lcb_registry.py` implements
+rule `lcb-signed-ledger-v2`.
+
+*Non-reactive scenarios:*
+- With no source or sink, every checkpoint must equal the initial Water
+  integer. Any transient gain or loss fails.
+- With an explicit source/sink, the final value must close exactly and every
+  checkpoint must stay within bounds.
+
+*A reactive species never explains a discrepancy by itself.* For Salt only:
+- any checkpoint-to-checkpoint gain is `OPEN_UNEXPLAINED`, because dissolution
+  can only remove Water;
+- a total loss above 255 × the initial Salt cells is `OPEN_UNEXPLAINED`;
+- with world-wide species counts at every checkpoint, the reducer enforces:
+  - `Δbrine = 2s` exactly;
+  - `Δwater ∈ [−255s, −s]`;
+  - Water constant once `s` stops changing;
+  - every other species constant.
+
+  An exact `−255s` gives `closed_signed_reaction_ledger`. A value inside the
+  bounds gives `UNVERIFIED_PARTIAL_WATER_160`, the #160 partial-cell boundary.
+- without those counts, a bounded monotone loss is
+  `UNVERIFIED_REACTION_AMOUNT`.
+
+*Sodium,* whose Steam can condense back to full Water, is always
+`UNVERIFIED_REACTION_AMOUNT` unless Water never changes.
+
+*Only `closed` and `closed_signed_reaction_ledger` are eligible for
+acceptance.* The reducer lists unverified cases separately from problems.
+
+**Re-reduction.** The retained 2026-10-23 controls file is **unchanged**, LF
+SHA-256 recorded in the new record. It is re-reduced into a new versioned record,
+[`lcb-scenario-ledger-2026-10-23.v2.json`](../reference/lcb-scenario-ledger-2026-10-23.v2.json)
+(`lcb_registry.py reledger`; `--check` in the Documentation workflow).
+
+| Scenario | Historical state | v2 state | Signed Water delta |
+|---|---|---|---:|
+| `mixed.water-oil-brine.v1` (M0) | open by declared reaction | `UNVERIFIED_REACTION_AMOUNT` | −7,395 |
+| `granular.salt-dissolution.v1` | open by declared reaction | `UNVERIFIED_REACTION_AMOUNT` | −514,527 |
+| `mixed.sodium-oil-fire.v1` | open by declared reaction | `UNVERIFIED_REACTION_AMOUNT` | +6,547 |
+| other 24 | closed | `closed` (every checkpoint constant, or exact source/sink closure) | 0 |
+
+- No case is `OPEN_UNEXPLAINED`. The three reactive cases are **ineligible for
+  acceptance** from the campaign record, because the campaign retained only
+  world Water integers and windowed observations: no world-wide species counts
+  and no per-reaction log.
+- M0's exact reaction ledger remains verified only on the CI-re-executed
+  prefix, by `test_lcb_fixture_manifests.gd` at t30: 29 Salt consumed, Water
+  −7,395 = −29 × 255. That is the accepted-evidence scope stated above.
+- The registry's `qualification.windows_local_native` now reports the v2
+  state, `ledger_eligible_for_acceptance`, the rule and the record path.
+  Goldens and definitions are unchanged.
+
+**Synthetic regressions.** `tools/lcb/test_lcb_registry.py` has 15 tests,
+including:
+- the review's +1 gain (fails) and −9,999 loss (unverified);
+- a loss beyond the Salt bound, and a gain after a loss (both fail);
+- Sodium, which is never eligible;
+- reaction plus explicit source (unverified);
+- a valid signed species ledger that closes;
+- a partial-Water #160 case;
+- Brine mismatch, post-dissolution gain and loss, Water outside bounds, and
+  drift in another species (all fail);
+- non-reactive transients;
+- historical-record preservation.
+
+Run locally:
+`python -m unittest discover -s tools/lcb -p test_lcb_registry.py` → 15 OK.
+No fixture bytes, controls bytes or goldens changed.

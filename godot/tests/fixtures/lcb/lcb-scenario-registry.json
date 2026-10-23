@@ -5,6 +5,7 @@
     "capability_matrix": "442c4e50f8065f7c2ed49e54be424953f3145ec3cc7961a5e218e45630d87105",
     "protected_manifest": "d5c922c39fe04a7981b7a14a6a6f2d14064674337e6afedb3acf3e83eb8553f3",
     "controls": "989ff70dba646285991a2a5e8ca5c3b0aa94b9381dc44c849528518e4238fac1",
+    "ledger_v2": "5688e26f19c5514ac2ece0ab1acde2ebda2077603bc85575245a4203b353d8fa",
     "catalogue_tool": "0863508fe163dab7835b5089c5930e8dd25546e4afd39eb84b198df53e37e121"
   },
   "integration_requirements": [
@@ -432,7 +433,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -1000,8 +1004,11 @@
           "status": "measured",
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
-          "ledger": "open_by_declared_reaction",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger": "UNVERIFIED_REACTION_AMOUNT",
+          "ledger_eligible_for_acceptance": false,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -1461,7 +1468,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -1921,7 +1931,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -2381,7 +2394,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -2808,7 +2824,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "running",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -3138,7 +3157,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -3598,7 +3620,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -3950,7 +3975,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -4302,7 +4330,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -4654,7 +4685,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -4890,7 +4924,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -5207,7 +5244,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -5513,7 +5553,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -6342,7 +6385,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "running",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -6950,7 +6996,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "running",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -7544,7 +7593,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "running",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -7880,7 +7932,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -8302,7 +8357,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -8708,7 +8766,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -9133,7 +9194,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -9558,7 +9622,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -9859,8 +9926,11 @@
           "status": "measured",
           "parity_1_vs_4_workers": "identical",
           "outcome": "running",
-          "ledger": "open_by_declared_reaction",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger": "UNVERIFIED_REACTION_AMOUNT",
+          "ledger_eligible_for_acceptance": false,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -10430,7 +10500,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -10853,8 +10926,11 @@
           "status": "measured",
           "parity_1_vs_4_workers": "identical",
           "outcome": "running",
-          "ledger": "open_by_declared_reaction",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger": "UNVERIFIED_REACTION_AMOUNT",
+          "ledger_eligible_for_acceptance": false,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -11208,7 +11284,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
@@ -11514,7 +11593,10 @@
           "parity_1_vs_4_workers": "identical",
           "outcome": "complete",
           "ledger": "closed",
-          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json"
+          "ledger_eligible_for_acceptance": true,
+          "ledger_rule": "lcb-signed-ledger-v2",
+          "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+          "ledger_file": "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
         },
         "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
         "web": "not executed",
