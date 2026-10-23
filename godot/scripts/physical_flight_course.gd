@@ -5,6 +5,7 @@ extends RefCounted
 # world. CyberPhysicalActorArena installs these rectangles in CyberNativeCellWorld
 # and rebuilds the normal Rapier hard-surface coupling from that same world.
 const VERSION: int = 1
+const SPLIT_VERSION: int = 2
 const ID: String = "4ly-flight-course/v1"
 const ARENA = Rect2i(128, 128, 512, 224)
 const START = Vector2(192.0, 238.0)
@@ -102,6 +103,25 @@ static func scenario(id: String, seed: int = 0, split: String = "development") -
 			goals[index] += Vector2(-37.0, 26.0)
 		if id in OBSTACLE_IDS:
 			obstacles.append(_rect(544, 300, 20, 25))
+	# Geometry-split amendment v2: retain the semantics of HORIZONTAL,
+	# VERTICAL and HOVER tests. Off-axis variants would not test the same
+	# registered handling skill. This changes no physical plant or score gate.
+	if id == "unsupported_hover":
+		goals = [start]
+	elif id in ["horizontal_reach", "arrival_braking", "reverse",
+		"neutral_control", "constant_control", "power_off"]:
+		for index: int in range(goals.size()):
+			var goal_horizontal: Vector2 = goals[index]
+			goal_horizontal.y = start.y
+			goals[index] = goal_horizontal
+	elif id == "vertical_reach":
+		var vertical_target: Vector2 = goals[0]
+		vertical_target.x = start.x
+		if split == "tuning":
+			vertical_target.y = 158.0
+		elif split == "final":
+			vertical_target.y = 147.0
+		goals = [vertical_target]
 	# Only bounded, mechanically irrelevant repeat variation on development
 	# and tuning. Final geometry is fully specified by its separate split.
 	if split != "final":
@@ -112,7 +132,7 @@ static func scenario(id: String, seed: int = 0, split: String = "development") -
 			obstacles[0] = first
 
 	var radius: float = 12.0 if family != "hover" else 9.0
-	return {"version": VERSION, "id": id, "seed": seed, "split": split,
+	return {"version": VERSION, "split_version": SPLIT_VERSION, "id": id, "seed": seed, "split": split,
 		"family": family, "start": start, "goals": goals,
 		"arrival_radius": radius, "speed_tolerance": 2.5,
 		"dwell_ticks": 36, "max_ticks": deadline,
