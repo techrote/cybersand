@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-23
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -73,6 +73,8 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Pinned Rapier acquisition and verification | [Rapier runbook](../operations/rapier-2d-migration-runbook.md) |
 | Native snapshots, dirty retention, GPU uploads | [Rendering/gameplay bridges](../architecture/rendering-and-gameplay-bridges.md) |
 | Desktop gameplay-state recording, frame format, bounded drops and evidence limits | [Gameplay recording](../operations/gameplay-recording.md), [ownership](../architecture/data-ownership-and-lifetimes.md) |
+| What does GEN-006 need to preserve material state, optional temperature, recent-write support, scheduler deadlines and pending boundary work across future eviction/reload? | [Planned carrier-neutral semantic persistence contract](../architecture/gen006-semantic-state-and-persistence.md), [MAT-003PREPASS D acceptance prerequisites](../operations/mat003prepass-gen006-state-handoff.md) |
+| How are a scheduler epoch, durable mutation generation, chunk incarnation and asynchronous job identity different, and why do stale saves or same-value edits matter? | [Identity and reconciliation contract](../architecture/gen006-semantic-state-and-persistence.md#ownership-and-lifecycle-transactions), [experimental refusal fixture](../operations/mat003prepass-gen006-state-handoff.md#experimental-reference-fixture-bounded-not-runtime-integration) |
 | CYSD1 content, import/export ownership, exact resume | [Level saves and replay](level-saves-and-replay.md) |
 | Hash coverage, parity, deterministic boundaries | [Determinism](../architecture/determinism-and-boundary-transfers.md) |
 | Chunk versus activity block versus core, neighbor writes | [Chunk/tile model](../architecture/chunk-tile-and-buffer-model.md) |
