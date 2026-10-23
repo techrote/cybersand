@@ -362,6 +362,9 @@ func manifest() -> Dictionary:
 		"profile_hash": Profile.profile_hash(Profile.entry(profile_id)),
 		"controller_sha256": Controller.controller_hash(),
 		"godot": str(Engine.get_version_info().get("string", "")),
+		"source_git_sha": OS.get_environment("GITHUB_SHA"),
+		"teacher_source_sha256": FileAccess.get_file_as_string("res://scripts/physical_flight_teacher.gd").sha256_text() if source == &"teacher" else null,
+		"runtime_hash_evidence": "CI regression identity.json contains the exact Git checkout, native and Rapier binary SHA-256; per-episode hashes are joined by independent readback",
 		"native_coupling": true, "host_count": 1,
 		"max_ticks": int(scenario.get("max_ticks", 0))}
 
