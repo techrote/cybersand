@@ -17,11 +17,17 @@ regressions on this page exist in source and run against the unchanged native
 World. Every *executed* result is a **Current-defaults** control: Water
 `freemass_v1`, other liquids `cellular_yield_v1`.
 
-**Campaign accounting** uses the signed rule `lcb-signed-ledger-v2`. A
-reactive species never explains a Water discrepancy. Gains and out-of-bound
-losses fail. Where the retained data cannot establish the reaction amount, the
-case is `UNVERIFIED_*` and ineligible for acceptance. See the
-[ledger correction](../audits/2026-10-23-lcb003-scenario-qualification.md#addendum--signed-campaign-ledger-correction-2026-10-23).
+**Campaign accounting** uses the signed rule `lcb-signed-ledger-v3`. It
+superseded v2 after re-review findings N3 and N4.
+- Every quantity is bound to the declared initial ledger and inventory.
+- Supplied species evidence is validated before any constant-Water shortcut.
+- A reactive species never explains a Water discrepancy.
+- Explicit sources and sinks close only against timed per-event amounts.
+
+Gains, out-of-bound losses, impossible directions and exceeded budgets fail.
+Where the retained data cannot establish the reaction amount or the
+source/sink timing, the case is `UNVERIFIED_*` and ineligible for acceptance.
+See the [ledger correction](../audits/2026-10-23-lcb003-scenario-qualification.md#addendum--signed-campaign-ledger-v3-correction-2026-10-23).
 
 **Accepted evidence** is the CI-re-executed prefix: canonical hash, initial
 inventory, tick-30 hashes and 1/4-worker parity for all 27 scenarios. The

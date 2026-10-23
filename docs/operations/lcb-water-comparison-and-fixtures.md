@@ -233,7 +233,9 @@ on Water gain). The stronger checks are applied **outside** the definition, so
 the protected identity is unchanged:
 - the fixture regression enforces them exactly on the CI-re-executed prefix;
 - the LCB-003 campaign reducer enforces them as signed rule
-  `lcb-signed-ledger-v2` (#217).
+  `lcb-signed-ledger-v3` (#217). That rule superseded v2 after re-review N3/N4.
+  It binds species accounting to the declared initial state and validates
+  species evidence before any shortcut.
 
 A reactive species is never an explanation by itself. Where a campaign has not
 retained world-wide species counts or per-reaction amounts, the reducer reports
