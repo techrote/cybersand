@@ -112,6 +112,22 @@ class DeflectionLossN2(unittest.TestCase):
                     stages = [e.stage for e in res.entries]
                     self.assertLess(stages.index("support"), stages.index("deflect"))
 
+    def test_native_rest_registration_is_qualified(self):
+        # Re-review R5: the generated #212 registration must not demand rest when U3a may re-aim.
+        import physics_contracts
+        contract = [c for c in physics_contracts.contracts(physics_contracts.fixtures())["contracts"]
+                    if c["id"] == "inertial-update"][0]
+        rest = [r for r in contract["native_registrations_for_212"] if "initially at rest" in r]
+        self.assertTrue(any("both diagonals blocked" in r for r in rest), rest)
+        self.assertTrue(any("eligible diagonal re-aims" in r for r in rest), rest)
+        self.assertIn("static closed pool keeps every velocity exactly 0 (mandatory)",
+                      contract["native_registrations_for_212"])
+        self.assertFalse(any("supported cell with a free side keep" in r
+                             for r in contract["native_registrations_for_212"]))
+        # The reviewer's case: support below, a free side and an eligible diagonal re-aims from rest.
+        res = ic.update(ic.Grid(["#####", "#.W..", "###.."]), ic.Cell(2, 1, 0, 0))
+        self.assertEqual((res.cell.vx, res.cell.vy), (2, 2))
+
     def test_rest_qualification_reaim_is_intentional(self):
         # Diagonally blocked support: rest never drifts. An enterable diagonal re-aims from rest (U3a).
         self.assertEqual(run("supported-rest-free-side")["end"]["vx"], 0)

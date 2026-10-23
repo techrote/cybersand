@@ -365,3 +365,18 @@ of `efc5c12`. The measurements above are unchanged.
 
 No inertial World has executed. The boundary law in §E is unchanged: vertical
 density exchange only.
+
+**R5 follow-up (2026-10-23).** This responds to the
+[re-review](https://github.com/techrote/cybersand/pull/226#issuecomment-6366526752).
+The generated #212 native registration in the `inertial-update` contract
+still demanded zero velocity for "a supported cell with a free side". That
+requirement is now split into three registrations:
+- the mandatory static closed pool;
+- a supported cell **initially at rest with both diagonals blocked**;
+- a cell at rest with an eligible diagonal, which re-aims by design (U3a,
+  `reaim-from-rest`).
+
+The registry is regenerated. A regression (`test_native_rest_registration_is_qualified`)
+pins the qualification and the reviewer's case
+`["#####","#.W..","###.."]`, `Cell(2,1,0,0)` → `vx = vy = 2`. The deflection
+formula is unchanged.

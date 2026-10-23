@@ -1536,7 +1536,9 @@
       "native_registrations_for_212": [
         "reproduce every worked example on a single inertial cell in a native World fixture",
         "per-tick signed momentum and speed-loss ledgers close on the dam ladder and lock exchanges",
-        "static closed pool and a supported cell with a free side keep every velocity exactly 0",
+        "static closed pool keeps every velocity exactly 0 (mandatory)",
+        "a supported cell initially at rest with both diagonals blocked keeps every velocity exactly 0, even with a free side (U3b: no carried vy, no deflection)",
+        "a supported cell initially at rest with an eligible diagonal re-aims by design (U3a; example reaim-from-rest: vx = vy = 2) and is not a rest violation",
         "Wall, body mask and same-family contacts produce identical ledgers for identical geometry",
         "1/4-worker identical velocity/accumulator state in the physical-state hash"
       ],
