@@ -10,6 +10,8 @@ related-documents: [2026-10-23-lcb000-gate-b-state-handoff.md, ../research/mat-0
 
 # LCB-000 independent architectural review — 2026-10-23
 
+> **Later qualified status (2026-10-23):** [Gate A acceptance and Gate B S2A refresh](2026-10-23-lcb000-admission-gatea-gateb-refresh.md) records PR #214 merged at `69ded481a853abb0eefd5edcc79d5dffca10b1f2`, so A is now **PASS**; PR #211's separate 224/224 S2A run 39876455400 is also complete, preserving B's **bounded design PASS**. The A=BLOCKED and S2A=unmeasured statements below are an **accurate earlier checkpoint**, not current gate status. C/D/E remain BLOCKED and LCB-000 remains BLOCKED.
+
 ## Review identity and permission boundary
 
 Primary owner [#213](https://github.com/techrote/cybersand/issues/213), input [PR #214](https://github.com/techrote/cybersand/pull/214) reviewed at **00c17082a01de751b7834868f929d8f653cff6f6** (OPEN, unmerged); input [PR #215](https://github.com/techrote/cybersand/pull/215) at **6fc0e25a423324523c8cc468f59052231d4cb8d8** (OPEN, unmerged). PRs originated from native/Water source snapshot **9012425e3bba62aa1fefb15ea5d7306f196b8da2**, while inspected main is **4caa2c3561f50d91a92ebab645db1bfcb3856d9c**. Qualified MAT-003PREPASS readbacks are [PR #208](https://github.com/techrote/cybersand/pull/208) at **7b71fbb9e1b4286197fb948da3d34f3c3bd5f879** and stacked [PR #211](https://github.com/techrote/cybersand/pull/211) at **2b2a1dd64f16dc46d5e812b757de73f47df0fb2b**.

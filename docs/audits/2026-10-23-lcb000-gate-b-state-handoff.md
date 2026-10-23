@@ -10,6 +10,8 @@ related-documents: [../research/mat-003prepass-state-inventory.md, ../research/m
 
 # LCB-000 / Gate B: independently bounded authoritative-state handoff
 
+> **Later qualified evidence, 2026-10-23:** [Gate A acceptance and complete S2A performance reassessment](2026-10-23-lcb000-admission-gatea-gateb-refresh.md) records the separately successful 224/224 run 39876455400 (16 paired contrasts). The no-performance-data text below describes the **earlier failed first run** and is not current evidence status. The selected **bounded C64-E8 + optional solver-owned storage + authoritative gas-compartment table** recommendation is unchanged; no ABI/epoch/production selection follows.
+
 **Decision, 2026-10-23: PASS for the minimum reversible LCB-001 storage architecture only.** Retain the exact current 64-bit, eight-byte, eight-aligned production Cell and its existing state semantics. New experimental liquid families receive **optional, versioned, bounded, solver-owned storage** plus a World-owned gas-compartment table as required. Do not assign production spare bits or change the cell ABI. This acceptance means an architecture contract is available for integrating a validated policy and preparing a candidate; it does **not** admit pressure implementation while other LCB-000 gates are blocked, freeze numeric payload widths or persistence, accept pressure solver physics, finish MAT-003PREPASS, or authorize GEN-006 continuation.
 
 If the actual family implementation requires a representation that cannot be admitted through the proposed optional storage, stop and separately register a representation/migration decision with memory, correctness, platform, rollback and ABI evidence. Refusal is preferable to a silently lossy fallback.
