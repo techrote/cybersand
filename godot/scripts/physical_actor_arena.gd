@@ -298,6 +298,27 @@ func flight_contact_count(actor_id: int) -> int:
 	return state.get_contact_count() if state != null else -1
 
 
+func apply_flight_disturbance(actor_id: int, expected_epoch: int,
+		expected_tick: int, velocity_jump: Vector2, angular_jump: float) -> Dictionary:
+	# Bounded evaluator/host facility only, NOT an admitted policy action.
+	# All disturbance motion occurs as a Rapier impulse during next step.
+	if session == null or _finished or _paused or actor_id != 0 \
+		or not session.is_flight_actor(actor_id) or session.epoch != expected_epoch \
+		or session.tick != expected_tick or not velocity_jump.is_finite() \
+		or not is_finite(angular_jump) or velocity_jump.length() > 24.0 \
+		or absf(angular_jump) > 1.0:
+		return {"accepted": false, "reason": "disturbance_admission"}
+	var body: RigidBody2D = session.bodies()[0]
+	var linear_impulse: Vector2 = velocity_jump * body.mass
+	var angular_impulse: float = angular_jump * body.inertia
+	PhysicsServer2D.body_apply_central_impulse(body.get_rid(), linear_impulse)
+	PhysicsServer2D.body_apply_torque_impulse(body.get_rid(), angular_impulse)
+	return {"accepted": true, "epoch": expected_epoch, "tick": expected_tick,
+		"delta_velocity_cells_per_second": velocity_jump,
+		"delta_angular_velocity_rad_per_second": angular_jump,
+		"linear_impulse": linear_impulse, "angular_impulse": angular_impulse}
+
+
 func submit(command: Variant, producer: StringName = &"policy") -> bool:
 	if session == null or _finished or _paused:
 		last_error = "inactive_or_paused"
