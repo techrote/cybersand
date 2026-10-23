@@ -49,6 +49,24 @@ static func _save(directory: String, filename: String, value: Dictionary) -> Dic
 		"bytes": serialized.to_utf8_buffer().size()}
 
 
+static func _recovery_witness(record: Dictionary) -> bool:
+	var disturbance_tick: int = -1
+	for sample: Variant in record.get("trace", []):
+		if not sample is Dictionary:
+			continue
+		var receipt: Variant = sample.get("host_disturbance", {})
+		if receipt is Dictionary and bool(receipt.get("accepted", false)):
+			disturbance_tick = int(sample.get("tick", -1))
+			break
+	if disturbance_tick < 0:
+		return false
+	for sample: Variant in record.get("trace", []):
+		if sample is Dictionary and int(sample.get("tick", -1)) >= disturbance_tick \
+			and bool(sample.get("contact", false)):
+			return true
+	return false
+
+
 static func run(root_node: Node, group: String) -> Dictionary:
 	var scenario_ids: Array[String] = FREE_CASES if group == "free" else OBSTACLE_CASES
 	var failed: Array[String] = []
@@ -125,18 +143,24 @@ static func run(root_node: Node, group: String) -> Dictionary:
 			var record: Dictionary = env.record()
 			var metrics: Dictionary = record.metrics
 			var credit: bool = bool(env.transition(0).navigation_credit)
+			var recovery_witness: bool = true
+			if str(scenario.family) == "recovery":
+				recovery_witness = _recovery_witness(record)
+			var qualification_credit: bool = credit and recovery_witness
 			var category: String = str(model) + ":" + str(scenario.family)
 			var counter: Dictionary = family_counts.get(category,
 				{"attempted": 0, "successful": 0, "failed_physics": 0, "invalid_actions": 0})
 			counter.attempted += 1
-			counter.successful += int(credit)
+			counter.successful += int(qualification_credit)
 			counter.failed_physics += int(bool(metrics.failed))
 			counter.invalid_actions += int(metrics.invalid_actions)
 			family_counts[category] = counter
+			if str(scenario.family) == "recovery" and not recovery_witness:
+				failed.append("recovery_without_post_disturbance_contact:" + str(model))
 			if scenario_id in Course.NEGATIVE_IDS and credit:
 				failed.append("negative_control_received_navigation_credit:" + str(model))
 			if not bool(metrics.failed):
-				pass_count += int(credit)
+				pass_count += int(qualification_credit)
 			else:
 				failures += 1
 			var filename: String = str(model) + "_" + scenario_id + "_" + str(SEED) + ".json"
@@ -147,7 +171,8 @@ static func run(root_node: Node, group: String) -> Dictionary:
 				digest_inventory.append(inventory)
 			results.append({"model": str(model), "scenario": scenario_id,
 				"family": str(scenario.family), "seed": SEED,
-				"navigation_credit": credit, "metrics": metrics,
+				"navigation_credit": credit, "qualification_credit": qualification_credit,
+				"recovery_witness": recovery_witness, "metrics": metrics,
 				"trace_sha256": inventory.get("sha256", null),
 				"trace_filename": inventory.get("name", "")})
 			episodes += 1
