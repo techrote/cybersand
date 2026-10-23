@@ -24,9 +24,12 @@ are prospective admission requirements. The source string
 lab frontend, real synchronous episode owner, bounded local ray sensing and
 an observation-only reference teacher. **Not yet qualified** is the claim
 that teacher can navigate, brake, settle and recover on all four profiles:
-that requires passing actual-host scored runs on separately committed final
-geometry after freezing teacher source. This documentation describes source
-contracts and reproduction, not passing outcomes.
+that requires passing actual-host scored runs on a genuinely **externally sealed**
+final suite after freezing teacher/source identities. Earlier in-repository final
+layouts were disclosed during implementation and are **retired as scoring
+holdouts**. The [prospective v3 split correction](../../godot/tests/fixtures/4ly003_split_amendment_v3.json)
+now refuses final without an independently admitted external suite.
+This documentation describes source contracts and reproduction, not final pass.
 
 In-game entry: choose **4LY Flight Lab** in the feature menu, click
 **4LY flight lab** in the main sandbox, or launch with `--flight-lab`.
@@ -74,12 +77,20 @@ failure until physical feasibility is demonstrated. Environment
 randomness affects bounded authored geometry only; dynamics, response
 and controller are unchanged.
 
-Development, tuning and final use meaningfully different start/goal and
-additional obstacle geometry, not merely different seed labels.
-`godot/tests/fixtures/4ly003_qualification_registration.json` registers
-the prospective exact split and scoring thresholds. Do not use final
-geometry for teacher development; keep the final score blocked until a
-source freeze and exact-host preflight.
+**Development and tuning** retain distinct start/goal/obstacle geometries,
+not merely different seed labels. The
+[original numeric threshold registration](../../godot/tests/fixtures/4ly003_qualification_registration.json)
+still binds per-profile gates. Geometry-only
+[split amendment v2](../../godot/tests/fixtures/4ly003_split_amendment_v2.json)
+repairs pure vertical/horizontal/hover semantics; the later
+[v3 amendment](../../godot/tests/fixtures/4ly003_split_amendment_v3.json)
+explicitly retires disclosed public final examples. The published game
+checkout **cannot access the new final suite**. For genuine final admission,
+an independent reviewer must supply separately held
+`user://4ly003_sealed_final_suite.json` and an
+`user://4ly003_final_admission.json` binding the exact approved teacher,
+GitHub checkout source and suite SHA-256. Until then final episode reset
+fails closed. No final geometry is passed to a policy.
 
 ## Episode lifecycle and authority
 
@@ -208,25 +219,39 @@ admission failures; never substitute a recorded/dummy protocol fixture
 for training physics. One persistent actual host initially;
 multi-host concurrency needs an independently measured lane.
 
-A bounded **proposed** dense reward to be consumed by the *learner*,
-not used as a privileged teacher sensor: per-step progress
-`clip((d[t-1]-d[t])/16, -1,1)*0.3`, speed-aware arrival
-`+1.0` only after actual dwell, collision/contact
-`-min(contact_count,1)*0.02` per tick, optional elapsed-tick
-`-0.001`, true fault `-1.0`. Administrative deadline
-is a **truncation**, not an independent failure reward.
-Do not claim these rewards are implemented/trained at this checkpoint.
+**Implemented evaluator-only** bounded reward terms are recorded per
+consumed physical tick, not in the teacher/policy observation:
+`clip((d[t-1]-d[t])/16, -1,1)*0.3` progress,
+`+1.0` only upon nontrivial navigation success **after 36 low-speed dwell ticks**,
+`-min(contact_count,1)*0.02` per tick (contact is a 0/1 flag),
+`-0.001` elapsed-tick penalty and `-1.0` on a consumed physics fault.
+The first tick of each goal has zero progress reward (no prior distance).
+`transition(repeat)` returns the accumulated evaluator reward for exactly
+its consumed ticks; `transition(0)` grants zero reward, preventing duplicate
+training credit. Per-step terms and cumulative totals are retained in the
+evaluator trace and metrics only. Administrative deadline is a
+**truncation**, not an independently penalized failure. No neural-policy
+training has been performed.
 
-`godot/tests/test_physical_flight_lab.gd` is actual-host DEVELOPMENT
-smoke coverage plus negative controls; it does not score final.
-`godot/tests/test_physical_flight_pilot.gd` runs a
-prospectively capped 960 real physical-tick single-host pilot and
-records physics throughput, policy decisions/s, resets,
-JSON serialization, OS/CPU, Godot, memory and checkout context.
-Transport/inference overhead is null when not exercised.
-The actual measurement does not exist until a successful CI
-runtime artifact is published. Both tests are discovered by
-the normal Godot CI wildcard suite; no separate simulator is used.
+`godot/tests/test_physical_flight_lab.gd` supplies actual-host development
+smoke, privilege checks and negative controls; it does not score final.
+The two new wildcard cases
+`test_physical_flight_teacher_dev_free.gd` and
+`test_physical_flight_teacher_dev_obstacle.gd` exercise all four
+profiles on development-only geometry, retaining every per-tick positive
+and failed physical trial in bounded individual JSON files. The separate
+Python [readback](../../tools/ci/readback_4ly003_development.py)
+verifies the complete SHA-256 inventory, receipt attribution, tick
+sequence and positive/negative outcomes after Godot exits; no final
+qualification is inferred from a single seed.
+`godot/tests/test_physical_flight_pilot.gd` runs a prospectively
+capped 960 real physical-tick single-host pilot and records physics
+ticks/s, decisions/s, resets, JSON serialization, OS/CPU, Godot and
+memory. Transport/inference overhead remains null when unsupported.
+[The checkpoint audit](../audits/2026-10-23-4ly003-checkpoint.md)
+records preliminary earlier-source actual-host measurements, not a
+passing exact-final-head gate. All tests use the ordinary real native
+and Rapier runtime; no stand-alone simulator is introduced.
 
 ## Ownership and exclusions
 
