@@ -5,7 +5,7 @@ document-kind: evidence
 scope: Independent source/head-bound architectural and pre-implementation admission review of issue 213, Claude PRs 214 and 215, MAT-003PREPASS PRs 208 and 211
 canonical-for: [lcb000-independent-admission-disposition]
 last-reviewed: 2026-10-23
-related-documents: [2026-10-23-lcb000-gate-b-state-handoff.md, 2026-10-23-wex005-water-evidence-synthesis.md, 2026-10-23-lcb000-gate-a-water-pressure-admission.md, ../architecture/liquid-solver-family-policy.md, ../operations/lcb-water-comparison-and-fixtures.md]
+related-documents: [2026-10-23-lcb000-gate-b-state-handoff.md, ../research/mat-003prepass-state-inventory.md, ../research/mat-003prepass-gen006-handoff.md, ../operations/architecture-programme.md]
 ---
 
 # LCB-000 independent architectural review — 2026-10-23
