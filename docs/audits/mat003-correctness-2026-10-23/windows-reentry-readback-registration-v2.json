@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "registration_id": "mat003-windows-reentry-readback-v2-20261023",
+  "status": "proposal-awaiting-independent-source-protocol-admission-and-owner-authorization",
+  "purpose": "Full readback-only requalification of the existing immutable 152-case Windows correctness evidence with the repaired independent verifier. No candidate execution, build, timing, substitution, retry or selective case read is permitted.",
+  "parent_issue": 204,
+  "stacked_on_pr": 221,
+  "immutable_execution": {
+    "original_registration_sha256": "9b1dbfb70d90102b1a95a9fedb360daab7e1d14036b13757bbeb05d1cc5dc59e",
+    "executable_source_commit": "e655166989661617cd8d6cb4d58a71b9d88c9467",
+    "process_count": 152,
+    "processes_exit_zero": 152,
+    "stderr_empty": true,
+    "watchdog_stops": 0,
+    "timing": false,
+    "retained_archive_sha256": "5c658fb6a5df41e36e539a442d739d4316e4cfbc8a2460da31ac850bceb0e948",
+    "retained_archive_bytes": 97897664,
+    "result_sha256": "3ac1a9c3ae81b32d47a865174612bcafed01658140e4c56f961b56e6ca7ef3f1",
+    "inventory_sha256": "8a08b04ef76f23d26ddce6237bd1388b38a5c8082ac506c09f4657869b1b3e82"
+  },
+  "immutable_original_reader": {
+    "disposition": "refused",
+    "first_failure": "resident-015/event/B: resident sleep/exclusion witness absent",
+    "report_sha256": "4e581ae3ddc2edca8a23b0d8d0174fd57f2e87b2ce7767ad324d3cb0350b5a6a",
+    "reader_inventory_sha256": "2fa51b09ed67eb1ee97080685fea6e48f5de74adaf6e3b4c24418234ac86e7a7",
+    "source_sha256": {
+      "tools/experiments/mat003_correctness/readback.py": "e1dfa359e1d83e0c4797a53a3007476d1e72780596f4393aa376c107a4207a62",
+      "tools/experiments/mat003_correctness/world_oracle.py": "466e97cc4416c61875cd82d91bdc14824834b539c333d4a340c30b419dd02f86",
+      "tools/experiments/mat003_correctness/negative.py": "184abf33b4cd9fa98c7bb78a3795b6b1c9922b0342f32e710a3c60c371935b60"
+    }
+  },
+  "revised_verifier": {
+    "source_commit": "20e6647e9d05b0ed9837b8ca37feb3b1b9712c63",
+    "source_sha256": {
+      "tools/experiments/mat003_correctness/world_oracle.py": "b007036867c1fc2d03a224373e331561e8487fef59f1e7bfbac4ad279d6156c4",
+      "tools/experiments/mat003_correctness/readback.py": "3224f005be4b2630139e773d7f1c80b041f7a69c9752431dcc783a04e6a8f9f2",
+      "tools/experiments/mat003_correctness/negative.py": "be47679bea3b9ecc1532b29cd187d0031fa5c3d7c3171cddc3092b5c7f8736b1",
+      "tools/experiments/mat003_correctness/test_verifier_contracts.py": "a53ca86913df5b5572523d5db21fb9e5920294536d985cd2ab1e550148ea8791"
+    },
+    "corrected_predicate": [
+      "An inactive selected chunk is internally consistent only when chunk quiet_ticks equals sleep_after_quiet_ticks, every block is inactive, and every inactive block quiet count is either zero (never activated) or exactly the sleep threshold.",
+      "At least one inactive selected block must be at the sleep threshold; inactive flags alone are insufficient.",
+      "The cumulative BlockSleep physics diagnostic must be nonzero, binding the witness to an actual source sleep transition.",
+      "The deliberately excluded resident chunk (3,0) must remain active with chunk quiet_ticks zero and at least one active block below the sleep threshold.",
+      "Prepared clear may not fabricate activity events between B and P.",
+      "Cumulative activity counters may not regress, and BlockWake must increase from Q to R, binding narrow-to-512 reentry to a real wake transition.",
+      "All pre-existing cell-state, conservation, scheduling, refusal, cross-arm and endpoint checks remain unchanged."
+    ],
+    "focused_test_command": "python -B tools/experiments/mat003_correctness/test_verifier_contracts.py",
+    "focused_contracts": {
+      "rejection_fixtures": 32,
+      "positive_mixed_aged_never_activated_fixture": 1,
+      "decoder_crosscheck_records": 704
+    }
+  },
+  "required_full_readback_coverage": {
+    "cases": 152,
+    "full_endpoints": 992,
+    "metadata_only_refusal_endpoints": 8192,
+    "full_cell_records": 1164967936,
+    "cells_bin_bytes": 14853341184,
+    "tick_rows": 1180224,
+    "storage_operation_rows": 1048576,
+    "refusal_attempts": 4096,
+    "suites": {
+      "storage": 16,
+      "small": 48,
+      "natural": 8,
+      "resident": 64,
+      "refusal": 16
+    },
+    "normal_processes": 76,
+    "sanitized_processes": 76,
+    "require_every_registered_case": true,
+    "allow_subset": false,
+    "allow_selective_skip": false,
+    "allow_substitution": false
+  },
+  "required_semantic_checks": [
+    "sealed archive/inventory hashes and immutable execution identity",
+    "exact 152-case registration/matrix identity",
+    "all revised negative controls and decoder crosscheck",
+    "storage operation one-hot/copy/swap/clear/replace coverage",
+    "full endpoint ABI/schema/clock/clear/work/scheduler/resource contracts",
+    "complete cell decode, temperature, nonzero Empty/high-state and owner checks",
+    "Water/Sand source-sink conservation and closed-period accounting",
+    "resident sleep/exclusion, prepared-clear and reentry transition witnesses",
+    "resident excluded-Sand pause/reentry behavior",
+    "natural/prepared and event/reference exact-state joins",
+    "refusal nonmutation and failed-world recovery",
+    "all cross-arm common-control joins reached by the reader"
+  ],
+  "archive_sufficiency": {
+    "assessment": "sufficient-for-a-complete-readback-only-requalification-if-this-protocol-is-independently-admitted",
+    "basis": "The retained archive contains the complete registered process matrix, every full and metadata-only endpoint, full cells/ticks/operations/refusal records, activity metadata and cumulative physics diagnostics needed by the revised predicate. No new candidate observation is required by the repaired checks.",
+    "limitation": "Sufficiency is a protocol/source assessment, not semantic acceptance; the revised full readback has not been run."
+  },
+  "resource_limits": {
+    "aggregate_wall_seconds": 21600,
+    "verifier_rss_bytes": 2147483648,
+    "concurrency": 1,
+    "timing_measurement": false,
+    "candidate_processes_allowed": 0,
+    "builds_allowed": 0
+  },
+  "nonmutation_guarantees": [
+    "Read only the existing immutable retained archive.",
+    "Write verification output only to a new empty append-only output root.",
+    "Do not alter, replace, normalize, repair or regenerate any archive member.",
+    "Retain original reader source, original refusal and all prior failures unchanged.",
+    "Do not invoke candidate binaries, compiler, benchmark or timing paths."
+  ],
+  "failure_rules": [
+    "Any source/hash/inventory/count/semantic/resource mismatch refuses qualification.",
+    "Any missing endpoint or missing diagnostic refuses qualification; do not reconstruct it.",
+    "No retry of the revised full readback under the same authorization.",
+    "No selective case omission, replacement observation or fallback to the original weaker/stronger predicate.",
+    "Preserve complete revised reader output on success or failure."
+  ],
+  "authority": {
+    "independent_source_protocol_admitted": false,
+    "owner_readback_authorized": false,
+    "original_campaign_authorization_reused": false,
+    "full_revised_readback_executed": false,
+    "timing_authorized": false
+  }
+}
