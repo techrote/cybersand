@@ -10,6 +10,12 @@ related-documents: [../operations/local-build-and-validation.md, ../systems/phys
 
 # Physical actor intermittent timeout investigation
 
+The subsequent [break handover](2026-10-23-physical-actor-timeout-handover.md)
+records completed hosted campaigns and gate results observed at 20:22:47 UTC,
+including Windows timeout frequencies and valid second-campaign minidumps.
+Earlier queued/in-progress observations below are retained historical checkpoints.
+The root cause and a repaired zero-timeout campaign remain unresolved.
+
 ## Intake and recoverable source
 
 Investigation starts from fetched main `1f9336388f11be39abaae340a781a5eef52115d4`

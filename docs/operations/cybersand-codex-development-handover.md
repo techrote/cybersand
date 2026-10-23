@@ -16,6 +16,9 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 of intermittent 180-second arena/rig/course hangs. Use the
 [diagnostic and stress guide](local-build-and-validation.md#physical-actor-timeout-investigation)
 and [dated audit](../audits/2026-10-23-physical-actor-timeouts.md).
+The [owner-requested break handover](../audits/2026-10-23-physical-actor-timeout-handover.md)
+records completed hosted frequencies, valid dumps, passing ordinary gates and the
+uncompiled Rapier candidate. Resume from that checkpoint; no monitoring is scheduled.
 Root-cause repair and exact-head hosted acceptance remain pending; diagnostic
 instrumentation and local passes must not be described as a hang fix.
 
