@@ -67,7 +67,7 @@ scientific fixtures, materials and learned Jolt lane are untouched.
 | `arrival_braking` | Long-range arrival and speed-controlled settling |
 | `wide_corridor`, `offset_gates`, `corner`, `slalom` | Finite native material obstacles with profile-relative clearance |
 | `wall_recovery` | Bounded contact and recovery test |
-| `neutral_control`, `constant_control`, `power_off` | Negative controls; navigation credit always disallowed |
+| `neutral_control`, `constant_control`, `power_off` | Negative controls must demonstrably fail remote-target low-speed dwell; any genuine navigation success fails the negative gate |
 
 Nominal obstacle gaps are recorded separately from **measured** feasible
 transits: `feasible_clearance()` reports gap, actual profile collider
