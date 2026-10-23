@@ -40,6 +40,16 @@ def verify(root,apparatus):
         e=admission['admission_evidence']
         require(sha(Path(__file__))==e['timing_verifier_sha256'],'not the frozen independent verifier')
         require(sha(apparatus/'files.json')==e['files_sha256'] and sha(apparatus/'independent-readback.json')==e['readback_sha256'],'qualified apparatus mismatch')
+        apparatus_files=load(apparatus/'files.json')
+        apparatus_actual={p.relative_to(apparatus).as_posix() for p in apparatus.rglob('*')
+                          if p.is_file() and p.name not in ('files.json','independent-readback.json')}
+        require(set(apparatus_files)==apparatus_actual,'qualified apparatus inventory changed')
+        for name,digest in apparatus_files.items():
+            original=apparatus/name; resolved=original.resolve()
+            require(resolved.is_relative_to(apparatus.resolve()) and not original.is_symlink() and sha(original)==digest,
+                    'qualified apparatus content drift: '+name)
+        require(load(apparatus/'independent-readback.json')['status']=='qualification-readback-passed-timing-held' and
+                load(apparatus/'run.json')['source_head']==e['source_commit'],'apparatus readback/source identity differs')
         require(r['status']=='collected-not-accepted' and not r['errors'] and r['formal_timing_admitted'] is True,'incomplete timing campaign')
         require(r['admission_sha256']==sha(root/'admission.json') and r['authority_sha256']==sha(root/'authority.json'),'approval identity drift')
         require(r['collector_sha256']==e['timing_collector_sha256'] and r['source_commit']==e['source_commit'],'collector/source identity drift')
