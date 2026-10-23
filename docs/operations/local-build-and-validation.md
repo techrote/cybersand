@@ -604,6 +604,30 @@ The [physical Thunderbowl reference](../systems/thunderbowl-control-reference.md
 contains scene and headless runner examples. Its version-2 command and observation
 contract is separate from the sampled control lab below.
 
+### Runner IK joint-target checks
+
+**ACT-IK-001 development, actual host required:** the separate
+[Runner IK contract](../systems/physical-joint-targets.md) and
+[admission ledger](../audits/2026-10-23-act-ik-001-development-admission.md)
+require the pinned Godot 4.7 GDExtension/Rapier2D v0.35.2 runtime.
+From the checked-out repository root with the pinned binaries installed,
+the commands below run a source/protocol shape fixture and a **real**
+physical-session fixture:
+
+```sh
+godot --headless --path godot --script res://tests/test_physical_joint_target.gd
+godot --headless --path godot --script res://tests/test_physical_joint_session.gd
+```
+
+CI's `tools/ci/run_godot_regressions.py` automatically discovers both
+`test_*.gd` files and must also pass the normal Runner, physical usable
+and 4LY suites with zero hidden skips. The host fixture's 40/64-hex build
+identity is explicitly synthetic; a passing result cannot replace real
+source/runtime provenance. Final acceptance needs the exact NCA #55
+client/packet cross-check, actual compiled runtime hashes, motion/obstruction
+screens, independent review and NCA physical performance criteria.
+The current authored test files must not be cited as executed passes.
+
 ### Physical free-flight checks
 
 The internal [4LY family](../systems/physical-free-flight.md) uses the same
