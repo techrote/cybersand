@@ -1,0 +1,244 @@
+---
+title: 4LY-003 flight laboratory and actual-host episode contract
+status: Current
+document-kind: contract
+scope: Experimental single-host physics episode API and teacher source; final navigation admission and learned-policy qualification remain separately gated
+canonical-for: [4ly-flight-lab, 4ly-episodes, 4ly-scripted-teacher, 4ly-training-contract]
+last-reviewed: 2026-10-23
+related-documents: [physical-free-flight.md, physical-actor-rigs.md, ../operations/physical-actor-programme.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-23-4ly003-checkpoint.md]
+---
+
+# 4LY-003 physical flight laboratory
+
+## Current implementation and explicit admission boundary
+
+Issue [#207](https://github.com/techrote/cybersand/issues/207) follows
+4LY-001/#205 and 4LY-002/#206, merged as [PR #223](https://github.com/techrote/cybersand/pull/223)
+at `1f9336388f11be39abaae340a781a5eef52115d4`.
+All four real physical profile hashes and the unchanged source controller
+`fb86190c68c6a87e7d2ef7e845b1fb97305f188723a326f67f07caa6971cc8ae`
+are prospective admission requirements. The source string
+`calibration = "candidate_4ly002"` remains untouched.
+
+**Current checkpoint source** provides a new native-material flight course, playable
+lab frontend, real synchronous episode owner, bounded local ray sensing and
+an observation-only reference teacher. **Not yet qualified** is the claim
+that teacher can navigate, brake, settle and recover on all four profiles:
+that requires passing actual-host scored runs on separately committed final
+geometry after freezing teacher source. This documentation describes source
+contracts and reproduction, not passing outcomes.
+
+In-game entry: choose **4LY Flight Lab** in the feature menu, click
+**4LY flight lab** in the main sandbox, or launch with `--flight-lab`.
+The independent lab scene is **an entry mode of the same Godot application**,
+not an alternate physics engine. It uses the existing
+`CyberPhysicalActorArena` and `CyberPhysicalActorSession`:
+`CyberNativeCellWorld` -> copied native rigid-body mask ->
+native physics tick/coupling -> Rapier hard-terrain colliders and real body ->
+owner observation. One Rapier body per drone retains the configured mass,
+inertia, gravity, native mask, force/torque and controller unchanged.
+Desktop sandbox physics remains a separately paced host; the
+headless arena is a *synchronous* but fully physical execution route.
+The interactive flight scene invokes that same synchronous arena on
+each 60 Hz Godot physics callback.
+
+Game view: profile, scenario and producer selectors all perform a **fresh
+physical reset**. W/A/S/D or arrow keys request normalized desired velocity;
+scripted teacher and optional external policy submit through the same owner.
+External policy mode does not advance until an actual action is supplied;
+it does not fake a learned policy. Rendered start, goal/radius,
+obstacles and current rigid-body footprint are presentation only. F2/Exit
+returns to feature selection. Existing sandbox maps, actor selector,
+scientific fixtures, materials and learned Jolt lane are untouched.
+
+## Scenario and geometry contract
+
+`CyberPhysicalFlightCourse` owns fixed seeded scenarios in the rectangle
+`(128,128)-(640,352)`, with native-material perimeter and obstacles:
+
+| Scenario IDs | Family / mechanics |
+|---|---|
+| `unsupported_hover` | Hover and low-speed dwell; not navigation credit |
+| `horizontal_reach`, `vertical_reach`, `diagonal_reach` | Directed free-space movement |
+| `reverse` | Reach one waypoint, reverse and dwell at the second |
+| `arrival_braking` | Long-range arrival and speed-controlled settling |
+| `wide_corridor`, `offset_gates`, `corner`, `slalom` | Finite native material obstacles with profile-relative clearance |
+| `wall_recovery` | Bounded contact and recovery test |
+| `neutral_control`, `constant_control`, `power_off` | Negative controls; navigation credit always disallowed |
+
+Nominal obstacle gaps are recorded separately from **measured** feasible
+transits: `feasible_clearance()` reports gap, actual profile collider
+dimensions, nominal margin and `clearance_measured=false`.
+An obstructed Hauler episode cannot be scored as a learned-policy
+failure until physical feasibility is demonstrated. Environment
+randomness affects bounded authored geometry only; dynamics, response
+and controller are unchanged.
+
+Development, tuning and final use meaningfully different start/goal and
+additional obstacle geometry, not merely different seed labels.
+`godot/tests/fixtures/4ly003_qualification_registration.json` registers
+the prospective exact split and scoring thresholds. Do not use final
+geometry for teacher development; keep the final score blocked until a
+source freeze and exact-host preflight.
+
+## Episode lifecycle and authority
+
+`CyberPhysicalFlightEpisode` is the episode owner. `reset(model,scenario,
+seed,split,source)` creates fresh native World, isolated Rapier space,
+physical chassis, new session epoch/run ID, and invalidates all previous
+action authority. `observe()` publishes a fresh copied policy view.
+`tick(action, observation_id, repeat_ticks)` accepts new action **only**
+at 6-tick decision boundaries, with 1-6 real 60 Hz physical steps per
+call and never beyond the next decision boundary. Intermediate ticks
+carry the admitted controller request while its v2 lease remains live.
+Use `tick(null, "", 1)` on intermediate steps. The maximum lease is
+12 ticks; a new decision is required every six. An action is rejected
+*before* any physical step if malformed, nonfinite, stale, wrong epoch,
+wrong producer, or made from a revoked observation. One actual Rapier
+step and native tick are recorded for each consumed physics tick.
+
+No physical motion may be credited after first success, deadline, actor
+fault or administrative failure. The final real observation and physical
+receipt are retained. `transition()` distinguishes
+`terminated`, `truncated`, `failed`, `success`,
+`navigation_credit` and `reason`. Success requires entering
+the circle, reducing speed to at most 2.5 cells/s and holding for
+36 **consecutive physical ticks**. A high-speed pass-through cannot
+meet the dwell condition. A complete episode `record()` holds the
+actual `world_tick`, owner-observation identity, action request and
+admission, flight force/torque receipt, physical pose, contact count,
+dwell and termination. No direct velocity, position or actuator
+force writes originate in this layer.
+
+## Policy observation and normalization
+
+The versioned `4ly-observation/v1` dictionary is copied from the
+real owner and task goal. Fields in canonical insertion order:
+
+1. `version`, `action_version`, `run_id`, `actor_id`, `epoch`,
+   `observed_tick`, `observation_id`, `control_generation`
+2. `goal_delta_cells` (Vector2, world +x right/+y down),
+   `arrival_radius_cells` (scalar positive)
+3. `velocity_cells_per_second` (Vector2), `orientation_sin`,
+   `orientation_cos` (dimensionless), `angular_velocity_rad_per_second`
+4. `actuator_mode` (string), `assistance_valid`,
+   `command_age_ticks` (-1 if absent), `command_live`,
+   `lease_remaining_ticks`
+5. `resources` (continuous authored supply, powered,
+   fuel measurement invalid), `capabilities` (copied immutable
+   physical *values*, without model name), `local_obstacles`
+   (eight world-fixed rays, R/NE/N/NW/L/SW/S/SE, maximum 80 cells,
+   normalized hit distance, per-ray validity mask, hit flag)
+
+No absolute goal, scene geometry, route, future disturbance, evaluator
+status, reward, score, source profile ID or global map is provided.
+The policy producer and teacher see the same dictionary. Owner ray
+queries are 8 finite Rapier queries against *actual* installed native
+terrain colliders; invalid sensing is explicit with empty arrays and
+`available=false`. A valid ray with no collision reports distance
+1.0 and hit=false. Controller assistance receives **no** scene
+position, target or rays.
+
+`4ly-flat-observation/v1` is a **54-float**, fixed-order
+`CyberPhysicalFlightObservationAdapter.flatten()` output:
+
+| Offset (0-based) | Contents | Normalization and supported range |
+|---|---|---|
+| 0-1 | Relative goal x/y | divide 512 cells, clamp [-1,1] |
+| 2-3 | Own velocity x/y | divide respective `desired_speed`, clamp [-4,4] |
+| 4-5 | Angle sine/cosine | unchanged [-1,1] |
+| 6 | Angular velocity | divide 8 rad/s, clamp [-4,4] |
+| 7-11 | Mode one-hot | velocity, neutral, passive_no_lease, power_off, other |
+| 12 | Command age | -1/18 when absent, otherwise ticks/18; [-1,1] |
+| 13 | Live flag | 0 or 1 |
+| 14 | Remaining lease | ticks/18 in [0,1] |
+| 15 | Powered flag | 0 or 1 |
+| 16-29 | Physical capabilities | width/64, height/64, mass/20, inertia/14000, speed x/240, speed y/240, acceleration/1200, braking/1200, thrust response/5, velocity response/5, max force/24000, gravity/500, vertical force margin/24000, angular drag/8; each clamped [-1,1] |
+| 30-37 | 8 local ray distances | [0,1], zeroed if mask invalid |
+| 38-45 | 8 hit flags | 0/1, zeroed if invalid |
+| 46-53 | 8 validity masks | 0/1 |
+
+Malformed source versions or nonfinite values return an empty result
+rather than supplying fabricated observations. Capability scaling
+uses published schema bounds; raw physical values remain in the
+dictionary for diagnostics, and clipping is declared for the flat
+learner input. Negative velocity ratio may exceed 1 after real
+contact/impulse (clamped to 4, not silently recast as a new actuator).
+All arrays and dictionaries crossing the owner boundary are copied.
+
+Action version `4ly-action/v1` contains only
+`{"move": Vector2(x, y)}` with finite normalized components in
+[-1,1] and unit-disk normalization. This is wrapped in the existing
+v2 `physical_wire_action` envelope, never a second controller.
+
+## Teacher and qualification
+
+`CyberPhysicalFlightTeacher` uses permitted relative goal/velocity,
+published braking, acceleration and actuator response, and bounded
+local owner sensing. It applies a predictable stopping-distance planner
+with PD-like low-speed control and local potential-field obstacle
+correction. It has no profile-name-specific branches, future course
+geometry, hidden reward or privileged contact knowledge.
+The implementation may still require development-only tuning.
+Measured difficulty and feasibility (particularly corners/slalom,
+heavy Hauler response and Drifter overshoot) remain **open** until
+scored actual-host results have been retained.
+
+**Prospective pass gate**: independently per profile and family,
+nontrivial start-goal separation, minimum score counts,
+low-speed dwell, arrival/overshoot/contact metrics, zero rejected
+commands or physics faults, and zero navigation credit for trivial
+controls. Failed episodes and their reasons are retained.
+An issue/PR must not be accepted solely because the scripts import.
+After freezing the teacher and final geometry, run the separately
+registered final qualification on GitHub-hosted actual Godot/native
+and review every failed episode. Linux/Windows determinism is not
+assumed equivalent; differing runtimes need separate measured checks.
+
+## Training handoff, rewards, and limits
+
+The proposed `4LY-004` interface in
+`techrote/neural-cyber-automata#74` shall verify
+`4ly-episode/v1`, `4ly-observation/v1`,
+`4ly-flat-observation/v1` (54 fields), `4ly-action/v1`,
+`4ly_velocity_v1`, 60 Hz, 6-tick decisions, v2 producer lease,
+the four exact profile digests, controller digest, course version,
+Godot/native/Rapier versions and checkout SHA. Mismatches are
+admission failures; never substitute a recorded/dummy protocol fixture
+for training physics. One persistent actual host initially;
+multi-host concurrency needs an independently measured lane.
+
+A bounded **proposed** dense reward to be consumed by the *learner*,
+not used as a privileged teacher sensor: per-step progress
+`clip((d[t-1]-d[t])/16, -1,1)*0.3`, speed-aware arrival
+`+1.0` only after actual dwell, collision/contact
+`-min(contact_count,1)*0.02` per tick, optional elapsed-tick
+`-0.001`, true fault `-1.0`. Administrative deadline
+is a **truncation**, not an independent failure reward.
+Do not claim these rewards are implemented/trained at this checkpoint.
+
+`godot/tests/test_physical_flight_lab.gd` is actual-host DEVELOPMENT
+smoke coverage plus negative controls; it does not score final.
+`godot/tests/test_physical_flight_pilot.gd` runs a
+prospectively capped 960 real physical-tick single-host pilot and
+records physics throughput, policy decisions/s, resets,
+JSON serialization, OS/CPU, Godot, memory and checkout context.
+Transport/inference overhead is null when not exercised.
+The actual measurement does not exist until a successful CI
+runtime artifact is published. Both tests are discovered by
+the normal Godot CI wildcard suite; no separate simulator is used.
+
+## Ownership and exclusions
+
+Game UI owns inputs and screen-only drawing; Episode owns task
+terminal and observation projection; Course owns immutable native
+geometry; Arena owns native cellular effects and Rapier stepping;
+Session owns producer/lease authority; old Flight controller owns
+bounded force/torque. The teacher has access **only** to the
+policy observation. The native material solver, Water/LCB, 64-bit
+cell carrier, general ACT004 scientific fixtures and
+Jolt neural learning are not modified by this feature.
+
+An actual positive navigation score is **Planned/Unqualified** until
+both prospective qualification and exact-final-head Godot,
+GDExtension/Native and documentation/provenance gates are evidenced.
