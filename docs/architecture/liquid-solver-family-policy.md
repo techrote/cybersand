@@ -137,7 +137,7 @@ LiquidSolverPolicy v1
   capability_matrix_digest     : sha256 of the capability-matrix sources (derivation tool output)
   assignments[material_id]     : { family_code, variant_code }   // only for liquid descriptors; others must be default
   family_parameters[family]    : versioned typed parameter block owned by that family (e.g. inertial damping)
-  material_parameters[material]: versioned typed per-material block (e.g. W-CY Water viscosity), or absent
+  material_parameters[material]: versioned typed per-material block (e.g. the W-CY Water flow-rate parameter), or absent
   policy_hash                  : see canonical hashing below
 ```
 
@@ -191,7 +191,7 @@ Source anchors are `world.cpp` at `9012425`; that file is unchanged at main
 
 **Current dispatch, per cell.** The sequence is:
 
-- `World::update_cell` (L3500) skips cells under a transient body mask;
+- `World::update_cell` (L3500) skips any position under a transient body mask;
 - it calls `update_rule_kernel` (L2725 onward);
 - that computes the temporal lanes (`contact_chemistry_due`,
   `lifecycle_due` and so on, L2753);
@@ -201,13 +201,13 @@ Source anchors are `world.cpp` at `9012425`; that file is unchanged at main
 
 The Water kernel is `update_water` (L2650–L2723), which mixes material
 behaviour with FreeMass motion. A family-aware implementation splits each cell
-update into five stages:
+step into five stages:
 
 | Stage | Owner | Water content today | Under W-CY / W-PF / W-IN |
 |---|---|---|---|
 | 1. Contact chemistry | material (generic, pre-switch) | Pair rules with Water as a participant: Lava quench, Fire extinguish, Salt dissolve, Sodium react, Toxic Sludge, Molten Glass, BareIron, building materials | **Preserved unchanged.** Products take their own descriptor default state and family default state. Quantity follows the [state-transition matrix](#state-and-quantity-boundaries-gate-c-correction-2026-10-23). |
-| 2. Material pre-motion | material | Coherence countdown: `state_b` decremented each update (L2654–L2658) | **Preserved.** The family must decrement it, and must suppress *lateral* motion while it is above zero (L2687). Gravity still runs. |
-| 3. Motion and quantity | **family** | Gravity: merge into Water or move/swap (L2663–L2682). Then the adhesion film stop (≤`film()` on a non-Water/non-Empty support, L2691–L2695), `lateral_due` cadence, and the ¾-difference same-row relaxation with `tolerance()` (L2698–L2720). | **Replaced** by the family law. Adhesion is defined on fractional mass, so it is **not applicable** to whole-cell W-CY or whole-cell W-IN v1, where cells are always full. That is declared, not hidden. W-PF must state whether it keeps the film rule. |
+| 2. Material pre-motion | material | Coherence countdown: `state_b` decremented each tick it is visited (L2654–L2658) | **Preserved.** The family must decrement it, and must suppress *lateral* motion while it is above zero (L2687). Gravity still runs. |
+| 3. Motion and quantity | **family** | Gravity: merge into Water, relocate or swap (L2663–L2682). Then the adhesion film stop (≤`film()` on a non-Water/non-Empty support, L2691–L2695), `lateral_due` cadence, and the ¾-difference same-row relaxation with `tolerance()` (L2698–L2720). | **Replaced** by the family law. Adhesion is defined on fractional mass, so it is **not applicable** to whole-cell W-CY or whole-cell W-IN v1, which always hold `maximum()`. That is declared, not hidden. W-PF must state whether it keeps the film rule. |
 | 4. Post-motion coupling | material + World | `mix_after_motion` with the *actually moved* quantity (transport carrying/erosion, L2564 / L2568); body-mask contact via `transient_obstacle_at` (`record_transient_contact` in `transfer_water`/`try_move`); density exchange through `try_move` → `can_density_exchange` | **Preserved.** Moved quantity is `maximum()` for a whole-cell move. A family must call the same hooks with its real moved quantity. |
 | 5. Neighbour-observed identity | other kernels | Other kernels test for `Water` neighbours: Steam→Water product (L2849), Coal/Combustible extinguish (L2984), Cement cure (L3048), Ice/melt (L3026/L3142), Oil extinguish (L3205), Cloner (L3264), player payload (L3405) | **Preserved.** Identity stays `Material::Water` under every family. A product Water cell starts at `maximum()` and at that family's default state. |
 
@@ -248,7 +248,7 @@ are identical, apart from the declared stage-3 differences. Cases:
 - transport carrying with whole-cell moved mass.
 
 Each case also needs a negative control showing that a Water cell under W-CY
-never runs `flow_as_yielding_liquid` with Paste/Slush viscosity.
+never runs `flow_as_yielding_liquid` with Paste/Slush descriptor parameters.
 
 ### Validation and refusal (Proposed)
 
@@ -437,7 +437,7 @@ and `--check` (run in documentation CI) fails when that JSON is stale. The
 JSON has two kinds of content:
 
 - **Source facts:** parsed from `material.hpp` and `interaction_rules.hpp`.
-  These are material IDs, densities, kernels, lateral-flow modes, viscosity,
+  These are material IDs, densities, kernels, lateral-flow modes, flow-rate index,
   density motion and pair-rule participation.
 - **Reviewed design classifications:** hand-authored in the tool (`PROPOSED`,
   `VARIANTS`, `KERNEL_SPECIALIZATION`). These are the proposed, alternate and
@@ -445,7 +445,7 @@ JSON has two kinds of content:
 
 Each row records which fields are which. **The matrix is not mechanically
 derived executable solver coverage.** Only `current_default` cells execute.
-Unusual chemistry, temperature and viscosity cases are validated by #200/#212
+Unusual chemistry, temperature and flow-rate cases are validated by #200/#212
 implementation tests, not by this table.
 
 | Material (ID) | freemass_v1 | cellular_yield_v1 | pressure_flow_v1 | inertial_cellular_v1 |
