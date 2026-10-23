@@ -16,7 +16,7 @@ related-documents: [liquid-solver-family-policy.md, lcb-pressure-inertial-handof
 - **Proposed rows** are the contract that #200 (policy, `pressure_flow_v1`,
   whole-cell Water) and #212 (`inertial_cellular_v1`) must implement and
   test.
-- **Storage** follows the [Gate B bounded handoff](https://github.com/techrote/cybersand/pull/216):
+- **Storage** follows the [Gate B bounded handoff](../audits/2026-10-23-lcb000-gate-b-state-handoff.md) (accepted; [refresh](../audits/2026-10-23-lcb000-admission-gatea-gateb-refresh.md)):
   - the C64-E8 Cell is unchanged;
   - family state lives in **optional, versioned, solver-owned storage**, plus
     a **World-owned gas-compartment table**;
