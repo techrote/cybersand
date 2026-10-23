@@ -11,6 +11,8 @@ const UsableRuntime = preload("res://scripts/physical_usable_runtime.gd")
 const UsableCatalog = preload("res://scripts/usable_catalog.gd")
 const UsableCourse = preload("res://scripts/physical_usable_course.gd")
 const PlayerCourse = preload("res://scripts/player_playground_course.gd")
+const FlightCourse = preload("res://scripts/physical_flight_course.gd")
+const FlightProfile = preload("res://scripts/physical_flight_profile.gd")
 const VERSION: int = 2
 const PHYSICS_HZ: int = 60
 const MAX_TICKS: int = 36000
@@ -63,14 +65,14 @@ static func usable_course_config(model: StringName = &"digger", count: int = 8) 
 
 
 func _validated_config(value: Variant) -> Dictionary:
-	if not value is Dictionary or value.size() > 6:
+	if not value is Dictionary or value.size() > 8:
 		return {}
 	for key: Variant in value:
-		if str(key) not in ["version", "seed", "max_ticks", "actors", "local_patch_radius", "course"]:
+		if str(key) not in ["version", "seed", "max_ticks", "actors", "local_patch_radius", "course", "flight_scenario", "flight_split"]:
 			return {}
-	if not value.get("course", "manoeuvre") is String or str(value.get("course", "manoeuvre")) not in ["manoeuvre", UsableCourse.ID, PlayerCourse.ID]:
+	if not value.get("course", "manoeuvre") is String or str(value.get("course", "manoeuvre")) not in ["manoeuvre", UsableCourse.ID, PlayerCourse.ID, FlightCourse.ID]:
 		return {}
-	if not Session._integer(value.get("version", VERSION), VERSION, VERSION) \
+	if str(value.get("course", "")) == FlightCourse.ID:\n		if FlightCourse.scenario(str(value.get("flight_scenario", "")), int(value.get("seed", 0)), str(value.get("flight_split", "development"))).is_empty():\n			return {}\n	if not Session._integer(value.get("version", VERSION), VERSION, VERSION) \
 		or not Session._integer(value.get("seed", 0), 0, 2147483647) \
 		or not Session._integer(value.get("max_ticks", 600), 1, MAX_TICKS) \
 		or not Session._integer(value.get("local_patch_radius", 6), 0, 8):
@@ -103,9 +105,9 @@ func _validated_config(value: Variant) -> Dictionary:
 		definitions.append({"model": model, "producer": producer, "position": position})
 	if not Session.valid_definitions(definitions):
 		return {}
-	return {"version": VERSION, "seed": int(value.get("seed", 0)),
+	if str(value.get("course", "")) == FlightCourse.ID:\n		var flight_scenario: Dictionary = FlightCourse.scenario(str(value.get("flight_scenario", "")),\n			int(value.get("seed", 0)), str(value.get("flight_split", "development")))\n		if definitions.size() != 1 or not FlightProfile.has_rig(definitions[0].model) \\n			or Vector2(definitions[0].position).distance_to(Vector2(flight_scenario.start)) > 0.0001:\n			return {}\n	return {"version": VERSION, "seed": int(value.get("seed", 0)),
 		"max_ticks": int(value.get("max_ticks", 600)), "actors": definitions,
-		"local_patch_radius": int(value.get("local_patch_radius", 6)), "course": str(value.get("course", "manoeuvre"))}
+		"local_patch_radius": int(value.get("local_patch_radius", 6)), "course": str(value.get("course", "manoeuvre")),\n		"flight_scenario": str(value.get("flight_scenario", "")), "flight_split": str(value.get("flight_split", "development"))}
 
 
 func configure(value: Variant) -> bool:
@@ -130,6 +132,8 @@ func configure(value: Variant) -> bool:
 		rectangles = UsableCourse.layout()
 	elif validated.course == PlayerCourse.ID:
 		rectangles = PlayerCourse.layout()
+	elif validated.course == FlightCourse.ID:
+		rectangles = FlightCourse.layout(validated.flight_scenario, validated.seed, validated.flight_split)
 	for rectangle: Dictionary in rectangles:
 		if not world.diagnostic_fill_rect(rectangle.origin, rectangle.size, rectangle.material):
 			last_error = "native_layout"
@@ -241,6 +245,37 @@ func observation(actor_id: int) -> Dictionary:
 			own_effects.append(receipt.duplicate(true))
 	view["last_effects"] = own_effects
 	return view
+
+
+func local_flight_rays(actor_id: int, maximum_distance: float = 80.0) -> Dictionary:
+	# Narrow main-thread OWNER sensing over the same installed native terrain
+	# collision as the real body. Only bounded range fractions and masks leave.
+	if session == null or _viewport == null or _finished or _failed or actor_id != 0 \
+		or not session.is_flight_actor(actor_id) or maximum_distance < 8.0 or maximum_distance > 96.0:
+		return {"available": false, "distances": [], "hits": [], "valid": []}
+	var view: Dictionary = session.observation(actor_id)
+	var position: Vector2 = view.get("centre", Vector2.INF)
+	if not position.is_finite():
+		return {"available": false, "distances": [], "hits": [], "valid": []}
+	var body: RigidBody2D = session.bodies()[0]
+	var exclusions: Array[RID] = [body.get_rid()]
+	var vectors: Array[Vector2] = [Vector2.RIGHT, Vector2(1, -1).normalized(),
+		Vector2.UP, Vector2(-1, -1).normalized(), Vector2.LEFT,
+		Vector2(-1, 1).normalized(), Vector2.DOWN, Vector2(1, 1).normalized()]
+	var distances: Array[float] = []
+	var hits: Array[bool] = []
+	var valid: Array[bool] = []
+	for direction: Vector2 in vectors:
+		var query := PhysicsRayQueryParameters2D.create(position,
+			position + direction * maximum_distance, 1, exclusions)
+		query.hit_from_inside = false
+		var result: Dictionary = _viewport.world_2d.direct_space_state.intersect_ray(query)
+		var hit: bool = not result.is_empty()
+		distances.append(clampf(position.distance_to(Vector2(result.position)) / maximum_distance, 0.0, 1.0) if hit else 1.0)
+		hits.append(hit)
+		valid.append(true)
+	return {"available": true, "maximum_distance_cells": maximum_distance,
+		"distances": distances, "hits": hits, "valid": valid}
 
 
 func submit(command: Variant, producer: StringName = &"policy") -> bool:
@@ -368,6 +403,8 @@ func snapshot() -> Dictionary:
 		"usable_totals": {"requests": _usable_requests_total, "accepted": _usable_accepted_total,
 			"refused": _usable_refused_total, "changed_cells": _usable_changes_total},
 		"course": str(config.get("course", "manoeuvre")),
+		"flight_scenario": str(config.get("flight_scenario", "")),
+		"flight_split": str(config.get("flight_split", "")),
 		"course_sections": UsableCourse.sections() if config.get("course") == UsableCourse.ID else [],
 		"course_fixture_result": _course_fixture_result.duplicate(true),
 		"effect_totals": {"requests": _effect_requests_total, "changed_cells": _effect_changes_total, "refused": _effect_refusals_total},
