@@ -659,6 +659,294 @@ func complete_step() -> void:
 			_flight_prepared = false
 
 
+func ik_capabilities(actor_id: int) -> Dictionary:
+	if not _active or not is_joint_pilot(actor_id) or _suspended or not _joint_step_fault.is_empty():
+		return {}
+	var value: Dictionary = JointTargets.capability(_joint_host_identity, _catalogue[actor_id])
+	if value.is_empty() or not str(_rigs[actor_id].fault).is_empty():
+		return {}
+	value["actor_id"] = actor_id
+	value["run_id"] = run_id
+	value["epoch"] = epoch
+	value["incarnation"] = _rigs[actor_id].epoch
+	value["control_generation"] = _generations[actor_id]
+	value["source_owner"] = str(_definitions[actor_id].producer)
+	return value.duplicate(true)
+
+
+func ik_grant(actor_id: int, producer: StringName, source_id: String, policy_sha256: String,
+		goal_id: String, goal_deadline_tick: int) -> Dictionary:
+	# Trusted main-thread issue, not a client-provided grant or a wire packet.
+	if ik_capabilities(actor_id).is_empty() or producer != StringName(str(_definitions[actor_id].producer)) \
+		or not JointTargets.identifier(source_id) or not JointTargets.identifier(goal_id) \
+		or not JointTargets.digest(policy_sha256) \
+		or not JointTargets.integer(goal_deadline_tick, tick + 1, 9007199254740991):
+		last_error = "ik_grant_refused"
+		return {}
+	if not cancel_input(actor_id, epoch, producer) or not _rigs[actor_id].enable_joint_targets():
+		last_error = "ik_owner_transition_refused"
+		return {}
+	var granted: Dictionary = {
+		"protocol": JointTargets.PROTOCOL, "operation": "ik_grant", "version": 1,
+		"run_id": run_id, "actor_id": actor_id, "epoch": epoch,
+		"incarnation": _rigs[actor_id].epoch,
+		"control_generation": _generations[actor_id],
+		"source_id": source_id, "policy_sha256": policy_sha256,
+		"goal_id": goal_id, "goal_deadline_tick": goal_deadline_tick,
+		"grant_id": Crypto.new().generate_random_bytes(16).hex_encode(),
+		"grant_generation": _generations[actor_id],
+		"producer": str(producer), "profile_sha256": JointTargets.PROFILE_SHA256,
+		"topology_sha256": JointTargets.TOPOLOGY_SHA256,
+		"joint_ids": JointTargets.ACTIVE_JOINT_IDS.duplicate()
+	}
+	_joint_grants[actor_id] = granted.duplicate(true)
+	_joint_last_rejection[actor_id] = {}
+	return granted.duplicate(true)
+
+
+func ik_observe(actor_id: int, grant_id: String) -> Dictionary:
+	if ik_capabilities(actor_id).is_empty() or _joint_grants[actor_id].is_empty() \
+		or str(_joint_grants[actor_id].grant_id) != grant_id \
+		or int(_joint_grants[actor_id].control_generation) != _generations[actor_id] \
+		or tick >= int(_joint_grants[actor_id].goal_deadline_tick):
+		return {}
+	var view: Dictionary = observation(actor_id)
+	var chain: Array = JointTargets.observed_chain(view)
+	if chain.size() != 2 or view.get("parts", []).size() != 5 \
+		or not Vector2(view.get("position", Vector2.INF)).is_finite() \
+		or not is_finite(float(view.get("rotation", INF))):
+		return {}
+	var positions: Array = []
+	for joint: Dictionary in view.joints:
+		positions.append(float(joint.angle))
+	positions.append_array([null, null, null])
+	var digest: String = JointTargets.observation_digest(view)
+	var record: Dictionary = {
+		"protocol": JointTargets.PROTOCOL, "operation": "ik_observe",
+		"schema": "ik_host_observation/v1", "version": 1,
+		"run_id": run_id, "actor_id": actor_id, "epoch": epoch,
+		"incarnation": _rigs[actor_id].epoch, "control_generation": _generations[actor_id],
+		"grant_id": grant_id, "source_id": str(_joint_grants[actor_id].source_id),
+		"goal_id": str(_joint_grants[actor_id].goal_id),
+		"observed_tick": tick, "observation_id": str(view.observation_id),
+		"observation_sha256": digest,
+		"profile_sha256": JointTargets.PROFILE_SHA256,
+		"topology_sha256": JointTargets.TOPOLOGY_SHA256,
+		"root_pose": {"position_cells": [float(view.position.x), float(view.position.y)],
+			"angle_radians": float(view.rotation)},
+		"part_ids": JointTargets.PART_IDS.duplicate(),
+		"joint_ids": JointTargets.JOINT_IDS.duplicate(),
+		"part_present": [true, true, true, true, true, false, false, false],
+		"joint_present": [true, true, true, true, false, false, false],
+		"joint_measured": [true, true, true, true, false, false, false],
+		"joint_active": [false, false, true, true, false, false, false],
+		"joint_positions_radians": positions,
+		"measured_chain_radians": chain.duplicate(), "evidence_kind": "host_observation"
+	}
+	# Bounded original-observation archive, keyed by the exact issued tick.
+	# A later observation may never overwrite an earlier source frame.
+	var cache: Dictionary = _joint_observations[actor_id]
+	cache[str(tick)] = record.duplicate(true)
+	for key: Variant in cache.keys():
+		if int(key) < tick - JointTargets.MAX_LEASE:
+			cache.erase(key)
+	return record.duplicate(true)
+
+
+func _ik_refuse(actor_id: int, reason: String, request: Variant = null) -> Dictionary:
+	var refusal: Dictionary = {
+		"protocol": JointTargets.PROTOCOL, "operation": "ik_submit",
+		"accepted": false, "reason": reason, "owner_tick": tick,
+		"run_id": run_id, "actor_id": actor_id, "epoch": epoch
+	}
+	if request is Dictionary:
+		refusal["sequence"] = request.get("sequence", -1)
+		refusal["observation_id"] = request.get("observation_id", "")
+	if is_joint_pilot(actor_id):
+		_joint_last_rejection[actor_id] = refusal.duplicate(true)
+	last_error = reason
+	rejected_commands += 1
+	return refusal
+
+
+func ik_submit(value: Variant) -> Dictionary:
+	var reason: String = JointTargets.validation_error(value)
+	if not reason.is_empty():
+		return _ik_refuse(-1, reason, value)
+	var packet: Dictionary = value
+	var actor_id: int = int(packet.actor_id)
+	if not _active or _suspended or not is_joint_pilot(actor_id) \
+		or ik_capabilities(actor_id).is_empty() or _joint_grants[actor_id].is_empty():
+		return _ik_refuse(actor_id, "ik_capability_or_grant", packet)
+	var grant: Dictionary = _joint_grants[actor_id]
+	# Duplicates permit read-only lookup, never second admission or extension.
+	if int(packet.sequence) <= _joint_sequences[actor_id]:
+		for receipt: Dictionary in _joint_receipts[actor_id]:
+			if receipt.get("requested", {}) == packet:
+				var prior: Dictionary = receipt.duplicate(true)
+				prior["duplicate_lookup"] = true
+				return prior
+		return _ik_refuse(actor_id, "ik_sequence_replay", packet)
+	if packet.run_id != run_id or int(packet.epoch) != epoch \
+		or int(packet.incarnation) != _rigs[actor_id].epoch \
+		or int(packet.control_generation) != _generations[actor_id] \
+		or packet.producer != str(_definitions[actor_id].producer) \
+		or packet.source_id != grant.source_id or packet.policy_sha256 != grant.policy_sha256 \
+		or packet.grant_id != grant.grant_id or int(packet.grant_generation) != int(grant.grant_generation) \
+		or packet.goal_id != grant.goal_id or int(packet.goal_deadline_tick) != int(grant.goal_deadline_tick):
+		return _ik_refuse(actor_id, "ik_authority_mismatch", packet)
+	var original: Dictionary = _joint_observations[actor_id].get(str(packet.observed_tick), {})
+	if original.is_empty() or original.observation_id != packet.observation_id \
+		or original.observation_sha256 != packet.observation_sha256:
+		# The client may not swap an old q with a later root frame.
+		return _ik_refuse(actor_id, "ik_original_observation_mismatch", packet)
+	if int(original.control_generation) != _generations[actor_id] \
+		or not JointTargets.can_consume(int(packet.observed_tick), int(packet.lease_ticks),
+			int(grant.goal_deadline_tick), tick):
+		return _ik_refuse(actor_id, "ik_exclusive_expiry", packet)
+	var references: Array = JointTargets.resolve_targets(packet, original.measured_chain_radians)
+	if references.size() != 2:
+		# A delta beyond inner pose bounds is a refusal, never a hidden clamp.
+		return _ik_refuse(actor_id, "ik_resolved_target_bounds", packet)
+	_joint_sequences[actor_id] = int(packet.sequence)
+	_joint_targets[actor_id] = {
+		"packet": packet.duplicate(true), "references": references.duplicate(),
+		"control_generation": _generations[actor_id],
+		"grant_id": str(grant.grant_id), "observation_sha256": original.observation_sha256
+	}
+	var admission: Dictionary = {
+		"protocol": JointTargets.PROTOCOL, "operation": "ik_submit",
+		"accepted": true, "requested": packet.duplicate(true),
+		"admitted": {"owner_tick": tick, "references_radians": references.duplicate(),
+			"mode": JointTargets.MODE, "joint_ids": JointTargets.ACTIVE_JOINT_IDS.duplicate(),
+			"same_owner_and_limits_for_producers": true},
+		"limited": {"reference_projection": false, "reference_interpolation": false,
+			"motor_speed_and_slew_limited_at_consumption": true},
+		"integrity": {"original_observed_tick": int(packet.observed_tick),
+			"exclusive_deadline_tick": JointTargets.expiration(
+				int(packet.observed_tick), int(packet.lease_ticks), int(grant.goal_deadline_tick)),
+			"applied_tick_count": 0, "terminal_boundary": "not_consumed",
+			"missing_receipt_count": 0, "unknown_receipt_count": 0}
+	}
+	_joint_receipts[actor_id].append(admission.duplicate(true))
+	if _joint_receipts[actor_id].size() > 64:
+		_joint_receipts[actor_id].pop_front()
+	accepted_commands += 1
+	return admission.duplicate(true)
+
+
+func ik_receipts(actor_id: int, grant_id: String, sequence: int = -1) -> Array:
+	# Read-only lookup after cancellation is allowed; never reissues a grant.
+	if not is_joint_pilot(actor_id) or not JointTargets.identifier(grant_id):
+		return []
+	var found: Array = []
+	for receipt: Dictionary in _joint_receipts[actor_id]:
+		var packet: Dictionary = receipt.get("requested", {})
+		if str(packet.get("grant_id", "")) == grant_id \
+			and (sequence < 0 or int(packet.get("sequence", -1)) == sequence):
+			found.append(receipt.duplicate(true))
+	return found
+
+
+func ik_cancel(actor_id: int, grant_id: String, source_id: String) -> Dictionary:
+	if not is_joint_pilot(actor_id) or _joint_grants[actor_id].is_empty() \
+		or str(_joint_grants[actor_id].grant_id) != grant_id \
+		or str(_joint_grants[actor_id].source_id) != source_id:
+		return {"confirmed": false, "reason": "ik_grant_not_current"}
+	var old_generation: int = _generations[actor_id]
+	if not cancel_input(actor_id, epoch, StringName(str(_definitions[actor_id].producer))):
+		return {"confirmed": false, "reason": "ik_owner_revocation_failed"}
+	return {"protocol": JointTargets.PROTOCOL, "operation": "ik_cancel",
+		"confirmed": true, "tick": tick, "run_id": run_id, "actor_id": actor_id,
+		"epoch": epoch, "revoked_generation": old_generation,
+		"new_generation": _generations[actor_id], "grant_id": grant_id,
+		"old_motor_references_revoked": true, "momentum_reset": false}
+
+
+func _advance_joint_pilot(actor_id: int, delta: float) -> void:
+	if _joint_grants[actor_id].is_empty() or _joint_targets[actor_id].is_empty():
+		return
+	var active_target: Dictionary = _joint_targets[actor_id]
+	var packet: Dictionary = active_target.packet
+	var grant: Dictionary = _joint_grants[actor_id]
+	var original: Dictionary = _joint_observations[actor_id].get(str(packet.observed_tick), {})
+	var valid: bool = _active and not _suspended and _joint_step_fault.is_empty() \
+		and _rigs[actor_id].fault == "" and _generations[actor_id] == int(active_target.control_generation) \
+		and grant.grant_id == active_target.grant_id \
+		and int(grant.grant_generation) == _generations[actor_id] \
+		and int(grant.goal_deadline_tick) == int(packet.goal_deadline_tick) \
+		and str(_definitions[actor_id].producer) == str(packet.producer) \
+		and JointTargets.compatible_assembly(_catalogue[actor_id]) \
+		and not original.is_empty() and original.observation_sha256 == active_target.observation_sha256 \
+		and JointTargets.observed_chain(_rigs[actor_id].observation()).size() == 2 \
+		and JointTargets.can_consume(int(packet.observed_tick), int(packet.lease_ticks),
+			int(grant.goal_deadline_tick), tick)
+	if not valid or absf(delta - 1.0 / 60.0) > 0.000000001:
+		cancel_input(actor_id, epoch, StringName(str(_definitions[actor_id].producer)))
+		_joint_last_rejection[actor_id] = {"reason": "ik_consumption_authority_or_expiry", "owner_tick": tick}
+		return
+	var motor: Dictionary = _rigs[actor_id].advance_joint_targets(active_target.references, delta)
+	if motor.is_empty():
+		cancel_input(actor_id, epoch, StringName(str(_definitions[actor_id].producer)))
+		_joint_last_rejection[actor_id] = {"reason": "ik_motor_refused", "owner_tick": tick}
+		return
+	var report: Dictionary = {
+		"protocol": JointTargets.PROTOCOL, "operation": "ik_receipt", "version": 1,
+		"accepted": true, "requested": packet.duplicate(true),
+		"admitted": {"owner_tick": tick, "sequence": int(packet.sequence),
+			"control_generation": _generations[actor_id], "grant_id": str(grant.grant_id),
+			"references_radians": active_target.references.duplicate(),
+			"mode": JointTargets.MODE},
+		"limited": {"reference_radians": active_target.references.duplicate(),
+			"motor_slew_and_deadzone": motor.motors.duplicate(true)},
+		"motor": motor.duplicate(true),
+		"motion": {"available": false, "reason": "physics_step_not_completed"},
+		"integrity": {"requested_observed_tick": int(packet.observed_tick),
+			"consumed_base_tick": tick, "expected_physics_step": bridge.manual_step_count() + 1,
+			"actual_physics_step": null, "completed_base_tick": null,
+			"terminal_boundary": "pending_physics_completion",
+			"missing_receipt_count": 0, "unknown_receipt_count": 0}
+	}
+	_joint_receipts[actor_id].append(report.duplicate(true))
+	if _joint_receipts[actor_id].size() > 64:
+		_joint_receipts[actor_id].pop_front()
+	_joint_pending_steps[actor_id] = {"receipt_index": _joint_receipts[actor_id].size() - 1,
+		"physics_step": bridge.manual_step_count() + 1, "generation": _generations[actor_id]}
+
+
+func _complete_joint_step(actor_id: int) -> void:
+	if not is_joint_pilot(actor_id) or _joint_pending_steps[actor_id].is_empty():
+		return
+	var pending: Dictionary = _joint_pending_steps[actor_id]
+	var index: int = int(pending.receipt_index)
+	_joint_pending_steps[actor_id] = {}
+	if index < 0 or index >= _joint_receipts[actor_id].size():
+		return
+	var row: Dictionary = _joint_receipts[actor_id][index]
+	var actual: int = bridge.manual_step_count()
+	row.integrity.actual_physics_step = actual
+	row.integrity.completed_base_tick = tick
+	if actual != int(pending.physics_step):
+		row.integrity.terminal_boundary = "physics_step_mismatch"
+		row.integrity.missing_receipt_count = 1
+		return
+	var view: Dictionary = _rigs[actor_id].observation()
+	var angles: Array = JointTargets.observed_chain(view)
+	row.motion = {"available": angles.size() == 2, "completed_tick": tick,
+		"root_position": view.get("position", Vector2.ZERO),
+		"root_angle": view.get("rotation", 0.0),
+		"joint_angles_radians": angles.duplicate(), "part_motion": view.get("parts", []).duplicate(true),
+		"joint_motion": view.get("joints", []).duplicate(true),
+		"grounded": view.get("grounded", false),
+		"contact_normal": view.get("contact_normal", Vector2.ZERO),
+		"per_joint_force_telemetry": null, "passive_force_decomposition": null}
+	if angles.size() == 2:
+		var references: Array = row.admitted.references_radians
+		row.motion["tracking_error_radians"] = [
+			float(references[0]) - float(angles[0]), float(references[1]) - float(angles[1])]
+	row.integrity.terminal_boundary = "completed"
+
+
 func drain_effects() -> Array:
 	var result: Array = _effects.duplicate(true)
 	_effects.clear()
