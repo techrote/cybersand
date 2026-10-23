@@ -5,7 +5,8 @@ extends RefCounted
 # world. CyberPhysicalActorArena installs these rectangles in CyberNativeCellWorld
 # and rebuilds the normal Rapier hard-surface coupling from that same world.
 const VERSION: int = 1
-const SPLIT_VERSION: int = 2
+const SPLIT_VERSION: int = 3
+const Sealed = preload("res://scripts/physical_flight_sealed_suite.gd")
 const ID: String = "4ly-flight-course/v1"
 const ARENA = Rect2i(128, 128, 512, 224)
 const START = Vector2(192.0, 238.0)
@@ -24,6 +25,12 @@ const NEGATIVE_IDS: Array[String] = ["neutral_control", "constant_control", "pow
 static func scenario(id: String, seed: int = 0, split: String = "development") -> Dictionary:
 	if id not in IDS or seed < 0 or split not in ["development", "tuning", "final"]:
 		return {}
+	# The public v1 final geometry was disclosed during implementation and is
+	# INVALID as a sealed score. The successor independent suite lives outside
+	# the repository, loads only after a frozen-teacher/source admission, and
+	# provides exact geometry without leaking it to any policy observation.
+	if split == "final":
+		return Sealed.resolve(id, seed, scenario(id, seed, "development"))
 	# Neither scenario identity nor its evaluator geometry is policy input.
 	var start: Vector2 = START
 	var goals: Array[Vector2] = [Vector2(350.0, 238.0)]
@@ -97,12 +104,6 @@ static func scenario(id: String, seed: int = 0, split: String = "development") -
 			goals[index] += Vector2(-18.0, 16.0)
 		if id in OBSTACLE_IDS:
 			obstacles.append(_rect(558, 148, 10, 28))
-	elif split == "final":
-		start += Vector2(13.0, -25.0)
-		for index: int in range(goals.size()):
-			goals[index] += Vector2(-37.0, 26.0)
-		if id in OBSTACLE_IDS:
-			obstacles.append(_rect(544, 300, 20, 25))
 	# Geometry-split amendment v2: retain the semantics of HORIZONTAL,
 	# VERTICAL and HOVER tests. Off-axis variants would not test the same
 	# registered handling skill. This changes no physical plant or score gate.
@@ -119,8 +120,6 @@ static func scenario(id: String, seed: int = 0, split: String = "development") -
 		vertical_target.x = start.x
 		if split == "tuning":
 			vertical_target.y = 158.0
-		elif split == "final":
-			vertical_target.y = 147.0
 		goals = [vertical_target]
 	# Only bounded, mechanically irrelevant repeat variation on development
 	# and tuning. Final geometry is fully specified by its separate split.
