@@ -10,7 +10,9 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
-## MAT-003 continuation â€” 2026-10-23
+## MAT-003 continuation — 2026-10-23
+
+**Current isolated correctness apparatus: source-reviewed; build incomplete, binary admission refused.** The [source-closure checkpoint](../audits/2026-10-23-mat003-apparatus-source-closure.md) superseded the partial implementation hold. The later [authorized exact5380c76 Windows build](../audits/2026-10-23-mat003-build-only-admission.md) passed toolchain preflight, then stopped after the first World compile emitted warnings. Independent review refused the partial32-binary build; no candidate executable, qualification case or timing ran. A new source/contract/build authority is required before replacement. R16-T1 remains conditional; production and both draft PR states are unchanged. The consolidated report records the three previously accepted campaigns separately; the earlier admission-pending statement below is historical planning state.
 
 **Current replacement build artifacts admitted; candidate execution held.** The [reviewed isolated warning correction](../audits/2026-10-23-mat003-warning-fix-build.md) at6e85fe6 completed all32 Windows builds and independent binary admission. This supersedes the prior refused-build status only for the new attempt; all failures remain retained. No candidate binary/case or timing ran, Linux remains unexecuted, R16-T1 conditional and production unchanged. Both PRs stay draft.
 
@@ -18,17 +20,17 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 **Current accepted S2A / Planned independent continuation admission:** [PR #211](https://github.com/techrote/cybersand/pull/211) remains draft and stacked; accepted manual [run 39876455400](https://github.com/techrote/cybersand/actions/runs/39876455400) completed 224 processes and 16 contrasts. The [continuation report](../research/mat003-continuation.md) separates packed diagnosis (#218), actual wide-clear apparatus (#219) and 128-bit feasibility (#220). Optimized packed speed, E16/E24/E32 clear latency, C128 performance, S2B, production migration and GEN-006 remain unadmitted. The [dated continuation audit](../audits/2026-10-23-mat003-continuation.md) owns new execution status; prior 22 October next-step statements below are historical planning state.
 
-## MAT-003PREPASS S1 World apparatus â€” 2026-10-22
+## MAT-003PREPASS S1 World apparatus — 2026-10-22
 
 **Current registered Linux S1 correctness; broader qualification open:** [#204](https://github.com/techrote/cybersand/issues/204) retains the [S0 isolated-storage pass](../audits/2026-10-22-mat003-prepass-foundation.md), source inventory, epoch consumer audit and [proposed GEN-006 semantic handoff](../research/mat-003prepass-gen006-handoff.md). The [registered S1 apparatus](../operations/mat-003prepass-registration.md) adds seventeen real World arms using generated source copies, typed 8/16-bit counters, full semantic and conservation checks, and a gate covering two natural sixteen-bit rollovers. The registered normal/sanitized collection and independent readback passed at apparatus source `e31d296`; this qualifies the declared native Linux fixtures. The [World report](../audits/2026-10-22-mat003-world-correctness.md) owns execution status and limits. Production source and 64-bit/epoch8 storage remain unchanged.
 
-Historical 2026-10-22 next step: the [S2F source-only preflight](../audits/2026-10-22-mat003-s2f-preflight.md) passes six untimed Linux developer scenes and independent evidence readback. The remaining 18 source contexts, candidate observed twins and separately registered S2A/S2B paired measurements are unqualified; the S2 proposal remains unadmitted as a timing campaign. #204 remains open. Programme order is GEN-007 â†’ MAT-003PREPASS â†’ GEN-006 â†’ full MAT-003; GEN-006 architecture can continue, but durable state contracts must consume this prepass. #14/G-final and unrelated Water/soliding gates remain open.
+Historical 2026-10-22 next step: the [S2F source-only preflight](../audits/2026-10-22-mat003-s2f-preflight.md) passes six untimed Linux developer scenes and independent evidence readback. The remaining 18 source contexts, candidate observed twins and separately registered S2A/S2B paired measurements are unqualified; the S2 proposal remains unadmitted as a timing campaign. #204 remains open. Programme order is GEN-007 → MAT-003PREPASS → GEN-006 → full MAT-003; GEN-006 architecture can continue, but durable state contracts must consume this prepass. #14/G-final and unrelated Water/soliding gates remain open.
 
-## GEN-007 authoring and qualification â€” 2026-10-21
+## GEN-007 authoring and qualification — 2026-10-21
 
-**Current implementation with scoped qualification:** [Generation Workbench 2](../systems/generation-workbench-2.md) adds native provenance replay and true stages, transactional visual authoring, graph/hierarchy/plane diagnostics, undo/redo and bounded seed/recipe comparison. The [procedural qualification scene](../operations/procedural-qualification.md) supplies one compact 1024 Ã— 1024 four-plane map: four declared seeds pass final-raster structural and equivalence checks, eight paired-plane native exhibits pass mechanism controls, and retained display captures receive a qualified visual pass for approaching Deepworks. Broad negative spaces, repeated service cabinets and less varied fine machinery remain explicit. Source-matched Linux and Windows publication passed; the [dated ledger](../audits/2026-10-21-gen007-workbench-qualification.md) retains source/runtime identities, the revised 4 GiB graphical envelope and observed authoring hitches. [PR #198](https://github.com/techrote/cybersand/pull/198) records final exact-head repository acceptance and merge verification. GEN-006 remains the subsequent streaming/persistence owner.
+**Current implementation with scoped qualification:** [Generation Workbench 2](../systems/generation-workbench-2.md) adds native provenance replay and true stages, transactional visual authoring, graph/hierarchy/plane diagnostics, undo/redo and bounded seed/recipe comparison. The [procedural qualification scene](../operations/procedural-qualification.md) supplies one compact 1024 × 1024 four-plane map: four declared seeds pass final-raster structural and equivalence checks, eight paired-plane native exhibits pass mechanism controls, and retained display captures receive a qualified visual pass for approaching Deepworks. Broad negative spaces, repeated service cabinets and less varied fine machinery remain explicit. Source-matched Linux and Windows publication passed; the [dated ledger](../audits/2026-10-21-gen007-workbench-qualification.md) retains source/runtime identities, the revised 4 GiB graphical envelope and observed authoring hitches. [PR #198](https://github.com/techrote/cybersand/pull/198) records final exact-head repository acceptance and merge verification. GEN-006 remains the subsequent streaming/persistence owner.
 
-## Player control playground â€” 2026-10-20
+## Player control playground — 2026-10-20
 
 **Current experimental source:** the [player playground](../systems/player-control-playground.md)
 adds seven human movement presets and a dedicated course. Five mechanical
@@ -51,7 +53,7 @@ interaction, target-PC human feel, complete timed routes and new browser
 execution remain separate qualifications. Generic granular, soliding and Water
 successor work retains its own gates.
 
-## Exploratory actor integration and physical migration â€” 2026-10-18
+## Exploratory actor integration and physical migration — 2026-10-18
 
 **Current experimental desktop source, ACT-004:** F5 selects all 29 existing
 actor identities as articulated Rapier rigs, plus twelve SetX mechanisms, with
@@ -77,7 +79,7 @@ new physics on assumptions that the current implementation does not guarantee.
 The [validation ledger](validation-evidence.md) separates dated runtime results
 from inspected code. No documentation status is a blanket platform acceptance.
 
-## Recovery / current CI checkpoint â€” 2026-09-24
+## Recovery / current CI checkpoint — 2026-09-24
 
 The [final recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md)
 closes the 2026-09-20 through 2026-09-22 CI / Stage-3B recovery programme.
@@ -94,7 +96,7 @@ disposition.
 Remote `main` remains unprotected with no repository ruleset. The owner-side
 minimal protection action is explicitly documented; do not report it as installed.
 
-## Development-claims remediation checkpoint â€” 2026-09-20
+## Development-claims remediation checkpoint — 2026-09-20
 
 The [canonical remediation programme](../operations/development-claims-remediation-programme.md)
 governs F01-F19 and issues #79-#87. It separates Implemented, Integrated, Verified,
@@ -113,7 +115,7 @@ Historical completion records remain immutable.
 ## Current implementation map
 
 **Layered exhibition source, 2026-10-20:**
-[Deepworks](../operations/deepworks-exhibition.md) adds one 1024 Ã— 1024
+[Deepworks](../operations/deepworks-exhibition.md) adds one 1024 × 1024
 composition with sixteen districts, 32 foreground/rear native exhibits and all
 51 MAT-002 building materials. Four independent full-size worlds run at
 30/20/15/0 Hz; the true distant background is frozen. Finite reaction sources
@@ -121,16 +123,16 @@ preserve products, while the camera/painting viewer supports whole-map reset,
 apparatus focus and a guided tour. It does not install an ordinary actor session.
 The shared [depth APIs](../systems/depth-layers-and-parallax.md) now admit each
 axis from 8 through 1024, including non-square worlds, while preserving Strata
-Theatre's 640 Ã— 360 default. Native ABI and material rules are unchanged.
+Theatre's 640 × 360 default. Native ABI and material rules are unchanged.
 Runtime and actual rendered acceptance remain separately scoped by the
 [dated exhibition audit](../audits/2026-10-20-deepworks-exhibition.md).
 
 **Connected scene content, 2026-10-18:**
-[Blacksite Nine](../operations/blacksite-nine-demo.md) composes nine 320 Ã— 320
-districts into one 960 Ã— 960 native region: a surface laboratory between two
+[Blacksite Nine](../operations/blacksite-nine-demo.md) composes nine 320 × 320
+districts into one 960 × 960 native region: a surface laboratory between two
 wastelands, above six dense underground industrial districts. Twelve reciprocal
 ports and a common final passage carve connect the whole map. Shift+F11 and the
-Web demo menu install the complex; the 3Ã—3 map, atlas and following views change
+Web demo menu install the complex; the 3×3 map, atlas and following views change
 only the camera, while R resets all nine districts together. Its fixed interest
 region and world-coordinate presentation preserve continuity without introducing
 a streaming subsystem. The [dated scene audit](../audits/2026-10-18-blacksite-nine.md)
@@ -148,7 +150,7 @@ It is an aesthetic showcase; existing physics programmes retain their own gates.
 | Cellular authority and platform owners | Native World; asynchronous desktop GDScript owner, synchronous Web callbacks with optional internal pool; [threading](../architecture/simulation-tick-and-threading.md) |
 | Scheduler and storage | Sparse chunks, phased in-place jobs, explicit capacities and activity sleep; [chunk/tile model](../architecture/chunk-tile-and-buffer-model.md), [storage](../systems/world-storage-and-interest-region.md) |
 | Procedural generation candidates | Opt-in Strata, Flow Network and District Grammar; theme/brush/override/module recipes plus bounded scalar fields, masked context guidance and aggregate materials; copied chunk proposals and explicit fresh-chunk admission; [generation contract](../systems/procedural-world-generation.md), [field/modifier contract](../systems/procedural-generation-fields-and-modifiers.md) |
-| Materials | Bounded adapted kernels, mass-conserving native Water, discrete fallback, secondary interaction lanes; 51 MAT-002 building materials (IDs 81â€“131) with combustion and 42 versioned pair reactions; [materials](../systems/materials-and-rule-kernels.md), [building catalogue](../systems/building-material-catalogue.md), [Water](../systems/water-design.md). Source/runtime publication and completed-test scope are recorded in the [MAT-002 review](../audits/2026-10-19-mat002-review-and-validation.md). |
+| Materials | Bounded adapted kernels, mass-conserving native Water, discrete fallback, secondary interaction lanes; 51 MAT-002 building materials (IDs 81–131) with combustion and 42 versioned pair reactions; [materials](../systems/materials-and-rule-kernels.md), [building catalogue](../systems/building-material-catalogue.md), [Water](../systems/water-design.md). Source/runtime publication and completed-test scope are recorded in the [MAT-002 review](../audits/2026-10-19-mat002-review-and-validation.md). |
 | Field storage and events | Optional temperature storage and bounded explosions; no general heat/pressure/wind solver; [field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
 | Bodies and character | Main-thread Rapier, 64-ID rectangular native coupling, static terrain packets, 46 articulated [physical actors](../systems/physical-actor-rigs.md), shared keyboard/demo/policy control and usables; SetP circles retain conservative square native masks; sampled and single-hull references remain available |
 | Human movement playground | Seven [player presets](../systems/player-control-playground.md), keyboard/gamepad sampler, acrobat chains and separate leased native Sand/Water fields; course checkpoints and focused tests are not human feel or route-completion acceptance |
@@ -157,7 +159,7 @@ It is an aesthetic showcase; existing physics programmes retain their own gates.
 | Persistence | Fixed CYSD1 demo levels; complete resumed replay absent; [save contract](level-saves-and-replay.md) |
 | Runtime availability | All 18 required LFS payloads materialized; current execution scope is platform-specific; [build](../operations/local-build-and-validation.md) and [evidence](validation-evidence.md) |
 
-## Procedural generation candidate checkpoint â€” 2026-10-18
+## Procedural generation candidate checkpoint — 2026-10-18
 
 **Current source, GEN-001 / [#163](https://github.com/techrote/cybersand/issues/163):**
 three deterministic native candidates share hierarchical theme selections,
@@ -177,7 +179,7 @@ loading, resident-chunk eviction and modified-world persistence remain
 claim a merged release or platform acceptance; use the
 [dated GEN-001 evidence](../audits/2026-10-18-gen001-procedural-generation.md).
 
-## Procedural fields and aggregate checkpoint â€” 2026-10-18
+## Procedural fields and aggregate checkpoint — 2026-10-18
 
 **Current source, GEN-002 / [#171](https://github.com/techrote/cybersand/issues/171):**
 named fields add finite Hilbert/Morton ranks, structured noise, analytic masks,
@@ -196,7 +198,7 @@ source/runtime results and remaining publication/platform gates belong to the
 [GEN-002 evidence](../audits/2026-10-18-gen002-fields-and-aggregates.md), independently
 of the older GEN-001 checkpoint.
 
-## Typed spatial generation checkpoint â€” 2026-10-20
+## Typed spatial generation checkpoint — 2026-10-20
 
 **Current source implementation, GEN-003 / [#190](https://github.com/techrote/cybersand/issues/190):**
 explicit schema 2 adds signed scalar/distance, vector, exact category and boolean
@@ -219,7 +221,7 @@ continues with [GEN-004 #191](https://github.com/techrote/cybersand/issues/191),
 [GEN-006 #194](https://github.com/techrote/cybersand/issues/194). GEN-004 reuses
 the immutable geometry/assignment interfaces and the existing bounded solver.
 
-## Hierarchical places checkpoint â€” 2026-10-21
+## Hierarchical places checkpoint — 2026-10-21
 
 **Current source implementation, GEN-004 / [#191](https://github.com/techrote/cybersand/issues/191):**
 schema 3 adds a finite canonical regional hierarchy with stable rule/slot IDs,
@@ -241,9 +243,9 @@ recorded in the [GEN-004 audit](../audits/2026-10-21-gen004-hierarchical-generat
 
 This stage adds no persistent resident-world streaming, automatic player-edit
 reconciliation or semantic depth projection. The next programme stages remain
-GEN-005 â†’ GEN-007 â†’ GEN-006, subject to this issue's explicit acceptance gates.
+GEN-005 → GEN-007 → GEN-006, subject to this issue's explicit acceptance gates.
 
-## Semantic depth checkpoint â€” 2026-10-21
+## Semantic depth checkpoint — 2026-10-21
 
 **Current source implementation, GEN-005 / [#192](https://github.com/techrote/cybersand/issues/192):**
 [one semantic hierarchy projects into four planes](../systems/procedural-semantic-planes.md)
@@ -273,14 +275,14 @@ evidence defines each fix's platform acceptance.
 
 | ID | Precise uncertainty or contradiction | Next bounded check/decision |
 |---|---|---|
-| F01 â€” failed ticks | Current fix: latch failed World, distinguish attempted/completed ticks, suppress partial publication, stop desktop/Web owners; explicit reset/validated replacement, no replay/rollback | Windows/native acceptance and browser limits: [issue #1 evidence](../audits/2026-09-08-issue-1-failed-ticks.md); [tick contract](../architecture/simulation-tick-and-threading.md) |
-| F02 â€” region re-entry | Current fix: phased exclusion retains activity/quiet state; new core coverage wakes resident blocks once without catch-up. Serial still ignores the region | Separate and combined acceptance: [issue #2 evidence](../audits/2026-09-08-issue-2-interest-regions.md); [storage](../systems/world-storage-and-interest-region.md). Future field/streaming semantics remain open |
-| F03 â€” tick ownership | Desktop moves character before cells with async Rapier samples; Web moves character after cells and gates on terrain backlog | Decide which ordering differences are acceptable before a common physics/replay contract; [threading](../architecture/simulation-tick-and-threading.md) |
-| F04 â€” delayed rules and sleep | Current MAT-001 fix retains future compact-pair and Ice reaction opportunities across sleep and wakes the center block on body-mask changes; other specialized waiting paths remain material-specific | [Scoped #158 evidence](../audits/2026-10-18-mat001-material-reaction-progress.md), [materials](../systems/materials-and-rule-kernels.md); characterize further lifecycle/feel changes separately rather than claiming every material is accepted |
-| F05 â€” replay and fidelity | Current hashes omit some future-affecting state; CYSD1 omits more; no selectable strict runtime policy | Specify complete input/configuration identity, fidelity policy and replay schema before promising continuation; [determinism](../architecture/determinism-and-boundary-transfers.md) |
-| F06 â€” bounded operations | Native lazy allocation and partial failure coexist with Approved prepared/no-allocation goals; desktop input Array is unbounded | Define command backpressure, setup/reconfiguration and allocation accounting; [capacity](../operations/configuration-and-capacity-budgets.md) |
-| F07 â€” body physics scope | Rectangle proof does not settle general shapes, sweep/CCD, force/torque units, sample-age policy or particle overflow | Name units and fixture tolerances, extend one bounded coupling case at a time; [coupling](../architecture/rigid-body-and-cellular-coupling.md) |
-| F08 â€” build/release identity | CI 4.0.11 versus builder 4.0.20; missing native binding argument; compile-only skips runtime; historical template lock and base-only export identity | Current/M11 gate separation is implemented; remaining Web work stays in issue #3. [CI contradictions](../operations/github-development-and-release.md#unresolved-ci-contradictions) |
+| F01 — failed ticks | Current fix: latch failed World, distinguish attempted/completed ticks, suppress partial publication, stop desktop/Web owners; explicit reset/validated replacement, no replay/rollback | Windows/native acceptance and browser limits: [issue #1 evidence](../audits/2026-09-08-issue-1-failed-ticks.md); [tick contract](../architecture/simulation-tick-and-threading.md) |
+| F02 — region re-entry | Current fix: phased exclusion retains activity/quiet state; new core coverage wakes resident blocks once without catch-up. Serial still ignores the region | Separate and combined acceptance: [issue #2 evidence](../audits/2026-09-08-issue-2-interest-regions.md); [storage](../systems/world-storage-and-interest-region.md). Future field/streaming semantics remain open |
+| F03 — tick ownership | Desktop moves character before cells with async Rapier samples; Web moves character after cells and gates on terrain backlog | Decide which ordering differences are acceptable before a common physics/replay contract; [threading](../architecture/simulation-tick-and-threading.md) |
+| F04 — delayed rules and sleep | Current MAT-001 fix retains future compact-pair and Ice reaction opportunities across sleep and wakes the center block on body-mask changes; other specialized waiting paths remain material-specific | [Scoped #158 evidence](../audits/2026-10-18-mat001-material-reaction-progress.md), [materials](../systems/materials-and-rule-kernels.md); characterize further lifecycle/feel changes separately rather than claiming every material is accepted |
+| F05 — replay and fidelity | Current hashes omit some future-affecting state; CYSD1 omits more; no selectable strict runtime policy | Specify complete input/configuration identity, fidelity policy and replay schema before promising continuation; [determinism](../architecture/determinism-and-boundary-transfers.md) |
+| F06 — bounded operations | Native lazy allocation and partial failure coexist with Approved prepared/no-allocation goals; desktop input Array is unbounded | Define command backpressure, setup/reconfiguration and allocation accounting; [capacity](../operations/configuration-and-capacity-budgets.md) |
+| F07 — body physics scope | Rectangle proof does not settle general shapes, sweep/CCD, force/torque units, sample-age policy or particle overflow | Name units and fixture tolerances, extend one bounded coupling case at a time; [coupling](../architecture/rigid-body-and-cellular-coupling.md) |
+| F08 — build/release identity | CI 4.0.11 versus builder 4.0.20; missing native binding argument; compile-only skips runtime; historical template lock and base-only export identity | Current/M11 gate separation is implemented; remaining Web work stays in issue #3. [CI contradictions](../operations/github-development-and-release.md#unresolved-ci-contradictions) |
 
 ## Approved, Planned, Deferred and Rejected work
 
@@ -330,7 +332,7 @@ runtimes and a focused recurrence regression. See the
 This does not convert the historical result into broad acceptance. The owner
 clarification still treats the barrel as a generic Rapier reference body and does
 not accept the historical ordinary envelope as finished body physics. **#83 /
-REM-004 is now the bodyâ†”granular acceptance owner after REM-002**. Raising impulse
+REM-004 is now the body↔granular acceptance owner after REM-002**. Raising impulse
 caps alone remains an invalid substitute. The
 [remediation programme](../operations/development-claims-remediation-programme.md)
 owns these claim-state distinctions; #12 remains independently active.
@@ -369,7 +371,7 @@ retains explicit invalid-spawn repair while refusing runtime actor reordering.
 The barrel candidate keeps native cells as material authority and main-thread
 Rapier as body authority. Horizontal movement is a bounded additive impulse after
 cellular reaction, with no vertical velocity assignment and no generic
-bodyâ†”granular semantic change. #83 remains the production body-envelope owner and
+body↔granular semantic change. #83 remains the production body-envelope owner and
 #132 remains open for later representation experiments and selection.
 
 ## PENV-001 player/environment tuning checkpoint
@@ -394,7 +396,7 @@ sensitivity multipliers. Liquid sensitivity is inspectable/captured only; Water
 and generic-body semantics are unchanged. Parent #133 remains the long-lived
 programme for later environment/player tuning after finite child #138.
 
-## Provisional actor control checkpoint â€” 2026-10-18
+## Provisional actor control checkpoint — 2026-10-18
 
 **Current sampled reference implementation, experimental:** ACT-002 / #168 expands the original
 ACT-001 trio into 29 [actor rigs](../systems/actor-rigs.md) across SetA/B/F/Y/U/V.
@@ -423,7 +425,7 @@ Registered scientific/control fixtures retain their existing actor identities.
 Use the [validation ledger](validation-evidence.md) for scoped execution evidence;
 the preserved ACT-001 audit does not automatically validate the additional rigs.
 
-## Physical actor usable checkpoint â€” 2026-10-19
+## Physical actor usable checkpoint — 2026-10-19
 
 **Current experimental source, USABLE-002 / ACT-005 / #182:** the
 [32-entry equipment catalogue](../systems/actor-usables.md) is reconciled with
@@ -524,16 +526,16 @@ thresholds by tick 4800; this is a corrected Current-Water observation, not a ne
 solver selection. Production Water is unchanged. #95 must synthesize this control
 with WEX evidence before #45 may proceed, narrow, recharter, defer or no-go.
 
-## Water hybrid / pressure extension checkpoint â€” 2026-09-20
+## Water hybrid / pressure extension checkpoint — 2026-09-20
 
 The [WEX programme](../operations/water-hybrid-pressure-extension-programme.md)
 and tracker [#90](https://github.com/techrote/cybersand/issues/90) add a parallel
 investigation before any new #45 pressure/head mechanism is treated as inevitable.
 
 - [#91](https://github.com/techrote/cybersand/issues/91) freezes current generic
-  Rapierâ†”Water splash/displacement and hard-boundary failure evidence.
+  Rapier↔Water splash/displacement and hard-boundary failure evidence.
 - [#92](https://github.com/techrote/cybersand/issues/92) is dispositioned
-  **BLOCKED** on current main: the required generic dynamic cellâ†”Rapier singular-owner
+  **BLOCKED** on current main: the required generic dynamic cell↔Rapier singular-owner
   handoff remains Planned/model-only under #12. No sheet arm ran and the hypothesis
   is untested, not rejected. See the
   [blocked disposition](../audits/2026-09-24-wex002-water-sheet-blocked-disposition.md).
@@ -767,11 +769,11 @@ the 8-byte superset carrier after #19 integration;
 the [storage contract](../architecture/chunk-tile-and-buffer-model.md) supersedes
 earlier four-byte physical-size statements for this source without selecting G-final.
 
-## Combined desktop features and physical actor trial â€” 2026-10-18
+## Combined desktop features and physical actor trial — 2026-10-18
 
 The [physical actor programme](../operations/physical-actor-programme.md) retains the initial barrel/Ripper comparison and owner notes. The [ACT-004 contract](../systems/physical-actor-rigs.md) now owns articulation, shared physical control and usable attachments. Broad granular acceptance remains separate; owner observations and scripted fixture results are distinct forms of evidence.
 
-## Strata Theatre integration â€” 2026-10-18
+## Strata Theatre integration — 2026-10-18
 
 The opt-in [depth prototype](../systems/depth-layers-and-parallax.md) supplies four native material worlds and five compositor modes. It remains a synchronous comparison host, separate from ordinary asynchronous gameplay; production layering, immutable native-event forwarding, persistence and browser qualification remain Planned.
 
