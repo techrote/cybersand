@@ -10,6 +10,14 @@ related-documents: [physical-free-flight.md, actor-usables.md, actor-rigs.md, th
 
 # Articulated Rapier actors and shared physical control
 
+**Separate ACT-IK-001 experiment:** the
+[Runner joint-target pilot](physical-joint-targets.md) is an explicitly
+admitted five-part, equipment-free instance of the original Runner,
+with exclusive right-joint angle targets and source-bound actual-host
+receipts. It is not an additional roster ID or a conversion of the
+ordinary six-body equipped Runner. [Its admission ledger](../audits/2026-10-23-act-ik-001-development-admission.md)
+records the pending NCA and physical verification gates.
+
 ## Which actors are physical?
 
 **Current experimental desktop source:** all 29 original actor identities have
