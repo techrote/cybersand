@@ -182,6 +182,12 @@ func tick(action: Variant = null, observation_id: String = "", repeat_ticks: int
 			_fail("invalid_or_stale_action")
 			return transition(0)
 		var owner: Dictionary = arena.observation(0)
+		if str(owner.get("observation_id", "")) != observation_id \
+			or int(owner.get("control_generation", -1)) != int(_observation.get("control_generation", -2)) \
+			or int(owner.get("tick", -1)) != int(_observation.get("observed_tick", -2)):
+			_invalid_actions += 1
+			_fail("owner_observation_fenced")
+			return transition(0)
 		command = Session.make_command(owner, int(owner.last_sequence) + 1, normalized, LEASE_TICKS)
 		_decisions += 1
 	var consumed: int = 0
@@ -189,16 +195,14 @@ func tick(action: Variant = null, observation_id: String = "", repeat_ticks: int
 		var before: int = int(arena.session.tick)
 		var requested: Dictionary = command.duplicate(true) if index == 0 else {}
 		var accepted: bool = true
-		if not requested.is_empty() and source == &"human":
-			accepted = arena.submit(requested, &"human")
-		var frame: Dictionary = arena.step([requested] if not requested.is_empty() and source != &"human" else [])
-		if not requested.is_empty() and source != &"human":
-			var command_results: Array = frame.get("command_results", [])
-			accepted = command_results.size() == 1 and bool(command_results[0].get("accepted", false))
+		if not requested.is_empty():
+			accepted = arena.submit(requested, &"human" if source == &"human" else &"policy")
 		if not accepted:
+			# A rejected command must never advance even one real physics tick.
 			_invalid_actions += 1
 			_fail("action_admission: " + arena.last_error)
 			break
+		var frame: Dictionary = arena.step([])
 		if int(arena.session.tick) != before + 1:
 			_fail("physics_tick_not_consumed")
 			break
@@ -223,7 +227,8 @@ func _assess_tick(owner: Dictionary, frame: Dictionary,
 		return
 	var distance: float = centre.distance_to(goal)
 	var speed: float = velocity.length()
-	var contact: bool = Vector2(owner.get("contact_normal", Vector2.ZERO)).length_squared() > 0.01
+	var contact_count: int = arena.flight_contact_count(0)
+	var contact: bool = contact_count > 0
 	_contacts += int(contact)
 	if distance > _last_distance + 4.0 and _last_distance < float(scenario.arrival_radius) * 2.0:
 		_overshoot += 1
@@ -238,7 +243,8 @@ func _assess_tick(owner: Dictionary, frame: Dictionary,
 		"admitted": accepted if not requested.is_empty() else null,
 		"physical_receipt": received,
 		"centre": centre, "velocity": velocity, "distance": distance,
-		"dwell": _dwell, "contact": contact, "physics_fault": bool(frame.get("failed", false))})
+		"dwell": _dwell, "contact": contact, "contact_count": contact_count,
+		"physics_fault": bool(frame.get("failed", false))})
 	if bool(frame.get("failed", false)):
 		_fail("actual_host: " + str(frame.get("reason", "")))
 		return
@@ -288,7 +294,7 @@ func metrics() -> Dictionary:
 		"final_goal_error_cells": distance, "final_speed_cells_per_second": speed,
 		"successful_dwell": _success, "best_error_cells": _best_distance,
 		"overshoot_events": _overshoot, "contact_ticks": _contacts,
-		"invalid_actions": _invalid_actions, "terminated": _terminal,
+		"invalid_actions": _invalid_actions, "terminated": _terminal and not _failed and not _truncated,
 		"failed": _failed, "truncated": _truncated, "reason": _reason}
 
 
