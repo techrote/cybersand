@@ -394,6 +394,519 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
 
+
+  fourly003-final-qualification:
+    name: 4LY-003 sealed final qualification
+    needs: linux-build
+    if: >-
+      always() &&
+      github.event_name == 'pull_request' &&
+      github.event.action == 'ready_for_review' &&
+      github.event.pull_request.number == 229 &&
+      github.event.pull_request.draft == false &&
+      needs.linux-build.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      FROZEN_TEACHER_SHA256: 0fb571cfd314a53fc86b3517fb5a8258a77d7215fcbcb43fc7f53519e7e29761
+      FINAL_EVIDENCE: ${{ github.workspace }}/build/4ly003-final
+    steps:
+      - name: Check out exact frozen candidate
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Restore exact Linux runtime
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: linux-runtime-${{ github.run_id }}
+          path: build/linux-runtime
+
+      - name: Verify source, teacher freeze and exact runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(cat build/linux-runtime/source-sha.txt)" = "$(git rev-parse HEAD)"
+          (cd build/linux-runtime && sha256sum --check --strict runtime.sha256)
+          cp build/linux-runtime/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/
+          cp build/linux-runtime/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so godot/addons/godot-rapier2d/bin/
+          timeout 1m tools/check_linux_runtime_floor.sh
+          ACTUAL_TEACHER="$(sha256sum godot/scripts/physical_flight_teacher.gd | awk '{print $1}')"
+          test "$ACTUAL_TEACHER" = "$FROZEN_TEACHER_SHA256"
+          mkdir -p "$FINAL_EVIDENCE/sealed-input"
+          printf '%s\n' "$GITHUB_SHA" > "$FINAL_EVIDENCE/source-sha.txt"
+          printf '%s\n' "$ACTUAL_TEACHER" > "$FINAL_EVIDENCE/teacher-sha256.txt"
+          cp build/linux-runtime/runtime.sha256 "$FINAL_EVIDENCE/runtime.sha256"
+
+      - name: Prepare exact Godot runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$GODOT_BIN"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+
+      - name: Install software rendering display
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes xvfb xauth libgl1-mesa-dri mesa-utils
+
+      - name: Independently generate and preflight one-use sealed final suite
+        id: sealed
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from __future__ import annotations
+          import hashlib
+          import json
+          import math
+          import os
+          import random
+          from itertools import product
+          from pathlib import Path
+
+          ids = [
+              "unsupported_hover", "horizontal_reach", "vertical_reach",
+              "diagonal_reach", "reverse", "arrival_braking",
+              "wide_corridor", "offset_gates", "corner", "slalom",
+              "wall_recovery", "neutral_control", "constant_control", "power_off",
+          ]
+          seeds = [419, 421, 431, 433]
+          teacher = os.environ["FROZEN_TEACHER_SHA256"]
+          source = os.environ["GITHUB_SHA"]
+          run_id = os.environ["GITHUB_RUN_ID"]
+          seed_material = f"4ly003-independent-final-v1:{run_id}:{source}:{teacher}".encode()
+          rng = random.Random(int.from_bytes(hashlib.sha256(seed_material).digest(), "big"))
+
+          def rect(x: int, y: int, w: int, h: int) -> dict:
+              return {"origin": [x, y], "size": [w, h], "material": 1}
+
+          cases: list[dict] = []
+          for seed in seeds:
+              dx = rng.randint(-6, 6)
+              dy = rng.randint(-6, 6)
+              shift = rng.randint(-3, 3)
+              vertical = rng.randint(-3, 3)
+
+              def add(case_id: str, start: tuple[int, int],
+                      goals: list[tuple[int, int]], obstacles: list[dict]) -> None:
+                  cases.append({
+                      "id": case_id,
+                      "seed": seed,
+                      "start": list(start),
+                      "goals": [list(v) for v in goals],
+                      "obstacles": obstacles,
+                  })
+
+              add("unsupported_hover", (238 + dx, 220 + dy), [(238 + dx, 220 + dy)], [])
+              add("horizontal_reach", (184 + dx, 236 + dy), [(382 + dx, 236 + dy)], [])
+              add("vertical_reach", (214 + dx, 288 + dy), [(214 + dx, 166 + dy)], [])
+              add("diagonal_reach", (186 + dx, 300 + dy), [(386 + dx, 176 + dy)], [])
+              add("reverse", (188 + dx, 236 + dy),
+                  [(382 + dx, 236 + dy), (216 + dx, 236 + dy)], [])
+              add("arrival_braking", (186 + dx, 242 + dy), [(490 + dx, 242 + dy)], [])
+
+              add("wide_corridor", (184 + dx, 248 + dy), [(532 + dx, 248 + dy)], [
+                  rect(252 + shift, 164 + vertical, 240, 40),
+                  rect(252 + shift, 296 + vertical, 240, 40),
+              ])
+              add("offset_gates", (184 + dx, 240 + dy), [(532 + dx, 244 + dy)], [
+                  rect(292 + shift, 132, 14, 100),
+                  rect(292 + shift, 300, 14, 48),
+                  rect(410 + shift, 132, 14, 62),
+                  rect(410 + shift, 266, 14, 82),
+              ])
+              add("corner", (184 + dx, 238 + dy), [(510 + dx, 270 + dy)], [
+                  rect(328 + shift, 206 + vertical, 72, 76),
+              ])
+              add("slalom", (184 + dx, 240 + dy), [(530 + dx, 240 + dy)], [
+                  rect(278 + shift, 132, 14, 114),
+                  rect(366 + shift, 260, 14, 88),
+                  rect(454 + shift, 132, 14, 114),
+              ])
+
+              wall_x = 304 + shift
+              wall_y = 208 + vertical
+              contact_y = 241 + vertical
+              add("wall_recovery", (wall_x - 11, contact_y),
+                  [(458 + dx, contact_y)], [rect(wall_x, wall_y, 18, 66)])
+
+              for case_id in ("neutral_control", "constant_control", "power_off"):
+                  add(case_id, (186 + dx, 238 + dy), [(438 + dx, 238 + dy)], [])
+
+          suite = {"version": "4ly003-sealed-final-suite/v1", "cases": cases}
+          errors: list[str] = []
+          expected = set(product(ids, seeds))
+          actual = {(c["id"], c["seed"]) for c in cases}
+          if len(cases) != 56 or len(actual) != 56 or actual != expected:
+              errors.append("case_identity_set")
+          if [c["id"] for c in cases[:14]] != ids:
+              errors.append("authored_case_order")
+
+          def point_ok(p: list[int]) -> bool:
+              return len(p) == 2 and 141 <= p[0] <= 627 and 144 <= p[1] <= 339
+
+          for case in cases:
+              key = f"{case['id']}:{case['seed']}"
+              if set(case) != {"id", "seed", "start", "goals", "obstacles"}:
+                  errors.append("field_set:" + key)
+              if not point_ok(case["start"]) or not case["goals"] or len(case["goals"]) > 3:
+                  errors.append("point_or_goal_count:" + key)
+                  continue
+              if any(not point_ok(goal) for goal in case["goals"]):
+                  errors.append("goal_bounds:" + key)
+              if len(case["obstacles"]) > 16:
+                  errors.append("obstacle_count:" + key)
+              for obstacle in case["obstacles"]:
+                  ox, oy = obstacle["origin"]
+                  w, h = obstacle["size"]
+                  if not (
+                      obstacle.get("material") == 1 and
+                      132 <= ox <= 634 and 132 <= oy <= 346 and
+                      1 <= w <= 250 and 1 <= h <= 212 and
+                      ox + w <= 636 and oy + h <= 348
+                  ):
+                      errors.append("obstacle_bounds:" + key)
+              sx, sy = case["start"]
+              gx, gy = case["goals"][0]
+              distance = math.hypot(gx - sx, gy - sy)
+              if case["id"] == "unsupported_hover":
+                  if case["goals"][0] != case["start"]:
+                      errors.append("hover_identity:" + key)
+              elif distance < 60.0:
+                  errors.append("nontrivial_distance:" + key)
+              if case["id"] in {
+                  "horizontal_reach", "arrival_braking",
+                  "neutral_control", "constant_control", "power_off",
+              } and gy != sy:
+                  errors.append("horizontal_semantics:" + key)
+              if case["id"] == "vertical_reach" and gx != sx:
+                  errors.append("vertical_semantics:" + key)
+
+              for label, point in [("start", case["start"])] + [
+                  (f"goal{index}", goal) for index, goal in enumerate(case["goals"])
+              ]:
+                  px, py = point
+                  for obstacle in case["obstacles"]:
+                      ox, oy = obstacle["origin"]
+                      w, h = obstacle["size"]
+                      if ox - 10 <= px <= ox + w + 10 and oy - 7 <= py <= oy + h + 7:
+                          errors.append(f"{label}_obstacle_clearance:" + key)
+
+              if case["id"] == "wall_recovery":
+                  obstacle = case["obstacles"][0]
+                  gap = obstacle["origin"][0] - case["start"][0] - 8
+                  if not (1 <= gap <= 5):
+                      errors.append("recovery_contact_gap:" + key)
+
+          if errors:
+              raise SystemExit("sealed final preflight failed: " + ",".join(errors[:50]))
+
+          raw = json.dumps(suite, separators=(",", ":"), ensure_ascii=False)
+          suite_hash = hashlib.sha256(raw.encode()).hexdigest()
+          evidence = Path(os.environ["FINAL_EVIDENCE"])
+          sealed = evidence / "sealed-input"
+          sealed.mkdir(parents=True, exist_ok=True)
+          (sealed / "4ly003_sealed_final_suite.json").write_text(raw, encoding="utf-8")
+          admission = {
+              "version": "4ly003-final-admission/v1",
+              "independent_preflight_accepted": True,
+              "reviewer": "OpenAI GPT-5.6 Sol independent final-suite review",
+              "source_git_sha": source,
+              "teacher_sha256": teacher,
+              "suite_sha256": suite_hash,
+              "generator_binding": {
+                  "github_run_id": run_id,
+                  "scheme": "4ly003-independent-final-v1",
+              },
+          }
+          (sealed / "4ly003_final_admission.json").write_text(
+              json.dumps(admission, sort_keys=True, indent=2) + "\n", encoding="utf-8"
+          )
+          (sealed / "preflight.json").write_text(
+              json.dumps({
+                  "status": "PASS",
+                  "source_git_sha": source,
+                  "teacher_sha256": teacher,
+                  "suite_sha256": suite_hash,
+                  "case_count": len(cases),
+                  "scenario_ids": ids,
+                  "seeds": seeds,
+              }, sort_keys=True, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as handle:
+              handle.write(f"suite_sha256={suite_hash}\n")
+          print("4LY003_FINAL_PREFLIGHT " + json.dumps({
+              "status": "PASS", "suite_sha256": suite_hash, "case_count": len(cases)
+          }, sort_keys=True))
+          PY
+
+      - name: Materialize sealed inputs only in Godot user storage
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > godot/qualification/_ci_4ly003_materialize_final.gd <<'GDSCRIPT'
+          extends SceneTree
+
+          func _init() -> void:
+              var source_root: String = OS.get_environment("FINAL_EVIDENCE").path_join("sealed-input")
+              for filename: String in ["4ly003_sealed_final_suite.json", "4ly003_final_admission.json"]:
+                  var source: String = source_root.path_join(filename)
+                  var data: String = FileAccess.get_file_as_string(source)
+                  if data.is_empty():
+                      push_error("missing sealed input: " + filename)
+                      quit(1)
+                      return
+                  var target: FileAccess = FileAccess.open("user://" + filename, FileAccess.WRITE)
+                  if target == null:
+                      push_error("cannot materialize sealed input: " + filename)
+                      quit(1)
+                      return
+                  target.store_string(data)
+                  target.close()
+                  if FileAccess.get_file_as_string("user://" + filename) != data:
+                      push_error("sealed input readback mismatch: " + filename)
+                      quit(1)
+                      return
+              print("4LY003_FINAL_INPUT_MATERIALIZATION PASS")
+              quit(0)
+          GDSCRIPT
+          export XDG_DATA_HOME="$RUNNER_TEMP/4ly003-xdg"
+          echo "XDG_DATA_HOME=$XDG_DATA_HOME" >> "$GITHUB_ENV"
+          "$GODOT_BIN" --headless --path godot             --script res://qualification/_ci_4ly003_materialize_final.gd
+          rm godot/qualification/_ci_4ly003_materialize_final.gd
+
+      - name: Execute independently admitted sealed final on actual host
+        shell: bash
+        env:
+          LIBGL_ALWAYS_SOFTWARE: "1"
+          LP_NUM_THREADS: "2"
+          GALLIVM_PERF: "nopt"
+          CYBERSAND_PRESENTATION_EVIDENCE: ${{ github.workspace }}/build/4ly003-final
+        run: |
+          set -euo pipefail
+          timeout 25m xvfb-run --auto-servernum             --server-args="-screen 0 1920x1080x24 -nolisten tcp"             "$GODOT_BIN" --headless --path godot             --script res://qualification/4ly003_teacher_qualification.gd             -- --split=final --admit-final             | tee "$FINAL_EVIDENCE/qualification.log"
+
+      - name: Independently read back every final physical trace
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from __future__ import annotations
+          import hashlib
+          import json
+          import os
+          from collections import Counter
+          from pathlib import Path
+
+          EXPECTED_PROFILES = {
+              "4ly_trainer": "f1f9286a27b929c96caca5aaf2be70cbd82e0fd933f29968c1aaaa43ac8f1704",
+              "4ly_hauler": "e9979ed9e437d2fcdf5c4c52fb4385e788d4ccd6f40c7494308c60c26c11e10d",
+              "4ly_drifter": "c195dd35677dcbdb76c85c798d0c1fbc103dcc40182932be7d70c755b1dbac24",
+              "4ly_dart": "a48a58c388fb0826f5b5b29005a7469d2cd081dd2c0ed3bfe6c028d88cd04084",
+          }
+          CONTROLLER = "fb86190c68c6a87e7d2ef7e845b1fb97305f188723a326f67f07caa6971cc8ae"
+          FAMILY = {
+              "unsupported_hover": "hover",
+              "horizontal_reach": "free_space", "vertical_reach": "free_space",
+              "diagonal_reach": "free_space", "reverse": "reversal",
+              "arrival_braking": "arrival", "wide_corridor": "obstacles",
+              "offset_gates": "obstacles", "corner": "obstacles", "slalom": "obstacles",
+              "wall_recovery": "recovery", "neutral_control": "negative",
+              "constant_control": "negative", "power_off": "negative",
+          }
+          SEEDS = {419, 421, 431, 433}
+          GATES = {"free_space": 0.80, "reversal": 0.75, "arrival": 0.80,
+                   "obstacles": 0.60, "recovery": 0.60}
+          EXPECTED_TRIALS = {"hover": 4, "free_space": 12, "reversal": 4,
+                             "arrival": 4, "obstacles": 16, "recovery": 4, "negative": 12}
+
+          def load(path: Path) -> dict:
+              value = json.loads(path.read_text(encoding="utf-8"))
+              if not isinstance(value, dict):
+                  raise ValueError(f"{path}: expected object")
+              return value
+
+          def sha(path: Path) -> str:
+              return hashlib.sha256(path.read_bytes()).hexdigest()
+
+          root = Path(os.environ["FINAL_EVIDENCE"])
+          suite = root / "sealed-input" / "4ly003_sealed_final_suite.json"
+          admission = load(root / "sealed-input" / "4ly003_final_admission.json")
+          final_dir = root / "4ly003-qualified-final"
+          payload = load(final_dir / "summary.json")
+          summary = payload.get("summary", {})
+          inventory = payload.get("complete_episode_sha256_inventory", [])
+          errors: list[str] = []
+
+          source = os.environ["GITHUB_SHA"]
+          teacher = os.environ["FROZEN_TEACHER_SHA256"]
+          suite_hash = sha(suite)
+          if summary.get("split") != "final" or summary.get("disposition") != "qualified":
+              errors.append("final_disposition")
+          if summary.get("github_sha") != source or summary.get("teacher_sha256") != teacher:
+              errors.append("source_or_teacher_identity")
+          if summary.get("sealed_suite_sha256") != suite_hash or admission.get("suite_sha256") != suite_hash:
+              errors.append("sealed_suite_identity")
+          if summary.get("trials") != 224 or summary.get("retained_episode_count") != 224:
+              errors.append("final_trial_count")
+          if summary.get("faults") not in ([], None):
+              errors.append("qualification_faults")
+
+          counts = summary.get("counts", {})
+          for model in EXPECTED_PROFILES:
+              for family, expected_trials in EXPECTED_TRIALS.items():
+                  row = counts.get(f"{model}:{family}", {})
+                  if row.get("trials") != expected_trials:
+                      errors.append(f"trial_count:{model}:{family}")
+                  if row.get("physics_faults") != 0 or row.get("invalid_actions") != 0:
+                      errors.append(f"authority_fault:{model}:{family}")
+                  if family in GATES:
+                      if expected_trials <= 0 or row.get("successes", 0) / expected_trials < GATES[family]:
+                          errors.append(f"gate:{model}:{family}")
+                  if family == "negative" and row.get("successes") != 0:
+                      errors.append(f"negative_success:{model}")
+
+          seen = Counter()
+          total_ticks = 0
+          total_bytes = 0
+          for item in inventory:
+              model = item.get("model")
+              scenario = item.get("scenario")
+              seed = item.get("seed")
+              key = (model, scenario, seed)
+              seen[key] += 1
+              artifact = item.get("artifact", {})
+              filename = artifact.get("name", "")
+              path = final_dir / filename
+              if model not in EXPECTED_PROFILES or scenario not in FAMILY or seed not in SEEDS:
+                  errors.append("inventory_identity:" + str(key))
+                  continue
+              if not filename or Path(filename).name != filename or not path.is_file():
+                  errors.append("missing_trace:" + str(key))
+                  continue
+              if sha(path) != artifact.get("sha256") or path.stat().st_size != artifact.get("bytes"):
+                  errors.append("trace_digest:" + str(key))
+                  continue
+              record = load(path)
+              manifest = record.get("manifest", {})
+              metrics = record.get("metrics", {})
+              trace = record.get("trace", [])
+              if manifest.get("profile_hash") != EXPECTED_PROFILES[model]:
+                  errors.append("profile_hash:" + str(key))
+              if manifest.get("controller_sha256") != CONTROLLER:
+                  errors.append("controller_hash:" + str(key))
+              if manifest.get("source_git_sha") != source or manifest.get("teacher_source_sha256") != teacher:
+                  errors.append("trace_source:" + str(key))
+              if manifest.get("split") != "final" or manifest.get("sealed_suite_sha256") != suite_hash:
+                  errors.append("trace_split:" + str(key))
+              if manifest.get("host_schedule") != "synchronous-mask-actuation-effects-material-feedback-terrain-rapier/v1":
+                  errors.append("host_schedule:" + str(key))
+              if manifest.get("physics_hz") != 60 or manifest.get("decision_ticks") != 6:
+                  errors.append("cadence:" + str(key))
+              if manifest.get("observation") != "4ly-observation/v1" or manifest.get("action_profile") != "4ly_velocity_v1":
+                  errors.append("policy_schema:" + str(key))
+              if metrics.get("scenario") != scenario or metrics.get("split") != "final" or metrics.get("seed") != seed:
+                  errors.append("metric_identity:" + str(key))
+              if metrics.get("physical_ticks") != len(trace) or metrics.get("invalid_actions") != 0 or metrics.get("failed") is True:
+                  errors.append("metric_or_authority:" + str(key))
+              if any(x.get("physics_fault") for x in trace):
+                  errors.append("physics_fault:" + str(key))
+
+              recovery_witness = True
+              if FAMILY[scenario] == "recovery":
+                  disturbance = [
+                      int(x.get("tick", -1))
+                      for x in trace
+                      if isinstance(x.get("host_disturbance"), dict)
+                      and x.get("host_disturbance", {}).get("accepted") is True
+                  ]
+                  recovery_witness = bool(disturbance) and any(
+                      int(x.get("tick", -1)) >= disturbance[0] and x.get("contact") is True
+                      for x in trace
+                  )
+                  if not recovery_witness:
+                      errors.append("recovery_witness:" + str(key))
+              if item.get("recovery_witness") is not recovery_witness:
+                  errors.append("recorded_recovery_witness:" + str(key))
+              expected_credit = bool(item.get("navigation_credit")) and recovery_witness
+              if item.get("qualification_credit") is not expected_credit:
+                  errors.append("qualification_credit:" + str(key))
+
+              if scenario in {"neutral_control", "constant_control", "power_off"}:
+                  if item.get("navigation_credit") is not False or item.get("qualification_credit") is not False:
+                      errors.append("negative_navigation:" + str(key))
+              if item.get("navigation_credit") is True:
+                  if metrics.get("successful_dwell") is not True:
+                      errors.append("missing_success_dwell:" + str(key))
+                  if not any(int(x.get("dwell", 0)) >= 36 for x in trace):
+                      errors.append("missing_trace_dwell:" + str(key))
+                  if float(metrics.get("final_speed_cells_per_second", 999.0)) > 2.5001:
+                      errors.append("high_speed_arrival:" + str(key))
+
+              for index, sample in enumerate(trace, 1):
+                  if sample.get("tick") != index or sample.get("world_tick") != index:
+                      errors.append("tick_continuity:" + str(key))
+                      break
+                  receipt = sample.get("physical_receipt", {})
+                  if not isinstance(receipt, dict) or receipt.get("physics_step") != index:
+                      errors.append("physical_receipt:" + str(key))
+                      break
+                  if receipt.get("actor_id") != 0 or "controller" not in receipt:
+                      errors.append("controller_receipt:" + str(key))
+                      break
+              total_ticks += len(trace)
+              total_bytes += path.stat().st_size
+
+          expected_keys = {
+              (model, scenario, seed)
+              for model in EXPECTED_PROFILES for scenario in FAMILY for seed in SEEDS
+          }
+          if set(seen) != expected_keys or any(count != 1 for count in seen.values()):
+              errors.append("complete_inventory_identity")
+
+          result = {
+              "schema": "4ly003-independent-final-readback/v1",
+              "status": "PASS" if not errors else "FAIL",
+              "source_sha": source,
+              "teacher_sha256": teacher,
+              "suite_sha256": suite_hash,
+              "episodes_verified": sum(seen.values()),
+              "ticks_verified": total_ticks,
+              "trace_bytes_verified": total_bytes,
+              "errors": errors[:200],
+          }
+          (root / "independent-final-readback.json").write_text(
+              json.dumps(result, sort_keys=True, indent=2) + "\n", encoding="utf-8"
+          )
+          print("4LY003_FINAL_INDEPENDENT_READBACK " + json.dumps(result, sort_keys=True))
+          raise SystemExit(0 if not errors else 1)
+          PY
+
+      - name: Prove repository remained unchanged by sealed evaluation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- .             ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'             ':!godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
+
+      - name: Retain sealed final evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: 4ly003-sealed-final-${{ github.run_id }}
+          path: |
+            build/4ly003-final/
+            build/linux-runtime/source-sha.txt
+            build/linux-runtime/runtime.sha256
+          if-no-files-found: error
+          retention-days: 30
+
   linux-serial-equivalence:
     name: linux serial equivalence
     needs: linux-build
