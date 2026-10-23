@@ -112,6 +112,8 @@
     "research/mat-003prepass-epoch-consumers.md",
     "research/mat-003prepass-gen006-handoff.md",
     "research/mat003-continuation.md",
+    "audits/2026-10-23-mat003-independent-carrier-audit.md",
+    "decisions/ADR-016-mat003-carrier-evidence-synthesis.md",
     "research/mat003-state-schema-proposal.md",
     "decisions/ADR-015-material-state-schema-and-carrier-gates.md",
     "research/mat003-semantics-budget-review.md",
