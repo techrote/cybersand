@@ -667,6 +667,9 @@ outcomes.
 
 ## Addendum — signed campaign ledger v6 and registry corrections (2026-10-23)
 
+*Superseded in part by the [v7 report validation](#addendum--campaign-report-validation-v7-2026-10-23).
+This section is retained as the historical v6 record.*
+
 This responds to findings against `3248bf3`:
 - F3 and F4 from the [independent F1/F2 re-review](https://github.com/techrote/cybersand/pull/226#issuecomment-6369840825);
 - G1–G6 from the [second-opinion audit](https://github.com/techrote/cybersand/pull/226#issuecomment-6370541150);
@@ -734,3 +737,62 @@ retained as recorded:
 The catalogue Godot test adds the H1 mapping check and the H2 whole-frame
 inventory. Synthetic mutations confirm both now fail: the third-pass Sodium
 omission with a shrunken region, and a W-CY arm relabelled `measured`.
+
+## Addendum — campaign report validation, v7 (2026-10-23)
+
+This responds to Astra's
+[Gate E decision](https://github.com/techrote/cybersand/issues/213#issuecomment-6373205044)
+and [detailed review](https://github.com/techrote/cybersand/pull/226#issuecomment-6373189849)
+of `db3fa22`/`be0d1c7`. That review closed every F3/F4, G1–G6 and H1–H4
+reproducer, accepted the H3/H4/G3 scope choices, and raised one blocking P2
+(I1) and one non-blocking P3.
+
+**I1 (P2).** `reduce_cmd` read two report fields that v6 did not validate. With
+an otherwise valid quiet-pool pair (author-local, synthetic, via the
+`reduce` CLI):
+
+| Report field | v6 `db3fa22` | v7 |
+|---|---|---|
+| `capture.observations = [{"id": "synthetic"}]` | exit 1, `KeyError: 'value'`, no output | exit 0; `malformed_report`, `not_comparable`, problem |
+| `capture.timing = [1]` | exit 1, `AttributeError`, no output | exit 0; `malformed_report`, `not_comparable`, problem |
+| valid pair (control) | exit 0, identical | exit 0, identical |
+
+**Correction.** `report_shape_problems` validates every report field the
+reducer reads before any use:
+- `capture` is an object;
+- `observations` is a list of objects with a string `id`, a `value` that is an
+  integer or an object (as the host emits), and unique ids;
+- `timing` is an object of numbers or `null`;
+- `runtime_identity` is an object;
+- `checkpoints` is a list.
+
+`load_report` turns any violation into a `malformed_report` case with the
+reasons in `errors`, and the remaining campaign is still reduced. Malformed
+observations are never dropped into an apparently matching set. `derived()`
+uses only integer observations, so object-valued `cell_state` observations
+carry no scalar.
+
+**P3 follow-up.** `ineligible_for_acceptance` is now complete: it includes
+every problem (such as `IDENTITY_MISMATCH` with a closed ledger) as well as
+every ineligible ledger.
+
+**Records:**
+- The historical controls and v2–v6 are byte-unchanged. v6 (`a7189204…`)
+  joins the revision replay at `db3fa22`.
+- New record
+  [`lcb-scenario-ledger-2026-10-23.v7.json`](../reference/lcb-scenario-ledger-2026-10-23.v7.json):
+  the rule name is `lcb-signed-ledger-v7`, and the accounting body is
+  unchanged.
+- Classifications are unchanged (`changed_from_v6` is empty): 20 closed, 4
+  `UNVERIFIED_SOURCE_SINK_TIMING`, 3 `UNVERIFIED_REACTION_AMOUNT`.
+- Registry qualification routes to v7. Goldens, definitions, inventories and
+  arms are unchanged.
+
+**Regressions** (`test_lcb_registry.py`, 81 tests):
+- both I1 reproducers and seven more malformed shapes, each on either side of
+  the pair;
+- valid timing and object-valued observations still complete;
+- a malformed report alongside a valid one: the campaign continues, and the
+  valid case is identical and closed;
+- an identity-only failure appears in the complete ineligible list;
+- v6 revision replay and the v7 record check.
