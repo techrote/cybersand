@@ -87,6 +87,8 @@ def validate_group(base: Path, group: str, git_sha: str) -> dict[str, Any]:
             errors.append("frozen_profile_identity:" + name)
         if manifest.get("controller_sha256") != CONTROLLER:
             errors.append("controller_identity:" + name)
+        if manifest.get("source_git_sha") != git_sha or manifest.get("teacher_source_sha256") != summary.get("teacher_source_sha256"):
+            errors.append("checkout_or_teacher_source_identity:" + name)
         if manifest.get("source") != "teacher" or manifest.get("split") != "development":
             errors.append("producer_or_split:" + name)
         if manifest.get("host_schedule") != "synchronous-mask-actuation-effects-material-feedback-terrain-rapier/v1":
@@ -151,6 +153,20 @@ def main() -> int:
     root = args.regression_output
     metadata = load_json(root / "timings.json")
     included = set(metadata.get("assigned_cases", []))
+    build_identity = metadata.get("identity", {})
+    runtime_errors: list[str] = []
+    if build_identity.get("source_sha") != args.expect_source_sha:
+        runtime_errors.append("regression_identity_source_sha_mismatch")
+    runtime_identities: dict[str, Any] = {}
+    for key in ("cybersand_runtime", "rapier_runtime"):
+        item = build_identity.get(key, {})
+        raw_path, reported_sha = item.get("path", ""), item.get("sha256", "")
+        binary = (Path(__file__).resolve().parents[2] / raw_path).resolve()
+        if not raw_path or not reported_sha or not binary.is_file() or sha256(binary) != reported_sha:
+            runtime_errors.append("runtime_sha256_mismatch:" + key)
+        runtime_identities[key] = {"path": raw_path, "sha256": reported_sha}
+    if not str(build_identity.get("godot_version", "")).startswith("4.7."):
+        runtime_errors.append("godot_4_7_identity")
     parts = [
         validate_group(root / "presentation", group, args.expect_source_sha)
         for group, case in CASES.items() if case in included
@@ -163,7 +179,12 @@ def main() -> int:
         "split": "development_only_no_teacher_admission",
         "matched_scopes": len(parts),
         "groups": parts,
-        "status": "PASS" if all(p["status"] == "PASS" for p in parts) else "FAIL",
+        "actual_host_runtime": {
+            "godot_version": build_identity.get("godot_version", ""),
+            "cybersand_native_and_rapier": runtime_identities,
+            "staged_binary_and_checkout_errors": runtime_errors,
+        },
+        "status": "PASS" if not runtime_errors and all(p["status"] == "PASS" for p in parts) else "FAIL",
     }
     dest = root / "4ly003-independent-readback.json"
     dest.write_text(json.dumps(result, indent=2, sort_keys=True) + "\n", encoding="utf-8")
