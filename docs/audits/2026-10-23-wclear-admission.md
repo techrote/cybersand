@@ -67,7 +67,7 @@ They were not rewritten or selectively accepted.
 | Frozen qualification reader | `38f05365daf8314a77bf7efc8d6be3dc798fe79bfd7a4bf2506cbee900c209ce` |
 | Frozen timing collector | `52ee2ae651e9cc67ec74bed301f1cb0d34f8341ad4dfc66207376e4d5566f236` |
 | Frozen timing reader | `ad3a53c856662408e931437cc14db6309b56add7192ad8928a02304396d069d2` |
-| Admitted registration | `844dc51bd6c83f96b8827285d50be95d6612a048539ce3a480f6082486ac48b3` |
+| Admitted registration | `a207d988098f75b6d1921ec817d11322f001b2e85ea9977b04448cf14732a3e1` |
 | Manual-only workflow | `92b953d00c12e1e8d45144ad35263623d7b507d8421b90565ca5d521acfe968f` |
 
 ## Why this protocol is admissible
@@ -164,7 +164,7 @@ merging the stacked PRs. Until publication and owner authority are complete,
 there is no executable dispatch action.
 
 ```powershell
-gh workflow run mat003-wclear-timing.yml --repo techrote/cybersand --ref codex/mat003-continuation --field "registration_sha256=844dc51bd6c83f96b8827285d50be95d6612a048539ce3a480f6082486ac48b3" --field "owner_authority_json=$(Get-Content -Raw -LiteralPath 'OWNER-APPROVED-WCLEAR-AUTHORITY.json')"
+gh workflow run mat003-wclear-timing.yml --repo techrote/cybersand --ref codex/mat003-continuation --field "registration_sha256=a207d988098f75b6d1921ec817d11322f001b2e85ea9977b04448cf14732a3e1" --field "owner_authority_json=$(Get-Content -Raw -LiteralPath 'OWNER-APPROVED-WCLEAR-AUTHORITY.json')"
 ```
 
 The workflow uses pinned actions and GitHub-hosted Ubuntu 24.04. A second checkout
