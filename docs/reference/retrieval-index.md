@@ -266,3 +266,5 @@ Proposed concrete MAT-003 fields,256-chunk memory envelope and native latency ta
 Accepted MAT-003 qualification budgets are in the [owner offer](../research/mat003-concrete-owner-offer.md); the [correctness-only plan](../research/mat003-correctness-only-plan.md) remains Planned and unexecuted. R16-T1 semantics stay conditional.
 
 The [bounded plan](../research/mat003-correctness-only-plan.md#exact-eight-arm-mapping-contracts) now specifies all eight proposed neutral16 maps, operation-relative high-lane masks, an independent oracle and complete World endpoint records. These document contracts require independent review and grant no apparatus construction/execution authority.
+
+Later owner authority permits isolated correctness-apparatus construction only. The [source-completion and independent review checkpoint](../audits/2026-10-23-mat003-apparatus-source-closure.md) supersedes the retained partial implementation hold; build/platform admission, qualification execution and timing remain held. Source completion does not qualify R16-T1 or select a production carrier.

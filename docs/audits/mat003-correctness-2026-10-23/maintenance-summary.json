@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "scope": "repository maintenance only; no apparatus execution",
+  "source_intake_commit": "b4c8f14474e63e1485181b9508bfd7b995814d5a",
+  "source_manifest_sha256": "4b00c9aca1421840eb62846886a879ef9b7c4cd8334455b5bc9169e7b9a8962e",
+  "static_ast_python_files": 10,
+  "static_ast_status": "parsed without imports or execution",
+  "checks": {
+    "check_docs.py": "passed",
+    "check_repository.py": "passed",
+    "check_m11_consistency.py": "passed;18 records/28 historical source hashes",
+    "git diff --check": "passed"
+  },
+  "retrieval": {
+    "source-closure-retrieval": {
+      "questions": 32,
+      "canonical_hit_at_1": 21,
+      "canonical_hit_at_k": 32,
+      "mrr_at_k": 0.7937,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "source-closure-supplementary": {
+      "questions": 126,
+      "canonical_hit_at_1": 99,
+      "canonical_hit_at_k": 124,
+      "mrr_at_k": 0.868,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "source-closure-supplementary-routed": {
+      "questions": 126,
+      "canonical_hit_at_1": 100,
+      "canonical_hit_at_k": 125,
+      "mrr_at_k": 0.8759,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    }
+  },
+  "retained_maintenance_sha256": {
+    "source-closure-check-0.txt": "e7b5f5350850dd812490863a1dedb784593ab5a939b17047a8eed70a51a7f02f",
+    "source-closure-check-1.txt": "cee18ce76346fe7412bd2cf64ef46e4100a236074c156ea384357e8e908c212e",
+    "source-closure-check-2.txt": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+    "source-closure-check-3.txt": "adcaec4e8f11fae9c37edecc60080b0657de64cd2adc6d5f0a08e618c48c1893",
+    "source-closure-check-4.txt": "a5976b7d3befe06d4c2ec8f5e711e16d6ae062f5181bc21ebb41f022fac6313a",
+    "source-closure-check-5.txt": "a138433e50571f870d78cf98b5e9b893a15bc43731e199540f81928b5b6d2d2b",
+    "source-closure-retrieval.json": "f38fa1de848f3bac506d60a0abe93ce32f896fdfeef4fff050105e9c37efc34a",
+    "source-closure-supplementary.json": "2a074943609fa94d315e05283372fd2f84849b10ac93ac9543c531ff54cf9ee8",
+    "source-closure-supplementary-routed.json": "fc78e262605329f8f837f2c07de9c2d899eeeda022aa22d68eb959d045668312",
+    "source-closure-supplementary-routed.txt": "5c32e8deac3d7dbab98eee5782e804f15425908c410b9d5d434adc9e446c2ff0",
+    "source-closure-final-docs.txt": "e7b5f5350850dd812490863a1dedb784593ab5a939b17047a8eed70a51a7f02f",
+    "source-closure-final-repository.txt": "cee18ce76346fe7412bd2cf64ef46e4100a236074c156ea384357e8e908c212e",
+    "source-closure-final-diff.txt": "a138433e50571f870d78cf98b5e9b893a15bc43731e199540f81928b5b6d2d2b"
+  },
+  "qualification_executed": false,
+  "timing_executed": false
+}

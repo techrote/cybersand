@@ -90,3 +90,5 @@ The [concrete owner offer](mat003-concrete-owner-offer.md) proposes R16-T1 seman
 ## Owner budget disposition — 2026-10-23
 
 The owner has now accepted the [concrete offer budgets](mat003-concrete-owner-offer.md) as qualification targets, superseding earlier budget-pending statements only. R16-T1 remains conditional, and carrier/epoch mapping, solver behavior, implementation and timing are not approved. The [bounded correctness-only plan](mat003-correctness-only-plan.md) is prepared for review, not execution. Reference-machine identity and proof of target compliance remain outstanding; both PRs stay draft and Current production is unchanged.
+
+Later owner authority separately permits construction of isolated correctness apparatus against the reviewed eight-map/oracle contract. Its [source-completion review checkpoint](../audits/2026-10-23-mat003-apparatus-source-closure.md) does not approve R16-T1, select a production map, demonstrate budget compliance or authorize build/qualification execution or timing. Earlier implementation-pending wording applies to production semantics/adoption and the historical planning checkpoint.

@@ -1,0 +1,52 @@
+---
+title: MAT-003 eight-map apparatus source completion and review closure
+status: Current
+document-kind: audit
+scope: Isolated unexecuted correctness apparatus source and independent review; no build, qualification, timing or production acceptance
+canonical-for: []
+last-reviewed: 2026-10-23
+related-documents: [2026-10-23-mat003-apparatus-held-review.md, 2026-10-23-mat003-mapping-oracle-review.md, ../research/mat003-correctness-only-plan.md, ../research/mat003-continuation.md]
+---
+
+# Apparatus source checkpoint
+
+Owner authorized completion of isolated correctness apparatus and closure of independent source-review blockers, with a stop before qualification execution or timing. Intake is `b4c8f14474e63e1485181b9508bfd7b995814d5a`, on `codex/mat003-continuation` in the managed continuation worktree. The [earlier held review](2026-10-23-mat003-apparatus-held-review.md) remains an accurate historical failed completion assessment at that intake. This record supersedes its remaining-implementation status only. The recoverable publication commit containing this record identifies the complete delta; the final source manifest below binds the reviewed files without a self-referential commit hash.
+
+The [reviewed plan](../research/mat003-correctness-only-plan.md) remains byte-identical to its reviewed canonical LF SHA-256 `f134267c2304cc03974605595089cced53f03a09918e097681ae3f6bf11c0b23`, reviewed commit `1bbbec9580f9a3e9e6a6f9136503f873ede0f254`. Exact eight-arm maps, opaque neutral R16, capability-refusing K64-E16 and independent oracle requirements are unchanged. R16-T1 remains conditional and unimplemented. Accepted numeric owner budgets remain qualification targets, not compliance findings.
+
+## Implemented source and blocker closure
+
+| Retained finding | Source response and future verification obligation |
+|---|---|
+| Incomplete storage coverage | Fixed65536-operation schedule independently reproduced in Python; explicit ordered field pairs, boundaries and accepted one-hots. Seeded raw U precedes meaningful swap/copy/clear/replacement. Reader rejects vacuous coverage or broken prestate chains. Checked negative/schema/capacity requests call candidate admission functions. |
+| Incomplete World payload/semantic coverage | Full-byte copy/construction and masked R/U transition receipts, bounded logical payload model, nonzero R/U sentinels, nonzero/high Empty and temperature boundaries, fixed move/swap/Water transfer/drain/conversion/replacement fixtures and independently derived input/Water/Sand accounting. |
+| Missing complete owner export/readback | Single canonical full carrier+temperature stream, sorted ownership/address/stride registry and full config/policy/clock/chunk/block/interest/event/ledger/support metadata. Physical size/alignment/stride/high-lane offset are independently checked. Source-symbol applicability inventory is in the [kit README](../../tools/experiments/mat003_correctness/README.md). |
+| Incorrect null-owner premise | Discovery is absent by scoped config; the Current transient owner is present and empty, with all65 contact/impulse slots checked zero. Parallel scratch exports live geometry/capacity; Current reset/rebuild-before-use and completed dispatch delimit nonauthoritative scratch. Failed state is quarantined. |
+| Refusal/lifecycle suite missing |224 checked publications plus32 real failed-world/quarantine/recovery attempts. Each attempt retains target bytes and metadata before/after; refusals preserve relevant owner state and full endpoints check unrelated cells. The capacity failure is induced through a real tick, not a synthetic flag. |
+| Natural/prepared proof incomplete | Each E16 natural process has two sequential65,540-tick roles. Prepared reaches the exact natural prestate at65535, rebases through128 and back, then uses the real clear. B/Q/R join to natural65535/65536/65540; B/P preserve current predicates/owners. Both roles share the same600s process budget. |
+| Resident setup invalid/default reserve too large | Initial reserve equals bounded resident chunk count. Quiet/active plus interest-excluded fixtures retain exact B/P/Q/R event/reference endpoints; reentry limits selected work to provisioned capacity. Runtime capacity/work receipts remain mandatory. |
+| Missing sealed collector and admission ordering | External source/platform/build authority; precompile source freeze;32 sealed binaries; immutable build checkpoint; separate independent binary admission and execution authority; exclusive attempt marker before fixed152 cases; full raw retention, no retries and no partial completion. |
+| Incomplete independent provenance/negative reader | Exact command/flags/order/source/tool/binary/monitor/toolchain receipts and full inventory checked. Retained negative fixtures cover map/partial/high-lane/refusal/owner/stream/hash/matrix failures; mathematical World decoder cross-checks bit oracle. Shared-generator reproduction is an integrity check, separately from independent semantics. |
+| Reader watchdog installed too late | Wall guard precedes first hash/inventory/provenance/negative work; pinned monitor seal precedes RSS use. Hashes check budget every1MiB and generated-file comparisons are guarded. Expired-budget failure reports are still retained. |
+
+No production include/build/config, native cells, material/Water physics, GEN-006, dependency lock or accepted S0/S1/S2F/S2A/S2P/WCLEAR/C128 evidence is changed. The preexisting WCLEAR registration status marker is untouched. Both PR211/221 remain draft and stacked; no workflow is added or dispatched. Publication uses `[skip ci]` to preserve the no-execution instruction.
+
+## Independent source disposition
+
+Independent reviewer `/root/independent_review` inspected all22 apparatus files read-only, including the final watchdog changes. Its disposition is **no remaining definite blocking implementation defect identified; source implementation complete for review, unexecuted, not runtime-qualified and not apparatus-admitted**. The reviewer independently calculated canonical UTF-8/LF file seals; the [source manifest](mat003-correctness-2026-10-23/source-review-sha256.json) retains the exact reviewed identities. The machine contract's final disposition wording was reconciled after review and separately read back. Source review cannot establish a successful compile, sanitizer availability, platform feasibility, negative-fixture success, correctness qualification or timing admission.
+
+## Prospective bounds and held gates
+
+Matrix remains152 observations and32 compilations/platform,304 observations across Linux/Windows. Natural processes now explicitly count two sequential65,540-tick roles within the unchanged600s budget. Resident processes retain exactly eight full large endpoints; no duplicated normalized cell stream exists. Output is capped32GiB/platform/64GiB combined, with47.75GiB conservative full cell-stream allowance. Concurrency1; compile180s; storage/small/refusal300s; natural/resident600s; normal/sanitized candidate RSS2/3GiB; reader RSS2GiB; aggregate active build+execution+reader wall6h/platform excludes external admission waiting. These are enforced source contracts, not demonstrated feasibility.
+
+Windows native peak working set and sampled process-family RSS remain RSS observations. The Job Object additionally limits commit memory at the same numeric ceiling and kills descendants on close. Commit memory is not RSS; this extra stricter/different guard and the suspended-child resume path require exact toolchain/sanitizer preflight. Linux process-group handling also requires qualification. Neither platform has been exercised here.
+
+Next permissible decision is separate source/platform/toolchain and build authority. After an authorized build, independent review must admit the exact generated sources/binaries and owner authority must name the exact execution registration before any cases run. Subsequent full raw readback, retained negative fixtures and independent disposition are required before correctness acceptance. No authority is supplied or inferred by this checkpoint. Timing and production adoption remain separate, later gates; no manual dispatch is appropriate now.
+
+## Maintenance evidence
+
+Static `ast.parse` accepted all10 Python source files without importing or executing apparatus code. `python tools/ci/check_docs.py`, `python tools/ci/check_repository.py`, `python tools/ci/check_m11_consistency.py` and `git diff --check` passed. Historical M11 checked18 retained records and28 source hashes, without rewriting them. No CI configuration changed, so no provider-policy change or new workflow gate applies.
+
+`python tools/docs/retrieval_eval.py --output build/mat003-continuation/source-closure-retrieval.json` retained frozen32-query results:21 at rank1,32 in top5, MRR0.7937. The supplementary command with `--queries docs/reference/retrieval-challenges.json` initially missed new MATSCHEMA07 (99/126 rank1,124/126 top5, MRR0.8680). That observation is retained. A dedicated source-completion/execution-boundary heading was added to the existing canonical continuation report, without changing the query or prior125 objects. The routed evaluation in `source-closure-supplementary-routed.json` gives new MATSCHEMA07 rank1 and100/126 rank1,125/126 top5, MRR0.8759. Prior125 remain99 rank1/124 top5/MRR0.8749; C09 remains the previously retained lexical miss. The retrieved source-completion paragraph explicitly supplies source-only closure, unexecuted status, separate authority gates, conditional R16-T1 and unchanged production/draft/evidence facts. This is a disclosed development-set routing correction, not unseen retrieval or runtime validation.
+
+The [maintenance summary](mat003-correctness-2026-10-23/maintenance-summary.json) retains commands/dispositions, source manifest seal and hashes of complete local maintenance reports under ignored `build/mat003-continuation`. Source manifest SHA-256 is `4b00c9aca1421840eb62846886a879ef9b7c4cd8334455b5bc9169e7b9a8962e`; independent integration readback confirmed every22 file seal and the final status/whitespace-only reconciliation. No apparatus module import, generator invocation, compilation, candidate process, qualification, sanitizer execution or timing occurred. Historical held findings and all accepted measurements remain retained. Canonical routing covers the consolidated report, schema, ADR, roadmap and retrieval index; production ownership/interfaces/invariants/configuration/user controls are unchanged.

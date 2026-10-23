@@ -1,4 +1,6 @@
 """Append-only source generation only; never builds or runs the generated World."""
+import sys
+sys.dont_write_bytecode=True
 import hashlib
 import importlib.util
 import json
@@ -21,7 +23,16 @@ def prepare(source, output, arm_id):
     receipt=module.prepare_overlay(source,output,arm)
     shutil.copyfile(source/HERE/'world_adapter.hpp',output/S1/'world_adapter.hpp')
     shutil.copyfile(source/HERE/'maps.hpp',output/S1/'maps.hpp')
+    shutil.copyfile(source/HERE/'trace.hpp',output/S1/'trace.hpp')
+    shutil.copyfile(source/HERE/'resource.hpp',output/S1/'resource.hpp')
+    receipt['compile_definitions']=[m if not m.startswith('-DMAT003_WORLD_SOURCE=') else '-DMAT003_WORLD_SOURCE='+chr(34)+(output/'native/src/world.cpp').as_posix()+chr(34) for m in receipt['compile_definitions']]
     receipt['compile_definitions'] += [f'-DMAT003_CAPACITY={capacity}']
+    world=output/'native/src/world.cpp'
+    text=world.read_text(encoding='utf-8')
+    old='    if (update_epoch_ == 0) {'
+    text=module._replace(text,old,old+'\n        ++mat003_world::clear_count;\n        for (const auto& [key, owner] : chunks_) { (void)key; mat003_world::clear_cells += owner->cells.size(); }','clear traversal observer',receipt['patches'],'native/src/world.cpp')
+    world.write_text(text,encoding='utf-8')
+    prepare_probe(source,output)
     receipt['reviewed_arm']=arm_id
     receipt['files_after_all_edits']={p.relative_to(output).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(output.rglob('*')) if p.is_file()}
     (output/'reviewed-overlay.json').write_text(json.dumps(receipt,indent=2)+'\n',encoding='utf-8')
@@ -43,3 +54,4 @@ def prepare_probe(source, output):
     extension=(source/HERE/'probe.inc').read_text(encoding='utf-8-sig')
     (output/S1/'probe.hpp').write_text(prefix+extension+rebase,encoding='utf-8')
     shutil.copyfile(source/HERE/'world.cpp',output/S1/'reviewed_world.cpp')
+    shutil.copyfile(source/HERE/'lifecycle.hpp',output/S1/'lifecycle.hpp')
