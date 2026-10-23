@@ -26,7 +26,11 @@ participate in the passing profile hashes. Owner handling/visual review,
 final-head validation and the #207 host/teacher gate remain separate; a
 selectable name or passing manoeuvre metric is not an accepted learning plant.
 
-4LY-003 subsequently owns the flight lab, actual-host episodes and qualified teacher. Trainer learning
+4LY-003 (#207) has an [implementation candidate](../systems/physical-flight-lab.md)
+for the playable flight lab, actual-host episodes and observation-only teacher.
+Its [checkpoint ledger](../audits/2026-10-23-4ly003-checkpoint.md)
+does not claim a qualified scripted teacher: measured per-profile final
+navigation, feasibility, exact-head CI and resource evidence remain gated. Trainer learning
 and subsequent family learning belong to the companion repository's 4LY-004/005
 gates. None of these stages closes #132, generic granular/soliding acceptance or
 the separate Jolt/morphology programme by implication.
