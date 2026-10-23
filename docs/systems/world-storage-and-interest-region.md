@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [world-storage, camera-interest-region]
 status: Current
 scope: Sparse native storage, finite adapters, interest pause/resume and fresh generated-chunk admission; general persistence/reconfiguration/streaming remain separate
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-23
 related-documents: [activity-dirty-regions-and-waking.md, ../architecture/chunk-tile-and-buffer-model.md, ../reference/configuration-reference.md, ../reference/level-saves-and-replay.md, ../decisions/ADR-004-interest-region-and-reconfiguration.md]
 ---
 
@@ -163,7 +163,9 @@ exclusive export ownership, state omissions, and body tolerance belong to the
 [level-save contract](../reference/level-saves-and-replay.md).
 
 **Planned:** sparse persistence, schema migration, general serialized
-configuration, replay capture and I/O backpressure. **Deferred implementation:**
+configuration, replay capture and I/O backpressure.
+
+**Planned, design-only MAT-003PREPASS D:** the [GEN-006 semantic-state contract](../architecture/gen006-semantic-state-and-persistence.md) specifies carrier-independent state, durable mutation provenance, scheduler rebase/refusal and ownership fences. Its [source/experimental fixture handoff](../operations/mat003prepass-gen006-state-handoff.md) is not a codec, eviction API or implemented continuation capability. **Deferred implementation:**
 broad streamed loading/eviction until local material behavior is mature.
 
 ## Approved expansion and unresolved policy
