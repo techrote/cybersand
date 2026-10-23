@@ -81,6 +81,7 @@ def verify(root, expected_source=None):
         require(report['status']=='collected-not-admitted' and report['errors']==[], 'incomplete collector')
         require(report['formal_timing_admitted'] is False,'timing boundary violation')
         require(report['qualified_toolchain'] is True and '13.3.0' in report['compiler_version'],'unqualified toolchain')
+        require('2.42' in report['linker_version'] and (root/'linker.stdout').read_text()==report['linker_version'],'linker pin/readback mismatch')
         require(all(r['exit_code']==0 and not r.get('timed_out',False) for r in report['commands']),'failed command retained: collection incomplete')
         require(len(report['cases'])==len({c['id'] for c in report['cases']}),'duplicate cases')
         seal=load(root/'source-seal.json')
@@ -125,7 +126,7 @@ def verify(root, expected_source=None):
             built={a+'-o'+str(o) for a in all_arms for o in (0,1)}
         else: raise ValueError('unknown track')
         require({b['id'] for b in report['builds']}==built and len(report['builds'])==len(built),'missing/extra/duplicate builds')
-        labels={'compiler'}|{'common/'+n for n in ('material_rules','scheduler_geometry','settled_world_discovery')}
+        labels={'compiler','linker'}|{'common/'+n for n in ('material_rules','scheduler_geometry','settled_world_discovery')}
         labels|={'compile/'+a for a in built}
         labels|={'execute/'+c['id'] for c in report['cases']}
         labels|={'compile/storage','execute/storage','compile/storage-ubsan','execute/storage-ubsan'}

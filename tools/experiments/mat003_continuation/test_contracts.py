@@ -5,6 +5,8 @@ import tempfile
 import unittest
 import verify
 import assembly_report
+import timing
+import verify_timing
 
 
 class EvidenceContracts(unittest.TestCase):
@@ -47,6 +49,23 @@ class EvidenceContracts(unittest.TestCase):
         for changed in [argv[:2]+['-O3']+argv[3:], [v.replace('EPOCH_BITS=16','EPOCH_BITS=8') for v in argv],
                         [v.replace('OBSERVERS=1','OBSERVERS=0') for v in argv]]:
             with self.assertRaises(ValueError): verify.check_compile(changed,'memcpy-e16-x2',1)
+
+    def test_timing_gate_rejects_before_authority_or_execution(self):
+        registration=Path(__file__).parent/'wclear-registration-v2.json'
+        with self.assertRaisesRegex(ValueError,'HELD: no independent'):
+            timing.gates(registration,Path('nonexistent-owner-authority.json'))
+
+    def test_exact_timing_schedule_is_bounded_and_interleaved(self):
+        rows=timing.schedule()
+        self.assertEqual(len(rows),672)
+        self.assertEqual([r['role'] for r in rows[:6]],list('ABBAAB'))
+        self.assertEqual(len({(r['epoch_bits'],r['side'],r['scene'],r['workers'],r['pair'],r['role']) for r in rows}),672)
+
+    def test_timing_reduction_preserves_extreme_and_negative_excess(self):
+        # Synthetic reader contract only, never a World timing observation.
+        s=verify_timing.summary([-9,1,2,3,4,5,1000000])
+        self.assertEqual((s['median'],s['minimum'],s['p95'],s['p99'],s['maximum']),(3,-9,1000000,1000000,1000000))
+        self.assertEqual(s['mad'],2)
 
 
 if __name__=='__main__': unittest.main()

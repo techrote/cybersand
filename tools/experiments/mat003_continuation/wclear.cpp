@@ -1,11 +1,29 @@
 // Untimed qualifier only. probe.hpp is a receipted prefix of the accepted S1
 // independent semantic observer plus the continuation's checked stamp rebase.
 #include "probe.hpp"
+#include <chrono>
+#include <cstdlib>
+#ifdef __linux__
+#include <sys/resource.h>
+#endif
 
 int main(int argc, char** argv) {
     try {
-        fixture::require(argc == 6 || argc == 7, "usage: wclear side workers scene event|ordinary output [setup-ticks]");
-        const unsigned setup_ticks = argc == 7 ? static_cast<unsigned>(std::stoul(argv[6])) : 255;
+        fixture::require(argc >= 6 && argc <= 8, "usage: wclear side workers scene event|ordinary output [setup-ticks] [--measure]");
+        const bool measure = argc == 8 && std::string(argv[7]) == "--measure";
+        fixture::require(argc != 8 || measure, "unknown mode");
+        if (measure) {
+            fixture::require(MAT003_TWIN_OBSERVERS == 0, "observed twins cannot be timed");
+            const char* authority=std::getenv("MAT003_WCLEAR_EXECUTION_AUTHORITY");
+            fixture::require(authority != nullptr && std::string(authority).size()==64,
+                             "HELD: admitted collector execution authority is required");
+        }
+        using Clock=std::chrono::steady_clock;
+        using Time=Clock::time_point;
+        const auto now=[&]() { return measure ? Clock::now() : Time{}; };
+        const auto ns=[](Time a,Time b) { return std::chrono::duration_cast<std::chrono::nanoseconds>(b-a).count(); };
+        const auto startup_begin=now();
+        const unsigned setup_ticks = argc >= 7 ? static_cast<unsigned>(std::stoul(argv[6])) : 255;
         const unsigned side = static_cast<unsigned>(std::stoul(argv[1]));
         const unsigned workers = static_cast<unsigned>(std::stoul(argv[2]));
         const bool active = std::string(argv[3]) == "active-window-excluded";
@@ -27,8 +45,12 @@ int main(int argc, char** argv) {
             for (unsigned x = 0; x < side; x += 128) world.set(x + 3, y + 3, Material::Wall);
         world.set(side - 8, 8, Material::Sand); // excluded granular sentinel
         const std::vector<fixture::Point> support{{side - 8, 8}, {20, 20}};
+        const auto startup_ns=ns(startup_begin,now());
+        std::int64_t input_ns=0;
+        const auto setup_begin=now();
         TickStats setup_stats;
         for (unsigned t = 1; t <= setup_ticks; ++t) {
+            const auto input_begin=now();
             if (active && t >= setup_ticks - 119) {
                 // Multiple disjoint phased cores; controlled external input is
                 // finished before either matched event/ordinary tick.
@@ -36,10 +58,12 @@ int main(int argc, char** argv) {
                     world.set(x, 8, Material::Water); world.set(x + 8, 8, Material::Sand);
                 }
             }
+            input_ns+=ns(input_begin,now());
             const auto stats = world.tick();
             setup_stats = stats;
             fixture::require(stats.tick == t && world.completed_tick_index() == t, "setup tick failed");
         }
+        const auto setup_ns=ns(setup_begin,now());
         const auto before = PrecisionProbe::snapshot(world, setup_stats, support);
         const auto limit = (std::uint64_t{1} << MAT003_EPOCH_BITS) - 1;
         const bool naturally_reached = PrecisionProbe::epoch(world) == limit;
@@ -55,7 +79,9 @@ int main(int argc, char** argv) {
         mat003_world::reset_dispatch_observations();
         mat003_world::observed_clears=0;
         mat003_world::observed_clear_cells=0;
-        const auto stats = world.tick(); // Real production clear path, no clocks.
+        const auto event_begin=now();
+        const auto stats = world.tick(); // Real production clear path; clocks only in admitted measure mode.
+        const auto tick_ns=ns(event_begin,now());
         const auto event_dispatch = mat003_world::dispatch_observations();
         fixture::require(world.completed_tick_index() == setup_ticks + 1 && stats.tick == setup_ticks + 1, "event tick not completed");
         fixture::require(PrecisionProbe::epoch(world) == (event ? 1U : 129U), "event counter mismatch");
@@ -91,7 +117,21 @@ int main(int argc, char** argv) {
                   << ",\"event_worker_tasks\":" << event_dispatch.worker_tasks
                   << ",\"observed_clear_count\":" << mat003_world::observed_clears
                   << ",\"observed_clear_cells\":" << mat003_world::observed_clear_cells
-                  << ",\"formal_timing_admitted\":false,\"assertions\":" << fixture::assertions << "}\n";
+                  << ",\"qualification_only\":" << (measure ? "false" : "true")
+                  << ",\"assertions\":" << fixture::assertions << "}\n";
+        if (measure) {
+            // Separate line prevents untimed output from containing timing
+            // observations. The admitted collector retains both complete lines.
+            std::int64_t peak_rss=0;
+#ifdef __linux__
+            rusage usage{};
+            fixture::require(getrusage(RUSAGE_SELF,&usage)==0,"RSS query failed");
+            peak_rss=usage.ru_maxrss;
+#endif
+            std::cout << "{\"measurement\":true,\"tick_ns\":" << tick_ns
+                      << ",\"startup_ns\":" << startup_ns << ",\"setup_ns\":" << setup_ns
+                      << ",\"input_ns\":" << input_ns << ",\"peak_rss_kib\":" << peak_rss << "}\n";
+        }
         return 0;
     } catch (const std::exception& error) { std::cerr << error.what() << '\n'; return 1; }
 }

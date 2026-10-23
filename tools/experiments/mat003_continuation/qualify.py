@@ -111,6 +111,8 @@ def main():
         report['compiler_sha256'] = digest(Path(compiler))
         report['platform'] = platform.platform()
         report['qualified_toolchain'] = platform.system() == 'Linux' and '13.3.0' in version
+        report['linker_version']=run(['ld','--version'],'linker',10)
+        report['qualified_toolchain']=report['qualified_toolchain'] and '2.42' in report['linker_version']
         if not args.local_toolchain_diagnostic and not report['qualified_toolchain']:
             raise ValueError('requires Linux GCC 13.3.0; local diagnostic cannot admit anything')
         # Seal all source inputs before builds. Check accepted inputs against Git,
