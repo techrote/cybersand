@@ -137,6 +137,13 @@ func _run() -> void:
 	if out != null:
 		out.store_string(JSON.stringify(Arena.json_value(evidence)))
 		out.close()
+	var retained_dir: String = OS.get_environment("CYBERSAND_PRESENTATION_EVIDENCE")
+	if not retained_dir.is_empty():
+		DirAccess.make_dir_recursive_absolute(retained_dir)
+		var archive: FileAccess = FileAccess.open(retained_dir.path_join("4ly003_qualification_" + split + ".json"), FileAccess.WRITE)
+		if archive != null:
+			archive.store_string(JSON.stringify(Arena.json_value(evidence)))
+			archive.close()
 	print("4LY003_QUALIFICATION ", JSON.stringify(Arena.json_value(summary)))
 	episode.close()
 	parent.free()
