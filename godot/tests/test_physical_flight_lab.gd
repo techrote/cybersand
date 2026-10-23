@@ -93,7 +93,7 @@ func _run_episode(model: StringName, scenario_id: String, source: StringName = &
 			"owner receipt with native world tick is preserved, not only counters")
 	print("4LY003_DEV_EPISODE ", JSON.stringify(Arena.json_value({
 		"manifest": evidence.manifest, "metrics": metrics})))
-	results.append({"manifest": evidence.manifest, "metrics": metrics})
+	results.append({"manifest": evidence.manifest, "metrics": metrics, "trace": evidence.trace})
 	return {"metrics": metrics, "initial_position": Vector2(episode.scenario.start),
 		"final_position": episode.active_goal() - Vector2(latest.goal_delta_cells),
 		"terminal": episode.transition(0), "trace": evidence.trace}
