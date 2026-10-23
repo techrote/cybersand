@@ -470,6 +470,15 @@ func submit_local(actor_id: int, action: Dictionary, producer: StringName, lease
 	return submit(make_command(view, _sequences[actor_id] + 1, action, lease), producer)
 
 
+func _fault_joint_step(reason: String) -> void:
+	_joint_step_fault = reason
+	last_error = reason
+	_suspended = true
+	for actor_id: int in range(_rigs.size()):
+		if is_joint_pilot(actor_id):
+			cancel_input(actor_id, epoch, StringName(str(_definitions[actor_id].producer)))
+
+
 func cancel_input(actor_id: int, expected_epoch: int, producer: StringName) -> bool:
 	if not _active or actor_id < 0 or actor_id >= _rigs.size() or expected_epoch != epoch \
 		or producer != StringName(str(_definitions[actor_id].producer)):
@@ -478,7 +487,14 @@ func cancel_input(actor_id: int, expected_epoch: int, producer: StringName) -> b
 	if is_joint_pilot(actor_id):
 		_joint_grants[actor_id] = {}
 		_joint_targets[actor_id] = {}
-		_joint_pending_steps[actor_id] = {}
+		var pending: Dictionary = _joint_pending_steps[actor_id]
+		if not pending.is_empty() and bridge.manual_step_count() < int(pending.physics_step):
+			var receipt_index: int = int(pending.receipt_index)
+			if receipt_index >= 0 and receipt_index < _joint_receipts[actor_id].size():
+				var pending_row: Dictionary = _joint_receipts[actor_id][receipt_index]
+				pending_row.integrity.terminal_boundary = "cancelled_before_physics"
+				pending_row.motion = {"available": false, "reason": "motor_revoked_before_physics"}
+			_joint_pending_steps[actor_id] = {}
 	_commands[actor_id] = {}
 	_flight_commands[actor_id] = {}
 	_flight_applied[actor_id] = {}
@@ -503,6 +519,15 @@ func cancel_input(actor_id: int, expected_epoch: int, producer: StringName) -> b
 func set_suspended(value: bool) -> void:
 	if value == _suspended:
 		return
+	if not value and _has_joint_pilot:
+		if not _joint_step_fault.is_empty():
+			return
+		if bridge.manual_step_count() != _joint_completed_step:
+			_fault_joint_step("ik_physics_advanced_while_suspended")
+			return
+		for index: int in range(_rigs.size()):
+			if is_joint_pilot(index):
+				cancel_input(index, epoch, StringName(str(_definitions[index].producer)))
 	if not value and _has_flight:
 		if not _flight_step_fault.is_empty():
 			return
@@ -529,6 +554,13 @@ func set_suspended(value: bool) -> void:
 func advance(delta: float) -> void:
 	if not _active or _suspended:
 		return
+	if _has_joint_pilot:
+		if bridge.manual_step_count() != _joint_completed_step:
+			_fault_joint_step("ik_requires_completion_before_advance")
+			return
+		if _joint_prepared:
+			last_error = "ik_step_already_prepared"
+			return
 	if _has_flight:
 		if bridge.manual_step_count() != _flight_completed_step:
 			_fault_flight_step("flight_requires_completion_before_advance")
@@ -538,6 +570,9 @@ func advance(delta: float) -> void:
 			return
 	if not is_finite(delta) or delta <= 0.0:
 		for index: int in range(_rigs.size()):
+			if is_joint_pilot(index):
+				cancel_input(index, epoch, StringName(str(_definitions[index].producer)))
+				_joint_last_rejection[index] = {"reason": "ik_invalid_cadence"}
 			if is_flight_actor(index):
 				cancel_input(index, epoch, StringName(str(_definitions[index].producer)))
 				_fallback_reasons[index] = "invalid_cadence"
@@ -545,17 +580,22 @@ func advance(delta: float) -> void:
 		return
 	if _has_flight:
 		_flight_prepared = true
+	if _has_joint_pilot:
+		_joint_prepared = true
 	# Collect every scripted view before admitting outputs or advancing any body.
 	var script_actions: Array = []
 	if tick % DECISION_TICKS == 0:
 		for index: int in range(_rigs.size()):
-			if str(_rigs[index].fault).is_empty() and (_definitions[index].producer == &"demo" or _definitions[index].producer == "demo"):
+			if not is_joint_pilot(index) and str(_rigs[index].fault).is_empty() and (_definitions[index].producer == &"demo" or _definitions[index].producer == "demo"):
 				script_actions.append({"id": index,
 					"action": _scripts[index].next_action(observation(index), delta * DECISION_TICKS)})
 	for output: Dictionary in script_actions:
 		submit_local(int(output.id), output.action, &"demo", 12)
 	_effects.clear()
 	for index: int in range(_rigs.size()):
+		if is_joint_pilot(index):
+			_advance_joint_pilot(index, delta)
+			continue
 		if is_flight_actor(index) and absf(delta - Flight.FIXED_DELTA) > 0.000000001:
 			cancel_input(index, epoch, StringName(str(_definitions[index].producer)))
 			_fallback_reasons[index] = "invalid_cadence"
@@ -623,6 +663,17 @@ func _fault_flight_step(reason: String) -> void:
 func complete_step() -> void:
 	if not _active:
 		return
+	if _has_joint_pilot:
+		var actual_joint_step: int = bridge.manual_step_count()
+		if not _joint_step_fault.is_empty():
+			return
+		if _suspended:
+			if actual_joint_step != _joint_completed_step:
+				_fault_joint_step("ik_physics_advanced_while_suspended")
+			return
+		if actual_joint_step != _joint_completed_step + 1 or not _joint_prepared:
+			_fault_joint_step("ik_unexpected_physics_step")
+			return
 	if _has_flight:
 		if not _flight_step_fault.is_empty():
 			return
@@ -644,6 +695,7 @@ func complete_step() -> void:
 			_capture_flight_step(index)
 			_rigs[index].complete_step()
 			_rigs[index].refresh_observation()
+			_complete_joint_step(index)
 			# Fault quarantine retires both unconsumed input and copied tool work.
 			# Healthy actors keep their separate leases and continue the session.
 			if not str(_rigs[index].fault).is_empty() and not _commands[index].is_empty():
@@ -657,6 +709,9 @@ func complete_step() -> void:
 		if _has_flight:
 			_flight_completed_step = bridge.manual_step_count()
 			_flight_prepared = false
+		if _has_joint_pilot:
+			_joint_completed_step = bridge.manual_step_count()
+			_joint_prepared = false
 
 
 func ik_capabilities(actor_id: int) -> Dictionary:
