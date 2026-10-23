@@ -542,6 +542,13 @@ func set_suspended(value: bool) -> void:
 				_fallback_reasons[index] = "resumed"
 	_suspended = value
 	if value:
+		if _has_joint_pilot:
+			# Suspension before the step revokes the prepared references; an
+			# already-completed but unreported Rapier step is an owner fault.
+			if _joint_prepared and bridge.manual_step_count() != _joint_completed_step:
+				_fault_joint_step("ik_step_unreported_before_suspend")
+				return
+			_joint_prepared = false
 		_flight_pause_step = bridge.manual_step_count()
 		_effects.clear()
 		for index: int in range(_rigs.size()):
