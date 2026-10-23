@@ -41,7 +41,13 @@ func _run() -> void:
 		if "--admit-final" not in args or not admission is Dictionary \
 			or str(admission.get("teacher_sha256", "")) != frozen_teacher \
 			or not bool(admission.get("independent_preflight_accepted", false)) \
-			or str(admission.get("source_git_sha", "")).is_empty():
+			or str(admission.get("version", "")) != "4ly003-final-admission/v1" \
+			or str(admission.get("reviewer", "")).is_empty() \
+			or str(admission.get("source_git_sha", "")) != OS.get_environment("GITHUB_SHA") \
+			or OS.get_environment("GITHUB_SHA").is_empty() \
+			or str(admission.get("suite_sha256", "")).length() != 64 \
+			or not FileAccess.file_exists("user://4ly003_sealed_final_suite.json") \
+			or FileAccess.get_file_as_string("user://4ly003_sealed_final_suite.json").sha256_text() != str(admission.get("suite_sha256", "")):
 			push_error("4LY003_QUALIFICATION: final sealed; no independently admitted frozen source")
 			quit(1)
 			return
