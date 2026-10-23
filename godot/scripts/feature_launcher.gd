@@ -77,7 +77,7 @@ func _button(parent: Node, text: String, destination: String) -> void:
 func launch(destination: String) -> void:
 	var scene: String = "res://main.tscn"
 	if destination == "flight_lab": scene = "res://flight_lab.tscn"
-	eldestination == "thunderbowl": scene = "res://examples/thunderbowl/thunderbowl.tscn"
+	elif destination == "thunderbowl": scene = "res://examples/thunderbowl/thunderbowl.tscn"
 	elif destination in ["physical_actors", "physical_usables"]: scene = "res://examples/thunderbowl/physical_thunderbowl.tscn"
 	elif destination == "worldgen": scene = "res://worldgen_workbench.tscn"
 	elif destination == "semantic_depth": scene = "res://semantic_depth.tscn"
