@@ -39,6 +39,11 @@ must not be inferred from these measurements.
 4LY-002 [#206](https://github.com/techrote/cybersand/issues/206) now has
 passing source-bound physical manoeuvre envelopes and profile hashes, but
 owner-feel and final changed-head reconciliation are still not accepted.
+The [4LY-003 implementation candidate](../systems/physical-flight-lab.md)
+adds a dedicated in-game/native-Rapier flight course, versioned
+episode/observation interfaces and a scripted teacher; its
+[checkpoint ledger](../audits/2026-10-23-4ly003-checkpoint.md)
+keeps final teacher qualification and throughput **pending**.
 Next, [4LY-003 #207](https://github.com/techrote/cybersand/issues/207)
 owns actual-host lab/teacher qualification. Their independent preparation may
 overlap after this interface is fixed, but final host evidence uses frozen
