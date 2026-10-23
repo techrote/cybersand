@@ -46,3 +46,5 @@ The separate independent reviewer reran the frozen `verify_timing.py` against re
 No production layout/epoch winner, generalized width ordering or cold-gameplay guarantee is accepted. The 1ms findings require architecture consideration of resident traversal/frame hitches; wider epochs change frequency without eliminating the observed hitch. No failed/incomplete observations exist in this campaign; no reruns were performed.
 
 Documentation/current repository/historical M11 checks and diff checks pass. Frozen retrieval remains21/32 at1,32/32 at5,MRR0.7937; supplementary96/119 at1,119/119 at5,MRR0.8843. Manual fact/status review preserves the protocol qualifiers and separate timing-admission versus evidence-acceptance meanings.
+
+Observer-off means dispatch/clear correctness observers are compiled out. The frozen fixture still enables physics diagnostics and retains ledgers/semantic buffers; both roles share that qualified configuration. These are exact diagnostics-enabled fixture costs, not an unqualified production observer-free baseline.
