@@ -156,3 +156,5 @@ world streaming. Fixed-demo level saves provide none of these. Use
 [ownership](data-ownership-and-lifetimes.md) and the
 [validation ledger](../reference/validation-evidence.md) before claiming a
 particular region, allocation or boundary fixture is covered.
+
+The Planned [MAT-003 schema proposal](../research/mat003-state-schema-proposal.md) and [ADR-015](../decisions/ADR-015-material-state-schema-and-carrier-gates.md) distinguish logical capacity from physical stride and retain compact/DUAL64 options. Current cell storage and scheduler ownership remain unchanged; no new timing authority follows.

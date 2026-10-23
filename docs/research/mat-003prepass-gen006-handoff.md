@@ -278,3 +278,7 @@ state/solver/recipe changes and compatible migrations. Any behavior introducing
 new authoritative history or ownership must first satisfy the field and
 continuation contract. No experimental capacity arm is a universal payload
 reservation for those future features.
+
+## Subsequent MAT-003 schema proposal
+
+The [state-schema proposal](mat003-state-schema-proposal.md) and [ADR-015](../decisions/ADR-015-material-state-schema-and-carrier-gates.md) add Planned logical extension/epoch capacity accounting and adoption gates. They do not freeze a GEN-006 codec, assign pressure/air semantics or replace this canonical durable contract. No implementation changes follow from the shortlist.

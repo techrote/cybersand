@@ -256,3 +256,5 @@ executed results belong to the [dated Deepworks audit](../audits/2026-10-20-deep
 ## Semantic four-plane generation and authoring
 
 GEN-005 projection, typed link, fixture lifecycle, atomic admission and frozen-background questions route to the [semantic-plane contract](../systems/procedural-semantic-planes.md). Refinery/cavern JSON, source programmes, controls, actor placements, actual captures and provenance inspection route to the [authoring guide](../operations/semantic-depth-authoring.md).
+
+MAT-003 field/lifecycle and logical capacity questions route to the [state-schema proposal](../research/mat003-state-schema-proposal.md); shortlist/adoption questions route to [ADR-015](../decisions/ADR-015-material-state-schema-and-carrier-gates.md). Both are Planned, with no production selection or new timing authority.

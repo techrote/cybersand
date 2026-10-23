@@ -770,3 +770,5 @@ The [physical actor programme](../operations/physical-actor-programme.md) retain
 ## Strata Theatre integration — 2026-10-18
 
 The opt-in [depth prototype](../systems/depth-layers-and-parallax.md) supplies four native material worlds and five compositor modes. It remains a synchronous comparison host, separate from ordinary asynchronous gameplay; production layering, immutable native-event forwarding, persistence and browser qualification remain Planned.
+
+**2026-10-23 MAT-003 proposed decision checkpoint:** [state schema](../research/mat003-state-schema-proposal.md) and [ADR-015](../decisions/ADR-015-material-state-schema-and-carrier-gates.md) retain optimized compact and DUAL64 as leading expansion options after all three separately verified campaigns. Field semantics, epoch/map choice and owner budgets remain Planned/Ambiguous; production C64/E8 and draft PR211/221 remain unchanged. No new timing is authorized.
