@@ -81,17 +81,20 @@ static func _axis(offset: float, velocity: float, maximum: float, braking: float
 	var sign_value: float = signf(offset)
 	# Braking starts before the nominal target: predicted coasting/response
 	# distance must fit in the remaining space to the arrival region.
-	# The episode requires 36 ticks of low-speed dwell after reaching the
-	# arrival region. Include a bounded settling reserve in the *planner* so
-	# slow-response bodies start braking before actuator lag consumes that
-	# dwell window. This uses only published capability timing.
-	var planning_latency: float = latency + 0.45
-	var stop_distance: float = velocity * velocity / (2.0 * braking) \
-		+ absf(velocity) * planning_latency
+	var stop_distance: float = velocity * velocity / (2.0 * braking) + absf(velocity) * latency
 	var usable: float = maxf(0.0, remaining - radius * 0.30)
-	var speed_by_distance: float = sqrt(2.0 * braking * usable * 0.60)
-	var speed_by_response: float = usable / maxf(planning_latency * 1.60, 0.28)
+	var speed_by_distance: float = sqrt(2.0 * braking * usable * 0.64)
+	var speed_by_response: float = usable / maxf(latency * 1.75, 0.20)
 	var target: float = sign_value * minf(maximum, minf(speed_by_distance, speed_by_response))
+	# Keep ordinary/open-course transit unchanged. Only inside the terminal
+	# arrival window reserve actuator response time for the mandatory 36-tick
+	# low-speed dwell. This uses goal-relative offset, own velocity and
+	# published response timing; no scenario identity or privileged score.
+	var arrival_window: float = radius * 3.5 + absf(velocity) * latency * 0.20
+	if remaining < arrival_window and velocity * offset > 0.0:
+		var settle_denominator: float = maxf(0.8, latency * 2.5 + 0.50)
+		var settle_speed: float = maxf(0.0, remaining - radius * 0.35) / settle_denominator
+		target = sign_value * minf(absf(target), settle_speed)
 	if remaining < radius * 1.5:
 		target = clampf(offset * 1.25, -maximum * 0.45, maximum * 0.45)
 	# In the braking region command a smaller desired velocity than the body's
