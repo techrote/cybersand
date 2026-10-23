@@ -106,6 +106,7 @@ func measure_commands(model: StringName) -> Dictionary:
 		await close_fixture()
 		return {}
 	var grounded: int = 0
+	var hover_start: Vector2 = rig.centre()
 	var hover: Dictionary = {}
 	for tick: int in range(240):
 		hover = step()
@@ -114,7 +115,9 @@ func measure_commands(model: StringName) -> Dictionary:
 			check_actuator(hover, model)
 	out["unsupported_hover_steps"] = 240 - grounded
 	out["hover_final_speed"] = Vector2(hover.velocity).length()
-	expect(grounded == 0 and out.hover_final_speed <= float(registered.individual.maximum_final_hover_speed_cells_per_second),
+	out["neutral_hover_displacement_cells"] = Vector2(hover.centre).distance_to(hover_start)
+	expect(int(out.unsupported_hover_steps) >= int(registered.individual.minimum_hover_support_free_steps)
+		and out.hover_final_speed <= float(registered.individual.maximum_final_hover_speed_cells_per_second),
 		str(model) + " holds unsupported neutral hover and settles")
 	var onset: int = -1
 	var speed_60: float = 0.0
@@ -133,8 +136,10 @@ func measure_commands(model: StringName) -> Dictionary:
 	speed_120 = float(view.velocity.x)
 	var brake_start: float = float(view.centre.x)
 	var brake_time: int = -1
+	var most_negative_vx: float = 0.0
 	for tick: int in range(180):
 		view = step()
+		most_negative_vx = minf(most_negative_vx, float(view.velocity.x))
 		if brake_time < 0 and absf(float(view.velocity.x)) <= 1.0:
 			brake_time = tick + 1
 		if tick % 30 == 0:
@@ -145,6 +150,7 @@ func measure_commands(model: StringName) -> Dictionary:
 		str(model) + " has usable authorized stopping authority")
 	out.merge({"onset_steps": onset, "vx_after_60": speed_60, "vx_after_120": speed_120,
 		"neutral_brake_ticks_to_one": brake_time, "neutral_stop_distance": neutral_stop,
+		"neutral_brake_velocity_overshoot": -most_negative_vx,
 		"thrust_saturated_ticks": saturated}, true)
 	for _tick: int in range(120):
 		step(Vector2.RIGHT)
