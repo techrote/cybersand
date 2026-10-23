@@ -41,6 +41,9 @@ var _decisions: int = 0
 var _ticks: int = 0
 var _last_distance: float = INF
 var _best_distance: float = INF
+var _step_reward: float = 0.0
+var _episode_reward: float = 0.0
+var _last_reward_terms: Dictionary = {}
 var _disturbance_applied: bool = false
 var _disturbance_receipt: Dictionary = {}
 var _start_usec: int = 0
@@ -100,6 +103,9 @@ func reset(model: StringName, scenario_id: String, seed: int = 0,
 	_ticks = 0
 	_last_distance = INF
 	_best_distance = INF
+	_step_reward = 0.0
+	_episode_reward = 0.0
+	_last_reward_terms.clear()
 	_reset_usec = Time.get_ticks_usec() - started
 	_serialize_usec = 0
 	_start_usec = Time.get_ticks_usec()
@@ -185,6 +191,8 @@ func tick(action: Variant = null, observation_id: String = "", repeat_ticks: int
 	if not must_decide and action != null:
 		_fail("action_outside_decision_boundary")
 		return transition(0)
+	_step_reward = 0.0
+	_last_reward_terms.clear()
 	var command: Dictionary = {}
 	if action != null:
 		var normalized: Dictionary = Session.normalized_flight_action(action)
@@ -245,6 +253,8 @@ func _assess_tick(owner: Dictionary, frame: Dictionary,
 	var velocity: Vector2 = owner.get("velocity", Vector2.INF)
 	var goal: Vector2 = active_goal()
 	if not centre.is_finite() or not velocity.is_finite() or not goal.is_finite():
+		_trace.append({"tick": _ticks, "world_tick": int(frame.get("world_tick", -1)),
+			"physics_fault": true, "reason": "nonfinite_physical_state"})
 		_fail("nonfinite_physical_state")
 		return
 	var distance: float = centre.distance_to(goal)
@@ -254,24 +264,18 @@ func _assess_tick(owner: Dictionary, frame: Dictionary,
 	_contacts += int(contact)
 	if distance > _last_distance + 4.0 and _last_distance < float(scenario.arrival_radius) * 2.0:
 		_overshoot += 1
+	# Evaluator-only reward. This value NEVER enters a policy observation or
+	# the goal-blind stabilizer. Bound per-step progress and contact penalties.
+	var progress: float = clampf((_last_distance - distance) / 16.0, -1.0, 1.0) * 0.30 \
+		if is_finite(_last_distance) else 0.0
 	_last_distance = distance
 	_best_distance = minf(_best_distance, distance)
 	var within: bool = distance <= float(scenario.arrival_radius) and speed <= float(scenario.speed_tolerance)
 	_dwell = _dwell + 1 if within else 0
-	var received: Dictionary = owner.flight.get("last_step", {}).duplicate(true)
-	_trace.append({"tick": _ticks, "world_tick": int(frame.get("world_tick", -1)),
-		"observation_id": str(owner.observation_id),
-		"requested_action": requested.get("action", {}).duplicate(true) if not requested.is_empty() else {},
-		"admitted": accepted if not requested.is_empty() else null,
-		"physical_receipt": received,
-		"centre": centre, "velocity": velocity, "distance": distance,
-		"dwell": _dwell, "contact": contact, "contact_count": contact_count,
-		"physics_fault": bool(frame.get("failed", false)),
-		"host_disturbance": _disturbance_receipt.duplicate(true)})
+	var observed_dwell: int = _dwell
 	if bool(frame.get("failed", false)):
 		_fail("actual_host: " + str(frame.get("reason", "")))
-		return
-	if _dwell >= int(scenario.dwell_ticks):
+	elif _dwell >= int(scenario.dwell_ticks):
 		_waypoint += 1
 		_dwell = 0
 		_last_distance = INF
@@ -279,13 +283,34 @@ func _assess_tick(owner: Dictionary, frame: Dictionary,
 			_success = true
 			_terminal = true
 			_reason = "low_speed_arrival_dwell"
-			return
-	if bool(frame.get("finished", false)):
+	elif bool(frame.get("finished", false)):
 		_terminal = true
 		_truncated = bool(frame.get("truncated", false))
 		_failed = bool(frame.get("failed", false))
 		_reason = "deadline" if _truncated else str(frame.get("reason", "host_finished"))
-
+	var bonus: float = 1.0 if _success and bool(scenario.get("navigation_credit", false)) else 0.0
+	var physical_fault_penalty: float = -1.0 if bool(frame.get("failed", false)) else 0.0
+	var terms: Dictionary = {
+		"progress": progress, "contact": -0.02 if contact else 0.0,
+		"time": -0.001, "low_speed_navigation_dwell": bonus,
+		"physical_fault": physical_fault_penalty}
+	var reward: float = 0.0
+	for value: Variant in terms.values():
+		reward += float(value)
+	_step_reward += reward
+	_episode_reward += reward
+	_last_reward_terms = terms.duplicate(true)
+	var received: Dictionary = owner.flight.get("last_step", {}).duplicate(true)
+	_trace.append({"tick": _ticks, "world_tick": int(frame.get("world_tick", -1)),
+		"observation_id": str(owner.observation_id),
+		"requested_action": requested.get("action", {}).duplicate(true) if not requested.is_empty() else {},
+		"admitted": accepted if not requested.is_empty() else null,
+		"physical_receipt": received,
+		"centre": centre, "velocity": velocity, "distance": distance,
+		"dwell": observed_dwell, "contact": contact, "contact_count": contact_count,
+		"physics_fault": bool(frame.get("failed", false)),
+		"host_disturbance": _disturbance_receipt.duplicate(true),
+		"reward": reward, "reward_terms": terms, "episode_terminal_tick": _terminal})
 
 func _fail(reason: String) -> void:
 	_terminal = true
@@ -303,6 +328,8 @@ func transition(consumed: int) -> Dictionary:
 		"observation": observe(), "terminated": _terminal and not _truncated and not _failed,
 		"truncated": _truncated, "failed": _failed, "reason": _reason,
 		"success": _success, "navigation_credit": _success and bool(scenario.get("navigation_credit", false)),
+		"reward": _step_reward if consumed > 0 else 0.0,
+		"reward_terms_last_tick": _last_reward_terms.duplicate(true) if consumed > 0 else {},
 		"episode_done": _terminal, "waypoint": _waypoint, "dwell_ticks": _dwell}
 	return result.duplicate(true)
 
@@ -317,7 +344,8 @@ func metrics() -> Dictionary:
 		"final_goal_error_cells": distance, "final_speed_cells_per_second": speed,
 		"successful_dwell": _success, "best_error_cells": _best_distance,
 		"overshoot_events": _overshoot, "contact_ticks": _contacts,
-		"invalid_actions": _invalid_actions, "terminated": _terminal and not _failed and not _truncated,
+		"invalid_actions": _invalid_actions, "cumulative_evaluator_reward": _episode_reward,
+		"terminated": _terminal and not _failed and not _truncated,
 		"failed": _failed, "truncated": _truncated, "reason": _reason}
 
 
