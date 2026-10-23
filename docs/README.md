@@ -14,6 +14,14 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 For **Generation Workbench 2**, use the [inspection and authoring contract](systems/generation-workbench-2.md): truthful native replay, actual intermediate stages, graph/hierarchy tools, transactional undo/redo and bounded seed/recipe comparisons. The [procedural qualification guide](operations/procedural-qualification.md) routes the 1024 × 1024 scene, final-raster paths, native exhibits and visual evidence.
 
+For the **separately admitted Runner IK pilot**, use the
+[physical joint-target contract](systems/physical-joint-targets.md):
+the original five-part/ four-joint assembly, source-bound exclusive
+right-leg motor references and per-tick real-Rapier receipts.
+The [ACT-IK-001 admission ledger](audits/2026-10-23-act-ik-001-development-admission.md)
+distinguishes proposed source work from required NCA compatibility,
+published runtime proof and actual physical tracking.
+
 Choose all 46 [articulated Rapier actors](systems/physical-actor-rigs.md) with F5 in the sandbox and exploratory maps, using keyboard, local scripted or external-policy control. Sampled references and the initial hull arms remain available; [the physical actor programme](operations/physical-actor-programme.md) preserves owner intent and integration scope.
 
 For the internal **4LY** single-chassis drone family, use the
