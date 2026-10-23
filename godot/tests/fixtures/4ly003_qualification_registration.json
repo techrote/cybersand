@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "registration_date_utc": "2026-10-23",
+  "registration_status": "prospective_before_any_4ly003_teacher_scoring",
+  "plant_sources": {
+    "upstream_merge_sha": "1f9336388f11be39abaae340a781a5eef52115d4",
+    "controller_sha256": "fb86190c68c6a87e7d2ef7e845b1fb97305f188723a326f67f07caa6971cc8ae",
+    "profiles": {
+      "4ly_trainer": "f1f9286a27b929c96caca5aaf2be70cbd82e0fd933f29968c1aaaa43ac8f1704",
+      "4ly_hauler": "e9979ed9e437d2fcdf5c4c52fb4385e788d4ccd6f40c7494308c60c26c11e10d",
+      "4ly_drifter": "c195dd35677dcbdb76c85c798d0c1fbc103dcc40182932be7d70c755b1dbac24",
+      "4ly_dart": "a48a58c388fb0826f5b5b29005a7469d2cd081dd2c0ed3bfe6c028d88cd04084"
+    }
+  },
+  "runtime": {
+    "physics_hz": 60,
+    "decision_interval_ticks": 6,
+    "lease_ticks": 12,
+    "host": "actual CyberPhysicalActorArena; native material + Rapier 0.35.2",
+    "godot": "4.7"
+  },
+  "criteria": {
+    "arrival_radius_cells": 12,
+    "hover_radius_cells": 9,
+    "max_arrival_speed_cells_per_second": 2.5,
+    "required_dwell_ticks": 36,
+    "first_terminal_tick_stopping": true,
+    "maximum_post_terminal_transitions": 0,
+    "maximum_invalid_actions": 0,
+    "maximum_physics_faults": 0,
+    "minimum_nontrivial_start_goal_distance_cells": 60
+  },
+  "teacher_gate": {
+    "development_only_tuning": true,
+    "final_evaluation_split": "final",
+    "per_profile_family_success_rate": {
+      "free_space": 0.8,
+      "reversal": 0.75,
+      "arrival": 0.8,
+      "obstacles": 0.6,
+      "recovery": 0.6
+    },
+    "minimum_trials_per_profile_and_family": 4,
+    "zero_authority_integrity_violations": true,
+    "negative_control_max_navigation_success_rate": 0
+  },
+  "splits": {
+    "development": {
+      "scenario_ids": [
+        "unsupported_hover",
+        "horizontal_reach",
+        "vertical_reach",
+        "diagonal_reach",
+        "reverse",
+        "arrival_braking",
+        "wide_corridor",
+        "offset_gates",
+        "corner",
+        "slalom",
+        "wall_recovery",
+        "neutral_control",
+        "constant_control",
+        "power_off"
+      ],
+      "seeds": [
+        101,
+        103,
+        107,
+        109
+      ],
+      "geometry_rule": "base authored layout with bounded fixture variation; no score admission"
+    },
+    "tuning": {
+      "seeds": [
+        211,
+        223,
+        227,
+        229
+      ],
+      "geometry_rule": "start raised 16 cells, shifted destination plus a distinct obstacle for obstacle scenarios"
+    },
+    "final": {
+      "seeds": [
+        419,
+        421,
+        431,
+        433
+      ],
+      "geometry_rule": "start shifted 13 x and -25 y, goals -37 x and +26 y, distinct final obstacle placement",
+      "sealed_for_teacher_tuning": true,
+      "open_only_after_teacher_source_freeze": true
+    }
+  },
+  "negative_controls": [
+    "neutral_control",
+    "constant_control",
+    "power_off"
+  ],
+  "prohibited_claims": [
+    "Cross-OS deterministic physics",
+    "Production-real-time inference",
+    "Teacher qualified before scored actual-host validation",
+    "Learned navigation"
+  ],
+  "source_status": "registration only; no 4LY-003 teacher scoring run recorded"
+}
