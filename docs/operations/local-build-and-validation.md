@@ -672,6 +672,33 @@ this candidate to learning as already accepted. The flight lab, qualified teache
 navigation, target-PC human feel and new Web runtime support have separate
 4LY follow-up gates.
 
+### 4LY-003 flight lab checks
+
+**Current 4LY-003 implementation candidate** (not yet accepted teacher score):
+[flight-lab contract](../systems/physical-flight-lab.md),
+[prospective criteria](../../godot/tests/fixtures/4ly003_qualification_registration.json)
+and [checkpoint/gaps](../audits/2026-10-23-4ly003-checkpoint.md).
+The existing Godot GDExtension suite auto-discovers both additional
+headless tests by wildcard. The pinned runtime must include real
+`CyberNativeCellWorld` and `RapierPhysicsServer2D`.
+
+```sh
+godot --headless --path godot --script res://tests/test_physical_flight_lab.gd
+godot --headless --path godot --script res://tests/test_physical_flight_pilot.gd
+```
+
+The first validates frozen 4LY profile/controller digests, actual
+native/Rapier 60 Hz stepping, copied policy/normalization boundary,
+issued-observation generation fences, physical navigation samples,
+hover and power-off negative controls. It is deliberately
+**development-only**; the separately registered final split must
+remain sealed until the teacher implementation is frozen. The second
+measures at most 960 physical ticks from one actual host, along with
+decision/reset/JSON-serialization/memory counters. Neither test
+implies complete teacher admission, learned-policy success or
+desktop real-time throughput. Retain positive *and failed* episodes,
+and use final-head GitHub-hosted CI rather than mock-based tests.
+
 ### Thunderbowl controls and native arena
 
 The [Thunderbowl reference](../systems/thunderbowl-control-reference.md) contains
