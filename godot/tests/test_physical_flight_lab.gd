@@ -54,6 +54,13 @@ func _run_episode(model: StringName, scenario_id: String, source: StringName = &
 	first.capabilities.desired_speed[0] = -99.0
 	check(float(episode.observe().capabilities.desired_speed[0]) == snapshot_capability,
 		"mutating a copied observation does not modify the authoritative descriptor")
+	var flat: Dictionary = episode.flat_observation()
+	check(str(flat.get("version", "")) == "4ly-flat-observation/v1"
+		and int(flat.get("field_count", 0)) == 54 and flat.get("values", []).size() == 54,
+		"fixed-order normalized 54-channel policy tensor is available")
+	if flat.has("values"):
+		for item: Variant in flat.values:
+			check(item is float and is_finite(float(item)), "flat feature finite and bounded")
 	var initial_tick: int = int(first.observed_tick)
 	var budget: int = int(episode.scenario.max_ticks)
 	if max_ticks > 0:
