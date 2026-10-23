@@ -5,12 +5,14 @@ document-kind: decision
 scope: Accepted qualification budgets and conditional schema-first compact/DUAL64 shortlist; no production layout, epoch or solver adoption
 canonical-for: [decision-mat003-schema-carrier-gates]
 last-reviewed: 2026-10-23
-related-documents: [../research/mat003-state-schema-proposal.md, ../research/mat003-continuation.md, ADR-002-double-buffered-tile-jobs.md, ../architecture/chunk-tile-and-buffer-model.md]
+related-documents: [../research/mat003-state-schema-proposal.md, ../research/mat003-continuation.md, ADR-016-mat003-carrier-evidence-synthesis.md, ADR-002-double-buffered-tile-jobs.md, ../architecture/chunk-tile-and-buffer-model.md]
 ---
 
 # ADR-015 MAT-003 semantic schema and carrier adoption gates
 
 ## Status and decision boundary
+
+The independent [ADR-016 carrier evidence synthesis](ADR-016-mat003-carrier-evidence-synthesis.md) and [source-bound archive audit](../audits/2026-10-23-mat003-independent-carrier-audit.md) consolidate the accepted S2A/S2P/WCLEAR/C128 observations without adopting a carrier. This ADR-015 remains authoritative for proposed qualification budgets, field-schema/adoption gates and owner decisions. The new synthesis neither extends these budget approvals nor supplies the missing Windows correctness, actual high-state or GEN-006 implementation acceptance.
 
 **Approved design for qualification budgets only; conditional schema and adoption decision.** The requested shortlist is optimized compact C72/C80 and DUAL64; this ADR proposes the criteria for choosing between them after semantic requirements are approved. It does not approve production implementation, a material-state schema, a new solver or timing execution. Production C64/E8 remains Current, ADR-002 scheduling ownership stays intact, PR211/221 stay draft. No accepted evidence or statistical definition changes.
 
