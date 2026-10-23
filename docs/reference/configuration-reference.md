@@ -862,10 +862,15 @@ Use actual observation hashes, runtime/physics identities and committed
 source SHA in evidence; no static profile name is a compatibility token.
 
 The [prospective thresholds](../../godot/tests/fixtures/4ly002_handling_thresholds.json)
-were registered before 4LY-002 handling execution. These values remain
-**candidates until** actual-Rapier measured handling, exact-final-head hosted
-checks and human feel acceptance are separately recorded; do not freeze them
-into a learning corpus from this document alone.
+were registered before the four-profile actual-Rapier run. The
+[measured envelopes](../audits/2026-10-23-4ly002-measured-handling-qualification.md)
+**passed** on Linux and Windows using exactly the source profile hashes published
+in that record. The literal `candidate_4ly002` marker **must not be changed**
+without new profile hash/plant compatibility qualification. This is a
+source-bound measured physical candidate, **not** owner-feel, target-PC,
+Web or downstream learning approval. The updated PR head's new visual
+capture/test scope remains separately gated; do not silently treat the
+earlier implementation-only checks as its final-head tests.
 
 All fields are required. Unknown fields, wrong types, nonfinite numbers,
 out-of-range values, inconsistent rectangular inertia and plant-envelope
