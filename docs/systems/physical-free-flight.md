@@ -2,35 +2,48 @@
 title: 4LY physical free-flight and assisted velocity control
 status: Current
 document-kind: contract
-scope: Shared single-chassis flight plant, strict two-output control and profile identity; four-profile calibration, flight lab and learned-policy qualification remain separate
+scope: Shared single-chassis flight plant, strict two-output control, four 4LY-002 handling candidates and ordinary-game selection; measured calibration and downstream flight lab/policy qualification are separate
 canonical-for: [physical-free-flight, 4ly-programme, 4ly-assisted-velocity-control]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-23
 related-documents: [physical-actor-rigs.md, ../operations/physical-actor-programme.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../reference/status-and-roadmap.md]
 ---
 
 # 4LY physical free-flight and assisted velocity control
 
-## What does 4LY-001 implement, and which drones are ready?
+## What does 4LY-001 implement, and which 4LY-002 drone profiles can I select?
 
 **Current experimental source, [4LY-001 / #205](https://github.com/techrote/cybersand/issues/205):**
 one shared physical plant and bounded velocity controller for the stable IDs
-`4ly_trainer`, `4ly_hauler`, `4ly_drifter` and `4ly_dart`. Each is recognized by
-the physical catalogue's explicit lookup and can be installed by a physical
-session. The ordinary `RIG_IDS` roster remains 46 actors; these four are not yet
-ordinary F5 choices. The existing physical Skimmer already supplies articulated
-twin-pod vector flight. 4LY adds a simpler training topology through the same
-physical owner.
+`4ly_trainer`, `4ly_hauler`, `4ly_drifter` and `4ly_dart`.
+**Current 4LY-002 implementation candidate (#206):** these four IDs now have
+distinct numerical profiles, each using exactly the same controller and
+single rectangular body. F5 has a separately named **set4LY** appended after
+the established eight sets. The original 46 entries in `RIG_IDS` and the
+original SetP indices are unchanged. Available hosts are the ordinary sandbox
+and the existing Play/exploratory maps with a physical F5 actor selector;
+protected Benchmark/scientific fixtures still refuse actor replacement.
+The physical Skimmer already supplies articulated twin-pod vector flight;
+4LY adds a simpler training topology through the same physical owner.
 
 The source owners are the validated
 [profile schema](../../godot/scripts/physical_flight_profile.gd), pure
 [velocity controller](../../godot/scripts/physical_flight_controller.gd),
 [catalogue](../../godot/scripts/physical_actor_catalog.gd) and shared session/rig.
 
-Trainer has initial conformance tuning. Hauler, Drifter and Dart currently use
-the same numerical defaults and are explicitly **uncalibrated placeholders**.
-Their names do not establish lumbering, floaty or nimble handling. Final profile
-authoring, ordinary-game selection and measured differentiation belong to
-[4LY-002 / #206](https://github.com/techrote/cybersand/issues/206).
+Trainer preserves its validated 4LY-001 physical-conformance defaults.
+Hauler, Drifter and Dart are different **candidate** handling plants: the largest
+Hauler has lower speed, acceleration and slower response; Drifter has reduced
+translation braking and passive drag while retaining upright torque; the
+smallest Dart has higher speed, acceleration and braking. No hidden
+profile-specific navigation code exists. `calibration = candidate_4ly002` is deliberately retained as part of the
+measured source's four profile hashes. The candidates have now **passed**
+prospectively registered real Rapier manoeuvre thresholds on both Linux
+and Windows at implementation head `f7721a1...`; that result does not
+by itself grant owner-feel or learned-policy admission. Exact resolved
+values are in the [configuration reference](../reference/configuration-reference.md#physical-free-flight-values).
+The [pre-registered numeric thresholds](../../godot/tests/fixtures/4ly002_handling_thresholds.json)
+and [actual fixture](../../godot/tests/test_physical_flight_handling.gd)
+are supported by the source-bound [qualification record](../audits/2026-10-23-4ly002-measured-handling-qualification.md).
 
 Implementation, measured handling, useful learned navigation and owner feel
 acceptance are separate claims. Source presence does not qualify a policy or
@@ -39,6 +52,64 @@ certify an unmeasured platform. Focused reproduction commands are in the
 The [dated conformance audit](../audits/2026-10-22-4ly001-physical-free-flight.md)
 records the actual Linux measurements, corrected failures and exact-head hosted
 gate handoff separately from the contract.
+
+## What can an ordinary player or external producer do with the new family?
+
+Open **F5 → set4LY → Trainer / Hauler / Drifter / Dart** in the regular
+sandbox or an exploratory Play host. Select the keyboard, scripted-demo or
+external-policy source and Apply. This resets the authored map and creates a
+fresh matching Rapier chassis at that host's spawn; it never converts the
+old body's live mass, inertia or collider. **WASD** submits only the admitted
+world-frame horizontal/vertical `move` request. Releasing the keys sends
+authorized neutral; focus/menu/input cancellation retires authority and
+falls back to passive physical behavior. **R** resets the retained selection.
+The visible F5 button reports the selected profile, producer, current flight
+mode and a tooltip with the lease/fallback and resolved profile hash.
+The selection panel shows movement, assistance, reset and empty-loadout
+semantics. Equipment choice and equip-only requests are disabled and
+independently refused at the host for all four flight profiles.
+
+The same session accepts the demo's current neutral request and the
+external policy's already-defined version-2 wire action. A demo source here
+is a *neutral conformance producer*, not a qualified navigation teacher.
+The four-drone family shares the session controller, force/torque actuator,
+contact owner and observation schema. No extra policy steering, training
+fast-path, Web ownership change, scientific fixture substitution, or
+unmeasured browser/platform qualification is implied. It may be selected
+with the ordinary multi-NPC demonstration checkbox, one body per drone.
+
+Collider-aligned rendering uses the real bridge's transform and rectangle
+dimensions. A small thrust mark shows the **applied** controller force and
+an intent mark shows the requested desired velocity, only while an admitted
+lease is live. Neither mark drives a pose, changes the force budget, or
+reconstructs a second motion trajectory.
+
+## How are the four handling candidates compared?
+
+A separate deterministic actual-Rapier suite uses a common 60 Hz step,
+fresh unsupported body at the same start, identical normalized velocity
+commands, equal-speed external impulse/braking comparison (20 cells/s),
+passive power-off coasting, a real static wall, and angular recovery.
+It records onset, velocity at fixed ticks, neutral stop time/distance,
+reverse crossing, ascent/descent, torque response, force saturation, common
+speed braking/coast, wall contacts and body penetration. The exact source
+of thresholds is
+[`4ly002_handling_thresholds.json`](../../godot/tests/fixtures/4ly002_handling_thresholds.json),
+committed before running the qualification fixture; the reproduction command
+and host gates are listed in the
+[local build guide](../operations/local-build-and-validation.md#physical-free-flight-checks).
+
+The proposed numeric criteria require: Hauler speed at 60 equal normalized
+steps no more than 85% of Trainer; Dart at least 120% of Trainer; Drifter
+common-speed stopping distance at least 125% of Trainer, along with
+per-profile hover, manoeuvre, upright and contact limits. These **prospectively registered criteria have passed** at the
+measured source/physics identity documented in the
+[4LY-002 qualification audit](../audits/2026-10-23-4ly002-measured-handling-qualification.md).
+The first Windows attempt's unrelated timeout is retained separately
+from the successful rerun. Any future profile/physics edit changes source
+identity and requires new qualification. A new hosted graphical
+gameplay-capture fixture is being validated for descriptive screenshots;
+target-PC owner feel, Web and multi-agent learning remain unmeasured.
 
 ## Who owns the chassis, contacts and equipment?
 
@@ -208,8 +279,15 @@ command by being submitted late.
 | 4LY-004 | [neural-cyber-automata #74](https://github.com/techrote/neural-cyber-automata/issues/74) | Adapter conformance and bounded Trainer-only learning after accepted host/profile/teacher qualification |
 | 4LY-005 | [neural-cyber-automata #75](https://github.com/techrote/neural-cyber-automata/issues/75) | Capability-conditioned family policy and per-profile deployment evidence after an independently verified passing Trainer result |
 
-Once 4LY-001's interface is fixed, 4LY-002 authoring and 4LY-003 lab scaffolding
-may overlap. 4LY-003 final evidence must use frozen 4LY-002 profiles. Neither an
+4LY-002 has authored selectable candidate profiles and now has passing
+real-Rapier physical envelopes for all four at the measured executable
+identity. The [source-bound measurement manifest](../audits/4ly002-2026-10-23/measured-handling.json)
+fixes the four observed profile hashes, while human-feel approval, final
+revised-head acceptance and later policy admission remain separate.
+4LY-003 may use those envelopes for preparatory flight-lab/teacher work;
+its *final* host evidence must first verify the actually merged profile,
+controller and runtime identities. No learning allocation follows from
+this source-level handoff. Neither an
 implementation merge nor issue creation authorizes a learning allocation or
 substitutes for the Trainer performance gate. Learner implementation and learned
 policy evidence belong in the companion repository; its

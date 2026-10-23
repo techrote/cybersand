@@ -827,7 +827,7 @@ are separate gates.
 
 ### Physical free-flight actions
 
-**Current experimental 4LY-001:** a session-installed `4ly_*` actor declares
+**Current 4LY-001 contract / 4LY-002 profile candidates:** a session-installed `4ly_*` actor declares
 `action_profile = "4ly_velocity_v1"`, `control_mode = "4ly_velocity_v1"` and
 `profile_version = 1` in its copied observation. Its command still uses the
 version-2 `physical_wire_action` envelope above. The action object must contain
@@ -862,7 +862,13 @@ distinguishes an authorized neutral request from passive fallback.
 
 The resolved profile descriptor carries `profile_hash`, `controller_id`, units,
 axes, speed mapping, empty default loadout, fallback, neutral and resource
-semantics. Controller receipts add `controller_hash` and `fixed_delta`.
+semantics. Its **`capabilities`** subdescriptor is a deep-copied static physical
+contract for collider dimensions, mass/inertia, desired-speed limits,
+acceleration/braking authority, response/slew times, force/gravity margin,
+drag and upright torque. That subdescriptor deliberately omits actor name,
+evaluator label, goal, position and reward. Dynamic propulsion, lease/fallback
+state and saturation remain separately observable. Controller receipts add
+`controller_hash` and `fixed_delta`.
 `profile_hash` is SHA-256 of the validated resolved profile serialized with
 sorted keys and full float precision. `controller_hash` is the embedded SHA-256
 of checked-in UTF-8 controller source with the `SOURCE_SHA256` value replaced
@@ -887,7 +893,7 @@ step are therefore distinguishable.
 |---|---|
 | `flight.mode` | `velocity`, `neutral`, `passive_no_lease`, `power_off` or `suspended` |
 | `flight.propulsion_enabled` | Explicit host power state; distinct from possession of a live command |
-| `flight.capabilities` | Resolved profile, units/semantics and profile/controller identities |
+| `flight.capabilities` | Deep-copied full resolved profile, static `capabilities` subdescriptor, units/semantics and profile/controller identities; no secret goal or evaluator label |
 | `flight.controller` | Current pure controller response/receipt with requested/bounded/applied force and torque, saturation/slew flags and reason; cleared on revocation |
 | `flight.command` | Raw `requested_action`, normalized `admitted_action`, `sequence`, `observed_tick` and `admitted_tick` for the accepted command; empty after revocation |
 | `flight.command_live` | A current unexpired command exists and the actor is neither suspended nor faulted; host propulsion may still be disabled |

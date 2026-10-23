@@ -10,7 +10,7 @@ const Player = preload("res://scripts/player_actor_catalog.gd")
 const Flight = preload("res://scripts/physical_flight_profile.gd")
 const VERSION: int = 1
 const MAX_PARTS: int = 8
-const SET_IDS: Array[StringName] = [&"setA", &"setB", &"setF", &"setY", &"setU", &"setV", &"setX", &"setP"]
+const SET_IDS: Array[StringName] = [&"setA", &"setB", &"setF", &"setY", &"setU", &"setV", &"setX", &"setP", &"set4LY"]
 const RIG_IDS: Array[StringName] = [
 	&"runner", &"skimmer", &"crawler", &"scout", &"scrabbler", &"ripper",
 	&"groundeffect", &"digger", &"copter", &"pouncer", &"dropbot", &"lineshank",
@@ -35,6 +35,11 @@ static func has_rig(rig_id: StringName) -> bool:
 
 static func rigs_in_set(set_id: StringName) -> Array[StringName]:
 	var result: Array[StringName] = []
+	# Append a new selection family without renumbering the 46 original actor
+	# indices or making dedicated scientific/sampled actors part of 4LY.
+	if set_id == &"set4LY":
+		result.append_array(Flight.IDS)
+		return result
 	for rig_id: StringName in RIG_IDS:
 		if set_for(rig_id) == set_id:
 			result.append(rig_id)
@@ -118,7 +123,7 @@ static func entry(rig_id: StringName) -> Dictionary:
 
 static func controls_text(rig_id: StringName, supplied: Dictionary = {}) -> String:
 	if rig_id in Flight.IDS:
-		return "WASD: desired world velocity. Release movement: brake and hover while the command is live. Cancel/expiry: passive fall."
+		return "WASD: world-frame desired velocity (up is W). Release: bounded brake and hover with a live lease. Escape/menu/focus cancellation: passive fall. F5: select or reset a fresh chassis at the map spawn. No equipment; power/assistance is host-owned."
 	if Player.has_rig(rig_id):
 		return Player.controls(rig_id)
 	var data: Dictionary = supplied if not supplied.is_empty() else entry(rig_id)
@@ -131,21 +136,32 @@ static func controls_text(rig_id: StringName, supplied: Dictionary = {}) -> Stri
 
 
 static func _flight_entry(rig_id: StringName) -> Dictionary:
-	# Reserved conformance family. 4LY-002 owns ordinary-game enumeration and
-	# measured handling differences; RIG_IDS/SET_IDS retain their current roster.
 	var flight: Dictionary = Flight.entry(rig_id)
 	var size := Vector2(float(flight.collider_size[0]), float(flight.collider_size[1]))
 	var half: Vector2 = size * 0.5
+	# Appearance metadata only: there are no drone-specific controller paths.
+	var palette: Dictionary = {
+		&"4ly_trainer": Color(0.34, 0.85, 0.90),
+		&"4ly_hauler": Color(0.83, 0.62, 0.28),
+		&"4ly_drifter": Color(0.59, 0.67, 0.97),
+		&"4ly_dart": Color(0.96, 0.45, 0.48)}
+	var descriptions: Dictionary = {
+		&"4ly_trainer": "Balanced assisted free-flight baseline: predictable acceleration and firm neutral braking.",
+		&"4ly_hauler": "Heavy clearance planner: slower translation, force buildup and deliberate braking.",
+		&"4ly_drifter": "Low-drag flyer: soft translation correction and persistent controlled drift, with upright stabilization.",
+		&"4ly_dart": "Compact quick-correction flyer: high speed and aggressive acceleration and braking."}
+	var hull_color: Color = palette[rig_id]
 	return {"id": rig_id, "name": name_for(rig_id), "set": &"set4LY",
+		"theme": "4LY — assisted free-flight drones",
 		"version": VERSION, "representation": "articulated-rapier", "experimental": true,
-		"description": "Single-chassis physical free-flight conformance profile; family calibration follows in 4LY-002.",
-		"color": Color(0.32, 0.83, 0.91), "channels": ["move"],
+		"description": descriptions[rig_id] + " Handling calibration is a measured 4LY-002 gate.",
+		"color": hull_color, "channels": ["move"],
 		"controller_id": Flight.CONTROLLER_ID, "action_profile": Flight.ACTION_PROFILE,
 		"flight_profile": flight, "equipment_preparation": "none", "equipment_managed": true,
 		"parts": [{"id": "chassis", "offset": Vector2.ZERO, "size": size,
 			"mass": float(flight.mass), "inertia": float(flight.inertia), "angle": 0.0,
 			"shape": "rectangle", "friction": float(flight.friction), "bounce": float(flight.bounce),
-			"role": "hull", "color": Color(0.32, 0.83, 0.91)}],
+			"role": "hull", "color": hull_color}],
 		"joints": [], "mounts": [], "part_count": 1,
 		"profile": {"movement": "4ly_velocity", "gravity": float(flight.gravity),
 			"air_drag": float(flight.linear_drag), "angular_drag": float(flight.angular_drag)},
@@ -153,9 +169,8 @@ static func _flight_entry(rig_id: StringName) -> Dictionary:
 		"bounds": Rect2(-half, size), "body_size": size,
 		"spawn_floor_clearance": half.y + 2.0, "spawn_radius": half.length() + 2.0,
 		"controls": controls_text(rig_id),
-		"limitations": ["Continuous authored power, bounded force/torque; no calibrated fuel model.",
-			"Neutral demonstration only; flight lab, teacher and measured family differences are follow-up work."]}
-
+		"limitations": ["Continuous authored power; no simulated fuel timer or equipment.",
+			"Flight lab, qualified teaching and owner-feel acceptance remain separate gates."]}
 
 static func _ability_text(ability: String) -> String:
 	var names: Dictionary = {"jump": "jump", "charge_jump": "hold to coil, release to leap",

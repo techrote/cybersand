@@ -228,7 +228,12 @@ static func observation_digest(view: Dictionary) -> String:
 		float(view.get("position", Vector2.ZERO).y), float(view.get("rotation", 0.0)),
 		joints
 	]
-	return HashingContext.hash(HashingContext.HASH_SHA256, JSON.stringify(body).to_utf8_buffer()).hex_encode()
+	var context := HashingContext.new()
+	if context.start(HashingContext.HASH_SHA256) != OK:
+		return ""
+	if context.update(JSON.stringify(body).to_utf8_buffer()) != OK:
+		return ""
+	return context.finish().hex_encode()
 
 
 static func observed_chain(view: Dictionary) -> Array:
