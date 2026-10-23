@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "track": "C128",
+  "status": "preregistered-apparatus-qualification-only",
+  "formal_timing_admitted": false,
+  "execution_authorized": false,
+  "base_commit": "2b2a1dd64f16dc46d5e812b757de73f47df0fb2b",
+  "carrier_correctness_run": 39885505290,
+  "carrier_correctness_artifact_sha256": "fd3e269812bfadd737f38c2cabafd906efb15ea407cb2d4c70a820279179b0c5",
+  "platform": "Linux x86_64 GitHub-hosted ubuntu-24.04 GCC13.3.0 ld2.42",
+  "flags": [
+    "-std=c++20",
+    "-O2",
+    "-DNDEBUG",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-pthread"
+  ],
+  "arms": [
+    {
+      "id": "C80-E8-aligned",
+      "representation": "aligned",
+      "extra_bytes": 2,
+      "stride": 16,
+      "alignment": 8
+    },
+    {
+      "id": "C128-E8-u128",
+      "representation": "u128",
+      "extra_bytes": 2,
+      "stride": 16,
+      "alignment": 16
+    },
+    {
+      "id": "C128-E8-dual64",
+      "representation": "dual64",
+      "extra_bytes": 2,
+      "stride": 16,
+      "alignment": 8
+    }
+  ],
+  "warmup_ticks": 120,
+  "sample_ticks": 256,
+  "seed": 204,
+  "contrasts": [
+    {
+      "anchor": "active-512-w4",
+      "a": "C80-E8-aligned",
+      "b": "C128-E8-u128"
+    },
+    {
+      "anchor": "active-512-w4",
+      "a": "C80-E8-aligned",
+      "b": "C128-E8-dual64"
+    },
+    {
+      "anchor": "quiet-2048-w1",
+      "a": "C80-E8-aligned",
+      "b": "C128-E8-u128"
+    },
+    {
+      "anchor": "quiet-2048-w1",
+      "a": "C80-E8-aligned",
+      "b": "C128-E8-dual64"
+    },
+    {
+      "anchor": "active-512-w4",
+      "a": "C128-E8-dual64",
+      "b": "C128-E8-u128"
+    }
+  ],
+  "pair_orders": [
+    "AB",
+    "BA",
+    "AB",
+    "BA",
+    "AB",
+    "BA",
+    "AB"
+  ],
+  "primary_processes": 70,
+  "qualification_builds": 6,
+  "qualification_processes": 12,
+  "budgets": {
+    "compile_seconds": 180,
+    "process_seconds": 120,
+    "qualification_wall_seconds": 2400,
+    "timing_wall_seconds": 1800,
+    "concurrency": 1
+  },
+  "statistics": {
+    "primary": "seven B_mean/A_mean ratios per contrast; process mean over all256tick_ns",
+    "spread": "median/minimum/maximum/MAD of7ratios",
+    "tick_percentiles": "per-process nearest-rank p50/p95/p99 and literalmax; processsamplesnotindependentreplicates",
+    "retention": "allraw256tickandinputtimes,work,ledgers,RSS,startup; no omissions/reruns/partial acceptance"
+  },
+  "scope": "Prospective S2A fixture semantics/statistics reused without dataset merge; E8 naturalclear256 included. Diagnostics-disabled. Neutralzero uppercapacity only, no future authoritative high64 schema/access benchmark. FullS1 highlane correctness prerequisite; actualworkload finalhash/ledger/per-tickwork qualification notfullsemanticbyte traces. Allcontrols16bytes; no C64/packed performance contrast.",
+  "authority": "independent exact-artifact admission and owner exactregistration/executioncommit authority required before formal timing",
+  "anchors": [
+    {
+      "id": "active-512-w4",
+      "side": 512,
+      "workers": 4,
+      "scenario": "active"
+    },
+    {
+      "id": "quiet-2048-w1",
+      "side": 2048,
+      "workers": 1,
+      "scenario": "quiet"
+    }
+  ]
+}
