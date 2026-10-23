@@ -135,7 +135,9 @@ static func scenario(id: String, seed: int = 0, split: String = "development") -
 		"family": family, "start": start, "goals": goals,
 		"arrival_radius": radius, "speed_tolerance": 2.5,
 		"dwell_ticks": 36, "max_ticks": deadline,
-		"navigation_credit": family not in ["hover", "negative"],
+		# The negative controls must actually fail low-speed arrival, not pass a
+		# vacuous evaluator ban on navigation credit. Their targets are remote.
+		"navigation_credit": family != "hover",
 		"power_off": id == "power_off",
 		"disturbance": {"tick": 90, "delta_velocity": Vector2(18.0, -7.0),
 			"delta_angular_velocity": 0.4} if id == "wall_recovery" else {},
