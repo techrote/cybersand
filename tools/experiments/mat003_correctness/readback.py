@@ -10,7 +10,7 @@ from matrix import cases,ARMS,LIMITS
 
 budget_hook=lambda:None
 from storage_oracle import expected,apply
-from world_oracle import metadata,cells,registry,Transitions,compare,small_boundary,resident_endpoint,resident_sand_witness
+from world_oracle import metadata,cells,registry,Transitions,compare,small_boundary,resident_endpoint,resident_activity_transitions,resident_sand_witness
 
 def digest(path):
     h=hashlib.sha256()
@@ -124,6 +124,7 @@ def world(path,case):
             refusal(role,case)
             continue
         receipts=ticks(role,case)
+        resident_meta={}
         cursor=0
         for endpoint,tick in sorted(snapshots.items(),key=lambda x:(x[1],x[0])):
             for current in range(cursor+1,tick+1):
@@ -131,7 +132,9 @@ def world(path,case):
                     model.feed(pending[1]);pending=next(transitions,None)
             cursor=tick
             root=role/endpoint;m=metadata(root)
-            if case['suite']=='resident':resident_endpoint(m,case['side'],endpoint)
+            if case['suite']=='resident':
+                resident_endpoint(m,case['side'],endpoint)
+                resident_meta[endpoint]=m
             if set(p.name for p in root.iterdir())!={'cells.bin','chunks.txt','metadata.txt'}:raise ValueError('endpoint inventory')
             if m['clock'][:2]!=(tick,tick):raise ValueError('attempt/completed tick checkpoint mismatch')
             cap=POSITIONS[case['arm']][0];alignment=1 if cap in (72,80) else 8
@@ -160,6 +163,7 @@ def world(path,case):
                 if m[f'chunk:{x}:{y}'][1]!=count:raise ValueError('nonempty count mismatch')
             if tick and (water,sand)!=(receipts[tick-1][12],receipts[tick-1][13]):raise ValueError('endpoint ledger reduction mismatch')
             if case['suite']=='resident':resident_sand_witness(excluded_sand,endpoint)
+        if case['suite']=='resident':resident_activity_transitions(resident_meta)
         if pending is not None:raise ValueError('unbound transition records')
         if case['suite']=='small':operations(role/'operations.txt',case['arm'])
     if case['suite']=='natural':
