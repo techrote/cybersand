@@ -314,7 +314,9 @@ enforced; [invariants](invariants.md) identifies that gap.
 
 **Planned:** generalized bounded command/result queues; safe live reconfiguration;
 general world/configuration/replay persistence; field equations and units; production
-body-shape/CCD/force policy; GPU subregion writes; authored appearance schema/tooling;
+body-shape/CCD/force policy; GPU subregion writes; an optional Water flow render
+plane and opt-in seam-fix presentation ([proposal](../research/water-flow-render-channel.md);
+the flow plane needs admitted Water velocity state, #45 or LCB); authored appearance schema/tooling;
 a user-facing material-presentation quality tier with weaker-GPU and browser cost
 measurement ([effects register](material-effects-register.md#planned));
 remaining platform/LeakSanitizer and production performance acceptance. Current

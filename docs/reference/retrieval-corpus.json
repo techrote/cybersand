@@ -53,6 +53,7 @@
     "research/lumped-gas-region-pressure-bookkeeping.md",
     "research/bounded-decompression-impulse-events.md",
     "research/sandspiel-performance-and-material-port.md",
+    "research/water-flow-render-channel.md",
     "systems/activity-dirty-regions-and-waking.md",
     "systems/actor-control-prototypes.md",
     "systems/actor-rigs.md",
