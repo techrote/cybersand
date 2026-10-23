@@ -50,6 +50,39 @@ jobs:
           echo "cd4bf5096f023788fc65702e18d1643fe8f36ee0433474c65dd75eff0b58a3a4  build/mat003-s2a/apparatus/run.json" | sha256sum -c -
           echo "b40659b95268ed887ee8181a46cd9b1d09e8e4937f39ee825dd460cd957c914f  build/mat003-s2a/apparatus/sealed-binaries.json" | sha256sum -c -
           echo "9db6991150ecc23215cfe15072e0b0dc38e562990532d1e55f8cc72ec1930759  build/mat003-s2a/apparatus/independent-readback.json" | sha256sum -c -
+      - name: Restore executable mode on sealed artifacts without changing bytes
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          import stat
+          from pathlib import Path
+
+          root = Path("build/mat003-s2a/apparatus").resolve()
+          seal = json.loads((root / "sealed-binaries.json").read_text())
+          reg = json.loads(Path("tools/experiments/mat003_s2a/registration.json").read_text())
+          expected = {c[k] for c in reg["contrasts"] for k in ("a", "b")}
+          binaries = seal["binaries"]
+          if len(expected) != 17 or set(binaries) != expected:
+              raise SystemExit("HARD STOP: sealed arm set differs from 17 admitted arms")
+          binroot = (root / "bin").resolve()
+          for arm in sorted(expected):
+              info = binaries[arm]
+              binary = root / info["path"]
+              if binary.is_symlink() or not binary.is_file() or binary.parent.resolve() != binroot:
+                  raise SystemExit("HARD STOP: unexpected sealed binary path for " + arm)
+              before = hashlib.sha256(binary.read_bytes()).hexdigest()
+              if before != info["sha256"]:
+                  raise SystemExit("HARD STOP: sealed binary hash mismatch before chmod: " + arm)
+              binary.chmod(binary.stat().st_mode | stat.S_IXUSR)
+              if not os.access(binary, os.X_OK):
+                  raise SystemExit("HARD STOP: sealed binary still not executable: " + arm)
+              after = hashlib.sha256(binary.read_bytes()).hexdigest()
+              if after != before:
+                  raise SystemExit("HARD STOP: sealed binary hash mismatch after chmod: " + arm)
+          print("MODE_RESTORED: 17/17 admitted binaries, no byte changes, hashes checked twice")
+          PY
       - name: Execute exact 224-process admitted S2A schedule
         run: |
           python3 tools/experiments/mat003_s2a/measure.py \
