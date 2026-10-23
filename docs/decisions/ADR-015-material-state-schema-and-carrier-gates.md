@@ -51,3 +51,5 @@ Any changed packing, material semantics, high-state access, epoch width, compile
 ## Semantics and budget review disposition
 
 The [technical review](../research/mat003-semantics-budget-review.md) retains this Planned shortlist and corrects record-admission versus failed-tick semantics. Adoption remains blocked: no named extension semantics or owner memory/latency/platform envelope is approved. Standalone4096-chunk limits are not performance acceptance and imply1GiB DUAL64 arrays before other allocations. A material/World-schema discriminator must be explicit, and rollback cannot silently truncate wider records to C64. Production and timing authority remain unchanged.
+
+The [concrete owner offer](../research/mat003-concrete-owner-offer.md) supplies reviewable proposed semantics and numeric budgets. This ADR remains Planned until an explicit disposition; publication of suggested values does not approve a Water solver, implementation or new timing.

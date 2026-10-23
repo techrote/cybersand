@@ -260,3 +260,5 @@ GEN-005 projection, typed link, fixture lifecycle, atomic admission and frozen-b
 MAT-003 field/lifecycle and logical capacity questions route to the [state-schema proposal](../research/mat003-state-schema-proposal.md); shortlist/adoption questions route to [ADR-015](../decisions/ADR-015-material-state-schema-and-carrier-gates.md). Both are Planned, with no production selection or new timing authority.
 
 MAT-003 review disposition and outstanding owner choices: [semantics/budget review](../research/mat003-semantics-budget-review.md), including default-cap memory and record-admission versus failed-tick distinctions.
+
+Proposed concrete MAT-003 fields,256-chunk memory envelope and native latency targets: [owner offer](../research/mat003-concrete-owner-offer.md). Values await owner review and have not been qualified as a new profile.

@@ -84,3 +84,5 @@ Before production selection: reconcile actual source and field requirements; app
 ## Semantics and owner-budget review
 
 The [technical review](../research/mat003-semantics-budget-review.md) retains the shortlist but blocks adoption pending named extension semantics and owner budgets. Proposed extension interpretation is material ID plus World schema/solver identity; no unbudgeted per-cell tag or simultaneous-field overlap is permitted. Default4096-chunk residency would require1024MiB of DUAL64 cell arrays, plus128MiB full temperature and other owners; the measured256-chunk envelope is not a qualification of that cap. The review supplies an actionable decision worksheet without approving numeric release limits or changing construction defaults. Neither proposal nor review authorizes timing.
+
+The [concrete owner offer](mat003-concrete-owner-offer.md) proposes R16-T1 semantics, a256-chunk residency envelope, memory sublimits and prospective native latency/platform gates for explicit review. Its values are Planned recommendations, not owner-approved requirements, measured compliance, production changes or new timing authority.
