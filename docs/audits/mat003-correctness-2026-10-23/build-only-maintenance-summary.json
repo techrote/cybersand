@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "scope": "documentation/provenance/retrieval maintenance, not candidate qualification",
+  "checks": {
+    "check_docs.py": "passed",
+    "check_repository.py": "passed",
+    "check_m11_consistency.py": "passed",
+    "git diff --check": "passed"
+  },
+  "historical_records": 18,
+  "historical_source_hashes": 28,
+  "retrieval": {
+    "build-only-retrieval": {
+      "questions": 32,
+      "canonical_hit_at_1": 21,
+      "canonical_hit_at_k": 32,
+      "mrr_at_k": 0.7937,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "build-only-supplementary": {
+      "questions": 127,
+      "canonical_hit_at_1": 101,
+      "canonical_hit_at_k": 126,
+      "mrr_at_k": 0.8769,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    }
+  },
+  "new_question": {
+    "id": "MATSCHEMA08",
+    "rank": 1
+  },
+  "prior_question_status_correction": "MATSCHEMA07 facts distinguish historical no-build checkpoint from subsequent failed build; prior125 objects and all existingquerytext preserved",
+  "raw_maintenance_sha256": {
+    "build-only-check-0.txt": "2a6eccea16f9b27ac16060346fc60f5479e2833d118143885c4d9a0c48dcdd89",
+    "build-only-check-1.txt": "d7da43cc935e5d6ee84365162fec2a1c434aec43cbda539d3b22ab4e890fd9a0",
+    "build-only-check-2.txt": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+    "build-only-check-3.txt": "5854543d20a14d35bc7c0ce606523087bccc30f3eea1d88fab8a80a51d3a161e",
+    "build-only-check-4.txt": "1099d44d86013455c5742846b964c6df206b97a88b72a17a5efeb34f080917dc",
+    "build-only-check-5.txt": "936cb6d3e50f55c54226a3c23cab3931090acf0e6b91b813537bba856fdfb255",
+    "build-only-retrieval.json": "9400915b586c900679a03bacc96b72c9e85b9ce4b71e1eec9c71bc146cf4e781",
+    "build-only-supplementary.json": "1e9891548a238f9d963f18419d5e7db4b07b2492c9259812d1ab83b4714e0243"
+  },
+  "qualification_cases_executed": 0,
+  "timing_executed": false
+}

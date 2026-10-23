@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "source_commit": "5380c763c2a745169d1dd488fce4d5645fe46502",
+  "source_tree": "d6373964eda71a7379dc97fe71d3a4acd3c4b21c",
+  "platform": "native Windows AMD64; Python3.12.10; LLVM-MinGW20260826/Clang23.1.0/UCRT",
+  "toolchain_preflight": {
+    "schema_version": 1,
+    "disposition": "accepted-for-build-preparation-only",
+    "reviewer": "/root/independent_review",
+    "report_sha256": "c03bb8c6d7c09365a44094a14dc335cb4ec18dac06a95783a8cda4f3f0aa8eb6",
+    "pending_proof_sha256": "f06e092db1306bbaf15c0fa962c217df5fe7d70819e87402e6a7d3d7317e5fa5",
+    "inventory_sha256": "44c2aeafb44aebb5c46a6be60b929143e1e892f6ac9df7532e4c468b2836eed0",
+    "verified_preflight_files": 59,
+    "verified_toolchain_files": 9069,
+    "verified_monitor_files": 29,
+    "limits": [
+      "native Windows only",
+      "no LSan finding",
+      "commit ceiling not stress-tested",
+      "not binary admission",
+      "no qualification case or timing authority"
+    ]
+  },
+  "binary_admission": {
+    "schema_version": 1,
+    "independent_admission": "refused",
+    "reviewer": "/root/independent_review",
+    "source_commit": "5380c763c2a745169d1dd488fce4d5645fe46502",
+    "source_tree": "d6373964eda71a7379dc97fe71d3a4acd3c4b21c",
+    "reason": "Incomplete32-binary/eight-arm build; frozen diagnostic gate rejected World compiler stderr despite exit0",
+    "verified_files": 198,
+    "source_files": 93,
+    "generated_files": 61,
+    "compiler_attempts": 2,
+    "clean_registered_builds": 1,
+    "physical_binaries": 2,
+    "generated_arms": 1,
+    "built_sha256": "38d46be6ddcaf8d82ee1a33f8df5f1acf4c2065b62af91070adba694ef3b6d5d",
+    "build_inventory_sha256": "1935bbac95e5f126f3ad89236a7cce7cf27ecf556b798e46a9d5fb70234653c9",
+    "build_authority_sha256": "27f3db6b53f5a7ff34030e0bcae32c6def8e1e254ff8de8604fdc220b036b690",
+    "binary_sha256": {
+      "K64-E8-0-storage.exe": "efe1d6a743957d1225e9ef7c96fc2428415b5d9aff668e62c16c98ee31d60e03",
+      "K64-E8-0-world.exe": "a95d6d1c58a0e6539dad6c1201080b4c581f5b8edb47c571b9d75c7b52bd9932"
+    },
+    "qualification_cases_executed": 0,
+    "timing_executed": false,
+    "owner_execution_authorized": false,
+    "source_corrected": false,
+    "retried": false
+  },
+  "archive": {
+    "path": "C:\\Users\\_\\mat003-evidence-20261023\\windows-5380c76-build-evidence.zip",
+    "bytes": 192264155,
+    "sha256": "feae39f75842c428b2997c76cbb08ea0910340b590cdadefc7733a5590b36db9",
+    "retained_entries": 297,
+    "retention_inventory_sha256": "5468c68d9c62980f98758576f5112b0da0f02fdcfe1e7e5ddf1ae37f1f64bf43"
+  },
+  "raw_build_path": "C:\\Users\\_\\mat003-evidence-20261023\\windows-build-5380c76",
+  "raw_preflight_path": "C:\\Users\\_\\.codex\\tmp\\mat003-build-5380c76-20261023",
+  "qualification_cases_executed": 0,
+  "timing_executed": false,
+  "linux_preflight": "not executed; no local Linux host and no hosted runner dispatched"
+}
