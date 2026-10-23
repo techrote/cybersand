@@ -586,6 +586,13 @@ The mixed control runs **two** families today; three need
 PASS**: Gate A (#95/#45) and Gate B (#204 storage) lack accepted evidence, so
 LCB-001 implementation stays blocked.
 
+The [LCB scenario catalogue v1](../operations/lcb-scenario-catalogue.md) adds 25
+controlled current-source scenarios (dam depth ladder, shallow flow, vented
+heads, rest/wake, viscous, density, granular, mixed stress, seams) with a
+source-derived registry for #202 and 1/4-worker controls
+([evidence](../audits/2026-10-23-lcb003-scenario-qualification.md)). Every
+non-default solver arm remains blocked on #200/#201/#212.
+
 ## Opt-in transport profiles
 
 **Current:** the [profile contract](../systems/flow-transport-and-profiles.md)

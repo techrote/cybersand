@@ -16,6 +16,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -58,7 +59,7 @@ def derived(meta: dict, obs: dict) -> dict:
     if "reservoir-t1800" in obs and inv.get("water_integer"):
         out["reservoir_retained_fraction_t1800"] = round(obs["reservoir-t1800"] / inv["water_integer"], 4)
     for t in (240, 1200):
-        bands = sorted(k for k in obs if k.startswith("band") and k.endswith(f"-t{t}"))
+        bands = sorted(k for k in obs if re.fullmatch(rf"band\d+-t{t}", k))
         if bands:
             wet = [int(k[4:k.index("-")]) for k in bands if obs[k] > 0]
             out[f"front_band_t{t}"] = max(wet) if wet else 0
@@ -107,8 +108,12 @@ def reduce_cmd(args) -> int:
         parity = (both and observations(w1) == observations(w4)
                   and [(c["tick"], c["content_hash"], c["state_hash"]) for c in w1["checkpoints"]]
                   == [(c["tick"], c["content_hash"], c["state_hash"]) for c in w4["checkpoints"]])
-        meta = metas.get(sid) or {"id": sid, "category": "protected",
-                                  "initial_inventory": {"water_integer": protected[sid]["initial"].get("water_integer")}}
+        if sid in metas:
+            meta = metas[sid]
+        else:
+            definition = load(ROOT / protected[sid]["path"])
+            meta = {"id": sid, "category": "protected-reference",
+                    "initial_inventory": catalogue.inventory_of(definition["rectangles"], definition["partial_water_fills"])}
         names = set(meta.get("initial_inventory", {}).get("cells", {}))
         case = {
             "status": {"w1": w1.get("status"), "w4": w4.get("status")},

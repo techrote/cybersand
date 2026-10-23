@@ -5,7 +5,7 @@ document-kind: design
 scope: LCB-000 Gates D and E — four-model controlled Water comparison contract, quantity normalization, supported/refused combinations, the protected lcb.dam.water.freemass.reference.v1 Dam Break fixture and the one-World mixed-liquid fixture with arm overlays, negative controls and commands
 canonical-for: [lcb-water-comparison-contract, lcb-reference-fixtures]
 last-reviewed: 2026-10-23
-related-documents: [../architecture/liquid-solver-family-policy.md, lcb-manual-comparison-ux.md, ../systems/water-design.md, microscenarios.md, experiment-tower.md, ../audits/2026-10-23-lcb000-gates-cde-design-evidence.md]
+related-documents: [../architecture/liquid-solver-family-policy.md, lcb-manual-comparison-ux.md, lcb-scenario-catalogue.md, ../systems/water-design.md, microscenarios.md, experiment-tower.md, ../audits/2026-10-23-lcb000-gates-cde-design-evidence.md]
 ---
 
 # LCB Water comparison contract and reference fixtures
@@ -214,6 +214,10 @@ M1 executes. That depends on #212, and nothing here claims it.
 - pressure summaries are invalidated after Brine/Oil contact (#201);
 - 1/4-worker parity;
 - refusal of M1/M2 on a build without the families, with the M0 session kept.
+
+**Broader scenario library.** The [scenario catalogue v1](lcb-scenario-catalogue.md)
+extends these two fixtures with 25 further controlled scenarios and a
+source-derived registry. It leaves both protected fixtures unchanged.
 
 ## Negative controls (registered; owners in brackets)
 
