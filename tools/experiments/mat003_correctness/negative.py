@@ -142,7 +142,9 @@ def exercise(output):
         endpoints['P'][f'event:{BLOCK_SLEEP_KEY}']=(8,);endpoints['P'][f'event:{BLOCK_WAKE_KEY}']=(4,)
         endpoints['Q'][f'event:{BLOCK_SLEEP_KEY}']=(9,);endpoints['Q'][f'event:{BLOCK_WAKE_KEY}']=(4,)
         endpoints['R'][f'event:{BLOCK_SLEEP_KEY}']=(10,);endpoints['R'][f'event:{BLOCK_WAKE_KEY}']=(20,)
-        if kind=='post-clear':endpoints['P'][f'event:{BLOCK_WAKE_KEY}']=(5,)
+        if kind=='post-clear':
+            endpoints['P'][f'event:{BLOCK_WAKE_KEY}']=(5,)
+            endpoints['Q'][f'event:{BLOCK_WAKE_KEY}']=(5,)
         if kind=='reentry':endpoints['R'][f'event:{BLOCK_WAKE_KEY}']=(4,)
         (p/'input.json').write_text(json.dumps(endpoints)+'\n',encoding='utf-8')
         resident_activity_transitions(endpoints)
