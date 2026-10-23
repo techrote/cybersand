@@ -6,7 +6,7 @@ on:
     paths:
       - 'tools/experiments/mat003_correctness/**'
       - 'docs/audits/2026-10-23-mat003-readback-verifier-repair.md'
-      - 'docs/audits/mat003-correctness-2026-10-23/windows-reentry-readback-registration-v2.json'
+      - 'docs/audits/mat003-correctness-2026-10-23/windows-reentry-readback-registration-v*.json'
       - '.github/workflows/mat003-correctness-verifier.yml'
   workflow_dispatch:
 
