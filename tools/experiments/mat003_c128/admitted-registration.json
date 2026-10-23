@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "track": "C128",
+  "status": "admitted-paired-timing",
+  "formal_timing_admitted": true,
+  "execution_authorized": false,
+  "base_commit": "2b2a1dd64f16dc46d5e812b757de73f47df0fb2b",
+  "carrier_correctness_run": 39885505290,
+  "carrier_correctness_artifact_sha256": "fd3e269812bfadd737f38c2cabafd906efb15ea407cb2d4c70a820279179b0c5",
+  "platform": "Linux x86_64 GitHub-hosted ubuntu-24.04 GCC13.3.0 ld2.42",
+  "flags": [
+    "-std=c++20",
+    "-O2",
+    "-DNDEBUG",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-pthread"
+  ],
+  "arms": [
+    {
+      "id": "C80-E8-aligned",
+      "representation": "aligned",
+      "extra_bytes": 2,
+      "stride": 16,
+      "alignment": 8
+    },
+    {
+      "id": "C128-E8-u128",
+      "representation": "u128",
+      "extra_bytes": 2,
+      "stride": 16,
+      "alignment": 16
+    },
+    {
+      "id": "C128-E8-dual64",
+      "representation": "dual64",
+      "extra_bytes": 2,
+      "stride": 16,
+      "alignment": 8
+    }
+  ],
+  "warmup_ticks": 120,
+  "sample_ticks": 256,
+  "seed": 204,
+  "contrasts": [
+    {
+      "anchor": "active-512-w4",
+      "a": "C80-E8-aligned",
+      "b": "C128-E8-u128"
+    },
+    {
+      "anchor": "active-512-w4",
+      "a": "C80-E8-aligned",
+      "b": "C128-E8-dual64"
+    },
+    {
+      "anchor": "quiet-2048-w1",
+      "a": "C80-E8-aligned",
+      "b": "C128-E8-u128"
+    },
+    {
+      "anchor": "quiet-2048-w1",
+      "a": "C80-E8-aligned",
+      "b": "C128-E8-dual64"
+    },
+    {
+      "anchor": "active-512-w4",
+      "a": "C128-E8-dual64",
+      "b": "C128-E8-u128"
+    }
+  ],
+  "pair_orders": [
+    "AB",
+    "BA",
+    "AB",
+    "BA",
+    "AB",
+    "BA",
+    "AB"
+  ],
+  "primary_processes": 70,
+  "qualification_builds": 6,
+  "qualification_processes": 12,
+  "budgets": {
+    "compile_seconds": 180,
+    "process_seconds": 120,
+    "qualification_wall_seconds": 2400,
+    "timing_wall_seconds": 1800,
+    "concurrency": 1
+  },
+  "statistics": {
+    "primary": "seven B_mean/A_mean ratios per contrast; process mean over all256tick_ns",
+    "spread": "median/minimum/maximum/MAD of7ratios",
+    "tick_percentiles": "per-process nearest-rank p50/p95/p99 and literalmax; processsamplesnotindependentreplicates",
+    "retention": "allraw256tickandinputtimes,work,ledgers,RSS,startup; no omissions/reruns/partial acceptance"
+  },
+  "scope": "Prospective S2A fixture semantics/statistics reused without dataset merge; E8 naturalclear256 included. Diagnostics-disabled. Neutralzero uppercapacity only, no future authoritative high64 schema/access benchmark. FullS1 highlane correctness prerequisite; actualworkload finalhash/ledger/per-tickwork qualification notfullsemanticbyte traces. Allcontrols16bytes; no C64/packed performance contrast.",
+  "authority": "independent exact-artifact admission and owner exactregistration/executioncommit authority required before formal timing",
+  "anchors": [
+    {
+      "id": "active-512-w4",
+      "side": 512,
+      "workers": 4,
+      "scenario": "active"
+    },
+    {
+      "id": "quiet-2048-w1",
+      "side": 2048,
+      "workers": 1,
+      "scenario": "quiet"
+    }
+  ],
+  "registration_version": 2,
+  "performance_accepted": false,
+  "author": "C128 apparatus and collector implementation owner (/root)",
+  "campaign_id": "C128-70-001",
+  "scope_id": "neutral-capacity-e8-two-anchor-v1",
+  "independent_review": {
+    "decision": "admitted",
+    "reviewer": "Independent C128 verifier and apparatus reviewer (/root/independent_review)",
+    "date": "2026-10-23",
+    "record": "docs/audits/2026-10-23-c128-admission.md",
+    "basis": "Fresh independent exact-source readback passes all6builds/12actual-workload twins/306sealedfiles; unchanged full-S1 high-lane correctness prerequisite retained; only five prospective contrasts admitted",
+    "execution_authority": "not granted; stop before dispatch until owner explicitly authorizes this exact registration hash and execution commit"
+  },
+  "admission_evidence": {
+    "repository": "techrote/cybersand",
+    "run_id": 39923189244,
+    "artifact_id": 12487933388,
+    "artifact_bytes": 2419372,
+    "artifact_sha256": "d330a929dbde20fec00a3e6ab31ec72d871483e1ea279f304e93909d8442ff05",
+    "artifact_expires_at": "2027-01-21T08:13:51Z",
+    "branch_source_commit": "405f6d8db91a4e294271e45b660a5a6a2de53ec7",
+    "source_commit": "c749740b0783583e15fbeda21eb036d875e69c1f",
+    "files_sha256": "c5c0cd82a1606b150620fe33437e8e1bda6be31d9e8f158db33a36a6aa31d618",
+    "readback_sha256": "4e7e1cdd97d345d8b1b922d2e0722921f5c33d325360c93c7aa1ad881445ea5b",
+    "source_manifest_sha256": "c2d0514090d7ddcd428282c01d7bef4786a9fb1503e3c33be545de25fc12f376",
+    "generated_seal_sha256": "fced04db66d1f288eed51853557ec7d829ae174d9a76f6428547845669833fde",
+    "binary_seal_sha256": "d3f9909cb0070db0dd962d20689675dcba80a4532c6da84689e8a8e08b7bbae3",
+    "collector_sha256": "c497ed33f72d63d871151d74a14151a12583c8d903e8b9cc6c801e75492822f3",
+    "verifier_sha256": "33e87ba71e20f2d0769c7268036b6ceeab5cf97530f3d778f51719458b588329",
+    "fixture_sha256": "0371a24e5d9cc5eadb492dde4e778dff7fef9cc950c001ab560efddb639b8e11",
+    "prerequisite_registration_sha256": "2127058a8589096b325985bcb80400d24b2b95fb30a2cefe66eddf1511097ba7",
+    "correctness_candidates_sha256": "c62ecf0948ab6f31074ddd65fc95409c3a58d54e8f2bcbcc6996142d43f6ab4b",
+    "correctness_overlay_sha256": "0b3da467496e18ea935028a876105dea43a1e4c17a17a4bc395e2db8b732aba4",
+    "cases": 12,
+    "builds": 6,
+    "checked_files": 306
+  },
+  "execution_workflow": {
+    "path": ".github/workflows/mat003-c128-timing.yml",
+    "sha256": "fea5ae2ea4423d3828e468b816d229a52f6445cf897a9baf36793f57beff5200",
+    "trigger": "workflow_dispatch only",
+    "runner": "ubuntu-24.04",
+    "job_timeout_minutes": 100,
+    "artifact_retention_days": 90,
+    "authority": "repository-owner dispatch with owner-established JSON receipt binding exact registration hash, C128-70-001, neutral-capacity-e8-two-anchor-v1 and execution commit; no generated authorization"
+  },
+  "admitted_limits": [
+    "Only the five registered E8 neutral-capacity contrasts at active512w4 and quiet2048w1 are admitted. Each process has120warmup plus256sample ticks, seed204, and includes natural epoch clear at completedtick256.",
+    "Seven independent fresh-process pairs per contrast, in exact AB/BA alternating order. All256tick observations enter each process mean; within-process ticks are not independent replicates. Retain all70processes and17920tick/input observations, startup,RSS,work,ledgers and extrema; no selective replacement, omissions or partial acceptance.",
+    "All three arms occupy16-byte stride. Aligned andDual64 align8; nativeU128 aligns16 on this qualified ABI. No C64 or packed timing contrast, other epoch width, other compiler/platform or future material-state access benchmark is admitted.",
+    "Upper capacity is neutralzero in the actual-workload fixture. Unchanged full-S1 high-lane preservation qualification remains a prerequisite, not a new authoritative material schema or proof of future high-state access cost.",
+    "Actual-workload twins match final content/state hashes, material/Water ledgers and complete per-tick visits/phase jobs per anchor. They do not retain complete semantic-byte traces. Prior full-S1 carrier traces and storage/boundary tests supply independent prerequisite coverage.",
+    "Physics diagnostics are disabled. Correctness-only dispatch observers are compiled out of timing arms. Positive active worker counters cover all376ticks including warmup; quiet counters remain zero even with the observer compiled in. No per-sample background participation or cold-gameplay bound is inferred.",
+    "Native unsigned __int128 availability/alignment/ABI findings apply to GCC13.3.0 Linuxx86_64 only. Dual64 is an explicitly defined fallback candidate, but other platforms require independent qualification.",
+    "Nominal dense carrier arrays are4MiB at512square and64MiB at2048square for all arms. Compared with an8-byte C64 array these derived quantities double cell storage; they do not measure total World RSS or provide a C64 performance control.",
+    "Accepted S0/S1/S2F/S2A, S2P andWCLEAR datasets/source identities/statistics remain separate and unchanged. No production-carrier change, S2B, Water physics change, wide-epoch timing or GEN-006 modification is admitted.",
+    "Admission establishes apparatus suitability, not timing results or a C128 production victory. Complete independent raw-evidence readback is required before any scoped performance acceptance."
+  ],
+  "execution_requirements": [
+    "STOP before dispatch until owner explicitly authorizes this exact canonicalLF registration SHA256 and exact execution commit.",
+    "Owner-established receipt must contain execution_authorized=true, approver=authenticated repository owner, registration_sha256, decision=authorize-exact-registered-campaign, campaign_id=C128-70-001, scope_acknowledged=neutral-capacity-e8-two-anchor-v1 and exact execution_commit.",
+    "Manual workflow publication/registration is a separate prerequisite. Admission authorizes no default-branch merge, alternate trigger, ready-for-review transition or PR211/221 merge.",
+    "After the complete authorized70-process campaign independently verify all raw observations, schedule, authority, source and reductions; retain every failure and obtain separately scoped performance-evidence acceptance."
+  ],
+  "observer_off_binaries": [
+    {
+      "arm": "C80-E8-aligned",
+      "binary": "bin/C80-E8-aligned-o0",
+      "compile_definitions": [
+        "-DMAT003_STORAGE_KIND=4",
+        "-DMAT003_EXTRA_BYTES=2",
+        "-DMAT003_SPLIT=0",
+        "-DMAT003_WORLD_SOURCE=\"/home/runner/work/cybersand/cybersand/build/mat003-c128/overlays/C80-E8-aligned/native/src/world.cpp\"",
+        "-DMAT003_ARM_ID=\"C80-E8-aligned\"",
+        "-DMAT003_EPOCH_BITS=8"
+      ],
+      "id": "C80-E8-aligned-o0",
+      "observer": 0,
+      "overlay": "overlays/C80-E8-aligned",
+      "sha256": "e730ac481904794933f2a52b719b4aeafe86e462c5d2bfc52dfcea14281036f9"
+    },
+    {
+      "arm": "C128-E8-u128",
+      "binary": "bin/C128-E8-u128-o0",
+      "compile_definitions": [
+        "-DMAT003_STORAGE_KIND=4",
+        "-DMAT003_EXTRA_BYTES=2",
+        "-DMAT003_SPLIT=0",
+        "-DMAT003_WORLD_SOURCE=\"/home/runner/work/cybersand/cybersand/build/mat003-c128/overlays/C128-E8-u128/native/src/world.cpp\"",
+        "-DMAT003_ARM_ID=\"C128-E8-u128\"",
+        "-DMAT003_EPOCH_BITS=8"
+      ],
+      "id": "C128-E8-u128-o0",
+      "observer": 0,
+      "overlay": "overlays/C128-E8-u128",
+      "sha256": "2b2e2a87092bef1f89ab39770cf0913aefe3a192dc797bf39f83a707d72d3ac0"
+    },
+    {
+      "arm": "C128-E8-dual64",
+      "binary": "bin/C128-E8-dual64-o0",
+      "compile_definitions": [
+        "-DMAT003_STORAGE_KIND=4",
+        "-DMAT003_EXTRA_BYTES=2",
+        "-DMAT003_SPLIT=0",
+        "-DMAT003_WORLD_SOURCE=\"/home/runner/work/cybersand/cybersand/build/mat003-c128/overlays/C128-E8-dual64/native/src/world.cpp\"",
+        "-DMAT003_ARM_ID=\"C128-E8-dual64\"",
+        "-DMAT003_EPOCH_BITS=8"
+      ],
+      "id": "C128-E8-dual64-o0",
+      "observer": 0,
+      "overlay": "overlays/C128-E8-dual64",
+      "sha256": "b96e01bcf18bcdc9ba6111716c13d6997f7b732e13492c0a9ff86778b6fdd338"
+    }
+  ],
+  "nominal_resident_carrier_bytes": {
+    "active-512-w4": 4194304,
+    "quiet-2048-w1": 67108864
+  },
+  "manual_dispatch": "STOP: pending owner authority. Future workflow mat003-c128-timing.yml requires exact registration_sha256 and owner_authority_json inputs at the owner-approved execution commit. No dispatch authorized by this file."
+}
