@@ -10,7 +10,7 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
-For packed overhead, actual wide-epoch clearing, 128-total-bit feasibility and separate admission, use the [MAT-003 continuation report](../research/mat003-continuation.md). Its [dated audit](../audits/2026-10-23-mat003-continuation.md) owns executed evidence; S2A acceptance does not admit these new tracks.
+For **MAT-003PREPASS C** unified carrier comparisons, actual archive/seal verification, source-qualified sampling and outstanding correctness gates, use the [independent carrier evidence audit](../audits/2026-10-23-mat003-independent-carrier-audit.md) and [conditional ADR-016](../decisions/ADR-016-mat003-carrier-evidence-synthesis.md). The [continuation report](../research/mat003-continuation.md) retains source/assembly diagnosis and historical staged-admission status. S2A, S2P, WCLEAR and C128 have separate accepted campaigns; do not combine their ratios, claim a production winner, or interpret prepared E16/E24/E32 events as natural long-run epochs.
 
 ## Generation Workbench 2 and procedural quality
 
