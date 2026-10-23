@@ -81,10 +81,16 @@ static func _axis(offset: float, velocity: float, maximum: float, braking: float
 	var sign_value: float = signf(offset)
 	# Braking starts before the nominal target: predicted coasting/response
 	# distance must fit in the remaining space to the arrival region.
-	var stop_distance: float = velocity * velocity / (2.0 * braking) + absf(velocity) * latency
+	# The episode requires 36 ticks of low-speed dwell after reaching the
+	# arrival region. Include a bounded settling reserve in the *planner* so
+	# slow-response bodies start braking before actuator lag consumes that
+	# dwell window. This uses only published capability timing.
+	var planning_latency: float = latency + 0.45
+	var stop_distance: float = velocity * velocity / (2.0 * braking) \
+		+ absf(velocity) * planning_latency
 	var usable: float = maxf(0.0, remaining - radius * 0.30)
-	var speed_by_distance: float = sqrt(2.0 * braking * usable * 0.64)
-	var speed_by_response: float = usable / maxf(latency * 1.75, 0.20)
+	var speed_by_distance: float = sqrt(2.0 * braking * usable * 0.60)
+	var speed_by_response: float = usable / maxf(planning_latency * 1.60, 0.28)
 	var target: float = sign_value * minf(maximum, minf(speed_by_distance, speed_by_response))
 	if remaining < radius * 1.5:
 		target = clampf(offset * 1.25, -maximum * 0.45, maximum * 0.45)
