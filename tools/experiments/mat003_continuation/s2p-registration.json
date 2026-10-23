@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "track": "S2P",
+  "issue": 218,
+  "parent": 204,
+  "base_commit": "2b2a1dd64f16dc46d5e812b757de73f47df0fb2b",
+  "status": "untimed-diagnostic-qualification-only",
+  "formal_timing_admitted": false,
+  "compiler": "g++-13",
+  "compiler_version": "13.3.0",
+  "flags": ["-std=c++20", "-O2", "-DNDEBUG", "-Wall", "-Wextra", "-Wpedantic", "-pthread"],
+  "controls": ["C64-E8-word", "C72-E8-packed", "C80-E8-packed", "C72-E8-aligned", "C80-E8-aligned", "C72-E8-split", "C80-E8-split"],
+  "candidates": ["C72-E8-memcpy", "C80-E8-memcpy", "C72-E16-memcpy", "C80-E16-memcpy"],
+  "assembly": ["word-load-store", "material-get-set", "state_a-get-set", "epoch-get-clear", "copy-swap", "World-translation-unit"],
+  "correctness": "unchanged S1 full fixture for each candidate, independent S1 readback contract where compatible; source-control semantic trace comparison",
+  "budgets": {"compile_seconds": 180, "process_seconds": 300, "wall_seconds": 3600},
+  "timing": "no clocks in new qualification fixture; no production rankings"
+}
