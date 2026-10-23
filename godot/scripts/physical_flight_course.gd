@@ -58,8 +58,10 @@ static func scenario(id: String, seed: int = 0, split: String = "development") -
 		"offset_gates":
 			goals = [Vector2(518.0, 245.0)]
 			obstacles = [
-				_rect(295, 132, 14, 86), _rect(295, 286, 14, 62),
-				_rect(414, 132, 14, 69), _rect(414, 277, 14, 71)]
+				# Alternating apertures: lower opening first, then upper.
+				# The direct start -> goal segment is blocked by real cells.
+				_rect(295, 132, 14, 119), _rect(295, 304, 14, 44),
+				_rect(414, 132, 14, 73), _rect(414, 261, 14, 87)]
 			family = "obstacles"
 			deadline = 2100
 		"corner":
@@ -70,8 +72,10 @@ static func scenario(id: String, seed: int = 0, split: String = "development") -
 		"slalom":
 			goals = [Vector2(538.0, 238.0)]
 			obstacles = [
-				_rect(282, 132, 14, 93), _rect(366, 256, 14, 92),
-				_rect(450, 132, 14, 93)]
+				# Slalom requires down, then up, then down through wide
+				# physically passable openings, not a straight dash.
+				_rect(282, 132, 14, 127), _rect(366, 252, 14, 96),
+				_rect(450, 132, 14, 127)]
 			family = "obstacles"
 			deadline = 2400
 		"wall_recovery":
@@ -150,9 +154,9 @@ static func feasible_clearance(model: StringName, id: String, seed: int = 0,
 		"wide_corridor":
 			gap = 77.0
 		"offset_gates":
-			gap = 68.0
+			gap = 53.0
 		"slalom":
-			gap = 31.0
+			gap = 89.0
 		_:
 			gap = 0.0
 	return {"nominal_gap_cells": gap, "collider": collider,
