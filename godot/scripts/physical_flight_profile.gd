@@ -2,8 +2,8 @@ class_name CyberPhysicalFlightProfile
 extends RefCounted
 
 # 4LY-001's finite, JSON-safe schema. These are authored game units, not SI
-# calibration. Only Trainer's conformance defaults are supplied here. The other
-# reserved IDs deliberately share those values until 4LY-002 measures handling.
+# calibration. 4LY-002 authors the four handling candidates; actual Rapier measurements
+# and owner-feel admission must qualify these values before training.
 const VERSION: int = 1
 const ACTION_PROFILE: String = "4ly_velocity_v1"
 const CONTROLLER_ID: String = "4ly-velocity-controller/v1"
@@ -39,18 +39,51 @@ static func name_for(id: StringName) -> String:
 static func entry(id: StringName) -> Dictionary:
 	if not has_rig(id):
 		return {}
-	return {"version": VERSION, "id": str(id), "family": "4ly", "topology": "single_rectangle",
-		"action_profile": ACTION_PROFILE, "fixed_delta": FIXED_DELTA,
-		"collider_size": [10.0, 6.0], "mass": 1.2, "inertia": 13.6, "gravity": 156.0,
-		"friction": 0.82, "bounce": 0.04,
-		"desired_speed": [48.0, 36.0], "acceleration": 90.0, "braking": 135.0,
-		"max_force": 360.0, "velocity_response_seconds": 0.25,
-		"thrust_response_seconds": 0.06, "max_force_slew": 2400.0,
-		"linear_drag": 0.05, "angular_drag": 0.25,
+	# 4LY-002 handling candidates. Every profile is a complete instance of the
+	# same validated topology/actuator schema, never a branch in navigation code.
+	# Calibration remains candidate until actual-host measurements are accepted.
+	var value: Dictionary = {"version": VERSION, "id": str(id), "family": "4ly",
+		"topology": "single_rectangle", "action_profile": ACTION_PROFILE,
+		"fixed_delta": FIXED_DELTA, "collider_size": [10.0, 6.0],
+		"mass": 1.2, "inertia": 13.6, "gravity": 156.0,
+		"friction": 0.82, "bounce": 0.04, "desired_speed": [48.0, 36.0],
+		"acceleration": 90.0, "braking": 135.0, "max_force": 360.0,
+		"velocity_response_seconds": 0.25, "thrust_response_seconds": 0.06,
+		"max_force_slew": 2400.0, "linear_drag": 0.05, "angular_drag": 0.25,
 		"attitude_kp": 18.0, "attitude_kd": 8.0, "max_torque": 300.0,
 		"max_torque_slew": 3600.0, "resource_mode": "continuous_authored_power",
-		"calibration": "conformance_only" if id == &"4ly_trainer" else "uncalibrated_placeholder"}
-
+		"calibration": "candidate_4ly002"}
+	match id:
+		&"4ly_hauler":
+			value.merge({"collider_size": [16.0, 10.0], "mass": 3.6,
+				"desired_speed": [27.0, 23.0], "acceleration": 38.0,
+				"braking": 55.0, "max_force": 1100.0,
+				"velocity_response_seconds": 0.60, "thrust_response_seconds": 0.18,
+				"max_force_slew": 4800.0, "linear_drag": 0.035,
+				"angular_drag": 0.30, "attitude_kp": 14.0, "attitude_kd": 7.0,
+				"max_torque": 3000.0, "max_torque_slew": 16000.0}, true)
+		&"4ly_drifter":
+			value.merge({"collider_size": [12.0, 7.0], "mass": 1.55,
+				"desired_speed": [50.0, 33.0], "acceleration": 64.0,
+				"braking": 48.0, "max_force": 460.0,
+				"velocity_response_seconds": 0.45, "thrust_response_seconds": 0.10,
+				"max_force_slew": 2600.0, "linear_drag": 0.012,
+				"angular_drag": 0.27, "attitude_kp": 20.0, "attitude_kd": 9.0,
+				"max_torque": 470.0, "max_torque_slew": 3800.0}, true)
+		&"4ly_dart":
+			value.merge({"collider_size": [6.0, 4.0], "mass": 0.55,
+				"desired_speed": [84.0, 58.0], "acceleration": 250.0,
+				"braking": 320.0, "max_force": 235.0,
+				"velocity_response_seconds": 0.135, "thrust_response_seconds": 0.035,
+				"max_force_slew": 4600.0, "linear_drag": 0.09,
+				"angular_drag": 0.32, "attitude_kp": 25.0, "attitude_kd": 9.0,
+				"max_torque": 135.0, "max_torque_slew": 2400.0}, true)
+	# A single rectangular body has the declared planar inertia; recalculating
+	# it from data prevents accidental mismatch after changing the footprint.
+	var width: float = float(value.collider_size[0])
+	var height: float = float(value.collider_size[1])
+	value.inertia = float(value.mass) * (width * width + height * height) / 12.0
+	return value
 
 static func validate(value: Variant) -> String:
 	if not value is Dictionary or value.size() != KEYS.size():
@@ -69,7 +102,7 @@ static func validate(value: Variant) -> String:
 		["action_profile", ACTION_PROFILE], ["resource_mode", "continuous_authored_power"]]:
 		if not value[pair[0]] is String or value[pair[0]] != pair[1]:
 			return "flight profile identity: " + str(pair[0])
-	if not value.calibration is String or value.calibration not in ["conformance_only", "uncalibrated_placeholder"]:
+	if not value.calibration is String or value.calibration not in ["conformance_only", "uncalibrated_placeholder", "candidate_4ly002", "measured_4ly002"]:
 		return "flight profile calibration status"
 	if not _number(value.fixed_delta) or absf(float(value.fixed_delta) - FIXED_DELTA) > 0.000000001:
 		return "flight profile requires 60 Hz"
@@ -143,4 +176,19 @@ static func descriptor(value: Variant) -> Dictionary:
 	result["fallback"] = "passive_unpowered"
 	result["neutral"] = "zero desired velocity; bounded braking and gravity compensation; no position target"
 	result["resource_behavior"] = "continuous authored supply; no fuel timer or reserve drain"
+	# Policy-visible STATIC physical capabilities: no name, evaluator outcome,
+	# route or privileged observation is embedded in this sub-descriptor.
+	result["capabilities"] = {
+		"collider_size": result.collider_size.duplicate(),
+		"mass": result.mass, "inertia": result.inertia,
+		"desired_speed": result.desired_speed.duplicate(),
+		"acceleration": result.acceleration, "braking": result.braking,
+		"velocity_response_seconds": result.velocity_response_seconds,
+		"thrust_response_seconds": result.thrust_response_seconds,
+		"max_force_slew": result.max_force_slew,
+		"max_force": result.max_force, "gravity": result.gravity,
+		"vertical_force_margin": result.max_force - result.mass * result.gravity,
+		"linear_drag": result.linear_drag, "angular_drag": result.angular_drag,
+		"attitude_kp": result.attitude_kp, "attitude_kd": result.attitude_kd,
+		"max_torque": result.max_torque, "max_torque_slew": result.max_torque_slew}
 	return result
