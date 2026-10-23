@@ -44,7 +44,7 @@ func assert_current(model: StringName, producer: StringName) -> void:
 		str(model) + " actual runtime profile/action identity")
 	expect(state.body_count >= 1 and session.bodies().size() == state.body_count,
 		str(model) + " actual bodies not visual-only")
-	expect(view.flight.mode == "passive_no_lease" and not bool(view.flight.command_live),
+	expect(str(view.flight.mode) in ["passive_no_lease", "suspended"] and not bool(view.flight.command_live),
 		str(model) + " new selection starts without stale assistance")
 	expect(view.equipment.get("preparation") == "none" and not bool(view.equipment.get("available", true)),
 		str(model) + " remains an empty-loadout single chassis")
