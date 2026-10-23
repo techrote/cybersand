@@ -318,3 +318,5 @@ The owner accepted numeric residency/memory and latency/platform limits in the [
 The [exact eight-arm maps and independent oracle contract](mat003-correctness-only-plan.md#exact-eight-arm-mapping-contracts) close the plan review at document level: E8 mapping is retained, expanded E16 uses epoch40–55/R56–71, and C64/E16 is a capability-refusal control. Full endpoint datasets and raw/schema-valid modes are explicit. Independent document review is separate from any future apparatus admission; R16-T1 and execution remain conditional/unapproved.
 
 The [independent mapping/oracle review closure](../audits/2026-10-23-mat003-mapping-oracle-review.md) records all four document findings closed and the exact reviewed document hashes. Apparatus implementation/admission/execution remains a separate gate.
+
+The [unexecuted apparatus implementation review](../audits/2026-10-23-mat003-apparatus-held-review.md) is held/incomplete: isolated source development has begun, but full World/oracle coverage, inventory and collector/readback remain blocking. This is not apparatus qualification or permission to execute; R16-T1 and production remain unchanged.
