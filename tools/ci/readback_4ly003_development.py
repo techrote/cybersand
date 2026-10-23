@@ -114,6 +114,25 @@ def validate_group(base: Path, group: str, git_sha: str) -> dict[str, Any]:
                 errors.append("high_speed_arrival:" + name)
         if item.get("scenario") in {"neutral_control", "constant_control", "power_off"} and item.get("navigation_credit") is not False:
             errors.append("negative_navigation_credit:" + name)
+        recovery_witness = True
+        if item.get("family") == "recovery":
+            disturbance_ticks = [
+                int(x.get("tick", -1))
+                for x in trace
+                if isinstance(x.get("host_disturbance"), dict)
+                and x.get("host_disturbance", {}).get("accepted") is True
+            ]
+            recovery_witness = bool(disturbance_ticks) and any(
+                int(x.get("tick", -1)) >= disturbance_ticks[0] and x.get("contact") is True
+                for x in trace
+            )
+            if not recovery_witness:
+                errors.append("missing_post_disturbance_recovery_contact:" + name)
+        expected_qualification_credit = bool(item.get("navigation_credit")) and recovery_witness
+        if item.get("qualification_credit") is not expected_qualification_credit:
+            errors.append("qualification_credit_mismatch:" + name)
+        if item.get("recovery_witness") is not recovery_witness:
+            errors.append("recovery_witness_mismatch:" + name)
         if any(x.get("physics_fault") for x in trace):
             errors.append("physics_fault_in_trace:" + name)
         # Verified source of each transition: same actual Rapier physics step,
