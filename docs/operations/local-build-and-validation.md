@@ -617,6 +617,8 @@ godot --headless --path godot --script res://tests/test_physical_flight_session.
 godot --headless --path godot --script res://tests/test_physical_flight_physics.gd
 godot --headless --path godot --script res://tests/test_physical_flight_handling.gd
 godot --headless --path godot --script res://tests/test_physical_flight_selection.gd
+# The following actual-framebuffer case must run with a real display:
+godot --path godot --script res://tests/test_physical_flight_gameplay_render.gd
 ```
 
 The profile fixture checks the closed schema, numerical limits, canonical
@@ -629,7 +631,7 @@ native World: unsupported Trainer hover, ascent/descent, neutral braking,
 attitude recovery, explicit power-off fall, underpowered gravity saturation,
 high-momentum bounded actuation and native hard-contact integration.
 
-**4LY-002 adds two automatically discovered cases:**
+**4LY-002 adds two headless cases and one graphical capture case:**
 `test_physical_flight_handling.gd` uses the same four real Rapier physics
 fixtures and normalized commands for every profile, and separately compares
 braking under an identical +20 cell/s physical impulse. It also measures
@@ -641,23 +643,32 @@ and prints a `4LY_002_HANDLING_METRICS` JSON line with the profile hashes and
 actual measurements. `test_physical_flight_selection.gd` exercises real main
 scene F5 selector entries, no-equipment enforcement, same-source ownership,
 fresh reset fences, scripted/policy choices, multi-drone demo, exploratory
-map retention and return to sampled gameplay. These fixtures must execute
-against actual backend/runtime/source identities; a skipped backend, script
-error or pending check is **not** acceptance.
+map retention and return to sampled gameplay.
+`test_physical_flight_gameplay_render.gd` (Linux `*_render` display shard)
+opens the **actual ordinary main sandbox**, selects all four drones in turn,
+submits observation-fenced policy velocity requests through the normal host,
+and retains full GL viewport PNGs plus controller/profile and physical
+motion metadata under `CYBERSAND_PRESENTATION_EVIDENCE`. It is **descriptive
+gameplay evidence**, not a subjective handling preference or an alternative
+motion implementation. The case does not run on headless Windows.
+These fixtures must execute against actual backend/runtime/source identities;
+a skipped display/backend, script error or pending check is **not** acceptance.
 
 Run the existing physical catalogue/session/rig/equipment, sampled reference and
-protected scientific-fixture regressions when changing shared owners. All five
-flight cases join the existing applicable Linux and Windows Godot discovery;
+protected scientific-fixture regressions when changing shared owners. The five original flight cases join the existing Linux and Windows Godot
+discovery; the new `*_render` capture joins **only the Linux display suite**;
 no separate provider or external runner is required. Draft-skipped expensive checks
 do not qualify the implementation. Before merge, follow the
 [exact-head release gates](github-development-and-release.md) and record source,
 runtime, commands, outcomes and unmeasured platforms separately.
 
 These are reproduction instructions and fixture scopes, **not a statement that
-the current checkout has passed**. The 4LY-002 authored profiles retain
-`candidate_4ly002` until passing measured/owner-feel evidence is recorded
-against exact frozen source/profile/runtime identities; do not hand them to
-learning as already accepted. The flight lab, qualified teacher, learned
+the current checkout has passed**. 4LY-002 [real-Rapier measured envelopes](../audits/2026-10-23-4ly002-measured-handling-qualification.md)
+pass their prospective criteria at the recorded prior implementation head,
+while new visual capture/final-head validation and human owner-feel acceptance
+remain separate. The literal `candidate_4ly002` must remain unchanged
+until a new measured identity is intentionally qualified; do not hand
+this candidate to learning as already accepted. The flight lab, qualified teacher, learned
 navigation, target-PC human feel and new Web runtime support have separate
 4LY follow-up gates.
 
