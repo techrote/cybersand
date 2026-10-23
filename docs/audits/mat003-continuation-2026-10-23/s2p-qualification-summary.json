@@ -1,0 +1,184 @@
+{
+  "scope": "untimed S2P actual-workload qualification only; no performance result",
+  "run_id": 39919157903,
+  "artifact_id": 12485574778,
+  "archive_bytes": 3713276,
+  "archive_sha256": "cb63fdf9ceb769770f16cf9e0c6f49b6a8cb0c0811dad642e84fce8632dfe6a0",
+  "expires_at": "2027-01-21T07:38:52Z",
+  "source_head": "59093d68a673c2014908a1a44846b82b885a6744",
+  "branch_source": "d67e00ce53a200c76726d25b98cac8047000f4aa",
+  "registration_sha256": "2fa849cbd56674b96e537fd00f0647de52d41b660300868f5d0104ec50daf6ca",
+  "files_sha256": "11b2902e635838fa8a5948a43aaa492c666e716817b709cdbb1fe6f9e9949bbc",
+  "binary_seal_sha256": "e48f8202b65dc72ab006a440f06b6b2f76076e71585d4dafc0d173b55884822a",
+  "readback": {
+    "status": "qualification-readback-passed-timing-held",
+    "formal_timing_admitted": false,
+    "performance_accepted": false,
+    "checked_files": 419,
+    "cases": 10,
+    "builds": 10,
+    "errors": []
+  },
+  "binaries": [
+    {
+      "arm": "C64-E8-word",
+      "binary": "bin/C64-E8-word-o0",
+      "compile_definitions": [
+        "-DMAT003_STORAGE_KIND=1",
+        "-DMAT003_EXTRA_BYTES=0",
+        "-DMAT003_SPLIT=0",
+        "-DMAT003_WORLD_SOURCE=\"/home/runner/work/cybersand/cybersand/build/mat003-s2p/overlays/C64-E8-word/native/src/world.cpp\"",
+        "-DMAT003_ARM_ID=\"C64-E8-word\"",
+        "-DMAT003_EPOCH_BITS=8"
+      ],
+      "id": "C64-E8-word-o0",
+      "observer": 0,
+      "overlay": "overlays/C64-E8-word",
+      "sha256": "abfae9a967df96a2bbacc4d11a01b270370aeb5c2bc6fff8dae0fee5fa0a315b"
+    },
+    {
+      "arm": "C64-E8-word",
+      "binary": "bin/C64-E8-word-o1",
+      "compile_definitions": [
+        "-DMAT003_STORAGE_KIND=1",
+        "-DMAT003_EXTRA_BYTES=0",
+        "-DMAT003_SPLIT=0",
+        "-DMAT003_WORLD_SOURCE=\"/home/runner/work/cybersand/cybersand/build/mat003-s2p/overlays/C64-E8-word/native/src/world.cpp\"",
+        "-DMAT003_ARM_ID=\"C64-E8-word\"",
+        "-DMAT003_EPOCH_BITS=8"
+      ],
+      "id": "C64-E8-word-o1",
+      "observer": 1,
+      "overlay": "overlays/C64-E8-word",
+      "sha256": "00d7b48910c363657bd1b0c55f96e45fcef8198905623e444d73daba4ff51e01"
+    },
+    {
+      "arm": "C72-E8-packed",
+      "binary": "bin/C72-E8-packed-o0",
+      "compile_definitions": [
+        "-DMAT003_STORAGE_KIND=3",
+        "-DMAT003_EXTRA_BYTES=1",
+        "-DMAT003_SPLIT=0",
+        "-DMAT003_WORLD_SOURCE=\"/home/runner/work/cybersand/cybersand/build/mat003-s2p/overlays/C72-E8-packed/native/src/world.cpp\"",
+        "-DMAT003_ARM_ID=\"C72-E8-packed\"",
+        "-DMAT003_EPOCH_BITS=8"
+      ],
+      "id": "C72-E8-packed-o0",
+      "observer": 0,
+      "overlay": "overlays/C72-E8-packed",
+      "sha256": "d45dd446b67d24bdfcca6ff9191eedcea76c38c31c0714cb9198a3494f4624cb"
+    },
+    {
+      "arm": "C72-E8-packed",
+      "binary": "bin/C72-E8-packed-o1",
+      "compile_definitions": [
+        "-DMAT003_STORAGE_KIND=3",
+        "-DMAT003_EXTRA_BYTES=1",
+        "-DMAT003_SPLIT=0",
+        "-DMAT003_WORLD_SOURCE=\"/home/runner/work/cybersand/cybersand/build/mat003-s2p/overlays/C72-E8-packed/native/src/world.cpp\"",
+        "-DMAT003_ARM_ID=\"C72-E8-packed\"",
+        "-DMAT003_EPOCH_BITS=8"
+      ],
+      "id": "C72-E8-packed-o1",
+      "observer": 1,
+      "overlay": "overlays/C72-E8-packed",
+      "sha256": "52fb6731586c7c89c004a5b527f9819533c866a2866625ffe6b5bc772c5767c7"
+    },
+    {
+      "arm": "C72-E8-memcpy",
+      "binary": "bin/C72-E8-memcpy-o0",
+      "compile_definitions": [
+        "-DMAT003_STORAGE_KIND=3",
+        "-DMAT003_EXTRA_BYTES=1",
+        "-DMAT003_SPLIT=0",
+        "-DMAT003_WORLD_SOURCE=\"/home/runner/work/cybersand/cybersand/build/mat003-s2p/overlays/C72-E8-memcpy/native/src/world.cpp\"",
+        "-DMAT003_ARM_ID=\"C72-E8-memcpy\"",
+        "-DMAT003_EPOCH_BITS=8"
+      ],
+      "id": "C72-E8-memcpy-o0",
+      "observer": 0,
+      "overlay": "overlays/C72-E8-memcpy",
+      "sha256": "703566914fe8c0e3fa3eb8842f929e5bc03bacdc1e7b74eb0e15c759bc208a2f"
+    },
+    {
+      "arm": "C72-E8-memcpy",
+      "binary": "bin/C72-E8-memcpy-o1",
+      "compile_definitions": [
+        "-DMAT003_STORAGE_KIND=3",
+        "-DMAT003_EXTRA_BYTES=1",
+        "-DMAT003_SPLIT=0",
+        "-DMAT003_WORLD_SOURCE=\"/home/runner/work/cybersand/cybersand/build/mat003-s2p/overlays/C72-E8-memcpy/native/src/world.cpp\"",
+        "-DMAT003_ARM_ID=\"C72-E8-memcpy\"",
+        "-DMAT003_EPOCH_BITS=8"
+      ],
+      "id": "C72-E8-memcpy-o1",
+      "observer": 1,
+      "overlay": "overlays/C72-E8-memcpy",
+      "sha256": "f7bc2d6ab2c592e0a5c445b3daea8b9e5f8595568a1cc55f39551c0fd6a531e8"
+    },
+    {
+      "arm": "C80-E8-packed",
+      "binary": "bin/C80-E8-packed-o0",
+      "compile_definitions": [
+        "-DMAT003_STORAGE_KIND=3",
+        "-DMAT003_EXTRA_BYTES=2",
+        "-DMAT003_SPLIT=0",
+        "-DMAT003_WORLD_SOURCE=\"/home/runner/work/cybersand/cybersand/build/mat003-s2p/overlays/C80-E8-packed/native/src/world.cpp\"",
+        "-DMAT003_ARM_ID=\"C80-E8-packed\"",
+        "-DMAT003_EPOCH_BITS=8"
+      ],
+      "id": "C80-E8-packed-o0",
+      "observer": 0,
+      "overlay": "overlays/C80-E8-packed",
+      "sha256": "bee7d53e4cc757ac4d9e69f8efe45e46a7ae4c411dc1f21c99c870790e3e2ad6"
+    },
+    {
+      "arm": "C80-E8-packed",
+      "binary": "bin/C80-E8-packed-o1",
+      "compile_definitions": [
+        "-DMAT003_STORAGE_KIND=3",
+        "-DMAT003_EXTRA_BYTES=2",
+        "-DMAT003_SPLIT=0",
+        "-DMAT003_WORLD_SOURCE=\"/home/runner/work/cybersand/cybersand/build/mat003-s2p/overlays/C80-E8-packed/native/src/world.cpp\"",
+        "-DMAT003_ARM_ID=\"C80-E8-packed\"",
+        "-DMAT003_EPOCH_BITS=8"
+      ],
+      "id": "C80-E8-packed-o1",
+      "observer": 1,
+      "overlay": "overlays/C80-E8-packed",
+      "sha256": "e9aac084d5fdea32b42f45f1d884e4729349c3cf32c4bc96e88723a8558ca4c3"
+    },
+    {
+      "arm": "C80-E8-memcpy",
+      "binary": "bin/C80-E8-memcpy-o0",
+      "compile_definitions": [
+        "-DMAT003_STORAGE_KIND=3",
+        "-DMAT003_EXTRA_BYTES=2",
+        "-DMAT003_SPLIT=0",
+        "-DMAT003_WORLD_SOURCE=\"/home/runner/work/cybersand/cybersand/build/mat003-s2p/overlays/C80-E8-memcpy/native/src/world.cpp\"",
+        "-DMAT003_ARM_ID=\"C80-E8-memcpy\"",
+        "-DMAT003_EPOCH_BITS=8"
+      ],
+      "id": "C80-E8-memcpy-o0",
+      "observer": 0,
+      "overlay": "overlays/C80-E8-memcpy",
+      "sha256": "99d3a4dc3bf6c84d9b8e4dc95ee383ad0e3ae9fc4a38d9c406fcea96098a1733"
+    },
+    {
+      "arm": "C80-E8-memcpy",
+      "binary": "bin/C80-E8-memcpy-o1",
+      "compile_definitions": [
+        "-DMAT003_STORAGE_KIND=3",
+        "-DMAT003_EXTRA_BYTES=2",
+        "-DMAT003_SPLIT=0",
+        "-DMAT003_WORLD_SOURCE=\"/home/runner/work/cybersand/cybersand/build/mat003-s2p/overlays/C80-E8-memcpy/native/src/world.cpp\"",
+        "-DMAT003_ARM_ID=\"C80-E8-memcpy\"",
+        "-DMAT003_EPOCH_BITS=8"
+      ],
+      "id": "C80-E8-memcpy-o1",
+      "observer": 1,
+      "overlay": "overlays/C80-E8-memcpy",
+      "sha256": "54b2e034c97f54bc8050b024f9e8bf470eafb8669ac0ec21f1b6a77229be1b79"
+    }
+  ]
+}

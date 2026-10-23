@@ -1,0 +1,150 @@
+name: S2P independently admitted paired timing
+
+on:
+  workflow_dispatch:
+    inputs:
+      registration_sha256:
+        description: Exact independently admitted registration SHA-256
+        type: string
+        required: true
+      owner_authority_json:
+        description: Owner-established JSON receipt authorizing this registration and execution commit
+        type: string
+        required: true
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: mat003-s2p-timing-001-formal-timing
+  cancel-in-progress: false
+
+jobs:
+  timing:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    steps:
+      - name: Check out the reviewed admission and manual-only workflow
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          lfs: false
+      - name: Validate exact registration and owner-established execution receipt
+        env:
+          REQUESTED_REGISTRATION_SHA256: ${{ inputs.registration_sha256 }}
+          OWNER_AUTHORITY_JSON: ${{ inputs.owner_authority_json }}
+        run: |
+          python3 -B - <<'PY'
+          import hashlib, json, os, pathlib, re
+          out=pathlib.Path('build/mat003-s2p-timing/preflight'); out.mkdir(parents=True,exist_ok=True)
+          def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
+          def require(b,m):
+              if not b: raise ValueError(m)
+          def unique(pairs):
+              result={}
+              for k,v in pairs:
+                  require(k not in result,'duplicate JSON key'); result[k]=v
+              return result
+          def load(text): return json.loads(text,object_pairs_hook=unique)
+          request=dict(registration_sha256=os.environ['REQUESTED_REGISTRATION_SHA256'],
+                       owner_authority_json=os.environ['OWNER_AUTHORITY_JSON'],
+                       actor=os.environ['GITHUB_ACTOR'],execution_commit=os.environ['GITHUB_SHA'],
+                       event=os.environ['GITHUB_EVENT_NAME'],run_id=os.environ['GITHUB_RUN_ID'],
+                       run_attempt=os.environ['GITHUB_RUN_ATTEMPT'])
+          (out/'request.json').write_text(json.dumps(request,indent=2)+'\n')
+          try:
+              require(request['event']=='workflow_dispatch','manual dispatch required')
+              require(request['run_attempt']=='1','reruns are not admitted; preserve the failed campaign and obtain a new disposition')
+              require(os.environ['GITHUB_REPOSITORY']=='techrote/cybersand','wrong repository')
+              actor=request['actor']
+              require(actor.lower()==os.environ['GITHUB_REPOSITORY_OWNER'].lower(),'repository owner must supply execution authority')
+              registration=pathlib.Path('tools/experiments/mat003_s2p/admitted-registration.json')
+              requested=request['registration_sha256']
+              require(re.fullmatch('[0-9a-f]{64}',requested) is not None and sha(registration)==requested,'exact registration hash mismatch')
+              admitted=load(registration.read_text())
+              require(admitted['status']=='admitted-paired-timing' and admitted['formal_timing_admitted'] is True and
+                      admitted['execution_authorized'] is False,'independent admission or owner boundary invalid')
+              workflow=pathlib.Path('.github/workflows/mat003-s2p-timing.yml')
+              require(sha(workflow)==admitted['execution_workflow']['sha256'],'workflow differs from independently reviewed source')
+              authority=load(request['owner_authority_json'])
+              require(authority.get('execution_authorized') is True and authority.get('approver')==actor and
+                      authority.get('registration_sha256')==requested,'owner authority absent or bound to a different registration')
+              require(authority.get('decision')=='authorize-exact-registered-campaign' and
+                      authority.get('campaign_id')==admitted['campaign_id'],'explicit campaign decision missing')
+              require(authority.get('execution_commit')==request['execution_commit'] and
+                      re.fullmatch('[0-9a-f]{40}',request['execution_commit']) is not None,'owner authority must pin this exact execution commit')
+              require(authority.get('scope_acknowledged')==admitted['scope_id'],'registered S2P workload scope must be acknowledged')
+              (out/'admission.json').write_bytes(registration.read_bytes())
+              # Preserve supplied authority bytes; never create or upgrade an owner decision.
+              (out/'authority.json').write_text(request['owner_authority_json'])
+              result=dict(status='owner-receipt-validated',registration_sha256=requested,
+                          authority_sha256=sha(out/'authority.json'),workflow_sha256=sha(workflow))
+          except Exception as error:
+              (out/'result.json').write_text(json.dumps(dict(status='rejected',error=str(error)),indent=2)+'\n')
+              raise
+          (out/'result.json').write_text(json.dumps(result,indent=2)+'\n')
+          PY
+      - name: Check out the exact qualified source for frozen readers and collector
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 59093d68a673c2014908a1a44846b82b885a6744
+          fetch-depth: 0
+          lfs: false
+          path: build/mat003-s2p-frozen-source
+      - name: Download the immutable qualified artifact
+        timeout-minutes: 15
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p build/mat003-s2p-timing/input
+          gh --version > build/mat003-s2p-timing/input/gh-version.txt
+          gh api repos/techrote/cybersand/actions/artifacts/12485574778 > build/mat003-s2p-timing/input/artifact-metadata.json
+          gh api repos/techrote/cybersand/actions/artifacts/12485574778/zip > build/mat003-s2p-timing/input/qualified.zip
+          python3 -B - <<'PY'
+          import hashlib, json, pathlib, stat, zipfile
+          root=pathlib.Path('build/mat003-s2p-timing'); admission=json.loads((root/'preflight/admission.json').read_text())
+          evidence=admission['admission_evidence']; archive=root/'input/qualified.zip'
+          metadata=json.loads((root/'input/artifact-metadata.json').read_text())
+          assert metadata['id']==evidence['artifact_id'] and metadata['workflow_run']['id']==evidence['run_id'] and not metadata['expired'],'artifact identity/availability mismatch'
+          assert archive.stat().st_size==evidence['artifact_bytes'] and hashlib.sha256(archive.read_bytes()).hexdigest()==evidence['artifact_sha256'],'immutable ZIP mismatch'
+          with zipfile.ZipFile(archive) as zipped:
+              entries=zipped.infolist(); names=[i.filename for i in entries]
+              assert len(names)==len(set(names)),'duplicate ZIP entry'
+              for entry in entries:
+                  name=entry.filename; p=pathlib.PurePosixPath(name)
+                  assert name and not p.is_absolute() and '..' not in p.parts and '\\' not in name and ':' not in name,'unsafe ZIP path'
+                  assert not stat.S_ISLNK(entry.external_attr>>16),'ZIP symlink refused'
+              assert zipped.testzip() is None,'ZIP integrity error'
+              zipped.extractall(root/'qualified')
+          frozen=pathlib.Path('build/mat003-s2p-frozen-source/tools/experiments/mat003_s2p')
+          for name,key in [('verify.py','verifier_sha256'),('measure.py','collector_sha256')]:
+              assert hashlib.sha256((frozen/name).read_bytes()).hexdigest()==evidence[key],'frozen tool source mismatch: '+name
+          PY
+      - name: Repeat the frozen independent S2P apparatus readback
+        timeout-minutes: 20
+        run: |
+          python3 -B build/mat003-s2p-frozen-source/tools/experiments/mat003_s2p/verify.py build/mat003-s2p-timing/qualified --source-commit 59093d68a673c2014908a1a44846b82b885a6744 > build/mat003-s2p-timing/preflight/fresh-independent-readback.json
+          python3 -B - <<'PY'
+          import json,pathlib
+          root=pathlib.Path('build/mat003-s2p-timing')
+          fresh=json.loads((root/'preflight/fresh-independent-readback.json').read_text())
+          original=json.loads((root/'qualified/independent-readback.json').read_text())
+          assert fresh==original and fresh['status']=='qualification-readback-passed-timing-held' and fresh['cases']==10 and not fresh['errors'],'fresh apparatus readback failed'
+          PY
+      - name: Run only the exact admitted paired campaign
+        timeout-minutes: 35
+        run: |
+          python3 -B build/mat003-s2p-frozen-source/tools/experiments/mat003_s2p/measure.py --admission build/mat003-s2p-timing/preflight/admission.json --authority build/mat003-s2p-timing/preflight/authority.json --apparatus build/mat003-s2p-timing/qualified --archive build/mat003-s2p-timing/input/qualified.zip --output build/mat003-s2p-timing/timing
+      - name: Independently read all registered timing evidence without granting acceptance
+        timeout-minutes: 20
+        run: |
+          python3 -B build/mat003-s2p-frozen-source/tools/experiments/mat003_s2p/verify.py --timing build/mat003-s2p-timing/timing --apparatus build/mat003-s2p-timing/qualified > build/mat003-s2p-timing/timing/independent-timing-readback.json
+      - name: Retain all raw inputs observations and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mat003-s2p-timing-${{ github.run_id }}-attempt-${{ github.run_attempt }}
+          path: build/mat003-s2p-timing/
+          if-no-files-found: error
+          retention-days: 90
