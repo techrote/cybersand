@@ -71,7 +71,7 @@ Epoch clear resets scheduling stamps only, preserving material/state/extension/t
 
 At default128² chunks these are128/144/160/256KiB per cell array. Full temperature adds2 bytes per cell (8MiB at2048²), independently of other allocations. Scratch, activity, descriptors, immutable snapshots, allocator overhead and process RSS need separate accounting; do not double-count legacy component aggregates. No4096² admission follows from these calculations.
 
-**Ambiguous, requiring owner/product decisions before adoption:** maximum resident population and active profile; dense/optional extension occupancy; memory and simultaneous-snapshot envelope; acceptable normal-tick cost; acceptable clear-frame hitch and pause policy; target tick horizon and platform matrix. No numeric release threshold is invented. The historical1ms review trigger is not an acceptance limit or frame-rate promise.
+**Decision split:** the owner disposition below accepts resident/active, memory/snapshot, latency and platform budgets as qualification targets. Dense/optional extension occupancy, field semantics, exact map/adoption, reference-machine identity and demonstrated compliance remain unresolved. The historical1ms review trigger is not an acceptance limit or frame-rate promise.
 
 Use N+D/(2^E−1) only as a conditional steady model with carrier-specific measured N and incremental D. First clear is at2^E, later intervals2^E−1. E16's subsequent interval is257 times E8's, while the first-clear horizon ratio is256. Width reduces frequency, not the single hitch. WCLEAR's prepared-cache protocol and C128's naturally reached first-clear frame are separate datasets, not interchangeable D values. No carrier/epoch break-even has been established for the proposed R16 map.
 
@@ -85,7 +85,7 @@ Before production selection: reconcile actual source and field requirements; app
 
 The [technical review](../research/mat003-semantics-budget-review.md) retains the shortlist but blocks adoption pending named extension semantics and owner budgets. Proposed extension interpretation is material ID plus World schema/solver identity; no unbudgeted per-cell tag or simultaneous-field overlap is permitted. Default4096-chunk residency would require1024MiB of DUAL64 cell arrays, plus128MiB full temperature and other owners; the measured256-chunk envelope is not a qualification of that cap. The review supplies an actionable decision worksheet without approving numeric release limits or changing construction defaults. Neither proposal nor review authorizes timing.
 
-The [concrete owner offer](mat003-concrete-owner-offer.md) proposes R16-T1 semantics, a256-chunk residency envelope, memory sublimits and prospective native latency/platform gates for explicit review. Its values are Planned recommendations, not owner-approved requirements, measured compliance, production changes or new timing authority.
+The [concrete owner offer](mat003-concrete-owner-offer.md) proposes R16-T1 semantics, a256-chunk residency envelope, memory sublimits and prospective native latency/platform gates for explicit review. Its budget values are now owner-accepted qualification targets as recorded below; R16-T1 and mapping remain conditional. Acceptance establishes neither measured compliance, production changes nor new timing authority.
 
 ## Owner budget disposition — 2026-10-23
 

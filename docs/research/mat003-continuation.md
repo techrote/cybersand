@@ -314,3 +314,7 @@ The [semantics and owner-budget review](../research/mat003-semantics-budget-revi
 The [concrete owner offer](mat003-concrete-owner-offer.md) proposes R16-T1 semantics, a256-chunk residency envelope, memory sublimits and prospective native latency/platform gates for explicit review. Its values are Planned recommendations, not owner-approved requirements, measured compliance, production changes or new timing authority.
 
 The owner accepted numeric residency/memory and latency/platform limits in the [concrete offer](mat003-concrete-owner-offer.md) as qualification targets only. R16-T1 remains conditional. The [bounded correctness-only plan](mat003-correctness-only-plan.md) proposes152 cases per platform without implementation, execution or timing authority. Existing production and both draft PRs remain unchanged.
+
+The [exact eight-arm maps and independent oracle contract](mat003-correctness-only-plan.md#exact-eight-arm-mapping-contracts) close the plan review at document level: E8 mapping is retained, expanded E16 uses epoch40–55/R56–71, and C64/E16 is a capability-refusal control. Full endpoint datasets and raw/schema-valid modes are explicit. Independent document review is separate from any future apparatus admission; R16-T1 and execution remain conditional/unapproved.
+
+The [independent mapping/oracle review closure](../audits/2026-10-23-mat003-mapping-oracle-review.md) records all four document findings closed and the exact reviewed document hashes. Apparatus implementation/admission/execution remains a separate gate.

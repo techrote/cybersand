@@ -264,3 +264,5 @@ MAT-003 review disposition and outstanding owner choices: [semantics/budget revi
 Proposed concrete MAT-003 fields,256-chunk memory envelope and native latency targets: [owner offer](../research/mat003-concrete-owner-offer.md). Values await owner review and have not been qualified as a new profile.
 
 Accepted MAT-003 qualification budgets are in the [owner offer](../research/mat003-concrete-owner-offer.md); the [correctness-only plan](../research/mat003-correctness-only-plan.md) remains Planned and unexecuted. R16-T1 semantics stay conditional.
+
+The [bounded plan](../research/mat003-correctness-only-plan.md#exact-eight-arm-mapping-contracts) now specifies all eight proposed neutral16 maps, operation-relative high-lane masks, an independent oracle and complete World endpoint records. These document contracts require independent review and grant no apparatus construction/execution authority.

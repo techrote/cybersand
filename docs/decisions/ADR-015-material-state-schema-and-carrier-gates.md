@@ -28,7 +28,7 @@ Accepted S2A packed ratios near1.50 remain valid for their original implementati
 
 ## Proposed decision
 
-Define semantic requirements before allocating physical bits. The [state-schema proposal](../research/mat003-state-schema-proposal.md) owns logical field domains, extension-budget accounting, lifecycle and unresolved owner budgets. Preserve material16/state_a16/state_b8, nonzero Empty and separately owned temperature/continuation state. Raw storage width must not silently widen public material/mass domains.
+Define semantic requirements before allocating physical bits. The [state-schema proposal](../research/mat003-state-schema-proposal.md) owns logical field domains, extension-budget accounting and lifecycle, with accepted budget targets and unresolved semantic/adoption choices. Preserve material16/state_a16/state_b8, nonzero Empty and separately owned temperature/continuation state. Raw storage width must not silently widen public material/mass domains.
 
 Advance two expansion options: safe memcpy-based compact C72/C80 when the approved logical fields fit and the target platform/workload gates pass; explicit DUAL64 when required capacity or field-access simplicity justifies16-byte cells. Keep C64 as the unchanged baseline and a viable outcome if the requirements fit. Do not choose16 bytes merely because capacity exists. DUAL64 is the leading sixteen-byte option, not a selected production winner.
 
@@ -52,7 +52,7 @@ Any changed packing, material semantics, high-state access, epoch width, compile
 
 The [technical review](../research/mat003-semantics-budget-review.md) retains this Planned shortlist and corrects record-admission versus failed-tick semantics. At that technical review, adoption was blocked because neither named extension semantics nor owner budget targets had been approved. The later owner disposition below accepts budget targets only; semantic/adoption gates remain blocked. Standalone4096-chunk limits are not performance acceptance and imply1GiB DUAL64 arrays before other allocations. A material/World-schema discriminator must be explicit, and rollback cannot silently truncate wider records to C64. Production and timing authority remain unchanged.
 
-The [concrete owner offer](../research/mat003-concrete-owner-offer.md) supplies reviewable proposed semantics and numeric budgets. This ADR remains Planned until an explicit disposition; publication of suggested values does not approve a Water solver, implementation or new timing.
+The [concrete owner offer](../research/mat003-concrete-owner-offer.md) supplies reviewable proposed semantics and numeric budgets. Budget targets are Approved design under the owner disposition below; R16-T1 semantics, exact maps and adoption remain conditional. Budget acceptance does not approve a Water solver, implementation or new timing. The bounded plan now defines eight proposed maps and an independent oracle contract for separate review, not execution.
 
 ## Owner acceptance of qualification targets — 2026-10-23
 
