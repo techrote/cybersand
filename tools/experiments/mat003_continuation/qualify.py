@@ -34,6 +34,11 @@ def compress_streams(root):
         p.unlink()
 
 
+def seal_generated(work):
+    dump(work/'generated-source-seal.json', {p.relative_to(work).as_posix():digest(p)
+         for p in sorted(work.rglob('*')) if p.is_file() and p.name!='generated-source-seal.json'})
+
+
 PROBE = r'''
     static std::uint64_t prepare_clear(World& world, std::uint64_t target) {
         fixture::require(!world.tick_in_progress_ && !world.tick_failed_, "invalid preparation boundary");
@@ -164,9 +169,12 @@ extern "C" void clear_epoch(C* c) { c->set_epoch(0); }
 extern "C" void copy_cell(C* a, const C* b) { *a=*b; }
 extern "C" void swap_cell(C* a, C* b) { const auto t=*a; *a=*b; *b=t; }
 ''')
-                run([compiler,*flags,*macros,'-DMAT003_TWIN_OBSERVERS=0',*includes,'-S',wrapper,'-o',assembly/'access.s'], 'asm/'+identifier,180)
-                run([compiler,*flags,*macros,'-DMAT003_TWIN_OBSERVERS=0',*includes,'-S',work/'native/src/world.cpp','-o',assembly/'world.s'], 'world-asm/'+identifier,180)
+                def compile_assembly():
+                    run([compiler,*flags,*macros,'-DMAT003_TWIN_OBSERVERS=0',*includes,'-S',wrapper,'-o',assembly/'access.s'], 'asm/'+identifier,180)
+                    run([compiler,*flags,*macros,'-DMAT003_TWIN_OBSERVERS=0',*includes,'-S',work/'native/src/world.cpp','-o',assembly/'world.s'], 'world-asm/'+identifier,180)
                 if rep not in ('memcpy','u128','dual64','word'):
+                    seal_generated(work)
+                    compile_assembly()
                     continue # Reuse accepted control correctness; no repeat campaign.
                 fixture = work/S1/'test_world.cpp'
                 if rep in ('u128','dual64'):
@@ -186,6 +194,8 @@ extern "C" void swap_cell(C* a, C* b) { const auto t=*a; *a=*b; *b=t; }
                     text = text.replace('fixture::require(mat003_world::get_extra(cell) == expected, "forced clear changed AoS payload");',
                         'fixture::require(cell.storage.upper() == (0xa581234567890000ULL | expected), "forced clear changed full high64");')
                     fixture.write_text(text)
+                seal_generated(work)
+                compile_assembly()
                 run([compiler,*flags,*macros,'-DMAT003_TWIN_OBSERVERS=1',*includes,fixture,*common,'-o',binary], 'compile/'+identifier,180)
                 report['builds'].append(dict(id=identifier,binary=str(binary.relative_to(out)),sha256=digest(binary),observer=1))
                 dump(out/'binary-seal.json',report['builds'])
@@ -221,6 +231,7 @@ extern "C" void swap_cell(C* a, C* b) { const auto t=*a; *a=*b; *b=t; }
                 prefix = prefix.replace('static_assert(sizeof(Epoch) * 8 == MAT003_EPOCH_BITS);',
                                         'static_assert(sizeof(Epoch) * 8 == (MAT003_EPOCH_BITS == 24 ? 32 : MAT003_EPOCH_BITS));')
                 (work/S1/'probe.hpp').write_text(prefix + PROBE)
+                seal_generated(work)
                 for observer in [0,1]:
                     twin = binary.with_name(identifier+'-o'+str(observer)+('.exe' if os.name == 'nt' else ''))
                     run([compiler,*flags,*macros,'-DMAT003_TWIN_OBSERVERS='+str(observer),*includes,source/HERE/'wclear.cpp',*common,'-o',twin], 'compile/'+twin.name,180)
@@ -247,7 +258,7 @@ extern "C" void swap_cell(C* a, C* b) { const auto t=*a; *a=*b; *b=t; }
                         report['cases'].append(row)
                         compress_streams(out/'cases'/name)
             # Snapshot all generated inputs/patches to bind modified fixtures too.
-            dump(work/'generated-source-seal.json', {p.relative_to(work).as_posix():digest(p) for p in sorted(work.rglob('*')) if p.is_file()})
+            # Seal was written before the fixture compile and remains immutable.
         # Independent full high-lane storage/byte-map model, also under UBSan.
         if args.track in ('s2p','c128','wclear'):
             storage=out/'bin'/('storage.exe' if os.name == 'nt' else 'storage')

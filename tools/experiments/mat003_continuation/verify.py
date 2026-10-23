@@ -10,6 +10,7 @@ import importlib.util
 import itertools
 import json
 from pathlib import Path
+import subprocess
 import tempfile
 
 
@@ -37,7 +38,7 @@ def require(b, message):
     if not b: raise ValueError(message)
 
 
-def verify(root):
+def verify(root, expected_source=None):
     result=dict(status='failed',formal_timing_admitted=False,errors=[],checked_files=0,cases=0)
     try:
         files=load(root/'files.json')
@@ -47,6 +48,11 @@ def verify(root):
             require(sha(checked(root,name))==digest,'file hash mismatch: '+name)
             result['checked_files']+=1
         report=load(root/'run.json')
+        trusted=Path(__file__).resolve().parents[3]
+        require(len(report['source_head'])==40,'missing exact source commit')
+        source_commit=report['source_head']
+        expected_source=expected_source or subprocess.check_output(['git','rev-parse','HEAD'],cwd=trusted,text=True).strip()
+        require(source_commit==expected_source,'source commit differs from explicit review identity')
         require(report['status']=='collected-not-admitted' and report['errors']==[], 'incomplete collector')
         require(report['formal_timing_admitted'] is False,'timing boundary violation')
         require(report['qualified_toolchain'] is True and '13.3.0' in report['compiler_version'],'unqualified toolchain')
@@ -54,7 +60,23 @@ def verify(root):
         require(len(report['cases'])==len({c['id'] for c in report['cases']}),'duplicate cases')
         seal=load(root/'source-seal.json')
         require(seal==report['source_sha256'],'source seal mismatch')
-        for name,digest in seal.items(): require(sha(checked(root,'source/'+name))==digest,'source seal drift')
+        # Bind to actual Git objects from the review checkout. This verifier's
+        # published commit is the trust root, never an artifact-supplied module.
+        baseline='2b2a1dd64f16dc46d5e812b757de73f47df0fb2b'
+        frozen_s1=json.loads(subprocess.check_output(['git','show',baseline+':tools/experiments/mat003_prepass/world_registration.json'],cwd=trusted))
+        expected_sources=set(frozen_s1['baseline_control_sha256'])
+        for folder in ['mat003_prepass','mat003_s2a','mat003_continuation']:
+            names=subprocess.check_output(['git','ls-tree','--name-only',source_commit+':tools/experiments/'+folder],cwd=trusted,text=True).splitlines()
+            expected_sources.update('tools/experiments/'+folder+'/'+n for n in names if Path(n).suffix in ('.py','.hpp','.cpp','.json'))
+        require(set(seal)==expected_sources,'source inventory mismatch')
+        for name,digest in seal.items():
+            require(sha(checked(root,'source/'+name))==digest,'source seal drift')
+            commit=source_commit if name.startswith('tools/experiments/mat003_continuation/') else baseline
+            content=subprocess.check_output(['git','show',commit+':'+name],cwd=trusted)
+            require(hashlib.sha256(content).hexdigest()==digest,'source disagrees with frozen Git object: '+name)
+            if name.startswith('tools/experiments/mat003_continuation/'):
+                current=subprocess.check_output(['git','show','HEAD:'+name],cwd=trusted)
+                require(hashlib.sha256(current).hexdigest()==digest,'trusted continuation checkout differs: '+name)
         require(load(root/'binary-seal.json')==report['builds'],'binary seal mismatch')
         for b in report['builds']: require(sha(checked(root,b['binary']))==b['sha256'],'binary seal drift')
         for row in report['commands']:
@@ -65,6 +87,39 @@ def verify(root):
         spec=importlib.util.spec_from_file_location('frozen_independent_s1_reader',path)
         reader=importlib.util.module_from_spec(spec); spec.loader.exec_module(reader)
         track=report['track']
+        # Exact build and command inventories, rather than validating only the
+        # subset a collector happens to retain.
+        if track=='s2p':
+            all_arms=['word-e8-x0','packed-e8-x1','packed-e8-x2','aligned-e8-x1','aligned-e8-x2','split-e8-x1','split-e8-x2']+[f'memcpy-e{e}-x{x}' for e in (8,16) for x in (1,2)]
+            built={'word-e8-x0'}|{f'memcpy-e{e}-x{x}' for e in (8,16) for x in (1,2)}
+        elif track=='c128':
+            all_arms=[f'{r}-e{e}-x2' for r in ('u128','dual64') for e in (8,16)]
+            built=set(all_arms)
+        elif track=='wclear':
+            all_arms=[f'aligned-e{e}-x2' for e in (8,16,24,32)]
+            built={a+'-o'+str(o) for a in all_arms for o in (0,1)}
+        else: raise ValueError('unknown track')
+        require({b['id'] for b in report['builds']}==built and len(report['builds'])==len(built),'missing/extra/duplicate builds')
+        labels={'compiler'}|{'common/'+n for n in ('material_rules','scheduler_geometry','settled_world_discovery')}
+        labels|={'compile/'+a for a in built}
+        labels|={'execute/'+c['id'] for c in report['cases']}
+        labels|={'compile/storage','execute/storage','compile/storage-ubsan','execute/storage-ubsan'}
+        if track!='wclear':
+            labels|={'asm/'+a for a in all_arms}|{'world-asm/'+a for a in all_arms}
+            for a in all_arms:
+                require((root/'assembly'/a/'access.s').is_file() and (root/'assembly'/a/'world.s').is_file(),'assembly control missing')
+        require({c['label'] for c in report['commands']}==labels and len(report['commands'])==len(labels),'missing/extra/duplicate command inventory')
+        for a in all_arms:
+            folder=root/'overlays'/a
+            generated=load(folder/'generated-source-seal.json')
+            actual_generated={p.relative_to(folder).as_posix() for p in folder.rglob('*') if p.is_file() and p.name!='generated-source-seal.json'}
+            require(set(generated)==actual_generated,'generated input inventory mismatch')
+            for name,digest in generated.items(): require(sha(checked(folder,name))==digest,'generated source drift')
+        commands={c['label']:c for c in report['commands']}
+        builds={b['id']:b for b in report['builds']}
+        storage=json.loads((root/'execute/storage.stdout').read_text())
+        require(storage=={'dual_size':16,'dual_align':8,'u128_size':16,'u128_align':16,'passed':True},'storage boundary/ABI model failed')
+        require(json.loads((root/'execute/storage-ubsan.stdout').read_text())==storage,'sanitized storage model disagrees')
         if track=='wclear':
             expected={f'aligned-e{e}-x2-o{o}-{s}-{scene}-w{w}-{mode}'
                       for e,o,s,scene,w,mode in itertools.product((8,16,24,32),(0,1),(512,1024,2048),
@@ -76,6 +131,20 @@ def verify(root):
             cell_cache={}
             for row in report['cases']:
                 name=row['id']; event=row['event']; observed=row['observer']==1
+                # Parse the authoritative ID, then require all declared metadata
+                # and the actual command argv to match this exact context.
+                import re
+                m=re.fullmatch(r'aligned-e(8|16|24|32)-x2-o([01])-(128|512|1024|2048)-(sleep-excluded|active-window-excluded)-w([14])-(event|ordinary)(-natural16)?',name)
+                require(m is not None,'invalid context ID')
+                e,o,s,scene,w,mode,suffix=m.groups()
+                require((row['epoch_bits'],row['observer'],row['side'],row['scene'],row['workers'],event)==
+                        (int(e),int(o),int(s),scene,int(w),mode=='event'),'case metadata differs from registered context')
+                b=builds[f'aligned-e{e}-x2-o{o}']
+                argv=commands['execute/'+name]['argv']
+                require(argv[1:5]==[s,w,scene,mode] and Path(argv[0]).name==Path(b['binary']).name and
+                        Path(argv[5]).name==name and argv[6:]==(['65535'] if suffix else []),'execute argv differs from exact context')
+                require(argv[0]==commands['compile/'+b['id']]['argv'][-1],'executed binary differs from compiler output')
+                require(b['observer']==int(o),'build observer metadata mismatch')
                 require(row==dict(json.loads((root/('execute/'+name+'.stdout')).read_text()),
                                   id=name,scene=row['scene'],observer=row['observer']), 'stdout/receipt mismatch')
                 require(row['resident_cells']==row['side']**2 and row['stride']==16 and row['alignment']==8,'resident geometry mismatch')
@@ -143,5 +212,6 @@ def verify(root):
 
 if __name__=='__main__':
     ap=argparse.ArgumentParser(description=__doc__); ap.add_argument('root',type=Path)
-    args=ap.parse_args(); result=verify(args.root.resolve())
+    ap.add_argument('--source-commit',help='exact externally reviewed checkout commit; defaults to current HEAD')
+    args=ap.parse_args(); result=verify(args.root.resolve(),args.source_commit)
     print(json.dumps(result,indent=2)); raise SystemExit(bool(result['errors']))
