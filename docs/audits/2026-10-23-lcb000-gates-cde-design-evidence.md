@@ -165,3 +165,45 @@ added afterwards:
     stacked LCB physics prepass.
 
 Gates C, D and E remain **submitted for review**, and LCB-000 is not PASS.
+
+## Addendum — Gate C wire/hash correction 2 (2026-10-23)
+
+Responds to [re-review finding 1](https://github.com/techrote/cybersand/pull/226#issuecomment-6362824493)
+(re-reviewed head `ca6fb7c`). The first correction is retained above as history.
+Its three-array transport could not carry `catalogue_digest` or
+`capability_matrix_digest`, so the claim that "every hashed component crosses the
+wire" was false at that head.
+
+- The single flat `int32` request envelope now carries magic, envelope version,
+  policy version, both digests as eight big-endian words each, assignments, and
+  family and material blocks. See
+  [request envelope and canonical hash](../architecture/liquid-solver-family-policy.md#request-envelope-and-canonical-hash-gate-c-correction-2-2026-10-23).
+- The exact packed-word to canonical-byte conversion is specified:
+  - u16/u8 narrowing after range checks;
+  - word versus byte lengths (4·L);
+  - strictly ascending unique owners;
+  - complete normalized assignments;
+  - request code 0 normalized away.
+- Validation precedence is total, and stale digests are checked before catalogue
+  interpretation.
+- `capability_matrix_digest` hashes the generated matrix file, so it binds the
+  reviewed classifications as well as the source-fact digests.
+- Standalone executable oracle: `tools/lcb/policy_contract.py`, with 46
+  registered cases and a session transcript in
+  `docs/reference/liquid-policy-wire-vectors.json`, plus 14 unit tests in
+  `tools/lcb/test_policy_contract.py`. Both now run in the Documentation
+  workflow.
+
+**Evidence class: executed contract model.** Local commands, Windows, Python
+3.12, 1-minute bound each:
+
+```text
+python tools/lcb/policy_contract.py --check                                → "policy wire vectors match the oracle"
+python -m unittest discover -s tools/lcb -p test_policy_contract.py        → Ran 14 tests, OK
+```
+
+This does **not** implement a native policy, C API, GDExtension method, Web
+bridge, World or solver. The parameter-block schemas in the oracle are
+illustrative and freeze nothing. The vector build with all families available
+is hypothetical. Gate C stays **submitted for re-review**, and LCB-000 is not
+PASS.

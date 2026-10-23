@@ -140,30 +140,19 @@ a World, equality-comparable and versioned.
 ```text
 LiquidSolverPolicy v1
   version                      = 1
-  catalogue_digest             : sha256 of the material descriptor table it was validated against
-  capability_matrix_digest     : sha256 of the capability-matrix sources (derivation tool output)
+  catalogue_digest             : 32 bytes; see "Request envelope and canonical hash"
+  capability_matrix_digest     : 32 bytes; binds source facts AND reviewed classifications
   assignments[material_id]     : { family_code, variant_code }   // only for liquid descriptors; others must be default
   family_parameters[family]    : versioned typed parameter block owned by that family (e.g. inertial damping)
   material_parameters[material]: versioned typed per-material block (e.g. the W-CY Water flow-rate parameter), or absent
   policy_hash                  : see canonical hashing below
 ```
 
-**Canonical hashing (Gate C correction, 2026-10-23).** `policy_hash` is SHA-256
-over this canonical byte form:
-
-```text
-"lcb-liquid-policy" | version
-| catalogue_digest | capability_matrix_digest
-| count | (material_id u16, family_code u8, variant_code u8) × count     // strictly ascending material_id
-| family block count | (family_code u8, block_version u16, length u32, bytes) // ascending family_code
-| material block count | (material_id u16, block_version u16, length u32, bytes)
-```
-
-- Every field is little-endian.
-- Assignments include **every liquid descriptor**, defaults included, so
-  absence never means "default".
-- Parameter blocks are typed by family/material schema, and unknown fields are
-  refused.
+**Canonical hashing.** `policy_hash` is SHA-256 over the canonical byte form
+defined, with its wire envelope, in
+[request envelope and canonical hash](#request-envelope-and-canonical-hash-gate-c-correction-2-2026-10-23).
+That section supersedes the first-correction byte form and three-array
+transport, which left both digests off the wire (re-review finding 1).
 
 A separate **run receipt hash** binds everything that affects execution:
 `policy_hash`, the `WaterExperimentPolicy` tuple, the transport profile hash,
@@ -177,36 +166,10 @@ receipt component except the compared family/variant is equal.
   for the other ten). It **must be bit-identical in behaviour to today**:
   golden hashes, the #49 v2 control and the LCB Dam Break reference stay
   unchanged.
-- **Packed transport (corrected after the #226 review).** Every hashed
-  component crosses the C API, GDExtension and Web in one versioned packed form.
-  Nothing hashed is left without a wire representation. This mirrors
-  `water_semantics`/`TransportPolicy::unpack`, and no strings, parsing or
-  allocation happen in native jobs. The form is three `PackedInt32Array`
-  sections:
-
-  ```text
-  assignments: [wire_version, count, (material_id, family_code, variant_code) × count]
-  family:      [count, (family_code, block_version, length, words…) × count]
-  material:    [count, (material_id, block_version, length, words…) × count]
-  ```
-
-  - Assignments are ascending, complete over liquid descriptors, and have no
-    duplicates.
-  - Family and material blocks are ascending by code or ID, unique, and typed
-    by `(owner, block_version)`.
-  - Validation of the blocks:
-    - **Known blocks:** each `(owner, block_version)` must be known.
-    - **Lengths:** each length must match that block's schema.
-    - **Fields:** every field must be in range.
-    - **Ownership:** a material block is allowed only for a material whose
-      applied family declares that block. The W-CY Water flow-rate block, for
-      example, is valid only when Water maps to `cellular_yield_v1`.
-    - **Mandatory blocks:** any missing mandatory block, and any extra block,
-      is refused (`unknown_parameter` / `malformed_policy`) before
-      construction.
-  - The `policy_hash` byte form above is computed from exactly these three
-    sections, so two policies are equal on the wire if and only if they hash
-    equal.
+- **Packed transport.** One flat versioned `int32` envelope carries every
+  hashed component, including both digests and the policy version, across the
+  C API, GDExtension and Web. See
+  [request envelope and canonical hash](#request-envelope-and-canonical-hash-gate-c-correction-2-2026-10-23).
 - **Kernel dispatch.** The family owns **only motion and quantity transport**.
   Material identity, chemistry, lifecycle, temperature, density and coupling
   stay with the material. That split is defined against the real dispatch
@@ -281,6 +244,163 @@ are identical, apart from the declared stage-3 differences. Cases:
 Each case also needs a negative control showing that a Water cell under W-CY
 never runs `flow_as_yielding_liquid` with Paste/Slush descriptor parameters.
 
+### Request envelope and canonical hash (Gate C correction 2, 2026-10-23)
+
+Correction for [re-review finding 1](https://github.com/techrote/cybersand/pull/226#issuecomment-6362824493).
+The executable specification is the standalone oracle
+[`tools/lcb/policy_contract.py`](../../tools/lcb/policy_contract.py), its
+generated vectors
+[`liquid-policy-wire-vectors.json`](../reference/liquid-policy-wire-vectors.json)
+and the regressions in
+[`test_policy_contract.py`](../../tools/lcb/test_policy_contract.py), run in the
+Documentation workflow. **The oracle is a contract model only.** It implements
+no native policy, World or solver. #200/#212 must reproduce the vectors bit for
+bit; disagreement is a contract defect to reconcile here, not a reason to
+regenerate the vectors.
+
+**Identity digests (Proposed).**
+
+| Digest | Definition |
+|---|---|
+| `catalogue_digest` | SHA-256 of `"lcb-material-catalogue-v1\0"`, then for `material.hpp` and `interaction_rules.hpp` in that order: u32 LE path length, UTF-8 repository path, u32 LE byte length, LF-normalized bytes |
+| `capability_matrix_digest` | SHA-256 of `"lcb-capability-matrix-v1\0"` followed by the LF-normalized bytes of the generated [capability matrix](../reference/liquid-solver-capability-matrix.json) |
+
+The matrix file embeds the source-fact digests **and** every reviewed design
+classification: status, variants, notes and specialization text. A
+reclassification therefore changes `capability_matrix_digest` even when no
+source file changes. A regression mutates one status, one specialization text
+and one source digest, and requires a new digest each time. A native build
+would embed both values as generated constants; the current values are recorded
+in the vector file's `current_build_identity`.
+
+**Wire envelope v1.** One flat sequence of signed 32-bit words. It is a
+`PackedInt32Array` in GDExtension, `const int32_t* words, size_t word_count` in
+the C API, and an `Int32Array` on Web; the desktop worker and Web bridge
+forward it unchanged. JSON and strings are never the wire. In order:
+
+| Words | Field | Valid range |
+|---|---|---|
+| 1 | magic `0x4C435057` ("LCPW") | exact |
+| 1 | `envelope_version` | 1 |
+| 1 | `policy_version` | 1 |
+| 8 | `catalogue_digest` | any int32: word *i* = digest bytes 4*i*..4*i*+3, big-endian, two's complement |
+| 8 | `capability_matrix_digest` | as above |
+| 1 | assignment count *N* | 0..liquid count (11) |
+| 3*N* | `(material_id, family_code, variant_code)` | `0..0xFFFF`, `0..0xFF`, `0..0xFF` |
+| 1 | family block count *F* | 0..4 |
+| per block | `(family_code, block_version, word_length L, L values)` | `0..0xFF`, `0..0xFFFF`, `0..64`, any int32 |
+| 1 | material block count *M* | 0..liquid count |
+| per block | `(material_id, block_version, word_length L, L values)` | `0..0xFFFF`, `0..0xFFFF`, `0..64`, any int32 |
+
+The envelope must be consumed exactly: a short read or trailing words are
+`malformed_policy`. `envelope_version` selects only the decoder and is not
+hashed. `policy_version` is hashed.
+
+**Request normalization.** In a *request*, family code 0 means "this
+material's default family" and requires variant `reference`. Normalization
+replaces it before the matrix cell is validated. Code 0 is never applied,
+hashed or read back. A request with every code 0, one with only Water at 0, and
+the explicit default therefore hash to the same `policy_hash`; these are
+registered vectors.
+
+**Canonical bytes.** These are hashed with SHA-256 to `policy_hash`. Integers
+are little-endian:
+
+```text
+"lcb-liquid-policy\0"                        18 bytes
+policy_version                               u16
+catalogue_digest | capability_matrix_digest  32 + 32 raw bytes
+N                                            u16
+(material_id u16, family_code u8, variant_code u8) × N     normalized, ascending
+F                                            u8
+(family_code u8, block_version u16, byte_length u32 = 4·L, L × i32) × F
+M                                            u16
+(material_id u16, block_version u16, byte_length u32 = 4·L, L × i32) × M
+```
+
+- Wire lengths count words; canonical lengths count bytes (4·*L*).
+- A wire word is narrowed to u8/u16 only after its range check above.
+- Two envelopes are the same policy if and only if their normalized canonical
+  bytes are equal.
+- The normalized envelope re-encodes the applied policy, and decoding it
+  reproduces the same policy.
+
+**Validation precedence.** The first failure wins, so a given malformed input
+has exactly one refusal:
+
+1. every element is an int32 (`malformed_policy`);
+2. length ≥ header + 3, then magic, `envelope_version` and `policy_version`
+   (`malformed_policy`);
+3. `catalogue_digest`, then `capability_matrix_digest`, each compared with the
+   running build. Either mismatch is `stale_capability_matrix`, and `detail`
+   names the digest. This check runs before any catalogue-dependent
+   interpretation;
+4. section structure: counts and block lengths in range, exact consumption
+   (`malformed_policy`);
+5. per assignment: `unknown_material` (outside the catalogue or reserved 10),
+   `not_a_liquid`, `unknown_family`, `unknown_variant`; then strictly ascending
+   IDs and completeness over all liquid descriptors (`malformed_policy`);
+6. normalization of code 0 (a non-reference variant with code 0 is
+   `malformed_policy`);
+7. per assignment: `combination_rejected`, `not_selectable`,
+   `variant_unsupported`, `platform_unsupported` (no native handshake, any
+   non-default), `family_unavailable` (not compiled/qualified);
+8. blocks, family then material:
+   - strictly ascending owners (`malformed_policy`);
+   - a known `(owner, block_version)` and a schema-matching length
+     (`unknown_parameter`);
+   - a family block only for an assigned family, and a material block only
+     where the material's applied family declares it (`malformed_policy`);
+   - every field in its schema range (`malformed_policy`);
+   - then any missing mandatory block (`unknown_parameter`).
+
+`water_semantics_incompatible`, `capacity_refused` and
+`normalization_required` depend on the World setup. They remain native-only
+checks after step 8. Each refusal returns `{code, material|null, detail}` and
+leaves the live session, its readback and its `policy_hash` untouched.
+
+**Parameter-block schemas are illustrative.** The oracle registers two
+contract-test schemas only to exercise the rules:
+- a mandatory `inertial_cellular_v1` v1 block (`damping_q16` 0..65536,
+  `speed_cap_q8` 256..2048);
+- an optional Water v1 block, valid only under `cellular_yield_v1`
+  (`flow_rate_permille` 1..1000).
+
+#200/#212 replace them by appending block versions. **No parameter name, range
+or default is frozen here.**
+
+**Applied readback.** The readback is the normalized applied policy, never the
+request:
+
+- `CyberNativeCellWorld.get_liquid_solver_policy()` and the Web/worker forward
+  return the dictionary under [effective readback](#effective-readback-proposed).
+  It includes `envelope` (the normalized wire words) and `session_generation`.
+- C API: `cybersand_world_liquid_policy_v1(world, out_words, capacity)` returns
+  the required word count and writes the normalized envelope when it fits.
+  `cybersand_world_liquid_policy_hash_v1(world, out_32_bytes)` writes the hash.
+
+`policy_hash` is reported as 64 lowercase hex characters. After a refusal, the
+readback, `policy_hash` and `session_generation` equal their prior values.
+
+**Registered vectors.** All are in the vector file, and each is checked by
+`--check` and by the unit tests:
+
+| Group | Cases |
+|---|---|
+| Round trip | default; W-IN Water with a family block; W-CY Water with and without a material block; W-PF Water `cached_dormant`; W-IN Brine. Each decodes, re-encodes to its normalized envelope, and reads back the same hash |
+| Equivalent normalized | all-code-0 and Water-code-0 requests equal the explicit default hash |
+| Changed identity | changed `catalogue_digest` and changed `capability_matrix_digest`: a different hash, and refused `stale_capability_matrix` |
+| Changed parameters | changed family (default vs W-IN vs W-CY vs W-PF), family-block value and material-block value: all hashes pairwise distinct |
+| Malformed | empty, truncated header, bad magic, unknown envelope/policy version, trailing word, short/negative/oversize count, a word above int32, block past end, block over 64 words, schema length mismatch, unknown block version, missing mandatory block, extra family block, material block under the wrong family, field out of range, duplicate block, unsorted/duplicate/missing assignment, non-liquid, reserved, outside catalogue, unknown family/variant code, code 0 with a non-reference variant, unsupported variant, rejected and `proposed_alternate` combinations |
+| Build profiles | today's build refuses W-IN/W-PF as `family_unavailable`; the GDScript fallback refuses non-defaults as `platform_unsupported` and accepts defaults |
+| Session | default → W-IN accepted (generation 1) → stale catalogue, stale capability and truncated envelope refused with the W-IN hash unchanged → W-CY accepted (generation 2) |
+
+The "all families" build in the vectors is a **hypothetical contract build**, so
+that non-default hashes can be computed. It is not evidence that W-PF or W-IN
+exist. Vector builds use a fixed synthetic catalogue digest so the vectors stay
+stable when the headers change. The real matrix still supplies the statuses and
+the capability digest.
+
 ### Validation and refusal (Proposed)
 
 Validation runs **before** any World is built or replaced. Any failure returns
@@ -298,7 +418,7 @@ a typed refusal and leaves the live session untouched, as
 | `water_semantics_incompatible` | family cannot honour the requested Water mass bits/coherence |
 | `platform_unsupported` | family/variant not qualified on this platform (Web profile, GDScript fallback) |
 | `capacity_refused` | family scratch/state budget cannot be prepared for this World size |
-| `stale_capability_matrix` | `catalogue_digest` or `capability_matrix_digest` differs from the running build |
+| `stale_capability_matrix` | the envelope's `catalogue_digest` or `capability_matrix_digest` differs from the running build; `detail` names which (checked at precedence step 3) |
 | `malformed_policy` | duplicate, missing, unsorted or out-of-range material IDs; count above the catalogue; signed/overflowing integers; a non-liquid or reserved ID present |
 | `unknown_parameter` | unknown block version, field or length; a missing mandatory parameter |
 | `not_selectable` | the matrix lists the cell as `proposed_alternate` (e.g. Toxic Sludge inertial M1-alt), or the variant list is empty |
@@ -315,10 +435,10 @@ fallback reports every non-default assignment as `platform_unsupported`.
 
 `World::liquid_solver_policy()` returns the applied policy. It surfaces as:
 
-- C API: `cybersand_world_liquid_policy_v1(world, out_packed, capacity)` plus
-  `policy_hash`;
+- C API: `cybersand_world_liquid_policy_v1(world, out_words, capacity)` (normalized
+  envelope) plus `cybersand_world_liquid_policy_hash_v1`;
 - GDExtension: `CyberNativeCellWorld.get_liquid_solver_policy()` →
-  `{version, wire_version, policy_hash, catalogue_digest, capability_matrix_digest, source_revision, native_binary_sha256, platform, assignments:[{material, requested_family, applied_family, applied_variant}], family_blocks:[{family, block_version, values}], material_blocks:[{material, block_version, values}], normalization:{rule, receipt_hash, signed_delta}|null, refusal:null|{code, material, detail}}`;
+  `{version, wire_version, envelope, session_generation, policy_hash, catalogue_digest, capability_matrix_digest, source_revision, native_binary_sha256, platform, assignments:[{material, requested_family, applied_family, applied_variant}], family_blocks:[{family, block_version, values}], material_blocks:[{material, block_version, values}], normalization:{rule, receipt_hash, signed_delta}|null, refusal:null|{code, material, detail}}`;
 - desktop worker and Web bridge, which forward the native dictionary
   unchanged.
 
