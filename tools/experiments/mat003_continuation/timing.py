@@ -71,6 +71,10 @@ def main():
     apparatus=load(root/'run.json')
     require(apparatus['source_head']==evidence['source_commit'],'apparatus source mismatch')
     require(sha(Path(__file__))==evidence['timing_collector_sha256'],'collector is not the frozen admitted source')
+    verifier=Path(__file__).with_name('verify_timing.py')
+    frozen_verifier=root/'source/tools/experiments/mat003_continuation/verify_timing.py'
+    require(sha(verifier)==evidence['timing_verifier_sha256'] and sha(frozen_verifier)==evidence['timing_verifier_sha256'],
+            'frozen independent verifier missing or mismatched; timing remains held')
     for name,digest in load(root/'files.json').items():
         p=(root/name).resolve()
         require(p.is_relative_to(root) and not p.is_symlink() and sha(p)==digest,'apparatus file drift: '+name)
