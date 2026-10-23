@@ -1,0 +1,286 @@
+{
+  "schema_version": 2,
+  "id": "lcb.seam.dam-on-chunk-seams.v1",
+  "recipe_version": 1,
+  "seed": 0,
+  "maturity": "reference",
+  "rectangles": [
+    0,
+    0,
+    1024,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1024,
+    1,
+    1023,
+    0,
+    1,
+    1024,
+    1,
+    0,
+    1023,
+    1024,
+    1,
+    1,
+    256,
+    384,
+    640,
+    8,
+    1,
+    256,
+    128,
+    8,
+    256,
+    1,
+    888,
+    128,
+    8,
+    256,
+    1,
+    380,
+    128,
+    8,
+    256,
+    1
+  ],
+  "partial_water_fills": [
+    264,
+    224,
+    116,
+    160,
+    255,
+    0
+  ],
+  "transport_profile": {
+    "families": {
+      "liquid": {
+        "cadence": 1,
+        "carrying": 0,
+        "erosion": 0,
+        "horizontal": 2,
+        "permeability": 1
+      },
+      "powder": {
+        "mixing": 0,
+        "packing": 8,
+        "pickup": 64
+      }
+    },
+    "materials": {
+      "33": {
+        "permeability": 30
+      }
+    },
+    "name": "Baseline",
+    "pairs": [],
+    "version": 1
+  },
+  "water_semantics": [
+    1,
+    8,
+    12,
+    0
+  ],
+  "player_start": [
+    24,
+    222
+  ],
+  "camera_origin": [
+    0,
+    0
+  ],
+  "player_enabled": false,
+  "body_enabled": false,
+  "tools": [],
+  "interest": {
+    "policy": "fixed",
+    "region": [
+      240,
+      80,
+      672,
+      328
+    ]
+  },
+  "execution": {
+    "policy": "fixed",
+    "cadence_lod_enabled": false,
+    "liquid_surface_adhesion_enabled": true
+  },
+  "events": [
+    {
+      "tick": 0,
+      "kind": "erase",
+      "x": 380,
+      "y": 128,
+      "width": 8,
+      "height": 256,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    }
+  ],
+  "observations": [
+    {
+      "id": "total-t0",
+      "tick": 0,
+      "metric": "water_integer",
+      "region": [
+        264,
+        96,
+        624,
+        288
+      ],
+      "material": 3
+    },
+    {
+      "id": "band1-t240",
+      "tick": 240,
+      "metric": "water_integer",
+      "region": [
+        388,
+        192,
+        168,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band2-t240",
+      "tick": 240,
+      "metric": "water_integer",
+      "region": [
+        556,
+        192,
+        168,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band3-t240",
+      "tick": 240,
+      "metric": "water_integer",
+      "region": [
+        724,
+        192,
+        164,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "reservoir-t240",
+      "tick": 240,
+      "metric": "water_integer",
+      "region": [
+        264,
+        192,
+        116,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band1-t1200",
+      "tick": 1200,
+      "metric": "water_integer",
+      "region": [
+        388,
+        192,
+        168,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band2-t1200",
+      "tick": 1200,
+      "metric": "water_integer",
+      "region": [
+        556,
+        192,
+        168,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band3-t1200",
+      "tick": 1200,
+      "metric": "water_integer",
+      "region": [
+        724,
+        192,
+        164,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "total-t1800",
+      "tick": 1800,
+      "metric": "water_integer",
+      "region": [
+        264,
+        96,
+        624,
+        288
+      ],
+      "material": 3
+    },
+    {
+      "id": "reservoir-t1800",
+      "tick": 1800,
+      "metric": "water_integer",
+      "region": [
+        264,
+        192,
+        116,
+        192
+      ],
+      "material": 3
+    }
+  ],
+  "conditions": [
+    {
+      "observation": "total-t1800",
+      "comparison": "eq",
+      "value": 4732800,
+      "outcome": "complete"
+    }
+  ],
+  "source_recipe": "LCB-003 scenario catalogue v1: seams",
+  "source_recipe_hash": "",
+  "presentation": {
+    "title": "Dam across chunk/core/block seams",
+    "instructions": "Gate straddles the x=384 chunk seam; the reservoir crosses the y=256 chunk seam and x/y=320 core seams. Checks conservation and 1/4-worker parity across storage and scheduling seams.",
+    "duration_ticks": 1800,
+    "baseline": "Current native defaults; controlled fixed-tick run",
+    "profile": "Baseline",
+    "regions": [
+      {
+        "id": "gate",
+        "label": "Gate on x=384 seam",
+        "region": [
+          380,
+          128,
+          8,
+          256
+        ]
+      },
+      {
+        "id": "reservoir",
+        "label": "Reservoir",
+        "region": [
+          264,
+          224,
+          116,
+          160
+        ]
+      }
+    ]
+  }
+}

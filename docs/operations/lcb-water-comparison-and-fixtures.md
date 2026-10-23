@@ -5,7 +5,7 @@ document-kind: design
 scope: LCB-000 Gates D and E — four-model controlled Water comparison contract, quantity normalization, supported/refused combinations, the protected lcb.dam.water.freemass.reference.v1 Dam Break fixture and the one-World mixed-liquid fixture with arm overlays, negative controls and commands
 canonical-for: [lcb-water-comparison-contract, lcb-reference-fixtures]
 last-reviewed: 2026-10-23
-related-documents: [../architecture/liquid-solver-family-policy.md, lcb-manual-comparison-ux.md, ../systems/water-design.md, microscenarios.md, experiment-tower.md, ../audits/2026-10-23-lcb000-gates-cde-design-evidence.md]
+related-documents: [../architecture/liquid-solver-family-policy.md, lcb-manual-comparison-ux.md, lcb-scenario-catalogue.md, ../systems/water-design.md, microscenarios.md, experiment-tower.md, ../audits/2026-10-23-lcb000-gates-cde-design-evidence.md]
 ---
 
 # LCB Water comparison contract and reference fixtures
@@ -233,7 +233,11 @@ on Water gain). The stronger checks are applied **outside** the definition, so
 the protected identity is unchanged:
 - the fixture regression enforces them exactly on the CI-re-executed prefix;
 - the LCB-003 campaign reducer enforces them as signed rule
-  `lcb-signed-ledger-v2` (#217).
+  `lcb-signed-ledger-v7` (#217). Its accounting body is unchanged from v6,
+  which superseded v5 (re-review F3/F4, G1/G2) as well as v2 (re-review N3/N4),
+  v3 (re-review R1–R4) and v4 (re-review F1/F2). It binds species accounting to the declared initial
+  state over the complete observed species domain, and it evaluates species
+  evidence before any shortcut.
 
 A reactive species is never an explanation by itself. Where a campaign has not
 retained world-wide species counts or per-reaction amounts, the reducer reports
@@ -262,6 +266,10 @@ are:
 - pressure summaries are invalidated after Brine/Oil contact (#201);
 - 1/4-worker parity;
 - refusal of M1/M2 on a build without the families, with the M0 session kept.
+
+**Broader scenario library.** The [scenario catalogue v1](lcb-scenario-catalogue.md)
+extends these two fixtures with 25 further controlled scenarios and a
+source-derived registry. It leaves both protected fixtures unchanged.
 
 ## Negative controls (registered; owners in brackets)
 

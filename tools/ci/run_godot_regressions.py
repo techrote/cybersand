@@ -20,6 +20,9 @@ DEFAULT_UNKNOWN_WEIGHT_SECONDS = 5.0
 # weight so new fixtures are never omitted and are unlikely to overload one shard.
 CASE_WEIGHTS_SECONDS = {
     "test_microscenarios": 54.0,
+    # LCB scenario catalogue: 27 installs plus 1/4-worker 30-tick prefixes
+    # (32 s on a 2026-10-23 Windows workstation; CI hosts are slower).
+    "test_lcb_scenario_catalogue": 60.0,
     "test_interaction_policy": 37.0,
     "profile_scheduler": 20.0,
     "test_transport_probe": 14.0,

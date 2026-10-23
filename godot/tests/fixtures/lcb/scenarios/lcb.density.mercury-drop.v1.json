@@ -1,0 +1,231 @@
+{
+  "schema_version": 2,
+  "id": "lcb.density.mercury-drop.v1",
+  "recipe_version": 1,
+  "seed": 0,
+  "maturity": "reference",
+  "rectangles": [
+    0,
+    0,
+    1024,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1024,
+    1,
+    1023,
+    0,
+    1,
+    1024,
+    1,
+    0,
+    1023,
+    1024,
+    1,
+    1,
+    32,
+    256,
+    960,
+    8,
+    1,
+    32,
+    64,
+    8,
+    192,
+    1,
+    984,
+    64,
+    8,
+    192,
+    1,
+    480,
+    64,
+    32,
+    32,
+    33,
+    480,
+    96,
+    32,
+    4,
+    1
+  ],
+  "partial_water_fills": [
+    40,
+    160,
+    944,
+    96,
+    255,
+    0
+  ],
+  "transport_profile": {
+    "families": {
+      "liquid": {
+        "cadence": 1,
+        "carrying": 0,
+        "erosion": 0,
+        "horizontal": 2,
+        "permeability": 1
+      },
+      "powder": {
+        "mixing": 0,
+        "packing": 8,
+        "pickup": 64
+      }
+    },
+    "materials": {
+      "33": {
+        "permeability": 30
+      }
+    },
+    "name": "Baseline",
+    "pairs": [],
+    "version": 1
+  },
+  "water_semantics": [
+    1,
+    8,
+    12,
+    0
+  ],
+  "player_start": [
+    24,
+    222
+  ],
+  "camera_origin": [
+    0,
+    0
+  ],
+  "player_enabled": false,
+  "body_enabled": false,
+  "tools": [],
+  "interest": {
+    "policy": "fixed",
+    "region": [
+      16,
+      16,
+      992,
+      272
+    ]
+  },
+  "execution": {
+    "policy": "fixed",
+    "cadence_lod_enabled": false,
+    "liquid_surface_adhesion_enabled": true
+  },
+  "events": [
+    {
+      "tick": 0,
+      "kind": "erase",
+      "x": 480,
+      "y": 96,
+      "width": 32,
+      "height": 4,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    }
+  ],
+  "observations": [
+    {
+      "id": "mercury-bottom-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        40,
+        224,
+        944,
+        32
+      ],
+      "material": 33
+    },
+    {
+      "id": "water-t0",
+      "tick": 0,
+      "metric": "water_integer",
+      "region": [
+        40,
+        32,
+        944,
+        224
+      ],
+      "material": 3
+    },
+    {
+      "id": "mercury-bottom-t120",
+      "tick": 120,
+      "metric": "material_cells",
+      "region": [
+        40,
+        224,
+        944,
+        32
+      ],
+      "material": 33
+    },
+    {
+      "id": "mercury-bottom-t600",
+      "tick": 600,
+      "metric": "material_cells",
+      "region": [
+        40,
+        224,
+        944,
+        32
+      ],
+      "material": 33
+    },
+    {
+      "id": "water-t600",
+      "tick": 600,
+      "metric": "water_integer",
+      "region": [
+        40,
+        32,
+        944,
+        224
+      ],
+      "material": 3
+    }
+  ],
+  "conditions": [
+    {
+      "observation": "water-t600",
+      "comparison": "eq",
+      "value": 23109120,
+      "outcome": "complete"
+    }
+  ],
+  "source_recipe": "LCB-003 scenario catalogue v1: density",
+  "source_recipe_hash": "",
+  "presentation": {
+    "title": "Mercury block into Water",
+    "instructions": "A 32x32 Mercury block falls from a shelf into a 96-row Water pool and must sink through it. Compares dense displacement speed and Water conservation.",
+    "duration_ticks": 600,
+    "baseline": "Current native defaults; controlled fixed-tick run",
+    "profile": "Baseline",
+    "regions": [
+      {
+        "id": "mercury",
+        "label": "Mercury block",
+        "region": [
+          480,
+          64,
+          32,
+          32
+        ]
+      },
+      {
+        "id": "bottom",
+        "label": "Pool bottom",
+        "region": [
+          40,
+          224,
+          944,
+          32
+        ]
+      }
+    ]
+  }
+}
