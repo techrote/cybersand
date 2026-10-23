@@ -191,7 +191,8 @@
         "lcb.accept.gas.single-pocket.v1",
         "lcb.accept.gas.twin-pockets.v1",
         "lcb.accept.gas.unequal-merge.v1",
-        "lcb.accept.gas.compress-vent-reseal.v2"
+        "lcb.accept.gas.compress-vent-reseal.v2",
+        "lcb.accept.gas.split.v1"
       ],
       "purpose": "#200 trapped-gas defect regressions: identity independent of amount, unequal merge once, reseal from current volume, gas state in the physical hash.",
       "expected": {
@@ -228,6 +229,49 @@
             8,
             9,
             10,
+            30
+          ]
+        },
+        "lcb.accept.gas.split.v1": {
+          "geometry_volumes": {
+            "t0-t2": {
+              "volume": 222,
+              "vented": false
+            },
+            "t3-t30 room A side": {
+              "volume": 108,
+              "vented": false
+            },
+            "t3-t30 room B side": {
+              "volume": 111,
+              "vented": false
+            }
+          },
+          "t0-t2": "one sealed compartment of volume 222 at atmospheric amount (222 in atmospheric cell-equivalents); one id",
+          "t3": "the trap fill removes 3 cells of gas volume and closes the path in the same event: the parent id is retired; two NEW ids with ancestry = parent; generation advances; one split ledger entry whose parts sum exactly to the parent amount",
+          "allocation_rule": "volume-proportional floor shares; the integer remainder goes to the compartment containing the lowest (y, x) cell",
+          "worked_example_atmospheric_cell_equivalents": {
+            "parent_amount": 222,
+            "volumes": [
+              108,
+              111
+            ],
+            "floor_shares": [
+              109,
+              112
+            ],
+            "remainder": 1,
+            "result": [
+              110,
+              112
+            ]
+          },
+          "t4-t30": "both ids, volumes and amounts constant; trap Water stays 3 full cells (stationary closure)",
+          "hash": "the split changes the versioned physical-state hash; nothing else does after t3",
+          "inspect_at": [
+            2,
+            3,
+            4,
             30
           ]
         }
@@ -525,6 +569,39 @@
         ]
       },
       "definition_path": "res://tests/fixtures/lcb/acceptance/lcb.accept.gas.compress-vent-reseal.v2.json"
+    },
+    {
+      "id": "lcb.accept.gas.split.v1",
+      "version": 1,
+      "category": "gas-acceptance",
+      "title": "Split one sealed compartment",
+      "purpose": "One sealed compartment spans two rooms joined through a channel and a dry U-trap. At tick 3 Water fills the trap's supported bottom row, closing the path: W-PF must split the amount deterministically by volume into two NEW compartments with ancestry, book the split exactly, and hold both to tick 30.",
+      "horizon_ticks": 30,
+      "manual": {
+        "free_play": false,
+        "note": "controlled gas apparatus; Current has no gas state"
+      },
+      "overview": [
+        0,
+        0,
+        64,
+        32
+      ],
+      "transport_profile": "Baseline",
+      "initial_inventory": {
+        "cells": {
+          "water": 20
+        },
+        "water_integer": 5100,
+        "water_cells": 20,
+        "material_region": [
+          9,
+          19,
+          34,
+          1
+        ]
+      },
+      "definition_path": "res://tests/fixtures/lcb/acceptance/lcb.accept.gas.split.v1.json"
     },
     {
       "id": "lcb.accept.dormant-water-active-oil.v1",

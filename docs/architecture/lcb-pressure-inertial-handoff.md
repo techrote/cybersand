@@ -122,6 +122,7 @@ fixtures:
 | `gas.twin-pockets` | two ids, each 100, no 100,50,25… cycling |
 | `gas.unequal-merge` | 100+120 → 220 once |
 | `gas.compress-vent-reseal.v2` | 100 held at half volume (50 cells); vent through a channel and dry U-trap with an exchange ledger; reseal by a supported trap Water plug into a **new** 58-cell compartment at atmospheric amount, held to t30 (v1's unsupported roof plug is withdrawn) |
+| `gas.split.v1` | one compartment through two rooms and a dry U-trap; a supported trap fill at t3 splits it into two **new** ids with ancestry; volume-proportional floor shares, remainder to the compartment holding the lowest (y, x) cell; exact split ledger |
 | empty-only-chunk survival | native test |
 | hash change on gas-only change | needs the hash API |
 

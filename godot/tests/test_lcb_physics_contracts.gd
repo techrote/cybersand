@@ -31,6 +31,7 @@ func _initialize() -> void:
 	_ownership()
 	_dormancy()
 	_reseal()
+	_split()
 	print("LCB physics contracts: %d assertions, %d failures" % [assertions, failures])
 	quit(1 if failures > 0 else 0)
 
@@ -198,5 +199,23 @@ func _reseal() -> void:
 		expect(trap10 == 3 * 255 and trap30 == 3 * 255, id + ": trap seal Water moved (%d, %d)" % [trap10, trap30])
 		expect(int(inst.world.material_at(19, 12)) == 0, id + ": closure cell not open after tick 5")
 		expect(M.water(inst.world, [8, 8, 12, 13]) == 2550 + 50 * 255, id + ": room Water changed after compression")
+		observed.append(M.world_hashes(inst.world))
+	expect(observed[0] == observed[1], id + ": 1/4-worker results differ")
+
+# Split v1 geometry control on Current (no gas): the trap closure plug is
+# supported and stationary, and no other Water moves.
+func _split() -> void:
+	var id: String = "lcb.accept.gas.split.v1"
+	var observed: Array = []
+	for workers: int in [1, 4]:
+		var inst: Dictionary = _run(id, workers, 5)
+		if inst.is_empty(): return
+		var trap5: int = M.water(inst.world, [23, 16, 3, 1])
+		if not _advance(inst, id, 25): return
+		var trap30: int = M.water(inst.world, [23, 16, 3, 1])
+		expect(trap5 == 3 * 255 and trap30 == 3 * 255, id + ": trap closure Water moved (%d, %d)" % [trap5, trap30])
+		expect(int(inst.world.material_at(19, 12)) == 0 and int(inst.world.material_at(32, 12)) == 0,
+			id + ": room openings are not open")
+		expect(M.water(inst.world, [8, 8, 36, 13]) == 2 * 2550 + 3 * 255, id + ": Water changed outside the closure fill")
 		observed.append(M.world_hashes(inst.world))
 	expect(observed[0] == observed[1], id + ": 1/4-worker results differ")

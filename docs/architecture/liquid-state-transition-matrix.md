@@ -142,7 +142,7 @@ related-documents: [liquid-solver-family-policy.md, lcb-pressure-inertial-handof
 | Create | a sealed Empty region with no vented path forms a compartment with a new id and generation 0, amount = atmospheric amount for its free volume, and a ledger entry. Identity is never derived from amount. |
 | Volume change (compression) | amount constant, volume recomputed, pressure derived (isothermal) |
 | Connect / merge | distinct compartments merge **once**; amount = sum; one survivor id with ancestry of both; generation++ (`gas.unequal-merge`: 100+120 → 220) |
-| Split | conservative deterministic split by a recorded allocation rule (volume-proportional with a remainder to the lowest new id); new ids; ancestry |
+| Split | deterministic split by a recorded allocation rule: volume-proportional floor shares, with the integer remainder to the compartment holding the lowest (y, x) cell; parent id retired; new ids with ancestry; exact split ledger (`gas.split.v1`) |
 | Vent | connection to the atmosphere sets pressure toward atmospheric, with an explicit exchange ledger (amount in/out) |
 | Reseal | a new compartment from the current volume at atmospheric amount (`gas.compress-vent-reseal.v2`, supported U-trap seal); the stale id is never reused |
 | Disappear | free volume → 0 (filled by liquid): the remaining amount is booked to a declared sink or refused; never silently dropped |

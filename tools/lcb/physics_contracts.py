@@ -35,6 +35,7 @@ PF_DORMANT = {"family": "pressure_flow_v1/cached_dormant", "depends_on": ["#213 
 IN = {"family": "inertial_cellular_v1", "depends_on": ["#200 per-material policy", "#212"]}
 CY = {"family": "cellular_yield_v1 (Water, whole-cell)", "depends_on": ["#213 LCB-000 PASS", "#200"]}
 RESEAL_EXPECTED: dict = {}
+SPLIT_EXPECTED: dict = {}
 
 
 def room(s: cat.Scenario, x0: int, interior_w: int = 10) -> None:
@@ -144,6 +145,28 @@ def fixtures() -> list[cat.Scenario]:
         "trap's supported bottom row and reseals it. The archived candidate kept 100; W-PF must reseal from the "
         "current volume at atmospheric amount with an explicit exchange ledger, and hold it to tick 30.", 30, vent))
 
+    def split(s):
+        # One sealed compartment spans room A, a channel/U-trap path and room B.
+        # Filling the trap's Wall-supported bottom row at tick 3 closes the path
+        # and splits it into two compartments; the plug cannot fall.
+        room(s, 8)
+        room(s, 32)
+        s.rect(20, 11, 12, 1, WALL).rect(20, 13, 3, 1, WALL).rect(22, 13, 1, 4, WALL)
+        s.rect(24, 12, 1, 4, WALL).rect(22, 17, 5, 1, WALL).rect(26, 13, 1, 4, WALL)
+        s.rect(26, 13, 6, 1, WALL)
+        s.rect(19, 12, 1, 1, 0).rect(32, 12, 1, 1, 0)
+        s.event(3, "fill", 23, 16, 3, 1, 255, 0)
+        whole, trap = (8, 8, 36, 13), (23, 16, 3, 1)
+        s.observe("water-t0", 0, whole).observe("trap-water-t5", 5, trap)
+        s.observe("trap-water-t30", 30, trap).observe("water-t30", 30, whole)
+        s.region("room-a", "Room A pocket", (9, 9, 10, 10)).region("room-b", "Room B pocket", (33, 9, 10, 10))
+        s.region("trap", "U-trap closure row", trap)
+    out.append(gas_fixture("lcb.accept.gas.split.v1", "Split one sealed compartment",
+        "One sealed compartment spans two rooms joined through a channel and a dry U-trap. At tick 3 Water fills "
+        "the trap's supported bottom row, closing the path: W-PF must split the amount deterministically by "
+        "volume into two NEW compartments with ancestry, book the split exactly, and hold both to tick 30.",
+        30, split))
+
     s = cat.Scenario("lcb.accept.dormant-water-active-oil.v1", "dormancy", "Resting deep Water beside falling Oil",
         "A full deep Water pool rests behind a divider while an Oil block is released at tick 120 in the next "
         "compartment. Current control: the pool sleeps and the Oil still moves. W-PF cached_dormant must never "
@@ -216,6 +239,33 @@ def contracts(fx: list[cat.Scenario]) -> dict:
     v = defs["lcb.accept.gas.compress-vent-reseal.v2"]
     phases = {name: gas_volume(v, tick) for name, tick in (("t0", 0), ("t1-t4", 1), ("t5-t8", 5), ("t9-t30", 9))}
     assert not phases["t1-t4"]["vented"] and phases["t5-t8"]["vented"] and not phases["t9-t30"]["vented"]
+    global SPLIT_EXPECTED
+    sp = defs["lcb.accept.gas.split.v1"]
+    before = gas_volume(sp, 0, seed=(13, 10))
+    after_a, after_b = gas_volume(sp, 3, seed=(13, 10)), gas_volume(sp, 3, seed=(37, 10))
+    assert before == gas_volume(sp, 0, seed=(37, 10)) and not before["vented"]
+    assert not after_a["vented"] and not after_b["vented"]
+    assert after_a["volume"] + after_b["volume"] == before["volume"] - 3
+    amount = before["volume"]  # sealed at atmospheric: amount in atmospheric cell-equivalents
+    share_a = amount * after_a["volume"] // (after_a["volume"] + after_b["volume"])
+    share_b = amount * after_b["volume"] // (after_a["volume"] + after_b["volume"])
+    SPLIT_EXPECTED = {
+        "geometry_volumes": {"t0-t2": before, "t3-t30 room A side": after_a, "t3-t30 room B side": after_b},
+        "t0-t2": f"one sealed compartment of volume {before['volume']} at atmospheric amount ({amount} in "
+                 "atmospheric cell-equivalents); one id",
+        "t3": "the trap fill removes 3 cells of gas volume and closes the path in the same event: the parent id "
+              "is retired; two NEW ids with ancestry = parent; generation advances; one split ledger entry whose "
+              "parts sum exactly to the parent amount",
+        "allocation_rule": "volume-proportional floor shares; the integer remainder goes to the compartment "
+                           "containing the lowest (y, x) cell",
+        "worked_example_atmospheric_cell_equivalents": {
+            "parent_amount": amount, "volumes": [after_a["volume"], after_b["volume"]],
+            "floor_shares": [share_a, share_b], "remainder": amount - share_a - share_b,
+            "result": [share_a + (amount - share_a - share_b), share_b]},
+        "t4-t30": "both ids, volumes and amounts constant; trap Water stays 3 full cells (stationary closure)",
+        "hash": "the split changes the versioned physical-state hash; nothing else does after t3",
+        "inspect_at": [2, 3, 4, 30],
+    }
     RESEAL_EXPECTED = {
         "geometry_volumes": phases,
         "t1-t4": "one sealed compartment, amount 100 (atmospheric for the original 100 cells), volume "
@@ -270,7 +320,8 @@ def contracts(fx: list[cat.Scenario]) -> dict:
                  "lcb.accept.gas.twin-pockets.v1": "two identities, each amount 100 at every tick; no cycling",
                  "lcb.accept.gas.unequal-merge.v1": "after tick 1: one pocket, amount 220, generation advanced, "
                                                    "ancestry records both parents",
-                 "lcb.accept.gas.compress-vent-reseal.v2": RESEAL_EXPECTED},
+                 "lcb.accept.gas.compress-vent-reseal.v2": RESEAL_EXPECTED,
+                 "lcb.accept.gas.split.v1": SPLIT_EXPECTED},
              "withdrawn": {"lcb.accept.gas.compress-vent-reseal.v1":
                            "Water roof plug above an Empty cell can fall and reopen the vent (review on #226); "
                            "never accepted; replaced by v2"},
