@@ -12,7 +12,7 @@ const EPSILON: float = 0.00001
 const DECISION_DT: float = 0.1
 const ACQUIRE: int = 1
 const TRAVERSE: int = 2
-const MAX_AVOIDANCE_DECISIONS: int = 300
+const MAX_AVOIDANCE_DECISIONS: int = 120
 
 var _previous: Vector2 = Vector2.ZERO
 var _avoidance_mode: int = 0
@@ -132,7 +132,17 @@ func _avoid_local_obstacles(target: Vector2, rays: Dictionary,
 	if _avoidance_mode == 0 and desired_sign != 0.0 \
 		and absf(goal_delta.x) > radius + body_half_width * 2.0 \
 		and ahead < sensor_range * 0.72:
-		_bypass_side = _choose_bypass_side(distances, desired_sign, goal_delta.y)
+		_bypass_side = _choose_bypass_side(distances, desired_sign)
+		var proposed_travel: int = 6 if _bypass_side > 0.0 else 2
+		var alternate_travel: int = 2 if _bypass_side > 0.0 else 6
+		var proposed_clearance: float = float(distances[proposed_travel]) * sensor_range
+		var alternate_clearance: float = float(distances[alternate_travel]) * sensor_range
+		# Never commit toward an observed boundary that cannot fit the body plus
+		# a conservative side margin when the opposite side is roomier.
+		if bool(hits[proposed_travel]) \
+				and proposed_clearance < body_half_height + 15.0 \
+				and alternate_clearance > proposed_clearance + 8.0:
+			_bypass_side = -_bypass_side
 		_forward_sign = desired_sign
 		_avoidance_mode = ACQUIRE
 		_cleared_side_distance = 0.0
@@ -160,26 +170,38 @@ func _avoid_local_obstacles(target: Vector2, rays: Dictionary,
 		var latency: float = maxf(0.0, float(capabilities.get("velocity_response_seconds", 0.0))
 			+ float(capabilities.get("thrust_response_seconds", 0.0)))
 		var stopping: float = to_wall * to_wall / (2.0 * braking) + maxf(0.0, to_wall) * latency
+		var edge_diag: int
+		if _forward_sign > 0.0:
+			edge_diag = 1 if _bypass_side > 0.0 else 7
+		else:
+			edge_diag = 3 if _bypass_side > 0.0 else 5
+		var edge_blocked: bool = bool(hits[edge_diag]) and float(distances[edge_diag]) < 0.995
 		if is_finite(ahead):
 			var margin: float = body_half_width + 9.0
 			var remaining: float = ahead - margin - maxf(0.0, stopping)
 			var forward_velocity: float = clampf(remaining * 1.25, -speeds.x * 0.35, speeds.x * 0.7)
 			target.x = _forward_sign * minf(target.x * _forward_sign, forward_velocity)
 			_cleared_side_distance = 0.0
-		else:
-			# First obtain extra physical body clearance, not merely a clear
-			# centre-point ray. This matters for the heavy Hauler in gates.
+			target.y = _bypass_side * speeds.y * 0.72
+		elif edge_blocked:
+			# Centre ray is open but the diagonal toward the obstacle still
+			# intersects its edge: continue just far enough to clear the full
+			# collider, while bleeding lateral speed before the arena boundary.
+			target.x = _forward_sign * minf(target.x * _forward_sign, speeds.x * 0.30)
+			target.y = _bypass_side * speeds.y * 0.38
 			_cleared_side_distance += absf(velocity.y) * DECISION_DT
-			target.x = _forward_sign * minf(target.x * _forward_sign, speeds.x * 0.34)
-		target.y = _bypass_side * speeds.y * 0.78
-		var travel_ray: int = 6 if _bypass_side > 0.0 else 2
-		var clearance: float = float(distances[travel_ray]) * sensor_range
-		if clearance < body_half_height + 11.0 and bool(hits[travel_ray]):
-			target.y = 0.0
-		if not is_finite(ahead) and _cleared_side_distance > body_half_height + 11.0:
+		else:
+			# Both centre and edge-facing forward rays are clear. The full body
+			# is past the obstacle edge; brake lateral motion before traversing.
 			_avoidance_mode = TRAVERSE
 			_side_clear_decisions = 0
 			_side_wall_seen = false
+			target.x = _forward_sign * minf(maxf(0.0, target.x * _forward_sign), speeds.x * 0.48)
+			target.y = clampf(-velocity.y * 1.15, -speeds.y * 0.72, speeds.y * 0.72)
+		var travel_ray: int = 6 if _bypass_side > 0.0 else 2
+		var clearance: float = float(distances[travel_ray]) * sensor_range
+		if bool(hits[travel_ray]) and clearance < body_half_height + 10.0:
+			target.y = clampf(-velocity.y * 1.35, -speeds.y * 0.8, speeds.y * 0.8)
 	elif _avoidance_mode == TRAVERSE:
 		# Hold the bypass lane against vertical momentum until the obstacle
 		# has moved off the *side* ray. Pure target-seeking here steers back
@@ -196,7 +218,8 @@ func _avoid_local_obstacles(target: Vector2, rays: Dictionary,
 				_avoidance_mode = 0
 		# A newly blocked forward ray means a later wall/gate (potentially
 		# the alternate leg of a slalom). Replan using *current local rays*.
-		if ahead < sensor_range * 0.52 and _side_wall_seen:
+		if ahead < sensor_range * 0.52 \
+				and (_side_wall_seen or _avoidance_decisions > 12):
 			_avoidance_mode = 0
 			_avoidance_decisions = 0
 			return _avoid_local_obstacles(target, rays, speeds, velocity,
@@ -210,14 +233,15 @@ func _avoid_local_obstacles(target: Vector2, rays: Dictionary,
 		clampf(target.y, -speeds.y, speeds.y))
 
 
-static func _choose_bypass_side(distances: Array, desired_sign: float,
-		relative_goal_y: float) -> float:
-	# Prefer the locally open diagonal/vertical directions. On a strict
-	# tie use the goal-relative side, not a profile-specific/global route.
+static func _choose_bypass_side(distances: Array, desired_sign: float) -> float:
+	# Prefer the locally open diagonal/vertical directions. If the two
+	# bounded views are effectively tied, choose DOWN deterministically.
+	# Using goal Y as a tie-break caused the vehicle to chase normal hover
+	# error into the ceiling instead of discovering the lower gate opening.
 	var above_diag: int = 1 if desired_sign > 0.0 else 3
 	var below_diag: int = 7 if desired_sign > 0.0 else 5
 	var above: float = float(distances[above_diag]) * 0.8 + float(distances[2]) * 0.2
 	var below: float = float(distances[below_diag]) * 0.8 + float(distances[6]) * 0.2
 	if absf(above - below) < 0.07:
-		return 1.0 if relative_goal_y >= 0.0 else -1.0
+		return 1.0
 	return -1.0 if above > below else 1.0
