@@ -101,8 +101,8 @@ No new production performance rankings are admitted.
 | C80 P1/P2 compact | 10 / 1 | 160 KiB | 2.5 / 10 / 40 |
 | C72/C80 aligned | 16 / 8 | 256 KiB | 4 / 16 / 64 |
 | C72/C80 split | base 8 / 8, separate tail 1/2 | 128 + 16/32 KiB | 2.25/2.5 / 9/10 / 36/40 |
-| C128 U128 | 16 / 16 on local GCC 16.2 Windows | 256 KiB | 4 / 16 / 64 |
-| C128 DUAL64 | 16 / 8 on local GCC 16.2 Windows | 256 KiB | 4 / 16 / 64 |
+| C128 U128 | 16 / 16 on GCC13.3 Linux and GCC16.2 Windows | 256 KiB | 4 / 16 / 64 |
+| C128 DUAL64 | 16 / 8 on GCC13.3 Linux and GCC16.2 Windows | 256 KiB | 4 / 16 / 64 |
 
 At 4096² these arrays would occupy 128, 144, 160 or 256 MiB respectively;
 that optional WCLEAR scale is excluded pending explicit feasibility review.
@@ -206,7 +206,7 @@ its own measured D and the footprint tradeoff remains separate.
 
 ## C128 feasibility and GEN-006 consequences
 
-**Current experimental source / Planned qualification:** U128 uses GCC's
+**Current untimed-qualified experimental source:** U128 uses GCC's
 `unsigned __int128` only under `__SIZEOF_INT128__`; DUAL64 has two explicit
 `uint64_t` members and is the fallback strategy. Both expose the original low64
 E8/E16 semantic maps and a neutral high64 lane. This is 128 total logical bits,
@@ -229,8 +229,8 @@ nor a16-byte size establish atomic128-bit updates or a shared ABI with DUAL64.
 
 Compared with the existing split World arm, either C128 representation keeps neutral extension in the cell value: no second chunk-owned allocation/index and no separate tail-transfer patches are required. That is a concrete ownership/surface-area simplification, not a measured total complexity or speed result. DUAL64 also avoids the native scalar extension. If a 16-byte stride were chosen independently, C128 would turn the aligned C72/C80 control's otherwise nonsemantic 56/48 padding bits into neutral storage without additional cell-array bytes. This does not justify doubling C64 arrays or assigning future material semantics before a schema proposal.
 
-**Decision:** retain both C128 candidates for untimed qualification and propose
-a separate bounded paired-performance registration only after complete readback.
+**Decision:** retain both untimed-qualified C128 candidates and propose
+a separate bounded paired-performance registration; tick comparability remains open.
 The unadmitted [C128 proposal](mat003-continuation-proposals/c128.json) has five
 E8 contrasts and 70 primary processes; the [S2P proposal](mat003-continuation-proposals/s2p.json)
 has four contrasts and 56 processes. Both require new actual-workload observer/off
@@ -263,6 +263,8 @@ contract proposal; persistence/streaming and physics are unchanged.
 | Physical arrays and state capacity | Exact arithmetic/tested ABI within stated platforms; allocator/World/process totals require component accounting. |
 | Other platforms and future state semantics | Windows diagnostics, Wasm/Godot, durable state and future high64 schema are separately unqualified. |
 
+
+The complete [GCC13.3 untimed run](https://github.com/techrote/cybersand/actions/runs/39885505290) passed S2P5, WCLEAR208 and C1284 fixture arms on hosted checkout `f7c80a47da8bd1c87ac84b2f7281120a4fcc0796`, from experimental source `c7d7bf6f3c085f68332c30384c9742dd0ca55f93`. The [immutable artifact summary](../audits/mat003-continuation-2026-10-23/hosted-qualification-summary.json) binds the downloaded archive, registrations, binaries, verifier and complete raw records. No event latency was collected.
 
 The [dated audit](../audits/2026-10-23-mat003-continuation.md) owns actual command,
 source, platform, artifact and independent-review outcomes. Source mechanisms,

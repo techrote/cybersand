@@ -1,0 +1,349 @@
+{
+  "schema_version": 1,
+  "scope": "untimed qualification only; no timing admission or performance acceptance",
+  "branch_source_commit": "c7d7bf6f3c085f68332c30384c9742dd0ca55f93",
+  "hosted_checkout_commit": "f7c80a47da8bd1c87ac84b2f7281120a4fcc0796",
+  "base_commit": "2b2a1dd64f16dc46d5e812b757de73f47df0fb2b",
+  "run_url": "https://github.com/techrote/cybersand/actions/runs/39885505290",
+  "artifact_id": 12472344560,
+  "archive_sha256": "fd3e269812bfadd737f38c2cabafd906efb15ea407cb2d4c70a820279179b0c5",
+  "archive_bytes": 17442801,
+  "artifact_expires_at": "2027-01-21T01:42:22Z",
+  "archive_digest_independently_matched": true,
+  "formal_timing_admitted": false,
+  "execution_authorized": false,
+  "tracks": {
+    "s2p": {
+      "compiler_version": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "compiler_sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
+      "linker_version": "GNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n",
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "qualified_toolchain": true,
+      "registration_path": "tools/experiments/mat003_continuation/s2p-registration.json",
+      "registration_sha256": "79d2e8d2f2cd5fa46ae360017d125bce4dd610b7d760b6b020db81a622c49078",
+      "readback": {
+        "status": "qualification-readback-passed-timing-held",
+        "formal_timing_admitted": false,
+        "errors": [],
+        "checked_files": 762,
+        "cases": 5
+      },
+      "sealed_files_sha256": "0fbdb64d92637950035d35413a9b720c2caa5a9eaeda4bdb09cd640d6c31b827",
+      "binary_seal_sha256": "264fc02b4bb55a6a47d4bd09e76a6651e70fb4acccbff9e5da61ad96623e57ac",
+      "storage_binary_seal_sha256": "6912b568d4149e96bcaa4c24bde38c28d094f54ce798f8526f221e29bacb830b",
+      "raw_run_sha256": "240cf270ce8af14ee3b0b9368f4451d7c011d4e746dd0d60fa678330c09b3673",
+      "embedded_readback_sha256": "30aa9a9c720cc670f874826bde065fabb49e660b49a29ab4e0e7c1c18301a896",
+      "frozen_verifier_sha256": "38f05365daf8314a77bf7efc8d6be3dc798fe79bfd7a4bf2506cbee900c209ce",
+      "binary_seal": [
+        {
+          "binary": "bin/word-e8-x0",
+          "id": "word-e8-x0",
+          "observer": 1,
+          "sha256": "b5b7f0166e4e0daea27ab8caa3ff02b75ee88a7e757f2da2b3c155709cb63bce"
+        },
+        {
+          "binary": "bin/memcpy-e8-x1",
+          "id": "memcpy-e8-x1",
+          "observer": 1,
+          "sha256": "4ae1b1d67f4b46977691d4efe18bfec93318e2ea9581793af43eba21601c89f9"
+        },
+        {
+          "binary": "bin/memcpy-e8-x2",
+          "id": "memcpy-e8-x2",
+          "observer": 1,
+          "sha256": "caf178cb21f4bd157219beee6138f2a7496f07944af217dd3452603cc33bd953"
+        },
+        {
+          "binary": "bin/memcpy-e16-x1",
+          "id": "memcpy-e16-x1",
+          "observer": 1,
+          "sha256": "5db87fabd028a92c06107d8259901627cabf5f05870bfe8d1cc3066c67f70b6b"
+        },
+        {
+          "binary": "bin/memcpy-e16-x2",
+          "id": "memcpy-e16-x2",
+          "observer": 1,
+          "sha256": "3a671bf8d8e16e83e6a1675c6c25e772f0c0d4f61acb9c9f6fe92b6644491f25"
+        }
+      ],
+      "storage_stdout": "{\"dual_size\":16,\"dual_align\":8,\"u128_size\":16,\"u128_align\":16,\"passed\":true}\n",
+      "storage_ubsan_stdout": "{\"dual_size\":16,\"dual_align\":8,\"u128_size\":16,\"u128_align\":16,\"passed\":true}\n",
+      "abi": [
+        {
+          "id": "word-e8-x0",
+          "cell_alignment": 8,
+          "cell_stride": 8,
+          "epoch_bits": 8,
+          "logical_bits": 64
+        },
+        {
+          "id": "memcpy-e8-x1",
+          "cell_alignment": 1,
+          "cell_stride": 9,
+          "epoch_bits": 8,
+          "logical_bits": 72
+        },
+        {
+          "id": "memcpy-e8-x2",
+          "cell_alignment": 1,
+          "cell_stride": 10,
+          "epoch_bits": 8,
+          "logical_bits": 80
+        },
+        {
+          "id": "memcpy-e16-x1",
+          "cell_alignment": 1,
+          "cell_stride": 9,
+          "epoch_bits": 16,
+          "logical_bits": 72
+        },
+        {
+          "id": "memcpy-e16-x2",
+          "cell_alignment": 1,
+          "cell_stride": 10,
+          "epoch_bits": 16,
+          "logical_bits": 80
+        }
+      ]
+    },
+    "wclear": {
+      "compiler_version": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "compiler_sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
+      "linker_version": "GNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n",
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "qualified_toolchain": true,
+      "registration_path": "tools/experiments/mat003_continuation/wclear-registration-v3.json",
+      "registration_sha256": "f619f53e0503e9dd91ef0937b54680a87c6c7c78d0af80019c6d1f12392a5aac",
+      "readback": {
+        "status": "qualification-readback-passed-timing-held",
+        "formal_timing_admitted": false,
+        "errors": [],
+        "checked_files": 1984,
+        "cases": 208
+      },
+      "sealed_files_sha256": "aec240e7f4f01dceba518d91394287c13da70efc439e328b15d0fd661b1c1f2f",
+      "binary_seal_sha256": "72a2b5ce449f905e26b1e28a3d0b464b56eec989e1d66bd94653c4cd04ad4d17",
+      "storage_binary_seal_sha256": "ff744c24324cb91ac03acedb68c4f89da3910a1c386f6f12e9e10be2cd18fcbf",
+      "raw_run_sha256": "e02d281cd0c7cc0ffbb297d30984d31072b34f2b474933cb5cce13e25dfd8741",
+      "embedded_readback_sha256": "73654d6b5cca7c8facf9c8990db6e0db78562544767c595c98ae981ac237709c",
+      "frozen_verifier_sha256": "38f05365daf8314a77bf7efc8d6be3dc798fe79bfd7a4bf2506cbee900c209ce",
+      "binary_seal": [
+        {
+          "binary": "bin/aligned-e8-x2-o0",
+          "id": "aligned-e8-x2-o0",
+          "observer": 0,
+          "sha256": "5aa02e752ecf4c5a24fbdb04a689fbe8e9bb1099873c60e6a2ceee8d7d9084d5"
+        },
+        {
+          "binary": "bin/aligned-e8-x2-o1",
+          "id": "aligned-e8-x2-o1",
+          "observer": 1,
+          "sha256": "fcb6f094cf0bdb51545cae872021e68e26b1fb16b66f47fe7fb9e5169988396c"
+        },
+        {
+          "binary": "bin/aligned-e16-x2-o0",
+          "id": "aligned-e16-x2-o0",
+          "observer": 0,
+          "sha256": "140dc066a09b5fe85f96da8c5489eb9d50e54ad78106b4d7ccf819d14c1bd642"
+        },
+        {
+          "binary": "bin/aligned-e16-x2-o1",
+          "id": "aligned-e16-x2-o1",
+          "observer": 1,
+          "sha256": "46aab3f54c446b5d3ffcc6463df79140cde69d644fe65ea7c57cc083a2303471"
+        },
+        {
+          "binary": "bin/aligned-e24-x2-o0",
+          "id": "aligned-e24-x2-o0",
+          "observer": 0,
+          "sha256": "bc8679920264b115f969d22bc5acfe8bb897c922e7bc66615b600c00f93b707c"
+        },
+        {
+          "binary": "bin/aligned-e24-x2-o1",
+          "id": "aligned-e24-x2-o1",
+          "observer": 1,
+          "sha256": "f83ca4c15caa199f6e265cb87201b52b86cfc57a9bfccf2f9b7d09645c9ed1aa"
+        },
+        {
+          "binary": "bin/aligned-e32-x2-o0",
+          "id": "aligned-e32-x2-o0",
+          "observer": 0,
+          "sha256": "e0a325e47ce64a49014283662ad9b0454b8d486ccd367dbf867c417ae708a4aa"
+        },
+        {
+          "binary": "bin/aligned-e32-x2-o1",
+          "id": "aligned-e32-x2-o1",
+          "observer": 1,
+          "sha256": "eae7091ae2eeb665b84c71f46f155cb24c7491c3e3f5b9b05b0698196732de98"
+        }
+      ],
+      "storage_stdout": "{\"dual_size\":16,\"dual_align\":8,\"u128_size\":16,\"u128_align\":16,\"passed\":true}\n",
+      "storage_ubsan_stdout": "{\"dual_size\":16,\"dual_align\":8,\"u128_size\":16,\"u128_align\":16,\"passed\":true}\n",
+      "active_four_worker_event_tasks": [
+        {
+          "id": "aligned-e8-x2-o1-512-active-window-excluded-w4-event",
+          "event_worker_tasks": 12
+        },
+        {
+          "id": "aligned-e8-x2-o1-1024-active-window-excluded-w4-event",
+          "event_worker_tasks": 24
+        },
+        {
+          "id": "aligned-e8-x2-o1-2048-active-window-excluded-w4-event",
+          "event_worker_tasks": 48
+        },
+        {
+          "id": "aligned-e16-x2-o1-512-active-window-excluded-w4-event",
+          "event_worker_tasks": 12
+        },
+        {
+          "id": "aligned-e16-x2-o1-1024-active-window-excluded-w4-event",
+          "event_worker_tasks": 24
+        },
+        {
+          "id": "aligned-e16-x2-o1-2048-active-window-excluded-w4-event",
+          "event_worker_tasks": 48
+        },
+        {
+          "id": "aligned-e24-x2-o1-512-active-window-excluded-w4-event",
+          "event_worker_tasks": 12
+        },
+        {
+          "id": "aligned-e24-x2-o1-1024-active-window-excluded-w4-event",
+          "event_worker_tasks": 24
+        },
+        {
+          "id": "aligned-e24-x2-o1-2048-active-window-excluded-w4-event",
+          "event_worker_tasks": 48
+        },
+        {
+          "id": "aligned-e32-x2-o1-512-active-window-excluded-w4-event",
+          "event_worker_tasks": 12
+        },
+        {
+          "id": "aligned-e32-x2-o1-1024-active-window-excluded-w4-event",
+          "event_worker_tasks": 24
+        },
+        {
+          "id": "aligned-e32-x2-o1-2048-active-window-excluded-w4-event",
+          "event_worker_tasks": 48
+        }
+      ]
+    },
+    "c128": {
+      "compiler_version": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+      "compiler_sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
+      "linker_version": "GNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n",
+      "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+      "qualified_toolchain": true,
+      "registration_path": "tools/experiments/mat003_continuation/c128-registration.json",
+      "registration_sha256": "cf278731fafe76b0d63ce334ab808ce9c1f0ef4eb34b05960530d811921cdfa7",
+      "readback": {
+        "status": "qualification-readback-passed-timing-held",
+        "formal_timing_admitted": false,
+        "errors": [],
+        "checked_files": 360,
+        "cases": 4
+      },
+      "sealed_files_sha256": "081e71cce22b8b384118230ca18c94b7eae7b792d578efed2e24355ebbd64ecd",
+      "binary_seal_sha256": "3c4007c00dfeb8a49b524ae529e492463d812b83c988b3db1e58363f07b4138a",
+      "storage_binary_seal_sha256": "31d3fb3e859325890e68606d40a85db3407186d8d7a3d2b669b3c3bab30713b7",
+      "raw_run_sha256": "f235a8dc1a23c19433cad942d70babb7303db837e0a2961eb2ab0a7874683824",
+      "embedded_readback_sha256": "24df5f9bb140b12f953cfb2e4afeb8f0a9a31aef34d3b664e5f55ed8b2a17e30",
+      "frozen_verifier_sha256": "38f05365daf8314a77bf7efc8d6be3dc798fe79bfd7a4bf2506cbee900c209ce",
+      "binary_seal": [
+        {
+          "binary": "bin/u128-e8-x2",
+          "id": "u128-e8-x2",
+          "observer": 1,
+          "sha256": "15ca804783fcfeea75e92380893b24e2f196da17928b412b8d486cc450987d5a"
+        },
+        {
+          "binary": "bin/u128-e16-x2",
+          "id": "u128-e16-x2",
+          "observer": 1,
+          "sha256": "629f31b43f564f4b8b1ff7b1a8476189f8cfc014715b095ccf61e0606aec5810"
+        },
+        {
+          "binary": "bin/dual64-e8-x2",
+          "id": "dual64-e8-x2",
+          "observer": 1,
+          "sha256": "4ea5941c17e873c9e71a11225b955322d56ac0d9d1d17dfaa85809ebec046dcf"
+        },
+        {
+          "binary": "bin/dual64-e16-x2",
+          "id": "dual64-e16-x2",
+          "observer": 1,
+          "sha256": "bc9a6becfbb87481e70f77c191125c0f3d2f40e729726ad482b8e9cde6c75246"
+        }
+      ],
+      "storage_stdout": "{\"dual_size\":16,\"dual_align\":8,\"u128_size\":16,\"u128_align\":16,\"passed\":true}\n",
+      "storage_ubsan_stdout": "{\"dual_size\":16,\"dual_align\":8,\"u128_size\":16,\"u128_align\":16,\"passed\":true}\n",
+      "abi": [
+        {
+          "id": "u128-e8-x2",
+          "cell_alignment": 16,
+          "cell_stride": 16,
+          "epoch_bits": 8,
+          "logical_bits": 128
+        },
+        {
+          "id": "u128-e16-x2",
+          "cell_alignment": 16,
+          "cell_stride": 16,
+          "epoch_bits": 16,
+          "logical_bits": 128
+        },
+        {
+          "id": "dual64-e8-x2",
+          "cell_alignment": 8,
+          "cell_stride": 16,
+          "epoch_bits": 8,
+          "logical_bits": 128
+        },
+        {
+          "id": "dual64-e16-x2",
+          "cell_alignment": 8,
+          "cell_stride": 16,
+          "epoch_bits": 16,
+          "logical_bits": 128
+        }
+      ]
+    }
+  },
+  "independent_artifact_review": {
+    "reviewer": "independent_review agent; separate source and raw-evidence readback",
+    "date": "2026-10-23",
+    "disposition": "untimed qualification supported; formal timing admission held",
+    "archive_members": 3114,
+    "duplicate_members": false,
+    "zip_crc_errors": false,
+    "archive_extracted_byte_equality": true,
+    "all_file_hashes_unchanged_after_readback": true,
+    "results": {
+      "s2p": {
+        "status": "qualification-readback-passed-timing-held",
+        "formal_timing_admitted": false,
+        "errors": [],
+        "checked_files": 762,
+        "cases": 5
+      },
+      "wclear": {
+        "status": "qualification-readback-passed-timing-held",
+        "formal_timing_admitted": false,
+        "errors": [],
+        "checked_files": 1984,
+        "cases": 208
+      },
+      "c128": {
+        "status": "qualification-readback-passed-timing-held",
+        "formal_timing_admitted": false,
+        "errors": [],
+        "checked_files": 360,
+        "cases": 4
+      }
+    },
+    "formal_timing_admitted": false,
+    "execution_authorized": false
+  }
+}

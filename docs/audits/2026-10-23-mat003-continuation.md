@@ -38,7 +38,7 @@ accepted experimental files and PR211 are unchanged.
 Local toolchain is MSYS2 GCC16.2.0 on Windows x86-64, explicitly outside the
 registered Linux GCC13.3 platform. No WSL installation exists. The independent
 storage model passes; observed size/alignment is 16/16 for native U128 and 16/8
-for DUAL64. Six Python evidence-contract tests and the CI provider policy check
+for DUAL64. Ten Python evidence-contract tests and the CI provider policy check
 pass. These are untimed diagnostics, not admitted performance or full platform
 qualification. Build receipts remain in the ignored continuation build directory.
 
@@ -68,13 +68,13 @@ natural E16 comparison; event worker attribution; full-high64 World preservation
 incomplete build/command inventories; metadata not bound to context IDs; source
 seals lacking a reviewed Git anchor; and generated-source seal ordering.
 Review is independent source inspection, not execution authority or timing admission.
-The completed collector/verifier and hosted artifacts still require exact source
-readback and independent disposition. No reviewer has admitted formal timing.
+Exact-artifact readback and its independent disposition are recorded below.
+No reviewer has admitted formal timing.
 
 The first hosted untimed run is
 [39881371873](https://github.com/techrote/cybersand/actions/runs/39881371873)
-at branch source36c9f8c. Its results must retain the above verifier qualifications
-even if the workflow exits successfully. A subsequent run uses corrected source;
+at branch source36c9f8c. It failed independent readback as detailed below.
+Subsequent runs use corrected source;
 all attempts and raw artifacts are retained. No partial matrix is accepted as
 completed qualification and no clear-cost samples are collected.
 
@@ -86,6 +86,8 @@ completed qualification and no clear-cost samples are collected.
 | [39881795109](https://github.com/techrote/cybersand/actions/runs/39881795109),07c87a0 | GitHub cancellation log; API returned no raw artifact | Manually superseded while correcting the known pre-record defect. Partial raw collector output is unavailable; it is not reconstructed or accepted. |
 | [39882646067](https://github.com/techrote/cybersand/actions/runs/39882646067),1fec40c | [12471606431](https://github.com/techrote/cybersand/actions/runs/39882646067/artifacts/12471606431), `5ccd46514bf552d2ec9e24ee05982e2bc45d46a7665c106d60ec12327dbbde40` | WCLEAR208 and four C128 fixture executions completed. C128 recursive readback rejected an unsealed bytecode cache introduced by the S2P reader itself. Whole attempt remains failed. |
 | [39883050638](https://github.com/techrote/cybersand/actions/runs/39883050638),86a8ddc | [12471563260](https://github.com/techrote/cybersand/actions/runs/39883050638/artifacts/12471563260), `9e25399cac0903a0ab365f2821941f3f29fd7a04718bee029ed8559dc3565bdb` | Same recursive-reader mutation defect; all raw observations retained. C128 cross-lane assembly is diagnostic, not accepted performance. |
+
+| [39884113549](https://github.com/techrote/cybersand/actions/runs/39884113549),36547f9 | [12472521677](https://github.com/techrote/cybersand/actions/runs/39884113549/artifacts/12472521677), `4fefa1539fbab00225ffbab81827e8096089cc5029586860dd1ef87b0267fd89` | Complete untimed workflow passed all three stages. Downloaded 17,437,167-byte ZIP independently matches the published digest. This predates final raw-epoch receipts/readback optimization and is retained separately from the final source qualification. |
 
 Intermediate queued workflows replaced by the concurrency policy never executed
 fixtures; their cancelled states remain in GitHub. The read-only bytecode guard
@@ -106,6 +108,53 @@ rather than naturally reached raw epoch history, observer-twin qualification of
 background participation and descriptive seven-event tail summaries. The active
 [v3 registration](../../tools/experiments/mat003_continuation/wclear-registration-v3.json)
 and gated timing source must still receive exact-artifact independent disposition.
+
+
+## Complete final untimed hosted evidence
+
+[Run39885505290](https://github.com/techrote/cybersand/actions/runs/39885505290)
+passed all three qualification steps on Ubuntu24.04 x86-64, GCC13.3.0 and
+GNU ld2.42, completed2026-10-23T01:51:15Z. Branch source is
+`c7d7bf6f3c085f68332c30384c9742dd0ca55f93`; exact hosted checkout is
+`f7c80a47da8bd1c87ac84b2f7281120a4fcc0796` (PR merge-ref source).
+Docs-only checkpoint21fe0f4 has identical experimental inputs. The
+[artifact12472344560](https://github.com/techrote/cybersand/actions/runs/39885505290/artifacts/12472344560)
+is17,442,801 bytes; the downloaded ZIP independently hashes to
+`fd3e269812bfadd737f38c2cabafd906efb15ea407cb2d4c70a820279179b0c5`, matching
+GitHub's digest. Raw source, commands, fixtures, generated source/assembly,
+binaries, every semantic trace, stdout/stderr and pre-execution seals are
+retained there. Expiration is2027-01-21T01:42:22Z; the archive is also retained
+locally in the ignored continuation build directory. The committed
+[summary](mat003-continuation-2026-10-23/hosted-qualification-summary.json)
+pins per-track inventories, registrations, binaries, verifier and readbacks.
+
+Embedded independent readback passed5 S2P cases/762 files,208 WCLEAR cases/1984
+files and4 C128 cases/360 files. C128 recursively reads the same sealed C64
+control. P2 E8/E16 both compact sizes and U128/DUAL64 E8/E16 pass the original
+S1 contract, including serial/phased1/phased4 and natural two-wrap E16,
+plus the new whole-high64 probes. All three storage models pass normal and
+undefined-behavior-sanitized execution. WCLEAR observer/off records match;
+E8 naturally clears at256 and65536, E16 naturally clears at65536 in the
+small validation, and E24/E32 use explicitly prepared events. Actual raw
+counter transitions, observer clear witnesses and active four-worker event
+participation are retained. All208 processes ran without `--measure`; there
+are no clear-cost samples, startup timing or RSS timing receipts to report.
+The candidate stride/alignment is9/1 and10/1 for P2,16/16 for U128,16/8 for
+DUAL64 on this Linux toolchain. Complete additional memory component receipts
+remain in S1 fixture JSON; they are not process-memory timing evidence.
+
+
+The independent review agent separately read and hashed the same archive and
+reran all three readers with `python -B tools/experiments/mat003_continuation/verify.py
+<track-root> --source-commit f7c80a47da8bd1c87ac84b2f7281120a4fcc0796`.
+All exited0 with empty stderr and the same5/208/4 cases and762/1984/360 files.
+It checked ZIP CRC, no duplicate members, exact archive/extracted byte equality
+for3114 files and unchanged complete file hashes before/after readback. No
+reader mutated the artifact. Independent disposition supports this exact-source
+untimed qualification only. No performance acceptance, formal timing admission
+or execution authority was granted. The external review outputs are retained
+locally and their results are committed in the artifact summary.
+
 
 ## Documentation obligation mapping
 
@@ -140,10 +189,13 @@ The exact CLI is `gh workflow run mat003-continuation.yml --repo techrote/cybers
 `check_m11_consistency.py`, the CI provider-policy checker, ten continuation
 contract tests and `git diff --check` pass locally with the pinned companion
 retrieval fixtures present. Frozen retrieval remains 21/32 at 1 and 32/32 at 5,
-MRR 0.7937. Supplementary retrieval is 96/119 at 1 and 119/119 at 5, MRR 0.8847;
+MRR 0.7937. Supplementary retrieval is 96/119 at 1 and 119/119 at 5, MRR 0.8843;
 all three new questions route at rank 1. Frozen 32 and previous supplementary
 question objects remain unchanged. Manual new-question review confirms the
 required status, no-performance-admission, source/platform and schema limits.
 These lexical metrics do not establish answer correctness or runtime acceptance.
-The final hosted documentation result and exact-current artifact disposition
-are recorded below when available.
+Hosted Documentation/provenance passed at docs-only checkpoint21fe0f4 in
+[run39885752855](https://github.com/techrote/cybersand/actions/runs/39885752855).
+The final publication checkpoint must retain its own exact-head CI status; the
+source-sensitive untimed result above remains bound to its exact hosted checkout.
+Draft-only Native/GDExtension gates are skipped, not runtime acceptance.
