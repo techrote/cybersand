@@ -47,6 +47,8 @@ The #95 evidence synthesis supports **#45 NARROW** strictly for its own *product
 - Raw artifact [12468697797](https://github.com/techrote/cybersand/actions/runs/39876455400/artifacts/12468697797) = **517,177 bytes**, SHA-256 `9de681dde221093dcd740673f50a9549240d1858c86c44c1f85182696dc0a1db`, recorded expiry **2026-11-22 00:13:13 UTC**. Results and unfiltered ratios: [#204 S2A 16-contrast reductions](https://github.com/techrote/cybersand/issues/204#issuecomment-6354419821).
 - The original [failed first-process run 39875052969](https://github.com/techrote/cybersand/actions/runs/39875052969) remains **INCOMPLETE, zero qualified timing observations**. A workflow-only executable-mode restoration preceded the wholly new successful campaign; hashes of the 17 admitted binaries were retained. Never substitute or erase that failure.
 
+**Additional independent reduction check in this review:** parsed the publicly retained seven unfiltered B/A process ratios for each of A01–A16 from [issue #204's reduction record](https://github.com/techrote/cybersand/issues/204#issuecomment-6354419821); independently recomputed each series' median, minimum, maximum and median absolute deviation. **All 16/16 seven-pair series match all four published five-decimal summaries** to rounding tolerance (maximum absolute discrepancy 0.0000051). This is a *numerical consistency check of published process-pair ratios*, not raw ZIP byte replay, a new timing campaign or proof of unmeasured platforms.
+
 ### S2A evidence means this—and no more
 
 | Registered comparison | Observed median B/A | Qualification and decision |
