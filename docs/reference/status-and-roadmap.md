@@ -566,7 +566,8 @@ investigation before any new #45 pressure/head mechanism is treated as inevitabl
   separately by the
   [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
   [#213](https://github.com/techrote/cybersand/issues/213) is **not PASS**:
-  Gates B–E remain open, so LCB-001 pressure implementation stays blocked.
+  Gate A passed and Gate B passed in bounded form ([refresh](../audits/2026-10-23-lcb000-admission-gatea-gateb-refresh.md)); Gates C–E remain
+  open, so LCB-001 pressure implementation stays blocked.
 
 Water FreeMass and other-liquid CellularYield remain separate; no unification or
 production solver change is selected. Equal-level communicating-head fixtures are
@@ -591,8 +592,8 @@ The protected `lcb.dam.water.freemass.reference.v1` Dam Break and the
 with measured Current-default controls (local Windows, 1/4-worker identical).
 The mixed control runs **two** families today; three need
 [#212](https://github.com/techrote/cybersand/issues/212). LCB-000 is **not
-PASS**: Gate A (#95/#45) and Gate B (#204 storage) lack accepted evidence, so
-LCB-001 implementation stays blocked.
+PASS**: Gate A passed and Gate B passed in bounded form ([refresh](../audits/2026-10-23-lcb000-admission-gatea-gateb-refresh.md)), but
+Gates C–E are still awaiting acceptance, so LCB-001 implementation stays blocked.
 
 ## Opt-in transport profiles
 

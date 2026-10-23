@@ -24,9 +24,16 @@ source today.
   [#200](https://github.com/techrote/cybersand/issues/200) (policy, state and
   pressure) and LCB-005 [#212](https://github.com/techrote/cybersand/issues/212)
   (inertial).
-- Durable state width, sidecars and save schema are **Gate B**, owned by the
-  active MAT-003PREPASS work [#204](https://github.com/techrote/cybersand/issues/204).
-  This page only lists what each family would need. It freezes nothing.
+- State storage follows the **accepted bounded Gate B handoff**
+  ([state handoff](../audits/2026-10-23-lcb000-gate-b-state-handoff.md),
+  [refresh](../audits/2026-10-23-lcb000-admission-gatea-gateb-refresh.md)):
+  - the C64-E8 Cell is unchanged;
+  - family state goes in optional versioned solver-owned storage, plus a
+    World-owned gas-compartment table;
+  - numeric widths are frozen by #200/#212 before code.
+
+  MAT-003PREPASS [#204](https://github.com/techrote/cybersand/issues/204)
+  continues to own representation research. This page freezes no layout.
 
 Claim labels used below:
 
@@ -160,7 +167,7 @@ over this canonical byte form:
 
 A separate **run receipt hash** binds everything that affects execution:
 `policy_hash`, the `WaterExperimentPolicy` tuple, the transport profile hash,
-the interaction policy hash, the canonical setup hash, the normalization
+the interaction policy hash, the canonical setup hash and seed, the normalization
 receipt hash (or none), workers/scheduler, interest/execution settings and
 source/binary/catalogue identity. A comparison is matched only when every
 receipt component except the compared family/variant is equal.
@@ -330,8 +337,9 @@ policy, applied policy and hash, setup hash, refusal (if any) and tick 0.
 
 ## State ownership per family
 
-Field-level needs only, as input to Gate B. Width, sidecar and save decisions
-are **Deferred to B (#204)**.
+Field-level needs, placed into optional storage by the accepted bounded Gate B
+handoff. Widths, capacities and save fields are frozen by #200/#212 within that
+handoff; no Cell layout change is implied.
 
 | Family | Authoritative state beyond material/state_a/state_b | Current/Proposed |
 |---|---|---|
