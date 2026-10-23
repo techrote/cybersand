@@ -122,6 +122,21 @@ complete, #95 may now synthesize the available evidence without waiting for
 speculative future #12 dynamics. This checkpoint does not modify Current Water
 semantics.
 
+WEX-005 disposition on 2026-10-23
+([synthesis](../audits/2026-10-23-wex005-water-evidence-synthesis.md)):
+**#45 NARROW.** #45 remains the production saturated-head owner. Its next step is
+admission/design under explicit shared/vented-atmosphere assumptions, with
+deep-release surge registered as a separate versioned fixture family and
+thresholds frozen against the current-main #49 v2 control before candidate code.
+Sealed-gas, vacuum and decompression targets are outside #45. #18 remains held,
+#93 is research only, #94 is narrow-use, and #14/G-final and #20 are unchanged.
+The opt-in LCB pressure comparison (#200/#213) is a separate experimental lane
+bounded by the
+[LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
+It selects no production mechanism.
+
+`#49 v2 control + WEX evidence -> #95 (2026-10-23) -> #45 NARROW admission/design + surge registration -> directional reassessment -> #18 admission/no-go -> #20/G-B if justified -> G-final`.
+
 ## Current staged status, after G-P (2026-09-11)
 
 C/G-C, L/G-L and P/G-P are complete. [Issue17 evidence](../audits/2026-09-11-issue-17-state-precision.md)

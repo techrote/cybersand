@@ -79,7 +79,7 @@ Rules:
     for a down-round. Cells are visited in deterministic row-major order
     (ascending y, then x).
   - **Receipt.** The receipt holds rule ID and version, mass bits, the
-    canonical setup hash before and after, cells up/down/unchanged, `Σδ⁺`,
+    canonical setup hash and seed before and after, cells up/down/unchanged, `Σδ⁺`,
     `Σδ⁻` and the net delta, and a receipt hash that is part of the run
     receipt.
   - **Ledger.** The net delta is booked as a **declared setup-only
@@ -237,8 +237,8 @@ unchanged. With `s` = Salt cells consumed, they are:
 - `Δwater = −Σ m_i` over the consumed Water cells. That lies in `[−255·s, −s]`,
   and equals `−255·s` only when every consumed Water cell was full. That is
   true for M0 by construction: 29 consumed, Water −7,395.
-- after the last dissolution, the Water integer is constant. Any further loss
-  is an **unexplained loss** and fails.
+- after the last dissolution, the Water integer is constant. Any further
+  **gain or loss** is unexplained and fails.
 - Oil cells are constant;
 - quantities are booked **per species** (Water integer, Brine cells, Oil cells,
   Salt cells). No cross-species "total mass" is claimed. A partially filled
