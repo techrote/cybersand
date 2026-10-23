@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 import re
 import subprocess
+import sys
 import tempfile
 
 
@@ -111,7 +112,14 @@ def verify(root, expected_source=None):
         # This is the accepted independent reader, not the apparatus generator.
         path=root/'source/tools/experiments/mat003_prepass/world_verify.py'
         spec=importlib.util.spec_from_file_location('frozen_independent_s1_reader',path)
-        reader=importlib.util.module_from_spec(spec); spec.loader.exec_module(reader)
+        reader=importlib.util.module_from_spec(spec)
+        # A reader must not create an unsealed __pycache__ inside its evidence.
+        previous_bytecode=sys.dont_write_bytecode
+        try:
+            sys.dont_write_bytecode=True
+            spec.loader.exec_module(reader)
+        finally:
+            sys.dont_write_bytecode=previous_bytecode
         track=report['track']
         # Exact build and command inventories, rather than validating only the
         # subset a collector happens to retain.

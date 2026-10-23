@@ -1,5 +1,6 @@
 """Independent complete-matrix WCLEAR timing readback. Never grants acceptance."""
 import argparse
+import gzip
 import hashlib
 import itertools
 import json
@@ -68,6 +69,11 @@ def verify(root,apparatus):
             require(semantic['natural_event']==(event and spec['epoch_bits']==8) and semantic['prepared_event']==(event and spec['epoch_bits']!=8),'natural/prepared identity mismatch')
             require(observation['measurement'] is True and all(type(observation[k]) is int and observation[k]>=0 for k in
                 ('tick_ns','startup_ns','setup_ns','input_ns','peak_rss_kib')) and observation['tick_ns']>0 and observation['peak_rss_kib']>0,'invalid latency/RSS observation')
+            control=f'aligned-e{spec["epoch_bits"]}-x2-o0-{spec["side"]}-{spec["scene"]}-w{spec["workers"]}-{spec["mode"]}'
+            for filename in ['pre.bin','post.bin']+[f'reentry-{i}.bin' for i in range(4)]:
+                measured=gzip.decompress((root/'cases'/name/(filename+'.gz')).read_bytes())
+                qualified=gzip.decompress((apparatus/'cases'/control/(filename+'.gz')).read_bytes())
+                require(measured==qualified,'timing-mode semantic stream differs from qualified observer-off twin')
             key=f'E{spec["epoch_bits"]}-{spec["side"]}-{spec["scene"]}-w{spec["workers"]}'
             contexts.setdefault(key,{}).setdefault(spec['pair'],{})[spec['role']]=observation
             result['processes']+=1
