@@ -143,8 +143,22 @@ func _run() -> void:
 	root.add_child(owner)
 	episode = Episode.new()
 	owner.add_child(episode)
-	check(Course.scenario("offset_gates", 0, "development") != Course.scenario("offset_gates", 0, "final"),
-		"geometry/start/goal split differs, not a seed-only rename")
+	check(Course.scenario("offset_gates", 0, "tuning") != Course.scenario("offset_gates", 0, "development"),
+		"tuning geometry differs from development, not merely by seed")
+	check(Course.scenario("offset_gates", 0, "final").is_empty(),
+		"sealed final suite refuses unadmitted access and cannot be developer-scored")
+	for split_id: String in ["development", "tuning"]:
+		var hover_case: Dictionary = Course.scenario("unsupported_hover", 101, split_id)
+		var vertical_case: Dictionary = Course.scenario("vertical_reach", 101, split_id)
+		var horizontal_case: Dictionary = Course.scenario("horizontal_reach", 101, split_id)
+		check(Vector2(hover_case.start) == Vector2(hover_case.goals[0]),
+			"hover target remains real start on " + split_id)
+		check(absf(float(vertical_case.goals[0].x) - float(vertical_case.start.x)) < 0.001 \
+			and Vector2(vertical_case.start).distance_to(Vector2(vertical_case.goals[0])) >= 60.0,
+			"vertical reach remains purely vertical and nontrivial on " + split_id)
+		check(absf(float(horizontal_case.goals[0].y) - float(horizontal_case.start.y)) < 0.001 \
+			and Vector2(horizontal_case.start).distance_to(Vector2(horizontal_case.goals[0])) >= 60.0,
+			"horizontal reach remains horizontal and nontrivial on " + split_id)
 	for model: StringName in Profile.IDS:
 		var nominal: Dictionary = Course.feasible_clearance(model, "wide_corridor")
 		check(bool(nominal.feasible_nominal) and not bool(nominal.clearance_measured),
