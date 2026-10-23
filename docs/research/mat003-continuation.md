@@ -17,7 +17,7 @@ replaces only the overconstrained resident sleep/exclusion witness for a prospec
 readback of the already complete immutable Windows archive. The archive is source-
 assessed sufficient; candidate execution, timing and production changes remain
 forbidden. Independent source/protocol admission and explicit owner authorization
-of registration `130dc475363585dd7d14095305d398d7cfcbb0cccd722b0ee5e802181b11ee7f`
+of registration `4869725932a59bdaad7ede819e520a352c8b9764bbffa019a8e000009add0344`
 are still required before one full revised readback. Until then Windows correctness
 remains refused and this continuation report selects no carrier.
 
