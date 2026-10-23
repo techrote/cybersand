@@ -229,9 +229,17 @@ M1 executes. That depends on #212, and nothing here claims it.
 
 **Signed reaction ledger (corrected 2026-10-23).** The frozen M0 definition
 keeps its original conditions and hash (`complete` on Oil conservation, `fail`
-on Water gain). The stronger checks are applied **outside** the definition, by
-the fixture regression and the campaign reducer, so the protected identity is
-unchanged. With `s` = Salt cells consumed, they are:
+on Water gain). The stronger checks are applied **outside** the definition, so
+the protected identity is unchanged:
+- the fixture regression enforces them exactly on the CI-re-executed prefix;
+- the LCB-003 campaign reducer enforces them as signed rule
+  `lcb-signed-ledger-v2` (#217).
+
+A reactive species is never an explanation by itself. Where a campaign has not
+retained world-wide species counts or per-reaction amounts, the reducer reports
+the case `UNVERIFIED_*` and **ineligible for acceptance**; it does not classify
+it as closed (re-review finding 3). With `s` = Salt cells consumed, the checks
+are:
 
 - `Δbrine = +2·s` exactly (Water+Salt→Brine+Brine);
 - `Δwater = −Σ m_i` over the consumed Water cells. That lies in `[−255·s, −s]`,
