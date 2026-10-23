@@ -9,6 +9,7 @@ const MODELS: Array[StringName] = [&"", &"runner", &"skimmer", &"crawler"]
 const PRODUCERS: Array[StringName] = [&"human", &"demo", &"policy"]
 const Catalog = preload("res://scripts/actor_rig_catalog.gd")
 const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
+const Flight = preload("res://scripts/physical_flight_profile.gd")
 const UsableCatalog = preload("res://scripts/usable_catalog.gd")
 
 var set_choice: OptionButton
@@ -23,6 +24,7 @@ var usable_power_slider: HSlider
 var usable_power_label: Label
 var usable_description: Label
 var _equipment_physical: bool = false
+var _equip_only_button: Button
 var status: Label
 var _visible_models: Array[StringName] = []
 
@@ -47,7 +49,7 @@ func _ready() -> void:
 	title.add_theme_font_size_override("font_size", 23)
 	column.add_child(title)
 	var subtitle: Label = Label.new()
-	subtitle.text = "%d articulated Rapier actors, scripted pilots and sampled references" % PhysicalCatalog.RIG_IDS.size()
+	subtitle.text = "%d retained articulated actors + four 4LY single-body free-flight drones; sampled references remain available" % PhysicalCatalog.RIG_IDS.size()
 	subtitle.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	column.add_child(subtitle)
 	set_choice = OptionButton.new()
@@ -111,6 +113,7 @@ func _ready() -> void:
 	var equip_only := Button.new()
 	equip_only.text = "Equip only"
 	equip_only.pressed.connect(_equip_only)
+	_equip_only_button = equip_only
 	equipment_row.add_child(equip_only)
 	var scroll: ScrollContainer = ScrollContainer.new()
 	scroll.custom_minimum_size.y = 180
@@ -186,6 +189,9 @@ func _refresh_usable_power(value: float) -> void:
 
 
 func _equip_only() -> void:
+	if _flight_selected():
+		set_error("4LY drone loadout is explicitly empty; equipment selection is unavailable.")
+		return
 	equipment_requested.emit(selected_usable_index(), usable_power_slider.value)
 
 
@@ -207,14 +213,31 @@ func _populate_models(set_id: StringName, selected: StringName) -> void:
 	model_choice.add_item("Rapier reference — Ripper (single hull)")
 	for rig_id: StringName in PhysicalCatalog.rigs_in_set(set_id):
 		_visible_models.append(StringName("rapier/" + str(rig_id)))
-		model_choice.add_item("Articulated Rapier — " + PhysicalCatalog.name_for(rig_id))
+		model_choice.add_item(("4LY free-flight drone — " if rig_id in Flight.IDS else "Articulated Rapier — ") + PhysicalCatalog.name_for(rig_id))
 	model_choice.select(maxi(0, _visible_models.find(selected)))
 	npc_choice.text = "Add up to 7 other rigs in this set as scripted demo NPCs"
 	_refresh_description(model_choice.selected)
 
 
+func _flight_selected() -> bool:
+	if model_choice == null or model_choice.selected < 0 or model_choice.selected >= _visible_models.size():
+		return false
+	var model: String = str(_visible_models[model_choice.selected])
+	return model.begins_with("rapier/") and StringName(model.trim_prefix("rapier/")) in Flight.IDS
+
+
 func _refresh_description(index: int) -> void:
 	var rig_id: StringName = _visible_models[index]
+	var flight: bool = _flight_selected()
+	usable_choice.disabled = flight
+	usable_power_slider.editable = not flight
+	_equip_only_button.disabled = flight
+	if flight:
+		usable_choice.select(0)
+		_refresh_usable(0)
+		npc_choice.text = "Add the other three 4LY drones as scripted neutral demo companions"
+	else:
+		npc_choice.text = "Add up to 7 other rigs in this set as scripted demo NPCs"
 	var articulated: bool = str(rig_id).begins_with("rapier/")
 	var physical: bool = str(rig_id).begins_with("physical/")
 	producer_choice.disabled = rig_id == &"" or physical
@@ -229,8 +252,18 @@ func _refresh_description(index: int) -> void:
 	if articulated:
 		var bare_id := StringName(str(rig_id).trim_prefix("rapier/"))
 		var rig: Dictionary = PhysicalCatalog.entry(bare_id)
-		description.text = "%s / ARTICULATED RAPIER\n%s\n\n%s\n\n%d moving parts · %d joints. Scripted pilots patrol, use their abilities and recover using local feedback.\nM: use mounted tool · N: release held tool · U: reattach nearby tool." % [str(rig.name).to_upper(), str(rig.description), PhysicalCatalog.controls_text(bare_id), rig.parts.size(), rig.joints.size()]
-		effort_slider.editable = producer_choice.selected == 0
+		if flight:
+			var profile: Dictionary = Flight.entry(bare_id)
+			description.text = "%s / 4LY ASSISTED FREE-FLIGHT\n%s\n\n%s\n\nOne physical rectangle (%s cells), mass %.2f authored units. Desired speed: %.1f horizontal / %.1f vertical cells/s; acceleration %.1f; braking %.1f cells/s². Thrust limit %.1f; response %.3f s.\nController: %s. Assistance: bounded velocity tracking + upright stabilization when an admitted live command exists; neutral brakes/hovers; cancellation/expiry/power-off removes force.\nDefault loadout: EMPTY. F5 Apply resets map + actor and clears input history; no live mass/collider conversion.\nScripted demonstration currently sends neutral hover only; external policy requires fresh admitted actions." % [
+				str(rig.name).to_upper(), str(rig.description), PhysicalCatalog.controls_text(bare_id),
+				str(profile.collider_size), float(profile.mass), float(profile.desired_speed[0]), float(profile.desired_speed[1]),
+				float(profile.acceleration), float(profile.braking), float(profile.max_force),
+				float(profile.velocity_response_seconds), Flight.CONTROLLER_ID]
+			effort_slider.editable = false
+			effort_label.get_parent().visible = false
+		else:
+			description.text = "%s / ARTICULATED RAPIER\n%s\n\n%s\n\n%d moving parts · %d joints. Scripted pilots patrol, use their abilities and recover using local feedback.\nM: use mounted tool · N: release held tool · U: reattach nearby tool." % [str(rig.name).to_upper(), str(rig.description), PhysicalCatalog.controls_text(bare_id), rig.parts.size(), rig.joints.size()]
+			effort_slider.editable = producer_choice.selected == 0
 		return
 	if rig_id == &"":
 		description.text = "Restore the existing sampled character and player/environment profile."

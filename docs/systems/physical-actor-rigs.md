@@ -47,14 +47,17 @@ existing held part or adds one permanent jointed equipment chassis during sessio
 preparation, still within eight parts. Held and released equipment keeps its
 coupling slot for the lifetime of the actor session.
 
-The internal [4LY free-flight family](physical-free-flight.md) adds four explicit
-lookup IDs through this same owner, outside the 46-entry ordinary roster. Its
-single rectangular chassis has no joints, mounts or equipment; its explicit
-no-equipment preparation bypasses the usual ACT-005 chassis insertion.
-Trainer has initial conformance tuning and the other three IDs remain identical,
-uncalibrated placeholders until 4LY-002. Its strict two-output velocity profile
-has a separately declared action interpretation; it does not alter the legacy
-controls below.
+The [4LY free-flight family](physical-free-flight.md) now adds an ordinary
+**F5 → set4LY** selection family with four candidate profiles: Trainer, Hauler,
+Drifter and Dart. Original `RIG_IDS` remains exactly 46 and SetP keeps its
+existing index; this ninth selection set is additive. All drones share one
+physical single-rectangle controller/actuator, with no joints, mounts or
+equipment. Explicit no-equipment preparation bypasses ACT-005's usual held
+chassis. They differ in authored numeric handling parameters, **not** controller
+logic. The 4LY velocity profile strictly admits two world-frame move outputs,
+with neutral braking/hover while a lease is live; this does not alter legacy
+physical controls, actor IDs or sampled reference meanings. Measured acceptance
+is distinct from selectable candidate source.
 
 ## How do I select and control them?
 

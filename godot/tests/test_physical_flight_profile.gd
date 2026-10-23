@@ -21,18 +21,36 @@ func expect(value: bool, reason: String) -> void:
 
 
 func test_schema() -> void:
+	var seen_hashes: Dictionary = {}
 	for id: StringName in Profile.IDS:
 		var profile: Dictionary = Profile.entry(id)
 		expect(Profile.validate(profile).is_empty(), "all reserved profiles validate " + str(id))
-		expect(profile.calibration == ("conformance_only" if id == &"4ly_trainer" else "uncalibrated_placeholder"),
-			"profile cannot claim measured differentiation " + str(id))
-		expect(Profile.profile_hash(profile).length() == 64, "profile has complete hash " + str(id))
+		expect(profile.calibration == "candidate_4ly002",
+			"distinct authored values are candidates until the prospectively registered measurement gate " + str(id))
+		var hash: String = Profile.profile_hash(profile)
+		expect(hash.length() == 64 and not seen_hashes.has(hash), "each profile has unique complete hash " + str(id))
+		seen_hashes[hash] = true
+		expect(float(profile.max_force) > float(profile.mass) * float(profile.gravity) * 1.15,
+			"unsupported hover and ascent have finite vertical thrust headroom " + str(id))
+		var original_size: Array = profile.collider_size.duplicate()
 		var view: Dictionary = Profile.descriptor(profile)
 		view.collider_size[0] = 50.0
+		view.capabilities.collider_size[0] = 50.0
 		view.units.force = "changed"
-		expect(profile.collider_size == [10.0, 6.0], "descriptor arrays are copied " + str(id))
+		expect(profile.collider_size == original_size, "descriptor and policy-visible capabilities are deep copies " + str(id))
 		expect(Profile.descriptor(profile).units.force == "authored_mass*cell/second^2", "nested descriptor copy " + str(id))
-	var base: Dictionary = Profile.entry(&"4ly_trainer")
+	var trainer: Dictionary = Profile.entry(&"4ly_trainer")
+	var hauler: Dictionary = Profile.entry(&"4ly_hauler")
+	var drifter: Dictionary = Profile.entry(&"4ly_drifter")
+	var dart: Dictionary = Profile.entry(&"4ly_dart")
+	expect(float(hauler.mass) > float(trainer.mass) and float(hauler.acceleration) < float(trainer.acceleration)
+		and float(hauler.velocity_response_seconds) > float(trainer.velocity_response_seconds),
+		"Hauler has distinct heavy, low-response actuator parameters")
+	expect(float(drifter.braking) < float(trainer.braking) and float(drifter.linear_drag) < float(trainer.linear_drag)
+		and float(drifter.attitude_kp) > 0.0, "Drifter has softer translation but finite upright assistance")
+	expect(float(dart.acceleration) > float(trainer.acceleration) and float(dart.braking) > float(trainer.braking)
+		and float(dart.mass) < float(trainer.mass), "Dart has faster, smaller physical handling parameters")
+	var base: Dictionary = trainer
 	for key: String in Profile.KEYS:
 		var missing: Dictionary = base.duplicate(true)
 		missing.erase(key)

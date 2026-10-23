@@ -55,7 +55,9 @@ func velocity() -> Vector2:
 
 
 func test_topology() -> void:
-	expect(Catalog.RIG_IDS.size() == 46, "4LY conformance registration does not extend the ordinary menu before 4LY-002")
+	expect(Catalog.RIG_IDS.size() == 46 and Catalog.SET_IDS[-1] == &"set4LY"
+		and Catalog.rigs_in_set(&"set4LY") == Profile.IDS,
+		"4LY selection is appended without renumbering the retained 46 actor identities/sets")
 	for model: StringName in Profile.IDS:
 		var base: Dictionary = Catalog.entry(model)
 		var loadout: Dictionary = Loadouts.entry(model)
@@ -81,7 +83,8 @@ func test_topology() -> void:
 		identity.collider_size[0] = 64.0
 		identity.profile_hash = "changed consumer copy"
 		var untouched: Dictionary = session.observation(0).flight.capabilities
-		expect(float(untouched.collider_size[0]) == 10.0 and str(untouched.profile_hash).length() == 64,
+		expect(is_equal_approx(float(untouched.collider_size[0]), float(Profile.entry(model).collider_size[0]))
+			and str(untouched.profile_hash).length() == 64,
 			str(model) + " capabilities are deep copies")
 		var body: RigidBody2D = session.bodies()[0]
 		var shape: RectangleShape2D = body.get_child(0).shape

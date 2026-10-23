@@ -16,13 +16,20 @@ For **Generation Workbench 2**, use the [inspection and authoring contract](syst
 
 Choose all 46 [articulated Rapier actors](systems/physical-actor-rigs.md) with F5 in the sandbox and exploratory maps, using keyboard, local scripted or external-policy control. Sampled references and the initial hull arms remain available; [the physical actor programme](operations/physical-actor-programme.md) preserves owner intent and integration scope.
 
-For the internal **4LY** single-chassis drone family, use the
+For the **4LY** single-chassis drone family, open the ordinary F5
+**set4LY** selection group and consult the
 [physical free-flight contract](systems/physical-free-flight.md): two desired
 velocity outputs, bounded assistance, profile identity and passive cancellation.
-Trainer conformance tuning and three uncalibrated placeholders share one plant;
-ordinary-game selection and measured handling differences belong to 4LY-002.
-The [4LY-001 conformance audit](audits/2026-10-22-4ly001-physical-free-flight.md)
-records actual Rapier measurements, lifecycle negatives and source/runtime identity.
+The four distinct Trainer, Hauler, Drifter and Dart plants have now passed
+the prospectively registered [real-Rapier handling measurements](audits/2026-10-23-4ly002-measured-handling-qualification.md)
+on Linux and Windows; their source calibration marker remains
+`candidate_4ly002` until a separately authorized acceptance transition.
+The original [pre-execution ledger](audits/2026-10-23-4ly002-handling-candidate-admission.md)
+retains the earlier PENDING status and the new record preserves negative
+Windows evidence and explicit owner-feel limitations. The
+[4LY-001 conformance audit](audits/2026-10-22-4ly001-physical-free-flight.md)
+retains the original actual Rapier Trainer data, lifecycle negatives and
+source/runtime identity.
 
 For seven human movement presets, use the [player control playground](systems/player-control-playground.md): buggy, trials bike, momentum acrobat, arcade lander, native Sand cloud, native Water blob and jetpack barrel. The guide owns keyboard/gamepad controls, acrobat chains, reset/focus rules and bounded material-field ownership. The five mechanical presets also appear in F5 SetP.
 
