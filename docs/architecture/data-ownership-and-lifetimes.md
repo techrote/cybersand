@@ -11,6 +11,16 @@ last-reviewed: 2026-10-22
 
 # Data ownership and lifetimes
 
+The separately admitted ACT-IK-001 Runner joint-reference pilot follows the
+same main-thread owner boundary: only `CyberPhysicalActorSession` can issue
+a trusted source grant and read an original root/joint observation, and only
+`CyberPhysicalActorRig` mutates the real Rapier joint motors. Delayed NCA
+results carry copied original-issue identity and the earliest-exclusive
+deadline; native cellular workers see neither joint nodes nor mutable
+Rapier objects. See the [joint-target contract](../systems/physical-joint-targets.md)
+and [evidence ledger](../audits/2026-10-23-act-ik-001-development-admission.md).
+
+
 ## Exploratory map actor installation
 
 **Current desktop:** the simulation owner installs copied sampled actor definitions
