@@ -23,6 +23,8 @@ CASE_WEIGHTS_SECONDS = {
     # LCB scenario catalogue: 27 installs plus 1/4-worker 30-tick prefixes
     # (32 s on a 2026-10-23 Windows workstation; CI hosts are slower).
     "test_lcb_scenario_catalogue": 60.0,
+    # LCB physics contracts: 43 s on the same workstation (dam ladder to t240 at 1/4 workers).
+    "test_lcb_physics_contracts": 80.0,
     "test_interaction_policy": 37.0,
     "profile_scheduler": 20.0,
     "test_transport_probe": 14.0,
