@@ -275,6 +275,10 @@ headless in that run.
 
 ## Addendum — signed campaign ledger correction (2026-10-23)
 
+*Superseded in part by the
+[v3 correction](#addendum--signed-campaign-ledger-v3-correction-2026-10-23).
+This section is retained as the historical v2 record.*
+
 This responds to [re-review finding 3](https://github.com/techrote/cybersand/pull/226#issuecomment-6362824493).
 At `5cd81ba`, `ledger_state` returned `open_by_declared_reaction` for any
 mismatch whenever the inventory held Salt or Sodium, and the problem predicate
@@ -351,3 +355,105 @@ including:
 Run locally:
 `python -m unittest discover -s tools/lcb -p test_lcb_registry.py` → 15 OK.
 No fixture bytes, controls bytes or goldens changed.
+
+## Addendum — signed campaign ledger v3 correction (2026-10-23)
+
+This responds to re-review findings
+[N3 and N4](https://github.com/techrote/cybersand/pull/226#issuecomment-6364909265),
+raised against `54a8d62`. The v2 rule still admitted two defects:
+- **N3:** an initial ±1 Water discrepancy disappeared, because the species
+  ledger used the tick-0 checkpoint as its baseline. A constant-Water shortcut
+  also skipped contradictory Salt/Brine evidence.
+- **N4:** with aggregate source/sink totals, a history of 0→100→50→100 against
+  a source of 100 closed.
+
+**Rule `lcb-signed-ledger-v3`** (`signed_ledger` in `tools/lcb/lcb_registry.py`)
+applies these checks in order:
+
+1. **Structure.** Ticks start at 0 and strictly increase. Water, source, sink
+   and species counts are non-negative integers. Species evidence must be
+   present at every checkpoint and cover every tracked species, including
+   Brine when Salt is present; a missing species is never treated as
+   unchanged. Timed events must sum to the declared totals. Any violation is
+   `MALFORMED_EVIDENCE`.
+2. **Binding to the declared initial state.** The ledger initial must equal
+   the inventory Water. Tick-0 Water and tick-0 species must equal the
+   declared initial values; otherwise the case is `OPEN_UNEXPLAINED`. The
+   first checkpoint is never substituted for the declaration.
+3. **Sources and sinks, non-reactive.** With timed events
+   (`ledger.events = [{tick, source, sink}]`, first observed at completed tick
+   N+1), Water must equal the cumulative expectation at **every** checkpoint.
+   That gives `closed_timed_source_sink`. With aggregate totals only:
+   - a gain without a source, a loss without a sink, positive increments above
+     the source, negative increments above the sink, or a final imbalance is
+     `OPEN_UNEXPLAINED`;
+   - otherwise the case is `UNVERIFIED_SOURCE_SINK_TIMING`, because aggregate
+     totals cannot reconcile intermediate checkpoints.
+4. **Reactive species.** Supplied species evidence is evaluated **before**
+   any constant-Water shortcut. The checks are:
+   - `Δbrine = 2s`;
+   - `Δwater ∈ [−255s, −s]` against the declared initial;
+   - constancy after dissolution and constancy of every other species;
+   - the #160 partial-Water boundary, reported as
+     `UNVERIFIED_PARTIAL_WATER_160`.
+
+   Without species evidence:
+   - a Salt-only history whose Water is constant at every checkpoint closes,
+     since any dissolution would have removed Water;
+   - a gain, or a loss beyond the bound, fails;
+   - any other loss is `UNVERIFIED_REACTION_AMOUNT`.
+
+   Sodium, and a reaction overlapping a source/sink, remain unverified.
+
+Only `closed`, `closed_signed_reaction_ledger` and `closed_timed_source_sink`
+are eligible for acceptance. `OPEN_UNEXPLAINED` and `MALFORMED_EVIDENCE` are
+reducer problems.
+
+**Records:**
+- The historical controls file is unchanged: LF SHA-256
+  `989ff70dba646285991a2a5e8ca5c3b0aa94b9381dc44c849528518e4238fac1`.
+- The v2 record is unchanged. It is now verified **against its own frozen
+  reducer**, `tools/lcb/ledger_v2_historical.py`, which is a verbatim copy of
+  the v2 functions at `54a8d62` (`lcb_registry.py reledger --version v2
+  --check`). It is never regenerated with changed code.
+- New re-reduction:
+  [`lcb-scenario-ledger-2026-10-23.v3.json`](../reference/lcb-scenario-ledger-2026-10-23.v3.json).
+  It records the input hashes (controls, superseded v2 record, reducer,
+  catalogue tool, protected manifest), the superseded states and the evidence
+  limits.
+
+| Scenario | v2 | v3 |
+|---|---|---|
+| `shallow.stream-steps.v1` | closed | `UNVERIFIED_SOURCE_SINK_TIMING` |
+| `rest.two-pool-partial-activity.v1` | closed | `UNVERIFIED_SOURCE_SINK_TIMING` |
+| `rest.remote-disturbance.v1` | closed | `UNVERIFIED_SOURCE_SINK_TIMING` |
+| `mixed.repeated-openings.v1` | closed | `UNVERIFIED_SOURCE_SINK_TIMING` |
+| M0, salt-dissolution, sodium-oil-fire | `UNVERIFIED_REACTION_AMOUNT` | unchanged |
+| the other 20 | closed | closed (Water constant at every checkpoint) |
+
+- No case is open or malformed. The four source/sink scenarios changed
+  because the campaign retained only aggregate totals and no per-event
+  timing. Every direction and gross budget is consistent; closure simply
+  cannot be established.
+- The registry's `qualification.windows_local_native` now routes to v3.
+- Goldens, definitions and measurements are unchanged.
+- Accepted evidence remains the CI-re-executed prefixes.
+
+**Regressions.** `tools/lcb/test_lcb_registry.py` now has 31 tests, run
+locally with `python -m unittest discover -s tools/lcb -p
+test_lcb_registry.py` → 31 OK. They include:
+- the review's 10001→7451 and 9999→7449 cases (open, with the initial
+  discrepancy reported);
+- 10000→10000 against consumed Salt (open);
+- the 0/100/50/100 history with source 100 (open: no declared sink, gains
+  150 above the source 100);
+- source-only, sink-only and mixed transients;
+- exhausted budgets and missing timing (unverified);
+- legitimate timed changes (closed);
+- an event-phase error and mismatched event totals (malformed);
+- missing, partial and negative species evidence (malformed);
+- malformed ticks;
+- frozen-v2 and v3 record checks.
+
+The original counterexamples keep their outcomes: final 10001 → open; final 1
+→ unverified; one Salt cell → the dissolution bound fails.
