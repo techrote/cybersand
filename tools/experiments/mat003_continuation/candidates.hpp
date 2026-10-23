@@ -47,6 +47,20 @@ struct U128 {
 };
 #endif
 
+// Raw representational diagnostic only. This span deliberately crosses bit64
+// and overlaps the experimental epoch; it defines no material field and is
+// never invoked by World. Compare the native mask with an explicit lane split.
+inline void raw_cross16(Dual64& c, std::uint16_t v) noexcept {
+    c.low = (c.low & 0x0fffffffffffffffULL) | (std::uint64_t{v & 15U} << 60);
+    c.high = (c.high & ~std::uint64_t{4095}) | (v >> 4);
+}
+#if defined(__SIZEOF_INT128__)
+inline void raw_cross16(U128& c, std::uint16_t v) noexcept {
+    const auto mask = U128::Value{65535} << 60;
+    c.bits = (c.bits & ~mask) | (U128::Value{v} << 60);
+}
+#endif
+
 // WCLEAR E24/E32 only. 40 semantic low bits are unchanged. E32 consumes the
 // first tail byte, leaving the second tail byte neutral. No signed shifts or
 // width-sized shifts; tail access always uses the representation's safe API.

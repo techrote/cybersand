@@ -21,6 +21,11 @@ template<class R> void exercise() {
         b.extra(0x81a5); check(b.storage.upper() == ((high & ~std::uint64_t{65535}) | 0x81a5));
         std::swap(a, b); check(a.storage.upper() == ((high & ~std::uint64_t{65535}) | 0x81a5));
         auto record = a.read(); check(a.write(record) && a.storage.upper() == ((high & ~std::uint64_t{65535}) | 0x81a5));
+        const auto before_low=a.storage.word(), before_high=a.storage.upper();
+        const auto span=static_cast<std::uint16_t>(rng>>32);
+        mat003_continuation::raw_cross16(a.storage,span);
+        check(a.storage.word()==((before_low&0x0fffffffffffffffULL)|(std::uint64_t{span&15U}<<60)));
+        check(a.storage.upper()==((before_high&~std::uint64_t{4095})|(span>>4)));
     }
 }
 template<unsigned N> void compact() {

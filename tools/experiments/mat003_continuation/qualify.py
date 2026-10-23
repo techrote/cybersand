@@ -169,6 +169,9 @@ extern "C" void clear_epoch(C* c) { c->set_epoch(0); }
 extern "C" void copy_cell(C* a, const C* b) { *a=*b; }
 extern "C" void swap_cell(C* a, C* b) { const auto t=*a; *a=*b; *b=t; }
 ''')
+                if rep in ('u128','dual64'):
+                    with wrapper.open('a') as f:
+                        f.write('extern "C" void raw_cross_lane16(C* c, unsigned v) { mat003_continuation::raw_cross16(c->storage, static_cast<std::uint16_t>(v)); }\n')
                 def compile_assembly():
                     run([compiler,*flags,*macros,'-DMAT003_TWIN_OBSERVERS=0',*includes,'-S',wrapper,'-o',assembly/'access.s'], 'asm/'+identifier,180)
                     run([compiler,*flags,*macros,'-DMAT003_TWIN_OBSERVERS=0',*includes,'-S',work/'native/src/world.cpp','-o',assembly/'world.s'], 'world-asm/'+identifier,180)
