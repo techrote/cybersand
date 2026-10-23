@@ -742,8 +742,9 @@ actor IDs and their action meanings are unchanged.
 `observation(actor_id)` returns copied identity, tick, selected profile,
 pose/velocity, contacts and local rays, resource/charge/cooldown, part and joint
 states, attachment/tool state and lease status. These dictionaries do not change
-the sampled actor state/observation strides. Physical actors currently expose
-the wire lane only; sampled v1 tag, message, metal and NCA contracts remain
+the sampled actor state/observation strides. Ordinary physical actors continue to expose
+the wire lane; the separately admitted Runner IK pilot is the only narrow
+exception (see [joint-target protocol](#runner-point-ik-joint-target-actions)); sampled v1 tag, message, metal and NCA contracts remain
 separate. Desktop exposes `physical_actor_observation(actor_id)` and
 `submit_physical_actor_command(command)` and `cancel_physical_actor_command(actor_id)`
 from `main.gd` for a policy-owned actor.
