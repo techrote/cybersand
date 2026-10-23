@@ -2,7 +2,7 @@
   "schema": "lcb-scenario-registry-v1",
   "status": "LCB-003 preparation. Only arms with status starting 'measured' have executed; every blocked arm names its dependency.",
   "sources": {
-    "capability_matrix": "626e64fa871debedf33d8dd583d4026593c03487f5ec7687b8fcc47e6f5ee041",
+    "capability_matrix": "442c4e50f8065f7c2ed49e54be424953f3145ec3cc7961a5e218e45630d87105",
     "protected_manifest": "d5c922c39fe04a7981b7a14a6a6f2d14064674337e6afedb3acf3e83eb8553f3",
     "controls": "989ff70dba646285991a2a5e8ca5c3b0aa94b9381dc44c849528518e4238fac1",
     "catalogue_tool": "0863508fe163dab7835b5089c5930e8dd25546e4afd39eb84b198df53e37e121"
@@ -338,35 +338,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -803,29 +811,37 @@
           "freemass_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
           },
           "cellular_yield_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "pressure_flow_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification"
           }
         },
@@ -833,27 +849,35 @@
           "freemass_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
           },
           "cellular_yield_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "pressure_flow_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
           },
           "inertial_cellular_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
           }
         },
@@ -861,35 +885,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -1331,35 +1363,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -1783,35 +1823,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -2235,35 +2283,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -2984,35 +3040,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -3436,35 +3500,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -3780,35 +3852,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -4124,35 +4204,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -4468,35 +4556,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -4696,35 +4792,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -5005,35 +5109,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -5303,35 +5415,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -5843,29 +5963,37 @@
           "freemass_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
           },
           "cellular_yield_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "pressure_flow_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification"
           }
         },
@@ -5873,27 +6001,35 @@
           "freemass_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
           },
           "cellular_yield_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "pressure_flow_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
           },
           "inertial_cellular_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
           }
         },
@@ -5901,27 +6037,35 @@
           "freemass_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
           },
           "cellular_yield_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "pressure_flow_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
           },
           "inertial_cellular_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
           }
         },
@@ -5929,27 +6073,35 @@
           "freemass_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
           },
           "cellular_yield_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "pressure_flow_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
           },
           "inertial_cellular_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
           }
         },
@@ -5957,27 +6109,35 @@
           "freemass_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
           },
           "cellular_yield_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "pressure_flow_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
           },
           "inertial_cellular_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
           }
         },
@@ -5985,35 +6145,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -6565,29 +6733,37 @@
           "freemass_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
           },
           "cellular_yield_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "pressure_flow_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification"
           }
         },
@@ -6595,27 +6771,35 @@
           "freemass_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
           },
           "cellular_yield_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "pressure_flow_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
           },
           "inertial_cellular_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
           }
         },
@@ -6623,27 +6807,35 @@
           "freemass_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
           },
           "cellular_yield_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "pressure_flow_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
           },
           "inertial_cellular_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
           }
         },
@@ -6651,27 +6843,35 @@
           "freemass_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
           },
           "cellular_yield_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "pressure_flow_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
           },
           "inertial_cellular_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
           }
         },
@@ -6679,27 +6879,35 @@
           "freemass_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
           },
           "cellular_yield_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "pressure_flow_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
           },
           "inertial_cellular_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
           }
         }
@@ -7089,29 +7297,37 @@
           "freemass_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
           },
           "cellular_yield_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "pressure_flow_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification"
           }
         },
@@ -7119,27 +7335,35 @@
           "freemass_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
           },
           "cellular_yield_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "pressure_flow_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
           },
           "inertial_cellular_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
           }
         },
@@ -7147,35 +7371,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -7510,27 +7742,35 @@
           "freemass_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
           },
           "cellular_yield_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "pressure_flow_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
           },
           "inertial_cellular_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
           }
         },
@@ -7538,35 +7778,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -7900,29 +8148,37 @@
           "freemass_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
           },
           "cellular_yield_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "pressure_flow_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification"
           }
         },
@@ -7930,35 +8186,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -8306,27 +8570,35 @@
           "freemass_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
           },
           "cellular_yield_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "pressure_flow_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
           },
           "inertial_cellular_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
           }
         },
@@ -8334,35 +8606,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -8755,35 +9035,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -9172,35 +9460,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -9466,35 +9762,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -9879,29 +10183,37 @@
           "freemass_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
           },
           "cellular_yield_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "pressure_flow_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification"
           }
         },
@@ -9909,27 +10221,35 @@
           "freemass_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
           },
           "cellular_yield_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "pressure_flow_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
           },
           "inertial_cellular_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
           }
         },
@@ -9937,35 +10257,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -10388,27 +10716,35 @@
           "freemass_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids"
           },
           "cellular_yield_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "pressure_flow_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)"
           },
           "inertial_cellular_v1": {
             "status": "rejected",
             "executable_today": false,
+            "selectable": false,
             "variants": [],
+            "classification": "reviewed design classification (default rejection)",
             "note": "not proposed for v1; kernel specialization or chemistry not qualified by #212"
           }
         },
@@ -10416,35 +10752,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -10766,35 +11110,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
@@ -11064,35 +11416,43 @@
           "freemass_v1": {
             "status": "current_default",
             "executable_today": true,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "source fact (LateralFlowMode)",
             "note": "unchanged production behavior; protected control"
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference",
               "cached",
               "cached_dormant"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
             "executable_today": false,
+            "selectable": true,
             "variants": [
               "reference"
             ],
+            "classification": "reviewed design classification (PROPOSED table)",
             "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
           }
         }
