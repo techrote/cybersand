@@ -18,13 +18,30 @@ func _text(id: String) -> String:
 func _emit(name: String, value: Variant) -> void:
 	print("LCB_DIAG ", JSON.stringify({"experiment":name, "result":value}))
 
+# A failed install, tick or capture stops the runner: no measurement from a
+# failed run is ever emitted.
+func _abort(message: String) -> void:
+	printerr("LCB_DIAG_FAILURE ", message)
+	quit(1)
+
+func _install(text: String) -> Dictionary:
+	var inst: Dictionary = Runner.install(text, 1)
+	if not inst.ok: _abort("install refused: " + str(inst.get("error", "")))
+	return inst
+
+func _tick(inst: Dictionary) -> bool:
+	if inst.host.advance(): return true
+	_abort("tick faulted: " + str(inst.host.last_error))
+	return false
+
 func _run() -> void:
 	# A. Front distance from the gate face and surface heights against time.
 	for id: String in LADDER:
-		var inst: Dictionary = Runner.install(_text(id), 1)
+		var inst: Dictionary = _install(_text(id))
+		if not inst.ok: return
 		var rows: Array = []
 		for tick: int in range(1, 1801):
-			inst.host.advance()
+			if not _tick(inst): return
 			if tick in [15, 30, 60, 120, 240, 480, 960, 1800]:
 				rows.append({"tick":tick, "front":M.front_x(inst.world, 255, 240, 983) - 240,
 					"gate_surface_y":M.surface_y(inst.world, 236, 64, 256),
@@ -36,6 +53,9 @@ func _run() -> void:
 			var definition: Dictionary = JSON.parse_string(_text(id))
 			definition.execution.liquid_surface_adhesion_enabled = adhesion
 			var result: Dictionary = Runner.run_text(JSON.stringify(definition), 1, 1800)
+			if result.status != "completed":
+				_abort(id + " adhesion run " + str(result.status) + ": " + str(result.get("error", "")))
+				return
 			var observed: Dictionary = {}
 			for entry: Dictionary in result.capture.observations: observed[entry.id] = entry.value
 			_emit("adhesion/" + id, {"adhesion":adhesion, "status":result.status,
@@ -46,10 +66,11 @@ func _run() -> void:
 	for region: Array in [[0, 0, 1024, 1024], [16, 16, 992, 272], [40, 96, 944, 160]]:
 		var definition: Dictionary = JSON.parse_string(_text("lcb.rest.deep-quiet-pool.v1"))
 		definition.interest.region = region
-		var inst: Dictionary = Runner.install(JSON.stringify(definition), 1)
+		var inst: Dictionary = _install(JSON.stringify(definition))
+		if not inst.ok: return
 		var series: Array = []
 		for tick: int in range(1, 21):
-			inst.host.advance()
+			if not _tick(inst): return
 			if tick in [1, 3, 4, 20]:
 				var values: Dictionary = bridge.inspect_statistics(inst.world)["values"]
 				series.append({"tick":tick, "visited":values.visited_cells, "scheduled_cores":values.scheduled_cores,

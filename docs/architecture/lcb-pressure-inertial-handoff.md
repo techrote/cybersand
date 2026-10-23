@@ -58,6 +58,25 @@ requirements.
 - saturated connected Water has no legal move, so vented limbs never level
   (mechanism report §A, §B).
 
+**Admission criteria versus characterization (both families).**
+
+- **Mandatory admission criteria.** These are correctness invariants:
+  - exact quantity, including overfill or whole-cell count;
+  - closed ledgers;
+  - 1/4-worker parity;
+  - no fallback;
+  - bounded writes and allocation;
+  - complete physical-state hash;
+  - unchanged default goldens;
+  - the gas-topology expectations;
+  - static-rest and momentum-ledger regressions.
+
+  A candidate that fails any of them is invalid.
+- **Characterization screens.** The physical screens below (surge, front,
+  retained fraction, vented-head level difference) are recorded per arm as
+  pass or fail. They are **not** admission criteria, and the owner's feel
+  comparison decides preference.
+
 **Two separate behaviours, screened separately:**
 
 1. **Deep-release surge.** Column height must produce lateral acceleration at
@@ -102,7 +121,7 @@ fixtures:
 | `gas.single-pocket` | amount 100 constant |
 | `gas.twin-pockets` | two ids, each 100, no 100,50,25… cycling |
 | `gas.unequal-merge` | 100+120 → 220 once |
-| `gas.compress-vent-reseal` | 100 held at half volume; vent with ledger; reseal at 50 |
+| `gas.compress-vent-reseal.v2` | 100 held at half volume (50 cells); vent through a channel and dry U-trap with an exchange ledger; reseal by a supported trap Water plug into a **new** 58-cell compartment at atmospheric amount, held to t30 (v1's unsupported roof plug is withdrawn) |
 | empty-only-chunk survival | native test |
 | hash change on gas-only change | needs the hash API |
 
@@ -152,6 +171,16 @@ report §E).
 
 **Laws** (transition matrix §5):
 - gravity increment to vy;
+- **horizontal momentum from rest comes only from**:
+  - **(A) diagonal moves**, which re-aim the speed along the move;
+  - **(B) blocked-fall deflection**, which turns `f_deflect·vy` into vx toward a
+    free side.
+
+  There is no pressure or column-height term. At a released dam, face cells
+  whose diagonal target becomes Empty fall diagonally and gain vx. Cells that
+  fall farther carry more speed into the turn, so depth dependence *can*
+  emerge kinematically, but it is not guaranteed;
+- a per-tick momentum ledger that closes exactly;
 - travel by accumulator, one step per whole unit, re-checking each target;
 - blocked travel zeroes the normal component and books the impulse;
 - damping is multiplicative per tick, with a rest threshold;
@@ -165,7 +194,9 @@ report §E).
 |---|---|
 | Residual motion after support removal | lateral travel continuing ≥ N ticks after the source stops, with N declared |
 | Over-run past a step | travel beyond where the gravity-only path stops |
-| Depth-dependent surge | screen: depth response ≥ 1.25 at t240; depth-160 front ≥ 142; retained ≤ 0.70 at t1800 |
+| Depth-dependent surge | **characterization screen, not an admission criterion**: depth response ≥ 1.25 at t240; depth-160 front ≥ 142; retained ≤ 0.70 at t1800. The result is recorded either way. |
+| Static rest | **mandatory**: a fully supported closed pool keeps every velocity at exactly 0 and its physical-state hash constant |
+| Momentum ledger | **mandatory**: the per-tick identity closes exactly on the dam ladder and the lock exchanges |
 
 **Material specialization survives:** stages 1, 2, 4 and 5 of the material
 hooks apply unchanged. For Brine that means:

@@ -89,6 +89,10 @@ related-documents: [liquid-solver-family-policy.md, lcb-pressure-inertial-handof
 | Operation | Rule (Proposed) |
 |---|---|
 | Gravity | adds a fixed-point increment to vy each tick, saturating at the frozen bound |
+| **Lateral source A: diagonal move** | When the straight-down target is blocked and a diagonal target is taken (the existing gravity order: down, then both diagonals in `deterministic_direction` order), the velocity is re-aimed along the move. The speed is `|v| + g` minus a registered turn loss, split equally into ±vx and vy in fixed point; the loss is booked. A cell at rest that falls diagonally gains only the gravity increment, along the diagonal. |
+| **Lateral source B: blocked-fall deflection** | When down and both diagonals are blocked, `vy > 0`, and a lateral neighbour is Empty, a fraction `f_deflect` (family parameter) of `vy` becomes vx toward the free side (deterministic order when both are free). vy is zeroed and `(1−f_deflect)·vy` is booked as dissipation. A cell with `vy = 0` gains nothing. |
+| **No other lateral source** | There is no column-height scan, pressure or neighbour push. A head-like term would make the family a pressure solver, and that is `pressure_flow_v1`'s role. A static, fully supported cell therefore stays at exactly zero velocity. |
+| Momentum ledger | Per tick and component, in exact fixed-point integers: `p_after = p_before + gravity_input − (turn + deflection + blocked + damping + drag losses)`. All losses are non-negative and recorded; the identity must close every tick. |
 | Travel | accumulator += velocity; the cell moves one step per whole unit, re-checking each target. A blocked target leaves the cell in place, zeroes that velocity component and books the lost impulse. |
 | Collision with Wall/solid/body mask | the normal component is zeroed (no bounce in v1) and the impulse is booked as dissipation; no Rapier force is applied |
 | Same-family collision | each cell's velocity is preserved (no exchange in v1). A blocked cell waits. |
@@ -140,7 +144,7 @@ related-documents: [liquid-solver-family-policy.md, lcb-pressure-inertial-handof
 | Connect / merge | distinct compartments merge **once**; amount = sum; one survivor id with ancestry of both; generation++ (`gas.unequal-merge`: 100+120 → 220) |
 | Split | conservative deterministic split by a recorded allocation rule (volume-proportional with a remainder to the lowest new id); new ids; ancestry |
 | Vent | connection to the atmosphere sets pressure toward atmospheric, with an explicit exchange ledger (amount in/out) |
-| Reseal | a new compartment from the current volume at atmospheric amount (`gas.compress-vent-reseal`); the stale id is never reused |
+| Reseal | a new compartment from the current volume at atmospheric amount (`gas.compress-vent-reseal.v2`, supported U-trap seal); the stale id is never reused |
 | Disappear | free volume → 0 (filled by liquid): the remaining amount is booked to a declared sink or refused; never silently dropped |
 | Empty-only chunks | compartment state is independent of whether Empty chunks are allocated (native #200 test) |
 | Cross-family boundary | gas abuts a non-pressure liquid: the liquid is an impermeable boundary; volume counts only Empty cells |

@@ -30,6 +30,7 @@ func _initialize() -> void:
 	_accounting()
 	_ownership()
 	_dormancy()
+	_reseal()
 	print("LCB physics contracts: %d assertions, %d failures" % [assertions, failures])
 	quit(1 if failures > 0 else 0)
 
@@ -44,11 +45,21 @@ func _run(id: String, workers: int, ticks: int) -> Dictionary:
 	var inst: Dictionary = Runner.install(_text(id), workers)
 	expect(inst.ok, id + " install refused: " + str(inst.get("error", "")))
 	if not inst.ok: return {}
+	if not _advance(inst, id, ticks): return {}
+	return inst
+
+# Every controlled tick is checked; a fault or a failed capture fails closed and
+# no measurement is taken from that run.
+func _advance(inst: Dictionary, id: String, ticks: int) -> bool:
 	for tick: int in range(ticks):
 		if not inst.host.advance():
-			expect(false, id + " faulted at tick %d" % tick)
-			return {}
-	return inst
+			expect(false, id + " faulted at tick %d: %s" % [tick, inst.host.last_error])
+			return false
+	var capture: Dictionary = inst.host.capture(CyberMicroScenarioIdentity.current("unavailable"))
+	if bool(capture.get("failed", false)):
+		expect(false, id + " capture reports a failed run: " + str(capture.get("error", "")))
+		return false
+	return true
 
 # Blocked arms stay blocked; acceptance fixtures parse and match their
 # Python-derived inventories.
@@ -90,17 +101,27 @@ func _deep_release() -> void:
 	expect(response < 1.25, "Current unexpectedly meets a candidate depth-response screen (%.2f)" % response)
 
 # Vented and roofed limbs: Current moves nothing and cannot tell them apart.
+# Content hash and Water total must not change; the state hash (which includes
+# tick/scheduler state) must equal its measured t300 golden at 1 and 4 workers.
 func _heads() -> void:
+	var state_t300: Dictionary = {"lcb.head.vented-two-limb.v1":"15825c7a967f67c2",
+		"lcb.head.sealed-two-limb.v1":"4462b7b202987cad"}
 	var limbs: Array = []
-	for id: String in ["lcb.head.vented-two-limb.v1", "lcb.head.sealed-two-limb.v1"]:
-		var inst: Dictionary = _run(id, 1, 0)
-		if inst.is_empty(): return
-		var before: Array = M.world_hashes(inst.world)
-		for tick: int in range(300): inst.host.advance()
-		var after: Array = M.world_hashes(inst.world)
-		expect(before[0] == after[0] and before[2] == after[2], id + ": Current moved Water in a saturated two-limb")
-		limbs.append([M.water(inst.world, [100, 64, 48, 184]), M.water(inst.world, [300, 64, 48, 184])])
-	expect(limbs[0] == [1860480, 391680] and limbs[0] == limbs[1],
+	for id: String in state_t300:
+		var per_worker: Array = []
+		for workers: int in [1, 4]:
+			var inst: Dictionary = _run(id, workers, 0)
+			if inst.is_empty(): return
+			var before: Array = M.world_hashes(inst.world)
+			if not _advance(inst, id, 300): return
+			var after: Array = M.world_hashes(inst.world)
+			expect(before[0] == after[0] and before[2] == after[2], id + ": Current moved Water in a saturated two-limb")
+			expect(after[1] == state_t300[id], id + ": t300 state hash changed: " + str(after[1]))
+			per_worker.append(after)
+			if workers == 1:
+				limbs.append([M.water(inst.world, [100, 64, 48, 184]), M.water(inst.world, [300, 64, 48, 184])])
+		expect(per_worker[0] == per_worker[1], id + ": 1/4-worker hashes differ")
+	expect(limbs.size() == 2 and limbs[0] == [1860480, 391680] and limbs[0] == limbs[1],
 		"Current vented and roofed limbs differ; a gas distinction would need W-PF")
 
 # Signed per-species ledger: Water+Salt consumes one Water cell of any mass.
@@ -110,7 +131,7 @@ func _accounting() -> void:
 	var region: Array = [40, 32, 944, 224]
 	var salt0: int = int(Runner.material_counts(inst.world, [40, 64, 944, 192]).get(23, 0))
 	var water0: int = M.water(inst.world, region)
-	for tick: int in range(120): inst.host.advance()
+	if not _advance(inst, "lcb.granular.salt-dissolution.v1", 120): return
 	var counts: Dictionary = Runner.material_counts(inst.world, [40, 64, 944, 192])
 	var consumed: int = salt0 - int(counts.get(23, 0))
 	var delta_water: int = M.water(inst.world, region) - water0
@@ -122,7 +143,7 @@ func _accounting() -> void:
 	var basin: Array = [72, 96, 880, 160]
 	var m0: Dictionary = Runner.material_counts(mixed.world, basin)
 	var w0: int = M.water(mixed.world, basin)
-	for tick: int in range(30): mixed.host.advance()
+	if not _advance(mixed, "lcb.mixed.water-oil-brine.v1", 30): return
 	var m1: Dictionary = Runner.material_counts(mixed.world, basin)
 	var s: int = int(m0.get(23, 0)) - int(m1.get(23, 0))
 	expect(int(m1.get(24, 0)) - int(m0.get(24, 0)) == 2 * s, "M0 Brine delta is not +2 per Salt")
@@ -162,3 +183,20 @@ func _dormancy() -> void:
 		expect(int(oil.get(16, 0)) == 4096 and int(low.get(16, 0)) == 4078, "Oil did not keep moving beside resting Water")
 		observed.append(M.world_hashes(inst.world))
 	expect(observed[0] == observed[1], "Dormancy control differs between 1 and 4 workers")
+
+# Reseal v2 geometry control on Current (no gas): the closure opens, and the
+# U-trap Water plug is supported and stationary from tick 10 to tick 30.
+func _reseal() -> void:
+	var id: String = "lcb.accept.gas.compress-vent-reseal.v2"
+	var observed: Array = []
+	for workers: int in [1, 4]:
+		var inst: Dictionary = _run(id, workers, 10)
+		if inst.is_empty(): return
+		var trap10: int = M.water(inst.world, [23, 16, 3, 1])
+		if not _advance(inst, id, 20): return
+		var trap30: int = M.water(inst.world, [23, 16, 3, 1])
+		expect(trap10 == 3 * 255 and trap30 == 3 * 255, id + ": trap seal Water moved (%d, %d)" % [trap10, trap30])
+		expect(int(inst.world.material_at(19, 12)) == 0, id + ": closure cell not open after tick 5")
+		expect(M.water(inst.world, [8, 8, 12, 13]) == 2550 + 50 * 255, id + ": room Water changed after compression")
+		observed.append(M.world_hashes(inst.world))
+	expect(observed[0] == observed[1], id + ": 1/4-worker results differ")

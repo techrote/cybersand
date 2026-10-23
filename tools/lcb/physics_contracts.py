@@ -34,6 +34,7 @@ PF = {"family": "pressure_flow_v1", "depends_on": ["#213 LCB-000 PASS", "#200"]}
 PF_DORMANT = {"family": "pressure_flow_v1/cached_dormant", "depends_on": ["#213 LCB-000 PASS", "#200", "#201"]}
 IN = {"family": "inertial_cellular_v1", "depends_on": ["#200 per-material policy", "#212"]}
 CY = {"family": "cellular_yield_v1 (Water, whole-cell)", "depends_on": ["#213 LCB-000 PASS", "#200"]}
+RESEAL_EXPECTED: dict = {}
 
 
 def room(s: cat.Scenario, x0: int, interior_w: int = 10) -> None:
@@ -42,6 +43,41 @@ def room(s: cat.Scenario, x0: int, interior_w: int = 10) -> None:
     s.rect(x0, 8, interior_w + 2, 1, WALL).rect(x0, 20, interior_w + 2, 1, WALL)
     s.rect(x0, 8, 1, 13, WALL).rect(right, 8, 1, 13, WALL)
     s.fill(x0 + 1, 19, interior_w, 1)
+
+
+def gas_volume(s: cat.Scenario, tick: int, seed=(13, 10), box=(0, 0, 64, 32)) -> dict:
+    """Static geometry after scheduled events up to `tick`: connected Empty volume
+    containing `seed`, and whether it reaches the box edge (open atmosphere).
+    Ignores liquid motion; used only to preregister expected volumes."""
+    x0, y0, w, h = box
+    grid = {}
+    for i in range(0, len(s.rects), 5):
+        x, y, rw, rh, m = s.rects[i:i + 5]
+        for yy in range(max(y, y0), min(y + rh, y0 + h)):
+            for xx in range(max(x, x0), min(x + rw, x0 + w)):
+                grid[(xx, yy)] = m
+    for i in range(0, len(s.fills), 6):
+        x, y, rw, rh = s.fills[i:i + 4]
+        for yy in range(y, y + rh):
+            for xx in range(x, x + rw):
+                grid[(xx, yy)] = WATER
+    for e in s.events:
+        if e["tick"] > tick or e["kind"] == "sample":
+            continue
+        for yy in range(e["y"], e["y"] + e["height"]):
+            for xx in range(e["x"], e["x"] + e["width"]):
+                grid[(xx, yy)] = WATER if e["kind"] == "fill" else 0
+    seen, stack, vented = {seed}, [seed], False
+    while stack:
+        cx, cy = stack.pop()
+        for nx, ny in ((cx + 1, cy), (cx - 1, cy), (cx, cy + 1), (cx, cy - 1)):
+            if not (x0 <= nx < x0 + w and y0 <= ny < y0 + h):
+                vented = True
+                continue
+            if (nx, ny) not in seen and grid.get((nx, ny), 0) == 0:
+                seen.add((nx, ny))
+                stack.append((nx, ny))
+    return {"volume": len(seen), "vented": vented}
 
 
 def gas_fixture(sid, title, purpose, horizon, build):
@@ -86,16 +122,27 @@ def fixtures() -> list[cat.Scenario]:
         "The archived candidate kept 120; W-PF must merge the amounts once to 220.", 10, merge))
 
     def vent(s):
+        # v2: the vent path leaves through the right wall, runs along a roofed
+        # channel and through a dry U-trap whose bottom row rests on a Wall
+        # floor. Resealing fills that bottom row with Water, which is supported
+        # and cannot fall; v1 used an unsupported roof plug (review on #226).
         room(s, 8)
+        s.rect(20, 11, 5, 1, WALL).rect(20, 13, 3, 1, WALL).rect(22, 13, 1, 4, WALL)
+        s.rect(24, 11, 1, 5, WALL).rect(22, 17, 5, 1, WALL).rect(26, 9, 1, 9, WALL)
         s.event(1, "fill", 9, 14, 10, 5, 255, 0)
-        s.event(5, "erase", 13, 8, 1, 1)
-        s.event(9, "fill", 13, 8, 1, 1, 255, 0)
-        s.observe("water-t0", 0, (8, 8, 12, 13)).observe("water-t12", 12, (8, 8, 12, 13))
-        s.region("pocket", "Pocket", (9, 9, 10, 10)).region("vent", "Vent at (13,8)", (13, 8, 1, 1))
-    out.append(gas_fixture("lcb.accept.gas.compress-vent-reseal.v1", "Compress, vent and reseal",
-        "#200 reproducer: Water fills half the pocket at tick 1 (compression, amount stays 100), a roof cell opens "
-        "at tick 5 (vent to atmosphere), and a Water plug reseals it at tick 9. The archived candidate kept 100; "
-        "W-PF must reseal with the current volume's atmospheric amount and an explicit exchange ledger.", 12, vent))
+        s.event(5, "erase", 19, 12, 1, 1)
+        s.event(9, "fill", 23, 16, 3, 1, 255, 0)
+        room_region, trap = (8, 8, 12, 13), (23, 16, 3, 1)
+        s.observe("room-water-t0", 0, room_region).observe("room-water-t4", 4, room_region)
+        s.observe("trap-water-t10", 10, trap).observe("room-water-t30", 30, room_region)
+        s.observe("trap-water-t30", 30, trap)
+        s.region("pocket", "Pocket", (9, 9, 10, 10)).region("closure", "Closure (19,12), erased at t5", (19, 12, 1, 1))
+        s.region("trap", "U-trap seal row", trap)
+    out.append(gas_fixture("lcb.accept.gas.compress-vent-reseal.v2", "Compress, vent and reseal (U-trap)",
+        "#200 reproducer: Water fills half the pocket at tick 1 (compression, amount stays 100); the wall cell "
+        "(19,12) opens at tick 5, venting the pocket through a channel and a dry U-trap; at tick 9 Water fills the "
+        "trap's supported bottom row and reseals it. The archived candidate kept 100; W-PF must reseal from the "
+        "current volume at atmospheric amount with an explicit exchange ledger, and hold it to tick 30.", 30, vent))
 
     s = cat.Scenario("lcb.accept.dormant-water-active-oil.v1", "dormancy", "Resting deep Water beside falling Oil",
         "A full deep Water pool rests behind a divider while an Oil block is released at tick 120 in the next "
@@ -134,7 +181,16 @@ SURGE = {
         "note": "Current spreads diffusively (front ~ t^0.5) with almost no depth dependence; adhesion-off "
                 "diagnostic changed nothing material.",
     },
-    "screens": {
+    "admission_criteria": {
+        "pressure_flow_v1": ["exact visible+overfill quantity every tick", "closed gas and Water ledgers",
+                             "identical 1/4-worker observations and physical-state hash", "no fallback",
+                             "bounded writes/allocation", "default goldens unchanged"],
+        "inertial_cellular_v1": ["exact whole-cell count every tick", "momentum ledger closes every tick",
+                                 "static closed pool keeps every velocity exactly 0 and its hash constant",
+                                 "identical 1/4-worker observations and physical-state hash", "no fallback",
+                                 "bounded writes/allocation", "default goldens unchanged"],
+    },
+    "characterization_screens": {
         "pressure_flow_v1": {"exact_quantity": "visible + overfill Water integer constant every tick",
                              "depth_response_t240_min": 1.5, "front_distance_t240_depth160_min": 213,
                              "retained_fraction_t1800_depth160_max": 0.50,
@@ -145,13 +201,33 @@ SURGE = {
                                  "worker_parity": "identical 1/4-worker observations and physical-state hash"},
     },
     "rationale": "Shallow-water dam-break fronts advance ballistically at ~2*sqrt(g*h); sqrt(160/48)=1.83. "
-                 "Screens allow dissipation and are deliberately loose; passing a screen is not owner feel "
-                 "acceptance, and failing one is a recorded result, not a build blocker.",
+                 "Characterization screens allow dissipation and are deliberately loose: they are recorded per "
+                 "arm, are NOT admission criteria, and passing one is not owner feel acceptance. Admission "
+                 "criteria are the correctness invariants listed separately.",
+    "inertial_lateral_sources": "horizontal momentum arises only from diagonal moves (speed re-aimed along "
+        "the move, turn loss booked) and blocked-fall deflection (f_deflect*vy to vx toward a free side, "
+        "remainder booked); no pressure or column-height term; a static supported cell stays at zero velocity",
 }
 
 
 def contracts(fx: list[cat.Scenario]) -> dict:
     defs = {s.id: s for s in fx}
+    global RESEAL_EXPECTED
+    v = defs["lcb.accept.gas.compress-vent-reseal.v2"]
+    phases = {name: gas_volume(v, tick) for name, tick in (("t0", 0), ("t1-t4", 1), ("t5-t8", 5), ("t9-t30", 9))}
+    assert not phases["t1-t4"]["vented"] and phases["t5-t8"]["vented"] and not phases["t9-t30"]["vented"]
+    RESEAL_EXPECTED = {
+        "geometry_volumes": phases,
+        "t1-t4": "one sealed compartment, amount 100 (atmospheric for the original 100 cells), volume "
+                 f"{phases['t1-t4']['volume']}, pressure derived accordingly; same id and generation as t0",
+        "t5-t8": "vented: connected to atmosphere; amount relaxes toward atmospheric with an explicit exchange "
+                 "ledger entry; vent state recorded",
+        "t9": f"reseal: a NEW compartment id (old id never reused), volume {phases['t9-t30']['volume']}, "
+              "amount = atmospheric amount for that volume, ledger entry for the reseal",
+        "t10-t30": "id, generation, volume and amount constant; trap Water stays 3 full cells (stationary seal)",
+        "hash": "every amount, volume, vent or id change alters the versioned physical-state hash",
+        "inspect_at": [4, 5, 8, 9, 10, 30],
+    }
     return {
         "schema": "lcb-physics-contracts-v1",
         "status": "LCB physics prepass. Executable contracts run on Current only; every candidate arm is BLOCKED "
@@ -168,7 +244,7 @@ def contracts(fx: list[cat.Scenario]) -> dict:
              "purpose": "Vented/shared-atmosphere communicating head (#49 boundary assumption).",
              "current_control": {"status": "executable", "test": "test_lcb_physics_contracts.gd::heads",
                                  "characterization": "zero cells move in 2400 ticks; difference stays 120.0 rows"},
-             "screens": {"pressure_flow_v1": {
+             "characterization_screens": {"pressure_flow_v1": {
                  "vented-two-limb": "limb level difference at t2400 <= 12 rows (10% of 120) with exact quantity",
                  "narrow-passage": "limb level difference at t2400 <= 60 rows (50% of 120) with exact quantity",
                  "stability": "after first reaching the bound, the difference never grows by more than 2 rows"},
@@ -194,9 +270,10 @@ def contracts(fx: list[cat.Scenario]) -> dict:
                  "lcb.accept.gas.twin-pockets.v1": "two identities, each amount 100 at every tick; no cycling",
                  "lcb.accept.gas.unequal-merge.v1": "after tick 1: one pocket, amount 220, generation advanced, "
                                                    "ancestry records both parents",
-                 "lcb.accept.gas.compress-vent-reseal.v1": "t1-t4 amount 100 at volume 50 (pressure doubled); "
-                     "t5 vented to atmosphere with exchange ledger; t9 resealed amount = atmospheric amount for "
-                     "the current volume (50); each change alters the versioned physical-state hash"},
+                 "lcb.accept.gas.compress-vent-reseal.v2": RESEAL_EXPECTED},
+             "withdrawn": {"lcb.accept.gas.compress-vent-reseal.v1":
+                           "Water roof plug above an Empty cell can fall and reopen the vent (review on #226); "
+                           "never accepted; replaced by v2"},
              "current_control": {"status": "geometry-only",
                                  "note": "Current runs check definitions and Water inventory only; it has no gas"},
              "blocked_native_cases": ["empty-only (unallocated) chunk gas survival: MicroScenario reserves the "
@@ -222,7 +299,11 @@ def contracts(fx: list[cat.Scenario]) -> dict:
              "current_control": {"status": "executable", "test": "test_lcb_physics_contracts.gd::ownership",
                                  "case": "Brine (state_b tag 77) sinks through partial Water (mass 200); both "
                                          "tuples arrive intact"},
-             "blocked_cases": ["inertial velocity follows its cell through a density swap (#212)",
+             "blocked_cases": ["inertial static closed pool: every velocity exactly 0, physical hash constant (#212)",
+                               "inertial momentum ledger closes every tick on the dam ladder (#212)",
+                               "inertial dam release: vx nonzero only in cells that moved diagonally or "
+                               "deflected (#212)",
+                               "inertial velocity follows its cell through a density swap (#212)",
                                "pressure overfill follows Water through moves and retires on conversion (#200)",
                                "no optional state remains on an Empty vacancy (#200/#212)"],
              "arms": [{"arm": "M1", **IN}, {"arm": "W-PF", **PF}]},
@@ -248,7 +329,7 @@ def main() -> int:
     for s in fx:
         data.setdefault("fixtures", []).append({**s.metadata(), "definition_path": f"res://tests/fixtures/lcb/acceptance/{s.id}.json"})
     outputs[CONTRACTS] = json.dumps(data, indent=2) + "\n"
-    stale = []
+    stale = [p.name for p in OUT.glob("*.json") if p not in outputs] if OUT.exists() else []
     for path, text in outputs.items():
         if args.check:
             current = path.read_text(encoding="utf-8").replace("\r\n", "\n") if path.exists() else None

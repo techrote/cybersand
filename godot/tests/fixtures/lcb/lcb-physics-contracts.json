@@ -44,7 +44,26 @@
           "depth_response_t240": 1.06,
           "note": "Current spreads diffusively (front ~ t^0.5) with almost no depth dependence; adhesion-off diagnostic changed nothing material."
         },
-        "screens": {
+        "admission_criteria": {
+          "pressure_flow_v1": [
+            "exact visible+overfill quantity every tick",
+            "closed gas and Water ledgers",
+            "identical 1/4-worker observations and physical-state hash",
+            "no fallback",
+            "bounded writes/allocation",
+            "default goldens unchanged"
+          ],
+          "inertial_cellular_v1": [
+            "exact whole-cell count every tick",
+            "momentum ledger closes every tick",
+            "static closed pool keeps every velocity exactly 0 and its hash constant",
+            "identical 1/4-worker observations and physical-state hash",
+            "no fallback",
+            "bounded writes/allocation",
+            "default goldens unchanged"
+          ]
+        },
+        "characterization_screens": {
           "pressure_flow_v1": {
             "exact_quantity": "visible + overfill Water integer constant every tick",
             "depth_response_t240_min": 1.5,
@@ -60,7 +79,8 @@
             "worker_parity": "identical 1/4-worker observations and physical-state hash"
           }
         },
-        "rationale": "Shallow-water dam-break fronts advance ballistically at ~2*sqrt(g*h); sqrt(160/48)=1.83. Screens allow dissipation and are deliberately loose; passing a screen is not owner feel acceptance, and failing one is a recorded result, not a build blocker."
+        "rationale": "Shallow-water dam-break fronts advance ballistically at ~2*sqrt(g*h); sqrt(160/48)=1.83. Characterization screens allow dissipation and are deliberately loose: they are recorded per arm, are NOT admission criteria, and passing one is not owner feel acceptance. Admission criteria are the correctness invariants listed separately.",
+        "inertial_lateral_sources": "horizontal momentum arises only from diagonal moves (speed re-aimed along the move, turn loss booked) and blocked-fall deflection (f_deflect*vy to vx toward a free side, remainder booked); no pressure or column-height term; a static supported cell stays at zero velocity"
       },
       "arms": [
         {
@@ -101,7 +121,7 @@
         "test": "test_lcb_physics_contracts.gd::heads",
         "characterization": "zero cells move in 2400 ticks; difference stays 120.0 rows"
       },
-      "screens": {
+      "characterization_screens": {
         "pressure_flow_v1": {
           "vented-two-limb": "limb level difference at t2400 <= 12 rows (10% of 120) with exact quantity",
           "narrow-passage": "limb level difference at t2400 <= 60 rows (50% of 120) with exact quantity",
@@ -171,14 +191,49 @@
         "lcb.accept.gas.single-pocket.v1",
         "lcb.accept.gas.twin-pockets.v1",
         "lcb.accept.gas.unequal-merge.v1",
-        "lcb.accept.gas.compress-vent-reseal.v1"
+        "lcb.accept.gas.compress-vent-reseal.v2"
       ],
       "purpose": "#200 trapped-gas defect regressions: identity independent of amount, unequal merge once, reseal from current volume, gas state in the physical hash.",
       "expected": {
         "lcb.accept.gas.single-pocket.v1": "amount 100 and one stable pocket identity at every tick",
         "lcb.accept.gas.twin-pockets.v1": "two identities, each amount 100 at every tick; no cycling",
         "lcb.accept.gas.unequal-merge.v1": "after tick 1: one pocket, amount 220, generation advanced, ancestry records both parents",
-        "lcb.accept.gas.compress-vent-reseal.v1": "t1-t4 amount 100 at volume 50 (pressure doubled); t5 vented to atmosphere with exchange ledger; t9 resealed amount = atmospheric amount for the current volume (50); each change alters the versioned physical-state hash"
+        "lcb.accept.gas.compress-vent-reseal.v2": {
+          "geometry_volumes": {
+            "t0": {
+              "volume": 100,
+              "vented": false
+            },
+            "t1-t4": {
+              "volume": 50,
+              "vented": false
+            },
+            "t5-t8": {
+              "volume": 1820,
+              "vented": true
+            },
+            "t9-t30": {
+              "volume": 58,
+              "vented": false
+            }
+          },
+          "t1-t4": "one sealed compartment, amount 100 (atmospheric for the original 100 cells), volume 50, pressure derived accordingly; same id and generation as t0",
+          "t5-t8": "vented: connected to atmosphere; amount relaxes toward atmospheric with an explicit exchange ledger entry; vent state recorded",
+          "t9": "reseal: a NEW compartment id (old id never reused), volume 58, amount = atmospheric amount for that volume, ledger entry for the reseal",
+          "t10-t30": "id, generation, volume and amount constant; trap Water stays 3 full cells (stationary seal)",
+          "hash": "every amount, volume, vent or id change alters the versioned physical-state hash",
+          "inspect_at": [
+            4,
+            5,
+            8,
+            9,
+            10,
+            30
+          ]
+        }
+      },
+      "withdrawn": {
+        "lcb.accept.gas.compress-vent-reseal.v1": "Water roof plug above an Empty cell can fall and reopen the vent (review on #226); never accepted; replaced by v2"
       },
       "current_control": {
         "status": "geometry-only",
@@ -270,6 +325,9 @@
         "case": "Brine (state_b tag 77) sinks through partial Water (mass 200); both tuples arrive intact"
       },
       "blocked_cases": [
+        "inertial static closed pool: every velocity exactly 0, physical hash constant (#212)",
+        "inertial momentum ledger closes every tick on the dam ladder (#212)",
+        "inertial dam release: vx nonzero only in cells that moved diagonally or deflected (#212)",
         "inertial velocity follows its cell through a density swap (#212)",
         "pressure overfill follows Water through moves and retires on conversion (#200)",
         "no optional state remains on an Empty vacancy (#200/#212)"
@@ -436,12 +494,12 @@
       "definition_path": "res://tests/fixtures/lcb/acceptance/lcb.accept.gas.unequal-merge.v1.json"
     },
     {
-      "id": "lcb.accept.gas.compress-vent-reseal.v1",
+      "id": "lcb.accept.gas.compress-vent-reseal.v2",
       "version": 1,
       "category": "gas-acceptance",
-      "title": "Compress, vent and reseal",
-      "purpose": "#200 reproducer: Water fills half the pocket at tick 1 (compression, amount stays 100), a roof cell opens at tick 5 (vent to atmosphere), and a Water plug reseals it at tick 9. The archived candidate kept 100; W-PF must reseal with the current volume's atmospheric amount and an explicit exchange ledger.",
-      "horizon_ticks": 12,
+      "title": "Compress, vent and reseal (U-trap)",
+      "purpose": "#200 reproducer: Water fills half the pocket at tick 1 (compression, amount stays 100); the wall cell (19,12) opens at tick 5, venting the pocket through a channel and a dry U-trap; at tick 9 Water fills the trap's supported bottom row and reseals it. The archived candidate kept 100; W-PF must reseal from the current volume at atmospheric amount with an explicit exchange ledger, and hold it to tick 30.",
+      "horizon_ticks": 30,
       "manual": {
         "free_play": false,
         "note": "controlled gas apparatus; Current has no gas state"
@@ -466,7 +524,7 @@
           1
         ]
       },
-      "definition_path": "res://tests/fixtures/lcb/acceptance/lcb.accept.gas.compress-vent-reseal.v1.json"
+      "definition_path": "res://tests/fixtures/lcb/acceptance/lcb.accept.gas.compress-vent-reseal.v2.json"
     },
     {
       "id": "lcb.accept.dormant-water-active-oil.v1",

@@ -26,7 +26,11 @@ related-documents: [../architecture/liquid-state-transition-matrix.md, ../archit
   - new diagnostics from `godot/tests/run_lcb_mechanism_diagnostics.gd`,
     retained as [mechanism-diagnostics.jsonl](lcb-physics-prepass-2026-10-23/mechanism-diagnostics.jsonl)
     (SHA-256 `d2d4fefd…8105`, 97 s);
-  - `test_lcb_physics_contracts.gd`: 112 assertions, 0 failures.
+  - `test_lcb_physics_contracts.gd`: 112 assertions, 0 failures at first
+    publication. After the #226 review hardening it is 131/0: every tick is
+    checked, there are state-hash pins, and the reseal v2 control is added.
+  - The hardened diagnostics runner reproduces the retained output byte for
+    byte.
 - **Scope:** characterization of Current behaviour only. A conserving result
   is **not** treated as physically good behaviour. No candidate solver ran.
 
