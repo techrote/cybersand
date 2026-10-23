@@ -1,0 +1,52 @@
+name: MAT-003 continuation untimed qualification
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'tools/experiments/mat003_continuation/**'
+      - '.github/workflows/mat003-continuation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mat003-continuation-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          lfs: false
+      - name: Check provider and independent evidence failure contracts
+        run: |
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m unittest discover -s tools/experiments/mat003_continuation -p 'test_*.py' -v
+      - name: S2P compiler output and untimed correctness
+        run: |
+          python3 tools/experiments/mat003_continuation/qualify.py --track s2p --output build/mat003-continuation/s2p
+          python3 tools/experiments/mat003_continuation/verify.py build/mat003-continuation/s2p > build/mat003-continuation/s2p/independent-readback.json
+          python3 tools/experiments/mat003_continuation/assembly_report.py build/mat003-continuation/s2p > build/mat003-continuation/s2p-assembly.json
+      - name: WCLEAR real-event apparatus qualification without timing
+        run: |
+          python3 tools/experiments/mat003_continuation/qualify.py --track wclear --output build/mat003-continuation/wclear
+          python3 tools/experiments/mat003_continuation/verify.py build/mat003-continuation/wclear > build/mat003-continuation/wclear/independent-readback.json
+      - name: C128 untimed correctness and compiler output
+        run: |
+          python3 tools/experiments/mat003_continuation/qualify.py --track c128 --output build/mat003-continuation/c128
+          python3 tools/experiments/mat003_continuation/verify.py build/mat003-continuation/c128 > build/mat003-continuation/c128/independent-readback.json
+          python3 tools/experiments/mat003_continuation/assembly_report.py build/mat003-continuation/c128 > build/mat003-continuation/c128-assembly.json
+      - name: Retain complete inputs binaries assembly raw semantic evidence and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mat003-continuation-untimed-${{ github.run_id }}
+          path: build/mat003-continuation/
+          if-no-files-found: error
+          retention-days: 90
