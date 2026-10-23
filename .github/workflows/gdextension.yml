@@ -20,6 +20,11 @@ on:
       - 'tools/ci/check_ci_provider_policy.py'
       - 'tools/ci/test_ci_provider_policy.py'
   workflow_dispatch:
+    inputs:
+      physical_actor_stress:
+        description: Run the isolated physical actor timeout campaign
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -39,6 +44,10 @@ env:
   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
 
 jobs:
+  physical-actor-stress:
+    if: github.event_name == 'workflow_dispatch' && inputs.physical_actor_stress == true
+    uses: ./.github/workflows/physical-actor-stress.yml
+
   ready_scope:
     name: ready validation scope
     if: github.event_name == 'pull_request' && github.event.action == 'ready_for_review'
@@ -106,7 +115,7 @@ jobs:
     name: linux build x86_64
     needs: [ready_scope]
     if: >-
-      always() &&
+      always() && inputs.physical_actor_stress != true &&
       (github.event_name != 'pull_request' ||
        (github.event.pull_request.draft == false &&
         (github.event.action != 'ready_for_review' ||
@@ -196,7 +205,7 @@ jobs:
     # Ubuntu runner using the pinned LLVM-MinGW toolchain below.
     needs: [ready_scope]
     if: >-
-      always() &&
+      always() && inputs.physical_actor_stress != true &&
       (github.event_name != 'pull_request' ||
        (github.event.pull_request.draft == false &&
         (github.event.action != 'ready_for_review' ||
@@ -262,7 +271,7 @@ jobs:
     name: windows headless regression
     needs: [ready_scope]
     if: >-
-      always() &&
+      always() && inputs.physical_actor_stress != true &&
       (github.event_name != 'pull_request' ||
        (github.event.pull_request.draft == false &&
         (github.event.action != 'ready_for_review' ||
@@ -326,7 +335,7 @@ jobs:
     name: linux regression shard ${{ matrix.shard }}
     needs: linux-build
     if: >-
-      always() &&
+      always() && inputs.physical_actor_stress != true &&
       needs.linux-build.result == 'success' &&
       (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
     # Every shard has >=2 logical CPUs so weighted planning may move the worker
@@ -397,7 +406,7 @@ jobs:
     name: linux serial equivalence
     needs: linux-build
     if: >-
-      always() &&
+      always() && inputs.physical_actor_stress != true &&
       needs.linux-build.result == 'success' &&
       github.event_name == 'pull_request' &&
       github.event.pull_request.draft == false &&
@@ -464,7 +473,7 @@ jobs:
     name: linux x86_64
     needs: [ready_scope, linux-regression, linux-serial-equivalence]
     if: >-
-      always() &&
+      always() && inputs.physical_actor_stress != true &&
       (github.event_name != 'pull_request' ||
        (github.event.pull_request.draft == false &&
         (github.event.action != 'ready_for_review' ||

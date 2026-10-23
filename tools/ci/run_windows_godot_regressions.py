@@ -28,7 +28,8 @@ GODOT_SHA512 = (
 )
 INPUT_SCOPES = (
     "godot", "native/include", "native/src", "tools/ci/run_godot_regressions.py",
-    "tools/ci/run_windows_godot_regressions.py", ".github/workflows/gdextension.yml",
+    "tools/ci/run_windows_godot_regressions.py", "tools/ci/godot_timeout_diagnostics.py",
+    ".github/workflows/gdextension.yml",
     "third_party/godot-runtime.lock.json", "third_party/native-toolchain.lock.json",
 )
 RAPIER_IMPORT_DESCRIPTORS = frozenset({
