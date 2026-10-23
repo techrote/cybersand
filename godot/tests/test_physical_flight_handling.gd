@@ -7,6 +7,7 @@ extends SceneTree
 const Rig = preload("res://scripts/physical_actor_rig.gd")
 const Catalog = preload("res://scripts/physical_actor_catalog.gd")
 const Profile = preload("res://scripts/physical_flight_profile.gd")
+const Controller = preload("res://scripts/physical_flight_controller.gd")
 const Bridge = preload("res://scripts/rapier_physics_bridge.gd")
 const DT: float = 1.0 / 60.0
 const ORIGIN := Vector2(400.0, 400.0)
@@ -304,6 +305,6 @@ func run() -> void:
 	print("4LY_002_HANDLING_METRICS ", JSON.stringify({
 		"registered_thresholds": registered,
 		"fixed_delta": DT, "common_impulse_speed": COMMON_SPEED,
-		"controller_hash": Profile.CONTROLLER_ID, "profiles": results}))
+		"controller_hash": Controller.controller_hash(), "profiles": results}))
 	print("4LY-002 handling: %d assertions, %d failures" % [assertions, failures])
 	quit(0 if failures == 0 else 1)
