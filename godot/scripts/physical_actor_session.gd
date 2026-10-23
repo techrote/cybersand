@@ -809,6 +809,22 @@ func ik_observe(actor_id: int, grant_id: String) -> Dictionary:
 
 
 func _ik_refuse(actor_id: int, reason: String, request: Variant = null) -> Dictionary:
+	# A malformed/stale command from the *current authenticated owner*
+	# terminates its old pending motor request. An unrelated source cannot
+	# disarm the real owner by sending a corrupt packet or guessed actor ID.
+	if request is Dictionary:
+		var claimed: Variant = request.get("actor_id", -1)
+		if JointTargets.integer(claimed, 0, _joint_pilots.size() - 1):
+			var slot: int = int(claimed)
+			if is_joint_pilot(slot) and not _joint_grants[slot].is_empty():
+				var g: Dictionary = _joint_grants[slot]
+				if request.get("run_id") == run_id and request.get("epoch") == epoch \
+					and request.get("control_generation") == _generations[slot] \
+					and request.get("grant_id") == g.grant_id \
+					and request.get("source_id") == g.source_id \
+					and request.get("policy_sha256") == g.policy_sha256 \
+					and request.get("producer") == g.producer:
+					cancel_input(slot, epoch, StringName(str(g.producer)))
 	var refusal: Dictionary = {
 		"protocol": JointTargets.PROTOCOL, "operation": "ik_submit",
 		"accepted": false, "reason": reason, "owner_tick": tick,
