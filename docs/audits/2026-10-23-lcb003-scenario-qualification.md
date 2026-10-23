@@ -358,6 +358,10 @@ No fixture bytes, controls bytes or goldens changed.
 
 ## Addendum — signed campaign ledger v3 correction (2026-10-23)
 
+*Superseded in part by the
+[v4 correction](#addendum--signed-campaign-ledger-v4-correction-2026-10-23).
+This section is retained as the historical v3 record.*
+
 This responds to re-review findings
 [N3 and N4](https://github.com/techrote/cybersand/pull/226#issuecomment-6364909265),
 raised against `54a8d62`. The v2 rule still admitted two defects:
@@ -457,3 +461,106 @@ test_lcb_registry.py` → 31 OK. They include:
 
 The original counterexamples keep their outcomes: final 10001 → open; final 1
 → unverified; one Salt cell → the dissolution bound fails.
+
+## Addendum — signed campaign ledger v4 correction (2026-10-23)
+
+This responds to the independent re-review findings
+[R1–R4](https://github.com/techrote/cybersand/pull/226#issuecomment-6366526752)
+against `b9b36c9`. The governing author handoff is
+[6366713878](https://github.com/techrote/cybersand/pull/226#issuecomment-6366713878).
+Under v3, four classes of history were accepted as closed and eligible.
+Reproduced against the frozen v3 reducer:
+
+| Finding | Reproducer | v3 (frozen) | v4 |
+|---|---|---|---|
+| R1 | initial 10000; Salt/Brine/Oil/Sodium (40,10,5,1)→(30,30,5,1); Water 10000→10000 | closed, eligible | `OPEN_UNEXPLAINED` |
+| R1 | the same with Sodium 0 at both checkpoints | closed, eligible | `OPEN_UNEXPLAINED` |
+| R2 | valid Salt control plus an undeclared Lava 0→100 | `closed_signed_reaction_ledger`, eligible | `OPEN_UNEXPLAINED` (Lava changed) |
+| R2 | valid Salt control plus Lava 0 at t0, with the key absent at t30 | `closed_signed_reaction_ledger`, eligible | `MALFORMED_EVIDENCE` |
+| R3 | initial 0, source 100; checkpoints t0/t10 = 0/0; source event at tick 10 | `closed_timed_source_sink`, delta −100 | `UNVERIFIED_INCOMPLETE_HORIZON` |
+| R3 | initial 100, source 100, sink 50; t0/t10 = 100/100; events at ticks 10 and 11 | `closed_timed_source_sink`, delta −50 | `UNVERIFIED_INCOMPLETE_HORIZON` |
+| R3 | net-zero future pair: source 50 at tick 10, sink 50 at tick 11 | `closed_timed_source_sink`, delta 0 | `UNVERIFIED_INCOMPLETE_HORIZON` |
+| R4 | initial 0, source 100, sink 100; t0/t10 = 0/0; sink at tick 1, then source at tick 2 | `closed_timed_source_sink` | `OPEN_UNEXPLAINED` (balance −100 at tick 1) |
+| control | source at tick 1, then sink at tick 2 | closed | `closed_timed_source_sink` |
+| control | valid Salt-only ledger, Water 10000→7450 | closed | `closed_signed_reaction_ledger` |
+
+**Rule `lcb-signed-ledger-v4`** (`signed_ledger` in `tools/lcb/lcb_registry.py`):
+
+- **Species domain (R2).** The domain is every non-Water inventory species,
+  plus Brine when Salt is present, plus every key in any supplied
+  observation.
+  - A species absent from the inventory is declared 0 and must be observed as
+    0 at tick 0.
+  - Every domain key must be present at every checkpoint. A missing key is
+    `MALFORMED_EVIDENCE`, never "unchanged".
+  - A `water` species key is malformed, because Water is accounted by
+    `water_integer`.
+- **Active reactions (R1).** With species evidence, a reactive species is
+  active only if its observed count changes. Without species evidence, it is
+  active if its declared count is positive.
+  - Zero-count or constant species never open a reaction route.
+  - Supplied species evidence is evaluated **before** any constant-Water
+    closure. With no active reaction, any changed species is open.
+  - With Salt only, every species other than Salt and Brine must stay
+    constant, and the signed Salt ledger applies against the declared
+    initial state.
+  - Any other active set is `UNVERIFIED_REACTION_AMOUNT`.
+  - Without species evidence, an active Sodium is unverified even if Water
+    is constant.
+- **Event horizon (R3).** An event indexed N is first observed at completed
+  N+1, so every counted event must have `tick < last completed checkpoint`.
+  Otherwise the case is `UNVERIFIED_INCOMPLETE_HORIZON` (ineligible), because
+  the declared totals are captured amounts the observations do not cover.
+  This also catches net-zero future pairs. A closed source/sink ledger always
+  has a zero final signed delta, and the reducer asserts it.
+- **Chronological balance (R4).** Events must be listed in application order:
+  non-decreasing tick, and same-tick events in the order the host applied
+  them, so list order is authoritative. Each event records a source or a
+  sink, never both. The cumulative Water balance must stay ≥ 0 after every
+  event; otherwise the case is `OPEN_UNEXPLAINED`. Unordered or combined
+  events are `MALFORMED_EVIDENCE`. Checkpoint agreement is still required at
+  every checkpoint.
+
+**Records:**
+- Historical controls `989ff70d…`, v2 `5688e26f…` and v3 `b70f3257…` are all
+  unchanged.
+- v3 is now verified **against its own frozen reducer**,
+  `tools/lcb/ledger_v3_historical.py`. Its `signed_ledger`,
+  `_aggregate_source_sink` and `_salt_species_ledger` are verbatim from
+  `b9b36c9` (file LF `23dcb9a2…4355`). Its `reledger` is a faithful
+  compatibility adapter: dependencies are injected and the reducer hash is
+  pinned. `ledger_v2_historical.py` is described the same way: verbatim
+  accounting functions plus a `reledger` adapter. Both checks are check-only
+  (`reledger --version v2|v3 --check`) and never write.
+- New re-reduction:
+  [`lcb-scenario-ledger-2026-10-23.v4.json`](../reference/lcb-scenario-ledger-2026-10-23.v4.json).
+  It records the input hashes (controls, v2, v3, reducer, catalogue tool,
+  protected manifest), the superseded controls/v2/v3 states and the evidence
+  limits.
+- **No classification changes from v3** (`changed_from_v3` is empty):
+  - 20 closed;
+  - 4 `UNVERIFIED_SOURCE_SINK_TIMING`;
+  - 3 `UNVERIFIED_REACTION_AMOUNT`;
+  - none open or malformed.
+
+  R1–R4 concern species and timed-event evidence that the retained campaign
+  never supplied. The record version changes because the reducer identity
+  changed.
+- Registry qualification routes to v4. Goldens, definitions and
+  measurements are unchanged.
+
+**Regressions.** `tools/lcb/test_lcb_registry.py` now has 52 tests, run
+locally with `python -m unittest discover -s tools/lcb -p
+test_lcb_registry.py` → 52 OK. The new classes are:
+- `MixedReactiveEvidenceR1`, 6 tests;
+- `SpeciesDomainR2`, 6;
+- `TimedHorizonR3`, 4;
+- `EventBalanceR4`, 4;
+- frozen v2 and v3 checks, and the v4 record check.
+
+Every earlier counterexample keeps its outcome:
+- N3: ±1 initial discrepancy and 10000→10000 are open; the valid control
+  closes;
+- N4: 0/100/50/100 is open;
+- the original Salt cases: final 10001 is open, final 1 is unverified, and one
+  Salt cell fails the bound.
