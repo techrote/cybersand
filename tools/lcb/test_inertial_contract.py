@@ -66,7 +66,102 @@ class WorkedExamples(unittest.TestCase):
         e = run("reaim-carried")
         reaim = [x for x in e["entries"] if x["stage"] == "reaim"][0]
         self.assertEqual((reaim["jx"], reaim["jy"], reaim["loss"], reaim["remainder"]), (19, -24, 5, 4))
-        self.assertEqual(e["moves"], [(3, 1), (3, 2)])
+        self.assertEqual(e["moves"], [(3, 2)])  # one diagonal move (N1: no split into axis substeps)
+
+
+def deflect_entry(rows, vx):
+    res = ic.update(ic.Grid(rows), ic.Cell(2, 1, vx, 32))
+    return res, [e for e in res.entries if e.stage == "deflect"][0]
+
+
+class DeflectionLossN2(unittest.TestCase):
+    """U3b deflection, checked against independently computed values (re-review N2)."""
+
+    RIGHT_FREE, LEFT_FREE = ["#####", "##W..", "#####"], ["#####", "..W##", "#####"]
+
+    def test_review_counterexample_opposing_vx(self):
+        res, d = deflect_entry(self.LEFT_FREE, 40)
+        # (40, 32) -> (16, 0): impulses (-24, -32); L1 loss 72 - 16 = 56, not vy_in - d = 8.
+        self.assertEqual((d.jx, d.jy, d.loss), (-24, -32, 56))
+        self.assertEqual((res.cell.vx, res.cell.vy), (15, 0))  # after damping -1
+
+    def test_hand_computed_registered_examples(self):
+        expected = {  # name: (deflect jx, jy, loss), end (x, y, vx, vy, ax, ay)
+            "deflect-right-aligned-vx": ((24, -32, 8), (4, 1, 32, 0, 0, 0)),
+            "deflect-right-opposing-vx": ((24, -32, 28), (2, 1, 14, 0, 14, 0)),
+            "deflect-left-aligned-vx": ((-24, -32, 8), (0, 1, -32, 0, 0, 0)),
+            "deflect-left-opposing-vx": ((-24, -32, 56), (2, 1, 15, 0, 15, 0)),
+        }
+        for name, (entry, end) in expected.items():
+            e = run(name)
+            d = [x for x in e["entries"] if x["stage"] == "deflect"][0]
+            self.assertEqual((d["jx"], d["jy"], d["loss"]), entry, name)
+            self.assertEqual(tuple(e["end"][k] for k in ("x", "y", "vx", "vy", "ax", "ay")), end, name)
+
+    def test_general_formula_both_sides_and_signs(self):
+        for rows, s in ((self.RIGHT_FREE, 1), (self.LEFT_FREE, -1)):
+            for vx in (-40, -24, -10, -1, 0, 1, 10, 24, 40):
+                for vy_in in (1, 7, 32, 60):
+                    res = ic.update(ic.Grid(rows), ic.Cell(2, 1, vx, vy_in))
+                    d = [e for e in res.entries if e.stage == "deflect"][0]
+                    mag = vy_in * 3 // 4
+                    self.assertEqual((d.jx, d.jy), (s * mag, -vy_in), (s, vx, vy_in))
+                    self.assertEqual(d.loss, abs(vx) + vy_in - abs(vx + s * mag), (s, vx, vy_in))
+                    self.assertGreaterEqual(d.loss, 0)
+                    self.assertEqual(sum(e.stage == "gravity" for e in res.entries), 1)
+                    stages = [e.stage for e in res.entries]
+                    self.assertLess(stages.index("support"), stages.index("deflect"))
+
+    def test_rest_qualification_reaim_is_intentional(self):
+        # Diagonally blocked support: rest never drifts. An enterable diagonal re-aims from rest (U3a).
+        self.assertEqual(run("supported-rest-free-side")["end"]["vx"], 0)
+        self.assertEqual(run("reaim-from-rest")["end"]["vx"], 2)
+
+
+class DirectionalEligibilityN1(unittest.TestCase):
+    """A lighter foreign liquid is entered only by a move with dy = +1 (re-review N1)."""
+
+    def test_review_counterexample_no_horizontal_swap(self):
+        e = run("no-horizontal-swap")
+        self.assertEqual(e["moves"], [])
+        self.assertEqual(e["swaps"], [])
+        self.assertEqual((e["end"]["x"], e["end"]["vx"]), (1, 0))
+        self.assertFalse(any(x["stage"] == "drag" for x in e["entries"]))
+        contact = [x for x in e["entries"] if x["stage"] == "contact"][0]
+        self.assertEqual((contact["jx"], contact["loss"]), (-19, 19))
+
+    def test_horizontal_lighter_contact_equals_wall_mask_same(self):
+        ends = {}
+        for blocker in (ic.LIGHTER, ic.WALL, ic.MASK, ic.SAME):
+            res = ic.update(ic.Grid(["#####", "#W" + blocker + ".#", "#####"]), ic.Cell(1, 1, 20, 0))
+            ends[blocker] = (vars(res.cell), [(e.stage, e.jx, e.jy, e.loss) for e in res.entries])
+        self.assertEqual(len({str(v) for v in ends.values()}), 1, ends)
+
+    def test_no_deflection_into_lighter_side(self):
+        e = run("no-deflection-into-lighter")
+        self.assertEqual((e["end"]["vx"], e["end"]["vy"]), (0, 0))
+        self.assertEqual([x["stage"] for x in e["entries"]], ["gravity", "support", "contact"])
+
+    def test_vertical_and_diagonal_down_swaps_are_permitted(self):
+        self.assertEqual(run("drag-density-swap")["swaps"], [(0, 1)])
+        e = run("reaim-diagonal-into-lighter")
+        self.assertEqual((e["swaps"], e["moves"]), ([(1, 1)], [(3, 2)]))
+        drag = [x for x in e["entries"] if x["stage"] == "drag"][0]
+        self.assertEqual((drag["jx"], drag["jy"], drag["loss"]), (-4, -4, 8))
+
+    def test_lighter_below_is_not_support(self):
+        res = ic.update(ic.Grid([".....", "..W..", "..o..", "#####"]), ic.Cell(2, 1, 0, 0))
+        self.assertFalse(any(e.stage == "support" for e in res.entries))
+
+    def test_corner_falling_cell_never_swaps_sideways(self):
+        # Falling cell whose DDA first wants a horizontal-only substep (nx=2, ny=1): the
+        # lighter neighbour is a horizontal contact, never a sideways swap.
+        res = ic.update(ic.Grid(["######", "#Wo..#", "#....#", "######"]), ic.Cell(1, 1, 40, 20))
+        self.assertEqual((res.swaps, res.moves), ([], []))
+        self.assertEqual((res.cell.vx, res.cell.vy), (0, 23))
+        # The same history with the lighter cell on the true diagonal-down target swaps.
+        res = ic.update(ic.Grid(["######", "#W...#", "#..o.#", "######"]), ic.Cell(1, 1, 40, 20))
+        self.assertEqual((res.swaps, res.moves), ([(1, 1)], [(2, 1), (3, 2)]))
 
     def test_saturation_and_travel_bounds(self):
         e = run("saturate-free-fall")
@@ -93,8 +188,9 @@ class Invariants(unittest.TestCase):
         cases = 0
         for ring in itertools.product(alphabet, repeat=8):
             rows = ["".join(ring[0:3]), ring[3] + ic.SAME + ring[4], "".join(ring[5:8])]
-            below_blocked = ring[6] not in ic.ENTERABLE
-            diag_blocked = ring[5] not in ic.ENTERABLE and ring[7] not in ic.ENTERABLE
+            probe = ic.Grid(rows)
+            below_blocked = not probe.enterable(1, 1, 0, 1)
+            diag_blocked = not probe.enterable(1, 1, -1, 1) and not probe.enterable(1, 1, 1, 1)
             for vx, vy, ax, ay in itertools.product((-40, -1, 0, 1, 40), (0, 1, 32, 64), (0, -15, 15), (0, 15)):
                 start = ic.Cell(1, 1, vx, vy, ax, ay)
                 res = ic.update(ic.Grid(rows), start)
@@ -105,6 +201,11 @@ class Invariants(unittest.TestCase):
                 self.assertTrue(abs(c.vx) <= P.vmax and 0 <= c.vy <= P.vmax, key)
                 self.assertTrue(abs(c.ax) < P.q and abs(c.ay) < P.q, key)
                 self.assertLessEqual(len(res.moves), 2 * (P.vmax // P.q), key)
+                self.assertTrue(all(dy == 1 for _, dy in res.swaps), key)  # N1: never a sideways swap
+                path = [(1, 1)] + res.moves
+                for (x0, y0), (x1, y1) in zip(path, path[1:]):
+                    if rows[y1][x1] == ic.LIGHTER if 0 <= y1 < 3 and 0 <= x1 < 3 else False:
+                        self.assertEqual(y1 - y0, 1, key)
                 stages = {e.stage for e in res.entries}
                 if vx == 0 and c.vx != 0:
                     self.assertTrue(stages & {"reaim", "deflect"}, key)

@@ -339,7 +339,7 @@ contracts are corrected.
 
 | Finding | Correction | Evidence class |
 |---|---|---|
-| 2 (P1) inertial ledger/order | One ordered update, `inertial-update-v1`, is defined in [transition matrix §5](../architecture/liquid-state-transition-matrix.md#5-velocity-and-momentum-in-pf-flow). It carries signed per-component impulses and a separate non-negative L1 speed-loss ledger. Support cancels this tick's gravity before deflection, so a supported cell at rest never drifts. One inelastic contact rule covers Wall, body mask and same family. | Standalone contract model (`tools/lcb/inertial_contract.py`, 13 tests, 393,660-case sweep). **No inertial World executed.** |
+| 2 (P1) inertial ledger/order | One ordered update, `inertial-update-v1`, is defined in [transition matrix §5](../architecture/liquid-state-transition-matrix.md#5-velocity-and-momentum-in-pf-flow). It carries signed per-component impulses and a separate non-negative L1 speed-loss ledger. Support cancels this tick's gravity before deflection, so a supported cell at rest never drifts. One inelastic contact rule covers Wall, body mask and same family. | Standalone contract model (`tools/lcb/inertial_contract.py`; 13 tests at `efc5c12`; the sweep executes 787,320 updates, not the 393,660 first stated, which re-review N5 corrected). **No inertial World executed.** |
 | 4 (P2) gas phases | `completed(N)` and `post_event(N)` phases are defined. Every expectation and `inspect_at_completed` value now uses completed ticks. Each event rectangle is checked at completed N and N+1 at 1 and 4 workers. Geometry and amounts are unchanged. | Current geometry control, executed locally (`test_lcb_physics_contracts.gd` 174/0). A mutation using the old `<=` reading fails 10 checks. |
 | 5 (P3) qualifications | Section A now says "approximately diffusive" and "weak depth response". Pressure and retained velocity are no longer claimed to be the only possible deep-release fixes; that is a hypothesis with no ablation. The Oil-vs-Brine attribution is a hypothesis, and its missing ablation is named. The kernel dispatch order now covers Oil, Lava and Acid; for Acid, movement comes first and corrosion follows movement attempts (L3151–L3176). | Source reading at `e5baca0` (`world.cpp`) |
 
@@ -351,3 +351,17 @@ Gas-phase observations (Current geometry, completed ticks):
 - merge erase indexed t1: Wall at t1, Empty at t2.
 
 These match the reviewer's independent probe for the first four.
+
+## Addendum — inertial N1/N2/N5 corrections (2026-10-23)
+
+This responds to the [second re-review](https://github.com/techrote/cybersand/pull/226#issuecomment-6364909265)
+of `efc5c12`. The measurements above are unchanged.
+
+| Finding | Correction | Evidence class |
+|---|---|---|
+| N1 (P2) | Eligibility is directional for support, re-aim, side selection and every travel move. A lighter foreign liquid is entered only by a `dy = +1` move: straight or diagonal down, which is Current's vertical density exchange. A horizontal move into it is a contact. A DDA sub-step needing both axes is first tried as one diagonal move. The reviewer's case `["#####", "#Wo.#", "#####"]` with `Cell(1,1,20,0)` now makes horizontal contact (vx 0, no drag, no move). | Contract model; 23 tests |
+| N2 (P2) | The U3b loss is `|vx| + vy_in − |vx + s·d|`, booked separately from the signed impulses `(s·d, −vy_in)`. The reviewer's case `(40, 32)` deflecting left books 56. Aligned and opposing cases on both sides are registered and tested against independently computed values. "Never drifts" is qualified to the diagonally blocked case. | Contract model |
+| N5 (P3) | The sweep count is 3⁸ × 5 × 4 × 3 × 2 = 787,320 updates; 393,660 was wrong. The sweep now also asserts swap direction. It is not offered as proof of the written formula; the analytic tests cover that. | Executed (Python) |
+
+No inertial World has executed. The boundary law in §E is unchanged: vertical
+density exchange only.

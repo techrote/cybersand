@@ -203,7 +203,16 @@ executable contract model `tools/lcb/inertial_contract.py`). Per tick:
 Properties of this update:
 - **Horizontal momentum from rest comes only from (A) and (B).** There is no
   pressure or column-height term.
-- **A supported cell at rest carries no `vy`, so it never drifts sideways.**
+- **A supported cell at rest whose diagonals are blocked carries no `vy`, so
+  it never drifts sideways.** If a diagonal target is eligible, U3a re-aims
+  from rest by design. The mandatory static closed-pool regression is
+  unchanged.
+- **Eligibility is directional** (re-review N1). A lighter foreign liquid is
+  entered only by a move with `dy = +1`, straight or diagonal down, which is
+  the vertical density exchange of Current `can_density_exchange`. A
+  horizontal move never swaps; a lighter neighbour is a horizontal contact.
+- **Deflection loss** (re-review N2) is `|vx| + vy_in − |vx + s·d|`. The signed
+  impulses `(s·d, −vy_in)` are booked separately.
 - At a released dam, face cells whose diagonal target becomes Empty re-aim
   and gain vx. Cells that fall farther carry more speed into the turn or the
   landing, so depth dependence *can* emerge kinematically, but it is not

@@ -254,7 +254,9 @@ SURGE = {
                  "criteria are the correctness invariants listed separately.",
     "inertial_lateral_sources": "inertial-update-v1 (contract 'inertial-update'): horizontal momentum arises "
         "only from diagonal re-aim (A) and blocked-fall deflection of velocity carried in from earlier ticks (B); "
-        "support cancels the current tick's gravity first, so a supported cell at rest never drifts; no pressure "
+        "support cancels the current tick's gravity first, so a supported cell at rest with both diagonals blocked "
+        "never drifts (an eligible diagonal re-aims from rest by design); a lighter liquid is entered only with "
+        "dy = +1, never horizontally; no pressure "
         "or column-height term",
 }
 

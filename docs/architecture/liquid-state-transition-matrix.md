@@ -110,20 +110,21 @@ always, because v1 has no upward impulse source.
 
 | Step | Rule |
 |---|---|
-| U1 support | `supported` := the cell below is **not enterable**, evaluated before any velocity change. Only Empty and a lighter liquid (by vertical density swap) are enterable. Wall, solid, transient body mask and an occupied same-family cell are all non-enterable, under one contact rule. |
+| Eligibility (N1 correction) | One **directional** rule `eligible(dx, dy)` serves support, re-aim, side selection and every travel move. Empty: any move. A lighter foreign liquid: **only a move with `dy = +1`**, straight or diagonal down. This is the vertical density exchange Current `can_density_exchange` admits (vertical delta ≠ 0). A horizontal move (`dy = 0`) never swaps; a lighter neighbour beside the cell is a horizontal contact. Wall, solid, transient body mask and an occupied same-family cell are never eligible and share one contact rule. No new foreign-liquid boundary law is introduced. |
+| U1 support | `supported` := `not eligible(0, +1)`, evaluated before any velocity change. A lighter liquid below is therefore not support. |
 | U2 gravity | `vy += g`, **exactly once per tick**, booked as the only speed-adding entry. |
-| U3a diagonal re-aim (lateral source A) | If supported and a diagonal-below target is enterable: the `sign(vx)` side first, else `deterministic_direction` order. Then `S = |vx| + vy` (including this tick's `g`), `turn = trunc(S·1/8)`, `S' = S − turn`, `|vx| = S' // 2` toward the diagonal, `vy = S' − |vx|`. A cell at rest gains only `g` along the diagonal. |
-| U3b support and deflection (lateral source B) | If supported and both diagonals are blocked, a **support** impulse `−g` first cancels this tick's gravity. It is a constraint, not dissipation. Only the velocity `vy_in` **carried in from earlier ticks** may deflect: `d = trunc(vy_in·3/4)` toward a free side (`sign(vx)` side first, else deterministic order), `vx += ±d`, `vy −= vy_in`, booked loss `vy_in − d`. With no free side, `vy −= vy_in` is a pure contact loss. **A supported cell at rest has `vy_in = 0`, so it never gains `vx`.** |
+| U3a diagonal re-aim (lateral source A) | If supported and `eligible(±1, +1)`: the `sign(vx)` side first, else `deterministic_direction` order. Then `S = |vx| + vy` (including this tick's `g`), `turn = trunc(S·1/8)`, `S' = S − turn`, `|vx| = S' // 2` toward the diagonal, `vy = S' − |vx|`. A cell at rest gains only `g` along the diagonal. |
+| U3b support and deflection (lateral source B) | If supported and both diagonals are blocked, a **support** impulse `−g` first cancels this tick's gravity. It is a constraint, not dissipation. Only the velocity `vy_in` **carried in from earlier ticks** may deflect. With `d = trunc(vy_in·3/4)` and side `s = ±1`, the first `eligible(s, 0)` side is chosen (`sign(vx)` side first, else deterministic order). Then `vx += s·d` and `vy −= vy_in`. The **signed impulses** are `(s·d, −vy_in)`. The **L1 speed loss** is `|vx| + vy_in − |vx + s·d|`, which includes cancellation against an opposing `vx` (N2 correction). It equals `vy_in − d` only when `vx = 0` or `sign(vx) = s`. Example: `(40, 32)` deflecting left gives `(16, 0)`, loss 72 − 16 = **56**. With no eligible side, `vy −= vy_in` is a pure contact loss. **A supported cell at rest with both diagonals blocked has `vy_in = 0`, so it never gains `vx`.** With an eligible diagonal, U3a re-aims from rest by design. |
 | U4 saturation | Clamp each component to `±vmax`. The clamped amount is a signed impulse with a non-negative loss. It is applied again after a travel landing. |
 | U5 damping | `v_c −= trunc(v_c·1/16)` per component, truncated toward zero. For a negative `vx` the impulse is **positive**: `−40` becomes `−38`, with impulse `+2`. |
-| U6 travel | `a += v`; whole steps `n = trunc(a / q)`, `a −= n·q`, so `|a| < q` and at most `vmax / q` = 4 cells per axis per tick. Unit moves follow a DDA, vertical first unless the vertical target is blocked while a horizontal move is due. **Every target is rechecked.** A lighter liquid swaps, and the mover loses `trunc(v·1/4)` per component (drag). **The first contact ends travel.** A vertical contact applies the U3b landing rule (deflection of the remaining `vy`, then saturation). A horizontal contact zeroes `vx` and `ax` as a booked contact impulse. |
+| U6 travel | `a += v`; whole steps `n = trunc(a / q)`, `a −= n·q`, so `|a| < q` and at most `vmax / q` = 4 cells per axis per tick. Moves follow a DDA. A sub-step that needs both axes is first tried as **one diagonal move** `(sx, +1)` when that move is eligible. Otherwise it becomes a vertical unit move, then a horizontal one. A permitted move with vertical displacement is therefore never split into a forbidden horizontal swap. **Every target is rechecked with `eligible`.** A lighter liquid swaps only on a `dy = +1` move, and the mover loses `trunc(v·1/4)` per component (drag). **The first contact ends travel.** A vertical contact applies the U3b landing rule (deflection of the remaining `vy`, then saturation). A horizontal contact zeroes `vx` and `ax` as a booked contact impulse. |
 | U7 rest and sleep | If supported, `vy = 0` and `|vx| ≤ rest`, then `vx = 0`. Any accumulator residue is reset and recorded as a travel note; it is not momentum. The cell is **sleep-eligible** iff `v = 0`, `a = 0` and it is supported. |
 | Momentum ledger | Per component, exactly: `v_after = v_before + gravity + Σ signed impulses`, where gravity is `(0, g)` and the impulses are support, re-aim, deflect, contact, saturate, damping, drag and rest. **Signed impulses are distinct from loss.** |
 | Speed-loss ledger | Separate, with L1 speed `S = |vx| + |vy|`: `S_after = S_before + g − Σ loss`, and every non-gravity loss ≥ 0. `support` is booked as a constraint, the rest as dissipation. The quadratic energy is not claimed. |
 | Rounding | Every rational product truncates toward zero. The signed remainder numerator is audited per entry and never stored. |
-| Collision with Wall/solid/body mask/same family | **One rule for all non-enterable targets**: vertical = the U3b landing, horizontal = zero `vx`. Same-family contact is **inelastic** in v1: no velocity exchange, and the occupied cell is unchanged. This resolves the earlier "preserves velocity" row, which would have stored unbounded pending motion. No Rapier force is applied. |
+| Collision with Wall/solid/body mask/same family, or a lighter liquid entered horizontally | **One rule for every ineligible move**: vertical = the U3b landing, horizontal = zero `vx`. Same-family contact is **inelastic** in v1: no velocity exchange, and the occupied cell is unchanged. This resolves the earlier "preserves velocity" row, which would have stored unbounded pending motion. No Rapier force is applied. |
 | No other lateral source | There is no column-height scan, pressure or neighbour push; that is `pressure_flow_v1`'s role. |
-| Displacing a lighter liquid (vertical swap) | Drag is booked per U6. The displaced cell keeps its own (or zero) state, and no velocity is written into a foreign family. |
+| Displacing a lighter liquid (vertical swap, `dy = +1` only) | Drag is booked per U6. The displaced cell keeps its own (or zero) state, and no velocity is written into a foreign family. |
 | Split/merge (PF partial flux) | Outgoing flux carries the source's updated velocity (the #200 defect fix); the receiver mass-weights it; rounding remainders are booked. |
 
 **Worked examples** (exact, in the registry):
@@ -132,25 +133,43 @@ always, because v1 has no upward impulse source.
 |---|---|---|---|
 | deflect right (left side blocked) | (2,1, 0,32, 0,0) | (3,1, 23,0, 7,0) | gravity +4y; support −4y; deflect +24x −32y, loss 8; damping −1x, loss 1, remainder 8 |
 | deflect left | (2,1, 0,32, 0,0) | (1,1, −23,0, −7,0) | mirror of the above |
+| deflect right, aligned vx | (2,1, 10,32, 0,0) | (4,1, 32,0, 0,0) | deflect +24x −32y, loss 10+32−34 = 8; damping −2x |
+| deflect right, opposing vx | (2,1, −10,32, 0,0) | (2,1, 14,0, 14,0) | deflect +24x −32y, loss 10+32−14 = **28** |
+| deflect left, aligned vx | (2,1, −10,32, 0,0) | (0,1, −32,0, 0,0) | deflect −24x −32y, loss 8; damping +2x |
+| deflect left, opposing vx (review N2) | (2,1, 40,32, 0,0) | (2,1, 15,0, 15,0) | deflect −24x −32y, loss 40+32−16 = **56**; damping −1x |
 | damp negative vx | (2,1, −40,0, 0,0) | (0,1, −38,0, −6,0) | gravity +4y; support −4y; damping **+2x**, loss 2, remainder −8 |
 | supported rest, free side | (2,1, 0,0, 0,0) | unchanged, sleep-eligible | gravity +4y; support −4y |
 | blocked by same family | (2,1, 0,20, 0,0) | (2,1, 0,0, 0,0), sleep-eligible | gravity +4y; support −4y; contact −20y, loss 20 |
 | re-aim from rest | (2,1, 0,0, 0,0) | (2,1, 2,2, 2,2) | gravity +4y; re-aim +2x −2y, loss 0, remainder 4 |
-| re-aim carried | (2,1, 0,40, 0,0) | (3,2, 18,19, 2,3) | re-aim +19x −24y, loss 5 (44 → 39); damping −1x −1y |
+| re-aim carried | (2,1, 0,40, 0,0) | (3,2, 18,19, 2,3), one diagonal move | re-aim +19x −24y, loss 5 (44 → 39); damping −1x −1y |
 | saturation and bounds | (2,1, 0,62, 0,15) | (2,5, 0,60, 0,11), 4 cells | saturate −2y; damping −4y |
 | contact mid-travel | (0,1, 48,0, 0,0) | (1,1, 0,0, 0,0), sleep-eligible | damping −3x; horizontal contact −45x |
 | body-mask landing | as deflect right, with a mask below | identical to deflect right | identical: one contact rule |
-| density swap drag | (2,1, 0,20, 0,0) | (2,2, 0,18, 0,7) | damping −1y; drag −5y, loss 5, remainder 3 |
+| density swap drag | (2,1, 0,20, 0,0) | (2,2, 0,18, 0,7) | damping −1y; drag −5y, loss 5, remainder 3; swap `(0,+1)` |
+| re-aim diagonally into a lighter liquid | (2,1, 0,40, 0,0), lighter at (3,2) | (3,2, 14,15, 2,3) | re-aim +19x −24y; damping −1x −1y; drag −4x −4y; swap `(+1,+1)` |
+| no horizontal swap (review N1) | (1,1, 20,0, 0,0), lighter at (2,1) | (1,1, 0,0, 0,0), sleep-eligible | damping −1x; horizontal contact −19x, loss 19; no drag, no move |
+| no deflection into a lighter side | (2,1, 0,32, 0,0), lighter left, Wall right | (2,1, 0,0, 0,0) | support −4y; vertical contact −32y, loss 32 |
 
 An exhaustive regression covers every 3×3 Empty/Wall/lighter neighbourhood
-across a velocity and accumulator grid (393,660 updates). It asserts:
+across a velocity and accumulator grid. That is 3⁸ × 5 × 4 × 3 × 2 =
+**787,320 updates**; the earlier figure of 393,660 was wrong (re-review N5). It
+asserts:
 - both ledgers close;
 - every non-gravity loss is ≥ 0;
 - exactly one gravity entry;
 - bounds `|v| ≤ vmax`, `|a| < q`, and ≤ 8 unit moves;
 - `vx` leaves 0 only through a re-aim or deflect entry;
 - a supported, diagonally blocked cell at rest stays exactly at rest and is
-  sleep-eligible.
+  sleep-eligible;
+- every density-exchange move has `dy = +1`, and no move enters a lighter
+  cell horizontally.
+
+The sweep checks ledger closure, bounds and swap direction. It does **not**
+by itself prove agreement with the written U3b formula. Separate analytic
+tests do that: they compute impulses and loss independently for both sides,
+for aligned and opposing `vx`, and for several `vy_in`. Further directional
+tests cover Wall, body mask, same-family and lighter horizontal contacts,
+corner travel, and lighter-below non-support.
 
 ## 6. Reactions and material conversion
 

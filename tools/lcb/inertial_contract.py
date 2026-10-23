@@ -18,12 +18,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-# Neighbourhood cells. Only EMPTY and LIGHTER are enterable by a falling inertial
-# cell (LIGHTER by vertical density swap). WALL, MASK (transient body mask) and
-# SAME (an occupied same-family cell) are all non-enterable and use one contact
+# Neighbourhood cells. Eligibility is directional (re-review N1): EMPTY is
+# enterable by any move; LIGHTER (a lighter foreign liquid) only by a move with a
+# downward vertical displacement (dy = +1, straight or diagonal down), the
+# density exchange Current `can_density_exchange` admits (vertical delta != 0).
+# A horizontal move (dy = 0) never swaps. WALL, MASK (transient body mask) and
+# SAME (an occupied same-family cell) are never enterable and use one contact
 # rule.
 EMPTY, LIGHTER, WALL, MASK, SAME = ".", "o", "#", "M", "W"
-ENTERABLE = {EMPTY, LIGHTER}
 
 
 @dataclass(frozen=True)
@@ -63,6 +65,7 @@ class Result:
     cell: Cell
     entries: list = field(default_factory=list)
     moves: list = field(default_factory=list)
+    swaps: list = field(default_factory=list)  # (dx, dy) of every density-exchange move
     sleep_eligible: bool = False
 
 
@@ -86,8 +89,11 @@ class Grid:
             return self.rows[y][x]
         return WALL  # outside the neighbourhood is a boundary
 
-    def enterable(self, x: int, y: int) -> bool:
-        return self.at(x, y) in ENTERABLE
+    def enterable(self, x: int, y: int, dx: int, dy: int) -> bool:
+        """May a cell at (x, y) move by (dx, dy)? The one eligibility rule for support,
+        re-aim, side selection and every travel move."""
+        target = self.at(x + dx, y + dy)
+        return target == EMPTY or (target == LIGHTER and dy == 1)
 
 
 def _book(res: Result, stage: str, before: tuple, c: Cell, remainder: int = 0, note: str = "") -> None:
@@ -98,17 +104,20 @@ def _book(res: Result, stage: str, before: tuple, c: Cell, remainder: int = 0, n
 
 
 def _side(g: Grid, c: Cell, dy: int, order: tuple) -> int:
-    """First enterable side (+1 right, -1 left) at row y+dy: sign(vx) first, else `order`."""
+    """First eligible move (s, dy), s = +1 right / -1 left: sign(vx) first, else `order`.
+    dy = 1 asks for a diagonal-down target, dy = 0 for a horizontal neighbour."""
     sides = ((1 if c.vx > 0 else -1), (-1 if c.vx > 0 else 1)) if c.vx else order
     for s in sides:
-        if g.enterable(c.x + s, c.y + dy):
+        if g.enterable(c.x, c.y, s, dy):
             return s
     return 0
 
 
 def _land(g: Grid, c: Cell, p: Params, res: Result, carried: int, order: tuple) -> None:
-    """Blocked fall: the carried vy is removed by the contact; f_deflect of it becomes vx
-    toward a free side. Used both before travel (U3) and at a travel contact (U6)."""
+    """Blocked fall: the carried vy is removed by the contact; d = trunc(f_deflect * vy) is
+    added to vx toward the first horizontally eligible side. Impulses (s*d, -vy); L1 loss
+    |vx| + vy - |vx + s*d|, which includes cancellation against an opposing vx (N2).
+    Used both before travel (U3) and at a travel contact (U6)."""
     before = (c.vx, c.vy)
     side = _side(g, c, 0, order)
     if side and carried > 0:
@@ -136,7 +145,7 @@ def update(g: Grid, start: Cell, p: Params = Params(), order: tuple = (1, -1)) -
     assert c.vy >= 0, "v1 has no upward impulse source"
     carried = c.vy
     # U1 support detection, before any velocity change.
-    supported = not g.enterable(c.x, c.y + 1)
+    supported = not g.enterable(c.x, c.y, 0, 1)
     # U2 exactly one gravity application.
     before = (c.vx, c.vy)
     c.vy += p.gravity
@@ -178,17 +187,16 @@ def update(g: Grid, start: Cell, p: Params = Params(), order: tuple = (1, -1)) -
     for i in range(1, k + 1):
         want_y = abs(ny) * i // k - done_y
         want_x = abs(nx) * i // k - done_x
+        # A sub-step needing both axes is first tried as one diagonal move, so a
+        # permitted move with vertical displacement is never split into a forbidden
+        # horizontal swap. Otherwise vertical, then horizontal, unit moves.
+        plan = [(sx, sy)] if want_x and want_y and g.enterable(c.x, c.y, sx, sy) else \
+            [(0, sy)] * bool(want_y) + [(sx, 0)] * bool(want_x)
         stop = False
-        for axis in (("y", "x") if want_y and not (want_x and not g.enterable(c.x, c.y + sy)) else ("x", "y")):
-            if axis == "y" and want_y:
-                tx, ty = c.x, c.y + sy
-            elif axis == "x" and want_x:
-                tx, ty = c.x + sx, c.y
-            else:
-                continue
-            target = g.at(tx, ty)
-            if target not in ENTERABLE:
-                if axis == "y":
+        for dx, dy in plan:
+            if not g.enterable(c.x, c.y, dx, dy):
+                target = g.at(c.x + dx, c.y + dy)
+                if dy:
                     _land(g, c, p, res, c.vy, order)
                     _saturate(c, p, res)
                 else:
@@ -197,23 +205,24 @@ def update(g: Grid, start: Cell, p: Params = Params(), order: tuple = (1, -1)) -
                     _book(res, "contact", before, c, note=f"horizontal contact with {target!r}")
                 stop = True
                 break
+            tx, ty = c.x + dx, c.y + dy
+            target = g.at(tx, ty)
             if target == LIGHTER:
                 before = (c.vx, c.vy)
                 gx, rgx = trunc_mul(c.vx, p.drag)
                 gy, rgy = trunc_mul(c.vy, p.drag)
                 c.vx, c.vy = c.vx - gx, c.vy - gy
                 _book(res, "drag", before, c, rgx + rgy, "density swap")
+                res.swaps.append((dx, dy))
             g.rows[c.y][c.x], g.rows[ty][tx] = target, SAME  # swap/move in the scratch grid
             c.x, c.y = tx, ty
             res.moves.append((tx, ty))
-            if axis == "y":
-                done_y += 1
-            else:
-                done_x += 1
+            done_x += abs(dx)
+            done_y += abs(dy)
         if stop:
             break
     # U7 rest and sleep eligibility.
-    supported = not g.enterable(c.x, c.y + 1)
+    supported = not g.enterable(c.x, c.y, 0, 1)
     if supported and c.vy == 0 and abs(c.vx) <= p.rest:
         before = (c.vx, c.vy)
         c.vx = 0
@@ -241,6 +250,10 @@ def ledger_closes(start: Cell, res: Result, p: Params = Params()) -> bool:
 EXAMPLES = {
     "deflect-right": (["#####", "##W..", "#####"], Cell(2, 1, 0, 32)),
     "deflect-left": (["#####", "..W##", "#####"], Cell(2, 1, 0, 32)),
+    "deflect-right-aligned-vx": (["#####", "##W..", "#####"], Cell(2, 1, 10, 32)),
+    "deflect-right-opposing-vx": (["#####", "##W..", "#####"], Cell(2, 1, -10, 32)),
+    "deflect-left-aligned-vx": (["#####", "..W##", "#####"], Cell(2, 1, -10, 32)),
+    "deflect-left-opposing-vx": (["#####", "..W##", "#####"], Cell(2, 1, 40, 32)),
     "damp-negative-vx": (["#####", "..W..", "#####"], Cell(2, 1, -40, 0)),
     "supported-rest-free-side": (["#####", "#.W..", "#####"], Cell(2, 1, 0, 0)),
     "blocked-same-family": (["WWWWW", "WWWWW", "WWWWW"], Cell(2, 1, 0, 20)),
@@ -250,6 +263,9 @@ EXAMPLES = {
     "contact-mid-travel": (["#####", "W.#..", "#####"], Cell(0, 1, 48, 0)),
     "body-mask-landing": (["#####", "##W.M", "##M##"], Cell(2, 1, 0, 32)),
     "drag-density-swap": ([".....", "..W..", "..o..", "..o..", "#####"], Cell(2, 1, 0, 20)),
+    "reaim-diagonal-into-lighter": ([".....", "..W..", "..#o.", "#####"], Cell(2, 1, 0, 40)),
+    "no-horizontal-swap": (["#####", "#Wo.#", "#####"], Cell(1, 1, 20, 0)),
+    "no-deflection-into-lighter": (["#####", "#oW##", "#####"], Cell(2, 1, 0, 32)),
 }
 
 
@@ -257,7 +273,7 @@ def example(name: str, p: Params = Params()) -> dict:
     rows, start = EXAMPLES[name]
     res = update(Grid(rows), start, p)
     return {"name": name, "neighbourhood": rows,
-            "start": vars(start), "end": vars(res.cell), "moves": res.moves,
+            "start": vars(start), "end": vars(res.cell), "moves": res.moves, "swaps": res.swaps,
             "entries": [{k: v for k, v in vars(e).items() if v or k in ("stage",)} for e in res.entries],
             "ledger_closes": ledger_closes(start, res, p), "sleep_eligible": res.sleep_eligible}
 
@@ -270,15 +286,21 @@ def registry() -> dict:
                   "of one cell update against a static neighbourhood; no World, scheduler or inertial family "
                   "has executed.",
         "illustrative_parameters": {k: (list(v) if isinstance(v, tuple) else v) for k, v in vars(p).items()},
+        "eligibility": "Empty: any move. Lighter foreign liquid: only a move with dy = +1 (straight or diagonal "
+                       "down; Current can_density_exchange, vertical delta != 0). Wall, body mask, same family: "
+                       "never. One rule for support, re-aim, side selection and every travel move.",
+        "deflection": "s*d with d = trunc(vy_in * deflect); impulses (s*d, -vy_in); L1 loss "
+                      "|vx| + vy_in - |vx + s*d| (cancellation against an opposing vx included)",
         "order": ["U1 support detection (below enterable?) before any velocity change",
                   "U2 gravity: vy += g exactly once",
                   "U3 supported cell: diagonal re-aim (A) if a diagonal is enterable; otherwise support cancels "
                   "this tick's g, then blocked-fall deflection (B) of the vy carried in from earlier ticks",
                   "U4 per-component saturation to +-vmax",
                   "U5 per-component damping, truncated toward zero",
-                  "U6 accumulator travel: whole-cell unit moves, target recheck each; a lighter liquid swaps with "
-                  "drag; the first contact ends travel (vertical contact = rule B then saturation, horizontal = "
-                  "zero vx)",
+                  "U6 accumulator travel: whole-cell unit moves, target recheck each; a sub-step needing both axes "
+                  "is tried as one diagonal move first; a lighter liquid swaps with drag only on a move with "
+                  "dy = +1 (never horizontally); the first contact ends travel (vertical contact = rule B then "
+                  "saturation, horizontal = zero vx)",
                   "U7 rest: supported, vy == 0, |vx| <= rest -> vx = 0 and accumulators reset; "
                   "sleep-eligible iff v == 0, a == 0 and supported"],
         "ledgers": {"momentum": "per component: v_after = v_before + gravity + sum(signed impulses)",
