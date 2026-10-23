@@ -35,13 +35,15 @@ Hauler, Drifter and Dart are different **candidate** handling plants: the larges
 Hauler has lower speed, acceleration and slower response; Drifter has reduced
 translation braking and passive drag while retaining upright torque; the
 smallest Dart has higher speed, acceleration and braking. No hidden
-profile-specific navigation code exists. `calibration = candidate_4ly002`
-explicitly prevents the authored differences from being mistaken for accepted
-measurements. Exact resolved values are in the
-[configuration reference](../reference/configuration-reference.md#physical-free-flight-values);
-the [prospective numeric qualification registration](../../godot/tests/fixtures/4ly002_handling_thresholds.json)
-is read by the actual Rapier
-[handling fixture](../../godot/tests/test_physical_flight_handling.gd).
+profile-specific navigation code exists. `calibration = candidate_4ly002` is deliberately retained as part of the
+measured source's four profile hashes. The candidates have now **passed**
+prospectively registered real Rapier manoeuvre thresholds on both Linux
+and Windows at implementation head `f7721a1...`; that result does not
+by itself grant owner-feel or learned-policy admission. Exact resolved
+values are in the [configuration reference](../reference/configuration-reference.md#physical-free-flight-values).
+The [pre-registered numeric thresholds](../../godot/tests/fixtures/4ly002_handling_thresholds.json)
+and [actual fixture](../../godot/tests/test_physical_flight_handling.gd)
+are supported by the source-bound [qualification record](../audits/2026-10-23-4ly002-measured-handling-qualification.md).
 
 Implementation, measured handling, useful learned navigation and owner feel
 acceptance are separate claims. Source presence does not qualify a policy or
@@ -100,13 +102,14 @@ and host gates are listed in the
 The proposed numeric criteria require: Hauler speed at 60 equal normalized
 steps no more than 85% of Trainer; Dart at least 120% of Trainer; Drifter
 common-speed stopping distance at least 125% of Trainer, along with
-per-profile hover, manoeuvre, upright and contact limits. These are
-**prospectively registered tests, not passing outcomes** until they have
-executed against the final exact source/physics identity. Failed tuning
-must remain separately visible from a later accepted calibration. Any
-change in physics/profile bytes requires a fresh runtime identity and
-qualification. Target-PC owner feel, graphics clips, Web and multi-agent
-learning remain unmeasured until independently demonstrated.
+per-profile hover, manoeuvre, upright and contact limits. These **prospectively registered criteria have passed** at the
+measured source/physics identity documented in the
+[4LY-002 qualification audit](../audits/2026-10-23-4ly002-measured-handling-qualification.md).
+The first Windows attempt's unrelated timeout is retained separately
+from the successful rerun. Any future profile/physics edit changes source
+identity and requires new qualification. A new hosted graphical
+gameplay-capture fixture is being validated for descriptive screenshots;
+target-PC owner feel, Web and multi-agent learning remain unmeasured.
 
 ## Who owns the chassis, contacts and equipment?
 
@@ -276,11 +279,15 @@ command by being submitted late.
 | 4LY-004 | [neural-cyber-automata #74](https://github.com/techrote/neural-cyber-automata/issues/74) | Adapter conformance and bounded Trainer-only learning after accepted host/profile/teacher qualification |
 | 4LY-005 | [neural-cyber-automata #75](https://github.com/techrote/neural-cyber-automata/issues/75) | Capability-conditioned family policy and per-profile deployment evidence after an independently verified passing Trainer result |
 
-4LY-002 has authored candidate profiles, additive ordinary-game selection, and
-registered measurement fixtures. It cannot hand off frozen learning inputs to
-4LY-003 until the same final-source/run identity has passing measured envelopes.
-4LY-003 lab scaffolding may overlap, but its final evidence must use frozen
-4LY-002 profiles. Neither an
+4LY-002 has authored selectable candidate profiles and now has passing
+real-Rapier physical envelopes for all four at the measured executable
+identity. The [source-bound measurement manifest](../audits/4ly002-2026-10-23/measured-handling.json)
+fixes the four observed profile hashes, while human-feel approval, final
+revised-head acceptance and later policy admission remain separate.
+4LY-003 may use those envelopes for preparatory flight-lab/teacher work;
+its *final* host evidence must first verify the actually merged profile,
+controller and runtime identities. No learning allocation follows from
+this source-level handoff. Neither an
 implementation merge nor issue creation authorizes a learning allocation or
 substitutes for the Trainer performance gate. Learner implementation and learned
 policy evidence belong in the companion repository; its
