@@ -13,6 +13,7 @@ import sys
 import time
 
 import godot_timeout_diagnostics as diagnostics
+import godot_process_monitor as process_monitor
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_UNKNOWN_WEIGHT_SECONDS = 5.0
@@ -177,34 +178,20 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str) -> tuple[dict,
     returncode = None
     launch_error = None
     capture_error = None
+    timeout_kind = None
     with log_path.open("w", encoding="utf-8") as log:
         try:
             with subprocess.Popen(command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT) as child:
-                # Capture the live process before the original deadline kills it.
-                # At most 16s of bounded probes fit inside the 30s reserve.
-                try:
-                    child.wait(timeout=max(0.001, case.timeout - 30))
-                except subprocess.TimeoutExpired:
-                    log.flush()
-                    before = log_path.read_text(encoding="utf-8", errors="replace")
-                    print(f"{case.name}: elapsed={time.perf_counter() - started:.3f}s "
-                          f"pid={child.pid} last_progress={diagnostics.last_progress(before)}\n"
-                          + before[-8192:], flush=True)
-                    try:
-                        diagnostics.snapshot(child.pid, output_dir / (case.name + "-diagnostics"))
-                    except Exception as error:
-                        capture_error = str(error)
-                        print(f"Diagnostic capture failed for {case.name}: {error}", flush=True)
-                    remaining = max(0.001, case.timeout - (time.perf_counter() - started))
-                    try:
-                        child.wait(timeout=remaining)
-                    except subprocess.TimeoutExpired:
-                        timed_out = True
-                        child.kill()
-                        child.wait(timeout=10)
+                timed_out, timeout_kind, capture_error = process_monitor.wait(
+                    child, case.name, case.timeout, started, log_path,
+                    output_dir / (case.name + "-diagnostics"),
+                )
+                if timed_out:
+                    child.kill()
+                    child.wait(timeout=10)
                 returncode = None if timed_out else child.returncode
             if timed_out:
-                log.write(f"\nTIMEOUT after {case.timeout}s\n")
+                log.write(f"\nTIMEOUT ({timeout_kind}) after {time.perf_counter() - started:.3f}s; case limit {case.timeout}s\n")
         except OSError as error:
             launch_error = str(error)
             log.write(f"\nLAUNCH ERROR: {launch_error}\n")
@@ -233,6 +220,7 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str) -> tuple[dict,
         "status": status,
         "seconds": round(elapsed, 3),
         "timeout_seconds": case.timeout,
+        "timeout_kind": timeout_kind,
         "returncode": returncode,
         "diagnostic_error": diagnostic_error,
         "launch_error": launch_error,

@@ -4,11 +4,20 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-23
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
 # Status and foundational roadmap
+
+## Physical actor regression hangs — 2026-10-23
+
+**Current investigation:** [draft PR #236](https://github.com/techrote/cybersand/pull/236)
+adds live timeout diagnostics and a manual 50-trial-per-test/platform stress lane.
+The [build guide](../operations/local-build-and-validation.md#physical-actor-timeout-investigation)
+owns invocation; the [dated audit](../audits/2026-10-23-physical-actor-timeouts.md)
+separates historical incidents, local experiments, queued hosted work and the
+unresolved root cause. **Planned:** causal repair and hosted before/after acceptance.
 
 ## 4LY shared physical free-flight — 2026-10-22
 

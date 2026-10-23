@@ -81,7 +81,9 @@ def last_progress(output: str) -> dict | None:
     for line in reversed(output.splitlines()):
         if line.startswith("CYBERSAND_PROGRESS "):
             try:
-                return json.loads(line.removeprefix("CYBERSAND_PROGRESS "))
+                marker = json.loads(line.removeprefix("CYBERSAND_PROGRESS "))
+                if isinstance(marker, dict) and isinstance(marker.get("phase"), str):
+                    return marker
             except ValueError:
                 continue
     return None

@@ -29,6 +29,7 @@ GODOT_SHA512 = (
 INPUT_SCOPES = (
     "godot", "native/include", "native/src", "tools/ci/run_godot_regressions.py",
     "tools/ci/run_windows_godot_regressions.py", "tools/ci/godot_timeout_diagnostics.py",
+    "tools/ci/godot_process_monitor.py", "tools/ci/physical_progress_watchdog.py",
     ".github/workflows/gdextension.yml",
     "third_party/godot-runtime.lock.json", "third_party/native-toolchain.lock.json",
 )

@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-23
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
@@ -177,7 +177,16 @@ and provider-routing boundary.
 
 **Current tooling:** both platform runners use `run_godot_regressions.run_case`.
 A live process/thread snapshot, elapsed time, PID and the last fixture progress
-marker are captured 30 seconds before the original per-case deadline. Linux
+marker are captured 30 seconds before the original per-case deadline. The
+[process monitor](../../tools/ci/godot_process_monitor.py) also runs an independent
+[progress watchdog](../../tools/ci/physical_progress_watchdog.py) for the three
+instrumented suspect fixtures: capture after 30 seconds without a new marker,
+then fail as `timeout` / `progress_watchdog` after 45 seconds of inactivity.
+Startup and post-quit stalls are covered as well as setup, stepping and frame
+waits. Capture commands are bounded; this remains runnable when Godot cannot
+execute a main-loop timer. Real progress renews liveness, unrelated output does
+not, and no marker can extend the outer 180-second case deadline. Other cases
+retain their existing deadlines and oracle. Linux
 captures `/proc` wait channels and attempts all-thread GDB stacks when available;
 Windows attempts DbgHelp minidumps for the console wrapper and engine child.
 Capture is bounded and best-effort; unavailable stacks are explicitly recorded.

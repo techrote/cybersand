@@ -37,7 +37,7 @@ func scripted_examples() -> void:
 		var config: Dictionary = Arena.usable_course_config(model, 1)
 		var ticks: int = 1800 if model == &"heavylift" else 900
 		config.max_ticks = ticks
-		Progress.mark("configure", "expect")
+		Progress.mark("configure", str(model))
 		expect(arena.configure(config), "course starts " + str(model))
 		if arena.session == null:
 			continue
@@ -85,7 +85,7 @@ func scripted_examples() -> void:
 func mixed_course() -> void:
 	var config: Dictionary = Arena.usable_course_config()
 	config.max_ticks = 600
-	Progress.mark("configure", "expect")
+	Progress.mark("configure")
 	expect(arena.configure(config), "mixed course starts")
 	var expected_parts: int = 0
 	for actor: Dictionary in config.actors:
@@ -115,7 +115,7 @@ func mixed_course() -> void:
 		"reset retires pending uses and all committed sparse objects")
 	var saved_run: String = str(result.run_id)
 	config.course = "unknown-course"
-	Progress.mark("configure", "expect")
+	Progress.mark("configure")
 	expect(not arena.configure(config) and arena.snapshot().run_id == saved_run,
 		"unknown course refusal preserves the live run")
 	print("PHYSICAL_USABLE_COURSE_MIXED actors=8 parts=", expected_parts, " successful_actors=", successful)
@@ -129,7 +129,7 @@ func processor_transaction() -> void:
 	config.max_ticks = 1200
 	config.actors[0].producer = "policy"
 	config.actors[0].position = Vector2(584, 330)
-	Progress.mark("configure", "expect")
+	Progress.mark("configure")
 	expect(arena.configure(config), "native physical processor fixture starts")
 	var initial: Dictionary = arena.observation(0).equipment
 	var held: RigidBody2D = arena.session.bodies()[int(initial.body_id) - 1]
@@ -236,11 +236,11 @@ func run() -> void:
 		return
 	arena = Arena.new()
 	root.add_child(arena)
-	Progress.mark("scripted_examples")
+	Progress.mark("scripted_examples", "scripted_examples")
 	scripted_examples()
-	Progress.mark("mixed_course")
+	Progress.mark("mixed_course", "mixed_course")
 	mixed_course()
-	Progress.mark("processor_transaction")
+	Progress.mark("processor_transaction", "processor_transaction")
 	processor_transaction()
 	arena.free()
 	print("PHYSICAL_USABLE_COURSE_RESULT assertions=", assertions, " failures=", failures)

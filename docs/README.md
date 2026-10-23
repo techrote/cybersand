@@ -12,6 +12,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
+For intermittent physical actor Godot timeouts, use the [live diagnostics and stress guide](operations/local-build-and-validation.md#physical-actor-timeout-investigation) and [dated investigation](audits/2026-10-23-physical-actor-timeouts.md). Root-cause and hosted acceptance remain pending.
+
 For **Generation Workbench 2**, use the [inspection and authoring contract](systems/generation-workbench-2.md): truthful native replay, actual intermediate stages, graph/hierarchy tools, transactional undo/redo and bounded seed/recipe comparisons. The [procedural qualification guide](operations/procedural-qualification.md) routes the 1024 × 1024 scene, final-raster paths, native exhibits and visual evidence.
 
 Choose all 46 [articulated Rapier actors](systems/physical-actor-rigs.md) with F5 in the sandbox and exploratory maps, using keyboard, local scripted or external-policy control. Sampled references and the initial hull arms remain available; [the physical actor programme](operations/physical-actor-programme.md) preserves owner intent and integration scope.

@@ -4,11 +4,19 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-23
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md]
 ---
 
 # Validation evidence ledger
+
+## Intermittent physical actor timeouts — 2026-10-23
+
+The [investigation audit](../audits/2026-10-23-physical-actor-timeouts.md) preserves
+the two cited hosted runs, phase/blocking-path inspection and separate local
+stress evidence. [Draft PR #236](https://github.com/techrote/cybersand/pull/236)
+has no accepted root-cause repair yet. A queued stress job, successful rerun or
+local zero-timeout sample does not establish hosted resolution.
 
 ## GEN-005 semantic four-plane generation — 2026-10-21
 

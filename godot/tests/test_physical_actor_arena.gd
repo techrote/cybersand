@@ -91,7 +91,7 @@ func _roster() -> void:
 	batch.max_ticks = 8
 	for actor: Dictionary in batch.actors:
 		actor.model = str(largest)
-	Progress.mark("configure", "_check")
+	Progress.mark("configure")
 	_check(_arena.configure(batch), "eight largest assemblies admitted")
 	var result: Dictionary = _arena.snapshot()
 	for _tick: int in range(8):
@@ -107,7 +107,7 @@ func _roster() -> void:
 
 
 func _protocol() -> void:
-	Progress.mark("configure", "_check")
+	Progress.mark("configure")
 	_check(_arena.configure(_config(&"pouncer", "policy", 100, Vector2(380, 340))), "policy arena starts")
 	var first: Dictionary = _arena.observation(0)
 	_check(first.cell_patch.materials.size() == 289 and first.cell_patch.body_ids.size() == 289,
@@ -150,7 +150,7 @@ func _protocol() -> void:
 		{"max_ticks": 36001, "actors": [{"model": "runner"}]},
 		{"local_patch_radius": 9, "actors": [{"model": "runner"}]},
 		{"unknown": true, "actors": [{"model": "runner"}]}]:
-		Progress.mark("configure", "_check")
+		Progress.mark("configure")
 		_check(not _arena.configure(invalid), "invalid arena configuration refused")
 		_check(str(_arena.snapshot().run_id) == live_id and int(_arena.snapshot().tick) == tick,
 			"rejected reset preserves the running owner")
@@ -180,7 +180,7 @@ func _protocol() -> void:
 
 
 func _native_effects_and_terrain() -> void:
-	Progress.mark("configure", "_check")
+	Progress.mark("configure")
 	_check(_arena.configure(_config(&"runner")), "physical stamper arena starts")
 	var command: Dictionary = _command({"equipment": {"aim": [1, 0], "trigger": true, "power": 1.0}}, 1)
 	var state: Dictionary = _arena.step([command])
@@ -204,7 +204,7 @@ func _native_effects_and_terrain() -> void:
 	_arena.close()
 	Progress.mark("close_complete")
 
-	Progress.mark("configure", "_check")
+	Progress.mark("configure")
 	_check(_arena.configure(_config(&"lineshank", "policy", 10, Vector2(328, 270))), "physical cutter arena starts")
 	var previous_revision: int = int(_arena.snapshot().terrain_revision)
 	_check(int(_arena._world.material_at(328, 240)) == 56, "authored packed-earth target exists natively")
@@ -240,11 +240,11 @@ func _run() -> void:
 		return
 	_arena = Arena.new()
 	root.add_child(_arena)
-	Progress.mark("_roster")
+	Progress.mark("_roster", "_roster")
 	_roster()
-	Progress.mark("_protocol")
+	Progress.mark("_protocol", "_protocol")
 	_protocol()
-	Progress.mark("_native_effects_and_terrain")
+	Progress.mark("_native_effects_and_terrain", "_native_effects_and_terrain")
 	_native_effects_and_terrain()
 	_arena.free()
 	print("PHYSICAL_ARENA_RESULT assertions=", _assertions, " failures=", _failures,
