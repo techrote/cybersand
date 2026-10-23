@@ -1,4 +1,4 @@
-"""Synthetic regressions for the signed campaign ledger (lcb-signed-ledger-v4).
+"""Synthetic regressions for the signed campaign ledger (lcb-signed-ledger-v5).
 
 These exercise the reducer only. They do not touch protected fixture bytes or
 the retained 2026-10-23 controls file.
@@ -360,6 +360,80 @@ class EventBalanceR4(unittest.TestCase):
         self.assertEqual(both["state"], "MALFORMED_EVIDENCE")
 
 
+class ObservedOnlySaltF1(unittest.TestCase):
+    """Re-review F1: Salt seen only in observations must never reach the Salt ledger without Brine."""
+
+    def ledger(self, species, cells=None):
+        checkpoints = [{"tick": t, "water_integer": 10000, "species": s} for t, s in zip((0, 30), species)]
+        return reg.signed_ledger({"water_integer": 10000, "cells": cells or {}},
+                                 {"initial_integer": 10000, "explicit_source": 0, "explicit_sink": 0}, checkpoints)
+
+    def test_review_reproducer_is_malformed_not_an_exception(self):
+        r = self.ledger([{"salt": 0}, {"salt": 1}])
+        self.assertEqual(r["state"], "MALFORMED_EVIDENCE")
+        self.assertFalse(r["eligible_for_acceptance"])
+        self.assertIn("brine", r["species_domain"])
+        self.assertIn("'brine'", r["reason"])
+
+    def test_explicit_zero_brine_is_unexplained_salt_production(self):
+        r = self.ledger([{"salt": 0, "brine": 0}, {"salt": 1, "brine": 0}])
+        self.assertEqual(r["state"], "OPEN_UNEXPLAINED")
+        self.assertIn("Salt reappeared", r["reason"])
+
+    def test_brine_supplied_at_one_checkpoint_only(self):
+        for species in ([{"salt": 0, "brine": 0}, {"salt": 1}], [{"salt": 0}, {"salt": 1, "brine": 0}]):
+            r = self.ledger(species)
+            self.assertEqual(r["state"], "MALFORMED_EVIDENCE", species)
+
+    def test_salt_first_appearing_at_a_later_checkpoint(self):
+        for species in ([{}, {"salt": 1}], [{"brine": 0}, {"salt": 1, "brine": 0}]):
+            r = self.ledger(species)
+            self.assertEqual(r["state"], "MALFORMED_EVIDENCE", species)
+
+    def test_declared_salt_closure_and_r2_binding_preserved(self):
+        cells = {"water": 40, "salt": 40, "brine": 10, "oil": 5}
+        sp = [{"salt": 40, "brine": 10, "oil": 5}, {"salt": 30, "brine": 30, "oil": 5}]
+        r = run(cells, [(0, 10000), (30, 7450)], species=sp, initial=10000)
+        self.assertEqual(r["state"], "closed_signed_reaction_ledger")
+        bad = run(cells, [(0, 10000), (30, 7450)], species=[sp[0], {"salt": 30, "brine": 30, "oil": 5.5}])
+        self.assertEqual(bad["state"], "MALFORMED_EVIDENCE")
+
+
+class EventShapeF2(unittest.TestCase):
+    """Re-review F2: exactly one of source/sink by key presence, independent of amount."""
+
+    def probe(self, event, source=0, sink=0, initial=0, final=0):
+        return reg.signed_ledger({"water_integer": initial, "cells": {}},
+                                 {"initial_integer": initial, "explicit_source": source, "explicit_sink": sink,
+                                  "events": [event]},
+                                 [{"tick": 0, "water_integer": initial}, {"tick": 10, "water_integer": final}])
+
+    def test_tick_only_and_dual_key_variants_are_malformed(self):
+        for event, kw in (({"tick": 1}, {}),
+                          ({"tick": 1, "source": 0, "sink": 0}, {}),
+                          ({"tick": 1, "source": 100, "sink": 0}, {"source": 100, "final": 100}),
+                          ({"tick": 1, "source": 0, "sink": 100}, {"sink": 100, "initial": 100})):
+            r = self.probe(event, **kw)
+            self.assertEqual(r["state"], "MALFORMED_EVIDENCE", event)
+            self.assertFalse(r["eligible_for_acceptance"])
+
+    def test_explicit_zero_under_one_key_is_valid(self):
+        # A recorded zero-amount event is valid evidence: the timed ledger closes on it.
+        self.assertEqual(self.probe({"tick": 1, "source": 0})["state"], "closed_timed_source_sink")
+        self.assertEqual(self.probe({"tick": 1, "sink": 0})["state"], "closed_timed_source_sink")
+
+    def test_amount_and_tick_types_still_checked(self):
+        for event in ({"tick": 1, "source": -1}, {"tick": 1, "source": 1.5}, {"tick": -1, "source": 1},
+                      {"tick": 1, "source": True}, {"tick": 1, "flow": 1}):
+            self.assertEqual(self.probe(event, source=1, final=1)["state"], "MALFORMED_EVIDENCE", event)
+
+    def test_valid_single_key_controls(self):
+        self.assertEqual(self.probe({"tick": 1, "source": 100}, source=100, final=100)["state"],
+                         "closed_timed_source_sink")
+        self.assertEqual(self.probe({"tick": 1, "sink": 100}, sink=100, initial=100)["state"],
+                         "closed_timed_source_sink")
+
+
 class RetainedRecords(unittest.TestCase):
     def test_historical_controls_preserved(self):
         self.assertEqual(reg.lf_sha256(reg.CONTROLS),
@@ -379,20 +453,29 @@ class RetainedRecords(unittest.TestCase):
         self.assertEqual(json.loads(expected)["input"]["reducer_sha256_lf"],
                          "23dcb9a25649d1560ce2b319dd24402fabc6ef7415ee66ff2ccb484a15734355")
 
-    def test_v4_current_and_classifications(self):
-        expected = json.dumps(reg.reledger(), indent=2) + "\n"
+    def test_v4_verifies_against_its_frozen_reducer(self):
+        self.assertEqual(reg.lf_sha256(reg.LEDGER_V4),
+                         "0cc6d6dfa5da907c981f954e19ed2858f573a7e12996017b293872bf84030e13")
+        expected = json.dumps(reg.reledger_v4(), indent=2) + "\n"
         self.assertEqual(reg.LEDGER_V4.read_text(encoding="utf-8").replace("\r\n", "\n"), expected)
-        v4 = json.loads(expected)
-        self.assertEqual(v4["rule"], "lcb-signed-ledger-v4")
-        self.assertEqual(v4["open_unexplained_or_malformed"], [])
-        self.assertEqual(v4["changed_from_v3"], [])
+        self.assertEqual(json.loads(expected)["input"]["reducer_sha256_lf"],
+                         "69a48fa557e0219811f1ba88dadca61685f0f5a2cf323862568874d6367a43d2")
+
+    def test_v5_current_and_classifications(self):
+        expected = json.dumps(reg.reledger(), indent=2) + "\n"
+        self.assertEqual(reg.LEDGER_V5.read_text(encoding="utf-8").replace("\r\n", "\n"), expected)
+        v5 = json.loads(expected)
+        self.assertEqual(v5["rule"], "lcb-signed-ledger-v5")
+        self.assertEqual(v5["open_unexplained_or_malformed"], [])
+        self.assertEqual(v5["changed_from_v4"], [])
         timing = ["lcb.mixed.repeated-openings.v1", "lcb.rest.remote-disturbance.v1",
                   "lcb.rest.two-pool-partial-activity.v1", "lcb.shallow.stream-steps.v1"]
         reaction = ["lcb.granular.salt-dissolution.v1", "lcb.mixed.sodium-oil-fire.v1",
                     "lcb.mixed.water-oil-brine.v1"]
-        self.assertEqual(v4["accounting_unverified_ineligible_for_acceptance"], sorted(timing + reaction))
-        self.assertTrue(all(v4["cases"][s]["state"] == "UNVERIFIED_SOURCE_SINK_TIMING" for s in timing))
-        self.assertTrue(all(v4["cases"][s]["state"] == "UNVERIFIED_REACTION_AMOUNT" for s in reaction))
+        self.assertEqual(v5["accounting_unverified_ineligible_for_acceptance"], sorted(timing + reaction))
+        self.assertTrue(all(v5["cases"][s]["state"] == "UNVERIFIED_SOURCE_SINK_TIMING" for s in timing))
+        self.assertTrue(all(v5["cases"][s]["state"] == "UNVERIFIED_REACTION_AMOUNT" for s in reaction))
+        self.assertEqual(sum(c["state"] == "closed" for c in v5["cases"].values()), 20)
 
 
 if __name__ == "__main__":
