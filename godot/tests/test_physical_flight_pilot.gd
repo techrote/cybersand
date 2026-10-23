@@ -86,6 +86,13 @@ func _run() -> void:
 	if stored != null:
 		stored.store_string(JSON.stringify(Arena.json_value(report), "\t"))
 		stored.close()
+	var retained_dir: String = OS.get_environment("CYBERSAND_PRESENTATION_EVIDENCE")
+	if not retained_dir.is_empty():
+		DirAccess.make_dir_recursive_absolute(retained_dir)
+		var archive: FileAccess = FileAccess.open(retained_dir.path_join("4ly003_actual_host_pilot.json"), FileAccess.WRITE)
+		if archive != null:
+			archive.store_string(JSON.stringify(Arena.json_value(report)))
+			archive.close()
 	print("4LY003_ACTUAL_HOST_PILOT ", JSON.stringify(Arena.json_value(report)))
 	episode.close()
 	parent.free()
