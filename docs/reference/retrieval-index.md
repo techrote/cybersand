@@ -282,3 +282,5 @@ Latest authorized containment correctness disposition: [resident-015 reentry/scr
 Resident reentry scratch capacity, exact grid and paused/resumed witness repair: [source-only repair audit](../audits/2026-10-23-mat003-resident-reentry-repair.md), linked from the [current continuation report](../research/mat003-continuation.md#resident-reentry-source-repair-and-held-rebuild). Prior build/execution routes above describe historical stages; changed source requires fresh admission.
 
 Fresh e655166 binaries and exact replacement registration: [resident reentry build/admission](../audits/2026-10-23-mat003-reentry-build-admission.md). Source review/build success does not supply runtime qualification or owner case authorization.
+
+Latest MAT-003 runtime disposition: [152-process replacement and Astra readback refusal](../audits/2026-10-23-mat003-reentry-correctness-attempt.md). All candidate processes exited0, but the frozen reader rejected an overconstrained sleeping witness. No full correctness acceptance, rerun or timing; prior stage summaries are historical.

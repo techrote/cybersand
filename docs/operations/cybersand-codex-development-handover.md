@@ -10,6 +10,10 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## MAT-003 latest correctness disposition — 2026-10-23
+
+The [authorized152-case run](../audits/2026-10-23-mat003-reentry-correctness-attempt.md) completed collection, then frozen Astra readback refused the overconstrained sleep witness. Full qualification remains refused; every observation/failure is retained, no repair/rerun is authorized. Earlier build/held-execution entries describe historical stages. R16-T1 conditional, PRs draft, production unchanged.
+
 ## MAT-003 isolated resident repair — 2026-10-23
 
 The [resident reentry/scratch source repair](../audits/2026-10-23-mat003-resident-reentry-repair.md) follows two retained incomplete Windows correctness attempts. Independent source review is closed; builds, cases and timing are held. Use the [current continuation report](../research/mat003-continuation.md#resident-reentry-source-repair-and-held-rebuild) for next gates, bounded2048 reentry scope and unchanged evidence. Old binary certificates/authorizations cannot admit new source. R16-T1 conditional, PR211/221 draft, production unchanged. Earlier dated entries retain historical context.

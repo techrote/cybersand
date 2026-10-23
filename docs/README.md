@@ -12,6 +12,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
+Current MAT-003: [complete152-process collection and Astra readback refusal](audits/2026-10-23-mat003-reentry-correctness-attempt.md). No correctness acceptance or rerun; prior stage summaries below are historical.
+
 Latest MAT-003 source status: [resident reentry/scratch repair and independent source review](audits/2026-10-23-mat003-resident-reentry-repair.md). Fresh build/binary/registration gates remain held; no repair execution or timing. Earlier checkpoints below are historical stages.
 
 The latest [containment replacement runtime attempt](audits/2026-10-23-mat003-containment-correctness-attempt.md) stopped at resident reentry after clear256, with15 exit0 processes and136 unattempted cases. Full correctness remains refused; prior evidence is retained.
@@ -235,3 +237,5 @@ stays read-only with respect to material authority.
 MAT-003 design continuation: [semantic state-schema proposal](research/mat003-state-schema-proposal.md) and [ADR-015 carrier adoption gates](decisions/ADR-015-material-state-schema-and-carrier-gates.md) remain Planned; production and timing authority are unchanged.
 
 Latest [resident reentry Windows build and replacement execution gate](audits/2026-10-23-mat003-reentry-build-admission.md):32 clean builds; no qualification cases or timing.
+
+Latest MAT-003 runtime disposition: [152-process replacement and Astra readback refusal](audits/2026-10-23-mat003-reentry-correctness-attempt.md). All candidate processes exited0, but the frozen reader rejected an overconstrained sleeping witness. No full correctness acceptance, rerun or timing; prior stage summaries are historical.

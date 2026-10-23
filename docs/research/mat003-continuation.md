@@ -358,3 +358,7 @@ The [source-only repair and adjacent review](../audits/2026-10-23-mat003-residen
 ## Resident reentry replacement build-only gate
 
 The [e655166 Windows build/admission checkpoint](../audits/2026-10-23-mat003-reentry-build-admission.md) completed32 clean normal/sanitized compilations from93 exact Git inputs. This does not establish runtime repair success. New independent binary admission and exact replacement registration bind bounded-reentry-v2,152 cases, complete evidence and unchanged limits; owner execution and timing remain false pending explicit new-hash authorization. Prior failures retained; R16-T1 conditional, both PRs draft and production unchanged.
+
+## Authorized replacement collected; independent readback refused
+
+The [exact9b1dbfb7 Windows attempt](../audits/2026-10-23-mat003-reentry-correctness-attempt.md) completed152/152 candidate processes once, all exit0/empty stderr/no watchdog stops. The requested Astra XHigh verifier ran the frozen reader once:27 rejection fixtures and704 decoder records completed, then resident-015/event/B failed the sleep/exclusion witness. Full correctness is refused; later semantic checks are unverified. Source/metadata prove an overstrict oracle condition: inactive quiet3 chunk with8 slept blocks quiet3 and8 never-activated blocks quiet0, whereas the reader demanded all16 quiet>=3. No rerun, repair or evidence amendment. A separately reviewed correction/admission scope is required; no readback-only or new-case authority is inferred. R16-T1 conditional, PRs draft, production unchanged; no timing.
