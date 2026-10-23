@@ -1,0 +1,164 @@
+extends SceneTree
+
+# LCB physics prepass contracts that current native interfaces can exercise.
+# Every check is a Current-family control or characterization; candidate
+# families (pressure, inertial, whole-cell Water) are registered as BLOCKED in
+# lcb-physics-contracts.json and are only checked for blocked-ness here.
+# Pinned values were measured on 2026-10-23 (Windows, retained runtime) and
+# must reproduce on any source-matched runtime.
+const Runner = preload("res://tests/lcb_scenario_runner.gd")
+const M = preload("res://tests/lcb_physics_metrics.gd")
+const CONTRACTS: String = "res://tests/fixtures/lcb/lcb-physics-contracts.json"
+var assertions: int = 0
+var failures: int = 0
+
+func expect(value: bool, message: String) -> void:
+	assertions += 1
+	if not value:
+		failures += 1
+		push_error(message)
+
+func _initialize() -> void:
+	if not ClassDB.class_exists(&"CyberNativeCellWorld"):
+		push_error("Current native extension is required")
+		quit(1)
+		return
+	var registry: Dictionary = JSON.parse_string(Runner.read_text(CONTRACTS).text)
+	_registry(registry)
+	_deep_release()
+	_heads()
+	_accounting()
+	_ownership()
+	_dormancy()
+	print("LCB physics contracts: %d assertions, %d failures" % [assertions, failures])
+	quit(1 if failures > 0 else 0)
+
+func _text(id: String) -> String:
+	for folder: String in ["scenarios/", "acceptance/", ""]:
+		var path: String = "res://tests/fixtures/lcb/" + folder + id + ".json"
+		if FileAccess.file_exists(path): return Runner.read_text(path).text
+	expect(false, "Missing fixture " + id)
+	return ""
+
+func _run(id: String, workers: int, ticks: int) -> Dictionary:
+	var inst: Dictionary = Runner.install(_text(id), workers)
+	expect(inst.ok, id + " install refused: " + str(inst.get("error", "")))
+	if not inst.ok: return {}
+	for tick: int in range(ticks):
+		if not inst.host.advance():
+			expect(false, id + " faulted at tick %d" % tick)
+			return {}
+	return inst
+
+# Blocked arms stay blocked; acceptance fixtures parse and match their
+# Python-derived inventories.
+func _registry(registry: Dictionary) -> void:
+	expect(str(registry.get("schema", "")) == "lcb-physics-contracts-v1", "Unexpected contract schema")
+	for contract: Dictionary in registry.contracts:
+		for arm: Dictionary in contract.arms:
+			expect(not arm.get("depends_on", []).is_empty(), contract.id + "/" + str(arm.arm) + " has no dependency")
+			expect(not arm.has("result") and not arm.has("measured"), contract.id + "/" + str(arm.arm) + " claims a result")
+	for fixture: Dictionary in registry.fixtures:
+		var inst: Dictionary = Runner.install(Runner.read_text(str(fixture.definition_path)).text, 1)
+		expect(inst.ok, fixture.id + " refused: " + str(inst.get("error", "")))
+		if not inst.ok: continue
+		var inventory: Dictionary = fixture.initial_inventory
+		expect(M.water(inst.world, [0, 0, 1024, 1024]) == int(inventory.water_integer), fixture.id + " Water differs")
+		var counts: Dictionary = Runner.material_counts(inst.world, inventory.material_region)
+		if inventory.cells.has("oil"): expect(int(counts.get(16, 0)) == int(inventory.cells.oil), fixture.id + " Oil differs")
+
+# Deep release versus depth: Current spreads diffusively with almost no depth
+# response, so it must not satisfy the frozen candidate surge screens.
+func _deep_release() -> void:
+	var pins: Dictionary = {"lcb.dam.water.freemass.depth-48.v1":[67, 138.354, 2350080],
+		"lcb.dam.water.freemass.depth-160.v1":[71, 139.195, 7833600]}
+	var fronts: Dictionary = {}
+	for id: String in pins:
+		var observed: Array = []
+		for workers: int in [1, 4]:
+			var inst: Dictionary = _run(id, workers, 240)
+			if inst.is_empty(): return
+			var front: int = M.front_x(inst.world, 255, 240, 983) - 240
+			var centroid: float = M.centroid_x(inst.world, [40, 64, 944, 192])
+			expect(M.water(inst.world, [0, 0, 1024, 1024]) == int(pins[id][2]), id + " Water not conserved")
+			expect(front == int(pins[id][0]), id + " Current front at t240 changed: %d" % front)
+			expect(absf(centroid - float(pins[id][1])) < 0.001, id + " Current centroid changed: %.3f" % centroid)
+			observed.append([front, M.world_hashes(inst.world)])
+		expect(observed[0] == observed[1], id + " 1/4-worker deep-release results differ")
+		fronts[id] = float(observed[0][0])
+	var response: float = fronts["lcb.dam.water.freemass.depth-160.v1"] / fronts["lcb.dam.water.freemass.depth-48.v1"]
+	expect(response < 1.25, "Current unexpectedly meets a candidate depth-response screen (%.2f)" % response)
+
+# Vented and roofed limbs: Current moves nothing and cannot tell them apart.
+func _heads() -> void:
+	var limbs: Array = []
+	for id: String in ["lcb.head.vented-two-limb.v1", "lcb.head.sealed-two-limb.v1"]:
+		var inst: Dictionary = _run(id, 1, 0)
+		if inst.is_empty(): return
+		var before: Array = M.world_hashes(inst.world)
+		for tick: int in range(300): inst.host.advance()
+		var after: Array = M.world_hashes(inst.world)
+		expect(before[0] == after[0] and before[2] == after[2], id + ": Current moved Water in a saturated two-limb")
+		limbs.append([M.water(inst.world, [100, 64, 48, 184]), M.water(inst.world, [300, 64, 48, 184])])
+	expect(limbs[0] == [1860480, 391680] and limbs[0] == limbs[1],
+		"Current vented and roofed limbs differ; a gas distinction would need W-PF")
+
+# Signed per-species ledger: Water+Salt consumes one Water cell of any mass.
+func _accounting() -> void:
+	var inst: Dictionary = _run("lcb.granular.salt-dissolution.v1", 1, 0)
+	if inst.is_empty(): return
+	var region: Array = [40, 32, 944, 224]
+	var salt0: int = int(Runner.material_counts(inst.world, [40, 64, 944, 192]).get(23, 0))
+	var water0: int = M.water(inst.world, region)
+	for tick: int in range(120): inst.host.advance()
+	var counts: Dictionary = Runner.material_counts(inst.world, [40, 64, 944, 192])
+	var consumed: int = salt0 - int(counts.get(23, 0))
+	var delta_water: int = M.water(inst.world, region) - water0
+	expect(consumed == 2048 and int(counts.get(24, 0)) == 2 * consumed, "Brine is not exactly two cells per Salt")
+	expect(delta_water <= -consumed and delta_water >= -255 * consumed, "Water loss outside the per-reaction bounds")
+	expect(delta_water == -514527, "Current partial-Water reaction deficit changed (#160 boundary): %d" % delta_water)
+	var mixed: Dictionary = _run("lcb.mixed.water-oil-brine.v1", 1, 0)
+	if mixed.is_empty(): return
+	var basin: Array = [72, 96, 880, 160]
+	var m0: Dictionary = Runner.material_counts(mixed.world, basin)
+	var w0: int = M.water(mixed.world, basin)
+	for tick: int in range(30): mixed.host.advance()
+	var m1: Dictionary = Runner.material_counts(mixed.world, basin)
+	var s: int = int(m0.get(23, 0)) - int(m1.get(23, 0))
+	expect(int(m1.get(24, 0)) - int(m0.get(24, 0)) == 2 * s, "M0 Brine delta is not +2 per Salt")
+	expect(M.water(mixed.world, basin) - w0 == -255 * s, "M0 full-cell Water ledger does not close")
+	expect(int(m1.get(16, 0)) == int(m0.get(16, 0)), "M0 Oil not conserved")
+
+# Current cross-material ownership: a density swap moves whole state tuples.
+func _ownership() -> void:
+	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+	var results: Array = []
+	for workers: int in [1, 4]:
+		var world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
+		expect(world.diagnostic_reset({"workers":workers}), "Diagnostic reset failed")
+		world.set_simulation_window_enabled(false)
+		expect(world.diagnostic_fill_rect(Vector2i(99, 98), Vector2i(1, 5), 1, 0)
+			and world.diagnostic_fill_rect(Vector2i(101, 98), Vector2i(1, 5), 1, 0)
+			and world.diagnostic_fill_rect(Vector2i(100, 102), Vector2i(1, 1), 1, 0), "Column walls refused")
+		expect(world.diagnostic_fill_rect(Vector2i(100, 100), Vector2i(1, 1), 24, 77), "Tagged Brine refused")
+		expect(world.water_experiment_fill_rect(Vector2i(100, 101), Vector2i(1, 1), 200, 0), "Partial Water refused")
+		for tick: int in range(8): expect(world.simulation_tick(), "Ownership tick failed")
+		var top: Dictionary = bridge.inspect_cell(world, Vector2i(100, 100))
+		var bottom: Dictionary = bridge.inspect_cell(world, Vector2i(100, 101))
+		expect(int(bottom.material) == 24 and int(bottom.state_b) == 77, "Brine tuple did not travel with its cell")
+		expect(int(top.material) == 3 and int(top.state_a) == 200, "Partial Water tuple did not travel with its cell")
+		results.append([top.material, top.state_a, top.state_b, bottom.material, bottom.state_a, bottom.state_b])
+	expect(results[0] == results[1], "Ownership swap differs between 1 and 4 workers")
+
+# Non-pressure motion continues while a Water pool rests (NC-4 Current control).
+func _dormancy() -> void:
+	var observed: Array = []
+	for workers: int in [1, 4]:
+		var inst: Dictionary = _run("lcb.accept.dormant-water-active-oil.v1", workers, 600)
+		if inst.is_empty(): return
+		var oil: Dictionary = Runner.material_counts(inst.world, [488, 64, 496, 192])
+		var low: Dictionary = Runner.material_counts(inst.world, [488, 224, 496, 32])
+		expect(M.water(inst.world, [40, 64, 440, 192]) == 440 * 160 * 255, "Resting pool changed")
+		expect(int(oil.get(16, 0)) == 4096 and int(low.get(16, 0)) == 4078, "Oil did not keep moving beside resting Water")
+		observed.append(M.world_hashes(inst.world))
+	expect(observed[0] == observed[1], "Dormancy control differs between 1 and 4 workers")
