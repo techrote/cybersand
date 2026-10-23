@@ -188,6 +188,11 @@ across a velocity and accumulator grid (393,660 updates). It asserts:
 
 ## 10. Pressure gas compartments (PF, World-owned)
 
+Expected times use the phase convention in the
+[handoff](lcb-pressure-inertial-handoff.md#pressure-pressure_flow_v1-water-only-200): an
+event indexed N applies after completed tick N and is first observable at
+completed N+1.
+
 | Operation | Rule (Proposed; fixtures in `godot/tests/fixtures/lcb/acceptance/`) |
 |---|---|
 | Create | a sealed Empty region with no vented path forms a compartment with a new id and generation 0, amount = atmospheric amount for its free volume, and a ledger entry. Identity is never derived from amount. |

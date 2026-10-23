@@ -32,6 +32,7 @@ func _initialize() -> void:
 	_dormancy()
 	_reseal()
 	_split()
+	_event_boundaries(registry)
 	print("LCB physics contracts: %d assertions, %d failures" % [assertions, failures])
 	quit(1 if failures > 0 else 0)
 
@@ -219,3 +220,35 @@ func _split() -> void:
 		expect(M.water(inst.world, [8, 8, 36, 13]) == 2 * 2550 + 3 * 255, id + ": Water changed outside the closure fill")
 		observed.append(M.world_hashes(inst.world))
 	expect(observed[0] == observed[1], id + ": 1/4-worker results differ")
+
+# Gas event phases: the host observes completed tick N before it applies the
+# events indexed N (they run before native tick N+1). Each registered event
+# rectangle must hold its pre-event material at completed N and its post-event
+# material at completed N+1, at 1 and 4 workers; any fault fails closed.
+func _event_boundaries(registry: Dictionary) -> void:
+	var expected: Dictionary = {}
+	for contract: Dictionary in registry.contracts:
+		if str(contract.id) == "gas-topology": expected = contract.expected
+	expect(not expected.is_empty(), "gas-topology contract missing")
+	var checked: int = 0
+	for id: String in expected:
+		if not (expected[id] is Dictionary) or not expected[id].has("event_boundaries"): continue
+		for workers: int in [1, 4]:
+			var inst: Dictionary = _run(id, workers, 0)
+			if inst.is_empty(): return
+			var at: int = 0
+			for boundary: Dictionary in expected[id].event_boundaries:
+				for side: int in range(2):
+					var tick: int = int(boundary.check_ticks[side])
+					if not _advance(inst, id, tick - at): return
+					at = tick
+					var want: int = int((boundary.material_before if side == 0 else boundary.material_after)[0])
+					var r: Array = boundary.rect
+					var wrong: int = 0
+					for y: int in range(int(r[1]), int(r[1]) + int(r[3])):
+						for x: int in range(int(r[0]), int(r[0]) + int(r[2])):
+							if int(inst.world.material_at(x, y)) != want: wrong += 1
+					expect(wrong == 0, "%s w%d: %s at completed t%d has %d cells != material %d" % [
+						id, workers, str(boundary.event), tick, wrong, want])
+					checked += 1
+	expect(checked == 2 * 2 * 5, "expected 5 gas events checked on both sides at 1/4 workers, got %d" % checked)

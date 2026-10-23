@@ -47,10 +47,24 @@ def room(s: cat.Scenario, x0: int, interior_w: int = 10) -> None:
     s.fill(x0 + 1, 19, interior_w, 1)
 
 
-def gas_volume(s: cat.Scenario, tick: int, seed=(13, 10), box=(0, 0, 64, 32)) -> dict:
-    """Static geometry after scheduled events up to `tick`: connected Empty volume
-    containing `seed`, and whether it reaches the box edge (open atmosphere).
-    Ignores liquid motion; used only to preregister expected volumes."""
+# Phase convention (re-review finding 4). The MicroScenario host observes
+# completed tick N *before* it applies the events indexed N; those events run in
+# before_tick of native tick N+1. So:
+#   completed(N)  = state after native tick N (N = 0: as installed); events with
+#                   tick < N are applied, events indexed N are not.
+#   post_event(N) = after the events indexed N, before native tick N+1 runs.
+#                   Not observable through MicroScenario observations.
+# Every inspect_at value below is a completed tick.
+PHASES = ("completed", "post_event")
+
+
+def event_applied(event_tick: int, phase: str, n: int) -> bool:
+    assert phase in PHASES, phase
+    return event_tick < n if phase == "completed" else event_tick <= n
+
+
+def static_grid(s: cat.Scenario, phase: str, n: int, box=(0, 0, 64, 32)) -> dict:
+    """Static material geometry at a phase: rectangles, fills and the applied events."""
     x0, y0, w, h = box
     grid = {}
     for i in range(0, len(s.rects), 5):
@@ -64,11 +78,20 @@ def gas_volume(s: cat.Scenario, tick: int, seed=(13, 10), box=(0, 0, 64, 32)) ->
             for xx in range(x, x + rw):
                 grid[(xx, yy)] = WATER
     for e in s.events:
-        if e["tick"] > tick or e["kind"] == "sample":
+        if e["kind"] == "sample" or not event_applied(e["tick"], phase, n):
             continue
         for yy in range(e["y"], e["y"] + e["height"]):
             for xx in range(e["x"], e["x"] + e["width"]):
                 grid[(xx, yy)] = WATER if e["kind"] == "fill" else 0
+    return grid
+
+
+def gas_volume(s: cat.Scenario, n: int, seed=(13, 10), box=(0, 0, 64, 32), phase: str = "completed") -> dict:
+    """Connected Empty volume containing `seed` at a phase, and whether it reaches
+    the box edge (open atmosphere). Ignores liquid motion; used only to
+    preregister expected volumes."""
+    x0, y0, w, h = box
+    grid = static_grid(s, phase, n, box)
     seen, stack, vented = {seed}, [seed], False
     while stack:
         cx, cy = stack.pop()
@@ -235,50 +258,94 @@ SURGE = {
 }
 
 
+def constant_over(s, first: int, last: int, seed=(13, 10)) -> dict:
+    """Completed-tick geometry that must be identical over [first, last]."""
+    values = [gas_volume(s, n, seed) for n in range(first, last + 1)]
+    assert all(v == values[0] for v in values), (s.id, first, last, values)
+    return values[0]
+
+
+def event_boundaries(s: cat.Scenario) -> list[dict]:
+    """For each event: every cell's material at completed(N) (before) and completed(N+1) (after)."""
+    out = []
+    for e in s.events:
+        if e["kind"] == "sample":
+            continue
+        n = e["tick"]
+        pre, post = static_grid(s, "completed", n), static_grid(s, "completed", n + 1)
+        assert static_grid(s, "post_event", n) == post and static_grid(s, "post_event", n - 1) == pre
+        cells = [(x, y) for y in range(e["y"], e["y"] + e["height"]) for x in range(e["x"], e["x"] + e["width"])]
+        out.append({"event": f"{e['kind']} ({e['x']},{e['y']},{e['width']},{e['height']}) indexed t{n}",
+                    "rect": [e["x"], e["y"], e["width"], e["height"]],
+                    "pre_event": f"completed t{n}", "post_event": f"post-event t{n} (before native tick {n + 1})",
+                    "first_observed": f"completed t{n + 1}",
+                    "material_before": sorted({pre.get(c, 0) for c in cells}),
+                    "material_after": sorted({post.get(c, 0) for c in cells}),
+                    "check_ticks": [n, n + 1]})
+        assert len(out[-1]["material_before"]) == 1 and len(out[-1]["material_after"]) == 1
+    return out
+
+
 def contracts(fx: list[cat.Scenario]) -> dict:
     defs = {s.id: s for s in fx}
     global RESEAL_EXPECTED
     v = defs["lcb.accept.gas.compress-vent-reseal.v2"]
-    phases = {name: gas_volume(v, tick) for name, tick in (("t0", 0), ("t1-t4", 1), ("t5-t8", 5), ("t9-t30", 9))}
-    assert not phases["t1-t4"]["vented"] and phases["t5-t8"]["vented"] and not phases["t9-t30"]["vented"]
+    phases = {"completed t0-t1": constant_over(v, 0, 1), "completed t2-t5": constant_over(v, 2, 5),
+              "completed t6-t9": constant_over(v, 6, 9), "completed t10-t30": constant_over(v, 10, 30)}
+    assert [p["volume"] for p in phases.values()][:2] == [100, 50] and phases["completed t10-t30"]["volume"] == 58
+    assert not phases["completed t2-t5"]["vented"] and phases["completed t6-t9"]["vented"]
+    assert not phases["completed t10-t30"]["vented"]
     global SPLIT_EXPECTED
     sp = defs["lcb.accept.gas.split.v1"]
-    before = gas_volume(sp, 0, seed=(13, 10))
-    after_a, after_b = gas_volume(sp, 3, seed=(13, 10)), gas_volume(sp, 3, seed=(37, 10))
-    assert before == gas_volume(sp, 0, seed=(37, 10)) and not before["vented"]
+    before = constant_over(sp, 0, 3)
+    after_a, after_b = constant_over(sp, 4, 30), constant_over(sp, 4, 30, seed=(37, 10))
+    assert before == constant_over(sp, 0, 3, seed=(37, 10)) and not before["vented"]
     assert not after_a["vented"] and not after_b["vented"]
     assert after_a["volume"] + after_b["volume"] == before["volume"] - 3
     amount = before["volume"]  # sealed at atmospheric: amount in atmospheric cell-equivalents
     share_a = amount * after_a["volume"] // (after_a["volume"] + after_b["volume"])
     share_b = amount * after_b["volume"] // (after_a["volume"] + after_b["volume"])
+    assert (before["volume"], after_a["volume"], after_b["volume"]) == (222, 108, 111)
     SPLIT_EXPECTED = {
-        "geometry_volumes": {"t0-t2": before, "t3-t30 room A side": after_a, "t3-t30 room B side": after_b},
-        "t0-t2": f"one sealed compartment of volume {before['volume']} at atmospheric amount ({amount} in "
-                 "atmospheric cell-equivalents); one id",
-        "t3": "the trap fill removes 3 cells of gas volume and closes the path in the same event: the parent id "
-              "is retired; two NEW ids with ancestry = parent; generation advances; one split ledger entry whose "
-              "parts sum exactly to the parent amount",
+        "geometry_volumes": {"completed t0-t3": before, "completed t4-t30 room A side": after_a,
+                             "completed t4-t30 room B side": after_b},
+        "completed t0-t3": f"one sealed compartment of volume {before['volume']} at atmospheric amount ({amount} "
+                           "in atmospheric cell-equivalents); one id",
+        "post-event t3": "the trap fill indexed t3 runs before native tick 4; it removes 3 cells of gas volume "
+                         "and closes the path in the same event: the parent id is retired; two NEW ids with "
+                         "ancestry = parent; generation advances; one split ledger entry whose parts sum exactly "
+                         "to the parent amount. First observable at completed t4",
         "allocation_rule": "volume-proportional floor shares; the integer remainder goes to the compartment "
                            "containing the lowest (y, x) cell",
         "worked_example_atmospheric_cell_equivalents": {
             "parent_amount": amount, "volumes": [after_a["volume"], after_b["volume"]],
             "floor_shares": [share_a, share_b], "remainder": amount - share_a - share_b,
             "result": [share_a + (amount - share_a - share_b), share_b]},
-        "t4-t30": "both ids, volumes and amounts constant; trap Water stays 3 full cells (stationary closure)",
-        "hash": "the split changes the versioned physical-state hash; nothing else does after t3",
-        "inspect_at": [2, 3, 4, 30],
+        "completed t4-t30": "both ids, volumes and amounts constant; trap Water stays 3 full cells "
+                            "(stationary closure)",
+        "hash": "the split changes the versioned physical-state hash between completed t3 and t4; nothing else "
+                "does after completed t4",
+        "event_boundaries": event_boundaries(sp),
+        "inspect_at_completed": [3, 4, 30],
     }
     RESEAL_EXPECTED = {
         "geometry_volumes": phases,
-        "t1-t4": "one sealed compartment, amount 100 (atmospheric for the original 100 cells), volume "
-                 f"{phases['t1-t4']['volume']}, pressure derived accordingly; same id and generation as t0",
-        "t5-t8": "vented: connected to atmosphere; amount relaxes toward atmospheric with an explicit exchange "
-                 "ledger entry; vent state recorded",
-        "t9": f"reseal: a NEW compartment id (old id never reused), volume {phases['t9-t30']['volume']}, "
-              "amount = atmospheric amount for that volume, ledger entry for the reseal",
-        "t10-t30": "id, generation, volume and amount constant; trap Water stays 3 full cells (stationary seal)",
+        "completed t0-t1": "one sealed compartment of volume 100 at atmospheric amount 100; one id",
+        "completed t2-t5": "after the compression fill indexed t1: the same compartment, amount 100 "
+                           "(atmospheric for the original 100 cells), volume "
+                           f"{phases['completed t2-t5']['volume']}, pressure derived accordingly; same id and "
+                           "generation",
+        "completed t6-t9": "after the vent erase indexed t5: connected to atmosphere; amount relaxes toward "
+                           "atmospheric with an explicit exchange ledger entry; vent state recorded",
+        "post-event t9": "the trap fill indexed t9 runs before native tick 10 and reseals: a NEW compartment id "
+                         f"(old id never reused), volume {phases['completed t10-t30']['volume']}, amount = "
+                         "atmospheric amount for that volume, ledger entry for the reseal. First observable at "
+                         "completed t10",
+        "completed t10-t30": "id, generation, volume and amount constant; trap Water stays 3 full cells "
+                             "(stationary seal)",
         "hash": "every amount, volume, vent or id change alters the versioned physical-state hash",
-        "inspect_at": [4, 5, 8, 9, 10, 30],
+        "event_boundaries": event_boundaries(v),
+        "inspect_at_completed": [1, 2, 5, 6, 9, 10, 30],
     }
     return {
         "schema": "lcb-physics-contracts-v1",
@@ -317,11 +384,26 @@ def contracts(fx: list[cat.Scenario]) -> dict:
             {"id": "gas-topology", "scenarios": [d for d in defs if d.startswith("lcb.accept.gas.")],
              "purpose": "#200 trapped-gas defect regressions: identity independent of amount, unequal merge once, "
                         "reseal from current volume, gas state in the physical hash.",
+             "phase_convention": {
+                 "completed(N)": "state after native tick N (N = 0: as installed); events indexed N are NOT yet "
+                                 "applied. MicroScenario observations and inspect_at_completed use this phase.",
+                 "post_event(N)": "after the events indexed N are applied in before_tick of native tick N+1, "
+                                  "before that native tick runs; not observable through MicroScenario observations",
+                 "host": "godot/scripts/microscenario_host.gd: tick-0 observation precedes tick-0 events; "
+                         "unchanged by this contract",
+                 "boundary_checks": "test_lcb_physics_contracts.gd::event_boundaries inspects every event "
+                                    "rectangle at completed N (material_before) and completed N+1 "
+                                    "(material_after), at 1 and 4 workers, failing closed"},
              "expected": {
                  "lcb.accept.gas.single-pocket.v1": "amount 100 and one stable pocket identity at every tick",
                  "lcb.accept.gas.twin-pockets.v1": "two identities, each amount 100 at every tick; no cycling",
-                 "lcb.accept.gas.unequal-merge.v1": "after tick 1: one pocket, amount 220, generation advanced, "
-                                                   "ancestry records both parents",
+                 "lcb.accept.gas.unequal-merge.v1": {
+                     "completed t0-t1": "two pockets, amounts 100 and 120",
+                     "post-event t1": "the wall erase indexed t1 runs before native tick 2: one pocket, amount 220, "
+                                      "generation advanced, ancestry records both parents; first observable at "
+                                      "completed t2",
+                     "event_boundaries": event_boundaries(defs["lcb.accept.gas.unequal-merge.v1"]),
+                     "inspect_at_completed": [1, 2, 10]},
                  "lcb.accept.gas.compress-vent-reseal.v2": RESEAL_EXPECTED,
                  "lcb.accept.gas.split.v1": SPLIT_EXPECTED},
              "withdrawn": {"lcb.accept.gas.compress-vent-reseal.v1":

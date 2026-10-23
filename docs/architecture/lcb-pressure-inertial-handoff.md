@@ -114,15 +114,30 @@ requirements.
 
 **Gas** (World-owned; **independent of #45's vented scope**; required by #200).
 The rules are §10 of the transition matrix. They must hold on the acceptance
-fixtures:
+fixtures.
+
+**Phase convention (correction 2026-10-23, re-review finding 4).** The
+MicroScenario host observes completed tick N *before* it applies the events
+indexed N; those events run before native tick N+1. Every expected time below is
+therefore either:
+- `completed tN`: after native tick N, events indexed N not yet applied;
+- `post-event tN`: after the events indexed N, before native tick N+1; not
+  observable through MicroScenario observations.
+
+An event indexed N is first observable at completed N+1. The host semantics are
+unchanged. `test_lcb_physics_contracts.gd::event_boundaries` checks every event
+rectangle at completed N (pre-event material) and completed N+1 (post-event
+material) at 1 and 4 workers. A mutation using the old `event.tick <= tick`
+reading fails 10 of those checks.
+
 
 | Fixture | Requirement |
 |---|---|
 | `gas.single-pocket` | amount 100 constant |
 | `gas.twin-pockets` | two ids, each 100, no 100,50,25… cycling |
-| `gas.unequal-merge` | 100+120 → 220 once |
-| `gas.compress-vent-reseal.v2` | 100 held at half volume (50 cells); vent through a channel and dry U-trap with an exchange ledger; reseal by a supported trap Water plug into a **new** 58-cell compartment at atmospheric amount, held to t30 (v1's unsupported roof plug is withdrawn) |
-| `gas.split.v1` | one compartment through two rooms and a dry U-trap; a supported trap fill at t3 splits it into two **new** ids with ancestry; volume-proportional floor shares, remainder to the compartment holding the lowest (y, x) cell; exact split ledger |
+| `gas.unequal-merge` | 100+120 at completed t0–t1; the wall erase indexed t1 merges once to 220 (post-event t1, first observed at completed t2) |
+| `gas.compress-vent-reseal.v2` | volume 100 at completed t0–t1; amount 100 held at half volume (50 cells) at completed t2–t5; vented through a channel and dry U-trap with an exchange ledger at completed t6–t9; the supported trap Water plug indexed t9 reseals into a **new** 58-cell compartment at atmospheric amount, first observed at completed t10 and held to t30 (v1's unsupported roof plug is withdrawn) |
+| `gas.split.v1` | one 222-cell compartment through two rooms and a dry U-trap at completed t0–t3; the supported trap fill indexed t3 splits it (post-event t3, first observed at completed t4) into two **new** ids with ancestry, volumes 108 and 111; volume-proportional floor shares 109/112, remainder 1 to the compartment holding the lowest (y, x) cell, giving 110/112; exact split ledger |
 | empty-only-chunk survival | native test |
 | hash change on gas-only change | needs the hash API |
 

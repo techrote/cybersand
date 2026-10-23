@@ -195,38 +195,146 @@
         "lcb.accept.gas.split.v1"
       ],
       "purpose": "#200 trapped-gas defect regressions: identity independent of amount, unequal merge once, reseal from current volume, gas state in the physical hash.",
+      "phase_convention": {
+        "completed(N)": "state after native tick N (N = 0: as installed); events indexed N are NOT yet applied. MicroScenario observations and inspect_at_completed use this phase.",
+        "post_event(N)": "after the events indexed N are applied in before_tick of native tick N+1, before that native tick runs; not observable through MicroScenario observations",
+        "host": "godot/scripts/microscenario_host.gd: tick-0 observation precedes tick-0 events; unchanged by this contract",
+        "boundary_checks": "test_lcb_physics_contracts.gd::event_boundaries inspects every event rectangle at completed N (material_before) and completed N+1 (material_after), at 1 and 4 workers, failing closed"
+      },
       "expected": {
         "lcb.accept.gas.single-pocket.v1": "amount 100 and one stable pocket identity at every tick",
         "lcb.accept.gas.twin-pockets.v1": "two identities, each amount 100 at every tick; no cycling",
-        "lcb.accept.gas.unequal-merge.v1": "after tick 1: one pocket, amount 220, generation advanced, ancestry records both parents",
+        "lcb.accept.gas.unequal-merge.v1": {
+          "completed t0-t1": "two pockets, amounts 100 and 120",
+          "post-event t1": "the wall erase indexed t1 runs before native tick 2: one pocket, amount 220, generation advanced, ancestry records both parents; first observable at completed t2",
+          "event_boundaries": [
+            {
+              "event": "erase (19,13,1,1) indexed t1",
+              "rect": [
+                19,
+                13,
+                1,
+                1
+              ],
+              "pre_event": "completed t1",
+              "post_event": "post-event t1 (before native tick 2)",
+              "first_observed": "completed t2",
+              "material_before": [
+                1
+              ],
+              "material_after": [
+                0
+              ],
+              "check_ticks": [
+                1,
+                2
+              ]
+            }
+          ],
+          "inspect_at_completed": [
+            1,
+            2,
+            10
+          ]
+        },
         "lcb.accept.gas.compress-vent-reseal.v2": {
           "geometry_volumes": {
-            "t0": {
+            "completed t0-t1": {
               "volume": 100,
               "vented": false
             },
-            "t1-t4": {
+            "completed t2-t5": {
               "volume": 50,
               "vented": false
             },
-            "t5-t8": {
+            "completed t6-t9": {
               "volume": 1820,
               "vented": true
             },
-            "t9-t30": {
+            "completed t10-t30": {
               "volume": 58,
               "vented": false
             }
           },
-          "t1-t4": "one sealed compartment, amount 100 (atmospheric for the original 100 cells), volume 50, pressure derived accordingly; same id and generation as t0",
-          "t5-t8": "vented: connected to atmosphere; amount relaxes toward atmospheric with an explicit exchange ledger entry; vent state recorded",
-          "t9": "reseal: a NEW compartment id (old id never reused), volume 58, amount = atmospheric amount for that volume, ledger entry for the reseal",
-          "t10-t30": "id, generation, volume and amount constant; trap Water stays 3 full cells (stationary seal)",
+          "completed t0-t1": "one sealed compartment of volume 100 at atmospheric amount 100; one id",
+          "completed t2-t5": "after the compression fill indexed t1: the same compartment, amount 100 (atmospheric for the original 100 cells), volume 50, pressure derived accordingly; same id and generation",
+          "completed t6-t9": "after the vent erase indexed t5: connected to atmosphere; amount relaxes toward atmospheric with an explicit exchange ledger entry; vent state recorded",
+          "post-event t9": "the trap fill indexed t9 runs before native tick 10 and reseals: a NEW compartment id (old id never reused), volume 58, amount = atmospheric amount for that volume, ledger entry for the reseal. First observable at completed t10",
+          "completed t10-t30": "id, generation, volume and amount constant; trap Water stays 3 full cells (stationary seal)",
           "hash": "every amount, volume, vent or id change alters the versioned physical-state hash",
-          "inspect_at": [
-            4,
+          "event_boundaries": [
+            {
+              "event": "fill (9,14,10,5) indexed t1",
+              "rect": [
+                9,
+                14,
+                10,
+                5
+              ],
+              "pre_event": "completed t1",
+              "post_event": "post-event t1 (before native tick 2)",
+              "first_observed": "completed t2",
+              "material_before": [
+                0
+              ],
+              "material_after": [
+                3
+              ],
+              "check_ticks": [
+                1,
+                2
+              ]
+            },
+            {
+              "event": "erase (19,12,1,1) indexed t5",
+              "rect": [
+                19,
+                12,
+                1,
+                1
+              ],
+              "pre_event": "completed t5",
+              "post_event": "post-event t5 (before native tick 6)",
+              "first_observed": "completed t6",
+              "material_before": [
+                1
+              ],
+              "material_after": [
+                0
+              ],
+              "check_ticks": [
+                5,
+                6
+              ]
+            },
+            {
+              "event": "fill (23,16,3,1) indexed t9",
+              "rect": [
+                23,
+                16,
+                3,
+                1
+              ],
+              "pre_event": "completed t9",
+              "post_event": "post-event t9 (before native tick 10)",
+              "first_observed": "completed t10",
+              "material_before": [
+                0
+              ],
+              "material_after": [
+                3
+              ],
+              "check_ticks": [
+                9,
+                10
+              ]
+            }
+          ],
+          "inspect_at_completed": [
+            1,
+            2,
             5,
-            8,
+            6,
             9,
             10,
             30
@@ -234,21 +342,21 @@
         },
         "lcb.accept.gas.split.v1": {
           "geometry_volumes": {
-            "t0-t2": {
+            "completed t0-t3": {
               "volume": 222,
               "vented": false
             },
-            "t3-t30 room A side": {
+            "completed t4-t30 room A side": {
               "volume": 108,
               "vented": false
             },
-            "t3-t30 room B side": {
+            "completed t4-t30 room B side": {
               "volume": 111,
               "vented": false
             }
           },
-          "t0-t2": "one sealed compartment of volume 222 at atmospheric amount (222 in atmospheric cell-equivalents); one id",
-          "t3": "the trap fill removes 3 cells of gas volume and closes the path in the same event: the parent id is retired; two NEW ids with ancestry = parent; generation advances; one split ledger entry whose parts sum exactly to the parent amount",
+          "completed t0-t3": "one sealed compartment of volume 222 at atmospheric amount (222 in atmospheric cell-equivalents); one id",
+          "post-event t3": "the trap fill indexed t3 runs before native tick 4; it removes 3 cells of gas volume and closes the path in the same event: the parent id is retired; two NEW ids with ancestry = parent; generation advances; one split ledger entry whose parts sum exactly to the parent amount. First observable at completed t4",
           "allocation_rule": "volume-proportional floor shares; the integer remainder goes to the compartment containing the lowest (y, x) cell",
           "worked_example_atmospheric_cell_equivalents": {
             "parent_amount": 222,
@@ -266,10 +374,33 @@
               112
             ]
           },
-          "t4-t30": "both ids, volumes and amounts constant; trap Water stays 3 full cells (stationary closure)",
-          "hash": "the split changes the versioned physical-state hash; nothing else does after t3",
-          "inspect_at": [
-            2,
+          "completed t4-t30": "both ids, volumes and amounts constant; trap Water stays 3 full cells (stationary closure)",
+          "hash": "the split changes the versioned physical-state hash between completed t3 and t4; nothing else does after completed t4",
+          "event_boundaries": [
+            {
+              "event": "fill (23,16,3,1) indexed t3",
+              "rect": [
+                23,
+                16,
+                3,
+                1
+              ],
+              "pre_event": "completed t3",
+              "post_event": "post-event t3 (before native tick 4)",
+              "first_observed": "completed t4",
+              "material_before": [
+                0
+              ],
+              "material_after": [
+                3
+              ],
+              "check_ticks": [
+                3,
+                4
+              ]
+            }
+          ],
+          "inspect_at_completed": [
             3,
             4,
             30
