@@ -71,6 +71,3 @@ For illustration only, fresh E8 clears at256 and then every255 completed ticks; 
 
 Current source, runtime identities and accepted raw evidence are unchanged. This review is a documentation checkpoint; the schema/ADR corrections and owner worksheet are recoverable through the existing draft PR221. It claims no new runtime validation or owner/product sign-off.
 
-## Documentation validation
-
-Docs/current-repository and historical M11 checks pass; no runtime validation ran. The new review question retrieves its canonical route at rank1. Supplementary122 results are98 at1 and121 at5,MRR0.8821: C09 (powder/barrel downward impulses) moves outside top5 after corpus statistics change. Its question/expected facts and physics source remain untouched; top contexts remain physics-characterisation/policy documents. This lexical regression is retained as a retrieval limitation, not a changed physics answer. Initial placement as an indexed audit was correctly rejected by corpus policy; the current review lives under research as a reference, with historical audits still excluded. No checker or evaluation rule was relaxed.
