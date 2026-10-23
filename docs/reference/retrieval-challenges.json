@@ -1973,13 +1973,14 @@
       "query": "Can the four 4LY drones be selected in ordinary F5 without changing existing actor IDs, and are their handling profiles already measured?",
       "canonical": [
         "systems/physical-free-flight.md",
-        "reference/configuration-reference.md"
+        "reference/configuration-reference.md",
+        "audits/2026-10-23-4ly002-measured-handling-qualification.md"
       ],
       "facts": [
         "F5 appends named set4LY containing stable Trainer/Hauler/Drifter/Dart IDs after the original eight sets; RIG_IDS still preserves the original 46 actors and SetP indices.",
-        "4LY-002 authors four distinct numeric plant candidates, sharing exactly one flight controller, topology and strict two-axis admitted velocity action; each profile's calibration status is candidate_4ly002 until measured acceptance.",
+        "4LY-002 supplies four distinct candidate physical plants sharing one bounded two-axis actuator. Actual Rapier Linux and Windows manoeuvre fixtures passed 602 assertions with zero failures on each host; the literal calibration field remains candidate_4ly002 to preserve the measured profile hashes.",
         "All four one-rectangle Rapier chassis have explicit no-equipment preparation and no joints/mounts; a legacy empty usable selection alone may retain a held equipment body.",
-        "Prospectively registered physical manoeuvre thresholds compare normalized response and common-speed braking; a source-level distinction or visible selector alone is not passing measured handling or owner-feel acceptance.",
+        "Prospectively registered numeric thresholds passed at implementation head f7721a1: Hauler 60-step normalized response ratio 0.475933 (maximum 0.85), Dart 1.766361 (minimum 1.20) and Drifter equal-speed stop distance ratio 1.846532 (minimum 1.25); this is real physical handling measurement but not owner-feel approval.",
         "The ordinary sandbox and existing exploratory Play hosts support this selector, while protected fixtures and Benchmark mode retain their separate authority."
       ],
       "sources": [
@@ -1988,7 +1989,8 @@
         "../godot/scripts/actor_prototype_panel.gd",
         "../godot/scripts/physical_usable_equipment.gd",
         "../godot/tests/test_physical_flight_handling.gd",
-        "../godot/tests/test_physical_flight_selection.gd"
+        "../godot/tests/test_physical_flight_selection.gd",
+        "audits/2026-10-23-4ly002-measured-handling-qualification.md"
       ],
       "revision_sensitive": true
     },
@@ -2051,14 +2053,15 @@
         "Copied raw requested action, admitted action, accepted sequence/source tick, prepared force/torque receipt, actually completed step and sampled motion remain distinguishable.",
         "The physical bridge counter proves completed last_step attribution; its immutable snapshot retains the original run, actor, epoch, producer, control generation, sequence and source tick across later cancellation or takeover.",
         "Assistance receipts do not claim an unavailable decomposition of passive damping, contacts or native material forces.",
-        "4LY-002 must first qualify and freeze its authored candidates with real Rapier metrics and exact-host identity; 4LY-003 then qualifies the lab host and teacher; companion 4LY-004 qualifies Trainer before independently verified passing Trainer evidence admits 4LY-005 family learning.",
+        "4LY-002 has qualifying source-bound Linux/Windows physical manoeuvre envelopes and four matching resolved profile hashes; owner-feel and final revised-head acceptance remain independent. 4LY-003 must qualify its own actual host/teacher against the final merged source; companion 4LY-004 then qualifies Trainer before passing Trainer evidence can admit family-wide 4LY-005 learning.",
         "Implementation merge and issue creation do not execute or allocate training, and parent #132 and Jolt/morphology gates remain separate."
       ],
       "sources": [
         "../godot/scripts/physical_flight_profile.gd",
         "../godot/scripts/physical_flight_controller.gd",
         "../godot/scripts/physical_actor_session.gd",
-        "../godot/tests/test_physical_flight_profile.gd"
+        "../godot/tests/test_physical_flight_profile.gd",
+        "audits/2026-10-23-4ly002-measured-handling-qualification.md"
       ],
       "revision_sensitive": true
     },
@@ -2074,13 +2077,14 @@
         "The profile descriptor exposes a copied static capabilities subobject for rectangle size, mass/inertia, requested speeds, acceleration/braking, force/response/slew, drag, attitude and gravity/vertical force margin.",
         "This subdescriptor contains no evaluator label, secret actor name, goal, world position or reward; dynamic flight assistance/lease/resource state is published separately in the physical session observation.",
         "The four source profiles use shared action profile 4ly_velocity_v1, source-hashed goal-blind controller, one rigid chassis, and explicit empty default loadouts.",
-        "Candidate status and actual-host measurements remain separate from accepting a learned policy or owner-feel requirement."
+        "Measured Linux and Windows physical profiles share identity hashes and pass prospectively registered envelope comparisons; static capabilities or those measurements alone do not grant navigation learning, owner-feel or Web execution acceptance."
       ],
       "sources": [
         "../godot/scripts/physical_flight_profile.gd",
         "../godot/scripts/physical_actor_session.gd",
         "../godot/tests/test_physical_flight_profile.gd",
-        "../godot/tests/test_physical_flight_handling.gd"
+        "../godot/tests/test_physical_flight_handling.gd",
+        "audits/2026-10-23-4ly002-measured-handling-qualification.md"
       ],
       "revision_sensitive": true
     }
