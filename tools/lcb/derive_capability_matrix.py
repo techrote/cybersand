@@ -99,23 +99,24 @@ def parse_pair_rules(text: str) -> list[dict]:
 def family_cell(material: dict, family: str) -> dict:
     default = DEFAULT_FAMILY.get(material["lateral_flow"])
     if family == default:
-        return {"status": "current_default", "executable_today": True,
-                "variants": ["reference"],
+        return {"status": "current_default", "executable_today": True, "selectable": True,
+                "variants": ["reference"], "classification": "source fact (LateralFlowMode)",
                 "note": "unchanged production behavior; protected control"}
     key = (material["name"], family)
     if key in PROPOSED:
         status, note = PROPOSED[key]
         return {"status": status, "executable_today": False,
+                "selectable": status == "proposed_experimental",
                 "variants": VARIANTS[family] if status == "proposed_experimental" else [],
-                "note": note}
+                "classification": "reviewed design classification (PROPOSED table)", "note": note}
     reasons = {
         "freemass_v1": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids",
         "cellular_yield_v1": "not applicable",
         "pressure_flow_v1": "pressure_flow_v1 v1 scope is Water only (corrected 7ef2aac candidate)",
         "inertial_cellular_v1": "not proposed for v1; kernel specialization or chemistry not qualified by #212",
     }
-    return {"status": "rejected", "executable_today": False, "variants": [],
-            "note": reasons[family]}
+    return {"status": "rejected", "executable_today": False, "selectable": False, "variants": [],
+            "classification": "reviewed design classification (default rejection)", "note": reasons[family]}
 
 
 def build() -> dict:
@@ -132,6 +133,11 @@ def build() -> dict:
             "viscosity_index": m["viscosity_index"], "density_motion": m["density_motion"],
             "accepts_density_exchange": m["accepts_density_exchange"],
             "kernel_specialization": KERNEL_SPECIALIZATION.get(m["kernel"], m["kernel"] + " kernel"),
+            "provenance": {
+                "source_facts": ["material_id", "enum", "name", "density", "kernel", "lateral_flow",
+                                 "viscosity_index", "density_motion", "accepts_density_exchange",
+                                 "pair_reactions_as_reactant", "pair_reactions_producing"],
+                "reviewed_design": ["kernel_specialization", "families"]},
             "mercury_viscosity_diagnostic_override": m["enum"] == "Mercury",
             "pair_reactions_as_reactant": reactions, "pair_reactions_producing": produced_by,
             "current_default_family": DEFAULT_FAMILY[m["lateral_flow"]],
@@ -140,7 +146,7 @@ def build() -> dict:
     non_liquid = [m["name"] for m in materials if m["valid"] and m not in liquids]
     return {
         "schema": "lcb-liquid-capability-matrix-v1",
-        "status": "Approved design is NOT claimed; LCB-000 Gate C proposal. Only current_default cells execute today.",
+        "status": "LCB-000 Gate C proposal. Descriptor fields are parsed source facts; family statuses, variants and kernel_specialization text are reviewed hand-authored design classifications, not executable solver coverage. Only current_default cells execute today.",
         "sources": {
             "native/include/cybersand/material.hpp": source_digest(MATERIAL_HPP),
             "native/include/cybersand/interaction_rules.hpp": source_digest(RULES_HPP),
@@ -150,7 +156,7 @@ def build() -> dict:
         "status_vocabulary": {
             "current_default": "executes today as the unchanged production default",
             "proposed_experimental": "Gate C/D design target; not implemented, must be refused until its owner lands it",
-            "proposed_alternate": "documented substitute candidate; not a design commitment",
+            "proposed_alternate": "documented substitute candidate; NOT selectable (refused as not_selectable) until its owner qualifies it",
             "rejected": "construction must refuse this mapping before replacing any session",
         },
         "material_descriptor_count": len(materials),

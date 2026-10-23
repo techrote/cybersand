@@ -42,11 +42,20 @@ Rules:
 - **Everyday Water does not change.** No scene, preset, save or default maps
   Water away from `W-FM` unless a comparison policy is explicitly selected. The
   experimental settings are separate, opt-in, versioned identities.
-- **Precision and coherence.** Water mass precision 3–8 and coherence 0–12
-  (`WaterExperimentPolicy`) apply to `W-FM`. Each other arm declares whether it
-  honours them; otherwise construction refuses the combination with
-  `water_semantics_incompatible`. No arm hides a 255-unit assumption: a
-  candidate on mass*N* scales quantities from `maximum()`.
+- **Precision and coherence (corrected 2026-10-23).** Water mass precision 3–8
+  and coherence 0–12 (`WaterExperimentPolicy`) apply to every arm. No arm
+  quietly changes a policy axis while still calling a run matched.
+  - **Mass bits:** W-CY and whole-cell W-IN v1 store exactly `maximum()` per
+    Water cell for the selected mass bits. W-PF scales overfill and thresholds
+    from `maximum()`. No arm hides a 255-unit assumption.
+  - **Coherence:** every arm **honours** it as the material pre-motion hook. The
+    `state_b` countdown decrements per update and suppresses lateral motion
+    while it is above zero (see
+    [material hooks](../architecture/liquid-solver-family-policy.md#material-hooks-versus-motion-gate-c-correction-2026-10-23)).
+    An implementation that cannot honour it refuses with
+    `water_semantics_incompatible`; it never ignores it silently.
+  - **Adhesion film:** defined on fractional mass. It is **not applicable** to
+    whole-cell arms, and the receipt records that as a declared difference.
 - **Other liquids are not required to support every family.** Only the matrix
   rows apply.
 
@@ -57,12 +66,26 @@ Rules:
   in all four regimes, so both reference fixtures use only full Water cells.
 - **Fractional cells.** For a whole-cell (`W-CY`) or any regime without
   fractional support, a setup containing fractional Water is **refused**
-  (`combination_rejected`) unless the caller selects a registered conversion
-  rule. The only proposed rule is `water-normalize-v1`:
-  - cells at or above `maximum()/2` become one full unit, and cells below
-    become Empty;
-  - the exact signed quantity delta is reported in the receipt and the
-    run's source/sink ledger.
+  (`normalization_required`) unless the caller explicitly opts in to a
+  registered setup conversion. The only proposed rule is
+  **`water-normalize-v1` (corrected 2026-10-23)**:
+  - **Rounding.** A Water cell of mass `m` (1 ≤ m ≤ `maximum()`) becomes one
+    full cell (`maximum()`) when `2·m ≥ maximum()`, evaluated in at least
+    32-bit arithmetic. Otherwise it becomes Empty. `maximum()` is odd for mass
+    bits 3–8, so the smallest up-rounding mass is `(maximum()+1)/2`: **128/255
+    rounds up and 127/255 rounds down** at mass8, and 4/7 up, 3/7 down at
+    mass3. The earlier wording "`maximum()/2`" wrongly rounded 127/255 up.
+  - **Per-cell signed delta.** `δ = (maximum() − m)` for an up-round, `δ = −m`
+    for a down-round. Cells are visited in deterministic row-major order
+    (ascending y, then x).
+  - **Receipt.** The receipt holds rule ID and version, mass bits, the
+    canonical setup hash before and after, cells up/down/unchanged, `Σδ⁺`,
+    `Σδ⁻` and the net delta, and a receipt hash that is part of the run
+    receipt.
+  - **Ledger.** The net delta is booked as a **declared setup-only
+    source/sink** at tick 0. It is not physical conservation, and it is not a
+    live hot-swap. Matched comparisons that need a conversion compare
+    post-normalization states and report the delta.
 
   Nothing rounds or deletes partial mass silently.
 - **Reverse direction.** A whole-cell or inertial Water cell entering a
@@ -102,7 +125,7 @@ pins that hash, so any edit fails until a new version is registered.
 | Seed | 0 (the definition has no stochastic setup) |
 | Horizon | 1,800 ticks |
 | Observations | total Water at 0/1800; near band at 30; downstream at 60; near/middle/far bands at 120/240; reservoir at 240/480/1800 (13 total, within the area budget) |
-| Conditions | `complete` if total at 1800 = 7,833,600; `fail` if reservoir at 480 exceeds the initial total |
+| Conditions | `complete` if total at 1800 = 7,833,600; `fail` if reservoir at 480 exceeds the initial total. **`complete` is an accounting criterion only.** Surge and front metrics that stop a conserving but immobile candidate from passing are registered separately for #200/#212. |
 | Camera / presentation | origin `[0,0]`; regions: reservoir, gate, downstream and three bands; normal rendering, no smoothing claim |
 
 **Measured Current-default control (2026-10-23, Windows):** outcome
@@ -199,16 +222,33 @@ conserved.
 | **M1** three-family target | `freemass_v1` | `cellular_yield_v1` | `inertial_cellular_v1` | **3** | blocked on #212 (+#200 policy) |
 | **M2** pressure substitution | `pressure_flow_v1/reference` | `cellular_yield_v1` | `inertial_cellular_v1` | 3 | blocked on #200 + #212 |
 | **M2b** pressure, no inertial | `pressure_flow_v1/reference` | `cellular_yield_v1` | `cellular_yield_v1` | 2 | blocked on #200 |
-| **M1-alt** substitute inertial | `freemass_v1` | `cellular_yield_v1` | Toxic Sludge (32) as `inertial_cellular_v1` | 3 | only if Brine fails qualification; needs a new geometry version (sludge converts to Water on contact) |
+| **M1-alt** substitute inertial | `freemass_v1` | `cellular_yield_v1` | Toxic Sludge (32) as `inertial_cellular_v1` | 3 | **not selectable** (`not_selectable`); only if Brine fails qualification, and then with a new geometry version (sludge converts to Water on contact) |
 
 **M0 runs only two families.** The three-family requirement is met only when
 M1 executes. That depends on #212, and nothing here claims it.
 
+**Signed reaction ledger (corrected 2026-10-23).** The frozen M0 definition
+keeps its original conditions and hash (`complete` on Oil conservation, `fail`
+on Water gain). The stronger checks are applied **outside** the definition, by
+the fixture regression and the campaign reducer, so the protected identity is
+unchanged. With `s` = Salt cells consumed, they are:
+
+- `Δbrine = +2·s` exactly (Water+Salt→Brine+Brine);
+- `Δwater = −Σ m_i` over the consumed Water cells. That lies in `[−255·s, −s]`,
+  and equals `−255·s` only when every consumed Water cell was full. That is
+  true for M0 by construction: 29 consumed, Water −7,395.
+- after the last dissolution, the Water integer is constant. Any further loss
+  is an **unexplained loss** and fails.
+- Oil cells are constant;
+- quantities are booked **per species** (Water integer, Brine cells, Oil cells,
+  Salt cells). No cross-species "total mass" is claimed. A partially filled
+  consumed Water cell is a #160 boundary event, not conservation.
+
 **Required invariants for M1/M2** (preregistered):
 
 - exact Oil cell count;
-- Water integer + 255 × (Brine gained / 2 attributable to Salt) closes against
-  Salt consumed;
+- the signed reaction ledger above, with each consumed Water mass booked per
+  reaction;
 - no velocity or overfill state survives in non-owning families;
 - each reaction product starts at its family default state;
 - pressure summaries are invalidated after Brine/Oil contact (#201);
@@ -221,7 +261,7 @@ M1 executes. That depends on #212, and nothing here claims it.
 |---|---|---|
 | NC-1 | Request `inertial_cellular_v1` for Oil | `combination_rejected` before construction; prior session intact [#200] |
 | NC-2 | Request `pressure_flow_v1` or `inertial_cellular_v1` on today's build | `family_unavailable`; no fallback to Current [#200] |
-| NC-3 | Fractional-Water setup under `W-CY` without `water-normalize-v1` | `combination_rejected` [#200] |
+| NC-3 | Fractional-Water setup under `W-CY` without an explicit `water-normalize-v1` opt-in | `normalization_required` [#200] |
 | NC-4 | Pressure Water at rest beside actively flowing Oil (M2b) | Oil motion and chemistry continue; Water dormancy never suppresses them [#201] |
 | NC-5 | Salt dissolution under M1 | Products at inertial default state; ledger closes as above [#212/#160] |
 | NC-6 | Copy, move or swap across families (density exchange in M1/M2) | Each cell keeps only its own family state; full physical-state hash changes exactly when authoritative state does [#200/#212] |
