@@ -91,6 +91,8 @@ def validate_group(base: Path, group: str, git_sha: str) -> dict[str, Any]:
             errors.append("producer_or_split:" + name)
         if manifest.get("host_schedule") != "synchronous-mask-actuation-effects-material-feedback-terrain-rapier/v1":
             errors.append("native_host_schedule:" + name)
+        if manifest.get("split_geometry_version") != 3 or manifest.get("sealed_suite_sha256") is not None:
+            errors.append("missing_split_v3_or_public_final_leak:" + name)
         if manifest.get("action_profile") != "4ly_velocity_v1":
             errors.append("physical_action_profile:" + name)
         if manifest.get("physics_hz") != 60 or manifest.get("decision_ticks") != 6:
