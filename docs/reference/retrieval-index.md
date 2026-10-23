@@ -24,7 +24,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 
 | Question family | Canonical route |
 |---|---|
-| Are Trainer, Hauler, Drifter and Dart four calibrated drones, and can I select them in ordinary play yet? | [4LY implementation scope and programme](../systems/physical-free-flight.md#what-does-4ly-001-implement-and-which-drones-are-ready), [profile values](configuration-reference.md#physical-free-flight-values) |
+| Are Trainer, Hauler, Drifter and Dart four calibrated drones, and can I select them in ordinary play yet? | [4LY implementation scope and programme](../systems/physical-free-flight.md#what-does-4ly-001-implement-and-which-4ly-002-drone-profiles-can-i-select), [profile values](configuration-reference.md#physical-free-flight-values) |
 | How can two desired-velocity outputs control a real flying chassis without hidden goal navigation, unlimited hover or velocity clipping? | [4LY control and goal blindness](../systems/physical-free-flight.md), [strict action interface](interfaces-and-message-contracts.md#physical-free-flight-actions) |
 | Does releasing a drone's velocity request mean hover, and what happens on cancellation, lease expiry, power-off or replacement? | [4LY neutral and lifecycle modes](../systems/physical-free-flight.md#how-do-neutral-cancellation-power-off-and-suspension-differ), [copied publications](interfaces-and-message-contracts.md#physical-free-flight-actions) |
 | Which profile/controller hashes, applied assistance and actual motion belong in 4LY flight evidence, and what gates Trainer learning? | [4LY identity and programme](../systems/physical-free-flight.md), [focused conformance tests](../operations/local-build-and-validation.md#physical-free-flight-checks) |
