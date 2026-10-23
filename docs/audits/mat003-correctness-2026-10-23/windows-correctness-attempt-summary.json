@@ -1,0 +1,75 @@
+{
+  "registration_sha256": "6d5011004ad4fbde2b26348db44483cb4fc4942ad6b71d8caf18347ce5ae09b0",
+  "authority_sha256": "3abc186278c27277b8b69f185237e9415583c7f9e9e4720add494a1130231dee",
+  "result_sha256": "e0e1572049997aa7552057223778e1566534961568265d4036130285bf9a6e27",
+  "inventory_sha256": "014a84ea614bf07c0c8d7d093fe4fa18ae8e103bd8e850e01b0fc40e9b08f2a5",
+  "independent_review": {
+    "disposition": "REFUSE correctness qualification: registered campaign incomplete; no timing authorized or accepted",
+    "source_commit": "6e85fe680b20fc9e67e4572d5d60502be8615524",
+    "inventory_files": 785,
+    "total_files": 786,
+    "inventory_sha256": "014a84ea614bf07c0c8d7d093fe4fa18ae8e103bd8e850e01b0fc40e9b08f2a5",
+    "build_inventory_files": 751,
+    "build_inventory_sha256": "b5c43e706221d87112020842ad55120dd899dc5237511bee4eaaf10c3747b0ee",
+    "built_sha256": "d62e3e134e7f330a28ab2e28115883059acdbc7e5d70b24e19d2883ec63691ac",
+    "result_sha256": "e0e1572049997aa7552057223778e1566534961568265d4036130285bf9a6e27",
+    "authority_sha256": "3abc186278c27277b8b69f185237e9415583c7f9e9e4720add494a1130231dee",
+    "authority_changed_fields": {
+      "owner_execution_authorized": [
+        false,
+        true
+      ],
+      "owner_authority_reference": [
+        "Pending exact registration hash authorization; preparation only",
+        "User2026-10-23: I authorize Windows 6d5011004ad4fbde2b26348db44483cb4fc4942ad6b71d8caf18347ce5ae09b0. Run all152cases once, retain all evidence/failures and independently verify. Keep R16-T1 conditional, PRs draft and production unchanged. Timing remains outside this exact registration."
+      ]
+    },
+    "attempted_cases": 2,
+    "exit_zero_cases": 1,
+    "registered_cases": 152,
+    "remaining_cases_not_attempted": 150,
+    "storage": {
+      "arm": "K64-E8",
+      "sanitized": false,
+      "operations_independently_verified": 65536,
+      "accepted_operations": 38532,
+      "operation_coverage": {
+        "copy": true,
+        "swap": true,
+        "clear": true,
+        "replace": true
+      },
+      "accepted_one_hot_coverage": "16/16/8/8/16 bits",
+      "stdout_sha256": "27ff69f350ba30425939f8edc15b3359eade29680574850e22bdb005efebacb6"
+    },
+    "small": {
+      "case": "small-001",
+      "completed_tick_rows": 293,
+      "attempted_failure_tick": 294,
+      "error": "maximum chunk capacity exhausted",
+      "exception_scope": "ensure_chunk requested a nonresident chunk while resident chunk count was at configured maximum4; failed coordinate/call path not retained",
+      "stderr_sha256": "a75c9f7bba56d053e3e606dedebe6c97b0f36619257e314288130e40541e204c",
+      "last_complete_endpoint": 257,
+      "completed_horizon_required": 2048
+    },
+    "readback": {
+      "executions": 1,
+      "exit_code": 1,
+      "negative_checks_passed": 16,
+      "error": "incomplete/changed campaign",
+      "report_sha256": "10645dae054323716b5a8870cabd6c4262b6ae981d04fe8916cf84dd3572f5c5"
+    },
+    "evidence_unchanged": true,
+    "qualification_accepted": false,
+    "performance_accepted": false
+  },
+  "review_sha256": "22ee04b3b9a4e503cc0f5a8c71639b5096b2263cf9b318b5fcc728c2aa618b06",
+  "archive": {
+    "path": "C:\\Users\\_\\mat003-evidence-20261023\\windows-correctness-attempt-evidence.zip",
+    "bytes": 25635582,
+    "sha256": "0ff06a91c1d03f6533d4027f02dbed8f313ace7579369f43e45e6e323ae99790",
+    "entries": 835,
+    "retention_inventory_sha256": "90b719c5ed1b08dfaacb3204b1e6a801b4bd6ada3858b8ae5e9ce969538a3536"
+  },
+  "timing_executed": false
+}

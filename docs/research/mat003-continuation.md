@@ -334,3 +334,7 @@ The owner subsequently authorized two isolated warning repairs and a new build-o
 ## Windows correctness-only execution registration
 
 The [exact Windows execution registration and independent admission](../audits/2026-10-23-mat003-windows-execution-admission.md) bind the admitted6e85fe6 source/binaries to152 ordered correctness cases, immutable tooling/verifier identities, resource/retention limits and independent raw readback. Preparation/admission does not grant execution authority: owner authorization of the final registration hash is still required, followed by the explicitly constrained derived authority. No cases or timing ran; Linux remains outside scope, R16-T1 conditional, production unchanged and both PRs draft.
+
+## Authorized Windows correctness attempt stopped incomplete
+
+Owner authorized registration6d5011004ad4fbde2b26348db44483cb4fc4942ad6b71d8caf18347ce5ae09b0. The [retained execution audit](../audits/2026-10-23-mat003-windows-correctness-attempt.md) records one completed storage process followed by small-001 failure: maximum chunk capacity exhausted. Frozen stop rules prevented the remaining150 cases and any retry. Independent frozen readback ran once:15 rejection fixtures and decoder cross-check passed, then incomplete-campaign rejection. No152-case correctness acceptance or timing result follows. Existing source/build admissions remain historical scoped records; runtime qualification is incomplete. R16-T1 remains conditional, Linux unexecuted, both PRs draft and production unchanged.
