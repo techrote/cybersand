@@ -72,7 +72,10 @@ func _validated_config(value: Variant) -> Dictionary:
 			return {}
 	if not value.get("course", "manoeuvre") is String or str(value.get("course", "manoeuvre")) not in ["manoeuvre", UsableCourse.ID, PlayerCourse.ID, FlightCourse.ID]:
 		return {}
-	if str(value.get("course", "")) == FlightCourse.ID:\n		if FlightCourse.scenario(str(value.get("flight_scenario", "")), int(value.get("seed", 0)), str(value.get("flight_split", "development"))).is_empty():\n			return {}\n	if not Session._integer(value.get("version", VERSION), VERSION, VERSION) \
+	if str(value.get("course", "")) == FlightCourse.ID:
+		if FlightCourse.scenario(str(value.get("flight_scenario", "")), int(value.get("seed", 0)), str(value.get("flight_split", "development"))).is_empty():
+			return {}
+	if not Session._integer(value.get("version", VERSION), VERSION, VERSION) \
 		or not Session._integer(value.get("seed", 0), 0, 2147483647) \
 		or not Session._integer(value.get("max_ticks", 600), 1, MAX_TICKS) \
 		or not Session._integer(value.get("local_patch_radius", 6), 0, 8):
@@ -105,9 +108,16 @@ func _validated_config(value: Variant) -> Dictionary:
 		definitions.append({"model": model, "producer": producer, "position": position})
 	if not Session.valid_definitions(definitions):
 		return {}
-	if str(value.get("course", "")) == FlightCourse.ID:\n		var flight_scenario: Dictionary = FlightCourse.scenario(str(value.get("flight_scenario", "")),\n			int(value.get("seed", 0)), str(value.get("flight_split", "development")))\n		if definitions.size() != 1 or not FlightProfile.has_rig(definitions[0].model) \\n			or Vector2(definitions[0].position).distance_to(Vector2(flight_scenario.start)) > 0.0001:\n			return {}\n	return {"version": VERSION, "seed": int(value.get("seed", 0)),
+	if str(value.get("course", "")) == FlightCourse.ID:
+		var flight_scenario: Dictionary = FlightCourse.scenario(str(value.get("flight_scenario", "")),
+			int(value.get("seed", 0)), str(value.get("flight_split", "development")))
+		if definitions.size() != 1 or not FlightProfile.has_rig(definitions[0].model) \
+			or Vector2(definitions[0].position).distance_to(Vector2(flight_scenario.start)) > 0.0001:
+			return {}
+	return {"version": VERSION, "seed": int(value.get("seed", 0)),
 		"max_ticks": int(value.get("max_ticks", 600)), "actors": definitions,
-		"local_patch_radius": int(value.get("local_patch_radius", 6)), "course": str(value.get("course", "manoeuvre")),\n		"flight_scenario": str(value.get("flight_scenario", "")), "flight_split": str(value.get("flight_split", "development"))}
+		"local_patch_radius": int(value.get("local_patch_radius", 6)), "course": str(value.get("course", "manoeuvre")),
+		"flight_scenario": str(value.get("flight_scenario", "")), "flight_split": str(value.get("flight_split", "development"))}
 
 
 func configure(value: Variant) -> bool:
