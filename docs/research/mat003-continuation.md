@@ -330,3 +330,7 @@ The later owner-authorized [native Windows build-only checkpoint](../audits/2026
 ## Reviewed warning correction and replacement build-only gate
 
 The owner subsequently authorized two isolated warning repairs and a new build-only attempt. The [replacement checkpoint](../audits/2026-10-23-mat003-warning-fix-build.md) freezes source6e85fe680b20fc9e67e4572d5d60502be8615524: const-reference role iteration and an exact checked removal of unused capture in generated World copies. Production and accepted baseline sources remain unchanged; no warning flag or diagnostic gate is weakened. All32 Windows compilations completed with status built-execution-held; independent binary review is separately recorded in that audit. The failed5380c76 attempt remains retained. No candidate executable, qualification case or timing is authorized or run; Linux remains unexecuted and R16-T1 conditional.
+
+## Windows correctness-only execution registration
+
+The [exact Windows execution registration and independent admission](../audits/2026-10-23-mat003-windows-execution-admission.md) bind the admitted6e85fe6 source/binaries to152 ordered correctness cases, immutable tooling/verifier identities, resource/retention limits and independent raw readback. Preparation/admission does not grant execution authority: owner authorization of the final registration hash is still required, followed by the explicitly constrained derived authority. No cases or timing ran; Linux remains outside scope, R16-T1 conditional, production unchanged and both PRs draft.
