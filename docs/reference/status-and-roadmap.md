@@ -20,15 +20,21 @@ share finite thrust authority; attitude assistance has its own bounded torque.
 The stabilizer has no goal, terrain or evaluator input. Authorized neutral
 brakes/hovers; cancellation and expiry select explicit passive fallback.
 
-The four stable `4ly_*` IDs are available to explicit physical-session lookup,
-with no automatic equipment body. Trainer has initial conformance tuning;
-Hauler, Drifter and Dart share those numbers as uncalibrated placeholders. The
-ordinary 46-actor F5 roster remains unchanged. Fixture source and hash identity
-do not themselves prove runtime/platform or learned-policy qualification.
+The four stable `4ly_*` IDs retain one actual collider each with no automatic
+equipment body. **4LY-002 candidate implementation (#206)** adds distinct
+Trainer/Hauler/Drifter/Dart mass/footprint, speed, brake, response, thrust and
+drag profiles. Ordinary F5 selection now appends a named `set4LY` after the
+original eight sets: the existing 46 actor IDs and SetP positions are untouched.
+The same human/script/policy owner and two-axis actuator path is reused, with
+visible assistance/identity and actual-Rapier handling tests. Values remain
+`candidate_4ly002` until prospectively registered manoeuvre metrics, hosted
+exact-final-head checks and owner feel are qualified. Code/tests alone do not
+prove learned navigation, runtime/platform qualification or owner acceptance.
 
-Next are [4LY-002 #206](https://github.com/techrote/cybersand/issues/206) for
-authored differentiation and selection and [4LY-003 #207](https://github.com/techrote/cybersand/issues/207)
-for the actual-host flight lab and teacher. Their independent preparation may
+4LY-002 [#206](https://github.com/techrote/cybersand/issues/206) owns candidate
+differentiation and selector integration; its **measured acceptance and frozen
+profile identity remain gating work**. Next, [4LY-003 #207](https://github.com/techrote/cybersand/issues/207)
+owns actual-host lab/teacher qualification. Their independent preparation may
 overlap after this interface is fixed, but final host evidence uses frozen
 4LY-002 profiles. Companion 4LY-004/005 own Trainer-first and family learning,
 with a passing Trainer result required before family learning. Parent #132 and
