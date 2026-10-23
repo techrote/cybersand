@@ -195,6 +195,7 @@ def verify(root, expected_source=None):
                                   id=name,scene=row['scene'],observer=row['observer']), 'stdout/receipt mismatch')
                 require(row['resident_cells']==row['side']**2 and row['stride']==16 and row['alignment']==8,'resident geometry mismatch')
                 require(row['clear_count']==int(event),'counter transition did not indicate expected clear')
+                require(row['epoch_before']==((1<<row['epoch_bits'])-1 if event else 128) and row['epoch_after']==(1 if event else 129),'raw epoch transition mismatch')
                 require(row['observed_clear_count']==int(event and observed),'actual observed clear entry mismatch')
                 require(row['observed_clear_cells']==(row['resident_cells'] if event and observed else 0),'actual clear traversal mismatch')
                 natural=event and (row['epoch_bits']==8 or (row['epoch_bits']==16 and row['side']==128))

@@ -76,6 +76,7 @@ def verify(root,apparatus):
             require((semantic['epoch_bits'],semantic['side'],semantic['workers'],semantic['event'])==(spec['epoch_bits'],spec['side'],spec['workers'],event),'semantic context mismatch')
             require(semantic['qualification_only'] is False and semantic['clear_count']==int(event) and semantic['completed_event_tick']==256 and
                     semantic['resident_cells']==spec['side']**2 and semantic['stride']==16,'clear/work identity mismatch')
+            require(semantic['epoch_before']==((1<<spec['epoch_bits'])-1 if event else 128) and semantic['epoch_after']==(1 if event else 129),'actual epoch transition mismatch')
             require(semantic['natural_event']==(event and spec['epoch_bits']==8) and semantic['prepared_event']==(event and spec['epoch_bits']!=8),'natural/prepared identity mismatch')
             require(observation['measurement'] is True and all(type(observation[k]) is int and observation[k]>=0 for k in
                 ('tick_ns','startup_ns','setup_ns','input_ns','peak_rss_kib')) and observation['tick_ns']>0 and observation['peak_rss_kib']>0,'invalid latency/RSS observation')

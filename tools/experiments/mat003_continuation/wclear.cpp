@@ -68,6 +68,7 @@ int main(int argc, char** argv) {
         const auto limit = (std::uint64_t{1} << MAT003_EPOCH_BITS) - 1;
         const bool naturally_reached = PrecisionProbe::epoch(world) == limit;
         const auto stamps = PrecisionProbe::prepare_clear(world, event ? limit : 128);
+        const auto epoch_before = PrecisionProbe::epoch(world);
         const auto prepared = PrecisionProbe::snapshot(world, setup_stats, support);
         fixture::require(before.bytes == prepared.bytes, "stamp preparation changed semantic/support/scheduling state");
         const auto write = [&](const char* name, const fixture::Bytes& bytes) {
@@ -82,6 +83,7 @@ int main(int argc, char** argv) {
         const auto event_begin=now();
         const auto stats = world.tick(); // Real production clear path; clocks only in admitted measure mode.
         const auto tick_ns=ns(event_begin,now());
+        const auto epoch_after=PrecisionProbe::epoch(world);
         const auto event_dispatch = mat003_world::dispatch_observations();
         fixture::require(world.completed_tick_index() == setup_ticks + 1 && stats.tick == setup_ticks + 1, "event tick not completed");
         fixture::require(PrecisionProbe::epoch(world) == (event ? 1U : 129U), "event counter mismatch");
@@ -110,7 +112,9 @@ int main(int argc, char** argv) {
                   << ",\"prepared_event\":" << (event && !naturally_reached ? "true" : "false")
                   << ",\"resident_cells\":" << stamps << ",\"stride\":" << PrecisionProbe::stride()
                   << ",\"alignment\":" << PrecisionProbe::alignment()
-                  << ",\"clear_count\":" << (event ? 1 : 0)
+                  << ",\"epoch_before\":" << static_cast<std::uint64_t>(epoch_before)
+                  << ",\"epoch_after\":" << static_cast<std::uint64_t>(epoch_after)
+                  << ",\"clear_count\":" << (epoch_after < epoch_before ? 1 : 0)
                   << ",\"completed_event_tick\":" << setup_ticks + 1 << ",\"visited\":" << stats.visited_cells
                   << ",\"phase_jobs\":[" << stats.phase_jobs[0] << ',' << stats.phase_jobs[1] << ',' << stats.phase_jobs[2] << ',' << stats.phase_jobs[3]
                   << "],\"worker_tasks\":" << dispatch.worker_tasks
