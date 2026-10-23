@@ -176,6 +176,7 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str) -> tuple[dict,
     timed_out = False
     returncode = None
     launch_error = None
+    capture_error = None
     with log_path.open("w", encoding="utf-8") as log:
         try:
             with subprocess.Popen(command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT) as child:
@@ -189,7 +190,11 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str) -> tuple[dict,
                     print(f"{case.name}: elapsed={time.perf_counter() - started:.3f}s "
                           f"pid={child.pid} last_progress={diagnostics.last_progress(before)}\n"
                           + before[-8192:], flush=True)
-                    diagnostics.snapshot(child.pid, output_dir / (case.name + "-diagnostics"))
+                    try:
+                        diagnostics.snapshot(child.pid, output_dir / (case.name + "-diagnostics"))
+                    except Exception as error:
+                        capture_error = str(error)
+                        print(f"Diagnostic capture failed for {case.name}: {error}", flush=True)
                     remaining = max(0.001, case.timeout - (time.perf_counter() - started))
                     try:
                         child.wait(timeout=remaining)
@@ -231,6 +236,7 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str) -> tuple[dict,
         "returncode": returncode,
         "diagnostic_error": diagnostic_error,
         "launch_error": launch_error,
+        "capture_error": capture_error,
         "skip_messages": skip_messages,
         "requires_display": case.requires_display,
         "command": command,

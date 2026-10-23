@@ -137,6 +137,8 @@ jobs:
           python3 -m py_compile tools/ci/run_godot_regressions.py tools/ci/test_godot_regression_sharding.py tools/ci/run_windows_godot_regressions.py tools/ci/test_windows_godot_regressions.py
           python3 tools/ci/test_godot_regression_sharding.py
           python3 tools/ci/test_windows_godot_regressions.py
+          python3 tools/ci/test_godot_timeout_diagnostics.py
+          python3 tools/ci/test_physical_stress.py
 
       - name: Install pinned SCons
         run: |
@@ -309,6 +311,8 @@ jobs:
           set -euo pipefail
           python tools/ci/test_godot_regression_sharding.py
           python tools/ci/test_windows_godot_regressions.py
+          python tools/ci/test_godot_timeout_diagnostics.py
+          python tools/ci/test_physical_stress.py
 
       - name: Download official Windows Godot archive
         timeout-minutes: 10

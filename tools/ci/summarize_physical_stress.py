@@ -13,14 +13,26 @@ def summarize(root: Path) -> dict:
     counts = {}
     phases = Counter()
     errors = []
+    identities = {}
+    source_shas = set()
     reports = sorted(root.glob("*/stress.json"))
     if len(reports) != 10:
         errors.append(f"Expected ten batch reports, found {len(reports)}")
     for path in reports:
         report = json.loads(path.read_text(encoding="utf-8"))
         host = "windows" if "windows" in path.parent.name else "linux"
+        identity = report["identity"]
+        source_shas.add(identity["source_sha"])
+        runtime = tuple(identity[key] for key in ("native_sha256", "rapier_sha256", "godot_version"))
+        if host in identities and identities[host] != runtime:
+            errors.append(f"Mixed runtime identities for {host}: {path}")
+        identities[host] = runtime
         if not report["completed"] or report["iterations_requested"] != 10:
             errors.append(f"Incomplete batch: {path}")
+        expected = Counter((iteration, name) for iteration in range(10) for name in SUSPECTS)
+        actual = Counter((result["iteration"], result["name"]) for result in report["results"])
+        if actual != expected:
+            errors.append(f"Trial identities are missing or duplicated: {path}")
         for result in report["results"]:
             key = host + "/" + result["name"]
             counts.setdefault(key, Counter())[result["status"]] += 1
@@ -32,7 +44,10 @@ def summarize(root: Path) -> dict:
             values = counts.get(key, Counter())
             if sum(values.values()) != 50 or values["passed"] != 50:
                 errors.append(f"Required 50/50 passes for {key}: {dict(values)}")
-    return {"counts": {k: dict(v) for k, v in counts.items()}, "timeouts_by_phase": dict(phases), "errors": errors}
+    if len(source_shas) != 1:
+        errors.append(f"Expected one source revision, found {sorted(source_shas)}")
+    return {"source_shas": sorted(source_shas), "runtime_identities": identities,
+            "counts": {k: dict(v) for k, v in counts.items()}, "timeouts_by_phase": dict(phases), "errors": errors}
 
 
 def main() -> int:

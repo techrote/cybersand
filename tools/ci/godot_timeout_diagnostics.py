@@ -37,10 +37,10 @@ public static class GodotDump {
 }
 "@
 '''
-        dump_script += script[:script.index("$items |")]
+        dump_script += "$dumpRoot = $args[0]; " + script[:script.index("$items |")]
         dump_script += ("$items | Where-Object { $_.ProcessId -eq $targetId -or $_.ParentProcessId -eq $targetId } | "
                         "ForEach-Object { $p = Get-Process -Id $_.ProcessId; "
-                        "$file = [System.IO.File]::Create((Join-Path $args[0] ($p.Id.ToString() + '.dmp'))); "
+                        "$file = [System.IO.File]::Create((Join-Path $dumpRoot ($p.Id.ToString() + '.dmp'))); "
                         "try { $ok = [GodotDump]::MiniDumpWriteDump($p.Handle, $p.Id, $file.SafeFileHandle, 0, "
                         "[IntPtr]::Zero, [IntPtr]::Zero, [IntPtr]::Zero); "
                         "Write-Output ('pid=' + $p.Id + ' dump=' + $ok + ' error=' + [Runtime.InteropServices.Marshal]::GetLastWin32Error()) "
@@ -48,7 +48,7 @@ public static class GodotDump {
         dump_file = output / "capture.ps1"
         # A script file also preserves the exact diagnostic command for replay.
         dump_file.write_text(dump_script, encoding="utf-8")
-        commands.append(("minidump", ["powershell.exe", "-NoProfile", "-File", str(dump_file.resolve()), str(output.resolve())]))
+        commands.append(("minidump", ["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(dump_file.resolve()), str(output.resolve())]))
 
     else:
         commands.append(("process", ["ps", "-L", "-p", str(pid), "-o",
