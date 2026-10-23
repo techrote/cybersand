@@ -471,6 +471,22 @@ func submit_local(actor_id: int, action: Dictionary, producer: StringName, lease
 
 
 func _fault_joint_step(reason: String) -> void:
+	# Any physics work which cannot be matched to exactly one completed
+	# owner step is unavailable/failed, never a successful physical sample.
+	for actor_id: int in range(_rigs.size()):
+		if not is_joint_pilot(actor_id):
+			continue
+		var pending: Dictionary = _joint_pending_steps[actor_id]
+		if pending.is_empty():
+			continue
+		var row_index: int = int(pending.get("receipt_index", -1))
+		if row_index >= 0 and row_index < _joint_receipts[actor_id].size():
+			var row: Dictionary = _joint_receipts[actor_id][row_index]
+			row.integrity.terminal_boundary = reason
+			row.integrity.actual_physics_step = bridge.manual_step_count()
+			row.integrity.missing_receipt_count = 1
+			row.motion = {"available": false, "reason": "ik_physics_step_unverified"}
+		_joint_pending_steps[actor_id] = {}
 	_joint_step_fault = reason
 	last_error = reason
 	_suspended = true
@@ -485,8 +501,11 @@ func cancel_input(actor_id: int, expected_epoch: int, producer: StringName) -> b
 		return false
 	_capture_flight_step(actor_id)
 	if is_joint_pilot(actor_id):
+		if not _joint_targets[actor_id].is_empty():
+			_ik_record_terminal(actor_id, "owner_cancelled")
 		_joint_grants[actor_id] = {}
 		_joint_targets[actor_id] = {}
+		_joint_observations[actor_id] = {}
 		var pending: Dictionary = _joint_pending_steps[actor_id]
 		if not pending.is_empty() and bridge.manual_step_count() < int(pending.physics_step):
 			var receipt_index: int = int(pending.receipt_index)
@@ -762,6 +781,9 @@ func ik_grant(actor_id: int, producer: StringName, source_id: String, policy_sha
 		"joint_ids": JointTargets.ACTIVE_JOINT_IDS.duplicate()
 	}
 	_joint_grants[actor_id] = granted.duplicate(true)
+	# Sequences are scoped to the new grant/generation, not a stale owner's
+	# actor-wide counter. Older generations stay invalid by identity.
+	_joint_sequences[actor_id] = -1
 	_joint_last_rejection[actor_id] = {}
 	return granted.duplicate(true)
 
@@ -942,6 +964,11 @@ func ik_cancel(actor_id: int, grant_id: String, source_id: String) -> Dictionary
 
 
 func _advance_joint_pilot(actor_id: int, delta: float) -> void:
+	if not _joint_grants[actor_id].is_empty() \
+		and tick >= int(_joint_grants[actor_id].goal_deadline_tick):
+		cancel_input(actor_id, epoch, StringName(str(_definitions[actor_id].producer)))
+		_joint_last_rejection[actor_id] = {"reason": "ik_goal_expired", "owner_tick": tick}
+		return
 	if _joint_grants[actor_id].is_empty() or _joint_targets[actor_id].is_empty():
 		return
 	var active_target: Dictionary = _joint_targets[actor_id]
@@ -990,6 +1017,34 @@ func _advance_joint_pilot(actor_id: int, delta: float) -> void:
 		_joint_receipts[actor_id].pop_front()
 	_joint_pending_steps[actor_id] = {"receipt_index": _joint_receipts[actor_id].size() - 1,
 		"physics_step": bridge.manual_step_count() + 1, "generation": _generations[actor_id]}
+
+
+func _ik_record_terminal(actor_id: int, reason: String) -> void:
+	# A terminal receipt is a *no new actuation* boundary. Preserve the
+	# original request identity for external auditing and read-only lookup.
+	var active_target: Dictionary = _joint_targets[actor_id]
+	if active_target.is_empty():
+		return
+	var packet: Dictionary = active_target.packet
+	var row: Dictionary = {
+		"protocol": JointTargets.PROTOCOL, "operation": "ik_terminal",
+		"version": 1, "accepted": false, "requested": packet.duplicate(true),
+		"admitted": {"owner_tick": tick, "no_new_actuation": true},
+		"limited": {"motor_disarmed": true},
+		"motor": {"mode": "passive_no_grant", "commanded_joint_ids": [],
+			"passive_joint_ids": JointTargets.JOINT_IDS.duplicate()},
+		"motion": {"available": false, "reason": "no_physics_consumption"},
+		"integrity": {
+			"requested_observed_tick": int(packet.observed_tick),
+			"consumed_base_tick": null,
+			"completed_base_tick": null,
+			"actual_physics_step": null,
+			"terminal_boundary": reason, "cancel_confirmed": true,
+			"missing_receipt_count": 0, "unknown_receipt_count": 0}
+	}
+	_joint_receipts[actor_id].append(row)
+	if _joint_receipts[actor_id].size() > 64:
+		_joint_receipts[actor_id].pop_front()
 
 
 func _complete_joint_step(actor_id: int) -> void:
