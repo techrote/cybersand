@@ -583,12 +583,41 @@ investigation before any new #45 pressure/head mechanism is treated as inevitabl
   separately by the
   [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
   [#213](https://github.com/techrote/cybersand/issues/213) is **not PASS**:
-  Gates B–E remain open, so LCB-001 pressure implementation stays blocked.
+  Gate A passed and Gate B passed in bounded form ([refresh](../audits/2026-10-23-lcb000-admission-gatea-gateb-refresh.md)); Gates C–E remain
+  open, so LCB-001 pressure implementation stays blocked.
 
 Water FreeMass and other-liquid CellularYield remain separate; no unification or
 production solver change is selected. Equal-level communicating-head fixtures are
 vented/shared-pressure controls, not universal sealed-room targets. #18 remains
 held pending the resulting evidence rather than by issue-number sequence alone.
+
+## Liquid Comparison Build design checkpoint — 2026-10-23
+
+**Planned; nothing implemented.** LCB-000 [#213](https://github.com/techrote/cybersand/issues/213)
+Gates C–E submissions for review:
+
+- the [solver-family policy/API](../architecture/liquid-solver-family-policy.md)
+  and source-derived [capability matrix](liquid-solver-capability-matrix.json):
+  Water is the only `freemass_v1` liquid and ten liquids are `cellular_yield_v1`
+  by default; Brine is the proposed first inertial material;
+- the [Water comparison contract and fixtures](../operations/lcb-water-comparison-and-fixtures.md);
+- the [manual UX flow](../operations/lcb-manual-comparison-ux.md) for
+  [#202](https://github.com/techrote/cybersand/issues/202).
+
+The protected `lcb.dam.water.freemass.reference.v1` Dam Break and the
+`lcb.mixed.water-oil-brine.v1` fixture are frozen MicroScenario definitions
+with measured Current-default controls (local Windows, 1/4-worker identical).
+The mixed control runs **two** families today; three need
+[#212](https://github.com/techrote/cybersand/issues/212). LCB-000 is **not
+PASS**: Gate A passed and Gate B passed in bounded form ([refresh](../audits/2026-10-23-lcb000-admission-gatea-gateb-refresh.md)), but
+Gates C–E are still awaiting acceptance, so LCB-001 implementation stays blocked.
+
+The [LCB scenario catalogue v1](../operations/lcb-scenario-catalogue.md) adds 25
+controlled current-source scenarios (dam depth ladder, shallow flow, vented
+heads, rest/wake, viscous, density, granular, mixed stress, seams) with a
+source-derived registry for #202 and 1/4-worker controls
+([evidence](../audits/2026-10-23-lcb003-scenario-qualification.md)). Every
+non-default solver arm remains blocked on #200/#201/#212.
 
 ## Opt-in transport profiles
 

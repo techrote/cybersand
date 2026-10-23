@@ -1,0 +1,595 @@
+{
+  "schema_version": 2,
+  "id": "lcb.viscous.lane-gallery.v1",
+  "recipe_version": 1,
+  "seed": 0,
+  "maturity": "reference",
+  "rectangles": [
+    0,
+    0,
+    1024,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1024,
+    1,
+    1023,
+    0,
+    1,
+    1024,
+    1,
+    0,
+    1023,
+    1024,
+    1,
+    1,
+    16,
+    256,
+    320,
+    8,
+    1,
+    16,
+    160,
+    8,
+    96,
+    1,
+    328,
+    160,
+    8,
+    96,
+    1,
+    72,
+    160,
+    8,
+    96,
+    1,
+    352,
+    256,
+    320,
+    8,
+    1,
+    352,
+    160,
+    8,
+    96,
+    1,
+    664,
+    160,
+    8,
+    96,
+    1,
+    408,
+    160,
+    8,
+    96,
+    1,
+    360,
+    192,
+    48,
+    64,
+    16,
+    688,
+    256,
+    320,
+    8,
+    1,
+    688,
+    160,
+    8,
+    96,
+    1,
+    1000,
+    160,
+    8,
+    96,
+    1,
+    744,
+    160,
+    8,
+    96,
+    1,
+    696,
+    192,
+    48,
+    64,
+    24,
+    16,
+    512,
+    320,
+    8,
+    1,
+    16,
+    416,
+    8,
+    96,
+    1,
+    328,
+    416,
+    8,
+    96,
+    1,
+    72,
+    416,
+    8,
+    96,
+    1,
+    24,
+    448,
+    48,
+    64,
+    21,
+    352,
+    512,
+    320,
+    8,
+    1,
+    352,
+    416,
+    8,
+    96,
+    1,
+    664,
+    416,
+    8,
+    96,
+    1,
+    408,
+    416,
+    8,
+    96,
+    1,
+    360,
+    448,
+    48,
+    64,
+    20,
+    688,
+    512,
+    320,
+    8,
+    1,
+    688,
+    416,
+    8,
+    96,
+    1,
+    1000,
+    416,
+    8,
+    96,
+    1,
+    744,
+    416,
+    8,
+    96,
+    1,
+    696,
+    448,
+    48,
+    64,
+    33
+  ],
+  "partial_water_fills": [
+    24,
+    192,
+    48,
+    64,
+    255,
+    0
+  ],
+  "transport_profile": {
+    "families": {
+      "liquid": {
+        "cadence": 1,
+        "carrying": 0,
+        "erosion": 0,
+        "horizontal": 2,
+        "permeability": 1
+      },
+      "powder": {
+        "mixing": 0,
+        "packing": 8,
+        "pickup": 64
+      }
+    },
+    "materials": {
+      "33": {
+        "permeability": 30
+      }
+    },
+    "name": "Baseline",
+    "pairs": [],
+    "version": 1
+  },
+  "water_semantics": [
+    1,
+    8,
+    12,
+    0
+  ],
+  "player_start": [
+    24,
+    222
+  ],
+  "camera_origin": [
+    0,
+    0
+  ],
+  "player_enabled": false,
+  "body_enabled": false,
+  "tools": [],
+  "interest": {
+    "policy": "fixed",
+    "region": [
+      0,
+      120,
+      1024,
+      408
+    ]
+  },
+  "execution": {
+    "policy": "fixed",
+    "cadence_lod_enabled": false,
+    "liquid_surface_adhesion_enabled": true
+  },
+  "events": [
+    {
+      "tick": 0,
+      "kind": "erase",
+      "x": 72,
+      "y": 160,
+      "width": 8,
+      "height": 96,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    },
+    {
+      "tick": 0,
+      "kind": "erase",
+      "x": 408,
+      "y": 160,
+      "width": 8,
+      "height": 96,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    },
+    {
+      "tick": 0,
+      "kind": "erase",
+      "x": 744,
+      "y": 160,
+      "width": 8,
+      "height": 96,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    },
+    {
+      "tick": 0,
+      "kind": "erase",
+      "x": 72,
+      "y": 416,
+      "width": 8,
+      "height": 96,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    },
+    {
+      "tick": 0,
+      "kind": "erase",
+      "x": 408,
+      "y": 416,
+      "width": 8,
+      "height": 96,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    },
+    {
+      "tick": 0,
+      "kind": "erase",
+      "x": 744,
+      "y": 416,
+      "width": 8,
+      "height": 96,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    }
+  ],
+  "observations": [
+    {
+      "id": "water-compartment-t0",
+      "tick": 0,
+      "metric": "water_integer",
+      "region": [
+        24,
+        192,
+        48,
+        64
+      ],
+      "material": 3
+    },
+    {
+      "id": "oil-compartment-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        360,
+        192,
+        48,
+        64
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-compartment-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        696,
+        192,
+        48,
+        64
+      ],
+      "material": 24
+    },
+    {
+      "id": "slush-compartment-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        24,
+        448,
+        48,
+        64
+      ],
+      "material": 21
+    },
+    {
+      "id": "paste-compartment-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        360,
+        448,
+        48,
+        64
+      ],
+      "material": 20
+    },
+    {
+      "id": "mercury-compartment-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        696,
+        448,
+        48,
+        64
+      ],
+      "material": 33
+    },
+    {
+      "id": "water-runout-t300",
+      "tick": 300,
+      "metric": "water_integer",
+      "region": [
+        80,
+        160,
+        248,
+        96
+      ],
+      "material": 3
+    },
+    {
+      "id": "oil-runout-t300",
+      "tick": 300,
+      "metric": "material_cells",
+      "region": [
+        416,
+        160,
+        248,
+        96
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-runout-t300",
+      "tick": 300,
+      "metric": "material_cells",
+      "region": [
+        752,
+        160,
+        248,
+        96
+      ],
+      "material": 24
+    },
+    {
+      "id": "slush-runout-t300",
+      "tick": 300,
+      "metric": "material_cells",
+      "region": [
+        80,
+        416,
+        248,
+        96
+      ],
+      "material": 21
+    },
+    {
+      "id": "paste-runout-t300",
+      "tick": 300,
+      "metric": "material_cells",
+      "region": [
+        416,
+        416,
+        248,
+        96
+      ],
+      "material": 20
+    },
+    {
+      "id": "mercury-runout-t300",
+      "tick": 300,
+      "metric": "material_cells",
+      "region": [
+        752,
+        416,
+        248,
+        96
+      ],
+      "material": 33
+    },
+    {
+      "id": "water-runout-t1200",
+      "tick": 1200,
+      "metric": "water_integer",
+      "region": [
+        80,
+        160,
+        248,
+        96
+      ],
+      "material": 3
+    },
+    {
+      "id": "oil-runout-t1200",
+      "tick": 1200,
+      "metric": "material_cells",
+      "region": [
+        416,
+        160,
+        248,
+        96
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-runout-t1200",
+      "tick": 1200,
+      "metric": "material_cells",
+      "region": [
+        752,
+        160,
+        248,
+        96
+      ],
+      "material": 24
+    },
+    {
+      "id": "slush-runout-t1200",
+      "tick": 1200,
+      "metric": "material_cells",
+      "region": [
+        80,
+        416,
+        248,
+        96
+      ],
+      "material": 21
+    },
+    {
+      "id": "paste-runout-t1200",
+      "tick": 1200,
+      "metric": "material_cells",
+      "region": [
+        416,
+        416,
+        248,
+        96
+      ],
+      "material": 20
+    },
+    {
+      "id": "mercury-runout-t1200",
+      "tick": 1200,
+      "metric": "material_cells",
+      "region": [
+        752,
+        416,
+        248,
+        96
+      ],
+      "material": 33
+    }
+  ],
+  "conditions": [],
+  "source_recipe": "LCB-003 scenario catalogue v1: viscous",
+  "source_recipe_hash": "",
+  "presentation": {
+    "title": "Viscous lane gallery",
+    "instructions": "Six separate lanes release equal 48x64 blocks of Water, Oil, Brine, Slush, Paste and Mercury at tick 0. Runout cell counts compare spreading rate against viscosity with each kernel's specialization intact.",
+    "duration_ticks": 1200,
+    "baseline": "Current native defaults; controlled fixed-tick run",
+    "profile": "Baseline",
+    "regions": [
+      {
+        "id": "water",
+        "label": "Water lane",
+        "region": [
+          16,
+          160,
+          320,
+          104
+        ]
+      },
+      {
+        "id": "oil",
+        "label": "Oil lane",
+        "region": [
+          352,
+          160,
+          320,
+          104
+        ]
+      },
+      {
+        "id": "brine",
+        "label": "Brine lane",
+        "region": [
+          688,
+          160,
+          320,
+          104
+        ]
+      },
+      {
+        "id": "slush",
+        "label": "Slush lane",
+        "region": [
+          16,
+          416,
+          320,
+          104
+        ]
+      },
+      {
+        "id": "paste",
+        "label": "Paste lane",
+        "region": [
+          352,
+          416,
+          320,
+          104
+        ]
+      },
+      {
+        "id": "mercury",
+        "label": "Mercury lane",
+        "region": [
+          688,
+          416,
+          320,
+          104
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,369 @@
+{
+  "schema_version": 2,
+  "id": "lcb.mixed.repeated-openings.v1",
+  "recipe_version": 1,
+  "seed": 0,
+  "maturity": "reference",
+  "rectangles": [
+    0,
+    0,
+    1024,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1024,
+    1,
+    1023,
+    0,
+    1,
+    1024,
+    1,
+    0,
+    1023,
+    1024,
+    1,
+    1,
+    64,
+    256,
+    896,
+    8,
+    1,
+    64,
+    96,
+    8,
+    160,
+    1,
+    952,
+    96,
+    8,
+    160,
+    1,
+    296,
+    96,
+    8,
+    160,
+    1,
+    528,
+    96,
+    8,
+    160,
+    1,
+    760,
+    96,
+    8,
+    160,
+    1,
+    72,
+    136,
+    224,
+    120,
+    24,
+    536,
+    136,
+    224,
+    120,
+    16
+  ],
+  "partial_water_fills": [
+    304,
+    136,
+    224,
+    120,
+    255,
+    0
+  ],
+  "transport_profile": {
+    "families": {
+      "liquid": {
+        "cadence": 1,
+        "carrying": 0,
+        "erosion": 0,
+        "horizontal": 2,
+        "permeability": 1
+      },
+      "powder": {
+        "mixing": 0,
+        "packing": 8,
+        "pickup": 64
+      }
+    },
+    "materials": {
+      "33": {
+        "permeability": 30
+      }
+    },
+    "name": "Baseline",
+    "pairs": [],
+    "version": 1
+  },
+  "water_semantics": [
+    1,
+    8,
+    12,
+    0
+  ],
+  "player_start": [
+    24,
+    222
+  ],
+  "camera_origin": [
+    0,
+    0
+  ],
+  "player_enabled": false,
+  "body_enabled": false,
+  "tools": [],
+  "interest": {
+    "policy": "fixed",
+    "region": [
+      48,
+      56,
+      928,
+      216
+    ]
+  },
+  "execution": {
+    "policy": "fixed",
+    "cadence_lod_enabled": false,
+    "liquid_surface_adhesion_enabled": true
+  },
+  "events": [
+    {
+      "tick": 30,
+      "kind": "erase",
+      "x": 296,
+      "y": 96,
+      "width": 8,
+      "height": 160,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    },
+    {
+      "tick": 300,
+      "kind": "erase",
+      "x": 528,
+      "y": 96,
+      "width": 8,
+      "height": 160,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    },
+    {
+      "tick": 600,
+      "kind": "erase",
+      "x": 760,
+      "y": 96,
+      "width": 8,
+      "height": 160,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    },
+    {
+      "tick": 900,
+      "kind": "fill",
+      "x": 600,
+      "y": 72,
+      "width": 8,
+      "height": 8,
+      "material": 3,
+      "normalized_mass": 255,
+      "coherence": 0
+    },
+    {
+      "tick": 1000,
+      "kind": "fill",
+      "x": 600,
+      "y": 72,
+      "width": 8,
+      "height": 8,
+      "material": 3,
+      "normalized_mass": 255,
+      "coherence": 0
+    },
+    {
+      "tick": 1100,
+      "kind": "fill",
+      "x": 600,
+      "y": 72,
+      "width": 8,
+      "height": 8,
+      "material": 3,
+      "normalized_mass": 255,
+      "coherence": 0
+    }
+  ],
+  "observations": [
+    {
+      "id": "water-t0",
+      "tick": 0,
+      "metric": "water_integer",
+      "region": [
+        72,
+        96,
+        880,
+        160
+      ],
+      "material": 3
+    },
+    {
+      "id": "oil-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        72,
+        96,
+        880,
+        160
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        72,
+        96,
+        880,
+        160
+      ],
+      "material": 24
+    },
+    {
+      "id": "water-t1500",
+      "tick": 1500,
+      "metric": "water_integer",
+      "region": [
+        72,
+        96,
+        880,
+        160
+      ],
+      "material": 3
+    },
+    {
+      "id": "oil-t1500",
+      "tick": 1500,
+      "metric": "material_cells",
+      "region": [
+        72,
+        96,
+        880,
+        160
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-t1500",
+      "tick": 1500,
+      "metric": "material_cells",
+      "region": [
+        72,
+        96,
+        880,
+        160
+      ],
+      "material": 24
+    },
+    {
+      "id": "water-runout-t1500",
+      "tick": 1500,
+      "metric": "water_integer",
+      "region": [
+        768,
+        96,
+        184,
+        160
+      ],
+      "material": 3
+    },
+    {
+      "id": "oil-runout-t1500",
+      "tick": 1500,
+      "metric": "material_cells",
+      "region": [
+        768,
+        96,
+        184,
+        160
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-runout-t1500",
+      "tick": 1500,
+      "metric": "material_cells",
+      "region": [
+        768,
+        96,
+        184,
+        160
+      ],
+      "material": 24
+    }
+  ],
+  "conditions": [
+    {
+      "observation": "oil-t1500",
+      "comparison": "eq",
+      "value": 26880,
+      "outcome": "complete"
+    }
+  ],
+  "source_recipe": "LCB-003 scenario catalogue v1: mixed-stress",
+  "source_recipe_hash": "",
+  "presentation": {
+    "title": "Staggered openings with Water pulses",
+    "instructions": "Brine | Water | Oil compartments open one gate at a time (ticks 30, 300, 600), then three Water pulses enter at ticks 900-1100 (explicit sources). Stresses repeated boundary changes, density exchange and accounting.",
+    "duration_ticks": 1500,
+    "baseline": "Current native defaults; controlled fixed-tick run",
+    "profile": "Baseline",
+    "regions": [
+      {
+        "id": "brine",
+        "label": "Brine",
+        "region": [
+          72,
+          136,
+          224,
+          120
+        ]
+      },
+      {
+        "id": "water",
+        "label": "Water",
+        "region": [
+          304,
+          136,
+          224,
+          120
+        ]
+      },
+      {
+        "id": "oil",
+        "label": "Oil",
+        "region": [
+          536,
+          136,
+          224,
+          120
+        ]
+      },
+      {
+        "id": "runout",
+        "label": "Runout",
+        "region": [
+          768,
+          96,
+          184,
+          160
+        ]
+      }
+    ]
+  }
+}

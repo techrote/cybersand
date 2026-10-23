@@ -1,0 +1,441 @@
+{
+  "schema_version": 2,
+  "id": "lcb.mixed.water-oil-brine.v1",
+  "recipe_version": 1,
+  "seed": 0,
+  "maturity": "reference",
+  "rectangles": [
+    0,
+    0,
+    1024,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1024,
+    1,
+    1023,
+    0,
+    1,
+    1024,
+    1,
+    0,
+    1023,
+    1024,
+    1,
+    1,
+    64,
+    256,
+    896,
+    8,
+    1,
+    64,
+    96,
+    8,
+    160,
+    1,
+    952,
+    96,
+    8,
+    160,
+    1,
+    296,
+    96,
+    8,
+    160,
+    1,
+    528,
+    96,
+    8,
+    160,
+    1,
+    760,
+    96,
+    8,
+    160,
+    1,
+    72,
+    136,
+    224,
+    120,
+    24,
+    536,
+    136,
+    224,
+    120,
+    16,
+    400,
+    248,
+    8,
+    8,
+    23
+  ],
+  "partial_water_fills": [
+    304,
+    136,
+    224,
+    112,
+    255,
+    0,
+    304,
+    248,
+    96,
+    8,
+    255,
+    0,
+    408,
+    248,
+    120,
+    8,
+    255,
+    0
+  ],
+  "transport_profile": {
+    "families": {
+      "liquid": {
+        "cadence": 1,
+        "carrying": 0,
+        "erosion": 0,
+        "horizontal": 2,
+        "permeability": 1
+      },
+      "powder": {
+        "mixing": 0,
+        "packing": 8,
+        "pickup": 64
+      }
+    },
+    "materials": {
+      "33": {
+        "permeability": 30
+      }
+    },
+    "name": "Baseline",
+    "pairs": [],
+    "version": 1
+  },
+  "water_semantics": [
+    1,
+    8,
+    12,
+    0
+  ],
+  "player_start": [
+    24,
+    222
+  ],
+  "camera_origin": [
+    0,
+    0
+  ],
+  "player_enabled": false,
+  "body_enabled": false,
+  "tools": [],
+  "interest": {
+    "policy": "fixed",
+    "region": [
+      48,
+      80,
+      928,
+      200
+    ]
+  },
+  "execution": {
+    "policy": "fixed",
+    "cadence_lod_enabled": false,
+    "liquid_surface_adhesion_enabled": true
+  },
+  "events": [
+    {
+      "tick": 30,
+      "kind": "erase",
+      "x": 296,
+      "y": 96,
+      "width": 8,
+      "height": 160,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    },
+    {
+      "tick": 30,
+      "kind": "erase",
+      "x": 528,
+      "y": 96,
+      "width": 8,
+      "height": 160,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    },
+    {
+      "tick": 30,
+      "kind": "erase",
+      "x": 760,
+      "y": 96,
+      "width": 8,
+      "height": 160,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    }
+  ],
+  "observations": [
+    {
+      "id": "water-t0",
+      "tick": 0,
+      "metric": "water_integer",
+      "region": [
+        72,
+        96,
+        880,
+        160
+      ],
+      "material": 3
+    },
+    {
+      "id": "oil-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        536,
+        136,
+        224,
+        120
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        72,
+        136,
+        224,
+        120
+      ],
+      "material": 24
+    },
+    {
+      "id": "salt-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        392,
+        240,
+        24,
+        16
+      ],
+      "material": 23
+    },
+    {
+      "id": "water-t30",
+      "tick": 30,
+      "metric": "water_integer",
+      "region": [
+        72,
+        96,
+        880,
+        160
+      ],
+      "material": 3
+    },
+    {
+      "id": "salt-t30",
+      "tick": 30,
+      "metric": "material_cells",
+      "region": [
+        392,
+        240,
+        24,
+        16
+      ],
+      "material": 23
+    },
+    {
+      "id": "water-runout-t240",
+      "tick": 240,
+      "metric": "water_integer",
+      "region": [
+        768,
+        96,
+        184,
+        160
+      ],
+      "material": 3
+    },
+    {
+      "id": "oil-runout-t240",
+      "tick": 240,
+      "metric": "material_cells",
+      "region": [
+        768,
+        96,
+        184,
+        160
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-runout-t240",
+      "tick": 240,
+      "metric": "material_cells",
+      "region": [
+        768,
+        96,
+        184,
+        160
+      ],
+      "material": 24
+    },
+    {
+      "id": "water-t900",
+      "tick": 900,
+      "metric": "water_integer",
+      "region": [
+        72,
+        96,
+        880,
+        160
+      ],
+      "material": 3
+    },
+    {
+      "id": "oil-t900",
+      "tick": 900,
+      "metric": "material_cells",
+      "region": [
+        72,
+        96,
+        880,
+        160
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-t900",
+      "tick": 900,
+      "metric": "material_cells",
+      "region": [
+        72,
+        96,
+        880,
+        160
+      ],
+      "material": 24
+    },
+    {
+      "id": "water-runout-t900",
+      "tick": 900,
+      "metric": "water_integer",
+      "region": [
+        768,
+        96,
+        184,
+        160
+      ],
+      "material": 3
+    },
+    {
+      "id": "oil-runout-t900",
+      "tick": 900,
+      "metric": "material_cells",
+      "region": [
+        768,
+        96,
+        184,
+        160
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-runout-t900",
+      "tick": 900,
+      "metric": "material_cells",
+      "region": [
+        768,
+        96,
+        184,
+        160
+      ],
+      "material": 24
+    }
+  ],
+  "conditions": [
+    {
+      "observation": "oil-t900",
+      "comparison": "eq",
+      "value": 26880,
+      "outcome": "complete"
+    },
+    {
+      "observation": "water-t900",
+      "comparison": "ge",
+      "value": 6838081,
+      "outcome": "fail"
+    }
+  ],
+  "source_recipe": "LCB-000 Gate E mixed-liquid geometry: Brine | Water (+Salt strip) | Oil lock exchange; Current-default control M0",
+  "source_recipe_hash": "",
+  "presentation": {
+    "title": "LCB mixed liquids - Brine / Water / Oil",
+    "instructions": "Three 224 x 120 compartments hold Brine (whole cell), Water (mass8 full cells around an 8 x 8 Salt strip) and Oil (whole cell). Salt dissolves into Brine on Water contact from tick 0. All three full-height gates are erased at tick 30, producing a lock exchange into a dry runout: Brine undercuts Water, Oil rides over it. Under Current defaults this exercises freemass_v1 and cellular_yield_v1 only; the three-family overlay needs LCB-005 and the pressure substitution needs LCB-001.",
+    "duration_ticks": 900,
+    "baseline": "Current defaults (M0): Water freemass_v1, Oil and Brine cellular_yield_v1",
+    "profile": "Baseline",
+    "regions": [
+      {
+        "id": "brine",
+        "label": "Brine compartment",
+        "region": [
+          72,
+          136,
+          224,
+          120
+        ]
+      },
+      {
+        "id": "water",
+        "label": "Water compartment",
+        "region": [
+          304,
+          136,
+          224,
+          120
+        ]
+      },
+      {
+        "id": "salt",
+        "label": "Salt strip",
+        "region": [
+          400,
+          248,
+          8,
+          8
+        ]
+      },
+      {
+        "id": "oil",
+        "label": "Oil compartment",
+        "region": [
+          536,
+          136,
+          224,
+          120
+        ]
+      },
+      {
+        "id": "runout",
+        "label": "Dry runout",
+        "region": [
+          768,
+          96,
+          184,
+          160
+        ]
+      }
+    ]
+  }
+}
