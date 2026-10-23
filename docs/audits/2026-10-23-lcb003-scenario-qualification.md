@@ -25,6 +25,48 @@ related-documents: [../operations/lcb-scenario-catalogue.md, ../operations/lcb-w
   families: Water `freemass_v1` and `cellular_yield_v1` for the other liquids.
 - **LCB-000 remains NOT PASS.**
 
+## Accepted-evidence scope (stated 2026-10-23 for the Gate E review)
+
+This scope settles the review question of replayable full-run receipts versus
+independently tested prefixes.
+
+**1. Accepted evidence: independently re-executed prefixes.** Every claim below
+is re-run from committed source by `test_lcb_scenario_catalogue.gd` on
+GitHub-hosted CI. CI builds its own source-matched runtime.
+- For all 27 scenarios, including the protected Dam Break and mixed M0
+  fixtures:
+  - contract admission and the pinned canonical definition hash;
+  - Python-derived initial material inventory and Water quantity against native
+    tick 0;
+  - tick-30 content hash, state hash and Water integer against the registry
+    goldens;
+  - identical 1- and 4-worker prefixes;
+  - every arm's status consistent with its `executable_today` flag.
+- The protected fixtures' longer prefixes (Dam to t60, M0 to t30) are checked
+  by `test_lcb_fixture_manifests.gd`. #226's `test_lcb_physics_contracts.gd`
+  adds the t240/t300 deep-release, head and ledger pins.
+- Qualifying runs, all green on Linux shards and the Windows headless
+  regression:
+
+  | Run | Head | Result |
+  |---|---|---|
+  | [39901078679](https://github.com/techrote/cybersand/actions/runs/39901078679) | #217 `b5d3174` | catalogue 523/0, negative 74/0, manifests 26/0 |
+  | [39927025733](https://github.com/techrote/cybersand/actions/runs/39927025733) | #226 `b72b7c8`, which contains this PR | the same, plus physics 131/0 |
+
+**2. Characterization only, author-reported: the full-length runs.** These are
+the 1,800/2,400-tick values in
+[`lcb-scenario-controls-2026-10-23.json`](../reference/lcb-scenario-controls-2026-10-23.json).
+They were measured locally on Windows, 1/4-worker identical. The reduced
+observations, checkpoint hashes and per-report SHA-256 are committed; **the raw
+per-case reports are not**. They are reproducible with the documented commands,
+but they are not independently replayed artifacts and are **not** accepted
+evidence. No admission decision may rest on a full-length value unless it is
+re-executed on CI.
+
+**3. Not evidence of any candidate physics.** Every measured arm is
+Current-family. No pressure, inertial or whole-cell Water arm has run, and no
+three-family World has run.
+
 ## Identities
 
 - **Apparatus commit:** `a6bde31a06ec4331513d22e3548d4fd682287225` on
