@@ -46,6 +46,8 @@ func _run_episode(model: StringName, scenario_id: String, source: StringName = &
 		"course_geometry", "contact_count"]:
 		check(not first.has(forbidden), "policy observation forbids evaluator key: " + forbidden)
 	check(not first.has("navigation_credit"), "evaluator navigation credit not policy input")
+	check(not first.has("reward") and not first.has("reward_terms"),
+		"privileged evaluator reward is absent from the policy observation")
 	check(bool(first.local_obstacles.available) and first.local_obstacles.valid.size() == 8,
 		"owner ray sensing provides eight admitted validity masks")
 	check(bool(first.capabilities.has("desired_speed")) and not first.capabilities.has("id"),
@@ -78,6 +80,9 @@ func _run_episode(model: StringName, scenario_id: String, source: StringName = &
 			else:
 				action = episode.reference_action() if source == &"teacher" else {"move": Vector2.RIGHT}
 		var output: Dictionary = episode.tick(action, observation_id, 1)
+		check(output.has("reward") and is_finite(float(output.reward))
+			and float(output.reward) >= -1.3211 and float(output.reward) <= 1.3001,
+			"bounded evaluator-only dense reward and physical-step scaling")
 		check(int(output.ticks_consumed) == 1 or bool(output.failed),
 			"accepted input consumes exactly one physical tick before terminal")
 		if bool(output.failed):
@@ -91,6 +96,18 @@ func _run_episode(model: StringName, scenario_id: String, source: StringName = &
 	if bool(episode.transition(0).episode_done):
 		check(int(episode.tick().ticks_consumed) == 0, "no post-terminal training transition")
 	var evidence: Dictionary = episode.record()
+	var recomputed: float = 0.0
+	for entry: Dictionary in evidence.trace:
+		recomputed += float(entry.get("reward", 0.0))
+	check(absf(recomputed - float(metrics.cumulative_evaluator_reward)) < 0.002,
+		"per-tick evaluator reward reconciles to authoritative cumulative reward")
+	for index: int in range(evidence.trace.size() - 1):
+		check(not bool(evidence.trace[index].get("episode_terminal_tick", false)),
+			"no physical transition after first terminal tick")
+	if scenario_id in Course.NEGATIVE_IDS:
+		for entry: Dictionary in evidence.trace:
+			check(float(entry.reward_terms.low_speed_navigation_dwell) == 0.0,
+				"trivial policy never receives navigation success reward")
 	check(evidence.trace.size() == int(metrics.physical_ticks),
 		"full per-tick physical receipt trace retained")
 	check(str(evidence.manifest.profile_hash) == str(EXPECTED[str(model)]),
