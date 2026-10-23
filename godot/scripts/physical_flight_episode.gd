@@ -41,6 +41,8 @@ var _decisions: int = 0
 var _ticks: int = 0
 var _last_distance: float = INF
 var _best_distance: float = INF
+var _disturbance_applied: bool = false
+var _disturbance_receipt: Dictionary = {}
 var _start_usec: int = 0
 var _reset_usec: int = 0
 var _serialize_usec: int = 0
@@ -81,6 +83,8 @@ func reset(model: StringName, scenario_id: String, seed: int = 0,
 	source = requested_source
 	scenario = definition.duplicate(true)
 	_teacher.reset()
+	_disturbance_applied = false
+	_disturbance_receipt.clear()
 	_trace.clear()
 	_terminal = false
 	_truncated = false
@@ -209,6 +213,17 @@ func tick(action: Variant = null, observation_id: String = "", repeat_ticks: int
 			_invalid_actions += 1
 			_fail("action_admission: " + arena.last_error)
 			break
+		_disturbance_receipt.clear()
+		if not _disturbance_applied and not scenario.get("disturbance", {}).is_empty() \
+			and _ticks == int(scenario.disturbance.tick):
+			_disturbance_applied = true
+			_disturbance_receipt = arena.apply_flight_disturbance(0,
+				arena.session.epoch, arena.session.tick,
+				Vector2(scenario.disturbance.delta_velocity),
+				float(scenario.disturbance.delta_angular_velocity))
+			if not bool(_disturbance_receipt.get("accepted", false)):
+				_fail("host_disturbance_admission")
+				break
 		var frame: Dictionary = arena.step([])
 		if int(arena.session.tick) != before + 1:
 			_fail("physics_tick_not_consumed")
@@ -251,7 +266,8 @@ func _assess_tick(owner: Dictionary, frame: Dictionary,
 		"physical_receipt": received,
 		"centre": centre, "velocity": velocity, "distance": distance,
 		"dwell": _dwell, "contact": contact, "contact_count": contact_count,
-		"physics_fault": bool(frame.get("failed", false))})
+		"physics_fault": bool(frame.get("failed", false)),
+		"host_disturbance": _disturbance_receipt.duplicate(true)})
 	if bool(frame.get("failed", false)):
 		_fail("actual_host: " + str(frame.get("reason", "")))
 		return
