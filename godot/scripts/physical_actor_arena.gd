@@ -288,6 +288,16 @@ func local_flight_rays(actor_id: int, maximum_distance: float = 80.0) -> Diction
 		"distances": distances, "hits": hits, "valid": valid}
 
 
+func flight_contact_count(actor_id: int) -> int:
+	# Evaluator-only authoritative Rapier contact count. Not part of the
+	# policy-visible observation or low-level stabilizer input.
+	if session == null or not session.is_flight_actor(actor_id) or actor_id != 0:
+		return -1
+	var body: RigidBody2D = session.bodies()[0]
+	var state: PhysicsDirectBodyState2D = PhysicsServer2D.body_get_direct_state(body.get_rid())
+	return state.get_contact_count() if state != null else -1
+
+
 func submit(command: Variant, producer: StringName = &"policy") -> bool:
 	if session == null or _finished or _paused:
 		last_error = "inactive_or_paused"
