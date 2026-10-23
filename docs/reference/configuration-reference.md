@@ -780,6 +780,24 @@ observations and version-2 commands are separate from sampled actor packed rows.
 Usable lifecycle, gyro/play semantics and producer limits belong to the
 [physical actor contract](../systems/physical-actor-rigs.md).
 
+## 4LY-003 flight laboratory configuration
+
+The [flight lab](../systems/physical-flight-lab.md) is an additive
+native/Rapier course mode, not a new physical profile or a configuration
+change to the pre-existing 64-bit material cells. Its closed scenario
+IDs are defined in
+`godot/scripts/physical_flight_course.gd`; the existing ACT004 arena
+accepts `course = "4ly-flight-course/v1"`,
+`flight_scenario` and `flight_split` only with one actual 4LY body
+at the registered start pose. The headless Episode accepts a model,
+scenario, seed, split and producer and enforces 60 Hz physical steps,
+a 6-tick decision interval, 12-tick action lease, arrival radius
+12 cells (9 for hover), max final speed 2.5 cells/s and 36
+consecutive dwell ticks. Scenario deadlines are bounded at
+2400 real physics ticks; the prospective throughput pilot is
+limited to 960. Source/profile/controller hashes and
+`candidate_4ly002` calibration remain unchanged.
+
 ## Physical free-flight values
 
 **Current experimental 4LY-001 controller + 4LY-002 candidate profiles:**
