@@ -1,0 +1,485 @@
+{
+  "scope": "conditional model from process medians; protocol excess is not isolated clear-loop cost; no carrier access contrast; not natural wide long-run measurement",
+  "contexts": [
+    {
+      "context": "E8-512-sleep-excluded-w1",
+      "normal_median_ns": 2514,
+      "paired_excess_median_ns": 59929,
+      "subsequent_interval": 255,
+      "initial_clear_tick": 256,
+      "conditional_steady_ns": 2749.01568627451,
+      "maintenance_ns_per_tick": 235.01568627450982,
+      "worst_observed_event_ns": 63744
+    },
+    {
+      "context": "E8-512-sleep-excluded-w4",
+      "normal_median_ns": 1943,
+      "paired_excess_median_ns": 110573,
+      "subsequent_interval": 255,
+      "initial_clear_tick": 256,
+      "conditional_steady_ns": 2376.619607843137,
+      "maintenance_ns_per_tick": 433.61960784313726,
+      "worst_observed_event_ns": 117883
+    },
+    {
+      "context": "E8-512-active-window-excluded-w1",
+      "normal_median_ns": 595968,
+      "paired_excess_median_ns": 42121,
+      "subsequent_interval": 255,
+      "initial_clear_tick": 256,
+      "conditional_steady_ns": 596133.1803921568,
+      "maintenance_ns_per_tick": 165.18039215686275,
+      "worst_observed_event_ns": 707241
+    },
+    {
+      "context": "E8-512-active-window-excluded-w4",
+      "normal_median_ns": 498754,
+      "paired_excess_median_ns": 147708,
+      "subsequent_interval": 255,
+      "initial_clear_tick": 256,
+      "conditional_steady_ns": 499333.24705882353,
+      "maintenance_ns_per_tick": 579.2470588235294,
+      "worst_observed_event_ns": 744977
+    },
+    {
+      "context": "E8-1024-sleep-excluded-w1",
+      "normal_median_ns": 11317,
+      "paired_excess_median_ns": 456202,
+      "subsequent_interval": 255,
+      "initial_clear_tick": 256,
+      "conditional_steady_ns": 13106.027450980393,
+      "maintenance_ns_per_tick": 1789.0274509803921,
+      "worst_observed_event_ns": 473477
+    },
+    {
+      "context": "E8-1024-sleep-excluded-w4",
+      "normal_median_ns": 10435,
+      "paired_excess_median_ns": 523402,
+      "subsequent_interval": 255,
+      "initial_clear_tick": 256,
+      "conditional_steady_ns": 12487.556862745098,
+      "maintenance_ns_per_tick": 2052.556862745098,
+      "worst_observed_event_ns": 595497
+    },
+    {
+      "context": "E8-1024-active-window-excluded-w1",
+      "normal_median_ns": 1370749,
+      "paired_excess_median_ns": 319951,
+      "subsequent_interval": 255,
+      "initial_clear_tick": 256,
+      "conditional_steady_ns": 1372003.7098039216,
+      "maintenance_ns_per_tick": 1254.7098039215687,
+      "worst_observed_event_ns": 1706534
+    },
+    {
+      "context": "E8-1024-active-window-excluded-w4",
+      "normal_median_ns": 940667,
+      "paired_excess_median_ns": 415281,
+      "subsequent_interval": 255,
+      "initial_clear_tick": 256,
+      "conditional_steady_ns": 942295.5529411765,
+      "maintenance_ns_per_tick": 1628.5529411764705,
+      "worst_observed_event_ns": 1392732
+    },
+    {
+      "context": "E8-2048-sleep-excluded-w1",
+      "normal_median_ns": 49883,
+      "paired_excess_median_ns": 2353907,
+      "subsequent_interval": 255,
+      "initial_clear_tick": 256,
+      "conditional_steady_ns": 59114.00784313725,
+      "maintenance_ns_per_tick": 9231.007843137255,
+      "worst_observed_event_ns": 2515925
+    },
+    {
+      "context": "E8-2048-sleep-excluded-w4",
+      "normal_median_ns": 50825,
+      "paired_excess_median_ns": 2330903,
+      "subsequent_interval": 255,
+      "initial_clear_tick": 256,
+      "conditional_steady_ns": 59965.79607843138,
+      "maintenance_ns_per_tick": 9140.796078431373,
+      "worst_observed_event_ns": 2417320
+    },
+    {
+      "context": "E8-2048-active-window-excluded-w1",
+      "normal_median_ns": 2665685,
+      "paired_excess_median_ns": 1827434,
+      "subsequent_interval": 255,
+      "initial_clear_tick": 256,
+      "conditional_steady_ns": 2672851.407843137,
+      "maintenance_ns_per_tick": 7166.4078431372545,
+      "worst_observed_event_ns": 4591981
+    },
+    {
+      "context": "E8-2048-active-window-excluded-w4",
+      "normal_median_ns": 1625824,
+      "paired_excess_median_ns": 2165119,
+      "subsequent_interval": 255,
+      "initial_clear_tick": 256,
+      "conditional_steady_ns": 1634314.6627450981,
+      "maintenance_ns_per_tick": 8490.66274509804,
+      "worst_observed_event_ns": 4090594
+    },
+    {
+      "context": "E16-512-sleep-excluded-w1",
+      "normal_median_ns": 2444,
+      "paired_excess_median_ns": 62722,
+      "subsequent_interval": 65535,
+      "initial_clear_tick": 65536,
+      "conditional_steady_ns": 2444.9570763714046,
+      "maintenance_ns_per_tick": 0.957076371404593,
+      "worst_observed_event_ns": 67169
+    },
+    {
+      "context": "E16-512-sleep-excluded-w4",
+      "normal_median_ns": 2133,
+      "paired_excess_median_ns": 58886,
+      "subsequent_interval": 65535,
+      "initial_clear_tick": 65536,
+      "conditional_steady_ns": 2133.898542763409,
+      "maintenance_ns_per_tick": 0.8985427634088655,
+      "worst_observed_event_ns": 75371
+    },
+    {
+      "context": "E16-512-active-window-excluded-w1",
+      "normal_median_ns": 613944,
+      "paired_excess_median_ns": 37284,
+      "subsequent_interval": 65535,
+      "initial_clear_tick": 65536,
+      "conditional_steady_ns": 613944.5689173724,
+      "maintenance_ns_per_tick": 0.5689173723964294,
+      "worst_observed_event_ns": 666792
+    },
+    {
+      "context": "E16-512-active-window-excluded-w4",
+      "normal_median_ns": 490863,
+      "paired_excess_median_ns": 56343,
+      "subsequent_interval": 65535,
+      "initial_clear_tick": 65536,
+      "conditional_steady_ns": 490863.8597390707,
+      "maintenance_ns_per_tick": 0.8597390707255665,
+      "worst_observed_event_ns": 609147
+    },
+    {
+      "context": "E16-1024-sleep-excluded-w1",
+      "normal_median_ns": 10436,
+      "paired_excess_median_ns": 475059,
+      "subsequent_interval": 65535,
+      "initial_clear_tick": 65536,
+      "conditional_steady_ns": 10443.248935683223,
+      "maintenance_ns_per_tick": 7.248935683222705,
+      "worst_observed_event_ns": 524683
+    },
+    {
+      "context": "E16-1024-sleep-excluded-w4",
+      "normal_median_ns": 11397,
+      "paired_excess_median_ns": 477293,
+      "subsequent_interval": 65535,
+      "initial_clear_tick": 65536,
+      "conditional_steady_ns": 11404.28302433814,
+      "maintenance_ns_per_tick": 7.283024338139925,
+      "worst_observed_event_ns": 537722
+    },
+    {
+      "context": "E16-1024-active-window-excluded-w1",
+      "normal_median_ns": 1390628,
+      "paired_excess_median_ns": 341433,
+      "subsequent_interval": 65535,
+      "initial_clear_tick": 65536,
+      "conditional_steady_ns": 1390633.2099336232,
+      "maintenance_ns_per_tick": 5.2099336232547495,
+      "worst_observed_event_ns": 1779581
+    },
+    {
+      "context": "E16-1024-active-window-excluded-w4",
+      "normal_median_ns": 934746,
+      "paired_excess_median_ns": 401863,
+      "subsequent_interval": 65535,
+      "initial_clear_tick": 65536,
+      "conditional_steady_ns": 934752.1320363164,
+      "maintenance_ns_per_tick": 6.132036316472115,
+      "worst_observed_event_ns": 1363628
+    },
+    {
+      "context": "E16-2048-sleep-excluded-w1",
+      "normal_median_ns": 53148,
+      "paired_excess_median_ns": 2324464,
+      "subsequent_interval": 65535,
+      "initial_clear_tick": 65536,
+      "conditional_steady_ns": 53183.46904707408,
+      "maintenance_ns_per_tick": 35.46904707408255,
+      "worst_observed_event_ns": 2424770
+    },
+    {
+      "context": "E16-2048-sleep-excluded-w4",
+      "normal_median_ns": 48612,
+      "paired_excess_median_ns": 2334315,
+      "subsequent_interval": 65535,
+      "initial_clear_tick": 65536,
+      "conditional_steady_ns": 48647.61936369879,
+      "maintenance_ns_per_tick": 35.619363698786906,
+      "worst_observed_event_ns": 2563425
+    },
+    {
+      "context": "E16-2048-active-window-excluded-w1",
+      "normal_median_ns": 2770249,
+      "paired_excess_median_ns": 1738379,
+      "subsequent_interval": 65535,
+      "initial_clear_tick": 65536,
+      "conditional_steady_ns": 2770275.525963226,
+      "maintenance_ns_per_tick": 26.52596322575723,
+      "worst_observed_event_ns": 4557339
+    },
+    {
+      "context": "E16-2048-active-window-excluded-w4",
+      "normal_median_ns": 1588338,
+      "paired_excess_median_ns": 2148502,
+      "subsequent_interval": 65535,
+      "initial_clear_tick": 65536,
+      "conditional_steady_ns": 1588370.7840390631,
+      "maintenance_ns_per_tick": 32.78403906309605,
+      "worst_observed_event_ns": 3896235
+    },
+    {
+      "context": "E24-512-sleep-excluded-w1",
+      "normal_median_ns": 1993,
+      "paired_excess_median_ns": 61230,
+      "subsequent_interval": 16777215,
+      "initial_clear_tick": 16777216,
+      "conditional_steady_ns": 1993.0036495926172,
+      "maintenance_ns_per_tick": 0.0036495926171298395,
+      "worst_observed_event_ns": 88420
+    },
+    {
+      "context": "E24-512-sleep-excluded-w4",
+      "normal_median_ns": 2053,
+      "paired_excess_median_ns": 60959,
+      "subsequent_interval": 16777215,
+      "initial_clear_tick": 16777216,
+      "conditional_steady_ns": 2053.0036334397573,
+      "maintenance_ns_per_tick": 0.0036334397574329233,
+      "worst_observed_event_ns": 70093
+    },
+    {
+      "context": "E24-512-active-window-excluded-w1",
+      "normal_median_ns": 602798,
+      "paired_excess_median_ns": 39068,
+      "subsequent_interval": 16777215,
+      "initial_clear_tick": 16777216,
+      "conditional_steady_ns": 602798.0023286344,
+      "maintenance_ns_per_tick": 0.002328634400882387,
+      "worst_observed_event_ns": 664508
+    },
+    {
+      "context": "E24-512-active-window-excluded-w4",
+      "normal_median_ns": 482510,
+      "paired_excess_median_ns": 82101,
+      "subsequent_interval": 16777215,
+      "initial_clear_tick": 16777216,
+      "conditional_steady_ns": 482510.00489360123,
+      "maintenance_ns_per_tick": 0.004893601232385709,
+      "worst_observed_event_ns": 882344
+    },
+    {
+      "context": "E24-1024-sleep-excluded-w1",
+      "normal_median_ns": 11567,
+      "paired_excess_median_ns": 463432,
+      "subsequent_interval": 16777215,
+      "initial_clear_tick": 16777216,
+      "conditional_steady_ns": 11567.027622701384,
+      "maintenance_ns_per_tick": 0.02762270138399013,
+      "worst_observed_event_ns": 507658
+    },
+    {
+      "context": "E24-1024-sleep-excluded-w4",
+      "normal_median_ns": 11887,
+      "paired_excess_median_ns": 491233,
+      "subsequent_interval": 16777215,
+      "initial_clear_tick": 16777216,
+      "conditional_steady_ns": 11887.029279770211,
+      "maintenance_ns_per_tick": 0.029279770212159766,
+      "worst_observed_event_ns": 555719
+    },
+    {
+      "context": "E24-1024-active-window-excluded-w1",
+      "normal_median_ns": 1428013,
+      "paired_excess_median_ns": 274483,
+      "subsequent_interval": 16777215,
+      "initial_clear_tick": 16777216,
+      "conditional_steady_ns": 1428013.0163604626,
+      "maintenance_ns_per_tick": 0.016360462687043113,
+      "worst_observed_event_ns": 1894039
+    },
+    {
+      "context": "E24-1024-active-window-excluded-w4",
+      "normal_median_ns": 936018,
+      "paired_excess_median_ns": 431335,
+      "subsequent_interval": 16777215,
+      "initial_clear_tick": 16777216,
+      "conditional_steady_ns": 936018.025709571,
+      "maintenance_ns_per_tick": 0.02570957098660296,
+      "worst_observed_event_ns": 1406461
+    },
+    {
+      "context": "E24-2048-sleep-excluded-w1",
+      "normal_median_ns": 52738,
+      "paired_excess_median_ns": 2390768,
+      "subsequent_interval": 16777215,
+      "initial_clear_tick": 16777216,
+      "conditional_steady_ns": 52738.14250088587,
+      "maintenance_ns_per_tick": 0.14250088587408577,
+      "worst_observed_event_ns": 2480883
+    },
+    {
+      "context": "E24-2048-sleep-excluded-w4",
+      "normal_median_ns": 53869,
+      "paired_excess_median_ns": 2342739,
+      "subsequent_interval": 16777215,
+      "initial_clear_tick": 16777216,
+      "conditional_steady_ns": 53869.13963813422,
+      "maintenance_ns_per_tick": 0.13963813421953525,
+      "worst_observed_event_ns": 2445641
+    },
+    {
+      "context": "E24-2048-active-window-excluded-w1",
+      "normal_median_ns": 2706385,
+      "paired_excess_median_ns": 1800671,
+      "subsequent_interval": 16777215,
+      "initial_clear_tick": 16777216,
+      "conditional_steady_ns": 2706385.107328362,
+      "maintenance_ns_per_tick": 0.10732836170961628,
+      "worst_observed_event_ns": 4589677
+    },
+    {
+      "context": "E24-2048-active-window-excluded-w4",
+      "normal_median_ns": 1594227,
+      "paired_excess_median_ns": 2127732,
+      "subsequent_interval": 16777215,
+      "initial_clear_tick": 16777216,
+      "conditional_steady_ns": 1594227.1268227175,
+      "maintenance_ns_per_tick": 0.12682271759645447,
+      "worst_observed_event_ns": 3782508
+    },
+    {
+      "context": "E32-512-sleep-excluded-w1",
+      "normal_median_ns": 2353,
+      "paired_excess_median_ns": 96322,
+      "subsequent_interval": 4294967295,
+      "initial_clear_tick": 4294967296,
+      "conditional_steady_ns": 2353.0000224267133,
+      "maintenance_ns_per_tick": 2.2426713263249656e-05,
+      "worst_observed_event_ns": 99867
+    },
+    {
+      "context": "E32-512-sleep-excluded-w4",
+      "normal_median_ns": 2764,
+      "paired_excess_median_ns": 98335,
+      "subsequent_interval": 4294967295,
+      "initial_clear_tick": 4294967296,
+      "conditional_steady_ns": 2764.0000228954013,
+      "maintenance_ns_per_tick": 2.289540134903402e-05,
+      "worst_observed_event_ns": 110953
+    },
+    {
+      "context": "E32-512-active-window-excluded-w1",
+      "normal_median_ns": 615246,
+      "paired_excess_median_ns": 83903,
+      "subsequent_interval": 4294967295,
+      "initial_clear_tick": 4294967296,
+      "conditional_steady_ns": 615246.0000195352,
+      "maintenance_ns_per_tick": 1.9535189499039014e-05,
+      "worst_observed_event_ns": 753489
+    },
+    {
+      "context": "E32-512-active-window-excluded-w4",
+      "normal_median_ns": 500938,
+      "paired_excess_median_ns": 108049,
+      "subsequent_interval": 4294967295,
+      "initial_clear_tick": 4294967296,
+      "conditional_steady_ns": 500938.0000251571,
+      "maintenance_ns_per_tick": 2.5157118222014308e-05,
+      "worst_observed_event_ns": 627063
+    },
+    {
+      "context": "E32-1024-sleep-excluded-w1",
+      "normal_median_ns": 12248,
+      "paired_excess_median_ns": 530862,
+      "subsequent_interval": 4294967295,
+      "initial_clear_tick": 4294967296,
+      "conditional_steady_ns": 12248.000123600941,
+      "maintenance_ns_per_tick": 0.00012360094118015863,
+      "worst_observed_event_ns": 563700
+    },
+    {
+      "context": "E32-1024-sleep-excluded-w4",
+      "normal_median_ns": 11177,
+      "paired_excess_median_ns": 531613,
+      "subsequent_interval": 4294967295,
+      "initial_clear_tick": 4294967296,
+      "conditional_steady_ns": 11177.000123775797,
+      "maintenance_ns_per_tick": 0.0001237757969935834,
+      "worst_observed_event_ns": 660362
+    },
+    {
+      "context": "E32-1024-active-window-excluded-w1",
+      "normal_median_ns": 1463585,
+      "paired_excess_median_ns": 257349,
+      "subsequent_interval": 4294967295,
+      "initial_clear_tick": 4294967296,
+      "conditional_steady_ns": 1463585.0000599187,
+      "maintenance_ns_per_tick": 5.991873332763061e-05,
+      "worst_observed_event_ns": 1763807
+    },
+    {
+      "context": "E32-1024-active-window-excluded-w4",
+      "normal_median_ns": 966469,
+      "paired_excess_median_ns": 402993,
+      "subsequent_interval": 4294967295,
+      "initial_clear_tick": 4294967296,
+      "conditional_steady_ns": 966469.0000938291,
+      "maintenance_ns_per_tick": 9.382911959985018e-05,
+      "worst_observed_event_ns": 1482307
+    },
+    {
+      "context": "E32-2048-sleep-excluded-w1",
+      "normal_median_ns": 55371,
+      "paired_excess_median_ns": 2439872,
+      "subsequent_interval": 4294967295,
+      "initial_clear_tick": 4294967296,
+      "conditional_steady_ns": 55371.00056807697,
+      "maintenance_ns_per_tick": 0.0005680769683253199,
+      "worst_observed_event_ns": 2556163
+    },
+    {
+      "context": "E32-2048-sleep-excluded-w4",
+      "normal_median_ns": 53409,
+      "paired_excess_median_ns": 2467088,
+      "subsequent_interval": 4294967295,
+      "initial_clear_tick": 4294967296,
+      "conditional_steady_ns": 53409.00057441369,
+      "maintenance_ns_per_tick": 0.000574413687124479,
+      "worst_observed_event_ns": 2561366
+    },
+    {
+      "context": "E32-2048-active-window-excluded-w1",
+      "normal_median_ns": 2785249,
+      "paired_excess_median_ns": 1856762,
+      "subsequent_interval": 4294967295,
+      "initial_clear_tick": 4294967296,
+      "conditional_steady_ns": 2785249.000432311,
+      "maintenance_ns_per_tick": 0.00043231109167270155,
+      "worst_observed_event_ns": 4739428
+    },
+    {
+      "context": "E32-2048-active-window-excluded-w4",
+      "normal_median_ns": 1635307,
+      "paired_excess_median_ns": 2204345,
+      "subsequent_interval": 4294967295,
+      "initial_clear_tick": 4294967296,
+      "conditional_steady_ns": 1635307.000513239,
+      "maintenance_ns_per_tick": 0.0005132390653046871,
+      "worst_observed_event_ns": 3867648
+    }
+  ]
+}

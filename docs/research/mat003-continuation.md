@@ -258,7 +258,7 @@ contract proposal; persistence/streaming and physics are unchanged.
 | Cache/unaligned/vectorization causality | Unresolved without counters/profiles or controlled admitted timing; geometry alone is insufficient. |
 | P2 and C128 correctness | Source review and untimed fixtures; exact-current immutable readback is owned by the dated audit. Full new-World sanitizers are a gap; storage UBSan is separate. |
 | Wide prepared-event equivalence | Bounded to the frozen scenes, populations, current predicates, equality-only consumers and immediate-clear schedule; natural E24/E32 history is unobserved. |
-| Actual wide clear cost and amortized benefit | Unmeasured; only the conditional frequency/model is derived. No new cost ranking exists. |
+| Actual wide clear cost and amortized benefit | Complete authorized WCLEAR run now measures prepared-resident event latency and paired excess; conditional projections retain cache/preparation limitations. See the results audit below; no production ranking. |
 | C128 versus aligned tick cost | Unmeasured; ABI and instruction counts cannot answer tick-time comparability. |
 | Physical arrays and state capacity | Exact arithmetic/tested ABI within stated platforms; allocator/World/process totals require component accounting. |
 | Other platforms and future state semantics | Windows diagnostics, Wasm/Godot, durable state and future high64 schema are separately unqualified. |
@@ -276,3 +276,7 @@ Wasm/Godot and production acceptance remain unqualified until separately admitte
 ## WCLEAR timing admission checkpoint
 
 **Approved conditional experiment / execution pending:** the [independent admission](../audits/2026-10-23-wclear-admission.md) admits only the exact 672-process prepared-resident WCLEAR protocol. Its separately sealed registration sets formal timing admission true while execution authority remains false. The manual-only workflow requires an owner-established receipt for the exact registration hash and execution commit. No dispatch or timing has occurred. This supersedes the earlier WCLEAR admission-pending checkpoint; packed/C128 timing and performance acceptance remain held.
+
+## Complete authorized WCLEAR evidence
+
+**Current measured conditional protocol:** [run39889832605 results](../audits/2026-10-23-wclear-results.md) supersede the earlier WCLEAR execution-pending/unmeasured checkpoint. All672 processes across48 contexts are retained with raw hashes and independent readback. Quiet w1 event medians rise from roughly0.062–0.098ms at512² to2.385–2.510ms at2048²; the maximum event tick is4.739428ms in E32/2048²/active/w1. All spikes and the negative paired excess are retained. Width reduces rollover frequency, not the existence of an individual hitch. Prepared-state/store/cache histories constrain comparisons; no isolated-loop, natural E24/E32 long-run, carrier break-even or C128 speed claim follows. The dated results audit owns final independent disposition and exact evidence identities.
