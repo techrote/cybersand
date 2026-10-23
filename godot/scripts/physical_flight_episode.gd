@@ -10,6 +10,7 @@ const Profile = preload("res://scripts/physical_flight_profile.gd")
 const Controller = preload("res://scripts/physical_flight_controller.gd")
 const Course = preload("res://scripts/physical_flight_course.gd")
 const Teacher = preload("res://scripts/physical_flight_teacher.gd")
+const Adapter = preload("res://scripts/physical_flight_observation_adapter.gd")
 const VERSION: String = "4ly-episode/v1"
 const OBS_VERSION: String = "4ly-observation/v1"
 const ACTION_VERSION: String = "4ly-action/v1"
@@ -104,6 +105,10 @@ func reset(model: StringName, scenario_id: String, seed: int = 0,
 
 func observe() -> Dictionary:
 	return _observation.duplicate(true)
+
+
+func flat_observation() -> Dictionary:
+	return Adapter.flatten(observe())
 
 
 func reference_action() -> Dictionary:
@@ -302,6 +307,7 @@ func metrics() -> Dictionary:
 
 func manifest() -> Dictionary:
 	return {"schema": VERSION, "observation": OBS_VERSION, "action": ACTION_VERSION,
+		"flat_observation": Adapter.VERSION, "flat_observation_length": Adapter.LENGTH,
 		"action_profile": Profile.ACTION_PROFILE, "source": str(source),
 		"course_version": Course.VERSION, "course": str(scenario.get("id", "")),
 		"seed": int(scenario.get("seed", -1)), "split": str(scenario.get("split", "")),
