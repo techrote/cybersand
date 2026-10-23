@@ -24,6 +24,24 @@ var pass_counts: Dictionary = {}
 var faults: Array = []
 
 
+func _recovery_witness(record: Dictionary) -> bool:
+	var disturbance_tick: int = -1
+	for sample: Variant in record.get("trace", []):
+		if not sample is Dictionary:
+			continue
+		var receipt: Variant = sample.get("host_disturbance", {})
+		if receipt is Dictionary and bool(receipt.get("accepted", false)):
+			disturbance_tick = int(sample.get("tick", -1))
+			break
+	if disturbance_tick < 0:
+		return false
+	for sample: Variant in record.get("trace", []):
+		if sample is Dictionary and int(sample.get("tick", -1)) >= disturbance_tick \
+			and bool(sample.get("contact", false)):
+			return true
+	return false
+
+
 func _init() -> void:
 	_run.call_deferred()
 
@@ -129,14 +147,21 @@ func _run() -> void:
 				var record: Dictionary = episode.record()
 				var metrics: Dictionary = record.metrics
 				var credited: bool = bool(episode.transition(0).navigation_credit)
+				var recovery_witness: bool = true
+				if str(episode.scenario.family) == "recovery":
+					recovery_witness = _recovery_witness(record)
+				var qualification_credit: bool = credited and recovery_witness
 				var group: String = str(model) + ":" + str(episode.scenario.family)
 				var row: Dictionary = pass_counts.get(group, {"trials": 0, "successes": 0,
 					"physics_faults": 0, "invalid_actions": 0})
 				row.trials += 1
-				row.successes += int(credited)
+				row.successes += int(qualification_credit)
 				row.physics_faults += int(bool(metrics.failed))
 				row.invalid_actions += int(metrics.invalid_actions)
 				pass_counts[group] = row
+				if str(episode.scenario.family) == "recovery" and not recovery_witness:
+					faults.append("recovery_without_post_disturbance_contact: "
+						+ str(model) + "/" + id + "/" + str(seed))
 				if id in Course.NEGATIVE_IDS and credited:
 					faults.append("negative_control_navigation_credit: " + str(model) + "/" + id)
 				if not no_authority_violation:
@@ -149,7 +174,8 @@ func _run() -> void:
 				else:
 					evidence_inventory.append({"model": str(model), "scenario": id,
 						"seed": int(seed), "metrics": metrics.duplicate(true),
-						"navigation_credit": credited, "artifact": receipt})
+						"navigation_credit": credited, "qualification_credit": qualification_credit,
+						"recovery_witness": recovery_witness, "artifact": receipt})
 				trials += 1
 			if trials >= MAX_EPISODES:
 				break
