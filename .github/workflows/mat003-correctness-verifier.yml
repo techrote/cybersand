@@ -1,0 +1,29 @@
+name: MAT-003 correctness verifier contracts
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'tools/experiments/mat003_correctness/**'
+      - 'docs/audits/2026-10-23-mat003-readback-verifier-repair.md'
+      - 'docs/audits/mat003-correctness-2026-10-23/windows-reentry-readback-registration-v2.json'
+      - '.github/workflows/mat003-correctness-verifier.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mat003-correctness-verifier-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verifier-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Validate CI provider policy
+        run: python3 tools/ci/check_ci_provider_policy.py
+      - name: Run focused untimed verifier contracts
+        run: python3 -B tools/experiments/mat003_correctness/test_verifier_contracts.py
