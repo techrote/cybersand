@@ -180,6 +180,8 @@ extern "C" void swap_cell(C* a, C* b) { const auto t=*a; *a=*b; *b=t; }
                     compile_assembly()
                     continue # Reuse accepted control correctness; no repeat campaign.
                 fixture = work/S1/'test_world.cpp'
+                if rep == 'memcpy':
+                    fixture.write_text(fixture.read_text().replace('"packed", "aligned"','"memcpy", "aligned"'))
                 if rep in ('u128','dual64'):
                     text = fixture.read_text().replace('64 + 8 * MAT003_EXTRA_BYTES','128')
                     text = text.replace('"aligned", "split"', '"'+rep+'", "split"')
@@ -267,10 +269,14 @@ extern "C" void swap_cell(C* a, C* b) { const auto t=*a; *a=*b; *b=t; }
             storage=out/'bin'/('storage.exe' if os.name == 'nt' else 'storage')
             inc=['-I'+str(source/'native/include'),'-I'+str(source/S1),'-I'+str(source/HERE)]
             run([compiler,*flags,*inc,source/HERE/'storage.cpp','-o',storage], 'compile/storage',180)
+            storage_seals=[dict(id='storage',binary=str(storage.relative_to(out)),sha256=digest(storage))]
+            dump(out/'storage-binary-seal.json',storage_seals)
             run([storage],'execute/storage',60)
             if report['qualified_toolchain']:
                 sanitized=out/'bin'/'storage-ubsan'
                 run([compiler,*flags,'-fsanitize=undefined','-fno-sanitize-recover=all',*inc,source/HERE/'storage.cpp','-o',sanitized],'compile/storage-ubsan',180)
+                storage_seals.append(dict(id='storage-ubsan',binary=str(sanitized.relative_to(out)),sha256=digest(sanitized)))
+                dump(out/'storage-binary-seal.json',storage_seals)
                 run([sanitized],'execute/storage-ubsan',60)
         report['status']='collected-not-admitted'
     except Exception as error:

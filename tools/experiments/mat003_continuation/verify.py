@@ -10,6 +10,7 @@ import importlib.util
 import itertools
 import json
 from pathlib import Path
+import re
 import subprocess
 import tempfile
 
@@ -36,6 +37,30 @@ def load(p): return json.loads(p.read_text(),object_pairs_hook=unique)
 def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
 def require(b, message):
     if not b: raise ValueError(message)
+
+
+def identity(name):
+    m=re.fullmatch(r'(word|packed|aligned|split|memcpy|u128|dual64)-e(8|16|24|32)-x([012])',name)
+    require(m is not None,'invalid registered arm identity')
+    rep,bits,extra=m.groups()
+    return rep,int(bits),int(extra)
+
+
+def check_compile(argv, arm, observer, assembly=False):
+    rep,bits,extra=identity(arm)
+    flags=['-std=c++20','-O2','-DNDEBUG','-Wall','-Wextra','-Wpedantic','-pthread']
+    require(argv[1:8]==flags,'compiler flags differ from frozen S2A flags')
+    actual_flags=[v for v in argv[1:] if v.startswith('-') and not v.startswith(('-D','-I')) and v not in ('-o','-S')]
+    require(actual_flags==[v for v in flags if not v.startswith('-D')],'extra/missing compiler optimization flags')
+    capacity=128 if rep in ('u128','dual64') else 64+8*extra
+    kind={'word':1,'packed':3,'memcpy':3,'aligned':4,'split':5,'u128':4,'dual64':4}[rep]
+    definitions=[v for v in argv if v.startswith('-D')]
+    expected={'-DNDEBUG',f'-DMAT003_STORAGE_KIND={kind}',f'-DMAT003_EXTRA_BYTES={extra}',f'-DMAT003_SPLIT={int(rep=="split")}',
+              f'-DMAT003_ARM_ID="C{capacity}-E{bits}-{rep}"',f'-DMAT003_EPOCH_BITS={bits}',f'-DMAT003_TWIN_OBSERVERS={observer}'}
+    world=[v for v in definitions if v.startswith('-DMAT003_WORLD_SOURCE=')]
+    require(len(world)==1 and world[0].endswith('/overlays/'+arm+'/native/src/world.cpp"'),'compiled World source path differs')
+    require(set(definitions)==expected|set(world) and len(definitions)==len(expected)+1,'compiler macros differ from registered arm')
+    require(('-S' in argv)==assembly,'compiler output kind mismatch')
 
 
 def verify(root, expected_source=None):
@@ -117,6 +142,19 @@ def verify(root, expected_source=None):
             for name,digest in generated.items(): require(sha(checked(folder,name))==digest,'generated source drift')
         commands={c['label']:c for c in report['commands']}
         builds={b['id']:b for b in report['builds']}
+        for a in all_arms:
+            if track=='wclear':
+                for observer in (0,1):
+                    check_compile(commands['compile/'+a+'-o'+str(observer)]['argv'],a,observer)
+            else:
+                check_compile(commands['asm/'+a]['argv'],a,0,True)
+                check_compile(commands['world-asm/'+a]['argv'],a,0,True)
+                if a in built: check_compile(commands['compile/'+a]['argv'],a,1)
+        storage_seals=load(root/'storage-binary-seal.json')
+        require({b['id'] for b in storage_seals}=={'storage','storage-ubsan'} and len(storage_seals)==2,'storage binary seals missing')
+        for b in storage_seals:
+            require(sha(checked(root,b['binary']))==b['sha256'],'storage binary hash mismatch')
+            require(commands['execute/'+b['id']]['argv'][0]==commands['compile/'+b['id']]['argv'][-1],'executed storage binary mismatch')
         storage=json.loads((root/'execute/storage.stdout').read_text())
         require(storage=={'dual_size':16,'dual_align':8,'u128_size':16,'u128_align':16,'passed':True},'storage boundary/ABI model failed')
         require(json.loads((root/'execute/storage-ubsan.stdout').read_text())==storage,'sanitized storage model disagrees')
@@ -133,7 +171,6 @@ def verify(root, expected_source=None):
                 name=row['id']; event=row['event']; observed=row['observer']==1
                 # Parse the authoritative ID, then require all declared metadata
                 # and the actual command argv to match this exact context.
-                import re
                 m=re.fullmatch(r'aligned-e(8|16|24|32)-x2-o([01])-(128|512|1024|2048)-(sleep-excluded|active-window-excluded)-w([14])-(event|ordinary)(-natural16)?',name)
                 require(m is not None,'invalid context ID')
                 e,o,s,scene,w,mode,suffix=m.groups()
@@ -180,6 +217,10 @@ def verify(root, expected_source=None):
                     controls[trace_name]=gzip.decompress((source_control/'cases/word-e8-x0'/(trace_name+'.bin.gz')).read_bytes())
             for row in report['cases']:
                 r=row['result']; name=row['id']; rep=name.split('-')[0]
+                expected_rep,expected_bits,expected_extra=identity(name)
+                expected_capacity=128 if rep in ('u128','dual64') else 64+8*expected_extra
+                require((r['epoch_bits'],r['representation'],r['arm_id'])==(expected_bits,expected_rep,f'C{expected_capacity}-E{expected_bits}-{rep}'),'candidate metadata differs from registered ID')
+                require(builds[name]['observer']==1,'candidate correctness build observer mismatch')
                 require(commands['execute/'+name]['argv'][0]==commands['compile/'+name]['argv'][-1],'executed candidate differs from compiler output')
                 require(commands['execute/'+name]['argv'][1]=='--output' and Path(commands['execute/'+name]['argv'][2]).name==name,'candidate output argument mismatch')
                 require(r==load(root/'cases'/name/'result.json'),'result readback mismatch')
