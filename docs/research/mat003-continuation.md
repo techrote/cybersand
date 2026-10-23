@@ -312,3 +312,5 @@ The [state-schema proposal](mat003-state-schema-proposal.md) owns proposed logic
 The [semantics and owner-budget review](../research/mat003-semantics-budget-review.md) records the documentation-only technical disposition, default-cap memory gap and unresolved owner worksheet. It preserves the shortlist and blocks adoption or new timing pending explicit decisions.
 
 The [concrete owner offer](mat003-concrete-owner-offer.md) proposes R16-T1 semantics, a256-chunk residency envelope, memory sublimits and prospective native latency/platform gates for explicit review. Its values are Planned recommendations, not owner-approved requirements, measured compliance, production changes or new timing authority.
+
+The owner accepted numeric residency/memory and latency/platform limits in the [concrete offer](mat003-concrete-owner-offer.md) as qualification targets only. R16-T1 remains conditional. The [bounded correctness-only plan](mat003-correctness-only-plan.md) proposes152 cases per platform without implementation, execution or timing authority. Existing production and both draft PRs remain unchanged.

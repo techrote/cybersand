@@ -115,7 +115,8 @@
     "research/mat003-state-schema-proposal.md",
     "decisions/ADR-015-material-state-schema-and-carrier-gates.md",
     "research/mat003-semantics-budget-review.md",
-    "research/mat003-concrete-owner-offer.md"
+    "research/mat003-concrete-owner-offer.md",
+    "research/mat003-correctness-only-plan.md"
   ],
   "navigation": [
     "README.md",

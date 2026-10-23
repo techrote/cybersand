@@ -1,8 +1,8 @@
 ---
 title: MAT-003 concrete semantic profile and owner-budget offer
-status: Planned
+status: Approved design
 document-kind: design
-scope: Concrete R16 semantics and bounded native rollout targets offered for owner review; no implementation, solver adoption or new timing authority
+scope: Owner-accepted qualification budgets with conditional R16-T1 semantics; no implementation, solver adoption or new timing authority
 canonical-for: [mat003-concrete-owner-offer]
 last-reviewed: 2026-10-23
 related-documents: [mat003-state-schema-proposal.md, mat003-semantics-budget-review.md, mat003-continuation.md, ../decisions/ADR-015-material-state-schema-and-carrier-gates.md, ../operations/water-hybrid-pressure-extension-programme.md]
@@ -10,11 +10,15 @@ related-documents: [mat003-state-schema-proposal.md, mat003-semantics-budget-rev
 
 # MAT-003 concrete semantics and owner-budget offer
 
-## Decision offered, not approved
+## Owner disposition — 2026-10-23
 
-Recommend approving the following as a **design target for subsequent qualification**, not as implemented behavior or satisfied release limits. All new field meanings and numeric limits here are Planned recommendations. Production C64/E8, existing adapter configurations, accepted evidence and draft PR211/221 stay unchanged. No new implementation or timing campaign starts here. Source intake is `4c928b35b58f02558f4e16a7ea5d63c21437c000`.
+**Approved design, budgets only:** the owner explicitly accepted the proposed residency/memory and latency/platform budgets as qualification targets, kept R16-T1 conditional, and requested a bounded correctness-only plan with no implementation or new timing. Production C64/E8, existing defaults, accepted evidence and draft PR211/221 stay unchanged. Acceptance is not evidence that any future profile meets these targets.
 
-The offer has three parts: R16-T1 transport-state semantics; a256-chunk resident native envelope with a512MiB aggregate cellular-memory budget; and prospective latency gates on a pinned Linux/Windows reference platform. Do not infer approval from publication or from prior measured results.
+Accepted targets are the256-resident-chunk/64-active-core envelope and its stated provisioning, four configured workers, initial single simulated World,512MiB aggregate cellular memory and additive sublimits within2GiB application RSS;60native ticks/s, ordinary p95≤5ms/p99≤8ms and10ms observed-tick ceiling, using the stated finite-run interpretation; and native Linux/Windows phase1 platform scope. The reference machine is still unidentified and remains a qualification prerequisite. Other platforms and multi-World expansion remain separately gated.
+
+**Planned/conditional:** R16-T1, the compact C72/E16/R16 physical map, choice of epoch/carrier, authoritative Water domain changes, solver integration and GEN-006 implementation are not accepted by this budget approval. No implementation, test-harness construction, qualification execution or timing dispatch is authorized. The [bounded correctness plan](mat003-correctness-only-plan.md) is preparation for a future explicit implementation/qualification decision.
+
+The following numeric tables are now accepted qualification targets; their evidence and compliance limitations remain. Field and mapping sections remain proposals.
 
 ## Proposed extension MAT003-R16-T1
 
@@ -59,9 +63,9 @@ Keep compact C80 for justified additional fields and **DUAL64** as the leading l
 
 E16 is a proposed starting epoch because natural-rollover correctness exists and it substantially reduces frequency. At the proposed60 simulation ticks/s, first rollover is1092.2667s and later intervals1092.25s, versus E8's4.2667s and4.25s. This is arithmetic, not a latency guarantee or measured long-run result. No E24/E32 adoption is proposed now. Neither new C72 mapping, authoritative R16 mutations nor its E16 performance has been qualified by the completed neutral-capacity campaigns.
 
-## Proposed native operating envelope
+## Accepted native qualification envelope
 
-These are proposed profile limits, not edits to WorldConfig or a claim that arbitrary contents inside the limits meet latency targets.
+These are owner-accepted qualification profile limits, not edits to WorldConfig or a claim that arbitrary contents inside the limits meet latency targets.
 
 | Dimension | Offer for first rollout qualification |
 |---|---|
@@ -74,7 +78,7 @@ These are proposed profile limits, not edits to WorldConfig or a claim that arbi
 
 The256-chunk population is the largest measured resident anchor, not a universal qualified scene. Standalone4096-chunk defaults are outside this proposed rollout envelope and remain unchanged. A4096² stress case is also outside it.
 
-## Proposed memory envelopes
+## Accepted memory qualification envelopes
 
 Aggregate **cellular-engine owned resident/temporary host memory ≤512MiB**, including retained old/candidate and snapshot leases. Proposed sublimits are additive ceilings with headroom, not measured current allocations:
 
@@ -95,7 +99,7 @@ The aggregate allowance applies across classes and owners simultaneously. A64MiB
 
 Propose **whole native application peak RSS ≤2GiB** for this single-World MAT profile, with the512MiB engine envelope included, not added. GPU/device allocations need a separately recorded platform budget and are not hidden in the host limit. This does not retroactively replace GEN-007's separate4GiB scene qualification envelope or qualify all Godot scenes. Largest observed campaign RSS (~281.57MiB WCLEAR, ~91.73MiB C128) shows bounded apparatus feasibility, not compliance of the engine breakdown or a rendered application with these ceilings.
 
-## Proposed latency and platform targets
+## Accepted latency and platform qualification targets
 
 | Quantity | Prospective review/qualification target |
 |---|---|
@@ -105,14 +109,12 @@ Propose **whole native application peak RSS ≤2GiB** for this single-World MAT 
 | Any observed tick>10ms |Release review/failure for this proposed profile; retain the observation, investigate, and require a separately reviewed correction/disposition. No selective replacement or outlier trimming. |
 | Evidence meaning |Finite-run observed gates, never a mathematical worst-case bound or permission to hide OS stalls. Specify replicate counts/order and all gates before future execution. |
 
-These are **new suggested thresholds**, not retrospective acceptance tests on the completed campaigns. S2P's optimized/C64 active means are roughly3.2ms in its paired contrasts; C128's active maximum7.08ms and quiet maximum8.35ms motivate an8–10ms frame guard with limited margin. WCLEAR maxima and the historical1ms review trigger are separate evidence/diagnostic concepts. None proves the proposed R16/E16 profile meets these targets; the quiet C128 event alone consumes much of the proposed10ms ceiling.
+These are **owner-accepted prospective qualification thresholds**, not retrospective acceptance tests on the completed campaigns. S2P's optimized/C64 active means are roughly3.2ms in its paired contrasts; C128's active maximum7.08ms and quiet maximum8.35ms motivate an8–10ms frame guard with limited margin. WCLEAR maxima and the historical1ms review trigger are separate evidence/diagnostic concepts. None proves the proposed R16/E16 profile meets these targets; the quiet C128 event alone consumes much of the proposed10ms ceiling.
 
 Phase1 targets: native Linux x86-64 with the established GCC13.3/ld2.42 reference and Windows x86-64 with the repository-pinned native toolchain/Godot dependencies. Four configured workers; strict field/lifecycle correctness on both platforms. Linux hosted results are the existing performance reference, not Windows or target-hardware acceptance. Before any release qualification, record one owner reference machine's CPU model, physical/logical cores, RAM, OS and power policy and freeze the exact source/compiler/runtime identities. Owner machine identity is still needed; no hardware purchase or unmeasured minimum specification is implied.
 
 Web/Wasm, macOS, mobile, reduced-memory profiles and multi-World rendering remain separate rollout qualification, not removal of existing support. Do not grant them the native budget or assume unsigned128 availability. One-worker serial/phased cases remain required correctness checks; performance envelopes for them need their own profile.
 
-## What owner approval would mean
+## Remaining decision and execution boundary
 
-Owner may approve/revise separately: (A) R16-T1 proposed semantics and its deferred-air/solver boundary; (B)256-resident/64-active-core and512MiB/2GiB memory envelopes; (C) E16 starting map and60Hz/5ms-p95/8ms-p99/10ms-observed targets on the two native platforms. Reference-machine identity remains an explicit prerequisite. Budget approval does not approve source code, a Water solver, a save format, production promotion or any new timing registration. If R16-T1 is not the desired feature, retain current semantics and revise fields before choosing a carrier.
-
-After review, update the schema/ADR decision status deliberately, reconcile programme ownership, define meaningful correctness fixtures and sanitizers, and identify only the unanswered performance questions. No implementation or campaign is started by this document. PR211/221 remain draft; all accepted raw evidence and Current production are unchanged.
+Owner acceptance covers budgets as targets only. R16-T1 remains conditional; its field semantics, total-amount domain and solver/programme implications require an explicit subsequent disposition. The E16 map remains proposed, not selected. Reference-machine identity must be recorded before performance qualification. Approval grants neither measured compliance nor production adoption. Use the bounded correctness-only plan to prepare the next review; do not implement or execute it without separate authority. PR211/221 remain draft and all accepted evidence is preserved.

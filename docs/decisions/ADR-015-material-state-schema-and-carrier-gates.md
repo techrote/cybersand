@@ -1,8 +1,8 @@
 ---
 title: ADR-015 MAT-003 semantic schema and carrier adoption gates
-status: Planned
+status: Approved design
 document-kind: decision
-scope: Proposed schema-first shortlist of optimized compact and DUAL64; no production layout, epoch or solver adoption
+scope: Accepted qualification budgets and conditional schema-first compact/DUAL64 shortlist; no production layout, epoch or solver adoption
 canonical-for: [decision-mat003-schema-carrier-gates]
 last-reviewed: 2026-10-23
 related-documents: [../research/mat003-state-schema-proposal.md, ../research/mat003-continuation.md, ADR-002-double-buffered-tile-jobs.md, ../architecture/chunk-tile-and-buffer-model.md]
@@ -12,7 +12,7 @@ related-documents: [../research/mat003-state-schema-proposal.md, ../research/mat
 
 ## Status and decision boundary
 
-**Planned decision proposal.** The requested shortlist is optimized compact C72/C80 and DUAL64; this ADR proposes the criteria for choosing between them after semantic requirements are approved. It does not approve production implementation, a material-state schema, a new solver or timing execution. Production C64/E8 remains Current, ADR-002 scheduling ownership stays intact, PR211/221 stay draft. No accepted evidence or statistical definition changes.
+**Approved design for qualification budgets only; conditional schema and adoption decision.** The requested shortlist is optimized compact C72/C80 and DUAL64; this ADR proposes the criteria for choosing between them after semantic requirements are approved. It does not approve production implementation, a material-state schema, a new solver or timing execution. Production C64/E8 remains Current, ADR-002 scheduling ownership stays intact, PR211/221 stay draft. No accepted evidence or statistical definition changes.
 
 ## Evidence and why a decision is needed
 
@@ -44,12 +44,18 @@ The proposed shortlist preserves a compact route for modest state growth and a p
 
 ## Adoption, review and rollback gates
 
-Owner decisions must name required fields, maximum resident/active populations, memory/snapshot envelopes, normal tick and clear-frame budgets, tick horizon and platforms. These remain Ambiguous inputs rather than invented thresholds. The schema proposal supplies invariants and test obligations. Adoption requires an explicit approved mapping, independent correctness and applicable runtime/platform validation, source-matched provenance, and a separately authorized implementation PR ready for review under repository merge policy. Evidence acceptance is not implementation acceptance.
+Owner decisions must name required fields, maximum resident/active populations, memory/snapshot envelopes, normal tick and clear-frame budgets, tick horizon and platforms. The numeric budgets are now accepted qualification targets as recorded below; required field semantics, reference-machine identity and demonstrated compliance remain unresolved. The schema proposal supplies invariants and test obligations. Adoption requires an explicit approved mapping, independent correctness and applicable runtime/platform validation, source-matched provenance, and a separately authorized implementation PR ready for review under repository merge policy. Evidence acceptance is not implementation acceptance.
 
 Any changed packing, material semantics, high-state access, epoch width, compiler/target, workload or resident envelope triggers relevant requalification. A new timing campaign is a distinct future decision and is stopped here. Never selectively rerun/drop failures or retrofit old registrations. Preserve the recoverable prior production/runtime checkpoint; a future migration must specify semantic conversion, refusal and rollback before rollout, with no mixed-version reinterpretation or raw-byte saves. GEN-006's canonical semantic handoff remains separate and unchanged in implementation.
 
 ## Semantics and budget review disposition
 
-The [technical review](../research/mat003-semantics-budget-review.md) retains this Planned shortlist and corrects record-admission versus failed-tick semantics. Adoption remains blocked: no named extension semantics or owner memory/latency/platform envelope is approved. Standalone4096-chunk limits are not performance acceptance and imply1GiB DUAL64 arrays before other allocations. A material/World-schema discriminator must be explicit, and rollback cannot silently truncate wider records to C64. Production and timing authority remain unchanged.
+The [technical review](../research/mat003-semantics-budget-review.md) retains this Planned shortlist and corrects record-admission versus failed-tick semantics. At that technical review, adoption was blocked because neither named extension semantics nor owner budget targets had been approved. The later owner disposition below accepts budget targets only; semantic/adoption gates remain blocked. Standalone4096-chunk limits are not performance acceptance and imply1GiB DUAL64 arrays before other allocations. A material/World-schema discriminator must be explicit, and rollback cannot silently truncate wider records to C64. Production and timing authority remain unchanged.
 
 The [concrete owner offer](../research/mat003-concrete-owner-offer.md) supplies reviewable proposed semantics and numeric budgets. This ADR remains Planned until an explicit disposition; publication of suggested values does not approve a Water solver, implementation or new timing.
+
+## Owner acceptance of qualification targets — 2026-10-23
+
+The owner accepted the [concrete offer's budgets](../research/mat003-concrete-owner-offer.md) as qualification targets:256resident chunks/64active cores,512MiB aggregate cellular memory within2GiB application RSS,60Hz native simulation target, ordinary p95≤5ms/p99≤8ms and10ms observed-tick ceiling, Linux/Windows phase1 scope with reference-machine identity outstanding. The detailed sublimits, provisioning and finite-run interpretation in that document govern; this summary does not create different budgets.
+
+R16-T1 and its proposed C72/E16 mapping remain conditional. No owner approval of Water overfill, field feedback, epoch/layout adoption, GEN-006 implementation or satisfied performance limits is inferred. The [bounded correctness-only plan](../research/mat003-correctness-only-plan.md) prepares a later review, without implementation or test execution authority. No new timing is authorized. Production and both draft PR states remain unchanged.

@@ -262,3 +262,5 @@ MAT-003 field/lifecycle and logical capacity questions route to the [state-schem
 MAT-003 review disposition and outstanding owner choices: [semantics/budget review](../research/mat003-semantics-budget-review.md), including default-cap memory and record-admission versus failed-tick distinctions.
 
 Proposed concrete MAT-003 fields,256-chunk memory envelope and native latency targets: [owner offer](../research/mat003-concrete-owner-offer.md). Values await owner review and have not been qualified as a new profile.
+
+Accepted MAT-003 qualification budgets are in the [owner offer](../research/mat003-concrete-owner-offer.md); the [correctness-only plan](../research/mat003-correctness-only-plan.md) remains Planned and unexecuted. R16-T1 semantics stay conditional.

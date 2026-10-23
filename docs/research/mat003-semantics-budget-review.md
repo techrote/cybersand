@@ -72,3 +72,7 @@ For illustration only, fresh E8 clears at256 and then every255 completed ticks; 
 Current source, runtime identities and accepted raw evidence are unchanged. This review is a documentation checkpoint; the schema/ADR corrections and owner worksheet are recoverable through the existing draft PR221. It claims no new runtime validation or owner/product sign-off.
 
 The [concrete owner offer](mat003-concrete-owner-offer.md) proposes R16-T1 semantics, a256-chunk residency envelope, memory sublimits and prospective native latency/platform gates for explicit review. Its values are Planned recommendations, not owner-approved requirements, measured compliance, production changes or new timing authority.
+
+## Owner budget disposition — 2026-10-23
+
+The owner has now accepted the [concrete offer budgets](mat003-concrete-owner-offer.md) as qualification targets, superseding earlier budget-pending statements only. R16-T1 remains conditional, and carrier/epoch mapping, solver behavior, implementation and timing are not approved. The [bounded correctness-only plan](mat003-correctness-only-plan.md) is prepared for review, not execution. Reference-machine identity and proof of target compliance remain outstanding; both PRs stay draft and Current production is unchanged.
