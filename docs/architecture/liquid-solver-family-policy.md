@@ -136,9 +136,34 @@ LiquidSolverPolicy v1
   catalogue_digest             : sha256 of the material descriptor table it was validated against
   capability_matrix_digest     : sha256 of the capability-matrix sources (derivation tool output)
   assignments[material_id]     : { family_code, variant_code }   // only for liquid descriptors; others must be default
-  family_parameters[family]    : opaque versioned blob owned by that family (e.g. inertial damping); hashed
-  policy_hash                  : sha256 over canonical (version, catalogue_digest, assignments, family_parameters)
+  family_parameters[family]    : versioned typed parameter block owned by that family (e.g. inertial damping)
+  material_parameters[material]: versioned typed per-material block (e.g. W-CY Water viscosity), or absent
+  policy_hash                  : see canonical hashing below
 ```
+
+**Canonical hashing (Gate C correction, 2026-10-23).** `policy_hash` is SHA-256
+over this canonical byte form:
+
+```text
+"lcb-liquid-policy" | version
+| catalogue_digest | capability_matrix_digest
+| count | (material_id u16, family_code u8, variant_code u8) × count     // strictly ascending material_id
+| family block count | (family_code u8, block_version u16, length u32, bytes) // ascending family_code
+| material block count | (material_id u16, block_version u16, length u32, bytes)
+```
+
+- Every field is little-endian.
+- Assignments include **every liquid descriptor**, defaults included, so
+  absence never means "default".
+- Parameter blocks are typed by family/material schema, and unknown fields are
+  refused.
+
+A separate **run receipt hash** binds everything that affects execution:
+`policy_hash`, the `WaterExperimentPolicy` tuple, the transport profile hash,
+the interaction policy hash, the canonical setup hash, the normalization
+receipt hash (or none), workers/scheduler, interest/execution settings and
+source/binary/catalogue identity. A comparison is matched only when every
+receipt component except the compared family/variant is equal.
 
 - **Default.** A default-constructed policy assigns every liquid its current
   default (`freemass_v1/reference` for Water, `cellular_yield_v1/reference`
@@ -151,12 +176,79 @@ LiquidSolverPolicy v1
   family-parameter blobs as a separate packed array. This mirrors
   `water_semantics`/`TransportPolicy::unpack`. No strings, parsing or allocation
   happen in native jobs.
-- **Kernel dispatch.** Family dispatch happens where `update_cell` now switches
-  on `RuleKernel`. Material identity, `RuleKernel` chemistry, temperature,
-  lifecycle and density stay with the material. The family owns **only motion
-  and quantity transport**: gravity order, lateral transfer and the family's
-  extra state. Each kernel keeps its non-motion behaviour, for example Oil
-  burn/extinguish, under every admitted family.
+- **Kernel dispatch.** The family owns **only motion and quantity transport**.
+  Material identity, chemistry, lifecycle, temperature, density and coupling
+  stay with the material. That split is defined against the real dispatch
+  points in
+  [material hooks versus motion](#material-hooks-versus-motion-gate-c-correction-2026-10-23).
+  It is **not** a redirect of `RuleKernel::Water` into `RuleKernel::YieldingLiquid`.
+
+## Material hooks versus motion (Gate C correction, 2026-10-23)
+
+Correction requested by the [independent review](https://github.com/techrote/cybersand/pull/216).
+Source anchors are `world.cpp` at `9012425`; that file is unchanged at main
+`4caa2c3`.
+
+**Current dispatch, per cell.** The sequence is:
+
+- `World::update_cell` (L3500) skips cells under a transient body mask;
+- it calls `update_rule_kernel` (L2725 onward);
+- that computes the temporal lanes (`contact_chemistry_due`,
+  `lifecycle_due` and so on, L2753);
+- then runs **generic pair chemistry before any kernel**
+  (`has_pair_reactions` block, L2797–L2826);
+- then the `RuleKernel` switch (L2829).
+
+The Water kernel is `update_water` (L2650–L2723), which mixes material
+behaviour with FreeMass motion. A family-aware implementation splits each cell
+update into five stages:
+
+| Stage | Owner | Water content today | Under W-CY / W-PF / W-IN |
+|---|---|---|---|
+| 1. Contact chemistry | material (generic, pre-switch) | Pair rules with Water as a participant: Lava quench, Fire extinguish, Salt dissolve, Sodium react, Toxic Sludge, Molten Glass, BareIron, building materials | **Preserved unchanged.** Products take their own descriptor default state and family default state. Quantity follows the [state-transition matrix](#state-and-quantity-boundaries-gate-c-correction-2026-10-23). |
+| 2. Material pre-motion | material | Coherence countdown: `state_b` decremented each update (L2654–L2658) | **Preserved.** The family must decrement it, and must suppress *lateral* motion while it is above zero (L2687). Gravity still runs. |
+| 3. Motion and quantity | **family** | Gravity: merge into Water or move/swap (L2663–L2682). Then the adhesion film stop (≤`film()` on a non-Water/non-Empty support, L2691–L2695), `lateral_due` cadence, and the ¾-difference same-row relaxation with `tolerance()` (L2698–L2720). | **Replaced** by the family law. Adhesion is defined on fractional mass, so it is **not applicable** to whole-cell W-CY or whole-cell W-IN v1, where cells are always full. That is declared, not hidden. W-PF must state whether it keeps the film rule. |
+| 4. Post-motion coupling | material + World | `mix_after_motion` with the *actually moved* quantity (transport carrying/erosion, L2564 / L2568); body-mask contact via `transient_obstacle_at` (`record_transient_contact` in `transfer_water`/`try_move`); density exchange through `try_move` → `can_density_exchange` | **Preserved.** Moved quantity is `maximum()` for a whole-cell move. A family must call the same hooks with its real moved quantity. |
+| 5. Neighbour-observed identity | other kernels | Other kernels test for `Water` neighbours: Steam→Water product (L2849), Coal/Combustible extinguish (L2984), Cement cure (L3048), Ice/melt (L3026/L3142), Oil extinguish (L3205), Cloner (L3264), player payload (L3405) | **Preserved.** Identity stays `Material::Water` under every family. A product Water cell starts at `maximum()` and at that family's default state. |
+
+**Deliberately different under the experimental Water families.** These are
+declared in the run receipt:
+
+- partial fills and fractional transfer (W-CY and whole-cell W-IN v1 hold
+  exactly `maximum()` per cell);
+- the ¾ relaxation and `tolerance()`;
+- the adhesion film threshold (not applicable to whole cells);
+- FreeMass merge-on-fall.
+
+**Never different:**
+- Water's material ID, density 1000, `DensityMotion::Down`,
+  `accepts_density_exchange`, and the pair rules and their products;
+- temperature, which moves with whole-cell moves;
+- body-mask ownership, transport hooks, and render coverage derived from
+  `state_a` (full for whole cells);
+- the other kernels' Water tests.
+
+**Specialized liquids.** Oil, Lava, Acid, Cement and Molten Glass keep their
+source-matched kernels (stages 1–5 unchanged) under their default
+`cellular_yield_v1`. The matrix rejects every other family for them in v1.
+
+**Required tests** (owned by #200 for W-CY/W-PF, #212 for W-IN): a
+material×family hook matrix. Each case runs the same fixture under the
+default and the experimental family and asserts the stage 1/2/4/5 outcomes
+are identical, apart from the declared stage-3 differences. Cases:
+
+- Water+Salt products;
+- Lava quench;
+- Fire extinguish;
+- Oil extinguish;
+- Cement cure;
+- Steam condensation product family;
+- coherence lateral suppression;
+- body-mask contact with no motion under the mask;
+- transport carrying with whole-cell moved mass.
+
+Each case also needs a negative control showing that a Water cell under W-CY
+never runs `flow_as_yielding_liquid` with Paste/Slush viscosity.
 
 ### Validation and refusal (Proposed)
 
@@ -175,7 +267,14 @@ a typed refusal and leaves the live session untouched, as
 | `water_semantics_incompatible` | family cannot honour the requested Water mass bits/coherence |
 | `platform_unsupported` | family/variant not qualified on this platform (Web profile, GDScript fallback) |
 | `capacity_refused` | family scratch/state budget cannot be prepared for this World size |
-| `stale_capability_matrix` | `catalogue_digest` differs from the running catalogue |
+| `stale_capability_matrix` | `catalogue_digest` or `capability_matrix_digest` differs from the running build |
+| `malformed_policy` | duplicate, missing, unsorted or out-of-range material IDs; count above the catalogue; signed/overflowing integers; a non-liquid or reserved ID present |
+| `unknown_parameter` | unknown block version, field or length; a missing mandatory parameter |
+| `not_selectable` | the matrix lists the cell as `proposed_alternate` (e.g. Toxic Sludge inertial M1-alt), or the variant list is empty |
+| `normalization_required` | the setup holds fractional Water and the selected Water family is whole-cell, with no explicit normalization opt-in |
+
+All codes are evaluated before any World allocation and before the previous
+session is released.
 
 There is **no hidden fallback**. A refused or unavailable family is never
 replaced by Current, another family or the GDScript fallback. The GDScript
@@ -188,8 +287,15 @@ fallback reports every non-default assignment as `platform_unsupported`.
 - C API: `cybersand_world_liquid_policy_v1(world, out_packed, capacity)` plus
   `policy_hash`;
 - GDExtension: `CyberNativeCellWorld.get_liquid_solver_policy()` →
-  `{version, policy_hash, catalogue_digest, assignments:[{material, family, variant}], refusals:[]}`;
-- desktop worker and Web bridge.
+  `{version, policy_hash, catalogue_digest, capability_matrix_digest, source_revision, native_binary_sha256, platform, assignments:[{material, requested_family, applied_family, applied_variant}], normalization:{rule, receipt_hash, signed_delta}|null, refusal:null|{code, material, detail}}`;
+- desktop worker and Web bridge, which forward the native dictionary
+  unchanged.
+
+The readback reports the **applied** family/variant and any setup
+normalization, not merely the request. A host that cannot obtain this
+handshake from native (for example the GDScript fallback) reports
+`platform_unsupported` for every non-default assignment. It never silently
+switches to GDScript.
 
 Every World constructor named in #202 reports the same receipt: desktop async
 worker, Web bridge, MicroScenario replacement, player material modes, physical
@@ -208,8 +314,17 @@ never the source of truth; the receipt is.
    MicroScenario `install`. Only then is the old World released.
 
 Refusal or cancellation at any step keeps the old session and returns the
-refusal code. **No mid-flow hot switching:** converting live cells between
-families is not supported. A later *qualified* converter would need its own
+refusal code.
+
+**Reconstruction rules:**
+- When the caller holds only a setup, reconstruction rebuilds a **tick-zero
+  scenario** from that retained setup. It is not a resume of the live state.
+- A CYSD1 level import is a finite-level reconstruction (all liquids on
+  default families). It is never labelled exact continuation.
+- A failed or unsupported import keeps the live session.
+
+**No mid-flow hot switching:** converting live cells between families is not
+supported. A later *qualified* converter would need its own
 registration and lossless proof. #200 freezes the receipt fields: requested
 policy, applied policy and hash, setup hash, refusal (if any) and tick 0.
 
@@ -266,13 +381,72 @@ or Solid by default. Family-specific rules:
   non-pressure motion, chemistry or lifecycle work (#201). Cross-family contact
   wakes both sides.
 
+## State and quantity boundaries (Gate C correction, 2026-10-23)
+
+Normative summary. The operation-by-operation
+[state-transition matrix](https://github.com/techrote/cybersand/pull/217) for
+#200/#212 refines it in the LCB physics prepass and does not override it.
+
+1. **Current transfer laws (source).**
+   - FreeMass Water moves quantity only by `transfer_water` (L2481) into
+     Empty/Water with capacity, or as a whole tuple by `try_move`/`move_cell`
+     (L2446/L2323).
+   - Every other liquid moves whole cells only.
+   - Density exchange needs a nonzero vertical delta (`can_density_exchange`),
+     so unlike liquids never swap sideways.
+   - A swap carries material, `state_a`, `state_b` and temperature as one tuple.
+2. **Experimental quantity laws.** Each family defines, before implementation,
+   its transfer into Empty, its same-material merge, its displacement of a
+   foreign liquid, and the quantity, velocity and remainder split.
+   - Optional state (overfill, velocity, accumulators) moves with its owning
+     cell and is retired, never left as a ghost, when the cell becomes Empty
+     or another material.
+   - Unit, range and rounding are frozen per Gate B before code.
+3. **Foreign neighbours.** A different family's liquid is neither Empty nor
+   Solid.
+   - Current density exchange decides who moves.
+   - Pressure treats it as a density-bearing boundary and does not propagate
+     head through it.
+   - Inertial momentum stops at it, and the lost impulse is booked as
+     dissipation.
+4. **Reactions and conversions carry signed ledgers.** The current
+   Water+Salt→Brine+Brine rule consumes one Water cell **whatever its mass** and
+   creates two whole Brine cells. Steam expiry writes Water at `maximum()`
+   (L2849).
+   - Both are explicit **source/sink** events, not conserved transfers. LCB
+     ledgers book the signed Water delta per reaction.
+   - #160 owns the quantity rule change (PR #162 is unmerged and covers
+     Steam/Ice/quench, not Salt).
+   - No document may assert whole-cell mass conservation from a partial-Water
+     source.
+5. **Specialized liquids stay on their defaults.** Oil, Lava, Acid, Cement and
+   Molten Glass keep their source-matched kernels under `cellular_yield_v1`.
+6. **Not selectable.** `proposed_alternate` rows (Toxic Sludge inertial,
+   M1-alt) have an empty variant list and are refused with `not_selectable`
+   until #212 qualifies them and registers a new fixture version.
+7. **Reset and wake.** A rebuilt World starts with all optional state at family
+   defaults and all blocks active. Any cross-family write wakes both endpoint
+   blocks, as `move_cell` does today.
+
 ## Capability matrix
 
-The matrix is **source-derived**:
+**Provenance (corrected 2026-10-23).**
 [`tools/lcb/derive_capability_matrix.py`](../../tools/lcb/derive_capability_matrix.py)
-reads `material.hpp` and `interaction_rules.hpp` and writes
-[liquid-solver-capability-matrix.json](../reference/liquid-solver-capability-matrix.json).
-`--check` fails when the JSON is stale, and documentation CI runs it.
+writes [liquid-solver-capability-matrix.json](../reference/liquid-solver-capability-matrix.json),
+and `--check` (run in documentation CI) fails when that JSON is stale. The
+JSON has two kinds of content:
+
+- **Source facts:** parsed from `material.hpp` and `interaction_rules.hpp`.
+  These are material IDs, densities, kernels, lateral-flow modes, viscosity,
+  density motion and pair-rule participation.
+- **Reviewed design classifications:** hand-authored in the tool (`PROPOSED`,
+  `VARIANTS`, `KERNEL_SPECIALIZATION`). These are the proposed, alternate and
+  rejected statuses and the variant lists.
+
+Each row records which fields are which. **The matrix is not mechanically
+derived executable solver coverage.** Only `current_default` cells execute.
+Unusual chemistry, temperature and viscosity cases are validated by #200/#212
+implementation tests, not by this table.
 
 | Material (ID) | freemass_v1 | cellular_yield_v1 | pressure_flow_v1 | inertial_cellular_v1 |
 |---|---|---|---|---|

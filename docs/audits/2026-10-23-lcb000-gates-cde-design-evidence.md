@@ -128,3 +128,40 @@ non-liquid descriptors refused.
 accepted evidence, and C–E are submissions awaiting review. LCB-001 pressure
 porting and state/schema freeze remain blocked. Under #213, isolated read-only
 preparation, policy/API and UI design may continue.
+
+## Addendum — corrections after independent review (2026-10-23)
+
+The [independent admission review (PR #216)](https://github.com/techrote/cybersand/pull/216)
+reviewed head `6fc0e25` and returned Gates C, D and E as **BLOCKED** for
+focused corrections. The record above is unchanged. These corrections were
+added afterwards:
+
+- **Gate C:**
+  - Material hooks are separated from motion at the real dispatch points.
+  - Canonical policy hashing now includes `capability_matrix_digest`,
+    complete sorted assignments and typed parameter blocks, plus a separate run
+    receipt hash.
+  - New refusal codes: `malformed_policy`, `unknown_parameter`,
+    `not_selectable`, `normalization_required`.
+  - Readback now reports the applied family and normalization, with
+    source/binary/catalogue identity.
+  - Tick-zero reconstruction wording added; CYSD1 imports are not
+    continuation.
+  - State/quantity boundary rules added.
+  - Matrix provenance split into source facts versus reviewed design. Toxic
+    Sludge M1-alt is not selectable.
+- **Gate D:**
+  - `water-normalize-v1` now rounds up when `2·m ≥ maximum()`, so 128/255 goes
+    up and 127/255 goes down.
+  - Each conversion records per-cell signed deltas, deterministic ordering and
+    a receipt hash, and is booked as a setup-only source/sink.
+  - Coherence is honoured by every arm (or refused); adhesion is declared not
+    applicable to whole-cell arms.
+- **Gate E:**
+  - The protected definitions and hashes are unchanged.
+  - Stronger signed reaction-ledger checks are applied outside the definition.
+  - Dam Break `complete` is labelled an accounting criterion only.
+  - The surge, gas and physics acceptance extensions are delivered in the
+    stacked LCB physics prepass.
+
+Gates C, D and E remain **submitted for review**, and LCB-000 is not PASS.
