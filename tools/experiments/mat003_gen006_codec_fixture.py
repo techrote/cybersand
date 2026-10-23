@@ -88,6 +88,11 @@ def _cell(cell: object, side: int) -> int:
             refuse("INVALID_WATER_STATE")
     elif a > 255:
         refuse("INVALID_STATE")
+    # Cloner (5) and Rocket (17) encode material references in state_b.
+    # Zero is a legitimate uncaptured/unconfigured sentinel. A reserved or
+    # unknown nonzero reference is incompatible rather than silently remapped.
+    if material in (5, 17) and b != 0 and b not in VALID_MATERIALS:
+        refuse("UNKNOWN_MATERIAL")
     return idx
 
 
@@ -229,6 +234,8 @@ def decode(blob: bytes) -> dict:
         refuse("CHECKSUM_FAILURE")
     try:
         obj = json.loads(payload, object_pairs_hook=unique_pairs)
+    except Refusal:
+        raise  # Preserve an explicit duplicate-key refusal from the parser.
     except (ValueError, UnicodeDecodeError):
         refuse("MALFORMED_PAYLOAD")
     validate(obj)
@@ -344,6 +351,22 @@ class ExperimentalCodecTests(unittest.TestCase):
             fixture = sample()
             fixture["cells"][0]["material_id"] = value
             self.refusal(fixture, "UNKNOWN_MATERIAL")
+
+    def test_state_carried_material_reference_refuses_unknown(self) -> None:
+        for material in (5, 17):
+            fixture = sample()
+            fixture["cells"][0].update(material_id=material, state_a=0, state_b=10)
+            self.refusal(fixture, "UNKNOWN_MATERIAL")
+
+    def test_duplicate_json_key_with_valid_hash(self) -> None:
+        payload = encode(sample())[HEADER.size:]
+        self.assertIn(b'\x22world_id\x22:\x22fixture-world\x22', payload)
+        payload = payload.replace(b'\x22world_id\x22:\x22fixture-world\x22',
+                                  b'\x22world_id\x22:\x22fixture-world\x22,\x22world_id\x22:\x22other\x22', 1)
+        raw = HEADER.pack(MAGIC, WIRE_VERSION, len(payload),
+                          hashlib.sha256(payload).digest()) + payload
+        with self.assertRaisesRegex(Refusal, "DUPLICATE_JSON_KEY"):
+            decode(raw)
 
     def test_truncated_state(self) -> None:
         fixture = sample()
