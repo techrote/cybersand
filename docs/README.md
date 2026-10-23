@@ -12,13 +12,13 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
-Latest MAT-003 source status: [resident reentry/scratch repair and independent source review](audits/2026-10-23-mat003-resident-reentry-repair.md). Fresh build/binary/registration gates remain held; no repair execution or timing. Earlier checkpoints below are historical stages.
+Latest MAT-003 **Windows containment correctness** status: [re-entry/scratch repair and independent source review](audits/2026-10-23-mat003-resident-reentry-repair.md) has advanced to [32 clean replacement builds and a new independently admitted 152-case registration](audits/2026-10-23-mat003-reentry-build-admission.md). The replacement has **not** executed correctness cases: exact owner authority is held, and the prior failed attempts are preserved. The build/source reviews do not close the full Windows correctness gate.
 
 The latest [containment replacement runtime attempt](audits/2026-10-23-mat003-containment-correctness-attempt.md) stopped at resident reentry after clear256, with15 exit0 processes and136 unattempted cases. Full correctness remains refused; prior evidence is retained.
 
 The [isolated containment repair and blocked replacement](audits/2026-10-23-mat003-containment-replacement.md) follow the retained Windows failure. Source review is complete; new builds/binary admission and execution authority are still required. That source-only stage preceded the retained replacement failure.
 
-For the **2026-10-23 MAT-003 continuation**, use the [decision report](research/mat003-continuation.md) and [dated evidence](audits/2026-10-23-mat003-continuation.md): accepted S2A remains unchanged; S2P #218, WCLEAR-001 #219 and C128-001 #220 have separate qualification/admission boundaries. No new formal timing or production carrier is admitted.
+For **MAT-003PREPASS C carrier architecture synthesis**, use the [independent original-archive audit](audits/2026-10-23-mat003-independent-carrier-audit.md), [unified matrix / conditional ADR-016](decisions/ADR-016-mat003-carrier-evidence-synthesis.md) and [source/assembly continuation report](research/mat003-continuation.md). S2A, S2P #218, WCLEAR-001 #219 and C128-001 #220 have each completed independently accepted, **non-interchangeable** timing campaigns; original archives and reducers are preserved. Optimized compact safe-memcpy and DUAL64 remain **experimental candidates**, production C64-E8 is unchanged, and no production migration is admitted.
 
 The [eight-map source review](audits/2026-10-23-mat003-apparatus-source-closure.md) and [failed5380c76 build](audits/2026-10-23-mat003-build-only-admission.md) remain retained. The [independently reviewed isolated correction/replacement build](audits/2026-10-23-mat003-warning-fix-build.md) records all32 Windows compilations at6e85fe6 and separate binary admission. No candidate cases or timing ran at that build-only stage; R16-T1 remains conditional, both PRs draft and production unchanged.
 
