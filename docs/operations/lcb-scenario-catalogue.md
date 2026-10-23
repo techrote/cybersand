@@ -17,9 +17,10 @@ regressions on this page exist in source and run against the unchanged native
 World. Every *executed* result is a **Current-defaults** control: Water
 `freemass_v1`, other liquids `cellular_yield_v1`.
 
-**Campaign accounting** uses the signed rule `lcb-signed-ledger-v6`. It
-superseded v2 (re-review N3/N4), v3 (re-review R1–R4), v4 (re-review F1/F2)
-and v5 (re-review F3/F4, G1/G2).
+**Campaign accounting** uses the signed rule `lcb-signed-ledger-v7`. It
+superseded v2 (re-review N3/N4), v3 (re-review R1–R4), v4 (re-review F1/F2),
+v5 (re-review F3/F4, G1/G2) and v6 (re-review I1: campaign report-shape
+validation; the accounting body is unchanged).
 - Every root, item and key is type-checked before use. A malformed container
   is `MALFORMED_EVIDENCE` and never raises. A present `events` value must be a
   list, and an explicit `null` is malformed. Omitting `events` means
@@ -39,8 +40,12 @@ and v5 (re-review F3/F4, G1/G2).
 - Campaign reduction binds each 1/4-worker report pair to its scenario id,
   worker count, pinned definition hash, horizon, source revision and shared
   runtime identity. A mismatch is never "identical" or measured. Duplicate JSON
-  names make a report malformed.
-- Superseded records (v2–v5) are verified by replaying each record's own
+  names, or any malformed field the reducer reads, make a report a
+  `malformed_report` problem case. Malformed fields include observation entries
+  (string id, an integer or object value, unique ids), the timing object, the
+  runtime identity and the checkpoints list. The rest of the campaign is still
+  reduced.
+- Superseded records (v2–v6) are verified by replaying each record's own
   producer at its recorded revision. The record must also be byte-identical
   there. Current catalogue, loader or manifest changes cannot alter or break
   that check.
@@ -49,7 +54,7 @@ Gains, out-of-bound losses, impossible directions, exceeded budgets and
 negative event balances fail. Where the retained data cannot establish the
 reaction amount, the source/sink timing or the event horizon, the case is
 `UNVERIFIED_*` and ineligible for acceptance. See the
-[ledger correction](../audits/2026-10-23-lcb003-scenario-qualification.md#addendum--signed-campaign-ledger-v6-and-registry-corrections-2026-10-23).
+[ledger correction](../audits/2026-10-23-lcb003-scenario-qualification.md#addendum--campaign-report-validation-v7-2026-10-23).
 
 **Accepted evidence** is the CI-re-executed prefix: canonical hash, initial
 inventory, tick-30 hashes and 1/4-worker parity for all 27 scenarios. The
