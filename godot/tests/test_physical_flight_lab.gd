@@ -166,6 +166,15 @@ func _run() -> void:
 		stored.store_string(JSON.stringify(Arena.json_value({"source":"4ly-003-development-not-final",
 			"registration": registration, "results": results}), "\t"))
 		stored.close()
+	var retained_dir: String = OS.get_environment("CYBERSAND_PRESENTATION_EVIDENCE")
+	if not retained_dir.is_empty():
+		DirAccess.make_dir_recursive_absolute(retained_dir)
+		var archive: FileAccess = FileAccess.open(retained_dir.path_join("4ly003_development_evidence.json"), FileAccess.WRITE)
+		if archive != null:
+			archive.store_string(JSON.stringify(Arena.json_value({
+				"source": "development_not_sealed_final", "registration": registration,
+				"results": results})))
+			archive.close()
 	episode.close()
 	owner.free()
 	await process_frame
