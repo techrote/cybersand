@@ -12,6 +12,8 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
+The latest [containment replacement runtime attempt](audits/2026-10-23-mat003-containment-correctness-attempt.md) stopped at resident reentry after clear256, with15 exit0 processes and136 unattempted cases. Full correctness remains refused; prior evidence is retained.
+
 The [isolated containment repair and blocked replacement](audits/2026-10-23-mat003-containment-replacement.md) follow the retained Windows failure. Source review is complete; new builds/binary admission and execution authority are still required. No replacement was executed.
 
 For the **2026-10-23 MAT-003 continuation**, use the [decision report](research/mat003-continuation.md) and [dated evidence](audits/2026-10-23-mat003-continuation.md): accepted S2A remains unchanged; S2P #218, WCLEAR-001 #219 and C128-001 #220 have separate qualification/admission boundaries. No new formal timing or production carrier is admitted.

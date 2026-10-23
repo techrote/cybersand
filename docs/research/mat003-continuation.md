@@ -346,3 +346,7 @@ The [containment repair review](../audits/2026-10-23-mat003-containment-replacem
 ## Containment replacement build and new execution gate
 
 The [a3f4e37 build/admission checkpoint](../audits/2026-10-23-mat003-containment-build-admission.md) records all32 clean Windows compilations and new independent binary admission. The earlier blocked preparatory registration is historical; a new complete execution registration now binds these exact new binaries, source,152-case matrix and budgets. Owner authorization of its final independently admitted hash is still required. No replacement case, negative fixture, probe or timing ran; the prior293-tick failure remains retained and runtime containment remains unproved. R16-T1 conditional, PRs draft and production unchanged.
+
+## Authorized containment replacement stopped at resident reentry
+
+The [exact86345703 Windows correctness attempt](../audits/2026-10-23-mat003-containment-correctness-attempt.md) ran15 processes to exit0, then stopped on resident-015 active scheduling-core capacity exhausted. The failed event role completed setup and clear tick256; the152-case matrix is incomplete and remaining136 cases were not launched or retried. Exit0 prefix processes are not full semantic acceptance. All raw evidence/failures are retained for independent verification; no timing or production change. R16-T1 remains conditional and both PRs draft.

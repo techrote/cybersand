@@ -1,0 +1,227 @@
+{
+  "registration_sha256": "863457032bb1b5fb1bafd268c3f7fd15899d7ce8cfc55d3fccfeca8d603f1884",
+  "authority_sha256": "624d708f9861ff96e86f786895c05abaa4e0ca5713a59e4ade595be5bc76f21a",
+  "independent_review": {
+    "disposition": "REFUSE full correctness qualification: retained incomplete registered campaign",
+    "source_commit": "a3f4e371d8c01bd97c5f44c598036b1a083676f6",
+    "source_tree": "9d2496126f6306e90b7634684e62fbf6389b3bea",
+    "inventory_entries": 4203,
+    "total_files": 4204,
+    "inventory_sha256": "6f339dd7ce4325f3cfe5adfed8ee1b1cd49f718fc51ffce26e14e7b4cf1b97c6",
+    "result_sha256": "dd8a7ab621a44f0c01453cdb4ff2efa987c6e0238da87d80e01e3ab7020d35fa",
+    "built_sha256": "b3198fd3bfb0b3acffe136c0ec9fbd8f402ddf004e1841fe9eb0bac1f98121c7",
+    "build_inventory_sha256": "672ed554378a47b0727a21229474abb3f145ff8451deb51c10101b603a02e97d",
+    "authority_sha256": "624d708f9861ff96e86f786895c05abaa4e0ca5713a59e4ade595be5bc76f21a",
+    "authority_derivation_changed_fields": [
+      "owner_authority_reference",
+      "owner_execution_authorized"
+    ],
+    "registered_cases": 152,
+    "attempted_cases": 16,
+    "successful_exit_cases": 15,
+    "unattempted_cases": 136,
+    "ordered_case_receipts": [
+      {
+        "case": "storage-000",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt_sha256": "aceab39155fe438924313de03e4dfa4fc242d4b74bdf3c8bb616de096f820841"
+      },
+      {
+        "case": "small-001",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt_sha256": "55a8652b2e6b91eab909f02a9111601fabd2bf6dad3f1272e2834003c0d559f5"
+      },
+      {
+        "case": "small-002",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt_sha256": "454629db374152184383efcfef2e4748f029faba09f2b01180d6b40849bddd1d"
+      },
+      {
+        "case": "small-003",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt_sha256": "fbeff6a9ed92ca5786a7eb6fd9a4841cc547ad02dae63e76fcc3bd6f91130995"
+      },
+      {
+        "case": "refusal-004",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt_sha256": "fc53b57a5f2f04a0b89d3023733ec06b45aadc2649b6f2b9ceffef29915d1d13"
+      },
+      {
+        "case": "storage-005",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt_sha256": "5ad9e7c62943b3b9248a881dba5841fc4ccea47bc9fbe309c6c7663dc93df6b7"
+      },
+      {
+        "case": "small-006",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt_sha256": "7b11bd8289e8a41ff93cf4983d293744e475afdd4fc90244884a0b8155d3dda5"
+      },
+      {
+        "case": "small-007",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt_sha256": "2af1d68baf63628fe7cc653b0d31060658f80749404dfcce4a081892b9945295"
+      },
+      {
+        "case": "small-008",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt_sha256": "d1182efb2e2af1f8f4cdf5c5965f193628c78e292a061bf94e9a4b384fab6623"
+      },
+      {
+        "case": "refusal-009",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt_sha256": "0cdd2ece1cc24dc3634b69709cf87f2afabe028f64b038688c085c28ea88192e"
+      },
+      {
+        "case": "storage-010",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt_sha256": "7c1600f2d22363ce4cf5f7343fb9f10eb99cc5f37d4707e6374c819d5746ca37"
+      },
+      {
+        "case": "small-011",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt_sha256": "e1e3a0db07451fee8a8f0c0efa0871af719ea285ccd6f8c59338c58ea2472aa8"
+      },
+      {
+        "case": "small-012",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt_sha256": "461895dbd8b1da932f7506ef2a1711f7b2f40f3b14632c0d45fb9451d065002a"
+      },
+      {
+        "case": "small-013",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt_sha256": "2b472ec75875839b363611ca127cee28494b441d0e3c7010c537da939034c417"
+      },
+      {
+        "case": "natural-014",
+        "exit_code": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt_sha256": "2c6f9d8a7bf534246f611e0f95df842da39d00cd99d3defdf280b4cb66e6f3ca"
+      },
+      {
+        "case": "resident-015",
+        "exit_code": 1,
+        "stderr_sha256": "21bd092231963a3f1a9a26ec41f9e125f647152b430ccbdb5d8a8cab4c67bf5c",
+        "receipt_sha256": "37330deec38b0fbbd26e70708fc245bb048cc0f742aa7df1440fe939d1cbd851"
+      }
+    ],
+    "small_fixture_partial_findings": [
+      {
+        "case": "small-001",
+        "completed_ticks": 2048,
+        "endpoints_checked": 6,
+        "border_cells_checked": 12192
+      },
+      {
+        "case": "small-002",
+        "completed_ticks": 2048,
+        "endpoints_checked": 6,
+        "border_cells_checked": 12192
+      },
+      {
+        "case": "small-003",
+        "completed_ticks": 2048,
+        "endpoints_checked": 6,
+        "border_cells_checked": 12192
+      },
+      {
+        "case": "small-006",
+        "completed_ticks": 2048,
+        "endpoints_checked": 6,
+        "border_cells_checked": 12192
+      },
+      {
+        "case": "small-007",
+        "completed_ticks": 2048,
+        "endpoints_checked": 6,
+        "border_cells_checked": 12192
+      },
+      {
+        "case": "small-008",
+        "completed_ticks": 2048,
+        "endpoints_checked": 6,
+        "border_cells_checked": 12192
+      },
+      {
+        "case": "small-011",
+        "completed_ticks": 2048,
+        "endpoints_checked": 6,
+        "border_cells_checked": 12192
+      },
+      {
+        "case": "small-012",
+        "completed_ticks": 2048,
+        "endpoints_checked": 6,
+        "border_cells_checked": 12192
+      },
+      {
+        "case": "small-013",
+        "completed_ticks": 2048,
+        "endpoints_checked": 6,
+        "border_cells_checked": 12192
+      }
+    ],
+    "natural_partial_findings": "K64-E16 normal roles each retain65540tick rows; all3registered ordinary/preparedjoin cells.bin files byteidentical. This is partial raw consistency, not full semantic qualification.",
+    "failure": {
+      "case": "resident-015",
+      "arm": "K64-E16",
+      "sanitized": false,
+      "backend": "phased",
+      "workers": 1,
+      "side": 512,
+      "scene": "sleeping-excluded",
+      "completed_ticks": 256,
+      "attempted_failure_tick": 257,
+      "endpoints": [
+        "B",
+        "P",
+        "Q"
+      ],
+      "prepared_clear_completed_tick": 256,
+      "clear_count": 1,
+      "clear_cells": 262144,
+      "error": "active scheduling-core capacity exhausted",
+      "guard": "World::gather_active_cores checks active_core_scratch_.size() >= config_.active_core_capacity (128) before each push, before sort/unique; this limit counts pre-deduplication entries rather than necessarily distinct cores.",
+      "context": "Failure after Q and full simulation-interest restoration, during first of four recovery ticks; reference role was not reached.",
+      "limits": "No failed-tick state or exact overflowing core is retained; no physics cause or complete post-clear recovery claim."
+    },
+    "readback": {
+      "invocations": 1,
+      "exit_code": 1,
+      "negative_checks_passed": 19,
+      "error": "incomplete/changed campaign",
+      "report_sha256": "86b3ba33f58b9e7e5736c00293b24538afd18a00c2cb60b3ce7b5c3e54c152c4"
+    },
+    "evidence_unchanged": true,
+    "qualification_accepted": false,
+    "performance_accepted": false,
+    "timing_authorized": false,
+    "limitations": [
+      "Successful process exit is not independent full semantic qualification. Frozen reader refuses matrix before individual-case readback.",
+      "Independent partial checks here cover exact receipts, retained small horizons/borders and natural raw endpoint joins; all maps, traces, lifecycle semantics and cross-arm equivalence have not been admitted.",
+      "Prior failed attempt remains separate retained evidence; no rerun, remaining case, source change or probe was executed by this review."
+    ]
+  },
+  "review_sha256": "8c268b4bbdfeef20959e66d98e8e885cc30c6d0cfd86f70b539eee8c57fd737a",
+  "archive": {
+    "path": "C:\\Users\\_\\mat003-evidence-20261023\\containment-correctness-attempt-evidence.zip",
+    "bytes": 31807781,
+    "sha256": "842d9444c8c376060014e5a5b7b739b2ed89e96165459f551defbff8b27aada4",
+    "entries": 4256,
+    "inventory_sha256": "11dda2404af828a144518ab18214fb30ab95f6d4ee0be0b1837d56ab81abe321"
+  },
+  "timing_executed": false
+}

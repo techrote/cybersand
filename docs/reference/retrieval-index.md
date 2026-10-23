@@ -276,3 +276,5 @@ The later [reviewed replacement at6e85fe6](../audits/2026-10-23-mat003-warning-f
 Latest isolated fixture residency/boundary repair: [containment audit and blocked replacement](../audits/2026-10-23-mat003-containment-replacement.md). Two-cell inactive border covers serial writes and phased halo preparation within unchanged resident geometry; source review is not runtime success, and new builds/certificates/execution authority remain required.
 
 Containment source a3f4e37 now has [32 independently admitted Windows build artifacts and a new execution registration](../audits/2026-10-23-mat003-containment-build-admission.md); case execution remains held for exact owner hash authorization.
+
+Latest authorized containment correctness disposition: [resident-015 reentry/scratch failure and independent refusal](../audits/2026-10-23-mat003-containment-correctness-attempt.md). Fifteen exit0 observations precede failure on attempted257 after clear256; the pre-dedup scratch bound does not prove128 distinct cores. No full correctness or timing acceptance.

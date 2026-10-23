@@ -12,6 +12,8 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## MAT-003 continuation — 2026-10-23
 
+**Current replacement runtime qualification incomplete:** [authorized86345703 run](../audits/2026-10-23-mat003-containment-correctness-attempt.md) stopped on its16th process with active scheduling-core capacity exhausted after clear256;15 exit0 observations retained,136 cases unattempted. No full correctness or timing acceptance.
+
 **Current containment replacement built/admitted; cases held:** all32 Windows builds at a3f4e37 passed new independent binary admission. The [exact new execution gate](../audits/2026-10-23-mat003-containment-build-admission.md) requires owner hash authorization; no containment case or timing has run.
 
 **Current repair prepared, execution held:** the [isolated two-cell containment repair](../audits/2026-10-23-mat003-containment-replacement.md) is independently source-reviewed at a3f4e37. Its replacement registration stays blocked pending new build/binary qualification; prior failures and all source/runtime limits remain explicit. No replacement builds or cases ran; production unchanged.
