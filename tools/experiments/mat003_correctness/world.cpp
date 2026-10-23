@@ -12,7 +12,7 @@ int main(int argc,char** argv) {
         fixture::require(suite=="small"||suite=="natural"||suite=="resident"||suite=="refusal","unknown suite");
         fixture::require((suite!="natural"&&suite!="resident")||MAT003_EPOCH_BITS==16,"wide suite requires E16");
         const std::filesystem::path output=argv[6];fixture::require(!std::filesystem::exists(output),"output exists");
-        for(const std::string role: suite=="resident"?std::vector<std::string>{"event","reference"}:suite=="natural"?std::vector<std::string>{"ordinary","prepared"}:std::vector<std::string>{"ordinary"}) {
+        for(const std::string& role: suite=="resident"?std::vector<std::string>{"event","reference"}:suite=="natural"?std::vector<std::string>{"ordinary","prepared"}:std::vector<std::string>{"ordinary"}) {
             mat003_world::reset_dispatch_observations();mat003_correctness::trace_size=0;mat003_correctness::trace_overflow=false;
             mat003_correctness::trace_enabled=false;
             WorldConfig config;config.worker_threads=workers;config.parallel_job_threshold=1;

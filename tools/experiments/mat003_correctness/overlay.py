@@ -29,6 +29,7 @@ def prepare(source, output, arm_id):
     receipt['compile_definitions'] += [f'-DMAT003_CAPACITY={capacity}']
     world=output/'native/src/world.cpp'
     text=world.read_text(encoding='utf-8')
+    text=module._replace(text,'const auto neighbour = [this, x, y](std::size_t index) {','const auto neighbour = [x, y](std::size_t index) {','remove unused neighbour capture in generated copy only',receipt['patches'],'native/src/world.cpp')
     old='    if (update_epoch_ == 0) {'
     text=module._replace(text,old,old+'\n        ++mat003_world::clear_count;\n        for (const auto& [key, owner] : chunks_) { (void)key; mat003_world::clear_cells += owner->cells.size(); }','clear traversal observer',receipt['patches'],'native/src/world.cpp')
     world.write_text(text,encoding='utf-8')
