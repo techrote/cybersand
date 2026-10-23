@@ -87,6 +87,11 @@ static func scenario(id: String, seed: int = 0, split: String = "development") -
 			family = "obstacles"
 			deadline = 2400
 		"wall_recovery":
+			# Start close to, but clear of, the wall. The bounded host disturbance
+			# below then creates a real contact opportunity before the teacher can
+			# simply route around the obstacle. Qualification still requires the
+			# actor to recover and complete low-speed arrival afterwards.
+			start = Vector2(281.0, 241.0)
 			goals = [Vector2(440.0, 241.0)]
 			obstacles = [_rect(292, 215, 18, 60)]
 			family = "recovery"
@@ -139,7 +144,7 @@ static func scenario(id: String, seed: int = 0, split: String = "development") -
 		# vacuous evaluator ban on navigation credit. Their targets are remote.
 		"navigation_credit": family != "hover",
 		"power_off": id == "power_off",
-		"disturbance": {"tick": 90, "delta_velocity": Vector2(18.0, -7.0),
+		"disturbance": {"tick": 6, "delta_velocity": Vector2(24.0, 0.0),
 			"delta_angular_velocity": 0.4} if id == "wall_recovery" else {},
 		"obstacles": obstacles,
 		"bounds": ARENA}
