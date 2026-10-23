@@ -6,8 +6,8 @@ extends RefCounted
 # and rebuilds the normal Rapier hard-surface coupling from that same world.
 const VERSION: int = 1
 const ID: String = "4ly-flight-course/v1"
-const ARENA := Rect2i(128, 128, 512, 224)
-const START := Vector2(192.0, 238.0)
+const ARENA = Rect2i(128, 128, 512, 224)
+const START = Vector2(192.0, 238.0)
 const IDS: Array[String] = [
 	"unsupported_hover", "horizontal_reach", "vertical_reach", "diagonal_reach",
 	"reverse", "arrival_braking", "wide_corridor", "offset_gates",
