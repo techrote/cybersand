@@ -66,8 +66,14 @@ scientific fixtures, materials and learned Jolt lane are untouched.
 | `reverse` | Reach one waypoint, reverse and dwell at the second |
 | `arrival_braking` | Long-range arrival and speed-controlled settling |
 | `wide_corridor`, `offset_gates`, `corner`, `slalom` | Finite native material obstacles with profile-relative clearance |
-| `wall_recovery` | Bounded contact and recovery test |
+| `wall_recovery` | Bounded host disturbance, actual Rapier contact and subsequent recovery/arrival |
 | `neutral_control`, `constant_control`, `power_off` | Negative controls must demonstrably fail remote-target low-speed dwell; any genuine navigation success fails the negative gate |
+
+Recovery qualification is **not** satisfied by merely routing around the wall.
+The evaluator requires an accepted bounded host-disturbance receipt and at least
+one authoritative Rapier contact at or after that disturbance before a later
+low-speed arrival can receive recovery-family qualification credit. The policy
+observation still receives neither contact count nor disturbance schedule.
 
 Nominal obstacle gaps are recorded separately from **measured** feasible
 transits: `feasible_clearance()` reports gap, actual profile collider
