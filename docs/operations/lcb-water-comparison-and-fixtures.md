@@ -233,8 +233,8 @@ on Water gain). The stronger checks are applied **outside** the definition, so
 the protected identity is unchanged:
 - the fixture regression enforces them exactly on the CI-re-executed prefix;
 - the LCB-003 campaign reducer enforces them as signed rule
-  `lcb-signed-ledger-v4` (#217). That rule superseded v2 (re-review N3/N4) and
-  v3 (re-review R1–R4). It binds species accounting to the declared initial
+  `lcb-signed-ledger-v5` (#217). That rule superseded v2 (re-review N3/N4),
+  v3 (re-review R1–R4) and v4 (re-review F1/F2). It binds species accounting to the declared initial
   state over the complete observed species domain, and it evaluates species
   evidence before any shortcut.
 

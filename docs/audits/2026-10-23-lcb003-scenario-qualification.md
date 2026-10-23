@@ -464,6 +464,10 @@ The original counterexamples keep their outcomes: final 10001 → open; final 1
 
 ## Addendum — signed campaign ledger v4 correction (2026-10-23)
 
+*Superseded in part by the
+[v5 correction](#addendum--signed-campaign-ledger-v5-correction-2026-10-23).
+This section is retained as the historical v4 record.*
+
 This responds to the independent re-review findings
 [R1–R4](https://github.com/techrote/cybersand/pull/226#issuecomment-6366526752)
 against `b9b36c9`. The governing author handoff is
@@ -564,3 +568,93 @@ Every earlier counterexample keeps its outcome:
 - N4: 0/100/50/100 is open;
 - the original Salt cases: final 10001 is open, final 1 is unverified, and one
   Salt cell fails the bound.
+
+## Addendum — signed campaign ledger v5 correction (2026-10-23)
+
+This responds to independent re-review findings
+[F1 (P2) and F2 (P3)](https://github.com/techrote/cybersand/pull/226#issuecomment-6368165810),
+raised against `b2d5222`. The governing author handoff is
+[6368244594](https://github.com/techrote/cybersand/pull/226#issuecomment-6368244594).
+
+**F1.** Under v4, Salt seen only in observations was added to the species
+domain, but Brine was added only when Salt was in the inventory. The active
+Salt route then reached the Salt ledger without a Brine key and raised
+`KeyError('brine')`. An uncaught exception like that could abort a whole
+campaign reduction. It was an exception defect, not a false eligible result.
+
+**F2.** Event validation tested truthy amounts rather than key presence. A
+tick-only event, a dual-zero event, and both dual-key variants with one zero
+amount were all accepted as `closed_timed_source_sink`.
+
+| Reproducer | v4 (frozen) | v5 |
+|---|---|---|
+| F1: undeclared Salt 0→1 with no Brine observation | **`KeyError('brine')`** | `MALFORMED_EVIDENCE` (Brine in domain, missing) |
+| F1: Salt 0→1 with Brine 0/0 | `OPEN_UNEXPLAINED` | `OPEN_UNEXPLAINED` (Salt reappeared) |
+| F1: Brine at one checkpoint only (either one) | `MALFORMED_EVIDENCE` | `MALFORMED_EVIDENCE` |
+| F1: Salt first appearing at a later checkpoint | `MALFORMED_EVIDENCE` | `MALFORMED_EVIDENCE` |
+| F2: `{tick}` only | `closed_timed_source_sink` | `MALFORMED_EVIDENCE` |
+| F2: `{tick, source: 0, sink: 0}` | `closed_timed_source_sink` | `MALFORMED_EVIDENCE` |
+| F2: `{tick, source: 100, sink: 0}` | `closed_timed_source_sink` | `MALFORMED_EVIDENCE` |
+| F2: `{tick, source: 0, sink: 100}` | `closed_timed_source_sink` | `MALFORMED_EVIDENCE` |
+| control: `{tick, source: 100}`, Water 0→100 | closed | `closed_timed_source_sink` |
+| control: `{tick, source: 0}` (an explicit zero under one key) | closed | `closed_timed_source_sink` (valid by design) |
+
+**Rule `lcb-signed-ledger-v5`.** It differs from v4 only in these two
+points:
+- **Species domain (F1).** Brine joins the domain whenever Salt is
+  **declared or observed**. The existing completeness check then requires a
+  Brine observation at every checkpoint before the Salt ledger can run. A
+  missing Brine is never supplied as zero, and no exception is caught to
+  produce a state. The domain is recorded on every result, including
+  malformed ones.
+- **Event shape (F2).** An event may carry only `tick`, `source` and `sink`,
+  and exactly one of `source` or `sink` must be **present as a key**,
+  whatever its amount. A recorded zero under one key is valid.
+
+These are unchanged from v4:
+- integer and range checks;
+- non-decreasing ticks, with same-tick list order taken as the host's
+  application order;
+- reconciliation of the aggregate totals;
+- horizon coverage and the cumulative non-negative balance;
+- per-checkpoint agreement.
+
+**Records:**
+- Historical controls `989ff70d…`, v2 `5688e26f…`, v3 `b70f3257…` and v4
+  `0cc6d6df…` are all unchanged.
+- v4 is now verified against its own frozen reducer,
+  `tools/lcb/ledger_v4_historical.py`.
+  - Its `signed_ledger`, `_timed_source_sink`, `_aggregate_source_sink` and
+    `_salt_species_ledger` are verbatim from `b2d5222` (file LF
+    `69a48fa5…43d2`).
+  - Its `reledger` is a compatibility adapter: dependencies are injected and
+    the reducer hash is pinned.
+  - The check is `reledger --version v4 --check`; it is check-only and runs
+    in the Documentation workflow.
+- New re-reduction:
+  [`lcb-scenario-ledger-2026-10-23.v5.json`](../reference/lcb-scenario-ledger-2026-10-23.v5.json).
+  It records input hashes for the controls, v2, v3, v4, the reducer, the
+  catalogue tool and the protected manifest, along with the superseded
+  controls/v2/v3/v4 states and the evidence limits.
+- **No classification change from v4** (`changed_from_v4` is empty):
+  - 20 closed;
+  - 4 `UNVERIFIED_SOURCE_SINK_TIMING`;
+  - 3 `UNVERIFIED_REACTION_AMOUNT`;
+  - none open or malformed.
+
+  The retained campaign supplied no species observations or timed events. The
+  version changed only because the reducer identity did.
+- Registry qualification routes to v5.
+
+**Regressions.** `tools/lcb/test_lcb_registry.py` now has 62 tests, run
+locally with `python -m unittest discover -s tools/lcb -p
+test_lcb_registry.py` → 62 OK. The new tests are:
+- `ObservedOnlySaltF1`, 5 tests: the review reproducer, explicit Brine 0,
+  Brine at one checkpoint only, Salt appearing late, and declared Salt
+  closure with R2 binding preserved;
+- `EventShapeF2`, 4 tests: tick-only and every dual-key variant, explicit
+  zero under one key, amount and tick type checks, and single-key controls;
+- the frozen v4 check and the v5 record check.
+
+All earlier R1–R4, N3/N4 and original Salt counterexamples keep their
+outcomes.

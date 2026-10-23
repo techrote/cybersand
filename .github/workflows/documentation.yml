@@ -50,6 +50,7 @@ jobs:
           timeout 2m python3 tools/lcb/lcb_registry.py reledger --check
           timeout 2m python3 tools/lcb/lcb_registry.py reledger --version v2 --check
           timeout 2m python3 tools/lcb/lcb_registry.py reledger --version v3 --check
+          timeout 2m python3 tools/lcb/lcb_registry.py reledger --version v4 --check
           timeout 2m python3 -m unittest discover -s tools/lcb -p test_lcb_registry.py
       - name: Validate current documentation
         run: timeout 5m python3 tools/ci/check_docs.py

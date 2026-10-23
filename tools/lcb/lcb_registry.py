@@ -5,8 +5,9 @@ Standard-library only.
 
   reduce  --w1 DIR --w4 DIR --out FILE   reduce one campaign into a dated controls
                                           file (refuses to overwrite: evidence is immutable)
-  reledger [--check] [--version v4|v3|v2] re-reduce the retained 2026-10-23 controls into the
-                                          versioned v4 record; v2 and v3 are check-only against
+  reledger [--check] [--version v5|v4|v3|v2]
+                                          re-reduce the retained 2026-10-23 controls into the
+                                          versioned v5 record; v2-v4 are check-only against
                                           their frozen historical reducers (ledger_v*_historical.py)
   build   [--check]                       write/check godot/tests/fixtures/lcb/lcb-scenario-registry.json
 
@@ -27,6 +28,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import ledger_v2_historical  # noqa: E402
 import ledger_v3_historical  # noqa: E402
+import ledger_v4_historical  # noqa: E402
 import scenario_catalogue as catalogue  # noqa: E402
 
 FIXTURES = ROOT / "godot/tests/fixtures/lcb"
@@ -37,7 +39,8 @@ CONTROLS = ROOT / "docs/reference/lcb-scenario-controls-2026-10-23.json"
 LEDGER_V2 = ROOT / "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json"
 LEDGER_V3 = ROOT / "docs/reference/lcb-scenario-ledger-2026-10-23.v3.json"
 LEDGER_V4 = ROOT / "docs/reference/lcb-scenario-ledger-2026-10-23.v4.json"
-LEDGER_RULE = "lcb-signed-ledger-v4"
+LEDGER_V5 = ROOT / "docs/reference/lcb-scenario-ledger-2026-10-23.v5.json"
+LEDGER_RULE = "lcb-signed-ledger-v5"
 # Declared reactions that may change the Water integer, per reactive species.
 # Salt: Water+Salt -> Brine+Brine removes one Water cell of mass m in 1..255
 # per consumed Salt cell and adds two Brine cells. Sodium: products include
@@ -96,13 +99,14 @@ def derived(meta: dict, obs: dict) -> dict:
 
 
 def signed_ledger(inventory: dict, ledger: dict, checkpoints: list) -> dict:
-    """Signed per-species Water accounting (lcb-signed-ledger-v4).
+    """Signed per-species Water accounting (lcb-signed-ledger-v5).
 
     Every quantity is bound to the declared initial ledger and inventory; the
     first checkpoint is validated against them, never substituted for them.
 
-    Species domain: every non-Water species in the inventory, Brine when Salt is
-    present, and every key in any supplied observation. A species absent from
+    Species domain: every non-Water species in the inventory, every key in any
+    supplied observation, and Brine whenever Salt is declared or observed (F1),
+    so the Salt ledger is never dispatched without complete Brine evidence. A species absent from
     the inventory is declared at 0. Every domain key must be observed at every
     checkpoint; a species outside a supported reaction must stay constant.
 
@@ -113,7 +117,8 @@ def signed_ledger(inventory: dict, ledger: dict, checkpoints: list) -> dict:
     active reaction is UNVERIFIED.
 
     Explicit sources/sinks close exactly only against timed per-event amounts
-    (ledger["events"]: [{"tick", "source" | "sink"}], in application order; an
+    (ledger["events"]: [{"tick", exactly one of "source" | "sink"}] by key presence
+    (F2; an explicit 0 under one key is valid), in application order; an
     event indexed N is first observed at completed tick N+1). Every counted event
     must lie inside the observed horizon, and the cumulative Water balance must
     stay non-negative after every event. Aggregate-only totals reject impossible
@@ -154,11 +159,14 @@ def signed_ledger(inventory: dict, ledger: dict, checkpoints: list) -> dict:
     events = ledger.get("events")
     if events is not None:
         for e in events:
-            amounts = (e.get("source", 0), e.get("sink", 0))
-            if not (nonneg(e.get("tick")) and all(nonneg(a) for a in amounts)) or set(e) - {"tick", "source", "sink"}:
-                return result("MALFORMED_EVIDENCE", "timed events need a non-negative tick and source or sink")
-            if amounts[0] and amounts[1]:
-                return result("MALFORMED_EVIDENCE", "a timed event records a source or a sink, not both")
+            if not isinstance(e, dict) or set(e) - {"tick", "source", "sink"}:
+                return result("MALFORMED_EVIDENCE", "timed events may only carry tick, source and sink")
+            keys = [k for k in ("source", "sink") if k in e]
+            if len(keys) != 1:
+                return result("MALFORMED_EVIDENCE", "a timed event records exactly one of source or sink (by key "
+                                                    f"presence, whatever the amount); found {keys or 'neither'}")
+            if not (nonneg(e.get("tick")) and nonneg(e[keys[0]])):
+                return result("MALFORMED_EVIDENCE", "timed events need a non-negative integer tick and amount")
         if any(b["tick"] < a["tick"] for a, b in zip(events, events[1:])):
             return result("MALFORMED_EVIDENCE", "timed events must be listed in application order (non-decreasing "
                                                 "tick; same-tick events in the order the host applied them)")
@@ -171,8 +179,10 @@ def signed_ledger(inventory: dict, ledger: dict, checkpoints: list) -> dict:
             return result("MALFORMED_EVIDENCE", "species counts are present at some checkpoints but not all")
         if any("water" in s for s in species):
             return result("MALFORMED_EVIDENCE", "Water is accounted by water_integer, not as a species count")
-        domain = sorted((set(cells) - {"water"}) | ({"brine"} if "salt" in cells else set())
-                        | set().union(*(set(s) for s in species)))
+        observed = set().union(*(set(s) for s in species))
+        domain = sorted((set(cells) - {"water"}) | observed
+                        | ({"brine"} if "salt" in cells or "salt" in observed else set()))
+        base["species_domain"] = domain
         for tick, s in zip(ticks, species):
             missing = [k for k in domain if k not in s]
             if missing:
@@ -433,10 +443,16 @@ def reledger_v3() -> dict:
                                          inventories, catalogue.__file__)
 
 
+def reledger_v4() -> dict:
+    """The historical v4 record, regenerated only by its frozen reducer (check-only)."""
+    return ledger_v4_historical.reledger(CONTROLS, LEDGER_V2, LEDGER_V3, PROTECTED_MANIFEST, ROOT, load,
+                                         lf_sha256, inventories, catalogue.__file__)
+
+
 def reledger() -> dict:
-    """Re-reduce the retained (immutable) 2026-10-23 controls with lcb-signed-ledger-v4."""
+    """Re-reduce the retained (immutable) 2026-10-23 controls with lcb-signed-ledger-v5."""
     controls = load(CONTROLS)
-    v2, v3 = load(LEDGER_V2)["cases"], load(LEDGER_V3)["cases"]
+    v2, v3, v4 = load(LEDGER_V2)["cases"], load(LEDGER_V3)["cases"], load(LEDGER_V4)["cases"]
     inv = inventories()
     cases = {}
     for sid, case in controls["cases"].items():
@@ -448,19 +464,21 @@ def reledger() -> dict:
         new = signed_ledger(inv[sid], ledger, case["checkpoints"])
         cases[sid] = {"superseded_states": {"controls_2026_10_23": old["state"],
                                             "lcb-signed-ledger-v2": v2[sid]["state"],
-                                            "lcb-signed-ledger-v3": v3[sid]["state"]}, **new}
+                                            "lcb-signed-ledger-v3": v3[sid]["state"],
+                                            "lcb-signed-ledger-v4": v4[sid]["state"]}, **new}
     return {
-        "schema": "lcb-scenario-ledger-v4",
+        "schema": "lcb-scenario-ledger-v5",
         "date": "2026-10-23",
         "rule": LEDGER_RULE,
-        "status": "Corrected accounting reduction of retained characterization data (re-review R1-R4). The "
-                  "historical controls file and the v2/v3 records are preserved unchanged and stay verifiable "
+        "status": "Corrected accounting reduction of retained characterization data (re-review F1/F2). The "
+                  "historical controls file and the v2/v3/v4 records are preserved unchanged and stay verifiable "
                   "against their frozen reducers; this record supersedes only their ledger classification. "
                   "Characterization only: accepted evidence remains the CI-re-executed prefixes.",
         "input": {"controls_file": CONTROLS.relative_to(ROOT).as_posix(), "controls_sha256_lf": lf_sha256(CONTROLS),
                   "controls_source_commit": controls["source_commit"],
                   "superseded_records": {LEDGER_V2.relative_to(ROOT).as_posix(): lf_sha256(LEDGER_V2),
-                                         LEDGER_V3.relative_to(ROOT).as_posix(): lf_sha256(LEDGER_V3)},
+                                         LEDGER_V3.relative_to(ROOT).as_posix(): lf_sha256(LEDGER_V3),
+                                         LEDGER_V4.relative_to(ROOT).as_posix(): lf_sha256(LEDGER_V4)},
                   "reducer": "tools/lcb/lcb_registry.py::signed_ledger",
                   "reducer_sha256_lf": lf_sha256(Path(__file__)),
                   "catalogue_tool_sha256_lf": lf_sha256(Path(catalogue.__file__)),
@@ -468,20 +486,20 @@ def reledger() -> dict:
         "evidence_limits": "The campaign retained world Water integers per checkpoint, aggregate explicit "
                            "source/sink totals and windowed observations. It retained no world-wide per-species "
                            "counts, no per-reaction log and no per-event source/sink timing, so reactive cases "
-                           "and cases with explicit sources/sinks cannot be closed from this record. R1-R4 concern "
-                           "species and timed-event evidence that this campaign did not supply.",
+                           "and cases with explicit sources/sinks cannot be closed from this record. R1-R4 and "
+                           "F1/F2 concern species and timed-event evidence that this campaign did not supply.",
         "open_unexplained_or_malformed": sorted(s for s, c in cases.items() if c["state"] in PROBLEM_STATES),
         "accounting_unverified_ineligible_for_acceptance": sorted(
             s for s, c in cases.items() if c["state"] in UNVERIFIED_STATES),
-        "changed_from_v3": sorted(s for s, c in cases.items()
-                                  if c["state"] != c["superseded_states"]["lcb-signed-ledger-v3"]),
+        "changed_from_v4": sorted(s for s, c in cases.items()
+                                  if c["state"] != c["superseded_states"]["lcb-signed-ledger-v4"]),
         "cases": cases,
     }
 
 
 def reledger_cmd(args) -> int:
     path, build = {"v2": (LEDGER_V2, reledger_v2), "v3": (LEDGER_V3, reledger_v3),
-                   "v4": (LEDGER_V4, reledger)}[args.version]
+                   "v4": (LEDGER_V4, reledger_v4), "v5": (LEDGER_V5, reledger)}[args.version]
     text = json.dumps(build(), indent=2) + "\n"
     if args.check:
         current = path.read_text(encoding="utf-8").replace("\r\n", "\n") if path.exists() else ""
@@ -490,7 +508,7 @@ def reledger_cmd(args) -> int:
             return 1
         print(f"{path.name} matches the retained controls and its reducer")
         return 0
-    if args.version != "v4" or path.exists():
+    if args.version != "v5" or path.exists():
         print(f"refusing to overwrite dated evidence {path.relative_to(ROOT)}", file=sys.stderr)
         return 1
     path.write_bytes(text.encode("utf-8"))
@@ -573,7 +591,7 @@ def entry(sid, meta, definition_path, control, matrix, protected_fixture=None, l
                                       "ledger_eligible_for_acceptance": ledger_v2.get("eligible_for_acceptance"),
                                       "ledger_rule": LEDGER_RULE,
                                       "controls_file": CONTROLS.relative_to(ROOT).as_posix(),
-                                      "ledger_file": LEDGER_V4.relative_to(ROOT).as_posix()}
+                                      "ledger_file": LEDGER_V5.relative_to(ROOT).as_posix()}
                                      if control else {"status": "unmeasured"}),
             "linux_ci": "test_lcb_scenario_catalogue.gd: tick-30 prefix hashes and 1/4-worker parity on GitHub-hosted Linux (non-draft PR)",
             "web": "not executed", "rapier_player_render": "not executed (native-only runner)",
@@ -589,7 +607,7 @@ def entry(sid, meta, definition_path, control, matrix, protected_fixture=None, l
 def build() -> dict:
     matrix = load(MATRIX)
     controls = load(CONTROLS)["cases"] if CONTROLS.exists() else {}
-    ledgers = load(LEDGER_V4)["cases"] if LEDGER_V4.exists() else {}
+    ledgers = load(LEDGER_V5)["cases"] if LEDGER_V5.exists() else {}
     manifest = load(PROTECTED_MANIFEST)
     entries = []
     for fixture in manifest["fixtures"]:
@@ -617,7 +635,7 @@ def build() -> dict:
         "status": "LCB-003 preparation. Only arms with status starting 'measured' have executed; every blocked arm names its dependency.",
         "sources": {"capability_matrix": lf_sha256(MATRIX), "protected_manifest": lf_sha256(PROTECTED_MANIFEST),
                     "controls": lf_sha256(CONTROLS) if CONTROLS.exists() else None,
-                    "ledger_v4": lf_sha256(LEDGER_V4) if LEDGER_V4.exists() else None,
+                    "ledger_v5": lf_sha256(LEDGER_V5) if LEDGER_V5.exists() else None,
                     "catalogue_tool": lf_sha256(Path(catalogue.__file__))},
         "integration_requirements": [
             "#200: LiquidSolverPolicy, refusal codes and effective readback so blocked arms can execute",
@@ -656,7 +674,7 @@ def main() -> int:
     r.add_argument("--source-sha", required=True)
     g = sub.add_parser("reledger")
     g.add_argument("--check", action="store_true")
-    g.add_argument("--version", choices=["v4", "v3", "v2"], default="v4")
+    g.add_argument("--version", choices=["v5", "v4", "v3", "v2"], default="v5")
     b = sub.add_parser("build")
     b.add_argument("--check", action="store_true")
     args = parser.parse_args()

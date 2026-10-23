@@ -17,23 +17,25 @@ regressions on this page exist in source and run against the unchanged native
 World. Every *executed* result is a **Current-defaults** control: Water
 `freemass_v1`, other liquids `cellular_yield_v1`.
 
-**Campaign accounting** uses the signed rule `lcb-signed-ledger-v4`. It
-superseded v2 (re-review N3/N4) and v3 (re-review R1–R4).
+**Campaign accounting** uses the signed rule `lcb-signed-ledger-v5`. It
+superseded v2 (re-review N3/N4), v3 (re-review R1–R4) and v4 (re-review
+F1/F2).
 - Every quantity is bound to the declared initial ledger and inventory.
-- The species domain covers the inventory and every observed key. Each key is
-  observed at every checkpoint, and an undeclared species starts at 0.
+- The species domain covers the inventory and every observed key, plus Brine
+  whenever Salt is declared or observed. Each key is observed at every
+  checkpoint, and an undeclared species starts at 0.
 - Supplied species evidence is evaluated before any constant-Water closure,
   and only Salt-only reactions have a complete signed ledger.
 - A reactive species never explains a Water discrepancy.
-- Explicit sources and sinks close only against timed per-event amounts that
-  lie inside the observed horizon and keep a non-negative chronological
-  balance.
+- Explicit sources and sinks close only against timed per-event amounts. Each
+  event carries exactly one `source` or `sink` key. The events must lie inside
+  the observed horizon and keep a non-negative chronological balance.
 
 Gains, out-of-bound losses, impossible directions, exceeded budgets and
 negative event balances fail. Where the retained data cannot establish the
 reaction amount, the source/sink timing or the event horizon, the case is
 `UNVERIFIED_*` and ineligible for acceptance. See the
-[ledger correction](../audits/2026-10-23-lcb003-scenario-qualification.md#addendum--signed-campaign-ledger-v4-correction-2026-10-23).
+[ledger correction](../audits/2026-10-23-lcb003-scenario-qualification.md#addendum--signed-campaign-ledger-v5-correction-2026-10-23).
 
 **Accepted evidence** is the CI-re-executed prefix: canonical hash, initial
 inventory, tick-30 hashes and 1/4-worker parity for all 27 scenarios. The
