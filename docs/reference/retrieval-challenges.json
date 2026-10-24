@@ -2240,8 +2240,314 @@
         "../tools/experiments/mat003_prepass/world_registration.json"
       ],
       "revision_sensitive": true
+    },
+    {
+      "id": "MATCONT01",
+      "query": "Why were packed72 and packed80 cells slower in accepted S2A, and is memcpy optimization already accepted performance?",
+      "canonical": [
+        "research/mat003-continuation.md"
+      ],
+      "facts": [
+        "S2A packed ratios remain accepted and unchanged; source byte reconstruction is a mechanism to inspect, while cache misses/unaligned causality needs evidence.",
+        "P2 safe memcpy requires separate correctness qualification in generated copies; static GCC13.3 assembly is diagnostic and new paired timing requires independent admission."
+      ],
+      "sources": [
+        "../tools/experiments/mat003_continuation/candidates.hpp",
+        "../tools/experiments/mat003_continuation/wclear-registration-v2.json"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MATCONT02",
+      "query": "Does a short E16 horizon measure actual clear latency, and what admits prepared E24 E32 events?",
+      "canonical": [
+        "research/mat003-continuation.md"
+      ],
+      "facts": [
+        "No: S2A E8 includes the registered clear and E16 does not clear; new WCLEAR is separate.",
+        "Preserve current-stamp predicates and exact semantic/scheduling/support records, compare with natural E8/E16, exercise real clear, qualify observer-off twins and retain all events.",
+        "A separate immutable registration, independent admission and execution authority precede manual-only formal timing; wider frequency does not eliminate an individual hitch."
+      ],
+      "sources": [
+        "../tools/experiments/mat003_continuation/candidates.hpp",
+        "../tools/experiments/mat003_continuation/wclear-registration-v2.json"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MATCONT03",
+      "query": "Do native128 and dual64 cell carriers have the same ABI or prove a MAT003 production winner and GEN006 format?",
+      "canonical": [
+        "research/mat003-continuation.md"
+      ],
+      "facts": [
+        "Both have 16-byte stride in the current prototypes but size does not imply identical alignment; local U128 align16 and DUAL64 align8 require platform qualification.",
+        "128 means total logical capacity with neutral high64, not a 128-bit epoch; full state, movement and clear tests are untimed.",
+        "Dense cell arrays double relative to C64; no performance winner, material schema or raw-struct persistence is selected."
+      ],
+      "sources": [
+        "../tools/experiments/mat003_continuation/candidates.hpp",
+        "../tools/experiments/mat003_continuation/wclear-registration-v2.json"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MATSCHEMA01",
+      "query": "Can a sixteen-bit MAT003 material extension fit compact cells with E16 or E32 without overlapping the saved pressure prototype?",
+      "canonical": [
+        "research/mat003-state-schema-proposal.md"
+      ],
+      "facts": [
+        "Common semantic fields consume40 bits; R16/E16 needs72 total bits while R16/E32 needs88, so C80-E32 cannot hold R16.",
+        "No physical map is selected: prototype40–55 overlaps experimental E1648–63; a new packing contract needs qualification.",
+        "R16 is a candidate budget, not adopted pressure or air semantics; production C64/E8 remains unchanged."
+      ],
+      "sources": [
+        "../tools/experiments/mat003_prepass/carriers.hpp",
+        "research/mat-003prepass-state-inventory.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MATSCHEMA02",
+      "query": "What does ADR015 decide after the compact C128 and epoch-clear campaigns, and may we promote production or run another timing campaign?",
+      "canonical": [
+        "decisions/ADR-015-material-state-schema-and-carrier-gates.md"
+      ],
+      "facts": [
+        "The ADR is Planned: optimized compact and DUAL64 lead expansion options, C64 remains viable, and no production epoch/carrier is selected.",
+        "Owner field, residency, memory, normal-tick, hitch and platform budgets are unresolved; measured evidence is not implementation acceptance.",
+        "No new timing is authorized; changes need scoped qualification and separate registration/admission/owner authority. GEN006 stays semantic and ABI-independent."
+      ],
+      "sources": [
+        "research/mat003-continuation.md",
+        "research/mat003-state-schema-proposal.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MATSCHEMA03",
+      "query": "Did the MAT003 owner-budget review approve DUAL64 at default4096 resident chunks or promise atomic rollback of capacity-failed ticks?",
+      "canonical": [
+        "research/mat003-semantics-budget-review.md"
+      ],
+      "facts": [
+        "At the technical review no owner budget was approved; subsequent owner acceptance covers qualification targets only, not adoption. Measured256-chunk residency is one-sixteenth of standalone4096 default cap.",
+        "DUAL64 arrays would be1024MiB plus128MiB full temperature at that cap, before other owners; this is derived, not measured RSS.",
+        "Proposed record admission prevalidates before publication; current in-tick failure may mutate state and requires quarantine. No new timing is authorized."
+      ],
+      "sources": [
+        "../native/include/cybersand/world.hpp",
+        "operations/configuration-and-capacity-budgets.md",
+        "research/mat003-state-schema-proposal.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MATSCHEMA04",
+      "query": "What concrete MAT003 extension semantics residency memory and latency limits are offered for owner review, and are they already approved or measured?",
+      "canonical": [
+        "research/mat003-concrete-owner-offer.md"
+      ],
+      "facts": [
+        "Planned R16-T1 has Water signed8 lateral history and unsigned8 overfill with totalT=a+o<=2M, canonical base first and exact source/sink conservation; Empty-air is deferred and solver adoption remains separate.",
+        "Owner accepted256resident chunks,64active cores,512MiB aggregate cellular memory within2GiB application RSS as qualification targets; no production defaults changed.",
+        "Owner accepted60ticks/s, ordinary p95<=5ms/p99<=8ms and10ms observed maximum as prospective targets, not measured compliance. R16-T1 remains conditional and no implementation/timing is authorized."
+      ],
+      "sources": [
+        "research/mat003-semantics-budget-review.md",
+        "audits/2026-10-23-c128-results.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MATSCHEMA05",
+      "query": "Does accepting MAT003 budgets authorize R16T1 implementation or correctness execution, and how is the bounded neutral-state plan limited?",
+      "canonical": [
+        "research/mat003-correctness-only-plan.md"
+      ],
+      "facts": [
+        "No: budget targets are accepted but R16-T1 and map/adoption remain conditional; the plan grants no harness build, execution or timing authority.",
+        "Eight arm contracts cover compact72/80,Dual64 and C64 controls at E8/E16,152 processes per platform304 across Linux/Windows; nonrepresentable payloads refuse.",
+        "Neutral payload preservation is distinct from authoritative Water semantics; all failures retained, full matrix/verifier/platform gaps explicit, no performance compliance claim."
+      ],
+      "sources": [
+        "research/mat003-concrete-owner-offer.md",
+        "decisions/ADR-015-material-state-schema-and-carrier-gates.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MATSCHEMA06",
+      "query": "What exact eight-arm MAT003 neutral16 maps and independent oracle distinguish C64 E16 refusal from compact and DUAL64 preservation?",
+      "canonical": [
+        "research/mat003-correctness-only-plan.md"
+      ],
+      "facts": [
+        "All E8 arms use epoch56-63 and neutral16 at40-55; expanded E16 arms use epoch40-55 and neutral16 at56-71. C64 E16 keeps epoch48-63 and refuses every nonzero neutral16 request.",
+        "The oracle uses independent logical values and bit enumeration, full canonical bytes and operation-relative masks; raw nonzero unused-bit probes are distinct from schema-valid records.",
+        "Large cases retain eight complete World endpoint datasets, not eight sampled cells. R16-T1 remains conditional and document contracts authorize no implementation, execution or timing."
+      ],
+      "sources": [
+        "research/mat003-concrete-owner-offer.md",
+        "decisions/ADR-015-material-state-schema-and-carrier-gates.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MATSCHEMA07",
+      "query": "Is the MAT-003 eight-map correctness apparatus source complete, and may qualification execute after independent source review?",
+      "canonical": [
+        "research/mat003-continuation.md"
+      ],
+      "facts": [
+        "Isolated eight-map source implementation is complete and independent source review found no remaining definite implementation blocker; the earlier held review is retained historically.",
+        "At source completion no build or runtime qualification had occurred. The later exact5380c76 Windows build stopped on diagnostics, and independent binary admission was refused; no candidate case or timing ran.",
+        "R16-T1 stays conditional, production unchanged and PR211/221 draft; accepted campaign evidence is preserved."
+      ],
+      "sources": [
+        "research/mat003-continuation.md",
+        "audits/2026-10-23-mat003-apparatus-source-closure.md"
+      ]
+    },
+    {
+      "id": "MATSCHEMA08",
+      "query": "Why was MAT-003 binary admission refused at5380c76 even though the Windows compiler exited zero, and may qualification cases run?",
+      "canonical": [
+        "research/mat003-continuation.md"
+      ],
+      "facts": [
+        "Native Windows LLVM-MinGW23.1.0/UCRT toolchain preflight passed, but the exact build stopped on two warnings after two compiler attempts.",
+        "One storage build was clean and the World compiler produced an executable with1667 bytes stderr; frozen no-diagnostics rules rejected it, leaving32-binary/eight-arm build incomplete.",
+        "Independent binary admission was refused. Neither retained executable was run; no retry, source correction, warning suppression, qualification case or timing occurred.",
+        "A new reviewed source/contract and separately authorized bounded build are required; Linux was not executed, R16-T1 remains conditional, production unchanged and both PRs draft."
+      ],
+      "sources": [
+        "research/mat003-continuation.md",
+        "audits/2026-10-23-mat003-build-only-admission.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MATSCHEMA09",
+      "query": "What does the reviewed MAT003 warning-fix replacement build at6e85fe6 establish, and does binary admission authorize correctness cases?",
+      "canonical": [
+        "research/mat003-continuation.md"
+      ],
+      "facts": [
+        "Only two isolated warning fixes changed source: role reference and unused capture in generated copies, with production unchanged.",
+        "All32 native Windows builds completed; binary admission is a separately source-bound gate, not runtime correctness or case execution authority.",
+        "Failed5380c76 evidence remains unchanged, no candidate cases or timing ran, Linux unexecuted and R16-T1 conditional."
+      ],
+      "sources": [
+        "research/mat003-continuation.md",
+        "audits/2026-10-23-mat003-warning-fix-build.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MATSCHEMA10",
+      "query": "Did the authorized Windows MAT003 correctness registration complete all152 cases, and why was timing not collected?",
+      "canonical": [
+        "research/mat003-continuation.md"
+      ],
+      "facts": [
+        "The exact authorized attempt stopped at second process small-001 with maximum chunk capacity exhausted after storage-000 exited0; remaining150 cases not launched or retried.",
+        "Independent frozen reader ran once, passed15 negative fixtures and decoder cross-check, then rejected incomplete campaign. No full correctness or performance acceptance.",
+        "Instrumented correctness binaries and watchdog limits do not define a timing protocol; separate timing registration/admission/authority required. R16-T1 conditional, PRs draft, production unchanged."
+      ],
+      "sources": [
+        "research/mat003-continuation.md",
+        "audits/2026-10-23-mat003-windows-correctness-attempt.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MATSCHEMA11",
+      "query": "How does the MAT003 replacement fixture prevent residency boundary escape and phased halo demand, and may it execute now?",
+      "canonical": [
+        "research/mat003-continuation.md"
+      ],
+      "facts": [
+        "Small-only two-cell inactiveWall band inside256²/fourchunks, side256/radius2 guards; independent endpoints enforceWall/a/b/R/U in wholeborder and future negativefixtures cover holes/innerstrip/neutralcorruption.",
+        "Serial targets and phased prepare_write_domain active-source intersection are bounded by source argument; previousfailedcoordinate unknown and runtime containment unproven.",
+        "Replacement152case registration changes48smallfixtures, blocksbuild/exec and nulls old binary certificates pending newbuild/admission/exactexecutionauthority; no builds/cases/timing ran, R16-T1 conditional and production unchanged."
+      ],
+      "sources": [
+        "research/mat003-continuation.md",
+        "audits/2026-10-23-mat003-containment-replacement.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MATSCHEMA12",
+      "query": "What stopped the authorized MAT003 containment replacement at resident-015, and did all152 correctness cases pass?",
+      "canonical": [
+        "research/mat003-continuation.md"
+      ],
+      "facts": [
+        "15processes exited0;16thresident-015 failed active scheduling-core capacity exhausted on attempted257 afterclear256;136cases notrun/no retries.",
+        "Capacityguard is beforeactive-core sort/unique, so append-time scratchbound does not prove128distinctcores; fullinterest restored afterQ.",
+        "Frozenreader once:18negativefixtures+decodercrosscheck passed then incompletecampaign refusal; no full correctness/timing acceptance. R16-T1conditional,productionunchanged,PRsdraft."
+      ],
+      "sources": [
+        "research/mat003-continuation.md",
+        "audits/2026-10-23-mat003-containment-correctness-attempt.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MATSCHEMA13",
+      "query": "How does the isolated MAT003 resident reentry repair provision duplicate core scratch and excluded active chunks without exceeding64 unique cores, and is it runtime qualified?",
+      "canonical": [
+        "research/mat003-continuation.md"
+      ],
+      "facts": [
+        "Initial256x512/reentry512x512;128/256 pre-dedup entries from32-cellblocks/64-cellcores, corecapacity256; activechunkcapacity16/256 includes excludedresidents.",
+        "Full residentclear maintained;2048fullworldreentry excluded. Exactgrid, samechunkand16blocks quiet>=3, excludedSandpause/resume and boundedinputledger independently checked.",
+        "Independent source-only closure, nine future negatives unexecuted; freshbuild/binary/registration/owner gates required. Failures retained,R16-T1conditional,PRsdraft,productionunchanged."
+      ],
+      "sources": [
+        "research/mat003-continuation.md",
+        "audits/2026-10-23-mat003-resident-reentry-repair.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MATSCHEMA14",
+      "query": "What exact new execution authority is required after the e655166 resident reentry replacement build, and does binary admission prove runtime repair?",
+      "canonical": [
+        "research/mat003-continuation.md"
+      ],
+      "facts": [
+        "32 fresh clean Windows normal/sanitized builds at e655166; separate binary certificate and exact new152-case registration.",
+        "Owner execution false and timing false until explicit new-hash authorization; previous authorizations/certificates cannot admit changed source.",
+        "Bounded2048 reentry and full resident clear; no candidate/negative/reader execution at build-only stage. R16-T1conditional,PRsdraft,productionunchanged,failurespreserved."
+      ],
+      "sources": [
+        "research/mat003-continuation.md",
+        "audits/2026-10-23-mat003-reentry-build-admission.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "MATSCHEMA15",
+      "query": "Did the authorized9b1 MAT003 replacement pass all152 correctness cases, and why did Astra reject the sleeping witness?",
+      "canonical": [
+        "research/mat003-continuation.md"
+      ],
+      "facts": [
+        "152candidate processes completed once exit0/no diagnostics; frozenreader27negativefixtures+704decoderrecords then refusedresident015/event/B; no fullsemanticacceptance.",
+        "Inactivechunkquiet3 with8blocksquiet3/8neveractivatedquiet0 violates overlystrictall16quiet>=3oracle; source skipsinactiveaging. Notcarrier/productiondefectproof.",
+        "Fullrawfailuresretained; no reader/candidate rerun or retroactivefix; newcorrection/admissionauthorityrequired. R16-T1conditional,PRsdraft,productionunchanged,notiming."
+      ],
+      "sources": [
+        "research/mat003-continuation.md",
+        "audits/2026-10-23-mat003-reentry-correctness-attempt.md"
+      ],
+      "revision_sensitive": true
     }
   ],
-  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: SCENE01 adds independent demo-level entry/view/ownership routing; the frozen 32-question set is unchanged. 2026-10-18: SCENE02 adds the owner-requested four-tile descent and state-boundary question; all prior and frozen questions remain unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged. 2026-10-18: SCENE03 adds the nine-district route and continuity question; all 47 prior supplementary questions, including SCENE01/SCENE02 and ACT01-ACT09, and the frozen 32-question set remain unchanged. 2026-10-18 ACT-004: ACT10/ACT11 expected facts reconciled with retained hull references and implemented full physical roster; ACT12-ACT15 add independent physical fidelity, producer lifetime, usable and arena-version challenges. Frozen query wording is unchanged; Q10 capacity correction is disclosed in the frozen fixture metadata. 2026-10-18 USABLE-001: USABLE01 adds the independent actor-equipment catalogue/ownership/budget question without changing the frozen 32-question set. 2026-10-19 ACT-005: ACT14 now also routes to the expanded actor-usables canonical contract; ACT14 and USABLE01 expected facts and source routes distinguish the implemented physical equipment catalogue from retained sampled authority. Existing question IDs and query wording are unchanged. USABLE02-USABLE04 add supplementary source-discovered lifetime, processor and course challenges; the frozen 32-question fixture is unchanged, and new question results are reported separately from the prior 70-question baseline. 2026-10-19: MAT03 and TEST01 add catalogue integration and actual graphical-test execution questions; TEST02 adds standalone CLI admission and sampled accounting. 2026-10-19 resumed MAT-002 review: MAT03 scopes sampled-rig digging separately from authored sampled and physical equipment. TEST03 adds the current Windows execution gate; all upstream USABLE01-USABLE04 questions and the frozen 32-question set are preserved. 2026-10-19 Windows follow-up: TEST03 distinguishes the four text descriptor newline comparisons from byte-exact source and binary evidence; existing questions and query wording are unchanged. 2026-10-20: SCENE04 and DEP02 add independent full-map exhibition/replay and depth-size/stale-packet challenges. DEP01 preserves Strata Theatre defaults while admitting the new shared dimensions; TEST03 now refers to dynamically discovered rendered cases instead of a stale count. Existing question IDs and query wording, and the frozen 32-question fixture, are unchanged. The two new challenges are reported separately from the prior 77-question set. 2026-10-20 player playground: PLAY01-PLAY05 add five supplementary source-discovered questions; all prior 79 supplementary objects and the frozen 32-question fixture remain unchanged. New results are reported separately from the prior set. 2026-10-21 PR #189 integration: retains all ten GEN-003 questions GEN09-GEN18 from main alongside PLAY01-PLAY05, for 94 supplementary questions; the frozen 32-question fixture remains unchanged. 2026-10-21: GEN19–GEN26 add independently scoped semantic identity, hierarchy constraints/fallback, structural curve, final-raster override, immutable geometry, bounded publication, authoring and final support-contact questions. All prior 89 supplementary queries and the frozen 32-question set remain unchanged. 2026-10-21 PR #189 GEN-004 reintegration: preserves all 94 player/GEN-003 supplementary questions and all 97 questions from GEN-004 main, yielding 102 distinct questions with unchanged IDs, query wording and expected facts; the frozen 32-question fixture remains unchanged. 2026-10-21 GEN-005: adds three supplementary semantic-plane questions; the original frozen 32-question fixture and all 102 prior supplementary objects remain unchanged. New question results are reported separately. 2026-10-21 GEN-007: adds four independent workbench/procedural qualification questions; frozen 32 and all 105 prior supplementary objects are preserved. 2026-10-22 Water exit correction: adds WATER-EXIT-01 for stale desktop receipt rejection; the frozen 32-question fixture and all 109 prior supplemental objects are unchanged. 2026-10-22 4LY-001: adds four independent free-flight challenges; the frozen 32-question fixture and all 110 prior supplementary objects remain unchanged. New question results are reported separately. 2026-10-24 LCB-001 #200 foundation: LCB01 expected fact 2 records the bounded hold lift; LCB02 adds the native policy foundation question. Query wording, the frozen 32-question fixture and all other supplementary objects are unchanged; new results are reported separately. 2026-10-22 MAT-003PREPASS S1: adds MATPRE05/MATPRE06 for real-World rollover evidence and observer/split/continuation limits. All prior 114 IDs and queries and the frozen 32-question set are preserved. MATPRE02 expected facts now distinguish historical S0 from separately scoped S1; new questions are reported separately. 2026-10-24 MAT-003/current-main reconciliation: retains all six MATPRE questions and all 117 questions from main at 1e032e4, taking main's updated LCB01 bounded-foundation fact and new LCB02. The original frozen 32-question fixture is unchanged.",
-  "integration_note": "Retains all scene, generation, sampled and physical actor-usable, Thunderbowl, physical-actor, building-material and presentation routes; historical questions are preserved. Deepworks scene controls, finite source replay and full-size/non-square depth dimensions are additive routes; existing historical scope remains intact. Player playground controls, native field ownership and conservative wheel-mask routing are additive; original and historical questions remain unchanged. GEN-004 semantic identity, hierarchy constraints, structural routes, final-raster qualification, immutable geometry, bounded publication, authoring and support-contact routes coexist with all five player questions. MAT-003PREPASS S0/S1 routes coexist with the landed #239 policy foundation, current 4LY and closed LCB-000 admission records. All six MATPRE objects and all 117 current-main objects are retained; only LCB01's prior hold fact is superseded by its current-main fact."
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: SCENE01 adds independent demo-level entry/view/ownership routing; the frozen 32-question set is unchanged. 2026-10-18: SCENE02 adds the owner-requested four-tile descent and state-boundary question; all prior and frozen questions remain unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged. 2026-10-18: SCENE03 adds the nine-district route and continuity question; all 47 prior supplementary questions, including SCENE01/SCENE02 and ACT01-ACT09, and the frozen 32-question set remain unchanged. 2026-10-18 ACT-004: ACT10/ACT11 expected facts reconciled with retained hull references and implemented full physical roster; ACT12-ACT15 add independent physical fidelity, producer lifetime, usable and arena-version challenges. Frozen query wording is unchanged; Q10 capacity correction is disclosed in the frozen fixture metadata. 2026-10-18 USABLE-001: USABLE01 adds the independent actor-equipment catalogue/ownership/budget question without changing the frozen 32-question set. 2026-10-19 ACT-005: ACT14 now also routes to the expanded actor-usables canonical contract; ACT14 and USABLE01 expected facts and source routes distinguish the implemented physical equipment catalogue from retained sampled authority. Existing question IDs and query wording are unchanged. USABLE02-USABLE04 add supplementary source-discovered lifetime, processor and course challenges; the frozen 32-question fixture is unchanged, and new question results are reported separately from the prior 70-question baseline. 2026-10-19: MAT03 and TEST01 add catalogue integration and actual graphical-test execution questions; TEST02 adds standalone CLI admission and sampled accounting. 2026-10-19 resumed MAT-002 review: MAT03 scopes sampled-rig digging separately from authored sampled and physical equipment. TEST03 adds the current Windows execution gate; all upstream USABLE01-USABLE04 questions and the frozen 32-question set are preserved. 2026-10-19 Windows follow-up: TEST03 distinguishes the four text descriptor newline comparisons from byte-exact source and binary evidence; existing questions and query wording are unchanged. 2026-10-20: SCENE04 and DEP02 add independent full-map exhibition/replay and depth-size/stale-packet challenges. DEP01 preserves Strata Theatre defaults while admitting the new shared dimensions; TEST03 now refers to dynamically discovered rendered cases instead of a stale count. Existing question IDs and query wording, and the frozen 32-question fixture, are unchanged. The two new challenges are reported separately from the prior 77-question set. 2026-10-20 player playground: PLAY01-PLAY05 add five supplementary source-discovered questions; all prior 79 supplementary objects and the frozen 32-question fixture remain unchanged. New results are reported separately from the prior set. 2026-10-21 PR #189 integration: retains all ten GEN-003 questions GEN09-GEN18 from main alongside PLAY01-PLAY05, for 94 supplementary questions; the frozen 32-question fixture remains unchanged. 2026-10-21: GEN19–GEN26 add independently scoped semantic identity, hierarchy constraints/fallback, structural curve, final-raster override, immutable geometry, bounded publication, authoring and final support-contact questions. All prior 89 supplementary queries and the frozen 32-question set remain unchanged. 2026-10-21 PR #189 GEN-004 reintegration: preserves all 94 player/GEN-003 supplementary questions and all 97 questions from GEN-004 main, yielding 102 distinct questions with unchanged IDs, query wording and expected facts; the frozen 32-question fixture remains unchanged. 2026-10-21 GEN-005: adds three supplementary semantic-plane questions; the original frozen 32-question fixture and all 102 prior supplementary objects remain unchanged. New question results are reported separately. 2026-10-21 GEN-007: adds four independent workbench/procedural qualification questions; frozen 32 and all 105 prior supplementary objects are preserved. 2026-10-22 Water exit correction: adds WATER-EXIT-01 for stale desktop receipt rejection; the frozen 32-question fixture and all 109 prior supplemental objects are unchanged. 2026-10-22 4LY-001: adds four independent free-flight challenges; the frozen 32-question fixture and all 110 prior supplementary objects remain unchanged. New question results are reported separately. 2026-10-24 LCB-001 #200 foundation: LCB01 expected fact 2 records the bounded hold lift; LCB02 adds the native policy foundation question. Query wording, the frozen 32-question fixture and all other supplementary objects are unchanged; new results are reported separately. 2026-10-22 MAT-003PREPASS S1: adds MATPRE05/MATPRE06 for real-World rollover evidence and observer/split/continuation limits. All prior 114 IDs and queries and the frozen 32-question set are preserved. MATPRE02 expected facts now distinguish historical S0 from separately scoped S1; new questions are reported separately. 2026-10-24 MAT-003/current-main reconciliation: retains all six MATPRE questions and all 117 questions from main at 1e032e4, taking main's updated LCB01 bounded-foundation fact and new LCB02. The original frozen 32-question fixture is unchanged. 2026-10-23: adds MATCONT01-MATCONT03 for independently scoped packed diagnosis, real clear admission and 128-total-bit feasibility; original frozen questions and prior supplementary objects remain unchanged. 2026-10-23 MATSCHEMA01/MATSCHEMA02 add Planned schema capacity/overlap and ADR adoption-gate questions; prior119 supplementary objects and frozen32 remain unchanged. MATSCHEMA03 adds the current technical review/default-cap/failed-tick distinction; prior121 supplementary objects and frozen32 unchanged. MATSCHEMA04 adds the concrete Planned owner offer; all prior122 objects and frozen32 remain unchanged. Owner budget acceptance updates MATSCHEMA03/04 expected status facts only; IDs/queries and frozen32 unchanged. MATSCHEMA05 adds bounded unexecuted correctness-plan scope. MATSCHEMA06 adds exact neutral16 maps, independent-oracle and complete-endpoint contracts; all prior124 objects and frozen32 remain unchanged. 2026-10-23: MATSCHEMA07 adds the source-completion versus runtime-admission boundary; all prior125 questions and frozen32 are unchanged. 2026-10-23: MATSCHEMA08 adds exact5380c76 build-warning/refused-admission routing. MATSCHEMA07 expected status distinguishes its historical source-only checkpoint from the later failed build; prior125 objects and all query wording/frozen32 are preserved. 2026-10-23: MATSCHEMA09 adds replacement-build versus case-authority routing; all prior127 objects and frozen32 unchanged. 2026-10-23: MATSCHEMA10 adds authorized partial-execution/stop/timing boundary; all prior128 objects and frozen32 unchanged. 2026-10-23: MATSCHEMA11 adds source containment repair and blocked replacement scope; all prior129 objects/frozen32 unchanged. 2026-10-23: MATSCHEMA12 adds containment replacement reentry/scratch failure; all prior130 objects/frozen32 unchanged. 2026-10-23: MATSCHEMA13 adds resident reentry duplicate-scratch/excluded-chunk provisioning and source-only closure; all131 prior objects/frozen32 unchanged. 2026-10-23: MATSCHEMA14 adds resident replacement build versus execution authority; all132 prior objects/frozen32 preserved. 2026-10-23: MATSCHEMA15 adds complete collection versus Astra refusal/overstrict witness; all133 prior objects and frozen32 preserved.",
+  "integration_note": "Retains all scene, generation, sampled and physical actor-usable, Thunderbowl, physical-actor, building-material and presentation routes; historical questions are preserved. Deepworks scene controls, finite source replay and full-size/non-square depth dimensions are additive routes; existing historical scope remains intact. Player playground controls, native field ownership and conservative wheel-mask routing are additive; original and historical questions remain unchanged. GEN-004 semantic identity, hierarchy constraints, structural routes, final-raster qualification, immutable geometry, bounded publication, authoring and support-contact routes coexist with all five player questions. MAT-003PREPASS S0/S1 routes coexist with the landed #239 policy foundation, current 4LY and closed LCB-000 admission records. All six MATPRE objects and all 117 current-main objects are retained; only LCB01's prior hold fact is superseded by its current-main fact. The eighteen MATCONT/MATSCHEMA continuation and schema-stage objects are retained alongside the new-main LCB01/LCB02 foundation facts; historical source scope and the frozen 32-question fixture remain intact."
 }

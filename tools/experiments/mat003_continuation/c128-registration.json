@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "track": "C128-001",
+  "issue": 220,
+  "parent": 204,
+  "base_commit": "2b2a1dd64f16dc46d5e812b757de73f47df0fb2b",
+  "status": "untimed-feasibility-only",
+  "formal_timing_admitted": false,
+  "logical_bits": 128,
+  "candidates": ["C128-E8-u128", "C128-E16-u128", "C128-E8-dual64", "C128-E16-dual64"],
+  "semantic_map": "original S1 low64 E8/E16 field maps; full high64 neutral capacity; low16 of high lane exercised by S1 neutral-extra API; all high64 independently boundary/random tested",
+  "correctness": "unchanged S1 full World fixture including natural E16, ordinary serial/phased1/phased4, large forced clears, lifecycle, temperature and Water; separate full-high64 storage tests",
+  "E24_E32": "separately gated; not C128-qualified by WCLEAR results",
+  "portability": "native arm only where __SIZEOF_INT128__ exists; dual64 portable fallback requires independent platform qualification",
+  "budgets": {"compile_seconds": 180, "process_seconds": 300, "wall_seconds": 3600},
+  "next_performance_registration": "separate bounded paired registration after correctness; never S2A or WCLEAR data"
+}

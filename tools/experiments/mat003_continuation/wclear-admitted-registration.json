@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "track": "WCLEAR-001",
+  "issue": 219,
+  "parent": 204,
+  "base_commit": "2b2a1dd64f16dc46d5e812b757de73f47df0fb2b",
+  "status": "admitted-paired-timing",
+  "formal_timing_admitted": true,
+  "execution_authorized": false,
+  "candidate_carrier": "C80-aligned, identical 16-byte stride for E8/E16/E24/E32",
+  "fields": {
+    "material": [
+      0,
+      16
+    ],
+    "state_a": [
+      16,
+      16
+    ],
+    "state_b": [
+      32,
+      8
+    ],
+    "epoch8": [
+      56,
+      8
+    ],
+    "epoch16": [
+      48,
+      16
+    ],
+    "epoch24": [
+      40,
+      24
+    ],
+    "epoch32": [
+      40,
+      32
+    ]
+  },
+  "resident_sides": [
+    512,
+    1024,
+    2048
+  ],
+  "optional_4096": "excluded; separate memory/runtime feasibility and amendment required",
+  "workers": [
+    1,
+    4
+  ],
+  "scenes": [
+    "sleep-excluded",
+    "active-window-excluded"
+  ],
+  "epoch_bits": [
+    8,
+    16,
+    24,
+    32
+  ],
+  "event_generation": "At completed global tick 255: retain all raw E8 natural stamps; wide arms map current stamps to maximum, all noncurrent stamps to zero; verify every current predicate and complete non-epoch/scheduling/support record; next real World::tick clears. Matched ordinary maps current to128 and noncurrent0, avoiding next-epoch aliases.",
+  "reference": "separate identically initialized fresh process; matched global tick/input/RNG schedule with counter rebased to 128 instead of maximum; no clear",
+  "natural_validation": "Additional side128 sleep-excluded w1 at global tick65536: E8 (256+256*255) and E16 first clear both naturally reached without stamp writes; prepared E24/E32 and matched ordinary twins must match exact pre/post/reentry records. S1 E16 two-wrap evidence remains accepted and unchanged.",
+  "qualification": "exact pre/post semantic records, temperature, support, activity/deadlines, Water ledgers and work; observed/off twins; stamps checked immediately after clear before simulation by correctness observer only",
+  "proposed_process_matrix": {
+    "contexts": 48,
+    "alternating_pair_orders": [
+      "AB",
+      "BA",
+      "AB",
+      "BA",
+      "AB",
+      "BA",
+      "AB"
+    ],
+    "processes_per_pair": 2,
+    "events_per_process": 1,
+    "primary_processes": 672,
+    "A": "matched-ordinary",
+    "B": "natural E8 / prepared E16,E24,E32 clear",
+    "order": "epoch,side,scene,workers,pair,AB-or-BA"
+  },
+  "statistics": {
+    "primary_unit": "independent process pair",
+    "latency": "observer-off steady_clock nanoseconds around World::tick only",
+    "summary": "seven process values: median/min/max/MAD for clear,ordinary,paired excess and B/A; nearest-rank p50/p95/p99/max over seven event values per context explicitly descriptive",
+    "replicates": "one event per process; never treat events within a process as independent",
+    "retention": "all spikes/failures; no reruns or partial acceptance"
+  },
+  "required_receipts": [
+    "frozen-source-and-binary-sha256",
+    "compiler-linker-flags",
+    "fixtures",
+    "seal-before-execution",
+    "pair-order",
+    "tick_ns",
+    "startup-input-ns-separate",
+    "clear-count",
+    "completed-tick",
+    "resident-cells",
+    "physical-array-bytes",
+    "RSS",
+    "visits",
+    "phase-jobs",
+    "worker-participation",
+    "independent-readback",
+    "frozen-independent-verifier"
+  ],
+  "budgets": {
+    "qualification_wall_seconds": 3600,
+    "compile_seconds": 180,
+    "qualification_process_seconds": 300,
+    "timing_process_seconds": 120,
+    "timing_wall_seconds": 7200,
+    "concurrency": 1
+  },
+  "admission_requirements": [
+    "met: all208 correctness cases and observed/off twins pass",
+    "met: immutable qualified artifact/source/binaries independently read back",
+    "met: independent source-bound admission limited by admitted_limits",
+    "prepared: hash-pinned manual-only workflow",
+    "pending: explicit owner authority for exact registration and execution commit",
+    "after execution: complete independent timing readback and separate performance acceptance"
+  ],
+  "amortized_model": "normal_ns + measured_incremental_clear_ns/(2^E-1) after first clear at 2^E; finite horizon clears = 0 if T<2^E else 1+floor((T-2^E)/(2^E-1)); add carrier normal access/footprint separately; report observed hitch separately; E24/E32 projections are not natural measurements",
+  "review_triggers": [
+    "any semantic/readback mismatch blocks admission",
+    "historical >1ms excess is a review trigger, not an acceptance limit",
+    "unqualified background participation excludes worker claim"
+  ],
+  "manual_dispatch": "STOP: no execution authority is granted. After explicit owner authorization only, dispatch mat003-wclear-timing.yml on the reviewed workflow commit with this registration SHA-256 and the owner-established authority JSON. See docs/audits/2026-10-23-wclear-admission.md.",
+  "registration_version": 4,
+  "supersedes_proposal": "v1/v2/v3 remain immutable; this independent admission binds only the exact qualified artifact and prepared-resident timing protocol",
+  "qualification_matrix": {
+    "builds": 8,
+    "resident_cases": 192,
+    "small_natural_cases": 16,
+    "total_processes": 208,
+    "observers": [
+      0,
+      1
+    ],
+    "side128_setup_ticks": 65535,
+    "primary_setup_ticks": 255,
+    "record_files_per_case": 6,
+    "compression": "lossless gzip immediately after each process to bound disk use"
+  },
+  "timing_implementation": {
+    "fixture": "wclear.cpp optional --measure after setup-ticks; requires explicit collector authority hash and observers=0",
+    "collector": "timing.py rejects before clocks/subprocesses unless independent admission plus exact owner authority",
+    "independent_verifier": "verify_timing.py; full672-process inventory, all raw streams versus qualified twins, nearest-rank descriptive reduction; no self-acceptance",
+    "qualification": "same binary invoked without --measure, no Clock::now calls or timing fields emitted",
+    "startup": "after CLI/authority checks through World construction, fixture residency and initial edits",
+    "setup": "all255 setup ticks plus external input, retained separately from event tick",
+    "input": "bounds around each setup-tick input preparation including empty schedule branch/clock overhead; excluded from primary tick_ns",
+    "peak_rss": "whole process including full semantic records, not cell-only allocation",
+    "memory_precondition": "complete semantic pre-scan before/after stamp rebase, then counter resets; identical order frozen; preparation dirty-cache differences and warm-resident scope require independent admission review",
+    "cold_gameplay": "not measured; no universal cold-cache or worst-case guarantee"
+  },
+  "performance_accepted": false,
+  "author": "MAT-003 continuation implementation owner (/root)",
+  "campaign_id": "WCLEAR-001-672-001",
+  "scope_id": "prepared-resident-protocol-v1",
+  "independent_review": {
+    "decision": "admitted",
+    "reviewer": "Independent Codex source/apparatus reviewer (/root/independent_review)",
+    "date": "2026-10-23",
+    "review_record": "docs/audits/2026-10-23-wclear-admission.md",
+    "basis": "Independent source review plus fresh complete immutable artifact readback: 208 WCLEAR cases/1984 files, zero errors, no artifact mutation; primary measurement is conditional on frozen preparation/cache history",
+    "execution_authority": "not granted; the owner must separately authorize this exact registration and execution commit"
+  },
+  "admission_evidence": {
+    "repository": "techrote/cybersand",
+    "run_id": 39885505290,
+    "artifact_id": 12472344560,
+    "artifact_bytes": 17442801,
+    "artifact_sha256": "fd3e269812bfadd737f38c2cabafd906efb15ea407cb2d4c70a820279179b0c5",
+    "branch_source_commit": "c7d7bf6f3c085f68332c30384c9742dd0ca55f93",
+    "source_commit": "f7c80a47da8bd1c87ac84b2f7281120a4fcc0796",
+    "files_sha256": "aec240e7f4f01dceba518d91394287c13da70efc439e328b15d0fd661b1c1f2f",
+    "readback_sha256": "73654d6b5cca7c8facf9c8990db6e0db78562544767c595c98ae981ac237709c",
+    "source_seal_sha256": "4d9f21136fe8c6d043fd61939922186680cb888a68d6c01346fb05eda93c7f58",
+    "binary_seal_sha256": "72a2b5ce449f905e26b1e28a3d0b464b56eec989e1d66bd94653c4cd04ad4d17",
+    "qualification_verifier_sha256": "38f05365daf8314a77bf7efc8d6be3dc798fe79bfd7a4bf2506cbee900c209ce",
+    "timing_collector_sha256": "52ee2ae651e9cc67ec74bed301f1cb0d34f8341ad4dfc66207376e4d5566f236",
+    "timing_verifier_sha256": "ad3a53c856662408e931437cc14db6309b56add7192ad8928a02304396d069d2",
+    "fixture_sha256": "f644cdfc647e7462100f67667d6e67392922654aae9140f369d2084e039a04d5",
+    "accepted_reader_sha256": "8845d2df81e77cfad374e203d8ae68b94ed8c5436bd77773fd25c7419ad73452",
+    "prerequisite_registration_sha256": "f619f53e0503e9dd91ef0937b54680a87c6c7c78d0af80019c6d1f12392a5aac",
+    "qualification_cases": 208,
+    "qualification_checked_files": 1984
+  },
+  "execution_workflow": {
+    "path": ".github/workflows/mat003-wclear-timing.yml",
+    "sha256": "92b953d00c12e1e8d45144ad35263623d7b507d8421b90565ca5d521acfe968f",
+    "trigger": "workflow_dispatch only",
+    "runner": "ubuntu-24.04",
+    "job_timeout_minutes": 210,
+    "artifact_retention_days": 90,
+    "authorization": "input registration_sha256 must match this file; owner-supplied JSON receipt must authorize this exact registration/campaign/scope/execution commit; repository owner actor required; no reruns"
+  },
+  "admitted_limits": [
+    "Conditional prepared-resident comparison only: complete semantic pre-scans, stamp rebase and pre-record output are frozen; natural E8 preserves stamps while ordinary and wider prepared arms write them. Store/cache histories differ and are part of this protocol.",
+    "The event-inclusive World::tick latency is directly observed; clear-event excess is a paired protocol contrast and is not an instrumented isolated clear-loop cost.",
+    "E8 events are natural at tick256. E16/E24/E32 primary events are prepared; side128 E8/E16 natural tick65536 comparisons qualify semantics, not wide-epoch natural latency.",
+    "Clearing predicates and scheduling/support equivalence are qualified; historical raw epoch labels are intentionally not reproduced by wide-event preparation.",
+    "Configured workers and phase work are retained; direct background participation is qualified by correctness-observed twins and is not counted in observer-off timing.",
+    "Seven fresh-process pairs per context: descriptive p95/p99 are the observed maximum, not an estimated population tail or a worst-gameplay guarantee.",
+    "Process peak RSS includes startup, World allocations, semantic buffers and reentry. Cell carrier address span is resident_cells*16 bytes, not a measured cache/bus traffic count.",
+    "Only C80-aligned 16-byte carriers on the qualified native Linux/x86-64 binaries are admitted. No C64 normal-access contrast, packed speed ranking, C128 timing, S2B, production migration or GEN-006 implementation is admitted.",
+    "Amortized projections are conditional model calculations; they do not establish E24/E32 natural long-run timing, general cold-cache behavior or lower individual-clear latency."
+  ],
+  "execution_requirements": [
+    "STOP until owner explicitly authorizes the exact SHA-256 of this registration and exact workflow execution commit.",
+    "Owner-established JSON receipt fields: execution_authorized=true; approver=authenticated repository-owner login; registration_sha256=exact hash; decision=authorize-exact-registered-campaign; campaign_id=WCLEAR-001-672-001; scope_acknowledged=prepared-resident-protocol-v1; execution_commit=exact dispatched SHA.",
+    "No generated approval, reused pre-admission authority, selective rerun, dropped spikes, partial acceptance or dispatch by the admission reviewer.",
+    "A failed or budget-exhausted matrix remains failed; obtain a separately recorded review disposition before any replacement campaign.",
+    "After the one admitted campaign retain all raw files and hashes, independently verify all672 processes, then obtain separate performance acceptance."
+  ],
+  "physical_carrier_address_span_bytes": {
+    "512": 4194304,
+    "1024": 16777216,
+    "2048": 67108864
+  },
+  "observer_off_binaries": [
+    {
+      "binary": "bin/aligned-e8-x2-o0",
+      "id": "aligned-e8-x2-o0",
+      "observer": 0,
+      "sha256": "5aa02e752ecf4c5a24fbdb04a689fbe8e9bb1099873c60e6a2ceee8d7d9084d5"
+    },
+    {
+      "binary": "bin/aligned-e16-x2-o0",
+      "id": "aligned-e16-x2-o0",
+      "observer": 0,
+      "sha256": "140dc066a09b5fe85f96da8c5489eb9d50e54ad78106b4d7ccf819d14c1bd642"
+    },
+    {
+      "binary": "bin/aligned-e24-x2-o0",
+      "id": "aligned-e24-x2-o0",
+      "observer": 0,
+      "sha256": "bc8679920264b115f969d22bc5acfe8bb897c922e7bc66615b600c00f93b707c"
+    },
+    {
+      "binary": "bin/aligned-e32-x2-o0",
+      "id": "aligned-e32-x2-o0",
+      "observer": 0,
+      "sha256": "e0a325e47ce64a49014283662ad9b0454b8d486ccd367dbf867c417ae708a4aa"
+    }
+  ]
+}

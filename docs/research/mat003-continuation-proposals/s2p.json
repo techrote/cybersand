@@ -1,0 +1,61 @@
+{
+  "status": "proposal-not-timing-registration",
+  "formal_timing_admitted": false,
+  "execution_authorized": false,
+  "candidate_source_commit": "c7d7bf6f3c085f68332c30384c9742dd0ca55f93",
+  "prerequisites": [
+    "complete untimed qualification and independent readback",
+    "new actual-workload observed/off twins",
+    "frozen compiler/source/binaries/fixtures/hash-sealed apparatus",
+    "independent source-bound admission",
+    "explicit owner execution authority",
+    "manual-only timing workflow"
+  ],
+  "platform": "GitHub-hosted Ubuntu24.04 x86_64 GCC13.3 ld2.42",
+  "warmup_ticks": 120,
+  "sample_ticks": 256,
+  "seed": 204,
+  "pairs": [
+    "AB",
+    "BA",
+    "AB",
+    "BA",
+    "AB",
+    "BA",
+    "AB"
+  ],
+  "primary": "seven B/A ratios of process mean World::tick ns, retain all256 samples per process",
+  "source_qualification": "S2A definitions may be reused prospectively but no old datasets merged or relabeled",
+  "limits": "No production ranking or selected layout; all timings held",
+  "track": "S2P-performance-proposal",
+  "issue": 218,
+  "anchors": [
+    "active-512-w4"
+  ],
+  "contrasts": [
+    [
+      "C72-E8-packed",
+      "C72-E8-memcpy"
+    ],
+    [
+      "C80-E8-packed",
+      "C80-E8-memcpy"
+    ],
+    [
+      "C64-E8-word",
+      "C72-E8-memcpy"
+    ],
+    [
+      "C64-E8-word",
+      "C80-E8-memcpy"
+    ]
+  ],
+  "primary_processes": 56,
+  "epoch_scope": "allE8, identical registered clear inclusion; E16 separate future question",
+  "budget_proposal": {
+    "compile_seconds": 180,
+    "process_seconds": 120,
+    "wall_seconds": 1800,
+    "concurrency": 1
+  }
+}

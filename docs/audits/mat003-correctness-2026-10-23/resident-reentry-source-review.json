@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "review_date": "2026-10-23",
+  "intake_commit": "1bf96938a2c9928965c2df7ca77e8528f9c721e7",
+  "independent_reviewer": "/root/independent_review",
+  "disposition": "source-review-closed-no-definite-remaining-blocker",
+  "source_sha256": {
+    "tools/experiments/mat003_correctness/world.cpp": "f8281c76f051527645d1516b7d05d981d8fe88a580160895fc7934ac70b83fc2",
+    "tools/experiments/mat003_correctness/matrix.py": "a3cf8ce4a8141f01b8a3aec3fb3bcc7107e924f8d0fb999a596feb98080d30b0",
+    "tools/experiments/mat003_correctness/readback.py": "e1dfa359e1d83e0c4797a53a3007476d1e72780596f4393aa376c107a4207a62",
+    "tools/experiments/mat003_correctness/world_oracle.py": "466e97cc4416c61875cd82d91bdc14824834b539c333d4a340c30b419dd02f86",
+    "tools/experiments/mat003_correctness/negative.py": "184abf33b4cd9fa98c7bb78a3795b6b1c9922b0342f32e710a3c60c371935b60",
+    "tools/experiments/mat003_correctness/README.md": "08633e1b6b5adf7a107a68c7cf263345eb8091d98a748dd94d2f6fd451a1955f",
+    "tools/experiments/mat003_correctness/apparatus-contract.json": "b76dca3adcf572b0d6092284f80fe31753bf312df2043a7b198c6a09912a7b71"
+  },
+  "findings": [
+    {
+      "id": "observed-raw-core-scratch",
+      "status": "fixed-source-only"
+    },
+    {
+      "id": "latent-excluded-chunk-scratch-and-large-selection",
+      "status": "fixed-source-only"
+    },
+    {
+      "id": "reader-grid-coordinate-gap",
+      "status": "fixed-source-only"
+    },
+    {
+      "id": "independent-sleep-witness",
+      "status": "closed-after-revision"
+    }
+  ],
+  "cases_per_platform": 152,
+  "changed_resident_cases": 64,
+  "new_unexecuted_rejection_fixtures": 9,
+  "runtime_success_proved": false,
+  "builds_executed": 0,
+  "cases_executed": 0,
+  "generator_executed": false,
+  "negative_fixtures_executed": false,
+  "timing_executed": false,
+  "production_changed": false,
+  "R16_T1": "conditional",
+  "prior_failures_preserved": true,
+  "pr211_221": "draft",
+  "source_commit": "e655166989661617cd8d6cb4d58a71b9d88c9467",
+  "maintenance": {
+    "documentation": "passed",
+    "repository": "passed (runtime libraries unmaterialized; no runtime acceptance)",
+    "historical_M11": "passed18records/28hashes",
+    "static_AST": "parsed changed Python only; no imports or apparatus execution",
+    "diff_check": "passed",
+    "frozen_retrieval": {
+      "questions": 32,
+      "rank1": 21,
+      "top5": 32,
+      "MRR": 0.7937
+    },
+    "supplementary_retrieval": {
+      "questions": 132,
+      "rank1": 106,
+      "top5": 131,
+      "MRR": 0.8822,
+      "new_MATSCHEMA13_rank": 1,
+      "known_miss": "C09"
+    },
+    "prior131_question_objects": "preserved exactly against intake Git",
+    "raw_failure_archive_sha256": "842d9444c8c376060014e5a5b7b739b2ed89e96165459f551defbff8b27aada4"
+  },
+  "source_tree": "c302420be202ac05f393c556375bf4acf7686089",
+  "final_review_note": "Independent reviewer matched seven hashes including final contract; sole audit wording correction to conservative256-chunk population bound applied. No source blocker remains identified."
+}

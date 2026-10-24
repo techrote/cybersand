@@ -93,6 +93,8 @@ introduce unintended seams; intended scan/phase order can still affect results.
 
 ## What is stored per cell and per chunk?
 
+**Experimental continuation, 2026-10-23:** [MAT-003 S2P/WCLEAR/C128](../research/mat003-continuation.md#physical-storage-and-cache-footprint-accounting) compares packed, aligned, split and 16-byte neutral-capacity prototypes in generated World copies. Production remains the 8-byte carrier below; arithmetic array footprints are separate from process RSS and no new layout is selected.
+
 **Current source at `da5112c`, checked 2026-10-22:** `World::Chunk::Cell` aliases
 [`detail::PrecisionStorage`](../../native/include/cybersand/precision_storage.hpp),
 whose enforced physical size/alignment is **8/8 bytes**. It retains material identity,
@@ -154,3 +156,5 @@ world streaming. Fixed-demo level saves provide none of these. Use
 [ownership](data-ownership-and-lifetimes.md) and the
 [validation ledger](../reference/validation-evidence.md) before claiming a
 particular region, allocation or boundary fixture is covered.
+
+The Planned [MAT-003 schema proposal](../research/mat003-state-schema-proposal.md) and [ADR-015](../decisions/ADR-015-material-state-schema-and-carrier-gates.md) distinguish logical capacity from physical stride and retain compact/DUAL64 options. Current cell storage and scheduler ownership remain unchanged; no new timing authority follows.

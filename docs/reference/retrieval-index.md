@@ -17,6 +17,8 @@ retirement and #243's completed #233 diagnostic record, use the
 Previous completed checks, superseded partial runs and historical experiments
 retain their own source scope; fresh checks on the new heads are pending.
 
+For packed overhead, actual wide-epoch clearing, 128-total-bit feasibility and separate admission, use the [MAT-003 continuation report](../research/mat003-continuation.md). Its [dated audit](../audits/2026-10-23-mat003-continuation.md) owns executed evidence; S2A acceptance does not admit these new tracks.
+
 ## Generation Workbench 2 and procedural quality
 
 - [Workbench inspection and transactions](../systems/generation-workbench-2.md): accepted native identities, bounded deterministic replay, actual stage meanings, invalid-edit preservation, graph/hierarchy/plane editing, undo/redo, seeds and comparison.
@@ -276,3 +278,31 @@ executed results belong to the [dated Deepworks audit](../audits/2026-10-20-deep
 ## Semantic four-plane generation and authoring
 
 GEN-005 projection, typed link, fixture lifecycle, atomic admission and frozen-background questions route to the [semantic-plane contract](../systems/procedural-semantic-planes.md). Refinery/cavern JSON, source programmes, controls, actor placements, actual captures and provenance inspection route to the [authoring guide](../operations/semantic-depth-authoring.md).
+
+MAT-003 field/lifecycle and logical capacity questions route to the [state-schema proposal](../research/mat003-state-schema-proposal.md); shortlist/adoption questions route to [ADR-015](../decisions/ADR-015-material-state-schema-and-carrier-gates.md). Both are Planned, with no production selection or new timing authority.
+
+MAT-003 review disposition and outstanding owner choices: [semantics/budget review](../research/mat003-semantics-budget-review.md), including default-cap memory and record-admission versus failed-tick distinctions.
+
+Proposed concrete MAT-003 fields,256-chunk memory envelope and native latency targets: [owner offer](../research/mat003-concrete-owner-offer.md). Values await owner review and have not been qualified as a new profile.
+
+Accepted MAT-003 qualification budgets are in the [owner offer](../research/mat003-concrete-owner-offer.md); the [correctness-only plan](../research/mat003-correctness-only-plan.md) remains Planned and unexecuted. R16-T1 semantics stay conditional.
+
+The [bounded plan](../research/mat003-correctness-only-plan.md#exact-eight-arm-mapping-contracts) now specifies all eight proposed neutral16 maps, operation-relative high-lane masks, an independent oracle and complete World endpoint records. These document contracts require independent review and grant no apparatus construction/execution authority.
+
+Later owner authority permits isolated correctness-apparatus construction only. The [source-completion and independent review checkpoint](../audits/2026-10-23-mat003-apparatus-source-closure.md) supersedes the retained partial implementation hold; build/platform admission, qualification execution and timing remain held. Source completion does not qualify R16-T1 or select a production carrier.
+
+The subsequent [authorized5380c76 Windows build-only gate](../audits/2026-10-23-mat003-build-only-admission.md) passed toolchain preflight but retained a compiler-warning failure after two attempts. Independent binary admission is refused; no candidate case or timing ran. The [consolidated report](../research/mat003-continuation.md#build-only-qualification-and-refused-binary-admission-at5380c76) owns this latest disposition and the next source/authority gate.
+
+The later [reviewed replacement at6e85fe6](../audits/2026-10-23-mat003-warning-fix-build.md) completed32 Windows builds and independent binary admission; the preceding refusal remains historical for5380c76. Binary admission grants no candidate-case or timing execution authority and establishes no runtime correctness.
+
+Latest isolated fixture residency/boundary repair: [containment audit and blocked replacement](../audits/2026-10-23-mat003-containment-replacement.md). Two-cell inactive border covers serial writes and phased halo preparation within unchanged resident geometry; source review is not runtime success, and new builds/certificates/execution authority remain required.
+
+Containment source a3f4e37 now has [32 independently admitted Windows build artifacts and a new execution registration](../audits/2026-10-23-mat003-containment-build-admission.md); case execution remains held for exact owner hash authorization.
+
+Latest authorized containment correctness disposition: [resident-015 reentry/scratch failure and independent refusal](../audits/2026-10-23-mat003-containment-correctness-attempt.md). Fifteen exit0 observations precede failure on attempted257 after clear256; the pre-dedup scratch bound does not prove128 distinct cores. No full correctness or timing acceptance.
+
+Resident reentry scratch capacity, exact grid and paused/resumed witness repair: [source-only repair audit](../audits/2026-10-23-mat003-resident-reentry-repair.md), linked from the [current continuation report](../research/mat003-continuation.md#resident-reentry-source-repair-and-held-rebuild). Prior build/execution routes above describe historical stages; changed source requires fresh admission.
+
+Fresh e655166 binaries and exact replacement registration: [resident reentry build/admission](../audits/2026-10-23-mat003-reentry-build-admission.md). Source review/build success does not supply runtime qualification or owner case authorization.
+
+Latest MAT-003 runtime disposition: [152-process replacement and Astra readback refusal](../audits/2026-10-23-mat003-reentry-correctness-attempt.md). All candidate processes exited0, but the frozen reader rejected an overconstrained sleeping witness. No full correctness acceptance, rerun or timing; prior stage summaries are historical.

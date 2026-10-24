@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "status": "resident-reentry-source-repair-build-and-execution-held",
+  "source_review_disposition": "independent source review closed with no definite remaining blocker; prior incomplete attempts retained; no new binary or runtime admission",
+  "resident_fixture": {"revision": "bounded-reentry-v2", "initial_interest": [0,0,256,512], "reentry_interest": [0,0,512,512], "maximum_unique_cores": 64, "maximum_pre_dedup_entries": 256, "active_core_capacity": 256, "active_chunk_capacity": "all resident chunks: 16 or 256", "full_world_reentry": "512 only; 2048 retains excluded residents", "clear_traversal": "all resident cells"},
+  "reviewed_plan_commit": "1bbbec9580f9a3e9e6a6f9136503f873ede0f254",
+  "reviewed_plan_lf_sha256": "f134267c2304cc03974605595089cced53f03a09918e097681ae3f6bf11c0b23",
+  "logical_fields": {"material": [0,15], "state_a": [16,31], "state_b": [32,39]},
+  "e8": {"epoch": [56,63], "neutral16": [40,55]},
+  "expanded_e16": {"epoch": [40,55], "neutral16": [56,71]},
+  "k64_e16": {"epoch": [48,63], "neutral16": "unsupported: every nonzero request refuses", "raw_unused": [40,47]},
+  "arms": ["K64-E8","K64-E16","K72-E8","K72-E16","K80-E8","K80-E16","D128-E8","D128-E16"],
+  "profiles": {"material_semantics": "Current domains; labelled raw high-state/unused probes are separate", "extension_semantics": "opaque neutral16", "R16-T1": "conditional and unimplemented"},
+  "stages": ["external source/build authority", "32 builds and immutable precompile/binary checkpoint", "external independent binary admission and exact execution authority", "152 observations per platform", "external sealed independent readback"],
+  "qualification_execution_authorized": false,
+  "timing_authorized": false,
+  "production_changed": false
+}

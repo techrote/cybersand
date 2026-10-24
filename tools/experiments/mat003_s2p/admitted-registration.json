@@ -1,0 +1,266 @@
+{
+  "schema_version": 1,
+  "track": "S2P",
+  "status": "admitted-paired-timing",
+  "formal_timing_admitted": true,
+  "execution_authorized": false,
+  "base_commit": "2b2a1dd64f16dc46d5e812b757de73f47df0fb2b",
+  "carrier_correctness_run": 39885505290,
+  "carrier_correctness_artifact_sha256": "fd3e269812bfadd737f38c2cabafd906efb15ea407cb2d4c70a820279179b0c5",
+  "platform": "Linux x86_64 GitHub-hosted ubuntu-24.04 GCC13.3.0 ld2.42",
+  "flags": [
+    "-std=c++20",
+    "-O2",
+    "-DNDEBUG",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-pthread"
+  ],
+  "arms": [
+    {
+      "id": "C64-E8-word",
+      "representation": "word",
+      "extra_bytes": 0,
+      "stride": 8,
+      "alignment": 8
+    },
+    {
+      "id": "C72-E8-packed",
+      "representation": "packed",
+      "extra_bytes": 1,
+      "stride": 9,
+      "alignment": 1
+    },
+    {
+      "id": "C72-E8-memcpy",
+      "representation": "memcpy",
+      "extra_bytes": 1,
+      "stride": 9,
+      "alignment": 1
+    },
+    {
+      "id": "C80-E8-packed",
+      "representation": "packed",
+      "extra_bytes": 2,
+      "stride": 10,
+      "alignment": 1
+    },
+    {
+      "id": "C80-E8-memcpy",
+      "representation": "memcpy",
+      "extra_bytes": 2,
+      "stride": 10,
+      "alignment": 1
+    }
+  ],
+  "anchor": {
+    "side": 512,
+    "workers": 4,
+    "scenario": "active"
+  },
+  "warmup_ticks": 120,
+  "sample_ticks": 256,
+  "seed": 204,
+  "contrasts": [
+    [
+      "C72-E8-packed",
+      "C72-E8-memcpy"
+    ],
+    [
+      "C80-E8-packed",
+      "C80-E8-memcpy"
+    ],
+    [
+      "C64-E8-word",
+      "C72-E8-memcpy"
+    ],
+    [
+      "C64-E8-word",
+      "C80-E8-memcpy"
+    ]
+  ],
+  "pair_orders": [
+    "AB",
+    "BA",
+    "AB",
+    "BA",
+    "AB",
+    "BA",
+    "AB"
+  ],
+  "primary_processes": 56,
+  "qualification_builds": 10,
+  "qualification_processes": 10,
+  "budgets": {
+    "compile_seconds": 180,
+    "process_seconds": 120,
+    "qualification_wall_seconds": 2400,
+    "timing_wall_seconds": 1800,
+    "concurrency": 1
+  },
+  "statistics": {
+    "primary": "seven B_mean/A_mean ratios per contrast; process mean over all256tick_ns",
+    "spread": "median/minimum/maximum/MAD of7ratios",
+    "tick_percentiles": "per-process nearest-rank p50/p95/p99 and literalmax; processsamplesnotindependentreplicates",
+    "retention": "allraw256tickandinputtimes,work,ledgers,RSS,startup; no omissions/reruns/partial acceptance"
+  },
+  "scope": "prospective S2A fixture semantics reused; no dataset merge; sampleincludesnaturalE8clear256. Diagnostics-disabled fixture, no production/cold-gameplay claim. FullS1carriertraces prerequisite; actualworkload compares finalhashes/ledgers andper-tickwork, notfullsemantictraces.",
+  "authority": "independent exact-artifact admission and owner exactregistration/executioncommit authority required before formal timing",
+  "registration_version": 2,
+  "performance_accepted": false,
+  "author": "S2P apparatus and collector implementation owner (/root)",
+  "campaign_id": "S2P-56-001",
+  "scope_id": "active512w4-packed-access-v1",
+  "independent_review": {
+    "decision": "admitted",
+    "reviewer": "Independent S2P verifier and apparatus reviewer (/root/independent_review)",
+    "date": "2026-10-23",
+    "record": "docs/audits/2026-10-23-s2p-admission.md",
+    "basis": "Fresh independent exact-source readback passes all10actual-workload twins/419files; original full-state carrier qualification retained; only four prospective paired contrasts are admitted",
+    "execution_authority": "not granted; stop before dispatch until owner explicitly authorizes this exact registration hash and execution commit"
+  },
+  "admission_evidence": {
+    "repository": "techrote/cybersand",
+    "run_id": 39919157903,
+    "artifact_id": 12485574778,
+    "artifact_bytes": 3713276,
+    "artifact_sha256": "cb63fdf9ceb769770f16cf9e0c6f49b6a8cb0c0811dad642e84fce8632dfe6a0",
+    "artifact_expires_at": "2027-01-21T07:38:52Z",
+    "branch_source_commit": "d67e00ce53a200c76726d25b98cac8047000f4aa",
+    "source_commit": "59093d68a673c2014908a1a44846b82b885a6744",
+    "files_sha256": "11b2902e635838fa8a5948a43aaa492c666e716817b709cdbb1fe6f9e9949bbc",
+    "readback_sha256": "4932449c5ff829a044b1e32272c29181858ad03700c4c3844714a937bf4c99c2",
+    "source_manifest_sha256": "aa1225bf217d6bc619d27f7153866169092b0a87922adf654c2bc97a733c626c",
+    "generated_seal_sha256": "09111e3f2497607ea6081f16790b806133f0cfdebf03b367bf37913052f30a06",
+    "binary_seal_sha256": "e48f8202b65dc72ab006a440f06b6b2f76076e71585d4dafc0d173b55884822a",
+    "collector_sha256": "de08d8a19e65299a2be848848c0081f9c3a0638ccfb90d14e10543fe94dd2b65",
+    "verifier_sha256": "1d686f18d06d8459f02fbd649d693d050522a07627446ca839c86f159837bfe6",
+    "fixture_sha256": "ee795168482666cacb2bf6ad7a44211c5dc76923178b509b8146a7882734dcd3",
+    "prerequisite_registration_sha256": "2fa849cbd56674b96e537fd00f0647de52d41b660300868f5d0104ec50daf6ca",
+    "accepted_apparatus_reader_sha256": "60a4e5fb634424efab9a0f4bda8a674a88fa913fd5b3cf39f70d5a858f8fe6f5",
+    "accepted_statistics_reader_sha256": "2ff91978067e35544731d5c33537f3c87c062f2abf091d586cfc68d1e933d479",
+    "correctness_candidates_sha256": "c62ecf0948ab6f31074ddd65fc95409c3a58d54e8f2bcbcc6996142d43f6ab4b",
+    "correctness_overlay_sha256": "0b3da467496e18ea935028a876105dea43a1e4c17a17a4bc395e2db8b732aba4",
+    "cases": 10,
+    "builds": 10,
+    "checked_files": 419
+  },
+  "execution_workflow": {
+    "path": ".github/workflows/mat003-s2p-timing.yml",
+    "sha256": "eecbb081d8ce7d404b28e072f7ce54c84799617da1f857864c0de7df23c27706",
+    "trigger": "workflow_dispatch only",
+    "runner": "ubuntu-24.04",
+    "job_timeout_minutes": 100,
+    "artifact_retention_days": 90,
+    "authority": "repository-owner dispatch with an owner-established JSON receipt binding this registration hash, S2P-56-001, active512w4-packed-access-v1 and exact execution commit; no generated authorization"
+  },
+  "admitted_limits": [
+    "Only the exact active512x512, configured4workers, E8 fixture with120warmup plus256sample ticks and seed204 parameter is admitted; natural rollover at completedtick256 remains included in the process mean.",
+    "Four paired contrasts only: C72-P2/P1, C80-P2/P1, C72-P2/C64 and C80-P2/C64. Seven independent fresh-process pairs per contrast; retained256ticks within a process are not independent replicates.",
+    "Prospective reuse of unchanged S2A statistical definitions and workload semantics does not merge datasets or amend accepted S2A ratios, source identities or the224-process campaign.",
+    "Actual-workload twins compare final content/state hashes, material andWater ledgers and complete per-tick visits/phase work. They do not retain full semantic-byte traces for this active fixture; full S1 carrier traces and boundary/storage qualification remain prerequisites.",
+    "Observed worker counters cover the entire376-tick execution, including warmup. Background participation is qualified for that registered execution, not measured directly per sampled tick in observer-off timing.",
+    "Physics diagnostics are disabled by the unchanged S2A WorldConfig default. Dispatch correctness observers are compiled out of all timed arms. No cold-gameplay or production-performance guarantee follows.",
+    "P1/P2 at a given capacity share9/10-byte stride and alignment1; the C64 control is8-byte stride/alignment8. Findings concern these safe compiler-visible implementations under GCC13.3.0/Linuxx86_64, not every possible compact layout or platform.",
+    "Neutral tail capacity is not a new material schema; this actual workload does not exercise future additional material-state use. No production carrier change, E16/wide-epoch timing, C128 timing, S2B or GEN-006 modification is admitted.",
+    "All56processes, all per-tick tick/input observations, startup,RSS,work,ledgers and extrema must remain. Any failure, budget stop or semantic mismatch rejects completion; no selective replacement, drop or rerun is admitted.",
+    "New production rankings or intrinsic cache/unaligned-access explanations require independent result review; admission itself establishes no timing result."
+  ],
+  "execution_requirements": [
+    "STOP before dispatch until the owner explicitly authorizes this exact canonicalLF registration SHA256 and exact execution commit.",
+    "An owner-established receipt must contain execution_authorized=true, approver=authenticated repository owner, registration_sha256, decision=authorize-exact-registered-campaign, campaign_id=S2P-56-001, scope_acknowledged=active512w4-packed-access-v1 and exact execution_commit.",
+    "Workflow publication/registration is a separate prerequisite. No default-branch merge, alternate automatic trigger, ready-for-review transition or PR211/221 merge is authorized by admission.",
+    "After a complete authorized campaign independently verify all56 observations and exact reductions, then obtain a separately scoped performance-evidence acceptance."
+  ],
+  "observer_off_binaries": [
+    {
+      "arm": "C64-E8-word",
+      "binary": "bin/C64-E8-word-o0",
+      "compile_definitions": [
+        "-DMAT003_STORAGE_KIND=1",
+        "-DMAT003_EXTRA_BYTES=0",
+        "-DMAT003_SPLIT=0",
+        "-DMAT003_WORLD_SOURCE=\"/home/runner/work/cybersand/cybersand/build/mat003-s2p/overlays/C64-E8-word/native/src/world.cpp\"",
+        "-DMAT003_ARM_ID=\"C64-E8-word\"",
+        "-DMAT003_EPOCH_BITS=8"
+      ],
+      "id": "C64-E8-word-o0",
+      "observer": 0,
+      "overlay": "overlays/C64-E8-word",
+      "sha256": "abfae9a967df96a2bbacc4d11a01b270370aeb5c2bc6fff8dae0fee5fa0a315b"
+    },
+    {
+      "arm": "C72-E8-packed",
+      "binary": "bin/C72-E8-packed-o0",
+      "compile_definitions": [
+        "-DMAT003_STORAGE_KIND=3",
+        "-DMAT003_EXTRA_BYTES=1",
+        "-DMAT003_SPLIT=0",
+        "-DMAT003_WORLD_SOURCE=\"/home/runner/work/cybersand/cybersand/build/mat003-s2p/overlays/C72-E8-packed/native/src/world.cpp\"",
+        "-DMAT003_ARM_ID=\"C72-E8-packed\"",
+        "-DMAT003_EPOCH_BITS=8"
+      ],
+      "id": "C72-E8-packed-o0",
+      "observer": 0,
+      "overlay": "overlays/C72-E8-packed",
+      "sha256": "d45dd446b67d24bdfcca6ff9191eedcea76c38c31c0714cb9198a3494f4624cb"
+    },
+    {
+      "arm": "C72-E8-memcpy",
+      "binary": "bin/C72-E8-memcpy-o0",
+      "compile_definitions": [
+        "-DMAT003_STORAGE_KIND=3",
+        "-DMAT003_EXTRA_BYTES=1",
+        "-DMAT003_SPLIT=0",
+        "-DMAT003_WORLD_SOURCE=\"/home/runner/work/cybersand/cybersand/build/mat003-s2p/overlays/C72-E8-memcpy/native/src/world.cpp\"",
+        "-DMAT003_ARM_ID=\"C72-E8-memcpy\"",
+        "-DMAT003_EPOCH_BITS=8"
+      ],
+      "id": "C72-E8-memcpy-o0",
+      "observer": 0,
+      "overlay": "overlays/C72-E8-memcpy",
+      "sha256": "703566914fe8c0e3fa3eb8842f929e5bc03bacdc1e7b74eb0e15c759bc208a2f"
+    },
+    {
+      "arm": "C80-E8-packed",
+      "binary": "bin/C80-E8-packed-o0",
+      "compile_definitions": [
+        "-DMAT003_STORAGE_KIND=3",
+        "-DMAT003_EXTRA_BYTES=2",
+        "-DMAT003_SPLIT=0",
+        "-DMAT003_WORLD_SOURCE=\"/home/runner/work/cybersand/cybersand/build/mat003-s2p/overlays/C80-E8-packed/native/src/world.cpp\"",
+        "-DMAT003_ARM_ID=\"C80-E8-packed\"",
+        "-DMAT003_EPOCH_BITS=8"
+      ],
+      "id": "C80-E8-packed-o0",
+      "observer": 0,
+      "overlay": "overlays/C80-E8-packed",
+      "sha256": "bee7d53e4cc757ac4d9e69f8efe45e46a7ae4c411dc1f21c99c870790e3e2ad6"
+    },
+    {
+      "arm": "C80-E8-memcpy",
+      "binary": "bin/C80-E8-memcpy-o0",
+      "compile_definitions": [
+        "-DMAT003_STORAGE_KIND=3",
+        "-DMAT003_EXTRA_BYTES=2",
+        "-DMAT003_SPLIT=0",
+        "-DMAT003_WORLD_SOURCE=\"/home/runner/work/cybersand/cybersand/build/mat003-s2p/overlays/C80-E8-memcpy/native/src/world.cpp\"",
+        "-DMAT003_ARM_ID=\"C80-E8-memcpy\"",
+        "-DMAT003_EPOCH_BITS=8"
+      ],
+      "id": "C80-E8-memcpy-o0",
+      "observer": 0,
+      "overlay": "overlays/C80-E8-memcpy",
+      "sha256": "99d3a4dc3bf6c84d9b8e4dc95ee383ad0e3ae9fc4a38d9c406fcea96098a1733"
+    }
+  ],
+  "nominal_resident_carrier_bytes": {
+    "C64-E8-word": 2097152,
+    "C72-E8-packed": 2359296,
+    "C72-E8-memcpy": 2359296,
+    "C80-E8-packed": 2621440,
+    "C80-E8-memcpy": 2621440
+  },
+  "manual_dispatch": "STOP: pending owner authority. Future manual-only workflow mat003-s2p-timing.yml requires exact registration_sha256 and owner_authority_json inputs; use the owner-approved execution commit. No dispatch is authorized by this file."
+}

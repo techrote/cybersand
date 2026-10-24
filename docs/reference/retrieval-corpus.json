@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-10-22",
+  "reviewed": "2026-10-23",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -117,7 +117,13 @@
     "operations/mat-003prepass-registration.md",
     "research/mat-003prepass-state-inventory.md",
     "research/mat-003prepass-epoch-consumers.md",
-    "research/mat-003prepass-gen006-handoff.md"
+    "research/mat-003prepass-gen006-handoff.md",
+    "research/mat003-continuation.md",
+    "research/mat003-state-schema-proposal.md",
+    "decisions/ADR-015-material-state-schema-and-carrier-gates.md",
+    "research/mat003-semantics-budget-review.md",
+    "research/mat003-concrete-owner-offer.md",
+    "research/mat003-correctness-only-plan.md"
   ],
   "navigation": [
     "README.md",

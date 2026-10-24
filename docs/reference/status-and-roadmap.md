@@ -27,11 +27,22 @@ Historical campaigns remain unchanged; #204 and
 independent acceptance remain open. This task dispatches no manual physical
 stress campaign and starts neither #212 nor #234 repair.
 
+## MAT-003 continuation — 2026-10-23
+
+Latest MAT-003 runtime disposition: [152-process replacement and Astra readback refusal](../audits/2026-10-23-mat003-reentry-correctness-attempt.md). All candidate processes exited0, but the frozen reader rejected an overconstrained sleeping witness. No full correctness acceptance, rerun or timing; prior stage summaries are historical.
+
+
+**Historical source-review checkpoint, subsequently executed:** the [resident reentry and scratch repair](../audits/2026-10-23-mat003-resident-reentry-repair.md) has independent source-review closure. Pre-dedup core entries are provisioned256; active-chunk capacity covers all16/256 resident chunks. Initial256x512/reentry512x512 windows retain at most64 unique cores, full resident clearing and bounded reentry; full2048 reentry is outside scope. Exact-grid, sleep and Sand pause/resume checks close adjacent reader gaps. No runtime success or new build/case/timing admission follows.
+
+**Historical partial runtime attempt, retained unchanged:** [authorized86345703](../audits/2026-10-23-mat003-containment-correctness-attempt.md) stopped at resident-015 after clear256, retaining15 exit0 processes and136 unattempted cases. Full correctness is refused. Its32 admitted a3f4e37 binaries cannot admit the changed repair. The [prior293-tick failure](../audits/2026-10-23-mat003-windows-correctness-attempt.md), [failed warning build](../audits/2026-10-23-mat003-build-only-admission.md) and subsequent historical build/source checkpoints remain retained. New build-only authority, fresh binaries, independent admission and exact execution registration/hash authorization are required.
+
+**Current accepted campaigns / conditional architecture:** S2A224 processes and the separate [S2P56](../audits/2026-10-23-s2p-results.md), [WCLEAR672](../audits/2026-10-23-wclear-results.md) and [C12870](../audits/2026-10-23-c128-results.md) processes remain accepted only under their own source/workload/platform contracts. The [continuation report](../research/mat003-continuation.md) and [ADR-015](../decisions/ADR-015-material-state-schema-and-carrier-gates.md) preserve optimized compact/DUAL64 as leading options and accepted budgets as qualification targets. R16-T1 is conditional. At that dated checkpoint PR211/221 were draft; production C64/E8, Water and GEN-006 were unchanged. No S2B or new timing authority.
+
 ## MAT-003PREPASS S1 World apparatus — 2026-10-22
 
 **Current registered Linux S1 correctness; broader qualification open:** [#204](https://github.com/techrote/cybersand/issues/204) retains the [S0 isolated-storage pass](../audits/2026-10-22-mat003-prepass-foundation.md), source inventory, epoch consumer audit and [proposed GEN-006 semantic handoff](../research/mat-003prepass-gen006-handoff.md). The [registered S1 apparatus](../operations/mat-003prepass-registration.md) adds seventeen real World arms using generated source copies, typed 8/16-bit counters, full semantic and conservation checks, and a gate covering two natural sixteen-bit rollovers. The registered normal/sanitized collection and independent readback passed at apparatus source `e31d296`; this qualifies the declared native Linux fixtures. The [World report](../audits/2026-10-22-mat003-world-correctness.md) owns execution status and limits. Production source and 64-bit/epoch8 storage remain unchanged.
 
-Next: the [S2F source-only preflight](../audits/2026-10-22-mat003-s2f-preflight.md) passes six untimed Linux developer scenes and independent evidence readback. The remaining 18 source contexts, candidate observed twins and separately registered S2A/S2B paired measurements are unqualified; the S2 proposal remains unadmitted as a timing campaign. #204 remains open. Programme order is GEN-007 → MAT-003PREPASS → GEN-006 → full MAT-003; GEN-006 architecture can continue, but durable state contracts must consume this prepass. #14/G-final and unrelated Water/soliding gates remain open.
+Historical 2026-10-22 next step: the [S2F source-only preflight](../audits/2026-10-22-mat003-s2f-preflight.md) passes six untimed Linux developer scenes and independent evidence readback. The remaining 18 source contexts, candidate observed twins and separately registered S2A/S2B paired measurements are unqualified; the S2 proposal remains unadmitted as a timing campaign. #204 remains open. Programme order is GEN-007 → MAT-003PREPASS → GEN-006 → full MAT-003; GEN-006 architecture can continue, but durable state contracts must consume this prepass. #14/G-final and unrelated Water/soliding gates remain open.
 
 ## 4LY shared physical free-flight — 2026-10-22
 
@@ -917,3 +928,7 @@ The [physical actor programme](../operations/physical-actor-programme.md) retain
 ## Strata Theatre integration — 2026-10-18
 
 The opt-in [depth prototype](../systems/depth-layers-and-parallax.md) supplies four native material worlds and five compositor modes. It remains a synchronous comparison host, separate from ordinary asynchronous gameplay; production layering, immutable native-event forwarding, persistence and browser qualification remain Planned.
+
+**2026-10-23 MAT-003 proposed decision checkpoint:** [state schema](../research/mat003-state-schema-proposal.md) and [ADR-015](../decisions/ADR-015-material-state-schema-and-carrier-gates.md) retain optimized compact and DUAL64 as leading expansion options after all three separately verified campaigns. Field semantics, epoch/map choice and owner budgets remain Planned/Ambiguous; production C64/E8 and draft PR211/221 remain unchanged. No new timing is authorized.
+
+Latest MAT-003 build checkpoint: [e655166 resident reentry build/admission](../audits/2026-10-23-mat003-reentry-build-admission.md).32 clean compilations; new binary/registration seals replace no historical evidence. Cases and timing remain held pending new registration hash authorization.

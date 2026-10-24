@@ -1,0 +1,1470 @@
+{
+  "status": "complete-independent-readback-performance-acceptance-held",
+  "formal_timing_admitted": true,
+  "performance_accepted": false,
+  "checked_files": 116,
+  "processes": 56,
+  "contrasts": [
+    {
+      "contrast": 1,
+      "a": "C72-E8-packed",
+      "b": "C72-E8-memcpy",
+      "pairs": [
+        {
+          "pair": 1,
+          "order": "AB",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 1274971890,
+              "mean_ns": 4980358.9453125,
+              "p50_ns": 4578410,
+              "p95_ns": 6510977,
+              "p99_ns": 7736774,
+              "max_ns": 8604891
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 5143668,
+              "mean_ns": 20092.453125,
+              "p50_ns": 20211,
+              "p95_ns": 22564,
+              "p99_ns": 29194,
+              "max_ns": 33982
+            },
+            "startup_ns": 2945370,
+            "peak_process_rss_bytes": 30642176
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 790654052,
+              "mean_ns": 3088492.390625,
+              "p50_ns": 2882792,
+              "p95_ns": 4423713,
+              "p99_ns": 4541751,
+              "max_ns": 4592617
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3312495,
+              "mean_ns": 12939.43359375,
+              "p50_ns": 12779,
+              "p95_ns": 15213,
+              "p99_ns": 25368,
+              "max_ns": 26681
+            },
+            "startup_ns": 2882352,
+            "peak_process_rss_bytes": 30695424
+          },
+          "b_over_a_mean_tick_ratio": 0.6201344972397783
+        },
+        {
+          "pair": 2,
+          "order": "BA",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 1241036307,
+              "mean_ns": 4847798.07421875,
+              "p50_ns": 4554320,
+              "p95_ns": 6372343,
+              "p99_ns": 6560091,
+              "max_ns": 6715576
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 5157184,
+              "mean_ns": 20145.25,
+              "p50_ns": 20240,
+              "p95_ns": 24187,
+              "p99_ns": 32138,
+              "max_ns": 32289
+            },
+            "startup_ns": 3283316,
+            "peak_process_rss_bytes": 30642176
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 809850766,
+              "mean_ns": 3163479.5546875,
+              "p50_ns": 2903924,
+              "p95_ns": 4395652,
+              "p99_ns": 4562613,
+              "max_ns": 4622352
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3326877,
+              "mean_ns": 12995.61328125,
+              "p50_ns": 13029,
+              "p95_ns": 14372,
+              "p99_ns": 20361,
+              "max_ns": 24416
+            },
+            "startup_ns": 2987741,
+            "peak_process_rss_bytes": 30638080
+          },
+          "b_over_a_mean_tick_ratio": 0.6525600914591131
+        },
+        {
+          "pair": 3,
+          "order": "AB",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 1281959129,
+              "mean_ns": 5007652.84765625,
+              "p50_ns": 4576901,
+              "p95_ns": 6641142,
+              "p99_ns": 7025038,
+              "max_ns": 8108107
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 5235670,
+              "mean_ns": 20451.8359375,
+              "p50_ns": 20301,
+              "p95_ns": 25389,
+              "p99_ns": 32980,
+              "max_ns": 42965
+            },
+            "startup_ns": 3044696,
+            "peak_process_rss_bytes": 30543872
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 847974477,
+              "mean_ns": 3312400.30078125,
+              "p50_ns": 3009697,
+              "p95_ns": 4505903,
+              "p99_ns": 4643842,
+              "max_ns": 4730513
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3268893,
+              "mean_ns": 12769.11328125,
+              "p50_ns": 12769,
+              "p95_ns": 14191,
+              "p99_ns": 21583,
+              "max_ns": 28192
+            },
+            "startup_ns": 3268338,
+            "peak_process_rss_bytes": 30650368
+          },
+          "b_over_a_mean_tick_ratio": 0.6614676379437054
+        },
+        {
+          "pair": 4,
+          "order": "BA",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 1255999477,
+              "mean_ns": 4906247.95703125,
+              "p50_ns": 4527705,
+              "p95_ns": 6350185,
+              "p99_ns": 6496066,
+              "max_ns": 6692039
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 5110083,
+              "mean_ns": 19961.26171875,
+              "p50_ns": 20250,
+              "p95_ns": 21232,
+              "p99_ns": 30156,
+              "max_ns": 32359
+            },
+            "startup_ns": 3190190,
+            "peak_process_rss_bytes": 30617600
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 819398417,
+              "mean_ns": 3200775.06640625,
+              "p50_ns": 2926542,
+              "p95_ns": 4392220,
+              "p99_ns": 4553375,
+              "max_ns": 4616661
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3190398,
+              "mean_ns": 12462.4921875,
+              "p50_ns": 12659,
+              "p95_ns": 13491,
+              "p99_ns": 14192,
+              "max_ns": 25178
+            },
+            "startup_ns": 2905009,
+            "peak_process_rss_bytes": 30728192
+          },
+          "b_over_a_mean_tick_ratio": 0.6523875463365341
+        },
+        {
+          "pair": 5,
+          "order": "AB",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 1235123833,
+              "mean_ns": 4824702.47265625,
+              "p50_ns": 4559224,
+              "p95_ns": 5850243,
+              "p99_ns": 5977485,
+              "max_ns": 6082152
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 5097327,
+              "mean_ns": 19911.43359375,
+              "p50_ns": 20120,
+              "p95_ns": 21643,
+              "p99_ns": 32129,
+              "max_ns": 33170
+            },
+            "startup_ns": 3176850,
+            "peak_process_rss_bytes": 30543872
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 825287646,
+              "mean_ns": 3223779.8671875,
+              "p50_ns": 2934901,
+              "p95_ns": 4389777,
+              "p99_ns": 4527134,
+              "max_ns": 4657000
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3219483,
+              "mean_ns": 12576.10546875,
+              "p50_ns": 12669,
+              "p95_ns": 14011,
+              "p99_ns": 18027,
+              "max_ns": 20581
+            },
+            "startup_ns": 3070586,
+            "peak_process_rss_bytes": 30646272
+          },
+          "b_over_a_mean_tick_ratio": 0.668182107696403
+        },
+        {
+          "pair": 6,
+          "order": "BA",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 1257318326,
+              "mean_ns": 4911399.7109375,
+              "p50_ns": 4548337,
+              "p95_ns": 6460022,
+              "p99_ns": 6614961,
+              "max_ns": 6729639
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 5177142,
+              "mean_ns": 20223.2109375,
+              "p50_ns": 20241,
+              "p95_ns": 22844,
+              "p99_ns": 31498,
+              "max_ns": 39170
+            },
+            "startup_ns": 3654838,
+            "peak_process_rss_bytes": 30646272
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 827002751,
+              "mean_ns": 3230479.49609375,
+              "p50_ns": 2947439,
+              "p95_ns": 4406382,
+              "p99_ns": 4575317,
+              "max_ns": 4686645
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3243851,
+              "mean_ns": 12671.29296875,
+              "p50_ns": 12789,
+              "p95_ns": 13971,
+              "p99_ns": 18107,
+              "max_ns": 26070
+            },
+            "startup_ns": 3436597,
+            "peak_process_rss_bytes": 30646272
+          },
+          "b_over_a_mean_tick_ratio": 0.6577512901056689
+        },
+        {
+          "pair": 7,
+          "order": "AB",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 1192259252,
+              "mean_ns": 4657262.703125,
+              "p50_ns": 4261132,
+              "p95_ns": 5944865,
+              "p99_ns": 6276996,
+              "max_ns": 6508314
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 5079477,
+              "mean_ns": 19841.70703125,
+              "p50_ns": 20260,
+              "p95_ns": 21182,
+              "p99_ns": 23846,
+              "max_ns": 29455
+            },
+            "startup_ns": 3198859,
+            "peak_process_rss_bytes": 30703616
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 811466473,
+              "mean_ns": 3169790.91015625,
+              "p50_ns": 2904965,
+              "p95_ns": 4348895,
+              "p99_ns": 4555417,
+              "max_ns": 4598061
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3233404,
+              "mean_ns": 12630.484375,
+              "p50_ns": 12649,
+              "p95_ns": 13851,
+              "p99_ns": 21553,
+              "max_ns": 24798
+            },
+            "startup_ns": 3140581,
+            "peak_process_rss_bytes": 30646272
+          },
+          "b_over_a_mean_tick_ratio": 0.6806124352893678
+        }
+      ],
+      "ratio_summary": {
+        "ratios": [
+          0.6201344972397783,
+          0.6525600914591131,
+          0.6614676379437054,
+          0.6523875463365341,
+          0.668182107696403,
+          0.6577512901056689,
+          0.6806124352893678
+        ],
+        "median": 0.6577512901056689,
+        "min": 0.6201344972397783,
+        "max": 0.6806124352893678,
+        "median_absolute_deviation": 0.005363743769134843
+      }
+    },
+    {
+      "contrast": 2,
+      "a": "C80-E8-packed",
+      "b": "C80-E8-memcpy",
+      "pairs": [
+        {
+          "pair": 1,
+          "order": "AB",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 1268100167,
+              "mean_ns": 4953516.27734375,
+              "p50_ns": 4567705,
+              "p95_ns": 6413952,
+              "p99_ns": 6686259,
+              "max_ns": 6858664
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 5156117,
+              "mean_ns": 20141.08203125,
+              "p50_ns": 20190,
+              "p95_ns": 21462,
+              "p99_ns": 32109,
+              "max_ns": 69264
+            },
+            "startup_ns": 3416598,
+            "peak_process_rss_bytes": 30842880
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 829381050,
+              "mean_ns": 3239769.7265625,
+              "p50_ns": 2950303,
+              "p95_ns": 4384404,
+              "p99_ns": 4596443,
+              "max_ns": 4648307
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3267409,
+              "mean_ns": 12763.31640625,
+              "p50_ns": 12719,
+              "p95_ns": 14172,
+              "p99_ns": 23726,
+              "max_ns": 25859
+            },
+            "startup_ns": 3387384,
+            "peak_process_rss_bytes": 30904320
+          },
+          "b_over_a_mean_tick_ratio": 0.6540343354437868
+        },
+        {
+          "pair": 2,
+          "order": "BA",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 1238668465,
+              "mean_ns": 4838548.69140625,
+              "p50_ns": 4551210,
+              "p95_ns": 6005456,
+              "p99_ns": 7797711,
+              "max_ns": 8174150
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 5181917,
+              "mean_ns": 20241.86328125,
+              "p50_ns": 20180,
+              "p95_ns": 23295,
+              "p99_ns": 32279,
+              "max_ns": 37717
+            },
+            "startup_ns": 3515327,
+            "peak_process_rss_bytes": 30904320
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 830327707,
+              "mean_ns": 3243467.60546875,
+              "p50_ns": 2956653,
+              "p95_ns": 4436137,
+              "p99_ns": 4613159,
+              "max_ns": 5044580
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3259736,
+              "mean_ns": 12733.34375,
+              "p50_ns": 12860,
+              "p95_ns": 13991,
+              "p99_ns": 24918,
+              "max_ns": 25768
+            },
+            "startup_ns": 3288283,
+            "peak_process_rss_bytes": 30908416
+          },
+          "b_over_a_mean_tick_ratio": 0.6703389409368713
+        },
+        {
+          "pair": 3,
+          "order": "AB",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 1215269893,
+              "mean_ns": 4747148.01953125,
+              "p50_ns": 4455246,
+              "p95_ns": 6452972,
+              "p99_ns": 6625802,
+              "max_ns": 6911915
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 5077996,
+              "mean_ns": 19835.921875,
+              "p50_ns": 19970,
+              "p95_ns": 20952,
+              "p99_ns": 33040,
+              "max_ns": 37887
+            },
+            "startup_ns": 3688178,
+            "peak_process_rss_bytes": 30916608
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 826154936,
+              "mean_ns": 3227167.71875,
+              "p50_ns": 2936373,
+              "p95_ns": 4391429,
+              "p99_ns": 4557360,
+              "max_ns": 4578572
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3240572,
+              "mean_ns": 12658.484375,
+              "p50_ns": 12679,
+              "p95_ns": 14101,
+              "p99_ns": 20922,
+              "max_ns": 21582
+            },
+            "startup_ns": 3401275,
+            "peak_process_rss_bytes": 30908416
+          },
+          "b_over_a_mean_tick_ratio": 0.6798119008449756
+        },
+        {
+          "pair": 4,
+          "order": "BA",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 1259704533,
+              "mean_ns": 4920720.83203125,
+              "p50_ns": 4543579,
+              "p95_ns": 6353747,
+              "p99_ns": 6508095,
+              "max_ns": 6645893
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 5084723,
+              "mean_ns": 19862.19921875,
+              "p50_ns": 20110,
+              "p95_ns": 21242,
+              "p99_ns": 29164,
+              "max_ns": 33200
+            },
+            "startup_ns": 3563139,
+            "peak_process_rss_bytes": 30846976
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 830492402,
+              "mean_ns": 3244110.9453125,
+              "p50_ns": 2964045,
+              "p95_ns": 4416347,
+              "p99_ns": 4591001,
+              "max_ns": 4611962
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3223691,
+              "mean_ns": 12592.54296875,
+              "p50_ns": 12769,
+              "p95_ns": 13691,
+              "p99_ns": 15032,
+              "max_ns": 24156
+            },
+            "startup_ns": 3259801,
+            "peak_process_rss_bytes": 30806016
+          },
+          "b_over_a_mean_tick_ratio": 0.6592755525156152
+        },
+        {
+          "pair": 5,
+          "order": "AB",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 1205098207,
+              "mean_ns": 4707414.87109375,
+              "p50_ns": 4517841,
+              "p95_ns": 5806065,
+              "p99_ns": 6489737,
+              "max_ns": 6610739
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 5096212,
+              "mean_ns": 19907.078125,
+              "p50_ns": 20060,
+              "p95_ns": 21062,
+              "p99_ns": 30546,
+              "max_ns": 33200
+            },
+            "startup_ns": 3496158,
+            "peak_process_rss_bytes": 30814208
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 835934935,
+              "mean_ns": 3265370.83984375,
+              "p50_ns": 2932847,
+              "p95_ns": 4484730,
+              "p99_ns": 4706856,
+              "max_ns": 5323827
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3286806,
+              "mean_ns": 12839.0859375,
+              "p50_ns": 12659,
+              "p95_ns": 14963,
+              "p99_ns": 22273,
+              "max_ns": 25989
+            },
+            "startup_ns": 3353843,
+            "peak_process_rss_bytes": 30961664
+          },
+          "b_over_a_mean_tick_ratio": 0.6936654043167123
+        },
+        {
+          "pair": 6,
+          "order": "BA",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 1247997343,
+              "mean_ns": 4874989.62109375,
+              "p50_ns": 4508345,
+              "p95_ns": 6419959,
+              "p99_ns": 6695326,
+              "max_ns": 11795633
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 5116381,
+              "mean_ns": 19985.86328125,
+              "p50_ns": 20080,
+              "p95_ns": 22484,
+              "p99_ns": 31337,
+              "max_ns": 37036
+            },
+            "startup_ns": 3354563,
+            "peak_process_rss_bytes": 30908416
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 828228082,
+              "mean_ns": 3235265.9453125,
+              "p50_ns": 2936492,
+              "p95_ns": 4454875,
+              "p99_ns": 4583009,
+              "max_ns": 4630050
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3254116,
+              "mean_ns": 12711.390625,
+              "p50_ns": 12659,
+              "p95_ns": 14011,
+              "p99_ns": 23625,
+              "max_ns": 25639
+            },
+            "startup_ns": 3001761,
+            "peak_process_rss_bytes": 30793728
+          },
+          "b_over_a_mean_tick_ratio": 0.6636457093803284
+        },
+        {
+          "pair": 7,
+          "order": "AB",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 1275987833,
+              "mean_ns": 4984327.47265625,
+              "p50_ns": 4572171,
+              "p95_ns": 6407040,
+              "p99_ns": 6685370,
+              "max_ns": 6705480
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 5109985,
+              "mean_ns": 19960.87890625,
+              "p50_ns": 20100,
+              "p95_ns": 21943,
+              "p99_ns": 31859,
+              "max_ns": 32709
+            },
+            "startup_ns": 3274712,
+            "peak_process_rss_bytes": 30908416
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 841092177,
+              "mean_ns": 3285516.31640625,
+              "p50_ns": 2968250,
+              "p95_ns": 4444157,
+              "p99_ns": 4651160,
+              "max_ns": 4746624
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3347415,
+              "mean_ns": 13075.83984375,
+              "p50_ns": 12909,
+              "p95_ns": 14643,
+              "p99_ns": 26079,
+              "max_ns": 26240
+            },
+            "startup_ns": 3346220,
+            "peak_process_rss_bytes": 30920704
+          },
+          "b_over_a_mean_tick_ratio": 0.6591694334753112
+        }
+      ],
+      "ratio_summary": {
+        "ratios": [
+          0.6540343354437868,
+          0.6703389409368713,
+          0.6798119008449756,
+          0.6592755525156152,
+          0.6936654043167123,
+          0.6636457093803284,
+          0.6591694334753112
+        ],
+        "median": 0.6636457093803284,
+        "min": 0.6540343354437868,
+        "max": 0.6936654043167123,
+        "median_absolute_deviation": 0.006693231556542889
+      }
+    },
+    {
+      "contrast": 3,
+      "a": "C64-E8-word",
+      "b": "C72-E8-memcpy",
+      "pairs": [
+        {
+          "pair": 1,
+          "order": "AB",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 814623923,
+              "mean_ns": 3182124.69921875,
+              "p50_ns": 2896112,
+              "p95_ns": 4336586,
+              "p99_ns": 4536137,
+              "max_ns": 4573162
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 2987943,
+              "mean_ns": 11671.65234375,
+              "p50_ns": 11478,
+              "p95_ns": 13140,
+              "p99_ns": 20541,
+              "max_ns": 23556
+            },
+            "startup_ns": 3277046,
+            "peak_process_rss_bytes": 30433280
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 810398062,
+              "mean_ns": 3165617.4296875,
+              "p50_ns": 2965296,
+              "p95_ns": 4438949,
+              "p99_ns": 4571019,
+              "max_ns": 4615836
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3213925,
+              "mean_ns": 12554.39453125,
+              "p50_ns": 12699,
+              "p95_ns": 13641,
+              "p99_ns": 15133,
+              "max_ns": 21763
+            },
+            "startup_ns": 2903342,
+            "peak_process_rss_bytes": 30584832
+          },
+          "b_over_a_mean_tick_ratio": 0.9948125007372267
+        },
+        {
+          "pair": 2,
+          "order": "BA",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 816082449,
+              "mean_ns": 3187822.06640625,
+              "p50_ns": 2891726,
+              "p95_ns": 4373853,
+              "p99_ns": 4573334,
+              "max_ns": 4930013
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 2959123,
+              "mean_ns": 11559.07421875,
+              "p50_ns": 11597,
+              "p95_ns": 12759,
+              "p99_ns": 16204,
+              "max_ns": 18368
+            },
+            "startup_ns": 2944185,
+            "peak_process_rss_bytes": 30375936
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 831559150,
+              "mean_ns": 3248277.9296875,
+              "p50_ns": 2924745,
+              "p95_ns": 4457990,
+              "p99_ns": 4663901,
+              "max_ns": 4831704
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3232227,
+              "mean_ns": 12625.88671875,
+              "p50_ns": 12650,
+              "p95_ns": 13721,
+              "p99_ns": 23556,
+              "max_ns": 25778
+            },
+            "startup_ns": 3078046,
+            "peak_process_rss_bytes": 30633984
+          },
+          "b_over_a_mean_tick_ratio": 1.0189646291486414
+        },
+        {
+          "pair": 3,
+          "order": "AB",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 779306524,
+              "mean_ns": 3044166.109375,
+              "p50_ns": 2638403,
+              "p95_ns": 4339291,
+              "p99_ns": 4523349,
+              "max_ns": 4560374
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 2978231,
+              "mean_ns": 11633.71484375,
+              "p50_ns": 11508,
+              "p95_ns": 12880,
+              "p99_ns": 19359,
+              "max_ns": 23896
+            },
+            "startup_ns": 3157917,
+            "peak_process_rss_bytes": 30277632
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 834909706,
+              "mean_ns": 3261366.0390625,
+              "p50_ns": 2969503,
+              "p95_ns": 4502192,
+              "p99_ns": 4640405,
+              "max_ns": 4654617
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3239906,
+              "mean_ns": 12655.8828125,
+              "p50_ns": 12690,
+              "p95_ns": 14041,
+              "p99_ns": 20201,
+              "max_ns": 26700
+            },
+            "startup_ns": 2947880,
+            "peak_process_rss_bytes": 30507008
+          },
+          "b_over_a_mean_tick_ratio": 1.0713495656556316
+        },
+        {
+          "pair": 4,
+          "order": "BA",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 820981621,
+              "mean_ns": 3206959.45703125,
+              "p50_ns": 2930454,
+              "p95_ns": 4432872,
+              "p99_ns": 4587565,
+              "max_ns": 4653085
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 2989557,
+              "mean_ns": 11677.95703125,
+              "p50_ns": 11498,
+              "p95_ns": 12919,
+              "p99_ns": 23595,
+              "max_ns": 24317
+            },
+            "startup_ns": 2978286,
+            "peak_process_rss_bytes": 30384128
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 828185241,
+              "mean_ns": 3235098.59765625,
+              "p50_ns": 2951947,
+              "p95_ns": 4437880,
+              "p99_ns": 4536689,
+              "max_ns": 4581887
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3219664,
+              "mean_ns": 12576.8125,
+              "p50_ns": 12729,
+              "p95_ns": 13760,
+              "p99_ns": 21473,
+              "max_ns": 24186
+            },
+            "startup_ns": 2937825,
+            "peak_process_rss_bytes": 30642176
+          },
+          "b_over_a_mean_tick_ratio": 1.0087743986171402
+        },
+        {
+          "pair": 5,
+          "order": "AB",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 823560459,
+              "mean_ns": 3217033.04296875,
+              "p50_ns": 2945877,
+              "p95_ns": 4340082,
+              "p99_ns": 4515147,
+              "max_ns": 4597040
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 2968835,
+              "mean_ns": 11597.01171875,
+              "p50_ns": 11507,
+              "p95_ns": 12939,
+              "p99_ns": 18948,
+              "max_ns": 21192
+            },
+            "startup_ns": 3038768,
+            "peak_process_rss_bytes": 30261248
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 786872730,
+              "mean_ns": 3073721.6015625,
+              "p50_ns": 2891144,
+              "p95_ns": 4404229,
+              "p99_ns": 4548056,
+              "max_ns": 4583269
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3236227,
+              "mean_ns": 12641.51171875,
+              "p50_ns": 12689,
+              "p95_ns": 13951,
+              "p99_ns": 18037,
+              "max_ns": 24907
+            },
+            "startup_ns": 2912557,
+            "peak_process_rss_bytes": 30646272
+          },
+          "b_over_a_mean_tick_ratio": 0.9554522942437672
+        },
+        {
+          "pair": 6,
+          "order": "BA",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 818429580,
+              "mean_ns": 3196990.546875,
+              "p50_ns": 2896392,
+              "p95_ns": 4387774,
+              "p99_ns": 4539794,
+              "max_ns": 4996653
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3015310,
+              "mean_ns": 11778.5546875,
+              "p50_ns": 11497,
+              "p95_ns": 13310,
+              "p99_ns": 21312,
+              "max_ns": 24678
+            },
+            "startup_ns": 3029573,
+            "peak_process_rss_bytes": 30384128
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 815338810,
+              "mean_ns": 3184917.2265625,
+              "p50_ns": 2909212,
+              "p95_ns": 4375896,
+              "p99_ns": 4570750,
+              "max_ns": 4595357
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3291471,
+              "mean_ns": 12857.30859375,
+              "p50_ns": 12629,
+              "p95_ns": 14672,
+              "p99_ns": 25298,
+              "max_ns": 29274
+            },
+            "startup_ns": 3255965,
+            "peak_process_rss_bytes": 30646272
+          },
+          "b_over_a_mean_tick_ratio": 0.9962235358111079
+        },
+        {
+          "pair": 7,
+          "order": "AB",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 807874687,
+              "mean_ns": 3155760.49609375,
+              "p50_ns": 2883994,
+              "p95_ns": 4383538,
+              "p99_ns": 4557330,
+              "max_ns": 4774648
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 2986360,
+              "mean_ns": 11665.46875,
+              "p50_ns": 11577,
+              "p95_ns": 12679,
+              "p99_ns": 20450,
+              "max_ns": 23295
+            },
+            "startup_ns": 2957996,
+            "peak_process_rss_bytes": 30437376
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 793384577,
+              "mean_ns": 3099158.50390625,
+              "p50_ns": 2919287,
+              "p95_ns": 4362145,
+              "p99_ns": 4541986,
+              "max_ns": 4636629
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3279598,
+              "mean_ns": 12810.9296875,
+              "p50_ns": 12829,
+              "p95_ns": 13962,
+              "p99_ns": 21492,
+              "max_ns": 27471
+            },
+            "startup_ns": 3062232,
+            "peak_process_rss_bytes": 30539776
+          },
+          "b_over_a_mean_tick_ratio": 0.982063913830735
+        }
+      ],
+      "ratio_summary": {
+        "ratios": [
+          0.9948125007372267,
+          1.0189646291486414,
+          1.0713495656556316,
+          1.0087743986171402,
+          0.9554522942437672,
+          0.9962235358111079,
+          0.982063913830735
+        ],
+        "median": 0.9962235358111079,
+        "min": 0.9554522942437672,
+        "max": 1.0713495656556316,
+        "median_absolute_deviation": 0.014159621980372905
+      }
+    },
+    {
+      "contrast": 4,
+      "a": "C64-E8-word",
+      "b": "C80-E8-memcpy",
+      "pairs": [
+        {
+          "pair": 1,
+          "order": "AB",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 805905397,
+              "mean_ns": 3148067.95703125,
+              "p50_ns": 2894409,
+              "p95_ns": 4336301,
+              "p99_ns": 4539353,
+              "max_ns": 4778879
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 2948815,
+              "mean_ns": 11518.80859375,
+              "p50_ns": 11508,
+              "p95_ns": 12519,
+              "p99_ns": 19590,
+              "max_ns": 20191
+            },
+            "startup_ns": 3003344,
+            "peak_process_rss_bytes": 30384128
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 830062349,
+              "mean_ns": 3242431.05078125,
+              "p50_ns": 2927158,
+              "p95_ns": 4422566,
+              "p99_ns": 4591991,
+              "max_ns": 4788708
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3249824,
+              "mean_ns": 12694.625,
+              "p50_ns": 12730,
+              "p95_ns": 14142,
+              "p99_ns": 19259,
+              "max_ns": 26190
+            },
+            "startup_ns": 3213382,
+            "peak_process_rss_bytes": 30908416
+          },
+          "b_over_a_mean_tick_ratio": 1.029974922726569
+        },
+        {
+          "pair": 2,
+          "order": "BA",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 813563292,
+              "mean_ns": 3177981.609375,
+              "p50_ns": 2890173,
+              "p95_ns": 4348804,
+              "p99_ns": 4455144,
+              "max_ns": 4574115
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 2951185,
+              "mean_ns": 11528.06640625,
+              "p50_ns": 11507,
+              "p95_ns": 12729,
+              "p99_ns": 18137,
+              "max_ns": 23335
+            },
+            "startup_ns": 3178858,
+            "peak_process_rss_bytes": 30384128
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 816648677,
+              "mean_ns": 3190033.89453125,
+              "p50_ns": 2926418,
+              "p95_ns": 4371939,
+              "p99_ns": 4567609,
+              "max_ns": 4622608
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3192398,
+              "mean_ns": 12470.3046875,
+              "p50_ns": 12589,
+              "p95_ns": 13540,
+              "p99_ns": 22063,
+              "max_ns": 24397
+            },
+            "startup_ns": 3351980,
+            "peak_process_rss_bytes": 30855168
+          },
+          "b_over_a_mean_tick_ratio": 1.003792433889704
+        },
+        {
+          "pair": 3,
+          "order": "AB",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 820934952,
+              "mean_ns": 3206777.15625,
+              "p50_ns": 2901249,
+              "p95_ns": 4354808,
+              "p99_ns": 4505500,
+              "max_ns": 4591230
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 2982636,
+              "mean_ns": 11650.921875,
+              "p50_ns": 11487,
+              "p95_ns": 13370,
+              "p99_ns": 23165,
+              "max_ns": 24237
+            },
+            "startup_ns": 2966027,
+            "peak_process_rss_bytes": 30277632
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 828202161,
+              "mean_ns": 3235164.69140625,
+              "p50_ns": 2951646,
+              "p95_ns": 4379571,
+              "p99_ns": 4543118,
+              "max_ns": 4587604
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3219795,
+              "mean_ns": 12577.32421875,
+              "p50_ns": 12639,
+              "p95_ns": 13941,
+              "p99_ns": 21142,
+              "max_ns": 24347
+            },
+            "startup_ns": 2951745,
+            "peak_process_rss_bytes": 30908416
+          },
+          "b_over_a_mean_tick_ratio": 1.0088523566724688
+        },
+        {
+          "pair": 4,
+          "order": "BA",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 817853443,
+              "mean_ns": 3194740.01171875,
+              "p50_ns": 2905636,
+              "p95_ns": 4387272,
+              "p99_ns": 4563388,
+              "max_ns": 4914738
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3025303,
+              "mean_ns": 11817.58984375,
+              "p50_ns": 11558,
+              "p95_ns": 13280,
+              "p99_ns": 23075,
+              "max_ns": 25228
+            },
+            "startup_ns": 3119148,
+            "peak_process_rss_bytes": 30392320
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 816468154,
+              "mean_ns": 3189328.7265625,
+              "p50_ns": 2931875,
+              "p95_ns": 4144446,
+              "p99_ns": 4347282,
+              "max_ns": 4379521
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3175794,
+              "mean_ns": 12405.4453125,
+              "p50_ns": 12659,
+              "p95_ns": 13611,
+              "p99_ns": 14321,
+              "max_ns": 24657
+            },
+            "startup_ns": 3227471,
+            "peak_process_rss_bytes": 30810112
+          },
+          "b_over_a_mean_tick_ratio": 0.9983061891933613
+        },
+        {
+          "pair": 5,
+          "order": "AB",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 819865199,
+              "mean_ns": 3202598.43359375,
+              "p50_ns": 2902462,
+              "p95_ns": 4351028,
+              "p99_ns": 4490118,
+              "max_ns": 4563098
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3023701,
+              "mean_ns": 11811.33203125,
+              "p50_ns": 11557,
+              "p95_ns": 13611,
+              "p99_ns": 23806,
+              "max_ns": 24818
+            },
+            "startup_ns": 3209485,
+            "peak_process_rss_bytes": 30269440
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 819187974,
+              "mean_ns": 3199953.0234375,
+              "p50_ns": 2948902,
+              "p95_ns": 4430107,
+              "p99_ns": 4580405,
+              "max_ns": 4755859
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3232966,
+              "mean_ns": 12628.7734375,
+              "p50_ns": 12689,
+              "p95_ns": 13731,
+              "p99_ns": 24578,
+              "max_ns": 25598
+            },
+            "startup_ns": 3079508,
+            "peak_process_rss_bytes": 30806016
+          },
+          "b_over_a_mean_tick_ratio": 0.9991739800630323
+        },
+        {
+          "pair": 6,
+          "order": "BA",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 816919448,
+              "mean_ns": 3191091.59375,
+              "p50_ns": 2910854,
+              "p95_ns": 4409727,
+              "p99_ns": 4545061,
+              "max_ns": 4675543
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3006377,
+              "mean_ns": 11743.66015625,
+              "p50_ns": 11667,
+              "p95_ns": 12970,
+              "p99_ns": 19689,
+              "max_ns": 22764
+            },
+            "startup_ns": 3192189,
+            "peak_process_rss_bytes": 30433280
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 831870292,
+              "mean_ns": 3249493.328125,
+              "p50_ns": 2964344,
+              "p95_ns": 4420373,
+              "p99_ns": 4552532,
+              "max_ns": 4576698
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3238672,
+              "mean_ns": 12651.0625,
+              "p50_ns": 12739,
+              "p95_ns": 13941,
+              "p99_ns": 20291,
+              "max_ns": 24427
+            },
+            "startup_ns": 3347653,
+            "peak_process_rss_bytes": 30908416
+          },
+          "b_over_a_mean_tick_ratio": 1.0183014910914447
+        },
+        {
+          "pair": 7,
+          "order": "AB",
+          "a": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 801390350,
+              "mean_ns": 3130431.0546875,
+              "p50_ns": 2867829,
+              "p95_ns": 4386161,
+              "p99_ns": 4555807,
+              "max_ns": 4698267
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3013771,
+              "mean_ns": 11772.54296875,
+              "p50_ns": 11567,
+              "p95_ns": 12799,
+              "p99_ns": 23486,
+              "max_ns": 24237
+            },
+            "startup_ns": 2950945,
+            "peak_process_rss_bytes": 30384128
+          },
+          "b": {
+            "tick_stats": {
+              "count": 256,
+              "total_ns": 824370826,
+              "mean_ns": 3220198.5390625,
+              "p50_ns": 2930303,
+              "p95_ns": 4389747,
+              "p99_ns": 4536258,
+              "max_ns": 4592112
+            },
+            "input_stats": {
+              "count": 256,
+              "total_ns": 3245649,
+              "mean_ns": 12678.31640625,
+              "p50_ns": 12739,
+              "p95_ns": 13560,
+              "p99_ns": 21803,
+              "max_ns": 48063
+            },
+            "startup_ns": 2900498,
+            "peak_process_rss_bytes": 30908416
+          },
+          "b_over_a_mean_tick_ratio": 1.0286757583242674
+        }
+      ],
+      "ratio_summary": {
+        "ratios": [
+          1.029974922726569,
+          1.003792433889704,
+          1.0088523566724688,
+          0.9983061891933613,
+          0.9991739800630323,
+          1.0183014910914447,
+          1.0286757583242674
+        ],
+        "median": 1.0088523566724688,
+        "min": 0.9983061891933613,
+        "max": 1.029974922726569,
+        "median_absolute_deviation": 0.00967837660943649
+      }
+    }
+  ],
+  "errors": []
+}

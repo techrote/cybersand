@@ -1,0 +1,500 @@
+{
+  "registration_sha256": "9b1dbfb70d90102b1a95a9fedb360daab7e1d14036b13757bbeb05d1cc5dc59e",
+  "execution_authority_sha256": "fb1abb3b574cb5a35d7f7f535a176ccac884f9e770cc045cbcad76b9d263cdd5",
+  "source_commit": "e655166989661617cd8d6cb4d58a71b9d88c9467",
+  "collector_status": "collected-not-verified",
+  "candidate_processes": 152,
+  "all_candidate_receipts_exit0_stderr0_no_stop": true,
+  "independent_disposition": "refused-full-correctness-complete-collection-frozen-reader-failure",
+  "independent_review_sha256": "e65c843554bdda33e726d7619bb36ede0d7ef0ca7cbd005a4be712a57a6619be",
+  "independent_review": {
+    "schema_version": 1,
+    "review_date": "2026-10-23",
+    "reviewer": "/root/astra_evidence_review",
+    "review_role": "Independent verifier requested by the owner for the exact Windows MAT-003 correctness attempt",
+    "disposition": "refused-full-correctness-complete-collection-frozen-reader-failure",
+    "collector_complete": true,
+    "qualification_accepted": false,
+    "full_readback_accepted": false,
+    "all_semantic_obligations_closed": false,
+    "performance_accepted": false,
+    "timing_authorized": false,
+    "reader_invocation_count": 1,
+    "candidate_or_probe_or_build_invocations_by_reviewer": 0,
+    "retry_or_subset_invocations_by_reviewer": 0,
+    "source_commit": "e655166989661617cd8d6cb4d58a71b9d88c9467",
+    "source_tree": "c302420be202ac05f393c556375bf4acf7686089",
+    "source_root": "C:/Users/_/mat003-evidence-20261023/reentry-source",
+    "evidence_root": "C:/Users/_/mat003-evidence-20261023/windows-reentry-replacement",
+    "verification_root": "C:/Users/_/mat003-evidence-20261023/windows-reentry-replacement-readback",
+    "registration": {
+      "path": "C:/Users/_/.codex/worktrees/mat003-continuation/khybersand/docs/audits/mat003-correctness-2026-10-23/windows-reentry-execution-registration.json",
+      "sha256": "9b1dbfb70d90102b1a95a9fedb360daab7e1d14036b13757bbeb05d1cc5dc59e",
+      "derived_authority_sha256": "fb1abb3b574cb5a35d7f7f535a176ccac884f9e770cc045cbcad76b9d263cdd5",
+      "independently_verified_derivation_changes": [
+        "owner_execution_authorized: false -> true",
+        "owner_authority_reference: pending -> exact human authorization reference"
+      ],
+      "other_fields_changed": false,
+      "build_authority_sha256": "6a1d4b017ff457f37a920bb60aa93ef05437640bf403ee1731e0bf12faba137f",
+      "binary_admission_sha256": "39a79616bc9446ffba30bcc11a0b70ffaa501cf3f8fac4d5199a49c2e53d1512",
+      "built_sha256": "8d2c2022dc0a21a31bd99d3c10579c4080701e5e1b9e743f425bd0f01e1fea30",
+      "build_inventory_sha256": "00ca78d5c1e1cf32498b61a799965c693a594ddce5a18884647b98b1f9701646",
+      "reader_sha256": "e1dfa359e1d83e0c4797a53a3007476d1e72780596f4393aa376c107a4207a62"
+    },
+    "platform": {
+      "system": "Windows",
+      "machine": "AMD64",
+      "release": "11",
+      "version": "10.0.26300",
+      "python": "3.12.10",
+      "python_executable": "C:/Users/_/.codex/tmp/mat003-build-5380c76-20261023/venv/Scripts/python.exe",
+      "python_executable_sha256": "0b471133e110cfb53a061cad528ce8e517d7b9ac41a0a396c39ad795a487fc14",
+      "matches_registered_identity": true
+    },
+    "integrity_and_completeness": {
+      "result": "passed",
+      "scope": "All retained file hashes, names, source/binary seals, exact build/case commands and structural counts. This is not a substitute for full semantic readback.",
+      "source_files_matching_detached_bytes_retained_snapshot_and_git_blobs": 93,
+      "missing_or_extra_relevant_source_inputs": 0,
+      "generated_file_seals_checked": 488,
+      "pre_execution_inventory_entries_checked": 751,
+      "build_commands_checked": 32,
+      "case_commands_checked": 152,
+      "cases_exit_zero_without_stops_or_stderr": 152,
+      "unattempted_cases": 0,
+      "byte_hashes_names_commands_counts_audit": {
+        "errors": [],
+        "raw_inventory_entries": 29813,
+        "raw_total_bytes": 16135468480,
+        "verification_inventory_entries": 60,
+        "source_files": 93,
+        "builds": 32,
+        "cases": 152,
+        "suite_counts": {
+          "storage": {
+            "processes": 16
+          },
+          "small": {
+            "processes": 48
+          },
+          "refusal": {
+            "processes": 16
+          },
+          "natural": {
+            "processes": 8
+          },
+          "resident": {
+            "processes": 64
+          }
+        },
+        "normal_cases": 76,
+        "sanitized_cases": 76,
+        "counts": {
+          "storage_operations": 1048576,
+          "tick_rows": 1180224,
+          "lifecycle_operations": 288,
+          "full_endpoints": 992,
+          "full_cell_records": 1164967936,
+          "cells_bin_bytes": 14853341184,
+          "refusal_attempts": 4096,
+          "metadata_only_endpoints": 8192
+        },
+        "witness_diagnostics": {
+          "endpoints_inspected": 384,
+          "strict_witness_present": 0,
+          "strict_witness_absent": 384,
+          "active_excluded_chunk_present": 384,
+          "inactive_chunk_with_aged_block_present": 384
+        },
+        "first_failure": {
+          "case": {
+            "id": "resident-015",
+            "suite": "resident",
+            "arm": "K64-E16",
+            "sanitized": false,
+            "backend": "phased",
+            "workers": 1,
+            "side": 512,
+            "scene": "sleeping-excluded",
+            "setup": 255,
+            "reentry": 4,
+            "roles": [
+              "event",
+              "reference"
+            ],
+            "timeout": 600,
+            "fixture_revision": "bounded-reentry-v2",
+            "initial_interest": [
+              0,
+              0,
+              256,
+              512
+            ],
+            "reentry_interest": [
+              0,
+              0,
+              512,
+              512
+            ],
+            "active_core_capacity": 256,
+            "active_chunk_capacity": 16
+          },
+          "role": "event",
+          "endpoint": "B",
+          "metadata_sha256": "1340740e7869d710627cd04936ecb1734eb8b5ae125584843a53daf8c829a24c",
+          "clock": [
+            255,
+            255,
+            255,
+            0,
+            0
+          ],
+          "excluded_chunk": [
+            4,
+            2,
+            1,
+            0,
+            0,
+            1,
+            3,
+            3,
+            120,
+            8,
+            16
+          ],
+          "selected_chunks": [
+            {
+              "coordinate": [
+                0,
+                0
+              ],
+              "chunk_active": 0,
+              "chunk_quiet": 3,
+              "blocks_inactive": 16,
+              "block_quiet_counts": {
+                "0": 8,
+                "3": 8
+              },
+              "strict_witness": false,
+              "inactive_with_aged_block": true
+            },
+            {
+              "coordinate": [
+                1,
+                0
+              ],
+              "chunk_active": 0,
+              "chunk_quiet": 3,
+              "blocks_inactive": 16,
+              "block_quiet_counts": {
+                "0": 16
+              },
+              "strict_witness": false,
+              "inactive_with_aged_block": false
+            },
+            {
+              "coordinate": [
+                0,
+                1
+              ],
+              "chunk_active": 0,
+              "chunk_quiet": 3,
+              "blocks_inactive": 16,
+              "block_quiet_counts": {
+                "0": 8,
+                "3": 8
+              },
+              "strict_witness": false,
+              "inactive_with_aged_block": true
+            },
+            {
+              "coordinate": [
+                1,
+                1
+              ],
+              "chunk_active": 0,
+              "chunk_quiet": 3,
+              "blocks_inactive": 16,
+              "block_quiet_counts": {
+                "0": 16
+              },
+              "strict_witness": false,
+              "inactive_with_aged_block": false
+            },
+            {
+              "coordinate": [
+                0,
+                2
+              ],
+              "chunk_active": 1,
+              "chunk_quiet": 0,
+              "blocks_inactive": 12,
+              "block_quiet_counts": {
+                "0": 13,
+                "1": 3
+              },
+              "strict_witness": false,
+              "inactive_with_aged_block": false
+            },
+            {
+              "coordinate": [
+                1,
+                2
+              ],
+              "chunk_active": 0,
+              "chunk_quiet": 3,
+              "blocks_inactive": 16,
+              "block_quiet_counts": {
+                "0": 16
+              },
+              "strict_witness": false,
+              "inactive_with_aged_block": false
+            },
+            {
+              "coordinate": [
+                0,
+                3
+              ],
+              "chunk_active": 0,
+              "chunk_quiet": 3,
+              "blocks_inactive": 16,
+              "block_quiet_counts": {
+                "0": 12,
+                "3": 4
+              },
+              "strict_witness": false,
+              "inactive_with_aged_block": true
+            },
+            {
+              "coordinate": [
+                1,
+                3
+              ],
+              "chunk_active": 0,
+              "chunk_quiet": 3,
+              "blocks_inactive": 16,
+              "block_quiet_counts": {
+                "0": 12,
+                "3": 4
+              },
+              "strict_witness": false,
+              "inactive_with_aged_block": true
+            }
+          ]
+        },
+        "negative_dispositions": 27,
+        "decoder_records": 704,
+        "decoder_arm_counts": {
+          "K64-E8": 66,
+          "K64-E16": 66,
+          "K72-E8": 74,
+          "K72-E16": 74,
+          "K80-E8": 82,
+          "K80-E16": 82,
+          "D128-E8": 130,
+          "D128-E16": 130
+        },
+        "raw_inventory_sha256": "8a08b04ef76f23d26ddce6237bd1388b38a5c8082ac506c09f4657869b1b3e82",
+        "result_sha256": "3ac1a9c3ae81b32d47a865174612bcafed01658140e4c56f961b56e6ca7ef3f1",
+        "verification_inventory_sha256": "2fa51b09ed67eb1ee97080685fea6e48f5de74adaf6e3b4c24418234ac86e7a7",
+        "readback_sha256": "4e581ae3ddc2edca8a23b0d8d0174fd57f2e87b2ce7767ad324d3cb0350b5a6a"
+      },
+      "source_status_qualification": "Git initially reported probe.inc and requirements.txt as modified; git diff was empty and both raw byte hashes matched registration and frozen Git blobs. No source file was modified by this reviewer.",
+      "raw_or_verification_evidence_modified_after_frozen_reader": false
+    },
+    "frozen_reader": {
+      "exit_code": 1,
+      "status": "failed",
+      "error": "resident sleep/exclusion witness absent",
+      "report_sha256": "4e581ae3ddc2edca8a23b0d8d0174fd57f2e87b2ce7767ad324d3cb0350b5a6a",
+      "inventory_sha256": "2fa51b09ed67eb1ee97080685fea6e48f5de74adaf6e3b4c24418234ac86e7a7",
+      "rejected_negative_fixtures": 27,
+      "decoder_crosscheck_records": 704,
+      "negative_fixture_result": "27 rejected as required; mathematical World decoder agrees with bit-enumeration oracle on all 704 retained records",
+      "first_rejected_case": "resident-015",
+      "first_rejected_role": "event",
+      "first_rejected_endpoint": "B",
+      "first_rejection_location_method": "Derived from frozen deterministic case/role/endpoint order, the retained traceback, and independently inspected complete metadata; no reader function or subset was rerun.",
+      "per_case_function_returns_before_first_rejection": 15,
+      "later_per_case_semantic_checks_not_reached": 136,
+      "cross_arm_common_control_join_phase_reached": false,
+      "prefix_qualification": "The 15 earlier per-case checks returning does not qualify a complete arm, suite, platform or cross-arm matrix. All 152 native invocations completed, but the full semantic readback did not.",
+      "execution_capture": {
+        "command": "& 'C:/Users/_/.codex/tmp/mat003-build-5380c76-20261023/venv/Scripts/python.exe' -B 'tools/experiments/mat003_correctness/readback.py' --evidence 'C:/Users/_/mat003-evidence-20261023/windows-reentry-replacement' --authority-sha256 'fb1abb3b574cb5a35d7f7f535a176ccac884f9e770cc045cbcad76b9d263cdd5' --verification-output 'C:/Users/_/mat003-evidence-20261023/windows-reentry-replacement-readback'",
+        "cwd": "C:/Users/_/mat003-evidence-20261023/reentry-source",
+        "session_id": 54127,
+        "initial_tool_result": {
+          "chunk_id": "f839bc",
+          "wall_time_seconds": 10.0150975,
+          "session_id": 54127,
+          "original_token_count": 0,
+          "output": ""
+        },
+        "final_tool_result": {
+          "chunk_id": "cdd569",
+          "wall_time_seconds": 8.1e-06,
+          "exit_code": 1,
+          "original_token_count": 266,
+          "output": "Traceback (most recent call last):\r\n  File \"C:\\Users\\_\\mat003-evidence-20261023\\reentry-source\\tools\\experiments\\mat003_correctness\\readback.py\", line 355, in <module>\r\n    report.update(completion(args.evidence,args.authority_sha256,budget))\r\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Users\\_\\mat003-evidence-20261023\\reentry-source\\tools\\experiments\\mat003_correctness\\readback.py\", line 266, in completion\r\n    else:world(p/'world',case)\r\n         ^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Users\\_\\mat003-evidence-20261023\\reentry-source\\tools\\experiments\\mat003_correctness\\readback.py\", line 134, in world\r\n    if case['suite']=='resident':resident_endpoint(m,case['side'],endpoint)\r\n                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n  File \"C:\\Users\\_\\mat003-evidence-20261023\\reentry-source\\tools\\experiments\\mat003_correctness\\world_oracle.py\", line 41, in resident_endpoint\r\n    raise ValueError('resident sleep/exclusion witness absent')\r\nValueError: resident sleep/exclusion witness absent\r\n"
+        },
+        "stream_capture_note": "No shell stream redirection was used. The original combined output and tool process result above are transcribed from the exec/write_stdin tool capture; no separate stdout, stderr, PID, or native process receipt was generated. Tool wall_time_seconds is call wait time, not a performance measurement or reader duration."
+      }
+    },
+    "source_bound_diagnosis": {
+      "classification": "Frozen sleep-witness predicate overconstrains the source's inactive-block state; fixture and oracle do not satisfy the same witness contract.",
+      "first_endpoint_metadata_path": "C:/Users/_/mat003-evidence-20261023/windows-reentry-replacement/cases/resident-015/world/event/B/metadata.txt",
+      "first_endpoint_metadata_sha256": "1340740e7869d710627cd04936ecb1734eb8b5ae125584843a53daf8c829a24c",
+      "observed_facts": [
+        "At resident-015/event/B, chunk (3,0) is active, so the exclusion conjunct is present.",
+        "Chunk (0,0) is inactive with chunk quiet_ticks=3 and all 16 blocks inactive; 8 blocks have quiet_ticks=3 and 8 have quiet_ticks=0.",
+        "Every one of the 384 retained resident B/P/Q metadata observations lacks the frozen all-blocks-aged witness, while each contains an inactive chunk with at least one aged block and an active excluded chunk."
+      ],
+      "source_facts": [
+        "World::Chunk::ActivityBlock defaults to active=false and quiet_ticks=0.",
+        "World::finish_tick skips already inactive blocks; those blocks do not accrue quiet ticks.",
+        "World::finish_tick sets chunk quiet_ticks to sleep_after_quiet_ticks whenever no active block remains, regardless of quiet counts in untouched inactive blocks.",
+        "The initial applied core region is empty; clip_core_range with no region returns its input. Narrowing the initial region therefore does not wake untouched blocks merely because the selected region changed.",
+        "The frozen oracle requires an inactive selected chunk with chunk quiet>=3 and all 16 blocks simultaneously inactive and quiet>=3."
+      ],
+      "interpretation": "The artifacts demonstrate aged sleeping blocks and active excluded storage, but fail the stronger frozen whole-chunk all-blocks-aged prerequisite. This is an apparatus witness-contract failure. It does not establish a carrier corruption, failed epoch clear, absence of all genuine sleeping blocks, or production scheduler defect.",
+      "limits": "No weakened predicate is used to qualify this attempt. Later resident transport/clear/reentry checks and the cross-arm comparison phase remain unclosed after the frozen reader stopped.",
+      "source_references": [
+        {
+          "path": "native/src/world.cpp",
+          "line": 231,
+          "symbol": "World::Chunk::ActivityBlock",
+          "sha256": "e8b6cb70de10aad958920b4ba795a62eeed6b2c2b07a5350b7f7ffa03df8fec9"
+        },
+        {
+          "path": "native/include/cybersand/world.hpp",
+          "line": 311,
+          "symbol": "selected_core_region_ and applied_core_region_",
+          "sha256": "8280e968fe161305a7dbb57704e057d9755232037ea91ba20a4d17a547989c4f"
+        },
+        {
+          "path": "native/src/world.cpp",
+          "line": 1714,
+          "symbol": "World::set_simulation_region"
+        },
+        {
+          "path": "native/src/world.cpp",
+          "line": 3582,
+          "symbol": "World::begin_tick coverage transition"
+        },
+        {
+          "path": "native/src/world.cpp",
+          "line": 3627,
+          "symbol": "World::clip_core_range"
+        },
+        {
+          "path": "native/src/world.cpp",
+          "line": 3638,
+          "symbol": "World::finish_tick inactive-block skip"
+        },
+        {
+          "path": "native/src/world.cpp",
+          "line": 3659,
+          "symbol": "World::finish_tick chunk quiet accounting"
+        },
+        {
+          "path": "tools/experiments/mat003_correctness/world_oracle.py",
+          "line": 39,
+          "symbol": "resident_endpoint all-blocks-aged predicate",
+          "sha256": "466e97cc4416c61875cd82d91bdc14824834b539c333d4a340c30b419dd02f86"
+        },
+        {
+          "path": "tools/experiments/mat003_correctness/readback.py",
+          "line": 134,
+          "symbol": "resident endpoint validation"
+        },
+        {
+          "path": "tools/experiments/mat003_correctness/readback.py",
+          "line": 256,
+          "symbol": "ordered per-case semantic validation"
+        }
+      ]
+    },
+    "independently_reviewed_reader_paths": [
+      "readback.py complete inventory/matrix/receipts, full storage replay, endpoint/lifecycle/refusal checks and final common-control joins",
+      "provenance.py source/binary/tool/monitor binding, source reproduction and exact command reconstruction",
+      "oracle.py independent bit enumeration and storage_oracle.py logical operation model",
+      "world_oracle.py independent mathematical decoding, neutral-state transition model, full cells/metadata, preparation and resident prerequisites",
+      "negative.py 27 rejection fixtures and exhaustive one-hot/zero/all-ones decoder cross-check",
+      "matrix.py, collect.py, maps.hpp, world.cpp, probe.inc, lifecycle.hpp, world_adapter.hpp, trace.hpp, schedule.hpp, resource.hpp, windows_job.py, overlay.py",
+      "Frozen native World activity initialization, interest selection, quiet aging and scheduler scratch paths"
+    ],
+    "semantic_obligation_disposition": {
+      "full_inventory_source_binary_command_binding": "passed",
+      "complete_registered_native_process_matrix": "completed without process failures",
+      "negative_reader_controls": "passed",
+      "storage_small_refusal_natural_prefix_checks": "15 per-case functions returned before resident-015; no standalone or full qualification is inferred",
+      "resident_sleep_witness_prerequisite": "failed",
+      "all_later_per_case_semantics": "not completed by the frozen reader",
+      "full_cross_arm_common_control_joins": "not reached",
+      "full_eight_map_windows_correctness": "refused"
+    },
+    "future_work_boundary": [
+      "This attempt, its source, registration, raw observations, frozen reader failure, and verification outputs remain immutable.",
+      "A future correction to the oracle/witness contract would require separate source review, negative-control review, an explicit new readback registration and owner authority before any new verification.",
+      "A separately admitted full readback-only campaign over all unchanged 152 observations would be distinct from a new candidate campaign. This review neither authorizes nor assumes that reuse is admissible.",
+      "No source patch, new oracle run, candidate rerun, subset, replacement observation or reconstructed missing evidence was performed or authorized here."
+    ],
+    "unchanged_boundaries": {
+      "R16_T1": "conditional; opaque neutral payload only",
+      "production": "unchanged by this verification; no adoption approval",
+      "PR211_and_PR221": "must remain draft",
+      "linux": "not executed or qualified by this attempt",
+      "performance": "no timing samples, rankings, latency/memory-target acceptance or performance claim",
+      "prior_failures": "retained; no prior failure was rewritten or replaced"
+    },
+    "archive_inputs": {
+      "raw_evidence_directory": "C:/Users/_/mat003-evidence-20261023/windows-reentry-replacement",
+      "complete_verification_directory": "C:/Users/_/mat003-evidence-20261023/windows-reentry-replacement-readback",
+      "build_and_execution_control_directory": "C:/Users/_/mat003-evidence-20261023/reentry-build-control",
+      "independent_review_certificate": "C:/Users/_/mat003-evidence-20261023/reentry-correctness-independent-review.json",
+      "original_reader_tool_capture_location": "This certificate: frozen_reader.execution_capture",
+      "additional_external_audit_output_paths": [],
+      "additional_external_audit_input_paths": [
+        "Detached Git checkout C:/Users/_/mat003-evidence-20261023/reentry-source, compared read-only with its Git blobs; all 93 required source bytes are also retained under raw evidence/source.",
+        "The original execution registration at registration.path, already sealed and separately retained by the parent.",
+        "Pinned Python executable and monitor/toolchain paths named by the execution authority; the complete frozen authority, proof, copied tool/monitor bytes and generated/source snapshots are retained in the raw tree."
+      ],
+      "capture_limitation": "No separate reader stdout/stderr/PID/process-receipt files were generated. The original combined CLI traceback and observed exit result are retained verbatim in the certificate's tool capture; no process receipt was fabricated.",
+      "audit_method": "Independent standard-library read-only scripts ran through exec and printed their results. They imported no apparatus modules, launched no candidate/probe/build and created no external audit files. Their factual results are retained in this certificate."
+    }
+  },
+  "raw_archive": {
+    "path": "C:\\Users\\_\\mat003-evidence-20261023\\reentry-correctness-evidence.zip",
+    "bytes": 97897664,
+    "entries": 29883,
+    "sha256": "5c658fb6a5df41e36e539a442d739d4316e4cfbc8a2460da31ac850bceb0e948",
+    "inventory_sha256": "7b97932bf29e180aa8376c25551c8ed463d9d36da6428f41f12ddd37d2775aba",
+    "all_entry_hashes_lengths_CRC_verified": true
+  },
+  "qualification_accepted": false,
+  "timing_authorized": false,
+  "R16_T1": "conditional",
+  "production_changed": false,
+  "previous_failures_preserved": true,
+  "maintenance": {
+    "docs": "passed",
+    "repository": "passed; identity only",
+    "historical_M11": "passed18records/28hashes",
+    "frozen_retrieval": "21rank1/32top5/MRR0.7937",
+    "supplementary_retrieval": "107rank1/133top5/134questions/MRR0.8802;newMATSCHEMA15rank2;C09knownmiss",
+    "prior133_question_objects_preserved": true,
+    "diff_check": "passed"
+  },
+  "independent_retention_review": {
+    "reviewer": "/root/astra_evidence_review",
+    "status": "passed-no-errors",
+    "scope": "archive whole-byte hash, every central name/length and exact manifest coverage; control/certificate/registration/packager/manifest bytes directly read; root full large-payload hash/CRC verification retained",
+    "raw_entries": 29814,
+    "verification_entries": 61,
+    "controls": 4,
+    "total_entries": 29883,
+    "retention_record_sha256": "5faf3f7e93cb0a347b04461f7d5b773ad45f7993cbde506be0941a74135fc409",
+    "certificate_unchanged": true
+  }
+}

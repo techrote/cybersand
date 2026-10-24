@@ -30,6 +30,18 @@ The separately landed [#243 diagnostic record](audits/2026-10-24-issue-233-physi
 completes #233's deliverable with 11 timeouts in 600 stress attempts; the cause
 remains unknown and #234 owns the next repair. This MAT task starts no repair.
 
+Historical MAT-003 collection (2026-10-23): [complete152-process collection and Astra readback refusal](audits/2026-10-23-mat003-reentry-correctness-attempt.md). No correctness acceptance or rerun; prior stage summaries below are historical.
+
+Historical MAT-003 source checkpoint: [resident reentry/scratch repair and independent source review](audits/2026-10-23-mat003-resident-reentry-repair.md). At that source-only stage, fresh build/binary/registration gates were held and no repair execution or timing had run. Later dated records preserve the subsequent outcomes.
+
+The historical [containment replacement runtime attempt](audits/2026-10-23-mat003-containment-correctness-attempt.md) stopped at resident reentry after clear256, with15 exit0 processes and136 unattempted cases. Full correctness remains refused; prior evidence is retained.
+
+The [isolated containment repair and blocked replacement](audits/2026-10-23-mat003-containment-replacement.md) follow the retained Windows failure. Source review is complete; new builds/binary admission and execution authority are still required. That source-only stage preceded the retained replacement failure.
+
+For the **2026-10-23 MAT-003 continuation**, use the [decision report](research/mat003-continuation.md) and [dated evidence](audits/2026-10-23-mat003-continuation.md): accepted S2A remains unchanged; S2P #218, WCLEAR-001 #219 and C128-001 #220 have separate qualification/admission boundaries. No new formal timing or production carrier is admitted.
+
+The [eight-map source review](audits/2026-10-23-mat003-apparatus-source-closure.md) and [failed5380c76 build](audits/2026-10-23-mat003-build-only-admission.md) remain retained. The [independently reviewed isolated correction/replacement build](audits/2026-10-23-mat003-warning-fix-build.md) records all32 Windows compilations at6e85fe6 and separate binary admission. No candidate cases or timing ran at that build-only stage; R16-T1 remains conditional, both PRs draft and production unchanged.
+
 For **MAT-003PREPASS / #204**, start with the [staged carrier registration](operations/mat-003prepass-registration.md), [source state inventory](research/mat-003prepass-state-inventory.md), [epoch consumer audit](research/mat-003prepass-epoch-consumers.md) and [proposed GEN-006 handoff](research/mat-003prepass-gen006-handoff.md). [S0 isolated storage checks passed](audits/2026-10-22-mat003-prepass-foundation.md). The [S1 World report](audits/2026-10-22-mat003-world-correctness.md) covers the new seventeen-arm apparatus, typed 8/16-bit counters and two-rollover gate; the registered Linux normal/sanitized collection and independent readback passed. Production remains unchanged, #204 stays open, and S2 paired performance requires separate registration.
 
 For **Generation Workbench 2**, use the [inspection and authoring contract](systems/generation-workbench-2.md): truthful native replay, actual intermediate stages, graph/hierarchy tools, transactional undo/redo and bounded seed/recipe comparisons. The [procedural qualification guide](operations/procedural-qualification.md) routes the 1024 × 1024 scene, final-raster paths, native exhibits and visual evidence.
@@ -257,6 +269,12 @@ dependency-ready Stage-3B implementation package**, followed by #67, #68 and the
 registered #70 campaign/exit packet. Stage 4 is not admitted.
 Macro-dynamics and coherent-child fracture remain first-class later goals; discovery
 stays read-only with respect to material authority.
+
+MAT-003 design continuation: [semantic state-schema proposal](research/mat003-state-schema-proposal.md) and [ADR-015 carrier adoption gates](decisions/ADR-015-material-state-schema-and-carrier-gates.md) remain Planned; production and timing authority are unchanged.
+
+Historical [resident reentry Windows build and replacement execution gate](audits/2026-10-23-mat003-reentry-build-admission.md):32 clean builds; no qualification cases or timing.
+
+Latest MAT-003 runtime disposition: [152-process replacement and Astra readback refusal](audits/2026-10-23-mat003-reentry-correctness-attempt.md). All candidate processes exited0, but the frozen reader rejected an overconstrained sleeping witness. No full correctness acceptance, rerun or timing; prior stage summaries are historical.
 
 ## LCB-000 final admission status
 

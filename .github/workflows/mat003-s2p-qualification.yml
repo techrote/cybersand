@@ -1,0 +1,50 @@
+name: S2P untimed actual-workload qualification
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'tools/experiments/mat003_s2p/**'
+      - '.github/workflows/mat003-s2p-qualification.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: s2p-untimed-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          lfs: false
+      - name: Provider policy
+        run: python3 tools/ci/check_ci_provider_policy.py
+      - name: Select immutable historical MAT control (not current-main qualification)
+        env:
+          GIT_LFS_SKIP_SMUDGE: "1"
+        run: |
+          set -euo pipefail
+          printf 'Current integration GITHUB_SHA: %s\n' "$GITHUB_SHA"
+          printf 'Current checked-out source: %s\n' "$(git rev-parse HEAD)"
+          # Only the policy-free registered native baseline is qualified here.
+          # Ordinary exact-head Native/Godot/provenance jobs cover current main.
+          # Any changed apparatus needs its own reviewed qualification source.
+          git diff --exit-code 7dd1373d999d91e52e6f29e9c9832f106a77da14 HEAD -- tools/experiments/mat003_prepass tools/experiments/mat003_s2a tools/experiments/mat003_continuation tools/experiments/mat003_s2p third_party/native-toolchain.lock.json
+          git -c advice.detachedHead=false switch --detach 7dd1373d999d91e52e6f29e9c9832f106a77da14
+          test "$(git rev-parse HEAD)" = "7dd1373d999d91e52e6f29e9c9832f106a77da14"
+          printf 'Historical MAT control source: %s\n' "$(git rev-parse HEAD)"
+      - name: Compile and qualify all actual-workload twins without timing
+        run: python3 -B tools/experiments/mat003_s2p/apparatus.py --output build/mat003-s2p
+      - name: Independently read complete untimed apparatus
+        run: python3 -B tools/experiments/mat003_s2p/verify.py build/mat003-s2p > build/mat003-s2p/independent-readback.json
+      - name: Retain complete source binaries raw observations and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mat003-s2p-untimed-${{ github.run_id }}
+          path: build/mat003-s2p/
+          if-no-files-found: error
+          retention-days: 90

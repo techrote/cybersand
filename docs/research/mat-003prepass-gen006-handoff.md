@@ -13,6 +13,8 @@ related-documents: [mat-003prepass-state-inventory.md, mat-003prepass-epoch-cons
 
 ## Decision and source boundary
 
+**2026-10-23 continuation:** [S2P/WCLEAR/C128](mat003-continuation.md#c128-feasibility-and-gen-006-consequences) adds access, clear-frequency and 128-total-bit feasibility questions. Its neutral high64 has no authoritative material schema. No ABI, padding, raw epoch or future-state meaning is added to this proposed durable contract.
+
 **Planned proposal from MAT-003PREPASS / [#204](https://github.com/techrote/cybersand/issues/204):**
 give [GEN-006 / #194](https://github.com/techrote/cybersand/issues/194) a versioned
 semantic persistence boundary independent of the selected in-memory carrier.
@@ -276,3 +278,7 @@ state/solver/recipe changes and compatible migrations. Any behavior introducing
 new authoritative history or ownership must first satisfy the field and
 continuation contract. No experimental capacity arm is a universal payload
 reservation for those future features.
+
+## Subsequent MAT-003 schema proposal
+
+The [state-schema proposal](mat003-state-schema-proposal.md) and [ADR-015](../decisions/ADR-015-material-state-schema-and-carrier-gates.md) add Planned logical extension/epoch capacity accounting and adoption gates. They do not freeze a GEN-006 codec, assign pressure/air semantics or replace this canonical durable contract. No implementation changes follow from the shortlist.

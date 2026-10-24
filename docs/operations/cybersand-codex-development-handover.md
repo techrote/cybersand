@@ -36,6 +36,14 @@ physical stress campaign, or start #212, #234 repair or a solver port. The lande
 work is imported through main; separate source branches and the dirty primary
 checkout remain untouched.
 
+## MAT-003 latest correctness disposition — 2026-10-23
+
+The [authorized152-case run](../audits/2026-10-23-mat003-reentry-correctness-attempt.md) completed collection, then frozen Astra readback refused the overconstrained sleep witness. Full qualification remains refused; every observation/failure is retained, no repair/rerun is authorized. Earlier build/held-execution entries describe historical stages. R16-T1 conditional, PRs draft, production unchanged.
+
+## MAT-003 isolated resident repair — 2026-10-23
+
+The [resident reentry/scratch source repair](../audits/2026-10-23-mat003-resident-reentry-repair.md) follows two retained incomplete Windows correctness attempts. Independent source review is closed; builds, cases and timing are held. Use the [current continuation report](../research/mat003-continuation.md#resident-reentry-source-repair-and-held-rebuild) for next gates, bounded2048 reentry scope and unchanged evidence. Old binary certificates/authorizations cannot admit new source. R16-T1 conditional, PR211/221 draft, production unchanged. Earlier dated entries retain historical context.
+
 ## MAT-003PREPASS S1 World apparatus — 2026-10-22
 
 Resume [#204](https://github.com/techrote/cybersand/issues/204) from the [registration](mat-003prepass-registration.md) and [S1 World report](../audits/2026-10-22-mat003-world-correctness.md). [S0 isolated storage checks passed](../audits/2026-10-22-mat003-prepass-foundation.md). The experimental kit now supplies all seventeen real World arms through generated source copies, typed 8/16-bit counters, full semantic records and a gate spanning two natural sixteen-bit rollovers. **The registered Linux S1 normal/sanitized matrix and independent readback passed at apparatus source `e31d296`; broader World/platform qualification remains open.** Production source and its 64-bit/epoch8 storage remain unchanged.
