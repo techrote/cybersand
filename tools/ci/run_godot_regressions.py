@@ -225,10 +225,13 @@ def _capture_timeout_snapshot(pid: int, path: Path, log_path: Path, elapsed: flo
         # This may fail under Yama ptrace restrictions. Record that refusal;
         # never let evidence collection promote a timeout to a pass.
         if shutil.which("gdb"):
-            parts.append(_snapshot_command([
-                "gdb", "-q", "-n", "-batch", "-p", str(pid),
-                "-ex", "set pagination off", "-ex", "thread apply all bt 12",
-            ]))
+            debugger = ["gdb", "-q", "-n", "-batch", "-p", str(pid),
+                        "-ex", "set pagination off", "-ex", "thread apply all bt 12"]
+            # GitHub Ubuntu may enable Yama ptrace_scope=1. sudo -n is
+            # available on hosted runners; refusal stays explicit evidence.
+            if shutil.which("sudo"):
+                debugger = ["sudo", "-n", *debugger]
+            parts.append(_snapshot_command(debugger))
         else:
             parts.append("Native stack capture: gdb not installed; process wait-channel snapshot retained.\n")
     try:
