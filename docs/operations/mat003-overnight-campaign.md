@@ -77,3 +77,12 @@ neither execution is a benchmark or whole-programme acceptance.
 A separately labelled small-width contract model exercises epoch relabelling,
 owner writes/no-ops and full-resident clearing. It supports the capture-phase
 argument under its stated assumptions; it adds no native restore qualification.
+
+The [standalone Wasm32/Node profile](../audits/2026-10-24-mat003-wasm-portability.md)
+passed 27 normal cases with assertions and stack checks, and archived-data
+comparison matches the Windows logical outcomes. Its three failed precursor
+profiles remain preserved. It does not qualify Godot, a browser or all carriers.
+
+The [remaining acceptance inventory](../research/mat003-remaining-acceptance.md)
+separates retained evidence, conditional recommendations and the still-open
+independent, platform, performance and integration gates for #204.

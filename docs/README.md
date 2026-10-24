@@ -245,3 +245,6 @@ limits, see the [overnight campaign](operations/mat003-overnight-campaign.md).
 
 For the native between-tick touch counterexample and proposed capture rule, see
 the [capture-phase handoff](research/mat003-capture-phase-handoff.md).
+
+For retained evidence, conditional recommendations and still-open #204 gates,
+see the [remaining acceptance inventory](research/mat003-remaining-acceptance.md).

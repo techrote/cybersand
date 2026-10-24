@@ -287,6 +287,8 @@ Latest MAT-003 runtime disposition: [152-process replacement and Astra readback 
 
 For MAT-003 revised-reader provenance, immutable-archive validation and the
 independent-acceptance boundary, see the [overnight campaign](../operations/mat003-overnight-campaign.md).
+For the source-qualified acceptance matrix, retain/defer recommendations and
+open integration/platform gates, see the [remaining #204 acceptance](../research/mat003-remaining-acceptance.md).
 
 For why content hashes and completed tick cannot reconstruct the support-relevant
 touch predicate after owner edits, read the [capture-phase handoff](../research/mat003-capture-phase-handoff.md).
