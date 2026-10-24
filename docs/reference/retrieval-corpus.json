@@ -102,6 +102,7 @@
     "systems/depth-layers-and-parallax.md",
     "systems/physical-actor-rigs.md",
     "systems/physical-free-flight.md",
+    "systems/physical-joint-targets.md",
     "operations/deepworks-exhibition.md",
     "systems/player-control-playground.md",
     "systems/procedural-typed-spatial-fields.md",

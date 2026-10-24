@@ -54,10 +54,15 @@ static func definition(base: Dictionary, _loadout: Dictionary = {}) -> Dictionar
 	var data: Dictionary = base.duplicate(true)
 	if str(data.get("equipment_preparation", "mounted")) == "none":
 		# Explicit absence differs from an empty usable on a permanent chassis.
-		# Callers which prepare catalogue geometry without a loadout still retain
-		# this declared topology. A supplied contradictory loadout is refused.
-		if data.get("parts", []).size() != 1 or not data.get("mounts", []).is_empty() \
-			or not data.get("joints", []).is_empty() \
+		# Flight remains exactly one chassis. The separately declared five-part
+		# Runner IK pilot has zero equipment bodies/mounts; the session validates
+		# its full immutable geometry before installing this exception.
+		# A supplied contradictory loadout is refused.
+		var pilot: bool = str(data.get("joint_target_profile", "")) == "runner-right-sole@1"
+		var exact_pilot: bool = pilot and str(data.get("id", "")) == "runner" \
+			and data.get("parts", []).size() == 5 and data.get("joints", []).size() == 4
+		if (not exact_pilot and (data.get("parts", []).size() != 1 or not data.get("joints", []).is_empty())) \
+			or not data.get("mounts", []).is_empty() \
 			or (not _loadout.is_empty() and (_loadout.get("preparation") != "none" or _loadout.get("usable_index") != -1)):
 			return {}
 		data["equipment_managed"] = true

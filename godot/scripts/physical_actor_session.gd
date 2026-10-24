@@ -11,6 +11,7 @@ const Scripted = preload("res://scripts/physical_actor_script.gd")
 const Equipment = preload("res://scripts/physical_usable_equipment.gd")
 const Loadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const Flight = preload("res://scripts/physical_flight_profile.gd")
+const JointTargets = preload("res://scripts/physical_joint_target.gd")
 const MAX_ACTORS: int = 8
 const MAX_PARTS: int = 8
 const MAX_LEASE: int = 18
@@ -45,6 +46,19 @@ var _flight_completed_step: int = 0
 var _flight_prepared: bool = false
 var _flight_step_fault: String = ""
 var _flight_pause_step: int = 0
+var _joint_host_identity: Dictionary = {}
+var _joint_pilots: Array[bool] = []
+var _joint_grants: Array = []
+var _joint_targets: Array = []
+var _joint_observations: Array = []
+var _joint_receipts: Array = []
+var _joint_last_rejection: Array = []
+var _joint_sequences: PackedInt64Array = PackedInt64Array()
+var _joint_pending_steps: Array = []
+var _has_joint_pilot: bool = false
+var _joint_completed_step: int = 0
+var _joint_prepared: bool = false
+var _joint_step_fault: String = ""
 var _fallback_reasons: Array[String] = []
 var _button_edges: Array = []
 var _accepted_buttons: Array = []
@@ -55,6 +69,27 @@ var _active: bool = false
 var _suspended: bool = false
 var accepted_commands: int = 0
 var rejected_commands: int = 0
+
+
+static func _prepared_definition(value: Dictionary) -> Dictionary:
+	var model := StringName(str(value.get("model", "")))
+	var base: Dictionary = Catalog.entry(model)
+	var loadout: Dictionary = Loadouts.entry(model)
+	if not value.has("ik_pilot"):
+		return Equipment.definition(base, loadout)
+	if typeof(value.ik_pilot) != TYPE_BOOL:
+		return {}
+	if not bool(value.ik_pilot):
+		return Equipment.definition(base, loadout)
+	if model != &"runner" or value.get("usable_index", -1) != -1:
+		return {}
+	# This is a new assembly, not a switch disabling a sixth equipment body.
+	base["mounts"] = []
+	base["equipment_preparation"] = "none"
+	base["equipment_managed"] = true
+	base["joint_target_profile"] = JointTargets.PROFILE_ID
+	var prepared: Dictionary = Equipment.definition(base, {"preparation": "none", "usable_index": -1})
+	return prepared if JointTargets.compatible_assembly(prepared) else {}
 
 
 static func valid_definitions(definitions: Array) -> bool:
@@ -71,8 +106,9 @@ static func valid_definitions(definitions: Array) -> bool:
 			return false
 		if value.position.x < 0.0 or value.position.y < 0.0 or value.position.x >= 1024.0 or value.position.y >= 1024.0:
 			return false
-		var prepared: Dictionary = Equipment.definition(Catalog.entry(model), Loadouts.entry(model))
-		if prepared.is_empty() or not _integer(value.get("usable_index", Loadouts.entry(model).get("usable_index", -1)), -1, 31):
+		var prepared: Dictionary = _prepared_definition(value)
+		var initial_usable: Variant = value.get("usable_index", -1 if bool(value.get("ik_pilot", false)) else Loadouts.entry(model).get("usable_index", -1))
+		if prepared.is_empty() or not _integer(initial_usable, -1, 31):
 			return false
 		if model in Flight.IDS and int(value.get("usable_index", -1)) != -1:
 			return false
@@ -83,12 +119,17 @@ static func valid_definitions(definitions: Array) -> bool:
 	return parts <= CyberRigidBodyCoupling.MAX_BODIES
 
 
-func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
+func configure(definitions: Array, space: RID, new_epoch: int = 1,
+		host_identity: Dictionary = {}) -> bool:
 	if _active or not is_inside_tree() or not valid_definitions(definitions) or new_epoch < 1:
 		last_error = "Invalid physical actor configuration or live owner"
 		return false
 	epoch = new_epoch
 	tick = 0
+	_joint_host_identity = host_identity.duplicate(true)
+	_has_joint_pilot = false
+	_joint_prepared = false
+	_joint_step_fault = ""
 	_suspended = false
 	_has_flight = false
 	_flight_prepared = false
@@ -104,7 +145,20 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 		var definition: Dictionary = definitions[index]
 		_has_flight = _has_flight or StringName(str(definition.model)) in Flight.IDS
 		var loadout: Dictionary = Loadouts.entry(StringName(str(definition.model)))
-		var data: Dictionary = Equipment.definition(Catalog.entry(StringName(str(definition.model))), loadout)
+		var data: Dictionary = _prepared_definition(definition)
+		if data.is_empty():
+			last_error = "Pilot assembly incompatible with immutable profile"
+			close()
+			return false
+		var is_joint: bool = bool(definition.get("ik_pilot", false))
+		_has_joint_pilot = _has_joint_pilot or is_joint
+		_joint_pilots.append(is_joint)
+		_joint_grants.append({})
+		_joint_targets.append({})
+		_joint_observations.append({})
+		_joint_receipts.append([])
+		_joint_last_rejection.append({})
+		_joint_pending_steps.append({})
 		_catalogue.append(data)
 		var rig = Rig.new()
 		add_child(rig)
@@ -116,7 +170,7 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 			return false
 		var item = Equipment.new()
 		if not item.configure(rig, run_id, epoch, index, _body_offsets[index],
-			int(definition.get("usable_index", loadout.get("usable_index", -1)))):
+			int(definition.get("usable_index", -1 if is_joint else loadout.get("usable_index", -1)))):
 			last_error = "Physical equipment refused: " + str(definition.model)
 			close()
 			return false
@@ -149,6 +203,9 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 	_deadlines.fill(-1)
 	_generations.resize(_rigs.size())
 	_generations.fill(0)
+	_joint_sequences.resize(_rigs.size())
+	_joint_sequences.fill(-1)
+	_joint_completed_step = bridge.manual_step_count()
 	_flight_completed_step = bridge.manual_step_count()
 	_flight_pause_step = _flight_completed_step
 	_active = true
@@ -157,6 +214,10 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 
 func active() -> bool:
 	return _active
+
+
+func is_joint_pilot(actor_id: int) -> bool:
+	return actor_id >= 0 and actor_id < _joint_pilots.size() and _joint_pilots[actor_id]
 
 
 func is_flight_actor(actor_id: int) -> bool:
@@ -213,6 +274,14 @@ func _view(actor_id: int, issue: bool) -> Dictionary:
 	result["pending_input_edges"] = _button_edges[actor_id].size()
 	result["equipment"] = _equipment[actor_id].observation()
 	result["cell_patch"] = result.equipment.get("cell_patch", {}).duplicate(true)
+	if is_joint_pilot(actor_id):
+		result["control_mode"] = JointTargets.MODE if not _joint_grants[actor_id].is_empty() else "passive_no_grant"
+		result["ik"] = {
+			"capability": JointTargets.capability(_joint_host_identity, _catalogue[actor_id]),
+			"last_rejection": _joint_last_rejection[actor_id].duplicate(true),
+			"grant_active": not _joint_grants[actor_id].is_empty(),
+			"target_live": not _joint_targets[actor_id].is_empty()
+		}
 	if is_flight_actor(actor_id):
 		result["action_profile"] = Flight.ACTION_PROFILE
 		result["profile_version"] = Flight.VERSION
@@ -327,6 +396,8 @@ func submit(command: Variant, producer: StringName = &"policy") -> bool:
 	if not _integer(command.get("actor_id"), 0, _rigs.size() - 1):
 		return _reject("actor_id")
 	var actor_id: int = int(command.actor_id)
+	if is_joint_pilot(actor_id):
+		return _reject("ik_pilot_wire_disabled")
 	if producer != StringName(str(_definitions[actor_id].producer)):
 		return _reject("producer")
 	if command.get("run_id") != run_id or not _integer(command.get("epoch"), epoch, epoch):
@@ -399,11 +470,50 @@ func submit_local(actor_id: int, action: Dictionary, producer: StringName, lease
 	return submit(make_command(view, _sequences[actor_id] + 1, action, lease), producer)
 
 
+func _fault_joint_step(reason: String) -> void:
+	# Any physics work which cannot be matched to exactly one completed
+	# owner step is unavailable/failed, never a successful physical sample.
+	for actor_id: int in range(_rigs.size()):
+		if not is_joint_pilot(actor_id):
+			continue
+		var pending: Dictionary = _joint_pending_steps[actor_id]
+		if pending.is_empty():
+			continue
+		var row_index: int = int(pending.get("receipt_index", -1))
+		if row_index >= 0 and row_index < _joint_receipts[actor_id].size():
+			var row: Dictionary = _joint_receipts[actor_id][row_index]
+			row.integrity.terminal_boundary = reason
+			row.integrity.actual_physics_step = bridge.manual_step_count()
+			row.integrity.missing_receipt_count = 1
+			row.motion = {"available": false, "reason": "ik_physics_step_unverified"}
+		_joint_pending_steps[actor_id] = {}
+	_joint_step_fault = reason
+	last_error = reason
+	_suspended = true
+	for actor_id: int in range(_rigs.size()):
+		if is_joint_pilot(actor_id):
+			cancel_input(actor_id, epoch, StringName(str(_definitions[actor_id].producer)))
+
+
 func cancel_input(actor_id: int, expected_epoch: int, producer: StringName) -> bool:
 	if not _active or actor_id < 0 or actor_id >= _rigs.size() or expected_epoch != epoch \
 		or producer != StringName(str(_definitions[actor_id].producer)):
 		return false
 	_capture_flight_step(actor_id)
+	if is_joint_pilot(actor_id):
+		if not _joint_targets[actor_id].is_empty():
+			_ik_record_terminal(actor_id, "owner_cancelled")
+		_joint_grants[actor_id] = {}
+		_joint_targets[actor_id] = {}
+		_joint_observations[actor_id] = {}
+		var pending: Dictionary = _joint_pending_steps[actor_id]
+		if not pending.is_empty() and bridge.manual_step_count() < int(pending.physics_step):
+			var receipt_index: int = int(pending.receipt_index)
+			if receipt_index >= 0 and receipt_index < _joint_receipts[actor_id].size():
+				var pending_row: Dictionary = _joint_receipts[actor_id][receipt_index]
+				pending_row.integrity.terminal_boundary = "cancelled_before_physics"
+				pending_row.motion = {"available": false, "reason": "motor_revoked_before_physics"}
+			_joint_pending_steps[actor_id] = {}
 	_commands[actor_id] = {}
 	_flight_commands[actor_id] = {}
 	_flight_applied[actor_id] = {}
@@ -428,6 +538,15 @@ func cancel_input(actor_id: int, expected_epoch: int, producer: StringName) -> b
 func set_suspended(value: bool) -> void:
 	if value == _suspended:
 		return
+	if not value and _has_joint_pilot:
+		if not _joint_step_fault.is_empty():
+			return
+		if bridge.manual_step_count() != _joint_completed_step:
+			_fault_joint_step("ik_physics_advanced_while_suspended")
+			return
+		for index: int in range(_rigs.size()):
+			if is_joint_pilot(index):
+				cancel_input(index, epoch, StringName(str(_definitions[index].producer)))
 	if not value and _has_flight:
 		if not _flight_step_fault.is_empty():
 			return
@@ -442,6 +561,13 @@ func set_suspended(value: bool) -> void:
 				_fallback_reasons[index] = "resumed"
 	_suspended = value
 	if value:
+		if _has_joint_pilot:
+			# Suspension before the step revokes the prepared references; an
+			# already-completed but unreported Rapier step is an owner fault.
+			if _joint_prepared and bridge.manual_step_count() != _joint_completed_step:
+				_fault_joint_step("ik_step_unreported_before_suspend")
+				return
+			_joint_prepared = false
 		_flight_pause_step = bridge.manual_step_count()
 		_effects.clear()
 		for index: int in range(_rigs.size()):
@@ -454,6 +580,13 @@ func set_suspended(value: bool) -> void:
 func advance(delta: float) -> void:
 	if not _active or _suspended:
 		return
+	if _has_joint_pilot:
+		if bridge.manual_step_count() != _joint_completed_step:
+			_fault_joint_step("ik_requires_completion_before_advance")
+			return
+		if _joint_prepared:
+			last_error = "ik_step_already_prepared"
+			return
 	if _has_flight:
 		if bridge.manual_step_count() != _flight_completed_step:
 			_fault_flight_step("flight_requires_completion_before_advance")
@@ -463,6 +596,9 @@ func advance(delta: float) -> void:
 			return
 	if not is_finite(delta) or delta <= 0.0:
 		for index: int in range(_rigs.size()):
+			if is_joint_pilot(index):
+				cancel_input(index, epoch, StringName(str(_definitions[index].producer)))
+				_joint_last_rejection[index] = {"reason": "ik_invalid_cadence"}
 			if is_flight_actor(index):
 				cancel_input(index, epoch, StringName(str(_definitions[index].producer)))
 				_fallback_reasons[index] = "invalid_cadence"
@@ -470,17 +606,22 @@ func advance(delta: float) -> void:
 		return
 	if _has_flight:
 		_flight_prepared = true
+	if _has_joint_pilot:
+		_joint_prepared = true
 	# Collect every scripted view before admitting outputs or advancing any body.
 	var script_actions: Array = []
 	if tick % DECISION_TICKS == 0:
 		for index: int in range(_rigs.size()):
-			if str(_rigs[index].fault).is_empty() and (_definitions[index].producer == &"demo" or _definitions[index].producer == "demo"):
+			if not is_joint_pilot(index) and str(_rigs[index].fault).is_empty() and (_definitions[index].producer == &"demo" or _definitions[index].producer == "demo"):
 				script_actions.append({"id": index,
 					"action": _scripts[index].next_action(observation(index), delta * DECISION_TICKS)})
 	for output: Dictionary in script_actions:
 		submit_local(int(output.id), output.action, &"demo", 12)
 	_effects.clear()
 	for index: int in range(_rigs.size()):
+		if is_joint_pilot(index):
+			_advance_joint_pilot(index, delta)
+			continue
 		if is_flight_actor(index) and absf(delta - Flight.FIXED_DELTA) > 0.000000001:
 			cancel_input(index, epoch, StringName(str(_definitions[index].producer)))
 			_fallback_reasons[index] = "invalid_cadence"
@@ -548,6 +689,17 @@ func _fault_flight_step(reason: String) -> void:
 func complete_step() -> void:
 	if not _active:
 		return
+	if _has_joint_pilot:
+		var actual_joint_step: int = bridge.manual_step_count()
+		if not _joint_step_fault.is_empty():
+			return
+		if _suspended:
+			if actual_joint_step != _joint_completed_step:
+				_fault_joint_step("ik_physics_advanced_while_suspended")
+			return
+		if actual_joint_step != _joint_completed_step + 1 or not _joint_prepared:
+			_fault_joint_step("ik_unexpected_physics_step")
+			return
 	if _has_flight:
 		if not _flight_step_fault.is_empty():
 			return
@@ -569,6 +721,7 @@ func complete_step() -> void:
 			_capture_flight_step(index)
 			_rigs[index].complete_step()
 			_rigs[index].refresh_observation()
+			_complete_joint_step(index)
 			# Fault quarantine retires both unconsumed input and copied tool work.
 			# Healthy actors keep their separate leases and continue the session.
 			if not str(_rigs[index].fault).is_empty() and not _commands[index].is_empty():
@@ -582,6 +735,349 @@ func complete_step() -> void:
 		if _has_flight:
 			_flight_completed_step = bridge.manual_step_count()
 			_flight_prepared = false
+		if _has_joint_pilot:
+			_joint_completed_step = bridge.manual_step_count()
+			_joint_prepared = false
+
+
+func ik_capabilities(actor_id: int) -> Dictionary:
+	if not _active or not is_joint_pilot(actor_id) or _suspended or not _joint_step_fault.is_empty():
+		return {}
+	var value: Dictionary = JointTargets.capability(_joint_host_identity, _catalogue[actor_id])
+	if value.is_empty() or not str(_rigs[actor_id].fault).is_empty():
+		return {}
+	value["actor_id"] = actor_id
+	value["run_id"] = run_id
+	value["epoch"] = epoch
+	value["incarnation"] = _rigs[actor_id].epoch
+	value["control_generation"] = _generations[actor_id]
+	value["source_owner"] = str(_definitions[actor_id].producer)
+	return value.duplicate(true)
+
+
+func ik_grant(actor_id: int, producer: StringName, source_id: String, policy_sha256: String,
+		goal_id: String, goal_deadline_tick: int) -> Dictionary:
+	# Trusted main-thread issue, not a client-provided grant or a wire packet.
+	if ik_capabilities(actor_id).is_empty() or producer != StringName(str(_definitions[actor_id].producer)) \
+		or not JointTargets.identifier(source_id) or not JointTargets.identifier(goal_id) \
+		or not JointTargets.digest(policy_sha256) \
+		or not JointTargets.integer(goal_deadline_tick, tick + 1, 9007199254740991):
+		last_error = "ik_grant_refused"
+		return {}
+	if not cancel_input(actor_id, epoch, producer) or not _rigs[actor_id].enable_joint_targets():
+		last_error = "ik_owner_transition_refused"
+		return {}
+	var granted: Dictionary = {
+		"protocol": JointTargets.PROTOCOL, "operation": "ik_grant", "version": 1,
+		"run_id": run_id, "actor_id": actor_id, "epoch": epoch,
+		"incarnation": _rigs[actor_id].epoch,
+		"control_generation": _generations[actor_id],
+		"source_id": source_id, "policy_sha256": policy_sha256,
+		"goal_id": goal_id, "goal_deadline_tick": goal_deadline_tick,
+		"grant_id": Crypto.new().generate_random_bytes(16).hex_encode(),
+		"grant_generation": _generations[actor_id],
+		"producer": str(producer), "profile_sha256": JointTargets.PROFILE_SHA256,
+		"topology_sha256": JointTargets.TOPOLOGY_SHA256,
+		"joint_ids": JointTargets.ACTIVE_JOINT_IDS.duplicate()
+	}
+	_joint_grants[actor_id] = granted.duplicate(true)
+	# Sequences are scoped to the new grant/generation, not a stale owner's
+	# actor-wide counter. Older generations stay invalid by identity.
+	_joint_sequences[actor_id] = -1
+	_joint_last_rejection[actor_id] = {}
+	return granted.duplicate(true)
+
+
+func ik_observe(actor_id: int, grant_id: String) -> Dictionary:
+	if ik_capabilities(actor_id).is_empty() or _joint_grants[actor_id].is_empty() \
+		or str(_joint_grants[actor_id].grant_id) != grant_id \
+		or int(_joint_grants[actor_id].control_generation) != _generations[actor_id] \
+		or tick >= int(_joint_grants[actor_id].goal_deadline_tick):
+		return {}
+	var view: Dictionary = observation(actor_id)
+	var chain: Array = JointTargets.observed_chain(view)
+	if chain.size() != 2 or view.get("parts", []).size() != 5 \
+		or not Vector2(view.get("position", Vector2.INF)).is_finite() \
+		or not is_finite(float(view.get("rotation", INF))):
+		return {}
+	var positions: Array = []
+	for joint: Dictionary in view.joints:
+		positions.append(float(joint.angle))
+	positions.append_array([null, null, null])
+	var digest: String = JointTargets.observation_digest(view)
+	var record: Dictionary = {
+		"protocol": JointTargets.PROTOCOL, "operation": "ik_observe",
+		"schema": "ik_host_observation/v1", "version": 1,
+		"run_id": run_id, "actor_id": actor_id, "epoch": epoch,
+		"incarnation": _rigs[actor_id].epoch, "control_generation": _generations[actor_id],
+		"grant_id": grant_id, "source_id": str(_joint_grants[actor_id].source_id),
+		"goal_id": str(_joint_grants[actor_id].goal_id),
+		"observed_tick": tick, "observation_id": str(view.observation_id),
+		"observation_sha256": digest,
+		"profile_sha256": JointTargets.PROFILE_SHA256,
+		"topology_sha256": JointTargets.TOPOLOGY_SHA256,
+		"root_pose": {"position_cells": [float(view.position.x), float(view.position.y)],
+			"angle_radians": float(view.rotation)},
+		"part_ids": JointTargets.PART_IDS.duplicate(),
+		"joint_ids": JointTargets.JOINT_IDS.duplicate(),
+		"part_present": [true, true, true, true, true, false, false, false],
+		"joint_present": [true, true, true, true, false, false, false],
+		"joint_measured": [true, true, true, true, false, false, false],
+		"joint_active": [false, false, true, true, false, false, false],
+		"joint_positions_radians": positions,
+		"measured_chain_radians": chain.duplicate(), "evidence_kind": "host_observation"
+	}
+	# Bounded original-observation archive, keyed by the exact issued tick.
+	# A later observation may never overwrite an earlier source frame.
+	var cache: Dictionary = _joint_observations[actor_id]
+	cache[str(tick)] = record.duplicate(true)
+	for key: Variant in cache.keys():
+		if int(key) < tick - JointTargets.MAX_LEASE:
+			cache.erase(key)
+	return record.duplicate(true)
+
+
+func _ik_refuse(actor_id: int, reason: String, request: Variant = null) -> Dictionary:
+	# A malformed/stale command from the *current authenticated owner*
+	# terminates its old pending motor request. An unrelated source cannot
+	# disarm the real owner by sending a corrupt packet or guessed actor ID.
+	if request is Dictionary:
+		var claimed: Variant = request.get("actor_id", -1)
+		if JointTargets.integer(claimed, 0, _joint_pilots.size() - 1):
+			var slot: int = int(claimed)
+			if is_joint_pilot(slot) and not _joint_grants[slot].is_empty():
+				var g: Dictionary = _joint_grants[slot]
+				if request.get("run_id") == run_id and request.get("epoch") == epoch \
+					and request.get("control_generation") == _generations[slot] \
+					and request.get("grant_id") == g.grant_id \
+					and request.get("source_id") == g.source_id \
+					and request.get("policy_sha256") == g.policy_sha256 \
+					and request.get("producer") == g.producer:
+					cancel_input(slot, epoch, StringName(str(g.producer)))
+	var refusal: Dictionary = {
+		"protocol": JointTargets.PROTOCOL, "operation": "ik_submit",
+		"accepted": false, "reason": reason, "owner_tick": tick,
+		"run_id": run_id, "actor_id": actor_id, "epoch": epoch
+	}
+	if request is Dictionary:
+		refusal["sequence"] = request.get("sequence", -1)
+		refusal["observation_id"] = request.get("observation_id", "")
+	if is_joint_pilot(actor_id):
+		_joint_last_rejection[actor_id] = refusal.duplicate(true)
+	last_error = reason
+	rejected_commands += 1
+	return refusal
+
+
+func ik_submit(value: Variant) -> Dictionary:
+	var reason: String = JointTargets.validation_error(value)
+	if not reason.is_empty():
+		return _ik_refuse(-1, reason, value)
+	var packet: Dictionary = value
+	var actor_id: int = int(packet.actor_id)
+	if not _active or _suspended or not is_joint_pilot(actor_id) \
+		or ik_capabilities(actor_id).is_empty() or _joint_grants[actor_id].is_empty():
+		return _ik_refuse(actor_id, "ik_capability_or_grant", packet)
+	var grant: Dictionary = _joint_grants[actor_id]
+	# Duplicates permit read-only lookup, never second admission or extension.
+	if int(packet.sequence) <= _joint_sequences[actor_id]:
+		for receipt: Dictionary in _joint_receipts[actor_id]:
+			if receipt.get("requested", {}) == packet:
+				var prior: Dictionary = receipt.duplicate(true)
+				prior["duplicate_lookup"] = true
+				return prior
+		return _ik_refuse(actor_id, "ik_sequence_replay", packet)
+	if packet.run_id != run_id or int(packet.epoch) != epoch \
+		or int(packet.incarnation) != _rigs[actor_id].epoch \
+		or int(packet.control_generation) != _generations[actor_id] \
+		or packet.producer != str(_definitions[actor_id].producer) \
+		or packet.source_id != grant.source_id or packet.policy_sha256 != grant.policy_sha256 \
+		or packet.grant_id != grant.grant_id or int(packet.grant_generation) != int(grant.grant_generation) \
+		or packet.goal_id != grant.goal_id or int(packet.goal_deadline_tick) != int(grant.goal_deadline_tick):
+		return _ik_refuse(actor_id, "ik_authority_mismatch", packet)
+	var original: Dictionary = _joint_observations[actor_id].get(str(packet.observed_tick), {})
+	if original.is_empty() or original.observation_id != packet.observation_id \
+		or original.observation_sha256 != packet.observation_sha256:
+		# The client may not swap an old q with a later root frame.
+		return _ik_refuse(actor_id, "ik_original_observation_mismatch", packet)
+	if int(original.control_generation) != _generations[actor_id] \
+		or not JointTargets.can_consume(int(packet.observed_tick), int(packet.lease_ticks),
+			int(grant.goal_deadline_tick), tick):
+		return _ik_refuse(actor_id, "ik_exclusive_expiry", packet)
+	var references: Array = JointTargets.resolve_targets(packet, original.measured_chain_radians)
+	if references.size() != 2:
+		# A delta beyond inner pose bounds is a refusal, never a hidden clamp.
+		return _ik_refuse(actor_id, "ik_resolved_target_bounds", packet)
+	_joint_sequences[actor_id] = int(packet.sequence)
+	_joint_targets[actor_id] = {
+		"packet": packet.duplicate(true), "references": references.duplicate(),
+		"control_generation": _generations[actor_id],
+		"grant_id": str(grant.grant_id), "observation_sha256": original.observation_sha256
+	}
+	var admission: Dictionary = {
+		"protocol": JointTargets.PROTOCOL, "operation": "ik_submit",
+		"accepted": true, "requested": packet.duplicate(true),
+		"admitted": {"owner_tick": tick, "references_radians": references.duplicate(),
+			"mode": JointTargets.MODE, "joint_ids": JointTargets.ACTIVE_JOINT_IDS.duplicate(),
+			"same_owner_and_limits_for_producers": true},
+		"limited": {"reference_projection": false, "reference_interpolation": false,
+			"motor_speed_and_slew_limited_at_consumption": true},
+		"integrity": {"original_observed_tick": int(packet.observed_tick),
+			"exclusive_deadline_tick": JointTargets.expiration(
+				int(packet.observed_tick), int(packet.lease_ticks), int(grant.goal_deadline_tick)),
+			"applied_tick_count": 0, "terminal_boundary": "not_consumed",
+			"missing_receipt_count": 0, "unknown_receipt_count": 0}
+	}
+	_joint_receipts[actor_id].append(admission.duplicate(true))
+	if _joint_receipts[actor_id].size() > 64:
+		_joint_receipts[actor_id].pop_front()
+	accepted_commands += 1
+	return admission.duplicate(true)
+
+
+func ik_receipts(actor_id: int, grant_id: String, sequence: int = -1) -> Array:
+	# Read-only lookup after cancellation is allowed; never reissues a grant.
+	if not is_joint_pilot(actor_id) or not JointTargets.identifier(grant_id):
+		return []
+	var found: Array = []
+	for receipt: Dictionary in _joint_receipts[actor_id]:
+		var packet: Dictionary = receipt.get("requested", {})
+		if str(packet.get("grant_id", "")) == grant_id \
+			and (sequence < 0 or int(packet.get("sequence", -1)) == sequence):
+			found.append(receipt.duplicate(true))
+	return found
+
+
+func ik_cancel(actor_id: int, grant_id: String, source_id: String) -> Dictionary:
+	if not is_joint_pilot(actor_id) or _joint_grants[actor_id].is_empty() \
+		or str(_joint_grants[actor_id].grant_id) != grant_id \
+		or str(_joint_grants[actor_id].source_id) != source_id:
+		return {"confirmed": false, "reason": "ik_grant_not_current"}
+	var old_generation: int = _generations[actor_id]
+	if not cancel_input(actor_id, epoch, StringName(str(_definitions[actor_id].producer))):
+		return {"confirmed": false, "reason": "ik_owner_revocation_failed"}
+	return {"protocol": JointTargets.PROTOCOL, "operation": "ik_cancel",
+		"confirmed": true, "tick": tick, "run_id": run_id, "actor_id": actor_id,
+		"epoch": epoch, "revoked_generation": old_generation,
+		"new_generation": _generations[actor_id], "grant_id": grant_id,
+		"old_motor_references_revoked": true, "momentum_reset": false}
+
+
+func _advance_joint_pilot(actor_id: int, delta: float) -> void:
+	if not _joint_grants[actor_id].is_empty() \
+		and tick >= int(_joint_grants[actor_id].goal_deadline_tick):
+		cancel_input(actor_id, epoch, StringName(str(_definitions[actor_id].producer)))
+		_joint_last_rejection[actor_id] = {"reason": "ik_goal_expired", "owner_tick": tick}
+		return
+	if _joint_grants[actor_id].is_empty() or _joint_targets[actor_id].is_empty():
+		return
+	var active_target: Dictionary = _joint_targets[actor_id]
+	var packet: Dictionary = active_target.packet
+	var grant: Dictionary = _joint_grants[actor_id]
+	var original: Dictionary = _joint_observations[actor_id].get(str(packet.observed_tick), {})
+	var valid: bool = _active and not _suspended and _joint_step_fault.is_empty() \
+		and _rigs[actor_id].fault == "" and _generations[actor_id] == int(active_target.control_generation) \
+		and grant.grant_id == active_target.grant_id \
+		and int(grant.grant_generation) == _generations[actor_id] \
+		and int(grant.goal_deadline_tick) == int(packet.goal_deadline_tick) \
+		and str(_definitions[actor_id].producer) == str(packet.producer) \
+		and JointTargets.compatible_assembly(_catalogue[actor_id]) \
+		and not original.is_empty() and original.observation_sha256 == active_target.observation_sha256 \
+		and JointTargets.observed_chain(_rigs[actor_id].observation()).size() == 2 \
+		and JointTargets.can_consume(int(packet.observed_tick), int(packet.lease_ticks),
+			int(grant.goal_deadline_tick), tick)
+	if not valid or absf(delta - 1.0 / 60.0) > 0.000000001:
+		cancel_input(actor_id, epoch, StringName(str(_definitions[actor_id].producer)))
+		_joint_last_rejection[actor_id] = {"reason": "ik_consumption_authority_or_expiry", "owner_tick": tick}
+		return
+	var motor: Dictionary = _rigs[actor_id].advance_joint_targets(active_target.references, delta)
+	if motor.is_empty():
+		cancel_input(actor_id, epoch, StringName(str(_definitions[actor_id].producer)))
+		_joint_last_rejection[actor_id] = {"reason": "ik_motor_refused", "owner_tick": tick}
+		return
+	var report: Dictionary = {
+		"protocol": JointTargets.PROTOCOL, "operation": "ik_receipt", "version": 1,
+		"accepted": true, "requested": packet.duplicate(true),
+		"admitted": {"owner_tick": tick, "sequence": int(packet.sequence),
+			"control_generation": _generations[actor_id], "grant_id": str(grant.grant_id),
+			"references_radians": active_target.references.duplicate(),
+			"mode": JointTargets.MODE},
+		"limited": {"reference_radians": active_target.references.duplicate(),
+			"motor_slew_and_deadzone": motor.motors.duplicate(true)},
+		"motor": motor.duplicate(true),
+		"motion": {"available": false, "reason": "physics_step_not_completed"},
+		"integrity": {"requested_observed_tick": int(packet.observed_tick),
+			"consumed_base_tick": tick, "expected_physics_step": bridge.manual_step_count() + 1,
+			"actual_physics_step": null, "completed_base_tick": null,
+			"terminal_boundary": "pending_physics_completion",
+			"missing_receipt_count": 0, "unknown_receipt_count": 0}
+	}
+	_joint_receipts[actor_id].append(report.duplicate(true))
+	if _joint_receipts[actor_id].size() > 64:
+		_joint_receipts[actor_id].pop_front()
+	_joint_pending_steps[actor_id] = {"receipt_index": _joint_receipts[actor_id].size() - 1,
+		"physics_step": bridge.manual_step_count() + 1, "generation": _generations[actor_id]}
+
+
+func _ik_record_terminal(actor_id: int, reason: String) -> void:
+	# A terminal receipt is a *no new actuation* boundary. Preserve the
+	# original request identity for external auditing and read-only lookup.
+	var active_target: Dictionary = _joint_targets[actor_id]
+	if active_target.is_empty():
+		return
+	var packet: Dictionary = active_target.packet
+	var row: Dictionary = {
+		"protocol": JointTargets.PROTOCOL, "operation": "ik_terminal",
+		"version": 1, "accepted": false, "requested": packet.duplicate(true),
+		"admitted": {"owner_tick": tick, "no_new_actuation": true},
+		"limited": {"motor_disarmed": true},
+		"motor": {"mode": "passive_no_grant", "commanded_joint_ids": [],
+			"passive_joint_ids": JointTargets.JOINT_IDS.duplicate()},
+		"motion": {"available": false, "reason": "no_physics_consumption"},
+		"integrity": {
+			"requested_observed_tick": int(packet.observed_tick),
+			"consumed_base_tick": null,
+			"completed_base_tick": null,
+			"actual_physics_step": null,
+			"terminal_boundary": reason, "cancel_confirmed": true,
+			"missing_receipt_count": 0, "unknown_receipt_count": 0}
+	}
+	_joint_receipts[actor_id].append(row)
+	if _joint_receipts[actor_id].size() > 64:
+		_joint_receipts[actor_id].pop_front()
+
+
+func _complete_joint_step(actor_id: int) -> void:
+	if not is_joint_pilot(actor_id) or _joint_pending_steps[actor_id].is_empty():
+		return
+	var pending: Dictionary = _joint_pending_steps[actor_id]
+	var index: int = int(pending.receipt_index)
+	_joint_pending_steps[actor_id] = {}
+	if index < 0 or index >= _joint_receipts[actor_id].size():
+		return
+	var row: Dictionary = _joint_receipts[actor_id][index]
+	var actual: int = bridge.manual_step_count()
+	row.integrity.actual_physics_step = actual
+	row.integrity.completed_base_tick = tick
+	if actual != int(pending.physics_step):
+		row.integrity.terminal_boundary = "physics_step_mismatch"
+		row.integrity.missing_receipt_count = 1
+		return
+	var view: Dictionary = _rigs[actor_id].observation()
+	var angles: Array = JointTargets.observed_chain(view)
+	row.motion = {"available": angles.size() == 2, "completed_tick": tick,
+		"root_position": view.get("position", Vector2.ZERO),
+		"root_angle": view.get("rotation", 0.0),
+		"joint_angles_radians": angles.duplicate(), "part_motion": view.get("parts", []).duplicate(true),
+		"joint_motion": view.get("joints", []).duplicate(true),
+		"grounded": view.get("grounded", false),
+		"contact_normal": view.get("contact_normal", Vector2.ZERO),
+		"per_joint_force_telemetry": null, "passive_force_decomposition": null}
+	if angles.size() == 2:
+		var references: Array = row.admitted.references_radians
+		row.motion["tracking_error_radians"] = [
+			float(references[0]) - float(angles[0]), float(references[1]) - float(angles[1])]
+	row.integrity.terminal_boundary = "completed"
 
 
 func drain_effects() -> Array:
@@ -695,6 +1191,18 @@ func close() -> void:
 	_flight_commands.clear()
 	_flight_applied.clear()
 	_flight_last_step.clear()
+	_joint_host_identity.clear()
+	_joint_pilots.clear()
+	_joint_grants.clear()
+	_joint_targets.clear()
+	_joint_observations.clear()
+	_joint_receipts.clear()
+	_joint_last_rejection.clear()
+	_joint_pending_steps.clear()
+	_joint_sequences.clear()
+	_has_joint_pilot = false
+	_joint_prepared = false
+	_joint_step_fault = ""
 	_has_flight = false
 	_flight_prepared = false
 	_flight_step_fault = ""
