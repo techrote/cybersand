@@ -128,6 +128,7 @@ jobs:
           python3 -m py_compile tools/ci/run_godot_regressions.py tools/ci/test_godot_regression_sharding.py tools/ci/run_windows_godot_regressions.py tools/ci/test_windows_godot_regressions.py
           python3 tools/ci/test_godot_regression_sharding.py
           python3 tools/ci/test_windows_godot_regressions.py
+          python3 tools/ci/test_physical_timeout_diagnostics.py
 
       - name: Install pinned SCons
         run: |
