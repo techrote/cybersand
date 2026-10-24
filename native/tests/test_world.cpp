@@ -3736,6 +3736,16 @@ void test_liquid_policy_world_construction_and_refusal();
 void test_liquid_policy_default_preserves_behavior_and_workers();
 void test_liquid_policy_c_api_transaction();
 void test_liquid_policy_c_api_allocation_failures();
+void test_lcb_inertial_boundary_workers();
+void test_lcb_inertial_reset_products();
+void test_lcb_inertial_storage_capture();
+void test_lcb_inertial_residual_motion();
+void test_lcb_inertial_admission();
+void test_lcb_inertial_contract_examples();
+void test_lcb_inertial_ledgers_rest_parity();
+void test_lcb_inertial_no_tunnelling();
+void test_lcb_inertial_lifecycle();
+void test_lcb_inertial_three_families();
 void test_lcb_pressure_admission();
 void test_lcb_pressure_gas_id_restore_bounds();
 void test_lcb_pressure_gas_id_creation_exhaustion();
@@ -3868,6 +3878,16 @@ int main(int argc, char** argv) {
         {"LCB-001 liquid policy World construction and refusal", test_liquid_policy_world_construction_and_refusal},
         {"LCB-001 liquid policy default behavior and workers", test_liquid_policy_default_preserves_behavior_and_workers},
         {"LCB-001 liquid policy C API transaction", test_liquid_policy_c_api_transaction},
+        {"LCB-005 inertial boundary workers",test_lcb_inertial_boundary_workers},
+        {"LCB-005 inertial reset products",test_lcb_inertial_reset_products},
+        {"LCB-005 inertial storage capture",test_lcb_inertial_storage_capture},
+        {"LCB-005 inertial residual motion",test_lcb_inertial_residual_motion},
+        {"LCB-005 inertial admission", test_lcb_inertial_admission},
+        {"LCB-005 inertial contract examples", test_lcb_inertial_contract_examples},
+        {"LCB-005 inertial ledgers rest parity", test_lcb_inertial_ledgers_rest_parity},
+        {"LCB-005 inertial no tunnelling", test_lcb_inertial_no_tunnelling},
+        {"LCB-005 inertial lifecycle", test_lcb_inertial_lifecycle},
+        {"LCB-005 inertial three families", test_lcb_inertial_three_families},
         {"LCB-001 pressure admission and refusal", test_lcb_pressure_admission},
         {"LCB-001 pressure gas ID restore bounds", test_lcb_pressure_gas_id_restore_bounds},
         {"LCB-001 pressure gas ID creation exhaustion", test_lcb_pressure_gas_id_creation_exhaustion},

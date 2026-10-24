@@ -1,0 +1,34 @@
+{
+  "questions": [
+    {
+      "id": "LCB005-1",
+      "query": "Why does native Brine inertial cellular require radius three when it only travels two cells per tick?",
+      "canonical": [
+        "architecture/inertial-cellular-v1.md"
+      ],
+      "facts": [
+        "Travel writes reach two; final support and contact-side reads can reach three.",
+        "IN requires explicit radius3 and matched comparison geometry; current default preset remains radius2."
+      ],
+      "sources": [
+        "../native/src/world_inertial.inc"
+      ]
+    },
+    {
+      "id": "LCB005-2",
+      "query": "Does the six byte Brine IN sidecar allocate only for Brine cells, and which hash capture and memory costs are qualified?",
+      "canonical": [
+        "architecture/inertial-cellular-v1.md"
+      ],
+      "facts": [
+        "Dense optional arrays cover every resident chunk when World policy enables IN.",
+        "IN uses explicit hash3/CYPS3; existing non-IN formats retain their field emission.",
+        "Reported component sum excludes allocator metadata/shared resources/RSS; native-only proof does not qualify Godot or runtime publication."
+      ],
+      "sources": [
+        "../native/include/cybersand/inertial_cellular.hpp",
+        "../native/src/world_pressure.inc"
+      ]
+    }
+  ]
+}

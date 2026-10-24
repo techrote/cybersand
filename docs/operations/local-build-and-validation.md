@@ -1086,3 +1086,7 @@ The scoped GEN-007 publisher (retired; see
 [branch-scoped runtime publishers](#branch-scoped-runtime-publishers)) bound
 Linux/Windows execution to exact source and runtime bytes; the ready-for-review
 full repository gates remain separate.
+
+## Native Brine IN checkpoint
+
+The isolated #212 [Brine reference](../architecture/inertial-cellular-v1.md) is exercised with `make build/tests` then `./build/tests "LCB-005"`; the full native suite remains required. [Dated local evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) distinguishes Windows LLVM execution, failed fixture premises, actual worker participation and memory components from future Linux/MSVC/Godot/runtime qualification. No Water IN or application adapter follows from this native-only checkpoint.

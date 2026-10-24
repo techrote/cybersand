@@ -128,7 +128,13 @@ two illustrative contract schemas remain historical contract-test schemas.
 The residual native build additionally qualifies Water ×
 `cellular_yield_v1/reference` and appends its actual optional Water material
 block **v2**, `{viscosity_index 0..255}`, default 0. It does not reinterpret
-the illustrative v1 `flow_rate_permille` block. Residual outcomes are:
+the illustrative v1 `flow_rate_permille` block.
+
+The isolated #212 native checkpoint additionally compiles family4
+(`available_families` 0x0F) and admits only Brine/reference. It binds fixed
+parameters through native state-extension identity1, not the illustrative caller
+damping schema. This admission updates the capability digest and policy/receipt
+identities; it does not imply changed Current physics. Residual outcomes are:
 
 | Request | Outcome |
 |---|---|
@@ -137,7 +143,8 @@ the illustrative v1 `flow_rate_permille` block. Residual outcomes are:
 | Matrix `rejected` cell (e.g. Oil × `inertial_cellular_v1`, NC-1; any non-Water liquid × `pressure_flow_v1`) | `combination_rejected` |
 | `proposed_alternate` cell (Toxic Sludge × inertial) | `not_selectable` |
 | A variant the cell does not offer (e.g. Water FreeMass `cached`) | `variant_unsupported` |
-| `inertial_cellular_v1` (NC-2), Brine × inertial | `family_unavailable` (not compiled) |
+| Water / `inertial_cellular_v1` (NC-2) | `family_unavailable`; complete Water carrying stencil remains unqualified |
+| Brine / `inertial_cellular_v1/reference` | **Accepted on the isolated native #212 branch only**, with explicit execution radius3; [law, storage and evidence](inertial-cellular-v1.md) |
 | Water × `cellular_yield_v1/reference`, with no Water block or its v2 viscosity block | **Accepted** in residual native source; whole-cell Water law below |
 | Stale digests, malformed envelopes, any other parameter block, an out-of-range pressure block | as the precedence above |
 

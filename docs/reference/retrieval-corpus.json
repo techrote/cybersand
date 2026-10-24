@@ -18,6 +18,7 @@
     "architecture/liquid-state-transition-matrix.md",
     "architecture/lcb-pressure-inertial-handoff.md",
     "architecture/pressure-flow-v1.md",
+    "architecture/inertial-cellular-v1.md",
     "architecture/simulation-tick-and-threading.md",
     "decisions/ADR-001-native-simulation-core.md",
     "decisions/ADR-002-double-buffered-tile-jobs.md",
