@@ -10,6 +10,20 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## LCB-003 controlled host preparation — 2026-10-24
+
+The first bounded #202 source slice lives on
+`codex/lcb003-application-host`, based on frozen #246 head `9e91a9f7` while its
+acceptance runs. It adds explicit native normalization and immutable typed
+receipt copies to fixed actor-free MicroScenarios in the actual desktop and
+synchronous application owners. One candidate/token slot and the worker's final
+request/reset/stop fence preserve live state and host cursors on refusal.
+Read the [bounded contract](../architecture/liquid-prepared-setup-and-receipts.md#controlled-application-host-preparation-slice)
+and [local evidence and remaining gaps](../audits/2026-10-24-lcb003-controlled-host-slice.md).
+This is not all #202 constructors/UI or browser qualification. Integrate onto
+fresh main after #246; preserve the normal #201/#202/#212 → #203 sequence and
+all native-v1 provenance/host qualifications.
+
 ## Residual LCB-001 continuation — 2026-10-24
 
 After PR #245's exact-head acceptance/merge, continue from the focused

@@ -646,9 +646,30 @@ setup/normalization identities, complete hash2 and exact accounting. Shaped
 source/runtime values remain caller claims and full matched eligibility stays
 false until #202 supplies actual verification. The older Godot dictionary
 getter above remains a different encoding; no Godot typed normalization opt-in
-or full comparison host is supplied here. Detailed shapes, absence rules,
+or full comparison host is supplied by that residual native checkpoint. Detailed shapes, absence rules,
 capacities and the narrow native codec freeze belong to
 [native prepared setup and receipts](../architecture/liquid-prepared-setup-and-receipts.md).
+
+**Subsequent #202 source slice:** `CyberDemoBridge.prepare_liquid_world(world,
+rectangles, profile, policy, water_fills, liquid_policy, options)` returns one
+positive opaque token or zero. Options bind the definition SHA256 claim, seed,
+final four-word region, cadence/adhesion and explicit normalization rule. The
+unchanged native builder supplies normalization and typed outcomes. No pending
+World is exposed. `commit_liquid_world(world, token)` consumes that token at the
+exclusive owner boundary after a retained-state fence; `discard_liquid_world`
+retires it. There is one pending candidate per adapter.
+
+`get_applied_liquid_construction_receipt()` and
+`get_liquid_construction_attempt()` return distinct owned dictionaries containing
+the original native canonical `PackedByteArray`, its SHA256, qualifications and
+eligibility. Applied readback includes the actual tick-zero policy, prepared
+payload/setup, generation, final region, execution selections and optional
+normalization digest/counters. Both application owners accept
+`microscenario_apply_controlled_liquid(definition, policy, normalize_water,
+mode)` for the initial fixed actor-free schema-2 route. Desktop commands carry
+`controlled_liquid_setup`; the worker issues its own queue revision and fences
+the actual native commit against newer requests/reset/stop. Details and current
+gaps belong to the [bounded host contract](../architecture/liquid-prepared-setup-and-receipts.md#controlled-application-host-preparation-slice).
 
 ### Read-only native MicroScenario inspection
 

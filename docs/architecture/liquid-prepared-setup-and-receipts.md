@@ -27,12 +27,73 @@ storage. Preparation acts on an unexposed new candidate. It accepts no live
 World to normalize or replace. The owner still performs the eventual session
 installation and publication transaction.
 
-**Native-only:** Godot has no typed-v1 normalization opt-in route here. The
+**Residual #200 boundary:** that native checkpoint supplies no Godot typed-v1
+normalization opt-in route. The subsequent [bounded #202 host slice](#controlled-application-host-preparation-slice)
+adds one on `codex/lcb003-application-host`. The
 existing `CyberNativeCellWorld.get_liquid_run_receipt(Dictionary)` in
 [`cyber_native_cell_world.cpp`](../../godot/native_extension/cyber_native_cell_world.cpp)
 remains an experimental dictionary/string assembly from the pressure reference.
 It is a different encoding and does not supply this typed native contract or
 application-host proof.
+
+## Controlled application-host preparation slice
+
+**Current experimental source on `codex/lcb003-application-host`, based on
+`9e91a9f75d47b9a9aa4a8ba2d3ce78ba2fbfd882`:** the normal desktop
+MicroScenario owner and synchronous application controller accept a fixed,
+actor-free schema-2 definition with an explicit policy and optional
+`water-normalize-v1`. `microscenario_apply_controlled_liquid` keeps the existing
+definition, event, observation, pause, acknowledgement and Reset routes. Reset
+retains the accepted policy and normalization opt-in. Ordinary constructors
+continue to use their existing defaults. This is the first #202 slice, not
+completion of the comparison host, UI, all constructors or Web qualification.
+
+`CyberDemoBridge.prepare_liquid_world` resolves the ordered rectangle and
+nonzero Water-fill overlays into final unique native tuples before calling the
+unchanged `PreparedWorldBuilder`. Zero-mass fills retain their no-op meaning.
+The construction-only dense tuple map has 1,048,576 entries; no staging storage
+or allocation enters tick execution. This initial schema carries ambient
+temperatures; native tuple/thermal authority and native normalization remain
+owned by the contract above.
+
+One adapter-owned pending slot owns the candidate World, render exchange,
+final setup, copied native receipt and a monotonically issued opaque token.
+The final fixed interest region, adhesion and host cadence selection are set
+before native capture. Preparation cannot expose its World or applied receipt.
+A newer preparation retires the previous token even when the newer request
+refuses. Commit is one-use and first checks the retained generation, revision,
+complete physical hash and selected adapter execution flags. Changed live state,
+discard and token replay refuse before any swap. Legacy constructors retire the
+typed identity rather than retain a receipt from another World.
+
+The desktop worker prepares outside its queue mutex. It fences the actual
+native commit under that mutex against the current owner-issued request
+revision, reset and stop. A same-definition newer request still has a different
+request identity. Refusal preserves the old World, generation, applied receipt
+and MicroScenario event/observation cursor; the latest native-issued refusal
+has a distinct copied construction-attempt encoding. The attempt captures the
+healthy retained native facts before preparation and again after refusal.
+An initial legacy World with generation zero cannot mint that native receipt.
+Host schema/unsupported-route errors and retired tokens do not invent native
+policy refusals.
+
+`get_applied_liquid_construction_receipt` and
+`get_liquid_construction_attempt` copy the native canonical bytes and SHA256
+into owned Godot values. The applied value remains the original tick-zero
+receipt through ordinary ticks. Consumer mutation cannot affect the adapter or
+later worker publications. The native-v1 qualification flags remain intact and
+full matched-evidence eligibility remains false: a host definition digest is
+still a claim, source/runtime verification is not supplied, and no GDScript
+re-encoding upgrades the frozen native contract. The older dictionary getter
+remains a separate encoding.
+
+The [dated host evidence](../audits/2026-10-24-lcb003-controlled-host-slice.md)
+records deterministic preparation/commit barriers, masked-Water refusal,
+normalization totals, actual normal-app routes and retained legacy regressions.
+The synchronous `web_main.tscn` check executes in Windows Godot; it is not a
+browser/Wasm result. Actor/loadout staging, exploratory and remaining constructor
+routing, comparison controls/exhibition, provenance verification, browser runs
+and hosted source-matched runtime publication remain #202 work.
 
 ## Source map
 

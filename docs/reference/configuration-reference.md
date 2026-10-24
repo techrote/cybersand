@@ -310,8 +310,14 @@ default 0. Its law version is 1; the illustrative material-block v1
 `flow_rate_permille` schema is not reinterpreted. Whole-cell Water requires
 `maximum()` at ingress. Explicit native `water-normalize-v1` preparation admits
 3–8 mass bits, at most 1024 cells per domain side and 1,048,576 final unique tuple
-records (caller may lower the record budget). There is no Godot typed
-normalization opt-in route yet.
+records (caller may lower the record budget). The subsequent experimental
+`codex/lcb003-application-host` slice adds typed normalization opt-in for fixed,
+actor-free schema-2 MicroScenarios in both existing application owners. Its
+`normalize_water` bool maps only to the explicit `water-normalize-v1` rule;
+false never rounds silently. Unknown native rule strings refuse. There is one
+pending preparation token per adapter, and Reset retains the accepted option.
+See the [bounded host contract](../architecture/liquid-prepared-setup-and-receipts.md#controlled-application-host-preparation-slice)
+for its constructor and platform limits.
 
 The [native prepared setup/receipt/accounting contract](../architecture/liquid-prepared-setup-and-receipts.md)
 owns these bounds, native-issued refusal/failure outcomes, source/host

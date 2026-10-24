@@ -799,6 +799,29 @@ reports, required material stages, other-liquid work and future stochastic/
 cadence work. Zero rounded flow is not rest, and a complete tick-inclusive hash
 cannot be a cross-tick static-rest predicate.
 
+## LCB-003 controlled application-host slice — 2026-10-24
+
+**Current experimental source on `codex/lcb003-application-host`, based on
+the frozen #246 head `9e91a9f7`:** fixed actor-free schema-2 MicroScenarios can
+request an explicit family policy and `water-normalize-v1` through the normal
+desktop and synchronous application controllers. One pending native candidate,
+preallocated rendering, final execution/interest capture and copied typed
+native receipts precede a one-use token commit. The worker checks current
+request revision/reset/stop under its queue mutex at the actual swap; a newer
+same-definition request cannot commit an older preparation. Reset retains the
+accepted policy and normalization selection. Refusal retains the old World,
+cursor, generation and applied receipt, with a distinct native attempt value
+where native preparation/admission supplied that outcome.
+
+The [host contract](../architecture/liquid-prepared-setup-and-receipts.md#controlled-application-host-preparation-slice)
+and [dated evidence](../audits/2026-10-24-lcb003-controlled-host-slice.md) own exact
+scope. Native-v1 setup/source/runtime/host qualifications and false full-match
+eligibility remain intact. Linux/hosted publication, real Web execution of this
+new path, verified definition/provenance collection, actor/equipment staging,
+remaining normal constructors, comparison UI and exhibition remain #202 work.
+The work is prepared independently while #246 completes its acceptance gates;
+integration still follows fresh accepted main.
+
 ## Opt-in transport profiles
 
 **Current:** the [profile contract](../systems/flow-transport-and-profiles.md)

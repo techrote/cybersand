@@ -419,6 +419,29 @@ separate. Scratch Windows proof does not reattest retained libraries. The
 Godot normalization opt-in and full application host are separate integration
 work, and no new #201/#212 implementation is included in this checkpoint.
 
+### Controlled liquid application-host slice
+
+On `codex/lcb003-application-host`, the focused
+[`test_liquid_prepared_host.gd`](../../godot/tests/test_liquid_prepared_host.gd)
+executes the typed native preparation/token API, explicit normalization,
+canonical copied receipts and actual desktop/synchronous application controller
+routes. It uses Semaphore barriers at the preparation/commit boundary to test
+same-definition supersession, ordinary reset and stop deterministically. It
+also retains masked stored Water, host event cursors and applied receipts on
+refusal. Run with a freshly built source-matched development DLL:
+
+```text
+godot --headless --path godot --script res://tests/test_liquid_prepared_host.gd
+```
+
+The [dated host ledger](../audits/2026-10-24-lcb003-controlled-host-slice.md)
+separates Windows headless execution of `web_main.tscn` from actual browser
+execution, records artifact/source inputs and preserves the first test-harness
+failure. Retain policy, worker, MicroScenario, native-observation, workbench and
+Water Feel lifecycle regressions alongside this focused case. No release
+runtime is supplied by this local source checkpoint; Linux, real Wasm/browser,
+hosted publication and final exact-head acceptance remain separate gates.
+
 ### Branch-scoped runtime publishers
 
 Source-matched Linux and Windows runtimes have been published by **temporary,
