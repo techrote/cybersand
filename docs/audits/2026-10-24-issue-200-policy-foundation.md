@@ -208,6 +208,16 @@ layout.
 | Frozen 32-question retrieval | unchanged: 21/32 at 1, 32/32 at 5, MRR 0.7953 |
 | 117 supplementary challenges | 94/117 at 1, 117/117 at 5, MRR 0.8849 (LCB02 rank 1) |
 
+**Failed first ready-PR Native run.** Ready-for-review head `a035133` ran
+Native [run 40055347840](https://github.com/techrote/cybersand/actions/runs/40055347840).
+The UBSan step stopped at `native/src/c_api.cpp:67`: "null pointer passed as
+argument 2". `fill_liquid_refusal` passed an empty `std::string_view` (null data)
+to `memcpy` on the accepted path. MSVC did not detect it. The fix guards
+zero-length copies, and the C API test now also requires an accepted request to
+clear a stale detail. Because `c_api.cpp` is a provenance-bound runtime input,
+both runtimes were republished from the fixed source. The publication run, hashes
+and final exact-head gates are in the PR evidence comment.
+
 The exact-head Documentation, Native and GDExtension/Godot gates for the
 ready-for-review head are recorded in the PR evidence comment, not here, so that
 recording them does not change the head.

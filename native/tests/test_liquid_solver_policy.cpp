@@ -457,8 +457,10 @@ void test_liquid_policy_c_api_transaction() {
     cybersand_liquid_policy_refusal_v1 refusal{};
     refusal.struct_size = sizeof(refusal);
     std::array<std::uint8_t, 32> hash{};
+    refusal.detail[0] = 'x'; // an accepted request must clear any stale detail
     require(cybersand_liquid_policy_validate_v1(request.data(), request.size(), &refusal, hash.data()) == 1 &&
-                refusal.code == CYBERSAND_LIQUID_POLICY_ACCEPTED && hash == LiquidSolverPolicy{}.policy_hash(),
+                refusal.code == CYBERSAND_LIQUID_POLICY_ACCEPTED && refusal.detail[0] == '\0' &&
+                hash == LiquidSolverPolicy{}.policy_hash(),
             "C validate default");
 
     auto config = cybersand_default_config_v2();

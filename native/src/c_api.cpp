@@ -64,7 +64,8 @@ void fill_liquid_refusal(cybersand_liquid_policy_refusal_v1* destination, std::u
     destination->code = code;
     destination->material = material;
     const auto length = std::min(detail.size(), sizeof(destination->detail) - 1U);
-    std::memcpy(destination->detail, detail.data(), length);
+    // An empty view may carry a null data pointer, which memcpy must not receive.
+    if (length != 0U) std::memcpy(destination->detail, detail.data(), length);
     destination->detail[length] = '\0';
 }
 
