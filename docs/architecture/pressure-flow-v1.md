@@ -10,7 +10,7 @@ related-documents: [lcb-pressure-inertial-handoff.md, liquid-state-transition-ma
 
 # pressure_flow_v1 reference — corrected Water pressure family
 
-## Status
+## Implementation status and admission
 
 **Current on main** since [PR #245](https://github.com/techrote/cybersand/pull/245)
 merged at `03785c3`, and retained in unmerged residual
@@ -22,6 +22,14 @@ unchanged. The owner lifted the hold on the pressure reference and the inertial
 family on 2026-10-24 (LCB continuous-execution instruction). Evidence, including
 failed attempts and runtime identities, is in the
 [publication record](../audits/2026-10-24-lcb001-pressure-reference-publication.md).
+
+The implemented pressure family admits Water with variant `reference`. It stores
+overfill and retained horizontal flow in an optional per-cell sidecar, plus
+Empty-cell gas labels and a World-owned compartment table. Requests for cached
+or dormant variants currently refuse; they do not execute a different Water
+solver. Other materials retain their own kernels, and default Water remains
+FreeMass. The storage, admission and refusal details below describe that native
+implementation separately from later application-host acceptance.
 
 The residual native source adds W-CY, explicit normalization, typed native
 receipts and exact shared quantity accounting. Their construction, ownership,
