@@ -20,7 +20,9 @@ permissions:
   contents: read
 
 concurrency:
-  group: mat003-prepass-${{ github.ref }}
+  # Preserve a live pre-reconciliation collection in its original group while
+  # this explicitly historical-control workflow starts a separate CI cohort.
+  group: mat003-prepass-historical-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
