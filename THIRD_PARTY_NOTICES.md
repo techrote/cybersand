@@ -91,6 +91,14 @@ The complete upstream license and dependency notices are retained in
 `godot/addons/godot-rapier2d/LICENSE` and
 `godot/addons/godot-rapier2d/THIRDPARTY.txt`.
 
+Windows and Linux x86_64 libraries include CyberSand's 2026-10-24 cooperative
+deferred-BVH join backport to the addon's pinned `rapier2d` 0.35.1 dependency
+(Apache-2.0, copyright 2020 Sébastien Crozet). The patch is retained at
+`third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch`; exact upstream
+sources, build inputs and artifact identities are recorded in
+`third_party/rapier-bvh-build.lock.json` and the addon's per-platform runtime
+provenance. Other platform libraries retain the original v0.35.2 release bytes.
+
 ## godot-cpp
 
 The `CyberNativeCellWorld` GDExtension is statically linked with the official

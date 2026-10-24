@@ -6,7 +6,7 @@ status: Current
 scope: Accepted Rapier backend/version selection, manual owner and remaining platform/physics/replay work
 keywords: [ADR, Rapier2D, Godot Physics, version pin, manual stepping, Salva]
 related-documents: [../architecture/rigid-body-and-cellular-coupling.md, ../operations/rapier-2d-migration-runbook.md, ADR-007-rigid-body-cellular-coupling.md]
-last-reviewed: 2026-09-09
+last-reviewed: 2026-10-24
 ---
 
 # ADR-009: Rapier2D rigid-body backend
@@ -15,10 +15,24 @@ last-reviewed: 2026-09-09
 
 **Approved and Current:** Rapier2D is the sole runtime rigid-body backend.
 Retain exact Godot `4.7.stable.official.5b4e0cb0f` and the official 2D single
-Rapier add-on `v0.35.2`. The add-on's broader 4.7.x declaration does not authorize
+Rapier add-on `v0.35.2`. The working #234 candidate selects the scoped Windows/Linux
+x86_64 cooperative deferred-BVH join backport on 2026-10-24. Other architectures and Web retain the
+original release artifacts. The add-on's broader 4.7.x declaration does not authorize
 untested dependency drift. Versions, release hashes and notices are in the
 [Godot runtime lock](../../third_party/godot-runtime.lock.json) and
 [Rapier lock](../../godot/third_party/rapier2d.lock.json).
+
+The [dated blocking-call and paired validation record](../audits/2026-10-24-physical-actor-bvh-validation.md)
+owns the backport evidence. The patch changes only the parallel deferred receive
+to help queued Rayon work while waiting; the outside-pool receive and disconnected
+producer failure remain intact. Native cell authority, physics parameters,
+thread-pool size and engine-owned interfaces are unchanged. Per-platform runtime
+provenance retains the exact upstream sources, patch, dependency lock, compiler,
+build run and tested library hashes; the original release archive hash is preserved.
+This adopts the prior qualified PR #236 artifacts; it does not complete #234
+acceptance. The [integration ledger](../audits/2026-10-24-issue-234-physical-hang-repair.md)
+owns pending exact-head hosted gates and the fresh standard 600-attempt campaign,
+separately from the prior 300-candidate paired comparison and admitted #233 baseline.
 
 Ordinary RigidBody2D/RectangleShape2D nodes remain supported while
 `CyberRapierPhysicsBridge` owns explicit space stepping and direct-server state.

@@ -173,6 +173,79 @@ Current build jobs set `SCONS_JOBS=2` directly; the
 [repository provider policy](github-development-and-release.md) owns the runner
 and provider-routing boundary.
 
+## Physical actor timeout investigation
+
+**Current working #234 candidate:** both platform runners use
+`run_godot_regressions.run_case` and an independent
+[process monitor](../../tools/ci/godot_process_monitor.py). The three suspect
+fixtures request live capture after 30 seconds without a new main-thread marker
+and fail as `timeout` / `progress_watchdog` at 45 seconds idle. Capture is separately
+bounded and cannot defer that failure decision. The ordinary 180-second outer
+case ceiling remains unchanged; no heartbeat extends it. Startup, setup, stepping,
+frame waits and post-quit stalls are covered externally. Linux attempts process /
+`/proc` wait-state and bounded native stack capture; Windows attempts process/thread
+state and DbgHelp minidumps for the wrapper and engine child. Refusal or missing
+stack capture remains explicit evidence. Full logs and bounded tails are retained.
+
+The original `REGRESSION_PROGRESS` records preserve actual case, phase, rig/model
+and last reported physical tick. The additional `CYBERSAND_PROGRESS` sequence and
+cumulative step counter are coarse main-thread heartbeats, not an exact blocked
+instruction or native-worker count. Unrelated output and timestamp-only changes
+cannot renew liveness. No retries, skips, workload reduction, physics parameters
+or native-worker count changes are introduced.
+
+The fixture-only [internal guard](../../godot/tests/helpers/physical_internal_watchdog.gd)
+observes a separate 120-second whole-fixture limit using a RefCounted Godot thread,
+monotonic clock and copied mutex-owned context. It performs no scene-tree, World
+or Rapier operation. Expiry emits sticky `ERROR: REGRESSION_WATCHDOG`; a later
+successful return cannot erase it. Stop polls for at most one second, then joins
+only an exited thread. A blocked main thread is terminated by the external runner
+after capture; the internal observer never self-kills and does not promise native
+stack recovery. Startup before arming, a process-wide runtime stall and engine
+shutdown after disarming remain externally bounded. The
+[test-selection guide](testing-validation-and-replay.md#physical-regression-timeout-diagnostics)
+owns these failure and observation limits.
+
+Focused checks, with the pinned Godot executable already prepared:
+
+```sh
+python tools/ci/test_physical_progress_watchdog.py
+python tools/ci/test_godot_process_monitor.py
+python tools/ci/test_physical_internal_watchdog.py --godot <godot>
+```
+
+The last command executes both a healthy child and an expected-failing child
+whose main thread is synchronously blocked. It verifies independent observation,
+sticky nonzero failure and join without admitting the expected failure as an
+ordinary passing physical fixture.
+
+The [standard 600-attempt workflow](../../.github/workflows/physical-timeout-stress.yml)
+is dispatch-only and GitHub-hosted. Set `source_sha` to the exact immutable
+candidate commit after applicable exact-head ordinary gates. It runs five batches
+of ten repetitions for each of arena, rigs and usable course on Windows/Linux
+in serial and three-process parallel modes: 600 physical attempts plus import
+preflights. Inspect the independent completeness gate and raw per-attempt evidence.
+The [#234 integration ledger](../audits/2026-10-24-issue-234-physical-hang-repair.md)
+owns actual source/run identities and the **pending** fresh repair qualification.
+The [admitted #233 campaign](../audits/2026-10-24-issue-233-physical-regression-timeouts.md)
+retains 589 passes, 11 Windows timeouts and zero other physical failures at its
+original source, plus the older Linux failure. Preserve all original attempts.
+
+The retained [earlier stress workflow](../../.github/workflows/physical-actor-stress.yml)
+and GDExtension `physical_actor_stress` / `rapier_bvh_pair` diagnostics belong to
+the [PR #236 investigation](../audits/2026-10-23-physical-actor-timeouts.md).
+Its same-host paired campaign 40056501226 recorded six Windows control timeouts,
+zero Linux control timeouts and zero candidate timeouts in 300 candidate trials.
+Balanced pair order, hardware/fixture identities, matching native stacks and the
+scope of earlier failed or inconclusive samples are retained in the
+[blocking-call and paired audit](../audits/2026-10-24-physical-actor-bvh-validation.md).
+That comparison supports adopting the exact qualified Windows/Linux x86_64 BVH
+backport artifacts; other architectures/Web retain release bytes. Runtime locks,
+provenance and repository/Windows preflights still reject byte or build-input
+drift. Those 300 candidate samples remain separate from #234's fresh standard
+600-attempt acceptance. Final #234 exact-head hosted gates and qualification are
+pending; the selected working candidate is not a completed repair claim.
+
 ## Windows retained-runtime execution
 
 For intermittent physical actor/usable/flight stalls, use the

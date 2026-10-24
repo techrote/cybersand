@@ -1,0 +1,35 @@
+{
+  "counts": {
+    "linux/test_physical_actor_arena": {
+      "passed": 50
+    },
+    "linux/test_physical_actor_rigs": {
+      "passed": 50
+    },
+    "linux/test_physical_usable_course": {
+      "passed": 50
+    },
+    "windows/test_physical_actor_arena": {
+      "passed": 49,
+      "timeout": 1
+    },
+    "windows/test_physical_actor_rigs": {
+      "passed": 44,
+      "timeout": 6
+    },
+    "windows/test_physical_usable_course": {
+      "passed": 49,
+      "timeout": 1
+    }
+  },
+  "timeouts_by_phase": {
+    "windows/test_physical_actor_rigs/step": 6,
+    "windows/test_physical_usable_course/step": 1,
+    "windows/test_physical_actor_arena/step": 1
+  },
+  "errors": [
+    "Required 50/50 passes for windows/test_physical_actor_arena: {'passed': 49, 'timeout': 1}",
+    "Required 50/50 passes for windows/test_physical_actor_rigs: {'passed': 44, 'timeout': 6}",
+    "Required 50/50 passes for windows/test_physical_usable_course: {'passed': 49, 'timeout': 1}"
+  ]
+}

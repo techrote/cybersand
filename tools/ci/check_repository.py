@@ -31,6 +31,47 @@ def verify_runtime(root, manifest):
         errors.append(platform + " bytes differ from published provenance")
     return errors
 
+def verify_rapier_overrides(root, lock):
+    """Verify the selected desktop backport without rewriting release identities."""
+    overrides = lock.get("runtime_overrides", {})
+    if not overrides:
+        return []
+    if set(overrides) != {"windows", "linux"}:
+        return ["Rapier backport must identify both selected x86_64 desktop runtimes"]
+    errors = []
+    build_lock_path = root / "third_party/rapier-bvh-build.lock.json"
+    build_lock = json.loads(build_lock_path.read_text(encoding="utf-8"))
+    inputs = {"third_party/rapier-bvh-build.lock.json", build_lock["patch"],
+              "tools/ci/build_rapier_bvh_candidate.py", ".github/workflows/rapier-bvh-build.yml"}
+    filenames = {"windows": "libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+                 "linux": "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so"}
+    for platform, filename in filenames.items():
+        relative = f"godot/addons/godot-rapier2d/runtime-provenance.{platform}.json"
+        if overrides[platform] != relative:
+            errors.append("Unexpected Rapier provenance path for " + platform)
+            continue
+        manifest = json.loads((root / relative).read_text(encoding="utf-8"))
+        build = manifest["build_record"]
+        if (manifest.get("schema_version") != 1
+                or manifest.get("artifact") != "godot/addons/godot-rapier2d/bin/" + filename
+                or set(manifest["source_inputs"]) != inputs
+                or build.get("schema_version") != 1 or build.get("godot_version") != GODOT
+                or build.get("variant") != "patched" or build.get("platform") != platform
+                or build.get("source_sha") != manifest.get("build_commit")
+                or build.get("build_inputs") != build_lock
+                or build.get("build_lock_sha256") != digest(build_lock_path.read_bytes())
+                or build.get("join_source_sha256") != build_lock["patched_join_source_sha256"]
+                or build.get("upstream_cargo_lock_sha256") != build_lock["upstream_cargo_lock_sha256"]
+                or build.get("join_regression_exit") != 0
+                or not build.get("resolved_cargo_lock_sha256")
+                or build.get("resolved_cargo_lock_sha256") != build.get("artifacts", {}).get("Cargo.lock")
+                or not build.get("rustc", "").startswith("rustc " + build_lock["rust_toolchain"] + " ")
+                or build.get("artifacts", {}).get(filename) != manifest.get("sha256")
+                or build_lock["patch_sha256"] != digest((root / build_lock["patch"]).read_bytes())):
+            errors.append("Invalid selected Rapier backport provenance for " + platform)
+        errors.extend(verify_runtime(root, manifest))
+    return errors
+
 def check(root, require_materialized=False):
     docs = check_docs(root)
     errors = list(docs["errors"])
@@ -45,6 +86,7 @@ def check(root, require_materialized=False):
             errors.append("current Godot dependency differs from the approved pin")
         if rapier["rapier_tag"] != "v0.35.2":
             errors.append("current Rapier dependency differs from the approved pin")
+        errors.extend(verify_rapier_overrides(root, rapier))
         if not any(a.get("name") == "godot-cpp" and a.get("version") == GODOT_CPP for a in native["artifacts"]):
             errors.append("current godot-cpp dependency differs from the approved pin")
         for manifest_name in ("runtime-provenance.json", "runtime-provenance.linux.json"):

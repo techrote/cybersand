@@ -1,0 +1,1018 @@
+{
+  "source_commit": "77c8b0e7f0191037dccd18e5038e882bb57bcb46",
+  "source_tree": "954689a3a6d420c00d07d14923cb22c785070790",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "python_version": "3.12.10",
+  "runtime_source_commit": "2f7f65bf6e80c7258f2bdda19f949760d211b59e",
+  "runtime_build_commit": "2f7f65bf6e80c7258f2bdda19f949760d211b59e",
+  "cybersand_runtime": {
+    "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "sha256": "e6d9ec7d0847287c4c6b1acaffd52dc2807fe43e9dccfc36123ffa117fb6045f",
+    "size": 3945472
+  },
+  "rapier_runtime": {
+    "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+    "sha256": "4e26ffa78ec2aaff434c4a70cd2ec85288b10ba5237912c35f204cb1e6ed2180",
+    "size": 10018816
+  },
+  "all_discovered_case_count": 133,
+  "applicable_case_count": 121,
+  "executed_case_count": 121,
+  "out_of_scope_graphical_cases": [
+    "test_blacksite_nine_render",
+    "test_deepworks_render",
+    "test_depth_dimensions_render",
+    "test_depth_surface_render",
+    "test_gen007_qualification_render",
+    "test_gen007_workbench_render",
+    "test_material_presentation_render",
+    "test_material_vapour_pipeline_render",
+    "test_physical_flight_gameplay_render",
+    "test_semantic_depth_render",
+    "test_showcase_backdrop_render",
+    "test_water_presentation_render"
+  ],
+  "completed": true,
+  "status": "passed",
+  "seconds": 1076.11,
+  "report_sha256": "b58012f932553dc113c020defbf4eec0cf166351af4403b5c7272d56e0c17b4c",
+  "results": [
+    {
+      "name": "import",
+      "role": "preflight",
+      "status": "passed",
+      "seconds": 5.153,
+      "timeout_seconds": 240,
+      "returncode": 0
+    },
+    {
+      "name": "test_act004_body_capacity",
+      "role": "case",
+      "status": "passed",
+      "seconds": 1.939,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_actor_actuator_session",
+      "role": "case",
+      "status": "passed",
+      "seconds": 1.415,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_actor_prototype_integration",
+      "role": "case",
+      "status": "passed",
+      "seconds": 4.593,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_actor_prototype_session",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.971,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_actor_prototypes",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.696,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_actor_rig_actuation",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.608,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_actor_rig_integration",
+      "role": "case",
+      "status": "passed",
+      "seconds": 5.059,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_actor_rig_session",
+      "role": "case",
+      "status": "passed",
+      "seconds": 1.635,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_actor_rigs",
+      "role": "case",
+      "status": "passed",
+      "seconds": 1.928,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_actor_usables_integration",
+      "role": "case",
+      "status": "passed",
+      "seconds": 3.142,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_auto_worker_policy",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.369,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_blacksite_nine",
+      "role": "case",
+      "status": "passed",
+      "seconds": 3.22,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_blacksite_nine_integration",
+      "role": "case",
+      "status": "passed",
+      "seconds": 11.659,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_brush_owner_commands",
+      "role": "case",
+      "status": "passed",
+      "seconds": 1.799,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_building_material_integration",
+      "role": "case",
+      "status": "passed",
+      "seconds": 2.639,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_cell_world",
+      "role": "case",
+      "status": "passed",
+      "seconds": 26.706,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_deepworks",
+      "role": "case",
+      "status": "passed",
+      "seconds": 1.593,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_deepworks_controller",
+      "role": "case",
+      "status": "passed",
+      "seconds": 1.925,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_deepworks_reactions",
+      "role": "case",
+      "status": "passed",
+      "seconds": 9.961,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_depth_compositor",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.513,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_depth_dimensions",
+      "role": "case",
+      "status": "passed",
+      "seconds": 1.637,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_depth_lab",
+      "role": "case",
+      "status": "passed",
+      "seconds": 1.401,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_depth_layer_runtime",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.941,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_experiment_tower",
+      "role": "case",
+      "status": "passed",
+      "seconds": 4.321,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_exploratory_actor_selection",
+      "role": "case",
+      "status": "passed",
+      "seconds": 66.291,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_feature_launch_arguments",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.207,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_feature_launcher",
+      "role": "case",
+      "status": "passed",
+      "seconds": 8.247,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_gameplay_recorder",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.592,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_gen007_inspection",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.507,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_gen007_qualification",
+      "role": "case",
+      "status": "passed",
+      "seconds": 32.881,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_gen007_reactions",
+      "role": "case",
+      "status": "passed",
+      "seconds": 23.681,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_gen007_workbench",
+      "role": "case",
+      "status": "passed",
+      "seconds": 3.006,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_interaction_async",
+      "role": "case",
+      "status": "passed",
+      "seconds": 13.272,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_interaction_policy",
+      "role": "case",
+      "status": "passed",
+      "seconds": 113.247,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_material_appearance_lut",
+      "role": "case",
+      "status": "passed",
+      "seconds": 61.977,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_material_glow_control",
+      "role": "case",
+      "status": "passed",
+      "seconds": 2.045,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_microscenario_controllers",
+      "role": "case",
+      "status": "passed",
+      "seconds": 4.085,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_microscenario_flood_control",
+      "role": "case",
+      "status": "passed",
+      "seconds": 8.436,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_microscenario_materials_lab",
+      "role": "case",
+      "status": "passed",
+      "seconds": 14.625,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_microscenario_native_observation",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.374,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_microscenario_reference_contract",
+      "role": "case",
+      "status": "passed",
+      "seconds": 32.392,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_microscenario_reference_pack_ui",
+      "role": "case",
+      "status": "passed",
+      "seconds": 12.963,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_microscenario_stress",
+      "role": "case",
+      "status": "passed",
+      "seconds": 8.532,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_microscenario_workbench",
+      "role": "case",
+      "status": "passed",
+      "seconds": 19.346,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_microscenario_workbench_lifecycle",
+      "role": "case",
+      "status": "passed",
+      "seconds": 3.434,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_microscenarios",
+      "role": "case",
+      "status": "passed",
+      "seconds": 78.855,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_native_edge_contact_regression",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.654,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_native_fire_presentation_regression",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.383,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_native_render_bridge_regression",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.284,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_neon_reliquary",
+      "role": "case",
+      "status": "passed",
+      "seconds": 6.13,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_pchar001_player_representations",
+      "role": "case",
+      "status": "passed",
+      "seconds": 3.901,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_penv001_player_environment",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.283,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_actor_actuation",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.933,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_actor_arena",
+      "role": "case",
+      "status": "passed",
+      "seconds": 12.871,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_actor_catalog",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.382,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_actor_effect_admission",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.842,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_actor_effects",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.385,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_actor_integration",
+      "role": "case",
+      "status": "passed",
+      "seconds": 12.596,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_actor_rigs",
+      "role": "case",
+      "status": "passed",
+      "seconds": 18.43,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_actor_script",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.372,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_actor_session",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.563,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_actor_trial",
+      "role": "case",
+      "status": "passed",
+      "seconds": 5.097,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_flight_handling",
+      "role": "case",
+      "status": "passed",
+      "seconds": 2.416,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_flight_physics",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.941,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_flight_profile",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.283,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_flight_selection",
+      "role": "case",
+      "status": "passed",
+      "seconds": 3.8,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_flight_session",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.651,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_usable_course",
+      "role": "case",
+      "status": "passed",
+      "seconds": 11.685,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_usable_equipment",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.579,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_usable_lifecycle",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.56,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_usable_script",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.659,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_usables_admission",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.944,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_usables_desktop",
+      "role": "case",
+      "status": "passed",
+      "seconds": 2.699,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physical_usables_runtime",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.847,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physics_async",
+      "role": "case",
+      "status": "passed",
+      "seconds": 2.969,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physics_characterisation",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.379,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_physics_instrumentation",
+      "role": "case",
+      "status": "passed",
+      "seconds": 1.13,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_player_acrobat",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.295,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_player_acrobat_physics",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.766,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_player_material_field",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.483,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_player_playground_course",
+      "role": "case",
+      "status": "passed",
+      "seconds": 2.701,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_player_playground_runtime",
+      "role": "case",
+      "status": "passed",
+      "seconds": 3.532,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_player_vehicle_controls",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.841,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_playval001_selectable_player_fixtures",
+      "role": "case",
+      "status": "passed",
+      "seconds": 4.457,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_presentation_controls",
+      "role": "case",
+      "status": "passed",
+      "seconds": 1.586,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_rapier_backend_preflight",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.19,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_rapier_drop_in",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.375,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_rapier_manual_step",
+      "role": "case",
+      "status": "passed",
+      "seconds": 1.955,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_rem002_body_granular",
+      "role": "case",
+      "status": "passed",
+      "seconds": 3.248,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_rem003_player_granular",
+      "role": "case",
+      "status": "passed",
+      "seconds": 91.607,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_render_patch_handoff_regression",
+      "role": "case",
+      "status": "passed",
+      "seconds": 1.79,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_render_world_generation",
+      "role": "case",
+      "status": "passed",
+      "seconds": 4.221,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_semantic_planes_examples",
+      "role": "case",
+      "status": "passed",
+      "seconds": 8.611,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_semantic_planes_runtime",
+      "role": "case",
+      "status": "passed",
+      "seconds": 4.586,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_showcase_tiles",
+      "role": "case",
+      "status": "passed",
+      "seconds": 18.937,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_thunderbowl_arena",
+      "role": "case",
+      "status": "passed",
+      "seconds": 3.546,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_thunderbowl_controllers",
+      "role": "case",
+      "status": "passed",
+      "seconds": 1.24,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_tick_failure_regression",
+      "role": "case",
+      "status": "passed",
+      "seconds": 3.515,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_transport_probe",
+      "role": "case",
+      "status": "passed",
+      "seconds": 19.712,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_transport_profiles",
+      "role": "case",
+      "status": "passed",
+      "seconds": 1.802,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_usable_session",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.453,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_usables",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.448,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_water_experiment_profiles",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.456,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_water_feel_controller",
+      "role": "case",
+      "status": "passed",
+      "seconds": 8.337,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_water_feel_integration",
+      "role": "case",
+      "status": "passed",
+      "seconds": 5.158,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_water_feel_scenarios",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.695,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_water_presentation_model",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.413,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_web_demo_setup",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.966,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_web_rapier",
+      "role": "case",
+      "status": "passed",
+      "seconds": 4.331,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_web_worker_parity",
+      "role": "case",
+      "status": "passed",
+      "seconds": 16.069,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_wex001_water_body_baseline",
+      "role": "case",
+      "status": "passed",
+      "seconds": 105.999,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_wex004_decompression",
+      "role": "case",
+      "status": "passed",
+      "seconds": 2.087,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_worker_benchmark",
+      "role": "case",
+      "status": "passed",
+      "seconds": 3.854,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_worldgen_fields",
+      "role": "case",
+      "status": "passed",
+      "seconds": 1.147,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_worldgen_grammar",
+      "role": "case",
+      "status": "passed",
+      "seconds": 1.61,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_worldgen_planes",
+      "role": "case",
+      "status": "passed",
+      "seconds": 2.344,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_worldgen_typed",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.859,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "test_worldgen_workbench",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.87,
+      "timeout_seconds": 180,
+      "returncode": 0
+    },
+    {
+      "name": "profile_native_world",
+      "role": "case",
+      "status": "passed",
+      "seconds": 0.494,
+      "timeout_seconds": 1200,
+      "returncode": 0
+    },
+    {
+      "name": "profile_scheduler",
+      "role": "case",
+      "status": "passed",
+      "seconds": 34.305,
+      "timeout_seconds": 1200,
+      "returncode": 0
+    },
+    {
+      "name": "scene",
+      "role": "case",
+      "status": "passed",
+      "seconds": 1.734,
+      "timeout_seconds": 180,
+      "returncode": 0
+    }
+  ],
+  "scope": "Local full Windows headless baseline before progress watchdog integration; Linux owns the twelve rendered cases."
+}
