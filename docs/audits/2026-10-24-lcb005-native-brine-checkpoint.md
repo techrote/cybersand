@@ -99,3 +99,36 @@ The external repair directory retains build/run argv, timeouts90/180s, exact bef
 
 
 A separately named source mirror under the pinned external companion workspace validated the repaired source plus this audit, without changing the earlier `source200` mirror or companion files. Documentation passed113 documents/221 canonical claims/2,739 local links with no errors/warnings; historical M11 passed18 records/28 original hashes. Generated capability/policy/native artifacts passed, and seven **freshly emitted repaired-binary receipt vectors** matched the independent Python byte oracle. Frozen retrieval retained32/32 canonical top-five hits(20 first); the separate IN fixture retained2/2 top-five hits. These routing checks do not establish answer or physics acceptance. `check_repository.py` still reports exactly12 stale Windows/Linux native input records and no documentation/vendor-runtime error. Before/after native inputs and whitespace checks pass. Commands, diagnostics and mirror/companion fences are retained with the repair evidence; platform/release gaps remain explicit.
+
+
+## 2026-10-25 native damping parameter closure
+
+The original fixed-profile checkpoint above remains historical source-matched evidence. Issue212's native user-tunable damping requirement is implemented as an optional family owner4/blockv2 containing one int32 `damping_numerator` in0..16 over fixed denominator16; omission applies1. The prior illustrative blockv1 is not reinterpreted and remains refused by the running native build. No extra material, variant, force, carrier, state/format version or Cell ABI is admitted. Existing production defaults and all eleven registered reference examples retain their law.
+
+The actual immutable per-World parameter is read back through `World::inertial_parameters()`, used directly by U5 and bound into the existing canonical effective-law identity. Applied policy blocks enter the policy hash and saved envelope. Hash3, CYPS3 and native receipt extensions use actual parameters; restore derives them from the validated saved policy and checks the identity before constructing its unexposed candidate. Default1 preserves the previous identity bytes; explicit1 shares that effective-law identity but keeps a distinct policy hash. Valid-digest mismatches, unsupported versions/lengths, out-of-range values and unused-family blocks refuse. A contract-only relaxed policy cannot bypass the running World admission guard.
+
+`tools/lcb/inertial_parameter_contract.py` independently generates the new twelve-case native schema/hash/identity vectors and native test include. Existing illustrative policy-vector output remains byte-for-byte current. The retained frozen7cb profile refuses all three tested v2 requests(0,1,16) with `unknown_parameter`, as expected for its earlier fixed law. The first expanded full native run passed the new damping/old IN groups but caught the pressure fixture's old two-schema profile assertion; the correction now asserts the third schema's actual owner, version, optionality, field and bounds. Both original outcomes remain in `C:/Users/_/.codex/tmp/lcb212-damping-v2`.
+
+Matched initial Brine tuples(vx24, vy0, ax0, ay0) on the same supported floor produce these30-tick observations, with no later external source:
+
+| Damping numerator /16 | Final x(start20) | Final vx | Cumulative loss |
+|---|---:|---:|---:|
+| 0 | 65 | 24 | 120 |
+| 1(default) | 50 | 15 | 129 |
+| 8 | 21 | 0 | 56 |
+| 16 | 20 | 0 | 40 |
+
+Every tick closes signed-component and L1 ledgers and matches the same-policy1/4-worker/restored state. Loss includes gravity cancellation by support; it is not a damping-only total. Zero damping can retain lateral motion indefinitely. Default1/16 also retains a sub16 plateau because per-component damping truncates toward zero rather than accumulating hidden fractions. These are measured native outcomes, not universal settling claims. Independent arithmetic tests cover all17 admitted numerators; native endpoint/signed-rounding checks retain maximum travel2/read3, exact tuple/quantity/lifecycle behavior and prepared no tick allocation.
+
+A separate fresh build of frozen7cb and the candidate produces exactly matching **eight non-IN/default-IN physical-hash/CYPS-SHA observations**, plus policy/default identity readback, at ticks0–3. Its exact stdout SHA-256 is `5f75ec6def0c2a2ddebde213de08e6424ece7b50bb387c787d330c07c4063af1`. No capability-matrix digest or prior receipt vector was rewritten. The native actual parameter cache adds4 declared per-World component bytes: the1024² fixture now reports289 World IN bytes and6,916,385 total declared component bytes; six-byte slots, arrays, vector/pointer owners, worker-ledger capacity and exclusion rules are unchanged. The omitted-default CYPS3 fixture remains12,603,966 bytes.
+
+
+The native damping source checkpoint is **e192af9dd8133b39828cb9e5366e8fd82195055a**, descending directly from7cbf845. Its final ordinary run passes **137/137** in36.500s; the focused eleven IN groups pass **ASan/UBSan11/11** in48.157s with empty stderr. Both omitted-default and explicit endpoint worker fixtures observe **four distinct participants** at damping0,1,16 and match exact one-versus-four-worker physical state and ledgers. All124 LCB Python tests pass in50.359s. Ordinary and sanitizer executables retain1MiB PE stack reserve; the12 baseline warning messages are unchanged. Leak detection remains disabled/unsupported, and no new full-suite ASan/global-new or hosted race qualification is claimed.
+
+| Native damping checkpoint input/artifact | SHA-256 |
+|---|---|
+| `qualified-canonical-inputs.json`(100 native inputs) | `29c0151bb8e33370c07f0ca28dc0925f827f8270ce987f0930ceafce4c47d62e` |
+| `qualified-normal-tests.exe` | `0105fce8dc1bcea437889f79527f0e490932bef411b01ba3362ab7bf6dc6e2bb` |
+| `qualified-sanitized-tests.exe` | `d695805db23e11b9d6b070f5b187b8fc7e8e9c0c280d52bd0ddc98506ec33984` |
+
+Raw before/after native fences match; their101st entry is the unchanged material-pack JSON outside the canonical compiler-source set. Seven freshly emitted repaired-binary complete receipt files match the independent Python oracle. The pinned companion mirror passes documentation113 documents/221 claims/2,742 links, historical M11 integrity18 records/28 hashes, old generated policy/native artifacts, new native damping vectors, whitespace and both retrieval fixtures(32/32 and2/2 top-five hits). `check_repository.py` has exactly12 expected stale native runtime entries and no documentation/vendor-runtime error. The source, mirror and final checkpoint fences are retained externally. Host user controls, merged-platform execution, fresh artifact publication and full #212/feel acceptance remain separate; these local results do not reattest a released runtime.

@@ -12,7 +12,7 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## LCB-005 native Brine checkpoint — 2026-10-24
 
-**Current on the isolated LCB-005 branch only:** [Brine IN reference](../architecture/inertial-cellular-v1.md) selectively ports the genuine fixed-point law onto the shared quantity/prepared-state foundation. [Native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) qualifies its stated source/platform scope. Default behavior remains retained; Water IN, Godot adapter/host integration, source-matched runtime publication, owner feel and full #212 completion remain unqualified here. No Cell-carrier migration or generic Rapier force follows.
+**Current on the isolated LCB-005 branch only:** [Brine IN reference](../architecture/inertial-cellular-v1.md) selectively ports the genuine fixed-point law onto the shared quantity/prepared-state foundation, including an optional versioned native damping numerator0..16 over16(default1). [Native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) qualifies its stated source/platform scope. Default behavior remains retained; Water IN, Godot adapter/host integration, source-matched runtime publication, owner feel and full #212 completion remain unqualified here. No Cell-carrier migration or generic Rapier force follows.
 
 ## Physical actor regression hangs — 2026-10-23
 
