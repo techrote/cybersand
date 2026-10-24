@@ -12,10 +12,12 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Current MAT-003 integration checkpoint — 2026-10-24
 
-The [post-#242 integration checkpoint](../audits/2026-10-24-mat003-post-242-integration-checkpoint.md)
-owns reconciliation with main `fd97367`, including #239's bounded policy
+The [post-#243 integration checkpoint](../audits/2026-10-24-mat003-post-243-integration-checkpoint.md)
+owns reconciliation with main `3e9f0e6`, including #239's bounded policy
 foundation, #240's regression follow-ups, #241's timeout diagnostics and #242's
-retirement of spent publishers. The earlier complete 15 current and seven scoped
+retirement of spent publishers. The separately landed #243 diagnostic record
+completes #233's deliverable with 11/600 timeouts; the cause remains unknown,
+#234 owns the next repair and parent #232 remains open. The earlier complete 15 current and seven scoped
 workflow passes and later completed checks remain valid for their exact heads.
 Unfinished Native/Godot workflows retain their own source scope; supersession is
 neither a new PASS nor a test failure. Fresh checks, including ordinary Godot
@@ -345,13 +347,15 @@ GEN-006 #194 retains persistent streaming and durable mutation reconciliation.
 
 ## Decisions and defects to resolve
 
-Physical Godot regressions have intermittent full 180-second stalls on both
-Windows and Linux. [#233 diagnostics](../operations/testing-validation-and-replay.md#physical-regression-timeout-diagnostics)
-and the [dated evidence](../audits/2026-10-24-issue-233-physical-regression-timeouts.md)
-own apparatus admission, the registered 600-attempt campaign and classification.
-Apparatus implementation alone does not complete #233. #234 owns the causal
-repair, internal watchdog and subsequent zero-timeout stress qualification;
-parent #232 remains open until that repair/qualification is complete.
+**Current, 2026-10-24:** #233's diagnostic deliverable is complete. The admitted
+[timeout apparatus](../operations/testing-validation-and-replay.md#physical-regression-timeout-diagnostics)
+and completed source-bound campaign confirmed intermittent physical-roster stalls;
+the [dated evidence](../audits/2026-10-24-issue-233-physical-regression-timeouts.md)
+owns distributions, captured process/thread state and causal limits. The new
+campaign reproduced Windows timeouts, while retained historical evidence includes
+both Windows and Linux. No native stack was captured; the causal mechanism remains
+unclassified. #234 owns the next repair, internal watchdog and subsequent zero-timeout stress
+qualification; parent #232 remains open until that repair/qualification is complete.
 
 Rows distinguish **Current fixes**, remaining defects and open decisions; dated
 evidence defines each fix's platform acceptance.
