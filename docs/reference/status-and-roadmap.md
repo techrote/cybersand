@@ -12,13 +12,16 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Current MAT-003 integration checkpoint — 2026-10-24
 
-The [post-#240 integration checkpoint](../audits/2026-10-24-mat003-post-240-integration-checkpoint.md)
-owns reconciliation with main `a395e33`, including #239's bounded policy
-foundation and #240's regression follow-ups. All 15 current and seven scoped
-workflows passed on the previous exact heads by 09:11 UTC; fresh checks on the
-newly reconciled heads are pending. Historical campaigns and CI results retain
-their recorded source/platform scope. #204 remains open, independent acceptance
-remains separate, and #212 remains held.
+The [post-#241 integration checkpoint](../audits/2026-10-24-mat003-post-241-integration-checkpoint.md)
+owns reconciliation with main `4348516`, including #239's bounded policy
+foundation, #240's regression follow-ups and #241's timeout diagnostics. The
+earlier 15 current and seven scoped workflow passes remain valid for their exact
+heads. The next reconciliation's completed checks and unfinished Native/Godot
+workflows retain their own source scope; supersession is neither a new PASS nor
+a test failure. Fresh checks, including ordinary Godot physical-timing reduction,
+are pending on the new heads. Historical campaigns remain unchanged; #204 and
+independent acceptance remain open. This task dispatches no manual physical
+stress campaign and starts neither #212 nor #234 repair.
 
 ## MAT-003 continuation — 2026-10-23
 
@@ -317,6 +320,14 @@ count as passes. GEN-007 #193 is the next authoring/quality stage after acceptan
 GEN-006 #194 retains persistent streaming and durable mutation reconciliation.
 
 ## Decisions and defects to resolve
+
+Physical Godot regressions have intermittent full 180-second stalls on both
+Windows and Linux. [#233 diagnostics](../operations/testing-validation-and-replay.md#physical-regression-timeout-diagnostics)
+and the [dated evidence](../audits/2026-10-24-issue-233-physical-regression-timeouts.md)
+own apparatus admission, the registered 600-attempt campaign and classification.
+Apparatus implementation alone does not complete #233. #234 owns the causal
+repair, internal watchdog and subsequent zero-timeout stress qualification;
+parent #232 remains open until that repair/qualification is complete.
 
 Rows distinguish **Current fixes**, remaining defects and open decisions; dated
 evidence defines each fix's platform acceptance.
