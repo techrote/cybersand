@@ -481,7 +481,8 @@ private:
 
     void refuse_liquid_policy(const cybersand::LiquidPolicyRefusal& refusal) {
         last_liquid_policy_refusal_ = refusal_dictionary(refusal);
-        error_ = String(("Liquid solver policy refused; running world preserved: " + refusal.message()).c_str());
+        error_ = String(cybersand::liquid_policy_detail::concat(
+            "Liquid solver policy refused; running world preserved: ", refusal.message()).c_str());
     }
 
     [[nodiscard]] bool build_water_world(

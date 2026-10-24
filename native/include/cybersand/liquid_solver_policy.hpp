@@ -27,6 +27,29 @@
 // or falls back to another solver, and no wire/ABI layout is frozen.
 namespace cybersand {
 
+namespace liquid_policy_detail {
+
+// Append-only text assembly. GCC 13 inlines `literal + std::string&&` as a
+// front insertion that imports basic_string::_M_replace_cold@GLIBCXX_3.4.31,
+// above the published Linux runtime floor (tools/check_linux_runtime_floor.sh).
+inline void append_part(std::string& out, std::string_view part) { out.append(part.data(), part.size()); }
+
+template <typename Integer>
+    requires std::is_integral_v<Integer>
+inline void append_part(std::string& out, Integer value) {
+    const auto text = std::to_string(value);
+    out.append(text.data(), text.size());
+}
+
+template <typename... Parts>
+[[nodiscard]] std::string concat(const Parts&... parts) {
+    std::string out;
+    (append_part(out, parts), ...);
+    return out;
+}
+
+}  // namespace liquid_policy_detail
+
 enum class LiquidSolverFamily : std::uint8_t {
     MaterialDefault = 0, // request-only: never applied, hashed or read back
     FreeMassV1 = 1,
@@ -98,7 +121,7 @@ struct LiquidPolicyRefusal {
     std::string detail;
 
     [[nodiscard]] std::string message() const {
-        return std::string(liquid_policy_refusal_id(code)) + ": " + detail;
+        return liquid_policy_detail::concat(liquid_policy_refusal_id(code), ": ", detail);
     }
 };
 
@@ -106,7 +129,7 @@ struct LiquidPolicyRefusal {
 class LiquidPolicyRefused final : public std::invalid_argument {
 public:
     explicit LiquidPolicyRefused(LiquidPolicyRefusal refusal)
-        : std::invalid_argument("liquid solver policy refused: " + refusal.message()),
+        : std::invalid_argument(liquid_policy_detail::concat("liquid solver policy refused: ", refusal.message())),
           refusal_(std::move(refusal)) {}
     [[nodiscard]] const LiquidPolicyRefusal& refusal() const noexcept { return refusal_; }
 
@@ -386,6 +409,10 @@ class LiquidPolicyDecoder final {
     static_assert(std::is_integral_v<Word> && std::is_signed_v<Word> && sizeof(Word) >= 4);
     using Failure = liquid_policy_detail::Failure;
     using Code = LiquidPolicyRefusalCode;
+    template <typename... Parts>
+    [[nodiscard]] static std::string concat(const Parts&... parts) {
+        return liquid_policy_detail::concat(parts...);
+    }
 
 public:
     LiquidPolicyDecoder(std::span<const Word> words, const LiquidPolicyBuild& build)
@@ -407,17 +434,15 @@ private:
 
     std::int64_t take(std::string_view what) {
         if (position_ >= words_.size())
-            refuse(Code::MalformedPolicy, "truncated at word " + std::to_string(position_) + " (" +
-                                              std::string(what) + ")");
+            refuse(Code::MalformedPolicy, concat("truncated at word ", position_, " (", what, ")"));
         return static_cast<std::int64_t>(words_[position_++]);
     }
 
     std::uint64_t take_unsigned(std::string_view what, std::uint64_t maximum) {
         const auto value = take(what);
         if (value < 0 || static_cast<std::uint64_t>(value) > maximum)
-            refuse(Code::MalformedPolicy, std::string(what) + "=" + std::to_string(value) + " outside 0.." +
-                                              std::to_string(maximum) + " at word " +
-                                              std::to_string(position_ - 1U));
+            refuse(Code::MalformedPolicy,
+                   concat(what, "=", value, " outside 0..", maximum, " at word ", position_ - 1U));
         return static_cast<std::uint64_t>(value);
     }
 
@@ -446,13 +471,12 @@ private:
         for (std::size_t i = 0; i < words_.size(); ++i) {
             const auto value = static_cast<std::int64_t>(words_[i]);
             if (value < kInt32Min || value > kInt32Max)
-                refuse(Code::MalformedPolicy, "word " + std::to_string(i) + " is not a signed 32-bit integer");
+                refuse(Code::MalformedPolicy, concat("word ", i, " is not a signed 32-bit integer"));
         }
         // 2. Header.
         constexpr auto kMinimum = LiquidSolverPolicy::kHeaderWords + 3U;
         if (words_.size() < kMinimum)
-            refuse(Code::MalformedPolicy, "envelope has " + std::to_string(words_.size()) + " words; minimum " +
-                                              std::to_string(kMinimum));
+            refuse(Code::MalformedPolicy, concat("envelope has ", words_.size(), " words; minimum ", kMinimum));
         if (take("magic") != LiquidSolverPolicy::kMagic) refuse(Code::MalformedPolicy, "bad magic");
         if (take("envelope_version") != LiquidSolverPolicy::kEnvelopeVersion)
             refuse(Code::MalformedPolicy, "unknown envelope_version");
@@ -487,21 +511,21 @@ private:
         std::array<std::vector<RawBlock>, 2> blocks;
         for (std::size_t kind = 0; kind < 2U; ++kind) {
             const std::string prefix = kind == 0U ? "family" : "material";
-            const auto block_count = take_unsigned(prefix + "_block_count", kind == 0U
+            const auto block_count = take_unsigned(concat(prefix, "_block_count"), kind == 0U
                                                                                 ? LiquidSolverPolicy::kFamilyCount
                                                                                 : LiquidSolverPolicy::kLiquidCount);
             for (std::uint64_t i = 0; i < block_count; ++i) {
                 RawBlock block;
-                block.owner = take_unsigned(prefix + "_block_owner", kind == 0U ? 0xFFU : 0xFFFFU);
-                block.version = take_unsigned(prefix + "_block_version", 0xFFFFU);
-                const auto length = take_unsigned(prefix + "_block_word_length", LiquidSolverPolicy::kMaximumBlockWords);
+                block.owner = take_unsigned(concat(prefix, "_block_owner"), kind == 0U ? 0xFFU : 0xFFFFU);
+                block.version = take_unsigned(concat(prefix, "_block_version"), 0xFFFFU);
+                const auto length = take_unsigned(concat(prefix, "_block_word_length"), LiquidSolverPolicy::kMaximumBlockWords);
                 for (std::uint64_t v = 0; v < length; ++v)
-                    block.values.push_back(static_cast<std::int32_t>(take(prefix + "_block_value")));
+                    block.values.push_back(static_cast<std::int32_t>(take(concat(prefix, "_block_value"))));
                 blocks[kind].push_back(std::move(block));
             }
         }
         if (position_ != words_.size())
-            refuse(Code::MalformedPolicy, std::to_string(words_.size() - position_) + " trailing words");
+            refuse(Code::MalformedPolicy, concat(words_.size() - position_, " trailing words"));
         // 5. Assignment identity and order.
         for (const auto& item : raw) {
             const auto material = static_cast<std::uint16_t>(item.material);
@@ -511,9 +535,9 @@ private:
             if (liquid_row(item.material) == nullptr)
                 refuse(Code::NotALiquid, "assignment to a non-liquid descriptor", material);
             if (item.family > LiquidSolverPolicy::kFamilyCount)
-                refuse(Code::UnknownFamily, "family_code " + std::to_string(item.family), material);
+                refuse(Code::UnknownFamily, concat("family_code ", item.family), material);
             if (item.variant >= LiquidSolverPolicy::kVariantCount)
-                refuse(Code::UnknownVariant, "variant_code " + std::to_string(item.variant), material);
+                refuse(Code::UnknownVariant, concat("variant_code ", item.variant), material);
         }
         for (std::size_t i = 1; i < raw.size(); ++i) {
             if (raw[i].material <= raw[i - 1U].material)
@@ -526,8 +550,8 @@ private:
         }
         if (!missing.empty()) {
             std::string list = "[";
-            for (std::size_t i = 0; i < missing.size(); ++i) list += (i ? ", " : "") + std::to_string(missing[i]);
-            refuse(Code::MalformedPolicy, "incomplete assignments; missing " + list + "]", missing.front());
+            for (std::size_t i = 0; i < missing.size(); ++i) list += concat(i ? ", " : "", missing[i]);
+            refuse(Code::MalformedPolicy, concat("incomplete assignments; missing ", list, "]"), missing.front());
         }
         // 6. Normalization of the request-only material-default code.
         std::vector<LiquidSolverAssignment> assignments;
@@ -552,26 +576,26 @@ private:
             const auto variant = static_cast<std::size_t>(item.variant);
             const auto status = row.status[family - 1U];
             const auto variants = row.variant_mask[family - 1U];
-            const std::string cell = std::string(row.name) + " x " + family_name(family);
+            const std::string cell = concat(row.name, " x ", family_name(family));
             if (status == CellStatus::Rejected) refuse(Code::CombinationRejected, cell, item.material);
             if (status == CellStatus::ProposedAlternate || variants == 0U)
                 refuse(Code::NotSelectable, cell, item.material);
             if ((variants & (1U << variant)) == 0U)
                 refuse(Code::VariantUnsupported,
-                       std::string(liquid_solver_variant_id(item.variant)) + " for " + family_name(family),
+                       concat(liquid_solver_variant_id(item.variant), " for ", family_name(family)),
                        item.material);
             const bool is_default = family == row.default_family && item.variant == LiquidSolverVariant::Reference;
             if (!build_.native && !is_default)
                 refuse(Code::PlatformUnsupported, "host has no native policy handshake", item.material);
             if ((build_.available_families & (1U << (family - 1U))) == 0U)
-                refuse(Code::FamilyUnavailable, family_name(family) + " is not compiled/qualified in this build",
+                refuse(Code::FamilyUnavailable, concat(family_name(family), " is not compiled/qualified in this build"),
                        item.material);
             if (build_.cell_qualified &&
                 std::find(build_.qualified_cells.begin(), build_.qualified_cells.end(),
                           std::pair<std::uint16_t, std::uint8_t>{item.material, static_cast<std::uint8_t>(family)}) ==
                     build_.qualified_cells.end())
-                refuse(Code::FamilyUnavailable, family_name(family) + " is not qualified for material " +
-                                                    std::to_string(item.material) + " in this build",
+                refuse(Code::FamilyUnavailable,
+                       concat(family_name(family), " is not qualified for material ", item.material, " in this build"),
                        item.material);
         }
         // 8. Parameter blocks, family then material.
@@ -591,28 +615,26 @@ private:
             const auto& list = blocks[kind];
             for (std::size_t i = 1; i < list.size(); ++i) {
                 if (list[i].owner <= list[i - 1U].owner)
-                    refuse(Code::MalformedPolicy, name + " blocks not strictly ascending (duplicate or unsorted)");
+                    refuse(Code::MalformedPolicy, concat(name, " blocks not strictly ascending (duplicate or unsorted)"));
             }
             for (const auto& block : list) {
-                const auto label = name + " block (" + std::to_string(block.owner) + ", v" +
-                                   std::to_string(block.version) + ")";
+                const auto label = concat(name, " block (", block.owner, ", v", block.version, ")");
                 const auto* found = schema(kind == 0U, block.owner, block.version);
-                if (found == nullptr) refuse(Code::UnknownParameter, "unknown " + label);
+                if (found == nullptr) refuse(Code::UnknownParameter, concat("unknown ", label));
                 if (block.values.size() != found->fields.size())
-                    refuse(Code::UnknownParameter, label + " has " + std::to_string(block.values.size()) +
-                                                       " words; schema has " + std::to_string(found->fields.size()));
+                    refuse(Code::UnknownParameter, concat(label, " has ", block.values.size(), " words; schema has ",
+                                                          found->fields.size()));
                 if (kind == 0U && !used(block.owner))
-                    refuse(Code::MalformedPolicy, "extra family block for unassigned " + family_name(block.owner));
+                    refuse(Code::MalformedPolicy, concat("extra family block for unassigned ", family_name(block.owner)));
                 if (kind == 1U && family_of(block.owner) != std::optional<std::uint8_t>{found->requires_family})
-                    refuse(Code::MalformedPolicy, label + " not declared by the material's applied family",
+                    refuse(Code::MalformedPolicy, concat(label, " not declared by the material's applied family"),
                            static_cast<std::uint16_t>(block.owner));
                 for (std::size_t f = 0; f < found->fields.size(); ++f) {
                     const auto& field = found->fields[f];
                     const auto value = static_cast<std::int64_t>(block.values[f]);
                     if (value < field.minimum || value > field.maximum)
-                        refuse(Code::MalformedPolicy, std::string(field.name) + "=" + std::to_string(value) +
-                                                          " outside " + std::to_string(field.minimum) + ".." +
-                                                          std::to_string(field.maximum));
+                        refuse(Code::MalformedPolicy,
+                               concat(field.name, "=", value, " outside ", field.minimum, "..", field.maximum));
                 }
                 applied[kind].push_back({static_cast<std::uint16_t>(block.owner),
                                          static_cast<std::uint16_t>(block.version), block.values});
@@ -622,7 +644,7 @@ private:
             if (!item.family_owner || !item.mandatory || !used(item.owner)) continue;
             if (std::none_of(applied[0].begin(), applied[0].end(),
                              [&](const LiquidParameterBlock& block) { return block.owner == item.owner; }))
-                refuse(Code::UnknownParameter, "missing mandatory family block for " + family_name(item.owner));
+                refuse(Code::UnknownParameter, concat("missing mandatory family block for ", family_name(item.owner)));
         }
         return {LiquidSolverPolicy::Construct{}, catalogue, capability, std::move(assignments),
                 std::move(applied[0]), std::move(applied[1])};
