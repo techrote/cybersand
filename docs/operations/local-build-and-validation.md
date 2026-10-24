@@ -313,16 +313,39 @@ semantic records and live ownership unchanged. The [authoring guide](semantic-de
 documents reproducible composites, isolated planes, region details and capture
 manifests. Headless rendering does not substitute for those captures.
 
-The scoped [GEN-005 publisher](../../.github/workflows/gen005-runtime-publication.yml)
-builds source-matched Linux and Windows runtimes, runs all retained player and
-generation admission checks plus the three GEN-005 headless suites on each
-target OS, and accepts only complete positive-count error-free evidence before
-publishing the four runtime/provenance paths. Its independent
-[`unittest` suite](../../tools/ci/test_gen005_runtime_publication.py) exercises
-missing, malformed and tampered evidence. Exact-head documentation/provenance,
-native, full Godot and applicable scoped apparatus gates remain required for
-implementation acceptance. The [GEN-005 audit](../audits/2026-10-21-gen005-semantic-planes.md)
-records actual platform/source results and any environment qualification.
+### Branch-scoped runtime publishers
+
+Source-matched Linux and Windows runtimes have been published by **temporary,
+branch-scoped publisher workflows**. Each workflow:
+
+1. builds both runtimes on GitHub-hosted runners;
+2. runs a focused headless case list on each target OS;
+3. accepts only complete, positive-count, error-free evidence;
+4. fast-forwards the four runtime and provenance paths onto its feature branch.
+
+Exact-head documentation/provenance, Native, full Godot and applicable scoped
+apparatus gates remain required for implementation acceptance.
+
+The six publishers whose branches had merged were **retired on 2026-10-24**:
+GEN-003, GEN-004, GEN-005, GEN-007, player and LCB-001. Their workflow files
+and `tools/ci/*_runtime_publication.py` helpers and unittest guards were removed
+from main. Their dated audits (for example the
+[GEN-005 audit](../audits/2026-10-21-gen005-semantic-planes.md)) and the retained
+`runtime-provenance*.json` build-input hashes still describe the original
+builds; those historical links intentionally resolve only in Git history.
+
+For a new native change, restore the most recent publisher from history, then
+re-scope it before pushing:
+
+```sh
+git show a395e33dc0632f5c3f41e8b8b1c18c89f0aaa131:.github/workflows/lcb001-runtime-publication.yml
+git show a395e33dc0632f5c3f41e8b8b1c18c89f0aaa131:tools/ci/lcb001_runtime_publication.py
+git show a395e33dc0632f5c3f41e8b8b1c18c89f0aaa131:tools/ci/test_lcb001_runtime_publication.py
+```
+
+Re-scoping means renaming it and changing its branch guard, evidence path, case
+list and markers, and running `python3 tools/ci/check_ci_provider_policy.py`.
+Retire it again once its branch merges.
 
 ## Hierarchical generation example and acceptance
 
@@ -929,5 +952,7 @@ Run the additional `test_gen007_*_render.gd` cases through the existing regressi
 runner on a display-backed renderer. The `_render` suffix prevents a headless
 no-frame shortcut. `capture_gen007.gd` retains real scene views and identities;
 its successful completion and each required output image must be checked.
-The scoped GEN-007 publisher binds Linux/Windows execution to exact source and
-runtime bytes; the ready-for-review full repository gates remain separate.
+The scoped GEN-007 publisher (retired; see
+[branch-scoped runtime publishers](#branch-scoped-runtime-publishers)) bound
+Linux/Windows execution to exact source and runtime bytes; the ready-for-review
+full repository gates remain separate.

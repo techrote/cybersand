@@ -12,16 +12,19 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
-Current integration baseline: main `4348516` includes the bounded
+Current integration baseline: main `fd97367` includes the bounded
 [#200 policy foundation](reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24)
 from [PR #239](https://github.com/techrote/cybersand/pull/239) and its
 [PR #240 regression follow-ups](https://github.com/techrote/cybersand/pull/240).
 It also imports [PR #241](https://github.com/techrote/cybersand/pull/241)'s
-physical-timeout diagnostics. The [post-#241 MAT-003 checkpoint](audits/2026-10-24-mat003-post-241-integration-checkpoint.md)
-preserves the earlier 15 current and seven scoped workflow passes and the next
-reconciliation's completed checks under their exact source scopes. Fresh Native,
-Godot, ordinary physical-timing reduction and materialized provenance checks are
-pending on the new heads; #212 and pressure/inertial ports remain held.
+physical-timeout diagnostics. [PR #242](https://github.com/techrote/cybersand/pull/242)
+retires the spent [branch-scoped runtime publishers](operations/local-build-and-validation.md#branch-scoped-runtime-publishers)
+while preserving their historical evidence and published runtimes. The
+[post-#242 MAT-003 checkpoint](audits/2026-10-24-mat003-post-242-integration-checkpoint.md)
+preserves completed earlier checks and qualifies superseded partial runs under
+their exact source scopes. Fresh Native, Godot, ordinary physical-timing reduction
+and materialized provenance checks are pending on the new heads; #212 and
+pressure/inertial ports remain held.
 
 PR #238 retains the [reader/fixture review corrections](audits/2026-10-24-mat003-pr238-review-closure.md), following the [complete v4 author readback](audits/2026-10-24-mat003-overnight-results.md). Independent acceptance remains open. The original refusal and earlier stages below are historical records.
 
