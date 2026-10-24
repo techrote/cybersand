@@ -4,13 +4,18 @@ status: Current
 document-kind: runbook
 scope: LCB-003 (#202) / LCB-000 Gate E (#213) — versioned liquid comparison scenario catalogue v1, source-derived scenario registry for the LCB UI, controlled native-only runner, regressions, negative contracts and blocked future-family arms
 canonical-for: [lcb-scenario-catalogue]
-last-reviewed: 2026-10-23
+last-reviewed: 2026-10-24
 related-documents: [lcb-water-comparison-and-fixtures.md, lcb-manual-comparison-ux.md, ../architecture/liquid-solver-family-policy.md, microscenarios.md, ../audits/2026-10-23-lcb003-scenario-qualification.md]
 ---
 
 # LCB scenario catalogue and controlled runner
 
 ## Status
+
+**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted; the owner currently holds both #200 and #212. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration.
+
+The #213 prerequisite is satisfied. Remaining arm dependencies below still
+block execution; the registered historical inventories are unchanged.
 
 **Current apparatus.** The scenario definitions, runner, registry tooling and
 regressions on this page exist in source and run against the unchanged native
@@ -162,13 +167,13 @@ UI rules (to be enforced by #202):
 | Arm | Mapping | Status |
 |---|---|---|
 | `W-FM` / `C0` | Current defaults | **measured** on Current |
-| `W-CY` | Water `cellular_yield_v1/reference` | blocked: #213 PASS, #200 |
-| `W-PF` | Water `pressure_flow_v1/reference\|cached\|cached_dormant` | blocked: #213 PASS, #200, #201 |
+| `W-CY` | Water `cellular_yield_v1/reference` | blocked: #200 |
+| `W-PF` | Water `pressure_flow_v1/reference\|cached\|cached_dormant` | blocked: #200, #201 |
 | `W-IN` | Water `inertial_cellular_v1/reference` | blocked: #200, #212 |
 | `BRINE-IN` | Brine `inertial_cellular_v1/reference` | blocked: #200, #212 |
 | `M1` | Water FreeMass + Oil CellularYield + Brine Inertial | blocked: #200, #212 |
-| `M2` | pressure Water + Oil + inertial Brine | blocked: #213 PASS, #200, #201, #212 |
-| `M2b` | pressure Water + Oil/Brine CellularYield | blocked: #213 PASS, #200, #201 |
+| `M2` | pressure Water + Oil + inertial Brine | blocked: #200, #201, #212 |
+| `M2b` | pressure Water + Oil/Brine CellularYield | blocked: #200, #201 |
 | `M1-alt` | Toxic Sludge inertial (protected mixed fixture only) | proposed alternate; needs #212 and a new geometry version |
 
 **No scenario has run three solver families at once.** Every executed mixed

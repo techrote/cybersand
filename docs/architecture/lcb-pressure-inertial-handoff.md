@@ -2,9 +2,9 @@
 title: LCB pressure and inertial implementation handoff
 status: Planned
 document-kind: design
-scope: Implementation-ready requirements for LCB-001 (#200, pressure_flow_v1 and solver policy) and LCB-005 (#212, inertial_cellular_v1) derived from the LCB physics prepass — exact source hooks, state, laws, boundary rules, invalidating failures, smallest experimental regimes and the APIs needed to unblock registered tests; no kernel is implemented and LCB-000 remains blocked
+scope: Implementation-ready requirements for LCB-001 (#200, pressure_flow_v1 and solver policy) and LCB-005 (#212, inertial_cellular_v1) derived from the LCB physics prepass — exact source hooks, state, laws, boundary rules, invalidating failures, smallest experimental regimes and the APIs needed to unblock registered tests; no kernel is implemented; bounded admission passed and implementation remains held
 canonical-for: [lcb-pressure-inertial-handoff]
-last-reviewed: 2026-10-23
+last-reviewed: 2026-10-24
 related-documents: [liquid-state-transition-matrix.md, liquid-solver-family-policy.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, ../operations/lcb-scenario-catalogue.md]
 ---
 
@@ -12,7 +12,7 @@ related-documents: [liquid-state-transition-matrix.md, liquid-solver-family-poli
 
 ## Status
 
-**Planned. Do not start until LCB-000 (#213) passes all five gates.** This
+**Planned implementation.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted; the owner currently holds both #200 and #212. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration. This
 page converts the [mechanism report](../audits/2026-10-23-lcb-physics-mechanism-report.md)
 and the [state-transition matrix](liquid-state-transition-matrix.md) into
 requirements.
@@ -289,5 +289,5 @@ Every item above is preregistered in `godot/tests/fixtures/lcb/lcb-physics-contr
 Current-family controls run in `test_lcb_physics_contracts.gd`; every candidate
 arm is BLOCKED with its dependency.
 
-This handoff is submitted for **independent review (Sol, #216 follow-up)**.
-It is not an admission decision, and LCB-000 is not PASS.
+This handoff records future implementation requirements. The linked final
+admission checkpoint owns the accepted scope and continuing execution hold.

@@ -1,10 +1,10 @@
 ---
 title: Liquid solver family policy and API specification
-status: Planned
+status: Approved design
 document-kind: design
-scope: LCB-000 Gate C proposal — versioned four-family liquid solver identities, immutable per-World per-material policy, construction/readback/refusal contracts, source-derived capability matrix and cross-issue mapping for LCB-001..005; nothing here is implemented
+scope: LCB-000 Gate C accepted design — versioned four-family liquid solver identities, immutable per-World per-material policy, construction/readback/refusal contracts, source-derived capability matrix and cross-issue mapping for LCB-001..005; native policy API implementation remains Planned
 canonical-for: [liquid-solver-family-policy]
-last-reviewed: 2026-10-23
+last-reviewed: 2026-10-24
 related-documents: [../systems/water-design.md, ../systems/materials-and-rule-kernels.md, ../systems/flow-transport-and-profiles.md, ../decisions/ADR-005-water-model.md, ../operations/lcb-water-comparison-and-fixtures.md, ../operations/lcb-manual-comparison-ux.md, ../audits/2026-10-23-lcb000-gates-cde-design-evidence.md]
 ---
 
@@ -12,10 +12,11 @@ related-documents: [../systems/water-design.md, ../systems/materials-and-rule-ke
 
 ## Status
 
-**Planned design, proposed for LCB-000 Gate C
-([#213](https://github.com/techrote/cybersand/issues/213)).** Nothing below
-is implemented. No API, enum, packed array or UI control named here exists in
-source today.
+**Approved design — Gate C PASS.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted; the owner currently holds both #200 and #212. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration.
+
+Native construction/readback APIs and comparison UI remain **Planned**. The
+source-derived matrix and contract-model checks are Current apparatus, not
+implementation of the candidate native policy API.
 
 - The only liquid behaviour that executes today is each material's
   **current default** in the

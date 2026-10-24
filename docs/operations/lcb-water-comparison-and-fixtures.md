@@ -1,10 +1,10 @@
 ---
 title: LCB Water comparison contract and reference fixtures
-status: Planned
+status: Approved design
 document-kind: design
 scope: LCB-000 Gates D and E — four-model controlled Water comparison contract, quantity normalization, supported/refused combinations, the protected lcb.dam.water.freemass.reference.v1 Dam Break fixture and the one-World mixed-liquid fixture with arm overlays, negative controls and commands
 canonical-for: [lcb-water-comparison-contract, lcb-reference-fixtures]
-last-reviewed: 2026-10-23
+last-reviewed: 2026-10-24
 related-documents: [../architecture/liquid-solver-family-policy.md, lcb-manual-comparison-ux.md, lcb-scenario-catalogue.md, ../systems/water-design.md, microscenarios.md, experiment-tower.md, ../audits/2026-10-23-lcb000-gates-cde-design-evidence.md]
 ---
 
@@ -12,8 +12,7 @@ related-documents: [../architecture/liquid-solver-family-policy.md, lcb-manual-c
 
 ## Status
 
-**Planned. Proposed for LCB-000 Gates D and E
-([#213](https://github.com/techrote/cybersand/issues/213)).**
+**Approved bounded comparison design and fixtures — Gates D/E PASS.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted; the owner currently holds both #200 and #212. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration.
 
 - **Owner-approved:** Water must be a common controlled test material for all
   four families (#213 Gate D; #200 amendment of 2026-10-22).

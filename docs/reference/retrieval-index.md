@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-24
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -94,7 +94,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | What happens to quantity, velocity, gas and family state when liquids move, swap, react, sleep or are saved? | [State-transition matrix](../architecture/liquid-state-transition-matrix.md), [solver-family policy](../architecture/liquid-solver-family-policy.md) |
 | How should a human compare liquid solvers in the full app without hot-switching? | [Manual UX flow](../operations/lcb-manual-comparison-ux.md), [solver-family policy](../architecture/liquid-solver-family-policy.md#construction-restart-and-transaction-proposed) |
 | What did WEX-005 (#95) decide for #45, and when are equal communicating levels a valid target? | [WEX-005 synthesis](../audits/2026-10-23-wex005-water-evidence-synthesis.md), [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md#wex-005-disposition-2026-10-23), [Water design](../systems/water-design.md#wex-005-disposition-and-the-opt-in-lcb-lane-2026-10-23) |
-| Does the opt-in Liquid Comparison Build pressure solver change production Water or #45, and has LCB-000 passed? | [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md), [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md#lcb-experimental-pressure-lane-reconciliation-2026-10-23), [Water design](../systems/water-design.md#wex-005-disposition-and-the-opt-in-lcb-lane-2026-10-23) |
+| Has LCB-000 passed, what landed, and may #200/#212 start? | [Final admission and execution hold](status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23), [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md), [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md#lcb-experimental-pressure-lane-reconciliation-2026-10-23), [Water design](../systems/water-design.md#wex-005-disposition-and-the-opt-in-lcb-lane-2026-10-23) |
 | How could trapped gas, sealed rooms or vacuum be approximated without cellular gas CFD? | [WEX-003 feasibility research](../research/lumped-gas-region-pressure-bookkeeping.md), [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md), [field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
 | Heat/pressure/wind and Smoke limits | [Field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
 | Appearance LUTs, glow, authoring intent | [Appearance](../systems/material-appearance-and-rendering.md), [authored programs](../architecture/item-authored-material-programs.md) |
