@@ -116,6 +116,9 @@ public:
     [[nodiscard]] Dictionary inspect_gas_compartments() const;
     [[nodiscard]] Dictionary inspect_pressure_cell(Vector2i point) const;
     [[nodiscard]] Dictionary get_pressure_flow_ledger() const;
+    // LCB-005 inertial_cellular_v1 (#212) inspection.
+    [[nodiscard]] Dictionary inspect_inertial_cell(Vector2i point) const;
+    [[nodiscard]] Dictionary get_inertial_ledger() const;
     // Run receipt: binds the applied policy and every World execution input with
     // the caller's setup identity into one SHA-256 receipt hash.
     [[nodiscard]] Dictionary get_liquid_run_receipt(const Dictionary& setup) const;

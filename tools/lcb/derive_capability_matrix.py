@@ -52,6 +52,7 @@ KERNEL_SPECIALIZATION = {
 # executes (LCB-001 #200). Every other non-default cell is refused natively.
 EXECUTABLE_CANDIDATES = {
     ("water", "pressure_flow_v1"): ["reference"],
+    ("brine", "inertial_cellular_v1"): ["reference"],
 }
 # Gate C/D design classifications. Keys are descriptor names.
 PROPOSED = {
@@ -62,7 +63,7 @@ PROPOSED = {
     ("water", "inertial_cellular_v1"): ("proposed_experimental",
         "Gate D experimental inertial regime; LCB-005 #212 not implemented"),
     ("brine", "inertial_cellular_v1"): ("proposed_experimental",
-        "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification"),
+        "LCB-005 #212 first non-Water inertial family: inertial-update-v1 replaces generic YieldingLiquid motion; Brine chemistry unchanged"),
     ("toxic-sludge", "inertial_cellular_v1"): ("proposed_alternate",
         "documented fallback inertial candidate if Brine fails qualification: generic YieldingLiquid kernel"),
 }

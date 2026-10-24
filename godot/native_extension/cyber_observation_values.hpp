@@ -54,6 +54,16 @@ inline Dictionary cell(const cybersand::World& world, Vector2i point) {
         family["gas_label"] = static_cast<int64_t>(state.gas);
         out["family_state"] = family;
     }
+    if (world.inertial_enabled() && world.inertial_family(world.stored_material(point.x, point.y))) {
+        const auto state = world.inertial_cell(point.x, point.y);
+        Dictionary family;
+        family["family"] = "inertial_cellular_v1";
+        family["vx"] = static_cast<int64_t>(state.vx);
+        family["vy"] = static_cast<int64_t>(state.vy);
+        family["ax"] = static_cast<int64_t>(state.ax);
+        family["ay"] = static_cast<int64_t>(state.ay);
+        out["family_state"] = family;
+    }
     return out;
 }
 

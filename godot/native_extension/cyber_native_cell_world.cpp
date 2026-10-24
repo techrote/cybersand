@@ -90,6 +90,8 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("inspect_gas_compartments"), &CyberNativeCellWorld::inspect_gas_compartments);
     ClassDB::bind_method(D_METHOD("inspect_pressure_cell", "point"), &CyberNativeCellWorld::inspect_pressure_cell);
     ClassDB::bind_method(D_METHOD("get_pressure_flow_ledger"), &CyberNativeCellWorld::get_pressure_flow_ledger);
+    ClassDB::bind_method(D_METHOD("inspect_inertial_cell", "point"), &CyberNativeCellWorld::inspect_inertial_cell);
+    ClassDB::bind_method(D_METHOD("get_inertial_ledger"), &CyberNativeCellWorld::get_inertial_ledger);
     ClassDB::bind_method(D_METHOD("get_liquid_run_receipt", "setup"), &CyberNativeCellWorld::get_liquid_run_receipt);
     ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("auto_worker_threads", "logical_threads"), &CyberNativeCellWorld::auto_worker_threads);
     ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("logical_processor_count"), &CyberNativeCellWorld::logical_processor_count);
@@ -1621,6 +1623,23 @@ Dictionary CyberNativeCellWorld::liquid_policy_receipt(
         pressure["adhesion_film"] = "resting cells only";
         parameters["pressure_flow_v1"] = pressure;
     }
+    for (const auto& item : policy.assignments()) {
+        if (item.family != cybersand::LiquidSolverFamily::InertialCellularV1) continue;
+        using P = cybersand::InertialParameters;
+        Dictionary inertial;
+        inertial["family_version"] = static_cast<std::int64_t>(P::kVersion);
+        inertial["q"] = static_cast<std::int64_t>(P::kQ);
+        inertial["gravity"] = static_cast<std::int64_t>(P::kGravity);
+        inertial["vmax"] = static_cast<std::int64_t>(P::kVmax);
+        inertial["turn"] = Vector2i(P::kTurnNumerator, P::kTurnDenominator);
+        inertial["deflect"] = Vector2i(P::kDeflectNumerator, P::kDeflectDenominator);
+        inertial["damping"] = Vector2i(P::kDampingNumerator, P::kDampingDenominator);
+        inertial["drag"] = Vector2i(P::kDragNumerator, P::kDragDenominator);
+        inertial["rest"] = static_cast<std::int64_t>(P::kRest);
+        inertial["update_rule"] = "inertial-update-v1";
+        parameters["inertial_cellular_v1"] = inertial;
+        break;
+    }
     result["family_parameters"] = parameters;
     result["physical_state_hash_version"] = static_cast<std::int64_t>(cybersand::World::kPhysicalStateHashVersion);
     result["normalization"] = Variant();
@@ -1742,6 +1761,46 @@ Dictionary CyberNativeCellWorld::get_pressure_flow_ledger() const {
     diagnostics["chunk_allocations"] = static_cast<std::int64_t>(d.chunk_allocations);
     diagnostics["woken_blocks"] = static_cast<std::int64_t>(d.woken_blocks);
     out["last_tick"] = diagnostics;
+    return out;
+}
+
+Dictionary CyberNativeCellWorld::inspect_inertial_cell(Vector2i point) const {
+    Dictionary out;
+    out["available"] = false;
+    if (world_ == nullptr || !in_bounds(point.x, point.y)) return out;
+    const auto state = world_->inertial_cell(point.x, point.y);
+    const auto material = world_->stored_material(point.x, point.y);
+    out["available"] = state.available;
+    out["material"] = static_cast<std::int64_t>(material);
+    out["inertial_family"] = world_->inertial_family(material);
+    out["vx"] = static_cast<std::int64_t>(state.vx);
+    out["vy"] = static_cast<std::int64_t>(state.vy);
+    out["ax"] = static_cast<std::int64_t>(state.ax);
+    out["ay"] = static_cast<std::int64_t>(state.ay);
+    return out;
+}
+
+Dictionary CyberNativeCellWorld::get_inertial_ledger() const {
+    Dictionary out;
+    out["available"] = world_ != nullptr && world_->inertial_enabled();
+    if (world_ == nullptr || !world_->inertial_enabled()) return out;
+    const auto l = world_->inertial_ledger();
+    out["gravity_y"] = l.gravity_y;
+    out["impulse_x"] = l.impulse_x;
+    out["impulse_y"] = l.impulse_y;
+    out["loss"] = l.loss;
+    out["support"] = l.support;
+    out["remainder"] = l.remainder;
+    out["retired_x"] = l.retired_x;
+    out["retired_y"] = l.retired_y;
+    out["external_x"] = l.external_x;
+    out["external_y"] = l.external_y;
+    out["velocity_retired"] = static_cast<std::int64_t>(l.velocity_retired);
+    out["updates"] = static_cast<std::int64_t>(l.updates);
+    out["unit_moves"] = static_cast<std::int64_t>(l.unit_moves);
+    out["density_swaps"] = static_cast<std::int64_t>(l.density_swaps);
+    out["contacts"] = static_cast<std::int64_t>(l.contacts);
+    out["rests"] = static_cast<std::int64_t>(l.rests);
     return out;
 }
 
