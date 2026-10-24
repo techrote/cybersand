@@ -317,3 +317,23 @@ CI-provider policy checker, YAML parsing and independent read-only review.
 Those guard results are not runtime execution or publication evidence. The
 explicit request and actual source/runtime/run receipts follow only after this
 preparation checkpoint is committed.
+
+At committed preparation `c4bd841211a6fe577daadec2daad81d00ade6808`, the
+pinned-companion validation passed current documentation (112 documents, 220
+claims, zero errors/warnings), M11, provider policy, both canonical oracles,
+LFS integrity and whitespace. Frozen retrieval remains 32/32 top five and
+supplementary challenges are 126/126 top five; the merge preserves both parents'
+question IDs and wording, including the physical-hang routes. All tracked
+input fences were unchanged. Repository validation materialized all 18 runtimes
+and reported only the expected eighteen stale native source entries, nine per
+platform; approved Rapier bytes/provenance passed. Local command, timeout and
+log/fence receipts are under
+`C:/Users/_/.codex/tmp/lcb245-validation/resumed200/validation-receipt.json`,
+SHA-256 `09d4a44059e098c2dea55f95478379c5069097066ba6e5fdb776d23af89d706b`.
+Hosted draft Documentation
+[40136499918](https://github.com/techrote/cybersand/actions/runs/40136499918)
+and unarmed publisher guard runs
+[40136497461](https://github.com/techrote/cybersand/actions/runs/40136497461)
+(push) and [40136499898](https://github.com/techrote/cybersand/actions/runs/40136499898)
+(PR) passed at that exact head. Draft provenance is intentionally skipped and
+these guard passes do not close runtime acceptance.
