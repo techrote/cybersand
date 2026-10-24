@@ -1,7 +1,0 @@
-{
-  "schema": "lcb001-pressure-reference-publish-request-v1",
-  "family": "pressure_flow_v1",
-  "variant": "reference",
-  "intent": "publish-source-matched-runtimes",
-  "request_sequence": 4
-}

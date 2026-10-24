@@ -15,8 +15,12 @@ related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../ar
 The owner requested a handover boundary after completing PR #245 and consolidating
 the current residual #200 work. Branch `codex/lcb001-shared-contract` owns this
 checkpoint. Its preparation began at pressure source
-`349d59359a45ebbe4f92af879945b43b591d412a`; the final recoverable commits and
-refreshed-main identity are recorded in the successor PR and handover.
+`349d59359a45ebbe4f92af879945b43b591d412a`. PR #245 subsequently passed all
+required exact-head gates and merged at fresh main
+`03785c3dcaa5c82df000eeca1471bd6ec698be00`. The prepared successor integrates
+that main checkpoint and scoped publisher retirement `446016a8` while preserving
+the reviewed native `ffeaabd`, Godot `32c284f` and documentation `386ffded`
+commits as reachable recovery points. The successor PR records its final head.
 
 This evidence describes **unmerged source and local execution**, with exact
 native input manifests below. It does not declare #200 complete. Source-matched
@@ -143,6 +147,26 @@ and an external archiver wrapper exceeded Windows command length. Restoring
 upstream's existing argument splitter by dropping the wrapper executable suffix
 completed the archive without dependency or toolchain source changes.
 
+### Current-registry follow-up
+
+After regenerating the current W-CY capability metadata, four directly affected
+LCB cases ran in a fresh separate project at clean source checkpoint
+`386ffded5699a5dedb7f502e5b16cc568831f547`: negative contracts **74/0**,
+catalogue **774/0** across 27 scenarios, protected fixtures **26/0** and physics
+contracts **174/0** (1,048 assertions, zero failures). Clean import and every
+process exited zero without captured engine errors or warnings. The campaign
+arm statuses/measurements remain unchanged; admission is not campaign acceptance.
+
+All 73 native/build/adapter inputs match the same sealed DLL build. The fresh
+stage copied 557 tracked Godot files and the regenerated registry; input fences,
+runtime bytes and the original sealed evidence were unchanged. Report:
+`C:/Users/_/.codex/tmp/lcb200-godot-registry-proof-70bf/REPORT.md`, SHA-256
+`787302dbc4167507becabccdb0d151386c755804ed884713a0ad9b5c11924cb7`;
+19-file manifest SHA-256
+`f50cd84420628c9be6fce53db6b469bbf143fc8e8dd873b1c81bb75a4dfc7e17`.
+The directory retains its initially requested `70bf` label; the receipt binds
+actual `386ffded` and preserves the initial revision-guard stop.
+
 ## Preserved failures and adversarial review
 
 - W-CY viscosity 255 reproduced sleep starvation against an always-awake
@@ -250,7 +274,7 @@ Full commands, mismatch paths, copied-file hashes, source fences and log hashes
 are retained in
 `C:/Users/_/.codex/tmp/lcb245-validation/final200/validation-receipt.json` and
 `sync-manifest.json`. This result precedes the evidence-only addition of this
-section and the final fresh-main rebase; the focused successor PR records its
+section and the final fresh-main integration; the focused successor PR records its
 final committed-head checks.
 
 The live #201 mirror records the body-contact/rest-certificate requirement.

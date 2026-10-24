@@ -12,20 +12,21 @@ related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-
 
 ## Status and inputs
 
-- **Current rows** describe source at `9012425`, unchanged at main `4caa2c3`.
+- **Default-family baseline rows** retain the historical prepass at `9012425`/`4caa2c3`. Current PF and residual W-CY refinements are identified separately below.
 - **Proposed rows** are the contract that #200 (policy, `pressure_flow_v1`,
   whole-cell Water) and #212 (`inertial_cellular_v1`) must implement and
   test.
 - **PF rows are implemented (2026-10-24)** by the opt-in
-  [`pressure_flow_v1/reference`](pressure-flow-v1.md), Current on branch
-  `claude/lcb001-pressure-reference` (unmerged). Its
+  [`pressure_flow_v1/reference`](pressure-flow-v1.md), Current on main since #245
+  merged at `03785c3`. Its
   [lifecycle table](pressure-flow-v1.md#lifecycle-per-mutation-path) owns the
   Current per-path result. Refinements of the Proposed PF text: the overfill
   bound is `maximum()`; a kernel-vacated cell carries a vacuum label (volume, not
   amount); `transfer_water` throws in a pressure World; vented and collapsed gas
   amounts are booked in `GasLedger`. Residual native #200 source advances exact
   hash/persistence to version 2 with the shared quantity ledger; historical
-  CYPS1 explicitly refuses. CYSD1 stays a default-family reconstruction.
+  CYPS1 explicitly refuses in that residual build; main retains CYPS1. CYSD1
+  stays a default-family reconstruction.
 - **W-CY rows are Current in residual native source** on
   `codex/lcb001-shared-contract`: whole-cell Water law version 1 and optional
   viscosity material block v2, with retained cadence/stochastic liveness.
@@ -220,11 +221,11 @@ corner travel, and lighter-below non-support.
 | Sleep | Current: ordinary quiet threshold 3; W-CY retains deadlines for legal future cadence/yield opportunities and blocked pools may sleep. Planned #201 dormancy needs analytical future rest, preserves no-motion body contacts/material work and cannot freeze nonzero flow or suppress other families (`dormant-water-active-oil`). |
 | Wake | any write, cross-family contact, topology change, gas change or remote head change affecting a dormant certificate |
 | Reset/rebuild | a new World with fresh optional storage and gas table; no state carried from the old World; validate → reconstruct → commit |
-| Save/readback | Current native: typed-v1 prepared setup/receipts/accounting, complete physical hash2 and CYPS2 continuation; unknown schema/format and historical CYPS1 refuse. Qualified provenance is not full host replay proof. CYSD1 loads defaults and is never a continuation. |
+| Save/readback | Current in residual native source: typed-v1 prepared setup/receipts/accounting, complete physical hash2 and CYPS2 continuation; unknown schema/format and historical CYPS1 refuse. Qualified provenance is not full host replay proof. CYSD1 loads defaults and is never a continuation. |
 
 ## 10. Pressure gas compartments (PF, World-owned)
 
-**Implemented on branch `claude/lcb001-pressure-reference`** by the
+**Implemented in source** by the
 [pressure reference gas pass](pressure-flow-v1.md#gas-compartments): label-overlap
 identity, monotonic ids, exact `GasLedger`, phase convention unchanged. The
 registered fixtures below pass in the native and Godot pressure regressions at
@@ -254,6 +255,6 @@ completed N+1.
 | Contract | Coverage |
 |---|---|
 | Executable now (Current) | `test_lcb_physics_contracts.gd` (ownership swap, ledgers, dormancy, deep-release characterization, heads) and `test_lcb_negative_contracts.gd` |
-| Executable on the pressure branch (PF reference) | native `test_lcb_pressure.cpp` (13 cases: admission, gas fixtures, Empty-only chunks, quantity/worker parity, two-limb, barriers, static rest/wake, lifecycle ledgers, physical hash and CYPS persistence, default goldens) and `test_lcb_pressure_reference.gd` (12 sections) |
+| Executable on main (PF reference, #245) | native `test_lcb_pressure.cpp` (13 cases: admission, gas fixtures, Empty-only chunks, quantity/worker parity, two-limb, barriers, static rest/wake, lifecycle ledgers, physical hash and CYPS persistence, default goldens) and `test_lcb_pressure_reference.gd` (12 sections) |
 | Native residual #200 | `test_water_cellular_yield.cpp`, `test_water_normalization.cpp`, `test_liquid_construction_refusal.cpp`, `test_liquid_run_receipt.cpp`, `test_quantity_ledger.cpp`; qualified native evidence in the [canonical contract](liquid-prepared-setup-and-receipts.md#tests-and-qualified-evidence) |
 | Remaining campaign dependencies | #202 host/normalization UI, #212 IN, #201 cached/dormant and their registered mixed arms remain pending; native W-CY tests do not imply those campaign gates passed |

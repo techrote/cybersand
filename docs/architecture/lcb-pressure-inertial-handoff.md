@@ -12,7 +12,7 @@ related-documents: [pressure-flow-v1.md, liquid-state-transition-matrix.md, liqu
 
 ## Status
 
-**Approved requirements; pressure reference implemented, inertial Planned.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). The initial opt-in #200 start was separately scoped. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The #245 [`pressure_flow_v1/reference`](pressure-flow-v1.md) supplies the recorded pressure evidence; #212 remains unqualified in this shared source. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a global schema/ABI freeze.
+**Approved requirements; pressure reference implemented, inertial Planned.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). The initial opt-in #200 start was separately scoped. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](pressure-flow-v1.md) is Current on main since #245 merged at `03785c3`, with its recorded pressure evidence; #212 is no longer owner-held but remains unimplemented and unqualified in this shared source. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a global schema/ABI freeze.
 
 Residual #200 native source on `codex/lcb001-shared-contract` adds W-CY motion,
 explicit normalization, native-issued refusal/failure values, typed native
@@ -30,7 +30,7 @@ page converts the [mechanism report](../audits/2026-10-23-lcb-physics-mechanism-
 and the [state-transition matrix](liquid-state-transition-matrix.md) into
 requirements.
 
-- Source references are `9012425`, unchanged at main `4caa2c3`.
+- Historical prepass source references are `9012425`, unchanged at checkpoint `4caa2c3`; the Current pressure and residual-native sources are identified above.
 - The archived pressure candidate is `7ef2aacf`
   (`tools/experiments/water_pressure_prototype/src/water_proto_b.inc`) on
   `620826f5`. It is unqualified, with known defects.
@@ -41,9 +41,9 @@ requirements.
 
 | Need | Where today | Requirement |
 |---|---|---|
-| Per-World policy | `WorldConfig::liquid_solver_policy` beside `WaterExperimentPolicy` | **Current foundation (2026-10-24):** `LiquidSolverPolicy` with the [canonical hashing](liquid-solver-family-policy.md#native-policy-object-proposed), validated before allocation ([foundation](liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)). **Branch:** the running build qualifies Water × `pressure_flow_v1/reference` with one optional family block. Further candidate families must extend the running build's qualified cells and schemas. |
+| Per-World policy | `WorldConfig::liquid_solver_policy` beside `WaterExperimentPolicy` | **Current foundation (2026-10-24):** `LiquidSolverPolicy` with the [canonical hashing](liquid-solver-family-policy.md#native-policy-object-proposed), validated before allocation ([foundation](liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)). **Current on main:** Water × `pressure_flow_v1/reference` with one optional family block. Residual native source also qualifies Water × `cellular_yield_v1/reference` with its v2 viscosity block. Further candidate families must extend the running build's qualified cells and schemas. |
 | Construction | Native `PreparedWorldBuilder`; bridge `build_liquid_policy_world`; other #202 constructors | Native explicit normalization and actual payload/quantity checks occur on an unexposed candidate. Native-issued outcome preserves retained World/generation. Godot typed normalization opt-in and remaining #202 constructors are Planned. |
-| Family dispatch | `update_rule_kernel` L2829 (`RuleKernel` switch), after generic pair chemistry L2797 | Dispatch motion by family only for liquids with a non-default assignment. Keep stages 1, 2, 4 and 5 from the [material hooks](liquid-solver-family-policy.md#material-hooks-versus-motion-gate-c-correction-2026-10-23) unchanged. **Branch:** `RuleKernel::Water` calls `update_water_pressure` in a pressure World. |
+| Family dispatch | `update_rule_kernel` L2829 (`RuleKernel` switch), after generic pair chemistry L2797 | Dispatch motion by family only for liquids with a non-default assignment. Keep stages 1, 2, 4 and 5 from the [material hooks](liquid-solver-family-policy.md#material-hooks-versus-motion-gate-c-correction-2026-10-23) unchanged. **Current on main:** `RuleKernel::Water` calls `update_water_pressure` in a pressure World; residual native source also dispatches W-CY explicitly. |
 | Moves and swaps | `move_cell` L2323, `try_move` L2446, `transfer_water` L2481, `relocate_stored_cell` L1840 | Optional state moves atomically with its tuple; retired on Empty/conversion (R1). |
 | Writes and products | `write_cell`, `set_cell_state`, generic pair products | Current native: reset family state even for same-material products, retain family-only mutation witnesses, book gross visible+overfill Water and initialized output per catalogue rule; separate material populations. |
 | Transport coupling | `mix_after_motion` L2568 | Called with the real moved quantity (`maximum()` for a whole cell). |
@@ -53,11 +53,11 @@ requirements.
 
 **APIs required to unblock the registered tests** (in
 `lcb-physics-contracts.json`):
-- policy readback (Current foundation; branch adds `family_parameters`);
+- policy readback (Current foundation; the #245 pressure adapter adds `family_parameters`);
 - versioned physical-state hash (`get_physical_state_hash()`, residual version 2);
-- `inspect_cell` extended with family state (branch: `family_state` in pressure Worlds);
+- `inspect_cell` extended with family state (`family_state` in pressure Worlds, Current on main);
 - `inspect_gas_compartments()` returning id, generation, ancestry, amount,
-  volume, vent state and topology revision (branch);
+  volume, vent state and topology revision (Current on main);
 - native bounded per-reaction quantity aggregates and separate material-cell
   counts (not ordered replay); #202 owns their complete host collection;
 - a front/centroid observation metric (optional; the tests currently scan
@@ -66,7 +66,7 @@ requirements.
 ## Pressure (`pressure_flow_v1`, Water only, #200)
 
 **Implementation status (2026-10-24).** `pressure_flow_v1/reference` is
-**Current from #245 and retained in residual native source**; the
+**Current on main since #245 merged at `03785c3`, and retained in residual native source**; the
 [canonical design](pressure-flow-v1.md) owns its storage, gas identity, laws,
 parameters and known limits. The native suite (13 `LCB-001 pressure` cases) and
 the Godot candidate regression exercise the mandatory criteria below. The native
@@ -173,7 +173,7 @@ reading fails 10 of those checks.
 | `gas.unequal-merge` | 100+120 at completed t0–t1; the wall erase indexed t1 merges once to 220 (post-event t1, first observed at completed t2) |
 | `gas.compress-vent-reseal.v2` | volume 100 at completed t0–t1; amount 100 held at half volume (50 cells) at completed t2–t5; vented through a channel and dry U-trap with an exchange ledger at completed t6–t9; the supported trap Water plug indexed t9 reseals into a **new** 58-cell compartment at atmospheric amount, first observed at completed t10 and held to t30 (v1's unsupported roof plug is withdrawn) |
 | `gas.split.v1` | one 222-cell compartment through two rooms and a dry U-trap at completed t0–t3; the supported trap fill indexed t3 splits it (post-event t3, first observed at completed t4) into two **new** ids with ancestry, volumes 108 and 111; volume-proportional floor shares 109/112, remainder 1 to the compartment holding the lowest (y, x) cell, giving 110/112; exact split ledger |
-| empty-only-chunk survival | native test (branch: `LCB-001 pressure gas in Empty-only and unallocated chunks`) |
+| empty-only-chunk survival | native test (Current: `LCB-001 pressure gas in Empty-only and unallocated chunks`) |
 | hash change on gas-only change | residual physical-state hash 2 (`LCB-001 pressure physical hash and exact persistence`); #245 historical source used version 1 |
 
 **Sealed headspace.** The `head.sealed-two-limb` target is the isothermal
@@ -329,8 +329,8 @@ default 0); the illustrative v1 flow-rate block is not its encoding.
 
 Every item above is preregistered in `godot/tests/fixtures/lcb/lcb-physics-contracts.json`.
 Current-family controls run in `test_lcb_physics_contracts.gd`; the registry
-still records every candidate arm BLOCKED with its dependency. On the pressure
-branch, [`test_lcb_pressure_reference.gd`](../../godot/tests/test_lcb_pressure_reference.gd)
+still records every candidate arm BLOCKED with its dependency. In the #245 pressure
+reference, [`test_lcb_pressure_reference.gd`](../../godot/tests/test_lcb_pressure_reference.gd)
 runs W-PF `reference` on the registered gas acceptance fixtures and scenario
 geometries without changing those registry records; re-dispositioning arms
 belongs to the #202 comparison host.

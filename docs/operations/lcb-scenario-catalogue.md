@@ -12,7 +12,7 @@ related-documents: [lcb-water-comparison-and-fixtures.md, lcb-manual-comparison-
 
 ## Status
 
-**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current on branch `claude/lcb001-pressure-reference` (unmerged); #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
+**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current in source; #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
 
 The #213 prerequisite is satisfied. Remaining arm dependencies below still
 block execution; the registered historical inventories are unchanged.
@@ -69,7 +69,7 @@ full-length values are author-reported characterization; see the
 **Planned arms.** Every `pressure_flow_v1`, `inertial_cellular_v1` and Water
 `cellular_yield_v1` arm is registered but **blocked**. Each one names its
 owning dependency (#200, #201, #212). No arm runs on a fallback solver.
-On branch `claude/lcb001-pressure-reference` (unmerged) W-PF `reference`
+In source W-PF `reference`
 executes natively ([design](../architecture/pressure-flow-v1.md)) and in
 [`test_lcb_pressure_reference.gd`](../../godot/tests/test_lcb_pressure_reference.gd)
 on registered geometries. The unmerged residual #200 checkpoint additionally
@@ -269,7 +269,7 @@ it is an explicit, reviewed change.
    - `LiquidSolverPolicy`, its packed bridge, refusal codes and effective
      readback are Current (2026-10-24 foundation; NC-1, NC-2 and NC-10
      executable);
-   - on the pressure branch (unmerged): `pressure_flow_v1/reference`, the
+   - at the accepted #245 main checkpoint: `pressure_flow_v1/reference`, the
      versioned physical-state hash, CYPS v1 persistence and per-family
      observation (`inspect_cell.family_state`, gas inspection, overfill in
      `water_integer`);

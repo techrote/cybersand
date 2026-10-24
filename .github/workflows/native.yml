@@ -102,7 +102,10 @@ jobs:
         (github.event.action != 'ready_for_review' ||
          needs.ready_scope.outputs.required == 'true')))
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    # The combined sanitizer builds can consume more than 40 minutes before
+    # TSan and the final shared-library/benchmark gate begin. Keep their existing
+    # per-command bounds and allow the full required job to finish.
+    timeout-minutes: 90
     env:
       CC: gcc-13
       CXX: g++-13

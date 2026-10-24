@@ -2,7 +2,7 @@
 title: pressure_flow_v1 reference — corrected Water pressure family
 status: Current
 document-kind: design
-scope: LCB-001 (#200) implemented opt-in Water family pressure_flow_v1/reference — admission, solver-owned state, gas-compartment topology and identity, head snapshot, kernel laws, declared parameters and bounds, lifecycle per mutation path, physical-state hash, CYPS persistence, inspection APIs and known limits; cached/dormant variants (#201) and the comparison host (#202) are not here
+scope: LCB-001 (#200) Current main opt-in Water family pressure_flow_v1/reference plus unmerged residual hash v2/CYPS2 accounting — admission, solver-owned state, gas-compartment topology and identity, head snapshot, kernel laws, declared parameters and bounds, lifecycle per mutation path, physical-state hash, CYPS persistence, inspection APIs and known limits; cached/dormant variants (#201) and the comparison host (#202) are not here
 canonical-for: [pressure-flow-v1, gas-compartments, physical-state-hash, physical-state-persistence]
 last-reviewed: 2026-10-24
 related-documents: [lcb-pressure-inertial-handoff.md, liquid-state-transition-matrix.md, liquid-solver-family-policy.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb001-pressure-reference-publication.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md]
@@ -12,7 +12,8 @@ related-documents: [lcb-pressure-inertial-handoff.md, liquid-state-transition-ma
 
 ## Status
 
-**Current** in the #245 pressure reference and retained in unmerged residual
+**Current on main** since [PR #245](https://github.com/techrote/cybersand/pull/245)
+merged at `03785c3`, and retained in unmerged residual
 [#200](https://github.com/techrote/cybersand/issues/200) source on
 `codex/lcb001-shared-contract`. It is **opt-in**: only
 a World whose applied liquid policy assigns Water to `pressure_flow_v1/reference`
@@ -26,6 +27,11 @@ The residual native source adds W-CY, explicit normalization, typed native
 receipts and exact shared quantity accounting. Their construction, ownership,
 codec freeze and qualification rules belong to
 [native prepared setup and receipts](liquid-prepared-setup-and-receipts.md).
+The hash v2 and CYPS2 sections describe the unmerged residual native source;
+main at the #245 merge retains its source-matched hash v1/CYPS1 contract.
+The [publication and acceptance record](../audits/2026-10-24-lcb001-pressure-reference-publication.md)
+owns the exact #245 gates and runtime identities.
+
 This page retains the pressure laws; its characterization remains the recorded
 `349d593` #245 evidence, not a rerun of that campaign on the residual delta.
 
@@ -271,16 +277,16 @@ saved; settled discovery must be disabled. A restored World continues
 bit-identically (physical and state hash, including at a different worker count).
 Restore also checks native quantity schema, source/sink roles and quanta,
 aggregate closure, prepared Water count/mass consistency and restored authority.
-Historical CYPS1 explicitly refuses as an unknown format; #245's saved format-1
+In residual source, historical CYPS1 explicitly refuses as an unknown format; #245's saved format-1
 evidence remains historical. The owner-requested narrow native codec freeze is
 described in the [shared contract](liquid-prepared-setup-and-receipts.md); it is
 not a production Cell/global ABI or full application replay freeze.
 
 ## Characterization (screens, not admission criteria)
 
-Native harness at corrected source `349d593`, registered geometries, 1 worker,
-2026-10-24 (identities in the #245 evidence record; not rerun for the residual
-native setup/accounting delta):
+Native harness at repaired source `349d593`, registered geometries, 1 worker,
+2026-10-24 (identities and retained earlier results in the #245 evidence record;
+not rerun for the residual native setup/accounting delta):
 
 | Screen | Threshold | Current | pressure_flow_v1/reference |
 |---|---|---|---|

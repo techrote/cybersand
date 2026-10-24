@@ -677,11 +677,11 @@ read that record and the current-main #49 v2 rerun it cites.
 The owner-approved opt-in Liquid Comparison Build (#200) is a separate
 experimental lane. Its pressure family is bounded by the
 [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
-**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current on branch `claude/lcb001-pressure-reference` (unmerged); #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
+**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current in source; #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
 
 ### LCB-001 pressure reference operations (2026-10-24)
 
-On branch `claude/lcb001-pressure-reference` (unmerged) Water ×
+In source Water ×
 `pressure_flow_v1/reference` is admitted and runs opt-in. Read the
 [canonical design](../architecture/pressure-flow-v1.md), the
 [roadmap entry](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)
@@ -703,17 +703,16 @@ before changing it. Keep it separate from #45: its screens select nothing there.
   and confirm no wire-vector acceptance or refusal changes unintentionally.
 - **Runtime publisher.** `.github/workflows/lcb001-pressure-reference-runtime-publication.yml`,
   `tools/ci/lcb001_pressure_reference_runtime_publication.py` and its unittest
-  came from draft PR #244. The workflow is armed only by committing
-  `tools/ci/lcb001_pressure_reference_publish_request.json` on this branch;
-  ordinary native edits do not dispatch it. It records its outcome in the
-  evidence record and fast-forwards only the runtime/provenance paths. Run
-  `python3 tools/ci/check_ci_provider_policy.py` after any change, and **retire**
-  the workflow, helper, unittest and request file once the branch merges, as for
-  other [branch-scoped publishers](local-build-and-validation.md#branch-scoped-runtime-publishers).
+  came from draft PR #244 and are retired with the source-bound request after
+  PR #245. The publication evidence and original implementation at `48fb275`
+  are retained. A successor native checkpoint needs a newly scoped publisher;
+  follow [branch-scoped publishers](local-build-and-validation.md#branch-scoped-runtime-publishers)
+  and run `python3 tools/ci/check_ci_provider_policy.py` after any CI change.
 - **Issue state.** #200 was auto-closed when PR #239 merged, because GitHub read
   "does not close #200" as a closing keyword; it was reopened on 2026-10-24. Avoid
-  negated closing keywords in PR bodies; #200 still owns W-CY, normalization,
-  a frozen run receipt and the remaining #202 constructors.
+  negated closing keywords in PR bodies; #200 still owns shared native
+  W-CY/normalization/receipt acceptance. Full-application constructor propagation
+  and verified host collection remain #202 work.
 
 
 ## PENV-001 player/environment tuning handoff

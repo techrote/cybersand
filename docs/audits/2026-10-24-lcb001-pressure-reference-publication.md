@@ -66,6 +66,7 @@ builds non-bit-reproducible, as for the repository's own builds).
 
 ## Characterization (screens, not admission)
 
+Retained original pre-repair characterization (source through `a5b5322`):
 `native/bench/lcb_pressure_characterisation.cpp`, registered geometries rebuilt
 from the scenario definitions, 1 worker, quantity checked every 50 ticks. The
 harness reproduces the registered Current controls exactly (fronts 67/70/71,
@@ -261,6 +262,101 @@ artifacts, scenario registry and physics contracts still match their sources;
 `git diff --check` and provider policy pass. Hosted runtime and final acceptance
 gates remain separate.
 
+## Corrected publication and final-source characterization
+
+**Attempt 4 (request_sequence 4, source
+`349d59359a45ebbe4f92af879945b43b591d412a`,
+[run 40100666514](https://github.com/techrote/cybersand/actions/runs/40100666514)):
+passed on 2026-10-24.** Linux build/runtime-floor/execution, Windows cross-build
+and actual execution, and final source/provenance lease verification all passed.
+The bot published only the two libraries and two manifests at recoverable
+checkpoint `101758d59e7d493fb43c9c4cdc7fbde24279614f`.
+
+| Target | Bytes | SHA-256 |
+|---|---:|---|
+| Windows x86_64 | 4,352,512 | `813bfbb42f0bc9c21488aca44df2a3477e47db594b3521885ea2fed39ea07f0a` |
+| Linux x86_64 | 3,749,776 | `3bfe1679c6d0201203fcf99b6f53d7f50875a530611776787131d7dc1d5098c2` |
+
+Both manifests bind source tree `7f5a0e36d3f7da1c3e50cd118259f9714993f01d`.
+Materialized payload hashes were independently checked with `Get-FileHash` after
+a clean fast-forward. Both targets ran import and all nine mandatory cases with
+the same pinned tools and per-case limits as attempt 2. The updated candidate
+regression reported **1933 assertions, 0 failures, all 12 sections true** on each
+OS. Retained Linux/Windows `validation.json` hashes are respectively
+`cd0b386d97074b95b3a4ce085dd922087c7d394b4384e4abced44915a2e03142` and
+`88dc29474d5be711ff52a1fcad43cee3f1164d22caf9c518dbea54ecd4711286`.
+This is focused execution of exact source-matched development runtimes; the
+full ready-PR matrix remains a separate acceptance gate.
+
+The final characterization executable was built from `git archive 349d593 native`
+in an isolated directory with MSVC 19.38.33145.0 x64,
+`/std:c++20 /EHsc /O2`. Command: `characterisation.exe all 1`, timeout 1800 s,
+one worker, dam horizon 1800, head horizon 2400. Execution on 2026-10-24
+14:03:30–14:13:00 UTC completed in 569.506 s, exit 0, empty stderr, no timeout.
+
+| Screen | Current | Final pressure reference |
+|---|---|---|
+| fronts at t240, depths 48/96/160 | 67/70/71 | 130/221/220 |
+| depth response | 1.06 | 1.69 |
+| retained at t1800, depths 48/96/160 | 0.839/0.841/0.851 | 0.619/0.437/0.371 |
+| vented gap at t2400 | 120 | −9; first within ±12 at t1026, subsequent maximum 12 |
+| narrow gap at t2400 | 120 | 43 |
+| sealed at t2400 | gap 120 | levels 152/175, gap 23; unsettled, no sealed-law acceptance |
+
+All twelve runs preserved exact quantity. The final sealed gas records
+`(amount, volume, gauge)` are `(1152, 3831, −5706)` and `(6912, 4933, 3273)`.
+The earlier source's 4.9-row residual is historical and is not reused for this
+source. An intermediate `1a1c32c` run produced identical physical metrics and gas
+records; its earlier output remains preserved separately.
+
+Raw identity, compiler/build log, runtime output, empty stderr and comparison
+are retained under
+`C:/Users/_/AppData/Local/Temp/codex-pressure-review/characterisation-349d593/`.
+Source archive SHA-256
+`f63c0a386d404b9913e379562ba92a27f89fe7f8daf5d3e85ca01cf9c8424d60`;
+executable SHA-256
+`8980188eb29ca596df1f750efc25c01a7bcf21e77c8003968648c648d15f41ec`;
+runtime-log SHA-256
+`fe2c4d7c70f6209b7c986fb3b2ab8e9046133b2a2f7e01563a29bf0edea45096`.
+
+Canonical pressure design, handoff and roadmap metrics were updated together,
+with the actual run-receipt region/diagnostic fields synchronized in the policy
+interface description. Historical measurements, failures and artifact hashes
+are retained. Final exact-head CI, independent review and merge disposition are
+recorded in PR #245's description/Checks to avoid changing source for its own
+acceptance receipt. Remaining shared #200 work is still open; the stale capability
+matrix headline about only default execution is a known identity-metadata gap
+for that next checkpoint, while its qualified candidate rows and native applied
+readback identify this executable pressure reference.
+
+The final evidence/documentation delta over published `101758d` passed the
+isolated pinned-companion validation layout again: documentation 111 pages / 217
+claims / 2594 links with zero errors or warnings, materialized repository
+provenance (18/18 runtimes), 18 retained M11 records / 28 historical hashes,
+eight validation failure-contract tests, LFS fsck and whitespace. Frozen
+retrieval retained 32/32 top-five routes (MRR 0.7953); challenge retrieval
+retained 121/121 (MRR 0.8742). These lexical results do not establish answer
+sufficiency. No native input changed after the published source.
+
+## Native CI aggregate-timeout correction
+
+The ready-PR Native run
+[`40101949681`](https://github.com/techrote/cybersand/actions/runs/40101949681)
+at head `48fb275` was cancelled by its **45-minute job limit**, not an assertion
+or sanitizer diagnostic. The native job ran from 14:19:13 to 15:04:27 UTC on
+2026-10-24. Behavioral tests, CLI/generation checks, ASan/UBSan, the sanitized
+settled-regions build and soliding sanitizer regressions passed. The latter
+finished at 15:02:47; the deadline interrupted TSan at 15:04:25, and the final
+shared-library/benchmark step did not run. Neither incomplete gate is credited.
+ASan execution retained its declared `detect_leaks=0` scope.
+
+The aggregate job budget is increased to 90 minutes while retaining every
+existing test, sanitizer setting and per-command timeout. Native source inputs,
+published runtime bytes and provenance are unchanged. CI-provider policy and its
+six tests pass locally; the complete required non-draft matrix must pass again
+at the updated PR head before merge. Exact new run identities and their completed
+outcomes are recorded in PR #245's description and Checks.
+
 ## Gaps (open)
 
 - #200: W-CY (whole-cell Water `cellular_yield_v1`), `water-normalize-v1` and
@@ -271,3 +367,36 @@ gates remain separate.
   in the scoped publisher above, with the complete Godot matrix still separate.
 - Web/WASM: not built or run.
 - Reference cost is O(resident cells) per tick (#201 owns caching/dormancy).
+
+## Exact-head acceptance and merge
+
+PR #245 merged on 2026-10-24 as
+`03785c3dcaa5c82df000eeca1471bd6ec698be00`, after all applicable non-draft
+gates passed at final head `e48c5aa5f9871fc997434f226284ed638613177f`:
+
+- [Documentation/provenance 40105553880](https://github.com/techrote/cybersand/actions/runs/40105553880): pass.
+- [Native 40105553858](https://github.com/techrote/cybersand/actions/runs/40105553858): pass in 50m29s, including normal, ASan/UBSan and TSan execution of all 107 tests, generation/CLI and soliding checks, shared-library build and final benchmark. ASan retains its declared `detect_leaks=0` scope.
+- [GDExtension/Godot 40105553817](https://github.com/techrote/cybersand/actions/runs/40105553817): both builds, all 128 applicable Windows headless cases, four Linux shards with 140 unique cases exactly once plus four imports, and the aggregate pass. Actual rendered Linux cases are included.
+- [#49 apparatus 40105553843](https://github.com/techrote/cybersand/actions/runs/40105553843): pass.
+
+The tested synthetic merge `35bc821479108d5c694d1ad143462f2b374ecca1`, final
+head and actual main merge all have tree
+`31518a3838808227715aa7b81f6cfc7cae7b775d`. Windows execution reported empty
+errors/source drift and used the published `813bfbb4…` runtime; Linux used
+`3bfe1679…`. Independent native/boundary and material-stage reviews found no
+remaining actionable issue. No skipped draft/scope result supplies acceptance.
+
+Complete Native logs and actual Windows/Linux receipts are retained under the
+pressure worktree's ignored `build/takeover-245/e48-*` paths. The Native log
+SHA-256 is `7fcadd27e9fdc53fb0fd8fa3d51746e3d075b86b35c333014e55b3b173511d0c`;
+the Windows execution receipt hashes to
+`abf5073f21649be0c862482e84f4e809307fb0d0ca833aea3f56de48207b6005`.
+
+The main checkpoint was fetched and the source worktree fast-forwarded cleanly.
+Superseded draft #244 was closed. The completed pressure publisher workflow,
+helper, unittest and source-bound request are removed in the focused residual
+#200 successor checkpoint, with their original implementation recoverable at
+`48fb275`. This retirement is part of that successor branch, not an assertion
+that the files have already disappeared from the recorded main merge. A new
+native delta requires a freshly scoped publisher and fresh matched runtimes.
+Issue #200 remains open for its separate residual acceptance.

@@ -358,15 +358,17 @@ Re-scoping means renaming it and changing its branch guard, evidence path, case
 list and markers, and running `python3 tools/ci/check_ci_provider_policy.py`.
 Retire it again once its branch merges.
 
-**Active, 2026-10-24:** the LCB-001 pressure-reference publisher
+**Retired, 2026-10-24:** the LCB-001 pressure-reference publisher
 (`.github/workflows/lcb001-pressure-reference-runtime-publication.yml`,
 `tools/ci/lcb001_pressure_reference_runtime_publication.py` and
 `tools/ci/test_lcb001_pressure_reference_runtime_publication.py`, re-scoped in
-draft PR #244) exists on branch `claude/lcb001-pressure-reference`. It builds and
-publishes only after `tools/ci/lcb001_pressure_reference_publish_request.json` is
-committed on that branch, and records its outcome in the
+draft PR #244) is removed with its source-bound request after PR #245.
+Its implementation remains recoverable at
+[`48fb275`](https://github.com/techrote/cybersand/tree/48fb275f506b05b00461e43df813c11d68acb274).
+It published only after an explicit request on the implementation branch and recorded its outcome in the
 [evidence record](../audits/2026-10-24-lcb001-pressure-reference-publication.md).
-Retire the three files and the request after that branch merges.
+A later native checkpoint must use a newly scoped publisher and fresh execution;
+the historical artifacts qualify their recorded source only.
 
 ## Hierarchical generation example and acceptance
 
