@@ -33,7 +33,7 @@ Families, variants, refusal codes and receipts are defined in the
 | Arm ID | Water mapping | Regime | State today |
 |---|---|---|---|
 | `W-FM` | `freemass_v1/reference` | protected native Current: mass8, coherence12, fractional | **executes** |
-| `W-CY` | `cellular_yield_v1/reference` | **experimental whole-cell**: every Water cell contains `maximum()`; Water's own yielding law and material block v2 (`viscosity_index` 0–255, default 0) retain its material hooks | Current in unmerged residual #200 source; local native and scoped Windows proof, release publication/acceptance pending ([contract](../architecture/liquid-prepared-setup-and-receipts.md)) |
+| `W-CY` | `cellular_yield_v1/reference` | **experimental whole-cell**: every Water cell contains `maximum()`; Water's own yielding law and material block v2 (`viscosity_index` 0–255, default 0) retain its material hooks | Current in unmerged residual #200 source; native and scoped Windows/Linux publication pass, full final-head acceptance pending ([contract](../architecture/liquid-prepared-setup-and-receipts.md)) |
 | `W-PF` | `pressure_flow_v1/{reference,cached,cached_dormant}` | experimental pressure/overfill/gas candidate, Water-only v1 | `reference` **executes**, opt-in: Current from merged #245 ([design](../architecture/pressure-flow-v1.md)); `cached`/`cached_dormant` refused `family_unavailable` (#201) |
 | `W-IN` | `inertial_cellular_v1/reference` | experimental inertial regime with retained velocity/accumulator | proposed (#212); refused today |
 
