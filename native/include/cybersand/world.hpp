@@ -4,6 +4,7 @@
 #include "cybersand/physics_diagnostics.hpp"
 #include "cybersand/interaction_policy.hpp"
 #include "cybersand/liquid_solver_policy.hpp"
+#include "cybersand/liquid_comparison.hpp"
 #include "cybersand/pressure_flow.hpp"
 #include "cybersand/quantity_ledger.hpp"
 #include "cybersand/transport_policy.hpp"
@@ -318,6 +319,13 @@ public:
     static constexpr std::uint32_t kPhysicalStateHashVersion = 2;
     [[nodiscard]] std::uint64_t physical_state_hash() const;
 
+    // Explicit diagnostic domains. Same-tick equivalence normalizes only the
+    // pressure implementation variant. Quiescent content additionally excludes
+    // clocks, cell epochs, activity aging and cumulative accounting counters;
+    // it retains pending events/deadlines, construction bindings and authority.
+    // A constant quiescent hash does not establish future rest or justify skips.
+    [[nodiscard]] std::uint64_t liquid_comparison_hash(LiquidStateProjection projection) const;
+
     // Candidate-capable tick-boundary persistence ("CYPS" v2): exact
     // continuation of every physical value above. Transient body masks are
     // host-owned and not saved. restore validates everything before returning
@@ -339,6 +347,8 @@ public:
     void copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::size_t stride_bytes) const;
 
 private:
+    [[nodiscard]] std::uint64_t physical_state_hash_impl(
+        std::optional<LiquidStateProjection> projection) const;
     friend class PreparedWorldBuilder;
     friend class RenderSnapshotExchange;
 

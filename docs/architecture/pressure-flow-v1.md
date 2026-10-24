@@ -274,6 +274,43 @@ silently reinterpreted. The hash includes policy/variant and clock, so #201
 equivalence must define its comparison projection rather than demand equal raw
 hashes across variants or across ticks.
 
+### Liquid comparison projections
+
+**Current in unmerged `codex/lcb002-pressure-variants` source:**
+`World::liquid_comparison_hash(LiquidStateProjection)` supplies two explicitly
+named diagnostic observations. Each prefixes its own domain, then binds the
+underlying physical-hash version and its declared field stream. The original
+physical-hash v2 stream and CYPS2 bytes are unchanged by this extraction.
+
+| Domain | Included state and explicit exclusions | Intended comparison |
+|---|---|---|
+| `lcb.pressure-variant-equivalence.v1` | Complete physical-hash fields, with only each `pressure_flow_v1` implementation variant normalized to `reference` in the canonical policy. Other assignments, catalogue/capability digests, all parameter blocks, clocks, epochs, activity, deadlines, construction bindings, quantity accounting and all authority remain significant. Derived caches and their diagnostics have no authority in this stream. | Reference/cached/dormant at the **same completed tick**, with separately compared gas and momentum ledgers/history where outside the complete hash. |
+| `lcb.quiescent-physical-content.v1` | The same physical authority/configuration and normalized policy, excluding tick/completed-tick clocks, update/cell epochs, activity/quiet aging and cumulative quantity source/sink/event counters. Retains failure state, selected/applied regions, future event/deadline obligations, original construction bindings/baselines, current quantities/populations, exact material/state/temperature tuples, overfill/flow/gas labels and the full gas table. | A cross-tick static-content diagnostic. It is **not a future rest certificate** and cannot authorize skipped work. |
+
+Unknown projection identities refuse. Observations allocate only on the caller's
+inspection path, never in worker kernels; no World state changes during capture.
+The comparison policy is built from the canonical encoder, not a policy-hash
+mask: changing family, material or parameter remains visible. Future authoritative
+family extensions must enter each applicable projection or remain unsupported.
+The quiescent diagnostic does not prove the absence of future chemistry,
+stochastic, cadence, body-contact or remote pressure work. Dormancy needs its
+separate positive proof and invalidation before every reuse.
+
+The initial 2026-10-24 local LLVM-MinGW 20260826/Clang 23.1.0 C++20 `-O1`
+projection checkpoint passes **128/128** native cases in 27.297 s, including
+two new groups. A supported static pool remains constant through 300 ticks and
+epoch rollover only in the quiescent observation; complete/same-tick hashes
+change. Tests retain thermal, mask, future-event and adhesion distinctions,
+exact restore, variant-only canonical normalization and family/parameter
+distinctions. All 120 Python LCB tests and generated-contract checks pass.
+Separately compiled source `9e91a9f7` and the projection delta produce identical
+original physical hashes and SHA-256 digests of CYPS bytes at all eight
+registered default/pressure fixture observations, including masked and thermal
+state. Commands, complete input fences, executables and logs are retained under
+`C:/Users/_/.codex/tmp/lcb201-projections/validation.json`. This is local source
+proof for the projection extraction; caching, dormancy, new runtime publication
+and platform/full-PR acceptance are not credited by it.
+
 ## Persistence (CYPS v2)
 
 `World::save_physical_state()` / `World::restore_physical_state(execution, bytes)`:
