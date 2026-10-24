@@ -66,6 +66,12 @@ def case_environment(folder: Path) -> dict[str, str]:
             path = folder / name.lower()
             path.mkdir(parents=True, exist_ok=True)
             environment[name] = str(path)
+    # Native libraries can write temporary files without consulting XDG or
+    # APPDATA. Keep those writes isolated in the three-process condition too.
+    temporary = folder / "tmp"
+    temporary.mkdir(parents=True, exist_ok=True)
+    for name in ("TMPDIR", "TEMP", "TMP"):
+        environment[name] = str(temporary)
     return environment
 
 
@@ -76,6 +82,11 @@ def execute(godot: str, case: runner.Case, repetition: int, output: Path) -> dic
         godot, case, location, "case", env=case_environment(location / "userdata"),
     )
     record["repetition"] = repetition
+    # Preserve finished attempts even if a later invocation/harness failure
+    # interrupts the batch before its next summary checkpoint.
+    (location / "attempt-result.json").write_text(
+        json.dumps(record, sort_keys=True, indent=2) + "\n", encoding="utf-8",
+    )
     return record
 
 
@@ -96,6 +107,8 @@ def main() -> int:
         parser.error("repetitions must be between 1 and 100")
 
     output = args.output.resolve()
+    if output.exists() and any(output.iterdir()):
+        raise RuntimeError("Refused: stress output must be empty; preserve prior campaign evidence")
     output.mkdir(parents=True, exist_ok=True)
     source = subprocess.check_output(
         ["git", "rev-parse", "HEAD"], cwd=runner.ROOT, text=True,
@@ -108,7 +121,7 @@ def main() -> int:
     candidates = {case.name: case for case in runner.discover_cases()}
     if any(name not in candidates or candidates[name].requires_display for name in CASES):
         raise RuntimeError("Refused: physical stress catalogue differs from declared headless scope")
-    version = subprocess.check_output([args.godot, "--version"], text=True).strip()
+    version = subprocess.check_output([args.godot, "--version"], text=True, timeout=30).strip()
     report = {
         "status": "running", "completed": False, "source_sha": source,
         "godot_version": version, "mode": args.mode, "repetitions": args.repetitions,

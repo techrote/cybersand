@@ -313,6 +313,9 @@ jobs:
         run: |
           python3 tools/ci/aggregate_physical_stress.py \
             --input build/stress-input --output build/stress-audit \
+            --expected-source-sha "${{ inputs.source_sha }}" \
+            --expected-run-id "${{ github.run_id }}" \
+            --expected-run-attempt "${{ github.run_attempt }}" \
             --batches 5 --per-batch 10
       - name: Retain the independent complete-run disposition
         if: always()

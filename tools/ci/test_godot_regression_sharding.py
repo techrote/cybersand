@@ -4,9 +4,11 @@
 from contextlib import redirect_stdout
 import io
 import json
+import os
 from pathlib import Path
 import sys
 import tempfile
+import time
 import unittest
 from unittest import mock
 
@@ -165,6 +167,54 @@ class ResultTests(unittest.TestCase):
             self.assertIn("Last 60 lines", snapshot.read_text())
             self.assertIn("world tick=120", snapshot.read_text())
 
+    def test_snapshot_failure_still_kills_and_records_timeout(self):
+        with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
+            output = Path(directory)
+            case = subject.Case("snapshot_failure", (), 0.05, 1)
+            processes = []
+            kill_tree = subject._kill_process_tree
+
+            def kill_and_observe(process):
+                processes.append(process)
+                kill_tree(process)
+
+            with (
+                mock.patch.object(subject, "case_command", return_value=[sys.executable, "-c", "import time;time.sleep(30)"]),
+                mock.patch.object(subject, "_capture_timeout_snapshot", side_effect=RuntimeError("synthetic observation failure")),
+                mock.patch.object(subject, "_kill_process_tree", side_effect=kill_and_observe),
+            ):
+                result, failed = subject.run_case("fixture", case, output, "case")
+            self.assertTrue(failed)
+            self.assertEqual(result["status"], "timeout")
+            self.assertIsNone(result["launch_error"])
+            self.assertIn("synthetic observation failure", result["timeout_diagnostic_error"])
+            self.assertIn("synthetic observation failure", (output / result["timeout_diagnostics"]).read_text())
+            self.assertEqual(len(processes), 1)
+            self.assertIsNotNone(processes[0].poll())
+
+    def test_snapshot_precedes_process_tree_kill(self):
+        with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
+            events = []
+            kill_tree = subject._kill_process_tree
+
+            def snapshot(pid, path, _log, _elapsed):
+                events.append(("snapshot", pid))
+                path.write_text("snapshot while alive")
+
+            def kill_and_observe(process):
+                self.assertIsNone(process.poll())
+                events.append(("kill", process.pid))
+                kill_tree(process)
+
+            with (
+                mock.patch.object(subject, "case_command", return_value=[sys.executable, "-c", "import time;time.sleep(30)"]),
+                mock.patch.object(subject, "_capture_timeout_snapshot", side_effect=snapshot),
+                mock.patch.object(subject, "_kill_process_tree", side_effect=kill_and_observe),
+            ):
+                result, failed = subject.run_case("fixture", subject.Case("ordering", (), 0.05, 1), Path(directory), "case")
+            self.assertTrue(failed)
+            self.assertEqual(events, [("snapshot", result["pid"]), ("kill", result["pid"])])
+
     def test_unavailable_executable_is_recorded_as_failure(self):
         with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
             result, failed = subject.run_case(str(Path(directory) / "missing-godot"), fake("missing", 1), Path(directory), "case")
@@ -200,6 +250,85 @@ class ResultTests(unittest.TestCase):
         self.assertTrue(result["completed"])
         self.assertEqual([case["name"] for case in result["results"]], ["import", "fails", "runs_after_failure"])
         self.assertEqual([case["status"] for case in result["results"]], ["passed", "failed", "passed"])
+
+
+class SnapshotTests(unittest.TestCase):
+    def test_tail_is_bounded_even_with_a_single_oversized_line(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "long.log"
+            path.write_bytes(b"x" * (1024 * 1024) + b"\nlast line\n")
+            tail = subject._tail(path)
+        self.assertIn("tail capped", tail)
+        self.assertLessEqual(len(tail), 256 * 1024 + 100)
+        self.assertTrue(tail.endswith("last line"))
+
+    def test_command_output_is_capped_with_an_explicit_marker(self):
+        result = subject._snapshot_command([
+            sys.executable, "-c", "import sys;sys.stdout.write('o'*200000);sys.stderr.write('e'*200000)",
+        ])
+        self.assertIn("exit=0", result)
+        self.assertIn("snapshot output capped", result)
+        self.assertLess(len(result), 81000)
+        self.assertTrue(result.endswith("e" * 16000))
+
+    def test_command_timeout_cannot_wait_on_descendant_output_pipes(self):
+        # The child inherits output and survives longer than its parent timeout.
+        # A subprocess.run(..., PIPE) cleanup can block waiting on these handles.
+        command = [sys.executable, "-c", (
+            "import subprocess,sys,time;"
+            "subprocess.Popen([sys.executable,'-c','import time;time.sleep(30)']);"
+            "print('before timeout',flush=True);time.sleep(30)"
+        )]
+        started = time.perf_counter()
+        result = subject._snapshot_command(command, timeout=0.25)
+        self.assertLess(time.perf_counter() - started, 8)
+        self.assertIn("TimeoutExpired", result)
+        self.assertIn("before timeout", result)
+
+    def test_unavailable_debugger_command_is_explicit(self):
+        result = subject._snapshot_command(["missing-issue233-snapshot-command"])
+        self.assertIn("SNAPSHOT UNAVAILABLE: FileNotFoundError", result)
+
+    def test_linux_snapshot_retains_session_tree_threads_and_ptrace_refusal(self):
+        commands = []
+
+        def command_result(command):
+            commands.append(command)
+            return "ptrace: Operation not permitted" if "gdb" in command else "process wait state"
+
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "snapshot.txt"
+            log = Path(directory) / "fixture.log"
+            log.write_text("REGRESSION_PROGRESS phase=bridge_step tick=120\n")
+            with (
+                mock.patch.object(subject.sys, "platform", "linux"),
+                mock.patch.object(subject.shutil, "which", side_effect=lambda name: "/usr/bin/" + name),
+                mock.patch.object(subject, "_snapshot_command", side_effect=command_result),
+            ):
+                subject._capture_timeout_snapshot(123, path, log, 180)
+            output = path.read_text()
+        self.assertEqual(commands[0][:4], ["ps", "--forest", "-s", "123"])
+        self.assertIn("wchan:32", commands[0][-1])
+        self.assertEqual(commands[1][:4], ["ps", "-T", "-p", "123"])
+        self.assertEqual(commands[2][:3], ["sudo", "-n", "gdb"])
+        self.assertIn("Operation not permitted", output)
+        self.assertIn("phase=bridge_step tick=120", output)
+
+    @unittest.skipUnless(sys.platform == "win32", "actual Windows process/thread observation")
+    def test_windows_snapshot_has_actual_per_thread_state_without_a_debugger(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "snapshot.txt"
+            log = Path(directory) / "fixture.log"
+            log.write_text("REGRESSION_PROGRESS phase=world tick=120\n")
+            subject._capture_timeout_snapshot(os.getpid(), path, log, 180)
+            output = path.read_text()
+        self.assertRegex(output, r"(?m)^ProcessId\s*:\s*\d+")
+        self.assertRegex(output, r"(?m)^ThreadId\s*:\s*\d+")
+        self.assertRegex(output, r"(?m)^WaitReason\s*:\s*\w+")
+        self.assertRegex(output, r"(?m)^State\s*:\s*\w+")
+        self.assertIn("without a preinstalled debugger", output)
+        self.assertNotIn("\nSNAPSHOT UNAVAILABLE:", output)
+        self.assertNotIn("\nTHREAD SNAPSHOT UNAVAILABLE:", output)
 
 
 if __name__ == "__main__":

@@ -78,19 +78,22 @@ class StressContractTests(unittest.TestCase):
                     path.write_text(json.dumps({
                         "status": "passed", "completed": True, "mode": mode, "platform": platform,
                         "batch": 0, "source_sha": "a"*40, "godot_version": "fixture",
-                        "native_sha256": "b"*64, "rapier_sha256": "c"*64, "results": rows,
+                        "native_sha256": "b"*64, "rapier_sha256": "c"*64,
+                        "run_id": "42", "run_attempt": "1", "cases": list(stress.CASES), "repetitions": 1,
+                        "results": [{"name": "import", "role": "preflight", "status": "passed", "seconds": 1}, *rows],
                     }), encoding="utf-8")
                     files.append(path)
-            rows, errors = aggregate.aggregate(files, batches=1, per_batch=1)
+            identity = {"expected_source_sha": "a"*40, "expected_run_id": "42", "expected_run_attempt": "1"}
+            rows, errors = aggregate.aggregate(files, batches=1, per_batch=1, **identity)
             self.assertEqual(len(rows), 12)
             self.assertFalse(errors, errors)
-            missing, errors = aggregate.aggregate(files[:-1], batches=1, per_batch=1)
+            missing, errors = aggregate.aggregate(files[:-1], batches=1, per_batch=1, **identity)
             self.assertTrue(any("expected one file" in error for error in errors))
             path = files[0]
             payload = json.loads(path.read_text(encoding="utf-8"))
-            payload["results"][0]["status"] = "timeout"
+            payload["results"][1]["status"] = "timeout"
             path.write_text(json.dumps(payload), encoding="utf-8")
-            _, errors = aggregate.aggregate(files, batches=1, per_batch=1)
+            _, errors = aggregate.aggregate(files, batches=1, per_batch=1, **identity)
             self.assertTrue(any("timeout" in error for error in errors))
 
 

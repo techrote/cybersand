@@ -13,6 +13,7 @@ import shutil
 import signal
 import subprocess
 import sys
+import tempfile
 import time
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -174,22 +175,46 @@ def case_command(godot: str, case: Case, platform: str = sys.platform) -> list[s
     return [*command, "--path", str(ROOT / "godot"), *case.flags]
 
 
+def _bounded_file_tail(handle, byte_limit: int) -> tuple[bytes, bool]:
+    handle.seek(0, os.SEEK_END)
+    size = handle.tell()
+    handle.seek(max(0, size - byte_limit))
+    return handle.read(byte_limit), size > byte_limit
+
+
 def _tail(path: Path, lines: int = 60) -> str:
     """Bound the timeout console excerpt without replacing the retained full log."""
-    return "\n".join(path.read_text(encoding="utf-8", errors="replace").splitlines()[-lines:])
+    with path.open("rb") as handle:
+        data, truncated = _bounded_file_tail(handle, 256 * 1024)
+    prefix = "[tail capped at 262144 bytes]\n" if truncated else ""
+    return prefix + "\n".join(data.decode("utf-8", errors="replace").splitlines()[-lines:])
 
 
 def _snapshot_command(command: list[str], *, timeout: int = 12) -> str:
+    heading = f"$ {command!r}\n"
     try:
-        result = subprocess.run(
-            command, capture_output=True, text=True, errors="replace", timeout=timeout,
-        )
-        return (
-            f"$ {command!r}\nexit={result.returncode}\n"
-            + result.stdout[-64000:] + result.stderr[-16000:]
-        )
-    except (OSError, subprocess.TimeoutExpired) as error:
-        return f"$ {command!r}\nSNAPSHOT UNAVAILABLE: {type(error).__name__}: {error}\n"
+        # File-backed capture avoids unlimited in-memory output and inherited-pipe
+        # waits when a timed-out debugger or PowerShell command has descendants.
+        with tempfile.TemporaryFile() as stdout, tempfile.TemporaryFile() as stderr:
+            options = (
+                {"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP}
+                if sys.platform == "win32" else {"start_new_session": True}
+            )
+            process = subprocess.Popen(command, stdout=stdout, stderr=stderr, **options)
+            try:
+                process.wait(timeout=timeout)
+                status = f"exit={process.returncode}\n"
+            except subprocess.TimeoutExpired:
+                status = f"SNAPSHOT UNAVAILABLE: TimeoutExpired after {timeout}s\n"
+                _kill_process_tree(process, wait_seconds=2)
+            out, out_truncated = _bounded_file_tail(stdout, 64000)
+            err, err_truncated = _bounded_file_tail(stderr, 16000)
+            if out_truncated or err_truncated:
+                status += "[snapshot output capped at 64000 stdout / 16000 stderr bytes]\n"
+            output = (out + err).decode("utf-8", errors="replace").replace("\r\n", "\n")
+            return heading + status + output
+    except OSError as error:
+        return heading + f"SNAPSHOT UNAVAILABLE: {type(error).__name__}: {error}\n"
 
 
 def _capture_timeout_snapshot(pid: int, path: Path, log_path: Path, elapsed: float) -> None:
@@ -210,14 +235,24 @@ def _capture_timeout_snapshot(pid: int, path: Path, log_path: Path, elapsed: flo
             " | ForEach-Object ProcessId)) | Sort-Object -Unique }; "
             "$procs | Where-Object { $ids -contains $_.ProcessId }"
             " | Format-List ProcessId,ParentProcessId,Name,CommandLine; "
-            "foreach($id in $ids){ Get-Process -Id $id -ErrorAction SilentlyContinue"
-            " | Select-Object Id,ProcessName,CPU,Threads,StartTime | Format-List }"
+            "foreach($id in $ids){ $p=Get-Process -Id $id -ErrorAction SilentlyContinue; "
+            "if($null -eq $p){continue}; "
+            "$p | Select-Object Id,ProcessName,CPU,StartTime | Format-List; "
+            "try { foreach($thread in $p.Threads){ "
+            "$wait='not waiting'; "
+            "if($thread.ThreadState -eq [System.Diagnostics.ThreadState]::Wait){ "
+            "try {$wait=$thread.WaitReason} catch {$wait='unavailable: '+$_.Exception.Message} }; "
+            "[pscustomobject]@{ProcessId=$id;ThreadId=$thread.Id;State=$thread.ThreadState;"
+            "WaitReason=$wait;CPU=$thread.TotalProcessorTime} | Format-List "
+            "} } catch { Write-Output ('THREAD SNAPSHOT UNAVAILABLE: '+$_.Exception.Message) } }"
         )
         parts.append(_snapshot_command(["powershell", "-NoProfile", "-NonInteractive", "-Command", script]))
         parts.append("Native stack capture: unavailable without a preinstalled debugger; process/thread snapshot retained.\n")
     else:
+        # run_case starts an owned session, so this includes the engine root and
+        # any same-session descendants rather than only the launcher PID.
         parts.append(_snapshot_command([
-            "ps", "-p", str(pid), "-o", "pid,ppid,pgid,stat,etime,wchan:32,args",
+            "ps", "--forest", "-s", str(pid), "-o", "pid,ppid,pgid,sid,stat,etime,wchan:32,args",
         ]))
         parts.append(_snapshot_command([
             "ps", "-T", "-p", str(pid), "-o", "pid,tid,stat,etime,wchan:32,comm",
@@ -240,11 +275,25 @@ def _capture_timeout_snapshot(pid: int, path: Path, log_path: Path, elapsed: flo
         print(f"Cannot write timeout snapshot {path}: {error}", flush=True)
 
 
-def _kill_process_tree(process: subprocess.Popen) -> None:
+def _kill_process_tree(process: subprocess.Popen, *, wait_seconds: int = 10) -> None:
     if sys.platform == "win32":
         # Windows Godot launches a console wrapper plus an engine child. Its
         # kill-on-close job and taskkill /T cover both processes.
-        _snapshot_command(["taskkill", "/PID", str(process.pid), "/T", "/F"], timeout=10)
+        try:
+            killer = subprocess.Popen(
+                ["taskkill", "/PID", str(process.pid), "/T", "/F"],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            )
+            try:
+                killer.wait(timeout=wait_seconds)
+            except subprocess.TimeoutExpired:
+                killer.kill()
+                try:
+                    killer.wait(timeout=2)
+                except subprocess.TimeoutExpired:
+                    print("taskkill did not exit after termination", flush=True)
+        except OSError as error:
+            print(f"Cannot terminate process tree for PID {process.pid}: {error}", flush=True)
     else:
         try:
             os.killpg(os.getpgid(process.pid), signal.SIGKILL)
@@ -253,7 +302,7 @@ def _kill_process_tree(process: subprocess.Popen) -> None:
     if process.poll() is None:
         process.kill()
     try:
-        process.wait(timeout=10)
+        process.wait(timeout=wait_seconds)
     except subprocess.TimeoutExpired:
         process.kill()
         try:
@@ -274,6 +323,7 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
     launch_error = None
     pid = None
     timeout_observed = None
+    timeout_diagnostic_error = None
     with log_path.open("w", encoding="utf-8") as log:
         try:
             options = (
@@ -291,8 +341,20 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
                 log.flush()
                 elapsed = time.perf_counter() - started
                 timeout_observed = elapsed
-                _capture_timeout_snapshot(pid, snapshot_path, log_path, elapsed)
-                _kill_process_tree(process)
+                try:
+                    _capture_timeout_snapshot(pid, snapshot_path, log_path, elapsed)
+                except Exception as error:
+                    # Failure to observe must never bypass termination or turn
+                    # a real timeout into a launch error or a passing result.
+                    timeout_diagnostic_error = f"{type(error).__name__}: {error}"
+                    message = f"Timeout evidence unavailable for PID {pid}: {timeout_diagnostic_error}\n"
+                    print(message, end="", flush=True)
+                    try:
+                        snapshot_path.write_text(message, encoding="utf-8")
+                    except OSError:
+                        pass
+                finally:
+                    _kill_process_tree(process)
                 log.write(f"\nTIMEOUT after {case.timeout}s\n")
                 log.flush()
         except OSError as error:
@@ -331,6 +393,7 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
         "log": log_path.name,
         "pid": pid,
         "timeout_diagnostics": snapshot_path.name if timed_out and snapshot_path.exists() else None,
+        "timeout_diagnostic_error": timeout_diagnostic_error,
         "last_progress": next(
             (line for line in reversed(output.splitlines()) if line.startswith("REGRESSION_PROGRESS ")),
             None,

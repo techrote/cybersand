@@ -2105,6 +2105,25 @@
       ]
     },
     {
+      "id": "TEST04",
+      "query": "How do physical Godot timeout diagnostics preserve failures and count a source-bound stress campaign, and which issue owns the repair?",
+      "canonical": [
+        "operations/testing-validation-and-replay.md"
+      ],
+      "facts": [
+        "A physical test timeout always fails at the unchanged 180-second bound; bounded process/thread evidence and log tails are captured before killing the tree.",
+        "The registered campaign contains 600 physical attempts plus 20 preflights across Windows/Linux, serial/three-process parallel, five batches and three declared cases; the independent reducer checks source, workflow run/attempt and missing or failed evidence.",
+        "Process concurrency does not manipulate native worker count. #233 owns diagnostic classification and #234 owns causal repair/watchdog and later zero-timeout qualification under #232."
+      ],
+      "sources": [
+        "operations/testing-validation-and-replay.md",
+        "../tools/ci/run_godot_regressions.py",
+        "../tools/ci/aggregate_physical_stress.py",
+        "../.github/workflows/physical-timeout-stress.yml"
+      ],
+      "revision_sensitive": true
+    },
+    {
       "id": "LCB02",
       "query": "Is the native liquid solver policy API implemented, and what does this build accept, refuse and read back?",
       "canonical": [
