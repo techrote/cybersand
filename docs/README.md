@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-24
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -236,3 +236,9 @@ dependency-ready Stage-3B implementation package**, followed by #67, #68 and the
 registered #70 campaign/exit packet. Stage 4 is not admitted.
 Macro-dynamics and coherent-child fracture remain first-class later goals; discovery
 stays read-only with respect to material authority.
+
+## LCB-000 final admission status
+
+For final Gate A–E PASS, the landed stack and the owner hold on #200/#212, read
+the [current roadmap checkpoint](reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23)
+and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconciliation.md).

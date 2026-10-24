@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [native-water-semantics, native-fallback-water-differences]
 status: Current
 scope: Native conserved Water, coherent emission and adhesion, rest/hash fixtures, fallback differences, and future reaction accounting
-last-reviewed: 2026-09-20
+last-reviewed: 2026-10-24
 related-documents: [materials-and-rule-kernels.md, material-appearance-and-rendering.md, ../reference/level-saves-and-replay.md, ../operations/water-hybrid-pressure-extension-programme.md, ../decisions/ADR-005-water-model.md]
 ---
 
@@ -169,8 +169,7 @@ families with Water as a common test material. The
 [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md)
 bounds that lane: unchanged defaults, no hidden fallback, no production #45
 selection, no new pressure-to-Rapier forces, and the Current fixtures and #49 v2
-controls held fixed. Nothing in this section is implemented, and LCB-000 has not
-passed.
+controls held fixed. Candidate kernels remain **Planned**. **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted; the owner currently holds both #200 and #212. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration.
 
 ## Coherent emission and surface adhesion
 
