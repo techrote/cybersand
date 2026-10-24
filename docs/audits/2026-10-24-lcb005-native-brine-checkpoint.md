@@ -4,7 +4,7 @@ status: Current
 document-kind: evidence
 scope: Isolated native Brine IN source and Windows LLVM qualification only; full issue212, application integration, other platform execution and runtime publication remain open
 canonical-for: [lcb005-native-brine-evidence]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [../architecture/inertial-cellular-v1.md, ../architecture/liquid-solver-family-policy.md, ../architecture/liquid-prepared-setup-and-receipts.md, ../reference/status-and-roadmap.md, ../operations/local-build-and-validation.md]
 ---
 
@@ -72,3 +72,30 @@ Native source checkpoint **c312bb0c6ac628f7d8055703bf8ad64fc9719cde** was fast-f
 At that source, documentation passed113 documents/221 canonical claims/2,738 local links with zero errors or warnings; historical M11 passed18 records/28 original source hashes. All generated policy/capability/native/receipt artifacts passed; all seven independently encoded receipt files match complete native bytes. The frozen32-query retrieval and separate two-question IN retrieval retained the stated routes. `check_repository.py` reports exactly12 stale Windows/Linux native source entries, with no documentation or vendor-runtime errors. The source/runtime rebuild gap remains explicit and no released runtime was reattested.
 
 `mirror-validation.json` in the external evidence directory records commands, exits, mirror source identity, canonical input match and read-only companion-file hashes. The follow-up documentation-only commit leaves the native input manifest unchanged; final clean-mirror/source fences are retained externally. No broader platform, application, scientific or full #212 acceptance is inferred.
+
+
+## 2026-10-25 bounded eligibility repairs
+
+Independent read-only review at clean **cb1a9a3e48fd2a30ac64769779332ff0bf178a45** reproduced two ordinary execution defects. Their original probes, commands, stdout, binaries and immutable receipts remain under `C:/Users/_/.codex/tmp/lcb212-independent-review`; the earlier checkpoint measurements above remain bound to their original source.
+
+The four-case powder control put boxed Brine at(23,21) over boxed Dust at(23,22), with IN vy20. Current CY swapped with `exchange_off=false` and stayed with `true`; IN incorrectly swapped in both arms. The immutable diagnostic control already denies every Powder exchange target, independently of telemetry. Its independent receipt SHA-256 is `529ff3efe9b8c9cabf3cb906c558e11f1173cdbb44c510ac3934b5154a9161eb`.
+
+The eight-case sparse seam control used chunk/core/activity8, radius3 and Brine(3,7) seeded with vy20. Only unreserved SerialInPlace IN incorrectly stayed at y7; reserved serial IN, both phased IN arms and all four Current CY arms reached y8. The independent receipt SHA-256 is `fbd470e79751a9ab79e4711a9f230af1aa4e262c9ddd1e2f0857246ad9939f6d`.
+
+Both corrections stay in the shared IN eligibility predicate. Powder denial applies before U1 support, U3 diagonal re-aim and each U6 target recheck. Absent storage reads as Empty only for exclusive serial execution; eligibility itself never allocates. An actual move retains the shared allocator, explicit capacity failure and failed-World quarantine. Worker jobs still require prepared resident domains. Default controls, parameters, carriers, slot/storage ABI, policy admission and hash/CYPS formats are unchanged.
+
+The new native regression first failed against the unchanged kernel with `CY and IN both preserve the immutable powder-target exchange control`; the failure is retained in `C:/Users/_/.codex/tmp/lcb212-powder-control-fix`. Final checks cover CY/IN control arms under serial, phased1 and phased4; a support-only state before travel; denied diagonal re-aim; a second powder target after an allowed Empty step; positive/negative sparse seams; exact tuple/population retention; read-only no-allocation; prepared no tick allocation; and actual sparse travel capacity refusal. The existing eleven numerical examples and every previous native group remain intact. Independent review found no lost eligibility or allocation guard.
+
+
+The bounded repair source is **5b123913ddc2b42d4d15b0dc458627d8973490b8**, directly descending from the sealed checkpoint; the follow-up audit commit changes no native inputs. Windows LLVM-MinGW20260826 UCRT/clang23.1.0 execution passed136/136 ordinary native cases in38.438s and10/10 focused IN groups in11.062s. The same ten groups passed ASan/UBSan in37.828s with no diagnostics; leak detection remains disabled/unsupported on this host. Both executables retain a1MiB PE stack. No assertion, numeric example, allocation-injection test or prior failure was weakened. Full hosted Linux sanitizers/race checks, MSVC and application/platform execution remain open after integration.
+
+| Bounded repair input/artifact | SHA-256 |
+|---|---|
+| `fixed-canonical-inputs.json` (99 native source inputs) | `f0b19376af2c7641973d357d856de719e23c2362d05f2c0b93c919495befd6be` |
+| `fixed-normal-tests.exe` | `a3b2fd4a43cc8d9a0234c2e7e8aa5c2941e4fa02f7d04a1a1976146dd60c1704` |
+| `fixed-sanitized-tests.exe` | `afb98dd5174fadec5c4bd9dcbb3a3876bcb644afc8fdcbfc34badd59d7d2dc1e` |
+
+The external repair directory retains build/run argv, timeouts90/180s, exact before/after raw inputs and canonical source manifest, original failing control and final stdout/stderr. The raw fence additionally records the unchanged material-pack JSON; the canonical99-input source set matches the prior checkpoint's scope. No released runtime or provenance manifest is reattested by these native-only tests.
+
+
+A separately named source mirror under the pinned external companion workspace validated the repaired source plus this audit, without changing the earlier `source200` mirror or companion files. Documentation passed113 documents/221 canonical claims/2,739 local links with no errors/warnings; historical M11 passed18 records/28 original hashes. Generated capability/policy/native artifacts passed, and seven **freshly emitted repaired-binary receipt vectors** matched the independent Python byte oracle. Frozen retrieval retained32/32 canonical top-five hits(20 first); the separate IN fixture retained2/2 top-five hits. These routing checks do not establish answer or physics acceptance. `check_repository.py` still reports exactly12 stale Windows/Linux native input records and no documentation/vendor-runtime error. Before/after native inputs and whitespace checks pass. Commands, diagnostics and mirror/companion fences are retained with the repair evidence; platform/release gaps remain explicit.
