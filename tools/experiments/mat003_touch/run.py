@@ -17,7 +17,7 @@ def collect(compiler, output, expected_compiler):
     compiler=Path(compiler).resolve();output=Path(output).resolve()
     if digest(compiler)!=expected_compiler:raise ValueError('compiler seal mismatch')
     output.mkdir(parents=True,exist_ok=False)
-    registration=Path(__file__).with_name('registration-v2.json')
+    registration=Path(__file__).with_name('registration-v3.json')
     spec=json.loads(registration.read_text())
     started=time.monotonic()
     result=dict(status='failed',timing=False,validation_class='author-validation-pending-independent-review',
@@ -35,6 +35,13 @@ def collect(compiler, output, expected_compiler):
         for p in sources:
             target=output/'source'/p.relative_to(ROOT);target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,target)
         result['source_sha256']={p.relative_to(ROOT).as_posix():digest(output/'source'/p.relative_to(ROOT)) for p in sources}
+        shutil.copytree(output/'source/native',output/'compiled/native')
+        overlay=spec['source_overlay'];target=output/'compiled'/overlay['file']
+        before=target.read_bytes();old=overlay['old'].encode();new=overlay['new'].encode()
+        if before.count(old)!=overlay['required_count']:raise ValueError('unused-capture overlay context drift')
+        target.write_bytes(before.replace(old,new))
+        result['compiled_sha256']={p.relative_to(output/'compiled').as_posix():digest(p) for p in (output/'compiled').rglob('*') if p.is_file()}
+        result['overlay']=overlay
         linker=compiler.with_name('ld.lld.exe' if os.name=='nt' else 'ld.lld')
         result['linker_sha256']=digest(linker)
         for sanitized in (False,True):
@@ -42,8 +49,8 @@ def collect(compiler, output, expected_compiler):
             binary=output/(name+('.exe' if os.name=='nt' else ''))
             flags=spec['sanitizer_flags' if sanitized else 'normal_flags']
             args=[compiler,*flags,'--ld-path='+str(linker),'-DCYBERSAND_MASS_BITS=8','-DCYBERSAND_DELAY_BITS=8','-DCYBERSAND_LITERAL_TOLERANCE=0',
-                  '-I'+str(output/'source/native/include'),output/'source/tools/experiments/mat003_touch/fixture.cpp',
-                  *(output/'source/native/src'/n for n in ('world.cpp','material_rules.cpp','scheduler_geometry.cpp','settled_world_discovery.cpp')),
+                  '-I'+str(output/'compiled/native/include'),output/'source/tools/experiments/mat003_touch/fixture.cpp',
+                  *(output/'compiled/native/src'/n for n in ('world.cpp','material_rules.cpp','scheduler_geometry.cpp','settled_world_discovery.cpp')),
                   '-o',binary]
             receipt=run(args,output,'build-'+name,spec['limits']['build_timeout_seconds'],spec['limits']['process_rss_bytes'],env,started)
             result['builds'].append(dict(sanitized=sanitized,path=binary.name,sha256=digest(binary),receipt=receipt))
