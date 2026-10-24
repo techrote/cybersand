@@ -12,10 +12,12 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Current MAT-003 integration checkpoint — 2026-10-24
 
-The [post-#242 integration checkpoint](../audits/2026-10-24-mat003-post-242-integration-checkpoint.md)
-owns reconciliation with main `fd97367`, including #239's bounded policy
+The [post-#243 integration checkpoint](../audits/2026-10-24-mat003-post-243-integration-checkpoint.md)
+owns reconciliation with main `3e9f0e6`, including #239's bounded policy
 foundation, #240's regression follow-ups, #241's timeout diagnostics and #242's
-retirement of spent publishers. The earlier complete 15 current and seven scoped
+retirement of spent publishers. The separately landed #243 diagnostic record
+completes #233's deliverable with 11/600 timeouts; the cause remains unknown,
+#234 owns the next repair and parent #232 remains open. The earlier complete 15 current and seven scoped
 workflow passes and later completed checks remain valid for their exact heads.
 Unfinished Native/Godot workflows retain their own source scope; supersession is
 neither a new PASS nor a test failure. Fresh checks, including ordinary Godot

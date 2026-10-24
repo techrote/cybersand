@@ -12,8 +12,8 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## MAT-003 stack reconciliation — 2026-10-24
 
-The [post-#242 checkpoint](../audits/2026-10-24-mat003-post-242-integration-checkpoint.md)
-now reconciles main `fd97367acc5bcf5757b9ca69ae594279f0ad96bf` with the
+The [post-#243 checkpoint](../audits/2026-10-24-mat003-post-243-integration-checkpoint.md)
+now reconciles main `3e9f0e6dcbfdb9c122c8c555dac43e7b4d926e5f` with the
 experimental parent chain. Main includes the bounded
 [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24)
 landed by [PR #239](https://github.com/techrote/cybersand/pull/239), plus
@@ -23,7 +23,9 @@ physical-timeout diagnostics. [PR #242](https://github.com/techrote/cybersand/pu
 retires spent publishers and their helpers/tests; use the imported
 [publication policy](local-build-and-validation.md#branch-scoped-runtime-publishers)
 for their historical references. This task restores no publisher and changes no
-runtime input. The earlier complete 15 current and seven scoped workflow passes,
+runtime input. The separately landed #243 documentation completes #233's diagnostic
+deliverable (11/600 timeouts, cause unknown); #234 remains the next repair owner.
+The earlier complete 15 current and seven scoped workflow passes,
 and later completed Documentation/provenance, verifier and historical-apparatus
 checks, remain valid for their exact heads. Unfinished Native/Godot checks are
 superseded, without being credited as PASS or treated as a test failure solely

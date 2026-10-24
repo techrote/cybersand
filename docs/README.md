@@ -12,7 +12,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
-Current integration baseline: main `fd97367` includes the bounded
+Current integration baseline: main `3e9f0e6` includes the bounded
 [#200 policy foundation](reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24)
 from [PR #239](https://github.com/techrote/cybersand/pull/239) and its
 [PR #240 regression follow-ups](https://github.com/techrote/cybersand/pull/240).
@@ -20,11 +20,15 @@ It also imports [PR #241](https://github.com/techrote/cybersand/pull/241)'s
 physical-timeout diagnostics. [PR #242](https://github.com/techrote/cybersand/pull/242)
 retires the spent [branch-scoped runtime publishers](operations/local-build-and-validation.md#branch-scoped-runtime-publishers)
 while preserving their historical evidence and published runtimes. The
-[post-#242 MAT-003 checkpoint](audits/2026-10-24-mat003-post-242-integration-checkpoint.md)
+[post-#243 MAT-003 checkpoint](audits/2026-10-24-mat003-post-243-integration-checkpoint.md)
 preserves completed earlier checks and qualifies superseded partial runs under
 their exact source scopes. Fresh Native, Godot, ordinary physical-timing reduction
 and materialized provenance checks are pending on the new heads; #212 and
 pressure/inertial ports remain held.
+
+The separately landed [#243 diagnostic record](audits/2026-10-24-issue-233-physical-regression-timeouts.md)
+completes #233's deliverable with 11 timeouts in 600 stress attempts; the cause
+remains unknown and #234 owns the next repair. This MAT task starts no repair.
 
 For **MAT-003PREPASS / #204**, start with the [staged carrier registration](operations/mat-003prepass-registration.md), [source state inventory](research/mat-003prepass-state-inventory.md), [epoch consumer audit](research/mat-003prepass-epoch-consumers.md) and [proposed GEN-006 handoff](research/mat-003prepass-gen006-handoff.md). [S0 isolated storage checks passed](audits/2026-10-22-mat003-prepass-foundation.md). The [S1 World report](audits/2026-10-22-mat003-world-correctness.md) covers the new seventeen-arm apparatus, typed 8/16-bit counters and two-rollover gate; the registered Linux normal/sanitized collection and independent readback passed. Production remains unchanged, #204 stays open, and S2 paired performance requires separate registration.
 
