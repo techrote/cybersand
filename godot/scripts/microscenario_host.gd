@@ -13,6 +13,9 @@ var _material_ids: Array[int] = []
 var _interaction_profile: Dictionary = {}
 var _interaction_inspection: Array = []
 var last_error: String = ""
+# Typed LCB-001 refusal {code, material, detail} of the last rejected liquid
+# solver policy request; empty after any other outcome.
+var last_liquid_policy_refusal: Dictionary = {}
 var _world: Variant
 var _definition: Dictionary = {}
 var _definition_hash: String = ""
@@ -37,9 +40,16 @@ var _timing_total_ms: float = 0.0
 var _timing_count: int = 0
 var _last_completed_tick: int = 0
 
-func install(world: Variant, value: Variant, mode: String = "Inspect", instrumentation: bool = true) -> bool:
+func install(world: Variant, value: Variant, mode: String = "Inspect", instrumentation: bool = true,
+		liquid_policy: Variant = null) -> bool:
 	# All schema/profile validation precedes the existing candidate-and-swap
 	# builder. A rejected replacement leaves the old World AND host cursor intact.
+	# liquid_policy: null keeps every liquid on its default; otherwise the LCB-001
+	# PackedInt32Array request is validated natively before any replacement.
+	last_liquid_policy_refusal = {}
+	if liquid_policy != null and typeof(liquid_policy) != TYPE_PACKED_INT32_ARRAY:
+		last_error = "Liquid solver policy must be a PackedInt32Array envelope"
+		return false
 	var checked: Dictionary = Contract.validate(value)
 	if not checked.get("ok", false):
 		last_error = str(checked.get("error", "Invalid definition"))
@@ -58,7 +68,19 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 		or not bridge.has_method(&"inspect_interaction")):
 		last_error = "Schema 2 requires the rebuilt native observation adapter; prior world preserved"
 		return false
-	if not bridge.build_water_feel_world(world, PackedInt32Array(candidate.rectangles),
+	if liquid_policy != null:
+		if not bridge.has_method(&"build_liquid_policy_world") or not world.has_method(&"get_liquid_solver_policy"):
+			last_liquid_policy_refusal = {"code":"platform_unsupported", "material":null,
+				"detail":"host has no native policy handshake"}
+			last_error = "Liquid solver policy refused; running world preserved: platform_unsupported"
+			return false
+		if not bridge.build_liquid_policy_world(world, PackedInt32Array(candidate.rectangles),
+			checked.transport.packed, PackedInt32Array(candidate.water_semantics),
+			PackedInt32Array(candidate.partial_water_fills), liquid_policy):
+			last_liquid_policy_refusal = bridge.get_last_liquid_policy_refusal()
+			last_error = str(bridge.get_last_error())
+			return false
+	elif not bridge.build_water_feel_world(world, PackedInt32Array(candidate.rectangles),
 		checked.transport.packed, PackedInt32Array(candidate.water_semantics),
 		PackedInt32Array(candidate.partial_water_fills)):
 		last_error = str(bridge.get_last_error())
@@ -117,6 +139,11 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 
 func active() -> bool:
 	return not _definition.is_empty()
+
+# The live World's applied liquid solver policy receipt, read from native.
+func liquid_solver_policy() -> Dictionary:
+	if _world == null or not _world.has_method(&"get_liquid_solver_policy"): return {}
+	return _world.get_liquid_solver_policy()
 
 func clear() -> void:
 	_world = null

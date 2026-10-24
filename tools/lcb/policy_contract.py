@@ -124,10 +124,22 @@ def load_matrix(matrix_bytes: bytes) -> dict:
     return {"descriptor_count": data["material_descriptor_count"], "liquids": rows}
 
 
-def make_build(matrix_bytes: bytes, catalogue: str, available=(1, 2), native: bool = True) -> dict:
-    """A running build's identity. `available` = family codes compiled and qualified."""
+def make_build(matrix_bytes: bytes, catalogue: str, available=(1, 2), native: bool = True,
+               qualified=None) -> dict:
+    """A running build's identity. `available` = family codes compiled and qualified.
+
+    `qualified`, when given, further restricts admission to those (material, family)
+    cells. A family compiled for some materials is not thereby qualified for every
+    matrix-selectable material (LCB-001 #200 reconciliation, 2026-10-24).
+    """
     return {"catalogue_digest": catalogue, "capability_matrix_digest": capability_matrix_digest(matrix_bytes),
-            "matrix": load_matrix(matrix_bytes), "available": tuple(sorted(available)), "native": native}
+            "matrix": load_matrix(matrix_bytes), "available": tuple(sorted(available)), "native": native,
+            "qualified": None if qualified is None else frozenset(qualified)}
+
+
+def current_default_cells(matrix_bytes: bytes) -> frozenset:
+    """The (material, family) cells a build that executes only current defaults has qualified."""
+    return frozenset((m, row["default"]) for m, row in load_matrix(matrix_bytes)["liquids"].items())
 
 
 def default_assignments(build: dict) -> list[tuple[int, int, int]]:
@@ -259,6 +271,8 @@ def decode(words: list[int], build: dict) -> dict:
             raise Refusal("platform_unsupported", "host has no native policy handshake", m)
         if f not in build["available"]:
             raise Refusal("family_unavailable", f"{FAMILY_NAMES[f]} is not compiled/qualified in this build", m)
+        if build["qualified"] is not None and (m, f) not in build["qualified"]:
+            raise Refusal("family_unavailable", f"{FAMILY_NAMES[f]} is not qualified for material {m} in this build", m)
     # 8. Parameter blocks.
     family_of = {m: f for m, f, _ in assignments}
     used = set(family_of.values())
@@ -357,9 +371,10 @@ def build_vectors(matrix_bytes: bytes, catalogue: str) -> dict:
     # stable; the real matrix supplies statuses and the capability digest.
     vec_cat = hashlib.sha256(b"lcb policy vector catalogue").hexdigest()
     other_cat = hashlib.sha256(b"lcb policy vector catalogue (changed)").hexdigest()
-    today = make_build(matrix_bytes, vec_cat, available=(1, 2))
+    defaults_only = current_default_cells(matrix_bytes)
+    today = make_build(matrix_bytes, vec_cat, available=(1, 2), qualified=defaults_only)
     hypo = make_build(matrix_bytes, vec_cat, available=(1, 2, 3, 4))
-    fallback = make_build(matrix_bytes, vec_cat, available=(1, 2), native=False)
+    fallback = make_build(matrix_bytes, vec_cat, available=(1, 2), native=False, qualified=defaults_only)
     builds = {"today": today, "all_families_hypothetical": hypo, "gdscript_fallback": fallback}
     base = default_assignments(hypo)
     water_in = _with(base, 3, 4)
@@ -430,6 +445,8 @@ def build_vectors(matrix_bytes: bytes, catalogue: str) -> dict:
     for name, w in words.items():
         case(name, "all_families_hypothetical", w)
     case("water_inertial_today", "today", words["water_inertial"], "W-IN is not compiled today")
+    case("water_cellular_yield_today", "today", words["water_cellular_yield_no_block"],
+         "cellular_yield_v1 is compiled for ten liquids but not qualified for Water today")
     case("water_inertial_fallback", "gdscript_fallback", words["water_inertial"], "no native handshake")
     case("default_fallback", "gdscript_fallback", words["default"], "defaults remain constructible")
     for name, w in malformed.items():
@@ -464,6 +481,8 @@ def build_vectors(matrix_bytes: bytes, catalogue: str) -> dict:
         "vector_builds": {k: {"catalogue_digest": b["catalogue_digest"],
                               "capability_matrix_digest": b["capability_matrix_digest"],
                               "available_families": [FAMILY_NAMES[f] for f in b["available"]],
+                              "qualified_cells": "all_selectable" if b["qualified"] is None else
+                              [[m, FAMILY_NAMES[f]] for m, f in sorted(b["qualified"])],
                               "native": b["native"]} for k, b in builds.items()},
         "cases": cases,
         "session_transcript": transcript,

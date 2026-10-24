@@ -158,6 +158,39 @@ typedef struct cybersand_render_patch {
     size_t stride_bytes;
 } cybersand_render_patch;
 
+/* Experimental LCB-001 (#200) liquid solver policy surface. The request is the
+ * flat int32 "LCPW" envelope from docs/architecture/liquid-solver-family-policy.md.
+ * Not a frozen ABI: names, codes and layout may change before #200 freezes them. */
+#define CYBERSAND_LIQUID_POLICY_DETAIL_BYTES 192u
+
+typedef enum cybersand_liquid_policy_refusal_code {
+    CYBERSAND_LIQUID_POLICY_ACCEPTED = 0,
+    CYBERSAND_LIQUID_POLICY_UNKNOWN_MATERIAL = 1,
+    CYBERSAND_LIQUID_POLICY_NOT_A_LIQUID = 2,
+    CYBERSAND_LIQUID_POLICY_UNKNOWN_FAMILY = 3,
+    CYBERSAND_LIQUID_POLICY_UNKNOWN_VARIANT = 4,
+    CYBERSAND_LIQUID_POLICY_FAMILY_UNAVAILABLE = 5,
+    CYBERSAND_LIQUID_POLICY_COMBINATION_REJECTED = 6,
+    CYBERSAND_LIQUID_POLICY_VARIANT_UNSUPPORTED = 7,
+    CYBERSAND_LIQUID_POLICY_WATER_SEMANTICS_INCOMPATIBLE = 8,
+    CYBERSAND_LIQUID_POLICY_PLATFORM_UNSUPPORTED = 9,
+    CYBERSAND_LIQUID_POLICY_CAPACITY_REFUSED = 10,
+    CYBERSAND_LIQUID_POLICY_STALE_CAPABILITY_MATRIX = 11,
+    CYBERSAND_LIQUID_POLICY_MALFORMED_POLICY = 12,
+    CYBERSAND_LIQUID_POLICY_UNKNOWN_PARAMETER = 13,
+    CYBERSAND_LIQUID_POLICY_NOT_SELECTABLE = 14,
+    CYBERSAND_LIQUID_POLICY_NORMALIZATION_REQUIRED = 15,
+    /* Not a policy refusal: invalid arguments or World configuration. */
+    CYBERSAND_LIQUID_POLICY_CONSTRUCTION_FAILED = 255
+} cybersand_liquid_policy_refusal_code;
+
+typedef struct cybersand_liquid_policy_refusal_v1 {
+    uint32_t struct_size;
+    uint32_t code;     /* cybersand_liquid_policy_refusal_code */
+    int32_t material;  /* -1 when the refusal names no material */
+    char detail[CYBERSAND_LIQUID_POLICY_DETAIL_BYTES]; /* NUL-terminated, truncated */
+} cybersand_liquid_policy_refusal_v1;
+
 CYBERSAND_API cybersand_world* cybersand_world_create(cybersand_config config);
 CYBERSAND_API void cybersand_world_destroy(cybersand_world* world);
 CYBERSAND_API uint16_t cybersand_world_get(const cybersand_world* world, int64_t x, int64_t y);
@@ -210,6 +243,22 @@ CYBERSAND_API int cybersand_world_copy_render_cells(const cybersand_world* world
 CYBERSAND_API size_t cybersand_world_take_dirty_chunks(cybersand_world* world,
                                                         cybersand_dirty_chunk* destination,
                                                         size_t capacity);
+
+/* Experimental LCB-001 policy functions (see the note above). Sizes are word
+ * counts. With destination == NULL or insufficient capacity, the size-returning
+ * functions return the required count without writing; CYBERSAND_SIZE_ERROR on
+ * failure. A refusal leaves no World and fills `refusal` when non-NULL. */
+CYBERSAND_API size_t cybersand_liquid_policy_default_v1(int32_t* destination, size_t capacity);
+CYBERSAND_API int cybersand_liquid_policy_validate_v1(const int32_t* words, size_t word_count,
+                                                      cybersand_liquid_policy_refusal_v1* refusal,
+                                                      uint8_t* policy_hash_32);
+CYBERSAND_API cybersand_world* cybersand_world_create_with_liquid_policy_v1(
+    const cybersand_config_v2* config, const int32_t* words, size_t word_count,
+    cybersand_liquid_policy_refusal_v1* refusal);
+CYBERSAND_API size_t cybersand_world_liquid_policy_v1(const cybersand_world* world,
+                                                      int32_t* destination, size_t capacity);
+CYBERSAND_API int cybersand_world_liquid_policy_hash_v1(const cybersand_world* world,
+                                                        uint8_t* destination_32);
 
 CYBERSAND_API cybersand_render_exchange* cybersand_render_exchange_create(
     size_t slot_count, size_t patch_capacity_per_slot, size_t byte_capacity_per_slot);

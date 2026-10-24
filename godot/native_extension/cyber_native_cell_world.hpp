@@ -97,6 +97,12 @@ public:
     [[nodiscard]] String get_backend_name() const;
     [[nodiscard]] String get_last_tick_error() const;
     [[nodiscard]] Dictionary get_water_experiment_policy() const;
+    // Applied LCB-001 liquid solver policy receipt of the live World. The
+    // generation counts committed World replacements; refusals never advance it.
+    [[nodiscard]] Dictionary get_liquid_solver_policy() const;
+    [[nodiscard]] std::int64_t get_liquid_policy_session_generation() const;
+    [[nodiscard]] static Dictionary liquid_policy_receipt(
+        const cybersand::LiquidSolverPolicy& policy, std::int64_t session_generation);
     bool water_experiment_fill_rect(Vector2i origin, Vector2i size,
                                     std::int64_t normalized_mass,
                                     std::int64_t coherence);
@@ -184,6 +190,7 @@ private:
     std::uint64_t revision_ = 0;
     std::uint64_t hard_surface_revision_ = 0;
     std::uint64_t tick_failure_count_ = 0;
+    std::uint64_t liquid_policy_session_generation_ = 0;
     String last_tick_error_{};
     double simulation_time_ms_ = 0.0;
     bool simulation_window_enabled_ = true;

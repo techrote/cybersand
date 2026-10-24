@@ -446,6 +446,9 @@ World::World(WorldConfig config)
     : config_(config),
       scheduler_geometry_(config.scheduling_core_size, config.maximum_rule_radius) {
     config_.water_experiment_policy.validate();
+    // Refuse before any World allocation; no other family or fallback runs.
+    if (auto refusal = config_.liquid_solver_policy.admission_refusal())
+        throw LiquidPolicyRefused(std::move(*refusal));
     config.transport_policy.validate();
     if(config.transport_policy.configured)for(const auto& p:config.transport_policy.pairs) {
         flow_mixing_enabled_ = flow_mixing_enabled_ || p.mixing!=0;
