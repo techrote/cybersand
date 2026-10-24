@@ -42,7 +42,7 @@ not silently substituted for the audited native baseline.
 | Broader candidate performance and fixed-memory evidence | Existing accepted primary campaigns plus explicit array arithmetic and observational RSS within their own scopes | S2B/broader contrasts remain unexecuted/unadmitted; array budgets are not a fixed-memory speed comparison. No new timings were collected during this campaign. |
 | Secondary E24/E32, lazy/local epoch alternative | Separate proposals and lifecycle requirements retained | Explicitly deferred. Wider frequency and local-clear ideas do not inherit full-resident clear or stale-label correctness without their own proof. |
 | Full platform/application matrix | Retained Linux/Windows historical scope plus new [standalone Wasm/Node specimen qualification](../audits/2026-10-24-mat003-wasm-portability.md), 27 normal cases with exact desktop comparison | Godot/browser, all-carrier and full-application coverage remain open. Three failed precursor Wasm profiles remain preserved; no Wasm sanitizer result. |
-| Independent final decision and repository integration | Retained bounded Gate B decision; new draft author PR and raw evidence | Independent acceptance, reconciliation of the unmerged parent stack with current main, and fresh applicable checks remain necessary before any merge or #204 completion. |
+| Independent final decision and repository integration | Retained bounded Gate B decision; author PR/raw evidence and [non-rewriting current-main reconciliation](../audits/2026-10-24-mat003-stack-integration-checkpoint.md) | Ready-for-review executes fresh exact-head checks; their metadata/logs are recorded on each PR. The stack remains unmerged. Independent scientific acceptance and #204 completion remain separate decisions. |
 
 ## Conditional recommendations
 
@@ -80,8 +80,8 @@ The unchanged Linux/Wasm archives pass the strengthened readers; resealed missin
 fields, altered accounting/hashes and comparator substitutions refuse. The small
 coordinate-refusal test qualifies the corrected experimental fixture separately
 from the original collected source. The one-shot collection launchers are retired;
-future collections need new registrations. Independent acceptance and parent/main
-integration remain open.
+future collections need new registrations. Parent/main source reconciliation is
+recorded separately from fresh CI qualification and independent acceptance.
 
 The proposed Python codec's missing-identity and boolean-version acceptance are
 nonproduction fixture follow-ups, with reproducible probes in the capture-phase

@@ -19,7 +19,7 @@ Latest MAT-003 archived-data disposition: [complete overnight v4 readback](../au
 
 **Historical partial runtime attempt, retained unchanged:** [authorized86345703](../audits/2026-10-23-mat003-containment-correctness-attempt.md) stopped at resident-015 after clear256, retaining15 exit0 processes and136 unattempted cases. Full correctness is refused. Its32 admitted a3f4e37 binaries cannot admit the changed repair. The [prior293-tick failure](../audits/2026-10-23-mat003-windows-correctness-attempt.md), [failed warning build](../audits/2026-10-23-mat003-build-only-admission.md) and subsequent historical build/source checkpoints remain retained. New build-only authority, fresh binaries, independent admission and exact execution registration/hash authorization are required.
 
-**Current accepted campaigns / conditional architecture:** S2A224 processes and the separate [S2P56](../audits/2026-10-23-s2p-results.md), [WCLEAR672](../audits/2026-10-23-wclear-results.md) and [C12870](../audits/2026-10-23-c128-results.md) processes remain accepted only under their own source/workload/platform contracts. The [continuation report](../research/mat003-continuation.md) and [ADR-015](../decisions/ADR-015-material-state-schema-and-carrier-gates.md) preserve optimized compact/DUAL64 as leading options and accepted budgets as qualification targets. R16-T1 is conditional. PR211/221 remain draft; production C64/E8, Water and GEN-006 unchanged. No S2B or new timing authority.
+**Current accepted campaigns / conditional architecture:** S2A224 processes and the separate [S2P56](../audits/2026-10-23-s2p-results.md), [WCLEAR672](../audits/2026-10-23-wclear-results.md) and [C12870](../audits/2026-10-23-c128-results.md) processes remain accepted only under their own source/workload/platform contracts. The [continuation report](../research/mat003-continuation.md) and [ADR-015](../decisions/ADR-015-material-state-schema-and-carrier-gates.md) preserve optimized compact/DUAL64 as leading options and accepted budgets as qualification targets. R16-T1 is conditional. The unmerged parent stack now enters fresh integration validation; production C64/E8, Water and GEN-006 remain unchanged. No S2B or new timing authority.
 
 ## MAT-003 overnight completion — 2026-10-24
 
@@ -37,14 +37,52 @@ no LCB solver or #212 work.
 The [PR #238 review corrections](../audits/2026-10-24-mat003-pr238-review-closure.md)
 strengthen the archived-data comparison readers and add a separate coordinate
 refusal regression. Original records remain unchanged; the spent one-shot
-launchers are retired. The PR stays draft pending parent/main reconciliation,
-independent acceptance and fresh applicable exact-head integration checks.
+launchers are retired. The [current-main reconciliation checkpoint](../audits/2026-10-24-mat003-stack-integration-checkpoint.md)
+preserves every registered historical identity and moves the unmerged stack to
+ready-for-review for fresh applicable exact-head integration checks. Their actual
+results are recorded per PR; independent acceptance and #204 completion remain open.
 
 ## MAT-003PREPASS S1 World apparatus — 2026-10-22
 
 **Current registered Linux S1 correctness; broader qualification open:** [#204](https://github.com/techrote/cybersand/issues/204) retains the [S0 isolated-storage pass](../audits/2026-10-22-mat003-prepass-foundation.md), source inventory, epoch consumer audit and [proposed GEN-006 semantic handoff](../research/mat-003prepass-gen006-handoff.md). The [registered S1 apparatus](../operations/mat-003prepass-registration.md) adds seventeen real World arms using generated source copies, typed 8/16-bit counters, full semantic and conservation checks, and a gate covering two natural sixteen-bit rollovers. The registered normal/sanitized collection and independent readback passed at apparatus source `e31d296`; this qualifies the declared native Linux fixtures. The [World report](../audits/2026-10-22-mat003-world-correctness.md) owns execution status and limits. Production source and 64-bit/epoch8 storage remain unchanged.
 
 Historical 2026-10-22 next step: the [S2F source-only preflight](../audits/2026-10-22-mat003-s2f-preflight.md) passes six untimed Linux developer scenes and independent evidence readback. The remaining 18 source contexts, candidate observed twins and separately registered S2A/S2B paired measurements are unqualified; the S2 proposal remains unadmitted as a timing campaign. #204 remains open. Programme order is GEN-007 → MAT-003PREPASS → GEN-006 → full MAT-003; GEN-006 architecture can continue, but durable state contracts must consume this prepass. #14/G-final and unrelated Water/soliding gates remain open.
+
+## 4LY shared physical free-flight — 2026-10-22
+
+**Current experimental source, 4LY-001 / #205:** the
+[free-flight contract](../systems/physical-free-flight.md) adds a shared single
+rectangular Rapier chassis, validated versioned profile schema and two-output
+desired-velocity controller. Gravity compensation, response/slew and braking
+share finite thrust authority; attitude assistance has its own bounded torque.
+The stabilizer has no goal, terrain or evaluator input. Authorized neutral
+brakes/hovers; cancellation and expiry select explicit passive fallback.
+
+The four stable `4ly_*` IDs retain one actual collider each with no automatic
+equipment body. **4LY-002 candidate implementation (#206)** adds distinct
+Trainer/Hauler/Drifter/Dart mass/footprint, speed, brake, response, thrust and
+drag profiles. Ordinary F5 selection now appends a named `set4LY` after the
+original eight sets: the existing 46 actor IDs and SetP positions are untouched.
+The same human/script/policy owner and two-axis actuator path is reused, with
+visible assistance/identity and actual-Rapier handling tests. On tested source
+`f7721a1...` the [measured handling record](../audits/2026-10-23-4ly002-measured-handling-qualification.md)
+shows all prospective manoeuvre thresholds passed on GitHub-hosted Linux
+and Windows, as well as full Godot/Native and documentation/provenance checks.
+The original failed Windows attempt was retained; its 121/121-case rerun passed.
+The source field remains `candidate_4ly002` to preserve these measured hashes;
+final revised-head validation, descriptive gameplay footage and human owner-feel
+approval remain separate. Learning or unmeasured Web/target-PC qualification
+must not be inferred from these measurements.
+
+4LY-002 [#206](https://github.com/techrote/cybersand/issues/206) now has
+passing source-bound physical manoeuvre envelopes and profile hashes, but
+owner-feel and final changed-head reconciliation are still not accepted.
+Next, [4LY-003 #207](https://github.com/techrote/cybersand/issues/207)
+owns actual-host lab/teacher qualification. Their independent preparation may
+overlap after this interface is fixed, but final host evidence uses frozen
+4LY-002 profiles. Companion 4LY-004/005 own Trainer-first and family learning,
+with a passing Trainer result required before family learning. Parent #132 and
+generic physical/Jolt/morphology gates remain separate.
 
 ## GEN-007 authoring and qualification — 2026-10-21
 
@@ -174,6 +212,7 @@ It is an aesthetic showcase; existing physics programmes retain their own gates.
 | Field storage and events | Optional temperature storage and bounded explosions; no general heat/pressure/wind solver; [field roadmap](../systems/smoke-heat-pressure-roadmap.md) |
 | Bodies and character | Main-thread Rapier, 64-ID rectangular native coupling, static terrain packets, 46 articulated [physical actors](../systems/physical-actor-rigs.md), shared keyboard/demo/policy control and usables; SetP circles retain conservative square native masks; sampled and single-hull references remain available |
 | Human movement playground | Seven [player presets](../systems/player-control-playground.md), keyboard/gamepad sampler, acrobat chains and separate leased native Sand/Water fields; course checkpoints and focused tests are not human feel or route-completion acceptance |
+| Assisted physical free flight | Internal [4LY single-chassis family](../systems/physical-free-flight.md), strict two-output velocity profile, bounded goal-blind assistance and passive revocation; initial Trainer conformance numbers only, with normal selection and differentiated handling owned by 4LY-002 |
 | Actor control and battle experiments | Separate physical Thunderbowl v2 plus retained sampled [Thunderbowl v1](../systems/thunderbowl-control-reference.md); physical wire control does not silently inherit sampled metal/NCA/message semantics; trained policies and general actor damage remain Planned |
 | Rendering | Immutable native snapshots, copied dirty RG8 patches, full finite GPU texture update and derived material appearance; [bridges](../architecture/rendering-and-gameplay-bridges.md) |
 | Persistence | Fixed CYSD1 demo levels; complete resumed replay absent; [save contract](level-saves-and-replay.md) |
@@ -566,15 +605,69 @@ investigation before any new #45 pressure/head mechanism is treated as inevitabl
 - [#94](https://github.com/techrote/cybersand/issues/94) completed as
   [NARROW-USE local decompression research](../audits/2026-09-24-wex004-decompression-disposition.md);
   no general routed/room-scale atmosphere feature is admitted.
-- [#95](https://github.com/techrote/cybersand/issues/95) now has all prerequisites
-  in their allowed form (#92 explicitly blocked) and is the next WEX action. It
-  synthesizes WEX evidence with merged #49 controls and decides whether #45 should
-  proceed, narrow, recharter, defer or no-go.
+- [#95](https://github.com/techrote/cybersand/issues/95) synthesis is recorded in
+  the [2026-10-23 WEX-005 record](../audits/2026-10-23-wex005-water-evidence-synthesis.md):
+  the deep-release deficit is unresolved (on current `main` deep and medium outlets
+  deliver identical discharge; sheets untested), and **#45 is NARROW** —
+  admission/design only, under shared/vented-atmosphere assumptions, with a
+  separately registered surge fixture. No production mechanism is selected.
+- The opt-in Liquid Comparison Build pressure lane
+  ([#200](https://github.com/techrote/cybersand/issues/200)) is reconciled
+  separately by the
+  [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
+  [#213](https://github.com/techrote/cybersand/issues/213) is **closed completed;
+  Gates A–E PASS**. The [final checkpoint](#liquid-comparison-build-design-checkpoint--2026-10-23)
+  records bounded admission, the later separately assigned #200 foundation and
+  the continuing #212 hold.
 
 Water FreeMass and other-liquid CellularYield remain separate; no unification or
 production solver change is selected. Equal-level communicating-head fixtures are
 vented/shared-pressure controls, not universal sealed-room targets. #18 remains
 held pending the resulting evidence rather than by issue-number sequence alone.
+
+## Liquid Comparison Build design checkpoint — 2026-10-23
+
+**Current admission status — 2026-10-24:** LCB-000 [#213](https://github.com/techrote/cybersand/issues/213)
+is **closed completed; Gates A–E and integrated LCB-000 PASS**, with no RECHARTER.
+The [final landed-stack evidence](https://github.com/techrote/cybersand/issues/213#issuecomment-6377498947)
+and subsequent [closure](https://github.com/techrote/cybersand/issues/213#issuecomment-6377517354)
+supersede the earlier pending-admission status without rewriting those dated records.
+
+| Gate | Accepted scope |
+|---|---|
+| A — PASS | Separate experimental Water lane; production Water/WEX limits retained. |
+| B — PASS | Bounded reversible storage design; no representation winner or schema/ABI freeze; #204 is not complete. |
+| C — PASS | [Solver-family policy design](../architecture/liquid-solver-family-policy.md) and source-derived capability matrix. |
+| D — PASS | [Bounded Water comparison contract and protected fixtures](../operations/lcb-water-comparison-and-fixtures.md). |
+| E — PASS | Independently closed I1/P2 and listed P3; reviewed integrated apparatus landed with passing post-merge CI. |
+
+**Current landed checkpoint:** #215 → #217 → #226 merged to main
+`e95fe85d82e108a682a2ae0212d85569f1c03cd8`, whose tree
+`fece020ef7fc83faf5cfe3081b018f2647f7e4fe` equals the reviewed #226 head.
+Documentation/provenance, Native and GDExtension/Godot post-merge CI passed.
+The [dated reconciliation](../audits/2026-10-24-lcb000-landed-status-reconciliation.md)
+records exact identities, evidence classes and validation limits.
+
+**Approved bounded admission:** only a separately scoped initial opt-in
+[#200](https://github.com/techrote/cybersand/issues/200) start is admitted.
+After the retained closure checkpoint, the owner separately assigned that bounded
+foundation to Claude. Its branch remains separate from this MAT-003 reconciliation;
+no foundation code is imported here. The owner continues to hold
+[#212](https://github.com/techrote/cybersand/issues/212). This PASS does not admit
+#212, a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier
+integration. Native policy/state implementation and candidate kernels remain
+**Planned**. #201/#202/#203 remain open; the scenario apparatus delivered part of
+#202, not the complete comparison host or its [manual UX](../operations/lcb-manual-comparison-ux.md).
+
+**Current apparatus:** the [LCB scenario catalogue](../operations/lcb-scenario-catalogue.md)
+contains 25 scenarios plus the protected Dam Break and mixed fixtures, with
+Current-default controls. Water is the only `freemass_v1` liquid; ten liquids
+use `cellular_yield_v1`. The mixed control runs two families; three-family World
+execution remains blocked. All **90 candidate arms remain blocked**.
+Controls and v2–v6 records are preserved byte-for-byte; v7 retains
+**20 closed / 4 unverified source-sink timing / 3 unverified reaction amount**,
+with `changed_from_v6=[]`. Characterization and contract-model evidence do not
+establish candidate runtime acceptance or change defaults.
 
 ## Opt-in transport profiles
 

@@ -1,0 +1,570 @@
+{
+  "schema": "lcb-scenario-ledger-v5",
+  "date": "2026-10-23",
+  "rule": "lcb-signed-ledger-v5",
+  "status": "Corrected accounting reduction of retained characterization data (re-review F1/F2). The historical controls file and the v2/v3/v4 records are preserved unchanged and stay verifiable against their frozen reducers; this record supersedes only their ledger classification. Characterization only: accepted evidence remains the CI-re-executed prefixes.",
+  "input": {
+    "controls_file": "docs/reference/lcb-scenario-controls-2026-10-23.json",
+    "controls_sha256_lf": "989ff70dba646285991a2a5e8ca5c3b0aa94b9381dc44c849528518e4238fac1",
+    "controls_source_commit": "a6bde31a06ec4331513d22e3548d4fd682287225",
+    "superseded_records": {
+      "docs/reference/lcb-scenario-ledger-2026-10-23.v2.json": "5688e26f19c5514ac2ece0ab1acde2ebda2077603bc85575245a4203b353d8fa",
+      "docs/reference/lcb-scenario-ledger-2026-10-23.v3.json": "b70f325739035e943e27a8b36273757e054db4092fda0ed113d1db89485d399b",
+      "docs/reference/lcb-scenario-ledger-2026-10-23.v4.json": "0cc6d6dfa5da907c981f954e19ed2858f573a7e12996017b293872bf84030e13"
+    },
+    "reducer": "tools/lcb/lcb_registry.py::signed_ledger",
+    "reducer_sha256_lf": "7c6f6ecb76fa57797acddb15f3e6afbec1485e136aea4538d631e9f17d008b4e",
+    "catalogue_tool_sha256_lf": "0863508fe163dab7835b5089c5930e8dd25546e4afd39eb84b198df53e37e121",
+    "protected_manifest_sha256_lf": "d5c922c39fe04a7981b7a14a6a6f2d14064674337e6afedb3acf3e83eb8553f3"
+  },
+  "evidence_limits": "The campaign retained world Water integers per checkpoint, aggregate explicit source/sink totals and windowed observations. It retained no world-wide per-species counts, no per-reaction log and no per-event source/sink timing, so reactive cases and cases with explicit sources/sinks cannot be closed from this record. R1-R4 and F1/F2 concern species and timed-event evidence that this campaign did not supply.",
+  "open_unexplained_or_malformed": [],
+  "accounting_unverified_ineligible_for_acceptance": [
+    "lcb.granular.salt-dissolution.v1",
+    "lcb.mixed.repeated-openings.v1",
+    "lcb.mixed.sodium-oil-fire.v1",
+    "lcb.mixed.water-oil-brine.v1",
+    "lcb.rest.remote-disturbance.v1",
+    "lcb.rest.two-pool-partial-activity.v1",
+    "lcb.shallow.stream-steps.v1"
+  ],
+  "changed_from_v4": [],
+  "cases": {
+    "lcb.dam.water.freemass.depth-160.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "closed",
+        "lcb-signed-ledger-v4": "closed"
+      },
+      "state": "closed",
+      "eligible_for_acceptance": true,
+      "reason": "Water constant at every checkpoint; no source, sink or active reaction",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 7833600,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 7833600,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": []
+    },
+    "lcb.dam.water.freemass.depth-48.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "closed",
+        "lcb-signed-ledger-v4": "closed"
+      },
+      "state": "closed",
+      "eligible_for_acceptance": true,
+      "reason": "Water constant at every checkpoint; no source, sink or active reaction",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 2350080,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 2350080,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": []
+    },
+    "lcb.dam.water.freemass.depth-96.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "closed",
+        "lcb-signed-ledger-v4": "closed"
+      },
+      "state": "closed",
+      "eligible_for_acceptance": true,
+      "reason": "Water constant at every checkpoint; no source, sink or active reaction",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 4700160,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 4700160,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": []
+    },
+    "lcb.dam.water.freemass.reference.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "closed",
+        "lcb-signed-ledger-v4": "closed"
+      },
+      "state": "closed",
+      "eligible_for_acceptance": true,
+      "reason": "Water constant at every checkpoint; no source, sink or active reaction",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 7833600,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 7833600,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": []
+    },
+    "lcb.density.inverted-column.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "closed",
+        "lcb-signed-ledger-v4": "closed"
+      },
+      "state": "closed",
+      "eligible_for_acceptance": true,
+      "reason": "Water constant at every checkpoint; no source, sink or active reaction",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 1044480,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 1044480,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": []
+    },
+    "lcb.density.mercury-drop.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "closed",
+        "lcb-signed-ledger-v4": "closed"
+      },
+      "state": "closed",
+      "eligible_for_acceptance": true,
+      "reason": "Water constant at every checkpoint; no source, sink or active reaction",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 23109120,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 23109120,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": []
+    },
+    "lcb.density.oil-water-lock-exchange.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "closed",
+        "lcb-signed-ledger-v4": "closed"
+      },
+      "state": "closed",
+      "eligible_for_acceptance": true,
+      "reason": "Water constant at every checkpoint; no source, sink or active reaction",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 15536640,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 15536640,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": []
+    },
+    "lcb.density.water-brine-lock-exchange.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "closed",
+        "lcb-signed-ledger-v4": "closed"
+      },
+      "state": "closed",
+      "eligible_for_acceptance": true,
+      "reason": "Water constant at every checkpoint; no source, sink or active reaction",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 15536640,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 15536640,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": []
+    },
+    "lcb.granular.salt-dissolution.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "open_by_declared_reaction",
+        "lcb-signed-ledger-v2": "UNVERIFIED_REACTION_AMOUNT",
+        "lcb-signed-ledger-v3": "UNVERIFIED_REACTION_AMOUNT",
+        "lcb-signed-ledger-v4": "UNVERIFIED_REACTION_AMOUNT"
+      },
+      "state": "UNVERIFIED_REACTION_AMOUNT",
+      "eligible_for_acceptance": false,
+      "reason": "loss lies within the dissolution bound and never reverses, but consumed Salt and Brine production are not retained world-wide, so the reaction amount is not established",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 23109120,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 22594593,
+      "signed_delta": -514527,
+      "species_domain": [],
+      "active_reactions": [
+        "salt"
+      ],
+      "loss_bound": 522240
+    },
+    "lcb.granular.water-sand-baseline.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "closed",
+        "lcb-signed-ledger-v4": "closed"
+      },
+      "state": "closed",
+      "eligible_for_acceptance": true,
+      "reason": "Water constant at every checkpoint; no source, sink or active reaction",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 4700160,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 4700160,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": []
+    },
+    "lcb.granular.water-sand-erosion.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "closed",
+        "lcb-signed-ledger-v4": "closed"
+      },
+      "state": "closed",
+      "eligible_for_acceptance": true,
+      "reason": "Water constant at every checkpoint; no source, sink or active reaction",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 4700160,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 4700160,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": []
+    },
+    "lcb.head.narrow-passage.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "closed",
+        "lcb-signed-ledger-v4": "closed"
+      },
+      "state": "closed",
+      "eligible_for_acceptance": true,
+      "reason": "Water constant at every checkpoint; no source, sink or active reaction",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 2525520,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 2525520,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": []
+    },
+    "lcb.head.sealed-two-limb.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "closed",
+        "lcb-signed-ledger-v4": "closed"
+      },
+      "state": "closed",
+      "eligible_for_acceptance": true,
+      "reason": "Water constant at every checkpoint; no source, sink or active reaction",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 2758080,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 2758080,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": []
+    },
+    "lcb.head.vented-two-limb.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "closed",
+        "lcb-signed-ledger-v4": "closed"
+      },
+      "state": "closed",
+      "eligible_for_acceptance": true,
+      "reason": "Water constant at every checkpoint; no source, sink or active reaction",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 2758080,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 2758080,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": []
+    },
+    "lcb.mixed.repeated-openings.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "UNVERIFIED_SOURCE_SINK_TIMING",
+        "lcb-signed-ledger-v4": "UNVERIFIED_SOURCE_SINK_TIMING"
+      },
+      "state": "UNVERIFIED_SOURCE_SINK_TIMING",
+      "eligible_for_acceptance": false,
+      "reason": "directions and gross budgets are consistent and the final balance closes, but without per-event source/sink timing the intermediate checkpoints cannot be reconciled",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 6854400,
+      "explicit_source": 48960,
+      "explicit_sink": 0,
+      "final_world_water": 6903360,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": [],
+      "positive_increments": 48960,
+      "negative_increments": 0
+    },
+    "lcb.mixed.sodium-oil-fire.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "open_by_declared_reaction",
+        "lcb-signed-ledger-v2": "UNVERIFIED_REACTION_AMOUNT",
+        "lcb-signed-ledger-v3": "UNVERIFIED_REACTION_AMOUNT",
+        "lcb-signed-ledger-v4": "UNVERIFIED_REACTION_AMOUNT"
+      },
+      "state": "UNVERIFIED_REACTION_AMOUNT",
+      "eligible_for_acceptance": false,
+      "reason": "active reactions ['sodium'] without species evidence; neither sign nor amount is established, even if Water is constant",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 10771200,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 10777747,
+      "signed_delta": 6547,
+      "species_domain": [],
+      "active_reactions": [
+        "sodium"
+      ],
+      "checkpoint_gains": [
+        [
+          120,
+          600,
+          94350
+        ]
+      ]
+    },
+    "lcb.mixed.water-oil-brine.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "open_by_declared_reaction",
+        "lcb-signed-ledger-v2": "UNVERIFIED_REACTION_AMOUNT",
+        "lcb-signed-ledger-v3": "UNVERIFIED_REACTION_AMOUNT",
+        "lcb-signed-ledger-v4": "UNVERIFIED_REACTION_AMOUNT"
+      },
+      "state": "UNVERIFIED_REACTION_AMOUNT",
+      "eligible_for_acceptance": false,
+      "reason": "loss lies within the dissolution bound and never reverses, but consumed Salt and Brine production are not retained world-wide, so the reaction amount is not established",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 6838080,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 6830685,
+      "signed_delta": -7395,
+      "species_domain": [],
+      "active_reactions": [
+        "salt"
+      ],
+      "loss_bound": 16320
+    },
+    "lcb.rest.deep-quiet-pool.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "closed",
+        "lcb-signed-ledger-v4": "closed"
+      },
+      "state": "closed",
+      "eligible_for_acceptance": true,
+      "reason": "Water constant at every checkpoint; no source, sink or active reaction",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 38515200,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 38515200,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": []
+    },
+    "lcb.rest.remote-disturbance.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "UNVERIFIED_SOURCE_SINK_TIMING",
+        "lcb-signed-ledger-v4": "UNVERIFIED_SOURCE_SINK_TIMING"
+      },
+      "state": "UNVERIFIED_SOURCE_SINK_TIMING",
+      "eligible_for_acceptance": false,
+      "reason": "directions and gross budgets are consistent and the final balance closes, but without per-event source/sink timing the intermediate checkpoints cannot be reconciled",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 38515200,
+      "explicit_source": 16320,
+      "explicit_sink": 16320,
+      "final_world_water": 38515200,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": [],
+      "positive_increments": 16320,
+      "negative_increments": 16320
+    },
+    "lcb.rest.two-pool-partial-activity.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "UNVERIFIED_SOURCE_SINK_TIMING",
+        "lcb-signed-ledger-v4": "UNVERIFIED_SOURCE_SINK_TIMING"
+      },
+      "state": "UNVERIFIED_SOURCE_SINK_TIMING",
+      "eligible_for_acceptance": false,
+      "reason": "directions and gross budgets are consistent and the final balance closes, but without per-event source/sink timing the intermediate checkpoints cannot be reconciled",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 35904000,
+      "explicit_source": 16320,
+      "explicit_sink": 0,
+      "final_world_water": 35920320,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": [],
+      "positive_increments": 16320,
+      "negative_increments": 0
+    },
+    "lcb.seam.dam-on-chunk-seams.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "closed",
+        "lcb-signed-ledger-v4": "closed"
+      },
+      "state": "closed",
+      "eligible_for_acceptance": true,
+      "reason": "Water constant at every checkpoint; no source, sink or active reaction",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 4732800,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 4732800,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": []
+    },
+    "lcb.seam.world-boundary.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "closed",
+        "lcb-signed-ledger-v4": "closed"
+      },
+      "state": "closed",
+      "eligible_for_acceptance": true,
+      "reason": "Water constant at every checkpoint; no source, sink or active reaction",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 6089400,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 6089400,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": []
+    },
+    "lcb.shallow.ledge-sheet-fall.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "closed",
+        "lcb-signed-ledger-v4": "closed"
+      },
+      "state": "closed",
+      "eligible_for_acceptance": true,
+      "reason": "Water constant at every checkpoint; no source, sink or active reaction",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 701760,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 701760,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": []
+    },
+    "lcb.shallow.obstacle-run.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "closed",
+        "lcb-signed-ledger-v4": "closed"
+      },
+      "state": "closed",
+      "eligible_for_acceptance": true,
+      "reason": "Water constant at every checkpoint; no source, sink or active reaction",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 1175040,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 1175040,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": []
+    },
+    "lcb.shallow.stream-steps.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "UNVERIFIED_SOURCE_SINK_TIMING",
+        "lcb-signed-ledger-v4": "UNVERIFIED_SOURCE_SINK_TIMING"
+      },
+      "state": "UNVERIFIED_SOURCE_SINK_TIMING",
+      "eligible_for_acceptance": false,
+      "reason": "directions and gross budgets are consistent and the final balance closes, but without per-event source/sink timing the intermediate checkpoints cannot be reconciled",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 0,
+      "explicit_source": 80900,
+      "explicit_sink": 0,
+      "final_world_water": 80900,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": [],
+      "positive_increments": 80900,
+      "negative_increments": 0
+    },
+    "lcb.viscous.lane-gallery.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "closed",
+        "lcb-signed-ledger-v4": "closed"
+      },
+      "state": "closed",
+      "eligible_for_acceptance": true,
+      "reason": "Water constant at every checkpoint; no source, sink or active reaction",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 783360,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 783360,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": []
+    },
+    "lcb.viscous.pour-heaps.v1": {
+      "superseded_states": {
+        "controls_2026_10_23": "closed",
+        "lcb-signed-ledger-v2": "closed",
+        "lcb-signed-ledger-v3": "closed",
+        "lcb-signed-ledger-v4": "closed"
+      },
+      "state": "closed",
+      "eligible_for_acceptance": true,
+      "reason": "Water constant at every checkpoint; no source, sink or active reaction",
+      "rule": "lcb-signed-ledger-v5",
+      "initial": 0,
+      "explicit_source": 0,
+      "explicit_sink": 0,
+      "final_world_water": 0,
+      "signed_delta": 0,
+      "species_domain": [],
+      "active_reactions": []
+    }
+  }
+}

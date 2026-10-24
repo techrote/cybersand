@@ -131,6 +131,10 @@ launcher. Archived-data verification does not execute the collected candidates.
 The active [verifier workflow](../../.github/workflows/mat003-correctness-verifier.yml)
 uses full Git history for `test_published_revision.py`, runs the small comparison
 contracts and the separately registered coordinate-refusal tests. It does not
-replay the full R16 archive or replace the Native/Godot integration gates. Keep
-#238 draft until the unmerged parent stack is reconciled with current main and
-all applicable exact-head runtime and provenance checks execute successfully.
+replay the full R16 archive or replace the Native/Godot integration gates. The
+[stack reconciliation checkpoint](../audits/2026-10-24-mat003-stack-integration-checkpoint.md)
+merges current main through all five parents while retaining historical source
+identities. The owner authorized the ready-for-review transition to execute fresh
+Native/Godot/provenance gates. Keep the stack unmerged; actual exact-head results
+are recorded in each PR's description/Checks. Independent acceptance of the
+author packet and #204 completion remain separate.

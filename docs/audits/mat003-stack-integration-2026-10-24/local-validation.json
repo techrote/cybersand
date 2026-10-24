@@ -1,0 +1,285 @@
+{
+  "schema": 1,
+  "date": "2026-10-24",
+  "class_": "local-pre-CI-integration-checkpoint",
+  "main": "1002b9201006b572180a12cbc4c3b21fc234e8fa",
+  "final_source": "merge commit containing this record; parent and payload identities recorded separately",
+  "final_parents": [
+    "40f4060ad57d5c6d5b62fdc81cac20e77d4c42fe",
+    "82c8aef3990e6852c17b5c3cf2bf6ff7b0ff44b3"
+  ],
+  "source_index_sha256_excluding_this_record": "79cf5d96f24170359c6d048b3a664d1e518b6c2fc1499ab47161a424375ab297",
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "scientific_acceptance": false,
+  "merged": false,
+  "preservation": {
+    "main_production_blob_manifest_sha256": "fe397ac8d1219f0e4bf793c3f569dbce856da53a857e9331849c100fe3acbd0c",
+    "supplementary_questions": {
+      "main": 116,
+      "old238": 139,
+      "merged": 145,
+      "unique": 145,
+      "all_original_objects_preserved": true
+    },
+    "frozen_questions_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec"
+  },
+  "stages": {
+    "208": {
+      "prior_head": "7b71fbb9e1b4286197fb948da3d34f3c3bd5f879",
+      "reconciled_head": "dc2b610ef563bd395104d154302f0a97417957d8",
+      "protected_prior_files": 372,
+      "prior_blob_manifest_sha256": "4c5648f57660c60a832cdea3e83af373c8848b88cb8b11e06d83b2738bf36b12",
+      "preserved": true,
+      "main_production_and_standard_gate_files": 661
+    },
+    "211": {
+      "prior_head": "2b2a1dd64f16dc46d5e812b757de73f47df0fb2b",
+      "reconciled_head": "c160b4509857370f8065f7d64a9cb1c9d2847260",
+      "protected_prior_files": 390,
+      "prior_blob_manifest_sha256": "65e0da5b15acd8fb4a57c2253d4bc5dd6f43b848aaba63241ad97d2ffd581680",
+      "preserved": true,
+      "main_production_and_standard_gate_files": 661
+    },
+    "221": {
+      "prior_head": "7648e94fd8954d235ffd2723dc67b290dfe2e9e3",
+      "reconciled_head": "7dd1373d999d91e52e6f29e9c9832f106a77da14",
+      "protected_prior_files": 491,
+      "prior_blob_manifest_sha256": "2cf9a25f50ed849605dec638ce1afb6d696e0a32d9eda74b5ed62149390cd039",
+      "preserved": true,
+      "main_production_and_standard_gate_files": 661
+    },
+    "235": {
+      "prior_head": "145b22599f0667bf29a37303d7f3915c690b68b2",
+      "reconciled_head": "82c8aef3990e6852c17b5c3cf2bf6ff7b0ff44b3",
+      "protected_prior_files": 497,
+      "prior_blob_manifest_sha256": "f09ffa28593abb3494624b0f295925c9bef677b1e6e44f48bb245c7960b3b1b8",
+      "preserved": true,
+      "main_production_and_standard_gate_files": 661
+    },
+    "238": {
+      "prior_head": "40f4060ad57d5c6d5b62fdc81cac20e77d4c42fe",
+      "reconciled_head": "commit-containing-this-record",
+      "protected_prior_files": 559,
+      "prior_blob_manifest_sha256": "1ac7a0036933e89f1fdc4298db2f9b42b174e40f46217fb3c0e2882f53538592",
+      "preserved": true,
+      "main_production_and_standard_gate_files": 661
+    }
+  },
+  "checks": [
+    {
+      "argv": [
+        "python",
+        "-B",
+        "tools/ci/check_docs.py"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "7cfe340fe1d425dae064dda8d03fdf8821676095a0635398ec9a67fa2fa935ba",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "tools/ci/check_repository.py",
+        "--require-materialized"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "acb73acfd11207770ba536bc6360a099c0c8d242759be1cc03ccd27a43e5546e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "tools/ci/check_ci_provider_policy.py"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "7d42fa2d0cae64ad3a3b8060fd58f61181609e38202d905c19abcb72f9b0f2e6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "tools/experiments/mat003_correctness/test_published_revision.py"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "ac73694ff2a36e04e7b254719a0406dbd8a76ff9a68c3e4fa1da7ed758c8056e"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "tools/experiments/mat003_correctness/test_verifier_revision.py"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "be39fe06ccbcbf058c24787dc04ebd2f07777fe8f5da6ee88564d759ebdeb127"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "tools/experiments/mat003_correctness/test_verifier_contracts.py"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "4674cd1eb3ac1fe3eec802ea5181d4bd871f8345a2a19d46ea4bc3339db6cc44"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "tools/experiments/mat003_optional/test_comparison_contract.py"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3026ec44bc7e8defaa63d1647f3f92526bd7ac348fd584f5641c783c93dd82de"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments/mat003_prepass",
+        "-p",
+        "test_*.py"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "50150ea39611a4f447af226cfaf6c105e7f82d09be955c990bd6f22b683f77e1",
+      "evidence_class": "Windows-platform-limited",
+      "limitation": "Frozen S1 overlay writer emits CRLF on Windows (16 subtest failures); symlink fixture lacks Windows privilege (one error). Unchanged Linux CI must pass this suite. No source repair or test weakening."
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments/mat003_perf",
+        "-p",
+        "test_*.py"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "9f19866c8af7bd0425354480972b9749c259e92bd47393c4d7e76dcf44f46db3"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments/mat003_continuation",
+        "-p",
+        "test_*.py"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "f773d2b54456fc49680212135be34cd273c848e35b5e3f1296b52d61d1fd36bf"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\mat003-stack-reconcile-20261024\\retrieval-frozen.json"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "1a43619dea4220ed8395c9e80ee7ca01a693a7326b5969c023bcf5f708a937be",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-challenges.json",
+        "--output",
+        "C:\\Users\\_\\mat003-stack-reconcile-20261024\\retrieval-challenges.json"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "4b840cdbd1805c8449f46147d44a74f3232eb64ad72aecff5fa46851b0d465bb",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "setup_gaps": [
+    "Initial isolated checkout lacked five pinned companion files and materialized LFS bytes. Restored from companion6a583119 and local LFS cache; no source or artifact modification."
+  ],
+  "retrieval": {
+    "frozen": {
+      "questions": 32,
+      "canonical_hit_at_1": 21,
+      "canonical_hit_at_k": 32,
+      "mrr_at_k": 0.7937,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "supplementary": {
+      "questions": 145,
+      "canonical_hit_at_1": 115,
+      "canonical_hit_at_k": 145,
+      "mrr_at_k": 0.878,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "new_question_rank": 1
+  },
+  "status": "feasible-local-checks-passed-with-explicit-Windows-S1-limits"
+}

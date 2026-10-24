@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-24
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -12,13 +12,15 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
-Current MAT-003 PR #238: [reader/fixture review corrections and retained evidence](audits/2026-10-24-mat003-pr238-review-closure.md), following the [complete v4 author readback](audits/2026-10-24-mat003-overnight-results.md). Independent acceptance and parent-stack/main integration remain open. The original refusal and earlier stages below are historical records.
+Current MAT-003 integration work: [parent-stack reconciliation with main](audits/2026-10-24-mat003-stack-reconciliation.md). Fresh applicable Native, Godot and materialized provenance checks are pending on the reconciled heads; ready-for-review permits those checks, with no merge authorized.
+
+PR #238 retains the [reader/fixture review corrections](audits/2026-10-24-mat003-pr238-review-closure.md), following the [complete v4 author readback](audits/2026-10-24-mat003-overnight-results.md). Independent acceptance remains open. The original refusal and earlier stages below are historical records.
 
 Historical MAT-003 collection: [complete152-process collection and Astra readback refusal](audits/2026-10-23-mat003-reentry-correctness-attempt.md). The original refusal remains preserved; the later v4 archived-data pass does not rerun candidates or confer independent acceptance.
 
-Latest MAT-003 source status: [resident reentry/scratch repair and independent source review](audits/2026-10-23-mat003-resident-reentry-repair.md). Fresh build/binary/registration gates remain held; no repair execution or timing. Earlier checkpoints below are historical stages.
+Historical resident-repair source checkpoint: [resident reentry/scratch repair and independent source review](audits/2026-10-23-mat003-resident-reentry-repair.md). At that stage, fresh build/binary/registration gates were held; no repair execution or timing had run. Later collection and readback records above preserve the subsequent outcomes.
 
-The latest [containment replacement runtime attempt](audits/2026-10-23-mat003-containment-correctness-attempt.md) stopped at resident reentry after clear256, with15 exit0 processes and136 unattempted cases. Full correctness remains refused; prior evidence is retained.
+The historical [containment replacement runtime attempt](audits/2026-10-23-mat003-containment-correctness-attempt.md) stopped at resident reentry after clear256, with15 exit0 processes and136 unattempted cases. Full correctness remains refused; prior evidence is retained.
 
 The [isolated containment repair and blocked replacement](audits/2026-10-23-mat003-containment-replacement.md) follow the retained Windows failure. Source review is complete; new builds/binary admission and execution authority are still required. That source-only stage preceded the retained replacement failure.
 
@@ -28,16 +30,31 @@ The [eight-map source review](audits/2026-10-23-mat003-apparatus-source-closure.
 
 For **MAT-003PREPASS / #204**, start with the [staged carrier registration](operations/mat-003prepass-registration.md), [source state inventory](research/mat-003prepass-state-inventory.md), [epoch consumer audit](research/mat-003prepass-epoch-consumers.md) and [proposed GEN-006 handoff](research/mat-003prepass-gen006-handoff.md). [S0 isolated storage checks passed](audits/2026-10-22-mat003-prepass-foundation.md). The [S1 World report](audits/2026-10-22-mat003-world-correctness.md) covers the new seventeen-arm apparatus, typed 8/16-bit counters and two-rollover gate; the registered Linux normal/sanitized collection and independent readback passed. Production remains unchanged, #204 stays open, and S2 paired performance requires separate registration.
 
-For **Generation Workbench 2**, use the [inspection and authoring contract](systems/generation-workbench-2.md): truthful native replay, actual intermediate stages, graph/hierarchy tools, transactional undo/redo and bounded seed/recipe comparisons. The [procedural qualification guide](operations/procedural-qualification.md) routes the 1024 Ã— 1024 scene, final-raster paths, native exhibits and visual evidence.
+For **Generation Workbench 2**, use the [inspection and authoring contract](systems/generation-workbench-2.md): truthful native replay, actual intermediate stages, graph/hierarchy tools, transactional undo/redo and bounded seed/recipe comparisons. The [procedural qualification guide](operations/procedural-qualification.md) routes the 1024 × 1024 scene, final-raster paths, native exhibits and visual evidence.
 
 Choose all 46 [articulated Rapier actors](systems/physical-actor-rigs.md) with F5 in the sandbox and exploratory maps, using keyboard, local scripted or external-policy control. Sampled references and the initial hull arms remain available; [the physical actor programme](operations/physical-actor-programme.md) preserves owner intent and integration scope.
+
+For the **4LY** single-chassis drone family, open the ordinary F5
+**set4LY** selection group and consult the
+[physical free-flight contract](systems/physical-free-flight.md): two desired
+velocity outputs, bounded assistance, profile identity and passive cancellation.
+The four distinct Trainer, Hauler, Drifter and Dart plants have now passed
+the prospectively registered [real-Rapier handling measurements](audits/2026-10-23-4ly002-measured-handling-qualification.md)
+on Linux and Windows; their source calibration marker remains
+`candidate_4ly002` until a separately authorized acceptance transition.
+The original [pre-execution ledger](audits/2026-10-23-4ly002-handling-candidate-admission.md)
+retains the earlier PENDING status and the new record preserves negative
+Windows evidence and explicit owner-feel limitations. The
+[4LY-001 conformance audit](audits/2026-10-22-4ly001-physical-free-flight.md)
+retains the original actual Rapier Trainer data, lifecycle negatives and
+source/runtime identity.
 
 For seven human movement presets, use the [player control playground](systems/player-control-playground.md): buggy, trials bike, momentum acrobat, arcade lander, native Sand cloud, native Water blob and jetpack barrel. The guide owns keyboard/gamepad controls, acrobat chains, reset/focus rules and bounded material-field ownership. The five mechanical presets also appear in F5 SetP.
 
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).
 
 For **Deepworks**, start with the [exhibition guide](operations/deepworks-exhibition.md):
-one 1024 Ã— 1024 map, sixteen themed districts, 32 foreground/rear native exhibits,
+one 1024 × 1024 map, sixteen themed districts, 32 foreground/rear native exhibits,
 four full-size material planes, source schedules, free-camera painting and
 whole-map replay. `--deepworks` opens its separate scene from the desktop launcher.
 The [PR #185 completion record](audits/2026-10-20-deepworks-pr185-completion.md)
@@ -45,7 +62,7 @@ owns the reaction-evidence correction and final hosted acceptance.
 
 For **Blacksite Nine**, start with the
 [connected-complex guide](operations/blacksite-nine-demo.md): Shift+F11 entry,
-the 3Ã—3 camera map, twelve shared passages, player-follow exploration and the
+the 3×3 camera map, twelve shared passages, player-follow exploration and the
 whole-complex reset. All nine districts occupy one continuous native world.
 
 For Neon Reliquary and the three district tiles below it, start with the
@@ -54,6 +71,7 @@ moving Above/Below, choosing viewpoints, editing native cells and capturing imag
 
 | Need | Start here |
 |---|---|
+| Implement or test Trainer, Hauler, Drifter and Dart without giving the stabilizer goal or world access | [4LY free-flight contract and programme](systems/physical-free-flight.md), [action interface](reference/interfaces-and-message-contracts.md#physical-free-flight-actions), [profile values](reference/configuration-reference.md#physical-free-flight-values), and [focused checks](operations/local-build-and-validation.md#physical-free-flight-checks) |
 | Play the stunt buggy, trials bike, acrobat chains, lander, material swarms or jetpack barrel | [Player control playground](systems/player-control-playground.md), [field API](reference/interfaces-and-message-contracts.md#player-material-field-control), and [focused checks](operations/local-build-and-validation.md#player-playground-checks) |
 | Explore Deepworks, replay a foreground/rear reaction or understand complete multilayer coverage | [Exhibition guide](operations/deepworks-exhibition.md), [depth contract](systems/depth-layers-and-parallax.md), and [dated source/runtime evidence](audits/2026-10-20-deepworks-exhibition.md) |
 | Review MAT-002 save/diagnostic integration, real rendered tests and matching runtime publication | [Building catalogue](systems/building-material-catalogue.md), [test acceptance](operations/testing-validation-and-replay.md#ci-execution-sharding), and [PR review evidence](audits/2026-10-19-mat002-review-and-validation.md) |
@@ -81,7 +99,8 @@ moving Above/Below, choosing viewpoints, editing native cells and capturing imag
 | Find a building material's ID, reactions or finish (IDs 81+) | [Building material catalogue](systems/building-material-catalogue.md), [interaction substrate](systems/intermaterial-interactions.md#mat-002-building-material-pass) |
 | Design a material's look or a procedural/generative fill | [Material visual pattern library](systems/material-visual-pattern-library.md), [effects register](reference/material-effects-register.md), [appearance contract](systems/material-appearance-and-rendering.md) |
 | Understand the persistent-reaction and body-mask wake repair | [Material cadence](systems/materials-and-rule-kernels.md#how-do-persistent-reactions-survive-sleep), [activity lifecycle](systems/activity-dirty-regions-and-waking.md), [MAT-001 evidence](audits/2026-10-18-mat001-material-reaction-progress.md) |
-| Investigate deep Water surge, hybrid Water sheets, trapped gas or decompression | [Water hybrid/pressure extension](operations/water-hybrid-pressure-extension-programme.md), [WEX-002 blocked disposition](audits/2026-09-24-wex002-water-sheet-blocked-disposition.md), [WEX-003 gas-region feasibility](research/lumped-gas-region-pressure-bookkeeping.md), [WEX-004 narrow-use disposition](audits/2026-09-24-wex004-decompression-disposition.md), then [Water Current semantics](systems/water-design.md) and [soliding programme](operations/soliding-programme.md) |
+| Plan the Liquid Comparison Build: solver families, Water comparison, Dam Break and mixed-liquid fixtures, manual UX | [Solver-family policy (Planned)](architecture/liquid-solver-family-policy.md), [capability matrix](reference/liquid-solver-capability-matrix.json), [Water comparison and fixtures](operations/lcb-water-comparison-and-fixtures.md), [manual UX flow](operations/lcb-manual-comparison-ux.md), [scenario catalogue and runner](operations/lcb-scenario-catalogue.md), [Gate C/D/E evidence](audits/2026-10-23-lcb000-gates-cde-design-evidence.md), [scenario qualification evidence](audits/2026-10-23-lcb003-scenario-qualification.md), [state-transition matrix](architecture/liquid-state-transition-matrix.md), [pressure/inertial handoff](architecture/lcb-pressure-inertial-handoff.md), [physics mechanism report](audits/2026-10-23-lcb-physics-mechanism-report.md) |
+| Investigate deep Water surge, hybrid Water sheets, trapped gas or decompression | [Water hybrid/pressure extension](operations/water-hybrid-pressure-extension-programme.md), [WEX-002 blocked disposition](audits/2026-09-24-wex002-water-sheet-blocked-disposition.md), [WEX-003 gas-region feasibility](research/lumped-gas-region-pressure-bookkeeping.md), [WEX-004 narrow-use disposition](audits/2026-09-24-wex004-decompression-disposition.md), [WEX-005 synthesis and #45 NARROW disposition](audits/2026-10-23-wex005-water-evidence-synthesis.md), [LCB-000 Gate A pressure-experiment admission](audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md), then [Water Current semantics](systems/water-design.md) and [soliding programme](operations/soliding-programme.md) |
 | Investigate powder penetration, barrel sinking or soliding | [Measured baseline tooling](operations/physics-characterisation.md), [dated results](audits/2026-09-09-physics-characterisation.md), [future soliding plan](operations/physics-characterisation-plan.md) |
 | Build or validate | [Build guide](operations/local-build-and-validation.md), [test selection](operations/testing-validation-and-replay.md), [dated evidence](reference/validation-evidence.md) |
 | Understand intent | [Product priorities](reference/product-intent-and-priorities.md), [principles](architecture/principles-and-non-goals.md), [ADRs](decisions) |
@@ -238,7 +257,7 @@ stays read-only with respect to material authority.
 
 MAT-003 design continuation: [semantic state-schema proposal](research/mat003-state-schema-proposal.md) and [ADR-015 carrier adoption gates](decisions/ADR-015-material-state-schema-and-carrier-gates.md) remain Planned; production and timing authority are unchanged.
 
-Latest [resident reentry Windows build and replacement execution gate](audits/2026-10-23-mat003-reentry-build-admission.md):32 clean builds; no qualification cases or timing.
+Historical [resident reentry Windows build and replacement execution gate](audits/2026-10-23-mat003-reentry-build-admission.md):32 clean builds; no qualification cases or timing.
 
 Latest MAT-003 archived-data disposition: [complete overnight v4 readback](audits/2026-10-24-mat003-overnight-results.md), all 152 cases and 96 cross-arm comparisons verified as author validation pending independent review. The [original Astra refusal](audits/2026-10-23-mat003-reentry-correctness-attempt.md) remains unchanged. No candidate rerun, performance acceptance or production migration follows; #204 remains open.
 
@@ -250,3 +269,13 @@ the [capture-phase handoff](research/mat003-capture-phase-handoff.md).
 
 For retained evidence, conditional recommendations and still-open #204 gates,
 see the [remaining acceptance inventory](research/mat003-remaining-acceptance.md).
+
+## LCB-000 final admission status
+
+For final Gate A–E PASS, the landed stack and bounded successor admission, read
+the [current roadmap checkpoint](reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23)
+and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconciliation.md).
+The #200 hold recorded at #213 closure is historical: the owner has since assigned
+the bounded #200 foundation separately to Claude. That branch is untouched and
+unimported by this MAT-003 reconciliation; #212 remains held. This permits no
+pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration.
