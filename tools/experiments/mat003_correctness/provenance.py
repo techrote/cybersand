@@ -4,7 +4,7 @@ from pathlib import Path
 import tempfile
 from matrix import ARMS,cases,LIMITS
 
-def verify_provenance(root,result,authority,expected_seal,digest,guard):
+def verify_provenance(root,result,authority,expected_seal,digest,guard,verifier_revision=None):
     if len(expected_seal)!=64 or digest(root/'authority.json')!=expected_seal or result.get('authority_sha256')!=expected_seal:raise ValueError('external authority seal mismatch')
     if result.get('source_commit')!=authority['source_commit'] or result.get('source_tree')!=authority['source_tree']:raise ValueError('source Git identity mismatch')
     if result.get('authority')!=authority:raise ValueError('authority object mismatch')
@@ -34,9 +34,13 @@ def verify_provenance(root,result,authority,expected_seal,digest,guard):
         if not p.resolve().is_relative_to(root/'source') or p.is_symlink() or digest(p)!=value:raise ValueError('admitted source snapshot drift')
     source_actual={p.relative_to(root/'source').as_posix() for p in (root/'source').rglob('*') if p.is_file()}
     if source_actual!=set(authority['source_sha256']):raise ValueError('source input inventory drift')
+    verifier_sources=authority['source_sha256']
+    if verifier_revision is not None:
+        from verifier_revision import revision_sources
+        verifier_sources=revision_sources(root,authority,result,*verifier_revision,digest)
     for name in ('readback.py','provenance.py','world_oracle.py','oracle.py','matrix.py','storage_oracle.py','negative.py','overlay.py'):
         relative='tools/experiments/mat003_correctness/'+name
-        if digest(Path(__file__).parent/name)!=authority['source_sha256'][relative]:raise ValueError('independent verifier source identity mismatch')
+        if digest(Path(__file__).parent/name)!=verifier_sources[relative]:raise ValueError('independent verifier source identity mismatch')
     if digest(root/'tools/compiler.bin')!=authority['compiler_sha256'] or digest(root/'tools/linker.bin')!=authority['linker_sha256']:raise ValueError('tool binary seal mismatch')
     for name,value in authority['psutil_source_sha256'].items():
         if digest(root/'monitor'/name)!=value:raise ValueError('resource monitor seal drift')
