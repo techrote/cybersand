@@ -1421,7 +1421,7 @@ private:
 constexpr std::uint32_t kPhysicalStateMagic = 0x53505943U;  // "CYPS"
 
 void refuse_state(const char* detail) {
-    throw std::invalid_argument(std::string("physical state refused: ") + detail);
+    throw std::invalid_argument(liquid_policy_detail::concat("physical state refused: ", detail));
 }
 
 }  // namespace

@@ -116,10 +116,18 @@ retained 0.839/0.841/0.851, two-limb difference 120).
 
 ## Runtime publication
 
-Pending: the scoped publisher (`lcb001-pressure-reference-runtime-publication.yml`)
-runs only after `tools/ci/lcb001_pressure_reference_publish_request.json` is
-committed. Its build/execution logs, runtime hashes and bot commit will be
-recorded here.
+**Attempt 1 (request_sequence 1, source `fd37a0a`, run 40095281125): failed.**
+Admission and both builds passed; the Linux execution step failed before any
+case ran. The retained Linux runtime (`libcybersand_native.linux.x86_64.so`)
+imports `std::__cxx11::basic_string::_M_replace_cold@GLIBCXX_3.4.31`, above the
+published Linux runtime floor (`GLIBCXX_3.4.30`, `tools/check_linux_runtime_floor.sh`).
+Cause: the new GDExtension run-receipt code concatenated `std::string&& +
+std::string&&`, which GCC 13 inlines as a front insertion. Correction: append-only
+assembly through `liquid_policy_detail::concat` in the receipt, the physical-state
+import error and the CYPS refusal text. Local check (GCC 16, `-O3`, godot-cpp
+headers): `nm` finds `_M_replace_cold` once in the old `cyber_native_cell_world.cpp`
+object and in no rebuilt GDExtension or World object. Republication uses
+request_sequence 2.
 
 ## Gaps (open)
 
