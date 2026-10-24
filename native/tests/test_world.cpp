@@ -3726,6 +3726,16 @@ void test_player_field_native_tick_quantity_and_worker_parity() {
 
 } // namespace
 
+void test_liquid_policy_sha256_known_answers();
+void test_liquid_policy_identity_matches_source();
+void test_liquid_policy_catalogue_matches_descriptors();
+void test_liquid_policy_wire_vectors();
+void test_liquid_policy_session_transcript();
+void test_liquid_policy_running_build_admits_only_defaults();
+void test_liquid_policy_world_construction_and_refusal();
+void test_liquid_policy_default_preserves_behavior_and_workers();
+void test_liquid_policy_c_api_transaction();
+
 int main(int argc, char** argv) {
     struct Test {
         const char* name;
@@ -3816,6 +3826,15 @@ int main(int argc, char** argv) {
         {"building CYSD1 constructor and snapshot round trip", test_building_level_snapshot_round_trip},
         {"building transport schema bounds", test_building_transport_schema_bounds},
         {"building contact boundaries and worker parity", test_building_contact_boundaries_and_worker_parity},
+        {"LCB-001 liquid policy SHA-256 known answers", test_liquid_policy_sha256_known_answers},
+        {"LCB-001 liquid policy identity matches source", test_liquid_policy_identity_matches_source},
+        {"LCB-001 liquid policy catalogue matches descriptors", test_liquid_policy_catalogue_matches_descriptors},
+        {"LCB-001 liquid policy wire vectors", test_liquid_policy_wire_vectors},
+        {"LCB-001 liquid policy session transcript", test_liquid_policy_session_transcript},
+        {"LCB-001 liquid policy running build admits only defaults", test_liquid_policy_running_build_admits_only_defaults},
+        {"LCB-001 liquid policy World construction and refusal", test_liquid_policy_world_construction_and_refusal},
+        {"LCB-001 liquid policy default behavior and workers", test_liquid_policy_default_preserves_behavior_and_workers},
+        {"LCB-001 liquid policy C API transaction", test_liquid_policy_c_api_transaction},
     };
 
     std::size_t passed = 0;

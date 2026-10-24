@@ -76,7 +76,9 @@ catalogue ends at 80 reject levels containing the new materials; they do not gai
 support from the unchanged format version alone.
 
 `CyberDemoBridge::import_level` validates and builds a replacement World and
-render exchange before no-throw ownership swaps. Invalid codec/native payloads
+render exchange before no-throw ownership swaps. CYSD1 stores no liquid solver
+policy: an import always reconstructs on every liquid's default family (LCB NC-10),
+whatever the live World's policy. Invalid codec/native payloads
 leave the active World intact. The Web controller rejects a Physics Pit save
 when Rapier is unavailable before native import. This guarantee concerns the
 checked import paths; it is not a general transaction guarantee for simulation

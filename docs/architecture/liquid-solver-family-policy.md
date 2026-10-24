@@ -2,7 +2,7 @@
 title: Liquid solver family policy and API specification
 status: Approved design
 document-kind: design
-scope: LCB-000 Gate C accepted design — versioned four-family liquid solver identities, immutable per-World per-material policy, construction/readback/refusal contracts, source-derived capability matrix and cross-issue mapping for LCB-001..005; native policy API implementation remains Planned
+scope: LCB-000 Gate C accepted design — versioned four-family liquid solver identities, immutable per-World per-material policy, construction/readback/refusal contracts, source-derived capability matrix and cross-issue mapping for LCB-001..005; the native policy foundation (defaults-only admission, identity, refusal and readback) is Current and candidate families remain Planned
 canonical-for: [liquid-solver-family-policy]
 last-reviewed: 2026-10-24
 related-documents: [../systems/water-design.md, ../systems/materials-and-rule-kernels.md, ../systems/flow-transport-and-profiles.md, ../decisions/ADR-005-water-model.md, ../operations/lcb-water-comparison-and-fixtures.md, ../operations/lcb-manual-comparison-ux.md, ../audits/2026-10-23-lcb000-gates-cde-design-evidence.md]
@@ -12,11 +12,15 @@ related-documents: [../systems/water-design.md, ../systems/materials-and-rule-ke
 
 ## Status
 
-**Approved design — Gate C PASS.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted; the owner currently holds both #200 and #212. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration.
+**Approved design — Gate C PASS.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) only; the pressure backend, every other solver port and #212 remain held. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration.
 
-Native construction/readback APIs and comparison UI remain **Planned**. The
-source-derived matrix and contract-model checks are Current apparatus, not
-implementation of the candidate native policy API.
+The [native policy foundation](#native-policy-foundation-current-2026-10-24)
+(object, wire decoding, validation, canonical identity, refusal, applied readback
+and transactional construction) is **Current** for this build's default mappings
+only; every candidate mapping is refused. Candidate kernels, the run receipt hash,
+normalization, the physical-state hash, the remaining #202 constructors and the
+comparison UI remain **Planned**. The source-derived matrix and contract-model
+checks remain Current apparatus.
 
 - The only liquid behaviour that executes today is each material's
   **current default** in the
@@ -66,14 +70,141 @@ Claim labels used below:
   Godot through `CyberDemoBridge::build_water_feel_world`
   ([cyber_demo_bridge.hpp](../../godot/native_extension/cyber_demo_bridge.hpp)).
   Invalid values throw before `install`, so the previous World survives.
-- **Effective readback exists for Water only.**
-  `CyberNativeCellWorld::get_water_experiment_policy` returns the applied Water
-  policy. Nothing reports a per-material motion family.
+- **Effective readback exists for Water and, since the 2026-10-24 foundation,
+  for the liquid policy.** `CyberNativeCellWorld::get_water_experiment_policy`
+  returns the applied Water policy; `get_liquid_solver_policy` returns the applied
+  per-material family receipt described below. Every liquid still executes its
+  current default kernel.
 - **Liquids already meet in one World.** Density exchange (`DensityMotion`,
   `accepts_density_exchange`) and pair rules
   ([interaction_rules.hpp](../../native/include/cybersand/interaction_rules.hpp))
   act between liquids today. Examples: `int.pair.water-salt.dissolve.v1`, and
   Oil extinguished by Water inside the Oil kernel.
+
+## Native policy foundation (Current, 2026-10-24)
+
+LCB-001 [#200](https://github.com/techrote/cybersand/issues/200) foundation, under
+the owner's bounded hold lift ([roadmap](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24),
+[evidence](../audits/2026-10-24-issue-200-policy-foundation.md)). It reproduces
+every registered [wire vector](../reference/liquid-policy-wire-vectors.json) bit for
+bit: acceptance, refusal code, material and detail text, `policy_hash`, canonical
+bytes and normalized envelope. Nothing here selects or runs another solver.
+
+**Source.**
+
+| Piece | Location |
+|---|---|
+| Policy object, decoder and precedence | [`liquid_solver_policy.hpp`](../../native/include/cybersand/liquid_solver_policy.hpp): `LiquidSolverPolicy`, `LiquidPolicyDecoder`, `LiquidPolicyBuild::running`, `LiquidPolicyRefused` |
+| SHA-256 | [`sha256.hpp`](../../native/include/cybersand/sha256.hpp) |
+| Embedded identity and matrix | generated [`liquid_policy_catalogue.hpp`](../../native/include/cybersand/liquid_policy_catalogue.hpp); `python tools/lcb/native_policy_artifacts.py --check` runs in Documentation CI |
+| World admission | `WorldConfig::liquid_solver_policy`, `World::World` and `World::liquid_solver_policy()` in [`world.hpp`](../../native/include/cybersand/world.hpp)/[`world.cpp`](../../native/src/world.cpp) |
+| Experimental C API | [`c_api.h`](../../native/include/cybersand/c_api.h): `cybersand_liquid_policy_default_v1`, `_validate_v1`, `cybersand_world_create_with_liquid_policy_v1`, `cybersand_world_liquid_policy_v1`, `_hash_v1` |
+| GDExtension | `CyberNativeCellWorld.get_liquid_solver_policy()`/`get_liquid_policy_session_generation()`; `CyberDemoBridge.default_liquid_policy()`, `validate_liquid_policy()`, `build_liquid_policy_world()`, `get_last_liquid_policy_refusal()` |
+| Hosts | `CyberMicroScenarioHost.install(..., liquid_policy)` and `liquid_solver_policy()`; desktop worker `scenario_reset.liquid_policy` and `lab_context.liquid_solver_policy` |
+
+**Admission in this build.** `freemass_v1` and `cellular_yield_v1` are compiled,
+and only each liquid's **current-default cell** is qualified. No parameter-block
+schema is registered, because no admitted family declares one; the two
+illustrative schemas exist only in the contract-test build. Outcomes therefore are:
+
+| Request | Refusal |
+|---|---|
+| Matrix `rejected` cell (e.g. Oil × `inertial_cellular_v1`, NC-1) | `combination_rejected` |
+| `proposed_alternate` cell (Toxic Sludge × inertial) | `not_selectable` |
+| A variant the cell does not offer (e.g. Water FreeMass `cached`) | `variant_unsupported` |
+| `pressure_flow_v1` or `inertial_cellular_v1` (NC-2), Brine × inertial | `family_unavailable` (not compiled) |
+| Water × `cellular_yield_v1` | `family_unavailable` (compiled, not qualified for Water) |
+| Stale digests, malformed envelopes, any parameter block | as the precedence above |
+
+`water_semantics_incompatible`, `capacity_refused` and `normalization_required`
+exist as codes but are unreachable until a candidate family is admitted. NC-3
+therefore stays blocked.
+
+**Contract reconciliation (2026-10-24).** The oracle's `today` build treated
+availability per family, so it would have accepted Water × `cellular_yield_v1`
+although no Water route through that family exists. The oracle now also
+qualifies per material × family cell (`make_build(..., qualified=...)`), and an
+appended vector `water_cellular_yield_today` registers the refusal. All earlier
+vector cases, the transcript and the build identity are unchanged.
+
+**Dispatch.** Unchanged: kernels remain keyed by `RuleKernel`. `World::World`
+re-validates the policy's normalized envelope against the running build before
+any World-owned storage (chunks, scratch, worker pool) is allocated, and throws
+`LiquidPolicyRefused` otherwise. The validation itself allocates temporary policy
+data, and a refused constructor releases it; no partially built World escapes. A policy accepted by a
+hypothetical contract build can therefore never reach a kernel, and no fallback
+path exists to be taken silently.
+
+**Readback receipt (GDExtension).** Implemented fields: `version`,
+`wire_version`, `envelope`, `session_generation`, `policy_hash`,
+`catalogue_digest`, `capability_matrix_digest`, `platform`, `admission`
+(`current_defaults_only`), `assignments` (`material`, `name`,
+`requested_family`, `applied_family`, `applied_variant`), `family_blocks`,
+`material_blocks`, `normalization` (null) and `refusal` (null; refusals are
+returned by the constructing call). `source_revision` and `native_binary_sha256`
+are **not** in the native receipt; the host's runtime identity supplies them.
+`session_generation` counts the World replacements committed by that adapter
+(the constructor's demo, `reset_demo_world`, `diagnostic_reset` and every bridge
+install). A refusal never advances it.
+
+**Constructors.** Every World constructor takes the policy from its
+`WorldConfig`. Only two paths accept a request: `build_liquid_policy_world` and
+the C API's `create_with_liquid_policy_v1`. All other paths reach a World as
+follows:
+
+| Path | Policy |
+|---|---|
+| `reset_demo_world`, `build_world`, `build_tuned_world`, `build_water_feel_world` and CYSD1 `import_level` (NC-10) | Explicitly set to the default before construction |
+| `diagnostic_reset`, the adapter constructor, and the C API's `cybersand_world_create`/`_create_v2` | A fresh `WorldConfig`, therefore the default |
+| [`demo::construct`, `demo::reconstruct` and `demo::empty_level`](../../native/include/cybersand/demo_snapshot.hpp) | Build from the `WorldConfig` they are given; every current caller passes one of the configurations above |
+| The other #202 constructors (generation previews, depth and exhibition planes, physical arenas, player material modes, the Web controller and Water reset) | No request; they run defaults. Wiring them is Planned |
+
+A copied `WorldConfig` can carry only an admitted policy, and `World::World`
+re-validates it in every case.
+
+**Not frozen.** The C API is marked experimental, the receipt is a dictionary
+rather than a schema, and the default policy is not persisted in CYSD1.
+
+**Fallback hosts (deliberate host/oracle difference).** The oracle's
+`gdscript_fallback` build models a host that can *decode* a request. It accepts a
+default policy and refuses only non-default assignments as `platform_unsupported`.
+No such GDScript decoder exists. `CyberMicroScenarioHost.install` therefore
+refuses **every** explicit request, including the explicit default, as
+`platform_unsupported` when the native handshake (`build_liquid_policy_world`,
+`get_liquid_solver_policy`) is missing. Without the handshake it could neither
+validate nor read back what it applied. Callers that want defaults on such a
+host pass no request (`null`). The oracle vectors remain the contract for a
+decoding host; adding a fallback decoder would have to reproduce them first.
+
+### Regenerating identity after a material or rule edit
+
+`catalogue_digest` hashes `material.hpp` and `interaction_rules.hpp`, and the
+capability matrix embeds their digests. **Any edit to either file** must
+therefore regenerate, in this order:
+
+```sh
+python tools/lcb/derive_capability_matrix.py   # matrix: source digests, liquid rows
+python tools/lcb/policy_contract.py            # wire vectors: capability digest, hashes, current identity
+python tools/lcb/native_policy_artifacts.py    # liquid_policy_catalogue.hpp and liquid_policy_vectors.inc
+```
+
+Then validate:
+
+```sh
+python tools/lcb/derive_capability_matrix.py --check
+python tools/lcb/policy_contract.py --check
+python -m unittest discover -s tools/lcb -p test_policy_contract.py
+python tools/lcb/native_policy_artifacts.py --check
+make build/tests && ./build/tests "LCB-001"   # or build_windows_msvc.bat
+```
+
+Review the vector diff before committing. A pure source edit should change only
+digest words, `policy_hash`, canonical bytes and the identity block. If any
+case's acceptance or refusal code changes, the edit has changed the policy
+contract (for example a new liquid, or a `LateralFlowMode` change). That needs
+review under this page, not silent regeneration. The generated header is a
+native runtime input, so the published GDExtension runtimes need a
+source-matched rebuild as for any native edit.
 
 ## Identities (owner-approved catalogue; Proposed encoding)
 

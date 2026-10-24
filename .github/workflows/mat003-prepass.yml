@@ -97,6 +97,20 @@ jobs:
           PY
       - name: Check provider policy
         run: timeout 1m python3 tools/ci/check_ci_provider_policy.py
+      # S1's native inputs are a registered historical control. In particular,
+      # the landed LCB-001 policy-enabled World is not that control. Keep this
+      # regression source-qualified; current Native/Godot/provenance jobs test
+      # the integration head instead. Never refresh the old registration seals.
+      - name: Select immutable historical MAT control (not current-main qualification)
+        if: steps.scope.outputs.changed == 'true'
+        env:
+          GIT_LFS_SKIP_SMUDGE: '1'
+        run: |
+          printf 'Current integration revision: %s\n' "$GITHUB_SHA"
+          git diff --exit-code dc2b610ef563bd395104d154302f0a97417957d8 HEAD -- tools/experiments/mat003_prepass/ third_party/native-toolchain.lock.json
+          git -c advice.detachedHead=false switch --detach dc2b610ef563bd395104d154302f0a97417957d8
+          printf 'Historical S1 control checkout: %s\n' "$(git rev-parse HEAD)"
+          echo 'S1 executes the immutable pre-LCB-001 registered baseline; it does not qualify MAT candidates against the current policy-enabled World.' >> "$GITHUB_STEP_SUMMARY"
       - name: Test isolated overlays and World evidence rejection
         if: steps.scope.outputs.changed == 'true'
         run: timeout 2m python3 -m unittest discover -s tools/experiments/mat003_prepass -p 'test_world_*.py' -v

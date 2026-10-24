@@ -71,6 +71,10 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("diagnostic_body_metrics"), &CyberNativeCellWorld::diagnostic_body_metrics);
     ClassDB::bind_method(D_METHOD("get_water_experiment_policy"),
                          &CyberNativeCellWorld::get_water_experiment_policy);
+    ClassDB::bind_method(D_METHOD("get_liquid_solver_policy"),
+                         &CyberNativeCellWorld::get_liquid_solver_policy);
+    ClassDB::bind_method(D_METHOD("get_liquid_policy_session_generation"),
+                         &CyberNativeCellWorld::get_liquid_policy_session_generation);
     ClassDB::bind_method(D_METHOD("water_experiment_fill_rect", "origin", "size",
                                   "normalized_mass", "coherence"),
                          &CyberNativeCellWorld::water_experiment_fill_rect);
@@ -259,6 +263,7 @@ bool CyberNativeCellWorld::reset_demo_world() {
         auto config = world_->config();
         config.physics_diagnostics = {};
         config.interaction_policy = {};
+        config.liquid_solver_policy = {}; // The ordinary demo runs every liquid's default.
         auto candidate = std::make_unique<cybersand::World>(config);
         candidate->reserve_region({0, 0, kWorldWidth, kWorldHeight});
         candidate->configure_transient_obstacles({0, 0, kWorldWidth, kWorldHeight});
@@ -308,6 +313,7 @@ bool CyberNativeCellWorld::reset_demo_world() {
 
         candidate->set_simulation_region(world_->simulation_region());
         world_.swap(candidate);
+        ++liquid_policy_session_generation_;
         diagnostic_fixture_ = false;
         body_diagnostics_.reset();
         displacement_gain_ = kBodyDisplacementReactionImpulse;
@@ -1402,6 +1408,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         auto diagnostics = config.physics_diagnostics.enabled
             ? std::make_unique<BodyDiagnostics>() : nullptr;
         world_.swap(candidate);
+        ++liquid_policy_session_generation_;
         body_diagnostics_ = std::move(diagnostics);
         diagnostic_fixture_ = true;
         worker_threads_ = config.worker_threads;
@@ -1518,6 +1525,73 @@ Dictionary CyberNativeCellWorld::get_water_experiment_policy() const {
     result["film"] = policy.film();
     result["tolerance"] = policy.tolerance();
     return result;
+}
+
+Dictionary CyberNativeCellWorld::liquid_policy_receipt(
+    const cybersand::LiquidSolverPolicy& policy, std::int64_t session_generation) {
+    Dictionary result;
+    result["version"] = static_cast<std::int64_t>(policy.policy_version());
+    result["wire_version"] = static_cast<std::int64_t>(cybersand::LiquidSolverPolicy::kEnvelopeVersion);
+    PackedInt32Array envelope;
+    for (const auto word : policy.envelope()) envelope.push_back(word);
+    result["envelope"] = envelope;
+    result["session_generation"] = session_generation;
+    result["policy_hash"] = String(policy.policy_hash_hex().c_str());
+    result["catalogue_digest"] = String(cybersand::Sha256::hex(policy.catalogue_digest()).c_str());
+    result["capability_matrix_digest"] =
+        String(cybersand::Sha256::hex(policy.capability_matrix_digest()).c_str());
+#if defined(__EMSCRIPTEN__)
+    result["platform"] = "web";
+#elif defined(_WIN32)
+    result["platform"] = "windows";
+#elif defined(__APPLE__)
+    result["platform"] = "macos";
+#else
+    result["platform"] = "linux";
+#endif
+    result["admission"] = "current_defaults_only";
+    auto id = [](std::string_view text) { return String(std::string(text).c_str()); };
+    Array assignments;
+    for (const auto& item : policy.assignments()) {
+        Dictionary entry;
+        entry["material"] = static_cast<std::int64_t>(item.material);
+        if (const auto* name = cybersand::liquid_policy_material_name(item.material)) entry["name"] = name;
+        entry["requested_family"] = id(cybersand::liquid_solver_family_id(item.requested_family));
+        entry["applied_family"] = id(cybersand::liquid_solver_family_id(item.family));
+        entry["applied_variant"] = id(cybersand::liquid_solver_variant_id(item.variant));
+        assignments.push_back(entry);
+    }
+    result["assignments"] = assignments;
+    for (const auto family_blocks : {true, false}) {
+        Array blocks;
+        for (const auto& block : family_blocks ? policy.family_blocks() : policy.material_blocks()) {
+            Dictionary entry;
+            if (family_blocks)
+                entry["family"] = id(cybersand::liquid_solver_family_id(
+                    static_cast<cybersand::LiquidSolverFamily>(block.owner)));
+            else
+                entry["material"] = static_cast<std::int64_t>(block.owner);
+            entry["block_version"] = static_cast<std::int64_t>(block.version);
+            PackedInt32Array values;
+            for (const auto value : block.values) values.push_back(value);
+            entry["values"] = values;
+            blocks.push_back(entry);
+        }
+        result[family_blocks ? "family_blocks" : "material_blocks"] = blocks;
+    }
+    result["normalization"] = Variant();
+    result["refusal"] = Variant();
+    return result;
+}
+
+Dictionary CyberNativeCellWorld::get_liquid_solver_policy() const {
+    if (world_ == nullptr) return {};
+    return liquid_policy_receipt(world_->liquid_solver_policy(),
+                                 static_cast<std::int64_t>(liquid_policy_session_generation_));
+}
+
+std::int64_t CyberNativeCellWorld::get_liquid_policy_session_generation() const {
+    return static_cast<std::int64_t>(liquid_policy_session_generation_);
 }
 
 bool CyberNativeCellWorld::water_experiment_fill_rect(

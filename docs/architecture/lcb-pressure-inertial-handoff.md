@@ -12,7 +12,7 @@ related-documents: [liquid-state-transition-matrix.md, liquid-solver-family-poli
 
 ## Status
 
-**Planned implementation.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted; the owner currently holds both #200 and #212. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration. This
+**Planned implementation.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) only; the pressure backend, every other solver port and #212 remain held. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration. This
 page converts the [mechanism report](../audits/2026-10-23-lcb-physics-mechanism-report.md)
 and the [state-transition matrix](liquid-state-transition-matrix.md) into
 requirements.
@@ -28,8 +28,8 @@ requirements.
 
 | Need | Where today | Requirement |
 |---|---|---|
-| Per-World policy | `WorldConfig` (`world.hpp` L30), beside `WaterExperimentPolicy` | Add `LiquidSolverPolicy` with the [canonical hashing](liquid-solver-family-policy.md#native-policy-object-proposed), validated before allocation. The default must reproduce the PR #217 goldens bit for bit. |
-| Construction bridge | `CyberDemoBridge::build_water_feel_world` (`cyber_demo_bridge.hpp` L411) and every World constructor listed in #202 | Take the packed policy and refuse before `install`. Readback via `get_liquid_solver_policy()` with the applied family and normalization. |
+| Per-World policy | `WorldConfig::liquid_solver_policy` beside `WaterExperimentPolicy` | **Current foundation (2026-10-24):** `LiquidSolverPolicy` with the [canonical hashing](liquid-solver-family-policy.md#native-policy-object-proposed), validated before allocation; defaults only ([foundation](liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)). Candidate families must extend the running build's qualified cells and schemas. |
+| Construction bridge | `CyberDemoBridge::build_liquid_policy_world` beside `build_water_feel_world`; every World constructor listed in #202 | **Current foundation:** packed request refused before `install`; `get_liquid_solver_policy()` readback. Remaining #202 constructors and normalization are Planned. |
 | Family dispatch | `update_rule_kernel` L2829 (`RuleKernel` switch), after generic pair chemistry L2797 | Dispatch motion by family only for liquids with a non-default assignment. Keep stages 1, 2, 4 and 5 from the [material hooks](liquid-solver-family-policy.md#material-hooks-versus-motion-gate-c-correction-2026-10-23) unchanged. |
 | Moves and swaps | `move_cell` L2323, `try_move` L2446, `transfer_water` L2481, `relocate_stored_cell` L1840 | Optional state moves atomically with its tuple; retired on Empty/conversion (R1). |
 | Writes and products | `write_cell` L1475, `set_cell_state` L1693, pair-product writes L2797–L2826 | Products start at their family default state; signed ledger hook. |
@@ -40,7 +40,7 @@ requirements.
 
 **APIs required to unblock the registered tests** (in
 `lcb-physics-contracts.json`):
-- policy readback;
+- policy readback (Current foundation, defaults only);
 - versioned physical-state hash;
 - `inspect_cell` extended with family state;
 - `inspect_gas_compartments()` returning id, generation, ancestry, amount,

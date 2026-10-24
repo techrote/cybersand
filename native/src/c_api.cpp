@@ -5,11 +5,15 @@
 #include "cybersand/render_snapshot.hpp"
 #include "cybersand/world.hpp"
 
+#include <algorithm>
+#include <cstring>
 #include <exception>
 #include <limits>
 #include <new>
 #include <memory>
 #include <span>
+#include <string_view>
+#include <vector>
 
 struct cybersand_world {
     explicit cybersand_world(cybersand::WorldConfig config) : implementation(config) {}
@@ -46,6 +50,61 @@ static_assert(static_cast<std::uint8_t>(cybersand::LateralFlowMode::FreeMass) ==
               CYBERSAND_LATERAL_FLOW_FREE_MASS);
 static_assert(static_cast<std::uint8_t>(cybersand::LateralFlowMode::CellularYield) ==
               CYBERSAND_LATERAL_FLOW_CELLULAR_YIELD);
+
+static_assert(static_cast<std::uint8_t>(cybersand::LiquidPolicyRefusalCode::UnknownMaterial) ==
+              CYBERSAND_LIQUID_POLICY_UNKNOWN_MATERIAL);
+static_assert(static_cast<std::uint8_t>(cybersand::LiquidPolicyRefusalCode::StaleCapabilityMatrix) ==
+              CYBERSAND_LIQUID_POLICY_STALE_CAPABILITY_MATRIX);
+static_assert(static_cast<std::uint8_t>(cybersand::LiquidPolicyRefusalCode::NormalizationRequired) ==
+              CYBERSAND_LIQUID_POLICY_NORMALIZATION_REQUIRED);
+
+void fill_liquid_refusal(cybersand_liquid_policy_refusal_v1* destination, std::uint32_t code,
+                         std::int32_t material, std::string_view detail) noexcept {
+    if (destination == nullptr || destination->struct_size < sizeof(cybersand_liquid_policy_refusal_v1)) return;
+    destination->code = code;
+    destination->material = material;
+    const auto length = std::min(detail.size(), sizeof(destination->detail) - 1U);
+    // An empty view may carry a null data pointer, which memcpy must not receive.
+    if (length != 0U) std::memcpy(destination->detail, detail.data(), length);
+    destination->detail[length] = '\0';
+}
+
+void fill_liquid_refusal(cybersand_liquid_policy_refusal_v1* destination,
+                         const cybersand::LiquidPolicyRefusal& refusal) noexcept {
+    fill_liquid_refusal(destination, static_cast<std::uint32_t>(refusal.code),
+                        refusal.material ? static_cast<std::int32_t>(*refusal.material) : -1, refusal.detail);
+}
+
+[[nodiscard]] std::size_t copy_policy_words(const std::vector<std::int32_t>& words, int32_t* destination,
+                                            std::size_t capacity) noexcept {
+    if (destination != nullptr && capacity >= words.size())
+        std::copy(words.begin(), words.end(), destination);
+    return words.size();
+}
+
+[[nodiscard]] cybersand_config_v2 default_config_v2() {
+    const cybersand::WorldConfig native{};
+    return {
+        sizeof(cybersand_config_v2),
+        CYBERSAND_CONFIG_V2_ABI_VERSION,
+        native.chunk_size,
+        native.sleep_after_quiet_ticks,
+        native.ambient_temperature,
+        static_cast<uint8_t>(native.backend),
+        0,
+        native.activity_block_size,
+        native.scheduling_core_size,
+        native.maximum_rule_radius,
+        native.worker_threads,
+        static_cast<uint64_t>(native.initial_chunk_reserve),
+        static_cast<uint64_t>(native.parallel_job_threshold),
+        static_cast<uint64_t>(native.active_core_capacity),
+        static_cast<uint64_t>(native.active_chunk_capacity),
+        static_cast<uint64_t>(native.maximum_chunk_count),
+        static_cast<uint64_t>(native.deferred_event_capacity),
+        native.maximum_explosion_radius,
+    };
+}
 
 [[nodiscard]] bool checked_size(std::uint64_t value, std::size_t& destination) noexcept {
     if (value > std::numeric_limits<std::size_t>::max()) return false;
@@ -178,27 +237,14 @@ int cybersand_world_copy_rgba(const cybersand_world* world, int64_t x, int64_t y
 }
 
 cybersand_config_v2 cybersand_default_config_v2(void) {
-    const cybersand::WorldConfig native{};
-    return {
-        sizeof(cybersand_config_v2),
-        CYBERSAND_CONFIG_V2_ABI_VERSION,
-        native.chunk_size,
-        native.sleep_after_quiet_ticks,
-        native.ambient_temperature,
-        static_cast<uint8_t>(native.backend),
-        0,
-        native.activity_block_size,
-        native.scheduling_core_size,
-        native.maximum_rule_radius,
-        native.worker_threads,
-        static_cast<uint64_t>(native.initial_chunk_reserve),
-        static_cast<uint64_t>(native.parallel_job_threshold),
-        static_cast<uint64_t>(native.active_core_capacity),
-        static_cast<uint64_t>(native.active_chunk_capacity),
-        static_cast<uint64_t>(native.maximum_chunk_count),
-        static_cast<uint64_t>(native.deferred_event_capacity),
-        native.maximum_explosion_radius,
-    };
+    // WorldConfig default construction copies the (allocating) liquid policy.
+    // No exception may cross the C ABI: failure yields an all-zero config, whose
+    // struct_size of 0 every v2 consumer refuses.
+    try {
+        return default_config_v2();
+    } catch (...) {
+        return cybersand_config_v2{};
+    }
 }
 
 cybersand_world* cybersand_world_create_v2(const cybersand_config_v2* config) {
@@ -209,6 +255,92 @@ cybersand_world* cybersand_world_create_v2(const cybersand_config_v2* config) {
     } catch (...) {
         return nullptr;
     }
+}
+
+size_t cybersand_liquid_policy_default_v1(int32_t* destination, size_t capacity) {
+    try {
+        return copy_policy_words(cybersand::LiquidSolverPolicy::default_request(), destination, capacity);
+    } catch (...) {
+        return CYBERSAND_SIZE_ERROR;
+    }
+}
+
+int cybersand_liquid_policy_validate_v1(const int32_t* words, size_t word_count,
+                                        cybersand_liquid_policy_refusal_v1* refusal,
+                                        uint8_t* policy_hash_32) {
+    try {
+        if (words == nullptr && word_count != 0U) {
+            fill_liquid_refusal(refusal, CYBERSAND_LIQUID_POLICY_CONSTRUCTION_FAILED, -1, "null policy words");
+            return 0;
+        }
+        const auto result = cybersand::LiquidSolverPolicy::decode(std::span<const std::int32_t>(words, word_count));
+        if (!result.accepted()) {
+            fill_liquid_refusal(refusal, result.refusal);
+            return 0;
+        }
+        fill_liquid_refusal(refusal, CYBERSAND_LIQUID_POLICY_ACCEPTED, -1, {});
+        if (policy_hash_32 != nullptr) {
+            const auto& hash = result.policy->policy_hash();
+            std::copy(hash.begin(), hash.end(), policy_hash_32);
+        }
+        return 1;
+    } catch (const std::exception& error) {
+        fill_liquid_refusal(refusal, CYBERSAND_LIQUID_POLICY_CONSTRUCTION_FAILED, -1, error.what());
+        return 0;
+    } catch (...) {
+        fill_liquid_refusal(refusal, CYBERSAND_LIQUID_POLICY_CONSTRUCTION_FAILED, -1, "unknown failure");
+        return 0;
+    }
+}
+
+cybersand_world* cybersand_world_create_with_liquid_policy_v1(
+    const cybersand_config_v2* config, const int32_t* words, size_t word_count,
+    cybersand_liquid_policy_refusal_v1* refusal) {
+    try {
+        cybersand::WorldConfig native{};
+        if (!native_config_from_v2(config, native)) {
+            fill_liquid_refusal(refusal, CYBERSAND_LIQUID_POLICY_CONSTRUCTION_FAILED, -1, "invalid World config");
+            return nullptr;
+        }
+        if (words == nullptr && word_count != 0U) {
+            fill_liquid_refusal(refusal, CYBERSAND_LIQUID_POLICY_CONSTRUCTION_FAILED, -1, "null policy words");
+            return nullptr;
+        }
+        auto result = cybersand::LiquidSolverPolicy::decode(std::span<const std::int32_t>(words, word_count));
+        if (!result.accepted()) {
+            fill_liquid_refusal(refusal, result.refusal);
+            return nullptr;
+        }
+        native.liquid_solver_policy = std::move(*result.policy);
+        auto* world = new cybersand_world(native);
+        fill_liquid_refusal(refusal, CYBERSAND_LIQUID_POLICY_ACCEPTED, -1, {});
+        return world;
+    } catch (const cybersand::LiquidPolicyRefused& refused) {
+        fill_liquid_refusal(refusal, refused.refusal());
+        return nullptr;
+    } catch (const std::exception& error) {
+        fill_liquid_refusal(refusal, CYBERSAND_LIQUID_POLICY_CONSTRUCTION_FAILED, -1, error.what());
+        return nullptr;
+    } catch (...) {
+        fill_liquid_refusal(refusal, CYBERSAND_LIQUID_POLICY_CONSTRUCTION_FAILED, -1, "unknown failure");
+        return nullptr;
+    }
+}
+
+size_t cybersand_world_liquid_policy_v1(const cybersand_world* world, int32_t* destination, size_t capacity) {
+    if (world == nullptr) return CYBERSAND_SIZE_ERROR;
+    try {
+        return copy_policy_words(world->implementation.liquid_solver_policy().envelope(), destination, capacity);
+    } catch (...) {
+        return CYBERSAND_SIZE_ERROR;
+    }
+}
+
+int cybersand_world_liquid_policy_hash_v1(const cybersand_world* world, uint8_t* destination_32) {
+    if (world == nullptr || destination_32 == nullptr) return 0;
+    const auto& hash = world->implementation.liquid_solver_policy().policy_hash();
+    std::copy(hash.begin(), hash.end(), destination_32);
+    return 1;
 }
 
 int cybersand_world_set_v2(cybersand_world* world, int64_t x, int64_t y,
