@@ -441,6 +441,17 @@ the repair-merge ordinary run. Those later passes preserve, rather than replace,
 the original timeout. No Water/LCB/GEN behavior or timeout was changed to address
 this adjacent observation under #234.
 
+The 160.984-second passing WEX execution also crossed the ordinary runner's
+150-second preemptive-capture threshold. Its capture started at 150.000151
+seconds and completed in 0.202 seconds, with no capture error or diagnostic
+failure; the test returned zero. The snapshot sampled the main thread as `Rsl`,
+worker futex waits and a timer wait. It explicitly records unavailable GDB and
+ten refused `/proc` stack reads. This is a healthy long-running control outside
+the physical stress cohort, not a reproduced actor hang or a native-stack
+attribution. Its full capture files and hashes are retained in the adjacent CI
+receipt, artifact `12574263099`. The statement that the 600-attempt campaign
+produced no captures applies to that campaign alone.
+
 Preceding-main Native [40109504739](https://github.com/techrote/cybersand/actions/runs/40109504739)
 also failed: the ten-minute `make soliding-sanitize` command hit exit 124 while
 compiling `build/test_stage3b_sparse_activity_deadline_sanitized`. Normal and
@@ -448,8 +459,16 @@ ASan/UBSan suites had passed 107/107; TSan and shared/benchmark were skipped aft
 that build failure. This is a sanitizer **build-command** timeout, not a captured
 Godot/Rapier test stall. The failing log remains retained and no automatic rerun
 or unrelated code correction was used to hide it. Current-head PR Native passed
-its complete matrix independently. Automatic repair-merge checks are retained
-separately in the adjacent execution receipts.
+its complete matrix independently. Automatic repair-merge Native
+[40129347322](https://github.com/techrote/cybersand/actions/runs/40129347322),
+attempt 1 at `13b8e631f3e8fbaa2176ed41afc02c434b11e558`, also passed:
+107/107 normal, 107/107 ASan/UBSan and 107/107 TSan, all seventeen command groups,
+generation/soliding sanitizers, shared build and the 120-tick benchmark. Full-log
+independent review found no failed test, sanitizer runtime finding or unexpected
+nonzero exit. Its 157,516-byte log has SHA-256
+`7ff95997ca3cbb4596e197fc020bd796c3956726247e479c4e0b72fff88df7b4`.
+These additional checks and the original failure retain separate source scopes
+in the adjacent execution receipts.
 
 The two adjacent Godot cohorts retain [all 536 case observations](issue-234/ordinary-adjacent-observations.csv),
 [per-run/OS/test distributions](issue-234/ordinary-adjacent-distributions.csv),
@@ -567,7 +586,7 @@ The evidence PR's final exact-head hosted Documentation/provenance result and
 merge identity belong to its admission/issue-completion receipts. This avoids
 mislabeling an older documentation check as validation of a later evidence edit.
 
-**Pending:** final hosted evidence admission and issue disposition; the separate
-automatic post-merge Native result is retained in the adjacent CI receipt.
+Final hosted evidence admission and issue disposition are recorded in the
+evidence PR and issue-completion receipts after this source checkpoint.
 Repair implementation, ordinary admission, complete registered campaign, full
 independent readback and all twelve timing/frequency strata are complete.
