@@ -15,26 +15,58 @@ class FreeWorld:
 		return false
 
 
-class TraversalWorld:
+class ContourWorld:
 	extends RefCounted
 
-	var obstacle_height: int = 1
+	const FLOOR_Y: float = 40.0
+	const STEP_X: int = 18
 
-	func _init(height: int) -> void:
-		obstacle_height = height
+	var rise_per_step: int = 1
+	var run_width: int = 1000000
+	var maximum_height: int = 1
+	var overhang: Rect2 = Rect2()
 
-	func box_collides(origin: Vector2, _size: Vector2) -> bool:
-		return (
-			origin.x > 0.0001
-			and origin.y > -float(obstacle_height) + 0.0001
-		)
+	static func isolated(height: int) -> ContourWorld:
+		var world := ContourWorld.new()
+		world.rise_per_step = height
+		world.maximum_height = height
+		return world
 
-	func character_box_collides(origin: Vector2, size: Vector2, mode: int) -> bool:
-		if mode == 1:
+	static func staircase(rise: int, run: int, maximum: int = 32) -> ContourWorld:
+		var world := ContourWorld.new()
+		world.rise_per_step = rise
+		world.run_width = maxi(1, run)
+		world.maximum_height = maximum
+		return world
+
+	static func with_overhang() -> ContourWorld:
+		var world := ContourWorld.new()
+		world.rise_per_step = 0
+		world.maximum_height = 0
+		world.overhang = Rect2(18.0, 26.0, 4.0, 4.0)
+		return world
+
+	func surface_height(x: int) -> int:
+		if x < STEP_X or rise_per_step <= 0:
+			return 0
+		var step_index: int = int((x - STEP_X) / run_width) + 1
+		return mini(maximum_height, step_index * rise_per_step)
+
+	func box_collides(origin: Vector2, size: Vector2) -> bool:
+		var actor := Rect2(origin, size)
+		if overhang.size.x > 0.0 and actor.intersects(overhang):
 			return true
-		if mode == 2:
-			return box_collides(origin, size)
+		var first_x: int = floori(origin.x + 0.001)
+		var last_x: int = ceili(origin.x + size.x - 0.001) - 1
+		var bottom: float = origin.y + size.y
+		for x: int in range(first_x, last_x + 1):
+			var surface_y: float = FLOOR_Y - float(surface_height(x))
+			if bottom > surface_y + 0.001:
+				return true
 		return false
+
+	func character_box_collides(origin: Vector2, size: Vector2, _mode: int) -> bool:
+		return box_collides(origin, size)
 
 
 class ImpactWorld:
@@ -192,64 +224,150 @@ func _test_mass_and_granular_sensitivity() -> void:
 	)
 
 
+func _place_on_flat(character: CyberSampledCharacter) -> void:
+	character.position = Vector2(
+		10.0,
+		ContourWorld.FLOOR_Y - CyberSampledCharacter.BODY_SIZE.y
+	)
+	character.velocity.x = 10.0
+	character.grounded = true
+
+
 func _test_traversal_bands() -> void:
 	var baseline: Dictionary = Profiles.preset(Profiles.PRESET_CURRENT)
 	var character := CyberSampledCharacter.new()
 	character.configure_profile(baseline)
-	character.position = Vector2.ZERO
-	character.velocity.x = 10.0
-	character.grounded = true
-	character.move_horizontal(1.0, TraversalWorld.new(1))
+
+	_place_on_flat(character)
+	character.move_horizontal(1.0, ContourWorld.isolated(1))
 	_expect(
-		character.position.is_equal_approx(Vector2(1.0, -1.0)),
-		"one-pixel baseline step no longer follows the historical full-speed path"
+		character.last_traversal_band == "step",
+		"one-pixel baseline obstacle did not classify as step"
+	)
+	_expect(
+		absf(character.last_traversal_horizontal_progress - 1.0) < 0.0001,
+		"step band lost horizontal progress"
+	)
+	_expect(
+		character.last_traversal_ledge_height == 1,
+		"one-pixel baseline ledge height was not measured locally"
 	)
 
-	character.position = Vector2.ZERO
-	character.velocity.x = 10.0
-	character.grounded = true
-	character.move_horizontal(1.0, TraversalWorld.new(2))
+	_place_on_flat(character)
+	var baseline_x: float = character.position.x
+	character.move_horizontal(1.0, ContourWorld.isolated(2))
 	_expect(
-		character.position.is_equal_approx(Vector2.ZERO),
-		"exact-current profile unexpectedly traversed a two-pixel obstacle"
+		absf(character.position.x - baseline_x) < 0.0001
+			and character.last_traversal_band == "blocked",
+		"exact-current profile unexpectedly admitted a two-pixel local ledge"
 	)
 
+	# Owner explicitly tested 2/4/6 and rejected the old whole-box model. This
+	# profile is the primary PENV-002 owner-rejected-case classification regression.
 	var traversal: Dictionary = baseline.duplicate(true)
-	traversal.id = "step-knee-clamber-fixture"
-	traversal.step_height = 1
-	traversal.knee_height = 2
-	traversal.clamber_height = 4
+	traversal.id = "step-knee-clamber-2-4-6"
+	traversal.step_height = 2
+	traversal.knee_height = 4
+	traversal.clamber_height = 6
 	traversal.knee_slowdown = 0.5
 	traversal.clamber_slowdown = 0.25
 	var resolved: Dictionary = Profiles.resolve(traversal)
-	_expect(resolved.get("ok", false), "step/knee/clamber profile rejected")
+	_expect(resolved.get("ok", false), "2/4/6 traversal profile rejected")
 	if not resolved.get("ok", false):
 		return
 	character.configure_profile(resolved.profile)
 
-	character.position = Vector2.ZERO
-	character.velocity.x = 10.0
-	character.grounded = true
-	character.move_horizontal(1.0, TraversalWorld.new(2))
+	for height: int in [1, 2]:
+		_place_on_flat(character)
+		character.move_horizontal(1.0, ContourWorld.isolated(height))
+		_expect(
+			character.last_traversal_band == "step",
+			"%dpx ledge escaped the configured step band" % height
+		)
+		_expect(
+			absf(character.last_traversal_horizontal_progress - 1.0) < 0.0001,
+			"%dpx step applied deliberate horizontal slowdown" % height
+		)
+
+	for height: int in [3, 4]:
+		_place_on_flat(character)
+		character.move_horizontal(1.0, ContourWorld.isolated(height))
+		_expect(
+			character.last_traversal_band == "knee"
+				and character.last_traversal_ledge_height == height,
+			"%dpx ledge did not stay in the knee band" % height
+		)
+		_expect(
+			absf(character.last_traversal_horizontal_progress - 0.5) < 0.0001,
+			"%dpx knee ledge ignored its own slowdown" % height
+		)
+
+	for height: int in [5, 6]:
+		_place_on_flat(character)
+		character.move_horizontal(1.0, ContourWorld.isolated(height))
+		_expect(
+			character.last_traversal_band == "clamber"
+				and character.last_traversal_ledge_height == height,
+			"%dpx ledge did not stay in the clamber band" % height
+		)
+		_expect(
+			absf(character.last_traversal_horizontal_progress - 0.25) < 0.0001,
+			"%dpx clamber ledge ignored its own slowdown" % height
+		)
+
+	_place_on_flat(character)
+	var blocked_x: float = character.position.x
+	character.move_horizontal(1.0, ContourWorld.isolated(7))
 	_expect(
-		character.position.is_equal_approx(Vector2(0.5, -2.0)),
-		"knee-height obstacle did not use the configured stair-like slowdown"
+		character.last_traversal_band == "blocked"
+			and absf(character.position.x - blocked_x) < 0.0001,
+		"above-clamber local ledge was admitted"
 	)
 
-	character.position = Vector2.ZERO
-	character.velocity.x = 10.0
-	character.grounded = true
-	character.move_horizontal(1.0, TraversalWorld.new(4))
+	# The key remediation case: an 8px-wide actor traversing a long shoulder can
+	# need >1px total box clearance even though each *local* rise is only 1px.
+	# The old algorithm classified that whole-box clearance as knee/clamber and
+	# made the entire shoulder sluggish.
+	_place_on_flat(character)
+	var staircase := ContourWorld.staircase(1, 3, 12)
+	var start_x: float = character.position.x
+	for _step: int in range(12):
+		character.grounded = true
+		character.move_horizontal(1.0, staircase)
+		_expect(
+			character.last_traversal_band in ["none", "step"],
+			"1px shoulder leaked into knee/clamber slowdown"
+		)
 	_expect(
-		character.position.is_equal_approx(Vector2(0.25, -4.0)),
-		"clamber-height obstacle did not use the configured climbing slowdown"
+		absf(character.position.x - (start_x + 12.0)) < 0.0001,
+		"1px shoulder lost horizontal progress under 2/4/6"
 	)
 
-	character.position = Vector2.ZERO
-	character.velocity.x = 10.0
-	character.grounded = true
-	character.move_horizontal(1.0, TraversalWorld.new(5))
+	# A repeated 2px stair remains in step because the configured step threshold
+	# explicitly admits two pixels.
+	_place_on_flat(character)
+	var two_px_stairs := ContourWorld.staircase(2, 3, 24)
+	start_x = character.position.x
+	for _step: int in range(9):
+		character.grounded = true
+		character.move_horizontal(1.0, two_px_stairs)
+		_expect(
+			character.last_traversal_band in ["none", "step"],
+			"2px staircase leaked into knee/clamber slowdown"
+		)
 	_expect(
-		character.position.is_equal_approx(Vector2.ZERO),
-		"above-clamber obstacle was not blocked"
+		absf(character.position.x - (start_x + 9.0)) < 0.0001,
+		"2px staircase lost horizontal progress under step-height 2"
+	)
+
+	# A head-height obstruction has no contiguous ledge at the foot. It must not
+	# be reinterpreted as a climbable step.
+	_place_on_flat(character)
+	blocked_x = character.position.x
+	character.move_horizontal(1.0, ContourWorld.with_overhang())
+	_expect(
+		character.last_traversal_band == "blocked"
+			and character.last_traversal_ledge_height == 0
+			and absf(character.position.x - blocked_x) < 0.0001,
+		"overhang/head obstruction was misclassified as traversal"
 	)
