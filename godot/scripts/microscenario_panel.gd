@@ -2,6 +2,7 @@ class_name CyberMicroScenarioPanel
 extends VBoxContainer
 
 const Workbench = preload("res://scripts/microscenario_workbench.gd")
+const LiquidPanel = preload("res://scripts/liquid_comparison_panel.gd")
 var workbench: CyberMicroScenarioWorkbench
 var host: Control
 var picker: OptionButton
@@ -18,6 +19,8 @@ var definition_error: Label
 var capture_button: Button
 var status: Label
 var shown_identity: String = ""
+var liquid_dialog: AcceptDialog
+var liquid_panel: CyberLiquidComparisonPanel
 
 func _button(row: Node, text: String, action: Callable) -> Button:
 	var control := Button.new()
@@ -55,6 +58,7 @@ func setup(controller: Control) -> void:
 	step_button = _button(row, "Single step", func() -> void: host.tower_command({"step":true}))
 	definition_button = _button(row, "Definition JSON", _open_definition)
 	capture_button = _button(row, "Capture", func() -> void: host.microscenario_capture())
+	_button(row, "Liquids…", open_liquids)
 	_button(row, "Hide HUD / F8", func() -> void: host.microscenario_toggle_hud())
 	status = Label.new()
 	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -78,9 +82,24 @@ func setup(controller: Control) -> void:
 	workbench = Workbench.new()
 	add_child(workbench)
 	workbench.setup(host)
+	liquid_dialog = AcceptDialog.new()
+	liquid_dialog.title = "Liquid comparison"
+	liquid_dialog.get_ok_button().text = "Close"
+	add_child(liquid_dialog)
+	liquid_panel = LiquidPanel.new()
+	liquid_panel.custom_minimum_size = Vector2(740, 340)
+	liquid_dialog.add_child(liquid_panel)
+	liquid_panel.setup(host)
+
+func open_liquids(load_dam: bool = false) -> void:
+	workbench.cancel_declared_window()
+	host.paused = true
+	if load_dam: liquid_panel.load_dam()
+	liquid_panel.refresh(host.tower_context)
+	liquid_dialog.popup_centered(Vector2i(780, 420))
 
 func modal_open() -> bool:
-	return definition_dialog.visible or workbench.modal_open()
+	return definition_dialog.visible or liquid_dialog.visible or workbench.modal_open()
 
 func _launch() -> void:
 	get_viewport().gui_release_focus()
@@ -90,7 +109,10 @@ func _launch() -> void:
 
 func refresh(context: Dictionary) -> void:
 	workbench.refresh(context)
-	if host.microscenario_hud_hidden: definition_dialog.hide()
+	if liquid_dialog.visible: liquid_panel.refresh(context)
+	if host.microscenario_hud_hidden:
+		definition_dialog.hide()
+		liquid_dialog.hide()
 	var blind: bool = not host.water_blind_set.is_empty() or not host.water_active_blind_label.is_empty()
 	var pending: bool = not host.pending_microscenario_apply.is_empty() or not host.pending_water_apply.is_empty()
 	picker.disabled = blind or pending

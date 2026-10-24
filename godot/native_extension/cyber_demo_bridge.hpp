@@ -471,6 +471,42 @@ public:
 
     [[nodiscard]] Dictionary get_last_liquid_policy_refusal() const { return last_liquid_policy_refusal_; }
 
+    // The UI receives native-generated request values and actual admission
+    // outcomes. GDScript never reconstructs the policy wire layout or infers
+    // availability from a design-only matrix cell.
+    [[nodiscard]] Array liquid_policy_assignment_choices(const PackedInt32Array& request, std::int64_t material) {
+        error_ = String();
+        Array choices;
+        const auto decoded = cybersand::LiquidSolverPolicy::decode(std::span<const std::int32_t>(
+            request.ptr(), static_cast<std::size_t>(request.size())));
+        if (!decoded.accepted()) { error_ = String(decoded.refusal.message().c_str()); return choices; }
+        std::size_t index = 0;
+        for (const auto& row : cybersand::liquid_policy_catalogue::kLiquidRows) {
+            if (material != row.material_id) { ++index; continue; }
+            for (std::uint8_t family = 1; family <= cybersand::LiquidSolverPolicy::kFamilyCount; ++family) {
+                const auto mask = row.variant_mask[family-1];
+                for (std::uint8_t variant = 0; variant < cybersand::LiquidSolverPolicy::kVariantCount; ++variant) {
+                    if (variant != 0 && (mask & (1U << variant)) == 0U) continue;
+                    auto edited = request.duplicate();
+                    const auto offset = static_cast<std::int64_t>(cybersand::LiquidSolverPolicy::kHeaderWords + 1 + index*3);
+                    edited.set(offset+1, family); edited.set(offset+2, variant);
+                    auto choice = validate_liquid_policy(edited);
+                    choice["request"] = edited;
+                    choice["material"] = material;
+                    choice["family"] = String(std::string(cybersand::liquid_solver_family_id(
+                        static_cast<cybersand::LiquidSolverFamily>(family))).c_str());
+                    choice["variant"] = String(std::string(cybersand::liquid_solver_variant_id(
+                        static_cast<cybersand::LiquidSolverVariant>(variant))).c_str());
+                    choice["current_default"] = family == row.default_family && variant == 0;
+                    choices.push_back(choice);
+                }
+            }
+            return choices;
+        }
+        error_ = "Material has no liquid solver assignment";
+        return choices;
+    }
+
     // Construction is deliberately split: the simulation owner may prepare
     // without holding its queue mutex, then fence the one-use commit under it.
     [[nodiscard]] std::int64_t prepare_liquid_world(const Ref<CyberNativeCellWorld>& adapter,
@@ -773,6 +809,8 @@ protected:
                                      "policy", "water_fills", "liquid_policy"),
                              &CyberDemoBridge::build_liquid_policy_world);
         ClassDB::bind_method(D_METHOD("default_liquid_policy"), &CyberDemoBridge::default_liquid_policy);
+        ClassDB::bind_method(D_METHOD("liquid_policy_assignment_choices", "request", "material"),
+                             &CyberDemoBridge::liquid_policy_assignment_choices);
         ClassDB::bind_method(D_METHOD("prepare_liquid_world", "world", "rectangles", "profile", "policy",
             "water_fills", "liquid_policy", "options"), &CyberDemoBridge::prepare_liquid_world);
         ClassDB::bind_method(D_METHOD("commit_liquid_world", "world", "token"), &CyberDemoBridge::commit_liquid_world);

@@ -1,0 +1,262 @@
+class_name CyberLiquidComparisonPanel
+extends VBoxContainer
+
+# Presentation and copied request selection only. The existing application
+# owner and native prepared builder perform every actual reconstruction.
+const Contract = preload("res://scripts/microscenario_contract.gd")
+const DAM_PATH: String = "res://tests/fixtures/lcb/lcb.dam.water.freemass.reference.v1.json"
+const MIXED_PATH: String = "res://tests/fixtures/lcb/lcb.mixed.water-oil-brine.v1.json"
+const PRESETS: Array[Dictionary] = [
+	{"label":"Current defaults", "assignments":[]},
+	{"label":"Water: whole-cell", "assignments":[[3,"cellular_yield_v1","reference"]]},
+	{"label":"Water: pressure reference", "assignments":[[3,"pressure_flow_v1","reference"]]},
+	{"label":"Water: pressure cached", "assignments":[[3,"pressure_flow_v1","cached"]]},
+	{"label":"Water: pressure dormant", "assignments":[[3,"pressure_flow_v1","cached_dormant"]]},
+	{"label":"Water: inertial", "assignments":[[3,"inertial_cellular_v1","reference"]]},
+	{"label":"Mixed: pressure Water + inertial Brine", "assignments":[[3,"pressure_flow_v1","reference"],[24,"inertial_cellular_v1","reference"]]},
+]
+var host: Control
+var bridge: Variant
+var preset_picker: OptionButton
+var setup_picker: OptionButton
+var material_picker: OptionButton
+var family_picker: OptionButton
+var normalize_water: CheckBox
+var apply_button: Button
+var dam_button: Button
+var control_button: Button
+var receipt_label: Label
+var status: Label
+var requested_policy := PackedInt32Array()
+var _choices: Array = []
+var _validation: Dictionary = {}
+var _dirty: bool = false
+var _applied_generation: int = -1
+var _waiting_serial: int = 0
+var _refusal: String = ""
+
+func _button(row: Node, text: String, action: Callable) -> Button:
+	var button := Button.new()
+	button.text = text
+	button.focus_mode = Control.FOCUS_NONE
+	button.pressed.connect(action)
+	row.add_child(button)
+	return button
+
+func setup(controller: Control) -> void:
+	host = controller
+	name = "LiquidComparisonControls"
+	var heading := Label.new()
+	heading.text = "Liquid comparison • experimental"
+	heading.add_theme_font_size_override("font_size", 20)
+	add_child(heading)
+	var explanation := Label.new()
+	explanation.text = "Choose a pending solver policy, then rebuild a fixed actor-free scenario. Existing pause and step controls run the accepted setup."
+	explanation.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	add_child(explanation)
+	var presets := HFlowContainer.new()
+	add_child(presets)
+	setup_picker = OptionButton.new()
+	setup_picker.add_item("Protected Dam Break")
+	setup_picker.add_item("Water / Oil / Brine lock exchange")
+	presets.add_child(setup_picker)
+	preset_picker = OptionButton.new()
+	preset_picker.tooltip_text = "Presets replace the solver policy. The active definition's independent Water precision, coherence and transport settings stay unchanged."
+	preset_picker.item_selected.connect(select_preset)
+	presets.add_child(preset_picker)
+	var rows := HFlowContainer.new()
+	add_child(rows)
+	material_picker = OptionButton.new()
+	material_picker.tooltip_text = "The policy covers every liquid material, including species absent from this setup. Its solver applies whenever cells of that material appear."
+	material_picker.item_selected.connect(func(_index: int) -> void: _refresh_choices())
+	rows.add_child(material_picker)
+	family_picker = OptionButton.new()
+	family_picker.item_selected.connect(select_family)
+	rows.add_child(family_picker)
+	normalize_water = CheckBox.new()
+	normalize_water.text = "Normalize Water to whole cells on rebuild"
+	normalize_water.tooltip_text = "Explicit water-normalize-v1: final Water cells round at one-half of the native maximum. The receipt records exact Water added and removed, including zero net change. Check this for both comparator arms when matching whole-cell setups."
+	normalize_water.toggled.connect(func(_enabled: bool) -> void: _dirty = true; _refusal = "")
+	add_child(normalize_water)
+	var actions := HFlowContainer.new()
+	add_child(actions)
+	apply_button = _button(actions, "Apply & rebuild active", apply_active)
+	dam_button = _button(actions, "Load selected comparison", load_selected)
+	control_button = _button(actions, "Original Current control", load_current_control)
+	control_button.tooltip_text = "Uses the unchanged protected definition and original default constructor; pending family and normalization choices are not applied."
+	receipt_label = Label.new()
+	receipt_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	add_child(receipt_label)
+	status = Label.new()
+	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	add_child(status)
+	if ClassDB.class_exists(&"CyberDemoBridge"):
+		bridge = ClassDB.instantiate(&"CyberDemoBridge")
+	if bridge == null or not bridge.has_method(&"liquid_policy_assignment_choices"):
+		refresh({})
+		return
+	requested_policy = bridge.default_liquid_policy()
+	_validation = bridge.validate_liquid_policy(requested_policy)
+	for assignment: Dictionary in _validation.receipt.assignments:
+		material_picker.add_item(str(assignment.name).capitalize(), int(assignment.material))
+	for index: int in PRESETS.size():
+		var result: Dictionary = _preset(index)
+		preset_picker.add_item(str(PRESETS[index].label))
+		preset_picker.set_item_disabled(index, not result.ok)
+		preset_picker.set_item_tooltip(index, str(result.get("error", "Pending policy; applies only on rebuild")))
+	_refresh_choices()
+	refresh({})
+
+func _preset(index: int) -> Dictionary:
+	var request: PackedInt32Array = bridge.default_liquid_policy()
+	for assignment: Array in PRESETS[index].assignments:
+		var found: bool = false
+		for choice: Dictionary in bridge.liquid_policy_assignment_choices(request, int(assignment[0])):
+			if choice.family != assignment[1] or choice.variant != assignment[2]: continue
+			if not choice.accepted:
+				return {"ok":false, "error":str(choice.refusal.code) + ": " + str(choice.refusal.detail)}
+			request = choice.request
+			found = true
+			break
+		if not found: return {"ok":false, "error":"This runtime has no declared choice for that preset"}
+	return {"ok":true, "request":request}
+
+func select_preset(index: int) -> void:
+	if bridge == null or not bridge.has_method(&"liquid_policy_assignment_choices") or index < 0 or index >= PRESETS.size(): return
+	var result: Dictionary = _preset(index)
+	if not result.ok:
+		_refusal = str(result.error)
+		return
+	requested_policy = result.request
+	_dirty = true
+	_refusal = ""
+	_refresh_choices()
+
+func _refresh_choices() -> void:
+	if bridge == null or not bridge.has_method(&"liquid_policy_assignment_choices") or requested_policy.is_empty(): return
+	_validation = bridge.validate_liquid_policy(requested_policy)
+	_choices = bridge.liquid_policy_assignment_choices(requested_policy, material_picker.get_selected_id())
+	family_picker.clear()
+	var selected: int = -1
+	for assignment: Dictionary in _validation.get("receipt", {}).get("assignments", []):
+		if int(assignment.material) != material_picker.get_selected_id(): continue
+		for index: int in _choices.size():
+			if _choices[index].family == assignment.applied_family and _choices[index].variant == assignment.applied_variant:
+				selected = index
+	for index: int in _choices.size():
+		var choice: Dictionary = _choices[index]
+		var label: String = str(choice.family).trim_suffix("_v1").replace("_", " ").capitalize() + " / " + str(choice.variant)
+		label += " • Current" if choice.current_default else " • experimental"
+		if not choice.accepted: label += " • unavailable"
+		family_picker.add_item(label)
+		family_picker.set_item_disabled(index, not choice.accepted)
+		if not choice.accepted:
+			family_picker.set_item_tooltip(index, str(choice.refusal.code) + ": " + str(choice.refusal.detail))
+	if selected >= 0: family_picker.select(selected)
+
+func select_family(index: int) -> void:
+	if index < 0 or index >= _choices.size(): return
+	var choice: Dictionary = _choices[index]
+	if not choice.accepted:
+		_refusal = str(choice.refusal.code) + ": " + str(choice.refusal.detail)
+		return
+	requested_policy = choice.request.duplicate()
+	_dirty = true
+	_refusal = ""
+	_refresh_choices()
+
+func _definition_supported(definition: Dictionary) -> bool:
+	return (not definition.is_empty() and int(definition.get("schema_version",0)) == 2 \
+		and not definition.get("player_enabled",true) and not definition.get("body_enabled",true) \
+		and definition.get("execution",{}).get("policy","") == "fixed" \
+		and definition.get("interest",{}).get("policy","") == "fixed")
+
+func _request(definition: Dictionary, original_control: bool = false, mode: String = "Inspect") -> bool:
+	_refusal = ""
+	if bridge == null or not bridge.has_method(&"liquid_policy_assignment_choices"):
+		_refusal = "This runtime has no native liquid comparison editor"
+		return false
+	if not _definition_supported(definition):
+		_refusal = "This route is not yet wired for experimental policies. Choose a fixed actor-free MicroScenario or load Dam Break."
+		return false
+	var admitted: bool = (host.microscenario_apply_definition(definition, mode) if original_control \
+		else host.microscenario_apply_controlled_liquid(definition, requested_policy, normalize_water.button_pressed, mode))
+	if not admitted:
+		_refusal = str(host.microscenario_error)
+		return false
+	if not host.pending_microscenario_apply.is_empty():
+		_waiting_serial = int(host.pending_microscenario_apply.serial)
+	else:
+		_dirty = false
+		_sync_applied(host.tower_context)
+	return true
+
+func apply_active() -> bool:
+	return _request(host.microscenario_definition.duplicate(true), false, host.microscenario_mode)
+
+func _selected_definition() -> Dictionary:
+	var checked: Dictionary = Contract.parse(FileAccess.get_file_as_string(DAM_PATH if setup_picker.selected == 0 else MIXED_PATH))
+	if not checked.get("ok",false):
+		_refusal = str(checked.get("error","Protected Dam Break unavailable"))
+		return {}
+	return checked.definition
+
+func load_dam() -> bool:
+	setup_picker.select(0)
+	return load_selected()
+
+func load_selected() -> bool:
+	return _request(_selected_definition())
+
+func load_current_control() -> bool:
+	return _request(_selected_definition(), true)
+
+func _sync_applied(context: Dictionary) -> void:
+	var applied: Dictionary = context.get("liquid_solver_policy",{})
+	if applied.is_empty() or not applied.has("envelope"): return
+	_applied_generation = int(applied.session_generation)
+	if not _dirty:
+		requested_policy = applied.envelope.duplicate()
+		normalize_water.set_pressed_no_signal(not host.microscenario_liquid_setup.is_empty() \
+			and host.microscenario_liquid_setup.get("normalization","") == "water-normalize-v1")
+		_refresh_choices()
+
+func refresh(context: Dictionary) -> void:
+	var available: bool = bridge != null and bridge.has_method(&"liquid_policy_assignment_choices")
+	var pending: bool = not host.pending_microscenario_apply.is_empty() or not host.pending_water_apply.is_empty()
+	var blind: bool = not host.water_blind_set.is_empty() or not host.water_active_blind_label.is_empty()
+	if _waiting_serial != 0 and not pending and int(context.get("scenario_request_serial",0)) == _waiting_serial:
+		if context.get("scenario_request_applied",false): _dirty = false
+		else: _refusal = str(host.microscenario_error)
+		_waiting_serial = 0
+	var generation: int = int(context.get("liquid_solver_policy",{}).get("session_generation",-1))
+	if available and generation != _applied_generation: _sync_applied(context)
+	preset_picker.disabled = not available or pending or blind
+	setup_picker.disabled = not available or pending or blind
+	material_picker.disabled = not available or pending or blind
+	family_picker.disabled = not available or pending or blind
+	normalize_water.disabled = not available or pending or blind
+	dam_button.disabled = not available or pending or blind
+	control_button.disabled = not available or pending or blind
+	apply_button.disabled = not available or pending or blind or not _definition_supported(host.microscenario_definition)
+	var applied: Dictionary = context.get("liquid_solver_policy",{})
+	var typed: Dictionary = context.get("liquid_construction_receipt",{})
+	receipt_label.text = "Applied native policy: " + str(applied.get("policy_hash","unavailable")).left(16)
+	for assignment: Dictionary in applied.get("assignments",[]):
+		if int(assignment.material) == 3:
+			receipt_label.text += " • Water " + str(assignment.applied_family) + "/" + str(assignment.applied_variant)
+	if not typed.is_empty():
+		receipt_label.text += "\nNative receipt " + str(typed.receipt_hash).left(16) + " • host/source proof pending"
+		var normalized: Dictionary = typed.get("normalization",{})
+		if not normalized.is_empty():
+			receipt_label.text += " • Water added %s / removed %s / net %s" % [normalized.positive_delta, normalized.negative_delta, normalized.net_delta]
+	else:
+		receipt_label.text += " • original constructor; no typed setup receipt"
+	if not available: status.text = "This runtime has no liquid comparison editor; a source-matched native rebuild is required."
+	elif blind: status.text = "Finish the Water blind session before changing solver policy."
+	elif pending: status.text = "Rebuilding at the existing owner boundary…"
+	elif context.get("microscenario",{}).get("failed",false): status.text = "Installed session apparatus failed: " + str(context.microscenario.get("error","unavailable"))
+	elif not _refusal.is_empty(): status.text = "Refused; applied session retained. " + _refusal
+	elif not _definition_supported(host.microscenario_definition): status.text = "Load Dam Break, or choose a fixed actor-free MicroScenario. Actor, exploratory and other constructor routes remain pending."
+	elif _dirty: status.text = "Pending solver/normalization selection. The running World keeps its applied policy until rebuild."
+	else: status.text = "Applied setup is ready. Reset keeps its accepted policy and normalization selection."

@@ -6,6 +6,7 @@ const WaterFeelWebProbe = preload("res://scripts/water_feel_web_probe.gd")
 # Every native call here runs on Godot's main thread; cellular ticks remain
 # fixed at 60 Hz and render publication has its own bounded cadence.
 var micro_host: CyberMicroScenarioHost = CyberMicroScenarioHost.new()
+var _liquid_context_generation: int = -1
 var native_world: Variant
 var demo_bridge: Variant
 var player: CyberSampledCharacter = CyberSampledCharacter.new()
@@ -149,6 +150,8 @@ func _install_web_microscenario(definition: Dictionary, mode: String, liquid_pol
 		return false
 	if not micro_host.install(native_world, definition, mode, true, liquid_policy, controlled_setup):
 		microscenario_error = micro_host.last_error
+		if native_world.has_method(&"get_liquid_construction_attempt"):
+			tower_context["liquid_construction_attempt"] = native_world.get_liquid_construction_attempt()
 		return false
 	if microscenario_panel != null: microscenario_panel.workbench.cancel_declared_window()
 	var installed: Dictionary = micro_host.definition()
@@ -175,6 +178,7 @@ func _install_web_microscenario(definition: Dictionary, mode: String, liquid_pol
 		"microscenario":micro_host.summary(), "status":"MicroScenario " + str(installed.id),
 		"liquid_construction_receipt":native_world.get_applied_liquid_construction_receipt() \
 			if native_world.has_method(&"get_applied_liquid_construction_receipt") else {}}
+	_update_liquid_context(true)
 	_activate_physics(bool(installed.body_enabled))
 	showcase_presentation.installed(installed)
 	blacksite_nine_presentation.installed(installed)
@@ -425,8 +429,20 @@ func _notification(what: int) -> void:
 func release_game_input() -> void:
 	input_armed = false
 
+func _update_liquid_context(force: bool = false) -> void:
+	if native_world == null or not native_world.has_method(&"get_liquid_policy_session_generation"): return
+	var generation: int = int(native_world.get_liquid_policy_session_generation())
+	if not force and generation == _liquid_context_generation: return
+	_liquid_context_generation = generation
+	tower_context["liquid_solver_policy"] = native_world.get_liquid_solver_policy()
+	tower_context["liquid_construction_receipt"] = native_world.get_applied_liquid_construction_receipt() \
+		if native_world.has_method(&"get_applied_liquid_construction_receipt") else {}
+	tower_context["liquid_construction_attempt"] = native_world.get_liquid_construction_attempt() \
+		if native_world.has_method(&"get_liquid_construction_attempt") else {}
+
 func _process(delta: float) -> void:
 	if native_world != null: tower_context["tick"]=int(native_world.get_tick_index());tower_context["paused"]=paused
+	_update_liquid_context()
 	if native_world != null: _update_water_web_context()
 	tower_context["microscenario"] = micro_host.summary()
 	tower_panel.refresh(tower_active,tower_floor,tower_context)
