@@ -338,6 +338,25 @@ retrieval retained 32/32 top-five routes (MRR 0.7953); challenge retrieval
 retained 121/121 (MRR 0.8742). These lexical results do not establish answer
 sufficiency. No native input changed after the published source.
 
+## Native CI aggregate-timeout correction
+
+The ready-PR Native run
+[`40101949681`](https://github.com/techrote/cybersand/actions/runs/40101949681)
+at head `48fb275` was cancelled by its **45-minute job limit**, not an assertion
+or sanitizer diagnostic. The native job ran from 14:19:13 to 15:04:27 UTC on
+2026-10-24. Behavioral tests, CLI/generation checks, ASan/UBSan, the sanitized
+settled-regions build and soliding sanitizer regressions passed. The latter
+finished at 15:02:47; the deadline interrupted TSan at 15:04:25, and the final
+shared-library/benchmark step did not run. Neither incomplete gate is credited.
+ASan execution retained its declared `detect_leaks=0` scope.
+
+The aggregate job budget is increased to 90 minutes while retaining every
+existing test, sanitizer setting and per-command timeout. Native source inputs,
+published runtime bytes and provenance are unchanged. CI-provider policy and its
+six tests pass locally; the complete required non-draft matrix must pass again
+at the updated PR head before merge. Exact new run identities and their completed
+outcomes are recorded in PR #245's description and Checks.
+
 ## Gaps (open)
 
 - #200: W-CY (whole-cell Water `cellular_yield_v1`), `water-normalize-v1` and
