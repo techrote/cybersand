@@ -1073,6 +1073,7 @@ func _ready() -> void:
 	setup_player_environment_tuning()
 	setup_depth_lab_launcher()
 	setup_actor_prototypes()
+	setup_flight_lab_launcher()
 	var tower_button: Button = Button.new()
 	tower_button.name = "ExperimentTowerLauncher"
 	tower_button.text = "Experiment Tower / F9"
@@ -1282,6 +1283,16 @@ func setup_depth_lab_launcher() -> void:
 	launcher.tooltip_text = "Open the separate layering/parallax prototype scene. Returning starts a fresh sandbox."
 	launcher.focus_mode = Control.FOCUS_NONE
 	launcher.pressed.connect(open_depth_lab)
+	$Layout.add_child(launcher)
+
+
+func setup_flight_lab_launcher() -> void:
+	var launcher := Button.new()
+	launcher.name = "PhysicalFlightLabLauncher"
+	launcher.text = "4LY flight lab"
+	launcher.tooltip_text = "Open the native-material/Rapier four-drone course; F2 returns to feature selection."
+	launcher.focus_mode = Control.FOCUS_NONE
+	launcher.pressed.connect(func() -> void: get_tree().change_scene_to_file("res://flight_lab.tscn"))
 	$Layout.add_child(launcher)
 
 

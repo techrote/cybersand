@@ -1,0 +1,29 @@
+{
+  "schema_version": 3,
+  "registered_utc": "2026-10-23",
+  "status": "SOURCE_CONTRACT_REGISTERED_FINAL_SUITE_UNAVAILABLE_NOT_ADMITTED",
+  "topic": "4LY-003 meaningful dev/tuning family semantics and externally sealed final evaluation",
+  "supersedes_geometry": [
+    "godot/tests/fixtures/4ly003_qualification_registration.json: initial published final geometry rule",
+    "godot/tests/fixtures/4ly003_split_amendment_v2.json: exposed final geometry example"
+  ],
+  "reason": "Earlier in-repository final geometry was publicly visible before teacher source freeze, so it cannot serve as a genuinely sealed holdout. It is retired. Future independently generated final geometry must be delivered only as externally sealed JSON with SHA-256 commitment and reviewed source admission.",
+  "unchanged_numerical_acceptance": "godot/tests/fixtures/4ly003_qualification_registration.json",
+  "split_versions": {
+    "development": 3,
+    "tuning": 3,
+    "final": "externally sealed 4ly003-sealed-final-suite/v1 only"
+  },
+  "development_geometry": "Retained; four source-bound profile hashes and original teacher gates unchanged",
+  "tuning_geometry": "Distinct start/goal and obstacle family; unsupported-hover goal=start; pure horizontal/vertical remain axis-aligned and nontrivial",
+  "retired_exposed_final_geometry": "Never use publicly committed offsets/targets as a sealed score; any such measurements are development only",
+  "external_final_suite": {
+    "file_reference": "user://4ly003_sealed_final_suite.json",
+    "schema": "4ly003-sealed-final-suite/v1",
+    "minimum_contents": "one unique entry per admitted scenario and seed with id,seed,start,goals,obstacles; no policy privileges",
+    "mandatory_admission": "user://4ly003_final_admission.json with version 4ly003-final-admission/v1, independent reviewer, accepted teacher SHA-256, accepted GH checkout source SHA, external suite SHA-256 and preflight acceptance",
+    "gating": "No final-split execution without exact hash matches; the public repo contains no accepted final geometry; independent reviewer must inspect private fixture and feasibility before first score"
+  },
+  "provenance_notice": "Historical exposed 'final' geometry remains visible in Git history and must not be reused. This v3 manifest records that invalidation before actual final teacher qualification.",
+  "current_result": "not admitted; no 4LY-003 final scored run"
+}
