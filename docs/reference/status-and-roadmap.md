@@ -12,14 +12,16 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Current MAT-003 integration checkpoint — 2026-10-24
 
-The [post-#241 integration checkpoint](../audits/2026-10-24-mat003-post-241-integration-checkpoint.md)
-owns reconciliation with main `4348516`, including #239's bounded policy
-foundation, #240's regression follow-ups and #241's timeout diagnostics. The
-earlier 15 current and seven scoped workflow passes remain valid for their exact
-heads. The next reconciliation's completed checks and unfinished Native/Godot
-workflows retain their own source scope; supersession is neither a new PASS nor
-a test failure. Fresh checks, including ordinary Godot physical-timing reduction,
-are pending on the new heads. Historical campaigns remain unchanged; #204 and
+The [post-#242 integration checkpoint](../audits/2026-10-24-mat003-post-242-integration-checkpoint.md)
+owns reconciliation with main `fd97367`, including #239's bounded policy
+foundation, #240's regression follow-ups, #241's timeout diagnostics and #242's
+retirement of spent publishers. The earlier complete 15 current and seven scoped
+workflow passes and later completed checks remain valid for their exact heads.
+Unfinished Native/Godot workflows retain their own source scope; supersession is
+neither a new PASS nor a test failure. Fresh checks, including ordinary Godot
+physical-timing reduction, are pending on the new heads. Retired publishers stay
+historical under the [publication policy](../operations/local-build-and-validation.md#branch-scoped-runtime-publishers).
+Historical campaigns remain unchanged; #204 and
 independent acceptance remain open. This task dispatches no manual physical
 stress campaign and starts neither #212 nor #234 repair.
 
