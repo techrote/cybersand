@@ -129,7 +129,9 @@ vector cases, the transcript and the build identity are unchanged.
 
 **Dispatch.** Unchanged: kernels remain keyed by `RuleKernel`. `World::World`
 re-validates the policy's normalized envelope against the running build before
-any allocation and throws `LiquidPolicyRefused` otherwise. A policy accepted by a
+any World-owned storage (chunks, scratch, worker pool) is allocated, and throws
+`LiquidPolicyRefused` otherwise. The validation itself allocates temporary policy
+data, and a refused constructor releases it; no partially built World escapes. A policy accepted by a
 hypothetical contract build can therefore never reach a kernel, and no fallback
 path exists to be taken silently.
 
@@ -145,18 +147,64 @@ are **not** in the native receipt; the host's runtime identity supplies them.
 (the constructor's demo, `reset_demo_world`, `diagnostic_reset` and every bridge
 install). A refusal never advances it.
 
-**Constructors.** Only `build_liquid_policy_world` and the C API's
-`create_with_liquid_policy_v1` accept a request. `reset_demo_world`,
-`build_world`, `build_tuned_world`, `build_water_feel_world`,
-`diagnostic_reset` and CYSD1 `import_level` (NC-10) construct on the default
-policy explicitly. The other #202 constructors (generation previews, depth and
-exhibition planes, physical arenas, player material modes, the Web controller and
-Water reset) pass no request and run defaults; wiring them is Planned.
+**Constructors.** Every World constructor takes the policy from its
+`WorldConfig`. Only two paths accept a request: `build_liquid_policy_world` and
+the C API's `create_with_liquid_policy_v1`. All other paths reach a World as
+follows:
+
+| Path | Policy |
+|---|---|
+| `reset_demo_world`, `build_world`, `build_tuned_world`, `build_water_feel_world` and CYSD1 `import_level` (NC-10) | Explicitly set to the default before construction |
+| `diagnostic_reset`, the adapter constructor, and the C API's `cybersand_world_create`/`_create_v2` | A fresh `WorldConfig`, therefore the default |
+| [`demo::construct`, `demo::reconstruct` and `demo::empty_level`](../../native/include/cybersand/demo_snapshot.hpp) | Build from the `WorldConfig` they are given; every current caller passes one of the configurations above |
+| The other #202 constructors (generation previews, depth and exhibition planes, physical arenas, player material modes, the Web controller and Water reset) | No request; they run defaults. Wiring them is Planned |
+
+A copied `WorldConfig` can carry only an admitted policy, and `World::World`
+re-validates it in every case.
 
 **Not frozen.** The C API is marked experimental, the receipt is a dictionary
-rather than a schema, and the default policy is not persisted in CYSD1. A runtime
-without the native handshake refuses any explicit request as
-`platform_unsupported`; callers that want defaults pass no request.
+rather than a schema, and the default policy is not persisted in CYSD1.
+
+**Fallback hosts (deliberate host/oracle difference).** The oracle's
+`gdscript_fallback` build models a host that can *decode* a request. It accepts a
+default policy and refuses only non-default assignments as `platform_unsupported`.
+No such GDScript decoder exists. `CyberMicroScenarioHost.install` therefore
+refuses **every** explicit request, including the explicit default, as
+`platform_unsupported` when the native handshake (`build_liquid_policy_world`,
+`get_liquid_solver_policy`) is missing. Without the handshake it could neither
+validate nor read back what it applied. Callers that want defaults on such a
+host pass no request (`null`). The oracle vectors remain the contract for a
+decoding host; adding a fallback decoder would have to reproduce them first.
+
+### Regenerating identity after a material or rule edit
+
+`catalogue_digest` hashes `material.hpp` and `interaction_rules.hpp`, and the
+capability matrix embeds their digests. **Any edit to either file** must
+therefore regenerate, in this order:
+
+```sh
+python tools/lcb/derive_capability_matrix.py   # matrix: source digests, liquid rows
+python tools/lcb/policy_contract.py            # wire vectors: capability digest, hashes, current identity
+python tools/lcb/native_policy_artifacts.py    # liquid_policy_catalogue.hpp and liquid_policy_vectors.inc
+```
+
+Then validate:
+
+```sh
+python tools/lcb/derive_capability_matrix.py --check
+python tools/lcb/policy_contract.py --check
+python -m unittest discover -s tools/lcb -p test_policy_contract.py
+python tools/lcb/native_policy_artifacts.py --check
+make build/tests && ./build/tests "LCB-001"   # or build_windows_msvc.bat
+```
+
+Review the vector diff before committing. A pure source edit should change only
+digest words, `policy_hash`, canonical bytes and the identity block. If any
+case's acceptance or refusal code changes, the edit has changed the policy
+contract (for example a new liquid, or a `LateralFlowMode` change). That needs
+review under this page, not silent regeneration. The generated header is a
+native runtime input, so the published GDExtension runtimes need a
+source-matched rebuild as for any native edit.
 
 ## Identities (owner-approved catalogue; Proposed encoding)
 

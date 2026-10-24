@@ -41,7 +41,7 @@ Later commits on the branch (runtime publication, documentation) are listed in
 
 | Path | Before | After |
 |---|---|---|
-| `WorldConfig` / `World::World` | Water and transport policies validated; no liquid policy | `liquid_solver_policy` admitted by re-validating its normalized envelope against the running build before allocation; `LiquidPolicyRefused` otherwise |
+| `WorldConfig` / `World::World` | Water and transport policies validated; no liquid policy | `liquid_solver_policy` admitted by re-validating its normalized envelope against the running build before World-owned storage is allocated; `LiquidPolicyRefused` otherwise |
 | Dispatch | `RuleKernel` switch; family implied by descriptor | Unchanged. No family dispatch exists, and unqualified mappings cannot reach a World |
 | C API | No policy | Experimental default/validate/create/readback/hash functions |
 | `CyberDemoBridge` constructors | Copied the live config | Explicit defaults in `build_world`, `build_tuned_world`, `build_water_feel_world` and CYSD1 `import_level`; `build_liquid_policy_world` takes a request |
@@ -234,6 +234,24 @@ The exact-head Documentation, Native and GDExtension/Godot gates for the
 ready-for-review head are recorded in the PR evidence comment, not here, so that
 recording them does not change the head.
 
+## Independent review follow-up
+
+**Astra** found no defects. Astra's threaded worker probe passed 15/0 and covers
+the previously untested worker `liquid_policy` forward.
+
+**Luna** found no blockers. Each finding was addressed:
+
+| Finding | Response |
+|---|---|
+| Should-fix: `cybersand_default_config_v2` could let `std::bad_alloc` escape the C ABI (default `WorldConfig` copies the policy) | Now wrapped; an allocation failure returns an all-zero config (`struct_size` 0), which every v2 consumer refuses. Documented in `c_api.h` |
+| Should-fix: material authors had no regeneration route | New [regeneration sequence](../architecture/liquid-solver-family-policy.md#regenerating-identity-after-a-material-or-rule-edit), linked from the building-material and materials/rule-kernels guides |
+| Nit: "before any World allocation" was too broad | Now "before any World-owned storage is allocated", in source and docs |
+| Nit: constructor inventory | Now lists the default C API constructors and the `demo::` helpers |
+| Question: fallback host versus oracle | Documented as a deliberate difference: there is no fallback decoder, so the host refuses even an explicit default |
+
+The `c_api.cpp` and `world.cpp` changes are runtime source inputs, so both
+runtimes were republished again (see the PR evidence update).
+
 ## Explicit gaps
 
 - Not implemented:
@@ -249,8 +267,10 @@ recording them does not change the head.
 - Two Worlds with *different* applied policies cannot coexist yet, because only
   defaults are admitted. Independence is shown by separate receipts, generations
   and refusal isolation.
-- The desktop worker `scenario_reset.liquid_policy` forward has no executed
-  threaded test.
+- The desktop worker `scenario_reset.liquid_policy` forward has no committed
+  threaded regression. Astra's independent threaded probe (15/0) is review
+  evidence, not a repository test.
+- The C API's allocation-failure return is inspected, not fault-injected.
 - Web/WASM is not built or run. The policy code is the same source; Web execution
   remains unverified.
 - `source_revision`/`native_binary_sha256` are not in the native receipt.

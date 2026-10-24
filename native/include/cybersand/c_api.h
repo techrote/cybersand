@@ -203,6 +203,8 @@ CYBERSAND_API int cybersand_world_copy_rgba(const cybersand_world* world, int64_
                                              int64_t width, int64_t height, uint8_t* destination,
                                              size_t destination_size, size_t stride_bytes);
 
+/* Returns an all-zero config (struct_size 0, rejected by every v2 consumer) if
+ * the defaults cannot be materialized; it never throws across the C ABI. */
 CYBERSAND_API cybersand_config_v2 cybersand_default_config_v2(void);
 CYBERSAND_API cybersand_world* cybersand_world_create_v2(const cybersand_config_v2* config);
 CYBERSAND_API int cybersand_world_set_v2(cybersand_world* world, int64_t x, int64_t y,

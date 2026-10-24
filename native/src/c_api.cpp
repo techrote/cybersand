@@ -82,6 +82,30 @@ void fill_liquid_refusal(cybersand_liquid_policy_refusal_v1* destination,
     return words.size();
 }
 
+[[nodiscard]] cybersand_config_v2 default_config_v2() {
+    const cybersand::WorldConfig native{};
+    return {
+        sizeof(cybersand_config_v2),
+        CYBERSAND_CONFIG_V2_ABI_VERSION,
+        native.chunk_size,
+        native.sleep_after_quiet_ticks,
+        native.ambient_temperature,
+        static_cast<uint8_t>(native.backend),
+        0,
+        native.activity_block_size,
+        native.scheduling_core_size,
+        native.maximum_rule_radius,
+        native.worker_threads,
+        static_cast<uint64_t>(native.initial_chunk_reserve),
+        static_cast<uint64_t>(native.parallel_job_threshold),
+        static_cast<uint64_t>(native.active_core_capacity),
+        static_cast<uint64_t>(native.active_chunk_capacity),
+        static_cast<uint64_t>(native.maximum_chunk_count),
+        static_cast<uint64_t>(native.deferred_event_capacity),
+        native.maximum_explosion_radius,
+    };
+}
+
 [[nodiscard]] bool checked_size(std::uint64_t value, std::size_t& destination) noexcept {
     if (value > std::numeric_limits<std::size_t>::max()) return false;
     destination = static_cast<std::size_t>(value);
@@ -213,27 +237,14 @@ int cybersand_world_copy_rgba(const cybersand_world* world, int64_t x, int64_t y
 }
 
 cybersand_config_v2 cybersand_default_config_v2(void) {
-    const cybersand::WorldConfig native{};
-    return {
-        sizeof(cybersand_config_v2),
-        CYBERSAND_CONFIG_V2_ABI_VERSION,
-        native.chunk_size,
-        native.sleep_after_quiet_ticks,
-        native.ambient_temperature,
-        static_cast<uint8_t>(native.backend),
-        0,
-        native.activity_block_size,
-        native.scheduling_core_size,
-        native.maximum_rule_radius,
-        native.worker_threads,
-        static_cast<uint64_t>(native.initial_chunk_reserve),
-        static_cast<uint64_t>(native.parallel_job_threshold),
-        static_cast<uint64_t>(native.active_core_capacity),
-        static_cast<uint64_t>(native.active_chunk_capacity),
-        static_cast<uint64_t>(native.maximum_chunk_count),
-        static_cast<uint64_t>(native.deferred_event_capacity),
-        native.maximum_explosion_radius,
-    };
+    // WorldConfig default construction copies the (allocating) liquid policy.
+    // No exception may cross the C ABI: failure yields an all-zero config, whose
+    // struct_size of 0 every v2 consumer refuses.
+    try {
+        return default_config_v2();
+    } catch (...) {
+        return cybersand_config_v2{};
+    }
 }
 
 cybersand_world* cybersand_world_create_v2(const cybersand_config_v2* config) {

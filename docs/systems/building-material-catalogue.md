@@ -26,6 +26,7 @@ The authoritative sources are the
 `apply_building_finish` branch of the
 [palette shader](../../godot/shaders/material_palette.gdshader). IDs 38–80 stay
 owned by the [themed construction catalogue](themed-construction-materials.md).
+Editing either native source also changes the LCB liquid-policy identity: follow the [regeneration sequence](../architecture/liquid-solver-family-policy.md#regenerating-identity-after-a-material-or-rule-edit) before committing.
 
 ## Catalogue
 
