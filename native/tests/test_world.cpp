@@ -3735,6 +3735,7 @@ void test_liquid_policy_running_build_admits_only_defaults();
 void test_liquid_policy_world_construction_and_refusal();
 void test_liquid_policy_default_preserves_behavior_and_workers();
 void test_liquid_policy_c_api_transaction();
+void test_liquid_policy_c_api_allocation_failures();
 
 int main(int argc, char** argv) {
     struct Test {
@@ -3835,6 +3836,7 @@ int main(int argc, char** argv) {
         {"LCB-001 liquid policy World construction and refusal", test_liquid_policy_world_construction_and_refusal},
         {"LCB-001 liquid policy default behavior and workers", test_liquid_policy_default_preserves_behavior_and_workers},
         {"LCB-001 liquid policy C API transaction", test_liquid_policy_c_api_transaction},
+        {"LCB-001 liquid policy C API allocation failures", test_liquid_policy_c_api_allocation_failures},
     };
 
     std::size_t passed = 0;
