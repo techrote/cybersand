@@ -10,6 +10,12 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+For current MAT-003 reconciliation with main `a395e33`, including the landed
+#239 foundation and #240 regressions, use the
+[post-#240 integration checkpoint](../audits/2026-10-24-mat003-post-240-integration-checkpoint.md).
+Previous exact-head CI passes and historical experiment records retain their own
+source scope; fresh checks on the new heads are pending.
+
 ## Generation Workbench 2 and procedural quality
 
 - [Workbench inspection and transactions](../systems/generation-workbench-2.md): accepted native identities, bounded deterministic replay, actual stage meanings, invalid-edit preservation, graph/hierarchy/plane editing, undo/redo, seeds and comparison.

@@ -36,10 +36,13 @@ For broad #10/#11 acceptance and issue-state routing, use the
 
 The 2026-10-24 main reconciliation also imports the bounded
 [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24)
-landed by [PR #239](https://github.com/techrote/cybersand/pull/239). That
-defaults-only policy API is Current; it is separate from this representation
-experiment and admits no candidate kernel or #212 implementation. Historical
-MAT source and evidence identities remain unchanged.
+landed by [PR #239](https://github.com/techrote/cybersand/pull/239) and
+[PR #240](https://github.com/techrote/cybersand/pull/240)'s regression follow-ups
+on main `a395e33`. That defaults-only policy API is Current; it is separate from
+this representation experiment and admits no candidate kernel or #212
+implementation. The [post-#240 checkpoint](../audits/2026-10-24-mat003-post-240-integration-checkpoint.md)
+preserves the previous exact-head passes and requires fresh integration checks
+on the new heads. Historical MAT source and evidence identities remain unchanged.
 
 The source inventory and GEN-006 semantic proposal precede durable streaming-contract selection. Preserve #16/#17 historical controls and the open G-final disposition. This checkpoint selects no production layout or solver and admits no Water successor, compact history or soliding gate.
 

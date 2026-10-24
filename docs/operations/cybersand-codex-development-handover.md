@@ -12,16 +12,19 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## MAT-003 stack reconciliation — 2026-10-24
 
-The [stack reconciliation](../audits/2026-10-24-mat003-lcb001-integration-checkpoint.md)
-now incorporates main `1e032e492cafb232e604baf6e2b823b13d779aa8`, including
-the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24)
-landed by [PR #239](https://github.com/techrote/cybersand/pull/239), into the
-experimental parent chain. Registered history and current-main LCB/4LY/WEX
-behavior are preserved. Fresh applicable Native, Godot and materialized provenance
-gates are required on these reconciled heads; earlier-head results retain their
-own source scope. This work does not complete #204 or start #212 or a solver port.
-The foundation is imported through main; Claude's separate source branch and the
-dirty primary checkout remain untouched.
+The [post-#240 checkpoint](../audits/2026-10-24-mat003-post-240-integration-checkpoint.md)
+now reconciles main `a395e33dc0632f5c3f41e8b8b1c18c89f0aaa131` with the
+experimental parent chain. Main includes the bounded
+[#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24)
+landed by [PR #239](https://github.com/techrote/cybersand/pull/239), plus
+[PR #240](https://github.com/techrote/cybersand/pull/240)'s threaded-worker and
+allocation-failure regressions. All 15 current and seven scoped workflows passed
+on the previous reconciled heads by 09:11 UTC; those records retain their exact
+source scope. Fresh applicable Native, Godot and materialized provenance gates
+are pending on the new heads. Registered MAT history and current-main LCB/4LY/WEX
+behavior are preserved. This work does not complete #204 or start #212 or a solver
+port. The foundation and follow-ups are imported through main; Claude's separate
+source branches and the dirty primary checkout remain untouched.
 
 ## MAT-003PREPASS S1 World apparatus — 2026-10-22
 
