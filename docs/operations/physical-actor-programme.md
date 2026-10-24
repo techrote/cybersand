@@ -26,13 +26,13 @@ participate in the passing profile hashes. Owner handling/visual review,
 final-head validation and the #207 host/teacher gate remain separate; a
 selectable name or passing manoeuvre metric is not an accepted learning plant.
 
-4LY-003 (#207) has an [implementation candidate](../systems/physical-flight-lab.md)
-for the playable flight lab, actual-host episodes and observation-only teacher.
-Its [checkpoint ledger](../audits/2026-10-23-4ly003-checkpoint.md)
-does not claim a qualified scripted teacher: measured per-profile final
-navigation, feasibility, exact-head CI and resource evidence remain gated. Trainer learning
-and subsequent family learning belong to the companion repository's 4LY-004/005
-gates. None of these stages closes #132, generic granular/soliding acceptance or
+4LY-003 (#207) now has the [playable Flight Lab and physical episode owner](../systems/physical-flight-lab.md).
+Its [frozen-teacher final-score audit](../audits/2026-10-24-4ly003-final-qualification.md)
+records a passing per-profile/per-family physical score, three retained Hauler
+obstacle failures, exact tested hashes and Linux runtime readback. External
+holdout custody and human review are not attested by that CI score alone.
+Trainer learning and subsequent family learning remain controlled by the
+companion repository's separate 4LY-004/005 gates. None of these stages closes #132, generic granular/soliding acceptance or
 the separate Jolt/morphology programme by implication.
 
 ## What is the approved direction for the complete actor roster?

@@ -2,10 +2,10 @@
 title: 4LY-003 flight laboratory and actual-host episode contract
 status: Current
 document-kind: contract
-scope: Experimental single-host physics episode API and teacher source; final navigation admission and learned-policy qualification remain separately gated
+scope: Experimental single-host physics episode API and scored frozen teacher; external final-custody signoff and learned-policy qualification remain separately gated
 canonical-for: [4ly-flight-lab, 4ly-episodes, 4ly-scripted-teacher, 4ly-training-contract]
-last-reviewed: 2026-10-23
-related-documents: [physical-free-flight.md, physical-actor-rigs.md, ../operations/physical-actor-programme.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-23-4ly003-checkpoint.md]
+last-reviewed: 2026-10-24
+related-documents: [physical-free-flight.md, physical-actor-rigs.md, ../operations/physical-actor-programme.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-23-4ly003-checkpoint.md, ../audits/2026-10-24-4ly003-final-qualification.md]
 ---
 
 # 4LY-003 physical flight laboratory
@@ -20,16 +20,19 @@ All four real physical profile hashes and the unchanged source controller
 are prospective admission requirements. The source string
 `calibration = "candidate_4ly002"` remains untouched.
 
-**Current checkpoint source** provides a new native-material flight course, playable
+**Current implementation** provides a native-material flight course, playable
 lab frontend, real synchronous episode owner, bounded local ray sensing and
-an observation-only reference teacher. **Not yet qualified** is the claim
-that teacher can navigate, brake, settle and recover on all four profiles:
-that requires passing actual-host scored runs on a genuinely **externally sealed**
-final suite after freezing teacher/source identities. Earlier in-repository final
-layouts were disclosed during implementation and are **retired as scoring
-holdouts**. The [prospective v3 split correction](../../godot/tests/fixtures/4ly003_split_amendment_v3.json)
-now refuses final without an independently admitted external suite.
-This documentation describes source contracts and reproduction, not final pass.
+an observation-only reference teacher. [The 2026-10-24 score audit](../audits/2026-10-24-4ly003-final-qualification.md)
+records a **passing frozen-teacher physical final score**: 224/224 traces
+independently read back, 157/160 nontrivial family successes, all 48 negative
+controls without navigation credit, and zero faults. Three Hauler obstacle
+failures remain visible. This result is scoped to the recorded Linux host,
+teacher and suite hashes. The run-local final-suite generator was authored
+after the teacher freeze, but not held by a separate external custodian;
+an automated reviewer label does not establish independent human signoff.
+Earlier public layouts remain retired by [split amendment v3](../../godot/tests/fixtures/4ly003_split_amendment_v3.json).
+The runtime still refuses final access without separately supplied exact
+source/teacher/suite admission. This is **not** a 4LY-004 learner admission.
 
 In-game entry: choose **4LY Flight Lab** in the feature menu, click
 **4LY flight lab** in the main sandbox, or launch with `--flight-lab`.
@@ -196,10 +199,11 @@ local owner sensing. It applies a predictable stopping-distance planner
 with PD-like low-speed control and local potential-field obstacle
 correction. It has no profile-name-specific branches, future course
 geometry, hidden reward or privileged contact knowledge.
-The implementation may still require development-only tuning.
-Measured difficulty and feasibility (particularly corners/slalom,
-heavy Hauler response and Drifter overshoot) remain **open** until
-scored actual-host results have been retained.
+The frozen reference was evaluated on the physical host after its
+development-only tuning. The [retained score](../audits/2026-10-24-4ly003-final-qualification.md)
+meets all prospectively registered per-profile family gates. Three Hauler
+obstacle failures remain in the record; platform generality and independent
+custody signoff remain open.
 
 **Prospective pass gate**: independently per profile and family,
 nontrivial start-goal separation, minimum score counts,
@@ -254,9 +258,10 @@ qualification is inferred from a single seed.
 capped 960 real physical-tick single-host pilot and records physics
 ticks/s, decisions/s, resets, JSON serialization, OS/CPU, Godot and
 memory. Transport/inference overhead remains null when unsupported.
-[The checkpoint audit](../audits/2026-10-23-4ly003-checkpoint.md)
-records preliminary earlier-source actual-host measurements, not a
-passing exact-final-head gate. All tests use the ordinary real native
+[The historical checkpoint audit](../audits/2026-10-23-4ly003-checkpoint.md)
+records earlier-source measurements; the [final-score audit](../audits/2026-10-24-4ly003-final-qualification.md)
+records the qualified frozen teacher, 224 traced episodes, remaining custody
+caveat and later integration checks. All tests use the ordinary real native
 and Rapier runtime; no stand-alone simulator is introduced.
 
 ## Ownership and exclusions
@@ -270,6 +275,8 @@ policy observation. The native material solver, Water/LCB, 64-bit
 cell carrier, general ACT004 scientific fixtures and
 Jolt neural learning are not modified by this feature.
 
-An actual positive navigation score is **Planned/Unqualified** until
-both prospective qualification and exact-final-head Godot,
-GDExtension/Native and documentation/provenance gates are evidenced.
+An actual positive teacher navigation score is **Measured on the recorded
+one-use Linux final suite**, rather than merely planned. External custody
+and reviewer signoff remain unverified, and the companion learned-policy
+evaluation is still unrun. Never promote the retained score to a different
+source/runtime identity without its own conformance evidence.

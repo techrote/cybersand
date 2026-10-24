@@ -674,10 +674,12 @@ navigation, target-PC human feel and new Web runtime support have separate
 
 ### 4LY-003 flight lab checks
 
-**Current 4LY-003 implementation candidate** (not yet accepted teacher score):
-[flight-lab contract](../systems/physical-flight-lab.md),
-[prospective criteria](../../godot/tests/fixtures/4ly003_qualification_registration.json)
-and [checkpoint/gaps](../audits/2026-10-23-4ly003-checkpoint.md).
+**Current 4LY-003 physical flight lab:** [flight-lab contract](../systems/physical-flight-lab.md),
+[prospective criteria](../../godot/tests/fixtures/4ly003_qualification_registration.json),
+[historical implementation checkpoint](../audits/2026-10-23-4ly003-checkpoint.md),
+and [frozen-teacher final-score evidence](../audits/2026-10-24-4ly003-final-qualification.md).
+The latter passes the recorded Linux actual-host teacher-family thresholds but
+does not provide separately attested external custody or learned qualification.
 The existing Godot GDExtension suite auto-discovers the development
 episode, gameplay scene, bounded throughput and two scored-family
 development fixtures by wildcard. The pinned runtime must include real
@@ -705,10 +707,11 @@ inventory under `CYBERSAND_PRESENTATION_EVIDENCE`; the
 is required **after** Godot exits in the Linux sharded and serial
 workflows. The original public final geometry is retired and superseded
 by [v3 sealed external geometry](../../godot/tests/fixtures/4ly003_split_amendment_v3.json).
-It cannot be accessed without independent admission of a separately
-held suite. None of these tests implies final teacher acceptance,
-learned-policy success or desktop real-time throughput. Do not run
-neural training in routine PR CI. Keep failed episodes and the exact
+It cannot be accessed without the separately admitted suite.
+These wildcard tests alone do not establish final teacher acceptance:
+the one-use final score and independent readback are retained in the
+separate audit. Neither learned-policy success nor desktop real-time
+throughput is demonstrated. Do not run neural training in routine PR CI. Keep failed episodes and the exact
 tested checkout and runtime identities.
 
 ### Thunderbowl controls and native arena
