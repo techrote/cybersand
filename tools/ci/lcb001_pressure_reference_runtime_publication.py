@@ -58,7 +58,8 @@ CASE_MARKERS = {
     "test_lcb_negative_contracts": r"(?m)^LCB negative contracts: [1-9][0-9]* assertions, 0 failures\s*$",
     "test_lcb_fixture_manifests": r"(?m)^LCB fixture manifests: [1-9][0-9]* assertions, 0 failures\s*$",
     "test_lcb_scenario_catalogue": r"(?m)^LCB scenario catalogue: [1-9][0-9]* scenarios, [1-9][0-9]* assertions, 0 failures\s*$",
-    "test_water_feel_integration": r"(?m)^WATER_FEEL_INTEGRATION: 24 policy cases \+ 70 scenario builds/reset/invalid/actions/RG8/authority passed default_hash=\S+\s*$",    "test_lcb_pressure_reference": r"(?m)^LCB_PRESSURE_REFERENCE: [1-9][0-9]* assertions; 0 failures; completed=(.+)$",
+    "test_water_feel_integration": r"(?m)^WATER_FEEL_INTEGRATION: 24 policy cases \+ 70 scenario builds/reset/invalid/actions/RG8/authority passed default_hash=\S+\s*$",
+    "test_lcb_pressure_reference": r"(?m)^LCB_PRESSURE_REFERENCE: [1-9][0-9]* assertions; 0 failures; completed=(.+)$",
 }
 # Every helper section of the liquid-policy regression must report real work.
 LIQUID_POLICY_SECTIONS = {"validation": True, "default_readback": True, "refusals": 12,
@@ -140,7 +141,7 @@ def require_publication_request(source: str) -> None:
     path = ROOT / REQUEST
     require(path.is_file() and not path.is_symlink(),
             "Missing explicit pressure-reference publish request")
-    payload = path.read_bytes().replace(b"\\r\\n", b"\\n")
+    payload = path.read_bytes().replace(b"\r\n", b"\n")
     require(git("show", source + ":" + REQUEST) == payload,
             "Pressure-reference publish request differs from source commit")
     try:
