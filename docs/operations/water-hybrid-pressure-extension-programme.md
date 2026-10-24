@@ -4,8 +4,8 @@ status: Planned
 document-kind: design
 scope: Parallel/extension research for deep-Water bulk response, generic Rapier↔cellular coupling, bounded solided-Water sheet proofs, saturated-head requirement reassessment, lumped gas regions and optional decompression events; no production architecture adoption
 canonical-for: [water-hybrid-pressure-extension-programme]
-last-reviewed: 2026-09-24
-related-documents: [architecture-programme.md, soliding-programme.md, ../systems/water-design.md, ../architecture/rigid-body-and-cellular-coupling.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md, ../reference/product-intent-and-priorities.md, ../research/lumped-gas-region-pressure-bookkeeping.md, ../audits/2026-09-24-wex002-water-sheet-blocked-disposition.md, ../audits/2026-09-24-wex004-decompression-disposition.md]
+last-reviewed: 2026-10-24
+related-documents: [architecture-programme.md, soliding-programme.md, ../systems/water-design.md, ../architecture/rigid-body-and-cellular-coupling.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md, ../reference/product-intent-and-priorities.md, ../research/lumped-gas-region-pressure-bookkeeping.md, ../audits/2026-09-24-wex002-water-sheet-blocked-disposition.md, ../audits/2026-09-24-wex004-decompression-disposition.md, ../audits/2026-10-23-wex005-water-evidence-synthesis.md, ../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md]
 ---
 
 # Water hybrid, saturated-head and compartment-pressure extension programme
@@ -391,10 +391,11 @@ simple/open direct breaches can use a finite local pressure-difference event
 without gas CFD, but routed/corner/room-scale decompression is unproven and no
 production atmosphere feature is admitted.
 
-All WEX-005 prerequisites are now available in their allowed form: #91 complete,
+All WEX-005 prerequisites were available in their allowed form: #91 complete,
 #92 explicitly blocked, #93 complete, #94 complete, and #49 corrected apparatus
-available. **#95 is the next WEX programme action.** WEX-005 is a
-decision/reconciliation issue, not an automatic implementation issue.
+available. The [2026-10-23 WEX-005 synthesis](../audits/2026-10-23-wex005-water-evidence-synthesis.md)
+consumes them and routes **#45 to NARROW** (see
+[WEX-005 disposition](#wex-005-disposition-2026-10-23)). WEX-005 implements nothing.
 
 #84 formal blind-study capture, #85/#86 broad remediation and unrelated
 MicroScenario work are separate. Do not make them blanket prerequisites for this
@@ -609,6 +610,62 @@ It must answer separately:
 A selected production migration requires a new/revised explicit implementation
 authority. WEX-005 itself does not smuggle experimental code into Current.
 
+### WEX-005 disposition (2026-10-23)
+
+The [WEX-005 evidence synthesis](../audits/2026-10-23-wex005-water-evidence-synthesis.md)
+answers the eight questions separately. It becomes canonical when its PR lands.
+
+1. **Deep-release surge:** an unresolved deficit that no WEX lane improved.
+   Water sheets never ran. On current `main` (#49 v2 rerun 39739371203) deep and
+   medium outlets deliver identical discharge in every registered view, so extra
+   depth adds no drive past the saturated outlet. No surge/dam-break fixture is
+   registered yet.
+2. **Water sheets:** still blocked by the missing generic hybrid substrate.
+3. **Explicit saturated-head mechanism:** still a real need under a vented/shared
+   atmosphere. Hybrid evidence does not remove it.
+4. **Equal-level controls:** valid only for a shared/vented atmosphere (every
+   Current World and every #49 v2 fixture). Separately sealed headspaces settle
+   at a gas-pressure-dependent level difference. Vacuum/low-pressure boundaries
+   have no Current target.
+5. **Compartment pressure (#93):** useful research only.
+6. **Decompression (#94):** narrow-use; no production issue now.
+7. **#18:** remains held, not no-go. No concrete directional target exists, and the
+   bulk-head confound persists.
+8. **#45: NARROW.** #45 stays the production saturated-head owner. Its next step is
+   admission/design only, under explicit shared/vented-atmosphere assumptions,
+   with a separately preregistered versioned surge fixture family and thresholds
+   frozen against the current-main #49 v2 control before candidate code. Sealed
+   gas, vacuum and decompression are out of #45 scope. Production selection
+   additionally needs owner H review, an ADR-005 amendment and a separate
+   implementation authority.
+
+FreeMass/CellularYield separation is unchanged. #14/G-final remains open. #20
+stays downstream of #18.
+
+## LCB experimental pressure lane reconciliation (2026-10-23)
+
+The owner-approved opt-in Liquid Comparison Build
+([#200](https://github.com/techrote/cybersand/issues/200), LCB-000 gate
+[#213](https://github.com/techrote/cybersand/issues/213)) is a **separate
+experimental lane**, not #45 implementation and not WEX scope. The
+[LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md)
+records the accepted lane constraints:
+
+- `pressure_flow_v1` (reference/cached/cached-dormant variants) may run only as an
+  opt-in, per-World, per-material, version-identified family side by side with
+  unchanged Current/FreeMass, in the same native World authority;
+- it implies no default switch, no production #45 selection, no #12 Stage 4
+  authority, no new pressure-to-Rapier forces, no production gas or decompression
+  owner, no #18 admission and no liquid unification;
+- vented scenes use equal-level controls; sealed-air scenes are experimental and
+  never scored against vented equal-level targets; vacuum is out of scope;
+- the #49 v2 controls (original and current-main reruns), Current native Water
+  fixtures and the WEX-001 zero-forbidden-floor regression are fixed controls;
+- LCB results can reach #45 only through the registered apparatus with source
+  identity. #45 does not start a competing pressure port while LCB-001 owns one.
+
+**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted; the owner currently holds both #200 and #212. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration.
+
 ## Autonomous issue execution contract
 
 Every WEX child issue must contain this execution discipline or reference this
@@ -692,7 +749,8 @@ The published issue chain is:
 - [#92](https://github.com/techrote/cybersand/issues/92) — WEX-002 bounded upper-volume Water-sheet proof;
 - [#93](https://github.com/techrote/cybersand/issues/93) — WEX-003 lumped gas-region feasibility;
 - [#94](https://github.com/techrote/cybersand/issues/94) — WEX-004 conditional decompression-event proof;
-- [#95](https://github.com/techrote/cybersand/issues/95) — WEX-005 evidence synthesis and #45 routing.
+- [#95](https://github.com/techrote/cybersand/issues/95) — WEX-005 evidence synthesis and #45 routing
+  ([2026-10-23 synthesis](../audits/2026-10-23-wex005-water-evidence-synthesis.md)).
 
 Issue numbers are identifiers, not execution order. Follow the graph and live
 ownership checks above.

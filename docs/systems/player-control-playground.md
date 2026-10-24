@@ -30,9 +30,11 @@ while coasting with neutral input. Best times are kept only during this scene's
 lifetime. Authored routes and
 checkpoint detection do not establish that every route has been completed.
 
-Five mechanical presets also appear in **F5 → Rapier → SetP**, increasing the
-physical catalogue to 46 actors across eight sets. They reuse the shared
-physical session, controls and optional equipment lifecycle in exploratory maps.
+Five mechanical presets also appear in **F5 → Rapier → SetP**, among the
+46 retained physical actor IDs and original eight sets. The separate 4LY
+free-flight family appends a ninth **F5 → set4LY** selection group without
+renumbering SetP or replacing this dedicated player playground. They reuse
+the shared physical session, controls and optional equipment lifecycle in exploratory maps.
 Dust Devil and Undertow are available only in this separate playground; they
 control native material and have no Rapier actor definition.
 

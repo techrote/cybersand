@@ -50,3 +50,15 @@ func _draw() -> void:
 		if outlines:
 			vertices.append(vertices[0])
 			draw_polyline(vertices, color.lightened(0.35), 1.0, false)
+		# Cues derive exclusively from the admitted/applied actuator receipt
+		# and the real Rapier transform. They never integrate a separate pose.
+		if bool(part.get("flight_live", false)):
+			var centre: Vector2 = (part.transform.origin - _origin) * size / _view_size
+			var force: Vector2 = part.get("flight_force", Vector2.ZERO)
+			if force.length_squared() > 1.0:
+				draw_line(centre, centre - force.normalized() * clampf(force.length() * 0.025, 2.0, 10.0),
+					color.lightened(0.5), 2.0, true)
+			var intent: Vector2 = part.get("flight_intent", Vector2.ZERO)
+			if intent.length_squared() > 1.0:
+				draw_line(centre, centre + intent.normalized() * clampf(intent.length() * 0.075, 2.0, 6.0),
+					color.darkened(0.55), 1.0, true)

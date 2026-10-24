@@ -1,0 +1,392 @@
+{
+  "schema_version": 2,
+  "id": "lcb.dam.water.freemass.depth-160.v1",
+  "recipe_version": 1,
+  "seed": 0,
+  "maturity": "reference",
+  "rectangles": [
+    0,
+    0,
+    1024,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1024,
+    1,
+    1023,
+    0,
+    1,
+    1024,
+    1,
+    0,
+    1023,
+    1024,
+    1,
+    1,
+    32,
+    256,
+    960,
+    8,
+    1,
+    32,
+    64,
+    8,
+    192,
+    1,
+    984,
+    64,
+    8,
+    192,
+    1,
+    232,
+    64,
+    8,
+    192,
+    1
+  ],
+  "partial_water_fills": [
+    40,
+    96,
+    192,
+    160,
+    255,
+    0
+  ],
+  "transport_profile": {
+    "families": {
+      "liquid": {
+        "cadence": 1,
+        "carrying": 0,
+        "erosion": 0,
+        "horizontal": 2,
+        "permeability": 1
+      },
+      "powder": {
+        "mixing": 0,
+        "packing": 8,
+        "pickup": 64
+      }
+    },
+    "materials": {
+      "33": {
+        "permeability": 30
+      }
+    },
+    "name": "Baseline",
+    "pairs": [],
+    "version": 1
+  },
+  "water_semantics": [
+    1,
+    8,
+    12,
+    0
+  ],
+  "player_start": [
+    24,
+    222
+  ],
+  "camera_origin": [
+    0,
+    0
+  ],
+  "player_enabled": false,
+  "body_enabled": false,
+  "tools": [],
+  "interest": {
+    "policy": "fixed",
+    "region": [
+      16,
+      16,
+      992,
+      272
+    ]
+  },
+  "execution": {
+    "policy": "fixed",
+    "cadence_lod_enabled": false,
+    "liquid_surface_adhesion_enabled": true
+  },
+  "events": [
+    {
+      "tick": 0,
+      "kind": "erase",
+      "x": 232,
+      "y": 64,
+      "width": 8,
+      "height": 192,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    }
+  ],
+  "observations": [
+    {
+      "id": "total-t0",
+      "tick": 0,
+      "metric": "water_integer",
+      "region": [
+        40,
+        32,
+        944,
+        224
+      ],
+      "material": 3
+    },
+    {
+      "id": "reservoir-t60",
+      "tick": 60,
+      "metric": "water_integer",
+      "region": [
+        40,
+        64,
+        192,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "reservoir-t240",
+      "tick": 240,
+      "metric": "water_integer",
+      "region": [
+        40,
+        64,
+        192,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band1-t240",
+      "tick": 240,
+      "metric": "water_integer",
+      "region": [
+        240,
+        64,
+        124,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band2-t240",
+      "tick": 240,
+      "metric": "water_integer",
+      "region": [
+        364,
+        64,
+        124,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band3-t240",
+      "tick": 240,
+      "metric": "water_integer",
+      "region": [
+        488,
+        64,
+        124,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band4-t240",
+      "tick": 240,
+      "metric": "water_integer",
+      "region": [
+        612,
+        64,
+        124,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band5-t240",
+      "tick": 240,
+      "metric": "water_integer",
+      "region": [
+        736,
+        64,
+        124,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band6-t240",
+      "tick": 240,
+      "metric": "water_integer",
+      "region": [
+        860,
+        64,
+        124,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "reservoir-t600",
+      "tick": 600,
+      "metric": "water_integer",
+      "region": [
+        40,
+        64,
+        192,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band1-t1200",
+      "tick": 1200,
+      "metric": "water_integer",
+      "region": [
+        240,
+        64,
+        124,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band2-t1200",
+      "tick": 1200,
+      "metric": "water_integer",
+      "region": [
+        364,
+        64,
+        124,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band3-t1200",
+      "tick": 1200,
+      "metric": "water_integer",
+      "region": [
+        488,
+        64,
+        124,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band4-t1200",
+      "tick": 1200,
+      "metric": "water_integer",
+      "region": [
+        612,
+        64,
+        124,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band5-t1200",
+      "tick": 1200,
+      "metric": "water_integer",
+      "region": [
+        736,
+        64,
+        124,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "band6-t1200",
+      "tick": 1200,
+      "metric": "water_integer",
+      "region": [
+        860,
+        64,
+        124,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "total-t1800",
+      "tick": 1800,
+      "metric": "water_integer",
+      "region": [
+        40,
+        32,
+        944,
+        224
+      ],
+      "material": 3
+    },
+    {
+      "id": "reservoir-t1800",
+      "tick": 1800,
+      "metric": "water_integer",
+      "region": [
+        40,
+        64,
+        192,
+        192
+      ],
+      "material": 3
+    }
+  ],
+  "conditions": [
+    {
+      "observation": "total-t1800",
+      "comparison": "eq",
+      "value": 7833600,
+      "outcome": "complete"
+    }
+  ],
+  "source_recipe": "LCB-003 scenario catalogue v1: dam-ladder",
+  "source_recipe_hash": "",
+  "presentation": {
+    "title": "Dam Break depth 160",
+    "instructions": "Depth ladder: identical gate/runout geometry to the protected reference with a 160-row full-cell reservoir. Compares release volume, retained reservoir and front band arrival against depth. Physics-identical to lcb.dam.water.freemass.reference.v1 (registry consistency control).",
+    "duration_ticks": 1800,
+    "baseline": "Current native defaults; controlled fixed-tick run",
+    "profile": "Baseline",
+    "regions": [
+      {
+        "id": "reservoir",
+        "label": "Reservoir",
+        "region": [
+          40,
+          96,
+          192,
+          160
+        ]
+      },
+      {
+        "id": "gate",
+        "label": "Gate",
+        "region": [
+          232,
+          64,
+          8,
+          192
+        ]
+      },
+      {
+        "id": "runout",
+        "label": "Runout",
+        "region": [
+          240,
+          64,
+          744,
+          192
+        ]
+      }
+    ]
+  }
+}
