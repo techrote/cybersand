@@ -4,7 +4,7 @@ status: Planned
 document-kind: design
 scope: Evidence gates for Cell representation, liquid state and transport, presentation, and conditional sparse motion; no production architecture selection
 canonical-for: [architecture-experimental-programme]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-24
 related-documents: [architecture-programme-source-ledger.md, physics-characterisation.md, physics-characterisation-plan.md, microscenarios-programme.md, water-hybrid-pressure-extension-programme.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md]
 ---
 
@@ -133,7 +133,9 @@ Sealed-gas, vacuum and decompression targets are outside #45. #18 remains held,
 The opt-in LCB pressure comparison (#200/#213) is a separate experimental lane
 bounded by the
 [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
-It selects no production mechanism.
+It selects no production mechanism. The [final LCB-000 checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23)
+records Gate A–E PASS and #213 closure; the owner still holds #200/#212, and
+no pressure/inertial port or schema/ABI freeze is admitted.
 
 `#49 v2 control + WEX evidence -> #95 (2026-10-23) -> #45 NARROW admission/design + surge registration -> directional reassessment -> #18 admission/no-go -> #20/G-B if justified -> G-final`.
 

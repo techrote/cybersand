@@ -660,9 +660,7 @@ read that record and the current-main #49 v2 rerun it cites.
 The owner-approved opt-in Liquid Comparison Build (#200) is a separate
 experimental lane. Its pressure family is bounded by the
 [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
-**LCB-000 (#213) is not PASS.** Gates B–E (#204 storage handoff, family policy,
-Water comparison contract, Dam Break/mixed fixtures) remain open, so do not port
-the `7ef2aac` pressure prototype or freeze LCB state/schema yet.
+**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted; the owner currently holds both #200 and #212. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration.
 
 
 ## PENV-001 player/environment tuning handoff

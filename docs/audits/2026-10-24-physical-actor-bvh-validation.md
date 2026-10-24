@@ -290,3 +290,47 @@ CI-HANG-01's canonical build guide at rank 2. The retrieved guide retains the
 strict oracles, selected platform scope and separate final-gate qualifier. Raw
 local logs/reports are under ignored `build/bvh-publication-checks`. Repository
 materialization/provenance is checked again after committing the new LFS identity.
+
+## Integration with independently advanced main
+
+The repair/runtime selection checkpoint is `023fc13f1d5c0f66339a9737d52d685a06262077`.
+Its exact-head Documentation/provenance run
+[40059321942](https://github.com/techrote/cybersand/actions/runs/40059321942)
+passed, and GDExtension run
+[40059325026](https://github.com/techrote/cybersand/actions/runs/40059325026)
+passed both builds and all four Linux shards/aggregate while the Windows full
+suite was still running at this observation. Native run
+[40059323590](https://github.com/techrote/cybersand/actions/runs/40059323590)
+was still in progress. These runs retain their actual final outcomes separately.
+
+Meanwhile, main advanced to `1002b9201006b572180a12cbc4c3b21fc234e8fa` with the
+independently merged #215/#217/#226 stack and #237 status reconciliation. GitHub
+reported a conflict in the shared supplementary retrieval fixture. Integrating
+that existing main snapshot preserves all incoming LCB implementation, fixtures,
+contracts and records unchanged. Explicit diff checks against main cover
+`tools/lcb`, LCB Godot tests/fixtures and LCB/liquid policy documents; none carry
+a timeout-branch modification. No LCB or MAT successor work is selected here.
+
+The sole manual merge resolution combines both additive retrieval questions and
+metadata: every question object from both parents is retained unchanged, giving
+117 supplementary queries. Other shared documentation and the runner catalog
+merge normally. Main's four new ordinary LCB validation cases increase discovery
+to **125 Windows headless / 137 Linux cases**, including the same 12 Linux
+rendered cases. Earlier 121/133 results retain their original source scope.
+
+The selected Rapier artifact bytes and all four registered build inputs remain
+unchanged; native C++/extension source is also unchanged. The integrated source
+requires fresh exact-head full validation, kept separate from the completed
+causal stress comparison. PR #236 remains draft through that validation, and its
+current body records the resulting source/run receipts without altering the
+checked revision.
+
+Integrated local checks passed all 140 tooling tests again, current repository
+provenance/materialization, provider policy, documentation and historical M11
+integrity. The merged corpus has 110 documents; frozen retrieval remains 32/32
+hit@5, 21/32 hit@1, MRR 0.7953, while all 117 supplementary questions hit@5
+(MRR 0.8806). The source diff against the incoming main has no native, LCB or MAT
+implementation changes. The integration commit is the recoverable checkpoint
+for fresh full-scope hosted validation; earlier running validations can be
+superseded by that new source head, with cancellation recorded rather than
+counted as a pass or silently retried.

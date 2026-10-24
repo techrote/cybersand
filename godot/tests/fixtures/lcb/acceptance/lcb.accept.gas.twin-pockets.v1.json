@@ -1,0 +1,221 @@
+{
+  "schema_version": 2,
+  "id": "lcb.accept.gas.twin-pockets.v1",
+  "recipe_version": 1,
+  "seed": 0,
+  "maturity": "reference",
+  "rectangles": [
+    0,
+    0,
+    1024,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1024,
+    1,
+    1023,
+    0,
+    1,
+    1024,
+    1,
+    0,
+    1023,
+    1024,
+    1,
+    1,
+    8,
+    8,
+    12,
+    1,
+    1,
+    8,
+    20,
+    12,
+    1,
+    1,
+    8,
+    8,
+    1,
+    13,
+    1,
+    19,
+    8,
+    1,
+    13,
+    1,
+    32,
+    8,
+    12,
+    1,
+    1,
+    32,
+    20,
+    12,
+    1,
+    1,
+    32,
+    8,
+    1,
+    13,
+    1,
+    43,
+    8,
+    1,
+    13,
+    1
+  ],
+  "partial_water_fills": [
+    9,
+    19,
+    10,
+    1,
+    255,
+    0,
+    33,
+    19,
+    10,
+    1,
+    255,
+    0
+  ],
+  "transport_profile": {
+    "families": {
+      "liquid": {
+        "cadence": 1,
+        "carrying": 0,
+        "erosion": 0,
+        "horizontal": 2,
+        "permeability": 1
+      },
+      "powder": {
+        "mixing": 0,
+        "packing": 8,
+        "pickup": 64
+      }
+    },
+    "materials": {
+      "33": {
+        "permeability": 30
+      }
+    },
+    "name": "Baseline",
+    "pairs": [],
+    "version": 1
+  },
+  "water_semantics": [
+    1,
+    8,
+    12,
+    0
+  ],
+  "player_start": [
+    24,
+    222
+  ],
+  "camera_origin": [
+    0,
+    0
+  ],
+  "player_enabled": false,
+  "body_enabled": false,
+  "tools": [],
+  "interest": {
+    "policy": "fixed",
+    "region": [
+      0,
+      0,
+      64,
+      32
+    ]
+  },
+  "execution": {
+    "policy": "fixed",
+    "cadence_lod_enabled": false,
+    "liquid_surface_adhesion_enabled": true
+  },
+  "events": [],
+  "observations": [
+    {
+      "id": "water-8-t0",
+      "tick": 0,
+      "metric": "water_integer",
+      "region": [
+        8,
+        8,
+        12,
+        13
+      ],
+      "material": 3
+    },
+    {
+      "id": "water-32-t0",
+      "tick": 0,
+      "metric": "water_integer",
+      "region": [
+        32,
+        8,
+        12,
+        13
+      ],
+      "material": 3
+    },
+    {
+      "id": "water-8-t10",
+      "tick": 10,
+      "metric": "water_integer",
+      "region": [
+        8,
+        8,
+        12,
+        13
+      ],
+      "material": 3
+    },
+    {
+      "id": "water-32-t10",
+      "tick": 10,
+      "metric": "water_integer",
+      "region": [
+        32,
+        8,
+        12,
+        13
+      ],
+      "material": 3
+    }
+  ],
+  "conditions": [],
+  "source_recipe": "LCB-003 scenario catalogue v1: gas-acceptance",
+  "source_recipe_hash": "",
+  "presentation": {
+    "title": "Two independent sealed pockets",
+    "instructions": "#200 reproducer: two identical independent pockets. The archived candidate cycled each amount 100,50,25,12,6,3,1,100; W-PF must hold each at 100 with distinct stable identities.",
+    "duration_ticks": 10,
+    "baseline": "Current native defaults; controlled fixed-tick run",
+    "profile": "Baseline",
+    "regions": [
+      {
+        "id": "pocket-a",
+        "label": "Pocket A",
+        "region": [
+          9,
+          9,
+          10,
+          10
+        ]
+      },
+      {
+        "id": "pocket-b",
+        "label": "Pocket B",
+        "region": [
+          33,
+          9,
+          10,
+          10
+        ]
+      }
+    ]
+  }
+}

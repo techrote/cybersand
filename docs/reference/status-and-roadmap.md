@@ -593,13 +593,56 @@ investigation before any new #45 pressure/head mechanism is treated as inevitabl
   ([#200](https://github.com/techrote/cybersand/issues/200)) is reconciled
   separately by the
   [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
-  [#213](https://github.com/techrote/cybersand/issues/213) is **not PASS**:
-  Gates B–E remain open, so LCB-001 pressure implementation stays blocked.
+  [#213](https://github.com/techrote/cybersand/issues/213) is **closed completed;
+  Gates A–E PASS**. The [final checkpoint](#liquid-comparison-build-design-checkpoint--2026-10-23)
+  records bounded admission and the continuing owner hold on #200/#212.
 
 Water FreeMass and other-liquid CellularYield remain separate; no unification or
 production solver change is selected. Equal-level communicating-head fixtures are
 vented/shared-pressure controls, not universal sealed-room targets. #18 remains
 held pending the resulting evidence rather than by issue-number sequence alone.
+
+## Liquid Comparison Build design checkpoint — 2026-10-23
+
+**Current admission status — 2026-10-24:** LCB-000 [#213](https://github.com/techrote/cybersand/issues/213)
+is **closed completed; Gates A–E and integrated LCB-000 PASS**, with no RECHARTER.
+The [final landed-stack evidence](https://github.com/techrote/cybersand/issues/213#issuecomment-6377498947)
+and subsequent [closure](https://github.com/techrote/cybersand/issues/213#issuecomment-6377517354)
+supersede the earlier pending-admission status without rewriting those dated records.
+
+| Gate | Accepted scope |
+|---|---|
+| A — PASS | Separate experimental Water lane; production Water/WEX limits retained. |
+| B — PASS | Bounded reversible storage design; no representation winner or schema/ABI freeze; #204 is not complete. |
+| C — PASS | [Solver-family policy design](../architecture/liquid-solver-family-policy.md) and source-derived capability matrix. |
+| D — PASS | [Bounded Water comparison contract and protected fixtures](../operations/lcb-water-comparison-and-fixtures.md). |
+| E — PASS | Independently closed I1/P2 and listed P3; reviewed integrated apparatus landed with passing post-merge CI. |
+
+**Current landed checkpoint:** #215 → #217 → #226 merged to main
+`e95fe85d82e108a682a2ae0212d85569f1c03cd8`, whose tree
+`fece020ef7fc83faf5cfe3081b018f2647f7e4fe` equals the reviewed #226 head.
+Documentation/provenance, Native and GDExtension/Godot post-merge CI passed.
+The [dated reconciliation](../audits/2026-10-24-lcb000-landed-status-reconciliation.md)
+records exact identities, evidence classes and validation limits.
+
+**Approved admission, execution held:** only a separately scoped initial opt-in
+[#200](https://github.com/techrote/cybersand/issues/200) start is admitted.
+The owner has not authorized that start and explicitly holds #200 and
+[#212](https://github.com/techrote/cybersand/issues/212). This PASS does not admit
+#212, a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier
+integration. Native policy/state implementation and candidate kernels remain
+**Planned**. #201/#202/#203 remain open; the scenario apparatus delivered part of
+#202, not the complete comparison host or its [manual UX](../operations/lcb-manual-comparison-ux.md).
+
+**Current apparatus:** the [LCB scenario catalogue](../operations/lcb-scenario-catalogue.md)
+contains 25 scenarios plus the protected Dam Break and mixed fixtures, with
+Current-default controls. Water is the only `freemass_v1` liquid; ten liquids
+use `cellular_yield_v1`. The mixed control runs two families; three-family World
+execution remains blocked. All **90 candidate arms remain blocked**.
+Controls and v2–v6 records are preserved byte-for-byte; v7 retains
+**20 closed / 4 unverified source-sink timing / 3 unverified reaction amount**,
+with `changed_from_v6=[]`. Characterization and contract-model evidence do not
+establish candidate runtime acceptance or change defaults.
 
 ## Opt-in transport profiles
 

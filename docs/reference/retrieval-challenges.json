@@ -1,7 +1,7 @@
 {
   "version": 1,
   "frozen_date": "2026-09-08",
-  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits. SCENE01/SCENE02 cover Neon Reliquary entry and view controls, and the four-district descent with explicit scene-state boundaries. ACT04-ACT09 cover the 29-rig sets, parametric input, consumed-action identity, fictional personas, bounded tool/rope authority and SetA compatibility. SCENE03 covers the connected Blacksite Nine route, camera-only district views, shared-world continuity and whole-complex reset. USABLE01 covers the separate 32-item actor equipment catalogue, ownership and work limits. ACT-005 USABLE02-USABLE04 add independent physical equipment lifetime/admission, real processor lifecycle/stock and physical usable course questions. MAT03, TEST01 and TEST02 cover the 2026-10-19 catalogue integration, required rendered-test acceptance and CLI corrections. TEST03 covers actual retained-DLL Windows execution, current native source identity and applicable test scope. SCENE04 and DEP02 cover the 2026-10-20 Deepworks map/replay boundaries and parameterized depth dimensions/publication admission. PLAY01-PLAY05 independently cover the seven human presets, acrobat chains, native material field bounds, input lifetime/gamepad mapping and circular-wheel approximation. GEN005-1–GEN005-3 cover coherent plane projection, identity-bound admission/events and actual finite fixture/capture evidence. 4LY01-4LY05 cover the flight family selection and candidate calibration distinction, goal-blind bounded velocity controller, neutral/lifecycle, evidence/learning gates, and copied policy-visible static capabilities.",
+  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits. SCENE01/SCENE02 cover Neon Reliquary entry and view controls, and the four-district descent with explicit scene-state boundaries. ACT04-ACT09 cover the 29-rig sets, parametric input, consumed-action identity, fictional personas, bounded tool/rope authority and SetA compatibility. SCENE03 covers the connected Blacksite Nine route, camera-only district views, shared-world continuity and whole-complex reset. USABLE01 covers the separate 32-item actor equipment catalogue, ownership and work limits. ACT-005 USABLE02-USABLE04 add independent physical equipment lifetime/admission, real processor lifecycle/stock and physical usable course questions. MAT03, TEST01 and TEST02 cover the 2026-10-19 catalogue integration, required rendered-test acceptance and CLI corrections. TEST03 covers actual retained-DLL Windows execution, current native source identity and applicable test scope. SCENE04 and DEP02 cover the 2026-10-20 Deepworks map/replay boundaries and parameterized depth dimensions/publication admission. PLAY01-PLAY05 independently cover the seven human presets, acrobat chains, native material field bounds, input lifetime/gamepad mapping and circular-wheel approximation. GEN005-1–GEN005-3 cover coherent plane projection, identity-bound admission/events and actual finite fixture/capture evidence. 4LY01-4LY05 cover the flight family selection and candidate calibration distinction, goal-blind bounded velocity controller, neutral/lifecycle, evidence/learning gates, and copied policy-visible static capabilities. LCB01 covers final bounded admission, landed evidence and the continuing successor execution hold.",
   "questions": [
     {
       "id": "C05",
@@ -2087,6 +2087,22 @@
         "audits/2026-10-23-4ly002-measured-handling-qualification.md"
       ],
       "revision_sensitive": true
+    },
+    {
+      "id": "LCB01",
+      "query": "Has LCB-000 passed, what landed, and may #200 or #212 start?",
+      "canonical": [
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "Gates A–E and integrated LCB-000 PASS; #213 is closed completed and #215/#217/#226 landed at e95fe85.",
+        "Only a separately scoped initial opt-in #200 start is admitted; the owner still holds #200 and #212.",
+        "No pressure/inertial port, schema/ABI freeze, defaults change or Rapier integration is admitted; all 90 candidate arms remain blocked."
+      ],
+      "sources": [
+        "reference/status-and-roadmap.md",
+        "audits/2026-10-24-lcb000-landed-status-reconciliation.md"
+      ]
     },
     {
       "id": "CI-HANG-01",
