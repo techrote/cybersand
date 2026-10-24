@@ -256,7 +256,10 @@ def _kill_process_tree(process: subprocess.Popen) -> None:
         process.wait(timeout=10)
     except subprocess.TimeoutExpired:
         process.kill()
-        process.wait()
+        try:
+            process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            print(f"Timed-out Godot PID {process.pid} did not exit after SIGKILL", flush=True)
 
 
 def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
