@@ -106,8 +106,13 @@ static func valid_definitions(definitions: Array) -> bool:
 			return false
 		if value.position.x < 0.0 or value.position.y < 0.0 or value.position.x >= 1024.0 or value.position.y >= 1024.0:
 			return false
+		var is_joint: bool = false
+		if value.has("ik_pilot"):
+			if typeof(value.ik_pilot) != TYPE_BOOL:
+				return false
+			is_joint = value.ik_pilot
 		var prepared: Dictionary = _prepared_definition(value)
-		var initial_usable: Variant = value.get("usable_index", -1 if bool(value.get("ik_pilot", false)) else Loadouts.entry(model).get("usable_index", -1))
+		var initial_usable: Variant = value.get("usable_index", -1 if is_joint else Loadouts.entry(model).get("usable_index", -1))
 		if prepared.is_empty() or not _integer(initial_usable, -1, 31):
 			return false
 		if model in Flight.IDS and int(value.get("usable_index", -1)) != -1:
@@ -848,10 +853,17 @@ func _ik_refuse(actor_id: int, reason: String, request: Variant = null) -> Dicti
 			if is_joint_pilot(slot) and not _joint_grants[slot].is_empty():
 				var g: Dictionary = _joint_grants[slot]
 				if request.get("run_id") == run_id and request.get("epoch") == epoch \
+					and request.get("incarnation") == _rigs[slot].epoch \
 					and request.get("control_generation") == _generations[slot] \
 					and request.get("grant_id") == g.grant_id \
+					and request.get("grant_generation") == g.grant_generation \
 					and request.get("source_id") == g.source_id \
 					and request.get("policy_sha256") == g.policy_sha256 \
+					and request.get("goal_id") == g.goal_id \
+					and request.get("goal_deadline_tick") == g.goal_deadline_tick \
+					and request.get("profile_sha256") == g.profile_sha256 \
+					and request.get("topology_sha256") == g.topology_sha256 \
+					and request.get("joint_ids") == g.joint_ids \
 					and request.get("producer") == g.producer:
 					cancel_input(slot, epoch, StringName(str(g.producer)))
 	var refusal: Dictionary = {
