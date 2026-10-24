@@ -303,7 +303,7 @@ void serial_and_phased_transactions() {
         parallel_batch = parallel_batch || std::any_of(stats.phase_jobs.begin(), stats.phase_jobs.end(),
             [](const auto count) { return count >= 4U; });
         require(serial.quantity_ledger() == phased.quantity_ledger(),
-                "serial scalar and genuine four-worker exact per-rule accounting");
+                "serial scalar and four-worker-configured exact per-rule accounting");
         oracle(serial, {0, 0, 256, 64}); oracle(phased, {0, 0, 256, 64});
     }
     const auto ledger = serial.quantity_ledger();
