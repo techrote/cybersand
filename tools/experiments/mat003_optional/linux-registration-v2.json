@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "id": "mat003-overnight-linux-untimed-v2-20261024",
+  "purpose": "Portability execution of the new optional-tail and capture-touch specimens on a separate GitHub-hosted Linux platform; no repetition of accepted performance campaigns.",
+  "platform": "GitHub-hosted ubuntu-24.04, native x86-64",
+  "compiler": "G++13.3.0, ld2.42; abort on version drift; retain executable hashes and actual platform/library versions",
+  "optional_parent": "mat003-optional-neutral-storage-20261024",
+  "touch_parent": "mat003-capture-touch-projection-v3-20261024",
+  "normal_flags": [
+    "-std=c++20",
+    "-O2",
+    "-DNDEBUG",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-Werror"
+  ],
+  "sanitizer_flags": [
+    "-std=c++20",
+    "-O1",
+    "-g",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-Werror",
+    "-fsanitize=address,undefined",
+    "-fno-omit-frame-pointer",
+    "-fno-pie",
+    "-no-pie"
+  ],
+  "sanitizer_environment": {
+    "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1",
+    "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+  },
+  "touch_additional_flags": [
+    "-pthread",
+    "-DCYBERSAND_MASS_BITS=8",
+    "-DCYBERSAND_DELAY_BITS=8",
+    "-DCYBERSAND_LITERAL_TOLERANCE=0"
+  ],
+  "touch_overlay": "Exactly the registered unused-this-capture removal in a generated copy; all original native files remain unchanged.",
+  "builds": 6,
+  "cases": {
+    "optional": 48,
+    "touch": 6
+  },
+  "execution_order": "Build optional normal8/normal16/sanitized8/sanitized16 and touch normal/sanitized, seal all six; then optional cases in that build order, ascending 512/1024/2048 and absent/unread/clustered/dispersed; finally touch serial1/phased1/phased4 for normal then sanitized.",
+  "limits": {
+    "concurrency": 1,
+    "compile_timeout_seconds": 180,
+    "case_timeout_seconds": 120,
+    "aggregate_seconds": 1200,
+    "workflow_timeout_minutes": 25,
+    "output_bytes": 33554432
+  },
+  "memory_scope": "No per-process RSS acceptance claim in this Linux profile; small fixed fixtures and the GitHub-hosted job envelope apply. Array metrics are from the fixture, not process RSS.",
+  "failure_rules": "Stop on any build/runtime/diagnostic, version, identity, coverage or projection mismatch. Retain complete attempted output. No rerun or selective retry under this registration; a source repair requires a new version and fresh full collection.",
+  "timing": false,
+  "acceptance_class": "author validation pending independent review",
+  "production_changes": false,
+  "not_qualified": [
+    "benchmarks",
+    "all existing carrier arms on Linux/Windows/Wasm",
+    "World sidecar integration",
+    "native restore",
+    "production carrier migration",
+    "solver behavior"
+  ],
+  "linker_resolution": "Accept an absolute GCC-reported linker path, or resolve a bare program name through PATH; refuse other relative paths. Record the resolved BFD linker hash and force its search directory.",
+  "library_versions": "Retain dpkg-query versions for libc6, libstdc++6, libgcc-s1, g++-13 and binutils, plus resolved libstdc++/libgcc/libc shared-library hashes.",
+  "trigger": "Source-sensitive push on the dedicated research branch; later documentation-only pushes do not recollect the registered cases.",
+  "supersedes": {
+    "id": "mat003-overnight-linux-untimed-v1-20261024",
+    "disposition": "collector setup failure before all builds/cases",
+    "run": 40053969822,
+    "artifact": 12544099734,
+    "artifact_sha256": "6a61919c9b3fba2650ed028d9ef75ce6746d34f309899b590d4d5482f52f14ba",
+    "reason": "GCC returned bare ld; Path.resolve incorrectly treated it as relative to the source checkout. No compile or candidate process ran."
+  }
+}
