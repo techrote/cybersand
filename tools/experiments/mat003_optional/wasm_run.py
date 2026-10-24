@@ -22,7 +22,7 @@ def digest(path):
 
 def collect(output,sdk):
     output=Path(output).resolve();sdk=Path(sdk).resolve();output.mkdir(parents=True,exist_ok=False)
-    registration=Path(__file__).with_name('wasm-registration-v3.json');spec=json.loads(registration.read_text())
+    registration=Path(__file__).with_name('wasm-registration-v4.json');spec=json.loads(registration.read_text())
     started=time.monotonic()
     result={'status':'failed','timing':False,'validation_class':'author-validation-pending-independent-review',
             'source_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
