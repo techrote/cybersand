@@ -58,6 +58,12 @@ reviewed. The collector, candidate twins and independent reader run in the same
 selected checkout; their records report its actual source revision. Relative
 output paths, complete diagnostics and artifact retention stay intact.
 
+The prepass workflow uses a distinct historical-control concurrency group. An
+already running pre-reconciliation collection keeps its original group and is
+not canceled when the current-source stack is published. Both hosted jobs retain
+their declared limits and per-collection serial execution; no paired timing or
+cross-host performance comparison is admitted by running these untimed checks.
+
 | Historical regression | Explicit apparatus checkout |
 |---|---|
 | S1 World | `dc2b610ef563bd395104d154302f0a97417957d8` |
