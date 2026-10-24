@@ -4,7 +4,7 @@ status: Approved design
 document-kind: design
 scope: LCB-000 Gate C accepted design, Current main pressure reference and unmerged residual LCB-001 native source — four-family identities, immutable per-World per-material policy, admission/readback, W-CY motion/material block v2, pressure reference and cross-issue mapping; native setup/receipt/accounting detail has a separate canonical owner, while inertial and cached/dormant execution remain Planned
 canonical-for: [liquid-solver-family-policy]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [pressure-flow-v1.md, liquid-prepared-setup-and-receipts.md, ../systems/water-design.md, ../systems/materials-and-rule-kernels.md, ../systems/flow-transport-and-profiles.md, ../decisions/ADR-005-water-model.md, ../operations/lcb-water-comparison-and-fixtures.md, ../operations/lcb-manual-comparison-ux.md, ../audits/2026-10-23-lcb000-gates-cde-design-evidence.md]
 ---
 
@@ -589,7 +589,7 @@ has exactly one refusal:
 checks after step 8. Each refusal returns `{code, material|null, detail}` and
 leaves the live session, its readback and its `policy_hash` untouched.
 
-**Parameter-block schemas are illustrative.** The oracle registers two
+**Historical oracle schemas are illustrative.** The original profiles register two
 contract-test schemas only to exercise the rules:
 - a mandatory `inertial_cellular_v1` v1 block (`damping_q16` 0..65536,
   `speed_cap_q8` 256..2048);
@@ -597,8 +597,13 @@ contract-test schemas only to exercise the rules:
   (`flow_rate_permille` 1..1000).
 
 #200 appends the actual W-CY material block v2 described above; v1 is not
-reinterpreted as viscosity. The inertial illustrative block is still only a
-contract-test schema. The owner-requested native shared-codec freeze does not
+reinterpreted as viscosity. #212 appends optional native IN family owner4/blockv2,
+with one `damping_numerator` field0..16 over fixed denominator16 and default1;
+[the IN reference](inertial-cellular-v1.md) owns its actual execution/identity.
+The inertial illustrative blockv1 remains only a contract-test schema and is
+refused by the running build. The native successor vectors are separately
+registered in [inertial-parameter-vectors.json](../reference/inertial-parameter-vectors.json);
+existing illustrative profiles and outcomes are preserved. The owner-requested native shared-codec freeze does not
 freeze an inertial law, pressure calibration or production ABI.
 
 **Applied readback.** The readback is the normalized applied policy, never the

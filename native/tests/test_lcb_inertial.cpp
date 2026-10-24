@@ -7,6 +7,7 @@
 #include "cybersand/world.hpp"
 
 #include "cybersand/liquid_run_receipt_native_capture.hpp"
+#include "inertial_parameter_vectors.inc"
 #include <array>
 #include <chrono>
 #include <cstdint>
@@ -644,6 +645,8 @@ void closed(const World &world, RectI64 region) {
                 l.gravity_y - l.loss + l.external_speed - static_cast<std::int64_t>(l.velocity_retired),
             "L1 IN closure (external changes are summed before cancellation)");
 }
+LiquidSolverPolicy damping_policy(int numerator);
+
 void test_inertial_boundary_workers() {
     auto narrow = config(1);
     narrow.maximum_rule_radius = 2;
@@ -675,30 +678,39 @@ void test_inertial_boundary_workers() {
             require(s.chunk_allocations == 0 && s.temperature_field_allocations == 0,
                     "prepared seam allocated during tick");
         }
-    World one(config(1)), four(config(4));
-    for (auto *w : {&one, &four}) {
-        w->reserve_region({0, 0, 512, 512});
-        for (int gy = 0; gy < 4; ++gy)
-            for (int gx = 0; gx < 4; ++gx) {
-                const auto ox = gx * 128, oy = gy * 128;
-                rect(*w, ox + 4, oy + 112, 120, 2, Material::Wall);
-                rect(*w, ox + 4, oy + 4, 2, 108, Material::Wall);
-                rect(*w, ox + 122, oy + 4, 2, 108, Material::Wall);
-                rect(*w, ox + 16, oy + 16, 88, 64, Material::Brine);
-            }
+    // Observe actual participants for both damping endpoints as well as the
+    // unchanged default; configured pool size alone is not execution evidence.
+    for (const auto damping : {0, 1, 16}) {
+        auto one_config = config(1), four_config = config(4);
+        if (damping != 1) {
+            one_config.liquid_solver_policy = damping_policy(damping);
+            four_config.liquid_solver_policy = one_config.liquid_solver_policy;
+        }
+        World one(one_config), four(four_config);
+        for (auto *w : {&one, &four}) {
+            w->reserve_region({0, 0, 512, 512});
+            for (int gy = 0; gy < 4; ++gy)
+                for (int gx = 0; gx < 4; ++gx) {
+                    const auto ox = gx * 128, oy = gy * 128;
+                    rect(*w, ox + 4, oy + 112, 120, 2, Material::Wall);
+                    rect(*w, ox + 4, oy + 4, 2, 108, Material::Wall);
+                    rect(*w, ox + 122, oy + 4, 2, 108, Material::Wall);
+                    rect(*w, ox + 16, oy + 16, 88, 64, Material::Brine);
+                }
+        }
+        std::uint32_t observed = 0;
+        for (int i = 0; i < 32; ++i) {
+            const auto a = tick(one), b = tick(four);
+            observed = std::max(observed, b.worker_threads_observed);
+            require(one.physical_state_hash() == four.physical_state_hash() &&
+                        one.inertial_ledger() == four.inertial_ledger(),
+                    "genuine multi-core 1/4-worker divergence");
+            require(a.chunk_allocations == 0 && b.chunk_allocations == 0, "prepared four-worker World allocated");
+            closed(one, {0, 0, 512, 512});
+        }
+        require(observed == 4U, "four configured workers did not all execute tasks");
+        std::cout << "IN worker observation: damping=" << damping << "/16 configured=4 observed=" << observed << "\n";
     }
-    std::uint32_t observed = 0;
-    for (int i = 0; i < 32; ++i) {
-        const auto a = tick(one), b = tick(four);
-        observed = std::max(observed, b.worker_threads_observed);
-        require(one.physical_state_hash() == four.physical_state_hash() &&
-                    one.inertial_ledger() == four.inertial_ledger(),
-                "genuine multi-core 1/4-worker divergence");
-        require(a.chunk_allocations == 0 && b.chunk_allocations == 0, "prepared four-worker World allocated");
-        closed(one, {0, 0, 512, 512});
-    }
-    require(observed == 4U, "four configured workers did not all execute tasks");
-    std::cout << "IN worker observation: configured=4 observed=" << observed << "\n";
 }
 void test_inertial_reset_products() {
     World w(config(1));
@@ -847,6 +859,133 @@ void test_inertial_storage_capture() {
               << " total_components=" << storage.total_component_bytes << " serialized=" << saved.size()
               << " capture_restore_seconds=" << duration << "\n";
 }
+LiquidSolverPolicy damping_policy(int numerator) {
+    auto words = policy(false, true).envelope();
+    // Empty family/material lists are the final two words of this request.
+    words[words.size() - 2U] = 1;
+    words.insert(words.end() - 1, {4, 2, 1, numerator});
+    auto decoded = LiquidSolverPolicy::decode(std::span<const std::int32_t>(words));
+    require(decoded.accepted(), "IN damping request refused: " + decoded.refusal.message());
+    return *decoded.policy;
+}
+
+void test_inertial_damping_parameters() {
+    const auto default_identity = cybersand::inertial_extension_identity();
+    for (const auto& vector : inertial_parameter_vectors::kCases) {
+        auto decoded = LiquidSolverPolicy::decode(std::span<const std::int32_t>(vector.words));
+        require(decoded.accepted() == vector.accepted, std::string(vector.name) + ": schema acceptance");
+        if (!vector.accepted) {
+            require(cybersand::liquid_policy_refusal_id(decoded.refusal.code) == vector.refusal,
+                    std::string(vector.name) + ": refusal classification");
+            continue;
+        }
+        auto cfg = config(1); cfg.liquid_solver_policy = *decoded.policy;
+        World world(cfg);
+        const auto parameters = world.inertial_parameters();
+        require(parameters.damping_numerator == vector.damping_numerator &&
+                    world.liquid_solver_policy().policy_hash_hex() == vector.policy_hash &&
+                    cybersand::Sha256::hex(cybersand::inertial_extension_identity(parameters)) == vector.extension_identity,
+                std::string(vector.name) + ": actual readback/policy/independent identity");
+        cybersand::setup::SetupDescriptor setup; setup.domain = {0, 0, 8, 8};
+        const auto facts = cybersand::receipt::capture_native_facts(world, setup);
+        require(facts.values().solver_state_extensions[0].extension_digest ==
+                    cybersand::inertial_extension_identity(parameters),
+                "native receipt extension uses actual damping");
+        const auto saved = world.save_physical_state();
+        auto restored = World::restore_physical_state(config(4), saved);
+        require(restored->inertial_parameters() == parameters && restored->save_physical_state() == saved &&
+                    restored->physical_state_hash() == world.physical_state_hash(),
+                "CYPS3 restores actual damping from policy and matching identity");
+        if (vector.damping_numerator != 1) {
+            auto mismatch = saved;
+            const auto identity = cybersand::inertial_extension_identity(parameters);
+            const auto at = std::search(mismatch.begin(), mismatch.end() - 32, identity.begin(), identity.end());
+            require(at != mismatch.end() - 32, "actual IN identity not serialized");
+            std::copy(default_identity.begin(), default_identity.end(), at); reseal(mismatch);
+            bool refused = false;
+            try { (void)World::restore_physical_state(config(1), mismatch); }
+            catch (const std::invalid_argument&) { refused = true; }
+            require(refused && world.save_physical_state() == saved,
+                    "valid-digest policy/actual-parameter identity mismatch refuses without changing source");
+        }
+    }
+    // A contract-only relaxed schema cannot install an out-of-range policy in
+    // the running World; refusal preserves an already live session candidate.
+    auto relaxed = cybersand::LiquidPolicyBuild::running();
+    for (auto& schema : relaxed.schemas)
+        if (schema.family_owner && schema.owner == 4U) schema.fields[0].maximum = 17;
+    auto words = policy(false, true).envelope(); words[words.size() - 2U] = 1;
+    words.insert(words.end() - 1, {4, 2, 1, 17});
+    auto relaxed_policy = LiquidSolverPolicy::decode(std::span<const std::int32_t>(words), relaxed);
+    require(relaxed_policy.accepted(), "contract-only invalid running parameter fixture");
+    auto invalid_config = config(1); invalid_config.liquid_solver_policy = *relaxed_policy.policy;
+    World retained(config(1)); const auto retained_bytes = retained.save_physical_state();
+    bool install_refused = false;
+    try { (void)std::make_unique<World>(invalid_config); }
+    catch (const cybersand::LiquidPolicyRefused& refusal) {
+        install_refused = refusal.refusal().code == LiquidPolicyRefusalCode::MalformedPolicy;
+    }
+    require(install_refused && retained.save_physical_state() == retained_bytes,
+            "invalid actual damping refuses before a new candidate can replace retained authority");
+    std::array<int, 4> final_x{}, final_vx{};
+    std::size_t arm = 0;
+    for (const auto numerator : {0, 1, 8, 16}) {
+        auto cfg = config(1); cfg.liquid_solver_policy = damping_policy(numerator);
+        cfg.parallel_job_threshold = 1;
+        World one(cfg); cfg.worker_threads = 4; World four(cfg);
+        for (auto* world : {&one, &four}) {
+            world->reserve_region({0, 0, 256, 64});
+            rect(*world, 0, 30, 256, 2, Material::Wall);
+            world->set(20, 29, Material::Brine);
+            require(world->diagnostic_set_inertial_cell(20, 29, 24, 0, 0, 0), "matched initial lateral state");
+        }
+        auto restored = World::restore_physical_state(config(4), one.save_physical_state());
+        for (int t = 0; t < 30; ++t) {
+            tick(one); tick(four); tick(*restored);
+            require(one.physical_state_hash() == four.physical_state_hash() &&
+                        one.physical_state_hash() == restored->physical_state_hash() &&
+                        one.inertial_ledger() == four.inertial_ledger() &&
+                        one.inertial_ledger() == restored->inertial_ledger(),
+                    "actual damping retains exact 1/4-worker and restored continuation each tick");
+            closed(one, {0, 0, 256, 64});
+        }
+        for (int x = 0; x < 256; ++x)
+            if (one.stored_material(x, 29) == Material::Brine) {
+                final_x[arm] = x; final_vx[arm] = one.inertial_cell(x, 29).vx;
+            }
+        std::cout << "IN damping tail: numerator=" << numerator << "/16 tick=30 x=" << final_x[arm]
+                  << " vx=" << final_vx[arm] << " loss=" << one.inertial_ledger().loss << "\n";
+        ++arm;
+    }
+    require(final_vx == std::array<int,4>{24, 15, 0, 0} && final_x[0] > final_x[1] &&
+                final_x[1] > final_x[2] && final_x[2] >= final_x[3],
+            "matched damping arms retain different actual tails; zero and rounded default need not settle");
+    // Zero damping still saturates at32; accumulator15 gives exactly two moves.
+    // Signed x endpoints and final support probe retain write2/read3 geometry.
+    for (const auto vx : {-32, 32}) {
+        auto cfg = config(1); cfg.liquid_solver_policy = damping_policy(0);
+        World world(cfg); world.reserve_region({0, 0, 128, 128}); world.set(64, 64, Material::Brine);
+        require(world.diagnostic_set_inertial_cell(64, 64, static_cast<std::int16_t>(vx), 32,
+                    static_cast<std::int8_t>(vx < 0 ? -15 : 15), 15), "zero-damping radius seed");
+        const auto stats = tick(world); const auto ledger = world.inertial_ledger();
+        require(world.stored_material(vx < 0 ? 62 : 66, 66) == Material::Brine &&
+                    ledger.maximum_write_reach == 2 && ledger.maximum_read_reach == 3 &&
+                    stats.chunk_allocations == 0 && stats.temperature_field_allocations == 0,
+                "zero damping preserves complete radius3 and two-cell signed travel without tick allocation");
+        closed(world, {0, 0, 128, 128});
+    }
+    for (const auto vx : {-17, 17}) {
+        auto cfg = config(1); cfg.liquid_solver_policy = damping_policy(8);
+        World world(cfg); world.reserve_region({0,0,64,64}); rect(world,0,30,64,2,Material::Wall);
+        world.set(20,29,Material::Brine);
+        require(world.diagnostic_set_inertial_cell(20,29,static_cast<std::int16_t>(vx),0,0,0), "signed rounding seed");
+        tick(world); const auto state = world.inertial_cell(20,29);
+        require(state.vx == (vx < 0 ? -9 : 9) && state.ax == state.vx && world.inertial_ledger().loss == 12,
+                "damping truncates signed half-units toward zero and books support plus exact speed loss");
+        closed(world,{0,0,64,64});
+    }
+}
+
 void test_inertial_residual_motion() {
     World w(config(1));
     w.reserve_region({0, 0, 128, 128});
@@ -893,3 +1032,5 @@ void test_lcb_inertial_reset_products() { test_inertial_reset_products(); }
 void test_lcb_inertial_storage_capture() { test_inertial_storage_capture(); }
 
 void test_lcb_inertial_residual_motion() { test_inertial_residual_motion(); }
+
+void test_lcb_inertial_damping_parameters() { test_inertial_damping_parameters(); }

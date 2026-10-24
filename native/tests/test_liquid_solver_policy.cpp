@@ -279,7 +279,7 @@ void test_liquid_policy_identity_matches_source() {
     const auto& running = LiquidPolicyBuild::running();
     // LCB-001 pressure reference: FreeMass, CellularYield and pressure_flow_v1
     // compiled; optional pressure family and Water CellularYield v2 schemas.
-    require(running.catalogue_digest == catalogue_digest && running.native && running.schemas.size() == 2U &&
+    require(running.catalogue_digest == catalogue_digest && running.native && running.schemas.size() == 3U &&
                 running.schemas.front().family_owner && running.schemas.front().owner == 3U &&
                 !running.schemas.front().mandatory && running.available_families == 0x0FU,
             "running build identity");

@@ -22,9 +22,9 @@
 // ("Request envelope and canonical hash"); tools/lcb/policy_contract.py is its
 // executable oracle and the native tests replay its registered vectors.
 //
-// This build executes only each material's current default family. Every other
-// mapping is refused before any World is built; nothing here selects, dispatches
-// or falls back to another solver, and no wire/ABI layout is frozen.
+// The running build qualifies Current defaults and explicit opt-in cells;
+// every other mapping refuses before World storage is built. Policy admission
+// never silently falls back, and no production Cell ABI is frozen here.
 namespace cybersand {
 
 namespace liquid_policy_detail {
@@ -180,11 +180,13 @@ struct LiquidPolicyBuild {
     static constexpr std::int32_t kPressureDefaultGasEnabled = 1;
     static constexpr std::int32_t kPressureDefaultAtmosphericRows = 32;
     static constexpr std::uint16_t kWaterCellularYieldBlockVersion = 2;
+    // IN v1 remains the historical illustrative schema; v2 is the native law.
+    static constexpr std::uint16_t kInertialBlockVersion = 2;
 
     // This binary: FreeMass and CellularYield qualified for each liquid's current
     // default, plus Water x pressure_flow_v1/reference and whole-cell
-    // cellular_yield_v1/reference (#200). cached and
-    // cached_dormant (#201) and every other candidate remain refused.
+    // cellular_yield_v1/reference (#200), plus Brine IN/reference (#212).
+    // cached/cached_dormant (#201) and every other candidate remain refused.
     [[nodiscard]] static const LiquidPolicyBuild& running() {
         static const LiquidPolicyBuild build = [] {
             LiquidPolicyBuild result;
@@ -203,6 +205,8 @@ struct LiquidPolicyBuild {
                                       {{"gas_enabled", 0, 1}, {"atmospheric_head_rows", 16, 4096}}});
             result.schemas.push_back({false, 3, kWaterCellularYieldBlockVersion, false, 2,
                                       {{"viscosity_index", 0, 255}}});
+            result.schemas.push_back({true, 4, kInertialBlockVersion, false, 0,
+                                      {{"damping_numerator", 0, 16}}});
             return result;
         }();
         return build;

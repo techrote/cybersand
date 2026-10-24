@@ -218,8 +218,8 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
     saturate();
     {
         const Snapshot before{vx, vy};
-        const auto damp_x = trunc_mul(vx, P::kDampingNumerator, P::kDampingDenominator);
-        const auto damp_y = trunc_mul(vy, P::kDampingNumerator, P::kDampingDenominator);
+        const auto damp_x = trunc_mul(vx, inertial_parameters_.damping_numerator, P::kDampingDenominator);
+        const auto damp_y = trunc_mul(vy, inertial_parameters_.damping_numerator, P::kDampingDenominator);
         vx -= damp_x.applied;
         vy -= damp_y.applied;
         book.remainder += damp_x.remainder + damp_y.remainder;
@@ -385,7 +385,7 @@ InertialStorageUsage World::inertial_storage_usage() const noexcept {
     out.slot_size = sizeof(InertialSlot);
     out.slot_alignment = alignof(InertialSlot);
     out.world_state_bytes =
-        sizeof(inertial_enabled_) + sizeof(inertial_materials_) + sizeof(inertial_ledger_);
+        sizeof(inertial_enabled_) + sizeof(inertial_materials_) + sizeof(inertial_ledger_) + sizeof(inertial_parameters_);
     out.job_ledger_bytes = parallel_ == nullptr ? 0U : parallel_->results.capacity() * sizeof(InertialLedger);
     for (const auto &[coord, p] : chunks_) {
         (void)coord;

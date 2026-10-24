@@ -1380,7 +1380,7 @@ std::uint64_t World::physical_state_hash() const {
     hash_integer(hash, static_cast<std::uint8_t>(liquid_surface_adhesion_enabled_));
     for (const auto byte : config_.liquid_solver_policy.policy_hash()) hash_byte(hash, byte);
     if (inertial_enabled_) {
-        for (const auto byte:inertial_extension_identity()) hash_byte(hash,byte);
+        for (const auto byte:inertial_extension_identity(inertial_parameters_)) hash_byte(hash,byte);
     }
     hash_integer(hash, static_cast<std::uint8_t>(pressure_ != nullptr));
     if (pressure_ != nullptr) {
@@ -1563,7 +1563,7 @@ std::vector<std::uint8_t> World::save_physical_state() const {
     for (const auto word : envelope) out.put(word);
     if (inertial_enabled_) {
         out.put(InertialParameters::kVersion);
-        for (const auto byte:inertial_extension_identity()) out.put(byte);
+        for (const auto byte:inertial_extension_identity(inertial_parameters_)) out.put(byte);
     }
     // Clock, interest and events.
     out.put(tick_index_);
@@ -1742,7 +1742,7 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
     if (has_inertial != (format==3U)) refuse_state("IN requires its explicit CYPS3 format");
     if (has_inertial) {
         if (in.get<std::uint16_t>() != InertialParameters::kVersion) refuse_state("unknown IN state contract");
-        for (const auto expected:inertial_extension_identity())
+        for (const auto expected:inertial_extension_identity(inertial_parameters_for_policy(config.liquid_solver_policy)))
             if (in.get<std::uint8_t>() != expected) refuse_state("unknown IN parameter/state identity");
     }
     config.settled_discovery_enabled = false;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cybersand/sha256.hpp"
+#include "cybersand/liquid_solver_policy.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <initializer_list>
@@ -25,7 +26,24 @@ struct InertialParameters {
     static constexpr std::int32_t kDragNumerator = 1, kDragDenominator = 4;
     static constexpr std::int32_t kExecutionRadius = 3;
     static constexpr std::int32_t kRest = 1;
+    static constexpr std::uint16_t kFamilyBlockVersion = LiquidPolicyBuild::kInertialBlockVersion;
+    std::int32_t damping_numerator = kDampingNumerator;
+    [[nodiscard]] bool operator==(const InertialParameters&) const = default;
 };
+
+// The policy decoder checks this optional native v2 schema before installation.
+// Keep its interpretation shared by construction and pre-install CYPS identity.
+[[nodiscard]] inline InertialParameters inertial_parameters_for_policy(const LiquidSolverPolicy& policy) {
+    InertialParameters result;
+    for (const auto& block : policy.family_blocks()) {
+        if (block.owner != static_cast<std::uint16_t>(LiquidSolverFamily::InertialCellularV1)) continue;
+        if (block.version != InertialParameters::kFamilyBlockVersion || block.values.size() != 1U ||
+            block.values[0] < 0 || block.values[0] > InertialParameters::kDampingDenominator)
+            throw std::invalid_argument("unsupported IN damping parameter block");
+        result.damping_numerator = block.values[0];
+    }
+    return result;
+}
 
 // Authoritative per-cell state (only on a cell whose material runs inertial).
 struct InertialCellState {
@@ -70,16 +88,16 @@ struct InertialStorageUsage {
     std::size_t total_component_bytes = 0;
 };
 
-// Binds fixed fields, units, parameters, full execution reach and update order.
+// Binds fields, units, actual damping, fixed law, execution reach and update order.
 // Canonical LE int32 values follow the domain; independent of C++ padding.
-[[nodiscard]] inline Sha256::Digest inertial_extension_identity() noexcept {
+[[nodiscard]] inline Sha256::Digest inertial_extension_identity(InertialParameters parameters = {}) noexcept {
     Sha256 hash;
     constexpr char domain[] = "cybersand-inertial-update-v1-state-v1-identity-v1";
     hash.update({reinterpret_cast<const std::uint8_t *>(domain), sizeof(domain) - 1U});
     using P = InertialParameters;
     for (const std::int32_t value :
          {16, 16, 8, 8, P::kQ, P::kGravity, P::kVmax, P::kTurnNumerator, P::kTurnDenominator,
-          P::kDeflectNumerator, P::kDeflectDenominator, P::kDampingNumerator, P::kDampingDenominator,
+          P::kDeflectNumerator, P::kDeflectDenominator, parameters.damping_numerator, P::kDampingDenominator,
           P::kDragNumerator, P::kDragDenominator, P::kRest, P::kExecutionRadius}) {
         std::array<std::uint8_t, 4> bytes{};
         for (unsigned i = 0; i < 4; ++i)

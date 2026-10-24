@@ -505,6 +505,7 @@ World::World(WorldConfig config)
     // builds temporary policy data); no other family or fallback runs.
     if (auto refusal = config_.liquid_solver_policy.admission_refusal())
         throw LiquidPolicyRefused(std::move(*refusal));
+    inertial_parameters_ = inertial_parameters_for_policy(config_.liquid_solver_policy);
     const bool pressure_requested = policy_selects_pressure(config_.liquid_solver_policy);
     for (const auto& item : config_.liquid_solver_policy.assignments()) {
         if (item.family != LiquidSolverFamily::InertialCellularV1) continue;

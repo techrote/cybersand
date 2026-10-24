@@ -125,7 +125,7 @@ def load_matrix(matrix_bytes: bytes) -> dict:
 
 
 def make_build(matrix_bytes: bytes, catalogue: str, available=(1, 2), native: bool = True,
-               qualified=None) -> dict:
+               qualified=None, schemas=None) -> dict:
     """A running build's identity. `available` = family codes compiled and qualified.
 
     `qualified`, when given, further restricts admission to those (material, family)
@@ -134,7 +134,8 @@ def make_build(matrix_bytes: bytes, catalogue: str, available=(1, 2), native: bo
     """
     return {"catalogue_digest": catalogue, "capability_matrix_digest": capability_matrix_digest(matrix_bytes),
             "matrix": load_matrix(matrix_bytes), "available": tuple(sorted(available)), "native": native,
-            "qualified": None if qualified is None else frozenset(qualified)}
+            "qualified": None if qualified is None else frozenset(qualified),
+            **({} if schemas is None else {"schemas": schemas})}
 
 
 def current_default_cells(matrix_bytes: bytes) -> frozenset:
@@ -273,7 +274,9 @@ def decode(words: list[int], build: dict) -> dict:
             raise Refusal("family_unavailable", f"{FAMILY_NAMES[f]} is not compiled/qualified in this build", m)
         if build["qualified"] is not None and (m, f) not in build["qualified"]:
             raise Refusal("family_unavailable", f"{FAMILY_NAMES[f]} is not qualified for material {m} in this build", m)
-    # 8. Parameter blocks.
+    # 8. Parameter blocks. Historical vector profiles keep their original
+    # illustrative schemas; native successor contracts can name an explicit set.
+    schemas = build.get("schemas", BLOCK_SCHEMAS)
     family_of = {m: f for m, f, _ in assignments}
     used = set(family_of.values())
     for kind in ("family", "material"):
@@ -281,7 +284,7 @@ def decode(words: list[int], build: dict) -> dict:
         if any(b <= a for a, b in zip(owners, owners[1:])):
             raise Refusal("malformed_policy", f"{kind} blocks not strictly ascending (duplicate or unsorted)")
         for owner, version, values in blocks[kind]:
-            schema = BLOCK_SCHEMAS.get((kind, owner, version))
+            schema = schemas.get((kind, owner, version))
             if schema is None:
                 raise Refusal("unknown_parameter", f"unknown {kind} block ({owner}, v{version})")
             if len(values) != len(schema["fields"]):
@@ -295,7 +298,7 @@ def decode(words: list[int], build: dict) -> dict:
             for (name, lo, hi), value in zip(schema["fields"], values):
                 if not lo <= value <= hi:
                     raise Refusal("malformed_policy", f"{name}={value} outside {lo}..{hi}")
-    for (kind, owner, _), schema in BLOCK_SCHEMAS.items():
+    for (kind, owner, _), schema in schemas.items():
         if kind == "family" and schema["mandatory"] and owner in used \
                 and owner not in [b[0] for b in blocks["family"]]:
             raise Refusal("unknown_parameter", f"missing mandatory family block for {FAMILY_NAMES[owner]}")

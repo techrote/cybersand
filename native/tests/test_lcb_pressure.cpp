@@ -343,7 +343,12 @@ void test_pending_event_restore_bounds() {
 
 void test_pressure_admission_and_refusal() {
     const auto& running = LiquidPolicyBuild::running();
-    require(running.available_families == 0x0FU && running.schemas.size() == 2U, "running build profile");
+    require(running.available_families == 0x0FU && running.schemas.size() == 3U &&
+            running.schemas.back().family_owner && running.schemas.back().owner == 4U &&
+            running.schemas.back().version == 2U && !running.schemas.back().mandatory &&
+            running.schemas.back().fields.size() == 1U &&
+            running.schemas.back().fields[0].name == "damping_numerator" &&
+            running.schemas.back().fields[0].minimum == 0 && running.schemas.back().fields[0].maximum == 16, "running build profile");
     const auto policy = pressure_policy();
     require(policy.assignment(3)->family == LiquidSolverFamily::PressureFlowV1, "Water applied family");
     for (std::int32_t variant : {1, 2}) {

@@ -315,6 +315,7 @@ public:
     [[nodiscard]] std::uint64_t water_quantity(RectI64 region) const;
     [[nodiscard]] bool inertial_enabled() const noexcept { return inertial_enabled_; }
     [[nodiscard]] bool inertial_family(Material material) const noexcept;
+    [[nodiscard]] InertialParameters inertial_parameters() const noexcept { return inertial_parameters_; }
     [[nodiscard]] InertialCellState inertial_cell(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] InertialLedger inertial_ledger() const noexcept;
     [[nodiscard]] InertialStorageUsage inertial_storage_usage() const noexcept;
@@ -389,6 +390,7 @@ private:
     bool inertial_enabled_ = false;
     std::array<bool,kMaterialDefinitions.size()> inertial_materials_{};
     InertialLedger inertial_ledger_{};
+    InertialParameters inertial_parameters_{};
     QuantityLedgerSnapshot quantity_{};
     void record_physics(PhysicsEvent kind, Material source, Material target,
                         std::int64_t dx, std::int64_t dy, JobEffects* effects,

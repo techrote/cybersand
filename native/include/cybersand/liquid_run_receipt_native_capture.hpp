@@ -33,7 +33,7 @@ inline NativeFacts capture_native_facts(const World& world, const SetupDescripto
         value.effective_pressure=world.pressure_flow_parameters();
     }
     if (world.inertial_enabled())
-        value.solver_state_extensions.push_back({4,InertialParameters::kVersion,1,inertial_extension_identity()});
+        value.solver_state_extensions.push_back({4,InertialParameters::kVersion,1,inertial_extension_identity(world.inertial_parameters())});
     return NativeFacts(std::move(value));
 }
 } // namespace cybersand::receipt
