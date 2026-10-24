@@ -75,27 +75,81 @@ def exercise(output):
         small_boundary(point,Record(material=1,epoch=255),256)
     small_boundary((2,128),Record(material=3,a=255),256)
     # Source-only fixtures until a new verifier/case authority is issued.
-    from world_oracle import resident_endpoint,resident_sand_witness
+    from world_oracle import (resident_endpoint,resident_activity_transitions,
+        resident_sand_witness,BLOCK_SLEEP_KEY,BLOCK_WAKE_KEY)
     from readback import resident_grid
+    def resident_rows(endpoint='Q'):
+        rows={'config':(128,3,200,256,1,32,64,2,1,1,256,256,256,1024,64,0,4096,0,0,0)}
+        width=512 if endpoint=='R' else 256
+        rows['interest']=(1,0,0,width,512)
+        rows['selected']=(1,0,0,width//64-1,7)
+        rows['applied']=rows['selected']
+        def chunk(active,quiet,nonempty=0):
+            return (4,nonempty,int(active),0,quiet,0,0,0,0,0,16)
+        for y in range(4):
+            for x in range(2):
+                rows[f'chunk:{x}:{y}']=chunk(False,3)
+                for i in range(16):
+                    rows[f'block:{x}:{y}:{i}']=(0,3 if (x,y)==(0,0) and i<8 else 0,0,0)
+        rows['chunk:3:0']=chunk(True,0,2)
+        for i in range(16):
+            rows[f'block:3:0:{i}']=(0,0,1 if i==0 else 0,0)
+        rows[f'event:{BLOCK_SLEEP_KEY}']=(8,)
+        rows[f'event:{BLOCK_WAKE_KEY}']=(20 if endpoint=='R' else 4,)
+        return rows
+    positive=output/'resident-mixed-aged-unaged-positive';positive.mkdir()
+    positive_rows=resident_rows()
+    (positive/'input.json').write_text(json.dumps(positive_rows)+'\n',encoding='utf-8')
+    resident_endpoint(positive_rows,2048,'Q')
+    passed.append('resident-mixed-aged-unaged-positive')
     def resident_mutation(p,kind):
-        rows={'config':(128,3,200,256,1,32,64,2,1,1,256,256,256,1024,64,0,4096,0,0,0),
-              'interest':(1,0,0,256,512),'selected':(1,0,0,3,7),'applied':(1,0,0,3,7),'chunk:3:0':(4,1,1)}
-        rows.update({f'block:{x}:{y}:{i}':(0,3,0,0) for y in range(4) for x in range(2) for i in range(16)})
-        rows.update({f'chunk:{x}:{y}':(4,0,0,0,3) for y in range(4) for x in range(2)})
+        rows=resident_rows()
         if kind in ('core','chunk'):
-            c=list(rows['config']);c[10 if kind=='core' else 11]=128 if kind=='core' else 64;rows['config']=tuple(c)
+            cfg=list(rows['config']);cfg[10 if kind=='core' else 11]=128 if kind=='core' else 64;rows['config']=tuple(cfg)
         elif kind=='interest':rows['interest']=(1,0,0,2048,2048)
         elif kind=='applied':rows['applied']=(1,0,0,7,7)
         elif kind=='sleep':
-            for k in list(rows):
-                if k.startswith('block:'):rows[k]=(0,0,1,0)
+            rows['block:0:0:0']=(0,0,1,0)
         elif kind=='unaged':
-            for k in list(rows):
-                if k.startswith('block:'):rows[k]=(0,0,0,0)
+            for key in list(rows):
+                if key.startswith('block:') and not key.startswith('block:3:0:'):
+                    rows[key]=(0,0,0,0)
+        elif kind=='missing-exclusion':
+            rows['chunk:3:0']=(4,2,0,0,3,0,0,0,0,0,16)
+            for i in range(16):rows[f'block:3:0:{i}']=(0,0,0,0)
+        elif kind=='contradictory-exclusion':
+            for i in range(16):rows[f'block:3:0:{i}']=(0,0,0,0)
+        elif kind=='block-owner':
+            del rows['block:0:0:15']
         (p/'input.json').write_text(json.dumps(rows)+'\n',encoding='utf-8')
         resident_endpoint(rows,2048,'Q')
-    for kind in ('core','chunk','interest','applied','sleep','unaged'):
-        rejects('resident-'+kind+'-drift',lambda p,k=kind:resident_mutation(p,k))
+    expected={
+        'core':'resident scratch/geometry provisioning drift',
+        'chunk':'resident scratch/geometry provisioning drift',
+        'interest':'resident interest/reentry coverage drift',
+        'applied':'resident interest/reentry coverage drift',
+        'sleep':'resident inactive chunk/activity contradiction',
+        'unaged':'resident sleep transition witness absent',
+        'missing-exclusion':'resident exclusion witness absent/contradictory',
+        'contradictory-exclusion':'resident exclusion witness absent/contradictory',
+        'block-owner':'resident activity ownership/metadata drift',
+    }
+    for kind,reason in expected.items():
+        rejects('resident-'+kind+'-drift',lambda p,k=kind:resident_mutation(p,k),reason)
+    def activity_transition(p,kind):
+        endpoints={name:resident_rows(name) for name in ('B','P','Q','R')}
+        endpoints['B'][f'event:{BLOCK_SLEEP_KEY}']=(8,);endpoints['B'][f'event:{BLOCK_WAKE_KEY}']=(4,)
+        endpoints['P'][f'event:{BLOCK_SLEEP_KEY}']=(8,);endpoints['P'][f'event:{BLOCK_WAKE_KEY}']=(4,)
+        endpoints['Q'][f'event:{BLOCK_SLEEP_KEY}']=(9,);endpoints['Q'][f'event:{BLOCK_WAKE_KEY}']=(4,)
+        endpoints['R'][f'event:{BLOCK_SLEEP_KEY}']=(10,);endpoints['R'][f'event:{BLOCK_WAKE_KEY}']=(20,)
+        if kind=='post-clear':
+            endpoints['P'][f'event:{BLOCK_WAKE_KEY}']=(5,)
+            endpoints['Q'][f'event:{BLOCK_WAKE_KEY}']=(5,)
+        if kind=='reentry':endpoints['R'][f'event:{BLOCK_WAKE_KEY}']=(4,)
+        (p/'input.json').write_text(json.dumps(endpoints)+'\n',encoding='utf-8')
+        resident_activity_transitions(endpoints)
+    rejects('resident-post-clear-activity-drift',lambda p:activity_transition(p,'post-clear'),'prepared-clear activity transition')
+    rejects('resident-reentry-activity-drift',lambda p:activity_transition(p,'reentry'),'reentry wake transition absent')
     def shifted_grid(p):
         reg=[(x+1,y,16384,100+16384*8*(y*4+x)) for y in range(4) for x in range(4)]
         (p/'input.json').write_text(json.dumps(reg)+'\n',encoding='utf-8');resident_grid(reg,512)

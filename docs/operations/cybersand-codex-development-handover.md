@@ -36,6 +36,10 @@ physical stress campaign, or start #212, #234 repair or a solver port. The lande
 work is imported through main; separate source branches and the dirty primary
 checkout remain untouched.
 
+## MAT-003 readback verifier repair — 2026-10-23
+
+The [readback verifier repair and v2 admission proposal](../audits/2026-10-23-mat003-readback-verifier-repair.md) corrects only the independently diagnosed resident sleep/exclusion oracle. The complete 152-case archive is assessed sufficient for a future readback-only requalification; no candidate rerun is needed. The revised protocol is **not independently admitted**, owner authority for the changed reader is **absent**, and no full revised readback has run. Keep #204/#221 open/draft, production unchanged and Windows correctness refused until both gates close.
+
 ## MAT-003 latest correctness disposition — 2026-10-23
 
 The [authorized152-case run](../audits/2026-10-23-mat003-reentry-correctness-attempt.md) completed collection, then frozen Astra readback refused the overconstrained sleep witness. Full qualification remains refused; every observation/failure is retained, no repair/rerun is authorized. Earlier build/held-execution entries describe historical stages. R16-T1 conditional, PRs draft, production unchanged.

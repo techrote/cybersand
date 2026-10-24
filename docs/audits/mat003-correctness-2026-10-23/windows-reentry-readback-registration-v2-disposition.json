@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "registration_id": "mat003-windows-reentry-readback-v2-20261023",
+  "registration_sha256": "130dc475363585dd7d14095305d398d7cfcbb0cccd722b0ee5e802181b11ee7f",
+  "disposition": "not-admitted-superseded",
+  "focused_run_id": 39989589419,
+  "focused_run_url": "https://github.com/techrote/cybersand/actions/runs/39989589419",
+  "failure": "resident-post-clear-activity-drift synthetic negative was rejected first by resident activity event counter regression, not the intended prepared-clear activity transition guard",
+  "evidence_boundary": "No candidate binary, full evidence readback, benchmark or timing execution occurred.",
+  "successor": "mat003-windows-reentry-readback-v3-20261023"
+}

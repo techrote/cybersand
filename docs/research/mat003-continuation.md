@@ -5,10 +5,21 @@ document-kind: reference
 scope: Source-bound S2P packed diagnosis, WCLEAR-001 apparatus and C128-001 feasibility; timing and production selection remain separately held
 canonical-for: [mat003-continuation-decisions, mat003-packed-diagnosis, mat003-wide-clear-admission, mat003-c128-feasibility]
 last-reviewed: 2026-10-23
-related-documents: [../operations/mat-003prepass-registration.md, mat-003prepass-epoch-consumers.md, mat-003prepass-gen006-handoff.md, ../architecture/chunk-tile-and-buffer-model.md, ../operations/architecture-programme.md]
+related-documents: [../operations/mat-003prepass-registration.md, mat-003prepass-epoch-consumers.md, mat-003prepass-gen006-handoff.md, ../architecture/chunk-tile-and-buffer-model.md, ../operations/architecture-programme.md, ../audits/2026-10-23-mat003-readback-verifier-repair.md]
 ---
 
 # MAT-003 continuation decisions and admission boundary
+
+## Windows correctness readback repair boundary
+
+The [2026-10-23 verifier repair](../audits/2026-10-23-mat003-readback-verifier-repair.md)
+replaces only the overconstrained resident sleep/exclusion witness for a prospective
+readback of the already complete immutable Windows archive. The archive is source-
+assessed sufficient; candidate execution, timing and production changes remain
+forbidden. Independent source/protocol admission and explicit owner authorization
+of registration `4869725932a59bdaad7ede819e520a352c8b9764bbffa019a8e000009add0344`
+are still required before one full revised readback. Until then Windows correctness
+remains refused and this continuation report selects no carrier.
 
 ## Scope and preserved evidence
 

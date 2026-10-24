@@ -5,6 +5,19 @@ from dataclasses import replace
 
 budget_hook=lambda:None
 
+# Source-bound independent literals from PhysicsEvent ordinal values and
+# physics_event_key(..., Empty, Empty, 0, 0). They are intentionally not
+# imported from production so verifier drift remains reviewable.
+BLOCK_WAKE_KEY=(16<<24)|4
+BLOCK_SLEEP_KEY=(17<<24)|4
+
+def resident_event_count(rows,key):
+    value=rows.get(f'event:{key}',(0,))
+    if len(value)!=1 or value[0]<0:
+        raise ValueError('resident physics event metadata drift')
+    return value[0]
+
+
 def small_boundary(pos,record,side):
     """Independent fixed two-cell moat contract; epoch may clear normally."""
     x,y=pos
@@ -31,14 +44,53 @@ def resident_endpoint(rows,side,endpoint):
     if raw>c[10] or unique>64 or chunks>c[11]:
         raise ValueError('resident append/job/chunk bound exceeded')
     if endpoint!='R':
+        threshold=c[1]
         sleeping=False
+        # Source-bound non-vacuous witness: ActivityBlock initializes inactive/quiet0,
+        # finish_tick skips already-inactive blocks, and an active selected block is
+        # made inactive only after reaching sleep_after_quiet_ticks. Therefore an
+        # inactive chunk containing at least one inactive block at the threshold is
+        # direct evidence of a real sleep transition. Untouched blocks may remain
+        # inactive/quiet0 and must not be required to age.
         for y in range(4):
             for x in range(2):
-                chunk=rows[f'chunk:{x}:{y}']
-                blocks=[rows[f'block:{x}:{y}:{i}'] for i in range(16)]
-                sleeping|=chunk[2]==0 and chunk[4]>=3 and all(b[2]==0 and b[1]>=3 for b in blocks)
-        if not sleeping or not rows['chunk:3:0'][2]:
-            raise ValueError('resident sleep/exclusion witness absent')
+                chunk=rows.get(f'chunk:{x}:{y}')
+                blocks=[rows.get(f'block:{x}:{y}:{i}') for i in range(16)]
+                if chunk is None or len(chunk)<5 or any(b is None or len(b)!=4 for b in blocks):
+                    raise ValueError('resident activity ownership/metadata drift')
+                if chunk[2]==0:
+                    if chunk[4]!=threshold or any(b[2]!=0 or b[1] not in (0,threshold) for b in blocks):
+                        raise ValueError('resident inactive chunk/activity contradiction')
+                    sleeping|=any(b[1]>=threshold for b in blocks)
+        # Chunk (3,0) is deliberately resident but outside the narrow initial
+        # interest. Source retains excluded active blocks without aging them.
+        excluded=rows.get('chunk:3:0')
+        excluded_blocks=[rows.get(f'block:3:0:{i}') for i in range(16)]
+        if excluded is None or len(excluded)<5 or any(b is None or len(b)!=4 for b in excluded_blocks):
+            raise ValueError('resident exclusion ownership/metadata drift')
+        if excluded[2]!=1 or excluded[4]!=0 or not any(b[2]==1 and b[1]<threshold for b in excluded_blocks):
+            raise ValueError('resident exclusion witness absent/contradictory')
+        if not sleeping or resident_event_count(rows,BLOCK_SLEEP_KEY)==0:
+            raise ValueError('resident sleep transition witness absent')
+
+
+def resident_activity_transitions(endpoints):
+    """Cross-endpoint cumulative diagnostics for clear preservation and reentry wake."""
+    if set(endpoints)!=set(('B','P','Q','R')):
+        raise ValueError('resident activity transition endpoint inventory')
+    sleeps=[resident_event_count(endpoints[name],BLOCK_SLEEP_KEY) for name in ('B','P','Q','R')]
+    wakes=[resident_event_count(endpoints[name],BLOCK_WAKE_KEY) for name in ('B','P','Q','R')]
+    if sleeps!=sorted(sleeps) or wakes!=sorted(wakes):
+        raise ValueError('resident activity event counter regression')
+    # prepare_clear mutates only experimental epoch bytes; it must not fabricate
+    # activity transitions between the co-timed B and P endpoints.
+    if sleeps[1]!=sleeps[0] or wakes[1]!=wakes[0]:
+        raise ValueError('resident prepared-clear activity transition')
+    # The narrow->512 reentry necessarily wakes previously inactive resident
+    # blocks at tick entry. Four subsequent ticks may sleep them again, so the
+    # durable witness is a cumulative BlockWake increase, not final active flags.
+    if wakes[3]<=wakes[2]:
+        raise ValueError('resident reentry wake transition absent')
 
 
 def resident_sand_witness(positions,endpoint):
