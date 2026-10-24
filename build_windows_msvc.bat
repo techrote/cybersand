@@ -14,7 +14,7 @@ set BRIDGE_SOURCES=native\src\render_snapshot.cpp native\src\c_api.cpp
 set CORE_SOURCES=%SIMULATION_SOURCES% %BRIDGE_SOURCES%
 
 echo Building and running tests...
-cl %COMMON% /Od /Zi %CORE_SOURCES% native\tests\test_world.cpp /Fe:build\tests.exe
+cl %COMMON% /Od /Zi %CORE_SOURCES% native\tests\test_world.cpp native\tests\test_liquid_solver_policy.cpp /Fe:build\tests.exe
 if errorlevel 1 exit /b 1
 build\tests.exe
 if errorlevel 1 exit /b 1

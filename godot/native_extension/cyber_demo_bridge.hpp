@@ -15,6 +15,7 @@ namespace godot {
 class CyberDemoBridge final : public RefCounted {
     GDCLASS(CyberDemoBridge, RefCounted)
     String error_;
+    Dictionary last_liquid_policy_refusal_;
 
     static String interaction_string(std::string_view value) {
         if (value.empty()) return String();
@@ -85,6 +86,7 @@ class CyberDemoBridge final : public RefCounted {
         // All fallible allocation and validation precede these no-throw swaps.
         adapter.world_.swap(candidate);
         adapter.render_exchange_.swap(exchange);
+        ++adapter.liquid_policy_session_generation_;
         adapter.current_bodies_ = {};
         adapter.previous_bodies_ = {};
         adapter.clear_observations();
@@ -401,6 +403,7 @@ public:
             config.physics_diagnostics = {}; config.physics_diagnostics.enabled = true;
             config.interaction_policy = {};
             config.water_experiment_policy = cybersand::WaterExperimentPolicy{};
+            config.liquid_solver_policy = {};
             auto candidate=cybersand::demo::construct(config,
                 {rectangles.ptr(),static_cast<std::size_t>(rectangles.size())});
             install(*adapter.ptr(),std::move(candidate));
@@ -415,6 +418,80 @@ public:
         const PackedInt32Array& policy,
         const PackedInt32Array& water_fills) {
         error_ = String();
+        last_liquid_policy_refusal_ = Dictionary();
+        return build_water_world(adapter, rectangles, profile, policy, water_fills, {});
+    }
+
+    // The same validated candidate-and-swap construction with an explicit
+    // LCB-001 liquid solver policy request (the flat int32 envelope). The
+    // request is decoded and admitted before any World is built; a refusal
+    // returns false, records a typed refusal and keeps the live session.
+    [[nodiscard]] bool build_liquid_policy_world(
+        const Ref<CyberNativeCellWorld>& adapter,
+        const PackedInt32Array& rectangles,
+        const PackedInt32Array& profile,
+        const PackedInt32Array& policy,
+        const PackedInt32Array& water_fills,
+        const PackedInt32Array& liquid_policy) {
+        error_ = String();
+        last_liquid_policy_refusal_ = Dictionary();
+        auto decoded = cybersand::LiquidSolverPolicy::decode(
+            std::span<const std::int32_t>(liquid_policy.ptr(), static_cast<std::size_t>(liquid_policy.size())));
+        if (!decoded.accepted()) {
+            refuse_liquid_policy(decoded.refusal);
+            return false;
+        }
+        return build_water_world(adapter, rectangles, profile, policy, water_fills, *decoded.policy);
+    }
+
+    [[nodiscard]] PackedInt32Array default_liquid_policy() const {
+        PackedInt32Array words;
+        for (const auto word : cybersand::LiquidSolverPolicy::default_request()) words.push_back(word);
+        return words;
+    }
+
+    // Side-effect-free validation: the would-be applied receipt or the refusal.
+    [[nodiscard]] Dictionary validate_liquid_policy(const PackedInt32Array& liquid_policy) const {
+        auto decoded = cybersand::LiquidSolverPolicy::decode(
+            std::span<const std::int32_t>(liquid_policy.ptr(), static_cast<std::size_t>(liquid_policy.size())));
+        if (decoded.accepted()) {
+            if (auto refusal = decoded.policy->admission_refusal()) {
+                decoded.refusal = *refusal;
+                decoded.policy.reset();
+            }
+        }
+        Dictionary result;
+        result["accepted"] = decoded.accepted();
+        result["refusal"] = decoded.accepted() ? Variant() : Variant(refusal_dictionary(decoded.refusal));
+        result["receipt"] = decoded.accepted()
+            ? Variant(CyberNativeCellWorld::liquid_policy_receipt(*decoded.policy, -1)) : Variant();
+        return result;
+    }
+
+    [[nodiscard]] Dictionary get_last_liquid_policy_refusal() const { return last_liquid_policy_refusal_; }
+
+private:
+    [[nodiscard]] static Dictionary refusal_dictionary(const cybersand::LiquidPolicyRefusal& refusal) {
+        Dictionary out;
+        out["code"] = String(std::string(cybersand::liquid_policy_refusal_id(refusal.code)).c_str());
+        out["material"] = refusal.material ? Variant(static_cast<std::int64_t>(*refusal.material)) : Variant();
+        out["detail"] = String(refusal.detail.c_str());
+        return out;
+    }
+
+    void refuse_liquid_policy(const cybersand::LiquidPolicyRefusal& refusal) {
+        last_liquid_policy_refusal_ = refusal_dictionary(refusal);
+        error_ = String(cybersand::liquid_policy_detail::concat(
+            "Liquid solver policy refused; running world preserved: ", refusal.message()).c_str());
+    }
+
+    [[nodiscard]] bool build_water_world(
+        const Ref<CyberNativeCellWorld>& adapter,
+        const PackedInt32Array& rectangles,
+        const PackedInt32Array& profile,
+        const PackedInt32Array& policy,
+        const PackedInt32Array& water_fills,
+        const cybersand::LiquidSolverPolicy& liquid_policy) {
         if (adapter.is_null() || !adapter->world_) {
             error_ = "Native world unavailable";
             return false;
@@ -461,6 +538,7 @@ public:
                 static_cast<std::uint8_t>(policy[1]),
                 static_cast<std::uint8_t>(policy[2]),
                 cybersand::WaterRestPolicy::CurrentNormalizedV1);
+            config.liquid_solver_policy = liquid_policy;
             auto candidate = cybersand::demo::construct(
                 config, {rectangles.ptr(), static_cast<std::size_t>(rectangles.size())});
             const auto& water_policy = candidate->config().water_experiment_policy;
@@ -487,12 +565,16 @@ public:
             }
             install(*adapter.ptr(), std::move(candidate));
             return true;
+        } catch (const cybersand::LiquidPolicyRefused& refused) {
+            refuse_liquid_policy(refused.refusal());
+            return false;
         } catch (const std::exception& error) {
             error_ = error.what();
             return false;
         }
     }
 
+public:
     [[nodiscard]] PackedByteArray export_level(const Ref<CyberNativeCellWorld>& adapter) {
         error_ = String();
         PackedByteArray bytes;
@@ -518,7 +600,10 @@ public:
             return false;
         }
         try {
-            auto candidate = cybersand::demo::reconstruct(adapter->world_->config(),
+            // A CYSD1 level is a finite-level reconstruction on default families.
+            auto config = adapter->world_->config();
+            config.liquid_solver_policy = {};
+            auto candidate = cybersand::demo::reconstruct(config,
                 {bytes.ptr(), static_cast<std::size_t>(bytes.size())});
             install(*adapter.ptr(), std::move(candidate));
             return true;
@@ -538,6 +623,7 @@ public:
             auto config = adapter->world_->config();
             config.transport_policy = {}; // Ordinary demos retain production Baseline.
             config.water_experiment_policy = cybersand::WaterExperimentPolicy{};
+            config.liquid_solver_policy = {};
             auto candidate = cybersand::demo::construct(config,
                 {rectangles.ptr(), static_cast<std::size_t>(rectangles.size())});
             install(*adapter.ptr(), std::move(candidate));
@@ -581,6 +667,14 @@ protected:
         ClassDB::bind_method(D_METHOD("build_water_feel_world", "world", "rectangles",
                                      "profile", "policy", "water_fills"),
                              &CyberDemoBridge::build_water_feel_world);
+        ClassDB::bind_method(D_METHOD("build_liquid_policy_world", "world", "rectangles", "profile",
+                                     "policy", "water_fills", "liquid_policy"),
+                             &CyberDemoBridge::build_liquid_policy_world);
+        ClassDB::bind_method(D_METHOD("default_liquid_policy"), &CyberDemoBridge::default_liquid_policy);
+        ClassDB::bind_method(D_METHOD("validate_liquid_policy", "liquid_policy"),
+                             &CyberDemoBridge::validate_liquid_policy);
+        ClassDB::bind_method(D_METHOD("get_last_liquid_policy_refusal"),
+                             &CyberDemoBridge::get_last_liquid_policy_refusal);
         ClassDB::bind_method(D_METHOD("queue_explosion", "world", "x", "y", "radius"), &CyberDemoBridge::queue_explosion);
         ClassDB::bind_method(D_METHOD("get_last_error"), &CyberDemoBridge::get_last_error);
     }
