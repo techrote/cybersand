@@ -136,7 +136,7 @@
         },
         "pressure_flow_v1": {
           "status": "proposed_experimental",
-          "executable_today": false,
+          "executable_today": true,
           "selectable": true,
           "variants": [
             "reference",
@@ -144,7 +144,10 @@
             "cached_dormant"
           ],
           "classification": "reviewed design classification (PROPOSED table)",
-          "note": "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"
+          "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+          "executable_variants": [
+            "reference"
+          ]
         },
         "inertial_cellular_v1": {
           "status": "proposed_experimental",

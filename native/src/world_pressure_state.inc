@@ -72,7 +72,9 @@ struct World::PressureState {
         compartments.reserve(PressureFlowParameters::kCompartmentCapacity);
         next_compartments.reserve(PressureFlowParameters::kCompartmentCapacity);
         history.reserve(PressureFlowParameters::kHistoryCapacity);
-        queue.reserve(PressureFlowParameters::kCompartmentVolumeLimit + 4U);
+        // One entry per visited resident cell or chunk node; a fill stops once its
+        // volume exceeds the limit, so this bound is never exceeded.
+        queue.reserve(PressureFlowParameters::kCompartmentVolumeLimit + kChunkNodeCapacity + 4U);
         regions.reserve(kRegionCapacity);
         overlaps.reserve(kOverlapCapacity);
         nodes.reserve(kChunkNodeCapacity);

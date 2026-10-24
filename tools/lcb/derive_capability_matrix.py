@@ -48,12 +48,17 @@ KERNEL_SPECIALIZATION = {
     "MoltenGlass": "cooling lifecycle toward Glass",
     "YieldingLiquid": "generic heap-capable CellularYield motion (flow_as_yielding_liquid)",
 }
+# Candidate cells the running build compiles and qualifies, with the variants it
+# executes (LCB-001 #200). Every other non-default cell is refused natively.
+EXECUTABLE_CANDIDATES = {
+    ("water", "pressure_flow_v1"): ["reference"],
+}
 # Gate C/D design classifications. Keys are descriptor names.
 PROPOSED = {
     ("water", "cellular_yield_v1"): ("proposed_experimental",
         "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"),
     ("water", "pressure_flow_v1"): ("proposed_experimental",
-        "LCB-001 #200 port of the corrected 7ef2aac candidate; blocked until LCB-000 PASS"),
+        "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201"),
     ("water", "inertial_cellular_v1"): ("proposed_experimental",
         "Gate D experimental inertial regime; LCB-005 #212 not implemented"),
     ("brine", "inertial_cellular_v1"): ("proposed_experimental",
@@ -105,10 +110,13 @@ def family_cell(material: dict, family: str) -> dict:
     key = (material["name"], family)
     if key in PROPOSED:
         status, note = PROPOSED[key]
-        return {"status": status, "executable_today": False,
+        cell = {"status": status, "executable_today": key in EXECUTABLE_CANDIDATES,
                 "selectable": status == "proposed_experimental",
                 "variants": VARIANTS[family] if status == "proposed_experimental" else [],
                 "classification": "reviewed design classification (PROPOSED table)", "note": note}
+        if key in EXECUTABLE_CANDIDATES:
+            cell["executable_variants"] = EXECUTABLE_CANDIDATES[key]
+        return cell
     reasons = {
         "freemass_v1": "FreeMass is the Water kernel's fractional solver; #15 selected no FreeMass conversion for other liquids",
         "cellular_yield_v1": "not applicable",

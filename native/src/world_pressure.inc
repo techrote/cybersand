@@ -218,6 +218,8 @@ void World::resolve_gas_topology() {
 
     const auto visit = [&](std::int64_t x, std::int64_t y) {
         if (stop) return;
+        if (state.queue.size() == state.queue.capacity())
+            throw std::logic_error("pressure gas queue exceeded its reserved bound");
         if (transient_obstacle_at(x, y) != 0U) return;
         auto& region = state.regions[current];
         const auto target = address(x, y);
