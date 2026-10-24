@@ -120,6 +120,13 @@ class ResultTests(unittest.TestCase):
         self.assertTrue(result["diagnostic_error"])
         self.assertTrue(failed)
 
+    def test_internal_guard_error_cannot_pass_after_zero_exit(self):
+        result, failed = self.run_child("print('ERROR: REGRESSION_WATCHDOG expired without main-thread progress')")
+        self.assertEqual(result["returncode"], 0)
+        self.assertEqual(result["status"], "failed")
+        self.assertTrue(result["diagnostic_error"])
+        self.assertTrue(failed)
+
     def test_headless_skip_cannot_pass(self):
         for message in (
             "MATERIAL_PRESENTATION_RENDER: skipped (headless DisplayServer has no frame submission)",

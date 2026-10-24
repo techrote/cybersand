@@ -1,0 +1,758 @@
+{
+  "schema_version": 1,
+  "scope": "Pre-merge ordinary admission for PR #236 current head; executed synthetic merge and resulting merged source have the identical recorded tree. This receipt does not classify or admit the separate post-merge 600-attempt campaign.",
+  "generated_utc": "2026-10-24T20:20:06.547087+00:00",
+  "pr_url": "https://github.com/techrote/cybersand/pull/236",
+  "pr_head": "330ded5aa0937b4a46ea0b5f270583a8e0375931",
+  "tested_synthetic_merge": "bb84068378765e3874840e19507666c6a7a1e5df",
+  "source_tree": "873db3c3e75c8a4d60bc09e05316aa99e9143f05",
+  "same_tree_verified": true,
+  "tested_merge_parents": [
+    "03785c3dcaa5c82df000eeca1471bd6ec698be00",
+    "330ded5aa0937b4a46ea0b5f270583a8e0375931"
+  ],
+  "gates": [
+    {
+      "id": 40125121759,
+      "name": "Documentation and provenance",
+      "head_sha": "330ded5aa0937b4a46ea0b5f270583a8e0375931",
+      "run_attempt": 1,
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/40125121759",
+      "created_at": "2026-10-24T19:24:06Z",
+      "updated_at": "2026-10-24T19:25:21Z",
+      "jobs": [
+        {
+          "id": 120964786997,
+          "name": "consistency",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-24T19:24:10Z",
+          "completed_at": "2026-10-24T19:25:20Z",
+          "html_url": "https://github.com/techrote/cybersand/actions/runs/40125121759/job/120964786997"
+        }
+      ],
+      "raw_snapshots": [
+        {
+          "storage": "ignored local cache; not committed",
+          "cache_base": "build/issue234-admission/portable",
+          "cache_relative_path": "snapshots/40125121759-run-final.json",
+          "sha256": "7ce9716e2452825bcf0f4d8a7a5cd329e1c7b1ebb009631777ab3c0cbfe2e069",
+          "bytes": 12517
+        },
+        {
+          "storage": "ignored local cache; not committed",
+          "cache_base": "build/issue234-admission/portable",
+          "cache_relative_path": "snapshots/40125121759-jobs-final.json",
+          "sha256": "e5aad40fccde49f5be1d8183d10d3b97d6c78f5ccd0627c8a6862c8eed5f85ec",
+          "bytes": 4414
+        }
+      ]
+    },
+    {
+      "id": 40125433656,
+      "name": "Documentation and provenance",
+      "head_sha": "330ded5aa0937b4a46ea0b5f270583a8e0375931",
+      "run_attempt": 1,
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/40125433656",
+      "created_at": "2026-10-24T19:28:13Z",
+      "updated_at": "2026-10-24T19:29:40Z",
+      "jobs": [
+        {
+          "id": 120965722360,
+          "name": "consistency",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-24T19:28:17Z",
+          "completed_at": "2026-10-24T19:29:39Z",
+          "html_url": "https://github.com/techrote/cybersand/actions/runs/40125433656/job/120965722360"
+        }
+      ],
+      "raw_snapshots": [
+        {
+          "storage": "ignored local cache; not committed",
+          "cache_base": "build/issue234-admission/portable",
+          "cache_relative_path": "snapshots/40125433656-run-final.json",
+          "sha256": "587913b4dd8bde22697c68cbf41fc6859ee6c74ed60c3f00f44fa06ddfc59f0e",
+          "bytes": 12517
+        },
+        {
+          "storage": "ignored local cache; not committed",
+          "cache_base": "build/issue234-admission/portable",
+          "cache_relative_path": "snapshots/40125433656-jobs-final.json",
+          "sha256": "ece1baea1ecb2918c3cbfd1ab68ada3ec5536a87eec27eb5a900d115105ee697",
+          "bytes": 4414
+        }
+      ]
+    },
+    {
+      "id": 40125433654,
+      "name": "Issue 49 Water apparatus v2",
+      "head_sha": "330ded5aa0937b4a46ea0b5f270583a8e0375931",
+      "run_attempt": 1,
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/40125433654",
+      "created_at": "2026-10-24T19:28:13Z",
+      "updated_at": "2026-10-24T19:36:13Z",
+      "jobs": [
+        {
+          "id": 120965722420,
+          "name": "apparatus",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-24T19:28:17Z",
+          "completed_at": "2026-10-24T19:36:12Z",
+          "html_url": "https://github.com/techrote/cybersand/actions/runs/40125433654/job/120965722420"
+        }
+      ],
+      "raw_snapshots": [
+        {
+          "storage": "ignored local cache; not committed",
+          "cache_base": "build/issue234-admission/portable",
+          "cache_relative_path": "snapshots/40125433654-run-final.json",
+          "sha256": "899fbf000da8c0d80876ffdff890b96caea075d7c5c217ca31b07b43d7271d34",
+          "bytes": 12525
+        },
+        {
+          "storage": "ignored local cache; not committed",
+          "cache_base": "build/issue234-admission/portable",
+          "cache_relative_path": "snapshots/40125433654-jobs-final.json",
+          "sha256": "6972b00a6bb275d5b57ed276e9b37d52feaf6cf3aa316f553adb5e143cd8f6bc",
+          "bytes": 2482
+        }
+      ]
+    },
+    {
+      "id": 40125433675,
+      "name": "GDExtension build and current Godot regression",
+      "head_sha": "330ded5aa0937b4a46ea0b5f270583a8e0375931",
+      "run_attempt": 1,
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/40125433675",
+      "created_at": "2026-10-24T19:28:13Z",
+      "updated_at": "2026-10-24T19:51:39Z",
+      "jobs": [
+        {
+          "id": 120965722395,
+          "name": "ready validation scope",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-24T19:28:17Z",
+          "completed_at": "2026-10-24T19:28:21Z",
+          "html_url": "https://github.com/techrote/cybersand/actions/runs/40125433675/job/120965722395"
+        },
+        {
+          "id": 120965723263,
+          "name": "physical-actor-stress",
+          "status": "completed",
+          "conclusion": "skipped",
+          "started_at": "2026-10-24T19:28:14Z",
+          "completed_at": "2026-10-24T19:28:13Z",
+          "html_url": "https://github.com/techrote/cybersand/actions/runs/40125433675/job/120965723263"
+        },
+        {
+          "id": 120965751416,
+          "name": "windows headless regression",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-24T19:28:24Z",
+          "completed_at": "2026-10-24T19:51:26Z",
+          "html_url": "https://github.com/techrote/cybersand/actions/runs/40125433675/job/120965751416"
+        },
+        {
+          "id": 120965751417,
+          "name": "linux build x86_64",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-24T19:28:24Z",
+          "completed_at": "2026-10-24T19:35:42Z",
+          "html_url": "https://github.com/techrote/cybersand/actions/runs/40125433675/job/120965751417"
+        },
+        {
+          "id": 120965751447,
+          "name": "windows x86_64",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-24T19:28:25Z",
+          "completed_at": "2026-10-24T19:34:31Z",
+          "html_url": "https://github.com/techrote/cybersand/actions/runs/40125433675/job/120965751447"
+        },
+        {
+          "id": 120967437677,
+          "name": "linux regression shard 3",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-24T19:35:45Z",
+          "completed_at": "2026-10-24T19:44:04Z",
+          "html_url": "https://github.com/techrote/cybersand/actions/runs/40125433675/job/120967437677"
+        },
+        {
+          "id": 120967437683,
+          "name": "linux regression shard 2",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-24T19:35:45Z",
+          "completed_at": "2026-10-24T19:44:46Z",
+          "html_url": "https://github.com/techrote/cybersand/actions/runs/40125433675/job/120967437683"
+        },
+        {
+          "id": 120967437686,
+          "name": "linux regression shard 1",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-24T19:35:44Z",
+          "completed_at": "2026-10-24T19:42:45Z",
+          "html_url": "https://github.com/techrote/cybersand/actions/runs/40125433675/job/120967437686"
+        },
+        {
+          "id": 120967437716,
+          "name": "linux regression shard 0",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-24T19:35:45Z",
+          "completed_at": "2026-10-24T19:40:43Z",
+          "html_url": "https://github.com/techrote/cybersand/actions/runs/40125433675/job/120967437716"
+        },
+        {
+          "id": 120967438888,
+          "name": "linux serial equivalence",
+          "status": "completed",
+          "conclusion": "skipped",
+          "started_at": "2026-10-24T19:35:42Z",
+          "completed_at": "2026-10-24T19:35:42Z",
+          "html_url": "https://github.com/techrote/cybersand/actions/runs/40125433675/job/120967438888"
+        },
+        {
+          "id": 120969526517,
+          "name": "linux x86_64",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-24T19:44:48Z",
+          "completed_at": "2026-10-24T19:44:51Z",
+          "html_url": "https://github.com/techrote/cybersand/actions/runs/40125433675/job/120969526517"
+        },
+        {
+          "id": 120971009273,
+          "name": "physical regression timing distribution",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-24T19:51:29Z",
+          "completed_at": "2026-10-24T19:51:39Z",
+          "html_url": "https://github.com/techrote/cybersand/actions/runs/40125433675/job/120971009273"
+        }
+      ],
+      "raw_snapshots": [
+        {
+          "storage": "ignored local cache; not committed",
+          "cache_base": "build/issue234-admission/portable",
+          "cache_relative_path": "snapshots/40125433675-run-final.json",
+          "sha256": "8bab62a544165c7d5d959afe3e6a303b1fc735ac07c5b1e23a0ee6d86f25163d",
+          "bytes": 12911
+        },
+        {
+          "storage": "ignored local cache; not committed",
+          "cache_base": "build/issue234-admission/portable",
+          "cache_relative_path": "snapshots/40125433675-jobs-final.json",
+          "sha256": "70c147d477c61483e24e3527385638276ba4bce54e340af45e0e2112870b6248",
+          "bytes": 27535
+        }
+      ]
+    },
+    {
+      "id": 40125433657,
+      "name": "Native C++ validation",
+      "head_sha": "330ded5aa0937b4a46ea0b5f270583a8e0375931",
+      "run_attempt": 1,
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/40125433657",
+      "created_at": "2026-10-24T19:28:13Z",
+      "updated_at": "2026-10-24T20:17:33Z",
+      "jobs": [
+        {
+          "id": 120965722121,
+          "name": "ready validation scope",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-24T19:28:16Z",
+          "completed_at": "2026-10-24T19:28:20Z",
+          "html_url": "https://github.com/techrote/cybersand/actions/runs/40125433657/job/120965722121"
+        },
+        {
+          "id": 120965744741,
+          "name": "native",
+          "status": "completed",
+          "conclusion": "success",
+          "started_at": "2026-10-24T19:28:22Z",
+          "completed_at": "2026-10-24T20:17:32Z",
+          "html_url": "https://github.com/techrote/cybersand/actions/runs/40125433657/job/120965744741"
+        }
+      ],
+      "raw_snapshots": [
+        {
+          "storage": "ignored local cache; not committed",
+          "cache_base": "build/issue234-admission/portable",
+          "cache_relative_path": "snapshots/40125433657-run-final.json",
+          "sha256": "2744ec26d2614e729a764869dc963a1f189a15671b6d6a86b67378a8a108ed56",
+          "bytes": 12503
+        },
+        {
+          "storage": "ignored local cache; not committed",
+          "cache_base": "build/issue234-admission/portable",
+          "cache_relative_path": "snapshots/40125433657-jobs-final.json",
+          "sha256": "a9d136092bce1ea99196c25a268db1b1013c271573b5d754b74f79e0cdc69647",
+          "bytes": 5924
+        }
+      ]
+    }
+  ],
+  "all_ordinary_gates_green": true,
+  "pending_gate_run_ids": [],
+  "admission_blockers": [],
+  "ordinary_godot_review": {
+    "source": "330ded5aa0937b4a46ea0b5f270583a8e0375931",
+    "tested_merge": "bb84068378765e3874840e19507666c6a7a1e5df",
+    "tree": "873db3c3e75c8a4d60bc09e05316aa99e9143f05",
+    "run_id": 40125433675,
+    "attempt": 1,
+    "windows": {
+      "case_count": 128,
+      "imports": 1,
+      "statuses": {
+        "passed": 129
+      },
+      "suspects": [
+        {
+          "name": "test_physical_actor_arena",
+          "status": "passed",
+          "seconds": 19.615,
+          "timeout_seconds": 180,
+          "diagnostic_seconds": 0.0,
+          "timeout_kind": null,
+          "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_arena phase=teardown",
+          "last_heartbeat": {
+            "case": "test_physical_actor_arena",
+            "detail": "jetbarrel",
+            "elapsed_ms": 19493,
+            "phase": "quit",
+            "sequence": 259,
+            "steps": 11042
+          }
+        },
+        {
+          "name": "test_physical_actor_rigs",
+          "status": "passed",
+          "seconds": 29.249,
+          "timeout_seconds": 180,
+          "diagnostic_seconds": 0.0,
+          "timeout_kind": null,
+          "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_rigs phase=teardown",
+          "last_heartbeat": {
+            "case": "test_physical_actor_rigs",
+            "detail": "copter",
+            "elapsed_ms": 29167,
+            "phase": "quit",
+            "sequence": 890,
+            "steps": 62080
+          }
+        },
+        {
+          "name": "test_physical_usable_course",
+          "status": "passed",
+          "seconds": 17.489,
+          "timeout_seconds": 180,
+          "diagnostic_seconds": 0.0,
+          "timeout_kind": null,
+          "last_progress": "REGRESSION_PROGRESS case=test_physical_usable_course phase=teardown",
+          "last_heartbeat": {
+            "case": "test_physical_usable_course",
+            "detail": "heavylift",
+            "elapsed_ms": 17338,
+            "phase": "quit",
+            "sequence": 86,
+            "steps": 6962
+          }
+        }
+      ],
+      "source_commit": "bb84068378765e3874840e19507666c6a7a1e5df",
+      "source_tree": "873db3c3e75c8a4d60bc09e05316aa99e9143f05",
+      "executed_case_count": 128,
+      "applicable_case_count": 128,
+      "all_discovered_case_count": 140,
+      "runtime_source_commit": "349d59359a45ebbe4f92af879945b43b591d412a",
+      "runtime_build_commit": "349d59359a45ebbe4f92af879945b43b591d412a",
+      "cybersand_runtime": {
+        "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "sha256": "813bfbb42f0bc9c21488aca44df2a3477e47db594b3521885ea2fed39ea07f0a",
+        "size": 4352512
+      },
+      "rapier_runtime": {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "size": 9987072
+      },
+      "godot_identity": {
+        "archive_sha512": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+        "archive_size": 83764371,
+        "console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "runtime_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "source_drift": [],
+      "seconds": 1345.438
+    },
+    "linux": {
+      "0": {
+        "case_count": 34,
+        "imports": 1,
+        "statuses": {
+          "passed": 35
+        },
+        "suspects": [
+          {
+            "name": "test_physical_actor_rigs",
+            "status": "passed",
+            "seconds": 13.171,
+            "timeout_seconds": 180,
+            "diagnostic_seconds": 0.0,
+            "timeout_kind": null,
+            "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_rigs phase=teardown",
+            "last_heartbeat": {
+              "case": "test_physical_actor_rigs",
+              "detail": "copter",
+              "elapsed_ms": 13099,
+              "phase": "quit",
+              "sequence": 890,
+              "steps": 62080
+            }
+          }
+        ],
+        "identity": {
+          "cybersand_runtime": {
+            "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "sha256": "3bfe1679c6d0201203fcf99b6f53d7f50875a530611776787131d7dc1d5098c2"
+          },
+          "godot_version": "4.7.stable.official.5b4e0cb0f",
+          "rapier_runtime": {
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+            "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+          },
+          "shard_count": 4,
+          "shard_index": 0,
+          "source_sha": "bb84068378765e3874840e19507666c6a7a1e5df"
+        }
+      },
+      "1": {
+        "case_count": 35,
+        "imports": 1,
+        "statuses": {
+          "passed": 36
+        },
+        "suspects": [
+          {
+            "name": "test_physical_usable_course",
+            "status": "passed",
+            "seconds": 16.744,
+            "timeout_seconds": 180,
+            "diagnostic_seconds": 0.0,
+            "timeout_kind": null,
+            "last_progress": "REGRESSION_PROGRESS case=test_physical_usable_course phase=teardown",
+            "last_heartbeat": {
+              "case": "test_physical_usable_course",
+              "detail": "heavylift",
+              "elapsed_ms": 16577,
+              "phase": "quit",
+              "sequence": 86,
+              "steps": 6962
+            }
+          }
+        ],
+        "identity": {
+          "cybersand_runtime": {
+            "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "sha256": "3bfe1679c6d0201203fcf99b6f53d7f50875a530611776787131d7dc1d5098c2"
+          },
+          "godot_version": "4.7.stable.official.5b4e0cb0f",
+          "rapier_runtime": {
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+            "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+          },
+          "shard_count": 4,
+          "shard_index": 1,
+          "source_sha": "bb84068378765e3874840e19507666c6a7a1e5df"
+        }
+      },
+      "2": {
+        "case_count": 36,
+        "imports": 1,
+        "statuses": {
+          "passed": 37
+        },
+        "suspects": [],
+        "identity": {
+          "cybersand_runtime": {
+            "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "sha256": "3bfe1679c6d0201203fcf99b6f53d7f50875a530611776787131d7dc1d5098c2"
+          },
+          "godot_version": "4.7.stable.official.5b4e0cb0f",
+          "rapier_runtime": {
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+            "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+          },
+          "shard_count": 4,
+          "shard_index": 2,
+          "source_sha": "bb84068378765e3874840e19507666c6a7a1e5df"
+        }
+      },
+      "3": {
+        "case_count": 35,
+        "imports": 1,
+        "statuses": {
+          "passed": 36
+        },
+        "suspects": [
+          {
+            "name": "test_physical_actor_arena",
+            "status": "passed",
+            "seconds": 16.644,
+            "timeout_seconds": 180,
+            "diagnostic_seconds": 0.0,
+            "timeout_kind": null,
+            "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_arena phase=teardown",
+            "last_heartbeat": {
+              "case": "test_physical_actor_arena",
+              "detail": "jetbarrel",
+              "elapsed_ms": 16572,
+              "phase": "quit",
+              "sequence": 259,
+              "steps": 11042
+            }
+          }
+        ],
+        "identity": {
+          "cybersand_runtime": {
+            "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "sha256": "3bfe1679c6d0201203fcf99b6f53d7f50875a530611776787131d7dc1d5098c2"
+          },
+          "godot_version": "4.7.stable.official.5b4e0cb0f",
+          "rapier_runtime": {
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+            "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+          },
+          "shard_count": 4,
+          "shard_index": 3,
+          "source_sha": "bb84068378765e3874840e19507666c6a7a1e5df"
+        }
+      }
+    },
+    "issues": [],
+    "linux_total_cases": 140,
+    "ordinary_case_logs": {
+      "windows": 129,
+      "linux": 144,
+      "unexpected_windows_error_logs": []
+    },
+    "watchdog_probes": {
+      "windows": {
+        "matched": true,
+        "observed_ms": 55,
+        "main_returned_ms": 1000,
+        "job_log_sha256": "781144293c516e09f13f5bcfb73b563fb4b5bad68fec477061333243ca5c9d1c",
+        "note": "Expected blocked-probe nonzero exit/error was captured and checked by the probe harness, separate from passing ordinary cases."
+      },
+      "linux": {
+        "matched": true,
+        "observed_ms": 50,
+        "main_returned_ms": 1000,
+        "job_log_sha256": "4c7f5c2462c260e5d5a4434af1070617d760d3a5a39c3e8dc6e64811af97e94d",
+        "note": "Expected blocked-probe nonzero exit/error was captured and checked by the probe harness, separate from passing ordinary cases."
+      }
+    }
+  },
+  "water_completion": {
+    "accounted_case_count": 120,
+    "all_cases_successful": true,
+    "complete_accounting": true,
+    "dispositions": {
+      "success": 120
+    },
+    "duplicate_attempt_count": 0,
+    "missing_cases": [],
+    "registered_case_count": 120,
+    "runner_schema": "water-evidence-runner-v2",
+    "unexpected_cases": [],
+    "source_head": "bb84068378765e3874840e19507666c6a7a1e5df",
+    "source_sha256": "144c5604feac3dc89e133a12f11d669e306123c876f8b9a10001ae56a357316c"
+  },
+  "log_manifests": {
+    "docs-40125121759.log": {
+      "bytes": 81361,
+      "sha256": "df0a1ff0f9a034340aa90a666a95b8e1c5b0f9eb45b7082088279b75c7786561",
+      "unittest_counts": [
+        6,
+        15,
+        81,
+        24,
+        14,
+        16
+      ],
+      "provider_policy_passed": true,
+      "cache_relative_path": "logs/docs-40125121759.log",
+      "cache_base": "build/issue234-admission/portable",
+      "storage": "ignored local cache; not committed"
+    },
+    "docs-40125433656.log": {
+      "bytes": 85620,
+      "sha256": "b215844c7dcd3c517e0fe3004e0af49f969259f99f5952b2ee69d2edf1049839",
+      "unittest_counts": [
+        6,
+        15,
+        81,
+        24,
+        14,
+        16
+      ],
+      "provider_policy_passed": true,
+      "cache_relative_path": "logs/docs-40125433656.log",
+      "cache_base": "build/issue234-admission/portable",
+      "storage": "ignored local cache; not committed"
+    },
+    "native-40125433657.log": {
+      "bytes": 158577,
+      "sha256": "bf9f4a9aba978b6b89f422c4926048636c57b2341bba59f9eef7085a833f87de",
+      "unittest_counts": [
+        3,
+        7
+      ],
+      "cache_relative_path": "logs/native-40125433657.log",
+      "cache_base": "build/issue234-admission/portable",
+      "storage": "ignored local cache; not committed"
+    },
+    "water-40125433654.log": {
+      "bytes": 101967,
+      "sha256": "3b999955b016b549636e1723e928803c79e85cbc816618acb6656cd07f45d355",
+      "unittest_counts": [
+        13,
+        13
+      ],
+      "cache_relative_path": "logs/water-40125433654.log",
+      "cache_base": "build/issue234-admission/portable",
+      "storage": "ignored local cache; not committed"
+    }
+  },
+  "native_job_review": {
+    "status": "passed",
+    "run_id": 40125433657,
+    "attempt": 1,
+    "job_id": 120965744741,
+    "pr_head": "330ded5aa0937b4a46ea0b5f270583a8e0375931",
+    "tested_synthetic_merge": "bb84068378765e3874840e19507666c6a7a1e5df",
+    "suite_counts": {
+      "Run native behavioral and integration suite": [
+        107
+      ],
+      "Compile and run ASan plus UBSan": [
+        107
+      ],
+      "Compile and run TSan": [
+        107
+      ]
+    },
+    "log_sha256": "bf9f4a9aba978b6b89f422c4926048636c57b2341bba59f9eef7085a833f87de",
+    "unexpected_findings": [],
+    "issues": [],
+    "curated_record": {
+      "path_relative_to_repository": "docs/audits/issue-234/native-job-review.json",
+      "sha256": "eeb11020ad11de65dcd01f4c10bdf2fdd78b2d83430e057bab3560200ddb79d7"
+    }
+  },
+  "native_physics_cli_review": {
+    "status": "passed",
+    "test_groups": 3,
+    "invocations": 154,
+    "exit_codes": {
+      "0": 106,
+      "1": 48
+    },
+    "expected_negative_invocations": 48,
+    "failures": 0,
+    "errors": 0,
+    "executable_sha256": "40060c61a0ffc3610e7d1f0477bbb82bb1e730a0a3323465363a2f3fb2178464",
+    "all_stream_hashes_checked": true,
+    "issues": [],
+    "validation_log_sha256": "eb65c7ca1cdfcce9e2489f11a03da53366de8fb4099c4edfc1ff5bb77a4c4c7c"
+  },
+  "legitimate_non_admission_skips": [
+    {
+      "run_id": 40125433675,
+      "job": "physical-actor-stress",
+      "reason": "workflow_dispatch plus physical_actor_stress input only; ordinary PR event does not execute this legacy manual stress lane."
+    },
+    {
+      "run_id": 40125433675,
+      "job": "linux serial equivalence",
+      "reason": "optional migration lane requires repository variable GDEXT_SERIAL_EQUIVALENCE=1; ordinary required four-shard aggregate passed."
+    },
+    {
+      "run_ids": [
+        40125121848,
+        40125121998
+      ],
+      "reason": "initial synchronize while PR was draft suppressed expensive gates; these skips are retained and are not used for admission."
+    },
+    {
+      "run_id": 40125121773,
+      "reason": "scoped LCB runtime publisher was skipped during initial draft event; no LCB implementation/publication is selected by this repair."
+    }
+  ],
+  "evidence_integrity_limits": [
+    "GitHub ZIP digests retained in artifact catalogues; gh run download extracted directly, so ZIP digests were not independently rehashed.",
+    "Downloaded Linux runtime bytes and all129 Windows test logs were independently rehashed.",
+    "Expected internal watchdog negative probe output was captured/checked by the probe harness and is separate from ordinary passing case logs."
+  ],
+  "curation": {
+    "curated_utc": "2026-10-24T20:23:20.600705+00:00",
+    "original_record": {
+      "storage": "ignored local cache; not a committed documentation-relative file",
+      "cache_base": "build/issue234-admission/portable",
+      "cache_relative_path": "admission.json",
+      "sha256": "49b9c57acdae27d48d0e13dcd84479c78ac4b3fb948a3f043225693d4ad62842",
+      "bytes": 39489
+    },
+    "transformations": [
+      "Added actual merge identity/parents and independently checked tree equality.",
+      "Relabeled raw snapshots/logs as ignored-cache locators; they are not documentation-relative committed files.",
+      "Moved the unchanged full Native review to its separately curated receipt and retained a compact reference here."
+    ]
+  },
+  "merged_source": {
+    "merge_commit": "13b8e631f3e8fbaa2176ed41afc02c434b11e558",
+    "merge_parents": [
+      "03785c3dcaa5c82df000eeca1471bd6ec698be00",
+      "330ded5aa0937b4a46ea0b5f270583a8e0375931"
+    ],
+    "merge_tree": "873db3c3e75c8a4d60bc09e05316aa99e9143f05",
+    "merged_at": "2026-10-24T21:20:33+01:00",
+    "admitted_pr_head": "330ded5aa0937b4a46ea0b5f270583a8e0375931",
+    "admitted_pr_head_tree": "873db3c3e75c8a4d60bc09e05316aa99e9143f05",
+    "tested_synthetic_merge": "bb84068378765e3874840e19507666c6a7a1e5df",
+    "tested_synthetic_merge_tree": "873db3c3e75c8a4d60bc09e05316aa99e9143f05",
+    "merge_tree_matches_admitted_head": true,
+    "merge_tree_matches_tested_synthetic": true
+  },
+  "path_conventions": {
+    "runtime_path": "Paths under godot/ name runtime files relative to the tested source repository.",
+    "curated_record": "path_relative_to_repository names committed evidence metadata.",
+    "ignored_cache": "cache_base plus cache_relative_path locates optional raw files under ignored build output; those raw files are not included in the repository."
+  }
+}

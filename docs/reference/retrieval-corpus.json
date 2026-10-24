@@ -390,6 +390,26 @@
     {
       "path": "audits/2026-10-24-lcb001-residual-shared-contract.md",
       "reason": "Dated unmerged residual #200 native setup, normalization, typed receipt, quantity-accounting and scoped Windows execution evidence. Retrieve explicitly through the native prepared-setup contract or navigation with its source, artifact, platform and remaining acceptance limits; it is not a default Current contract or full-host qualification."
+    },
+    {
+      "path": "audits/2026-10-23-physical-actor-timeouts.md",
+      "reason": "Dated physical actor timeout investigation and stress evidence; retrieve through the build/validation guide with its unresolved root-cause and platform qualifiers."
+    },
+    {
+      "path": "audits/2026-10-23-physical-actor-timeout-handover.md",
+      "reason": "Dated paused investigation handover, hosted frequencies and uncompiled repair candidate; retrieve explicitly through the development handover, not as a confirmed physics diagnosis."
+    },
+    {
+      "path": "audits/2026-10-24-physical-actor-bvh-validation.md",
+      "reason": "Dated engine-dump attribution and paired Rapier experiment evidence; retrieve explicitly through the build guide or handover with its acceptance limits."
+    },
+    {
+      "path": "audits/2026-10-24-issue-233-physical-regression-timeouts.md",
+      "reason": "Admitted dated diagnostic campaign, timing records and retained failures; retrieve through the timeout procedure with its original source/runtime identities and no-native-stack causal limit."
+    },
+    {
+      "path": "audits/2026-10-24-issue-234-physical-hang-repair.md",
+      "reason": "Dated integrated repair admission and source-bound qualification; retrieve through the build/test guides with exact source/runtime/platform identities, separate prior campaigns and explicit remaining uncertainty."
     }
   ],
   "integration_note": "Retains scene, generation, actor, sampled and physical actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions remain separately scoped. Deepworks routes cover full-size four-plane exhibitions, independent native source schedules and parameterized depth dimensions; its dated audit remains explicitly scoped. Player playground adds seven human movement presets, native material-field authority and circular-wheel approximation routes; dated execution remains separately scoped. GEN-003 typed-spatial and operator-reference routes from main are retained alongside player playground routes. GEN-004 hierarchy and ADR-013 canonical routes coexist with the player and GEN-003 routes; both GEN-004 and player completion audits remain explicitly excluded from ordinary retrieval. The unmerged residual #200 native prepared-setup, normalization, typed receipt and exact quantity contract is an explicit Current-on-branch route; its dated local checkpoint remains excluded from default retrieval and must retain qualification."

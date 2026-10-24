@@ -545,3 +545,25 @@ a closing directive. Final state inspection identified this premature transition
 the issue was reopened while #243 evidence admission was pending. That automatic
 transition supplies no completion evidence. Intentional completed closure follows
 the full campaign/readback and admission of this evidence checkpoint.
+
+## Successor evidence, separately scoped
+
+The [#234 continuation](2026-10-24-issue-234-physical-hang-repair.md) subsequently
+reconciles existing open PR #236's native dumps and cooperative deferred-BVH
+backport with this admitted baseline. Its fresh offline readback verifies a
+historical physical hang in the same official Rapier DLL by exact function bytes.
+This does not add a native stack to any of the eleven #233 captures, change
+their source/runtime identities, erase a failure or prove that every retained
+timeout shared that wait. The successor owns repair admission and a fresh full
+600-attempt zero-timeout qualification; this diagnostic issue remains completed.
+
+On 2026-10-24 the successor admitted PR #236 at head
+`330ded5aa0937b4a46ea0b5f270583a8e0375931`, merge/source
+`13b8e631f3e8fbaa2176ed41afc02c434b11e558`. Its fresh standard campaign
+[40129364630/1](https://github.com/techrote/cybersand/actions/runs/40129364630)
+completed 600/600 physical passes plus 20/20 preflights, with 0/50 timeouts in
+every OS/mode/test stratum. Independent full-log/checkpoint and timing readers
+agree with its complete gate. The [successor qualification record](2026-10-24-issue-234-physical-hang-repair.md)
+owns those distributions, native-call attribution, cooperative repair and bounded
+guards. This later operational qualification does not alter this audit's eleven
+timeouts, historical Linux event, source identities or causal limits.

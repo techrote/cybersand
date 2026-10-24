@@ -1,0 +1,1561 @@
+{
+  "date": "2026-10-24",
+  "status": "Completed independent historical dump readback; separate local negative reproduction control",
+  "scope": "Supports adoption of captured blocking-call evidence under issue234. Does not replace issue233 campaign or prove its eleven stalls share one mechanism.",
+  "historical_capture": {
+    "run_id": "40014516069",
+    "attempt": "1",
+    "run_url": "https://github.com/techrote/cybersand/actions/runs/40014516069",
+    "source_sha": "c01c11e7e1ac85a5a81ad92c52516ac5fc8c26b0",
+    "source_delta": "",
+    "platform": "Windows-2022Server-10.0.20348-SP0",
+    "batch": 3,
+    "iteration": 1,
+    "test": "test_physical_actor_arena",
+    "engine_pid": 1796,
+    "identity": {
+      "role": "Historical artifact runtime identity",
+      "relative_path": "build/hosted-capture/windows-3/identity.json",
+      "sha256": "c6fc93ae98637bfc7caf7aa6c14a00b0559482040de9093bcfb27d7763408064",
+      "bytes": 7811
+    },
+    "native_sha256": "e6d9ec7d0847287c4c6b1acaffd52dc2807fe43e9dccfc36123ffa117fb6045f",
+    "native_source_commit": "2f7f65bf6e80c7258f2bdda19f949760d211b59e",
+    "native_build_commit": "2f7f65bf6e80c7258f2bdda19f949760d211b59e",
+    "native_provenance_sha256": "1f13eb716a86f1824da4b8d4e77d0ed4ff81a7122b5fd5f07bebf4c9ff1d88e1",
+    "native_source_input_manifest_sha256": "0aff3039cadcfe2445ccc918bd134b9a21c1a82379b358dc0395f9d8da977709",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "dump": {
+      "role": "Historical actual engine minidump",
+      "relative_path": "build/hosted-capture/windows-3/iteration-001/test_physical_actor_arena-diagnostics/1796.dmp",
+      "sha256": "9c645a918de634d76fa1ebf41018c6aa84bb312fa8f01fcf1ce7ade7620ef7b6",
+      "bytes": 119006
+    },
+    "timeout_kind": "progress_watchdog",
+    "outer_case_limit_seconds": 180,
+    "capture_context_elapsed_seconds": 41.020114800000016,
+    "result_elapsed_seconds_including_diagnostics": 56.804,
+    "last_emitted_progress": {
+      "kind": "CYBERSAND_PROGRESS",
+      "phase": "step",
+      "detail": "trialsbike",
+      "cumulative_steps": 10200,
+      "fixture_elapsed_ms": 10537
+    },
+    "progress_limitation": "Historical cumulative steps and markers differ from233 roster markers; last emission does not identify exact blocked physical tick.",
+    "module_identities_from_dump": {
+      "Godot_v4.7-stable_win64.exe": {
+        "module_base": "0x7ff7af880000",
+        "image_size": "0xac15000",
+        "checksum": "0xaa37cc0",
+        "timestamp": "0x6a32f90f",
+        "file_version": "4.7.0.0",
+        "codeview": null
+      },
+      "ntdll.dll": {
+        "module_base": "0x7ff90cf20000",
+        "image_size": "0x204000",
+        "checksum": "0x213ec2",
+        "timestamp": "0xd0106634",
+        "file_version": "10.0.20348.5756",
+        "codeview": {
+          "guid": "58ca28f4-c1f0-0e50-f15d-e78a44b054c2",
+          "age": 1,
+          "pdb": "ntdll.pdb"
+        }
+      },
+      "KERNELBASE.dll": {
+        "module_base": "0x7ff90a4f0000",
+        "image_size": "0x371000",
+        "checksum": "0x3873d2",
+        "timestamp": "0x379e5a64",
+        "file_version": "10.0.20348.5756",
+        "codeview": {
+          "guid": "347a49d5-d0f6-1e5d-ff0d-152d911d01eb",
+          "age": 1,
+          "pdb": "kernelbase.pdb"
+        }
+      },
+      "cybersand_native.windows.x86_64.dll": {
+        "module_base": "0x7ff8ed550000",
+        "image_size": "0x31a000",
+        "checksum": "0x0",
+        "timestamp": "0x0",
+        "file_version": "0.0.0.0",
+        "codeview": {
+          "guid": "c73d9c4f-65d5-9ee7-4c4c-44205044422e",
+          "age": 1,
+          "pdb": ""
+        }
+      },
+      "libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": {
+        "module_base": "0x7ff8ec460000",
+        "image_size": "0x991000",
+        "checksum": "0x0",
+        "timestamp": "0x6a797f49",
+        "file_version": "0.0.0.0",
+        "codeview": {
+          "guid": "c4cce8ce-7c8b-4119-94bc-99955d4a9964",
+          "age": 1,
+          "pdb": "godot_rapier.pdb"
+        }
+      }
+    }
+  },
+  "official_rapier": {
+    "runtime_version": "godot-rapier v0.35.2",
+    "addon_source_commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75",
+    "dll": {
+      "role": "Exact same official Windows DLL hash as233 campaign",
+      "relative_path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "sha256": "4e26ffa78ec2aaff434c4a70cd2ec85288b10ba5237912c35f204cb1e6ed2180",
+      "bytes": 10018816
+    },
+    "dll_image_identity": {
+      "image_size": "0x991000",
+      "timestamp": "0x6a797f49",
+      "checksum": "0x0",
+      "codeview": {
+        "guid": "c4cce8ce-7c8b-4119-94bc-99955d4a9964",
+        "age": 1,
+        "pdb": "godot_rapier.pdb"
+      }
+    },
+    "matching_Rapier_PDB_available": false,
+    "Rapier_PDB_used": false,
+    "static_archive_zip": {
+      "role": "Official upstream static archive download",
+      "relative_path": "build/static-rapier-2d-single.zip",
+      "sha256": "c4b69859e1792a245787300b48ad434faa7240882c0d3645441469073626a155",
+      "bytes": 560424413
+    },
+    "static_archive_url": "https://github.com/appsinacup/godot-rapier-physics/releases/download/v0.35.2/static-rapier-2d-single.zip",
+    "extracted_static_library": {
+      "role": "Exact COFF archive used for function attribution",
+      "relative_path": "build/static-rapier/static-rapier-2d-single/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.a",
+      "sha256": "8074795126c763f1ec7fa817f952ea3f58234f6ba33da7f6b38cc7319738ae0f",
+      "bytes": 159455102
+    }
+  },
+  "tools": {
+    "reader_executable": {
+      "role": "Bounded offline DbgEng wrapper",
+      "relative_path": "build/dump_reader.exe",
+      "sha256": "bbf06bc2e1dde7b0d773f775fb7d8cb3c1f93c9b5282ece7fdf88dc49391cc2d",
+      "bytes": 142752
+    },
+    "reader_source": {
+      "role": "Wrapper source from PR236 head8ff66b7",
+      "relative_path": "build/dump_reader.cpp",
+      "sha256": "c958b183c62cf687cfe64e9cca19c51e06b5b17e9271706204493306b3945568",
+      "bytes": 1264
+    },
+    "dbgeng_version": "10.0.26100.1",
+    "dbgeng_sha256": "bfa188b10eb64a94f1eb59bfb0f8d85eb5dfc803cd0f6b5c554816fe311a236e",
+    "mapper": {
+      "role": "PE.pdata and exact nonrelocation COFF byte attribution",
+      "relative_path": "tools/ci/map_rapier_coff_frames.py",
+      "sha256": "134657e09dd1d8138bc5e4a598f67b44b57ab0272278cdf18f94a9486450bbbc",
+      "bytes": 6233
+    },
+    "readback_helper": {
+      "role": "Ignored independent readback helper; current revision used for03",
+      "relative_path": "build/issue234_readback_official_dump.py",
+      "sha256": "d5d993fc209d1c77ee1ca655a6eba7138249d167d9de638e01662c3bdc924386",
+      "bytes": 8167
+    }
+  },
+  "system_image_and_PDB_inventory": [
+    {
+      "image": {
+        "role": "Cached Microsoft executable image; no PDB loaded in readback03",
+        "relative_path": "build/dump-symbols/ntdll.dll",
+        "sha256": "67fff5660c35feaadc25f1982c4f8333ce4c47365d28f87dbc8c3b0732d6d1c0",
+        "bytes": 2141680
+      },
+      "dump_module_identity": {
+        "module_base": "0x7ff90cf20000",
+        "image_size": "0x204000",
+        "checksum": "0x213ec2",
+        "timestamp": "0xd0106634",
+        "file_version": "10.0.20348.5756",
+        "codeview": {
+          "guid": "58ca28f4-c1f0-0e50-f15d-e78a44b054c2",
+          "age": 1,
+          "pdb": "ntdll.pdb"
+        }
+      },
+      "cached_image_identity": {
+        "image_size": "0x204000",
+        "timestamp": "0xd0106634",
+        "checksum": "0x21a6ba",
+        "codeview": {
+          "guid": "58ca28f4-c1f0-0e50-f15d-e78a44b054c2",
+          "age": 1,
+          "pdb": "ntdll.pdb"
+        }
+      },
+      "matching_fields": [
+        "timestamp",
+        "image_size",
+        "CodeView GUID",
+        "CodeView age"
+      ],
+      "file_checksum_matches_dump": false,
+      "historical_image_url": "https://msdl.microsoft.com/download/symbols/ntdll.dll/D0106634204000/ntdll.dll",
+      "cached_pdb": {
+        "role": "Inventory only; excluded from readback03",
+        "relative_path": "build/dump-symbols/ntdll.pdb",
+        "sha256": "d79e8763fecd7602a9759ee6e28eebd274cb7b200d550d55a0279813aec5bc00",
+        "bytes": 2322432,
+        "guid": "58ca28f4-c1f0-0e50-f15d-e78a44b054c2",
+        "age": 3,
+        "dump_and_image_age": 1,
+        "age_matches": false,
+        "historical_symbol_url": "https://msdl.microsoft.com/download/symbols/ntdll.pdb/58CA28F4C1F00E50F15DE78A44B054C21/ntdll.pdb"
+      }
+    },
+    {
+      "image": {
+        "role": "Cached Microsoft executable image; no PDB loaded in readback03",
+        "relative_path": "build/dump-symbols/KERNELBASE.dll",
+        "sha256": "036f7a92a9ad96df0bb4d315ed51f5f751c0a844b6144505aa5c34bd1aecb2c5",
+        "bytes": 3637736
+      },
+      "dump_module_identity": {
+        "module_base": "0x7ff90a4f0000",
+        "image_size": "0x371000",
+        "checksum": "0x3873d2",
+        "timestamp": "0x379e5a64",
+        "file_version": "10.0.20348.5756",
+        "codeview": {
+          "guid": "347a49d5-d0f6-1e5d-ff0d-152d911d01eb",
+          "age": 1,
+          "pdb": "kernelbase.pdb"
+        }
+      },
+      "cached_image_identity": {
+        "image_size": "0x371000",
+        "timestamp": "0x379e5a64",
+        "checksum": "0x384ff9",
+        "codeview": {
+          "guid": "347a49d5-d0f6-1e5d-ff0d-152d911d01eb",
+          "age": 1,
+          "pdb": "kernelbase.pdb"
+        }
+      },
+      "matching_fields": [
+        "timestamp",
+        "image_size",
+        "CodeView GUID",
+        "CodeView age"
+      ],
+      "file_checksum_matches_dump": false,
+      "historical_image_url": "https://msdl.microsoft.com/download/symbols/KERNELBASE.dll/379E5A64371000/KERNELBASE.dll",
+      "cached_pdb": {
+        "role": "Inventory only; excluded from readback03",
+        "relative_path": "build/dump-symbols/kernelbase.pdb",
+        "sha256": "8ec4babbb1a018c0d77960a3e9ecfb1d30822d25fe0688da233a4bc77c5a9afc",
+        "bytes": 11071488,
+        "guid": "347a49d5-d0f6-1e5d-ff0d-152d911d01eb",
+        "age": 1,
+        "dump_and_image_age": 1,
+        "age_matches": true,
+        "historical_symbol_url": "https://msdl.microsoft.com/download/symbols/kernelbase.pdb/347A49D5D0F61E5DFF0D152D911D01EB1/kernelbase.pdb"
+      }
+    }
+  ],
+  "readbacks": [
+    {
+      "id": "02",
+      "date": "2026-10-24",
+      "exit_code": 0,
+      "seconds": 2.622,
+      "deadline_seconds": 20,
+      "argument_template": [
+        "<DUMP_READER_EXE>",
+        "<ENGINE_DUMP>",
+        "<OUTPUT_STACK_LOG>",
+        ".sympath <MICROSOFT_IMAGE_CACHE>",
+        ".exepath <MICROSOFT_IMAGE_CACHE>;<GODOT_DIRECTORY>;<OFFICIAL_RAPIER_DIRECTORY>",
+        ".reload /f ntdll.dll",
+        ".reload /f KERNELBASE.dll",
+        ".reload /f libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "lmv m libgodot_rapier*",
+        "~* kb 24"
+      ],
+      "environment": {
+        "_NT_SYMBOL_PATH": "<MICROSOFT_IMAGE_CACHE>",
+        "_NT_ALT_SYMBOL_PATH": "<MICROSOFT_IMAGE_CACHE>",
+        "_NT_EXECUTABLE_IMAGE_PATH": "<MICROSOFT_IMAGE_CACHE>;<GODOT_DIRECTORY>;<OFFICIAL_RAPIER_DIRECTORY>"
+      },
+      "PDBs_loaded": "Microsoft public symbols available; ntdll PDB age differs as inventoried",
+      "external_deadline_action": "taskkill /PID <reader pid> /T /F; residual direct child kill with 2-second wait",
+      "retained_files": [
+        {
+          "role": "Full ignored identity receipt",
+          "relative_path": "build/issue234-official-stack-readback-02/readback-receipt.json",
+          "sha256": "d673a204fdd561fbedd37ccb86aaaa611c02be0878eb5e7fc64b85e701cab7a8",
+          "bytes": 22050
+        },
+        {
+          "role": "Raw debugger output; not committed",
+          "relative_path": "build/issue234-official-stack-readback-02/official-engine-1796-stacks.txt",
+          "sha256": "ff6e1cf728bf92711a8045f1382bf7fa62294c1d404af0b78b6105c3577d73da",
+          "bytes": 29236
+        },
+        {
+          "role": "Complete COFF matches; not committed",
+          "relative_path": "build/issue234-official-stack-readback-02/coff-frame-map.json",
+          "sha256": "56bacba567e21a37afc892c41b586f1f70a7f5420cf5b8f5ae3e31844954cf34",
+          "bytes": 6833
+        }
+      ]
+    },
+    {
+      "id": "03-no-pdb",
+      "date": "2026-10-24",
+      "exit_code": 0,
+      "seconds": 2.575,
+      "deadline_seconds": 20,
+      "argument_template": [
+        "<DUMP_READER_EXE>",
+        "<ENGINE_DUMP>",
+        "<OUTPUT_STACK_LOG>",
+        ".sympath <EMPTY_SYMBOL_DIRECTORY>",
+        ".exepath <MICROSOFT_IMAGE_CACHE>;<GODOT_DIRECTORY>;<OFFICIAL_RAPIER_DIRECTORY>",
+        ".reload /f ntdll.dll",
+        ".reload /f KERNELBASE.dll",
+        ".reload /f libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "lmv m libgodot_rapier*",
+        "~* kb 24"
+      ],
+      "environment": {
+        "_NT_SYMBOL_PATH": "<EMPTY_SYMBOL_DIRECTORY>",
+        "_NT_ALT_SYMBOL_PATH": "<EMPTY_SYMBOL_DIRECTORY>",
+        "_NT_EXECUTABLE_IMAGE_PATH": "<MICROSOFT_IMAGE_CACHE>;<GODOT_DIRECTORY>;<OFFICIAL_RAPIER_DIRECTORY>"
+      },
+      "PDBs_loaded": false,
+      "external_deadline_action": "taskkill /PID <reader pid> /T /F; residual direct child kill with 2-second wait",
+      "retained_files": [
+        {
+          "role": "Full ignored identity receipt",
+          "relative_path": "build/issue234-official-stack-readback-03-no-pdb/readback-receipt.json",
+          "sha256": "c70c8c8ebda6b95cbf85e28a95310e9fe58b4fb253a9a8d594d50f6cb210f8e8",
+          "bytes": 22217
+        },
+        {
+          "role": "Raw debugger output; not committed",
+          "relative_path": "build/issue234-official-stack-readback-03-no-pdb/official-engine-1796-stacks.txt",
+          "sha256": "f845879bd6075ee4eebaa9622c2fd9d86ded84fc882fa0e41a756f67b406c411",
+          "bytes": 30355
+        },
+        {
+          "role": "Complete COFF matches; not committed",
+          "relative_path": "build/issue234-official-stack-readback-03-no-pdb/coff-frame-map.json",
+          "sha256": "56bacba567e21a37afc892c41b586f1f70a7f5420cf5b8f5ae3e31844954cf34",
+          "bytes": 6833
+        }
+      ]
+    }
+  ],
+  "independent_no_PDB_comparison": {
+    "identical_distinct_Rapier_RVAs": 19,
+    "identical_per_thread_Rapier_unwound_frames": 24,
+    "all_frame_PCs_equal": true,
+    "interpretation": "Essential wait-path function attribution survives complete PDB removal. Export-nearest display names are not accepted as attribution."
+  },
+  "captured_waits": [
+    {
+      "tid": 2724,
+      "role": "main",
+      "finding": "WaitOnAddress -> byte-matched std Condvar::wait -> Rayon LockLatch::wait_and_reset; PhysicsWorld::step further down stack"
+    },
+    {
+      "tid": 4620,
+      "role": "Rapier worker",
+      "finding": "WaitOnAddress -> Thread::park -> Channel<DeferredBvhOptimize>::recv -> join_deferred_bvh_optimize -> step_inner -> Rayon StackJob::execute"
+    },
+    {
+      "tid": 4304,
+      "role": "other Rapier worker",
+      "finding": "WaitOnAddress -> std Condvar::wait; scheduler intermediate frames remain unattributed; byte-matched Rayon ThreadBuilder::run below"
+    }
+  ],
+  "unwound_Rapier_frames": [
+    {
+      "thread_index": 0,
+      "tid": 2724,
+      "unwound_pc": "0x7ff8ecbdb7b3",
+      "rva": "0x77b7b3",
+      "function": "std::sys::sync::condvar::futex::Condvar::wait",
+      "attribution": "full PE function bytes matched against official COFF section except relocation fields"
+    },
+    {
+      "thread_index": 0,
+      "tid": 2724,
+      "unwound_pc": "0x7ff8ecbd097e",
+      "rva": "0x77097e",
+      "function": "rayon_core::LockLatch::wait_and_reset",
+      "attribution": "full PE function bytes matched against official COFF section except relocation fields"
+    },
+    {
+      "thread_index": 0,
+      "tid": 2724,
+      "unwound_pc": "0x7ff8ecbf982d",
+      "rva": "0x79982d",
+      "function": null,
+      "attribution": "unattributed; module+RVA only"
+    },
+    {
+      "thread_index": 0,
+      "tid": 2724,
+      "unwound_pc": "0x7ff8ec6634d0",
+      "rva": "0x2034d0",
+      "function": "godot_rapier::PhysicsWorld::step",
+      "attribution": "full PE function bytes matched against official COFF section except relocation fields"
+    },
+    {
+      "thread_index": 0,
+      "tid": 2724,
+      "unwound_pc": "0x7ff8ec65479a",
+      "rva": "0x1f479a",
+      "function": "godot_rapier::RapierSpace::step",
+      "attribution": "full PE function bytes matched against official COFF section except relocation fields"
+    },
+    {
+      "thread_index": 0,
+      "tid": 2724,
+      "unwound_pc": "0x7ff8ec69022f",
+      "rva": "0x23022f",
+      "function": "godot_rapier::RapierPhysicsServer2D::space_step",
+      "attribution": "full PE function bytes matched against official COFF section except relocation fields"
+    },
+    {
+      "thread_index": 0,
+      "tid": 2724,
+      "unwound_pc": "0x7ff8ec6bbaa4",
+      "rva": "0x25baa4",
+      "function": "Godot space_step varcall wrapper",
+      "attribution": "full PE function bytes matched against official COFF section except relocation fields"
+    },
+    {
+      "thread_index": 14,
+      "tid": 4620,
+      "unwound_pc": "0x7ff8ecbdd0d1",
+      "rva": "0x77d0d1",
+      "function": "std::thread::Thread::park",
+      "attribution": "full PE function bytes matched against official COFF section except relocation fields"
+    },
+    {
+      "thread_index": 14,
+      "tid": 4620,
+      "unwound_pc": "0x7ff8ecad3358",
+      "rva": "0x673358",
+      "function": "std::sync::mpmc::list::Channel<rapier2d::DeferredBvhOptimize>::recv closure",
+      "attribution": "full PE function bytes matched against official COFF section except relocation fields"
+    },
+    {
+      "thread_index": 14,
+      "tid": 4620,
+      "unwound_pc": "0x7ff8ecb0c57d",
+      "rva": "0x6ac57d",
+      "function": "rapier2d::PhysicsPipeline::join_deferred_bvh_optimize",
+      "attribution": "full PE function bytes matched against official COFF section except relocation fields"
+    },
+    {
+      "thread_index": 14,
+      "tid": 4620,
+      "unwound_pc": "0x7ff8ecaeade7",
+      "rva": "0x68ade7",
+      "function": "rapier2d::PhysicsPipeline::step_inner",
+      "attribution": "full PE function bytes matched against official COFF section except relocation fields"
+    },
+    {
+      "thread_index": 14,
+      "tid": 4620,
+      "unwound_pc": "0x7ff8ec742669",
+      "rva": "0x2e2669",
+      "function": "rayon_core::StackJob<LockLatch, PhysicsWorld::step>::execute",
+      "attribution": "full PE function bytes matched against official COFF section except relocation fields"
+    },
+    {
+      "thread_index": 14,
+      "tid": 4620,
+      "unwound_pc": "0x7ff8ecc14bc6",
+      "rva": "0x7b4bc6",
+      "function": null,
+      "attribution": "unattributed; module+RVA only"
+    },
+    {
+      "thread_index": 14,
+      "tid": 4620,
+      "unwound_pc": "0x7ff8ecbd0253",
+      "rva": "0x770253",
+      "function": "rayon_core::ThreadBuilder::run",
+      "attribution": "full PE function bytes matched against official COFF section except relocation fields"
+    },
+    {
+      "thread_index": 14,
+      "tid": 4620,
+      "unwound_pc": "0x7ff8ecbcf669",
+      "rva": "0x76f669",
+      "function": null,
+      "attribution": "unattributed; module+RVA only"
+    },
+    {
+      "thread_index": 14,
+      "tid": 4620,
+      "unwound_pc": "0x7ff8ecbcfa8d",
+      "rva": "0x76fa8d",
+      "function": "Rayon DefaultSpawn worker FnOnce vtable",
+      "attribution": "full PE function bytes matched against official COFF section except relocation fields"
+    },
+    {
+      "thread_index": 14,
+      "tid": 4620,
+      "unwound_pc": "0x7ff8ecbe201a",
+      "rva": "0x78201a",
+      "function": "std::sys::thread::windows::Thread::new::thread_start",
+      "attribution": "full PE function bytes matched against official COFF section except relocation fields"
+    },
+    {
+      "thread_index": 15,
+      "tid": 4304,
+      "unwound_pc": "0x7ff8ecbdb7b3",
+      "rva": "0x77b7b3",
+      "function": "std::sys::sync::condvar::futex::Condvar::wait",
+      "attribution": "full PE function bytes matched against official COFF section except relocation fields"
+    },
+    {
+      "thread_index": 15,
+      "tid": 4304,
+      "unwound_pc": "0x7ff8ecc14465",
+      "rva": "0x7b4465",
+      "function": null,
+      "attribution": "unattributed; module+RVA only"
+    },
+    {
+      "thread_index": 15,
+      "tid": 4304,
+      "unwound_pc": "0x7ff8ecc14b53",
+      "rva": "0x7b4b53",
+      "function": null,
+      "attribution": "unattributed; module+RVA only"
+    },
+    {
+      "thread_index": 15,
+      "tid": 4304,
+      "unwound_pc": "0x7ff8ecbd0253",
+      "rva": "0x770253",
+      "function": "rayon_core::ThreadBuilder::run",
+      "attribution": "full PE function bytes matched against official COFF section except relocation fields"
+    },
+    {
+      "thread_index": 15,
+      "tid": 4304,
+      "unwound_pc": "0x7ff8ecbcf669",
+      "rva": "0x76f669",
+      "function": null,
+      "attribution": "unattributed; module+RVA only"
+    },
+    {
+      "thread_index": 15,
+      "tid": 4304,
+      "unwound_pc": "0x7ff8ecbcfa8d",
+      "rva": "0x76fa8d",
+      "function": "Rayon DefaultSpawn worker FnOnce vtable",
+      "attribution": "full PE function bytes matched against official COFF section except relocation fields"
+    },
+    {
+      "thread_index": 15,
+      "tid": 4304,
+      "unwound_pc": "0x7ff8ecbe201a",
+      "rva": "0x78201a",
+      "function": "std::sys::thread::windows::Thread::new::thread_start",
+      "attribution": "full PE function bytes matched against official COFF section except relocation fields"
+    }
+  ],
+  "verified_named_function_coverage": [
+    {
+      "rva": "0x1f479a",
+      "begin": "0x1f3630",
+      "end": "0x1f4913",
+      "PE_function_bytes": 4835,
+      "verified_bytes": 4835,
+      "nonrelocation_bytes_verified": 4611,
+      "relocation_bytes_excluded": 224,
+      "complete_PE_function_covered": true,
+      "object": "godot_rapier.godot_rapier.f662fa7776f29b8-cgu.0.rcgu.o",
+      "symbol_names": [
+        "_RNvMs2_NtNtCs1jY6lgQ791c_12godot_rapier6spaces12rapier_spaceNtB5_11RapierSpace4step"
+      ],
+      "readable_function": "godot_rapier::RapierSpace::step"
+    },
+    {
+      "rva": "0x2034d0",
+      "begin": "0x201d00",
+      "end": "0x2034e8",
+      "PE_function_bytes": 6120,
+      "verified_bytes": 6120,
+      "nonrelocation_bytes_verified": 5928,
+      "relocation_bytes_excluded": 192,
+      "complete_PE_function_covered": true,
+      "object": "godot_rapier.godot_rapier.f662fa7776f29b8-cgu.0.rcgu.o",
+      "symbol_names": [
+        "_RNvMs5_NtNtCs1jY6lgQ791c_12godot_rapier14rapier_wrapper13physics_worldNtB5_12PhysicsWorld4step"
+      ],
+      "readable_function": "godot_rapier::PhysicsWorld::step"
+    },
+    {
+      "rva": "0x23022f",
+      "begin": "0x230150",
+      "end": "0x230310",
+      "PE_function_bytes": 448,
+      "verified_bytes": 448,
+      "nonrelocation_bytes_verified": 380,
+      "relocation_bytes_excluded": 68,
+      "complete_PE_function_covered": true,
+      "object": "godot_rapier.godot_rapier.f662fa7776f29b8-cgu.0.rcgu.o",
+      "symbol_names": [
+        "_RNvMsq_NtNtCs1jY6lgQ791c_12godot_rapier7servers24rapier_physics_server_2dNtB5_21RapierPhysicsServer2D10space_step"
+      ],
+      "readable_function": "godot_rapier::RapierPhysicsServer2D::space_step"
+    },
+    {
+      "rva": "0x25baa4",
+      "begin": "0x25b7b0",
+      "end": "0x25bb4d",
+      "PE_function_bytes": 925,
+      "verified_bytes": 925,
+      "nonrelocation_bytes_verified": 809,
+      "relocation_bytes_excluded": 116,
+      "complete_PE_function_covered": true,
+      "object": "godot_rapier.godot_rapier.f662fa7776f29b8-cgu.0.rcgu.o",
+      "symbol_names": [
+        "_RNvNCNvNvNvNtNtCs1jY6lgQ791c_12godot_rapier7servers24rapier_physics_server_2ds7_1__6___init12___inner_init0sD_10varcall_fn"
+      ],
+      "readable_function": "Godot space_step varcall wrapper"
+    },
+    {
+      "rva": "0x2e2669",
+      "begin": "0x2e2560",
+      "end": "0x2e2734",
+      "PE_function_bytes": 468,
+      "verified_bytes": 468,
+      "nonrelocation_bytes_verified": 424,
+      "relocation_bytes_excluded": 44,
+      "complete_PE_function_covered": true,
+      "object": "godot_rapier.godot_rapier.f662fa7776f29b8-cgu.0.rcgu.o",
+      "symbol_names": [
+        "_RNvXs2_NtCs91j0qopwnKc_10rayon_core3jobINtB5_8StackJobINtNtB7_5latch8LatchRefNtBT_9LockLatchENCNCINvMs4_NtB7_8registryNtB1E_8Registry14in_worker_coldNCINvMNtB7_11thread_poolNtB2t_10ThreadPool7installNCNvMs5_NtNtCs1jY6lgQ791c_12godot_rapier14rapier_wrapper13physics_worldNtB3j_12PhysicsWorld4step0uE0uE00uENtB5_3Job7executeB3n_"
+      ],
+      "readable_function": "rayon_core::StackJob<LockLatch, PhysicsWorld::step>::execute"
+    },
+    {
+      "rva": "0x673358",
+      "begin": "0x673280",
+      "end": "0x673415",
+      "PE_function_bytes": 405,
+      "verified_bytes": 405,
+      "nonrelocation_bytes_verified": 357,
+      "relocation_bytes_excluded": 48,
+      "complete_PE_function_covered": true,
+      "object": "rapier2d-b364c6410f3f46c5.rapier2d.d0f68180d56c8cff-cgu.0.rcgu.o",
+      "symbol_names": [
+        "_RNCNvMs1_NtNtNtCslFVcyoAu48q_3std4sync4mpmc4listINtB7_7ChannelNtNtNtCshWiTd6uhCRT_8rapier2d8geometry15broad_phase_bvh19DeferredBvhOptimizeE4recvs_0B14_"
+      ],
+      "readable_function": "std::sync::mpmc::list::Channel<rapier2d::DeferredBvhOptimize>::recv closure"
+    },
+    {
+      "rva": "0x68ade7",
+      "begin": "0x689590",
+      "end": "0x68c2d0",
+      "PE_function_bytes": 11584,
+      "verified_bytes": 11584,
+      "nonrelocation_bytes_verified": 11192,
+      "relocation_bytes_excluded": 392,
+      "complete_PE_function_covered": true,
+      "object": "rapier2d-b364c6410f3f46c5.rapier2d.d0f68180d56c8cff-cgu.0.rcgu.o",
+      "symbol_names": [
+        "_RNvMNtNtNtCshWiTd6uhCRT_8rapier2d8pipeline16physics_pipeline7substepNtB4_15PhysicsPipeline10step_inner"
+      ],
+      "readable_function": "rapier2d::PhysicsPipeline::step_inner"
+    },
+    {
+      "rva": "0x6ac57d",
+      "begin": "0x6ac240",
+      "end": "0x6ad615",
+      "PE_function_bytes": 5077,
+      "verified_bytes": 5077,
+      "nonrelocation_bytes_verified": 4737,
+      "relocation_bytes_excluded": 340,
+      "complete_PE_function_covered": true,
+      "object": "rapier2d-b364c6410f3f46c5.rapier2d.d0f68180d56c8cff-cgu.0.rcgu.o",
+      "symbol_names": [
+        "_RNvMs_NtNtCshWiTd6uhCRT_8rapier2d8pipeline16physics_pipelineNtB4_15PhysicsPipeline26join_deferred_bvh_optimize"
+      ],
+      "readable_function": "rapier2d::PhysicsPipeline::join_deferred_bvh_optimize"
+    },
+    {
+      "rva": "0x76fa8d",
+      "begin": "0x76f9b0",
+      "end": "0x76fb5f",
+      "PE_function_bytes": 431,
+      "verified_bytes": 431,
+      "nonrelocation_bytes_verified": 415,
+      "relocation_bytes_excluded": 16,
+      "complete_PE_function_covered": true,
+      "object": "rayon_core-990d6bf5b2659913.rayon_core.6912f336ddc7f59e-cgu.0.rcgu.o",
+      "symbol_names": [
+        "_RNSNvYNCINvNtNtCslFVcyoAu48q_3std6thread9lifecycle15spawn_uncheckedNCNvXs0_NtCs91j0qopwnKc_10rayon_core8registryNtB1b_12DefaultSpawnNtB1b_11ThreadSpawn5spawn0uEs_0INtNtNtCs55qC6OcLGgs_4core3ops8function6FnOnceuE9call_once6vtableB1d_"
+      ],
+      "readable_function": "Rayon DefaultSpawn worker FnOnce vtable"
+    },
+    {
+      "rva": "0x770253",
+      "begin": "0x7700b0",
+      "end": "0x770329",
+      "PE_function_bytes": 633,
+      "verified_bytes": 633,
+      "nonrelocation_bytes_verified": 549,
+      "relocation_bytes_excluded": 84,
+      "complete_PE_function_covered": true,
+      "object": "rayon_core-990d6bf5b2659913.rayon_core.6912f336ddc7f59e-cgu.0.rcgu.o",
+      "symbol_names": [
+        "_RNvMNtCs91j0qopwnKc_10rayon_core8registryNtB2_13ThreadBuilder3run"
+      ],
+      "readable_function": "rayon_core::ThreadBuilder::run"
+    },
+    {
+      "rva": "0x77097e",
+      "begin": "0x770910",
+      "end": "0x770a7d",
+      "PE_function_bytes": 365,
+      "verified_bytes": 365,
+      "nonrelocation_bytes_verified": 309,
+      "relocation_bytes_excluded": 56,
+      "complete_PE_function_covered": true,
+      "object": "rayon_core-990d6bf5b2659913.rayon_core.6912f336ddc7f59e-cgu.0.rcgu.o",
+      "symbol_names": [
+        "_RNvMs3_NtCs91j0qopwnKc_10rayon_core5latchNtB5_9LockLatch14wait_and_reset"
+      ],
+      "readable_function": "rayon_core::LockLatch::wait_and_reset"
+    },
+    {
+      "rva": "0x77b7b3",
+      "begin": "0x77b780",
+      "end": "0x77b7ec",
+      "PE_function_bytes": 108,
+      "verified_bytes": 108,
+      "nonrelocation_bytes_verified": 92,
+      "relocation_bytes_excluded": 16,
+      "complete_PE_function_covered": true,
+      "object": "std-ad7efb1bc85901be.std.fc79cc53f84b73ec-cgu.0.rcgu.o",
+      "symbol_names": [
+        "_RNvMNtNtNtNtCslFVcyoAu48q_3std3sys4sync7condvar5futexNtB2_7Condvar4wait"
+      ],
+      "readable_function": "std::sys::sync::condvar::futex::Condvar::wait"
+    },
+    {
+      "rva": "0x77d0d1",
+      "begin": "0x77d060",
+      "end": "0x77d0db",
+      "PE_function_bytes": 123,
+      "verified_bytes": 123,
+      "nonrelocation_bytes_verified": 115,
+      "relocation_bytes_excluded": 8,
+      "complete_PE_function_covered": true,
+      "object": "std-ad7efb1bc85901be.std.fc79cc53f84b73ec-cgu.0.rcgu.o",
+      "symbol_names": [
+        "_RNvMs_NtNtCslFVcyoAu48q_3std6thread6threadNtB4_6Thread4park"
+      ],
+      "readable_function": "std::thread::Thread::park"
+    },
+    {
+      "rva": "0x78201a",
+      "begin": "0x781e50",
+      "end": "0x782042",
+      "PE_function_bytes": 498,
+      "verified_bytes": 498,
+      "nonrelocation_bytes_verified": 406,
+      "relocation_bytes_excluded": 92,
+      "complete_PE_function_covered": true,
+      "object": "std-ad7efb1bc85901be.std.fc79cc53f84b73ec-cgu.0.rcgu.o",
+      "symbol_names": [
+        "_RNvNvMNtNtNtCslFVcyoAu48q_3std3sys6thread7windowsNtB4_6Thread3new12thread_start"
+      ],
+      "readable_function": "std::sys::thread::windows::Thread::new::thread_start"
+    }
+  ],
+  "unattributed_RVAs": [
+    "0x76f669",
+    "0x79982d",
+    "0x7b4465",
+    "0x7b4b53",
+    "0x7b4bc6"
+  ],
+  "excluded_or_qualified_evidence": [
+    {
+      "record": "build/issue234-official-stack-readback-01",
+      "reason": "Incomplete first parser retained only literal module+RVA displays, omitting nearest-export-labelled frames. Not used for complete wait-path claims."
+    },
+    {
+      "record": "Historical wrapper PID4856 dump",
+      "reason": "Wrapper state is not engine1796 state; no engine blocking-call inference from wrapper."
+    },
+    {
+      "record": "Historical analysis using current localWindows11 system images",
+      "reason": "Image timestamp/layout mismatch with Server2022 dump; excluded from adopted unwind."
+    },
+    {
+      "record": "docs/audits/physical-actor-timeouts-2026-10-23/invalid-local-full-apparatus.json",
+      "reason": "Project-only export omitted repository fixtures;58/121 executed and fiveactualfailures. Excluded as repair qualification."
+    },
+    {
+      "record": "Historical incomplete/inconclusive paired campaigns",
+      "reason": "Retained in original records; not promoted into600 zero-timeout acceptance."
+    }
+  ],
+  "local_negative_capture_control": {
+    "purpose": "Bounded source3e9f/officialRapier30-attempt diagnostic capture, not hosted or repair acceptance",
+    "source_sha": "3e9f0e6dcbfdb9c122c8c555dac43e7b4d926e5f",
+    "source_delta": "",
+    "completed": true,
+    "mode": "three-process parallel",
+    "physical_attempts": 30,
+    "passed": 30,
+    "timeouts": 0,
+    "other_failures": 0,
+    "timeout_frequency": "0/30",
+    "preflight_passes": 1,
+    "physical_case_timeout_seconds": 180,
+    "preflight_timeout_seconds": 240,
+    "retries": 0,
+    "platform": "Windows-11-10.0.26300-SP0",
+    "hardware": {
+      "cpu": "AMD Ryzen5 5600X",
+      "physical_cores": 6,
+      "logical_processors": 12
+    },
+    "Rapier_worker_count": {
+      "expected_from_pinned_source_and_hardware": 6,
+      "directly_instrumented": false,
+      "setting_override_available": false,
+      "reason": "get_num_threads OnceLock uses performance_core_count().max(1); Windows fallback num_cpus::get_physical; explicit ThreadPoolBuilder.num_threads. No project setting/env override."
+    },
+    "runtime": {
+      "godot_version": "4.7.stable.official.5b4e0cb0f",
+      "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "cybersand_runtime": {
+        "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "sha256": "b13805bf1a0bb3452493c6990b212575787f638c30be22613a5cc03b78933d30",
+        "size": 4049408
+      },
+      "rapier_runtime": {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "sha256": "4e26ffa78ec2aaff434c4a70cd2ec85288b10ba5237912c35f204cb1e6ed2180",
+        "size": 10018816
+      },
+      "runtime_source_commit": "c8f14c7bc18d6ed8349d568cb00e47a826313cf9",
+      "runtime_build_commit": "c8f14c7bc18d6ed8349d568cb00e47a826313cf9",
+      "runtime_provenance": {
+        "path": "godot/addons/cybersand_native/runtime-provenance.json",
+        "sha256": "ab5c348f5f2c9f9b5fa85ffa46ba5f748ad08e4010ae89365a0585bee17706db"
+      }
+    },
+    "retained_receipts": [
+      {
+        "role": "Local runtime identity",
+        "relative_path": "build/issue234-official-control-01/identity.json",
+        "sha256": "d127e38148af9a29a13a3a8ded8ad14e64d65e7d2913dc6dd433810db394f4d7",
+        "bytes": 8085
+      },
+      {
+        "role": "All31 local attempts including preflight",
+        "relative_path": "build/issue234-official-control-01/capture-summary.json",
+        "sha256": "f0b4e7970df80f926a6e40c3fcc38c9f8c53520d7646a3bece48fdcfe4f58e60",
+        "bytes": 36089
+      },
+      {
+        "role": "Local diagnostic driver",
+        "relative_path": "build/capture_official.py",
+        "sha256": "ffcd2a24a5f958b922a9ef8eeed5a9d7cb3d1914f4a3b950c0610b127f97a454",
+        "bytes": 2904
+      }
+    ],
+    "distributions": [
+      {
+        "test": "test_physical_actor_arena",
+        "samples": 10,
+        "passed": 10,
+        "timeouts": 0,
+        "other_failures": 0,
+        "timeout_frequency": "0/10",
+        "median_s": "14.7835",
+        "p95_s": "16.701",
+        "max_s": "16.701"
+      },
+      {
+        "test": "test_physical_actor_rigs",
+        "samples": 10,
+        "passed": 10,
+        "timeouts": 0,
+        "other_failures": 0,
+        "timeout_frequency": "0/10",
+        "median_s": "20.9365",
+        "p95_s": "22.722",
+        "max_s": "22.722"
+      },
+      {
+        "test": "test_physical_usable_course",
+        "samples": 10,
+        "passed": 10,
+        "timeouts": 0,
+        "other_failures": 0,
+        "timeout_frequency": "0/10",
+        "median_s": "13.8515",
+        "p95_s": "15.943",
+        "max_s": "15.943"
+      }
+    ],
+    "observations": [
+      {
+        "test": "test_physical_actor_arena",
+        "repetition": 1,
+        "seconds": 13.724,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_arena phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-001/test_physical_actor_arena/test_physical_actor_arena.log",
+          "sha256": "a6800de331e6bedcb86ccf41538b2d035e931db567570f91f211faf704fd41a3",
+          "bytes": 29157
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-001/test_physical_actor_arena/attempt-result.json",
+          "sha256": "8620b8e90b5d5eccad6716ed8181a656666dd09701a844421ddff472250473d5",
+          "bytes": 790
+        }
+      },
+      {
+        "test": "test_physical_actor_rigs",
+        "repetition": 1,
+        "seconds": 19.558,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_rigs phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-001/test_physical_actor_rigs/test_physical_actor_rigs.log",
+          "sha256": "25c88e488f9eabb49a31317a4c92ded63a5daa5998194297f031dead4794daac",
+          "bytes": 52185
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-001/test_physical_actor_rigs/attempt-result.json",
+          "sha256": "d733031c8a432ed6be4353ebecb0400a01f9088a6dd0c7ffadb18abb220b35ba",
+          "bytes": 786
+        }
+      },
+      {
+        "test": "test_physical_usable_course",
+        "repetition": 1,
+        "seconds": 12.88,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_usable_course phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-001/test_physical_usable_course/test_physical_usable_course.log",
+          "sha256": "00277a40833b21a247daf998d834207d4591fcb873c5dc60da3bff5d71204596",
+          "bytes": 7648
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-001/test_physical_usable_course/attempt-result.json",
+          "sha256": "8356149424813661b82a977f193a13d7c1f8dfe5b51f4e26d5d8a63a7c2124b9",
+          "bytes": 797
+        }
+      },
+      {
+        "test": "test_physical_actor_arena",
+        "repetition": 2,
+        "seconds": 13.243,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_arena phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-002/test_physical_actor_arena/test_physical_actor_arena.log",
+          "sha256": "f1e84615ad8c64d848c8f7a636fb3ab13522248ab2771e856e8a0dc95821d539",
+          "bytes": 29157
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-002/test_physical_actor_arena/attempt-result.json",
+          "sha256": "fc1cfe1cbaa29ea1c7fb082700411c910d5a07ec56ad286eee9fb0e4a65396fd",
+          "bytes": 790
+        }
+      },
+      {
+        "test": "test_physical_actor_rigs",
+        "repetition": 2,
+        "seconds": 19.075,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_rigs phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-002/test_physical_actor_rigs/test_physical_actor_rigs.log",
+          "sha256": "25c88e488f9eabb49a31317a4c92ded63a5daa5998194297f031dead4794daac",
+          "bytes": 52185
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-002/test_physical_actor_rigs/attempt-result.json",
+          "sha256": "7dbcacc7bb7ba1f91748dc9380e56e998f470268b9ef5988b3bc296eb967c065",
+          "bytes": 786
+        }
+      },
+      {
+        "test": "test_physical_usable_course",
+        "repetition": 2,
+        "seconds": 12.238,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_usable_course phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-002/test_physical_usable_course/test_physical_usable_course.log",
+          "sha256": "00277a40833b21a247daf998d834207d4591fcb873c5dc60da3bff5d71204596",
+          "bytes": 7648
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-002/test_physical_usable_course/attempt-result.json",
+          "sha256": "4865cfdc7ea9601ef35c699e5eef40fbaed15059bf3504caf6f38ab6ad31995f",
+          "bytes": 798
+        }
+      },
+      {
+        "test": "test_physical_actor_arena",
+        "repetition": 3,
+        "seconds": 13.443,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_arena phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-003/test_physical_actor_arena/test_physical_actor_arena.log",
+          "sha256": "2c2282decca947593d8e2554cd4107323edcc11414e7492cc71e21240f90b457",
+          "bytes": 29157
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-003/test_physical_actor_arena/attempt-result.json",
+          "sha256": "5edeca60173f571336901d3e4f91783462c757339da021cc41f2f8b8c835d43d",
+          "bytes": 790
+        }
+      },
+      {
+        "test": "test_physical_actor_rigs",
+        "repetition": 3,
+        "seconds": 19.356,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_rigs phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-003/test_physical_actor_rigs/test_physical_actor_rigs.log",
+          "sha256": "25c88e488f9eabb49a31317a4c92ded63a5daa5998194297f031dead4794daac",
+          "bytes": 52185
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-003/test_physical_actor_rigs/attempt-result.json",
+          "sha256": "3bdf4d591946ca18451716700dc04823386c662e9acd204f689c563704e641b9",
+          "bytes": 786
+        }
+      },
+      {
+        "test": "test_physical_usable_course",
+        "repetition": 3,
+        "seconds": 12.416,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_usable_course phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-003/test_physical_usable_course/test_physical_usable_course.log",
+          "sha256": "00277a40833b21a247daf998d834207d4591fcb873c5dc60da3bff5d71204596",
+          "bytes": 7648
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-003/test_physical_usable_course/attempt-result.json",
+          "sha256": "9011c2b1c490aeb7aae9541eeb17407a67516b7cd4a610cbb7ff9e40c29b6ac8",
+          "bytes": 798
+        }
+      },
+      {
+        "test": "test_physical_actor_arena",
+        "repetition": 4,
+        "seconds": 13.341,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_arena phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-004/test_physical_actor_arena/test_physical_actor_arena.log",
+          "sha256": "929c208a5b6b387d4fe27b4051c1b40e55240f0a49430ca7c502004b6330460c",
+          "bytes": 29157
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-004/test_physical_actor_arena/attempt-result.json",
+          "sha256": "1c2d9a355e2fc7df8a384ea7a3724bcd03dec69e324586348fe04cc1c857de68",
+          "bytes": 790
+        }
+      },
+      {
+        "test": "test_physical_actor_rigs",
+        "repetition": 4,
+        "seconds": 19.17,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_rigs phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-004/test_physical_actor_rigs/test_physical_actor_rigs.log",
+          "sha256": "25c88e488f9eabb49a31317a4c92ded63a5daa5998194297f031dead4794daac",
+          "bytes": 52185
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-004/test_physical_actor_rigs/attempt-result.json",
+          "sha256": "ae83a0f4b140a6f569bd9c10431f2dc277fff91ed157fd4eec411838133fe481",
+          "bytes": 784
+        }
+      },
+      {
+        "test": "test_physical_usable_course",
+        "repetition": 4,
+        "seconds": 12.233,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_usable_course phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-004/test_physical_usable_course/test_physical_usable_course.log",
+          "sha256": "00277a40833b21a247daf998d834207d4591fcb873c5dc60da3bff5d71204596",
+          "bytes": 7648
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-004/test_physical_usable_course/attempt-result.json",
+          "sha256": "3ed3d78524f4cf376f5968021a8991ea31af023ad8edebc15387e0a7592026be",
+          "bytes": 798
+        }
+      },
+      {
+        "test": "test_physical_actor_arena",
+        "repetition": 5,
+        "seconds": 13.25,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_arena phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-005/test_physical_actor_arena/test_physical_actor_arena.log",
+          "sha256": "585b57c44976b437d62d4bbbde8a5e0a41fc840e25f1447d8d3ad06513366a2e",
+          "bytes": 29156
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-005/test_physical_actor_arena/attempt-result.json",
+          "sha256": "61b5212e85f5603ff6bd27b0a38286449a5c8bd778535a3c3c77357a6b46a6c6",
+          "bytes": 789
+        }
+      },
+      {
+        "test": "test_physical_actor_rigs",
+        "repetition": 5,
+        "seconds": 19.923,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_rigs phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-005/test_physical_actor_rigs/test_physical_actor_rigs.log",
+          "sha256": "25c88e488f9eabb49a31317a4c92ded63a5daa5998194297f031dead4794daac",
+          "bytes": 52185
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-005/test_physical_actor_rigs/attempt-result.json",
+          "sha256": "0444866c45ff25c068974f4aa38578196d3e3578b6bb1154c99ef53aeb41c3b5",
+          "bytes": 785
+        }
+      },
+      {
+        "test": "test_physical_usable_course",
+        "repetition": 5,
+        "seconds": 12.23,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_usable_course phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-005/test_physical_usable_course/test_physical_usable_course.log",
+          "sha256": "00277a40833b21a247daf998d834207d4591fcb873c5dc60da3bff5d71204596",
+          "bytes": 7648
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-005/test_physical_usable_course/attempt-result.json",
+          "sha256": "46e6760102a4074a6e69c00e33c6b6b100dcb8a71fc278b10fb8df3641774490",
+          "bytes": 797
+        }
+      },
+      {
+        "test": "test_physical_actor_arena",
+        "repetition": 6,
+        "seconds": 16.127,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_arena phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-006/test_physical_actor_arena/test_physical_actor_arena.log",
+          "sha256": "09c82499683299e4500fc51eedaf49c49e77c08a1b19ab96071cc79df9aef3f6",
+          "bytes": 29157
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-006/test_physical_actor_arena/attempt-result.json",
+          "sha256": "88427a7f05b763edca9779b971f7109098127dc1acd70edd76844ca88a346b42",
+          "bytes": 790
+        }
+      },
+      {
+        "test": "test_physical_actor_rigs",
+        "repetition": 6,
+        "seconds": 22.426,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_rigs phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-006/test_physical_actor_rigs/test_physical_actor_rigs.log",
+          "sha256": "25c88e488f9eabb49a31317a4c92ded63a5daa5998194297f031dead4794daac",
+          "bytes": 52185
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-006/test_physical_actor_rigs/attempt-result.json",
+          "sha256": "0dee4eba53801fa30458c14486fa900f2b00847e8de66408880407189e963fc3",
+          "bytes": 786
+        }
+      },
+      {
+        "test": "test_physical_usable_course",
+        "repetition": 6,
+        "seconds": 15.197,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_usable_course phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-006/test_physical_usable_course/test_physical_usable_course.log",
+          "sha256": "00277a40833b21a247daf998d834207d4591fcb873c5dc60da3bff5d71204596",
+          "bytes": 7648
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-006/test_physical_usable_course/attempt-result.json",
+          "sha256": "eaa193422d84a6c284e4060a19df955a58c3914cd34243d582e1a117f824cd1f",
+          "bytes": 797
+        }
+      },
+      {
+        "test": "test_physical_actor_arena",
+        "repetition": 7,
+        "seconds": 16.23,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_arena phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-007/test_physical_actor_arena/test_physical_actor_arena.log",
+          "sha256": "11687c2ca0c80cc346324add91c05b009decc4c684809a09fe4b3076016673a4",
+          "bytes": 29157
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-007/test_physical_actor_arena/attempt-result.json",
+          "sha256": "bb2733a55ee2c6d781924d7d2a696611942a5ee3d565c9875d29ccca1988b0b6",
+          "bytes": 789
+        }
+      },
+      {
+        "test": "test_physical_actor_rigs",
+        "repetition": 7,
+        "seconds": 22.339,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_rigs phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-007/test_physical_actor_rigs/test_physical_actor_rigs.log",
+          "sha256": "25c88e488f9eabb49a31317a4c92ded63a5daa5998194297f031dead4794daac",
+          "bytes": 52185
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-007/test_physical_actor_rigs/attempt-result.json",
+          "sha256": "6e4e2a6a49730caa3392009bf0019f1a49cb0157c38ec191327e4e5644f6b014",
+          "bytes": 786
+        }
+      },
+      {
+        "test": "test_physical_usable_course",
+        "repetition": 7,
+        "seconds": 15.485,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_usable_course phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-007/test_physical_usable_course/test_physical_usable_course.log",
+          "sha256": "00277a40833b21a247daf998d834207d4591fcb873c5dc60da3bff5d71204596",
+          "bytes": 7648
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-007/test_physical_usable_course/attempt-result.json",
+          "sha256": "e9dcd17458390601a7c9a9c4da9b0ad4416745e368ff40bc1d12b890e7b01077",
+          "bytes": 798
+        }
+      },
+      {
+        "test": "test_physical_actor_arena",
+        "repetition": 8,
+        "seconds": 16.038,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_arena phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-008/test_physical_actor_arena/test_physical_actor_arena.log",
+          "sha256": "542b735b1f2ac199b68ed2f33b9f65b477ac69934dc5be6f4329c131b8a6bd53",
+          "bytes": 29157
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-008/test_physical_actor_arena/attempt-result.json",
+          "sha256": "455e7d77002ad45b5a417f3c651581357c85107ea78c0b379e742691588b2be6",
+          "bytes": 790
+        }
+      },
+      {
+        "test": "test_physical_actor_rigs",
+        "repetition": 8,
+        "seconds": 22.049,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_rigs phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-008/test_physical_actor_rigs/test_physical_actor_rigs.log",
+          "sha256": "25c88e488f9eabb49a31317a4c92ded63a5daa5998194297f031dead4794daac",
+          "bytes": 52185
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-008/test_physical_actor_rigs/attempt-result.json",
+          "sha256": "3925a54668e12f79c0111dbe4bc5b72d36aa20e32e5381f0562a3416909db8aa",
+          "bytes": 786
+        }
+      },
+      {
+        "test": "test_physical_usable_course",
+        "repetition": 8,
+        "seconds": 15.019,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_usable_course phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-008/test_physical_usable_course/test_physical_usable_course.log",
+          "sha256": "00277a40833b21a247daf998d834207d4591fcb873c5dc60da3bff5d71204596",
+          "bytes": 7648
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-008/test_physical_usable_course/attempt-result.json",
+          "sha256": "c7cc718db191622cf5387e50751d755b08f311062e602c2f4f6cac5e09e2fc9c",
+          "bytes": 798
+        }
+      },
+      {
+        "test": "test_physical_actor_arena",
+        "repetition": 9,
+        "seconds": 15.843,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_arena phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-009/test_physical_actor_arena/test_physical_actor_arena.log",
+          "sha256": "7de51fd57ca33c310834c2a51f322021930e3d00d34c4e9e96f3be46dc0627c3",
+          "bytes": 29157
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-009/test_physical_actor_arena/attempt-result.json",
+          "sha256": "d79d4a9d3820537be6c15171a01ece5b0c4f5279f76e901a43317eefa33777de",
+          "bytes": 790
+        }
+      },
+      {
+        "test": "test_physical_actor_rigs",
+        "repetition": 9,
+        "seconds": 21.95,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_rigs phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-009/test_physical_actor_rigs/test_physical_actor_rigs.log",
+          "sha256": "25c88e488f9eabb49a31317a4c92ded63a5daa5998194297f031dead4794daac",
+          "bytes": 52185
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-009/test_physical_actor_rigs/attempt-result.json",
+          "sha256": "1732d57742975ae8ec17c5660a6c7d557c3a34a8b657a22eeede78540c0d757f",
+          "bytes": 785
+        }
+      },
+      {
+        "test": "test_physical_usable_course",
+        "repetition": 9,
+        "seconds": 14.823,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_usable_course phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-009/test_physical_usable_course/test_physical_usable_course.log",
+          "sha256": "00277a40833b21a247daf998d834207d4591fcb873c5dc60da3bff5d71204596",
+          "bytes": 7648
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-009/test_physical_usable_course/attempt-result.json",
+          "sha256": "8ed3c3f2e79b0614a2d29bd4162203d7e6268972fe13cedea29680e83ceab781",
+          "bytes": 798
+        }
+      },
+      {
+        "test": "test_physical_actor_arena",
+        "repetition": 10,
+        "seconds": 16.701,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_arena phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-010/test_physical_actor_arena/test_physical_actor_arena.log",
+          "sha256": "9e16991a1db86fa42c136e5f32796b0fca40b674d00b64a71f15e0e739a52374",
+          "bytes": 29157
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-010/test_physical_actor_arena/attempt-result.json",
+          "sha256": "e5ba113ef6d63bca8569dc63d75d3406631c36c9cd0a8794894084995dbf9b57",
+          "bytes": 791
+        }
+      },
+      {
+        "test": "test_physical_actor_rigs",
+        "repetition": 10,
+        "seconds": 22.722,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_actor_rigs phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-010/test_physical_actor_rigs/test_physical_actor_rigs.log",
+          "sha256": "25c88e488f9eabb49a31317a4c92ded63a5daa5998194297f031dead4794daac",
+          "bytes": 52185
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-010/test_physical_actor_rigs/attempt-result.json",
+          "sha256": "60a35f6eaccfd7ac57526b68f46342ca169caed4036c9ff714a2b0a23da08412",
+          "bytes": 787
+        }
+      },
+      {
+        "test": "test_physical_usable_course",
+        "repetition": 10,
+        "seconds": 15.943,
+        "status": "passed",
+        "last_progress": "REGRESSION_PROGRESS case=test_physical_usable_course phase=teardown",
+        "log": {
+          "role": "Retained full local test log",
+          "relative_path": "build/issue234-official-control-01/repeat-010/test_physical_usable_course/test_physical_usable_course.log",
+          "sha256": "00277a40833b21a247daf998d834207d4591fcb873c5dc60da3bff5d71204596",
+          "bytes": 7648
+        },
+        "checkpoint": {
+          "role": "Retained independent attempt receipt",
+          "relative_path": "build/issue234-official-control-01/repeat-010/test_physical_usable_course/attempt-result.json",
+          "sha256": "d1e2a72ec79a7c5532262609d50aa38e8da1c97f7d28b59d183802a4b68bc3ce",
+          "bytes": 799
+        }
+      }
+    ],
+    "limitations": [
+      "No timeout reproduced, therefore no fresh native dump exists from this control.",
+      "Six-worker local hardware differs from hosted two-worker default. This is not evidence that worker count caused the difference.",
+      "Parallel attempts use isolated user/temp state but share the baseline checkout/project after import.",
+      "A proposed two-worker project override was not run because pinned addon source has no such setting."
+    ]
+  },
+  "affinity_API_probe": {
+    "purpose": "Only this disposable Python process changes affinity; no Godot or parent affinity changed",
+    "date": "2026-10-24",
+    "host": "Windows-11-10.0.26300-SP0",
+    "pid": 30140,
+    "api": "GetLogicalProcessorInformation RelationProcessorCore, same counting API as pinned num_cpus1.17.0 Windows get_physical",
+    "before": {
+      "process_affinity_mask": "0xfff",
+      "system_affinity_mask": "0xfff",
+      "api_physical_core_count": 6,
+      "processor_core_masks": [
+        "0x3",
+        "0xc",
+        "0x30",
+        "0xc0",
+        "0x300",
+        "0xc00"
+      ]
+    },
+    "two_logical_cpu_affinity": {
+      "process_affinity_mask": "0x3",
+      "system_affinity_mask": "0xfff",
+      "api_physical_core_count": 6,
+      "processor_core_masks": [
+        "0x3",
+        "0xc",
+        "0x30",
+        "0xc0",
+        "0x300",
+        "0xc00"
+      ]
+    },
+    "restored": {
+      "process_affinity_mask": "0xfff",
+      "system_affinity_mask": "0xfff",
+      "api_physical_core_count": 6,
+      "processor_core_masks": [
+        "0x3",
+        "0xc",
+        "0x30",
+        "0xc0",
+        "0x300",
+        "0xc00"
+      ]
+    },
+    "addon_source_sha256": "82c6ced2e5abba180784b40a2f6be9d4b81db2fcd4aa97d2f322b677f2741d13",
+    "limitation": "Demonstrates API behavior; no native worker-count mutation or physical-test acceptance result.",
+    "receipt": {
+      "role": "Own disposable process API check",
+      "relative_path": "build/issue234-affinity-count-probe-01.json",
+      "sha256": "99610c7d9606e6603e5f25451e8660249ddcf49fee85c62b7ecbe3d0819a7841",
+      "bytes": 1332
+    }
+  },
+  "classification_limits": [
+    "Confirms a deferred-BVH channel receive and outer job wait in this historical official-DLL arena process.",
+    "Does not establish the exact scheduler race or lost wakeup, or prove every233 timeout shares the mechanism.",
+    "Native World worker wait, teardown and quit are not the active captured blocking path here; other failures remain separately classified.",
+    "No raw dump, binary, symbol archive or full log is committed. Original historical records remain unchanged."
+  ]
+}

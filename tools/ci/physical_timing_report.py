@@ -75,7 +75,7 @@ def rows_from_json(path: Path, run_id: str, attempt: str) -> list[dict]:
 # These values include a small, explicit runner gap after test completion;
 # prefer JSON's measured seconds whenever it is available.
 START = re.compile(r"^(\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z) Running (\w+), timeout (\d+)s:")
-TIMEOUT = re.compile(r"\bTIMEOUT after (\d+)s")
+TIMEOUT = re.compile(r"\bTIMEOUT(?: \([a-z_]+\))? after (\d+(?:\.\d+)?)s")
 OUTCOME = re.compile(r"^(\w+) (passed|timeout|failed|skipped);")
 SKIP = re.compile(r"\bskipped\b|^\s*SKIP\b", re.IGNORECASE)
 

@@ -98,11 +98,42 @@ refusal is explicit evidence. Full logs remain alongside the bounded excerpt.
 `diagnostic_seconds`. Coarse fixture markers identify the last emitted phase,
 rig/model and tick; they do not identify an exact blocked instruction.
 
+**Current #234 guards:** the independent runner-side
+[progress watchdog](../../tools/ci/physical_progress_watchdog.py) requests live
+capture after 30 seconds without a new main-thread marker and fails at 45 seconds
+idle. Capture runs independently, so a slow or failed debugger cannot extend that
+failure deadline. The 180-second outer case limit remains authoritative for all
+execution; startup before fixture instrumentation and engine shutdown after quit
+remain covered. Both original `REGRESSION_PROGRESS` case/phase/rig/model/tick
+records and coarse `CYBERSAND_PROGRESS` heartbeat records are retained. Only real
+marker/sequence changes renew liveness; unrelated output or timestamps alone do
+not. The heartbeat's cumulative `steps` is distinct from a fixture's physical tick.
+
+A fixture-only [internal observer](../../godot/tests/helpers/physical_internal_watchdog.gd)
+adds a 120-second whole-fixture deadline on a separate Godot thread. It uses
+monotonic time and copied mutex-owned context, calls no scene-tree, World or
+Rapier API, and emits sticky `ERROR: REGRESSION_WATCHDOG` on expiry. Completion
+cannot turn an expired deadline into a pass. Stop polls for at most one second
+and joins only an already-finished thread. It does not self-kill before evidence
+capture; the external monitor bounds a permanently blocked main thread. Startup
+before arming, process-wide runtime stalls and post-disarm engine shutdown remain
+external-monitor responsibilities. The [actual-Godot blocked-main probe](../../tools/ci/test_physical_internal_watchdog.py)
+checks independent expiry during a synchronous main-thread delay, sticky failure,
+normal completion and clean join. The [#234 ledger](../audits/2026-10-24-issue-234-physical-hang-repair.md)
+owns exact source/platform results, completed ordinary admission and fresh
+qualification. No automatic retry
+or required-test skip is admitted.
+
 The ordinary GDExtension timing job retains actor/usable/flight observations and
 per-platform median, nearest-rank p95, maximum and failure frequencies. Record
 the checkout SHA in the artifacts as well as the workflow head SHA: ordinary PR
 jobs can execute GitHub's synthetic merge checkout. Missing or ambiguous timing
 must remain qualified. A passing rerun never replaces a preceding timeout.
+For a `progress_watchdog` timeout, `seconds` is process elapsed time when 45 idle
+seconds are detected, rather than a fixed 45-second duration. Compare it with
+#233's 180-second full-deadline observations using that detection difference.
+An internal guard error can produce an ordinary failed result rather than a
+timeout; preserve both outcome classes.
 
 The dispatch-only
 [`physical-timeout-stress.yml`](../../.github/workflows/physical-timeout-stress.yml)
@@ -124,9 +155,24 @@ owns actual run IDs, historical failures, distributions and causal limitations.
 **Current diagnostic disposition, 2026-10-24:** #233's deliverable is complete
 after apparatus admission and the full source-bound campaign. Captured progress
 and process/thread state establish intermittent roster stalls, while the causal
-mechanism remains unclassified without native stacks. The campaign's Windows
-reproductions do not erase retained historical Linux failures. The next causal repair/watchdog and
-subsequent zero-timeout qualification belong to #234; parent #232 remains open.
+mechanism remains unclassified within that campaign because it captured no native
+stack. Its Windows reproductions do not erase retained historical Linux failures.
+The separate [PR #236 stack/paired record](../audits/2026-10-24-physical-actor-bvh-validation.md)
+confirms the deferred-BVH receive/outer latch path and supports the cooperative
+join selected in the merged #234 repair. Its 300-candidate comparison has its
+own immutable scope. The integrated PR #236 head passed exact-head ordinary gates;
+fresh standard campaign `40129364630` at merge source
+`13b8e631f3e8fbaa2176ed41afc02c434b11e558` completed 600/600 physical passes,
+0/600 timeouts, zero other failures and 20/20 import passes. All twelve
+OS/mode/test strata passed 50/50; the independent hosted gate and raw readback
+agree. Serial and parallel frequencies are both zero in this experiment;
+parallel process load still changes timing, and native-worker count was not
+varied. The registered workload qualifies the exact Windows/Linux x86_64
+artifacts without proving absence of every possible hang or the precise
+scheduler trigger. The [#234 audit](../audits/2026-10-24-issue-234-physical-hang-repair.md)
+owns distributions, prior failures and limits; route actual issue disposition through
+[#234](https://github.com/techrote/cybersand/issues/234) and
+[#232](https://github.com/techrote/cybersand/issues/232).
 
 ## What does equality establish?
 

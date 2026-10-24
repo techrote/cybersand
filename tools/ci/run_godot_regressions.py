@@ -16,6 +16,9 @@ import sys
 import tempfile
 import time
 
+import godot_timeout_diagnostics as diagnostics
+import godot_process_monitor as process_monitor
+
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_UNKNOWN_WEIGHT_SECONDS = 5.0
 
@@ -250,7 +253,8 @@ def _capture_timeout_snapshot(pid: int, path: Path, log_path: Path, elapsed: flo
             "} } catch { Write-Output ('THREAD SNAPSHOT UNAVAILABLE: '+$_.Exception.Message) } }"
         )
         parts.append(_snapshot_command(["powershell", "-NoProfile", "-NonInteractive", "-Command", script]))
-        parts.append("Native stack capture: unavailable without a preinstalled debugger; process/thread snapshot retained.\n")
+        parts.append("Native stack text: unavailable without a preinstalled debugger; process/thread snapshot retained. "
+                     "See the separate diagnostic directory for the independent Windows minidump attempt.\n")
     else:
         # run_case starts an owned session, so this includes the engine root and
         # any same-session descendants rather than only the launcher PID.
@@ -327,6 +331,8 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
     pid = None
     timeout_observed = None
     timeout_diagnostic_error = None
+    capture_error = None
+    timeout_kind = None
     with log_path.open("w", encoding="utf-8") as log:
         try:
             options = (
@@ -337,29 +343,39 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
                 command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, env=env, **options,
             )
             pid = process.pid
+            def observe_timeout(now):
+                nonlocal timeout_observed
+                timeout_observed = now - started
+
             try:
-                returncode = process.wait(timeout=case.timeout)
-            except subprocess.TimeoutExpired:
-                timed_out = True
-                log.flush()
-                elapsed = time.perf_counter() - started
-                timeout_observed = elapsed
-                try:
-                    _capture_timeout_snapshot(pid, snapshot_path, log_path, elapsed)
-                except Exception as error:
-                    # Failure to observe must never bypass termination or turn
-                    # a real timeout into a launch error or a passing result.
-                    timeout_diagnostic_error = f"{type(error).__name__}: {error}"
-                    message = f"Timeout evidence unavailable for PID {pid}: {timeout_diagnostic_error}\n"
-                    print(message, end="", flush=True)
+                timed_out, timeout_kind, capture_error = process_monitor.wait(
+                    process, case.name, case.timeout, started, log_path,
+                    output_dir / (case.name + "-diagnostics"),
+                    on_timeout=observe_timeout,
+                )
+                if timed_out:
+                    # Snapshot overhead is recorded separately from the time at
+                    # which the independent monitor observed the failing limit.
+                    log.flush()
                     try:
-                        snapshot_path.write_text(message, encoding="utf-8")
-                    except OSError:
-                        pass
-                finally:
+                        _capture_timeout_snapshot(pid, snapshot_path, log_path, timeout_observed)
+                    except Exception as error:
+                        timeout_diagnostic_error = f"{type(error).__name__}: {error}"
+                        message = f"Timeout evidence unavailable for PID {pid}: {timeout_diagnostic_error}\n"
+                        print(message, end="", flush=True)
+                        try:
+                            snapshot_path.write_text(message, encoding="utf-8")
+                        except OSError:
+                            pass
+                    log.write(f"\nTIMEOUT ({timeout_kind}) after {timeout_observed:.3f}s; case limit {case.timeout}s\n")
+                    log.flush()
+                else:
+                    returncode = process.returncode
+            finally:
+                # Observation failures and debugger refusal cannot bypass tree
+                # cleanup. A timeout always remains a failing result.
+                if timed_out or process.poll() is None:
                     _kill_process_tree(process)
-                log.write(f"\nTIMEOUT after {case.timeout}s\n")
-                log.flush()
         except OSError as error:
             launch_error = str(error)
             log.write(f"\nLAUNCH ERROR: {launch_error}\n")
@@ -387,9 +403,11 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
         "seconds": round(timeout_observed if timeout_observed is not None else elapsed, 3),
         "diagnostic_seconds": round(elapsed - timeout_observed, 3) if timeout_observed is not None else 0.0,
         "timeout_seconds": case.timeout,
+        "timeout_kind": timeout_kind,
         "returncode": returncode,
         "diagnostic_error": diagnostic_error,
         "launch_error": launch_error,
+        "capture_error": capture_error,
         "skip_messages": skip_messages,
         "requires_display": case.requires_display,
         "command": command,
@@ -399,8 +417,10 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
         "timeout_diagnostic_error": timeout_diagnostic_error,
         "last_progress": next(
             (line for line in reversed(output.splitlines()) if line.startswith("REGRESSION_PROGRESS ")),
-            None,
+            diagnostics.last_progress(output),
         ),
+        "last_heartbeat": diagnostics.last_progress(output),
+        "diagnostics": case.name + "-diagnostics" if (output_dir / (case.name + "-diagnostics")).exists() else None,
     }
     if failed:
         print(

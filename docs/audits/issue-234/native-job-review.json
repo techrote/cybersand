@@ -1,0 +1,387 @@
+{
+  "status": "passed",
+  "run_id": 40125433657,
+  "attempt": 1,
+  "job_id": 120965744741,
+  "pr_head": "330ded5aa0937b4a46ea0b5f270583a8e0375931",
+  "tested_merge_present_in_checkout_log": true,
+  "bytes": 158577,
+  "log_sha256": "bf9f4a9aba978b6b89f422c4926048636c57b2341bba59f9eef7085a833f87de",
+  "suite_counts": {
+    "Run native behavioral and integration suite": [
+      107
+    ],
+    "Compile and run ASan plus UBSan": [
+      107
+    ],
+    "Compile and run TSan": [
+      107
+    ]
+  },
+  "steps": [
+    {
+      "number": 1,
+      "name": "Set up job",
+      "conclusion": "success",
+      "started_at": "2026-10-24T19:28:23Z",
+      "completed_at": "2026-10-24T19:28:24Z",
+      "duration_seconds": 1.0,
+      "pass_line_count": 0,
+      "numeric_suite_counts": [],
+      "unittest_counts": [],
+      "summaries": [],
+      "step_log_sha256": "f0e632d4c8206b54c73046fcb6a1be0a2d1195a1ff5f7f7c11d7abf4a98619c8"
+    },
+    {
+      "number": 2,
+      "name": "Check out source",
+      "conclusion": "success",
+      "started_at": "2026-10-24T19:28:24Z",
+      "completed_at": "2026-10-24T19:28:26Z",
+      "duration_seconds": 2.0,
+      "pass_line_count": 0,
+      "numeric_suite_counts": [],
+      "unittest_counts": [],
+      "summaries": [],
+      "step_log_sha256": "1c2e44ed59758a1c479a775e65960abc4fb7284168ecced4d394c2b8634d8c29"
+    },
+    {
+      "number": 3,
+      "name": "Record compiler and linker identity",
+      "conclusion": "success",
+      "started_at": "2026-10-24T19:28:26Z",
+      "completed_at": "2026-10-24T19:28:26Z",
+      "duration_seconds": 0.0,
+      "pass_line_count": 0,
+      "numeric_suite_counts": [],
+      "unittest_counts": [],
+      "summaries": [],
+      "step_log_sha256": "b3ce9d189317586dc82af51b95e8f6899da6b9ec799b677f7a44f5bfb2ca2c57"
+    },
+    {
+      "number": 4,
+      "name": "Compile C API and native tests",
+      "conclusion": "success",
+      "started_at": "2026-10-24T19:28:26Z",
+      "completed_at": "2026-10-24T19:28:46Z",
+      "duration_seconds": 20.0,
+      "pass_line_count": 0,
+      "numeric_suite_counts": [],
+      "unittest_counts": [],
+      "summaries": [],
+      "step_log_sha256": "5eb26d34261ae9cfed1433563c2b07b66d00bcf6ca080b70358387b2829c6c4d"
+    },
+    {
+      "number": 5,
+      "name": "Run native behavioral and integration suite",
+      "conclusion": "success",
+      "started_at": "2026-10-24T19:28:46Z",
+      "completed_at": "2026-10-24T19:32:38Z",
+      "duration_seconds": 232.0,
+      "pass_line_count": 107,
+      "numeric_suite_counts": [
+        107
+      ],
+      "unittest_counts": [],
+      "summaries": [
+        "107 tests passed"
+      ],
+      "step_log_sha256": "3d0436a8be4a9c9ae7dda6295c8315385bcdc6640026e20b5b1dcfdc91e1c81c"
+    },
+    {
+      "number": 6,
+      "name": "Sanitize physics CLI material admission and sampled accounting",
+      "conclusion": "success",
+      "started_at": "2026-10-24T19:32:38Z",
+      "completed_at": "2026-10-24T19:33:54Z",
+      "duration_seconds": 76.0,
+      "pass_line_count": 0,
+      "numeric_suite_counts": [],
+      "unittest_counts": [
+        3
+      ],
+      "summaries": [
+        "Ran 3 tests in 6.553s",
+        "OK",
+        "CLI material accounting: passed; 154 invocations"
+      ],
+      "step_log_sha256": "a649f8330fb2135255b59531e96f405c20e923c28b764c80ce8fffa08f253fbd"
+    },
+    {
+      "number": 7,
+      "name": "Retain physics CLI results and sanitizer logs",
+      "conclusion": "success",
+      "started_at": "2026-10-24T19:33:54Z",
+      "completed_at": "2026-10-24T19:33:55Z",
+      "duration_seconds": 1.0,
+      "pass_line_count": 0,
+      "numeric_suite_counts": [],
+      "unittest_counts": [],
+      "summaries": [],
+      "step_log_sha256": "e9e433129974ee49309d61afaa12df5cd542f107fefda517319a6d2f92b03b29"
+    },
+    {
+      "number": 8,
+      "name": "Validate procedural generation candidates and fresh chunk admission",
+      "conclusion": "success",
+      "started_at": "2026-10-24T19:33:55Z",
+      "completed_at": "2026-10-24T19:36:46Z",
+      "duration_seconds": 171.0,
+      "pass_line_count": 0,
+      "numeric_suite_counts": [],
+      "unittest_counts": [],
+      "summaries": [
+        "PASS procedural generation: candidate/order/partition determinism, signed seams, theme hierarchy/exclusions, broad/fine/hard controls, bounded modules, incremental ownership/cancel/stale identity, invalid input and capacity controls",
+        "PASS world generation installation: initialization, signed coordinates, residence, atomic refusal, masks, capacity, quarantine, owner boundary and simulation",
+        "PASS generation fields: finite curve bijection/locality, signed tiles, analytic masks/sidechains, structured noise/warp, immutable context, canonical identity, concurrent purity, allocation and rejection bounds",
+        "PASS generation modifiers: retained GEN-001 oracle, masked guidance/exclusion, immutable context, hard authority, aggregate material/grains, hook masks, signed partitioning, diagnostic receipts and bounded failure",
+        "PASS typed generation fields: 14162 analytical, type/unit, transform/distance, exact-category, partition/cache/worker, allocation and rejection assertions",
+        "PASS typed generator integration: complete rectangle partition/worker/budget parity, immutable diagnostics, mask conversion, final override, rejection and schema compatibility",
+        "PASS generation spatial: finite Peano coverage/inverses/locality; independent broad Voronoi/Poisson controls; Delaunay ties and reciprocal structure; exact geometry/categories; bounded UNSAT/exhaustion; negative boundaries; concurrent allocation-free sampling",
+        "PASS semantic grammar: 208576 assertions"
+      ],
+      "step_log_sha256": "447bd1535d307e384754c442c63d92e3a4a3f3a051f39e0461a6d95036da9ee4"
+    },
+    {
+      "number": 9,
+      "name": "Sanitize procedural generation and chunk admission",
+      "conclusion": "success",
+      "started_at": "2026-10-24T19:36:46Z",
+      "completed_at": "2026-10-24T19:44:22Z",
+      "duration_seconds": 456.0,
+      "pass_line_count": 0,
+      "numeric_suite_counts": [],
+      "unittest_counts": [],
+      "summaries": [
+        "PASS procedural generation: candidate/order/partition determinism, signed seams, theme hierarchy/exclusions, broad/fine/hard controls, bounded modules, incremental ownership/cancel/stale identity, invalid input and capacity controls",
+        "PASS world generation installation: initialization, signed coordinates, residence, atomic refusal, masks, capacity, quarantine, owner boundary and simulation",
+        "PASS generation fields: finite curve bijection/locality, signed tiles, analytic masks/sidechains, structured noise/warp, immutable context, canonical identity, concurrent purity, allocation and rejection bounds",
+        "PASS generation modifiers: retained GEN-001 oracle, masked guidance/exclusion, immutable context, hard authority, aggregate material/grains, hook masks, signed partitioning, diagnostic receipts and bounded failure",
+        "PASS typed generation fields: 14162 analytical, type/unit, transform/distance, exact-category, partition/cache/worker, allocation and rejection assertions",
+        "PASS typed generator integration: complete rectangle partition/worker/budget parity, immutable diagnostics, mask conversion, final override, rejection and schema compatibility",
+        "PASS generation spatial: finite Peano coverage/inverses/locality; independent broad Voronoi/Poisson controls; Delaunay ties and reciprocal structure; exact geometry/categories; bounded UNSAT/exhaustion; negative boundaries; concurrent allocation-free sampling",
+        "PASS semantic grammar: 208576 assertions"
+      ],
+      "step_log_sha256": "98a6c7985ee7b6ee3ace4dc68428d3b7fe3c8d877c544c30f3d38e7963b7251b"
+    },
+    {
+      "number": 10,
+      "name": "Run soliding contract regressions",
+      "conclusion": "success",
+      "started_at": "2026-10-24T19:44:22Z",
+      "completed_at": "2026-10-24T19:46:12Z",
+      "duration_seconds": 110.0,
+      "pass_line_count": 0,
+      "numeric_suite_counts": [],
+      "unittest_counts": [],
+      "summaries": [
+        "PASS soliding lifecycle model: 384 complete transitions, 12 prepare/ack/commit guard refusals, 8 finalize quarantine guards, exact tuple/owner ledger, stale/cancel/capacity/exhaustion, eligibility/exclusion/quarantine",
+        "PASS settled discovery: exact work bounds, partial/ABA/tuple/signal/capacity/failure/coordinate/fairness tests; paired observer World neutrality workers1/4",
+        "settled region tests passed",
+        "settled World discovery tests passed",
+        "Stage-3B runtime-sized storage tests passed",
+        "Stage-3B bounded spatial-index tests passed",
+        "Stage-3B sparse mutation/witness tests passed",
+        "Stage-3B sparse activity/deadline tests passed"
+      ],
+      "step_log_sha256": "6b529eb9ccee86af5eef9272ef45231c0267fdaeee8e4b3c1e0bdaf4811be958"
+    },
+    {
+      "number": 11,
+      "name": "Smoke-test isolated discovery characterization",
+      "conclusion": "success",
+      "started_at": "2026-10-24T19:46:12Z",
+      "completed_at": "2026-10-24T19:46:14Z",
+      "duration_seconds": 2.0,
+      "pass_line_count": 0,
+      "numeric_suite_counts": [],
+      "unittest_counts": [],
+      "summaries": [],
+      "step_log_sha256": "c3af1286b748f0a8b487f0dc230e0a14a04a730f7e5b763c95f3a75729807f16"
+    },
+    {
+      "number": 12,
+      "name": "Validate Stage-3B preregistration apparatus",
+      "conclusion": "success",
+      "started_at": "2026-10-24T19:46:14Z",
+      "completed_at": "2026-10-24T19:46:14Z",
+      "duration_seconds": 0.0,
+      "pass_line_count": 0,
+      "numeric_suite_counts": [],
+      "unittest_counts": [
+        7
+      ],
+      "summaries": [
+        "Ran 7 tests in 0.244s",
+        "OK"
+      ],
+      "step_log_sha256": "a740440a4eb815758db405f593c881b7a513b37e266ad74edbe4692d3a54aae7"
+    },
+    {
+      "number": 13,
+      "name": "Smoke-test retained Stage-3 benchmark lineage",
+      "conclusion": "success",
+      "started_at": "2026-10-24T19:46:14Z",
+      "completed_at": "2026-10-24T19:46:35Z",
+      "duration_seconds": 21.0,
+      "pass_line_count": 0,
+      "numeric_suite_counts": [],
+      "unittest_counts": [],
+      "summaries": [],
+      "step_log_sha256": "e2fa587dc2b0e099a0e8a550dc38b56879c1be5cbd3ca6644819deb60c341297"
+    },
+    {
+      "number": 14,
+      "name": "Compile and run ASan plus UBSan",
+      "conclusion": "success",
+      "started_at": "2026-10-24T19:46:35Z",
+      "completed_at": "2026-10-24T19:52:22Z",
+      "duration_seconds": 347.0,
+      "pass_line_count": 107,
+      "numeric_suite_counts": [
+        107
+      ],
+      "unittest_counts": [],
+      "summaries": [
+        "107 tests passed"
+      ],
+      "step_log_sha256": "068f1f0c499fe726c0cca7ff0275eaeaaa19c6a7a8bbd9546694d50071aeeebb"
+    },
+    {
+      "number": 15,
+      "name": "Build and characterize sanitized settled-regions regression",
+      "conclusion": "success",
+      "started_at": "2026-10-24T19:52:22Z",
+      "completed_at": "2026-10-24T20:02:55Z",
+      "duration_seconds": 633.0,
+      "pass_line_count": 0,
+      "numeric_suite_counts": [],
+      "unittest_counts": [],
+      "summaries": [],
+      "step_log_sha256": "ce3184b7c06c0f861eef53691003e5c917df1679f3a3a3cfdfaff1a50332294d"
+    },
+    {
+      "number": 16,
+      "name": "Sanitize soliding contract regressions",
+      "conclusion": "success",
+      "started_at": "2026-10-24T20:02:55Z",
+      "completed_at": "2026-10-24T20:12:22Z",
+      "duration_seconds": 567.0,
+      "pass_line_count": 0,
+      "numeric_suite_counts": [],
+      "unittest_counts": [],
+      "summaries": [
+        "PASS soliding lifecycle model: 384 complete transitions, 12 prepare/ack/commit guard refusals, 8 finalize quarantine guards, exact tuple/owner ledger, stale/cancel/capacity/exhaustion, eligibility/exclusion/quarantine",
+        "PASS settled discovery: exact work bounds, partial/ABA/tuple/signal/capacity/failure/coordinate/fairness tests; paired observer World neutrality workers1/4",
+        "settled region tests passed",
+        "settled World discovery tests passed",
+        "Stage-3B runtime-sized storage tests passed",
+        "Stage-3B bounded spatial-index tests passed",
+        "Stage-3B sparse mutation/witness tests passed",
+        "Stage-3B sparse activity/deadline tests passed"
+      ],
+      "step_log_sha256": "6406c3278cd9c3ab5426e88c4b96e47188e210c72a1e8cb61a251bd8397153db"
+    },
+    {
+      "number": 17,
+      "name": "Compile and run TSan",
+      "conclusion": "success",
+      "started_at": "2026-10-24T20:12:22Z",
+      "completed_at": "2026-10-24T20:16:52Z",
+      "duration_seconds": 270.0,
+      "pass_line_count": 107,
+      "numeric_suite_counts": [
+        107
+      ],
+      "unittest_counts": [],
+      "summaries": [
+        "107 tests passed"
+      ],
+      "step_log_sha256": "a4258e0791fddf63c138383dd1c58b489b838ac2d4847388977a7f331feec77d"
+    },
+    {
+      "number": 18,
+      "name": "Compile shared library and benchmark",
+      "conclusion": "success",
+      "started_at": "2026-10-24T20:16:52Z",
+      "completed_at": "2026-10-24T20:17:31Z",
+      "duration_seconds": 39.0,
+      "pass_line_count": 0,
+      "numeric_suite_counts": [],
+      "unittest_counts": [],
+      "summaries": [],
+      "step_log_sha256": "9b6781f055c2a0eb2f09cfc5c6f774b3262f759a3cbdd2e2d0d1c025c20110bf"
+    },
+    {
+      "number": 36,
+      "name": "Post Check out source",
+      "conclusion": "success",
+      "started_at": "2026-10-24T20:17:31Z",
+      "completed_at": "2026-10-24T20:17:31Z",
+      "duration_seconds": 0.0,
+      "pass_line_count": 0,
+      "numeric_suite_counts": [],
+      "unittest_counts": [],
+      "summaries": [],
+      "step_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "number": 37,
+      "name": "Complete job",
+      "conclusion": "success",
+      "started_at": "2026-10-24T20:17:31Z",
+      "completed_at": "2026-10-24T20:17:31Z",
+      "duration_seconds": 0.0,
+      "pass_line_count": 0,
+      "numeric_suite_counts": [],
+      "unittest_counts": [],
+      "summaries": [],
+      "step_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "unexpected_findings": [],
+  "issues": [],
+  "notes": [
+    "Step result lines are attributed by ordered Run command-group boundaries; REST step timestamps have only second precision and can place final output lines in the next step.",
+    "Expected nonzero invalid-input CLI calls are separately verified in physics-cli-review.json; they are test assertions rather than failed Native steps.",
+    "Compiler conversion/shadow warnings are preserved in full raw logs; they are distinct from sanitizer runtime findings."
+  ],
+  "curation": {
+    "curated_utc": "2026-10-24T20:23:20.600705+00:00",
+    "original_record": {
+      "storage": "ignored local cache; not a committed documentation-relative file",
+      "cache_base": "build/issue234-admission/portable",
+      "cache_relative_path": "native-job-review.json",
+      "sha256": "59bd988a729e6bd1755de39ea3814543ab8f879a9f40f274d12a065d84658873",
+      "bytes": 15201
+    },
+    "transformations": [
+      "Added original-record provenance, explicit ignored-cache locator and merge/tree identity.",
+      "Retained all original validation results, step counts, source identities, timestamps and log hashes."
+    ]
+  },
+  "merged_source": {
+    "merge_commit": "13b8e631f3e8fbaa2176ed41afc02c434b11e558",
+    "merge_parents": [
+      "03785c3dcaa5c82df000eeca1471bd6ec698be00",
+      "330ded5aa0937b4a46ea0b5f270583a8e0375931"
+    ],
+    "merge_tree": "873db3c3e75c8a4d60bc09e05316aa99e9143f05",
+    "merged_at": "2026-10-24T21:20:33+01:00",
+    "admitted_pr_head": "330ded5aa0937b4a46ea0b5f270583a8e0375931",
+    "admitted_pr_head_tree": "873db3c3e75c8a4d60bc09e05316aa99e9143f05",
+    "tested_synthetic_merge": "bb84068378765e3874840e19507666c6a7a1e5df",
+    "tested_synthetic_merge_tree": "873db3c3e75c8a4d60bc09e05316aa99e9143f05",
+    "merge_tree_matches_admitted_head": true,
+    "merge_tree_matches_tested_synthetic": true
+  },
+  "tested_synthetic_merge": "bb84068378765e3874840e19507666c6a7a1e5df",
+  "raw_log": {
+    "storage": "ignored local cache; not committed",
+    "cache_base": "build/issue234-admission/portable",
+    "cache_relative_path": "logs/native-40125433657.log",
+    "sha256": "bf9f4a9aba978b6b89f422c4926048636c57b2341bba59f9eef7085a833f87de",
+    "github_job_url": "https://github.com/techrote/cybersand/actions/runs/40125433657/job/120965744741"
+  },
+  "step_log_hash_method": "UTF-8 SHA-256 of ANSI-stripped, timestamp-removed lines joined with LF and no final LF. Workflow steps2-18 use ordered Run command-group boundaries; setup/post/complete entries use REST timestamp intervals."
+}

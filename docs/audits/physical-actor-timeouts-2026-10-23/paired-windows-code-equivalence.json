@@ -1,0 +1,459 @@
+{
+  "date": "2026-10-24",
+  "scope": "Windows executable sections and application input equivalence across three paired campaigns",
+  "method": "SHA-256 of PE section SizeOfRawData bytes and exact Git subtree object identities; additional PE comparison clears only the listed timestamp/checksum/debug-payload ranges. Whole DLLs remain distinct artifacts.",
+  "sources": [
+    {
+      "run_id": 40053106474,
+      "source_sha": "18f6105736fb5a0a37e96c5220857f21ed0630e2",
+      "git_subtrees": {
+        "godot": "9cc6859a15ea96e81a1cefe9f6445ac69064f2a6",
+        "native": "226df63154250008d965f9a53d63c6d5e9dd62fc",
+        "examples": "7ab834cb209bd7fb0ed626044684d261eb766753"
+      }
+    },
+    {
+      "run_id": 40053639095,
+      "source_sha": "4c2bb37b6b0376509693b1d04fb4581a6503d099",
+      "git_subtrees": {
+        "godot": "9cc6859a15ea96e81a1cefe9f6445ac69064f2a6",
+        "native": "226df63154250008d965f9a53d63c6d5e9dd62fc",
+        "examples": "7ab834cb209bd7fb0ed626044684d261eb766753"
+      }
+    },
+    {
+      "run_id": 40056501226,
+      "source_sha": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+      "git_subtrees": {
+        "godot": "9cc6859a15ea96e81a1cefe9f6445ac69064f2a6",
+        "native": "226df63154250008d965f9a53d63c6d5e9dd62fc",
+        "examples": "7ab834cb209bd7fb0ed626044684d261eb766753"
+      }
+    }
+  ],
+  "variants": {
+    "control": [
+      {
+        "run_id": 40053106474,
+        "dll_sha256": "3c9fd3506fe68e889d2ba3d412d0b94f75165ac07b0297f24d7b4d8d4e5dc4c2",
+        "sections": {
+          ".text": {
+            "size": 8091136,
+            "sha256": "23abe93825d2fe5501f975a663d76043c6fe8e7950fe251ecd2998aafed5a809"
+          },
+          ".rdata": {
+            "size": 1657344,
+            "sha256": "3925d7b6814c14fc786697fcce126e0a8633428b5cb0be7c9dbd980475ff6345"
+          },
+          ".data": {
+            "size": 7168,
+            "sha256": "8c99f951a46b57810475ae4cc038e0a60edb3b50a60174a9f2e4eee2b8e70fd2"
+          },
+          ".pdata": {
+            "size": 216064,
+            "sha256": "d575260b19ebe58baaeece1fdc086ca491b0eba743cf22833d4933883f5a7598"
+          },
+          ".reloc": {
+            "size": 12288,
+            "sha256": "075b128facd6bcbb17ca86b382bdc467a9b554219862ee0b149dce2f1c0bde8d"
+          }
+        },
+        "sha256_excluding_declared_debug_metadata": "3e6b4e3b37d14752da1021ad8f8b93a776207dc18be8cc1c6acacf6dbf6469ea",
+        "excluded_debug_ranges": [
+          {
+            "offset": 248,
+            "size": 4,
+            "kind": "COFF timestamp"
+          },
+          {
+            "offset": 328,
+            "size": 4,
+            "kind": "PE checksum"
+          },
+          {
+            "offset": 8640116,
+            "size": 4,
+            "kind": "debug directory timestamp"
+          },
+          {
+            "offset": 8640500,
+            "size": 41,
+            "kind": "declared debug payload type 2"
+          },
+          {
+            "offset": 8640144,
+            "size": 4,
+            "kind": "debug directory timestamp"
+          },
+          {
+            "offset": 8640544,
+            "size": 20,
+            "kind": "declared debug payload type 12"
+          },
+          {
+            "offset": 8640172,
+            "size": 4,
+            "kind": "debug directory timestamp"
+          },
+          {
+            "offset": 8640564,
+            "size": 772,
+            "kind": "declared debug payload type 13"
+          }
+        ]
+      },
+      {
+        "run_id": 40053639095,
+        "dll_sha256": "8e0f5e6c5222cf79445dc064d29a02c976fd138fe9393d811b2b2fa7657b1a56",
+        "sections": {
+          ".text": {
+            "size": 8091136,
+            "sha256": "23abe93825d2fe5501f975a663d76043c6fe8e7950fe251ecd2998aafed5a809"
+          },
+          ".rdata": {
+            "size": 1657344,
+            "sha256": "0e446c175b7aeefe782b83f20b30424fd2fd69c9ebadc8491a745f08c00ae37e"
+          },
+          ".data": {
+            "size": 7168,
+            "sha256": "8c99f951a46b57810475ae4cc038e0a60edb3b50a60174a9f2e4eee2b8e70fd2"
+          },
+          ".pdata": {
+            "size": 216064,
+            "sha256": "d575260b19ebe58baaeece1fdc086ca491b0eba743cf22833d4933883f5a7598"
+          },
+          ".reloc": {
+            "size": 12288,
+            "sha256": "075b128facd6bcbb17ca86b382bdc467a9b554219862ee0b149dce2f1c0bde8d"
+          }
+        },
+        "sha256_excluding_declared_debug_metadata": "3e6b4e3b37d14752da1021ad8f8b93a776207dc18be8cc1c6acacf6dbf6469ea",
+        "excluded_debug_ranges": [
+          {
+            "offset": 248,
+            "size": 4,
+            "kind": "COFF timestamp"
+          },
+          {
+            "offset": 328,
+            "size": 4,
+            "kind": "PE checksum"
+          },
+          {
+            "offset": 8640116,
+            "size": 4,
+            "kind": "debug directory timestamp"
+          },
+          {
+            "offset": 8640500,
+            "size": 41,
+            "kind": "declared debug payload type 2"
+          },
+          {
+            "offset": 8640144,
+            "size": 4,
+            "kind": "debug directory timestamp"
+          },
+          {
+            "offset": 8640544,
+            "size": 20,
+            "kind": "declared debug payload type 12"
+          },
+          {
+            "offset": 8640172,
+            "size": 4,
+            "kind": "debug directory timestamp"
+          },
+          {
+            "offset": 8640564,
+            "size": 772,
+            "kind": "declared debug payload type 13"
+          }
+        ]
+      },
+      {
+        "run_id": 40056501226,
+        "dll_sha256": "ffb71971ff5ff1b1cc354207d6383ea313fb5b5d986753c9c786f82df95af389",
+        "sections": {
+          ".text": {
+            "size": 8091136,
+            "sha256": "23abe93825d2fe5501f975a663d76043c6fe8e7950fe251ecd2998aafed5a809"
+          },
+          ".rdata": {
+            "size": 1657344,
+            "sha256": "3d9cd66f3a3c6ab3ba07edd7dbd07ab7124373d6999ab8b1e4438d1d5d2c9db6"
+          },
+          ".data": {
+            "size": 7168,
+            "sha256": "8c99f951a46b57810475ae4cc038e0a60edb3b50a60174a9f2e4eee2b8e70fd2"
+          },
+          ".pdata": {
+            "size": 216064,
+            "sha256": "d575260b19ebe58baaeece1fdc086ca491b0eba743cf22833d4933883f5a7598"
+          },
+          ".reloc": {
+            "size": 12288,
+            "sha256": "075b128facd6bcbb17ca86b382bdc467a9b554219862ee0b149dce2f1c0bde8d"
+          }
+        },
+        "sha256_excluding_declared_debug_metadata": "3e6b4e3b37d14752da1021ad8f8b93a776207dc18be8cc1c6acacf6dbf6469ea",
+        "excluded_debug_ranges": [
+          {
+            "offset": 248,
+            "size": 4,
+            "kind": "COFF timestamp"
+          },
+          {
+            "offset": 328,
+            "size": 4,
+            "kind": "PE checksum"
+          },
+          {
+            "offset": 8640116,
+            "size": 4,
+            "kind": "debug directory timestamp"
+          },
+          {
+            "offset": 8640500,
+            "size": 41,
+            "kind": "declared debug payload type 2"
+          },
+          {
+            "offset": 8640144,
+            "size": 4,
+            "kind": "debug directory timestamp"
+          },
+          {
+            "offset": 8640544,
+            "size": 20,
+            "kind": "declared debug payload type 12"
+          },
+          {
+            "offset": 8640172,
+            "size": 4,
+            "kind": "debug directory timestamp"
+          },
+          {
+            "offset": 8640564,
+            "size": 772,
+            "kind": "declared debug payload type 13"
+          }
+        ]
+      }
+    ],
+    "patched": [
+      {
+        "run_id": 40053106474,
+        "dll_sha256": "7a6f17e2069b7220230810fabf152d13ad767fef3b53c74321b64ce8cf501933",
+        "sections": {
+          ".text": {
+            "size": 8093184,
+            "sha256": "cb1cc9a6edbb0d3232bfe6d4eb10afeb1648d25991f82f9b8d3e54b5fdfa00ce"
+          },
+          ".rdata": {
+            "size": 1657344,
+            "sha256": "749340ef3296416280ec30c010dd59d9e6c67fc79525c3b993e8396aa3c28904"
+          },
+          ".data": {
+            "size": 7168,
+            "sha256": "01c11f13ec783039f2da7d276885bea30c7dac9e94997551cc3d80c056137fda"
+          },
+          ".pdata": {
+            "size": 216064,
+            "sha256": "bc7d51398e3c2f441ca9dbeaec45fe73f4250463839bfd85d763cc1269df1e24"
+          },
+          ".reloc": {
+            "size": 12288,
+            "sha256": "2579db3e2a161540e2e83fb202ab436fc7ed942d889dbb2c47d05bd1f4d1c006"
+          }
+        },
+        "sha256_excluding_declared_debug_metadata": "cecb0c3db160b3afb5db889a02c568c98163b4805e114bb27e021500b7def4b9",
+        "excluded_debug_ranges": [
+          {
+            "offset": 248,
+            "size": 4,
+            "kind": "COFF timestamp"
+          },
+          {
+            "offset": 328,
+            "size": 4,
+            "kind": "PE checksum"
+          },
+          {
+            "offset": 8642212,
+            "size": 4,
+            "kind": "debug directory timestamp"
+          },
+          {
+            "offset": 8642548,
+            "size": 41,
+            "kind": "declared debug payload type 2"
+          },
+          {
+            "offset": 8642240,
+            "size": 4,
+            "kind": "debug directory timestamp"
+          },
+          {
+            "offset": 8642592,
+            "size": 20,
+            "kind": "declared debug payload type 12"
+          },
+          {
+            "offset": 8642268,
+            "size": 4,
+            "kind": "debug directory timestamp"
+          },
+          {
+            "offset": 8642612,
+            "size": 772,
+            "kind": "declared debug payload type 13"
+          }
+        ]
+      },
+      {
+        "run_id": 40053639095,
+        "dll_sha256": "c8857f4532309095768e6e00fb57fcafa2e304bd535acc151856b4c42c58edb8",
+        "sections": {
+          ".text": {
+            "size": 8093184,
+            "sha256": "cb1cc9a6edbb0d3232bfe6d4eb10afeb1648d25991f82f9b8d3e54b5fdfa00ce"
+          },
+          ".rdata": {
+            "size": 1657344,
+            "sha256": "6af30ce00aa0e6855f6d98f5af246be732fe26a4a53e23a7d39c124b53c6cfca"
+          },
+          ".data": {
+            "size": 7168,
+            "sha256": "01c11f13ec783039f2da7d276885bea30c7dac9e94997551cc3d80c056137fda"
+          },
+          ".pdata": {
+            "size": 216064,
+            "sha256": "bc7d51398e3c2f441ca9dbeaec45fe73f4250463839bfd85d763cc1269df1e24"
+          },
+          ".reloc": {
+            "size": 12288,
+            "sha256": "2579db3e2a161540e2e83fb202ab436fc7ed942d889dbb2c47d05bd1f4d1c006"
+          }
+        },
+        "sha256_excluding_declared_debug_metadata": "cecb0c3db160b3afb5db889a02c568c98163b4805e114bb27e021500b7def4b9",
+        "excluded_debug_ranges": [
+          {
+            "offset": 248,
+            "size": 4,
+            "kind": "COFF timestamp"
+          },
+          {
+            "offset": 328,
+            "size": 4,
+            "kind": "PE checksum"
+          },
+          {
+            "offset": 8642212,
+            "size": 4,
+            "kind": "debug directory timestamp"
+          },
+          {
+            "offset": 8642548,
+            "size": 41,
+            "kind": "declared debug payload type 2"
+          },
+          {
+            "offset": 8642240,
+            "size": 4,
+            "kind": "debug directory timestamp"
+          },
+          {
+            "offset": 8642592,
+            "size": 20,
+            "kind": "declared debug payload type 12"
+          },
+          {
+            "offset": 8642268,
+            "size": 4,
+            "kind": "debug directory timestamp"
+          },
+          {
+            "offset": 8642612,
+            "size": 772,
+            "kind": "declared debug payload type 13"
+          }
+        ]
+      },
+      {
+        "run_id": 40056501226,
+        "dll_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "sections": {
+          ".text": {
+            "size": 8093184,
+            "sha256": "cb1cc9a6edbb0d3232bfe6d4eb10afeb1648d25991f82f9b8d3e54b5fdfa00ce"
+          },
+          ".rdata": {
+            "size": 1657344,
+            "sha256": "8dfd60d0bc599346bb89ea335151023bc7fc0bff13843902e8bd27bbd9d0c70d"
+          },
+          ".data": {
+            "size": 7168,
+            "sha256": "01c11f13ec783039f2da7d276885bea30c7dac9e94997551cc3d80c056137fda"
+          },
+          ".pdata": {
+            "size": 216064,
+            "sha256": "bc7d51398e3c2f441ca9dbeaec45fe73f4250463839bfd85d763cc1269df1e24"
+          },
+          ".reloc": {
+            "size": 12288,
+            "sha256": "2579db3e2a161540e2e83fb202ab436fc7ed942d889dbb2c47d05bd1f4d1c006"
+          }
+        },
+        "sha256_excluding_declared_debug_metadata": "cecb0c3db160b3afb5db889a02c568c98163b4805e114bb27e021500b7def4b9",
+        "excluded_debug_ranges": [
+          {
+            "offset": 248,
+            "size": 4,
+            "kind": "COFF timestamp"
+          },
+          {
+            "offset": 328,
+            "size": 4,
+            "kind": "PE checksum"
+          },
+          {
+            "offset": 8642212,
+            "size": 4,
+            "kind": "debug directory timestamp"
+          },
+          {
+            "offset": 8642548,
+            "size": 41,
+            "kind": "declared debug payload type 2"
+          },
+          {
+            "offset": 8642240,
+            "size": 4,
+            "kind": "debug directory timestamp"
+          },
+          {
+            "offset": 8642592,
+            "size": 20,
+            "kind": "declared debug payload type 12"
+          },
+          {
+            "offset": 8642268,
+            "size": 4,
+            "kind": "debug directory timestamp"
+          },
+          {
+            "offset": 8642612,
+            "size": 772,
+            "kind": "declared debug payload type 13"
+          }
+        ]
+      }
+    ]
+  },
+  "limitations": [
+    "The PE .rdata section and whole DLL hashes differ; executable .text equality does not establish equality of every binary byte or scheduling outcome.",
+    "The first campaign's Linux patched preflight failed; it remains incomplete overall. Its Windows trial results are retained as valid platform-scoped evidence.",
+    "The later zero-timeout control cohort does not invalidate the earlier observed control failures or the candidate passes."
+  ]
+}

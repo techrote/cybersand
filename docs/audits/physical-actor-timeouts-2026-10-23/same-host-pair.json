@@ -1,0 +1,1012 @@
+{
+  "date": "2026-10-24",
+  "run_id": 40056501226,
+  "run_url": "https://github.com/techrote/cybersand/actions/runs/40056501226",
+  "source_sha": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+  "raw_summary_sha256": "bb7fe290c94cd9e49e7c1e010a4c3d1fda3e9152cd0995641a004adf4edb13e6",
+  "qualification": {
+    "qualified": true,
+    "control": {
+      "source_shas": [
+        "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb"
+      ],
+      "runtime_identities": {
+        "linux": [
+          "28f99172da4256acc34bcd932b113dacabe52bdb459fd0ee4883f741e41bd8e5",
+          "842bca64cb71bf9f23dcd6e53ef5f24314eaadfd8e3ec76939990407175dbf5e",
+          "4.7.stable.official.5b4e0cb0f"
+        ],
+        "windows": [
+          "e6d9ec7d0847287c4c6b1acaffd52dc2807fe43e9dccfc36123ffa117fb6045f",
+          "ffb71971ff5ff1b1cc354207d6383ea313fb5b5d986753c9c786f82df95af389",
+          "4.7.stable.official.5b4e0cb0f"
+        ]
+      },
+      "counts": {
+        "linux/test_physical_actor_arena": {
+          "passed": 50
+        },
+        "linux/test_physical_actor_rigs": {
+          "passed": 50
+        },
+        "linux/test_physical_usable_course": {
+          "passed": 50
+        },
+        "windows/test_physical_actor_arena": {
+          "passed": 48,
+          "timeout": 2
+        },
+        "windows/test_physical_actor_rigs": {
+          "passed": 46,
+          "timeout": 4
+        },
+        "windows/test_physical_usable_course": {
+          "passed": 50
+        }
+      },
+      "timeouts_by_phase": {
+        "windows/test_physical_actor_arena/configure": 2,
+        "windows/test_physical_actor_rigs/setup_complete": 2,
+        "windows/test_physical_actor_rigs/step": 2
+      },
+      "errors": [
+        "Required 50/50 passes for windows/test_physical_actor_arena: {'passed': 48, 'timeout': 2}",
+        "Required 50/50 passes for windows/test_physical_actor_rigs: {'passed': 46, 'timeout': 4}"
+      ]
+    },
+    "patched": {
+      "source_shas": [
+        "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb"
+      ],
+      "runtime_identities": {
+        "linux": [
+          "28f99172da4256acc34bcd932b113dacabe52bdb459fd0ee4883f741e41bd8e5",
+          "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+          "4.7.stable.official.5b4e0cb0f"
+        ],
+        "windows": [
+          "e6d9ec7d0847287c4c6b1acaffd52dc2807fe43e9dccfc36123ffa117fb6045f",
+          "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+          "4.7.stable.official.5b4e0cb0f"
+        ]
+      },
+      "counts": {
+        "linux/test_physical_actor_arena": {
+          "passed": 50
+        },
+        "linux/test_physical_actor_rigs": {
+          "passed": 50
+        },
+        "linux/test_physical_usable_course": {
+          "passed": 50
+        },
+        "windows/test_physical_actor_arena": {
+          "passed": 50
+        },
+        "windows/test_physical_actor_rigs": {
+          "passed": 50
+        },
+        "windows/test_physical_usable_course": {
+          "passed": 50
+        }
+      },
+      "timeouts_by_phase": {},
+      "errors": []
+    },
+    "builds": {
+      "linux/control": {
+        "artifacts": {
+          "Cargo.lock": "6711ce94ea78d86e20cdd5b3eb4f5ff5c38499811afe3627f883d26fc370f6eb",
+          "join-regression.log": "68464fe6645c5ccacaba680942eea93b4628ec201fc1f616e6488e4d9fcfe2b4",
+          "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "842bca64cb71bf9f23dcd6e53ef5f24314eaadfd8e3ec76939990407175dbf5e"
+        },
+        "build_inputs": {
+          "addon_commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75",
+          "addon_repository": "https://github.com/appsinacup/godot-rapier-physics.git",
+          "addon_tag": "v0.35.2",
+          "base_join_source_sha256": "b5fffdf4bd0c8e359d1aa52d9ddc95b04e21c11a8438b2ac8c31bebc57c32963",
+          "crate": "rapier2d",
+          "crate_sha256": "74bfd393193e08a812ba0c83c7c844dff29979fd30f96de2854cdea507350065",
+          "crate_url": "https://static.crates.io/crates/rapier2d/rapier2d-0.35.1.crate",
+          "crate_version": "0.35.1",
+          "features": [
+            "serde-serialize",
+            "parallel",
+            "register-docs",
+            "single-dim2",
+            "api-custom"
+          ],
+          "patch": "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch",
+          "patch_sha256": "6eda9ecd071925af35b7bfc92a2c3c01ac2b87831591947d79925cc92588975e",
+          "patched_join_source_sha256": "0a63cf10ae1111c4fa3c22d945d505918f36d1165b8176e130573d5259f9a973",
+          "release_overrides": {
+            "CARGO_PROFILE_RELEASE_DEBUG": "1",
+            "CARGO_PROFILE_RELEASE_STRIP": "none"
+          },
+          "rust_toolchain": "1.98.0",
+          "status": "candidate; runtime publication requires paired control and patched evidence",
+          "upstream_cargo_lock_sha256": "63cb5170bd78cec10a46ecc912bfd56e101f7d30ed9bfd97789146f9b682d4dc",
+          "upstream_reports": [
+            "https://github.com/dimforge/rapier/issues/1008",
+            "https://github.com/appsinacup/godot-rapier-physics/issues/640"
+          ]
+        },
+        "build_lock_sha256": "0951b69d1b59c70c915f59bcae8390291ad9b89b4eb976ac8f3dfbed0fa7c46b",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "join_regression_exit": 124,
+        "join_source_sha256": "b5fffdf4bd0c8e359d1aa52d9ddc95b04e21c11a8438b2ac8c31bebc57c32963",
+        "platform": "linux",
+        "resolved_cargo_lock_sha256": "6711ce94ea78d86e20cdd5b3eb4f5ff5c38499811afe3627f883d26fc370f6eb",
+        "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)\nbinary: rustc\ncommit-hash: 88d9e12ae178fab0fb5cc050a94da85685d449ea\ncommit-date: 2026-08-18\nhost: x86_64-unknown-linux-gnu\nrelease: 1.98.0\nLLVM version: 22.1.8\n",
+        "schema_version": 1,
+        "source_sha": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+        "upstream_cargo_lock_sha256": "63cb5170bd78cec10a46ecc912bfd56e101f7d30ed9bfd97789146f9b682d4dc",
+        "variant": "control"
+      },
+      "windows/control": {
+        "artifacts": {
+          "Cargo.lock": "6711ce94ea78d86e20cdd5b3eb4f5ff5c38499811afe3627f883d26fc370f6eb",
+          "godot_rapier.pdb": "ffca92f046eac2aebed6a4082ebc9546ee9a33b2138a4e1523f5b26936418dd0",
+          "join-regression.log": "7de23d398af728db795a1aaa924d2fbbbee081765fa9b6772c90ece9f18b7bed",
+          "libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "ffb71971ff5ff1b1cc354207d6383ea313fb5b5d986753c9c786f82df95af389"
+        },
+        "build_inputs": {
+          "addon_commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75",
+          "addon_repository": "https://github.com/appsinacup/godot-rapier-physics.git",
+          "addon_tag": "v0.35.2",
+          "base_join_source_sha256": "b5fffdf4bd0c8e359d1aa52d9ddc95b04e21c11a8438b2ac8c31bebc57c32963",
+          "crate": "rapier2d",
+          "crate_sha256": "74bfd393193e08a812ba0c83c7c844dff29979fd30f96de2854cdea507350065",
+          "crate_url": "https://static.crates.io/crates/rapier2d/rapier2d-0.35.1.crate",
+          "crate_version": "0.35.1",
+          "features": [
+            "serde-serialize",
+            "parallel",
+            "register-docs",
+            "single-dim2",
+            "api-custom"
+          ],
+          "patch": "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch",
+          "patch_sha256": "6eda9ecd071925af35b7bfc92a2c3c01ac2b87831591947d79925cc92588975e",
+          "patched_join_source_sha256": "0a63cf10ae1111c4fa3c22d945d505918f36d1165b8176e130573d5259f9a973",
+          "release_overrides": {
+            "CARGO_PROFILE_RELEASE_DEBUG": "1",
+            "CARGO_PROFILE_RELEASE_STRIP": "none"
+          },
+          "rust_toolchain": "1.98.0",
+          "status": "candidate; runtime publication requires paired control and patched evidence",
+          "upstream_cargo_lock_sha256": "63cb5170bd78cec10a46ecc912bfd56e101f7d30ed9bfd97789146f9b682d4dc",
+          "upstream_reports": [
+            "https://github.com/dimforge/rapier/issues/1008",
+            "https://github.com/appsinacup/godot-rapier-physics/issues/640"
+          ]
+        },
+        "build_lock_sha256": "0951b69d1b59c70c915f59bcae8390291ad9b89b4eb976ac8f3dfbed0fa7c46b",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "join_regression_exit": 124,
+        "join_source_sha256": "b5fffdf4bd0c8e359d1aa52d9ddc95b04e21c11a8438b2ac8c31bebc57c32963",
+        "platform": "windows",
+        "resolved_cargo_lock_sha256": "6711ce94ea78d86e20cdd5b3eb4f5ff5c38499811afe3627f883d26fc370f6eb",
+        "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)\nbinary: rustc\ncommit-hash: 88d9e12ae178fab0fb5cc050a94da85685d449ea\ncommit-date: 2026-08-18\nhost: x86_64-pc-windows-msvc\nrelease: 1.98.0\nLLVM version: 22.1.8\n",
+        "schema_version": 1,
+        "source_sha": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+        "upstream_cargo_lock_sha256": "63cb5170bd78cec10a46ecc912bfd56e101f7d30ed9bfd97789146f9b682d4dc",
+        "variant": "control"
+      },
+      "linux/patched": {
+        "artifacts": {
+          "Cargo.lock": "6711ce94ea78d86e20cdd5b3eb4f5ff5c38499811afe3627f883d26fc370f6eb",
+          "join-regression.log": "49e2c95c803d961ba9419f8b90ad50a3b96d3b0099e387cf79894f36098c8d24",
+          "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+        },
+        "build_inputs": {
+          "addon_commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75",
+          "addon_repository": "https://github.com/appsinacup/godot-rapier-physics.git",
+          "addon_tag": "v0.35.2",
+          "base_join_source_sha256": "b5fffdf4bd0c8e359d1aa52d9ddc95b04e21c11a8438b2ac8c31bebc57c32963",
+          "crate": "rapier2d",
+          "crate_sha256": "74bfd393193e08a812ba0c83c7c844dff29979fd30f96de2854cdea507350065",
+          "crate_url": "https://static.crates.io/crates/rapier2d/rapier2d-0.35.1.crate",
+          "crate_version": "0.35.1",
+          "features": [
+            "serde-serialize",
+            "parallel",
+            "register-docs",
+            "single-dim2",
+            "api-custom"
+          ],
+          "patch": "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch",
+          "patch_sha256": "6eda9ecd071925af35b7bfc92a2c3c01ac2b87831591947d79925cc92588975e",
+          "patched_join_source_sha256": "0a63cf10ae1111c4fa3c22d945d505918f36d1165b8176e130573d5259f9a973",
+          "release_overrides": {
+            "CARGO_PROFILE_RELEASE_DEBUG": "1",
+            "CARGO_PROFILE_RELEASE_STRIP": "none"
+          },
+          "rust_toolchain": "1.98.0",
+          "status": "candidate; runtime publication requires paired control and patched evidence",
+          "upstream_cargo_lock_sha256": "63cb5170bd78cec10a46ecc912bfd56e101f7d30ed9bfd97789146f9b682d4dc",
+          "upstream_reports": [
+            "https://github.com/dimforge/rapier/issues/1008",
+            "https://github.com/appsinacup/godot-rapier-physics/issues/640"
+          ]
+        },
+        "build_lock_sha256": "0951b69d1b59c70c915f59bcae8390291ad9b89b4eb976ac8f3dfbed0fa7c46b",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "join_regression_exit": 0,
+        "join_source_sha256": "0a63cf10ae1111c4fa3c22d945d505918f36d1165b8176e130573d5259f9a973",
+        "platform": "linux",
+        "resolved_cargo_lock_sha256": "6711ce94ea78d86e20cdd5b3eb4f5ff5c38499811afe3627f883d26fc370f6eb",
+        "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)\nbinary: rustc\ncommit-hash: 88d9e12ae178fab0fb5cc050a94da85685d449ea\ncommit-date: 2026-08-18\nhost: x86_64-unknown-linux-gnu\nrelease: 1.98.0\nLLVM version: 22.1.8\n",
+        "schema_version": 1,
+        "source_sha": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+        "upstream_cargo_lock_sha256": "63cb5170bd78cec10a46ecc912bfd56e101f7d30ed9bfd97789146f9b682d4dc",
+        "variant": "patched"
+      },
+      "windows/patched": {
+        "artifacts": {
+          "Cargo.lock": "6711ce94ea78d86e20cdd5b3eb4f5ff5c38499811afe3627f883d26fc370f6eb",
+          "godot_rapier.pdb": "4d8a135baf94b65d0870400a4fbbb0da2d39c47b169a26298c74a29eac3a8d4f",
+          "join-regression.log": "3ecf7389d26108974295a699aa9d0ea1a89bcce2a444f01d0bafa0a54e8d5fbe",
+          "libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+        },
+        "build_inputs": {
+          "addon_commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75",
+          "addon_repository": "https://github.com/appsinacup/godot-rapier-physics.git",
+          "addon_tag": "v0.35.2",
+          "base_join_source_sha256": "b5fffdf4bd0c8e359d1aa52d9ddc95b04e21c11a8438b2ac8c31bebc57c32963",
+          "crate": "rapier2d",
+          "crate_sha256": "74bfd393193e08a812ba0c83c7c844dff29979fd30f96de2854cdea507350065",
+          "crate_url": "https://static.crates.io/crates/rapier2d/rapier2d-0.35.1.crate",
+          "crate_version": "0.35.1",
+          "features": [
+            "serde-serialize",
+            "parallel",
+            "register-docs",
+            "single-dim2",
+            "api-custom"
+          ],
+          "patch": "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch",
+          "patch_sha256": "6eda9ecd071925af35b7bfc92a2c3c01ac2b87831591947d79925cc92588975e",
+          "patched_join_source_sha256": "0a63cf10ae1111c4fa3c22d945d505918f36d1165b8176e130573d5259f9a973",
+          "release_overrides": {
+            "CARGO_PROFILE_RELEASE_DEBUG": "1",
+            "CARGO_PROFILE_RELEASE_STRIP": "none"
+          },
+          "rust_toolchain": "1.98.0",
+          "status": "candidate; runtime publication requires paired control and patched evidence",
+          "upstream_cargo_lock_sha256": "63cb5170bd78cec10a46ecc912bfd56e101f7d30ed9bfd97789146f9b682d4dc",
+          "upstream_reports": [
+            "https://github.com/dimforge/rapier/issues/1008",
+            "https://github.com/appsinacup/godot-rapier-physics/issues/640"
+          ]
+        },
+        "build_lock_sha256": "0951b69d1b59c70c915f59bcae8390291ad9b89b4eb976ac8f3dfbed0fa7c46b",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "join_regression_exit": 0,
+        "join_source_sha256": "0a63cf10ae1111c4fa3c22d945d505918f36d1165b8176e130573d5259f9a973",
+        "platform": "windows",
+        "resolved_cargo_lock_sha256": "6711ce94ea78d86e20cdd5b3eb4f5ff5c38499811afe3627f883d26fc370f6eb",
+        "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)\nbinary: rustc\ncommit-hash: 88d9e12ae178fab0fb5cc050a94da85685d449ea\ncommit-date: 2026-08-18\nhost: x86_64-pc-windows-msvc\nrelease: 1.98.0\nLLVM version: 22.1.8\n",
+        "schema_version": 1,
+        "source_sha": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+        "upstream_cargo_lock_sha256": "63cb5170bd78cec10a46ecc912bfd56e101f7d30ed9bfd97789146f9b682d4dc",
+        "variant": "patched"
+      }
+    },
+    "errors": []
+  },
+  "batches": [
+    {
+      "variant": "control",
+      "platform_batch": "linux-0",
+      "report_sha256": "5af678599c821853821bfb2be582298ae638ee9c6fe4acc26a1538fcc32a3549",
+      "pair_host_id": "runnervm8k3b6",
+      "hardware": {
+        "affinity": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "logical_processors": 4,
+        "physical_cores": 2,
+        "processor": "INTEL(R) XEON(R) PLATINUM 8573C"
+      },
+      "fixture_inputs_sha256": "d302b68f2209ba9f762b4229ecec40cbd4261a29c15e40ce80b0658b00e576b0",
+      "counts": {
+        "test_physical_actor_arena": {
+          "passed": 10
+        },
+        "test_physical_actor_rigs": {
+          "passed": 10
+        },
+        "test_physical_usable_course": {
+          "passed": 10
+        }
+      },
+      "input_drift": []
+    },
+    {
+      "variant": "control",
+      "platform_batch": "linux-1",
+      "report_sha256": "4cb2bff0d3f3812d47b36e6e1c2983687cb7a5e571c3e5e765d9c3b45c763685",
+      "pair_host_id": "runnervmtai0g",
+      "hardware": {
+        "affinity": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "logical_processors": 4,
+        "physical_cores": 2,
+        "processor": "INTEL(R) XEON(R) PLATINUM 8573C"
+      },
+      "fixture_inputs_sha256": "d302b68f2209ba9f762b4229ecec40cbd4261a29c15e40ce80b0658b00e576b0",
+      "counts": {
+        "test_physical_actor_arena": {
+          "passed": 10
+        },
+        "test_physical_actor_rigs": {
+          "passed": 10
+        },
+        "test_physical_usable_course": {
+          "passed": 10
+        }
+      },
+      "input_drift": []
+    },
+    {
+      "variant": "control",
+      "platform_batch": "linux-2",
+      "report_sha256": "5fbf43d363a5fcb3632e1be192835a96962f8ecbc425e55a95b0c7399f993907",
+      "pair_host_id": "runnervmtai0g",
+      "hardware": {
+        "affinity": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "logical_processors": 4,
+        "physical_cores": 2,
+        "processor": "AMD EPYC 7763 64-Core Processor"
+      },
+      "fixture_inputs_sha256": "d302b68f2209ba9f762b4229ecec40cbd4261a29c15e40ce80b0658b00e576b0",
+      "counts": {
+        "test_physical_actor_arena": {
+          "passed": 10
+        },
+        "test_physical_actor_rigs": {
+          "passed": 10
+        },
+        "test_physical_usable_course": {
+          "passed": 10
+        }
+      },
+      "input_drift": []
+    },
+    {
+      "variant": "control",
+      "platform_batch": "linux-3",
+      "report_sha256": "be6861a9220b2f7b3924af22335cf6f772b3d9bbaa251291c51ef1f8db426ff8",
+      "pair_host_id": "runnervmtai0g",
+      "hardware": {
+        "affinity": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "logical_processors": 4,
+        "physical_cores": 2,
+        "processor": "AMD EPYC 7763 64-Core Processor"
+      },
+      "fixture_inputs_sha256": "d302b68f2209ba9f762b4229ecec40cbd4261a29c15e40ce80b0658b00e576b0",
+      "counts": {
+        "test_physical_actor_arena": {
+          "passed": 10
+        },
+        "test_physical_actor_rigs": {
+          "passed": 10
+        },
+        "test_physical_usable_course": {
+          "passed": 10
+        }
+      },
+      "input_drift": []
+    },
+    {
+      "variant": "control",
+      "platform_batch": "linux-4",
+      "report_sha256": "6796021e111a92769aa456a0db0ed27b758718fb0207685c42d6cf51b812e65d",
+      "pair_host_id": "runnervm8k3b6",
+      "hardware": {
+        "affinity": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "logical_processors": 4,
+        "physical_cores": 2,
+        "processor": "AMD EPYC 9V45 96-Core Processor"
+      },
+      "fixture_inputs_sha256": "d302b68f2209ba9f762b4229ecec40cbd4261a29c15e40ce80b0658b00e576b0",
+      "counts": {
+        "test_physical_actor_arena": {
+          "passed": 10
+        },
+        "test_physical_actor_rigs": {
+          "passed": 10
+        },
+        "test_physical_usable_course": {
+          "passed": 10
+        }
+      },
+      "input_drift": []
+    },
+    {
+      "variant": "control",
+      "platform_batch": "windows-0",
+      "report_sha256": "79c16fbff8ed96dee62063a993a3a86548cfd0432d8697412e33b535188e21fc",
+      "pair_host_id": "runnervmwtbz6",
+      "hardware": {
+        "logical_processors": 4,
+        "physical_cores": 2,
+        "processor": "AMD64 Family 25 Model 1 Stepping 1, AuthenticAMD",
+        "processors": [
+          {
+            "Name": "AMD EPYC 7763 64-Core Processor                ",
+            "NumberOfCores": 2,
+            "NumberOfLogicalProcessors": 4
+          }
+        ]
+      },
+      "fixture_inputs_sha256": "d302b68f2209ba9f762b4229ecec40cbd4261a29c15e40ce80b0658b00e576b0",
+      "counts": {
+        "test_physical_actor_arena": {
+          "passed": 9,
+          "timeout": 1
+        },
+        "test_physical_actor_rigs": {
+          "passed": 9,
+          "timeout": 1
+        },
+        "test_physical_usable_course": {
+          "passed": 10
+        }
+      },
+      "input_drift": []
+    },
+    {
+      "variant": "control",
+      "platform_batch": "windows-1",
+      "report_sha256": "2c4b873b3241b49f5cff84600501ecc3ebef30906f0ec0834e4fdb727f614163",
+      "pair_host_id": "runnervmgnbhw",
+      "hardware": {
+        "logical_processors": 4,
+        "physical_cores": 2,
+        "processor": "AMD64 Family 25 Model 1 Stepping 1, AuthenticAMD",
+        "processors": [
+          {
+            "Name": "AMD EPYC 7763 64-Core Processor                ",
+            "NumberOfCores": 2,
+            "NumberOfLogicalProcessors": 4
+          }
+        ]
+      },
+      "fixture_inputs_sha256": "d302b68f2209ba9f762b4229ecec40cbd4261a29c15e40ce80b0658b00e576b0",
+      "counts": {
+        "test_physical_actor_arena": {
+          "passed": 9,
+          "timeout": 1
+        },
+        "test_physical_actor_rigs": {
+          "passed": 7,
+          "timeout": 3
+        },
+        "test_physical_usable_course": {
+          "passed": 10
+        }
+      },
+      "input_drift": []
+    },
+    {
+      "variant": "control",
+      "platform_batch": "windows-2",
+      "report_sha256": "93de511620f17f0f9a80ea48590f5116cbf0b6676496776321ee3201aa0175b4",
+      "pair_host_id": "runnervmwtbz6",
+      "hardware": {
+        "logical_processors": 4,
+        "physical_cores": 2,
+        "processor": "Intel64 Family 6 Model 207 Stepping 2, GenuineIntel",
+        "processors": [
+          {
+            "Name": "INTEL(R) XEON(R) PLATINUM 8573C",
+            "NumberOfCores": 2,
+            "NumberOfLogicalProcessors": 4
+          }
+        ]
+      },
+      "fixture_inputs_sha256": "d302b68f2209ba9f762b4229ecec40cbd4261a29c15e40ce80b0658b00e576b0",
+      "counts": {
+        "test_physical_actor_arena": {
+          "passed": 10
+        },
+        "test_physical_actor_rigs": {
+          "passed": 10
+        },
+        "test_physical_usable_course": {
+          "passed": 10
+        }
+      },
+      "input_drift": []
+    },
+    {
+      "variant": "control",
+      "platform_batch": "windows-3",
+      "report_sha256": "fba3649b2996fea0b978695d5ae94883afb45984f259bb01a41b0045a7119471",
+      "pair_host_id": "runnervmwtbz6",
+      "hardware": {
+        "logical_processors": 4,
+        "physical_cores": 2,
+        "processor": "AMD64 Family 25 Model 1 Stepping 1, AuthenticAMD",
+        "processors": [
+          {
+            "Name": "AMD EPYC 7763 64-Core Processor                ",
+            "NumberOfCores": 2,
+            "NumberOfLogicalProcessors": 4
+          }
+        ]
+      },
+      "fixture_inputs_sha256": "d302b68f2209ba9f762b4229ecec40cbd4261a29c15e40ce80b0658b00e576b0",
+      "counts": {
+        "test_physical_actor_arena": {
+          "passed": 10
+        },
+        "test_physical_actor_rigs": {
+          "passed": 10
+        },
+        "test_physical_usable_course": {
+          "passed": 10
+        }
+      },
+      "input_drift": []
+    },
+    {
+      "variant": "control",
+      "platform_batch": "windows-4",
+      "report_sha256": "cfa6fd82d6e3f44f7129ab56bc9d878fdf5dfa2d5befd8ce43ec0cfe7bab314b",
+      "pair_host_id": "runnervmwtbz6",
+      "hardware": {
+        "logical_processors": 4,
+        "physical_cores": 2,
+        "processor": "AMD64 Family 25 Model 1 Stepping 1, AuthenticAMD",
+        "processors": [
+          {
+            "Name": "AMD EPYC 7763 64-Core Processor                ",
+            "NumberOfCores": 2,
+            "NumberOfLogicalProcessors": 4
+          }
+        ]
+      },
+      "fixture_inputs_sha256": "d302b68f2209ba9f762b4229ecec40cbd4261a29c15e40ce80b0658b00e576b0",
+      "counts": {
+        "test_physical_actor_arena": {
+          "passed": 10
+        },
+        "test_physical_actor_rigs": {
+          "passed": 10
+        },
+        "test_physical_usable_course": {
+          "passed": 10
+        }
+      },
+      "input_drift": []
+    },
+    {
+      "variant": "patched",
+      "platform_batch": "linux-0",
+      "report_sha256": "e9f930a9f7c6c4e1c82592c2fac514f71b1431033996331da391c444f06cdf71",
+      "pair_host_id": "runnervm8k3b6",
+      "hardware": {
+        "affinity": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "logical_processors": 4,
+        "physical_cores": 2,
+        "processor": "INTEL(R) XEON(R) PLATINUM 8573C"
+      },
+      "fixture_inputs_sha256": "d302b68f2209ba9f762b4229ecec40cbd4261a29c15e40ce80b0658b00e576b0",
+      "counts": {
+        "test_physical_actor_arena": {
+          "passed": 10
+        },
+        "test_physical_actor_rigs": {
+          "passed": 10
+        },
+        "test_physical_usable_course": {
+          "passed": 10
+        }
+      },
+      "input_drift": []
+    },
+    {
+      "variant": "patched",
+      "platform_batch": "linux-1",
+      "report_sha256": "cf78cb5854654a60108e5ff7f53f60aed5fc8213802b34ee104928427c01fb37",
+      "pair_host_id": "runnervmtai0g",
+      "hardware": {
+        "affinity": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "logical_processors": 4,
+        "physical_cores": 2,
+        "processor": "INTEL(R) XEON(R) PLATINUM 8573C"
+      },
+      "fixture_inputs_sha256": "d302b68f2209ba9f762b4229ecec40cbd4261a29c15e40ce80b0658b00e576b0",
+      "counts": {
+        "test_physical_actor_arena": {
+          "passed": 10
+        },
+        "test_physical_actor_rigs": {
+          "passed": 10
+        },
+        "test_physical_usable_course": {
+          "passed": 10
+        }
+      },
+      "input_drift": []
+    },
+    {
+      "variant": "patched",
+      "platform_batch": "linux-2",
+      "report_sha256": "923b4c127e90e696f63e7ba8454308e3125b62941bd725d5de157d956f2a993c",
+      "pair_host_id": "runnervmtai0g",
+      "hardware": {
+        "affinity": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "logical_processors": 4,
+        "physical_cores": 2,
+        "processor": "AMD EPYC 7763 64-Core Processor"
+      },
+      "fixture_inputs_sha256": "d302b68f2209ba9f762b4229ecec40cbd4261a29c15e40ce80b0658b00e576b0",
+      "counts": {
+        "test_physical_actor_arena": {
+          "passed": 10
+        },
+        "test_physical_actor_rigs": {
+          "passed": 10
+        },
+        "test_physical_usable_course": {
+          "passed": 10
+        }
+      },
+      "input_drift": []
+    },
+    {
+      "variant": "patched",
+      "platform_batch": "linux-3",
+      "report_sha256": "b614ede8cb5516e1ba9f9246138b621438fce8befd8970d1d7af475c371e2a27",
+      "pair_host_id": "runnervmtai0g",
+      "hardware": {
+        "affinity": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "logical_processors": 4,
+        "physical_cores": 2,
+        "processor": "AMD EPYC 7763 64-Core Processor"
+      },
+      "fixture_inputs_sha256": "d302b68f2209ba9f762b4229ecec40cbd4261a29c15e40ce80b0658b00e576b0",
+      "counts": {
+        "test_physical_actor_arena": {
+          "passed": 10
+        },
+        "test_physical_actor_rigs": {
+          "passed": 10
+        },
+        "test_physical_usable_course": {
+          "passed": 10
+        }
+      },
+      "input_drift": []
+    },
+    {
+      "variant": "patched",
+      "platform_batch": "linux-4",
+      "report_sha256": "43e602f15603bc021db5ac7ebef6e80595b637ce38cc52e16cdaa3a9573bb3fa",
+      "pair_host_id": "runnervm8k3b6",
+      "hardware": {
+        "affinity": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "logical_processors": 4,
+        "physical_cores": 2,
+        "processor": "AMD EPYC 9V45 96-Core Processor"
+      },
+      "fixture_inputs_sha256": "d302b68f2209ba9f762b4229ecec40cbd4261a29c15e40ce80b0658b00e576b0",
+      "counts": {
+        "test_physical_actor_arena": {
+          "passed": 10
+        },
+        "test_physical_actor_rigs": {
+          "passed": 10
+        },
+        "test_physical_usable_course": {
+          "passed": 10
+        }
+      },
+      "input_drift": []
+    },
+    {
+      "variant": "patched",
+      "platform_batch": "windows-0",
+      "report_sha256": "5010d10bd75c6762bb21d0793aec056ddd6714b705c1f836f952597ddef8b72d",
+      "pair_host_id": "runnervmwtbz6",
+      "hardware": {
+        "logical_processors": 4,
+        "physical_cores": 2,
+        "processor": "AMD64 Family 25 Model 1 Stepping 1, AuthenticAMD",
+        "processors": [
+          {
+            "Name": "AMD EPYC 7763 64-Core Processor                ",
+            "NumberOfCores": 2,
+            "NumberOfLogicalProcessors": 4
+          }
+        ]
+      },
+      "fixture_inputs_sha256": "d302b68f2209ba9f762b4229ecec40cbd4261a29c15e40ce80b0658b00e576b0",
+      "counts": {
+        "test_physical_actor_arena": {
+          "passed": 10
+        },
+        "test_physical_actor_rigs": {
+          "passed": 10
+        },
+        "test_physical_usable_course": {
+          "passed": 10
+        }
+      },
+      "input_drift": []
+    },
+    {
+      "variant": "patched",
+      "platform_batch": "windows-1",
+      "report_sha256": "fa7412bdb3f90031be6e5caaa40ffdeaaba6ebc0fb254c1cb389eb16dcad72ce",
+      "pair_host_id": "runnervmgnbhw",
+      "hardware": {
+        "logical_processors": 4,
+        "physical_cores": 2,
+        "processor": "AMD64 Family 25 Model 1 Stepping 1, AuthenticAMD",
+        "processors": [
+          {
+            "Name": "AMD EPYC 7763 64-Core Processor                ",
+            "NumberOfCores": 2,
+            "NumberOfLogicalProcessors": 4
+          }
+        ]
+      },
+      "fixture_inputs_sha256": "d302b68f2209ba9f762b4229ecec40cbd4261a29c15e40ce80b0658b00e576b0",
+      "counts": {
+        "test_physical_actor_arena": {
+          "passed": 10
+        },
+        "test_physical_actor_rigs": {
+          "passed": 10
+        },
+        "test_physical_usable_course": {
+          "passed": 10
+        }
+      },
+      "input_drift": []
+    },
+    {
+      "variant": "patched",
+      "platform_batch": "windows-2",
+      "report_sha256": "fb5d830530085aa86c9adcab5eee2b7c1ff06ddc0a2604a9998b659098b288a4",
+      "pair_host_id": "runnervmwtbz6",
+      "hardware": {
+        "logical_processors": 4,
+        "physical_cores": 2,
+        "processor": "Intel64 Family 6 Model 207 Stepping 2, GenuineIntel",
+        "processors": [
+          {
+            "Name": "INTEL(R) XEON(R) PLATINUM 8573C",
+            "NumberOfCores": 2,
+            "NumberOfLogicalProcessors": 4
+          }
+        ]
+      },
+      "fixture_inputs_sha256": "d302b68f2209ba9f762b4229ecec40cbd4261a29c15e40ce80b0658b00e576b0",
+      "counts": {
+        "test_physical_actor_arena": {
+          "passed": 10
+        },
+        "test_physical_actor_rigs": {
+          "passed": 10
+        },
+        "test_physical_usable_course": {
+          "passed": 10
+        }
+      },
+      "input_drift": []
+    },
+    {
+      "variant": "patched",
+      "platform_batch": "windows-3",
+      "report_sha256": "97f5503789bee5c86c7bf2f107ca3ce123478f82616814478664f4133ccf8fc1",
+      "pair_host_id": "runnervmwtbz6",
+      "hardware": {
+        "logical_processors": 4,
+        "physical_cores": 2,
+        "processor": "AMD64 Family 25 Model 1 Stepping 1, AuthenticAMD",
+        "processors": [
+          {
+            "Name": "AMD EPYC 7763 64-Core Processor                ",
+            "NumberOfCores": 2,
+            "NumberOfLogicalProcessors": 4
+          }
+        ]
+      },
+      "fixture_inputs_sha256": "d302b68f2209ba9f762b4229ecec40cbd4261a29c15e40ce80b0658b00e576b0",
+      "counts": {
+        "test_physical_actor_arena": {
+          "passed": 10
+        },
+        "test_physical_actor_rigs": {
+          "passed": 10
+        },
+        "test_physical_usable_course": {
+          "passed": 10
+        }
+      },
+      "input_drift": []
+    },
+    {
+      "variant": "patched",
+      "platform_batch": "windows-4",
+      "report_sha256": "311d570359b8d3a8fff7fa91b91fdd584f9758c63e52026e61250ad25a792da2",
+      "pair_host_id": "runnervmwtbz6",
+      "hardware": {
+        "logical_processors": 4,
+        "physical_cores": 2,
+        "processor": "AMD64 Family 25 Model 1 Stepping 1, AuthenticAMD",
+        "processors": [
+          {
+            "Name": "AMD EPYC 7763 64-Core Processor                ",
+            "NumberOfCores": 2,
+            "NumberOfLogicalProcessors": 4
+          }
+        ]
+      },
+      "fixture_inputs_sha256": "d302b68f2209ba9f762b4229ecec40cbd4261a29c15e40ce80b0658b00e576b0",
+      "counts": {
+        "test_physical_actor_arena": {
+          "passed": 10
+        },
+        "test_physical_actor_rigs": {
+          "passed": 10
+        },
+        "test_physical_usable_course": {
+          "passed": 10
+        }
+      },
+      "input_drift": []
+    }
+  ],
+  "timeout_cases": [
+    {
+      "variant": "control",
+      "platform_batch": "windows-0",
+      "name": "test_physical_actor_arena",
+      "iteration": 4,
+      "pair_position": 0,
+      "last_progress": {
+        "detail": "arcadelander",
+        "elapsed_ms": 17365,
+        "phase": "configure",
+        "steps": 10560
+      },
+      "seconds": 63.47,
+      "timeout_kind": "progress_watchdog",
+      "timeout_seconds": 180
+    },
+    {
+      "variant": "control",
+      "platform_batch": "windows-0",
+      "name": "test_physical_actor_rigs",
+      "iteration": 5,
+      "pair_position": 1,
+      "last_progress": {
+        "detail": "scrabbler",
+        "elapsed_ms": 2804,
+        "phase": "setup_complete",
+        "steps": 4800
+      },
+      "seconds": 48.127,
+      "timeout_kind": "progress_watchdog",
+      "timeout_seconds": 180
+    },
+    {
+      "variant": "control",
+      "platform_batch": "windows-1",
+      "name": "test_physical_actor_rigs",
+      "iteration": 5,
+      "pair_position": 0,
+      "last_progress": {
+        "detail": "heavylift",
+        "elapsed_ms": 22975,
+        "phase": "step",
+        "steps": 46680
+      },
+      "seconds": 68.835,
+      "timeout_kind": "progress_watchdog",
+      "timeout_seconds": 180
+    },
+    {
+      "variant": "control",
+      "platform_batch": "windows-1",
+      "name": "test_physical_actor_rigs",
+      "iteration": 6,
+      "pair_position": 1,
+      "last_progress": {
+        "detail": "ripper",
+        "elapsed_ms": 4073,
+        "phase": "step",
+        "steps": 6720
+      },
+      "seconds": 50.171,
+      "timeout_kind": "progress_watchdog",
+      "timeout_seconds": 180
+    },
+    {
+      "variant": "control",
+      "platform_batch": "windows-1",
+      "name": "test_physical_actor_rigs",
+      "iteration": 7,
+      "pair_position": 0,
+      "last_progress": {
+        "detail": "pendulum",
+        "elapsed_ms": 18509,
+        "phase": "setup_complete",
+        "steps": 37200
+      },
+      "seconds": 64.248,
+      "timeout_kind": "progress_watchdog",
+      "timeout_seconds": 180
+    },
+    {
+      "variant": "control",
+      "platform_batch": "windows-1",
+      "name": "test_physical_actor_arena",
+      "iteration": 9,
+      "pair_position": 0,
+      "last_progress": {
+        "detail": "pendulum",
+        "elapsed_ms": 13768,
+        "phase": "configure",
+        "steps": 7440
+      },
+      "seconds": 59.266,
+      "timeout_kind": "progress_watchdog",
+      "timeout_seconds": 180
+    }
+  ]
+}

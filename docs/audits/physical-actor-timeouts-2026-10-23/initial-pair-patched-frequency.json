@@ -1,0 +1,30 @@
+{
+  "source_shas": [
+    "18f6105736fb5a0a37e96c5220857f21ed0630e2"
+  ],
+  "runtime_identities": {
+    "windows": [
+      "e6d9ec7d0847287c4c6b1acaffd52dc2807fe43e9dccfc36123ffa117fb6045f",
+      "7a6f17e2069b7220230810fabf152d13ad767fef3b53c74321b64ce8cf501933",
+      "4.7.stable.official.5b4e0cb0f"
+    ]
+  },
+  "counts": {
+    "windows/test_physical_actor_arena": {
+      "passed": 50
+    },
+    "windows/test_physical_actor_rigs": {
+      "passed": 50
+    },
+    "windows/test_physical_usable_course": {
+      "passed": 50
+    }
+  },
+  "timeouts_by_phase": {},
+  "errors": [
+    "Expected ten batch reports, found 5",
+    "Required 50/50 passes for linux/test_physical_actor_arena: {}",
+    "Required 50/50 passes for linux/test_physical_actor_rigs: {}",
+    "Required 50/50 passes for linux/test_physical_usable_course: {}"
+  ]
+}
