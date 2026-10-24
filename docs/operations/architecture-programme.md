@@ -134,7 +134,8 @@ The opt-in LCB pressure comparison (#200/#213) is a separate experimental lane
 bounded by the
 [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
 It selects no production mechanism. The [final LCB-000 checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23)
-records Gate A–E PASS and #213 closure; the owner still holds #200/#212, and
+records Gate A–E PASS and #213 closure; the owner holds #212 and all of #200 except its bounded
+[policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24), and
 no pressure/inertial port or schema/ABI freeze is admitted.
 
 `#49 v2 control + WEX evidence -> #95 (2026-10-23) -> #45 NARROW admission/design + surge registration -> directional reassessment -> #18 admission/no-go -> #20/G-B if justified -> G-final`.

@@ -579,7 +579,8 @@ investigation before any new #45 pressure/head mechanism is treated as inevitabl
   [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
   [#213](https://github.com/techrote/cybersand/issues/213) is **closed completed;
   Gates A–E PASS**. The [final checkpoint](#liquid-comparison-build-design-checkpoint--2026-10-23)
-  records bounded admission and the continuing owner hold on #200/#212.
+  records bounded admission; the [#200 policy foundation](#lcb-001-policy-foundation--2026-10-24)
+  is the only lifted part of the owner hold on #200/#212.
 
 Water FreeMass and other-liquid CellularYield remain separate; no unification or
 production solver change is selected. Equal-level communicating-head fixtures are
@@ -611,8 +612,9 @@ records exact identities, evidence classes and validation limits.
 
 **Approved admission, execution held:** only a separately scoped initial opt-in
 [#200](https://github.com/techrote/cybersand/issues/200) start is admitted.
-The owner has not authorized that start and explicitly holds #200 and
-[#212](https://github.com/techrote/cybersand/issues/212). This PASS does not admit
+The owner then lifted the hold for the bounded
+[#200 policy foundation](#lcb-001-policy-foundation--2026-10-24) only and continues to hold
+the #200 pressure backend, every other solver port and [#212](https://github.com/techrote/cybersand/issues/212). This PASS does not admit
 #212, a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier
 integration. Native policy/state implementation and candidate kernels remain
 **Planned**. #201/#202/#203 remain open; the scenario apparatus delivered part of
@@ -627,6 +629,25 @@ Controls and v2–v6 records are preserved byte-for-byte; v7 retains
 **20 closed / 4 unverified source-sink timing / 3 unverified reaction amount**,
 with `changed_from_v6=[]`. Characterization and contract-model evidence do not
 establish candidate runtime acceptance or change defaults.
+
+## LCB-001 policy foundation — 2026-10-24
+
+**Current on the `claude/issue-200-policy-foundation` branch (draft PR; not merged).**
+The owner lifted the #200 hold for this bounded foundation only. It implements the
+accepted Gate C policy object, not a solver: validation precedence, canonical
+SHA-256 identity, normalized readback and transactional construction for the
+running build, which **admits only each liquid's current default** and refuses
+every candidate mapping before any World is built. Defaults, dispatch, C64-E8,
+kernels and goldens are unchanged. See the
+[native foundation contract](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)
+and [dated evidence](../audits/2026-10-24-issue-200-policy-foundation.md).
+
+| Item | Status |
+|---|---|
+| Native policy, wire decode, refusal codes, hash, World admission, experimental C API, GDExtension receipt/validation/construction, MicroScenario request, worker receipt | Current (branch) |
+| NC-1, NC-2 and NC-10 | Executable in the foundation regressions; the LCB registry is unchanged |
+| Pressure backend, W-CY/W-IN kernels, run receipt hash, normalization, physical-state hash, remaining #202 constructors, durable schema/ABI freeze | Planned, held or deferred |
+| #212, #201, #202, #203 and all 90 candidate arms | Unchanged: held or blocked |
 
 ## Opt-in transport profiles
 

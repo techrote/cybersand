@@ -1,0 +1,163 @@
+---
+title: LCB-001 #200 policy foundation evidence
+status: Current
+document-kind: evidence
+scope: Author evidence packet for the bounded #200 liquid solver policy foundation — source identities, executed native/Godot/CI results, contract reconciliation and explicit gaps; no solver, defaults or schema/ABI change
+canonical-for: [issue-200-policy-foundation-evidence]
+last-reviewed: 2026-10-24
+related-documents: [../architecture/liquid-solver-family-policy.md, ../reference/status-and-roadmap.md, ../reference/liquid-policy-wire-vectors.json]
+---
+
+# LCB-001 #200 policy foundation evidence — 2026-10-24
+
+## Authority and scope
+
+On 2026-10-24 the owner lifted the #200 hold **for this bounded foundation only**:
+immutable, versioned per-World/per-material policy validation and canonical
+identity, effective native readback and a bounded construction/adapter path. The
+pressure backend, #212, every other solver port, C64-E8 changes, spare-bit
+assignment, speculative solver payloads, durable schema/ABI freeze, default changes
+and Rapier forces remain outside it. All 90 candidate arms stay blocked. The #204
+experiment task was neither awaited nor consumed. Contracts consumed: the
+[family policy](../architecture/liquid-solver-family-policy.md), the
+[state-transition matrix](../architecture/liquid-state-transition-matrix.md) and the
+[implementation handoff](../architecture/lcb-pressure-inertial-handoff.md), as
+accepted at the #213 closure.
+
+## Source identity
+
+| Item | Value |
+|---|---|
+| Base | main `1002b9201006b572180a12cbc4c3b21fc234e8fa` (merge of #237), fetched fresh |
+| Worktree / branch | isolated `.claude/worktrees/issue-200-policy-foundation`, `claude/issue-200-policy-foundation` |
+| Implementation commit | `457ab64449f2715c60ab6318739655cbc40b42df` |
+| Primary checkout | `mat/material-fidelity-pass-2` with unrelated uncommitted changes; untouched |
+| Generated identity | `catalogue_digest` `82b5ab9a…fdbad3`, `capability_matrix_digest` `d31e434b…fc4e45` (full values in the generated header and vector file) |
+
+Later commits on the branch (runtime publication, documentation) are listed in
+[CI and publication](#ci-and-publication).
+
+## Audit result (construction, validation, dispatch, readback)
+
+| Path | Before | After |
+|---|---|---|
+| `WorldConfig` / `World::World` | Water and transport policies validated; no liquid policy | `liquid_solver_policy` admitted by re-validating its normalized envelope against the running build before allocation; `LiquidPolicyRefused` otherwise |
+| Dispatch | `RuleKernel` switch; family implied by descriptor | Unchanged. No family dispatch exists, and unqualified mappings cannot reach a World |
+| C API | No policy | Experimental default/validate/create/readback/hash functions |
+| `CyberDemoBridge` constructors | Copied the live config | Explicit defaults in `build_world`, `build_tuned_world`, `build_water_feel_world` and CYSD1 `import_level`; `build_liquid_policy_world` takes a request |
+| `CyberNativeCellWorld` | Water readback only | `get_liquid_solver_policy()` receipt plus committed-session generation; `reset_demo_world` uses explicit defaults |
+| MicroScenario host / desktop worker | No request | Optional `liquid_policy` (null keeps defaults); worker forwards the native receipt in `lab_context` |
+
+Routine choices made within the contract:
+
+- the decoder is build-parametric, so contract-test builds replay the vectors;
+- detail strings match the oracle;
+- `session_generation` counts committed World replacements;
+- the native receipt omits `source_revision`/`native_binary_sha256`, which are host identity.
+
+**Contract defect reconciled.** The oracle's `today` build qualified per family
+and would have admitted Water × `cellular_yield_v1`, a mapping with no
+implementation. The oracle now qualifies per material × family cell. The appended
+vector `water_cellular_yield_today` expects `family_unavailable`. All 46 earlier
+cases, the session transcript and the build identity were compared before and
+after: no change.
+
+## Executed native validation (Windows, local)
+
+Host: Windows 11 Pro 10.0.26300 x64; MSVC 19.38.33145 (VS 2022 Build Tools 17.14);
+`/std:c++20 /EHsc /W4 /Od /Zi`; the same six core sources as
+`build_windows_msvc.bat`; tests run from the worktree root. No explicit timeout;
+durations measured.
+
+| Build | Tests | Result | Duration | `tests.exe` SHA-256 |
+|---|---|---|---|---|
+| Baseline main `1002b92` | `test_world.cpp` | **84/84 passed** | 121.2 s | `97c1076e…a4db3b` |
+| Candidate `457ab64` | `test_world.cpp` + `test_liquid_solver_policy.cpp` | **93/93 passed** | 136.5 s | `5f775727…4fec1e8` |
+
+Build warnings: the five pre-existing MSVC warnings only; none in new code.
+
+The nine new tests:
+
+1. **SHA-256** — NIST answers, including one million `a`.
+2. **Identity** — the embedded catalogue and capability digests equal SHA-256
+   recomputed from the LF-normalized source files and the matrix JSON at run time.
+3. **Descriptors** — the catalogue's eleven liquids and default families equal
+   `MaterialRules` (state/`LateralFlowMode`).
+4. **Wire vectors** — all **47** oracle vectors (11 accepted, 36 refused). Exact
+   acceptance, refusal code, material, detail, `policy_hash`, canonical bytes and
+   normalized envelope; normalized round trip; int32 transport equivalence.
+5. **Session transcript** — the generation and readback hash after each step.
+6. **Running-build sweep** — all 121 non-default material × family × variant cells
+   are refused with the matrix-predicted code; explicit, all-code-0 and implicit
+   defaults are identical. Water × CY gives the exact `family_unavailable` detail.
+7. **World admission** — a Water-inertial policy that a contract build accepted
+   is refused by `World::World` (`family_unavailable`, material 3).
+8. **Default behaviour** — a mixed fixture (Water, Oil, Brine, Sand, Mercury, Lava,
+   Salt) runs 160 ticks. An implicit-default World, an explicit-decoded-default
+   World and an explicit-default **four-worker** World keep identical
+   `state_hash`/`content_hash` every tick. Water mass3/coherence0 does not change
+   the policy hash.
+9. **C API transaction** — size queries, default/validate, create success, and
+   stale/rejected/truncated/invalid-config refusals with an untouched existing
+   World, readback words/hash, an independent second World, and the
+   undersized-struct guard.
+
+Python contract checks (Python 3.12.10, each under one second):
+
+| Command | Result |
+|---|---|
+| `policy_contract.py --check` | PASS |
+| `test_policy_contract.py` | **15/15** |
+| `derive_capability_matrix.py --check` | PASS |
+| `native_policy_artifacts.py --check` | PASS |
+| `test_lcb001_runtime_publication.py` | **17/17** |
+| `check_ci_provider_policy.py` | PASS |
+
+## Godot validation
+
+The local Godot 4.7 console executable
+(SHA-256 `d8055fb8…c34161c`) imported the worktree project. It parse-checked
+`test_liquid_solver_policy.gd`, `microscenario_host.gd` and `simulation_worker.gd`
+(exit 0) against the then-committed, pre-change runtime. That is a parse check,
+not execution. No local godot-cpp toolchain exists, so the GDExtension is built
+and executed only by GitHub-hosted CI (below).
+
+`test_liquid_solver_policy.gd` covers, through the real adapter and MicroScenario
+host on the protected `lcb.dam.water.freemass.reference.v1` definition:
+
+- the validation receipt and code-0 normalization;
+- the installed readback;
+- 12 refusals (NC-1, NC-2 and the other matrix classes, stale digest, truncated
+  and empty envelopes, and a non-packed type). Each must keep tick, state/content
+  hash, Water integer, definition hash, receipt and generation;
+- continuation after the refusals and an independent second World;
+- implicit-versus-explicit-default and four-worker Dam Break hash parity at five
+  checkpoints over 40 ticks;
+- CYSD1 export/import on defaults (NC-10) and a refused corrupt import.
+
+## CI and publication
+
+Pending; filled from the actual runs.
+
+## Explicit gaps
+
+- Not implemented:
+  - the run receipt hash;
+  - normalization and `normalization_required` (NC-3 stays blocked);
+  - `water_semantics_incompatible` and `capacity_refused` (unreachable with
+    defaults);
+  - a versioned physical-state hash (no family state exists);
+  - the remaining #202 constructors (generation previews, depth/exhibition
+    planes, physical arenas, player modes, Web controller, Water reset), which
+    run defaults without a request;
+  - a GDScript fallback decoder.
+- Two Worlds with *different* applied policies cannot coexist yet, because only
+  defaults are admitted. Independence is shown by separate receipts, generations
+  and refusal isolation.
+- The desktop worker `scenario_reset.liquid_policy` forward has no executed
+  threaded test.
+- Web/WASM is not built or run. The policy code is the same source; Web execution
+  remains unverified.
+- `source_revision`/`native_binary_sha256` are not in the native receipt.
+- No candidate arm, pressure/inertial/W-CY kernel, Rapier force, Cell/schema
+  change or default change was made or executed.
