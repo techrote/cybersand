@@ -217,7 +217,10 @@ def _capture_timeout_snapshot(pid: int, path: Path, log_path: Path, elapsed: flo
         parts.append("Native stack capture: unavailable without a preinstalled debugger; process/thread snapshot retained.\n")
     else:
         parts.append(_snapshot_command([
-            "ps", "-e", "-o", "pid,ppid,pgid,stat,etime,wchan:32,args", "--forest",
+            "ps", "-p", str(pid), "-o", "pid,ppid,pgid,stat,etime,wchan:32,args",
+        ]))
+        parts.append(_snapshot_command([
+            "ps", "-T", "-p", str(pid), "-o", "pid,tid,stat,etime,wchan:32,comm",
         ]))
         # This may fail under Yama ptrace restrictions. Record that refusal;
         # never let evidence collection promote a timeout to a pass.
