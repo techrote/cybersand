@@ -249,8 +249,19 @@ the previously untested worker `liquid_policy` forward.
 | Nit: constructor inventory | Now lists the default C API constructors and the `demo::` helpers |
 | Question: fallback host versus oracle | Documented as a deliberate difference: there is no fallback decoder, so the host refuses even an explicit default |
 
-The `c_api.cpp` and `world.cpp` changes are runtime source inputs, so both
-runtimes were republished again (see the PR evidence update).
+The `c_api.h`, `c_api.cpp` and `world.cpp` changes in `c8f14c7` are runtime
+source inputs, so both runtimes were republished again. Local MSVC run: 93/93 in
+120 s (`tests.exe` `92ad46da…121ff61d`).
+
+[Run 40066828015](https://github.com/techrote/cybersand/actions/runs/40066828015)
+passed the floor, import and the same eight cases on both OSes, with summaries
+identical to the earlier publications. It fast-forwarded `a309c44`. These
+identities supersede both earlier tables:
+
+| Platform | Runtime SHA-256 | Size | Validation report SHA-256 |
+|---|---|---|---|
+| Windows x86_64 | `b13805bf1a0bb3452493c6990b212575787f638c30be22613a5cc03b78933d30` | 4,049,408 | `145449114aecef27…` |
+| Linux x86_64 | `2495cedc12de07be3738a76b41ea352e5dff8309d167ea89f7fc430ae89765cf` (unchanged) | 3,525,584 | `c90303c78593613c…` |
 
 ## Explicit gaps
 
