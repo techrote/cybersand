@@ -148,7 +148,11 @@ def require_publication_request(source: str) -> None:
         request = json.loads(payload)
     except (ValueError, UnicodeDecodeError) as exc:
         raise RuntimeError("Invalid pressure-reference publish request JSON") from exc
-    require(request == REQUEST_VALUE, "Invalid pressure-reference publish request identity")
+    require(isinstance(request, dict) and set(request) == set(REQUEST_VALUE) | {"request_sequence"}
+            and all(type(request.get(key)) is type(value) and request[key] == value
+                    for key, value in REQUEST_VALUE.items())
+            and type(request.get("request_sequence")) is int and request["request_sequence"] > 0,
+            "Invalid pressure-reference publish request identity or sequence")
     require((ROOT / PRESSURE_CASE).is_file(), "Pressure-reference native regression is not implemented")
     require((ROOT / EVIDENCE).is_file(), "Pressure-reference candidate evidence file is missing")
 
