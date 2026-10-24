@@ -5,6 +5,7 @@
 #include "cybersand/interaction_policy.hpp"
 #include "cybersand/liquid_solver_policy.hpp"
 #include "cybersand/pressure_flow.hpp"
+#include "cybersand/inertial_cellular.hpp"
 #include "cybersand/transport_policy.hpp"
 #include "cybersand/scheduler_geometry.hpp"
 #include "cybersand/settled_world_discovery.hpp"
@@ -284,6 +285,18 @@ public:
     // stored cells, including cells under a transient body mask.
     [[nodiscard]] std::uint64_t water_quantity(RectI64 region) const;
 
+    // LCB-005 inertial_cellular_v1/reference (#212), active for every material
+    // the applied policy assigns to it. Serialized owner queries between ticks.
+    [[nodiscard]] bool inertial_enabled() const noexcept { return inertial_enabled_; }
+    [[nodiscard]] bool inertial_family(Material material) const noexcept;
+    [[nodiscard]] InertialCellState inertial_cell(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] InertialLedger inertial_ledger() const noexcept;
+    // Exclusive owner, between ticks: set one inertial cell's velocity and
+    // accumulators within the declared ranges (vy >= 0, |v| <= vmax, |a| < q).
+    // Booked as an external impulse; refused for any other cell or value.
+    [[nodiscard]] bool diagnostic_set_inertial_cell(std::int64_t x, std::int64_t y, std::int16_t vx,
+                                                    std::int16_t vy, std::int8_t ax, std::int8_t ay);
+
     // Versioned complete physical-state hash (LCB-001). Covers every
     // future-affecting value: cells, epochs, temperatures, activity/deadlines,
     // pending events, policies, pressure sidecars and the gas table. Independent
@@ -297,7 +310,9 @@ public:
     // host-owned and not saved. restore validates everything before returning
     // a new World and throws std::invalid_argument for unknown, corrupt or
     // incompatible payloads; the caller's live World is never touched.
-    static constexpr std::uint32_t kPhysicalStateFormatVersion = 1;
+    // v2 adds the optional inertial sidecar; v1 payloads (no inertial state)
+    // remain readable.
+    static constexpr std::uint32_t kPhysicalStateFormatVersion = 2;
     [[nodiscard]] std::vector<std::uint8_t> save_physical_state() const;
     [[nodiscard]] static std::unique_ptr<World> restore_physical_state(
         WorldConfig execution, std::span<const std::uint8_t> bytes);
@@ -342,6 +357,9 @@ private:
     std::unique_ptr<PhysicsTotals> physics_totals_;
     std::unique_ptr<soliding::SettledWorldDiscoveryCoordinator> settled_discovery_;
     std::unique_ptr<PressureState> pressure_;
+    bool inertial_enabled_ = false;
+    std::array<bool, kMaterialDefinitions.size()> inertial_materials_{};
+    InertialLedger inertial_ledger_{};
     void record_physics(PhysicsEvent kind, Material source, Material target,
                         std::int64_t dx, std::int64_t dy, JobEffects* effects,
                         std::uint64_t count = 1) noexcept;
@@ -397,6 +415,8 @@ private:
     [[nodiscard]] bool update_cell(std::int64_t x, std::int64_t y, JobEffects* effects = nullptr);
     [[nodiscard]] bool update_water(std::int64_t x, std::int64_t y, JobEffects* effects);
     [[nodiscard]] bool update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* effects);
+    [[nodiscard]] bool update_inertial(Material material, std::int64_t x, std::int64_t y, JobEffects* effects);
+    void retire_inertial_cell(Chunk& chunk, std::size_t index, JobEffects* effects) noexcept;
     void prepare_pressure_tick();
     void resolve_gas_topology();
     void compute_pressure_heads();

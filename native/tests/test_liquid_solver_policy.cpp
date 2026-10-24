@@ -274,11 +274,11 @@ void test_liquid_policy_identity_matches_source() {
                     kVectorCurrentCapabilityDigest,
             "vector current_build_identity differs from the native build");
     const auto& running = LiquidPolicyBuild::running();
-    // LCB-001 pressure reference: FreeMass, CellularYield and pressure_flow_v1
-    // compiled; one optional pressure_flow_v1 family block schema.
+    // LCB-001/-005: all four families compiled; one optional pressure_flow_v1
+    // family block schema.
     require(running.catalogue_digest == catalogue_digest && running.native && running.schemas.size() == 1U &&
                 running.schemas.front().family_owner && running.schemas.front().owner == 3U &&
-                !running.schemas.front().mandatory && running.available_families == 0x07U,
+                !running.schemas.front().mandatory && running.available_families == 0x0FU,
             "running build identity");
 }
 
@@ -390,13 +390,15 @@ void test_liquid_policy_running_build_admits_only_defaults() {
         for (std::uint8_t family = 1; family <= 4U; ++family) {
             for (std::uint8_t variant = 0; variant < 3U; ++variant) {
                 if (family == row.default_family && variant == 0U) continue;
-                if (row.material_id == 3U && family == 3U && variant == 0U) {
-                    // The one admitted candidate: Water x pressure_flow_v1/reference.
+                if ((row.material_id == 3U && family == 3U && variant == 0U) ||
+                    (row.material_id == 24U && family == 4U && variant == 0U)) {
+                    // The admitted candidates: Water x pressure_flow_v1/reference (#200)
+                    // and Brine x inertial_cellular_v1/reference (#212).
                     auto words = request;
                     words[20U + row_index * 3U + 1U] = family;
-                    const auto admitted = accept(words, LiquidPolicyBuild::running(), "Water pressure reference");
-                    require(admitted.assignment(3)->family == LiquidSolverFamily::PressureFlowV1,
-                            "Water pressure reference applied");
+                    const auto admitted = accept(words, LiquidPolicyBuild::running(), "qualified candidate");
+                    require(static_cast<std::uint8_t>(admitted.assignment(row.material_id)->family) == family,
+                            "qualified candidate applied");
                     ++cells;
                     continue;
                 }

@@ -180,18 +180,22 @@ struct LiquidPolicyBuild {
     static constexpr std::int32_t kPressureDefaultAtmosphericRows = 32;
 
     // This binary: FreeMass and CellularYield qualified for each liquid's current
-    // default, plus Water x pressure_flow_v1/reference (#200). cached and
-    // cached_dormant (#201) and every other candidate remain refused.
+    // default, plus Water x pressure_flow_v1/reference (#200) and Brine x
+    // inertial_cellular_v1/reference (#212). cached and cached_dormant (#201),
+    // Water x inertial and every other candidate remain refused.
     [[nodiscard]] static const LiquidPolicyBuild& running() {
         static const LiquidPolicyBuild build = [] {
             LiquidPolicyBuild result;
-            result.available_families = 0x07U;
+            result.available_families = 0x0FU;
             for (const auto& row : liquid_policy_catalogue::kLiquidRows) {
                 result.qualified_cells.emplace_back(row.material_id, row.default_family);
                 result.qualified_variants.push_back({row.material_id, row.default_family, 0x01U});
             }
             result.qualified_cells.emplace_back(std::uint16_t{3}, std::uint8_t{3});
             result.qualified_variants.push_back({3, 3, 0x01U});
+            // LCB-005 (#212): Brine x inertial_cellular_v1/reference.
+            result.qualified_cells.emplace_back(std::uint16_t{24}, std::uint8_t{4});
+            result.qualified_variants.push_back({24, 4, 0x01U});
             result.schemas.push_back({true, 3, kPressureBlockVersion, false, 0,
                                       {{"gas_enabled", 0, 1}, {"atmospheric_head_rows", 16, 4096}}});
             return result;

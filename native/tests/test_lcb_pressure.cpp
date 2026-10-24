@@ -107,7 +107,7 @@ std::uint64_t quantity(const World& world, RectI64 r) { return world.water_quant
 
 void test_pressure_admission_and_refusal() {
     const auto& running = LiquidPolicyBuild::running();
-    require(running.available_families == 0x07U && running.schemas.size() == 1U, "running build profile");
+    require((running.available_families & 0x07U) == 0x07U && running.schemas.size() == 1U, "running build profile");
     const auto policy = pressure_policy();
     require(policy.assignment(3)->family == LiquidSolverFamily::PressureFlowV1, "Water applied family");
     for (std::int32_t variant : {1, 2}) {
@@ -590,9 +590,12 @@ void test_physical_hash_and_persistence() {
     tick(a, 3);
     require(a.gas_compartments().size() == 1U && a.gas_history().empty(), "one pocket, no history");
     auto bytes = a.save_physical_state();
-    constexpr std::size_t kDigest = 32U, kTail = 8U + 10U * 8U + 5U * 8U, kRecord = 4U + 4U + 1U + 32U + 7U * 8U;
-    const auto record = bytes.size() - kDigest - kTail - kRecord;
-    const auto tail = bytes.size() - kDigest - kTail;
+    // Payload tail (CYPS v2): history header, gas ledger, flow ledger, then the
+    // inertial ledger (10 signed + 6 unsigned words) and the digest.
+    constexpr std::size_t kDigest = 32U, kInertial = 16U * 8U, kTail = 8U + 10U * 8U + 5U * 8U;
+    constexpr std::size_t kRecord = 4U + 4U + 1U + 32U + 7U * 8U;
+    const auto record = bytes.size() - kDigest - kInertial - kTail - kRecord;
+    const auto tail = bytes.size() - kDigest - kInertial - kTail;
     const auto bump = [&bytes](std::size_t at) {
         std::uint64_t value = 0;
         for (std::size_t i = 0; i < 8U; ++i) value |= static_cast<std::uint64_t>(bytes[at + i]) << (8U * i);

@@ -3736,6 +3736,12 @@ void test_liquid_policy_world_construction_and_refusal();
 void test_liquid_policy_default_preserves_behavior_and_workers();
 void test_liquid_policy_c_api_transaction();
 void test_liquid_policy_c_api_allocation_failures();
+void test_lcb_inertial_admission();
+void test_lcb_inertial_contract_examples();
+void test_lcb_inertial_ledgers_rest_parity();
+void test_lcb_inertial_no_tunnelling();
+void test_lcb_inertial_lifecycle();
+void test_lcb_inertial_three_families();
 void test_lcb_pressure_admission();
 void test_lcb_pressure_gas_pockets();
 void test_lcb_pressure_gas_merge();
@@ -3862,6 +3868,12 @@ int main(int argc, char** argv) {
         {"LCB-001 pressure lifecycle state and ledgers", test_lcb_pressure_lifecycle},
         {"LCB-001 pressure physical hash and exact persistence", test_lcb_pressure_persistence},
         {"LCB-001 pressure default policy untouched", test_lcb_pressure_default_untouched},
+        {"LCB-005 inertial admission and dispatch identity", test_lcb_inertial_admission},
+        {"LCB-005 inertial contract worked examples in a World", test_lcb_inertial_contract_examples},
+        {"LCB-005 inertial ledgers, rest and worker parity", test_lcb_inertial_ledgers_rest_parity},
+        {"LCB-005 inertial no wall or mask tunnelling", test_lcb_inertial_no_tunnelling},
+        {"LCB-005 inertial Brine chemistry lifecycle", test_lcb_inertial_lifecycle},
+        {"LCB-005 inertial three families in one World", test_lcb_inertial_three_families},
         {"LCB-001 liquid policy C API allocation failures", test_liquid_policy_c_api_allocation_failures},
     };
 
