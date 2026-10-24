@@ -313,7 +313,7 @@ declared suspect case. **600/600 physical attempts are present: 589 passed,
 attempts. All 20 import preflights passed.** No failed batch was retried or
 replaced. Every physical timeout remains a failed test and a failed batch.
 The 180-second limit was unchanged; diagnostics occur afterward and are timed
-separately. The selected source and the workflow head are both the #241 merge
+separately together with process-tree termination/cleanup. The selected source and the workflow head are both the #241 merge
 `4348516aba4c8e7036370d73afc14e86a19ea6a2`.
 
 Independent raw readback inspected all **620 full logs**, all 600 per-attempt
@@ -385,13 +385,17 @@ historical and ordinary records. Raw files remain in the Actions artifacts and
 the isolated worktree's ignored `build/issue233-stress-40082890839` cache; the
 independent raw report is in `build/issue233-raw-final-600`. Logs, ZIPs, generated
 imports and runtime binaries are intentionally outside the source commit.
+The artifact manifest records the actual 30-day GitHub retention, expiring on
+2026-11-23; the complete downloaded raw cache is retained locally and this
+worktree is kept active for the #234 handoff.
 
 ### Every reproduced timeout
 
 All eleven are Windows `phase=roster_step` observations. Repetition numbers are
 global within each OS/mode/test (1–50); batches are numbered 0–4. “Tick” is the
 last reported loop index, and “diagnostics” is additional elapsed time before
-termination, separate from the failed test's watchdog duration.
+return from diagnostic capture and process-tree termination/cleanup, separate
+from the failed test's watchdog duration (`diagnostic_seconds` in runner JSON).
 
 | Mode | Batch | Test | Repetition | Last rig | Last tick | Test elapsed (s) | Diagnostics (s) | Engine cumulative CPU (s) |
 |---|---:|---|---:|---|---:|---:|---:|---:|
