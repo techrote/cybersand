@@ -11,11 +11,15 @@ from pathlib import Path, PurePosixPath
 import re
 import subprocess
 
+from comparison_contract import authenticate_comparator, compare_result
+
 
 def digest(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
 def verify(root, expected_commit, windows_optional, windows_touch):
+    authenticate_comparator('optional', windows_optional)
+    authenticate_comparator('touch', windows_touch)
     root=Path(root).resolve()
     inventory=json.loads((root/'inventory.json').read_text())
     actual={p.relative_to(root).as_posix() for p in root.rglob('*') if p.is_file() and p.name!='inventory.json'}
@@ -90,18 +94,17 @@ def verify(root, expected_commit, windows_optional, windows_touch):
     optional_checks=touch_checks=0
     for i,(row,(build,context)) in enumerate(zip(r['cases'],contexts)):
         data=row['result']
+        compare_result(build['kind'], data)
         if row['kind']!=build['kind'] or data!=json.loads((root/f'case-{i:03d}.stdout').read_text()) or data.get('status')!='passed' or data.get('timing') is not False:raise ValueError('case result binding')
         if build['kind']=='optional':
             if (data['tail_bits'],data['side'],data['mode'])!=(build['bits'],*context):raise ValueError('optional context')
             win=next(c for c in windows_optional['cases'] if (c['tail_bits'],c['side'],c['mode'],c['sanitized'])==(build['bits'],*context,False))
-            for key in data:
-                if key not in ('owner_object_size','pointer_capacity_bytes') and data[key]!=win[key]:raise ValueError('desktop/Wasm logical disagreement: '+key)
-            if data['owner_object_size']!=72 or data['pointer_capacity_bytes']!=data['resident_owners']*4:raise ValueError('Wasm32 owner/pointer accounting')
+            compare_result('optional', data, win, wasm=True)
             optional_checks+=data['checks']
         else:
             if data['mode']!=context[0]:raise ValueError('touch context')
             win=next(c for c in windows_touch['cases'] if (c['mode'],c['sanitized'])==(context[0],False))
-            if any(data[key]!=win[key] for key in data):raise ValueError('desktop/Wasm native touch disagreement')
+            compare_result('touch', data, win, wasm=True)
             touch_checks+=data['checks']
     if r['elapsed_watchdog_seconds']>spec['limits']['aggregate_seconds']:raise ValueError('aggregate watchdog')
     return {'status':'verified','builds':3,'optional_cases':24,'touch_cases':3,'optional_checks':optional_checks,'touch_checks':touch_checks,

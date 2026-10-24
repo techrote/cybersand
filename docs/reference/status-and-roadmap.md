@@ -34,6 +34,12 @@ limits. The original reader refusal and all prior observations remain intact.
 unimplemented. The separate #200 foundation belongs to Claude; this task starts
 no LCB solver or #212 work.
 
+The [PR #238 review corrections](../audits/2026-10-24-mat003-pr238-review-closure.md)
+strengthen the archived-data comparison readers and add a separate coordinate
+refusal regression. Original records remain unchanged; the spent one-shot
+launchers are retired. The PR stays draft pending parent/main reconciliation,
+independent acceptance and fresh applicable exact-head integration checks.
+
 ## MAT-003PREPASS S1 World apparatus — 2026-10-22
 
 **Current registered Linux S1 correctness; broader qualification open:** [#204](https://github.com/techrote/cybersand/issues/204) retains the [S0 isolated-storage pass](../audits/2026-10-22-mat003-prepass-foundation.md), source inventory, epoch consumer audit and [proposed GEN-006 semantic handoff](../research/mat-003prepass-gen006-handoff.md). The [registered S1 apparatus](../operations/mat-003prepass-registration.md) adds seventeen real World arms using generated source copies, typed 8/16-bit counters, full semantic and conservation checks, and a gate covering two natural sixteen-bit rollovers. The registered normal/sanitized collection and independent readback passed at apparatus source `e31d296`; this qualifies the declared native Linux fixtures. The [World report](../audits/2026-10-22-mat003-world-correctness.md) owns execution status and limits. Production source and 64-bit/epoch8 storage remain unchanged.

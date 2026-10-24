@@ -101,3 +101,36 @@ Godot/browser execution, sanitizers or performance. Packed9/10-byte and aligned
 The [remaining acceptance inventory](../research/mat003-remaining-acceptance.md)
 separates retained evidence, conditional recommendations and the still-open
 independent, platform, performance and integration gates for #204.
+
+## Review corrections and retained reproduction
+
+The [PR #238 correction record](../audits/2026-10-24-mat003-pr238-review-closure.md)
+records authenticated Windows comparators, complete Linux/Wasm result schemas,
+resealed negative archives, the static v4 historical-source check and the separate
+coordinate-refusal regression. Historical collection records and all nine sealed
+R16 reader modules remain unchanged. These are author corrections awaiting review.
+
+Current comparison readers authenticate the complete Windows result or published
+summary against pinned SHA-256 identities before comparing. They require exact
+25-field optional and nine-field touch results; Linux compares every field.
+Wasm's required owner-size/pointer-capacity fields have explicit ABI checks and
+are its only comparison exceptions. A resealed missing field, changed hash or
+matching forged comparator cannot supply its own authority. Static v4 publication
+checks compare the eight original and nine revised module maps against their
+recorded Git revisions; they do not independently authenticate private-chat
+authorization or turn author validation into independent acceptance.
+
+The three overnight collection workflows were **historical one-shot launchers**,
+not reusable CI. Their registrations have been spent. The exact YAML is retained
+under [historical-workflows](../../tools/experiments/mat003_optional/historical-workflows/)
+and at each collected source revision; it has been removed from active workflows
+so later fixture changes cannot silently repeat an old collection. Reproducing a
+new collection requires a new scoped registration, source identity, budget and
+launcher. Archived-data verification does not execute the collected candidates.
+
+The active [verifier workflow](../../.github/workflows/mat003-correctness-verifier.yml)
+uses full Git history for `test_published_revision.py`, runs the small comparison
+contracts and the separately registered coordinate-refusal tests. It does not
+replay the full R16 archive or replace the Native/Godot integration gates. Keep
+#238 draft until the unmerged parent stack is reconciled with current main and
+all applicable exact-head runtime and provenance checks execute successfully.

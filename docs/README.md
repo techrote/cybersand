@@ -12,7 +12,9 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
-Current MAT-003: [complete152-process collection and Astra readback refusal](audits/2026-10-23-mat003-reentry-correctness-attempt.md). No correctness acceptance or rerun; prior stage summaries below are historical.
+Current MAT-003 PR #238: [reader/fixture review corrections and retained evidence](audits/2026-10-24-mat003-pr238-review-closure.md), following the [complete v4 author readback](audits/2026-10-24-mat003-overnight-results.md). Independent acceptance and parent-stack/main integration remain open. The original refusal and earlier stages below are historical records.
+
+Historical MAT-003 collection: [complete152-process collection and Astra readback refusal](audits/2026-10-23-mat003-reentry-correctness-attempt.md). The original refusal remains preserved; the later v4 archived-data pass does not rerun candidates or confer independent acceptance.
 
 Latest MAT-003 source status: [resident reentry/scratch repair and independent source review](audits/2026-10-23-mat003-resident-reentry-repair.md). Fresh build/binary/registration gates remain held; no repair execution or timing. Earlier checkpoints below are historical stages.
 

@@ -73,6 +73,16 @@ not silently substituted for the audited native baseline.
 
 ## Concrete follow-ups
 
+The [PR #238 reader/fixture corrections](../audits/2026-10-24-mat003-pr238-review-closure.md)
+authenticate the existing Windows comparison records, require complete result
+schemas, compare every Linux field and verify the published v4 source maps in CI.
+The unchanged Linux/Wasm archives pass the strengthened readers; resealed missing
+fields, altered accounting/hashes and comparator substitutions refuse. The small
+coordinate-refusal test qualifies the corrected experimental fixture separately
+from the original collected source. The one-shot collection launchers are retired;
+future collections need new registrations. Independent acceptance and parent/main
+integration remain open.
+
 The proposed Python codec's missing-identity and boolean-version acceptance are
 nonproduction fixture follow-ups, with reproducible probes in the capture-phase
 handoff. They do not establish a shipped stale-job/save defect. The known Clang

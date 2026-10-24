@@ -5,10 +5,14 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - 'tools/experiments/mat003_correctness/**'
+      - 'tools/experiments/mat003_optional/**'
       - 'tools/experiments/mat003_touch/epoch_model.py'
       - 'tools/experiments/mat003_touch/epoch-model-registration.json'
       - 'docs/audits/2026-10-23-mat003-readback-verifier-repair.md'
       - 'docs/audits/mat003-correctness-2026-10-23/windows-reentry-readback-registration-v*.json'
+      - 'docs/audits/mat003-overnight-2026-10-24/readback-registration-v4.json'
+      - 'docs/audits/mat003-overnight-2026-10-24/optional-summary.json'
+      - 'docs/audits/mat003-overnight-2026-10-24/touch-summary.json'
       - '.github/workflows/mat003-correctness-verifier.yml'
   workflow_dispatch:
 
@@ -25,11 +29,31 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
       - name: Validate CI provider policy
         run: python3 tools/ci/check_ci_provider_policy.py
       - name: Run focused untimed verifier contracts
         run: python3 -B tools/experiments/mat003_correctness/test_verifier_contracts.py
       - name: Run reader-revision provenance contracts
         run: python3 -B tools/experiments/mat003_correctness/test_verifier_revision.py
+      - name: Verify published v4 registration against historical sources
+        run: timeout 1m python3 -B tools/experiments/mat003_correctness/test_published_revision.py
+      - name: Test complete portability comparison contracts (no archive replay)
+        run: timeout 1m python3 -B tools/experiments/mat003_optional/test_comparison_contract.py
+      - name: Run focused coordinate-refusal regressions (no campaign or timing)
+        shell: bash
+        run: |
+          set -euo pipefail
+          for bits in 8 16; do
+            for profile in normal sanitized; do
+              flags=(-O2)
+              if [[ "$profile" == sanitized ]]; then
+                flags=(-O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer)
+              fi
+              timeout 2m g++-13 -std=c++20 -Wall -Wextra -Werror "${flags[@]}" -DMAT003_TAIL_BITS="$bits" -Inative/include tools/experiments/mat003_optional/test_bounds.cpp -o "$RUNNER_TEMP/mat003-bounds-$bits-$profile"
+              ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1 timeout 30s "$RUNNER_TEMP/mat003-bounds-$bits-$profile"
+            done
+          done
       - name: Exercise epoch-projection contract model (not native execution)
         run: timeout 2m python3 -B tools/experiments/mat003_touch/epoch_model.py

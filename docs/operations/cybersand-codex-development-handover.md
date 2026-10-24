@@ -10,6 +10,18 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## MAT-003 PR #238 review corrections — 2026-10-24
+
+The [correction record](../audits/2026-10-24-mat003-pr238-review-closure.md) closes
+the comparison-reader and coordinate-refusal findings as author work, preserving
+the original sealed records and nine R16 reader modules. The complete v4 readback
+remains **author validation pending independent review**. Collection launchers are
+retired one-shot apparatus; the active small verifier checks publication hashes
+against full historical Git sources. Keep #238 draft: reconcile the unmerged
+parent stack with main, then execute fresh applicable Native/Godot/provenance
+gates before integration. #204 stays open; production, #213's closure and #212's
+hold remain unchanged. Older entries below describe their dated checkpoints.
+
 ## MAT-003 readback verifier repair — 2026-10-23
 
 The [readback verifier repair and v2 admission proposal](../audits/2026-10-23-mat003-readback-verifier-repair.md) corrects only the independently diagnosed resident sleep/exclusion oracle. The complete 152-case archive is assessed sufficient for a future readback-only requalification; no candidate rerun is needed. The revised protocol is **not independently admitted**, owner authority for the changed reader is **absent**, and no full revised readback has run. Keep #204/#221 open/draft, production unchanged and Windows correctness refused until both gates close.

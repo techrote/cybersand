@@ -6,11 +6,15 @@ import json
 from pathlib import Path, PurePosixPath
 import subprocess
 
+from comparison_contract import authenticate_comparator, compare_result
+
 
 def digest(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
 def verify(root, expected_commit, windows_optional=None, windows_touch=None):
+    if windows_optional is not None: authenticate_comparator('optional', windows_optional)
+    if windows_touch is not None: authenticate_comparator('touch', windows_touch)
     root=Path(root).resolve();inventory=json.loads((root/'inventory.json').read_text())
     if set(inventory)!={p.relative_to(root).as_posix() for p in root.rglob('*') if p.is_file() and p.name!='inventory.json'}:
         raise ValueError('evidence inventory')
@@ -73,17 +77,16 @@ def verify(root, expected_commit, windows_optional=None, windows_touch=None):
     for index,(row,(build,context)) in enumerate(zip(r['cases'],cases)):
         if row['kind']!=build['kind'] or row['sanitized']!=build['sanitized'] or row['binary_sha256']!=build['sha256']:raise ValueError('case binary binding')
         data=row['result']
+        compare_result(row['kind'], data)
         if data!=json.loads((root/f'case-{index:03d}.stdout').read_text()) or data['status']!='passed' or data['timing'] is not False:raise ValueError('case result substitution')
         if row['kind']=='optional':
             if (data['tail_bits'],data['side'],data['mode'])!=(build['bits'],*context):raise ValueError('optional context')
-            if windows_optional:
+            if windows_optional is not None:
                 win=next(c for c in windows_optional['cases'] if (c['tail_bits'],c['sanitized'],c['side'],c['mode'])==(build['bits'],build['sanitized'],*context))
-                for key in ('operation_projection_hash','nonzero_payloads','consumer_reads','consumer_writes','tail_array_bytes','allocated_owners','checks'):
-                    if data[key]!=win[key]:raise ValueError('Windows/Linux logical/accounting disagreement: '+key)
-        elif windows_touch:
+                compare_result('optional', data, win)
+        elif windows_touch is not None:
             win=next(c for c in windows_touch['cases'] if (c['sanitized'],c['mode'])==(build['sanitized'],context[0]))
-            for key in ('observations','recoveries','native_ticks','checks'):
-                if data[key]!=win[key]:raise ValueError('Windows/Linux native touch disagreement')
+            compare_result('touch', data, win)
     if r['elapsed_watchdog_seconds']>spec['limits']['aggregate_seconds']:raise ValueError('aggregate watchdog')
     return {'status':'verified','builds':6,'optional_cases':48,'touch_cases':6,'timing':False,
             'windows_optional_compared':bool(windows_optional),'windows_touch_compared':bool(windows_touch),

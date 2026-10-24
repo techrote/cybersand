@@ -84,6 +84,7 @@ public:
     }
     bool copy(std::size_t source, std::size_t destination) { return put(destination, get(source)); }
     bool move(std::size_t source, std::size_t destination) {
+        if (source >= size() || destination >= size()) { ++refusals; return false; }
         if (source == destination) return true;
         const auto value = get(source);
         if (!writable(destination, value)) { ++refusals; return false; }
@@ -96,6 +97,7 @@ public:
     }
     // Synthetic neutral-count split/merge. This does not assign physical meaning.
     bool split(std::size_t source, std::size_t destination, unsigned amount) {
+        if (source >= size() || destination >= size()) { ++refusals; return false; }
         if (source == destination) return amount == 0;
         auto a = get(source), b = get(destination);
         if (amount > a.tail || amount > tail_max - b.tail) { ++refusals; return false; }
@@ -104,6 +106,7 @@ public:
         return put(source, a) && put(destination, b);
     }
     bool reclaim(std::size_t chunk) {
+        if (chunk >= owners()) { ++refusals; return false; }
         if (!owns(chunk)) return true;
         if (std::any_of(tails_[chunk].get(), tails_[chunk].get() + chunk_cells, [](Tail v) { return v != 0; })) { ++refusals; return false; }
         tails_[chunk].reset(); ++reclaims; return true;
