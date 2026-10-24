@@ -590,3 +590,25 @@ SHA-256 `638616e1f3bfe20d2301e244ef65012ab3dc80db29fb2f58737d3eaa59f8c201`.
 This execution includes the assertion-wording follow-up. Request sequence 3
 publishes the repaired source; both prior runtime hashes remain qualified only
 for attempt 2 until replaced by newly executed artifacts.
+
+Before dispatching that request, fresh main advanced to
+`b5a8570e5123e1f633766e9390761a1c8134cfa2` (qualified 4LY-003, PR #229).
+Integration commit `02d144981b3e8196df5e790c874199a935df4f4d` preserves the
+flight lab, launcher, five additional Godot regressions and their evidence.
+No native/binding implementation input changed in that refresh, so the MSVC
+native fence above still describes those inputs. The new publication and
+complete final-head matrix must consume the merged application/tests, including
+the updated Godot harness; the earlier 140/128-case totals remain qualified to
+the first full-gate attempt, not the expanded suite.
+
+Pre-refresh checkpoint `2b44b151d937bb74fc42971a1b05e3587a8fbf3f` passed
+documentation/M11, retrieval 32/32 and 126/126, provider policy, both byte
+oracles, generated native-policy artifacts, all 120 Python LCB tests, all
+30 publisher guards, LFS integrity and whitespace. All tracked inputs remained
+unchanged. The materialized repository checker reported exactly two errors:
+the Windows and Linux native libraries require rebuilding for
+`native/src/world_quantity.inc`; it reported no documentation, vendor or
+unmaterialized-runtime error. This is an explicit publication prerequisite,
+not an accepted provenance exception. The proof is
+`C:/Users/_/.codex/tmp/lcb246-serial-validation/validation-receipt.json`,
+SHA-256 `ede10af51fe6a3099c3381b2fe6442519fd2a43d0975a2b61d766e89a44e735e`.
