@@ -1020,6 +1020,15 @@ and discovery suites. They change no installed native runtime artifact. See the
 [control measurement procedure](soliding-measurement.md) for immutable-source
 benchmark compilation; builds/tests must stop during registered local timing.
 
+Native CI prebuilds the eight soliding sanitizer executables under a separate
+twenty-minute compilation bound, then runs the unchanged `make soliding-sanitize`
+group under its ten-minute execution bound with ASan/UBSan failure handling.
+The same Makefile prerequisites, compiler flags, tests and hosted runner apply;
+the ninety-minute overall job bound remains. The
+[residual shared-contract audit](../audits/2026-10-24-lcb001-residual-shared-contract.md#native-aggregate-compilation-timeout-and-separate-build-budget)
+preserves the preceding aggregate timeout while compiling the final executable
+and distinguishes partial earlier passes from complete final-head acceptance.
+
 `make soliding-benchmark-smoke` compiles the isolated journal characterization
 with warnings as errors and exercises its bounded-work/fairness assertions on a
 small fixture. CI timings are not performance acceptance measurements.

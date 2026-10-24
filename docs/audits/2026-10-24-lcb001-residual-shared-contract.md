@@ -2,7 +2,7 @@
 title: LCB-001 residual native shared-contract checkpoint
 status: Current
 document-kind: evidence
-scope: Dated source and execution evidence for the unmerged residual #200 whole-cell Water, setup normalization, native receipts and quantity-accounting checkpoint; publication attempt 2 passed but full Windows execution exposed a serial construction slowdown requiring a native repair and new runtimes
+scope: Dated source and execution evidence for the unmerged residual #200 whole-cell Water, setup normalization, native receipts and quantity-accounting checkpoint; publication attempt 3 supplies the repaired Windows/Linux runtimes and complete final-head acceptance remains required
 canonical-for: [lcb001-residual-shared-contract-evidence]
 last-reviewed: 2026-10-24
 related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../architecture/liquid-solver-family-policy.md, ../architecture/pressure-flow-v1.md, ../reference/status-and-roadmap.md, 2026-10-24-lcb001-pressure-reference-publication.md]
@@ -612,3 +612,74 @@ unmaterialized-runtime error. This is an explicit publication prerequisite,
 not an accepted provenance exception. The proof is
 `C:/Users/_/.codex/tmp/lcb246-serial-validation/validation-receipt.json`,
 SHA-256 `ede10af51fe6a3099c3381b2fe6442519fd2a43d0975a2b61d766e89a44e735e`.
+
+### Publication attempt 3 passed after the construction repair
+
+[Publication 40143202793](https://github.com/techrote/cybersand/actions/runs/40143202793)
+built `66506d1aea029d39fcaebb17554f8a58bd6c3a13`, tree
+`55b413e6fbbc4bdf6bf5e0c2733dc0c9af2f2468`, with explicit request
+sequence 3. Both actual target operating systems passed import and all twelve
+scoped cases: thirteen complete logs per target, required positive summaries,
+no skipped case, diagnostic error or timeout. The Windows executed DLL matches
+the independently captured cross-build byte for byte. Both platforms retain the
+qualified desktop Rapier artifacts from fresh main.
+
+| Runtime | Bytes | SHA-256 | Validation JSON SHA-256 |
+|---|---:|---|---|
+| Windows x86_64 | 4,397,568 | `89a20e5bf278eb1801342ff82329667a58e375fb4e141dc6f32116baa4062aaf` | `56a32b3b1af36506b523c1ff67477d71f7e489a507867a257a93934c3bff8f39` |
+| Linux x86_64 | 3,781,256 | `ce62448ceb81add84b9ccbf1e176f21360a99c2ddc21cffe76a1ed85e6244abb` | `cbd79f6de0f3f49d4dd533e4f9b445e3ead71aff5affbe6452390c97f21ca70a` |
+
+Independent reduction matches all 540 immutable Git inputs (68 native and 472
+build/test), artifact bytes, every case/log digest and required sections on
+each target. Raw ZIP digests match the GitHub artifact metadata. Receipts in
+`C:/Users/_/.codex/tmp/lcb246-acceptance/publication3/independent-review/`:
+
+- `windows-target-independent-receipt.json`, SHA-256
+  `c401bcf4051a5603bc9d567eb86aa8b71ed5459c890005aa64649e36bcc747c2`.
+- `linux-target-independent-receipt.json`, SHA-256
+  `6a9c2401da1b835fa5b55ae33f530ce342a457164272e73b39b0032fa27bc296`.
+
+The publisher appended only the two libraries and two manifests in
+`0719b7ec92075d8647469050d74c2d8bc78b7b67`, whose sole parent is the built
+source. The local branch fast-forwarded to that commit and materialized both
+new LFS objects; their SHA-256 values match the table above. The earlier
+attempt-2 hashes are historical evidence and are not reattested for this repair.
+
+The source-fenced prepublication checks also passed after the fresh-main
+integration, at `66506d1a`: docs/M11, retrieval 32/32 and 126/126, provider,
+oracles/generated policy, 120 Python LCB tests, 30 publisher guards, LFS and
+whitespace. Its two then-expected stale native errors named only
+`world_quantity.inc`. Receipt
+`C:/Users/_/.codex/tmp/lcb246-serial-integrated-validation/attempt2/validation-receipt.json`
+hashes to `dac10cb3b467f00472101e437b2240d43e513abb215054d7652d3605de30b162`.
+An initial invocation passed the symbolic word `HEAD` to the detached mirror;
+the coordinator refused before testing. That failed harness record remains in
+the parent directory; the successful retry supplies the exact full source SHA.
+
+### Native aggregate compilation timeout and separate build budget
+
+Old-head [Native 40140021680](https://github.com/techrote/cybersand/actions/runs/40140021680)
+passed ordinary native execution, the physics CLI, generation, full ASan/UBSan
+and the separately built settled-regions sanitizer. It then exhausted the
+ten-minute `make soliding-sanitize` aggregate while compiling the final sparse
+activity/deadline executable, before that target group could execute. The job
+records failure/exit 124 at 23:39:59 UTC; the enclosing run reports cancelled
+after draft/synchronize supersession. Both raw states are retained. This is
+neither a runtime assertion nor a sanitizer diagnostic. TSan and the final
+shared-library/benchmark steps did not execute and receive no acceptance credit.
+The complete log SHA-256 is
+`9900f63e2fe88fecc642fbd6871addc442466909bc1ad1388c77d4b9a7059d64`;
+`old-native-terminal-receipt.json` in the publication-3 review directory hashes
+to `1f462d29a90ef80f75b4c26d54ba70baea14f67ee1c9790e5894b4d3c14abc60`.
+
+The workflow now prebuilds the exact same eight Makefile prerequisites under a
+separate bounded twenty-minute compilation step. The existing ten-minute
+`ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1
+make soliding-sanitize` execution step is unchanged and runs all eight binaries.
+Compiler flags, Makefile, tests, GitHub-hosted runner and ninety-minute overall
+job limit are unchanged. Independent review verified the exact prerequisite
+list against Makefile lines 147–155. This CI-only workflow file is outside the
+runtime publisher's native/build input ledger; final materialized provenance
+must nevertheless pass after the edit. The entire final non-draft matrix,
+including actual completion of this group, TSan, builds and benchmark, remains
+required. No previous partial run replaces it.
