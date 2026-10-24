@@ -2,7 +2,7 @@
   "acceptance": "This exact source-matched runtime passed Import plus the LCB-001 liquid-policy adapter regression, two MicroScenario host/owner, four LCB contract/catalogue and one Water Feel worker headless cases; full ready-PR CI is separate. Every required helper completed with no skips or errors.",
   "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
   "build_attempt": "1",
-  "build_commit": "04bd222ea99d6450f220a1f7a72cfde246f933ca",
+  "build_commit": "c86a34c38cb7fd4937c64fd3297e39a59f2da72a",
   "build_inputs": {
     ".gitattributes": "b2145b01096190b9fe0037b905e254ec9652dac584b21ee54d8cfc1403af481d",
     ".github/workflows/gdextension.yml": "3b62c06e1199619455ba2a2b9b70d52d95a67259a8af1aad2d8953c19a33afae",
@@ -371,7 +371,7 @@
     "native/tests/test_generation_spatial.cpp": "f925284221027a5ff71c444617dd20bccae46c8444162fc0329d9f151327b15f",
     "native/tests/test_generation_typed.cpp": "3f5e30dd9d79282e32585d53cd741c179efcd2d5dee1ef9ceae0fa4b5a3dce8d",
     "native/tests/test_generation_typed_integration.cpp": "e0c5ffbd8aa19d211f4bfdb7abaf71a127b67a148b0aee0f107f2b564dbdea8d",
-    "native/tests/test_liquid_solver_policy.cpp": "bb8055a1911211d361fd5172d3f30fe2dc43cc55571f0dcc44ed434a3a728f2b",
+    "native/tests/test_liquid_solver_policy.cpp": "8ccfc0d0f1561cf92406e8506f9d5ae0358b7a28638cb601bc3a63d946b2e30c",
     "native/tests/test_precision_workers.cpp": "ce7a2bb2860dc4034fb87c2bcb7441644abea3da53463f63fbc521643bd80101",
     "native/tests/test_settled_discovery.cpp": "bac53bbce5a58d304b325bb01acf288fe1d4e8eb14c5f4176a4b6ba4539b6a96",
     "native/tests/test_settled_regions.cpp": "611a4286c73133fed6df98849f51cc06e46d4fc2fdb70a44a5a7e1d39de06ddb",
@@ -405,7 +405,7 @@
   "schema_version": 1,
   "sha256": "2495cedc12de07be3738a76b41ea352e5dff8309d167ea89f7fc430ae89765cf",
   "size": 3525584,
-  "source_commit": "04bd222ea99d6450f220a1f7a72cfde246f933ca",
+  "source_commit": "c86a34c38cb7fd4937c64fd3297e39a59f2da72a",
   "source_input_hash_kind": "SHA-256 of canonical Git blob bytes; CRLF working files normalize to LF",
   "source_inputs": {
     "godot/native_extension/cyber_demo_bridge.hpp": "bb131a66546c6243a58abd1530af8f69a49968110c218ac28fc01cbc2b627d91",
@@ -451,7 +451,7 @@
     "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
     "native/include/cybersand/world.hpp": "aba7b9eb127b6bca22b014e12d2faf9233b43058e9b83fd16ef58c923d56251d",
     "native/include/cybersand/world_generation.hpp": "28007e89dc009d68af125e2c04d77a5fb6aec48ec9758a4079affa016f3dca5c",
-    "native/src/c_api.cpp": "d8c2e4c1b6b05d6e853f0d114081dd4062ef022a92cdb2d34b12e26a1d7e7d9d",
+    "native/src/c_api.cpp": "7d0122cd8f46f92db46f1027b6b42abb38fa723fe2f5736bf750540731f2471b",
     "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
     "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
     "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
@@ -465,12 +465,12 @@
     "native/src/world.cpp": "ae90309127f17ff61aa740b4707c597450c59c69394801b528132501c9d60ed4",
     "native/src/world_generation.cpp": "cf9eb2efef6ac9a9e49bd40eb9fac1915fd967071920816100703d1ae306b535"
   },
-  "source_tree": "334d294588310b2e4f046cb7d459f64179e862d2",
+  "source_tree": "48e8b18f130f92863d1a6a3c60ba936603bb9cc8",
   "status": "validated-development-runtime",
   "toolchain": "Build host: GitHub-hosted Ubuntu 24.04; Linux x86_64 target\ngodot-cpp=101ae38034304346a46ea9ea84ae156d3e860496; SCons=4.10.1\ng++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nGNU ld (GNU Binutils for Ubuntu) 2.42\nbc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666  /home/runner/work/_temp/godot-cpp/bin/libgodot-cpp.linux.template_debug.x86_64.a",
   "validated_platform": "Linux x86_64 Godot 4.7 (actual GitHub-hosted headless execution)",
-  "validation_output": "lcb001-runtime-linux-40054064436/validation.json",
-  "validation_sha256": "3d49bfd8aaac4902d59be8b7fba0ff3ade856d187fda8eebed6b3022b27d2e29",
+  "validation_output": "lcb001-runtime-linux-40056996111/validation.json",
+  "validation_sha256": "841213a282f580c18f9531445562f5625124c1de7a903188ba23f6c4774db14d",
   "workflow_attempt": "1",
-  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/40054064436"
+  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/40056996111"
 }
