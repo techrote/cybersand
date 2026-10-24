@@ -8,7 +8,6 @@
 #include <array>
 #include <cstdint>
 #include <cstdlib>
-#include <cstring>
 #include <fstream>
 #include <iterator>
 #include <optional>
@@ -559,6 +558,22 @@ void test_liquid_policy_c_api_transaction() {
 
 namespace {
 
+// Field-wise: cybersand_config_v2 has padding (after worker_threads and at the
+// end), whose bytes are unspecified, so memcmp is not a valid comparison.
+bool same_config(const cybersand_config_v2& a, const cybersand_config_v2& b) {
+    return a.struct_size == b.struct_size && a.abi_version == b.abi_version &&
+           a.chunk_size == b.chunk_size && a.sleep_after_quiet_ticks == b.sleep_after_quiet_ticks &&
+           a.ambient_temperature == b.ambient_temperature && a.backend == b.backend &&
+           a.reserved_0 == b.reserved_0 && a.activity_block_size == b.activity_block_size &&
+           a.scheduling_core_size == b.scheduling_core_size && a.maximum_rule_radius == b.maximum_rule_radius &&
+           a.worker_threads == b.worker_threads && a.initial_chunk_reserve == b.initial_chunk_reserve &&
+           a.parallel_job_threshold == b.parallel_job_threshold &&
+           a.active_core_capacity == b.active_core_capacity &&
+           a.active_chunk_capacity == b.active_chunk_capacity && a.maximum_chunk_count == b.maximum_chunk_count &&
+           a.deferred_event_capacity == b.deferred_event_capacity &&
+           a.maximum_explosion_radius == b.maximum_explosion_radius;
+}
+
 // Fail the 0th, 1st, ... allocation of `call` in turn until one run completes
 // without an injected failure. Returns {injected failures, allocations seen}.
 template <typename Call, typename Check>
@@ -592,13 +607,13 @@ void test_liquid_policy_c_api_allocation_failures() {
     auto config_sweep = sweep_allocation_failures(
         [] { return cybersand_default_config_v2(); },
         [&](const cybersand_config_v2& result, long long nth) {
-            require(std::memcmp(&result, &zero, sizeof(zero)) == 0,
+            require(same_config(result, zero),
                     "default config failure " + std::to_string(nth) + " is not all-zero");
         });
     require(config_sweep.first >= 1U, "default config performed no injectable allocation");
     require(cybersand_world_create_v2(&zero) == nullptr, "zero config constructed a World");
     const auto again = cybersand_default_config_v2();
-    require(std::memcmp(&again, &expected, sizeof(expected)) == 0, "default config changed after failures");
+    require(same_config(again, expected), "default config changed after failures");
 
     // 2. Validation: every failure is a CONSTRUCTION_FAILED refusal, never a throw.
     cybersand_liquid_policy_refusal_v1 refusal{};

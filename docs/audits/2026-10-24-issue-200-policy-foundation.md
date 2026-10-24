@@ -305,6 +305,14 @@ Local MSVC result: 10/10 LCB-001 tests. Mutation check: removing the `try`/`catc
 from `cybersand_default_config_v2` fails the test with an escaping
 `bad allocation`.
 
+The first ready-PR Native run on #240,
+[40075499009](https://github.com/techrote/cybersand/actions/runs/40075499009),
+failed in GCC's plain behavioural suite with "default config changed after
+failures". The defect was in the test, not the C API: it compared
+`cybersand_config_v2` values with `memcmp`. The struct has unspecified padding at
+bytes 36–40 and 92–96, which MSVC happened to leave equal. The test now compares
+field by field; locally 94/94 in 131 s.
+
 **Publisher decision.** `lcb001-runtime-publication.yml` is retained, as the
 GEN-005 and GEN-007 publishers were. Its jobs run only for
 `refs/heads/claude/issue-200-policy-foundation`. That branch still exists at
