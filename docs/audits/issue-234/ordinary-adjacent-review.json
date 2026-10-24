@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "scope": "Two separate adjacent ordinary cohorts; admission observations and registered stress N are unchanged.",
+  "retention_scope": "All 536 ordinary case observations, including the WEX timeout; physical_family and registered_stress_case columns permit narrower selection without hiding the failure.",
+  "cohorts": [
+    {
+      "run_id": "40109504699",
+      "run_attempt": "1",
+      "source_sha": "03785c3dcaa5c82df000eeca1471bd6ec698be00",
+      "workflow_conclusion": "failure",
+      "ordinary_cases": {
+        "linux": 140,
+        "windows": 128
+      },
+      "passed": 267,
+      "timeouts": 1,
+      "other_failures": 0,
+      "preflights_passed": 5,
+      "physical_family_samples": 45,
+      "physical_family_passed": 45,
+      "exact_hosted_physical_rows_match": true,
+      "runtimes": {
+        "linux": [
+          [
+            "4.7.stable.official.5b4e0cb0f",
+            "3bfe1679c6d0201203fcf99b6f53d7f50875a530611776787131d7dc1d5098c2",
+            "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831"
+          ]
+        ],
+        "windows": [
+          [
+            "4.7.stable.official.5b4e0cb0f",
+            "813bfbb42f0bc9c21488aca44df2a3477e47db594b3521885ea2fed39ea07f0a",
+            "4e26ffa78ec2aaff434c4a70cd2ec85288b10ba5237912c35f204cb1e6ed2180"
+          ]
+        ]
+      }
+    },
+    {
+      "run_id": "40129347402",
+      "run_attempt": "1",
+      "source_sha": "13b8e631f3e8fbaa2176ed41afc02c434b11e558",
+      "workflow_conclusion": "success",
+      "ordinary_cases": {
+        "linux": 140,
+        "windows": 128
+      },
+      "passed": 268,
+      "timeouts": 0,
+      "other_failures": 0,
+      "preflights_passed": 5,
+      "physical_family_samples": 45,
+      "physical_family_passed": 45,
+      "exact_hosted_physical_rows_match": true,
+      "runtimes": {
+        "linux": [
+          [
+            "4.7.stable.official.5b4e0cb0f",
+            "3bfe1679c6d0201203fcf99b6f53d7f50875a530611776787131d7dc1d5098c2",
+            "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+          ]
+        ],
+        "windows": [
+          [
+            "4.7.stable.official.5b4e0cb0f",
+            "813bfbb42f0bc9c21488aca44df2a3477e47db594b3521885ea2fed39ea07f0a",
+            "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          ]
+        ]
+      }
+    }
+  ],
+  "observations": 536,
+  "physical_family_observations": 90,
+  "per_os_catalogues_equal": true,
+  "failed_observation": {
+    "run_id": "40109504699",
+    "run_attempt": "1",
+    "source_sha": "03785c3dcaa5c82df000eeca1471bd6ec698be00",
+    "platform": "linux",
+    "mode": "ci",
+    "test": "test_wex001_water_body_baseline",
+    "physical_family": false,
+    "registered_stress_case": false,
+    "seconds": "180.001",
+    "status": "timeout",
+    "timeout_seconds": 180,
+    "last_progress": "",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "native_sha256": "3bfe1679c6d0201203fcf99b6f53d7f50875a530611776787131d7dc1d5098c2",
+    "rapier_sha256": "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831",
+    "timing_basis": "runner-elapsed",
+    "evidence": "https://github.com/techrote/cybersand/actions/runs/40109504699/job/120919559036",
+    "job_id": 120919559036,
+    "artifact_id": 12566870789,
+    "artifact_name": "linux-godot-shard-2-40109504699",
+    "raw_log": "linux-godot-shard-2-40109504699/godot-regressions/shard-2/test_wex001_water_body_baseline.log",
+    "raw_log_sha256": "7bc01016e87df81a7d061676b660926ee58caa5dcd7a714bf4ba6c0880547465",
+    "diagnostic_seconds": "0.054",
+    "timeout_kind": null,
+    "timeout_diagnostics": "test_wex001_water_body_baseline.timeout-diagnostics.txt",
+    "native_runtime_source_sha": "03785c3dcaa5c82df000eeca1471bd6ec698be00",
+    "native_runtime_build_sha": "03785c3dcaa5c82df000eeca1471bd6ec698be00"
+  },
+  "timeout_log_review": {
+    "actual_completed_physics_receipts": 13,
+    "last_completed_receipt": {
+      "completed_ticks": 600,
+      "ok": true
+    },
+    "last_completed_fixture_spec": {
+      "id": "P1",
+      "workers": 4.0,
+      "ticks": 600.0
+    },
+    "no_final_WEX001_SUMMARY": true,
+    "no_REGRESSION_PROGRESS": true,
+    "raw_log_sha256": "7bc01016e87df81a7d061676b660926ee58caa5dcd7a714bf4ba6c0880547465",
+    "raw_snapshot_sha256": "639582b2e4969a75857dd1bdac613765b75293ddd4d013ddf412b55b6514dbad",
+    "process_snapshot": "Main thread Rsl, wait channel '-' at the instant of ps; other threads mostly futex_do_wait, one hrtimer_nanosleep. No native stack: snapshot explicitly records gdb not installed.",
+    "causal_limit": "Last completed internal fixture is P1. P2 is next in the declared fixture order, but no marker establishes it started. No hang-versus-load or Rapier/World/teardown mechanism is inferred from this snapshot."
+  },
+  "method": "Independent standard-library JSON reader, grouped by run/attempt/source/OS/test; Decimal median and nearest-rank p95. Each stratum has N=1.",
+  "reader_sha256": "aae69488eeb0a04de3a5e4f5bff342a354661507c0339e5fb6dea9ba6a082987",
+  "retained_csv_hash_scope": "SHA-256 of canonical UTF-8 text with LF endings, matching Git blob bytes; raw artifact/log hashes retain original byte scope.",
+  "retained_csv_sha256": {
+    "ordinary-adjacent-observations.csv": "6fa4463d4e6f03101b7acabee183a3e16b78f89b348ac797982c94b5b9785d9d",
+    "ordinary-adjacent-distributions.csv": "bd5dbff6e36bade854cc70a6c63ba765908785f7f3ceacd6a72215eb05710201",
+    "ordinary-adjacent-case-accounting.csv": "0ff3a7db9c36f729605c83ca5b2f38320c7d82eb720776117c45a62e29623ea2"
+  },
+  "limitations": [
+    "Original preceding-main timeout remains evidence; a later passing run does not replace it.",
+    "No CI rerun or physical-test retry was requested. An artifact-download transport retry did not execute a test.",
+    "GitHub archive digests are retained; these neighboring artifacts were downloaded extracted, so ZIP digests were not independently rehashed locally.",
+    "All ordinary cohort observations and preflights are excluded from the registered stress600N."
+  ]
+}

@@ -15,7 +15,7 @@ last-reviewed: 2026-10-24
 
 **Approved and Current:** Rapier2D is the sole runtime rigid-body backend.
 Retain exact Godot `4.7.stable.official.5b4e0cb0f` and the official 2D single
-Rapier add-on `v0.35.2`. The working #234 candidate selects the scoped Windows/Linux
+Rapier add-on `v0.35.2`. The qualified #234 repair selects the scoped Windows/Linux
 x86_64 cooperative deferred-BVH join backport on 2026-10-24. Other architectures and Web retain the
 original release artifacts. The add-on's broader 4.7.x declaration does not authorize
 untested dependency drift. Versions, release hashes and notices are in the
@@ -29,10 +29,15 @@ producer failure remain intact. Native cell authority, physics parameters,
 thread-pool size and engine-owned interfaces are unchanged. Per-platform runtime
 provenance retains the exact upstream sources, patch, dependency lock, compiler,
 build run and tested library hashes; the original release archive hash is preserved.
-This adopts the prior qualified PR #236 artifacts; it does not complete #234
-acceptance. The [integration ledger](../audits/2026-10-24-issue-234-physical-hang-repair.md)
-owns pending exact-head hosted gates and the fresh standard 600-attempt campaign,
-separately from the prior 300-candidate paired comparison and admitted #233 baseline.
+This adopts the prior qualified PR #236 artifacts. The integrated PR head passed
+exact-head ordinary gates and merged as `13b8e631f3e8fbaa2176ed41afc02c434b11e558`.
+The [integration ledger](../audits/2026-10-24-issue-234-physical-hang-repair.md)
+owns completed fresh standard qualification run `40129364630` at that source:
+600/600 physical passes, 0/600 timeouts, zero other failures and twenty passing
+imports, separately from the prior 300-candidate paired comparison and admitted
+#233 baseline. This qualifies the registered workload and exact desktop artifacts;
+native-worker count was not varied and the precise scheduler trigger remains
+unproven. It does not extend acceptance to other architectures or Web libraries.
 
 Ordinary RigidBody2D/RectangleShape2D nodes remain supported while
 `CyberRapierPhysicsBridge` owns explicit space stepping and direct-server state.

@@ -14,7 +14,7 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 The [investigation audit](../audits/2026-10-23-physical-actor-timeouts.md) preserves
 the two cited hosted runs, phase/blocking-path inspection and separate local
-stress evidence. [Draft PR #236](https://github.com/techrote/cybersand/pull/236)
+stress evidence. [PR #236](https://github.com/techrote/cybersand/pull/236)
 retains historical failures and separate candidate qualification. A queued stress
 job, successful rerun or local zero-timeout sample alone does not establish
 hosted resolution.
@@ -25,8 +25,18 @@ new symbolized control captures. Same-host run 40056501226 qualified the repair:
 Windows control arena 2/50 and rigs 4/50 timeouts, course 0/50; Linux control and
 all 300 patched trials passed. Exact tested desktop x86_64 backports are selected
 with source-matched manifests; other platforms retain original artifacts.
-Its helper regression, paired evidence and final full-suite/exact-head gates
-have separate scopes. Final gate receipts are recorded on PR #236's current head.
+Its helper regression and paired evidence have separate scopes. The
+[#234 integration ledger](../audits/2026-10-24-issue-234-physical-hang-repair.md)
+owns the integrated head's completed ordinary gates and merge source
+`13b8e631f3e8fbaa2176ed41afc02c434b11e558`. Ordinary Godot run `40125433675`
+retained 268 passing cases plus five passing imports, including 45 physical-family
+timing observations; fresh standard campaign `40129364630` completed 600/600
+physical passes, 0/600 timeouts, zero other failures and twenty passing imports
+at the merge source, with 50/50 passes in every OS/mode/test stratum. Independent
+raw readback and hosted completeness checks agree. Those ordinary and earlier paired samples remain
+outside the new campaign N. The [admitted #233 record](../audits/2026-10-24-issue-233-physical-regression-timeouts.md)
+retains its original 589 passes, eleven Windows timeouts and historical Linux
+failure without retroactively adding native stacks to those captures.
 
 ## GEN-005 semantic four-plane generation — 2026-10-21
 

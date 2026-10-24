@@ -1,0 +1,1086 @@
+{
+  "schema_version": 1,
+  "issue": 234,
+  "review_kind": "Adjacent ordinary CI observations, separate from exact-head PR admission",
+  "preceding_main_sha": "03785c3dcaa5c82df000eeca1471bd6ec698be00",
+  "repair_merge_sha": "13b8e631f3e8fbaa2176ed41afc02c434b11e558",
+  "ordinary_admission_preserved_at": "docs/audits/issue-234/ordinary-admission.json",
+  "notes": [
+    "These push runs are additional observations; they do not replace or relabel the pre-merge PR admission runs.",
+    "Every earlier failure remains retained alongside later results; no CI or test rerun was requested for this review.",
+    "Raw logs, snapshots, downloads and detailed readbacks live in ignored build caches and are not committed.",
+    "Physical timing rows and distributions are separately retained by run/source/runtime in ordinary-adjacent CSVs."
+  ],
+  "native_source_comparison": {
+    "command": "git diff --name-only 03785c3dcaa5c82df000eeca1471bd6ec698be00 13b8e631f3e8fbaa2176ed41afc02c434b11e558 -- native Makefile .github/workflows/native.yml",
+    "changed_paths": [],
+    "interpretation": "The repair does not change the Native code, tests, Makefile or Native workflow."
+  },
+  "preceding_native": {
+    "run_id": 40109504739,
+    "attempt": 1,
+    "source_sha": "03785c3dcaa5c82df000eeca1471bd6ec698be00",
+    "event": "push",
+    "workflow": ".github/workflows/native.yml",
+    "status": "completed",
+    "conclusion": "failure",
+    "job_id": 120918089344,
+    "url": "https://github.com/techrote/cybersand/actions/runs/40109504739",
+    "metadata": [
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-adjacent-ci/snapshots/40109504739-run-final.json",
+        "bytes": 12054,
+        "sha256": "afb10e448634f2b0a321f98144c63f5a6c587b85e96af44bd9ecd9ac0122ef50"
+      },
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-adjacent-ci/snapshots/40109504739-jobs-final.json",
+        "bytes": 5354,
+        "sha256": "e9b00034c76302ee63c22db360230b803c79562320d102df2d6c040e86bdf128"
+      }
+    ],
+    "job_status": "completed",
+    "job_conclusion": "failure",
+    "review_status": "read",
+    "full_log": {
+      "storage": "ignored local cache",
+      "repository_relative_path": "build/issue234-adjacent-ci/logs/native-40109504739.log",
+      "bytes": 136092,
+      "sha256": "e1d9445b2e52e3cf174b97515baac2072b46a7619aed5add3d6e859faeb4f5bc"
+    },
+    "executed_steps": [
+      {
+        "number": 2,
+        "name": "Check out source",
+        "conclusion": "success",
+        "started_at": "2026-10-24T16:00:05Z",
+        "completed_at": "2026-10-24T16:00:08Z",
+        "duration_seconds": 3.0,
+        "pass_line_count": 0,
+        "numeric_suite_counts": [],
+        "unittest_counts": [],
+        "step_log_sha256": "80a3d10d3cd1a0b2a51e269dc12033171257eb12f7e8e1b7d88dd48b3fd58bf9"
+      },
+      {
+        "number": 3,
+        "name": "Record compiler and linker identity",
+        "conclusion": "success",
+        "started_at": "2026-10-24T16:00:08Z",
+        "completed_at": "2026-10-24T16:00:08Z",
+        "duration_seconds": 0.0,
+        "pass_line_count": 0,
+        "numeric_suite_counts": [],
+        "unittest_counts": [],
+        "step_log_sha256": "b3ce9d189317586dc82af51b95e8f6899da6b9ec799b677f7a44f5bfb2ca2c57"
+      },
+      {
+        "number": 4,
+        "name": "Compile C API and native tests",
+        "conclusion": "success",
+        "started_at": "2026-10-24T16:00:08Z",
+        "completed_at": "2026-10-24T16:00:32Z",
+        "duration_seconds": 24.0,
+        "pass_line_count": 0,
+        "numeric_suite_counts": [],
+        "unittest_counts": [],
+        "step_log_sha256": "5eb26d34261ae9cfed1433563c2b07b66d00bcf6ca080b70358387b2829c6c4d"
+      },
+      {
+        "number": 5,
+        "name": "Run native behavioral and integration suite",
+        "conclusion": "success",
+        "started_at": "2026-10-24T16:00:32Z",
+        "completed_at": "2026-10-24T16:04:33Z",
+        "duration_seconds": 241.0,
+        "pass_line_count": 107,
+        "numeric_suite_counts": [
+          107
+        ],
+        "unittest_counts": [],
+        "step_log_sha256": "3d0436a8be4a9c9ae7dda6295c8315385bcdc6640026e20b5b1dcfdc91e1c81c"
+      },
+      {
+        "number": 6,
+        "name": "Sanitize physics CLI material admission and sampled accounting",
+        "conclusion": "success",
+        "started_at": "2026-10-24T16:04:33Z",
+        "completed_at": "2026-10-24T16:05:56Z",
+        "duration_seconds": 83.0,
+        "pass_line_count": 0,
+        "numeric_suite_counts": [],
+        "unittest_counts": [
+          3
+        ],
+        "step_log_sha256": "c26d27c35c1603450a3b78df21068d246e1bfd20d514fd7fe8fd6cf001e9dff5"
+      },
+      {
+        "number": 7,
+        "name": "Retain physics CLI results and sanitizer logs",
+        "conclusion": "success",
+        "started_at": "2026-10-24T16:05:56Z",
+        "completed_at": "2026-10-24T16:05:58Z",
+        "duration_seconds": 2.0,
+        "pass_line_count": 0,
+        "numeric_suite_counts": [],
+        "unittest_counts": [],
+        "step_log_sha256": "82719eea8e7791ce14c9578f2f1d9d9d7e86fcf52aa437a1b830a748180700b6"
+      },
+      {
+        "number": 8,
+        "name": "Validate procedural generation candidates and fresh chunk admission",
+        "conclusion": "success",
+        "started_at": "2026-10-24T16:05:58Z",
+        "completed_at": "2026-10-24T16:09:05Z",
+        "duration_seconds": 187.0,
+        "pass_line_count": 0,
+        "numeric_suite_counts": [],
+        "unittest_counts": [],
+        "step_log_sha256": "447bd1535d307e384754c442c63d92e3a4a3f3a051f39e0461a6d95036da9ee4"
+      },
+      {
+        "number": 9,
+        "name": "Sanitize procedural generation and chunk admission",
+        "conclusion": "success",
+        "started_at": "2026-10-24T16:09:05Z",
+        "completed_at": "2026-10-24T16:17:18Z",
+        "duration_seconds": 493.0,
+        "pass_line_count": 0,
+        "numeric_suite_counts": [],
+        "unittest_counts": [],
+        "step_log_sha256": "98a6c7985ee7b6ee3ace4dc68428d3b7fe3c8d877c544c30f3d38e7963b7251b"
+      },
+      {
+        "number": 10,
+        "name": "Run soliding contract regressions",
+        "conclusion": "success",
+        "started_at": "2026-10-24T16:17:18Z",
+        "completed_at": "2026-10-24T16:19:17Z",
+        "duration_seconds": 119.0,
+        "pass_line_count": 0,
+        "numeric_suite_counts": [],
+        "unittest_counts": [],
+        "step_log_sha256": "6b529eb9ccee86af5eef9272ef45231c0267fdaeee8e4b3c1e0bdaf4811be958"
+      },
+      {
+        "number": 11,
+        "name": "Smoke-test isolated discovery characterization",
+        "conclusion": "success",
+        "started_at": "2026-10-24T16:19:17Z",
+        "completed_at": "2026-10-24T16:19:19Z",
+        "duration_seconds": 2.0,
+        "pass_line_count": 0,
+        "numeric_suite_counts": [],
+        "unittest_counts": [],
+        "step_log_sha256": "078d4b95c53e9ce686149aca3c4a9857107475bfd2d30e9cf6b310cd686ad92e"
+      },
+      {
+        "number": 12,
+        "name": "Validate Stage-3B preregistration apparatus",
+        "conclusion": "success",
+        "started_at": "2026-10-24T16:19:19Z",
+        "completed_at": "2026-10-24T16:19:19Z",
+        "duration_seconds": 0.0,
+        "pass_line_count": 0,
+        "numeric_suite_counts": [],
+        "unittest_counts": [
+          7
+        ],
+        "step_log_sha256": "56b69e35a6f4f48a7a32a3f49a14f454aeb246366076c380e44a072cbd5d1ff6"
+      },
+      {
+        "number": 13,
+        "name": "Smoke-test retained Stage-3 benchmark lineage",
+        "conclusion": "success",
+        "started_at": "2026-10-24T16:19:19Z",
+        "completed_at": "2026-10-24T16:19:41Z",
+        "duration_seconds": 22.0,
+        "pass_line_count": 0,
+        "numeric_suite_counts": [],
+        "unittest_counts": [],
+        "step_log_sha256": "504630b2918cdd5f4532114f1f8bdfdf1b515e491a48fd679a0a5e6e36ce0f55"
+      },
+      {
+        "number": 14,
+        "name": "Compile and run ASan plus UBSan",
+        "conclusion": "success",
+        "started_at": "2026-10-24T16:19:41Z",
+        "completed_at": "2026-10-24T16:25:38Z",
+        "duration_seconds": 357.0,
+        "pass_line_count": 107,
+        "numeric_suite_counts": [
+          107
+        ],
+        "unittest_counts": [],
+        "step_log_sha256": "068f1f0c499fe726c0cca7ff0275eaeaaa19c6a7a8bbd9546694d50071aeeebb"
+      },
+      {
+        "number": 15,
+        "name": "Build and characterize sanitized settled-regions regression",
+        "conclusion": "success",
+        "started_at": "2026-10-24T16:25:38Z",
+        "completed_at": "2026-10-24T16:36:57Z",
+        "duration_seconds": 679.0,
+        "pass_line_count": 0,
+        "numeric_suite_counts": [],
+        "unittest_counts": [],
+        "step_log_sha256": "f26745295f19cef17e2f6ee2daec17d47c79ae030f4633170fe208830399ab81"
+      },
+      {
+        "number": 16,
+        "name": "Sanitize soliding contract regressions",
+        "conclusion": "failure",
+        "started_at": "2026-10-24T16:36:57Z",
+        "completed_at": "2026-10-24T16:46:57Z",
+        "duration_seconds": 600.0,
+        "pass_line_count": 0,
+        "numeric_suite_counts": [],
+        "unittest_counts": [],
+        "step_log_sha256": "4492f47f2749765852280f42b4d0cfb57547baa4726e6c1f720f99e0c9f84d42"
+      }
+    ],
+    "nonpassing_or_sanitizer_findings": [
+      "##[error]Process completed with exit code 124."
+    ],
+    "skipped_steps": [
+      "Compile and run TSan",
+      "Compile shared library and benchmark"
+    ],
+    "independent_readback_issues": [],
+    "step_attribution": "Ordered Run command-group boundaries; REST step timestamps have only second precision.",
+    "failure_readback": {
+      "classification": "Bounded Native sanitizer build-command timeout; not a Godot physical-test timeout.",
+      "step": "Sanitize soliding contract regressions",
+      "command_timeout_seconds": 600,
+      "command": "timeout 10m env ASAN_OPTIONS=... UBSAN_OPTIONS=... make soliding-sanitize",
+      "last_compiling_target": "build/test_stage3b_sparse_activity_deadline_sanitized",
+      "last_compile_timestamp": "2026-10-24T16:45:54.5459309Z",
+      "termination_timestamp": "2026-10-24T16:46:57.7117373Z",
+      "exit_code": 124,
+      "normal_suite_passed": 107,
+      "asan_ubsan_suite_passed": 107,
+      "tsan_executed": false,
+      "shared_library_benchmark_executed": false,
+      "limitations": [
+        "No sanitizer runtime finding is captured before the build-command timeout.",
+        "This identifies the observed failing command and target, not why compilation consumed its bound."
+      ]
+    }
+  },
+  "preceding_godot": {
+    "run_id": 40109504699,
+    "attempt": 1,
+    "source_sha": "03785c3dcaa5c82df000eeca1471bd6ec698be00",
+    "conclusion": "failure",
+    "total_cases": 268,
+    "preflights": 5,
+    "counts": {
+      "passed": 272,
+      "timeout": 1
+    },
+    "windows": {
+      "case_count": 128,
+      "counts": {
+        "passed": 129
+      },
+      "native": {
+        "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "sha256": "813bfbb42f0bc9c21488aca44df2a3477e47db594b3521885ea2fed39ea07f0a",
+        "size": 4352512
+      },
+      "rapier": {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "sha256": "4e26ffa78ec2aaff434c4a70cd2ec85288b10ba5237912c35f204cb1e6ed2180",
+        "size": 10018816
+      },
+      "godot": {
+        "archive_sha512": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+        "archive_size": 83764371,
+        "console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "runtime_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "source_drift": []
+    },
+    "linux": {
+      "case_count": 140,
+      "counts": {
+        "passed": 143,
+        "timeout": 1
+      },
+      "identities": [
+        {
+          "cybersand_runtime": {
+            "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "sha256": "3bfe1679c6d0201203fcf99b6f53d7f50875a530611776787131d7dc1d5098c2"
+          },
+          "godot_version": "4.7.stable.official.5b4e0cb0f",
+          "rapier_runtime": {
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+            "sha256": "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831"
+          },
+          "shard_count": 4,
+          "shard_index": 0,
+          "source_sha": "03785c3dcaa5c82df000eeca1471bd6ec698be00"
+        },
+        {
+          "cybersand_runtime": {
+            "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "sha256": "3bfe1679c6d0201203fcf99b6f53d7f50875a530611776787131d7dc1d5098c2"
+          },
+          "godot_version": "4.7.stable.official.5b4e0cb0f",
+          "rapier_runtime": {
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+            "sha256": "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831"
+          },
+          "shard_count": 4,
+          "shard_index": 1,
+          "source_sha": "03785c3dcaa5c82df000eeca1471bd6ec698be00"
+        },
+        {
+          "cybersand_runtime": {
+            "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "sha256": "3bfe1679c6d0201203fcf99b6f53d7f50875a530611776787131d7dc1d5098c2"
+          },
+          "godot_version": "4.7.stable.official.5b4e0cb0f",
+          "rapier_runtime": {
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+            "sha256": "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831"
+          },
+          "shard_count": 4,
+          "shard_index": 2,
+          "source_sha": "03785c3dcaa5c82df000eeca1471bd6ec698be00"
+        },
+        {
+          "cybersand_runtime": {
+            "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "sha256": "3bfe1679c6d0201203fcf99b6f53d7f50875a530611776787131d7dc1d5098c2"
+          },
+          "godot_version": "4.7.stable.official.5b4e0cb0f",
+          "rapier_runtime": {
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+            "sha256": "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831"
+          },
+          "shard_count": 4,
+          "shard_index": 3,
+          "source_sha": "03785c3dcaa5c82df000eeca1471bd6ec698be00"
+        }
+      ]
+    },
+    "nonpassing": [
+      {
+        "command": [
+          "/home/runner/work/_temp/godot/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/home/runner/work/cybersand/cybersand/godot",
+          "--script",
+          "res://tests/test_wex001_water_body_baseline.gd"
+        ],
+        "diagnostic_error": false,
+        "diagnostic_seconds": 0.054,
+        "last_progress": null,
+        "launch_error": null,
+        "log": "test_wex001_water_body_baseline.log",
+        "name": "test_wex001_water_body_baseline",
+        "pid": 5079,
+        "requires_display": false,
+        "returncode": null,
+        "role": "case",
+        "seconds": 180.001,
+        "skip_messages": [],
+        "status": "timeout",
+        "timeout_diagnostic_error": null,
+        "timeout_diagnostics": "test_wex001_water_body_baseline.timeout-diagnostics.txt",
+        "timeout_seconds": 180
+      }
+    ],
+    "integrity_issues": [],
+    "event": "push",
+    "url": "https://github.com/techrote/cybersand/actions/runs/40109504699",
+    "workflow": ".github/workflows/gdextension.yml",
+    "derivation": {
+      "storage": "ignored local cache",
+      "repository_relative_path": "build/issue234-ordinary-review-40109504699/independent-adjacent-review.json",
+      "bytes": 4880,
+      "sha256": "18463f36efc9715362aec0aecada9cd12b2b7af4c9e8ee9e502cc6c111c67e46"
+    },
+    "metadata": [
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-ordinary-review-40109504699/run.json",
+        "bytes": 12084,
+        "sha256": "eb086b9eff9dcb62ee9a6297c064272608c83830532f510398b99b44056a495a"
+      },
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-ordinary-review-40109504699/jobs.json",
+        "bytes": 24761,
+        "sha256": "0d2986c3766bacbcc9a470fde806a32aa1ec4fe02309635fa1bf564b939e4357"
+      },
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-ordinary-review-40109504699/artifact-catalogue.json",
+        "bytes": 4896,
+        "sha256": "fb4c2e15914b4b119746f145ae9584b91b742040c99894f3b9a613144673b642"
+      }
+    ],
+    "raw_log_receipts": [
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-ordinary-review-40109504699/logs/linux-shard-0.log",
+        "bytes": 176183,
+        "sha256": "67d5fe339ad5d600e9dbde390a489a72ae6520e1c862fa1aa34be62e22b93daa"
+      },
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-ordinary-review-40109504699/logs/linux-shard-1.log",
+        "bytes": 165715,
+        "sha256": "312c435d576511c88bd9e957354263e83dd1037b341e64413e81706b208ed1c6"
+      },
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-ordinary-review-40109504699/logs/linux-shard-2.log",
+        "bytes": 1633053,
+        "sha256": "301466fa21184e78fb24b1daa914f83aebd5336c379fb5230b925349638f0029"
+      },
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-ordinary-review-40109504699/logs/linux-shard-3.log",
+        "bytes": 218956,
+        "sha256": "fd834d9bfaf0b590dd8b688ea5b8cc71c3fe7750784c43d548338f82f7c8df9b"
+      },
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-ordinary-review-40109504699/logs/windows.log",
+        "bytes": 1934092,
+        "sha256": "e4919c36e45b4c77e0f9ac33bb0f29e6f78330117bbe2cb8605e60bafa62780d"
+      }
+    ],
+    "artifacts": [
+      {
+        "id": 12566965633,
+        "name": "windows-godot-headless-40109504699",
+        "digest": "sha256:786c57cccdd9ef172681a5046f3148cef7763077b6edeb8a9dcc068cc93cb2e0",
+        "expired": false,
+        "size_in_bytes": 547313
+      },
+      {
+        "id": 12566870789,
+        "name": "linux-godot-shard-2-40109504699",
+        "digest": "sha256:9c44830f35184516be60e077c27913e531a7bea5e933ee1e17fa036c92ec9a7e",
+        "expired": false,
+        "size_in_bytes": 426528
+      },
+      {
+        "id": 12566660487,
+        "name": "linux-runtime-40109504699",
+        "digest": "sha256:8550d52988a772871fa982c1d6136579189aa28aaafe9dff9ed93bf309e33f1a",
+        "expired": false,
+        "size_in_bytes": 4762508
+      },
+      {
+        "id": 12566386526,
+        "name": "linux-godot-shard-3-40109504699",
+        "digest": "sha256:6aa2bd48ae1dce891166a2f97fe9cc02fb4144fb3a4caf5e247a27646171b16c",
+        "expired": false,
+        "size_in_bytes": 37112
+      },
+      {
+        "id": 12566033535,
+        "name": "linux-godot-shard-1-40109504699",
+        "digest": "sha256:3246ecaf8975a56b06bcc832bd0ac6c21cf5d7a4aeacdba3952c5eaf88c11e9b",
+        "expired": false,
+        "size_in_bytes": 385439
+      },
+      {
+        "id": 12565893996,
+        "name": "physical-timing-40109504699-1",
+        "digest": "sha256:4909cb535a39e80afffa664b6cbdfdfe3de282a65b8d2cce24c44e9331ea5391",
+        "expired": false,
+        "size_in_bytes": 3245
+      },
+      {
+        "id": 12565364891,
+        "name": "linux-godot-shard-0-40109504699",
+        "digest": "sha256:c0d47e97004dca39fedb79ac75a3dfc2dee3cb03c2a89c7bdab6ddacf5f63b10",
+        "expired": false,
+        "size_in_bytes": 486448
+      }
+    ],
+    "runtime_jobs": [
+      {
+        "id": 120918089527,
+        "name": "windows headless regression",
+        "conclusion": "success"
+      },
+      {
+        "id": 120919559036,
+        "name": "linux regression shard 2",
+        "conclusion": "failure"
+      },
+      {
+        "id": 120919559065,
+        "name": "linux regression shard 0",
+        "conclusion": "success"
+      },
+      {
+        "id": 120919559066,
+        "name": "linux regression shard 3",
+        "conclusion": "success"
+      },
+      {
+        "id": 120919559117,
+        "name": "linux regression shard 1",
+        "conclusion": "success"
+      },
+      {
+        "id": 120923555623,
+        "name": "physical regression timing distribution",
+        "conclusion": "success"
+      }
+    ],
+    "integrity_scope": [
+      "Every retained Windows per-test log SHA256 was checked against its manifest.",
+      "Every shard manifest source identity matches this run source.",
+      "GitHub ZIP digest metadata is retained; gh extracted downloads were not independently rehashed as ZIPs."
+    ],
+    "timeout_readback": {
+      "case": "test_wex001_water_body_baseline",
+      "os": "Linux",
+      "shard_index": 2,
+      "elapsed_seconds": 180.001,
+      "timeout_seconds": 180,
+      "diagnostic_seconds": 0.054,
+      "last_progress": null,
+      "log_bytes": 1231982,
+      "log_sha256": "7bc01016e87df81a7d061676b660926ee58caa5dcd7a714bf4ba6c0880547465",
+      "diagnostic_bytes": 264160,
+      "diagnostic_sha256": "639582b2e4969a75857dd1bdac613765b75293ddd4d013ddf412b55b6514dbad",
+      "completed_result_count": 13,
+      "completed_results": [
+        {
+          "spec": {
+            "id": "W0",
+            "workers": 1.0,
+            "ticks": 360.0,
+            "mode": "none",
+            "seed": 0.0,
+            "wex001": true
+          },
+          "ok": true,
+          "completed_ticks": 360,
+          "last_wex_surface_tick": 360
+        },
+        {
+          "spec": {
+            "id": "W1",
+            "workers": 1.0,
+            "ticks": 360.0,
+            "mode": "none",
+            "seed": 0.0,
+            "wex001": true
+          },
+          "ok": true,
+          "completed_ticks": 360,
+          "last_wex_surface_tick": 360
+        },
+        {
+          "spec": {
+            "id": "H0",
+            "workers": 1.0,
+            "ticks": 360.0,
+            "mode": "barrel",
+            "seed": 0.0,
+            "wex001": true
+          },
+          "ok": true,
+          "completed_ticks": 360,
+          "last_wex_surface_tick": 360
+        },
+        {
+          "spec": {
+            "id": "Sg",
+            "workers": 1.0,
+            "ticks": 600.0,
+            "mode": "barrel",
+            "seed": 0.0,
+            "wex001": true
+          },
+          "ok": true,
+          "completed_ticks": 600,
+          "last_wex_surface_tick": 600
+        },
+        {
+          "spec": {
+            "id": "Sm",
+            "workers": 1.0,
+            "ticks": 600.0,
+            "mode": "barrel",
+            "seed": 0.0,
+            "wex001": true
+          },
+          "ok": true,
+          "completed_ticks": 600,
+          "last_wex_surface_tick": 600
+        },
+        {
+          "spec": {
+            "id": "Sh",
+            "workers": 1.0,
+            "ticks": 600.0,
+            "mode": "barrel",
+            "seed": 0.0,
+            "wex001": true
+          },
+          "ok": true,
+          "completed_ticks": 600,
+          "last_wex_surface_tick": 600
+        },
+        {
+          "spec": {
+            "id": "Dn",
+            "workers": 1.0,
+            "ticks": 60.0,
+            "mode": "barrel",
+            "seed": 0.0,
+            "wex001": true
+          },
+          "ok": true,
+          "completed_ticks": 60,
+          "last_wex_surface_tick": 60
+        },
+        {
+          "spec": {
+            "id": "Dm",
+            "workers": 1.0,
+            "ticks": 600.0,
+            "mode": "barrel",
+            "seed": 0.0,
+            "wex001": true
+          },
+          "ok": true,
+          "completed_ticks": 600,
+          "last_wex_surface_tick": 600
+        },
+        {
+          "spec": {
+            "id": "Dl",
+            "workers": 1.0,
+            "ticks": 900.0,
+            "mode": "barrel",
+            "seed": 0.0,
+            "wex001": true
+          },
+          "ok": true,
+          "completed_ticks": 900,
+          "last_wex_surface_tick": 900
+        },
+        {
+          "spec": {
+            "id": "M-",
+            "workers": 1.0,
+            "ticks": 600.0,
+            "mode": "barrel",
+            "seed": 0.0,
+            "wex001": true
+          },
+          "ok": true,
+          "completed_ticks": 600,
+          "last_wex_surface_tick": 600
+        },
+        {
+          "spec": {
+            "id": "M+",
+            "workers": 1.0,
+            "ticks": 600.0,
+            "mode": "barrel",
+            "seed": 0.0,
+            "wex001": true
+          },
+          "ok": true,
+          "completed_ticks": 600,
+          "last_wex_surface_tick": 600
+        },
+        {
+          "spec": {
+            "id": "T",
+            "workers": 1.0,
+            "ticks": 600.0,
+            "mode": "barrel",
+            "seed": 0.0,
+            "wex001": true
+          },
+          "ok": true,
+          "completed_ticks": 600,
+          "last_wex_surface_tick": 600
+        },
+        {
+          "spec": {
+            "id": "P1",
+            "workers": 4.0,
+            "ticks": 600.0,
+            "mode": "barrel",
+            "seed": 0.0,
+            "wex001": true
+          },
+          "ok": true,
+          "completed_ticks": 600,
+          "last_wex_surface_tick": 600
+        }
+      ],
+      "process_snapshot": {
+        "root_pid": 5079,
+        "root_state": "Rsl (runnable)",
+        "elapsed": "3:00",
+        "thread_count": 14,
+        "worker_observations": "GodotWorker0..3 in futex waits; one thread in hrtimer sleep.",
+        "native_stack": null,
+        "debugger_refusal": "GDB not installed (explicitly recorded)."
+      },
+      "limitations": [
+        "No fixture REGRESSION_PROGRESS marker or native stack identifies the current call.",
+        "The last P1 workers=4 completed result at tick600 is prior completed context; it does not locate the blocked phase.",
+        "The snapshot alone does not distinguish a hang from slowness or establish Rapier causality.",
+        "This case is outside the three registered physical suspects; all three suspect cases passed in this run."
+      ],
+      "raw_derivation": {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-adjacent-ci/wex001-timeout-readback.json",
+        "bytes": 6320,
+        "sha256": "981300cd8261ae684bad079b427ed1f14d89631cddf79425cbfbb08a33a4b4c1"
+      }
+    }
+  },
+  "postmerge_docs": {
+    "run_id": 40129347305,
+    "attempt": 1,
+    "source_sha": "13b8e631f3e8fbaa2176ed41afc02c434b11e558",
+    "event": "push",
+    "conclusion": "success",
+    "url": "https://github.com/techrote/cybersand/actions/runs/40129347305",
+    "jobs": [
+      {
+        "id": 120977521064,
+        "name": "consistency",
+        "conclusion": "success"
+      }
+    ],
+    "provider_policy": "passed; GitHub-hosted Actions; 6 focused provider-policy tests passed",
+    "full_log": {
+      "storage": "ignored local cache",
+      "repository_relative_path": "build/issue234-adjacent-ci/logs/docs-40129347305.log",
+      "bytes": 83396,
+      "sha256": "c6afd59ed201b30620602d2edfee8306526fffafcf1d177633be242f2791e35e"
+    },
+    "metadata": [
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-adjacent-ci/snapshots/40129347305-run-final.json",
+        "bytes": 12076,
+        "sha256": "f11518386a5e7c8a3d04903ee866a9265303916fb39c61a341d64abfa5cc440a"
+      },
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-adjacent-ci/snapshots/40129347305-jobs-final.json",
+        "bytes": 4389,
+        "sha256": "7fdc5cabf74edcd8589ae34ddb27d3297a96ab9b55bacd7a6bbe109441fc9918"
+      }
+    ]
+  },
+  "postmerge_godot": {
+    "run_id": 40129347402,
+    "attempt": 1,
+    "source_sha": "13b8e631f3e8fbaa2176ed41afc02c434b11e558",
+    "conclusion": "success",
+    "total_cases": 268,
+    "preflights": 5,
+    "counts": {
+      "passed": 273
+    },
+    "windows": {
+      "case_count": 128,
+      "counts": {
+        "passed": 129
+      },
+      "native": {
+        "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "sha256": "813bfbb42f0bc9c21488aca44df2a3477e47db594b3521885ea2fed39ea07f0a",
+        "size": 4352512
+      },
+      "rapier": {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "size": 9987072
+      },
+      "godot": {
+        "archive_sha512": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+        "archive_size": 83764371,
+        "console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "runtime_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "source_drift": []
+    },
+    "linux": {
+      "case_count": 140,
+      "counts": {
+        "passed": 144
+      },
+      "identities": [
+        {
+          "cybersand_runtime": {
+            "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "sha256": "3bfe1679c6d0201203fcf99b6f53d7f50875a530611776787131d7dc1d5098c2"
+          },
+          "godot_version": "4.7.stable.official.5b4e0cb0f",
+          "rapier_runtime": {
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+            "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+          },
+          "shard_count": 4,
+          "shard_index": 0,
+          "source_sha": "13b8e631f3e8fbaa2176ed41afc02c434b11e558"
+        },
+        {
+          "cybersand_runtime": {
+            "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "sha256": "3bfe1679c6d0201203fcf99b6f53d7f50875a530611776787131d7dc1d5098c2"
+          },
+          "godot_version": "4.7.stable.official.5b4e0cb0f",
+          "rapier_runtime": {
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+            "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+          },
+          "shard_count": 4,
+          "shard_index": 1,
+          "source_sha": "13b8e631f3e8fbaa2176ed41afc02c434b11e558"
+        },
+        {
+          "cybersand_runtime": {
+            "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "sha256": "3bfe1679c6d0201203fcf99b6f53d7f50875a530611776787131d7dc1d5098c2"
+          },
+          "godot_version": "4.7.stable.official.5b4e0cb0f",
+          "rapier_runtime": {
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+            "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+          },
+          "shard_count": 4,
+          "shard_index": 2,
+          "source_sha": "13b8e631f3e8fbaa2176ed41afc02c434b11e558"
+        },
+        {
+          "cybersand_runtime": {
+            "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "sha256": "3bfe1679c6d0201203fcf99b6f53d7f50875a530611776787131d7dc1d5098c2"
+          },
+          "godot_version": "4.7.stable.official.5b4e0cb0f",
+          "rapier_runtime": {
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+            "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+          },
+          "shard_count": 4,
+          "shard_index": 3,
+          "source_sha": "13b8e631f3e8fbaa2176ed41afc02c434b11e558"
+        }
+      ]
+    },
+    "nonpassing": [],
+    "integrity_issues": [],
+    "event": "push",
+    "url": "https://github.com/techrote/cybersand/actions/runs/40129347402",
+    "workflow": ".github/workflows/gdextension.yml",
+    "derivation": {
+      "storage": "ignored local cache",
+      "repository_relative_path": "build/issue234-ordinary-review-40129347402/independent-adjacent-review.json",
+      "bytes": 3991,
+      "sha256": "a6c551f9af4d94b6c86187aab12fa1ad23e9d40538bbba8959af633bf9c437b7"
+    },
+    "metadata": [
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-ordinary-review-40129347402/run.json",
+        "bytes": 12462,
+        "sha256": "88e833b06bbc77d9a96987410b49e38dfac551974395bc15b4e7b8a6a0be8c35"
+      },
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-ordinary-review-40129347402/jobs.json",
+        "bytes": 26715,
+        "sha256": "2dbb0d65e70896a6a14ee84006ee81980a019b6dc235773f69ba7726267f7463"
+      },
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-ordinary-review-40129347402/artifact-catalogue.json",
+        "bytes": 4897,
+        "sha256": "b19f9efd57ad37e718c00edbdf920464dd667f725da527a808856d0d8d231e9a"
+      }
+    ],
+    "raw_log_receipts": [
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-ordinary-review-40129347402/logs/linux-shard-0.log",
+        "bytes": 328595,
+        "sha256": "e91d1376086348dfb6aedc73d7131069c8d194889bc619486f71d7f6cfe4fb54"
+      },
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-ordinary-review-40129347402/logs/linux-shard-1.log",
+        "bytes": 177121,
+        "sha256": "ad471769b210b1cc6e2732cd3ea57292eb985afe1546dcdac3a0e4465f04d8de"
+      },
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-ordinary-review-40129347402/logs/linux-shard-2.log",
+        "bytes": 1633933,
+        "sha256": "217edc28774accc3e9815ed1e28c563cbb227e2d0275d751c0cf3a72b839b43b"
+      },
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-ordinary-review-40129347402/logs/linux-shard-3.log",
+        "bytes": 262930,
+        "sha256": "5aacbee9dc76825f5c695c4cdddd967e211de518b6e69f262aa152962e7d340f"
+      },
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-ordinary-review-40129347402/logs/windows.log",
+        "bytes": 2159773,
+        "sha256": "b7323bb282bae8dd5ac5e12e6a0cc9a0e45239951bc49c18b2fc78b17412317d"
+      }
+    ],
+    "artifacts": [
+      {
+        "id": 12574972739,
+        "name": "windows-godot-headless-40129347402",
+        "digest": "sha256:da7ca2f45bd9e85906068101d0d72e3b3513bac388241f2e9af8dec0560cb130",
+        "expired": false,
+        "size_in_bytes": 563130
+      },
+      {
+        "id": 12574907984,
+        "name": "physical-timing-40129347402-1",
+        "digest": "sha256:728c0bb899b907471299256eac2e4a2c347eff1c174b50112dddb08852798a35",
+        "expired": false,
+        "size_in_bytes": 3266
+      },
+      {
+        "id": 12574524325,
+        "name": "linux-godot-shard-0-40129347402",
+        "digest": "sha256:03c728694aa622bd2b46a701100565e05a4bc53e668f07d8add714c48d88d2dd",
+        "expired": false,
+        "size_in_bytes": 498496
+      },
+      {
+        "id": 12574439596,
+        "name": "linux-godot-shard-1-40129347402",
+        "digest": "sha256:1250a26e073c9d028ff72a2776f401df4c03e0023c4ebdea4d5dc51399b6c84a",
+        "expired": false,
+        "size_in_bytes": 386696
+      },
+      {
+        "id": 12574263099,
+        "name": "linux-godot-shard-2-40129347402",
+        "digest": "sha256:44b951e8ea5d893f5aad9085da3701fb3c3b0a57c36d003b9fda391d3933514f",
+        "expired": false,
+        "size_in_bytes": 441777
+      },
+      {
+        "id": 12573899821,
+        "name": "linux-godot-shard-3-40129347402",
+        "digest": "sha256:efe25207022ccfcca0a18ee1c22e96ec26325fa5e5125712ff4eb0a7cb95bd5c",
+        "expired": false,
+        "size_in_bytes": 40445
+      },
+      {
+        "id": 12573852238,
+        "name": "linux-runtime-40129347402",
+        "digest": "sha256:168f1a69021b91db3faf497a535e3c08a5fb6b9d32e11d348ea81874b5ba52ec",
+        "expired": false,
+        "size_in_bytes": 21721912
+      }
+    ],
+    "runtime_jobs": [
+      {
+        "id": 120977521633,
+        "name": "windows headless regression",
+        "conclusion": "success"
+      },
+      {
+        "id": 120979390113,
+        "name": "linux regression shard 2",
+        "conclusion": "success"
+      },
+      {
+        "id": 120979390129,
+        "name": "linux regression shard 0",
+        "conclusion": "success"
+      },
+      {
+        "id": 120979390212,
+        "name": "linux regression shard 3",
+        "conclusion": "success"
+      },
+      {
+        "id": 120979390318,
+        "name": "linux regression shard 1",
+        "conclusion": "success"
+      },
+      {
+        "id": 120981983777,
+        "name": "physical regression timing distribution",
+        "conclusion": "success"
+      }
+    ],
+    "integrity_scope": [
+      "Every retained Windows per-test log SHA256 was checked against its manifest.",
+      "Every shard manifest source identity matches this run source.",
+      "GitHub ZIP digest metadata is retained; gh extracted downloads were not independently rehashed as ZIPs."
+    ],
+    "internal_watchdog_probe": {
+      "windows": {
+        "guard_observed_ms": 54,
+        "main_returned_ms": 1001
+      },
+      "linux_shard_0": {
+        "guard_observed_ms": 50,
+        "main_returned_ms": 1000
+      },
+      "result": "Healthy probe passed; blocked-main probe verified sticky failure and observer join.",
+      "test_override_only": true,
+      "production_guard_seconds": 120,
+      "ordinary_physical_timeout_seconds": 180
+    }
+  },
+  "postmerge_native": {
+    "run_id": 40129347322,
+    "attempt": 1,
+    "source_sha": "13b8e631f3e8fbaa2176ed41afc02c434b11e558",
+    "event": "push",
+    "workflow": ".github/workflows/native.yml",
+    "status": "in_progress",
+    "conclusion": null,
+    "job_id": 120977521142,
+    "url": "https://github.com/techrote/cybersand/actions/runs/40129347322",
+    "metadata": [
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-adjacent-ci/snapshots/40129347322-run-current.json",
+        "bytes": 12059,
+        "sha256": "64b31c08b2f580ac848aecdf7df94ee88224f5a6aa22c10c83e6b5761512b2ad"
+      },
+      {
+        "storage": "ignored local cache",
+        "repository_relative_path": "build/issue234-adjacent-ci/snapshots/40129347322-jobs-current.json",
+        "bytes": 4986,
+        "sha256": "ea356a6836c919997cd3a7a8fcc9b3ff2e26720d1b7ebc50339b7e27698b1873"
+      }
+    ],
+    "job_status": "in_progress",
+    "job_conclusion": null,
+    "review_status": "pending full job log",
+    "active_steps": [
+      "Build and characterize sanitized settled-regions regression"
+    ]
+  }
+}
