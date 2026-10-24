@@ -412,8 +412,10 @@ python -m unittest discover -s tools/lcb -p 'test_*.py'
 
 The two new oracles compare complete canonical byte vectors with independent
 Python encoders. Source-sensitive runtime publication remains required before
-ready-PR acceptance. Keep the successor draft while release binaries are stale;
-scratch Windows proof does not reattest retained Linux/Windows libraries. The
+ready-PR acceptance. Both development runtimes passed scoped publication in
+run `40138333825` at source `29c7c4d`, appended as `888a39f0`; the dated audit
+records their hashes and exact coverage. Full non-draft acceptance remains
+separate. Scratch Windows proof does not reattest retained libraries. The
 Godot normalization opt-in and full application host are separate integration
 work, and no new #201/#212 implementation is included in this checkpoint.
 

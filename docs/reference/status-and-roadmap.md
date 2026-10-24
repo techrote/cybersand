@@ -783,12 +783,13 @@ encoding freeze does not establish a global ABI or full-host evidence freeze.
 
 Read the [canonical native contract](../architecture/liquid-prepared-setup-and-receipts.md)
 and [dated evidence](../audits/2026-10-24-lcb001-residual-shared-contract.md).
-Final LLVM-MinGW and MSVC builds pass **121/121** at the ordinary 1 MiB stack;
+Final LLVM-MinGW and MSVC builds pass **126/126** at the ordinary 1 MiB stack;
 eight normalization and seven complete receipt byte vectors match independent
-Python oracles. A fresh local Windows DLL passes policy/pressure/receipt/native
-observation and 16 WEX body-mask cases. This is a draft handover checkpoint:
-both-platform release publication, full final-head non-draft CI, Godot typed
-normalization opt-in and actual host coverage/provenance remain open.
+Python oracles. Source-matched Windows/Linux development runtimes passed import
+and all twelve scoped regression cases, including the 16 WEX body-mask cases,
+in publication run `40138333825`, appended as `888a39f0`. Full final-head
+non-draft CI remains required before merge. Godot typed normalization opt-in
+and actual host coverage/provenance remain #202 integration work.
 
 **Owner execution boundary:** finish residual #200 acceptance first, then fan out
 #201/#202/#212 where write sets permit, and complete #203 after integration.
