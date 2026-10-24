@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Native-only opt-in Brine IN checkpoint on the LCB-005 branch; current defaults retained, no Water-IN, Godot or runtime-publication qualification
 canonical-for: [inertial-cellular-v1-brine]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [lcb-pressure-inertial-handoff.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb005-native-brine-checkpoint.md]
 ---
 
@@ -20,13 +20,15 @@ The source owners are `native/include/cybersand/inertial_cellular.hpp`, `native/
 
 The optional slot has signed16 `vx/vy` and signed8 `ax/ay`. Velocity/accumulators use16 quanta per cell. Admitted ranges are vx −32…32, vy0…32 and each accumulator −15…15. New products, paint and reconstruction default to zero. The actual stored slot is six bytes/alignment2 on the measured Windows LLVM ABI; this is not a production Cell ABI change or a portable raw-struct save format.
 
-Fixed reference parameters are version1: q16, gravity4, vmax32, turn1/8, deflect3/4, damping1/16, density-swap drag1/4 and rest threshold1. The existing `inertial-update-v1` order is U1 support; U2 one gravity application; U3 diagonal re-aim or support cancellation and carried-velocity deflection; U4 saturation; U5 signed truncating damping; U6 accumulator travel with every target rechecked; U7 rest/sleep eligibility. First contact ends travel. Wall, body mask and same-family contact are inelastic; only Empty is horizontally enterable. A lighter foreign material is exchangeable only downward under the existing density/exchange gate.
+Fixed reference parameters are version1: q16, gravity4, vmax32, turn1/8, deflect3/4, damping1/16, density-swap drag1/4 and rest threshold1. The existing `inertial-update-v1` order is U1 support; U2 one gravity application; U3 diagonal re-aim or support cancellation and carried-velocity deflection; U4 saturation; U5 signed truncating damping; U6 accumulator travel with every target rechecked; U7 rest/sleep eligibility. First contact ends travel. Wall, body mask and same-family contact are inelastic; only Empty is horizontally enterable. A lighter foreign material is exchangeable only downward under the existing density/exchange gate. The immutable `physics_diagnostics.disable_powder_exchange_targets` causal control denies every Powder target before U1 support, U3 diagonal re-aim and every U6 travel recheck, including when telemetry is disabled; it does not change default eligibility. See the existing [diagnostic-control contract](../operations/physics-characterisation.md#which-variants-are-isolated-from-production-defaults).
 
 The complete fixed parameter/state/update identity is canonical little-endian data hashed by `inertial_extension_identity()`. Unsupported caller parameter blocks refuse; there is no silently ignored damping request or automatic family fallback.
 
 ## Why does IN require radius three?
 
 Travel writes reach at most two cells per axis: after saturation/damping |v|≤30 and |accumulator|≤15, so division by16 produces at most two unit moves. Eligibility is rechecked before each actual step. At most one extra neighborhood probe occurs after or alongside a final travel position. Starting vy32/ay15 reaches y+2 and U7 reads y+3; a contact-side query can similarly reach x±3. Shared powder-exchange Stone bracing inspects one further neighbor of a target within the same radius-three envelope. Brine does not execute the Water carrying stencil.
+
+Absent storage reads as Empty on the exclusive serial owner path, as in Current cellular motion. Eligibility queries allocate nothing; an actual serial move uses the shared destination allocator and its explicit capacity/failure contract. Phased jobs retain the prepared-domain guard and never allocate missing storage themselves. Reserving Empty chunks must not change the IN motion tuple at positive or negative chunk seams.
 
 An IN World therefore explicitly requires `maximum_rule_radius>=3`. The existing scheduler validates radius≤half an even core, prepares neighbor chunks, and separates same-phase expanded domains. Candidate/control comparisons must use identical admitted execution geometry; the protected exact Current preset retains radius2. Native boundary tests exercise signed coordinates, core8/core64, chunk seams, observed read3/write2 reach, no prepared tick allocation and actual four-worker execution. Configured workers and observed task participants are separate `TickStats` values.
 

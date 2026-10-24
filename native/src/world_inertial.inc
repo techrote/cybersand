@@ -131,8 +131,9 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
     std::int64_t cy = y;
     const auto direction = deterministic_direction(x, y);
     // One directional eligibility rule for support, re-aim, side selection and
-    // every travel move: Empty for any move; a lighter liquid/gas only by a
-    // downward move (Current density exchange); never Wall, mask, same family.
+    // every travel move: Empty for any move; a lighter foreign material only
+    // downward under Current density/exchange controls; never Wall, mask or
+    // same family. Eligibility reads do not allocate serial sparse chunks.
     const auto eligible = [&](std::int64_t dx, std::int64_t dy) {
         const auto tx = cx + dx;
         const auto ty = cy + dy;
@@ -147,11 +148,14 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
         const auto target_address = address(tx, ty);
         const auto *chunk = find_chunk(target_address.chunk);
         if (chunk == nullptr)
-            return false;
+            return effects == nullptr && config_.backend == SimulationBackend::SerialInPlace;
         const auto &cell = chunk->cells[target_address.index];
         const auto target = cell.material_value();
         if (target == Material::Empty)
             return true;
+        if (config_.physics_diagnostics.disable_powder_exchange_targets &&
+            MaterialRules::descriptor(target).state == MaterialState::Powder)
+            return false;
         return dy == 1 && MaterialRules::can_density_exchange(material, target, 1) &&
                cell.epoch_value() != update_epoch_;
     };

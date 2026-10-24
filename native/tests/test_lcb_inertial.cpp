@@ -344,6 +344,134 @@ void test_inertial_ledgers_rest_and_parity() {
     require(pool.tick().active_blocks_after == 0U, "a rested inertial pool sleeps");
 }
 
+void test_inertial_powder_exchange_control() {
+    for (const auto workers : {0U, 1U, 4U}) {
+        const auto selected_config = [&](bool inertial, bool disabled) {
+            auto cfg = config(workers == 0U ? 1U : workers);
+            cfg.liquid_solver_policy = policy(false, inertial);
+            if (workers == 0U)
+                cfg.backend = cybersand::SimulationBackend::SerialInPlace;
+            cfg.physics_diagnostics.disable_powder_exchange_targets = disabled;
+            return cfg;
+        };
+        const auto boxed = [](World& world) {
+            world.reserve_region({0, 0, 64, 64});
+            rect(world, 20, 20, 7, 6, Material::Wall);
+            world.set(23, 21, Material::Brine);
+        };
+        // Preserve the Current causal-control matrix for actual density travel,
+        // independently of whether optional physics telemetry is enabled.
+        for (const bool inertial : {false, true}) {
+            for (const bool disabled : {false, true}) {
+                World world(selected_config(inertial, disabled));
+                boxed(world);
+                world.set(23, 22, Material::Dust);
+                if (inertial)
+                    require(world.diagnostic_set_inertial_cell(23, 21, 0, 20, 0, 0), "powder travel seed");
+                tick(world);
+                require((world.stored_material(23, 22) == Material::Brine) == !disabled &&
+                            (world.stored_material(23, 21) == Material::Dust) == !disabled,
+                        "CY and IN both preserve the immutable powder-target exchange control");
+            }
+        }
+        for (const bool disabled : {false, true}) {
+            World support(selected_config(true, disabled));
+            boxed(support);
+            support.set(23, 22, Material::Dust);
+            tick(support);
+            const auto supported = support.inertial_cell(23, 21);
+            require(supported.vx == 0 && supported.ax == 0 &&
+                        supported.vy == (disabled ? 0 : 4) && supported.ay == (disabled ? 0 : 4),
+                    "U1 treats a denied powder target as support before velocity or travel");
+
+            World reaim(selected_config(true, disabled));
+            boxed(reaim);
+            reaim.set(24, 22, Material::Dust);
+            tick(reaim);
+            const auto aimed = reaim.inertial_cell(23, 21);
+            const auto expected = disabled ? 0 : 2;
+            require(aimed.vx == expected && aimed.vy == expected &&
+                        aimed.ax == expected && aimed.ay == expected,
+                    "U3 never reaims toward a denied diagonal powder target");
+
+            World travel(selected_config(true, disabled));
+            boxed(travel);
+            travel.set(23, 22, Material::Empty);
+            travel.set(23, 23, Material::Dust);
+            require(travel.diagnostic_set_inertial_cell(23, 21, 0, 32, 0, 15), "two-step powder travel seed");
+            tick(travel);
+            const auto ledger = travel.inertial_ledger();
+            require(travel.stored_material(23, disabled ? 22 : 23) == Material::Brine &&
+                        ledger.unit_moves == (disabled ? 1U : 2U) &&
+                        ledger.density_swaps == (disabled ? 0U : 1U),
+                    "U6 rechecks the control after an allowed Empty step before the second powder target");
+            if (disabled)
+                require(travel.stored_material(23, 23) == Material::Dust &&
+                            travel.inertial_cell(23, 22).vy == 0,
+                        "denied powder travel lands in Empty without displacing the target");
+        }
+    }
+}
+
+void test_inertial_sparse_serial_seam() {
+    for (const auto workers : {0U, 1U, 4U}) {
+        for (const bool inertial : {false, true}) {
+            for (const bool reserved : {false, true}) {
+                for (const auto start : {std::pair{3, 7}, std::pair{-5, -1}}) {
+                    auto cfg = config(workers == 0U ? 1U : workers);
+                    cfg.liquid_solver_policy = policy(false, inertial);
+                    cfg.chunk_size = 8; cfg.activity_block_size = 8; cfg.scheduling_core_size = 8;
+                    if (workers == 0U)
+                        cfg.backend = cybersand::SimulationBackend::SerialInPlace;
+                    World world(cfg);
+                    if (reserved)
+                        world.reserve_region({start.first - 16, start.second - 16, 40, 40});
+                    world.set(start.first, start.second, Material::Brine);
+                    if (inertial)
+                        require(world.diagnostic_set_inertial_cell(start.first, start.second, 0, 20, 0, 0),
+                                "sparse seam motion seed");
+                    const auto chunks_before = world.chunk_count();
+                    const auto stats = tick(world);
+                    require(world.stored_material(start.first, start.second) == Material::Empty &&
+                                world.stored_material(start.first, start.second + 1) == Material::Brine,
+                            "CY and IN cross signed chunk seams independently of serial/phase and reservation");
+                    require(world.quantity_ledger().material_cells[static_cast<std::uint8_t>(Material::Brine)] == 1U,
+                            "sparse crossing retains exact material population");
+                    if (inertial) {
+                        const auto state = world.inertial_cell(start.first, start.second + 1);
+                        require(state.vx == 0 && state.vy == 23 && state.ax == 0 && state.ay == 7,
+                                "sparse IN crossing retains the complete motion tuple");
+                    }
+                    if (workers == 0U && !reserved)
+                        require(world.chunk_count() == chunks_before + 1U && stats.chunk_allocations == 1U,
+                                "serial owner allocates only the actual sparse destination");
+                    if (reserved)
+                        require(world.chunk_count() == chunks_before && stats.chunk_allocations == 0U,
+                                "prepared serial/phase crossing allocates no tick chunks");
+                }
+            }
+        }
+    }
+    auto cfg = config(1);
+    cfg.backend = cybersand::SimulationBackend::SerialInPlace;
+    cfg.chunk_size = 8; cfg.activity_block_size = 8; cfg.scheduling_core_size = 8;
+    cfg.initial_chunk_reserve = 1; cfg.maximum_chunk_count = 1;
+    World reading(cfg);
+    reading.set(3, 7, Material::Brine);
+    const auto stats = tick(reading);
+    const auto state = reading.inertial_cell(3, 7);
+    require(reading.chunk_count() == 1U && stats.chunk_allocations == 0U && state.vy == 4 && state.ay == 4,
+            "serial support probes see absent Empty without allocating until travel is required");
+    World full(cfg);
+    full.set(3, 7, Material::Brine);
+    require(full.diagnostic_set_inertial_cell(3, 7, 0, 20, 0, 0), "sparse capacity fixture");
+    bool refused = false;
+    try { tick(full); } catch (const std::runtime_error&) { refused = true; }
+    require(refused && full.has_failed() && full.completed_tick_index() == 0U && full.chunk_count() == 1U &&
+                full.stored_material(3, 7) == Material::Brine,
+            "actual serial sparse travel preserves explicit capacity failure and failed-World quarantine");
+}
+
 void test_inertial_no_tunnelling() {
     for (const bool mask : {false, true}) {
         auto example_config = config(1);
@@ -750,7 +878,11 @@ void test_inertial_residual_motion() {
 void test_lcb_inertial_admission() { test_inertial_admission(); }
 void test_lcb_inertial_contract_examples() { test_inertial_contract_examples(); }
 void test_lcb_inertial_ledgers_rest_parity() { test_inertial_ledgers_rest_and_parity(); }
-void test_lcb_inertial_no_tunnelling() { test_inertial_no_tunnelling(); }
+void test_lcb_inertial_no_tunnelling() {
+    test_inertial_powder_exchange_control();
+    test_inertial_sparse_serial_seam();
+    test_inertial_no_tunnelling();
+}
 void test_lcb_inertial_lifecycle() { test_inertial_lifecycle_chemistry(); }
 void test_lcb_inertial_three_families() { test_three_families_one_world(); }
 
