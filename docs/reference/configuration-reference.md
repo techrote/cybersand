@@ -798,6 +798,37 @@ observations and version-2 commands are separate from sampled actor packed rows.
 Usable lifecycle, gyro/play semantics and producer limits belong to the
 [physical actor contract](../systems/physical-actor-rigs.md).
 
+## Runner IK pilot values
+
+**Current source, acceptance pending:** the
+[opt-in physical joint-target contract](../systems/physical-joint-targets.md)
+owns behaviour, and
+[`physical_joint_target.gd`](../../godot/scripts/physical_joint_target.gd)
+owns the explicit version and envelope values. These do **not** change
+the regular Runner's wire controls, equipment, 4LY flight plant or native
+packed-cell configuration.
+
+| Value | Pilot declaration |
+|---|---|
+| Installation | `runner` only, `ik_pilot: true`, `usable_index: -1`, no equipment mounts |
+| Capacity | Exactly five ordered real Rapier parts, four ordered rotary joints; fixed NCA vector slots eight/seven |
+| Selected chain | Right `hip_1`, `ankle_1`, sole point local `(0,1)`; left joint motors passive |
+| Host capability | `nca-host/1`, `physical_joint_target/v1`; withheld without source SHA-1 and runtime SHA-256 |
+| Pilot rotary inner bounds | Hip [-0.72,+0.72] rad; ankle [-0.27,+0.27] rad |
+| Delta cap | ±0.25 rad **per joint**, then absolute bound check |
+| Controller | Original rest-relative error with 0.055 rad play; proportional gain 9, relative-speed damping 0.25 |
+| Physical motor cap | ±7 rad/s, request slew 20 rad/s²; `PinJoint2D` max-force parameter 100; fixed effort 1.0 |
+| Gyro | Original Runner neutral target, profile gyro 26, gain 0.65 airborne / 1.0 grounded, same authored slope response |
+| Decision and consumption | Six host physics ticks per nominal decision, one *consumption* per actual 60 Hz Rapier step |
+| Freshness | Source observation younger than 12 ticks; lease 1–18 ticks; actual expiry earliest of source+12, source+lease, goal deadline |
+| Ownership | Run, epoch, incarnation, control generation, producer/source/policy/goal/grant and original observation ID/hash |
+| Receipt | Source-bound admission and per-tick requested/admitted/limited/motor/motion/integrity; per-joint torque telemetry unavailable |
+
+**Do not interpret this table as a qualified native runtime.** Source-only
+fixtures, dummy hashes and no-step receipts cannot meet actual-host or
+physical end-effector tracking gates; see
+[the dated ledger](../audits/2026-10-23-act-ik-001-development-admission.md).
+
 ## Physical free-flight values
 
 **Current experimental 4LY-001 controller + 4LY-002 candidate profiles:**

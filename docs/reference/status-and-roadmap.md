@@ -36,6 +36,23 @@ owns the independent 30s capture / 45s idle failure guard, fixture-only 120s
 observer and unchanged 180s outer limit. No retries, skips, physics/worker-count
 changes or broad scheduler-fix claim follow from the selected backport.
 
+## ACT-IK-001 five-part Runner joint-reference pilot — 2026-10-23
+
+**Development source, acceptance pending:** [Cybersand #210](https://github.com/techrote/cybersand/issues/210)
+adds a separate no-equipment Runner assembly, exclusive right-leg IK
+references, source/grant/observation freshness and per-Rapier-tick
+receipts. Existing Runner equipment/wire, 4LY flight and production
+physics remain unchanged. The code and new protocol/host fixture files
+are on the isolated ACT-IK-001 branch; source-only validation does not
+establish an accepted NCA #55 protocol revision or real tracking scores.
+
+**Next gate:** [the ACT-IK-001 evidence ledger](../audits/2026-10-23-act-ik-001-development-admission.md)
+requires exact-head Godot/Rapier CI, host provenance, independent NCA wire/
+observation hash reconciliation, full regression coverage and separate
+physical performance acceptance before issue closure. See
+[the system contract](../systems/physical-joint-targets.md) for
+all actuator limits and lifetime semantics.
+
 ## 4LY shared physical free-flight — 2026-10-22
 
 **Current experimental source, 4LY-001 / #205:** the

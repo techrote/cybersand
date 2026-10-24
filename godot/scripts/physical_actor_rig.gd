@@ -23,6 +23,7 @@ const PlayerVehicle = preload("res://scripts/player_vehicle_controller.gd")
 const PlayerAcrobat = preload("res://scripts/player_acrobat_controller.gd")
 const FlightProfile = preload("res://scripts/physical_flight_profile.gd")
 const FlightController = preload("res://scripts/physical_flight_controller.gd")
+const JointTargets = preload("res://scripts/physical_joint_target.gd")
 
 var rig_id: StringName = &""
 var actor_slot: int = 0
@@ -97,6 +98,8 @@ var _player_free_joints: Dictionary = {}
 var _flight_controller: RefCounted
 var _flight_capabilities: Dictionary = {}
 var _flight_mode_name: String = "passive_no_lease"
+var _joint_mode_enabled: bool = false
+var _joint_motor_receipt: Dictionary = {}
 
 
 static func validate_definition(definition: Dictionary) -> String:
@@ -575,6 +578,116 @@ func advance(action: Dictionary, delta: float, allowed: bool = true) -> void:
 	_previous_buttons = buttons
 	_publish_observation()
 	queue_redraw()
+
+
+func enable_joint_targets() -> bool:
+	# Only the explicitly prepared five-part Runner may enter this owner mode.
+	# Disarm authored gait, charge, buttons, attachments and prior motor filters
+	# without reconstructing a body, contact or velocity.
+	if not configured or not fault.is_empty() or not JointTargets.compatible_assembly(_definition):
+		return false
+	cancel()
+	_joint_mode_enabled = true
+	return true
+
+
+func advance_joint_targets(desired: Array, delta: float) -> Dictionary:
+	# A distinct physical owner path: never feed joint poses through wire aim,
+	# player preset targets or semantic locomotion. Passive left pins retain
+	# constraints and contacts, but neither motor requests nor gait authority.
+	if not _joint_mode_enabled or not configured or not fault.is_empty() \
+		or not is_finite(delta) or absf(delta - 1.0 / 60.0) > 0.000000001 \
+		or desired.size() != 2:
+		cancel()
+		return {}
+	for i: int in range(2):
+		if not JointTargets.finite_number(desired[i]) or absf(float(desired[i])) > JointTargets.TARGET_LIMITS[i]:
+			cancel()
+			return {}
+	_refresh_states()
+	if not fault.is_empty():
+		cancel()
+		return {}
+	_sense()
+	_refresh_equipment_state()
+	_tick += 1
+	_effects.clear()
+	_last_impulse = Vector2.ZERO
+	_last_torque_impulse = 0.0
+	_last_energy_used = 0.0
+	_movement_limited = false
+	_action = {"mode": JointTargets.MODE, "requested_joint_positions": desired.duplicate()}
+	# Exactly the authored Runner's neutral grounded/airborne gyro branch.
+	# Slope response and normal play remain present; no IK-specific increase.
+	var lean: float = 0.0
+	if not _support.is_empty():
+		lean = clampf(Vector2(_support.normal).angle() + PI * 0.5, -0.8, 0.8)
+	_gyro(lean, delta, 0.65 if _support.is_empty() else 1.0)
+	var motor: Array = []
+	for index: int in range(_joints.size()):
+		var joint: Dictionary = _joints[index]
+		if str(joint.type) != "rotary" or not bool(joint.enabled):
+			cancel()
+			return {}
+		var pin: PinJoint2D = joint.node
+		var commanded: bool = index == 2 or index == 3
+		if not commanded:
+			pin.motor_enabled = false
+			pin.motor_target_velocity = 0.0
+			joint.target = 0.0
+			continue
+		var a: int = int(joint.a)
+		var b: int = int(joint.b)
+		var measured: float = wrapf(_transforms[b].get_rotation() - _transforms[a].get_rotation()
+			- float(joint.initial_relative_angle), -PI, PI)
+		var relative_speed: float = _angular_velocities[b] - _angular_velocities[a]
+		var selected: float = float(desired[index - 2])
+		var error: float = selected - measured
+		var play: float = float(_profile.get("play", 0.055))
+		var after_play: float = signf(error) * maxf(0.0, absf(error) - play)
+		var raw_velocity: float = after_play * 9.0 - relative_speed * 0.25
+		var limited_velocity: float = clampf(raw_velocity,
+			-float(joint.get("motor_speed", 7.0)), float(joint.get("motor_speed", 7.0)))
+		var before_slew: float = pin.motor_target_velocity
+		# New lane effort is fixed at 1.0, not the rig's internal 1.2/1.5.
+		var submitted_velocity: float = move_toward(before_slew, limited_velocity, 20.0 * delta)
+		pin.motor_enabled = true
+		pin.motor_target_velocity = submitted_velocity
+		joint.target = limited_velocity # Existing field means motor velocity, NOT pose.
+		motor.append({
+			"joint_id": str(joint.id), "reference_radians": selected,
+			"measured_radians_before": measured, "error_radians": error,
+			"relative_speed_radians_per_second": relative_speed,
+			"deadzone_radians": play, "after_deadzone_radians": after_play,
+			"raw_velocity_radians_per_second": raw_velocity,
+			"limited_velocity_radians_per_second": limited_velocity,
+			"previous_request_radians_per_second": before_slew,
+			"submitted_motor_velocity_radians_per_second": submitted_velocity,
+			"effort": 1.0, "speed_cap_radians_per_second": float(joint.get("motor_speed", 7.0)),
+			"request_slew_radians_per_second_squared": 20.0,
+			"joint_max_force_parameter": float(joint.get("max_force", 100.0)),
+			"measured_motor_torque": null, "passive_force_decomposition": null,
+			"speed_clipped": not is_equal_approx(raw_velocity, limited_velocity),
+			"slew_limited": not is_equal_approx(limited_velocity, submitted_velocity)
+		})
+	_limit_extreme_motion(delta)
+	_joint_motor_receipt = {
+		"mode": JointTargets.MODE, "commanded_joint_ids": JointTargets.ACTIVE_JOINT_IDS.duplicate(),
+		"passive_joint_ids": ["hip_-1", "ankle_-1"],
+		"motors": motor, "gyro": {"enabled": true, "neutral_radians": lean,
+			"gain": 0.65 if _support.is_empty() else 1.0,
+			"authored_profile": {"gyro": 26.0, "gyro_kp": 10.0, "damping": 3.0, "play": 0.055}},
+		"whole_body_physics": true, "equipment_absent": true,
+		"actor_impulse": _last_impulse, "actor_torque_impulse": _last_torque_impulse,
+		"per_joint_force_telemetry": null, "passive_force_decomposition": null
+	}
+	_publish_observation()
+	queue_redraw()
+	return _joint_motor_receipt.duplicate(true)
+
+
+func joint_motor_receipt() -> Dictionary:
+	return _joint_motor_receipt.duplicate(true)
 
 
 func set_propulsion_enabled(enabled: bool) -> bool:
@@ -1654,6 +1767,8 @@ func _update_detached(dt: float) -> void:
 
 
 func cancel() -> void:
+	_joint_mode_enabled = false
+	_joint_motor_receipt.clear()
 	# Revocation discards future work/charge; it never performs a release action,
 	# erases momentum, resets a spring, or launches a charged leap.
 	charge = 0.0
@@ -1733,6 +1848,8 @@ func close() -> void:
 	_player_controller = null
 	_flight_controller = null
 	_flight_capabilities.clear()
+	_joint_mode_enabled = false
+	_joint_motor_receipt.clear()
 	configured = false
 	for joint: Dictionary in _joints:
 		if is_instance_valid(joint.node):
