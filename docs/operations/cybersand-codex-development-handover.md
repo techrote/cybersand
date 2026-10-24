@@ -10,6 +10,36 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Physical actor timeout investigation — 2026-10-23
+
+**Current working candidate for #234, 2026-10-24:** the integrated repair adopts
+[PR #236](https://github.com/techrote/cybersand/pull/236)'s qualified Windows/Linux
+x86_64 cooperative deferred-BVH join backport on independently advanced main.
+The [captured stacks and paired validation](../audits/2026-10-24-physical-actor-bvh-validation.md)
+confirm the blocking deferred receive and outer Rayon latch. Same-host run
+40056501226 retained six Windows control timeouts and zero candidate timeouts in
+300 candidate trials across Windows/Linux. The exact scheduler event that
+stranded the queued work remains unproven.
+
+The [#234 integration record](../audits/2026-10-24-issue-234-physical-hang-repair.md)
+owns this candidate's actual checkpoint, gates and remaining work. Final
+exact-head hosted validation and a fresh standard 600-attempt serial/parallel
+campaign are **Planned / pending**. The earlier 300-candidate paired programme
+keeps its separate source, configuration and acceptance scope.
+
+The [build guide](local-build-and-validation.md#physical-actor-timeout-investigation)
+owns invocation and the [timeout procedure](testing-validation-and-replay.md#physical-regression-timeout-diagnostics)
+owns strict failure semantics. External monitoring requests capture after 30s
+without main-thread progress, fails after 45s idle, and retains the 180s outer
+case limit. A separate fixture-only thread observes a 120s whole-fixture limit;
+it emits sticky failure without scene/World/Rapier access or self-killing before
+capture. Preserve the original #233 markers and campaign as admitted diagnostic
+evidence. No test retries or skips are introduced.
+
+The [original investigation](../audits/2026-10-23-physical-actor-timeouts.md) and
+[break handover](../audits/2026-10-23-physical-actor-timeout-handover.md) retain their
+historical source identities, failed apparatus and then-pending gates.
+
 ## 4LY single-chassis flight contract — 2026-10-22
 
 Start with the [physical free-flight contract](../systems/physical-free-flight.md)
@@ -204,12 +234,14 @@ complete: the admitted apparatus and completed source-bound hosted campaign
 captured intermittent roster stalls. Read the
 [timeout procedure](testing-validation-and-replay.md#physical-regression-timeout-diagnostics)
 and [dated audit](../audits/2026-10-24-issue-233-physical-regression-timeouts.md).
-The captured process/thread evidence supplies no native stack or causal mechanism.
-The campaign reproduced Windows stalls; retained historical failures also include
-Linux, so the overall problem remains broader than this campaign's reproduction.
-#234 owns the next causal repair, internal watchdog and subsequent zero-timeout
-qualification; parent #232 remains open. Preserve the full campaign and original
-failures: a physical timeout remains failed and is valid diagnostic evidence.
+That #233 campaign supplied no native stack: its 11 Windows timeouts and retained
+historical Linux failure remain unchanged. The separate PR #236 evidence lane
+supplies matching native-stack attribution and a qualified paired repair
+comparison; it does not retroactively add stacks to #233 captures.
+[#234 integration](../audits/2026-10-24-issue-234-physical-hang-repair.md) now owns
+the working backport/watchdog candidate, pending exact-head hosted gates and a
+fresh standard 600-attempt qualification. Parent #232 remains open until that
+repair/qualification is complete. Preserve every original failure and rerun.
 
 Work in `C:/kybersand`, with executable source in `source/`. The companion workspace
 and source now have separate Git histories. Read [source identity](source-checkpoint-and-recovery.md)

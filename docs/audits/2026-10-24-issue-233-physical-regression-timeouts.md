@@ -545,3 +545,14 @@ a closing directive. Final state inspection identified this premature transition
 the issue was reopened while #243 evidence admission was pending. That automatic
 transition supplies no completion evidence. Intentional completed closure follows
 the full campaign/readback and admission of this evidence checkpoint.
+
+## Successor evidence, separately scoped
+
+The [#234 continuation](2026-10-24-issue-234-physical-hang-repair.md) subsequently
+reconciles existing open PR #236's native dumps and cooperative deferred-BVH
+backport with this admitted baseline. Its fresh offline readback verifies a
+historical physical hang in the same official Rapier DLL by exact function bytes.
+This does not add a native stack to any of the eleven #233 captures, change
+their source/runtime identities, erase a failure or prove that every retained
+timeout shared that wait. The successor owns repair admission and a fresh full
+600-attempt zero-timeout qualification; this diagnostic issue remains completed.

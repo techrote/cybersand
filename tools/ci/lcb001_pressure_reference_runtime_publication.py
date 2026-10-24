@@ -46,7 +46,7 @@ MANIFESTS = {
 RAPIER = {
     "linux": (
         "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
-        "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831",
+        "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
     ),
     "windows": (windows.RAPIER, windows.RAPIER_SHA256),
 }

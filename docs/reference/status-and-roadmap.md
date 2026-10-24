@@ -10,6 +10,26 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Physical actor regression hangs — 2026-10-23
+
+**Current working candidate / Planned final acceptance, 2026-10-24:** #234 adopts
+[PR #236](https://github.com/techrote/cybersand/pull/236)'s cooperative deferred-BVH
+join repair and exact qualified Windows/Linux x86_64 artifacts on current main.
+Other architectures/Web retain release libraries. The
+[stack and paired evidence](../audits/2026-10-24-physical-actor-bvh-validation.md)
+confirms the deferred receive/outer latch blocking path; the exact scheduler race
+remains unproven. Same-host run 40056501226 qualified 300 candidate trials with
+zero timeouts while retaining six Windows control timeouts.
+
+The [#234 integration ledger](../audits/2026-10-24-issue-234-physical-hang-repair.md)
+separates that prior comparison from this candidate's pending exact-head hosted
+full-suite gates and fresh standard 600-attempt serial/parallel campaign. The
+[build guide](../operations/local-build-and-validation.md#physical-actor-timeout-investigation)
+owns invocation; the [timeout procedure](../operations/testing-validation-and-replay.md#physical-regression-timeout-diagnostics)
+owns the independent 30s capture / 45s idle failure guard, fixture-only 120s
+observer and unchanged 180s outer limit. No retries, skips, physics/worker-count
+changes or broad scheduler-fix claim follow from the selected backport.
+
 ## 4LY shared physical free-flight — 2026-10-22
 
 **Current experimental source, 4LY-001 / #205:** the
@@ -297,9 +317,12 @@ and completed source-bound campaign confirmed intermittent physical-roster stall
 the [dated evidence](../audits/2026-10-24-issue-233-physical-regression-timeouts.md)
 owns distributions, captured process/thread state and causal limits. The new
 campaign reproduced Windows timeouts, while retained historical evidence includes
-both Windows and Linux. No native stack was captured; the causal mechanism remains
-unclassified. #234 owns the next repair, internal watchdog and subsequent zero-timeout stress
-qualification; parent #232 remains open until that repair/qualification is complete.
+both Windows and Linux. That campaign captured no native stack; its causal limit
+remains historical fact. The separate PR #236 lane supplies matching native-stack
+attribution and a qualified cooperative-join comparison. The
+[#234 working candidate](../audits/2026-10-24-issue-234-physical-hang-repair.md)
+adopts that repair and bounded guards; exact-head hosted acceptance and a fresh
+standard 600-attempt qualification remain pending. Parent #232 remains open.
 
 Rows distinguish **Current fixes**, remaining defects and open decisions; dated
 evidence defines each fix's platform acceptance.

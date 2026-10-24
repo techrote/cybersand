@@ -6,7 +6,7 @@
   "license": "MIT",
   "godot_version": "4.7.x",
   "rapier_tag": "v0.35.2",
-  "build": "official 2D single build: parallel SIMD and cross-platform deterministic",
+  "build": "official 2D single v0.35.2 base; Windows/Linux x86_64 cooperative deferred-BVH join backport",
   "expected_gdextension": "res://addons/godot-rapier2d/godot-rapier2d.gdextension",
   "expected_addon_directory": "res://addons/godot-rapier2d",
   "physics_engine_name": "Rapier2D",
@@ -15,14 +15,27 @@
   "release_published_at": "2026-08-10T08:03:25Z",
   "release_asset_sha256": "73b46bfe2cfc40e3875f4f367478bbd2b1090f563eeef57f4fed3fc274aae1f0",
   "web_libraries": {
-    "threaded": {"path": "bin/godot_rapier.wasm", "sha256": "b4020962f6ff6c5f2c07436a94cdbf7b5e2096a5fc5832e4ff5526378ce88528"},
-    "compat": {"path": "bin/wasm-nothreads/godot_rapier.wasm", "sha256": "5ff6933670c1377c24dcbac30d67758a307165eacdcbd33b25bf01669577c4c2"}
+    "threaded": {
+      "path": "bin/godot_rapier.wasm",
+      "sha256": "b4020962f6ff6c5f2c07436a94cdbf7b5e2096a5fc5832e4ff5526378ce88528"
+    },
+    "compat": {
+      "path": "bin/wasm-nothreads/godot_rapier.wasm",
+      "sha256": "5ff6933670c1377c24dcbac30d67758a307165eacdcbd33b25bf01669577c4c2"
+    }
   },
   "activation_status": "selected; Godot 4.7 Linux x86_64 runtime preflight passed 2026-08-27",
   "notes": [
     "The official v0.35.2 2D single release asset was downloaded, hashed, and vendored.",
     "Install only the 2D addon; do not install Rapier3D or bundle Rapier twice.",
     "Retain the upstream MIT license and third-party notice with the vendored addon.",
-    "The add-on declares compatibility_minimum=4.7; run the backend preflight with Godot 4.7.x."
-  ]
+    "The add-on declares compatibility_minimum=4.7; run the backend preflight with Godot 4.7.x.",
+    "2026-10-24: Windows and Linux x86_64 select source-matched cooperative deferred-BVH join backports; exact tested artifact and build inputs are in runtime_overrides manifests.",
+    "The original release archive identity and all other platform/Web artifacts are retained. The backport changes only the parallel deferred receive; no solver, pool-size, native cell or actor parameter changes.",
+    "third_party/rapier-bvh-build.lock.json retains its immutable build-time candidate status; runtime_overrides is the subsequent desktop selection record."
+  ],
+  "runtime_overrides": {
+    "windows": "godot/addons/godot-rapier2d/runtime-provenance.windows.json",
+    "linux": "godot/addons/godot-rapier2d/runtime-provenance.linux.json"
+  }
 }

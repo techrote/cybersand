@@ -120,6 +120,7 @@ class RetainedRuntimeTests(unittest.TestCase):
             "godot/native_extension/bridge.cpp": b"bridge\n",
             subject.NATIVE: b"MZ-native-fixture",
             subject.RAPIER: b"MZ-rapier-fixture",
+            "godot/third_party/rapier2d.lock.json": b"{}\n",
         }
         for relative, data in files.items():
             path = self.root / relative
@@ -130,7 +131,7 @@ class RetainedRuntimeTests(unittest.TestCase):
             "source_commit": "a" * 40, "build_commit": "b" * 40,
             "sha256": digest(files[subject.NATIVE]), "size": len(files[subject.NATIVE]),
             "source_inputs": {relative: digest(data) for relative, data in files.items()
-                              if not relative.endswith(".dll")},
+                              if relative.endswith((".hpp", ".cpp"))},
         }
         self.committed = {subject.NATIVE: pointer(files[subject.NATIVE]),
                           subject.RAPIER: pointer(files[subject.RAPIER])}
@@ -188,12 +189,17 @@ class RetainedRuntimeTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "provenance differs from the tested Git commit"):
             subject.verify_retained_runtime(self.root)
 
-    def test_rapier_lfs_identity_does_not_replace_the_official_pin(self):
+    def test_rapier_lfs_identity_does_not_replace_the_selected_pin(self):
         replacement = b"MZ-different-rapier"
         self.committed[subject.RAPIER] = pointer(replacement)
         (self.root / subject.RAPIER).write_bytes(replacement)
-        with self.assertRaisesRegex(RuntimeError, "pinned official runtime"):
+        with self.assertRaisesRegex(RuntimeError, "pinned selected runtime"):
             subject.verify_retained_runtime(self.root)
+
+    def test_selected_rapier_build_input_drift_fails_preflight(self):
+        with mock.patch("check_repository.verify_rapier_overrides", return_value=["changed patch input"]):
+            with self.assertRaisesRegex(RuntimeError, "Selected Rapier runtime provenance failed"):
+                subject.verify_retained_runtime(self.root)
 
 
 class ExecutionTests(unittest.TestCase):

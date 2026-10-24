@@ -54,6 +54,20 @@ class HistoricalTimingTests(unittest.TestCase):
         self.assertIsNone(rows[0]["seconds"])
         self.assertEqual(timing.distributions(rows)[0]["timeout_frequency"], "1/1")
 
+    def test_progress_watchdog_timeout_is_not_inferred_as_a_pass_or_180_second_measurement(self):
+        prefix = (
+            "2026-10-24T01:00:00Z Running test_physical_actor_rigs, timeout 180s: []\n"
+            "2026-10-24T01:00:46Z TIMEOUT (progress_watchdog) after 45.106s; case limit 180s\n"
+        )
+        unfinished = self.rows(prefix)[0]
+        self.assertEqual(unfinished["status"], "timeout")
+        self.assertEqual(unfinished["timeout_seconds"], 180)
+        self.assertIsNone(unfinished["seconds"])
+        complete = self.rows(prefix + "2026-10-24T01:00:47Z Running another_case, timeout 180s: []\n")[0]
+        self.assertEqual(complete["status"], "timeout")
+        self.assertEqual(complete["seconds"], 47)
+        self.assertEqual(complete["timing_basis"], "next-start-boundary")
+
     def test_final_explicit_failure_and_pass_keep_outcome_with_unknown_duration(self):
         for status, exitcode in (("failed", 1), ("passed", 0)):
             with self.subTest(status=status):

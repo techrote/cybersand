@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Progress = preload("res://tests/helpers/physical_progress.gd")
+
 # Actual native cells, actual Rapier assemblies and the production issued-view
 # action interface. No material, projectile or body implementation is mocked.
 const Arena = preload("res://scripts/physical_actor_arena.gd")
@@ -12,6 +14,9 @@ var failures: int = 0
 
 
 func _initialize() -> void:
+	if not Progress.begin("test_physical_usable_course"):
+		quit(1)
+		return
 	run.call_deferred()
 
 
@@ -36,6 +41,7 @@ func scripted_examples() -> void:
 		var config: Dictionary = Arena.usable_course_config(model, 1)
 		var ticks: int = 1800 if model == &"heavylift" else 900
 		config.max_ticks = ticks
+		Progress.mark("configure", str(model))
 		expect(arena.configure(config), "course starts " + str(model))
 		if arena.session == null:
 			continue
@@ -52,6 +58,7 @@ func scripted_examples() -> void:
 		for tick: int in range(ticks):
 			if tick % 150 == 0:
 				print("REGRESSION_PROGRESS case=test_physical_usable_course phase=script_step model=", model, " tick=", tick)
+			Progress.tick("step")
 			result = arena.step()
 			var actor: Dictionary = result.actors[0]
 			travel = maxf(travel, actor.position.distance_to(initial.position))
@@ -77,13 +84,16 @@ func scripted_examples() -> void:
 		expect(initial == retained, str(model) + " retains immutable issued equipment observation")
 		print("PHYSICAL_USABLE_COURSE_DEMO model=", model, " travel=", travel,
 			" requests=", result.usable_totals, " released=", saw_release, " recovered=", saw_pickup)
+		Progress.mark("close")
 		arena.close()
+		Progress.mark("close_complete")
 
 
 func mixed_course() -> void:
 	print("REGRESSION_PROGRESS case=test_physical_usable_course phase=mixed_setup")
 	var config: Dictionary = Arena.usable_course_config()
 	config.max_ticks = 600
+	Progress.mark("configure")
 	expect(arena.configure(config), "mixed course starts")
 	var expected_parts: int = 0
 	for actor: Dictionary in config.actors:
@@ -97,6 +107,7 @@ func mixed_course() -> void:
 	for tick: int in range(600):
 		if tick % 100 == 0:
 			print("REGRESSION_PROGRESS case=test_physical_usable_course phase=mixed_step tick=", tick)
+		Progress.tick("step")
 		result = arena.step()
 	var successful: int = 0
 	for actor: Dictionary in result.actors:
@@ -114,10 +125,13 @@ func mixed_course() -> void:
 		"reset retires pending uses and all committed sparse objects")
 	var saved_run: String = str(result.run_id)
 	config.course = "unknown-course"
+	Progress.mark("configure")
 	expect(not arena.configure(config) and arena.snapshot().run_id == saved_run,
 		"unknown course refusal preserves the live run")
 	print("PHYSICAL_USABLE_COURSE_MIXED actors=8 parts=", expected_parts, " successful_actors=", successful)
+	Progress.mark("close")
 	arena.close()
+	Progress.mark("close_complete")
 
 
 func processor_transaction() -> void:
@@ -126,6 +140,7 @@ func processor_transaction() -> void:
 	config.max_ticks = 1200
 	config.actors[0].producer = "policy"
 	config.actors[0].position = Vector2(584, 330)
+	Progress.mark("configure")
 	expect(arena.configure(config), "native physical processor fixture starts")
 	var initial: Dictionary = arena.observation(0).equipment
 	var held: RigidBody2D = arena.session.bodies()[int(initial.body_id) - 1]
@@ -143,6 +158,7 @@ func processor_transaction() -> void:
 	for tick: int in range(180):
 		if tick % 30 == 0:
 			print("REGRESSION_PROGRESS case=test_physical_usable_course phase=processor_settle tick=", tick)
+		Progress.tick("step")
 		result = arena.step([command()])
 		if not result.physical_usables.objects.is_empty():
 			break
@@ -150,7 +166,9 @@ func processor_transaction() -> void:
 		"settled real Rapier body obtains its native processor record")
 	if result.physical_usables.objects.size() != 1:
 		print("PHYSICAL_USABLE_COURSE_DEPLOY_DIAGNOSTIC ", result.actors[0].equipment)
+		Progress.mark("close")
 		arena.close()
+		Progress.mark("close_complete")
 		return
 	var object: Dictionary = result.physical_usables.objects[0]
 	expect(object.body_id == initial.body_id and object.instance_id == initial.instance_id,
@@ -163,6 +181,7 @@ func processor_transaction() -> void:
 	var cycles: int = int(object.cycles)
 	var retained: Dictionary = result.duplicate(true)
 	var before_cells: PackedByteArray = arena._world.get_cells()
+	Progress.tick("step")
 	result = arena.step([command()])
 	object = result.physical_usables.objects[0]
 	expect(object.status == "blocked-output" and object.stock == stock and object.cycles == cycles,
@@ -184,6 +203,7 @@ func processor_transaction() -> void:
 		"jam consumes no native intake material and keeps the output obstruction")
 	expect(arena.course_processor_fixture(0, "clear").accepted, "course control clears final output")
 	expect(arena.course_processor_fixture(0, "feed").accepted, "feed refreshes the intake after ordinary granular motion")
+	Progress.tick("step")
 	result = arena.step([command()])
 	object = result.physical_usables.objects[0]
 	expect(object.cycles == cycles + 1 and object.stock == stock - 1,
@@ -205,23 +225,29 @@ func processor_transaction() -> void:
 			print("REGRESSION_PROGRESS case=test_physical_usable_course phase=processor_recover tick=", tick)
 		var item: Dictionary = arena.observation(0).equipment
 		var approach: float = clampf((Vector2(item.position).x - Vector2(item.grip_position).x) * 0.05, -0.35, 0.35)
+		Progress.tick("step")
 		result = arena.step([command({"attach": bool(item.reattach_ready)}, Vector2(approach, 0))])
 		if result.actors[0].equipment.state == "held":
 			picked_up = true
 			break
 	expect(picked_up and held.get_instance_id() == instance and arena.session.bodies().size() == count,
 		"ordinary approach and explicit pickup recover the same processor body")
+	Progress.tick("step")
 	result = arena.step([command()])
 	expect(result.physical_usables.objects.is_empty(), "pickup retires the native deployed incarnation")
 	expect(arena.reset() and arena.snapshot().physical_usables.objects.is_empty(),
 		"processor run reset discards sparse records and stock history")
+	Progress.mark("close")
 	arena.close()
+	Progress.mark("close_complete")
 
 
 func run() -> void:
+	Progress.mark("run")
 	expect(ClassDB.class_exists(&"CyberNativeCellWorld") and ClassDB.class_exists(&"RapierPhysicsServer2D"),
 		"native and Rapier extensions are required")
 	if failures:
+		Progress.finish()
 		quit(1)
 		return
 	print("REGRESSION_PROGRESS case=test_physical_usable_course phase=setup")
@@ -236,4 +262,7 @@ func run() -> void:
 	print("REGRESSION_PROGRESS case=test_physical_usable_course phase=teardown")
 	arena.free()
 	print("PHYSICAL_USABLE_COURSE_RESULT assertions=", assertions, " failures=", failures)
+	Progress.mark("quit")
+	if not Progress.finish():
+		failures += 1
 	quit(1 if failures else 0)

@@ -1,0 +1,390 @@
+name: Physical actor timeout stress
+
+on:
+  workflow_dispatch:
+    inputs:
+      rapier_pair:
+        type: boolean
+        default: false
+  workflow_call:
+    inputs:
+      rapier_pair:
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  PYTHONUTF8: '1'
+
+jobs:
+  rapier-build:
+    if: inputs.rapier_pair == true
+    uses: ./.github/workflows/rapier-bvh-build.yml
+
+  linux-build:
+    name: linux build x86_64
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Fetch Linux Rapier runtime only
+        run: |
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+
+      - name: Validate shard planner
+        run: |
+          python3 -m py_compile tools/ci/run_godot_regressions.py tools/ci/test_godot_regression_sharding.py tools/ci/run_windows_godot_regressions.py tools/ci/test_windows_godot_regressions.py
+          python3 tools/ci/test_godot_regression_sharding.py
+          python3 tools/ci/test_windows_godot_regressions.py
+          python3 tools/ci/test_godot_timeout_diagnostics.py
+          python3 tools/ci/test_godot_process_monitor.py
+          python3 tools/ci/test_physical_progress_watchdog.py
+          python3 tools/ci/test_physical_stress.py
+          python3 tools/ci/test_rapier_candidate_identity.py
+          python3 tools/ci/test_rapier_pair.py
+          python3 tools/ci/test_rapier_same_host.py
+
+      - name: Install pinned SCons
+        run: |
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+
+      - name: Check out exact godot-cpp source
+        run: |
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Build Linux godot-cpp and CyberSand extension
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: "2"
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          timeout 35m tools/build_pinned_godot_cpp.sh linux
+          timeout 20m tools/build_native_extension.sh
+          file "$CYBERSAND_NATIVE_OUTPUT" | tee "$RUNNER_TEMP/linux-file.txt"
+          grep -q 'ELF 64-bit.*x86-64' "$RUNNER_TEMP/linux-file.txt"
+
+      - name: Validate and stage exact Linux runtime
+        env:
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          timeout 1m tools/check_linux_runtime_floor.sh
+          mkdir -p build/linux-runtime
+          cp "$CYBERSAND_NATIVE_OUTPUT" build/linux-runtime/libcybersand_native.linux.x86_64.so
+          cp godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so build/linux-runtime/
+          git rev-parse HEAD > build/linux-runtime/source-sha.txt
+          {
+            echo "godot_cpp_commit=$GODOT_CPP_COMMIT"
+            echo "scons=4.10.1"
+            gcc-13 --version | head -n 1
+            g++-13 --version | head -n 1
+            ld --version | head -n 1
+          } > build/linux-runtime/toolchain.txt
+          (
+            cd build/linux-runtime
+            sha256sum libcybersand_native.linux.x86_64.so libgodot_rapier.linux.x86_64-unknown-linux-gnu.so > runtime.sha256
+            sha256sum --check --strict runtime.sha256
+          )
+          git diff --exit-code -- .             ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'             ':!godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
+
+      - name: Publish Linux runtime for isolated regression shards
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: linux-runtime-${{ github.run_id }}
+          path: build/linux-runtime/
+          if-no-files-found: error
+          retention-days: 1
+
+  linux-stress:
+    needs: [linux-build, rapier-build]
+    if: always() && inputs.rapier_pair != true && needs.linux-build.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        batch: [0, 1, 2, 3, 4]
+        variant: ${{ fromJSON(inputs.rapier_pair == true && '["control","patched"]' || '["retained"]') }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: linux-runtime-${{ github.run_id }}
+          path: build/linux-runtime
+      - name: Verify exact source and runtimes
+        run: |
+          test "$(cat build/linux-runtime/source-sha.txt)" = "$(git rev-parse HEAD)"
+          (cd build/linux-runtime && sha256sum --check --strict runtime.sha256)
+          cp build/linux-runtime/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/
+          cp build/linux-runtime/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so godot/addons/godot-rapier2d/bin/
+      - name: Prepare pinned Godot and stack debugger
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes gdb
+          # Permit a debugger child of the runner to inspect its Godot sibling.
+          sudo sysctl -w kernel.yama.ptrace_scope=0
+          curl --fail --location --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          test "$("$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --version)" = "$GODOT_VERSION"
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: inputs.rapier_pair == true
+        with:
+          name: rapier-bvh-linux-${{ matrix.variant }}-${{ github.run_id }}
+          path: build/rapier
+      - name: Install explicitly identified experimental Rapier
+        if: inputs.rapier_pair == true
+        run: cp build/rapier/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so godot/addons/godot-rapier2d/bin/
+      - name: Ten independent trials per test (five batches = fifty)
+        run: python3 tools/ci/stress_physical_actors.py --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --iterations 10 --host linux --batch ${{ matrix.batch }} --variant ${{ matrix.variant }} --output build/stress ${{ inputs.rapier_pair == true && '--rapier-build-manifest build/rapier/rapier-build.json' || '' }}
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: physical-stress-${{ matrix.variant }}-linux-${{ matrix.batch }}-${{ github.run_id }}
+          path: build/stress/
+          retention-days: 30
+          if-no-files-found: error
+
+  windows-stress:
+    needs: rapier-build
+    if: always() && inputs.rapier_pair != true
+    runs-on: windows-2022
+    timeout-minutes: 100
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        batch: [0, 1, 2, 3, 4]
+        variant: ${{ fromJSON(inputs.rapier_pair == true && '["control","patched"]' || '["retained"]') }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize source-matched Windows runtime and pinned Rapier
+        run: |
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+      - name: Prepare pinned official Windows Godot
+        run: |
+          curl --fail --location --output "$RUNNER_TEMP/godot.zip" https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+          python - <<'PY'
+          import os, sys
+          from pathlib import Path
+          sys.path.insert(0, 'tools/ci')
+          from run_windows_godot_regressions import prepare_godot
+          binary, identity = prepare_godot(Path(os.environ['RUNNER_TEMP']) / 'godot.zip')
+          print(identity)
+          with open(os.environ['GITHUB_ENV'], 'a') as output:
+              output.write('GODOT_BIN=' + str(binary) + '\n')
+          PY
+      - name: Verify retained Windows inputs before experimental substitution
+        run: python -c "import sys; sys.path.insert(0, 'tools/ci'); from run_windows_godot_regressions import verify_retained_runtime, ROOT; print(verify_retained_runtime(ROOT))"
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: inputs.rapier_pair == true
+        with:
+          name: rapier-bvh-windows-${{ matrix.variant }}-${{ github.run_id }}
+          path: build/rapier
+      - name: Install explicitly identified experimental Rapier and symbols
+        if: inputs.rapier_pair == true
+        run: |
+          cp build/rapier/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll godot/addons/godot-rapier2d/bin/
+          cp build/rapier/godot_rapier.pdb godot/addons/godot-rapier2d/bin/
+      - name: Ten independent trials per test (five batches = fifty)
+        run: python tools/ci/stress_physical_actors.py --godot "$GODOT_BIN" --iterations 10 --host windows --batch ${{ matrix.batch }} --variant ${{ matrix.variant }} --output build/stress ${{ inputs.rapier_pair == true && '--rapier-build-manifest build/rapier/rapier-build.json' || '' }}
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: physical-stress-${{ matrix.variant }}-windows-${{ matrix.batch }}-${{ github.run_id }}
+          path: build/stress/
+          retention-days: 30
+          if-no-files-found: error
+
+  linux-paired:
+    needs: [linux-build, rapier-build]
+    if: always() && inputs.rapier_pair == true && needs.linux-build.result == 'success' && needs.rapier-build.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    strategy:
+      fail-fast: false
+      matrix:
+        batch: [0, 1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: linux-runtime-${{ github.run_id }}
+          path: build/linux-runtime
+      - name: Verify and install exact native runtime
+        run: |
+          test "$(cat build/linux-runtime/source-sha.txt)" = "$(git rev-parse HEAD)"
+          (cd build/linux-runtime && sha256sum --check --strict runtime.sha256)
+          cp build/linux-runtime/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/
+          cp build/linux-runtime/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so godot/addons/godot-rapier2d/bin/
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: rapier-bvh-linux-control-${{ github.run_id }}
+          path: build/rapier-control
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: rapier-bvh-linux-patched-${{ github.run_id }}
+          path: build/rapier-patched
+      - name: Prepare pinned Godot and debugger
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes gdb
+          sudo sysctl -w kernel.yama.ptrace_scope=0
+          curl --fail --location --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+      - name: Alternate both variants on the same host with CPU topology recorded
+        run: python3 tools/ci/stress_rapier_same_host.py --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --host linux --batch ${{ matrix.batch }} --control-build build/rapier-control --patched-build build/rapier-patched --output build/same-host
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: physical-stress-control-linux-${{ matrix.batch }}-${{ github.run_id }}
+          path: build/same-host/control/
+          retention-days: 30
+          if-no-files-found: error
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: physical-stress-patched-linux-${{ matrix.batch }}-${{ github.run_id }}
+          path: build/same-host/patched/
+          retention-days: 30
+          if-no-files-found: error
+
+  windows-paired:
+    needs: rapier-build
+    if: always() && inputs.rapier_pair == true && needs.rapier-build.result == 'success'
+    runs-on: windows-2022
+    timeout-minutes: 100
+    strategy:
+      fail-fast: false
+      matrix:
+        batch: [0, 1, 2, 3, 4]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize retained native and baseline Rapier for provenance preflight
+        run: |
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: rapier-bvh-windows-control-${{ github.run_id }}
+          path: build/rapier-control
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: rapier-bvh-windows-patched-${{ github.run_id }}
+          path: build/rapier-patched
+      - name: Prepare pinned official Windows Godot
+        run: |
+          curl --fail --location --output "$RUNNER_TEMP/godot.zip" https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+          python - <<'PY'
+          import os, sys
+          from pathlib import Path
+          sys.path.insert(0, 'tools/ci')
+          from run_windows_godot_regressions import prepare_godot
+          binary, identity = prepare_godot(Path(os.environ['RUNNER_TEMP']) / 'godot.zip')
+          print(identity)
+          with open(os.environ['GITHUB_ENV'], 'a') as output:
+              output.write('GODOT_BIN=' + str(binary) + '\n')
+          PY
+      - name: Alternate both variants on the same host with CPU topology recorded
+        run: python tools/ci/stress_rapier_same_host.py --godot "$GODOT_BIN" --host windows --batch ${{ matrix.batch }} --control-build build/rapier-control --patched-build build/rapier-patched --output build/same-host
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: physical-stress-control-windows-${{ matrix.batch }}-${{ github.run_id }}
+          path: build/same-host/control/
+          retention-days: 30
+          if-no-files-found: error
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: physical-stress-patched-windows-${{ matrix.batch }}-${{ github.run_id }}
+          path: build/same-host/patched/
+          retention-days: 30
+          if-no-files-found: error
+
+  frequency:
+    if: always()
+    needs: [linux-stress, windows-stress, linux-paired, windows-paired]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: ${{ fromJSON(inputs.rapier_pair == true && '["control","patched"]' || '["retained"]') }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: physical-stress-${{ matrix.variant }}-*
+          path: build/frequency
+      - name: Require full scope and report per-test and per-phase frequencies
+        run: python3 tools/ci/summarize_physical_stress.py build/frequency --expected-variant ${{ matrix.variant }}
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: physical-stress-frequency-${{ matrix.variant }}-${{ github.run_id }}
+          path: build/frequency/summary.json
+          retention-days: 30
+
+  paired-qualification:
+    if: always() && inputs.rapier_pair == true
+    needs: [linux-stress, windows-stress, linux-paired, windows-paired]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: physical-stress-control-*
+          path: build/pair/control
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: physical-stress-patched-*
+          path: build/pair/patched
+      - name: Require complete pair, reproduced control and zero patched failures
+        run: python3 tools/ci/summarize_rapier_pair.py build/pair
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: rapier-paired-qualification-${{ github.run_id }}
+          path: build/pair/paired-summary.json
+          retention-days: 30
+          if-no-files-found: error

@@ -98,6 +98,31 @@ refusal is explicit evidence. Full logs remain alongside the bounded excerpt.
 `diagnostic_seconds`. Coarse fixture markers identify the last emitted phase,
 rig/model and tick; they do not identify an exact blocked instruction.
 
+**Current working #234 candidate:** the independent runner-side
+[progress watchdog](../../tools/ci/physical_progress_watchdog.py) requests live
+capture after 30 seconds without a new main-thread marker and fails at 45 seconds
+idle. Capture runs independently, so a slow or failed debugger cannot extend that
+failure deadline. The 180-second outer case limit remains authoritative for all
+execution; startup before fixture instrumentation and engine shutdown after quit
+remain covered. Both original `REGRESSION_PROGRESS` case/phase/rig/model/tick
+records and coarse `CYBERSAND_PROGRESS` heartbeat records are retained. Only real
+marker/sequence changes renew liveness; unrelated output or timestamps alone do
+not. The heartbeat's cumulative `steps` is distinct from a fixture's physical tick.
+
+A fixture-only [internal observer](../../godot/tests/helpers/physical_internal_watchdog.gd)
+adds a 120-second whole-fixture deadline on a separate Godot thread. It uses
+monotonic time and copied mutex-owned context, calls no scene-tree, World or
+Rapier API, and emits sticky `ERROR: REGRESSION_WATCHDOG` on expiry. Completion
+cannot turn an expired deadline into a pass. Stop polls for at most one second
+and joins only an already-finished thread. It does not self-kill before evidence
+capture; the external monitor bounds a permanently blocked main thread. Startup
+before arming, process-wide runtime stalls and post-disarm engine shutdown remain
+external-monitor responsibilities. The [actual-Godot blocked-main probe](../../tools/ci/test_physical_internal_watchdog.py)
+checks independent expiry during a synchronous main-thread delay, sticky failure,
+normal completion and clean join. The [#234 ledger](../audits/2026-10-24-issue-234-physical-hang-repair.md)
+owns exact source/platform results and pending admission gates. No automatic retry
+or required-test skip is admitted.
+
 The ordinary GDExtension timing job retains actor/usable/flight observations and
 per-platform median, nearest-rank p95, maximum and failure frequencies. Record
 the checkout SHA in the artifacts as well as the workflow head SHA: ordinary PR
@@ -124,9 +149,13 @@ owns actual run IDs, historical failures, distributions and causal limitations.
 **Current diagnostic disposition, 2026-10-24:** #233's deliverable is complete
 after apparatus admission and the full source-bound campaign. Captured progress
 and process/thread state establish intermittent roster stalls, while the causal
-mechanism remains unclassified without native stacks. The campaign's Windows
-reproductions do not erase retained historical Linux failures. The next causal repair/watchdog and
-subsequent zero-timeout qualification belong to #234; parent #232 remains open.
+mechanism remains unclassified within that campaign because it captured no native
+stack. Its Windows reproductions do not erase retained historical Linux failures.
+The separate [PR #236 stack/paired record](../audits/2026-10-24-physical-actor-bvh-validation.md)
+confirms the deferred-BVH receive/outer latch path and supports the cooperative
+join selected in the #234 working candidate. Its 300-candidate comparison has its
+own immutable scope. #234's exact-head hosted gates and fresh standard 600-attempt
+zero-timeout qualification remain pending; parent #232 remains open.
 
 ## What does equality establish?
 
