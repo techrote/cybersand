@@ -1,0 +1,16 @@
+{
+  "scope": "Exact local preregistration Git objects, retained because connector publication has different commit metadata",
+  "published_original_equivalent_tree_commit": "f6e16afed03b3df1e5c5f8de61fd1f5af187a285",
+  "commits": [
+    {
+      "sha": "101b72738cfa392aeaea141764baebba36a50cc4",
+      "raw_commit": "tree b006ecb1077d3d6749cdd2e790d403068dcad05c\nparent da5112c066416346d6fe3984d4161cd162611e50\nauthor techrote <261801702+techrote@users.noreply.github.com> 1792700145 +0200\ncommitter techrote <261801702+techrote@users.noreply.github.com> 1792700145 +0200\n\nRegister MAT-003PREPASS isolated carrier correctness stage\n",
+      "tree": "b006ecb1077d3d6749cdd2e790d403068dcad05c"
+    },
+    {
+      "sha": "34861647184a973ee659ad5f7b77643eee297720",
+      "raw_commit": "tree 08338281f81a1c7c5ed572e7d5cebe46384c0d9f\nparent 101b72738cfa392aeaea141764baebba36a50cc4\nauthor techrote <261801702+techrote@users.noreply.github.com> 1792700596 +0200\ncommitter techrote <261801702+techrote@users.noreply.github.com> 1792700596 +0200\n\nClarify S0 width-only stream before formal evidence collection\n",
+      "tree": "08338281f81a1c7c5ed572e7d5cebe46384c0d9f"
+    }
+  ]
+}

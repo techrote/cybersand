@@ -1,0 +1,252 @@
+{
+  "schema_version": 1,
+  "status": "passed",
+  "scope": "synthetic-storage-only",
+  "created_utc": "2026-10-22T20:25:08.446239+00:00",
+  "source_head": "34861647184a973ee659ad5f7b77643eee297720",
+  "source_status": [
+    "?? docs/operations/mat-003prepass-registration.md",
+    "?? docs/research/mat-003prepass-epoch-consumers.md",
+    "?? docs/research/mat-003prepass-gen006-handoff.md",
+    "?? docs/research/mat-003prepass-state-inventory.md",
+    "?? tools/experiments/mat003_prepass/carriers.hpp",
+    "?? tools/experiments/mat003_prepass/run.py",
+    "?? tools/experiments/mat003_prepass/test_carriers.cpp",
+    "?? tools/experiments/mat003_prepass/test_evidence.py",
+    "?? tools/experiments/mat003_prepass/verify.py"
+  ],
+  "platform": {
+    "system": "Linux",
+    "release": "6.18.55",
+    "machine": "x86_64",
+    "python": "3.12.14"
+  },
+  "compiler": "/usr/bin/x86_64-linux-gnu-g++-13",
+  "compiler_binary_sha256": "52f1ddb33fe78b9441e0f42e9cd22c571f1101938e046c8a26582494e041cc73",
+  "sanitizer_environment": {
+    "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1",
+    "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+  },
+  "source_sha256": {
+    "tools/experiments/mat003_prepass/registration.json": "4e4ffb9825617d8c0f98b5cfe28ff42a6d52ccf9802c4206e831618160be4d5a",
+    "tools/experiments/mat003_prepass/carriers.hpp": "542f35323ad97e385424fec8f69d143dddeb5fc41350140d917756d3d739dc81",
+    "tools/experiments/mat003_prepass/test_carriers.cpp": "bf4260950c119cbbf0a3fd69f9114cb276a2f4a1effb99610797c5749951ab5e",
+    "tools/experiments/mat003_prepass/run.py": "a92ba224937af286227ff85a5b7879b60139bdc876874c8d5bb0c8827a326526",
+    "tools/experiments/mat003_prepass/verify.py": "b9b904cc213043c213a6ed361b6158577e6f7ed4c35044cff84650356ff3e0cb",
+    "tools/experiments/mat003_prepass/test_evidence.py": "b0504d7670c00592937ac3de859d9831b6de0924b36933045f1c5ce5c9f355b8",
+    "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+    "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+    "third_party/native-toolchain.lock.json": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414"
+  },
+  "configurations": [
+    {
+      "name": "normal",
+      "compile": {
+        "command": [
+          "/usr/bin/c++",
+          "-std=c++20",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Werror",
+          "-I/workspace/scratch/7031ecb8f061/cybersand/build/mat003-prepass/run-002/source/native/include",
+          "/workspace/scratch/7031ecb8f061/cybersand/build/mat003-prepass/run-002/source/tools/experiments/mat003_prepass/test_carriers.cpp",
+          "-o",
+          "/workspace/scratch/7031ecb8f061/cybersand/build/mat003-prepass/run-002/normal"
+        ],
+        "timeout_seconds": 180,
+        "stdout": "normal.compile.stdout",
+        "stderr": "normal.compile.stderr",
+        "timed_out": false,
+        "exit_code": 0
+      },
+      "binary": "normal",
+      "execute": {
+        "command": [
+          "/workspace/scratch/7031ecb8f061/cybersand/build/mat003-prepass/run-002/normal"
+        ],
+        "timeout_seconds": 120,
+        "stdout": "normal.execute.stdout",
+        "stderr": "normal.execute.stderr",
+        "timed_out": false,
+        "exit_code": 0
+      },
+      "result_file": "normal.json"
+    },
+    {
+      "name": "sanitized",
+      "compile": {
+        "command": [
+          "/usr/bin/c++",
+          "-std=c++20",
+          "-O1",
+          "-g",
+          "-fno-omit-frame-pointer",
+          "-fsanitize=address,undefined",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Werror",
+          "-I/workspace/scratch/7031ecb8f061/cybersand/build/mat003-prepass/run-002/source/native/include",
+          "/workspace/scratch/7031ecb8f061/cybersand/build/mat003-prepass/run-002/source/tools/experiments/mat003_prepass/test_carriers.cpp",
+          "-o",
+          "/workspace/scratch/7031ecb8f061/cybersand/build/mat003-prepass/run-002/sanitized"
+        ],
+        "timeout_seconds": 180,
+        "stdout": "sanitized.compile.stdout",
+        "stderr": "sanitized.compile.stderr",
+        "timed_out": false,
+        "exit_code": 0
+      },
+      "binary": "sanitized",
+      "execute": {
+        "command": [
+          "/workspace/scratch/7031ecb8f061/cybersand/build/mat003-prepass/run-002/sanitized"
+        ],
+        "timeout_seconds": 120,
+        "stdout": "sanitized.execute.stdout",
+        "stderr": "sanitized.execute.stderr",
+        "timed_out": false,
+        "exit_code": 0
+      },
+      "result_file": "sanitized.json"
+    }
+  ],
+  "errors": [],
+  "files": {
+    "compiler-version.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "compiler-version.stdout": {
+      "bytes": 244,
+      "sha256": "d1587c99dacaf2619bba832ebf1d927d92d493f29fbef197f0636922de4ee952"
+    },
+    "linker-version.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "linker-version.stdout": {
+      "bytes": 281,
+      "sha256": "cbb0374a4d23f91537f8588348c460085a38ba5af336bed511060b72a1e76bf7"
+    },
+    "normal": {
+      "bytes": 225416,
+      "sha256": "23c7a1fc043cfe35834ca97e7752a8c48b6a7051e7791ae11f5f9ab7f89d4df0"
+    },
+    "normal.compile.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "normal.compile.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "normal.execute.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "normal.execute.stdout": {
+      "bytes": 35708,
+      "sha256": "100decb4f2b233aeff2ce14dff092878eebfc5f3008605da04bbb6c10ac6b6b0"
+    },
+    "normal.json": {
+      "bytes": 39798,
+      "sha256": "9480500c485eea33bbfe221d3d08f58c6d7b1f1fa5341f3f5325e35613227bf0"
+    },
+    "sanitized": {
+      "bytes": 9222776,
+      "sha256": "3d89a71f49057c7633e7e4412f605c02e90b30322999496cc506e87319f8226a"
+    },
+    "sanitized.compile.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sanitized.compile.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sanitized.execute.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "sanitized.execute.stdout": {
+      "bytes": 35708,
+      "sha256": "100decb4f2b233aeff2ce14dff092878eebfc5f3008605da04bbb6c10ac6b6b0"
+    },
+    "sanitized.json": {
+      "bytes": 39798,
+      "sha256": "9480500c485eea33bbfe221d3d08f58c6d7b1f1fa5341f3f5325e35613227bf0"
+    },
+    "source/native/include/cybersand/material.hpp": {
+      "bytes": 29262,
+      "sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+    },
+    "source/native/include/cybersand/precision_storage.hpp": {
+      "bytes": 2800,
+      "sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266"
+    },
+    "source/third_party/native-toolchain.lock.json": {
+      "bytes": 8627,
+      "sha256": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414"
+    },
+    "source/tools/experiments/mat003_prepass/carriers.hpp": {
+      "bytes": 12916,
+      "sha256": "542f35323ad97e385424fec8f69d143dddeb5fc41350140d917756d3d739dc81"
+    },
+    "source/tools/experiments/mat003_prepass/registration.json": {
+      "bytes": 9269,
+      "sha256": "4e4ffb9825617d8c0f98b5cfe28ff42a6d52ccf9802c4206e831618160be4d5a"
+    },
+    "source/tools/experiments/mat003_prepass/run.py": {
+      "bytes": 7943,
+      "sha256": "a92ba224937af286227ff85a5b7879b60139bdc876874c8d5bb0c8827a326526"
+    },
+    "source/tools/experiments/mat003_prepass/test_carriers.cpp": {
+      "bytes": 25756,
+      "sha256": "bf4260950c119cbbf0a3fd69f9114cb276a2f4a1effb99610797c5749951ab5e"
+    },
+    "source/tools/experiments/mat003_prepass/test_evidence.py": {
+      "bytes": 6532,
+      "sha256": "b0504d7670c00592937ac3de859d9831b6de0924b36933045f1c5ce5c9f355b8"
+    },
+    "source/tools/experiments/mat003_prepass/verify.py": {
+      "bytes": 13033,
+      "sha256": "b9b904cc213043c213a6ed361b6158577e6f7ed4c35044cff84650356ff3e0cb"
+    }
+  },
+  "registration_file": "source/tools/experiments/mat003_prepass/registration.json",
+  "baseline_commit": "da5112c066416346d6fe3984d4161cd162611e50",
+  "baseline_control_sha256": {
+    "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+    "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+  },
+  "compiler_version_receipt": {
+    "command": [
+      "/usr/bin/c++",
+      "--version"
+    ],
+    "timeout_seconds": 10,
+    "stdout": "compiler-version.stdout",
+    "stderr": "compiler-version.stderr",
+    "timed_out": false,
+    "exit_code": 0
+  },
+  "compiler_version": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0",
+  "linker_version_receipt": {
+    "command": [
+      "ld",
+      "--version"
+    ],
+    "timeout_seconds": 10,
+    "stdout": "linker-version.stdout",
+    "stderr": "linker-version.stderr",
+    "timed_out": false,
+    "exit_code": 0
+  }
+}

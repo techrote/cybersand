@@ -1,0 +1,15 @@
+{
+  "source_head": "e31d2961594d5c09fa5541b9ba2a0e43471801e4",
+  "fixture_sha256": "14fd0c6fe7d51ea944370abee99892a0e32bbdfb85b1ce56e72d720a77bff3d0",
+  "review_scope": "Read-only source sufficiency for supplemental MATPRE05/06; not an experimental result",
+  "findings": [
+    "Actual counter/accessor sizes, literal overlay reconstruction, fresh World through 131080 ticks and uninterrupted frame clocks jointly distinguish natural E16 rollover from forced storage clearing.",
+    "Numeric cell epochs are not in every semantic frame; frames retain current-stamp predicates. Frozen source and typed transition/sentinel receipts remain essential.",
+    "Natural E16 coverage is one phased worker and 256 resident cells; ordinary four-worker and large forced-clear fixtures are separate coverage.",
+    "S1 elapsed durations do not rank layouts; correctness observers, capture, build-mode differences and no AB/BA pairs preclude performance inference.",
+    "Eager chunk tails establish the declared dense ownership policy; they do not establish sparse optional state, whole-process RSS savings or GEN-006 continuation.",
+    "Observed background task counts do not identify four distinct workers or establish simultaneous execution; ASan/UBSan is not race-detector coverage."
+  ],
+  "status": "completed",
+  "experimental_result_inferred": false
+}

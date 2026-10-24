@@ -30,6 +30,28 @@ claim; #85 owns the full current-truth cleanup without changing G-L/G-P history.
 For broad #10/#11 acceptance and issue-state routing, use the
 [development-claims remediation programme](development-claims-remediation-programme.md).
 
+## MAT-003PREPASS evidence lane — 2026-10-22
+
+**Current registered Linux World correctness / Planned broader qualification:** [#204](https://github.com/techrote/cybersand/issues/204) registers 64/72/80-bit storage, epoch8/16 and packed/aligned/split controls in the [prepass](mat-003prepass-registration.md). [S0 isolated storage checks passed](../audits/2026-10-22-mat003-prepass-foundation.md). The [S1 World apparatus](../audits/2026-10-22-mat003-world-correctness.md) adds all seventeen real World arms, typed 8/16-bit counters and a gate covering two natural sixteen-bit rollovers; the registered Linux normal/sanitized collection and independent readback passed. Broader consumer/platform qualification remains open. Generated copies preserve unchanged production source and storage. S2 paired performance requires separate registration, and #204 remains open.
+
+The 2026-10-24 main reconciliation also imports the bounded
+[#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24)
+landed by [PR #239](https://github.com/techrote/cybersand/pull/239) and
+[PR #240](https://github.com/techrote/cybersand/pull/240)'s regression follow-ups
+through main, now `3e9f0e6`, which also includes #241's physical-timeout
+diagnostics, #242's retirement of spent runtime publishers and #243's completed
+#233 diagnostic record (11/600 timeouts, cause unknown; #234 repair remains next).
+That defaults-only
+policy API is Current; it is separate from
+this representation experiment and admits no candidate kernel or #212
+implementation. The [post-#243 checkpoint](../audits/2026-10-24-mat003-post-243-integration-checkpoint.md)
+preserves completed earlier checks and qualifies superseded partial runs;
+fresh integration checks on the new heads remain pending. Historical MAT source
+and evidence identities remain unchanged. No manual physical stress campaign or
+#234 repair is started by this reconciliation.
+
+The source inventory and GEN-006 semantic proposal precede durable streaming-contract selection. Preserve #16/#17 historical controls and the open G-final disposition. This checkpoint selects no production layout or solver and admits no Water successor, compact history or soliding gate.
+
 ## Post-H bulk Water disposition — 2026-09-19
 
 The Water H handoff and [issue #26 characterization](../audits/2026-09-19-issue-26-water-leveling.md)

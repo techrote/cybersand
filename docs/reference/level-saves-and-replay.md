@@ -32,7 +32,7 @@ and [CyberDemoBridge](../../godot/native_extension/cyber_demo_bridge.hpp).
 | Component | Current contract |
 |---|---|
 | World extent | Exactly 1024×1024, row-major; not arbitrary signed sparse storage |
-| Per-cell payload | Material ID, `state_a`, `state_b`, and signed temperature encoded as little-endian 16 bits: five bytes per cell, 5,242,880 bytes total |
+| Per-cell payload | Material-u8, `state_a`-u8, `state_b`-u8 and signed temperature encoded as little-endian16: five bytes per cell, 5,242,880 bytes total |
 | Header | 56 bytes: magic `CYSD1`, format/compression flags, dimensions, metadata/raw/compressed lengths, SHA-256 digest |
 | Integrity | Digest covers the first 24 header bytes plus JSON metadata and compressed world bytes |
 | Compression/text | DEFLATE binary payload; Base64 portable text |
@@ -45,6 +45,8 @@ The five save bytes encode logical material/state values and temperature from th
 optional field; they exclude the update epoch. Current authoritative cells use
 the [eight-byte storage carrier](../architecture/chunk-tile-and-buffer-model.md#what-is-stored-per-cell-and-per-chunk).
 CYSD1's five-byte save layout is separate from the in-memory `Cell` ABI.
+
+The native a accessor is sixteen bits; this legacy path narrows it to a byte. Current supported runtime values fit that range, but future high-a state cannot be silently truncated. The [MAT-003PREPASS GEN-006 proposal](../research/mat-003prepass-gen006-handoff.md) separates versioned semantic continuation records from carrier bytes, padding and CYSD1. It proposes explicit refusal for unsupported authoritative state and has no production codec or reload qualification.
 
 ## May saving run concurrently with a tick?
 

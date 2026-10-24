@@ -1,0 +1,858 @@
+{
+  "schema_version": 1,
+  "status": "initial_checkpoint_with_explicit_gaps",
+  "created_utc": "2026-10-22T20:35:29.655429+00:00",
+  "scope": "isolated synthetic storage correctness plus baseline-only focused checks; no full issue or production acceptance",
+  "baseline_commit": "da5112c066416346d6fe3984d4161cd162611e50",
+  "local_registration_head": "34861647184a973ee659ad5f7b77643eee297720",
+  "publication_identity": "Final PR tree must match these source inputs; GitHub commit metadata differs from local registration commits. Hosted results are separately source-qualified in PR Checks.",
+  "checks": [
+    {
+      "name": "docs",
+      "command": [
+        "python3",
+        "tools/ci/check_docs.py"
+      ],
+      "timeout_seconds": 120,
+      "timed_out": false,
+      "exit_code": 0,
+      "stdout": {
+        "path": "build/mat003-prepass/final-checks-02/docs.stdout",
+        "bytes": 470,
+        "sha256": "97232d2d216aa255db0859e34855bb2cb283251b45ea7f6c3a4f94b78a2c5785"
+      },
+      "stderr": {
+        "path": "build/mat003-prepass/final-checks-02/docs.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "result": {
+        "status": "passed",
+        "documents": 107,
+        "navigation_link_documents": 8,
+        "canonical_claims": 208,
+        "local_links": 2337,
+        "heading_anchors": 185,
+        "questions": 32,
+        "errors": [],
+        "warnings": [],
+        "limitations": [
+          "Does not verify source semantics or runtime claims",
+          "Does not fetch external URLs",
+          "Does not rewrite or reattest historical audits",
+          "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+        ]
+      }
+    },
+    {
+      "name": "repository",
+      "command": [
+        "python3",
+        "tools/ci/check_repository.py"
+      ],
+      "timeout_seconds": 120,
+      "timed_out": false,
+      "exit_code": 0,
+      "stdout": {
+        "path": "build/mat003-prepass/final-checks-02/repository.stdout",
+        "bytes": 2544,
+        "sha256": "240036d01b27a5b0bc56734aeaf5f8d9422709c7a559e614d196d3fb318f233f"
+      },
+      "stderr": {
+        "path": "build/mat003-prepass/final-checks-02/repository.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "result": {
+        "status": "passed",
+        "scope": "current source/documentation and artifact identity",
+        "documentation": {
+          "status": "passed",
+          "documents": 107,
+          "navigation_link_documents": 8,
+          "canonical_claims": 208,
+          "local_links": 2337,
+          "heading_anchors": 185,
+          "questions": 32,
+          "errors": [],
+          "warnings": [],
+          "limitations": [
+            "Does not verify source semantics or runtime claims",
+            "Does not fetch external URLs",
+            "Does not rewrite or reattest historical audits",
+            "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+          ]
+        },
+        "materialized_runtime_files": [],
+        "unmaterialized_runtime_files": [
+          "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+        ],
+        "errors": [],
+        "limitations": [
+          "Identity is not execution evidence; read the dated runtime acceptance report",
+          "Retained vendor binaries and platform execution have separate dated provenance",
+          "Historical M11 integrity is checked separately by check_m11_consistency.py"
+        ]
+      }
+    },
+    {
+      "name": "m11",
+      "command": [
+        "python3",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "timeout_seconds": 120,
+      "timed_out": false,
+      "exit_code": 0,
+      "stdout": {
+        "path": "build/mat003-prepass/final-checks-02/m11.stdout",
+        "bytes": 308,
+        "sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d"
+      },
+      "stderr": {
+        "path": "build/mat003-prepass/final-checks-02/m11.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "result": {
+        "status": "passed",
+        "scope": "historical M11 integrity; no current runtime acceptance",
+        "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+        "records_checked": 18,
+        "source_hashes_checked": 28,
+        "compare_working_tree": false,
+        "working_tree_differences": [],
+        "errors": []
+      }
+    },
+    {
+      "name": "provider-policy",
+      "command": [
+        "python3",
+        "tools/ci/check_ci_provider_policy.py"
+      ],
+      "timeout_seconds": 120,
+      "timed_out": false,
+      "exit_code": 0,
+      "stdout": {
+        "path": "build/mat003-prepass/final-checks-02/provider-policy.stdout",
+        "bytes": 280,
+        "sha256": "4e64d073155dc5a1655bf13eb2060b8f9930ba169e749c6ec486ba2248b1618f"
+      },
+      "stderr": {
+        "path": "build/mat003-prepass/final-checks-02/provider-policy.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "result": {
+        "status": "passed",
+        "scope": "active CI provider and runner routing",
+        "errors": [],
+        "policy": {
+          "routine_provider": "GitHub-hosted Actions",
+          "external_provider_config": "forbidden unless policy is explicitly changed",
+          "runner_indirection": "forbidden"
+        }
+      }
+    },
+    {
+      "name": "provider-tests",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/ci",
+        "-p",
+        "test_ci_provider_policy.py",
+        "-v"
+      ],
+      "timeout_seconds": 120,
+      "timed_out": false,
+      "exit_code": 0,
+      "stdout": {
+        "path": "build/mat003-prepass/final-checks-02/provider-tests.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "build/mat003-prepass/final-checks-02/provider-tests.stderr",
+        "bytes": 866,
+        "sha256": "e0db73d07b4eef1b7cbc236554bf9242a5347d9f8edd71a65c34950e8af9d640"
+      },
+      "output_summary": "test_circleci_config_is_rejected (test_ci_provider_policy.CiProviderPolicyTests.test_circleci_config_is_rejected) ... ok\ntest_external_runner_label_is_rejected (test_ci_provider_policy.CiProviderPolicyTests.test_external_runner_label_is_rejected) ... ok\ntest_github_hosted_workflow_passes (test_ci_provider_policy.CiProviderPolicyTests.test_github_hosted_workflow_passes) ... ok\ntest_historical_docs_are_out_of_scope (test_ci_provider_policy.CiProviderPolicyTests.test_historical_docs_are_out_of_scope) ... ok\ntest_runner_variable_indirection_is_rejected (test_ci_provider_policy.CiProviderPolicyTests.test_runner_variable_indirection_is_rejected) ... ok\ntest_self_hosted_is_rejected (test_ci_provider_policy.CiProviderPolicyTests.test_self_hosted_is_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 6 tests in 0.005s\n\nOK\n"
+    },
+    {
+      "name": "evidence-tests",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments/mat003_prepass",
+        "-p",
+        "test_evidence.py",
+        "-v"
+      ],
+      "timeout_seconds": 120,
+      "timed_out": false,
+      "exit_code": 0,
+      "stdout": {
+        "path": "build/mat003-prepass/final-checks-02/evidence-tests.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "build/mat003-prepass/final-checks-02/evidence-tests.stderr",
+        "bytes": 1747,
+        "sha256": "9487cc1c317bbcbc685c0540dbf1aed71dbdf0f014f82db78a972c56fdbe2e1f"
+      },
+      "output_summary": "_bytes_must_match_digest (test_evidence.ResultContracts.test_lossless_bytes_must_match_digest) ... ok\ntest_natural_rollover_is_required (test_evidence.ResultContracts.test_natural_rollover_is_required) ... ok\ntest_padding_cannot_impersonate_packed_capacity (test_evidence.ResultContracts.test_padding_cannot_impersonate_packed_capacity) ... ok\ntest_path_escape_rejected (test_evidence.ResultContracts.test_path_escape_rejected) ... ok\ntest_skip_or_engine_scope_cannot_pass (test_evidence.ResultContracts.test_skip_or_engine_scope_cannot_pass) ... ok\ntest_split_tail_accounting_required (test_evidence.ResultContracts.test_split_tail_accounting_required) ... ok\ntest_truncated_state_a_record_rejected (test_evidence.ResultContracts.test_truncated_state_a_record_rejected) ... ok\ntest_unexpected_or_malformed_arm_rejected (test_evidence.ResultContracts.test_unexpected_or_malformed_arm_rejected) ... ok\n\n----------------------------------------------------------------------\nRan 14 tests in 0.039s\n\nOK\n"
+    },
+    {
+      "name": "independent-readback",
+      "command": [
+        "python3",
+        "tools/experiments/mat003_prepass/verify.py",
+        "build/mat003-prepass/run-002"
+      ],
+      "timeout_seconds": 120,
+      "timed_out": false,
+      "exit_code": 0,
+      "stdout": {
+        "path": "build/mat003-prepass/final-checks-02/independent-readback.stdout",
+        "bytes": 301,
+        "sha256": "f86233a770fff442927557bcab9fe4a240ed87257e997423894a86c713e29e58"
+      },
+      "stderr": {
+        "path": "build/mat003-prepass/final-checks-02/independent-readback.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "result": {
+        "schema_version": 1,
+        "status": "passed",
+        "scope": "synthetic-storage-evidence-readback",
+        "errors": [],
+        "limitations": [
+          "Hashes verify identity, not trusted publication or authenticity.",
+          "Storage checks and primitive rollover do not qualify World semantics or performance."
+        ]
+      }
+    },
+    {
+      "name": "retrieval-frozen",
+      "command": [
+        "python3",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "build/mat003-prepass/final-checks-02/frozen.json"
+      ],
+      "timeout_seconds": 120,
+      "timed_out": false,
+      "exit_code": 0,
+      "stdout": {
+        "path": "build/mat003-prepass/final-checks-02/retrieval-frozen.stdout",
+        "bytes": 4302,
+        "sha256": "5d5eef327761f7d67fc322ad4c8245c1f64559256e62d227f87f161785901c0c"
+      },
+      "stderr": {
+        "path": "build/mat003-prepass/final-checks-02/retrieval-frozen.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "output_summary": "s.md :: Architectural principles and non-goals > Can materials run on GPU compute or arbitrary JavaScript?\nQ26 rank=2 architecture/overview.md :: Architecture overview > Are the named production modules already separate classes?\nQ27 rank=1 systems/smoke-heat-pressure-roadmap.md :: Smoke, heat, and pressure roadmap\nQ28 rank=1 operations/local-build-and-validation.md :: Local build and validation > Windows development commands\nQ29 rank=3 operations/source-checkpoint-and-recovery.md :: Source checkpoint and recovery > Which earlier identity statements are historical?\nQ30 rank=1 reference/validation-evidence.md :: Validation evidence ledger > Which gates remain absent or failing?\nQ31 rank=1 operations/current-and-historical-validation.md :: Current validation and retained M11 integrity > Why did the old consistency check report hash mismatches?\nQ32 rank=2 operations/microscenarios-programme.md :: CyberSand MicroScenarios and intermaterial-interactions programme > Agent checkpoint protocol\n"
+    },
+    {
+      "name": "retrieval-challenges",
+      "command": [
+        "python3",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-challenges.json",
+        "--output",
+        "build/mat003-prepass/final-checks-02/challenges.json"
+      ],
+      "timeout_seconds": 120,
+      "timed_out": false,
+      "exit_code": 0,
+      "stdout": {
+        "path": "build/mat003-prepass/final-checks-02/retrieval-challenges.stdout",
+        "bytes": 17212,
+        "sha256": "3a73578a903e68a941f642cd2d27ed900aa297840ad2243ac97a3f8537c28a61"
+      },
+      "stderr": {
+        "path": "build/mat003-prepass/final-checks-02/retrieval-challenges.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "output_summary": "qualification.md :: Procedural Deepworks qualification and visual review > How are routes checked after all material decisions?\nGEN007-4 rank=1 systems/generation-workbench-2.md :: Generation Workbench 2 inspection and transactional authoring > Which controls open the tools and retained captures?\nWATER-EXIT-01 rank=1 operations/experiment-tower.md :: Experiment Tower > Current #19 Water Feel Lab extension > How is a desktop Water exit acknowledged?\nMATPRE01 rank=1 research/mat-003prepass-state-inventory.md :: MAT-003PREPASS state inventory > Actual carrier capacity and narrower semantic domains\nMATPRE02 rank=3 reference/status-and-roadmap.md :: Status and foundational roadmap > MAT-003PREPASS foundation \u2014 2026-10-22\nMATPRE03 rank=1 research/mat-003prepass-epoch-consumers.md :: MAT-003PREPASS epoch consumer inventory > Direct native consumer inventory\nMATPRE04 rank=1 research/mat-003prepass-gen006-handoff.md :: Proposed GEN-006 handoff > Reconciliation preserves edits and old baselines\n"
+    },
+    {
+      "name": "diff-check",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "timeout_seconds": 120,
+      "timed_out": false,
+      "exit_code": 0,
+      "stdout": {
+        "path": "build/mat003-prepass/final-checks-02/diff-check.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "build/mat003-prepass/final-checks-02/diff-check.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "output_summary": ""
+    }
+  ],
+  "baseline_intake_failures": [
+    {
+      "name": "docs",
+      "command": [
+        "python3",
+        "tools/ci/check_docs.py"
+      ],
+      "exit_code": 1,
+      "status": "failed",
+      "errors": [
+        "Q01: missing expected-fact source ../../SOURCE-PROVENANCE.json",
+        "Q04: missing expected-fact source ../../docs/WEB_THREADING.md",
+        "Q28: missing expected-fact source ../../tools/dev.py",
+        "Q28: missing expected-fact source ../../docs/LOCAL_DEVELOPMENT.md",
+        "Q29: missing expected-fact source ../../tools/dev.py",
+        "Q30: missing expected-fact source ../../validation/browser-results.json"
+      ],
+      "documents": 103
+    },
+    {
+      "name": "repository",
+      "command": [
+        "python3",
+        "tools/ci/check_repository.py"
+      ],
+      "exit_code": 1,
+      "status": "failed",
+      "errors": [
+        "Q01: missing expected-fact source ../../SOURCE-PROVENANCE.json",
+        "Q04: missing expected-fact source ../../docs/WEB_THREADING.md",
+        "Q28: missing expected-fact source ../../tools/dev.py",
+        "Q28: missing expected-fact source ../../docs/LOCAL_DEVELOPMENT.md",
+        "Q29: missing expected-fact source ../../tools/dev.py",
+        "Q30: missing expected-fact source ../../validation/browser-results.json"
+      ]
+    }
+  ],
+  "companion_reference_restore_commit": "6a58311982941b75f46e22109a0829e5acb83c7e",
+  "retrieval": {
+    "frozen": {
+      "baseline_summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 21,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7953,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "checkpoint_summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 21,
+        "canonical_hit_at_k": 32,
+        "mrr_at_k": 0.7937,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "baseline_result_sha256": "89696a8667e71617e8a11e1d02bc7147bf89d3a61d667cbfdac16b77426fbdc3",
+      "checkpoint_result_sha256": "72c2f7ec7a980d95a4b860e55fe693c3d7c76c93dcea9fedfc89c25eb85639be",
+      "fixture_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "corpus_manifest_sha256": "ca32d53c9cc3b5ab63e91304a461aa93ac90488325294183d4a7378de63bc7c5",
+      "changed_prior_ranks": [
+        {
+          "id": "Q19",
+          "before": 4,
+          "after": 5
+        }
+      ],
+      "checkpoint_ranks": {
+        "Q01": 1,
+        "Q02": 1,
+        "Q03": 2,
+        "Q04": 2,
+        "Q05": 1,
+        "Q06": 1,
+        "Q07": 1,
+        "Q08": 2,
+        "Q09": 1,
+        "Q10": 2,
+        "Q11": 1,
+        "Q12": 1,
+        "Q13": 1,
+        "Q14": 1,
+        "Q15": 5,
+        "Q16": 1,
+        "Q17": 3,
+        "Q18": 1,
+        "Q19": 5,
+        "Q20": 1,
+        "Q21": 1,
+        "Q22": 1,
+        "Q23": 1,
+        "Q24": 3,
+        "Q25": 1,
+        "Q26": 2,
+        "Q27": 1,
+        "Q28": 1,
+        "Q29": 3,
+        "Q30": 1,
+        "Q31": 1,
+        "Q32": 2
+      }
+    },
+    "challenges": {
+      "baseline_summary": {
+        "questions": 110,
+        "canonical_hit_at_1": 89,
+        "canonical_hit_at_k": 110,
+        "mrr_at_k": 0.8867,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "checkpoint_summary": {
+        "questions": 114,
+        "canonical_hit_at_1": 92,
+        "canonical_hit_at_k": 114,
+        "mrr_at_k": 0.8848,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "baseline_result_sha256": "3d8339970cf0d445475dc2efc62c623c6a89c55d9a86f14b20c22514e58ff936",
+      "checkpoint_result_sha256": "e3a117a15728e2ff43cf9a8b9e5dd09a63a54e3b957467359f81f1638c5696f4",
+      "fixture_sha256": "1edbfc14c684904d1c77f50651c8b63758b4f2c012e9821063725f236552dfcb",
+      "evaluator_sha256": "a68ebed677cdd2916b18dfc065fe59245c4690707f2d6083e07d108a7b523e59",
+      "corpus_manifest_sha256": "ca32d53c9cc3b5ab63e91304a461aa93ac90488325294183d4a7378de63bc7c5",
+      "changed_prior_ranks": [
+        {
+          "id": "PLAY03",
+          "before": 1,
+          "after": 2
+        },
+        {
+          "id": "GEN25",
+          "before": 2,
+          "after": 1
+        }
+      ],
+      "checkpoint_ranks": {
+        "C05": 4,
+        "C06": 2,
+        "C01": 1,
+        "C02": 1,
+        "C03": 3,
+        "C04": 1,
+        "C07": 1,
+        "C08": 1,
+        "C09": 5,
+        "C10": 1,
+        "C11": 2,
+        "C12": 1,
+        "C13": 1,
+        "C14": 1,
+        "C15": 1,
+        "C16": 2,
+        "MS01": 1,
+        "MS02": 3,
+        "MS03": 1,
+        "MS04": 2,
+        "MS05": 4,
+        "SOL01": 2,
+        "SOL02": 3,
+        "SOL03": 1,
+        "MS06": 1,
+        "REM01": 1,
+        "REM02": 1,
+        "WEX01": 1,
+        "WEX02": 1,
+        "WEX03": 1,
+        "REC01": 1,
+        "REC02": 2,
+        "REC03": 1,
+        "SOL04": 1,
+        "MAT01": 1,
+        "MAT02": 1,
+        "SCENE01": 1,
+        "SCENE02": 1,
+        "ACT01": 1,
+        "ACT02": 1,
+        "ACT03": 1,
+        "ACT04": 1,
+        "ACT05": 1,
+        "ACT06": 1,
+        "ACT07": 1,
+        "ACT08": 1,
+        "ACT09": 1,
+        "SCENE03": 1,
+        "GEN01": 4,
+        "GEN02": 1,
+        "GEN03": 1,
+        "GEN04": 1,
+        "GEN05": 1,
+        "GEN06": 1,
+        "GEN07": 1,
+        "GEN08": 1,
+        "THB01": 1,
+        "THB02": 1,
+        "THB03": 1,
+        "THB04": 1,
+        "THB05": 1,
+        "THB06": 1,
+        "ACT10": 1,
+        "DEP01": 1,
+        "ACT11": 1,
+        "ACT12": 1,
+        "ACT13": 1,
+        "ACT14": 2,
+        "ACT15": 1,
+        "MAT03": 1,
+        "TEST02": 1,
+        "TEST01": 1,
+        "USABLE01": 2,
+        "USABLE02": 4,
+        "USABLE03": 3,
+        "USABLE04": 1,
+        "TEST03": 1,
+        "SCENE04": 1,
+        "DEP02": 1,
+        "PLAY01": 1,
+        "PLAY02": 1,
+        "PLAY03": 2,
+        "PLAY04": 1,
+        "PLAY05": 1,
+        "GEN09": 1,
+        "GEN10": 2,
+        "GEN11": 1,
+        "GEN12": 2,
+        "GEN13": 1,
+        "GEN14": 1,
+        "GEN15": 1,
+        "GEN16": 1,
+        "GEN17": 1,
+        "GEN18": 1,
+        "GEN19": 1,
+        "GEN20": 1,
+        "GEN21": 1,
+        "GEN22": 1,
+        "GEN23": 2,
+        "GEN24": 1,
+        "GEN25": 1,
+        "GEN26": 1,
+        "GEN005-1": 1,
+        "GEN005-2": 1,
+        "GEN005-3": 1,
+        "GEN007-1": 1,
+        "GEN007-2": 1,
+        "GEN007-3": 1,
+        "GEN007-4": 1,
+        "WATER-EXIT-01": 1,
+        "MATPRE01": 1,
+        "MATPRE02": 3,
+        "MATPRE03": 1,
+        "MATPRE04": 1
+      },
+      "preserved_prior_set": {
+        "questions": 110,
+        "hit_at_1": 89,
+        "hit_at_5": 110,
+        "mrr_at_5": 0.8867
+      },
+      "new_questions": {
+        "questions": 4,
+        "hit_at_1": 3,
+        "hit_at_5": 4,
+        "mrr_at_5": 0.8333
+      }
+    }
+  },
+  "retrieval_fixture_integrity": {
+    "frozen_questions_byte_identical": true,
+    "prior_challenge_objects_preserved": true,
+    "prior_challenge_count": 110,
+    "new_question_ids": [
+      "MATPRE01",
+      "MATPRE02",
+      "MATPRE03",
+      "MATPRE04"
+    ]
+  },
+  "manual_expected_fact_review": {
+    "scope": "Read all four canonical prepass pages, source references and new-question retrieved contexts; independent material/epoch review and artifact readback completed.",
+    "findings": [
+      "Current source mapping and narrow legacy adapters are distinguished from raw carrier capacity.",
+      "S0 physical arms and actual primitive rollovers do not imply World or timing qualification.",
+      "Native epoch consumers and fallback semantics retain separate scopes.",
+      "GEN-006 persistence identities, old-baseline reconciliation and unsupported-state refusal remain proposals, not implemented continuation.",
+      "Saved pressure prototype mapping is source-qualified separately from production and overlaps the C64-E16 mapping."
+    ],
+    "limitations": "Top-five lexical hits are not deployed retrieval or automatic answer-sufficiency proof; full canonical context is needed for some multi-part questions."
+  },
+  "native_unfiltered": {
+    "scope": "unchanged native World regression executable, no candidate integration",
+    "baseline": "da5112c066416346d6fe3984d4161cd162611e50",
+    "commands": [
+      {
+        "name": "compile",
+        "command": [
+          "make",
+          "build/tests"
+        ],
+        "timeout_seconds": 300,
+        "exit_code": 0,
+        "timed_out": false
+      },
+      {
+        "name": "execute",
+        "command": [
+          "./build/tests"
+        ],
+        "timeout_seconds": 120,
+        "exit_code": null,
+        "timed_out": true
+      }
+    ],
+    "binary_sha256": "7c002cae4c87a400eda23d306eff9f622704a79fd0f0e07cac4e88195e65c2c3",
+    "output_tail": "ause and unmask\n[pass] Ice neighbor success keeps pending contact\n[pass] material deadlines follow contact removal and reset\n[pass] material deadlines with discovery observer\n[pass] INT-000 sparse schema shadow equivalence\n[pass] flow resting packing, films, barriers and signed seams\n[pass] flow conserved state, temperature, workers and exclusion\n[pass] powder pairs and void-driven rearrangement\n[pass] Mercury lanes, sleeping wakes, seams and worker parity\n[pass] granular sampled support policy\n",
+    "status": "incomplete_timeout",
+    "passed_cases_before_timeout": 19,
+    "reported_failures_before_timeout": 0
+  },
+  "native_focused": {
+    "schema_version": 1,
+    "scope": "unchanged-baseline-focused-native-tests",
+    "baseline_commit": "da5112c066416346d6fe3984d4161cd162611e50",
+    "source_head": "34861647184a973ee659ad5f7b77643eee297720",
+    "created_utc": "2026-10-22T20:34:04.461346+00:00",
+    "cwd": "/workspace/scratch/7031ecb8f061/cybersand",
+    "binary": {
+      "path": "build/tests",
+      "bytes": 5429704,
+      "sha256": "7c002cae4c87a400eda23d306eff9f622704a79fd0f0e07cac4e88195e65c2c3"
+    },
+    "test_source": {
+      "path": "native/tests/test_world.cpp",
+      "bytes": 199804,
+      "sha256": "ca1ebce06324cc4a1d0afa462dd96ac0b83b21f1d755c4fd55ab744a8bdac0ee"
+    },
+    "world_candidate_qualification": false,
+    "performance_qualification": false,
+    "maximum_processes": 5,
+    "timeout_seconds_per_process": 30,
+    "earlier_full_suite_timeout": "Preserved by caller; this task does not alter or replace it.",
+    "tests": [
+      {
+        "filter": "optional temperature movement",
+        "command": [
+          "./build/tests",
+          "optional temperature movement"
+        ],
+        "timeout_seconds": 30,
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 0.024197,
+        "stdout": "01-optional-temperature.stdout",
+        "stderr": "01-optional-temperature.stderr",
+        "expected_single_test_output": true,
+        "status": "passed"
+      },
+      {
+        "filter": "serialized relocation preserves payload",
+        "command": [
+          "./build/tests",
+          "serialized relocation preserves payload"
+        ],
+        "timeout_seconds": 30,
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 0.013957,
+        "stdout": "02-serialized-relocation.stdout",
+        "stderr": "02-serialized-relocation.stderr",
+        "expected_single_test_output": true,
+        "status": "passed"
+      },
+      {
+        "filter": "issue #1 failed tick stop/reset",
+        "command": [
+          "./build/tests",
+          "issue #1 failed tick stop/reset"
+        ],
+        "timeout_seconds": 30,
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 0.091463,
+        "stdout": "03-failed-tick-reset.stdout",
+        "stderr": "03-failed-tick-reset.stderr",
+        "expected_single_test_output": true,
+        "status": "passed"
+      },
+      {
+        "filter": "issue #2 interest resume boundaries",
+        "command": [
+          "./build/tests",
+          "issue #2 interest resume boundaries"
+        ],
+        "timeout_seconds": 30,
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 0.093696,
+        "stdout": "04-interest-resume.stdout",
+        "stderr": "04-interest-resume.stderr",
+        "expected_single_test_output": true,
+        "status": "passed"
+      },
+      {
+        "filter": "building CYSD1 constructor and snapshot round trip",
+        "command": [
+          "./build/tests",
+          "building CYSD1 constructor and snapshot round trip"
+        ],
+        "timeout_seconds": 30,
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 1.873129,
+        "stdout": "05-building-snapshot.stdout",
+        "stderr": "05-building-snapshot.stderr",
+        "expected_single_test_output": true,
+        "status": "passed"
+      }
+    ],
+    "files": {
+      "01-optional-temperature.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "01-optional-temperature.stdout": {
+        "bytes": 52,
+        "sha256": "5d687b2d509875eefc4ef86f3e899d910e2b7815debddfd4b50c294df0bb65bc"
+      },
+      "02-serialized-relocation.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "02-serialized-relocation.stdout": {
+        "bytes": 62,
+        "sha256": "794013d58bb5dc66dba3093593a197918a6b89ac97c6a3d560b76654f9e87fdf"
+      },
+      "03-failed-tick-reset.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "03-failed-tick-reset.stdout": {
+        "bytes": 54,
+        "sha256": "9a6c236bd07804b2cc0d8741af3e33ca66ed3480551367347eb40ab788007e31"
+      },
+      "04-interest-resume.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "04-interest-resume.stdout": {
+        "bytes": 58,
+        "sha256": "96c9e76c0a388cf9f51389b588c7a717646066d42517a8149e131e95c2fa0661"
+      },
+      "05-building-snapshot.stderr": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "05-building-snapshot.stdout": {
+        "bytes": 73,
+        "sha256": "c416bad724fa64122a4d591c46f56474fb06cd85b71dec9ae4a543fb774bd430"
+      }
+    },
+    "status": "passed",
+    "completed_utc": "2026-10-22T20:34:06.570996+00:00",
+    "counts": {
+      "passed": 5,
+      "failed": 0,
+      "timed_out": 0,
+      "skipped": 0
+    }
+  },
+  "formal_run002_inputs_still_match": {
+    "tools/experiments/mat003_prepass/registration.json": true,
+    "tools/experiments/mat003_prepass/carriers.hpp": true,
+    "tools/experiments/mat003_prepass/test_carriers.cpp": true,
+    "tools/experiments/mat003_prepass/run.py": true,
+    "tools/experiments/mat003_prepass/verify.py": true,
+    "tools/experiments/mat003_prepass/test_evidence.py": true,
+    "native/include/cybersand/precision_storage.hpp": true,
+    "native/include/cybersand/material.hpp": true,
+    "third_party/native-toolchain.lock.json": true
+  },
+  "production_changed_paths": [],
+  "checkpoint_file_sha256": {
+    ".github/workflows/mat003-prepass.yml": "117217108960bf3cee29ccfa4b8f1506e7cfb22ac42b17694bae0f1e4cf5fd62",
+    "docs/README.md": "3bda5999cc6b4521f7514ec54407d827df9235c25e7848f3ee9ef7e640ec24f0",
+    "docs/architecture/chunk-tile-and-buffer-model.md": "926466f6490da0dda408ad7400bd3b2b5a342881a1a4d5313c5e85069af1e6ae",
+    "docs/architecture/data-ownership-and-lifetimes.md": "135ac4c366f4a5b2f2da0b77fb69053720eaebbe7f20084d837d288754ccf297",
+    "docs/audits/2026-10-22-mat003-prepass-foundation.md": "65c766576e8945e3136481226f0ab5c0be4a3e987beb3cde27718a9db48ef86d",
+    "docs/audits/mat003-prepass-2026-10-22/attempts.json": "04365fd76bc6024d66581eb526a5f907b3fc6f84acb870765b735f916079369c",
+    "docs/audits/mat003-prepass-2026-10-22/local-registration-commits.json": "8d5891f4a79fdf3415eb78b8c52dd5acc9e26812eae6596e91c438093794d949",
+    "docs/audits/mat003-prepass-2026-10-22/local-run-001-failed.json": "00e76a22f594dd54979af59fc7bd51b9f4ca57444804ade8546fc2fb65143641",
+    "docs/audits/mat003-prepass-2026-10-22/local-run-002.json": "7b64330ee74e3f2973321249fd14b3d0ad535720c89bd804f904a00158b61b13",
+    "docs/audits/mat003-prepass-2026-10-22/normal.json": "9480500c485eea33bbfe221d3d08f58c6d7b1f1fa5341f3f5325e35613227bf0",
+    "docs/audits/mat003-prepass-2026-10-22/sanitized.json": "9480500c485eea33bbfe221d3d08f58c6d7b1f1fa5341f3f5325e35613227bf0",
+    "docs/operations/architecture-programme.md": "100c23fec1990e538f85b7b03c0887fb617fb9a9f56e5d247eacac92e8c0dc08",
+    "docs/operations/cybersand-codex-development-handover.md": "dcc315ebd7ba9665fa5e76762f74f315d4195a4c9253c784ff30412be304345a",
+    "docs/operations/local-build-and-validation.md": "e3b32d473fd6152c01c960dcbdbe2542f236ac46e3ec860d15b750ea91ecec81",
+    "docs/operations/mat-003prepass-registration.md": "6c5e3650d97e8e188cc99701e0e874c4fca172abdedfa34716001447343fcbf8",
+    "docs/reference/level-saves-and-replay.md": "8b79d524bcabbab13d808c26b92d83ead1ea6b215905925e26f00e82580f18da",
+    "docs/reference/retrieval-challenges.json": "1edbfc14c684904d1c77f50651c8b63758b4f2c012e9821063725f236552dfcb",
+    "docs/reference/retrieval-corpus.json": "ca32d53c9cc3b5ab63e91304a461aa93ac90488325294183d4a7378de63bc7c5",
+    "docs/reference/retrieval-index.md": "d412b8ac676c2ea40352173e23c0437ede56ea3a92e00803ee22927021747247",
+    "docs/reference/status-and-roadmap.md": "3f3a713429d82ba6def540e80a8bfd8e524ba9b2b5adc4808e75ef7c4deed5aa",
+    "docs/reference/validation-evidence.md": "e5a109a623b515a73beb6cb9a56849b9c9e9745e53dc9d31b02a7c43fd93f0aa",
+    "docs/research/mat-003prepass-epoch-consumers.md": "3870fc1ec78528116aecaf2977e288f52c0dbfaa5eb984b0e19885e3f63b8b97",
+    "docs/research/mat-003prepass-gen006-handoff.md": "a2e27bce1bdb08562608402bb852c5f4d96a4e9c4bb4321c538b935a30fb745f",
+    "docs/research/mat-003prepass-state-inventory.md": "8a2a55be749381913d55c79889b404d05206f2d4d1e29b50d5e316e794bd6272",
+    "docs/systems/materials-and-rule-kernels.md": "ada4a40398ce719c14df499a75265c01a46f02106f41e8bbb888f4e70778160b",
+    "docs/systems/world-storage-and-interest-region.md": "e862c0ee196f7d1363fa329eca459f6eeb49e06251b94b6560806ac32d505308",
+    "tools/experiments/mat003_prepass/carriers.hpp": "542f35323ad97e385424fec8f69d143dddeb5fc41350140d917756d3d739dc81",
+    "tools/experiments/mat003_prepass/registration.json": "4e4ffb9825617d8c0f98b5cfe28ff42a6d52ccf9802c4206e831618160be4d5a",
+    "tools/experiments/mat003_prepass/run.py": "a92ba224937af286227ff85a5b7879b60139bdc876874c8d5bb0c8827a326526",
+    "tools/experiments/mat003_prepass/test_carriers.cpp": "bf4260950c119cbbf0a3fd69f9114cb276a2f4a1effb99610797c5749951ab5e",
+    "tools/experiments/mat003_prepass/test_evidence.py": "b0504d7670c00592937ac3de859d9831b6de0924b36933045f1c5ce5c9f355b8",
+    "tools/experiments/mat003_prepass/verify.py": "b9b904cc213043c213a6ed361b6158577e6f7ed4c35044cff84650356ff3e0cb"
+  },
+  "retention": {
+    "committed": "Curated JSON results, run receipts, local registration commit objects, validation and attempt ledgers.",
+    "local_only": "Raw local binaries, snapshots and stdout/stderr under build/mat003-prepass; hashes identify them but do not promise their permanent availability.",
+    "hosted": "Dedicated workflow uploads full source/binary/output artifacts for 30 days; PR Checks records actual run/artifact identities and outcomes when available."
+  },
+  "unqualified": [
+    "full native unfiltered suite",
+    "real World carrier integration and natural epoch16 rollover",
+    "candidate World semantics and conservation",
+    "performance or cache causality",
+    "Windows and Wasm execution",
+    "GEN-006 continuation codec",
+    "production layout selection"
+  ]
+}

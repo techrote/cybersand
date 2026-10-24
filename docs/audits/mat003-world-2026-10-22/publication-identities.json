@@ -1,0 +1,23 @@
+{
+  "scope": "Equivalent local/publication trees, exact remote Git objects and safe local branch alignment; existing documentation delta retained",
+  "local_apparatus_commit": "64772f16d6bdfd62ef01e65930644789dc8be8c7",
+  "local_raw_commit_object": "tree 51b3c72bdea14fc692982635fd9dc657cb935249\nparent 0c876a154c8d315191737d5eda57737074134eb8\nauthor Codex <codex@openai.com> 1792703307 +0200\ncommitter Codex <codex@openai.com> 1792703307 +0200\n\nAdd isolated native World carrier correctness stage\n",
+  "published_apparatus_commit": "e31d2961594d5c09fa5541b9ba2a0e43471801e4",
+  "equal_tree": "51b3c72bdea14fc692982635fd9dc657cb935249",
+  "remote_commit_objects": [
+    {
+      "sha": "fa6802d5e64f41b967ccce46d9005d5fca3194ab",
+      "raw_commit_object": "tree b017cf56cd80fa600376f6b600f0fad04ddf4ebf\nparent de767c6419ac23273232c5fa9699432af62116a4\nauthor tom <261801702+techrote@users.noreply.github.com> 1792702156 +0100\ncommitter tom <261801702+techrote@users.noreply.github.com> 1792702156 +0100\n\nRegister MAT-003PREPASS isolated World correctness continuation"
+    },
+    {
+      "sha": "e31d2961594d5c09fa5541b9ba2a0e43471801e4",
+      "raw_commit_object": "tree 51b3c72bdea14fc692982635fd9dc657cb935249\nparent fa6802d5e64f41b967ccce46d9005d5fca3194ab\nauthor tom <261801702+techrote@users.noreply.github.com> 1792703319 +0100\ncommitter tom <261801702+techrote@users.noreply.github.com> 1792703319 +0100\n\nAdd isolated native World carrier correctness stage\n\nFreeze the registered S1 apparatus and retained developer evidence before the full hosted collection. Production World and runtime inputs remain unchanged. Formal all-arm acceptance is pending."
+    }
+  ],
+  "hosted_checkout_commit": "ed70604f52234ea6c90ef6718870df65571908f6",
+  "hosted_checkout_tree": "51b3c72bdea14fc692982635fd9dc657cb935249",
+  "hosted_checkout_parents": [
+    "da5112c066416346d6fe3984d4161cd162611e50",
+    "e31d2961594d5c09fa5541b9ba2a0e43471801e4"
+  ]
+}

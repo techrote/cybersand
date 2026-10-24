@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "status": "failed",
+  "scope": "developer-diagnostic-sanitized-results-and-literal-trace-comparison",
+  "formal_s1_qualification": false,
+  "performance_qualification": false,
+  "run_directory": "/workspace/scratch/b7049e9642e7/cybersand/build/mat003-prepass/world-dev-003",
+  "configuration": "sanitized",
+  "arm": "C80-E16-split",
+  "verifier_sha256": "8845d2df81e77cfad374e203d8ae68b94ed8c5436bd77773fd25c7419ad73452",
+  "registration_sha256": "d4d78f2ae3ca64edc4639bacf2a973c7354647040eac635bf63ad5a0a2dae9bf",
+  "result_sha256": "7a90e4e38ac7cbe513480141fe07104339761a9674198579424d580ca3586d05",
+  "independently_decoded_normal_readback": "/workspace/scratch/b7049e9642e7/cybersand/build/mat003-prepass/world-dev-003-normal-readback.json",
+  "normal_readback_sha256": "dbd7816dfd782e17d0519d9d87225fce992e96ad6baa44eb5327eb38ab96f58b",
+  "comparisons": [
+    {
+      "name": "ordinary-serial",
+      "literal_bytes_equal": true,
+      "normal_file": "/workspace/scratch/b7049e9642e7/cybersand/build/mat003-prepass/world-dev-003/normal/C80-E16-split/results/ordinary-serial.bin",
+      "sanitized_file": "/workspace/scratch/b7049e9642e7/cybersand/build/mat003-prepass/world-dev-003/sanitized/C80-E16-split/results/ordinary-serial.bin",
+      "bytes": 1453237,
+      "sha256": "043c421d9b9788ccb97cc4d1ed2645ec2e266b732c010468f7fba6a64fe51283",
+      "matched_independently_decoded_frames": 2049,
+      "summary_validation_errors": [
+        "ordinary-serial: reactive conversion ledger is vacuous"
+      ]
+    },
+    {
+      "name": "ordinary-phased-1",
+      "literal_bytes_equal": true,
+      "normal_file": "/workspace/scratch/b7049e9642e7/cybersand/build/mat003-prepass/world-dev-003/normal/C80-E16-split/results/ordinary-phased-1.bin",
+      "sanitized_file": "/workspace/scratch/b7049e9642e7/cybersand/build/mat003-prepass/world-dev-003/sanitized/C80-E16-split/results/ordinary-phased-1.bin",
+      "bytes": 1604394,
+      "sha256": "1825d8d752fd72716fb52db955c83fbbabf3c53279fb466f58f9d0ac2c62d865",
+      "matched_independently_decoded_frames": 2049,
+      "summary_validation_errors": [
+        "ordinary-phased-1: reactive conversion ledger is vacuous"
+      ]
+    },
+    {
+      "name": "ordinary-phased-4",
+      "literal_bytes_equal": true,
+      "normal_file": "/workspace/scratch/b7049e9642e7/cybersand/build/mat003-prepass/world-dev-003/normal/C80-E16-split/results/ordinary-phased-4.bin",
+      "sanitized_file": "/workspace/scratch/b7049e9642e7/cybersand/build/mat003-prepass/world-dev-003/sanitized/C80-E16-split/results/ordinary-phased-4.bin",
+      "bytes": 1604394,
+      "sha256": "1825d8d752fd72716fb52db955c83fbbabf3c53279fb466f58f9d0ac2c62d865",
+      "matched_independently_decoded_frames": 2049,
+      "summary_validation_errors": [
+        "ordinary-phased-4: reactive conversion ledger is vacuous"
+      ]
+    },
+    {
+      "name": "natural",
+      "literal_bytes_equal": true,
+      "normal_file": "/workspace/scratch/b7049e9642e7/cybersand/build/mat003-prepass/world-dev-003/normal/C80-E16-split/results/natural.bin",
+      "sanitized_file": "/workspace/scratch/b7049e9642e7/cybersand/build/mat003-prepass/world-dev-003/sanitized/C80-E16-split/results/natural.bin",
+      "bytes": 4531591,
+      "sha256": "bb8ebd041b5a6e71dcf7530d77cdb50714eec8416c8af4c68ce8ba5fb01a6c05",
+      "matched_independently_decoded_frames": 131081,
+      "summary_validation_errors": []
+    }
+  ],
+  "errors": [
+    "ordinary-serial: reactive conversion ledger is vacuous",
+    "ordinary-phased-1: reactive conversion ledger is vacuous",
+    "ordinary-phased-4: reactive conversion ledger is vacuous"
+  ],
+  "limitations": [
+    "Developer selected-arm evidence cannot establish all-17 normal-plus-sanitized S1 acceptance.",
+    "This result validates retained result declarations and literal equality to independently decoded normal traces; process exit and sanitizer acceptance remain bound to collector receipts.",
+    "No World execution, recompilation or mutation of the captured run was performed."
+  ]
+}

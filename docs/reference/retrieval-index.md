@@ -10,6 +10,13 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+For current MAT-003 reconciliation with main `3e9f0e6`, including the landed
+#239 foundation, #240 regressions, #241 timeout diagnostics and #242 publisher
+retirement and #243's completed #233 diagnostic record, use the
+[post-#243 integration checkpoint](../audits/2026-10-24-mat003-post-243-integration-checkpoint.md).
+Previous completed checks, superseded partial runs and historical experiments
+retain their own source scope; fresh checks on the new heads are pending.
+
 ## Generation Workbench 2 and procedural quality
 
 - [Workbench inspection and transactions](../systems/generation-workbench-2.md): accepted native identities, bounded deterministic replay, actual stage meanings, invalid-edit preservation, graph/hierarchy/plane editing, undo/redo, seeds and comparison.
@@ -24,6 +31,8 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 
 | Question family | Canonical route |
 |---|---|
+| What does MAT-003PREPASS establish about 64/72/80-bit capacity, current material state, epoch consumers and GEN-006 continuation? | [Experiment registration](../operations/mat-003prepass-registration.md), [S0 isolated-storage pass](../audits/2026-10-22-mat003-prepass-foundation.md), [source inventory](../research/mat-003prepass-state-inventory.md), [epoch audit](../research/mat-003prepass-epoch-consumers.md), [proposed persistence handoff](../research/mat-003prepass-gen006-handoff.md) |
+| Are the seventeen real World arms and typed two-rollover gate accepted, and does #204 admit performance or production changes? | [S1 native Linux correctness evidence and limits](../audits/2026-10-22-mat003-world-correctness.md), [registration](../operations/mat-003prepass-registration.md), and [roadmap](status-and-roadmap.md#mat-003prepass-s1-world-apparatus--2026-10-22): #204 remains open, production is unchanged and S2 performance is separate. |
 | Are Trainer, Hauler, Drifter and Dart four calibrated drones, and can I select them in ordinary play yet? | [4LY implementation scope and programme](../systems/physical-free-flight.md#what-does-4ly-001-implement-and-which-4ly-002-drone-profiles-can-i-select), [profile values](configuration-reference.md#physical-free-flight-values) |
 | Which 4LY-002 manoeuvre envelopes passed on Linux/Windows, what are the exact hashes, and is owner handling feel accepted? | [Source-bound real-Rapier qualification](../audits/2026-10-23-4ly002-measured-handling-qualification.md), [machine-measured profile manifest](../audits/4ly002-2026-10-23/measured-handling.json), [4LY host/learning boundaries](../systems/physical-free-flight.md#what-follows-this-implementation-checkpoint) |
 | How can two desired-velocity outputs control a real flying chassis without hidden goal navigation, unlimited hover or velocity clipping? | [4LY control and goal blindness](../systems/physical-free-flight.md), [strict action interface](interfaces-and-message-contracts.md#physical-free-flight-actions) |
@@ -89,7 +98,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Why test hybrid Water sheets before adding another pressure solver, and why is WEX-002 currently blocked? | [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md), [WEX-002 blocked disposition](../audits/2026-09-24-wex002-water-sheet-blocked-disposition.md), [Water design](../systems/water-design.md), [soliding programme](../operations/soliding-programme.md) |
 | Is the barrel a special physics object, and was its historical support result owner-accepted? | [Product intent](product-intent-and-priorities.md), [Water hybrid/pressure extension](../operations/water-hybrid-pressure-extension-programme.md), [remediation programme](../operations/development-claims-remediation-programme.md) |
 | Which liquid solver families exist, which material×family combinations are allowed, and how is a family selected? | [Solver-family policy](../architecture/liquid-solver-family-policy.md), [capability matrix](liquid-solver-capability-matrix.json), [materials and rule kernels](../systems/materials-and-rule-kernels.md) |
-| Is the native liquid policy API implemented, what does this build accept or refuse, and what does readback report? | [Native policy foundation](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24), [roadmap](status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24), [dated evidence](../audits/2026-10-24-issue-200-policy-foundation.md) |
+| What did PR #239 land for the native liquid policy API, what does this build accept or refuse, and what does readback report? | [Native policy foundation](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24), [roadmap](status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24), [dated evidence](../audits/2026-10-24-issue-200-policy-foundation.md) |
 | What is the protected LCB Dam Break preset and the mixed Water/Oil/Brine fixture, and what did Current measure? | [Water comparison and fixtures](../operations/lcb-water-comparison-and-fixtures.md), [fixture manifest](lcb-fixture-manifest.json), [Gate C/D/E evidence](../audits/2026-10-23-lcb000-gates-cde-design-evidence.md) |
 | Which LCB scenarios exist, what does each one compare, and which solver arms are runnable or blocked? | [LCB scenario catalogue](../operations/lcb-scenario-catalogue.md), [scenario qualification evidence](../audits/2026-10-23-lcb003-scenario-qualification.md), [Water comparison and fixtures](../operations/lcb-water-comparison-and-fixtures.md) |
 | Why does deep Water release slowly, why do vented limbs not level, and what must pressure or inertial solvers change? | [Physics mechanism report](../audits/2026-10-23-lcb-physics-mechanism-report.md), [pressure/inertial handoff](../architecture/lcb-pressure-inertial-handoff.md), [Water design](../systems/water-design.md) |

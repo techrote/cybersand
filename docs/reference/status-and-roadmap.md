@@ -10,6 +10,29 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Current MAT-003 integration checkpoint — 2026-10-24
+
+The [post-#243 integration checkpoint](../audits/2026-10-24-mat003-post-243-integration-checkpoint.md)
+owns reconciliation with main `3e9f0e6`, including #239's bounded policy
+foundation, #240's regression follow-ups, #241's timeout diagnostics and #242's
+retirement of spent publishers. The separately landed #243 diagnostic record
+completes #233's deliverable with 11/600 timeouts; the cause remains unknown,
+#234 owns the next repair and parent #232 remains open. The earlier complete 15 current and seven scoped
+workflow passes and later completed checks remain valid for their exact heads.
+Unfinished Native/Godot workflows retain their own source scope; supersession is
+neither a new PASS nor a test failure. Fresh checks, including ordinary Godot
+physical-timing reduction, are pending on the new heads. Retired publishers stay
+historical under the [publication policy](../operations/local-build-and-validation.md#branch-scoped-runtime-publishers).
+Historical campaigns remain unchanged; #204 and
+independent acceptance remain open. This task dispatches no manual physical
+stress campaign and starts neither #212 nor #234 repair.
+
+## MAT-003PREPASS S1 World apparatus — 2026-10-22
+
+**Current registered Linux S1 correctness; broader qualification open:** [#204](https://github.com/techrote/cybersand/issues/204) retains the [S0 isolated-storage pass](../audits/2026-10-22-mat003-prepass-foundation.md), source inventory, epoch consumer audit and [proposed GEN-006 semantic handoff](../research/mat-003prepass-gen006-handoff.md). The [registered S1 apparatus](../operations/mat-003prepass-registration.md) adds seventeen real World arms using generated source copies, typed 8/16-bit counters, full semantic and conservation checks, and a gate covering two natural sixteen-bit rollovers. The registered normal/sanitized collection and independent readback passed at apparatus source `e31d296`; this qualifies the declared native Linux fixtures. The [World report](../audits/2026-10-22-mat003-world-correctness.md) owns execution status and limits. Production source and 64-bit/epoch8 storage remain unchanged.
+
+Next: separately register S2 performance feasibility and paired measurements; the proposal is not an admitted timing campaign. #204 remains open. Programme order is GEN-007 → MAT-003PREPASS → GEN-006 → full MAT-003; GEN-006 architecture can continue, but durable state contracts must consume this prepass. #14/G-final and unrelated Water/soliding gates remain open.
+
 ## 4LY shared physical free-flight — 2026-10-22
 
 **Current experimental source, 4LY-001 / #205:** the
@@ -620,14 +643,14 @@ Documentation/provenance, Native and GDExtension/Godot post-merge CI passed.
 The [dated reconciliation](../audits/2026-10-24-lcb000-landed-status-reconciliation.md)
 records exact identities, evidence classes and validation limits.
 
-**Approved admission, execution held:** only a separately scoped initial opt-in
+**Approved bounded admission; solver ports held:** only a separately scoped initial opt-in
 [#200](https://github.com/techrote/cybersand/issues/200) start is admitted.
 The owner then lifted the hold for the bounded
 [#200 policy foundation](#lcb-001-policy-foundation--2026-10-24) only and continues to hold
 the #200 pressure backend, every other solver port and [#212](https://github.com/techrote/cybersand/issues/212). This PASS does not admit
 #212, a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier
-integration. Native policy/state implementation and candidate kernels remain
-**Planned**. #201/#202/#203 remain open; the scenario apparatus delivered part of
+integration. The bounded native policy foundation is **Current** as recorded
+below; candidate family-state implementation and kernels remain **Planned**. #201/#202/#203 remain open; the scenario apparatus delivered part of
 #202, not the complete comparison host or its [manual UX](../operations/lcb-manual-comparison-ux.md).
 
 **Current apparatus:** the [LCB scenario catalogue](../operations/lcb-scenario-catalogue.md)
@@ -646,8 +669,17 @@ establish candidate runtime acceptance or change defaults.
 2026-10-24 at 07:01:19Z as
 [`1e032e492cafb232e604baf6e2b823b13d779aa8`](https://github.com/techrote/cybersand/commit/1e032e492cafb232e604baf6e2b823b13d779aa8).
 Its tree `4519bb257cc1060b1d79dd35ac3f183618ec605a` equals the reviewed head
-`cc01899`. The post-merge push runs all passed on first attempt:
+`cc01899331bf3010a2a9a98f1e7450e4f1cfc4be`. The post-merge push runs all passed on first attempt:
 [Native 40072499987](https://github.com/techrote/cybersand/actions/runs/40072499987), [GDExtension/Godot 40072499990](https://github.com/techrote/cybersand/actions/runs/40072499990), [Documentation/provenance 40072499986](https://github.com/techrote/cybersand/actions/runs/40072499986) and [#49 Water apparatus 40072499994](https://github.com/techrote/cybersand/actions/runs/40072499994).
+
+[PR #240](https://github.com/techrote/cybersand/pull/240) subsequently landed as
+`a395e33dc0632f5c3f41e8b8b1c18c89f0aaa131`. Its committed regressions cover
+threaded worker request forwarding/receipt isolation and C API allocation-failure
+outcomes. The [foundation evidence](../audits/2026-10-24-issue-200-policy-foundation.md#follow-up-regressions-stacked-on-239)
+records those tests and their limits. Production runtime inputs and published
+runtime identities are unchanged; fresh checks on the MAT stack incorporating
+this test-only main advance remain pending.
+
 The owner lifted the #200 hold for this bounded foundation only. It implements the
 accepted Gate C policy object, not a solver: validation precedence, canonical
 SHA-256 identity, normalized readback and transactional construction for the
@@ -659,7 +691,8 @@ and [dated evidence](../audits/2026-10-24-issue-200-policy-foundation.md).
 
 | Item | Status |
 |---|---|
-| Native policy, wire decode, refusal codes, hash, World admission, experimental C API, GDExtension receipt/validation/construction, MicroScenario request, worker receipt | Current (main `1e032e4`) |
+| Native policy, wire decode, refusal codes, hash, World admission, experimental C API, GDExtension receipt/validation/construction, MicroScenario request, worker receipt | Current (main; PR #239) |
+| Threaded worker forwarding/receipt isolation and C API allocation-failure regressions | Current on main `a395e33`; PR #240 |
 | NC-1, NC-2 and NC-10 | Executable in the foundation regressions; the LCB registry is unchanged |
 | Pressure backend, W-CY/W-IN kernels, run receipt hash, normalization, physical-state hash, remaining #202 constructors, durable schema/ABI freeze | Planned, held or deferred |
 | #212, #201, #202, #203 and all 90 candidate arms | Unchanged: held or blocked |

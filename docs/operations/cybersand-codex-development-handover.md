@@ -10,6 +10,38 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## MAT-003 stack reconciliation — 2026-10-24
+
+The [post-#243 checkpoint](../audits/2026-10-24-mat003-post-243-integration-checkpoint.md)
+now reconciles main `3e9f0e6dcbfdb9c122c8c555dac43e7b4d926e5f` with the
+experimental parent chain. Main includes the bounded
+[#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24)
+landed by [PR #239](https://github.com/techrote/cybersand/pull/239), plus
+[PR #240](https://github.com/techrote/cybersand/pull/240)'s threaded-worker and
+allocation-failure regressions and [PR #241](https://github.com/techrote/cybersand/pull/241)'s
+physical-timeout diagnostics. [PR #242](https://github.com/techrote/cybersand/pull/242)
+retires spent publishers and their helpers/tests; use the imported
+[publication policy](local-build-and-validation.md#branch-scoped-runtime-publishers)
+for their historical references. This task restores no publisher and changes no
+runtime input. The separately landed #243 documentation completes #233's diagnostic
+deliverable (11/600 timeouts, cause unknown); #234 remains the next repair owner.
+The earlier complete 15 current and seven scoped workflow passes,
+and later completed Documentation/provenance, verifier and historical-apparatus
+checks, remain valid for their exact heads. Unfinished Native/Godot checks are
+superseded, without being credited as PASS or treated as a test failure solely
+because of cancellation. Fresh Native, Godot, ordinary physical-timing reduction
+and materialized provenance gates are pending on the new heads. Registered MAT history and current-main LCB/4LY/WEX
+behavior are preserved. This work does not complete #204, dispatch the manual
+physical stress campaign, or start #212, #234 repair or a solver port. The landed
+work is imported through main; separate source branches and the dirty primary
+checkout remain untouched.
+
+## MAT-003PREPASS S1 World apparatus — 2026-10-22
+
+Resume [#204](https://github.com/techrote/cybersand/issues/204) from the [registration](mat-003prepass-registration.md) and [S1 World report](../audits/2026-10-22-mat003-world-correctness.md). [S0 isolated storage checks passed](../audits/2026-10-22-mat003-prepass-foundation.md). The experimental kit now supplies all seventeen real World arms through generated source copies, typed 8/16-bit counters, full semantic records and a gate spanning two natural sixteen-bit rollovers. **The registered Linux S1 normal/sanitized matrix and independent readback passed at apparatus source `e31d296`; broader World/platform qualification remains open.** Production source and its 64-bit/epoch8 storage remain unchanged.
+
+Read the [state inventory](../research/mat-003prepass-state-inventory.md), [all-consumer epoch audit](../research/mat-003prepass-epoch-consumers.md) and [GEN-006 proposal](../research/mat-003prepass-gen006-handoff.md). Preserve full state_a16 and nonzero Empty records; `content_hash` alone is insufficient. Next: separately register S2 performance feasibility and paired measurements from the bounded proposal; no timing campaign has been admitted. #204 remains open; this apparatus checkpoint selects no production layout.
+
 ## 4LY single-chassis flight contract — 2026-10-22
 
 Start with the [physical free-flight contract](../systems/physical-free-flight.md)

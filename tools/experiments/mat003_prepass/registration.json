@@ -1,0 +1,313 @@
+{
+  "schema_version": 1,
+  "experiment": "MAT-003PREPASS",
+  "stage": "S0-storage-correctness",
+  "registration_version": 2,
+  "status": "S0-correctness-amendment-before-formal-collection",
+  "issue": 204,
+  "planning_commit": "da5112c066416346d6fe3984d4161cd162611e50",
+  "execution_baseline": "da5112c066416346d6fe3984d4161cd162611e50",
+  "baseline_tree": "167c9a04ed45fe84d30846865e8a77d78cdfd6ec",
+  "scope": "Isolated carriers and synthetic ownership/epoch fixtures; no World candidate, solver, production migration or performance qualification.",
+  "fields": {
+    "material_raw": {
+      "offset": 0,
+      "bits": 16
+    },
+    "state_a": {
+      "offset": 16,
+      "bits": 16
+    },
+    "state_b_raw": {
+      "offset": 32,
+      "bits": 8
+    },
+    "epoch8": {
+      "offset": 56,
+      "bits": 8,
+      "counter_type": "uint8_t"
+    },
+    "epoch16": {
+      "offset": 48,
+      "bits": 16,
+      "counter_type": "uint16_t"
+    },
+    "neutral_extra": {
+      "offset": 64,
+      "bits": "logical_bits - 64"
+    },
+    "reserved": {
+      "offset": 40,
+      "bits": "24 - epoch_bits"
+    }
+  },
+  "arms": [
+    {
+      "id": "C64-E8-source",
+      "representation": "source",
+      "logical_bits": 64,
+      "epoch_bits": 8,
+      "epoch_offset": 56,
+      "unassigned_bits": 16,
+      "neutral_extra_bits": 0
+    },
+    {
+      "id": "C64-E8-word",
+      "representation": "word",
+      "logical_bits": 64,
+      "epoch_bits": 8,
+      "epoch_offset": 56,
+      "unassigned_bits": 16,
+      "neutral_extra_bits": 0
+    },
+    {
+      "id": "C64-E16-word",
+      "representation": "word",
+      "logical_bits": 64,
+      "epoch_bits": 16,
+      "epoch_offset": 48,
+      "unassigned_bits": 8,
+      "neutral_extra_bits": 0
+    },
+    {
+      "id": "C64-E8-padded",
+      "representation": "padded",
+      "logical_bits": 64,
+      "epoch_bits": 8,
+      "epoch_offset": 56,
+      "unassigned_bits": 16,
+      "neutral_extra_bits": 0
+    },
+    {
+      "id": "C64-E16-padded",
+      "representation": "padded",
+      "logical_bits": 64,
+      "epoch_bits": 16,
+      "epoch_offset": 48,
+      "unassigned_bits": 8,
+      "neutral_extra_bits": 0
+    },
+    {
+      "id": "C72-E8-packed",
+      "representation": "packed",
+      "logical_bits": 72,
+      "epoch_bits": 8,
+      "epoch_offset": 56,
+      "unassigned_bits": 24,
+      "neutral_extra_bits": 8
+    },
+    {
+      "id": "C72-E16-packed",
+      "representation": "packed",
+      "logical_bits": 72,
+      "epoch_bits": 16,
+      "epoch_offset": 48,
+      "unassigned_bits": 16,
+      "neutral_extra_bits": 8
+    },
+    {
+      "id": "C80-E8-packed",
+      "representation": "packed",
+      "logical_bits": 80,
+      "epoch_bits": 8,
+      "epoch_offset": 56,
+      "unassigned_bits": 32,
+      "neutral_extra_bits": 16
+    },
+    {
+      "id": "C80-E16-packed",
+      "representation": "packed",
+      "logical_bits": 80,
+      "epoch_bits": 16,
+      "epoch_offset": 48,
+      "unassigned_bits": 24,
+      "neutral_extra_bits": 16
+    },
+    {
+      "id": "C72-E8-aligned",
+      "representation": "aligned",
+      "logical_bits": 72,
+      "epoch_bits": 8,
+      "epoch_offset": 56,
+      "unassigned_bits": 24,
+      "neutral_extra_bits": 8
+    },
+    {
+      "id": "C72-E16-aligned",
+      "representation": "aligned",
+      "logical_bits": 72,
+      "epoch_bits": 16,
+      "epoch_offset": 48,
+      "unassigned_bits": 16,
+      "neutral_extra_bits": 8
+    },
+    {
+      "id": "C80-E8-aligned",
+      "representation": "aligned",
+      "logical_bits": 80,
+      "epoch_bits": 8,
+      "epoch_offset": 56,
+      "unassigned_bits": 32,
+      "neutral_extra_bits": 16
+    },
+    {
+      "id": "C80-E16-aligned",
+      "representation": "aligned",
+      "logical_bits": 80,
+      "epoch_bits": 16,
+      "epoch_offset": 48,
+      "unassigned_bits": 24,
+      "neutral_extra_bits": 16
+    },
+    {
+      "id": "C72-E8-split",
+      "representation": "split",
+      "logical_bits": 72,
+      "epoch_bits": 8,
+      "epoch_offset": 56,
+      "unassigned_bits": 24,
+      "neutral_extra_bits": 8
+    },
+    {
+      "id": "C72-E16-split",
+      "representation": "split",
+      "logical_bits": 72,
+      "epoch_bits": 16,
+      "epoch_offset": 48,
+      "unassigned_bits": 16,
+      "neutral_extra_bits": 8
+    },
+    {
+      "id": "C80-E8-split",
+      "representation": "split",
+      "logical_bits": 80,
+      "epoch_bits": 8,
+      "epoch_offset": 56,
+      "unassigned_bits": 32,
+      "neutral_extra_bits": 16
+    },
+    {
+      "id": "C80-E16-split",
+      "representation": "split",
+      "logical_bits": 80,
+      "epoch_bits": 16,
+      "epoch_offset": 48,
+      "unassigned_bits": 24,
+      "neutral_extra_bits": 16
+    }
+  ],
+  "representation_contracts": {
+    "source": "Direct current PrecisionStorage, production default mass8/delay8; include original header unchanged. Raw material16 storage is not runtime ID support.",
+    "word": "uint64_t mask/shift; original material/state offsets; uint8_t/uint16_t epoch accessor and counter.",
+    "packed": "Explicit uint8_t[9] or uint8_t[10], align1; little-endian byte operations or memcpy without misaligned typed access.",
+    "aligned": "uint64_t word plus uint8_t/uint16_t tail; measure sizeof/alignof/offsetof/stride on host; padding never semantic capacity.",
+    "padded": "Logical64 with explicit eight-byte neutral physical padding control; no additional payload capacity.",
+    "split": "Eight-byte base word array plus separately bounded chunk-owned uint8_t/uint16_t tail arrays. Measure buffers/descriptor/capacity separately; never label contiguous9/10."
+  },
+  "fixtures": {
+    "field_values": [
+      0,
+      1,
+      127,
+      128,
+      255,
+      256,
+      32767,
+      32768,
+      65535
+    ],
+    "tail_patterns": [
+      0,
+      1,
+      128,
+      165,
+      255,
+      256,
+      32768,
+      42330,
+      65535
+    ],
+    "deterministic_seed": 204,
+    "operation_stream_length": 4096,
+    "natural_epoch_ticks": 131080,
+    "ordinary_ticks": 2048,
+    "expected_epoch8_first_clear": 256,
+    "expected_epoch8_period": 255,
+    "expected_epoch16_clear_ticks": [
+      65536,
+      131071
+    ],
+    "synthetic_only": true,
+    "operation_streams": [
+      "width-only: identical4096 operations, neutral extra zero, compare all17 arms",
+      "full-capacity:4096 operations with width-masked extra, compare representations/epochs within each width"
+    ]
+  },
+  "correctness": [
+    "zero initialization and field isolation",
+    "mask disjointness and boundary clipping",
+    "full state_a and raw high material16 roundtrips",
+    "physical layout and array stride",
+    "direct-production versus abstraction-matched valid-material control",
+    "copy/move/swap and neutral payload preservation",
+    "synthetic split/merge/reset/reclaim and capacity-refusal non-mutation",
+    "absent/allocated-unread/accessed split tails with clustered/dispersed occupancy",
+    "natural E8/E16 counter/clear/restart primitive and forced boundary; not World acceptance",
+    "representation-independent lossless semantic records including state_a16 and nonzero tail"
+  ],
+  "execution": {
+    "primary_timing_admitted": false,
+    "max_simultaneous_test_processes": 1,
+    "max_correctness_configurations": 2,
+    "normal_flags": [
+      "-std=c++20",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Wconversion",
+      "-Wshadow",
+      "-Werror"
+    ],
+    "sanitizer_flags": [
+      "-std=c++20",
+      "-O1",
+      "-g",
+      "-fno-omit-frame-pointer",
+      "-fsanitize=address,undefined",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Wconversion",
+      "-Wshadow",
+      "-Werror"
+    ],
+    "compile_timeout_seconds": 180,
+    "test_timeout_seconds": 120,
+    "total_stage_budget_seconds": 1200,
+    "stop_rules": [
+      "Nonzero exit, timeout, sanitizer diagnostic, unexpected/missing arm or digest mismatch is failure, not skip/pass.",
+      "Retain every attempted run; corrections require a new output directory and new source hashes.",
+      "No candidate speed ranking or physics-equivalence inference from these synthetic tests."
+    ]
+  },
+  "deferred": [
+    "World integration and all-consumer widened counter",
+    "real World natural16 rollover and forced large resident boundaries",
+    "1/4-worker World semantics/conservation/event/work equivalence",
+    "paired performance campaign and observer overhead",
+    "assembly/hardware-counter analysis",
+    "Windows/Wasm execution",
+    "secondary C64-E24 C72-E32 C80-E32"
+  ],
+  "amendment": {
+    "original_local_commit": "101b72738cfa392aeaea141764baebba36a50cc4",
+    "published_original_commit": "f6e16afed03b3df1e5c5f8de61fd1f5af187a285",
+    "reason": "Make width-only zero-extra and full-capacity operation streams independently observable after prototype review; no timing admission or field-mapping change.",
+    "stage": "before formal normal/sanitized collection; earlier developer smoke attempts retained and unqualified"
+  },
+  "baseline_control_sha256": {
+    "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+    "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375"
+  }
+}

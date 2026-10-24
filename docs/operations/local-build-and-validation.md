@@ -10,6 +10,12 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## MAT-003PREPASS isolated storage checks
+
+**Experimental S0 only:** `python3 tools/experiments/mat003_prepass/run.py --output build/mat003-prepass/<new-run>` compiles the registered normal and ASan/UBSan harness against snapshotted inputs. `python3 tools/experiments/mat003_prepass/verify.py <run-directory>` independently reads hashes, exact records, layouts and primitive rollovers. `python3 -m unittest discover -s tools/experiments/mat003_prepass -p test_evidence.py -v` exercises evidence rejection. Existing output paths refuse overwrite. The [registration](mat-003prepass-registration.md) defines budgets and gaps; the [checkpoint](../audits/2026-10-22-mat003-prepass-foundation.md) records actual outcomes. The dedicated GitHub-hosted workflow runs this bounded research check even on its draft PR and preserves raw artifacts. It does not replace native World, runtime publication, platform or performance gates.
+
+**Experimental S1 correctness:** `python3 tools/experiments/mat003_prepass/world_run.py --compiler g++-13 --output build/mat003-prepass/<new-world-run>` snapshots the registered source, generates isolated World copies and runs all seventeen arms in optimized and ASan/UBSan configurations. `python3 tools/experiments/mat003_prepass/world_verify.py <world-run-directory>` independently reconstructs the generated sources, checks commands/binaries, decodes lossless state traces and compares exact semantic/work records. `python3 -m unittest discover -s tools/experiments/mat003_prepass -p 'test_world_*.py' -v` covers overlay isolation and evidence rejection. The [S1 registration](mat-003prepass-registration.md#s1-continuation-admission--2026-10-22) fixes correctness budgets and explicitly defers timing, other platforms and continuation. `--developer` subsets are diagnostic attempts and cannot satisfy the full matrix. The World workflow runs on the registered research branch or manual dispatch; its frozen historical control does not impose a new gate on unrelated future World changes.
+
 ## Which build inputs are required?
 
 **Current:** build scripts and locks select the following inputs. A pin is a

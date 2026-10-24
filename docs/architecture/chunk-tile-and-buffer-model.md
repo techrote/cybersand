@@ -93,7 +93,7 @@ introduce unintended seams; intended scan/phase order can still affect results.
 
 ## What is stored per cell and per chunk?
 
-**Current source at `de332ea`, checked 2026-09-19:** `World::Chunk::Cell` aliases
+**Current source at `da5112c`, checked 2026-10-22:** `World::Chunk::Cell` aliases
 [`detail::PrecisionStorage`](../../native/include/cybersand/precision_storage.hpp),
 whose enforced physical size/alignment is **8/8 bytes**. It retains material identity,
 material-local state and epoch through explicit masks/accessors. Default Water still
@@ -105,6 +105,18 @@ records the actual carrier in its frozen artifact. Temperature is a
 separate optional signed-16-bit array, allocated for a chunk only when needed.
 Temperature storage exists; conduction is not implemented. Rule descriptors
 declare bounded behavior in [material definitions](../../native/include/cybersand/material.hpp).
+
+The current bit mapping is material storage 0–15, `state_a` 16–31, `state_b` 32–39, unassigned 40–55 and epoch 56–63. The a accessor is `uint16_t`; b and epoch are `uint8_t`. `Material` remains a byte enum, so the 16-bit mask does not imply a wider runtime catalogue. Material16 + a16 + b8 consumes 40 bits: epoch24 fits 64 total bits, while epoch32 requires at least 72. The [MAT-003PREPASS inventory](../research/mat-003prepass-state-inventory.md) audits narrower adapters and state ownership. Its [72/80-bit experiments](../operations/mat-003prepass-registration.md) remain isolated; no production width or spare-bit meaning is selected.
+
+The [isolated S1 World apparatus](../audits/2026-10-22-mat003-world-correctness.md)
+uses generated candidate copies with typed E8/E16 counters. Packed arrays have
+9/10-byte cells; aligned and padded controls occupy 16 bytes; split candidates
+own an eight-byte base and eager one-/two-byte per-cell chunk tails. The fixture
+accounts for those allocations and descriptors separately from temperature,
+activity and scratch. Its exact semantic records include full a16 and valid
+nonzero Empty state; raw `state_hash` and the Empty-omitting `content_hash` are
+not cross-representation equivalence oracles. Production geometry and ownership
+above remain unchanged.
 
 Activity and render dirtiness are distinct. Sleeping blocks eliminate rule
 scans; dirty chunk bounds track needed visual publication and remain until
