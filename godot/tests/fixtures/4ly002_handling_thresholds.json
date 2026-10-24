@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "registered_utc": "2026-10-23",
+  "status": "prospective_before_first_handling_fixture_execution",
+  "action_profile": "4ly_velocity_v1",
+  "physical_fixture": "Rapier 0.35.2, 60Hz, one real rectangle, world-frame two-output velocity requests",
+  "comparisons": {
+    "hauler_speed_at_60_steps_max_of_trainer": 0.85,
+    "dart_speed_at_60_steps_min_of_trainer": 1.2,
+    "drifter_equal_speed_stop_distance_min_of_trainer": 1.25
+  },
+  "individual": {
+    "maximum_final_hover_speed_cells_per_second": 1.5,
+    "minimum_hover_support_free_steps": 240,
+    "minimum_upward_displacement_cells": 10,
+    "minimum_downward_displacement_cells": 10,
+    "maximum_upright_angle_radians": 0.15,
+    "maximum_upright_angular_speed_radians_per_second": 0.2,
+    "maximum_stop_speed_after_180_steps": 1.5,
+    "minimum_contact_ticks": 4,
+    "minimum_reverse_final_left_speed_cells_per_second": 8,
+    "maximum_final_wall_penetration_cells": 1.5
+  },
+  "command_traces": {
+    "normalized": [
+      "240 neutral",
+      "120 right",
+      "180 neutral",
+      "120 right",
+      "180 left",
+      "90 up",
+      "120 down",
+      "240 neutral, external torque impulse"
+    ],
+    "equal_speed_braking": [
+      "180 neutral",
+      "physical +20-cell/s impulse right",
+      "240 zero velocity"
+    ],
+    "passive_drift": [
+      "180 neutral",
+      "physical +20-cell/s impulse right",
+      "host power disabled",
+      "60 passive physics steps"
+    ],
+    "wall_contact": [
+      "240 neutral",
+      "480 right towards same fixed wall x=500"
+    ]
+  },
+  "caveats": [
+    "The +20-cell/s fixture impulse establishes identical physical initial speed without modifying the gameplay controller.",
+    "A passing gate measures deterministic physical manoeuvres; it is not owner-feel acceptance or actual-user-platform qualification.",
+    "Failed tuning runs remain distinct from accepted final profile identities."
+  ]
+}

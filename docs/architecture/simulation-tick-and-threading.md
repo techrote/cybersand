@@ -6,7 +6,7 @@ status: Current
 scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
 keywords: [fixed tick, desktop worker, Web synchronous, Rapier order, character order, tick failure, backlog]
 related-documents: [data-ownership-and-lifetimes.md, determinism-and-boundary-transfers.md, rigid-body-and-cellular-coupling.md, ../operations/web-threading.md]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-22
 ---
 
 # Simulation tick and threading
@@ -67,6 +67,23 @@ poses, muzzle directions, generations and body states enter the worker together
 through `set_physical_usable_state`; the worker never obtains a Rapier object. Demo
 decisions run every six physical ticks from copied actor views collected before
 any demo output is submitted.
+
+The internal [4LY flight profile](../systems/physical-free-flight.md) reuses this
+main-thread owner and requires a 1/60-second actuation step. Its pure controller
+produces bounded force/torque from own velocity/attitude before the shared Rapier
+step. The rig owns a constant-force/torque channel for that one integration;
+`Session.complete_step` calls `Rig.complete_step` to clear the channel after
+Rapier advances. Cancellation clears unconsumed force immediately. Copied
+post-step motion and completed-step history remain distinct from a prepared
+actuator request/receipt. A session containing 4LY binds preparation/completion
+to the bridge's actual manual-step counter: duplicate preparation or no-step
+completion is refused, and unexpected physical steps produce a sticky session
+fault requiring replacement. Cancellation after physics preserves the original
+completed receipt even if producer ownership changes before accounting.
+The initial 4LY demo emits neutral conformance requests at the existing six-tick
+decision cadence. Invalid cadence, cancellation or expiry removes actuation
+authority, rather than clamping a different step into the flight contract.
+No new cellular worker, body solver or independent world clock is introduced.
 
 The desktop worker prepares the native body mask before consuming copied usable
 effects under exclusive cellular ownership. ACT-005 validates the captured

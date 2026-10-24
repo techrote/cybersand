@@ -6,7 +6,7 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md]
-last-reviewed: 2026-10-21
+last-reviewed: 2026-10-22
 ---
 
 # Architectural and simulation invariants
@@ -197,6 +197,25 @@ listed boundaries; execution evidence remains separately dated.
 | RIG-013 | Current: the cellular owner accounts accepted usable work; only a matching accepted, consumed receipt can apply bounded physical recoil once, and cancellation, expiry, rearm, selection and reset fence stale results |
 | RIG-014 | Current: physical processors must settle and fix their real body before worker admission; rotated nonoverlapping exterior ports preflight complete batches, and blocked outputs consume no input |
 | RIG-015 | Current: bounded per-actor/per-processor history preserves stock, age, cycles and cooldown across pickup, redeployment and selection; an exhausted physical device remains observable and inert until its physical owner retires it |
+
+### Physical free-flight invariants
+
+Contract: [4LY single-chassis flight](../systems/physical-free-flight.md).
+Sources: [profile](../../godot/scripts/physical_flight_profile.gd),
+[pure controller](../../godot/scripts/physical_flight_controller.gd),
+[rig](../../godot/scripts/physical_actor_rig.gd) and
+[session](../../godot/scripts/physical_actor_session.gd).
+
+| ID | Status and narrow claim |
+|---|---|
+| FLY-001 | Current: the explicit no-equipment profile installs one rectangular body, no joints/mounts and no hidden held chassis through the ordinary physical owner |
+| FLY-002 | Current: `4ly_velocity_v1` admits exactly two finite in-range `move` components under the retained version-2 observation-relative lease; legacy profile meanings are unchanged |
+| FLY-003 | Current: the stabilizer receives only requested velocity and sampled own velocity/attitude, with no position, goal, terrain, route, reward or World authority |
+| FLY-004 | Current: gravity compensation shares bounded total thrust; acceleration/braking, force response/slew and torque bounds are explicit, without an integral or extra extreme-motion actuator |
+| FLY-005 | Current: desired speed limits do not overwrite collision momentum; cancellation/expiry discard command/filter state and select passive assistance without deleting physical velocity |
+| FLY-006 | Current: copied capabilities and resolved profile/controller hashes identify tuning and controller code separately from requested/admitted/applied input and actual sampled motion |
+| FLY-007 | Current scope: four stable IDs share initial conformance numbers; three are uncalibrated placeholders, and neither profile identity nor a fixture supplies four-profile handling or learned-policy acceptance |
+| FLY-008 | Current: a flight session binds immutable prepared receipts to the actual bridge step counter; cancellation cannot invent consumption or reattribute a completed step to a later producer, and unexpected physical steps require replacement |
 
 ### Player material field invariants
 

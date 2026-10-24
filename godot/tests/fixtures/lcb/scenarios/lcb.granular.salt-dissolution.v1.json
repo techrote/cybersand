@@ -1,0 +1,238 @@
+{
+  "schema_version": 2,
+  "id": "lcb.granular.salt-dissolution.v1",
+  "recipe_version": 1,
+  "seed": 0,
+  "maturity": "reference",
+  "rectangles": [
+    0,
+    0,
+    1024,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1024,
+    1,
+    1023,
+    0,
+    1,
+    1024,
+    1,
+    0,
+    1023,
+    1024,
+    1,
+    1,
+    32,
+    256,
+    960,
+    8,
+    1,
+    32,
+    64,
+    8,
+    192,
+    1,
+    984,
+    64,
+    8,
+    192,
+    1,
+    400,
+    96,
+    64,
+    32,
+    23,
+    400,
+    128,
+    64,
+    4,
+    1
+  ],
+  "partial_water_fills": [
+    40,
+    160,
+    944,
+    96,
+    255,
+    0
+  ],
+  "transport_profile": {
+    "families": {
+      "liquid": {
+        "cadence": 1,
+        "carrying": 0,
+        "erosion": 0,
+        "horizontal": 2,
+        "permeability": 1
+      },
+      "powder": {
+        "mixing": 0,
+        "packing": 8,
+        "pickup": 64
+      }
+    },
+    "materials": {
+      "33": {
+        "permeability": 30
+      }
+    },
+    "name": "Baseline",
+    "pairs": [],
+    "version": 1
+  },
+  "water_semantics": [
+    1,
+    8,
+    12,
+    0
+  ],
+  "player_start": [
+    24,
+    222
+  ],
+  "camera_origin": [
+    0,
+    0
+  ],
+  "player_enabled": false,
+  "body_enabled": false,
+  "tools": [],
+  "interest": {
+    "policy": "fixed",
+    "region": [
+      16,
+      16,
+      992,
+      272
+    ]
+  },
+  "execution": {
+    "policy": "fixed",
+    "cadence_lod_enabled": false,
+    "liquid_surface_adhesion_enabled": true
+  },
+  "events": [
+    {
+      "tick": 0,
+      "kind": "erase",
+      "x": 400,
+      "y": 128,
+      "width": 64,
+      "height": 4,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    }
+  ],
+  "observations": [
+    {
+      "id": "salt-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        400,
+        96,
+        64,
+        32
+      ],
+      "material": 23
+    },
+    {
+      "id": "water-t0",
+      "tick": 0,
+      "metric": "water_integer",
+      "region": [
+        40,
+        96,
+        944,
+        160
+      ],
+      "material": 3
+    },
+    {
+      "id": "salt-t60",
+      "tick": 60,
+      "metric": "material_cells",
+      "region": [
+        336,
+        96,
+        192,
+        160
+      ],
+      "material": 23
+    },
+    {
+      "id": "brine-t60",
+      "tick": 60,
+      "metric": "material_cells",
+      "region": [
+        40,
+        96,
+        944,
+        160
+      ],
+      "material": 24
+    },
+    {
+      "id": "salt-t1200",
+      "tick": 1200,
+      "metric": "material_cells",
+      "region": [
+        40,
+        96,
+        944,
+        160
+      ],
+      "material": 23
+    },
+    {
+      "id": "water-t1200",
+      "tick": 1200,
+      "metric": "water_integer",
+      "region": [
+        40,
+        96,
+        944,
+        160
+      ],
+      "material": 3
+    },
+    {
+      "id": "brine-t1200",
+      "tick": 1200,
+      "metric": "material_cells",
+      "region": [
+        40,
+        96,
+        944,
+        160
+      ],
+      "material": 24
+    }
+  ],
+  "conditions": [],
+  "source_recipe": "LCB-003 scenario catalogue v1: granular",
+  "source_recipe_hash": "",
+  "presentation": {
+    "title": "Salt heap dissolving into Brine",
+    "instructions": "A 64x32 Salt block falls into a full-cell Water pool. int.pair.water-salt.dissolve.v1 converts each Water+Salt pair to two Brine. Ledger identity: Water loss = 255 x Salt consumed while all reacting Water cells are full.",
+    "duration_ticks": 1200,
+    "baseline": "Current native defaults; controlled fixed-tick run",
+    "profile": "Baseline",
+    "regions": [
+      {
+        "id": "salt",
+        "label": "Salt block",
+        "region": [
+          400,
+          96,
+          64,
+          32
+        ]
+      }
+    ]
+  }
+}

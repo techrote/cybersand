@@ -1,0 +1,244 @@
+{
+  "schema_version": 2,
+  "id": "lcb.rest.remote-disturbance.v1",
+  "recipe_version": 1,
+  "seed": 0,
+  "maturity": "reference",
+  "rectangles": [
+    0,
+    0,
+    1024,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1024,
+    1,
+    1023,
+    0,
+    1,
+    1024,
+    1,
+    0,
+    1023,
+    1024,
+    1,
+    1,
+    32,
+    256,
+    960,
+    8,
+    1,
+    32,
+    64,
+    8,
+    192,
+    1,
+    984,
+    64,
+    8,
+    192,
+    1
+  ],
+  "partial_water_fills": [
+    40,
+    96,
+    944,
+    160,
+    255,
+    0
+  ],
+  "transport_profile": {
+    "families": {
+      "liquid": {
+        "cadence": 1,
+        "carrying": 0,
+        "erosion": 0,
+        "horizontal": 2,
+        "permeability": 1
+      },
+      "powder": {
+        "mixing": 0,
+        "packing": 8,
+        "pickup": 64
+      }
+    },
+    "materials": {
+      "33": {
+        "permeability": 30
+      }
+    },
+    "name": "Baseline",
+    "pairs": [],
+    "version": 1
+  },
+  "water_semantics": [
+    1,
+    8,
+    12,
+    0
+  ],
+  "player_start": [
+    24,
+    222
+  ],
+  "camera_origin": [
+    0,
+    0
+  ],
+  "player_enabled": false,
+  "body_enabled": false,
+  "tools": [],
+  "interest": {
+    "policy": "fixed",
+    "region": [
+      16,
+      16,
+      992,
+      272
+    ]
+  },
+  "execution": {
+    "policy": "fixed",
+    "cadence_lod_enabled": false,
+    "liquid_surface_adhesion_enabled": true
+  },
+  "events": [
+    {
+      "tick": 300,
+      "kind": "fill",
+      "x": 940,
+      "y": 72,
+      "width": 8,
+      "height": 8,
+      "material": 3,
+      "normalized_mass": 255,
+      "coherence": 0
+    },
+    {
+      "tick": 900,
+      "kind": "erase",
+      "x": 48,
+      "y": 240,
+      "width": 8,
+      "height": 8,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    }
+  ],
+  "observations": [
+    {
+      "id": "total-t0",
+      "tick": 0,
+      "metric": "water_integer",
+      "region": [
+        40,
+        40,
+        944,
+        216
+      ],
+      "material": 3
+    },
+    {
+      "id": "total-t300",
+      "tick": 300,
+      "metric": "water_integer",
+      "region": [
+        40,
+        40,
+        944,
+        216
+      ],
+      "material": 3
+    },
+    {
+      "id": "far-end-t600",
+      "tick": 600,
+      "metric": "water_integer",
+      "region": [
+        840,
+        64,
+        144,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "total-t900",
+      "tick": 900,
+      "metric": "water_integer",
+      "region": [
+        40,
+        40,
+        944,
+        216
+      ],
+      "material": 3
+    },
+    {
+      "id": "total-t1200",
+      "tick": 1200,
+      "metric": "water_integer",
+      "region": [
+        40,
+        40,
+        944,
+        216
+      ],
+      "material": 3
+    },
+    {
+      "id": "near-end-t1200",
+      "tick": 1200,
+      "metric": "water_integer",
+      "region": [
+        40,
+        64,
+        144,
+        192
+      ],
+      "material": 3
+    }
+  ],
+  "conditions": [
+    {
+      "observation": "total-t1200",
+      "comparison": "eq",
+      "value": 38515200,
+      "outcome": "complete"
+    }
+  ],
+  "source_recipe": "LCB-003 scenario catalogue v1: rest-wake",
+  "source_recipe_hash": "",
+  "presentation": {
+    "title": "Remote source and sink in a deep pool",
+    "instructions": "Deep quiet pool; an 8x8 Water block is added above the far end at tick 300 (explicit source) and an 8x8 full block is erased at the near bottom at tick 900 (explicit sink). Compares remote wake and checks ledger closure: final mass equals the initial mass.",
+    "duration_ticks": 1200,
+    "baseline": "Current native defaults; controlled fixed-tick run",
+    "profile": "Baseline",
+    "regions": [
+      {
+        "id": "source",
+        "label": "Source",
+        "region": [
+          940,
+          72,
+          8,
+          8
+        ]
+      },
+      {
+        "id": "sink",
+        "label": "Sink",
+        "region": [
+          48,
+          240,
+          8,
+          8
+        ]
+      }
+    ]
+  }
+}

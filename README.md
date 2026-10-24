@@ -142,6 +142,13 @@ inference is a future consumer. The [sampled rig](docs/systems/actor-rigs.md) an
 [SetA contracts](docs/systems/actor-control-prototypes.md) retain their original
 motor and policy compatibility details.
 
+The internal [4LY free-flight family](docs/systems/physical-free-flight.md)
+adds a single-chassis training plant with two desired-velocity outputs and
+bounded physical assistance. Trainer has initial conformance tuning; Hauler,
+Drifter and Dart are uncalibrated placeholders. Their ordinary-game selection
+and measured handling differences are follow-up work, so the F5 roster remains
+46 actors.
+
 The [32-item usable catalogue](docs/systems/actor-usables.md) supplies material
 tools, ballistic payloads and processors for the physical roster. Actors carry a
 jointed chassis with bounded aim, recoil, release and nearby pickup. Processors
