@@ -1,0 +1,85 @@
+{
+  "schema": "4ly004-host-compatibility-candidate/v1",
+  "status": "SOURCE_CANDIDATE_NOT_ADMITTED",
+  "source_scope": {
+    "upstream_4ly002_merge": "1f9336388f11be39abaae340a781a5eef52115d4",
+    "implementation_pr": "https://github.com/techrote/cybersand/pull/229",
+    "actual_4ly003_merge_sha": null,
+    "final_head_sha": null,
+    "retired_public_final_scenario_rules": true,
+    "external_sealed_final_required": true
+  },
+  "runtime_scope": {
+    "godot": "4.7",
+    "rapier": "0.35.2",
+    "native_source_sha": null,
+    "host": "CyberPhysicalActorArena native material + Rapier",
+    "physics_hz": 60,
+    "headless_physics": "actual_manual_stepping",
+    "desktop_parity_claim": false
+  },
+  "versions": {
+    "episode": "4ly-episode/v1",
+    "observation": "4ly-observation/v1",
+    "flat_observation": "4ly-flat-observation/v1",
+    "flat_channels": 54,
+    "action": "4ly-action/v1",
+    "physical_action_profile": "4ly_velocity_v1",
+    "producer_session": "physical_wire_action-v2",
+    "course": "4ly-flight-course/v1",
+    "split_geometry_version": 3
+  },
+  "decision": {
+    "decision_interval_ticks": 6,
+    "lease_ticks": 12,
+    "physics_ticks_per_second": 60,
+    "first_terminal_tick_stop": true,
+    "administrative_timeout_separate": true
+  },
+  "plant": {
+    "calibration_literal": "candidate_4ly002",
+    "controller_source_sha256": "fb86190c68c6a87e7d2ef7e845b1fb97305f188723a326f67f07caa6971cc8ae",
+    "profiles": {
+      "4ly_trainer": "f1f9286a27b929c96caca5aaf2be70cbd82e0fd933f29968c1aaaa43ac8f1704",
+      "4ly_hauler": "e9979ed9e437d2fcdf5c4c52fb4385e788d4ccd6f40c7494308c60c26c11e10d",
+      "4ly_drifter": "c195dd35677dcbdb76c85c798d0c1fbc103dcc40182932be7d70c755b1dbac24",
+      "4ly_dart": "a48a58c388fb0826f5b5b29005a7469d2cd081dd2c0ed3bfe6c028d88cd04084"
+    }
+  },
+  "training_admission": {
+    "allowed": false,
+    "reason": "Not qualified: source/actual-host final teacher score and exact runtimes pending",
+    "final_split_scored": false,
+    "throughput_measured": false,
+    "policy_success_claim": false,
+    "throughput_interpretation": "Not yet accepted at frozen exact-final-head source; preliminary native/Rapier throughput measured at an earlier source",
+    "sealed_final_suite_status": "Unprovided; initial public geometry and v2 exposure invalidated by prospective v3 amendment",
+    "evaluator_reward": "Implemented task-only bounded terms; not policy observation"
+  },
+  "acceptance_preconditions": [
+    "Exact current host source+runtime readback",
+    "Frozen teacher digest independent admission",
+    "Four-profile actual Rapier native scenarios with retained successful/failed traces",
+    "Negative controls have zero navigation credit",
+    "Final geometry separated from development",
+    "Reproducible terminal-first stepping",
+    "Exact-head Godot/Native/docs/retrieval validation"
+  ],
+  "historical_source_bound_pilot": {
+    "tested_implementation_pr_head": "689ed94b0c0fb5ab05481d14eb1008cf35a6e23c",
+    "tested_synthetic_merge": "095ff8c3f7565062b3fcfaf77bd948881aa1d02f",
+    "github_actions_url": "https://github.com/techrote/cybersand/actions/runs/39940305048",
+    "platform": "GitHub hosted Ubuntu, AMD EPYC 7763 / 4 logical processors, Godot 4.7 / Rapier 0.35.2",
+    "physical_ticks": 906,
+    "wall_seconds": 1.761273,
+    "physics_ticks_per_sec": 514.400663610922,
+    "policy_decisions": 151,
+    "policy_decisions_per_sec": 85.7334439351537,
+    "host_count": 1,
+    "reset_time_total_us": 111321,
+    "observation_json_serialization_us": 43327,
+    "peak_static_memory_bytes": 73041849,
+    "transport_inference_overhead_us": null,
+    "admission": "historical development pilot only; newer episode/reward/split source needs independent exact-head rerun"
+  }
+}

@@ -807,6 +807,22 @@ it to revoke the worker's queued and already-copied, not-yet-admitted effects fo
 that actor. Other actors retain their own command/effect generations. A fresh
 observation immediately reports the cleared charge, grip, rope and action state.
 
+### 4LY-003 policy episode/observation envelope
+
+**Current implementation candidate:** The physical v2
+`physical_wire_action` and `4ly_velocity_v1` plant contract remain
+unchanged. The [Flight Lab contract](../systems/physical-flight-lab.md)
+introduces a task-layer `4ly-episode/v1`, copied
+`4ly-observation/v1`, `4ly-action/v1` and normalized
+`4ly-flat-observation/v1` (54 floats). Only two admitted
+desired-velocity outputs cross into the existing session;
+each decision is bound to a current issued observation and epoch
+before consuming up to six real 60 Hz native/Rapier ticks.
+Task rewards, course geometry, evaluator contact count and terminal
+status are not policy-readable. The prospective
+[registration](../../godot/tests/fixtures/4ly003_qualification_registration.json)
+does not grant final teacher qualification.
+
 ### Physical free-flight actions
 
 **Current 4LY-001 contract / 4LY-002 profile candidates:** a session-installed `4ly_*` actor declares
