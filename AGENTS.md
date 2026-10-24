@@ -71,7 +71,10 @@ routes **#45 to NARROW**: admission/design only, under shared/vented-atmosphere
 assumptions, with deep-release surge registered as its own fixture family. The
 opt-in Liquid Comparison Build pressure family (#200) is a separate experimental
 lane bounded by the [LCB-000 Gate A record](docs/audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
-It is not #45 selection, and it may not be ported until all five #213 gates pass.
+It is not #45 selection. All five #213 gates passed; on 2026-10-24 the owner
+authorized the bounded LCB implementation (pressure reference #200, inertial #212)
+without default changes, generic #12 Stage 4, or a production carrier migration.
+The implemented family is described in [pressure_flow_v1](docs/architecture/pressure-flow-v1.md).
 
 Do not freeze #45 numeric thresholds from apparatus-v1 settling/U-tube metrics,
 rewrite old #26 artifacts, duplicate #49/#12 ownership, silently unify Water

@@ -3845,7 +3845,7 @@ int main(int argc, char** argv) {
         {"LCB-001 liquid policy catalogue matches descriptors", test_liquid_policy_catalogue_matches_descriptors},
         {"LCB-001 liquid policy wire vectors", test_liquid_policy_wire_vectors},
         {"LCB-001 liquid policy session transcript", test_liquid_policy_session_transcript},
-        {"LCB-001 liquid policy running build admits only defaults", test_liquid_policy_running_build_admits_only_defaults},
+        {"LCB-001 liquid policy running build admits defaults and qualified candidates", test_liquid_policy_running_build_admits_only_defaults},
         {"LCB-001 liquid policy World construction and refusal", test_liquid_policy_world_construction_and_refusal},
         {"LCB-001 liquid policy default behavior and workers", test_liquid_policy_default_preserves_behavior_and_workers},
         {"LCB-001 liquid policy C API transaction", test_liquid_policy_c_api_transaction},

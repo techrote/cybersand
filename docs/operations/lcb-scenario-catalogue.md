@@ -12,7 +12,7 @@ related-documents: [lcb-water-comparison-and-fixtures.md, lcb-manual-comparison-
 
 ## Status
 
-**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) only; the pressure backend, every other solver port and #212 remain held. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration.
+**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current on branch `claude/lcb001-pressure-reference` (unmerged); #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
 
 The #213 prerequisite is satisfied. Remaining arm dependencies below still
 block execution; the registered historical inventories are unchanged.
@@ -69,6 +69,11 @@ full-length values are author-reported characterization; see the
 **Planned arms.** Every `pressure_flow_v1`, `inertial_cellular_v1` and Water
 `cellular_yield_v1` arm is registered but **blocked**. Each one names its
 owning dependency (#200, #201, #212). No arm runs on a fallback solver.
+On branch `claude/lcb001-pressure-reference` (unmerged) W-PF `reference`
+executes natively ([design](../architecture/pressure-flow-v1.md)) and in
+[`test_lcb_pressure_reference.gd`](../../godot/tests/test_lcb_pressure_reference.gd)
+on registered geometries, but the registry's arm records are unchanged and still
+blocked; #202 owns consuming and re-dispositioning them.
 Families and refusal codes are defined in the
 [solver-family policy](../architecture/liquid-solver-family-policy.md).
 
@@ -112,7 +117,7 @@ correctness property that justifies the scenario.
 | `lcb.shallow.obstacle-run.v1` | shallow-flow | 24-row release over three low obstacles: overtopping, ponding, thin fronts |
 | `lcb.head.vented-two-limb.v1` | communicating-head | Vented 160/40-row limbs through an 8-row roofed passage. Equal levels are valid **only** because both headspaces are open (#49 boundary assumption). |
 | `lcb.head.narrow-passage.v1` | communicating-head | Same limbs through a 2-row passage |
-| `lcb.head.sealed-two-limb.v1` | communicating-head | Roofed (enclosed) limbs. Current has no gas state, so its result is labelled **`measured_not_a_sealed_control`**. A valid sealed target needs W-PF gas (#200). |
+| `lcb.head.sealed-two-limb.v1` | communicating-head | Roofed (enclosed) limbs. Current has no gas state, so its result is labelled **`measured_not_a_sealed_control`**. A valid sealed target needs W-PF gas (#200). On the pressure branch W-PF gas runs it: it differs from vented but was 4.9 rows from the isothermal law at t2400, still settling (characterization). |
 | `lcb.rest.deep-quiet-pool.v1` | rest-wake | Closed full-cell pool with no input: rest, constant hash |
 | `lcb.rest.remote-disturbance.v1` | rest-wake | Remote source (t300) and sink (t900) in a deep pool; ledger closes to the initial mass |
 | `lcb.rest.two-pool-partial-activity.v1` | rest-wake | Disturb pool A only; pool B must stay unchanged; activity counters show locality |
@@ -168,7 +173,7 @@ UI rules (to be enforced by #202):
 |---|---|---|
 | `W-FM` / `C0` | Current defaults | **measured** on Current |
 | `W-CY` | Water `cellular_yield_v1/reference` | blocked: #200 |
-| `W-PF` | Water `pressure_flow_v1/reference\|cached\|cached_dormant` | blocked: #200, #201 |
+| `W-PF` | Water `pressure_flow_v1/reference\|cached\|cached_dormant` | registered blocked: #200, #201. Branch: `reference` admitted natively, not yet run as a registry arm; `cached`/`cached_dormant` blocked on #201 |
 | `W-IN` | Water `inertial_cellular_v1/reference` | blocked: #200, #212 |
 | `BRINE-IN` | Brine `inertial_cellular_v1/reference` | blocked: #200, #212 |
 | `M1` | Water FreeMass + Oil CellularYield + Brine Inertial | blocked: #200, #212 |
@@ -184,11 +189,11 @@ the rest.
 
 | PR #215 NC | Coverage on current source |
 |---|---|
-| NC-1, NC-2, NC-10 | **Executed by the #200 foundation** in [`test_liquid_solver_policy.gd`](../../godot/tests/test_liquid_solver_policy.gd) through the MicroScenario host: Oil × inertial `combination_rejected`, pressure/inertial `family_unavailable` with the live session intact, and CYSD1 import on default families. The registry entries are unchanged. A definition carrying a `solver_family` field is still refused as an unknown root field. |
+| NC-1, NC-2, NC-10 | **Executed by the #200 foundation** in [`test_liquid_solver_policy.gd`](../../godot/tests/test_liquid_solver_policy.gd) through the MicroScenario host: Oil × inertial `combination_rejected`, pressure/inertial `family_unavailable` with the live session intact, and CYSD1 import on default families. On the pressure branch NC-2 uses pressure `cached`/`cached_dormant` and inertial, because `pressure_flow_v1/reference` is admitted. The registry entries are unchanged. A definition carrying a `solver_family` field is still refused as an unknown root field. |
 | NC-3 | **Blocked (#200):** `normalization_required` is unreachable until whole-cell Water (W-CY) is admitted. |
 | NC-4 | **Blocked (#201):** pressure dormancy does not exist |
 | NC-5 | **Blocked (#212)** under M1. The Current equivalent is measured (`salt-dissolution`, mixed M0). |
-| NC-6 | **Blocked (#200/#212)** across families. Current same-family density exchange is measured (lock exchanges, inverted column, Mercury drop). |
+| NC-6 | **Blocked (#200/#212)** across families. Current same-family density exchange is measured (lock exchanges, inverted column, Mercury drop). The versioned physical-state hash it needs exists on the pressure branch. |
 | NC-7 | **Executed:** campaign 1/4-worker parity plus regression tick-30 parity |
 | NC-8, NC-9 | **Blocked (#202):** presentation/exploratory flags live in the UI. Partial cover: the native-only runner refuses player-enabled definitions. |
 
@@ -258,10 +263,14 @@ it is an explicit, reviewed change.
 
 1. **#200:**
    - `LiquidSolverPolicy`, its packed bridge, refusal codes and effective
-     readback are Current for defaults (2026-10-24 foundation; NC-1, NC-2 and
-     NC-10 executable). Still required: the remaining World constructors, the
-     candidate families themselves and `normalization_required` (NC-3);
-   - a versioned complete physical-state hash, needed once family state exists.
+     readback are Current (2026-10-24 foundation; NC-1, NC-2 and NC-10
+     executable);
+   - on the pressure branch (unmerged): `pressure_flow_v1/reference`, the
+     versioned physical-state hash, CYPS v1 persistence and per-family
+     observation (`inspect_cell.family_state`, gas inspection, overfill in
+     `water_integer`);
+   - still required: W-CY, `normalization_required` (NC-3), the remaining World
+     constructors and a frozen run-receipt schema.
 2. **#212:** `inertial_cellular_v1` plus Brine qualification. This unblocks
    W-IN, BRINE-IN, M1 and M2. M1 is the first real three-family run.
 3. **#201:** pressure `cached`/`cached_dormant` variants with equivalence to

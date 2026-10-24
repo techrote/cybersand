@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-10-22",
+  "reviewed": "2026-10-24",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -16,6 +16,7 @@
     "architecture/liquid-solver-family-policy.md",
     "architecture/liquid-state-transition-matrix.md",
     "architecture/lcb-pressure-inertial-handoff.md",
+    "architecture/pressure-flow-v1.md",
     "architecture/simulation-tick-and-threading.md",
     "decisions/ADR-001-native-simulation-core.md",
     "decisions/ADR-002-double-buffered-tile-jobs.md",

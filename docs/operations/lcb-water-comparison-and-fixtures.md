@@ -12,7 +12,7 @@ related-documents: [../architecture/liquid-solver-family-policy.md, lcb-manual-c
 
 ## Status
 
-**Approved bounded comparison design and fixtures — Gates D/E PASS.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) only; the pressure backend, every other solver port and #212 remain held. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration.
+**Approved bounded comparison design and fixtures — Gates D/E PASS.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current on branch `claude/lcb001-pressure-reference` (unmerged); #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
 
 - **Owner-approved:** Water must be a common controlled test material for all
   four families (#213 Gate D; #200 amendment of 2026-10-22).
@@ -33,7 +33,7 @@ Families, variants, refusal codes and receipts are defined in the
 |---|---|---|---|
 | `W-FM` | `freemass_v1/reference` | protected native Current: mass8, coherence12, fractional | **executes** |
 | `W-CY` | `cellular_yield_v1/reference` | **experimental whole-cell**: every Water cell is one indivisible unit; motion through the generic yielding kernel with a Water-specific viscosity parameter registered by #200 | proposed; refused today (`family_unavailable`) |
-| `W-PF` | `pressure_flow_v1/{reference,cached,cached_dormant}` | experimental pressure/overfill/gas candidate, Water-only v1 | proposed (#200/#201); refused today |
+| `W-PF` | `pressure_flow_v1/{reference,cached,cached_dormant}` | experimental pressure/overfill/gas candidate, Water-only v1 | `reference` **executes**, opt-in: Current on branch `claude/lcb001-pressure-reference` ([design](../architecture/pressure-flow-v1.md)); `cached`/`cached_dormant` refused `family_unavailable` (#201) |
 | `W-IN` | `inertial_cellular_v1/reference` | experimental inertial regime with retained velocity/accumulator | proposed (#212); refused today |
 
 Rules:
@@ -220,7 +220,7 @@ conserved.
 | **M0** current control | `freemass_v1` | `cellular_yield_v1` (Oil kernel) | `cellular_yield_v1` | **2** | **executes; measured** |
 | **M1** three-family target | `freemass_v1` | `cellular_yield_v1` | `inertial_cellular_v1` | **3** | blocked on #212 (+#200 policy) |
 | **M2** pressure substitution | `pressure_flow_v1/reference` | `cellular_yield_v1` | `inertial_cellular_v1` | 3 | blocked on #200 + #212 |
-| **M2b** pressure, no inertial | `pressure_flow_v1/reference` | `cellular_yield_v1` | `cellular_yield_v1` | 2 | blocked on #200 |
+| **M2b** pressure, no inertial | `pressure_flow_v1/reference` | `cellular_yield_v1` | `cellular_yield_v1` | 2 | registered blocked on #200; the branch admits this policy natively, but the arm has not been run or re-dispositioned (#202 host; NC-4 needs #201) |
 | **M1-alt** substitute inertial | `freemass_v1` | `cellular_yield_v1` | Toxic Sludge (32) as `inertial_cellular_v1` | 3 | **not selectable** (`not_selectable`); only if Brine fails qualification, and then with a new geometry version (sludge converts to Water on contact) |
 
 **M0 runs only two families.** The three-family requirement is met only when
@@ -275,7 +275,7 @@ source-derived registry. It leaves both protected fixtures unchanged.
 | ID | Control | Expected |
 |---|---|---|
 | NC-1 | Request `inertial_cellular_v1` for Oil | `combination_rejected` before construction; prior session intact [#200] |
-| NC-2 | Request `pressure_flow_v1` or `inertial_cellular_v1` on today's build | `family_unavailable`; no fallback to Current [#200] |
+| NC-2 | Request `pressure_flow_v1` or `inertial_cellular_v1` on today's build | `family_unavailable`; no fallback to Current [#200]. On the pressure branch `pressure_flow_v1/reference` is admitted, so the regressions exercise NC-2 with `cached`, `cached_dormant` and inertial |
 | NC-3 | Fractional-Water setup under `W-CY` without an explicit `water-normalize-v1` opt-in | `normalization_required` [#200] |
 | NC-4 | Pressure Water at rest beside actively flowing Oil (M2b) | Oil motion and chemistry continue; Water dormancy never suppresses them [#201] |
 | NC-5 | Salt dissolution under M1 | Products at inertial default state; ledger closes as above [#212/#160] |
