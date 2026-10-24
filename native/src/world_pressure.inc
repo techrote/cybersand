@@ -166,6 +166,46 @@ void World::resolve_gas_topology() {
     const auto size = config_.chunk_size;
     const auto area = static_cast<std::uint64_t>(size) * static_cast<std::uint64_t>(size);
 
+    // The non-resident BFS node shortcut is valid only for uniformly Empty
+    // chunks. A transient body can occupy otherwise unallocated cells, so make
+    // its chunks resident before topology reads them. This is serial tick
+    // preparation; ensure_chunk retains the explicit capacity/quarantine path.
+    const auto& masks = *transient_obstacles_;
+    const auto mask_width = static_cast<std::size_t>(masks.region.width);
+    auto& coordinates = state.sorted_coordinates;
+    coordinates.clear();
+    for (const auto index : masks.occupied_indices) {
+        const auto x = masks.region.x + static_cast<std::int64_t>(index % mask_width);
+        const auto y = masks.region.y + static_cast<std::int64_t>(index / mask_width);
+        const auto coord = address(x, y).chunk;
+        if (find_chunk(coord) == nullptr) {
+            (void)ensure_chunk(coord);
+            coordinates.push_back(coord);
+            ++state.diagnostics.chunk_allocations;
+        }
+    }
+    if (!coordinates.empty()) {
+        std::sort(coordinates.begin(), coordinates.end());
+        // Installing a mask before its chunk exists cannot wake that chunk.
+        // Replay those missed wakes once, so sparse and resident representations
+        // have the same activity state as well as the same gas topology.
+        for (const auto index : masks.occupied_indices) {
+            const auto x = masks.region.x + static_cast<std::int64_t>(index % mask_width);
+            const auto y = masks.region.y + static_cast<std::int64_t>(index / mask_width);
+            const auto at = address(x, y);
+            if (std::binary_search(coordinates.begin(), coordinates.end(), at.chunk)) {
+                auto& chunk = *find_chunk(at.chunk);
+                const auto block = static_cast<std::size_t>(at.local_y / config_.activity_block_size) *
+                                       static_cast<std::size_t>(chunk.activity_blocks_per_axis) +
+                                   static_cast<std::size_t>(at.local_x / config_.activity_block_size);
+                // begin_tick already retired pre-tick changed_this_tick flags;
+                // replay activity without claiming a material mutation now.
+                wake_activity_block(at.chunk, chunk, block);
+                wake_cell_neighborhood(x, y);
+            }
+        }
+    }
+
     if (++state.pass_stamp == 0U) {
         for (auto& [coord, chunk] : chunks_) {
             (void)coord;
@@ -179,7 +219,6 @@ void World::resolve_gas_topology() {
     state.overlaps.clear();
     state.nodes.clear();
 
-    auto& coordinates = state.sorted_coordinates;
     coordinates.clear();
     for (const auto& [coord, chunk] : chunks_) {
         (void)chunk;
@@ -1198,6 +1237,8 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
     const auto target = ref(tx, y);
     if (target.chunk == nullptr) return store(true);
     const auto available = quantity(self);
+    const bool retain_source = stored_material(x, y - 1) == Material::Water &&
+                               transient_obstacle_at(x, y - 1) == 0U;
     const auto magnitude = flow < 0 ? -flow : flow;
     const auto want_numerator = magnitude * available;
     auto want = want_numerator / PressureFlowParameters::kFlowScale;
@@ -1207,7 +1248,7 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
     std::int64_t amount = 0;
     if (target_material == Material::Empty) {
         amount = std::min({want, available, maximum});
-        if (amount == available && self_side->overfill == 0U) {
+        if (amount == available && self_side->overfill == 0U && !retain_source) {
             // Whole-cell move: the tuple and its sidecar travel together.
             self_side->flow = static_cast<std::int16_t>(flow);
             const auto moved_mass = self.chunk->cells[self.at.index].state_a_value();
@@ -1225,7 +1266,7 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
     }
     // Water under Water never opens an interior void laterally: it keeps one
     // unit and gravity refills it from above (bottom-up, this same tick).
-    if (amount >= available && stored_material(x, y - 1) == Material::Water && transient_obstacle_at(x, y - 1) == 0U)
+    if (amount >= available && retain_source)
         amount = available - 1;
     if (amount <= 0) return store(true);
     record_physics(PhysicsEvent::WaterTransfer, Material::Water, target_material, step, 0, effects,
@@ -1269,6 +1310,8 @@ std::uint64_t World::physical_state_hash() const {
     hash_integer(hash, config_.scheduling_core_size);
     hash_integer(hash, config_.maximum_rule_radius);
     hash_integer(hash, config_.maximum_explosion_radius);
+    hash_integer(hash, static_cast<std::uint8_t>(config_.physics_diagnostics.disable_powder_exchange_targets));
+    hash_integer(hash, config_.physics_diagnostics.mercury_viscosity);
     hash_integer(hash, config_.interaction_policy.downward_support_cells);
     hash_integer(hash, config_.interaction_policy.side_support_cells);
     hash_integer(hash, config_.interaction_policy.mercury_exchange_period);
@@ -1443,6 +1486,8 @@ std::vector<std::uint8_t> World::save_physical_state() const {
     out.put(config_.ambient_temperature);
     out.put(static_cast<std::uint8_t>(config_.backend));
     out.put(config_.maximum_explosion_radius);
+    out.put(static_cast<std::uint8_t>(config_.physics_diagnostics.disable_powder_exchange_targets));
+    out.put(config_.physics_diagnostics.mercury_viscosity);
     out.put(config_.interaction_policy.downward_support_cells);
     out.put(config_.interaction_policy.side_support_cells);
     out.put(config_.interaction_policy.mercury_exchange_period);
@@ -1584,6 +1629,10 @@ std::unique_ptr<World> World::restore_physical_state(WorldConfig execution, std:
     if (backend > static_cast<std::uint8_t>(SimulationBackend::PhasedInPlace)) refuse_state("unknown backend");
     config.backend = static_cast<SimulationBackend>(backend);
     config.maximum_explosion_radius = in.get<std::int32_t>();
+    const auto disable_powder_exchange = in.get<std::uint8_t>();
+    if (disable_powder_exchange > 1U) refuse_state("invalid powder exchange option");
+    config.physics_diagnostics.disable_powder_exchange_targets = disable_powder_exchange != 0U;
+    config.physics_diagnostics.mercury_viscosity = in.get<std::int16_t>();
     config.interaction_policy.downward_support_cells = in.get<decltype(config.interaction_policy.downward_support_cells)>();
     config.interaction_policy.side_support_cells = in.get<decltype(config.interaction_policy.side_support_cells)>();
     config.interaction_policy.mercury_exchange_period = in.get<decltype(config.interaction_policy.mercury_exchange_period)>();
@@ -1809,7 +1858,12 @@ std::unique_ptr<World> World::restore_physical_state(WorldConfig execution, std:
         for (auto* value : {&gas.created, &gas.absorbed, &gas.vented, &gas.collapsed, &gas.merges, &gas.splits,
                             &gas.creations, &gas.vents, &gas.collapses, &gas.amount_live})
             *value = in.get<std::uint64_t>();
-        if (gas.amount_live != live) refuse_state("gas ledger does not close");
+        const auto maximum = std::numeric_limits<std::uint64_t>::max();
+        if (gas.amount_live != live || gas.absorbed > maximum - gas.created ||
+            gas.vented > maximum - gas.amount_live ||
+            gas.collapsed > maximum - (gas.amount_live + gas.vented) ||
+            gas.amount_live + gas.vented + gas.collapsed != gas.created + gas.absorbed)
+            refuse_state("gas ledger does not close");
         state.flow.overfill_converted = in.get<std::uint64_t>();
         state.flow.overfill_external = in.get<std::uint64_t>();
         state.flow.flow_remainder = in.get<std::int64_t>();

@@ -129,12 +129,120 @@ headers): `nm` finds `_M_replace_cold` once in the old `cyber_native_cell_world.
 object and in no rebuilt GDExtension or World object. Republication uses
 request_sequence 2.
 
+**Attempt 2 (request_sequence 2, source `a5b532203d5b86064ed119e2654042e5ccd5ee19`,
+[run 40096220163](https://github.com/techrote/cybersand/actions/runs/40096220163)):
+passed on 2026-10-24.** The Linux build and execution, Windows cross-build,
+actual Windows execution and lease-checked publication all succeeded. The bot
+advanced the branch to recoverable checkpoint
+`97a76aa89f645477b1864ae77864f43e330ca9ea`, changing only the two libraries and
+their two provenance manifests. The publication lease is complete.
+
+| Published target | Bytes | SHA-256 |
+|---|---:|---|
+| Windows x86_64 | 4,347,392 | `d607ac3981a73c4bbd60a344ffa87584565df2b9156d852e4586c3246d820cd3` |
+| Linux x86_64 | 3,745,672 | `4413cf5ff7d988f3ebcd39d57fb8fe0aa8a8ffa4eb17305f02d5c559e60fe34f` |
+
+The manifests record canonical source tree
+`e028c238566964b0130624eeae816852c22341cc`, exact source inputs and toolchains.
+Linux used GCC 13.3.0 / binutils 2.42 on GitHub-hosted Ubuntu 24.04 and passed
+the declared Linux runtime-floor check. Windows used the pinned LLVM-MinGW
+20260826 / Clang 23.1.0 cross-toolchain and executed with Windows Godot 4.7 on
+GitHub-hosted Windows 2022. Both used pinned godot-cpp
+`101ae38034304346a46ea9ea84ae156d3e860496` and SCons 4.10.1.
+
+On each target, the publisher ran project import followed by the nine mandatory
+liquid-policy, MicroScenario, LCB and Water Feel cases with a 180-second limit
+per case. `test_lcb_pressure_reference.gd` reported **1932 assertions, 0 failures,
+all 12 sections true** on both OSes (Linux about 39 seconds; Windows about 24
+seconds). The other controls completed without skips or errors. Retained
+artifacts are `lcb001-pressure-reference-runtime-linux-40096220163` and
+`lcb001-pressure-reference-runtime-windows-40096220163`; their `validation.json`
+SHA-256 values are respectively
+`5ded2401bef5caabe14fb60b9da9388321097a0d6ec78949b014d585032b5ef6` and
+`709fce3f1f12d3b31c4eec762b3ba4b6423c5cd579e7c8e171c122a38dad9d19`.
+
+Takeover verification used `gh run view 40096220163 --log`, a clean fast-forward
+of the existing pressure-reference worktree, and `Get-FileHash -Algorithm SHA256`
+on both materialized LFS payloads. Both bytes/size identities match the manifests.
+The root checkout's unrelated material edits and other worktrees were preserved.
+This evidence-only checkpoint updates this record and the roadmap publication
+status; subsystem behavior, ownership, interfaces, invariants, configuration,
+ADRs, controls and retrieval destinations are unchanged.
+
+**Final acceptance remains separate:** [PR #245](https://github.com/techrote/cybersand/pull/245)
+must leave draft and pass Documentation/provenance, Native, the complete Linux
+and Windows GDExtension/Godot matrix and the applicable #49 apparatus at its
+final head. Their exact-head results and review/merge receipt belong to the PR
+description and Checks. Publication alone does not establish those gates,
+graphical acceptance, Web/WASM execution or owner feel.
+
+## Takeover review corrections (2026-10-24)
+
+Independent review of published checkpoint `97a76aa` found the following
+correctness defects before ready-for-review acceptance. Attempt 2 remains valid
+evidence for its exact source and focused cases, but cannot accept these repaired
+native inputs: another source-matched publication is required.
+
+| Finding | Reproduction and correction |
+|---|---|
+| Gas topology depended on allocation history around a body mask | A divider crossing an unallocated interior chunk produced one gas compartment; allocating that chunk first produced two. Serial topology preparation now materializes mask-bearing chunks through the existing bounded capacity/quarantine path before applying the uniform-Empty-node shortcut. The regression compares sparse and resident layouts for three ticks, exact volumes/amounts 231 and 210, and equal complete physical hashes. |
+| Whole-cell lateral fast path opened an interior Water void | Full-speed lateral flow below a paused deep Water column returned before the retain-one-unit guard. The fast path now uses that guard too; a public-API 1/4-worker regression checks the retained source, updated outgoing velocity and exact quantity. |
+| CYPS and the complete physical hash omitted settings that change physics | A Mercury-viscosity override restored as the default and diverged on the first tick while its initial physical hash agreed. Both the viscosity override and powder-exchange suppression now participate in the physical hash and experimental CYPS v1 payload; the regression checks restored settings, byte round-trip and 20-tick continuation with a different worker count. |
+| A checksummed inconsistent gas ledger was admitted | Restore checked only `amount_live` against the gas table. It now also checks the complete conservation equation with overflow rejection; rechecksummed contradictory and overflowing source sums are refused. |
+| Different simulation windows shared a run receipt | Equal window flags hid different selected rectangles. The receipt now binds the actual region and physics-changing diagnostic settings; its Godot regression compares two different rectangles. |
+| Incremental Make builds missed pressure include edits | `CORE_HEADERS` now includes `native/src/*.inc`, so changes to the two pressure implementation fragments invalidate dependent native targets. |
+
+The experimental, unfrozen CYPS v1 encoding gains three physics-option bytes
+after `maximum_explosion_radius` (powder-exchange suppression u8 and Mercury
+viscosity i16). No accepted durable save-format or historical runtime record is
+rewritten. This repair checkpoint updates the canonical pressure design and
+interface contract alongside this record; policy admission, material catalogue,
+default physics, user controls, ADR decisions and retrieval destinations do not
+change. The source-derived capability, policy/vector/native-artifact, scenario
+registry and physics-contract checks still agree without regeneration.
+
+The standalone worktree initially failed local documentation/repository checks
+because five companion-workspace expected-fact sources were absent. An isolated
+real source worktree under `C:/Users/_/.codex/tmp/lcb245-validation/workspace/source`
+with companion commit `6a58311982941b75f46e22109a0829e5acb83c7e` reproduced the
+CI layout. At published `97a76aa` plus the publication evidence/roadmap delta,
+documentation and materialized repository checks passed (18/18 runtime payloads),
+as did 18 retained M11 records / 28 historical source hashes, eight validation
+failure contracts, LFS fsck and whitespace. Retrieval retained all 32 frozen and
+121 challenge routes in the top five; source review remains separate from those
+lexical scores. Raw local commands and identities are retained in that temporary
+layout's `initial-receipt.json` parent record. This initial pass predates the
+native repairs and does not attest their runtime identity.
+
+Live issue headers #200/#201/#202/#212 were reconciled with the canonical
+2026-10-24 bounded implementation authorization while preserving their original
+backlog contracts and historical comments. They remain open. After #245 passes,
+the owner's continuation order is remaining shared #200 contract first, then
+#201/#202/#212 in parallel where interfaces/write sets permit, then #203.
+
+**Repair validation before republication:** the complete native suite passed
+**107/107** on the integrated delta over `97a76aa`, using cached pinned
+LLVM-MinGW 20260826 / Clang 23.1.0 on Windows. Source hashes captured before and
+after execution were identical. Exact compiler command, source delta, input
+ledger and test output are retained under
+`C:/Users/_/.codex/tmp/review245-integrated-native-final/`; executable SHA-256
+`dbd1eb0f2cea3724c7f810a517e305f532e1978ad0afd954fe22a0c740a07779`,
+input-ledger SHA-256
+`271487478a097ec35392beee3ec84c26e679b196b1dda88f1367a79b8849936c8`.
+The focused pressure suite also passed 13/13. LCB Python tests passed 120/120,
+publisher guards 21/21, provider policy and `git diff --check` passed. Independent
+boundary review found no further actionable defects in its reviewed scope.
+Native sanitizer/TSan and the new Godot receipt assertion still require the
+hosted gates. Publisher request sequence 3 requests corrected source-matched
+Linux/Windows artifacts; the prior published hashes remain historical identities.
+
 ## Gaps (open)
 
 - #200: W-CY (whole-cell Water `cellular_yield_v1`), `water-normalize-v1` and
   `normalization_required`; the remaining #202 constructors; a frozen run
   receipt schema (the GDExtension receipt hash exists); the oracle has no build
   profile for this running build (native tests check it directly).
-- Sanitizer/TSan and Linux execution run only in CI.
+- Sanitizer/TSan require the final Native CI gate; Linux headless execution passed
+  in the scoped publisher above, with the complete Godot matrix still separate.
 - Web/WASM: not built or run.
 - Reference cost is O(resident cells) per tick (#201 owns caching/dormancy).

@@ -727,8 +727,10 @@ in every run.
 `lcb001-pressure-reference-runtime-publication.yml`, integrated from draft PR
 #244, publishes source-matched Linux/Windows runtimes only after
 `tools/ci/lcb001_pressure_reference_publish_request.json` is committed on this
-branch. Publication was pending when this entry was written; the evidence record
-holds the outcome. After the branch merges, retire the workflow, helper and
+branch. Publication run `40096220163` passed Linux and actual Windows headless
+execution and published both source-matched runtimes at `97a76aa`; the evidence
+record holds their hashes and scope. Final exact-head ready-PR gates remain
+separate. After the branch merges, retire the workflow, helper and
 unittest as described for [branch-scoped publishers](../operations/local-build-and-validation.md#branch-scoped-runtime-publishers).
 #200 itself stays open (see the [issue-state correction](#lcb-001-policy-foundation--2026-10-24)).
 

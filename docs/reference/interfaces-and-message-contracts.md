@@ -614,7 +614,7 @@ their dictionaries; none exposes live World storage.
 | `inspect_gas_compartments()` | `available` (false outside pressure Worlds), parameters, `topology_revision`, `next_id`, `completed_tick`, `compartments` (id, generation, ancestry, amount, volume, anchor, created tick, topology revision, `gauge_mass`, `vent_state`), retirement `history` with reason and successors, and the `ledger` with `closes` |
 | `inspect_pressure_cell(point)` | `available`, material, `state_a`, `overfill`, `flow`, `gas` (`compartment`/`atmosphere`/`vacuum`/`unresolved`) and `gas_compartment` |
 | `get_pressure_flow_ledger()` | overfill converted/external, flow remainder, contact loss, relief cells and `last_tick` diagnostics |
-| `get_liquid_run_receipt(setup)` | experimental run-receipt hash and components ([fields](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)) |
+| `get_liquid_run_receipt(setup)` | experimental run-receipt hash and components, including the actual simulation-region rectangle (or `unrestricted`) and physics-changing diagnostic overrides ([fields](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)) |
 | `get_liquid_solver_policy()` | adds `family_parameters` and `physical_state_hash_version`; `admission` is `current_defaults_only` or `qualified_candidate` |
 | `water_experiment_observation` | adds `water_visible` and `water_overfill`; `water_integer` = visible + overfill (overfill is 0 outside pressure Worlds) |
 | `CyberDemoBridge.inspect_cell(world, point)` | adds `family_state` (`family`, `overfill`, `flow`, `gas_label`) in pressure Worlds |

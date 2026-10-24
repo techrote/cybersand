@@ -364,6 +364,41 @@ void test_gas_empty_only_and_unallocated() {
                 "physical-state hash independent of all-Empty chunk allocation");
     }
     require(sparse->chunk_count() > before_chunks, "sealed unallocated chunk became resident for its labels");
+
+    // A body mask can cross a chunk with no stored cells. That chunk is not a
+    // uniformly Empty gas node: the mask must separate the two air pockets in
+    // both the sparse and explicitly resident representations.
+    const auto masked = [](bool reserve) {
+        auto config = pressure_config();
+        config.chunk_size = 8;
+        config.activity_block_size = 8;
+        config.scheduling_core_size = 8;
+        auto world = std::make_unique<World>(config);
+        if (reserve) world->reserve_region({0, 0, 40, 40});
+        rect(*world, 8, 8, 24, 1, Material::Wall);
+        rect(*world, 8, 31, 24, 1, Material::Wall);
+        rect(*world, 8, 8, 1, 24, Material::Wall);
+        rect(*world, 31, 8, 1, 24, Material::Wall);
+        rect(*world, 9, 30, 22, 1, Material::Water);
+        world->configure_transient_obstacles({0, 0, 40, 40});
+        for (std::int64_t y = 9; y < 31; ++y)
+            require(world->set_transient_obstacle(20, y, 1), "sparse gas divider mask");
+        return world;
+    };
+    sparse = masked(false);
+    dense = masked(true);
+    for (int t = 0; t < 3; ++t) {
+        tick(*sparse);
+        tick(*dense);
+        const auto a = live(*sparse);
+        const auto b = live(*dense);
+        require(a.size() == 2U && b.size() == 2U, "sparse mask separates two gas compartments");
+        require(a[0].volume == 231U && a[1].volume == 210U &&
+                    a[0].amount == 231U && a[1].amount == 210U,
+                "masked cells excluded from the two gas volumes and amounts");
+        require(sparse->physical_state_hash() == dense->physical_state_hash(),
+                "masked gas independent of all-Empty chunk allocation");
+    }
 }
 
 void build_dam(World& world, std::int64_t depth) {
@@ -469,6 +504,30 @@ void test_barriers_block_head() {
                         "barrier-side pool gained flow or overfill");
         }
         if (mask) require(world.water_quantity({37, 0, 1, 100}) == 0U, "no Water under the mask column");
+    }
+
+    // A deep supported column reaches full lateral velocity immediately. Its
+    // upper cells are outside the selected core, so they cannot refill a void
+    // during this tick: the active bottom cell must retain one unit even when
+    // its receiver is Empty and the whole-cell fast path would otherwise apply.
+    for (const auto workers : {1U, 4U}) {
+        auto config = pressure_config(workers);
+        config.chunk_size = 8;
+        config.activity_block_size = 8;
+        config.scheduling_core_size = 8;
+        World world(config);
+        world.set_simulation_region(RectI64{0, 400, 8, 8});
+        rect(world, 3, 1, 1, 400, Material::Water);
+        world.set(2, 400, Material::Wall);
+        rect(world, 2, 401, 3, 1, Material::Wall);
+        const auto before = world.water_quantity({0, 0, 8, 408});
+        tick(world);
+        require(world.stored_material(3, 400) == Material::Water && world.stored_state_a(3, 400) == 1U,
+                "full-speed lateral flow retains Water below the paused column");
+        require(world.stored_state_a(3, 399) == 255U && world.stored_state_a(4, 400) == 254U &&
+                    world.pressure_cell(4, 400).flow == cybersand::PressureFlowParameters::kFlowScale,
+                "retained source preserves the paused cell and updated outgoing velocity");
+        require(world.water_quantity({0, 0, 8, 408}) == before, "retained-source flux conserves exact quantity");
     }
 }
 
@@ -600,6 +659,7 @@ void test_physical_hash_and_persistence() {
         for (std::size_t i = 0; i < 8U; ++i) bytes[at + i] = static_cast<std::uint8_t>(value >> (8U * i));
     };
     bump(record + 41U);  // amount
+    bump(tail + 8U);  // ledger created: keep the modified gas ledger conserving
     bump(tail + 8U + 9U * 8U);  // ledger amount_live
     const auto digest = cybersand::Sha256::of(std::span<const std::uint8_t>(bytes.data(), bytes.size() - kDigest));
     std::copy(digest.begin(), digest.end(), bytes.end() - static_cast<std::ptrdiff_t>(kDigest));

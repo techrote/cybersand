@@ -83,7 +83,10 @@ produce identical physical states.
 4-neighbourhood, or carrying a live compartment label, is labelled with a
 4-connected breadth-first fill. Body-masked cells and every non-Empty material
 (walls, solids, foreign liquids) are impermeable; volume counts only Empty cells.
-An **unallocated chunk is one uniformly Empty node** of `chunk_size²` cells, so
+Before the fill, serial preparation materializes any unallocated chunks that
+contain transient body-mask cells, using the ordinary bounded chunk-capacity
+and failed-tick quarantine path. Only a mask-free **unallocated chunk is one
+uniformly Empty node** of `chunk_size²` cells, so
 topology never depends on allocation; a sealed region that includes one makes
 it resident so every cell can carry its label. A region larger than
 `kCompartmentVolumeLimit` (16 384 cells), or connected to a region that was, is
@@ -216,7 +219,8 @@ records them.
 `World::physical_state_hash()` (`kPhysicalStateHashVersion = 1`, 64-bit FNV-1a,
 16 hex digits through GDExtension) covers the tick clock, epoch, interest/core
 regions, physics configuration (chunk/scheduler geometry, interaction, Water,
-transport, adhesion), the policy hash, pressure parameters, pending events,
+transport, adhesion, powder-exchange suppression and Mercury-viscosity override),
+the policy hash, pressure parameters, pending events,
 body-mask occupancy, every non-default cell (coordinates, material, states,
 epoch for non-Empty, temperature, overfill, flow, gas label), every active or
 deadline-bearing activity block, and the full gas table. Only non-default content
@@ -233,7 +237,10 @@ Restore checks the digest first, decodes the policy with the running build, then
 range-checks every value and invariant before returning a new World; any failure
 throws `std::invalid_argument` (or `LiquidPolicyRefused`) and the caller's World
 is untouched. Execution settings (workers, capacities) come from the caller;
-physics settings from the payload. Transient body masks are host-owned and not
+physics settings from the payload, including physics-changing diagnostic
+overrides. Restore checks the complete gas conservation equation with checked
+sums as well as agreement between the table and `amount_live`; a valid digest
+does not admit a contradictory ledger. Transient body masks are host-owned and not
 saved; settled discovery must be disabled. A restored World continues
 bit-identically (physical and state hash, including at a different worker count).
 

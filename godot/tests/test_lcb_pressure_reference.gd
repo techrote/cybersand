@@ -116,6 +116,18 @@ func _native_dispatch_and_no_fallback() -> void:
 	var parameters: Dictionary = receipt.family_parameters.get("pressure_flow_v1", {})
 	dispatch_ok = expect(parameters.get("gas_enabled", false) and int(parameters.get("atmospheric_head_rows", 0)) == 32
 		and int(receipt.physical_state_hash_version) == 1, "pressure family parameters missing from receipt") and dispatch_ok
+	# Interest rectangles determine which cells run. Equal window flags alone
+	# must never make different selected regions look like matched executions.
+	pressure.world.set_simulation_window_enabled(true)
+	pressure.world.set_simulation_window(Vector2i.ZERO, Vector2i(128, 128), 0, 0)
+	var first_run: Dictionary = pressure.world.get_liquid_run_receipt({})
+	pressure.world.set_simulation_window(Vector2i(512, 512), Vector2i(128, 128), 0, 0)
+	var second_run: Dictionary = pressure.world.get_liquid_run_receipt({})
+	dispatch_ok = expect(first_run.receipt_hash != second_run.receipt_hash
+		and first_run.components.simulation_region == "0:0:128:128"
+		and second_run.components.simulation_region == "512:512:128:128",
+		"run receipt omitted the selected simulation region") and dispatch_ok
+	pressure.world.set_simulation_window_enabled(false)
 	dispatch_ok = expect(_gas(pressure.world).available and not _gas(current.world).available
 		and pressure.world.inspect_pressure_cell(Vector2i(120, 200)).available,
 		"pressure sidecar/gas inspection must exist only in the pressure World") and dispatch_ok

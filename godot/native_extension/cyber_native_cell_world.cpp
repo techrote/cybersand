@@ -1790,8 +1790,13 @@ Dictionary CyberNativeCellWorld::get_liquid_run_receipt(const Dictionary& setup)
     add("backend", concat(static_cast<int>(config.backend)));
     add("scheduler", concat(config.chunk_size, ":", config.activity_block_size, ":", config.scheduling_core_size, ":",
                             config.maximum_rule_radius, ":", config.sleep_after_quiet_ticks));
+    add("diagnostic_physics", concat(config.physics_diagnostics.disable_powder_exchange_targets ? 1 : 0, ":",
+                                     config.physics_diagnostics.mercury_viscosity));
     add("execution", concat(simulation_window_enabled_ ? "window" : "full", ":", cadence_lod_enabled_ ? "lod" : "nolod",
                             ":", liquid_surface_adhesion_enabled_ ? "adhesion" : "noadhesion"));
+    const auto region = world_->simulation_region();
+    add("simulation_region", region ? concat(region->x, ":", region->y, ":", region->width, ":", region->height)
+                                     : std::string("unrestricted"));
     add("physical_state_hash_version", concat(cybersand::World::kPhysicalStateHashVersion));
     for (const char* key : {"setup_hash", "seed", "normalization_receipt", "source_revision", "native_binary_sha256",
                             "catalogue_digest"}) {
