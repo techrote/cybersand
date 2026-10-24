@@ -74,9 +74,9 @@ owns the current interfaces and qualifications; the existing
 [Water comparison law](../operations/lcb-water-comparison-and-fixtures.md#water-quantity-normalization)
 owns the rounding rule.
 
-## Final native execution
+## Earlier native execution
 
-Both final builds used the same complete native implementation/test input
+Both builds at this earlier checkpoint used the same complete native implementation/test input
 manifest, SHA-256
 `9b6344ee27e198bd2aadb2c7e8a76cd8c3c56e1cfef5028571cceab374f81b4d`.
 Before/after manifests are identical. Both executables use a 1,048,576-byte
@@ -337,3 +337,86 @@ and unarmed publisher guard runs
 (push) and [40136499898](https://github.com/techrote/cybersand/actions/runs/40136499898)
 (PR) passed at that exact head. Draft provenance is intentionally skipped and
 these guard passes do not close runtime acceptance.
+
+### Publication attempt 1 stopped for coordinate-boundary defects
+
+Explicit source request `9704e993816318e5adbe1e76eb9e25d29e82a021` started
+[publication 40136618989](https://github.com/techrote/cybersand/actions/runs/40136618989).
+Its admission and guard jobs passed; both runtime builds started. Final native
+review then reproduced two inherited public API/continuation defects. The run
+was cancelled before publication; no resulting runtime is accepted or published.
+
+At that exact source, LLVM-MinGW Clang 23.1.0 with
+`-O1 -g -fsanitize=signed-integer-overflow -fno-sanitize-recover=all` found:
+
+- Direct `water_quantity({INT64_MAX, 0, 1, 1})` exited 1 with signed overflow
+  at `world_pressure.inc:104`, from the exclusive rectangle endpoint. The
+  prepared-World domain/halo preflight guards its own path, but the public
+  quantity readback did not guard this direct call.
+- A valid-digest CYPS2 payload changed only in pending-event x to `INT64_MAX`
+  restored successfully, although `queue_explosion` refused that coordinate.
+  Stepping the restored World exited 1 with signed overflow at
+  `world.cpp:2354`. Restore checked radius but omitted the queue's radius-plus-two
+  coordinate margin.
+
+The source probe, exact command, binary and separate stdout/stderr for quantity,
+event admission and event continuation remain under
+`C:/Users/_/.codex/tmp/lcb200-final-adversarial/`. These failures are preserved
+alongside the earlier passing finite-fixture evidence. The defects originated
+in pressure checkpoint `db256f8ed`; they require narrow public-boundary/restore
+guards, meaningful refusal and continuation regressions, fresh native tests
+and new source-matched runtime publication before this residual checkpoint can
+be accepted.
+
+### Native repairs and final local rerun
+
+The quantity reader now validates inclusive endpoints and uses offsets; zero
+dimensions remain no-ops. CYPS restores pending events through ordinary queue
+admission on its unexposed, discovery-disabled candidate. Five new native
+regression groups cover those boundaries plus gas-ID admission, creation and
+split exhaustion. Each group first failed against its preceding implementation.
+The two event/quantity groups passed with the original 121 cases (123 total)
+before the three independent gas-ID groups were added.
+
+The monotonic gas allocator now issues the last valid IDs, then retains the
+declared exhausted sentinel. Existing compartments continue without new IDs;
+new creation or split at exhaustion fails explicitly and quarantines the
+attempted tick. Small real room/split fixtures check exact amount, ancestry,
+restored continuation and refusal without reserved-ID reuse. No pressure law,
+ordinary capacity, default setting or Cell representation changes.
+
+Final LLVM-MinGW 20260826 / Clang 23.1.0 native execution passes **126/126**
+in 27.390 s, with **18/18** pressure cases in 5.532 s. Signed-integer-overflow
+UBSan passes all five new groups with empty runtime stderr. Existing build
+warnings are byte-identical to the baseline. All 85 native/header/test inputs
+remain unchanged across the final runs. The tested source is
+`9704e993816318e5adbe1e76eb9e25d29e82a021` plus the three-file native delta,
+SHA-256 `a79ee0036dbba72bf14584ce2d8a77d6f9f2b03c7c46bc2a0af01deb3b97176d`;
+the canonical native input manifest hashes to
+`c9122aca8ea9fbe0a25aef57e81a8979f5df989cebe3ac96c9f83909e077b726`.
+
+The final ordinary native executable hashes to
+`d40dcd6e1f71f53f107c09afb076c3517b19e421dcfb0ef553d57099ccac811b`;
+the instrumented executable hashes to
+`14ef88a7b3f8ca37246acc73563b862bbdc379d59c3383007de9e002993903ae`.
+Complete commands, timeouts, failing controls, artifacts, PE headers, logs and
+input fences are sealed in
+`C:/Users/_/.codex/tmp/lcb200-final-adversarial/gas-id-fixed-receipt.json`,
+SHA-256 `b2b3d9ac202c0a84f1244064eb5803ef77f4fd00d96827d35476e716bd8b25e3`.
+This supersedes the earlier 123-case receipt for final native claims without
+rewriting either earlier proof or failure.
+
+Independent actual MSVC 19.38.33145.0 with `/W4 /Od /Zi` also passes
+**126/126** in 200.407 s after a 26.182 s build. The PE stack remains
+1,048,576-byte reserve / 4,096-byte commit. All 85 raw/canonical native input
+hashes, the three-path delta above and source HEAD remained unchanged during
+build and execution. The executable SHA-256 is
+`d92f2306ee017c1dbf17f36d6aad664777bdd3471bfce9f1bae820af3c2eae62`.
+The independent command/compiler/PE/log/input receipt is
+`C:/Users/_/.codex/tmp/lcb200-coordinate-boundary-msvc/validation-receipt.json`,
+SHA-256 `96cfdd6a6ebf6ee89bee304453e4481294b9f739324d466d395b9272aedbb0a2`.
+
+The next publication uses explicit request sequence 2 and includes these native
+repairs. Source-matched Windows/Linux artifacts and the complete non-draft
+final-head acceptance matrix are still required; earlier runtime bytes cannot
+qualify the changed implementation.

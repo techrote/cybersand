@@ -396,7 +396,9 @@ Water, normalization, native-issued refusal, typed receipt and quantity-ledger
 cases in the ordinary `make test` and `build_windows_msvc.bat` suites. The
 [native contract](../architecture/liquid-prepared-setup-and-receipts.md) owns
 the interfaces and qualifications; the [dated evidence](../audits/2026-10-24-lcb001-residual-shared-contract.md)
-records two final 121-case native builds and scoped fresh Windows Godot proof.
+records the earlier two 121-case native builds and scoped fresh Windows Godot
+proof, followed by five new rectangle/event/gas-ID regressions. The latest native
+suite has 126 cases; use the dated final receipt for the tested source/delta.
 
 ```sh
 python tools/lcb/water_normalization_contract.py --check

@@ -22,7 +22,8 @@ liveness, explicit native normalization, exact ledger, typed native receipt/
 readback identity and prepared-World/masked-state checks. It retains qualified
 caller provenance and host coverage; no full matched-evidence claim follows.
 
-Local final native suites pass 121/121 with LLVM-MinGW and MSVC at 1 MiB stack.
+Local final native suites pass 126/126 with LLVM-MinGW and MSVC at 1 MiB stack,
+including rectangle/event bounds and non-wrapping gas-ID continuation.
 Scoped fresh Windows Godot checks pass. Release Windows/Linux publication and
 full final-head CI remain checkpoint acceptance work; the Godot normalization
 route and host verification remain #202 work. Preserve the original material checkout, the prepared #202
@@ -734,7 +735,8 @@ and the [evidence record](../audits/2026-10-24-lcb001-pressure-reference-publica
 before changing it. Keep it separate from #45: its screens select nothing there.
 
 - **Tests.** Native `native/tests/test_lcb_pressure.cpp` (13 `LCB-001 pressure`
-  cases registered in `test_world.cpp`; listed in `Makefile` `TEST_SOURCES` and
+  cases at accepted #245; residual source adds five rectangle/event/gas-ID
+  regressions, for 18 registered in `test_world.cpp`; listed in `Makefile` `TEST_SOURCES` and
   `build_windows_msvc.bat`). Godot `godot/tests/test_lcb_pressure_reference.gd`
   prints exactly one `LCB_PRESSURE_REFERENCE:` summary over 12 sections and has
   a 45 s weight in `tools/ci/run_godot_regressions.py`.

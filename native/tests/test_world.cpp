@@ -3737,6 +3737,11 @@ void test_liquid_policy_default_preserves_behavior_and_workers();
 void test_liquid_policy_c_api_transaction();
 void test_liquid_policy_c_api_allocation_failures();
 void test_lcb_pressure_admission();
+void test_lcb_pressure_gas_id_restore_bounds();
+void test_lcb_pressure_gas_id_creation_exhaustion();
+void test_lcb_pressure_gas_id_split_exhaustion();
+void test_lcb_pressure_quantity_bounds();
+void test_lcb_pressure_event_restore_bounds();
 void test_lcb_pressure_gas_pockets();
 void test_lcb_pressure_gas_merge();
 void test_lcb_pressure_gas_vent_reseal();
@@ -3864,6 +3869,11 @@ int main(int argc, char** argv) {
         {"LCB-001 liquid policy default behavior and workers", test_liquid_policy_default_preserves_behavior_and_workers},
         {"LCB-001 liquid policy C API transaction", test_liquid_policy_c_api_transaction},
         {"LCB-001 pressure admission and refusal", test_lcb_pressure_admission},
+        {"LCB-001 pressure gas ID restore bounds", test_lcb_pressure_gas_id_restore_bounds},
+        {"LCB-001 pressure gas ID creation exhaustion", test_lcb_pressure_gas_id_creation_exhaustion},
+        {"LCB-001 pressure gas ID split exhaustion", test_lcb_pressure_gas_id_split_exhaustion},
+        {"LCB-001 pressure quantity rectangle bounds", test_lcb_pressure_quantity_bounds},
+        {"LCB-001 pressure pending event restore bounds", test_lcb_pressure_event_restore_bounds},
         {"LCB-001 pressure gas single and twin pockets", test_lcb_pressure_gas_pockets},
         {"LCB-001 pressure gas unequal merge", test_lcb_pressure_gas_merge},
         {"LCB-001 pressure gas compress, vent and reseal", test_lcb_pressure_gas_vent_reseal},

@@ -221,6 +221,14 @@ and historical CYPS1 are explicitly refused. Complete physical hash v2 includes
 the ledger and continuation state. Historical content/state definitions are
 preserved; cross-tick rest is not equality of a tick-inclusive continuation hash.
 
+The residual pressure continuation also retains ordinary pending-event ingress
+bounds on restore and a non-wrapping gas-ID allocator for creation and split.
+Exhausted gas identities use an explicit sentinel and the existing failed-tick
+quarantine. Direct quantity rectangles validate their inclusive endpoints and
+preserve zero-area reads; none of these readback checks mutate the World or its
+ledger. The [pressure contract](pressure-flow-v1.md#persistence-cyps-v2) owns
+these concrete limits and the residual audit preserves their failing controls.
+
 ## Tests and qualified evidence
 
 Source regressions are

@@ -52,7 +52,7 @@ What this page does **not** claim:
 | Shared quantity accounting, typed setup and receipts | [`world_quantity.inc`](../../native/src/world_quantity.inc); [canonical native contract](liquid-prepared-setup-and-receipts.md) |
 | Hooks into Current paths | [`world.cpp`](../../native/src/world.cpp): `World::PressureChunk`, `ensure_chunk`, `write_cell(..., external)`, `set`, `move_cell`, `transfer_water` guard, `RuleKernel::Water` dispatch, `begin_tick`, `merge_job_effects`, `clear` |
 | GDExtension | `CyberNativeCellWorld.get_physical_state_hash()`, `get_physical_state_hash_version()`, `inspect_gas_compartments()`, `inspect_pressure_cell()`, `get_pressure_flow_ledger()`, `get_liquid_run_receipt(setup)`; `water_experiment_observation` adds `water_visible`/`water_overfill`; `CyberDemoBridge.export_physical_state()`/`import_physical_state()`; `inspect_cell` adds `family_state` |
-| Regressions | [`test_lcb_pressure.cpp`](../../native/tests/test_lcb_pressure.cpp) (13 native cases), [`test_lcb_pressure_reference.gd`](../../godot/tests/test_lcb_pressure_reference.gd) (publisher candidate regression) |
+| Regressions | [`test_lcb_pressure.cpp`](../../native/tests/test_lcb_pressure.cpp) (18 native cases in residual source; 13 at accepted #245), [`test_lcb_pressure_reference.gd`](../../godot/tests/test_lcb_pressure_reference.gd) (publisher candidate regression) |
 | Characterization harness | [`lcb_pressure_characterisation.cpp`](../../native/bench/lcb_pressure_characterisation.cpp) |
 
 ## Storage (Gate B handoff kept)
@@ -79,6 +79,14 @@ Invariants (checked on restore, asserted by the lifecycle test):
 - flow only on Water, `|flow| ≤ kFlowScale`;
 - a gas label only on an Empty cell: `0` unresolved, `kVacuumLabel`,
   `kAtmosphereLabel`, or a live compartment id.
+
+Residual source also bounds the monotonic gas-ID allocator: allocated identities
+are `1..kVacuumLabel-1`; `next_id == kVacuumLabel` is an exhausted sentinel.
+Creation and split share the checked allocator. They report capacity exhaustion
+and quarantine the failed tick before assigning an unresolved/vacuum/atmosphere
+label as a compartment ID. Restore accepts only the valid next-ID domain,
+including the exhausted sentinel, even when the live table is empty. No ID wraps
+or is reused; the sentinel is not an allocatable identity.
 
 ## Tick structure
 
@@ -266,7 +274,7 @@ regions, pending events, every chunk (blocks, cells with epochs, temperatures,
 sidecars), the exact shared quantity ledger/construction binding, gas table,
 history and pressure ledgers — followed by a SHA-256 of the body.
 Restore checks the digest first, decodes the policy with the running build, then
-range-checks every value and invariant before returning a new World; any failure
+checks the documented state ranges and invariants before returning a new World; any failure
 throws `std::invalid_argument` (or `LiquidPolicyRefused`) and the caller's World
 is untouched. Execution settings (workers, capacities) come from the caller;
 physics settings from the payload, including physics-changing diagnostic
@@ -277,6 +285,13 @@ saved; settled discovery must be disabled. A restored World continues
 bit-identically (physical and state hash, including at a different worker count).
 Restore also checks native quantity schema, source/sink roles and quanta,
 aggregate closure, prepared Water count/mass consistency and restored authority.
+Pending events reuse ordinary queue admission, including radius, capacity and
+the radius-plus-two coordinate margin. Direct rectangle quantity readback
+rejects negative dimensions and overflowing inclusive endpoints; zero-area
+reads remain zero, and valid final cells at `INT64_MAX` need no overflowing
+exclusive endpoint. These residual fixes retain ordinary event continuation,
+worker parity and quantity accounting; their earlier failures and validation
+are in the [residual audit](../audits/2026-10-24-lcb001-residual-shared-contract.md#publication-attempt-1-stopped-for-coordinate-boundary-defects).
 In residual source, historical CYPS1 explicitly refuses as an unknown format; #245's saved format-1
 evidence remains historical. The owner-requested narrow native codec freeze is
 described in the [shared contract](liquid-prepared-setup-and-receipts.md); it is

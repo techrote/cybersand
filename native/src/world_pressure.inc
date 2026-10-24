@@ -25,6 +25,14 @@ constexpr std::int64_t kHeadClamp = std::int64_t{1} << 28;
     return value != std::numeric_limits<std::int32_t>::min() && value <= kUnknownHeadBase;
 }
 
+[[nodiscard]] std::uint32_t allocate_gas_compartment_id(std::uint32_t& next_id) {
+    // IDs never reuse the unresolved/vacuum/atmosphere labels. kVacuumLabel is
+    // the exhausted next-ID sentinel after the last valid identity is issued.
+    if (next_id == 0U || next_id >= kVacuumLabel)
+        throw std::runtime_error("pressure gas identity capacity exhausted");
+    return next_id++;
+}
+
 // Inverse of TransportPolicy::unpack (schema v1) for persistence.
 [[nodiscard]] std::vector<std::int32_t> pack_transport(const TransportPolicy& policy) {
     std::vector<std::int32_t> words;
@@ -99,9 +107,18 @@ PressureFlowDiagnostics World::pressure_flow_diagnostics() const noexcept {
 
 std::uint64_t World::water_quantity(RectI64 region) const {
     if (region.width < 0 || region.height < 0) throw std::invalid_argument("region dimensions must not be negative");
+    if (region.width == 0 || region.height == 0) return 0;
+    const auto maximum = std::numeric_limits<std::int64_t>::max();
+    if (region.x > maximum - (region.width - 1) ||
+        region.y > maximum - (region.height - 1))
+        throw std::overflow_error("quantity region exceeds coordinate range");
     std::uint64_t total = 0;
-    for (std::int64_t y = region.y; y < region.y + region.height; ++y) {
-        for (std::int64_t x = region.x; x < region.x + region.width; ++x) {
+    // Offsets avoid forming an exclusive endpoint or incrementing a coordinate
+    // past INT64_MAX when the final included cell is exactly at that boundary.
+    for (std::int64_t dy = 0; dy < region.height; ++dy) {
+        const auto y = region.y + dy;
+        for (std::int64_t dx = 0; dx < region.width; ++dx) {
+            const auto x = region.x + dx;
             const auto target = address(x, y);
             const auto* chunk = find_chunk(target.chunk);
             if (chunk == nullptr) continue;
@@ -473,7 +490,7 @@ void World::resolve_gas_topology() {
                 throw std::runtime_error("pressure gas compartment capacity exhausted");
             auto& region = state.regions[r];
             State::Compartment made;
-            made.id = state.next_id++;
+            made.id = allocate_gas_compartment_id(state.next_id);
             // Newly sealed gas is atmospheric; kernel-vacated cells are vacuum.
             made.amount = region.fresh_cells + region.atmosphere_cells;
             made.volume = region.volume;
@@ -575,7 +592,7 @@ void World::resolve_gas_topology() {
                 throw std::runtime_error("pressure gas compartment capacity exhausted");
             auto& region = state.regions[r];
             State::Compartment made;
-            made.id = state.next_id++;
+            made.id = allocate_gas_compartment_id(state.next_id);
             made.generation = generation + 1U;
             made.parents = ids;
             made.parent_count = parent_count;
@@ -1730,8 +1747,10 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
         event.y = in.get<std::int64_t>();
         event.radius = in.get<std::int32_t>();
         event.collapse_strength = in.get<std::uint8_t>();
-        if (event.radius <= 0 || event.radius > w.config_.maximum_explosion_radius) refuse_state("bad pending event");
-        w.pending_explosions_.push_back(event);
+        // Discovery is disabled for this unexposed candidate. Reuse ingress's
+        // exact radius/capacity/R+2 coordinate checks before admitting the event.
+        if (!w.queue_explosion(event.x, event.y, event.radius, event.collapse_strength))
+            refuse_state("bad pending event");
     }
     const auto chunk_count = in.get<std::uint32_t>();
     if (chunk_count > w.config_.maximum_chunk_count) refuse_state("chunk count exceeds capacity");
@@ -1828,6 +1847,8 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
     if (has_pressure) {
         auto& state = *w.pressure_;
         state.next_id = in.get<std::uint32_t>();
+        if (state.next_id == 0U || state.next_id > kVacuumLabel)
+            refuse_state("next compartment id outside its allocated/exhausted domain");
         state.topology_revision = in.get<std::uint64_t>();
         const auto get_compartment = [&in]() {
             GasCompartmentSnapshot c;

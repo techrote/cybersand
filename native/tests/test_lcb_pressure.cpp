@@ -7,9 +7,11 @@
 #include "cybersand/world.hpp"
 
 #include <algorithm>
+#include <array>
 #include <cstdint>
 #include <functional>
 #include <iostream>
+#include <limits>
 #include <memory>
 #include <optional>
 #include <span>
@@ -103,7 +105,241 @@ const GasCompartmentSnapshot* find_anchor(const std::vector<GasCompartmentSnapsh
 
 std::uint64_t quantity(const World& world, RectI64 r) { return world.water_quantity(r); }
 
+std::vector<std::uint8_t> with_gas_next_id(const World& world, std::uint32_t next_id) {
+    require(world.pressure_flow_enabled() && world.gas_history().empty(), "gas ID codec fixture has no history");
+    auto bytes = world.save_physical_state();
+    // Frozen CYPS2 pressure tail: next ID, topology revision, table count,
+    // 97-byte live records, history count/cursor, ten gas and five flow totals.
+    const auto tail = 4U + 8U + 4U + world.gas_compartments().size() * 97U + 8U + 10U * 8U + 5U * 8U;
+    require(bytes.size() > 32U + tail, "gas ID fixture contains the pressure tail");
+    const auto at = bytes.size() - 32U - tail;
+    std::uint32_t previous = 0;
+    for (std::size_t i = 0; i < 4U; ++i) previous |= static_cast<std::uint32_t>(bytes[at + i]) << (8U * i);
+    require(bytes[at - 1U] == 1U && previous == world.gas_next_id(), "gas ID tail offset matches native readback");
+    for (std::size_t i = 0; i < 4U; ++i) bytes[at + i] = static_cast<std::uint8_t>(next_id >> (8U * i));
+    const auto digest = cybersand::Sha256::of(std::span<const std::uint8_t>(bytes.data(), bytes.size() - 32U));
+    std::copy(digest.begin(), digest.end(), bytes.end() - 32);
+    return bytes;
+}
+
+WorldConfig small_gas_config() {
+    auto config = pressure_config();
+    config.chunk_size = 32;
+    config.activity_block_size = 8;
+    config.scheduling_core_size = 16;
+    config.initial_chunk_reserve = 2;
+    config.maximum_chunk_count = 128;
+    config.active_chunk_capacity = 128;
+    config.active_core_capacity = 128;
+    return config;
+}
+
+void require_gas_id_exhaustion(World& world) {
+    const auto completed = world.completed_tick_index();
+    const auto before = world.gas_compartments();
+    bool refused = false;
+    try { tick(world); }
+    catch (const std::runtime_error& error) {
+        refused = std::string(error.what()).find("pressure gas identity capacity exhausted") != std::string::npos;
+    }
+    require(refused && world.has_failed() && world.completed_tick_index() == completed &&
+                world.tick_index() == completed + 1U,
+            "gas ID exhaustion fails explicitly and quarantines the attempted tick");
+    require(world.gas_next_id() == cybersand::kVacuumLabel, "exhausted gas ID sentinel never advances or wraps");
+    const auto after = world.gas_compartments();
+    require(after.size() == before.size(), "failed allocation retains the prior compartment identities");
+    for (std::size_t i = 0; i < after.size(); ++i)
+        require(after[i].id == before[i].id && after[i].id > 0U && after[i].id < cybersand::kVacuumLabel,
+                "exhaustion never installs an unresolved or reserved compartment ID");
+    bool quarantined = false;
+    try { tick(world); }
+    catch (const std::logic_error&) { quarantined = true; }
+    require(quarantined && world.completed_tick_index() == completed, "failed gas topology cannot resume");
+}
+
 // -------------------------------------------------------------------- tests
+
+void test_gas_id_restore_bounds() {
+    auto config = std::make_unique<WorldConfig>(small_gas_config());
+    auto empty = std::make_unique<World>(*config);
+    const auto before_hash = empty->physical_state_hash();
+    for (const auto invalid : {std::uint32_t{0}, cybersand::kAtmosphereLabel}) {
+        bool refused = false;
+        try { (void)World::restore_physical_state(*config, with_gas_next_id(*empty, invalid)); }
+        catch (const std::invalid_argument&) { refused = true; }
+        require(refused, "invalid next gas ID refuses even with an empty compartment table");
+    }
+    for (const auto admitted : {std::uint32_t{1}, cybersand::kVacuumLabel}) {
+        const auto bytes = with_gas_next_id(*empty, admitted);
+        auto restored = World::restore_physical_state(*config, bytes);
+        require(restored->gas_next_id() == admitted && restored->save_physical_state() == bytes,
+                "valid next gas ID and exhausted sentinel restore exactly");
+        tick(*restored);
+        require(!restored->has_failed() && restored->gas_next_id() == admitted && restored->gas_compartments().empty(),
+                "no-allocation topology can continue with an exhausted ID sentinel");
+    }
+    require(empty->physical_state_hash() == before_hash, "gas ID restore attempts leave the caller untouched");
+}
+
+void test_gas_id_creation_exhaustion() {
+    auto config = std::make_unique<WorldConfig>(small_gas_config());
+    auto prepared = std::make_unique<World>(*config);
+    room(*prepared, 8);
+    auto world = World::restore_physical_state(*config, with_gas_next_id(*prepared, cybersand::kVacuumLabel - 1U));
+    tick(*world);
+    auto compartments = world->gas_compartments();
+    require(compartments.size() == 1U && compartments[0].id == cybersand::kVacuumLabel - 1U &&
+                compartments[0].amount == 100U && world->gas_next_id() == cybersand::kVacuumLabel &&
+                world->pressure_cell(9, 9).gas == compartments[0].id,
+            "real compartment creation consumes the last valid ID without using a reserved label");
+    auto restored = World::restore_physical_state(*config, world->save_physical_state());
+    tick(*world);
+    tick(*restored);
+    require(world->physical_state_hash() == restored->physical_state_hash() && !world->has_failed(),
+            "existing last-ID compartment continues exactly without allocating an identity");
+    room(*world, 32);
+    require_gas_id_exhaustion(*world);
+}
+
+void test_gas_id_split_exhaustion() {
+    auto config = std::make_unique<WorldConfig>(small_gas_config());
+    auto prepared = std::make_unique<World>(*config);
+    room(*prepared, 8);
+    tick(*prepared);
+    const auto parent = prepared->gas_compartments().at(0).id;
+    auto world = World::restore_physical_state(*config, with_gas_next_id(*prepared, cybersand::kVacuumLabel - 2U));
+    rect(*world, 13, 9, 1, 10, Material::Wall);
+    tick(*world);
+    const auto compartments = world->gas_compartments();
+    require(compartments.size() == 2U && compartments[0].id == cybersand::kVacuumLabel - 2U &&
+                compartments[1].id == cybersand::kVacuumLabel - 1U &&
+                compartments[0].amount + compartments[1].amount == 100U &&
+                world->gas_next_id() == cybersand::kVacuumLabel && world->gas_ledger().splits == 1U,
+            "real split allocates the final two valid IDs and conserves the parent gas");
+    for (const auto& child : compartments)
+        require(child.parent_count == 1U && child.parents[0] == parent && child.generation == 1U,
+                "near-exhaustion split preserves fresh child identity and ancestry");
+    rect(*world, 11, 9, 1, 10, Material::Wall);
+    require_gas_id_exhaustion(*world);
+}
+
+void test_quantity_rectangle_bounds() {
+    auto world = std::make_unique<World>(pressure_config());
+    require(world->set_cell_state(3, 4, Material::Water, 17, 0), "quantity query fixture");
+    const auto before_hash = world->physical_state_hash();
+    const auto before_ledger = world->quantity_ledger();
+    const auto unchanged = [&]() {
+        require(world->physical_state_hash() == before_hash && world->quantity_ledger() == before_ledger,
+                "quantity query changed physical state or accounting");
+    };
+    constexpr auto minimum = std::numeric_limits<std::int64_t>::min();
+    constexpr auto maximum = std::numeric_limits<std::int64_t>::max();
+    for (const auto bounds : std::array<RectI64, 4>{{
+             {0, 0, -1, 1}, {0, 0, 1, -1}, {maximum, maximum, 0, -1}, {maximum, maximum, -1, 0}}}) {
+        bool refused = false;
+        try { (void)world->water_quantity(bounds); }
+        catch (const std::invalid_argument&) { refused = true; }
+        require(refused, "negative quantity query dimension must refuse");
+        unchanged();
+    }
+    for (const auto bounds : std::array<RectI64, 4>{{
+             {maximum, 0, 2, 1}, {0, maximum, 1, 2},
+             {maximum - 1, 0, 3, 1}, {0, maximum - 1, 1, 3}}}) {
+        bool refused = false;
+        try { (void)world->water_quantity(bounds); }
+        catch (const std::overflow_error&) { refused = true; }
+        require(refused, "overflowing quantity query inclusive endpoint must refuse");
+        unchanged();
+    }
+    for (const auto bounds : std::array<RectI64, 6>{{
+             {maximum, maximum, 1, 1}, {minimum, minimum, 1, 1},
+             {maximum - 1, maximum - 1, 2, 2}, {minimum, minimum, 2, 2},
+             {maximum, maximum, 0, maximum}, {maximum, maximum, maximum, 0}}}) {
+        require(world->water_quantity(bounds) == 0U, "empty extreme/zero-area quantity query");
+        unchanged();
+    }
+    require(world->water_quantity({3, 4, 1, 1}) == 17U &&
+                world->water_quantity({2, 3, 3, 3}) == 17U,
+            "bounded quantity queries retain exact partial Water");
+    unchanged();
+}
+
+void test_pending_event_restore_bounds() {
+    auto config = std::make_unique<WorldConfig>(pressure_config());
+    config->liquid_solver_policy = pressure_policy(std::pair{0, 64});
+    config->chunk_size = 32;
+    config->activity_block_size = 8;
+    config->scheduling_core_size = 16;
+    auto original = std::make_unique<World>(*config);
+    constexpr std::int64_t event_x = 0x0102030405060708LL;
+    constexpr std::int64_t event_y = 0x1112131415161718LL;
+    require(original->queue_explosion(event_x, event_y, 1, 17), "ordinary pending event admission");
+    const auto saved = original->save_physical_state();
+    const auto original_hash = original->physical_state_hash();
+    const auto original_ledger = original->quantity_ledger();
+    std::array<std::uint8_t, 16> marker{};
+    for (std::size_t i = 0; i < 8U; ++i) {
+        marker[i] = static_cast<std::uint8_t>(static_cast<std::uint64_t>(event_x) >> (8U * i));
+        marker[8U + i] = static_cast<std::uint8_t>(static_cast<std::uint64_t>(event_y) >> (8U * i));
+    }
+    const auto event = std::search(saved.begin(), saved.end() - 32, marker.begin(), marker.end());
+    require(event != saved.end() - 32 &&
+                std::search(event + 1, saved.end() - 32, marker.begin(), marker.end()) == saved.end() - 32,
+            "pending event coordinates are uniquely located in the saved fixture");
+    const auto event_offset = static_cast<std::size_t>(event - saved.begin());
+    const auto edited_event = [&](std::size_t axis, std::int64_t coordinate) {
+        auto bytes = saved;
+        for (std::size_t i = 0; i < 8U; ++i)
+            bytes[event_offset + axis * 8U + i] =
+                static_cast<std::uint8_t>(static_cast<std::uint64_t>(coordinate) >> (8U * i));
+        const auto digest = cybersand::Sha256::of(std::span<const std::uint8_t>(bytes.data(), bytes.size() - 32U));
+        std::copy(digest.begin(), digest.end(), bytes.end() - 32);
+        return bytes;
+    };
+    constexpr auto minimum = std::numeric_limits<std::int64_t>::min();
+    constexpr auto maximum = std::numeric_limits<std::int64_t>::max();
+    // Radius 1 uses the same R+2 coordinate margin at ingress and restore.
+    for (const auto axis : {std::size_t{0}, std::size_t{1}}) {
+        for (const auto coordinate : {minimum, minimum + 2, maximum - 2, maximum}) {
+            const auto x = axis == 0U ? coordinate : event_x;
+            const auto y = axis == 1U ? coordinate : event_y;
+            require(!original->queue_explosion(x, y, 1, 17), "invalid event coordinate refused at ingress");
+            bool refused = false;
+            try { (void)World::restore_physical_state(*config, edited_event(axis, coordinate)); }
+            catch (const std::invalid_argument&) { refused = true; }
+            require(refused, "valid-digest pending event outside the ingress margin must refuse");
+            require(original->physical_state_hash() == original_hash && original->quantity_ledger() == original_ledger,
+                    "failed pending-event restore changed the caller World");
+        }
+        for (const auto coordinate : {minimum + 3, maximum - 3}) {
+            const auto bytes = edited_event(axis, coordinate);
+            auto restored = World::restore_physical_state(*config, bytes);
+            require(restored->save_physical_state() == bytes,
+                    "pending event at the inclusive coordinate margin restores exactly");
+        }
+    }
+    auto continuous = std::make_unique<World>(*config);
+    continuous->reserve_temperature_region({0, 0, 32, 32});
+    require(continuous->set_cell_state(4, 4, Material::Water, 17, 0), "pending event partial Water fixture");
+    continuous->set_temperature(4, 4, 777);
+    require(continuous->queue_explosion(4, 4, 1, 17), "pending event continuation fixture");
+    auto execution = std::make_unique<WorldConfig>(*config);
+    execution->worker_threads = 4;
+    execution->parallel_job_threshold = 1;
+    auto restored = World::restore_physical_state(*execution, continuous->save_physical_state());
+    require(restored->physical_state_hash() == continuous->physical_state_hash(),
+            "ordinary pending event restores the exact initial state");
+    for (int t = 0; t < 4; ++t) {
+        tick(*continuous);
+        tick(*restored);
+        require(restored->physical_state_hash() == continuous->physical_state_hash() &&
+                    restored->state_hash() == continuous->state_hash() &&
+                    restored->quantity_ledger() == continuous->quantity_ledger(),
+                "ordinary pending event preserves exact continuation and accounting across workers");
+    }
+    require(continuous->quantity_ledger().kinds[static_cast<std::size_t>(cybersand::QuantityKind::DeferredEvent)].consumed == 17U,
+            "restored ordinary event books the actual partial Water sink once");
+}
 
 void test_pressure_admission_and_refusal() {
     const auto& running = LiquidPolicyBuild::running();
@@ -799,6 +1035,11 @@ void test_default_policy_untouched() {
 }  // namespace
 
 void test_lcb_pressure_admission() { test_pressure_admission_and_refusal(); }
+void test_lcb_pressure_gas_id_restore_bounds() { test_gas_id_restore_bounds(); }
+void test_lcb_pressure_gas_id_creation_exhaustion() { test_gas_id_creation_exhaustion(); }
+void test_lcb_pressure_gas_id_split_exhaustion() { test_gas_id_split_exhaustion(); }
+void test_lcb_pressure_quantity_bounds() { test_quantity_rectangle_bounds(); }
+void test_lcb_pressure_event_restore_bounds() { test_pending_event_restore_bounds(); }
 void test_lcb_pressure_gas_pockets() { test_gas_single_and_twin_pockets(); }
 void test_lcb_pressure_gas_merge() { test_gas_unequal_merge(); }
 void test_lcb_pressure_gas_vent_reseal() { test_gas_compress_vent_reseal(); }
