@@ -22,13 +22,13 @@ def digest(path):
 
 def collect(output,sdk):
     output=Path(output).resolve();sdk=Path(sdk).resolve();output.mkdir(parents=True,exist_ok=False)
-    registration=Path(__file__).with_name('wasm-registration.json');spec=json.loads(registration.read_text())
+    registration=Path(__file__).with_name('wasm-registration-v2.json');spec=json.loads(registration.read_text())
     started=time.monotonic()
     result={'status':'failed','timing':False,'validation_class':'author-validation-pending-independent-review',
             'source_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
             'registration_sha256':digest(registration),'commands':[],'builds':[],'cases':[]}
 
-    def command(argv,label,timeout,build=False):
+    def command(argv,label,timeout,build=False,setup_info=False):
         remaining=spec['limits']['aggregate_seconds']-(time.monotonic()-started)
         if remaining<=0:raise ValueError('aggregate watchdog')
         before=time.monotonic();code=None;stop=None
@@ -39,9 +39,11 @@ def collect(output,sdk):
         stderr=(output/(label+'.stderr')).read_text(errors='replace')
         receipt={'argv':list(map(str,argv)),'exit_code':code,'stop':stop,'timeout_seconds':timeout,
                  'elapsed_watchdog_seconds':time.monotonic()-before,'compiler_cache_info_allowed':build,
+                 'sdk_sanity_info_allowed':setup_info,
                  'stdout_sha256':digest(output/(label+'.stdout')),'stderr_sha256':digest(output/(label+'.stderr'))}
         result['commands'].append(receipt);(output/(label+'.receipt.json')).write_text(json.dumps(receipt,indent=2)+'\n')
-        if code!=0 or stop or (stderr and not build) or (build and re.search(r'warning:|error:|traceback|fatal error',stderr,re.I)):
+        invalid_setup=setup_info and any(line.strip() and not line.startswith('shared:INFO:') for line in stderr.splitlines())
+        if code!=0 or stop or (stderr and not (build or setup_info)) or invalid_setup or ((build or setup_info) and re.search(r'warning:|error:|traceback|fatal error',stderr,re.I)):
             raise ValueError('retained command failure: '+label)
         if sum(p.stat().st_size for p in output.rglob('*') if p.is_file())>spec['limits']['output_bytes']:raise ValueError('output bound')
         return (output/(label+'.stdout')).read_text()
@@ -54,7 +56,7 @@ def collect(output,sdk):
         if releases['releases'][spec['emscripten']]!=spec['release_build_identity']:raise ValueError('SDK release identity')
         compiler=(sdk/'upstream/emscripten/em++').resolve()
         node=Path(os.environ.get('EMSDK_NODE') or shutil.which('node') or '').resolve()
-        compiler_version=command([compiler,'--version'],'compiler-version',30)
+        compiler_version=command([compiler,'--version'],'compiler-version',30,setup_info=True)
         node_version=command([node,'--version'],'node-version',30).strip()
         if not re.search(r'\b4\.0\.20\b',compiler_version.splitlines()[0]) or node_version!=spec['node_version']:
             raise ValueError('compiler/Node version drift')
