@@ -12,12 +12,14 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
-Current integration baseline: [PR #239](https://github.com/techrote/cybersand/pull/239)
-landed the bounded [#200 policy foundation](reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24)
-on main `1e032e4`. The [MAT-003 stack reconciliation](audits/2026-10-24-mat003-lcb001-integration-checkpoint.md)
-imports that main baseline while retaining the experimental records below. Fresh
-Native, Godot and materialized provenance checks are required on the reconciled
-heads; #212 and pressure/inertial ports remain held.
+Current integration baseline: main `a395e33` includes the bounded
+[#200 policy foundation](reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24)
+from [PR #239](https://github.com/techrote/cybersand/pull/239) and its
+[PR #240 regression follow-ups](https://github.com/techrote/cybersand/pull/240).
+The [post-#240 MAT-003 checkpoint](audits/2026-10-24-mat003-post-240-integration-checkpoint.md)
+preserves the previous stack's 15 current and seven scoped workflow passes at
+their exact old heads. Fresh Native, Godot and materialized provenance checks
+are pending on the newly reconciled heads; #212 and pressure/inertial ports remain held.
 
 For **MAT-003PREPASS / #204**, start with the [staged carrier registration](operations/mat-003prepass-registration.md), [source state inventory](research/mat-003prepass-state-inventory.md), [epoch consumer audit](research/mat-003prepass-epoch-consumers.md) and [proposed GEN-006 handoff](research/mat-003prepass-gen006-handoff.md). [S0 isolated storage checks passed](audits/2026-10-22-mat003-prepass-foundation.md). The [S1 World report](audits/2026-10-22-mat003-world-correctness.md) covers the new seventeen-arm apparatus, typed 8/16-bit counters and two-rollover gate; the registered Linux normal/sanitized collection and independent readback passed. Production remains unchanged, #204 stays open, and S2 paired performance requires separate registration.
 
