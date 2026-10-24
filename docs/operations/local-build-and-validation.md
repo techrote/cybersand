@@ -23,7 +23,7 @@ requirement, not evidence that every platform artifact was built or tested.
 | Windows compiler | LLVM-MinGW 20260826, Clang 23.1.0, UCRT; native lock pins the Linux-host archive; local Windows ZIP is a distinct input |
 | Linux compiler/linker | GCC/G++ 13.3.0 / binutils 2.42; native lock |
 | Web compiler | Emscripten **4.0.20**, checked by [build_web.py](../../tools/build_web.py) |
-| Rapier2D | Official single-precision 2D **v0.35.2**; [Rapier lock](../../godot/third_party/rapier2d.lock.json) |
+| Rapier2D | Single-precision 2D **v0.35.2** base; qualified cooperative deferred-BVH join backport on Windows/Linux x86_64, official bytes on other targets; [Rapier lock](../../godot/third_party/rapier2d.lock.json) |
 | Web templates | Exact Godot 4.7 dlink templates: `web_dlink_nothreads_{debug,release}.zip` for compat, `web_dlink_{debug,release}.zip` for threaded |
 
 Keep native and Web godot-cpp checkouts separate: generated bindings and archives
@@ -123,11 +123,13 @@ Windows cross-builds use `build_pinned_godot_cpp.sh windows` and
 with `LLVM_MINGW_ROOT`/`WINDOWS_CXX`. PE/import inspection alone cannot prove a
 Windows runtime launch.
 
-The GitHub-hosted Native job has a 45-minute overall allowance. Its individual
+The GitHub-hosted Native job has a 90-minute overall allowance. Its individual
 build, test and benchmark commands retain their separate deadlines; increasing
 the job allowance does not skip cases or relax sanitizer failures. The
-[MAT-002 completion audit](../audits/2026-10-19-mat002-review-and-validation.md#completion-resumed--2258-utc)
-records the observed 35-minute cancellation and preceding successful durations.
+[pressure-reference acceptance](../audits/2026-10-24-lcb001-pressure-reference-publication.md#exact-head-acceptance-and-merge)
+records the 45-minute aggregate cancellation and successful 50-minute rerun.
+The [MAT-002 completion audit](../audits/2026-10-19-mat002-review-and-validation.md#completion-resumed--2258-utc)
+retains the earlier 35-minute cancellation and preceding successful durations.
 
 ## Linux GDExtension CI sharding
 
@@ -458,6 +460,18 @@ It published only after an explicit request on the implementation branch and rec
 [evidence record](../audits/2026-10-24-lcb001-pressure-reference-publication.md).
 A later native checkpoint must use a newly scoped publisher and fresh execution;
 the historical artifacts qualify their recorded source only.
+
+**Prepared residual checkpoint, 2026-10-24:**
+[`lcb001-shared-contract-runtime-publication.yml`](../../.github/workflows/lcb001-shared-contract-runtime-publication.yml)
+and its [helper](../../tools/ci/lcb001_shared_contract_runtime_publication.py)
+are limited to `codex/lcb001-shared-contract`. Its own explicit request arms
+the immutable source checkpoint; ordinary native edits do not request a build.
+Both target OSes must pass import and all twelve scoped cases, including W-CY,
+pressure, worker, native observation and WEX body-mask controls. The
+[residual audit](../audits/2026-10-24-lcb001-residual-shared-contract.md#resumed-execution-and-fresh-main-integration)
+records guard preparation and actual publication status. Full non-draft
+exact-head gates remain separate. Retire this publisher after its bounded
+checkpoint merges.
 
 ## Hierarchical generation example and acceptance
 

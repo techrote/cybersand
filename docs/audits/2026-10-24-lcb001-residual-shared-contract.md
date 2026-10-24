@@ -24,8 +24,10 @@ commits as reachable recovery points. The successor PR records its final head.
 
 This evidence describes **unmerged source and local execution**, with exact
 native input manifests below. It does not declare #200 complete. Source-matched
-published Windows/Linux runtimes, full non-draft final-head CI and the remaining
-application-host acceptance are required before implementation merge. The
+published Windows/Linux runtimes, full non-draft final-head CI and independent
+review are required before this bounded implementation merges. The remaining
+typed Godot normalization route, host verification and application acceptance
+belong to #202 and are not credited by the native checkpoint. The
 retained pressure runtimes qualify their recorded #245 source, not this native
 delta.
 
@@ -206,8 +208,9 @@ Fixed accounting adds 3,816 bytes per scheduling slot: 15,630,336 bytes
 and a 208-byte construction seed. This is an explicit cost, not an optimization.
 No new tick-time allocation, per-cell lock or per-material thread is introduced.
 
-Remaining acceptance includes source-matched release runtime publication on both
-platforms, full non-draft final-head CI and actual host collection/verification.
+Remaining acceptance for this checkpoint includes source-matched release runtime
+publication on both platforms, full non-draft final-head CI and independent
+review. Actual host collection/verification remains downstream #202 work.
 The native v1 receipt does not upgrade source/runtime caller claims to verified
 provenance or controlled/matched evidence. Its native-only coverage and host
 gaps remain explicit; the existing experimental Godot dictionary getter is a
@@ -281,3 +284,36 @@ The live #201 mirror records the body-contact/rest-certificate requirement.
 Historical failed publications, #245 screens, old hashes and M11 records remain
 unchanged. Final documentation/retrieval results and recoverable Git heads are
 recorded with the successor checkpoint after refreshing main.
+
+## Resumed execution and fresh-main integration
+
+The owner resumed continuous programme execution after the initial handover:
+finish residual #200, fan out #201/#202/#212 where write sets permit, then
+integrate and qualify #203. Draft [PR #246](https://github.com/techrote/cybersand/pull/246)
+preserves the native/shared contract boundary above; it does not acquire the
+full application work from #202.
+
+Fresh main advanced to `def212203ad12234236c4c6bb262c0546bd55b3d` after
+PRs #236 and #247. Merge checkpoint
+`1cb8e448be447100a52c51743ecaf3d4a7f4bc56` retains that qualified desktop
+Rapier deferred-BVH join repair, timeout diagnostics and their historical
+evidence. No native or extension implementation input changed in this refresh.
+The earlier local Windows checks above used the former official Rapier runtime;
+they remain dated evidence for those exact bytes. The fresh publication and
+full acceptance matrix must instead consume the currently approved patched
+desktop artifacts:
+
+- Windows SHA-256 `b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7`.
+- Linux SHA-256 `566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a`.
+
+The newly scoped, explicit-request shared-contract publisher binds the current
+native/build/test inputs, Rapier provenance, patch and lock. Both actual target
+OSes must pass import plus twelve complete regression cases: controlled W-CY
+admission/refusal, pressure reference, worker policy, native observation, WEX
+body-mask baseline, two MicroScenario controls, four LCB contracts and Water
+Feel. Per-case deadlines and positive completion/section checks are enforced.
+The unarmed three-file preparation passed 30 publisher guard tests, the
+CI-provider policy checker, YAML parsing and independent read-only review.
+Those guard results are not runtime execution or publication evidence. The
+explicit request and actual source/runtime/run receipts follow only after this
+preparation checkpoint is committed.

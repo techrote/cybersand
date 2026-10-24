@@ -23,9 +23,9 @@ readback identity and prepared-World/masked-state checks. It retains qualified
 caller provenance and host coverage; no full matched-evidence claim follows.
 
 Local final native suites pass 121/121 with LLVM-MinGW and MSVC at 1 MiB stack.
-Scoped fresh Windows Godot checks pass. Release Windows/Linux publication,
-full final-head CI, the Godot normalization route and host verification remain
-acceptance work. Preserve the original material checkout, the prepared #202
+Scoped fresh Windows Godot checks pass. Release Windows/Linux publication and
+full final-head CI remain checkpoint acceptance work; the Godot normalization
+route and host verification remain #202 work. Preserve the original material checkout, the prepared #202
 adapter work and the old pushed #212 branch; neither old branch is a substitute
 for integration onto fresh main.
 
@@ -750,8 +750,12 @@ before changing it. Keep it separate from #45: its screens select nothing there.
   `tools/ci/lcb001_pressure_reference_runtime_publication.py` and its unittest
   came from draft PR #244 and are retired with the source-bound request after
   PR #245. The publication evidence and original implementation at `48fb275`
-  are retained. A successor native checkpoint needs a newly scoped publisher;
-  follow [branch-scoped publishers](local-build-and-validation.md#branch-scoped-runtime-publishers)
+  are retained. The residual successor prepares
+  `.github/workflows/lcb001-shared-contract-runtime-publication.yml` and
+  `tools/ci/lcb001_shared_contract_runtime_publication.py` with its guard tests.
+  It remains limited to `codex/lcb001-shared-contract` and requires its own
+  explicit source-bound request; preparation alone does not publish runtimes.
+  Follow [branch-scoped publishers](local-build-and-validation.md#branch-scoped-runtime-publishers)
   and run `python3 tools/ci/check_ci_provider_policy.py` after any CI change.
 - **Issue state.** #200 was auto-closed when PR #239 merged, because GitHub read
   "does not close #200" as a closing keyword; it was reopened on 2026-10-24. Avoid
