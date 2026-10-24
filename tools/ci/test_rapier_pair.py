@@ -1,0 +1,72 @@
+import copy
+import json
+from pathlib import Path
+import tempfile
+import unittest
+
+from stress_physical_actors import SUSPECTS
+from summarize_rapier_pair import compare
+
+
+class PairTests(unittest.TestCase):
+    def setUp(self):
+        tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(tmp.cleanup)
+        self.root = Path(tmp.name)
+        self.lock = {"base_join_source_sha256": "original", "patched_join_source_sha256": "patched", "upstream_cargo_lock_sha256": "upstream"}
+        for variant in ("control", "patched"):
+            for host in ("windows", "linux"):
+                for batch in range(5):
+                    filename = "libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" if host == "windows" else "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so"
+                    build = {"variant": variant, "platform": host, "source_sha": "source", "build_inputs": self.lock,
+                             "join_source_sha256": "original" if variant == "control" else "patched",
+                             "join_regression_exit": 124 if variant == "control" else 0,
+                             "artifacts": {filename: host + variant}, "godot_version": "4.7", "rustc": "exact",
+                             "upstream_cargo_lock_sha256": "upstream", "resolved_cargo_lock_sha256": "resolved", "build_lock_sha256": "build-lock"}
+                    report = {"identity": {"source_sha": "source", "native_sha256": host + "native", "rapier_sha256": host + variant,
+                                           "godot_version": "4.7", "rapier_build": build},
+                              "completed": True, "iterations_requested": 10,
+                              "results": [{"iteration": i, "name": name, "status": "passed"} for i in range(10) for name in SUSPECTS]}
+                    if variant == "control" and host == "windows" and batch == 0:
+                        report["results"][0].update(status="timeout", last_progress={"phase": "step"})
+                    path = self.root / variant / f"{host}-{batch}" / "stress.json"
+                    path.parent.mkdir(parents=True)
+                    path.write_text(json.dumps(report))
+
+    def mutate(self, variant, function):
+        path = self.root / variant / "windows-0/stress.json"
+        report = json.loads(path.read_text())
+        function(report)
+        path.write_text(json.dumps(report))
+
+    def test_complete_pair_with_reproduced_control_qualifies(self):
+        self.assertTrue(compare(self.root, self.lock)["qualified"])
+
+    def test_no_control_reproduction_does_not_prove_repair(self):
+        self.mutate("control", lambda r: r["results"][0].update(status="passed"))
+        self.assertFalse(compare(self.root, self.lock)["qualified"])
+
+    def test_missing_trials_or_candidate_timeout_fail(self):
+        for status in ("timeout", "failed"):
+            with self.subTest(status=status):
+                self.mutate("patched", lambda r: r["results"][0].update(status=status))
+                self.assertFalse(compare(self.root, self.lock)["qualified"])
+        (self.root / "patched/linux-4/stress.json").unlink()
+        self.assertFalse(compare(self.root, self.lock)["qualified"])
+
+    def test_non_timeout_control_failure_is_not_expected_reproduction(self):
+        self.mutate("control", lambda r: r["results"][0].update(status="failed"))
+        self.assertFalse(compare(self.root, self.lock)["qualified"])
+
+    def test_mixed_build_or_source_is_rejected(self):
+        for field in ("source_sha", "resolved_cargo_lock_sha256", "rustc", "join_source_sha256"):
+            with self.subTest(field=field):
+                path = self.root / "patched/windows-0/stress.json"
+                original = path.read_text()
+                self.mutate("patched", lambda r: r["identity"]["rapier_build"].update({field: "drift"}))
+                self.assertFalse(compare(self.root, self.lock)["qualified"])
+                path.write_text(original)
+
+
+if __name__ == "__main__":
+    unittest.main()

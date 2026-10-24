@@ -246,3 +246,28 @@ jobs:
           name: physical-stress-frequency-${{ matrix.variant }}-${{ github.run_id }}
           path: build/frequency/summary.json
           retention-days: 30
+
+  paired-qualification:
+    if: always() && inputs.rapier_pair == true
+    needs: [linux-stress, windows-stress]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: physical-stress-control-*
+          path: build/pair/control
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: physical-stress-patched-*
+          path: build/pair/patched
+      - name: Require complete pair, reproduced control and zero patched failures
+        run: python3 tools/ci/summarize_rapier_pair.py build/pair
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: rapier-paired-qualification-${{ github.run_id }}
+          path: build/pair/paired-summary.json
+          retention-days: 30
+          if-no-files-found: error

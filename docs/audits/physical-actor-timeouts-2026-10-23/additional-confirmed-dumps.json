@@ -1,0 +1,161 @@
+[
+  {
+    "capture": "windows-0/iteration-006/test_physical_actor_arena-diagnostics/4308.dmp",
+    "sha256": "d12cca9a8937ae86ad16893290c58aa5b2a8ee3881c7460997d388e4d355fb7d",
+    "rapier_module_base": "0x7ffe5bc40000",
+    "threads": [
+      {
+        "thread": ".  0  Id: 10d4.1c98 Suspend: 0 Teb: 000000d8`23ef8000 Unfrozen",
+        "rapier_return_rvas": [
+          "0x77b7b3",
+          "0x77097e",
+          "0x79982d",
+          "0x2034d0",
+          "0x1f479a",
+          "0x23022f",
+          "0x25baa4"
+        ],
+        "join_deferred_bvh": false,
+        "outer_install_latch": true
+      },
+      {
+        "thread": "14  Id: 10d4.9ec Suspend: 0 Teb: 000000d8`23f68000 Unfrozen",
+        "rapier_return_rvas": [
+          "0x77d0d1",
+          "0x673358",
+          "0x6ac57d",
+          "0x68ade7",
+          "0x2e2669",
+          "0x7b4bc6",
+          "0x770253",
+          "0x76f669",
+          "0x76fa8d",
+          "0x78201a"
+        ],
+        "join_deferred_bvh": true,
+        "outer_install_latch": false
+      },
+      {
+        "thread": "15  Id: 10d4.1e7c Suspend: 0 Teb: 000000d8`23f6a000 Unfrozen",
+        "rapier_return_rvas": [
+          "0x77b7b3",
+          "0x7b4465",
+          "0x7b4b53",
+          "0x770253",
+          "0x76f669",
+          "0x76fa8d",
+          "0x78201a"
+        ],
+        "join_deferred_bvh": false,
+        "outer_install_latch": false
+      }
+    ],
+    "log": "matched-4308-stacks.txt"
+  },
+  {
+    "capture": "windows-3/iteration-003/test_physical_actor_rigs-diagnostics/6180.dmp",
+    "sha256": "149ebb2f510453260c0216db6c56dbbdb91927105ad4b9108ad66407cb5fd9db",
+    "rapier_module_base": "0x7ff8ec460000",
+    "threads": [
+      {
+        "thread": ".  0  Id: 1824.1e3c Suspend: 0 Teb: 00000054`eef65000 Unfrozen",
+        "rapier_return_rvas": [
+          "0x77b7b3",
+          "0x77097e",
+          "0x79982d",
+          "0x2034d0",
+          "0x1f479a",
+          "0x23022f",
+          "0x25baa4"
+        ],
+        "join_deferred_bvh": false,
+        "outer_install_latch": true
+      },
+      {
+        "thread": "14  Id: 1824.1a28 Suspend: 0 Teb: 00000054`eef81000 Unfrozen",
+        "rapier_return_rvas": [
+          "0x77d0d1",
+          "0x673358",
+          "0x6ac57d",
+          "0x68ade7",
+          "0x2e2669",
+          "0x7b4bc6",
+          "0x770253",
+          "0x76f669",
+          "0x76fa8d",
+          "0x78201a"
+        ],
+        "join_deferred_bvh": true,
+        "outer_install_latch": false
+      },
+      {
+        "thread": "15  Id: 1824.1a08 Suspend: 0 Teb: 00000054`eef83000 Unfrozen",
+        "rapier_return_rvas": [
+          "0x77b7b3",
+          "0x7b4465",
+          "0x7b4b53",
+          "0x770253",
+          "0x76f669",
+          "0x76fa8d",
+          "0x78201a"
+        ],
+        "join_deferred_bvh": false,
+        "outer_install_latch": false
+      }
+    ],
+    "log": "matched-6180-stacks.txt"
+  },
+  {
+    "capture": "windows-3/iteration-007/test_physical_actor_rigs-diagnostics/5192.dmp",
+    "sha256": "dc64ec37ef8e7184b675cb10890c155b30c3f43a6098d6b6c6e745df3c3f4e83",
+    "rapier_module_base": "0x7ff8ec460000",
+    "threads": [
+      {
+        "thread": ".  0  Id: 1448.4ec Suspend: 0 Teb: 000000ae`39725000 Unfrozen",
+        "rapier_return_rvas": [
+          "0x77b7b3",
+          "0x77097e",
+          "0x79982d",
+          "0x2034d0",
+          "0x1f479a",
+          "0x23022f",
+          "0x25baa4"
+        ],
+        "join_deferred_bvh": false,
+        "outer_install_latch": true
+      },
+      {
+        "thread": "14  Id: 1448.484 Suspend: 0 Teb: 000000ae`39741000 Unfrozen",
+        "rapier_return_rvas": [
+          "0x77d0d1",
+          "0x673358",
+          "0x6ac57d",
+          "0x68ade7",
+          "0x2e2669",
+          "0x7b4bc6",
+          "0x770253",
+          "0x76f669",
+          "0x76fa8d",
+          "0x78201a"
+        ],
+        "join_deferred_bvh": true,
+        "outer_install_latch": false
+      },
+      {
+        "thread": "15  Id: 1448.608 Suspend: 0 Teb: 000000ae`39743000 Unfrozen",
+        "rapier_return_rvas": [
+          "0x77b7b3",
+          "0x7b4465",
+          "0x7b4b53",
+          "0x770253",
+          "0x76f669",
+          "0x76fa8d",
+          "0x78201a"
+        ],
+        "join_deferred_bvh": false,
+        "outer_install_latch": false
+      }
+    ],
+    "log": "matched-5192-stacks.txt"
+  }
+]

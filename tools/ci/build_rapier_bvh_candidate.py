@@ -65,6 +65,11 @@ def main():
     run(["git", "apply", "--check", patch], crate)
     run(["git", "apply", patch], crate)
     patched = join.read_text(encoding="utf-8")
+    # git apply follows checkout EOL policy; make candidate source identity
+    # identical on Windows and Linux before hashing or compiling.
+    join.write_text(patched, encoding="utf-8", newline="\n")
+    if digest(join) != lock["patched_join_source_sha256"]:
+        raise RuntimeError("Patched join differs from its canonical LF source hash")
     helper_start = patched.index("// CYBERSAND_BVH_JOIN_BEGIN")
     helper_end = patched.index("// CYBERSAND_BVH_JOIN_END")
     helper = patched[helper_start:helper_end]

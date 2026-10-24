@@ -36,7 +36,7 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: gdextension-${{ github.ref }}-${{ inputs.physical_actor_stress == true && 'physical-stress' || 'suite' }}
+  group: gdextension-${{ github.ref }}-${{ inputs.rapier_bvh_pair == true && github.run_id || (inputs.physical_actor_stress == true && 'physical-stress' || 'suite') }}
   cancel-in-progress: true
 
 env:

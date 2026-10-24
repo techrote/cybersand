@@ -59,6 +59,25 @@ still matches the handover.
 
 ## Paired experiment registration
 
+Three additional valid engine dumps (arena batch 0 iteration 6, rigs batch 3
+iterations 3 and 7) confirm the identical deferred-BVH receive, outer install
+latch and idle-other-worker topology. Their
+[hashes and recovered RVAs](physical-actor-timeouts-2026-10-23/additional-confirmed-dumps.json)
+retain each independent capture. Batch 0 required its own exact system images;
+using the batch 3 images failed timestamp validation and was not counted.
+
+Initial paired build run
+[40053106474](https://github.com/techrote/cybersand/actions/runs/40053106474)
+at `18f6105736fb5a0a37e96c5220857f21ed0630e2` compiled both Linux variants and
+passed the expected helper controls. It exposed a provenance preflight error:
+the registered patched source hash came from Windows CRLF output of `git apply`,
+while Linux produced LF. The LF hash is
+`0a63cf10ae1111c4fa3c22d945d505918f36d1165b8176e130573d5259f9a973`.
+The corrected builder writes canonical LF before checking, hashing or compiling;
+the candidate code is unchanged. Preserve this initial run as an apparatus
+failure, not a complete paired acceptance campaign. The corrected campaign is
+independent and retains the same strict per-trial oracles.
+
 **Planned execution at this checkpoint:** the registered GDExtension workflow's
 manual `physical_actor_stress=true` plus `rapier_bvh_pair=true` calls the isolated
 paired build/stress lane. Both OS builds use the same addon commit, original
