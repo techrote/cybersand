@@ -63,7 +63,7 @@ class RepositoryFixture(unittest.TestCase):
         for relative in ["README.md", *RUNTIMES.values(), *MANIFESTS.values(), subject.REQUEST, subject.PRESSURE_CASE, subject.EVIDENCE]:
             path = self.root / relative
             path.parent.mkdir(parents=True, exist_ok=True)
-            content = json.dumps(subject.REQUEST_VALUE) + "\n" if relative == subject.REQUEST else "original\n"
+            content = json.dumps(dict(subject.REQUEST_VALUE, request_sequence=1)) + "\n" if relative == subject.REQUEST else "original\n"
             path.write_text(content, encoding="utf-8", newline="\n")
         self.git("add", ".")
         self.git("commit", "--quiet", "-m", "Original source")
@@ -137,6 +137,18 @@ class PressureAdmissionTests(RepositoryFixture):
         (self.root / subject.EVIDENCE).unlink()
         with self.assertRaisesRegex(RuntimeError, "evidence file is missing"):
             subject.require_publication_request(self.source)
+
+    def test_request_sequence_must_be_a_positive_integer(self):
+        path = self.root / subject.REQUEST
+        for value in (0, -1, True, "2", None):
+            with self.subTest(request_sequence=value):
+                payload = dict(subject.REQUEST_VALUE, request_sequence=value)
+                path.write_text(json.dumps(payload) + "\n", encoding="utf-8", newline="\n")
+                self.git("add", "--", subject.REQUEST)
+                self.git("commit", "--quiet", "-m", "Invalid request sequence fixture")
+                invalid_sha = self.git("rev-parse", "HEAD").decode().strip()
+                with self.assertRaisesRegex(RuntimeError, "Invalid pressure-reference publish request"):
+                    subject.require_publication_request(invalid_sha)
 
 
 class InputLedgerTests(RepositoryFixture):
