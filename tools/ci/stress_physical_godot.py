@@ -85,10 +85,13 @@ def main() -> int:
     parser.add_argument("--expected-source-sha", required=True)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--mode", required=True, choices=("serial", "parallel"))
-    parser.add_argument("--repetitions", type=int, default=50)
+    parser.add_argument("--repetitions", type=int, default=10)
+    parser.add_argument("--batch", type=int, default=0)
     args = parser.parse_args()
     if not re.fullmatch(r"[0-9a-f]{40}", args.expected_source_sha):
         parser.error("expected source must be a full SHA-1 commit ID")
+    if not 0 <= args.batch <= 9:
+        parser.error("batch must be between 0 and 9")
     if args.repetitions < 1 or args.repetitions > 100:
         parser.error("repetitions must be between 1 and 100")
 
@@ -109,6 +112,7 @@ def main() -> int:
     report = {
         "status": "running", "completed": False, "source_sha": source,
         "godot_version": version, "mode": args.mode, "repetitions": args.repetitions,
+        "batch": args.batch,
         "run_id": os.getenv("GITHUB_RUN_ID"), "run_attempt": os.getenv("GITHUB_RUN_ATTEMPT"),
         "platform": sys.platform, "cases": list(CASES),
         "native_sha256": runner.sha256(native), "rapier_sha256": runner.sha256(rapier),
@@ -125,7 +129,8 @@ def main() -> int:
         return 1
 
     selected = [candidates[name] for name in CASES]
-    for repetition in range(1, args.repetitions + 1):
+    for local_index in range(1, args.repetitions + 1):
+        repetition = args.batch * args.repetitions + local_index
         if args.mode == "serial":
             rows = [execute(args.godot, case, repetition, output) for case in selected]
         else:
@@ -139,7 +144,7 @@ def main() -> int:
         save(output, report)
         print(
             "STRESS_PROGRESS repeat=%d/%d mode=%s timeouts=%d" %
-            (repetition, args.repetitions, args.mode,
+            (local_index, args.repetitions, args.mode,
              sum(item["timeouts"] for item in report["summary"])),
             flush=True,
         )
@@ -147,7 +152,7 @@ def main() -> int:
     observed = Counter((row["name"], row["repetition"]) for row in report["results"]
                        if row["role"] == "case")
     expected = Counter((name, repetition) for name in CASES
-                       for repetition in range(1, args.repetitions + 1))
+                       for repetition in range(args.batch * args.repetitions + 1, (args.batch + 1) * args.repetitions + 1))
     report["completed"] = observed == expected
     report["status"] = (
         "passed" if report["completed"] and all(
