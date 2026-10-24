@@ -2425,14 +2425,14 @@
     },
     {
       "id": "MATON04",
-      "query": "Does the 17arm MAT003 Wasm S0 result with131080ticks qualify nativeWorld16bitepochrollover or9/10bytealignedcells?",
+      "query": "Does the 17-arm MAT-003 Wasm S0 result with 131,080 ticks qualify native World 16-bit epoch rollover or 9/10-byte aligned cells?",
       "canonical": [
         "operations/mat003-overnight-campaign.md"
       ],
       "facts": [
-        "Wasm S0 reuses the unchanged17armstoragefixture and compares losslessrecords to acceptedLinux;131080ticks are the synthetic epochprimitive, not nativeWorld.",
-        "PackedC72/C80 are9/10byte align1; padded/aligned forms occupy16bytes, split base8plus1/2bytetails. ABI descriptor costs are separate.",
-        "No Wasm nativeWorldcarrier matrix, nativeE16rollover, Godot/browser, sanitizer or performance acceptance follows."
+        "Wasm S0 reuses the unchanged 17-arm storage fixture and compares lossless records to accepted Linux; 131,080 ticks exercise the synthetic epoch primitive, not native World.",
+        "Packed C72/C80 use 9/10 bytes at alignment one; padded/aligned forms occupy 16 bytes, with split base eight plus one/two-byte tails. ABI descriptor costs are separate.",
+        "No Wasm native World carrier matrix, native E16 rollover, Godot/browser, sanitizer or performance acceptance follows."
       ],
       "sources": [
         "operations/mat003-overnight-campaign.md",

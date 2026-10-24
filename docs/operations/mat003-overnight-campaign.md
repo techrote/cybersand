@@ -81,7 +81,8 @@ argument under its stated assumptions; it adds no native restore qualification.
 The [standalone Wasm32/Node profile](../audits/2026-10-24-mat003-wasm-portability.md)
 passed 27 normal cases with assertions and stack checks, and archived-data
 comparison matches the Windows logical outcomes. Its three failed precursor
-profiles remain preserved. It does not qualify Godot, a browser or all carriers.
+profiles remain preserved. It does not qualify Godot, a browser or native World
+carrier variants.
 
 The separate unchanged **17-arm S0 storage fixture** also passed on Wasm32,
 with 49,775,273 assertions and exact byte-record comparison to accepted Linux.
