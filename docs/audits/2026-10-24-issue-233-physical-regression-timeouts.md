@@ -538,3 +538,10 @@ and #234/#232 ownership. These lexical metrics do not prove deployed semantic
 retrieval quality. The evidence-only PR's exact-head hosted documentation result
 and final merge/issue disposition are recorded in its admission and completion
 comments; ordinary runtime gates above belong to the actual tested source.
+
+Issue-state correction: GitHub automatically closed #233 at 09:40:25 UTC on
+#241's merge because it parsed the PR body's negated closing-keyword phrase as
+a closing directive. Final state inspection identified this premature transition;
+the issue was reopened while #243 evidence admission was pending. That automatic
+transition supplies no completion evidence. Intentional completed closure follows
+the full campaign/readback and admission of this evidence checkpoint.
