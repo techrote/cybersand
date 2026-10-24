@@ -4,6 +4,12 @@ name: LCB-001 pressure-reference scoped runtime publication
 # from this filter, and existing ready-for-review acceptance gates are unchanged.
 # Each target OS executes the pressure-reference, liquid-policy, MicroScenario, LCB and Water Feel cases after import.
 on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/lcb001-pressure-reference-runtime-publication.yml'
+      - 'tools/ci/lcb001_pressure_reference_runtime_publication.py'
+      - 'tools/ci/test_lcb001_pressure_reference_runtime_publication.py'
   push:
     branches: [chatgpt/lcb001-pressure-publisher-prep, claude/lcb001-pressure-reference]
     # Explicit source-bound publication request; normal native edits do not dispatch a publisher.
@@ -36,7 +42,7 @@ defaults:
 jobs:
   publisher-guards:
     name: validate staged publisher without building runtimes
-    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/chatgpt/lcb001-pressure-publisher-prep'
+    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/chatgpt/lcb001-pressure-publisher-prep') || (github.event_name == 'pull_request' && github.head_ref == 'chatgpt/lcb001-pressure-publisher-prep' && github.base_ref == 'main'))
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
