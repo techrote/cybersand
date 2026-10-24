@@ -7,6 +7,7 @@
 
 #include <array>
 #include <cstdint>
+#include <cstdlib>
 #include <fstream>
 #include <iterator>
 #include <optional>
@@ -14,7 +15,43 @@
 #include <stdexcept>
 #include <string>
 #include <string_view>
+#include <new>
 #include <vector>
+
+// Allocation fault injection for the C API, following test_generation_fields.cpp.
+// Thread-local and disarmed (-1) by default: only an explicitly armed call on
+// this thread sees a failure, and exactly one allocation (the Nth) fails.
+namespace liquid_policy_allocation_probe {
+thread_local long long fail_after = -1;
+thread_local std::size_t injected = 0;
+}
+
+#if defined(__GNUC__) || defined(__clang__)
+#define LIQUID_POLICY_TEST_NOINLINE __attribute__((noinline))
+#else
+#define LIQUID_POLICY_TEST_NOINLINE
+#endif
+LIQUID_POLICY_TEST_NOINLINE void* operator new(std::size_t size) {
+    auto& remaining = liquid_policy_allocation_probe::fail_after;
+    if (remaining == 0) {
+        remaining = -1;
+        ++liquid_policy_allocation_probe::injected;
+        throw std::bad_alloc();
+    }
+    if (remaining > 0) --remaining;
+    if (void* result = std::malloc(size == 0 ? 1 : size)) return result;
+    throw std::bad_alloc();
+}
+LIQUID_POLICY_TEST_NOINLINE void operator delete(void* pointer) noexcept { std::free(pointer); }
+LIQUID_POLICY_TEST_NOINLINE void operator delete(void* pointer, std::size_t) noexcept {
+    ::operator delete(pointer);
+}
+LIQUID_POLICY_TEST_NOINLINE void* operator new[](std::size_t size) { return ::operator new(size); }
+LIQUID_POLICY_TEST_NOINLINE void operator delete[](void* pointer) noexcept { ::operator delete(pointer); }
+LIQUID_POLICY_TEST_NOINLINE void operator delete[](void* pointer, std::size_t) noexcept {
+    ::operator delete(pointer);
+}
+#undef LIQUID_POLICY_TEST_NOINLINE
 
 namespace {
 
@@ -517,4 +554,106 @@ void test_liquid_policy_c_api_transaction() {
             "C null World");
     cybersand_world_destroy(plain);
     cybersand_world_destroy(kept);
+}
+
+namespace {
+
+// Field-wise: cybersand_config_v2 has padding (after worker_threads and at the
+// end), whose bytes are unspecified, so memcmp is not a valid comparison.
+bool same_config(const cybersand_config_v2& a, const cybersand_config_v2& b) {
+    return a.struct_size == b.struct_size && a.abi_version == b.abi_version &&
+           a.chunk_size == b.chunk_size && a.sleep_after_quiet_ticks == b.sleep_after_quiet_ticks &&
+           a.ambient_temperature == b.ambient_temperature && a.backend == b.backend &&
+           a.reserved_0 == b.reserved_0 && a.activity_block_size == b.activity_block_size &&
+           a.scheduling_core_size == b.scheduling_core_size && a.maximum_rule_radius == b.maximum_rule_radius &&
+           a.worker_threads == b.worker_threads && a.initial_chunk_reserve == b.initial_chunk_reserve &&
+           a.parallel_job_threshold == b.parallel_job_threshold &&
+           a.active_core_capacity == b.active_core_capacity &&
+           a.active_chunk_capacity == b.active_chunk_capacity && a.maximum_chunk_count == b.maximum_chunk_count &&
+           a.deferred_event_capacity == b.deferred_event_capacity &&
+           a.maximum_explosion_radius == b.maximum_explosion_radius;
+}
+
+// Fail the 0th, 1st, ... allocation of `call` in turn until one run completes
+// without an injected failure. Returns {injected failures, allocations seen}.
+template <typename Call, typename Check>
+std::pair<std::size_t, std::size_t> sweep_allocation_failures(Call call, Check check_failed) {
+    namespace probe = liquid_policy_allocation_probe;
+    constexpr long long kLimit = 20'000;
+    std::size_t failures = 0;
+    for (long long nth = 0; nth < kLimit; ++nth) {
+        const auto before = probe::injected;
+        probe::fail_after = nth;
+        auto result = call();
+        probe::fail_after = -1;
+        if (probe::injected == before) return {failures, static_cast<std::size_t>(nth)};
+        ++failures;
+        check_failed(result, nth);
+    }
+    throw std::runtime_error("allocation sweep did not converge");
+}
+
+}  // namespace
+
+void test_liquid_policy_c_api_allocation_failures() {
+    // Warm every lazily built static outside the armed window.
+    const auto request = LiquidSolverPolicy::default_request();
+    const auto expected = cybersand_default_config_v2();
+    require(expected.struct_size == sizeof(cybersand_config_v2), "unarmed default config");
+
+    // 1. Default config: an allocation failure yields the documented all-zero
+    //    config, which the v2 constructor refuses; it never escapes the C ABI.
+    const auto zero = cybersand_config_v2{};
+    auto config_sweep = sweep_allocation_failures(
+        [] { return cybersand_default_config_v2(); },
+        [&](const cybersand_config_v2& result, long long nth) {
+            require(same_config(result, zero),
+                    "default config failure " + std::to_string(nth) + " is not all-zero");
+        });
+    require(config_sweep.first >= 1U, "default config performed no injectable allocation");
+    require(cybersand_world_create_v2(&zero) == nullptr, "zero config constructed a World");
+    const auto again = cybersand_default_config_v2();
+    require(same_config(again, expected), "default config changed after failures");
+
+    // 2. Validation: every failure is a CONSTRUCTION_FAILED refusal, never a throw.
+    cybersand_liquid_policy_refusal_v1 refusal{};
+    refusal.struct_size = sizeof(refusal);
+    auto validate_sweep = sweep_allocation_failures(
+        [&] { return cybersand_liquid_policy_validate_v1(request.data(), request.size(), &refusal, nullptr); },
+        [&](int accepted, long long nth) {
+            require(accepted == 0 && refusal.code == CYBERSAND_LIQUID_POLICY_CONSTRUCTION_FAILED,
+                    "validate failure " + std::to_string(nth) + " was not a construction refusal");
+        });
+    require(validate_sweep.first >= 1U && refusal.code == CYBERSAND_LIQUID_POLICY_ACCEPTED,
+            "validate sweep");
+
+    // 3. Construction with a policy: every failure returns no World. Each call
+    //    disarms before releasing what it built, so no World leaks.
+    auto world_sweep = sweep_allocation_failures(
+        [&] {
+            cybersand_world* built =
+                cybersand_world_create_with_liquid_policy_v1(&expected, request.data(), request.size(), &refusal);
+            liquid_policy_allocation_probe::fail_after = -1;
+            const bool constructed = built != nullptr;
+            cybersand_world_destroy(built);
+            return constructed;
+        },
+        [&](bool constructed, long long nth) {
+            require(!constructed && refusal.code == CYBERSAND_LIQUID_POLICY_CONSTRUCTION_FAILED,
+                    "create failure " + std::to_string(nth) + " returned a World or a policy refusal");
+        });
+    require(world_sweep.first >= 1U && refusal.code == CYBERSAND_LIQUID_POLICY_ACCEPTED, "create sweep");
+    // The converged run built a World; read it back under failures, then release it.
+    cybersand_world* world = cybersand_world_create_with_liquid_policy_v1(&expected, request.data(),
+                                                                          request.size(), &refusal);
+    require(world != nullptr, "create after sweep");
+    std::vector<std::int32_t> words(request.size());
+    auto readback_sweep = sweep_allocation_failures(
+        [&] { return cybersand_world_liquid_policy_v1(world, words.data(), words.size()); },
+        [&](std::size_t result, long long nth) {
+            require(result == CYBERSAND_SIZE_ERROR,
+                    "readback failure " + std::to_string(nth) + " did not report CYBERSAND_SIZE_ERROR");
+        });
+    require(readback_sweep.first >= 1U && words == request, "readback sweep");
+    cybersand_world_destroy(world);
 }

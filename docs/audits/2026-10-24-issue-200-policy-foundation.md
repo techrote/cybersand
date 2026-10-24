@@ -31,6 +31,7 @@ accepted at the #213 closure.
 | Base | main `1002b9201006b572180a12cbc4c3b21fc234e8fa` (merge of #237), fetched fresh |
 | Worktree / branch | isolated `.claude/worktrees/issue-200-policy-foundation`, `claude/issue-200-policy-foundation` |
 | Implementation commit | `457ab64449f2715c60ab6318739655cbc40b42df` |
+| Landed | [#239](https://github.com/techrote/cybersand/pull/239) merged 2026-10-24 07:01:19Z as `1e032e492cafb232e604baf6e2b823b13d779aa8`; tree `4519bb25…` equals reviewed head `cc01899` |
 | Primary checkout | `mat/material-fidelity-pass-2` with unrelated uncommitted changes; untouched |
 | Generated identity | `catalogue_digest` `82b5ab9a…fdbad3`, `capability_matrix_digest` `d31e434b…fc4e45` (full values in the generated header and vector file) |
 
@@ -263,6 +264,75 @@ identities supersede both earlier tables:
 | Windows x86_64 | `b13805bf1a0bb3452493c6990b212575787f638c30be22613a5cc03b78933d30` | 4,049,408 | `145449114aecef27…` |
 | Linux x86_64 | `2495cedc12de07be3738a76b41ea352e5dff8309d167ea89f7fc430ae89765cf` (unchanged) | 3,525,584 | `c90303c78593613c…` |
 
+## Follow-up regressions (stacked on #239)
+
+Branch `claude/issue-200-foundation-followups` closes the two remaining test
+gaps. It was first stacked on #239 head `cc01899`, then rebased onto landed main
+`1e032e4`. Neither file is a runtime source input, so
+the published runtimes and their provenance are unchanged.
+
+**Threaded worker forwarding.**
+[`test_liquid_policy_worker.gd`](../../godot/tests/test_liquid_policy_worker.gd)
+drives the real threaded `CyberSimulationWorker` (`start_worker`, `queue_lab`,
+`take_latest_snapshot`) on the protected Dam Break definition. It covers:
+
+- the initial receipt;
+- an explicit default request forwarded through `scenario_reset.liquid_policy`
+  and read back normalized with a new generation;
+- consumer mutation of a published receipt that never reaches a later snapshot;
+- three refusals (Water × pressure, Oil × inertial, a non-packed request), each
+  with the request unapplied, a visible status, and an unchanged receipt,
+  generation and MicroScenario;
+- the code-0 request and the no-request path, each committing a refreshed
+  receipt.
+
+Local result with the published Windows DLL: **29/0** in 2 s.
+Mutation check: making the worker drop `liquid_policy` gives **10 failures**.
+
+**C API allocation fault injection.** `test_liquid_policy_c_api_allocation_failures`
+(in `test_liquid_solver_policy.cpp`) replaces `operator new` with a thread-local
+probe, following `test_generation_fields.cpp`. It fails the 0th, 1st, …
+allocation in turn until a run completes, for each entry point:
+
+| Entry point | Required outcome on every injected failure |
+|---|---|
+| `cybersand_default_config_v2` | An all-zero config, refused by `cybersand_world_create_v2` |
+| `cybersand_liquid_policy_validate_v1` | `CONSTRUCTION_FAILED` |
+| `cybersand_world_create_with_liquid_policy_v1` | No World, and `CONSTRUCTION_FAILED` |
+| `cybersand_world_liquid_policy_v1` | `CYBERSAND_SIZE_ERROR` |
+
+Local MSVC result: 10/10 LCB-001 tests. Mutation check: removing the `try`/`catch`
+from `cybersand_default_config_v2` fails the test with an escaping
+`bad allocation`.
+
+The first ready-PR Native run on #240,
+[40075499009](https://github.com/techrote/cybersand/actions/runs/40075499009),
+failed in GCC's plain behavioural suite with "default config changed after
+failures". The defect was in the test, not the C API: it compared
+`cybersand_config_v2` values with `memcmp`. The struct has unspecified padding at
+bytes 36–40 and 92–96, which MSVC happened to leave equal. The test now compares
+field by field; locally 94/94 in 131 s.
+
+**Publisher decision.** `lcb001-runtime-publication.yml` is retained, as the
+GEN-005 and GEN-007 publishers were. Its jobs run only for
+`refs/heads/claude/issue-200-policy-foundation`. That branch still exists at
+`cc01899` after the merge, and nothing further is pushed to it; the workflow
+becomes fully inert once the branch is deleted. Removing it would gain nothing but
+churn.
+
+**Post-merge reconciliation.** #239 merged on 2026-10-24 at 07:01:19Z as
+`1e032e492cafb232e604baf6e2b823b13d779aa8`. Its tree `4519bb25…` equals reviewed
+head `cc01899`. Post-merge push runs at that commit, first attempt each:
+
+| Workflow | Run | Result |
+|---|---|---|
+| Native C++ validation | [40072499987](https://github.com/techrote/cybersand/actions/runs/40072499987) | success: `native`, 93 tests in the plain, ASan+UBSan and TSan builds |
+| GDExtension/Godot | [40072499990](https://github.com/techrote/cybersand/actions/runs/40072499990) | success: Linux build, shards 0–3 and aggregate; Windows build and headless regression |
+| Documentation and provenance | [40072499986](https://github.com/techrote/cybersand/actions/runs/40072499986) | success: `consistency` |
+| Issue 49 Water apparatus v2 | [40072499994](https://github.com/techrote/cybersand/actions/runs/40072499994) | success: `apparatus` |
+
+The roadmap now records the foundation as Current on main.
+
 ## Explicit gaps
 
 - Not implemented:
@@ -278,10 +348,9 @@ identities supersede both earlier tables:
 - Two Worlds with *different* applied policies cannot coexist yet, because only
   defaults are admitted. Independence is shown by separate receipts, generations
   and refusal isolation.
-- The desktop worker `scenario_reset.liquid_policy` forward has no committed
-  threaded regression. Astra's independent threaded probe (15/0) is review
-  evidence, not a repository test.
-- The C API's allocation-failure return is inspected, not fault-injected.
+- The threaded worker forward and the C API allocation-failure paths are no
+  longer gaps; the [follow-up regressions](#follow-up-regressions-stacked-on-239)
+  cover them.
 - Web/WASM is not built or run. The policy code is the same source; Web execution
   remains unverified.
 - `source_revision`/`native_binary_sha256` are not in the native receipt.
