@@ -1,11 +1,16 @@
 name: MAT-003 overnight untimed portability
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  push:
+    branches: [codex/mat003-overnight-requalification]
     paths:
-      - 'tools/experiments/mat003_optional/**'
-      - 'tools/experiments/mat003_touch/**'
+      - 'tools/experiments/mat003_optional/fixture.cpp'
+      - 'tools/experiments/mat003_optional/linux_run.py'
+      - 'tools/experiments/mat003_optional/linux-registration*.json'
+      - 'tools/experiments/mat003_touch/fixture.cpp'
+      - 'tools/experiments/mat003_touch/registration-v3.json'
+      - 'native/include/**'
+      - 'native/src/**'
       - '.github/workflows/mat003-overnight-untimed.yml'
 
 permissions:

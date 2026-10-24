@@ -20,7 +20,7 @@ def digest(path):
 def collect(output):
     if platform.system()!='Linux' or platform.machine()!='x86_64':raise ValueError('registered native Linux x86-64 profile required')
     output=Path(output).resolve();output.mkdir(parents=True,exist_ok=False)
-    registration=Path(__file__).with_name('linux-registration.json')
+    registration=Path(__file__).with_name('linux-registration-v2.json')
     spec=json.loads(registration.read_text())
     started=time.monotonic()
     result={'status':'failed','timing':False,'validation_class':'author-validation-pending-independent-review',
@@ -39,6 +39,8 @@ def collect(output):
                 code=subprocess.run(list(map(str,argv)),cwd=output,env=env,stdout=out,stderr=err,timeout=min(timeout,remaining)).returncode
         except subprocess.TimeoutExpired:
             error='watchdog'
+        except OSError as exception:
+            error=type(exception).__name__+': '+str(exception)
         receipt={'argv':list(map(str,argv)),'exit_code':code,'stop':error,'timeout_seconds':timeout,
                  'elapsed_watchdog_seconds':time.monotonic()-before,
                  'stdout_sha256':digest(output/(label+'.stdout')),'stderr_sha256':digest(output/(label+'.stderr'))}
@@ -53,10 +55,21 @@ def collect(output):
         if not compiler.is_file():raise ValueError('G++13 unavailable')
         version=command([compiler,'-dumpfullversion'],'compiler-version',10).strip()
         if version!='13.3.0':raise ValueError('compiler version drift: '+version)
-        linker=Path(command([compiler,'-print-prog-name=ld'],'linker-path',10).strip()).resolve()
+        reported_linker=command([compiler,'-print-prog-name=ld'],'linker-path',10).strip()
+        if Path(reported_linker).is_absolute():linker=Path(reported_linker).resolve()
+        elif '/' not in reported_linker and '\\' not in reported_linker:
+            resolved=shutil.which(reported_linker)
+            if not resolved:raise ValueError('reported linker unavailable through PATH')
+            linker=Path(resolved).resolve()
+        else:raise ValueError('unsupported relative linker program path')
         linker_version=command([linker,'--version'],'linker-version',10)
         if '2.42' not in linker_version.splitlines()[0]:raise ValueError('linker version drift')
         result.update(compiler=str(compiler),compiler_sha256=digest(compiler),linker=str(linker),linker_sha256=digest(linker))
+        result['library_package_versions']=command(['dpkg-query','-W','libc6','libstdc++6','libgcc-s1','g++-13','binutils'],'library-package-versions',10)
+        libraries=[Path('/lib/x86_64-linux-gnu/libc.so.6').resolve()]
+        for name in ('libstdc++.so','libgcc_s.so.1'):
+            libraries.append(Path(command([compiler,'-print-file-name='+name],'library-'+name,10).strip()).resolve())
+        result['runtime_library_sha256']={str(path):digest(path) for path in libraries}
         sources=[p for d in ('native/include','native/src') for p in (ROOT/d).rglob('*') if p.suffix in ('.hpp','.cpp')]
         sources += [p for d in ('tools/experiments/mat003_optional','tools/experiments/mat003_touch') for p in (ROOT/d).glob('*') if p.suffix in ('.cpp','.py','.json')]
         for p in sources:
