@@ -12,7 +12,7 @@ related-documents: [lcb-pressure-inertial-handoff.md, liquid-state-transition-ma
 
 ## Status
 
-**Current** in source on branch `claude/lcb001-pressure-reference` (LCB-001
+**Current** in source (LCB-001
 [#200](https://github.com/techrote/cybersand/issues/200)). It is **opt-in**: only
 a World whose applied liquid policy assigns Water to `pressure_flow_v1/reference`
 runs it. The production default stays `freemass_v1` and every Current golden is

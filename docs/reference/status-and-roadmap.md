@@ -633,7 +633,7 @@ bounded LCB implementation, including the previously held #200 pressure referenc
 production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production
 Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a
 schema/ABI freeze. The policy foundation is Current on main; `pressure_flow_v1/reference`
-is Current on an unmerged branch; the other candidate kernels remain **Planned**.
+is Current in source; the other candidate kernels remain **Planned**.
 #201/#202/#203 remain open; the scenario apparatus delivered part of
 #202, not the complete comparison host or its [manual UX](../operations/lcb-manual-comparison-ux.md).
 
@@ -680,7 +680,7 @@ listed below.
 
 ## LCB-001 pressure reference — 2026-10-24
 
-**Current on branch `claude/lcb001-pressure-reference` (unmerged).** The opt-in
+**Current in source.** The opt-in
 Water family [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md)
 runs only in a World whose applied policy assigns it; production defaults, every
 Current golden, `content_hash`/`state_hash` and CYSD1 are unchanged. Source
@@ -724,16 +724,15 @@ measurements remain in the dated evidence record.
 | `inertial_cellular_v1` (W-IN, Brine), M1/M2 | #212, Planned; no longer owner-held |
 | Packaged builds and isolated timing | [#203](https://github.com/techrote/cybersand/issues/203), Planned |
 
-**Publisher.** The temporary branch-scoped workflow
-`lcb001-pressure-reference-runtime-publication.yml`, integrated from draft PR
-#244, publishes source-matched Linux/Windows runtimes only after
-`tools/ci/lcb001_pressure_reference_publish_request.json` is committed on this
-branch. After the retained failed/cancelled attempts and takeover repairs,
+**Publisher.** The temporary pressure-reference workflow, helper, unittest and
+source-bound request, integrated from draft PR #244, are retired after PR #245.
+Their original implementation remains recoverable at `48fb275`.
+After the retained failed/cancelled attempts and takeover repairs,
 publication run `40100666514` passed Linux and actual Windows headless execution
 and published both source-matched runtimes at `101758d`; the evidence
 record holds their hashes and scope. Final exact-head ready-PR gates remain
-separate. After the branch merges, retire the workflow, helper and
-unittest as described for [branch-scoped publishers](../operations/local-build-and-validation.md#branch-scoped-runtime-publishers).
+separate. Successor native changes require fresh source-matched publication,
+as described for [branch-scoped publishers](../operations/local-build-and-validation.md#branch-scoped-runtime-publishers).
 #200 itself stays open (see the [issue-state correction](#lcb-001-policy-foundation--2026-10-24)).
 
 ## Opt-in transport profiles

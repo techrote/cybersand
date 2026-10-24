@@ -603,7 +603,7 @@ the C entry points are experimental and not a frozen ABI.
 
 ### LCB-001 pressure reference inspection and persistence (experimental)
 
-**Current on branch `claude/lcb001-pressure-reference` (unmerged).** These calls
+**Current in source.** These calls
 serve the opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md)
 and follow the same serialized-owner rule as the bridge calls above. Results own
 their dictionaries; none exposes live World storage.

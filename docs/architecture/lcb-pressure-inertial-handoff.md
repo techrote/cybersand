@@ -2,7 +2,7 @@
 title: LCB pressure and inertial implementation handoff
 status: Approved design
 document-kind: design
-scope: Implementation-ready requirements for LCB-001 (#200, pressure_flow_v1 and solver policy) and LCB-005 (#212, inertial_cellular_v1) derived from the LCB physics prepass — exact source hooks, state, laws, boundary rules, invalidating failures, smallest experimental regimes and the APIs needed to unblock registered tests; the pressure_flow_v1 reference is implemented on branch claude/lcb001-pressure-reference (canonical design in pressure-flow-v1.md) and the inertial family remains Planned, no longer owner-held
+scope: Implementation-ready requirements for LCB-001 (#200, pressure_flow_v1 and solver policy) and LCB-005 (#212, inertial_cellular_v1) derived from the LCB physics prepass — exact source hooks, state, laws, boundary rules, invalidating failures, smallest experimental regimes and the APIs needed to unblock registered tests; the pressure_flow_v1 reference is implemented in source (canonical design in pressure-flow-v1.md) and the inertial family remains Planned, no longer owner-held
 canonical-for: [lcb-pressure-inertial-handoff]
 last-reviewed: 2026-10-24
 related-documents: [pressure-flow-v1.md, liquid-state-transition-matrix.md, liquid-solver-family-policy.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, ../operations/lcb-scenario-catalogue.md]
@@ -12,7 +12,7 @@ related-documents: [pressure-flow-v1.md, liquid-state-transition-matrix.md, liqu
 
 ## Status
 
-**Approved requirements; pressure reference implemented, inertial Planned.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](pressure-flow-v1.md) is Current on branch `claude/lcb001-pressure-reference` (unmerged); #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
+**Approved requirements; pressure reference implemented, inertial Planned.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](pressure-flow-v1.md) is Current in source; #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
 
 The pressure requirements below are now implemented by the
 [`pressure_flow_v1` reference](pressure-flow-v1.md), which owns the Current
@@ -57,7 +57,7 @@ requirements.
 ## Pressure (`pressure_flow_v1`, Water only, #200)
 
 **Implementation status (2026-10-24).** `pressure_flow_v1/reference` is
-**Current on branch `claude/lcb001-pressure-reference` (unmerged)**; the
+**Current in source**; the
 [canonical design](pressure-flow-v1.md) owns its storage, gas identity, laws,
 parameters and known limits. The native suite (13 `LCB-001 pressure` cases) and
 the Godot candidate regression exercise the mandatory criteria below. The native

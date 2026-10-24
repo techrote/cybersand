@@ -138,7 +138,7 @@ records Gate A–E PASS and #213 closure. On 2026-10-24 the owner lifted the hol
 on the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24)
 and then on the bounded LCB implementation, including the
 [#200 pressure reference](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)
-(Current on an unmerged branch) and #212. No default change, generic #12 Stage-4
+(Current in source) and #212. No default change, generic #12 Stage-4
 cell↔Rapier ownership, production Cell-carrier migration, full GEN-006 streaming
 or schema/ABI freeze is admitted, and the LCB pressure family does not advance this
 programme's #45/#18 gates.

@@ -96,7 +96,7 @@ explicit strict-mode implementation. Do not infer those contracts from CYSD1.
 
 ## How does CYPS v1 differ from CYSD1?
 
-**Current on branch `claude/lcb001-pressure-reference` (unmerged), experimental.**
+**Current in source, experimental.**
 `World::save_physical_state()`/`restore_physical_state()` and the bridge's
 `export_physical_state`/`import_physical_state` write and read **CYPS v1**
 (`kPhysicalStateFormatVersion` 1), an exact tick-boundary continuation for LCB

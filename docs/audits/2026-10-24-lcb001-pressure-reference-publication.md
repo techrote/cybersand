@@ -367,3 +367,36 @@ outcomes are recorded in PR #245's description and Checks.
   in the scoped publisher above, with the complete Godot matrix still separate.
 - Web/WASM: not built or run.
 - Reference cost is O(resident cells) per tick (#201 owns caching/dormancy).
+
+## Exact-head acceptance and merge
+
+PR #245 merged on 2026-10-24 as
+`03785c3dcaa5c82df000eeca1471bd6ec698be00`, after all applicable non-draft
+gates passed at final head `e48c5aa5f9871fc997434f226284ed638613177f`:
+
+- [Documentation/provenance 40105553880](https://github.com/techrote/cybersand/actions/runs/40105553880): pass.
+- [Native 40105553858](https://github.com/techrote/cybersand/actions/runs/40105553858): pass in 50m29s, including normal, ASan/UBSan and TSan execution of all 107 tests, generation/CLI and soliding checks, shared-library build and final benchmark. ASan retains its declared `detect_leaks=0` scope.
+- [GDExtension/Godot 40105553817](https://github.com/techrote/cybersand/actions/runs/40105553817): both builds, all 128 applicable Windows headless cases, four Linux shards with 140 unique cases exactly once plus four imports, and the aggregate pass. Actual rendered Linux cases are included.
+- [#49 apparatus 40105553843](https://github.com/techrote/cybersand/actions/runs/40105553843): pass.
+
+The tested synthetic merge `35bc821479108d5c694d1ad143462f2b374ecca1`, final
+head and actual main merge all have tree
+`31518a3838808227715aa7b81f6cfc7cae7b775d`. Windows execution reported empty
+errors/source drift and used the published `813bfbb4…` runtime; Linux used
+`3bfe1679…`. Independent native/boundary and material-stage reviews found no
+remaining actionable issue. No skipped draft/scope result supplies acceptance.
+
+Complete Native logs and actual Windows/Linux receipts are retained under the
+pressure worktree's ignored `build/takeover-245/e48-*` paths. The Native log
+SHA-256 is `7fcadd27e9fdc53fb0fd8fa3d51746e3d075b86b35c333014e55b3b173511d0c`;
+the Windows execution receipt hashes to
+`abf5073f21649be0c862482e84f4e809307fb0d0ca833aea3f56de48207b6005`.
+
+The main checkpoint was fetched and the source worktree fast-forwarded cleanly.
+Superseded draft #244 was closed. The completed pressure publisher workflow,
+helper, unittest and source-bound request are removed in the focused residual
+#200 successor checkpoint, with their original implementation recoverable at
+`48fb275`. This retirement is part of that successor branch, not an assertion
+that the files have already disappeared from the recorded main merge. A new
+native delta requires a freshly scoped publisher and fresh matched runtimes.
+Issue #200 remains open for its separate residual acceptance.

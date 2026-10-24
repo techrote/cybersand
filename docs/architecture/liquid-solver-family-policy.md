@@ -2,7 +2,7 @@
 title: Liquid solver family policy and API specification
 status: Approved design
 document-kind: design
-scope: LCB-000 Gate C accepted design — versioned four-family liquid solver identities, immutable per-World per-material policy, construction/readback/refusal contracts, source-derived capability matrix and cross-issue mapping for LCB-001..005; the native policy foundation (admission, identity, refusal and readback) is Current, Water × pressure_flow_v1/reference is the one admitted candidate (Current on branch claude/lcb001-pressure-reference) and the other candidate families remain Planned
+scope: LCB-000 Gate C accepted design — versioned four-family liquid solver identities, immutable per-World per-material policy, construction/readback/refusal contracts, source-derived capability matrix and cross-issue mapping for LCB-001..005; the native policy foundation (admission, identity, refusal and readback) is Current, Water × pressure_flow_v1/reference is the one admitted candidate (Current in source) and the other candidate families remain Planned
 canonical-for: [liquid-solver-family-policy]
 last-reviewed: 2026-10-24
 related-documents: [pressure-flow-v1.md, ../systems/water-design.md, ../systems/materials-and-rule-kernels.md, ../systems/flow-transport-and-profiles.md, ../decisions/ADR-005-water-model.md, ../operations/lcb-water-comparison-and-fixtures.md, ../operations/lcb-manual-comparison-ux.md, ../audits/2026-10-23-lcb000-gates-cde-design-evidence.md]
@@ -12,12 +12,12 @@ related-documents: [pressure-flow-v1.md, ../systems/water-design.md, ../systems/
 
 ## Status
 
-**Approved design — Gate C PASS.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](pressure-flow-v1.md) is Current on branch `claude/lcb001-pressure-reference` (unmerged); #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
+**Approved design — Gate C PASS.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](pressure-flow-v1.md) is Current in source; #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
 
 The [native policy foundation](#native-policy-foundation-current-2026-10-24)
 (object, wire decoding, validation, canonical identity, refusal, applied readback
 and transactional construction) is **Current** on main for the default mappings.
-On branch `claude/lcb001-pressure-reference` (unmerged) the running build also
+In source the running build also
 admits exactly one candidate cell, Water × [`pressure_flow_v1/reference`](pressure-flow-v1.md),
 with a versioned physical-state hash, CYPS v1 exact persistence and an
 experimental GDExtension run-receipt hash
@@ -111,10 +111,10 @@ bytes and normalized envelope. Nothing here selects or runs another solver.
 | GDExtension | `CyberNativeCellWorld.get_liquid_solver_policy()`/`get_liquid_policy_session_generation()`; `CyberDemoBridge.default_liquid_policy()`, `validate_liquid_policy()`, `build_liquid_policy_world()`, `get_last_liquid_policy_refusal()` |
 | Hosts | `CyberMicroScenarioHost.install(..., liquid_policy)` and `liquid_solver_policy()`; desktop worker `scenario_reset.liquid_policy` and `lab_context.liquid_solver_policy` |
 
-**Admission in this build.** On main (`1e032e4`) `freemass_v1` and
+**Admission history.** At the foundation checkpoint (`1e032e4`) `freemass_v1` and
 `cellular_yield_v1` are compiled (`available_families` 0x03), only each liquid's
 **current-default cell** is qualified, and no parameter-block schema is
-registered. On branch `claude/lcb001-pressure-reference` (unmerged)
+registered. In source
 `LiquidPolicyBuild::running()` also compiles `pressure_flow_v1`
 (`available_families` 0x07) and qualifies exactly one more cell, Water ×
 `pressure_flow_v1`, limited by `qualified_variants` to variant `reference`. It
@@ -261,7 +261,7 @@ source-matched rebuild as for any native edit.
 |---|---|---|---|
 | `freemass_v1` | Current fractional conserved pairwise Water | existing source | Yes, Water only (default) |
 | `cellular_yield_v1` | Current whole-cell yielding motion plus kernel specializations | existing source | Yes, 10 liquids (default) |
-| `pressure_flow_v1` | Corrected pressure/overfill/flow/gas | #200 | `reference` only, Water, opt-in: Current on branch `claude/lcb001-pressure-reference` ([design](pressure-flow-v1.md)); `cached`/`cached_dormant` no (#201) |
+| `pressure_flow_v1` | Corrected pressure/overfill/flow/gas | #200 | `reference` only, Water, opt-in: Current in source ([design](pressure-flow-v1.md)); `cached`/`cached_dormant` no (#201) |
 | `inertial_cellular_v1` | Non-pressure motion with retained velocity/accumulator | #212 | No |
 
 **Implementation variants** (an axis independent of family):
@@ -670,7 +670,7 @@ handoff; no Cell layout change is implied.
 |---|---|---|
 | `freemass_v1` | none: `state_a` = Water mass (policy-scaled), `state_b` = coherence delay | Current |
 | `cellular_yield_v1` | none beyond kernel use: Oil `state_b` burn, Cement/Molten Glass lifecycle, `initial_state_a` per descriptor | Current |
-| `pressure_flow_v1` | overfill quantity, signed horizontal velocity, gas pocket identity/generation and amount, derived per-tick head (scratch, not state) | Current on branch `claude/lcb001-pressure-reference`: a per-chunk solver-owned `PressureChunk` (`overfill u16`, `flow i16`, `gas u32`) plus the World gas table; no Cell bits ([storage](pressure-flow-v1.md#storage-gate-b-handoff-kept)). 7ef2aac's bits 40–55 are not used |
+| `pressure_flow_v1` | overfill quantity, signed horizontal velocity, gas pocket identity/generation and amount, derived per-tick head (scratch, not state) | Current in source: a per-chunk solver-owned `PressureChunk` (`overfill u16`, `flow i16`, `gas u32`) plus the World gas table; no Cell bits ([storage](pressure-flow-v1.md#storage-gate-b-handoff-kept)). 7ef2aac's bits 40–55 are not used |
 | `inertial_cellular_v1` | signed vx/vy (or momentum), subcell accumulator, saturation/rounding rules | Proposed (#212) |
 
 Rules every family must meet, which become Gate B and #200 acceptance:

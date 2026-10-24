@@ -2,7 +2,7 @@
 title: Liquid material and solver state-transition matrix
 status: Planned
 document-kind: design
-scope: Authoritative operation-by-operation transition rules for Current liquids and the proposed LCB families (FreeMass, whole-cell CellularYield Water, pressure_flow_v1, inertial_cellular_v1) — owner, state moved, conservation/source-sink, invalidation and family applicability; consumes the bounded Gate B storage handoff; no Cell layout choice; PF rows are implemented by the pressure_flow_v1 reference on branch claude/lcb001-pressure-reference
+scope: Authoritative operation-by-operation transition rules for Current liquids and the proposed LCB families (FreeMass, whole-cell CellularYield Water, pressure_flow_v1, inertial_cellular_v1) — owner, state moved, conservation/source-sink, invalidation and family applicability; consumes the bounded Gate B storage handoff; no Cell layout choice; PF rows are implemented by the pressure_flow_v1 reference in source
 canonical-for: [liquid-state-transition-matrix]
 last-reviewed: 2026-10-24
 related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, lcb-pressure-inertial-handoff.md, data-ownership-and-lifetimes.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, ../systems/water-design.md]
@@ -17,8 +17,7 @@ related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, lcb-pre
   whole-cell Water) and #212 (`inertial_cellular_v1`) must implement and
   test.
 - **PF rows are implemented (2026-10-24)** by the opt-in
-  [`pressure_flow_v1/reference`](pressure-flow-v1.md), Current on branch
-  `claude/lcb001-pressure-reference` (unmerged). Its
+  [`pressure_flow_v1/reference`](pressure-flow-v1.md), Current in source. Its
   [lifecycle table](pressure-flow-v1.md#lifecycle-per-mutation-path) owns the
   Current per-path result. Refinements of the Proposed PF text: the overfill
   bound is `maximum()`; a kernel-vacated cell carries a vacuum label (volume, not
@@ -217,7 +216,7 @@ corner travel, and lighter-below non-support.
 
 ## 10. Pressure gas compartments (PF, World-owned)
 
-**Implemented on branch `claude/lcb001-pressure-reference`** by the
+**Implemented in source** by the
 [pressure reference gas pass](pressure-flow-v1.md#gas-compartments): label-overlap
 identity, monotonic ids, exact `GasLedger`, phase convention unchanged. The
 registered fixtures below pass in the native and Godot pressure regressions at
