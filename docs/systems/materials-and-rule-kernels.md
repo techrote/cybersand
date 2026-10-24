@@ -29,6 +29,8 @@ IDs 0–19 preserve the attributed Sandspiel numbering; 10 is invalid and
 `Gas` aliases `Smoke` at 4. Project IDs continue through 131 (`kLastMaterial`;
 building materials start at `kFirstBuildingMaterial` = 81). Excluding Empty and
 invalid 10 leaves 130 paintable materials. UI slots are not serialized IDs.
+Descriptor and pair-rule edits also change the LCB liquid-policy identity; see the
+[regeneration sequence](../architecture/liquid-solver-family-policy.md#regenerating-identity-after-a-material-or-rule-edit).
 
 Descriptors carry material state, density/direction, target-side exchange
 permission, lateral-flow mode, viscosity, kernel, initial compact state, palette,
