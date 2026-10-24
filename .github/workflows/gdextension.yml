@@ -20,6 +20,15 @@ on:
       - 'tools/ci/check_ci_provider_policy.py'
       - 'tools/ci/test_ci_provider_policy.py'
   workflow_dispatch:
+    inputs:
+      physical_actor_stress:
+        description: Run the isolated physical actor timeout campaign
+        type: boolean
+        default: false
+      rapier_bvh_pair:
+        description: Build and stress paired Rapier control/patched runtimes (requires physical_actor_stress)
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -27,7 +36,7 @@ permissions:
   pull-requests: read
 
 concurrency:
-  group: gdextension-${{ github.ref }}
+  group: gdextension-${{ github.ref }}-${{ inputs.rapier_bvh_pair == true && github.run_id || (inputs.physical_actor_stress == true && 'physical-stress' || 'suite') }}
   cancel-in-progress: true
 
 env:
@@ -39,6 +48,12 @@ env:
   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
 
 jobs:
+  physical-actor-stress:
+    if: github.event_name == 'workflow_dispatch' && inputs.physical_actor_stress == true
+    uses: ./.github/workflows/physical-actor-stress.yml
+    with:
+      rapier_pair: ${{ inputs.rapier_bvh_pair == true }}
+
   ready_scope:
     name: ready validation scope
     if: github.event_name == 'pull_request' && github.event.action == 'ready_for_review'
@@ -106,7 +121,7 @@ jobs:
     name: linux build x86_64
     needs: [ready_scope]
     if: >-
-      always() &&
+      always() && inputs.physical_actor_stress != true &&
       (github.event_name != 'pull_request' ||
        (github.event.pull_request.draft == false &&
         (github.event.action != 'ready_for_review' ||
@@ -121,13 +136,17 @@ jobs:
         run: |
           git lfs install --local
           git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
-          echo "147ab5673b9687ccb7a3b12fec07ea55cc674ad8a75f529d1085bf7d61fbd831  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+          echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
 
       - name: Validate shard planner
         run: |
           python3 -m py_compile tools/ci/run_godot_regressions.py tools/ci/test_godot_regression_sharding.py tools/ci/run_windows_godot_regressions.py tools/ci/test_windows_godot_regressions.py
           python3 tools/ci/test_godot_regression_sharding.py
           python3 tools/ci/test_windows_godot_regressions.py
+          python3 tools/ci/test_godot_timeout_diagnostics.py
+          python3 tools/ci/test_godot_process_monitor.py
+          python3 tools/ci/test_physical_progress_watchdog.py
+          python3 tools/ci/test_physical_stress.py
 
       - name: Install pinned SCons
         run: |
@@ -196,7 +215,7 @@ jobs:
     # Ubuntu runner using the pinned LLVM-MinGW toolchain below.
     needs: [ready_scope]
     if: >-
-      always() &&
+      always() && inputs.physical_actor_stress != true &&
       (github.event_name != 'pull_request' ||
        (github.event.pull_request.draft == false &&
         (github.event.action != 'ready_for_review' ||
@@ -262,7 +281,7 @@ jobs:
     name: windows headless regression
     needs: [ready_scope]
     if: >-
-      always() &&
+      always() && inputs.physical_actor_stress != true &&
       (github.event_name != 'pull_request' ||
        (github.event.pull_request.draft == false &&
         (github.event.action != 'ready_for_review' ||
@@ -300,6 +319,10 @@ jobs:
           set -euo pipefail
           python tools/ci/test_godot_regression_sharding.py
           python tools/ci/test_windows_godot_regressions.py
+          python tools/ci/test_godot_timeout_diagnostics.py
+          python tools/ci/test_godot_process_monitor.py
+          python tools/ci/test_physical_progress_watchdog.py
+          python tools/ci/test_physical_stress.py
 
       - name: Download official Windows Godot archive
         timeout-minutes: 10
@@ -326,7 +349,7 @@ jobs:
     name: linux regression shard ${{ matrix.shard }}
     needs: linux-build
     if: >-
-      always() &&
+      always() && inputs.physical_actor_stress != true &&
       needs.linux-build.result == 'success' &&
       (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
     # Every shard has >=2 logical CPUs so weighted planning may move the worker
@@ -397,7 +420,7 @@ jobs:
     name: linux serial equivalence
     needs: linux-build
     if: >-
-      always() &&
+      always() && inputs.physical_actor_stress != true &&
       needs.linux-build.result == 'success' &&
       github.event_name == 'pull_request' &&
       github.event.pull_request.draft == false &&
@@ -464,7 +487,7 @@ jobs:
     name: linux x86_64
     needs: [ready_scope, linux-regression, linux-serial-equivalence]
     if: >-
-      always() &&
+      always() && inputs.physical_actor_stress != true &&
       (github.event_name != 'pull_request' ||
        (github.event.pull_request.draft == false &&
         (github.event.action != 'ready_for_review' ||

@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-24
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
@@ -172,6 +172,59 @@ identity and the required exact-head gates are independent of shard scheduling.
 Current build jobs set `SCONS_JOBS=2` directly; the
 [repository provider policy](github-development-and-release.md) owns the runner
 and provider-routing boundary.
+
+## Physical actor timeout investigation
+
+**Current tooling:** both platform runners use `run_godot_regressions.run_case`.
+A live process/thread snapshot, elapsed time, PID and the last fixture progress
+marker are captured 30 seconds before the original per-case deadline. The
+[process monitor](../../tools/ci/godot_process_monitor.py) also runs an independent
+[progress watchdog](../../tools/ci/physical_progress_watchdog.py) for the three
+instrumented suspect fixtures: capture after 30 seconds without a new marker,
+then fail as `timeout` / `progress_watchdog` after 45 seconds of inactivity.
+Startup and post-quit stalls are covered as well as setup, stepping and frame
+waits. Capture commands are bounded; this remains runnable when Godot cannot
+execute a main-loop timer. Real progress renews liveness, unrelated output does
+not, and no marker can extend the outer 180-second case deadline. Other cases
+retain their existing deadlines and oracle. Linux
+captures `/proc` wait channels and attempts all-thread GDB stacks when available;
+Windows attempts DbgHelp minidumps for the console wrapper and engine child.
+Capture is bounded and best-effort; unavailable stacks are explicitly recorded.
+The ordinary artifact uploads retain these diagnostics with each test log.
+The three suspect fixtures print `CYBERSAND_PROGRESS` at setup, bounded tick
+intervals, teardown/frame waits and quit. Assertions and physics settings retain
+their original meaning; a timeout, error, skip or nonzero exit still fails.
+
+The manual [physical actor stress workflow](../../.github/workflows/physical-actor-stress.yml)
+uses only GitHub-hosted Windows/Linux runners. Five isolated batches each execute
+ten independent trials of arena, rigs and usable course (50 per test/platform).
+It builds Linux from that checkout and verifies the retained Windows native input
+manifest and pinned Godot/Rapier bytes. `stress.json` is saved after every trial;
+the aggregate requires all 300 trials and reports failures and hangs by last phase.
+These experiments do not retry failed tests. The
+[dated investigation](../audits/2026-10-23-physical-actor-timeouts.md) owns run
+identities, observed frequencies and the root-cause disposition.
+
+For the explicitly experimental Rapier comparison, dispatch the existing
+GDExtension workflow on the PR branch with both `physical_actor_stress=true` and
+`rapier_bvh_pair=true`. It builds pinned, symbolized control/patched addons and
+runs 300 trials per variant. Each batch now alternates both variants on the same host and records
+CPU topology, pair order and matching immutable fixtures; fewer than two physical
+cores fails preflight. Earlier separate-host samples retain their own dated scope.
+Experimental substitution requires a same-head build
+manifest; ordinary retained-runtime gates keep their default byte checks. Control
+failures remain failures and may make the workflow red. Read the
+[2026-10-24 dump/paired validation record](../audits/2026-10-24-physical-actor-bvh-validation.md)
+for the confirmed blocking call, provenance, current results and acceptance limits.
+The 2026-10-24 same-host campaign qualified the cooperative join: Windows control
+had six timeouts versus zero patched; Linux had zero in either variant. All 300
+patched trials passed. Windows/Linux x86_64 now select those exact tested
+artifacts through the runtime lock's per-platform provenance manifests; other
+platforms retain release bytes. Repository and Windows preflight checks reject
+changed build inputs or mismatched libraries. The paired campaign remains red
+overall because actual control failures remain failed, while its separate
+qualification job passed. Use the dated record and PR #236 for complete
+frequencies and final full-suite/exact-head receipts.
 
 ## Windows retained-runtime execution
 

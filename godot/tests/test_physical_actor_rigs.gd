@@ -6,6 +6,7 @@ const Rig = preload("res://scripts/physical_actor_rig.gd")
 const Catalog = preload("res://scripts/physical_actor_catalog.gd")
 const Scripted = preload("res://scripts/physical_actor_script.gd")
 const Bridge = preload("res://scripts/rapier_physics_bridge.gd")
+const Progress = preload("res://tests/helpers/physical_progress.gd")
 const DT: float = 1.0 / 60.0
 
 var _failures: int = 0
@@ -19,10 +20,12 @@ var _selected_rig: StringName = &""
 
 
 func _init() -> void:
+	Progress.mark("initialize")
 	call_deferred("_run")
 
 
 func _run() -> void:
+	Progress.mark("run")
 	for argument: String in OS.get_cmdline_user_args():
 		if argument.begins_with("--rig="):
 			_selected_rig = StringName(argument.trim_prefix("--rig="))
@@ -34,24 +37,39 @@ func _run() -> void:
 	if _failures != 0:
 		quit(1)
 		return
+	Progress.mark("admission")
 	_test_admission()
 	for rig_id: StringName in Catalog.RIG_IDS:
 		if _selected_rig == &"" or _selected_rig == rig_id:
+			Progress.mark("scenario", str(rig_id))
 			await _test_roster_rig(rig_id)
+	Progress.mark("scenario", "_test_obstructed_patrol")
 	await _test_obstructed_patrol()
+	Progress.mark("scenario", "_test_no_air_traction")
 	await _test_no_air_traction()
+	Progress.mark("scenario", "_test_cancel_charge")
 	await _test_cancel_charge()
+	Progress.mark("scenario", "_test_mount_and_release")
 	await _test_mount_and_release()
+	Progress.mark("scenario", "_test_surface_blast")
 	await _test_surface_blast()
+	Progress.mark("scenario", "_test_support_removal")
 	await _test_support_removal()
+	Progress.mark("scenario", "_test_slide_endstops")
 	await _test_slide_endstops()
+	Progress.mark("scenario", "_test_rope_controls")
 	await _test_rope_controls()
+	Progress.mark("scenario", "_test_recovery")
 	await _test_recovery()
+	Progress.mark("scenario", "_test_owner_reuse")
 	await _test_owner_reuse()
 	print("ACT004_ROSTER_METRICS ", JSON.stringify(_results))
 	print("ACT004 real-Rapier rig fixture: ", Catalog.RIG_IDS.size(), " catalogue rigs; failures=", _failures)
 	_owner.queue_free()
+	Progress.mark("process_frame_wait")
 	await process_frame
+	Progress.mark("process_frame_resumed")
+	Progress.mark("quit")
 	quit(1 if _failures > 0 else 0)
 
 
@@ -73,6 +91,7 @@ func _test_admission() -> void:
 
 
 func _setup(rig_id: StringName, floor_enabled: bool = true, origin: Vector2 = Vector2.INF) -> bool:
+	Progress.mark("setup", str(rig_id))
 	var definition: Dictionary = Catalog.entry(rig_id)
 	var error: String = Rig.validate_definition(definition)
 	_expect(error.is_empty(), "%s definition rejected: %s" % [rig_id, error])
@@ -94,6 +113,7 @@ func _setup(rig_id: StringName, floor_enabled: bool = true, origin: Vector2 = Ve
 	_bridge = Bridge.new()
 	_expect(_bridge.initialize(_owner.get_world_2d().space, _rig.bodies(), _rig.body_sizes()) == OK,
 		"bridge initialization failed: " + str(rig_id))
+	Progress.mark("setup_complete", str(rig_id))
 	return _bridge.is_initialized()
 
 
@@ -111,6 +131,7 @@ func _box(position: Vector2, size: Vector2) -> StaticBody2D:
 
 
 func _step(action: Dictionary) -> Dictionary:
+	Progress.tick("step")
 	_rig.advance(action, DT)
 	_bridge.step()
 	_rig.refresh_observation()
@@ -118,6 +139,7 @@ func _step(action: Dictionary) -> Dictionary:
 
 
 func _teardown() -> void:
+	Progress.mark("teardown")
 	if _bridge != null:
 		_bridge.shutdown()
 		_bridge = null
@@ -129,7 +151,9 @@ func _teardown() -> void:
 		if is_instance_valid(body):
 			body.free()
 	_terrain.clear()
+	Progress.mark("process_frame_wait")
 	await process_frame
+	Progress.mark("process_frame_resumed")
 
 
 func _test_roster_rig(rig_id: StringName) -> void:

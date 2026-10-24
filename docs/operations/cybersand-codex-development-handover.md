@@ -10,6 +10,26 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Physical actor timeout investigation — 2026-10-23
+
+Resumed 2026-10-24: the [dump attribution and paired validation record](../audits/2026-10-24-physical-actor-bvh-validation.md)
+confirms a Rapier deferred-BVH channel wait in captured engine dumps. Same-host
+run 40056501226 qualified the cooperative join: six Windows control timeouts,
+zero candidate timeouts in 300 Windows/Linux trials. Exact tested desktop
+x86_64 libraries are selected with source-matched provenance. Keep PR #236 draft
+through remaining full-suite and exact-head validation; final check receipts
+belong to the PR's current revision.
+
+[PR #236](https://github.com/techrote/cybersand/pull/236) is a draft investigation
+of intermittent 180-second arena/rig/course hangs. Use the
+[diagnostic and stress guide](local-build-and-validation.md#physical-actor-timeout-investigation)
+and [dated audit](../audits/2026-10-23-physical-actor-timeouts.md).
+The [owner-requested break handover](../audits/2026-10-23-physical-actor-timeout-handover.md)
+records the historical break checkpoint, including then-uncompiled candidate
+and prior ordinary gates. The 2026-10-24 record supersedes its pending compilation
+and paired execution status; no monitoring is scheduled. Final hosted acceptance
+remains separate from the completed causal comparison and desktop selection.
+
 ## 4LY single-chassis flight contract — 2026-10-22
 
 Start with the [physical free-flight contract](../systems/physical-free-flight.md)

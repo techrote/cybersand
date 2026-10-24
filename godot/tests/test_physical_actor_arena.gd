@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Progress = preload("res://tests/helpers/physical_progress.gd")
+
 # Real synchronous native/Rapier coverage. No material or physics mock stands
 # in for a roster run, a cell effect or the terrain collider update below.
 const Arena = preload("res://scripts/physical_actor_arena.gd")
@@ -42,6 +44,7 @@ func _roster() -> void:
 		var config: Dictionary = Arena.default_config(id, 1)
 		config.seed = 17
 		config.max_ticks = ROSTER_TICKS
+		Progress.mark("configure", str(id))
 		_check(_arena.configure(config), "configure native roster " + str(id) + ": " + _arena.last_error)
 		if _arena.session == null:
 			continue
@@ -54,6 +57,7 @@ func _roster() -> void:
 		var state: Dictionary = _arena.snapshot()
 		var travel: float = 0.0
 		for _tick: int in range(ROSTER_TICKS):
+			Progress.tick("step")
 			state = _arena.step()
 			travel = maxf(travel, state.actors[0].position.distance_to(initial.position))
 		_check(not bool(state.failed) and int(state.tick) == ROSTER_TICKS and int(state.world_tick) == ROSTER_TICKS,
@@ -76,7 +80,9 @@ func _roster() -> void:
 		_check(initial.tick == 0 and initial.cell_patch.materials.size() == 169,
 			str(id) + " retained bounded observation is immutable")
 		var weak_world: WeakRef = weakref(_arena._world)
+		Progress.mark("close")
 		_arena.close()
+		Progress.mark("close_complete")
 		_check(_arena.get_child_count() == 0 and _arena.render_parts().is_empty() and weak_world.get_ref() == null,
 			str(id) + " closes actual world, space, bodies and joints")
 	print("PHYSICAL_ARENA_ROSTER models=", Catalog.RIG_IDS.size(), " ticks_each=", ROSTER_TICKS, " real_native=true")
@@ -85,6 +91,7 @@ func _roster() -> void:
 	batch.max_ticks = 8
 	for actor: Dictionary in batch.actors:
 		actor.model = str(largest)
+	Progress.mark("configure")
 	_check(_arena.configure(batch), "eight largest assemblies admitted")
 	var result: Dictionary = _arena.snapshot()
 	for _tick: int in range(8):
@@ -94,10 +101,13 @@ func _roster() -> void:
 	_check(result.cellular_results.size() == largest_count * 8 * Coupling.RESULT_STRIDE,
 		"eight-actor native feedback is complete")
 	print("PHYSICAL_ARENA_CAPACITY actors=8 parts=", result.body_count, " largest_rig=", largest)
+	Progress.mark("close")
 	_arena.close()
+	Progress.mark("close_complete")
 
 
 func _protocol() -> void:
+	Progress.mark("configure")
 	_check(_arena.configure(_config(&"pouncer", "policy", 100, Vector2(380, 340))), "policy arena starts")
 	var first: Dictionary = _arena.observation(0)
 	_check(first.cell_patch.materials.size() == 289 and first.cell_patch.body_ids.size() == 289,
@@ -109,6 +119,7 @@ func _protocol() -> void:
 	_check(state.command_results.size() == 1 and bool(state.command_results[0].accepted), "wire command admitted at the integration boundary")
 	_check(int(state.tick) == 1 and int(state.world_tick) == 1, "one admitted batch advances each clock once")
 	_check(not _arena.submit(old_command), "duplicate sequence is rejected")
+	Progress.tick("step")
 	state = _arena.step()
 	_check(state.actors[0].action.is_empty() and float(state.actors[0].charge) == 0.0,
 		"expired charged input cancels without a release impulse")
@@ -139,6 +150,7 @@ func _protocol() -> void:
 		{"max_ticks": 36001, "actors": [{"model": "runner"}]},
 		{"local_patch_radius": 9, "actors": [{"model": "runner"}]},
 		{"unknown": true, "actors": [{"model": "runner"}]}]:
+		Progress.mark("configure")
 		_check(not _arena.configure(invalid), "invalid arena configuration refused")
 		_check(str(_arena.snapshot().run_id) == live_id and int(_arena.snapshot().tick) == tick,
 			"rejected reset preserves the running owner")
@@ -157,13 +169,18 @@ func _protocol() -> void:
 		"wire observation JSON uses numeric vector arrays")
 	_check(round_trip.cell_patch.materials is Array and round_trip.cell_patch.materials.size() == 289,
 		"bounded native cell patch survives JSON serialization")
+	Progress.mark("close")
 	_arena.close()
+	Progress.mark("close_complete")
+	Progress.mark("close")
 	_arena.close()
+	Progress.mark("close_complete")
 	_check(_arena.session == null and _arena.get_child_count() == 0 and _arena.observation(0).is_empty(),
 		"teardown is idempotent and issues no new views")
 
 
 func _native_effects_and_terrain() -> void:
+	Progress.mark("configure")
 	_check(_arena.configure(_config(&"runner")), "physical stamper arena starts")
 	var command: Dictionary = _command({"equipment": {"aim": [1, 0], "trigger": true, "power": 1.0}}, 1)
 	var state: Dictionary = _arena.step([command])
@@ -183,11 +200,15 @@ func _native_effects_and_terrain() -> void:
 	_check(int(_arena.snapshot().usable_totals.requests) == 1, "expired equipment lease queues no later material edits")
 	_check(_arena.reset(), "stamper reset succeeds")
 	_check(_arena.snapshot().usable_totals.requests == 0, "reset replaces edited world and pending equipment work")
+	Progress.mark("close")
 	_arena.close()
+	Progress.mark("close_complete")
 
+	Progress.mark("configure")
 	_check(_arena.configure(_config(&"lineshank", "policy", 10, Vector2(328, 270))), "physical cutter arena starts")
 	var previous_revision: int = int(_arena.snapshot().terrain_revision)
 	_check(int(_arena._world.material_at(328, 240)) == 56, "authored packed-earth target exists natively")
+	Progress.tick("step")
 	state = _arena.step([_command({"equipment": {"aim": [0, -1], "trigger": true, "power": 1.0}}, 1)])
 	_check(int(state.usable_totals.changed_cells) > 0,
 		"catalogue cutter changes native hard terrain through the physical equipment path")
@@ -204,10 +225,13 @@ func _native_effects_and_terrain() -> void:
 	query.position = Vector2(330.5, 245.5)
 	_check(not _arena.session.get_world_2d().direct_space_state.intersect_point(query, 8).is_empty(),
 		"uncut neighboring target retains its real terrain collider")
+	Progress.mark("close")
 	_arena.close()
+	Progress.mark("close_complete")
 
 
 func _run() -> void:
+	Progress.mark("run")
 	var start_usec: int = Time.get_ticks_usec()
 	_check(ClassDB.class_exists(&"CyberNativeCellWorld") and ClassDB.class_exists(&"RapierPhysicsServer2D"),
 		"pinned native and Rapier extensions are required")
@@ -216,10 +240,14 @@ func _run() -> void:
 		return
 	_arena = Arena.new()
 	root.add_child(_arena)
+	Progress.mark("_roster", "_roster")
 	_roster()
+	Progress.mark("_protocol", "_protocol")
 	_protocol()
+	Progress.mark("_native_effects_and_terrain", "_native_effects_and_terrain")
 	_native_effects_and_terrain()
 	_arena.free()
 	print("PHYSICAL_ARENA_RESULT assertions=", _assertions, " failures=", _failures,
 		" elapsed_ms=", float(Time.get_ticks_usec() - start_usec) / 1000.0)
+	Progress.mark("quit")
 	quit(1 if _failures > 0 else 0)

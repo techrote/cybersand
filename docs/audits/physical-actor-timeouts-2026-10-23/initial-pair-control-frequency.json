@@ -1,0 +1,53 @@
+{
+  "source_shas": [
+    "18f6105736fb5a0a37e96c5220857f21ed0630e2"
+  ],
+  "runtime_identities": {
+    "linux": [
+      "28f99172da4256acc34bcd932b113dacabe52bdb459fd0ee4883f741e41bd8e5",
+      "842bca64cb71bf9f23dcd6e53ef5f24314eaadfd8e3ec76939990407175dbf5e",
+      "4.7.stable.official.5b4e0cb0f"
+    ],
+    "windows": [
+      "e6d9ec7d0847287c4c6b1acaffd52dc2807fe43e9dccfc36123ffa117fb6045f",
+      "3c9fd3506fe68e889d2ba3d412d0b94f75165ac07b0297f24d7b4d8d4e5dc4c2",
+      "4.7.stable.official.5b4e0cb0f"
+    ]
+  },
+  "counts": {
+    "linux/test_physical_actor_arena": {
+      "passed": 50
+    },
+    "linux/test_physical_actor_rigs": {
+      "passed": 50
+    },
+    "linux/test_physical_usable_course": {
+      "passed": 50
+    },
+    "windows/test_physical_actor_arena": {
+      "passed": 46,
+      "timeout": 4
+    },
+    "windows/test_physical_actor_rigs": {
+      "passed": 44,
+      "timeout": 6
+    },
+    "windows/test_physical_usable_course": {
+      "passed": 48,
+      "timeout": 2
+    }
+  },
+  "timeouts_by_phase": {
+    "windows/test_physical_actor_rigs/step": 3,
+    "windows/test_physical_actor_arena/configure": 2,
+    "windows/test_physical_actor_arena/step": 2,
+    "windows/test_physical_usable_course/step": 1,
+    "windows/test_physical_actor_rigs/setup_complete": 3,
+    "windows/test_physical_usable_course/configure": 1
+  },
+  "errors": [
+    "Required 50/50 passes for windows/test_physical_actor_arena: {'passed': 46, 'timeout': 4}",
+    "Required 50/50 passes for windows/test_physical_actor_rigs: {'passed': 44, 'timeout': 6}",
+    "Required 50/50 passes for windows/test_physical_usable_course: {'passed': 48, 'timeout': 2}"
+  ]
+}

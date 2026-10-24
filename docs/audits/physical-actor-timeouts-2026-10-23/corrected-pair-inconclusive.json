@@ -1,0 +1,284 @@
+{
+  "qualified": false,
+  "control": {
+    "source_shas": [
+      "4c2bb37b6b0376509693b1d04fb4581a6503d099"
+    ],
+    "runtime_identities": {
+      "linux": [
+        "28f99172da4256acc34bcd932b113dacabe52bdb459fd0ee4883f741e41bd8e5",
+        "842bca64cb71bf9f23dcd6e53ef5f24314eaadfd8e3ec76939990407175dbf5e",
+        "4.7.stable.official.5b4e0cb0f"
+      ],
+      "windows": [
+        "e6d9ec7d0847287c4c6b1acaffd52dc2807fe43e9dccfc36123ffa117fb6045f",
+        "8e0f5e6c5222cf79445dc064d29a02c976fd138fe9393d811b2b2fa7657b1a56",
+        "4.7.stable.official.5b4e0cb0f"
+      ]
+    },
+    "counts": {
+      "linux/test_physical_actor_arena": {
+        "passed": 50
+      },
+      "linux/test_physical_actor_rigs": {
+        "passed": 50
+      },
+      "linux/test_physical_usable_course": {
+        "passed": 50
+      },
+      "windows/test_physical_actor_arena": {
+        "passed": 50
+      },
+      "windows/test_physical_actor_rigs": {
+        "passed": 50
+      },
+      "windows/test_physical_usable_course": {
+        "passed": 50
+      }
+    },
+    "timeouts_by_phase": {},
+    "errors": []
+  },
+  "patched": {
+    "source_shas": [
+      "4c2bb37b6b0376509693b1d04fb4581a6503d099"
+    ],
+    "runtime_identities": {
+      "linux": [
+        "28f99172da4256acc34bcd932b113dacabe52bdb459fd0ee4883f741e41bd8e5",
+        "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "4.7.stable.official.5b4e0cb0f"
+      ],
+      "windows": [
+        "e6d9ec7d0847287c4c6b1acaffd52dc2807fe43e9dccfc36123ffa117fb6045f",
+        "c8857f4532309095768e6e00fb57fcafa2e304bd535acc151856b4c42c58edb8",
+        "4.7.stable.official.5b4e0cb0f"
+      ]
+    },
+    "counts": {
+      "linux/test_physical_actor_arena": {
+        "passed": 50
+      },
+      "linux/test_physical_actor_rigs": {
+        "passed": 50
+      },
+      "linux/test_physical_usable_course": {
+        "passed": 50
+      },
+      "windows/test_physical_actor_arena": {
+        "passed": 50
+      },
+      "windows/test_physical_actor_rigs": {
+        "passed": 50
+      },
+      "windows/test_physical_usable_course": {
+        "passed": 50
+      }
+    },
+    "timeouts_by_phase": {},
+    "errors": []
+  },
+  "builds": {
+    "linux/control": {
+      "artifacts": {
+        "Cargo.lock": "6711ce94ea78d86e20cdd5b3eb4f5ff5c38499811afe3627f883d26fc370f6eb",
+        "join-regression.log": "4ac4aed582636277111de8cc66d050ecc7712be90908c080775eab23468406c2",
+        "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "842bca64cb71bf9f23dcd6e53ef5f24314eaadfd8e3ec76939990407175dbf5e"
+      },
+      "build_inputs": {
+        "addon_commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75",
+        "addon_repository": "https://github.com/appsinacup/godot-rapier-physics.git",
+        "addon_tag": "v0.35.2",
+        "base_join_source_sha256": "b5fffdf4bd0c8e359d1aa52d9ddc95b04e21c11a8438b2ac8c31bebc57c32963",
+        "crate": "rapier2d",
+        "crate_sha256": "74bfd393193e08a812ba0c83c7c844dff29979fd30f96de2854cdea507350065",
+        "crate_url": "https://static.crates.io/crates/rapier2d/rapier2d-0.35.1.crate",
+        "crate_version": "0.35.1",
+        "features": [
+          "serde-serialize",
+          "parallel",
+          "register-docs",
+          "single-dim2",
+          "api-custom"
+        ],
+        "patch": "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch",
+        "patch_sha256": "6eda9ecd071925af35b7bfc92a2c3c01ac2b87831591947d79925cc92588975e",
+        "patched_join_source_sha256": "0a63cf10ae1111c4fa3c22d945d505918f36d1165b8176e130573d5259f9a973",
+        "release_overrides": {
+          "CARGO_PROFILE_RELEASE_DEBUG": "1",
+          "CARGO_PROFILE_RELEASE_STRIP": "none"
+        },
+        "rust_toolchain": "1.98.0",
+        "status": "candidate; runtime publication requires paired control and patched evidence",
+        "upstream_cargo_lock_sha256": "63cb5170bd78cec10a46ecc912bfd56e101f7d30ed9bfd97789146f9b682d4dc",
+        "upstream_reports": [
+          "https://github.com/dimforge/rapier/issues/1008",
+          "https://github.com/appsinacup/godot-rapier-physics/issues/640"
+        ]
+      },
+      "build_lock_sha256": "0951b69d1b59c70c915f59bcae8390291ad9b89b4eb976ac8f3dfbed0fa7c46b",
+      "godot_version": "4.7.stable.official.5b4e0cb0f",
+      "join_regression_exit": 124,
+      "join_source_sha256": "b5fffdf4bd0c8e359d1aa52d9ddc95b04e21c11a8438b2ac8c31bebc57c32963",
+      "platform": "linux",
+      "resolved_cargo_lock_sha256": "6711ce94ea78d86e20cdd5b3eb4f5ff5c38499811afe3627f883d26fc370f6eb",
+      "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)\nbinary: rustc\ncommit-hash: 88d9e12ae178fab0fb5cc050a94da85685d449ea\ncommit-date: 2026-08-18\nhost: x86_64-unknown-linux-gnu\nrelease: 1.98.0\nLLVM version: 22.1.8\n",
+      "schema_version": 1,
+      "source_sha": "4c2bb37b6b0376509693b1d04fb4581a6503d099",
+      "upstream_cargo_lock_sha256": "63cb5170bd78cec10a46ecc912bfd56e101f7d30ed9bfd97789146f9b682d4dc",
+      "variant": "control"
+    },
+    "windows/control": {
+      "artifacts": {
+        "Cargo.lock": "6711ce94ea78d86e20cdd5b3eb4f5ff5c38499811afe3627f883d26fc370f6eb",
+        "godot_rapier.pdb": "45096870f7d29bd1c4ebfbbdeb694a14e06e8cb85bb0e9956115d38c1b769f66",
+        "join-regression.log": "28980b3510b0b74f10985f47282a9e33eeb250037e1bef334f4d09801adad893",
+        "libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "8e0f5e6c5222cf79445dc064d29a02c976fd138fe9393d811b2b2fa7657b1a56"
+      },
+      "build_inputs": {
+        "addon_commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75",
+        "addon_repository": "https://github.com/appsinacup/godot-rapier-physics.git",
+        "addon_tag": "v0.35.2",
+        "base_join_source_sha256": "b5fffdf4bd0c8e359d1aa52d9ddc95b04e21c11a8438b2ac8c31bebc57c32963",
+        "crate": "rapier2d",
+        "crate_sha256": "74bfd393193e08a812ba0c83c7c844dff29979fd30f96de2854cdea507350065",
+        "crate_url": "https://static.crates.io/crates/rapier2d/rapier2d-0.35.1.crate",
+        "crate_version": "0.35.1",
+        "features": [
+          "serde-serialize",
+          "parallel",
+          "register-docs",
+          "single-dim2",
+          "api-custom"
+        ],
+        "patch": "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch",
+        "patch_sha256": "6eda9ecd071925af35b7bfc92a2c3c01ac2b87831591947d79925cc92588975e",
+        "patched_join_source_sha256": "0a63cf10ae1111c4fa3c22d945d505918f36d1165b8176e130573d5259f9a973",
+        "release_overrides": {
+          "CARGO_PROFILE_RELEASE_DEBUG": "1",
+          "CARGO_PROFILE_RELEASE_STRIP": "none"
+        },
+        "rust_toolchain": "1.98.0",
+        "status": "candidate; runtime publication requires paired control and patched evidence",
+        "upstream_cargo_lock_sha256": "63cb5170bd78cec10a46ecc912bfd56e101f7d30ed9bfd97789146f9b682d4dc",
+        "upstream_reports": [
+          "https://github.com/dimforge/rapier/issues/1008",
+          "https://github.com/appsinacup/godot-rapier-physics/issues/640"
+        ]
+      },
+      "build_lock_sha256": "0951b69d1b59c70c915f59bcae8390291ad9b89b4eb976ac8f3dfbed0fa7c46b",
+      "godot_version": "4.7.stable.official.5b4e0cb0f",
+      "join_regression_exit": 124,
+      "join_source_sha256": "b5fffdf4bd0c8e359d1aa52d9ddc95b04e21c11a8438b2ac8c31bebc57c32963",
+      "platform": "windows",
+      "resolved_cargo_lock_sha256": "6711ce94ea78d86e20cdd5b3eb4f5ff5c38499811afe3627f883d26fc370f6eb",
+      "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)\nbinary: rustc\ncommit-hash: 88d9e12ae178fab0fb5cc050a94da85685d449ea\ncommit-date: 2026-08-18\nhost: x86_64-pc-windows-msvc\nrelease: 1.98.0\nLLVM version: 22.1.8\n",
+      "schema_version": 1,
+      "source_sha": "4c2bb37b6b0376509693b1d04fb4581a6503d099",
+      "upstream_cargo_lock_sha256": "63cb5170bd78cec10a46ecc912bfd56e101f7d30ed9bfd97789146f9b682d4dc",
+      "variant": "control"
+    },
+    "linux/patched": {
+      "artifacts": {
+        "Cargo.lock": "6711ce94ea78d86e20cdd5b3eb4f5ff5c38499811afe3627f883d26fc370f6eb",
+        "join-regression.log": "6b0e91ed11c55ed505c8b447b5e263714f70422422e53e0baeef233e304921bc",
+        "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      },
+      "build_inputs": {
+        "addon_commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75",
+        "addon_repository": "https://github.com/appsinacup/godot-rapier-physics.git",
+        "addon_tag": "v0.35.2",
+        "base_join_source_sha256": "b5fffdf4bd0c8e359d1aa52d9ddc95b04e21c11a8438b2ac8c31bebc57c32963",
+        "crate": "rapier2d",
+        "crate_sha256": "74bfd393193e08a812ba0c83c7c844dff29979fd30f96de2854cdea507350065",
+        "crate_url": "https://static.crates.io/crates/rapier2d/rapier2d-0.35.1.crate",
+        "crate_version": "0.35.1",
+        "features": [
+          "serde-serialize",
+          "parallel",
+          "register-docs",
+          "single-dim2",
+          "api-custom"
+        ],
+        "patch": "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch",
+        "patch_sha256": "6eda9ecd071925af35b7bfc92a2c3c01ac2b87831591947d79925cc92588975e",
+        "patched_join_source_sha256": "0a63cf10ae1111c4fa3c22d945d505918f36d1165b8176e130573d5259f9a973",
+        "release_overrides": {
+          "CARGO_PROFILE_RELEASE_DEBUG": "1",
+          "CARGO_PROFILE_RELEASE_STRIP": "none"
+        },
+        "rust_toolchain": "1.98.0",
+        "status": "candidate; runtime publication requires paired control and patched evidence",
+        "upstream_cargo_lock_sha256": "63cb5170bd78cec10a46ecc912bfd56e101f7d30ed9bfd97789146f9b682d4dc",
+        "upstream_reports": [
+          "https://github.com/dimforge/rapier/issues/1008",
+          "https://github.com/appsinacup/godot-rapier-physics/issues/640"
+        ]
+      },
+      "build_lock_sha256": "0951b69d1b59c70c915f59bcae8390291ad9b89b4eb976ac8f3dfbed0fa7c46b",
+      "godot_version": "4.7.stable.official.5b4e0cb0f",
+      "join_regression_exit": 0,
+      "join_source_sha256": "0a63cf10ae1111c4fa3c22d945d505918f36d1165b8176e130573d5259f9a973",
+      "platform": "linux",
+      "resolved_cargo_lock_sha256": "6711ce94ea78d86e20cdd5b3eb4f5ff5c38499811afe3627f883d26fc370f6eb",
+      "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)\nbinary: rustc\ncommit-hash: 88d9e12ae178fab0fb5cc050a94da85685d449ea\ncommit-date: 2026-08-18\nhost: x86_64-unknown-linux-gnu\nrelease: 1.98.0\nLLVM version: 22.1.8\n",
+      "schema_version": 1,
+      "source_sha": "4c2bb37b6b0376509693b1d04fb4581a6503d099",
+      "upstream_cargo_lock_sha256": "63cb5170bd78cec10a46ecc912bfd56e101f7d30ed9bfd97789146f9b682d4dc",
+      "variant": "patched"
+    },
+    "windows/patched": {
+      "artifacts": {
+        "Cargo.lock": "6711ce94ea78d86e20cdd5b3eb4f5ff5c38499811afe3627f883d26fc370f6eb",
+        "godot_rapier.pdb": "48c4006858cd86d9c5b76053255cc4bec0c3fc991224f92ad358e66942d2ff47",
+        "join-regression.log": "2be20b5231e1b40b1a2d95c0a3d74ec3686b5eaec0188d8ff786c220ca6c23ed",
+        "libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "c8857f4532309095768e6e00fb57fcafa2e304bd535acc151856b4c42c58edb8"
+      },
+      "build_inputs": {
+        "addon_commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75",
+        "addon_repository": "https://github.com/appsinacup/godot-rapier-physics.git",
+        "addon_tag": "v0.35.2",
+        "base_join_source_sha256": "b5fffdf4bd0c8e359d1aa52d9ddc95b04e21c11a8438b2ac8c31bebc57c32963",
+        "crate": "rapier2d",
+        "crate_sha256": "74bfd393193e08a812ba0c83c7c844dff29979fd30f96de2854cdea507350065",
+        "crate_url": "https://static.crates.io/crates/rapier2d/rapier2d-0.35.1.crate",
+        "crate_version": "0.35.1",
+        "features": [
+          "serde-serialize",
+          "parallel",
+          "register-docs",
+          "single-dim2",
+          "api-custom"
+        ],
+        "patch": "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch",
+        "patch_sha256": "6eda9ecd071925af35b7bfc92a2c3c01ac2b87831591947d79925cc92588975e",
+        "patched_join_source_sha256": "0a63cf10ae1111c4fa3c22d945d505918f36d1165b8176e130573d5259f9a973",
+        "release_overrides": {
+          "CARGO_PROFILE_RELEASE_DEBUG": "1",
+          "CARGO_PROFILE_RELEASE_STRIP": "none"
+        },
+        "rust_toolchain": "1.98.0",
+        "status": "candidate; runtime publication requires paired control and patched evidence",
+        "upstream_cargo_lock_sha256": "63cb5170bd78cec10a46ecc912bfd56e101f7d30ed9bfd97789146f9b682d4dc",
+        "upstream_reports": [
+          "https://github.com/dimforge/rapier/issues/1008",
+          "https://github.com/appsinacup/godot-rapier-physics/issues/640"
+        ]
+      },
+      "build_lock_sha256": "0951b69d1b59c70c915f59bcae8390291ad9b89b4eb976ac8f3dfbed0fa7c46b",
+      "godot_version": "4.7.stable.official.5b4e0cb0f",
+      "join_regression_exit": 0,
+      "join_source_sha256": "0a63cf10ae1111c4fa3c22d945d505918f36d1165b8176e130573d5259f9a973",
+      "platform": "windows",
+      "resolved_cargo_lock_sha256": "6711ce94ea78d86e20cdd5b3eb4f5ff5c38499811afe3627f883d26fc370f6eb",
+      "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)\nbinary: rustc\ncommit-hash: 88d9e12ae178fab0fb5cc050a94da85685d449ea\ncommit-date: 2026-08-18\nhost: x86_64-pc-windows-msvc\nrelease: 1.98.0\nLLVM version: 22.1.8\n",
+      "schema_version": 1,
+      "source_sha": "4c2bb37b6b0376509693b1d04fb4581a6503d099",
+      "upstream_cargo_lock_sha256": "63cb5170bd78cec10a46ecc912bfd56e101f7d30ed9bfd97789146f9b682d4dc",
+      "variant": "patched"
+    }
+  },
+  "errors": [
+    "Control did not reproduce a timeout"
+  ]
+}
