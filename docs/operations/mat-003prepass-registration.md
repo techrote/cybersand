@@ -294,3 +294,70 @@ temperature/activity/scheduler storage and process peak RSS. Existing
 Keep fixed-cell and fixed-memory analyses separate. Current split tails are
 eagerly allocated: unread metadata does not establish absent optional-storage
 cost, and accessed/clustered/dispersed payload claims need declared workloads.
+
+
+## S2F source-only preflight registration — 2026-10-22
+
+**Preregistered for untimed apparatus/scene qualification only; not an S2A
+timing admission.** A separate continuation branch from S1 evidence head
+7b71fbb9e1b4286197fb948da3d34f3c3bd5f879 contains the
+[S2F decision and bounded preflight](mat-003-s2f-feasibility.md) and its
+[machine registration](../../tools/experiments/mat003_perf/s2f_registration.json).
+Registration commit 89b2b22635f53e0caee045bdc9fbfd3803f5b051 precedes
+all S2F apparatus changes. The six source-C64-E8 untimed developer fixtures
+are a subset of the proposed 24-context feasibility grid. No interleaved
+AB/BA timing comparison, representation winner, restored-World persistence
+or new pressure/momentum implementation is authorized. The S0/S1 checkpoint
+and 17-arm evidence remain unchanged and separately source-qualified.
+
+**Observed S2F developer preflight (2026-10-22):** Six source-C64-E8 untimed specimens, eight evidence-contract tests and a 57-file independent raw-artifact readback passed on GitHub-hosted Linux; see the [dated evidence](../audits/2026-10-22-mat003-s2f-preflight.md). Earlier failed attempts remain retained; this pass does not qualify the other 18 source contexts, a wider-carrier comparison or seven-pair S2A/S2B timing. The source-control binary and fixture were frozen separately from S1.
+
+**Observed full S2F + candidate-twin gate (2026-10-23):** The subsequent
+[hosted run 39870102635](https://github.com/techrote/cybersand/actions/runs/39870102635)
+passed all 24 source contexts and independently re-read 93 retained source files.
+Its dependent candidate job built the seventeen S1 arms in observed and
+observer-off forms from identical per-arm overlays, then passed 68/68 untimed
+anchor executions and an independent 1,075-file readback. Source and twin
+artifacts/digests are retained in the
+[dated evidence](../audits/2026-10-23-mat003-s2f-full-and-twins.md).
+
+This satisfies the proposed source-context and candidate-twin prerequisites.
+It **does not itself admit S2A timing**: a separate registration must still freeze
+the 16 contrasts, seven alternating AB/BA process pairs, exact timing-capable
+binaries/fixtures and hashes, warmup/horizon, process order, budgets and stop
+rules before the first timed invocation. Wide-epoch clear latency remains timing
+work; S1's natural/forced rollover evidence is correctness-only.
+
+
+### S2A admission update — 2026-10-23
+
+The prerequisite source/twin gate above was followed by a distinct S2A
+preregistration and timing-apparatus qualification. Registration versions 1–3
+froze the sixteen primary contrasts, seven alternating `AB/BA` fresh-process
+pairs per contrast, exact 224-process order, warmup/sample horizons, primary
+paired statistic, flags, budgets and stop rules **before any S2A compile or timed
+invocation**.
+
+The first apparatus readback run 39871650103 retained a verifier-only failure.
+Corrected [run 39872073828](https://github.com/techrote/cybersand/actions/runs/39872073828)
+passed 17 sealed timing-capable observer-off builds, all 25 required untimed
+arm/anchor qualifiers, a 940-file independent readback and 25/25 independent
+case checks. Admitted artifact
+[12466348465](https://github.com/techrote/cybersand/actions/runs/39872073828/artifacts/12466348465)
+has GitHub digest
+`sha256:ef0720eeca60dbe4daa7a05eaa5d792dbcb5138875e5d37f564fe6579b8d9a4a`.
+
+Atomic commit `e40cc0d060f4a26ead664ad5c6787a7aafd53cfe` then moved the S2A
+machine registration to version 4 / `admitted-paired-timing` and simultaneously
+made timing **manual workflow_dispatch only**, bound to that exact artifact and
+the published runner/fixture/readback hashes. No S2A timed workflow has executed
+as part of admission.
+
+This admission is narrow: it authorizes only the exact 224 primary S2A processes.
+It does not authorize S2B, wide-epoch clear-latency timing, fixed-memory
+conclusions, platform timing, a carrier winner, production migration or GEN-006
+persistence. Because E8 samples include the natural clear at completed tick 256
+while E16 samples do not naturally clear in this horizon, final epoch-width
+selection still requires separately measured wide-epoch clear latency.
+
+See [S2A admission evidence](../audits/2026-10-23-mat003-s2a-admission.md).

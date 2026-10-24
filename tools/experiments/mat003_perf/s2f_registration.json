@@ -1,0 +1,371 @@
+{
+  "schema_version": 2,
+  "experiment": "MAT-003PREPASS",
+  "stage": "S2F-source-feasibility",
+  "issue": 204,
+  "predecessor_pr": 208,
+  "owner_continuation": "2026-10-22",
+  "status": "preregistered-full-source-and-candidate-twins-untimed",
+  "performance_comparisons_admitted": false,
+  "formal_timing_admitted": false,
+  "execution_intake": "7b71fbb9e1b4286197fb948da3d34f3c3bd5f879",
+  "baseline_native_commit": "da5112c066416346d6fe3984d4161cd162611e50",
+  "s1_canonical_evidence": {
+    "run_id": 39854839256,
+    "artifact_id": 12461153830,
+    "s1_world_registration": "tools/experiments/mat003_prepass/world_registration.json"
+  },
+  "scope": "Formal untimed qualification of all 24 source-control contexts followed by source-matched observer-on/off candidate twins for all 17 S1 arms at the declared S2A anchors. No paired performance measurement, carrier winner, production migration or GEN-006 acceptance.",
+  "arm": "C64-E8-source",
+  "representation": "unmodified-source",
+  "epoch_bits": 8,
+  "platform": {
+    "runner": "github-hosted-ubuntu-24.04",
+    "compiler": "g++-13",
+    "linker": "GNU ld 2.42",
+    "architecture": "x86_64",
+    "workers": [
+      1,
+      4
+    ]
+  },
+  "inputs": {
+    "warmup_ticks": 120,
+    "measured_ticks": 256,
+    "seed": 204,
+    "scenarios": [
+      "quiet",
+      "small",
+      "active",
+      "reactive"
+    ],
+    "resident_side": [
+      512,
+      1024,
+      2048
+    ],
+    "simulation_backend": "phased",
+    "scheduler_core": 64,
+    "storage_chunk": 128,
+    "activity_block": 32,
+    "parallel_job_threshold": 1,
+    "scenario_initialization": "deterministic, no generator or randomized runtime input",
+    "input_cost": "separately measured, excluded from tick_ns",
+    "primary_metric": "per-tick wall clock steady_clock nanoseconds; process and per-tick samples, not replicates",
+    "quiet_expected": "non-active after warmup; zero visits expected",
+    "active_expected": "ongoing deterministic external maintenance after warmup; positive visits on >=90% measured ticks"
+  },
+  "contexts": [
+    {
+      "id": "quiet-512-w1",
+      "side": 512,
+      "scenario": "quiet",
+      "workers": 1
+    },
+    {
+      "id": "quiet-512-w4",
+      "side": 512,
+      "scenario": "quiet",
+      "workers": 4
+    },
+    {
+      "id": "small-512-w1",
+      "side": 512,
+      "scenario": "small",
+      "workers": 1
+    },
+    {
+      "id": "small-512-w4",
+      "side": 512,
+      "scenario": "small",
+      "workers": 4
+    },
+    {
+      "id": "active-512-w1",
+      "side": 512,
+      "scenario": "active",
+      "workers": 1
+    },
+    {
+      "id": "active-512-w4",
+      "side": 512,
+      "scenario": "active",
+      "workers": 4
+    },
+    {
+      "id": "reactive-512-w1",
+      "side": 512,
+      "scenario": "reactive",
+      "workers": 1
+    },
+    {
+      "id": "reactive-512-w4",
+      "side": 512,
+      "scenario": "reactive",
+      "workers": 4
+    },
+    {
+      "id": "quiet-1024-w1",
+      "side": 1024,
+      "scenario": "quiet",
+      "workers": 1
+    },
+    {
+      "id": "quiet-1024-w4",
+      "side": 1024,
+      "scenario": "quiet",
+      "workers": 4
+    },
+    {
+      "id": "small-1024-w1",
+      "side": 1024,
+      "scenario": "small",
+      "workers": 1
+    },
+    {
+      "id": "small-1024-w4",
+      "side": 1024,
+      "scenario": "small",
+      "workers": 4
+    },
+    {
+      "id": "active-1024-w1",
+      "side": 1024,
+      "scenario": "active",
+      "workers": 1
+    },
+    {
+      "id": "active-1024-w4",
+      "side": 1024,
+      "scenario": "active",
+      "workers": 4
+    },
+    {
+      "id": "reactive-1024-w1",
+      "side": 1024,
+      "scenario": "reactive",
+      "workers": 1
+    },
+    {
+      "id": "reactive-1024-w4",
+      "side": 1024,
+      "scenario": "reactive",
+      "workers": 4
+    },
+    {
+      "id": "quiet-2048-w1",
+      "side": 2048,
+      "scenario": "quiet",
+      "workers": 1
+    },
+    {
+      "id": "quiet-2048-w4",
+      "side": 2048,
+      "scenario": "quiet",
+      "workers": 4
+    },
+    {
+      "id": "small-2048-w1",
+      "side": 2048,
+      "scenario": "small",
+      "workers": 1
+    },
+    {
+      "id": "small-2048-w4",
+      "side": 2048,
+      "scenario": "small",
+      "workers": 4
+    },
+    {
+      "id": "active-2048-w1",
+      "side": 2048,
+      "scenario": "active",
+      "workers": 1
+    },
+    {
+      "id": "active-2048-w4",
+      "side": 2048,
+      "scenario": "active",
+      "workers": 4
+    },
+    {
+      "id": "reactive-2048-w1",
+      "side": 2048,
+      "scenario": "reactive",
+      "workers": 1
+    },
+    {
+      "id": "reactive-2048-w4",
+      "side": 2048,
+      "scenario": "reactive",
+      "workers": 4
+    }
+  ],
+  "run_order": "literal contexts array order; no run reordering or post-hoc omissions",
+  "execution": {
+    "maximum_compile_processes": 4,
+    "maximum_fixture_processes": 24,
+    "concurrent_processes": 1,
+    "compile_timeout_seconds": 180,
+    "fixture_timeout_seconds": 120,
+    "total_wall_budget_seconds": 1200,
+    "collection_hard_stop": "budget stop/incomplete, retain all processes and errors",
+    "flags": [
+      "-std=c++20",
+      "-O2",
+      "-DNDEBUG",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-pthread"
+    ],
+    "preflight_required": [
+      "immutable source copy before compile",
+      "match all S1 frozen native dependency sha256",
+      "record compiler executable sha256/version and linker version",
+      "hash binary and lock exact fixture bytes before any timed run",
+      "refuse pre-existing output directory",
+      "record stdout/stderr/exit per process",
+      "hash every retained evidence file",
+      "independent readback of 24 exact contexts"
+    ],
+    "developer_runs": "separately marked and cannot qualify formal feasibility"
+  },
+  "quality_gates": [
+    "all 24 process receipts succeed",
+    "reported scenario,side,workers,seed,horizons and actual stats match registration",
+    "nonquiet workloads remain active after warmup",
+    "quiet stays quiescent; zero-visit divisions forbidden",
+    "reactive workload observes a current-catalogue conversion",
+    "preserve inputs and results on any failure",
+    "fail unexecuted context; no skipped pass",
+    "RSS is whole-process peak, never added to per-World component bytes"
+  ],
+  "measurement_limits": [
+    "single source arm has no paired contrast and no storage winner",
+    "source-only feasibility timings cannot support final S2A/S2B conclusions",
+    "observer-on semantic twins and clear-time calibration are separate future gates",
+    "no unsupported worker participation proof from configured worker count",
+    "no cache, bandwidth, allocator-overhead or cross-platform causal claim",
+    "native elapsed clocks are host/noise dependent, do not carry production acceptance"
+  ],
+  "future_primary": {
+    "status": "held-pending-full-source-and-candidate-twin-readback",
+    "S2A": {
+      "contrasts": 16,
+      "pairs_per_contrast": 7,
+      "processes": 224
+    },
+    "S2B": {
+      "contrasts": 23,
+      "pairs_per_contrast": 7,
+      "processes": 322
+    },
+    "require": "freeze all contrast source/binaries/scenarios/actual worker evidence, observer-off and observed twins, AB/BA order, warmup, per-invocation and total budgets before measurements"
+  },
+  "deferred": [
+    "all experimental candidate timing",
+    "source vs matched abstraction overhead",
+    "E8/E16 clear-cost comparisons",
+    "interleaved AB/BA process ratios",
+    "observer overhead",
+    "fixed-memory comparisons",
+    "Windows/Wasm/Godot",
+    "E24/E32",
+    "production carrier selection",
+    "GEN-006 streaming acceptance"
+  ],
+  "registration_version": 3,
+  "source_context_qualification": {
+    "admitted": true,
+    "timed": false,
+    "contexts": 24,
+    "order": "literal contexts array order",
+    "prerequisite": "successful independent readback of every source context before candidate-twin execution"
+  },
+  "candidate_twin_qualification": {
+    "admitted": true,
+    "timed": false,
+    "source_reference": "C64-E8-source is built in both modes but has no injected dispatch hooks; C64-E8-word is the source-matched bridge for actual worker observation.",
+    "arms": [
+      "C64-E8-source",
+      "C64-E8-word",
+      "C64-E16-word",
+      "C64-E8-padded",
+      "C64-E16-padded",
+      "C72-E8-packed",
+      "C72-E16-packed",
+      "C80-E8-packed",
+      "C80-E16-packed",
+      "C72-E8-aligned",
+      "C72-E16-aligned",
+      "C80-E8-aligned",
+      "C80-E16-aligned",
+      "C72-E8-split",
+      "C72-E16-split",
+      "C80-E8-split",
+      "C80-E16-split"
+    ],
+    "observer_modes": [
+      "observed",
+      "timing-twin"
+    ],
+    "anchors": [
+      {
+        "id": "active-512-w4",
+        "side": 512,
+        "scenario": "active",
+        "workers": 4,
+        "purpose": "S2A E8 physical/capacity anchor and actual background-worker evidence"
+      },
+      {
+        "id": "quiet-2048-w1",
+        "side": 2048,
+        "scenario": "quiet",
+        "workers": 1,
+        "purpose": "S2A E8/E16 within-representation anchor and wide-resident quiescent equivalence"
+      }
+    ],
+    "warmup_ticks": 120,
+    "sample_ticks": 256,
+    "seed": 204,
+    "build_contract": {
+      "immutable_overlay": "one hash-guarded per-arm overlay generated from frozen S1 apparatus/native bytes",
+      "observed_define": "MAT003_TWIN_OBSERVERS=1",
+      "timing_twin_define": "MAT003_TWIN_OBSERVERS=0",
+      "allowed_binary_difference": "observer compile definition only; all source/overlay bytes and optimization flags identical",
+      "timing_arrays": "forbidden in both qualification modes"
+    },
+    "evidence_requirements": [
+      "both modes match representation-independent content hash, visit/job arrays, input ledger and final material/water summary for the same arm/context",
+      "all candidate arms match the C64-E8-source semantic reference at active-512-w4 and quiet-2048-w1 where epoch-inclusive state hashes may legitimately differ",
+      "observed 4-worker candidate runs record nonzero dispatch calls, dispatched tasks and executed worker tasks; source control is exempt because its bytes remain uninstrumented",
+      "observer-off timing twins report zero observer counters and remain untimed during qualification",
+      "compiler, flags, overlay hashes, twin-patch hash, fixture hash and both binary hashes are sealed before fixture execution",
+      "independent verifier rejects missing arms, mode/context duplication, source drift, nonempty timing arrays, semantic mismatch or fabricated worker evidence"
+    ],
+    "execution": {
+      "compiler": "g++-13",
+      "flags": [
+        "-std=c++20",
+        "-O2",
+        "-DNDEBUG",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-pthread"
+      ],
+      "maximum_arm_builds": 34,
+      "maximum_fixture_processes": 68,
+      "compile_timeout_seconds": 180,
+      "fixture_timeout_seconds": 120,
+      "total_wall_budget_seconds": 2400,
+      "concurrent_processes": 1,
+      "stop_rule": "any compile/run/readback mismatch or budget exhaustion leaves candidate twins unqualified and timing held"
+    }
+  },
+  "amendments": [
+    "Registration v2 admits only full 24-context untimed source qualification and untimed 17-arm observer-on/off candidate twins. Paired S2A/S2B timing remains explicitly unadmitted.",
+    "Registration v3 freezes candidate-twin matrix/budgets and source-control worker-observation exemption before twin apparatus is added."
+  ]
+}

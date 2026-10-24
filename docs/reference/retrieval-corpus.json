@@ -113,6 +113,7 @@
     "decisions/ADR-014-semantic-plane-admission.md",
     "systems/generation-workbench-2.md",
     "operations/procedural-qualification.md",
+    "operations/mat-003-s2f-feasibility.md",
     "operations/mat-003prepass-registration.md",
     "research/mat-003prepass-state-inventory.md",
     "research/mat-003prepass-epoch-consumers.md",
@@ -129,6 +130,10 @@
     "../.github/pull_request_template.md"
   ],
   "excluded": [
+    {
+      "path": "audits/2026-10-22-mat003-s2f-preflight.md",
+      "reason": "Dated S2F six-source-scenario untimed preflight and failed-attempt receipts; retrieve via S2F operations contract/validation ledger, not as universal performance evidence"
+    },
     {
       "path": "audits/2026-10-18-act002-actor-rigs.md",
       "reason": "Dated ACT-002 source/runtime, preserved failure and scoped rig validation evidence; retrieve explicitly through the rig contract or validation ledger, not as a default Current runtime contract"

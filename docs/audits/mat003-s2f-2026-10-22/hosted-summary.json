@@ -1,0 +1,145 @@
+{
+  "schema_version": 1,
+  "kind": "compact-hosted-evidence-index-not-the-raw-run-json",
+  "stage": "S2F-source-feasibility",
+  "date": "2026-10-22",
+  "issue": 204,
+  "pr": 211,
+  "qualification": "passed-untimed-developer-preflight-only",
+  "performance_qualification": false,
+  "formal_timing_admitted": false,
+  "scenarios_qualified": 6,
+  "full_s2f_grid": 24,
+  "registered_before_apparatus_commit": "89b2b22635f53e0caee045bdc9fbfd3803f5b051",
+  "source_branch_at_execution": "49949bfaff287b6e447dd64c3f9a854a100a65db",
+  "ci_merge_checkout": "257af0b31d1ab214feedeefddc863fcc1b593fe5",
+  "equivalent_tree": "c79fa77c1f5fa725ef8150a3b11a7fed4134796f",
+  "baseline_native_commit": "da5112c066416346d6fe3984d4161cd162611e50",
+  "s1_dependency_hash_ledger": "tools/experiments/mat003_prepass/world_registration.json",
+  "run": {
+    "id": 39867638084,
+    "workflow": "MAT-003PREPASS S2F untimed feasibility preflight",
+    "status": "success",
+    "job": 120133747881
+  },
+  "artifact": {
+    "id": 12464507219,
+    "bytes": 348965,
+    "sha256": "3c298e08fac7d9976dc26da50d69a76b1ac4a19fd7171e6e0c1771bab15a4d58",
+    "zip_crc_check": "passed",
+    "expires_utc": "2026-11-21T22:49:30Z"
+  },
+  "compiler": {
+    "version": "GCC 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04.1)",
+    "binary_sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
+    "linker": "GNU ld 2.42"
+  },
+  "binary_sha256": "976f45c08c59ca2bdc20291b396181265b958a9b3fc42f57fbc88103a38c3dc4",
+  "apparatus_input_sha256": {
+    "tools/experiments/mat003_perf/fixture.cpp": "5922e9d5fba6145dbfa392294422b4fcdd825ecf0dcfc66261e1d99009357871",
+    "tools/experiments/mat003_perf/s2f.py": "88e2b1b203c84630143ffe8348fefb91c74f4f0eb15fb499a53b430a4174b413",
+    "tools/experiments/mat003_perf/s2f_registration.json": "bc6701b1fe985d2d4efeab5a99ddc60f518353b9b4190fe247cc1bab834750f2",
+    "tools/experiments/mat003_perf/verify_s2f.py": "d530edf75599bb02ec1d807fc6b02d05b00d474b17a167dda1a8407bb32e766d",
+    "tools/experiments/mat003_prepass/world_registration.json": "d4d78f2ae3ca64edc4639bacf2a973c7354647040eac635bf63ad5a0a2dae9bf"
+  },
+  "inputs": {
+    "seed": 204,
+    "warmup_ticks": 120,
+    "observed_ticks": 256,
+    "mode": "qualify",
+    "sample_timing_arrays": "empty",
+    "current_source_carrier": "C64-E8"
+  },
+  "cases": [
+    {
+      "id": "quiet-512-w1",
+      "positive_visit_ticks": 0,
+      "total_visited_cells": 0,
+      "total_phase_jobs": 0,
+      "external_input_calls": 0,
+      "reactive_products_observed": 0,
+      "peak_process_rss_bytes": 29835264
+    },
+    {
+      "id": "small-512-w1",
+      "positive_visit_ticks": 256,
+      "total_visited_cells": 143072,
+      "total_phase_jobs": 1024,
+      "external_input_calls": 512,
+      "reactive_products_observed": 0,
+      "peak_process_rss_bytes": 29982720
+    },
+    {
+      "id": "active-512-w4",
+      "positive_visit_ticks": 256,
+      "total_visited_cells": 2907449,
+      "total_phase_jobs": 14740,
+      "external_input_calls": 32768,
+      "reactive_products_observed": 0,
+      "peak_process_rss_bytes": 30105600
+    },
+    {
+      "id": "reactive-512-w4",
+      "positive_visit_ticks": 256,
+      "total_visited_cells": 3135,
+      "total_phase_jobs": 3303,
+      "external_input_calls": 8192,
+      "reactive_products_observed": 63,
+      "peak_process_rss_bytes": 30167040
+    },
+    {
+      "id": "quiet-2048-w1",
+      "positive_visit_ticks": 0,
+      "total_visited_cells": 0,
+      "total_phase_jobs": 0,
+      "external_input_calls": 0,
+      "reactive_products_observed": 0,
+      "peak_process_rss_bytes": 62214144
+    },
+    {
+      "id": "active-2048-w4",
+      "positive_visit_ticks": 256,
+      "total_visited_cells": 2907449,
+      "total_phase_jobs": 14740,
+      "external_input_calls": 32768,
+      "reactive_products_observed": 0,
+      "peak_process_rss_bytes": 62619648
+    }
+  ],
+  "independent_readback": {
+    "status": "passed",
+    "checked_file_count": 57,
+    "checked_cases": 6,
+    "errors": [],
+    "verified_from_downloaded_zip": true
+  },
+  "test_scope": {
+    "negative_contract_tests": 8,
+    "status": "passed"
+  },
+  "documentation_run": {
+    "id": 39867638180,
+    "status": "success"
+  },
+  "compile_stderr_empty": true,
+  "measurement_limitations": [
+    "no primary candidate timings",
+    "configuration of four workers does not prove four independent worker-thread executions",
+    "peak process RSS is not additive with resident_cell_bytes",
+    "S2F incomplete: 18 remaining contexts",
+    "no observer-off matched candidate runs, AB/BA ratios, wide-epoch clear costs, fixed-memory inference or selection"
+  ],
+  "failed_attempts": [
+    {
+      "run": 39867119916,
+      "reason": "negative-test regex and retrieval corpus routing mismatch",
+      "fixture_execution": false
+    },
+    {
+      "run": 39867297931,
+      "artifact_id": 12465220190,
+      "artifact_sha256": "fc30d991342573db53e3e9489f3a66d51e13ed6c405fa16de72772c281e1392c",
+      "reason": "active 512-worker4 injection scene settled; retained incomplete collector, corrected next commit"
+    }
+  ]
+}
