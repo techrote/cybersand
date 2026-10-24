@@ -4,11 +4,20 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-24
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
 # Development handover
+
+## MAT-003 stack reconciliation — 2026-10-24
+
+The [stack reconciliation](../audits/2026-10-24-mat003-stack-reconciliation.md)
+merges current main into the experimental parent chain while preserving registered
+history and current-main LCB/4LY/WEX behavior. Fresh applicable Native, Godot and
+materialized provenance gates are required on the reconciled heads before any
+future merge. This work does not complete #204 or start #212. Claude's separate
+#200 foundation and the dirty primary checkout remain untouched.
 
 ## MAT-003 latest correctness disposition — 2026-10-23
 
@@ -23,6 +32,36 @@ The [resident reentry/scratch source repair](../audits/2026-10-23-mat003-residen
 Resume [#204](https://github.com/techrote/cybersand/issues/204) from the [registration](mat-003prepass-registration.md) and [S1 World report](../audits/2026-10-22-mat003-world-correctness.md). [S0 isolated storage checks passed](../audits/2026-10-22-mat003-prepass-foundation.md). The experimental kit now supplies all seventeen real World arms through generated source copies, typed 8/16-bit counters, full semantic records and a gate spanning two natural sixteen-bit rollovers. **The registered Linux S1 normal/sanitized matrix and independent readback passed at apparatus source `e31d296`; broader World/platform qualification remains open.** Production source and its 64-bit/epoch8 storage remain unchanged.
 
 Read the [state inventory](../research/mat-003prepass-state-inventory.md), [all-consumer epoch audit](../research/mat-003prepass-epoch-consumers.md) and [GEN-006 proposal](../research/mat-003prepass-gen006-handoff.md). Preserve full state_a16 and nonzero Empty records; `content_hash` alone is insufficient. Next: separately register S2 performance feasibility and paired measurements from the bounded proposal; no timing campaign has been admitted. #204 remains open; this apparatus checkpoint selects no production layout.
+
+## 4LY single-chassis flight contract — 2026-10-22
+
+Start with the [physical free-flight contract](../systems/physical-free-flight.md)
+for 4LY-001 / #205, its [strict action/publication interface](../reference/interfaces-and-message-contracts.md#physical-free-flight-actions),
+[profile values](../reference/configuration-reference.md#physical-free-flight-values)
+and [focused checks](local-build-and-validation.md#physical-free-flight-checks).
+The shared main-thread physical owner installs exactly one rectangular chassis;
+explicit no-equipment preparation must survive normal session installation.
+Do not replace that with a legacy empty usable, which can retain a jointed
+equipment body.
+
+The pure controller accepts own velocity/attitude and the admitted two-output
+request, with no position, goal, terrain, reward or World access. Keep gravity
+compensation inside total thrust, retain response/slew and torque bounds, and
+do not append legacy extreme-motion forces. Admitted zero movement means bounded
+braking/hover; cancellation, expiry, takeover and power changes retire command
+and filter state while preserving momentum. The copied profile/controller hashes
+and requested/admitted/applied records identify the actual control path.
+Sustained thrust uses an owned force channel for one actual Rapier step. Retain
+the prepare/bridge-step/complete protocol, immutable original receipt attribution
+and replacement requirement after a sticky step-order fault.
+
+All four stable IDs resolve, but only Trainer has initial conformance tuning;
+the others are identical uncalibrated placeholders. Ordinary `RIG_IDS` stays at
+46 until 4LY-002 authors and measures the profiles and adds selection. 4LY-003
+final flight-lab/teacher evidence must use those frozen profiles. Companion
+4LY-004 Trainer learning must pass independently before 4LY-005 family learning.
+No training run, compute allocation, generic physics acceptance or closure of
+long-lived #132 follows from this source checkpoint.
 
 ## GEN-007 Workbench 2 qualification — 2026-10-21
 
@@ -611,6 +650,20 @@ different physical control.
 The current affected route is therefore
 `#49 corrected apparatus + #91/#92 hybrid evidence + #93 optional gas evidence -> #95 -> #45 disposition -> #18 admission/no-go`.
 #28/#29 remain independently runnable.
+
+## WEX-005 / LCB-000 Gate A handoff, 2026-10-23
+
+The [WEX-005 synthesis](../audits/2026-10-23-wex005-water-evidence-synthesis.md)
+records the #95 disposition: **#45 NARROW** (admission/design only, under a
+vented/shared atmosphere, with deep-release surge registered as its own fixture
+family). The deep-release deficit remains unresolved, #92 is still blocked, #93
+is research only, #94 is narrow-use and #18 is held. Before any #45 candidate,
+read that record and the current-main #49 v2 rerun it cites.
+
+The owner-approved opt-in Liquid Comparison Build (#200) is a separate
+experimental lane. Its pressure family is bounded by the
+[LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
+**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted; the owner currently holds both #200 and #212. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration.
 
 
 ## PENV-001 player/environment tuning handoff

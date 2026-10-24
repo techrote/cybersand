@@ -21,6 +21,8 @@ const PROFILE_VERSION: int = 1
 const TERRAIN_MASK: int = 1
 const PlayerVehicle = preload("res://scripts/player_vehicle_controller.gd")
 const PlayerAcrobat = preload("res://scripts/player_acrobat_controller.gd")
+const FlightProfile = preload("res://scripts/physical_flight_profile.gd")
+const FlightController = preload("res://scripts/physical_flight_controller.gd")
 
 var rig_id: StringName = &""
 var actor_slot: int = 0
@@ -92,6 +94,9 @@ var _player_controller: RefCounted
 var _player_joint_targets: Dictionary = {}
 var _player_wheel_speeds: Dictionary = {}
 var _player_free_joints: Dictionary = {}
+var _flight_controller: RefCounted
+var _flight_capabilities: Dictionary = {}
+var _flight_mode_name: String = "passive_no_lease"
 
 
 static func validate_definition(definition: Dictionary) -> String:
@@ -198,6 +203,28 @@ static func validate_definition(definition: Dictionary) -> String:
 	for value in profile.values():
 		if (typeof(value) == TYPE_FLOAT or typeof(value) == TYPE_INT) and not is_finite(float(value)):
 			return "nonfinite gameplay profile"
+	if StringName(str(definition.id)) in FlightProfile.IDS or definition.has("flight_profile"):
+		var flight: Variant = definition.get("flight_profile")
+		var invalid: String = FlightProfile.validate(flight)
+		if not invalid.is_empty():
+			return "invalid flight profile: " + invalid
+		if str(flight.id) != str(definition.id) or definition.get("action_profile") != FlightProfile.ACTION_PROFILE:
+			return "flight profile identity mismatch"
+		if parts.size() != 1 or not joints.is_empty() or not mounts.is_empty() \
+			or definition.get("equipment_preparation") != "none":
+			return "flight requires one chassis without joints or equipment"
+		var part: Dictionary = parts[0]
+		var size := Vector2(float(flight.collider_size[0]), float(flight.collider_size[1]))
+		if Vector2(part.offset) != Vector2.ZERO or Vector2(part.size) != size \
+			or str(part.get("shape", "")) != "rectangle" \
+			or float(part.mass) != float(flight.mass) \
+			or not _finite_number(part.get("inertia")) or float(part.inertia) != float(flight.inertia) \
+			or part.get("friction") != flight.friction or part.get("bounce") != flight.bounce:
+			return "flight chassis does not match resolved profile"
+		if profile.size() != 4 or profile.get("movement") != "4ly_velocity" \
+			or profile.get("gravity") != flight.gravity or profile.get("air_drag") != flight.linear_drag \
+			or profile.get("angular_drag") != flight.angular_drag:
+			return "flight physics settings do not match resolved profile"
 	return ""
 
 
@@ -231,10 +258,41 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 	if not invalid.is_empty():
 		fault = invalid
 		return ERR_INVALID_DATA
+	var flight_gravity_scale: float = 0.0
+	if definition.has("flight_profile"):
+		var environment_gravity: Variant = ProjectSettings.get_setting("physics/2d/default_gravity", 980.0)
+		var environment_direction: Variant = ProjectSettings.get_setting("physics/2d/default_gravity_vector", Vector2.DOWN)
+		var environment_hz: Variant = ProjectSettings.get_setting("physics/common/physics_ticks_per_second", 60)
+		if not _finite_number(environment_gravity) or float(environment_gravity) <= 0.0 \
+			or not _finite_vector(environment_direction) or environment_direction != Vector2.DOWN \
+			or not _finite_number(environment_hz) or float(environment_hz) != 60.0:
+			fault = "flight requires 60 Hz and positive downward project gravity"
+			return ERR_INVALID_DATA
+		var backend_gravity: float = Vector2(float(environment_gravity), 0.0).x
+		if not is_finite(backend_gravity) or backend_gravity <= 0.0:
+			fault = "flight project gravity is not representable by the physics backend"
+			return ERR_INVALID_DATA
+		# Validate the backend's real_t representation before allocating a body.
+		# The legacy minimum divisor would silently halve authored gravity when
+		# the project default is 0.5; flight must preserve its resolved profile.
+		flight_gravity_scale = Vector2(float(definition.flight_profile.gravity) / backend_gravity, 0.0).x
+		if not is_finite(flight_gravity_scale) \
+			or not is_equal_approx(flight_gravity_scale * backend_gravity, float(definition.flight_profile.gravity)):
+			fault = "flight gravity scale is not representable by the physics backend"
+			return ERR_INVALID_DATA
 	_definition = definition.duplicate(true)
 	_profile = _definition.get("profile", {})
 	_part_defs = _definition.parts
 	_player_controller = null
+	_flight_controller = null
+	_flight_capabilities.clear()
+	_flight_mode_name = "passive_no_lease"
+	if _definition.has("flight_profile"):
+		_flight_controller = FlightController.new()
+		if not _flight_controller.configure(_definition.flight_profile):
+			return ERR_INVALID_DATA
+		_flight_capabilities = FlightProfile.descriptor(_definition.flight_profile)
+		_flight_capabilities["controller_hash"] = FlightController.controller_hash()
 	if str(_profile.get("player_controller", "")) == "acrobat":
 		_player_controller = PlayerAcrobat.new()
 	elif str(_profile.get("player_controller", "")) == "vehicle":
@@ -253,9 +311,13 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 		body.rotation = float(part.get("angle", 0.0))
 		body.mass = float(part.get("mass", 1.0))
 		body.inertia = maxf(0.01, body.mass * Vector2(part.size).length_squared() / 12.0)
+		if _flight_controller != null:
+			body.inertia = float(_definition.flight_profile.inertia)
 		if str(part.get("shape", "rectangle")) == "circle":
 			body.inertia = maxf(0.01, body.mass * pow(float(part.size.x) * 0.5, 2.0) * 0.5)
 		body.gravity_scale = _gravity / maxf(1.0, float(ProjectSettings.get_setting("physics/2d/default_gravity", 980.0)))
+		if _flight_controller != null:
+			body.gravity_scale = flight_gravity_scale
 		body.linear_damp_mode = RigidBody2D.DAMP_MODE_REPLACE
 		body.angular_damp_mode = RigidBody2D.DAMP_MODE_REPLACE
 		body.linear_damp = clampf(float(_profile.get("air_drag", 0.10)), 0.0, 3.0)
@@ -323,7 +385,7 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 	_last_impulse = Vector2.ZERO
 	_last_torque_impulse = 0.0
 	_last_energy_used = 0.0
-	_flight_mode = str(_profile.get("movement", "ground")) == "flight"
+	_flight_mode = str(_profile.get("movement", "ground")) in ["flight", "4ly_velocity"]
 	_air_jumps = 1 if rig_id == &"scout" else 0
 	refresh_observation()
 	_last_centre = _transforms[0].origin
@@ -423,6 +485,9 @@ func centre() -> Vector2:
 func advance(action: Dictionary, delta: float, allowed: bool = true) -> void:
 	if not configured or not fault.is_empty():
 		return
+	if _flight_controller != null:
+		_advance_flight(action, delta, allowed)
+		return
 	if not is_finite(delta) or delta <= 0.0:
 		cancel()
 		refresh_observation()
@@ -510,6 +575,59 @@ func advance(action: Dictionary, delta: float, allowed: bool = true) -> void:
 	_previous_buttons = buttons
 	_publish_observation()
 	queue_redraw()
+
+
+func set_propulsion_enabled(enabled: bool) -> bool:
+	if not configured or _flight_controller == null:
+		return false
+	cancel()
+	_power_enabled = enabled
+	_flight_mode_name = "passive_no_lease" if enabled else "power_off"
+	_publish_observation()
+	return true
+
+
+func _advance_flight(action: Dictionary, delta: float, allowed: bool) -> void:
+	# Deliberately separate from legacy abilities, gyro, energy, ground sensing
+	# feedback and the emergency high-speed brake. The blind helper owns the
+	# complete assistance budget, and receives no pose position, goal or world.
+	if not is_finite(delta) or absf(delta - FlightProfile.FIXED_DELTA) > 0.000000001 \
+		or not allowed or action.size() != 1 or not action.has("move") \
+		or not _finite_vector(action.move) or absf(action.move.x) > 1.0 or absf(action.move.y) > 1.0:
+		cancel()
+		refresh_observation()
+		return
+	_refresh_states()
+	if not fault.is_empty():
+		return
+	_tick += 1
+	_action = {"move": Vector2(action.move).limit_length(1.0)}
+	var response: Dictionary = _flight_controller.advance(_action.move, _velocities[0],
+		_transforms[0].get_rotation(), _angular_velocities[0], delta, _power_enabled)
+	_last_impulse = Vector2(response.applied_force) * delta
+	_last_torque_impulse = float(response.applied_torque) * delta
+	_last_energy_used = 0.0
+	if not bool(response.valid):
+		cancel()
+		return
+	# Own this force channel for exactly one host step. Sustained thrust must
+	# participate in Rapier's force/substep integration, not be a pre-step
+	# impulse: the latter can drift in position even at zero sampled velocity.
+	# Replacement/cancel can revoke an unconsumed force without undoing momentum.
+	PhysicsServer2D.body_set_constant_force(_parts[0].get_rid(), Vector2(response.applied_force))
+	PhysicsServer2D.body_set_constant_torque(_parts[0].get_rid(), float(response.applied_torque))
+	_flight_mode_name = "power_off" if not _power_enabled else ("neutral" if _action.move == Vector2.ZERO else "velocity")
+	_movement_limited = bool(response.thrust_saturated) or bool(response.acceleration_limited)
+	# Sensors belong to publication/producer input only, never to stabilization.
+	_sense()
+	_publish_observation()
+	queue_redraw()
+
+
+func complete_step() -> void:
+	if _flight_controller != null and not _parts.is_empty():
+		PhysicsServer2D.body_set_constant_force(_parts[0].get_rid(), Vector2.ZERO)
+		PhysicsServer2D.body_set_constant_torque(_parts[0].get_rid(), 0.0)
 
 
 func _apply_locomotion(family: String, buttons: Vector3i, dt: float, effort: float) -> void:
@@ -1273,24 +1391,42 @@ func _publish_observation() -> void:
 	_observation.merge(_sensors)
 	if _player_controller != null:
 		_observation["player_movement"] = _player_controller.observation()
+	if _flight_controller != null:
+		_observation["action_profile"] = FlightProfile.ACTION_PROFILE
+		_observation["flight"] = {"mode": _flight_mode_name, "propulsion_enabled": _power_enabled,
+			"capabilities": _flight_capabilities.duplicate(true), "controller": _flight_controller.observation()}
 
 
 func observation() -> Dictionary:
 	var result: Dictionary = _observation.duplicate(true)
 	result["fault"] = fault
+	if _flight_controller != null:
+		# Fault quarantine preserves the last finite pose, while current command
+		# and assistance publication must reflect cancellation immediately.
+		result["action"] = _action.duplicate(true)
+		result["applied_impulse"] = _last_impulse
+		result["applied_torque_impulse"] = _last_torque_impulse
+		result["energy_used"] = _last_energy_used
+		result["flight"] = {"mode": _flight_mode_name, "propulsion_enabled": _power_enabled,
+			"capabilities": _flight_capabilities.duplicate(true), "controller": _flight_controller.observation()}
 	if not fault.is_empty():
 		result["suspended"] = true
 	return result
 
 
 func capabilities() -> Dictionary:
-	return {"version": PROFILE_VERSION, "rig_id": str(rig_id), "representation": "articulated-rapier",
+	var result: Dictionary = {"version": PROFILE_VERSION, "rig_id": str(rig_id), "representation": "articulated-rapier",
 		"parts": _part_defs.duplicate(true), "joints": _definition.get("joints", []).duplicate(true),
 		"mounts": _definition.get("mounts", []).duplicate(true), "profile": _profile.duplicate(true),
 		"maximum_parts": MAX_PARTS, "maximum_rays": MAX_RAYS,
 		"native_geometry": "oriented-rectangles", "circle_native_mask": "circumscribed_rectangle",
 		"gyro_semantics": "bounded-authored-assistance",
 		"slide_semantics": "paired-slot-guide-with-spring-and-endstops", "learned_controller": false}
+	result["equipment_preparation"] = str(_definition.get("equipment_preparation", "mounted"))
+	if _flight_controller != null:
+		result["flight"] = _flight_capabilities.duplicate(true)
+		result["action_profile"] = FlightProfile.ACTION_PROFILE
+	return result
 
 
 func fire_mount(index: int = 0, effort: float = 1.0) -> bool:
@@ -1521,6 +1657,14 @@ func cancel() -> void:
 	# Revocation discards future work/charge; it never performs a release action,
 	# erases momentum, resets a spring, or launches a charged leap.
 	charge = 0.0
+	if _flight_controller != null:
+		_flight_controller.cancel()
+		complete_step()
+		_flight_mode_name = "passive_no_lease" if _power_enabled else "power_off"
+		_last_impulse = Vector2.ZERO
+		_last_torque_impulse = 0.0
+		_last_energy_used = 0.0
+		_movement_limited = false
 	if _player_controller != null:
 		_player_controller.cancel()
 	_player_joint_targets.clear()
@@ -1587,6 +1731,8 @@ func _draw() -> void:
 func close() -> void:
 	cancel()
 	_player_controller = null
+	_flight_controller = null
+	_flight_capabilities.clear()
 	configured = false
 	for joint: Dictionary in _joints:
 		if is_instance_valid(joint.node):
