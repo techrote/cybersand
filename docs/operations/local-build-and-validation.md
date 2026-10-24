@@ -298,6 +298,32 @@ semantic records and live ownership unchanged. The [authoring guide](semantic-de
 documents reproducible composites, isolated planes, region details and capture
 manifests. Headless rendering does not substitute for those captures.
 
+### Residual LCB-001 native setup and receipt checks
+
+The unmerged `codex/lcb001-shared-contract` checkpoint registers its whole-cell
+Water, normalization, native-issued refusal, typed receipt and quantity-ledger
+cases in the ordinary `make test` and `build_windows_msvc.bat` suites. The
+[native contract](../architecture/liquid-prepared-setup-and-receipts.md) owns
+the interfaces and qualifications; the [dated evidence](../audits/2026-10-24-lcb001-residual-shared-contract.md)
+records two final 121-case native builds and scoped fresh Windows Godot proof.
+
+```sh
+python tools/lcb/water_normalization_contract.py --check
+python tools/lcb/liquid_run_receipt_contract.py --check
+python tools/lcb/derive_capability_matrix.py --check
+python tools/lcb/policy_contract.py --check
+python tools/lcb/native_policy_artifacts.py --check
+python tools/lcb/lcb_registry.py build --check
+python -m unittest discover -s tools/lcb -p 'test_*.py'
+```
+
+The two new oracles compare complete canonical byte vectors with independent
+Python encoders. Source-sensitive runtime publication remains required before
+ready-PR acceptance. Keep the successor draft while release binaries are stale;
+scratch Windows proof does not reattest retained Linux/Windows libraries. The
+Godot normalization opt-in and full application host are separate integration
+work, and no new #201/#212 implementation is included in this checkpoint.
+
 ### Branch-scoped runtime publishers
 
 Source-matched Linux and Windows runtimes have been published by **temporary,

@@ -1,11 +1,11 @@
 ---
 title: Liquid material and solver state-transition matrix
-status: Planned
+status: Approved design
 document-kind: design
-scope: Authoritative operation-by-operation transition rules for Current liquids and the proposed LCB families (FreeMass, whole-cell CellularYield Water, pressure_flow_v1, inertial_cellular_v1) — owner, state moved, conservation/source-sink, invalidation and family applicability; consumes the bounded Gate B storage handoff; no Cell layout choice; PF rows are implemented by the pressure_flow_v1 reference on branch claude/lcb001-pressure-reference
+scope: Operation-by-operation transition rules for default liquids, native W-CY and pressure reference, plus Planned inertial/cache/dormancy requirements — ownership, state movement, exact quantity/source-sink, invalidation and family applicability; no production Cell layout choice
 canonical-for: [liquid-state-transition-matrix]
 last-reviewed: 2026-10-24
-related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, lcb-pressure-inertial-handoff.md, data-ownership-and-lifetimes.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, ../systems/water-design.md]
+related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-prepared-setup-and-receipts.md, lcb-pressure-inertial-handoff.md, data-ownership-and-lifetimes.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, ../systems/water-design.md]
 ---
 
 # Liquid material and solver state-transition matrix
@@ -23,9 +23,16 @@ related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, lcb-pre
   Current per-path result. Refinements of the Proposed PF text: the overfill
   bound is `maximum()`; a kernel-vacated cell carries a vacuum label (volume, not
   amount); `transfer_water` throws in a pressure World; vented and collapsed gas
-  amounts are booked in `GasLedger`; CYPS v1 is the exact save/readback path and
-  CYSD1 stays a default-family reconstruction. Dormancy and caches (#201), W-CY
-  and IN rows remain Proposed.
+  amounts are booked in `GasLedger`. Residual native #200 source advances exact
+  hash/persistence to version 2 with the shared quantity ledger; historical
+  CYPS1 explicitly refuses. CYSD1 stays a default-family reconstruction.
+- **W-CY rows are Current in residual native source** on
+  `codex/lcb001-shared-contract`: whole-cell Water law version 1 and optional
+  viscosity material block v2, with retained cadence/stochastic liveness.
+  [Native prepared setup and receipts](liquid-prepared-setup-and-receipts.md)
+  owns normalization, native-issued outcomes, typed receipt and accounting
+  codecs. This owner-requested narrow native freeze is not a production Cell or
+  global ABI freeze. IN and #201 caches/dormancy remain Planned.
 - **Storage** follows the [Gate B bounded handoff](../audits/2026-10-23-lcb000-gate-b-state-handoff.md) (accepted; [refresh](../audits/2026-10-23-lcb000-admission-gatea-gateb-refresh.md)):
   - the C64-E8 Cell is unchanged;
   - family state lives in **optional, versioned, solver-owned storage**, plus
@@ -67,31 +74,31 @@ related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, lcb-pre
 
 | Operation | Owner | State moved | Conservation | Invalidation / wake | FM | CY | PF | IN |
 |---|---|---|---|---|---|---|---|---|
-| Gravity/diagonal move of a whole cell into Empty | World kernel (`try_move` L2446 → `move_cell` L2323) | whole tuple + optional state | exact per cell | both endpoints' blocks woken; PF: column/run summaries dirty | Current (when not merging) | Current | Proposed: cell + overfill + velocity move together | Proposed: velocity and accumulator move with the cell |
-| Lateral move into Empty | kernel | same | exact | same | via `transfer_water` partial (see §4) | Current: whole cell, viscosity roll only for yielding kernels | Proposed: flux law, quantity moves, remainder stays | Proposed: travel from the accumulator; one destination per tick within the bounded radius |
+| Gravity/diagonal move of a whole cell into Empty | World kernel (`try_move` L2446 → `move_cell` L2323) | whole tuple + optional state | exact per cell | both endpoints' blocks woken; PF: column/run summaries dirty | Current (when not merging) | Current | Current PF: cell + overfill + velocity move together | Proposed: velocity and accumulator move with the cell |
+| Lateral move into Empty | kernel | same | exact | same | via `transfer_water` partial (see §4) | Current: whole cell, viscosity roll only for yielding kernels | Current PF: flux law, quantity moves, remainder stays | Proposed: travel from the accumulator; one destination per tick within the bounded radius |
 | Move refused by body mask | World (`transient_obstacle_at`) | none | exact | contact recorded (`record_transient_contact`) | Current | Current | must record the same contact and must not push state into the mask | same; impulse into a mask is dissipated and booked |
 
 ## 2. Same-liquid transfer and merge
 
 | Operation | Owner | State | Conservation | Invalidation | FM | CY | PF | IN |
 |---|---|---|---|---|---|---|---|---|
-| Fall onto same-liquid with capacity | Water: `transfer_water` (L2481); others: no merge | quantity | exact integer (Water) | both endpoints | Current: merges up to capacity; `state_b` = max | Current: none (whole cells only) | Proposed: visible + overfill conserved; velocities mixed by a registered mass-weighted rule with deterministic rounding and a booked rounding remainder | Proposed (whole-cell): no merge; momentum transfer through §5 |
-| Lateral relaxation between same-liquid neighbours | Water `level_with` (L2698) | quantity | exact | endpoints | Current ¾ rule, `tolerance()` | none | Proposed: head-gradient flux replaces it | none (motion is velocity-driven) |
+| Fall onto same-liquid with capacity | Water: `transfer_water` (L2481); others: no merge | quantity | exact integer (Water) | both endpoints | Current: merges up to capacity; `state_b` = max | Current: none (whole cells only) | Current PF: visible + overfill conserved; velocities mixed by a registered mass-weighted rule with deterministic rounding and a booked rounding remainder | Proposed (whole-cell): no merge; momentum transfer through §5 |
+| Lateral relaxation between same-liquid neighbours | Water `level_with` (L2698) | quantity | exact | endpoints | Current ¾ rule, `tolerance()` | none | Current PF: head-gradient flux and resting surface skin | none (motion is velocity-driven) |
 
 ## 3. Different-liquid displacement and density exchange
 
 | Operation | Owner | State | Conservation | Invalidation | FM | CY | PF | IN |
 |---|---|---|---|---|---|---|---|---|
-| Vertical density swap | `can_density_exchange` (vertical delta ≠ 0) + `move_cell(swap)` | **both** whole tuples + both cells' optional state | exact for both tuples (tested: `test_lcb_physics_contracts.gd::ownership`) | both endpoints; PF summaries of the affected run invalidated before reuse | Current | Current | Proposed: overfill stays with its Water cell; the foreign cell is a density boundary | Proposed: velocity stays with its cell; no velocity written into a foreign family |
-| Sideways contact with a foreign liquid | none today (no sideways swap) | — | — | — | Current: blocked | Current: blocked | Proposed: foreign liquid = known-density boundary, no head propagation through it | Proposed: impulse stops; dissipation booked |
+| Vertical density swap | `can_density_exchange` (vertical delta ≠ 0) + `move_cell(swap)` | **both** whole tuples + both cells' optional state | exact for both tuples (tested: `test_lcb_physics_contracts.gd::ownership`) | both endpoints; PF summaries of the affected run invalidated before reuse | Current | Current | Current PF: overfill stays with its Water cell; the foreign cell is a density boundary | Proposed: velocity stays with its cell; no velocity written into a foreign family |
+| Sideways contact with a foreign liquid | none today (no sideways swap) | — | — | — | Current: blocked | Current: blocked | Current PF: foreign liquid = known-density boundary, no head propagation through it | Proposed: impulse stops; dissipation booked |
 
 ## 4. Partial versus whole-cell quantity
 
 | Operation | Owner | Rule |
 |---|---|---|
 | FreeMass partial transfer | `transfer_water` | Current: `amount = min(requested, source, capacity)`. Zero source → Empty; Empty destination → Water. |
-| Whole-cell Water (W-CY, IN v1) | family | Proposed: every Water cell holds exactly `maximum()`. Fractional setup input is refused or explicitly normalized (`water-normalize-v1`: up when `2·m ≥ maximum()`, signed per-cell delta, setup-only ledger). |
-| Overfill (PF) | family | Proposed: Water can hold `maximum()` + overfill. Overfill counts in every quantity observation and in the ledger, is never rendered as an extra cell, and never exceeds the frozen bound. Refusal is preferred to clamping. |
+| Whole-cell Water (W-CY; IN v1 Planned) | family | Current native W-CY: every Water cell holds exactly `maximum()`. Fractional ingress refuses or uses explicit native `water-normalize-v1` preparation (up when `2·m ≥ maximum()`, exact setup-only source/sink); no Godot normalization opt-in yet. |
+| Overfill (PF) | family | Current: Water can hold `maximum()` + overfill, with overfill ≤ `maximum()`. Overfill enters native quantity accounting and observations and is never rendered as an extra cell. |
 | Observation of quantity | host | `water_integer` for FM/PF (visible + overfill for PF); `maximum()` per cell for whole-cell families |
 
 ## 5. Velocity and momentum (IN; PF flow)
@@ -110,7 +117,7 @@ executable specification is the standalone oracle
 [tests](../../tools/lcb/test_inertial_contract.py). Its worked examples are
 embedded in the [contract registry](../../godot/tests/fixtures/lcb/lcb-physics-contracts.json)
 (contract `inertial-update`). It is a contract model on static neighbourhoods:
-**no World, scheduler or inertial family has executed.**
+**the contract model itself executes no World, scheduler or inertial family.**
 
 Units: velocity and accumulators are signed integers in `q` units per cell. The
 illustrative values are `q = 16`, `g = 4` and `vmax = 64`. Fractions are
@@ -185,7 +192,7 @@ corner travel, and lighter-below non-support.
 
 | Operation | Owner | Rule |
 |---|---|---|
-| Pair reaction (any family) | generic pre-kernel chemistry (L2797) | **Current:** both products written at descriptor defaults (Water products at `maximum()`). **Proposed:** unchanged chemistry; optional state of both consumed cells is retired; products start at their family defaults (R2); a signed per-species ledger entry is booked (consumed Water mass, created cells). |
+| Pair reaction (any admitted family) | generic pre-kernel chemistry | **Current native:** products use descriptor defaults (Water at `maximum()`), with family state reset even for Water-to-Water products. Shared accounting books actual visible+overfill Water consumed and gross Water produced per rule; material cell counts are separate units. #160 chemistry is unchanged. |
 | Phase change Water↔Steam/Ice | Steam/Ice kernels (L2846, L3142) | Current: Steam expiry → Water at `maximum()` (#160 amplification). PR #162 would preserve quantity; it is unmerged, so LCB books the delta and does not assume it. |
 | Kernel lifecycle (Oil burn, Cement cure, Molten Glass cooling) | material kernel | unchanged under every admitted family; specialized liquids stay on their default family |
 
@@ -193,9 +200,9 @@ corner travel, and lighter-below non-support.
 
 | Operation | Owner | Rule |
 |---|---|---|
-| Paint/fill | host → `set_cell_state`/`water_experiment_fill_rect` | Current: Water fill writes the policy-scaled mass; rectangles write descriptor defaults. Proposed: the painted cell gets its material's applied family default state; whole-cell Water families paint `maximum()` only. |
+| Paint/fill | host → `set_cell_state`/`water_experiment_fill_rect` | Current native: Water fill uses selected precision; painted family state resets. W-CY requires `maximum()`; fractional bool ingress returns false before allocation/mutation. Family-only reset still emits mutation/wake witnesses. Native prepared construction is the explicit normalization path. |
 | Erase | host | the cell becomes Empty; optional state is retired; a ledgered sink |
-| Scheduled source/sink | MicroScenario events | ledgered exactly (`water_ledger`, regression `_ledger_closure`); PF overfill and IN state are included in the Water sink |
+| Scheduled source/sink | MicroScenario/World owners | Native shared accounting books actual Water source/sink including PF overfill, independently of the host observation window; IN retirement remains Planned. Host `water_ledger` is a separate apparatus projection. |
 | Explosions / tools | native queue | material removal is a sink; family state is retired; ledgers attribute the source |
 
 ## 8. Body displacement and boundary changes
@@ -210,10 +217,10 @@ corner travel, and lighter-below non-support.
 
 | Operation | Rule |
 |---|---|
-| Sleep | Current: a block sleeps after `sleep_after_quiet_ticks` (3) quiet ticks. Proposed: a family may sleep a block only when its future-affecting state is at rest (zero velocity, settled overfill, no pending gas change). PF dormancy (#201) must not suppress other families (contract `dormant-water-active-oil`). |
+| Sleep | Current: ordinary quiet threshold 3; W-CY retains deadlines for legal future cadence/yield opportunities and blocked pools may sleep. Planned #201 dormancy needs analytical future rest, preserves no-motion body contacts/material work and cannot freeze nonzero flow or suppress other families (`dormant-water-active-oil`). |
 | Wake | any write, cross-family contact, topology change, gas change or remote head change affecting a dormant certificate |
 | Reset/rebuild | a new World with fresh optional storage and gas table; no state carried from the old World; validate → reconstruct → commit |
-| Save/readback | the experiment capture holds setup + effective policy + complete tick-boundary physical state + receipt hash; unknown mandatory fields are refused; CYSD1 loads with all liquids on defaults and is never a continuation |
+| Save/readback | Current native: typed-v1 prepared setup/receipts/accounting, complete physical hash2 and CYPS2 continuation; unknown schema/format and historical CYPS1 refuse. Qualified provenance is not full host replay proof. CYSD1 loads defaults and is never a continuation. |
 
 ## 10. Pressure gas compartments (PF, World-owned)
 
@@ -230,7 +237,7 @@ Expected times use the phase convention in the
 event indexed N applies after completed tick N and is first observable at
 completed N+1.
 
-| Operation | Rule (Proposed; fixtures in `godot/tests/fixtures/lcb/acceptance/`) |
+| Operation | Rule (Current PF; fixtures in `godot/tests/fixtures/lcb/acceptance/`) |
 |---|---|
 | Create | a sealed Empty region with no vented path forms a compartment with a new id and generation 0, amount = atmospheric amount for its free volume, and a ledger entry. Identity is never derived from amount. |
 | Volume change (compression) | amount constant, volume recomputed, pressure derived (isothermal) |
@@ -248,4 +255,5 @@ completed N+1.
 |---|---|
 | Executable now (Current) | `test_lcb_physics_contracts.gd` (ownership swap, ledgers, dormancy, deep-release characterization, heads) and `test_lcb_negative_contracts.gd` |
 | Executable on the pressure branch (PF reference) | native `test_lcb_pressure.cpp` (13 cases: admission, gas fixtures, Empty-only chunks, quantity/worker parity, two-limb, barriers, static rest/wake, lifecycle ledgers, physical hash and CYPS persistence, default goldens) and `test_lcb_pressure_reference.gd` (12 sections) |
-| Blocked until #200/#212/#201 | registered in `godot/tests/fixtures/lcb/lcb-physics-contracts.json` with dependencies and frozen screens; the registry records are unchanged by the PF reference (W-CY, IN, cached/dormant and mixed arms remain blocked) |
+| Native residual #200 | `test_water_cellular_yield.cpp`, `test_water_normalization.cpp`, `test_liquid_construction_refusal.cpp`, `test_liquid_run_receipt.cpp`, `test_quantity_ledger.cpp`; qualified native evidence in the [canonical contract](liquid-prepared-setup-and-receipts.md#tests-and-qualified-evidence) |
+| Remaining campaign dependencies | #202 host/normalization UI, #212 IN, #201 cached/dormant and their registered mixed arms remain pending; native W-CY tests do not imply those campaign gates passed |

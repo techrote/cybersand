@@ -708,16 +708,17 @@ does not freeze #45 thresholds.
 | Linux, sanitizer/TSan and Web/WASM execution | CI only for Linux/sanitizers; Web not built or run |
 
 **Characterization screens, not admission criteria** (native harness, 1 worker):
-depth response t240 1.68 (Current 1.06); depth-160 front t240 219 (71);
-depth-160 retained t1800 0.369 (0.851); vented two-limb |difference| t2400 7 rows
-(120); narrow passage 42 rows (120). The sealed two-limb differs from vented but
-was 4.9 rows from the isothermal law at t2400, still settling. Quantity was exact
-in every run.
+at repaired source `349d593`: depth response t240 1.69 (Current 1.06); depth-160
+front t240 220 (71); depth-160 retained t1800 0.371 (0.851); vented two-limb
+|difference| t2400 9 rows (120); narrow passage 43 rows (120). The sealed
+two-limb differs from vented (levels 152/175, gap 23), remains unsettled and has
+no sealed-law acceptance. Quantity was exact in all twelve runs. Earlier-source
+measurements remain in the dated evidence record.
 
 | Remaining | Owner and status |
 |---|---|
-| W-CY (whole-cell Water `cellular_yield_v1`), `water-normalize-v1` and `normalization_required` (NC-3) | #200, Planned |
-| Frozen run-receipt schema; the remaining #202 constructors | #200, Planned |
+| W-CY, `water-normalize-v1`, native typed receipts and exact quantity accounting | #200, Current in unmerged successor; local proof and remaining acceptance [below](#lcb-001-residual-shared-contract--2026-10-24) |
+| Host provenance/collection proof and remaining normal-application constructors | #202, Planned; preserve native shared interfaces from #200 |
 | `cached`/`cached_dormant`, incremental caches and dormancy (the reference is O(resident cells) per tick) | [#201](https://github.com/techrote/cybersand/issues/201), Planned |
 | Comparison host and UI; re-dispositioning the registered candidate arms | [#202](https://github.com/techrote/cybersand/issues/202), Planned |
 | `inertial_cellular_v1` (W-IN, Brine), M1/M2 | #212, Planned; no longer owner-held |
@@ -733,6 +734,34 @@ record holds their hashes and scope. Final exact-head ready-PR gates remain
 separate. After the branch merges, retire the workflow, helper and
 unittest as described for [branch-scoped publishers](../operations/local-build-and-validation.md#branch-scoped-runtime-publishers).
 #200 itself stays open (see the [issue-state correction](#lcb-001-policy-foundation--2026-10-24)).
+
+## LCB-001 residual shared contract — 2026-10-24
+
+**Current in unmerged source:** `codex/lcb001-shared-contract` consolidates
+whole-cell Water admission/refusal, its own yielding law/material block v2,
+rare-yield liveness, explicit final-tuple `water-normalize-v1`, native-issued
+construction outcomes, immutable prepared Worlds, typed v1 run/attempt receipts
+and exact quantity aggregates. Physical hash and CYPS advance to **2** for the
+shared accounting continuation. Historical content/state hashes, Cell carrier,
+Current defaults and retained failures remain preserved. The narrow native
+encoding freeze does not establish a global ABI or full-host evidence freeze.
+
+Read the [canonical native contract](../architecture/liquid-prepared-setup-and-receipts.md)
+and [dated evidence](../audits/2026-10-24-lcb001-residual-shared-contract.md).
+Final LLVM-MinGW and MSVC builds pass **121/121** at the ordinary 1 MiB stack;
+eight normalization and seven complete receipt byte vectors match independent
+Python oracles. A fresh local Windows DLL passes policy/pressure/receipt/native
+observation and 16 WEX body-mask cases. This is a draft handover checkpoint:
+both-platform release publication, full final-head non-draft CI, Godot typed
+normalization opt-in and actual host coverage/provenance remain open.
+
+**Owner execution boundary:** finish residual #200 acceptance first, then fan out
+#201/#202/#212 where write sets permit, and complete #203 after integration.
+This checkpoint begins no substantial cache/dormancy or inertial implementation.
+The #201 rest certificate must preserve stationary failed-motion body-contact
+reports, required material stages, other-liquid work and future stochastic/
+cadence work. Zero rounded flow is not rest, and a complete tick-inclusive hash
+cannot be a cross-tick static-rest predicate.
 
 ## Opt-in transport profiles
 

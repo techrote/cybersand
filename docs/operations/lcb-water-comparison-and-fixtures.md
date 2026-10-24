@@ -20,9 +20,10 @@ related-documents: [../architecture/liquid-solver-family-policy.md, lcb-manual-c
   schema-2 definitions run on unchanged native Current liquids. Their
   Current-default control observations were measured on 2026-10-23
   ([evidence](../audits/2026-10-23-lcb000-gates-cde-design-evidence.md)).
-- **Proposed:** every non-default family arm. None of them can execute today.
-  They are registered with the configuration they will need and the
-  invariants they must meet.
+- **Current in source:** opt-in W-PF reference, plus W-CY on the unmerged
+  `codex/lcb001-shared-contract` successor. Their source/runtime qualifications
+  are recorded in their dated evidence. Cached/dormant and inertial arms remain
+  Planned, with their registered invariants still required.
 
 Families, variants, refusal codes and receipts are defined in the
 [solver-family policy](../architecture/liquid-solver-family-policy.md).
@@ -32,7 +33,7 @@ Families, variants, refusal codes and receipts are defined in the
 | Arm ID | Water mapping | Regime | State today |
 |---|---|---|---|
 | `W-FM` | `freemass_v1/reference` | protected native Current: mass8, coherence12, fractional | **executes** |
-| `W-CY` | `cellular_yield_v1/reference` | **experimental whole-cell**: every Water cell is one indivisible unit; motion through the generic yielding kernel with a Water-specific viscosity parameter registered by #200 | proposed; refused today (`family_unavailable`) |
+| `W-CY` | `cellular_yield_v1/reference` | **experimental whole-cell**: every Water cell contains `maximum()`; Water's own yielding law and material block v2 (`viscosity_index` 0–255, default 0) retain its material hooks | Current in unmerged residual #200 source; local native and scoped Windows proof, release publication/acceptance pending ([contract](../architecture/liquid-prepared-setup-and-receipts.md)) |
 | `W-PF` | `pressure_flow_v1/{reference,cached,cached_dormant}` | experimental pressure/overfill/gas candidate, Water-only v1 | `reference` **executes**, opt-in: Current on branch `claude/lcb001-pressure-reference` ([design](../architecture/pressure-flow-v1.md)); `cached`/`cached_dormant` refused `family_unavailable` (#201) |
 | `W-IN` | `inertial_cellular_v1/reference` | experimental inertial regime with retained velocity/accumulator | proposed (#212); refused today |
 
@@ -66,7 +67,8 @@ Rules:
 - **Fractional cells.** For a whole-cell (`W-CY`) or any regime without
   fractional support, a setup containing fractional Water is **refused**
   (`normalization_required`) unless the caller explicitly opts in to a
-  registered setup conversion. The only proposed rule is
+  registered setup conversion. The registered rule, implemented in unmerged
+  native residual #200 source, is
   **`water-normalize-v1` (corrected 2026-10-23)**:
   - **Rounding.** A Water cell of mass `m` (1 ≤ m ≤ `maximum()`) becomes one
     full cell (`maximum()`) when `2·m ≥ maximum()`, evaluated in at least
@@ -87,6 +89,12 @@ Rules:
     post-normalization states and report the delta.
 
   Nothing rounds or deletes partial mass silently.
+  Native preparation resolves immutable final tuples, preserves thermal/foreign
+  state, checks actual installed payload and binds the one-shot tick-zero ledger
+  seed to the receipt. The explicit Godot constructor refuses partial final
+  Water; its normalization opt-in and full normal-application routing remain
+  integration gaps. See the [native setup/receipt contract](../architecture/liquid-prepared-setup-and-receipts.md)
+  and [dated local proof](../audits/2026-10-24-lcb001-residual-shared-contract.md).
 - **Reverse direction.** A whole-cell or inertial Water cell entering a
   FreeMass-valued observation counts as `maximum()`.
 

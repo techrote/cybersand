@@ -2,7 +2,7 @@
 title: Level saves and exact replay
 status: Current
 document-kind: contract
-scope: Current CYSD1 finite-level format, exclusive ownership, import failure and omitted continuation state; how the experimental LCB CYPS v1 continuation differs
+scope: CYSD1 finite-level format, ownership and omitted continuation state; residual native LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps
 canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
 last-reviewed: 2026-10-24
 related-documents: [interfaces-and-message-contracts.md, ../architecture/pressure-flow-v1.md, ../architecture/determinism-and-boundary-transfers.md, validation-evidence.md]
@@ -94,21 +94,23 @@ checked with `1e-5` tolerance; exact floating-point trajectory replay is not cla
 complete state/configuration identity, migration, I/O pressure policy and an
 explicit strict-mode implementation. Do not infer those contracts from CYSD1.
 
-## How does CYPS v1 differ from CYSD1?
+## How does CYPS2 differ from CYSD1?
 
-**Current on branch `claude/lcb001-pressure-reference` (unmerged), experimental.**
+**Current in unmerged residual native #200 source on `codex/lcb001-shared-contract`.**
 `World::save_physical_state()`/`restore_physical_state()` and the bridge's
-`export_physical_state`/`import_physical_state` write and read **CYPS v1**
-(`kPhysicalStateFormatVersion` 1), an exact tick-boundary continuation for LCB
+`export_physical_state`/`import_physical_state` write and read **CYPS2**
+(`kPhysicalStateFormatVersion` 2), an exact tick-boundary continuation for LCB
 comparison Worlds. Its canonical description is the
-[pressure reference persistence contract](../architecture/pressure-flow-v1.md#persistence-cyps-v1).
+[pressure persistence contract](../architecture/pressure-flow-v1.md#persistence-cyps-v2)
+and [shared native setup/accounting contract](../architecture/liquid-prepared-setup-and-receipts.md).
 
-| | CYSD1 | CYPS v1 |
+| | CYSD1 | CYPS2 |
 |---|---|---|
 | Purpose | finite level exchange | exact continuation of a comparison World |
 | Liquid policy | not stored; import always reconstructs on default families (NC-10) | policy envelope stored and re-admitted by the running build |
 | Clock, epochs, regions, pending events, activity blocks | omitted | stored |
 | Pressure sidecars and gas table | n/a (lossy; never a continuation) | stored |
+| Shared quantity accounting and construction binding | omitted | exact source/sink and rule totals, visible+overfill, separate material cell counts, prepared/normalization identities |
 | Integrity | codec checksum and native validation | SHA-256 of the body, then range and invariant checks |
 | Failure | live World intact | `invalid_argument`/`LiquidPolicyRefused`; live World intact ("running world preserved") |
 | Continuation | none claimed | bit-identical physical and state hash, including at another worker count |
@@ -116,7 +118,18 @@ comparison Worlds. Its canonical description is the
 CYPS omits execution settings (workers, capacities come from the caller),
 host-owned transient body masks and Rapier state, and requires settled discovery
 to be disabled. It is not general sparse-world persistence, replay input capture
-or a frozen schema, and CYSD1 is unchanged.
+or full application replay. The owner-requested native codec freeze does not
+freeze production Cell/global ABI or those missing host contracts; CYSD1 is
+unchanged. Historical CYPS1 belongs to the #245 source/artifact evidence and is
+explicitly refused by this decoder. A valid digest does not excuse inconsistent
+accounting: restore validates closure, roles, quanta and actual stored authority.
+
+The native prepared builder can normalize final setup tuples only with explicit
+opt-in and a bound receipt. It cannot normalize a live World. Godot's normal
+level import still reconstructs defaults; native candidate CYSD1 ingress
+preflights nonzero fractional W-CY Water and returns `normalization_required`
+rather than silently rounding. The old Godot dictionary run getter is not the
+typed native receipt and provides no full host-replay proof.
 
 ## Which evidence applies?
 

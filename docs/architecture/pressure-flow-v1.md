@@ -5,15 +5,16 @@ document-kind: design
 scope: LCB-001 (#200) implemented opt-in Water family pressure_flow_v1/reference — admission, solver-owned state, gas-compartment topology and identity, head snapshot, kernel laws, declared parameters and bounds, lifecycle per mutation path, physical-state hash, CYPS persistence, inspection APIs and known limits; cached/dormant variants (#201) and the comparison host (#202) are not here
 canonical-for: [pressure-flow-v1, gas-compartments, physical-state-hash, physical-state-persistence]
 last-reviewed: 2026-10-24
-related-documents: [lcb-pressure-inertial-handoff.md, liquid-state-transition-matrix.md, liquid-solver-family-policy.md, ../audits/2026-10-24-lcb001-pressure-reference-publication.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md]
+related-documents: [lcb-pressure-inertial-handoff.md, liquid-state-transition-matrix.md, liquid-solver-family-policy.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb001-pressure-reference-publication.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md]
 ---
 
 # pressure_flow_v1 reference — corrected Water pressure family
 
 ## Status
 
-**Current** in source on branch `claude/lcb001-pressure-reference` (LCB-001
-[#200](https://github.com/techrote/cybersand/issues/200)). It is **opt-in**: only
+**Current** in the #245 pressure reference and retained in unmerged residual
+[#200](https://github.com/techrote/cybersand/issues/200) source on
+`codex/lcb001-shared-contract`. It is **opt-in**: only
 a World whose applied liquid policy assigns Water to `pressure_flow_v1/reference`
 runs it. The production default stays `freemass_v1` and every Current golden is
 unchanged. The owner lifted the hold on the pressure reference and the inertial
@@ -21,11 +22,17 @@ family on 2026-10-24 (LCB continuous-execution instruction). Evidence, including
 failed attempts and runtime identities, is in the
 [publication record](../audits/2026-10-24-lcb001-pressure-reference-publication.md).
 
+The residual native source adds W-CY, explicit normalization, typed native
+receipts and exact shared quantity accounting. Their construction, ownership,
+codec freeze and qualification rules belong to
+[native prepared setup and receipts](liquid-prepared-setup-and-receipts.md).
+This page retains the pressure laws; its characterization remains the recorded
+`349d593` #245 evidence, not a rerun of that campaign on the residual delta.
+
 What this page does **not** claim:
 - `cached` and `cached_dormant` (#201) are refused (`family_unavailable`);
-- whole-cell Water `cellular_yield_v1` (W-CY), `water-normalize-v1` and
-  `normalization_required` are not implemented yet (remaining #200 scope);
-- the comparison host and the other #202 constructors still run defaults;
+- native W-CY and normalization do not supply a Godot normalization opt-in or
+  complete #202 comparison host; the other host constructors still run defaults;
 - Web/WASM execution has not been run.
 
 ## Source map
@@ -36,6 +43,7 @@ What this page does **not** claim:
 | Public value types and declared constants | [`pressure_flow.hpp`](../../native/include/cybersand/pressure_flow.hpp): `PressureFlowParameters`, `PressureCellState`, `GasCompartmentSnapshot`, `GasHistoryRecord`, `GasLedger`, `PressureFlowLedger`, `PressureFlowDiagnostics`, `kAtmosphereLabel`, `kVacuumLabel` |
 | World-owned state and scratch | [`world_pressure_state.inc`](../../native/src/world_pressure_state.inc): `World::PressureState` |
 | Gas resolution, heads, kernel, hash, persistence | [`world_pressure.inc`](../../native/src/world_pressure.inc) |
+| Shared quantity accounting, typed setup and receipts | [`world_quantity.inc`](../../native/src/world_quantity.inc); [canonical native contract](liquid-prepared-setup-and-receipts.md) |
 | Hooks into Current paths | [`world.cpp`](../../native/src/world.cpp): `World::PressureChunk`, `ensure_chunk`, `write_cell(..., external)`, `set`, `move_cell`, `transfer_water` guard, `RuleKernel::Water` dispatch, `begin_tick`, `merge_job_effects`, `clear` |
 | GDExtension | `CyberNativeCellWorld.get_physical_state_hash()`, `get_physical_state_hash_version()`, `inspect_gas_compartments()`, `inspect_pressure_cell()`, `get_pressure_flow_ledger()`, `get_liquid_run_receipt(setup)`; `water_experiment_observation` adds `water_visible`/`water_overfill`; `CyberDemoBridge.export_physical_state()`/`import_physical_state()`; `inspect_cell` adds `family_state` |
 | Regressions | [`test_lcb_pressure.cpp`](../../native/tests/test_lcb_pressure.cpp) (13 native cases), [`test_lcb_pressure_reference.gd`](../../godot/tests/test_lcb_pressure_reference.gd) (publisher candidate regression) |
@@ -54,8 +62,11 @@ chunk**, a `PressureChunk`:
 
 The World owns the gas-compartment table (`PressureState`: id, generation,
 ancestry ≤ 8, amount, volume, anchor, created tick, revision, gauge), a
-64-entry retirement history, exact ledgers and fixed-capacity scratch reserved
-at construction. A default World allocates none of this.
+64-entry retirement history, pressure/gas ledgers and fixed-capacity scratch
+reserved at construction. A default World allocates no pressure state. The
+residual shared quantity ledger exists in every native World; its fixed worker
+scratch and measured storage cost are recorded in the
+[accounting contract](liquid-prepared-setup-and-receipts.md#quantity-aggregates-producers-and-continuation).
 
 Invariants (checked on restore, asserted by the lifecycle test):
 - overfill only on a saturated Water cell (`state_a == maximum()`), ≤ `maximum()`;
@@ -223,25 +234,31 @@ records them.
 | CYSD1 export/import | lossy level format; import always reconstructs on default families (never a continuation) |
 | CYPS save/restore | exact continuation (below) |
 
-## Physical-state hash v1
+## Physical-state hash v2
 
-`World::physical_state_hash()` (`kPhysicalStateHashVersion = 1`, 64-bit FNV-1a,
+`World::physical_state_hash()` (`kPhysicalStateHashVersion = 2`, 64-bit FNV-1a,
 16 hex digits through GDExtension) covers the tick clock, epoch, interest/core
 regions, physics configuration (chunk/scheduler geometry, interaction, Water,
 transport, adhesion, powder-exchange suppression and Mercury-viscosity override),
 the policy hash, pressure parameters, pending events,
 body-mask occupancy, every non-default cell (coordinates, material, states,
 epoch for non-Empty, temperature, overfill, flow, gas label), every active or
-deadline-bearing activity block, and the full gas table. Only non-default content
+deadline-bearing activity block, the full gas table and the exact shared quantity
+ledger, including its construction binding and material cell counts. Only non-default cell content
 is hashed, so an allocated all-Empty inactive chunk equals an unallocated one.
 `content_hash()` and `state_hash()` keep their historical definitions.
+Version 1 belongs to the source-matched #245 record; that historical hash is not
+silently reinterpreted. The hash includes policy/variant and clock, so #201
+equivalence must define its comparison projection rather than demand equal raw
+hashes across variants or across ticks.
 
-## Persistence (CYPS v1)
+## Persistence (CYPS v2)
 
 `World::save_physical_state()` / `World::restore_physical_state(execution, bytes)`:
-little-endian "CYPS" v1 — physics configuration and policy envelope, clock and
+little-endian "CYPS" v2 — physics configuration and policy envelope, clock and
 regions, pending events, every chunk (blocks, cells with epochs, temperatures,
-sidecars), the gas table, history and ledgers — followed by a SHA-256 of the body.
+sidecars), the exact shared quantity ledger/construction binding, gas table,
+history and pressure ledgers — followed by a SHA-256 of the body.
 Restore checks the digest first, decodes the policy with the running build, then
 range-checks every value and invariant before returning a new World; any failure
 throws `std::invalid_argument` (or `LiquidPolicyRefused`) and the caller's World
@@ -252,22 +269,32 @@ sums as well as agreement between the table and `amount_live`; a valid digest
 does not admit a contradictory ledger. Transient body masks are host-owned and not
 saved; settled discovery must be disabled. A restored World continues
 bit-identically (physical and state hash, including at a different worker count).
+Restore also checks native quantity schema, source/sink roles and quanta,
+aggregate closure, prepared Water count/mass consistency and restored authority.
+Historical CYPS1 explicitly refuses as an unknown format; #245's saved format-1
+evidence remains historical. The owner-requested narrow native codec freeze is
+described in the [shared contract](liquid-prepared-setup-and-receipts.md); it is
+not a production Cell/global ABI or full application replay freeze.
 
 ## Characterization (screens, not admission criteria)
 
-Native harness, registered geometries, 1 worker, 2026-10-24 (identities in the
-evidence record):
+Native harness at corrected source `349d593`, registered geometries, 1 worker,
+2026-10-24 (identities in the #245 evidence record; not rerun for the residual
+native setup/accounting delta):
 
 | Screen | Threshold | Current | pressure_flow_v1/reference |
 |---|---|---|---|
-| depth response t240 | ≥ 1.5 | 1.06 | **1.68** |
-| depth-160 front t240 | ≥ 213 | 71 | **219** |
-| depth-160 retained t1800 | ≤ 0.50 | 0.851 | **0.369** |
-| vented two-limb \|difference\| t2400 | ≤ 12 rows | 120 | **7** (≤ 12 from t1038) |
-| narrow passage t2400 | ≤ 60 rows | 120 | **42** |
-| sealed two-limb | ±2 rows of the isothermal law; differs from vented | 120 | differs; 4.9-row residual from the law at t2400 (still settling) |
+| depth response t240 | ≥ 1.5 | 1.06 | **1.69** |
+| depth-48/96/160 front t240 | depth-160 ≥ 213 | 67/70/71 | **130/221/220** |
+| depth-48/96/160 retained t1800 | depth-160 ≤ 0.50 | 0.839/0.841/0.851 | **0.619/0.437/0.371** |
+| vented two-limb \|difference\| t2400 | ≤ 12 rows | 120 | **9** (signed gap −9; first within ±12 at t1026, subsequent maximum 12) |
+| narrow passage t2400 | ≤ 60 rows | 120 | **43** |
+| sealed two-limb | ±2 rows of the isothermal law; differs from vented | 120 | differs; levels 152/175, gap 23 at t2400; unsettled, no sealed-law acceptance |
 
-Quantity (visible + overfill) was exact in every run.
+Quantity (visible + overfill) was exact in all twelve runs. Earlier pre-repair
+values, including the 4.9-row sealed-law residual, remain historical in the
+[evidence record](../audits/2026-10-24-lcb001-pressure-reference-publication.md);
+they do not describe source `349d593`.
 
 ## Known limits
 
@@ -275,8 +302,14 @@ Quantity (visible + overfill) was exact in every run.
   column and row passes): the reference is O(resident cells). A 1024² dam runs at
   roughly 1.5× Current single-threaded in the harness. Incremental caches and
   dormancy are #201.
+- **Dormancy remains Planned.** A #201 rest certificate must preserve body
+  contact reports even when a failed gravity/diagonal probe moves no Water:
+  those reports feed actual body coupling. It must preserve material stages,
+  prove future motion is a no-op rather than freeze nonzero flow, and demonstrate
+  savings beyond ordinary block sleep while unrelated material work continues.
+  This grants no #12 discovery or cell↔Rapier skip authority.
 - Vented two-limb sloshes (no proportional damping): it stays within the screen
-  but overshoots (−7 rows at t2400).
+  but overshoots (−9 rows at t2400).
 - Hidden overfill remains in long lidded passages until diffusion drains it to a
   free surface.
 - Gravity ignores gas pressure: falling Water can fill a sealed pocket and

@@ -6,7 +6,7 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-24
 ---
 
 # Architectural and simulation invariants
@@ -290,14 +290,27 @@ Fixtures: [native](../../native/tests/test_world.cpp),
 
 | ID | Status and requirement |
 |---|---|
-| WATER-001 | Current pure closed fixtures: exact 8-bit mass conservation; generalized reaction accounting Planned |
-| WATER-002 | Current: mass lives in the common material grid, without a second authority |
-| WATER-003 | Current: transfer cannot exceed source mass or destination 255 capacity |
-| WATER-004 | Current: adjacent difference ≤1 rests; settled content hash is the correct time-independent oracle |
+| WATER-001 | Current default pure closed fixtures conserve exact 8-bit mass. Residual native #200 additionally closes world-wide visible+PF-overfill Water against explicit setup/edit/generation/event/reaction/kernel source-sink aggregates; this preserves #160 chemistry rather than asserting reaction conservation |
+| WATER-002 | Current default FreeMass: visible mass lives in the common material grid; opt-in PF overfill remains native solver-owned cell state, without a second World authority |
+| WATER-003 | Current default mass8 FreeMass transfer cannot exceed source mass or destination 255 capacity; selected-precision and PF visible/overfill bounds follow their family contracts |
+| WATER-004 | Current default FreeMass fixture: adjacent difference ≤1 rests; settled content hash is time-independent, while complete physical hash includes clock and policy |
 | WATER-005 | Current leveling-fixture scope: free Water has no exhausted-history equilibrium rule |
 | WATER-006 | Current: mass-based display dither does not mutate mass/activity |
 | WATER-007 | Current fallback only: coherent emission preserves its supported-flow restrictions; native uses a distinct 12-tick delay |
 | WATER-008 | Current: adhesion differs between fallback dispersion and native supported-film threshold; neither is viscosity or yield |
+
+Residual native #200 invariants are owned in detail by
+[prepared setup and receipts](../architecture/liquid-prepared-setup-and-receipts.md)
+and [family material hooks](../architecture/liquid-solver-family-policy.md).
+
+| ID | Status and requirement |
+|---|---|
+| WATER-009 | Current residual native: W-CY holds `maximum()` Water per cell; fractional ingress refuses or uses explicit setup-only normalization, never a silent FreeMass fallback |
+| WATER-010 | Current residual native: same-material reaction products reset family state and book gross actual Water inputs/products; species cell counts are separate units |
+| WATER-011 | Current residual native: fixed job aggregates merge serially; checked external/generated overflow refuses before authority changes, while tick overflow quarantines partial progress |
+| WATER-012 | Current residual native: typed-v1 setup/run/attempt/accounting codecs and physical hash/CYPS2 preserve immutable native facts; historical CYPS1 explicitly refuses; historical content/state hashes and C64-E8 layout are unchanged |
+| WATER-013 | Current residual native: caller source/runtime claims cannot select verified provenance or full matched eligibility; the old Godot dictionary getter is not typed native-v1 proof |
+| WATER-014 | Planned #201: a Water rest certificate preserves body-contact probes, mandatory material/future work and unrelated materials; it proves rest instead of freezing nonzero flow and confers no #12 skip ownership |
 
 ## GPU and rejected-approach invariants
 

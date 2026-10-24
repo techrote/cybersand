@@ -10,6 +10,31 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Residual LCB-001 handover boundary — 2026-10-24
+
+After PR #245's exact-head acceptance/merge, continue from the focused
+`codex/lcb001-shared-contract` checkpoint. The [native prepared setup/receipt
+contract](../architecture/liquid-prepared-setup-and-receipts.md),
+[roadmap status](../reference/status-and-roadmap.md#lcb-001-residual-shared-contract--2026-10-24)
+and [dated evidence](../audits/2026-10-24-lcb001-residual-shared-contract.md)
+own completed scope and gaps. The successor provides W-CY admission/refusal and
+liveness, explicit native normalization, exact ledger, typed native receipt/
+readback identity and prepared-World/masked-state checks. It retains qualified
+caller provenance and host coverage; no full matched-evidence claim follows.
+
+Local final native suites pass 121/121 with LLVM-MinGW and MSVC at 1 MiB stack.
+Scoped fresh Windows Godot checks pass. Release Windows/Linux publication,
+full final-head CI, the Godot normalization route and host verification remain
+acceptance work. Preserve the original material checkout, the prepared #202
+adapter work and the old pushed #212 branch; neither old branch is a substitute
+for integration onto fresh main.
+
+Finish residual #200, then parallelize #201/#202/#212 and integrate/package via
+#203. For #201, retain failed-motion stationary body-contact reports when
+certifying rest; preserve material stages, other liquids and future cadence/
+stochastic work. No cache or dormancy is implemented here. The owner requested
+a clean pushed successor and handover to Claude at this boundary.
+
 ## 4LY single-chassis flight contract — 2026-10-22
 
 Start with the [physical free-flight contract](../systems/physical-free-flight.md)

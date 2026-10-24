@@ -97,6 +97,10 @@ and [focused documentation](docs/README.md). Use the
 [roadmap](docs/reference/status-and-roadmap.md) before foundational physics work:
 failed ticks now quarantine the affected world, and phased interest re-entry
 resumes retained activity. Their separate acceptance and remaining gaps are recorded.
+The unmerged residual LCB-001 checkpoint's [native setup and receipt contract](docs/architecture/liquid-prepared-setup-and-receipts.md)
+and [dated evidence](docs/audits/2026-10-24-lcb001-residual-shared-contract.md)
+record whole-cell Water, explicit normalization and exact accounting, with
+release publication and full application-host acceptance still open.
 For current MicroScenarios/intermaterial-interaction sequencing, do **not**
 infer order from GitHub issue numbers; use the
 [canonical programme graph](docs/operations/microscenarios-programme.md).
