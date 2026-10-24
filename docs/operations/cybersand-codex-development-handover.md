@@ -12,12 +12,16 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## MAT-003 stack reconciliation — 2026-10-24
 
-The [stack reconciliation](../audits/2026-10-24-mat003-stack-reconciliation.md)
-merges current main into the experimental parent chain while preserving registered
-history and current-main LCB/4LY/WEX behavior. Fresh applicable Native, Godot and
-materialized provenance gates are required on the reconciled heads before any
-future merge. This work does not complete #204 or start #212. Claude's separate
-#200 foundation and the dirty primary checkout remain untouched.
+The [stack reconciliation](../audits/2026-10-24-mat003-lcb001-integration-checkpoint.md)
+now incorporates main `1e032e492cafb232e604baf6e2b823b13d779aa8`, including
+the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24)
+landed by [PR #239](https://github.com/techrote/cybersand/pull/239), into the
+experimental parent chain. Registered history and current-main LCB/4LY/WEX
+behavior are preserved. Fresh applicable Native, Godot and materialized provenance
+gates are required on these reconciled heads; earlier-head results retain their
+own source scope. This work does not complete #204 or start #212 or a solver port.
+The foundation is imported through main; Claude's separate source branch and the
+dirty primary checkout remain untouched.
 
 ## MAT-003 PR #238 review corrections — 2026-10-24
 
@@ -29,8 +33,8 @@ retired one-shot apparatus; the active small verifier checks publication hashes
 against full historical Git sources. The earlier draft hold required parent-stack
 reconciliation with main. Fresh applicable Native, Godot and materialized provenance
 gates are now pending on the reconciled heads; ready-for-review permits their
-execution and does not grant merge approval. #204 stays open; production, #213's
-closure and #212's hold remain unchanged. Older entries below describe their dated checkpoints.
+execution and does not grant merge approval. #204 stays open; the production Cell
+representation, #213's closure and #212's hold remain unchanged. Older entries below describe their dated checkpoints.
 
 ## MAT-003 readback verifier repair — historical checkpoint, 2026-10-23
 
@@ -680,7 +684,7 @@ read that record and the current-main #49 v2 rerun it cites.
 The owner-approved opt-in Liquid Comparison Build (#200) is a separate
 experimental lane. Its pressure family is bounded by the
 [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
-**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. The #200 hold recorded at #213 closure is historical: the owner has since assigned the bounded #200 foundation separately to Claude. Its branch is untouched and unimported by this MAT-003 reconciliation; #212 remains held. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration.
+**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) only; the pressure backend, every other solver port and #212 remain held. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration.
 
 
 ## PENV-001 player/environment tuning handoff

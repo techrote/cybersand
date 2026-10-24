@@ -36,6 +36,13 @@ For broad #10/#11 acceptance and issue-state routing, use the
 
 **Current registered Linux World correctness / Planned broader qualification:** [#204](https://github.com/techrote/cybersand/issues/204) registers 64/72/80-bit storage, epoch8/16 and packed/aligned/split controls in the [prepass](mat-003prepass-registration.md). [S0 isolated storage checks passed](../audits/2026-10-22-mat003-prepass-foundation.md). The [S1 World apparatus](../audits/2026-10-22-mat003-world-correctness.md) adds all seventeen real World arms, typed 8/16-bit counters and a gate covering two natural sixteen-bit rollovers; the registered Linux normal/sanitized collection and independent readback passed. Broader consumer/platform qualification remains open. Generated copies preserve unchanged production source and storage. S2 paired performance requires separate registration, and #204 remains open. A [separate S2F source-only untimed preflight](mat-003-s2f-feasibility.md) is registered; [six hosted developer scenes and independent readback passed](../audits/2026-10-22-mat003-s2f-preflight.md). This does not qualify the remaining source contexts or candidate performance, and does not change S1 results.
 
+The 2026-10-24 main reconciliation also imports the bounded
+[#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24)
+landed by [PR #239](https://github.com/techrote/cybersand/pull/239). That
+defaults-only policy API is Current; it is separate from this representation
+experiment and admits no candidate kernel or #212 implementation. Historical
+MAT source and evidence identities remain unchanged.
+
 The source inventory and GEN-006 semantic proposal precede durable streaming-contract selection. Preserve #16/#17 historical controls and the open G-final disposition. This checkpoint selects no production layout or solver and admits no Water successor, compact history or soliding gate.
 
 ## Post-H bulk Water disposition — 2026-09-19
@@ -142,11 +149,10 @@ The opt-in LCB pressure comparison (#200/#213) is a separate experimental lane
 bounded by the
 [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
 It selects no production mechanism. The [final LCB-000 checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23)
-records Gate A–E PASS and #213 closure. The #200 hold recorded at closure is
-historical: the owner has since assigned the bounded #200 foundation separately
-to Claude. Its branch is untouched and unimported by this MAT-003 reconciliation;
-#212 remains held. No pressure/inertial port, schema/ABI freeze, defaults changes
-or Rapier integration is admitted.
+records Gate A–E PASS and #213 closure; the owner holds #212 and all of #200 except its bounded
+[policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24), and
+no pressure/inertial port, schema/ABI freeze, defaults changes or Rapier
+integration is admitted.
 
 `#49 v2 control + WEX evidence -> #95 (2026-10-23) -> #45 NARROW admission/design + surge registration -> directional reassessment -> #18 admission/no-go -> #20/G-B if justified -> G-final`.
 

@@ -12,14 +12,14 @@ related-documents: [lcb-water-comparison-and-fixtures.md, lcb-manual-comparison-
 
 ## Status
 
-**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. The #200 hold recorded at #213 closure is historical: the owner has since assigned the bounded #200 foundation separately to Claude. Its branch is untouched and unimported by this MAT-003 reconciliation; #212 remains held. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration.
+**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only the separately scoped initial opt-in #200 policy foundation was admitted. That [foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) landed through current main in [PR #239](https://github.com/techrote/cybersand/pull/239) on 2026-10-24 and accepts only Current-default mappings. The pressure backend, every other solver port and #212 remain held. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration.
 
 The #213 prerequisite is satisfied. Remaining arm dependencies below still
 block execution; the registered historical inventories are unchanged.
 
 **Current apparatus.** The scenario definitions, runner, registry tooling and
-regressions on this page exist in source and run against the unchanged native
-World. Every *executed* result is a **Current-defaults** control: Water
+regressions on this page exist in source and run against native Current-default
+liquid behavior. Every *executed* result is a **Current-defaults** control: Water
 `freemass_v1`, other liquids `cellular_yield_v1`.
 
 **Campaign accounting** uses the signed rule `lcb-signed-ledger-v7`. It
@@ -184,7 +184,8 @@ the rest.
 
 | PR #215 NC | Coverage on current source |
 |---|---|
-| NC-1, NC-2, NC-3, NC-10 | **Blocked (#200):** no solver-policy API exists. Partial cover: a definition carrying a `solver_family` field is refused as an unknown root field, so no family can be requested silently. |
+| NC-1, NC-2, NC-10 | **Executed by the #200 foundation** in [`test_liquid_solver_policy.gd`](../../godot/tests/test_liquid_solver_policy.gd) through the MicroScenario host: Oil × inertial `combination_rejected`, pressure/inertial `family_unavailable` with the live session intact, and CYSD1 import on default families. The registry entries are unchanged. A definition carrying a `solver_family` field is still refused as an unknown root field. |
+| NC-3 | **Blocked (#200):** `normalization_required` is unreachable until whole-cell Water (W-CY) is admitted. |
 | NC-4 | **Blocked (#201):** pressure dormancy does not exist |
 | NC-5 | **Blocked (#212)** under M1. The Current equivalent is measured (`salt-dissolution`, mixed M0). |
 | NC-6 | **Blocked (#200/#212)** across families. Current same-family density exchange is measured (lock exchanges, inverted column, Mercury drop). |
@@ -256,10 +257,10 @@ it is an explicit, reviewed change.
 ## Remaining native integration requirements (LCB-003/004)
 
 1. **#200:**
-   - `LiquidSolverPolicy` and its packed bridge on `build_water_feel_world` and
-     every other World constructor;
-   - refusal codes and effective readback, so blocked arms can run and NC-1,
-     NC-2, NC-3 and NC-10 become executable;
+   - `LiquidSolverPolicy`, its packed bridge, refusal codes and effective
+     readback are Current for defaults (2026-10-24 foundation; NC-1, NC-2 and
+     NC-10 executable). Still required: the remaining World constructors, the
+     candidate families themselves and `normalization_required` (NC-3);
    - a versioned complete physical-state hash, needed once family state exists.
 2. **#212:** `inertial_cellular_v1` plus Brine qualification. This unblocks
    W-IN, BRINE-IN, M1 and M2. M1 is the first real three-family run.

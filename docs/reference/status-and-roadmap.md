@@ -10,6 +10,14 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Current MAT-003 integration checkpoint — 2026-10-24
+
+The [LCB-001/main integration checkpoint](../audits/2026-10-24-mat003-lcb001-integration-checkpoint.md)
+owns reconciliation with main `1e032e4`, including the bounded policy foundation
+landed by #239. Fresh applicable Native, Godot and materialized provenance gates
+are required for these reconciled heads. Earlier campaign and CI records below
+retain their source-specific scope; #204 remains open and #212 remains held.
+
 ## MAT-003 continuation — 2026-10-23
 
 Latest MAT-003 archived-data disposition: [complete overnight v4 readback](../audits/2026-10-24-mat003-overnight-results.md), all 152 cases and 96 cross-arm comparisons verified as author validation pending independent review. The [original Astra refusal](../audits/2026-10-23-mat003-reentry-correctness-attempt.md) remains unchanged. No candidate rerun, performance acceptance or production migration follows; #204 remains open.
@@ -31,13 +39,14 @@ archive, including all 96 cross-arm comparisons. New optional-tail, capture-touc
 and standalone Wasm storage results retain their separate scope and platform
 limits. The original reader refusal and all prior observations remain intact.
 #204 remains open, production C64-E8 stays the baseline and GEN-006 remains
-unimplemented. The separate #200 foundation belongs to Claude; this task starts
-no LCB solver or #212 work.
+unimplemented. The overnight task started no LCB solver or #212 work. The
+bounded #200 policy foundation later landed separately through #239 and is now
+imported through main as recorded in the current integration checkpoint above.
 
 The [PR #238 review corrections](../audits/2026-10-24-mat003-pr238-review-closure.md)
 strengthen the archived-data comparison readers and add a separate coordinate
 refusal regression. Original records remain unchanged; the spent one-shot
-launchers are retired. The [current-main reconciliation checkpoint](../audits/2026-10-24-mat003-stack-integration-checkpoint.md)
+launchers are retired. The [current-main reconciliation checkpoint](../audits/2026-10-24-mat003-lcb001-integration-checkpoint.md)
 preserves every registered historical identity and moves the unmerged stack to
 ready-for-review for fresh applicable exact-head integration checks. Their actual
 results are recorded per PR; independent acceptance and #204 completion remain open.
@@ -617,8 +626,8 @@ investigation before any new #45 pressure/head mechanism is treated as inevitabl
   [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
   [#213](https://github.com/techrote/cybersand/issues/213) is **closed completed;
   Gates A–E PASS**. The [final checkpoint](#liquid-comparison-build-design-checkpoint--2026-10-23)
-  records bounded admission, the later separately assigned #200 foundation and
-  the continuing #212 hold.
+  records bounded admission; the [#200 policy foundation](#lcb-001-policy-foundation--2026-10-24)
+  is the only lifted part of the owner hold on #200/#212.
 
 Water FreeMass and other-liquid CellularYield remain separate; no unification or
 production solver change is selected. Equal-level communicating-head fixtures are
@@ -648,15 +657,14 @@ Documentation/provenance, Native and GDExtension/Godot post-merge CI passed.
 The [dated reconciliation](../audits/2026-10-24-lcb000-landed-status-reconciliation.md)
 records exact identities, evidence classes and validation limits.
 
-**Approved bounded admission:** only a separately scoped initial opt-in
+**Approved bounded admission; solver ports held:** only a separately scoped initial opt-in
 [#200](https://github.com/techrote/cybersand/issues/200) start is admitted.
-After the retained closure checkpoint, the owner separately assigned that bounded
-foundation to Claude. Its branch remains separate from this MAT-003 reconciliation;
-no foundation code is imported here. The owner continues to hold
-[#212](https://github.com/techrote/cybersand/issues/212). This PASS does not admit
+The owner then lifted the hold for the bounded
+[#200 policy foundation](#lcb-001-policy-foundation--2026-10-24) only and continues to hold
+the #200 pressure backend, every other solver port and [#212](https://github.com/techrote/cybersand/issues/212). This PASS does not admit
 #212, a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier
-integration. Native policy/state implementation and candidate kernels remain
-**Planned**. #201/#202/#203 remain open; the scenario apparatus delivered part of
+integration. The bounded native policy foundation is **Current** as recorded
+below; candidate family-state implementation and kernels remain **Planned**. #201/#202/#203 remain open; the scenario apparatus delivered part of
 #202, not the complete comparison host or its [manual UX](../operations/lcb-manual-comparison-ux.md).
 
 **Current apparatus:** the [LCB scenario catalogue](../operations/lcb-scenario-catalogue.md)
@@ -668,6 +676,27 @@ Controls and v2–v6 records are preserved byte-for-byte; v7 retains
 **20 closed / 4 unverified source-sink timing / 3 unverified reaction amount**,
 with `changed_from_v6=[]`. Characterization and contract-model evidence do not
 establish candidate runtime acceptance or change defaults.
+
+## LCB-001 policy foundation — 2026-10-24
+
+**Current on main:** [PR #239](https://github.com/techrote/cybersand/pull/239)
+landed as `1e032e492cafb232e604baf6e2b823b13d779aa8` on 2026-10-24, from
+source `cc01899331bf3010a2a9a98f1e7450e4f1cfc4be`.
+The owner lifted the #200 hold for this bounded foundation only. It implements the
+accepted Gate C policy object, not a solver: validation precedence, canonical
+SHA-256 identity, normalized readback and transactional construction for the
+running build, which **admits only each liquid's current default** and refuses
+every candidate mapping before any World is built. Defaults, dispatch, C64-E8,
+kernels and goldens are unchanged. See the
+[native foundation contract](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)
+and [dated evidence](../audits/2026-10-24-issue-200-policy-foundation.md).
+
+| Item | Status |
+|---|---|
+| Native policy, wire decode, refusal codes, hash, World admission, experimental C API, GDExtension receipt/validation/construction, MicroScenario request, worker receipt | Current (main; PR #239) |
+| NC-1, NC-2 and NC-10 | Executable in the foundation regressions; the LCB registry is unchanged |
+| Pressure backend, W-CY/W-IN kernels, run receipt hash, normalization, physical-state hash, remaining #202 constructors, durable schema/ABI freeze | Planned, held or deferred |
+| #212, #201, #202, #203 and all 90 candidate arms | Unchanged: held or blocked |
 
 ## Opt-in transport profiles
 

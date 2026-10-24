@@ -2,7 +2,7 @@
 title: LCB pressure and inertial implementation handoff
 status: Planned
 document-kind: design
-scope: Implementation-ready requirements for LCB-001 (#200, pressure_flow_v1 and solver policy) and LCB-005 (#212, inertial_cellular_v1) derived from the LCB physics prepass — exact source hooks, state, laws, boundary rules, invalidating failures, smallest experimental regimes and the APIs needed to unblock registered tests; no kernel is implemented here; bounded admission passed, the separate #200 foundation is assigned to Claude and pressure/inertial implementation remains held
+scope: Implementation-ready requirements for LCB-001 (#200, pressure_flow_v1 and solver policy) and LCB-005 (#212, inertial_cellular_v1) derived from the LCB physics prepass — exact source hooks, state, laws, boundary rules, invalidating failures, smallest experimental regimes and the APIs needed to unblock registered tests; no kernel is implemented here; bounded admission passed, the #200 policy foundation has landed through main and pressure/inertial implementation remains held
 canonical-for: [lcb-pressure-inertial-handoff]
 last-reviewed: 2026-10-24
 related-documents: [liquid-state-transition-matrix.md, liquid-solver-family-policy.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, ../operations/lcb-scenario-catalogue.md]
@@ -12,7 +12,7 @@ related-documents: [liquid-state-transition-matrix.md, liquid-solver-family-poli
 
 ## Status
 
-**Planned implementation.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. The #200 hold recorded at #213 closure is historical: the owner has since assigned the bounded #200 foundation separately to Claude. Its branch is untouched and unimported by this MAT-003 reconciliation; #212 remains held. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration. This
+**Planned implementation.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only the separately scoped initial opt-in #200 policy foundation was admitted. That [foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) landed through current main in [PR #239](https://github.com/techrote/cybersand/pull/239) on 2026-10-24 and accepts only Current-default mappings. The pressure backend, every other solver port and #212 remain held. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration. This
 page converts the [mechanism report](../audits/2026-10-23-lcb-physics-mechanism-report.md)
 and the [state-transition matrix](liquid-state-transition-matrix.md) into
 requirements.
@@ -28,8 +28,8 @@ requirements.
 
 | Need | Where today | Requirement |
 |---|---|---|
-| Per-World policy | `WorldConfig` (`world.hpp` L30), beside `WaterExperimentPolicy` | Add `LiquidSolverPolicy` with the [canonical hashing](liquid-solver-family-policy.md#native-policy-object-proposed), validated before allocation. The default must reproduce the PR #217 goldens bit for bit. |
-| Construction bridge | `CyberDemoBridge::build_water_feel_world` (`cyber_demo_bridge.hpp` L411) and every World constructor listed in #202 | Take the packed policy and refuse before `install`. Readback via `get_liquid_solver_policy()` with the applied family and normalization. |
+| Per-World policy | `WorldConfig::liquid_solver_policy` beside `WaterExperimentPolicy` | **Current foundation (2026-10-24):** `LiquidSolverPolicy` with the [canonical hashing](liquid-solver-family-policy.md#native-policy-object-proposed), validated before allocation; defaults only ([foundation](liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)). Candidate families must extend the running build's qualified cells and schemas. |
+| Construction bridge | `CyberDemoBridge::build_liquid_policy_world` beside `build_water_feel_world`; every World constructor listed in #202 | **Current foundation:** packed request refused before `install`; `get_liquid_solver_policy()` readback. Remaining #202 constructors and normalization are Planned. |
 | Family dispatch | `update_rule_kernel` L2829 (`RuleKernel` switch), after generic pair chemistry L2797 | Dispatch motion by family only for liquids with a non-default assignment. Keep stages 1, 2, 4 and 5 from the [material hooks](liquid-solver-family-policy.md#material-hooks-versus-motion-gate-c-correction-2026-10-23) unchanged. |
 | Moves and swaps | `move_cell` L2323, `try_move` L2446, `transfer_water` L2481, `relocate_stored_cell` L1840 | Optional state moves atomically with its tuple; retired on Empty/conversion (R1). |
 | Writes and products | `write_cell` L1475, `set_cell_state` L1693, pair-product writes L2797–L2826 | Products start at their family default state; signed ledger hook. |
@@ -40,7 +40,7 @@ requirements.
 
 **APIs required to unblock the registered tests** (in
 `lcb-physics-contracts.json`):
-- policy readback;
+- policy readback (Current foundation, defaults only);
 - versioned physical-state hash;
 - `inspect_cell` extended with family state;
 - `inspect_gas_compartments()` returning id, generation, ancestry, amount,
@@ -290,4 +290,5 @@ Current-family controls run in `test_lcb_physics_contracts.gd`; every candidate
 arm is BLOCKED with its dependency.
 
 This handoff records future implementation requirements. The linked final
-admission checkpoint owns the accepted scope and continuing execution hold.
+admission checkpoint owns the accepted scope and continuing pressure/inertial
+implementation hold.

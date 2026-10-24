@@ -24,10 +24,24 @@ jobs:
         with:
           fetch-depth: 0
           lfs: false
-      - name: Check provider and independent evidence failure contracts
+      - name: Check current CI provider policy
+        run: python3 tools/ci/check_ci_provider_policy.py
+      - name: Select immutable historical MAT control (not current-main qualification)
+        env:
+          GIT_LFS_SKIP_SMUDGE: "1"
         run: |
-          python3 tools/ci/check_ci_provider_policy.py
-          python3 -m unittest discover -s tools/experiments/mat003_continuation -p 'test_*.py' -v
+          set -euo pipefail
+          printf 'Current integration GITHUB_SHA: %s\n' "$GITHUB_SHA"
+          printf 'Current checked-out source: %s\n' "$(git rev-parse HEAD)"
+          # Only the policy-free registered native baseline is qualified here.
+          # Ordinary exact-head Native/Godot/provenance jobs cover current main.
+          # Any changed apparatus needs its own reviewed qualification source.
+          git diff --exit-code 7dd1373d999d91e52e6f29e9c9832f106a77da14 HEAD -- tools/experiments/mat003_prepass tools/experiments/mat003_s2a tools/experiments/mat003_continuation third_party/native-toolchain.lock.json
+          git -c advice.detachedHead=false switch --detach 7dd1373d999d91e52e6f29e9c9832f106a77da14
+          test "$(git rev-parse HEAD)" = "7dd1373d999d91e52e6f29e9c9832f106a77da14"
+          printf 'Historical MAT control source: %s\n' "$(git rev-parse HEAD)"
+      - name: Test historical independent evidence failure contracts
+        run: python3 -m unittest discover -s tools/experiments/mat003_continuation -p 'test_*.py' -v
       - name: S2P compiler output and untimed correctness
         run: |
           python3 tools/experiments/mat003_continuation/qualify.py --track s2p --output build/mat003-continuation/s2p

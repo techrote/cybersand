@@ -664,7 +664,7 @@ records the accepted lane constraints:
 - LCB results can reach #45 only through the registered apparatus with source
   identity. #45 does not start a competing pressure port while LCB-001 owns one.
 
-**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. The #200 hold recorded at #213 closure is historical: the owner has since assigned the bounded #200 foundation separately to Claude. Its branch is untouched and unimported by this MAT-003 reconciliation; #212 remains held. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration.
+**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only the separately scoped initial opt-in #200 policy foundation was admitted. That [foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) landed through current main in [PR #239](https://github.com/techrote/cybersand/pull/239) on 2026-10-24 and accepts only Current-default mappings. The pressure backend, every other solver port and #212 remain held. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration.
 
 ## Autonomous issue execution contract
 
