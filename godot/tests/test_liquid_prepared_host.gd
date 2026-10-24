@@ -200,6 +200,9 @@ func run() -> void:
 		and failed_host.summary().failed and failed_host.last_error.contains("fixture observation"), "post-commit observation failure is an installed apparatus fault, never refused construction")
 	expect(world.get_liquid_policy_session_generation() == generation+1 \
 		and intact_receipt(world.get_applied_liquid_construction_receipt()), "installed faulty apparatus retains its actual new World and native receipt")
+	var legacy_failed_host := ObservationFailureHost.new()
+	expect(not legacy_failed_host.install(world, checked.definition, "Benchmark", true, request),
+		"ordinary host retains its pre-existing initial-observer failure return contract")
 	await worker_barrier_test(checked.definition, request)
 	await installed_observation_failure_test(checked.definition, request)
 	await application_routes_test(partial_checked.definition, whole)

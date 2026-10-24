@@ -166,10 +166,10 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 	if controlled_setup.is_empty(): apply_interest()
 	_observe_due() # Tick zero describes initial state, before tick-zero events.
 	if _instrumentation and _inspection_bridge != null: _telemetry.sample(_world, _inspection_bridge, false)
-	# The native replacement has committed. Initial observer/apparatus failure
-	# is a fault of this installed session (summary.failed / last_error), never
-	# a construction refusal that could claim the preceding World was retained.
-	return true
+	# Controlled native replacement has committed. Its initial observer failure
+	# is an installed session fault, never a retained-World construction refusal.
+	# Preserve legacy ordinary-host return semantics outside this new route.
+	return true if not controlled_setup.is_empty() else not _failed
 
 func active() -> bool:
 	return not _definition.is_empty()
