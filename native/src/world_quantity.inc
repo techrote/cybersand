@@ -172,26 +172,10 @@ void World::record_quantity_transition(Material before, std::uint16_t before_vis
     std::uint16_t before_overfill, Material after, std::uint16_t after_visible,
     std::uint16_t after_overfill, JobEffects* effects, QuantityCause cause,
     bool source_sink, bool reaction_product) {
-    if (effects == nullptr) {
-        JobEffects serial;
-        record_quantity_transition(before, before_visible, before_overfill, after,
-            after_visible, after_overfill, &serial, cause, source_sink, reaction_product);
-        merge_quantity_effects(serial);
-        return;
-    }
-    auto& delta = effects->quantity;
     const auto old_visible = before == Material::Water ? before_visible : std::uint16_t{0};
     const auto new_visible = after == Material::Water ? after_visible : std::uint16_t{0};
     const auto old_overfill = before == Material::Water ? before_overfill : std::uint16_t{0};
     const auto new_overfill = after == Material::Water ? after_overfill : std::uint16_t{0};
-    quantity_delta_add(delta.visible, static_cast<std::int64_t>(new_visible) - old_visible, delta.overflow);
-    quantity_delta_add(delta.overfill, static_cast<std::int64_t>(new_overfill) - old_overfill, delta.overflow);
-    if (before != after) {
-        if (before != Material::Empty)
-            quantity_delta_add(delta.material_cells[static_cast<std::uint8_t>(before)], -1, delta.overflow);
-        if (after != Material::Empty)
-            quantity_delta_add(delta.material_cells[static_cast<std::uint8_t>(after)], 1, delta.overflow);
-    }
     const auto old_quantity = static_cast<std::uint64_t>(old_visible) + old_overfill;
     const auto new_quantity = static_cast<std::uint64_t>(new_visible) + new_overfill;
     WaterQuantityFlow flow;
@@ -199,6 +183,76 @@ void World::record_quantity_transition(Material before, std::uint16_t before_vis
         if (reaction_product) flow = {new_quantity, old_quantity};
         else if (new_quantity >= old_quantity) flow.produced = new_quantity - old_quantity;
         else flow.consumed = old_quantity - new_quantity;
+    }
+    if (effects == nullptr) {
+        // A serial write touches two quantities, at most two populations and
+        // one cause/rule. Check those candidates before committing any of them;
+        // do not initialize job scratch or copy/scan the full ledger per cell.
+        const auto visible = quantity_apply(quantity_.water_visible,
+            static_cast<std::int64_t>(new_visible) - old_visible);
+        const auto overfill = quantity_apply(quantity_.water_overfill,
+            static_cast<std::int64_t>(new_overfill) - old_overfill);
+        const bool remove_cell = before != after && before != Material::Empty;
+        const bool add_cell = before != after && after != Material::Empty;
+        const auto before_slot = static_cast<std::uint8_t>(before);
+        const auto after_slot = static_cast<std::uint8_t>(after);
+        const auto before_count = remove_cell
+            ? quantity_apply(quantity_.material_cells[before_slot], -1) : 0U;
+        const auto after_count = add_cell
+            ? quantity_add(quantity_.material_cells[after_slot], 1) : 0U;
+        const bool has_flow = flow.produced != 0U || flow.consumed != 0U;
+        auto kind = kQuantityKindCount;
+        WaterQuantityFlow next_kind;
+        WaterQuantityFlow next_rule;
+        WaterQuantityFlow* rule = nullptr;
+        if (has_flow) {
+            kind = static_cast<std::size_t>(cause.kind);
+            if (kind >= kQuantityKindCount || cause.kind == QuantityKind::SetupNormalization)
+                throw std::logic_error("invalid runtime quantity cause");
+            next_kind = quantity_.kinds[kind];
+            quantity_flow_add(next_kind, flow);
+            if (cause.kind == QuantityKind::PairReaction) {
+                if (cause.rule >= quantity_.pair_rules.size())
+                    throw std::logic_error("invalid quantity pair rule");
+                rule = &quantity_.pair_rules[cause.rule];
+            } else if (cause.kind == QuantityKind::KernelConversion) {
+                if (cause.rule >= quantity_.kernel_rules.size())
+                    throw std::logic_error("unclassified Water conversion");
+                rule = &quantity_.kernel_rules[cause.rule];
+            }
+            if (rule != nullptr) {
+                next_rule = *rule;
+                quantity_flow_add(next_rule, flow);
+            }
+        }
+        if (has_flow || visible != quantity_.water_visible || overfill != quantity_.water_overfill) {
+            // Preserve the full merge's lifetime-total bounds even when each
+            // category separately fits. Paired transport may temporarily open
+            // conservation, so only representability is checked here.
+            auto produced = quantity_.baseline_water;
+            auto consumed = quantity_add(visible, overfill);
+            for (std::size_t i = 0; i < quantity_.kinds.size(); ++i) {
+                const auto& candidate = i == kind ? next_kind : quantity_.kinds[i];
+                produced = quantity_add(produced, candidate.produced);
+                consumed = quantity_add(consumed, candidate.consumed);
+            }
+        }
+        quantity_.water_visible = visible;
+        quantity_.water_overfill = overfill;
+        if (remove_cell) quantity_.material_cells[before_slot] = before_count;
+        if (add_cell) quantity_.material_cells[after_slot] = after_count;
+        if (has_flow) quantity_.kinds[kind] = next_kind;
+        if (rule != nullptr) *rule = next_rule;
+        return;
+    }
+    auto& delta = effects->quantity;
+    quantity_delta_add(delta.visible, static_cast<std::int64_t>(new_visible) - old_visible, delta.overflow);
+    quantity_delta_add(delta.overfill, static_cast<std::int64_t>(new_overfill) - old_overfill, delta.overflow);
+    if (before != after) {
+        if (before != Material::Empty)
+            quantity_delta_add(delta.material_cells[static_cast<std::uint8_t>(before)], -1, delta.overflow);
+        if (after != Material::Empty)
+            quantity_delta_add(delta.material_cells[static_cast<std::uint8_t>(after)], 1, delta.overflow);
     }
     try {
         if (flow.produced != 0U || flow.consumed != 0U) {

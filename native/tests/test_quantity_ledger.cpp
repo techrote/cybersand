@@ -277,6 +277,102 @@ void refusal_and_overflow() {
     require(read_refused, "failed partial ledger cannot be read as completed accounting");
 }
 
+void serial_and_phased_transactions() {
+    auto serial_config = config();
+    serial_config.backend = SimulationBackend::SerialInPlace;
+    World serial(serial_config);
+    World phased(config(4));
+    const auto populate = [](World& world) {
+        for (const auto x : {2, 66, 130, 194}) {
+            box(world, x, 1, 3, 3, Material::Wall);
+            require(world.set_cell_state(x + 1, 2, Material::Steam, 1, 0),
+                    "serial/worker Steam conversion fixture");
+            box(world, x, 9, 4, 3, Material::Wall);
+            require(world.set_cell_state(x + 1, 10, Material::Water, 17, 0),
+                    "serial/worker partial reaction input");
+            world.set(x + 2, 10, Material::ToxicSludge);
+            world.set(x + 2, 10, Material::ToxicSludge); // no accounting change
+        }
+    };
+    populate(serial); populate(phased);
+    require(serial.quantity_ledger() == phased.quantity_ledger(), "identical serial construction accounting");
+    bool parallel_batch = false;
+    for (int tick = 0; tick < 128; ++tick) {
+        (void)serial.tick();
+        const auto stats = phased.tick();
+        parallel_batch = parallel_batch || std::any_of(stats.phase_jobs.begin(), stats.phase_jobs.end(),
+            [](const auto count) { return count >= 4U; });
+        require(serial.quantity_ledger() == phased.quantity_ledger(),
+                "serial scalar and genuine four-worker exact per-rule accounting");
+        oracle(serial, {0, 0, 256, 64}); oracle(phased, {0, 0, 256, 64});
+    }
+    const auto ledger = serial.quantity_ledger();
+    require(parallel_batch && ledger.kernel_rules[0].produced == 4U * 255U,
+            "four-worker batch and serial Steam source both executed");
+    std::uint64_t events = 0;
+    for (const auto count : ledger.pair_events) events += count;
+    require(events == 4U && kind(ledger, QuantityKind::PairReaction) == WaterQuantityFlow{4U * 510U, 4U * 17U},
+            "same-material products preserve gross pair sources and actual partial sinks");
+}
+
+void resident_serial_overflow_transaction() {
+    World original(config());
+    original.set(3, 3, Material::Wall); // resident writes bypass absent-chunk preflight
+    auto bytes = original.save_physical_state();
+    const auto kinds_offset = ledger_offset(bytes) + 27U;
+    const auto external = kinds_offset + static_cast<std::size_t>(QuantityKind::ExternalEdit) * 16U;
+    const auto generated = kinds_offset + static_cast<std::size_t>(QuantityKind::GeneratedChunk) * 16U;
+    constexpr auto maximum = std::numeric_limits<std::uint64_t>::max();
+    // Every category fits and lifetime totals equal UINT64_MAX. An external
+    // source would overflow the aggregate while its own category still fits.
+    put64(bytes, external, maximum - 255U);
+    put64(bytes, external + 8U, maximum);
+    put64(bytes, generated, 255U);
+    seal(bytes);
+    auto full = World::restore_physical_state(config(), bytes);
+    const auto before = full->quantity_ledger();
+    const auto before_hash = full->physical_state_hash();
+    const auto before_bytes = full->save_physical_state();
+    for (const auto bool_setter : {false, true}) {
+        bool overflow = false;
+        try {
+            if (bool_setter) (void)full->set_cell_state(3, 3, Material::Water, 1, 0);
+            else full->set(3, 3, Material::Water);
+        } catch (const std::overflow_error&) { overflow = true; }
+        require(overflow && !full->has_failed() && full->quantity_ledger() == before &&
+                full->physical_state_hash() == before_hash && full->save_physical_state() == before_bytes &&
+                full->stored_material(3, 3) == Material::Wall,
+                "resident aggregate overflow commits no population, quantity, authority or continuation field");
+    }
+    full->set(3, 3, Material::Wall);
+    require(full->quantity_ledger() == before && full->physical_state_hash() == before_hash,
+            "same-visible no-op remains allowed at exhausted lifetime total");
+    full->set(3, 3, Material::Sand);
+    const auto replaced = full->quantity_ledger();
+    require(replaced.kinds == before.kinds && replaced.pair_rules == before.pair_rules &&
+            replaced.kernel_rules == before.kernel_rules && replaced.pair_events == before.pair_events &&
+            replaced.material_cells[static_cast<std::uint8_t>(Material::Wall)] == 0U &&
+            replaced.material_cells[static_cast<std::uint8_t>(Material::Sand)] == 1U,
+            "non-Water replacement changes only its two populations at lifetime limit");
+    oracle(*full, {0, 0, 64, 64});
+
+    for (const auto backend : {SimulationBackend::SerialInPlace, SimulationBackend::PhasedInPlace}) {
+        auto cfg = config(backend == SimulationBackend::SerialInPlace ? 1U : 4U);
+        cfg.backend = backend;
+        World steam(cfg);
+        require(steam.set_cell_state(3, 3, Material::Steam, 1, 0), "serial/worker overflow fixture");
+        auto tick_bytes = steam.save_physical_state();
+        const auto tick_external = ledger_offset(tick_bytes) + 27U + 16U;
+        put64(tick_bytes, tick_external, maximum);
+        put64(tick_bytes, tick_external + 8U, maximum); seal(tick_bytes);
+        auto tick_full = World::restore_physical_state(cfg, tick_bytes);
+        bool overflow = false;
+        try { (void)tick_full->tick(); } catch (const std::overflow_error&) { overflow = true; }
+        require(overflow && tick_full->has_failed() && tick_full->completed_tick_index() == 0U,
+                "serial scalar and worker merge both quarantine lifetime overflow");
+    }
+}
+
 void prepared_population_binding() {
     const auto cfg = config();
     normalization::FinalSetupInput input;
@@ -313,4 +409,6 @@ void test_quantity_ledger() {
     }
     refusal_and_overflow();
     prepared_population_binding();
+    serial_and_phased_transactions();
+    resident_serial_overflow_transaction();
 }
