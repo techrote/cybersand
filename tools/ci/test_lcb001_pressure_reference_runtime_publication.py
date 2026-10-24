@@ -93,7 +93,7 @@ class ContextTests(RepositoryFixture):
             "GITHUB_REPOSITORY": "someone/cybersand",
             "GITHUB_REF": "refs/heads/main",
             "GITHUB_EVENT_NAME": "pull_request",
-            "GITHUB_WORKFLOW_REF": WORKFLOW.replace("lcb001-runtime", "gen007-runtime"),
+            "GITHUB_WORKFLOW_REF": WORKFLOW.replace("lcb001-pressure-reference-runtime", "gen007-runtime"),
             "GITHUB_SHA": "f" * 40,
             "GITHUB_RUN_ATTEMPT": "0",
         }
