@@ -67,6 +67,23 @@ class PairTests(unittest.TestCase):
                 self.assertFalse(compare(self.root, self.lock)["qualified"])
                 path.write_text(original)
 
+    def test_same_host_protocol_requires_matching_hardware_fixtures_and_alternation(self):
+        for variant in ("control", "patched"):
+            for host in ("windows", "linux"):
+                for batch in range(5):
+                    path = self.root / variant / f"{host}-{batch}/stress.json"
+                    report = json.loads(path.read_text())
+                    report["identity"].update(paired_protocol="same-host-alternating-v1", pair_batch=batch,
+                                              pair_host_id=f"host-{host}-{batch}", hardware={"physical_cores": 2},
+                                              fixture_inputs={"fixture": "same"})
+                    for result in report["results"]:
+                        first = "control" if (result["iteration"] + batch) % 2 == 0 else "patched"
+                        result["pair_position"] = int(variant != first)
+                    path.write_text(json.dumps(report))
+        self.assertTrue(compare(self.root, self.lock)["qualified"])
+        self.mutate("patched", lambda r: r["identity"].update(pair_host_id="different-host"))
+        self.assertFalse(compare(self.root, self.lock)["qualified"])
+
 
 if __name__ == "__main__":
     unittest.main()

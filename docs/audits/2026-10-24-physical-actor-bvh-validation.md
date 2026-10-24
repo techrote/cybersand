@@ -78,6 +78,23 @@ the candidate code is unchanged. Preserve this initial run as an apparatus
 failure, not a complete paired acceptance campaign. The corrected campaign is
 independent and retains the same strict per-trial oracles.
 
+The corrected campaign is
+[40053639095](https://github.com/techrote/cybersand/actions/runs/40053639095)
+at source `4c2bb37` (full identity in its build manifests). All four addon builds
+completed successfully; each blocking helper control exited 124 with the named
+sentinel, and each patched helper passed three tests. The same-head application
+trials and a full local applicable Windows candidate suite are in progress at
+this observation; no completed repaired sample is claimed yet.
+
+A control timeout in the first campaign's Windows batch 0, rigs iteration 6
+(`gemini`, last step marker 34320), also yielded a valid engine dump. The
+[matching-DLL/PDB analysis](physical-actor-timeouts-2026-10-23/symbolized-control-dump.json)
+directly names the BVH receive, outer install latch and other worker's
+`rayon_core::sleep::Sleep::sleep` / `wait_until_cold` frames. This independently
+corroborates the earlier COFF attribution. It is supplemental Windows evidence,
+not acceptance of the incomplete first paired campaign. Full raw debugger output
+is retained locally in `build/paired-control-symbolized-stacks.txt`.
+
 **Planned execution at this checkpoint:** the registered GDExtension workflow's
 manual `physical_actor_stress=true` plus `rapier_bvh_pair=true` calls the isolated
 paired build/stress lane. Both OS builds use the same addon commit, original
@@ -107,3 +124,47 @@ The build guide owns invocation, and this audit owns the dated results. Thread
 ownership, native interfaces/capacities, actor controls and fixture numerical
 semantics are unchanged. ADR-009's retained dependency selection is not superseded
 by an experimental build. Final full-suite and exact-head gates remain required.
+
+## Completed separate-host samples and strengthened protocol
+
+The first sample's [control frequencies](physical-actor-timeouts-2026-10-23/initial-pair-control-frequency.json)
+are Windows arena 4/50, rigs 6/50 and course 2/50 timeouts; Linux control passed
+50/50 per test. Its [Windows candidate sample](physical-actor-timeouts-2026-10-23/initial-pair-patched-frequency.json)
+passed 50/50 per test, while Linux candidate preflight failed because of the
+already recorded EOL hash error. The first sample remains incomplete overall.
+
+The [complete corrected sample](physical-actor-timeouts-2026-10-23/corrected-pair-inconclusive.json)
+at `4c2bb37` passed 50/50 per test/OS **for both variants**. The paired gate
+correctly failed with `Control did not reproduce a timeout`. Zero candidate
+failures are retained, but this cohort alone cannot meet the registered causal
+comparison criterion. The Windows control executable `.text` section is identical
+across the two samples: SHA-256
+`23abe93825d2fe5501f975a663d76043c6fe8e7950fe251ecd2998aafed5a809`.
+This is evidence of cohort/scheduling sensitivity, not proof of its exact cause.
+
+**Registered next experiment before execution:** both variants now run on the
+same GitHub-hosted machine in each batch, using separate complete source copies.
+Every test pair alternates control-first / candidate-first by iteration and
+batch. Each OS still has five batches of ten independent trials per test and
+variant, preserving all 600 trial outcomes without retries. CPU model, logical
+and physical core counts, host/batch identity, exact fixture hashes and pair
+order are recorded. A host with fewer than two physical cores fails preflight
+instead of silently testing only Rapier's inline path. No physics/thread-count
+override is introduced. The qualification checker additionally requires matching
+host/hardware/fixtures and the registered balanced order. This is a new controlled
+experiment; it does not erase the inconclusive or failed earlier samples.
+
+## Full local candidate Windows scope
+
+The [complete-repository candidate suite](physical-actor-timeouts-2026-10-23/patched-full-windows.json)
+passed import plus **121/121** applicable Windows headless tests at source
+`4c2bb37`, with no timeout, skip or copied-input drift. The manifest records exact
+Godot/native/Rapier identities, the orchestration hash, source/local-delta scope,
+raw report hash and every case result. Rendered cases remain Linux-owned.
+
+An earlier [invalid project-only copy](physical-actor-timeouts-2026-10-23/invalid-local-full-apparatus.json)
+lacked repository-level `examples/worldgen` JSON fixtures. It recorded five actual
+test failures and was stopped after 58 cases. Its outcomes and raw report remain
+preserved; it is excluded from full-suite qualification. The complete repository
+experiment reran the whole scope with unchanged assertions and deadlines, and
+passed those generation/launcher cases as well as the rest of the suite.

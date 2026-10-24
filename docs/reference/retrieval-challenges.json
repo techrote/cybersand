@@ -2097,13 +2097,14 @@
       "facts": [
         "Both platform runners share live pre-termination diagnostics and retain the original case deadline and strict failure/error/skip oracle.",
         "The three suspect tests emit setup, bounded tick, teardown and quit phase markers; Linux attempts GDB stacks and Windows attempts wrapper/child minidumps.",
-        "The manual hosted stress campaign requires 50 independent trials per suspect test on each platform and reports per-test and last-phase hang counts; an unresolved root cause or queued run is not evidence of a fix."
+        "The manual hosted stress campaign requires 50 independent trials per suspect test on each platform and reports per-test and last-phase hang counts; a captured blocking call or passing helper alone is not a repair. Paired validation requires reproduced control hangs, complete matching scope and zero patched failures."
       ],
       "sources": [
         "../tools/ci/run_godot_regressions.py",
         "../tools/ci/godot_timeout_diagnostics.py",
         "../.github/workflows/physical-actor-stress.yml",
-        "audits/2026-10-23-physical-actor-timeouts.md"
+        "audits/2026-10-23-physical-actor-timeouts.md",
+        "audits/2026-10-24-physical-actor-bvh-validation.md"
       ],
       "revision_sensitive": true
     }

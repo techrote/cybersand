@@ -22,7 +22,7 @@ def compare(root: Path, lock: dict) -> dict:
         errors.append("Control did not reproduce a timeout")
     if control["source_shas"] != patched["source_shas"]:
         errors.append("Control and patched source revisions differ")
-    identities = {}
+    identities, paired_hosts = {}, {}
     for variant in ("control", "patched"):
         for path in sorted((root / variant).glob("*/stress.json")):
             identity = json.loads(path.read_text(encoding="utf-8"))["identity"]
@@ -42,6 +42,21 @@ def compare(root: Path, lock: dict) -> dict:
             if key in identities and identities[key] != build:
                 errors.append("Mixed build provenance: " + key)
             identities[key] = build
+            if identity.get("paired_protocol"):
+                batch = identity.get("pair_batch")
+                if not isinstance(batch, int) or batch not in range(5):
+                    errors.append("Invalid same-host batch identity: " + str(path))
+                    continue
+                paired_hosts[(host, batch, variant)] = identity
+                if (identity.get("paired_protocol") != "same-host-alternating-v1" or batch not in range(5)
+                        or not identity.get("pair_host_id") or not identity.get("fixture_inputs")
+                        or identity.get("hardware", {}).get("physical_cores", 0) < 2):
+                    errors.append("Missing same-host hardware/fixture identity: " + str(path))
+                report = json.loads(path.read_text(encoding="utf-8"))
+                for result in report["results"]:
+                    first = "control" if (result["iteration"] + batch) % 2 == 0 else "patched"
+                    if result.get("pair_position") != int(variant != first):
+                        errors.append("Unexpected pair order: " + str(path))
     for host in ("windows", "linux"):
         a = control["runtime_identities"].get(host)
         b = patched["runtime_identities"].get(host)
@@ -51,6 +66,14 @@ def compare(root: Path, lock: dict) -> dict:
         for field in ("upstream_cargo_lock_sha256", "resolved_cargo_lock_sha256", "rustc", "build_lock_sha256"):
             if not ca.get(field) or ca.get(field) != cb.get(field):
                 errors.append("Paired build inputs differ: " + host + "/" + field)
+    if paired_hosts:
+        for host in ("windows", "linux"):
+            for batch in range(5):
+                a = paired_hosts.get((host, batch, "control"), {})
+                b = paired_hosts.get((host, batch, "patched"), {})
+                for field in ("pair_host_id", "hardware", "fixture_inputs"):
+                    if not a.get(field) or a.get(field) != b.get(field):
+                        errors.append(f"Mismatched same-host pair: {host}/{batch}/{field}")
     return {"qualified": not errors, "control": control, "patched": patched, "builds": identities, "errors": errors}
 
 

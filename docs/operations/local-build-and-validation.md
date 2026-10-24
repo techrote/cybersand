@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-23
+last-reviewed: 2026-10-24
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
@@ -208,7 +208,10 @@ identities, observed frequencies and the root-cause disposition.
 For the explicitly experimental Rapier comparison, dispatch the existing
 GDExtension workflow on the PR branch with both `physical_actor_stress=true` and
 `rapier_bvh_pair=true`. It builds pinned, symbolized control/patched addons and
-runs 300 trials per variant. Experimental substitution requires a same-head build
+runs 300 trials per variant. Each batch now alternates both variants on the same host and records
+CPU topology, pair order and matching immutable fixtures; fewer than two physical
+cores fails preflight. Earlier separate-host samples retain their own dated scope.
+Experimental substitution requires a same-head build
 manifest; ordinary retained-runtime gates keep their default byte checks. Control
 failures remain failures and may make the workflow red. Read the
 [2026-10-24 dump/paired validation record](../audits/2026-10-24-physical-actor-bvh-validation.md)

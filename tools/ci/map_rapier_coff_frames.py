@@ -1,58 +1,134 @@
+#!/usr/bin/env python3
+"""Attribute stripped AMD64 PE functions using matching COFF archive sections.
+
+This does not unwind stacks or infer names from nearby exports. Callers supply
+RVAs recovered by a debugger and independently verify their archive provenance.
+All function bytes except actual COFF relocation fields must match.
+"""
+
+import argparse
+import json
 from pathlib import Path
-import struct,json,hashlib,argparse
-parser=argparse.ArgumentParser(description='Map stripped Rapier functions to the same-release COFF archive by all non-relocated bytes.')
-parser.add_argument('--archive',type=Path,required=True)
-parser.add_argument('--dll',type=Path,required=True)
-parser.add_argument('--output',type=Path,required=True)
-parser.add_argument('rvas',nargs='+',type=lambda x:int(x,0))
-args=parser.parse_args()
-arc=args.archive.read_bytes()
-o=8;long=b'';objs=[]
-while o<len(arc):
- h=arc[o:o+60];n=int(h[48:58]);name=h[:16].decode().strip();data=arc[o+60:o+60+n]
- if name=='//':long=data
- elif name.startswith('/') and name[1:].isdigit():name=long[int(name[1:]):].split(b'\0')[0].split(b'/\n')[0].decode()
- if name.endswith('.o'):objs.append((name,data))
- o+=60+n+(n%2)
-dll=args.dll.read_bytes()
-pe=struct.unpack_from('<I',dll,0x3c)[0];ns=struct.unpack_from('<H',dll,pe+6)[0];opt=pe+24;secs=opt+struct.unpack_from('<H',dll,pe+20)[0]
-sections=[struct.unpack_from('<8sIIIIIIHHI',dll,secs+i*40) for i in range(ns)]
-def raw(rva):
- for name,vs,va,size,off,*_ in sections:
-  if va<=rva<va+max(vs,size):return off+rva-va
- raise ValueError(hex(rva))
-prva,psize=struct.unpack_from('<II',dll,opt+112+3*8)
-pdata=[struct.unpack_from('<III',dll,raw(prva)+i*12) for i in range(psize//12)]
-targets=args.rvas
-funcs={r:next((x for x in pdata if x[0]<=r<x[1]),None) for r in targets}
-result={hex(r):{'begin':hex(f[0]),'end':hex(f[1]),'matches':[]} for r,f in funcs.items() if f}
-for name,b in objs:
- big=b[:4]==b'\x00\x00\xff\xff'
- if big:count,sptr,snum=struct.unpack_from('<III',b,44);sh=56;symsize=20
- else:count=struct.unpack_from('<H',b,2)[0];sptr,snum=struct.unpack_from('<II',b,8);sh=20+struct.unpack_from('<H',b,16)[0];symsize=18
- strings=b[sptr+snum*symsize:];symnames={};i=0
- while i<snum:
-  at=sptr+i*symsize;nm=b[at:at+8]
-  if nm[:4]==b'\0'*4:no=struct.unpack_from('<I',nm,4)[0];nm=strings[no:strings.find(b'\0',no)]
-  else:nm=nm.split(b'\0')[0]
-  val=struct.unpack_from('<I',b,at+8)[0];sec=struct.unpack_from('<i' if big else '<h',b,at+12)[0]
-  aux=b[at+symsize-1]
-  if sec>0 and val==0 and not nm.startswith(b'.'):symnames.setdefault(sec,[]).append(nm.decode(errors='replace'))
-  i+=1+aux
- for j in range(count):
-  sn,vs,va,size,off,rp,lp,nrel,nline,flags=struct.unpack_from('<8sIIIIIIHHI',b,sh+j*40)
-  if not sn.startswith(b'.text') or size<16:continue
-  code=b[off:off+size]
-  for r,f in funcs.items():
-   if not f:continue
-   start,end,_=f; dc=dll[raw(start):raw(start)+min(size,end-start)]
-   if code[:8]!=dc[:8]:continue
-   ignored=set()
-   for k in range(nrel):
-    ra,si,typ=struct.unpack_from('<IIH',b,rp+k*10)
-    ignored.update(range(ra,ra+(8 if typ==1 else 4)))
-   n=min(len(code),len(dc));mismatches=[k for k in range(n) if k not in ignored and code[k]!=dc[k]]
-   if not mismatches and n>=16:
-    result[hex(r)]['matches'].append({'object':name,'section':j+1,'names':symnames.get(j+1,[]),'verified_bytes':n,'relocation_bytes':len([k for k in ignored if k<n])})
-args.output.write_text(json.dumps(result,indent=2))
-for k,v in result.items():print(k,v['begin'],[(m['names'],m['verified_bytes']) for m in v['matches']])
+import struct
+
+
+def archive_objects(archive):
+    if archive[:8] != b"!<arch>\n":
+        raise ValueError("Expected a COFF archive")
+    offset, names = 8, b""
+    while offset < len(archive):
+        header = archive[offset:offset + 60]
+        size = int(header[48:58])
+        name = header[:16].decode().strip()
+        data = archive[offset + 60:offset + 60 + size]
+        if name == "//":
+            names = data
+        elif name.startswith("/") and name[1:].isdigit():
+            name = names[int(name[1:]):].split(b"\0")[0].split(b"/\n")[0].decode()
+        if name.endswith(".o"):
+            yield name, data
+        offset += 60 + size + size % 2
+
+
+def pe_functions(image):
+    pe = struct.unpack_from("<I", image, 0x3c)[0]
+    if image[pe:pe + 4] != b"PE\0\0" or struct.unpack_from("<H", image, pe + 4)[0] != 0x8664:
+        raise ValueError("Expected an AMD64 PE image")
+    count = struct.unpack_from("<H", image, pe + 6)[0]
+    optional = pe + 24
+    start = optional + struct.unpack_from("<H", image, pe + 20)[0]
+    sections = [struct.unpack_from("<8sIIIIIIHHI", image, start + i * 40) for i in range(count)]
+
+    def raw(rva):
+        for _, virtual_size, virtual, size, offset, *_ in sections:
+            if virtual <= rva < virtual + max(virtual_size, size):
+                return offset + rva - virtual
+        raise ValueError(f"Unmapped RVA {rva:#x}")
+
+    pdata, length = struct.unpack_from("<II", image, optional + 112 + 3 * 8)
+    functions = [struct.unpack_from("<III", image, raw(pdata) + i * 12) for i in range(length // 12)]
+    return raw, functions
+
+
+def coff_sections(data):
+    big = data[:4] == b"\x00\x00\xff\xff"
+    if big:
+        count, symbols, symbol_count = struct.unpack_from("<III", data, 44)
+        header, symbol_size = 56, 20
+    else:
+        count = struct.unpack_from("<H", data, 2)[0]
+        symbols, symbol_count = struct.unpack_from("<II", data, 8)
+        header = 20 + struct.unpack_from("<H", data, 16)[0]
+        symbol_size = 18
+    strings = data[symbols + symbol_count * symbol_size:]
+    names, index = {}, 0
+    while index < symbol_count:
+        offset = symbols + index * symbol_size
+        name = data[offset:offset + 8]
+        if name[:4] == b"\0" * 4:
+            start = struct.unpack_from("<I", name, 4)[0]
+            name = strings[start:strings.find(b"\0", start)]
+        else:
+            name = name.split(b"\0")[0]
+        value = struct.unpack_from("<I", data, offset + 8)[0]
+        section = struct.unpack_from("<i" if big else "<h", data, offset + 12)[0]
+        auxiliary = data[offset + symbol_size - 1]
+        if section > 0 and value == 0 and not name.startswith(b"."):
+            names.setdefault(section, []).append(name.decode(errors="replace"))
+        index += 1 + auxiliary
+    for index in range(count):
+        name, _, _, size, offset, relocations, _, relocation_count, _, _ = struct.unpack_from("<8sIIIIIIHHI", data, header + index * 40)
+        if name.startswith(b".text") and size >= 16:
+            yield index + 1, data[offset:offset + size], names.get(index + 1, []), relocations, relocation_count
+
+
+def match_functions(archive, image, rvas):
+    raw, functions = pe_functions(image)
+    targets = {rva: next((f for f in functions if f[0] <= rva < f[1]), None) for rva in rvas}
+    result = {hex(rva): {"begin": hex(f[0]), "end": hex(f[1]), "matches": []}
+              for rva, f in targets.items() if f}
+    for object_name, data in archive_objects(archive):
+        for section, code, names, relocations, count in coff_sections(data):
+            for rva, function in targets.items():
+                if function is None:
+                    continue
+                start, end, _ = function
+                candidate = image[raw(start):raw(start) + min(len(code), end - start)]
+                # Leave possible linker-rewritten prefixes unattributed. An
+                # exact three-byte filter avoids parsing unrelated sections;
+                # the complete comparison below still checks every fixed byte.
+                if code[:3] != candidate[:3]:
+                    continue
+                ignored = set()
+                for i in range(count):
+                    position, _, kind = struct.unpack_from("<IIH", data, relocations + i * 10)
+                    if kind == 0:  # IMAGE_REL_AMD64_ABSOLUTE, no relocation.
+                        continue
+                    if kind not in (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11):
+                        raise ValueError(f"Unsupported AMD64 relocation type {kind}")
+                    width = 8 if kind == 1 else 2 if kind == 10 else 4
+                    ignored.update(range(position, position + width))
+                length = min(len(code), len(candidate))
+                if length >= 16 and all(code[i] == candidate[i] for i in range(length) if i not in ignored):
+                    result[hex(rva)]["matches"].append({
+                        "object": object_name, "section": section, "names": names,
+                        "verified_bytes": length, "relocation_bytes": sum(i < length for i in ignored),
+                    })
+    return result
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--archive", type=Path, required=True)
+    parser.add_argument("--dll", type=Path, required=True)
+    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("rvas", nargs="+", type=lambda value: int(value, 0))
+    args = parser.parse_args()
+    result = match_functions(args.archive.read_bytes(), args.dll.read_bytes(), args.rvas)
+    args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    for rva, record in result.items():
+        print(rva, record["begin"], [(m["names"], m["verified_bytes"]) for m in record["matches"]])
+
+
+if __name__ == "__main__":
+    main()

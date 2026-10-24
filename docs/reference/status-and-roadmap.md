@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-23
+last-reviewed: 2026-10-24
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
@@ -16,8 +16,12 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 adds live timeout diagnostics and a manual 50-trial-per-test/platform stress lane.
 The [build guide](../operations/local-build-and-validation.md#physical-actor-timeout-investigation)
 owns invocation; the [dated audit](../audits/2026-10-23-physical-actor-timeouts.md)
-separates historical incidents, local experiments, queued hosted work and the
-unresolved root cause. **Planned:** causal repair and hosted before/after acceptance.
+separates historical incidents and local experiments. The
+[2026-10-24 dump attribution](../audits/2026-10-24-physical-actor-bvh-validation.md)
+confirms a worker blocked in Rapier's deferred-BVH receive while the caller waits
+on the pool. A cooperative join candidate is undergoing paired control/patched
+validation. **Planned:** repaired runtime publication and hosted acceptance;
+diagnostic capture or helper tests alone do not establish a repair.
 
 ## 4LY shared physical free-flight — 2026-10-22
 

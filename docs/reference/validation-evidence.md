@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-10-23
+last-reviewed: 2026-10-24
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md]
 ---
 
@@ -17,6 +17,12 @@ the two cited hosted runs, phase/blocking-path inspection and separate local
 stress evidence. [Draft PR #236](https://github.com/techrote/cybersand/pull/236)
 has no accepted root-cause repair yet. A queued stress job, successful rerun or
 local zero-timeout sample does not establish hosted resolution.
+
+The [2026-10-24 dump and paired validation record](../audits/2026-10-24-physical-actor-bvh-validation.md)
+confirms the deferred-BVH channel wait in four retained-runtime captures and a
+new symbolized control capture. Its helper regression and hosted control/patched
+campaign have separate scopes. Runtime publication and final acceptance still
+require complete paired results and fresh full-suite gates.
 
 ## GEN-005 semantic four-plane generation — 2026-10-21
 
