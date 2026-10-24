@@ -4,7 +4,7 @@
   "class": "local-second-reconciliation-pre-CI",
   "main": "1e032e492cafb232e604baf6e2b823b13d779aa8",
   "tested_source": "c06c3bdb1bddf5b70afbf4f658ab78c81bdd87b3",
-  "final_delta": "This new receipt and its link only; final CI must run the commit containing both.",
+  "final_delta": "This receipt/link plus the historical prepass concurrency cohort and its documentation; production and apparatus stay unchanged. Final CI must run the descendant containing all of them.",
   "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
   "platform": "Windows-11-10.0.26300-SP0",
   "scientific_acceptance": false,
