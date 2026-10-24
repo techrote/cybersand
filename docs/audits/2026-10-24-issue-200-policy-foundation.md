@@ -137,7 +137,80 @@ host on the protected `lcb.dam.water.freemass.reference.v1` definition:
 
 ## CI and publication
 
-Pending; filled from the actual runs.
+**Branch commits:**
+
+| Commit | Content |
+|---|---|
+| `457ab64` | Implementation |
+| `0235c91` | Documentation |
+| `04bd222` | GLIBCXX fix |
+| `059e316` | Publisher bot runtime commit |
+
+**Failed first publication.** [Run 40053166064](https://github.com/techrote/cybersand/actions/runs/40053166064)
+built `457ab64`. Windows built and passed every case, but the Linux job failed
+`tools/check_linux_runtime_floor.sh` with "Unexpected CyberSand GLIBCXX
+requirement: 3.4.31 (expected 3.4.30)". Nothing was published. Cause: GCC 13
+inlines `literal + std::string&&` as a front insertion that imports
+`basic_string::_M_replace_cold@GLIBCXX_3.4.31`. Fix `04bd222` assembles refusal
+text append-only. The detail strings are byte-identical: the local candidate
+rebuilt at `04bd222` passed **93/93** native tests in 127.5 s
+(`tests.exe` `d00f3bf8…d38caa6`).
+
+**Passing publication.** [Run 40054064436](https://github.com/techrote/cybersand/actions/runs/40054064436)
+built `04bd222` on GitHub-hosted runners:
+
+- toolchains: Ubuntu 24.04 g++-13 and LLVM-MinGW 20260826 UCRT;
+- godot-cpp `101ae380`, SCons 4.10.1;
+- execution: Windows on `windows-2022`, Linux on Ubuntu 24.04, both with the
+  pinned Godot 4.7 and Rapier.
+
+Both passed the runtime floor, import and all eight focused cases. Then the
+publisher fast-forwarded `059e316`, which changes only the four runtime and
+provenance paths.
+
+| Platform | Runtime SHA-256 | Size | Validation report SHA-256 |
+|---|---|---|---|
+| Windows x86_64 | `b8ec750e12fad191f73d864a76428a10b540945659640e9b226c9a2c1bac06fb` | 4,049,408 | `be4e1f542ab289d6…` |
+| Linux x86_64 | `2495cedc12de07be3738a76b41ea352e5dff8309d167ea89f7fc430ae89765cf` | 3,525,584 | `3d49bfd8aaac4902…` |
+
+Identical summaries on both OSes:
+
+| Case | Result |
+|---|---|
+| `LIQUID_SOLVER_POLICY` | **236/0**; all five helper sections, 12 refusals, 5 parity checkpoints |
+| `MICROSCENARIOS` | **8855/0** |
+| `MICROSCENARIO_CONTROLLERS` | **55/0** |
+| LCB physics | **174/0** (unchanged from the landed baseline) |
+| LCB negative | **74/0** (unchanged) |
+| LCB manifests | **26/0** (unchanged) |
+| LCB catalogue | **774/0**, 27 scenarios |
+| `WATER_FEEL_INTEGRATION` | 24 policy cases + 70 scenario builds, `default_hash=7c40afe52c6e0e37` |
+
+**Local exact-runtime execution.** The published Windows DLL (verified SHA-256
+above) ran under local Godot 4.7 on Windows 11:
+
+| Case | Result | Time |
+|---|---|---|
+| `test_liquid_solver_policy` | **236/0** | 5 s |
+| `test_lcb_negative_contracts` | **74/0** | 4 s |
+| `test_microscenarios` | **8855/0** | 104 s |
+
+**Provenance.** At `059e316`, `python tools/ci/check_repository.py
+--require-materialized` reported 18 runtime files materialized, none
+unmaterialized, and no provenance error. The only errors were the six
+companion-workspace expected-fact paths that Documentation CI supplies from the
+pinned companion commit `6a583119`. `check_docs.py` passes under that companion
+layout.
+
+| Check | Result |
+|---|---|
+| `check_m11_consistency.py` | PASS |
+| Frozen 32-question retrieval | unchanged: 21/32 at 1, 32/32 at 5, MRR 0.7953 |
+| 117 supplementary challenges | 94/117 at 1, 117/117 at 5, MRR 0.8849 (LCB02 rank 1) |
+
+The exact-head Documentation, Native and GDExtension/Godot gates for the
+ready-for-review head are recorded in the PR evidence comment, not here, so that
+recording them does not change the head.
 
 ## Explicit gaps
 
