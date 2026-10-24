@@ -27,3 +27,5 @@ jobs:
         run: python3 tools/ci/check_ci_provider_policy.py
       - name: Run focused untimed verifier contracts
         run: python3 -B tools/experiments/mat003_correctness/test_verifier_contracts.py
+      - name: Run reader-revision provenance contracts
+        run: python3 -B tools/experiments/mat003_correctness/test_verifier_revision.py

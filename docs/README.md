@@ -239,3 +239,6 @@ MAT-003 design continuation: [semantic state-schema proposal](research/mat003-st
 Latest [resident reentry Windows build and replacement execution gate](audits/2026-10-23-mat003-reentry-build-admission.md):32 clean builds; no qualification cases or timing.
 
 Latest MAT-003 runtime disposition: [152-process replacement and Astra readback refusal](audits/2026-10-23-mat003-reentry-correctness-attempt.md). All candidate processes exited0, but the frozen reader rejected an overconstrained sleeping witness. No full correctness acceptance, rerun or timing; prior stage summaries are historical.
+
+For the bounded #204 overnight reader/provenance completion and its evidence
+limits, see the [overnight campaign](operations/mat003-overnight-campaign.md).

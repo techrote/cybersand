@@ -284,3 +284,6 @@ Resident reentry scratch capacity, exact grid and paused/resumed witness repair:
 Fresh e655166 binaries and exact replacement registration: [resident reentry build/admission](../audits/2026-10-23-mat003-reentry-build-admission.md). Source review/build success does not supply runtime qualification or owner case authorization.
 
 Latest MAT-003 runtime disposition: [152-process replacement and Astra readback refusal](../audits/2026-10-23-mat003-reentry-correctness-attempt.md). All candidate processes exited0, but the frozen reader rejected an overconstrained sleeping witness. No full correctness acceptance, rerun or timing; prior stage summaries are historical.
+
+For MAT-003 revised-reader provenance, immutable-archive validation and the
+independent-acceptance boundary, see the [overnight campaign](../operations/mat003-overnight-campaign.md).

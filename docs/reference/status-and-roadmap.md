@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-24
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
@@ -20,6 +20,17 @@ Latest MAT-003 runtime disposition: [152-process replacement and Astra readback 
 **Historical partial runtime attempt, retained unchanged:** [authorized86345703](../audits/2026-10-23-mat003-containment-correctness-attempt.md) stopped at resident-015 after clear256, retaining15 exit0 processes and136 unattempted cases. Full correctness is refused. Its32 admitted a3f4e37 binaries cannot admit the changed repair. The [prior293-tick failure](../audits/2026-10-23-mat003-windows-correctness-attempt.md), [failed warning build](../audits/2026-10-23-mat003-build-only-admission.md) and subsequent historical build/source checkpoints remain retained. New build-only authority, fresh binaries, independent admission and exact execution registration/hash authorization are required.
 
 **Current accepted campaigns / conditional architecture:** S2A224 processes and the separate [S2P56](../audits/2026-10-23-s2p-results.md), [WCLEAR672](../audits/2026-10-23-wclear-results.md) and [C12870](../audits/2026-10-23-c128-results.md) processes remain accepted only under their own source/workload/platform contracts. The [continuation report](../research/mat003-continuation.md) and [ADR-015](../decisions/ADR-015-material-state-schema-and-carrier-gates.md) preserve optimized compact/DUAL64 as leading options and accepted budgets as qualification targets. R16-T1 is conditional. PR211/221 remain draft; production C64/E8, Water and GEN-006 unchanged. No S2B or new timing authority.
+
+## MAT-003 overnight completion — 2026-10-24
+
+**Current experimental work; author validation, not independent acceptance:**
+the [bounded overnight campaign](../operations/mat003-overnight-campaign.md) reuses
+qualified S0/S1/S2A and continuation evidence. It corrects the revised-reader
+provenance path and runs one complete readback of the immutable 152-case Windows
+archive. The original reader refusal and all prior observations remain intact.
+#204 remains open, production C64-E8 stays the baseline and GEN-006 remains
+unimplemented. The separate #200 foundation belongs to Claude; this task starts
+no LCB solver or #212 work.
 
 ## MAT-003PREPASS S1 World apparatus — 2026-10-22
 

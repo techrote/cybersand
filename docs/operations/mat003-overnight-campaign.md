@@ -5,7 +5,7 @@ document-kind: guide
 scope: Bounded 2026-10-24 experimental completion queue, evidence reuse and author-validation limits for issue 204
 canonical-for: [mat003-overnight-campaign]
 last-reviewed: 2026-10-24
-related-documents: [../audits/2026-10-24-mat003-overnight-intake.md, mat003-continuation.md, architecture-programme.md]
+related-documents: [../audits/2026-10-24-mat003-overnight-intake.md, ../research/mat003-continuation.md, architecture-programme.md]
 ---
 
 # MAT-003 overnight evidence completion campaign
