@@ -632,7 +632,12 @@ establish candidate runtime acceptance or change defaults.
 
 ## LCB-001 policy foundation — 2026-10-24
 
-**Current on the `claude/issue-200-policy-foundation` branch (draft PR; not merged).**
+**Current on main.** [PR #239](https://github.com/techrote/cybersand/pull/239) merged on
+2026-10-24 at 07:01:19Z as
+[`1e032e492cafb232e604baf6e2b823b13d779aa8`](https://github.com/techrote/cybersand/commit/1e032e492cafb232e604baf6e2b823b13d779aa8).
+Its tree `4519bb257cc1060b1d79dd35ac3f183618ec605a` equals the reviewed head
+`cc01899`. The post-merge push runs all passed on first attempt:
+[Native 40072499987](https://github.com/techrote/cybersand/actions/runs/40072499987), [GDExtension/Godot 40072499990](https://github.com/techrote/cybersand/actions/runs/40072499990), [Documentation/provenance 40072499986](https://github.com/techrote/cybersand/actions/runs/40072499986) and [#49 Water apparatus 40072499994](https://github.com/techrote/cybersand/actions/runs/40072499994).
 The owner lifted the #200 hold for this bounded foundation only. It implements the
 accepted Gate C policy object, not a solver: validation precedence, canonical
 SHA-256 identity, normalized readback and transactional construction for the
@@ -644,7 +649,7 @@ and [dated evidence](../audits/2026-10-24-issue-200-policy-foundation.md).
 
 | Item | Status |
 |---|---|
-| Native policy, wire decode, refusal codes, hash, World admission, experimental C API, GDExtension receipt/validation/construction, MicroScenario request, worker receipt | Current (branch) |
+| Native policy, wire decode, refusal codes, hash, World admission, experimental C API, GDExtension receipt/validation/construction, MicroScenario request, worker receipt | Current (main `1e032e4`) |
 | NC-1, NC-2 and NC-10 | Executable in the foundation regressions; the LCB registry is unchanged |
 | Pressure backend, W-CY/W-IN kernels, run receipt hash, normalization, physical-state hash, remaining #202 constructors, durable schema/ABI freeze | Planned, held or deferred |
 | #212, #201, #202, #203 and all 90 candidate arms | Unchanged: held or blocked |
