@@ -15,14 +15,18 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 The [investigation audit](../audits/2026-10-23-physical-actor-timeouts.md) preserves
 the two cited hosted runs, phase/blocking-path inspection and separate local
 stress evidence. [Draft PR #236](https://github.com/techrote/cybersand/pull/236)
-has no accepted root-cause repair yet. A queued stress job, successful rerun or
-local zero-timeout sample does not establish hosted resolution.
+retains historical failures and separate candidate qualification. A queued stress
+job, successful rerun or local zero-timeout sample alone does not establish
+hosted resolution.
 
 The [2026-10-24 dump and paired validation record](../audits/2026-10-24-physical-actor-bvh-validation.md)
 confirms the deferred-BVH channel wait in four retained-runtime captures and a
-new symbolized control capture. Its helper regression and hosted control/patched
-campaign have separate scopes. Runtime publication and final acceptance still
-require complete paired results and fresh full-suite gates.
+new symbolized control captures. Same-host run 40056501226 qualified the repair:
+Windows control arena 2/50 and rigs 4/50 timeouts, course 0/50; Linux control and
+all 300 patched trials passed. Exact tested desktop x86_64 backports are selected
+with source-matched manifests; other platforms retain original artifacts.
+Its helper regression, paired evidence and final full-suite/exact-head gates
+have separate scopes. Final gate receipts are recorded on PR #236's current head.
 
 ## GEN-005 semantic four-plane generation — 2026-10-21
 

@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-24
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -24,7 +24,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 
 | Question family | Canonical route |
 |---|---|
-| How do I investigate intermittent physical actor Godot timeouts and interpret stress hang frequencies? | [Live diagnostics and stress invocation](../operations/local-build-and-validation.md#physical-actor-timeout-investigation), [dated unresolved investigation](../audits/2026-10-23-physical-actor-timeouts.md) |
+| How do I investigate intermittent physical actor Godot timeouts and interpret stress hang frequencies? | [Live diagnostics and stress invocation](../operations/local-build-and-validation.md#physical-actor-timeout-investigation), [captured call, paired repair and selected desktop provenance](../audits/2026-10-24-physical-actor-bvh-validation.md) |
 | Are Trainer, Hauler, Drifter and Dart four calibrated drones, and can I select them in ordinary play yet? | [4LY implementation scope and programme](../systems/physical-free-flight.md#what-does-4ly-001-implement-and-which-4ly-002-drone-profiles-can-i-select), [profile values](configuration-reference.md#physical-free-flight-values) |
 | Which 4LY-002 manoeuvre envelopes passed on Linux/Windows, what are the exact hashes, and is owner handling feel accepted? | [Source-bound real-Rapier qualification](../audits/2026-10-23-4ly002-measured-handling-qualification.md), [machine-measured profile manifest](../audits/4ly002-2026-10-23/measured-handling.json), [4LY host/learning boundaries](../systems/physical-free-flight.md#what-follows-this-implementation-checkpoint) |
 | How can two desired-velocity outputs control a real flying chassis without hidden goal navigation, unlimited hover or velocity clipping? | [4LY control and goal blindness](../systems/physical-free-flight.md), [strict action interface](interfaces-and-message-contracts.md#physical-free-flight-actions) |

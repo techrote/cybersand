@@ -2,7 +2,7 @@
 title: Physical actor deferred BVH blocking-call confirmation and paired validation
 status: Current
 document-kind: audit
-scope: Windows dump attribution and paired Rapier control/candidate experiments; no published runtime repair yet
+scope: Captured blocking call, paired qualification and source-matched Windows/Linux x86_64 runtime backport selection
 canonical-for: []
 last-reviewed: 2026-10-24
 related-documents: [2026-10-23-physical-actor-timeout-handover.md, 2026-10-23-physical-actor-timeouts.md, ../operations/local-build-and-validation.md, ../decisions/ADR-009-rapier-2d-rigid-body-backend.md]
@@ -16,9 +16,10 @@ The owner resumed [draft PR #236](https://github.com/techrote/cybersand/pull/236
 from handover commit `3e0f01e2b829bde1a357a79637bab15bf3de430d` on 2026-10-24.
 The existing `codex/physical-actor-timeouts` managed worktree remains the source
 checkout. Original dirty material work and LCB #215/#217/#226 / MAT-003PREPASS
-remain untouched. This experiment does not publish a runtime or change native
-physics, solver parameters, pool size, default selected binaries or assertions.
-The PR stays draft until the repair is proven.
+remain untouched. At resume, the experiment had not published a runtime or changed
+default selected binaries. The subsequent qualified desktop selection is recorded
+below. Native physics, solver parameters, pool size and assertions remain unchanged.
+The PR stays draft through remaining full-suite validation.
 
 ## Confirmed captured blocking call
 
@@ -189,3 +190,103 @@ test failures and was stopped after 58 cases. Its outcomes and raw report remain
 preserved; it is excluded from full-suite qualification. The complete repository
 experiment reran the whole scope with unchanged assertions and deadlines, and
 passed those generation/launcher cases as well as the rest of the suite.
+
+## Completed same-host qualification and desktop selection
+
+[40056501226](https://github.com/techrote/cybersand/actions/runs/40056501226)
+completed all **600 independent trials** at exact source
+`96dcb2ab6e35c9104726b2a541d1c2fbb298eecb`. Its
+**paired-qualification job passed** with no qualification errors; patched frequency
+also passed. The overall workflow remains **failed** because six control trials
+and the strict control-frequency job failed. Expected control failures are not
+converted to passes, retried or skipped.
+
+| Platform/test | Blocking control timeouts | Cooperative candidate timeouts |
+|---|---:|---:|
+| Windows arena | 2/50 (4%) | 0/50 |
+| Windows rigs | 4/50 (8%) | 0/50 |
+| Windows usable course | 0/50 | 0/50 |
+| Linux arena | 0/50 | 0/50 |
+| Linux rigs | 0/50 | 0/50 |
+| Linux usable course | 0/50 | 0/50 |
+
+The [complete qualification and batch receipts](physical-actor-timeouts-2026-10-23/same-host-pair.json)
+retain build/runtime identities, raw-report hashes, all six timeout records,
+CPU/core counts, fixture identity hashes and matching host/batch records. Each
+host exposes two physical cores/four logical processors; CPU families include
+AMD EPYC 7763/9V45 and Intel Xeon Platinum 8573C. All twenty variant reports
+completed with empty input-drift lists. Alternating pair order and matching
+hardware/fixtures passed the registered checker. Timeout phases were arena
+`configure` twice and rigs `setup_complete` twice / `step` twice. The independent
+watchdog captured at 30 seconds of idle and failed at 45 seconds of idle; the
+ordinary 180-second case limit was retained.
+
+A [new matching-PDB engine capture](physical-actor-timeouts-2026-10-23/same-host-control-dump.json)
+from control Windows batch 0, rigs iteration 5, PID 7788, confirms the same
+`join_deferred_bvh_optimize` → channel receive → parked worker. The main thread
+waits in `LockLatch::wait_and_reset`; the other Rapier worker sleeps in Rayon.
+Exact Microsoft images/PDBs and the current control's matching private PDB were
+used without forced mismatched symbols. Unrelated unavailable system-module
+warnings do not affect these attributed stacks. Raw output is retained locally
+as `build/same-host-control-symbolized-stacks.txt`.
+
+**Root cause and selected repair:** a Rayon worker blocks in the synchronous
+deferred-BVH receive instead of helping work queued in its pool. The caller then
+waits for that worker; the captures directly establish this blocking call and
+idle-worker topology. The backport polls the receive while yielding to queued
+Rayon work, preserves outside-pool receive behavior and still fails on a
+disconnected producer. The deterministic two-worker control stalls with exit
+124 within ten seconds on both OSes; the exact patched helper passes all three
+checks. The precise scheduler race that originally stranded the task remains
+unproven; this repair does not claim a general Rayon scheduler fix.
+
+The paired application comparison, repeated matching captures and deterministic
+progress regression support selecting the minimal backport for Windows/Linux
+x86_64. Across the three campaigns, completed candidate trials total **750 with
+zero failures/timeouts** (450 Windows, 300 Linux), retaining the first campaign's
+Linux preflight exclusion and the second campaign's inconclusive control sample.
+The [updated binary/input comparison](physical-actor-timeouts-2026-10-23/paired-windows-code-equivalence.json)
+records all three sources: Windows code/data sections match, and entire PE bytes
+match after excluding the explicitly listed timestamps/checksum and declared
+debug payloads. Actual DLL/PDB hashes remain distinct. The Linux candidate
+artifact is byte-identical in the complete second and third campaigns.
+
+**Selected exact tested artifacts**, with no stripping or rebuild after stress:
+
+| Platform | SHA-256 | Bytes |
+|---|---|---:|
+| Windows x86_64 | `b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7` | 9987072 |
+| Linux x86_64 | `566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a` | 117275416 |
+
+The [runtime lock](../../godot/third_party/rapier2d.lock.json) selects their new
+per-platform manifests while preserving the original v0.35.2 release archive
+and all other architecture/Web hashes. The immutable build-time candidate lock
+is retained as a build input; subsequent selection is expressed in the runtime
+lock rather than rewriting that historical status. Both artifacts use addon
+commit `172c66f5a88bf1164c2b8cf2d775ed889edefd75`, rapier2d 0.35.1 with its verified
+crate hash, original dependency versions and Rust 1.98.0. The MIT addon and
+Apache-2.0 Rapier notices remain retained and the modification is identified.
+
+| Documentation/checklist area | Disposition |
+|---|---|
+| Dependency/ADR/provenance | ADR-009, runtime lock, manifests, notices and runbook record the two desktop overrides; source-input or artifact drift fails repository and Windows preflight checks |
+| Ownership/interfaces/invariants | Main-thread Godot/Rapier ownership, immutable native payloads and native cell authority unchanged; no C++ source or engine-facing interface changes |
+| Configuration/capacity/user controls | No solver, worker-count, material, actor, capacity or user-control changes |
+| Build/test tooling | Active consumers use selected hashes; complete stress scope and strict failures retained; validation-contract negatives reject stale patch/toolchain/engine/dependency identity and mismatched libraries |
+| Routes/retrieval/status | Build guide, handover, roadmap, validation ledger, indexes and supplementary CI-HANG-01 expectations reconciled; frozen 32 questions preserved |
+| Historical/contradictory claims | Prior failed/inconclusive/invalid-apparatus evidence retained; the runbook's stale unresolved-LFS wording is corrected against actual materialization evidence |
+
+**Remaining at the publication checkpoint:** full applicable hosted regression,
+Native and exact-head Documentation/provenance acceptance. PR #236 remains draft
+through these checks. Their final source/run receipts are recorded in the PR so
+that recording a check result does not change the checked source revision.
+
+Local selection checks passed: **140 Python tests** (62 focused runner/stress/
+identity tests, 14 validation contracts, six provider-policy tests and 58 existing
+runtime-publication consumer tests), documentation metadata/links, historical M11
+integrity (18 records/28 hashes), provider policy and whitespace. Frozen retrieval
+is 32/32 hit@5, 21/32 hit@1, MRR 0.7953; supplementary is 116/116 hit@5, with
+CI-HANG-01's canonical build guide at rank 2. The retrieved guide retains the
+strict oracles, selected platform scope and separate final-gate qualifier. Raw
+local logs/reports are under ignored `build/bvh-publication-checks`. Repository
+materialization/provenance is checked again after committing the new LFS identity.

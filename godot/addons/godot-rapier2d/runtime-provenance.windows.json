@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "status": "source-matched-cooperative-bvh-backport",
+  "artifact": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+  "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+  "size": 9987072,
+  "build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/40056501226",
+  "build_artifact": "rapier-bvh-windows-patched-40056501226",
+  "build_record": {
+    "schema_version": 1,
+    "source_sha": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+    "variant": "patched",
+    "platform": "windows",
+    "build_inputs": {
+      "status": "candidate; runtime publication requires paired control and patched evidence",
+      "addon_repository": "https://github.com/appsinacup/godot-rapier-physics.git",
+      "addon_tag": "v0.35.2",
+      "addon_commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75",
+      "crate": "rapier2d",
+      "crate_version": "0.35.1",
+      "crate_url": "https://static.crates.io/crates/rapier2d/rapier2d-0.35.1.crate",
+      "crate_sha256": "74bfd393193e08a812ba0c83c7c844dff29979fd30f96de2854cdea507350065",
+      "base_join_source_sha256": "b5fffdf4bd0c8e359d1aa52d9ddc95b04e21c11a8438b2ac8c31bebc57c32963",
+      "patch": "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch",
+      "patch_sha256": "6eda9ecd071925af35b7bfc92a2c3c01ac2b87831591947d79925cc92588975e",
+      "rust_toolchain": "1.98.0",
+      "features": [
+        "serde-serialize",
+        "parallel",
+        "register-docs",
+        "single-dim2",
+        "api-custom"
+      ],
+      "release_overrides": {
+        "CARGO_PROFILE_RELEASE_DEBUG": "1",
+        "CARGO_PROFILE_RELEASE_STRIP": "none"
+      },
+      "upstream_reports": [
+        "https://github.com/dimforge/rapier/issues/1008",
+        "https://github.com/appsinacup/godot-rapier-physics/issues/640"
+      ],
+      "upstream_cargo_lock_sha256": "63cb5170bd78cec10a46ecc912bfd56e101f7d30ed9bfd97789146f9b682d4dc",
+      "patched_join_source_sha256": "0a63cf10ae1111c4fa3c22d945d505918f36d1165b8176e130573d5259f9a973"
+    },
+    "build_lock_sha256": "0951b69d1b59c70c915f59bcae8390291ad9b89b4eb976ac8f3dfbed0fa7c46b",
+    "upstream_cargo_lock_sha256": "63cb5170bd78cec10a46ecc912bfd56e101f7d30ed9bfd97789146f9b682d4dc",
+    "resolved_cargo_lock_sha256": "6711ce94ea78d86e20cdd5b3eb4f5ff5c38499811afe3627f883d26fc370f6eb",
+    "join_source_sha256": "0a63cf10ae1111c4fa3c22d945d505918f36d1165b8176e130573d5259f9a973",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)\nbinary: rustc\ncommit-hash: 88d9e12ae178fab0fb5cc050a94da85685d449ea\ncommit-date: 2026-08-18\nhost: x86_64-pc-windows-msvc\nrelease: 1.98.0\nLLVM version: 22.1.8\n",
+    "join_regression_exit": 0,
+    "artifacts": {
+      "Cargo.lock": "6711ce94ea78d86e20cdd5b3eb4f5ff5c38499811afe3627f883d26fc370f6eb",
+      "godot_rapier.pdb": "4d8a135baf94b65d0870400a4fbbb0da2d39c47b169a26298c74a29eac3a8d4f",
+      "join-regression.log": "3ecf7389d26108974295a699aa9d0ea1a89bcce2a444f01d0bafa0a54e8d5fbe",
+      "libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+    }
+  },
+  "source_inputs": {
+    "third_party/rapier-bvh-build.lock.json": "0951b69d1b59c70c915f59bcae8390291ad9b89b4eb976ac8f3dfbed0fa7c46b",
+    "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch": "6eda9ecd071925af35b7bfc92a2c3c01ac2b87831591947d79925cc92588975e",
+    "tools/ci/build_rapier_bvh_candidate.py": "f849f5175eded2cd296dd4e0feda2632ffee91714406f0f595834dbda9a482a5",
+    ".github/workflows/rapier-bvh-build.yml": "4a0e145c473f2cdef64263ee1e5b64d0c974e68c15d505944ee22364776d831d"
+  },
+  "validated_platform": "windows x86_64 Godot 4.7",
+  "validation_scope": "Exact artifact in same-host alternating physical-actor stress; final full-suite/exact-head results are recorded in PR #236.",
+  "evidence": "docs/audits/2026-10-24-physical-actor-bvh-validation.md",
+  "scope": "v0.35.2 addon / rapier2d 0.35.1; cooperative deferred-BVH receive only; other architectures and Web retain original release artifacts"
+}

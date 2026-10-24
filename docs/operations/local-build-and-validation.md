@@ -216,8 +216,15 @@ manifest; ordinary retained-runtime gates keep their default byte checks. Contro
 failures remain failures and may make the workflow red. Read the
 [2026-10-24 dump/paired validation record](../audits/2026-10-24-physical-actor-bvh-validation.md)
 for the confirmed blocking call, provenance, current results and acceptance limits.
-The default selected runtime remains unchanged until a repair is validated and
-published with explicit provenance.
+The 2026-10-24 same-host campaign qualified the cooperative join: Windows control
+had six timeouts versus zero patched; Linux had zero in either variant. All 300
+patched trials passed. Windows/Linux x86_64 now select those exact tested
+artifacts through the runtime lock's per-platform provenance manifests; other
+platforms retain release bytes. Repository and Windows preflight checks reject
+changed build inputs or mismatched libraries. The paired campaign remains red
+overall because actual control failures remain failed, while its separate
+qualification job passed. Use the dated record and PR #236 for complete
+frequencies and final full-suite/exact-head receipts.
 
 ## Windows retained-runtime execution
 

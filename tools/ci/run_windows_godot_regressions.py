@@ -20,7 +20,7 @@ ROOT = runner.ROOT
 PROVENANCE = "godot/addons/cybersand_native/runtime-provenance.json"
 NATIVE = "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
 RAPIER = "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
-RAPIER_SHA256 = "4e26ffa78ec2aaff434c4a70cd2ec85288b10ba5237912c35f204cb1e6ed2180"
+RAPIER_SHA256 = "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
 GODOT_VERSION = "4.7.stable.official.5b4e0cb0f"
 GODOT_SHA512 = (
     "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e"
@@ -32,6 +32,8 @@ INPUT_SCOPES = (
     "tools/ci/godot_process_monitor.py", "tools/ci/physical_progress_watchdog.py",
     ".github/workflows/gdextension.yml",
     "third_party/godot-runtime.lock.json", "third_party/native-toolchain.lock.json",
+    "third_party/rapier-bvh-build.lock.json", "third_party/patches",
+    "tools/ci/build_rapier_bvh_candidate.py", ".github/workflows/rapier-bvh-build.yml",
 )
 RAPIER_IMPORT_DESCRIPTORS = frozenset({
     "godot/addons/godot-rapier2d/Radial2D.svg.import",
@@ -77,6 +79,12 @@ def verify_retained_runtime(root: Path, *, rapier_build: Path | None = None) -> 
         candidate = verify(root, rapier_build)
         if candidate["platform"] != "windows":
             raise RuntimeError("Expected a Windows Rapier candidate")
+    else:
+        from check_repository import verify_rapier_overrides
+        rapier_lock = json.loads((root / "godot/third_party/rapier2d.lock.json").read_text(encoding="utf-8"))
+        errors = verify_rapier_overrides(root, rapier_lock)
+        if errors:
+            raise RuntimeError("Selected Rapier runtime provenance failed: " + "; ".join(errors))
     identities = {}
     for relative in (NATIVE, RAPIER):
         pointer = git(root, "show", "HEAD:" + relative)
@@ -97,7 +105,7 @@ def verify_retained_runtime(root: Path, *, rapier_build: Path | None = None) -> 
     if identities[NATIVE]["sha256"] != manifest["sha256"] or identities[NATIVE]["size"] != manifest["size"]:
         raise RuntimeError("Retained Windows DLL differs from its runtime provenance")
     if candidate is None and identities[RAPIER]["sha256"] != RAPIER_SHA256:
-        raise RuntimeError("Windows Rapier differs from the pinned official runtime")
+        raise RuntimeError("Windows Rapier differs from the pinned selected runtime")
     return {
         "runtime_source_commit": manifest["source_commit"],
         "runtime_build_commit": manifest["build_commit"],

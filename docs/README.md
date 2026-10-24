@@ -12,7 +12,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
-For intermittent physical actor Godot timeouts, use the [live diagnostics and stress guide](operations/local-build-and-validation.md#physical-actor-timeout-investigation), [original investigation](audits/2026-10-23-physical-actor-timeouts.md) and [captured deferred-BVH wait / paired validation](audits/2026-10-24-physical-actor-bvh-validation.md). The captured blocking call is confirmed; repair acceptance requires complete control/patched execution.
+For intermittent physical actor Godot timeouts, use the [live diagnostics and stress guide](operations/local-build-and-validation.md#physical-actor-timeout-investigation), [original investigation](audits/2026-10-23-physical-actor-timeouts.md) and [captured deferred-BVH wait / paired validation](audits/2026-10-24-physical-actor-bvh-validation.md). The captured blocking call and same-host repair comparison are confirmed; selected desktop backports and remaining final-gate scope are recorded there.
 
 For **Generation Workbench 2**, use the [inspection and authoring contract](systems/generation-workbench-2.md): truthful native replay, actual intermediate stages, graph/hierarchy tools, transactional undo/redo and bounded seed/recipe comparisons. The [procedural qualification guide](operations/procedural-qualification.md) routes the 1024 × 1024 scene, final-raster paths, native exhibits and visual evidence.
 

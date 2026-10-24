@@ -19,9 +19,12 @@ owns invocation; the [dated audit](../audits/2026-10-23-physical-actor-timeouts.
 separates historical incidents and local experiments. The
 [2026-10-24 dump attribution](../audits/2026-10-24-physical-actor-bvh-validation.md)
 confirms a worker blocked in Rapier's deferred-BVH receive while the caller waits
-on the pool. A cooperative join candidate is undergoing paired control/patched
-validation. **Planned:** repaired runtime publication and hosted acceptance;
-diagnostic capture or helper tests alone do not establish a repair.
+on the pool. The same-host control/patched campaign qualified the cooperative
+join: six Windows control timeouts versus zero candidate timeouts, with all 300
+candidate trials passing across Windows/Linux. Exact tested x86_64 desktop
+backports are selected with source-matched provenance; other architectures/Web
+retain release libraries. **Planned at the selection checkpoint:** final
+full-suite and exact-head hosted acceptance, with current receipts in PR #236.
 
 ## 4LY shared physical free-flight — 2026-10-22
 

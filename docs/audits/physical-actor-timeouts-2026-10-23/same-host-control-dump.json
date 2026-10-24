@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-24",
+  "run_id": 40056501226,
+  "source_sha": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+  "scope": "Qualified same-host paired experiment; Windows control batch 0 rigs iteration 5",
+  "variant": "control",
+  "batch": 0,
+  "iteration": 5,
+  "test": "test_physical_actor_rigs",
+  "engine_pid": 7788,
+  "dump_sha256": "c2d2f6bf6045dd20991364ab752f8da5aa9f326b65987b41a32b4533f9456c4f",
+  "rapier_module_base": "0x7ffc30c70000",
+  "rapier_sha256": "ffb71971ff5ff1b1cc354207d6383ea313fb5b5d986753c9c786f82df95af389",
+  "pdb_sha256": "ffca92f046eac2aebed6a4082ebc9546ee9a33b2138a4e1523f5b26936418dd0",
+  "pdb_guid_age": "6280F480661F4BDCA7A83E1F27FE002A1",
+  "method": "DbgEng native unwind with exact control DLL/PDB and exact Microsoft system images/PDBs. Private matching PDB symbols directly identify the blocked join and idle worker.",
+  "main": [
+    "rayon_core::latch::LockLatch::wait_and_reset",
+    "rayon_core::registry::in_worker_cold",
+    "rayon_core::thread_pool::ThreadPool::install",
+    "godot_rapier::rapier_wrapper::physics_world::PhysicsWorld::step"
+  ],
+  "blocked_worker": [
+    "std::thread::thread::Thread::park",
+    "std::sync::mpmc::list::Channel::recv (called by the deferred-BVH join)",
+    "std::sync::mpsc::Receiver::recv",
+    "rapier2d::pipeline::physics_pipeline::PhysicsPipeline::join_deferred_bvh_optimize+0x346",
+    "rapier2d::pipeline::physics_pipeline::PhysicsPipeline::step_inner+0x1887"
+  ],
+  "other_worker": [
+    "std::sys::sync::condvar::futex::Condvar::wait",
+    "rayon_core::sleep::Sleep::sleep",
+    "rayon_core::registry::WorkerThread::wait_until_cold+0xf3",
+    "rayon_core::registry::WorkerThread::wait_until_out_of_work",
+    "rayon_core::registry::main_loop"
+  ],
+  "limitations": [
+    "The precise scheduler lost-progress race is not proven by a snapshot. The deferred receive and idle-worker topology are directly symbolized."
+  ],
+  "thread_ids": {
+    "main": 1112,
+    "blocked_worker": 7064,
+    "other_worker": 7920
+  },
+  "last_progress": {
+    "detail": "scrabbler",
+    "elapsed_ms": 2804,
+    "phase": "setup_complete",
+    "steps": 4800
+  },
+  "stack_log_sha256": "db73045173d42188dd5bcd280ab765b9e81e45b0130dbe5b802c3ab3e1bf43c6"
+}
