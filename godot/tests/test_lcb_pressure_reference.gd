@@ -14,6 +14,8 @@ const SCENARIOS: String = LCB + "scenarios/"
 const ASSIGNMENTS_AT: int = 20
 const LIQUIDS: Array[int] = [3, 8, 12, 16, 20, 21, 24, 30, 32, 33, 36]
 const FULL: int = 255
+# CYPS/hash v2 includes the shared exact quantity-ledger continuation state.
+const PHYSICAL_STATE_VERSION: int = 2
 const FRAME: Vector2i = Vector2i(1024, 1024)
 const SECTIONS: Array[String] = ["native_dispatch", "no_fallback", "gas_identity", "gas_merge_split",
 	"vent_reseal", "empty_only_gas", "quantity_ledger", "physical_state_hash", "save_roundtrip",
@@ -115,7 +117,7 @@ func _native_dispatch_and_no_fallback() -> void:
 		"receipt does not report applied pressure_flow_v1/reference: " + str(water))
 	var parameters: Dictionary = receipt.family_parameters.get("pressure_flow_v1", {})
 	dispatch_ok = expect(parameters.get("gas_enabled", false) and int(parameters.get("atmospheric_head_rows", 0)) == 32
-		and int(receipt.physical_state_hash_version) == 1, "pressure family parameters missing from receipt") and dispatch_ok
+		and int(receipt.physical_state_hash_version) == PHYSICAL_STATE_VERSION, "pressure family parameters missing from receipt") and dispatch_ok
 	# Interest rectangles determine which cells run. Equal window flags alone
 	# must never make different selected regions look like matched executions.
 	pressure.world.set_simulation_window_enabled(true)
@@ -334,7 +336,7 @@ func _hash_and_save_roundtrip() -> void:
 	var original: Dictionary = _install(1, definition, pressure_request)
 	var current: Dictionary = _install(1, definition, null)
 	if not original.ok or not current.ok or not _advance(original, 20) or not _advance(current, 20): return
-	var hash_ok: bool = expect(int(original.world.get_physical_state_hash_version()) == 1
+	var hash_ok: bool = expect(int(original.world.get_physical_state_hash_version()) == PHYSICAL_STATE_VERSION
 		and str(original.world.get_physical_state_hash()).length() == 16, "physical-state hash identity")
 	hash_ok = expect(original.world.get_physical_state_hash() != current.world.get_physical_state_hash(),
 		"physical hash does not distinguish pressure from Current") and hash_ok
@@ -352,6 +354,8 @@ func _hash_and_save_roundtrip() -> void:
 	# Save at tick 21, restore into a separate adapter, continue both 40 ticks.
 	var bytes: PackedByteArray = bridge.export_physical_state(original.world)
 	var save_ok: bool = expect(bytes.size() > 64, "physical state export failed: " + str(bridge.get_last_error()))
+	save_ok = expect(bytes.size() > 8 and bytes.decode_u32(4) == PHYSICAL_STATE_VERSION,
+		"pressure quantity ledger must be encoded as CYPS2") and save_ok
 	var restored: Dictionary = _install(1, definition, pressure_request)
 	if not restored.ok: return
 	save_ok = expect(bridge.import_physical_state(restored.world, bytes),

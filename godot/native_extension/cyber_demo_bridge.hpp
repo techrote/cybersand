@@ -542,11 +542,31 @@ private:
             auto candidate = cybersand::demo::construct(
                 config, {rectangles.ptr(), static_cast<std::size_t>(rectangles.size())});
             const auto& water_policy = candidate->config().water_experiment_policy;
-            for (std::int64_t i = 0; i < water_fills.size(); i += 6) {
-                const auto mass = static_cast<std::uint16_t>(
-                    (2U * static_cast<std::uint32_t>(water_fills[i + 4]) *
+            const auto fill_mass = [&](std::int64_t offset) {
+                return static_cast<std::uint16_t>(
+                    (2U * static_cast<std::uint32_t>(water_fills[offset + 4]) *
                          water_policy.maximum() + 255U) /
                     (2U * 255U));
+            };
+            // Whole-cell admission examines the resolved setup, not an
+            // intermediate overlay. Zero-mass fills keep their existing no-op
+            // meaning. This bounded construction-only map records the last
+            // nonzero fill at each cell; no live World is converted or rounded.
+            const bool whole_cell = candidate->water_cellular_yield_enabled();
+            std::vector<std::uint16_t> final_fill;
+            if (whole_cell) {
+                final_fill.resize(std::size_t{cybersand::demo::kWidth} * cybersand::demo::kHeight);
+                for (std::int64_t i = 0; i < water_fills.size(); i += 6) {
+                    if (fill_mass(i) == 0U) continue;
+                    const auto owner = static_cast<std::uint16_t>(i / 6 + 1);
+                    for (auto y = water_fills[i + 1]; y < water_fills[i + 1] + water_fills[i + 3]; ++y)
+                        for (auto x = water_fills[i]; x < water_fills[i] + water_fills[i + 2]; ++x)
+                            final_fill[std::size_t{static_cast<std::uint32_t>(y)} * cybersand::demo::kWidth +
+                                       static_cast<std::uint32_t>(x)] = owner;
+                }
+            }
+            for (std::int64_t i = 0; i < water_fills.size(); i += 6) {
+                const auto mass = fill_mass(i);
                 const auto coherence = static_cast<std::uint8_t>(
                     (2U * static_cast<std::uint32_t>(water_fills[i + 5]) *
                          water_policy.coherence_ticks() + 12U) /
@@ -556,8 +576,22 @@ private:
                      y < water_fills[i + 1] + water_fills[i + 3]; ++y) {
                     for (auto x = water_fills[i];
                          x < water_fills[i] + water_fills[i + 2]; ++x) {
+                        if (whole_cell) {
+                            if (final_fill[std::size_t{static_cast<std::uint32_t>(y)} * cybersand::demo::kWidth +
+                                           static_cast<std::uint32_t>(x)] != static_cast<std::uint16_t>(i / 6 + 1))
+                                continue;
+                            if (mass != water_policy.maximum())
+                                throw cybersand::LiquidPolicyRefused({
+                                    cybersand::LiquidPolicyRefusalCode::NormalizationRequired,
+                                    static_cast<std::uint16_t>(cybersand::Material::Water),
+                                    "whole-cell Water setup requires explicit water-normalize-v1; "
+                                    "the Godot constructor does not opt in"});
+                        }
                         if (!candidate->set_cell_state(
-                                x, y, cybersand::Material::Water, mass, coherence)) {
+                                x, y, cybersand::Material::Water, mass, coherence) &&
+                            (candidate->stored_material(x, y) != cybersand::Material::Water ||
+                             candidate->stored_state_a(x, y) != mass ||
+                             candidate->stored_state_b(x, y) != coherence)) {
                             throw std::invalid_argument("Water fill could not be applied");
                         }
                     }
