@@ -12,7 +12,7 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## Physical actor timeout investigation — 2026-10-23
 
-**Current working candidate for #234, 2026-10-24:** the integrated repair adopts
+**Current qualified desktop repair for #234, 2026-10-24:** the integrated repair adopts
 [PR #236](https://github.com/techrote/cybersand/pull/236)'s qualified Windows/Linux
 x86_64 cooperative deferred-BVH join backport on independently advanced main.
 The [captured stacks and paired validation](../audits/2026-10-24-physical-actor-bvh-validation.md)
@@ -22,9 +22,14 @@ confirm the blocking deferred receive and outer Rayon latch. Same-host run
 stranded the queued work remains unproven.
 
 The [#234 integration record](../audits/2026-10-24-issue-234-physical-hang-repair.md)
-owns this candidate's actual checkpoint, gates and remaining work. Final
-exact-head hosted validation and a fresh standard 600-attempt serial/parallel
-campaign are **Planned / pending**. The earlier 300-candidate paired programme
+owns the actual checkpoint, gates and qualification limits. PR #236 head
+`330ded5aa0937b4a46ea0b5f270583a8e0375931` passed exact-head ordinary admission
+and merged as `13b8e631f3e8fbaa2176ed41afc02c434b11e558`. The fresh standard
+600-attempt serial/parallel campaign `40129364630` at that source completed
+600/600 physical passes, 0/600 timeouts, zero other failures and 20/20 import
+passes. Each OS/mode/test stratum passed 50/50. This qualifies the registered
+Windows/Linux x86_64 workload and exact artifacts; it does not establish all-load
+or other-platform absence of hangs. The earlier 300-candidate paired programme
 keeps its separate source, configuration and acceptance scope.
 
 The [build guide](local-build-and-validation.md#physical-actor-timeout-investigation)
@@ -239,9 +244,13 @@ historical Linux failure remain unchanged. The separate PR #236 evidence lane
 supplies matching native-stack attribution and a qualified paired repair
 comparison; it does not retroactively add stacks to #233 captures.
 [#234 integration](../audits/2026-10-24-issue-234-physical-hang-repair.md) now owns
-the working backport/watchdog candidate, pending exact-head hosted gates and a
-fresh standard 600-attempt qualification. Parent #232 remains open until that
-repair/qualification is complete. Preserve every original failure and rerun.
+the qualified backport/watchdog repair, admitted ordinary gates and completed
+standard 600-attempt qualification run `40129364630` at source
+`13b8e631f3e8fbaa2176ed41afc02c434b11e558`: all 600 physical attempts and twenty
+imports passed, with zero timeouts or other failures. Route the
+actual issue disposition through [#234](https://github.com/techrote/cybersand/issues/234)
+and parent [#232](https://github.com/techrote/cybersand/issues/232).
+Preserve every original failure and rerun.
 
 Work in `C:/kybersand`, with executable source in `source/`. The companion workspace
 and source now have separate Git histories. Read [source identity](source-checkpoint-and-recovery.md)

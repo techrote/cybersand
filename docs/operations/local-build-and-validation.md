@@ -175,7 +175,7 @@ and provider-routing boundary.
 
 ## Physical actor timeout investigation
 
-**Current working #234 candidate:** both platform runners use
+**Current qualified #234 apparatus:** both platform runners use
 `run_godot_regressions.run_case` and an independent
 [process monitor](../../tools/ci/godot_process_monitor.py). The three suspect
 fixtures request live capture after 30 seconds without a new main-thread marker
@@ -226,7 +226,13 @@ of ten repetitions for each of arena, rigs and usable course on Windows/Linux
 in serial and three-process parallel modes: 600 physical attempts plus import
 preflights. Inspect the independent completeness gate and raw per-attempt evidence.
 The [#234 integration ledger](../audits/2026-10-24-issue-234-physical-hang-repair.md)
-owns actual source/run identities and the **pending** fresh repair qualification.
+owns actual source/run identities, completed ordinary admission and fresh
+qualification run `40129364630` at immutable merge source
+`13b8e631f3e8fbaa2176ed41afc02c434b11e558`: 600/600 physical passes, 0/600
+timeouts, zero other failures and 20/20 import passes. Each of the twelve
+OS/mode/test strata passed 50/50. The [retained distributions](../audits/issue-234/stress-distributions.csv)
+use exact Decimal medians and nearest-rank p95 (rank 48 of 50), including every
+physical observation. All 600 raw attempt receipts match the hosted gate.
 The [admitted #233 campaign](../audits/2026-10-24-issue-233-physical-regression-timeouts.md)
 retains 589 passes, 11 Windows timeouts and zero other physical failures at its
 original source, plus the older Linux failure. Preserve all original attempts.
@@ -243,8 +249,18 @@ That comparison supports adopting the exact qualified Windows/Linux x86_64 BVH
 backport artifacts; other architectures/Web retain release bytes. Runtime locks,
 provenance and repository/Windows preflights still reject byte or build-input
 drift. Those 300 candidate samples remain separate from #234's fresh standard
-600-attempt acceptance. Final #234 exact-head hosted gates and qualification are
-pending; the selected working candidate is not a completed repair claim.
+600-attempt acceptance. Integrated PR #236 head
+`330ded5aa0937b4a46ea0b5f270583a8e0375931` passed exact-head ordinary gates and
+merged. Its completed fresh standard campaign qualifies the registered
+Windows/Linux x86_64 workload and exact artifacts. Both modes recorded zero
+timeouts; descriptive timing differences between clustered hosted batches do
+not establish co-tenancy or native-worker-count dependence. The precise
+scheduler trigger and untested loads/platforms remain outside that acceptance.
+Ordinary run `40125433675` separately retained 45 passing
+physical-family observations within 268 passing cases and five passing imports;
+these are outside the stress N. The [timing CSVs](../audits/issue-234/ordinary-observations.csv)
+retain the actual synthetic checkout `bb84068378765e3874840e19507666c6a7a1e5df`,
+which has the same source tree as that PR head, and per-platform runtime hashes.
 
 ## Windows retained-runtime execution
 

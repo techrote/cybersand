@@ -12,7 +12,7 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Physical actor regression hangs — 2026-10-23
 
-**Current working candidate / Planned final acceptance, 2026-10-24:** #234 adopts
+**Current qualified desktop repair, 2026-10-24:** #234 adopts
 [PR #236](https://github.com/techrote/cybersand/pull/236)'s cooperative deferred-BVH
 join repair and exact qualified Windows/Linux x86_64 artifacts on current main.
 Other architectures/Web retain release libraries. The
@@ -22,8 +22,14 @@ remains unproven. Same-host run 40056501226 qualified 300 candidate trials with
 zero timeouts while retaining six Windows control timeouts.
 
 The [#234 integration ledger](../audits/2026-10-24-issue-234-physical-hang-repair.md)
-separates that prior comparison from this candidate's pending exact-head hosted
-full-suite gates and fresh standard 600-attempt serial/parallel campaign. The
+separates that prior comparison from the integrated PR #236 head
+`330ded5aa0937b4a46ea0b5f270583a8e0375931`, which passed exact-head ordinary
+gates and merged as `13b8e631f3e8fbaa2176ed41afc02c434b11e558`. Fresh standard
+600-attempt serial/parallel campaign `40129364630` at that source completed
+600/600 physical passes, 0/600 timeouts, zero other failures and twenty passing
+imports, with 50/50 passes in every OS/mode/test stratum. This qualifies the
+registered Windows/Linux x86_64 workload and exact artifacts; native-worker
+count was not varied and other loads/platforms remain outside that result. The
 [build guide](../operations/local-build-and-validation.md#physical-actor-timeout-investigation)
 owns invocation; the [timeout procedure](../operations/testing-validation-and-replay.md#physical-regression-timeout-diagnostics)
 owns the independent 30s capture / 45s idle failure guard, fixture-only 120s
@@ -320,9 +326,13 @@ campaign reproduced Windows timeouts, while retained historical evidence include
 both Windows and Linux. That campaign captured no native stack; its causal limit
 remains historical fact. The separate PR #236 lane supplies matching native-stack
 attribution and a qualified cooperative-join comparison. The
-[#234 working candidate](../audits/2026-10-24-issue-234-physical-hang-repair.md)
-adopts that repair and bounded guards; exact-head hosted acceptance and a fresh
-standard 600-attempt qualification remain pending. Parent #232 remains open.
+[#234 repair](../audits/2026-10-24-issue-234-physical-hang-repair.md)
+adopts that repair and bounded guards. Its integrated PR passed exact-head
+ordinary gates and merged; standard qualification run `40129364630` completed
+600/600 physical passes, zero timeouts/other failures and twenty passing imports
+at immutable source `13b8e631f3e8fbaa2176ed41afc02c434b11e558`.
+The audit and [#234](https://github.com/techrote/cybersand/issues/234) /
+[#232](https://github.com/techrote/cybersand/issues/232) own the actual disposition.
 
 Rows distinguish **Current fixes**, remaining defects and open decisions; dated
 evidence defines each fix's platform acceptance.
