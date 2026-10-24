@@ -454,9 +454,20 @@ void test_barriers_block_head() {
         rect(world, 38, 90, 28, 10, Material::Water);
         const auto left = quantity(world, {10, 0, 27, 100});
         const auto right = quantity(world, {38, 0, 28, 100});
+        std::vector<std::uint64_t> right_columns;
+        for (std::int64_t x = 38; x < 66; ++x) right_columns.push_back(quantity(world, {x, 0, 1, 100}));
         for (int t = 0; t < 200; ++t) tick(world);
         require(quantity(world, {10, 0, 27, 100}) == left && quantity(world, {38, 0, 28, 100}) == right,
                 std::string("head crossed a ") + (mask ? "body mask" : "one-cell wall"));
+        // The flat right pool is at rest: a radius-2 sample through the barrier
+        // would push its barrier-side cells and reshape it.
+        for (std::int64_t x = 38; x < 66; ++x) {
+            require(quantity(world, {x, 0, 1, 100}) == right_columns[static_cast<std::size_t>(x - 38)],
+                    std::string("resting pool reshaped beside a ") + (mask ? "body mask" : "one-cell wall"));
+            for (std::int64_t y = 90; y < 100; ++y)
+                require(world.pressure_cell(x, y).flow == 0 && world.pressure_cell(x, y).overfill == 0,
+                        "barrier-side pool gained flow or overfill");
+        }
         if (mask) require(world.water_quantity({37, 0, 1, 100}) == 0U, "no Water under the mask column");
     }
 }

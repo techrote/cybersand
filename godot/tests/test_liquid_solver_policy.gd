@@ -3,7 +3,8 @@ extends SceneTree
 # LCB-001 (#200) liquid solver policy foundation through the real GDExtension
 # adapter and MicroScenario host: applied readback, transactional refusal with
 # the live session intact, explicit-default equivalence at 1 and 4 workers, and
-# CYSD1 import on default families. This build admits only current defaults.
+# CYSD1 import on default families. Candidate admission (Water pressure
+# reference) is exercised separately by test_lcb_pressure_reference.gd.
 const Contract = preload("res://scripts/microscenario_contract.gd")
 const Host = preload("res://scripts/microscenario_host.gd")
 const Runner = preload("res://tests/lcb_scenario_runner.gd")
@@ -127,7 +128,9 @@ func _transactional_refusals(bridge: Variant, definition: Dictionary, request: P
 	var truncated: PackedInt32Array = request.slice(0, request.size() - 1)
 	var cases: Array = [
 		["NC-1 Oil inertial", _with(request, 16, 4), "combination_rejected", 16],
-		["NC-2 Water pressure", _with(request, 3, 3), "family_unavailable", 3],
+		# pressure_flow_v1/reference is admitted since LCB-001 (see
+		# test_lcb_pressure_reference.gd); its #201 variants remain unavailable.
+		["NC-2 Water pressure cached", _with(request, 3, 3, 1), "family_unavailable", 3],
 		["NC-2 Water pressure cached_dormant", _with(request, 3, 3, 2), "family_unavailable", 3],
 		["NC-2 Water inertial", _with(request, 3, 4), "family_unavailable", 3],
 		["Water whole-cell CellularYield", _with(request, 3, 2), "family_unavailable", 3],
@@ -158,8 +161,8 @@ func _transactional_refusals(bridge: Variant, definition: Dictionary, request: P
 	# An unrelated World keeps its own policy session through those refusals.
 	var other: Dictionary = _install(1, definition, null)
 	var other_generation: int = int(other.world.get_liquid_policy_session_generation())
-	expect(not other.host.install(other.world, definition, "Benchmark", true, _with(request, 3, 3)),
-		"independent World admitted pressure_flow_v1")
+	expect(not other.host.install(other.world, definition, "Benchmark", true, _with(request, 3, 3, 2)),
+		"independent World admitted pressure_flow_v1/cached_dormant")
 	expect(int(other.world.get_liquid_policy_session_generation()) == other_generation
 		and other.world.get_liquid_solver_policy().policy_hash == receipt.policy_hash
 		and int(run.world.get_liquid_policy_session_generation()) == int(before.policy.session_generation),

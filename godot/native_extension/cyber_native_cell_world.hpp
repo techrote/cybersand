@@ -109,6 +109,16 @@ public:
     bool water_experiment_erase_rect(Vector2i origin, Vector2i size);
     [[nodiscard]] Dictionary water_experiment_observation(
         Vector2i origin, Vector2i size) const;
+    // LCB-001 pressure_flow_v1 (#200) inspection. Serialized owner-only reads of
+    // immutable values; nothing exposes live World storage.
+    [[nodiscard]] String get_physical_state_hash() const;
+    [[nodiscard]] std::int64_t get_physical_state_hash_version() const;
+    [[nodiscard]] Dictionary inspect_gas_compartments() const;
+    [[nodiscard]] Dictionary inspect_pressure_cell(Vector2i point) const;
+    [[nodiscard]] Dictionary get_pressure_flow_ledger() const;
+    // Run receipt: binds the applied policy and every World execution input with
+    // the caller's setup identity into one SHA-256 receipt hash.
+    [[nodiscard]] Dictionary get_liquid_run_receipt(const Dictionary& setup) const;
     // Isolated fresh-world experiment API. Called only by the exclusive owner.
     bool diagnostic_reset(const Dictionary& options);
     bool diagnostic_fill_rect(Vector2i origin, Vector2i size, std::int64_t material,

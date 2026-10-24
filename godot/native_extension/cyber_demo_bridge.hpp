@@ -593,6 +593,56 @@ public:
         return bytes;
     }
 
+    // LCB-001 candidate-capable persistence (CYPS v1): exact tick-boundary
+    // continuation including pressure sidecars and the gas table. Import is
+    // transactional: validation and construction precede the install swap.
+    [[nodiscard]] PackedByteArray export_physical_state(const Ref<CyberNativeCellWorld>& adapter) {
+        error_ = String();
+        PackedByteArray bytes;
+        if (adapter.is_null() || !adapter->world_) {
+            error_ = "Native world unavailable";
+            return bytes;
+        }
+        try {
+            const auto saved = adapter->world_->save_physical_state();
+            bytes.resize(static_cast<std::int64_t>(saved.size()));
+            std::copy(saved.begin(), saved.end(), bytes.ptrw());
+        } catch (const std::exception& error) {
+            error_ = error.what();
+            bytes = PackedByteArray();
+        }
+        return bytes;
+    }
+
+    [[nodiscard]] bool import_physical_state(const Ref<CyberNativeCellWorld>& adapter, const PackedByteArray& bytes) {
+        error_ = String();
+        last_liquid_policy_refusal_ = Dictionary();
+        if (adapter.is_null() || !adapter->world_) {
+            error_ = "Native world unavailable";
+            return false;
+        }
+        try {
+            auto execution = adapter->world_->config();
+            auto candidate = cybersand::World::restore_physical_state(
+                execution, {bytes.ptr(), static_cast<std::size_t>(bytes.size())});
+            const auto region = candidate->simulation_region();
+            const auto adhesion = candidate->liquid_surface_adhesion_enabled();
+            install(*adapter.ptr(), std::move(candidate));
+            // install() applies the adapter's interest/adhesion; a saved state
+            // carries its own, so restore them for exact continuation.
+            adapter->world_->set_simulation_region(region);
+            adapter->world_->set_liquid_surface_adhesion_enabled(adhesion);
+            adapter->liquid_surface_adhesion_enabled_ = adhesion;
+            return true;
+        } catch (const cybersand::LiquidPolicyRefused& refused) {
+            refuse_liquid_policy(refused.refusal());
+            return false;
+        } catch (const std::exception& error) {
+            error_ = (std::string("Physical state import refused; running world preserved: ") + error.what()).c_str();
+            return false;
+        }
+    }
+
     [[nodiscard]] bool import_level(const Ref<CyberNativeCellWorld>& adapter, const PackedByteArray& bytes) {
         error_ = String();
         if (adapter.is_null() || !adapter->world_) {
@@ -662,6 +712,9 @@ protected:
                              &CyberDemoBridge::inspect_interaction);
         ClassDB::bind_method(D_METHOD("export_level", "world"), &CyberDemoBridge::export_level);
         ClassDB::bind_method(D_METHOD("import_level", "world", "bytes"), &CyberDemoBridge::import_level);
+        ClassDB::bind_method(D_METHOD("export_physical_state", "world"), &CyberDemoBridge::export_physical_state);
+        ClassDB::bind_method(D_METHOD("import_physical_state", "world", "bytes"),
+                             &CyberDemoBridge::import_physical_state);
         ClassDB::bind_method(D_METHOD("build_world", "world", "rectangles"), &CyberDemoBridge::build_world);
         ClassDB::bind_method(D_METHOD("build_tuned_world", "world", "rectangles", "profile"), &CyberDemoBridge::build_tuned_world);
         ClassDB::bind_method(D_METHOD("build_water_feel_world", "world", "rectangles",
