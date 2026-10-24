@@ -90,6 +90,10 @@ var _reset_actor_prototype_serial: int = 0
 var _actor_prototype_result_serial: int = 0
 var _actor_prototype_reset_applied: bool = false
 var _lab_request: Dictionary = {} # One bounded pending control command; newest wins.
+var _lab_request_revision: int = 0
+# Optional deterministic test barrier, called by the exclusive owner after
+# native preparation and before the queue-mutex commit fence. No scene objects.
+var _controlled_liquid_prepare_barrier: Callable = Callable()
 var _lab_active: bool = false
 var _lab_floor: int = 0
 var _lab_status: String = ""
@@ -126,11 +130,21 @@ var _water_explicit_sink: int = 0
 
 func queue_lab(command: Dictionary) -> void:
 	_mutex.lock()
+	_lab_request_revision += 1
 	_lab_request = command.duplicate(true)
+	_lab_request["_owner_request_revision"] = _lab_request_revision
 	_pending_physical_effects.clear()
 	_cancel_physical_usables_locked()
 	if command.has("step") or command.has("reset") or command.has("water_reset") or command.has("scenario_reset") or command.has("floor"): _paused = true
 	_mutex.unlock()
+
+func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_revision: int) -> bool:
+	if _controlled_liquid_prepare_barrier.is_valid(): _controlled_liquid_prepare_barrier.call()
+	_mutex.lock()
+	var current: bool = _running and not _reset_requested and request_revision == _lab_request_revision
+	var committed: bool = bridge.commit_liquid_world(_world, token) if current else false
+	_mutex.unlock()
+	return committed
 
 func _lab_release(index: int) -> void:
 	if _water_lab_active or _micro_active: return
@@ -278,6 +292,11 @@ func _apply_lab(command: Dictionary) -> bool:
 		_scenario_request_serial = int(command.get("scenario_request_serial", 0))
 		_scenario_request_applied = false
 		var actor_definitions: Array = command.get("exploratory_actor_definitions", [])
+		var controlled_setup: Dictionary = command.get("controlled_liquid_setup", {})
+		if not controlled_setup.is_empty() and (not actor_definitions.is_empty() \
+			or bool(command.get("sampled_character_enabled", true))):
+			_lab_status = "Controlled liquid preparation requires an actor-free request"
+			return false
 		if not actor_definitions.is_empty() and (
 			not MicroCatalogue.exploratory_actor_map(command.scenario_reset)
 			or str(command.get("scenario_mode", "Inspect")) == "Benchmark"
@@ -287,7 +306,8 @@ func _apply_lab(command: Dictionary) -> bool:
 			_lab_status = "Refused actor configuration for controlled scenario"
 			return false
 		if not _scenario_host.install(_world, command.scenario_reset, str(command.get("scenario_mode", "Inspect")),
-			true, command.get("liquid_policy", null)):
+			true, command.get("liquid_policy", null), controlled_setup,
+			_commit_controlled_liquid_candidate.bind(int(command.get("_owner_request_revision", -1)))):
 			_lab_status = "MicroScenario rejected; " + _scenario_host.last_error
 			return false
 		_world_generation += 1
@@ -467,6 +487,7 @@ func stop_worker() -> void:
 		return
 	_mutex.lock()
 	_running = false
+	_lab_request_revision += 1
 	_mutex.unlock()
 	_thread.wait_to_finish()
 	_actor_session.set_suspended(true)
@@ -537,6 +558,7 @@ func queue_actor_prototype_reset(definitions: Array, spawn_position: Vector2, sa
 	):
 		_mutex.unlock()
 		return 0
+	_lab_request_revision += 1
 	_reset_requested = true
 	_reset_spawn = spawn_position
 	_reset_sampled_character_enabled = sampled_enabled
@@ -945,6 +967,7 @@ func queue_reset(
 	runtime_enclosure_recovery_enabled: bool = true
 ) -> void:
 	_mutex.lock()
+	_lab_request_revision += 1
 	_reset_requested = true
 	_reset_spawn = spawn_position
 	_reset_sampled_character_enabled = sampled_character_enabled
@@ -1511,6 +1534,10 @@ func _publish_snapshot(
 		"water_exit_request_applied":_water_exit_request_applied,
 		"micro_active":_micro_active,
 		"liquid_solver_policy":_liquid_policy_receipt_snapshot(),
+		"liquid_construction_receipt":_world.get_applied_liquid_construction_receipt() \
+			if _world.has_method(&"get_applied_liquid_construction_receipt") else {},
+		"liquid_construction_attempt":_world.get_liquid_construction_attempt() \
+			if _world.has_method(&"get_liquid_construction_attempt") else {},
 		"microscenario":_scenario_host.summary() if _lab_active else {},
 		"micro_capture_serial":_micro_capture_serial,
 		"micro_capture":_micro_capture, # Immutable one-slot result; replaced, never mutated.

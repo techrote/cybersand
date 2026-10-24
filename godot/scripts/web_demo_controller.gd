@@ -128,6 +128,15 @@ func water_lab_apply_result(result: Dictionary, blind_label: String = "") -> voi
 	_publish_world();update_shader_parameters();update_status()
 
 func microscenario_apply_definition(definition: Dictionary, mode: String = "Inspect") -> bool:
+	return _install_web_microscenario(definition, mode)
+
+func microscenario_apply_controlled_liquid(definition: Dictionary, liquid_policy: PackedInt32Array,
+		normalize_water: bool = false, mode: String = "Inspect") -> bool:
+	return _install_web_microscenario(definition, mode, liquid_policy,
+		{"normalization":"water-normalize-v1" if normalize_water else ""})
+
+func _install_web_microscenario(definition: Dictionary, mode: String, liquid_policy: Variant = null,
+		controlled_setup: Dictionary = {}) -> bool:
 	if str(definition.get("id", "")).begins_with("experimental/blacksite/"): return false
 	if not ready_to_play or not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return false
 	if not CyberMicroScenarioCatalogue.player_configuration(
@@ -138,12 +147,14 @@ func microscenario_apply_definition(definition: Dictionary, mode: String = "Insp
 			+ "asynchronous owner; Web execution is intentionally refused."
 		)
 		return false
-	if not micro_host.install(native_world, definition, mode):
+	if not micro_host.install(native_world, definition, mode, true, liquid_policy, controlled_setup):
 		microscenario_error = micro_host.last_error
 		return false
 	if microscenario_panel != null: microscenario_panel.workbench.cancel_declared_window()
 	var installed: Dictionary = micro_host.definition()
 	microscenario_definition = installed.duplicate(true)
+	microscenario_liquid_policy = liquid_policy.duplicate() if liquid_policy != null else null
+	microscenario_liquid_setup = controlled_setup.duplicate(true)
 	microscenario_mode = mode
 	microscenario_error = ""
 	paused = true
@@ -160,7 +171,9 @@ func microscenario_apply_definition(definition: Dictionary, mode: String = "Insp
 	player.reset(Vector2(installed.player_start[0], installed.player_start[1]))
 	character_position = player.position
 	tower_context = {"active":true, "micro_active":true, "water_active":false,
-		"microscenario":micro_host.summary(), "status":"MicroScenario " + str(installed.id)}
+		"microscenario":micro_host.summary(), "status":"MicroScenario " + str(installed.id),
+		"liquid_construction_receipt":native_world.get_applied_liquid_construction_receipt() \
+			if native_world.has_method(&"get_applied_liquid_construction_receipt") else {}}
 	_activate_physics(bool(installed.body_enabled))
 	showcase_presentation.installed(installed)
 	blacksite_nine_presentation.installed(installed)

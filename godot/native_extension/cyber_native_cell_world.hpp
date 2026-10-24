@@ -2,6 +2,7 @@
 
 #include "cybersand/render_snapshot.hpp"
 #include "cybersand/world.hpp"
+#include "cybersand/prepared_world.hpp"
 
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/variant/dictionary.hpp>
@@ -119,6 +120,9 @@ public:
     // Run receipt: binds the applied policy and every World execution input with
     // the caller's setup identity into one SHA-256 receipt hash.
     [[nodiscard]] Dictionary get_liquid_run_receipt(const Dictionary& setup) const;
+    // Typed native v1 construction values, copied at the exclusive owner boundary.
+    [[nodiscard]] Dictionary get_applied_liquid_construction_receipt() const;
+    [[nodiscard]] Dictionary get_liquid_construction_attempt() const;
     // Isolated fresh-world experiment API. Called only by the exclusive owner.
     bool diagnostic_reset(const Dictionary& options);
     bool diagnostic_fill_rect(Vector2i origin, Vector2i size, std::int64_t material,
@@ -201,6 +205,25 @@ private:
     std::uint64_t hard_surface_revision_ = 0;
     std::uint64_t tick_failure_count_ = 0;
     std::uint64_t liquid_policy_session_generation_ = 0;
+    struct PendingLiquidWorld {
+        std::unique_ptr<cybersand::World> world;
+        std::unique_ptr<cybersand::RenderSnapshotExchange> exchange;
+        cybersand::setup::SetupDescriptor setup;
+        Dictionary receipt;
+        std::uint64_t token = 0, retained_generation = 0, retained_revision = 0, retained_hash = 0;
+        Vector2i origin{}, size{};
+        bool cadence = false, adhesion = true;
+        bool retained_cadence = false, retained_window = true;
+    };
+    std::unique_ptr<PendingLiquidWorld> pending_liquid_world_;
+    std::uint64_t next_liquid_preparation_token_ = 0;
+    cybersand::setup::SetupDescriptor applied_liquid_setup_ = [] {
+        cybersand::setup::SetupDescriptor value;
+        value.domain = {0, 0, kWorldWidth, kWorldHeight};
+        return value;
+    }();
+    Dictionary applied_liquid_construction_receipt_;
+    Dictionary liquid_construction_attempt_;
     String last_tick_error_{};
     double simulation_time_ms_ = 0.0;
     bool simulation_window_enabled_ = true;
@@ -209,6 +232,7 @@ private:
     bool render_snapshot_full_refresh_required_ = true;
 
     void create_world();
+    void retire_liquid_construction_identity();
     void refresh_simulation_region();
     void refresh_render_cells() const;
     void clear_observations();

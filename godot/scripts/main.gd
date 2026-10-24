@@ -263,6 +263,8 @@ var pending_microscenario_apply: Dictionary = {}
 var _microscenario_request_serial: int = 0
 var microscenario_capture_seen: int = 0
 var microscenario_definition: Dictionary = {}
+var microscenario_liquid_policy: Variant = null
+var microscenario_liquid_setup: Dictionary = {}
 var showcase_presentation: CyberShowcasePresentation
 var blacksite_nine_presentation: CyberBlacksiteNinePresentation
 
@@ -293,8 +295,13 @@ func microscenario_launch(scenario_id: String, mode: String = "Inspect", seed: i
 func microscenario_apply_definition(definition: Dictionary, mode: String = "Inspect") -> bool:
 	return _apply_microscenario_definition(definition, mode)
 
+func microscenario_apply_controlled_liquid(definition: Dictionary, liquid_policy: PackedInt32Array,
+		normalize_water: bool = false, mode: String = "Inspect") -> bool:
+	return _apply_microscenario_definition(definition, mode, {}, liquid_policy,
+		{"normalization":"water-normalize-v1" if normalize_water else ""})
 
-func _apply_microscenario_definition(definition: Dictionary, mode: String, actor_configuration: Dictionary = {}) -> bool:
+func _apply_microscenario_definition(definition: Dictionary, mode: String, actor_configuration: Dictionary = {},
+		liquid_policy: Variant = null, controlled_setup: Dictionary = {}) -> bool:
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return false
 	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return false
 	definition = definition.duplicate(true)
@@ -314,6 +321,10 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 	if not checked.get("ok", false) or not mode in CyberMicroScenarioContract.MODES:
 		microscenario_error = str(checked.get("error", "Invalid mode"))
 		return false
+	if not controlled_setup.is_empty() and (checked.definition.player_enabled or checked.definition.body_enabled \
+		or checked.definition.execution.policy != "fixed" or checked.definition.interest.policy != "fixed"):
+		microscenario_error = "Controlled liquid setup requires a fixed actor-free MicroScenario"
+		return false
 	var player_configuration: Dictionary = (selected_actor.duplicate(true)
 		if exploratory and not selected_actor.is_empty()
 		else _player_configuration_for_microscenario(checked.definition))
@@ -327,6 +338,8 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 		"definition":checked.definition,
 		"previous_paused":paused,
 		"player_configuration":player_configuration.duplicate(true),
+		"liquid_policy":liquid_policy.duplicate() if liquid_policy != null else null,
+		"controlled_liquid_setup":controlled_setup.duplicate(true),
 	}
 	microscenario_mode = mode
 	paused = true
@@ -338,12 +351,14 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 		"scenario_request_serial":_microscenario_request_serial,
 		"scenario_mode":mode,
 		"sampled_character_enabled":(
-			requested_representation != CyberPlayerRepresentation.BARREL_RAPIER
+			controlled_setup.is_empty() and requested_representation != CyberPlayerRepresentation.BARREL_RAPIER
 		),
 		"runtime_enclosure_recovery_enabled":bool(
 			player_configuration.get("runtime_recovery_enabled", true)
 		),
 		"exploratory_actor_definitions":player_configuration.get("actor_definitions", []),
+		"liquid_policy":liquid_policy,
+		"controlled_liquid_setup":controlled_setup,
 	})
 	return true
 
@@ -358,6 +373,8 @@ func _microscenario_installed(definition: Dictionary) -> void:
 	)
 	_apply_microscenario_player_configuration(definition, player_configuration)
 	microscenario_definition = definition.duplicate(true)
+	microscenario_liquid_policy = pending_microscenario_apply.get("liquid_policy", null)
+	microscenario_liquid_setup = pending_microscenario_apply.get("controlled_liquid_setup", {}).duplicate(true)
 	tower_active = true
 	paused = true
 	current_view_size = Vector2i(480, 270)
@@ -379,7 +396,11 @@ func _microscenario_installed(definition: Dictionary) -> void:
 func microscenario_reset() -> void:
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return
 	if tower_context.get("micro_active", false):
-		microscenario_apply_definition(microscenario_definition, microscenario_mode)
+		if not microscenario_liquid_setup.is_empty() and microscenario_liquid_policy != null:
+			microscenario_apply_controlled_liquid(microscenario_definition, microscenario_liquid_policy,
+				microscenario_liquid_setup.get("normalization", "") == "water-normalize-v1", microscenario_mode)
+		else:
+			microscenario_apply_definition(microscenario_definition, microscenario_mode)
 	elif water_controlled_run_active():
 		water_lab_reset()
 	else:

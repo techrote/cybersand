@@ -86,6 +86,7 @@ class CyberDemoBridge final : public RefCounted {
         // All fallible allocation and validation precede these no-throw swaps.
         adapter.world_.swap(candidate);
         adapter.render_exchange_.swap(exchange);
+        adapter.retire_liquid_construction_identity();
         ++adapter.liquid_policy_session_generation_;
         adapter.current_bodies_ = {};
         adapter.previous_bodies_ = {};
@@ -470,6 +471,19 @@ public:
 
     [[nodiscard]] Dictionary get_last_liquid_policy_refusal() const { return last_liquid_policy_refusal_; }
 
+    // Construction is deliberately split: the simulation owner may prepare
+    // without holding its queue mutex, then fence the one-use commit under it.
+    [[nodiscard]] std::int64_t prepare_liquid_world(const Ref<CyberNativeCellWorld>& adapter,
+        const PackedInt32Array& rectangles, const PackedInt32Array& profile,
+        const PackedInt32Array& policy, const PackedInt32Array& water_fills,
+        const PackedInt32Array& liquid_policy, const Dictionary& options);
+    [[nodiscard]] bool commit_liquid_world(const Ref<CyberNativeCellWorld>& adapter, std::int64_t token);
+    void discard_liquid_world(const Ref<CyberNativeCellWorld>& adapter, std::int64_t token) {
+        if (adapter.is_valid() && adapter->pending_liquid_world_ &&
+            adapter->pending_liquid_world_->token == static_cast<std::uint64_t>(token))
+            adapter->pending_liquid_world_.reset();
+    }
+
 private:
     [[nodiscard]] static Dictionary refusal_dictionary(const cybersand::LiquidPolicyRefusal& refusal) {
         Dictionary out;
@@ -759,6 +773,10 @@ protected:
                                      "policy", "water_fills", "liquid_policy"),
                              &CyberDemoBridge::build_liquid_policy_world);
         ClassDB::bind_method(D_METHOD("default_liquid_policy"), &CyberDemoBridge::default_liquid_policy);
+        ClassDB::bind_method(D_METHOD("prepare_liquid_world", "world", "rectangles", "profile", "policy",
+            "water_fills", "liquid_policy", "options"), &CyberDemoBridge::prepare_liquid_world);
+        ClassDB::bind_method(D_METHOD("commit_liquid_world", "world", "token"), &CyberDemoBridge::commit_liquid_world);
+        ClassDB::bind_method(D_METHOD("discard_liquid_world", "world", "token"), &CyberDemoBridge::discard_liquid_world);
         ClassDB::bind_method(D_METHOD("validate_liquid_policy", "liquid_policy"),
                              &CyberDemoBridge::validate_liquid_policy);
         ClassDB::bind_method(D_METHOD("get_last_liquid_policy_refusal"),
@@ -769,3 +787,5 @@ protected:
 };
 
 }  // namespace godot
+
+#include "cyber_prepared_liquid_world.hpp"

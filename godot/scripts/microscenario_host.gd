@@ -41,7 +41,7 @@ var _timing_count: int = 0
 var _last_completed_tick: int = 0
 
 func install(world: Variant, value: Variant, mode: String = "Inspect", instrumentation: bool = true,
-		liquid_policy: Variant = null) -> bool:
+		liquid_policy: Variant = null, controlled_setup: Dictionary = {}, commit_guard: Callable = Callable()) -> bool:
 	# All schema/profile validation precedes the existing candidate-and-swap
 	# builder. A rejected replacement leaves the old World AND host cursor intact.
 	# liquid_policy: null keeps every liquid on its default; otherwise the LCB-001
@@ -68,7 +68,36 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 		or not bridge.has_method(&"inspect_interaction")):
 		last_error = "Schema 2 requires the rebuilt native observation adapter; prior world preserved"
 		return false
-	if liquid_policy != null:
+	if not controlled_setup.is_empty():
+		# First normal-host slice: a fixed actor-free native material apparatus.
+		# Actor/loadout staging and owner-controlled/exploratory constructors have
+		# separate lifecycle work; refuse them before preparing any replacement.
+		if int(candidate.schema_version) != 2 or candidate.player_enabled or candidate.body_enabled \
+			or candidate.execution.policy != "fixed" or candidate.interest.policy != "fixed":
+			last_error = "Controlled liquid preparation requires a fixed actor-free schema-2 scenario"
+			return false
+		if not world.has_method(&"get_applied_liquid_construction_receipt") or not bridge.has_method(&"prepare_liquid_world"):
+			last_error = "Controlled liquid preparation requires the rebuilt native adapter"
+			return false
+		var request: PackedInt32Array = bridge.default_liquid_policy() if liquid_policy == null else liquid_policy
+		var options: Dictionary = {"definition_hash":checked.hash, "seed":candidate.seed,
+			"region":PackedInt32Array(candidate.interest.region),
+			"cadence_lod_enabled":candidate.execution.cadence_lod_enabled,
+			"liquid_surface_adhesion_enabled":candidate.execution.liquid_surface_adhesion_enabled,
+			"normalization":controlled_setup.get("normalization", "")}
+		var token: int = bridge.prepare_liquid_world(world, PackedInt32Array(candidate.rectangles),
+			checked.transport.packed, PackedInt32Array(candidate.water_semantics),
+			PackedInt32Array(candidate.partial_water_fills), request, options)
+		if token == 0:
+			last_liquid_policy_refusal = bridge.get_last_liquid_policy_refusal()
+			last_error = str(bridge.get_last_error())
+			return false
+		var committed: bool = commit_guard.call(bridge, token) if commit_guard.is_valid() else bridge.commit_liquid_world(world, token)
+		if not committed:
+			bridge.discard_liquid_world(world, token)
+			last_error = "Controlled liquid replacement retired before commit; " + str(bridge.get_last_error())
+			return false
+	elif liquid_policy != null:
 		if not bridge.has_method(&"build_liquid_policy_world") or not world.has_method(&"get_liquid_solver_policy"):
 			last_liquid_policy_refusal = {"code":"platform_unsupported", "material":null,
 				"detail":"host has no native policy handshake"}

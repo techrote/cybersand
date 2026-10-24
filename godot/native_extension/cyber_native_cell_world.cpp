@@ -91,6 +91,8 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("inspect_pressure_cell", "point"), &CyberNativeCellWorld::inspect_pressure_cell);
     ClassDB::bind_method(D_METHOD("get_pressure_flow_ledger"), &CyberNativeCellWorld::get_pressure_flow_ledger);
     ClassDB::bind_method(D_METHOD("get_liquid_run_receipt", "setup"), &CyberNativeCellWorld::get_liquid_run_receipt);
+    ClassDB::bind_method(D_METHOD("get_applied_liquid_construction_receipt"), &CyberNativeCellWorld::get_applied_liquid_construction_receipt);
+    ClassDB::bind_method(D_METHOD("get_liquid_construction_attempt"), &CyberNativeCellWorld::get_liquid_construction_attempt);
     ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("auto_worker_threads", "logical_threads"), &CyberNativeCellWorld::auto_worker_threads);
     ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("logical_processor_count"), &CyberNativeCellWorld::logical_processor_count);
     ClassDB::bind_method(D_METHOD("reset_demo_world"),
@@ -322,6 +324,7 @@ bool CyberNativeCellWorld::reset_demo_world() {
 
         candidate->set_simulation_region(world_->simulation_region());
         world_.swap(candidate);
+        retire_liquid_construction_identity();
         ++liquid_policy_session_generation_;
         diagnostic_fixture_ = false;
         body_diagnostics_.reset();
@@ -1417,6 +1420,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         auto diagnostics = config.physics_diagnostics.enabled
             ? std::make_unique<BodyDiagnostics>() : nullptr;
         world_.swap(candidate);
+        retire_liquid_construction_identity();
         ++liquid_policy_session_generation_;
         body_diagnostics_ = std::move(diagnostics);
         diagnostic_fixture_ = true;
@@ -1807,6 +1811,23 @@ Dictionary CyberNativeCellWorld::get_liquid_run_receipt(const Dictionary& setup)
     out["components"] = components;
     out["tick"] = static_cast<std::int64_t>(world_->completed_tick_index());
     return out;
+}
+
+Dictionary CyberNativeCellWorld::get_applied_liquid_construction_receipt() const {
+    // This is the immutable tick-zero value; ordinary ticks do not recapture it.
+    return applied_liquid_construction_receipt_.duplicate(true);
+}
+
+void CyberNativeCellWorld::retire_liquid_construction_identity() {
+    pending_liquid_world_.reset();
+    applied_liquid_construction_receipt_.clear();
+    liquid_construction_attempt_.clear();
+    applied_liquid_setup_ = {};
+    applied_liquid_setup_.domain = {0, 0, kWorldWidth, kWorldHeight};
+}
+
+Dictionary CyberNativeCellWorld::get_liquid_construction_attempt() const {
+    return liquid_construction_attempt_.duplicate(true);
 }
 
 
