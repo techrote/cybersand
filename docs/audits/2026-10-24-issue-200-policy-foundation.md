@@ -31,6 +31,7 @@ accepted at the #213 closure.
 | Base | main `1002b9201006b572180a12cbc4c3b21fc234e8fa` (merge of #237), fetched fresh |
 | Worktree / branch | isolated `.claude/worktrees/issue-200-policy-foundation`, `claude/issue-200-policy-foundation` |
 | Implementation commit | `457ab64449f2715c60ab6318739655cbc40b42df` |
+| Landed | [#239](https://github.com/techrote/cybersand/pull/239) merged 2026-10-24 07:01:19Z as `1e032e492cafb232e604baf6e2b823b13d779aa8`; tree `4519bb25…` equals reviewed head `cc01899` |
 | Primary checkout | `mat/material-fidelity-pass-2` with unrelated uncommitted changes; untouched |
 | Generated identity | `catalogue_digest` `82b5ab9a…fdbad3`, `capability_matrix_digest` `d31e434b…fc4e45` (full values in the generated header and vector file) |
 
@@ -265,8 +266,9 @@ identities supersede both earlier tables:
 
 ## Follow-up regressions (stacked on #239)
 
-Branch `claude/issue-200-foundation-followups`, based on #239 head `cc01899`,
-closes the two remaining test gaps. Neither file is a runtime source input, so
+Branch `claude/issue-200-foundation-followups` closes the two remaining test
+gaps. It was first stacked on #239 head `cc01899`, then rebased onto landed main
+`1e032e4`. Neither file is a runtime source input, so
 the published runtimes and their provenance are unchanged.
 
 **Threaded worker forwarding.**
@@ -305,12 +307,23 @@ from `cybersand_default_config_v2` fails the test with an escaping
 
 **Publisher decision.** `lcb001-runtime-publication.yml` is retained, as the
 GEN-005 and GEN-007 publishers were. Its jobs run only for
-`refs/heads/claude/issue-200-policy-foundation`, so it is inert once that branch
-is deleted. Removing it would gain nothing but churn.
+`refs/heads/claude/issue-200-policy-foundation`. That branch still exists at
+`cc01899` after the merge, and nothing further is pushed to it; the workflow
+becomes fully inert once the branch is deleted. Removing it would gain nothing but
+churn.
 
-**Post-merge reconciliation is pending #239's merge.** The roadmap section still
-reads "Current on the `claude/issue-200-policy-foundation` branch". It changes to
-the landed main SHA and post-merge CI runs only once those exist.
+**Post-merge reconciliation.** #239 merged on 2026-10-24 at 07:01:19Z as
+`1e032e492cafb232e604baf6e2b823b13d779aa8`. Its tree `4519bb25…` equals reviewed
+head `cc01899`. Post-merge push runs at that commit, first attempt each:
+
+| Workflow | Run | Result |
+|---|---|---|
+| Native C++ validation | [40072499987](https://github.com/techrote/cybersand/actions/runs/40072499987) | success: `native`, 93 tests in the plain, ASan+UBSan and TSan builds |
+| GDExtension/Godot | [40072499990](https://github.com/techrote/cybersand/actions/runs/40072499990) | success: Linux build, shards 0–3 and aggregate; Windows build and headless regression |
+| Documentation and provenance | [40072499986](https://github.com/techrote/cybersand/actions/runs/40072499986) | success: `consistency` |
+| Issue 49 Water apparatus v2 | [40072499994](https://github.com/techrote/cybersand/actions/runs/40072499994) | success: `apparatus` |
+
+The roadmap now records the foundation as Current on main.
 
 ## Explicit gaps
 
