@@ -38,11 +38,13 @@ The 2026-10-24 main reconciliation also imports the bounded
 [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24)
 landed by [PR #239](https://github.com/techrote/cybersand/pull/239) and
 [PR #240](https://github.com/techrote/cybersand/pull/240)'s regression follow-ups
-through main, now `fd97367`, which also includes #241's physical-timeout
-diagnostics and #242's retirement of spent runtime publishers. That defaults-only
+through main, now `3e9f0e6`, which also includes #241's physical-timeout
+diagnostics, #242's retirement of spent runtime publishers and #243's completed
+#233 diagnostic record (11/600 timeouts, cause unknown; #234 repair remains next).
+That defaults-only
 policy API is Current; it is separate from
 this representation experiment and admits no candidate kernel or #212
-implementation. The [post-#242 checkpoint](../audits/2026-10-24-mat003-post-242-integration-checkpoint.md)
+implementation. The [post-#243 checkpoint](../audits/2026-10-24-mat003-post-243-integration-checkpoint.md)
 preserves completed earlier checks and qualifies superseded partial runs;
 fresh integration checks on the new heads remain pending. Historical MAT source
 and evidence identities remain unchanged. No manual physical stress campaign or

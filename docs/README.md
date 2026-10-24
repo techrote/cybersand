@@ -12,7 +12,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
-Current integration baseline: main `fd97367` includes the bounded
+Current integration baseline: main `3e9f0e6` includes the bounded
 [#200 policy foundation](reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24)
 from [PR #239](https://github.com/techrote/cybersand/pull/239) and its
 [PR #240 regression follow-ups](https://github.com/techrote/cybersand/pull/240).
@@ -20,11 +20,15 @@ It also imports [PR #241](https://github.com/techrote/cybersand/pull/241)'s
 physical-timeout diagnostics. [PR #242](https://github.com/techrote/cybersand/pull/242)
 retires the spent [branch-scoped runtime publishers](operations/local-build-and-validation.md#branch-scoped-runtime-publishers)
 while preserving their historical evidence and published runtimes. The
-[post-#242 MAT-003 checkpoint](audits/2026-10-24-mat003-post-242-integration-checkpoint.md)
+[post-#243 MAT-003 checkpoint](audits/2026-10-24-mat003-post-243-integration-checkpoint.md)
 preserves completed earlier checks and qualifies superseded partial runs under
 their exact source scopes. Fresh Native, Godot, ordinary physical-timing reduction
 and materialized provenance checks are pending on the new heads; #212 and
 pressure/inertial ports remain held.
+
+The separately landed [#243 diagnostic record](audits/2026-10-24-issue-233-physical-regression-timeouts.md)
+completes #233's deliverable with 11 timeouts in 600 stress attempts; the cause
+remains unknown and #234 owns the next repair. This MAT task starts no repair.
 
 For **MAT-003PREPASS / #204**, start with the [staged carrier registration](operations/mat-003prepass-registration.md), [source state inventory](research/mat-003prepass-state-inventory.md), [epoch consumer audit](research/mat-003prepass-epoch-consumers.md) and [proposed GEN-006 handoff](research/mat-003prepass-gen006-handoff.md). [S0 isolated storage checks passed](audits/2026-10-22-mat003-prepass-foundation.md). The [S1 World report](audits/2026-10-22-mat003-world-correctness.md) covers the new seventeen-arm apparatus, typed 8/16-bit counters and two-rollover gate; the registered Linux normal/sanitized collection and independent readback passed. Production remains unchanged, #204 stays open, and S2 paired performance requires separate registration.
 
@@ -100,7 +104,7 @@ moving Above/Below, choosing viewpoints, editing native cells and capturing imag
 | Plan the Liquid Comparison Build: solver families, Water comparison, Dam Break and mixed-liquid fixtures, manual UX | [Solver-family policy (Approved design; native policy foundation Current)](architecture/liquid-solver-family-policy.md), [#200 foundation evidence](audits/2026-10-24-issue-200-policy-foundation.md), [capability matrix](reference/liquid-solver-capability-matrix.json), [Water comparison and fixtures](operations/lcb-water-comparison-and-fixtures.md), [manual UX flow](operations/lcb-manual-comparison-ux.md), [scenario catalogue and runner](operations/lcb-scenario-catalogue.md), [Gate C/D/E evidence](audits/2026-10-23-lcb000-gates-cde-design-evidence.md), [scenario qualification evidence](audits/2026-10-23-lcb003-scenario-qualification.md), [state-transition matrix](architecture/liquid-state-transition-matrix.md), [pressure/inertial handoff](architecture/lcb-pressure-inertial-handoff.md), [physics mechanism report](audits/2026-10-23-lcb-physics-mechanism-report.md) |
 | Investigate deep Water surge, hybrid Water sheets, trapped gas or decompression | [Water hybrid/pressure extension](operations/water-hybrid-pressure-extension-programme.md), [WEX-002 blocked disposition](audits/2026-09-24-wex002-water-sheet-blocked-disposition.md), [WEX-003 gas-region feasibility](research/lumped-gas-region-pressure-bookkeeping.md), [WEX-004 narrow-use disposition](audits/2026-09-24-wex004-decompression-disposition.md), [WEX-005 synthesis and #45 NARROW disposition](audits/2026-10-23-wex005-water-evidence-synthesis.md), [LCB-000 Gate A pressure-experiment admission](audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md), then [Water Current semantics](systems/water-design.md) and [soliding programme](operations/soliding-programme.md) |
 | Investigate powder penetration, barrel sinking or soliding | [Measured baseline tooling](operations/physics-characterisation.md), [dated results](audits/2026-09-09-physics-characterisation.md), [future soliding plan](operations/physics-characterisation-plan.md) |
-| Diagnose intermittent physical-actor, usable or free-flight Godot regression timeouts, inspect stack/phase evidence and run pinned stress repetitions | [Dated #233 timeout baseline](audits/2026-10-24-issue-233-physical-regression-timeouts.md), [test and shard selection](operations/testing-validation-and-replay.md), [CI/release policy](operations/github-development-and-release.md) |
+| Inspect completed physical-regression timeout diagnosis and route the causal repair to #234 | [Dated #233 campaign and repair handoff](audits/2026-10-24-issue-233-physical-regression-timeouts.md), [timeout diagnostic procedure](operations/testing-validation-and-replay.md#physical-regression-timeout-diagnostics), [CI/release policy](operations/github-development-and-release.md) |
 | Build or validate | [Build guide](operations/local-build-and-validation.md), [test selection](operations/testing-validation-and-replay.md), [dated evidence](reference/validation-evidence.md) |
 | Understand intent | [Product priorities](reference/product-intent-and-priorities.md), [principles](architecture/principles-and-non-goals.md), [ADRs](decisions) |
 | Maintain these docs | [Documentation and retrieval contract](operations/documentation-maintenance.md) |

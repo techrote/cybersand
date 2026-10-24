@@ -10,10 +10,10 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
-For current MAT-003 reconciliation with main `fd97367`, including the landed
+For current MAT-003 reconciliation with main `3e9f0e6`, including the landed
 #239 foundation, #240 regressions, #241 timeout diagnostics and #242 publisher
-retirement, use the
-[post-#242 integration checkpoint](../audits/2026-10-24-mat003-post-242-integration-checkpoint.md).
+retirement and #243's completed #233 diagnostic record, use the
+[post-#243 integration checkpoint](../audits/2026-10-24-mat003-post-243-integration-checkpoint.md).
 Previous completed checks, superseded partial runs and historical experiments
 retain their own source scope; fresh checks on the new heads are pending.
 

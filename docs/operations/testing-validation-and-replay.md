@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Executable test selection and future gates; dated results and save format live in separate references
 canonical-for: [test-inventory, test-selection, future-validation-gates]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-24
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md, ../reference/level-saves-and-replay.md]
 ---
 
@@ -121,8 +121,12 @@ new campaign; successful batches from different campaigns cannot be combined.
 
 The [dated #233 audit](../audits/2026-10-24-issue-233-physical-regression-timeouts.md)
 owns actual run IDs, historical failures, distributions and causal limitations.
-Diagnosis completion belongs to #233; the causal repair/watchdog and subsequent
-zero-timeout qualification belong to #234, under parent #232.
+**Current diagnostic disposition, 2026-10-24:** #233's deliverable is complete
+after apparatus admission and the full source-bound campaign. Captured progress
+and process/thread state establish intermittent roster stalls, while the causal
+mechanism remains unclassified without native stacks. The campaign's Windows
+reproductions do not erase retained historical Linux failures. The next causal repair/watchdog and
+subsequent zero-timeout qualification belong to #234; parent #232 remains open.
 
 ## What does equality establish?
 
