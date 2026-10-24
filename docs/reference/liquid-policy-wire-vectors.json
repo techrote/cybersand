@@ -66,6 +66,52 @@
     "freemass_v1",
     "cellular_yield_v1"
    ],
+   "qualified_cells": [
+    [
+     3,
+     "freemass_v1"
+    ],
+    [
+     8,
+     "cellular_yield_v1"
+    ],
+    [
+     12,
+     "cellular_yield_v1"
+    ],
+    [
+     16,
+     "cellular_yield_v1"
+    ],
+    [
+     20,
+     "cellular_yield_v1"
+    ],
+    [
+     21,
+     "cellular_yield_v1"
+    ],
+    [
+     24,
+     "cellular_yield_v1"
+    ],
+    [
+     30,
+     "cellular_yield_v1"
+    ],
+    [
+     32,
+     "cellular_yield_v1"
+    ],
+    [
+     33,
+     "cellular_yield_v1"
+    ],
+    [
+     36,
+     "cellular_yield_v1"
+    ]
+   ],
    "native": true
   },
   "all_families_hypothetical": {
@@ -77,6 +123,7 @@
     "pressure_flow_v1",
     "inertial_cellular_v1"
    ],
+   "qualified_cells": "all_selectable",
    "native": true
   },
   "gdscript_fallback": {
@@ -85,6 +132,52 @@
    "available_families": [
     "freemass_v1",
     "cellular_yield_v1"
+   ],
+   "qualified_cells": [
+    [
+     3,
+     "freemass_v1"
+    ],
+    [
+     8,
+     "cellular_yield_v1"
+    ],
+    [
+     12,
+     "cellular_yield_v1"
+    ],
+    [
+     16,
+     "cellular_yield_v1"
+    ],
+    [
+     20,
+     "cellular_yield_v1"
+    ],
+    [
+     21,
+     "cellular_yield_v1"
+    ],
+    [
+     24,
+     "cellular_yield_v1"
+    ],
+    [
+     30,
+     "cellular_yield_v1"
+    ],
+    [
+     32,
+     "cellular_yield_v1"
+    ],
+    [
+     33,
+     "cellular_yield_v1"
+    ],
+    [
+     36,
+     "cellular_yield_v1"
+    ]
    ],
    "native": false
   }
@@ -244,6 +337,18 @@
     "code": "family_unavailable",
     "material": 3,
     "detail": "inertial_cellular_v1 is not compiled/qualified in this build"
+   }
+  },
+  {
+   "name": "water_cellular_yield_today",
+   "build": "today",
+   "words": [1279479895, 1, 1, 1428375937, 27146113, 561651727, 966728450, 988632159, 2045368013, -704113487, 1908419044, -752991413, 695200224, 909647776, -693283093, 1581330905, -396533938, 1626676260, -352563643, 11, 3, 2, 0, 8, 2, 0, 12, 2, 0, 16, 2, 0, 20, 2, 0, 21, 2, 0, 24, 2, 0, 30, 2, 0, 32, 2, 0, 33, 2, 0, 36, 2, 0, 0, 0],
+   "note": "cellular_yield_v1 is compiled for ten liquids but not qualified for Water today",
+   "outcome": {
+    "accepted": false,
+    "code": "family_unavailable",
+    "material": 3,
+    "detail": "cellular_yield_v1 is not qualified for material 3 in this build"
    }
   },
   {

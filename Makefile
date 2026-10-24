@@ -15,7 +15,7 @@ GENERATION_OPT_THREADED_OBJECTS := $(patsubst native/src/%.cpp,$(BUILD_DIR)/worl
 GENERATION_SAN_OBJECTS := $(patsubst native/src/%.cpp,$(BUILD_DIR)/worldgen-objects/sanitized/%.o,$(GENERATION_SOURCES))
 GENERATION_SAN_THREADED_OBJECTS := $(patsubst native/src/%.cpp,$(BUILD_DIR)/worldgen-objects/sanitized-threaded/%.o,$(GENERATION_SOURCES))
 CORE_HEADERS := $(wildcard native/include/cybersand/*.hpp native/include/cybersand/*.h native/src/*.hpp)
-TEST_SOURCES := native/tests/test_world.cpp
+TEST_SOURCES := native/tests/test_world.cpp native/tests/test_liquid_solver_policy.cpp
 BENCH_SOURCES := native/bench/benchmark.cpp
 PHYSICS_CHARACTERISATION_SOURCES := $(SIMULATION_SOURCES) native/src/render_snapshot.cpp native/bench/physics_characterisation.cpp
 

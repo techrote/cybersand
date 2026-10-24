@@ -166,6 +166,19 @@ class Refusals(unittest.TestCase):
                 pc.decode(pc.encode(pc.policy_for(b, assignments, [(4, 1, [0, 256])] if f == 4 else [])), b)
             self.assertEqual(caught.exception.code, "family_unavailable")
 
+    def test_compiled_family_is_qualified_per_material_cell(self):
+        # cellular_yield_v1 executes for ten liquids, but no Water route through it exists.
+        b = pc.make_build(MATRIX_BYTES, VEC_CAT, (1, 2), qualified=pc.current_default_cells(MATRIX_BYTES))
+        self.assertEqual(pc.policy_hash(pc.decode(pc.encode(pc.policy_for(b)), b)),
+                         pc.policy_hash(pc.decode(pc.encode(pc.policy_for(hypo())), hypo())))
+        assignments = [(m, 2 if m == 3 else d, 0) for m, d, _ in pc.default_assignments(b)]
+        with self.assertRaises(pc.Refusal) as caught:
+            pc.decode(pc.encode(pc.policy_for(b, assignments)), b)
+        self.assertEqual((caught.exception.code, caught.exception.material), ("family_unavailable", 3))
+        unqualified = pc.make_build(MATRIX_BYTES, VEC_CAT, (1, 2))
+        self.assertEqual(pc.decode(pc.encode(pc.policy_for(unqualified, assignments)), unqualified)["assignments"],
+                         assignments)
+
 
 if __name__ == "__main__":
     unittest.main()

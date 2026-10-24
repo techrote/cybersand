@@ -283,6 +283,7 @@ All members are construction-time; `cybersand_config_v2` mirrors the configurati
 | `maximum_chunk_count` | 4096 | Resident chunk limit |
 | `deferred_event_capacity` | 1024 | Accepted explosion queue bound |
 | `maximum_explosion_radius` | 64 | Largest accepted radius |
+| `liquid_solver_policy` | every liquid's current default | Immutable LCB-001 policy; construction refuses any mapping this build has not qualified ([foundation](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)). Not mirrored by `cybersand_config_v2`; use `cybersand_world_create_with_liquid_policy_v1`. |
 
 [World::World](../../native/src/world.cpp) checks chunk edge 8–1024, activity edge
 1–1024, workers 1–256, explosion maximum 1–256, and nonzero quiet/reservation/

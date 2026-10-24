@@ -107,6 +107,8 @@ var _micro_capture: Dictionary = {}
 var _micro_capture_serial: int = 0
 var _water_lab_active: bool = false
 var _water_policy: Dictionary = {}
+var _liquid_policy_receipt: Dictionary = {}
+var _liquid_policy_receipt_generation: int = -1
 var _water_policy_hash: String = ""
 var _water_policy_provenance: Dictionary = {}
 var _water_recipe: Dictionary = {}
@@ -137,6 +139,17 @@ func _lab_release(index: int) -> void:
 	var plug: Rect2i = plugs[index]
 	for y: int in range(plug.position.y,plug.end.y):
 		for x: int in range(plug.position.x,plug.end.x): _world.paint_disc(x,y,0,0,0)
+
+# Applied LCB-001 liquid solver policy receipt, forwarded unchanged. It is
+# re-read only after native commits a World replacement (a new generation).
+func _liquid_policy_receipt_snapshot() -> Dictionary:
+	if _world == null or not _world.has_method(&"get_liquid_policy_session_generation"):
+		return {}
+	var generation: int = int(_world.get_liquid_policy_session_generation())
+	if generation != _liquid_policy_receipt_generation:
+		_liquid_policy_receipt = _world.get_liquid_solver_policy()
+		_liquid_policy_receipt_generation = generation
+	return _liquid_policy_receipt.duplicate(true)
 
 func _water_observe(action: Dictionary = {}) -> Dictionary:
 	if not _world.has_method(&"water_experiment_observation"):
@@ -273,7 +286,8 @@ func _apply_lab(command: Dictionary) -> bool:
 			or not ActorSession.valid_definitions(actor_definitions)):
 			_lab_status = "Refused actor configuration for controlled scenario"
 			return false
-		if not _scenario_host.install(_world, command.scenario_reset, str(command.get("scenario_mode", "Inspect"))):
+		if not _scenario_host.install(_world, command.scenario_reset, str(command.get("scenario_mode", "Inspect")),
+			true, command.get("liquid_policy", null)):
 			_lab_status = "MicroScenario rejected; " + _scenario_host.last_error
 			return false
 		_world_generation += 1
@@ -1496,6 +1510,7 @@ func _publish_snapshot(
 		"water_exit_request_serial":_water_exit_request_serial,
 		"water_exit_request_applied":_water_exit_request_applied,
 		"micro_active":_micro_active,
+		"liquid_solver_policy":_liquid_policy_receipt_snapshot(),
 		"microscenario":_scenario_host.summary() if _lab_active else {},
 		"micro_capture_serial":_micro_capture_serial,
 		"micro_capture":_micro_capture, # Immutable one-slot result; replaced, never mutated.

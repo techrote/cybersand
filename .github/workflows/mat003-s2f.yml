@@ -27,6 +27,20 @@ jobs:
           lfs: false
       - name: Confirm GitHub-hosted runner policy
         run: timeout 1m python3 tools/ci/check_ci_provider_policy.py
+      - name: Select immutable historical MAT control (not current-main qualification)
+        env:
+          GIT_LFS_SKIP_SMUDGE: "1"
+        run: |
+          set -euo pipefail
+          printf 'Current integration GITHUB_SHA: %s\n' "$GITHUB_SHA"
+          printf 'Current checked-out source: %s\n' "$(git rev-parse HEAD)"
+          # Only the policy-free registered native baseline is qualified here.
+          # Ordinary exact-head Native/Godot/provenance jobs cover current main.
+          # Any changed apparatus needs its own reviewed qualification source.
+          git diff --exit-code c160b4509857370f8065f7d64a9cb1c9d2847260 HEAD -- tools/experiments/mat003_prepass tools/experiments/mat003_perf third_party/native-toolchain.lock.json
+          git -c advice.detachedHead=false switch --detach c160b4509857370f8065f7d64a9cb1c9d2847260
+          test "$(git rev-parse HEAD)" = "c160b4509857370f8065f7d64a9cb1c9d2847260"
+          printf 'Historical MAT control source: %s\n' "$(git rev-parse HEAD)"
       - name: Test negative evidence/readback contracts
         run: timeout 1m python3 -m unittest discover -s tools/experiments/mat003_perf -p 'test_*.py' -v
       - name: Build frozen source-control qualifier and run all 24 untimed contexts
@@ -55,6 +69,20 @@ jobs:
           lfs: false
       - name: Confirm GitHub-hosted runner policy
         run: timeout 1m python3 tools/ci/check_ci_provider_policy.py
+      - name: Select immutable historical MAT control (not current-main qualification)
+        env:
+          GIT_LFS_SKIP_SMUDGE: "1"
+        run: |
+          set -euo pipefail
+          printf 'Current integration GITHUB_SHA: %s\n' "$GITHUB_SHA"
+          printf 'Current checked-out source: %s\n' "$(git rev-parse HEAD)"
+          # Only the policy-free registered native baseline is qualified here.
+          # Ordinary exact-head Native/Godot/provenance jobs cover current main.
+          # Any changed apparatus needs its own reviewed qualification source.
+          git diff --exit-code c160b4509857370f8065f7d64a9cb1c9d2847260 HEAD -- tools/experiments/mat003_prepass tools/experiments/mat003_perf third_party/native-toolchain.lock.json
+          git -c advice.detachedHead=false switch --detach c160b4509857370f8065f7d64a9cb1c9d2847260
+          test "$(git rev-parse HEAD)" = "c160b4509857370f8065f7d64a9cb1c9d2847260"
+          printf 'Historical MAT control source: %s\n' "$(git rev-parse HEAD)"
       - name: Restore passed full source qualification evidence
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
