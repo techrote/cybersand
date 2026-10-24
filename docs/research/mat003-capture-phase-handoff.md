@@ -140,3 +140,15 @@ SHA-256 `9bbbaff902d946b3f361e80022f266e10137b7b57d59209366fe6de371dfac5a`.
 The [collector](../../tools/experiments/mat003_touch/run.py) reproduces v3 into
 a new output root with the sealed compiler; registration v1 is an unexecuted
 proposal and v2 remains a retained failed build, never overwritten by v3.
+
+The separate [Windows archive reader](../../tools/experiments/mat003_touch/verify.py)
+checks the complete source inventory against that Git revision, exact generated
+copy, two binaries, eight ordered commands/receipts and all 54 native checkpoint
+observations. Six resealed negative archives refuse omitted cases/checkpoints,
+changed flags/native source, false restored support and false no-op behavior.
+These are read-only checks; no native case is re-executed:
+
+```text
+python -B tools/experiments/mat003_touch/verify.py <touch-v3> --source-commit d6c0166ff416e7fa061919f37d18f12e841122e9 --registration-sha256 <touch-summary-registration-sha256> --compiler-sha256 <touch-summary-compiler-sha256>
+python -B tools/experiments/mat003_touch/test_verify.py <touch-v3>
+```

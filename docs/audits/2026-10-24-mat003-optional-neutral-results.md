@@ -101,7 +101,9 @@ whole-process savings, fixed-memory performance or cache behavior.
 
 ## Reproduction
 
-Use a fresh output directory and the compiler hash from the summary:
+Use a fresh output directory and the compiler hash from the summary;
+check out the frozen collection revision above before reproducing its exact
+inputs. A collection from a later revision is a separate source-qualified record.
 
 ```text
 python -B tools/experiments/mat003_optional/run.py --compiler <clang++> --expected-compiler-sha256 <sealed-hash> --output <new-external-directory>
