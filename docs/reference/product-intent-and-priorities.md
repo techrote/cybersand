@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Approved owner direction and deliberately preserved behavior; not current implementation or performance evidence
 canonical-for: [owner-intent, product-priorities, preserved-material-feel]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-24
 related-documents: [status-and-roadmap.md, ../decisions/ADR-008-bounded-approximate-fidelity.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -187,6 +187,19 @@ or select a production solver. The
 keeps #45 as the production owner (NARROW). The
 [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md)
 keeps the comparison opt-in and experimental.
+
+### Bounded LCB implementation authorization, 2026-10-24
+
+**Owner decision (dated, additive):** the owner explicitly authorized the bounded
+Liquid Comparison Build implementation, including the previously held
+`pressure_flow_v1` reference (#200) and the inertial family
+([#212](https://github.com/techrote/cybersand/issues/212)). The authorization
+excludes changing production defaults, generic #12 Stage-4 cell↔Rapier ownership,
+a production Cell-carrier migration and full GEN-006 streaming. It lifts the
+execution holds, not the evidence obligations: candidates stay opt-in, version
+identified and registered, and the comparison still selects no production solver
+or #45 mechanism. Status and remaining scope are in the
+[roadmap](status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24).
 
 ## Exploratory MicroScenario workflow, 2026-09-18
 

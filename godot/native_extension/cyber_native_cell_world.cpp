@@ -1826,9 +1826,11 @@ Dictionary CyberNativeCellWorld::get_liquid_run_receipt(const Dictionary& setup)
     };
     add("policy_hash", world_->liquid_solver_policy().policy_hash_hex());
     const auto& water = config.water_experiment_policy;
-    add("water_policy", std::to_string(water.version()) + ":" + std::to_string(water.mass_bits()) + ":" +
-                            std::to_string(water.coherence_ticks()) + ":" +
-                            std::to_string(static_cast<int>(water.rest_policy())));
+    // Append-only assembly (liquid_policy_detail::concat): string&& + string&&
+    // front insertion imports a GLIBCXX symbol above the Linux runtime floor.
+    using cybersand::liquid_policy_detail::concat;
+    add("water_policy", concat(static_cast<int>(water.version()), ":", static_cast<int>(water.mass_bits()), ":",
+                               static_cast<int>(water.coherence_ticks()), ":", static_cast<int>(water.rest_policy())));
     std::string transport = "baseline";
     if (config.transport_policy.configured) {
         cybersand::Sha256 transport_hash;
@@ -1840,19 +1842,16 @@ Dictionary CyberNativeCellWorld::get_liquid_run_receipt(const Dictionary& setup)
         transport = cybersand::Sha256::hex(transport_hash.finish());
     }
     add("transport_profile", transport);
-    add("interaction_policy", std::to_string(config.interaction_policy.downward_support_cells) + ":" +
-                                  std::to_string(config.interaction_policy.side_support_cells) + ":" +
-                                  std::to_string(config.interaction_policy.mercury_exchange_period));
-    add("workers", std::to_string(config.worker_threads));
-    add("backend", std::to_string(static_cast<int>(config.backend)));
-    add("scheduler", std::to_string(config.chunk_size) + ":" + std::to_string(config.activity_block_size) + ":" +
-                         std::to_string(config.scheduling_core_size) + ":" +
-                         std::to_string(config.maximum_rule_radius) + ":" +
-                         std::to_string(config.sleep_after_quiet_ticks));
-    add("execution", std::string(simulation_window_enabled_ ? "window" : "full") + ":" +
-                         (cadence_lod_enabled_ ? "lod" : "nolod") + ":" +
-                         (liquid_surface_adhesion_enabled_ ? "adhesion" : "noadhesion"));
-    add("physical_state_hash_version", std::to_string(cybersand::World::kPhysicalStateHashVersion));
+    add("interaction_policy", concat(static_cast<int>(config.interaction_policy.downward_support_cells), ":",
+                                     static_cast<int>(config.interaction_policy.side_support_cells), ":",
+                                     config.interaction_policy.mercury_exchange_period));
+    add("workers", concat(config.worker_threads));
+    add("backend", concat(static_cast<int>(config.backend)));
+    add("scheduler", concat(config.chunk_size, ":", config.activity_block_size, ":", config.scheduling_core_size, ":",
+                            config.maximum_rule_radius, ":", config.sleep_after_quiet_ticks));
+    add("execution", concat(simulation_window_enabled_ ? "window" : "full", ":", cadence_lod_enabled_ ? "lod" : "nolod",
+                            ":", liquid_surface_adhesion_enabled_ ? "adhesion" : "noadhesion"));
+    add("physical_state_hash_version", concat(cybersand::World::kPhysicalStateHashVersion));
     for (const char* key : {"setup_hash", "seed", "normalization_receipt", "source_revision", "native_binary_sha256",
                             "catalogue_digest"}) {
         const auto value = setup.has(key) ? std::string(String(setup[key]).utf8().get_data()) : std::string("none");

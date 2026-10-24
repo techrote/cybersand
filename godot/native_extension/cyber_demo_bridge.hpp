@@ -638,7 +638,8 @@ public:
             refuse_liquid_policy(refused.refusal());
             return false;
         } catch (const std::exception& error) {
-            error_ = (std::string("Physical state import refused; running world preserved: ") + error.what()).c_str();
+            error_ = String(cybersand::liquid_policy_detail::concat(
+                "Physical state import refused; running world preserved: ", error.what()).c_str());
             return false;
         }
     }

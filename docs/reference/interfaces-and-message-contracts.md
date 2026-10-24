@@ -6,7 +6,7 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-24
 ---
 
 # Interfaces and message contracts
@@ -600,6 +600,34 @@ receipt. These calls share the serialized-owner rule of the other bridge
 construction methods. The canonical contract, refusal table and receipt fields are
 in the [family policy](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24);
 the C entry points are experimental and not a frozen ABI.
+
+### LCB-001 pressure reference inspection and persistence (experimental)
+
+**Current on branch `claude/lcb001-pressure-reference` (unmerged).** These calls
+serve the opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md)
+and follow the same serialized-owner rule as the bridge calls above. Results own
+their dictionaries; none exposes live World storage.
+
+| Call | Result |
+|---|---|
+| `CyberNativeCellWorld.get_physical_state_hash()` / `get_physical_state_hash_version()` | 16-hex-digit FNV-1a `World::physical_state_hash()`; version 1 (`kPhysicalStateHashVersion`). `content_hash`/`state_hash` are unchanged |
+| `inspect_gas_compartments()` | `available` (false outside pressure Worlds), parameters, `topology_revision`, `next_id`, `completed_tick`, `compartments` (id, generation, ancestry, amount, volume, anchor, created tick, topology revision, `gauge_mass`, `vent_state`), retirement `history` with reason and successors, and the `ledger` with `closes` |
+| `inspect_pressure_cell(point)` | `available`, material, `state_a`, `overfill`, `flow`, `gas` (`compartment`/`atmosphere`/`vacuum`/`unresolved`) and `gas_compartment` |
+| `get_pressure_flow_ledger()` | overfill converted/external, flow remainder, contact loss, relief cells and `last_tick` diagnostics |
+| `get_liquid_run_receipt(setup)` | experimental run-receipt hash and components ([fields](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)) |
+| `get_liquid_solver_policy()` | adds `family_parameters` and `physical_state_hash_version`; `admission` is `current_defaults_only` or `qualified_candidate` |
+| `water_experiment_observation` | adds `water_visible` and `water_overfill`; `water_integer` = visible + overfill (overfill is 0 outside pressure Worlds) |
+| `CyberDemoBridge.inspect_cell(world, point)` | adds `family_state` (`family`, `overfill`, `flow`, `gas_label`) in pressure Worlds |
+| `CyberDemoBridge.export_physical_state(world)` / `import_physical_state(world, bytes)` | CYPS v1 bytes; import is transactional, re-admits the saved policy with the running build, and on refusal returns false with "running world preserved" ([persistence](../architecture/pressure-flow-v1.md#persistence-cyps-v1)) |
+
+Native counterparts on `World` are `pressure_flow_enabled`,
+`pressure_flow_parameters`, `pressure_cell`, `gas_compartments`, `gas_history`,
+`gas_ledger`, `gas_topology_revision`, `gas_next_id`, `pressure_flow_ledger`,
+`pressure_flow_diagnostics`, `water_quantity`, `physical_state_hash` and
+`save_physical_state`/`restore_physical_state` (`kPhysicalStateFormatVersion` 1)
+in [`world.hpp`](../../native/include/cybersand/world.hpp) and
+[`pressure_flow.hpp`](../../native/include/cybersand/pressure_flow.hpp). No C API
+entry point exposes them. None is a frozen ABI or schema.
 
 ### Read-only native MicroScenario inspection
 

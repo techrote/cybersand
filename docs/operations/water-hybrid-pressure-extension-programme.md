@@ -664,7 +664,12 @@ records the accepted lane constraints:
 - LCB results can reach #45 only through the registered apparatus with source
   identity. #45 does not start a competing pressure port while LCB-001 owns one.
 
-**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) only; the pressure backend, every other solver port and #212 remain held. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration.
+**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current on branch `claude/lcb001-pressure-reference` (unmerged); #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
+
+That branch implementation is the LCB-001 pressure port this section
+anticipates. It is not #45 implementation or selection: its characterization
+screens reach #45 only through the registered apparatus with source identity,
+and they do not freeze #45 thresholds.
 
 ## Autonomous issue execution contract
 
