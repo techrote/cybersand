@@ -64,3 +64,11 @@ The immutable local evidence receipt is `C:/Users/_/.codex/tmp/lcb212-native-202
 | `validation.json` | `93cf7d577e25ff5c8912afeeef42d7c56f092c95d599e9958304fc4e26f0c3c5` |
 
 The canonical native input manifest contains99 files. The frozen companion32-question fixture is unchanged. Exact-head Linux/MSVC/Godot/Web and required hosted sanitizer/race gates remain integration/release obligations.
+
+## Post-commit pinned companion validation
+
+Native source checkpoint **c312bb0c6ac628f7d8055703bf8ad64fc9719cde** was fast-forwarded into the owner-approved existing mirror `C:/Users/_/.codex/tmp/lcb245-validation/workspace/source200`. Its pinned companion parent was read only; no companion files were copied into managed worktree parents. The source mirror remained clean and all99 canonical native inputs matched the tested manifest exactly.
+
+At that source, documentation passed113 documents/221 canonical claims/2,738 local links with zero errors or warnings; historical M11 passed18 records/28 original source hashes. All generated policy/capability/native/receipt artifacts passed; all seven independently encoded receipt files match complete native bytes. The frozen32-query retrieval and separate two-question IN retrieval retained the stated routes. `check_repository.py` reports exactly12 stale Windows/Linux native source entries, with no documentation or vendor-runtime errors. The source/runtime rebuild gap remains explicit and no released runtime was reattested.
+
+`mirror-validation.json` in the external evidence directory records commands, exits, mirror source identity, canonical input match and read-only companion-file hashes. The follow-up documentation-only commit leaves the native input manifest unchanged; final clean-mirror/source fences are retained externally. No broader platform, application, scientific or full #212 acceptance is inferred.
