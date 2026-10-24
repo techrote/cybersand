@@ -25,6 +25,10 @@ def verify(root, expected_commit, expected_registration):
     if digest(registration_path)!=expected_registration or result['registration_sha256']!=expected_registration:
         raise ValueError('registration identity')
     registration=json.loads(registration_path.read_text())
+    required_sources={'tools/experiments/mat003_optional/'+name for name in ('fixture.cpp','registration.json','run.py')}
+    required_sources|={'native/include/cybersand/'+name for name in ('precision_storage.hpp','material.hpp')}
+    if set(result['source_sha256'])!=required_sources or {p.relative_to(root/'source').as_posix() for p in (root/'source').rglob('*') if p.is_file()}!=required_sources:
+        raise ValueError('incomplete/extra frozen source inventory')
     if result.get('status')!='passed' or result.get('timing') is not False or result.get('source_commit')!=expected_commit:
         raise ValueError('result identity/completion')
     for name,seal in result['source_sha256'].items():
@@ -45,10 +49,28 @@ def verify(root, expected_commit, expected_registration):
     if [(r['sanitized'],r['tail_bits'],r['side'],r['mode']) for r in result['cases']]!=expected_cases:
         raise ValueError('case order/identity')
     labels=['compiler-version']+['build-tail-'+str(bits)+'-'+('sanitized' if san else 'normal') for san,bits in expected_builds]+[f'case-{i:03d}' for i in range(48)]
+    def slash(value):return str(value).replace('\\','/')
+    original_root=slash(result['commands'][1]['argv'][-1]).rsplit('/',1)[0]
+    def normalized(argv):return [slash(v).replace(original_root,'$EVIDENCE') for v in argv]
+    compiler=slash(result['commands'][0]['argv'][0])
+    linker=compiler.rsplit('/',1)[0]+'/ld.lld.exe'
+    expected_commands=[[compiler,'--version']]
+    for build in result['builds']:
+        flags=registration['sanitizer_flags' if build['sanitized'] else 'normal_flags']
+        expected_commands.append([compiler,*flags,'--ld-path='+linker,f"-DMAT003_TAIL_BITS={build['bits']}",
+                                  '-I$EVIDENCE/source/native/include','$EVIDENCE/source/tools/experiments/mat003_optional/fixture.cpp',
+                                  '-o','$EVIDENCE/'+build['binary']])
+    for row in result['cases']:
+        build=next(b for b in result['builds'] if (b['bits'],b['sanitized'])==(row['tail_bits'],row['sanitized']))
+        expected_commands.append(['$EVIDENCE/'+build['binary'],str(row['side']),row['mode']])
     for index,(label,command) in enumerate(zip(labels,result['commands'])):
         if json.loads((root/(label+'.receipt.json')).read_text())!=command:raise ValueError('command receipt drift')
         if command['exit_code'] or command['stop'] or (root/(label+'.stderr')).stat().st_size:
             raise ValueError('failed command/diagnostic')
+        if normalized(command['argv'])!=expected_commands[index]:raise ValueError('compiler/flags/binary command binding')
+        expected_timeout=30 if index==0 else 180 if index<5 else 120
+        if command['timeout_seconds']!=expected_timeout or command['sampled_peak_process_tree_rss']>registration['limits']['case_rss_bytes']:
+            raise ValueError('registered command resource bound')
         if command['elapsed_watchdog_seconds']>command['timeout_seconds']+1:raise ValueError('command timeout')
         for stream in ('stdout','stderr'):
             if digest(root/(label+'.'+stream))!=command[stream+'_sha256']:raise ValueError('command stream seal')
@@ -78,6 +100,8 @@ def verify(root, expected_commit, expected_registration):
     for bits,side in itertools.product((8,16),(512,1024,2048)):
         rows=[r for r in result['cases'] if r['tail_bits']==bits and r['side']==side and r['mode'].startswith('accessed-')]
         if len({r['operation_projection_hash'] for r in rows})!=1:raise ValueError('cross-layout/configuration projection')
+    if result['elapsed_watchdog_seconds']>registration['limits']['aggregate_seconds'] or sum((root/n).stat().st_size for n in inventory)>registration['limits']['output_bytes']:
+        raise ValueError('aggregate resource bound')
     return {'status':'verified','cases':48,'builds':4,'timing':False,'validation_class':'author-validation-pending-independent-review'}
 
 

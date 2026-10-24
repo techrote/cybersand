@@ -55,3 +55,16 @@ benchmark measurements. Missing platforms and unexecuted arms remain explicit.
 Gate B's reversible storage PASS does not close #204, select a representation,
 adopt a persistence schema or establish continuation/runtime streaming. #213
 remains closed completed under its bounded final decision.
+
+## New untimed observations
+
+The [optional-tail campaign](../audits/2026-10-24-mat003-optional-neutral-results.md)
+passed four Windows normal/sanitized builds and 48 cases with exact logical
+reference checks. Array-accounting observations are separate from timing or
+whole-process memory claims.
+
+The [capture-phase handoff](../research/mat003-capture-phase-handoff.md) records
+a real Current native counterexample: external edits after a completed tick can
+change the support-relevant epoch predicate even after logical content is restored.
+Its proposed persistence refinement and experimental codec follow-ups require
+review; no restore or durable schema is adopted.

@@ -28,7 +28,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 |---|---|
 | What does MAT-003PREPASS establish about 64/72/80-bit capacity, current material state, epoch consumers and GEN-006 continuation? | [Experiment registration](../operations/mat-003prepass-registration.md), [S0 isolated-storage pass](../audits/2026-10-22-mat003-prepass-foundation.md), [source inventory](../research/mat-003prepass-state-inventory.md), [epoch audit](../research/mat-003prepass-epoch-consumers.md), [proposed persistence handoff](../research/mat-003prepass-gen006-handoff.md) |
 | Are the seventeen real World arms and typed two-rollover gate accepted, and does #204 admit performance or production changes? | [S1 native Linux correctness evidence and limits](../audits/2026-10-22-mat003-world-correctness.md), [registration](../operations/mat-003prepass-registration.md), and [roadmap](status-and-roadmap.md#mat-003prepass-s1-world-apparatus--2026-10-22): #204 remains open, production is unchanged and S2 performance is separate. |
-| Can IDs 81–131 survive CYSD1 saves and construction, diagnostic histograms and sampled-rig digging occlusion? | [Building integration](../systems/building-material-catalogue.md#which-integration-boundaries-use-the-expanded-catalogue), [save format](level-saves-and-replay.md), and [review evidence](../audits/2026-10-19-mat002-review-and-validation.md) |
+| Can IDs 81â€“131 survive CYSD1 saves and construction, diagnostic histograms and sampled-rig digging occlusion? | [Building integration](../systems/building-material-catalogue.md#which-integration-boundaries-use-the-expanded-catalogue), [save format](level-saves-and-replay.md), and [review evidence](../audits/2026-10-19-mat002-review-and-validation.md) |
 | Did graphical tests actually render, and can a headless skip or exit-zero script error pass CI? | [Required rendered-test execution](../operations/testing-validation-and-replay.md#ci-execution-sharding), [Linux invocation](../operations/local-build-and-validation.md#linux-gdextension-ci-sharding), and [review evidence](../audits/2026-10-19-mat002-review-and-validation.md) |
 | Can the standalone physics CLI safely count building materials, and which executable regression checks its JSON output? | [CLI admission and sample accounting](../operations/physics-characterisation.md#which-checks-guard-the-measurement-path), [build commands](../operations/local-build-and-validation.md#how-is-the-physics-baseline-rebuilt) |
 | Does current CI actually execute the retained Windows DLL, and what source and test coverage does that prove? | [Windows execution gate](../operations/local-build-and-validation.md#windows-retained-runtime-execution), [test acceptance](../operations/testing-validation-and-replay.md#ci-execution-sharding), and [dated runtime evidence](../audits/2026-10-19-mat002-review-and-validation.md) |
@@ -38,7 +38,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | How do all 32 usables share real physical mounts, independent aim/power, accepted recoil and the same human/demo/policy command path? | [Physical equipment](../systems/actor-usables.md), [equipment actions and results](interfaces-and-message-contracts.md#physical-equipment-actions-and-results) |
 | Can a stale receipt fire a dropped tool, can pickup refill a processor, and who owns a deployed device's native ports? | [Physical equipment lifecycle](../systems/actor-usables.md), [physical ownership](../architecture/data-ownership-and-lifetimes.md), [equipment interface](interfaces-and-message-contracts.md#physical-equipment-actions-and-results) |
 | How do I run the physical usable course, test a processor jam and inspect useful default loadouts for all 46 actors? | [Physical usable course](../systems/thunderbowl-control-reference.md#physical-usable-course), [scripted loadouts](../systems/physical-actor-rigs.md#how-do-the-scripted-actors-use-their-loadouts), [focused validation](../operations/local-build-and-validation.md#physical-usable-validation) |
-| How do I enter Blacksite Nine, follow the route through its connected 3×3 districts, use the camera map, and preserve or reset edits across shared boundaries? | [Blacksite Nine connected-complex guide](../operations/blacksite-nine-demo.md) |
+| How do I enter Blacksite Nine, follow the route through its connected 3Ã—3 districts, use the camera map, and preserve or reset edits across shared boundaries? | [Blacksite Nine connected-complex guide](../operations/blacksite-nine-demo.md) |
 | How do I open Neon Reliquary, descend through Middle Cyberberbia, Sewertech Alley and Industrial Underswamp, inspect viewpoints, or capture all four tiles? | [Neon Reliquary scene guide](../operations/neon-reliquary-demo.md) |
 
 | How do Strata, Flow Network and District Grammar generate interconnected chunks on demand? | [Procedural generation](../systems/procedural-world-generation.md); source/runtime scope belongs to [GEN-001 evidence](../audits/2026-10-18-gen001-procedural-generation.md) |
@@ -111,7 +111,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Can a stale Water snapshot end a blind session or acknowledge a newer Tower reset? | [Tower exit ownership](../operations/experiment-tower.md#how-is-a-desktop-water-exit-acknowledged), [receipt fields](interfaces-and-message-contracts.md#desktop-water-exit-receipts), then [dated correction](../audits/2026-10-22-water-exit-acknowledgement.md) |
 | Why #18 remains held after G-P | [Water-feel programme addendum](../operations/architecture-programme-water-feel-addendum.md), [compact-motion prompt](../operations/architecture-programme-prompts/compact-motion.md) |
 | What is the actual #24/#27-#30 development order, and may MicroScenarios run before G-final? | [Canonical MicroScenarios/interactions programme](../operations/microscenarios-programme.md), [roadmap](status-and-roadmap.md) |
-| What interaction schema/rule/provenance is authoritative now, and how do we avoid a destructive N² matrix? | [Current interaction substrate](../systems/intermaterial-interactions.md), [canonical programme](../operations/microscenarios-programme.md) |
+| What interaction schema/rule/provenance is authoritative now, and how do we avoid a destructive NÂ² matrix? | [Current interaction substrate](../systems/intermaterial-interactions.md), [canonical programme](../operations/microscenarios-programme.md) |
 
 ## Retrieve historical results explicitly
 
@@ -243,11 +243,11 @@ Layered material worlds, Strata Theatre, quantized relief and explicit interlaye
 ## Deepworks exhibition and full-size depth worlds
 
 The [Deepworks guide](../operations/deepworks-exhibition.md) owns `--deepworks`
-entry, the total 1024 × 1024 map, sixteen districts, 32 paired native exhibits,
+entry, the total 1024 Ã— 1024 map, sixteen districts, 32 paired native exhibits,
 foreground/rear source schedules, finite-feed replay, guided-tour timing and
 camera/painting controls. The live rear `scripted` plane and frozen true
-`background` are distinguished there. For 640 × 360 compatibility, non-square
-dimensions, the 8–1024 per-axis range, full-size material surfaces, view clamping
+`background` are distinguished there. For 640 Ã— 360 compatibility, non-square
+dimensions, the 8â€“1024 per-axis range, full-size material surfaces, view clamping
 and stale-packet rejection, use the
 [depth contract](../systems/depth-layers-and-parallax.md). Exact budgets belong
 to [configuration](configuration-reference.md#depth-host-and-deepworks-configuration);
@@ -287,3 +287,6 @@ Latest MAT-003 runtime disposition: [152-process replacement and Astra readback 
 
 For MAT-003 revised-reader provenance, immutable-archive validation and the
 independent-acceptance boundary, see the [overnight campaign](../operations/mat003-overnight-campaign.md).
+
+For why content hashes and completed tick cannot reconstruct the support-relevant
+touch predicate after owner edits, read the [capture-phase handoff](../research/mat003-capture-phase-handoff.md).

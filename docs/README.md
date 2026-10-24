@@ -26,7 +26,7 @@ The [eight-map source review](audits/2026-10-23-mat003-apparatus-source-closure.
 
 For **MAT-003PREPASS / #204**, start with the [staged carrier registration](operations/mat-003prepass-registration.md), [source state inventory](research/mat-003prepass-state-inventory.md), [epoch consumer audit](research/mat-003prepass-epoch-consumers.md) and [proposed GEN-006 handoff](research/mat-003prepass-gen006-handoff.md). [S0 isolated storage checks passed](audits/2026-10-22-mat003-prepass-foundation.md). The [S1 World report](audits/2026-10-22-mat003-world-correctness.md) covers the new seventeen-arm apparatus, typed 8/16-bit counters and two-rollover gate; the registered Linux normal/sanitized collection and independent readback passed. Production remains unchanged, #204 stays open, and S2 paired performance requires separate registration.
 
-For **Generation Workbench 2**, use the [inspection and authoring contract](systems/generation-workbench-2.md): truthful native replay, actual intermediate stages, graph/hierarchy tools, transactional undo/redo and bounded seed/recipe comparisons. The [procedural qualification guide](operations/procedural-qualification.md) routes the 1024 × 1024 scene, final-raster paths, native exhibits and visual evidence.
+For **Generation Workbench 2**, use the [inspection and authoring contract](systems/generation-workbench-2.md): truthful native replay, actual intermediate stages, graph/hierarchy tools, transactional undo/redo and bounded seed/recipe comparisons. The [procedural qualification guide](operations/procedural-qualification.md) routes the 1024 Ã— 1024 scene, final-raster paths, native exhibits and visual evidence.
 
 Choose all 46 [articulated Rapier actors](systems/physical-actor-rigs.md) with F5 in the sandbox and exploratory maps, using keyboard, local scripted or external-policy control. Sampled references and the initial hull arms remain available; [the physical actor programme](operations/physical-actor-programme.md) preserves owner intent and integration scope.
 
@@ -35,7 +35,7 @@ For seven human movement presets, use the [player control playground](systems/pl
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).
 
 For **Deepworks**, start with the [exhibition guide](operations/deepworks-exhibition.md):
-one 1024 × 1024 map, sixteen themed districts, 32 foreground/rear native exhibits,
+one 1024 Ã— 1024 map, sixteen themed districts, 32 foreground/rear native exhibits,
 four full-size material planes, source schedules, free-camera painting and
 whole-map replay. `--deepworks` opens its separate scene from the desktop launcher.
 The [PR #185 completion record](audits/2026-10-20-deepworks-pr185-completion.md)
@@ -43,7 +43,7 @@ owns the reaction-evidence correction and final hosted acceptance.
 
 For **Blacksite Nine**, start with the
 [connected-complex guide](operations/blacksite-nine-demo.md): Shift+F11 entry,
-the 3×3 camera map, twelve shared passages, player-follow exploration and the
+the 3Ã—3 camera map, twelve shared passages, player-follow exploration and the
 whole-complex reset. All nine districts occupy one continuous native world.
 
 For Neon Reliquary and the three district tiles below it, start with the
@@ -242,3 +242,6 @@ Latest MAT-003 runtime disposition: [152-process replacement and Astra readback 
 
 For the bounded #204 overnight reader/provenance completion and its evidence
 limits, see the [overnight campaign](operations/mat003-overnight-campaign.md).
+
+For the native between-tick touch counterexample and proposed capture rule, see
+the [capture-phase handoff](research/mat003-capture-phase-handoff.md).
