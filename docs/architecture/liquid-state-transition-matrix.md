@@ -2,10 +2,10 @@
 title: Liquid material and solver state-transition matrix
 status: Planned
 document-kind: design
-scope: Authoritative operation-by-operation transition rules for Current liquids and the proposed LCB families (FreeMass, whole-cell CellularYield Water, pressure_flow_v1, inertial_cellular_v1) — owner, state moved, conservation/source-sink, invalidation and family applicability; consumes the bounded Gate B storage handoff; no Cell layout choice
+scope: Authoritative operation-by-operation transition rules for Current liquids and the proposed LCB families (FreeMass, whole-cell CellularYield Water, pressure_flow_v1, inertial_cellular_v1) — owner, state moved, conservation/source-sink, invalidation and family applicability; consumes the bounded Gate B storage handoff; no Cell layout choice; PF rows are implemented by the pressure_flow_v1 reference on branch claude/lcb001-pressure-reference
 canonical-for: [liquid-state-transition-matrix]
-last-reviewed: 2026-10-23
-related-documents: [liquid-solver-family-policy.md, lcb-pressure-inertial-handoff.md, data-ownership-and-lifetimes.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, ../systems/water-design.md]
+last-reviewed: 2026-10-24
+related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, lcb-pressure-inertial-handoff.md, data-ownership-and-lifetimes.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, ../systems/water-design.md]
 ---
 
 # Liquid material and solver state-transition matrix
@@ -16,6 +16,16 @@ related-documents: [liquid-solver-family-policy.md, lcb-pressure-inertial-handof
 - **Proposed rows** are the contract that #200 (policy, `pressure_flow_v1`,
   whole-cell Water) and #212 (`inertial_cellular_v1`) must implement and
   test.
+- **PF rows are implemented (2026-10-24)** by the opt-in
+  [`pressure_flow_v1/reference`](pressure-flow-v1.md), Current on branch
+  `claude/lcb001-pressure-reference` (unmerged). Its
+  [lifecycle table](pressure-flow-v1.md#lifecycle-per-mutation-path) owns the
+  Current per-path result. Refinements of the Proposed PF text: the overfill
+  bound is `maximum()`; a kernel-vacated cell carries a vacuum label (volume, not
+  amount); `transfer_water` throws in a pressure World; vented and collapsed gas
+  amounts are booked in `GasLedger`; CYPS v1 is the exact save/readback path and
+  CYSD1 stays a default-family reconstruction. Dormancy and caches (#201), W-CY
+  and IN rows remain Proposed.
 - **Storage** follows the [Gate B bounded handoff](../audits/2026-10-23-lcb000-gate-b-state-handoff.md) (accepted; [refresh](../audits/2026-10-23-lcb000-admission-gatea-gateb-refresh.md)):
   - the C64-E8 Cell is unchanged;
   - family state lives in **optional, versioned, solver-owned storage**, plus
@@ -207,6 +217,14 @@ corner travel, and lighter-below non-support.
 
 ## 10. Pressure gas compartments (PF, World-owned)
 
+**Implemented on branch `claude/lcb001-pressure-reference`** by the
+[pressure reference gas pass](pressure-flow-v1.md#gas-compartments): label-overlap
+identity, monotonic ids, exact `GasLedger`, phase convention unchanged. The
+registered fixtures below pass in the native and Godot pressure regressions at
+1 and 4 workers ([evidence](../audits/2026-10-24-lcb001-pressure-reference-publication.md)).
+Declared simplification: a component that vents and seals in the same tick
+recreates its sealed part at atmospheric amount.
+
 Expected times use the phase convention in the
 [handoff](lcb-pressure-inertial-handoff.md#pressure-pressure_flow_v1-water-only-200): an
 event indexed N applies after completed tick N and is first observable at
@@ -229,4 +247,5 @@ completed N+1.
 | Contract | Coverage |
 |---|---|
 | Executable now (Current) | `test_lcb_physics_contracts.gd` (ownership swap, ledgers, dormancy, deep-release characterization, heads) and `test_lcb_negative_contracts.gd` |
-| Blocked until #200/#212/#201 | registered in `godot/tests/fixtures/lcb/lcb-physics-contracts.json` with dependencies and frozen screens |
+| Executable on the pressure branch (PF reference) | native `test_lcb_pressure.cpp` (13 cases: admission, gas fixtures, Empty-only chunks, quantity/worker parity, two-limb, barriers, static rest/wake, lifecycle ledgers, physical hash and CYPS persistence, default goldens) and `test_lcb_pressure_reference.gd` (12 sections) |
+| Blocked until #200/#212/#201 | registered in `godot/tests/fixtures/lcb/lcb-physics-contracts.json` with dependencies and frozen screens; the registry records are unchanged by the PF reference (W-CY, IN, cached/dormant and mixed arms remain blocked) |

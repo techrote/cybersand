@@ -589,8 +589,11 @@ investigation before any new #45 pressure/head mechanism is treated as inevitabl
   [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
   [#213](https://github.com/techrote/cybersand/issues/213) is **closed completed;
   Gates A–E PASS**. The [final checkpoint](#liquid-comparison-build-design-checkpoint--2026-10-23)
-  records bounded admission; the [#200 policy foundation](#lcb-001-policy-foundation--2026-10-24)
-  is the only lifted part of the owner hold on #200/#212.
+  records bounded admission. The owner lifted the hold for the
+  [#200 policy foundation](#lcb-001-policy-foundation--2026-10-24) and then for the
+  bounded LCB implementation, including the
+  [#200 pressure reference](#lcb-001-pressure-reference--2026-10-24) and #212.
+  `pressure_flow_v1` remains an opt-in comparison family, not #45 selection.
 
 Water FreeMass and other-liquid CellularYield remain separate; no unification or
 production solver change is selected. Equal-level communicating-head fixtures are
@@ -620,14 +623,18 @@ Documentation/provenance, Native and GDExtension/Godot post-merge CI passed.
 The [dated reconciliation](../audits/2026-10-24-lcb000-landed-status-reconciliation.md)
 records exact identities, evidence classes and validation limits.
 
-**Approved admission, execution held:** only a separately scoped initial opt-in
+**Approved admission; owner holds lifted 2026-10-24:** only a separately scoped initial opt-in
 [#200](https://github.com/techrote/cybersand/issues/200) start is admitted.
-The owner then lifted the hold for the bounded
-[#200 policy foundation](#lcb-001-policy-foundation--2026-10-24) only and continues to hold
-the #200 pressure backend, every other solver port and [#212](https://github.com/techrote/cybersand/issues/212). This PASS does not admit
-#212, a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier
-integration. Native policy/state implementation and candidate kernels remain
-**Planned**. #201/#202/#203 remain open; the scenario apparatus delivered part of
+The owner first lifted the hold for the bounded
+[#200 policy foundation](#lcb-001-policy-foundation--2026-10-24) only, then authorized the
+bounded LCB implementation, including the previously held #200 pressure reference and
+[#212](https://github.com/techrote/cybersand/issues/212) inertial work
+([owner decision](#lcb-001-pressure-reference--2026-10-24)). Neither decision admits
+production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production
+Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a
+schema/ABI freeze. The policy foundation is Current on main; `pressure_flow_v1/reference`
+is Current on an unmerged branch; the other candidate kernels remain **Planned**.
+#201/#202/#203 remain open; the scenario apparatus delivered part of
 #202, not the complete comparison host or its [manual UX](../operations/lcb-manual-comparison-ux.md).
 
 **Current apparatus:** the [LCB scenario catalogue](../operations/lcb-scenario-catalogue.md)
@@ -661,8 +668,73 @@ and [dated evidence](../audits/2026-10-24-issue-200-policy-foundation.md).
 |---|---|
 | Native policy, wire decode, refusal codes, hash, World admission, experimental C API, GDExtension receipt/validation/construction, MicroScenario request, worker receipt | Current (main `1e032e4`) |
 | NC-1, NC-2 and NC-10 | Executable in the foundation regressions; the LCB registry is unchanged |
-| Pressure backend, W-CY/W-IN kernels, run receipt hash, normalization, physical-state hash, remaining #202 constructors, durable schema/ABI freeze | Planned, held or deferred |
-| #212, #201, #202, #203 and all 90 candidate arms | Unchanged: held or blocked |
+| Pressure backend, W-CY/W-IN kernels, run receipt hash, normalization, physical-state hash, remaining #202 constructors, durable schema/ABI freeze | Planned, held or deferred at this checkpoint; the pressure backend, physical-state hash and an experimental run-receipt hash followed in the [pressure reference](#lcb-001-pressure-reference--2026-10-24) |
+| #212, #201, #202, #203 and all 90 candidate arms | Unchanged at this checkpoint: held or blocked (the #212 hold was lifted later the same day) |
+
+**Issue-state correction (2026-10-24).** GitHub automatically closed
+[#200](https://github.com/techrote/cybersand/issues/200) at 07:01:20Z when PR #239
+merged, because it parsed the PR body's negated phrase "does not close #200" as a
+closing keyword. The issue was reopened on 2026-10-24 with an explanatory comment.
+That transition supplies no completion evidence; #200 remains open for the scope
+listed below.
+
+## LCB-001 pressure reference — 2026-10-24
+
+**Current on branch `claude/lcb001-pressure-reference` (unmerged).** The opt-in
+Water family [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md)
+runs only in a World whose applied policy assigns it; production defaults, every
+Current golden, `content_hash`/`state_hash` and CYSD1 are unchanged. Source
+identities, commands, local results, failed attempts and runtime publication are
+in the [dated evidence record](../audits/2026-10-24-lcb001-pressure-reference-publication.md).
+
+**Owner decision (2026-10-24).** The owner explicitly authorized the bounded LCB
+implementation, including the previously held pressure reference (#200) and the
+inertial family ([#212](https://github.com/techrote/cybersand/issues/212)),
+without changing production defaults, without generic #12 Stage-4 cell↔Rapier
+ownership, without a production Cell-carrier migration and without full GEN-006
+streaming. This lifts the execution holds recorded in the
+[LCB-000 checkpoint](#liquid-comparison-build-design-checkpoint--2026-10-23). It
+does not admit new pressure-to-Rapier forces, a schema/ABI freeze or a #45
+mechanism: `pressure_flow_v1` is a comparison family, and its characterization
+does not freeze #45 thresholds.
+
+| Item (branch) | Status |
+|---|---|
+| Running-build admission of Water × `pressure_flow_v1/reference`, optional family block `{gas_enabled 0..1, atmospheric_head_rows 16..4096}` (defaults 1, 32); `cached`/`cached_dormant` refused `family_unavailable` | Current |
+| Solver-owned per-chunk sidecars, World gas table with label-overlap identity and exact ledgers, immutable head snapshot, phased kernel | Current ([design](../architecture/pressure-flow-v1.md)) |
+| Physical-state hash v1, CYPS v1 save/restore, GDExtension inspection and ledgers, `water_visible`/`water_overfill`, receipt `family_parameters`, experimental run-receipt hash | Current ([interfaces](interfaces-and-message-contracts.md#lcb-001-pressure-reference-inspection-and-persistence-experimental)) |
+| Capability matrix Water × pressure `executable_today: true`, `executable_variants: ["reference"]`; regenerated digest and vector identity words, with no acceptance/refusal change in the 47 cases | Current |
+| Native `test_lcb_pressure.cpp` (13 cases), Godot `test_lcb_pressure_reference.gd` (12 sections), native characterization harness | Current; results in the evidence record |
+| Linux, sanitizer/TSan and Web/WASM execution | CI only for Linux/sanitizers; Web not built or run |
+
+**Characterization screens, not admission criteria** (native harness, 1 worker):
+at repaired source `349d593`: depth response t240 1.69 (Current 1.06); depth-160
+front t240 220 (71); depth-160 retained t1800 0.371 (0.851); vented two-limb
+|difference| t2400 9 rows (120); narrow passage 43 rows (120). The sealed
+two-limb differs from vented (levels 152/175, gap 23), remains unsettled and has
+no sealed-law acceptance. Quantity was exact in all twelve runs. Earlier-source
+measurements remain in the dated evidence record.
+
+| Remaining | Owner and status |
+|---|---|
+| W-CY (whole-cell Water `cellular_yield_v1`), `water-normalize-v1` and `normalization_required` (NC-3) | #200, Planned |
+| Frozen run-receipt schema; the remaining #202 constructors | #200, Planned |
+| `cached`/`cached_dormant`, incremental caches and dormancy (the reference is O(resident cells) per tick) | [#201](https://github.com/techrote/cybersand/issues/201), Planned |
+| Comparison host and UI; re-dispositioning the registered candidate arms | [#202](https://github.com/techrote/cybersand/issues/202), Planned |
+| `inertial_cellular_v1` (W-IN, Brine), M1/M2 | #212, Planned; no longer owner-held |
+| Packaged builds and isolated timing | [#203](https://github.com/techrote/cybersand/issues/203), Planned |
+
+**Publisher.** The temporary branch-scoped workflow
+`lcb001-pressure-reference-runtime-publication.yml`, integrated from draft PR
+#244, publishes source-matched Linux/Windows runtimes only after
+`tools/ci/lcb001_pressure_reference_publish_request.json` is committed on this
+branch. After the retained failed/cancelled attempts and takeover repairs,
+publication run `40100666514` passed Linux and actual Windows headless execution
+and published both source-matched runtimes at `101758d`; the evidence
+record holds their hashes and scope. Final exact-head ready-PR gates remain
+separate. After the branch merges, retire the workflow, helper and
+unittest as described for [branch-scoped publishers](../operations/local-build-and-validation.md#branch-scoped-runtime-publishers).
+#200 itself stays open (see the [issue-state correction](#lcb-001-policy-foundation--2026-10-24)).
 
 ## Opt-in transport profiles
 

@@ -1,18 +1,23 @@
 ---
 title: LCB pressure and inertial implementation handoff
-status: Planned
+status: Approved design
 document-kind: design
-scope: Implementation-ready requirements for LCB-001 (#200, pressure_flow_v1 and solver policy) and LCB-005 (#212, inertial_cellular_v1) derived from the LCB physics prepass — exact source hooks, state, laws, boundary rules, invalidating failures, smallest experimental regimes and the APIs needed to unblock registered tests; no kernel is implemented; bounded admission passed and implementation remains held
+scope: Implementation-ready requirements for LCB-001 (#200, pressure_flow_v1 and solver policy) and LCB-005 (#212, inertial_cellular_v1) derived from the LCB physics prepass — exact source hooks, state, laws, boundary rules, invalidating failures, smallest experimental regimes and the APIs needed to unblock registered tests; the pressure_flow_v1 reference is implemented on branch claude/lcb001-pressure-reference (canonical design in pressure-flow-v1.md) and the inertial family remains Planned, no longer owner-held
 canonical-for: [lcb-pressure-inertial-handoff]
 last-reviewed: 2026-10-24
-related-documents: [liquid-state-transition-matrix.md, liquid-solver-family-policy.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, ../operations/lcb-scenario-catalogue.md]
+related-documents: [pressure-flow-v1.md, liquid-state-transition-matrix.md, liquid-solver-family-policy.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, ../operations/lcb-scenario-catalogue.md]
 ---
 
 # LCB pressure and inertial implementation handoff
 
 ## Status
 
-**Planned implementation.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) only; the pressure backend, every other solver port and #212 remain held. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration. This
+**Approved requirements; pressure reference implemented, inertial Planned.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](pressure-flow-v1.md) is Current on branch `claude/lcb001-pressure-reference` (unmerged); #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
+
+The pressure requirements below are now implemented by the
+[`pressure_flow_v1` reference](pressure-flow-v1.md), which owns the Current
+storage, laws, parameters and limits; this page keeps the requirements it was
+built against. The inertial requirements remain **Planned** (#212). This
 page converts the [mechanism report](../audits/2026-10-23-lcb-physics-mechanism-report.md)
 and the [state-transition matrix](liquid-state-transition-matrix.md) into
 requirements.
@@ -28,28 +33,41 @@ requirements.
 
 | Need | Where today | Requirement |
 |---|---|---|
-| Per-World policy | `WorldConfig::liquid_solver_policy` beside `WaterExperimentPolicy` | **Current foundation (2026-10-24):** `LiquidSolverPolicy` with the [canonical hashing](liquid-solver-family-policy.md#native-policy-object-proposed), validated before allocation; defaults only ([foundation](liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)). Candidate families must extend the running build's qualified cells and schemas. |
+| Per-World policy | `WorldConfig::liquid_solver_policy` beside `WaterExperimentPolicy` | **Current foundation (2026-10-24):** `LiquidSolverPolicy` with the [canonical hashing](liquid-solver-family-policy.md#native-policy-object-proposed), validated before allocation ([foundation](liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)). **Branch:** the running build qualifies Water × `pressure_flow_v1/reference` with one optional family block. Further candidate families must extend the running build's qualified cells and schemas. |
 | Construction bridge | `CyberDemoBridge::build_liquid_policy_world` beside `build_water_feel_world`; every World constructor listed in #202 | **Current foundation:** packed request refused before `install`; `get_liquid_solver_policy()` readback. Remaining #202 constructors and normalization are Planned. |
-| Family dispatch | `update_rule_kernel` L2829 (`RuleKernel` switch), after generic pair chemistry L2797 | Dispatch motion by family only for liquids with a non-default assignment. Keep stages 1, 2, 4 and 5 from the [material hooks](liquid-solver-family-policy.md#material-hooks-versus-motion-gate-c-correction-2026-10-23) unchanged. |
+| Family dispatch | `update_rule_kernel` L2829 (`RuleKernel` switch), after generic pair chemistry L2797 | Dispatch motion by family only for liquids with a non-default assignment. Keep stages 1, 2, 4 and 5 from the [material hooks](liquid-solver-family-policy.md#material-hooks-versus-motion-gate-c-correction-2026-10-23) unchanged. **Branch:** `RuleKernel::Water` calls `update_water_pressure` in a pressure World. |
 | Moves and swaps | `move_cell` L2323, `try_move` L2446, `transfer_water` L2481, `relocate_stored_cell` L1840 | Optional state moves atomically with its tuple; retired on Empty/conversion (R1). |
 | Writes and products | `write_cell` L1475, `set_cell_state` L1693, pair-product writes L2797–L2826 | Products start at their family default state; signed ledger hook. |
 | Transport coupling | `mix_after_motion` L2568 | Called with the real moved quantity (`maximum()` for a whole cell). |
 | Body masks | `transient_obstacle_at`, `update_cell` L3500 skip | Masks are solid for motion and head. No new Rapier force. |
 | Scheduling | `begin_tick` L3524+, block sleep after 3 quiet ticks | Sleep only when family state is at rest. Count work by visited cells and scheduled cores, not active-chunk flags (mechanism report §C). |
-| Hashing | `state_hash` L4187+ (unchanged) | New versioned complete physical-state hash covering optional state and gas tables. |
+| Hashing | `state_hash` L4187+ (unchanged) | New versioned complete physical-state hash covering optional state and gas tables. **Branch:** `World::physical_state_hash()` v1 ([definition](pressure-flow-v1.md#physical-state-hash-v1)). |
 
 **APIs required to unblock the registered tests** (in
 `lcb-physics-contracts.json`):
-- policy readback (Current foundation, defaults only);
-- versioned physical-state hash;
-- `inspect_cell` extended with family state;
+- policy readback (Current foundation; branch adds `family_parameters`);
+- versioned physical-state hash (branch: `get_physical_state_hash()`, version 1);
+- `inspect_cell` extended with family state (branch: `family_state` in pressure Worlds);
 - `inspect_gas_compartments()` returning id, generation, ancestry, amount,
-  volume, vent state and topology revision;
+  volume, vent state and topology revision (branch);
 - per-reaction ledger events;
 - a front/centroid observation metric (optional; the tests currently scan
   with `material_at`).
 
 ## Pressure (`pressure_flow_v1`, Water only, #200)
+
+**Implementation status (2026-10-24).** `pressure_flow_v1/reference` is
+**Current on branch `claude/lcb001-pressure-reference` (unmerged)**; the
+[canonical design](pressure-flow-v1.md) owns its storage, gas identity, laws,
+parameters and known limits. The native suite (13 `LCB-001 pressure` cases) and
+the Godot candidate regression exercise the mandatory criteria below. The native
+characterization harness at repaired source `349d593` recorded depth response
+1.69, depth-160 front 220, retained 0.371, vented two-limb |difference| 9 rows and
+narrow passage 43 rows at the screen ticks. The sealed two-limb differs from
+vented (levels 152/175, gap 23 at t2400), remains unsettled and has no sealed-law
+acceptance. These are screens, not admission
+criteria ([evidence](../audits/2026-10-24-lcb001-pressure-reference-publication.md)).
+Cached/dormant variants remain #201. This is not #45 selection.
 
 **What it must change.** Current Water has no head term:
 
@@ -138,8 +156,8 @@ reading fails 10 of those checks.
 | `gas.unequal-merge` | 100+120 at completed t0–t1; the wall erase indexed t1 merges once to 220 (post-event t1, first observed at completed t2) |
 | `gas.compress-vent-reseal.v2` | volume 100 at completed t0–t1; amount 100 held at half volume (50 cells) at completed t2–t5; vented through a channel and dry U-trap with an exchange ledger at completed t6–t9; the supported trap Water plug indexed t9 reseals into a **new** 58-cell compartment at atmospheric amount, first observed at completed t10 and held to t30 (v1's unsupported roof plug is withdrawn) |
 | `gas.split.v1` | one 222-cell compartment through two rooms and a dry U-trap at completed t0–t3; the supported trap fill indexed t3 splits it (post-event t3, first observed at completed t4) into two **new** ids with ancestry, volumes 108 and 111; volume-proportional floor shares 109/112, remainder 1 to the compartment holding the lowest (y, x) cell, giving 110/112; exact split ledger |
-| empty-only-chunk survival | native test |
-| hash change on gas-only change | needs the hash API |
+| empty-only-chunk survival | native test (branch: `LCB-001 pressure gas in Empty-only and unallocated chunks`) |
+| hash change on gas-only change | branch: physical-state hash v1 (`LCB-001 pressure physical hash and exact persistence`) |
 
 **Sealed headspace.** The `head.sealed-two-limb` target is the isothermal
 equilibrium `p_L + z_L = p_R + z_R`, with each limb's
@@ -286,8 +304,14 @@ Oil, Lava, Acid, Cement and Molten Glass are not admitted in v1.
 ## Admission and review
 
 Every item above is preregistered in `godot/tests/fixtures/lcb/lcb-physics-contracts.json`.
-Current-family controls run in `test_lcb_physics_contracts.gd`; every candidate
-arm is BLOCKED with its dependency.
+Current-family controls run in `test_lcb_physics_contracts.gd`; the registry
+still records every candidate arm BLOCKED with its dependency. On the pressure
+branch, [`test_lcb_pressure_reference.gd`](../../godot/tests/test_lcb_pressure_reference.gd)
+runs W-PF `reference` on the registered gas acceptance fixtures and scenario
+geometries without changing those registry records; re-dispositioning arms
+belongs to the #202 comparison host.
 
-This handoff records future implementation requirements. The linked final
-admission checkpoint owns the accepted scope and continuing execution hold.
+The pressure requirements are implemented as recorded in the
+[pressure reference roadmap entry](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24);
+the inertial requirements remain future work. The linked final admission
+checkpoint and that entry own the accepted scope.

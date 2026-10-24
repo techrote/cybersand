@@ -7,7 +7,9 @@
 #include <godot_cpp/variant/utility_functions.hpp>
 
 #include <algorithm>
+#include <array>
 #include <chrono>
+#include <cstdio>
 #include <cmath>
 #include <numbers>
 #include <span>
@@ -82,6 +84,13 @@ void CyberNativeCellWorld::_bind_methods() {
                          &CyberNativeCellWorld::water_experiment_erase_rect);
     ClassDB::bind_method(D_METHOD("water_experiment_observation", "origin", "size"),
                          &CyberNativeCellWorld::water_experiment_observation);
+    ClassDB::bind_method(D_METHOD("get_physical_state_hash"), &CyberNativeCellWorld::get_physical_state_hash);
+    ClassDB::bind_method(D_METHOD("get_physical_state_hash_version"),
+                         &CyberNativeCellWorld::get_physical_state_hash_version);
+    ClassDB::bind_method(D_METHOD("inspect_gas_compartments"), &CyberNativeCellWorld::inspect_gas_compartments);
+    ClassDB::bind_method(D_METHOD("inspect_pressure_cell", "point"), &CyberNativeCellWorld::inspect_pressure_cell);
+    ClassDB::bind_method(D_METHOD("get_pressure_flow_ledger"), &CyberNativeCellWorld::get_pressure_flow_ledger);
+    ClassDB::bind_method(D_METHOD("get_liquid_run_receipt", "setup"), &CyberNativeCellWorld::get_liquid_run_receipt);
     ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("auto_worker_threads", "logical_threads"), &CyberNativeCellWorld::auto_worker_threads);
     ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("logical_processor_count"), &CyberNativeCellWorld::logical_processor_count);
     ClassDB::bind_method(D_METHOD("reset_demo_world"),
@@ -1549,7 +1558,10 @@ Dictionary CyberNativeCellWorld::liquid_policy_receipt(
 #else
     result["platform"] = "linux";
 #endif
-    result["admission"] = "current_defaults_only";
+    // A policy equal to this build's default runs only Current defaults; any
+    // other admitted policy is a qualified LCB candidate (pressure reference).
+    result["admission"] = policy == cybersand::LiquidSolverPolicy{} ? "current_defaults_only"
+                                                                    : "qualified_candidate";
     auto id = [](std::string_view text) { return String(std::string(text).c_str()); };
     Array assignments;
     for (const auto& item : policy.assignments()) {
@@ -1579,10 +1591,224 @@ Dictionary CyberNativeCellWorld::liquid_policy_receipt(
         }
         result[family_blocks ? "family_blocks" : "material_blocks"] = blocks;
     }
+    Dictionary parameters;
+    if (const auto water = policy.assignment(static_cast<std::uint16_t>(cybersand::Material::Water));
+        water && water->family == cybersand::LiquidSolverFamily::PressureFlowV1) {
+        cybersand::PressureFlowParameters effective;
+        for (const auto& block : policy.family_blocks())
+            if (block.owner == 3U && block.version == cybersand::LiquidPolicyBuild::kPressureBlockVersion &&
+                block.values.size() == 2U) {
+                effective.gas_enabled = block.values[0] != 0;
+                effective.atmospheric_head_rows = block.values[1];
+            }
+        Dictionary pressure;
+        pressure["family_version"] = static_cast<std::int64_t>(cybersand::PressureFlowParameters::kVersion);
+        pressure["gas_enabled"] = effective.gas_enabled;
+        pressure["atmospheric_head_rows"] = static_cast<std::int64_t>(effective.atmospheric_head_rows);
+        pressure["flow_scale"] = static_cast<std::int64_t>(cybersand::PressureFlowParameters::kFlowScale);
+        pressure["compartment_volume_limit"] =
+            static_cast<std::int64_t>(cybersand::PressureFlowParameters::kCompartmentVolumeLimit);
+        pressure["compartment_capacity"] =
+            static_cast<std::int64_t>(cybersand::PressureFlowParameters::kCompartmentCapacity);
+        pressure["acceleration"] = static_cast<std::int64_t>(cybersand::PressureFlowParameters::kAccelNumerator);
+        pressure["retain_per_256"] = static_cast<std::int64_t>(cybersand::PressureFlowParameters::kRetain);
+        pressure["friction"] = static_cast<std::int64_t>(cybersand::PressureFlowParameters::kFriction);
+        pressure["start_dead_band_per_255"] =
+            static_cast<std::int64_t>(cybersand::PressureFlowParameters::kStartDeadBand255);
+        pressure["moving_dead_band_per_255"] =
+            static_cast<std::int64_t>(cybersand::PressureFlowParameters::kMovingDeadBand255);
+        pressure["overfill_limit"] = "maximum()";
+        pressure["adhesion_film"] = "resting cells only";
+        parameters["pressure_flow_v1"] = pressure;
+    }
+    result["family_parameters"] = parameters;
+    result["physical_state_hash_version"] = static_cast<std::int64_t>(cybersand::World::kPhysicalStateHashVersion);
     result["normalization"] = Variant();
     result["refusal"] = Variant();
     return result;
 }
+
+String CyberNativeCellWorld::get_physical_state_hash() const {
+    if (world_ == nullptr) return {};
+    char text[17];
+    std::snprintf(text, sizeof(text), "%016llx", static_cast<unsigned long long>(world_->physical_state_hash()));
+    return String(text);
+}
+
+std::int64_t CyberNativeCellWorld::get_physical_state_hash_version() const {
+    return static_cast<std::int64_t>(cybersand::World::kPhysicalStateHashVersion);
+}
+
+namespace {
+Dictionary gas_compartment_dictionary(const cybersand::GasCompartmentSnapshot& c) {
+    Dictionary out;
+    out["id"] = static_cast<std::int64_t>(c.id);
+    out["generation"] = static_cast<std::int64_t>(c.generation);
+    Array parents;
+    for (std::size_t i = 0; i < c.parent_count; ++i) parents.push_back(static_cast<std::int64_t>(c.parents[i]));
+    out["ancestry"] = parents;
+    out["amount"] = static_cast<std::int64_t>(c.amount);
+    out["volume"] = static_cast<std::int64_t>(c.volume);
+    out["anchor"] = Vector2i(static_cast<std::int32_t>(c.anchor_x), static_cast<std::int32_t>(c.anchor_y));
+    out["created_tick"] = static_cast<std::int64_t>(c.created_tick);
+    out["topology_revision"] = static_cast<std::int64_t>(c.revision);
+    out["gauge_mass"] = static_cast<std::int64_t>(c.gauge);
+    out["vent_state"] = "sealed";
+    return out;
+}
+}  // namespace
+
+Dictionary CyberNativeCellWorld::inspect_gas_compartments() const {
+    Dictionary out;
+    out["available"] = world_ != nullptr && world_->pressure_flow_enabled();
+    if (world_ == nullptr || !world_->pressure_flow_enabled()) return out;
+    const auto parameters = world_->pressure_flow_parameters();
+    out["gas_enabled"] = parameters.gas_enabled;
+    out["atmospheric_head_rows"] = static_cast<std::int64_t>(parameters.atmospheric_head_rows);
+    out["topology_revision"] = static_cast<std::int64_t>(world_->gas_topology_revision());
+    out["next_id"] = static_cast<std::int64_t>(world_->gas_next_id());
+    out["completed_tick"] = static_cast<std::int64_t>(world_->completed_tick_index());
+    Array compartments;
+    for (const auto& c : world_->gas_compartments()) compartments.push_back(gas_compartment_dictionary(c));
+    out["compartments"] = compartments;
+    Array history;
+    for (const auto& record : world_->gas_history()) {
+        auto entry = gas_compartment_dictionary(record.compartment);
+        static constexpr const char* kReasons[] = {"", "merged", "split", "vented", "collapsed"};
+        entry["vent_state"] = record.reason == cybersand::GasRetireReason::Vented ? "vented" : "retired";
+        entry["retired"] = kReasons[static_cast<std::size_t>(record.reason)];
+        Array successors;
+        for (std::size_t i = 0; i < record.successor_count; ++i)
+            successors.push_back(static_cast<std::int64_t>(record.successors[i]));
+        entry["successors"] = successors;
+        entry["retired_tick"] = static_cast<std::int64_t>(record.tick);
+        history.push_back(entry);
+    }
+    out["history"] = history;
+    const auto ledger = world_->gas_ledger();
+    Dictionary book;
+    book["created"] = static_cast<std::int64_t>(ledger.created);
+    book["absorbed"] = static_cast<std::int64_t>(ledger.absorbed);
+    book["vented"] = static_cast<std::int64_t>(ledger.vented);
+    book["collapsed"] = static_cast<std::int64_t>(ledger.collapsed);
+    book["merges"] = static_cast<std::int64_t>(ledger.merges);
+    book["splits"] = static_cast<std::int64_t>(ledger.splits);
+    book["creations"] = static_cast<std::int64_t>(ledger.creations);
+    book["vents"] = static_cast<std::int64_t>(ledger.vents);
+    book["collapses"] = static_cast<std::int64_t>(ledger.collapses);
+    book["amount_live"] = static_cast<std::int64_t>(ledger.amount_live);
+    book["closes"] = ledger.amount_live + ledger.vented + ledger.collapsed == ledger.created + ledger.absorbed;
+    out["ledger"] = book;
+    return out;
+}
+
+Dictionary CyberNativeCellWorld::inspect_pressure_cell(Vector2i point) const {
+    Dictionary out;
+    out["available"] = false;
+    if (world_ == nullptr || !in_bounds(point.x, point.y)) return out;
+    const auto state = world_->pressure_cell(point.x, point.y);
+    out["available"] = state.available;
+    out["material"] = static_cast<std::int64_t>(world_->stored_material(point.x, point.y));
+    out["state_a"] = static_cast<std::int64_t>(world_->stored_state_a(point.x, point.y));
+    out["overfill"] = static_cast<std::int64_t>(state.overfill);
+    out["flow"] = static_cast<std::int64_t>(state.flow);
+    String gas = "compartment";
+    if (state.gas == cybersand::kAtmosphereLabel) gas = "atmosphere";
+    else if (state.gas == cybersand::kVacuumLabel) gas = "vacuum";
+    else if (state.gas == 0U) gas = "unresolved";
+    out["gas"] = gas;
+    out["gas_compartment"] = state.gas == 0U || state.gas >= cybersand::kVacuumLabel
+        ? Variant() : Variant(static_cast<std::int64_t>(state.gas));
+    return out;
+}
+
+Dictionary CyberNativeCellWorld::get_pressure_flow_ledger() const {
+    Dictionary out;
+    out["available"] = world_ != nullptr && world_->pressure_flow_enabled();
+    if (world_ == nullptr || !world_->pressure_flow_enabled()) return out;
+    const auto ledger = world_->pressure_flow_ledger();
+    out["overfill_converted"] = static_cast<std::int64_t>(ledger.overfill_converted);
+    out["overfill_external"] = static_cast<std::int64_t>(ledger.overfill_external);
+    out["flow_remainder"] = static_cast<std::int64_t>(ledger.flow_remainder);
+    out["contact_loss"] = static_cast<std::int64_t>(ledger.contact_loss);
+    out["relief_cells"] = static_cast<std::int64_t>(ledger.relief_cells);
+    const auto d = world_->pressure_flow_diagnostics();
+    Dictionary diagnostics;
+    diagnostics["head_cells"] = static_cast<std::int64_t>(d.head_cells);
+    diagnostics["unknown_heads"] = static_cast<std::int64_t>(d.unknown_heads);
+    diagnostics["gas_visited"] = static_cast<std::int64_t>(d.gas_visited);
+    diagnostics["gas_regions"] = static_cast<std::int64_t>(d.gas_regions);
+    diagnostics["atmosphere_regions"] = static_cast<std::int64_t>(d.atmosphere_regions);
+    diagnostics["chunk_allocations"] = static_cast<std::int64_t>(d.chunk_allocations);
+    diagnostics["woken_blocks"] = static_cast<std::int64_t>(d.woken_blocks);
+    out["last_tick"] = diagnostics;
+    return out;
+}
+
+Dictionary CyberNativeCellWorld::get_liquid_run_receipt(const Dictionary& setup) const {
+    Dictionary out;
+    if (world_ == nullptr) return out;
+    const auto& config = world_->config();
+    cybersand::Sha256 hash;
+    const auto put = [&hash](const std::string& value) {
+        const auto length = static_cast<std::uint32_t>(value.size());
+        const std::array<std::uint8_t, 4> le{static_cast<std::uint8_t>(length), static_cast<std::uint8_t>(length >> 8U),
+                                             static_cast<std::uint8_t>(length >> 16U),
+                                             static_cast<std::uint8_t>(length >> 24U)};
+        hash.update(le);
+        hash.update({reinterpret_cast<const std::uint8_t*>(value.data()), value.size()});
+    };
+    put(std::string("lcb-run-receipt-v1"));
+    Dictionary components;
+    const auto add = [&](const char* key, const std::string& value) {
+        put(key);
+        put(value);
+        components[key] = String(value.c_str());
+    };
+    add("policy_hash", world_->liquid_solver_policy().policy_hash_hex());
+    const auto& water = config.water_experiment_policy;
+    // Append-only assembly (liquid_policy_detail::concat): string&& + string&&
+    // front insertion imports a GLIBCXX symbol above the Linux runtime floor.
+    using cybersand::liquid_policy_detail::concat;
+    add("water_policy", concat(static_cast<int>(water.version()), ":", static_cast<int>(water.mass_bits()), ":",
+                               static_cast<int>(water.coherence_ticks()), ":", static_cast<int>(water.rest_policy())));
+    std::string transport = "baseline";
+    if (config.transport_policy.configured) {
+        cybersand::Sha256 transport_hash;
+        for (const auto n : config.transport_policy.horizontal) transport_hash.update(std::array<std::uint8_t, 1>{n});
+        for (const auto n : config.transport_policy.cadence) transport_hash.update(std::array<std::uint8_t, 1>{n});
+        for (const auto& pair : config.transport_policy.pairs)
+            transport_hash.update(std::array<std::uint8_t, 6>{pair.mixing, pair.carrying, pair.pickup, pair.packing,
+                                                              pair.erosion, pair.permeability});
+        transport = cybersand::Sha256::hex(transport_hash.finish());
+    }
+    add("transport_profile", transport);
+    add("interaction_policy", concat(static_cast<int>(config.interaction_policy.downward_support_cells), ":",
+                                     static_cast<int>(config.interaction_policy.side_support_cells), ":",
+                                     config.interaction_policy.mercury_exchange_period));
+    add("workers", concat(config.worker_threads));
+    add("backend", concat(static_cast<int>(config.backend)));
+    add("scheduler", concat(config.chunk_size, ":", config.activity_block_size, ":", config.scheduling_core_size, ":",
+                            config.maximum_rule_radius, ":", config.sleep_after_quiet_ticks));
+    add("diagnostic_physics", concat(config.physics_diagnostics.disable_powder_exchange_targets ? 1 : 0, ":",
+                                     config.physics_diagnostics.mercury_viscosity));
+    add("execution", concat(simulation_window_enabled_ ? "window" : "full", ":", cadence_lod_enabled_ ? "lod" : "nolod",
+                            ":", liquid_surface_adhesion_enabled_ ? "adhesion" : "noadhesion"));
+    const auto region = world_->simulation_region();
+    add("simulation_region", region ? concat(region->x, ":", region->y, ":", region->width, ":", region->height)
+                                     : std::string("unrestricted"));
+    add("physical_state_hash_version", concat(cybersand::World::kPhysicalStateHashVersion));
+    for (const char* key : {"setup_hash", "seed", "normalization_receipt", "source_revision", "native_binary_sha256",
+                            "catalogue_digest"}) {
+        const auto value = setup.has(key) ? std::string(String(setup[key]).utf8().get_data()) : std::string("none");
+        add(key, value);
+    }
+    out["receipt_hash"] = String(cybersand::Sha256::hex(hash.finish()).c_str());
+    out["components"] = components;
+    out["tick"] = static_cast<std::int64_t>(world_->completed_tick_index());
+    return out;
+}
+
 
 Dictionary CyberNativeCellWorld::get_liquid_solver_policy() const {
     if (world_ == nullptr) return {};
@@ -1670,15 +1896,23 @@ Dictionary CyberNativeCellWorld::water_experiment_observation(
     }
     std::uint64_t water_integer = 0;
     std::uint64_t water_cells = 0;
+    std::uint64_t water_overfill = 0;
+    const bool pressure = world_->pressure_flow_enabled();
     for (auto y = origin.y; y < origin.y + size.y; ++y) {
         for (auto x = origin.x; x < origin.x + size.x; ++x) {
             if (world_->stored_material(x, y) == cybersand::Material::Water) {
                 water_integer += world_->stored_state_a(x, y);
+                if (pressure) water_overfill += world_->pressure_cell(x, y).overfill;
                 ++water_cells;
             }
         }
     }
     result["tick"] = world_->tick_index();
+    // pressure_flow_v1 quantity is visible state_a plus never-rendered overfill;
+    // overfill is identically zero under every other family.
+    result["water_visible"] = water_integer;
+    result["water_overfill"] = water_overfill;
+    water_integer += water_overfill;
     result["water_integer"] = water_integer;
     result["water_cells"] = water_cells;
     result["content_hash"] = String::num_uint64(world_->content_hash(), 16);

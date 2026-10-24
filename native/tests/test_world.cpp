@@ -3736,6 +3736,19 @@ void test_liquid_policy_world_construction_and_refusal();
 void test_liquid_policy_default_preserves_behavior_and_workers();
 void test_liquid_policy_c_api_transaction();
 void test_liquid_policy_c_api_allocation_failures();
+void test_lcb_pressure_admission();
+void test_lcb_pressure_gas_pockets();
+void test_lcb_pressure_gas_merge();
+void test_lcb_pressure_gas_vent_reseal();
+void test_lcb_pressure_gas_split();
+void test_lcb_pressure_gas_empty_only();
+void test_lcb_pressure_quantity_parity();
+void test_lcb_pressure_two_limb();
+void test_lcb_pressure_barriers();
+void test_lcb_pressure_static_rest();
+void test_lcb_pressure_lifecycle();
+void test_lcb_pressure_persistence();
+void test_lcb_pressure_default_untouched();
 
 int main(int argc, char** argv) {
     struct Test {
@@ -3832,10 +3845,23 @@ int main(int argc, char** argv) {
         {"LCB-001 liquid policy catalogue matches descriptors", test_liquid_policy_catalogue_matches_descriptors},
         {"LCB-001 liquid policy wire vectors", test_liquid_policy_wire_vectors},
         {"LCB-001 liquid policy session transcript", test_liquid_policy_session_transcript},
-        {"LCB-001 liquid policy running build admits only defaults", test_liquid_policy_running_build_admits_only_defaults},
+        {"LCB-001 liquid policy running build admits defaults and qualified candidates", test_liquid_policy_running_build_admits_only_defaults},
         {"LCB-001 liquid policy World construction and refusal", test_liquid_policy_world_construction_and_refusal},
         {"LCB-001 liquid policy default behavior and workers", test_liquid_policy_default_preserves_behavior_and_workers},
         {"LCB-001 liquid policy C API transaction", test_liquid_policy_c_api_transaction},
+        {"LCB-001 pressure admission and refusal", test_lcb_pressure_admission},
+        {"LCB-001 pressure gas single and twin pockets", test_lcb_pressure_gas_pockets},
+        {"LCB-001 pressure gas unequal merge", test_lcb_pressure_gas_merge},
+        {"LCB-001 pressure gas compress, vent and reseal", test_lcb_pressure_gas_vent_reseal},
+        {"LCB-001 pressure gas split", test_lcb_pressure_gas_split},
+        {"LCB-001 pressure gas in Empty-only and unallocated chunks", test_lcb_pressure_gas_empty_only},
+        {"LCB-001 pressure quantity, motion and worker parity", test_lcb_pressure_quantity_parity},
+        {"LCB-001 pressure vented two-limb head transmission", test_lcb_pressure_two_limb},
+        {"LCB-001 pressure walls and body masks block head", test_lcb_pressure_barriers},
+        {"LCB-001 pressure static rest, sleep and remote wake", test_lcb_pressure_static_rest},
+        {"LCB-001 pressure lifecycle state and ledgers", test_lcb_pressure_lifecycle},
+        {"LCB-001 pressure physical hash and exact persistence", test_lcb_pressure_persistence},
+        {"LCB-001 pressure default policy untouched", test_lcb_pressure_default_untouched},
         {"LCB-001 liquid policy C API allocation failures", test_liquid_policy_c_api_allocation_failures},
     };
 

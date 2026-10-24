@@ -29,6 +29,9 @@ CASE_WEIGHTS_SECONDS = {
     "test_lcb_scenario_catalogue": 60.0,
     # LCB physics contracts: 43 s on the same workstation (dam ladder to t240 at 1/4 workers).
     "test_lcb_physics_contracts": 80.0,
+    # LCB-001 pressure reference: 23 s on a 2026-10-24 Windows workstation
+    # (1024² gas fixtures at 1/4 workers, two-limb, dam and default goldens).
+    "test_lcb_pressure_reference": 45.0,
     "test_interaction_policy": 37.0,
     "profile_scheduler": 20.0,
     "test_transport_probe": 14.0,

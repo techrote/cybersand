@@ -356,3 +356,13 @@ The roadmap now records the foundation as Current on main.
 - `source_revision`/`native_binary_sha256` are not in the native receipt.
 - No candidate arm, pressure/inertial/W-CY kernel, Rapier force, Cell/schema
   change or default change was made or executed.
+
+Issue-state correction (2026-10-24): GitHub automatically closed #200 at
+07:01:20Z when #239 merged, because it parsed the PR body's negated phrase "does
+not close #200" as a closing directive. Later inspection identified this
+premature transition, and #200 was reopened on 2026-10-24 with an explanatory
+comment. That automatic transition supplies no completion evidence. The gaps
+above were the open #200 scope at this checkpoint; the subsequent pressure
+reference, which adds a versioned physical-state hash and an experimental
+run-receipt hash, is recorded separately in the
+[pressure reference evidence](2026-10-24-lcb001-pressure-reference-publication.md).

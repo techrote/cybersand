@@ -163,13 +163,21 @@ records #95's answers:
 - #93 is research only, #94 is narrow-use, #18 stays held, and FreeMass and
   CellularYield stay separate.
 
-The owner-approved **Liquid Comparison Build** (#200, gated by #213) may later add
-an opt-in, version-identified `pressure_flow_v1` family and other experimental
+The owner-approved **Liquid Comparison Build** (#200, gated by #213) adds an
+opt-in, version-identified `pressure_flow_v1` family and later other experimental
 families with Water as a common test material. The
 [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md)
 bounds that lane: unchanged defaults, no hidden fallback, no production #45
 selection, no new pressure-to-Rapier forces, and the Current fixtures and #49 v2
-controls held fixed. Candidate kernels remain **Planned**. **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) only; the pressure backend, every other solver port and #212 remain held. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration.
+controls held fixed. The [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md)
+kernel is **Current on branch `claude/lcb001-pressure-reference` (unmerged)**: it
+runs only in a World whose applied policy assigns it, adds overfill, signed flow and
+World-owned gas compartments, and leaves every semantic on this page unchanged for
+the default `freemass_v1` World. In a pressure World, `water_integer` counts visible
+plus overfill quantity and FreeMass `transfer_water` throws instead of
+running as a silent fallback. Its
+characterization does not select or tune #45. Other candidate kernels remain
+**Planned**. **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current on branch `claude/lcb001-pressure-reference` (unmerged); #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
 
 ## Coherent emission and surface adhesion
 

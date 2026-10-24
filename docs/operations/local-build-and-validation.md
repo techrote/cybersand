@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-24
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
@@ -331,6 +331,16 @@ git show a395e33dc0632f5c3f41e8b8b1c18c89f0aaa131:tools/ci/test_lcb001_runtime_p
 Re-scoping means renaming it and changing its branch guard, evidence path, case
 list and markers, and running `python3 tools/ci/check_ci_provider_policy.py`.
 Retire it again once its branch merges.
+
+**Active, 2026-10-24:** the LCB-001 pressure-reference publisher
+(`.github/workflows/lcb001-pressure-reference-runtime-publication.yml`,
+`tools/ci/lcb001_pressure_reference_runtime_publication.py` and
+`tools/ci/test_lcb001_pressure_reference_runtime_publication.py`, re-scoped in
+draft PR #244) exists on branch `claude/lcb001-pressure-reference`. It builds and
+publishes only after `tools/ci/lcb001_pressure_reference_publish_request.json` is
+committed on that branch, and records its outcome in the
+[evidence record](../audits/2026-10-24-lcb001-pressure-reference-publication.md).
+Retire the three files and the request after that branch merges.
 
 ## Hierarchical generation example and acceptance
 

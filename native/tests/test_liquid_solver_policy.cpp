@@ -6,10 +6,12 @@
 #include "cybersand/world.hpp"
 
 #include <array>
+#include <algorithm>
 #include <cstdint>
 #include <cstdlib>
 #include <fstream>
 #include <iterator>
+#include <limits>
 #include <optional>
 #include <span>
 #include <stdexcept>
@@ -274,8 +276,11 @@ void test_liquid_policy_identity_matches_source() {
                     kVectorCurrentCapabilityDigest,
             "vector current_build_identity differs from the native build");
     const auto& running = LiquidPolicyBuild::running();
-    require(running.catalogue_digest == catalogue_digest && running.native && running.schemas.empty() &&
-                running.available_families == 0x03U,
+    // LCB-001 pressure reference: FreeMass, CellularYield and pressure_flow_v1
+    // compiled; one optional pressure_flow_v1 family block schema.
+    require(running.catalogue_digest == catalogue_digest && running.native && running.schemas.size() == 1U &&
+                running.schemas.front().family_owner && running.schemas.front().owner == 3U &&
+                !running.schemas.front().mandatory && running.available_families == 0x07U,
             "running build identity");
 }
 
@@ -367,6 +372,7 @@ void test_liquid_policy_session_transcript() {
 }
 
 void test_liquid_policy_running_build_admits_only_defaults() {
+    // Defaults plus the single qualified #200 candidate (Water pressure reference).
     const auto request = LiquidSolverPolicy::default_request();
     const auto applied = accept(request, LiquidPolicyBuild::running(), "running default");
     require(applied == LiquidSolverPolicy{} && applied.envelope() == request, "explicit default equals implicit");
@@ -386,6 +392,16 @@ void test_liquid_policy_running_build_admits_only_defaults() {
         for (std::uint8_t family = 1; family <= 4U; ++family) {
             for (std::uint8_t variant = 0; variant < 3U; ++variant) {
                 if (family == row.default_family && variant == 0U) continue;
+                if (row.material_id == 3U && family == 3U && variant == 0U) {
+                    // The one admitted candidate: Water x pressure_flow_v1/reference.
+                    auto words = request;
+                    words[20U + row_index * 3U + 1U] = family;
+                    const auto admitted = accept(words, LiquidPolicyBuild::running(), "Water pressure reference");
+                    require(admitted.assignment(3)->family == LiquidSolverFamily::PressureFlowV1,
+                            "Water pressure reference applied");
+                    ++cells;
+                    continue;
+                }
                 auto words = request;
                 words[20U + row_index * 3U + 1U] = family;
                 words[20U + row_index * 3U + 2U] = variant;
@@ -396,6 +412,12 @@ void test_liquid_policy_running_build_admits_only_defaults() {
                 if (status == CellStatus::Rejected) expected = Code::CombinationRejected;
                 else if (status == CellStatus::ProposedAlternate || variants == 0U) expected = Code::NotSelectable;
                 else if ((variants & (1U << variant)) == 0U) expected = Code::VariantUnsupported;
+                if (row.material_id == 3U && family == 3U && expected == Code::FamilyUnavailable)
+                    require(result.refusal.detail == std::string("pressure_flow_v1/") +
+                                std::string(cybersand::liquid_solver_variant_id(
+                                    static_cast<cybersand::LiquidSolverVariant>(variant))) +
+                                " is not compiled/qualified for material 3 in this build",
+                            "pressure variant refusal detail");
                 require(!result.accepted() && result.refusal.code == expected &&
                             result.refusal.material == row.material_id,
                         std::string("running build admitted or misclassified ") + row.name + " family " +
@@ -479,6 +501,72 @@ void test_liquid_policy_default_preserves_behavior_and_workers() {
     World mass3_world(mass3);
     require(mass3_world.liquid_solver_policy().policy_hash() == explicit_default.policy_hash(),
             "Water semantics changed the liquid policy hash");
+
+    // These diagnostic switches change physics, so they belong to physical
+    // identity and CYPS even when histogram collection itself is disabled.
+    for (const bool powder_override : {false, true}) {
+        WorldConfig physics;
+        physics.physics_diagnostics.disable_powder_exchange_targets = powder_override;
+        physics.physics_diagnostics.mercury_viscosity = powder_override ? -1 : 0;
+        World original(physics);
+        original.reserve_region({0, 0, 128, 128});
+        for (std::int64_t x = 0; x < 128; ++x) original.set(x, 64, Material::Wall);
+        for (std::int64_t y = 48; y < 64; ++y)
+            for (std::int64_t x = 48; x < 80; ++x) original.set(x, y, Material::Mercury);
+        World default_physics;
+        default_physics.reserve_region({0, 0, 128, 128});
+        for (std::int64_t x = 0; x < 128; ++x) default_physics.set(x, 64, Material::Wall);
+        for (std::int64_t y = 48; y < 64; ++y)
+            for (std::int64_t x = 48; x < 80; ++x) default_physics.set(x, y, Material::Mercury);
+        require(original.state_hash() == default_physics.state_hash() &&
+                    original.physical_state_hash() != default_physics.physical_state_hash(),
+                "physics-changing diagnostic options omitted from physical identity");
+        const auto saved = original.save_physical_state();
+        WorldConfig execution;
+        execution.worker_threads = 4;
+        auto restored = World::restore_physical_state(execution, saved);
+        require(restored->config().physics_diagnostics.disable_powder_exchange_targets == powder_override &&
+                    restored->config().physics_diagnostics.mercury_viscosity ==
+                        physics.physics_diagnostics.mercury_viscosity &&
+                    restored->save_physical_state() == saved,
+                "CYPS lost physics-changing diagnostic options");
+        for (int tick = 0; tick < 20; ++tick) {
+            (void)original.tick();
+            (void)restored->tick();
+            require(original.physical_state_hash() == restored->physical_state_hash() &&
+                        original.state_hash() == restored->state_hash(),
+                    "diagnostic physics continuation diverged after CYPS restore");
+        }
+    }
+
+    // A valid digest does not make an inconsistent conservation ledger valid.
+    auto pressure_request = LiquidSolverPolicy::default_request();
+    pressure_request[21] = 3;
+    WorldConfig pressure_config;
+    pressure_config.liquid_solver_policy =
+        accept(pressure_request, LiquidPolicyBuild::running(), "pressure ledger restore");
+    World pressure(pressure_config);
+    const auto original_bytes = pressure.save_physical_state();
+    constexpr std::size_t digest_size = 32U, flow_bytes = 5U * 8U, gas_bytes = 10U * 8U;
+    const auto gas_start = original_bytes.size() - digest_size - flow_bytes - gas_bytes;
+    for (const bool overflow : {false, true}) {
+        auto bytes = original_bytes;
+        const auto put = [&bytes](std::size_t at, std::uint64_t value) {
+            for (std::size_t i = 0; i < 8U; ++i)
+                bytes[at + i] = static_cast<std::uint8_t>(value >> (8U * i));
+        };
+        put(gas_start, overflow ? std::numeric_limits<std::uint64_t>::max() : 1U); // created
+        if (overflow) put(gas_start + 8U, 1U); // absorbed, would wrap the source sum to zero
+        const auto digest = Sha256::of(std::span<const std::uint8_t>(bytes.data(), bytes.size() - digest_size));
+        std::copy(digest.begin(), digest.end(), bytes.end() - static_cast<std::ptrdiff_t>(digest_size));
+        bool refused = false;
+        try {
+            (void)World::restore_physical_state(WorldConfig{}, bytes);
+        } catch (const std::invalid_argument&) {
+            refused = true;
+        }
+        require(refused, "CYPS accepted an inconsistent or overflowing gas ledger");
+    }
 }
 
 void test_liquid_policy_c_api_transaction() {
