@@ -20,7 +20,12 @@ synchronous application owners. One candidate/token slot and the worker's final
 request/reset/stop fence preserve live state and host cursors on refusal.
 Read the [bounded contract](../architecture/liquid-prepared-setup-and-receipts.md#controlled-application-host-preparation-slice)
 and [local evidence and remaining gaps](../audits/2026-10-24-lcb003-controlled-host-slice.md).
-This is not all #202 constructors/UI or browser qualification. Integrate onto
+The next source checkpoint `0a702eb3` adds actual native-validated per-material
+choices/presets in the normal launcher and MicroScenario panel, explicit
+normalization, native readback and protected Current/mixed fixture controls. Read
+the [constructor coverage matrix](lcb-manual-comparison-ux.md#constructor-coverage-at-this-checkpoint)
+and [UI evidence](../audits/2026-10-25-lcb003-liquid-comparison-ui.md). This is not
+all #202 constructors/UI or browser qualification. Integrate onto
 fresh main after #246; preserve the normal #201/#202/#212 → #203 sequence and
 all native-v1 provenance/host qualifications.
 

@@ -671,6 +671,17 @@ mode)` for the initial fixed actor-free schema-2 route. Desktop commands carry
 the actual native commit against newer requests/reset/stop. Details and current
 gaps belong to the [bounded host contract](../architecture/liquid-prepared-setup-and-receipts.md#controlled-application-host-preparation-slice).
 
+The subsequent normal comparison panel calls
+`liquid_policy_assignment_choices(request, material)` for native-decoded,
+catalogue-declared family/variant choices. Each owns a copied request and actual
+validator result/refusal plus material/family/variant/Current metadata. Editing a
+choice preserves foreign assignments and existing native parameter blocks;
+invalid or incompatible blocks remain explicit refusals. This value API reads
+no World and changes no applied policy. GDScript owns pending selection and
+observes the existing owner acknowledgement before treating it as applied. See
+the [normal UI and constructor coverage](../operations/lcb-manual-comparison-ux.md)
+for actual supported routes and retained qualification.
+
 ### Read-only native MicroScenario inspection
 
 The MS-001 adapter preparation adds `CyberDemoBridge.inspect_cell(world, point)`

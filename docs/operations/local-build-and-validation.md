@@ -442,6 +442,27 @@ Water Feel lifecycle regressions alongside this focused case. No release
 runtime is supplied by this local source checkpoint; Linux, real Wasm/browser,
 hosted publication and final exact-head acceptance remain separate gates.
 
+### Normal liquid-comparison UI slice
+
+The later [`test_liquid_comparison_ui.gd`](../../godot/tests/test_liquid_comparison_ui.gd)
+executes actual feature-launcher and desktop/synchronous panel button routes,
+native availability and immutable requests, apply/refuse/reset, explicit gross
+normalization counters, disabled unsupported actor routes, a mixed-liquid World
+step and complete-hash agreement with the original Current control. It requires
+the updated native bridge and exact fixture files. Keep sibling `examples/`
+fixtures beside a staged `godot/` project for the existing semantic-depth launcher
+regression. Run:
+
+```text
+godot --headless --path godot --script res://tests/test_liquid_comparison_ui.gd
+```
+
+[UI evidence](../audits/2026-10-25-lcb003-liquid-comparison-ui.md) records the fresh
+local development DLL, source input manifests, commands, timeouts, failures and
+remaining platform gates. The [constructor matrix](lcb-manual-comparison-ux.md#constructor-coverage-at-this-checkpoint)
+is the authoritative boundary of this UI slice. No browser, release provenance
+or complete constructor acceptance follows from native headless execution.
+
 ### Branch-scoped runtime publishers
 
 Source-matched Linux and Windows runtimes have been published by **temporary,

@@ -1,10 +1,10 @@
 ---
 title: LCB manual liquid comparison UX flow
-status: Planned
+status: Current
 document-kind: design
-scope: LCB-003 (#202) preparation — proposed manual feel-testing flow inside the normal CyberSand application: entry points, comparison panel, per-material family picker driven by the capability matrix, validate-reconstruct-commit apply, controlled versus exploratory sessions, presets, overlays and refusal states; no UI is implemented
+scope: LCB-003 (#202) bounded experimental comparison UI, native availability, explicit normalization and constructor coverage, followed by remaining planned manual feel-testing flow
 canonical-for: [lcb-manual-comparison-ux]
-last-reviewed: 2026-10-23
+last-reviewed: 2026-10-25
 related-documents: [../architecture/liquid-solver-family-policy.md, lcb-water-comparison-and-fixtures.md, experiment-tower.md, microscenarios.md, ../systems/player-control-playground.md]
 ---
 
@@ -12,8 +12,88 @@ related-documents: [../architecture/liquid-solver-family-policy.md, lcb-water-co
 
 ## Status and scope
 
-**Planned design for LCB-003 ([#202](https://github.com/techrote/cybersand/issues/202)).
-No widget, route or setting described here exists yet.**
+**Current experimental, unmerged source:** `0a702eb304ebf1e9e1302a15250cdd159f0371f7`
+on `codex/lcb003-application-host`, based on frozen #246 head `9e91a9f7`.
+The normal application now has a bounded liquid-comparison panel for fixed,
+actor-free schema-2 MicroScenarios. The [UI evidence](../audits/2026-10-25-lcb003-liquid-comparison-ui.md)
+records the source-matched local Windows development runtime and exact tested
+scope. This does not complete [#202](https://github.com/techrote/cybersand/issues/202).
+
+## Current controls and ownership
+
+The feature launcher offers **Liquid comparison — solver policies and protected
+Dam Break**. Its `liquid_comparison` destination opens the existing `main.tscn`
+with **Liquids…** inside the existing MicroScenario dialog and the protected Dam
+Break paused. The same dialog exists in `web_main.tscn`; that synchronous
+controller has local native Windows headless proof, not actual Wasm/browser
+qualification of this new code.
+
+The panel owns copied pending policy selection, never the live World. The
+native `liquid_policy_assignment_choices(request, material)` method decodes the
+request, builds catalogue-declared choices and calls the existing native
+validator. GDScript does not edit wire offsets or invent availability. It lists
+all eleven liquid materials, including absent species, with Current or
+experimental labels and visible unavailable choices/reasons. A request edits
+only the selected assignment and preserves native parameter blocks; an
+incompatible block can refuse explicitly.
+
+Current presets are Current defaults, whole-cell Water, pressure reference,
+pressure cached, pressure dormant, Water inertial, and pressure Water with
+inertial Brine. Each is enabled only if that actual runtime validates it. On
+this source checkpoint, the #201 variants and #212 inertial choices remain
+unavailable. Their labels are not a claim that those kernels are implemented.
+
+**Apply & rebuild active** retains the active MicroScenario mode and uses the
+[prepared host contract](../architecture/liquid-prepared-setup-and-receipts.md#controlled-application-host-preparation-slice).
+**Load selected comparison** reconstructs the existing protected Dam Break or
+existing Water/Oil/Brine lock exchange in Inspect mode. Selecting a preset does
+not mutate the live World. **Normalize Water to whole cells on rebuild** is an
+explicit `water-normalize-v1` opt-in and the readback shows its exact gross added,
+gross removed and net Water counts. Fractional whole-cell construction without
+opt-in refuses, retaining the previous native World, policy and receipt. Reset
+retains the accepted request and normalization choice. The existing pause,
+step, reset and scene controls remain available.
+
+**Original Current control** calls the unchanged original default constructor
+with the selected exact fixture. Pending solver and normalization choices do
+not alter that control. The regression compares its complete native physical
+hash with an independently constructed original Current World after joining the
+worker. Readback separates native policy from the copied typed setup receipt;
+legacy construction correctly has no typed setup receipt. Applied receipt
+qualifications and false full-match eligibility remain visible. Source/runtime
+and complete host/setup verification remain open.
+
+Actor/body/player-enabled definitions and owner-paced/exploratory definitions
+remain available through their ordinary Current routes. The new controlled
+editor refuses them before queuing replacement. It does not synthesize a native
+attempt for a host-only refusal. Pending choices, applied policy, owner
+acknowledgement and error text stay distinct. Blind/read-only apparatus disable
+rebuild controls. This preserves existing actor/equipment ownership until that
+construction can be staged transactionally.
+
+## Constructor coverage at this checkpoint
+
+“Default” below means the existing constructor route remains supported; it does
+not imply new typed receipts or a global selected-policy coordinator. The new
+controlled API is narrower than older explicit-policy diagnostic APIs.
+
+| Route | Current result | Remaining #202 work |
+|---|---|---|
+| Fixed actor-free schema-2 MicroScenario, protected Dam Break and mixed fixture | Native prepared policy/normalization, immutable typed receipt, final owner fence, actual panel/controller apply/refuse/reset; desktop worker and synchronous controller | Complete verified definition/host/provenance collection and final integrated platform qualification |
+| Fixed actor/body/player-enabled MicroScenario | Ordinary default route retained; new controlled editor/API refuses before swap | Stage actor/equipment/body candidate and all fallible owner work before commit |
+| Owner-paced/exploratory MicroScenario | Ordinary default route retained; new controlled editor/API refuses before swap | Explicit exploratory setup/interest/execution receipt and retained edit/import semantics |
+| Bootstrap `create_world` / ordinary `reset_demo_world` | Defaults; ordinary reset retires typed setup identity | Explicit retained-policy coordinator without changing Current defaults |
+| `build_world` rectangle showcases / Blacksite | Existing default constructor | Prepared tuples and explicit setup/mode qualification |
+| `build_tuned_world` / Experiment Tower | Existing default constructor | Policy propagation while preserving independent transport and actor paths |
+| `build_water_feel_world` / Water Feel controlled and blind apparatus | Existing defaults and separate older explicit-policy API | Typed family choice without changing hidden blind identity, source ledger or body ownership |
+| CYSD `import_level` | Existing default reconstruction | Imported thermal tuples, explicit policy/normalization preparation and transactional refusal |
+| CYPS `import_physical_state` | Exact saved-policy continuation; old typed construction identity retired | Preserve exact continuation; never use it as a family-conversion rebuild |
+| Diagnostic reset / depth / arena / player playground / Thunderbowl | Existing diagnostic policy options and ordinary controls | Shared application coordinator/readback where supported, preserving plane and actor semantics |
+| Procedural WorldGenerator | Separate generator ownership | Native recipe/final tuples and actor/plane gaps, coordinated with GEN ownership |
+| Actual Web compat/threaded | UI/controller source present; Windows native synchronous scene tested | Rebuild final integrated source for both profiles and execute the actual browsers |
+
+The rest of this document is **Planned** design beyond the bounded Current slice
+above. Tables and acceptance hooks below are targets, not implemented coverage.
 
 - **Ground rule:** every control is backed by the native policy and receipt
   from the [solver-family policy](../architecture/liquid-solver-family-policy.md).
@@ -27,7 +107,7 @@ No widget, route or setting described here exists yet.**
 - **Out of scope:** the four-family runtime itself (#200/#212), packaging
   (#203), and timing (#203 runs it sequentially and isolated).
 
-## Entry points
+## Planned entry points
 
 | Entry | Route | Default state |
 |---|---|---|
@@ -41,7 +121,7 @@ selection and the Web 11-demo menu are unchanged. The panel appears only where
 a native World exists. GDScript fallback scenes show it read-only, with
 "native solver families unavailable in fallback".
 
-## Comparison panel
+## Planned comparison panel
 
 ```text
 ┌ Liquid comparison ────────────────────────────── [Controlled ▾] ┐
@@ -80,7 +160,7 @@ a native World exists. GDScript fallback scenes show it read-only, with
   precision/coherence and transport profiles, linked rather than duplicated.
   Changing a family never resets tuning, and the reverse holds too.
 
-## Apply flow (validate → reconstruct → commit)
+## Planned complete apply flow (validate → reconstruct → commit)
 
 ```text
 edit rows ──► [Apply & rebuild]
@@ -109,7 +189,7 @@ edit rows ──► [Apply & rebuild]
   active/configured, policy hash, or "frozen — configured inactive". Visibility
   and camera never change policy.
 
-## Controlled versus exploratory
+## Planned controlled versus exploratory coverage
 
 | | Controlled | Exploratory |
 |---|---|---|
@@ -120,7 +200,7 @@ edit rows ──► [Apply & rebuild]
 | Records | eligible for matched comparison exports | exported only as exploratory notes or feel-review entries |
 | Timing | not shown as performance evidence; #203 uses isolated runs | never |
 
-## Preset library
+## Planned preset library
 
 Grouped and searchable, with a ★ favourite. Protected presets are read-only:
 "Duplicate to edit" creates a new ID and version.
@@ -141,7 +221,7 @@ Grouped and searchable, with a ★ favourite. Protected presets are read-only:
   (`user://lcb/`). A setup is JSON holding the MicroScenario definition, the
   policy and a receipt. Import validates before replacing anything.
 
-## Inspection and presentation
+## Planned inspection and presentation
 
 - **Overlays** are optional and presentation-only, and are recorded in the
   receipt's presentation block:
@@ -161,7 +241,7 @@ Grouped and searchable, with a ★ favourite. Protected presets are read-only:
 - **Cell inspection.** The existing schema-2 `inspect_cell` probe gains a
   "family / family state" section once a family exports state.
 
-## Feel review (owner, optional)
+## Planned feel review (owner, optional)
 
 After any session the user can record a dated review against the #203
 template. The fields are:
@@ -174,7 +254,7 @@ template. The fields are:
 Reviews are stored separately from technical results and never change
 defaults.
 
-## Platform behaviour
+## Planned platform behaviour
 
 | Platform | Behaviour |
 |---|---|
@@ -182,7 +262,7 @@ defaults.
 | Web compat/threaded | same panel inside the existing Web demo menu; families offered only where Web qualification exists, otherwise `platform_unsupported` |
 | GDScript fallback | read-only panel; all non-default rows refused |
 
-## Acceptance hooks for #202
+## Remaining acceptance hooks for #202
 
 - The UI state equals the native receipt after every apply, refusal, reset,
   scene navigation, actor/material swap, load and #199 exit.

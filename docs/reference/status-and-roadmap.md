@@ -818,7 +818,14 @@ and [dated evidence](../audits/2026-10-24-lcb003-controlled-host-slice.md) own e
 scope. Native-v1 setup/source/runtime/host qualifications and false full-match
 eligibility remain intact. Linux/hosted publication, real Web execution of this
 new path, verified definition/provenance collection, actor/equipment staging,
-remaining normal constructors, comparison UI and exhibition remain #202 work.
+remaining normal constructors, full comparison exhibition and complete UI coverage remain #202 work.
+The subsequent source checkpoint `0a702eb3` adds a native-validated per-material
+picker/presets, explicit normalization, actual launcher/panel Apply/readback and
+protected Current/mixed fixture controls. The [manual UX contract and constructor
+coverage](../operations/lcb-manual-comparison-ux.md) distinguish this bounded
+Current UI from remaining Planned actor/exploratory/import/plane routes; the
+[UI evidence](../audits/2026-10-25-lcb003-liquid-comparison-ui.md) records local
+Windows controller execution and preserved Current physical hashes.
 The work is prepared independently while #246 completes its acceptance gates;
 integration still follows fresh accepted main.
 
