@@ -205,11 +205,12 @@ func application_routes_test(definition: Dictionary, request: PackedInt32Array) 
 	expect(receipt.prepared_payload_hash == payload and receipt.normalization.water_after == 255, "desktop Reset reproduces normalized final setup")
 	generation = receipt.session_generation
 	var retained: PackedByteArray = receipt.canonical_bytes.duplicate()
-	expect(desktop.microscenario_apply_controlled_liquid(definition, request, false, "Benchmark"), "desktop queues explicit no-opt-in request for native refusal")
+	expect(desktop.microscenario_apply_controlled_liquid(definition, request, false, "Inspect"), "desktop queues explicit no-opt-in request for native refusal")
 	expect(await wait_for(func() -> bool: return desktop.pending_microscenario_apply.is_empty()), "desktop receives refusal acknowledgement")
 	expect(desktop.tower_context.liquid_construction_receipt.canonical_bytes == retained \
 		and desktop.tower_context.liquid_construction_receipt.session_generation == generation \
-		and desktop.microscenario_error.contains("normalization_required"), "desktop refusal retains prior applied receipt and reports the reason")
+		and desktop.microscenario_mode == "Benchmark" \
+		and desktop.microscenario_error.contains("normalization_required"), "desktop refusal retains prior mode/applied receipt and reports the reason")
 	desktop.simulation_worker.stop_worker()
 	desktop.rapier_bridge.shutdown()
 	desktop.queue_free()

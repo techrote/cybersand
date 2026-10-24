@@ -337,6 +337,7 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 		"hash":checked.hash,
 		"definition":checked.definition,
 		"previous_paused":paused,
+		"previous_mode":microscenario_mode,
 		"player_configuration":player_configuration.duplicate(true),
 		"liquid_policy":liquid_policy.duplicate() if liquid_policy != null else null,
 		"controlled_liquid_setup":controlled_setup.duplicate(true),
@@ -363,6 +364,7 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 	return true
 
 func _microscenario_installed(definition: Dictionary) -> void:
+	microscenario_error = ""
 	var player_configuration: Dictionary = pending_microscenario_apply.get(
 		"player_configuration",
 		{
@@ -2110,6 +2112,7 @@ func consume_worker_snapshot() -> void:
 		elif (int(tower_context.get("scenario_request_serial", 0)) == int(pending_microscenario_apply.serial)
 			and not bool(tower_context.get("scenario_request_applied", true))):
 			paused = bool(pending_microscenario_apply.previous_paused)
+			microscenario_mode = str(pending_microscenario_apply.get("previous_mode", microscenario_mode))
 			microscenario_error = str(tower_context.status)
 			pending_microscenario_apply.clear()
 	var capture_serial: int = int(tower_context.get("micro_capture_serial", 0))
