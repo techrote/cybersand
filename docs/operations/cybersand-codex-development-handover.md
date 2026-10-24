@@ -12,19 +12,24 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## MAT-003 stack reconciliation — 2026-10-24
 
-The [post-#240 checkpoint](../audits/2026-10-24-mat003-post-240-integration-checkpoint.md)
-now reconciles main `a395e33dc0632f5c3f41e8b8b1c18c89f0aaa131` with the
+The [post-#241 checkpoint](../audits/2026-10-24-mat003-post-241-integration-checkpoint.md)
+now reconciles main `4348516aba4c8e7036370d73afc14e86a19ea6a2` with the
 experimental parent chain. Main includes the bounded
 [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24)
 landed by [PR #239](https://github.com/techrote/cybersand/pull/239), plus
 [PR #240](https://github.com/techrote/cybersand/pull/240)'s threaded-worker and
-allocation-failure regressions. All 15 current and seven scoped workflows passed
-on the previous reconciled heads by 09:11 UTC; those records retain their exact
-source scope. Fresh applicable Native, Godot and materialized provenance gates
-are pending on the new heads. Registered MAT history and current-main LCB/4LY/WEX
-behavior are preserved. This work does not complete #204 or start #212 or a solver
-port. The foundation and follow-ups are imported through main; Claude's separate
-source branches and the dirty primary checkout remain untouched.
+allocation-failure regressions and [PR #241](https://github.com/techrote/cybersand/pull/241)'s
+physical-timeout diagnostics. The completed earlier 15 current and seven scoped
+workflow passes remain valid for their exact heads. The next reconciliation
+completed Documentation/provenance, verifier, S0 and S2F checks before this main
+advance; its unfinished Native/Godot checks are superseded, without being credited
+as PASS or treated as a test failure solely because of cancellation. Fresh Native,
+Godot, ordinary physical-timing reduction and materialized provenance gates are
+pending on the new heads. Registered MAT history and current-main LCB/4LY/WEX
+behavior are preserved. This work does not complete #204, dispatch the manual
+physical stress campaign, or start #212, #234 repair or a solver port. The landed
+work is imported through main; separate source branches and the dirty primary
+checkout remain untouched.
 
 ## MAT-003 latest correctness disposition — 2026-10-23
 
@@ -228,6 +233,14 @@ rows and scientific references retain their own meanings; the current generic
 body capacity is 64. Exact runtime/source evidence belongs to the dated ACT-004 audit.
 
 ## Start here for the next task
+
+Physical regression stalls are tracked by #232, with diagnosis in #233 and causal
+repair in #234. Read the
+[timeout procedure](testing-validation-and-replay.md#physical-regression-timeout-diagnostics)
+and [dated audit](../audits/2026-10-24-issue-233-physical-regression-timeouts.md).
+The registered stress campaign requires the workflow on `main`, an immutable
+source and all 600 physical attempts. Preserve earlier timeouts and failed
+campaigns; a green rerun or apparatus-only merge does not complete diagnosis.
 
 Work in `C:/kybersand`, with executable source in `source/`. The companion workspace
 and source now have separate Git histories. Read [source identity](source-checkpoint-and-recovery.md)
