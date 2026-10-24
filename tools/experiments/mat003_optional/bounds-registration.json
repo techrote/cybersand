@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "registration_id": "mat003-review-coordinate-refusal-20261024",
+  "purpose": "Focused untimed regressions for invalid same-index move, zero split and reclaim; no repeat of the spent overnight campaign",
+  "prior_head": "10bab295213c9f7249b9b75276b9fe6126eea1d1",
+  "prior_fixture_sha256": "7ce2bf20dc8f358eb312927c0512ddfb2ab93749330704ece321dec56313dee2",
+  "profiles": {"tail_bits": [8, 16], "windows": ["normal", "asan-ubsan"], "hosted_linux": ["normal", "asan-ubsan"]},
+  "assertions": ["valid no-ops succeed", "size and max-size coordinates refuse", "invalid source and destination refuse", "refusals count exactly once", "logical state and owner allocation do not change"],
+  "limits": {"compile_timeout_seconds": 120, "case_timeout_seconds": 30, "aggregate_seconds": 600, "concurrency": 1},
+  "timing_allowed": false,
+  "production_changes_allowed": false,
+  "validation_class": "author-validation-pending-independent-review",
+  "failure_policy": "Retain every command, source identity, stdout, stderr and failure. This registration does not authorize replay of prior collection profiles or adoption of a production carrier."
+}
