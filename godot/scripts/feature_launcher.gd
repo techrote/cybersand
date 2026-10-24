@@ -9,6 +9,9 @@ func _ready() -> void:
 	if first_launch and "--semantic-depth" in OS.get_cmdline_user_args():
 		get_tree().change_scene_to_file.call_deferred("res://semantic_depth.tscn")
 		return
+	if first_launch and "--flight-lab" in OS.get_cmdline_user_args():
+		get_tree().change_scene_to_file.call_deferred("res://flight_lab.tscn")
+		return
 	if first_launch and "--player-playground" in OS.get_cmdline_user_args():
 		get_tree().change_scene_to_file.call_deferred("res://player_playground.tscn")
 		return
@@ -48,6 +51,7 @@ func _ready() -> void:
 	_button(column, "Thunderbowl — actor control arena", "thunderbowl")
 	_button(column, "Physical Thunderbowl — articulated actors, tools and scripted pilots", "physical_actors")
 	_button(column, "Physical usable course — 32 tools, payloads and processors", "physical_usables")
+	_button(column, "4LY Flight Lab — four physical drones, real native/Rapier navigation", "flight_lab")
 	_button(column, "World generation workbench — terrain authoring preview", "worldgen")
 	_button(column, "Semantic depth — refinery service gallery and flooded cavern", "semantic_depth")
 	_button(column, "Strata Theatre — layering and parallax depth lab", "depth")
@@ -72,7 +76,8 @@ func _button(parent: Node, text: String, destination: String) -> void:
 
 func launch(destination: String) -> void:
 	var scene: String = "res://main.tscn"
-	if destination == "thunderbowl": scene = "res://examples/thunderbowl/thunderbowl.tscn"
+	if destination == "flight_lab": scene = "res://flight_lab.tscn"
+	elif destination == "thunderbowl": scene = "res://examples/thunderbowl/thunderbowl.tscn"
 	elif destination in ["physical_actors", "physical_usables"]: scene = "res://examples/thunderbowl/physical_thunderbowl.tscn"
 	elif destination == "worldgen": scene = "res://worldgen_workbench.tscn"
 	elif destination == "semantic_depth": scene = "res://semantic_depth.tscn"

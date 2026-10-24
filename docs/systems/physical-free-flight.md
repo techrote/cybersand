@@ -10,6 +10,13 @@ related-documents: [physical-actor-rigs.md, ../operations/physical-actor-program
 
 # 4LY physical free-flight and assisted velocity control
 
+The separately owned [4LY-003 flight lab and episode contract](physical-flight-lab.md)
+extends this unchanged physical plant with an in-game native/Rapier lab,
+copied policy observations and an observation-only teacher candidate.
+[Its source-bound checkpoint](../audits/2026-10-23-4ly003-checkpoint.md)
+is **not** a scored teacher or neural-policy admission. All four
+`candidate_4ly002` profile identities remain frozen.
+
 ## What does 4LY-001 implement, and which 4LY-002 drone profiles can I select?
 
 **Current experimental source, [4LY-001 / #205](https://github.com/techrote/cybersand/issues/205):**

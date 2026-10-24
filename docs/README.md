@@ -28,6 +28,14 @@ The four distinct Trainer, Hauler, Drifter and Dart plants have now passed
 the prospectively registered [real-Rapier handling measurements](audits/2026-10-23-4ly002-measured-handling-qualification.md)
 on Linux and Windows; their source calibration marker remains
 `candidate_4ly002` until a separately authorized acceptance transition.
+The [4LY-003 flight lab contract](systems/physical-flight-lab.md) describes the
+native/Rapier in-game/headless episodes, scripted teacher and normalized
+observation. [The source-bound final score](audits/2026-10-24-4ly003-final-qualification.md)
+passed all preregistered teacher-family gates and preserves three Hauler
+obstacle failures; the [earlier checkpoint](audits/2026-10-23-4ly003-checkpoint.md)
+remains historical. External independent suite custody, human review and
+4LY-004 learner admission remain distinct.
+
 The original [pre-execution ledger](audits/2026-10-23-4ly002-handling-candidate-admission.md)
 retains the earlier PENDING status and the new record preserves negative
 Windows evidence and explicit owner-feel limitations. The
