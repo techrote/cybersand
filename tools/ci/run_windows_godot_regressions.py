@@ -55,7 +55,7 @@ def native_input_paths(root: Path) -> set[str]:
     }
 
 
-def verify_retained_runtime(root: Path) -> dict:
+def verify_retained_runtime(root: Path, *, rapier_build: Path | None = None) -> dict:
     """Reject stale native inputs, unmaterialized LFS pointers and changed bytes."""
     manifest_bytes = (root / PROVENANCE).read_bytes()
     if manifest_bytes != git(root, "show", "HEAD:" + PROVENANCE):
@@ -71,6 +71,12 @@ def verify_retained_runtime(root: Path) -> dict:
         if hashlib.sha256(data).hexdigest() != expected:
             raise RuntimeError("Retained Windows runtime requires rebuild for source input: " + relative)
 
+    candidate = None
+    if rapier_build is not None:
+        from rapier_candidate_identity import verify
+        candidate = verify(root, rapier_build)
+        if candidate["platform"] != "windows":
+            raise RuntimeError("Expected a Windows Rapier candidate")
     identities = {}
     for relative in (NATIVE, RAPIER):
         pointer = git(root, "show", "HEAD:" + relative)
@@ -83,12 +89,14 @@ def verify_retained_runtime(root: Path) -> dict:
         path = root / relative
         data = path.read_bytes()
         digest = hashlib.sha256(data).hexdigest()
-        if not data.startswith(b"MZ") or digest != match[1].decode() or len(data) != int(match[2]):
+        expected_hash = candidate["artifacts"][path.name] if candidate and relative == RAPIER else match[1].decode()
+        expected_size = len(data) if candidate and relative == RAPIER else int(match[2])
+        if not data.startswith(b"MZ") or digest != expected_hash or len(data) != expected_size:
             raise RuntimeError("Materialized Windows runtime differs from committed LFS bytes: " + relative)
         identities[relative] = {"path": relative, "sha256": digest, "size": len(data)}
     if identities[NATIVE]["sha256"] != manifest["sha256"] or identities[NATIVE]["size"] != manifest["size"]:
         raise RuntimeError("Retained Windows DLL differs from its runtime provenance")
-    if identities[RAPIER]["sha256"] != RAPIER_SHA256:
+    if candidate is None and identities[RAPIER]["sha256"] != RAPIER_SHA256:
         raise RuntimeError("Windows Rapier differs from the pinned official runtime")
     return {
         "runtime_source_commit": manifest["source_commit"],

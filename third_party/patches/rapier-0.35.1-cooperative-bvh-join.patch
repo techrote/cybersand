@@ -1,6 +1,6 @@
 --- a/src/pipeline/physics_pipeline/mod.rs
 +++ b/src/pipeline/physics_pipeline/mod.rs
-@@ -13,3 +13,75 @@
+@@ -13,6 +13,78 @@
  };
  use crate::math::Vector;
  use crate::pipeline::{EventHandler, PhysicsHooks};
@@ -76,6 +76,10 @@
 +        receive_deferred_bvh(rx);
 +    }
 +}
+-
++
+ mod quarantine;
+ pub use quarantine::Quarantine;
 @@ -132,7 +204,7 @@
      fn join_deferred_bvh_optimize(&mut self, broad_phase: &mut BroadPhaseBvh) {
          #[cfg(feature = "parallel")]

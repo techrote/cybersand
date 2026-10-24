@@ -205,6 +205,17 @@ These experiments do not retry failed tests. The
 [dated investigation](../audits/2026-10-23-physical-actor-timeouts.md) owns run
 identities, observed frequencies and the root-cause disposition.
 
+For the explicitly experimental Rapier comparison, dispatch the existing
+GDExtension workflow on the PR branch with both `physical_actor_stress=true` and
+`rapier_bvh_pair=true`. It builds pinned, symbolized control/patched addons and
+runs 300 trials per variant. Experimental substitution requires a same-head build
+manifest; ordinary retained-runtime gates keep their default byte checks. Control
+failures remain failures and may make the workflow red. Read the
+[2026-10-24 dump/paired validation record](../audits/2026-10-24-physical-actor-bvh-validation.md)
+for the confirmed blocking call, provenance, current results and acceptance limits.
+The default selected runtime remains unchanged until a repair is validated and
+published with explicit provenance.
+
 ## Windows retained-runtime execution
 
 **Current:** the GDExtension workflow also executes the retained Windows DLL on a

@@ -2,7 +2,15 @@ name: Physical actor timeout stress
 
 on:
   workflow_dispatch:
+    inputs:
+      rapier_pair:
+        type: boolean
+        default: false
   workflow_call:
+    inputs:
+      rapier_pair:
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -16,6 +24,10 @@ env:
   PYTHONUTF8: '1'
 
 jobs:
+  rapier-build:
+    if: inputs.rapier_pair == true
+    uses: ./.github/workflows/rapier-bvh-build.yml
+
   linux-build:
     name: linux build x86_64
     runs-on: ubuntu-24.04
@@ -102,7 +114,8 @@ jobs:
           retention-days: 1
 
   linux-stress:
-    needs: linux-build
+    needs: [linux-build, rapier-build]
+    if: always() && needs.linux-build.result == 'success' && (inputs.rapier_pair != true || needs.rapier-build.result == 'success')
     runs-on: ubuntu-24.04
     timeout-minutes: 100
     strategy:
@@ -110,6 +123,7 @@ jobs:
       max-parallel: 5
       matrix:
         batch: [0, 1, 2, 3, 4]
+        variant: ${{ fromJSON(inputs.rapier_pair == true && '["control","patched"]' || '["retained"]') }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
@@ -133,17 +147,27 @@ jobs:
           unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
           chmod +x "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
           test "$("$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --version)" = "$GODOT_VERSION"
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: inputs.rapier_pair == true
+        with:
+          name: rapier-bvh-linux-${{ matrix.variant }}-${{ github.run_id }}
+          path: build/rapier
+      - name: Install explicitly identified experimental Rapier
+        if: inputs.rapier_pair == true
+        run: cp build/rapier/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so godot/addons/godot-rapier2d/bin/
       - name: Ten independent trials per test (five batches = fifty)
-        run: python3 tools/ci/stress_physical_actors.py --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --iterations 10 --output build/stress
+        run: python3 tools/ci/stress_physical_actors.py --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --iterations 10 --output build/stress ${{ inputs.rapier_pair == true && '--rapier-build-manifest build/rapier/rapier-build.json' || '' }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: physical-stress-linux-${{ matrix.batch }}-${{ github.run_id }}
+          name: physical-stress-${{ matrix.variant }}-linux-${{ matrix.batch }}-${{ github.run_id }}
           path: build/stress/
           retention-days: 30
           if-no-files-found: error
 
   windows-stress:
+    needs: rapier-build
+    if: always() && (inputs.rapier_pair != true || needs.rapier-build.result == 'success')
     runs-on: windows-2022
     timeout-minutes: 100
     strategy:
@@ -151,6 +175,7 @@ jobs:
       max-parallel: 5
       matrix:
         batch: [0, 1, 2, 3, 4]
+        variant: ${{ fromJSON(inputs.rapier_pair == true && '["control","patched"]' || '["retained"]') }}
     defaults:
       run:
         shell: bash
@@ -176,12 +201,24 @@ jobs:
           with open(os.environ['GITHUB_ENV'], 'a') as output:
               output.write('GODOT_BIN=' + str(binary) + '\n')
           PY
+      - name: Verify retained Windows inputs before experimental substitution
+        run: python -c "import sys; sys.path.insert(0, 'tools/ci'); from run_windows_godot_regressions import verify_retained_runtime, ROOT; print(verify_retained_runtime(ROOT))"
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: inputs.rapier_pair == true
+        with:
+          name: rapier-bvh-windows-${{ matrix.variant }}-${{ github.run_id }}
+          path: build/rapier
+      - name: Install explicitly identified experimental Rapier and symbols
+        if: inputs.rapier_pair == true
+        run: |
+          cp build/rapier/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll godot/addons/godot-rapier2d/bin/
+          cp build/rapier/godot_rapier.pdb godot/addons/godot-rapier2d/bin/
       - name: Ten independent trials per test (five batches = fifty)
-        run: python tools/ci/stress_physical_actors.py --godot "$GODOT_BIN" --iterations 10 --output build/stress
+        run: python tools/ci/stress_physical_actors.py --godot "$GODOT_BIN" --iterations 10 --output build/stress ${{ inputs.rapier_pair == true && '--rapier-build-manifest build/rapier/rapier-build.json' || '' }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: physical-stress-windows-${{ matrix.batch }}-${{ github.run_id }}
+          name: physical-stress-${{ matrix.variant }}-windows-${{ matrix.batch }}-${{ github.run_id }}
           path: build/stress/
           retention-days: 30
           if-no-files-found: error
@@ -191,17 +228,21 @@ jobs:
     needs: [linux-stress, windows-stress]
     runs-on: ubuntu-24.04
     timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: ${{ fromJSON(inputs.rapier_pair == true && '["control","patched"]' || '["retained"]') }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          pattern: physical-stress-*
+          pattern: physical-stress-${{ matrix.variant }}-*
           path: build/frequency
       - name: Require full scope and report per-test and per-phase frequencies
         run: python3 tools/ci/summarize_physical_stress.py build/frequency
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: physical-stress-frequency-${{ github.run_id }}
+          name: physical-stress-frequency-${{ matrix.variant }}-${{ github.run_id }}
           path: build/frequency/summary.json
           retention-days: 30

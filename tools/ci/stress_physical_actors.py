@@ -19,6 +19,7 @@ def main() -> int:
     parser.add_argument("--godot", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--iterations", type=int, default=50)
+    parser.add_argument("--rapier-build-manifest", type=Path)
     args = parser.parse_args()
     if not 1 <= args.iterations <= 100:
         parser.error("iterations must be between 1 and 100")
@@ -32,9 +33,12 @@ def main() -> int:
         "run_id": os.environ.get("GITHUB_RUN_ID"), "attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),
         "local_delta": subprocess.check_output(["git", "diff", "HEAD", "--stat"], cwd=runner.ROOT, text=True),
     }
+    if args.rapier_build_manifest:
+        from rapier_candidate_identity import verify
+        identity["rapier_build"] = verify(runner.ROOT, args.rapier_build_manifest)
     if sys.platform == "win32":
         from run_windows_godot_regressions import verify_retained_runtime
-        identity["retained_runtime"] = verify_retained_runtime(runner.ROOT)
+        identity["retained_runtime"] = verify_retained_runtime(runner.ROOT, rapier_build=args.rapier_build_manifest)
     runner.write_json(args.output / "identity.json", identity)
     results = []
     cases = {case.name: case for case in runner.discover_cases()}

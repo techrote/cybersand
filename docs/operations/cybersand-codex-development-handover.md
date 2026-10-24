@@ -12,6 +12,10 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## Physical actor timeout investigation — 2026-10-23
 
+Resumed 2026-10-24: the [dump attribution and paired validation record](../audits/2026-10-24-physical-actor-bvh-validation.md)
+confirms a Rapier deferred-BVH channel wait in a captured engine dump. Paired
+control/candidate execution and repair acceptance remain pending; keep PR #236 draft.
+
 [PR #236](https://github.com/techrote/cybersand/pull/236) is a draft investigation
 of intermittent 180-second arena/rig/course hangs. Use the
 [diagnostic and stress guide](local-build-and-validation.md#physical-actor-timeout-investigation)

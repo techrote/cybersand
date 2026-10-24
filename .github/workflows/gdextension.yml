@@ -25,6 +25,10 @@ on:
         description: Run the isolated physical actor timeout campaign
         type: boolean
         default: false
+      rapier_bvh_pair:
+        description: Build and stress paired Rapier control/patched runtimes (requires physical_actor_stress)
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -47,6 +51,8 @@ jobs:
   physical-actor-stress:
     if: github.event_name == 'workflow_dispatch' && inputs.physical_actor_stress == true
     uses: ./.github/workflows/physical-actor-stress.yml
+    with:
+      rapier_pair: ${{ inputs.rapier_bvh_pair == true }}
 
   ready_scope:
     name: ready validation scope
