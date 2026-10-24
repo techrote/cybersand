@@ -24,8 +24,9 @@ caller provenance and host coverage; no full matched-evidence claim follows.
 
 Local final native suites pass 126/126 with LLVM-MinGW and MSVC at 1 MiB stack,
 including rectangle/event bounds and non-wrapping gas-ID continuation.
-Scoped fresh Windows Godot checks pass. Release Windows/Linux publication and
-full final-head CI remain checkpoint acceptance work; the Godot normalization
+Scoped source-matched Windows/Linux publication passed in run 40138333825,
+appended as `888a39f0`; full final-head CI remains checkpoint acceptance work.
+The Godot normalization
 route and host verification remain #202 work. Preserve the original material checkout, the prepared #202
 adapter work and the old pushed #212 branch; neither old branch is a substitute
 for integration onto fresh main.

@@ -2,7 +2,7 @@
 title: LCB-001 residual native shared-contract checkpoint
 status: Current
 document-kind: evidence
-scope: Dated local source and execution evidence for the unmerged residual #200 whole-cell Water, setup normalization, native receipts and quantity-accounting checkpoint; publication and full final-head acceptance remain open
+scope: Dated source and execution evidence for the unmerged residual #200 whole-cell Water, setup normalization, native receipts and quantity-accounting checkpoint; both runtimes are published and full final-head acceptance remains open
 canonical-for: [lcb001-residual-shared-contract-evidence]
 last-reviewed: 2026-10-24
 related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../architecture/liquid-solver-family-policy.md, ../architecture/pressure-flow-v1.md, ../reference/status-and-roadmap.md, 2026-10-24-lcb001-pressure-reference-publication.md]
@@ -22,10 +22,10 @@ that main checkpoint and scoped publisher retirement `446016a8` while preserving
 the reviewed native `ffeaabd`, Godot `32c284f` and documentation `386ffded`
 commits as reachable recovery points. The successor PR records its final head.
 
-This evidence describes **unmerged source and local execution**, with exact
-native input manifests below. It does not declare #200 complete. Source-matched
-published Windows/Linux runtimes, full non-draft final-head CI and independent
-review are required before this bounded implementation merges. The remaining
+This evidence describes **unmerged source, local execution and scoped published
+runtime validation**, with exact native input manifests below. It does not declare
+#200 complete. Full non-draft final-head CI and independent review are required
+before this bounded implementation merges. The remaining
 typed Godot normalization route, host verification and application acceptance
 belong to #202 and are not credited by the native checkpoint. The
 retained pressure runtimes qualify their recorded #245 source, not this native
@@ -420,3 +420,46 @@ The next publication uses explicit request sequence 2 and includes these native
 repairs. Source-matched Windows/Linux artifacts and the complete non-draft
 final-head acceptance matrix are still required; earlier runtime bytes cannot
 qualify the changed implementation.
+
+### Publication attempt 2 passed on both target operating systems
+
+Explicit request sequence 2 built source
+`29c7c4d951790c7a039ad70f3cb4f3085cfd8e4f`, tree
+`01c04cfd31cec0946e13540b1ff7cdcf8966e0c7`, in
+[run 40138333825](https://github.com/techrote/cybersand/actions/runs/40138333825).
+All six jobs passed, including actual Windows and Linux execution and the
+unchanged-source publication lease. The publisher appended only the two LFS
+libraries and their two provenance manifests in single-parent commit
+`888a39f0ad5ff06043b5e518d98d240684720b56`; its parent is the built source.
+
+| Runtime | Bytes | SHA-256 | Validation JSON SHA-256 |
+|---|---:|---|---|
+| Windows x86_64 | 4,396,544 | `985702678c91a45e9bd50750349ec043a764de1ebb335f99a08778371a414a5c` | `2a9240f2e5f5114125314996f51e5eeb60ee1f72b1dadf33c2b1e32f693a4fc3` |
+| Linux x86_64 | 3,781,048 | `9a06ca0cea4eb4826eca4cd6935ca8630309eb3013424f08524ee39079f0e6af` | `4d2849d4ef03247433c586a0e0884271ddbca4699d93705bb89dc80bfa1c5d27` |
+
+Each target passed import plus all twelve required regression cases, with
+complete positive markers, no skipped case and no runtime diagnostic error.
+These include policy/admission, both MicroScenario cases, four LCB contract/
+catalogue cases, Water Feel, pressure, worker parity, native observation and all
+sixteen WEX body cases. WEX took 138.154 s on Windows and 133.873 s on Linux,
+within the retained 600 s deadline. Linux also passed its minimum-runtime check.
+Both targets used Godot 4.7 and the fresh-main qualified desktop Rapier repair;
+the publisher records the exact engine archives, Rapier bytes, toolchains and
+canonical native/build input ledgers. These are scoped development runtimes,
+not whole-application or final PR acceptance.
+
+Both downloaded bundles were independently checked with `verify_bundle`,
+including canonical Git/source/build inputs, library bytes, every log digest
+and complete required-case evidence. Local verification receipts are under
+`C:/Users/_/.codex/tmp/lcb246-acceptance/publication2/`:
+`windows-local-verification.json` hashes to
+`fdf9a22d9f9a00e41482989767998eb787e8eae52a1b29f46f6bfedb4f838c16`,
+and `linux-local-verification.json` to
+`931b073e4e26da8483641c7e83dd042ecb614faeb571897b81e57ca81c4729b6`.
+The materialized publication fast-forward passed `git lfs fsck`.
+
+Documentation/provenance, the full Native normal/ASan/UBSan/TSan/build/benchmark
+job, Windows Godot execution, all four Linux shards and aggregate, physical
+timing distribution, and the #49 apparatus remain required at the final
+non-draft PR head. Earlier draft skips and this scoped publication do not
+satisfy those gates.
