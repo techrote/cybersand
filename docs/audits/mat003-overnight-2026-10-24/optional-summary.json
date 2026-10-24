@@ -1405,5 +1405,45 @@
     "bytes": 533723,
     "sha256": "6a8bdef1af348df36cd28c3e694218057fee934e0a8735514b8722c0bd0caa7e",
     "scope": "all four binaries, 53 command receipts and streams, sealed source, 48 case records and collector inventory"
-  }
+  },
+  "stricter_readback": {
+    "status": "verified",
+    "cases": 48,
+    "builds": 4,
+    "timing": false,
+    "validation_class": "author-validation-pending-independent-review",
+    "verifier_sha256": "5d240ab35bbcdde9db7e53a0bb059b1b649762e6b46a4e58ef60585ef89986fc"
+  },
+  "resealed_negative_rejections": [
+    {
+      "case": "missing-case",
+      "refused": true,
+      "reason": "incomplete matrix"
+    },
+    {
+      "case": "wrong-case-binary",
+      "refused": true,
+      "reason": "compiler/flags/binary command binding"
+    },
+    {
+      "case": "changed-compile-flags",
+      "refused": true,
+      "reason": "compiler/flags/binary command binding"
+    },
+    {
+      "case": "accessed-unread",
+      "refused": true,
+      "reason": "unread state was accessed"
+    },
+    {
+      "case": "false-array-bytes",
+      "refused": true,
+      "reason": "array footprint accounting"
+    },
+    {
+      "case": "timing-relabel",
+      "refused": true,
+      "reason": "result identity/completion"
+    }
+  ]
 }

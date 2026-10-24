@@ -1,0 +1,99 @@
+{
+  "status": "passed",
+  "timing": false,
+  "validation_class": "author-validation-pending-independent-review",
+  "platform": "Linux-6.17.0-1022-azure-x86_64-with-glibc2.39",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "source_commit": "7a8e984604db2f089105f65a68b58a4fc2456376",
+  "registration_sha256": "21c2049215dff30e6a79e7eccd800e0bc794aced2732df156d644131fe62bb21",
+  "compiler": "/usr/bin/x86_64-linux-gnu-g++-13",
+  "compiler_sha256": "1353e9bdd29a7295c7226bf6c63abccce056d8cac31f112e5cdbecc3f28c2769",
+  "linker": "/usr/bin/x86_64-linux-gnu-ld.bfd",
+  "linker_sha256": "e9ceb054c12207970f2726dfc07e9a66b411602748628baf27399f02a9bbb31b",
+  "library_package_versions": "binutils\t2.42-4ubuntu2.10\ng++-13\t13.3.0-6ubuntu2~24.04.1\nlibc6:amd64\t2.39-0ubuntu8.9\nlibgcc-s1:amd64\t14.2.0-4ubuntu2~24.04.1\nlibstdc++6:amd64\t14.2.0-4ubuntu2~24.04.1\n",
+  "runtime_library_sha256": {
+    "/usr/lib/x86_64-linux-gnu/libc.so.6": "3a15d66867d83762c7f2f1e37359cb8f6c5743edb369c65285cb0b1c4f7498bf",
+    "/usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.33": "1fd75fe70354a416d75aef22bcae68c47bd25d20e2d0568c30b1a9838cf62f11",
+    "/usr/lib/x86_64-linux-gnu/libgcc_s.so.1": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb"
+  },
+  "sanitizer_environment": {
+    "ASAN_OPTIONS": "detect_leaks=1:halt_on_error=1",
+    "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+  },
+  "builds": [
+    {
+      "kind": "optional",
+      "bits": 8,
+      "sanitized": false,
+      "path": "optional-8-normal",
+      "sha256": "927b0f83c2636ee63ea81734007d99f2f80bb3632a01c8c3c224e279ed002fb4"
+    },
+    {
+      "kind": "optional",
+      "bits": 16,
+      "sanitized": false,
+      "path": "optional-16-normal",
+      "sha256": "8b555a07d988a4b3c7eb56c907f0d942d0a36e0b942a0446250a2208703235e5"
+    },
+    {
+      "kind": "optional",
+      "bits": 8,
+      "sanitized": true,
+      "path": "optional-8-sanitized",
+      "sha256": "e5544410da15d2355971efdc381645a72d0e2cf9f51ca8d9c8b5658e08c9ff51"
+    },
+    {
+      "kind": "optional",
+      "bits": 16,
+      "sanitized": true,
+      "path": "optional-16-sanitized",
+      "sha256": "d7668e7819d6fb18fa795e58ac873a46bf44773edb45b8998e1f75bb153f89ce"
+    },
+    {
+      "kind": "touch",
+      "bits": 0,
+      "sanitized": false,
+      "path": "touch-0-normal",
+      "sha256": "b9ba26486f9bf8c183a9e8d240b84759c3c84d9b78a7341646ebddc8ca51aa0f"
+    },
+    {
+      "kind": "touch",
+      "bits": 0,
+      "sanitized": true,
+      "path": "touch-0-sanitized",
+      "sha256": "56d20363eb0d079e4757db9799dc15f28a2fcc9dc289f388f6460a21bc1b455a"
+    }
+  ],
+  "source_input_count": 52,
+  "compiled_input_count": 38,
+  "optional_cases": 48,
+  "touch_cases": 6,
+  "optional_checks": 88475076,
+  "touch_checks": 3630,
+  "readback": {
+    "status": "verified",
+    "builds": 6,
+    "optional_cases": 48,
+    "touch_cases": 6,
+    "timing": false,
+    "windows_optional_compared": true,
+    "windows_touch_compared": true,
+    "validation_class": "author-validation-pending-independent-review"
+  },
+  "run_id": 40054292111,
+  "job_id": 120753709077,
+  "artifact": {
+    "id": 12544682549,
+    "bytes": 5567399,
+    "sha256": "6d3f2850d1d30d359e4e137e911af93b75c66c4d856f0cf42768e13c6e39efbc",
+    "local_path": "C:\\Users\\_\\mat003-overnight-20261024\\linux-v2.zip"
+  },
+  "preserved_setup_failure": {
+    "run_id": 40053969822,
+    "artifact_id": 12544099734,
+    "bytes": 2993,
+    "sha256": "6a61919c9b3fba2650ed028d9ef75ce6746d34f309899b590d4d5482f52f14ba",
+    "candidate_builds": 0,
+    "candidate_cases": 0
+  }
+}

@@ -94,6 +94,30 @@ runtime admission, native continuation or complete validation. Original #230
 source and tests are unchanged; the new probes and source seal are retained in
 this campaign's handoff-review evidence.
 
+## Contract model: separate physical labels from the capture predicate
+
+The [registered model](../../tools/experiments/mat003_touch/epoch-model-registration.json)
+exhaustively exercises three abstract cells, two-/three-bit source and destination
+counters, every source stamp in `[0,current]`, every nonzero rebased destination
+epoch and all length-three traces of counter tick, changed write, no-op, committed
+move and committed swap. Mapping current stamps to the new current epoch and all
+other stamps to zero preserves logical contents, absolute clock, equality and the
+tick-zero support exception throughout that bounded domain.
+
+Local result: **13,960 initial projections, 1,745,000 terminal traces and
+2,177,760 positive comparisons pass**. Three deliberately broken models are
+refused: dropping current touch, stamping a true same-value no-op, and clearing
+only active cells while retaining an excluded old stamp across wrap.
+Reproducer: `python -B tools/experiments/mat003_touch/epoch_model.py`.
+
+**Contract-model evidence only:** this is not native restore, an E8/E16 rollover
+qualification or proof of complete continuation. Its argument requires that the
+relevant consumers use equality, future-stamp labels cannot appear, the full
+resident clear contract remains, and all other authoritative state is preserved.
+Raw epoch-inclusive hashes may differ and require separately versioned semantic
+comparison. A lazy/local-clear alternative cannot inherit this argument without
+establishing its own stale-label and exclusion/re-entry proof.
+
 ## Execution and preserved failure
 
 The probe's first v2 build was refused by Clang warnings-as-errors for the known

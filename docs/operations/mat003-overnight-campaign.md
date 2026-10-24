@@ -68,3 +68,12 @@ a real Current native counterexample: external edits after a completed tick can
 change the support-relevant epoch predicate even after logical content is restored.
 Its proposed persistence refinement and experimental codec follow-ups require
 review; no restore or durable schema is adopted.
+
+The [Linux portability follow-up](../audits/2026-10-24-mat003-linux-portability.md)
+executed six builds and 54 cases on GitHub-hosted GCC13.3/BFD2.42. Archived-data
+comparison agrees with Windows. The first collector setup refusal is retained;
+neither execution is a benchmark or whole-programme acceptance.
+
+A separately labelled small-width contract model exercises epoch relabelling,
+owner writes/no-ops and full-resident clearing. It supports the capture-phase
+argument under its stated assumptions; it adds no native restore qualification.

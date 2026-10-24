@@ -1,0 +1,52 @@
+[
+  {
+    "name": "s2a",
+    "artifact_id": 12468697797,
+    "path": "C:\\Users\\_\\mat003-overnight-20261024\\preserved-originals\\s2a.zip",
+    "bytes": 517177,
+    "sha256": "9de681dde221093dcd740673f50a9549240d1858c86c44c1f85182696dc0a1db"
+  },
+  {
+    "name": "s2a-apparatus",
+    "artifact_id": 12466348465,
+    "path": "C:\\Users\\_\\mat003-overnight-20261024\\preserved-originals\\s2a-apparatus.zip",
+    "bytes": 6964923,
+    "sha256": "ef0720eeca60dbe4daa7a05eaa5d792dbcb5138875e5d37f564fe6579b8d9a4a"
+  },
+  {
+    "name": "s2p",
+    "artifact_id": 12487656018,
+    "path": "C:\\Users\\_\\mat003-overnight-20261024\\preserved-originals\\s2p.zip",
+    "bytes": 7553206,
+    "sha256": "4eca7a0ae4cd742191e36f49b065c3370a3f3f7d53f5721ea8d016bad507bb8e"
+  },
+  {
+    "name": "c128",
+    "artifact_id": 12490045229,
+    "path": "C:\\Users\\_\\mat003-overnight-20261024\\preserved-originals\\c128.zip",
+    "bytes": 4987638,
+    "sha256": "39378e887b4d385183e85827470b3acec1239a4e164953ecc0766800834bb533"
+  },
+  {
+    "name": "wclear",
+    "artifact_id": 12474820652,
+    "path": "C:\\Users\\_\\mat003-overnight-20261024\\preserved-originals\\wclear.zip",
+    "bytes": 44021844,
+    "sha256": "cc4b461a2dd402ef3237ba74db8000bdca08807de87263c60bbaded58f5db5e1"
+  },
+  {
+    "name": "s1",
+    "artifact_id": 12461153830,
+    "path": "C:\\Users\\_\\mat003-overnight-20261024\\preserved-originals\\s1.zip",
+    "bytes": 132324591,
+    "sha256": "dd460bd34c7d5c00d76730bccc8c89e5c2d438ab5fc60a6a495b7472e35c170d"
+  },
+  {
+    "name": "s0",
+    "artifact_id": 12462871518,
+    "path": "C:\\Users\\_\\mat003-overnight-20261024\\preserved-originals\\s0.zip",
+    "bytes": 1956581,
+    "sha256": "e73030777e54ba2b7b04e8abe046c5bca8f4c513770b6e48cee3fb76d15c9380",
+    "expected_hash_source": "GitHub artifact metadata for run39862993984"
+  }
+]

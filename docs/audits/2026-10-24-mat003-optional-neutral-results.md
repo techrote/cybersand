@@ -112,3 +112,13 @@ The collector requires retained psutil 7.0.0. Exact ordered commands, environmen
 timeouts and receipts are in the raw archive. The separate verifier can be run
 with ordinary Python and Git from a checkout containing the frozen source commit.
 Existing dense split-storage, carrier, epoch and runtime experiments are unchanged.
+
+## Separate Linux follow-up
+
+The [Linux portability record](2026-10-24-mat003-linux-portability.md) adds
+actual GCC13.3 normal/sanitized execution and complete archived-data comparison
+to these Windows results. All 48 logical/accounting outcomes agree. The Windows
+archive above remains unchanged. A stricter separate reader additionally rejects
+six resealed negative datasets (missing case, wrong binary, changed flags,
+accessed-unread state, false array bytes and timing relabel), reproducible with
+`python -B tools/experiments/mat003_optional/test_verify.py <original-evidence>`.

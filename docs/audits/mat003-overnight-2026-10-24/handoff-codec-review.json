@@ -1,0 +1,25 @@
+{
+  "source_commit": "0d6d71301c5ce24d2dd1a80fe99cb1ac11bfb5a4",
+  "source_path": "tools/experiments/mat003_gen006_codec_fixture.py",
+  "source_sha256": "9df0473c4b096af06e0e86e77a13a6dcd7611895e8074cee8e920de4a2268bc9",
+  "test_cases": 17,
+  "timeout_seconds": 60,
+  "exit_code": 0,
+  "timing": false,
+  "scope": "unmodified nonproduction fixture review, no native acceptance",
+  "probes": [
+    {
+      "name": "missing-all",
+      "accepted": true
+    },
+    {
+      "name": "missing-session-and-job",
+      "accepted": true
+    },
+    {
+      "name": "boolean-schema-version",
+      "roundtrip_version": true
+    }
+  ],
+  "reproducer": "python -B tools/experiments/mat003_touch/review_codec.py --output <new-directory>"
+}
