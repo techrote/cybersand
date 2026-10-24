@@ -2108,6 +2108,8 @@ func consume_worker_snapshot() -> void:
 			and bool(tower_context.get("scenario_request_applied", false))
 			and str(tower_context.get("microscenario", {}).get("definition_hash", "")) == str(pending_microscenario_apply.hash)):
 			_microscenario_installed(pending_microscenario_apply.definition)
+			if tower_context.get("microscenario", {}).get("failed", false):
+				microscenario_error = "Installed session apparatus failed: " + str(tower_context.microscenario.get("error", "unavailable"))
 			pending_microscenario_apply.clear()
 		elif (int(tower_context.get("scenario_request_serial", 0)) == int(pending_microscenario_apply.serial)
 			and not bool(tower_context.get("scenario_request_applied", true))):

@@ -156,7 +156,8 @@ func _install_web_microscenario(definition: Dictionary, mode: String, liquid_pol
 	microscenario_liquid_policy = liquid_policy.duplicate() if liquid_policy != null else null
 	microscenario_liquid_setup = controlled_setup.duplicate(true)
 	microscenario_mode = mode
-	microscenario_error = ""
+	microscenario_error = "Installed session apparatus failed: " + micro_host.last_error \
+		if micro_host.summary().get("failed", false) else ""
 	paused = true
 	tower_active = true
 	demo_id = "experiment_tower"

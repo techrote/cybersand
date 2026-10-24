@@ -21,6 +21,13 @@ class PreparationBarrier extends RefCounted:
 			arrived.post()
 			resume.wait()
 
+class ObservationFailureHost extends CyberMicroScenarioHost:
+	# Inject the existing observer failure branch after a real native commit.
+	# Valid bounded native cell observations presently succeed; this exercises
+	# the error classification without corrupting a validated definition.
+	func _observe_due() -> void:
+		_fault("fixture observation adapter unavailable")
+
 func _initialize() -> void:
 	run.call_deferred()
 
@@ -178,9 +185,41 @@ func run() -> void:
 	actors.player_enabled = true
 	expect(not host.install(world, actors, "Inspect", true, request, {"normalization":"water-normalize-v1"}) \
 		and world.get_physical_state_hash() == initial_hash, "unsupported actor setup refuses before replacement")
+	var selected: Dictionary = checked.definition.duplicate(true)
+	selected.interest.region = [25,31,123,127]
+	selected.execution.cadence_lod_enabled = true
+	selected.execution.liquid_surface_adhesion_enabled = false
+	expect(host.install(world, selected, "Benchmark", true, request, {"normalization":""}), "nondefault fixed execution installs")
+	receipt = world.get_applied_liquid_construction_receipt()
+	expect(receipt.region == PackedInt32Array([25,31,123,127]) and world.get_cadence_lod_enabled() \
+		and not world.get_liquid_surface_adhesion_enabled() \
+		and str(receipt.physical_state_hash).lpad(16,"0") == world.get_physical_state_hash(), "post-install actual region/flags/hash match prepared native capture")
+	var failed_host := ObservationFailureHost.new()
+	generation = world.get_liquid_policy_session_generation()
+	expect(failed_host.install(world, checked.definition, "Benchmark", true, request, {"normalization":""}) \
+		and failed_host.summary().failed and failed_host.last_error.contains("fixture observation"), "post-commit observation failure is an installed apparatus fault, never refused construction")
+	expect(world.get_liquid_policy_session_generation() == generation+1 \
+		and intact_receipt(world.get_applied_liquid_construction_receipt()), "installed faulty apparatus retains its actual new World and native receipt")
 	await worker_barrier_test(checked.definition, request)
+	await installed_observation_failure_test(checked.definition, request)
 	await application_routes_test(partial_checked.definition, whole)
 	finish()
+
+func installed_observation_failure_test(definition: Dictionary, request: PackedInt32Array) -> void:
+	worker = Worker.new()
+	worker._scenario_host = ObservationFailureHost.new()
+	worker.set_frame_state(0, false, true, Vector2i(512,512), Vector2i(16,16), Vector2i(992,272), 0, 0, true, false, true)
+	expect(worker.start_worker(Vector2(512,512)) == OK, "fault-injection owner starts")
+	worker.queue_lab({"scenario_reset":definition,"scenario_request_serial":201,"scenario_mode":"Benchmark",
+		"sampled_character_enabled":false,"liquid_policy":request,"controlled_liquid_setup":{"normalization":""}})
+	expect(await wait_for(func() -> bool:
+		var snapshot: CyberSimulationSnapshot = worker.take_latest_snapshot(0)
+		return snapshot != null and snapshot.lab_context.get("scenario_request_serial",0) == 201), "faulty installed apparatus is acknowledged")
+	var snapshot: CyberSimulationSnapshot = worker.take_latest_snapshot(0)
+	expect(snapshot.lab_context.scenario_request_applied and snapshot.lab_context.microscenario.failed \
+		and str(snapshot.lab_context.status).contains("installed; apparatus failed") \
+		and intact_receipt(snapshot.lab_context.liquid_construction_receipt), "worker separates installed observer fault from transactional refusal")
+	worker.stop_worker()
 
 func application_routes_test(definition: Dictionary, request: PackedInt32Array) -> void:
 	# Run the real normal-app controllers and their existing acknowledgement,

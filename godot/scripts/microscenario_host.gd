@@ -161,10 +161,15 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 	_timing_total_ms = 0.0
 	_timing_count = 0
 	_last_completed_tick = 0
-	apply_interest()
+	# Controlled preparation already installed these exact final selections
+	# before native receipt capture. Ordinary constructors retain their old tail.
+	if controlled_setup.is_empty(): apply_interest()
 	_observe_due() # Tick zero describes initial state, before tick-zero events.
 	if _instrumentation and _inspection_bridge != null: _telemetry.sample(_world, _inspection_bridge, false)
-	return not _failed
+	# The native replacement has committed. Initial observer/apparatus failure
+	# is a fault of this installed session (summary.failed / last_error), never
+	# a construction refusal that could claim the preceding World was retained.
+	return true
 
 func active() -> bool:
 	return not _definition.is_empty()

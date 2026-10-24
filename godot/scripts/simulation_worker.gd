@@ -339,7 +339,8 @@ func _apply_lab(command: Dictionary) -> bool:
 			_character = _actor_session.player()
 			_sampled_character_enabled = true
 		_scenario_request_applied = true
-		_lab_status = "MicroScenario " + str(definition.id)
+		_lab_status = ("MicroScenario installed; apparatus failed: " + _scenario_host.last_error \
+			if _scenario_host.summary().get("failed", false) else "MicroScenario " + str(definition.id))
 	if not _lab_active: return false
 	if command.has("scenario_capture") and _scenario_host.active():
 		_micro_capture = _scenario_host.capture(command.get("identity", {}))
