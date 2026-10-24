@@ -28,28 +28,41 @@ func _run() -> void:
 			_selected_rig = StringName(argument.trim_prefix("--rig="))
 		if argument.begins_with("--ticks="):
 			_roster_ticks = clampi(int(argument.trim_prefix("--ticks=")), 360, 3600)
+	print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=setup")
 	_owner = Node2D.new()
 	root.add_child(_owner)
 	_expect(ClassDB.class_exists("RapierPhysicsServer2D"), "pinned real Rapier extension unavailable")
 	if _failures != 0:
 		quit(1)
 		return
+	print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=admission")
 	_test_admission()
 	for rig_id: StringName in Catalog.RIG_IDS:
 		if _selected_rig == &"" or _selected_rig == rig_id:
 			await _test_roster_rig(rig_id)
+	print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=obstructed_patrol")
 	await _test_obstructed_patrol()
+	print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=no_air_traction")
 	await _test_no_air_traction()
+	print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=cancel_charge")
 	await _test_cancel_charge()
+	print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=mount_and_release")
 	await _test_mount_and_release()
+	print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=surface_blast")
 	await _test_surface_blast()
+	print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=support_removal")
 	await _test_support_removal()
+	print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=slide_endstops")
 	await _test_slide_endstops()
+	print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=rope_controls")
 	await _test_rope_controls()
+	print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=recovery")
 	await _test_recovery()
+	print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=owner_reuse")
 	await _test_owner_reuse()
 	print("ACT004_ROSTER_METRICS ", JSON.stringify(_results))
 	print("ACT004 real-Rapier rig fixture: ", Catalog.RIG_IDS.size(), " catalogue rigs; failures=", _failures)
+	print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=teardown")
 	_owner.queue_free()
 	await process_frame
 	quit(1 if _failures > 0 else 0)
@@ -118,6 +131,7 @@ func _step(action: Dictionary) -> Dictionary:
 
 
 func _teardown() -> void:
+	print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=bridge_shutdown")
 	if _bridge != null:
 		_bridge.shutdown()
 		_bridge = null
@@ -133,9 +147,11 @@ func _teardown() -> void:
 
 
 func _test_roster_rig(rig_id: StringName) -> void:
+	print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=roster_setup rig=", rig_id)
 	if not _setup(rig_id):
 		await _teardown()
 		return
+	print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=world_built rig=", rig_id)
 	var pilot = Scripted.new()
 	pilot.configure(rig_id, _rig.centre(), 0)
 	var initial: Vector2 = _rig.centre()
@@ -159,6 +175,8 @@ func _test_roster_rig(rig_id: StringName) -> void:
 	var action: Dictionary = Scripted.neutral_action()
 	var before: Dictionary = _rig.observation()
 	for tick: int in range(_roster_ticks):
+		if tick % 300 == 0:
+			print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=roster_step rig=", rig_id, " tick=", tick)
 		if tick % 6 == 0:
 			action = pilot.next_action(before, DT * 6.0)
 			var direction: float = float(pilot.diagnostics().direction)
@@ -389,6 +407,7 @@ func _test_slide_endstops() -> void:
 
 func _test_rope_controls() -> void:
 	for rig_id: StringName in [&"swinger", &"lineshank", &"winchbug"]:
+		print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=rope_setup rig=", rig_id)
 		if not _setup(rig_id):
 			continue
 		var ceiling: StaticBody2D = _box(Vector2(132, 96), Vector2(240, 4))
@@ -404,6 +423,8 @@ func _test_rope_controls() -> void:
 		var highest: float = start.y
 		var maximum_tension: float = 0.0
 		for tick: int in range(600):
+			if tick % 150 == 0:
+				print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=rope_step rig=", rig_id, " tick=", tick)
 			if tick % 6 == 0:
 				action = pilot.next_action(before, DT * 6.0)
 			var observation: Dictionary = _step(action)
@@ -453,6 +474,7 @@ func _test_rope_controls() -> void:
 
 func _test_recovery() -> void:
 	for rig_id: StringName in [&"runner", &"scrabbler", &"clamberer", &"springjack", &"copter", &"gemini", &"tricopter"]:
+		print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=recovery_setup rig=", rig_id)
 		if not _setup(rig_id, true, Vector2(100, 110)):
 			continue
 		var initial: Dictionary = _rig.observation()
@@ -469,6 +491,8 @@ func _test_recovery() -> void:
 		var upright_ticks: int = 0
 		var recovery_tick: int = -1
 		for tick: int in range(600):
+			if tick % 150 == 0:
+				print("REGRESSION_PROGRESS case=test_physical_actor_rigs phase=recovery_step rig=", rig_id, " tick=", tick)
 			if tick % 6 == 0:
 				action = pilot.next_action(before, DT * 6.0)
 			before = _step(action)

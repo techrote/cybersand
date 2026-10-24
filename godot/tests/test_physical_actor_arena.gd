@@ -39,12 +39,14 @@ func _roster() -> void:
 	var largest: StringName = &"runner"
 	var largest_count: int = 0
 	for id: StringName in Catalog.RIG_IDS:
+		print("REGRESSION_PROGRESS case=test_physical_actor_arena phase=roster_setup rig=", id)
 		var config: Dictionary = Arena.default_config(id, 1)
 		config.seed = 17
 		config.max_ticks = ROSTER_TICKS
 		_check(_arena.configure(config), "configure native roster " + str(id) + ": " + _arena.last_error)
 		if _arena.session == null:
 			continue
+		print("REGRESSION_PROGRESS case=test_physical_actor_arena phase=world_built rig=", id)
 		var data: Dictionary = Equipment.definition(Catalog.entry(id))
 		if int(data.part_count) > largest_count:
 			largest_count = int(data.part_count)
@@ -54,6 +56,8 @@ func _roster() -> void:
 		var state: Dictionary = _arena.snapshot()
 		var travel: float = 0.0
 		for _tick: int in range(ROSTER_TICKS):
+			if _tick % 60 == 0:
+				print("REGRESSION_PROGRESS case=test_physical_actor_arena phase=roster_step rig=", id, " tick=", _tick)
 			state = _arena.step()
 			travel = maxf(travel, state.actors[0].position.distance_to(initial.position))
 		_check(not bool(state.failed) and int(state.tick) == ROSTER_TICKS and int(state.world_tick) == ROSTER_TICKS,
@@ -76,6 +80,7 @@ func _roster() -> void:
 		_check(initial.tick == 0 and initial.cell_patch.materials.size() == 169,
 			str(id) + " retained bounded observation is immutable")
 		var weak_world: WeakRef = weakref(_arena._world)
+		print("REGRESSION_PROGRESS case=test_physical_actor_arena phase=roster_teardown rig=", id)
 		_arena.close()
 		_check(_arena.get_child_count() == 0 and _arena.render_parts().is_empty() and weak_world.get_ref() == null,
 			str(id) + " closes actual world, space, bodies and joints")
@@ -214,11 +219,16 @@ func _run() -> void:
 	if _failures > 0:
 		quit(1)
 		return
+	print("REGRESSION_PROGRESS case=test_physical_actor_arena phase=setup")
 	_arena = Arena.new()
 	root.add_child(_arena)
+	print("REGRESSION_PROGRESS case=test_physical_actor_arena phase=roster")
 	_roster()
+	print("REGRESSION_PROGRESS case=test_physical_actor_arena phase=protocol")
 	_protocol()
+	print("REGRESSION_PROGRESS case=test_physical_actor_arena phase=effects")
 	_native_effects_and_terrain()
+	print("REGRESSION_PROGRESS case=test_physical_actor_arena phase=teardown")
 	_arena.free()
 	print("PHYSICAL_ARENA_RESULT assertions=", _assertions, " failures=", _failures,
 		" elapsed_ms=", float(Time.get_ticks_usec() - start_usec) / 1000.0)
