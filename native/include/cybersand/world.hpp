@@ -5,10 +5,12 @@
 #include "cybersand/interaction_policy.hpp"
 #include "cybersand/liquid_solver_policy.hpp"
 #include "cybersand/pressure_flow.hpp"
+#include "cybersand/quantity_ledger.hpp"
 #include "cybersand/transport_policy.hpp"
 #include "cybersand/scheduler_geometry.hpp"
 #include "cybersand/settled_world_discovery.hpp"
 #include "cybersand/water_experiment_policy.hpp"
+#include "cybersand/water_cellular_yield.hpp"
 
 #include <array>
 #include <cstddef>
@@ -22,6 +24,7 @@
 namespace cybersand {
 
 class RenderSnapshotExchange;
+class PreparedWorldBuilder;
 
 enum class SimulationBackend : std::uint8_t {
     SerialInPlace = 0,
@@ -55,8 +58,8 @@ struct WorldConfig {
     TransportPolicy transport_policy{};
     WaterExperimentPolicy water_experiment_policy{};
     // Immutable per-World/per-material liquid solver policy (LCB-001 #200).
-    // Only each liquid's current default is admitted by this build; anything
-    // else is refused at construction and never reaches a kernel.
+    // Defaults and source-qualified candidate cells are admitted; every other
+    // assignment is refused at construction and never reaches a kernel.
     LiquidSolverPolicy liquid_solver_policy{};
 };
 
@@ -88,6 +91,13 @@ struct RectI64 {
     std::int64_t y = 0;
     std::int64_t width = 0;
     std::int64_t height = 0;
+};
+
+// Inclusive scheduling-core coordinates. Null coverage means unrestricted;
+// requested coverage is immediate, while applied coverage latches at tick entry.
+struct SimulationCoreRange {
+    std::int64_t min_x, min_y, max_x, max_y;
+    friend bool operator==(const SimulationCoreRange&, const SimulationCoreRange&) = default;
 };
 
 struct TickStats {
@@ -183,6 +193,9 @@ public:
     [[nodiscard]] std::uint8_t stored_state_b(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] std::uint16_t liquid_mass(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] std::int16_t temperature(std::int64_t x, std::int64_t y) const noexcept;
+    // Exclusive owner readback of authoritative thermal storage, including
+    // cells hidden by a transient body mask. Does not expose mutable storage.
+    [[nodiscard]] std::int16_t stored_temperature(std::int64_t x, std::int64_t y) const noexcept;
 
     void set(std::int64_t x, std::int64_t y, Material material);
     [[nodiscard]] bool set_cell_state(std::int64_t x, std::int64_t y, Material material,
@@ -201,6 +214,12 @@ public:
         ChunkCoord coord, std::span<const Material> row_major_materials);
     void set_simulation_region(std::optional<RectI64> region);
     [[nodiscard]] std::optional<RectI64> simulation_region() const noexcept;
+    [[nodiscard]] std::optional<SimulationCoreRange> selected_simulation_cores() const noexcept {
+        return selected_core_region_;
+    }
+    [[nodiscard]] std::optional<SimulationCoreRange> applied_simulation_cores() const noexcept {
+        return applied_core_region_;
+    }
     void set_liquid_surface_adhesion_enabled(bool enabled) noexcept;
     [[nodiscard]] bool liquid_surface_adhesion_enabled() const noexcept;
 
@@ -279,7 +298,14 @@ public:
     [[nodiscard]] std::uint64_t gas_topology_revision() const noexcept;
     [[nodiscard]] std::uint32_t gas_next_id() const noexcept;
     [[nodiscard]] PressureFlowLedger pressure_flow_ledger() const noexcept;
+    [[nodiscard]] QuantityLedgerSnapshot quantity_ledger() const;
     [[nodiscard]] PressureFlowDiagnostics pressure_flow_diagnostics() const noexcept;
+    // Opt-in W-CY owns only Water motion/quantity; material identity and hooks
+    // remain Water. No sidecar is needed for its indivisible full-cell state.
+    [[nodiscard]] bool water_cellular_yield_enabled() const noexcept { return water_cellular_yield_; }
+    [[nodiscard]] WaterCellularYieldParameters water_cellular_yield_parameters() const noexcept {
+        return water_cellular_yield_parameters_;
+    }
     // Authoritative Water quantity (visible state_a plus pressure overfill) of
     // stored cells, including cells under a transient body mask.
     [[nodiscard]] std::uint64_t water_quantity(RectI64 region) const;
@@ -289,18 +315,18 @@ public:
     // pending events, policies, pressure sidecars and the gas table. Independent
     // of whether all-Empty, inactive chunks are allocated. content_hash() and
     // state_hash() keep their historical definitions.
-    static constexpr std::uint32_t kPhysicalStateHashVersion = 1;
+    static constexpr std::uint32_t kPhysicalStateHashVersion = 2;
     [[nodiscard]] std::uint64_t physical_state_hash() const;
 
-    // Candidate-capable tick-boundary persistence ("CYPS" v1): exact
+    // Candidate-capable tick-boundary persistence ("CYPS" v2): exact
     // continuation of every physical value above. Transient body masks are
     // host-owned and not saved. restore validates everything before returning
     // a new World and throws std::invalid_argument for unknown, corrupt or
     // incompatible payloads; the caller's live World is never touched.
-    static constexpr std::uint32_t kPhysicalStateFormatVersion = 1;
+    static constexpr std::uint32_t kPhysicalStateFormatVersion = 2;
     [[nodiscard]] std::vector<std::uint8_t> save_physical_state() const;
     [[nodiscard]] static std::unique_ptr<World> restore_physical_state(
-        WorldConfig execution, std::span<const std::uint8_t> bytes);
+        const WorldConfig& execution, std::span<const std::uint8_t> bytes);
 
     [[nodiscard]] std::size_t dirty_chunk_count() const noexcept;
     [[nodiscard]] std::vector<DirtyChunk> take_dirty_chunks();
@@ -313,6 +339,7 @@ public:
     void copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::size_t stride_bytes) const;
 
 private:
+    friend class PreparedWorldBuilder;
     friend class RenderSnapshotExchange;
 
     struct Chunk;
@@ -330,6 +357,8 @@ private:
     };
 
     WorldConfig config_;
+    bool water_cellular_yield_ = false;
+    WaterCellularYieldParameters water_cellular_yield_parameters_{};
     bool flow_mixing_enabled_ = false;
     bool flow_carrying_enabled_ = false;
     std::unordered_map<ChunkCoord, std::unique_ptr<Chunk>, ChunkCoordHash> chunks_;
@@ -342,13 +371,11 @@ private:
     std::unique_ptr<PhysicsTotals> physics_totals_;
     std::unique_ptr<soliding::SettledWorldDiscoveryCoordinator> settled_discovery_;
     std::unique_ptr<PressureState> pressure_;
+    QuantityLedgerSnapshot quantity_{};
     void record_physics(PhysicsEvent kind, Material source, Material target,
                         std::int64_t dx, std::int64_t dy, JobEffects* effects,
                         std::uint64_t count = 1) noexcept;
-    struct CoreRange {
-        std::int64_t min_x, min_y, max_x, max_y;
-        friend bool operator==(const CoreRange&, const CoreRange&) = default;
-    };
+    using CoreRange = SimulationCoreRange;
     [[nodiscard]] CoreRange block_core_range(ChunkCoord coord, std::size_t index) const noexcept;
     [[nodiscard]] static CoreRange clip_core_range(CoreRange block, std::optional<CoreRange> region) noexcept;
     std::optional<RectI64> simulation_region_;
@@ -389,13 +416,14 @@ private:
     void mix_after_motion(Material carrier, std::int64_t x, std::int64_t y,
         std::int64_t to_x, std::int64_t to_y, std::uint16_t mass, JobEffects* effects);
     [[nodiscard]] bool lateral_due(Material material, std::int64_t x, std::int64_t y,
-                                  JobEffects* effects) noexcept;
+                                  JobEffects* effects, bool retain_wake = true) noexcept;
     [[nodiscard]] bool try_lateral(Material material, std::int64_t x, std::int64_t y,
         std::int32_t direction, bool swap, JobEffects* effects);
     [[nodiscard]] bool try_move(Material material, std::int64_t x, std::int64_t y, std::int64_t target_x,
                                 std::int64_t target_y, bool allow_swap, JobEffects* effects);
     [[nodiscard]] bool update_cell(std::int64_t x, std::int64_t y, JobEffects* effects = nullptr);
     [[nodiscard]] bool update_water(std::int64_t x, std::int64_t y, JobEffects* effects);
+    [[nodiscard]] bool update_water_cellular_yield(std::int64_t x, std::int64_t y, JobEffects* effects);
     [[nodiscard]] bool update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* effects);
     void prepare_pressure_tick();
     void resolve_gas_topology();
@@ -411,7 +439,22 @@ private:
     [[nodiscard]] bool write_cell(std::int64_t x, std::int64_t y, Material material,
                                   std::uint16_t state_a_value, std::uint8_t state_b_value,
                                  JobEffects* effects, bool external = false,
-                                 bool reaction_product = false);
+                                 bool reaction_product = false,
+                                 QuantityCause quantity_cause = {});
+    void initialize_quantity_ledger(const QuantityConstructionSeed& seed);
+    void reset_quantity_ledger() noexcept;
+    void record_quantity_transition(Material before, std::uint16_t before_visible,
+        std::uint16_t before_overfill, Material after, std::uint16_t after_visible,
+        std::uint16_t after_overfill, JobEffects* effects, QuantityCause cause,
+        bool source_sink = true, bool reaction_product = false);
+    void record_quantity_pair_event(std::uint16_t rule, JobEffects* effects);
+    void merge_quantity_effects(const JobEffects& effects, bool commit = true);
+    void preflight_generated_quantity(std::span<const Material> materials);
+    void preflight_absent_quantity(Material material, std::uint16_t visible,
+                                   QuantityCause cause);
+    void validate_quantity_ledger(bool scan_authority) const;
+    void set_with_quantity_kind(std::int64_t x, std::int64_t y, Material material,
+                               QuantityKind kind);
     void merge_pressure_effects(const JobEffects& effects) noexcept;
     [[nodiscard]] bool rule_is_active(Material material, std::uint16_t state_a_value,
                                       std::uint8_t state_b_value) const noexcept;

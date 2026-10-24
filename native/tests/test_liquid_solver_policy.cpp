@@ -12,6 +12,7 @@
 #include <fstream>
 #include <iterator>
 #include <limits>
+#include <memory>
 #include <optional>
 #include <span>
 #include <stdexcept>
@@ -277,8 +278,8 @@ void test_liquid_policy_identity_matches_source() {
             "vector current_build_identity differs from the native build");
     const auto& running = LiquidPolicyBuild::running();
     // LCB-001 pressure reference: FreeMass, CellularYield and pressure_flow_v1
-    // compiled; one optional pressure_flow_v1 family block schema.
-    require(running.catalogue_digest == catalogue_digest && running.native && running.schemas.size() == 1U &&
+    // compiled; optional pressure family and Water CellularYield v2 schemas.
+    require(running.catalogue_digest == catalogue_digest && running.native && running.schemas.size() == 2U &&
                 running.schemas.front().family_owner && running.schemas.front().owner == 3U &&
                 !running.schemas.front().mandatory && running.available_families == 0x07U,
             "running build identity");
@@ -372,7 +373,7 @@ void test_liquid_policy_session_transcript() {
 }
 
 void test_liquid_policy_running_build_admits_only_defaults() {
-    // Defaults plus the single qualified #200 candidate (Water pressure reference).
+    // Defaults plus the two qualified #200 Water reference candidates.
     const auto request = LiquidSolverPolicy::default_request();
     const auto applied = accept(request, LiquidPolicyBuild::running(), "running default");
     require(applied == LiquidSolverPolicy{} && applied.envelope() == request, "explicit default equals implicit");
@@ -392,13 +393,13 @@ void test_liquid_policy_running_build_admits_only_defaults() {
         for (std::uint8_t family = 1; family <= 4U; ++family) {
             for (std::uint8_t variant = 0; variant < 3U; ++variant) {
                 if (family == row.default_family && variant == 0U) continue;
-                if (row.material_id == 3U && family == 3U && variant == 0U) {
-                    // The one admitted candidate: Water x pressure_flow_v1/reference.
+                if (row.material_id == 3U && (family == 2U || family == 3U) && variant == 0U) {
+                    // Each admitted candidate dispatches its own Water law.
                     auto words = request;
                     words[20U + row_index * 3U + 1U] = family;
-                    const auto admitted = accept(words, LiquidPolicyBuild::running(), "Water pressure reference");
-                    require(admitted.assignment(3)->family == LiquidSolverFamily::PressureFlowV1,
-                            "Water pressure reference applied");
+                    const auto admitted = accept(words, LiquidPolicyBuild::running(), "Water qualified reference");
+                    require(admitted.assignment(3)->family == static_cast<LiquidSolverFamily>(family),
+                            "Water candidate applied");
                     ++cells;
                     continue;
                 }
@@ -427,14 +428,13 @@ void test_liquid_policy_running_build_admits_only_defaults() {
         }
     }
     require(cells == LiquidSolverPolicy::kLiquidCount * 12U - LiquidSolverPolicy::kLiquidCount, "sweep size");
-    // Water x cellular_yield_v1 is matrix-selectable and the family is compiled,
-    // but no Water route exists: refused, never silently run as yielding Paste/Slush.
+    // W-CY is now qualified; its separate native regression proves Water hooks
+    // and Water-owned parameters rather than Paste/Slush descriptor dispatch.
     auto water_cy = request;
     water_cy[20U + 1U] = 2;
-    const auto refused = LiquidSolverPolicy::decode(std::span<const std::int32_t>(water_cy));
-    require(!refused.accepted() && refused.refusal.code == Code::FamilyUnavailable &&
-                refused.refusal.detail == "cellular_yield_v1 is not qualified for material 3 in this build",
-            "Water whole-cell CellularYield must be refused");
+    const auto admitted = LiquidSolverPolicy::decode(std::span<const std::int32_t>(water_cy));
+    require(admitted.accepted() && admitted.policy->assignment(3)->family == LiquidSolverFamily::CellularYieldV1,
+            "Water whole-cell CellularYield reference must be admitted");
 }
 
 void test_liquid_policy_world_construction_and_refusal() {
@@ -468,14 +468,22 @@ void test_liquid_policy_world_construction_and_refusal() {
 void test_liquid_policy_default_preserves_behavior_and_workers() {
     const auto explicit_default = accept(LiquidSolverPolicy::default_request(), LiquidPolicyBuild::running(),
                                          "explicit default");
-    WorldConfig implicit_config;
-    WorldConfig explicit_config;
+    // These fixtures deliberately coexist. Keep their large policy tables and
+    // Worlds off the test thread's ordinary 1 MiB Windows stack.
+    auto implicit_config_storage = std::make_unique<WorldConfig>();
+    auto& implicit_config = *implicit_config_storage;
+    auto explicit_config_storage = std::make_unique<WorldConfig>();
+    auto& explicit_config = *explicit_config_storage;
     explicit_config.liquid_solver_policy = explicit_default;
-    WorldConfig workers_config = explicit_config;
+    auto workers_config_storage = std::make_unique<WorldConfig>(explicit_config);
+    auto& workers_config = *workers_config_storage;
     workers_config.worker_threads = 4;
-    World implicit_world(implicit_config);
-    World explicit_world(explicit_config);
-    World workers_world(workers_config);
+    auto implicit_world_storage = std::make_unique<World>(implicit_config);
+    auto& implicit_world = *implicit_world_storage;
+    auto explicit_world_storage = std::make_unique<World>(explicit_config);
+    auto& explicit_world = *explicit_world_storage;
+    auto workers_world_storage = std::make_unique<World>(workers_config);
+    auto& workers_world = *workers_world_storage;
     for (World* world : {&implicit_world, &explicit_world, &workers_world}) populate_mixed_liquids(*world);
     require(implicit_world.state_hash() == explicit_world.state_hash() &&
                 implicit_world.state_hash() == workers_world.state_hash(),
@@ -496,24 +504,29 @@ void test_liquid_policy_default_preserves_behavior_and_workers() {
                 workers_world.config().worker_threads == 4U,
             "worker World readback");
     // The liquid policy identity is independent of Water semantics.
-    WorldConfig mass3;
+    auto mass3_storage = std::make_unique<WorldConfig>();
+    auto& mass3 = *mass3_storage;
     mass3.water_experiment_policy = cybersand::WaterExperimentPolicy(3U, 0U);
-    World mass3_world(mass3);
+    auto mass3_world_storage = std::make_unique<World>(mass3);
+    auto& mass3_world = *mass3_world_storage;
     require(mass3_world.liquid_solver_policy().policy_hash() == explicit_default.policy_hash(),
             "Water semantics changed the liquid policy hash");
 
     // These diagnostic switches change physics, so they belong to physical
     // identity and CYPS even when histogram collection itself is disabled.
     for (const bool powder_override : {false, true}) {
-        WorldConfig physics;
+        auto physics_storage = std::make_unique<WorldConfig>();
+        auto& physics = *physics_storage;
         physics.physics_diagnostics.disable_powder_exchange_targets = powder_override;
         physics.physics_diagnostics.mercury_viscosity = powder_override ? -1 : 0;
-        World original(physics);
+        auto original_storage = std::make_unique<World>(physics);
+        auto& original = *original_storage;
         original.reserve_region({0, 0, 128, 128});
         for (std::int64_t x = 0; x < 128; ++x) original.set(x, 64, Material::Wall);
         for (std::int64_t y = 48; y < 64; ++y)
             for (std::int64_t x = 48; x < 80; ++x) original.set(x, y, Material::Mercury);
-        World default_physics;
+        auto default_physics_storage = std::make_unique<World>();
+        auto& default_physics = *default_physics_storage;
         default_physics.reserve_region({0, 0, 128, 128});
         for (std::int64_t x = 0; x < 128; ++x) default_physics.set(x, 64, Material::Wall);
         for (std::int64_t y = 48; y < 64; ++y)
@@ -522,7 +535,8 @@ void test_liquid_policy_default_preserves_behavior_and_workers() {
                     original.physical_state_hash() != default_physics.physical_state_hash(),
                 "physics-changing diagnostic options omitted from physical identity");
         const auto saved = original.save_physical_state();
-        WorldConfig execution;
+        auto execution_storage = std::make_unique<WorldConfig>();
+        auto& execution = *execution_storage;
         execution.worker_threads = 4;
         auto restored = World::restore_physical_state(execution, saved);
         require(restored->config().physics_diagnostics.disable_powder_exchange_targets == powder_override &&
@@ -542,10 +556,12 @@ void test_liquid_policy_default_preserves_behavior_and_workers() {
     // A valid digest does not make an inconsistent conservation ledger valid.
     auto pressure_request = LiquidSolverPolicy::default_request();
     pressure_request[21] = 3;
-    WorldConfig pressure_config;
+    auto pressure_config_storage = std::make_unique<WorldConfig>();
+    auto& pressure_config = *pressure_config_storage;
     pressure_config.liquid_solver_policy =
         accept(pressure_request, LiquidPolicyBuild::running(), "pressure ledger restore");
-    World pressure(pressure_config);
+    auto pressure_storage = std::make_unique<World>(pressure_config);
+    auto& pressure = *pressure_storage;
     const auto original_bytes = pressure.save_physical_state();
     constexpr std::size_t digest_size = 32U, flow_bytes = 5U * 8U, gas_bytes = 10U * 8U;
     const auto gas_start = original_bytes.size() - digest_size - flow_bytes - gas_bytes;

@@ -60,6 +60,20 @@ inline void copy_level(World& world, std::span<std::uint8_t> bytes) {
 [[nodiscard]] inline std::unique_ptr<World> reconstruct(
     const WorldConfig& config, std::span<const std::uint8_t> bytes) {
     validate(bytes);  // Validate everything before allocating or changing a world.
+    if (auto refusal = config.liquid_solver_policy.admission_refusal())
+        throw LiquidPolicyRefused(std::move(*refusal));
+    const auto water = config.liquid_solver_policy.assignment(static_cast<std::uint16_t>(Material::Water));
+    if (water && water->family == LiquidSolverFamily::CellularYieldV1) {
+        const auto maximum = config.water_experiment_policy.maximum();
+        for (std::size_t i = 0; i < bytes.size(); i += kCellBytes) {
+            if (bytes[i] != static_cast<std::uint8_t>(Material::Water)) continue;
+            if (bytes[i + 1] > maximum || bytes[i + 2] > config.water_experiment_policy.coherence_ticks())
+                throw std::invalid_argument("CYSD1 Water state outside the experiment policy");
+            if (bytes[i + 1] != 0U && bytes[i + 1] != maximum)
+                throw LiquidPolicyRefused({LiquidPolicyRefusalCode::NormalizationRequired, std::uint16_t{3},
+                    "fractional CYSD1 Water requires explicit water-normalize-v1 setup preparation"});
+        }
+    }
     auto candidate = empty_level(config);
     std::size_t offset = 0;
     for (std::int32_t y = 0; y < kHeight; ++y) {

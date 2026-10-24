@@ -3749,6 +3749,20 @@ void test_lcb_pressure_static_rest();
 void test_lcb_pressure_lifecycle();
 void test_lcb_pressure_persistence();
 void test_lcb_pressure_default_untouched();
+void test_water_cy_admission_ingress();
+void test_water_cy_coherence_masks();
+void test_water_cy_material_hooks();
+void test_water_cy_workers_persistence_transport();
+void test_water_cy_liveness_cadence();
+void test_water_normalization_rounding();
+void test_water_normalization_refusals();
+void test_water_normalization_final_identity();
+void test_water_normalization_thermal();
+void test_water_normalization_arithmetic();
+void test_water_normalization_canonical_vectors();
+void test_liquid_run_receipt_native_identity();
+void test_liquid_construction_refusal_native_issuance();
+void test_quantity_ledger();
 
 int main(int argc, char** argv) {
     struct Test {
@@ -3863,6 +3877,20 @@ int main(int argc, char** argv) {
         {"LCB-001 pressure physical hash and exact persistence", test_lcb_pressure_persistence},
         {"LCB-001 pressure default policy untouched", test_lcb_pressure_default_untouched},
         {"LCB-001 liquid policy C API allocation failures", test_liquid_policy_c_api_allocation_failures},
+        {"LCB-001 W-CY admission and ingress", test_water_cy_admission_ingress},
+        {"LCB-001 W-CY coherence, viscosity and masks", test_water_cy_coherence_masks},
+        {"LCB-001 W-CY material hooks", test_water_cy_material_hooks},
+        {"LCB-001 W-CY workers, persistence and transport", test_water_cy_workers_persistence_transport},
+        {"LCB-001 W-CY liveness and cadence", test_water_cy_liveness_cadence},
+        {"LCB-001 Water normalization rounding", test_water_normalization_rounding},
+        {"LCB-001 Water normalization refusals", test_water_normalization_refusals},
+        {"LCB-001 Water normalization final identity", test_water_normalization_final_identity},
+        {"LCB-001 Water normalization thermal fields", test_water_normalization_thermal},
+        {"LCB-001 Water normalization arithmetic", test_water_normalization_arithmetic},
+        {"LCB-001 Water normalization canonical vectors", test_water_normalization_canonical_vectors},
+        {"LCB-001 native run receipt identity", test_liquid_run_receipt_native_identity},
+        {"LCB-001 native-issued construction refusals", test_liquid_construction_refusal_native_issuance},
+        {"LCB-001 native quantity ledger", test_quantity_ledger},
     };
 
     std::size_t passed = 0;

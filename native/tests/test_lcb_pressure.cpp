@@ -107,7 +107,7 @@ std::uint64_t quantity(const World& world, RectI64 r) { return world.water_quant
 
 void test_pressure_admission_and_refusal() {
     const auto& running = LiquidPolicyBuild::running();
-    require(running.available_families == 0x07U && running.schemas.size() == 1U, "running build profile");
+    require(running.available_families == 0x07U && running.schemas.size() == 2U, "running build profile");
     const auto policy = pressure_policy();
     require(policy.assignment(3)->family == LiquidSolverFamily::PressureFlowV1, "Water applied family");
     for (std::int32_t variant : {1, 2}) {

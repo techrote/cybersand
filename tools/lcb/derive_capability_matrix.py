@@ -2,9 +2,9 @@
 """Derive the LCB material x solver-family capability matrix from native source.
 
 Standard-library only. Reads the checked-in material descriptor table and pair
-rules; it never runs a solver. Only `current_default` cells describe behavior
-that executes today. Every other status is a design classification from the
-LCB-000 Gate C specification and must not be reported as available support.
+rules; it never runs a solver. `current_default` cells execute unchanged;
+source-qualified opt-in candidate variants are listed explicitly by
+EXECUTABLE_CANDIDATES. Design classifications alone do not establish execution.
 
 Usage:
   python tools/lcb/derive_capability_matrix.py            # rewrite the JSON
@@ -52,11 +52,12 @@ KERNEL_SPECIALIZATION = {
 # executes (LCB-001 #200). Every other non-default cell is refused natively.
 EXECUTABLE_CANDIDATES = {
     ("water", "pressure_flow_v1"): ["reference"],
+    ("water", "cellular_yield_v1"): ["reference"],
 }
 # Gate C/D design classifications. Keys are descriptor names.
 PROPOSED = {
     ("water", "cellular_yield_v1"): ("proposed_experimental",
-        "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"),
+        "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion"),
     ("water", "pressure_flow_v1"): ("proposed_experimental",
         "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201"),
     ("water", "inertial_cellular_v1"): ("proposed_experimental",
@@ -154,7 +155,7 @@ def build() -> dict:
     non_liquid = [m["name"] for m in materials if m["valid"] and m not in liquids]
     return {
         "schema": "lcb-liquid-capability-matrix-v1",
-        "status": "LCB-000 Gate C proposal. Descriptor fields are parsed source facts; family statuses, variants and kernel_specialization text are reviewed hand-authored design classifications, not executable solver coverage. Only current_default cells execute today.",
+        "status": "LCB-000 Gate C classifications with source-qualified execution. Descriptor fields are parsed source facts; family statuses, variants and kernel_specialization text remain reviewed design classifications. Current defaults execute unchanged; executable_today and executable_variants identify qualified opt-in candidates.",
         "sources": {
             "native/include/cybersand/material.hpp": source_digest(MATERIAL_HPP),
             "native/include/cybersand/interaction_rules.hpp": source_digest(RULES_HPP),
@@ -163,7 +164,7 @@ def build() -> dict:
         "legacy_arms": LEGACY_ARMS,
         "status_vocabulary": {
             "current_default": "executes today as the unchanged production default",
-            "proposed_experimental": "Gate C/D design target; not implemented, must be refused until its owner lands it",
+            "proposed_experimental": "Gate C/D design classification; only explicitly qualified executable_today/executable_variants run, all other variants must be refused",
             "proposed_alternate": "documented substitute candidate; NOT selectable (refused as not_selectable) until its owner qualifies it",
             "rejected": "construction must refuse this mapping before replacing any session",
         },

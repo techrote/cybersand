@@ -2,7 +2,7 @@
   "schema": "lcb-scenario-registry-v1",
   "status": "LCB-003 preparation. Only arms with status starting 'measured' have executed; every blocked arm names its dependency.",
   "sources": {
-    "capability_matrix": "18eea57cad4d4b229e4979b5298fbf94bd278434c40435c56defe70ac5f6f132",
+    "capability_matrix": "7201367eb6b08611c0bc430124045de7a69568ca7dab6e22ae978d845bb8bcac",
     "protected_manifest": "d5c922c39fe04a7981b7a14a6a6f2d14064674337e6afedb3acf3e83eb8553f3",
     "controls": "989ff70dba646285991a2a5e8ca5c3b0aa94b9381dc44c849528518e4238fac1",
     "ledger_v7": "b42012a672f468534efa9421beeca28d1ccea8ef1c1f2ce798d2cd80c336834d",
@@ -349,13 +349,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -909,13 +912,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -1402,13 +1408,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -1868,13 +1877,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -2334,13 +2346,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -3100,13 +3115,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -3566,13 +3584,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -3924,13 +3945,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -4282,13 +4306,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -4640,13 +4667,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -4882,13 +4912,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -5205,13 +5238,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -5517,13 +5553,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -6253,13 +6292,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -7488,13 +7530,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -7901,13 +7946,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -8315,13 +8363,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -8741,13 +8792,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -9176,13 +9230,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -9607,13 +9664,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -9915,13 +9975,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -10416,13 +10479,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -10917,13 +10983,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -11281,13 +11350,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",
@@ -11593,13 +11665,16 @@
           },
           "cellular_yield_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+            "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+            "executable_variants": [
+              "reference"
+            ]
           },
           "pressure_flow_v1": {
             "status": "proposed_experimental",

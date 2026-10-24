@@ -144,7 +144,8 @@ struct LiquidParameterField {
 };
 
 // A typed parameter block a family (or a material under its applied family)
-// declares. The running build registers none: no implemented family has one.
+// declares. Running-build schemas and illustrative contract-test schemas are
+// separately registered; matching a block version never changes its meaning.
 struct LiquidParameterSchema {
     bool family_owner = true;
     std::uint16_t owner = 0;
@@ -178,9 +179,11 @@ struct LiquidPolicyBuild {
     static constexpr std::uint16_t kPressureBlockVersion = 1;
     static constexpr std::int32_t kPressureDefaultGasEnabled = 1;
     static constexpr std::int32_t kPressureDefaultAtmosphericRows = 32;
+    static constexpr std::uint16_t kWaterCellularYieldBlockVersion = 2;
 
     // This binary: FreeMass and CellularYield qualified for each liquid's current
-    // default, plus Water x pressure_flow_v1/reference (#200). cached and
+    // default, plus Water x pressure_flow_v1/reference and whole-cell
+    // cellular_yield_v1/reference (#200). cached and
     // cached_dormant (#201) and every other candidate remain refused.
     [[nodiscard]] static const LiquidPolicyBuild& running() {
         static const LiquidPolicyBuild build = [] {
@@ -192,8 +195,12 @@ struct LiquidPolicyBuild {
             }
             result.qualified_cells.emplace_back(std::uint16_t{3}, std::uint8_t{3});
             result.qualified_variants.push_back({3, 3, 0x01U});
+            result.qualified_cells.emplace_back(std::uint16_t{3}, std::uint8_t{2});
+            result.qualified_variants.push_back({3, 2, 0x01U});
             result.schemas.push_back({true, 3, kPressureBlockVersion, false, 0,
                                       {{"gas_enabled", 0, 1}, {"atmospheric_head_rows", 16, 4096}}});
+            result.schemas.push_back({false, 3, kWaterCellularYieldBlockVersion, false, 2,
+                                      {{"viscosity_index", 0, 255}}});
             return result;
         }();
         return build;
