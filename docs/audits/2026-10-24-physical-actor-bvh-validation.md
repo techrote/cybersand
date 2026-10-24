@@ -82,9 +82,9 @@ The corrected campaign is
 [40053639095](https://github.com/techrote/cybersand/actions/runs/40053639095)
 at source `4c2bb37` (full identity in its build manifests). All four addon builds
 completed successfully; each blocking helper control exited 124 with the named
-sentinel, and each patched helper passed three tests. The same-head application
-trials and a full local applicable Windows candidate suite are in progress at
-this observation; no completed repaired sample is claimed yet.
+sentinel, and each patched helper passed three tests. At that initial observation
+the same-head application trials and full local Windows suite were still in
+progress. Their completed results are recorded below.
 
 A control timeout in the first campaign's Windows batch 0, rigs iteration 6
 (`gemini`, last step marker 34320), also yielded a valid engine dump. The
@@ -142,6 +142,19 @@ across the two samples: SHA-256
 `23abe93825d2fe5501f975a663d76043c6fe8e7950fe251ecd2998aafed5a809`.
 This is evidence of cohort/scheduling sensitivity, not proof of its exact cause.
 
+Here **corrected** means the provenance preflight's LF/CRLF handling was corrected;
+**control** still means the original blocking receive, and **patched** means the
+cooperative join. The candidate's zero-timeout result is the desired outcome.
+The later control's zero-timeout result makes that cohort inconclusive as a
+standalone comparison, but does not invalidate either cohort's candidate passes
+or the earlier Windows comparison (12/150 control timeouts versus 0/150 patched).
+The [code/input equivalence record](physical-actor-timeouts-2026-10-23/paired-windows-code-equivalence.json)
+also verifies identical candidate executable `.text` across these two campaigns,
+and identical Godot, native and example Git subtrees. Whole DLLs remain distinct
+artifacts; matching code is not a claim that every byte or scheduling outcome
+matches. The incomplete first campaign remains qualified by its Linux apparatus
+failure, while its completed Windows comparison remains valid platform evidence.
+
 **Registered next experiment before execution:** both variants now run on the
 same GitHub-hosted machine in each batch, using separate complete source copies.
 Every test pair alternates control-first / candidate-first by iteration and
@@ -153,6 +166,14 @@ instead of silently testing only Rapier's inline path. No physics/thread-count
 override is introduced. The qualification checker additionally requires matching
 host/hardware/fixtures and the registered balanced order. This is a new controlled
 experiment; it does not erase the inconclusive or failed earlier samples.
+
+The registered same-host campaign was dispatched as
+[40056501226](https://github.com/techrote/cybersand/actions/runs/40056501226)
+from exact source `96dcb2ab6e35c9104726b2a541d1c2fbb298eecb`. It is in progress
+at this checkpoint. It strengthens the aggregate evidence; the already observed
+Windows control failures and candidate passes do not depend on reproducing a
+new control failure in every future cohort. Keep the campaign's own registered
+qualification result distinct from that aggregate interpretation.
 
 ## Full local candidate Windows scope
 
