@@ -291,6 +291,14 @@ GEN-006 #194 retains persistent streaming and durable mutation reconciliation.
 
 ## Decisions and defects to resolve
 
+Physical Godot regressions have intermittent full 180-second stalls on both
+Windows and Linux. [#233 diagnostics](../operations/testing-validation-and-replay.md#physical-regression-timeout-diagnostics)
+and the [dated evidence](../audits/2026-10-24-issue-233-physical-regression-timeouts.md)
+own apparatus admission, the registered 600-attempt campaign and classification.
+Apparatus implementation alone does not complete #233. #234 owns the causal
+repair, internal watchdog and subsequent zero-timeout stress qualification;
+parent #232 remains open until that repair/qualification is complete.
+
 Rows distinguish **Current fixes**, remaining defects and open decisions; dated
 evidence defines each fix's platform acceptance.
 

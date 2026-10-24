@@ -175,6 +175,15 @@ and provider-routing boundary.
 
 ## Windows retained-runtime execution
 
+For intermittent physical actor/usable/flight stalls, use the
+[timeout diagnostic procedure](testing-validation-and-replay.md#physical-regression-timeout-diagnostics).
+The ordinary 180-second case bound is unchanged. Dispatch the full registered
+600-attempt stress workflow only after it exists on `main`, with `source_sha`
+set to the exact immutable diagnostic source. Inspect the independent reducer
+and raw logs even if the Actions run badge is green or red. The
+[dated audit](../audits/2026-10-24-issue-233-physical-regression-timeouts.md) records
+executions and remaining uncertainties separately from workflow availability.
+
 **Current:** the GDExtension workflow also executes the retained Windows DLL on a
 GitHub-hosted `windows-2022` runner. This lane is separate from the Windows
 cross-build job. The

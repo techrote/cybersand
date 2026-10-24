@@ -58,6 +58,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | How do Play/Inspect/Benchmark share a definition, and is a scenario capture replay? | [MicroScenario contract](../operations/microscenarios.md) |
 | Actual version, commits, local changes, recovery | [Source checkpoint](../operations/source-checkpoint-and-recovery.md) |
 | Who mutates cells; may a worker touch Godot? | [Ownership and lifetime](../architecture/data-ownership-and-lifetimes.md) |
+| How are physical Godot timeouts captured, source-bound stress attempts counted and diagnostic completion separated from repair? | [Timeout procedure](../operations/testing-validation-and-replay.md#physical-regression-timeout-diagnostics), [dated #233 evidence](../audits/2026-10-24-issue-233-physical-regression-timeouts.md) |
 | Desktop/Web order, synchronous ticks, failed-world reset/replacement | [Tick and threading](../architecture/simulation-tick-and-threading.md) |
 | Web compatibility/threaded Auto and hosting | [Web threading](../operations/web-threading.md) |
 | Body masks, displacement, terrain, Rapier scope | [Rigid-body/cellular coupling](../architecture/rigid-body-and-cellular-coupling.md) |
