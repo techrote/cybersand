@@ -181,6 +181,15 @@ Every direct authoritative write is witnessed like `transfer_water` (job effects
 or serial dirty/wake/discovery). Per-job ledgers merge after the phase barrier;
 there are no shared counters.
 
+Partial transfers propagate the maximum source/receiver coherence, capturing
+source coherence before an emptied tuple is retired. Every successful quantity
+transfer calls the unchanged material post-motion hook with its actual moved
+quantity, including surface skin and overfill relief/relay; the hook itself
+determines whether that motion qualifies for grain carrying. Reaction products
+start at family defaults even when a product retains Water identity. Same-material
+coherence countdowns retain family state. Repainting an identical visible tuple
+still publishes dirty/wake/discovery witnesses if its pressure state changed.
+
 ## Declared parameters (v1)
 
 | Parameter | Value | Kind |

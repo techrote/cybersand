@@ -191,6 +191,9 @@ native inputs: another source-matched publication is required.
 | A checksummed inconsistent gas ledger was admitted | Restore checked only `amount_live` against the gas table. It now also checks the complete conservation equation with overflow rejection; rechecksummed contradictory and overflowing source sums are refused. |
 | Different simulation windows shared a run receipt | Equal window flags hid different selected rectangles. The receipt now binds the actual region and physics-changing diagnostic settings; its Godot regression compares two different rectangles. |
 | Incremental Make builds missed pressure include edits | `CORE_HEADERS` now includes `native/src/*.inc`, so changes to the two pressure implementation fragments invalidate dependent native targets. |
+| Partial pressure transfers lost coherence | Source Water coherence 12 became 11 at the source but 0 at a partially filled receiver; Current retained 11. Transfers now propagate maximum coherence, captured before source retirement; regressions cover partial gravity, source emptying and overfill relief into Empty. |
+| Surface skin and relief bypassed material coupling | With a configured carrying profile, Current's 96-unit surface transfer carried Sand while the pressure path left it behind. All successful direct quantity transfers now call the material hook exactly once with actual mass; the regression checks Sand tuple 17/23 and temperature 777, exact Water quantity 128 and 1/4-worker execution. |
+| Same-material reaction products and pressure-only edits bypassed lifecycle rules | Water + ToxicSludge produced Water with the old flow 1024. Explicit product writes now reset family state (flow 0), while ordinary coherence writes retain it. Identical-visible `set`/`set_cell_state` also witness pressure-only reset changes through dirty/wake/discovery publication. |
 
 The experimental, unfrozen CYPS v1 encoding gains three physics-option bytes
 after `maximum_explosion_radius` (powder-exchange suppression u8 and Mercury
@@ -235,6 +238,28 @@ boundary review found no further actionable defects in its reviewed scope.
 Native sanitizer/TSan and the new Godot receipt assertion still require the
 hosted gates. Publisher request sequence 3 requests corrected source-matched
 Linux/Windows artifacts; the prior published hashes remain historical identities.
+
+**Attempt 3 (request_sequence 3, source `1a1c32ca00060657930dd93e00ef02d450b1781f`,
+[run 40100041024](https://github.com/techrote/cybersand/actions/runs/40100041024)):
+deliberately cancelled before publication.** Admission passed; both builds were
+cancelled after the material-hook review reproduced lost coherence. No runtime
+commit was published. That review also identified the missing material-coupling
+and same-material product/reset witnesses above. The completed repair is requested
+with sequence 4; the branch lease from attempt 3 is no longer active.
+
+The final integrated material-hook repair passed **107/107** native tests
+(36.495 seconds including compile/run, pinned Clang 23.1.0 Windows host), with
+identical native input hashes before/after execution, plus 13/13 focused pressure
+cases. Evidence is retained in
+`C:/Users/_/.codex/tmp/review245-material-hooks-native-final/`; executable SHA-256
+`0f784affe16d61cb82fc184cba29c31115143e27c72653269d850233244b78fa`,
+input-ledger SHA-256
+`a7a8d0aef611493eb44e5c5e081d4de95ce03f7f69adb085be1417c495bb4475`.
+Independent cross-review of both repair write sets and the targeted material
+stage audit reported no remaining actionable findings. Capability/native policy
+artifacts, scenario registry and physics contracts still match their sources;
+`git diff --check` and provider policy pass. Hosted runtime and final acceptance
+gates remain separate.
 
 ## Gaps (open)
 

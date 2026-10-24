@@ -588,6 +588,119 @@ void test_lifecycle_ledgers() {
         }
 }
 
+void test_pressure_material_hooks() {
+    // Gravity can consume the entire coherent source before the receiver is
+    // written. Both a partial and complete source transfer keep its decremented
+    // material coherence, exactly as transfer_water does for FreeMass.
+    for (const auto mass : {5U, 255U}) {
+        World world(pressure_config());
+        rect(world, 2, 5, 3, 1, Material::Wall);
+        for (const auto x : {2, 4}) rect(world, x, 3, 1, 2, Material::Wall);
+        require(world.set_cell_state(3, 3, Material::Water, static_cast<std::uint16_t>(mass), 12),
+                "coherent gravity source");
+        require(world.set_cell_state(3, 4, Material::Water, 250, 0), "coherent gravity receiver");
+        tick(world);
+        require(world.stored_state_a(3, 4) == 255U && world.stored_state_b(3, 4) == 11U,
+                "partial gravity keeps source coherence even when take empties the source");
+        require(world.water_quantity({0, 0, 8, 8}) == mass + 250U, "coherent gravity quantity exact");
+    }
+
+    // A full-speed neighbour gives a coherent saturated receiver overfill.
+    // Relief creates Water in the paused row above: its coherence must follow
+    // the actual receiver even if that receiver ran before the incoming flux.
+    auto config = pressure_config();
+    config.chunk_size = 8;
+    config.activity_block_size = 8;
+    config.scheduling_core_size = 8;
+    World world(config);
+    world.set_simulation_region(RectI64{0, 400, 8, 8});
+    rect(world, 3, 1, 1, 400, Material::Water);
+    world.set(2, 400, Material::Wall);
+    world.set(5, 400, Material::Wall);
+    rect(world, 2, 401, 4, 1, Material::Wall);
+    require(world.set_cell_state(4, 400, Material::Water, 255, 12), "coherent overfill receiver");
+    const auto before = world.water_quantity({0, 0, 8, 408});
+    for (int t = 0; t < 2 && world.stored_material(4, 399) != Material::Water; ++t) tick(world);
+    require(world.stored_material(4, 399) == Material::Water && world.stored_state_b(4, 399) != 0U &&
+                world.stored_state_b(4, 399) == world.stored_state_b(4, 400),
+            "overfill relief into Empty keeps the source material coherence");
+    require(world.water_quantity({0, 0, 8, 408}) == before, "coherent overfill relief quantity exact");
+
+    // A resting half-cell's 96-unit surface-skin transfer is strong enough to
+    // carry a grain under the registered transport hook. The grain's full
+    // tuple and temperature travel through the conservative swap.
+    for (const auto workers : {1U, 4U}) {
+        auto carrying = pressure_config(workers);
+        carrying.transport_policy.configured = true;
+        auto& pair = carrying.transport_policy.pairs[3U * cybersand::TransportPolicy::materials + 2U];
+        pair.carrying = 255;
+        pair.pickup = 0;
+        pair.packing = 0;
+        pair.erosion = 1;
+        World carrier(carrying);
+        carrier.reserve_temperature_region({0, 0, 128, 128});
+        carrier.set(23, 40, Material::Wall);
+        carrier.set(23, 41, Material::Wall);
+        carrier.set(25, 41, Material::Wall);
+        rect(carrier, 23, 42, 3, 1, Material::Wall);
+        require(carrier.set_cell_state(24, 41, Material::Sand, 17, 23), "skin carrying grain tuple");
+        carrier.set_temperature(24, 41, 777);
+        require(carrier.set_cell_state(24, 40, Material::Water, 128, 0), "skin carrying Water");
+        tick(carrier);
+        require(carrier.stored_material(25, 40) == Material::Sand && carrier.stored_state_a(25, 40) == 17U &&
+                    carrier.stored_state_b(25, 40) == 23U && carrier.temperature(25, 40) == 777,
+                "surface-skin flux invokes carrying with the complete grain payload");
+        require(carrier.water_quantity({0, 0, 128, 128}) == 128U &&
+                    carrier.stored_material(24, 41) == Material::Water &&
+                    carrier.stored_state_a(24, 41) == 96U,
+                "surface-skin carrying swaps actual Water quantity conservatively");
+    }
+
+    const auto moving_column = []() {
+        auto config = pressure_config();
+        config.chunk_size = 8;
+        config.activity_block_size = 8;
+        config.scheduling_core_size = 8;
+        auto world = std::make_unique<World>(config);
+        world->set_simulation_region(RectI64{1, 400, 8, 8});
+        rect(*world, 4, 1, 1, 400, Material::Water);
+        rect(*world, 2, 400, 2, 1, Material::Wall);
+        rect(*world, 2, 401, 5, 1, Material::Wall);
+        tick(*world);
+        require(world->stored_state_a(4, 400) == 1U &&
+                    world->pressure_cell(4, 400).flow == cybersand::PressureFlowParameters::kFlowScale,
+                "moving column primes a non-default family state");
+        return world;
+    };
+    // Water + ToxicSludge produces two fresh Water products. Existing Water
+    // identity at one site must not retain the old solver state of its reagent.
+    auto chemistry = moving_column();
+    chemistry->set(3, 400, Material::ToxicSludge);
+    tick(*chemistry);
+    for (const auto x : {3, 4}) {
+        const auto family = chemistry->pressure_cell(x, 400);
+        require(chemistry->stored_material(x, 400) == Material::Water &&
+                    chemistry->stored_state_a(x, 400) == 255U && family.flow == 0 && family.overfill == 0U,
+                "both Water reaction products start with fresh pressure state");
+    }
+    // External replacement can change only a sidecar while keeping every
+    // visible cell byte. Both public setters must still publish the mutation.
+    for (const bool explicit_state : {false, true}) {
+        auto painted = moving_column();
+        (void)painted->take_dirty_chunks();
+        require(painted->dirty_chunk_count() == 0U, "paint witness starts with no pending dirty chunk");
+        if (explicit_state) {
+            require(painted->set_cell_state(4, 400, Material::Water, 1, 0),
+                    "identical visible tuple reports changed family state");
+        } else {
+            painted->set(4, 400, Material::Water);
+        }
+        require(painted->pressure_cell(4, 400).flow == 0 && painted->stored_state_a(4, 400) == 1U &&
+                    painted->dirty_chunk_count() != 0U,
+                "same-material paint witnesses the family-only mutation");
+    }
+}
+
 void test_physical_hash_and_persistence() {
     const auto build = [](World& w) {
         rect(w, 8, 120, 80, 2, Material::Wall);
@@ -695,6 +808,6 @@ void test_lcb_pressure_quantity_parity() { test_quantity_parity_and_motion(); }
 void test_lcb_pressure_two_limb() { test_vented_two_limb_levels(); }
 void test_lcb_pressure_barriers() { test_barriers_block_head(); }
 void test_lcb_pressure_static_rest() { test_static_rest_and_sleep(); }
-void test_lcb_pressure_lifecycle() { test_lifecycle_ledgers(); }
+void test_lcb_pressure_lifecycle() { test_lifecycle_ledgers(); test_pressure_material_hooks(); }
 void test_lcb_pressure_persistence() { test_physical_hash_and_persistence(); }
 void test_lcb_pressure_default_untouched() { test_default_policy_untouched(); }

@@ -410,7 +410,8 @@ private:
     [[nodiscard]] std::uint8_t state_b(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] bool write_cell(std::int64_t x, std::int64_t y, Material material,
                                   std::uint16_t state_a_value, std::uint8_t state_b_value,
-                                  JobEffects* effects, bool external = false);
+                                 JobEffects* effects, bool external = false,
+                                 bool reaction_product = false);
     void merge_pressure_effects(const JobEffects& effects) noexcept;
     [[nodiscard]] bool rule_is_active(Material material, std::uint16_t state_a_value,
                                       std::uint8_t state_b_value) const noexcept;

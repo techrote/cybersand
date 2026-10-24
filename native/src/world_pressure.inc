@@ -961,7 +961,8 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
         witness(*r.chunk, r.at, 0, wx, wy);
     };
     // Add `amount` to a Water (or Empty -> new Water) cell: visible first, then overfill.
-    const auto give = [&](const Ref& r, std::int64_t amount, std::int16_t incoming_flow, bool mark_epoch,
+    const auto give = [&](const Ref& r, std::int64_t amount, std::int16_t incoming_flow,
+                          std::uint8_t incoming_coherence, bool mark_epoch,
                           std::int64_t wx, std::int64_t wy) {
         auto& cell = r.chunk->cells[r.at.index];
         auto& side = r.chunk->pressure->cells[r.at.index];
@@ -978,6 +979,7 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
         }
         const auto visible = std::min<std::int64_t>(amount, maximum - cell.state_a_value());
         cell.set_state_a(static_cast<std::uint16_t>(cell.state_a_value() + visible));
+        cell.set_state_b(std::max(cell.state_b_value(), incoming_coherence));
         side.overfill = static_cast<std::uint16_t>(side.overfill + (amount - visible));
         // Mass-weighted velocity merge; the truncation remainder is booked.
         const auto numerator = before * side.flow + amount * incoming_flow;
@@ -1012,8 +1014,10 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
             record_physics(PhysicsEvent::WaterTransfer, Material::Water, Material::Water,
                            tx - x, ty - y, effects, static_cast<std::uint64_t>(amount));
             const auto flow = source.chunk->pressure->cells[source.at.index].flow;
+            const auto coherence = source.chunk->cells[source.at.index].state_b_value();
             take(source, amount, x, y);
-            give(destination, amount, flow, true, tx, ty);
+            give(destination, amount, flow, coherence, true, tx, ty);
+            mix_after_motion(Material::Water, x, y, tx, ty, static_cast<std::uint16_t>(amount), effects);
             changed = true;
             return true;
         }
@@ -1044,7 +1048,8 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
             if (target.chunk != nullptr) {
                 const auto amount = std::min(o, maximum);
                 self_side->overfill = static_cast<std::uint16_t>(o - amount);
-                give(target, amount, self_side->flow, true, x, y - 1);
+                give(target, amount, self_side->flow, self.chunk->cells[self.at.index].state_b_value(), true, x, y - 1);
+                mix_after_motion(Material::Water, x, y, x, y - 1, static_cast<std::uint16_t>(amount), effects);
                 if (effects != nullptr) ++effects->pf_relief_cells;
                 else ++pressure_->flow.relief_cells;
                 witness(*self.chunk, self.at, 0, x, y);
@@ -1063,7 +1068,8 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
                 else amount = std::min(o, overfill_limit - other);
                 if (amount > 0) {
                     self_side->overfill = static_cast<std::uint16_t>(o - amount);
-                    give(target, amount, self_side->flow, false, x, y - 1);
+                    give(target, amount, self_side->flow, self.chunk->cells[self.at.index].state_b_value(), false, x, y - 1);
+                    mix_after_motion(Material::Water, x, y, x, y - 1, static_cast<std::uint16_t>(amount), effects);
                     witness(*self.chunk, self.at, 0, x, y);
                     changed = true;
                 }
@@ -1093,7 +1099,8 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
                 else if (o - other >= 2) amount = std::min((o - other) / 2, overfill_limit - other);
                 if (amount > 0) {
                     self_side->overfill = static_cast<std::uint16_t>(o - amount);
-                    give(target, amount, self_side->flow, false, *best, y);
+                    give(target, amount, self_side->flow, self.chunk->cells[self.at.index].state_b_value(), false, *best, y);
+                    mix_after_motion(Material::Water, x, y, *best, y, static_cast<std::uint16_t>(amount), effects);
                     witness(*self.chunk, self.at, 0, x, y);
                     changed = true;
                 }
@@ -1203,8 +1210,10 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
                 if (amount <= 0) return;
                 record_physics(PhysicsEvent::WaterTransfer, Material::Water, neighbour, nx - x, 0, effects,
                                static_cast<std::uint64_t>(amount));
+                const auto coherence = source.chunk->cells[source.at.index].state_b_value();
                 take(source, amount, x, y);
-                give(target, amount, 0, neighbour == Material::Empty, nx, y);
+                give(target, amount, 0, coherence, neighbour == Material::Empty, nx, y);
+                mix_after_motion(Material::Water, x, y, nx, y, static_cast<std::uint16_t>(amount), effects);
                 changed = true;
             };
             level_with(x + direction);
@@ -1272,10 +1281,11 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
     record_physics(PhysicsEvent::WaterTransfer, Material::Water, target_material, step, 0, effects,
                    static_cast<std::uint64_t>(amount));
     const auto outgoing = static_cast<std::int16_t>(flow);
+    const auto outgoing_coherence = self.chunk->cells[self.at.index].state_b_value();
     const bool emptied = amount >= available;
     if (!emptied) self_side->flow = outgoing;
     take(self, amount, x, y);
-    give(target, amount, outgoing, target_material == Material::Empty, tx, y);
+    give(target, amount, outgoing, outgoing_coherence, target_material == Material::Empty, tx, y);
     mix_after_motion(Material::Water, x, y, tx, y, static_cast<std::uint16_t>(std::min<std::int64_t>(amount, 65535)),
                      effects);
     if (emptied) return true;

@@ -1512,7 +1512,7 @@ bool World::rule_is_active(Material material, std::uint16_t state_a_value,
 
 bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
                        std::uint16_t state_a_value, std::uint8_t state_b_value,
-                       JobEffects* effects, bool external) {
+                       JobEffects* effects, bool external, bool reaction_product) {
     if (material == Material::Water &&
         (state_a_value == 0U ||
          state_a_value > config_.water_experiment_policy.maximum() ||
@@ -1531,11 +1531,17 @@ bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
     }
     auto& cell = chunk->cells[target.index];
     const auto before = cell.material_value();
-    // A painted/filled cell starts at its family default even when the visible
-    // tuple is unchanged; a kernel state update of the same material keeps it.
-    if (chunk->pressure != nullptr && (external || before != material))
+    // Paint and reaction products start at family defaults even when their
+    // material is unchanged. Ordinary same-material state updates retain state.
+    bool family_changed = false;
+    if (chunk->pressure != nullptr && (external || reaction_product || before != material)) {
+        const auto previous = chunk->pressure->cells[target.index];
         reset_pressure_cell(*chunk, target.index, before, material, external, effects);
-    if (cell.material_value() == material && cell.state_a_value() == state_a_value &&
+        const auto& current = chunk->pressure->cells[target.index];
+        family_changed = previous.overfill != current.overfill || previous.flow != current.flow ||
+                         previous.gas != current.gas;
+    }
+    if (!family_changed && cell.material_value() == material && cell.state_a_value() == state_a_value &&
         cell.state_b_value() == state_b_value) {
         return false;
     }
@@ -1709,9 +1715,15 @@ void World::set(std::int64_t x, std::int64_t y, Material material) {
     }
     auto& chunk = ensure_chunk(target.chunk);
     const auto previous_material = chunk.cells[target.index].material_value();
-    if (chunk.pressure != nullptr)
+    bool family_changed = false;
+    if (chunk.pressure != nullptr) {
+        const auto previous = chunk.pressure->cells[target.index];
         reset_pressure_cell(chunk, target.index, previous_material, material, true, nullptr);
-    if (previous_material == material) {
+        const auto& current = chunk.pressure->cells[target.index];
+        family_changed = previous.overfill != current.overfill || previous.flow != current.flow ||
+                         previous.gas != current.gas;
+    }
+    if (previous_material == material && !family_changed) {
         return;
     }
     const bool hard_surface_changed =
@@ -1722,9 +1734,11 @@ void World::set(std::int64_t x, std::int64_t y, Material material) {
     } else if (previous_material != Material::Empty && material == Material::Empty) {
         --chunk.non_empty_cell_count;
     }
-    chunk.cells[target.index] = Chunk::Cell::for_material(material);
-    if (material == Material::Water) {
-        chunk.cells[target.index].set_state_a(config_.water_experiment_policy.maximum());
+    if (previous_material != material) {
+        chunk.cells[target.index] = Chunk::Cell::for_material(material);
+        if (material == Material::Water) {
+            chunk.cells[target.index].set_state_a(config_.water_experiment_policy.maximum());
+        }
     }
     chunk.cells[target.index].set_epoch(update_epoch_);
     chunk.changed_this_tick = true;
@@ -2875,11 +2889,11 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             bool changed = write_cell(
                 target_x, target_y, reaction->target_product,
                 target_state_a, target_definition.initial_state_b,
-                effects);
+                effects, false, true);
             changed = write_cell(
                           x, y, reaction->source_product,
                           source_state_a,
-                          source_definition.initial_state_b, effects) ||
+                          source_definition.initial_state_b, effects, false, true) ||
                       changed;
             return changed;
         }
