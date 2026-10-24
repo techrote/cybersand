@@ -83,6 +83,47 @@ identities, commands, log hashes and drift/completion checks. The
 owns the job bounds and artifact route. This actual execution gate and the
 separate Windows cross-build check must retain their distinct evidence scopes.
 
+## Physical regression timeout diagnostics
+
+**Current apparatus for #233:**
+[`run_godot_regressions.py`](../../tools/ci/run_godot_regressions.py) keeps the
+ordinary physical test limit at 180 seconds. A timeout always fails, including
+when diagnostics fail or the process exits during evidence collection. Before
+killing the process tree it retains the last 60 log lines and attempts bounded
+process/thread evidence. Windows records process ancestry and individual thread
+state/wait reasons without requiring a debugger. Linux records process/thread
+wait channels and attempts a bounded GDB backtrace; missing debugger or ptrace
+refusal is explicit evidence. Full logs remain alongside the bounded excerpt.
+`seconds` excludes diagnostic/kill overhead, recorded separately as
+`diagnostic_seconds`. Coarse fixture markers identify the last emitted phase,
+rig/model and tick; they do not identify an exact blocked instruction.
+
+The ordinary GDExtension timing job retains actor/usable/flight observations and
+per-platform median, nearest-rank p95, maximum and failure frequencies. Record
+the checkout SHA in the artifacts as well as the workflow head SHA: ordinary PR
+jobs can execute GitHub's synthetic merge checkout. Missing or ambiguous timing
+must remain qualified. A passing rerun never replaces a preceding timeout.
+
+The dispatch-only
+[`physical-timeout-stress.yml`](../../.github/workflows/physical-timeout-stress.yml)
+requires an immutable source SHA and uses GitHub-hosted Windows Server 2022 and
+Ubuntu 24.04. For each platform it runs serial and three-process parallel modes,
+with five batches of ten repetitions of `test_physical_actor_arena`,
+`test_physical_actor_rigs` and `test_physical_usable_course`: 600 physical attempts
+plus 20 import preflights. Each attempt has isolated writable user and temporary
+state. Process parallelism does not select CyberSand's native worker count.
+The independent reducer binds all batches to the declared source, workflow run
+and attempt, checks runtime consistency, preflight and every expected repetition,
+and retains failures, missing attempts and malformed evidence. A physical timeout
+fails the stress gate and is still a valid diagnostic observation. An invalid
+campaign must be preserved and corrected through a reviewed PR before a complete
+new campaign; successful batches from different campaigns cannot be combined.
+
+The [dated #233 audit](../audits/2026-10-24-issue-233-physical-regression-timeouts.md)
+owns actual run IDs, historical failures, distributions and causal limitations.
+Diagnosis completion belongs to #233; the causal repair/watchdog and subsequent
+zero-timeout qualification belong to #234, under parent #232.
+
 ## What does equality establish?
 
 Native repeat and worker-count fixtures use `World::state_hash()` for their

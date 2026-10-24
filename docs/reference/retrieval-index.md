@@ -10,11 +10,11 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
-For current MAT-003 reconciliation with main `a395e33`, including the landed
-#239 foundation and #240 regressions, use the
-[post-#240 integration checkpoint](../audits/2026-10-24-mat003-post-240-integration-checkpoint.md).
-Previous exact-head CI passes and historical experiment records retain their own
-source scope; fresh checks on the new heads are pending.
+For current MAT-003 reconciliation with main `4348516`, including the landed
+#239 foundation, #240 regressions and #241 timeout diagnostics, use the
+[post-#241 integration checkpoint](../audits/2026-10-24-mat003-post-241-integration-checkpoint.md).
+Previous completed checks, superseded partial runs and historical experiments
+retain their own source scope; fresh checks on the new heads are pending.
 
 For packed overhead, actual wide-epoch clearing, 128-total-bit feasibility and separate admission, use the [MAT-003 continuation report](../research/mat003-continuation.md). Its [dated audit](../audits/2026-10-23-mat003-continuation.md) owns executed evidence; S2A acceptance does not admit these new tracks.
 
@@ -68,6 +68,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | How do Play/Inspect/Benchmark share a definition, and is a scenario capture replay? | [MicroScenario contract](../operations/microscenarios.md) |
 | Actual version, commits, local changes, recovery | [Source checkpoint](../operations/source-checkpoint-and-recovery.md) |
 | Who mutates cells; may a worker touch Godot? | [Ownership and lifetime](../architecture/data-ownership-and-lifetimes.md) |
+| How are physical Godot timeouts captured, source-bound stress attempts counted and diagnostic completion separated from repair? | [Timeout procedure](../operations/testing-validation-and-replay.md#physical-regression-timeout-diagnostics), [dated #233 evidence](../audits/2026-10-24-issue-233-physical-regression-timeouts.md) |
 | Desktop/Web order, synchronous ticks, failed-world reset/replacement | [Tick and threading](../architecture/simulation-tick-and-threading.md) |
 | Web compatibility/threaded Auto and hosting | [Web threading](../operations/web-threading.md) |
 | Body masks, displacement, terrain, Rapier scope | [Rigid-body/cellular coupling](../architecture/rigid-body-and-cellular-coupling.md) |

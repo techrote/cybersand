@@ -6,10 +6,14 @@ from collections import Counter
 from dataclasses import dataclass
 import hashlib
 import json
+import os
 from pathlib import Path
 import re
+import shutil
+import signal
 import subprocess
 import sys
+import tempfile
 import time
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -171,27 +175,188 @@ def case_command(godot: str, case: Case, platform: str = sys.platform) -> list[s
     return [*command, "--path", str(ROOT / "godot"), *case.flags]
 
 
-def run_case(godot: str, case: Case, output_dir: Path, role: str) -> tuple[dict, bool]:
+def _bounded_file_tail(handle, byte_limit: int) -> tuple[bytes, bool]:
+    handle.seek(0, os.SEEK_END)
+    size = handle.tell()
+    handle.seek(max(0, size - byte_limit))
+    return handle.read(byte_limit), size > byte_limit
+
+
+def _tail(path: Path, lines: int = 60) -> str:
+    """Bound the timeout console excerpt without replacing the retained full log."""
+    with path.open("rb") as handle:
+        data, truncated = _bounded_file_tail(handle, 256 * 1024)
+    prefix = "[tail capped at 262144 bytes]\n" if truncated else ""
+    return prefix + "\n".join(data.decode("utf-8", errors="replace").splitlines()[-lines:])
+
+
+def _snapshot_command(command: list[str], *, timeout: int = 12) -> str:
+    heading = f"$ {command!r}\n"
+    try:
+        # File-backed capture avoids unlimited in-memory output and inherited-pipe
+        # waits when a timed-out debugger or PowerShell command has descendants.
+        with tempfile.TemporaryFile() as stdout, tempfile.TemporaryFile() as stderr:
+            options = (
+                {"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP}
+                if sys.platform == "win32" else {"start_new_session": True}
+            )
+            process = subprocess.Popen(command, stdout=stdout, stderr=stderr, **options)
+            try:
+                process.wait(timeout=timeout)
+                status = f"exit={process.returncode}\n"
+            except subprocess.TimeoutExpired:
+                status = f"SNAPSHOT UNAVAILABLE: TimeoutExpired after {timeout}s\n"
+                _kill_process_tree(process, wait_seconds=2)
+            out, out_truncated = _bounded_file_tail(stdout, 64000)
+            err, err_truncated = _bounded_file_tail(stderr, 16000)
+            if out_truncated or err_truncated:
+                status += "[snapshot output capped at 64000 stdout / 16000 stderr bytes]\n"
+            output = (out + err).decode("utf-8", errors="replace").replace("\r\n", "\n")
+            return heading + status + output
+    except OSError as error:
+        return heading + f"SNAPSHOT UNAVAILABLE: {type(error).__name__}: {error}\n"
+
+
+def _capture_timeout_snapshot(pid: int, path: Path, log_path: Path, elapsed: float) -> None:
+    """Best-effort, bounded and non-fatal: preserve evidence *before* termination."""
+    parts = [
+        f"PID: {pid}\nElapsed before snapshot: {elapsed:.3f}s\n"
+        f"Full test log: {log_path}\nLast 60 lines before termination:\n{_tail(log_path)}\n",
+    ]
+    if sys.platform == "win32":
+        # The official console Godot wrapper owns a kill-on-close job containing
+        # its engine child. Capture both wrapper and children before taskkill /T.
+        script = (
+            "$rootId=" + str(pid) + "; "
+            "$procs=Get-CimInstance Win32_Process; "
+            "$ids=@($rootId); "
+            "for($i=0;$i -lt 5;$i++){"
+            "$ids=@($ids + @($procs | Where-Object { $ids -contains $_.ParentProcessId }"
+            " | ForEach-Object ProcessId)) | Sort-Object -Unique }; "
+            "$procs | Where-Object { $ids -contains $_.ProcessId }"
+            " | Format-List ProcessId,ParentProcessId,Name,CommandLine; "
+            "foreach($id in $ids){ $p=Get-Process -Id $id -ErrorAction SilentlyContinue; "
+            "if($null -eq $p){continue}; "
+            "$p | Select-Object Id,ProcessName,CPU,StartTime | Format-List; "
+            "try { foreach($thread in $p.Threads){ "
+            "$wait='not waiting'; "
+            "if($thread.ThreadState -eq [System.Diagnostics.ThreadState]::Wait){ "
+            "try {$wait=$thread.WaitReason} catch {$wait='unavailable: '+$_.Exception.Message} }; "
+            "[pscustomobject]@{ProcessId=$id;ThreadId=$thread.Id;State=$thread.ThreadState;"
+            "WaitReason=$wait;CPU=$thread.TotalProcessorTime} | Format-List "
+            "} } catch { Write-Output ('THREAD SNAPSHOT UNAVAILABLE: '+$_.Exception.Message) } }"
+        )
+        parts.append(_snapshot_command(["powershell", "-NoProfile", "-NonInteractive", "-Command", script]))
+        parts.append("Native stack capture: unavailable without a preinstalled debugger; process/thread snapshot retained.\n")
+    else:
+        # run_case starts an owned session, so this includes the engine root and
+        # any same-session descendants rather than only the launcher PID.
+        parts.append(_snapshot_command([
+            "ps", "--forest", "-s", str(pid), "-o", "pid,ppid,pgid,sid,stat,etime,wchan:32,args",
+        ]))
+        parts.append(_snapshot_command([
+            "ps", "-T", "-p", str(pid), "-o", "pid,tid,stat,etime,wchan:32,comm",
+        ]))
+        # This may fail under Yama ptrace restrictions. Record that refusal;
+        # never let evidence collection promote a timeout to a pass.
+        if shutil.which("gdb"):
+            debugger = ["gdb", "-q", "-n", "-batch", "-p", str(pid),
+                        "-ex", "set pagination off", "-ex", "thread apply all bt 12"]
+            # GitHub Ubuntu may enable Yama ptrace_scope=1. sudo -n is
+            # available on hosted runners; refusal stays explicit evidence.
+            if shutil.which("sudo"):
+                debugger = ["sudo", "-n", *debugger]
+            parts.append(_snapshot_command(debugger))
+        else:
+            parts.append("Native stack capture: gdb not installed; process wait-channel snapshot retained.\n")
+    try:
+        path.write_text("\n".join(parts), encoding="utf-8")
+    except OSError as error:
+        print(f"Cannot write timeout snapshot {path}: {error}", flush=True)
+
+
+def _kill_process_tree(process: subprocess.Popen, *, wait_seconds: int = 10) -> None:
+    if sys.platform == "win32":
+        # Windows Godot launches a console wrapper plus an engine child. Its
+        # kill-on-close job and taskkill /T cover both processes.
+        try:
+            killer = subprocess.Popen(
+                ["taskkill", "/PID", str(process.pid), "/T", "/F"],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            )
+            try:
+                killer.wait(timeout=wait_seconds)
+            except subprocess.TimeoutExpired:
+                killer.kill()
+                try:
+                    killer.wait(timeout=2)
+                except subprocess.TimeoutExpired:
+                    print("taskkill did not exit after termination", flush=True)
+        except OSError as error:
+            print(f"Cannot terminate process tree for PID {process.pid}: {error}", flush=True)
+    else:
+        try:
+            os.killpg(os.getpgid(process.pid), signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+    if process.poll() is None:
+        process.kill()
+    try:
+        process.wait(timeout=wait_seconds)
+    except subprocess.TimeoutExpired:
+        process.kill()
+        try:
+            process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            print(f"Timed-out Godot PID {process.pid} did not exit after SIGKILL", flush=True)
+
+
+def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
+             env: dict[str, str] | None = None) -> tuple[dict, bool]:
     log_path = output_dir / (case.name + ".log")
+    snapshot_path = output_dir / (case.name + ".timeout-diagnostics.txt")
     command = case_command(godot, case)
     print(f"Running {case.name}, timeout {case.timeout}s: {command}", flush=True)
     started = time.perf_counter()
     timed_out = False
     returncode = None
     launch_error = None
+    pid = None
+    timeout_observed = None
+    timeout_diagnostic_error = None
     with log_path.open("w", encoding="utf-8") as log:
         try:
-            result = subprocess.run(
-                command,
-                cwd=ROOT,
-                stdout=log,
-                stderr=subprocess.STDOUT,
-                timeout=case.timeout,
+            options = (
+                {"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP}
+                if sys.platform == "win32" else {"start_new_session": True}
             )
-            returncode = result.returncode
-        except subprocess.TimeoutExpired:
-            timed_out = True
-            log.write(f"\nTIMEOUT after {case.timeout}s\n")
+            process = subprocess.Popen(
+                command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, env=env, **options,
+            )
+            pid = process.pid
+            try:
+                returncode = process.wait(timeout=case.timeout)
+            except subprocess.TimeoutExpired:
+                timed_out = True
+                log.flush()
+                elapsed = time.perf_counter() - started
+                timeout_observed = elapsed
+                try:
+                    _capture_timeout_snapshot(pid, snapshot_path, log_path, elapsed)
+                except Exception as error:
+                    # Failure to observe must never bypass termination or turn
+                    # a real timeout into a launch error or a passing result.
+                    timeout_diagnostic_error = f"{type(error).__name__}: {error}"
+                    message = f"Timeout evidence unavailable for PID {pid}: {timeout_diagnostic_error}\n"
+                    print(message, end="", flush=True)
+                    try:
+                        snapshot_path.write_text(message, encoding="utf-8")
+                    except OSError:
+                        pass
+                finally:
+                    _kill_process_tree(process)
+                log.write(f"\nTIMEOUT after {case.timeout}s\n")
+                log.flush()
         except OSError as error:
             launch_error = str(error)
             log.write(f"\nLAUNCH ERROR: {launch_error}\n")
@@ -199,8 +364,6 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str) -> tuple[dict,
     output = log_path.read_text(encoding="utf-8", errors="replace")
     print(output, end="", flush=True)
     diagnostic_error = "SCRIPT ERROR:" in output or "ERROR:" in output
-    # A zero exit after a no-display shortcut did not exercise its oracle. Keep
-    # that outcome distinct in retained evidence and fail the required gate.
     skip_messages = [
         line for line in output.splitlines()
         if re.search(r"\bskipped\b|^\s*SKIP\b", line, flags=re.IGNORECASE)
@@ -218,7 +381,8 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str) -> tuple[dict,
         "name": case.name,
         "role": role,
         "status": status,
-        "seconds": round(elapsed, 3),
+        "seconds": round(timeout_observed if timeout_observed is not None else elapsed, 3),
+        "diagnostic_seconds": round(elapsed - timeout_observed, 3) if timeout_observed is not None else 0.0,
         "timeout_seconds": case.timeout,
         "returncode": returncode,
         "diagnostic_error": diagnostic_error,
@@ -227,12 +391,22 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str) -> tuple[dict,
         "requires_display": case.requires_display,
         "command": command,
         "log": log_path.name,
+        "pid": pid,
+        "timeout_diagnostics": snapshot_path.name if timed_out and snapshot_path.exists() else None,
+        "timeout_diagnostic_error": timeout_diagnostic_error,
+        "last_progress": next(
+            (line for line in reversed(output.splitlines()) if line.startswith("REGRESSION_PROGRESS ")),
+            None,
+        ),
     }
     if failed:
         print(
-            f"{case.name} {status}; exit={returncode}; see {log_path}",
+            f"{case.name} {status}; elapsed={record['seconds']:.3f}s; exit={returncode}; "
+            f"log={log_path}; snapshot={record['timeout_diagnostics']}",
             flush=True,
         )
+        if timed_out:
+            print("Last 60 log lines:\n" + _tail(log_path), flush=True)
     return record, failed
 
 
