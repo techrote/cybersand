@@ -263,6 +263,7 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str) -> tuple[dict,
     returncode = None
     launch_error = None
     pid = None
+    timeout_observed = None
     with log_path.open("w", encoding="utf-8") as log:
         try:
             options = (
@@ -279,6 +280,7 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str) -> tuple[dict,
                 timed_out = True
                 log.flush()
                 elapsed = time.perf_counter() - started
+                timeout_observed = elapsed
                 _capture_timeout_snapshot(pid, snapshot_path, log_path, elapsed)
                 _kill_process_tree(process)
                 log.write(f"\nTIMEOUT after {case.timeout}s\n")
@@ -307,7 +309,8 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str) -> tuple[dict,
         "name": case.name,
         "role": role,
         "status": status,
-        "seconds": round(elapsed, 3),
+        "seconds": round(timeout_observed if timeout_observed is not None else elapsed, 3),
+        "diagnostic_seconds": round(elapsed - timeout_observed, 3) if timeout_observed is not None else 0.0,
         "timeout_seconds": case.timeout,
         "returncode": returncode,
         "diagnostic_error": diagnostic_error,
@@ -325,7 +328,7 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str) -> tuple[dict,
     }
     if failed:
         print(
-            f"{case.name} {status}; elapsed={elapsed:.3f}s; exit={returncode}; "
+            f"{case.name} {status}; elapsed={record['seconds']:.3f}s; exit={returncode}; "
             f"log={log_path}; snapshot={record['timeout_diagnostics']}",
             flush=True,
         )
