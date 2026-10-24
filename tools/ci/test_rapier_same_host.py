@@ -47,7 +47,7 @@ class SameHostTests(unittest.TestCase):
                 return "native.dll\0" + relative + "\0godot/fixture.gd\0" if "ls-files" in args else "head\n"
             return "4.7\n"
 
-        argv = ["pair", "--godot", "fake", "--output", str(root / "out"), "--batch", "0", "--control-build", str(root / "control"), "--patched-build", str(root / "patched")]
+        argv = ["pair", "--godot", "fake", "--output", str(root / "out"), "--host", subject.current_host(), "--batch", "0", "--control-build", str(root / "control"), "--patched-build", str(root / "patched")]
         with patch.object(subject.runner, "ROOT", root), patch.object(subject.sys, "argv", argv), \
                 patch.object(subject, "hardware", return_value={"physical_cores": 2}), \
                 patch.object(subject.subprocess, "check_output", side_effect=command), \
@@ -67,6 +67,9 @@ class SameHostTests(unittest.TestCase):
         self.assertEqual(len(calls), 62)
         for variant, report in reports.items():
             self.assertTrue(report["completed"])
+            self.assertEqual(report["identity"]["host"], subject.current_host())
+            self.assertEqual(report["identity"]["batch"], 0)
+            self.assertEqual(report["identity"]["variant"], variant)
             self.assertEqual(len(report["results"]), 30)
             self.assertEqual(sum(r["pair_position"] == 0 for r in report["results"]), 15)
         self.assertEqual(sum(r["status"] == "timeout" for r in reports["control"]["results"]), 1)

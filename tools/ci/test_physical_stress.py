@@ -26,8 +26,12 @@ class SummaryTests(unittest.TestCase):
                 self.write(host, batch, self.report)
 
     def write(self, host, batch, report):
-        path = self.root / f"physical-stress-{host}-{batch}" / "stress.json"
+        path = self.root / f"physical-stress-retained-{host}-{batch}" / "stress.json"
         path.parent.mkdir(exist_ok=True)
+        report = copy.deepcopy(report)
+        report["identity"].setdefault("host", host)
+        report["identity"].setdefault("batch", batch)
+        report["identity"].setdefault("variant", "retained")
         path.write_text(json.dumps(report))
 
     def test_complete_three_hundred_trial_scope_passes(self):
@@ -52,7 +56,7 @@ class SummaryTests(unittest.TestCase):
         self.assertTrue(result["errors"])
 
     def test_missing_batch_cannot_report_zero_timeouts_as_success(self):
-        (self.root / "physical-stress-linux-0/stress.json").unlink()
+        (self.root / "physical-stress-retained-linux-0/stress.json").unlink()
         self.assertTrue(summarize(self.root)["errors"])
 
     def test_duplicate_trial_cannot_replace_an_unexecuted_trial(self):
@@ -62,17 +66,17 @@ class SummaryTests(unittest.TestCase):
         self.assertTrue(any("duplicated" in error for error in summarize(self.root)["errors"]))
 
     def test_duplicate_batch_cannot_replace_a_missing_host_batch(self):
-        missing = self.root / "physical-stress-linux-4/stress.json"
+        missing = self.root / "physical-stress-retained-linux-4/stress.json"
         missing.unlink()
-        duplicate = self.root / "physical-stress-linux-0-duplicate/stress.json"
+        duplicate = self.root / "physical-stress-retained-linux-0-duplicate/stress.json"
         duplicate.parent.mkdir()
-        duplicate.write_text(json.dumps(self.report))
+        duplicate.write_text((self.root / "physical-stress-retained-linux-0/stress.json").read_text())
         errors = summarize(self.root)["errors"]
         self.assertTrue(any("batch linux/0" in error for error in errors))
         self.assertTrue(any("batch linux/4" in error for error in errors))
 
     def test_unrecognized_host_or_batch_is_not_inferred_as_linux(self):
-        original = self.root / "physical-stress-linux-4"
+        original = self.root / "physical-stress-retained-linux-4"
         original.rename(self.root / "arbitrary-evidence-4")
         self.assertTrue(any("Invalid host/batch" in error for error in summarize(self.root)["errors"]))
 
@@ -95,6 +99,44 @@ class SummaryTests(unittest.TestCase):
         errors = summarize(self.root)["errors"]
         self.assertTrue(any("source revision" in error for error in errors))
         self.assertTrue(any("runtime identities" in error for error in errors))
+
+    def test_copied_batch_zero_renamed_four_cannot_retain_false_fifty_passes(self):
+        zero = self.root / "physical-stress-retained-linux-0/stress.json"
+        four = self.root / "physical-stress-retained-linux-4/stress.json"
+        four.write_bytes(zero.read_bytes())
+        report = summarize(self.root)
+        # Inventory/status counts alone still look perfect. Explicit identity
+        # must detect that batch4 never ran and batch0 was copied.
+        self.assertTrue(all(count == {"passed": 50} for count in report["counts"].values()))
+        self.assertTrue(any("differs from artifact path" in error for error in report["errors"]))
+        self.assertTrue(any("batch linux/4" in error for error in report["errors"]))
+
+    def test_missing_explicit_scope_and_noninteger_batch_are_rejected(self):
+        path = self.root / "physical-stress-retained-linux-0/stress.json"
+        original = path.read_text()
+        for field in ("host", "batch", "variant"):
+            with self.subTest(field=field):
+                report = json.loads(original)
+                report["identity"].pop(field)
+                path.write_text(json.dumps(report))
+                self.assertTrue(any("explicit host/batch/variant" in e for e in summarize(self.root)["errors"]))
+        for invalid in (True, "0", -1, 5):
+            with self.subTest(batch=invalid):
+                report = json.loads(original)
+                report["identity"]["batch"] = invalid
+                path.write_text(json.dumps(report))
+                self.assertTrue(summarize(self.root)["errors"])
+
+    def test_declared_variant_is_homogeneous_and_matches_artifact_and_cli(self):
+        path = self.root / "physical-stress-retained-linux-0/stress.json"
+        report = json.loads(path.read_text())
+        report["identity"]["variant"] = "patched"
+        path.write_text(json.dumps(report))
+        errors = summarize(self.root)["errors"]
+        self.assertTrue(any("variant differs from artifact path" in e for e in errors))
+        self.assertTrue(any("homogeneous variant" in e for e in errors))
+        path.write_text(json.dumps({**report, "identity": {**report["identity"], "variant": "retained"}}))
+        self.assertTrue(summarize(self.root, expected_variant="patched")["errors"])
 
 
 if __name__ == "__main__":

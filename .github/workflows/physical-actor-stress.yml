@@ -159,7 +159,7 @@ jobs:
         if: inputs.rapier_pair == true
         run: cp build/rapier/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so godot/addons/godot-rapier2d/bin/
       - name: Ten independent trials per test (five batches = fifty)
-        run: python3 tools/ci/stress_physical_actors.py --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --iterations 10 --output build/stress ${{ inputs.rapier_pair == true && '--rapier-build-manifest build/rapier/rapier-build.json' || '' }}
+        run: python3 tools/ci/stress_physical_actors.py --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --iterations 10 --host linux --batch ${{ matrix.batch }} --variant ${{ matrix.variant }} --output build/stress ${{ inputs.rapier_pair == true && '--rapier-build-manifest build/rapier/rapier-build.json' || '' }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -217,7 +217,7 @@ jobs:
           cp build/rapier/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll godot/addons/godot-rapier2d/bin/
           cp build/rapier/godot_rapier.pdb godot/addons/godot-rapier2d/bin/
       - name: Ten independent trials per test (five batches = fifty)
-        run: python tools/ci/stress_physical_actors.py --godot "$GODOT_BIN" --iterations 10 --output build/stress ${{ inputs.rapier_pair == true && '--rapier-build-manifest build/rapier/rapier-build.json' || '' }}
+        run: python tools/ci/stress_physical_actors.py --godot "$GODOT_BIN" --iterations 10 --host windows --batch ${{ matrix.batch }} --variant ${{ matrix.variant }} --output build/stress ${{ inputs.rapier_pair == true && '--rapier-build-manifest build/rapier/rapier-build.json' || '' }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -265,7 +265,7 @@ jobs:
           unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
           chmod +x "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
       - name: Alternate both variants on the same host with CPU topology recorded
-        run: python3 tools/ci/stress_rapier_same_host.py --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --batch ${{ matrix.batch }} --control-build build/rapier-control --patched-build build/rapier-patched --output build/same-host
+        run: python3 tools/ci/stress_rapier_same_host.py --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --host linux --batch ${{ matrix.batch }} --control-build build/rapier-control --patched-build build/rapier-patched --output build/same-host
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -324,7 +324,7 @@ jobs:
               output.write('GODOT_BIN=' + str(binary) + '\n')
           PY
       - name: Alternate both variants on the same host with CPU topology recorded
-        run: python tools/ci/stress_rapier_same_host.py --godot "$GODOT_BIN" --batch ${{ matrix.batch }} --control-build build/rapier-control --patched-build build/rapier-patched --output build/same-host
+        run: python tools/ci/stress_rapier_same_host.py --godot "$GODOT_BIN" --host windows --batch ${{ matrix.batch }} --control-build build/rapier-control --patched-build build/rapier-patched --output build/same-host
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -356,7 +356,7 @@ jobs:
           pattern: physical-stress-${{ matrix.variant }}-*
           path: build/frequency
       - name: Require full scope and report per-test and per-phase frequencies
-        run: python3 tools/ci/summarize_physical_stress.py build/frequency
+        run: python3 tools/ci/summarize_physical_stress.py build/frequency --expected-variant ${{ matrix.variant }}
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:

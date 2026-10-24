@@ -9,7 +9,8 @@ from summarize_physical_stress import report_batch, summarize
 
 
 def compare(root: Path, lock: dict, **expected) -> dict:
-    reports = {variant: summarize(root / variant, **expected) for variant in ("control", "patched")}
+    reports = {variant: summarize(root / variant, expected_variant=variant, **expected)
+               for variant in ("control", "patched")}
     errors = []
     control, patched = reports["control"], reports["patched"]
     for error in control["errors"]:
@@ -35,7 +36,10 @@ def compare(root: Path, lock: dict, **expected) -> dict:
             if report.get("preflight_passed") is not True:
                 errors.append("Missing or failed preflight receipt: " + str(path))
             build = identity.get("rapier_build", {})
-            host = "windows" if "windows" in path.parent.name else "linux"
+            host = identity.get("host")
+            if host not in ("windows", "linux") or identity.get("variant") != variant:
+                errors.append("Invalid explicit paired host/variant identity: " + str(path))
+                continue
             key = host + "/" + variant
             expected_join = lock["base_join_source_sha256"] if variant == "control" else lock["patched_join_source_sha256"]
             expected_file = "libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" if host == "windows" else "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so"
@@ -54,7 +58,8 @@ def compare(root: Path, lock: dict, **expected) -> dict:
                 errors.append("Missing or unsupported same-host pairing protocol: " + str(path))
             else:
                 batch = identity.get("pair_batch")
-                if type(batch) is not int or batch not in range(5) or report_batch(path) != (host, batch):
+                if (type(batch) is not int or batch not in range(5) or report_batch(path) != (host, batch)
+                        or identity.get("batch") != batch):
                     errors.append("Invalid same-host batch identity: " + str(path))
                     continue
                 if (host, batch, variant) in paired_hosts:

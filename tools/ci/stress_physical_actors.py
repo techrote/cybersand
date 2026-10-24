@@ -15,6 +15,14 @@ import run_godot_regressions as runner
 SUSPECTS = ("test_physical_actor_arena", "test_physical_actor_rigs", "test_physical_usable_course")
 
 
+def current_host() -> str:
+    if sys.platform == "win32":
+        return "windows"
+    if sys.platform.startswith("linux"):
+        return "linux"
+    raise RuntimeError("Physical stress requires Windows or Linux")
+
+
 def progress_phase(record: dict) -> str:
     marker = record.get("last_progress")
     if isinstance(marker, str):
@@ -32,10 +40,17 @@ def main() -> int:
     parser.add_argument("--godot", required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--iterations", type=int, default=50)
+    parser.add_argument("--host", choices=("windows", "linux"), required=True)
+    parser.add_argument("--batch", type=int, required=True)
+    parser.add_argument("--variant", choices=("retained", "control", "patched"), required=True)
     parser.add_argument("--rapier-build-manifest", type=Path)
     args = parser.parse_args()
     if not 1 <= args.iterations <= 100:
         parser.error("iterations must be between 1 and 100")
+    if args.host != current_host() or args.batch not in range(5):
+        parser.error("host must match this OS and batch must be between 0 and 4")
+    if (args.variant == "retained") != (args.rapier_build_manifest is None):
+        parser.error("control/patched variants require a build manifest; retained uses committed runtime")
     args.output.mkdir(parents=True, exist_ok=True)
     native, rapier = runner.runtime_paths()
     identity = {
@@ -44,11 +59,14 @@ def main() -> int:
         "godot_version": subprocess.check_output([args.godot, "--version"], text=True, timeout=30).strip(),
         "native_sha256": runner.sha256(native), "rapier_sha256": runner.sha256(rapier),
         "run_id": os.environ.get("GITHUB_RUN_ID"), "attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),
+        "host": args.host, "batch": args.batch, "variant": args.variant,
         "local_delta": subprocess.check_output(["git", "diff", "HEAD", "--stat"], cwd=runner.ROOT, text=True),
     }
     if args.rapier_build_manifest:
         from rapier_candidate_identity import verify
         identity["rapier_build"] = verify(runner.ROOT, args.rapier_build_manifest)
+        if identity["rapier_build"].get("variant") != args.variant:
+            raise RuntimeError("Declared stress variant differs from the verified Rapier build")
     if sys.platform == "win32":
         from run_windows_godot_regressions import verify_retained_runtime
         identity["retained_runtime"] = verify_retained_runtime(runner.ROOT, rapier_build=args.rapier_build_manifest)

@@ -24,7 +24,7 @@ class PairTests(unittest.TestCase):
                              "artifacts": {filename: host + variant}, "godot_version": "4.7", "rustc": "exact",
                              "upstream_cargo_lock_sha256": "upstream", "resolved_cargo_lock_sha256": "resolved", "build_lock_sha256": "build-lock"}
                     report = {"identity": {"source_sha": "source", "native_sha256": host + "native", "rapier_sha256": host + variant,
-                                           "godot_version": "4.7", "rapier_build": build, "run_id": "1234", "attempt": "1",
+                                           "godot_version": "4.7", "rapier_build": build, "host": host, "batch": batch, "variant": variant, "run_id": "1234", "attempt": "1",
                                            "paired_protocol": "same-host-alternating-v1", "pair_batch": batch,
                                            "pair_host_id": f"host-{host}-{batch}", "hardware": {"physical_cores": 2},
                                            "fixture_inputs": {"fixture": "same"}},
@@ -47,6 +47,27 @@ class PairTests(unittest.TestCase):
 
     def test_complete_pair_with_reproduced_control_qualifies(self):
         self.assertTrue(compare(self.root, self.lock)["qualified"])
+
+    def test_paired_explicit_host_batch_and_variant_are_required(self):
+        path = self.root / "patched/windows-0/stress.json"
+        original = path.read_text()
+        for field in ("host", "batch", "variant"):
+            with self.subTest(field=field):
+                report = json.loads(original)
+                report["identity"].pop(field)
+                path.write_text(json.dumps(report))
+                self.assertFalse(compare(self.root, self.lock)["qualified"])
+        path.write_text(original)
+        self.mutate("patched", lambda r: r["identity"].update(variant="control"))
+        self.assertFalse(compare(self.root, self.lock)["qualified"])
+
+    def test_paired_copied_zero_renamed_four_rejects_even_complete_counts(self):
+        zero = self.root / "patched/windows-0/stress.json"
+        four = self.root / "patched/windows-4/stress.json"
+        four.write_bytes(zero.read_bytes())
+        result = compare(self.root, self.lock)
+        self.assertFalse(result["qualified"])
+        self.assertTrue(any("differs from artifact path" in error for error in result["errors"]))
 
     def test_omitting_all_pair_protocol_fields_cannot_qualify(self):
         for path in self.root.glob("*/*/stress.json"):

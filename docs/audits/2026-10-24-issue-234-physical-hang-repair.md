@@ -165,8 +165,10 @@ Three outstanding P2 comments on PR #236 are corrected with focused negatives:
 2. The same-host runner retains `completed=false` until preflights and final
    fixture/runtime hashing finish. A crash or drift after the thirtieth case
    preserves the trial inventory without publishing accepted completion.
-3. The legacy 300-attempt reducer requires five distinct batch identities per OS;
-   a duplicate file cannot replace a missing batch while preserving totals.
+3. The legacy 300-attempt producer declares explicit JSON host/batch/variant and
+   the reducer requires five distinct batches per OS, matching artifact paths and
+   the expected variant. Copying batch zero over batch four remains rejected even
+   when apparent outcome totals are 50/50. Filename counts alone are insufficient.
 
 Legacy phase reduction also accepts both admitted marker formats without calling
 dictionary methods on #233's text marker. These fixes do not rewrite old reports
@@ -178,6 +180,9 @@ counterexamples now fail while valid baseline fixtures pass. New strict receipt
 requirements are not retroactively manufactured in historical reports.
 The fresh acceptance uses #233's separate exhaustive 600-attempt reducer, binding
 every batch to exact source, run ID, attempt and runtime identities.
+Historical log fallback also recognizes the new typed watchdog timeout line;
+it cannot infer that a truncated 45-second idle failure passed or was a measured
+180-second execution. JSON measured timing remains preferred.
 
 ## Local integration checks
 
@@ -190,6 +195,17 @@ blocked-main capture probes above also passed. The materialized repository check
 at the pre-commit merge delta reports only the two intentionally changed Rapier
 LFS identities relative to old HEAD; it must pass against the committed tree
 before admission. All eighteen payloads are materialized.
+
+The initial integrated checkpoint is `597e5b5f865cb20ba512a8d64b151c8971d945fd`.
+Its exact-head Documentation/provenance run `40124313363` passed; Windows import
+and all three default physical suspects passed locally with zero tested-input
+drift (5.598 / 13.057 / 18.984 / 11.578 s). Final explicit batch/variant review
+required a follow-up revision. Ready-event Native `40124497117`, Godot
+`40124497247` and Water `40124497148` were cancelled as superseded; no cancellation
+or draft skip is accepted as final admission. Their original records remain.
+The follow-up focused suites total **143 tests**, adding explicit-scope negatives
+and typed-watchdog historical timing coverage. Fresh exact-head hosted gates
+remain required after that revision.
 
 Documentation/link metadata, provider policy, M11 historical integrity
 (18 records/28 hashes) and whitespace checks passed. Frozen lexical retrieval

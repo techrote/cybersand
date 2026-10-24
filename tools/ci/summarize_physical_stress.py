@@ -1,10 +1,10 @@
 """Aggregate all planned experiments; missing/failed trials cannot look green."""
 
+import argparse
 import json
 import os
 import re
 from pathlib import Path
-import sys
 from collections import Counter
 
 from stress_physical_actors import SUSPECTS, progress_phase
@@ -15,7 +15,16 @@ def report_batch(path: Path) -> tuple[str, int] | None:
     return (match[1], int(match[2])) if match else None
 
 
-def summarize(root: Path, *, expected_source_sha=None, expected_run_id=None, expected_run_attempt=None) -> dict:
+def report_variant(path: Path) -> str | None:
+    match = re.match(r"physical-stress-(retained|control|patched)-", path.parent.name)
+    if match:
+        return match[1]
+    container = path.parent.parent.name
+    return container if container in ("retained", "control", "patched") else None
+
+
+def summarize(root: Path, *, expected_source_sha=None, expected_run_id=None, expected_run_attempt=None,
+              expected_variant="retained") -> dict:
     counts = {}
     phases = Counter()
     errors = []
@@ -23,6 +32,7 @@ def summarize(root: Path, *, expected_source_sha=None, expected_run_id=None, exp
     source_shas = set()
     campaigns = set()
     batches = Counter()
+    variants = set()
     reports = sorted(root.glob("*/stress.json"))
     if len(reports) != 10:
         errors.append(f"Expected ten batch reports, found {len(reports)}")
@@ -31,14 +41,26 @@ def summarize(root: Path, *, expected_source_sha=None, expected_run_id=None, exp
         if batch is None:
             errors.append(f"Invalid host/batch identity: {path}")
             continue
-        host, batch_number = batch
-        batches[batch] += 1
+        path_host, path_batch = batch
         try:
             report = json.loads(path.read_text(encoding="utf-8"))
         except (OSError, ValueError) as error:
             errors.append(f"Unreadable batch evidence: {path}: {error}")
             continue
         identity = report["identity"]
+        host, batch_number, variant = identity.get("host"), identity.get("batch"), identity.get("variant")
+        if (host not in ("windows", "linux") or type(batch_number) is not int
+                or batch_number not in range(5) or variant not in ("retained", "control", "patched")):
+            errors.append(f"Missing or invalid explicit host/batch/variant identity: {path}")
+            continue
+        batches[(host, batch_number)] += 1
+        variants.add(variant)
+        if (host, batch_number) != (path_host, path_batch):
+            errors.append(f"Declared host/batch identity differs from artifact path: {path}")
+        if variant != report_variant(path):
+            errors.append(f"Declared variant differs from artifact path: {path}")
+        if variant != expected_variant:
+            errors.append(f"Batch differs from declared variant {expected_variant}: {path}")
         source_shas.add(identity["source_sha"])
         run_id, attempt = str(identity.get("run_id", "")), str(identity.get("attempt", ""))
         campaigns.add((run_id, attempt))
@@ -76,15 +98,22 @@ def summarize(root: Path, *, expected_source_sha=None, expected_run_id=None, exp
         errors.append(f"Expected one source revision, found {sorted(source_shas)}")
     if len(campaigns) != 1:
         errors.append(f"Expected one run/attempt identity, found {sorted(campaigns)}")
+    if variants != {expected_variant}:
+        errors.append(f"Expected homogeneous variant {expected_variant}, found {sorted(variants)}")
     return {"source_shas": sorted(source_shas), "runtime_identities": identities,
-            "campaign_ids": sorted(campaigns),
+            "campaign_ids": sorted(campaigns), "variants": sorted(variants),
             "counts": {k: dict(v) for k, v in counts.items()}, "timeouts_by_phase": dict(phases), "errors": errors}
 
 
 def main() -> int:
-    root = Path(sys.argv[1])
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("root", type=Path)
+    parser.add_argument("--expected-variant", choices=("retained", "control", "patched"), required=True)
+    args = parser.parse_args()
+    root = args.root
     report = summarize(root, expected_source_sha=os.getenv("GITHUB_SHA"),
-                       expected_run_id=os.getenv("GITHUB_RUN_ID"), expected_run_attempt=os.getenv("GITHUB_RUN_ATTEMPT"))
+                       expected_run_id=os.getenv("GITHUB_RUN_ID"), expected_run_attempt=os.getenv("GITHUB_RUN_ATTEMPT"),
+                       expected_variant=args.expected_variant)
     (root / "summary.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     lines = ["| Host/test | Trials | Timeouts | Other failures |", "|---|---:|---:|---:|"]
     for key, counts in sorted(report["counts"].items()):

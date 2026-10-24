@@ -13,7 +13,7 @@ import subprocess
 import sys
 
 import run_godot_regressions as runner
-from stress_physical_actors import SUSPECTS, progress_phase
+from stress_physical_actors import SUSPECTS, current_host, progress_phase
 from rapier_candidate_identity import verify
 
 
@@ -45,7 +45,10 @@ def main():
     parser.add_argument("--control-build", type=Path, required=True)
     parser.add_argument("--patched-build", type=Path, required=True)
     parser.add_argument("--batch", type=int, required=True)
+    parser.add_argument("--host", choices=("windows", "linux"), required=True)
     args = parser.parse_args()
+    if args.host != current_host() or args.batch not in range(5):
+        parser.error("host must match this OS and batch must be between 0 and 4")
     root, output = runner.ROOT, args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
     host = hardware()
@@ -83,6 +86,7 @@ def main():
         runner.ROOT = project
         native, rapier = runner.runtime_paths()
         identity = {"source_sha": source, "platform": platform.platform(), "python": platform.python_version(),
+                    "host": args.host, "batch": args.batch, "variant": variant,
                     "godot_version": godot_version, "native_sha256": runner.sha256(native), "rapier_sha256": runner.sha256(rapier),
                     "rapier_build": data, "run_id": os.environ.get("GITHUB_RUN_ID"), "attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),
                     "paired_protocol": "same-host-alternating-v1", "pair_host_id": socket.gethostname(),
