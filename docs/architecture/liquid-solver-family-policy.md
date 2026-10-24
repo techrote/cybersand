@@ -182,7 +182,8 @@ are **not** in the native receipt; the host's runtime identity supplies them.
 (SHA-256 over the length-prefixed tag `lcb-run-receipt-v1` and key/value pairs),
 `components` and `tick`. It binds the policy hash, Water policy, transport
 profile, interaction policy, workers, backend, scheduler geometry, execution
-settings (window, LOD, adhesion) and the physical-state hash version, plus the
+settings (window, LOD, adhesion and actual simulation-region rectangle),
+physics-changing diagnostic overrides and the physical-state hash version, plus the
 caller-supplied `setup_hash`, `seed`, `normalization_receipt`, `source_revision`,
 `native_binary_sha256` and `catalogue_digest` (`none` when absent). Its fields are
 not a frozen #200 receipt schema.

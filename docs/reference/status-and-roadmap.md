@@ -708,11 +708,12 @@ does not freeze #45 thresholds.
 | Linux, sanitizer/TSan and Web/WASM execution | CI only for Linux/sanitizers; Web not built or run |
 
 **Characterization screens, not admission criteria** (native harness, 1 worker):
-depth response t240 1.68 (Current 1.06); depth-160 front t240 219 (71);
-depth-160 retained t1800 0.369 (0.851); vented two-limb |difference| t2400 7 rows
-(120); narrow passage 42 rows (120). The sealed two-limb differs from vented but
-was 4.9 rows from the isothermal law at t2400, still settling. Quantity was exact
-in every run.
+at repaired source `349d593`: depth response t240 1.69 (Current 1.06); depth-160
+front t240 220 (71); depth-160 retained t1800 0.371 (0.851); vented two-limb
+|difference| t2400 9 rows (120); narrow passage 43 rows (120). The sealed
+two-limb differs from vented (levels 152/175, gap 23), remains unsettled and has
+no sealed-law acceptance. Quantity was exact in all twelve runs. Earlier-source
+measurements remain in the dated evidence record.
 
 | Remaining | Owner and status |
 |---|---|
@@ -727,8 +728,9 @@ in every run.
 `lcb001-pressure-reference-runtime-publication.yml`, integrated from draft PR
 #244, publishes source-matched Linux/Windows runtimes only after
 `tools/ci/lcb001_pressure_reference_publish_request.json` is committed on this
-branch. Publication run `40096220163` passed Linux and actual Windows headless
-execution and published both source-matched runtimes at `97a76aa`; the evidence
+branch. After the retained failed/cancelled attempts and takeover repairs,
+publication run `40100666514` passed Linux and actual Windows headless execution
+and published both source-matched runtimes at `101758d`; the evidence
 record holds their hashes and scope. Final exact-head ready-PR gates remain
 separate. After the branch merges, retire the workflow, helper and
 unittest as described for [branch-scoped publishers](../operations/local-build-and-validation.md#branch-scoped-runtime-publishers).

@@ -61,10 +61,11 @@ requirements.
 [canonical design](pressure-flow-v1.md) owns its storage, gas identity, laws,
 parameters and known limits. The native suite (13 `LCB-001 pressure` cases) and
 the Godot candidate regression exercise the mandatory criteria below. The native
-characterization harness recorded depth response 1.68, depth-160 front 219,
-retained 0.369, vented two-limb |difference| 7 rows and narrow passage 42 rows at
-the screen ticks; the sealed two-limb differs from vented but was 4.9 rows from
-the isothermal law at t2400 (still settling). These are screens, not admission
+characterization harness at repaired source `349d593` recorded depth response
+1.69, depth-160 front 220, retained 0.371, vented two-limb |difference| 9 rows and
+narrow passage 43 rows at the screen ticks. The sealed two-limb differs from
+vented (levels 152/175, gap 23 at t2400), remains unsettled and has no sealed-law
+acceptance. These are screens, not admission
 criteria ([evidence](../audits/2026-10-24-lcb001-pressure-reference-publication.md)).
 Cached/dormant variants remain #201. This is not #45 selection.
 

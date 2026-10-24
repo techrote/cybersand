@@ -255,17 +255,17 @@ bit-identically (physical and state hash, including at a different worker count)
 
 ## Characterization (screens, not admission criteria)
 
-Native harness, registered geometries, 1 worker, 2026-10-24 (identities in the
-evidence record):
+Native harness at repaired source `349d593`, registered geometries, 1 worker,
+2026-10-24 (identities and retained earlier results in the evidence record):
 
 | Screen | Threshold | Current | pressure_flow_v1/reference |
 |---|---|---|---|
-| depth response t240 | ≥ 1.5 | 1.06 | **1.68** |
-| depth-160 front t240 | ≥ 213 | 71 | **219** |
-| depth-160 retained t1800 | ≤ 0.50 | 0.851 | **0.369** |
-| vented two-limb \|difference\| t2400 | ≤ 12 rows | 120 | **7** (≤ 12 from t1038) |
-| narrow passage t2400 | ≤ 60 rows | 120 | **42** |
-| sealed two-limb | ±2 rows of the isothermal law; differs from vented | 120 | differs; 4.9-row residual from the law at t2400 (still settling) |
+| depth response t240 | ≥ 1.5 | 1.06 | **1.69** |
+| depth-160 front t240 | ≥ 213 | 71 | **220** |
+| depth-160 retained t1800 | ≤ 0.50 | 0.851 | **0.371** |
+| vented two-limb \|difference\| t2400 | ≤ 12 rows | 120 | **9** (≤ 12 from t1026; subsequent maximum 12) |
+| narrow passage t2400 | ≤ 60 rows | 120 | **43** |
+| sealed two-limb | ±2 rows of the isothermal law; differs from vented | 120 | differs; levels 152/175, gap 23 at t2400; still settling, no sealed-law acceptance |
 
 Quantity (visible + overfill) was exact in every run.
 
@@ -276,7 +276,7 @@ Quantity (visible + overfill) was exact in every run.
   roughly 1.5× Current single-threaded in the harness. Incremental caches and
   dormancy are #201.
 - Vented two-limb sloshes (no proportional damping): it stays within the screen
-  but overshoots (−7 rows at t2400).
+  but overshoots (−9 rows at t2400).
 - Hidden overfill remains in long lidded passages until diffusion drains it to a
   free surface.
 - Gravity ignores gas pressure: falling Water can fill a sealed pocket and
