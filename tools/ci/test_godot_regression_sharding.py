@@ -142,6 +142,29 @@ class ResultTests(unittest.TestCase):
         self.assertEqual(result["status"], "timeout")
         self.assertTrue(failed)
 
+    def test_timeout_preserves_test_duration_tail_and_snapshot(self):
+        with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
+            output = Path(directory)
+            case = fake("stalled", 1)
+            child = (
+                "import sys,time;"
+                "print('REGRESSION_PROGRESS case=stalled phase=world tick=120',flush=True);"
+                "time.sleep(5)"
+            )
+            with mock.patch.object(subject, "case_command", return_value=[sys.executable, "-c", child]):
+                result, failed = subject.run_case("fixture", case.__class__(
+                    case.name, case.flags, 0.05, case.weight), output, "case")
+            self.assertTrue(failed)
+            self.assertEqual(result["status"], "timeout")
+            self.assertLess(result["seconds"], 1.0)
+            self.assertGreaterEqual(result["diagnostic_seconds"], 0)
+            self.assertIn("phase=world", result["last_progress"])
+            self.assertIn("TIMEOUT", (output / result["log"]).read_text())
+            snapshot = output / result["timeout_diagnostics"]
+            self.assertTrue(snapshot.exists())
+            self.assertIn("Last 60 lines", snapshot.read_text())
+            self.assertIn("world tick=120", snapshot.read_text())
+
     def test_unavailable_executable_is_recorded_as_failure(self):
         with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
             result, failed = subject.run_case(str(Path(directory) / "missing-godot"), fake("missing", 1), Path(directory), "case")
