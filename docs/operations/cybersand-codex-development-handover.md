@@ -199,13 +199,17 @@ body capacity is 64. Exact runtime/source evidence belongs to the dated ACT-004 
 
 ## Start here for the next task
 
-Physical regression stalls are tracked by #232, with diagnosis in #233 and causal
-repair in #234. Read the
+**Current, 2026-10-24:** #233's physical-regression diagnostic deliverable is
+complete: the admitted apparatus and completed source-bound hosted campaign
+captured intermittent roster stalls. Read the
 [timeout procedure](testing-validation-and-replay.md#physical-regression-timeout-diagnostics)
 and [dated audit](../audits/2026-10-24-issue-233-physical-regression-timeouts.md).
-The registered stress campaign requires the workflow on `main`, an immutable
-source and all 600 physical attempts. Preserve earlier timeouts and failed
-campaigns; a green rerun or apparatus-only merge does not complete diagnosis.
+The captured process/thread evidence supplies no native stack or causal mechanism.
+The campaign reproduced Windows stalls; retained historical failures also include
+Linux, so the overall problem remains broader than this campaign's reproduction.
+#234 owns the next causal repair, internal watchdog and subsequent zero-timeout
+qualification; parent #232 remains open. Preserve the full campaign and original
+failures: a physical timeout remains failed and is valid diagnostic evidence.
 
 Work in `C:/kybersand`, with executable source in `source/`. The companion workspace
 and source now have separate Git histories. Read [source identity](source-checkpoint-and-recovery.md)
