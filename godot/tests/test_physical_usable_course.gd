@@ -32,12 +32,14 @@ func command(extra: Dictionary = {}, movement: Vector2 = Vector2.ZERO) -> Dictio
 
 func scripted_examples() -> void:
 	for model: StringName in [&"digger", &"runner", &"ripper", &"astra", &"tricopter", &"heavylift"]:
+		print("REGRESSION_PROGRESS case=test_physical_usable_course phase=script_setup model=", model)
 		var config: Dictionary = Arena.usable_course_config(model, 1)
 		var ticks: int = 1800 if model == &"heavylift" else 900
 		config.max_ticks = ticks
 		expect(arena.configure(config), "course starts " + str(model))
 		if arena.session == null:
 			continue
+		print("REGRESSION_PROGRESS case=test_physical_usable_course phase=world_built model=", model)
 		var initial: Dictionary = arena.observation(0)
 		var retained: Dictionary = initial.duplicate(true)
 		var body: RigidBody2D = arena.session.bodies()[int(initial.equipment.body_id) - 1]
@@ -48,6 +50,8 @@ func scripted_examples() -> void:
 		var travel: float = 0.0
 		var result: Dictionary = arena.snapshot()
 		for tick: int in range(ticks):
+			if tick % 150 == 0:
+				print("REGRESSION_PROGRESS case=test_physical_usable_course phase=script_step model=", model, " tick=", tick)
 			result = arena.step()
 			var actor: Dictionary = result.actors[0]
 			travel = maxf(travel, actor.position.distance_to(initial.position))
@@ -77,6 +81,7 @@ func scripted_examples() -> void:
 
 
 func mixed_course() -> void:
+	print("REGRESSION_PROGRESS case=test_physical_usable_course phase=mixed_setup")
 	var config: Dictionary = Arena.usable_course_config()
 	config.max_ticks = 600
 	expect(arena.configure(config), "mixed course starts")
@@ -90,6 +95,8 @@ func mixed_course() -> void:
 		"eight real equipped assemblies fit the native body roster")
 	var result: Dictionary = initial
 	for tick: int in range(600):
+		if tick % 100 == 0:
+			print("REGRESSION_PROGRESS case=test_physical_usable_course phase=mixed_step tick=", tick)
 		result = arena.step()
 	var successful: int = 0
 	for actor: Dictionary in result.actors:
@@ -114,6 +121,7 @@ func mixed_course() -> void:
 
 
 func processor_transaction() -> void:
+	print("REGRESSION_PROGRESS case=test_physical_usable_course phase=processor_setup")
 	var config: Dictionary = Arena.usable_course_config(&"gyrocrate", 1)
 	config.max_ticks = 1200
 	config.actors[0].producer = "policy"
@@ -133,6 +141,8 @@ func processor_transaction() -> void:
 	expect(result.actors[0].equipment.state == "released" and held.get_instance_id() == instance,
 		"processor trigger releases the existing body before deployment")
 	for tick: int in range(180):
+		if tick % 30 == 0:
+			print("REGRESSION_PROGRESS case=test_physical_usable_course phase=processor_settle tick=", tick)
 		result = arena.step([command()])
 		if not result.physical_usables.objects.is_empty():
 			break
@@ -191,6 +201,8 @@ func processor_transaction() -> void:
 			body.freeze = false
 	var picked_up: bool = false
 	for tick: int in range(300):
+		if tick % 60 == 0:
+			print("REGRESSION_PROGRESS case=test_physical_usable_course phase=processor_recover tick=", tick)
 		var item: Dictionary = arena.observation(0).equipment
 		var approach: float = clampf((Vector2(item.position).x - Vector2(item.grip_position).x) * 0.05, -0.35, 0.35)
 		result = arena.step([command({"attach": bool(item.reattach_ready)}, Vector2(approach, 0))])
@@ -212,11 +224,16 @@ func run() -> void:
 	if failures:
 		quit(1)
 		return
+	print("REGRESSION_PROGRESS case=test_physical_usable_course phase=setup")
 	arena = Arena.new()
 	root.add_child(arena)
+	print("REGRESSION_PROGRESS case=test_physical_usable_course phase=scripted")
 	scripted_examples()
+	print("REGRESSION_PROGRESS case=test_physical_usable_course phase=mixed")
 	mixed_course()
+	print("REGRESSION_PROGRESS case=test_physical_usable_course phase=processor")
 	processor_transaction()
+	print("REGRESSION_PROGRESS case=test_physical_usable_course phase=teardown")
 	arena.free()
 	print("PHYSICAL_USABLE_COURSE_RESULT assertions=", assertions, " failures=", failures)
 	quit(1 if failures else 0)
