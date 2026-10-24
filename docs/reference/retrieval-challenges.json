@@ -2409,14 +2409,14 @@
     },
     {
       "id": "MATON03",
-      "query": "Does the MAT003 overnight packet finish issue204 or require a carrier migration before the scoped200 foundation?",
+      "query": "Does the MAT-003 overnight packet finish issue #204 or require a carrier migration before the separately scoped #200 foundation?",
       "canonical": [
         "research/mat003-remaining-acceptance.md"
       ],
       "facts": [
-        "Issue204 remains open awaiting independent acceptance and reconciliation of its unmerged parent stack.",
+        "Issue #204 remains open awaiting independent acceptance and reconciliation of its unmerged parent stack.",
         "Retain production C64-E8 and bounded optional state; optional specimens and standalone Wasm/Node do not qualify full-app Godot/browser or all carriers.",
-        "No new benchmark timings, schema freeze, GEN006 runtime, pressure/inertial port or issue212 admission follows from this packet."
+        "No new benchmark timings, schema freeze, GEN-006 runtime, pressure/inertial port or issue #212 admission follows from this packet."
       ],
       "sources": [
         "research/mat003-remaining-acceptance.md",

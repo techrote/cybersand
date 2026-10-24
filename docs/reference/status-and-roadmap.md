@@ -12,7 +12,7 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## MAT-003 continuation — 2026-10-23
 
-Latest MAT-003 runtime disposition: [152-process replacement and Astra readback refusal](../audits/2026-10-23-mat003-reentry-correctness-attempt.md). All candidate processes exited0, but the frozen reader rejected an overconstrained sleeping witness. No full correctness acceptance, rerun or timing; prior stage summaries are historical.
+Latest MAT-003 archived-data disposition: [complete overnight v4 readback](../audits/2026-10-24-mat003-overnight-results.md), all 152 cases and 96 cross-arm comparisons verified as author validation pending independent review. The [original Astra refusal](../audits/2026-10-23-mat003-reentry-correctness-attempt.md) remains unchanged. No candidate rerun, performance acceptance or production migration follows; #204 remains open.
 
 
 **Historical source-review checkpoint, subsequently executed:** the [resident reentry and scratch repair](../audits/2026-10-23-mat003-resident-reentry-repair.md) has independent source-review closure. Pre-dedup core entries are provisioned256; active-chunk capacity covers all16/256 resident chunks. Initial256x512/reentry512x512 windows retain at most64 unique cores, full resident clearing and bounded reentry; full2048 reentry is outside scope. Exact-grid, sleep and Sand pause/resume checks close adjacent reader gaps. No runtime success or new build/case/timing admission follows.
@@ -26,8 +26,10 @@ Latest MAT-003 runtime disposition: [152-process replacement and Astra readback 
 **Current experimental work; author validation, not independent acceptance:**
 the [bounded overnight campaign](../operations/mat003-overnight-campaign.md) reuses
 qualified S0/S1/S2A and continuation evidence. It corrects the revised-reader
-provenance path and runs one complete readback of the immutable 152-case Windows
-archive. The original reader refusal and all prior observations remain intact.
+provenance path and completed one full readback of the immutable 152-case Windows
+archive, including all 96 cross-arm comparisons. New optional-tail, capture-touch
+and standalone Wasm storage results retain their separate scope and platform
+limits. The original reader refusal and all prior observations remain intact.
 #204 remains open, production C64-E8 stays the baseline and GEN-006 remains
 unimplemented. The separate #200 foundation belongs to Claude; this task starts
 no LCB solver or #212 work.

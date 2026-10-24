@@ -1,0 +1,99 @@
+{
+  "validation_class": "author-validation-pending-independent-review",
+  "readback": {
+    "status": "verified",
+    "performance_accepted": false,
+    "verifier_revision_sha256": "b7d44256b4dc585f80afdd559f51fbd0d24a75d11aaf19fafdf64c56b54e07a4",
+    "validation_class": "author-validation-pending-independent-review",
+    "negative_fixtures": [
+      "wrong-byte-width",
+      "capability-refusal",
+      "wrong-map-overlap",
+      "partial-corrupts-material",
+      "high-lane-loss",
+      "false-refusal",
+      "missing-inventory-file",
+      "incomplete-operation-matrix",
+      "duplicate-cells-owner",
+      "truncated-full-state",
+      "dropped-sidecar-owner",
+      "natural-prepared-predicate-mismatch",
+      "extra-cell-record",
+      "corrupted-inventory-hash",
+      "missing-process-matrix",
+      "missing-outer-containment-wall",
+      "active-inner-containment-strip",
+      "corrupted-containment-neutral",
+      "resident-mixed-aged-unaged-positive",
+      "resident-core-drift",
+      "resident-chunk-drift",
+      "resident-interest-drift",
+      "resident-applied-drift",
+      "resident-sleep-drift",
+      "resident-unaged-drift",
+      "resident-missing-exclusion-drift",
+      "resident-contradictory-exclusion-drift",
+      "resident-block-owner-drift",
+      "resident-post-clear-activity-drift",
+      "resident-reentry-activity-drift",
+      "shifted-resident-grid",
+      "excluded-sand-simulated-early",
+      "excluded-sand-never-reentered",
+      "world-decoder-bit-enumeration-crosscheck"
+    ],
+    "cases": 152,
+    "scope": "frozen neutral mapping correctness only"
+  },
+  "process_receipt": {
+    "exit_code": 0,
+    "stop": null,
+    "elapsed_watchdog_seconds": 11852.20299999998,
+    "finished_utc": "2026-10-24T05:09:40.147812+00:00",
+    "timing": false,
+    "streams": {
+      "readback-v4.stdout": "89508396abe91ff3f79b688253a94c610415a729e20a925c45e02657d81f1b2a",
+      "readback-v4.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "case_completions": 152,
+  "cross_arm_comparisons_started": 96,
+  "expected_cross_arm_comparisons": 96,
+  "archive_cardinality": {
+    "kind": "archive-cardinality-and-size-characterization-only",
+    "not_semantic_acceptance": true,
+    "counts": {
+      "case_directories": 152,
+      "full_cells_endpoints": 992,
+      "metadata_only_endpoints": 8192,
+      "all_metadata_endpoints": 9184,
+      "cell_records": 1164967936,
+      "cells_bin_bytes": 14853341184,
+      "tick_rows": 1180224
+    },
+    "control_sha256": {
+      "authority.json": "fb1abb3b574cb5a35d7f7f535a176ccac884f9e770cc045cbcad76b9d263cdd5",
+      "result.json": "3ac1a9c3ae81b32d47a865174612bcafed01658140e4c56f961b56e6ca7ef3f1",
+      "inventory.json": "8a08b04ef76f23d26ddce6237bd1388b38a5c8082ac506c09f4657869b1b3e82"
+    }
+  },
+  "reader_source_commit": "610325422fc0cec496cf098990c40d5d4c292411",
+  "reader_modules_sha256": {
+    "tools/experiments/mat003_correctness/readback.py": "45204f0df7fcde406fb127c4791022d49295193b5e8bc963de61880e9ad0c8bc",
+    "tools/experiments/mat003_correctness/provenance.py": "cd6b7f16f8a6538f9e8b0794ee1505ea82085928f4898736e8e17761501e6c71",
+    "tools/experiments/mat003_correctness/world_oracle.py": "b007036867c1fc2d03a224373e331561e8487fef59f1e7bfbac4ad279d6156c4",
+    "tools/experiments/mat003_correctness/oracle.py": "5e02d9d0192f60e173ee301dcb6606d619aad591dfd9b5153a9118b74733e8ee",
+    "tools/experiments/mat003_correctness/matrix.py": "a3cf8ce4a8141f01b8a3aec3fb3bcc7107e924f8d0fb999a596feb98080d30b0",
+    "tools/experiments/mat003_correctness/storage_oracle.py": "396704351fc507b009bab20029b2b5b162664eeda70933f5b31730b88984f761",
+    "tools/experiments/mat003_correctness/negative.py": "88303f04dc0d5fd6556f004e679353e23c61e31c85d46e5d57758d6f5c18f0cd",
+    "tools/experiments/mat003_correctness/overlay.py": "9224858d773221127c0830f4fcc9b8550ad60f19dafa15d791a353318e584489",
+    "tools/experiments/mat003_correctness/verifier_revision.py": "15f16f71e6131c427109107a9af02a655c98d6073b601d9a40e0543af8035a91"
+  },
+  "original_controls_sha256": {
+    "authority.json": "fb1abb3b574cb5a35d7f7f535a176ccac884f9e770cc045cbcad76b9d263cdd5",
+    "result.json": "3ac1a9c3ae81b32d47a865174612bcafed01658140e4c56f961b56e6ca7ef3f1",
+    "inventory.json": "8a08b04ef76f23d26ddce6237bd1388b38a5c8082ac506c09f4657869b1b3e82"
+  },
+  "packet_source_head": "7a340f0d1e3fe585399882f2704d979c693a3840",
+  "timing": false,
+  "candidate_execution_during_readback": false
+}

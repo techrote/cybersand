@@ -16,6 +16,13 @@ Keep production C64-E8 and defaults; no merge, carrier migration, LCB solver or
 GEN-006 implementation is authorized. Claude independently owns #200 foundation.
 This task does not start #212 or edit another task's branches.
 
+**Completed author checkpoint at 05:09 UTC:** the one full v4 readback verified
+all 152 cases and all 96 cross-arm comparisons. The
+[final packet](../audits/2026-10-24-mat003-overnight-results.md) records the result,
+sealed raw archive, new untimed experiments and explicit remaining gates.
+Independent acceptance and full #204 completion remain open; no new timing was
+collected. The queue below records the campaign plan and its stop rules.
+
 ## Priority and bounded work
 
 1. Inventory valid existing work and outstanding acceptance; preserve historical

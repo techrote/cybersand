@@ -15,9 +15,11 @@ related-documents: [../operations/mat-003prepass-registration.md, mat-003prepass
 The [overnight campaign](../operations/mat003-overnight-campaign.md) preserves the
 completed Windows archive and old reader refusal. It adds a separately sealed
 reader-revision provenance path; the #235 repair otherwise still rejects its own
-changed reader bytes against original source seals. A new complete one-shot
-archived-data readback is in progress as **author validation pending independent
-review**. No candidate execution or timing is part of that readback. The
+changed reader bytes against original source seals. The complete one-shot
+archived-data readback verified **all 152 cases and 96 cross-arm comparisons**
+as **author validation pending independent review**. The
+[final author packet](../audits/2026-10-24-mat003-overnight-results.md) records the
+result and remaining gates. No candidate execution or timing was part of that readback. The
 [intake](../audits/2026-10-24-mat003-overnight-intake.md) records the source defect
 and existing evidence. Production C64-E8 remains unchanged.
 
