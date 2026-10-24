@@ -206,6 +206,13 @@ not authenticate every possible external history or provide an ordered replay.
 
 Worker deltas are fixed per scheduling slot and merged after the phase barrier.
 There is no new tick-time allocation, per-cell lock or per-material thread.
+Serial writes instead check only the affected Water quantities, at most two
+material populations, the selected cause/rule and the six-category lifetime
+totals before assigning any ledger field. They do not construct job scratch or
+copy/scan the entire ledger for each painted cell. Both paths preserve checked
+arithmetic and transactional external refusal; phase reduction retains its
+complete worker-delta merge. The dated audit retains the full Windows setup
+timeout that motivated this repair and a source-fenced construction comparison.
 In the measured Windows x64 layout a delta is 3816 bytes: the default 4096 slots
 add **15,630,336 bytes**. `QuantityLedgerSnapshot` is **6088 bytes** and
 `QuantityConstructionSeed` is **208 bytes**; the optional seed is already part
