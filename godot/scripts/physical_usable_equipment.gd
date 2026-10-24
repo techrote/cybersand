@@ -47,10 +47,21 @@ var _deploy_power: float = 1.0
 var _last_readback_tick: int = -1
 var _cell_patch: Dictionary = {}
 var _projectiles: Array = []
+var _absent: bool = false
 
 
 static func definition(base: Dictionary, _loadout: Dictionary = {}) -> Dictionary:
 	var data: Dictionary = base.duplicate(true)
+	if str(data.get("equipment_preparation", "mounted")) == "none":
+		# Explicit absence differs from an empty usable on a permanent chassis.
+		# Callers which prepare catalogue geometry without a loadout still retain
+		# this declared topology. A supplied contradictory loadout is refused.
+		if data.get("parts", []).size() != 1 or not data.get("mounts", []).is_empty() \
+			or not data.get("joints", []).is_empty() \
+			or (not _loadout.is_empty() and (_loadout.get("preparation") != "none" or _loadout.get("usable_index") != -1)):
+			return {}
+		data["equipment_managed"] = true
+		return data
 	if data.get("mounts", []).is_empty() or data.get("parts", []).is_empty():
 		return {}
 	var mount: Dictionary = data.mounts[0]
@@ -153,13 +164,15 @@ static func normalized_action(value: Variant) -> Dictionary:
 
 func configure(rig, session_run: String, actor_epoch: int, slot: int, first_body: int, initial_usable: int) -> bool:
 	var mount: Dictionary = rig.equipment_mount_state()
-	if mount.is_empty() or initial_usable < -1 or initial_usable >= Catalog.count():
+	_absent = str(rig.capabilities().get("equipment_preparation", "mounted")) == "none"
+	if (_absent and (not mount.is_empty() or initial_usable != -1)) \
+		or (not _absent and mount.is_empty()) or initial_usable < -1 or initial_usable >= Catalog.count():
 		return false
 	_rig = rig
 	_run_id = session_run
 	_epoch = actor_epoch
 	actor_id = slot
-	body_id = first_body + int(mount.held_part) + 1
+	body_id = 0 if _absent else first_body + int(mount.held_part) + 1
 	instance_id = "%s:%d:%d:equipment" % [session_run, actor_epoch, slot]
 	usable_index = initial_usable
 	state = "held" if usable_index >= 0 else "none"
@@ -173,7 +186,7 @@ func matches(action: Dictionary) -> bool:
 
 
 func can_select(index: int) -> bool:
-	return index == usable_index or state in ["held", "none"]
+	return not _absent and (index == usable_index or state in ["held", "none"])
 
 
 func pre_advance(action: Dictionary, fallback_aim: Vector2, allowed: bool) -> void:
@@ -189,6 +202,8 @@ func pre_advance(action: Dictionary, fallback_aim: Vector2, allowed: bool) -> vo
 
 
 func advance(action: Dictionary, delta: float, current_tick: int, generation: int, deadline: int, allowed: bool) -> void:
+	if _absent:
+		return
 	_tick = current_tick
 	_generation = generation
 	_deadline = deadline
@@ -460,6 +475,9 @@ func accept_readback(row: Dictionary, feedback: Dictionary, generation: int) -> 
 
 
 func observation() -> Dictionary:
+	if _absent:
+		return {"preparation": "none", "state": "none", "usable_index": -1,
+			"body_id": 0, "available": false, "ready": false, "cell_patch": {}}
 	var result: Dictionary = _rig.equipment_mount_state().duplicate(true)
 	var definition_value: Dictionary = Catalog.entry(usable_index)
 	result.merge({"instance_id": instance_id, "equipment_epoch": equipment_epoch, "body_id": body_id,

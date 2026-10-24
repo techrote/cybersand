@@ -2441,6 +2441,9 @@ func _publish_physical_keyboard_input(trigger_override: Variant = null, alternat
 			"alternate": alternate and not _actor_usable_transition_pending,
 			"drop": Input.is_key_pressed(KEY_N), "attach": Input.is_key_pressed(KEY_U)},
 	}
+	if physical_actor_session.is_flight_actor(0):
+		# The reserved 4LY interpretation has exactly two velocity outputs.
+		action = {"move": action.move}
 	physical_actor_session.submit_local(0, action, &"human", 6)
 
 
@@ -2511,6 +2514,9 @@ func apply_actor_prototype_configuration(model_id: StringName, producer: StringN
 
 func apply_actor_equipment_configuration(usable_index: int, power: float) -> bool:
 	if physical_actor_session != null:
+		if physical_actor_session.is_flight_actor(0):
+			actor_prototype_panel.set_error("4LY drones have an explicitly empty loadout; select a different actor to equip tools.")
+			return false
 		if actor_producer_selection != &"human" or paused or simulation_worker.has_failed() \
 			or not _physical_terrain_ready or _actor_reset_receipt != 0:
 			actor_prototype_panel.set_error("Equip-only requires an active, unpaused human actor.")
@@ -2776,8 +2782,16 @@ func refresh_actor_prototypes() -> void:
 		var equipment: Dictionary = state.actors[0].get("equipment", {}) if not state.actors.is_empty() else {}
 		actor_prototype_button.text = "Rapier %s / F5 | %s | %d actors / %d parts" % [
 			PhysicalCatalog.name_for(physical_rig_id), str(actor_producer_selection), state.actor_count, state.body_count]
-		actor_prototype_button.text += " | %s: %s" % [UsableCatalog.name_for(actor_usable_index), str(equipment.get("last_result", "ready"))]
-		actor_prototype_button.tooltip_text = PhysicalCatalog.controls_text(physical_rig_id) + "\nLeft/M use · right alternate · N release · U nearby pickup. Equipment uses the physical mount."
+		if physical_actor_session.is_flight_actor(0) and not state.actors.is_empty():
+			var flight: Dictionary = state.actors[0].flight
+			actor_prototype_button.text += " | 4LY: %s" % str(flight.get("mode", "unknown"))
+			actor_prototype_button.tooltip_text = PhysicalCatalog.controls_text(physical_rig_id) \
+				+ "\nAssistance: %s | Command live: %s | Fallback: %s\nProfile hash: %s" % [
+				str(flight.get("mode", "unknown")), str(flight.get("command_live", false)),
+				str(flight.get("fallback_reason", "")), str(flight.get("capabilities", {}).get("profile_hash", ""))]
+		else:
+			actor_prototype_button.text += " | %s: %s" % [UsableCatalog.name_for(actor_usable_index), str(equipment.get("last_result", "ready"))]
+			actor_prototype_button.tooltip_text = PhysicalCatalog.controls_text(physical_rig_id) + "\nLeft/M use · right alternate · N release · U nearby pickup. Equipment uses the physical mount."
 		return
 	if not physical_trial_arm.is_empty():
 		actor_prototype_button.text = "Rapier %s / impulses + torque / F5" % physical_trial_arm

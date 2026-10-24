@@ -6,6 +6,7 @@ extends RefCounted
 # moves a body, reads World, fills energy or claims global pathfinding.
 const Catalog = preload("res://scripts/physical_actor_catalog.gd")
 const UsablePilot = preload("res://scripts/physical_usable_script.gd")
+const Flight = preload("res://scripts/physical_flight_profile.gd")
 const MAX_DELTA: float = 0.25
 const PROGRESS_WINDOW: float = 0.65
 
@@ -119,10 +120,15 @@ func diagnostics() -> Dictionary:
 		"payload_swing": _payload_swing, "payload_swing_speed": _payload_swing_speed,
 		"payload_correction": _payload_correction,
 		"equipment": _usable_pilot.diagnostics(),
-		"controller_id": "local-feedback/" + str(rig_id) + "/v1"}
+		"controller_id": "4ly-neutral-producer/v1" if rig_id in Flight.IDS else "local-feedback/" + str(rig_id) + "/v1"}
 
 
 func next_action(observation: Dictionary, delta: float) -> Dictionary:
+	if rig_id in Flight.IDS:
+		# Conformance producer only. Goal-seeking flight teaching belongs to
+		# 4LY-003; the neutral request traverses the same lease and actuator path.
+		_last_action = {"move": Vector2.ZERO}
+		return _last_action.duplicate(true)
 	if _profile.is_empty() or not is_finite(delta) or delta <= 0.0 or delta > MAX_DELTA:
 		return neutral_action()
 	var centre: Vector2 = observation.get("centre", observation.get("position", Vector2.INF))

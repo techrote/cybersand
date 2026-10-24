@@ -1,0 +1,281 @@
+{
+  "schema_version": 2,
+  "id": "lcb.accept.gas.compress-vent-reseal.v2",
+  "recipe_version": 1,
+  "seed": 0,
+  "maturity": "reference",
+  "rectangles": [
+    0,
+    0,
+    1024,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1024,
+    1,
+    1023,
+    0,
+    1,
+    1024,
+    1,
+    0,
+    1023,
+    1024,
+    1,
+    1,
+    8,
+    8,
+    12,
+    1,
+    1,
+    8,
+    20,
+    12,
+    1,
+    1,
+    8,
+    8,
+    1,
+    13,
+    1,
+    19,
+    8,
+    1,
+    13,
+    1,
+    20,
+    11,
+    5,
+    1,
+    1,
+    20,
+    13,
+    3,
+    1,
+    1,
+    22,
+    13,
+    1,
+    4,
+    1,
+    24,
+    11,
+    1,
+    5,
+    1,
+    22,
+    17,
+    5,
+    1,
+    1,
+    26,
+    9,
+    1,
+    9,
+    1
+  ],
+  "partial_water_fills": [
+    9,
+    19,
+    10,
+    1,
+    255,
+    0
+  ],
+  "transport_profile": {
+    "families": {
+      "liquid": {
+        "cadence": 1,
+        "carrying": 0,
+        "erosion": 0,
+        "horizontal": 2,
+        "permeability": 1
+      },
+      "powder": {
+        "mixing": 0,
+        "packing": 8,
+        "pickup": 64
+      }
+    },
+    "materials": {
+      "33": {
+        "permeability": 30
+      }
+    },
+    "name": "Baseline",
+    "pairs": [],
+    "version": 1
+  },
+  "water_semantics": [
+    1,
+    8,
+    12,
+    0
+  ],
+  "player_start": [
+    24,
+    222
+  ],
+  "camera_origin": [
+    0,
+    0
+  ],
+  "player_enabled": false,
+  "body_enabled": false,
+  "tools": [],
+  "interest": {
+    "policy": "fixed",
+    "region": [
+      0,
+      0,
+      64,
+      32
+    ]
+  },
+  "execution": {
+    "policy": "fixed",
+    "cadence_lod_enabled": false,
+    "liquid_surface_adhesion_enabled": true
+  },
+  "events": [
+    {
+      "tick": 1,
+      "kind": "fill",
+      "x": 9,
+      "y": 14,
+      "width": 10,
+      "height": 5,
+      "material": 3,
+      "normalized_mass": 255,
+      "coherence": 0
+    },
+    {
+      "tick": 5,
+      "kind": "erase",
+      "x": 19,
+      "y": 12,
+      "width": 1,
+      "height": 1,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    },
+    {
+      "tick": 9,
+      "kind": "fill",
+      "x": 23,
+      "y": 16,
+      "width": 3,
+      "height": 1,
+      "material": 3,
+      "normalized_mass": 255,
+      "coherence": 0
+    }
+  ],
+  "observations": [
+    {
+      "id": "room-water-t0",
+      "tick": 0,
+      "metric": "water_integer",
+      "region": [
+        8,
+        8,
+        12,
+        13
+      ],
+      "material": 3
+    },
+    {
+      "id": "room-water-t4",
+      "tick": 4,
+      "metric": "water_integer",
+      "region": [
+        8,
+        8,
+        12,
+        13
+      ],
+      "material": 3
+    },
+    {
+      "id": "trap-water-t10",
+      "tick": 10,
+      "metric": "water_integer",
+      "region": [
+        23,
+        16,
+        3,
+        1
+      ],
+      "material": 3
+    },
+    {
+      "id": "room-water-t30",
+      "tick": 30,
+      "metric": "water_integer",
+      "region": [
+        8,
+        8,
+        12,
+        13
+      ],
+      "material": 3
+    },
+    {
+      "id": "trap-water-t30",
+      "tick": 30,
+      "metric": "water_integer",
+      "region": [
+        23,
+        16,
+        3,
+        1
+      ],
+      "material": 3
+    }
+  ],
+  "conditions": [],
+  "source_recipe": "LCB-003 scenario catalogue v1: gas-acceptance",
+  "source_recipe_hash": "",
+  "presentation": {
+    "title": "Compress, vent and reseal (U-trap)",
+    "instructions": "#200 reproducer: Water fills half the pocket at tick 1 (compression, amount stays 100); the wall cell (19,12) opens at tick 5, venting the pocket through a channel and a dry U-trap; at tick 9 Water fills the trap's supported bottom row and reseals it. The archived candidate kept 100; W-PF must reseal from the current volume at atmospheric amount with an explicit exchange ledger, and hold it to tick 30.",
+    "duration_ticks": 30,
+    "baseline": "Current native defaults; controlled fixed-tick run",
+    "profile": "Baseline",
+    "regions": [
+      {
+        "id": "pocket",
+        "label": "Pocket",
+        "region": [
+          9,
+          9,
+          10,
+          10
+        ]
+      },
+      {
+        "id": "closure",
+        "label": "Closure (19,12), erased at t5",
+        "region": [
+          19,
+          12,
+          1,
+          1
+        ]
+      },
+      {
+        "id": "trap",
+        "label": "U-trap seal row",
+        "region": [
+          23,
+          16,
+          3,
+          1
+        ]
+      }
+    ]
+  }
+}

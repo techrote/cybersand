@@ -1,0 +1,301 @@
+{
+  "schema_version": 2,
+  "id": "lcb.density.oil-water-lock-exchange.v1",
+  "recipe_version": 1,
+  "seed": 0,
+  "maturity": "reference",
+  "rectangles": [
+    0,
+    0,
+    1024,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1024,
+    1,
+    1023,
+    0,
+    1,
+    1024,
+    1,
+    0,
+    1023,
+    1024,
+    1,
+    1,
+    32,
+    256,
+    960,
+    8,
+    1,
+    32,
+    64,
+    8,
+    192,
+    1,
+    984,
+    64,
+    8,
+    192,
+    1,
+    500,
+    64,
+    8,
+    192,
+    1,
+    40,
+    128,
+    460,
+    128,
+    16
+  ],
+  "partial_water_fills": [
+    508,
+    128,
+    476,
+    128,
+    255,
+    0
+  ],
+  "transport_profile": {
+    "families": {
+      "liquid": {
+        "cadence": 1,
+        "carrying": 0,
+        "erosion": 0,
+        "horizontal": 2,
+        "permeability": 1
+      },
+      "powder": {
+        "mixing": 0,
+        "packing": 8,
+        "pickup": 64
+      }
+    },
+    "materials": {
+      "33": {
+        "permeability": 30
+      }
+    },
+    "name": "Baseline",
+    "pairs": [],
+    "version": 1
+  },
+  "water_semantics": [
+    1,
+    8,
+    12,
+    0
+  ],
+  "player_start": [
+    24,
+    222
+  ],
+  "camera_origin": [
+    0,
+    0
+  ],
+  "player_enabled": false,
+  "body_enabled": false,
+  "tools": [],
+  "interest": {
+    "policy": "fixed",
+    "region": [
+      16,
+      16,
+      992,
+      272
+    ]
+  },
+  "execution": {
+    "policy": "fixed",
+    "cadence_lod_enabled": false,
+    "liquid_surface_adhesion_enabled": true
+  },
+  "events": [
+    {
+      "tick": 30,
+      "kind": "erase",
+      "x": 500,
+      "y": 64,
+      "width": 8,
+      "height": 192,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    }
+  ],
+  "observations": [
+    {
+      "id": "oil-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        40,
+        64,
+        944,
+        192
+      ],
+      "material": 16
+    },
+    {
+      "id": "water-t0",
+      "tick": 0,
+      "metric": "water_integer",
+      "region": [
+        40,
+        64,
+        944,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "oil-in-right-bottom-t300",
+      "tick": 300,
+      "metric": "material_cells",
+      "region": [
+        508,
+        224,
+        476,
+        32
+      ],
+      "material": 16
+    },
+    {
+      "id": "water-in-left-bottom-t300",
+      "tick": 300,
+      "metric": "water_integer",
+      "region": [
+        40,
+        224,
+        460,
+        32
+      ],
+      "material": 3
+    },
+    {
+      "id": "water-in-left-top-t300",
+      "tick": 300,
+      "metric": "water_integer",
+      "region": [
+        40,
+        128,
+        460,
+        32
+      ],
+      "material": 3
+    },
+    {
+      "id": "oil-t1200",
+      "tick": 1200,
+      "metric": "material_cells",
+      "region": [
+        40,
+        64,
+        944,
+        192
+      ],
+      "material": 16
+    },
+    {
+      "id": "water-t1200",
+      "tick": 1200,
+      "metric": "water_integer",
+      "region": [
+        40,
+        64,
+        944,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "oil-in-right-bottom-t1200",
+      "tick": 1200,
+      "metric": "material_cells",
+      "region": [
+        508,
+        224,
+        476,
+        32
+      ],
+      "material": 16
+    },
+    {
+      "id": "water-in-left-bottom-t1200",
+      "tick": 1200,
+      "metric": "water_integer",
+      "region": [
+        40,
+        224,
+        460,
+        32
+      ],
+      "material": 3
+    },
+    {
+      "id": "water-in-left-top-t1200",
+      "tick": 1200,
+      "metric": "water_integer",
+      "region": [
+        40,
+        128,
+        460,
+        32
+      ],
+      "material": 3
+    }
+  ],
+  "conditions": [
+    {
+      "observation": "oil-t1200",
+      "comparison": "eq",
+      "value": 58880,
+      "outcome": "complete"
+    }
+  ],
+  "source_recipe": "LCB-003 scenario catalogue v1: density",
+  "source_recipe_hash": "",
+  "presentation": {
+    "title": "Oil/Water lock exchange",
+    "instructions": "Oil (left) and Water (right) open at tick 30; Oil should ride over Water. Compares buoyant spreading and the Oil kernel's retained behavior.",
+    "duration_ticks": 1200,
+    "baseline": "Current native defaults; controlled fixed-tick run",
+    "profile": "Baseline",
+    "regions": [
+      {
+        "id": "left",
+        "label": "Oil",
+        "region": [
+          40,
+          128,
+          460,
+          128
+        ]
+      },
+      {
+        "id": "right",
+        "label": "Water",
+        "region": [
+          508,
+          128,
+          476,
+          128
+        ]
+      },
+      {
+        "id": "gate",
+        "label": "Gate",
+        "region": [
+          500,
+          64,
+          8,
+          192
+        ]
+      }
+    ]
+  }
+}

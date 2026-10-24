@@ -1,0 +1,451 @@
+{
+  "schema_version": 2,
+  "id": "lcb.viscous.pour-heaps.v1",
+  "recipe_version": 1,
+  "seed": 0,
+  "maturity": "reference",
+  "rectangles": [
+    0,
+    0,
+    1024,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1024,
+    1,
+    1023,
+    0,
+    1,
+    1024,
+    1,
+    0,
+    1023,
+    1024,
+    1,
+    1,
+    32,
+    256,
+    960,
+    8,
+    1,
+    32,
+    64,
+    8,
+    192,
+    1,
+    984,
+    64,
+    8,
+    192,
+    1,
+    96,
+    64,
+    32,
+    32,
+    20,
+    96,
+    96,
+    32,
+    4,
+    1,
+    280,
+    64,
+    32,
+    32,
+    21,
+    280,
+    96,
+    32,
+    4,
+    1,
+    464,
+    64,
+    32,
+    32,
+    16,
+    464,
+    96,
+    32,
+    4,
+    1,
+    648,
+    64,
+    32,
+    32,
+    24,
+    648,
+    96,
+    32,
+    4,
+    1,
+    832,
+    64,
+    32,
+    32,
+    33,
+    832,
+    96,
+    32,
+    4,
+    1
+  ],
+  "partial_water_fills": [],
+  "transport_profile": {
+    "families": {
+      "liquid": {
+        "cadence": 1,
+        "carrying": 0,
+        "erosion": 0,
+        "horizontal": 2,
+        "permeability": 1
+      },
+      "powder": {
+        "mixing": 0,
+        "packing": 8,
+        "pickup": 64
+      }
+    },
+    "materials": {
+      "33": {
+        "permeability": 30
+      }
+    },
+    "name": "Baseline",
+    "pairs": [],
+    "version": 1
+  },
+  "water_semantics": [
+    1,
+    8,
+    12,
+    0
+  ],
+  "player_start": [
+    24,
+    222
+  ],
+  "camera_origin": [
+    0,
+    0
+  ],
+  "player_enabled": false,
+  "body_enabled": false,
+  "tools": [],
+  "interest": {
+    "policy": "fixed",
+    "region": [
+      16,
+      16,
+      992,
+      272
+    ]
+  },
+  "execution": {
+    "policy": "fixed",
+    "cadence_lod_enabled": false,
+    "liquid_surface_adhesion_enabled": true
+  },
+  "events": [
+    {
+      "tick": 0,
+      "kind": "erase",
+      "x": 96,
+      "y": 96,
+      "width": 32,
+      "height": 4,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    },
+    {
+      "tick": 0,
+      "kind": "erase",
+      "x": 280,
+      "y": 96,
+      "width": 32,
+      "height": 4,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    },
+    {
+      "tick": 0,
+      "kind": "erase",
+      "x": 464,
+      "y": 96,
+      "width": 32,
+      "height": 4,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    },
+    {
+      "tick": 0,
+      "kind": "erase",
+      "x": 648,
+      "y": 96,
+      "width": 32,
+      "height": 4,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    },
+    {
+      "tick": 0,
+      "kind": "erase",
+      "x": 832,
+      "y": 96,
+      "width": 32,
+      "height": 4,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    }
+  ],
+  "observations": [
+    {
+      "id": "paste-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        96,
+        64,
+        32,
+        32
+      ],
+      "material": 20
+    },
+    {
+      "id": "slush-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        280,
+        64,
+        32,
+        32
+      ],
+      "material": 21
+    },
+    {
+      "id": "oil-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        464,
+        64,
+        32,
+        32
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        648,
+        64,
+        32,
+        32
+      ],
+      "material": 24
+    },
+    {
+      "id": "mercury-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        832,
+        64,
+        32,
+        32
+      ],
+      "material": 33
+    },
+    {
+      "id": "paste-low-t900",
+      "tick": 900,
+      "metric": "material_cells",
+      "region": [
+        26,
+        240,
+        172,
+        16
+      ],
+      "material": 20
+    },
+    {
+      "id": "paste-high-t900",
+      "tick": 900,
+      "metric": "material_cells",
+      "region": [
+        26,
+        192,
+        172,
+        48
+      ],
+      "material": 20
+    },
+    {
+      "id": "slush-low-t900",
+      "tick": 900,
+      "metric": "material_cells",
+      "region": [
+        210,
+        240,
+        172,
+        16
+      ],
+      "material": 21
+    },
+    {
+      "id": "slush-high-t900",
+      "tick": 900,
+      "metric": "material_cells",
+      "region": [
+        210,
+        192,
+        172,
+        48
+      ],
+      "material": 21
+    },
+    {
+      "id": "oil-low-t900",
+      "tick": 900,
+      "metric": "material_cells",
+      "region": [
+        394,
+        240,
+        172,
+        16
+      ],
+      "material": 16
+    },
+    {
+      "id": "oil-high-t900",
+      "tick": 900,
+      "metric": "material_cells",
+      "region": [
+        394,
+        192,
+        172,
+        48
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-low-t900",
+      "tick": 900,
+      "metric": "material_cells",
+      "region": [
+        578,
+        240,
+        172,
+        16
+      ],
+      "material": 24
+    },
+    {
+      "id": "brine-high-t900",
+      "tick": 900,
+      "metric": "material_cells",
+      "region": [
+        578,
+        192,
+        172,
+        48
+      ],
+      "material": 24
+    },
+    {
+      "id": "mercury-low-t900",
+      "tick": 900,
+      "metric": "material_cells",
+      "region": [
+        762,
+        240,
+        172,
+        16
+      ],
+      "material": 33
+    },
+    {
+      "id": "mercury-high-t900",
+      "tick": 900,
+      "metric": "material_cells",
+      "region": [
+        762,
+        192,
+        172,
+        48
+      ],
+      "material": 33
+    }
+  ],
+  "conditions": [],
+  "source_recipe": "LCB-003 scenario catalogue v1: viscous",
+  "source_recipe_hash": "",
+  "presentation": {
+    "title": "Dropped viscous blocks",
+    "instructions": "32x32 blocks of Paste, Slush, Oil, Brine and Mercury fall from removable shelves onto the floor. Low and high band counts compare heap retention against spreading.",
+    "duration_ticks": 900,
+    "baseline": "Current native defaults; controlled fixed-tick run",
+    "profile": "Baseline",
+    "regions": [
+      {
+        "id": "paste",
+        "label": "Paste",
+        "region": [
+          26,
+          64,
+          172,
+          192
+        ]
+      },
+      {
+        "id": "slush",
+        "label": "Slush",
+        "region": [
+          210,
+          64,
+          172,
+          192
+        ]
+      },
+      {
+        "id": "oil",
+        "label": "Oil",
+        "region": [
+          394,
+          64,
+          172,
+          192
+        ]
+      },
+      {
+        "id": "brine",
+        "label": "Brine",
+        "region": [
+          578,
+          64,
+          172,
+          192
+        ]
+      },
+      {
+        "id": "mercury",
+        "label": "Mercury",
+        "region": [
+          762,
+          64,
+          172,
+          192
+        ]
+      }
+    ]
+  }
+}
