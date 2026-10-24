@@ -215,8 +215,20 @@ argument 2". `fill_liquid_refusal` passed an empty `std::string_view` (null data
 to `memcpy` on the accepted path. MSVC did not detect it. The fix guards
 zero-length copies, and the C API test now also requires an accepted request to
 clear a stale detail. Because `c_api.cpp` is a provenance-bound runtime input,
-both runtimes were republished from the fixed source. The publication run, hashes
-and final exact-head gates are in the PR evidence comment.
+both runtimes were republished from the fixed source `c86a34c`.
+
+**Republication.** [Run 40056996111](https://github.com/techrote/cybersand/actions/runs/40056996111)
+passed the floor, import and the same eight cases on both OSes, with summaries
+identical to run 40054064436. It then fast-forwarded `3510642`.
+
+| Platform | Runtime SHA-256 | Size | Validation report SHA-256 |
+|---|---|---|---|
+| Windows x86_64 | `2d4e92d56566fa40306c5c1a7a4f1e39996c310000466aceb784de88c0abeab9` | 4,049,408 | `5bac2413c0bb140b…` |
+| Linux x86_64 | `2495cedc12de07be3738a76b41ea352e5dff8309d167ea89f7fc430ae89765cf` (unchanged) | 3,525,584 | `841213a282f580c1…` |
+
+These supersede the first-publication hashes above for the current head. GitHub
+starts no workflows for the publisher's `GITHUB_TOKEN` push, so this record is the
+author commit that triggers the exact-head gates on top of the published runtimes.
 
 The exact-head Documentation, Native and GDExtension/Godot gates for the
 ready-for-review head are recorded in the PR evidence comment, not here, so that
