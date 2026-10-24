@@ -10,10 +10,11 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
-For current MAT-003 reconciliation with the landed #239 policy foundation and
-fresh source-matched validation requirements, use the
-[LCB-001/main integration checkpoint](../audits/2026-10-24-mat003-lcb001-integration-checkpoint.md).
-Historical experiment and acceptance routes below retain their dated scope.
+For current MAT-003 reconciliation with main `a395e33`, including the landed
+#239 foundation and #240 regressions, use the
+[post-#240 integration checkpoint](../audits/2026-10-24-mat003-post-240-integration-checkpoint.md).
+Previous exact-head CI passes and historical experiment records retain their own
+source scope; fresh checks on the new heads are pending.
 
 For packed overhead, actual wide-epoch clearing, 128-total-bit feasibility and separate admission, use the [MAT-003 continuation report](../research/mat003-continuation.md). Its [dated audit](../audits/2026-10-23-mat003-continuation.md) owns executed evidence; S2A acceptance does not admit these new tracks.
 
