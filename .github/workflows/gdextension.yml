@@ -379,6 +379,7 @@ jobs:
           CYBERSAND_PRESENTATION_EVIDENCE: ${{ github.workspace }}/build/godot-regressions/shard-${{ matrix.shard }}/presentation
         run: |
           timeout 30m xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -nolisten tcp" python3 tools/ci/run_godot_regressions.py --godot "$GODOT_BIN" --output "build/godot-regressions/shard-${{ matrix.shard }}" --shard-count 4 --shard-index "${{ matrix.shard }}" --keep-going
+          python3 tools/ci/readback_4ly003_development.py --regression-output "build/godot-regressions/shard-${{ matrix.shard }}" --expect-source-sha "$(git rev-parse HEAD)"
           git diff --exit-code -- .             ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'             ':!godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
 
       - name: Retain shard evidence
@@ -392,6 +393,8 @@ jobs:
             build/linux-runtime/runtime.sha256
           if-no-files-found: warn
           retention-days: 30
+
+
 
   linux-serial-equivalence:
     name: linux serial equivalence
@@ -446,6 +449,7 @@ jobs:
           CYBERSAND_PRESENTATION_EVIDENCE: ${{ github.workspace }}/build/godot-regressions/serial/presentation
         run: |
           timeout 30m xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -nolisten tcp" python3 tools/ci/run_godot_regressions.py --godot "$GODOT_BIN" --output build/godot-regressions/serial --keep-going
+          python3 tools/ci/readback_4ly003_development.py --regression-output build/godot-regressions/serial --expect-source-sha "$(git rev-parse HEAD)"
           git diff --exit-code -- .             ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'             ':!godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
 
       - name: Retain serial equivalence evidence

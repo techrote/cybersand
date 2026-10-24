@@ -39,10 +39,16 @@ must not be inferred from these measurements.
 4LY-002 [#206](https://github.com/techrote/cybersand/issues/206) now has
 passing source-bound physical manoeuvre envelopes and profile hashes, but
 owner-feel and final changed-head reconciliation are still not accepted.
-Next, [4LY-003 #207](https://github.com/techrote/cybersand/issues/207)
-owns actual-host lab/teacher qualification. Their independent preparation may
-overlap after this interface is fixed, but final host evidence uses frozen
-4LY-002 profiles. Companion 4LY-004/005 own Trainer-first and family learning,
+The [4LY-003 flight-lab implementation](../systems/physical-flight-lab.md)
+adds native/Rapier gameplay/headless episodes, 54-channel observations and
+a frozen scripted teacher. Its [physical final-score audit](../audits/2026-10-24-4ly003-final-qualification.md)
+reports 224 source-bound traces, 157/160 scored navigations/recoveries,
+all per-profile family gates met and zero authority/physics faults.
+The [earlier implementation ledger](../audits/2026-10-23-4ly003-checkpoint.md)
+remains historical. [4LY-003 #207](https://github.com/techrote/cybersand/issues/207)
+still requires distinct external suite custody/reviewer admission before
+claiming fully independent qualification; its tested host and frozen
+4LY-002 profiles cannot be silently generalized. Companion 4LY-004/005 own Trainer-first and family learning,
 with a passing Trainer result required before family learning. Parent #132 and
 generic physical/Jolt/morphology gates remain separate.
 
