@@ -136,6 +136,25 @@ func microscenario_apply_controlled_liquid(definition: Dictionary, liquid_policy
 	return _install_web_microscenario(definition, mode, liquid_policy,
 		{"normalization":"water-normalize-v1" if normalize_water else ""})
 
+func microscenario_apply_exploratory_liquid(definition: Dictionary, liquid_policy: PackedInt32Array,
+		normalize_water: bool = false, mode: String = "Play", actor_configuration: Dictionary = {}) -> bool:
+	if not actor_configuration.is_empty():
+		microscenario_error = "Web sampled rig/equipment owner staging remains pending; current session retained"
+		return false
+	return _install_web_microscenario(definition,mode,liquid_policy,
+		{"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else ""})
+
+func _commit_web_prepared_sampled(bridge: Variant, token: int, definition: Dictionary) -> bool:
+	var staged: Dictionary = CyberSimulationWorker.PreparedSampled.prepare(bridge,native_world,token,
+		Vector2(definition.player_start[0],definition.player_start[1]),bool(definition.player_enabled),
+		player.runtime_enclosure_recovery_enabled,player.active_profile(),[],0)
+	if not staged.ok:
+		microscenario_error = staged.error
+		return false
+	if not bridge.commit_liquid_world(native_world,token): return false
+	player = staged.character
+	return true
+
 func _install_web_microscenario(definition: Dictionary, mode: String, liquid_policy: Variant = null,
 		controlled_setup: Dictionary = {}) -> bool:
 	if str(definition.get("id", "")).begins_with("experimental/blacksite/"): return false
@@ -148,7 +167,20 @@ func _install_web_microscenario(definition: Dictionary, mode: String, liquid_pol
 			+ "asynchronous owner; Web execution is intentionally refused."
 		)
 		return false
-	if not micro_host.install(native_world, definition, mode, true, liquid_policy, controlled_setup):
+	var guard: Callable = Callable()
+	if not controlled_setup.is_empty():
+		var checked: Dictionary = CyberMicroScenarioContract.validate(definition)
+		if not checked.ok:
+			microscenario_error = str(checked.error)
+			return false
+		controlled_setup = controlled_setup.duplicate(true)
+		controlled_setup.owner_execution = CyberSimulationWorker.prepared_owner_execution(checked.definition, {
+			"simulation_window_enabled":native_world.get_simulation_window_enabled(),
+			"cadence_lod_enabled":native_world.get_cadence_lod_enabled(),
+			"liquid_surface_adhesion_enabled":liquid_surface_adhesion_enabled,
+			"horizontal_buffer":simulation_margin.x,"vertical_buffer":simulation_margin.y})
+		guard = _commit_web_prepared_sampled.bind(checked.definition)
+	if not micro_host.install(native_world, definition, mode, true, liquid_policy, controlled_setup, guard):
 		microscenario_error = micro_host.last_error
 		if native_world.has_method(&"get_liquid_construction_attempt"):
 			tower_context["liquid_construction_attempt"] = native_world.get_liquid_construction_attempt()
@@ -172,7 +204,7 @@ func _install_web_microscenario(definition: Dictionary, mode: String, liquid_pol
 	current_view_size = Vector2i(480,270)
 	camera_follow_enabled = false
 	camera_origin = Vector2(installed.camera_origin[0], installed.camera_origin[1])
-	player.reset(Vector2(installed.player_start[0], installed.player_start[1]))
+	if controlled_setup.is_empty(): player.reset(Vector2(installed.player_start[0], installed.player_start[1]))
 	character_position = player.position
 	tower_context = {"active":true, "micro_active":true, "water_active":false,
 		"microscenario":micro_host.summary(), "status":"MicroScenario " + str(installed.id),

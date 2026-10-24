@@ -21,6 +21,7 @@ var preset_picker: OptionButton
 var setup_picker: OptionButton
 var material_picker: OptionButton
 var family_picker: OptionButton
+var session_picker: OptionButton
 var normalize_water: CheckBox
 var apply_button: Button
 var dam_button: Button
@@ -51,7 +52,7 @@ func setup(controller: Control) -> void:
 	heading.add_theme_font_size_override("font_size", 20)
 	add_child(heading)
 	var explanation := Label.new()
-	explanation.text = "Choose a pending solver policy, then rebuild a fixed actor-free scenario. Existing pause and step controls run the accepted setup."
+	explanation.text = "Choose a solver policy, then rebuild the active scenario. Exploratory mode supports sampled actors. Use the existing pause and step controls to run."
 	explanation.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(explanation)
 	var presets := HFlowContainer.new()
@@ -60,6 +61,12 @@ func setup(controller: Control) -> void:
 	setup_picker.add_item("Protected Dam Break")
 	setup_picker.add_item("Water / Oil / Brine lock exchange")
 	presets.add_child(setup_picker)
+	session_picker = OptionButton.new()
+	session_picker.add_item("Controlled • fixed actor-free")
+	session_picker.add_item("Exploratory • sampled owner")
+	session_picker.tooltip_text = "Exploratory setup admits staged sampled actors and owner-paced interest. Physical body preparation remains pending; neither option qualifies full matched evidence."
+	session_picker.item_selected.connect(func(_index: int) -> void: _dirty = true; _refusal = "")
+	presets.add_child(session_picker)
 	preset_picker = OptionButton.new()
 	preset_picker.tooltip_text = "Presets replace the solver policy. The active definition's independent Water precision, coherence and transport settings stay unchanged."
 	preset_picker.item_selected.connect(select_preset)
@@ -166,9 +173,10 @@ func select_family(index: int) -> void:
 	_refresh_choices()
 
 func _definition_supported(definition: Dictionary) -> bool:
-	return (not definition.is_empty() and int(definition.get("schema_version",0)) == 2 \
-		and not definition.get("player_enabled",true) and not definition.get("body_enabled",true) \
-		and definition.get("execution",{}).get("policy","") == "fixed" \
+	if definition.is_empty() or int(definition.get("schema_version",0)) != 2 or definition.get("body_enabled",true): return false
+	if session_picker.selected == 1: return host.has_method(&"microscenario_apply_exploratory_liquid")
+	return (not definition.get("player_enabled",true)
+		and definition.get("execution",{}).get("policy","") == "fixed"
 		and definition.get("interest",{}).get("policy","") == "fixed")
 
 func _request(definition: Dictionary, original_control: bool = false, mode: String = "Inspect") -> bool:
@@ -179,8 +187,11 @@ func _request(definition: Dictionary, original_control: bool = false, mode: Stri
 	if not _definition_supported(definition):
 		_refusal = "This route is not yet wired for experimental policies. Choose a fixed actor-free MicroScenario or load Dam Break."
 		return false
-	var admitted: bool = (host.microscenario_apply_definition(definition, mode) if original_control \
-		else host.microscenario_apply_controlled_liquid(definition, requested_policy, normalize_water.button_pressed, mode))
+	var admitted: bool
+	if original_control: admitted = host.microscenario_apply_definition(definition, mode)
+	elif session_picker.selected == 1:
+		admitted = host.microscenario_apply_exploratory_liquid(definition, requested_policy, normalize_water.button_pressed, mode)
+	else: admitted = host.microscenario_apply_controlled_liquid(definition, requested_policy, normalize_water.button_pressed, mode)
 	if not admitted:
 		_refusal = str(host.microscenario_error)
 		return false
@@ -217,6 +228,7 @@ func _sync_applied(context: Dictionary) -> void:
 	_applied_generation = int(applied.session_generation)
 	if not _dirty:
 		requested_policy = applied.envelope.duplicate()
+		session_picker.select(1 if host.microscenario_liquid_setup.get("intent", "controlled") == "exploratory" else 0)
 		normalize_water.set_pressed_no_signal(not host.microscenario_liquid_setup.is_empty() \
 			and host.microscenario_liquid_setup.get("normalization","") == "water-normalize-v1")
 		_refresh_choices()
@@ -231,6 +243,7 @@ func refresh(context: Dictionary) -> void:
 		_waiting_serial = 0
 	var generation: int = int(context.get("liquid_solver_policy",{}).get("session_generation",-1))
 	if available and generation != _applied_generation: _sync_applied(context)
+	session_picker.disabled = not available or pending or blind
 	preset_picker.disabled = not available or pending or blind
 	setup_picker.disabled = not available or pending or blind
 	material_picker.disabled = not available or pending or blind
@@ -246,7 +259,7 @@ func refresh(context: Dictionary) -> void:
 		if int(assignment.material) == 3:
 			receipt_label.text += " • Water " + str(assignment.applied_family) + "/" + str(assignment.applied_variant)
 	if not typed.is_empty():
-		receipt_label.text += "\nNative receipt " + str(typed.receipt_hash).left(16) + " • host/source proof pending"
+		receipt_label.text += "\nNative receipt " + str(typed.receipt_hash).left(16) + " • " + str(typed.get("run_intent","controlled")) + " • host/source proof pending"
 		var normalized: Dictionary = typed.get("normalization",{})
 		if not normalized.is_empty():
 			receipt_label.text += " • Water added %s / removed %s / net %s" % [normalized.positive_delta, normalized.negative_delta, normalized.net_delta]
@@ -257,6 +270,6 @@ func refresh(context: Dictionary) -> void:
 	elif pending: status.text = "Rebuilding at the existing owner boundary…"
 	elif context.get("microscenario",{}).get("failed",false): status.text = "Installed session apparatus failed: " + str(context.microscenario.get("error","unavailable"))
 	elif not _refusal.is_empty(): status.text = "Refused; applied session retained. " + _refusal
-	elif not _definition_supported(host.microscenario_definition): status.text = "Load Dam Break, or choose a fixed actor-free MicroScenario. Actor, exploratory and other constructor routes remain pending."
+	elif not _definition_supported(host.microscenario_definition): status.text = "Load Dam Break, or choose a fixed actor-free MicroScenario. Choose Exploratory for staged sampled ownership; physical bodies and other constructors remain pending."
 	elif _dirty: status.text = "Pending solver/normalization selection. The running World keeps its applied policy until rebuild."
 	else: status.text = "Applied setup is ready. Reset keeps its accepted policy and normalization selection."

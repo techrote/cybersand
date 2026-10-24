@@ -9,6 +9,7 @@ const MicroHost = preload("res://scripts/microscenario_host.gd")
 const PlayerEnvironmentProfiles = preload("res://scripts/player_environment_profiles.gd")
 const ActorSession = preload("res://scripts/actor_prototype_session.gd")
 const UsableSession = preload("res://scripts/usable_session.gd")
+const PreparedSampled = preload("res://scripts/prepared_sampled_session.gd")
 const PhysicalEffects = preload("res://scripts/physical_actor_effects.gd")
 const PhysicalUsables = preload("res://scripts/physical_usable_runtime.gd")
 const SIMULATION_HZ: float = 60.0
@@ -91,6 +92,13 @@ var _actor_prototype_result_serial: int = 0
 var _actor_prototype_reset_applied: bool = false
 var _lab_request: Dictionary = {} # One bounded pending control command; newest wins.
 var _lab_request_revision: int = 0
+var _construction_settings_revision: int = 0
+var _prepared_frame_hold: Dictionary = {}
+var _prepared_frame_serial: int = 0
+var _prepared_liquid_owner_error: String = ""
+# Private dependency seams exercise declared precommit actor/equipment failures.
+var _prepared_actor_factory: Callable = Callable()
+var _prepared_usable_factory: Callable = Callable()
 # Optional deterministic test barrier, called by the exclusive owner after
 # native preparation and before the queue-mutex commit fence. No scene objects.
 var _controlled_liquid_prepare_barrier: Callable = Callable()
@@ -138,12 +146,70 @@ func queue_lab(command: Dictionary) -> void:
 	if command.has("step") or command.has("reset") or command.has("water_reset") or command.has("scenario_reset") or command.has("floor"): _paused = true
 	_mutex.unlock()
 
-func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_revision: int) -> bool:
-	if _controlled_liquid_prepare_barrier.is_valid(): _controlled_liquid_prepare_barrier.call()
+static func prepared_owner_execution(definition: Dictionary, settings: Dictionary) -> Dictionary:
+	var origin := Vector2i(int(definition.camera_origin[0]), int(definition.camera_origin[1]))
+	var size := Vector2i(480,270)
+	var horizontal: int = int(settings.horizontal_buffer)
+	var vertical: int = int(settings.vertical_buffer)
+	var first := Vector2i(clampi(origin.x-horizontal,0,1023), clampi(origin.y-vertical,0,1023))
+	var last := Vector2i(clampi(origin.x+size.x+horizontal,first.x+1,1024),
+		clampi(origin.y+size.y+vertical,first.y+1,1024))
+	var region: Array = [first.x,first.y,last.x-first.x,last.y-first.y] \
+		if settings.simulation_window_enabled else [0,0,1024,1024]
+	return {"region":region, "simulation_window_enabled":settings.simulation_window_enabled,
+		"cadence_lod_enabled":settings.cadence_lod_enabled,
+		"liquid_surface_adhesion_enabled":settings.liquid_surface_adhesion_enabled,
+		"view_origin":origin, "view_size":size, "horizontal_buffer":horizontal,"vertical_buffer":vertical}
+
+func acknowledge_prepared_liquid_configuration(serial: int) -> void:
+	# Main has installed the accepted camera/configuration before releasing the
+	# initial owner frame hold. Old presentation frames cannot rewrite tick zero.
 	_mutex.lock()
-	var current: bool = _running and not _reset_requested and request_revision == _lab_request_revision
-	var committed: bool = bridge.commit_liquid_world(_world, token) if current else false
+	if serial == _prepared_frame_serial:
+		_prepared_frame_hold = {}
+		_prepared_frame_serial = 0
 	_mutex.unlock()
+
+func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_revision: int,
+		settings_revision: int, command: Dictionary, definition: Dictionary, profile: Dictionary,
+		owner_execution: Dictionary) -> bool:
+	var staged: Dictionary = PreparedSampled.prepare(bridge, _world, token,
+		Vector2(definition.player_start[0],definition.player_start[1]),
+		bool(command.get("sampled_character_enabled",false)),
+		bool(command.get("runtime_enclosure_recovery_enabled",true)), profile,
+		command.get("exploratory_actor_definitions",[]), _actor_session.identity_epoch(),
+		_prepared_actor_factory, _prepared_usable_factory)
+	if not staged.ok:
+		_prepared_liquid_owner_error = staged.error
+		return false
+	if _controlled_liquid_prepare_barrier.is_valid(): _controlled_liquid_prepare_barrier.call()
+	# Retain the previous sessions through the no-fail swap; refusal never calls
+	# clear/configure on them or changes their epochs, equipment or actor state.
+	var retained_actors: CyberActorPrototypeSession = _actor_session
+	var retained_usables: CyberUsableSession = _usable_session
+	_mutex.lock()
+	var current: bool = _running and not _reset_requested and request_revision == _lab_request_revision \
+		and settings_revision == _construction_settings_revision
+	var committed: bool = bridge.commit_liquid_world(_world, token) if current else false
+	if committed:
+		_actor_session = staged.actors
+		_usable_session = staged.usables
+		_character = staged.character
+		_sampled_character_enabled = staged.enabled
+		if definition.interest.policy == "owner" or definition.execution.policy == "owner":
+			_prepared_frame_hold = owner_execution
+			_prepared_frame_serial = int(command.get("scenario_request_serial",0))
+			_view_origin = owner_execution.view_origin
+			_view_size = owner_execution.view_size
+			_horizontal_buffer = owner_execution.horizontal_buffer
+			_vertical_buffer = owner_execution.vertical_buffer
+			_simulation_window_enabled = owner_execution.simulation_window_enabled
+			_cadence_lod_enabled = owner_execution.cadence_lod_enabled
+			_liquid_surface_adhesion_enabled = owner_execution.liquid_surface_adhesion_enabled
+	_mutex.unlock()
+	# These references intentionally remain alive until after the mutex fence.
+	retained_actors = null
+	retained_usables = null
 	return committed
 
 func _lab_release(index: int) -> void:
@@ -293,7 +359,8 @@ func _apply_lab(command: Dictionary) -> bool:
 		_scenario_request_applied = false
 		var actor_definitions: Array = command.get("exploratory_actor_definitions", [])
 		var controlled_setup: Dictionary = command.get("controlled_liquid_setup", {})
-		if not controlled_setup.is_empty() and (not actor_definitions.is_empty() \
+		var exploratory_liquid: bool = controlled_setup.get("intent", "controlled") == "exploratory"
+		if not controlled_setup.is_empty() and not exploratory_liquid and (not actor_definitions.is_empty() \
 			or bool(command.get("sampled_character_enabled", true))):
 			_lab_status = "Controlled liquid preparation requires an actor-free request"
 			return false
@@ -305,10 +372,38 @@ func _apply_lab(command: Dictionary) -> bool:
 			or not ActorSession.valid_definitions(actor_definitions)):
 			_lab_status = "Refused actor configuration for controlled scenario"
 			return false
+		var prepared_owner: Dictionary = {}
+		var settings_revision: int = -1
+		var profile: Dictionary = {}
+		var prepared_definition: Dictionary = command.scenario_reset
+		_prepared_liquid_owner_error = ""
+		if not controlled_setup.is_empty():
+			var validated: Dictionary = CyberMicroScenarioContract.validate(command.scenario_reset)
+			if not validated.ok:
+				_lab_status = "MicroScenario rejected; " + str(validated.error)
+				return false
+			prepared_definition = validated.definition
+			_mutex.lock()
+			settings_revision = _construction_settings_revision
+			profile = command.get("_prepared_player_environment_profile",_player_environment_profile).duplicate(true)
+			var pending_profile: bool = not _pending_player_environment_profile.is_empty()
+			prepared_owner = prepared_owner_execution(validated.definition, {
+				"simulation_window_enabled":_simulation_window_enabled,"cadence_lod_enabled":_cadence_lod_enabled,
+				"liquid_surface_adhesion_enabled":_liquid_surface_adhesion_enabled,
+				"horizontal_buffer":_horizontal_buffer,"vertical_buffer":_vertical_buffer})
+			_mutex.unlock()
+			if pending_profile:
+				_lab_status = "Prepared liquid request retired by a pending player environment profile"
+				return false
+			controlled_setup = controlled_setup.duplicate(true)
+			controlled_setup.owner_execution = prepared_owner
+		var guard: Callable = _commit_controlled_liquid_candidate.bind(
+			int(command.get("_owner_request_revision",-1)),settings_revision,command,prepared_definition,
+			profile,prepared_owner) if not controlled_setup.is_empty() else Callable()
 		if not _scenario_host.install(_world, command.scenario_reset, str(command.get("scenario_mode", "Inspect")),
-			true, command.get("liquid_policy", null), controlled_setup,
-			_commit_controlled_liquid_candidate.bind(int(command.get("_owner_request_revision", -1)))):
-			_lab_status = "MicroScenario rejected; " + _scenario_host.last_error
+			true, command.get("liquid_policy", null), controlled_setup, guard):
+			_lab_status = "MicroScenario rejected; " + (_prepared_liquid_owner_error \
+				if not _prepared_liquid_owner_error.is_empty() else _scenario_host.last_error)
 			return false
 		_world_generation += 1
 		var definition: Dictionary = _scenario_host.definition()
@@ -323,21 +418,22 @@ func _apply_lab(command: Dictionary) -> bool:
 		_lab_inputs.clear()
 		_micro_capture = {}
 		_simulation_failed = false
-		_configure_sampled_character(
-			Vector2(definition.player_start[0], definition.player_start[1]),
-			bool(command.get("sampled_character_enabled", true)),
-			bool(command.get("runtime_enclosure_recovery_enabled", true))
-		)
-		if not actor_definitions.is_empty():
-			if not _actor_session.configure(actor_definitions, _world):
-				_lab_status = "Refused exploratory actor configuration"
-				return false
-			if not _usable_session.configure(_actor_session.snapshot()):
-				_actor_session.clear()
-				_lab_status = "Refused exploratory equipment session"
-				return false
-			_character = _actor_session.player()
-			_sampled_character_enabled = true
+		if controlled_setup.is_empty():
+			_configure_sampled_character(
+				Vector2(definition.player_start[0], definition.player_start[1]),
+				bool(command.get("sampled_character_enabled", true)),
+				bool(command.get("runtime_enclosure_recovery_enabled", true))
+			)
+			if not actor_definitions.is_empty():
+				if not _actor_session.configure(actor_definitions, _world):
+					_lab_status = "Refused exploratory actor configuration"
+					return false
+				if not _usable_session.configure(_actor_session.snapshot()):
+					_actor_session.clear()
+					_lab_status = "Refused exploratory equipment session"
+					return false
+				_character = _actor_session.player()
+				_sampled_character_enabled = true
 		_scenario_request_applied = true
 		_lab_status = ("MicroScenario installed; apparatus failed: " + _scenario_host.last_error \
 			if _scenario_host.summary().get("failed", false) else "MicroScenario " + str(definition.id))
@@ -437,6 +533,10 @@ func _configure_sampled_character(
 	enabled: bool,
 	runtime_recovery_enabled: bool
 ) -> void:
+	_mutex.lock()
+	_prepared_frame_hold = {}
+	_prepared_frame_serial = 0
+	_mutex.unlock()
 	_actor_session.clear()
 	_usable_session.clear()
 	if _character is CyberActorPrototype:
@@ -501,12 +601,18 @@ func submit_actor_action(
 	producer: StringName = &"policy"
 ) -> bool:
 	# Thread-safe value admission only. World and motors stay worker-exclusive.
-	return _actor_session.submit_action(actor_id, epoch, sequence, observed_tick,
+	_mutex.lock()
+	var session: CyberActorPrototypeSession = _actor_session
+	_mutex.unlock()
+	return session.submit_action(actor_id, epoch, sequence, observed_tick,
 		movement, primary, secondary, lease_ticks, producer)
 
 
 func cancel_actor_input(actor_id: int, epoch: int, producer: StringName) -> bool:
-	return _actor_session.cancel_input(actor_id, epoch, producer)
+	_mutex.lock()
+	var session: CyberActorPrototypeSession = _actor_session
+	_mutex.unlock()
+	return session.cancel_input(actor_id, epoch, producer)
 
 
 func submit_actor_usable_action(
@@ -516,12 +622,18 @@ func submit_actor_usable_action(
 ) -> bool:
 	# Equipment is an independent copied-input domain. Policies never receive a
 	# World reference or permission to submit cell-edit footprints directly.
-	return _usable_session.submit_action(actor_id, epoch, sequence, observed_tick,
+	_mutex.lock()
+	var session: CyberUsableSession = _usable_session
+	_mutex.unlock()
+	return session.submit_action(actor_id, epoch, sequence, observed_tick,
 		usable_index, aim, power, trigger, alternate, lease_ticks, producer)
 
 
 func cancel_actor_usable_input(actor_id: int, epoch: int, producer: StringName) -> bool:
-	return _usable_session.cancel_input(actor_id, epoch, producer)
+	_mutex.lock()
+	var session: CyberUsableSession = _usable_session
+	_mutex.unlock()
+	return session.cancel_input(actor_id, epoch, producer)
 
 
 func submit_actor_rig_action(
@@ -533,7 +645,10 @@ func submit_actor_rig_action(
 ) -> bool:
 	# ACT-002: the extended envelope admits values, never caller-supplied World
 	# commands, effect footprints or mutable motor references.
-	return _actor_session.submit_rig_action(actor_id, epoch, sequence, observed_tick,
+	_mutex.lock()
+	var session: CyberActorPrototypeSession = _actor_session
+	_mutex.unlock()
+	return session.submit_rig_action(actor_id, epoch, sequence, observed_tick,
 		movement, aim, effort, trim, reel, primary, secondary, auxiliary, lease_ticks, producer)
 
 
@@ -543,7 +658,10 @@ func submit_actor_actuator_action(
 	producer: StringName = &"policy"
 ) -> bool:
 	# The configuration-fixed direct lane admits copied actuator values only.
-	return _actor_session.submit_actuator_action(actor_id, epoch, sequence,
+	_mutex.lock()
+	var session: CyberActorPrototypeSession = _actor_session
+	_mutex.unlock()
+	return session.submit_actuator_action(actor_id, epoch, sequence,
 		observed_tick, actuators, lease_ticks, producer)
 
 
@@ -600,14 +718,19 @@ func set_frame_state(
 		for actor: int in range(PhysicalEffects.MAX_ACTORS):
 			_physical_effect_generations[actor] += 1
 	_paused = paused
-	_interest_center = interest_center
-	_view_origin = view_origin
-	_view_size = view_size
-	_horizontal_buffer = horizontal_buffer
-	_vertical_buffer = vertical_buffer
-	_simulation_window_enabled = simulation_window_enabled
-	_cadence_lod_enabled = cadence_lod_enabled
-	_liquid_surface_adhesion_enabled = liquid_surface_adhesion_enabled
+	if _prepared_frame_hold.is_empty():
+		if _simulation_window_enabled != simulation_window_enabled or _cadence_lod_enabled != cadence_lod_enabled \
+			or _liquid_surface_adhesion_enabled != liquid_surface_adhesion_enabled \
+			or _horizontal_buffer != horizontal_buffer or _vertical_buffer != vertical_buffer:
+			_construction_settings_revision += 1
+		_interest_center = interest_center
+		_view_origin = view_origin
+		_view_size = view_size
+		_horizontal_buffer = horizontal_buffer
+		_vertical_buffer = vertical_buffer
+		_simulation_window_enabled = simulation_window_enabled
+		_cadence_lod_enabled = cadence_lod_enabled
+		_liquid_surface_adhesion_enabled = liquid_surface_adhesion_enabled
 	_mutex.unlock()
 
 
@@ -990,6 +1113,7 @@ func queue_player_environment_profile(profile: Dictionary) -> bool:
 	if not resolved.get("ok", false):
 		return false
 	_mutex.lock()
+	_construction_settings_revision += 1
 	_pending_player_environment_profile = resolved.profile.duplicate(true)
 	# PENV tuning remains fresh-reset only. The presentation owner follows this
 	# with the current TEST-UX/PCHAR-aware reset path so tool state and player
@@ -1111,6 +1235,10 @@ func _worker_loop() -> void:
 			_actor_prototype_result_serial = local_actor_prototype_serial
 			_actor_prototype_reset_applied = false
 			_actor_prototype_status = "Refused actor reset: superseded by ordinary reset"
+		if not local_lab.get("controlled_liquid_setup",{}).is_empty() and not local_player_environment_profile.is_empty():
+			# A profile extracted in this same owner turn is part of the final
+			# staged character configuration, before native replacement commits.
+			local_lab["_prepared_player_environment_profile"] = local_player_environment_profile
 		if _apply_lab(local_lab):
 			# Candidate Worlds may reuse a hard-surface revision number. Their
 			# initial terrain must replace the previous World's retained packet.
@@ -1127,6 +1255,13 @@ func _worker_loop() -> void:
 				_actor_prototype_reset_applied = false
 				_actor_prototype_status = "Refused actor reset: scenario transition took priority"
 			local_reset_requested = false
+			if not local_lab.get("controlled_liquid_setup",{}).is_empty():
+				_mutex.lock()
+				local_view_origin = _view_origin; local_view_size = _view_size
+				local_horizontal_buffer = _horizontal_buffer; local_vertical_buffer = _vertical_buffer
+				local_window_enabled = _simulation_window_enabled; local_cadence_enabled = _cadence_lod_enabled
+				local_liquid_adhesion_enabled = _liquid_surface_adhesion_enabled
+				_mutex.unlock()
 			local_paused = true
 			_last_render_snapshot_usec = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 		if not local_player_environment_profile.is_empty():

@@ -69,12 +69,17 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 		last_error = "Schema 2 requires the rebuilt native observation adapter; prior world preserved"
 		return false
 	if not controlled_setup.is_empty():
-		# First normal-host slice: a fixed actor-free native material apparatus.
-		# Actor/loadout staging and owner-controlled/exploratory constructors have
-		# separate lifecycle work; refuse them before preparing any replacement.
-		if int(candidate.schema_version) != 2 or candidate.player_enabled or candidate.body_enabled \
-			or candidate.execution.policy != "fixed" or candidate.interest.policy != "fixed":
+		var intent: String = str(controlled_setup.get("intent", "controlled"))
+		if not intent in ["controlled", "exploratory"] or int(candidate.schema_version) != 2 or candidate.body_enabled:
+			last_error = "Prepared liquid setup requires schema 2 and staged body-free ownership"
+			return false
+		if intent == "controlled" and (candidate.player_enabled \
+			or candidate.execution.policy != "fixed" or candidate.interest.policy != "fixed"):
 			last_error = "Controlled liquid preparation requires a fixed actor-free schema-2 scenario"
+			return false
+		var owner: Dictionary = controlled_setup.get("owner_execution", {})
+		if intent == "exploratory" and (owner.is_empty() or not commit_guard.is_valid()):
+			last_error = "Exploratory liquid preparation requires staged owner configuration"
 			return false
 		if not world.has_method(&"get_applied_liquid_construction_receipt") or not bridge.has_method(&"prepare_liquid_world"):
 			last_error = "Controlled liquid preparation requires the rebuilt native adapter"
@@ -84,7 +89,15 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 			"region":PackedInt32Array(candidate.interest.region),
 			"cadence_lod_enabled":candidate.execution.cadence_lod_enabled,
 			"liquid_surface_adhesion_enabled":candidate.execution.liquid_surface_adhesion_enabled,
-			"normalization":controlled_setup.get("normalization", "")}
+			"normalization":controlled_setup.get("normalization", ""), "intent":intent,
+			"pacing":"host_paced" if intent == "exploratory" else "fixed_steps"}
+		if intent == "exploratory":
+			if candidate.interest.policy == "owner":
+				options.region = PackedInt32Array(owner.region)
+				options.simulation_window_enabled = owner.simulation_window_enabled
+			if candidate.execution.policy == "owner":
+				options.cadence_lod_enabled = owner.cadence_lod_enabled
+				options.liquid_surface_adhesion_enabled = owner.liquid_surface_adhesion_enabled
 		var token: int = bridge.prepare_liquid_world(world, PackedInt32Array(candidate.rectangles),
 			checked.transport.packed, PackedInt32Array(candidate.water_semantics),
 			PackedInt32Array(candidate.partial_water_fills), request, options)

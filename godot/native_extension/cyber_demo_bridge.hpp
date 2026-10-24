@@ -513,6 +513,15 @@ public:
         const PackedInt32Array& rectangles, const PackedInt32Array& profile,
         const PackedInt32Array& policy, const PackedInt32Array& water_fills,
         const PackedInt32Array& liquid_policy, const Dictionary& options);
+    [[nodiscard]] bool prepared_liquid_character_box_collides(const Ref<CyberNativeCellWorld>& adapter,
+        std::int64_t token, Vector2 origin, Vector2 size, std::int64_t mode) const {
+        // A stale view fails closed; no World reference, mutable storage or
+        // tick/edit capability crosses the exclusive preparation boundary.
+        if (adapter.is_null() || token <= 0 || !adapter->pending_liquid_world_ ||
+            adapter->pending_liquid_world_->token != static_cast<std::uint64_t>(token)) return true;
+        return CyberNativeCellWorld::character_box_collides_in(
+            adapter->pending_liquid_world_->world.get(), origin, size, mode);
+    }
     [[nodiscard]] bool commit_liquid_world(const Ref<CyberNativeCellWorld>& adapter, std::int64_t token);
     void discard_liquid_world(const Ref<CyberNativeCellWorld>& adapter, std::int64_t token) {
         if (adapter.is_valid() && adapter->pending_liquid_world_ &&
@@ -813,6 +822,8 @@ protected:
                              &CyberDemoBridge::liquid_policy_assignment_choices);
         ClassDB::bind_method(D_METHOD("prepare_liquid_world", "world", "rectangles", "profile", "policy",
             "water_fills", "liquid_policy", "options"), &CyberDemoBridge::prepare_liquid_world);
+        ClassDB::bind_method(D_METHOD("prepared_liquid_character_box_collides", "world", "token", "origin", "size", "mode"),
+            &CyberDemoBridge::prepared_liquid_character_box_collides);
         ClassDB::bind_method(D_METHOD("commit_liquid_world", "world", "token"), &CyberDemoBridge::commit_liquid_world);
         ClassDB::bind_method(D_METHOD("discard_liquid_world", "world", "token"), &CyberDemoBridge::discard_liquid_world);
         ClassDB::bind_method(D_METHOD("validate_liquid_policy", "liquid_policy"),

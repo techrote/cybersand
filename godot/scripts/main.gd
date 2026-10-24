@@ -300,10 +300,20 @@ func microscenario_apply_controlled_liquid(definition: Dictionary, liquid_policy
 	return _apply_microscenario_definition(definition, mode, {}, liquid_policy,
 		{"normalization":"water-normalize-v1" if normalize_water else ""})
 
+func microscenario_apply_exploratory_liquid(definition: Dictionary, liquid_policy: PackedInt32Array,
+		normalize_water: bool = false, mode: String = "Play", actor_configuration: Dictionary = {}) -> bool:
+	return _apply_microscenario_definition(definition, mode, actor_configuration, liquid_policy,
+		{"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else ""})
+
 func _apply_microscenario_definition(definition: Dictionary, mode: String, actor_configuration: Dictionary = {},
 		liquid_policy: Variant = null, controlled_setup: Dictionary = {}) -> bool:
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return false
 	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return false
+	# F5 rebuilds retain an explicitly accepted exploratory solver selection.
+	if (not actor_configuration.is_empty() and liquid_policy == null and controlled_setup.is_empty()
+		and microscenario_liquid_setup.get("intent", "controlled") == "exploratory"):
+		liquid_policy = microscenario_liquid_policy
+		controlled_setup = microscenario_liquid_setup.duplicate(true)
 	definition = definition.duplicate(true)
 	var exploratory: bool = CyberMicroScenarioCatalogue.exploratory_actor_map(definition) and mode != "Benchmark"
 	var selected_actor: Dictionary = actor_configuration if not actor_configuration.is_empty() else exploratory_actor_configuration
@@ -321,14 +331,23 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 	if not checked.get("ok", false) or not mode in CyberMicroScenarioContract.MODES:
 		microscenario_error = str(checked.get("error", "Invalid mode"))
 		return false
-	if not controlled_setup.is_empty() and (checked.definition.player_enabled or checked.definition.body_enabled \
-		or checked.definition.execution.policy != "fixed" or checked.definition.interest.policy != "fixed"):
-		microscenario_error = "Controlled liquid setup requires a fixed actor-free MicroScenario"
-		return false
+	if not controlled_setup.is_empty():
+		var prepared_exploratory: bool = controlled_setup.get("intent", "controlled") == "exploratory"
+		if int(checked.definition.schema_version) != 2 or checked.definition.body_enabled:
+			microscenario_error = "Prepared liquid setup requires schema 2; physical/body staging remains pending"
+			return false
+		if (not prepared_exploratory and (checked.definition.player_enabled
+			or checked.definition.execution.policy != "fixed" or checked.definition.interest.policy != "fixed")):
+			microscenario_error = "Controlled liquid setup requires a fixed actor-free MicroScenario"
+			return false
 	var player_configuration: Dictionary = (selected_actor.duplicate(true)
 		if exploratory and not selected_actor.is_empty()
 		else _player_configuration_for_microscenario(checked.definition))
 	if player_configuration.is_empty():
+		return false
+	if (not controlled_setup.is_empty() and (player_configuration.get("representation", "sampled") == "barrel-rapier"
+		or not str(player_configuration.get("physical_rig", "")).is_empty())):
+		microscenario_error = "Prepared physical actor/terrain staging remains pending; current session retained"
 		return false
 	if microscenario_panel != null: microscenario_panel.workbench.cancel_declared_window()
 	_microscenario_request_serial += 1
@@ -352,7 +371,8 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 		"scenario_request_serial":_microscenario_request_serial,
 		"scenario_mode":mode,
 		"sampled_character_enabled":(
-			controlled_setup.is_empty() and requested_representation != CyberPlayerRepresentation.BARREL_RAPIER
+			(controlled_setup.is_empty() or controlled_setup.get("intent", "controlled") == "exploratory")
+			and requested_representation != CyberPlayerRepresentation.BARREL_RAPIER
 		),
 		"runtime_enclosure_recovery_enabled":bool(
 			player_configuration.get("runtime_recovery_enabled", true)
@@ -394,13 +414,19 @@ func _microscenario_installed(definition: Dictionary) -> void:
 		showcase_presentation.installed(definition)
 	if blacksite_nine_presentation != null:
 		blacksite_nine_presentation.installed(definition)
+	if not microscenario_liquid_setup.is_empty():
+		simulation_worker.acknowledge_prepared_liquid_configuration(int(pending_microscenario_apply.get("serial",0)))
 
 func microscenario_reset() -> void:
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return
 	if tower_context.get("micro_active", false):
 		if not microscenario_liquid_setup.is_empty() and microscenario_liquid_policy != null:
-			microscenario_apply_controlled_liquid(microscenario_definition, microscenario_liquid_policy,
-				microscenario_liquid_setup.get("normalization", "") == "water-normalize-v1", microscenario_mode)
+			if microscenario_liquid_setup.get("intent", "controlled") == "exploratory":
+				microscenario_apply_exploratory_liquid(microscenario_definition, microscenario_liquid_policy,
+					microscenario_liquid_setup.get("normalization", "") == "water-normalize-v1", microscenario_mode)
+			else:
+				microscenario_apply_controlled_liquid(microscenario_definition, microscenario_liquid_policy,
+					microscenario_liquid_setup.get("normalization", "") == "water-normalize-v1", microscenario_mode)
 		else:
 			microscenario_apply_definition(microscenario_definition, microscenario_mode)
 	elif water_controlled_run_active():

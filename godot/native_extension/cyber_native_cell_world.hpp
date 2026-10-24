@@ -212,7 +212,7 @@ private:
         Dictionary receipt;
         std::uint64_t token = 0, retained_generation = 0, retained_revision = 0, retained_hash = 0;
         Vector2i origin{}, size{};
-        bool cadence = false, adhesion = true;
+        bool cadence = false, adhesion = true, window = true;
         bool retained_cadence = false, retained_window = true;
     };
     std::unique_ptr<PendingLiquidWorld> pending_liquid_world_;
@@ -231,6 +231,7 @@ private:
     bool liquid_surface_adhesion_enabled_ = true;
     bool render_snapshot_full_refresh_required_ = true;
 
+    [[nodiscard]] static bool character_box_collides_in(const cybersand::World* world, Vector2 origin, Vector2 size, std::int64_t mode);
     void create_world();
     void retire_liquid_construction_identity();
     void refresh_simulation_region();

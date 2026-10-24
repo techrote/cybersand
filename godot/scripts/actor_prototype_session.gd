@@ -157,8 +157,16 @@ static func valid_definitions(definitions: Array) -> bool:
 	return true
 
 
-func configure(definitions: Array, world) -> bool:
-	if not valid_definitions(definitions):
+func identity_epoch() -> int:
+	_mutex.lock()
+	var value: int = _epoch
+	_mutex.unlock()
+	return value
+
+func configure(definitions: Array, world, epoch_floor: int = -1) -> bool:
+	# A privately staged replacement must retire the previous session identity,
+	# even when this fresh object has never configured actors before.
+	if epoch_floor == 9223372036854775807 or not valid_definitions(definitions):
 		return false
 	var candidates: Array[CyberActorPrototype] = []
 	var capabilities: Array[Dictionary] = []
@@ -203,7 +211,7 @@ func configure(definitions: Array, world) -> bool:
 	_actuation_profiles = actuation_profiles
 	_actuation_capabilities = actuation_capabilities
 	_mutex.lock()
-	_epoch += 1
+	_epoch = maxi(_epoch + 1, epoch_floor + 1)
 	_tick = 0
 	_count = _actors.size()
 	_suspended = false

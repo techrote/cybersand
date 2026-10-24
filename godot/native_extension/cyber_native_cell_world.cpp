@@ -859,23 +859,28 @@ bool CyberNativeCellWorld::box_collides(Vector2 origin, Vector2 size) const {
 }
 
 bool CyberNativeCellWorld::character_box_collides(Vector2 origin, Vector2 size, std::int64_t mode) const {
+    return character_box_collides_in(world_.get(), origin, size, mode);
+}
+
+bool CyberNativeCellWorld::character_box_collides_in(
+    const cybersand::World* world, Vector2 origin, Vector2 size, std::int64_t mode) {
     // 0: enclosure/volume, 1: downward feet, 2: sides, 3: upward head.
     // Bounded owner query; malformed/out-of-world queries fail closed.
     if (!origin.is_finite() || !size.is_finite() || size.x <= 0 || size.y <= 0 ||
         size.x > 32 || size.y > 32 || mode < 0 || mode > 3 ||
         origin.x < 0 || origin.y < 0 || origin.x + size.x > kWorldWidth ||
-        origin.y + size.y > kWorldHeight || world_ == nullptr) return true;
+        origin.y + size.y > kWorldHeight || world == nullptr) return true;
     const auto first_x = static_cast<std::int32_t>(std::floor(origin.x + 0.001));
     const auto first_y = static_cast<std::int32_t>(std::floor(origin.y + 0.001));
     const auto last_x = static_cast<std::int32_t>(std::ceil(origin.x + size.x - 0.001)) - 1;
     const auto last_y = static_cast<std::int32_t>(std::ceil(origin.y + size.y - 0.001)) - 1;
     for (auto y = first_y; y <= last_y; ++y) for (auto x = first_x; x <= last_x; ++x) {
-        const auto material = world_->get(x, y);
+        const auto material = world->get(x, y);
         if (cybersand::MaterialRules::is_hard_surface(material)) return true;
         if ((mode == 1 && y != last_y) ||
             (mode == 2 && x != first_x && x != last_x) ||
             (mode == 3 && y != first_y)) continue;
-        if (world_->granular_support_at(x, y, mode >= 2)) return true;
+        if (world->granular_support_at(x, y, mode >= 2)) return true;
     }
     return false;
 }

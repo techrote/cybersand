@@ -70,6 +70,15 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_world(
             region[2] > cybersand::demo::kWidth || region[3] > cybersand::demo::kHeight ||
             region[0] > cybersand::demo::kWidth - region[2] || region[1] > cybersand::demo::kHeight - region[3])
             throw std::invalid_argument("Controlled preparation requires a finite final simulation region");
+        const String intent = options.get("intent", String("controlled"));
+        const String pacing = options.get("pacing", String("fixed_steps"));
+        if ((intent != "controlled" && intent != "exploratory") ||
+            (pacing != "fixed_steps" && pacing != "host_paced"))
+            throw std::invalid_argument("Unknown prepared host intent or pacing");
+        const bool window = options.get("simulation_window_enabled", true);
+        if (!window && (region[0] != 0 || region[1] != 0 ||
+            region[2] != cybersand::demo::kWidth || region[3] != cybersand::demo::kHeight))
+            throw std::invalid_argument("Disabled simulation window requires the full finite World region");
         const String rule = options.get("normalization", String());
         if (!rule.is_empty() && rule != "water-normalize-v1")
             throw std::invalid_argument("Unknown normalization rule");
@@ -165,6 +174,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_world(
         pending->world = prepared.take_world();
         pending->world->configure_transient_obstacles({0, 0, cybersand::demo::kWidth, cybersand::demo::kHeight});
         pending->origin = Vector2i(region[0], region[1]); pending->size = Vector2i(region[2], region[3]);
+        pending->window = window;
         pending->cadence = options.get("cadence_lod_enabled", false);
         pending->adhesion = options.get("liquid_surface_adhesion_enabled", true);
         pending->world->set_simulation_region(cybersand::RectI64{region[0], region[1], region[2], region[3]});
@@ -175,9 +185,11 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_world(
         const auto facts = std::make_unique<cybersand::receipt::NativeFacts>(
             cybersand::receipt::capture_native_facts(*pending->world, pending->setup));
         cybersand::receipt::HostExecution execution;
-        execution.simulation_window_enabled = true; execution.cadence_lod_enabled = pending->cadence;
+        execution.simulation_window_enabled = pending->window; execution.cadence_lod_enabled = pending->cadence;
+        execution.pacing = pacing == "host_paced" ? cybersand::receipt::Pacing::HostPaced : cybersand::receipt::Pacing::FixedSteps;
         const auto receipt = cybersand::receipt::build_applied_run_receipt(*facts, pending->setup, request,
-            cybersand::receipt::RunIntent::Controlled, cybersand::receipt::PlaneActivity::Active, execution, {},
+            intent == "exploratory" ? cybersand::receipt::RunIntent::Exploratory : cybersand::receipt::RunIntent::Controlled,
+            cybersand::receipt::PlaneActivity::Active, execution, {},
             adapter->liquid_policy_session_generation_+1, prepared.setup().normalization_receipt());
         pending->receipt = prepared_liquid_detail::encoding(receipt, "applied_run");
         pending->receipt["session_generation"] = static_cast<std::int64_t>(adapter->liquid_policy_session_generation_+1);
@@ -189,6 +201,8 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_world(
         pending->receipt["worker_threads"] = static_cast<std::int64_t>(config->worker_threads);
         pending->receipt["completed_tick"] = static_cast<std::int64_t>(facts->values().completed_tick);
         pending->receipt["region"] = region;
+        pending->receipt["run_intent"] = intent; pending->receipt["pacing"] = pacing;
+        pending->receipt["simulation_window_enabled"] = pending->window;
         pending->receipt["cadence_lod_enabled"] = pending->cadence;
         pending->receipt["liquid_surface_adhesion_enabled"] = pending->adhesion;
         pending->receipt["normalization"] = Dictionary();
@@ -247,7 +261,7 @@ inline bool CyberDemoBridge::commit_liquid_world(const Ref<CyberNativeCellWorld>
     std::swap(adapter->applied_liquid_construction_receipt_, pending->receipt);
     adapter->liquid_construction_attempt_.clear();
     ++adapter->liquid_policy_session_generation_;
-    adapter->simulation_window_enabled_ = true;
+    adapter->simulation_window_enabled_ = pending->window;
     adapter->last_view_origin_ = pending->origin; adapter->last_view_size_ = pending->size;
     adapter->last_horizontal_buffer_ = adapter->last_vertical_buffer_ = 0;
     adapter->cadence_lod_enabled_ = pending->cadence;
