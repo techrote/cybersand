@@ -1,0 +1,378 @@
+{
+  "schema_version": 2,
+  "id": "lcb.density.inverted-column.v1",
+  "recipe_version": 1,
+  "seed": 0,
+  "maturity": "reference",
+  "rectangles": [
+    0,
+    0,
+    1024,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1024,
+    1,
+    1023,
+    0,
+    1,
+    1024,
+    1,
+    0,
+    1023,
+    1024,
+    1,
+    1,
+    472,
+    256,
+    80,
+    8,
+    1,
+    472,
+    40,
+    8,
+    216,
+    1,
+    544,
+    40,
+    8,
+    216,
+    1,
+    480,
+    192,
+    64,
+    64,
+    16,
+    480,
+    64,
+    64,
+    64,
+    24
+  ],
+  "partial_water_fills": [
+    480,
+    128,
+    64,
+    64,
+    255,
+    0
+  ],
+  "transport_profile": {
+    "families": {
+      "liquid": {
+        "cadence": 1,
+        "carrying": 0,
+        "erosion": 0,
+        "horizontal": 2,
+        "permeability": 1
+      },
+      "powder": {
+        "mixing": 0,
+        "packing": 8,
+        "pickup": 64
+      }
+    },
+    "materials": {
+      "33": {
+        "permeability": 30
+      }
+    },
+    "name": "Baseline",
+    "pairs": [],
+    "version": 1
+  },
+  "water_semantics": [
+    1,
+    8,
+    12,
+    0
+  ],
+  "player_start": [
+    24,
+    222
+  ],
+  "camera_origin": [
+    0,
+    0
+  ],
+  "player_enabled": false,
+  "body_enabled": false,
+  "tools": [],
+  "interest": {
+    "policy": "fixed",
+    "region": [
+      456,
+      24,
+      112,
+      248
+    ]
+  },
+  "execution": {
+    "policy": "fixed",
+    "cadence_lod_enabled": false,
+    "liquid_surface_adhesion_enabled": true
+  },
+  "events": [],
+  "observations": [
+    {
+      "id": "oil-top-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        480,
+        64,
+        64,
+        64
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-top-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        480,
+        64,
+        64,
+        64
+      ],
+      "material": 24
+    },
+    {
+      "id": "oil-middle-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        480,
+        128,
+        64,
+        64
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-middle-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        480,
+        128,
+        64,
+        64
+      ],
+      "material": 24
+    },
+    {
+      "id": "oil-bottom-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        480,
+        192,
+        64,
+        64
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-bottom-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        480,
+        192,
+        64,
+        64
+      ],
+      "material": 24
+    },
+    {
+      "id": "oil-top-t600",
+      "tick": 600,
+      "metric": "material_cells",
+      "region": [
+        480,
+        64,
+        64,
+        64
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-top-t600",
+      "tick": 600,
+      "metric": "material_cells",
+      "region": [
+        480,
+        64,
+        64,
+        64
+      ],
+      "material": 24
+    },
+    {
+      "id": "oil-middle-t600",
+      "tick": 600,
+      "metric": "material_cells",
+      "region": [
+        480,
+        128,
+        64,
+        64
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-middle-t600",
+      "tick": 600,
+      "metric": "material_cells",
+      "region": [
+        480,
+        128,
+        64,
+        64
+      ],
+      "material": 24
+    },
+    {
+      "id": "oil-bottom-t600",
+      "tick": 600,
+      "metric": "material_cells",
+      "region": [
+        480,
+        192,
+        64,
+        64
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-bottom-t600",
+      "tick": 600,
+      "metric": "material_cells",
+      "region": [
+        480,
+        192,
+        64,
+        64
+      ],
+      "material": 24
+    },
+    {
+      "id": "oil-top-t1800",
+      "tick": 1800,
+      "metric": "material_cells",
+      "region": [
+        480,
+        64,
+        64,
+        64
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-top-t1800",
+      "tick": 1800,
+      "metric": "material_cells",
+      "region": [
+        480,
+        64,
+        64,
+        64
+      ],
+      "material": 24
+    },
+    {
+      "id": "oil-middle-t1800",
+      "tick": 1800,
+      "metric": "material_cells",
+      "region": [
+        480,
+        128,
+        64,
+        64
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-middle-t1800",
+      "tick": 1800,
+      "metric": "material_cells",
+      "region": [
+        480,
+        128,
+        64,
+        64
+      ],
+      "material": 24
+    },
+    {
+      "id": "oil-bottom-t1800",
+      "tick": 1800,
+      "metric": "material_cells",
+      "region": [
+        480,
+        192,
+        64,
+        64
+      ],
+      "material": 16
+    },
+    {
+      "id": "brine-bottom-t1800",
+      "tick": 1800,
+      "metric": "material_cells",
+      "region": [
+        480,
+        192,
+        64,
+        64
+      ],
+      "material": 24
+    }
+  ],
+  "conditions": [],
+  "source_recipe": "LCB-003 scenario catalogue v1: density",
+  "source_recipe_hash": "",
+  "presentation": {
+    "title": "Inverted three-liquid column",
+    "instructions": "A 64-wide column starts inverted: Brine on top, Water in the middle, Oil at the bottom. Density exchange should invert it. Third-by-third counts compare sorting speed and residual mixing.",
+    "duration_ticks": 1800,
+    "baseline": "Current native defaults; controlled fixed-tick run",
+    "profile": "Baseline",
+    "regions": [
+      {
+        "id": "top",
+        "label": "Top third",
+        "region": [
+          480,
+          64,
+          64,
+          64
+        ]
+      },
+      {
+        "id": "middle",
+        "label": "Middle third",
+        "region": [
+          480,
+          128,
+          64,
+          64
+        ]
+      },
+      {
+        "id": "bottom",
+        "label": "Bottom third",
+        "region": [
+          480,
+          192,
+          64,
+          64
+        ]
+      }
+    ]
+  }
+}

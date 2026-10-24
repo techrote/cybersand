@@ -2,10 +2,10 @@
 title: Level saves and exact replay
 status: Current
 document-kind: contract
-scope: Current CYSD1 finite-level format, exclusive ownership, import failure and omitted continuation state
+scope: Current CYSD1 finite-level format, exclusive ownership, import failure and omitted continuation state; how the experimental LCB CYPS v1 continuation differs
 canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
-last-reviewed: 2026-10-19
-related-documents: [interfaces-and-message-contracts.md, ../architecture/determinism-and-boundary-transfers.md, validation-evidence.md]
+last-reviewed: 2026-10-24
+related-documents: [interfaces-and-message-contracts.md, ../architecture/pressure-flow-v1.md, ../architecture/determinism-and-boundary-transfers.md, validation-evidence.md]
 ---
 
 # Level saves and exact replay
@@ -74,7 +74,9 @@ catalogue ends at 80 reject levels containing the new materials; they do not gai
 support from the unchanged format version alone.
 
 `CyberDemoBridge::import_level` validates and builds a replacement World and
-render exchange before no-throw ownership swaps. Invalid codec/native payloads
+render exchange before no-throw ownership swaps. CYSD1 stores no liquid solver
+policy: an import always reconstructs on every liquid's default family (LCB NC-10),
+whatever the live World's policy. Invalid codec/native payloads
 leave the active World intact. The Web controller rejects a Physics Pit save
 when Rapier is unavailable before native import. This guarantee concerns the
 checked import paths; it is not a general transaction guarantee for simulation
@@ -91,6 +93,30 @@ checked with `1e-5` tolerance; exact floating-point trajectory replay is not cla
 **Planned:** versioned general sparse-world persistence, replay input capture,
 complete state/configuration identity, migration, I/O pressure policy and an
 explicit strict-mode implementation. Do not infer those contracts from CYSD1.
+
+## How does CYPS v1 differ from CYSD1?
+
+**Current on branch `claude/lcb001-pressure-reference` (unmerged), experimental.**
+`World::save_physical_state()`/`restore_physical_state()` and the bridge's
+`export_physical_state`/`import_physical_state` write and read **CYPS v1**
+(`kPhysicalStateFormatVersion` 1), an exact tick-boundary continuation for LCB
+comparison Worlds. Its canonical description is the
+[pressure reference persistence contract](../architecture/pressure-flow-v1.md#persistence-cyps-v1).
+
+| | CYSD1 | CYPS v1 |
+|---|---|---|
+| Purpose | finite level exchange | exact continuation of a comparison World |
+| Liquid policy | not stored; import always reconstructs on default families (NC-10) | policy envelope stored and re-admitted by the running build |
+| Clock, epochs, regions, pending events, activity blocks | omitted | stored |
+| Pressure sidecars and gas table | n/a (lossy; never a continuation) | stored |
+| Integrity | codec checksum and native validation | SHA-256 of the body, then range and invariant checks |
+| Failure | live World intact | `invalid_argument`/`LiquidPolicyRefused`; live World intact ("running world preserved") |
+| Continuation | none claimed | bit-identical physical and state hash, including at another worker count |
+
+CYPS omits execution settings (workers, capacities come from the caller),
+host-owned transient body masks and Rapier state, and requires settled discovery
+to be disabled. It is not general sparse-world persistence, replay input capture
+or a frozen schema, and CYSD1 is unchanged.
 
 ## Which evidence applies?
 

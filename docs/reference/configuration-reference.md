@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-24
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md]
 ---
 
@@ -283,6 +283,24 @@ All members are construction-time; `cybersand_config_v2` mirrors the configurati
 | `maximum_chunk_count` | 4096 | Resident chunk limit |
 | `deferred_event_capacity` | 1024 | Accepted explosion queue bound |
 | `maximum_explosion_radius` | 64 | Largest accepted radius |
+| `liquid_solver_policy` | every liquid's current default | Immutable LCB-001 policy; construction refuses any mapping this build has not qualified ([foundation](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)). Not mirrored by `cybersand_config_v2`; use `cybersand_world_create_with_liquid_policy_v1`. |
+
+**LCB pressure family block (branch `claude/lcb001-pressure-reference`, unmerged; experimental).**
+When `liquid_solver_policy` assigns Water to `pressure_flow_v1/reference`, the
+optional family block `pressure_flow_v1` version 1 sets two construction-time
+values. Omitting the block applies the defaults. Out-of-range values are refused
+before construction.
+
+| Field | Default | Range | Meaning |
+|---|---:|---|---|
+| `gas_enabled` | 1 | 0..1 | Resolve sealed gas compartments each tick; 0 skips gas resolution, so every Empty boundary has zero gauge (vented) |
+| `atmospheric_head_rows` | 32 | 16..4096 | Atmospheric pressure in rows of saturated Water head (isothermal gauge scale) |
+
+The fixed v1 kernel constants (`kFlowScale` 1024, acceleration 3/1, retain
+256/256, friction 0, start/moving dead bands 128/10 per 255 of a row, overfill
+limit `maximum()`, compartment volume limit 16 384, capacity 1024, history 64) are
+not configurable; they are Proposed values recorded in the receipt's
+`family_parameters` ([declared parameters](../architecture/pressure-flow-v1.md#declared-parameters-v1)).
 
 [World::World](../../native/src/world.cpp) checks chunk edge 8–1024, activity edge
 1–1024, workers 1–256, explosion maximum 1–256, and nonzero quiet/reservation/

@@ -1,0 +1,1843 @@
+{
+  "schema": "lcb-physics-contracts-v1",
+  "status": "LCB physics prepass. Executable contracts run on Current only; every candidate arm is BLOCKED until its implementation exists. Thresholds are frozen before candidate execution.",
+  "contracts": [
+    {
+      "id": "deep-release-depth-response",
+      "scenarios": [
+        "lcb.dam.water.freemass.depth-48.v1",
+        "lcb.dam.water.freemass.depth-96.v1",
+        "lcb.dam.water.freemass.depth-160.v1"
+      ],
+      "purpose": "Separate deep-release surge from equalization; stop a conserving but immobile candidate from passing on accounting alone.",
+      "current_control": {
+        "status": "executable",
+        "test": "test_lcb_physics_contracts.gd::deep_release"
+      },
+      "surge": {
+        "metric_definitions": {
+          "front_distance": "rightmost Water cell on the floor row y=255 minus the gate face x=240, at the tick",
+          "retained_fraction": "Water integer in the reservoir region [40,64,192,192] / initial Water integer",
+          "depth_response": "front_distance(depth-160) / front_distance(depth-48) at the same tick",
+          "centroid_x": "mass-weighted mean column of all Water inside the container (per-column water_integer)"
+        },
+        "current_characterization_2026_10_23": {
+          "front_distance_t240": {
+            "depth-48": 67,
+            "depth-96": 70,
+            "depth-160": 71
+          },
+          "front_distance_t1800": {
+            "depth-48": 175,
+            "depth-96": 185,
+            "depth-160": 191
+          },
+          "front_growth_exponent_t120_t1800": {
+            "depth-48": 0.48,
+            "depth-160": 0.5
+          },
+          "retained_fraction_t1800": {
+            "depth-48": 0.839,
+            "depth-96": 0.841,
+            "depth-160": 0.851
+          },
+          "depth_response_t240": 1.06,
+          "note": "Current spreads approximately diffusively (front ~ t^0.48-0.50) with a weak depth response on these fixtures; adhesion-off diagnostic changed nothing material."
+        },
+        "admission_criteria": {
+          "pressure_flow_v1": [
+            "exact visible+overfill quantity every tick",
+            "closed gas and Water ledgers",
+            "identical 1/4-worker observations and physical-state hash",
+            "no fallback",
+            "bounded writes/allocation",
+            "default goldens unchanged"
+          ],
+          "inertial_cellular_v1": [
+            "exact whole-cell count every tick",
+            "momentum ledger closes every tick",
+            "static closed pool keeps every velocity exactly 0 and its hash constant",
+            "identical 1/4-worker observations and physical-state hash",
+            "no fallback",
+            "bounded writes/allocation",
+            "default goldens unchanged"
+          ]
+        },
+        "characterization_screens": {
+          "pressure_flow_v1": {
+            "exact_quantity": "visible + overfill Water integer constant every tick",
+            "depth_response_t240_min": 1.5,
+            "front_distance_t240_depth160_min": 213,
+            "retained_fraction_t1800_depth160_max": 0.5,
+            "worker_parity": "identical 1/4-worker observations and physical-state hash"
+          },
+          "inertial_cellular_v1": {
+            "exact_quantity": "whole-cell Water count constant every tick",
+            "depth_response_t240_min": 1.25,
+            "front_distance_t240_depth160_min": 142,
+            "retained_fraction_t1800_depth160_max": 0.7,
+            "worker_parity": "identical 1/4-worker observations and physical-state hash"
+          }
+        },
+        "rationale": "Shallow-water dam-break fronts advance ballistically at ~2*sqrt(g*h); sqrt(160/48)=1.83. Characterization screens allow dissipation and are deliberately loose: they are recorded per arm, are NOT admission criteria, and passing one is not owner feel acceptance. Admission criteria are the correctness invariants listed separately.",
+        "inertial_lateral_sources": "inertial-update-v1 (contract 'inertial-update'): horizontal momentum arises only from diagonal re-aim (A) and blocked-fall deflection of velocity carried in from earlier ticks (B); support cancels the current tick's gravity first, so a supported cell at rest with both diagonals blocked never drifts (an eligible diagonal re-aims from rest by design); a lighter liquid is entered only with dy = +1, never horizontally; no pressure or column-height term"
+      },
+      "arms": [
+        {
+          "arm": "W-PF",
+          "family": "pressure_flow_v1",
+          "depends_on": [
+            "#213 LCB-000 PASS",
+            "#200"
+          ]
+        },
+        {
+          "arm": "W-IN",
+          "family": "inertial_cellular_v1",
+          "depends_on": [
+            "#200 per-material policy",
+            "#212"
+          ]
+        },
+        {
+          "arm": "W-CY",
+          "family": "cellular_yield_v1 (Water, whole-cell)",
+          "depends_on": [
+            "#213 LCB-000 PASS",
+            "#200"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vented-head-equalization",
+      "scenarios": [
+        "lcb.head.vented-two-limb.v1",
+        "lcb.head.narrow-passage.v1"
+      ],
+      "purpose": "Vented/shared-atmosphere communicating head (#49 boundary assumption).",
+      "current_control": {
+        "status": "executable",
+        "test": "test_lcb_physics_contracts.gd::heads",
+        "characterization": "zero cells move in 2400 ticks; difference stays 120.0 rows"
+      },
+      "characterization_screens": {
+        "pressure_flow_v1": {
+          "vented-two-limb": "limb level difference at t2400 <= 12 rows (10% of 120) with exact quantity",
+          "narrow-passage": "limb level difference at t2400 <= 60 rows (50% of 120) with exact quantity",
+          "stability": "after first reaching the bound, the difference never grows by more than 2 rows"
+        },
+        "inertial_cellular_v1": "record only: a non-pressure family is not required to transmit head",
+        "cellular_yield_v1": "record only"
+      },
+      "arms": [
+        {
+          "arm": "W-PF",
+          "family": "pressure_flow_v1",
+          "depends_on": [
+            "#213 LCB-000 PASS",
+            "#200"
+          ]
+        },
+        {
+          "arm": "W-IN",
+          "family": "inertial_cellular_v1",
+          "depends_on": [
+            "#200 per-material policy",
+            "#212"
+          ]
+        },
+        {
+          "arm": "W-CY",
+          "family": "cellular_yield_v1 (Water, whole-cell)",
+          "depends_on": [
+            "#213 LCB-000 PASS",
+            "#200"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sealed-headspace-gas",
+      "scenarios": [
+        "lcb.head.sealed-two-limb.v1"
+      ],
+      "purpose": "Sealed headspaces settle at a gas-pressure-dependent difference, never the vented target.",
+      "current_control": {
+        "status": "executable",
+        "test": "test_lcb_physics_contracts.gd::heads",
+        "characterization": "identical to vented: Current has no gas state"
+      },
+      "target": {
+        "law": "isothermal: p_i * V_i = p_atm * V_i0 per sealed limb; equilibrium p_L + z_L = p_R + z_R (pressures in rows of Water head, z = surface height); equal limb widths, so z_L + z_R is constant",
+        "parameters": "p_atm in rows is a declared pressure_flow_v1 family parameter in the receipt",
+        "tolerance_rows": 2,
+        "must_differ_from_vented_target": true
+      },
+      "arms": [
+        {
+          "arm": "W-PF",
+          "family": "pressure_flow_v1",
+          "depends_on": [
+            "#213 LCB-000 PASS",
+            "#200"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gas-topology",
+      "scenarios": [
+        "lcb.accept.gas.single-pocket.v1",
+        "lcb.accept.gas.twin-pockets.v1",
+        "lcb.accept.gas.unequal-merge.v1",
+        "lcb.accept.gas.compress-vent-reseal.v2",
+        "lcb.accept.gas.split.v1"
+      ],
+      "purpose": "#200 trapped-gas defect regressions: identity independent of amount, unequal merge once, reseal from current volume, gas state in the physical hash.",
+      "phase_convention": {
+        "completed(N)": "state after native tick N (N = 0: as installed); events indexed N are NOT yet applied. MicroScenario observations and inspect_at_completed use this phase.",
+        "post_event(N)": "after the events indexed N are applied in before_tick of native tick N+1, before that native tick runs; not observable through MicroScenario observations",
+        "host": "godot/scripts/microscenario_host.gd: tick-0 observation precedes tick-0 events; unchanged by this contract",
+        "boundary_checks": "test_lcb_physics_contracts.gd::event_boundaries inspects every event rectangle at completed N (material_before) and completed N+1 (material_after), at 1 and 4 workers, failing closed"
+      },
+      "expected": {
+        "lcb.accept.gas.single-pocket.v1": "amount 100 and one stable pocket identity at every tick",
+        "lcb.accept.gas.twin-pockets.v1": "two identities, each amount 100 at every tick; no cycling",
+        "lcb.accept.gas.unequal-merge.v1": {
+          "completed t0-t1": "two pockets, amounts 100 and 120",
+          "post-event t1": "the wall erase indexed t1 runs before native tick 2: one pocket, amount 220, generation advanced, ancestry records both parents; first observable at completed t2",
+          "event_boundaries": [
+            {
+              "event": "erase (19,13,1,1) indexed t1",
+              "rect": [
+                19,
+                13,
+                1,
+                1
+              ],
+              "pre_event": "completed t1",
+              "post_event": "post-event t1 (before native tick 2)",
+              "first_observed": "completed t2",
+              "material_before": [
+                1
+              ],
+              "material_after": [
+                0
+              ],
+              "check_ticks": [
+                1,
+                2
+              ]
+            }
+          ],
+          "inspect_at_completed": [
+            1,
+            2,
+            10
+          ]
+        },
+        "lcb.accept.gas.compress-vent-reseal.v2": {
+          "geometry_volumes": {
+            "completed t0-t1": {
+              "volume": 100,
+              "vented": false
+            },
+            "completed t2-t5": {
+              "volume": 50,
+              "vented": false
+            },
+            "completed t6-t9": {
+              "volume": 1820,
+              "vented": true
+            },
+            "completed t10-t30": {
+              "volume": 58,
+              "vented": false
+            }
+          },
+          "completed t0-t1": "one sealed compartment of volume 100 at atmospheric amount 100; one id",
+          "completed t2-t5": "after the compression fill indexed t1: the same compartment, amount 100 (atmospheric for the original 100 cells), volume 50, pressure derived accordingly; same id and generation",
+          "completed t6-t9": "after the vent erase indexed t5: connected to atmosphere; amount relaxes toward atmospheric with an explicit exchange ledger entry; vent state recorded",
+          "post-event t9": "the trap fill indexed t9 runs before native tick 10 and reseals: a NEW compartment id (old id never reused), volume 58, amount = atmospheric amount for that volume, ledger entry for the reseal. First observable at completed t10",
+          "completed t10-t30": "id, generation, volume and amount constant; trap Water stays 3 full cells (stationary seal)",
+          "hash": "every amount, volume, vent or id change alters the versioned physical-state hash",
+          "event_boundaries": [
+            {
+              "event": "fill (9,14,10,5) indexed t1",
+              "rect": [
+                9,
+                14,
+                10,
+                5
+              ],
+              "pre_event": "completed t1",
+              "post_event": "post-event t1 (before native tick 2)",
+              "first_observed": "completed t2",
+              "material_before": [
+                0
+              ],
+              "material_after": [
+                3
+              ],
+              "check_ticks": [
+                1,
+                2
+              ]
+            },
+            {
+              "event": "erase (19,12,1,1) indexed t5",
+              "rect": [
+                19,
+                12,
+                1,
+                1
+              ],
+              "pre_event": "completed t5",
+              "post_event": "post-event t5 (before native tick 6)",
+              "first_observed": "completed t6",
+              "material_before": [
+                1
+              ],
+              "material_after": [
+                0
+              ],
+              "check_ticks": [
+                5,
+                6
+              ]
+            },
+            {
+              "event": "fill (23,16,3,1) indexed t9",
+              "rect": [
+                23,
+                16,
+                3,
+                1
+              ],
+              "pre_event": "completed t9",
+              "post_event": "post-event t9 (before native tick 10)",
+              "first_observed": "completed t10",
+              "material_before": [
+                0
+              ],
+              "material_after": [
+                3
+              ],
+              "check_ticks": [
+                9,
+                10
+              ]
+            }
+          ],
+          "inspect_at_completed": [
+            1,
+            2,
+            5,
+            6,
+            9,
+            10,
+            30
+          ]
+        },
+        "lcb.accept.gas.split.v1": {
+          "geometry_volumes": {
+            "completed t0-t3": {
+              "volume": 222,
+              "vented": false
+            },
+            "completed t4-t30 room A side": {
+              "volume": 108,
+              "vented": false
+            },
+            "completed t4-t30 room B side": {
+              "volume": 111,
+              "vented": false
+            }
+          },
+          "completed t0-t3": "one sealed compartment of volume 222 at atmospheric amount (222 in atmospheric cell-equivalents); one id",
+          "post-event t3": "the trap fill indexed t3 runs before native tick 4; it removes 3 cells of gas volume and closes the path in the same event: the parent id is retired; two NEW ids with ancestry = parent; generation advances; one split ledger entry whose parts sum exactly to the parent amount. First observable at completed t4",
+          "allocation_rule": "volume-proportional floor shares; the integer remainder goes to the compartment containing the lowest (y, x) cell",
+          "worked_example_atmospheric_cell_equivalents": {
+            "parent_amount": 222,
+            "volumes": [
+              108,
+              111
+            ],
+            "floor_shares": [
+              109,
+              112
+            ],
+            "remainder": 1,
+            "result": [
+              110,
+              112
+            ]
+          },
+          "completed t4-t30": "both ids, volumes and amounts constant; trap Water stays 3 full cells (stationary closure)",
+          "hash": "the split changes the versioned physical-state hash between completed t3 and t4; nothing else does after completed t4",
+          "event_boundaries": [
+            {
+              "event": "fill (23,16,3,1) indexed t3",
+              "rect": [
+                23,
+                16,
+                3,
+                1
+              ],
+              "pre_event": "completed t3",
+              "post_event": "post-event t3 (before native tick 4)",
+              "first_observed": "completed t4",
+              "material_before": [
+                0
+              ],
+              "material_after": [
+                3
+              ],
+              "check_ticks": [
+                3,
+                4
+              ]
+            }
+          ],
+          "inspect_at_completed": [
+            3,
+            4,
+            30
+          ]
+        }
+      },
+      "withdrawn": {
+        "lcb.accept.gas.compress-vent-reseal.v1": "Water roof plug above an Empty cell can fall and reopen the vent (review on #226); never accepted; replaced by v2"
+      },
+      "current_control": {
+        "status": "geometry-only",
+        "note": "Current runs check definitions and Water inventory only; it has no gas"
+      },
+      "blocked_native_cases": [
+        "empty-only (unallocated) chunk gas survival: MicroScenario reserves the whole frame, so this needs a #200 native test",
+        "physical-state hash detects a gas-only change: needs the #200 hash API"
+      ],
+      "arms": [
+        {
+          "arm": "W-PF",
+          "family": "pressure_flow_v1",
+          "depends_on": [
+            "#213 LCB-000 PASS",
+            "#200"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dormant-water-active-oil",
+      "scenarios": [
+        "lcb.accept.dormant-water-active-oil.v1"
+      ],
+      "purpose": "Non-pressure liquid motion continues while Water rests (NC-4).",
+      "current_control": {
+        "status": "executable",
+        "test": "test_lcb_physics_contracts.gd::dormancy"
+      },
+      "screens": {
+        "pressure_flow_v1/cached_dormant": "Oil observations identical to the same setup under pressure_flow_v1/reference; dormant Water blocks never block Oil"
+      },
+      "arms": [
+        {
+          "arm": "W-PF dormant",
+          "family": "pressure_flow_v1/cached_dormant",
+          "depends_on": [
+            "#213 LCB-000 PASS",
+            "#200",
+            "#201"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "material-accounting",
+      "scenarios": [
+        "lcb.mixed.water-oil-brine.v1",
+        "lcb.granular.salt-dissolution.v1",
+        "lcb.mixed.sodium-oil-fire.v1"
+      ],
+      "purpose": "Signed per-species ledgers; partial-Water reactions are #160 boundary events.",
+      "current_control": {
+        "status": "executable",
+        "test": "test_lcb_physics_contracts.gd::accounting"
+      },
+      "rules": {
+        "water-salt": "delta_brine = +2*s; delta_water = -sum(consumed masses) in [-255*s, -s]",
+        "steam-expiry": "current main writes Water at maximum() (#160 amplification; PR #162 unmerged)"
+      },
+      "arms": [
+        {
+          "arm": "M1",
+          "family": "inertial_cellular_v1",
+          "depends_on": [
+            "#200 per-material policy",
+            "#212"
+          ]
+        },
+        {
+          "arm": "M2",
+          "family": "pressure_flow_v1 + inertial_cellular_v1",
+          "depends_on": [
+            "#213 LCB-000 PASS",
+            "#200",
+            "#212"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "inertial-update",
+      "scenarios": [],
+      "purpose": "One ordered, bounded, exact-integer inertial cell update with a signed per-component momentum ledger and a separate non-negative speed-loss ledger (re-review finding 2).",
+      "current_control": {
+        "status": "contract-model",
+        "test": "tools/lcb/test_inertial_contract.py (standalone oracle; no World)"
+      },
+      "contract": {
+        "rule": "inertial-update-v1",
+        "status": "Proposed #212 contract model (tools/lcb/inertial_contract.py). Exact-integer worked examples of one cell update against a static neighbourhood; no World, scheduler or inertial family has executed.",
+        "illustrative_parameters": {
+          "q": 16,
+          "gravity": 4,
+          "vmax": 64,
+          "turn": [
+            1,
+            8
+          ],
+          "deflect": [
+            3,
+            4
+          ],
+          "damping": [
+            1,
+            16
+          ],
+          "drag": [
+            1,
+            4
+          ],
+          "rest": 1
+        },
+        "eligibility": "Empty: any move. Lighter foreign liquid: only a move with dy = +1 (straight or diagonal down; Current can_density_exchange, vertical delta != 0). Wall, body mask, same family: never. One rule for support, re-aim, side selection and every travel move.",
+        "deflection": "s*d with d = trunc(vy_in * deflect); impulses (s*d, -vy_in); L1 loss |vx| + vy_in - |vx + s*d| (cancellation against an opposing vx included)",
+        "order": [
+          "U1 support detection (below enterable?) before any velocity change",
+          "U2 gravity: vy += g exactly once",
+          "U3 supported cell: diagonal re-aim (A) if a diagonal is enterable; otherwise support cancels this tick's g, then blocked-fall deflection (B) of the vy carried in from earlier ticks",
+          "U4 per-component saturation to +-vmax",
+          "U5 per-component damping, truncated toward zero",
+          "U6 accumulator travel: whole-cell unit moves, target recheck each; a sub-step needing both axes is tried as one diagonal move first; a lighter liquid swaps with drag only on a move with dy = +1 (never horizontally); the first contact ends travel (vertical contact = rule B then saturation, horizontal = zero vx)",
+          "U7 rest: supported, vy == 0, |vx| <= rest -> vx = 0 and accumulators reset; sleep-eligible iff v == 0, a == 0 and supported"
+        ],
+        "ledgers": {
+          "momentum": "per component: v_after = v_before + gravity + sum(signed impulses)",
+          "speed_loss": "L1: |v_after| = |v_before| + g - sum(loss); every non-gravity loss >= 0; support cancellation is a constraint, not dissipation",
+          "rounding": "products truncate toward zero; the signed remainder numerator is audited, never stored"
+        },
+        "examples": [
+          {
+            "name": "deflect-right",
+            "neighbourhood": [
+              "#####",
+              "##W..",
+              "#####"
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 32,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 3,
+              "y": 1,
+              "vx": 23,
+              "vy": 0,
+              "ax": 7,
+              "ay": 0
+            },
+            "moves": [
+              [
+                3,
+                1
+              ]
+            ],
+            "swaps": [],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "support",
+                "jy": -4,
+                "loss": 4
+              },
+              {
+                "stage": "deflect",
+                "jx": 24,
+                "jy": -32,
+                "loss": 8,
+                "note": "carried vy 32 -> +24 vx"
+              },
+              {
+                "stage": "damping",
+                "jx": -1,
+                "loss": 1,
+                "remainder": 8
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          },
+          {
+            "name": "deflect-left",
+            "neighbourhood": [
+              "#####",
+              "..W##",
+              "#####"
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 32,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 1,
+              "y": 1,
+              "vx": -23,
+              "vy": 0,
+              "ax": -7,
+              "ay": 0
+            },
+            "moves": [
+              [
+                1,
+                1
+              ]
+            ],
+            "swaps": [],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "support",
+                "jy": -4,
+                "loss": 4
+              },
+              {
+                "stage": "deflect",
+                "jx": -24,
+                "jy": -32,
+                "loss": 8,
+                "note": "carried vy 32 -> -24 vx"
+              },
+              {
+                "stage": "damping",
+                "jx": 1,
+                "loss": 1,
+                "remainder": -8
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          },
+          {
+            "name": "deflect-right-aligned-vx",
+            "neighbourhood": [
+              "#####",
+              "##W..",
+              "#####"
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 10,
+              "vy": 32,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 4,
+              "y": 1,
+              "vx": 32,
+              "vy": 0,
+              "ax": 0,
+              "ay": 0
+            },
+            "moves": [
+              [
+                3,
+                1
+              ],
+              [
+                4,
+                1
+              ]
+            ],
+            "swaps": [],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "support",
+                "jy": -4,
+                "loss": 4
+              },
+              {
+                "stage": "deflect",
+                "jx": 24,
+                "jy": -32,
+                "loss": 8,
+                "note": "carried vy 32 -> +24 vx"
+              },
+              {
+                "stage": "damping",
+                "jx": -2,
+                "loss": 2,
+                "remainder": 2
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          },
+          {
+            "name": "deflect-right-opposing-vx",
+            "neighbourhood": [
+              "#####",
+              "##W..",
+              "#####"
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": -10,
+              "vy": 32,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 2,
+              "y": 1,
+              "vx": 14,
+              "vy": 0,
+              "ax": 14,
+              "ay": 0
+            },
+            "moves": [],
+            "swaps": [],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "support",
+                "jy": -4,
+                "loss": 4
+              },
+              {
+                "stage": "deflect",
+                "jx": 24,
+                "jy": -32,
+                "loss": 28,
+                "note": "carried vy 32 -> +24 vx"
+              },
+              {
+                "stage": "damping",
+                "remainder": 14
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          },
+          {
+            "name": "deflect-left-aligned-vx",
+            "neighbourhood": [
+              "#####",
+              "..W##",
+              "#####"
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": -10,
+              "vy": 32,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 0,
+              "y": 1,
+              "vx": -32,
+              "vy": 0,
+              "ax": 0,
+              "ay": 0
+            },
+            "moves": [
+              [
+                1,
+                1
+              ],
+              [
+                0,
+                1
+              ]
+            ],
+            "swaps": [],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "support",
+                "jy": -4,
+                "loss": 4
+              },
+              {
+                "stage": "deflect",
+                "jx": -24,
+                "jy": -32,
+                "loss": 8,
+                "note": "carried vy 32 -> -24 vx"
+              },
+              {
+                "stage": "damping",
+                "jx": 2,
+                "loss": 2,
+                "remainder": -2
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          },
+          {
+            "name": "deflect-left-opposing-vx",
+            "neighbourhood": [
+              "#####",
+              "..W##",
+              "#####"
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 40,
+              "vy": 32,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 2,
+              "y": 1,
+              "vx": 15,
+              "vy": 0,
+              "ax": 15,
+              "ay": 0
+            },
+            "moves": [],
+            "swaps": [],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "support",
+                "jy": -4,
+                "loss": 4
+              },
+              {
+                "stage": "deflect",
+                "jx": -24,
+                "jy": -32,
+                "loss": 56,
+                "note": "carried vy 32 -> -24 vx"
+              },
+              {
+                "stage": "damping",
+                "jx": -1,
+                "loss": 1
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          },
+          {
+            "name": "damp-negative-vx",
+            "neighbourhood": [
+              "#####",
+              "..W..",
+              "#####"
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": -40,
+              "vy": 0,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 0,
+              "y": 1,
+              "vx": -38,
+              "vy": 0,
+              "ax": -6,
+              "ay": 0
+            },
+            "moves": [
+              [
+                1,
+                1
+              ],
+              [
+                0,
+                1
+              ]
+            ],
+            "swaps": [],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "support",
+                "jy": -4,
+                "loss": 4
+              },
+              {
+                "stage": "damping",
+                "jx": 2,
+                "loss": 2,
+                "remainder": -8
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          },
+          {
+            "name": "supported-rest-free-side",
+            "neighbourhood": [
+              "#####",
+              "#.W..",
+              "#####"
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 0,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 0,
+              "ax": 0,
+              "ay": 0
+            },
+            "moves": [],
+            "swaps": [],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "support",
+                "jy": -4,
+                "loss": 4
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": true
+          },
+          {
+            "name": "blocked-same-family",
+            "neighbourhood": [
+              "WWWWW",
+              "WWWWW",
+              "WWWWW"
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 20,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 0,
+              "ax": 0,
+              "ay": 0
+            },
+            "moves": [],
+            "swaps": [],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "support",
+                "jy": -4,
+                "loss": 4
+              },
+              {
+                "stage": "contact",
+                "jy": -20,
+                "loss": 20,
+                "note": "vertical contact; no free side"
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": true
+          },
+          {
+            "name": "reaim-from-rest",
+            "neighbourhood": [
+              "#####",
+              "#.W..",
+              "###.."
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 0,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 2,
+              "y": 1,
+              "vx": 2,
+              "vy": 2,
+              "ax": 2,
+              "ay": 2
+            },
+            "moves": [],
+            "swaps": [],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "reaim",
+                "jx": 2,
+                "jy": -2,
+                "remainder": 4,
+                "note": "diagonal +1"
+              },
+              {
+                "stage": "damping",
+                "remainder": 4
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          },
+          {
+            "name": "reaim-carried",
+            "neighbourhood": [
+              "#####",
+              "#.W..",
+              "###.."
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 40,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 3,
+              "y": 2,
+              "vx": 18,
+              "vy": 19,
+              "ax": 2,
+              "ay": 3
+            },
+            "moves": [
+              [
+                3,
+                2
+              ]
+            ],
+            "swaps": [],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "reaim",
+                "jx": 19,
+                "jy": -24,
+                "loss": 5,
+                "remainder": 4,
+                "note": "diagonal +1"
+              },
+              {
+                "stage": "damping",
+                "jx": -1,
+                "jy": -1,
+                "loss": 2,
+                "remainder": 7
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          },
+          {
+            "name": "saturate-free-fall",
+            "neighbourhood": [
+              ".....",
+              "..W..",
+              ".....",
+              ".....",
+              ".....",
+              "....."
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 62,
+              "ax": 0,
+              "ay": 15
+            },
+            "end": {
+              "x": 2,
+              "y": 5,
+              "vx": 0,
+              "vy": 60,
+              "ax": 0,
+              "ay": 11
+            },
+            "moves": [
+              [
+                2,
+                2
+              ],
+              [
+                2,
+                3
+              ],
+              [
+                2,
+                4
+              ],
+              [
+                2,
+                5
+              ]
+            ],
+            "swaps": [],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "saturate",
+                "jy": -2,
+                "loss": 2
+              },
+              {
+                "stage": "damping",
+                "jy": -4,
+                "loss": 4
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          },
+          {
+            "name": "contact-mid-travel",
+            "neighbourhood": [
+              "#####",
+              "W.#..",
+              "#####"
+            ],
+            "start": {
+              "x": 0,
+              "y": 1,
+              "vx": 48,
+              "vy": 0,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 1,
+              "y": 1,
+              "vx": 0,
+              "vy": 0,
+              "ax": 0,
+              "ay": 0
+            },
+            "moves": [
+              [
+                1,
+                1
+              ]
+            ],
+            "swaps": [],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "support",
+                "jy": -4,
+                "loss": 4
+              },
+              {
+                "stage": "damping",
+                "jx": -3,
+                "loss": 3
+              },
+              {
+                "stage": "contact",
+                "jx": -45,
+                "loss": 45,
+                "note": "horizontal contact with '#'"
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": true
+          },
+          {
+            "name": "body-mask-landing",
+            "neighbourhood": [
+              "#####",
+              "##W.M",
+              "##M##"
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 32,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 3,
+              "y": 1,
+              "vx": 23,
+              "vy": 0,
+              "ax": 7,
+              "ay": 0
+            },
+            "moves": [
+              [
+                3,
+                1
+              ]
+            ],
+            "swaps": [],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "support",
+                "jy": -4,
+                "loss": 4
+              },
+              {
+                "stage": "deflect",
+                "jx": 24,
+                "jy": -32,
+                "loss": 8,
+                "note": "carried vy 32 -> +24 vx"
+              },
+              {
+                "stage": "damping",
+                "jx": -1,
+                "loss": 1,
+                "remainder": 8
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          },
+          {
+            "name": "drag-density-swap",
+            "neighbourhood": [
+              ".....",
+              "..W..",
+              "..o..",
+              "..o..",
+              "#####"
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 20,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 2,
+              "y": 2,
+              "vx": 0,
+              "vy": 18,
+              "ax": 0,
+              "ay": 7
+            },
+            "moves": [
+              [
+                2,
+                2
+              ]
+            ],
+            "swaps": [
+              [
+                0,
+                1
+              ]
+            ],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "damping",
+                "jy": -1,
+                "loss": 1,
+                "remainder": 8
+              },
+              {
+                "stage": "drag",
+                "jy": -5,
+                "loss": 5,
+                "remainder": 3,
+                "note": "density swap"
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          },
+          {
+            "name": "reaim-diagonal-into-lighter",
+            "neighbourhood": [
+              ".....",
+              "..W..",
+              "..#o.",
+              "#####"
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 40,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 3,
+              "y": 2,
+              "vx": 14,
+              "vy": 15,
+              "ax": 2,
+              "ay": 3
+            },
+            "moves": [
+              [
+                3,
+                2
+              ]
+            ],
+            "swaps": [
+              [
+                1,
+                1
+              ]
+            ],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "reaim",
+                "jx": 19,
+                "jy": -24,
+                "loss": 5,
+                "remainder": 4,
+                "note": "diagonal +1"
+              },
+              {
+                "stage": "damping",
+                "jx": -1,
+                "jy": -1,
+                "loss": 2,
+                "remainder": 7
+              },
+              {
+                "stage": "drag",
+                "jx": -4,
+                "jy": -4,
+                "loss": 8,
+                "remainder": 5,
+                "note": "density swap"
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": false
+          },
+          {
+            "name": "no-horizontal-swap",
+            "neighbourhood": [
+              "#####",
+              "#Wo.#",
+              "#####"
+            ],
+            "start": {
+              "x": 1,
+              "y": 1,
+              "vx": 20,
+              "vy": 0,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 1,
+              "y": 1,
+              "vx": 0,
+              "vy": 0,
+              "ax": 0,
+              "ay": 0
+            },
+            "moves": [],
+            "swaps": [],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "support",
+                "jy": -4,
+                "loss": 4
+              },
+              {
+                "stage": "damping",
+                "jx": -1,
+                "loss": 1,
+                "remainder": 4
+              },
+              {
+                "stage": "contact",
+                "jx": -19,
+                "loss": 19,
+                "note": "horizontal contact with 'o'"
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": true
+          },
+          {
+            "name": "no-deflection-into-lighter",
+            "neighbourhood": [
+              "#####",
+              "#oW##",
+              "#####"
+            ],
+            "start": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 32,
+              "ax": 0,
+              "ay": 0
+            },
+            "end": {
+              "x": 2,
+              "y": 1,
+              "vx": 0,
+              "vy": 0,
+              "ax": 0,
+              "ay": 0
+            },
+            "moves": [],
+            "swaps": [],
+            "entries": [
+              {
+                "stage": "gravity",
+                "jy": 4,
+                "loss": -4
+              },
+              {
+                "stage": "support",
+                "jy": -4,
+                "loss": 4
+              },
+              {
+                "stage": "contact",
+                "jy": -32,
+                "loss": 32,
+                "note": "vertical contact; no free side"
+              }
+            ],
+            "ledger_closes": true,
+            "sleep_eligible": true
+          }
+        ]
+      },
+      "native_registrations_for_212": [
+        "reproduce every worked example on a single inertial cell in a native World fixture",
+        "per-tick signed momentum and speed-loss ledgers close on the dam ladder and lock exchanges",
+        "static closed pool keeps every velocity exactly 0 (mandatory)",
+        "a supported cell initially at rest with both diagonals blocked keeps every velocity exactly 0, even with a free side (U3b: no carried vy, no deflection)",
+        "a supported cell initially at rest with an eligible diagonal re-aims by design (U3a; example reaim-from-rest: vx = vy = 2) and is not a rest violation",
+        "Wall, body mask and same-family contacts produce identical ledgers for identical geometry",
+        "1/4-worker identical velocity/accumulator state in the physical-state hash"
+      ],
+      "arms": [
+        {
+          "arm": "W-IN",
+          "family": "inertial_cellular_v1",
+          "depends_on": [
+            "#200 per-material policy",
+            "#212"
+          ]
+        },
+        {
+          "arm": "BRINE-IN",
+          "family": "inertial_cellular_v1",
+          "depends_on": [
+            "#200 per-material policy",
+            "#212"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cross-family-ownership",
+      "scenarios": [],
+      "purpose": "State tuples move with their cells; no ghost or copied family state.",
+      "current_control": {
+        "status": "executable",
+        "test": "test_lcb_physics_contracts.gd::ownership",
+        "case": "Brine (state_b tag 77) sinks through partial Water (mass 200); both tuples arrive intact"
+      },
+      "blocked_cases": [
+        "inertial static closed pool: every velocity exactly 0, physical hash constant (#212)",
+        "inertial-update-v1 signed momentum and speed-loss ledgers close every tick on the dam ladder (#212)",
+        "inertial dam release: vx becomes nonzero only through a re-aim or deflection ledger entry (#212)",
+        "inertial velocity follows its cell through a density swap (#212)",
+        "pressure overfill follows Water through moves and retires on conversion (#200)",
+        "no optional state remains on an Empty vacancy (#200/#212)"
+      ],
+      "arms": [
+        {
+          "arm": "M1",
+          "family": "inertial_cellular_v1",
+          "depends_on": [
+            "#200 per-material policy",
+            "#212"
+          ]
+        },
+        {
+          "arm": "W-PF",
+          "family": "pressure_flow_v1",
+          "depends_on": [
+            "#213 LCB-000 PASS",
+            "#200"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "water-material-hooks",
+      "scenarios": [],
+      "purpose": "Water chemistry, coherence, coupling and identity survive alternative motion.",
+      "current_control": {
+        "status": "blocked",
+        "reason": "needs a selectable non-default Water family"
+      },
+      "blocked_cases": [
+        "Water+Salt, Lava quench, Fire and Oil extinguish, Cement cure under W-CY/W-PF/W-IN",
+        "coherence countdown suppresses lateral motion under every family",
+        "transport carrying receives the real moved quantity",
+        "Water under W-CY never uses Paste/Slush viscosity"
+      ],
+      "arms": [
+        {
+          "arm": "W-CY",
+          "family": "cellular_yield_v1 (Water, whole-cell)",
+          "depends_on": [
+            "#213 LCB-000 PASS",
+            "#200"
+          ]
+        },
+        {
+          "arm": "W-PF",
+          "family": "pressure_flow_v1",
+          "depends_on": [
+            "#213 LCB-000 PASS",
+            "#200"
+          ]
+        },
+        {
+          "arm": "W-IN",
+          "family": "inertial_cellular_v1",
+          "depends_on": [
+            "#200 per-material policy",
+            "#212"
+          ]
+        }
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "id": "lcb.accept.gas.single-pocket.v1",
+      "version": 1,
+      "category": "gas-acceptance",
+      "title": "Sealed 10x10 air pocket",
+      "purpose": "#200 reproducer: one sealed 10x10 pocket over a Water floor. W-PF must keep gas amount 100 and pocket identity constant for every tick (control).",
+      "horizon_ticks": 10,
+      "manual": {
+        "free_play": false,
+        "note": "controlled gas apparatus; Current has no gas state"
+      },
+      "overview": [
+        0,
+        0,
+        64,
+        32
+      ],
+      "transport_profile": "Baseline",
+      "initial_inventory": {
+        "cells": {
+          "water": 10
+        },
+        "water_integer": 2550,
+        "water_cells": 10,
+        "material_region": [
+          9,
+          19,
+          10,
+          1
+        ]
+      },
+      "definition_path": "res://tests/fixtures/lcb/acceptance/lcb.accept.gas.single-pocket.v1.json"
+    },
+    {
+      "id": "lcb.accept.gas.twin-pockets.v1",
+      "version": 1,
+      "category": "gas-acceptance",
+      "title": "Two independent sealed pockets",
+      "purpose": "#200 reproducer: two identical independent pockets. The archived candidate cycled each amount 100,50,25,12,6,3,1,100; W-PF must hold each at 100 with distinct stable identities.",
+      "horizon_ticks": 10,
+      "manual": {
+        "free_play": false,
+        "note": "controlled gas apparatus; Current has no gas state"
+      },
+      "overview": [
+        0,
+        0,
+        64,
+        32
+      ],
+      "transport_profile": "Baseline",
+      "initial_inventory": {
+        "cells": {
+          "water": 20
+        },
+        "water_integer": 5100,
+        "water_cells": 20,
+        "material_region": [
+          9,
+          19,
+          34,
+          1
+        ]
+      },
+      "definition_path": "res://tests/fixtures/lcb/acceptance/lcb.accept.gas.twin-pockets.v1.json"
+    },
+    {
+      "id": "lcb.accept.gas.unequal-merge.v1",
+      "version": 1,
+      "category": "gas-acceptance",
+      "title": "Unequal pocket merge",
+      "purpose": "#200 reproducer: 100- and 120-cell pockets share wall x=19; the wall cell (19,13) opens at tick 1. The archived candidate kept 120; W-PF must merge the amounts once to 220.",
+      "horizon_ticks": 10,
+      "manual": {
+        "free_play": false,
+        "note": "controlled gas apparatus; Current has no gas state"
+      },
+      "overview": [
+        0,
+        0,
+        64,
+        32
+      ],
+      "transport_profile": "Baseline",
+      "initial_inventory": {
+        "cells": {
+          "water": 22
+        },
+        "water_integer": 5610,
+        "water_cells": 22,
+        "material_region": [
+          9,
+          19,
+          23,
+          1
+        ]
+      },
+      "definition_path": "res://tests/fixtures/lcb/acceptance/lcb.accept.gas.unequal-merge.v1.json"
+    },
+    {
+      "id": "lcb.accept.gas.compress-vent-reseal.v2",
+      "version": 1,
+      "category": "gas-acceptance",
+      "title": "Compress, vent and reseal (U-trap)",
+      "purpose": "#200 reproducer: Water fills half the pocket at tick 1 (compression, amount stays 100); the wall cell (19,12) opens at tick 5, venting the pocket through a channel and a dry U-trap; at tick 9 Water fills the trap's supported bottom row and reseals it. The archived candidate kept 100; W-PF must reseal from the current volume at atmospheric amount with an explicit exchange ledger, and hold it to tick 30.",
+      "horizon_ticks": 30,
+      "manual": {
+        "free_play": false,
+        "note": "controlled gas apparatus; Current has no gas state"
+      },
+      "overview": [
+        0,
+        0,
+        64,
+        32
+      ],
+      "transport_profile": "Baseline",
+      "initial_inventory": {
+        "cells": {
+          "water": 10
+        },
+        "water_integer": 2550,
+        "water_cells": 10,
+        "material_region": [
+          9,
+          19,
+          10,
+          1
+        ]
+      },
+      "definition_path": "res://tests/fixtures/lcb/acceptance/lcb.accept.gas.compress-vent-reseal.v2.json"
+    },
+    {
+      "id": "lcb.accept.gas.split.v1",
+      "version": 1,
+      "category": "gas-acceptance",
+      "title": "Split one sealed compartment",
+      "purpose": "One sealed compartment spans two rooms joined through a channel and a dry U-trap. At tick 3 Water fills the trap's supported bottom row, closing the path: W-PF must split the amount deterministically by volume into two NEW compartments with ancestry, book the split exactly, and hold both to tick 30.",
+      "horizon_ticks": 30,
+      "manual": {
+        "free_play": false,
+        "note": "controlled gas apparatus; Current has no gas state"
+      },
+      "overview": [
+        0,
+        0,
+        64,
+        32
+      ],
+      "transport_profile": "Baseline",
+      "initial_inventory": {
+        "cells": {
+          "water": 20
+        },
+        "water_integer": 5100,
+        "water_cells": 20,
+        "material_region": [
+          9,
+          19,
+          34,
+          1
+        ]
+      },
+      "definition_path": "res://tests/fixtures/lcb/acceptance/lcb.accept.gas.split.v1.json"
+    },
+    {
+      "id": "lcb.accept.dormant-water-active-oil.v1",
+      "version": 1,
+      "category": "dormancy",
+      "title": "Resting deep Water beside falling Oil",
+      "purpose": "A full deep Water pool rests behind a divider while an Oil block is released at tick 120 in the next compartment. Current control: the pool sleeps and the Oil still moves. W-PF cached_dormant must never suppress the Oil motion or chemistry (#201, NC-4).",
+      "horizon_ticks": 600,
+      "manual": {
+        "free_play": true,
+        "note": "disturb either side"
+      },
+      "overview": [
+        32,
+        64,
+        960,
+        200
+      ],
+      "transport_profile": "Baseline",
+      "initial_inventory": {
+        "cells": {
+          "oil": 4096,
+          "water": 70400
+        },
+        "water_integer": 17952000,
+        "water_cells": 70400,
+        "material_region": [
+          40,
+          64,
+          624,
+          192
+        ]
+      },
+      "definition_path": "res://tests/fixtures/lcb/acceptance/lcb.accept.dormant-water-active-oil.v1.json"
+    }
+  ]
+}

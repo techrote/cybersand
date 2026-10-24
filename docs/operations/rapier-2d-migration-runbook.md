@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Current pinned backend verification and change procedure; migration history and coupling semantics are linked separately
 canonical-for: [rapier-dependency-validation, rapier-packaging]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-10-24
 related-documents: [../architecture/rigid-body-and-cellular-coupling.md, ../reference/validation-evidence.md, web-threading.md]
 ---
 
@@ -12,13 +12,32 @@ related-documents: [../architecture/rigid-body-and-cellular-coupling.md, ../refe
 
 ## Is Rapier already installed and selected?
 
-**Current:** the official single-precision 2D **v0.35.2** add-on is vendored and
+**Current:** the single-precision 2D **v0.35.2** add-on is vendored and
 [project.godot](../../godot/project.godot) selects `Rapier2D`. The bridge reads
 `physics/common/physics_ticks_per_second` with a default of 60; the project does
 not override that setting.
 The [lock](../../godot/third_party/rapier2d.lock.json) records the release archive
 SHA-256 `73b46bfe2cfc40e3875f4f367478bbd2b1090f563eeef57f4fed3fc274aae1f0`.
 Godot is pinned to `4.7.stable.official.5b4e0cb0f` by the build requirements.
+
+The qualified #234 repair selects the Windows/Linux x86_64 cooperative deferred-BVH join backport;
+the lock's `runtime_overrides` routes to source-matched artifact/build manifests.
+Other architectures and Web retain the original release libraries. The
+[2026-10-24 audit](../audits/2026-10-24-physical-actor-bvh-validation.md) records
+the blocked receive and same-host comparison: six Windows control timeouts,
+zero patched timeouts in 300 trials across Windows/Linux. Verify the selected
+manifest and library bytes with `tools/ci/check_repository.py`; changing any
+registered build input requires a matching rebuild. The
+[#234 integration ledger](../audits/2026-10-24-issue-234-physical-hang-repair.md)
+owns completed exact-head full-suite receipts and fresh standard qualification
+run `40129364630` at immutable merge source
+`13b8e631f3e8fbaa2176ed41afc02c434b11e558`: 600/600 physical passes, 0/600
+timeouts, zero other failures and twenty passing imports. This qualifies the
+registered desktop workload and exact artifacts, while native-worker count,
+other loads/platforms and the precise scheduler trigger remain outside that
+result. Keep the prior 300-candidate paired evidence and
+[#233 baseline](../audits/2026-10-24-issue-233-physical-regression-timeouts.md)
+separate; their results are not rewritten by this runtime selection.
 
 The main-thread [CyberRapierPhysicsBridge](../../godot/scripts/rapier_physics_bridge.gd)
 deactivates automatic space stepping, applies the newest accepted cell result,
@@ -71,8 +90,9 @@ Linux M11, September Windows and retained Chromium results separately. The
 three-rectangle fixture allows two pixels of transient floor penetration and
 `1e-5` error for restored body values. It is not zero-penetration proof, generalized
 shape/high-count acceptance or exact Rapier replay. [CYSD1](../reference/level-saves-and-replay.md)
-omits Rapier caches and native continuation state. Linux binaries currently include
-unresolved LFS pointers despite historical Linux passes.
+omits Rapier caches and native continuation state. Linux runtime pointers must
+be materialized and hash-verified before execution; all 18 required runtime
+payloads were materialized at the 2026-10-24 local selection checkpoint.
 
 ## Future backend changes
 

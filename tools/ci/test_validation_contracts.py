@@ -81,5 +81,85 @@ class CurrentRuntimeChecks(unittest.TestCase):
         self.manifest["size"] = 99
         self.assertTrue(current.verify_runtime(self.root, self.manifest))
 
+class RapierBackportChecks(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.build_lock = {
+            "patch": "third_party/fix.patch", "patch_sha256": current.digest(b"patch\n"),
+            "patched_join_source_sha256": "patched-join", "upstream_cargo_lock_sha256": "upstream-lock",
+            "rust_toolchain": "1.98.0",
+        }
+        files = {"third_party/rapier-bvh-build.lock.json": json.dumps(self.build_lock).encode(),
+                 "third_party/fix.patch": b"patch\n", "tools/ci/build_rapier_bvh_candidate.py": b"builder\n",
+                 ".github/workflows/rapier-bvh-build.yml": b"workflow\n"}
+        for name, data in files.items():
+            target = self.root / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(data)
+        self.lock = {"runtime_overrides": {}}
+        self.manifests = {}
+        for platform, suffix in (("windows", "windows.x86_64-pc-windows-msvc.dll"),
+                                 ("linux", "linux.x86_64-unknown-linux-gnu.so")):
+            filename = "libgodot_rapier." + suffix
+            artifact = "godot/addons/godot-rapier2d/bin/" + filename
+            target = self.root / artifact
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(b"tested runtime")
+            relative = f"godot/addons/godot-rapier2d/runtime-provenance.{platform}.json"
+            self.lock["runtime_overrides"][platform] = relative
+            self.manifests[platform] = {
+                "schema_version": 1, "artifact": artifact, "build_commit": "immutable-build",
+                "sha256": current.digest(b"tested runtime"), "size": len(b"tested runtime"),
+                "source_inputs": {name: current.digest(data) for name, data in files.items()},
+                "build_record": {
+                    "schema_version": 1, "godot_version": current.GODOT,
+                    "variant": "patched", "platform": platform, "source_sha": "immutable-build",
+                    "build_inputs": self.build_lock,
+                    "build_lock_sha256": current.digest(files["third_party/rapier-bvh-build.lock.json"]),
+                    "join_source_sha256": "patched-join", "upstream_cargo_lock_sha256": "upstream-lock",
+                    "join_regression_exit": 0, "rustc": "rustc 1.98.0 (fixture)",
+                    "resolved_cargo_lock_sha256": "resolved-lock",
+                    "artifacts": {filename: current.digest(b"tested runtime"), "Cargo.lock": "resolved-lock"},
+                },
+            }
+
+    def verify(self):
+        for platform, manifest in self.manifests.items():
+            (self.root / self.lock["runtime_overrides"][platform]).write_text(json.dumps(manifest), encoding="utf-8")
+        return current.verify_rapier_overrides(self.root, self.lock)
+
+    def test_exact_selected_artifacts_and_immutable_build_record_pass(self):
+        self.assertEqual(self.verify(), [])
+
+    def test_blocking_control_cannot_be_selected_as_repair(self):
+        self.manifests["windows"]["build_record"].update(variant="control", join_regression_exit=124)
+        self.assertTrue(self.verify())
+
+    def test_missing_build_input_coverage_fails(self):
+        del self.manifests["linux"]["source_inputs"]["tools/ci/build_rapier_bvh_candidate.py"]
+        self.assertTrue(self.verify())
+
+    def test_changed_patch_requires_rebuild(self):
+        (self.root / self.build_lock["patch"]).write_bytes(b"different patch\n")
+        self.assertTrue(self.verify())
+
+    def test_corrupt_selected_artifact_fails(self):
+        (self.root / self.manifests["linux"]["artifact"]).write_bytes(b"other runtime")
+        self.assertTrue(self.verify())
+
+    def test_changed_build_identity_fails(self):
+        record = self.manifests["linux"]["build_record"]
+        for field, value in (("godot_version", "another engine"), ("schema_version", 2),
+                             ("rustc", "rustc 1.97.0 (fixture)"),
+                             ("resolved_cargo_lock_sha256", "changed dependency resolution"),
+                             ("join_source_sha256", "other join")):
+            with self.subTest(field=field):
+                original = record[field]
+                record[field] = value
+                self.assertTrue(self.verify())
+                record[field] = original
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,91 @@
+--- a/src/pipeline/physics_pipeline/mod.rs
++++ b/src/pipeline/physics_pipeline/mod.rs
+@@ -13,6 +13,78 @@
+ };
+ use crate::math::Vector;
+ use crate::pipeline::{EventHandler, PhysicsHooks};
++
++// CyberSand: a Rayon worker must help queued work while joining a detached BVH
++// task. A blocking channel receive can strand that task in the pool's queues.
++// CYBERSAND_BVH_JOIN_BEGIN
++#[cfg(feature = "parallel")]
++fn receive_deferred_bvh<T>(rx: std::sync::mpsc::Receiver<T>) -> T {
++    use std::sync::mpsc::TryRecvError;
++    loop {
++        match rx.try_recv() {
++            Ok(task) => return task,
++            Err(TryRecvError::Disconnected) => panic!("the deferred BVH optimization task died"),
++            Err(TryRecvError::Empty) => match rayon::yield_now() {
++                Some(rayon::Yield::Executed) => {},
++                Some(rayon::Yield::Idle) => std::thread::yield_now(),
++                None => return rx.recv().expect("the deferred BVH optimization task died"),
++            },
++        }
++    }
++}
++// CYBERSAND_BVH_JOIN_END
++
++#[cfg(all(test, feature = "parallel"))]
++mod cybersand_bvh_join_tests {
++    use super::receive_deferred_bvh;
++    use std::sync::{Arc, atomic::{AtomicBool, Ordering}, mpsc};
++    use std::time::Duration;
++
++    #[test]
++    fn cybersand_queued_task_progresses_with_other_worker_occupied() {
++        let completed = Arc::new(AtomicBool::new(false));
++        let watched = completed.clone();
++        std::thread::spawn(move || {
++            std::thread::sleep(Duration::from_secs(10));
++            if !watched.load(Ordering::SeqCst) {
++                eprintln!("CYBERSAND_BVH_CONTROL_STALLED: blocking join starved queued work");
++                std::process::exit(124);
++            }
++        });
++        let pool = rayon::ThreadPoolBuilder::new().num_threads(2).build().unwrap();
++        let (occupied_tx, occupied_rx) = mpsc::channel();
++        let (release_tx, release_rx) = mpsc::channel();
++        pool.spawn(move || {
++            occupied_tx.send(()).unwrap();
++            release_rx.recv().unwrap();
++        });
++        occupied_rx.recv_timeout(Duration::from_secs(5)).unwrap();
++        let actual = pool.install(|| {
++            let (tx, rx) = mpsc::channel();
++            rayon::spawn(move || tx.send(37u64).unwrap());
++            receive_deferred_bvh(rx)
++        });
++        release_tx.send(()).unwrap();
++        completed.store(true, Ordering::SeqCst);
++        assert_eq!(actual, 37);
++    }
++
++    #[test]
++    fn cybersand_outside_pool_preserves_received_value() {
++        let (tx, rx) = mpsc::channel();
++        let producer = std::thread::spawn(move || tx.send(91u64).unwrap());
++        assert_eq!(receive_deferred_bvh(rx), 91);
++        producer.join().unwrap();
++    }
++
++    #[test]
++    #[should_panic(expected = "the deferred BVH optimization task died")]
++    fn cybersand_disconnected_sender_still_fails() {
++        let (tx, rx) = mpsc::channel::<u64>();
++        drop(tx);
++        receive_deferred_bvh(rx);
++    }
++}
+-
++
+ mod quarantine;
+ pub use quarantine::Quarantine;
+@@ -132,7 +204,7 @@
+     fn join_deferred_bvh_optimize(&mut self, broad_phase: &mut BroadPhaseBvh) {
+         #[cfg(feature = "parallel")]
+         if let Some(rx) = self.deferred_bvh.get_mut().unwrap().take() {
+-            let task = rx.recv().expect("the deferred BVH optimization task died");
++            let task = receive_deferred_bvh(rx);
+             broad_phase.finish_deferred_optimize(task);
+             return;
+         }

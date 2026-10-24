@@ -1,0 +1,328 @@
+{
+  "schema_version": 2,
+  "id": "lcb.mixed.sodium-oil-fire.v1",
+  "recipe_version": 1,
+  "seed": 0,
+  "maturity": "reference",
+  "rectangles": [
+    0,
+    0,
+    1024,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1024,
+    1,
+    1023,
+    0,
+    1,
+    1024,
+    1,
+    0,
+    1023,
+    1024,
+    1,
+    1,
+    32,
+    256,
+    960,
+    8,
+    1,
+    32,
+    64,
+    8,
+    192,
+    1,
+    984,
+    64,
+    8,
+    192,
+    1,
+    480,
+    140,
+    8,
+    116,
+    1,
+    488,
+    160,
+    496,
+    96,
+    16,
+    440,
+    120,
+    16,
+    16,
+    25,
+    440,
+    136,
+    16,
+    4,
+    1
+  ],
+  "partial_water_fills": [
+    40,
+    160,
+    440,
+    96,
+    255,
+    0
+  ],
+  "transport_profile": {
+    "families": {
+      "liquid": {
+        "cadence": 1,
+        "carrying": 0,
+        "erosion": 0,
+        "horizontal": 2,
+        "permeability": 1
+      },
+      "powder": {
+        "mixing": 0,
+        "packing": 8,
+        "pickup": 64
+      }
+    },
+    "materials": {
+      "33": {
+        "permeability": 30
+      }
+    },
+    "name": "Baseline",
+    "pairs": [],
+    "version": 1
+  },
+  "water_semantics": [
+    1,
+    8,
+    12,
+    0
+  ],
+  "player_start": [
+    24,
+    222
+  ],
+  "camera_origin": [
+    0,
+    0
+  ],
+  "player_enabled": false,
+  "body_enabled": false,
+  "tools": [],
+  "interest": {
+    "policy": "fixed",
+    "region": [
+      16,
+      16,
+      992,
+      272
+    ]
+  },
+  "execution": {
+    "policy": "fixed",
+    "cadence_lod_enabled": false,
+    "liquid_surface_adhesion_enabled": true
+  },
+  "events": [
+    {
+      "tick": 30,
+      "kind": "erase",
+      "x": 440,
+      "y": 136,
+      "width": 16,
+      "height": 4,
+      "material": 0,
+      "normalized_mass": 0,
+      "coherence": 0
+    }
+  ],
+  "observations": [
+    {
+      "id": "pool-water-t0",
+      "tick": 0,
+      "metric": "water_integer",
+      "region": [
+        40,
+        96,
+        440,
+        160
+      ],
+      "material": 3
+    },
+    {
+      "id": "oil-t0",
+      "tick": 0,
+      "metric": "material_cells",
+      "region": [
+        488,
+        96,
+        496,
+        160
+      ],
+      "material": 16
+    },
+    {
+      "id": "sodium-window-t60",
+      "tick": 60,
+      "metric": "material_cells",
+      "region": [
+        360,
+        32,
+        256,
+        224
+      ],
+      "material": 25
+    },
+    {
+      "id": "fire-window-t60",
+      "tick": 60,
+      "metric": "material_cells",
+      "region": [
+        360,
+        32,
+        256,
+        224
+      ],
+      "material": 6
+    },
+    {
+      "id": "steam-window-t60",
+      "tick": 60,
+      "metric": "material_cells",
+      "region": [
+        360,
+        32,
+        256,
+        224
+      ],
+      "material": 22
+    },
+    {
+      "id": "pool-water-t300",
+      "tick": 300,
+      "metric": "water_integer",
+      "region": [
+        40,
+        96,
+        440,
+        160
+      ],
+      "material": 3
+    },
+    {
+      "id": "oil-t300",
+      "tick": 300,
+      "metric": "material_cells",
+      "region": [
+        488,
+        96,
+        496,
+        160
+      ],
+      "material": 16
+    },
+    {
+      "id": "sodium-window-t300",
+      "tick": 300,
+      "metric": "material_cells",
+      "region": [
+        360,
+        32,
+        256,
+        224
+      ],
+      "material": 25
+    },
+    {
+      "id": "fire-window-t300",
+      "tick": 300,
+      "metric": "material_cells",
+      "region": [
+        360,
+        32,
+        256,
+        224
+      ],
+      "material": 6
+    },
+    {
+      "id": "steam-window-t300",
+      "tick": 300,
+      "metric": "material_cells",
+      "region": [
+        360,
+        32,
+        256,
+        224
+      ],
+      "material": 22
+    },
+    {
+      "id": "pool-water-t900",
+      "tick": 900,
+      "metric": "water_integer",
+      "region": [
+        40,
+        96,
+        440,
+        160
+      ],
+      "material": 3
+    },
+    {
+      "id": "oil-t900",
+      "tick": 900,
+      "metric": "material_cells",
+      "region": [
+        488,
+        96,
+        496,
+        160
+      ],
+      "material": 16
+    }
+  ],
+  "conditions": [],
+  "source_recipe": "LCB-003 scenario catalogue v1: mixed-stress",
+  "source_recipe_hash": "",
+  "presentation": {
+    "title": "Sodium into Water beside Oil",
+    "instructions": "A Sodium block drops into a Water pool next to an Oil pool behind a low divider. Water+Sodium makes Steam and Fire; Fire may ignite Oil, and Water extinguishes burning Oil. Records native chemistry and phase products; material counts are not conserved by design.",
+    "duration_ticks": 900,
+    "baseline": "Current native defaults; controlled fixed-tick run",
+    "profile": "Baseline",
+    "regions": [
+      {
+        "id": "water",
+        "label": "Water pool",
+        "region": [
+          40,
+          160,
+          440,
+          96
+        ]
+      },
+      {
+        "id": "oil",
+        "label": "Oil pool",
+        "region": [
+          488,
+          160,
+          496,
+          96
+        ]
+      },
+      {
+        "id": "sodium",
+        "label": "Sodium",
+        "region": [
+          440,
+          120,
+          16,
+          16
+        ]
+      }
+    ]
+  }
+}

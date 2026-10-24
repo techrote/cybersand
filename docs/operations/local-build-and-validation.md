@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-24
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
@@ -173,7 +173,105 @@ Current build jobs set `SCONS_JOBS=2` directly; the
 [repository provider policy](github-development-and-release.md) owns the runner
 and provider-routing boundary.
 
+## Physical actor timeout investigation
+
+**Current qualified #234 apparatus:** both platform runners use
+`run_godot_regressions.run_case` and an independent
+[process monitor](../../tools/ci/godot_process_monitor.py). The three suspect
+fixtures request live capture after 30 seconds without a new main-thread marker
+and fail as `timeout` / `progress_watchdog` at 45 seconds idle. Capture is separately
+bounded and cannot defer that failure decision. The ordinary 180-second outer
+case ceiling remains unchanged; no heartbeat extends it. Startup, setup, stepping,
+frame waits and post-quit stalls are covered externally. Linux attempts process /
+`/proc` wait-state and bounded native stack capture; Windows attempts process/thread
+state and DbgHelp minidumps for the wrapper and engine child. Refusal or missing
+stack capture remains explicit evidence. Full logs and bounded tails are retained.
+
+The original `REGRESSION_PROGRESS` records preserve actual case, phase, rig/model
+and last reported physical tick. The additional `CYBERSAND_PROGRESS` sequence and
+cumulative step counter are coarse main-thread heartbeats, not an exact blocked
+instruction or native-worker count. Unrelated output and timestamp-only changes
+cannot renew liveness. No retries, skips, workload reduction, physics parameters
+or native-worker count changes are introduced.
+
+The fixture-only [internal guard](../../godot/tests/helpers/physical_internal_watchdog.gd)
+observes a separate 120-second whole-fixture limit using a RefCounted Godot thread,
+monotonic clock and copied mutex-owned context. It performs no scene-tree, World
+or Rapier operation. Expiry emits sticky `ERROR: REGRESSION_WATCHDOG`; a later
+successful return cannot erase it. Stop polls for at most one second, then joins
+only an exited thread. A blocked main thread is terminated by the external runner
+after capture; the internal observer never self-kills and does not promise native
+stack recovery. Startup before arming, a process-wide runtime stall and engine
+shutdown after disarming remain externally bounded. The
+[test-selection guide](testing-validation-and-replay.md#physical-regression-timeout-diagnostics)
+owns these failure and observation limits.
+
+Focused checks, with the pinned Godot executable already prepared:
+
+```sh
+python tools/ci/test_physical_progress_watchdog.py
+python tools/ci/test_godot_process_monitor.py
+python tools/ci/test_physical_internal_watchdog.py --godot <godot>
+```
+
+The last command executes both a healthy child and an expected-failing child
+whose main thread is synchronously blocked. It verifies independent observation,
+sticky nonzero failure and join without admitting the expected failure as an
+ordinary passing physical fixture.
+
+The [standard 600-attempt workflow](../../.github/workflows/physical-timeout-stress.yml)
+is dispatch-only and GitHub-hosted. Set `source_sha` to the exact immutable
+candidate commit after applicable exact-head ordinary gates. It runs five batches
+of ten repetitions for each of arena, rigs and usable course on Windows/Linux
+in serial and three-process parallel modes: 600 physical attempts plus import
+preflights. Inspect the independent completeness gate and raw per-attempt evidence.
+The [#234 integration ledger](../audits/2026-10-24-issue-234-physical-hang-repair.md)
+owns actual source/run identities, completed ordinary admission and fresh
+qualification run `40129364630` at immutable merge source
+`13b8e631f3e8fbaa2176ed41afc02c434b11e558`: 600/600 physical passes, 0/600
+timeouts, zero other failures and 20/20 import passes. Each of the twelve
+OS/mode/test strata passed 50/50. The [retained distributions](../audits/issue-234/stress-distributions.csv)
+use exact Decimal medians and nearest-rank p95 (rank 48 of 50), including every
+physical observation. All 600 raw attempt receipts match the hosted gate.
+The [admitted #233 campaign](../audits/2026-10-24-issue-233-physical-regression-timeouts.md)
+retains 589 passes, 11 Windows timeouts and zero other physical failures at its
+original source, plus the older Linux failure. Preserve all original attempts.
+
+The retained [earlier stress workflow](../../.github/workflows/physical-actor-stress.yml)
+and GDExtension `physical_actor_stress` / `rapier_bvh_pair` diagnostics belong to
+the [PR #236 investigation](../audits/2026-10-23-physical-actor-timeouts.md).
+Its same-host paired campaign 40056501226 recorded six Windows control timeouts,
+zero Linux control timeouts and zero candidate timeouts in 300 candidate trials.
+Balanced pair order, hardware/fixture identities, matching native stacks and the
+scope of earlier failed or inconclusive samples are retained in the
+[blocking-call and paired audit](../audits/2026-10-24-physical-actor-bvh-validation.md).
+That comparison supports adopting the exact qualified Windows/Linux x86_64 BVH
+backport artifacts; other architectures/Web retain release bytes. Runtime locks,
+provenance and repository/Windows preflights still reject byte or build-input
+drift. Those 300 candidate samples remain separate from #234's fresh standard
+600-attempt acceptance. Integrated PR #236 head
+`330ded5aa0937b4a46ea0b5f270583a8e0375931` passed exact-head ordinary gates and
+merged. Its completed fresh standard campaign qualifies the registered
+Windows/Linux x86_64 workload and exact artifacts. Both modes recorded zero
+timeouts; descriptive timing differences between clustered hosted batches do
+not establish co-tenancy or native-worker-count dependence. The precise
+scheduler trigger and untested loads/platforms remain outside that acceptance.
+Ordinary run `40125433675` separately retained 45 passing
+physical-family observations within 268 passing cases and five passing imports;
+these are outside the stress N. The [timing CSVs](../audits/issue-234/ordinary-observations.csv)
+retain the actual synthetic checkout `bb84068378765e3874840e19507666c6a7a1e5df`,
+which has the same source tree as that PR head, and per-platform runtime hashes.
+
 ## Windows retained-runtime execution
+
+For intermittent physical actor/usable/flight stalls, use the
+[timeout diagnostic procedure](testing-validation-and-replay.md#physical-regression-timeout-diagnostics).
+The ordinary 180-second case bound is unchanged. Dispatch the full registered
+600-attempt stress workflow only after it exists on `main`, with `source_sha`
+set to the exact immutable diagnostic source. Inspect the independent reducer
+and raw logs even if the Actions run badge is green or red. The
+[dated audit](../audits/2026-10-24-issue-233-physical-regression-timeouts.md) records
+executions and remaining uncertainties separately from workflow availability.
 
 **Current:** the GDExtension workflow also executes the retained Windows DLL on a
 GitHub-hosted `windows-2022` runner. This lane is separate from the Windows
@@ -289,16 +387,49 @@ semantic records and live ownership unchanged. The [authoring guide](semantic-de
 documents reproducible composites, isolated planes, region details and capture
 manifests. Headless rendering does not substitute for those captures.
 
-The scoped [GEN-005 publisher](../../.github/workflows/gen005-runtime-publication.yml)
-builds source-matched Linux and Windows runtimes, runs all retained player and
-generation admission checks plus the three GEN-005 headless suites on each
-target OS, and accepts only complete positive-count error-free evidence before
-publishing the four runtime/provenance paths. Its independent
-[`unittest` suite](../../tools/ci/test_gen005_runtime_publication.py) exercises
-missing, malformed and tampered evidence. Exact-head documentation/provenance,
-native, full Godot and applicable scoped apparatus gates remain required for
-implementation acceptance. The [GEN-005 audit](../audits/2026-10-21-gen005-semantic-planes.md)
-records actual platform/source results and any environment qualification.
+### Branch-scoped runtime publishers
+
+Source-matched Linux and Windows runtimes have been published by **temporary,
+branch-scoped publisher workflows**. Each workflow:
+
+1. builds both runtimes on GitHub-hosted runners;
+2. runs a focused headless case list on each target OS;
+3. accepts only complete, positive-count, error-free evidence;
+4. fast-forwards the four runtime and provenance paths onto its feature branch.
+
+Exact-head documentation/provenance, Native, full Godot and applicable scoped
+apparatus gates remain required for implementation acceptance.
+
+The six publishers whose branches had merged were **retired on 2026-10-24**:
+GEN-003, GEN-004, GEN-005, GEN-007, player and LCB-001. Their workflow files
+and `tools/ci/*_runtime_publication.py` helpers and unittest guards were removed
+from main. Their dated audits (for example the
+[GEN-005 audit](../audits/2026-10-21-gen005-semantic-planes.md)) and the retained
+`runtime-provenance*.json` build-input hashes still describe the original
+builds; those historical links intentionally resolve only in Git history.
+
+For a new native change, restore the most recent publisher from history, then
+re-scope it before pushing:
+
+```sh
+git show a395e33dc0632f5c3f41e8b8b1c18c89f0aaa131:.github/workflows/lcb001-runtime-publication.yml
+git show a395e33dc0632f5c3f41e8b8b1c18c89f0aaa131:tools/ci/lcb001_runtime_publication.py
+git show a395e33dc0632f5c3f41e8b8b1c18c89f0aaa131:tools/ci/test_lcb001_runtime_publication.py
+```
+
+Re-scoping means renaming it and changing its branch guard, evidence path, case
+list and markers, and running `python3 tools/ci/check_ci_provider_policy.py`.
+Retire it again once its branch merges.
+
+**Active, 2026-10-24:** the LCB-001 pressure-reference publisher
+(`.github/workflows/lcb001-pressure-reference-runtime-publication.yml`,
+`tools/ci/lcb001_pressure_reference_runtime_publication.py` and
+`tools/ci/test_lcb001_pressure_reference_runtime_publication.py`, re-scoped in
+draft PR #244) exists on branch `claude/lcb001-pressure-reference`. It builds and
+publishes only after `tools/ci/lcb001_pressure_reference_publish_request.json` is
+committed on that branch, and records its outcome in the
+[evidence record](../audits/2026-10-24-lcb001-pressure-reference-publication.md).
+Retire the three files and the request after that branch merges.
 
 ## Hierarchical generation example and acceptance
 
@@ -929,5 +1060,7 @@ Run the additional `test_gen007_*_render.gd` cases through the existing regressi
 runner on a display-backed renderer. The `_render` suffix prevents a headless
 no-frame shortcut. `capture_gen007.gd` retains real scene views and identities;
 its successful completion and each required output image must be checked.
-The scoped GEN-007 publisher binds Linux/Windows execution to exact source and
-runtime bytes; the ready-for-review full repository gates remain separate.
+The scoped GEN-007 publisher (retired; see
+[branch-scoped runtime publishers](#branch-scoped-runtime-publishers)) bound
+Linux/Windows execution to exact source and runtime bytes; the ready-for-review
+full repository gates remain separate.

@@ -1,0 +1,283 @@
+{
+  "date": "2026-10-24",
+  "run_id": 40014516069,
+  "source_sha": "c01c11e7e1ac85a5a81ad92c52516ac5fc8c26b0",
+  "batch": 3,
+  "iteration": 1,
+  "test": "test_physical_actor_arena",
+  "engine_pid": 1796,
+  "dump_sha256": "9c645a918de634d76fa1ebf41018c6aa84bb312fa8f01fcf1ce7ade7620ef7b6",
+  "rapier_module_base": "0x7ff8ec460000",
+  "official_static_archive_url": "https://github.com/appsinacup/godot-rapier-physics/releases/download/v0.35.2/static-rapier-2d-single.zip",
+  "official_static_archive_sha256": "c4b69859e1792a245787300b48ad434faa7240882c0d3645441469073626a155",
+  "method": "DbgEng unwind using exact Server 2022 ntdll/KERNELBASE images and PDBs from Microsoft symbol server; COFF symbol attribution verifies all function bytes except relocation fields against the official retained DLL. Unmatched frames are not named by inference.",
+  "threads": {
+    "main_2724": {
+      "wait": "Rayon LockLatch::wait_and_reset during PhysicsWorld::step",
+      "rvas": [
+        "0x77b7b3",
+        "0x77097e",
+        "0x2034d0"
+      ]
+    },
+    "worker_4620": {
+      "wait": "std::thread::Thread::park -> std::sync::mpmc::list::Channel<DeferredBvhOptimize>::recv -> PhysicsPipeline::join_deferred_bvh_optimize -> PhysicsPipeline::step_inner",
+      "rvas": [
+        "0x77d0d1",
+        "0x673358",
+        "0x6ac57d",
+        "0x68ade7"
+      ]
+    },
+    "worker_4304": {
+      "wait": "parked in Rayon scheduler; stripped scheduler frames retained by RVA, not assigned unsupported symbol names",
+      "rvas": [
+        "0x77b7b3",
+        "0x7b4465",
+        "0x7b4b53",
+        "0x770253"
+      ]
+    }
+  },
+  "frames": {
+    "0x77b7b3": {
+      "begin": "0x77b780",
+      "end": "0x77b7ec",
+      "matches": [
+        {
+          "object": "std-ad7efb1bc85901be.std.fc79cc53f84b73ec-cgu.0.rcgu.o",
+          "section": 214,
+          "names": [
+            "_RNvMNtNtNtNtCslFVcyoAu48q_3std3sys4sync7condvar5futexNtB2_7Condvar4wait"
+          ],
+          "verified_bytes": 108,
+          "relocation_bytes": 16
+        }
+      ]
+    },
+    "0x77097e": {
+      "begin": "0x770910",
+      "end": "0x770a7d",
+      "matches": [
+        {
+          "object": "rayon_core-990d6bf5b2659913.rayon_core.6912f336ddc7f59e-cgu.0.rcgu.o",
+          "section": 73,
+          "names": [
+            "_RNvMs3_NtCs91j0qopwnKc_10rayon_core5latchNtB5_9LockLatch14wait_and_reset"
+          ],
+          "verified_bytes": 365,
+          "relocation_bytes": 56
+        }
+      ]
+    },
+    "0x79982d": {
+      "begin": "0x7997a0",
+      "end": "0x79987c",
+      "matches": []
+    },
+    "0x2034d0": {
+      "begin": "0x201d00",
+      "end": "0x2034e8",
+      "matches": [
+        {
+          "object": "godot_rapier.godot_rapier.f662fa7776f29b8-cgu.0.rcgu.o",
+          "section": 2053,
+          "names": [
+            "_RNvMs5_NtNtCs1jY6lgQ791c_12godot_rapier14rapier_wrapper13physics_worldNtB5_12PhysicsWorld4step"
+          ],
+          "verified_bytes": 6120,
+          "relocation_bytes": 192
+        }
+      ]
+    },
+    "0x1f479a": {
+      "begin": "0x1f3630",
+      "end": "0x1f4913",
+      "matches": [
+        {
+          "object": "godot_rapier.godot_rapier.f662fa7776f29b8-cgu.0.rcgu.o",
+          "section": 1986,
+          "names": [
+            "_RNvMs2_NtNtCs1jY6lgQ791c_12godot_rapier6spaces12rapier_spaceNtB5_11RapierSpace4step"
+          ],
+          "verified_bytes": 4835,
+          "relocation_bytes": 224
+        }
+      ]
+    },
+    "0x23022f": {
+      "begin": "0x230150",
+      "end": "0x230310",
+      "matches": [
+        {
+          "object": "godot_rapier.godot_rapier.f662fa7776f29b8-cgu.0.rcgu.o",
+          "section": 2200,
+          "names": [
+            "_RNvMsq_NtNtCs1jY6lgQ791c_12godot_rapier7servers24rapier_physics_server_2dNtB5_21RapierPhysicsServer2D10space_step"
+          ],
+          "verified_bytes": 448,
+          "relocation_bytes": 68
+        }
+      ]
+    },
+    "0x25baa4": {
+      "begin": "0x25b7b0",
+      "end": "0x25bb4d",
+      "matches": [
+        {
+          "object": "godot_rapier.godot_rapier.f662fa7776f29b8-cgu.0.rcgu.o",
+          "section": 2399,
+          "names": [
+            "_RNvNCNvNvNvNtNtCs1jY6lgQ791c_12godot_rapier7servers24rapier_physics_server_2ds7_1__6___init12___inner_init0sD_10varcall_fn"
+          ],
+          "verified_bytes": 925,
+          "relocation_bytes": 116
+        }
+      ]
+    },
+    "0x77d0d1": {
+      "begin": "0x77d060",
+      "end": "0x77d0db",
+      "matches": [
+        {
+          "object": "std-ad7efb1bc85901be.std.fc79cc53f84b73ec-cgu.0.rcgu.o",
+          "section": 377,
+          "names": [
+            "_RNvMs_NtNtCslFVcyoAu48q_3std6thread6threadNtB4_6Thread4park"
+          ],
+          "verified_bytes": 123,
+          "relocation_bytes": 8
+        }
+      ]
+    },
+    "0x673358": {
+      "begin": "0x673280",
+      "end": "0x673415",
+      "matches": [
+        {
+          "object": "rapier2d-b364c6410f3f46c5.rapier2d.d0f68180d56c8cff-cgu.0.rcgu.o",
+          "section": 436,
+          "names": [
+            "_RNCNvMs1_NtNtNtCslFVcyoAu48q_3std4sync4mpmc4listINtB7_7ChannelNtNtNtCshWiTd6uhCRT_8rapier2d8geometry15broad_phase_bvh19DeferredBvhOptimizeE4recvs_0B14_"
+          ],
+          "verified_bytes": 405,
+          "relocation_bytes": 48
+        }
+      ]
+    },
+    "0x6ac57d": {
+      "begin": "0x6ac240",
+      "end": "0x6ad615",
+      "matches": [
+        {
+          "object": "rapier2d-b364c6410f3f46c5.rapier2d.d0f68180d56c8cff-cgu.0.rcgu.o",
+          "section": 867,
+          "names": [
+            "_RNvMs_NtNtCshWiTd6uhCRT_8rapier2d8pipeline16physics_pipelineNtB4_15PhysicsPipeline26join_deferred_bvh_optimize"
+          ],
+          "verified_bytes": 5077,
+          "relocation_bytes": 340
+        }
+      ]
+    },
+    "0x68ade7": {
+      "begin": "0x689590",
+      "end": "0x68c2d0",
+      "matches": [
+        {
+          "object": "rapier2d-b364c6410f3f46c5.rapier2d.d0f68180d56c8cff-cgu.0.rcgu.o",
+          "section": 557,
+          "names": [
+            "_RNvMNtNtNtCshWiTd6uhCRT_8rapier2d8pipeline16physics_pipeline7substepNtB4_15PhysicsPipeline10step_inner"
+          ],
+          "verified_bytes": 11584,
+          "relocation_bytes": 392
+        }
+      ]
+    },
+    "0x2e2669": {
+      "begin": "0x2e2560",
+      "end": "0x2e2734",
+      "matches": [
+        {
+          "object": "godot_rapier.godot_rapier.f662fa7776f29b8-cgu.0.rcgu.o",
+          "section": 3122,
+          "names": [
+            "_RNvXs2_NtCs91j0qopwnKc_10rayon_core3jobINtB5_8StackJobINtNtB7_5latch8LatchRefNtBT_9LockLatchENCNCINvMs4_NtB7_8registryNtB1E_8Registry14in_worker_coldNCINvMNtB7_11thread_poolNtB2t_10ThreadPool7installNCNvMs5_NtNtCs1jY6lgQ791c_12godot_rapier14rapier_wrapper13physics_worldNtB3j_12PhysicsWorld4step0uE0uE00uENtB5_3Job7executeB3n_"
+          ],
+          "verified_bytes": 468,
+          "relocation_bytes": 44
+        }
+      ]
+    },
+    "0x7b4bc6": {
+      "begin": "0x7b4a60",
+      "end": "0x7b4c11",
+      "matches": []
+    },
+    "0x770253": {
+      "begin": "0x7700b0",
+      "end": "0x770329",
+      "matches": [
+        {
+          "object": "rayon_core-990d6bf5b2659913.rayon_core.6912f336ddc7f59e-cgu.0.rcgu.o",
+          "section": 67,
+          "names": [
+            "_RNvMNtCs91j0qopwnKc_10rayon_core8registryNtB2_13ThreadBuilder3run"
+          ],
+          "verified_bytes": 633,
+          "relocation_bytes": 84
+        }
+      ]
+    },
+    "0x76f669": {
+      "begin": "0x76f660",
+      "end": "0x76f66f",
+      "matches": []
+    },
+    "0x76fa8d": {
+      "begin": "0x76f9b0",
+      "end": "0x76fb5f",
+      "matches": [
+        {
+          "object": "rayon_core-990d6bf5b2659913.rayon_core.6912f336ddc7f59e-cgu.0.rcgu.o",
+          "section": 56,
+          "names": [
+            "_RNSNvYNCINvNtNtCslFVcyoAu48q_3std6thread9lifecycle15spawn_uncheckedNCNvXs0_NtCs91j0qopwnKc_10rayon_core8registryNtB1b_12DefaultSpawnNtB1b_11ThreadSpawn5spawn0uEs_0INtNtNtCs55qC6OcLGgs_4core3ops8function6FnOnceuE9call_once6vtableB1d_"
+          ],
+          "verified_bytes": 431,
+          "relocation_bytes": 16
+        }
+      ]
+    },
+    "0x78201a": {
+      "begin": "0x781e50",
+      "end": "0x782042",
+      "matches": [
+        {
+          "object": "std-ad7efb1bc85901be.std.fc79cc53f84b73ec-cgu.0.rcgu.o",
+          "section": 584,
+          "names": [
+            "_RNvNvMNtNtNtCslFVcyoAu48q_3std3sys6thread7windowsNtB4_6Thread3new12thread_start"
+          ],
+          "verified_bytes": 498,
+          "relocation_bytes": 92
+        }
+      ]
+    },
+    "0x7b4465": {
+      "begin": "0x7b42a0",
+      "end": "0x7b4556",
+      "matches": []
+    },
+    "0x7b4b53": {
+      "begin": "0x7b4a60",
+      "end": "0x7b4c11",
+      "matches": []
+    }
+  },
+  "limitations": [
+    "Confirms the blocking call and parked-worker topology, not the exact scheduler race or a lost wakeup.",
+    "Repair requires independent control/patched experiments."
+  ]
+}

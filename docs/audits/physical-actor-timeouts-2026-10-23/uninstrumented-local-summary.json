@@ -1,0 +1,44 @@
+{
+  "scope": "Local uninstrumented fixture comparison; five isolated copies, two logical CPUs each, ten independent trials per copy; no watchdog",
+  "fixture_source_commit": "1f9336388f11be39abaae340a781a5eef52115d4",
+  "harness_commit": "77c8b0e7f0191037dccd18e5038e882bb57bcb46",
+  "native_sha256": "e6d9ec7d0847287c4c6b1acaffd52dc2807fe43e9dccfc36123ffa117fb6045f",
+  "rapier_sha256": "4e26ffa78ec2aaff434c4a70cd2ec85288b10ba5237912c35f204cb1e6ed2180",
+  "godot_version": "4.7.stable.official.5b4e0cb0f",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "timeout_seconds": 180,
+  "completed": true,
+  "counts": {
+    "test_physical_actor_arena": {
+      "passed": 50
+    },
+    "test_physical_actor_rigs": {
+      "passed": 50
+    },
+    "test_physical_usable_course": {
+      "passed": 50
+    }
+  },
+  "source_inputs": {
+    "godot/tests/test_physical_actor_arena.gd": "340bd18ec36bcf36bcce4eb8fd27d68f9cca489ad25cd4deec6f8f7a040140cf",
+    "godot/tests/test_physical_actor_rigs.gd": "efdf6e1765639e56d9e7f9ace7e1e1049c220bc1110ac921f3c0088ef87cc13f",
+    "godot/tests/test_physical_usable_course.gd": "6c14368d00f1acf45bc7b32268814e3a0f92c5e4ff27f90b0e22f03ae6e1017f"
+  },
+  "seconds": {
+    "test_physical_actor_arena": {
+      "min": 14.269,
+      "max": 20.562,
+      "mean": 16.723
+    },
+    "test_physical_actor_rigs": {
+      "min": 23.077,
+      "max": 30.927,
+      "mean": 25.897
+    },
+    "test_physical_usable_course": {
+      "min": 12.99,
+      "max": 19.963,
+      "mean": 15.943
+    }
+  }
+}

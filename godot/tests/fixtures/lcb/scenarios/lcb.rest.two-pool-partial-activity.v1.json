@@ -1,0 +1,244 @@
+{
+  "schema_version": 2,
+  "id": "lcb.rest.two-pool-partial-activity.v1",
+  "recipe_version": 1,
+  "seed": 0,
+  "maturity": "reference",
+  "rectangles": [
+    0,
+    0,
+    1024,
+    1,
+    1,
+    0,
+    0,
+    1,
+    1024,
+    1,
+    1023,
+    0,
+    1,
+    1024,
+    1,
+    0,
+    1023,
+    1024,
+    1,
+    1,
+    32,
+    256,
+    960,
+    8,
+    1,
+    32,
+    64,
+    8,
+    192,
+    1,
+    984,
+    64,
+    8,
+    192,
+    1,
+    480,
+    64,
+    64,
+    192,
+    1
+  ],
+  "partial_water_fills": [
+    40,
+    96,
+    440,
+    160,
+    255,
+    0,
+    544,
+    96,
+    440,
+    160,
+    255,
+    0
+  ],
+  "transport_profile": {
+    "families": {
+      "liquid": {
+        "cadence": 1,
+        "carrying": 0,
+        "erosion": 0,
+        "horizontal": 2,
+        "permeability": 1
+      },
+      "powder": {
+        "mixing": 0,
+        "packing": 8,
+        "pickup": 64
+      }
+    },
+    "materials": {
+      "33": {
+        "permeability": 30
+      }
+    },
+    "name": "Baseline",
+    "pairs": [],
+    "version": 1
+  },
+  "water_semantics": [
+    1,
+    8,
+    12,
+    0
+  ],
+  "player_start": [
+    24,
+    222
+  ],
+  "camera_origin": [
+    0,
+    0
+  ],
+  "player_enabled": false,
+  "body_enabled": false,
+  "tools": [],
+  "interest": {
+    "policy": "fixed",
+    "region": [
+      16,
+      16,
+      992,
+      272
+    ]
+  },
+  "execution": {
+    "policy": "fixed",
+    "cadence_lod_enabled": false,
+    "liquid_surface_adhesion_enabled": true
+  },
+  "events": [
+    {
+      "tick": 60,
+      "kind": "fill",
+      "x": 400,
+      "y": 72,
+      "width": 8,
+      "height": 8,
+      "material": 3,
+      "normalized_mass": 255,
+      "coherence": 0
+    }
+  ],
+  "observations": [
+    {
+      "id": "pool-a-t0",
+      "tick": 0,
+      "metric": "water_integer",
+      "region": [
+        40,
+        64,
+        440,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "pool-b-t0",
+      "tick": 0,
+      "metric": "water_integer",
+      "region": [
+        544,
+        64,
+        440,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "pool-a-t120",
+      "tick": 120,
+      "metric": "water_integer",
+      "region": [
+        40,
+        64,
+        440,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "pool-b-t120",
+      "tick": 120,
+      "metric": "water_integer",
+      "region": [
+        544,
+        64,
+        440,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "pool-a-t600",
+      "tick": 600,
+      "metric": "water_integer",
+      "region": [
+        40,
+        64,
+        440,
+        192
+      ],
+      "material": 3
+    },
+    {
+      "id": "pool-b-t600",
+      "tick": 600,
+      "metric": "water_integer",
+      "region": [
+        544,
+        64,
+        440,
+        192
+      ],
+      "material": 3
+    }
+  ],
+  "conditions": [
+    {
+      "observation": "pool-b-t600",
+      "comparison": "eq",
+      "value": 17952000,
+      "outcome": "complete"
+    }
+  ],
+  "source_recipe": "LCB-003 scenario catalogue v1: rest-wake",
+  "source_recipe_hash": "",
+  "presentation": {
+    "title": "Two pools, one disturbed",
+    "instructions": "Two deep pools separated by a 64-wide wall; only pool A receives an 8x8 drop at tick 60. Pool B must stay unchanged; checkpoint activity counters show whether work stays local.",
+    "duration_ticks": 600,
+    "baseline": "Current native defaults; controlled fixed-tick run",
+    "profile": "Baseline",
+    "regions": [
+      {
+        "id": "pool-a",
+        "label": "Pool A",
+        "region": [
+          40,
+          64,
+          440,
+          192
+        ]
+      },
+      {
+        "id": "pool-b",
+        "label": "Pool B",
+        "region": [
+          544,
+          64,
+          440,
+          192
+        ]
+      }
+    ]
+  }
+}

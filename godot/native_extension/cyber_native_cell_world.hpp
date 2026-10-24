@@ -97,12 +97,28 @@ public:
     [[nodiscard]] String get_backend_name() const;
     [[nodiscard]] String get_last_tick_error() const;
     [[nodiscard]] Dictionary get_water_experiment_policy() const;
+    // Applied LCB-001 liquid solver policy receipt of the live World. The
+    // generation counts committed World replacements; refusals never advance it.
+    [[nodiscard]] Dictionary get_liquid_solver_policy() const;
+    [[nodiscard]] std::int64_t get_liquid_policy_session_generation() const;
+    [[nodiscard]] static Dictionary liquid_policy_receipt(
+        const cybersand::LiquidSolverPolicy& policy, std::int64_t session_generation);
     bool water_experiment_fill_rect(Vector2i origin, Vector2i size,
                                     std::int64_t normalized_mass,
                                     std::int64_t coherence);
     bool water_experiment_erase_rect(Vector2i origin, Vector2i size);
     [[nodiscard]] Dictionary water_experiment_observation(
         Vector2i origin, Vector2i size) const;
+    // LCB-001 pressure_flow_v1 (#200) inspection. Serialized owner-only reads of
+    // immutable values; nothing exposes live World storage.
+    [[nodiscard]] String get_physical_state_hash() const;
+    [[nodiscard]] std::int64_t get_physical_state_hash_version() const;
+    [[nodiscard]] Dictionary inspect_gas_compartments() const;
+    [[nodiscard]] Dictionary inspect_pressure_cell(Vector2i point) const;
+    [[nodiscard]] Dictionary get_pressure_flow_ledger() const;
+    // Run receipt: binds the applied policy and every World execution input with
+    // the caller's setup identity into one SHA-256 receipt hash.
+    [[nodiscard]] Dictionary get_liquid_run_receipt(const Dictionary& setup) const;
     // Isolated fresh-world experiment API. Called only by the exclusive owner.
     bool diagnostic_reset(const Dictionary& options);
     bool diagnostic_fill_rect(Vector2i origin, Vector2i size, std::int64_t material,
@@ -184,6 +200,7 @@ private:
     std::uint64_t revision_ = 0;
     std::uint64_t hard_surface_revision_ = 0;
     std::uint64_t tick_failure_count_ = 0;
+    std::uint64_t liquid_policy_session_generation_ = 0;
     String last_tick_error_{};
     double simulation_time_ms_ = 0.0;
     bool simulation_window_enabled_ = true;

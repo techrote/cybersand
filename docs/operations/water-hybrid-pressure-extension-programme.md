@@ -4,7 +4,7 @@ status: Planned
 document-kind: design
 scope: Parallel/extension research for deep-Water bulk response, generic Rapier↔cellular coupling, bounded solided-Water sheet proofs, saturated-head requirement reassessment, lumped gas regions and optional decompression events; no production architecture adoption
 canonical-for: [water-hybrid-pressure-extension-programme]
-last-reviewed: 2026-10-23
+last-reviewed: 2026-10-24
 related-documents: [architecture-programme.md, soliding-programme.md, ../systems/water-design.md, ../architecture/rigid-body-and-cellular-coupling.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md, ../reference/product-intent-and-priorities.md, ../research/lumped-gas-region-pressure-bookkeeping.md, ../audits/2026-09-24-wex002-water-sheet-blocked-disposition.md, ../audits/2026-09-24-wex004-decompression-disposition.md, ../audits/2026-10-23-wex005-water-evidence-synthesis.md, ../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md]
 ---
 
@@ -649,7 +649,7 @@ The owner-approved opt-in Liquid Comparison Build
 [#213](https://github.com/techrote/cybersand/issues/213)) is a **separate
 experimental lane**, not #45 implementation and not WEX scope. The
 [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md)
-proposes its terms:
+records the accepted lane constraints:
 
 - `pressure_flow_v1` (reference/cached/cached-dormant variants) may run only as an
   opt-in, per-World, per-material, version-identified family side by side with
@@ -664,9 +664,12 @@ proposes its terms:
 - LCB results can reach #45 only through the registered apparatus with source
   identity. #45 does not start a competing pressure port while LCB-001 owns one.
 
-Gate A acceptance alone admits no code: LCB-001 pressure implementation and
-state/schema freeze remain **BLOCKED** until #213 Gates B–E also pass. LCB-000 is
-**not PASS**.
+**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current on branch `claude/lcb001-pressure-reference` (unmerged); #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
+
+That branch implementation is the LCB-001 pressure port this section
+anticipates. It is not #45 implementation or selection: its characterization
+screens reach #45 only through the registered apparatus with source identity,
+and they do not freeze #45 thresholds.
 
 ## Autonomous issue execution contract
 

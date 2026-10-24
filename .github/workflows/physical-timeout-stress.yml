@@ -1,0 +1,341 @@
+name: Physical-actor timeout diagnostic stress (#233)
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: 'Immutable full 40-hex commit SHA (no branch names)'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: physical-timeout-${{ inputs.source_sha }}
+  cancel-in-progress: false
+
+env:
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+
+jobs:
+  linux-build:
+    name: Pin and build Linux native runtime
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - name: Validate immutable commit input
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+        run: |
+          [[ "$SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo "Expected a full commit SHA" >&2; exit 1; }
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ inputs.source_sha }}
+      - name: Check source identity
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+        run: test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+      - name: Materialize selected Linux Rapier and verify backport provenance
+        run: |
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          import sys
+          sys.path.insert(0, 'tools/ci')
+          from check_repository import verify_rapier_overrides
+          root = Path.cwd()
+          lock = json.loads((root / 'godot/third_party/rapier2d.lock.json').read_text(encoding='utf-8'))
+          if set(lock.get('runtime_overrides', {})) != {'windows', 'linux'}:
+              raise RuntimeError('Stress requires the selected qualified desktop backport')
+          errors = verify_rapier_overrides(root, lock)
+          if errors:
+              raise RuntimeError('Selected Rapier provenance failed: ' + '; '.join(errors))
+          PY
+      - name: Install locked SCons
+        run: |
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+      - name: Fetch exact godot-cpp
+        run: |
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+      - name: Build exact Linux extension
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          timeout 35m tools/build_pinned_godot_cpp.sh linux
+          timeout 20m tools/build_native_extension.sh
+          mkdir -p build/physical-linux
+          cp "$CYBERSAND_NATIVE_OUTPUT" build/physical-linux/libcybersand_native.linux.x86_64.so
+          cp godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so build/physical-linux/
+          git rev-parse HEAD > build/physical-linux/source-sha.txt
+          (cd build/physical-linux && sha256sum libcybersand_native.linux.x86_64.so libgodot_rapier.linux.x86_64-unknown-linux-gnu.so > runtime.sha256)
+      - name: Retain frozen Linux stress runtime
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: physical-stress-linux-runtime-${{ github.run_id }}
+          path: build/physical-linux/
+          if-no-files-found: error
+          retention-days: 7
+
+  stress-linux:
+    name: Linux ${{ matrix.mode }} batch ${{ matrix.batch }}
+    needs: linux-build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 125
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [serial, parallel]
+        batch: [0, 1, 2, 3, 4]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out exact source commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ inputs.source_sha }}
+          lfs: false
+      - name: Verify immutable checkout
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+        run: test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+
+      - name: Restore exact Linux runtime
+        if: runner.os == 'Linux'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: physical-stress-linux-runtime-${{ github.run_id }}
+          path: build/physical-linux/
+      - name: Install Linux runtime and verify provenance
+        if: runner.os == 'Linux'
+        run: |
+          test "$(cat build/physical-linux/source-sha.txt)" = "$(git rev-parse HEAD)"
+          (cd build/physical-linux && sha256sum --check --strict runtime.sha256)
+          cp build/physical-linux/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/
+          cp build/physical-linux/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so godot/addons/godot-rapier2d/bin/
+          timeout 1m tools/check_linux_runtime_floor.sh
+      - name: Install official Linux Godot
+        if: runner.os == 'Linux'
+        run: |
+          curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$GODOT_BIN"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+      - name: Install native stack debugger
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes gdb
+
+      - name: Select Python 3.12 on Windows
+        if: runner.os == 'Windows'
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize retained Windows runtimes
+        if: runner.os == 'Windows'
+        run: |
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+      - name: Fetch and verify official Windows Godot
+        if: runner.os == 'Windows'
+        env:
+          GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+          PYTHONUTF8: '1'
+        run: |
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          import sys
+          sys.path.insert(0, "tools/ci")
+          import run_windows_godot_regressions as windows
+          windows.verify_retained_runtime(windows.ROOT)
+          binary, _details = windows.prepare_godot(Path(os.environ["RUNNER_TEMP"]) / "godot-windows.zip")
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as output:
+              output.write(f"GODOT_BIN={binary}\n")
+          PY
+
+      - name: Stress all three suspect cases without reruns or skips
+        env:
+          GODOT_SILENCE_ROOT_WARNING: '1'
+          PYTHONUTF8: '1'
+          CYBERSAND_SOURCE_REVISION: ${{ inputs.source_sha }}
+        run: |
+          python tools/ci/stress_physical_godot.py \
+            --godot "$GODOT_BIN" \
+            --expected-source-sha "${{ inputs.source_sha }}" \
+            --mode "${{ matrix.mode }}" \
+            --batch "${{ matrix.batch }}" --repetitions 10 \
+            --output "build/physical-stress/${{ matrix.mode }}-batch-${{ matrix.batch }}"
+      - name: Retain full per-attempt logs, phase tails, snapshots and summary
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: physical-stress-results-ubuntu-24.04-${{ matrix.mode }}-${{ matrix.batch }}-${{ github.run_id }}
+          path: build/physical-stress/
+          if-no-files-found: warn
+          retention-days: 30
+
+  stress-windows:
+    name: Windows ${{ matrix.mode }} batch ${{ matrix.batch }}
+    needs: linux-build
+    runs-on: windows-2022
+    timeout-minutes: 125
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [serial, parallel]
+        batch: [0, 1, 2, 3, 4]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out exact source commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ inputs.source_sha }}
+          lfs: false
+      - name: Verify immutable checkout
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+        run: test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+
+      - name: Restore exact Linux runtime
+        if: runner.os == 'Linux'
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: physical-stress-linux-runtime-${{ github.run_id }}
+          path: build/physical-linux/
+      - name: Install Linux runtime and verify provenance
+        if: runner.os == 'Linux'
+        run: |
+          test "$(cat build/physical-linux/source-sha.txt)" = "$(git rev-parse HEAD)"
+          (cd build/physical-linux && sha256sum --check --strict runtime.sha256)
+          cp build/physical-linux/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/
+          cp build/physical-linux/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so godot/addons/godot-rapier2d/bin/
+          timeout 1m tools/check_linux_runtime_floor.sh
+      - name: Install official Linux Godot
+        if: runner.os == 'Linux'
+        run: |
+          curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$GODOT_BIN"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+      - name: Install native stack debugger
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes gdb
+
+      - name: Select Python 3.12 on Windows
+        if: runner.os == 'Windows'
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize retained Windows runtimes
+        if: runner.os == 'Windows'
+        run: |
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+      - name: Fetch and verify official Windows Godot
+        if: runner.os == 'Windows'
+        env:
+          GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+          PYTHONUTF8: '1'
+        run: |
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          import sys
+          sys.path.insert(0, "tools/ci")
+          import run_windows_godot_regressions as windows
+          windows.verify_retained_runtime(windows.ROOT)
+          binary, _details = windows.prepare_godot(Path(os.environ["RUNNER_TEMP"]) / "godot-windows.zip")
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as output:
+              output.write(f"GODOT_BIN={binary}\n")
+          PY
+
+      - name: Stress all three suspect cases without reruns or skips
+        env:
+          GODOT_SILENCE_ROOT_WARNING: '1'
+          PYTHONUTF8: '1'
+          CYBERSAND_SOURCE_REVISION: ${{ inputs.source_sha }}
+        run: |
+          python tools/ci/stress_physical_godot.py \
+            --godot "$GODOT_BIN" \
+            --expected-source-sha "${{ inputs.source_sha }}" \
+            --mode "${{ matrix.mode }}" \
+            --batch "${{ matrix.batch }}" --repetitions 10 \
+            --output "build/physical-stress/${{ matrix.mode }}-batch-${{ matrix.batch }}"
+      - name: Retain full per-attempt logs, phase tails, snapshots and summary
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: physical-stress-results-windows-2022-${{ matrix.mode }}-${{ matrix.batch }}-${{ github.run_id }}
+          path: build/physical-stress/
+          if-no-files-found: warn
+          retention-days: 30
+
+  stress-gate:
+    name: Physical stress all 600 cases accounted
+    needs: [linux-build, stress-linux, stress-windows]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out independent reducer
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ inputs.source_sha }}
+      - name: Collect every stress batch
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: physical-stress-results-*-${{ github.run_id }}
+          path: build/stress-input
+      - name: Refuse missing, duplicate, failed, or timed-out repetitions
+        run: |
+          python3 tools/ci/aggregate_physical_stress.py \
+            --input build/stress-input --output build/stress-audit \
+            --expected-source-sha "${{ inputs.source_sha }}" \
+            --expected-run-id "${{ github.run_id }}" \
+            --expected-run-attempt "${{ github.run_attempt }}" \
+            --batches 5 --per-batch 10
+      - name: Retain the independent complete-run disposition
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: physical-stress-audit-${{ github.run_id }}
+          path: build/stress-audit/
+          if-no-files-found: warn
+          retention-days: 90

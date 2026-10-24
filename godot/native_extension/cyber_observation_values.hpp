@@ -45,6 +45,15 @@ inline Dictionary cell(const cybersand::World& world, Vector2i point) {
     block.append(point.y / world.config().activity_block_size);
     out["activity_block_coordinate"] = block;
     out["scope"] = "stored cell values; block coordinates are not a per-cell awake flag";
+    if (world.pressure_flow_enabled()) {
+        const auto state = world.pressure_cell(point.x, point.y);
+        Dictionary family;
+        family["family"] = "pressure_flow_v1";
+        family["overfill"] = static_cast<int64_t>(state.overfill);
+        family["flow"] = static_cast<int64_t>(state.flow);
+        family["gas_label"] = static_cast<int64_t>(state.gas);
+        out["family_state"] = family;
+    }
     return out;
 }
 

@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-24",
+  "run_id": 40053106474,
+  "source_sha": "18f6105736fb5a0a37e96c5220857f21ed0630e2",
+  "scope": "Supplemental Windows control capture; this campaign cannot qualify the complete pair because Linux patched preflight failed.",
+  "variant": "control",
+  "batch": 0,
+  "iteration": 6,
+  "test": "test_physical_actor_rigs",
+  "engine_pid": 4716,
+  "dump_sha256": "61c0a10597711e33ead7e2bb385ab52f0e963d7f114069f2ef4e1a66ded0f315",
+  "rapier_module_base": "0x7ff8975c0000",
+  "rapier_sha256": "3c9fd3506fe68e889d2ba3d412d0b94f75165ac07b0297f24d7b4d8d4e5dc4c2",
+  "pdb_sha256": "f62ac8b3df5d7d6588f85f87b859e8236407402e7b34e57c67bc5b2c14e265be",
+  "pdb_guid_age": "677C8052F65341C4BAD13CA95B21AB171",
+  "method": "DbgEng native unwind with the matching control DLL/PDB and exact Microsoft system images/PDBs. Symbolized frames corroborate the retained-runtime COFF attribution.",
+  "main": [
+    "rayon_core::latch::LockLatch::wait_and_reset",
+    "rayon_core::registry::in_worker_cold",
+    "rayon_core::thread_pool::ThreadPool::install",
+    "godot_rapier::rapier_wrapper::physics_world::PhysicsWorld::step"
+  ],
+  "blocked_worker": [
+    "std::thread::thread::Thread::park",
+    "std::sync::mpmc::list::Channel<DeferredBvhOptimize>::recv",
+    "std::sync::mpsc::Receiver::recv",
+    "rapier2d::pipeline::physics_pipeline::PhysicsPipeline::join_deferred_bvh_optimize+0x346",
+    "rapier2d::pipeline::physics_pipeline::PhysicsPipeline::step_inner+0x1887"
+  ],
+  "other_worker": [
+    "std::sys::sync::condvar::futex::Condvar::wait",
+    "rayon_core::sleep::Sleep::sleep",
+    "rayon_core::registry::WorkerThread::wait_until_cold+0xf3",
+    "rayon_core::registry::WorkerThread::wait_until_out_of_work",
+    "rayon_core::registry::main_loop"
+  ],
+  "limitations": [
+    "The precise scheduler lost-progress race is not proven by a snapshot. The deferred receive and idle-worker topology are directly symbolized."
+  ]
+}

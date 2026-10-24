@@ -1,0 +1,31 @@
+{
+  "status": "candidate; runtime publication requires paired control and patched evidence",
+  "addon_repository": "https://github.com/appsinacup/godot-rapier-physics.git",
+  "addon_tag": "v0.35.2",
+  "addon_commit": "172c66f5a88bf1164c2b8cf2d775ed889edefd75",
+  "crate": "rapier2d",
+  "crate_version": "0.35.1",
+  "crate_url": "https://static.crates.io/crates/rapier2d/rapier2d-0.35.1.crate",
+  "crate_sha256": "74bfd393193e08a812ba0c83c7c844dff29979fd30f96de2854cdea507350065",
+  "base_join_source_sha256": "b5fffdf4bd0c8e359d1aa52d9ddc95b04e21c11a8438b2ac8c31bebc57c32963",
+  "patch": "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch",
+  "patch_sha256": "6eda9ecd071925af35b7bfc92a2c3c01ac2b87831591947d79925cc92588975e",
+  "rust_toolchain": "1.98.0",
+  "features": [
+    "serde-serialize",
+    "parallel",
+    "register-docs",
+    "single-dim2",
+    "api-custom"
+  ],
+  "release_overrides": {
+    "CARGO_PROFILE_RELEASE_DEBUG": "1",
+    "CARGO_PROFILE_RELEASE_STRIP": "none"
+  },
+  "upstream_reports": [
+    "https://github.com/dimforge/rapier/issues/1008",
+    "https://github.com/appsinacup/godot-rapier-physics/issues/640"
+  ],
+  "upstream_cargo_lock_sha256": "63cb5170bd78cec10a46ecc912bfd56e101f7d30ed9bfd97789146f9b682d4dc",
+  "patched_join_source_sha256": "0a63cf10ae1111c4fa3c22d945d505918f36d1165b8176e130573d5259f9a973"
+}

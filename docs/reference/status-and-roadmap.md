@@ -4,11 +4,37 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-24
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
 # Status and foundational roadmap
+
+## Physical actor regression hangs — 2026-10-23
+
+**Current qualified desktop repair, 2026-10-24:** #234 adopts
+[PR #236](https://github.com/techrote/cybersand/pull/236)'s cooperative deferred-BVH
+join repair and exact qualified Windows/Linux x86_64 artifacts on current main.
+Other architectures/Web retain release libraries. The
+[stack and paired evidence](../audits/2026-10-24-physical-actor-bvh-validation.md)
+confirms the deferred receive/outer latch blocking path; the exact scheduler race
+remains unproven. Same-host run 40056501226 qualified 300 candidate trials with
+zero timeouts while retaining six Windows control timeouts.
+
+The [#234 integration ledger](../audits/2026-10-24-issue-234-physical-hang-repair.md)
+separates that prior comparison from the integrated PR #236 head
+`330ded5aa0937b4a46ea0b5f270583a8e0375931`, which passed exact-head ordinary
+gates and merged as `13b8e631f3e8fbaa2176ed41afc02c434b11e558`. Fresh standard
+600-attempt serial/parallel campaign `40129364630` at that source completed
+600/600 physical passes, 0/600 timeouts, zero other failures and twenty passing
+imports, with 50/50 passes in every OS/mode/test stratum. This qualifies the
+registered Windows/Linux x86_64 workload and exact artifacts; native-worker
+count was not varied and other loads/platforms remain outside that result. The
+[build guide](../operations/local-build-and-validation.md#physical-actor-timeout-investigation)
+owns invocation; the [timeout procedure](../operations/testing-validation-and-replay.md#physical-regression-timeout-diagnostics)
+owns the independent 30s capture / 45s idle failure guard, fixture-only 120s
+observer and unchanged 180s outer limit. No retries, skips, physics/worker-count
+changes or broad scheduler-fix claim follow from the selected backport.
 
 ## ACT-IK-001 five-part Runner joint-reference pilot — 2026-10-23
 
@@ -308,6 +334,23 @@ GEN-006 #194 retains persistent streaming and durable mutation reconciliation.
 
 ## Decisions and defects to resolve
 
+**Current, 2026-10-24:** #233's diagnostic deliverable is complete. The admitted
+[timeout apparatus](../operations/testing-validation-and-replay.md#physical-regression-timeout-diagnostics)
+and completed source-bound campaign confirmed intermittent physical-roster stalls;
+the [dated evidence](../audits/2026-10-24-issue-233-physical-regression-timeouts.md)
+owns distributions, captured process/thread state and causal limits. The new
+campaign reproduced Windows timeouts, while retained historical evidence includes
+both Windows and Linux. That campaign captured no native stack; its causal limit
+remains historical fact. The separate PR #236 lane supplies matching native-stack
+attribution and a qualified cooperative-join comparison. The
+[#234 repair](../audits/2026-10-24-issue-234-physical-hang-repair.md)
+adopts that repair and bounded guards. Its integrated PR passed exact-head
+ordinary gates and merged; standard qualification run `40129364630` completed
+600/600 physical passes, zero timeouts/other failures and twenty passing imports
+at immutable source `13b8e631f3e8fbaa2176ed41afc02c434b11e558`.
+The audit and [#234](https://github.com/techrote/cybersand/issues/234) /
+[#232](https://github.com/techrote/cybersand/issues/232) own the actual disposition.
+
 Rows distinguish **Current fixes**, remaining defects and open decisions; dated
 evidence defines each fix's platform acceptance.
 
@@ -594,13 +637,154 @@ investigation before any new #45 pressure/head mechanism is treated as inevitabl
   ([#200](https://github.com/techrote/cybersand/issues/200)) is reconciled
   separately by the
   [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
-  [#213](https://github.com/techrote/cybersand/issues/213) is **not PASS**:
-  Gates B–E remain open, so LCB-001 pressure implementation stays blocked.
+  [#213](https://github.com/techrote/cybersand/issues/213) is **closed completed;
+  Gates A–E PASS**. The [final checkpoint](#liquid-comparison-build-design-checkpoint--2026-10-23)
+  records bounded admission. The owner lifted the hold for the
+  [#200 policy foundation](#lcb-001-policy-foundation--2026-10-24) and then for the
+  bounded LCB implementation, including the
+  [#200 pressure reference](#lcb-001-pressure-reference--2026-10-24) and #212.
+  `pressure_flow_v1` remains an opt-in comparison family, not #45 selection.
 
 Water FreeMass and other-liquid CellularYield remain separate; no unification or
 production solver change is selected. Equal-level communicating-head fixtures are
 vented/shared-pressure controls, not universal sealed-room targets. #18 remains
 held pending the resulting evidence rather than by issue-number sequence alone.
+
+## Liquid Comparison Build design checkpoint — 2026-10-23
+
+**Current admission status — 2026-10-24:** LCB-000 [#213](https://github.com/techrote/cybersand/issues/213)
+is **closed completed; Gates A–E and integrated LCB-000 PASS**, with no RECHARTER.
+The [final landed-stack evidence](https://github.com/techrote/cybersand/issues/213#issuecomment-6377498947)
+and subsequent [closure](https://github.com/techrote/cybersand/issues/213#issuecomment-6377517354)
+supersede the earlier pending-admission status without rewriting those dated records.
+
+| Gate | Accepted scope |
+|---|---|
+| A — PASS | Separate experimental Water lane; production Water/WEX limits retained. |
+| B — PASS | Bounded reversible storage design; no representation winner or schema/ABI freeze; #204 is not complete. |
+| C — PASS | [Solver-family policy design](../architecture/liquid-solver-family-policy.md) and source-derived capability matrix. |
+| D — PASS | [Bounded Water comparison contract and protected fixtures](../operations/lcb-water-comparison-and-fixtures.md). |
+| E — PASS | Independently closed I1/P2 and listed P3; reviewed integrated apparatus landed with passing post-merge CI. |
+
+**Current landed checkpoint:** #215 → #217 → #226 merged to main
+`e95fe85d82e108a682a2ae0212d85569f1c03cd8`, whose tree
+`fece020ef7fc83faf5cfe3081b018f2647f7e4fe` equals the reviewed #226 head.
+Documentation/provenance, Native and GDExtension/Godot post-merge CI passed.
+The [dated reconciliation](../audits/2026-10-24-lcb000-landed-status-reconciliation.md)
+records exact identities, evidence classes and validation limits.
+
+**Approved admission; owner holds lifted 2026-10-24:** only a separately scoped initial opt-in
+[#200](https://github.com/techrote/cybersand/issues/200) start is admitted.
+The owner first lifted the hold for the bounded
+[#200 policy foundation](#lcb-001-policy-foundation--2026-10-24) only, then authorized the
+bounded LCB implementation, including the previously held #200 pressure reference and
+[#212](https://github.com/techrote/cybersand/issues/212) inertial work
+([owner decision](#lcb-001-pressure-reference--2026-10-24)). Neither decision admits
+production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production
+Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a
+schema/ABI freeze. The policy foundation is Current on main; `pressure_flow_v1/reference`
+is Current on an unmerged branch; the other candidate kernels remain **Planned**.
+#201/#202/#203 remain open; the scenario apparatus delivered part of
+#202, not the complete comparison host or its [manual UX](../operations/lcb-manual-comparison-ux.md).
+
+**Current apparatus:** the [LCB scenario catalogue](../operations/lcb-scenario-catalogue.md)
+contains 25 scenarios plus the protected Dam Break and mixed fixtures, with
+Current-default controls. Water is the only `freemass_v1` liquid; ten liquids
+use `cellular_yield_v1`. The mixed control runs two families; three-family World
+execution remains blocked. All **90 candidate arms remain blocked**.
+Controls and v2–v6 records are preserved byte-for-byte; v7 retains
+**20 closed / 4 unverified source-sink timing / 3 unverified reaction amount**,
+with `changed_from_v6=[]`. Characterization and contract-model evidence do not
+establish candidate runtime acceptance or change defaults.
+
+## LCB-001 policy foundation — 2026-10-24
+
+**Current on main.** [PR #239](https://github.com/techrote/cybersand/pull/239) merged on
+2026-10-24 at 07:01:19Z as
+[`1e032e492cafb232e604baf6e2b823b13d779aa8`](https://github.com/techrote/cybersand/commit/1e032e492cafb232e604baf6e2b823b13d779aa8).
+Its tree `4519bb257cc1060b1d79dd35ac3f183618ec605a` equals the reviewed head
+`cc01899`. The post-merge push runs all passed on first attempt:
+[Native 40072499987](https://github.com/techrote/cybersand/actions/runs/40072499987), [GDExtension/Godot 40072499990](https://github.com/techrote/cybersand/actions/runs/40072499990), [Documentation/provenance 40072499986](https://github.com/techrote/cybersand/actions/runs/40072499986) and [#49 Water apparatus 40072499994](https://github.com/techrote/cybersand/actions/runs/40072499994).
+The owner lifted the #200 hold for this bounded foundation only. It implements the
+accepted Gate C policy object, not a solver: validation precedence, canonical
+SHA-256 identity, normalized readback and transactional construction for the
+running build, which **admits only each liquid's current default** and refuses
+every candidate mapping before any World is built. Defaults, dispatch, C64-E8,
+kernels and goldens are unchanged. See the
+[native foundation contract](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)
+and [dated evidence](../audits/2026-10-24-issue-200-policy-foundation.md).
+
+| Item | Status |
+|---|---|
+| Native policy, wire decode, refusal codes, hash, World admission, experimental C API, GDExtension receipt/validation/construction, MicroScenario request, worker receipt | Current (main `1e032e4`) |
+| NC-1, NC-2 and NC-10 | Executable in the foundation regressions; the LCB registry is unchanged |
+| Pressure backend, W-CY/W-IN kernels, run receipt hash, normalization, physical-state hash, remaining #202 constructors, durable schema/ABI freeze | Planned, held or deferred at this checkpoint; the pressure backend, physical-state hash and an experimental run-receipt hash followed in the [pressure reference](#lcb-001-pressure-reference--2026-10-24) |
+| #212, #201, #202, #203 and all 90 candidate arms | Unchanged at this checkpoint: held or blocked (the #212 hold was lifted later the same day) |
+
+**Issue-state correction (2026-10-24).** GitHub automatically closed
+[#200](https://github.com/techrote/cybersand/issues/200) at 07:01:20Z when PR #239
+merged, because it parsed the PR body's negated phrase "does not close #200" as a
+closing keyword. The issue was reopened on 2026-10-24 with an explanatory comment.
+That transition supplies no completion evidence; #200 remains open for the scope
+listed below.
+
+## LCB-001 pressure reference — 2026-10-24
+
+**Current on branch `claude/lcb001-pressure-reference` (unmerged).** The opt-in
+Water family [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md)
+runs only in a World whose applied policy assigns it; production defaults, every
+Current golden, `content_hash`/`state_hash` and CYSD1 are unchanged. Source
+identities, commands, local results, failed attempts and runtime publication are
+in the [dated evidence record](../audits/2026-10-24-lcb001-pressure-reference-publication.md).
+
+**Owner decision (2026-10-24).** The owner explicitly authorized the bounded LCB
+implementation, including the previously held pressure reference (#200) and the
+inertial family ([#212](https://github.com/techrote/cybersand/issues/212)),
+without changing production defaults, without generic #12 Stage-4 cell↔Rapier
+ownership, without a production Cell-carrier migration and without full GEN-006
+streaming. This lifts the execution holds recorded in the
+[LCB-000 checkpoint](#liquid-comparison-build-design-checkpoint--2026-10-23). It
+does not admit new pressure-to-Rapier forces, a schema/ABI freeze or a #45
+mechanism: `pressure_flow_v1` is a comparison family, and its characterization
+does not freeze #45 thresholds.
+
+| Item (branch) | Status |
+|---|---|
+| Running-build admission of Water × `pressure_flow_v1/reference`, optional family block `{gas_enabled 0..1, atmospheric_head_rows 16..4096}` (defaults 1, 32); `cached`/`cached_dormant` refused `family_unavailable` | Current |
+| Solver-owned per-chunk sidecars, World gas table with label-overlap identity and exact ledgers, immutable head snapshot, phased kernel | Current ([design](../architecture/pressure-flow-v1.md)) |
+| Physical-state hash v1, CYPS v1 save/restore, GDExtension inspection and ledgers, `water_visible`/`water_overfill`, receipt `family_parameters`, experimental run-receipt hash | Current ([interfaces](interfaces-and-message-contracts.md#lcb-001-pressure-reference-inspection-and-persistence-experimental)) |
+| Capability matrix Water × pressure `executable_today: true`, `executable_variants: ["reference"]`; regenerated digest and vector identity words, with no acceptance/refusal change in the 47 cases | Current |
+| Native `test_lcb_pressure.cpp` (13 cases), Godot `test_lcb_pressure_reference.gd` (12 sections), native characterization harness | Current; results in the evidence record |
+| Linux, sanitizer/TSan and Web/WASM execution | CI only for Linux/sanitizers; Web not built or run |
+
+**Characterization screens, not admission criteria** (native harness, 1 worker):
+at repaired source `349d593`: depth response t240 1.69 (Current 1.06); depth-160
+front t240 220 (71); depth-160 retained t1800 0.371 (0.851); vented two-limb
+|difference| t2400 9 rows (120); narrow passage 43 rows (120). The sealed
+two-limb differs from vented (levels 152/175, gap 23), remains unsettled and has
+no sealed-law acceptance. Quantity was exact in all twelve runs. Earlier-source
+measurements remain in the dated evidence record.
+
+| Remaining | Owner and status |
+|---|---|
+| W-CY (whole-cell Water `cellular_yield_v1`), `water-normalize-v1` and `normalization_required` (NC-3) | #200, Planned |
+| Frozen run-receipt schema; the remaining #202 constructors | #200, Planned |
+| `cached`/`cached_dormant`, incremental caches and dormancy (the reference is O(resident cells) per tick) | [#201](https://github.com/techrote/cybersand/issues/201), Planned |
+| Comparison host and UI; re-dispositioning the registered candidate arms | [#202](https://github.com/techrote/cybersand/issues/202), Planned |
+| `inertial_cellular_v1` (W-IN, Brine), M1/M2 | #212, Planned; no longer owner-held |
+| Packaged builds and isolated timing | [#203](https://github.com/techrote/cybersand/issues/203), Planned |
+
+**Publisher.** The temporary branch-scoped workflow
+`lcb001-pressure-reference-runtime-publication.yml`, integrated from draft PR
+#244, publishes source-matched Linux/Windows runtimes only after
+`tools/ci/lcb001_pressure_reference_publish_request.json` is committed on this
+branch. After the retained failed/cancelled attempts and takeover repairs,
+publication run `40100666514` passed Linux and actual Windows headless execution
+and published both source-matched runtimes at `101758d`; the evidence
+record holds their hashes and scope. Final exact-head ready-PR gates remain
+separate. After the branch merges, retire the workflow, helper and
+unittest as described for [branch-scoped publishers](../operations/local-build-and-validation.md#branch-scoped-runtime-publishers).
+#200 itself stays open (see the [issue-state correction](#lcb-001-policy-foundation--2026-10-24)).
 
 ## Opt-in transport profiles
 

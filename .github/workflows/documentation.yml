@@ -37,6 +37,26 @@ jobs:
         run: timeout 1m python3 tools/ci/check_ci_provider_policy.py
       - name: Test CI provider policy checker
         run: timeout 1m python3 -m unittest discover -s tools/ci -p test_ci_provider_policy.py
+      - name: Check LCB capability matrix is source-derived
+        run: timeout 1m python3 tools/lcb/derive_capability_matrix.py --check
+      - name: Check LCB policy wire/hash contract vectors
+        run: |
+          timeout 1m python3 tools/lcb/policy_contract.py --check
+          timeout 1m python3 -m unittest discover -s tools/lcb -p test_policy_contract.py
+          timeout 1m python3 tools/lcb/native_policy_artifacts.py --check
+      - name: Check LCB scenario definitions and registry are source-derived
+        run: |
+          timeout 2m python3 tools/lcb/scenario_catalogue.py --check
+          timeout 2m python3 tools/lcb/lcb_registry.py build --check
+          timeout 2m python3 tools/lcb/lcb_registry.py reledger --check
+          timeout 2m python3 tools/lcb/lcb_registry.py reledger --version v2 --check
+          timeout 2m python3 tools/lcb/lcb_registry.py reledger --version v3 --check
+          timeout 2m python3 tools/lcb/lcb_registry.py reledger --version v4 --check
+          timeout 2m python3 tools/lcb/lcb_registry.py reledger --version v5 --check
+          timeout 2m python3 tools/lcb/lcb_registry.py reledger --version v6 --check
+          timeout 2m python3 -m unittest discover -s tools/lcb -p test_lcb_registry.py
+          timeout 2m python3 tools/lcb/physics_contracts.py --check
+          timeout 2m python3 -m unittest discover -s tools/lcb -p test_inertial_contract.py
       - name: Validate current documentation
         run: timeout 5m python3 tools/ci/check_docs.py
       - name: Validate dependency pins and published runtime provenance

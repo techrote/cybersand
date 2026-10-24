@@ -1,0 +1,43 @@
+{
+  "date": "2026-10-24",
+  "scope": "Invalid local full-suite apparatus: only Godot project copied, repository-level examples/worldgen fixtures absent; excluded from candidate qualification. All recorded test outcomes remain failures/passes as emitted.",
+  "source_commit": "4c2bb37b6b0376509693b1d04fb4581a6503d099",
+  "report_sha256": "5a7089b45c8d0d1584f26a8dcfa4c67ebfb6e4c713bd98f1c49e545ac9aa64ba",
+  "completed": false,
+  "executed_case_count": 58,
+  "applicable_case_count": 121,
+  "status": "failed",
+  "failures": [
+    {
+      "name": "test_feature_launcher",
+      "status": "failed",
+      "returncode": 1,
+      "log_sha256": "be4484e95020bebae951c5cf8938e99795ad6977308a1300f9043e8b72b515b5"
+    },
+    {
+      "name": "test_gen007_inspection",
+      "status": "failed",
+      "returncode": 1,
+      "log_sha256": "2eda37064e513bb8f0b7e6066b200f3904d197dbc4aab94d00440b4550127a63"
+    },
+    {
+      "name": "test_gen007_qualification",
+      "status": "failed",
+      "returncode": 1,
+      "log_sha256": "8e1e7cc3faf6bcb1d2b0f03049a2cf98511e6e6b2082d8c8c91e0b3240d7eaba"
+    },
+    {
+      "name": "test_gen007_reactions",
+      "status": "failed",
+      "returncode": 1,
+      "log_sha256": "62fd66b62b983ae4486853144f37e53db7f027259cf6eeb01c7ce60270e39b3b"
+    },
+    {
+      "name": "test_gen007_workbench",
+      "status": "failed",
+      "returncode": 1,
+      "log_sha256": "1cec3d2d1478d7df1e6a0f816eccb35e01cfbe5ef58e93243734ca02b581b254"
+    }
+  ],
+  "corrected_protocol": "Fresh complete tracked repository snapshot, with the same validated patched DLL; full suite rerun independently with unchanged assertions, deadlines and case discovery. No partial results are used as a full-suite pass."
+}
