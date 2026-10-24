@@ -163,16 +163,37 @@ struct LiquidPolicyBuild {
     // When set, admission is further limited to these (material, family) cells.
     bool cell_qualified = true;
     std::vector<std::pair<std::uint16_t, std::uint8_t>> qualified_cells;
+    // When non-empty, a qualified cell admits only the listed variants (bit =
+    // variant code). Contract builds leave it empty: every matrix variant.
+    struct QualifiedVariants {
+        std::uint16_t material = 0;
+        std::uint8_t family = 0;
+        std::uint8_t variant_mask = 0;
+    };
+    std::vector<QualifiedVariants> qualified_variants;
     std::vector<LiquidParameterSchema> schemas;
 
-    // This binary: FreeMass and CellularYield compiled, qualified only for each
-    // liquid's current default; no parameter blocks.
+    // pressure_flow_v1 optional family block v1 (LCB-001 #200): gas topology on/off
+    // and the atmospheric pressure expressed in rows of saturated Water head.
+    static constexpr std::uint16_t kPressureBlockVersion = 1;
+    static constexpr std::int32_t kPressureDefaultGasEnabled = 1;
+    static constexpr std::int32_t kPressureDefaultAtmosphericRows = 32;
+
+    // This binary: FreeMass and CellularYield qualified for each liquid's current
+    // default, plus Water x pressure_flow_v1/reference (#200). cached and
+    // cached_dormant (#201) and every other candidate remain refused.
     [[nodiscard]] static const LiquidPolicyBuild& running() {
         static const LiquidPolicyBuild build = [] {
             LiquidPolicyBuild result;
-            result.available_families = 0x03U;
-            for (const auto& row : liquid_policy_catalogue::kLiquidRows)
+            result.available_families = 0x07U;
+            for (const auto& row : liquid_policy_catalogue::kLiquidRows) {
                 result.qualified_cells.emplace_back(row.material_id, row.default_family);
+                result.qualified_variants.push_back({row.material_id, row.default_family, 0x01U});
+            }
+            result.qualified_cells.emplace_back(std::uint16_t{3}, std::uint8_t{3});
+            result.qualified_variants.push_back({3, 3, 0x01U});
+            result.schemas.push_back({true, 3, kPressureBlockVersion, false, 0,
+                                      {{"gas_enabled", 0, 1}, {"atmospheric_head_rows", 16, 4096}}});
             return result;
         }();
         return build;
@@ -597,6 +618,18 @@ private:
                 refuse(Code::FamilyUnavailable,
                        concat(family_name(family), " is not qualified for material ", item.material, " in this build"),
                        item.material);
+            if (!build_.qualified_variants.empty()) {
+                const auto found = std::find_if(
+                    build_.qualified_variants.begin(), build_.qualified_variants.end(),
+                    [&](const LiquidPolicyBuild::QualifiedVariants& qualified) {
+                        return qualified.material == item.material && qualified.family == family;
+                    });
+                if (found == build_.qualified_variants.end() || (found->variant_mask & (1U << variant)) == 0U)
+                    refuse(Code::FamilyUnavailable,
+                           concat(family_name(family), "/", liquid_solver_variant_id(item.variant),
+                                  " is not compiled/qualified for material ", item.material, " in this build"),
+                           item.material);
+            }
         }
         // 8. Parameter blocks, family then material.
         auto family_of = [&](std::uint64_t material) -> std::optional<std::uint8_t> {

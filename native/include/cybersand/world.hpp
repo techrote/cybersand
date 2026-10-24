@@ -4,6 +4,7 @@
 #include "cybersand/physics_diagnostics.hpp"
 #include "cybersand/interaction_policy.hpp"
 #include "cybersand/liquid_solver_policy.hpp"
+#include "cybersand/pressure_flow.hpp"
 #include "cybersand/transport_policy.hpp"
 #include "cybersand/scheduler_geometry.hpp"
 #include "cybersand/settled_world_discovery.hpp"
@@ -267,6 +268,40 @@ public:
     [[nodiscard]] soliding::RegionRefusal settled_region_refusal() const noexcept;
     [[nodiscard]] std::size_t settled_region_storage_bytes() const noexcept;
 
+    // LCB-001 pressure_flow_v1/reference (#200), active only when the applied
+    // liquid policy assigns Water to it. Serialized owner queries between ticks.
+    [[nodiscard]] bool pressure_flow_enabled() const noexcept;
+    [[nodiscard]] PressureFlowParameters pressure_flow_parameters() const noexcept;
+    [[nodiscard]] PressureCellState pressure_cell(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] std::vector<GasCompartmentSnapshot> gas_compartments() const;
+    [[nodiscard]] std::vector<GasHistoryRecord> gas_history() const;
+    [[nodiscard]] GasLedger gas_ledger() const noexcept;
+    [[nodiscard]] std::uint64_t gas_topology_revision() const noexcept;
+    [[nodiscard]] std::uint32_t gas_next_id() const noexcept;
+    [[nodiscard]] PressureFlowLedger pressure_flow_ledger() const noexcept;
+    [[nodiscard]] PressureFlowDiagnostics pressure_flow_diagnostics() const noexcept;
+    // Authoritative Water quantity (visible state_a plus pressure overfill) of
+    // stored cells, including cells under a transient body mask.
+    [[nodiscard]] std::uint64_t water_quantity(RectI64 region) const;
+
+    // Versioned complete physical-state hash (LCB-001). Covers every
+    // future-affecting value: cells, epochs, temperatures, activity/deadlines,
+    // pending events, policies, pressure sidecars and the gas table. Independent
+    // of whether all-Empty, inactive chunks are allocated. content_hash() and
+    // state_hash() keep their historical definitions.
+    static constexpr std::uint32_t kPhysicalStateHashVersion = 1;
+    [[nodiscard]] std::uint64_t physical_state_hash() const;
+
+    // Candidate-capable tick-boundary persistence ("CYPS" v1): exact
+    // continuation of every physical value above. Transient body masks are
+    // host-owned and not saved. restore validates everything before returning
+    // a new World and throws std::invalid_argument for unknown, corrupt or
+    // incompatible payloads; the caller's live World is never touched.
+    static constexpr std::uint32_t kPhysicalStateFormatVersion = 1;
+    [[nodiscard]] std::vector<std::uint8_t> save_physical_state() const;
+    [[nodiscard]] static std::unique_ptr<World> restore_physical_state(
+        WorldConfig execution, std::span<const std::uint8_t> bytes);
+
     [[nodiscard]] std::size_t dirty_chunk_count() const noexcept;
     [[nodiscard]] std::vector<DirtyChunk> take_dirty_chunks();
     void copy_render_cells(RectI64 region, std::span<std::uint8_t> destination,
@@ -281,6 +316,8 @@ private:
     friend class RenderSnapshotExchange;
 
     struct Chunk;
+    struct PressureChunk;
+    struct PressureState;
     struct Address;
     struct JobEffects;
     struct ParallelState;
@@ -304,6 +341,7 @@ private:
     std::unique_ptr<TransientObstacleState> transient_obstacles_;
     std::unique_ptr<PhysicsTotals> physics_totals_;
     std::unique_ptr<soliding::SettledWorldDiscoveryCoordinator> settled_discovery_;
+    std::unique_ptr<PressureState> pressure_;
     void record_physics(PhysicsEvent kind, Material source, Material target,
                         std::int64_t dx, std::int64_t dy, JobEffects* effects,
                         std::uint64_t count = 1) noexcept;
@@ -358,6 +396,13 @@ private:
                                 std::int64_t target_y, bool allow_swap, JobEffects* effects);
     [[nodiscard]] bool update_cell(std::int64_t x, std::int64_t y, JobEffects* effects = nullptr);
     [[nodiscard]] bool update_water(std::int64_t x, std::int64_t y, JobEffects* effects);
+    [[nodiscard]] bool update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* effects);
+    void prepare_pressure_tick();
+    void resolve_gas_topology();
+    void compute_pressure_heads();
+    void reset_pressure_cell(Chunk& chunk, std::size_t index, Material before, Material after,
+                             bool external, JobEffects* effects) noexcept;
+    void wake_activity_block(ChunkCoord coord, Chunk& chunk, std::size_t block_index);
     [[nodiscard]] std::uint16_t transfer_water(std::int64_t from_x, std::int64_t from_y,
                                                std::int64_t to_x, std::int64_t to_y,
                                                std::uint16_t requested, JobEffects* effects);
@@ -365,7 +410,8 @@ private:
     [[nodiscard]] std::uint8_t state_b(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] bool write_cell(std::int64_t x, std::int64_t y, Material material,
                                   std::uint16_t state_a_value, std::uint8_t state_b_value,
-                                  JobEffects* effects);
+                                  JobEffects* effects, bool external = false);
+    void merge_pressure_effects(const JobEffects& effects) noexcept;
     [[nodiscard]] bool rule_is_active(Material material, std::uint16_t state_a_value,
                                       std::uint8_t state_b_value) const noexcept;
     [[nodiscard]] bool update_rule_kernel(RuleKernel kernel, Material source_material,

@@ -274,8 +274,11 @@ void test_liquid_policy_identity_matches_source() {
                     kVectorCurrentCapabilityDigest,
             "vector current_build_identity differs from the native build");
     const auto& running = LiquidPolicyBuild::running();
-    require(running.catalogue_digest == catalogue_digest && running.native && running.schemas.empty() &&
-                running.available_families == 0x03U,
+    // LCB-001 pressure reference: FreeMass, CellularYield and pressure_flow_v1
+    // compiled; one optional pressure_flow_v1 family block schema.
+    require(running.catalogue_digest == catalogue_digest && running.native && running.schemas.size() == 1U &&
+                running.schemas.front().family_owner && running.schemas.front().owner == 3U &&
+                !running.schemas.front().mandatory && running.available_families == 0x07U,
             "running build identity");
 }
 
@@ -367,6 +370,7 @@ void test_liquid_policy_session_transcript() {
 }
 
 void test_liquid_policy_running_build_admits_only_defaults() {
+    // Defaults plus the single qualified #200 candidate (Water pressure reference).
     const auto request = LiquidSolverPolicy::default_request();
     const auto applied = accept(request, LiquidPolicyBuild::running(), "running default");
     require(applied == LiquidSolverPolicy{} && applied.envelope() == request, "explicit default equals implicit");
@@ -386,6 +390,16 @@ void test_liquid_policy_running_build_admits_only_defaults() {
         for (std::uint8_t family = 1; family <= 4U; ++family) {
             for (std::uint8_t variant = 0; variant < 3U; ++variant) {
                 if (family == row.default_family && variant == 0U) continue;
+                if (row.material_id == 3U && family == 3U && variant == 0U) {
+                    // The one admitted candidate: Water x pressure_flow_v1/reference.
+                    auto words = request;
+                    words[20U + row_index * 3U + 1U] = family;
+                    const auto admitted = accept(words, LiquidPolicyBuild::running(), "Water pressure reference");
+                    require(admitted.assignment(3)->family == LiquidSolverFamily::PressureFlowV1,
+                            "Water pressure reference applied");
+                    ++cells;
+                    continue;
+                }
                 auto words = request;
                 words[20U + row_index * 3U + 1U] = family;
                 words[20U + row_index * 3U + 2U] = variant;
@@ -396,6 +410,12 @@ void test_liquid_policy_running_build_admits_only_defaults() {
                 if (status == CellStatus::Rejected) expected = Code::CombinationRejected;
                 else if (status == CellStatus::ProposedAlternate || variants == 0U) expected = Code::NotSelectable;
                 else if ((variants & (1U << variant)) == 0U) expected = Code::VariantUnsupported;
+                if (row.material_id == 3U && family == 3U && expected == Code::FamilyUnavailable)
+                    require(result.refusal.detail == std::string("pressure_flow_v1/") +
+                                std::string(cybersand::liquid_solver_variant_id(
+                                    static_cast<cybersand::LiquidSolverVariant>(variant))) +
+                                " is not compiled/qualified for material 3 in this build",
+                            "pressure variant refusal detail");
                 require(!result.accepted() && result.refusal.code == expected &&
                             result.refusal.material == row.material_id,
                         std::string("running build admitted or misclassified ") + row.name + " family " +

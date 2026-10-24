@@ -225,6 +225,22 @@ private:
 
 }  // namespace
 
+// LCB-001 pressure_flow_v1 optional solver-owned storage (Gate B): one sidecar
+// per cell, allocated with its chunk only in a pressure World. head and visit are
+// derived scratch rebuilt serially before every tick's kernels.
+struct World::PressureChunk {
+    struct Cell {
+        std::uint16_t overfill = 0;
+        std::int16_t flow = 0;
+        std::uint32_t gas = 0;
+    };
+    static constexpr std::int32_t kNoHead = std::numeric_limits<std::int32_t>::min();
+    explicit PressureChunk(std::size_t count) : cells(count), head(count, kNoHead), visit(count, 0U) {}
+    std::vector<Cell> cells;
+    std::vector<std::int32_t> head;
+    std::vector<std::uint32_t> visit;
+};
+
 struct World::Chunk {
     using Cell = detail::PrecisionStorage;
 
@@ -247,6 +263,7 @@ struct World::Chunk {
     // structure-of-arrays field rather than consuming every resident cell.
     std::vector<Cell> cells;
     std::unique_ptr<std::vector<std::int16_t>> temperatures;
+    std::unique_ptr<PressureChunk> pressure;
     std::int32_t activity_blocks_per_axis = 0;
     std::vector<ActivityBlock> activity_blocks;
     std::size_t non_empty_cell_count = 0;
@@ -308,8 +325,17 @@ struct World::JobEffects {
     bool discovery_signal_overflow = false;
     bool hard_surface_changed = false;
     PhysicsJobHistogram* physics = nullptr;
+    // pressure_flow_v1 per-job accounting, merged after the phase barrier.
+    std::uint64_t pf_overfill_converted = 0;
+    std::int64_t pf_flow_remainder = 0;
+    std::uint64_t pf_contact_loss = 0;
+    std::uint64_t pf_relief_cells = 0;
 
     void reset() noexcept {
+        pf_overfill_converted = 0;
+        pf_flow_remainder = 0;
+        pf_contact_loss = 0;
+        pf_relief_cells = 0;
         chunk_count = 0;
         discovery_mutation_count = 0;
         discovery_signal_count = 0;
@@ -442,6 +468,8 @@ struct World::TransientObstacleState {
     }
 };
 
+#include "world_pressure_state.inc"
+
 World::World(WorldConfig config)
     : config_(config),
       scheduler_geometry_(config.scheduling_core_size, config.maximum_rule_radius) {
@@ -450,6 +478,7 @@ World::World(WorldConfig config)
     // builds temporary policy data); no other family or fallback runs.
     if (auto refusal = config_.liquid_solver_policy.admission_refusal())
         throw LiquidPolicyRefused(std::move(*refusal));
+    const bool pressure_requested = policy_selects_pressure(config_.liquid_solver_policy);
     config.transport_policy.validate();
     if(config.transport_policy.configured)for(const auto& p:config.transport_policy.pairs) {
         flow_mixing_enabled_ = flow_mixing_enabled_ || p.mixing!=0;
@@ -549,6 +578,10 @@ World::World(WorldConfig config)
                                                     config_.physics_diagnostics.enabled);
     }
     transient_obstacles_ = std::make_unique<TransientObstacleState>();
+    if (pressure_requested) {
+        pressure_ = std::make_unique<PressureState>(pressure_parameters_from(config_.liquid_solver_policy));
+        pressure_->sorted_coordinates.reserve(config_.maximum_chunk_count);
+    }
     initialize_settled_discovery();
 }
 
@@ -1310,6 +1343,7 @@ World::Chunk& World::ensure_chunk(ChunkCoord coord) {
         throw std::runtime_error("maximum chunk capacity exhausted");
     }
     auto chunk = std::make_unique<Chunk>(config_.chunk_size, config_.activity_block_size);
+    if (pressure_ != nullptr) chunk->pressure = std::make_unique<PressureChunk>(chunk->cells.size());
     const auto [iterator, inserted] = chunks_.try_emplace(coord, std::move(chunk));
     if (inserted) register_discovery_chunk(coord, *iterator->second);
     if (tick_in_progress_) ++tick_chunk_allocations_;
@@ -1478,7 +1512,7 @@ bool World::rule_is_active(Material material, std::uint16_t state_a_value,
 
 bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
                        std::uint16_t state_a_value, std::uint8_t state_b_value,
-                       JobEffects* effects) {
+                       JobEffects* effects, bool external) {
     if (material == Material::Water &&
         (state_a_value == 0U ||
          state_a_value > config_.water_experiment_policy.maximum() ||
@@ -1496,11 +1530,15 @@ bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
         chunk = &ensure_chunk(target.chunk);
     }
     auto& cell = chunk->cells[target.index];
+    const auto before = cell.material_value();
+    // A painted/filled cell starts at its family default even when the visible
+    // tuple is unchanged; a kernel state update of the same material keeps it.
+    if (chunk->pressure != nullptr && (external || before != material))
+        reset_pressure_cell(*chunk, target.index, before, material, external, effects);
     if (cell.material_value() == material && cell.state_a_value() == state_a_value &&
         cell.state_b_value() == state_b_value) {
         return false;
     }
-    const auto before = cell.material_value();
     if (tick_in_progress_ && before != material)
         record_physics(PhysicsEvent::Conversion, before, material, 0, 0, effects);
     const bool hard_surface_changed =
@@ -1670,10 +1708,12 @@ void World::set(std::int64_t x, std::int64_t y, Material material) {
         return;
     }
     auto& chunk = ensure_chunk(target.chunk);
-    if (chunk.cells[target.index].material_value() == material) {
+    const auto previous_material = chunk.cells[target.index].material_value();
+    if (chunk.pressure != nullptr)
+        reset_pressure_cell(chunk, target.index, previous_material, material, true, nullptr);
+    if (previous_material == material) {
         return;
     }
-    const auto previous_material = chunk.cells[target.index].material_value();
     const bool hard_surface_changed =
         MaterialRules::is_hard_surface(previous_material) !=
         MaterialRules::is_hard_surface(material);
@@ -1710,9 +1750,9 @@ bool World::set_cell_state(std::int64_t x, std::int64_t y, Material material,
     if (material != Material::Empty && transient_obstacle_at(x, y) != 0U) return false;
     if (material == Material::Water && state_a_value == 0U) {
         if (find_chunk(address(x, y).chunk) == nullptr) return false;
-        return write_cell(x, y, Material::Empty, 0U, 0U, nullptr);
+        return write_cell(x, y, Material::Empty, 0U, 0U, nullptr, true);
     }
-    return write_cell(x, y, material, state_a_value, state_b_value, nullptr);
+    return write_cell(x, y, material, state_a_value, state_b_value, nullptr, true);
 }
 
 void World::set_simulation_region(std::optional<RectI64> region) {
@@ -2262,7 +2302,7 @@ void World::apply_pending_explosions(TickStats& stats) {
                     // state_b=1 marks event-created Stone as granular. This is
                     // distinct from cooled/static Stone, which may remain
                     // braced by neighboring Stone.
-                    (void)write_cell(target_x, target_y, Material::Stone, 0, 1, nullptr);
+                    (void)write_cell(target_x, target_y, Material::Stone, 0, 1, nullptr, true);
                 }
             }
         }
@@ -2314,6 +2354,7 @@ void World::clear() {
     tick_chunk_allocations_ = 0;
     tick_temperature_field_allocations_ = 0;
     ++hard_surface_revision_;
+    if (pressure_ != nullptr) pressure_->reset();
     initialize_settled_discovery();
 }
 
@@ -2379,6 +2420,18 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
             static_cast<std::int64_t>(source.non_empty_cell_count) + source_delta);
     }
 
+    if (source.pressure != nullptr && destination.pressure != nullptr) {
+        // Optional state moves atomically with its tuple (R1). A vacated source
+        // inherits the destination's gas label: the displaced gas keeps identity.
+        auto& source_state = source.pressure->cells[source_address.index];
+        auto& destination_state = destination.pressure->cells[destination_address.index];
+        std::swap(source_state, destination_state);
+        const auto source_after = swap ? destination_material : Material::Empty;
+        if (source_material != Material::Water) destination_state.overfill = 0, destination_state.flow = 0;
+        if (source_material != Material::Empty) destination_state.gas = 0;
+        if (source_after != Material::Water) source_state.overfill = 0, source_state.flow = 0;
+        if (source_after != Material::Empty) source_state.gas = 0;
+    }
     destination.cells[destination_address.index] = source_cell;
     record_physics(!tick_in_progress_ ? PhysicsEvent::BodyDisplacement :
                    swap ? swap_event : PhysicsEvent::EmptyMove,
@@ -2486,6 +2539,8 @@ std::uint16_t World::transfer_water(std::int64_t from_x, std::int64_t from_y,
                                     std::int64_t to_x, std::int64_t to_y,
                                     std::uint16_t requested, JobEffects* effects) {
     if (requested == 0 || (from_x == to_x && from_y == to_y)) return 0;
+    if (pressure_ != nullptr)
+        throw std::logic_error("FreeMass transfer reached a pressure_flow_v1 World");
     const auto obstacle = transient_obstacle_at(to_x, to_y);
     if (obstacle != 0U) {
         record_transient_contact(obstacle, Material::Water, to_x - from_x, to_y - from_y);
@@ -2838,7 +2893,10 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             return fall_as_powder();
 
         case RuleKernel::Water:
-            return update_water(x, y, effects);
+            // Stage 1 chemistry above is shared; only motion/quantity (stage 3)
+            // differs. No fallback: a pressure World never runs FreeMass.
+            return pressure_ != nullptr ? update_water_pressure(x, y, effects)
+                                        : update_water(x, y, effects);
 
         case RuleKernel::YieldingLiquid: {
             // Viscosity affects only lateral yield. Gravity and density exchange
@@ -3603,6 +3661,9 @@ void World::begin_tick(TickStats& stats) {
     // carry the current epoch and therefore begin material simulation on the
     // following tick instead of receiving an accidental double update.
     apply_pending_explosions(stats);
+    // Serial, deterministic gas topology and head preparation. It may wake
+    // sleeping blocks, so it precedes the active-chunk list for this tick.
+    if (pressure_ != nullptr) prepare_pressure_tick();
 
     for (const auto& [coord, chunk] : chunks_) {
         if (chunk->active) {
@@ -3886,6 +3947,7 @@ void World::merge_job_effects(const JobEffects& effects) {
         physics_totals_->overflow += effects.physics->overflow;
     }
     if (effects.hard_surface_changed) ++hard_surface_revision_;
+    if (pressure_ != nullptr) merge_pressure_effects(effects);
 
     // Merge authoritative block/chunk state first. Discovery reconciliation is
     // deliberately deferred until the exact #61 payload records are invalidated,
@@ -4433,5 +4495,7 @@ void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::
     }
 }
 
+
+#include "world_pressure.inc"
 
 }  // namespace cybersand
