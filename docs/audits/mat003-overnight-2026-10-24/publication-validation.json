@@ -1,0 +1,147 @@
+{
+  "status": "passed",
+  "checked_utc": "2026-10-24T05:15:51.963764+00:00",
+  "source_checkpoint": "7a340f0d1e3fe585399882f2704d979c693a3840",
+  "scope": "Report publication working-tree checks after unchanged scientific input revisions; no new candidate execution or timing",
+  "commands": [
+    {
+      "label": "documentation",
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "tools/ci/check_docs.py"
+      ],
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "error": null,
+      "elapsed_watchdog_seconds": 0.9370000000344589,
+      "stdout_sha256": "9d5b372685bed1b2eea5b8d54d81b7ce7e9fe6290e7d4af5c62960111ef43c9d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "materialized-provenance",
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "tools/ci/check_repository.py",
+        "--require-materialized"
+      ],
+      "timeout_seconds": 180,
+      "exit_code": 0,
+      "error": null,
+      "elapsed_watchdog_seconds": 2.3280000000959262,
+      "stdout_sha256": "bb736c71ba3a0c8ebacb60000f8f3bdf7accb62c9c6b9b653af829298cc2f7e6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "historical-m11",
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "timeout_seconds": 180,
+      "exit_code": 0,
+      "error": null,
+      "elapsed_watchdog_seconds": 1.202999999979511,
+      "stdout_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "provider-policy",
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "tools/ci/check_ci_provider_policy.py"
+      ],
+      "timeout_seconds": 60,
+      "exit_code": 0,
+      "error": null,
+      "elapsed_watchdog_seconds": 0.2970000000204891,
+      "stdout_sha256": "7d42fa2d0cae64ad3a3b8060fd58f61181609e38202d905c19abcb72f9b0f2e6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "frozen-retrieval",
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\mat003-overnight-20261024\\publication-validation\\retrieval-frozen.json"
+      ],
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "error": null,
+      "elapsed_watchdog_seconds": 0.75,
+      "stdout_sha256": "48633c980082194a0575b1709bb18fbeeb3a53dfa0b2ca95c04a8b7aed13aad7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "supplementary-retrieval",
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-challenges.json",
+        "--output",
+        "C:\\Users\\_\\mat003-overnight-20261024\\publication-validation\\retrieval-supplementary.json"
+      ],
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "error": null,
+      "elapsed_watchdog_seconds": 1.297000000020489,
+      "stdout_sha256": "ddcbd8f074cdead23b3694b9148de376339d57cc94e4a17f883b0a88260c0457",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "label": "whitespace",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "timeout_seconds": 60,
+      "exit_code": 0,
+      "error": null,
+      "elapsed_watchdog_seconds": 0.0470000000204891,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b018239997642828f4e9bb2a4de625a9b140f63a94b2e828a1257e3eca9d4d92"
+    }
+  ],
+  "preservation": {
+    "production_changed_paths": [],
+    "old_audits_changed": [],
+    "frozen_question_bytes_unchanged": true,
+    "frozen_question_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+    "prior_supplementary_objects": 134,
+    "changed_prior_objects": [],
+    "added_question_ids": [
+      "MATON01",
+      "MATON02",
+      "MATON03",
+      "MATON04"
+    ],
+    "changed_reader_modules": []
+  },
+  "retrieval": {
+    "frozen": {
+      "questions": 32,
+      "canonical_hit_at_1": 21,
+      "canonical_hit_at_k": 32,
+      "mrr_at_k": 0.7937,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "supplementary": {
+      "questions": 138,
+      "canonical_hit_at_1": 110,
+      "canonical_hit_at_k": 137,
+      "mrr_at_k": 0.8777,
+      "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+    },
+    "supplementary_misses": [
+      "C09"
+    ],
+    "new_question_ranks": {
+      "MATON01": 3,
+      "MATON02": 1,
+      "MATON03": 3,
+      "MATON04": 1
+    }
+  }
+}

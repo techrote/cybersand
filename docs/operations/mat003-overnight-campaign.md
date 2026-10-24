@@ -1,0 +1,140 @@
+---
+title: MAT-003 overnight evidence completion campaign
+status: Current
+document-kind: guide
+scope: Bounded 2026-10-24 experimental completion queue, evidence reuse and author-validation limits for issue 204
+canonical-for: [mat003-overnight-campaign]
+last-reviewed: 2026-10-24
+related-documents: [../audits/2026-10-24-mat003-overnight-intake.md, ../research/mat003-continuation.md, architecture-programme.md]
+---
+
+# MAT-003 overnight evidence completion campaign
+
+**Current execution scope:** the owner authorized #204 experimental completion
+for at most eight elapsed hours from 2026-10-24 01:46 UTC, ending by 09:46 UTC.
+Keep production C64-E8 and defaults; no merge, carrier migration, LCB solver or
+GEN-006 implementation is authorized. Claude independently owns #200 foundation.
+This task does not start #212 or edit another task's branches.
+
+**Completed author checkpoint at 05:09 UTC:** the one full v4 readback verified
+all 152 cases and all 96 cross-arm comparisons. The
+[final packet](../audits/2026-10-24-mat003-overnight-results.md) records the result,
+sealed raw archive, new untimed experiments and explicit remaining gates.
+Independent acceptance and full #204 completion remain open; no new timing was
+collected. The queue below records the campaign plan and its stop rules.
+
+## Priority and bounded work
+
+1. Inventory valid existing work and outstanding acceptance; preserve historical
+   records. The [intake](../audits/2026-10-24-mat003-overnight-intake.md) identifies
+   #208/#211/#221/#230/#231/#235 and their distinct scopes.
+2. Repair and seal the revised-reader provenance path. Execute focused contracts
+   before a complete one-shot readback. Bind all original collected inputs and
+   current reader bytes separately. Keep output classified as author validation
+   until independent review.
+3. Spend at most the original registered readback resource limit (six hours
+   less the recorded collection budget), with concurrency one and 2 GiB reader
+   RSS. The overall overnight deadline takes precedence. No selective retry or
+   omitted case is permitted; retain failure and continue independent source/
+   handoff work if readback refuses.
+4. Inspect remaining material/continuation classifications and the existing
+   carrier-neutral handoff. Produce a reconciled acceptance/gap matrix and
+   explicit retain/defer/reject/propose-separate-change recommendations.
+5. Collect new experimental correctness or performance only for a documented
+   remaining uncertainty with a preregistered budget. Do not repeat accepted
+   campaigns or make a production winner from fixed-cell arithmetic. Primary
+   timings require a verified uncontended window: no Claude build, competing
+   benchmark or local build. If that cannot be established, retain a timing gap
+   and continue source/correctness/assembly/handoff work.
+6. Complete documentation, provenance, M11, retrieval and preservation checks;
+   publish a focused PR and durable raw-output seals with precise incomplete
+   items. Finish earlier if the scoped queue is complete. Do not launch work
+   that cannot finish and be recorded within the remaining budget.
+
+## Evidence classes
+
+Existing runtime campaigns retain their original revisions, platforms and
+independent dispositions. This campaign's source inspection, focused tests,
+full archived-data readback and any new native execution are reported separately.
+Readback wall/RSS receipts are operational budget accounting, not simulation
+benchmark measurements. Missing platforms and unexecuted arms remain explicit.
+
+Gate B's reversible storage PASS does not close #204, select a representation,
+adopt a persistence schema or establish continuation/runtime streaming. #213
+remains closed completed under its bounded final decision.
+
+## New untimed observations
+
+The [optional-tail campaign](../audits/2026-10-24-mat003-optional-neutral-results.md)
+passed four Windows normal/sanitized builds and 48 cases with exact logical
+reference checks. Array-accounting observations are separate from timing or
+whole-process memory claims.
+
+The [capture-phase handoff](../research/mat003-capture-phase-handoff.md) records
+a real Current native counterexample: external edits after a completed tick can
+change the support-relevant epoch predicate even after logical content is restored.
+Its proposed persistence refinement and experimental codec follow-ups require
+review; no restore or durable schema is adopted.
+
+The [Linux portability follow-up](../audits/2026-10-24-mat003-linux-portability.md)
+executed six builds and 54 cases on GitHub-hosted GCC13.3/BFD2.42. Archived-data
+comparison agrees with Windows. The first collector setup refusal is retained;
+neither execution is a benchmark or whole-programme acceptance.
+
+A separately labelled small-width contract model exercises epoch relabelling,
+owner writes/no-ops and full-resident clearing. It supports the capture-phase
+argument under its stated assumptions; it adds no native restore qualification.
+
+The [standalone Wasm32/Node profile](../audits/2026-10-24-mat003-wasm-portability.md)
+passed 27 normal cases with assertions and stack checks, and archived-data
+comparison matches the Windows logical outcomes. Its three failed precursor
+profiles remain preserved. It does not qualify Godot, a browser or native World
+carrier variants.
+
+The separate unchanged **17-arm S0 storage fixture** also passed on Wasm32,
+with 49,775,273 assertions and exact byte-record comparison to accepted Linux.
+Its 131,080-tick counter exercises a synthetic epoch primitive. It does not
+qualify the native World carrier matrix or native E16 rollover on Wasm, nor
+Godot/browser execution, sanitizers or performance. Packed9/10-byte and aligned
+16-byte layouts remain distinct; split descriptor sizes are reported per ABI.
+
+The [remaining acceptance inventory](../research/mat003-remaining-acceptance.md)
+separates retained evidence, conditional recommendations and the still-open
+independent, platform, performance and integration gates for #204.
+
+## Review corrections and retained reproduction
+
+The [PR #238 correction record](../audits/2026-10-24-mat003-pr238-review-closure.md)
+records authenticated Windows comparators, complete Linux/Wasm result schemas,
+resealed negative archives, the static v4 historical-source check and the separate
+coordinate-refusal regression. Historical collection records and all nine sealed
+R16 reader modules remain unchanged. These are author corrections awaiting review.
+
+Current comparison readers authenticate the complete Windows result or published
+summary against pinned SHA-256 identities before comparing. They require exact
+25-field optional and nine-field touch results; Linux compares every field.
+Wasm's required owner-size/pointer-capacity fields have explicit ABI checks and
+are its only comparison exceptions. A resealed missing field, changed hash or
+matching forged comparator cannot supply its own authority. Static v4 publication
+checks compare the eight original and nine revised module maps against their
+recorded Git revisions; they do not independently authenticate private-chat
+authorization or turn author validation into independent acceptance.
+
+The three overnight collection workflows were **historical one-shot launchers**,
+not reusable CI. Their registrations have been spent. The exact YAML is retained
+under [historical-workflows](../../tools/experiments/mat003_optional/historical-workflows/)
+and at each collected source revision; it has been removed from active workflows
+so later fixture changes cannot silently repeat an old collection. Reproducing a
+new collection requires a new scoped registration, source identity, budget and
+launcher. Archived-data verification does not execute the collected candidates.
+
+The active [verifier workflow](../../.github/workflows/mat003-correctness-verifier.yml)
+uses full Git history for `test_published_revision.py`, runs the small comparison
+contracts and the separately registered coordinate-refusal tests. It does not
+replay the full R16 archive or replace the Native/Godot integration gates. The
+[stack reconciliation checkpoint](../audits/2026-10-24-mat003-stack-integration-checkpoint.md)
+merges current main through all five parents while retaining historical source
+identities. The owner authorized the ready-for-review transition to execute fresh
+Native/Godot/provenance gates. Keep the stack unmerged; actual exact-head results
+are recorded in each PR's description/Checks. Independent acceptance of the
+author packet and #204 completion remain separate.

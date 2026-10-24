@@ -18,6 +18,15 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 ## Which build inputs are required?
 
+For the experimental PR #238 review fixes, run
+`python -B tools/experiments/mat003_correctness/test_published_revision.py` with
+full Git history, and
+`python -B tools/experiments/mat003_optional/test_comparison_contract.py` for the
+small comparison contracts. The [dated correction record](../audits/2026-10-24-mat003-pr238-review-closure.md)
+gives immutable archive inputs, full resealed-negative commands and the separate
+Windows/Linux coordinate-regression profiles. Retired overnight launchers are
+historical apparatus, not active integration gates.
+
 **Current:** build scripts and locks select the following inputs. A pin is a
 requirement, not evidence that every platform artifact was built or tested.
 

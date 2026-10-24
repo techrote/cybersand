@@ -1,0 +1,722 @@
+{
+  "schema": 1,
+  "date": "2026-10-24",
+  "validation_class": "author-validation-pending-independent-review",
+  "review_head": "10bab295213c9f7249b9b75276b9fe6126eea1d1",
+  "source_head": "f960fc38ab5bf7deabaab68baecae11040c4d93a",
+  "source_identity": "Recorded head plus exact file seals; local changes are not claimed to be a clean historical commit",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "timing": false,
+  "independent_acceptance": false,
+  "integration_gate": "OPEN: draft, unmerged parent stack and fresh applicable runtime gates required",
+  "source_sha256": {
+    ".github/workflows/mat003-correctness-verifier.yml": "aa7ebb3690f88d7315a630556ccc44baecfef2b01ca9e6a24c4452405a021ad9",
+    "tools/experiments/mat003_correctness/test_published_revision.py": "f91976a4f9567be3275a468a4560c0a31e7e879c1b8426867702e5cb3299df80",
+    "tools/experiments/mat003_optional/bounds-registration.json": "0b94e2a7a3c0935d30c4d088c8938963e39cf4eae47f4175dd947c0506571d3a",
+    "tools/experiments/mat003_optional/comparison_contract.py": "7c93ba84505232b707473663ca0e0a9903de90138a0e5ac0970a438b4eef0a19",
+    "tools/experiments/mat003_optional/fixture.cpp": "3daf6d13cfc0c0415e6be03329d3eab9d11a6c77daade9c531250b409d910d90",
+    "tools/experiments/mat003_optional/run_bounds.py": "5696db1191a8b8ffb38281bc9289536ca437688cd93ec4f65664af03faa983ba",
+    "tools/experiments/mat003_optional/test_bounds.cpp": "d65848ea96347103aa6f7d5aa9ffeb910b5913cc7f351ef60e7f272efaa7324d",
+    "tools/experiments/mat003_optional/test_comparison_contract.py": "4ac381e08135dc7c856808aab31d6d3d6a0498ef81737f18e04380a7ba4f03a7",
+    "tools/experiments/mat003_optional/test_portability_mutations.py": "49b96101a7b97158df87ec66ded474fdfe8b522d988d6bbc46c0e7f0e6e0e244",
+    "tools/experiments/mat003_optional/verify_linux.py": "82a4821c2a16513dcfbfd5ab756c60025fa536d6108c6edfcce71460dcf8a6a2",
+    "tools/experiments/mat003_optional/verify_wasm.py": "d3cabfa54d1668a1f810cc9a070eaff4cf7ba675534f4e4a3f7df9640bccf2b4"
+  },
+  "preservation": {
+    "docs/audits/mat003-overnight-2026-10-24/epoch-model-summary.json": {
+      "git_blob_sha256": "51d7f983a6f205a629db93ebf529e19f736388693b59ed67ef232826f629ccfc",
+      "working_sha256": "51d7f983a6f205a629db93ebf529e19f736388693b59ed67ef232826f629ccfc",
+      "existing_checkout_crlf_materialization": false
+    },
+    "docs/audits/mat003-overnight-2026-10-24/handoff-codec-review.json": {
+      "git_blob_sha256": "c8e3e776292b27e833b574f1821da53d04b70ddf49b624420df65f5b2d8a3041",
+      "working_sha256": "c8e3e776292b27e833b574f1821da53d04b70ddf49b624420df65f5b2d8a3041",
+      "existing_checkout_crlf_materialization": false
+    },
+    "docs/audits/mat003-overnight-2026-10-24/linux-summary.json": {
+      "git_blob_sha256": "85523e5322215e1618f14f9cb7295bda07b56247f5e152459f371f8886ff6d42",
+      "working_sha256": "85523e5322215e1618f14f9cb7295bda07b56247f5e152459f371f8886ff6d42",
+      "existing_checkout_crlf_materialization": false
+    },
+    "docs/audits/mat003-overnight-2026-10-24/optional-summary.json": {
+      "git_blob_sha256": "8c559c9975bc8535227eecf86d502d736bcc2fba0bf6d0b5c53a7f860bbd1c1d",
+      "working_sha256": "8c559c9975bc8535227eecf86d502d736bcc2fba0bf6d0b5c53a7f860bbd1c1d",
+      "existing_checkout_crlf_materialization": false
+    },
+    "docs/audits/mat003-overnight-2026-10-24/original-archive-preservation.json": {
+      "git_blob_sha256": "bffb1e5b8c17ecf6adb75be7ffa36df8b5a7b907d9663a1f6a60928c0345dc51",
+      "working_sha256": "bffb1e5b8c17ecf6adb75be7ffa36df8b5a7b907d9663a1f6a60928c0345dc51",
+      "existing_checkout_crlf_materialization": false
+    },
+    "docs/audits/mat003-overnight-2026-10-24/publication-validation.json": {
+      "git_blob_sha256": "345de1075b644e069c34402cd65af93be73990c252a20b1b13ed9197ecccfbfc",
+      "working_sha256": "607f455b65a8e19c06f80cd0ca853f63562528807161f19cb9dba92dc6926b85",
+      "existing_checkout_crlf_materialization": true
+    },
+    "docs/audits/mat003-overnight-2026-10-24/raw-bundle-seal.json": {
+      "git_blob_sha256": "22f4e8d1b8fa48a7abd99689c82947023785f9a5915eb93ec8941e2e8f57792a",
+      "working_sha256": "089540dc7c6e19c14f57ba2806ecbbb0ec997f7ee824431012863a45eda15320",
+      "existing_checkout_crlf_materialization": true
+    },
+    "docs/audits/mat003-overnight-2026-10-24/readback-registration-v4.json": {
+      "git_blob_sha256": "b7d44256b4dc585f80afdd559f51fbd0d24a75d11aaf19fafdf64c56b54e07a4",
+      "working_sha256": "b7d44256b4dc585f80afdd559f51fbd0d24a75d11aaf19fafdf64c56b54e07a4",
+      "existing_checkout_crlf_materialization": false
+    },
+    "docs/audits/mat003-overnight-2026-10-24/readback-summary.json": {
+      "git_blob_sha256": "cb6e1b9a7ec25baa013b3313acb7493ffc45bc050d3f6d78af858acc08da1610",
+      "working_sha256": "4d93fb19b21e4d19c2502aaf5302c4bde5fe72de77fe41a6576b95ebdc62323e",
+      "existing_checkout_crlf_materialization": true
+    },
+    "docs/audits/mat003-overnight-2026-10-24/source-reconciliation.json": {
+      "git_blob_sha256": "c236da7f358c32213c99b2ba8d9f0ffaa6c439247456c1c7161fd8779d601418",
+      "working_sha256": "e346f5161779f21be0e6247516abdbb18f293151136977c0b65717a9a1ddf895",
+      "existing_checkout_crlf_materialization": true
+    },
+    "docs/audits/mat003-overnight-2026-10-24/touch-summary.json": {
+      "git_blob_sha256": "e49d594235142005cc75be87d8108edae6fab151848737b41fd6a10603e93e18",
+      "working_sha256": "e49d594235142005cc75be87d8108edae6fab151848737b41fd6a10603e93e18",
+      "existing_checkout_crlf_materialization": false
+    },
+    "docs/audits/mat003-overnight-2026-10-24/wasm-storage-summary.json": {
+      "git_blob_sha256": "7cb6d9b9e56c330c41c18446c5631d2dba7b3e8d148bdb57bc2c94730d061994",
+      "working_sha256": "fe011aa85d937d114d2f2ecc86c9dac00a6fb130796030338a511ad06072b4bf",
+      "existing_checkout_crlf_materialization": true
+    },
+    "docs/audits/mat003-overnight-2026-10-24/wasm-summary.json": {
+      "git_blob_sha256": "46ade82f2e52978d408f8e9a20cab4ceb47a90c8e5902a4eeee3e7d9901ffb2c",
+      "working_sha256": "353c87f8355b1381d1c095266d7dbe25b4c836090a0645751253cb0f287e5039",
+      "existing_checkout_crlf_materialization": true
+    },
+    "tools/experiments/mat003_correctness/readback.py": {
+      "git_blob_sha256": "45204f0df7fcde406fb127c4791022d49295193b5e8bc963de61880e9ad0c8bc",
+      "working_sha256": "45204f0df7fcde406fb127c4791022d49295193b5e8bc963de61880e9ad0c8bc",
+      "existing_checkout_crlf_materialization": false
+    },
+    "tools/experiments/mat003_correctness/provenance.py": {
+      "git_blob_sha256": "cd6b7f16f8a6538f9e8b0794ee1505ea82085928f4898736e8e17761501e6c71",
+      "working_sha256": "cd6b7f16f8a6538f9e8b0794ee1505ea82085928f4898736e8e17761501e6c71",
+      "existing_checkout_crlf_materialization": false
+    },
+    "tools/experiments/mat003_correctness/world_oracle.py": {
+      "git_blob_sha256": "b007036867c1fc2d03a224373e331561e8487fef59f1e7bfbac4ad279d6156c4",
+      "working_sha256": "b007036867c1fc2d03a224373e331561e8487fef59f1e7bfbac4ad279d6156c4",
+      "existing_checkout_crlf_materialization": false
+    },
+    "tools/experiments/mat003_correctness/oracle.py": {
+      "git_blob_sha256": "5e02d9d0192f60e173ee301dcb6606d619aad591dfd9b5153a9118b74733e8ee",
+      "working_sha256": "5e02d9d0192f60e173ee301dcb6606d619aad591dfd9b5153a9118b74733e8ee",
+      "existing_checkout_crlf_materialization": false
+    },
+    "tools/experiments/mat003_correctness/matrix.py": {
+      "git_blob_sha256": "a3cf8ce4a8141f01b8a3aec3fb3bcc7107e924f8d0fb999a596feb98080d30b0",
+      "working_sha256": "a3cf8ce4a8141f01b8a3aec3fb3bcc7107e924f8d0fb999a596feb98080d30b0",
+      "existing_checkout_crlf_materialization": false
+    },
+    "tools/experiments/mat003_correctness/storage_oracle.py": {
+      "git_blob_sha256": "396704351fc507b009bab20029b2b5b162664eeda70933f5b31730b88984f761",
+      "working_sha256": "396704351fc507b009bab20029b2b5b162664eeda70933f5b31730b88984f761",
+      "existing_checkout_crlf_materialization": false
+    },
+    "tools/experiments/mat003_correctness/negative.py": {
+      "git_blob_sha256": "88303f04dc0d5fd6556f004e679353e23c61e31c85d46e5d57758d6f5c18f0cd",
+      "working_sha256": "88303f04dc0d5fd6556f004e679353e23c61e31c85d46e5d57758d6f5c18f0cd",
+      "existing_checkout_crlf_materialization": false
+    },
+    "tools/experiments/mat003_correctness/overlay.py": {
+      "git_blob_sha256": "9224858d773221127c0830f4fcc9b8550ad60f19dafa15d791a353318e584489",
+      "working_sha256": "9224858d773221127c0830f4fcc9b8550ad60f19dafa15d791a353318e584489",
+      "existing_checkout_crlf_materialization": false
+    },
+    "tools/experiments/mat003_correctness/verifier_revision.py": {
+      "git_blob_sha256": "15f16f71e6131c427109107a9af02a655c98d6073b601d9a40e0543af8035a91",
+      "working_sha256": "15f16f71e6131c427109107a9af02a655c98d6073b601d9a40e0543af8035a91",
+      "existing_checkout_crlf_materialization": false
+    },
+    "docs/reference/retrieval-questions.json": {
+      "git_blob_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+      "working_sha256": "f2727cbe26633359798736537e06c7754db8c5588af90627f79c6bd798bbb6ec",
+      "existing_checkout_crlf_materialization": false
+    },
+    "historical-workflows/mat003-overnight-untimed.yml": {
+      "git_blob_sha256": "28795fd990c4f5467664efb5ecef383861687b39428da3682c0ab81599996613",
+      "working_sha256": "28795fd990c4f5467664efb5ecef383861687b39428da3682c0ab81599996613"
+    },
+    "historical-workflows/mat003-overnight-wasm.yml": {
+      "git_blob_sha256": "134049589e04770c3d75ed1de6e8d6c74d24d118b104f5bd3d7343d15876da1e",
+      "working_sha256": "134049589e04770c3d75ed1de6e8d6c74d24d118b104f5bd3d7343d15876da1e"
+    },
+    "historical-workflows/mat003-overnight-wasm-storage.yml": {
+      "git_blob_sha256": "05cc4d1e897966453e147de4bce36f7771c9fe8f4bc31df67fa8a284e69381ab",
+      "working_sha256": "05cc4d1e897966453e147de4bce36f7771c9fe8f4bc31df67fa8a284e69381ab"
+    },
+    "original_author_packet.zip": "a361495c25d0f52d31be9bb1b1e615a961e3df66d405764840df344b23b39336"
+  },
+  "checks": [
+    {
+      "argv": [
+        "python",
+        "-B",
+        "tools/experiments/mat003_correctness/test_published_revision.py"
+      ],
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "f6ab850a539ce69a95d2ddb305d55fa1dea170e9bbf416c165e5b6ab095fe9bd"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "tools/experiments/mat003_optional/test_comparison_contract.py"
+      ],
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "72f5595d3b7def0aedf14601dce26d3ce3ed29eee815fe930e26ed611dc705ec"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "tools/experiments/mat003_correctness/test_verifier_revision.py"
+      ],
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "7beb66911c3b98daf1b4d47da63e9d096fa9536fa8a23246230b3bc96f745ad9"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "tools/experiments/mat003_correctness/test_verifier_contracts.py"
+      ],
+      "timeout_seconds": 120,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "2b835134c01eda48f6a27f48a63eaf4669cbc1966a7559a2fe85f7f15bfe0c1a"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "tools/ci/check_docs.py"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "1cc35b3c73eb38b9d01bc3b08d6807a88a52e0a33b3ff1a1b033bf32a184e228",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "tools/ci/check_m11_consistency.py"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "e5d2a8eecef5876957dc4ecff01b99af696053871616d2dea563371d44b2427b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "tools/ci/check_repository.py",
+        "--require-materialized"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "def5573b3d95f49b21fb9e5f3591997cfe852682381eaa8da4225fb893a58dc3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "tools/ci/check_ci_provider_policy.py"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "7d42fa2d0cae64ad3a3b8060fd58f61181609e38202d905c19abcb72f9b0f2e6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "tools/docs/retrieval_eval.py",
+        "--output",
+        "C:\\Users\\_\\mat003-overnight-20261024\\review-retrieval.json"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "83bfdc1005ff6451882b2d12e5adc828ec23424d44f307b614b637ff9c532a32",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "python",
+        "-B",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-challenges.json",
+        "--output",
+        "C:\\Users\\_\\mat003-overnight-20261024\\review-retrieval-challenges.json"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "3921110f6bc68f7a3fe215ccbe0ddafb2a0c6634919f78a8fda49f2427836287",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b018239997642828f4e9bb2a4de625a9b140f63a94b2e828a1257e3eca9d4d92"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check",
+        "145b22599f0667bf29a37303d7f3915c690b68b2"
+      ],
+      "timeout_seconds": 300,
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b018239997642828f4e9bb2a4de625a9b140f63a94b2e828a1257e3eca9d4d92"
+    }
+  ],
+  "archived_data": {
+    "linux": {
+      "before": {
+        "platform": "linux",
+        "positive": {
+          "status": "verified",
+          "builds": 6,
+          "optional_cases": 48,
+          "touch_cases": 6,
+          "timing": false,
+          "windows_optional_compared": true,
+          "windows_touch_compared": true,
+          "validation_class": "author-validation-pending-independent-review"
+        },
+        "mutations": [
+          {
+            "case": "missing-optional-logical-hash",
+            "refused": false
+          },
+          {
+            "case": "missing-touch-observations",
+            "refused": true,
+            "unstructured_error": "KeyError('observations')"
+          },
+          {
+            "case": "extra-optional-field",
+            "refused": false
+          },
+          {
+            "case": "changed-logical-hash",
+            "refused": false
+          },
+          {
+            "case": "changed-refusals",
+            "refused": false
+          },
+          {
+            "case": "changed-allocations",
+            "refused": false
+          },
+          {
+            "case": "changed-scheduled-cores",
+            "refused": false
+          },
+          {
+            "case": "changed-configured-workers",
+            "refused": false
+          },
+          {
+            "case": "substituted-optional-comparator",
+            "refused": false
+          },
+          {
+            "case": "substituted-touch-comparator",
+            "refused": false
+          }
+        ]
+      },
+      "after": {
+        "platform": "linux",
+        "positive": {
+          "status": "verified",
+          "builds": 6,
+          "optional_cases": 48,
+          "touch_cases": 6,
+          "timing": false,
+          "windows_optional_compared": true,
+          "windows_touch_compared": true,
+          "validation_class": "author-validation-pending-independent-review"
+        },
+        "mutations": [
+          {
+            "case": "missing-optional-logical-hash",
+            "refused": true,
+            "reason": "optional result schema: missing or extra fields"
+          },
+          {
+            "case": "missing-touch-observations",
+            "refused": true,
+            "reason": "touch result schema: missing or extra fields"
+          },
+          {
+            "case": "extra-optional-field",
+            "refused": true,
+            "reason": "optional result schema: missing or extra fields"
+          },
+          {
+            "case": "changed-logical-hash",
+            "refused": true,
+            "reason": "optional portable result disagreement: logical_hash"
+          },
+          {
+            "case": "changed-refusals",
+            "refused": true,
+            "reason": "optional portable result disagreement: refusals"
+          },
+          {
+            "case": "changed-allocations",
+            "refused": true,
+            "reason": "optional portable result disagreement: allocations"
+          },
+          {
+            "case": "changed-scheduled-cores",
+            "refused": true,
+            "reason": "touch portable result disagreement: scheduled_cores"
+          },
+          {
+            "case": "changed-configured-workers",
+            "refused": true,
+            "reason": "touch portable result disagreement: configured_workers"
+          },
+          {
+            "case": "substituted-optional-comparator",
+            "refused": true,
+            "reason": "unregistered Windows optional comparator identity"
+          },
+          {
+            "case": "substituted-touch-comparator",
+            "refused": true,
+            "reason": "unregistered Windows touch comparator identity"
+          }
+        ]
+      }
+    },
+    "wasm": {
+      "before": {
+        "platform": "wasm",
+        "positive": {
+          "status": "verified",
+          "builds": 3,
+          "optional_cases": 24,
+          "touch_cases": 3,
+          "optional_checks": 44237538,
+          "touch_checks": 1815,
+          "timing": false,
+          "sanitizers": false,
+          "windows_normal_compared": true,
+          "godot_or_browser_qualified": false,
+          "validation_class": "author-validation-pending-independent-review"
+        },
+        "mutations": [
+          {
+            "case": "missing-optional-logical-hash",
+            "refused": false
+          },
+          {
+            "case": "missing-touch-observations",
+            "refused": false
+          },
+          {
+            "case": "extra-optional-field",
+            "refused": true,
+            "unstructured_error": "KeyError('unregistered')"
+          },
+          {
+            "case": "changed-logical-hash",
+            "refused": true,
+            "reason": "desktop/Wasm logical disagreement: logical_hash"
+          },
+          {
+            "case": "changed-refusals",
+            "refused": true,
+            "reason": "desktop/Wasm logical disagreement: refusals"
+          },
+          {
+            "case": "changed-allocations",
+            "refused": true,
+            "reason": "desktop/Wasm logical disagreement: allocations"
+          },
+          {
+            "case": "changed-scheduled-cores",
+            "refused": true,
+            "reason": "desktop/Wasm native touch disagreement"
+          },
+          {
+            "case": "changed-configured-workers",
+            "refused": true,
+            "reason": "desktop/Wasm native touch disagreement"
+          },
+          {
+            "case": "substituted-optional-comparator",
+            "refused": false
+          },
+          {
+            "case": "substituted-touch-comparator",
+            "refused": false
+          }
+        ]
+      },
+      "after": {
+        "platform": "wasm",
+        "positive": {
+          "status": "verified",
+          "builds": 3,
+          "optional_cases": 24,
+          "touch_cases": 3,
+          "optional_checks": 44237538,
+          "touch_checks": 1815,
+          "timing": false,
+          "sanitizers": false,
+          "windows_normal_compared": true,
+          "godot_or_browser_qualified": false,
+          "validation_class": "author-validation-pending-independent-review"
+        },
+        "mutations": [
+          {
+            "case": "missing-optional-logical-hash",
+            "refused": true,
+            "reason": "optional result schema: missing or extra fields"
+          },
+          {
+            "case": "missing-touch-observations",
+            "refused": true,
+            "reason": "touch result schema: missing or extra fields"
+          },
+          {
+            "case": "extra-optional-field",
+            "refused": true,
+            "reason": "optional result schema: missing or extra fields"
+          },
+          {
+            "case": "changed-logical-hash",
+            "refused": true,
+            "reason": "optional portable result disagreement: logical_hash"
+          },
+          {
+            "case": "changed-refusals",
+            "refused": true,
+            "reason": "optional portable result disagreement: refusals"
+          },
+          {
+            "case": "changed-allocations",
+            "refused": true,
+            "reason": "optional portable result disagreement: allocations"
+          },
+          {
+            "case": "changed-scheduled-cores",
+            "refused": true,
+            "reason": "touch portable result disagreement: scheduled_cores"
+          },
+          {
+            "case": "changed-configured-workers",
+            "refused": true,
+            "reason": "touch portable result disagreement: configured_workers"
+          },
+          {
+            "case": "substituted-optional-comparator",
+            "refused": true,
+            "reason": "unregistered Windows optional comparator identity"
+          },
+          {
+            "case": "substituted-touch-comparator",
+            "refused": true,
+            "reason": "unregistered Windows touch comparator identity"
+          }
+        ]
+      }
+    },
+    "wasm_existing_negatives": [
+      {
+        "case": "missing-case",
+        "refused": true,
+        "reason": "full matrix coverage"
+      },
+      {
+        "case": "changed-flags",
+        "refused": true,
+        "reason": "ordered command binding"
+      },
+      {
+        "case": "missing-wasm",
+        "refused": true,
+        "reason": "JS/Wasm asset coverage"
+      },
+      {
+        "case": "wrong-target-abi",
+        "refused": true,
+        "reason": "Wasm32 ABI assertion"
+      },
+      {
+        "case": "false-pointer-bytes",
+        "refused": true,
+        "reason": "Wasm32 owner/pointer accounting"
+      },
+      {
+        "case": "changed-logical-result",
+        "refused": true,
+        "reason": "optional portable result disagreement: operation_projection_hash"
+      },
+      {
+        "case": "runtime-diagnostic",
+        "refused": true,
+        "reason": "runtime diagnostic"
+      },
+      {
+        "case": "timing-relabel",
+        "refused": true,
+        "reason": "result identity/completion"
+      }
+    ],
+    "windows_optional": {
+      "status": "verified",
+      "cases": 48,
+      "builds": 4,
+      "timing": false,
+      "validation_class": "author-validation-pending-independent-review"
+    },
+    "windows_touch": {
+      "status": "verified",
+      "builds": 2,
+      "cases": 6,
+      "observations": 54,
+      "checks": 3630,
+      "timing": false,
+      "native_restore_qualified": false,
+      "validation_class": "author-validation-pending-independent-review"
+    }
+  },
+  "retrieval_preservation": {
+    "prior_questions": 138,
+    "unchanged": true,
+    "added": [
+      "MATREV01"
+    ]
+  },
+  "focused_native": {
+    "status": "passed",
+    "timing": false,
+    "source_head": "f960fc38ab5bf7deabaab68baecae11040c4d93a",
+    "source_sha256": {
+      "tools/experiments/mat003_optional/fixture.cpp": "3daf6d13cfc0c0415e6be03329d3eab9d11a6c77daade9c531250b409d910d90",
+      "tools/experiments/mat003_optional/test_bounds.cpp": "d65848ea96347103aa6f7d5aa9ffeb910b5913cc7f351ef60e7f272efaa7324d",
+      "tools/experiments/mat003_optional/bounds-registration.json": "0b94e2a7a3c0935d30c4d088c8938963e39cf4eae47f4175dd947c0506571d3a",
+      "tools/experiments/mat003_optional/run_bounds.py": "5696db1191a8b8ffb38281bc9289536ca437688cd93ec4f65664af03faa983ba",
+      "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+      "native/include/cybersand/demo_snapshot.hpp": "98b1f397f48d61c2fabc454b2f8fda7634b64cadd8fb6503655c96c5edc6e172",
+      "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+      "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+      "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+      "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+      "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+      "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+      "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+      "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+      "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+      "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+      "native/include/cybersand/material_rules.hpp": "647931176804ffe3d5c31aa62fbeb5ed3f39b643e8bbecde0d4cfb6719d5ca0e",
+      "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+      "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+      "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+      "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+      "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+      "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+      "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+      "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+      "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+      "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+      "native/include/cybersand/world.hpp": "8280e968fe161305a7dbb57704e057d9755232037ea91ba20a4d17a547989c4f",
+      "native/include/cybersand/world_generation.hpp": "28007e89dc009d68af125e2c04d77a5fb6aec48ec9758a4079affa016f3dca5c"
+    },
+    "compiler_sha256": "bf58cf0e544a308660645aad1fe65ae9cbc44b0871e4010278f3d9551f86a690",
+    "compiler_version": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: C:/Users/_/.codex/tmp/mat003-build-5380c76-20261023/toolchain/llvm-mingw-20260826-ucrt-x86_64/bin\nConfiguration file: C:/Users/_/.codex/tmp/mat003-build-5380c76-20261023/toolchain/llvm-mingw-20260826-ucrt-x86_64/bin/x86_64-w64-windows-gnu.cfg\n",
+    "sanitizer_environment": {
+      "ASAN_OPTIONS": "detect_leaks=0:halt_on_error=1",
+      "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+    },
+    "sanitizer_limitations": "Windows ASan/UBSan; leak detection disabled; no race detector",
+    "cases": [
+      {
+        "profile": "normal",
+        "binary_sha256": "ec96abbbd1fd6c49d172d890146a32879d92d97c2bdff575c463471c0d3e8d3e",
+        "result": {
+          "status": "passed",
+          "timing": false,
+          "tail_bits": 8,
+          "checks": 32,
+          "coordinate_refusals": 14
+        }
+      },
+      {
+        "profile": "asan-ubsan",
+        "binary_sha256": "09f3ace245874aa9feea966d8caee839a999a852aa71fd968e51a648978b54b8",
+        "result": {
+          "status": "passed",
+          "timing": false,
+          "tail_bits": 8,
+          "checks": 32,
+          "coordinate_refusals": 14
+        }
+      },
+      {
+        "profile": "normal",
+        "binary_sha256": "1a6010c8b65e175ae7be938a11df9769b0e2de56028a575a6895ec7555ea5467",
+        "result": {
+          "status": "passed",
+          "timing": false,
+          "tail_bits": 16,
+          "checks": 32,
+          "coordinate_refusals": 14
+        }
+      },
+      {
+        "profile": "asan-ubsan",
+        "binary_sha256": "4f9741f69bcbdef633031e3c69535d9ffbe2dfbc20a29af413c2056562783c7a",
+        "result": {
+          "status": "passed",
+          "timing": false,
+          "tail_bits": 16,
+          "checks": 32,
+          "coordinate_refusals": 14
+        }
+      }
+    ]
+  },
+  "retained_failures": [
+    "bounds-before: loader setup lacked compiler DLL path (exit -1073741515), then old fixture refused new regression assertion (exit 1)",
+    "review-bounds-v1: collector omitted transitive header; compile failed before candidate cases",
+    "initial Windows-reader CLI probes omitted required seal arguments; usage exit 2, corrected commands passed"
+  ],
+  "raw_bundle": {
+    "path": "mat003-pr238-review-corrections-20261024.zip",
+    "bytes": 1785074,
+    "sha256": "2d314a1b4b4105c644941e1320fa2dd3a92bd18b2a18a79e627d92ff42afcf98"
+  }
+}

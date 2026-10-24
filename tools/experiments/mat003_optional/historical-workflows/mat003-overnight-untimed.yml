@@ -1,0 +1,46 @@
+name: MAT-003 overnight untimed portability
+
+on:
+  push:
+    branches: [codex/mat003-overnight-requalification]
+    paths:
+      - 'tools/experiments/mat003_optional/fixture.cpp'
+      - 'tools/experiments/mat003_optional/linux_run.py'
+      - 'tools/experiments/mat003_optional/linux-registration*.json'
+      - 'tools/experiments/mat003_touch/fixture.cpp'
+      - 'tools/experiments/mat003_touch/registration-v3.json'
+      - 'native/include/**'
+      - 'native/src/**'
+      - '.github/workflows/mat003-overnight-untimed.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mat003-overnight-untimed-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  untimed-portability:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+      - name: Validate CI provider policy
+        run: timeout 1m python3 tools/ci/check_ci_provider_policy.py
+      - name: Ensure registered GCC is available
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends g++-13
+      - name: Execute registered untimed specimens
+        run: timeout 21m python3 -B tools/experiments/mat003_optional/linux_run.py --output build/mat003-overnight-linux
+      - name: Preserve complete source, binaries, receipts and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mat003-overnight-linux-${{ github.run_id }}
+          path: build/mat003-overnight-linux/
+          if-no-files-found: warn
+          retention-days: 90

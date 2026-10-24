@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "id": "mat003-epoch-projection-model-v1-20261024",
+  "kind": "contract-model-only",
+  "purpose": "Exercise the proposed capture discriminator and epoch relabelling argument without implementing native restore or changing World.",
+  "source_widths": [2, 3],
+  "destination_widths": [2, 3],
+  "cells": 3,
+  "initial_source_epochs": "Every current epoch from zero through mask; every three-cell stamp tuple in [0,current]. Zero-current inputs represent a fresh tick-zero World.",
+  "destination_epochs": "Every nonzero destination current epoch; map touched cells to destination current and all others to zero, retaining logical contents and absolute tick.",
+  "actions": ["counter-tick-and-full-resident-clear", "changed-owner-write", "same-value-noop", "successful-move", "successful-swap"],
+  "trace_length": 3,
+  "invariants": ["logical content equality", "absolute tick equality", "per-cell current-epoch equality predicate", "tick-zero support exception", "no future stamps under full resident clear"],
+  "negative_models": ["drop current-touch during projection", "stamp a same-value no-op", "clear only active cells and leave an excluded old stamp at wrap"],
+  "limits": {"timeout_seconds": 120, "fixed_depth": 3, "concurrency": 1},
+  "qualification_limits": "Small-width exhaustive contract model, not native execution, production serializer, full material/geometry/scheduler equivalence, E8/E16 natural-rollover evidence, or acceptance of lazy clearing.",
+  "timing": false,
+  "acceptance_class": "contract-model author validation pending independent review"
+}

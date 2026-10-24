@@ -30,9 +30,11 @@ The separately landed [#243 diagnostic record](audits/2026-10-24-issue-233-physi
 completes #233's deliverable with 11 timeouts in 600 stress attempts; the cause
 remains unknown and #234 owns the next repair. This MAT task starts no repair.
 
-Historical MAT-003 collection (2026-10-23): [complete152-process collection and Astra readback refusal](audits/2026-10-23-mat003-reentry-correctness-attempt.md). No correctness acceptance or rerun; prior stage summaries below are historical.
+PR #238 retains the [reader/fixture review corrections](audits/2026-10-24-mat003-pr238-review-closure.md), following the [complete v4 author readback](audits/2026-10-24-mat003-overnight-results.md). Independent acceptance remains open. The original refusal and earlier stages below are historical records.
 
-Historical MAT-003 source checkpoint: [resident reentry/scratch repair and independent source review](audits/2026-10-23-mat003-resident-reentry-repair.md). At that source-only stage, fresh build/binary/registration gates were held and no repair execution or timing had run. Later dated records preserve the subsequent outcomes.
+Historical MAT-003 collection: [complete152-process collection and Astra readback refusal](audits/2026-10-23-mat003-reentry-correctness-attempt.md). The original refusal remains preserved; the later v4 archived-data pass does not rerun candidates or confer independent acceptance.
+
+Historical resident-repair source checkpoint: [resident reentry/scratch repair and independent source review](audits/2026-10-23-mat003-resident-reentry-repair.md). At that stage, fresh build/binary/registration gates were held; no repair execution or timing had run. Later collection and readback records above preserve the subsequent outcomes.
 
 The historical [containment replacement runtime attempt](audits/2026-10-23-mat003-containment-correctness-attempt.md) stopped at resident reentry after clear256, with15 exit0 processes and136 unattempted cases. Full correctness remains refused; prior evidence is retained.
 
@@ -274,7 +276,16 @@ MAT-003 design continuation: [semantic state-schema proposal](research/mat003-st
 
 Historical [resident reentry Windows build and replacement execution gate](audits/2026-10-23-mat003-reentry-build-admission.md):32 clean builds; no qualification cases or timing.
 
-Latest MAT-003 runtime disposition: [152-process replacement and Astra readback refusal](audits/2026-10-23-mat003-reentry-correctness-attempt.md). All candidate processes exited0, but the frozen reader rejected an overconstrained sleeping witness. No full correctness acceptance, rerun or timing; prior stage summaries are historical.
+Latest MAT-003 archived-data disposition: [complete overnight v4 readback](audits/2026-10-24-mat003-overnight-results.md), all 152 cases and 96 cross-arm comparisons verified as author validation pending independent review. The [original Astra refusal](audits/2026-10-23-mat003-reentry-correctness-attempt.md) remains unchanged. No candidate rerun, performance acceptance or production migration follows; #204 remains open.
+
+For the bounded #204 overnight reader/provenance completion and its evidence
+limits, see the [overnight campaign](operations/mat003-overnight-campaign.md).
+
+For the native between-tick touch counterexample and proposed capture rule, see
+the [capture-phase handoff](research/mat003-capture-phase-handoff.md).
+
+For retained evidence, conditional recommendations and still-open #204 gates,
+see the [remaining acceptance inventory](research/mat003-remaining-acceptance.md).
 
 ## LCB-000 final admission status
 
@@ -282,3 +293,8 @@ For final Gate A–E PASS, the landed stack, the bounded #200 policy foundation 
 owner hold on #212 and the #200 pressure backend, read
 the [current roadmap checkpoint](reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23)
 and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconciliation.md).
+The #200 hold recorded at #213 closure is historical. The bounded foundation
+subsequently landed through [PR #239](https://github.com/techrote/cybersand/pull/239)
+and is imported through main; Claude's separate source branch remains untouched.
+#212 and the pressure backend remain held. This permits no pressure/inertial
+port, schema/ABI freeze, defaults changes or Rapier integration.

@@ -9,6 +9,7 @@ from oracle import decode,POSITIONS
 from matrix import cases,ARMS,LIMITS
 
 budget_hook=lambda:None
+progress_hook=lambda row:None
 from storage_oracle import expected,apply
 from world_oracle import metadata,cells,registry,Transitions,compare,small_boundary,resident_endpoint,resident_activity_transitions,resident_sand_witness
 
@@ -240,7 +241,7 @@ def verification_budget(root,expected_authority_sha256):
 def matrix_contract(result):
     if result.get('status')!='collected-not-verified' or result.get('cases')!=cases() or result.get('timing') is not False:raise ValueError('incomplete/changed campaign')
 
-def completion(root,expected_authority_sha256,budget=None):
+def completion(root,expected_authority_sha256,budget=None,verifier_revision=None):
     root=Path(root).resolve()
     result,authority,guard=budget or verification_budget(root,expected_authority_sha256)
     if (root/'inventory.json').stat().st_size>16*1024**2:raise ValueError('inventory control size bound')
@@ -248,7 +249,7 @@ def completion(root,expected_authority_sha256,budget=None):
     matrix_contract(result)
     if authority.get('independent_admission')!='admitted' or authority.get('owner_execution_authorized') is not True:raise ValueError('unadmitted execution')
     from provenance import verify_provenance
-    verify_provenance(root,result,authority,expected_authority_sha256,digest,guard)
+    verify_provenance(root,result,authority,expected_authority_sha256,digest,guard,verifier_revision)
     if len(result['builds'])!=32 or len(result['results'])!=152:raise ValueError('partial matrix')
     buildmap={}
     for b in result['builds']:
@@ -259,6 +260,7 @@ def completion(root,expected_authority_sha256,budget=None):
     if set(buildmap)!=expected_builds:raise ValueError('build matrix mismatch')
     for case,row in zip(cases(),result['results']):
         guard()
+        progress_hook(dict(stage='case-begin',case=case['id']))
         if row['case']!=case['id']:raise ValueError('case ordering mismatch')
         kind='storage' if case['suite']=='storage' else 'world'
         if row['binary_sha256']!=buildmap[case['arm'],case['sanitized'],kind]['sha256']:raise ValueError('wrong case binary')
@@ -268,14 +270,17 @@ def completion(root,expected_authority_sha256,budget=None):
         if not 0<peak<=limit or row['peak_rss']!=peak:raise ValueError('RSS receipt mismatch')
         if kind=='storage':storage(case['arm'],p/'process.stdout')
         else:world(p/'world',case)
+        progress_hook(dict(stage='case-complete',case=case['id']))
     # Cross-arm common-control comparisons are separate from payload preservation.
     for case in cases():
         if case['suite'] not in ('small','natural','resident') or case['arm']=='K64-E16':continue
+        progress_hook(dict(stage='cross-arm-begin',case=case['id']))
         control=next(x for x in cases() if x['arm']=='K64-E16' and {k:v for k,v in x.items() if k not in ('id','arm')}=={k:v for k,v in case.items() if k not in ('id','arm')})
         for role in ('event','reference') if case['suite']=='resident' else ('ordinary','prepared') if case['suite']=='natural' else ('ordinary',):
             for endpoint in endpoints(case,role):
                 compare(root/'cases'/case['id']/'world'/role/endpoint,root/'cases'/control['id']/'world'/role/endpoint,case['arm'],control['arm'])
-    return dict(status='verified',cases=152,performance_accepted=False,scope='frozen neutral mapping correctness only')
+    return dict(status='verified',cases=152,performance_accepted=False,scope='frozen neutral mapping correctness only',
+                validation_class='author-validation-pending-independent-review' if verifier_revision else 'original-reader')
 
 def exact_state(left,right,arm):
     if metadata(left)!=metadata(right):raise ValueError('complete owner state mismatch')
@@ -347,16 +352,26 @@ if __name__=='__main__':
     # Negative fixtures use this same guarded module, rather than importing a second copy.
     sys.modules['readback']=sys.modules[__name__]
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--evidence',type=Path,required=True);parser.add_argument('--authority-sha256',required=True);parser.add_argument('--verification-output',type=Path,required=True)
+    parser.add_argument('--verifier-revision',type=Path)
+    parser.add_argument('--verifier-revision-sha256')
     args=parser.parse_args()
+    if (args.verifier_revision is None)!=(args.verifier_revision_sha256 is None):parser.error('reader revision requires both path and seal')
+    revision=None if args.verifier_revision is None else (args.verifier_revision,args.verifier_revision_sha256)
     destination=args.verification_output.resolve()
     if destination.exists() or destination==args.evidence.resolve() or args.evidence.resolve() in destination.parents:parser.error('verification output must be new and outside retained evidence')
     destination.mkdir(parents=True)
     report=dict(status='failed',performance_accepted=False)
+    progress_hook=lambda row:print(json.dumps(row,sort_keys=True),flush=True)
     try:
         budget=verification_budget(args.evidence,args.authority_sha256)
+        if revision:
+            from verifier_revision import revision_sources
+            revision_sources(args.evidence,budget[1],budget[0],*revision,digest)
+            report['verifier_revision_sha256']=args.verifier_revision_sha256
+            report['validation_class']='author-validation-pending-independent-review'
         from negative import exercise
         report['negative_fixtures']=exercise(destination/'negative-fixtures')
-        report.update(completion(args.evidence,args.authority_sha256,budget))
+        report.update(completion(args.evidence,args.authority_sha256,budget,revision))
     except Exception as error:
         report['error']=str(error)
         raise

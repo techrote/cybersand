@@ -2,7 +2,7 @@
 title: LCB pressure and inertial implementation handoff
 status: Planned
 document-kind: design
-scope: Implementation-ready requirements for LCB-001 (#200, pressure_flow_v1 and solver policy) and LCB-005 (#212, inertial_cellular_v1) derived from the LCB physics prepass — exact source hooks, state, laws, boundary rules, invalidating failures, smallest experimental regimes and the APIs needed to unblock registered tests; no kernel is implemented; bounded admission passed and implementation remains held
+scope: Implementation-ready requirements for LCB-001 (#200, pressure_flow_v1 and solver policy) and LCB-005 (#212, inertial_cellular_v1) derived from the LCB physics prepass — exact source hooks, state, laws, boundary rules, invalidating failures, smallest experimental regimes and the APIs needed to unblock registered tests; no kernel is implemented here; bounded admission passed, the #200 policy foundation has landed through main and pressure/inertial implementation remains held
 canonical-for: [lcb-pressure-inertial-handoff]
 last-reviewed: 2026-10-24
 related-documents: [liquid-state-transition-matrix.md, liquid-solver-family-policy.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, ../operations/lcb-scenario-catalogue.md]
@@ -12,7 +12,7 @@ related-documents: [liquid-state-transition-matrix.md, liquid-solver-family-poli
 
 ## Status
 
-**Planned implementation.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) only; the pressure backend, every other solver port and #212 remain held. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration. This
+**Planned implementation.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only the separately scoped initial opt-in #200 policy foundation was admitted. That [foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) landed through current main in [PR #239](https://github.com/techrote/cybersand/pull/239) on 2026-10-24 and accepts only Current-default mappings. The pressure backend, every other solver port and #212 remain held. This does not admit a pressure/inertial port, schema/ABI freeze, defaults changes or Rapier integration. This
 page converts the [mechanism report](../audits/2026-10-23-lcb-physics-mechanism-report.md)
 and the [state-transition matrix](liquid-state-transition-matrix.md) into
 requirements.
@@ -290,4 +290,5 @@ Current-family controls run in `test_lcb_physics_contracts.gd`; every candidate
 arm is BLOCKED with its dependency.
 
 This handoff records future implementation requirements. The linked final
-admission checkpoint owns the accepted scope and continuing execution hold.
+admission checkpoint owns the accepted scope and continuing pressure/inertial
+implementation hold.

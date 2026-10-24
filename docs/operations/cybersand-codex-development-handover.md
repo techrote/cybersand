@@ -36,17 +36,30 @@ physical stress campaign, or start #212, #234 repair or a solver port. The lande
 work is imported through main; separate source branches and the dirty primary
 checkout remain untouched.
 
-## MAT-003 readback verifier repair — 2026-10-23
+## MAT-003 PR #238 review corrections — 2026-10-24
 
-The [readback verifier repair and v2 admission proposal](../audits/2026-10-23-mat003-readback-verifier-repair.md) corrects only the independently diagnosed resident sleep/exclusion oracle. The complete 152-case archive is assessed sufficient for a future readback-only requalification; no candidate rerun is needed. The revised protocol is **not independently admitted**, owner authority for the changed reader is **absent**, and no full revised readback has run. Keep #204/#221 open/draft, production unchanged and Windows correctness refused until both gates close.
+The [correction record](../audits/2026-10-24-mat003-pr238-review-closure.md) closes
+the comparison-reader and coordinate-refusal findings as author work, preserving
+the original sealed records and nine R16 reader modules. The complete v4 readback
+remains **author validation pending independent review**. Collection launchers are
+retired one-shot apparatus; the active small verifier checks publication hashes
+against full historical Git sources. The earlier draft hold required parent-stack
+reconciliation with main. Fresh applicable Native, Godot and materialized provenance
+gates are now pending on the reconciled heads; ready-for-review permits their
+execution and does not grant merge approval. #204 stays open; the production Cell
+representation, #213's closure and #212's hold remain unchanged. Older entries below describe their dated checkpoints.
 
-## MAT-003 latest correctness disposition — 2026-10-23
+## MAT-003 readback verifier repair — historical checkpoint, 2026-10-23
 
-The [authorized152-case run](../audits/2026-10-23-mat003-reentry-correctness-attempt.md) completed collection, then frozen Astra readback refused the overconstrained sleep witness. Full qualification remains refused; every observation/failure is retained, no repair/rerun is authorized. Earlier build/held-execution entries describe historical stages. R16-T1 conditional, PRs draft, production unchanged.
+At this historical checkpoint, the [readback verifier repair and v2 admission proposal](../audits/2026-10-23-mat003-readback-verifier-repair.md) corrects only the independently diagnosed resident sleep/exclusion oracle. The complete 152-case archive is assessed sufficient for a future readback-only requalification; no candidate rerun is needed. The revised protocol is **not independently admitted**, owner authority for the changed reader is **absent**, and no full revised readback has run. Keep #204/#221 open/draft, production unchanged and Windows correctness refused until both gates close.
+
+## MAT-003 original correctness disposition — historical checkpoint, 2026-10-23
+
+At this historical checkpoint, the [authorized152-case run](../audits/2026-10-23-mat003-reentry-correctness-attempt.md) completed collection, then frozen Astra readback refused the overconstrained sleep witness. Full qualification remains refused; every observation/failure is retained, no repair/rerun is authorized. Earlier build/held-execution entries describe historical stages. R16-T1 conditional, PRs draft, production unchanged.
 
 ## MAT-003 isolated resident repair — 2026-10-23
 
-The [resident reentry/scratch source repair](../audits/2026-10-23-mat003-resident-reentry-repair.md) follows two retained incomplete Windows correctness attempts. Independent source review is closed; builds, cases and timing are held. Use the [current continuation report](../research/mat003-continuation.md#resident-reentry-source-repair-and-held-rebuild) for next gates, bounded2048 reentry scope and unchanged evidence. Old binary certificates/authorizations cannot admit new source. R16-T1 conditional, PR211/221 draft, production unchanged. Earlier dated entries retain historical context.
+At this historical source-only checkpoint, the [resident reentry/scratch source repair](../audits/2026-10-23-mat003-resident-reentry-repair.md) follows two retained incomplete Windows correctness attempts. Independent source review is closed; builds, cases and timing are held. Use the [current continuation report](../research/mat003-continuation.md#resident-reentry-source-repair-and-held-rebuild) for next gates, bounded2048 reentry scope and unchanged evidence. Old binary certificates/authorizations cannot admit new source. R16-T1 conditional, PR211/221 draft, production unchanged. Earlier dated entries retain historical context.
 
 ## MAT-003PREPASS S1 World apparatus — 2026-10-22
 

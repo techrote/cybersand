@@ -1,0 +1,57 @@
+name: MAT-003 overnight standalone Wasm portability
+
+on:
+  push:
+    branches: [codex/mat003-overnight-requalification]
+    paths:
+      - 'tools/experiments/mat003_optional/fixture.cpp'
+      - 'tools/experiments/mat003_optional/wasm_run.py'
+      - 'tools/experiments/mat003_optional/wasm-registration*.json'
+      - 'tools/experiments/mat003_touch/fixture.cpp'
+      - 'tools/experiments/mat003_touch/registration-v3.json'
+      - 'native/include/**'
+      - 'native/src/**'
+      - '.github/workflows/mat003-overnight-wasm.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mat003-overnight-wasm-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  standalone-wasm:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+      - name: Validate CI provider policy
+        run: timeout 1m python3 tools/ci/check_ci_provider_policy.py
+      - name: Prepare immutable Current-version SDK (historical Web workflow unchanged)
+        shell: bash
+        env:
+          EMSDK_KEEP_DOWNLOADS: '1'
+        run: |
+          set -euo pipefail
+          mkdir -p build/mat003-overnight-wasm/setup
+          git clone https://github.com/emscripten-core/emsdk.git "$RUNNER_TEMP/mat003-emsdk"
+          git -C "$RUNNER_TEMP/mat003-emsdk" checkout --detach e4fe26ef59168ff44f4c23c466e497bf60b3411e
+          "$RUNNER_TEMP/mat003-emsdk/emsdk" install 4.0.20 > build/mat003-overnight-wasm/setup/install.stdout 2> build/mat003-overnight-wasm/setup/install.stderr
+          "$RUNNER_TEMP/mat003-emsdk/emsdk" activate 4.0.20 > build/mat003-overnight-wasm/setup/activate.stdout 2> build/mat003-overnight-wasm/setup/activate.stderr
+      - name: Execute registered standalone Node/Wasm specimens
+        shell: bash
+        run: |
+          set -euo pipefail
+          source "$RUNNER_TEMP/mat003-emsdk/emsdk_env.sh"
+          timeout 21m python3 -B tools/experiments/mat003_optional/wasm_run.py --sdk "$RUNNER_TEMP/mat003-emsdk" --output build/mat003-overnight-wasm/cases
+      - name: Preserve complete setup, source, assets and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mat003-overnight-wasm-${{ github.run_id }}
+          path: build/mat003-overnight-wasm/
+          if-no-files-found: warn
+          retention-days: 90

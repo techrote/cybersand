@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "timing": false,
+  "native_execution": false,
+  "validation_class": "contract-model author validation pending independent review",
+  "source_commit": "2945840593833aa37afc0721cbcc600c06af607b",
+  "model_sha256": "0af04aad606b0f634ddddc112ab6b626d4a44ebf6bd42a67aa3b6fdfd76ac42a",
+  "registration_sha256": "d72f0df0f8f882654e25be7a9a48c69e473684b105bd58b2a20ed00919449fbc",
+  "initial_projections": 13960,
+  "positive_checks": 2177760,
+  "terminal_traces": 1745000,
+  "negative_models_refused": [
+    "drop-current-touch",
+    "stamp-same-value-noop",
+    "clear-active-only"
+  ]
+}

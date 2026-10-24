@@ -29,14 +29,36 @@ stress campaign and starts neither #212 nor #234 repair.
 
 ## MAT-003 continuation — 2026-10-23
 
-Latest MAT-003 runtime disposition: [152-process replacement and Astra readback refusal](../audits/2026-10-23-mat003-reentry-correctness-attempt.md). All candidate processes exited0, but the frozen reader rejected an overconstrained sleeping witness. No full correctness acceptance, rerun or timing; prior stage summaries are historical.
+Latest MAT-003 archived-data disposition: [complete overnight v4 readback](../audits/2026-10-24-mat003-overnight-results.md), all 152 cases and 96 cross-arm comparisons verified as author validation pending independent review. The [original Astra refusal](../audits/2026-10-23-mat003-reentry-correctness-attempt.md) remains unchanged. No candidate rerun, performance acceptance or production migration follows; #204 remains open.
 
 
 **Historical source-review checkpoint, subsequently executed:** the [resident reentry and scratch repair](../audits/2026-10-23-mat003-resident-reentry-repair.md) has independent source-review closure. Pre-dedup core entries are provisioned256; active-chunk capacity covers all16/256 resident chunks. Initial256x512/reentry512x512 windows retain at most64 unique cores, full resident clearing and bounded reentry; full2048 reentry is outside scope. Exact-grid, sleep and Sand pause/resume checks close adjacent reader gaps. No runtime success or new build/case/timing admission follows.
 
 **Historical partial runtime attempt, retained unchanged:** [authorized86345703](../audits/2026-10-23-mat003-containment-correctness-attempt.md) stopped at resident-015 after clear256, retaining15 exit0 processes and136 unattempted cases. Full correctness is refused. Its32 admitted a3f4e37 binaries cannot admit the changed repair. The [prior293-tick failure](../audits/2026-10-23-mat003-windows-correctness-attempt.md), [failed warning build](../audits/2026-10-23-mat003-build-only-admission.md) and subsequent historical build/source checkpoints remain retained. New build-only authority, fresh binaries, independent admission and exact execution registration/hash authorization are required.
 
-**Current accepted campaigns / conditional architecture:** S2A224 processes and the separate [S2P56](../audits/2026-10-23-s2p-results.md), [WCLEAR672](../audits/2026-10-23-wclear-results.md) and [C12870](../audits/2026-10-23-c128-results.md) processes remain accepted only under their own source/workload/platform contracts. The [continuation report](../research/mat003-continuation.md) and [ADR-015](../decisions/ADR-015-material-state-schema-and-carrier-gates.md) preserve optimized compact/DUAL64 as leading options and accepted budgets as qualification targets. R16-T1 is conditional. At that dated checkpoint PR211/221 were draft; production C64/E8, Water and GEN-006 were unchanged. No S2B or new timing authority.
+**Current accepted campaigns / conditional architecture:** S2A224 processes and the separate [S2P56](../audits/2026-10-23-s2p-results.md), [WCLEAR672](../audits/2026-10-23-wclear-results.md) and [C12870](../audits/2026-10-23-c128-results.md) processes remain accepted only under their own source/workload/platform contracts. The [continuation report](../research/mat003-continuation.md) and [ADR-015](../decisions/ADR-015-material-state-schema-and-carrier-gates.md) preserve optimized compact/DUAL64 as leading options and accepted budgets as qualification targets. R16-T1 is conditional. The unmerged parent stack now enters fresh integration validation; production C64/E8, Water and GEN-006 remain unchanged. No S2B or new timing authority.
+
+## MAT-003 overnight completion — 2026-10-24
+
+**Current experimental work; author validation, not independent acceptance:**
+the [bounded overnight campaign](../operations/mat003-overnight-campaign.md) reuses
+qualified S0/S1/S2A and continuation evidence. It corrects the revised-reader
+provenance path and completed one full readback of the immutable 152-case Windows
+archive, including all 96 cross-arm comparisons. New optional-tail, capture-touch
+and standalone Wasm storage results retain their separate scope and platform
+limits. The original reader refusal and all prior observations remain intact.
+#204 remains open, production C64-E8 stays the baseline and GEN-006 remains
+unimplemented. The overnight task started no LCB solver or #212 work. The
+bounded #200 policy foundation later landed separately through #239 and is now
+imported through main as recorded in the current integration checkpoint above.
+
+The [PR #238 review corrections](../audits/2026-10-24-mat003-pr238-review-closure.md)
+strengthen the archived-data comparison readers and add a separate coordinate
+refusal regression. Original records remain unchanged; the spent one-shot
+launchers are retired. The [current-main reconciliation checkpoint](../audits/2026-10-24-mat003-lcb001-integration-checkpoint.md)
+preserves every registered historical identity and moves the unmerged stack to
+ready-for-review for fresh applicable exact-head integration checks. Their actual
+results are recorded per PR; independent acceptance and #204 completion remain open.
 
 ## MAT-003PREPASS S1 World apparatus — 2026-10-22
 

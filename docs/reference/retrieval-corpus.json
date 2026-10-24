@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-10-23",
+  "reviewed": "2026-10-24",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -123,7 +123,10 @@
     "decisions/ADR-015-material-state-schema-and-carrier-gates.md",
     "research/mat003-semantics-budget-review.md",
     "research/mat003-concrete-owner-offer.md",
-    "research/mat003-correctness-only-plan.md"
+    "research/mat003-correctness-only-plan.md",
+    "operations/mat003-overnight-campaign.md",
+    "research/mat003-capture-phase-handoff.md",
+    "research/mat003-remaining-acceptance.md"
   ],
   "navigation": [
     "README.md",

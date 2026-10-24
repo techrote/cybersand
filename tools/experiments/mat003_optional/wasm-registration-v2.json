@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "id": "mat003-overnight-wasm-node-v2-20261024",
+  "kind": "untimed-standalone-wasm32-portability",
+  "platform": "GitHub-hosted ubuntu-24.04; Wasm32 programs executed under SDK Node, not Godot or a browser",
+  "emscripten": "4.0.20",
+  "sdk_repository": "https://github.com/emscripten-core/emsdk.git",
+  "sdk_source_commit": "e4fe26ef59168ff44f4c23c466e497bf60b3411e",
+  "release_build_identity": "c387d7a7e9537d0041d2c3ae71b7538cc978104e",
+  "node_version": "v22.16.0",
+  "dependency_policy": "Verify SDK Git source, selected release identity and actual compiler/Node versions before building; retain actual downloaded archive/tool/library hashes and SDK/runtime license notices. Do not update existing toolchain locks or historical M11 workflow.",
+  "optional_cases": "24 normal cases: tail8/tail16,512/1024/2048,absent/unread/clustered/dispersed; same C++ source as qualified desktop specimens",
+  "touch_cases": "3 normal cases:serial1/phased1/phased4; exact registered unused-this-capture removal in generated copy only",
+  "builds": 3,
+  "cases": 27,
+  "flags": [
+    "-std=c++20",
+    "-O2",
+    "-DNDEBUG",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-Werror",
+    "-fexceptions",
+    "-sDISABLE_EXCEPTION_CATCHING=0",
+    "-sALLOW_MEMORY_GROWTH=0",
+    "-sINITIAL_MEMORY=268435456",
+    "-sMAXIMUM_MEMORY=268435456",
+    "-sENVIRONMENT=node",
+    "-sEXIT_RUNTIME=1"
+  ],
+  "touch_additional_flags": [
+    "-pthread",
+    "-sPTHREAD_POOL_SIZE=4",
+    "-DCYBERSAND_MASS_BITS=8",
+    "-DCYBERSAND_DELAY_BITS=8",
+    "-DCYBERSAND_LITERAL_TOLERANCE=0"
+  ],
+  "abi": "Injected compile-time sizeof(void*)==4 assertion; Current Cell remains size/alignment8/8; measure pointer/owner sizes rather than importing x86-64 values",
+  "diagnostics": "Retain compiler/cache initialization output; compiler warnings/errors and nonzero exits refuse. Permit only shared:INFO SDK sanity-check lines during compiler --version. Runtime stderr remains strictly empty. No sanitizer coverage claimed.",
+  "execution_order": "Seal all three JS/Wasm asset sets before any case; optional tail8 then16, ascending side and registered state order, followed by three touch modes",
+  "limits": {
+    "concurrency": 1,
+    "compile_timeout_seconds": 300,
+    "case_timeout_seconds": 120,
+    "aggregate_seconds": 1200,
+    "workflow_timeout_minutes": 35,
+    "output_bytes": 67108864
+  },
+  "failure_policy": "Preserve any setup/build/runtime/provenance/accounting/projection failure; no selective retry under this registration. Changed source requires a new version and fresh full collection.",
+  "source_input_changes": false,
+  "timing": false,
+  "acceptance_class": "author validation pending independent review",
+  "not_qualified": [
+    "Godot Web export",
+    "actual browser execution",
+    "all carrier/epoch variants",
+    "native sidecar integration",
+    "restore/streaming",
+    "Wasm sanitizers",
+    "performance",
+    "solver semantics"
+  ],
+  "supersedes": {
+    "id": "mat003-overnight-wasm-node-v1-20261024",
+    "disposition": "SDK sanity-info refusal at compiler version query; zero builds and zero cases",
+    "run": 40056514214,
+    "artifact": 12545975932,
+    "artifact_sha256": "284c467acc40e2efd342e01d5f0f2b74a73fb94606ba6d0d7a786a71188d0721",
+    "reason": "The fresh SDK reports shared:INFO sanity checks on stderr even for --version. Preserve that successful tool initialization output without suppressing it; do not permit runtime diagnostics."
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "kind": "mat003-readback-revision",
+  "registration_id": "mat003-overnight-readback-v4-20261024",
+  "readback_only": true,
+  "candidate_processes_allowed": 0,
+  "builds_allowed": 0,
+  "timing_allowed": false,
+  "validation_class": "author-validation-pending-independent-review",
+  "owner_authorization": {
+    "authorized": true,
+    "reference": "Human instruction in this chat on 2026-10-24: Go ahead with #204 using the eight-hour overnight plan. Work autonomously, open a PR, and do not merge or start #212.",
+    "scope": "One complete author-validation readback under this new registration; no candidate execution or timing. Latest explicit autonomous scope supersedes older requests for further owner confirmation; independent acceptance remains pending."
+  },
+  "source_commit": "e655166989661617cd8d6cb4d58a71b9d88c9467",
+  "source_tree": "c302420be202ac05f393c556375bf4acf7686089",
+  "reader_source_commit": "610325422fc0cec496cf098990c40d5d4c292411",
+  "evidence_sha256": {
+    "authority.json": "fb1abb3b574cb5a35d7f7f535a176ccac884f9e770cc045cbcad76b9d263cdd5",
+    "result.json": "3ac1a9c3ae81b32d47a865174612bcafed01658140e4c56f961b56e6ca7ef3f1",
+    "inventory.json": "8a08b04ef76f23d26ddce6237bd1388b38a5c8082ac506c09f4657869b1b3e82"
+  },
+  "original_verifier_sha256": {
+    "tools/experiments/mat003_correctness/readback.py": "e1dfa359e1d83e0c4797a53a3007476d1e72780596f4393aa376c107a4207a62",
+    "tools/experiments/mat003_correctness/provenance.py": "5c1fdfe77b6cab9bc574f1679e3c37066d528cb3c51778689251b4610e8ad9b8",
+    "tools/experiments/mat003_correctness/world_oracle.py": "466e97cc4416c61875cd82d91bdc14824834b539c333d4a340c30b419dd02f86",
+    "tools/experiments/mat003_correctness/oracle.py": "5e02d9d0192f60e173ee301dcb6606d619aad591dfd9b5153a9118b74733e8ee",
+    "tools/experiments/mat003_correctness/matrix.py": "a3cf8ce4a8141f01b8a3aec3fb3bcc7107e924f8d0fb999a596feb98080d30b0",
+    "tools/experiments/mat003_correctness/storage_oracle.py": "396704351fc507b009bab20029b2b5b162664eeda70933f5b31730b88984f761",
+    "tools/experiments/mat003_correctness/negative.py": "184abf33b4cd9fa98c7bb78a3795b6b1c9922b0342f32e710a3c60c371935b60",
+    "tools/experiments/mat003_correctness/overlay.py": "9224858d773221127c0830f4fcc9b8550ad60f19dafa15d791a353318e584489"
+  },
+  "revised_verifier_sha256": {
+    "tools/experiments/mat003_correctness/readback.py": "45204f0df7fcde406fb127c4791022d49295193b5e8bc963de61880e9ad0c8bc",
+    "tools/experiments/mat003_correctness/provenance.py": "cd6b7f16f8a6538f9e8b0794ee1505ea82085928f4898736e8e17761501e6c71",
+    "tools/experiments/mat003_correctness/world_oracle.py": "b007036867c1fc2d03a224373e331561e8487fef59f1e7bfbac4ad279d6156c4",
+    "tools/experiments/mat003_correctness/oracle.py": "5e02d9d0192f60e173ee301dcb6606d619aad591dfd9b5153a9118b74733e8ee",
+    "tools/experiments/mat003_correctness/matrix.py": "a3cf8ce4a8141f01b8a3aec3fb3bcc7107e924f8d0fb999a596feb98080d30b0",
+    "tools/experiments/mat003_correctness/storage_oracle.py": "396704351fc507b009bab20029b2b5b162664eeda70933f5b31730b88984f761",
+    "tools/experiments/mat003_correctness/negative.py": "88303f04dc0d5fd6556f004e679353e23c61e31c85d46e5d57758d6f5c18f0cd",
+    "tools/experiments/mat003_correctness/overlay.py": "9224858d773221127c0830f4fcc9b8550ad60f19dafa15d791a353318e584489",
+    "tools/experiments/mat003_correctness/verifier_revision.py": "15f16f71e6131c427109107a9af02a655c98d6073b601d9a40e0543af8035a91"
+  },
+  "archive": {
+    "sha256": "5c658fb6a5df41e36e539a442d739d4316e4cfbc8a2460da31ac850bceb0e948",
+    "bytes": 97897664
+  },
+  "coverage": {
+    "cases": 152,
+    "full_endpoints": 992,
+    "metadata_endpoints": 8192,
+    "cell_records": 1164967936,
+    "tick_rows": 1180224,
+    "storage_operations": 1048576,
+    "refusal_attempts": 4096
+  },
+  "limits": {
+    "original_aggregate_seconds": 21600,
+    "recorded_collection_seconds": 1800.1869999999763,
+    "reader_rss_bytes": 2147483648,
+    "concurrency": 1,
+    "overnight_stop_utc": "2026-10-24T09:46:19Z"
+  },
+  "failure_policy": "One launch; preserve complete failure; no selective retry, omission, substitution or evidence mutation. Revised validation is not independent acceptance."
+}

@@ -98,7 +98,13 @@ All historical audit/experiment files, registrations, v4 seal and nine revised
 readers remain byte-unchanged. Retrieval retains the main-approved LCB01 update,
 adds LCB02 and preserves every other prior question object; the frozen32 bytes are
 unchanged. Local documentation, provider, provenance, M11, retrieval and focused
-contracts are checked separately from the hosted runtime gates. Local Windows
+contracts passed separately from the hosted runtime gates. The
+[local validation receipt](mat003-lcb001-integration-2026-10-24/local-validation.json)
+records the source before this receipt, commands, 300-second limits, Python3.12.10,
+new runtime publications, complete log seals and preservation across all five
+stages. Frozen32 and supplementary146 lexical questions all hit a canonical route
+within the first five results; this is retrieval evidence, not answer correctness.
+Local Windows
 S1 CRLF/symlink limitations remain in the earlier record; historical Linux S1
 execution supplies its own platform-qualified result.
 

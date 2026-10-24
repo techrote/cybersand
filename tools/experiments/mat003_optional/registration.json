@@ -1,0 +1,52 @@
+{
+  "schema": 1,
+  "id": "mat003-optional-neutral-storage-20261024",
+  "kind": "untimed-isolated-storage-correctness-and-array-accounting",
+  "source_baseline": "1002b9201006b572180a12cbc4c3b21fc234e8fa",
+  "purpose": "Close the absent/allocated-unread/accessed and clustered/dispersed neutral sidecar exercise gap without changing any World or interpreting payload as physics.",
+  "production_carrier": "unchanged PrecisionStorage uint64, size/alignment 8/8; opaque complete base bits preserved",
+  "neutral_tail_bits": [8, 16],
+  "logical_capacity_bits": [72, 80],
+  "representation": "bounded optional chunk-owned split tail; no contiguous 9/10-byte residency claim",
+  "chunk_side": 128,
+  "resident_sides": [512, 1024, 2048],
+  "states": ["absent", "allocated-unread", "accessed-clustered", "accessed-dispersed"],
+  "cases_per_configuration": 24,
+  "configurations": ["normal", "address-undefined-sanitized"],
+  "builds": 4,
+  "case_processes": 48,
+  "lifecycle_exercise_per_case": "A separate four-chunk specimen checks explicit allocation preflight, invalid coordinates/width, high-tail preservation, copy/move/swap, synthetic split/merge, replacement/reset, reclaim and atomic refusal including injected allocation failure; compare against a dense logical reference.",
+  "operation_stream": {
+    "seed": 204,
+    "operations_per_case": 8192,
+    "schedule": "i mod 8 selects copy, move, swap, replacement, bounded neutral split, merge, field write or read; deterministic xorshift64 chooses source/destination and bounded neutral values",
+    "clustered": "8192 distinct logical cells in the first storage chunk",
+    "dispersed": "the same 8192 logical values round-robin across every resident storage chunk",
+    "allocated_unread": "allocate two zero-filled tail chunks, perform no consumer tail read/write before recording counters",
+    "absent": "zero tail chunks, no implicit allocation; read default zero before recording counters"
+  },
+  "accounting": [
+    "actual base and pointer-vector capacities",
+    "actual allocated tail arrays and logical nonzero counts",
+    "sizeof/alignof base, tail element and owner object",
+    "consumer reads/writes, explicit allocation/refusal/reclaim counts",
+    "dense eager-tail bytes at identical cell count as arithmetic only"
+  ],
+  "not_measured": ["tick time", "throughput", "cache misses", "allocator overhead", "whole-process memory advantage", "fixed-memory performance", "native World integration", "worker equivalence", "solver semantics"],
+  "compiler": "existing LLVM-MinGW 20260826 / Clang 23.1.0 Windows toolchain retained by the prior #204 campaign; record executable hash and exact ordered argv before execution",
+  "normal_flags": ["-std=c++20", "-O2", "-DNDEBUG", "-Wall", "-Wextra", "-Wpedantic", "-Werror"],
+  "sanitizer_flags": ["-std=c++20", "-O1", "-g", "-Wall", "-Wextra", "-Wpedantic", "-Werror", "-fsanitize=address,undefined", "-fno-omit-frame-pointer"],
+  "limits": {
+    "concurrency": 1,
+    "compile_timeout_seconds": 180,
+    "case_timeout_seconds": 120,
+    "aggregate_seconds": 3600,
+    "case_rss_bytes": 2147483648,
+    "output_bytes": 16777216
+  },
+  "failure_rules": "Retain failed builds/cases, stop collection on unexpected exit, diagnostics, bounds, reference mismatch or accounting inconsistency. Any repaired source requires a new versioned registration and a complete fresh collection; no selective retry.",
+  "acceptance_class": "author validation pending independent review",
+  "timing": false,
+  "production_changes": false,
+  "owner_scope": "2026-10-24 autonomous #204 overnight experimental completion; no merge or #212"
+}

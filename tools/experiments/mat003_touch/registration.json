@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "id": "mat003-capture-touch-projection-v1-20261024",
+  "kind": "untimed-current-native-contract-probe",
+  "purpose": "Determine whether completed-tick history alone captures the support-relevant epoch predicate after external mutations at a healthy owner boundary.",
+  "native_baseline": "1002b9201006b572180a12cbc4c3b21fc234e8fa",
+  "production_changes": false,
+  "carrier": "unmodified C64-E8",
+  "fixture": "Existing granular-support test geometry: Wall row y104 for x48..79; Sand rows y100..103; inspect (64,100). No new solver or restore implementation.",
+  "cases": ["serial-1", "phased-1", "phased-4"],
+  "configurations": ["normal", "address-undefined-sanitized"],
+  "native_ticks": 512,
+  "checkpoints": [1, 2, 254, 255, 256, 257, 510, 511, 512],
+  "checkpoint_schedule": [
+    "observe stable support before external mutation",
+    "same-value set_cell_state must remain a noop with unchanged tick/hash/support",
+    "change Sand state_a between ticks, observe support immediately",
+    "restore original logical state before another native tick, observe support again",
+    "after the following native tick, observe supported stability restored"
+  ],
+  "expected_counterexample": "A genuine external write stamps the current World epoch even when no native tick occurred; restoring the previous content does not restore the old stamp. Durable state must capture the actual current-epoch touch predicate at capture, including owner-boundary writes.",
+  "builds": 2,
+  "case_processes": 6,
+  "compiler": "Retained Windows LLVM-MinGW 20260826 Clang23.1.0 and explicit LLD; seal source, compiler, linker and binaries before cases",
+  "normal_flags": ["-std=c++20", "-O2", "-DNDEBUG", "-Wall", "-Wextra", "-Wpedantic", "-Werror", "-pthread"],
+  "sanitizer_flags": ["-std=c++20", "-O1", "-g", "-Wall", "-Wextra", "-Wpedantic", "-Werror", "-pthread", "-fsanitize=address,undefined", "-fno-omit-frame-pointer"],
+  "limits": {"concurrency": 1, "build_timeout_seconds": 180, "case_timeout_seconds": 60, "aggregate_seconds": 900, "process_rss_bytes": 2147483648},
+  "failure_rule": "Stop and retain any unexpected build, diagnostic, runtime, counter or support result; no selective retry under this registration. Changed source requires a new registration.",
+  "timing": false,
+  "acceptance_class": "author validation pending independent review",
+  "not_qualified": ["snapshot restoration", "native streaming", "epoch widening", "whole-game replay", "performance"]
+}
