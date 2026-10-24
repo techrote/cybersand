@@ -5,6 +5,8 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - 'tools/experiments/mat003_correctness/**'
+      - 'tools/experiments/mat003_touch/epoch_model.py'
+      - 'tools/experiments/mat003_touch/epoch-model-registration.json'
       - 'docs/audits/2026-10-23-mat003-readback-verifier-repair.md'
       - 'docs/audits/mat003-correctness-2026-10-23/windows-reentry-readback-registration-v*.json'
       - '.github/workflows/mat003-correctness-verifier.yml'
@@ -29,3 +31,5 @@ jobs:
         run: python3 -B tools/experiments/mat003_correctness/test_verifier_contracts.py
       - name: Run reader-revision provenance contracts
         run: python3 -B tools/experiments/mat003_correctness/test_verifier_revision.py
+      - name: Exercise epoch-projection contract model (not native execution)
+        run: timeout 2m python3 -B tools/experiments/mat003_touch/epoch_model.py
