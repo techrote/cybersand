@@ -253,7 +253,8 @@ def _kill_process_tree(process: subprocess.Popen) -> None:
         process.wait()
 
 
-def run_case(godot: str, case: Case, output_dir: Path, role: str) -> tuple[dict, bool]:
+def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
+             env: dict[str, str] | None = None) -> tuple[dict, bool]:
     log_path = output_dir / (case.name + ".log")
     snapshot_path = output_dir / (case.name + ".timeout-diagnostics.txt")
     command = case_command(godot, case)
@@ -271,7 +272,7 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str) -> tuple[dict,
                 if sys.platform == "win32" else {"start_new_session": True}
             )
             process = subprocess.Popen(
-                command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, **options,
+                command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, env=env, **options,
             )
             pid = process.pid
             try:
