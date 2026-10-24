@@ -83,6 +83,13 @@ passed 27 normal cases with assertions and stack checks, and archived-data
 comparison matches the Windows logical outcomes. Its three failed precursor
 profiles remain preserved. It does not qualify Godot, a browser or all carriers.
 
+The separate unchanged **17-arm S0 storage fixture** also passed on Wasm32,
+with 49,775,273 assertions and exact byte-record comparison to accepted Linux.
+Its 131,080-tick counter exercises a synthetic epoch primitive. It does not
+qualify the native World carrier matrix or native E16 rollover on Wasm, nor
+Godot/browser execution, sanitizers or performance. Packed9/10-byte and aligned
+16-byte layouts remain distinct; split descriptor sizes are reported per ABI.
+
 The [remaining acceptance inventory](../research/mat003-remaining-acceptance.md)
 separates retained evidence, conditional recommendations and the still-open
 independent, platform, performance and integration gates for #204.

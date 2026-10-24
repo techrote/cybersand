@@ -71,7 +71,52 @@ expiry **2027-01-22T03:14:20Z**. It is also preserved outside Git locally.
 The result remains **author validation pending independent review**. This is
 standalone specimen portability, not all-carrier or application acceptance.
 
-## Failed profiles preserved
+## Separate unchanged 17-arm S0 storage qualification
+
+The [storage-only registration](../../tools/experiments/mat003_optional/wasm-storage-registration.json)
+preceded a separate new platform collection. It reuses the original S0 carrier,
+fixture and byte-record validator unchanged, with their individual SHA-256 seals.
+This is not a repeat of an accepted platform result or a retry of v4.
+[Run 40058790056](https://github.com/techrote/cybersand/actions/runs/40058790056),
+job **120767556083**, passed at
+`dc62b243eef07a183318eff40ee5321242595eaa`: one normal JS/Wasm build and one
+process covering **all 17 arms / 49,775,273 assertions**. The same pinned SDK/Node,
+fixed 256 MiB memory, 2 MiB stack and assertion/stack checks apply. Compile/case/
+aggregate bounds are 300/180/600 seconds, output 32 MiB, concurrency one.
+
+| Physical family | Observed Wasm size/alignment | Qualification |
+|---|---|---|
+| Source/word | 8/8 bytes | Current source E8 and matched E8/E16 words |
+| Padded/aligned | 16/8 bytes | Padded C64 and aligned C72/C80, E8/E16 |
+| Packed C72 | 9/1 bytes | E8/E16, safe explicit byte access |
+| Packed C80 | 10/1 bytes | E8/E16, safe explicit byte access |
+| Split C72/C80 | Base 8/8; tails 1/2 bytes | E8/E16; four-chunk metadata 56 bytes versus Linux 72 |
+
+The [read-only storage comparison](../../tools/experiments/mat003_optional/verify_wasm_storage.py)
+verifies exact source/commands/assets and the unchanged S0 validator, then compares
+**every lossless full-payload and width-only record** with the hash-pinned accepted
+Linux normal archive. All arm fields match except the explicitly observed split
+descriptor size. Four resealed negatives refuse an omitted arm, consistent altered
+records with recomputed FNV digests, imported x64 descriptor size and changed flags.
+The original S0 validator's 14 failure-contract tests also pass locally.
+
+The S0 output's **131,080 ticks refer to the synthetic epoch primitive**, not
+native World. They do not add a native E16 rollover result on Wasm. This collection
+also provides no sanitizer, Godot/browser or performance qualification.
+
+The [compact summary](mat003-overnight-2026-10-24/wasm-storage-summary.json) retains
+actual ABI/check/identity observations. Full artifact
+[12546860679](https://github.com/techrote/cybersand/actions/runs/40058790056/artifacts/12546860679)
+is **492,325 bytes**, SHA-256
+`8da9ec411af466c1c85487e3987641eb0e36fef2cac1a0a466177a94d9dd95bd`,
+expiry **2027-01-22T03:33:27Z**, and is also preserved locally.
+
+```text
+python -B tools/experiments/mat003_optional/verify_wasm_storage.py <storage-artifact>/cases --source-commit dc62b243eef07a183318eff40ee5321242595eaa --linux-archive <accepted-s0.zip>
+python -B tools/experiments/mat003_optional/test_verify_wasm_storage.py <storage-artifact>/cases --source-commit dc62b243eef07a183318eff40ee5321242595eaa --linux-archive <accepted-s0.zip>
+```
+
+## Failed initial 27-case profiles preserved
 
 No failed attempt was selectively retried or overwritten. Each successor
 registration preceded its changed collector/profile and restarted the full
