@@ -3,6 +3,7 @@
 #include "cybersand/material.hpp"
 #include "cybersand/physics_diagnostics.hpp"
 #include "cybersand/interaction_policy.hpp"
+#include "cybersand/liquid_solver_policy.hpp"
 #include "cybersand/transport_policy.hpp"
 #include "cybersand/scheduler_geometry.hpp"
 #include "cybersand/settled_world_discovery.hpp"
@@ -52,6 +53,10 @@ struct WorldConfig {
     InteractionPolicy interaction_policy{};
     TransportPolicy transport_policy{};
     WaterExperimentPolicy water_experiment_policy{};
+    // Immutable per-World/per-material liquid solver policy (LCB-001 #200).
+    // Only each liquid's current default is admitted by this build; anything
+    // else is refused at construction and never reaches a kernel.
+    LiquidSolverPolicy liquid_solver_policy{};
 };
 
 struct ChunkCoord {
@@ -162,6 +167,9 @@ public:
     World& operator=(World&&) noexcept;
 
     [[nodiscard]] const WorldConfig& config() const noexcept;
+    [[nodiscard]] const LiquidSolverPolicy& liquid_solver_policy() const noexcept {
+        return config_.liquid_solver_policy;
+    }
     [[nodiscard]] SimulationBackend backend() const noexcept;
     [[nodiscard]] Material get(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] Material stored_material(std::int64_t x, std::int64_t y) const noexcept;

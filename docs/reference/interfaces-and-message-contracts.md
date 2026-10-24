@@ -586,6 +586,21 @@ the same owner-local host directly. Existing #19 keys are compatibility projecti
 of the host's action ledger. Full schema, units, capacities and export limitations:
 [MicroScenarios](../operations/microscenarios.md).
 
+### LCB-001 liquid solver policy adapter (experimental)
+
+`CyberDemoBridge.build_liquid_policy_world(world, rectangles, profile, policy,
+water_fills, liquid_policy)` is `build_water_feel_world` plus a flat
+`PackedInt32Array` policy request. The request is decoded and admitted before any
+World is built. A refusal returns false, keeps the live World, its receipt and its
+`session_generation`, and exposes `{code, material, detail}` through
+`get_last_liquid_policy_refusal()`. `validate_liquid_policy()` has no side
+effects, and `default_liquid_policy()` returns the build's explicit default
+request. `CyberNativeCellWorld.get_liquid_solver_policy()` returns the applied
+receipt. These calls share the serialized-owner rule of the other bridge
+construction methods. The canonical contract, refusal table and receipt fields are
+in the [family policy](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24);
+the C entry points are experimental and not a frozen ABI.
+
 ### Read-only native MicroScenario inspection
 
 The MS-001 adapter preparation adds `CyberDemoBridge.inspect_cell(world, point)`

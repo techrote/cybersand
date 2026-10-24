@@ -12,11 +12,18 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
-Current MAT-003: [complete152-process collection and Astra readback refusal](audits/2026-10-23-mat003-reentry-correctness-attempt.md). No correctness acceptance or rerun; prior stage summaries below are historical.
+Current integration baseline: [PR #239](https://github.com/techrote/cybersand/pull/239)
+landed the bounded [#200 policy foundation](reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24)
+on main `1e032e4`. The [MAT-003 stack reconciliation](audits/2026-10-24-mat003-lcb001-integration-checkpoint.md)
+imports that main baseline while retaining the experimental records below. Fresh
+Native, Godot and materialized provenance checks are required on the reconciled
+heads; #212 and pressure/inertial ports remain held.
 
-Latest MAT-003 source status: [resident reentry/scratch repair and independent source review](audits/2026-10-23-mat003-resident-reentry-repair.md). Fresh build/binary/registration gates remain held; no repair execution or timing. Earlier checkpoints below are historical stages.
+Historical MAT-003 collection (2026-10-23): [complete152-process collection and Astra readback refusal](audits/2026-10-23-mat003-reentry-correctness-attempt.md). No correctness acceptance or rerun; prior stage summaries below are historical.
 
-The latest [containment replacement runtime attempt](audits/2026-10-23-mat003-containment-correctness-attempt.md) stopped at resident reentry after clear256, with15 exit0 processes and136 unattempted cases. Full correctness remains refused; prior evidence is retained.
+Historical MAT-003 source checkpoint: [resident reentry/scratch repair and independent source review](audits/2026-10-23-mat003-resident-reentry-repair.md). At that source-only stage, fresh build/binary/registration gates were held and no repair execution or timing had run. Later dated records preserve the subsequent outcomes.
+
+The historical [containment replacement runtime attempt](audits/2026-10-23-mat003-containment-correctness-attempt.md) stopped at resident reentry after clear256, with15 exit0 processes and136 unattempted cases. Full correctness remains refused; prior evidence is retained.
 
 The [isolated containment repair and blocked replacement](audits/2026-10-23-mat003-containment-replacement.md) follow the retained Windows failure. Source review is complete; new builds/binary admission and execution authority are still required. That source-only stage preceded the retained replacement failure.
 
@@ -95,7 +102,7 @@ moving Above/Below, choosing viewpoints, editing native cells and capturing imag
 | Find a building material's ID, reactions or finish (IDs 81+) | [Building material catalogue](systems/building-material-catalogue.md), [interaction substrate](systems/intermaterial-interactions.md#mat-002-building-material-pass) |
 | Design a material's look or a procedural/generative fill | [Material visual pattern library](systems/material-visual-pattern-library.md), [effects register](reference/material-effects-register.md), [appearance contract](systems/material-appearance-and-rendering.md) |
 | Understand the persistent-reaction and body-mask wake repair | [Material cadence](systems/materials-and-rule-kernels.md#how-do-persistent-reactions-survive-sleep), [activity lifecycle](systems/activity-dirty-regions-and-waking.md), [MAT-001 evidence](audits/2026-10-18-mat001-material-reaction-progress.md) |
-| Plan the Liquid Comparison Build: solver families, Water comparison, Dam Break and mixed-liquid fixtures, manual UX | [Solver-family policy (Planned)](architecture/liquid-solver-family-policy.md), [capability matrix](reference/liquid-solver-capability-matrix.json), [Water comparison and fixtures](operations/lcb-water-comparison-and-fixtures.md), [manual UX flow](operations/lcb-manual-comparison-ux.md), [scenario catalogue and runner](operations/lcb-scenario-catalogue.md), [Gate C/D/E evidence](audits/2026-10-23-lcb000-gates-cde-design-evidence.md), [scenario qualification evidence](audits/2026-10-23-lcb003-scenario-qualification.md), [state-transition matrix](architecture/liquid-state-transition-matrix.md), [pressure/inertial handoff](architecture/lcb-pressure-inertial-handoff.md), [physics mechanism report](audits/2026-10-23-lcb-physics-mechanism-report.md) |
+| Plan the Liquid Comparison Build: solver families, Water comparison, Dam Break and mixed-liquid fixtures, manual UX | [Solver-family policy (Approved design; native policy foundation Current)](architecture/liquid-solver-family-policy.md), [#200 foundation evidence](audits/2026-10-24-issue-200-policy-foundation.md), [capability matrix](reference/liquid-solver-capability-matrix.json), [Water comparison and fixtures](operations/lcb-water-comparison-and-fixtures.md), [manual UX flow](operations/lcb-manual-comparison-ux.md), [scenario catalogue and runner](operations/lcb-scenario-catalogue.md), [Gate C/D/E evidence](audits/2026-10-23-lcb000-gates-cde-design-evidence.md), [scenario qualification evidence](audits/2026-10-23-lcb003-scenario-qualification.md), [state-transition matrix](architecture/liquid-state-transition-matrix.md), [pressure/inertial handoff](architecture/lcb-pressure-inertial-handoff.md), [physics mechanism report](audits/2026-10-23-lcb-physics-mechanism-report.md) |
 | Investigate deep Water surge, hybrid Water sheets, trapped gas or decompression | [Water hybrid/pressure extension](operations/water-hybrid-pressure-extension-programme.md), [WEX-002 blocked disposition](audits/2026-09-24-wex002-water-sheet-blocked-disposition.md), [WEX-003 gas-region feasibility](research/lumped-gas-region-pressure-bookkeeping.md), [WEX-004 narrow-use disposition](audits/2026-09-24-wex004-decompression-disposition.md), [WEX-005 synthesis and #45 NARROW disposition](audits/2026-10-23-wex005-water-evidence-synthesis.md), [LCB-000 Gate A pressure-experiment admission](audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md), then [Water Current semantics](systems/water-design.md) and [soliding programme](operations/soliding-programme.md) |
 | Investigate powder penetration, barrel sinking or soliding | [Measured baseline tooling](operations/physics-characterisation.md), [dated results](audits/2026-09-09-physics-characterisation.md), [future soliding plan](operations/physics-characterisation-plan.md) |
 | Build or validate | [Build guide](operations/local-build-and-validation.md), [test selection](operations/testing-validation-and-replay.md), [dated evidence](reference/validation-evidence.md) |
@@ -253,12 +260,13 @@ stays read-only with respect to material authority.
 
 MAT-003 design continuation: [semantic state-schema proposal](research/mat003-state-schema-proposal.md) and [ADR-015 carrier adoption gates](decisions/ADR-015-material-state-schema-and-carrier-gates.md) remain Planned; production and timing authority are unchanged.
 
-Latest [resident reentry Windows build and replacement execution gate](audits/2026-10-23-mat003-reentry-build-admission.md):32 clean builds; no qualification cases or timing.
+Historical [resident reentry Windows build and replacement execution gate](audits/2026-10-23-mat003-reentry-build-admission.md):32 clean builds; no qualification cases or timing.
 
 Latest MAT-003 runtime disposition: [152-process replacement and Astra readback refusal](audits/2026-10-23-mat003-reentry-correctness-attempt.md). All candidate processes exited0, but the frozen reader rejected an overconstrained sleeping witness. No full correctness acceptance, rerun or timing; prior stage summaries are historical.
 
 ## LCB-000 final admission status
 
-For final Gate A–E PASS, the landed stack and the owner hold on #200/#212, read
+For final Gate A–E PASS, the landed stack, the bounded #200 policy foundation and the remaining
+owner hold on #212 and the #200 pressure backend, read
 the [current roadmap checkpoint](reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23)
 and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconciliation.md).
