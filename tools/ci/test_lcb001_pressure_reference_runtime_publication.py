@@ -36,7 +36,7 @@ SUCCESS_LOGS = {
     "test_lcb_fixture_manifests": "LCB fixture manifests: 26 assertions, 0 failures\n",
     "test_lcb_scenario_catalogue": "LCB scenario catalogue: 25 scenarios, 774 assertions, 0 failures\n",
     "test_water_feel_integration": "WATER_FEEL_INTEGRATION: 24 policy cases + 70 scenario builds/reset/invalid/actions/RG8/authority passed default_hash=123456789\n",
-    "test_lcb_pressure_reference": 'LCB_PRESSURE_REFERENCE: 250 assertions; 0 failures; completed={"native_dispatch":true,"no_fallback":true,"gas_identity":true,"gas_merge_split":true,"vent_reseal":true,"empty_only_gas":true,"quantity_ledger":true,"physical_state_hash":true,"save_roundtrip":true,"refusal_isolation":true,"default_goldens":true,"worker_parity":true}\\n',
+    "test_lcb_pressure_reference": 'LCB_PRESSURE_REFERENCE: 250 assertions; 0 failures; completed={"native_dispatch":true,"no_fallback":true,"gas_identity":true,"gas_merge_split":true,"vent_reseal":true,"empty_only_gas":true,"quantity_ledger":true,"physical_state_hash":true,"save_roundtrip":true,"refusal_isolation":true,"default_goldens":true,"worker_parity":true}\n',
 }
 
 
@@ -124,7 +124,7 @@ class PressureAdmissionTests(RepositoryFixture):
     def test_request_is_bound_to_original_source(self):
         subject.require_publication_request(self.source)
         path = self.root / subject.REQUEST
-        path.write_text('{"scope":"not pressure"}\\n', encoding="utf-8", newline="\\n")
+        path.write_text('{"scope":"not pressure"}\n', encoding="utf-8", newline="\n")
         with self.assertRaisesRegex(RuntimeError, "differs from source commit"):
             subject.require_publication_request(self.source)
 
@@ -133,7 +133,7 @@ class PressureAdmissionTests(RepositoryFixture):
         candidate.unlink()
         with self.assertRaisesRegex(RuntimeError, "regression is not implemented"):
             subject.require_publication_request(self.source)
-        candidate.write_text("candidate fixture\\n", encoding="utf-8", newline="\\n")
+        candidate.write_text("candidate fixture\n", encoding="utf-8", newline="\n")
         (self.root / subject.EVIDENCE).unlink()
         with self.assertRaisesRegex(RuntimeError, "evidence file is missing"):
             subject.require_publication_request(self.source)
@@ -282,7 +282,7 @@ class EvidenceTests(unittest.TestCase):
                     dict(sections, no_fallback=False), [], "done"]
         for value in variants:
             with self.subTest(sections=value):
-                self.write_log(name, prefix + "completed=" + json.dumps(value) + "\\n")
+                self.write_log(name, prefix + "completed=" + json.dumps(value) + "\n")
                 with self.assertRaises(RuntimeError):
                     subject.verify_case_results(self.root, self.report)
 
