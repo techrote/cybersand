@@ -119,6 +119,9 @@ public:
     [[nodiscard]] std::int64_t get_physical_state_hash_version() const;
     [[nodiscard]] std::int64_t get_physical_state_format_version() const;
     [[nodiscard]] Dictionary inspect_inertial_cell(Vector2i point) const;
+    // Constant-work exclusive-owner copy of the cumulative native IN ledger.
+    // Decimal strings preserve full signed/unsigned 64-bit values through JSON.
+    [[nodiscard]] Dictionary get_inertial_ledger() const;
     [[nodiscard]] Dictionary inspect_gas_compartments() const;
     [[nodiscard]] Dictionary inspect_pressure_cell(Vector2i point) const;
     [[nodiscard]] Dictionary get_pressure_flow_ledger() const;

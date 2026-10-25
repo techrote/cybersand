@@ -74,6 +74,13 @@ inline Dictionary statistics(const cybersand::World& world, const cybersand::Tic
     values["visited_cells"] = static_cast<int64_t>(last.visited_cells);
     values["moved_cells"] = static_cast<int64_t>(last.moved_cells);
     values["scheduled_cores"] = static_cast<int64_t>(last.scheduled_cores);
+    values["worker_threads_configured"] = static_cast<int64_t>(config.worker_threads);
+    // Existing phased-dispatch TickStats measurement: maximum distinct threads
+    // in one dispatch of the completed tick, not a sum across dispatches.
+    // Nonempty inline phases count one; no measured dispatch counts zero.
+    // SerialInPlace does not measure participation, so its raw zero is unavailable.
+    values["worker_threads_observed"] = static_cast<int64_t>(last.worker_threads_observed);
+    values["worker_threads_observed_available"] = config.backend == cybersand::SimulationBackend::PhasedInPlace;
     values["chunk_allocations"] = static_cast<int64_t>(last.chunk_allocations);
     values["temperature_field_allocations"] = static_cast<int64_t>(last.temperature_field_allocations);
     values["deferred_events_processed"] = static_cast<int64_t>(last.deferred_events);
@@ -85,7 +92,7 @@ inline Dictionary statistics(const cybersand::World& world, const cybersand::Tic
     out["limits"] = limits;
     out["values"] = values;
     out["phase_jobs_last_tick"] = phases;
-    out["scope"] = "completed native tick counts and current storage; phase jobs are not per-worker utilization";
+    out["scope"] = "completed native tick counts and current storage; observed worker threads are the maximum distinct participants in one dispatch of the phased backend (inline phases count one, no measured dispatch counts zero); SerialInPlace participation is unmeasured; phase jobs and participant counts are not per-worker utilization";
     Array unavailable;
     unavailable.append("total heap allocations");
     unavailable.append("per-worker utilization");
