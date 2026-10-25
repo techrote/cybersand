@@ -10,6 +10,28 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## LCB-004 native apparatus: bounded source and Windows proof
+
+**Current local apparatus, scientific acceptance Planned:** the
+[native apparatus](../operations/lcb-native-scientific-apparatus.md) exports
+real actor-free prepared CYPS inputs and checks all100 resident chunks,
+Water/species quantity and all19 IN ledger fields at completed/post-event
+boundaries. The [dated Windows O1 checkpoint](../audits/2026-10-25-lcb004-native-observation-apparatus.md)
+records three fresh30-tick host precursors, six1/4-worker Native children,
+all31 host baselines, exact parity and a corrected-reader six-positive/25-negative
+raw replay. The initial legacy0 quiet-cache mismatch and schema/helper failures
+remain explicit; no engine/law/default/fixture or117-record promotion follows.
+
+Actual Linux and Windows Release scoped CI/review, current provenance and the
+unexecuted O3 Makefile target remain apparatus merge gates. Full common-Water
+four-family characterization, residual/step witness with prospectively fixed
+N/stop/window/repeats/budgets, integrated component/total performance,
+full-host/manual/packaging and #203 acceptance remain Planned. No long-horizon
+campaign, new residual threshold or runtime publication is claimed by the short
+proof. Preserve protected radius2 FM versus matched radius3, pressure-variant
+equivalence versus distinct-family differences, and static rest versus exact
+continuation. Additional Web testing remains deferred by the owner.
+
 ## Post-publication identity-test correction
 
 **Current bounded test overlay, new final-head gates pending:** actual Linux

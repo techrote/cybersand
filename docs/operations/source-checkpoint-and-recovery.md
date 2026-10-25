@@ -10,6 +10,27 @@ related-documents: [local-build-and-validation.md, ../reference/validation-evide
 
 # Source checkpoint and recovery
 
+## Recoverable local scientific apparatus overlay
+
+The uncommitted science checkout is
+`C:/Users/_/.codex/worktrees/lcb004-science/khybersand`, branch
+`codex/lcb004-science`, base `dc2eee9408b959956153608a7ee6d212a5d21672`.
+The [apparatus ledger](../audits/2026-10-25-lcb004-native-observation-apparatus.md)
+binds each source SHA and the standalone O1 binary, actual E3/B54 runtime
+payloads, source/compiler maps, immutable precursors, raw outputs and failures.
+Its retained external root is `C:/Users/_/.codex/tmp/lcb004-science-native-v1`;
+`portable-harness-v1/final-freeze-coverage-corrected-v2/SOURCE-FREEZE.json`
+has SHA256 `fe892f4e88b8f7187ba6ff6d55775cde6c3a87121129208a85dedd46fe5dabbe`.
+These are recovery evidence locations, not committed build artifacts or a
+replacement for the separate pinned companion workspace.
+
+The final reader/harness proof re-reduces the original63.328s six-child cohort
+without rerunning the engine. Keep the earlier24-guard proof, accepted coverage
+float counterexample, initial two legacy hashes and protocol amendment intact.
+No Native core/ABI/default/fixture/registry or runtime-manifest rewrite belongs
+to this overlay. Actual Linux and Windows Release scoped CI and independent
+review remain before merge; O1 Windows proof does not qualify the O3 target.
+
 ## Recoverable post-publication identity-test overlay
 
 The current App checkpoint is ea96 plus exactly two frozen GDScript test changes,

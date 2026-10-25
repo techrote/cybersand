@@ -10,6 +10,39 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Bounded native scientific apparatus
+
+The [apparatus guide](lcb-native-scientific-apparatus.md) owns the standalone
+consumer and portable prepare/run/replay interface; the [dated O1 Windows
+record](../audits/2026-10-25-lcb004-native-observation-apparatus.md) owns actual
+compiler, binary, runtime and failure identities. Current local qualification
+is LLVM-MinGW23.1.0 `-O1 -g`, three actual Godot30-tick precursors and six Native
+children at120s each. It checks complete resident authority, all31 host
+baselines, worker parity and independently closed ledgers. The corrected-reader
+six-positive/25-negative replay is a reduction of those retained outputs.
+
+`make lcb-science` now builds the separate Release consumer with the existing
+`-O3 -DNDEBUG -flto` flags. **This target has not been executed by the O1
+record.** Actual Linux and Windows Release scoped CI is required before
+apparatus merge; no local Windows result substitutes for that matrix.
+Pure source/accounting guards can be run without physics output:
+
+```text
+make lcb-science-apparatus-test
+python -B -m unittest discover -s tools/lcb -p test_qualify_science_apparatus.py
+```
+
+The first command runs the producer/reducer tests; the second runs the
+portable-runner identity tests. `qualify_science_apparatus.py run` requires
+explicit Godot/Native/Rapier/consumer/compiler paths, a complete compiler-source
+map and build receipt, explicit shared libraries where needed and a new
+external output directory. It builds nothing, preserves strict child logs
+and never retries or overwrites. `replay` executes no engine/Godot process.
+Current manifest-native equality permits the published runtime to prepare
+inputs while historical build-input/host/module/script qualifications remain
+separate. This apparatus does not publish a runtime, run a full scientific
+campaign or establish Web/visual/full-host acceptance.
+
 ## Published and development identity-test controls
 
 The [two-test correction ledger](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)

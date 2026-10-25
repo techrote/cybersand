@@ -10,6 +10,27 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Local LCB-004 apparatus checkpoint — 2026-10-25
+
+Read the [native observation guide](lcb-native-scientific-apparatus.md) and
+[dated apparatus ledger](../audits/2026-10-25-lcb004-native-observation-apparatus.md)
+before extending scientific execution. Source is dc2eee94 plus a local
+apparatus-only delta; Native core/Cell/laws/defaults/fixtures and117 registry
+records remain unchanged. Actual Windows O1 proof covers three real30-tick
+precursors and six strict Native children, complete100-chunk census, all31 host
+baselines and worker parity. Corrected reader1544c22e/harness4643dc6c re-reduce
+that same cohort with six positives/25 intended refusals; they are not new
+engine executions. The prepared/restored legacy0 mismatch and all schema/
+LFS/PATH/gate helper failures remain preserved, with physical authority exact.
+
+Next obtain source-matched Linux and Windows Release scoped CI/review and
+current docs/provenance before apparatus merge. The new Makefile O3 target
+has not been executed by this O1 proof. Only then start a separately registered
+scientific campaign with fixed fixtures, N/stop/window/repeats/budgets; no
+residual threshold or long horizon has been accepted here. Keep protected FM,
+PF variant equivalence, distinct-family physics and full-host acceptance
+separate. Additional Web testing remains owner-deferred after the epic.
+
 ## Post-publication two-test correction — 2026-10-25
 
 Actual Linux run40232042725 at ea96/checkout56bd fails host34/1 and owner28/1

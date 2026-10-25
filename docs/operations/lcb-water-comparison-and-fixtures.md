@@ -122,6 +122,17 @@ interaction_policy, workers, interest/execution, platform/runtime}`.
 - A comparison is **matched** only when every field except `policy_hash` (and,
   for variant equivalence, the variant) is identical.
 
+## Native observation apparatus boundary
+
+The [native scientific apparatus](lcb-native-scientific-apparatus.md) now
+consumes the real prepared fixture/CYPS path for complete resident accounting
+and short Godot/Native continuation checks. Its [dated Windows O1 evidence](../audits/2026-10-25-lcb004-native-observation-apparatus.md)
+qualifies a bounded method, not this fixture's1800-tick candidate screens or
+new residual thresholds. Actual Linux/Windows Release CI and separately
+preregistered long-horizon common-Water/family qualification remain required.
+The original fixture bytes, measured results and117 registry classifications
+stay unchanged; fixed interest remains enabled by the real host.
+
 ## Protected Dam Break: `lcb.dam.water.freemass.reference.v1` (Gate E)
 
 **Definition (frozen):**
@@ -142,13 +153,24 @@ pins that hash, so any edit fails until a new version is registered.
 | Runout | dry floor `x 240..984` (744 cells) |
 | Release | `erase` of the whole gate at tick 0. Tick-0 observations precede tick-0 events |
 | Policies | Water `[1,8,12,0]` (mass8, coherence12, rest v1); transport **Baseline**; interaction default; adhesion on |
-| Execution | `fixed`; cadence LOD **off**; interest fixed `[16,16,992,272]`; simulation window off in the runner |
+| Execution | `fixed`; cadence LOD **off**; interest fixed `[16,16,992,272]`; the host enables the fixed simulation window before initial observation and before each native tick |
 | Inputs | none after tick 0 in controlled runs; no player, bodies or tools |
 | Seed | 0 (the definition has no stochastic setup) |
 | Horizon | 1,800 ticks |
 | Observations | total Water at 0/1800; near band at 30; downstream at 60; near/middle/far bands at 120/240; reservoir at 240/480/1800 (13 total, within the area budget) |
 | Conditions | `complete` if total at 1800 = 7,833,600; `fail` if reservoir at 480 exceeds the initial total. **`complete` is an accounting criterion only.** Surge and front metrics that stop a conserving but immobile candidate from passing are registered separately for #200/#212. |
 | Camera / presentation | origin `[0,0]`; regions: reservoir, gate, downstream and three bands; normal rendering, no smoothing claim |
+
+**Source correction, 2026-10-25:** the former table text "simulation window off
+in the runner" described only the runner's initial setter. In the ordinary
+runner, `host.install` calls `apply_interest`; that function enables the window
+and applies the fixed region, and `before_tick` repeats the selection. Controlled
+prepared setup installs the same final selection before receipt capture. With
+core64 the selected core range is x0..15/y0..4; the applied range latches at tick
+entry. The original dated results, fixture bytes, producer revisions, hashes
+and117 registry classifications remain unchanged. New apparatus retains actual
+requested/selected/applied regions and never interprets the old wording as an
+unrestricted-world control.
 
 **Measured Current-default control (2026-10-23, Windows):** outcome
 `complete`; 1/4-worker identical.
