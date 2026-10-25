@@ -15,7 +15,9 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 Independent review at `98595ac8` reproduces omitted body feedback from resting
 Brine IN. PR #250 stays Draft while the [bounded correction and its failed
 controls](../audits/2026-10-25-lcb005-pressure-union-integration.md#mandatory-resting-brine-body-contact-correction)
-receive fresh native/sanitizer/Godot proof and sequence3 publication. The source
+receive sequence3 publication and full ready gates. Local source `68f74906`
+already passes LLVM154, focused sanitizer29 and fresh Windows import plus six
+selected Godot cases, including IN10192/all six sections. The source
 repair changes contact observation only; numerical motion, damping and codec
 contracts remain intact. The earlier sequence2 artifacts remain preserved and
 do not qualify this correction. Do not treat zero velocity as permission to

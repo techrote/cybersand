@@ -18,9 +18,12 @@ maximum-damping IN omit it. The [union correction record](../audits/2026-10-25-l
 preserves that counterexample and the new regression's failing control. The
 repaired focused native case passes, and a non-author rerun passes18 contact
 cohorts plus680 arithmetic cases across all17 damping values without changing
-numeric state/ledger results. Full native/sanitizer, fresh Godot and sequence3
-publication remain required; PR #250 stays Draft and sequence2 artifacts are
-not relabelled as corrected runtime evidence.
+numeric state/ledger results. Fresh `68f74906` passes LLVM154 ordinary, PF15/IN13,
+seven actual byte oracles and focused ASan/UBSan29 with ordinary1MiB stack, plus
+a133-input DLL/import and six selected Windows Godot cases. IN reports10192/all
+six strict sections and ten explicit resting-contact traces. Sequence3 target-OS
+publication and full ready gates remain required; PR #250 stays Draft and
+sequence2 artifacts are not relabelled as corrected runtime evidence.
 
 ## Moving-body pressure gas blocker — 2026-10-25
 

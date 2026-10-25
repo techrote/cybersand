@@ -24,9 +24,11 @@ momentum/loss ledgers, sleep, sidecar and codec identity remain unchanged.
 
 The [dated union record](../audits/2026-10-25-lcb005-pressure-union-integration.md#mandatory-resting-brine-body-contact-correction)
 preserves the failed native and runtime controls. Published sequence2 runtimes
-still contain the omission. PR #250 stays Draft until the repair receives fresh
-native/sanitizer/Godot proof, source-matched sequence3 publication and full
-ready-PR gates. Earlier publication and numerical-law evidence retain their
+still contain the omission. Fresh local LLVM154, focused ASan/UBSan29 and a
+new Windows DLL/import plus six selected Godot cases now pass at `68f74906`;
+the IN case reports10192 assertions/all six sections and ten explicit resting
+contact traces. PR #250 stays Draft pending source-matched sequence3 publication
+and full ready-PR gates. Earlier publication and numerical-law evidence retain their
 original source and scope; no Water-IN or full-host qualification follows.
 
 ## What executes at this native checkpoint?
