@@ -2,7 +2,7 @@
 title: Brine inertial cellular reference
 status: Current
 document-kind: reference
-scope: Native opt-in Brine IN checkpoint and separately qualified integrated application-host route; defaults retained, no Water-IN or runtime-publication qualification
+scope: Opt-in Brine IN native law, standalone Godot instance/readback and separately qualified bounded application-host routes; defaults retained, no Water-IN or full host/platform qualification
 canonical-for: [inertial-cellular-v1-brine]
 last-reviewed: 2026-10-25
 related-documents: [lcb-pressure-inertial-handoff.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb005-native-brine-checkpoint.md]
@@ -22,7 +22,7 @@ qualify that local Windows native headless scope. The native evidence below
 retains its original checkpoint boundaries. Published runtimes, complete #202
 constructors, actual browsers and owner feel remain open.
 
-**Current on the LCB-005 branch only:** explicitly selecting Brine material24 / `inertial_cellular_v1/reference` executes retained signed motion and subcell accumulators. The default Brine CellularYield law and every other default remain unchanged. Water IN, alternate IN materials, cached/dormant IN variants, Godot presentation and released native artifacts are not qualified by this checkpoint. The [dated evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) names the base, local input seal, executable and actual tests. This is neither full #212 completion nor owner feel acceptance.
+**Current on the LCB-005 branch only:** explicitly selecting Brine material24 / `inertial_cellular_v1/reference` executes retained signed motion and subcell accumulators. The default Brine CellularYield law and every other default remain unchanged. Water IN, alternate IN materials, cached/dormant IN variants, full application integration and released native artifacts are not qualified by this checkpoint. The later [standalone adapter proof](../audits/2026-10-25-lcb005-standalone-adapter.md) separately qualifies copied instance values and explicit construction geometry on a local Windows runtime. The [dated evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) names the base, local input seal, executable and actual tests. This is neither full #212 completion nor owner feel acceptance.
 
 The source owners are `native/include/cybersand/inertial_cellular.hpp`, `native/src/world_inertial.inc` and narrow integration in `World`. Shared pair chemistry precedes the Brine yielding-liquid motion gate. The implementation contains no pressure/head term and applies no Rapier force.
 
@@ -61,6 +61,63 @@ Non-IN Worlds keep physical hash2 and CYPS2 field emission. IN Worlds use instan
 `capture_native_facts` remains the exclusive native boundary. It adds family4/state-contract1/extension-identity1 with the complete actual parameter identity digest through the existing outer receipt-v1 extension field. Its physical hash version comes from the actual instance. Host source/runtime claims remain explicitly unverified. Exact continuation retains clocks, actual epochs, activity/deadlines, interest and pending work; content plus completed tick does not reconstruct those obligations. Host-owned masks/actors and settled discovery retain their existing persistence refusals/ownership limits. This does not implement GEN-006 streaming.
 
 Static-rest observations require zero vx/vy/ax/ay and stable physical content. The complete continuation hash still changes with advancing clocks. The shared diagnostic projections are now integrated on this IN branch: `PressureVariantEquivalenceV1` normalizes only the PF implementation variant, and `QuiescentPhysicalContentV1` additionally excludes declared clocks, epochs, activity aging and cumulative quantity diagnostics. Both retain the actual IN parameter identity and every vx/vy/ax/ay field, including signed subcell state with identical visible pixels. They bind the actual instance version3; non-IN instances retain version2. IN ledgers remain separately compared. A constant diagnostic observation never grants future rest or permission to skip material/body work. No historical `content_hash`, `state_hash` or raw continuation byte stream is changed by these projections.
+
+## Standalone Godot readback and explicit geometry
+
+The combined #212 source integrates the frozen #201 checkpoint `12d76736`
+with the standalone adapter source. Brine IN/reference and all three Water PF
+variants coexist in the running catalogue. Their combined capability digest
+requires regenerated identity/receipt oracles and fresh native/DLL/Godot proof;
+neither parent's separate proof is reused as union acceptance. The
+[integration ledger](../audits/2026-10-25-lcb005-pressure-union-integration.md)
+owns those source and qualification facts. The standalone Windows evidence
+below remains attributed to its original IN-only source.
+
+Current source in `cyber_native_cell_world.hpp/.cpp` exposes owner-serialized
+copies, with no native pool worker calling Godot:
+
+| Read | Meaning |
+|---|---|
+| `get_physical_state_hash_version()` / `get_physical_state_format_version()` | Actual World instance: non-IN2, IN3, unavailable World0. |
+| `get_liquid_solver_policy()` | Actual applied policy/envelope/hash, actual execution radius, hash/save versions and IN family parameters: numerator0..16 over16, block2, family1, minimum radius3 and effective extension digest. `readback_source` is `applied_world`. |
+| `CyberDemoBridge.validate_liquid_policy()` | Prediction from admitted policy; `readback_source` is `validated_policy` and actual radius is absent. Validation does not install a World. |
+| `inspect_inertial_cell(point)` | Owned dictionary with material/family/availability and signed vx/vy/ax/ay. Out-of-domain or failed World refuses; modifying a returned dictionary cannot mutate the slot. |
+| `get_liquid_run_receipt(setup)` | The older experimental dictionary identity includes the actual instance hash version and, for IN only, actual parameter identity. It remains distinct from typed native-v1 host proof. |
+
+The legacy `CyberDemoBridge.build_liquid_policy_world` has an optional final
+`maximum_rule_radius`, accepting exactly2 or3 and defaulting to2. Brine IN must
+explicitly request3; the older six-argument call refuses without replacing the
+live World. There is no automatic geometry upgrade. `build_world`,
+`build_tuned_world`, `build_water_feel_world`, `reset_demo_world` and CYSD1
+reconstruction restore the protected radius2 instead of inheriting a prior IN
+World's radius3. CYPS2/3 imports retain their saved policy, geometry and complete
+continuation; they are not family-conversion operations.
+
+`test_lcb_inertial_adapter.gd` exercises all17 parameter values against independent
+Python-generated request/hash/digest bytes, actual three-family 1/4-worker runs
+and pressure substitution, closed density exchanges, readback isolation, CYPS3
+continuation and unchanged Current reconstruction. Its six completed sections
+are source-bound in the [dated adapter ledger](../audits/2026-10-25-lcb005-standalone-adapter.md).
+The new fixture is `godot/tests/fixtures/lcb/inertial-adapter-parameters.json`;
+it is an observation oracle, not a new native schema. Water quantity remains
+visible+overfill, while whole-cell Oil/Brine populations use cell counts.
+
+This adds no prepared token, UI, constructor coordinator, verified provenance,
+Web qualification or new physics. Full application integration remains #202;
+Linux/Windows publication and exact-head ready-PR acceptance remain pending.
+
+The staged `lcb005-inertial-runtime-publication.yml` profile reuses the accepted
+shared-contract verifier in an isolated module. Preparation leaves
+`tools/ci/lcb005_inertial_publish_request.json` absent. An explicit committed
+request, exact candidate branch/source/workflow lease and unchanged source
+are required before either target build. After the separately frozen #201
+checkpoint is integrated, both actual Windows and Linux executions must pass
+all fourteen scoped cases plus import, including the twelve retained cases,
+all six pressure-optimization sections and all six standalone IN sections.
+The IN-only checkpoint cannot qualify that union. Only the two runtime LFS
+paths and their two manifests may append in one source-parent commit; the
+atomic branch lease refuses a changed remote tip. Local preparation does not
+publish, arm a request or replace ready-PR acceptance.
 
 ## What does the storage readback measure?
 

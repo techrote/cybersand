@@ -147,9 +147,11 @@
             "cached_dormant"
           ],
           "classification": "reviewed design classification (PROPOSED table)",
-          "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+          "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
           "executable_variants": [
-            "reference"
+            "reference",
+            "cached",
+            "cached_dormant"
           ]
         },
         "inertial_cellular_v1": {

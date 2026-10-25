@@ -481,7 +481,8 @@ public:
         const PackedInt32Array& water_fills) {
         error_ = String();
         last_liquid_policy_refusal_ = Dictionary();
-        return build_water_world(adapter, rectangles, profile, policy, water_fills, {});
+        return build_water_world(adapter, rectangles, profile, policy, water_fills, {},
+                                 CyberNativeCellWorld::kProtectedCurrentRuleRadius);
     }
 
     // The same validated candidate-and-swap construction with an explicit
@@ -494,7 +495,8 @@ public:
         const PackedInt32Array& profile,
         const PackedInt32Array& policy,
         const PackedInt32Array& water_fills,
-        const PackedInt32Array& liquid_policy) {
+        const PackedInt32Array& liquid_policy,
+        std::int64_t maximum_rule_radius = CyberNativeCellWorld::kProtectedCurrentRuleRadius) {
         error_ = String();
         last_liquid_policy_refusal_ = Dictionary();
         auto decoded = cybersand::LiquidSolverPolicy::decode(
@@ -503,7 +505,8 @@ public:
             refuse_liquid_policy(decoded.refusal);
             return false;
         }
-        return build_water_world(adapter, rectangles, profile, policy, water_fills, *decoded.policy);
+        return build_water_world(adapter, rectangles, profile, policy, water_fills, *decoded.policy,
+                                 maximum_rule_radius);
     }
 
     [[nodiscard]] PackedInt32Array default_liquid_policy() const {
@@ -686,12 +689,15 @@ private:
         const PackedInt32Array& profile,
         const PackedInt32Array& policy,
         const PackedInt32Array& water_fills,
-        const cybersand::LiquidSolverPolicy& liquid_policy) {
+        const cybersand::LiquidSolverPolicy& liquid_policy,
+        std::int64_t maximum_rule_radius) {
         if (adapter.is_null() || !adapter->world_) {
             error_ = "Native world unavailable";
             return false;
         }
         try {
+            if (maximum_rule_radius != 2 && maximum_rule_radius != 3)
+                throw std::invalid_argument("Maximum rule radius must be explicitly two or three");
             if (policy.size() != 4 || policy[0] != 1 || policy[1] < 3 || policy[1] > 8 ||
                 policy[2] < 0 || policy[2] > 12 || policy[3] != 0) {
                 throw std::invalid_argument("Invalid Water experiment policy");
@@ -734,9 +740,7 @@ private:
                 static_cast<std::uint8_t>(policy[2]),
                 cybersand::WaterRestPolicy::CurrentNormalizedV1);
             config.liquid_solver_policy = liquid_policy;
-            // This older constructor has no explicit execution-geometry input.
-            // IN uses the prepared route with an explicit matched radius three.
-            config.maximum_rule_radius = CyberNativeCellWorld::kProtectedCurrentRuleRadius;
+            config.maximum_rule_radius = static_cast<std::int32_t>(maximum_rule_radius);
             auto candidate = cybersand::demo::construct(
                 config, {rectangles.ptr(), static_cast<std::size_t>(rectangles.size())});
             const auto& water_policy = candidate->config().water_experiment_policy;
@@ -957,8 +961,9 @@ protected:
                                      "profile", "policy", "water_fills"),
                              &CyberDemoBridge::build_water_feel_world);
         ClassDB::bind_method(D_METHOD("build_liquid_policy_world", "world", "rectangles", "profile",
-                                     "policy", "water_fills", "liquid_policy"),
-                             &CyberDemoBridge::build_liquid_policy_world);
+                                     "policy", "water_fills", "liquid_policy", "maximum_rule_radius"),
+                             &CyberDemoBridge::build_liquid_policy_world,
+                             DEFVAL(CyberNativeCellWorld::kProtectedCurrentRuleRadius));
         ClassDB::bind_method(D_METHOD("default_liquid_policy"), &CyberDemoBridge::default_liquid_policy);
         ClassDB::bind_method(D_METHOD("liquid_policy_assignment_choices", "request", "material"),
                              &CyberDemoBridge::liquid_policy_assignment_choices);

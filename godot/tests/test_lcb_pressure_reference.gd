@@ -161,8 +161,14 @@ func _native_dispatch_and_no_fallback() -> void:
 		!= current_hash, "pressure World reproduced Current content") and fallback_ok
 	for variant: int in [1, 2]:
 		var validation: Dictionary = bridge.validate_liquid_policy(_with(default_request, 3, 3, variant))
-		fallback_ok = expect(not validation.accepted and validation.refusal.code == "family_unavailable",
-			"unimplemented pressure variant %d must be refused, never substituted" % variant) and fallback_ok
+		var applied: Dictionary = {}
+		if validation.accepted:
+			for row: Dictionary in validation.receipt.assignments:
+				if int(row.material) == 3: applied = row
+		fallback_ok = expect(validation.accepted and validation.refusal == null
+			and applied.get("applied_family", "") == "pressure_flow_v1"
+			and applied.get("applied_variant", "") == ("cached" if variant == 1 else "cached_dormant"),
+			"pressure variant %d must be admitted distinctly without substitution" % variant) and fallback_ok
 	completed["no_fallback"] = fallback_ok
 
 func _run_fixture(file: String, workers: int, checks: Callable) -> bool:
@@ -397,8 +403,8 @@ func _refusal_isolation() -> void:
 		at += 1
 	bad_block[bad_block.size() - 1] = 0
 	var cases: Array = [
-		["pressure cached", _with(default_request, 3, 3, 1), "family_unavailable"],
-		["pressure cached_dormant", _with(default_request, 3, 3, 2), "family_unavailable"],
+		["Oil pressure cached", _with(default_request, 16, 3, 1), "combination_rejected"],
+		["Oil pressure cached_dormant", _with(default_request, 16, 3, 2), "combination_rejected"],
 		["Water inertial", _with(default_request, 3, 4), "family_unavailable"],
 		["Oil pressure", _with(default_request, 16, 3), "combination_rejected"],
 		["pressure atmosphere below range", bad_block, "malformed_policy"],

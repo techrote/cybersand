@@ -1,0 +1,371 @@
+name: LCB-005 IN and pressure union scoped runtime publication
+
+# Temporary branch-scoped publisher. Runtime/manifests are deliberately absent
+# from this filter, and existing ready-for-review acceptance gates are unchanged.
+# No request is present in the preparation checkpoint. After frozen #201 source
+# integration, each target OS must execute fourteen cases plus import: standalone
+# IN, all three pressure arms, W-CY, pressure-reference, worker, native observation,
+# WEX body-mask, MicroScenario, four LCB and Water Feel controls.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/lcb005-inertial-runtime-publication.yml'
+      - 'tools/ci/lcb001_shared_contract_runtime_publication.py'
+      - 'tools/ci/test_lcb001_shared_contract_runtime_publication.py'
+      - 'tools/ci/lcb005_inertial_runtime_publication.py'
+      - 'tools/ci/test_lcb005_inertial_runtime_publication.py'
+  push:
+    branches: [codex/lcb005-inertial]
+    # Explicit source-bound publication request; normal native edits do not dispatch a publisher.
+    # Workflow/helper changes run lightweight guards; absent request means no build.
+    paths:
+      - 'tools/ci/lcb005_inertial_publish_request.json'
+      - '.github/workflows/lcb005-inertial-runtime-publication.yml'
+      - 'tools/ci/lcb001_shared_contract_runtime_publication.py'
+      - 'tools/ci/test_lcb001_shared_contract_runtime_publication.py'
+      - 'tools/ci/lcb005_inertial_runtime_publication.py'
+      - 'tools/ci/test_lcb005_inertial_runtime_publication.py'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lcb005-inertial-runtime-publication-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  publisher-guards:
+    name: validate staged publisher without building runtimes
+    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/codex/lcb005-inertial') || (github.event_name == 'pull_request' && github.head_ref == 'codex/lcb005-inertial' && github.base_ref == 'main'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Check out exact preparation head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - name: Run adversarial publisher guards and CI-provider policy
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_lcb005_inertial_runtime_publication.py
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python3 tools/ci/check_ci_provider_policy.py
+
+  admission:
+    name: require an explicit IN-and-pressure-union publication request
+    if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/codex/lcb005-inertial'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      armed: ${{ steps.gate.outputs.armed }}
+    steps:
+      - name: Check out exact candidate source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - name: Validate request and exact branch lease before any runtime build
+        id: gate
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_lcb005_inertial_runtime_publication.py
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          if test -f 'tools/ci/lcb005_inertial_publish_request.json'; then
+            python3 tools/ci/lcb005_inertial_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+            echo 'armed=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'armed=false' >> "$GITHUB_OUTPUT"
+            echo 'No explicit IN-and-pressure-union publish request. Build and publication disabled.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  linux:
+    needs: admission
+    name: build and execute the Linux IN-and-pressure-union runtime
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/lcb005-inertial' && needs.admission.outputs.armed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+
+      - name: Validate publisher guards and unchanged source
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_lcb005_inertial_runtime_publication.py
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python3 tools/ci/lcb005_inertial_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+
+      - name: Fetch pinned Linux Rapier only
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+
+      - name: Prepare pinned SCons and godot-cpp
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Build exact Linux runtime and record canonical inputs
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euo pipefail
+          timeout 35m tools/build_pinned_godot_cpp.sh linux
+          timeout 20m tools/build_native_extension.sh
+          {
+            echo 'Build host: GitHub-hosted Ubuntu 24.04; Linux x86_64 target'
+            echo "godot-cpp=$GODOT_CPP_COMMIT; SCons=4.10.1"
+            g++-13 --version | head -n 1
+            ld --version | head -n 1
+            sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.linux.template_debug.x86_64.a"
+          } > "$RUNNER_TEMP/toolchain.txt"
+          python3 tools/ci/lcb005_inertial_runtime_publication.py record --platform linux --source-sha "$GITHUB_SHA" --runtime "$CYBERSAND_NATIVE_OUTPUT" --toolchain "$RUNNER_TEMP/toolchain.txt" --bundle build/lcb005-inertial-linux
+
+      - name: Execute all required IN-and-pressure-union and retained control cases on Linux
+        run: |
+          set -euo pipefail
+          timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot-linux.zip" "$GODOT_URL"
+          python3 tools/ci/lcb005_inertial_runtime_publication.py test --platform linux --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-linux.zip" --bundle build/lcb005-inertial-linux
+
+      - name: Retain Linux runtime and execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lcb005-inertial-runtime-linux-${{ github.run_id }}
+          path: build/lcb005-inertial-linux/
+          if-no-files-found: error
+          overwrite: true
+          retention-days: 30
+
+  windows-build:
+    needs: admission
+    name: cross-build the Windows IN-and-pressure-union runtime
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/lcb005-inertial' && needs.admission.outputs.armed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+
+      - name: Validate publisher guards and unchanged source
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_lcb005_inertial_runtime_publication.py
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python3 tools/ci/lcb005_inertial_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+
+      - name: Prepare pinned SCons and godot-cpp
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Prepare exact LLVM-MinGW
+        run: |
+          set -euo pipefail
+          timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          test -x "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-g++"
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then
+            ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+          fi
+
+      - name: Build exact Windows runtime and record canonical inputs
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
+        run: |
+          set -euo pipefail
+          timeout 35m tools/build_pinned_godot_cpp.sh windows
+          timeout 20m tools/build_native_extension_windows.sh
+          mkdir -p build/lcb005-inertial-windows
+          "$LLVM_MINGW_ROOT/bin/llvm-objdump" -p "$CYBERSAND_NATIVE_OUTPUT" > build/lcb005-inertial-windows/windows-imports.txt
+          {
+            echo 'Build host: GitHub-hosted Ubuntu 24.04; Windows x86_64 target'
+            echo "godot-cpp=$GODOT_CPP_COMMIT; SCons=4.10.1"
+            echo "LLVM-MinGW=20260826 UCRT; archive SHA-256=$LLVM_MINGW_SHA256"
+            "$WINDOWS_CXX" --version | head -n 1
+            "$LLVM_MINGW_ROOT/bin/ld.lld" --version
+            sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.windows.template_debug.x86_64.a"
+          } > "$RUNNER_TEMP/toolchain.txt"
+          python3 tools/ci/lcb005_inertial_runtime_publication.py record --platform windows --source-sha "$GITHUB_SHA" --runtime "$CYBERSAND_NATIVE_OUTPUT" --toolchain "$RUNNER_TEMP/toolchain.txt" --bundle build/lcb005-inertial-windows
+
+      - name: Retain Windows build for actual Windows execution
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lcb005-inertial-build-windows-${{ github.run_id }}
+          path: build/lcb005-inertial-windows/
+          if-no-files-found: error
+          overwrite: true
+          retention-days: 30
+
+  windows-execution:
+    name: execute Windows IN-and-pressure-union cases
+    needs: windows-build
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/lcb005-inertial'
+    runs-on: windows-2022
+    timeout-minutes: 25
+    env:
+      GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+    steps:
+      - name: Check out exact source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Validate publisher guards and unchanged source
+        run: |
+          set -euo pipefail
+          python tools/ci/test_lcb005_inertial_runtime_publication.py
+          python tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python tools/ci/lcb005_inertial_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+
+      - name: Restore exact Windows build
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: lcb005-inertial-build-windows-${{ github.run_id }}
+          path: build/lcb005-inertial-windows
+
+      - name: Fetch pinned Windows Rapier only
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          echo "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" | sha256sum --check --strict
+
+      - name: Execute all required IN-and-pressure-union and retained control cases on Windows
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+          python tools/ci/lcb005_inertial_runtime_publication.py test --platform windows --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-windows.zip" --bundle build/lcb005-inertial-windows
+
+      - name: Retain Windows runtime and execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lcb005-inertial-runtime-windows-${{ github.run_id }}
+          path: build/lcb005-inertial-windows/
+          if-no-files-found: error
+          overwrite: true
+          retention-days: 30
+
+  publish:
+    name: fast-forward the source branch with both validated runtimes
+    needs: [linux, windows-execution]
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/lcb005-inertial'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - name: Check out the exact built source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+
+      - name: Require the feature branch to remain at the built source
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_lcb005_inertial_runtime_publication.py
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python3 tools/ci/lcb005_inertial_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          git lfs install --local
+
+      - name: Restore passed Linux runtime and evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: lcb005-inertial-runtime-linux-${{ github.run_id }}
+          path: build/lcb005-inertial-linux
+
+      - name: Restore passed Windows runtime and evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: lcb005-inertial-runtime-windows-${{ github.run_id }}
+          path: build/lcb005-inertial-windows
+
+      - name: Verify complete matching provenance and stage only the four runtime paths
+        run: |
+          set -euo pipefail
+          python3 tools/ci/lcb005_inertial_runtime_publication.py stage --source-sha "$GITHUB_SHA" --linux-bundle build/lcb005-inertial-linux --windows-bundle build/lcb005-inertial-windows
+          git add -- godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/runtime-provenance.linux.json godot/addons/cybersand_native/runtime-provenance.json
+          python3 tools/ci/lcb005_inertial_runtime_publication.py check-index --source-sha "$GITHUB_SHA"
+          git diff --check --cached
+          git diff --exit-code
+
+      - name: Commit and fast-forward only the unchanged feature branch
+        run: |
+          set -euo pipefail
+          python3 tools/ci/lcb005_inertial_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          python3 tools/ci/lcb005_inertial_runtime_publication.py check-index --source-sha "$GITHUB_SHA"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'build(lcb005): publish source-matched Linux and Windows runtimes'
+          test "$(git rev-list --parents -n 1 HEAD)" = "$(git rev-parse HEAD) $GITHUB_SHA"
+          # The exact single-parent check proves this update only appends to
+          # the built SHA. The lease atomically refuses any changed remote tip,
+          # including a concurrent reset; it cannot overwrite concurrent work.
+          # The LFS pre-push hook uploads only the new runtime objects.
+          git push --force-with-lease="refs/heads/codex/lcb005-inertial:$GITHUB_SHA" origin HEAD:refs/heads/codex/lcb005-inertial
+          {
+            echo '### LCB-005 IN and pressure union runtime publication'
+            echo "Built source: $GITHUB_SHA"
+            echo "Runtime publication commit: $(git rev-parse HEAD)"
+            echo 'Both exact runtimes passed all fourteen mandatory IN/pressure/shared-contract cases plus import on their actual target OS; both new six-section helpers completed.'
+            echo 'The existing full ready-for-review validation gates remain required on the resulting PR head.'
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -4,11 +4,69 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-10-24
-related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md]
+last-reviewed: 2026-10-25
+related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md, ../audits/2026-10-25-lcb002-pressure-variants.md]
 ---
 
 # Validation evidence ledger
+
+## LCB-005 standalone adapter — 2026-10-25
+
+[The standalone IN ledger](../audits/2026-10-25-lcb005-standalone-adapter.md)
+records a fresh local Windows DLL, exact native/adapter/dependency input fences,
+all17 independent parameter/identity vectors, actual mixed-family density and
+worker controls, CYPS3 continuation, radius refusal and unchanged Current
+reconstruction. The inherited native140 proof remains tied to `028fc7b6`;
+this checkpoint changes only bindings/tests/docs. Preserved failed fixture and
+parse controls are distinct from native defects. Linux/release publication,
+full ready-PR gates, actual Web and application qualification remain pending.
+
+## LCB-002 pressure variants branch — 2026-10-25
+
+[The dated #201 ledger](../audits/2026-10-25-lcb002-pressure-variants.md) retains
+exact implementation/test/campaign checkpoints and failures for the unmerged
+branch. [The optimization contract](../architecture/pressure-optimization.md)
+owns the Current source behavior; this is separate from accepted #246 main.
+Execution1 local Windows complete-tick measurements retain ordinary-sleep,
+topology-churn and forced-fallback negatives. Configured1/4 is distinct from
+observed task claimants, and process RSS includes all three Worlds/apparatus.
+No global or cross-platform speedup follows. Execution2 correctness and fixture
+qualification are retained separately. Execution3 adds whole-layer work-credit
+admission and suspension to warmup/backoff; numerical prepared-head/net-boundary
+observations and fresh source proofs must be recorded separately, not inferred
+from the older campaign. The fixed credits do not establish wall-clock break-even.
+Final source-matched Windows/Linux publication and ready-PR gates remain pending.
+Native rotating mask/contact parity does not qualify actual Rapier motion,
+displacement, full application constructors, Web or #203 packaging.
+
+## Accepted LCB-001 shared native contract — 2026-10-25
+
+[PR #246](https://github.com/techrote/cybersand/pull/246) accepted the shared
+native checkpoint on main at `ec58d919b3d904fbd338eaccc25de35782c41a24`.
+Final tested head `560f9a4143852c5a508b5f33a4a7f2059edbcbdc`, synthetic checkout
+`2aa4e456fc7228a68f4d369686fd5eefbbe3a0ef` and the merge share tree
+`e8e999899bd35bf20df4b03cf9c0620d86089ff1`. The
+[final audit](../audits/2026-10-25-lcb001-shared-contract-acceptance.md)
+records the exact source/runtime/receipt hashes and retained failures.
+
+Documentation/provenance **40144712901**, Native **40144712872**, Godot
+**40144712946** and #49 **40144712913** passed. Native runs all 126 cases
+ordinarily, under ASan+UBSan and under TSan, all eight soliding sanitizer
+executables and the required generation/CLI/apparatus/shared/benchmark lanes.
+The full Native job lasts 35 min 48 s. Godot records 145 Linux + 133 Windows
+cases, five imports, twelve actual rendered Linux cases and 55 physical timing
+observations without timeouts/other failures. The previously failed Windows
+exploratory constructor passes in 71.240 s under its original 180 s limit.
+The retained #49 control records 120 cases and 60 worker-parity pairs.
+
+Accepted main now owns W-CY, explicit native preparation/normalization,
+qualified typed native-v1 receipts, exact accounting and physical hash/CYPS2;
+historical CYPS1 explicitly refuses. #200 remains open pending ownership
+reconciliation. #202 retains normal application constructors, typed host
+provenance/input/session proof, UX and Web; native-v1 full matched eligibility
+remains false. The source-matched runtime execution is Windows `89a20e5b…`
+and Linux `ce62448c…`; the separate fresh Windows cross-build is not substituted
+for the executed DLL. No other-platform or downstream completion follows.
 
 ## Intermittent physical actor timeouts — 2026-10-23
 

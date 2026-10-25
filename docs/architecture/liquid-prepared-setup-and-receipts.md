@@ -2,7 +2,7 @@
 title: Native liquid prepared setup, receipts and quantity accounting
 status: Current
 document-kind: design
-scope: Unmerged LCB-001 native construction contract on codex/lcb001-shared-contract — immutable final tuples, explicit Water normalization, prepared World ownership, typed native outcomes, native run and attempt receipts, exact quantity aggregates, physical hash/CYPS2 and qualified local evidence; application-host proof and downstream family work remain open
+scope: Accepted main LCB-001 native construction contract — immutable final tuples, explicit Water normalization, prepared World ownership, typed native outcomes, native run and attempt receipts, exact quantity aggregates, physical hash/CYPS2 and source-matched Windows/Linux acceptance; application-host proof and downstream family work remain open
 canonical-for: [liquid-prepared-setup, liquid-native-run-receipt, liquid-quantity-accounting]
 last-reviewed: 2026-10-25
 related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, liquid-state-transition-matrix.md, lcb-pressure-inertial-handoff.md, ../operations/lcb-water-comparison-and-fixtures.md, ../operations/lcb-manual-comparison-ux.md, ../operations/current-and-historical-validation.md, ../reference/status-and-roadmap.md]
@@ -14,14 +14,17 @@ related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, liquid-
 
 ## Source and completion boundary
 
-**Current in unmerged native source** on branch `codex/lcb001-shared-contract`,
-based on `349d59359a45ebbe4f92af879945b43b591d412a`, with the preparatory local
-delta dated 2026-10-24. The native prepared setup, normalization receipt, typed
-run receipt, construction-attempt receipt and quantity ledger use their explicit
-schema/version 1 contracts below. The complete physical-state hash version and
-CYPS persistence format are **2**. This describes the source and local native
-checks; it does not declare [#200](https://github.com/techrote/cybersand/issues/200)
-complete or establish a published, source-matched Godot runtime for this delta.
+**Current on main, accepted through [PR #246](https://github.com/techrote/cybersand/pull/246)**
+at merge `ec58d919b3d904fbd338eaccc25de35782c41a24` on 2026-10-25.
+Its final tested head `560f9a4143852c5a508b5f33a4a7f2059edbcbdc` and the merge
+share tree `e8e999899bd35bf20df4b03cf9c0620d86089ff1`. The native prepared setup,
+normalization receipt, typed run receipt, construction-attempt receipt and
+quantity ledger use their explicit schema/version **1** contracts below. The
+complete physical-state hash version and CYPS persistence format are **2**.
+The [accepted checkpoint](../audits/2026-10-25-lcb001-shared-contract-acceptance.md)
+records source-matched Windows/Linux runtime publication and the final required
+matrix. [#200](https://github.com/techrote/cybersand/issues/200) remains open
+pending ownership reconciliation; this acceptance does not complete #202 or #203.
 
 Native C++ owns cells, setup preparation and accounting. Values expose copied
 immutable data or const spans into owned values; they expose no mutable World
@@ -40,6 +43,13 @@ application-host proof.
 
 ## Controlled application-host preparation slice
 
+**Combined source update, 2026-10-25:** the application branch incorporates
+released union `713ee3abd093bf52ca1e02796e996d7017a51d95`, including the
+#201 pressure variants and the standalone #212 adapter. The earlier local
+application/runtime seals below remain evidence for their original inputs.
+Combined application runtime, platform publication and actual browser
+qualification are separate gates; this merge does not establish them.
+
 **Integration update, 2026-10-25:** the application branch has merged accepted
 main `ec58d919b3d904fbd338eaccc25de35782c41a24` (#246) and stable IN checkpoint
 `028fc7b6893a57ca816b5221ce1b9067f0c2c01d` (#250). The earlier dated host
@@ -47,7 +57,7 @@ evidence retains its original pre-final-#246 qualifiers. Fresh integrated
 adapter/application evidence is recorded separately in the
 [IN host checkpoint](../audits/2026-10-25-lcb003-integrated-inertial-host.md).
 
-**Current experimental source on `codex/lcb003-application-host`, based on
+**Historical first experimental source on `codex/lcb003-application-host`, based on
 `9e91a9f75d47b9a9aa4a8ba2d3ce78ba2fbfd882`:** the normal desktop
 MicroScenario owner and synchronous application controller accept a fixed,
 actor-free schema-2 definition with an explicit policy and optional
@@ -581,7 +591,7 @@ and historical CYPS1 are explicitly refused. Complete physical hash v2 includes
 the ledger and continuation state. Historical content/state definitions are
 preserved; cross-tick rest is not equality of a tick-inclusive continuation hash.
 
-The residual pressure continuation also retains ordinary pending-event ingress
+The accepted pressure continuation also retains ordinary pending-event ingress
 bounds on restore and a non-wrapping gas-ID allocator for creation and split.
 Exhausted gas identities use an explicit sentinel and the existing failed-tick
 quarantine. Direct quantity rectangles validate their inclusive endpoints and
@@ -590,6 +600,17 @@ ledger. The [pressure contract](pressure-flow-v1.md#persistence-cyps-v2) owns
 these concrete limits and the residual audit preserves their failing controls.
 
 ## Tests and qualified evidence
+
+**Accepted final-head matrix:** Documentation/provenance, Native, Godot and the
+retained #49 apparatus passed at `560f9a414…` with the same tree as merged main.
+Native executes all **126** cases ordinarily, under ASan+UBSan and under TSan,
+plus the eight soliding sanitizer executables and generation/CLI/apparatus/shared
+library/benchmark gates. Godot executes **145 Linux + 133 Windows** cases and
+five imports, including twelve actual rendered Linux cases. The previously
+timed-out Windows construction fixture completes in **71.240 s / 180 s**.
+Exact run IDs, runtime bytes, independent receipt hashes and the separate
+platform/host limits are in the
+[final acceptance audit](../audits/2026-10-25-lcb001-shared-contract-acceptance.md).
 
 Source regressions are
 [`test_water_cellular_yield.cpp`](../../native/tests/test_water_cellular_yield.cpp),
@@ -618,10 +639,11 @@ The receipt fixtures are `controlled_native_scope`, `exploratory`,
 `normalized_bound` and `refused_attempt`. The four physical hashes are explicitly
 measured fixture facts, not independent verification of native physics.
 
-The [dated evidence ledger](../audits/2026-10-24-lcb001-residual-shared-contract.md)
-records the final native and scoped Windows Godot executions, source manifests,
-tool/artifact hashes, failures and acceptance gaps. Local evidence is outside
-the repository and is qualified as a local proof:
+The [earlier residual evidence ledger](../audits/2026-10-24-lcb001-residual-shared-contract.md)
+preserves source-matched local/scoped executions, source manifests,
+tool/artifact hashes, failures and the gaps at those earlier checkpoints.
+The following local proofs remain historical inputs to the final acceptance;
+their hashes and counts are not reattested as later-source results:
 
 - `C:/Users/_/.codex/tmp/lcb200-quantity-prep/final-integrated/` and `msvc/`:
   final LLVM-MinGW/UCRT C++20 `-O1` and MSVC 19.38 `/W4 /Od /Zi` builds both
@@ -650,8 +672,8 @@ the repository and is qualified as a local proof:
 Run `python tools/lcb/water_normalization_contract.py --check` and
 `python tools/lcb/liquid_run_receipt_contract.py --check`. The latter also
 accepts `--native-dir` to compare all complete native fixture bytes. These local
-proofs do not replace exact-head Documentation, native/platform, Godot runtime
-publication or release gates.
+proofs did not substitute for the final exact-head matrix linked above. Future
+source changes again require fresh source-matched publication and applicable gates.
 
 ## Downstream ownership
 

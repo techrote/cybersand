@@ -3768,6 +3768,18 @@ void test_lcb_pressure_persistence();
 void test_lcb_pressure_default_untouched();
 void test_lcb_pressure_comparison_rest();
 void test_lcb_pressure_comparison_policy();
+void test_lcb_pressure_cached_heads();
+void test_lcb_pressure_optimization_identity();
+void test_lcb_pressure_cost_admission();
+void test_lcb_pressure_cached_gas();
+void test_lcb_pressure_affected_gas();
+void test_lcb_pressure_gas_cache_capacity();
+void test_lcb_pressure_dormant_obligations();
+void test_lcb_pressure_variants_remote_acceptance();
+void test_lcb_pressure_variants_mask_acceptance();
+void test_lcb_pressure_variants_obligation_acceptance();
+void test_lcb_pressure_variants_basins_acceptance();
+void test_lcb_pressure_variants_vent_acceptance();
 void test_water_cy_admission_ingress();
 void test_water_cy_coherence_masks();
 void test_water_cy_material_hooks();
@@ -3914,6 +3926,18 @@ int main(int argc, char** argv) {
         {"LCB-001 pressure default policy untouched", test_lcb_pressure_default_untouched},
         {"LCB-002 comparison static content and retained authority", test_lcb_pressure_comparison_rest},
         {"LCB-002 comparison pressure variant normalization", test_lcb_pressure_comparison_policy},
+        {"LCB-002 cached incremental heads and continuation", test_lcb_pressure_cached_heads},
+        {"LCB-002 native optimization identity and readback", test_lcb_pressure_optimization_identity},
+        {"LCB-002 deterministic dormant proof-cost admission", test_lcb_pressure_cost_admission},
+        {"LCB-002 cached gas invalidation and exact fallback", test_lcb_pressure_cached_gas},
+        {"LCB-002 affected gas component discovery and continuation", test_lcb_pressure_affected_gas},
+        {"LCB-002 gas component capacity and pair-budget fallback", test_lcb_pressure_gas_cache_capacity},
+        {"LCB-002 dormant motion and stationary body obligations", test_lcb_pressure_dormant_obligations},
+        {"LCB-002 acceptance remote hydraulic wake and sparse interest", test_lcb_pressure_variants_remote_acceptance},
+        {"LCB-002 acceptance rotating native masks", test_lcb_pressure_variants_mask_acceptance},
+        {"LCB-002 acceptance mandatory obligations and reconstruction", test_lcb_pressure_variants_obligation_acceptance},
+        {"LCB-002 acceptance communicating narrow and broad passages", test_lcb_pressure_variants_basins_acceptance},
+        {"LCB-002 acceptance isolated vent into certified target", test_lcb_pressure_variants_vent_acceptance},
         {"LCB-001 liquid policy C API allocation failures", test_liquid_policy_c_api_allocation_failures},
         {"LCB-001 W-CY admission and ingress", test_water_cy_admission_ingress},
         {"LCB-001 W-CY coherence, viscosity and masks", test_water_cy_coherence_masks},

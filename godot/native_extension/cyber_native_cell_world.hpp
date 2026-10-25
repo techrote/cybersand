@@ -121,6 +121,10 @@ public:
     [[nodiscard]] Dictionary inspect_gas_compartments() const;
     [[nodiscard]] Dictionary inspect_pressure_cell(Vector2i point) const;
     [[nodiscard]] Dictionary get_pressure_flow_ledger() const;
+    // Exclusive-owner diagnostic observations. Unknown projection IDs return
+    // no hash; optimization counters/budgets use exact unsigned decimal strings.
+    [[nodiscard]] String get_liquid_comparison_hash(std::int64_t projection_id) const;
+    [[nodiscard]] Dictionary inspect_pressure_optimization() const;
     // Run receipt: binds the applied policy and every World execution input with
     // the caller's setup identity into one SHA-256 receipt hash.
     [[nodiscard]] Dictionary get_liquid_run_receipt(const Dictionary& setup) const;

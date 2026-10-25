@@ -49,10 +49,11 @@ KERNEL_SPECIALIZATION = {
     "YieldingLiquid": "generic heap-capable CellularYield motion (flow_as_yielding_liquid)",
 }
 # Candidate cells the running build compiles and qualifies, with the variants it
-# executes (LCB-001 #200). Every other non-default cell is refused natively.
+# executes (LCB-001 #200 and the unmerged native #201 candidate). This is
+# executable source admission, not full application/platform acceptance.
 EXECUTABLE_CANDIDATES = {
     ("brine", "inertial_cellular_v1"): ["reference"],
-    ("water", "pressure_flow_v1"): ["reference"],
+    ("water", "pressure_flow_v1"): ["reference", "cached", "cached_dormant"],
     ("water", "cellular_yield_v1"): ["reference"],
 }
 # Gate C/D design classifications. Keys are descriptor names.
@@ -60,7 +61,7 @@ PROPOSED = {
     ("water", "cellular_yield_v1"): ("proposed_experimental",
         "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion"),
     ("water", "pressure_flow_v1"): ("proposed_experimental",
-        "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201"),
+        "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate"),
     ("water", "inertial_cellular_v1"): ("proposed_experimental",
         "Gate D experimental inertial regime; LCB-005 #212 not implemented"),
     ("brine", "inertial_cellular_v1"): ("proposed_experimental",

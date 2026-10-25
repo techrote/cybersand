@@ -5,7 +5,7 @@ canonical-for: [public-and-adapter-interface-layouts]
 status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
-related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md]
+related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
 last-reviewed: 2026-10-25
 ---
 
@@ -603,14 +603,14 @@ the C entry points are experimental and not a frozen ABI.
 
 ### LCB-001 pressure reference inspection and persistence (experimental)
 
-**Current pressure APIs from merged #245, retained in the residual native branch.** These calls
+**Current pressure APIs from #245, with shared hash2/CYPS2 accepted on main in #246.** These calls
 serve the opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md)
 and follow the same serialized-owner rule as the bridge calls above. Results own
 their dictionaries; none exposes live World storage.
 
 | Call | Result |
 |---|---|
-| `CyberNativeCellWorld.get_physical_state_hash()` / `get_physical_state_hash_version()` | 16-hex-digit FNV-1a `World::physical_state_hash()`; residual native version 2 includes exact shared accounting. Historical #245 version 1 is retained evidence; `content_hash`/`state_hash` are unchanged |
+| `CyberNativeCellWorld.get_physical_state_hash()` / `get_physical_state_hash_version()` | 16-hex-digit FNV-1a `World::physical_state_hash()`; Current main version 2 includes exact shared accounting. Historical #245 version 1 is retained evidence; `content_hash`/`state_hash` are unchanged |
 | `inspect_gas_compartments()` | `available` (false outside pressure Worlds), parameters, `topology_revision`, `next_id`, `completed_tick`, `compartments` (id, generation, ancestry, amount, volume, anchor, created tick, topology revision, `gauge_mass`, `vent_state`), retirement `history` with reason and successors, and the `ledger` with `closes` |
 | `inspect_pressure_cell(point)` | `available`, material, `state_a`, `overfill`, `flow`, `gas` (`compartment`/`atmosphere`/`vacuum`/`unresolved`) and `gas_compartment` |
 | `get_pressure_flow_ledger()` | overfill converted/external, flow remainder, contact loss, relief cells and `last_tick` diagnostics |
@@ -618,7 +618,7 @@ their dictionaries; none exposes live World storage.
 | `get_liquid_solver_policy()` | adds `family_parameters` and `physical_state_hash_version`; `admission` is `current_defaults_only` or `qualified_candidate` |
 | `water_experiment_observation` | adds `water_visible` and `water_overfill`; `water_integer` = visible + overfill (overfill is 0 outside pressure Worlds) |
 | `CyberDemoBridge.inspect_cell(world, point)` | adds `family_state` (`family`, `overfill`, `flow`, `gas_label`) in pressure Worlds |
-| `CyberDemoBridge.export_physical_state(world)` / `import_physical_state(world, bytes)` | residual source writes CYPS2 and explicitly refuses historical CYPS1; import re-admits saved policy and preserves the running World on refusal ([persistence](../architecture/pressure-flow-v1.md#persistence-cyps-v2)) |
+| `CyberDemoBridge.export_physical_state(world)` / `import_physical_state(world, bytes)` | Current main writes CYPS2 and explicitly refuses historical CYPS1; import re-admits saved policy and preserves the running World on refusal ([persistence](../architecture/pressure-flow-v1.md#persistence-cyps-v2)) |
 
 Native counterparts on `World` are `pressure_flow_enabled`,
 `pressure_flow_parameters`, `pressure_cell`, `gas_compartments`, `gas_history`,
@@ -629,9 +629,45 @@ in [`world.hpp`](../../native/include/cybersand/world.hpp) and
 [`pressure_flow.hpp`](../../native/include/cybersand/pressure_flow.hpp). No C API
 entry point exposes them. The C API/global ABI is not frozen by these additions.
 
+### LCB-005 standalone instance readback
+
+Current #212 branch source exposes copied `get_physical_state_format_version()`
+and `inspect_inertial_cell(point)` beside the actual instance hash-version
+getter. Non-IN instances report2 and IN instances3. Applied policy readback
+includes the actual IN damping/extension digest and execution radius; policy-only
+validation labels its values as predictions. The old dictionary run identity
+binds actual version and IN parameter identity without becoming typed host proof.
+
+`build_liquid_policy_world(..., maximum_rule_radius=2)` accepts exactly2/3 and
+requires explicit3 for Brine IN. Ordinary/default/CYSD1 reconstruction returns
+to2. CYPS continuation retains saved geometry. Calls remain serialized to the
+exclusive adapter owner; outputs expose no mutable World storage. The
+[IN reference](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry)
+owns fields, refusal behavior and the local Windows-only qualification.
+
+### LCB-002 copied pressure optimization observations
+
+**Current in #201 branch source, pending runtime and final CI:** the exclusive
+adapter owner serializes these calls with ticks. No result exposes mutable
+World/cache storage or authorizes simulation skipping.
+
+| Call | Copied result |
+|---|---|
+| `CyberNativeCellWorld.get_liquid_comparison_hash(1 or 2)` | Sixteen hexadecimal digits in the named same-tick or quiescent diagnostic domain; unknown IDs/unavailable World return an empty string. Complete continuation hashes retain their separate meaning. |
+| `CyberNativeCellWorld.inspect_pressure_optimization()` | Schema1 status, actual cached/dormant flags, execution3/identity-encoding1, requested budgets, observed capacities and cumulative work. Unsigned fields are decimal strings; status/version fields are small integers. Attempts count actual proofs; declines include warmup/backoff and obligation deferrals. |
+| `World::prepared_pressure_head(x, y)` | A value/status copy of the last prepared slot: family unavailable, nonresident, no head, unresolved encoded sentinel, or prepared numeric head. Valid zero differs from no head. It can be stale after transport/edits and unprepared after restore; it is not current cell pressure or certificate authority. |
+| `World::copy_pressure_head_chunk_coordinates(span)` | Required actual resident chunk count in a pressure World, including chunks allocated by gas discovery; sufficient caller storage receives copied coordinates, while a short span receives no partial result. A World without pressure returns zero. The call allocates and mutates nothing; the caller can sort its own roster and verify complete sampling. |
+
+Native `pressure_optimization_snapshot()` and `pressure_optimization_identity()`
+provide the underlying copied values. The [canonical optimization page](../architecture/pressure-optimization.md)
+owns the fields and limits. `get_pressure_flow_ledger().last_tick` reports work
+diagnostics and can legitimately differ across variants; compare authoritative
+PF fields separately. Prepared-head errors and declared-region net Water
+balances are diagnostic observations, not gross per-face flux or Rapier forces.
+
 ### Native prepared liquid setup and receipts
 
-**Current in unmerged residual native #200 source:** `PreparedWorldBuilder`
+**Current on main through accepted PR #246:** `PreparedWorldBuilder`
 validates final unique tuples, optionally normalizes Water and builds an
 unexposed candidate. Its native-issued `ConstructionRefusal` distinguishes
 policy/setup refusal from preparation failure, binding exact raw request scope
