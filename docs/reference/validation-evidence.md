@@ -10,6 +10,16 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+The later [prepared Water Feel reference-body proof](../audits/2026-10-25-lcb003-water-reference-body.md)
+records a new native133 development DLL after the moving-mask gas-label repair
+and12 passing local Windows Godot processes. The new75-assertion case preserves
+frozen-pose/receipt/refusal checks and adds actual normal unpaused pressure
+reference/cached/dormant/FM play through96 ticks. Native contacts, signed accepted
+feedback, age handling and Water/gas accounting are observed directly. The
+historical failed actual-body trace and compact native reduction remain retained.
+This does not qualify synchronous bodies, host-mask CYPS continuation, later Web
+source, complete host identity or published/exact-head platform acceptance.
+
 The [combined LCB-003 host and Web prerequisite](../audits/2026-10-25-lcb003-combined-host-web-prerequisite.md)
 records actual local non-release Windows native/headless execution on
 `871fba33` (fresh DLL, sixteen passing processes), plus `3b4db1dd`'s explicit

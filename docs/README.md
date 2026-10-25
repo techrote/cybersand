@@ -10,6 +10,13 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The subsequent [prepared Water Feel reference-body route](architecture/liquid-prepared-setup-and-receipts.md#prepared-water-feel-reference-bodies)
+stages actual frozen desktop bodies/terrain and retains the old graph and native
+receipt on refusal. Its [dated local proof](audits/2026-10-25-lcb003-water-reference-body.md)
+includes ordinary unpaused pressure/FM feedback and the native gas-label repair
+exposed by that play. Synchronous bodies, host-mask continuation and complete
+host/platform/publication qualification remain open.
+
 The subsequent unmerged [Water Feel family route](architecture/liquid-prepared-setup-and-receipts.md#ordinary-water-feel-preparation)
 preserves the sampled player, original recipes/actions and ordinary lab/reset
 controls in explicit unblinded body-free Exploratory mode. Its

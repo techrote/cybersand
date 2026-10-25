@@ -67,7 +67,9 @@ Current presets are Current defaults, whole-cell Water, pressure reference,
 pressure cached, pressure dormant, Water inertial, and pressure Water with
 inertial Brine, plus Current Water with inertial Brine. Each is enabled only if
 that actual runtime validates it. Integrated Brine IN is available; Water IN
-and the separately developed #201 variants remain unavailable in this checkpoint.
+is unsupported. The later integrated #201 source also admits pressure cached and
+dormant through the actual native validator; its earlier dated evidence remains
+qualified to its original inputs.
 
 **Matched IN geometry (radius 3)** is an explicit selection, distinct from
 default radius2. An IN policy with radius2 refuses; selecting IN never changes
@@ -119,8 +121,11 @@ comparison, complete manual-input replay or a complete host provenance envelope.
 The subsequent [Water Feel route](../architecture/liquid-prepared-setup-and-receipts.md#ordinary-water-feel-preparation)
 retains the existing sampled player and requires Exploratory. Apply/reset and
 normal Water semantic/scenario changes retain selected solver/normalization/
-geometry, ordinary controls and scheduled actions. Blind/body routes remain
-refused for experimental families. Whole-cell Water recipes with fractional
+geometry, ordinary controls and scheduled actions. Blind routes remain refused
+for experimental families. The subsequent desktop
+[reference-body stage](../architecture/liquid-prepared-setup-and-receipts.md#prepared-water-feel-reference-bodies)
+also admits the original supported-body Water Feel recipe with its sampled
+player; synchronous/Web body staging remains open. Whole-cell Water recipes with fractional
 future sources refuse; initial normalization never rewrites those actions.
 
 “Default” below means the existing constructor route remains supported; it does
@@ -135,7 +140,7 @@ controlled API is narrower than older explicit-policy diagnostic APIs.
 | Bootstrap `create_world` / ordinary `reset_demo_world` | Defaults; ordinary reset retires typed setup identity | Explicit retained-policy coordinator without changing Current defaults |
 | `build_world` rectangle showcases / Blacksite | Existing default constructor | Prepared tuples and explicit setup/mode qualification |
 | `build_tuned_world` / Experiment Tower | Original default constructor retained; ordinary application Tower explicitly stages sampled-owner policy/normalization/geometry with final floor and retains floor/release/schedule/transport controls; reset/profile rebuild retain accepted policy | Other direct tuned-world callers, complete host evidence and final platform qualification |
-| `build_water_feel_world` / Water Feel controlled and blind apparatus | Original defaults/blind/body routes retained; explicit unblinded body-free sampled Exploratory dispatcher/panel/reset carries typed policy/normalization/geometry and qualified owner record, preserving actions/ledger | Supported-body staging, blind-family study and whole-cell fractional future-source qualification; actual browsers/publication |
+| `build_water_feel_world` / Water Feel controlled and blind apparatus | Original defaults/blind routes retained; explicit unblinded sampled Exploratory dispatcher/panel/reset carries typed policy/normalization/geometry and qualified owner record, preserving actions/ledger; desktop additionally stages the original three reference bodies/terrain in their permanent space and proves ordinary unpaused feedback | Synchronous/Web reference bodies, barrel owners, blind-family study and whole-cell fractional future-source qualification; visual/publication gates |
 | CYSD `import_level` | Existing default reconstruction | Imported thermal tuples, explicit policy/normalization preparation and transactional refusal |
 | CYPS `import_physical_state` | Exact saved-policy continuation; old typed construction identity retired | Preserve exact continuation; never use it as a family-conversion rebuild |
 | Diagnostic reset / depth / arena / player playground / Thunderbowl | Existing diagnostic policy options and ordinary controls | Shared application coordinator/readback where supported, preserving plane and actor semantics |

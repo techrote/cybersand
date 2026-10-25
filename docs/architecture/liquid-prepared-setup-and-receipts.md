@@ -392,8 +392,10 @@ cannot falsely acknowledge a refused family rebuild. Accepted installation stays
 ledgers and controls. Reset and normal Water Feel semantic/scenario changes
 retain accepted solver/normalization/geometry; accepted ordinary exit retires it.
 
-Blind runs, unstaged supported-body/reference owners and non-sampled owners
-refuse before mutation. Starting a blind session from experimental Water Feel
+Blind runs and non-sampled owners refuse before mutation. The initial body-free
+checkpoint also refused reference bodies; the later desktop stage below admits
+the original supported-body owner while synchronous bodies remain unsupported.
+Starting a blind session from experimental Water Feel
 also refuses before creating its hidden mapping. Original Current blind and body
 routes remain available through their existing constructors. For whole-cell CY
 Water, recipes with fractional scheduled fill sources refuse before commit:
@@ -405,15 +407,62 @@ join this check; Brine IN does not admit Water-IN.
 The [Water Feel checkpoint](../audits/2026-10-25-lcb003-water-feel-constructor.md)
 records actual desktop/synchronous routes, deterministic refusals/fences, exact
 Current recipe/default controls and the unchanged local native-runtime identity.
-This closes the bounded unblinded body-free row only. Body staging, blind-family
+That earlier proof closes the bounded unblinded body-free row only. The later
+desktop reference-body proof is separate; synchronous bodies, blind-family
 study qualification, whole-cell future-source qualification, other constructors,
 complete executed host/source identity and actual browser/publication gates remain
 open. Native and host full matched eligibility remain false.
+
+The subsequent [reference-body checkpoint](../audits/2026-10-25-lcb003-water-reference-body.md)
+adds the bounded desktop route described immediately below; native-v1 and
+qualified host full matched eligibility remain false.
+
+## Prepared Water Feel reference bodies
+
+**Current on the unmerged #202 branch, with the narrow native moving-mask gas
+repair:** explicit unblinded Exploratory Water Feel now stages the existing
+three reference rectangles in a permanent private Rapier space. The sampled
+player, original recipe and authored 8×14 bodies at (160,176), (212,176) and
+(264,176) remain unchanged. This is a separate reference-body owner with epoch0,
+not an articulated actor/equipment session. The [dated body evidence](../audits/2026-10-25-lcb003-water-reference-body.md)
+records the exact local source, runtime and preserved failures.
+
+The shared prepared physical helper verifies actual poses and velocities across
+real physics frames while both the candidate and retained graph stay frozen.
+Copied native initial-body values, complete terrain and owner readiness precede
+the existing final request/settings/reset/stop fence. One-use continuation binds
+the complete original command; a caller cannot substitute a new definition with
+an old token. Success adopts the exact graph without a fallible physics rebind.
+Terrain, normalization or final-guard refusal retains the old World, body graph,
+canonical receipt and immutable owner observation. Reset replaces that graph
+only after success; body-free transitions and ordinary exit retire its space.
+
+The actual normal application then runs the accepted graph through its ordinary
+unpaused main-thread Rapier and asynchronous native-worker feedback path. The
+focused regression checks positive motion, manual steps, native completed ticks,
+contacts and accepted signed forces for pressure reference/cached/dormant and a
+FreeMass control. Received samples obey the existing age bound; an old rejected
+sample applies no impulse. Whole-World Water source/sink balance remains exact
+and pressure gas accounting closes. Pressure `contact_loss` is stopped momentum,
+not a Water sink. These functional cohorts are not performance or cross-arm
+trajectory comparisons; the independent direct fixture owns exact worker parity.
+
+This play prefix exposed masked Empty cells retaining retired compartment IDs.
+The native reducer now retires dangling labels to vacuum after assigning gas to
+successors or the existing vent/collapse ledger, retaining still-live labels.
+The historical failed ordinary run and compact six-arm native reduction remain
+evidence. The fix does not erase cell authority or weaken quarantine.
+
+Synchronous/Web reference-body staging, blind-family qualification, barrel
+owners, whole-cell fractional future sources, remaining constructors and full
+executed host/publication identity remain open. CYPS omits host body masks; an
+import alone does not establish complete masked physical continuation.
 
 ## Source map
 
 | Responsibility | Current source |
 |---|---|
+| Permanent frozen desktop reference-body owner and ordinary Water Feel adoption | [`prepared_reference_body_session.gd`](../../godot/scripts/prepared_reference_body_session.gd), shared [`prepared_physical_session.gd`](../../godot/scripts/prepared_physical_session.gd), [`main.gd`](../../godot/scripts/main.gd), [`simulation_worker.gd`](../../godot/scripts/simulation_worker.gd) |
 | Typed finite setup descriptor, coverage gaps and prepared identity | [`prepared_setup_identity.hpp`](../../native/include/cybersand/prepared_setup_identity.hpp), namespace `cybersand::setup` |
 | Final tuples, validation, explicit normalization and private receipt construction | [`water_normalization.hpp`](../../native/include/cybersand/water_normalization.hpp), namespace `cybersand::normalization` |
 | New candidate construction, actual payload check and private ledger initialization | [`prepared_world.hpp`](../../native/include/cybersand/prepared_world.hpp), `PreparedWorldBuilder` and `PreparedWorld` |

@@ -10,6 +10,8 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+- [Prepared Water Feel reference bodies](../architecture/liquid-prepared-setup-and-receipts.md#prepared-water-feel-reference-bodies): actual frozen masks, permanent-space adoption/refusal and normal unpaused feedback; preserve local-source limits, synchronous body and host-mask continuation gaps.
+
 ## Generation Workbench 2 and procedural quality
 
 - [Workbench inspection and transactions](../systems/generation-workbench-2.md): accepted native identities, bounded deterministic replay, actual stage meanings, invalid-edit preservation, graph/hierarchy/plane editing, undo/redo, seeds and comparison.

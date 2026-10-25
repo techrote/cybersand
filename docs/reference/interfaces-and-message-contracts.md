@@ -804,6 +804,16 @@ qualifies success; the semantic Water policy hash alone cannot. The original
 default/blind command route remains available. See [Water Feel route restrictions,
 source actions and ownership](../architecture/liquid-prepared-setup-and-receipts.md#ordinary-water-feel-preparation).
 
+The subsequent desktop reference-body route adds owner-internal
+`physical_owner = {kind: reference_body, epoch: 0, instance_id, initial_bodies}`
+to the same prepared command. The packed three-body input is copied from the
+actual frozen Rapier space. Native candidate identity, main-thread terrain and
+pose readiness, exact continuation binding and final owner fences precede
+installation. Refusal retains the old graph/receipt/record; success adopts the
+permanent space without rebind. It carries no actor/equipment authority. The
+synchronous controller explicitly refuses this body route until it has its own
+staged owner. See [reference-body lifetime and actual feedback](../architecture/liquid-prepared-setup-and-receipts.md#prepared-water-feel-reference-bodies).
+
 The subsequent qualified host observation API
 `CyberDemoBridge.loaded_native_runtime_values()` accepts no caller path/hash and
 returns copied version1 API-reported library path/current file SHA256/size, with

@@ -10,6 +10,14 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+The subsequent unmerged [desktop Water Feel reference-body slice](../architecture/liquid-prepared-setup-and-receipts.md#prepared-water-feel-reference-bodies)
+stages the unchanged three reference rectangles and terrain with actual frozen
+poses, retains old World/graph/receipts on refusal and proves normal unpaused
+pressure reference/cached/dormant/FM feedback. Its [fresh local proof](../audits/2026-10-25-lcb003-water-reference-body.md)
+also preserves the native retired-gas-label defect exposed by play and its narrow
+repair. Synchronous bodies, remaining constructors, host-mask continuation,
+complete host identity and matching publication remain open.
+
 The #202 application branch's [combined local checkpoint](../audits/2026-10-25-lcb003-combined-host-web-prerequisite.md)
 integrates exact released pressure/IN union `713ee3ab` as `871fba33` and passes
 sixteen fresh Windows native/headless processes. Follow-up `3b4db1dd` adds an

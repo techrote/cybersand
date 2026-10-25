@@ -361,6 +361,15 @@ semantic/scenario change. Blind/unstaged bodies and CY Water fractional future
 sources refuse; initial normalization never changes scheduled actions. No new
 Water policy field, body capacity or default is introduced. See [route bounds](../architecture/liquid-prepared-setup-and-receipts.md#ordinary-water-feel-preparation).
 
+The later desktop reference-body stage retains that same policy/recipe and
+requires Exploratory. It copies the original three 8×14, mass1 reference bodies
+at (160,176), (212,176), (264,176) with epoch0 into a permanent physics space;
+no geometry padding, automatic family selection or new body capacity is added.
+Their actual poses stay frozen through terrain/native readiness and final
+commit. The existing asynchronous response age limit still rejects old samples.
+Synchronous/Web body staging and barrel owners remain unsupported. See
+[prepared reference-body ownership](../architecture/liquid-prepared-setup-and-receipts.md#prepared-water-feel-reference-bodies).
+
 The ordinary Experiment Tower additionally accepts these explicit settings only
 in Exploratory mode with its existing sampled owner. Selected floor0..4, landing,
 camera and resolved transport profile are final preparation input. Native worker

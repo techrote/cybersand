@@ -2464,15 +2464,17 @@
         "operations/lcb-manual-comparison-ux.md"
       ],
       "facts": [
-        "The unblinded body-free sampled Water Feel route explicitly requires Exploratory, keeps original schema1 recipe/player/semantic policy/events, and stays water_active rather than MicroScenario. Its copied schema2 preparation uses existing owner fences; exact request serial/applied/definition acknowledgement prevents an unchanged Water policy hash from falsely accepting a refused solver rebuild.",
-        "Reset and ordinary Water semantic/scenario changes retain accepted family/normalization/radius; refusal retains old World/player/record and ordinary exit retires it. Blind/unstaged body routes and CY Water future fractional sources refuse before mutation. Initial normalization never rewrites scheduled sources, while Current/PF source actions and ledger remain exact. Water-IN is unsupported and future whole-cell compatibility requires its own qualification; actual browsers/full publication remain open."
+        "The unblinded sampled Water Feel route explicitly requires Exploratory, keeps original schema1 recipe/player/semantic policy/events, and stays water_active rather than MicroScenario. Its copied schema2 preparation uses existing owner fences; exact request serial/applied/definition acknowledgement prevents an unchanged Water policy hash from falsely accepting a refused solver rebuild. The subsequent desktop supported-body route stages the original three reference bodies in a permanent private physics space, freezes actual poses through initial native mask/receipt capture and terrain readiness, then adopts the same graph after final fences.",
+        "Reset and ordinary Water semantic/scenario changes retain accepted family/normalization/radius; refusal retains old World/player/body graph/record and ordinary exit retires it. Actual normal unpaused pressure reference/cached/dormant/FM cohorts prove motion, signed age-bounded feedback, exact Water quantity and gas closure after the narrow native moving-mask label repair. Blind, synchronous unstaged body routes and CY Water future fractional sources refuse before mutation. Initial normalization never rewrites scheduled sources. Water-IN remains unsupported; Web bodies, host-mask CYPS continuation, full host identity and publication remain open."
       ],
       "sources": [
         "../godot/scripts/microscenario_catalogue.gd",
         "../godot/scripts/simulation_worker.gd",
         "../godot/scripts/main.gd",
         "../godot/scripts/web_demo_controller.gd",
-        "../godot/tests/test_liquid_water_feel_host.gd"
+        "../godot/tests/test_liquid_water_feel_host.gd",
+        "../godot/scripts/prepared_reference_body_session.gd",
+        "../godot/tests/test_liquid_water_reference_body.gd"
       ]
     },
     {

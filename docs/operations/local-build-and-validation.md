@@ -10,6 +10,15 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+The later [prepared Water Feel reference-body checkpoint](../audits/2026-10-25-lcb003-water-reference-body.md)
+adds `test_liquid_water_reference_body.gd`: actual frozen poses across32 physics
+frames, deterministic refusal/retained receipts and four fresh ordinary unpaused
+pressure/FM application cohorts through96 native ticks. It uses a new DLL after
+the narrow native moving-mask gas repair; older runtime seals cannot qualify it.
+The focused case checks positive accepted feedback, age rejection and exact
+Water/gas accounting. Its local Windows proof leaves Web bodies, complete
+host-mask continuation and source-matched release/platform gates open.
+
 The [combined LCB host checkpoint](../audits/2026-10-25-lcb003-combined-host-web-prerequisite.md) records
 sixteen fresh Windows native/headless passes on `871fba33`, then the explicit
 Web apparatus prerequisite and actual Rapier applied-feedback parity on

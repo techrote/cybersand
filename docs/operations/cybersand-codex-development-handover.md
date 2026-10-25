@@ -10,6 +10,16 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+The later [desktop reference-body checkpoint](../audits/2026-10-25-lcb003-water-reference-body.md)
+adds permanent-space staging for the original supported-body Water Feel recipe,
+actual frozen poses/native masks, retained-graph refusal and ordinary unpaused
+feedback across pressure variants plus an FM control. Its fresh native133 DLL
+includes the separately authored moving-mask gas-label repair; prior runtime
+seals remain immutable. This is bounded local Windows #202 work. Continue with
+the released native CYSD preparation API and real body-free import owner, then
+remaining constructors, complete host identity and final platform/publication
+gates. Web bodies and host-mask CYPS continuation remain explicit gaps.
+
 ## LCB-003 combined-source integration — 2026-10-25
 
 The fresh [combined host and Web prerequisite](../audits/2026-10-25-lcb003-combined-host-web-prerequisite.md)
