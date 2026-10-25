@@ -17,6 +17,12 @@ includes ordinary unpaused pressure/FM feedback and the native gas-label repair
 exposed by that play. Synchronous bodies, host-mask continuation and complete
 host/platform/publication qualification remain open.
 
+The unmerged #202 [thermal level preparation](architecture/liquid-prepared-setup-and-receipts.md#imported-cysd-payload-preparation)
+preserves signed temperatures and heated Empty cells through explicit solver/
+normalization preparation and the existing native commit fence. Its [local
+evidence](audits/2026-10-25-lcb003-thermal-level-preparation.md) does not complete
+ordinary importer routing, host evidence or final platform publication.
+
 The subsequent unmerged [Water Feel family route](architecture/liquid-prepared-setup-and-receipts.md#ordinary-water-feel-preparation)
 preserves the sampled player, original recipes/actions and ordinary lab/reset
 controls in explicit unblinded body-free Exploratory mode. Its

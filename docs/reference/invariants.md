@@ -346,6 +346,9 @@ additionally owns these application preparation invariants:
 | LCBH-010 | Current apparatus/export boundary: an exporter identifies an unqualified build; explicit Web terminal JSON, successful POST, earliest console/network and ordinary visual execution are separately evidenced. Native headless Web-scene passes never become actual Wasm/browser acceptance |
 | LCBH-012 | Current desktop reference-body route: original three Water Feel bodies remain frozen with actual initial masks until terrain/readiness and final native/worker fences pass; success adopts the same permanent space. Refusal retains the old graph/World/receipt/record. Normal unpaused feedback obeys age rejection and exact Water accounting; synchronous/Web body staging and host-mask CYPS continuation remain open |
 
+| LCBH-009 | Current bounded Water Feel route: explicit unblinded body-free sampled Exploratory rebuild retains original policy/recipe/player/actions/ledger, with exact serial/applied/definition success acknowledgement. Initial normalization never rewrites future sources; CY Water fractional scheduled sources and unstaged blind/body routes refuse before mutation. Original Current/blind defaults remain separate |
+| LCBH-011 | Current native adapter slice: decoded CYSD thermal tuples, including nonambient Empty, prepare under the existing one-use commit fence; actual source bytes bind payload-only identity, fractional whole-cell Water requires explicit normalization, and refusal retains old World/receipt/generation. Legacy Current import is unchanged; ordinary importer/host/platform qualification remains open |
+
 ## GPU and rejected-approach invariants
 
 Rationale: [principles](../architecture/principles-and-non-goals.md),

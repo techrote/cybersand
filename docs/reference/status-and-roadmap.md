@@ -29,6 +29,15 @@ gates, actual compat/threaded browsers and ordinary visual walkthrough remain
 open. Water IN remains unsupported; Brine IN does not meet the fourth Water
 model requirement.
 
+## LCB-003 thermal level preparation — 2026-10-25
+
+The unmerged [native CYSD preparation slice](../architecture/liquid-prepared-setup-and-receipts.md#imported-cysd-payload-preparation)
+adds copied thermal tuples, actual payload identity, explicit normalization and
+the existing one-use native transaction. [Local Windows evidence](../audits/2026-10-25-lcb003-thermal-level-preparation.md)
+passes493 new assertions and seven retained scripts plus import. No native codec,
+physics law, dependency, Current default or legacy importer changes. Ordinary
+importer/host adoption and final platform qualification remain #202 ownership.
+
 ## LCB-005 native Brine checkpoint — 2026-10-24
 
 **Current on the isolated LCB-005 branch only:** [Brine IN reference](../architecture/inertial-cellular-v1.md) selectively ports the genuine fixed-point law onto the shared quantity/prepared-state foundation, including an optional versioned native damping numerator0..16 over16(default1). [Native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) qualifies its stated source/platform scope. Default behavior remains retained. The later [standalone Godot adapter](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry) adds actual instance readback and explicit radius3 with [local Windows proof](../audits/2026-10-25-lcb005-standalone-adapter.md). Water IN, full application integration, source-matched runtime publication, owner feel and full #212 completion remain unqualified here. No Cell-carrier migration or generic Rapier force follows.

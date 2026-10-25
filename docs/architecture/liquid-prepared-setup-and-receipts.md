@@ -737,6 +737,47 @@ accepts `--native-dir` to compare all complete native fixture bytes. These local
 proofs did not substitute for the final exact-head matrix linked above. Future
 source changes again require fresh source-matched publication and applicable gates.
 
+## Imported CYSD payload preparation
+
+**Current on the unmerged #202 thermal-import slice:**
+`CyberDemoBridge::prepare_liquid_level(world, payload, profile, water_policy,
+liquid_policy, options)` accepts the existing decoded CYSD1 finite cell payload.
+The [dated local proof](../audits/2026-10-25-lcb003-thermal-level-preparation.md)
+binds source, development DLL, tests and remaining host/platform gaps. This native
+adapter API does not yet route the ordinary application's import UI.
+
+[`cyber_prepared_level_payload.hpp`](../../godot/native_extension/cyber_prepared_level_payload.hpp)
+decodes exactly1024×1024 five-byte tuples: material, state_a, state_b and signed
+LE16 temperature. It validates material and selected Water precision/coherence
+before preparation. Nonambient Empty thermal authority survives, including Water
+rounded down to Empty. Zero-quantity Water follows existing CYSD reconstruction's
+Empty result after validating the original lanes. Nonzero Empty state lanes
+explicitly refuse; no precision conversion is implicit.
+
+Actual raw payload SHA256 binds the existing NativeCellFixture/schema1 descriptor,
+with NativePayloadOnly coverage and all non-cell/host gaps. No native codec/version
+changes. `definition_hash` is refused for this API; a host claim cannot replace
+that actual payload digest. Copied import receipt fields `setup_kind` and
+`source_payload_sha256` label the native fixture and original bytes. Canonical
+native payload/setup hashes remain separate, and native-v1 full matched eligibility
+remains false. Outer CYSD metadata, actors/loadout, plane clocks, later edits and
+verified host execution remain separately owned.
+
+Shared `prepare_liquid_candidate` uses the same exclusive pending slot, native
+normalization/attempt receipts, initial body rasterization, immutable capture and
+final retained-World one-use commit fence as MicroScenarios. Fractional whole-cell
+Water requires explicit `water-normalize-v1`; ledger/digest/counters come from the
+existing native builder. Parser/options exceptions return an error without
+inventing a native-issued attempt. Native policy/setup refusals keep their typed
+outcome distinction. Refusal preserves live World, applied receipt and generation;
+a newer request retires the prior token.
+
+Legacy `import_level` still reconstructs Current defaults with radius2. The new
+API can explicitly prepare admitted PF or Brine IN with radius3 where required;
+it reconstructs initial state rather than converting a running World or supplying
+CYPS continuation. Ordinary importer/host adoption and final source-matched
+Windows/Linux/Web qualification of this API remain #202/#203 requirements.
+
 ## Downstream ownership
 
 **Planned #201:** a rest certificate must preserve stationary body-contact

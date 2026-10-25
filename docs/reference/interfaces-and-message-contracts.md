@@ -713,6 +713,16 @@ World is exposed. `commit_liquid_world(world, token)` consumes that token at the
 exclusive owner boundary after a retained-state fence; `discard_liquid_world`
 retires it. There is one pending candidate per adapter.
 
+The separate `prepare_liquid_level(world, payload, profile, policy, liquid_policy,
+options)` shares that pending slot and commit API for decoded CYSD1 bytes.
+It binds actual raw payload SHA256 in NativeCellFixture/schema1, keeps payload-only
+coverage/all gaps, preserves signed thermal tuples and explicitly normalizes only
+on opt-in. `definition_hash` is refused; import-only copied `setup_kind` and
+`source_payload_sha256` distinguish source bytes from canonical native setup hashes.
+Legacy immediate `import_level` remains Current/default radius2. The [thermal
+preparation contract](../architecture/liquid-prepared-setup-and-receipts.md#imported-cysd-payload-preparation)
+owns exact lane/refusal/identity limits; ordinary importer routing remains open.
+
 `get_applied_liquid_construction_receipt()` and
 `get_liquid_construction_attempt()` return distinct owned dictionaries containing
 the original native canonical `PackedByteArray`, its SHA256, qualifications and

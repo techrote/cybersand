@@ -20,6 +20,16 @@ the released native CYSD preparation API and real body-free import owner, then
 remaining constructors, complete host identity and final platform/publication
 gates. Web bodies and host-mask CYPS continuation remain explicit gaps.
 
+## LCB-003 thermal import API — 2026-10-25
+
+The isolated `codex/lcb003-thermal-import` slice adds
+[`prepare_liquid_level`](../architecture/liquid-prepared-setup-and-receipts.md#imported-cysd-payload-preparation)
+over the existing pending World/token/capture/commit slot. C++ source177ae236 and
+test checkpoint76dc6912 retain signed CYSD temperatures, nonambient Empty and
+explicit normalization. [Local Windows proof](../audits/2026-10-25-lcb003-thermal-level-preparation.md)
+passes493 new assertions plus seven retained scripts and import. Legacy Current
+import is unchanged. Ordinary importer/host adoption and final platforms remain.
+
 ## LCB-003 combined-source integration — 2026-10-25
 
 The fresh [combined host and Web prerequisite](../audits/2026-10-25-lcb003-combined-host-web-prerequisite.md)
