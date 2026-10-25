@@ -10,6 +10,120 @@ related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../ar
 
 # LCB-003 application-host runtime publication
 
+## Post-publication identity-test correction — 2026-10-25
+
+**Current test-only overlay on App head
+`ea96d4851621c4bed37d5e6997a0320215450f79`:** two identity regressions now
+compare the independently read actual publication manifest to the actual
+API-reported path file. A published matching artifact and a same-native-source
+development artifact are both valid observations; neither grants mapped-module,
+executed-script or full matched-host eligibility. No Native80/compiled139,
+production, law/default, profile, request, runtime or manifest changes occur.
+No native rebuild or new publication is required for this two-test correction.
+
+The original source5f02/run40226343524/bot0c9 publication and72 actual processes
+below retain their exact original source. The earlier a704 content-identical
+integration/all615-input records remain historically exact. At this new overlay,
+all80 native entries and139 recorded compiled inputs still match; the historical
+535 build paths have **exactly two changed test entries and no added paths**:
+`godot/tests/test_liquid_host_evidence.gd` and
+`godot/tests/test_liquid_owner_observation.gd`. The other533 build entries stay
+exact. This is an explicit later test-source difference, not a rewritten535
+manifest or a claim that the old72 processes ran these new tests.
+
+### Preserved actual Linux failure
+
+Actual [GDExtension/Godot run40232042725](https://github.com/techrote/cybersand/actions/runs/40232042725)
+at head ea96 checks out `56bdc0fd015bc7dc570e7432a92e2b2b38ccacc0`, with the same
+tree as that head. Linux shards0/1 execute the actual published SO
+`02ea0661d3a62e2ab346c3fe46f9f85b808c6a0099c639144f053dc70a5c3d46`.
+Their failed identity cases end34 assertions/1 failure and28 assertions/1 failure,
+respectively: the old tests unconditionally expected a DLL/manifest mismatch.
+The publication had made the actual Linux artifact match. The two failures are
+obsolete test premises; their actual captured errors are not failed cellular/
+Rapier physics. They remain failed runs, not accepted passes or rerun acceptance.
+
+The independent failure packet at
+`tmp/lcb256-linux-failure-independent-v1-20261025/REVIEW-RECEIPT.json`, SHA
+`62322347dac22d47a466b899a15ff422bfae365b576002426a14a316aef870d8`,
+binds actual API/archive/source/runtime/case logs and both P2 findings at the
+original lines37/53. The original failure logs, durations0.801s/6.209s within180s,
+shard identities and nonzero/diagnostic-error outcomes are retained. No timeout,
+retry, Native edit or manifest rewrite resolves them.
+
+### Corrected assertions and fresh actual artifact cohorts
+
+The host-evidence case now independently reads the manifest hash and current
+path SHA. Controlled copied-observation fixtures additionally cover match,
+mismatch and unavailable observations without changing actual DLL bytes.
+Both match and mismatch keep loaded-module/executed-script binding unverified;
+a matching record still has full-host eligibility false. The owner case checks
+the same real equality in both full and compact identities and independently
+retains input-owner/definition/native-byte/rollback qualifications. Native-v1
+qualifications15 and full-matched=false remain unchanged. This is test coverage
+of the existing observation contract, not a production identity upgrade.
+
+Frozen test raw/LF SHA-256:
+
+| File | Corrected source SHA-256 |
+|---|---|
+| `test_liquid_host_evidence.gd` | `fada2038b3241eaf25af6fed095125345015d31f81fd10c7152627a299e5d3fa` |
+| `test_liquid_owner_observation.gd` | `f45cacf43421d90570f05eaf9390c235ae1ad45a636619f877901be343a7e25b` |
+
+Root executes two fresh Windows cohorts on this exact frozen test overlay,
+using actual distinct native artifacts rather than forging file identity:
+
+| Actual Windows artifact / manifest equality | Import /240s | Host evidence /180s | Owner observation /180s |
+|---|---:|---:|---:|
+| Published e3f17363, equalitytrue |5.892s|38 assertions/0 failures,2.437s|29/0,7.506s|
+| Same-native-source development46a8b4d9, equalityfalse |5.974s|38/0,2.533s|29/0,7.804s|
+
+The complete development DLL hash is
+`46a8b4d92727ce3f083f519330c0e5d53ccbea4c122f9fa3db494160e2ece953`;
+the full published hash remains the e3 row below. All six strict processes
+exit0 without errors/warnings/skips/timeouts, holding697 source,646 project,
+Native80 and139 compiled inputs in their actual maps. Cohort receipts under
+`tmp/lcb256-identity-regression-v1` are published
+`54ac62ab3d21e9bcc71bf86bc9ae11ad26abd81bd0c8aac04015f12e1b0069b9`
+and development
+`cb29759aa86cdadf26c06c1dbc6efbae35918e158433708ab20d978a32bf917b`.
+The old72-process publication and earlier local matrices are not relabelled.
+These two local Windows cohorts do not establish corrected Linux execution or
+a complete new final-head matrix.
+
+At the dated21:13 snapshot, converting #256 to draft had not stopped old
+Native40232042690 or Windows GDExtension execution; old #257 Native/Godot runs
+also continued. They are an old blocked/replaced matrix, not cancelled or a new
+head's acceptance. The snapshot receipt
+`549c20da13022789c780a292a253b4e6de8936844ad243433a1bad716538e125`
+retains actual states; Root separately owns any explicit obsolete-run action.
+Native/provider/limits remain unchanged.
+
+The initial proper-companion seven-command documentation pass is external
+`tmp/lcb256-identity-docs/docs-validation/checks-v1/VALIDATION-RECEIPT.json`, SHA
+`d750ae7705b0e272aa4aba03e81aabdd874431522ef1bc9e686f57e096d79afb`.
+All seven checks pass, including repository provenance with **zero errors**:
+Docs115 documents/228 canonical claims, historical M11 18 records/28 hashes,
+frozen/supplementary retrieval, CI-provider policy and whitespace. All1657 mirror
+inputs, eighteen actual LFS payloads and five separately pinned companion files
+stay held. Current source Native80/compiled139 remain equal; historical535 test
+source drift is the explicit two entries above, without changing that manifest.
+
+Frozen32 retrieval reports19 at rank1/32 at top5, MRR0.7589; supplementary151
+reports117 at rank1/150 at top5, MRR0.8664. All151 queries and the other150
+question objects stay exact; only an existing UNION expected fact is appended.
+These lexical metrics do not establish answer correctness or improvement. The
+initial receipt predates this validation/status paragraph; the final freeze
+records its fresh follow-up check with no additional engine execution.
+
+After the corrected source/docs are frozen, reviewed and pushed, Root may mark
+#256 ready so the applicable expensive gates can run. Merge requires fresh
+exact-head gates and final review to pass. The old ea96 Documentation/
+#49 greens do not validate a successor head. #257 likewise remains downstream
+and draft until the corrected App is consumed. Full-host/scientific/manual
+acceptance and remaining constructors remain separate. Additional Web/browser/
+shader work is owner-deferred until after the epic; no new Web execution occurs.
+
 ## Actual sequence1 Windows/Linux publication — 2026-10-25
 
 Request-only source `5f02d089ee4cff8b34421cc4ca58bb4ef50dd92c`, tree

@@ -10,6 +10,25 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Current corrected-App consumption — 2026-10-25
+
+The observer branch now normally merges exact reviewed App
+`dc2eee9408b959956153608a7ee6d212a5d21672` after unarmed preparation
+`944feaa58a6408356ad31e82f5334756d0e9dd7f`. The earlier a1cc/ea96 preparation
+statements below, including the pending corrected-App merge, describe their
+original checkpoints; that merge prerequisite is now satisfied. The incoming
+App correction retains its dated Draft/gate snapshots; Root subsequently pushed
+the corrected source/docs and marked #256 ready for fresh required gates.
+Neither the retained old gates nor this merge proves those new gates passed.
+
+The two incoming tests retain exact reviewed hashes. Observer source5,
+publisher3, recorded Native139, inherited runtimes/profiles/requests and Current
+defaults remain unchanged. Historical build535 now differs only in the two
+corrected tests; the other533 entries remain exact, with no added incoming
+paths. There are still541 present build paths and no004 request. The six
+Windows/Linux observer adapter-source rebuild blockers remain unwaived. No
+engine execution, observer publication or Web work is claimed at this merge.
+
 The observer preparation is currently a1cc with exact inherited App ea96;
 Root's corrected App source152a5074/docs dc2eee94 must be normally merged
 **after preparation commit and before arming**. Current inherited535 hashes
@@ -30,6 +49,21 @@ validate that successor. No target run, new runtime, scientific
 campaign, registry promotion or #203 completion is claimed. Final applicable
 CI/review and complete host/scientific/manual qualification remain separate;
 further Web work stays owner-deferred.
+
+## Post-publication identity-test correction
+
+**Current bounded test overlay, new final-head gates pending:** actual Linux
+run40232042725 at ea96/checkout56bd fails only the two identity expectations
+that unconditionally demand a mismatch after published02ea now matches. The
+[correction evidence](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)
+retains both failures and fresh published-e3/development46a Windows import/
+host38/owner29 passes. Correct real equality remains distinct from unverified
+loaded-module/scripts and full-host=false. This is no physics/law/default
+change: Native80/compiled139 stay exact, historical build535 changes exactly
+two tests and no paths are added. No runtime/manifest rewrite or Native rebuild
+is required. Older72-process/source5f02/a704 evidence stays scoped; #256 remains
+draft for fresh final-head CI/review and #257 is downstream. Old ea96 Docs/#49
+greens are not successor greens. Additional Web work remains owner-deferred.
 
 ## Current scoped application runtime publication — 2026-10-25
 

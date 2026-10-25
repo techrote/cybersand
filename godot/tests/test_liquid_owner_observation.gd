@@ -50,10 +50,20 @@ func run() -> void:
 	expect(record.values.native_applied_run.canonical_bytes_hex == receipt.canonical_bytes.hex_encode()
 		and record.canonical_bytes_hex.hex_decode().get_string_from_utf8().sha256_text() == identity.digest,
 		"full owner capture retains exact native bytes and canonical host digest")
-	expect(not identity.host_eligible_for_full_matched_evidence and not identity.publication_matches_current_path_file
+	var runtime: Dictionary = record.values.runtime
+	var manifest: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(runtime.publication_manifest.path))
+	var current_path: String = runtime.path_file.api_reported_library_path
+	var publication_matches: bool = str(manifest.get("sha256","")) == FileAccess.get_sha256(current_path)
+	expect(runtime.publication_manifest.status == "observed" and str(manifest.get("sha256","")).length() == 64
+		and runtime.path_file.current_file_sha256 == FileAccess.get_sha256(current_path)
+		and runtime.publication_manifest.artifact_matches_current_path_file == publication_matches
+		and identity.publication_matches_current_path_file == publication_matches,
+		"compact owner identity preserves actual manifest/current-file equality for matched or development runtimes")
+	expect(not identity.host_eligible_for_full_matched_evidence
+		and runtime.mapped_module_binding == "unverified" and runtime.source_execution_binding == "unverified"
 		and record.values.host_claims.values.input_owner == "exclusive_scenario_owner"
 		and record.values.host_claims.values.definition_hash == checked.hash,
-		"actual owner inputs stay explicitly qualified against the stale local publication")
+		"actual owner inputs remain qualified independently of publication-file equality")
 	var retained_hash: String = world.get_physical_state_hash()
 	host.refuse_observation = true
 	expect(not host.install(world,checked.definition,"Inspect",true,policy,{"normalization":"water-normalize-v1"}),

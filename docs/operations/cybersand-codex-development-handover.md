@@ -10,6 +10,25 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Current corrected-App consumption — 2026-10-25
+
+The observer branch now normally merges exact reviewed App
+`dc2eee9408b959956153608a7ee6d212a5d21672` after unarmed preparation
+`944feaa58a6408356ad31e82f5334756d0e9dd7f`. The earlier a1cc/ea96 preparation
+statements below, including the pending corrected-App merge, describe their
+original checkpoints; that merge prerequisite is now satisfied. The incoming
+App correction retains its dated Draft/gate snapshots; Root subsequently pushed
+the corrected source/docs and marked #256 ready for fresh required gates.
+Neither the retained old gates nor this merge proves those new gates passed.
+
+The two incoming tests retain exact reviewed hashes. Observer source5,
+publisher3, recorded Native139, inherited runtimes/profiles/requests and Current
+defaults remain unchanged. Historical build535 now differs only in the two
+corrected tests; the other533 entries remain exact, with no added incoming
+paths. There are still541 present build paths and no004 request. The six
+Windows/Linux observer adapter-source rebuild blockers remain unwaived. No
+engine execution, observer publication or Web work is claimed at this merge.
+
 The observer preparation is currently a1cc with exact inherited App ea96;
 Root's corrected App source152a5074/docs dc2eee94 must be normally merged
 **after preparation commit and before arming**. Current inherited535 hashes
@@ -29,6 +48,21 @@ six current rebuild blockers, source freeze and later independent artifact/final
 exact-head gates. A later #256 Linux run exposes two stale identity-test
 expectations; Root owns their correction, and the reviewed corrected App head
 must be consumed before004 arming. Earlier ea96 gates do not validate it. No new scientific campaign or Web work starts here.
+
+## Post-publication two-test correction — 2026-10-25
+
+Actual Linux run40232042725 at ea96/checkout56bd fails host34/1 and owner28/1
+because the old tests demand runtime/manifest mismatch after the published02ea
+artifact actually matches. Preserve that failed evidence and the [corrected
+identity assertions/cohorts](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25).
+Root's frozen test-only correction passes import/host38/owner29 on actual
+published e3 and same-native-source development46a, retaining full-host=false
+and unverified mapped-module/scripts. All80 Native/139 compiled inputs stay
+exact; build535 has exactly two changed test entries, no added paths. No Native
+rebuild, profile/request/runtime or manifest change is needed. Old source5f02
+72-process/a704 records remain historical, not new-test execution. #256 remains
+draft pending fresh corrected-head gates/review; #257 must consume that head.
+Old ea96 Docs/#49 greens do not cover it. All additional Web work is deferred.
 
 ## Current scoped application runtime publication — 2026-10-25
 

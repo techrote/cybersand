@@ -10,6 +10,23 @@ related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, liquid-
 
 # Native liquid prepared setup, receipts and quantity accounting
 
+## Current publication-file equality and identity-test correction
+
+After source5f02's actual003 publication, the API-reported path file can correctly
+match its manifest. The bounded [post-publication test correction](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)
+compares independently read actual manifest/path SHA values and separately tests
+match, mismatch and unavailable copied observations. Either real equality state
+preserves mapped-module/executed-script binding as unverified and full matched
+host eligibility false; equality alone never grants complete host identity.
+The existing receipt-v1 qualifiers and application transaction are unchanged.
+
+The later test-only overlay at ea96 changes two historical build535 entries;
+Native80 and compiled139 stay exact. Root's two actual Windows artifact cohorts
+pass host38/owner29 plus import, while the original Linux mismatch-assumption
+failures and old72-process publication proof keep their own source scope.
+Fresh corrected-head Linux/full CI remains required, without Native rebuild or
+manifest rewrite. Additional Web work is owner-deferred.
+
 The [actual003 Windows/Linux publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
 qualifies source5f02d089/bot0c9b1977 with import plus35 strict cases on each OS,
 72 actual processes and native80/build535 source ledgers. Existing prepared

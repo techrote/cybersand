@@ -10,6 +10,25 @@ related-documents: [local-build-and-validation.md, ../reference/validation-evide
 
 # Source checkpoint and recovery
 
+## Current corrected-App consumption — 2026-10-25
+
+The observer branch now normally merges exact reviewed App
+`dc2eee9408b959956153608a7ee6d212a5d21672` after unarmed preparation
+`944feaa58a6408356ad31e82f5334756d0e9dd7f`. The earlier a1cc/ea96 preparation
+statements below, including the pending corrected-App merge, describe their
+original checkpoints; that merge prerequisite is now satisfied. The incoming
+App correction retains its dated Draft/gate snapshots; Root subsequently pushed
+the corrected source/docs and marked #256 ready for fresh required gates.
+Neither the retained old gates nor this merge proves those new gates passed.
+
+The two incoming tests retain exact reviewed hashes. Observer source5,
+publisher3, recorded Native139, inherited runtimes/profiles/requests and Current
+defaults remain unchanged. Historical build535 now differs only in the two
+corrected tests; the other533 entries remain exact, with no added incoming
+paths. There are still541 present build paths and no004 request. The six
+Windows/Linux observer adapter-source rebuild blockers remain unwaived. No
+engine execution, observer publication or Web work is claimed at this merge.
+
 The observer preparation is currently a1cc with exact inherited App ea96;
 Root's corrected App source152a5074/docs dc2eee94 must be normally merged
 **after preparation commit and before arming**. Current inherited535 hashes
@@ -29,6 +48,19 @@ The [separate004 preparation](../audits/2026-10-25-lcb004-observer-publication.m
 adds only its own workflow/helper/guard/audit and small documentation routes.
 Its new request is absent, inherited requests/runtimes/profiles stay unchanged,
 and six native-source provenance comparisons still require actual new builds.
+
+## Recoverable post-publication identity-test overlay
+
+The current App checkpoint is ea96 plus exactly two frozen GDScript test changes,
+with their raw/LF hashes, failed Linux40232042725 packet62322347 and two actual
+Windows artifact-cohort receipts54ac62ab/cb29759a in the [correction ledger](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25).
+All80 native manifest entries and139 recorded compiled inputs stay exact.
+Historical build535 has exactly two changed test paths and no added paths;
+the other533 remain equal. Do not rewrite the original source5f02 publication,
+a704/all615 maps, runtimes, manifests, profiles or requests. No later commit is
+claimed as executed before its own gates. Root owns the corrected source/docs
+commit, push and fresh #256 final-head CI; #257 must consume it before readiness.
+No new Native build/publication or Web work is part of this test correction.
 
 ## Current scoped application runtime publication — 2026-10-25
 

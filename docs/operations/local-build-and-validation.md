@@ -10,6 +10,25 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Current corrected-App consumption — 2026-10-25
+
+The observer branch now normally merges exact reviewed App
+`dc2eee9408b959956153608a7ee6d212a5d21672` after unarmed preparation
+`944feaa58a6408356ad31e82f5334756d0e9dd7f`. The earlier a1cc/ea96 preparation
+statements below, including the pending corrected-App merge, describe their
+original checkpoints; that merge prerequisite is now satisfied. The incoming
+App correction retains its dated Draft/gate snapshots; Root subsequently pushed
+the corrected source/docs and marked #256 ready for fresh required gates.
+Neither the retained old gates nor this merge proves those new gates passed.
+
+The two incoming tests retain exact reviewed hashes. Observer source5,
+publisher3, recorded Native139, inherited runtimes/profiles/requests and Current
+defaults remain unchanged. Historical build535 now differs only in the two
+corrected tests; the other533 entries remain exact, with no added incoming
+paths. There are still541 present build paths and no004 request. The six
+Windows/Linux observer adapter-source rebuild blockers remain unwaived. No
+engine execution, observer publication or Web work is claimed at this merge.
+
 The observer preparation is currently a1cc with exact inherited App ea96;
 Root's corrected App source152a5074/docs dc2eee94 must be normally merged
 **after preparation commit and before arming**. Current inherited535 hashes
@@ -28,6 +47,20 @@ App runtime manifests still mismatch the three new adapter inputs per OS; six
 release blockers are not waived by local Windows proof or pure fixtures.
 Read the [canonical publication boundary](github-development-and-release.md#isolated-observer-runtime-publication)
 before a later authorized freeze/arming. Web work remains owner-deferred.
+
+## Published and development identity-test controls
+
+The [two-test correction ledger](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)
+records actual published-e3 and same-native-source development46a cohorts:
+import240s plus host-evidence38/owner-observation29 cases, each180s. All six
+actual Windows processes pass with held source/project, Native80 and compiled139
+maps. The tests independently read real file/manifest hashes and add copied
+match/mismatch/unavailable controls while retaining unverified module/scripts
+and full-host=false. Neither cohort invents actual matching artifact bytes.
+Historical535 build inputs have exactly two changed test entries; no Native,
+profile/request/runtime/manifest edit or rebuild is required. The failed Linux
+40232042725 mismatch premises remain preserved, and corrected Linux/new-head full
+CI still needs execution. Older72-process proof stays at source5f02. Web deferred.
 
 ## Current scoped application runtime publication — 2026-10-25
 
