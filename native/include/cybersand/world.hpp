@@ -302,6 +302,11 @@ public:
     // May be stale after transport/writes or unprepared after restore; no
     // freshness, authority or optimization-skip permission is implied.
     [[nodiscard]] PressureHeadSnapshot prepared_pressure_head(std::int64_t x, std::int64_t y) const noexcept;
+    // Copies the actual resident chunk roster for head observations. Returns
+    // the required count (zero without pressure); a short span is untouched.
+    // Unordered copied coordinates may be sorted by the caller. No allocation,
+    // preparation, storage exposure or freshness/skip authority is implied.
+    [[nodiscard]] std::size_t copy_pressure_head_chunk_coordinates(std::span<ChunkCoord> output) const noexcept;
     [[nodiscard]] std::vector<GasCompartmentSnapshot> gas_compartments() const;
     [[nodiscard]] std::vector<GasHistoryRecord> gas_history() const;
     [[nodiscard]] GasLedger gas_ledger() const noexcept;

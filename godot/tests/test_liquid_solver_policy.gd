@@ -268,8 +268,8 @@ func _transactional_refusals(bridge: Variant, definition: Dictionary, request: P
 	# An unrelated World keeps its own policy session through those refusals.
 	var other: Dictionary = _install(1, definition, null)
 	var other_generation: int = int(other.world.get_liquid_policy_session_generation())
-	expect(not other.host.install(other.world, definition, "Benchmark", true, _with(request, 3, 3, 2)),
-		"independent World admitted pressure_flow_v1/cached_dormant")
+	expect(not other.host.install(other.world, definition, "Benchmark", true, _with(request, 16, 3, 2)),
+		"independent World admitted unsupported Oil pressure_flow_v1/cached_dormant")
 	expect(int(other.world.get_liquid_policy_session_generation()) == other_generation
 		and other.world.get_liquid_solver_policy().policy_hash == receipt.policy_hash
 		and int(run.world.get_liquid_policy_session_generation()) == int(before.policy.session_generation),

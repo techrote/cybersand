@@ -85,6 +85,18 @@ PressureHeadSnapshot World::prepared_pressure_head(std::int64_t x, std::int64_t 
     return {PressureHeadStatus::Prepared, head};
 }
 
+std::size_t World::copy_pressure_head_chunk_coordinates(std::span<ChunkCoord> output) const noexcept {
+    if (pressure_ == nullptr) return 0;
+    const auto required = chunks_.size();
+    if (output.size() < required) return required;
+    std::size_t index = 0;
+    for (const auto& [coordinate, chunk] : chunks_) {
+        (void)chunk;
+        output[index++] = coordinate;
+    }
+    return required;
+}
+
 std::vector<GasCompartmentSnapshot> World::gas_compartments() const {
     std::vector<GasCompartmentSnapshot> out;
     if (pressure_ == nullptr) return out;

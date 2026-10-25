@@ -124,7 +124,7 @@ def inspect(plan: dict) -> dict:
             "registration": plan, "profiles": PROFILES, "fallback_subcases": FALLBACKS,
             "phase_ticks": PHASES, "counter_fields": sorted(fields),
             "timing": "each complete tick only; edits/setup separately; one parity/head/ROI observation per World after all three timers",
-            "head_measurement": "bounded preallocated domain covers every resident cell; statuses match and numeric signed/absolute sums, maximum error and comparison count are recorded in Water mass units; last pre-kernel field may be stale after mutations",
+            "head_measurement": "preallocated native chunk roster and maximum-admitted head buffers cover every actual resident cell; statuses match and numeric signed/absolute sums, maximum error and comparison count are recorded in Water mass units; last pre-kernel field may be stale after mutations",
             "boundary_measurement": "declared ROI Water end-start at zero host Water edits and zero tick Water source/sink counters; inferred NET boundary inflow only, not gross/per-face flux",
             "participants": "TickStats worker_threads_observed; max distinct task-claiming pool participants in any dispatch of that tick",
             "memory": "peak RSS is the process containing three simultaneous Worlds, pools and parity/apparatus; declared fields are partial capacities",
@@ -179,9 +179,9 @@ def validate_rows(rows: list[dict], profile: str, fallback: str, workers: int, r
     domain = [0, 0, 128, 128] if boxed else [0, 0, 416, 24] if profile == PROFILES[4] else [0, 0, 88, 8]
     roi = [0, 0, 32, 128] if boxed else [0, 0, 8, 8]
     chunk_size = 32 if boxed else 8
-    if (header.get("head_sample_domain") != domain or header.get("boundary_flux_roi") != roi or
+    if (header.get("head_sample_domain_hint") != domain or header.get("head_coverage") != "copied_sorted_native_resident_chunk_roster" or header.get("boundary_flux_roi") != roi or
             header.get("chunk_size") != chunk_size):
-        raise ValueError("head coverage domain or boundary-flux ROI differs from registration")
+        raise ValueError("head roster coverage declaration, authored domain hint or boundary-flux ROI differs from registration")
     if rows[-1].get("event") != "complete" or rows[-1].get("valid") is not True:
         raise ValueError("native apparatus did not complete all parity/opportunity checks")
     setups = [row for row in rows if row.get("event") == "setup"]
@@ -206,7 +206,7 @@ def validate_rows(rows: list[dict], profile: str, fallback: str, workers: int, r
         if row["phase"] != expected_phase or row["order_position"] != (ARMS.index(row["arm"])-replicate-row["tick"]+1) % 3:
             raise ValueError("phase boundary or rotated arm order differs from registration")
         head = row["prepared_head"]
-        if (head["sampled_cells"] != domain[2]*domain[3] or
+        if (head["sampled_cells"] != head["resident_cells"] or
                 head["resident_cells"] != row["memory"]["resident_chunks"]*chunk_size*chunk_size or
                 head["resident_cells"] != head["prepared_cells"]+head["no_head_cells"] or
                 head["numeric_comparisons"] != head["prepared_cells"] or
@@ -241,7 +241,7 @@ def validate_rows(rows: list[dict], profile: str, fallback: str, workers: int, r
             "tick_phase_total_ns": total, "edit_phase_total_ns": edits,
             "edit_plus_tick_phase_total_ns": {a: {p: total[a][p]+edits[a][p] for p in PHASES} for a in ARMS},
             "head_phase_metrics": head_totals, "boundary_phase_metrics": boundary_totals,
-            "head_sample_domain": domain, "boundary_flux_roi": roi, "setup": setups, "complete": rows[-1]}
+            "head_sample_domain_hint": domain, "head_coverage": header["head_coverage"], "boundary_flux_roi": roi, "setup": setups, "complete": rows[-1]}
 
 
 def run(args: argparse.Namespace, plan: dict) -> None:
@@ -311,7 +311,7 @@ def run(args: argparse.Namespace, plan: dict) -> None:
           "binary_sha256": proof["binary_sha256"], "registration": plan, "source_fence_unchanged": True,
           "replicates": 1 if args.qualification_only else 5, "runs": len(records), "comparisons": comparisons,
           "head_and_boundary_metrics": [{"profile": r["profile"], "fallback": r["fallback"], "workers": r["workers"], "replicate": r["replicate"],
-              "head_sample_domain": r["head_sample_domain"], "boundary_flux_roi": r["boundary_flux_roi"],
+              "head_sample_domain_hint": r["head_sample_domain_hint"], "head_coverage": r["head_coverage"], "boundary_flux_roi": r["boundary_flux_roi"],
               "head_phase_metrics": r["head_phase_metrics"], "boundary_phase_metrics": r["boundary_phase_metrics"]} for r in records],
           "head_scope": "all resident final prepared head slots, copied outside timers; may be stale after transport/writes and are not authority",
           "boundary_scope": "inferred signed NET inflow from ROI Water balance at zero host/tick Water source/sink; not gross or per-face flux",

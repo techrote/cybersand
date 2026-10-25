@@ -2,6 +2,51 @@
 // helpers; all three implementations execute the same native authority.
 using AcceptanceWorlds = std::array<std::unique_ptr<World>, 3>;
 
+using PressureHeadRosters = std::array<std::vector<cybersand::ChunkCoord>,3>;
+PressureHeadRosters preallocate_head_rosters(const AcceptanceWorlds& worlds) {
+    PressureHeadRosters output;
+    for (std::size_t arm=0;arm<3;++arm) output[arm].resize(worlds[arm]->config().maximum_chunk_count);
+    return output;
+}
+std::pair<std::uint64_t,std::uint64_t> compare_resident_prepared_heads(const AcceptanceWorlds& worlds, PressureHeadRosters& rosters) {
+    std::array<std::size_t,3> counts{};
+    for (std::size_t arm=0;arm<3;++arm) {
+        const auto required=worlds[arm]->chunk_count();
+        std::array<cybersand::ChunkCoord,2> short_output{{{991,997},{1009,1013}}};
+        const auto sentinel=short_output;
+        if (required>short_output.size()) require(worlds[arm]->copy_pressure_head_chunk_coordinates(short_output)==required && short_output==sentinel,
+                "short copied roster reports full required count and writes NOTHING");
+        counts[arm]=worlds[arm]->copy_pressure_head_chunk_coordinates(rosters[arm]);
+        require(counts[arm]==required && counts[arm]<=rosters[arm].size(),"preallocated actual resident roster is complete");
+        std::sort(rosters[arm].begin(),rosters[arm].begin()+static_cast<std::ptrdiff_t>(counts[arm]),
+                [](auto a,auto b){return a.y!=b.y ? a.y<b.y : a.x<b.x;});
+        require(std::adjacent_find(rosters[arm].begin(),rosters[arm].begin()+static_cast<std::ptrdiff_t>(counts[arm]))==rosters[arm].begin()+static_cast<std::ptrdiff_t>(counts[arm]),
+                "successful copied roster contains no duplicate coordinate");
+        require(counts[arm]==counts[0] && std::equal(rosters[0].begin(),rosters[0].begin()+static_cast<std::ptrdiff_t>(counts[0]),rosters[arm].begin()),
+                "all actual resident coordinates agree across pressure variants");
+    }
+    std::uint64_t resident=0, prepared=0;
+    const auto size=worlds[0]->config().chunk_size;
+    for (std::size_t chunk=0;chunk<counts[0];++chunk) {
+        const auto coordinate=rosters[0][chunk];
+        for (std::int64_t dy=0;dy<size;++dy) for (std::int64_t dx=0;dx<size;++dx) {
+            const auto x=coordinate.x*size+dx,y=coordinate.y*size+dy;
+            const auto reference=worlds[0]->prepared_pressure_head(x,y);
+            for (const auto& world:worlds) {
+                const auto copied=world->prepared_pressure_head(x,y);
+                require(copied==reference,"every actual resident copied head status/value agrees exactly");
+                require(copied.status==cybersand::PressureHeadStatus::Prepared || copied.status==cybersand::PressureHeadStatus::NoHead,
+                        "completed resident prepared field is neither missing nor unresolved");
+            }
+            ++resident;
+            if (reference.status==cybersand::PressureHeadStatus::Prepared) ++prepared;
+        }
+    }
+    require(resident==worlds[0]->chunk_count()*static_cast<std::uint64_t>(size)*static_cast<std::uint64_t>(size),
+            "copied native roster covers EVERY resident cell, including gas-discovery allocations");
+    return {resident,prepared};
+}
+
 WorldConfig acceptance_config(int variant, std::uint32_t workers, bool gas = false,
                               std::uint8_t cadence = 1) {
     auto config = cached_config(variant, gas, workers);
@@ -130,6 +175,14 @@ void test_variants_remote_hydraulic_acceptance() {
 }
 
 void test_variants_communicating_basins_acceptance() {
+    {
+        auto current=std::make_unique<World>();
+        std::array<cybersand::ChunkCoord,2> output{{{991,997},{1009,1013}}};
+        const auto original=output; const auto hash=current->physical_state_hash();
+        require(current->copy_pressure_head_chunk_coordinates(output)==0U && output==original &&
+                    current->chunk_count()==0U && current->physical_state_hash()==hash,
+                "default family returns zero roster and leaves the complete caller output/World untouched");
+    }
     for (const auto workers : {1U, 4U}) for (const auto passage_height : {1, 4}) {
         auto worlds = acceptance_worlds(workers);
         for (auto& world : worlds) {
@@ -145,7 +198,10 @@ void test_variants_communicating_basins_acceptance() {
         // Copy every resident prepared head slot, including non-Water and
         // paused cells. This observes the last pre-kernel field, which can be
         // stale after transport; it is never a current-pressure/rest authority.
-        const RectI64 sample_domain{-8, -8, 64, 64};
+        auto head_rosters=preallocate_head_rosters(worlds);
+        const auto source_hash=worlds[0]->physical_state_hash();
+        (void)compare_resident_prepared_heads(worlds,head_rosters);
+        require(worlds[0]->physical_state_hash()==source_hash,"copying/sorting actual roster and reading heads leaves authority unchanged");
         const RectI64 lower_limb{28, 3, 8, 37};
         std::uint64_t resident_samples = 0, prepared_samples = 0, positive_inflow_ticks = 0;
         std::int64_t maximum_net_inflow = 0;
@@ -157,26 +213,10 @@ void test_variants_communicating_basins_acceptance() {
                 start_kinds[arm] = worlds[arm]->quantity_ledger().kinds;
             }
             acceptance_tick(worlds, 1, "vented communicating basin passage " + std::to_string(passage_height));
-            std::array<std::uint64_t,3> resident{};
             std::array<std::int64_t,3> net_inflow{};
-            for (std::int64_t dy = 0; dy < sample_domain.height; ++dy)
-                for (std::int64_t dx = 0; dx < sample_domain.width; ++dx) {
-                    const auto x = sample_domain.x + dx, y = sample_domain.y + dy;
-                    const auto reference = worlds[0]->prepared_pressure_head(x, y);
-                    for (std::size_t arm = 0; arm < 3; ++arm) {
-                        const auto copied = worlds[arm]->prepared_pressure_head(x, y);
-                        require(copied == reference, "every copied prepared head status/value agrees exactly");
-                        require(copied.status != cybersand::PressureHeadStatus::FamilyUnavailable &&
-                                    copied.status != cybersand::PressureHeadStatus::Unresolved,
-                                "completed prepared field contains neither missing family nor unresolved sentinel");
-                        if (copied.status != cybersand::PressureHeadStatus::NonResident) ++resident[arm];
-                    }
-                    if (reference.status == cybersand::PressureHeadStatus::Prepared) ++prepared_samples;
-                }
+            const auto [resident,prepared]=compare_resident_prepared_heads(worlds,head_rosters);
+            prepared_samples+=prepared;
             for (std::size_t arm = 0; arm < 3; ++arm) {
-                const auto size = static_cast<std::uint64_t>(worlds[arm]->config().chunk_size);
-                require(resident[arm] == worlds[arm]->chunk_count() * size * size,
-                        "sample domain covers every resident cell rather than just the active Water");
                 require(worlds[arm]->quantity_ledger().kinds == start_kinds[arm],
                         "net-boundary control has zero tick Water sources/sinks and no host Water edits");
                 net_inflow[arm] = static_cast<std::int64_t>(worlds[arm]->water_quantity(lower_limb)) -
@@ -186,7 +226,7 @@ void test_variants_communicating_basins_acceptance() {
                     "declared lower-limb net Water boundary inflow agrees each tick");
             if (net_inflow[0] > 0) ++positive_inflow_ticks;
             maximum_net_inflow = std::max(maximum_net_inflow, net_inflow[0]);
-            resident_samples += resident[0];
+            resident_samples += resident;
         }
         require(prepared_samples > 0 && positive_inflow_ticks > 0,
                 "full resident head comparisons and a real positive boundary inflow are exercised");
@@ -216,6 +256,7 @@ void test_variants_rotating_mask_acceptance() {
         acceptance_tick(worlds, 8, "mask control warmup");
         const auto quantity_before = worlds[0]->water_quantity({-24, -8, 88, 8});
         std::uint64_t contacts = 0;
+        auto head_rosters=preallocate_head_rosters(worlds);
         for (int t = 0; t < 24; ++t) {
             for (auto& world : worlds) {
                 world->clear_transient_obstacles();
@@ -229,6 +270,7 @@ void test_variants_rotating_mask_acceptance() {
                 }
             }
             acceptance_tick(worlds, 1, "moving/rotating native masks");
+            (void)compare_resident_prepared_heads(worlds,head_rosters);
             contacts += worlds[0]->transient_contact_count(9);
             for (std::size_t arm = 1; arm < 3; ++arm)
                 require(worlds[0]->transient_contact_count(9) == worlds[arm]->transient_contact_count(9) &&

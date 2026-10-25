@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
+#include <limits>
 #include <memory>
 #include <span>
 #include <stdexcept>
@@ -144,8 +145,8 @@ bool edit(World& w, std::string_view profile, int t) {
     return changed && profile==kProfiles[2];
 }
 
-// The bounded domains cover every resident chunk created by these fixtures,
-// including churn's last chunk x408..415,y16..23. Coverage is checked each tick.
+// Initial authored fixture hints only. Gas discovery can allocate outside these
+// bounds; all head observations use the copied actual native resident roster.
 RectI64 head_domain(std::string_view profile) {
     if (boxed(profile)) return {0,0,128,128};
     return profile==kProfiles[4] ? RectI64{0,0,416,24} : RectI64{0,0,88,8};
@@ -158,14 +159,16 @@ struct HeadCoverage {
     std::int64_t prepared_head_sum=0;
     std::int32_t minimum_head=0, maximum_head=0;
 };
-HeadCoverage sample_heads(const World& w, RectI64 domain, std::span<PressureHeadSnapshot> slots) {
+HeadCoverage sample_heads(const World& w, std::span<const ChunkCoord> coordinates, std::span<PressureHeadSnapshot> slots) {
     HeadCoverage out;
-    require(slots.size()==static_cast<std::size_t>(domain.width*domain.height),"head sample buffer matches declared domain");
-    for (std::int64_t dy=0;dy<domain.height;++dy) for (std::int64_t dx=0;dx<domain.width;++dx) {
-        const auto head=w.prepared_pressure_head(domain.x+dx,domain.y+dy);
-        slots[static_cast<std::size_t>(dy*domain.width+dx)]=head; ++out.sampled;
-        require(head.status!=PressureHeadStatus::FamilyUnavailable,"all measured arms must expose the pressure head field");
-        if (head.status==PressureHeadStatus::NonResident) continue;
+    const auto size=static_cast<std::uint64_t>(w.config().chunk_size);
+    require(coordinates.size()==w.chunk_count(),"copied native roster must cover every resident chunk");
+    require(slots.size()==coordinates.size()*size*size,"head sample buffer matches actual resident roster");
+    for (const auto coordinate : coordinates)
+        for (std::int64_t dy=0;dy<w.config().chunk_size;++dy) for (std::int64_t dx=0;dx<w.config().chunk_size;++dx) {
+        const auto head=w.prepared_pressure_head(coordinate.x*w.config().chunk_size+dx,coordinate.y*w.config().chunk_size+dy);
+        slots[static_cast<std::size_t>(out.sampled++)]=head;
+        require(head.status!=PressureHeadStatus::FamilyUnavailable && head.status!=PressureHeadStatus::NonResident,"copied actual resident head slot must exist");
         ++out.resident;
         if (head.status==PressureHeadStatus::Prepared) {
             if (out.prepared==0U) out.minimum_head=out.maximum_head=head.head;
@@ -175,8 +178,7 @@ HeadCoverage sample_heads(const World& w, RectI64 domain, std::span<PressureHead
         if (head.status==PressureHeadStatus::NoHead) ++out.no_head;
         if (head.status==PressureHeadStatus::Unresolved) ++out.unresolved;
     }
-    const auto size=static_cast<std::uint64_t>(w.config().chunk_size);
-    require(out.resident==w.chunk_count()*size*size,"declared head domain must cover EVERY resident cell, including paused/churn chunks");
+    require(out.resident==w.chunk_count()*size*size,"actual head roster must cover EVERY resident cell, including gas discovery, paused and churn chunks");
     require(out.unresolved==0U,"completed pre-kernel head field must have no unresolved interpolation sentinel");
     return out;
 }
@@ -305,17 +307,27 @@ int run(std::string_view profile, std::string_view fallback, std::uint32_t worke
     }
     const auto domain=head_domain(profile), roi=flux_roi(profile);
     std::array<std::vector<PressureHeadSnapshot>,3> head_samples;
-    // Apparatus storage is fixed before all tick timers; no per-tick growth.
-    for (auto& samples : head_samples) samples.resize(static_cast<std::size_t>(domain.width*domain.height));
+    std::array<std::vector<ChunkCoord>,3> chunk_coordinates;
+    // Complete maximum admitted storage is fixed before all tick timers.
+    // Reference gas discovery can allocate outside the authored fixture hint.
+    for (std::size_t arm=0;arm<3;++arm) {
+        const auto& cfg=worlds[arm]->config();
+        const auto area=static_cast<std::size_t>(cfg.chunk_size)*static_cast<std::size_t>(cfg.chunk_size);
+        require(cfg.maximum_chunk_count<=std::numeric_limits<std::size_t>::max()/area,"registered head observation capacity is representable");
+        chunk_coordinates[arm].resize(cfg.maximum_chunk_count);
+        head_samples[arm].resize(cfg.maximum_chunk_count*area);
+    }
     std::cout<<"{\"event\":\"header\",\"schema\":\"lcb002-total-cost-v2\",\"execution\":2,\"profile\":\""<<profile
         <<"\",\"fallback\":\""<<fallback<<"\",\"workers\":"<<workers<<",\"replicate\":"<<replicate
         <<",\"phase_ticks\":["<<kCold<<','<<kWarm<<','<<kDisturbed<<"],\"sizeof_world\":"<<sizeof(World)
         <<",\"sizeof_world_config\":"<<sizeof(WorldConfig)<<",\"chunk_size\":"<<worlds[0]->config().chunk_size
         <<",\"sizeof_pressure_head_snapshot\":"<<sizeof(PressureHeadSnapshot)
         <<",\"apparatus_head_buffer_capacity_bytes\":"<<(head_samples[0].capacity()+head_samples[1].capacity()+head_samples[2].capacity())*sizeof(PressureHeadSnapshot)
-        <<",\"head_scope\":\"last pre-kernel prepared slot; may be stale after transport or writes; not current authority; all resident cells sampled outside timers; errors in Water mass units\""
+        <<",\"apparatus_chunk_roster_capacity_bytes\":"<<(chunk_coordinates[0].capacity()+chunk_coordinates[1].capacity()+chunk_coordinates[2].capacity())*sizeof(ChunkCoord)
+        <<",\"head_scope\":\"last pre-kernel prepared slot; may be stale after transport or writes; not current authority; all actual resident chunks copied/sorted/sampled outside timers; errors in Water mass units\""
         <<",\"flux_scope\":\"ROI end minus start at zero tick Water sources/sinks and zero host Water edits; inferred NET boundary inflow only, not gross or per-face transport\""
-        <<",\"head_sample_domain\":"; rect_json(domain); std::cout<<",\"boundary_flux_roi\":"; rect_json(roi); std::cout
+        <<",\"head_coverage\":\"copied_sorted_native_resident_chunk_roster\""
+        <<",\"head_sample_domain_hint\":"; rect_json(domain); std::cout<<",\"boundary_flux_roi\":"; rect_json(roi); std::cout
         <<",\"participant_scope\":\"maximum distinct pool threads claiming at least one task in any dispatch of this tick; serial reports1 only with jobs\""
         <<",\"counter_scope\":\"since preceding tick snapshot, including separately timed host edits and their producer invalidation\""
         <<",\"memory_scope\":\"process peak includes all three simultaneous Worlds, three pools when configured, parity observations, apparatus and allocator; declared fields are not a complete World footprint\"}\n";
@@ -358,14 +370,24 @@ int run(std::string_view profile, std::string_view fallback, std::uint32_t worke
         std::array<Observation,3> observations;
         std::array<HeadCoverage,3> head_coverage{};
         std::array<HeadDifference,3> head_difference{};
+        std::array<std::size_t,3> resident_counts{}, sampled_counts{};
         for (int position=0;position<3;++position) {
             const auto arm=static_cast<std::size_t>((replicate+t+position)%3);
             observations[arm]=observe(*worlds[arm],roi);
-            head_coverage[arm]=sample_heads(*worlds[arm],domain,head_samples[arm]);
+            resident_counts[arm]=worlds[arm]->copy_pressure_head_chunk_coordinates(chunk_coordinates[arm]);
+            require(resident_counts[arm]==worlds[arm]->chunk_count() && resident_counts[arm]<=chunk_coordinates[arm].size(),"preallocated native roster observation must be complete");
+            const auto first=chunk_coordinates[arm].begin(), last=first+static_cast<std::ptrdiff_t>(resident_counts[arm]);
+            std::sort(first,last,[](auto a,auto b){return a.y!=b.y ? a.y<b.y : a.x<b.x;});
+            require(std::adjacent_find(first,last)==last,"copied actual resident roster must contain no duplicates");
+            sampled_counts[arm]=resident_counts[arm]*static_cast<std::size_t>(worlds[arm]->config().chunk_size)*static_cast<std::size_t>(worlds[arm]->config().chunk_size);
+            head_coverage[arm]=sample_heads(*worlds[arm],std::span<const ChunkCoord>(chunk_coordinates[arm]).first(resident_counts[arm]),std::span<PressureHeadSnapshot>(head_samples[arm]).first(sampled_counts[arm]));
             require(observations[arm].quantities.kinds==water_kinds_before_tick[arm],"net boundary measurement requires zero tick Water sources AND sinks of every kind");
         }
         equivalent(observations[0],observations[1]); equivalent(observations[0],observations[2]);
-        for (std::size_t arm=0;arm<3;++arm) head_difference[arm]=compare_heads(head_samples[0],head_samples[arm]);
+        for (std::size_t arm=0;arm<3;++arm) {
+            require(resident_counts[arm]==resident_counts[0] && std::equal(chunk_coordinates[0].begin(),chunk_coordinates[0].begin()+static_cast<std::ptrdiff_t>(resident_counts[0]),chunk_coordinates[arm].begin()),"actual resident chunk rosters must agree across pressure variants");
+            head_difference[arm]=compare_heads(std::span<const PressureHeadSnapshot>(head_samples[0]).first(sampled_counts[0]),std::span<const PressureHeadSnapshot>(head_samples[arm]).first(sampled_counts[arm]));
+        }
         for (std::size_t arm=0;arm<3;++arm) {
             const auto now=worlds[arm]->pressure_optimization_snapshot();
             if (require_bfs_reuse && arm!=0U)
