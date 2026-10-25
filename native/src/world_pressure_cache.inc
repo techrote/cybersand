@@ -20,7 +20,7 @@ void World::rebuild_pressure_index() {
     cache.dirty_columns.clear(); cache.dirty_rows.clear();
     for (const auto& [coord, chunk] : chunks_) {
         cache.column_order.push_back(coord);
-        std::fill(chunk->pressure->rest_certificate.begin(), chunk->pressure->rest_certificate.end(), 0U);
+        std::fill(chunk->pressure->rest_certificate.begin(), chunk->pressure->rest_certificate.end(), PressureChunk::kCertificateWarmup);
     }
     std::sort(cache.column_order.begin(), cache.column_order.end(), [](auto a, auto b) {
         return a.x != b.x ? a.x < b.x : a.y < b.y;
@@ -82,7 +82,7 @@ void World::invalidate_pressure_certificates(ChunkCoord coord, std::int32_t min_
             for (auto y = first_y; y <= last_y; ++y) {
                 const auto start = static_cast<std::size_t>(y) * static_cast<std::size_t>(size);
                 std::fill(certificates.begin() + static_cast<std::ptrdiff_t>(start + static_cast<std::size_t>(first_x)),
-                          certificates.begin() + static_cast<std::ptrdiff_t>(start + static_cast<std::size_t>(last_x) + 1U), 0U);
+                          certificates.begin() + static_cast<std::ptrdiff_t>(start + static_cast<std::size_t>(last_x) + 1U), PressureChunk::kCertificateWarmup);
                 pressure_->optimization.certificate_invalidation_cells+=static_cast<std::uint64_t>(last_x-first_x+1);
             }
         }
@@ -152,7 +152,7 @@ std::optional<std::array<std::uint8_t,32>> World::pressure_optimization_identity
     Sha256 hash;
     constexpr char domain[]="cybersand-pressure-optimization-v1-identity-v1";
     hash.update({reinterpret_cast<const std::uint8_t*>(domain),sizeof(domain)-1U});
-    for (const std::uint64_t value : {std::uint64_t{1},std::uint64_t{cache.dormant ? 2U : 1U},
+    for (const std::uint64_t value : {kPressureOptimizationExecutionVersion,std::uint64_t{cache.dormant ? 2U : 1U},
             static_cast<std::uint64_t>(cache.config.index_chunk_capacity),cache.config.head_repair_cell_budget,
             static_cast<std::uint64_t>(cache.config.gas_member_capacity),cache.config.gas_invalidation_pair_budget}) {
         std::array<std::uint8_t,8> bytes{};
@@ -199,7 +199,7 @@ bool World::pressure_motion_is_noop(std::int64_t x, std::int64_t y, JobEffects* 
     // are not all represented by a neighboring authoritative cell edit.
     if (!pending_explosions_.empty() ||
         (config_.transport_policy.configured && config_.transport_policy.cadence_for(3U)!=1U)) {
-        certificate=0U;
+        certificate=PressureChunk::kCertificateWarmup;
         ++work.certificate_declines;
         return false;
     }
@@ -215,7 +215,20 @@ bool World::pressure_motion_is_noop(std::int64_t x, std::int64_t y, JobEffects* 
                 dy+edit.minimum_y<=at.local_y+2 && dy+edit.maximum_y>=at.local_y-2) { touched=true; break; }
         }
     }
-    if (certificate != 0U && !touched) { ++work.certificate_reuses; return true; }
+    if (touched) {
+        certificate=PressureChunk::kCertificateWarmup;
+        ++work.certificate_declines;
+        return false;
+    }
+    if (certificate == PressureChunk::kCertificateValid) { ++work.certificate_reuses; return true; }
+    if (certificate >= PressureChunk::kCertificateWarmup) {
+        // Only the exact Valid tag can skip motion. Countdown values cannot
+        // become Valid: the last deferred visit transitions directly to cold0.
+        --certificate;
+        if (certificate == PressureChunk::kCertificateValid) certificate=0U;
+        ++work.certificate_declines;
+        return false;
+    }
     ++work.certificate_attempts;
     const auto prove = [&] {
         const auto& cell=chunk.cells[at.index]; const auto& side=chunk.pressure->cells[at.index];
@@ -243,7 +256,8 @@ bool World::pressure_motion_is_noop(std::int64_t x, std::int64_t y, JobEffects* 
             (PressureFlowParameters::kStartDeadBand255*static_cast<std::int64_t>(maximum)+127)/255);
         return gradient>=-band && gradient<=band;
     };
-    const bool allowed=prove(); certificate=allowed ? 1U : 0U;
+    const bool allowed=prove();
+    certificate=allowed ? PressureChunk::kCertificateValid : PressureChunk::kCertificateBackoff;
     if (!allowed) ++work.certificate_declines;
     return allowed;
 }

@@ -1145,6 +1145,7 @@ void test_lcb_pressure_dormant_obligations() {
 }
 
 void test_lcb_pressure_optimization_identity() { test_pressure_optimization_identity_readback(); }
+void test_lcb_pressure_cost_admission() { test_dormant_cost_admission(); }
 void test_lcb_pressure_variants_remote_acceptance() { test_variants_remote_hydraulic_acceptance(); }
 void test_lcb_pressure_variants_mask_acceptance() { test_variants_rotating_mask_acceptance(); }
 void test_lcb_pressure_variants_obligation_acceptance() { test_variants_obligation_reconstruction_acceptance(); }

@@ -252,9 +252,12 @@ struct World::PressureChunk {
         std::uint32_t gas = 0;
     };
     static constexpr std::int32_t kNoHead = std::numeric_limits<std::int32_t>::min();
+    static constexpr std::uint8_t kCertificateValid = 1;
+    static constexpr std::uint8_t kCertificateWarmup = kPressureCertificateWarmupVisits + 1;
+    static constexpr std::uint8_t kCertificateBackoff = kPressureCertificateBackoffVisits + 1;
     explicit PressureChunk(std::size_t count, bool cached = false)
         : cells(count), head(count, kNoHead), visit(count, 0U) {
-        if (cached) { base_head.assign(count, kNoHead); rest_certificate.assign(count, 0U); }
+        if (cached) { base_head.assign(count, kNoHead); rest_certificate.assign(count, kCertificateWarmup); }
     }
     std::vector<Cell> cells;
     std::vector<std::int32_t> head;

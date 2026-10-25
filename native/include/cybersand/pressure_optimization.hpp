@@ -5,6 +5,13 @@
 
 namespace cybersand {
 
+// Execution v2 adds deterministic proof-cost admission. A cold/invalidated
+// stencil runs ordinary motion once; a failed proof waits eight eligible visits.
+// These are derived-work limits, never changes to pressure physics or cadence.
+inline constexpr std::uint64_t kPressureOptimizationExecutionVersion = 2;
+inline constexpr std::uint8_t kPressureCertificateWarmupVisits = 1;
+inline constexpr std::uint8_t kPressureCertificateBackoffVisits = 8;
+
 // Execution budgets, not different pressure physics. Incomplete derived state
 // selects the complete admitted reference operator, charged in the counters.
 struct PressureOptimizationConfig {
@@ -28,6 +35,8 @@ struct PressureKernelWork {
     std::uint64_t certificate_attempts = 0;
     std::uint64_t certificate_reuses = 0;
     std::uint64_t certificate_saved_calls = 0;
+    // Includes warmup/backoff and obligation deferrals as well as failed proofs;
+    // attempts counts only the actual complete local proof evaluation.
     std::uint64_t certificate_declines = 0;
 };
 

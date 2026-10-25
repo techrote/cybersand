@@ -204,7 +204,7 @@ void World::prepare_pressure_tick() {
                 if (cache->dormant) for (auto& [coord, chunk] : chunks_) {
                     (void)coord;
                     auto& certificates=chunk->pressure->rest_certificate;
-                    std::fill(certificates.begin(),certificates.end(),0U);
+                    std::fill(certificates.begin(),certificates.end(),PressureChunk::kCertificateWarmup);
                     state.optimization.certificate_invalidation_cells+=certificates.size();
                 }
                 for (std::size_t i = 0; i < cache->columns.size(); ++i)

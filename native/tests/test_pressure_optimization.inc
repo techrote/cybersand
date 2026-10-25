@@ -53,10 +53,10 @@ void test_pressure_optimization_identity_readback() {
         // Independent Python hashlib/struct '<6Q' known answers: execution
         // version, variant and the four requested budgets after the domain.
         const auto expected = variant == 1
-            ? "9fa1d2ece1d1a8d00fd62f485b9268b4db3bd40eaadf98b2125e074701014325"
-            : "b49b8772c0809e0f3dc2b36f840fb552e2081ee80bd0cf3fa1173e5aacc596cb";
+            ? "5cb90321b69b062f7d6c9d9f6f7b71d8cfb7dd5ad99194f250c85e875da571e9"
+            : "ea3815aa533f0ae0960e76772108b70dd6589eb4fa6e3770421ef894deeb6ec0";
         require(identity && cybersand::Sha256::hex(*identity) == expected && extensions[0].extension_identity_version == 1U,
-                "cached/dormant execution has its declared native v1 identity");
+                "cached/dormant execution2 has its declared native identity encoding1");
         const auto full = world->physical_state_hash();
         std::vector<std::array<std::uint8_t,32>> observations{*identity};
         for (int field = 0; field < 4; ++field) {
@@ -79,6 +79,51 @@ void test_pressure_optimization_identity_readback() {
                     "receipt reads the actual changed execution configuration");
         }
     }
+}
+
+void test_dormant_cost_admission() {
+    std::array<std::unique_ptr<World>,3> worlds;
+    for (int arm=0; arm<3; ++arm) {
+        auto world=std::make_unique<World>(cached_config(arm,false));
+        world->reserve_region({0,0,128,128});
+        rect(*world,1,1,14,14,Material::Wall);
+        require(world->set_cell_state(3,11,Material::Water,128,0), "partial stationary cost control");
+        require(world->set_cell_state(11,12,Material::Oil,0,200), "independent awake-block lifecycle");
+        worlds[static_cast<std::size_t>(arm)]=std::move(world);
+    }
+    for (int t=0;t<48;++t) {
+        const auto before=worlds[2]->pressure_optimization_snapshot().counters;
+        for (auto& world:worlds) tick(*world);
+        for (std::size_t arm=1;arm<3;++arm) require_pressure_equivalent(*worlds[0],*worlds[arm]);
+        const auto after=worlds[2]->pressure_optimization_snapshot().counters;
+        if (t==0) require(after.certificate_attempts==before.certificate_attempts &&
+                             after.water_motion_calls>before.water_motion_calls,
+                         "cold certificate defers proof and executes ordinary motion");
+    }
+    const auto denied=worlds[2]->pressure_optimization_snapshot().counters;
+    require(denied.certificate_attempts>0U && denied.certificate_attempts<=6U &&
+                denied.certificate_declines>=40U && denied.certificate_saved_calls==0U &&
+                denied.water_motion_calls==denied.water_material_calls && denied.water_material_calls>=40U,
+            "failed proofs have bounded visit-based retry cost while all ordinary work continues");
+    for (auto& world:worlds) require(world->set_cell_state(3,11,Material::Water,64,0), "changed proof input");
+    for (auto& world:worlds) tick(*world);
+    for (std::size_t arm=1;arm<3;++arm) require_pressure_equivalent(*worlds[0],*worlds[arm]);
+    require(worlds[2]->pressure_optimization_snapshot().counters.certificate_attempts==denied.certificate_attempts,
+            "changed inputs revoke the old state and require an ordinary warmup visit");
+
+    auto warm=std::make_unique<World>(cached_config(2,false));
+    warm->reserve_region({0,0,128,128});
+    rect(*warm,1,1,14,14,Material::Wall); rect(*warm,3,11,4,2,Material::Water);
+    require(warm->set_cell_state(11,12,Material::Oil,0,200), "warm positive independent lifecycle");
+    tick(*warm,16);
+    require(warm->pressure_optimization_snapshot().counters.certificate_reuses>0U,
+            "positive unchanged input still amortizes proof through genuine reuse");
+    auto restored=World::restore_physical_state(cached_config(2,false),warm->save_physical_state());
+    tick(*warm); tick(*restored);
+    require(warm->physical_state_hash()==restored->physical_state_hash() &&
+                restored->pressure_optimization_snapshot().counters.certificate_attempts==0U &&
+                restored->pressure_optimization_snapshot().counters.certificate_saved_calls==0U,
+            "restored derived certificates start cold and cannot interpret countdown bytes as valid");
 }
 
 void test_cached_incremental_heads() {

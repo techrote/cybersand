@@ -3758,6 +3758,7 @@ void test_lcb_pressure_comparison_rest();
 void test_lcb_pressure_comparison_policy();
 void test_lcb_pressure_cached_heads();
 void test_lcb_pressure_optimization_identity();
+void test_lcb_pressure_cost_admission();
 void test_lcb_pressure_cached_gas();
 void test_lcb_pressure_affected_gas();
 void test_lcb_pressure_gas_cache_capacity();
@@ -3903,6 +3904,7 @@ int main(int argc, char** argv) {
         {"LCB-002 comparison pressure variant normalization", test_lcb_pressure_comparison_policy},
         {"LCB-002 cached incremental heads and continuation", test_lcb_pressure_cached_heads},
         {"LCB-002 native optimization identity and readback", test_lcb_pressure_optimization_identity},
+        {"LCB-002 deterministic dormant proof-cost admission", test_lcb_pressure_cost_admission},
         {"LCB-002 cached gas invalidation and exact fallback", test_lcb_pressure_cached_gas},
         {"LCB-002 affected gas component discovery and continuation", test_lcb_pressure_affected_gas},
         {"LCB-002 gas component capacity and pair-budget fallback", test_lcb_pressure_gas_cache_capacity},
