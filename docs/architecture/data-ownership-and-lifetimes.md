@@ -6,10 +6,21 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-25
 ---
 
 # Data ownership and lifetimes
+
+## Pressure gas labels beneath host body masks
+
+**Current repair branch, acceptance pending:** native World owns retained gas
+labels, live compartments and retirement ledgers. A host-owned transient mask
+excludes an Empty pixel from topology volume and overlap without replacing the
+stored cell. Serial final relabelling removes labels whose compartment retired,
+using vacuum with no new gas amount; still-live covered identities remain.
+The [gas contract](pressure-flow-v1.md#gas-compartments) owns the exact rule.
+CYPS does not serialize the host mask region, sampled masks or Rapier graph;
+the host must restore those separately before claiming exact continuation.
 
 ## Exploratory map actor installation
 

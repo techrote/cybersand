@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
@@ -390,6 +390,18 @@ documents reproducible composites, isolated planes, region details and capture
 manifests. Headless rendering does not substitute for those captures.
 
 ### Residual LCB-001 native setup and receipt checks
+
+The moving-body gas repair additionally registers
+`LCB-002 moving gas masks retire and preserve exact identities` in ordinary,
+ASan/UBSan and TSan Makefile suites and the Windows MSVC test source list.
+With an already built ordinary binary, `build/tests "moving gas masks"` selects
+the focused group. It covers all four retirement reasons plus a still-live
+negative control, reference/cached/dormant with configured1/4 workers, immediate
+masked save/restore and exact authority/ledger/history continuation. Configured
+workers do not prove actual task participation. The separate ordinary Main
+regression supplies actual Rapier motion and asynchronous feedback evidence;
+neither test alone establishes performance or final platform acceptance. See the
+[dated repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
 
 The unmerged `codex/lcb001-shared-contract` checkpoint registers its whole-cell
 Water, normalization, native-issued refusal, typed receipt and quantity-ledger
