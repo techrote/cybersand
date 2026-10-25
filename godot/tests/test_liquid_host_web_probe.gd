@@ -11,6 +11,10 @@ func _run() -> void:
 	await process_frame
 	controller.set_process(false);controller.set_physics_process(false)
 	var result: Dictionary = Probe.run(controller)
+	var water_runs: Array = result.get("water_runs",[])
+	if water_runs.size()!=6:
+		result.ok = false
+		result.failures.append("native prerequisite must complete all six common-Water arms")
 	print("LIQUID_HOST_WEB_PROBE_NATIVE: ",JSON.stringify(result))
 	controller.queue_free()
 	await process_frame
