@@ -322,9 +322,12 @@ at default `active_core_capacity` 4096, plus a 6088-byte World snapshot in the
 measured x64 builds. These costs are separate from pressure storage and imply
 no performance qualification.
 
-The worker activity repair adds two preallocated grids per scheduling slot: one
-byte of signal flags and one 64-bit earliest deadline per ordinal slot, separate
-from the quantity/discovery/IN accounting above. Let `L = core + 2 * radius`.
+The worker activity repair adds a signal-flag byte and one 64-bit earliest
+deadline per ordinal slot, separate from the quantity/discovery/IN accounting
+above. Two contiguous `ParallelState` vectors own the complete payload; each
+scheduling slot has fixed disjoint spans into them. This uses two owning grid
+allocations per World, independent of `active_core_capacity`, rather than two
+owning vectors per job. Let `L = core + 2 * radius`.
 When chunk edge is divisible by activity edge `B`, the reserved axis bound is
 `ceil((L-1)/B)+1`; otherwise the safe axis bound is `L`, preserving single-worker
 unaligned chunks and their partial tail blocks. The squared bound covers the
@@ -332,8 +335,10 @@ whole core/halo, including moved-carrier wake targets. Default 64/core,32/activi
 radius2 reserves 16 slots/job and 589,824 payload bytes for 4096 jobs. With activity1,
 that same core/radius reserves 4624 slots/job and 170,459,136 payload bytes
 (162.56MiB); explicit IN radius3 reserves 4900 slots/job and 180,633,600 bytes
-(172.27MiB). Vector owners, scalar grid metadata, allocator overhead and existing
-job scratch are additional. Allocation/length failure occurs during construction;
+(172.27MiB). The two vector owners, per-job spans/scalar grid metadata, allocator
+overhead and existing job scratch are additional. Both the squared axis bound
+and `active_core_capacity * slots_per_job` are checked before allocation and
+span binding. Allocation/length failure occurs during construction;
 there is no tick-time grid resize or fallback to the optional 64-report observer.
 Each executed job clears its reserved flags; serial reduction scans its actual
 rectangular ordinal slots. Worker signal recording is constant time, with no
@@ -341,6 +346,15 @@ linear deduplication search. Thus the repair has bounded setup memory and real
 per-job bookkeeping cost even when no signal is emitted; older pressure timing
 records do not measure this changed scheduler. The fresh publication/Native
 benchmark and any later total-cost campaign retain separate source bindings.
+
+Native pool construction also retains typed refusal if reserve or a later
+worker startup throws. It stops, notifies and joins the already-started prefix
+while its mutex and condition variables still live; it does not silently reduce
+the requested worker count. The C API regression keeps complete one-worker
+allocation-failure sweeps at capacities1/4096 and a complete four-worker sweep,
+with the existing20000 convergence bound. Local allocation counts and the
+reproduced partial-startup hang have
+[dated source-bound evidence](../audits/2026-10-25-water-inertial-native.md#contiguous-activity-storage-and-constructor-retirement--2026-10-25).
 
 [World::World](../../native/src/world.cpp) checks chunk edge 8–1024, activity edge
 1–1024, workers 1–256, explosion maximum 1–256, and nonzero quiet/reservation/
