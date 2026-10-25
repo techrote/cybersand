@@ -393,8 +393,10 @@ struct World::JobEffects {
         // Aligned chunk boundaries introduce no extra partial blocks. In the
         // general single-worker geometry every cell could start a block, so
         // span is a conservative bound on the number of chunk-local blocks.
+        // span >= 2. This equivalent ceiling avoids span+block overflow on
+        // wasm32, so extreme geometry reaches the checked setup refusal below.
         const auto axis = config.chunk_size % config.activity_block_size == 0
-            ? (span + block - 2U) / block + 1U : span;
+            ? (span - 2U) / block + 2U : span;
         if (axis > std::numeric_limits<std::size_t>::max() / axis)
             throw std::length_error("per-job activity geometry capacity overflow");
         activity_flags.resize(axis * axis);
