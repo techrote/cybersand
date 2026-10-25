@@ -11,6 +11,17 @@ last-reviewed: 2026-10-25
 
 # Data ownership and lifetimes
 
+## Registered native-default actors
+
+The isolated [H1 retained actor owner](liquid-prepared-setup-and-receipts.md#registered-native-default-actors)
+borrows an installed graph without destruction authority. Refusal/close cannot
+reset or free its old wrapper/session/equipment/terrain. Successful Apply keeps
+that exclusive owner; fresh Restart/F5 later retire it. Native World arguments
+remain explicit per worker step. Worker and actor/usable admission locks cover
+captured-state equality through commit; main-thread source/body state stays under
+the pending hold. No Node/RID crosses into native workers. See
+[dated proof and limits](../audits/2026-10-25-lcb003-default-actor-host.md).
+
 The bounded [desktop single-trial-body owner](liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 retains one dynamic barrel/Ripper in an automatically inactive permanent private
 space. Actual motion is verified exactly across real physics frames before

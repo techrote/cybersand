@@ -4,11 +4,22 @@ status: Current
 document-kind: contract
 scope: Articulated desktop roster with ACT-005 physical equipment and SetP human movement presets, authored mechanics, local scripted control and leased input; sampled references and scientific material acceptance remain separate
 canonical-for: [physical-actor-rigs, physical-actor-control-v2, physical-actor-usables]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-25
 related-documents: [physical-free-flight.md, actor-usables.md, actor-rigs.md, thunderbowl-control-reference.md, ../operations/physical-actor-programme.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../operations/local-build-and-validation.md, ../audits/2026-10-19-act005-physical-usables.md]
 ---
 
 # Articulated Rapier actors and shared physical control
+
+## Registered native-default actors
+
+The isolated [native-default H1 route](../architecture/liquid-prepared-setup-and-receipts.md#registered-native-default-actors)
+reuses actor/equipment descriptors. Single-owner F5/Restart are fresh authored
+construction; Liquids Apply retains actual graph, motion and controller/equipment
+state on equal hard terrain. NPC/multiowner admission stays refused. Static
+50-physical/29-sampled coverage is separate from actual skimmer/WaterLance and
+runner execution. Explicit Water-IN radius3/normalization and advanced Apply
+have [local Windows proof](../audits/2026-10-25-lcb003-default-actor-host.md); this does not qualify every
+actor/tool, final platform, scientific material acceptance or feel.
 
 ## Which actors are physical?
 
