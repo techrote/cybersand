@@ -24,15 +24,22 @@ LIQUIDS = ((3, 1), (8, 2), (12, 2), (16, 2), (20, 2), (21, 2), (24, 2),
 SETUP = {"kind": 1, "definition_schema": 1, "definition_digest": None, "seed": 7,
          "domain": [0, 0, 8, 8], "coverage": 1, "gaps": 63}
 PHYSICAL_FACTS = {
-    "captured_date": "2026-10-24", "platform": "Windows x86_64",
+    "captured_date": "2026-10-24",
+    "platform": "Windows x86_64",
     "compiler": "LLVM-MinGW 20260826 UCRT, clang++ -O1 C++20",
-    "stack_reserve_bytes": 1048576, "stack_commit_bytes": 4096,
-    "binary_sha256": "5b1bc5a3cce3e3695afa4ba4747717ce5d5217995c869cf92238845648e284c3",
-    "qualification": "Measured native fixture facts; this oracle does not validate the physical-state hash algorithm",
+    "stack_reserve_bytes": 1048576,
+    "stack_commit_bytes": 4096,
+    "binary_sha256": "d0e95dcdd0df57349fcc565046fa6bfc1caaa7330a65af5178fc18f9501dcf5e",
+    "qualification": "Measured current-policy native fixture facts; frozen9e91 World and IN-capable World match all eight legacy hash/CYPS observations and four fixture hashes under identical new admission identities. Capability-digest change is not physics drift. Encoding oracle remains independent.",
     "hash_version": 2,
-    "hashes": {"empty": 16165131874597650402, "selected": 8342982264491895429,
-               "pressure": 16049781087787453878, "normalized": 3660450907820741656},
+    "hashes": {
+        "empty": 16642348853124720943,
+        "selected": 16302555753175075060,
+        "pressure": 8415393922628065281,
+        "normalized": 3877769997849147379
+    }
 }
+
 DEFAULT_CONFIG = {
     "water_semantics": [1, 8, 12, 0], "interaction": [1, 8, 9, 30],
     "geometry": [128, 32, 64, 2], "sleep_after_quiet_ticks": 3,
@@ -221,7 +228,7 @@ def canonical(case, identity):
         request_hash = sha(text("cybersand-construction-request-v1") + p("HB", 1, 1) + words(request))
         payload = sha(payload_bytes([]))
         return text("cybersand-construction-attempt-v1") + p("HQBB", 1, 5, 1, 1) + request_hash + words(request) + \
-            p("BBBH", 1, 5, 1, 3) + text("inertial_cellular_v1 is not compiled/qualified in this build") + text("") + \
+            p("BBBH", 1, 5, 1, 3) + text("inertial_cellular_v1 is not qualified for material 3 in this build") + text("") + \
             native(case, identity) + descriptor() + payload + setup_hash(payload)
     normalized = case == "normalized_bound"
     payload = sha(payload_bytes(normalization_values()["after_cells"] if normalized else []))

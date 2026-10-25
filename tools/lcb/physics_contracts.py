@@ -234,7 +234,8 @@ SURGE = {
                              "identical 1/4-worker observations and physical-state hash", "no fallback",
                              "bounded writes/allocation", "default goldens unchanged"],
         "inertial_cellular_v1": ["exact whole-cell count every tick", "momentum ledger closes every tick",
-                                 "static closed pool keeps every velocity exactly 0 and its hash constant",
+                                 "static closed pool keeps every velocity and accumulator exactly 0 and "
+                                 "lcb.quiescent-physical-content.v1 constant; complete hashes retain clocks",
                                  "identical 1/4-worker observations and physical-state hash", "no fallback",
                                  "bounded writes/allocation", "default goldens unchanged"],
     },
@@ -454,7 +455,8 @@ def contracts(fx: list[cat.Scenario]) -> dict:
              "current_control": {"status": "executable", "test": "test_lcb_physics_contracts.gd::ownership",
                                  "case": "Brine (state_b tag 77) sinks through partial Water (mass 200); both "
                                          "tuples arrive intact"},
-             "blocked_cases": ["inertial static closed pool: every velocity exactly 0, physical hash constant (#212)",
+             "blocked_cases": ["inertial static closed pool: every velocity and accumulator exactly 0, "
+                               "lcb.quiescent-physical-content.v1 constant; complete hashes retain clocks (#212)",
                                "inertial-update-v1 signed momentum and speed-loss ledgers close every tick "
                                "on the dam ladder (#212)",
                                "inertial dam release: vx becomes nonzero only through a re-aim or deflection "

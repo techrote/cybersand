@@ -4,7 +4,7 @@ status: Approved design
 document-kind: design
 scope: LCB-000 Gate C accepted design, Current main pressure reference and unmerged residual LCB-001 native source — four-family identities, immutable per-World per-material policy, admission/readback, W-CY motion/material block v2, pressure reference and cross-issue mapping; native setup/receipt/accounting detail has a separate canonical owner, while inertial and cached/dormant execution remain Planned
 canonical-for: [liquid-solver-family-policy]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [pressure-flow-v1.md, liquid-prepared-setup-and-receipts.md, ../systems/water-design.md, ../systems/materials-and-rule-kernels.md, ../systems/flow-transport-and-profiles.md, ../decisions/ADR-005-water-model.md, ../operations/lcb-water-comparison-and-fixtures.md, ../operations/lcb-manual-comparison-ux.md, ../audits/2026-10-23-lcb000-gates-cde-design-evidence.md]
 ---
 
@@ -128,7 +128,13 @@ two illustrative contract schemas remain historical contract-test schemas.
 The residual native build additionally qualifies Water ×
 `cellular_yield_v1/reference` and appends its actual optional Water material
 block **v2**, `{viscosity_index 0..255}`, default 0. It does not reinterpret
-the illustrative v1 `flow_rate_permille` block. Residual outcomes are:
+the illustrative v1 `flow_rate_permille` block.
+
+The isolated #212 native checkpoint additionally compiles family4
+(`available_families` 0x0F) and admits only Brine/reference. It binds fixed
+parameters through native state-extension identity1, not the illustrative caller
+damping schema. This admission updates the capability digest and policy/receipt
+identities; it does not imply changed Current physics. Residual outcomes are:
 
 | Request | Outcome |
 |---|---|
@@ -137,7 +143,8 @@ the illustrative v1 `flow_rate_permille` block. Residual outcomes are:
 | Matrix `rejected` cell (e.g. Oil × `inertial_cellular_v1`, NC-1; any non-Water liquid × `pressure_flow_v1`) | `combination_rejected` |
 | `proposed_alternate` cell (Toxic Sludge × inertial) | `not_selectable` |
 | A variant the cell does not offer (e.g. Water FreeMass `cached`) | `variant_unsupported` |
-| `inertial_cellular_v1` (NC-2), Brine × inertial | `family_unavailable` (not compiled) |
+| Water / `inertial_cellular_v1` (NC-2) | `family_unavailable`; complete Water carrying stencil remains unqualified |
+| Brine / `inertial_cellular_v1/reference` | **Accepted on the isolated native #212 branch only**, with explicit execution radius3; [law, storage and evidence](inertial-cellular-v1.md) |
 | Water × `cellular_yield_v1/reference`, with no Water block or its v2 viscosity block | **Accepted** in residual native source; whole-cell Water law below |
 | Stale digests, malformed envelopes, any other parameter block, an out-of-range pressure block | as the precedence above |
 
@@ -582,7 +589,7 @@ has exactly one refusal:
 checks after step 8. Each refusal returns `{code, material|null, detail}` and
 leaves the live session, its readback and its `policy_hash` untouched.
 
-**Parameter-block schemas are illustrative.** The oracle registers two
+**Historical oracle schemas are illustrative.** The original profiles register two
 contract-test schemas only to exercise the rules:
 - a mandatory `inertial_cellular_v1` v1 block (`damping_q16` 0..65536,
   `speed_cap_q8` 256..2048);
@@ -590,8 +597,13 @@ contract-test schemas only to exercise the rules:
   (`flow_rate_permille` 1..1000).
 
 #200 appends the actual W-CY material block v2 described above; v1 is not
-reinterpreted as viscosity. The inertial illustrative block is still only a
-contract-test schema. The owner-requested native shared-codec freeze does not
+reinterpreted as viscosity. #212 appends optional native IN family owner4/blockv2,
+with one `damping_numerator` field0..16 over fixed denominator16 and default1;
+[the IN reference](inertial-cellular-v1.md) owns its actual execution/identity.
+The inertial illustrative blockv1 remains only a contract-test schema and is
+refused by the running build. The native successor vectors are separately
+registered in [inertial-parameter-vectors.json](../reference/inertial-parameter-vectors.json);
+existing illustrative profiles and outcomes are preserved. The owner-requested native shared-codec freeze does not
 freeze an inertial law, pressure calibration or production ABI.
 
 **Applied readback.** The readback is the normalized applied policy, never the

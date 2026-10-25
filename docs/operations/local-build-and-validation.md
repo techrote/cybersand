@@ -1221,3 +1221,10 @@ The scoped GEN-007 publisher (retired; see
 [branch-scoped runtime publishers](#branch-scoped-runtime-publishers)) bound
 Linux/Windows execution to exact source and runtime bytes; the ready-for-review
 full repository gates remain separate.
+
+## Native Brine IN checkpoint
+
+The isolated #212 [Brine reference](../architecture/inertial-cellular-v1.md) is exercised with `make build/tests` then `./build/tests "LCB-005"`; the full native suite remains required. [Dated local evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) distinguishes Windows LLVM execution, failed fixture premises, actual worker participation and memory components from future Linux/MSVC/Godot/runtime qualification. No Water IN or application adapter follows from this native-only checkpoint.
+
+
+For the native damping parameter, run `python tools/lcb/inertial_parameter_contract.py --check` and the LCB Python suite as well as the native groups. The optional IN family blockv2 applies `damping_numerator`0..16/16(default1); actual readback/identity and save/restore are native-owned. The worker fixture observes four actual participants at0/default1/16, while the matched tail fixture records rounding/retained-motion outcomes without assuming every arm settles. Existing illustrative v1 vectors remain separate; use the family reference for the exact schema and qualifications.

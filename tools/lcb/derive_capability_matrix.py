@@ -51,6 +51,7 @@ KERNEL_SPECIALIZATION = {
 # Candidate cells the running build compiles and qualifies, with the variants it
 # executes (LCB-001 #200). Every other non-default cell is refused natively.
 EXECUTABLE_CANDIDATES = {
+    ("brine", "inertial_cellular_v1"): ["reference"],
     ("water", "pressure_flow_v1"): ["reference"],
     ("water", "cellular_yield_v1"): ["reference"],
 }

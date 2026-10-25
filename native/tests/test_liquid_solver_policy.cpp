@@ -279,9 +279,9 @@ void test_liquid_policy_identity_matches_source() {
     const auto& running = LiquidPolicyBuild::running();
     // LCB-001 pressure reference: FreeMass, CellularYield and pressure_flow_v1
     // compiled; optional pressure family and Water CellularYield v2 schemas.
-    require(running.catalogue_digest == catalogue_digest && running.native && running.schemas.size() == 2U &&
+    require(running.catalogue_digest == catalogue_digest && running.native && running.schemas.size() == 3U &&
                 running.schemas.front().family_owner && running.schemas.front().owner == 3U &&
-                !running.schemas.front().mandatory && running.available_families == 0x07U,
+                !running.schemas.front().mandatory && running.available_families == 0x0FU,
             "running build identity");
 }
 
@@ -393,12 +393,13 @@ void test_liquid_policy_running_build_admits_only_defaults() {
         for (std::uint8_t family = 1; family <= 4U; ++family) {
             for (std::uint8_t variant = 0; variant < 3U; ++variant) {
                 if (family == row.default_family && variant == 0U) continue;
-                if (row.material_id == 3U && (family == 2U || family == 3U) && variant == 0U) {
+                if (((row.material_id == 3U && (family == 2U || family == 3U)) ||
+                     (row.material_id == 24U && family == 4U)) && variant == 0U) {
                     // Each admitted candidate dispatches its own Water law.
                     auto words = request;
                     words[20U + row_index * 3U + 1U] = family;
                     const auto admitted = accept(words, LiquidPolicyBuild::running(), "Water qualified reference");
-                    require(admitted.assignment(3)->family == static_cast<LiquidSolverFamily>(family),
+                    require(admitted.assignment(row.material_id)->family == static_cast<LiquidSolverFamily>(family),
                             "Water candidate applied");
                     ++cells;
                     continue;

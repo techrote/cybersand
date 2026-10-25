@@ -10,6 +10,8 @@ related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-
 
 # Liquid material and solver state-transition matrix
 
+**Native #212 branch checkpoint:** the [Brine IN reference](inertial-cellular-v1.md) now implements the declared Brine ownership/law scope. Water IN and full application/runtime qualification remain Planned; the standalone model below retains its separate evidence meaning.
+
 ## Status and inputs
 
 - **Default-family baseline rows** retain the historical prepass at `9012425`/`4caa2c3`. Current PF and residual W-CY refinements are identified separately below.
