@@ -17,6 +17,10 @@ const PHYSICAL_STATE_VERSION: int = 2
 var assertions: int = 0
 var failures: int = 0
 var completed: Dictionary = {}
+# Separate source-bound Water evidence; the historical seven-field helper
+# summary and every original control remain exact.
+var water_inertial_proof: Dictionary = {"schema":"water-inertial-runtime-proof-v1",
+	"cohorts":[], "restores":[], "refusals":{}, "coherence":[]}
 
 func expect(value: bool, message: String) -> void:
 	assertions += 1
@@ -54,6 +58,9 @@ func _initialize() -> void:
 func _finish() -> void:
 	print("LIQUID_SOLVER_POLICY: %d assertions; %d failures; completed=%s" % [
 		assertions, failures, JSON.stringify(completed)])
+	water_inertial_proof["assertions"] = assertions
+	water_inertial_proof["failures"] = failures
+	print("WATER_INERTIAL_POLICY_PROOF: " + JSON.stringify(water_inertial_proof))
 	quit(1 if failures > 0 else 0)
 
 func _with(request: PackedInt32Array, material: int, family: int, variant: int = 0) -> PackedInt32Array:
@@ -154,6 +161,7 @@ func _whole_cell_family(bridge: Variant, definition: Dictionary, request: Packed
 		8, 40, 48, 1, 1, 8, 8, 1, 32, 1, 55, 8, 1, 32, 1, 12, 12, 12, 12, 3])
 	for bits: int in [3, 8]:
 		var runs: Array = []
+		var proof_rows: Array = []
 		for workers: int in [1, 4]:
 			var world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
 			expect(world.diagnostic_reset({"workers":workers}), "whole-cell worker configuration rejected")
@@ -166,6 +174,14 @@ func _whole_cell_family(bridge: Variant, definition: Dictionary, request: Packed
 				and world.get_liquid_solver_policy().policy_hash == validation.receipt.policy_hash,
 				"whole-cell constructor lost requested workers/policy")
 			runs.append(world)
+			if family == 4:
+				var applied: Dictionary = world.get_liquid_solver_policy()
+				proof_rows.append({"mass_bits":bits, "workers":int(world.get_worker_threads()),
+					"family":applied.assignments[0].applied_family,
+					"policy_hash":applied.policy_hash, "radius":int(applied.maximum_rule_radius),
+					"hash_version":int(world.get_physical_state_hash_version()),
+					"tick1_motion":false, "censuses":[],
+					"initial_content_hash":str(world.water_experiment_observation(Vector2i.ZERO, Vector2i(64, 64)).content_hash)})
 		var initial_hash: String = str(runs[0].water_experiment_observation(Vector2i.ZERO, Vector2i(64, 64)).content_hash)
 		var maximum: int = (1 << bits) - 1
 		for tick: int in range(21):
@@ -181,15 +197,26 @@ func _whole_cell_family(bridge: Variant, definition: Dictionary, request: Packed
 							retained = retained or (motion.inertial_family and (motion.vx != 0 or motion.vy != 0 or motion.ax != 0 or motion.ay != 0))
 					expect(retained and world.get_liquid_solver_policy().maximum_rule_radius == 3,
 						"actual Water IN executes retained motion with explicit radius3, without fallback")
+					proof_rows[runs.find(world)]["tick1_motion"] = retained
 			if tick % 10 != 0: continue
 			for world: Variant in runs:
 				var census: Dictionary = _whole_cell_census(bridge, world, maximum)
+				if family == 4:
+					proof_rows[runs.find(world)].censuses.append({"tick":int(world.get_tick_index()),
+						"count":int(census.count), "full":bool(census.full), "quantity":int(census.quantity)})
 				expect(census.full and int(census.count) == 144 and int(census.quantity) == 144 * maximum,
 					"whole-cell quantity/count changed at bits=%d tick=%d: %s" % [bits, tick, str(census)])
 			expect(runs[0].get_physical_state_hash() == runs[1].get_physical_state_hash(),
 				"whole-cell Water one/four-worker divergence at bits=%d tick=%d" % [bits, tick])
 		expect(str(runs[0].water_experiment_observation(Vector2i.ZERO, Vector2i(64, 64)).content_hash) != initial_hash,
 			"whole-cell Water did not move")
+		if family == 4:
+			for index: int in range(runs.size()):
+				var observed: Variant = runs[index]
+				proof_rows[index]["completed_ticks"] = int(observed.get_tick_index())
+				proof_rows[index]["physical_hash"] = str(observed.get_physical_state_hash())
+				proof_rows[index]["final_content_hash"] = str(observed.water_experiment_observation(Vector2i.ZERO, Vector2i(64, 64)).content_hash)
+				water_inertial_proof.cohorts.append(proof_rows[index])
 		var saved: PackedByteArray = bridge.export_physical_state(runs[0])
 		expect(int(runs[0].get_physical_state_hash_version()) == format_version
 			and saved.size() > 8 and saved.decode_u32(4) == format_version,
@@ -198,10 +225,17 @@ func _whole_cell_family(bridge: Variant, definition: Dictionary, request: Packed
 		expect(bridge.import_physical_state(restored, saved), "whole-cell family CYPS import failed")
 		expect(restored.get_physical_state_hash() == runs[0].get_physical_state_hash(),
 			"whole-cell family CYPS restore changed continuation state")
+		var restore_proof: Dictionary = {"mass_bits":bits, "source_workers":int(runs[0].get_worker_threads()),
+			"format_version":int(saved.decode_u32(4)), "saved_bytes":saved.size(),
+			"source_hash":str(runs[0].get_physical_state_hash()),
+			"restored_hash":str(restored.get_physical_state_hash()), "continuation":[]}
 		for tick: int in range(5):
 			expect(runs[0].simulation_tick() and restored.simulation_tick(), "whole-cell continuation tick failed")
 			expect(restored.get_physical_state_hash() == runs[0].get_physical_state_hash(),
 				"whole-cell family CYPS continuation diverged at +%d" % (tick + 1))
+			restore_proof.continuation.append({"tick":int(runs[0].get_tick_index()),
+				"source_hash":str(runs[0].get_physical_state_hash()), "restored_hash":str(restored.get_physical_state_hash())})
+		if family == 4: water_inertial_proof.restores.append(restore_proof)
 	completed["whole_cell_admission_parity"] = true
 	# Final overlays decide admission. Intermediate fractional fills can be
 	# overwritten; an explicit zero fill remains a no-op even over another role.
@@ -224,6 +258,7 @@ func _whole_cell_family(bridge: Variant, definition: Dictionary, request: Packed
 		PackedInt32Array([12, 12, 1, 1, 255, 7, 12, 12, 1, 1, 128, 2]),
 		PackedInt32Array([12, 12, 1, 1, 128, 4, 12, 12, 1, 1, 0, 12]),
 		PackedInt32Array([12, 12, 2, 1, 128, 4, 12, 12, 1, 1, 255, 0])]
+	var refused_rows: Array = []
 	for fills: PackedInt32Array in fractional_cases:
 		expect(not bridge.build_liquid_policy_world(world, rectangles, profile, PackedInt32Array([1, 8, 12, 0]),
 			fills, whole_request, radius), "final fractional Water must require explicit normalization")
@@ -231,9 +266,58 @@ func _whole_cell_family(bridge: Variant, definition: Dictionary, request: Packed
 		expect(refusal.get("code", "") == "normalization_required" and int(refusal.get("material", -1)) == 3
 			and str(refusal.get("detail", "")).contains("water-normalize-v1"), "fractional setup needs a typed refusal")
 		expect(_world_snapshot(world) == before, "fractional setup refusal changed the live session")
+		refused_rows.append({"code":str(refusal.get("code", "")), "material":int(refusal.get("material", -1)),
+			"unchanged_session":_world_snapshot(world) == before})
 	expect(world.simulation_tick() and int(world.get_tick_index()) == int(before.tick) + 1,
 		"live whole-cell session cannot continue after refusal")
 	completed["whole_cell_overlay_refusals"] = true
+	if family == 4:
+		water_inertial_proof.refusals = {"rows":refused_rows, "tick_before":int(before.tick),
+			"tick_after":int(world.get_tick_index())}
+		_water_inertial_coherence(bridge, profile, whole_request)
+
+func _water_inertial_coherence(bridge: Variant, profile: PackedInt32Array, request: PackedInt32Array) -> void:
+	# Natural retained gravity proves the Water decrement remains live and
+	# permits vertical travel before the positive lateral-only delay expires.
+	for bits: int in [3, 8]:
+		for workers: int in [1, 4]:
+			var world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
+			expect(world.diagnostic_reset({"workers":workers}), "Water IN coherence workers refused")
+			world.set_simulation_window_enabled(false)
+			var maximum: int = (1 << bits) - 1
+			expect(bridge.build_liquid_policy_world(world, PackedInt32Array([8, 40, 48, 1, 1, 20, 10, 1, 1, 3]),
+				profile, PackedInt32Array([1, bits, 12, 0]), PackedInt32Array([20, 10, 1, 1, 255, 7]), request, 3),
+				"Water IN coherent whole-cell preparation refused")
+			var initial: Dictionary = bridge.inspect_cell(world, Vector2i(20, 10))
+			expect(initial.get("ok", false) and int(initial.state_b) == 7 and int(initial.state_a) == maximum,
+				"Water IN coherence fixture lost initial state")
+			var observed: Array = []
+			var vertical_before_expiry: bool = false
+			var retained: bool = false
+			for tick: int in range(1, 8):
+				expect(world.simulation_tick(), "Water IN future coherence work faulted")
+				var point: Vector2i = Vector2i(-1, -1)
+				var count: int = 0
+				for y: int in range(40):
+					if int(world.material_at(20, y)) == 3:
+						point = Vector2i(20, y)
+						count += 1
+				expect(count == 1, "Water IN coherence carrier is not unique")
+				if count != 1: return
+				var cell: Dictionary = bridge.inspect_cell(world, point)
+				observed.append(int(cell.state_b))
+				expect(int(cell.state_b) == 7 - tick and int(cell.state_a) == maximum,
+					"Water IN coherence did not decrement exactly once with exact quantity")
+				var motion: Dictionary = world.inspect_inertial_cell(point)
+				retained = retained or (motion.inertial_family and (motion.vx != 0 or motion.vy != 0 or motion.ax != 0 or motion.ay != 0))
+				vertical_before_expiry = vertical_before_expiry or (point.y > 10 and int(cell.state_b) > 0)
+			var census: Dictionary = _whole_cell_census(bridge, world, maximum)
+			expect(vertical_before_expiry and retained and census.full and census.count == 1 and census.quantity == maximum,
+				"Water IN coherence suppressed vertical motion, retained state or whole-cell authority")
+			water_inertial_proof.coherence.append({"mass_bits":bits, "workers":int(world.get_worker_threads()),
+				"initial":int(initial.state_b), "observed":observed, "completed_ticks":int(world.get_tick_index()),
+				"vertical_before_expiry":vertical_before_expiry, "retained_motion":retained,
+				"count":int(census.count), "full":bool(census.full), "quantity":int(census.quantity)})
 
 func _snapshot(run: Dictionary) -> Dictionary:
 	var observation: Dictionary = run.world.water_experiment_observation(Vector2i.ZERO, Vector2i(1024, 1024))

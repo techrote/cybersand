@@ -75,6 +75,16 @@ historical content/state hashes and actual Current tuples/temperatures/material
 work are separate controls; this identity change does not mean changed Current
 physics. Old source-bound facts and failures remain historical.
 
+## Separate unarmed Water publication
+
+The [Water successor publisher](../operations/github-development-and-release.md#isolated-water-inertial-runtime-publication)
+is an isolated005/001 profile on its own branch. Its request is absent until
+independent review and final source freeze. It retains every existing process,
+deadline and strict summary and adds actual Water motion, whole-cell quantity,
+coherence, transactional refusal and CYPS continuation evidence. Preparation and
+local Windows execution do not qualify published Windows/Linux artifacts or
+common-Water/full-host/scientific acceptance.
+
 ## Mandatory resting-body contact correction — 2026-10-25
 
 Independent review of `98595ac8` reproduces missing signed body feedback from

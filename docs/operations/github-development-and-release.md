@@ -154,3 +154,22 @@ Distribution additionally needs the owner's project licensing decision:
 Keep third-party notices and exact Rapier/godot-cpp provenance in every bundle.
 Use the [documentation checklist](documentation-maintenance.md) before tagging;
 publication itself requires an authorized release task.
+
+
+## Isolated Water inertial runtime publication
+
+**Current unarmed preparation on `codex/lcb005-water-inertial`:** the separate
+Water profile/workflow loads its own005/001 engine, retains import plus14
+processes, all deadlines and strict policy/Brine/pressure sections, and requires
+an additional actual Water motion/whole-cell/coherence/refusal/CYPS proof. Its
+artifact prefix is `lcb005-water-inertial-runtime`. The [dated preparation](../audits/2026-10-25-water-inertial-publication.md)
+records exact source scope and failures; it is not target-OS publication proof.
+
+`tools/ci/lcb005_water_inertial_publish_request.json` remains absent until fresh
+independent guard review and final owner/source-freeze coordination. The older
+Brine request does not arm this workflow. Admission checks the Water request's
+exact schema/material/scope/sequence, source commit and branch before build or
+remote append. Only the same four runtime/manifest paths may be appended with
+an exact source parent and atomic lease on the Water branch. Parent PR #250's
+branch, request, concurrency group, artifacts and active gates remain separate.
+Fresh Water Windows/Linux execution and full ready-PR gates remain required.
