@@ -18,6 +18,10 @@ proof](../audits/2026-10-25-lcb003-level-import-host.md) reuses the verified unc
 135-input development DLL and passes eight affected processes. Physical/Tower/
 showcase imports, remaining constructors, complete host identity and final
 source-matched platform/visual gates remain open; Current imports stay default.
+The later sourcecccae86f explicitly refuses unsupported inherited interaction/
+diagnostic-law and independent transport settings before preparation. Its73
+import assertions include retired-generation/private-Baseline controls; the
+earlier44/eight-process proof remains Baseline-only historical evidence.
 
 The subsequent unmerged [desktop Water Feel reference-body slice](../architecture/liquid-prepared-setup-and-receipts.md#prepared-water-feel-reference-bodies)
 stages the unchanged three reference rectangles and terrain with actual frozen

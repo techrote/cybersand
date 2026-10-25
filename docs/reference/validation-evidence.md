@@ -10,6 +10,14 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+The [import settings correction](../audits/2026-10-25-lcb003-level-import-host.md#inherited-setting-refusal-correction)
+on sourcecccae86f adds native-component preflight for unsupported inherited
+interaction/diagnostic laws and transport. Three fresh strict processes pass:
+73 actual-import assertions/all five sections, UI105 and33 native Web-prerequisite
+checks, against the unchanged135-input development DLL. Independent review's
+P2 and older44/eight-process Baseline-only proof remain retained. This does not
+qualify the separately discovered Brine IN resting-body contact defect.
+
 The [normal-menu level-import proof](../audits/2026-10-25-lcb003-level-import-host.md)
 binds source46471b24 and the unchanged135-input local Windows development DLL.
 Fresh import and eight affected processes pass:44 actual-user transaction

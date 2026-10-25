@@ -810,6 +810,18 @@ replacement. Controlled/active apparatus retain their existing import guard.
 No body is detached or physics space rebound by an import attempt. These refusal
 boundaries are remaining constructor ownership, not implemented body conversion.
 
+The subsequent settings correction reads native run-component v1 before creating
+a token. Only production interaction8:9:30 and diagnostic law0:−1 are supported;
+other support/period/exchange/viscosity settings explicitly refuse instead of
+resetting. Independent configured transport also refuses. Production unconfigured
+Baseline is admitted; a private accepted level may retain its own configured
+Baseline only while actual transport component, native generation and copied
+applied receipt hash still match. A retained object alone grants no exemption.
+The builder's existing enabled observational telemetry remains explicit; this
+does not preserve arbitrary diagnostics/transport or convert another tuned run.
+The original44-assertion proof covers normal Baseline only. The later73 assertions
+add actual nondefault refusal and retired-generation controls.
+
 Accepted import starts paused. **R / Restart world** rebuilds its original copied
 payload with its accepted policy/normalization/geometry and metadata after edits,
 creating a new native generation and owner observation. Ordinary default import

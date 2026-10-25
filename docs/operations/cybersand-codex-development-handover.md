@@ -19,6 +19,12 @@ unchanged verified135-input DLL. Continue remaining constructors, physical impor
 complete host identity and fresh final Windows/Linux/Web/publication gates.
 The [new publisher preparation](../audits/2026-10-25-lcb003-runtime-publication.md)
 is unarmed; it is not a release result. Current imports remain the default.
+Follow-up sourcecccae86f corrects the inherited-setting gap by refusing unsupported
+interaction/diagnostic laws and independent transport before any token. Its
+known Baseline exemption binds actual native component/generation/receipt;
+73 import/UI105/Web-prerequisite33 checks pass. The earlier44 proof remains
+Baseline-only. Final native integration must also consume the separately owned
+Brine IN resting-body contact repair before publication/acceptance.
 
 The later [desktop reference-body checkpoint](../audits/2026-10-25-lcb003-water-reference-body.md)
 adds permanent-space staging for the original supported-body Water Feel recipe,

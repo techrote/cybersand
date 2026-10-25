@@ -19,6 +19,12 @@ it is not serialized policy configuration. Saved quality0/1/2 selects the existi
 320×180/480×270/640×360 views, margins16×18/32×36/64×72 and publication30/45/60Hz.
 Those values, final camera/region, current cadence and saved adhesion are applied
 before native capture. Existing Current import/defaults and format limits remain.
+Prepared import currently accepts production interaction component `8:9:30` and
+diagnostic-law component `0:-1` only. Other support/period/exchange/viscosity or
+independent transport settings refuse transactionally. A private accepted
+configured Baseline is admitted only with matching native component/generation/
+applied receipt identity. The prepared builder enables observational diagnostics;
+this does not claim the telemetry flag is preserved from ordinary Current.
 
 The explicit LCB Web apparatus flag is `?test=1&liquid-host-test=1`. It uses
 actual synchronous prepared-owner calls and emits a terminal copied result;

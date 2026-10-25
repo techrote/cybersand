@@ -12,12 +12,16 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 The [explicit normal-menu level-import proof](../audits/2026-10-25-lcb003-level-import-host.md)
 reuses the unchanged135-input development DLL after verifying every native input,
-then runs fresh import and eight affected Godot processes. The new44-assertion
+then runs fresh import and eight affected Godot processes. The original44-assertion
 `test_liquid_level_import_host.gd` requires all five JSON sections true and uses
 actual panel/Import/Restart callbacks. This does not claim a new native build or
 Wasm execution. The prepared [LCB-003 publisher profile](../audits/2026-10-25-lcb003-runtime-publication.md)
 is unarmed; its dedicated Windows/Linux gates and source-matched publication
 must qualify the frozen final source before release/full exact-head acceptance.
+The settings-refusal correction separately passes73 import assertions/all five
+sections, UI105 and33 native Web-prerequisite checks. It preserves inherited
+nondefault-law/transport refusal, native component identity and the older proof
+as Baseline-only; it does not qualify Brine IN resting-body contact.
 
 The later [prepared Water Feel reference-body checkpoint](../audits/2026-10-25-lcb003-water-reference-body.md)
 adds `test_liquid_water_reference_body.gd`: actual frozen poses across32 physics

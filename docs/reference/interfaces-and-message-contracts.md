@@ -740,6 +740,12 @@ exploratory, radius=2)`, `liquid_comparison_clear_import()` and copied
 demo reset. `liquid_level_host_observation_record()` explicitly copies the
 qualified imported-owner record; it grants no full-host eligibility. Final
 owner serial/lifetime and native one-use commit fences precede adoption.
+Native run-component v1 preflight refuses unsupported inherited interaction or
+diagnostic law and independent transport before issuing a token. The accepted
+level's configured Baseline exemption binds actual copied transport component,
+native generation and immutable applied receipt hash. No new native codec or
+configuration mutator is added; observational telemetry remains the existing
+prepared-builder behavior.
 
 `get_applied_liquid_construction_receipt()` and
 `get_liquid_construction_attempt()` return distinct owned dictionaries containing

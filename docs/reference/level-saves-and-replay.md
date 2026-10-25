@@ -93,6 +93,12 @@ owns those bounds and unsupported body/Tower/showcase routes. Restart retains th
 accepted in-memory payload and selection; CYSD1 serialization is unchanged and
 unarmed import still uses Current defaults. No full replay or browser/release
 qualification follows from this opt-in reconstruction.
+The follow-up preflight explicitly refuses unsupported inherited interaction,
+diagnostic-law or independent transport settings rather than replacing them
+with preparation defaults. The accepted private Baseline may restart only with
+matching native component/generation/receipt identity. Unarmed legacy import
+continues to preserve its inherited configuration. Optional enabled preparation
+telemetry is observational and remains qualified separately.
 
 ## What continuation state is missing?
 

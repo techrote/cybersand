@@ -12,6 +12,11 @@ related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../op
 
 ## Source and behavior
 
+The first46471b24/44-assertion checkpoint below is historical Baseline-only
+evidence. Independent review found unsupported inherited settings could reset;
+the subsequent [correction](#inherited-setting-refusal-correction) adds explicit
+refusal and fresh73-assertion evidence without rewriting that earlier seal.
+
 Implementation `46471b24c338e88d2e1ca70260b8e36c15f90802`, tree
 `0805773f773742e867275f9b5d7aed9861cdcce8`, is on
 `codex/lcb003-application-host`. It follows the native thermal API/moving-mask
@@ -137,3 +142,79 @@ comparisons, nine per platform, against separately scoped older pressure runtime
 publications. These are the only reported errors. No historical hash, runtime
 manifest or checker is changed to bypass that boundary. Matching publication
 and final exact-head hosted gates remain required.
+
+## Inherited-setting refusal correction
+
+Independent review of sealed46471b24/a6d34758 finds one P2: native prepared
+construction resets interaction/diagnostic physics while legacy import copies
+the inherited configuration. Thus the first proof cannot establish preservation
+of an independently tuned law/profile. Review receipt
+`tmp/lcb202-level-import-independent-v1/REVIEW-RECEIPT.json`, SHA256
+`4e97ff96e904e181865923f6e1c488a33ec05f1b13692759f643d02b7e94bc26`,
+and report SHA256
+`b19d649495d974825f98b62ef9559b918d68731bc755fdcdf19224a350723ff4`
+retain the finding and original source. No other bounded implementation finding
+is reported there.
+
+Source `cccae86f0a72c7e1b7a310c8941b402011617c9b`, tree
+`272dc4c07d6cf2734be6b9d6dacbbc7fa9478c04`, changes only controller, private
+level session and the regression. Before any preparation token, native
+run-component v1 must report interaction8:9:30 and diagnostic law0:−1. Otherwise
+the actual Import button refuses while retaining prior World, native/configuration
+receipts, player and owner record. Independent configured transport also refuses.
+The accepted private level's configured Baseline can restart only when actual
+transport component, native session generation and immutable applied receipt hash
+still match its copied values. A retained private object from a retired generation
+cannot grant that exemption. No new native API/codec or implicit policy is added.
+The existing prepared builder enables observational telemetry; its enabled flag
+is not claimed to preserve ordinary Current's observation configuration.
+
+Fresh root `C:/Users/_/.codex/tmp/lcb202-level-import-settings/` reuses the same
+unchanged135-input DLL79f35666 and verifies all native digests before stage/seal.
+Actual import and three strict processes pass without engine errors/warnings:
+73 import assertions/all five sections in5.921/180s, UI105 in10.219/180s and33
+native Web-prerequisite checks in8.265/180s. The actual menu exercises independent
+support1, Mercury period1, exchange-off, viscosity5 and Gentle transport settings;
+every refusal retains the entire native run-component receipt and existing
+World/player/native applied receipt/host record. Existing nonempty applied-record
+refusals and successful accepted Baseline restart remain tested. An explicit
+changed-generation control retains the old private object but correctly refuses
+its configured-Baseline exemption.
+
+Final import log SHA256 is
+`063e1cc7753df2d20ac3d5ac2e22aa8fe9dd50613cb32e19b7ff15399dca7a8c`.
+Five raw source fences in `source-candidate-v1.json` have SHA256
+`bd8e2a20608bd65196e914c2fa50c4d3fa065574167817142f2ee453cff587a2`;
+all execution input fences and native135 inputs hold at seal. `CHECKPOINT.json`
+SHA256 is `4cb995724f7008e6bf4074439d6068a9f7c60d87ce5160ff1cf5388654df98f1`;
+`MANIFEST.sha256` SHA256 is
+`eebe06879b5c2e3fc0ad73849c5e5b3434d15b1ff59d40ac287b43bf54a4a482`,
+43 retained files outside the generated project. This is a fresh GDScript proof,
+not a new native compilation or released runtime.
+
+All native/host full matched eligibility remains false. The mixed import proves
+Brine IN motion/readback only; it does not qualify the separately discovered
+stationary Brine/body-contact omission. Final native repair, source-matched
+publication, actual final Web/visual and full exact-head gates remain required.
+The prior Water-body cohorts cover PF Water and FM, not Brine IN contacts.
+
+The correction's12-document canonical delta passes the same companion-backed
+checks in `tmp/lcb202-level-import-settings-doc-checks/`: Documentation115/227,
+historical M11 integrity18/28 and provider policy. Frozen retrieval remains
+32/32 top5,19 top1, MRR0.7573; supplementary142/142 top5,110 top1, MRR0.8682.
+The existing import question's facts now include explicit unsupported-setting
+refusal and native identity binding; its query wording is unchanged. Repository
+freshness still reports only the expected18 stale native inputs against older
+Windows/Linux publications. No artifact or historical hash is rewritten.
+
+The independent successor review
+`tmp/lcb202-level-import-settings-independent/REVIEW-RECEIPT.json`, SHA256
+`17308b6223abaa9bd478e8befcdf3ba3ddcd31fa162ada091157118ca856cd80`,
+and report SHA256
+`1f014c67aaf2751186249ca5ec02911c7ebb8cb9a5942dfbeba37bb8d77d7470`
+verify all three changed/five candidate raw and Git inputs,43 artifacts,
+native135/DLL and2,610 staged hashes plus73/105/33 actual results. It reports no
+unresolved bounded finding and resolves the earlier P2. Its first reduction
+parser incorrectly expected an inline completed-section suffix; the correction
+reads the actual separate strict five-section JSON. That apparatus failure is
+retained, with no product or runtime evidence change.
