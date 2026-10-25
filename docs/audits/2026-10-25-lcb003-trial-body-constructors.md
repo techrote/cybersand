@@ -10,6 +10,33 @@ related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../op
 
 # LCB-003 desktop barrel and Ripper constructor checkpoint
 
+## Fresh integrated Windows replay — 2026-10-25
+
+After normal App integration, Root independently executes committed head
+`ad3fca18740165ec8eea156e0247945e202a57aa`, tree
+`e034994d33603a33080259e48a0cfdd3829a4d22`, with the actual published Windows
+DLL `e3f17363d21260690682dfaa9e5e118253544c1b9b19e69e50c03af567712343`
+from source5f02. Fresh import passes in5.817s/240s, the final Trial regression
+passes117 assertions/0 failures in26.036s/180s, and the retained desktop-default
+host regression passes86/0 in17.520s/180s. Every process exits0 with no errors,
+warnings, skips or timeout; the complete source/project and139 native input
+fences hold. The Trial test retains its exact one-ULP refusal and seven actual
+angle roundtrips, plus five real FM/CY/PF0/PF1/PF2 body-play cohorts with exact
+4,075,920 Water and closing PF gas. The default control separately retains
+positive FM/CY body play and all three typed initial PF capacity refusals.
+Asynchronous frame/tick counts describe this functional execution, not matched
+performance or bitwise body-trajectory comparisons.
+
+External receipt `tmp/lcb202-trial-body-root-integrated-ad3-v1/RECEIPT.json`
+has SHA `a4250b6cf99ae8c7d9f315f6fa487868b2b54f7e5dc6501975a437ead84dbde3`.
+Both inherited manifests match all80 native inputs; the historical535 build/
+execution ledger retains its four changed script/test entries and six new
+Trial-path additions, as explained below. No native rebuild or manifest rewrite
+is needed for this GDScript-only successor. These fresh Windows observations
+do not promote the older72-process publication to this head or establish Linux,
+final ready-PR gates, all constructors, full-host/scientific or #203 acceptance.
+Further Web work remains owner-deferred until after the epic.
+
 ## App publication integration: preparation only — 2026-10-25
 
 Normal integration consumes App checkpoint
