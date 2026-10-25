@@ -12,23 +12,11 @@ var failures: int = 0
 var desktop: Control
 var web: Control
 
-class EquipmentRefusal extends CyberUsableSession:
-	func configure(_context: Dictionary) -> bool:
-		return false
+const EquipmentRefusal = preload("res://tests/fixtures/lcb/sampled_preparation_equipment_refusal.gd")
 
-class ApplyCall extends RefCounted:
-	var worker: CyberSimulationWorker
-	var command: Dictionary
-	var applied: bool = false
-	func run() -> void:
-		applied = worker._apply_lab(command)
+const ApplyCall = preload("res://tests/fixtures/lcb/sampled_preparation_apply_call.gd")
 
-class Barrier extends RefCounted:
-	var arrived := Semaphore.new()
-	var resume := Semaphore.new()
-	func enter() -> void:
-		arrived.post()
-		resume.wait()
+const Barrier = preload("res://tests/fixtures/lcb/sampled_preparation_barrier.gd")
 
 func _initialize() -> void:
 	run.call_deferred()
