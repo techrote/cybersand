@@ -10,6 +10,24 @@ related-documents: [../architecture/liquid-solver-family-policy.md, lcb-water-co
 
 # LCB manual liquid comparison UX flow
 
+## Desktop barrel and Ripper selection
+
+The isolated trial-body extension adds desktop Exploratory **Liquids → Apply &
+rebuild** for the existing barrel and Ripper in native-origin default and
+allowlisted play maps. Apply retains exact captured pose/motion; **R** and **F5
+Apply** restore the authored map/pose with zero motion. Default F5 offers only
+sampled baseline, barrel and Ripper while a solver selection is active. A
+refused candidate leaves the old World, body graph, motion, input history and
+receipt/record installed. Exact reconstruction failure is an explicit refusal,
+not an approximate body conversion. The original default PF geometry still
+refuses initial gas capacity; no hidden solver substitution is supplied.
+
+The [owner contract](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
+and [dated Windows proof](../audits/2026-10-25-lcb003-trial-body-constructors.md) distinguish actual FM/CY/PF
+live feedback from generic native admission and remaining constructors/full-host
+gates. Water Feel barrels and physical imports remain separate. Further Web,
+browser and shader work stays deferred by the owner until the epic completes.
+
 The [actual common-Water Web record](../audits/2026-10-25-lcb003-web-common-water.md)
 now qualifies the explicit body-free functional apparatus on both profiles,
 with original successful POSTs. It does not qualify ordinary visible controls:
@@ -195,9 +213,9 @@ controlled API is narrower than older explicit-policy diagnostic APIs.
 |---|---|---|
 | Fixed actor-free schema-2 MicroScenario, protected Dam Break and mixed fixture | Native prepared policy/normalization and explicit geometry, immutable typed receipt, actual IN parameters/instance versions, final owner fence, actual panel/controller apply/refuse/reset; desktop worker and synchronous controller | Complete verified definition/host/provenance collection and final integrated platform qualification |
 | Fixed player-enabled or body-enabled MicroScenario | Ordinary default route retained; Controlled refuses; explicit Exploratory stages the existing sampled character when body-free | Stage physical body/terrain/equipment candidate before supporting rigid bodies |
-| Owner-paced/exploratory MicroScenario | Explicit Exploratory stages allowlisted sampled owners, the existing sampled character, or desktop articulated Rapier actor/equipment/terrain in a permanent space; native facts include actual initial masks and final execution; Controlled refuses | Remaining barrel/reference-body routes, complete verified host/actor envelope and retained edit/import semantics |
-| Bootstrap `create_world` / ordinary `reset_demo_world` | Original Current defaults retained; explicit desktop Exploratory native-default rebuild stages actual shared recipe/origin, sampled owner and three frozen bodies. R retains accepted selection. FM/CY positive body play; PF0/1/2 typed initial gas-capacity refusal before swap | Controlled player/body, other bootstrap callers, complete host identity and final source-matched platforms remain separate |
-| `build_world` rectangle showcases / Blacksite | Existing Current constructor retained; four curated synchronous body-free demos explicitly stage exact recipes, sampled player and actual view/cadence in Exploratory mode. A separate authored Physics Pit route stages its original three bodies/permanent space with final native masks; both retain accepted recipe/selection on Restart | Desktop counterparts, imported physical saves, Blacksite/showcase/other physical owners and arbitrary rectangle callers remain separate; complete host identity and final platforms remain open |
+| Owner-paced/exploratory MicroScenario | Explicit Exploratory stages allowlisted sampled owners, desktop articulated Rapier actor/equipment/terrain, or one actual barrel8×14/Ripper18×8 in a permanent space; exact captured trial motion, native initial masks and final execution precede commit; Controlled bodies refuse | Other reference-body routes, complete verified host/actor envelope and retained physical edit/import semantics; positive single-trial-body proof is scoped to FM/CY/PF0/1/2 in the original Neon map |
+| Bootstrap `create_world` / ordinary `reset_demo_world` | Original Current defaults retained; explicit desktop Exploratory native-default rebuild stages actual shared recipe/origin with sampled owner/three reference bodies or one actual barrel/Ripper. Trial Apply retains exact actual motion; R/F5 use authored fresh pose, and F5 can return to sampled/reference ownership. PF0/1/2 retain typed initial gas-capacity refusal before swap | Controlled player/body, other actors/bootstrap callers, complete host identity and final platform gates remain separate; the single-trial-body extension has local Windows proof |
+| `build_world` rectangle showcases / Blacksite | Existing Current constructor retained; four curated synchronous body-free demos explicitly stage exact recipes, sampled player and actual view/cadence in Exploratory mode. A separate authored Physics Pit route stages its original three bodies/permanent space with final native masks; both retain accepted recipe/selection on Restart | Desktop single-trial-body admission follows the preceding Exploratory row; other desktop counterparts, imported physical saves, other physical owners and arbitrary rectangle callers remain separate; complete host identity and final platforms remain open |
 | `build_tuned_world` / Experiment Tower | Original default constructor retained; ordinary application Tower explicitly stages sampled-owner policy/normalization/geometry with final floor and retains floor/release/schedule/transport controls; reset/profile rebuild retain accepted policy | Other direct tuned-world callers, complete host evidence and final platform qualification |
 | `build_water_feel_world` / Water Feel controlled and blind apparatus | Original defaults/blind routes retained; explicit unblinded sampled Exploratory dispatcher/panel/reset carries typed policy/normalization/geometry and qualified owner record, preserving actions/ledger; desktop and synchronous owners additionally stage their respective original three reference bodies/terrain in a permanent space and prove ordinary unpaused feedback | Actual Web/visual qualification, barrel owners, blind-family study and positive whole-cell schedule qualification; fractional future actions stay refused; visual/publication gates |
 | CYSD `import_level` | Existing default reconstruction retained; explicit synchronous Exploratory next-import selection prepares copied thermal payload/policy/normalization, saved metadata and a private sampled player before commit; refusal retains old owner/receipts and Restart reconstructs accepted input | Physical/Tower/showcase imports and unsupported inherited interaction/diagnostic/transport settings explicitly refused; complete verified host identity, persisted policy/setup design and final source-matched platforms remain open |

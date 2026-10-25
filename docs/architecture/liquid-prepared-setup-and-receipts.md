@@ -10,6 +10,45 @@ related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, liquid-
 
 # Native liquid prepared setup, receipts and quantity accounting
 
+## Desktop single-trial-body preparation
+
+**Current isolated unmerged trial branch, based on5f02d089:** desktop Exploratory
+Liquids Apply stages the existing barrel8×14 or Ripper18×8 in the native-origin
+default demo and allowlisted exploratory MicroScenario maps. The default path
+still calls the shared native recipe, not GDScript geometry. Other actor/default
+callers, Controlled bodies, blind apparatus and body-bearing imports remain
+separate. Generic native admission still owns material/family/radius decisions;
+positive trial-body runtime evidence below is narrower than that admission.
+
+[`prepared_trial_body_session.gd`](../../godot/scripts/prepared_trial_body_session.gd)
+owns exactly one actual rectangular body in a permanent private World2D. Apply
+copies the actual live server packet and requires exact reconstruction of every
+non-serial field, including canonical angle and linear/angular motion. An
+unrepresentable field refuses before native preparation and retains the old
+graph; a generic tolerance or postcommit motion repair cannot admit it. New
+sample serial/epoch values identify the replacement owner. The private space
+is inactive for automatic physics, while the body stays dynamic because Rapier
+freeze mode discards velocity. Exact packet comparison over at least two real
+physics frames and bounded terrain readiness precede the existing copied
+token/request/settings/native/body-digest fences. Successful adoption retains
+that exact graph and needs no fallible rebind.
+
+Main/worker stage F5 arm/effort and player settings before commit. Refusal keeps
+the old World, graph, actual motion, input/cooldown, receipt and qualified record.
+Liquids Apply retains captured motion; Restart/F5 use the authored fresh pose
+and zero motion. Default F5 admits sampled baseline/barrel/Ripper only; other
+default actor constructors still refuse. Native-v1 receipt/full-match qualifiers
+remain unchanged. Source symbols are Main `_prepare_trial_candidate`,
+`_adopt_prepared_physical_candidate`, worker `_prepared_trial_values_valid` and
+`_apply_prepared_default_liquid`.
+
+The [dated trial-body proof](../audits/2026-10-25-lcb003-trial-body-constructors.md) records117 final Windows
+assertions, seven actual negative/near±π angle roundtrips, exact one-ULP refusal,
+actual initial masks and five native FM/CY/PF-variant live cohorts. Default PF
+capacity refusal remains explicit. Positive IN trial-body, other constructor,
+full-host/host-mask continuation, Linux and exact-head gates remain open.
+Additional Web/browser/shader work is owner-deferred until after the epic.
+
 The final union's [local36-process host matrix](../audits/2026-10-25-lcb003-final-integration.md#complete-local-host-matrix-and-actual-web-result)
 passes import plus all35 cases against DLL93d3ee3f with held source/runtime
 inputs. Separately, [actual compat77/77 and threaded76/76 Web execution](../audits/2026-10-25-lcb003-web-common-water.md)

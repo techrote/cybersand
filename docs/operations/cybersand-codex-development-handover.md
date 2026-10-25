@@ -10,6 +10,24 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Isolated desktop trial-body checkpoint — 2026-10-25
+
+The separate `codex/lcb003-trial-body` worktree starts from5f02d089 and adds
+bounded desktop barrel8×14/Ripper18×8 preparation. Its ten-file overlay leaves
+native139 and the publishing final-integration branch untouched. Apply retains
+exact actual server motion; Restart/F5 stage authored fresh state. One-body
+epoch/mask/readiness guards and candidate-only F5 preferences preserve the old
+World/graph/receipt/input on refusal. The default PF gas-capacity refusal remains.
+
+The [dated source/runtime/failure ledger](../audits/2026-10-25-lcb003-trial-body-constructors.md) binds final
+source mapb4eae1ba, developmentDLL46a, focused117/0, prior retained regressions
+and Root's independently executed published-runtime117/0 at the preceding
+test-leaf snapshot. This is local Windows host proof, not another platform,
+scientific acceptance, all-constructor or full-host claim. No publication
+request/runtime files are changed in this slice. The inherited parent request
+is unchanged; a later bot/docs consumption is separate. Further Web/browser/
+shader work remains owner-deferred until after the epic.
+
 The application branch now normally consumes reviewed Water source/publication
 checkpoint02c33341 through merge108b84d1, including actual sequence2 sourceaa8af247,
 run40220697738 and bot03cccd8f. Merge1d376fb3 also consumes the separately reviewed
