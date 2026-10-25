@@ -10,7 +10,55 @@ related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../op
 
 # LCB-003 desktop barrel and Ripper constructor checkpoint
 
+## Failed full matrix and unsupported-rig correction — 2026-10-25
+
+App #256 now passes its four exact-dc2 required gates and merges as main
+`56422c050bd5ed2ceb5f816b1269748764e2dcb7`. Trial #257 is retargeted to main.
+Its normal integration `4867b032c2c5dc3ef0f42ca8d0de0f5058caf8ba` consumes
+that main commit without changing the ff2 Trial file tree. A later one-test
+overlay corrects the inherited sampled-preparation negative below; all ten
+original Trial implementation/test files remain exact f65f3de9.
+
+Actual full Godot run40235988125 at exact head
+`ff2cf45365b1ee47619b9723594a33e56e2e11e0` fails the same one assertion on
+Windows and Linux shard3: `test_liquid_sampled_preparation` expects the newly
+supported physical/barrel callback to return false. Both processes emit71
+assertions/1 failure and exit1, Windows12.471s and Linux14.221s within180s,
+without timeout/launch/capture failure. The dedicated Trial case passes117/0
+in the same Windows job; Linux Trial resides in green shard1. This is an obsolete
+negative premise, not evidence that the supported staged barrel route failed.
+Independent raw/API-digest/source diagnosis receipt
+`3d3a1dcedb86a814cab93e8be9ecc53b13caa244b3644f397cc4c98e0f40baa9`
+preserves both failed job logs and216 artifact files. Those failures are not
+reclassified as passes or erased by this correction.
+
+The one changed test selects `rapier/lcb-unsupported-rig`, which the actual
+physical catalog rejects before queueing. It retains the same strict no-queue,
+native generation and old gyrocrate-owner checks. Supported barrel/Ripper
+positives and the exact motion/final-fence refusals remain in the dedicated
+Trial regression. The corrected test raw SHA-256 is `1ee1857968bdff56db865da2b82939a7940d77cf4c4ec1e4bcf0b07d06450d32`.
+Production scripts, Native80/compiled139, library bytes, manifests, publication
+requests/profiles, Current defaults and all finite deadlines remain unchanged.
+Historical535 now has seven explicit script/test differences (four Trial,
+two App identity tests and this sampled test),528 unchanged entries and six
+new Trial paths/current541. The old source5f02 publication remains historical.
+
+Root independently runs the actual published Windows E3 library with this exact
+one-test overlay: import5.865s/240s, sampled71/0 in13.063s/180s, Trial117/0
+in27.230s/180s and default86/0 in17.405s/180s. All four processes exit0 without
+warnings/errors/skips/timeouts; complete source/project and139 native input
+fences hold. Receipt `tmp/lcb257-sampled-correction-v1/RECEIPT.json`, SHA-256
+`9e4ed5734472271b8802f031a387637d893457b8fe21a5863cd2fc9ad8fd1332`,
+retains the uncommitted-overlay source identity and original actual runtime.
+This is local Windows functional proof, not a new native publication, Linux
+execution or final corrected-head CI acceptance. Fresh final-head applicable
+gates and review are required. PR #257 stays draft while this correction is
+reviewed. Further Web testing remains owner-deferred until after the epic.
+
 ## Corrected App consumption — preparation only — 2026-10-25
+
+This section retains its historical pre-acceptance snapshot; the failed-matrix
+correction and accepted App main above own the later checkpoint.
 
 The Trial successor normally merges exact reviewed App
 `dc2eee9408b959956153608a7ee6d212a5d21672` into prior Trial
