@@ -8,7 +8,9 @@
 #include <bit>
 #include <algorithm>
 #include <godot_cpp/classes/ref.hpp>
+#include <godot_cpp/classes/file_access.hpp>
 #include <godot_cpp/core/class_db.hpp>
+#include <godot_cpp/godot.hpp>
 
 namespace godot {
 
@@ -131,6 +133,38 @@ class CyberDemoBridge final : public RefCounted {
     }
 
 public:
+    // The API reports the loader's library path, which can differ from an
+    // editor shadow copy. Observe current bytes at that path; this alone does
+    // not identify mapped bytes. The caller supplies no path/digest. Hash only
+    // at evidence boundaries, never from a native pool job or simulation tick.
+    [[nodiscard]] Dictionary loaded_native_runtime_values() const {
+        String path;
+        gdextension_interface::get_library_path(gdextension_interface::library,path._native_ptr());
+        Dictionary out;
+        out["schema_version"] = 1;
+        out["observation_source"] = "godot_library_path_current_file_v1";
+        out["api_reported_library_path"] = path;
+        out["mapped_module_binding"] = "unverified";
+        out["status"] = "unavailable";
+        out["current_file_sha256"] = Variant();
+        out["current_file_size"] = Variant();
+        if (path.is_empty() || !FileAccess::file_exists(path)) {
+            out["detail"] = "The API-reported path bytes are unavailable to FileAccess";
+            return out;
+        }
+        const auto file = FileAccess::open(path,FileAccess::READ);
+        const auto digest = FileAccess::get_sha256(path);
+        if (file.is_null() || digest.length() != 64) {
+            out["detail"] = "The API-reported path bytes could not be read completely";
+            return out;
+        }
+        out["current_file_size"] = static_cast<std::int64_t>(file->get_length());
+        out["current_file_sha256"] = digest;
+        out["status"] = "path_file_observed";
+        out["detail"] = "API-reported library path and current file hash; mapped-module and source/publication binding require separate evidence";
+        return out;
+    }
+
     [[nodiscard]] Dictionary inspect_interaction_profile() const {
         Dictionary out;
         out["schema_id"] = interaction_string(cybersand::kInteractionSchemaId);
@@ -890,6 +924,7 @@ public:
 
 protected:
     static void _bind_methods() {
+        ClassDB::bind_method(D_METHOD("loaded_native_runtime_values"), &CyberDemoBridge::loaded_native_runtime_values);
         ClassDB::bind_method(D_METHOD("inspect_cell", "world", "point"), &CyberDemoBridge::inspect_cell);
         ClassDB::bind_method(D_METHOD("inspect_statistics", "world"), &CyberDemoBridge::inspect_statistics);
         ClassDB::bind_method(D_METHOD("inspect_interaction_profile"), &CyberDemoBridge::inspect_interaction_profile);
