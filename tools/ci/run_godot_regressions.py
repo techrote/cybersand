@@ -26,6 +26,10 @@ DEFAULT_UNKNOWN_WEIGHT_SECONDS = 5.0
 # not pass/fail thresholds. Unknown tests deliberately receive a conservative
 # weight so new fixtures are never omitted and are unlikely to overload one shard.
 CASE_WEIGHTS_SECONDS = {
+    # Prospective 4LY-003 actual-host development cases; these are scheduling
+    # estimates, not actual measured pass/fail thresholds or simulated work.
+    "test_physical_flight_teacher_dev_free": 75.0,
+    "test_physical_flight_teacher_dev_obstacle": 100.0,
     "test_microscenarios": 54.0,
     # LCB scenario catalogue: 27 installs plus 1/4-worker 30-tick prefixes
     # (32 s on a 2026-10-23 Windows workstation; CI hosts are slower).
@@ -86,7 +90,13 @@ def discover_cases(root: Path = ROOT) -> list[Case]:
         Case(
             p.stem,
             ("--script", "res://tests/" + p.name),
-            180,
+            # Scored native/Rapier development cases can consume tens of
+            # thousands of real 60 Hz ticks. Keep their CI budget finite
+            # without falsely classifying slower Windows hosts as faults.
+            420 if p.stem in {
+                "test_physical_flight_teacher_dev_free",
+                "test_physical_flight_teacher_dev_obstacle",
+            } else 180,
             _weight(p.stem),
             # Actual-pixel fixtures use this suffix so newly added render tests
             # cannot silently inherit the headless server's no-frame shortcut.

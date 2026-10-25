@@ -1,0 +1,35 @@
+{
+  "schema_version": 2,
+  "created_utc": "2026-10-23",
+  "scope": "pre-final-scoring 4LY-003 split geometry amendment, no plant or acceptance thresholds changed",
+  "supersedes_geometry_only": "godot/tests/fixtures/4ly003_qualification_registration.json",
+  "source_owner": "godot/scripts/physical_flight_course.gd",
+  "reason": "The initial split translation had converted pure vertical and horizontal training tasks into diagonal ones and displaced the unsupported hover target away from its own starting position. The correction preserves each nominal task family across the three meaningful geometry splits.",
+  "unchanged": [
+    "64-bit material carrier",
+    "Rapier physics",
+    "4LY-002 controller and profile hashes",
+    "60Hz cadence",
+    "6-tick decisions",
+    "12-tick lease",
+    "arrival radius/speed threshold/dwell duration",
+    "per-profile family pass rates",
+    "seed and final suite sealing"
+  ],
+  "semantics": {
+    "unsupported_hover": "Goal equals actual new start in every split; no navigation credit",
+    "horizontal_reach": "Goal y equals start y; travel distance at least 60 cells in every split",
+    "arrival_braking": "Goal y equals start y; requires true horizontal low-speed dwell",
+    "reverse": "Both goals share actual start y, reverse X after first waypoint dwell",
+    "vertical_reach": "Goal x equals start x; tune target y=158 and final y=147 preserve upward displacement >=60 cells",
+    "negative_controls": "Remote target remains >60 cells from start in every split",
+    "obstacles": "Distinct per-split authored start, goal and extra native obstacles; contact clearance remains separately measured"
+  },
+  "source_status": "prospective amendment before full scored development/final teacher qualification",
+  "final_split_status": "sealed; no final teacher metrics published",
+  "requires": [
+    "source-bound actual-host dev score",
+    "independent reviewer checks final split geometry",
+    "teacher frozen and exact final source admitted before final scoring"
+  ]
+}

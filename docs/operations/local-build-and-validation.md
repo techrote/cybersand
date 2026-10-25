@@ -933,6 +933,48 @@ this candidate to learning as already accepted. The flight lab, qualified teache
 navigation, target-PC human feel and new Web runtime support have separate
 4LY follow-up gates.
 
+### 4LY-003 flight lab checks
+
+**Current 4LY-003 physical flight lab:** [flight-lab contract](../systems/physical-flight-lab.md),
+[prospective criteria](../../godot/tests/fixtures/4ly003_qualification_registration.json),
+[historical implementation checkpoint](../audits/2026-10-23-4ly003-checkpoint.md),
+and [frozen-teacher final-score evidence](../audits/2026-10-24-4ly003-final-qualification.md).
+The latter passes the recorded Linux actual-host teacher-family thresholds but
+does not provide separately attested external custody or learned qualification.
+The existing Godot GDExtension suite auto-discovers the development
+episode, gameplay scene, bounded throughput and two scored-family
+development fixtures by wildcard. The pinned runtime must include real
+`CyberNativeCellWorld` and `RapierPhysicsServer2D`, never mocks.
+
+```sh
+godot --headless --path godot --script res://tests/test_physical_flight_lab.gd
+godot --headless --path godot --script res://tests/test_physical_flight_pilot.gd
+godot --headless --path godot --script res://tests/test_physical_flight_lab_scene.gd
+godot --headless --path godot --script res://tests/test_physical_flight_teacher_dev_free.gd
+godot --headless --path godot --script res://tests/test_physical_flight_teacher_dev_obstacle.gd
+```
+
+The first validates frozen 4LY profile/controller digests, actual
+native/Rapier 60 Hz stepping, copied policy/normalization boundary,
+issued-observation generation fences, physical navigation samples,
+hover and power-off negative controls. It is deliberately
+**development-only**; the separately registered final split must
+remain sealed until the teacher implementation is frozen. The second
+measures at most 960 physical ticks from one actual host, along with
+decision/reset/JSON-serialization/memory counters. The scored development
+fixtures retain separate native/Rapier JSON traces and their SHA-256
+inventory under `CYBERSAND_PRESENTATION_EVIDENCE`; the
+[separate Python readback](../../tools/ci/readback_4ly003_development.py)
+is required **after** Godot exits in the Linux sharded and serial
+workflows. The original public final geometry is retired and superseded
+by [v3 sealed external geometry](../../godot/tests/fixtures/4ly003_split_amendment_v3.json).
+It cannot be accessed without the separately admitted suite.
+These wildcard tests alone do not establish final teacher acceptance:
+the one-use final score and independent readback are retained in the
+separate audit. Neither learned-policy success nor desktop real-time
+throughput is demonstrated. Do not run neural training in routine PR CI. Keep failed episodes and the exact
+tested checkout and runtime identities.
+
 ### Thunderbowl controls and native arena
 
 The [Thunderbowl reference](../systems/thunderbowl-control-reference.md) contains
@@ -1061,6 +1103,15 @@ interactive acceptance.
 and discovery suites. They change no installed native runtime artifact. See the
 [control measurement procedure](soliding-measurement.md) for immutable-source
 benchmark compilation; builds/tests must stop during registered local timing.
+
+Native CI prebuilds the eight soliding sanitizer executables under a separate
+twenty-minute compilation bound, then runs the unchanged `make soliding-sanitize`
+group under its ten-minute execution bound with ASan/UBSan failure handling.
+The same Makefile prerequisites, compiler flags, tests and hosted runner apply;
+the ninety-minute overall job bound remains. The
+[residual shared-contract audit](../audits/2026-10-24-lcb001-residual-shared-contract.md#native-aggregate-compilation-timeout-and-separate-build-budget)
+preserves the preceding aggregate timeout while compiling the final executable
+and distinguishes partial earlier passes from complete final-head acceptance.
 
 `make soliding-benchmark-smoke` compiles the isolated journal characterization
 with warnings as errors and exercises its bounded-work/fairness assertions on a

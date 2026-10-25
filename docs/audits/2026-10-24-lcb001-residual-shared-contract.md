@@ -2,7 +2,7 @@
 title: LCB-001 residual native shared-contract checkpoint
 status: Current
 document-kind: evidence
-scope: Dated source and execution evidence for the unmerged residual #200 whole-cell Water, setup normalization, native receipts and quantity-accounting checkpoint; both runtimes are published and full final-head acceptance remains open
+scope: Dated source and execution evidence for the unmerged residual #200 whole-cell Water, setup normalization, native receipts and quantity-accounting checkpoint; publication attempt 3 supplies the repaired Windows/Linux runtimes and complete final-head acceptance remains required
 canonical-for: [lcb001-residual-shared-contract-evidence]
 last-reviewed: 2026-10-24
 related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../architecture/liquid-solver-family-policy.md, ../architecture/pressure-flow-v1.md, ../reference/status-and-roadmap.md, 2026-10-24-lcb001-pressure-reference-publication.md]
@@ -463,3 +463,223 @@ job, Windows Godot execution, all four Linux shards and aggregate, physical
 timing distribution, and the #49 apparatus remain required at the final
 non-draft PR head. Earlier draft skips and this scoped publication do not
 satisfy those gates.
+
+### Full-platform attempt 1 exposed serial construction cost
+
+The ready candidate was `9e91a9f75d47b9a9aa4a8ba2d3ce78ba2fbfd882`,
+tree `9b39d48185139eb28a1119b7502a016035aeb52d`. Hosted synthetic checkout
+`df6e5105f5f8a187831b8a7f95ef59458a98a195` has that identical tree.
+[Documentation 40140021669](https://github.com/techrote/cybersand/actions/runs/40140021669)
+passed, including actual non-draft materialized runtime provenance, M11 and
+retrieval (32/32 frozen, 126/126 supplementary). The complete
+[#49 apparatus 40140021676](https://github.com/techrote/cybersand/actions/runs/40140021676)
+passed all 120 registered observations and its sanitizer harness. The local
+independent apparatus receipt is
+`C:/Users/_/.codex/tmp/lcb246-acceptance/final-head/apparatus-acceptance.json`,
+SHA-256 `08e28e2756a87f9ee27636cea293ffe317951b2556f72ffbadc1a90f6ed0f0d5`.
+
+[Godot 40140021724](https://github.com/techrote/cybersand/actions/runs/40140021724)
+failed its required Windows job. All four Linux shards and aggregate passed:
+140 unique cases, four imports, twelve actual-display cases, no omissions or
+duplicates. Windows executed all 128 expected cases and import; 127 cases and
+import passed, but `test_exploratory_actor_selection` hit its unchanged
+180-second deadline at 180.001 s. Its Linux counterpart took 146.327 s. The
+physical-timing reducer passed all 45 emitted rows (23 Linux, 22 Windows), but
+that subset excludes the failing case and cannot satisfy the full Windows gate.
+
+The Windows run used the attempt-2 native runtime `98570267...414a5c`, Godot
+`4.7.stable.official.5b4e0cb0f` and qualified Rapier `b54e54bd...0dd7`.
+Independent reduction checked all 625 source/binding/test inputs, 129 log
+digests and complete expected-case coverage. Its saved actual child dump
+(`748.dmp`, SHA-256
+`46560b39401a052a6d627ed83cb54b99926c2706f568a726438470f200b76fa4`)
+resolves the native owner stack to `merge_quantity_effects` →
+`record_quantity_transition` → `set_with_quantity_kind` → `set` →
+`demo::construct` → `CyberDemoBridge::build_water_world`. At the 150-second
+sample the owner had consumed 145.42 CPU seconds. Disassembly identifies the
+full 256-material accounting loop after a 6,088-byte ledger copy per serial
+cell write. Rebuilding the large demo maps amplifies this new accounting cost;
+the dump does not show a Rapier wait.
+
+The independently sealed Windows failure receipt is
+`C:/Users/_/.codex/tmp/lcb246-acceptance/final-head/independent-docs-godot/windows-independent-failure.json`,
+SHA-256 `1916cee7d30756ac1f3d96ff0fcca1afce6dc1b479f5d1588389ff106e76c71a`.
+The same directory retains the dump, LLDB unwind, diagnostics, complete job
+logs, Linux proof and timing reduction. The timing receipt hashes to
+`34caa7d569ed26f359f37b9f2d7232039948a2032069a1e44e4e227c2b9b3fab`.
+
+PR #246 returned to draft for a narrow checked-scalar serial transaction and
+meaningful accounting/refusal regressions. Worker deltas and their full phase
+merge remain separate. Both native source-matched runtimes must be published
+again with request sequence 3, followed by the entire required final-head
+matrix. The previous scoped publication and these partial full-gate successes
+remain historical evidence; they do not qualify changed native source. The
+case deadline is retained.
+
+### Checked serial transaction and frozen construction comparison
+
+Implementation and regressions are committed in
+`c96dc4b2e29e099f892b04fa4b37dfeca091dea7`, directly after the failed candidate.
+Follow-up `601352782b5e6d8f3d944b4ee80194fc6283d83d` clarifies only an
+assertion's wording: four-worker configuration and a four-job dispatch batch
+do not by themselves measure four distinct worker-thread participants.
+
+The serial path now checks the affected visible/overfill quantities, at most
+two material populations, one cause/rule and the six-category lifetime totals
+using local candidates before assigning any ledger field. It preserves paired
+transport's temporary conservation opening, gross same-Water reaction products
+and the existing checked bounds. Worker deltas and full phase merges are
+unchanged. Independent read-only review found no transactional or accounting
+gap in the two-file repair.
+
+At `c96dc4b2`, LLVM-MinGW Clang 23.1.0 `-O1 -g` passes **126/126** native
+cases in 25.679 s and the focused quantity group in 0.152 s. Focused signed
+overflow UBSan passes in 0.195 s with empty diagnostics. Regressions compare
+serial and four-worker-configured accounting including actual reaction/kernel
+sources, and exercise a restored resident World at the aggregate lifetime
+limit: refusal preserves the ledger, cell authority, physical hash and CYPS;
+same-visible no-ops and non-Water population edits remain legal. Serial and
+worker tick overflow both retain the existing quarantine. An initial fixture
+incorrectly selected the serial backend with four workers; its admission
+failure is retained and the fixture now selects one serial worker.
+
+All 85 native inputs are unchanged across this execution and the ordinary PE
+stack reserve remains 1,048,576 bytes. Executable SHA-256 is
+`9711cc68a703cdcc7cf5c591b50f23faca3f0d8291bcd5659bc415c38ea1f644`;
+the focused instrumented executable is
+`ed162a46d4d93451b8be4ea3e3aba6adc2a60351ed5922c71ed34606b1762846`.
+The proof directory is `C:/Users/_/.codex/tmp/lcb246-quantity-cost/`.
+`final-receipt.json` hashes to
+`29e52a34c61e05280c94b34ad221114d263eabe5fdb5984eb0740f494f9d423e`;
+`native-inputs.tsv` hashes to
+`f010eb7c67e7ba55860ca63c1cd299f0c32f03f9e5b4bb24d4f66fc466cd27ee`.
+This local receipt stays bound to `c96dc4b2`; subsequent platform execution
+must include the assertion-only follow-up and final publication source.
+
+The bounded cost probe reserves 1,024² cells, then performs four complete
+serial passes (4,194,304 setters per process, no ticks). Three runs per source
+use the same LLVM-MinGW x64 `-O2 -DNDEBUG` toolchain and ordinary stack. Values
+below are median milliseconds, not a general gameplay benchmark:
+
+| Construction pass | Accepted #245 `03785c3d` | Frozen #246 `9e91a9f7` | Scalar repair `c96dc4b2` |
+|---|---:|---:|---:|
+| Fill Wall | 35.570 | 696.142 | 54.543 |
+| Repeat Wall | 19.207 | 674.779 | 35.050 |
+| Replace with Water | 35.198 | 715.071 | 56.158 |
+| Clear cells | 42.261 | 720.506 | 59.847 |
+
+The repair is 12.0–19.3 times faster than frozen #246 in this probe. Accounting
+still adds visible cost relative to #245. Frozen and repaired #246 produce the
+identical final physical hash `6805180651738850370`, zero Water and exact
+produced/consumed totals of 267,386,880 each. The pre-ledger #245 hash is a
+different format and is not used for equality. `cost-receipt.json` hashes to
+`be3f0b6e79d14145ded6ba8958b74d01582d43ee4a294539fd39b839dee4de1a`;
+the directory retains extracted control sources, commands, executables, raw
+logs and source patches. New runtime publication and the complete final-head
+matrix remain required; this microbenchmark alone does not close Windows
+Godot acceptance.
+
+Actual MSVC 19.38 `/W4 /Od /Zi` rebuilt the final native inputs at
+`601352782b5e6d8f3d944b4ee80194fc6283d83d` in 29.047 s and passes
+**126/126** in 201.254 s. The source/native fences are unchanged and PE headers
+retain 1,048,576-byte reserve / 4,096-byte commit. Executable SHA-256 is
+`66aaa1ec38d6e95dc3a6e77a792808e782413a7c05ca01c81de1c33e423d3515`.
+Commands, compiler identity, build/test output, all inputs and PE headers remain
+in `C:/Users/_/.codex/tmp/lcb246-quantity-msvc/validation-receipt.json`,
+SHA-256 `638616e1f3bfe20d2301e244ef65012ab3dc80db29fb2f58737d3eaa59f8c201`.
+This execution includes the assertion-wording follow-up. Request sequence 3
+publishes the repaired source; both prior runtime hashes remain qualified only
+for attempt 2 until replaced by newly executed artifacts.
+
+Before dispatching that request, fresh main advanced to
+`b5a8570e5123e1f633766e9390761a1c8134cfa2` (qualified 4LY-003, PR #229).
+Integration commit `02d144981b3e8196df5e790c874199a935df4f4d` preserves the
+flight lab, launcher, five additional Godot regressions and their evidence.
+No native/binding implementation input changed in that refresh, so the MSVC
+native fence above still describes those inputs. The new publication and
+complete final-head matrix must consume the merged application/tests, including
+the updated Godot harness; the earlier 140/128-case totals remain qualified to
+the first full-gate attempt, not the expanded suite.
+
+Pre-refresh checkpoint `2b44b151d937bb74fc42971a1b05e3587a8fbf3f` passed
+documentation/M11, retrieval 32/32 and 126/126, provider policy, both byte
+oracles, generated native-policy artifacts, all 120 Python LCB tests, all
+30 publisher guards, LFS integrity and whitespace. All tracked inputs remained
+unchanged. The materialized repository checker reported exactly two errors:
+the Windows and Linux native libraries require rebuilding for
+`native/src/world_quantity.inc`; it reported no documentation, vendor or
+unmaterialized-runtime error. This is an explicit publication prerequisite,
+not an accepted provenance exception. The proof is
+`C:/Users/_/.codex/tmp/lcb246-serial-validation/validation-receipt.json`,
+SHA-256 `ede10af51fe6a3099c3381b2fe6442519fd2a43d0975a2b61d766e89a44e735e`.
+
+### Publication attempt 3 passed after the construction repair
+
+[Publication 40143202793](https://github.com/techrote/cybersand/actions/runs/40143202793)
+built `66506d1aea029d39fcaebb17554f8a58bd6c3a13`, tree
+`55b413e6fbbc4bdf6bf5e0c2733dc0c9af2f2468`, with explicit request
+sequence 3. Both actual target operating systems passed import and all twelve
+scoped cases: thirteen complete logs per target, required positive summaries,
+no skipped case, diagnostic error or timeout. The Windows executed DLL matches
+the independently captured cross-build byte for byte. Both platforms retain the
+qualified desktop Rapier artifacts from fresh main.
+
+| Runtime | Bytes | SHA-256 | Validation JSON SHA-256 |
+|---|---:|---|---|
+| Windows x86_64 | 4,397,568 | `89a20e5bf278eb1801342ff82329667a58e375fb4e141dc6f32116baa4062aaf` | `56a32b3b1af36506b523c1ff67477d71f7e489a507867a257a93934c3bff8f39` |
+| Linux x86_64 | 3,781,256 | `ce62448ceb81add84b9ccbf1e176f21360a99c2ddc21cffe76a1ed85e6244abb` | `cbd79f6de0f3f49d4dd533e4f9b445e3ead71aff5affbe6452390c97f21ca70a` |
+
+Independent reduction matches all 540 immutable Git inputs (68 native and 472
+build/test), artifact bytes, every case/log digest and required sections on
+each target. Raw ZIP digests match the GitHub artifact metadata. Receipts in
+`C:/Users/_/.codex/tmp/lcb246-acceptance/publication3/independent-review/`:
+
+- `windows-target-independent-receipt.json`, SHA-256
+  `c401bcf4051a5603bc9d567eb86aa8b71ed5459c890005aa64649e36bcc747c2`.
+- `linux-target-independent-receipt.json`, SHA-256
+  `6a9c2401da1b835fa5b55ae33f530ce342a457164272e73b39b0032fa27bc296`.
+
+The publisher appended only the two libraries and two manifests in
+`0719b7ec92075d8647469050d74c2d8bc78b7b67`, whose sole parent is the built
+source. The local branch fast-forwarded to that commit and materialized both
+new LFS objects; their SHA-256 values match the table above. The earlier
+attempt-2 hashes are historical evidence and are not reattested for this repair.
+
+The source-fenced prepublication checks also passed after the fresh-main
+integration, at `66506d1a`: docs/M11, retrieval 32/32 and 126/126, provider,
+oracles/generated policy, 120 Python LCB tests, 30 publisher guards, LFS and
+whitespace. Its two then-expected stale native errors named only
+`world_quantity.inc`. Receipt
+`C:/Users/_/.codex/tmp/lcb246-serial-integrated-validation/attempt2/validation-receipt.json`
+hashes to `dac10cb3b467f00472101e437b2240d43e513abb215054d7652d3605de30b162`.
+An initial invocation passed the symbolic word `HEAD` to the detached mirror;
+the coordinator refused before testing. That failed harness record remains in
+the parent directory; the successful retry supplies the exact full source SHA.
+
+### Native aggregate compilation timeout and separate build budget
+
+Old-head [Native 40140021680](https://github.com/techrote/cybersand/actions/runs/40140021680)
+passed ordinary native execution, the physics CLI, generation, full ASan/UBSan
+and the separately built settled-regions sanitizer. It then exhausted the
+ten-minute `make soliding-sanitize` aggregate while compiling the final sparse
+activity/deadline executable, before that target group could execute. The job
+records failure/exit 124 at 23:39:59 UTC; the enclosing run reports cancelled
+after draft/synchronize supersession. Both raw states are retained. This is
+neither a runtime assertion nor a sanitizer diagnostic. TSan and the final
+shared-library/benchmark steps did not execute and receive no acceptance credit.
+The complete log SHA-256 is
+`9900f63e2fe88fecc642fbd6871addc442466909bc1ad1388c77d4b9a7059d64`;
+`old-native-terminal-receipt.json` in the publication-3 review directory hashes
+to `1f462d29a90ef80f75b4c26d54ba70baea14f67ee1c9790e5894b4d3c14abc60`.
+
+The workflow now prebuilds the exact same eight Makefile prerequisites under a
+separate bounded twenty-minute compilation step. The existing ten-minute
+`ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1
+make soliding-sanitize` execution step is unchanged and runs all eight binaries.
+Compiler flags, Makefile, tests, GitHub-hosted runner and ninety-minute overall
+job limit are unchanged. Independent review verified the exact prerequisite
+list against Makefile lines 147–155. This CI-only workflow file is outside the
+runtime publisher's native/build input ledger; final materialized provenance
+must nevertheless pass after the edit. The entire final non-draft matrix,
+including actual completion of this group, TSan, builds and benchmark, remains
+required. No previous partial run replaces it.
