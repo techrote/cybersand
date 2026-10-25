@@ -165,9 +165,10 @@ request/schema, workflow, artifact prefix and concurrency group. The Brine
 publisher retains its separate branch/profile/request and artifact namespace.
 Water privately loads the 005/001 engine; it changes no shared imported profile
 or runner state and never pushes the Brine branch. Source-matched runtimes must
-come from the Water workflow's exact source and lease. The Water request is now
-committed and armed as sequence1 at source `4b588279`; the resulting publication
-is complete. This does not imply another request or an active Brine publication.
+come from the Water workflow's exact source and lease. The Water request is
+committed as sequence2 at source `aa8af247` after reviewed native repairs; its
+publication is complete. The first sequence1/source4b record remains historical.
+This does not imply another request or an active Brine publication.
 
 ### Actual publication and remaining final-head gates
 
@@ -179,7 +180,23 @@ the original491 build/test ledger remains evidence only for source4b. Its two
 Godot changes do not alone require sequence2 or a rewritten manifest. Fresh
 final-head required gates remain necessary after incorporating accepted main.
 
-**Current source-matched sequence1 on `codex/lcb005-water-inertial`:** the
+**Current source-matched sequence2 on `codex/lcb005-water-inertial`:**
+reviewed activity publication, contiguous storage and pool-constructor retirement
+repairs receive request-only sourceaa8af247 and actual run40220697738. All six
+jobs pass; each target OS passes15 strict processes/642 policy assertions and
+the actual Water-IN proof. Runtime-only bot03cccd8f has sole parentaa8 and exactly
+four pointer/manifest paths. Independent reviewd2da3ffd and Root acceptance6352fdaf
+verify native76/build491 sourceaa8, all18 LFS objects, actual floor, source lease
+and unchanged process deadlines. The [dated ledger](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25)
+preserves all failures, prior sequence1 and registration ambiguity. A later
+publication-audit metadata overlay is separately disclosed; native input drift
+must remain zero and current repository provenance must pass. Bot03 approval-held
+follow-ups contain no jobs, and are not final-head greens. Full final ready-head
+Documentation/provenance, Native, Godot/scoped apparatus and review remain
+separate from this scoped publication; no further sequence or bypass follows
+from that approval hold alone.
+
+**Historical source-matched sequence1 on `codex/lcb005-water-inertial`:** the
 separate Water profile privately loads005/001, retains import plus14 processes,
 all deadlines and strict policy/Brine/pressure sections, and requires the actual
 Water motion/whole-cell/coherence/refusal/CYPS proof. Artifact prefix remains

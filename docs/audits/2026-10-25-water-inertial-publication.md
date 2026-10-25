@@ -2,7 +2,7 @@
 title: Water inertial publication and preparation ledger
 status: Current
 document-kind: audit
-scope: Actual source-matched Windows/Linux Water-IN sequence1 publication, independent artifact review, exact source lease and retained preparation failures; full ready-PR, scientific and host/Web acceptance remain separate
+scope: Actual source-matched Windows/Linux Water-IN sequence1 and native-repair sequence2 publications, independent artifact review, exact source lease and retained preparation failures; full ready-PR, scientific and host/Web acceptance remain separate
 canonical-for: []
 last-reviewed: 2026-10-25
 related-documents: [2026-10-25-water-inertial-native.md, ../architecture/inertial-cellular-v1.md, ../operations/github-development-and-release.md]
@@ -10,7 +10,85 @@ related-documents: [2026-10-25-water-inertial-native.md, ../architecture/inertia
 
 # Water inertial publication and preparation ledger
 
+## Actual sequence2 Windows/Linux publication — 2026-10-25
+
+**Current scoped publication:** reviewed native activity metadata, contiguous
+storage and partial-pool-construction retirement repairs require fresh binaries.
+Native commitc97f68ec, six-doc checkpoint34e0979 and the actual c97 hosted TSan
+success precede request-only source
+`aa8af2473a59ab92cc81dfff1dda17be0f41a46d`, tree
+`906445ff96d38931a0d25b4525700ad13ff636fe`. Only `request_sequence` changes1→2;
+the schema/material/scope/intent and strict fifteen-process profile remain
+unchanged. Exact request SHA256 is
+`7d3a8cce7f496d020f370f385c344343f1f6088ca0fba9475aaff43eaa5d3e54`;
+arming receipt `d2708169febcce0fd2f09bf3957142815fef71e50fb9a3fddd3c4c02eba42a2a`
+preserves actual TSan metadata, source equivalence and lease preflight.
+
+Push run [40220697738](https://github.com/techrote/cybersand/actions/runs/40220697738),
+attempt1, starts18:19:31Z and completes successfully by18:34:39Z. All six jobs
+pass: staged validator, explicit request admission, Windows cross-build, actual
+Windows execution, Linux build/execution and four-path publication. Separate
+PR guard/draft skips are not runtime or full ready-head greens. Each OS executes
+all15 required processes with returncode0, no launch/diagnostic errors or skips,
+strict helper summaries,642 policy assertions and the actual Water-IN proof.
+That proof retains mass3/8 × configured1/4-worker cohorts,20 live ticks,
+transactional fractional refusal, exact whole-cell quantity, live coherence and
+five-tick CYPS3 continuation. It is functional publication proof, not registered
+common-Water scientific or full-application acceptance.
+
+| Target | Runtime SHA256 | Bytes | Actual validation JSON SHA256 |
+|---|---|---:|---|
+| Windows x86_64 | `ff22ee972f5b640153c7bc56ba68418ecff79f8d886471cb23a91cc12bab9dca` | 4,537,856 | `2f6bda76a6ea41cd0eabe7e1de8099971ff5519d0e73fa9b6577f401a4442704` |
+| Linux x86_64 | `941b91af8c005b82e799cdbc061ffb9794b6b8afe25d10fa794c939d947bdaec` | 3,912,384 | `18fe4126aafce841d57ed08086a47732b69da9546bbe48f6c56e53fb7cb60396` |
+
+Both76-native/491-build ledgers match all567 sourceaa8 canonical Git blobs.
+The c97 Native subtree is unchanged. The actual Linux floor passes bundle
+GLIBC2.34, with CyberSand GLIBC2.32/GLIBCXX3.4.30/CXXABI1.3.9 and Rapier2.34;
+independent ELF inspection corroborates the hosted check. Pinned Godot4.7,
+Rapier, compiler/dependency provenance and process deadlines remain unchanged.
+Capture `b9101251e53c2362409c30c7aa6fd08ec32433f6c8ecd0947b847252fd9b9ea0`
+binds fresh raw APIs/full logs, three API-digest-matched ZIPs and40 artifact files
+under `tmp/lcb-water-activity-repair-v1/publication-sequence2-capture/40220697738`.
+Author reduction `52e46ba3f824b67e54210630de53e7b3b2e582aafe5db30139e22b5fb84be2a9`
+rechecks every recorded process and source blob. External reducer import-path
+and guessed-runtime-basename failures remain retained apparatus records; no
+runtime/source/assertion/deadline was changed to correct them.
+
+The publisher appends
+`03cccd8fd133b505c6fad7911d3cb8d528ef5f22`, tree
+`80945c95f85464e19b6b013be2037c5f9afc68b7`, with sole parentaa8 and exactly
+two LFS runtime pointers plus their matching manifests. No competing source/doc
+push changed the lease before this append. Both committed manifests are
+byte-identical to the validated artifacts; all18 LFS payloads match bot pointers.
+Read-only bot/source/LFS/floor receipt is
+`bf5546135dcadb90bc2e42494cf6be3d0def2ca7d64c6711e5f8591278fab3f8`.
+
+Fresh independent review
+`d2da3ffd58c319347b8add077a09ea315e7b87d370e899dbc0d55df509211cfc`
+recaptures APIs, six job logs, all three ZIPs,567 source blobs, runtime/policy/
+Water proof, actual ELF floor, request2, single-parent/four-path append, lease
+and all18 LFS objects with no actionable bounded finding. Root acceptance
+`6352fdafe3564ee3734220b4bcc89513e2082efcb6d31833003dafa6263cdcf7`
+releases the lease; ff-only03cc and actual local18-object rehash are bound by
+`fe7b5ce0f19cafb618365efc2ac38ac4f23df0f339dbd03155335ff44a4a33b5`.
+At that materialized checkpoint all567 working canonical bytes equal sourceaa8.
+Only this audit belongs to the491 build inputs; the later documentation overlay
+changes its metadata, while Native76 remains exact. The immutable manifests
+retain their sourceaa8 hashes and do not qualify later changed scripts/tests.
+
+At publication PR #254 remains draft. Five bot03 follow-ups are action_required
+with no jobs; they are not greens. The c97 diagnostic Native job has successful
+TSan/ordinary/full-ASan step metadata and later stages still active at publication;
+its completed raw result is separately captured. Full final ready-head gates and
+adversarial review, common-Water scientific screens, normal host/Web/rendered/
+manual qualification and #203 packaging remain separate. Current defaults,
+117 registered campaign classifications, old ledgers and all failures remain
+preserved. No new sequence is required merely for an audit-only docs overlay.
+
 ## Main flight-lease refresh and native binary reuse — 2026-10-25
+
+**Historical unchanged-native intermediate checkpoint:** the following reuse
+conclusion predates the native repairs and sequence2 above.
 
 Accepted main advances to `9935d5696721d2c72a8273ea70454ab0c5b11361`
 through PR #249. The separate local review branch
@@ -23,7 +101,7 @@ source4b/C9 publication are preserved while this refresh is reviewed.
 
 All76 native inputs and both published library identities remain exact. The
 immutable491 build/test ledger still describes the original source4b execution,
-not this later head. Current drift is exactly this audit's later metadata plus
+not that later head. At that intermediate checkpoint drift was exactly this audit's later metadata plus
 `godot/scripts/physical_flight_episode.gd` and
 `godot/tests/test_physical_flight_lab.gd`; the remaining488 inputs are unchanged.
 The earlier e241 audit-only/remaining490 comparison below retains that checkpoint's

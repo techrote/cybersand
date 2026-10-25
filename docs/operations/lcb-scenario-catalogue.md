@@ -181,7 +181,7 @@ UI rules (to be enforced by #202):
 | `W-FM` / `C0` | Current defaults | **measured** on Current |
 | `W-CY` | Water `cellular_yield_v1/reference` | campaign arm unmeasured; native/explicit-constructor admission accepted on main in #246 with Windows/Linux publication and required matrix; registry host campaign integration remains pending |
 | `W-PF` | Water `pressure_flow_v1/reference\|cached\|cached_dormant` | retained registry campaign unmeasured. All three variants are accepted on main through #253, with source-matched publication and exact-head gates. This does not reclassify the retained registry campaign |
-| `W-IN` | Water `inertial_cellular_v1/reference` | retained campaign blocked: #200, #212. Isolated source4b588279 and Windows/Linux scoped publication execute Water IN; final ready-PR/common-Water campaign qualification remain separate |
+| `W-IN` | Water `inertial_cellular_v1/reference` | retained campaign blocked: #200, #212. Isolated sourceaa8af247 and Windows/Linux scoped publication execute Water IN; final ready-PR/common-Water campaign qualification remain separate |
 | `BRINE-IN` | Brine `inertial_cellular_v1/reference` | retained campaign unmeasured/blocked; Brine IN is accepted on main through #250 after corrected source-matched publication and full exact-head gates; retained campaign qualification remains open |
 | `M1` | Water FreeMass + Oil CellularYield + Brine Inertial | retained campaign unmeasured/blocked; local #212 mixed controls exist, with fresh combined-source and registry campaign qualification separate |
 | `M2` | pressure Water + Oil + inertial Brine | blocked: #200, #201, #212 |

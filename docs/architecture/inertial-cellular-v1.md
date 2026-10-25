@@ -18,16 +18,18 @@ Water uses its own whole-cell adapter around the shared integer IN law. Its
 [prospective registration and complete path model](../audits/2026-10-25-water-inertial-registration.md)
 start from reviewed Brine contact repair `68f74906`. Brine IN is accepted on main
 through PR #250 (`dc915f2b`); Water IN remains isolated in draft PR #254. Later
-[actual Water publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
-qualifies source4b588279 and runtime-only botC9e52b52 on Windows/Linux. It does
+[actual Water publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25)
+qualifies sequence2 sourceaa8af247 and runtime-only bot03cccd8f on Windows/Linux. It does
 not qualify normal hosts, common-Water scientific screens, owner feel or full
 Gate D/#203 completion.
 The [dated successor record](../audits/2026-10-25-water-inertial-native.md)
-records162 ordinary groups,37 focused sanitizer groups,124 Python tests and a
-fresh non-release Windows DLL passing import plus14 strict scoped Godot cases.
+preserves the original162/37 native/sanitizer proof and later163/23 activity
+and pool-retirement repair proof, plus124 Python tests and the separately
+qualified actual runtime processes. The original non-release DLL evidence keeps
+its exact source scope.
 Independent native/tooling reviews have no open findings in those bounded
 scopes. Actual publication passes15 processes perOS/642 policy assertions, with
-independent artifact review `b15ea7cb` and no actionable bounded finding. Full
+independent sequence2 artifact review `d2da3ffd` and no actionable bounded finding. Full
 exact-head ready acceptance remains pending; approval-held bot follow-ups are
 not greens.
 
@@ -86,7 +88,9 @@ physics. Old source-bound facts and failures remain historical.
 The [Water successor publisher](../operations/github-development-and-release.md#isolated-water-inertial-runtime-publication)
 is an isolated005/001 profile on its own branch. Reviewed profile24a is followed
 by request sequence1/source4b588279 and actual run40166210470, then four-path
-botC9e52b52. It retains all15 processes, deadlines and strict summaries and adds
+botC9e52b52. Later sequence2/sourceaa8af247/run40220697738/bot03cccd8f
+republishes the reviewed native activity/storage/pool repairs. It retains all15
+processes, deadlines and strict summaries and adds
 actual Water motion, whole-cell quantity, coherence, transactional refusal and
 CYPS continuation evidence. Both OS artifacts and input ledgers receive fresh
 independent review. Common-Water/full-host/scientific and final ready-PR

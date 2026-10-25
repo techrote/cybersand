@@ -918,3 +918,45 @@ owner/span fact; all133 challenge query strings and the frozen32 fixture remain
 unchanged. Retrieval finds an expected canonical route for every question within
 its five results, a routing observation rather than answer-correctness evidence. No stale
 runtime requirement is waived or historical manifest rewritten.
+
+## Target runtimes for the activity and pool repair — 2026-10-25
+
+The [actual sequence2 publication](2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25)
+at sourceaa8af247/run40220697738/bot03cccd8f contains the exact c97 Native tree
+`d5f9017a787e5bdbd87ca478dfd864d70a5e533d`. All15 processes on both OSes pass,
+including642 policy assertions and actual Water-IN proof. Independent publication
+reviewd2da3ffd and Root acceptance6352fdaf qualify those artifacts without
+rewriting any earlier race, timeout, packing, constructor-failure or cost record.
+The c97 diagnostic Native run40218227805 has actual successful TSan, ordinary
+and full ASan/UBSan step metadata; it was still running its later settled-regions
+stages when publication completed. Full raw diagnostic completion and final
+ready-head matrix/review remain separately captured; this scoped publication
+does not close scientific/normal-host/Web/#203 acceptance.
+
+### Completed c97 hosted diagnostic and publication-doc gates
+
+Run40218227805 completes successfully at18:51:17Z on exactc97. Raw logs contain
+163 unique, identically ordered passing groups in each ordinary, TSan and full
+ASan/UBSan execution, including the complete C API allocation-failure sweep and
+activity/observer regression. All18 validation stages pass: both eight-summary
+generation and soliding modes, seven preregistration tests, valid retained smoke
+records, the settled-region builds,154 physics-CLI invocations/three groups, and
+the shared-library/120-tick benchmark with zero tracked chunk/temperature tick
+allocations. Compiler warnings remain in the raw logs; no sanitizer report is
+present. Capture `f2562fced325b1aca2d2db85c88a1aa34a2c59be7898deeadc0286db16a5efc6`
+binds the full APIs/log/archive and310 artifact files; author reduction
+`956f1a57e11370856ce6947a6e1f37b043a061abf3c8eda8e0d5771c7fd4cb4d`
+checks their groups, hashes and actual process results. The diagnostic uses
+workflow_dispatch and its ready-scope job is skipped; it is not final ready-head
+acceptance. Earlier exit66/124 and constructor-hang records remain intact.
+
+After actual sequence2 publication, the frozen20-doc overlay passes all23 proper
+companion documentation/contract/registry/provider/publisher checks, including124
+Python tests, with zero repository/provenance errors. Receipt
+`ed8bef5c752eb456d12601deb399db6252d6f471c6254e40e8ee28d6a5b1168e`
+binds all18 materialized LFS payloads, Native76/remaining490 build hashes and the
+sole publication-audit metadata drift; manifests retain sourceaa8 hashes. All133
+query strings/117 registered classifications remain unchanged. This additive
+completion paragraph receives a fresh seven-gate/source fence before commit;
+full final ready-head gates/review and scientific/host qualification remain
+separate.

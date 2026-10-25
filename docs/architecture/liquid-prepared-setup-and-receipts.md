@@ -17,8 +17,8 @@ Water CY or IN as WholeCell. New Water admission executes that existing
 setup-only water-normalize-v1 path, gross source/sink counters and digest; live
 partial writes still refuse. The [Water adapter](inertial-cellular-v1.md#water-in-native-successor--2026-10-25)
 adds no parallel normalizer, receipt schema or live family converter. Its
-local proof retains its exact source scope; later [actual source4b588279 Water
-publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
+local proof retains its exact source scope; later [actual sourceaa8af247 Water
+publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25)
 qualifies both target runtimes separately. Full ready-PR, scientific and host/Web
 qualification remain open.
 
