@@ -657,3 +657,66 @@ cover this repair; the coordinator owns a separately registered rerun.
 The only retrieval change appends the worker metadata ownership fact to existing
 MAT01. All133 challenge query strings are preserved; existing canonical corpus
 and index routes already own activity, capacity and material cadence.
+
+### Fresh registered pressure total-cost repeat
+
+The corrected native commit `dab388f61b5357659f103979f86753ca9be71384`
+receives a new prospective total-cost repeat; its native subtree is unchanged
+at integrated source checkpoint `0d7c80e6`. Registration
+`5739d910a3610ed4174fb4fb42d440c9e4e155c2d0154ec4370529344ef0823d`
+precedes build and execution. The unchanged six-profile apparatus uses configured
+workers1/4, five rotated replicates, 8 cold/48 warm/32 disturbed ticks, all three
+pressure variants and four explicit fallback subcases. Optimized Windows x64
+LLVM-MinGW20260826/Clang23.1 C++20/O3/NDEBUG binary
+`7b5cfdef51cf7d4c923c4182dc569241c0aadff79c44823b696250787f90968f`
+is built from64 fenced inputs with its compiler, command and normal1MiB stack
+recorded. All competing local builds/correctness work completed before timing;
+before/after process inventories cannot establish continuous host isolation.
+
+All18 qualification children and90 measured children complete with exit0 and
+empty stderr, covering23,760 measured per-arm tick observations. Quantity,
+pressure projections, gas/history/ledger guards and mandatory material/contact
+work agree. All53 counters, actual fallbacks, resident-head status/numeric
+comparisons and signed ROI net Water balances pass their existing checks.
+Complete gas/quantity/PF structures are compared by the fenced native apparatus
+outside timers; undumped structures cannot be reconstructed independently from
+exported rows. Native-mask contacts do not establish an actual Rapier execution.
+No fixture threshold, credit model or speedup acceptance rule changes.
+
+The full-tick timings include the new reserved-flag clearing and coordinator
+activity/deadline reduction. Warm dormant/reference medians in awake Water are
+0.359803 at one worker and0.422000 at configured4, with737,280 saved motion calls
+and3,840 other-liquid calls per worker setting across five warm replicates.
+All awake configured4 runs observe four actual participants. Sleeping warm
+controls have zero cell visits and no saved motion calls; their timing difference
+does not establish a motion-skipping benefit. Small gas/churn/fallback profiles
+observe at most one participant despite configured4.
+
+Slower intervals remain explicit: disturbed churn cached/dormant ratios are
+1.115585/1.099127 at one worker and1.095148/1.129184 at configured4. Forced head
+fallback is slower over the complete88 ticks (cached/dormant1.116644/1.086540 at
+one worker and1.075149/1.040284 at configured4); index fallback is near or slightly
+above parity. Faster whole-run churn medians do not erase the disturbed negative.
+Setup/host edits and their ordering remain separately recorded. These local
+ratios establish no universal, target-PC, production-default or feel guarantee.
+
+This apparatus sets chunk/core/activity edges all to32 for the two boxed profiles
+and all to8 otherwise, radius2 and256 scheduling slots. Its nine ordinal slots
+per job add20,736 logical grid payload bytes per World,62,208 for three Worlds;
+vector owners, scalar fields, allocator overhead and other scratch are additional.
+Existing pressure memory counters omit this common grid payload. Process peak
+RSS13,602,816..21,594,112 bytes includes three simultaneous Worlds/pools plus
+observers/apparatus. The measured arms each report70 tick chunk allocations and
+zero temperature allocations; host churn allocation is separate. No complete
+memory, allocation-free or activity1 capacity claim follows from this campaign.
+
+Retained external root `tmp/lcb-water-activity-pressure-cost-20261025` contains
+qualification summary `7991871dced0aab81c8b17a9750237fc0ba6d2c66d35842eea5c46fa072f21e7`,
+measured summary `6a590bdc4e5a28c79e7ae5ee9b1e5e0c6b5e04f97d75d6dd5c8b0a25df9a0739`
+and complete source/executable/raw fences. Independent reduction authenticates
+all442 artifact records and recomputes54 phase comparisons; receipt
+`26e2ebcc20242ae09111f048af1f72d4d669239a6bd74affd95678a4beb77e00`
+with report `d0fbd99f833001583bc0d3ac756a23037232f83fc92373e71f974b8bf4198f79`
+preserves original source/counter/memory boundaries and every slower row.
+This fresh cost proof does not qualify target-runtime publication or the final
+hosted matrix. Earlier pressure timings and failures retain their original scope.
