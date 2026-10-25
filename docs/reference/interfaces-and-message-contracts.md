@@ -759,6 +759,15 @@ and applied receipt hash. Imported demo labels never supply that source identity
 See [ordinary demo rebuilding](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-synchronous-demo-rebuilding)
 for the four-route allowlist, retained refusal and healthy-World recovery limit.
 
+`prepared_reference_body_session.gd.prepare_reference(parent, templates, size,
+positions=PackedVector2Array(), rotations=PackedFloat32Array())` is a main-thread
+private-graph helper, not a native or worker message API. Each optional array is
+copied; nonempty arrays require exactly three finite entries before viewport
+allocation. Omitted positions/rotations retain the Water Feel defaults. Actual
+captured packed body values still cross the owner boundary as immutable values;
+no Node/RID is published to native workers, and constructor admission remains
+the calling owner's responsibility.
+
 `get_applied_liquid_construction_receipt()` and
 `get_liquid_construction_attempt()` return distinct owned dictionaries containing
 the original native canonical `PackedByteArray`, its SHA256, qualifications and

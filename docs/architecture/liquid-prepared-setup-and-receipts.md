@@ -460,6 +460,18 @@ owners, whole-cell fractional future sources, remaining constructors and full
 executed host/publication identity remain open. CYPS omits host body masks; an
 import alone does not establish complete masked physical continuation.
 
+The subsequent shared helper source381bae3d adds optional copied
+`PackedVector2Array` positions and `PackedFloat32Array` rotations to
+`prepare_reference(parent, templates, size, positions, rotations)`. Each omitted
+array independently preserves exact existing Water Feel defaults: three centers
+(160,176),(212,176),(264,176), zero rotations. A supplied array must contain
+exactly three finite values, validated before allocating a viewport. Both initial
+body nodes and Rapier reset use the same copies. This API does not admit another
+constructor; callers still own actual recipe selection, token/terrain readiness
+and final adoption. The [additive pose proof](../audits/2026-10-25-lcb003-water-reference-body.md#shared-explicit-pose-helper)
+checks default native-mask equality, real frozen frames, retained permanent space
+and the unchanged full Water Feel route.
+
 ## Source map
 
 | Responsibility | Current source |

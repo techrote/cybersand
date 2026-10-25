@@ -10,6 +10,13 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 # Configuration reference
 
+The shared prepared three-body helper accepts optional copied positions and
+rotations. Empty arrays retain the existing Water Feel centers(160,176),
+(212,176),(264,176) and zero angles independently; supplied arrays must each
+contain exactly three finite values before any private viewport allocation.
+This is caller-supplied constructor data, not a new global spawn/default or
+admission route. Original size/mass/physical settings and readiness remain.
+
 The unmerged #202 [four ordinary synchronous demo route](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-synchronous-demo-rebuilding)
 requires explicit Exploratory apply and copies its recipe/policy/normalization/
 radius for Restart. It captures actual quality/view: tested quality0 gives

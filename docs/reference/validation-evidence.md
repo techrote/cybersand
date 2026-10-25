@@ -10,6 +10,13 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+The subsequent [shared explicit-pose helper proof](../audits/2026-10-25-lcb003-water-reference-body.md#shared-explicit-pose-helper)
+binds381bae3d, unchanged native135/DLL79f35666,50 focused assertions and the75
+Water Feel body assertions. Exact default pose/native-mask equality, copied
+explicit poses/rotations,32 frozen frames, preallocation refusal and same-space
+adoption pass. Its first invalid empty-recipe fixture is retained and corrected
+only in the test; no new constructor/platform/Brine IN contact claim follows.
+
 The [ordinary synchronous demo proof](../audits/2026-10-25-lcb003-ordinary-demo-host.md)
 binds source89baee16, three exact candidate sources and unchanged135-input local
 Windows DLL. Six final strict processes pass: ordinary117, import73, UI105,

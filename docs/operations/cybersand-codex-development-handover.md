@@ -10,6 +10,13 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+Shared helper381bae3d now accepts copied optional three-position/rotation arrays,
+with finite/length preflight and unchanged omitted Water Feel defaults. Fresh50
+pose/native-mask/frozen-frame assertions plus the original75 actual Water Feel
+body assertions pass against unchanged native135. The [additive record](../audits/2026-10-25-lcb003-water-reference-body.md#shared-explicit-pose-helper)
+does not admit another constructor. Desktop and synchronous owners must supply
+their actual recipe poses and keep their final token/terrain/owner fences.
+
 The subsequent [ordinary synchronous demo checkpoint](../audits/2026-10-25-lcb003-ordinary-demo-host.md)
 on source89baee16 adds explicit Exploratory apply and retained Restart for the
 four curated body-free demos, keeping their exact recipes, sampled player and

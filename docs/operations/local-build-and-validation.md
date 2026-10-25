@@ -10,6 +10,13 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+The [shared explicit-pose helper proof](../audits/2026-10-25-lcb003-water-reference-body.md#shared-explicit-pose-helper)
+passes50 focused assertions plus the retained75-assertion actual Water Feel body
+case on unchanged135-input development DLL79f35666. Omitted/default native masks
+match exactly; explicit rotations survive32 actual frozen physics frames and
+invalid length/nonfinite arrays refuse before private allocation. It qualifies
+the shared helper only, with no newly supported constructor or final release.
+
 The [four ordinary synchronous demo checkpoint](../audits/2026-10-25-lcb003-ordinary-demo-host.md)
 reuses the unchanged135-input development DLL after before/after verification.
 `test_liquid_ordinary_demo_host.gd` passes117 assertions through actual normal
