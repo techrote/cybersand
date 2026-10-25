@@ -40,6 +40,11 @@ var _accepted_level: RefCounted
 var _level_import_serial: int = 0
 var _prepared_level_character_factory: Callable = Callable()
 var _prepared_level_commit_barrier: Callable = Callable()
+var _curated_demo_id: String = ""
+var _curated_demo_generation: int = -1
+var _accepted_demo: Dictionary = {}
+var _prepared_demo_actor_factory: Callable = Callable()
+var _prepared_demo_commit_barrier: Callable = Callable()
 var interest_region_test: Dictionary = {}
 var benchmark_running: bool = false
 var benchmark_cancelled: bool = false
@@ -110,6 +115,7 @@ func water_lab_apply_result(result: Dictionary, blind_label: String = "") -> voi
 
 func _water_web_installed(result: Dictionary, checked: Dictionary, recipe: Dictionary, blind_label: String,
 		prepared: bool) -> void:
+	_curated_demo_id = "";_accepted_demo = {};_accepted_level = null
 	_liquid_water_active = prepared;_liquid_tower_active = false
 	if not prepared:
 		microscenario_liquid_policy = null;microscenario_liquid_setup = {};microscenario_definition = {}
@@ -196,6 +202,91 @@ func microscenario_apply_exploratory_liquid(definition: Dictionary, liquid_polic
 	return _install_web_microscenario(definition,mode,liquid_policy,
 		{"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else "","maximum_rule_radius":maximum_rule_radius})
 
+func _curated_demo_is_current() -> bool:
+	return _curated_demo_id == demo_id and not _curated_demo_id.is_empty() \
+		and native_world.get_liquid_policy_session_generation() == _curated_demo_generation \
+		and not tower_active and not tower_context.get("micro_active",false) \
+		and not tower_context.get("water_active",false) and rigid_bodies.is_empty() \
+		and physical_actor_session == null and not showcase_presentation.active() and not blacksite_nine_presentation.active()
+
+func liquid_comparison_active_definition() -> Dictionary:
+	if _curated_demo_is_current():
+		return _accepted_demo.definition.duplicate(true) if not _accepted_demo.is_empty() \
+			else CyberMicroScenarioCatalogue.prepared_ordinary_demo(_curated_demo_id)
+	return super.liquid_comparison_active_definition()
+
+func liquid_comparison_can_apply_active(_exploratory: bool) -> bool:
+	# Main's optional native-default fallback belongs to its desktop owner.
+	# Synchronous routes supply their existing explicit supported definitions.
+	return false
+
+func liquid_comparison_apply_active(policy: PackedInt32Array, normalize_water: bool, exploratory: bool,
+		mode: String, radius: int) -> bool:
+	if _curated_demo_is_current():
+		if not exploratory:
+			microscenario_error = "Ordinary demos require Exploratory mode with their sampled player";return false
+		return _apply_prepared_ordinary_demo(liquid_comparison_active_definition(),policy,normalize_water,radius)
+	return super.liquid_comparison_apply_active(policy,normalize_water,exploratory,mode,radius)
+
+func _ordinary_demo_execution(definition: Dictionary) -> Dictionary:
+	var origin := Vector2i(definition.camera_origin[0],definition.camera_origin[1])
+	var first := Vector2i(maxi(0,origin.x-simulation_margin.x),maxi(0,origin.y-simulation_margin.y))
+	var last := Vector2i(mini(1024,origin.x+current_view_size.x+simulation_margin.x),
+		mini(1024,origin.y+current_view_size.y+simulation_margin.y))
+	var window: bool = native_world.get_simulation_window_enabled()
+	return {"region":[first.x,first.y,last.x-first.x,last.y-first.y] if window else [0,0,1024,1024],
+		"simulation_window_enabled":window,"cadence_lod_enabled":native_world.get_cadence_lod_enabled(),
+		"liquid_surface_adhesion_enabled":liquid_surface_adhesion_enabled}
+
+func _commit_web_ordinary_sampled(bridge: Variant, token: int, definition: Dictionary, serial: int) -> bool:
+	var staged: Dictionary = CyberSimulationWorker.PreparedSampled.prepare(bridge,native_world,token,
+		Vector2(definition.player_start[0],definition.player_start[1]),true,player.runtime_enclosure_recovery_enabled,
+		player.active_profile(),[],0,_prepared_demo_actor_factory)
+	if not staged.ok: microscenario_error = staged.error;return false
+	if _prepared_demo_commit_barrier.is_valid(): _prepared_demo_commit_barrier.call()
+	if serial != _level_import_serial or not is_inside_tree() or is_queued_for_deletion(): return false
+	if not bridge.commit_liquid_world(native_world,token): return false
+	player = staged.character
+	return true
+
+func _apply_prepared_ordinary_demo(definition: Dictionary, policy: PackedInt32Array,
+		normalize_water: bool, radius: int) -> bool:
+	if not ready_to_play or not _curated_demo_is_current() or not water_blind_set.is_empty() \
+		or not water_active_blind_label.is_empty(): return false
+	var refusal: String = _prepared_application_settings_refusal()
+	if not refusal.is_empty(): microscenario_error = refusal;return false
+	_level_import_serial += 1
+	var serial: int = _level_import_serial
+	var setup: Dictionary = {"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else "",
+		"maximum_rule_radius":radius,"owner_execution":_ordinary_demo_execution(definition)}
+	if not micro_host.install(native_world,definition,"Play",false,policy,setup,
+		_commit_web_ordinary_sampled.bind(definition,serial)):
+		microscenario_error = micro_host.last_error;return false
+	# The native commit and private sampled-owner stage have succeeded. Keep
+	# ordinary demo presentation and tools, adopting values without reconfiguration.
+	_accepted_level = null
+	_curated_demo_generation = native_world.get_liquid_policy_session_generation()
+	var receipt: Dictionary = native_world.get_applied_liquid_construction_receipt()
+	_accepted_demo = {"definition":definition.duplicate(true),"policy":policy.duplicate(),
+		"normalization":setup.normalization,"maximum_rule_radius":radius,
+		"generation":_curated_demo_generation,"receipt_hash":receipt.receipt_hash,
+		"transport":str(native_world.get_liquid_run_receipt({}).components.transport_profile)}
+	_liquid_tower_active = false;_liquid_water_active = false
+	microscenario_definition = definition.duplicate(true);microscenario_liquid_policy = policy.duplicate()
+	microscenario_liquid_setup = setup.duplicate(true);microscenario_liquid_setup.erase("owner_execution")
+	tower_context = {"active":false,"micro_active":false,"water_active":false,"status":"Ordinary demo / explicit liquid policy"}
+	tower_active = false;tower_schedule.clear();tower_inputs.clear();water_actions.clear();tower_single_step = false
+	camera_origin = Vector2(definition.camera_origin[0],definition.camera_origin[1]);camera_follow_enabled = false
+	character_position = player.position;paused = true;microscenario_error = ""
+	_update_liquid_context(true);force_publication = true;_publish_world();update_shader_parameters();update_status()
+	return true
+
+func _accepted_demo_retains_transport(transport: String) -> bool:
+	return not _accepted_demo.is_empty() and _curated_demo_is_current() \
+		and _accepted_demo.generation == _curated_demo_generation \
+		and transport == _accepted_demo.transport \
+		and native_world.get_applied_liquid_construction_receipt().get("receipt_hash","") == _accepted_demo.receipt_hash
+
 func microscenario_supports_prepared_physical_liquid(_definition: Dictionary) -> bool:
 	# Synchronous reference-body staging is a separate constructor checkpoint.
 	return false
@@ -227,6 +318,7 @@ func _apply_prepared_liquid_tower(policy: PackedInt32Array, normalize_water: boo
 		microscenario_error = micro_host.last_error
 		return false
 	_liquid_tower_active = true
+	_curated_demo_id = "";_accepted_demo = {};_accepted_level = null
 	_liquid_water_active = false
 	microscenario_error = "Installed session apparatus failed: " + micro_host.last_error if micro_host.summary().get("failed",false) else ""
 	microscenario_definition = definition.duplicate(true);microscenario_liquid_policy = policy.duplicate()
@@ -272,6 +364,7 @@ func _install_web_microscenario(definition: Dictionary, mode: String, liquid_pol
 		return false
 	if microscenario_panel != null: microscenario_panel.workbench.cancel_declared_window()
 	var installed: Dictionary = micro_host.definition()
+	_curated_demo_id = "";_accepted_demo = {};_accepted_level = null
 	_liquid_tower_active = false
 	_liquid_water_active = false
 	microscenario_definition = installed.duplicate(true)
@@ -669,7 +762,11 @@ func _report_tick_failure() -> void:
 	paused = true
 	input_armed = false
 	ui.show_page("home")
-	ui.message("Simulation stopped. Restart world or load a saved level. " + str(native_world.get_last_tick_error()))
+	var prepared: bool = native_world.has_method(&"get_applied_liquid_construction_receipt") \
+		and not native_world.get_applied_liquid_construction_receipt().is_empty()
+	var recovery: String = ("Choose a Current demo or use an unarmed level import to recover. Prepared Restart requires a healthy World. "
+		if prepared else "Restart world or load a saved level. ")
+	ui.message("Simulation stopped. " + recovery + str(native_world.get_last_tick_error()))
 
 func _world_pointer() -> Vector2i:
 	var content: Rect2 = view_content_rect()
@@ -857,6 +954,9 @@ func select_demo(id: String, close: bool = true) -> void:
 		ui.message(str(demo_bridge.get_last_error()))
 		return
 	_accepted_level = null
+	_curated_demo_id = id if id in ["material_lab","waterworks","foundry","neon_works"] else ""
+	_curated_demo_generation = native_world.get_liquid_policy_session_generation()
+	_accepted_demo = {}
 	_liquid_tower_active = false
 	_liquid_water_active = false
 	_water_end_blind_session()
@@ -931,6 +1031,9 @@ func restart_world() -> bool:
 	if _accepted_level != null and not _accepted_level.identity(native_world).is_empty():
 		var reconstruction: Dictionary = _accepted_level.reconstruction()
 		return _import_prepared_level(reconstruction.payload,reconstruction.metadata,reconstruction.selection)
+	if not _accepted_demo.is_empty() and _curated_demo_is_current():
+		return _apply_prepared_ordinary_demo(_accepted_demo.definition.duplicate(true),_accepted_demo.policy.duplicate(),
+			_accepted_demo.normalization=="water-normalize-v1",int(_accepted_demo.maximum_rule_radius))
 	select_demo(demo_id)
 	return true
 
@@ -960,7 +1063,7 @@ func _import_prepared_level(payload: PackedByteArray, metadata: Dictionary, sele
 		or str(metadata.demo)==CyberDemoWorlds.BlacksiteNine.ID:
 		last_save_error = "Prepared level imports currently support ordinary body-free demos; prior World and owners retained"
 		ui.message(last_save_error);return false
-	var settings_refusal: String = _prepared_level_settings_refusal()
+	var settings_refusal: String = _prepared_application_settings_refusal()
 	if not settings_refusal.is_empty():
 		last_save_error = settings_refusal;ui.message(last_save_error);return false
 	_level_import_serial += 1
@@ -982,6 +1085,7 @@ func _import_prepared_level(payload: PackedByteArray, metadata: Dictionary, sele
 	# Every fallible construction/observation step precedes native commit. This
 	# tail adopts prepared values and existing presentation objects only.
 	_accepted_level = staged;_next_level_selection = {}
+	_curated_demo_id = "";_accepted_demo = {}
 	player = staged.staged_player;character_position = player.position
 	micro_host.clear();tower_context = {};tower_active = false
 	_liquid_tower_active = false;_liquid_water_active = false
@@ -998,17 +1102,17 @@ func _import_prepared_level(payload: PackedByteArray, metadata: Dictionary, sele
 	ui.message("Prepared level restored paused. P resumes; Restart retains its imported setup and selected liquids.")
 	return true
 
-func _prepared_level_settings_refusal() -> String:
+func _prepared_application_settings_refusal() -> String:
 	# Native run-component v1 readback is authoritative. The prepared builder
 	# supports production interaction/diagnostic laws and configured Baseline;
 	# independently tuned laws/profiles must not silently reset during import.
 	var actual: Dictionary = native_world.get_liquid_run_receipt({}).get("components",{})
 	if actual.get("interaction_policy","") != "8:9:30" or actual.get("diagnostic_physics","") != "0:-1":
-		return "Prepared level import cannot yet retain the current interaction or diagnostic settings; prior World and owners retained"
+		return "Prepared solver rebuild cannot yet retain the current interaction or diagnostic settings; prior World and owners retained"
 	var transport: String = str(actual.get("transport_profile",""))
-	if transport != "baseline" and (_accepted_level == null \
+	if transport != "baseline" and not _accepted_demo_retains_transport(transport) and (_accepted_level == null \
 		or not _accepted_level.retains_prepared_transport(native_world,transport)):
-		return "Prepared level import cannot yet retain this independent transport profile; prior World and owners retained"
+		return "Prepared solver rebuild cannot yet retain this independent transport profile; prior World and owners retained"
 	return ""
 
 func update_status() -> void:
@@ -1149,10 +1253,11 @@ func _import_decoded(decoded: Dictionary) -> void:
 		last_save_error = str(demo_bridge.get_last_error())
 		ui.message(last_save_error)
 		return
-	if _accepted_level != null:
+	if _accepted_level != null or not _accepted_demo.is_empty():
 		microscenario_liquid_policy = null;microscenario_liquid_setup = {};microscenario_definition = {}
 		micro_host.clear();tower_context = {};tower_active = false
 	_accepted_level = null
+	_curated_demo_id = "";_accepted_demo = {}
 	demo_id = str(metadata.demo)
 	player.position = Vector2(metadata.player[0], metadata.player[1])
 	player.velocity = Vector2(metadata.player[2], metadata.player[3])
