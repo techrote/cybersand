@@ -10,6 +10,75 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Post-publication two-test correction — 2026-10-25
+
+Actual Linux run40232042725 at ea96/checkout56bd fails host34/1 and owner28/1
+because the old tests demand runtime/manifest mismatch after the published02ea
+artifact actually matches. Preserve that failed evidence and the [corrected
+identity assertions/cohorts](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25).
+Root's frozen test-only correction passes import/host38/owner29 on actual
+published e3 and same-native-source development46a, retaining full-host=false
+and unverified mapped-module/scripts. All80 Native/139 compiled inputs stay
+exact; build535 has exactly two changed test entries, no added paths. No Native
+rebuild, profile/request/runtime or manifest change is needed. Old source5f02
+72-process/a704 records remain historical, not new-test execution. #256 remains
+draft pending fresh corrected-head gates/review; #257 must consume that head.
+Old ea96 Docs/#49 greens do not cover it. All additional Web work is deferred.
+
+## Current scoped application runtime publication — 2026-10-25
+
+The [actual003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source
+`5f02d089ee4cff8b34421cc4ca58bb4ef50dd92c`, run40226343524 and four-path bot
+`0c9b197754d57e1eb579a52d745a1ca8fd0d2b32`. Windows runtimee3f17363
+(4,824,064 bytes) and Linux02ea0661 (4,222,304 bytes) each pass import plus
+all35 strict host/control cases:72 actual processes total, with matched
+native80/build535 input ledgers and642 policy assertions per OS. The
+earlier eight App provenance comparisons describe pre-publication inputs;
+the new manifests cover all80 current native inputs.
+
+The six approval-held bot follow-ups are not validation greens. Final
+exact-head CI/review, remaining constructors and complete host/scientific/
+manual qualification stay open; #202 and #203 are not complete. The owner
+defers additional Web/browser/shader work until after this epic. Historical
+Web functional success and rendering failure are retained; no rendering
+pass or fallback is claimed. All non-Web requirements remain in force.
+
+PR #254 is now accepted on main
+`06451f8ac9e8ac9b23a105d2fe22393375dc2d6b`, after its exact02c Documentation,
+Native, GDExtension/Godot and #49 gates and bounded reviews passed. The
+[publication ledger](../audits/2026-10-25-lcb003-runtime-publication.md#accepted-water-main-and-content-identical-integration--2026-10-25)
+binds those receipts. Local normal mergea704ce50 consumes that main with the
+unchanged bot0c9 tree; all615 publication inputs and139 compiled inputs remain
+exact. This does not substitute Water's gates for the application's final
+exact-head CI or close #202/#203.
+
+## Historical preparation and Water-artifact consumption
+
+The earlier source-bound records below retain their original unarmed,
+runtime-mismatch and pending-publication statements. They do not describe
+the actual003 publication above or relabel older executions.
+
+The application branch now normally consumes reviewed Water source/publication
+checkpoint02c33341 through merge108b84d1, including actual sequence2 sourceaa8af247,
+run40220697738 and bot03cccd8f. Merge1d376fb3 also consumes the separately reviewed
+Web evidencec8bd9623. All139 inputs of the development DLL46a remain equal to
+compiled18d/tested3d. The local164 native/39 sanitizer/import-plus35-host results
+retain those source identities. Relative to the696-source executed snapshot,
+691 entries stay exact; four published runtime/provenance paths and Water's
+sequence2 request are explicit later exceptions, with no native or host-code
+change. This is not a fresh host execution at the new merge head.
+
+Fresh proper-companion provenance reports eight remaining App input mismatches,
+four per OS: cyber_demo_bridge.hpp, cyber_native_cell_world.cpp/.hpp and
+prepared_world.hpp. The published kernel clears the earlier world.cpp pair;
+no mismatch is waived. The [runtime-consumption record](../audits/2026-10-25-lcb003-final-integration.md#published-water-sequence2-consumption--2026-10-25)
+binds the source/artifact exceptions and six passing cheap gates.003 remains
+unarmed/request absent with no push. Its source-matched Windows/Linux runtime
+publication and fresh35-case execution, final exact-head gates, remaining host
+constructors and scientific/feel acceptance remain required. The consumed
+[Web evidence](../audits/2026-10-25-lcb003-web-common-water.md) retains77/76 functional success and the rendering failure;
+minimal-palette diagnostics do not qualify full appearance or manual play.
+
 ## Qualified Water sequence2 publication — 2026-10-25
 
 PR #254's [actual sequence2 publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25) qualifies source
@@ -29,6 +98,118 @@ or #203 completion. The five bot03 approval-held follow-ups have no jobs and are
 not greens. Current defaults, protected fixtures and all117 registered campaign
 classifications remain unchanged. Earlier checkpoint sections below retain their
 own source/date/acceptance scope.
+
+**Earlier source-bound application evidence, before this Water artifact merge:**
+
+Local application preparation now normally integrates reviewed Water c97f68ec
+at18d20740, then commits only the sampled-test helper extraction at3d338356.
+Fresh DLL46a8b4d9, compiled18d with all139 inputs equal at tested3d, passes164
+ordinary native groups, seven receipt-byte oracles and39 focused ASan/UBSan
+groups. Fresh import plus all35 host cases pass:36 exit0 processes with696
+source files,646 post-import project inputs and139 native inputs held. The
+[packed storage/startup preparation](../audits/2026-10-25-lcb003-final-integration.md#packed-worker-storage-and-startup-local-preparation--2026-10-25)
+records receiptbbbea760 and preserves the failed first matrix, old-DLL A/B
+crash and exact helper-only correction. Normal merge1371a250 adds reviewed
+Water documentation34e0979b without changing those compiled/executed inputs.
+Earlier dd00/f34 and source4948 browser proof remain source-qualified; actual
+18d browser functional checks do not clear the observed shader/black-viewport
+visual failure. Final Water sequence2 bot/docs and combined publication remain
+required;003 stays unarmed, with ten real C9 source/runtime blockers and no
+local push or runtime/manifest commit.
+
+The final application branch additionally consumes fresh accepted main9935d569
+(#249) through normal mergec3cde29f before publication arming. Fresh import and
+the actual affected Flight test pass8,284 assertions/ten development episodes.
+The [qualified source exception](../audits/2026-10-25-lcb003-final-integration.md#fresh-main-flight-lease-merge--2026-10-25)
+preserves the old host matrix at e8f1d37b:691 of693 sources are unchanged and
+only the two incoming Flight Godot files differ; native139 is unchanged. Full
+003 publication must freshly execute all35 host cases; no request is added by
+this integration. Original visual/release/full-host gaps remain explicit.
+
+The current [application integration checkpoint](../audits/2026-10-25-lcb003-final-integration.md)
+is isolated on `codex/lcb003-final-integration`; frozen PR252/PR255 branches are
+preserved. It combines accepted main dc915f2b, desktop5f3f0c21 and Water
+c9e52b52/e2411469. Native139 produces fresh local Windows DLL93d3ee3f;
+LLVM163 groups, seven receipt oracles and38 focused ASan/UBSan groups pass.
+The original default fixture stays frozen; separately keyed capability vectors
+and CY/IN future-source refusals have focused actual-owner proof. The003 request
+is absent. Its complete local35-case plus import matrix now passes on clean
+functionale8f1d37b, receipt69479670, preserving all source/project/native inputs.
+The [separate source4948 Web proof](../audits/2026-10-25-lcb003-web-common-water.md)
+passes actualcompat77/threaded76 terminal checks/HTTP201 and all6+4 arms;
+ordinary visual/manual play remains open. Combined Windows/Linux publication,
+exact-head gates, remaining constructors and scientific/full-host acceptance
+remain separate. Earlier135-input proofs below remain historical scope.
+
+The subsequent [synchronous Water Feel body checkpoint](../audits/2026-10-25-lcb003-synchronous-water-reference-body.md)
+at source45b6ed9d reuses verified unchanged native135/DLL79f35666 and passes
+eight strict processes/656 assertions: new Water91, corrected PhysicsPit73,
+WaterFeel72, import73, UI105, poses50, desktopWater75 and ordinary117. Each
+uses its own180s timeout, complete source/project fences and strict exit/
+error checks. Actual native readback verifies all threePF variants and FM;
+the first label-only family coverage and other apparatus failures remain
+preserved and are superseded only in their stated scope. No new DLL build
+or final Wasm/release/Brine-contact/Water-IN acceptance is claimed. Before
+arming003, integrate this new case plus the incoming strict Water005 proof
+and final native/default sources into its still-unarmed publisher.
+
+The [synchronous Physics Pit checkpoint](../audits/2026-10-25-lcb003-synchronous-reference-body.md)
+on source5d5c75ed stages exact authored rectangles, original three8×14 bodies
+and sampled player with private same-request/token state, bounded real frozen
+readiness and retained cancellation/refusal. Final six strict Windows processes
+pass490 assertions including70 new checks and three240-tick PF arms with actual
+signed feedback/closed quantity. Imported same-label bodies remain unsupported
+for conversion. Native135/DLL79f35666 is an unchanged intermediate development
+runtime; final native repairs/default-route integration and release/Web gates
+remain required. Original red apparatus proofs remain preserved.
+
+Shared helper381bae3d now accepts copied optional three-position/rotation arrays,
+with finite/length preflight and unchanged omitted Water Feel defaults. Fresh50
+pose/native-mask/frozen-frame assertions plus the original75 actual Water Feel
+body assertions pass against unchanged native135. The [additive record](../audits/2026-10-25-lcb003-water-reference-body.md#shared-explicit-pose-helper)
+does not admit another constructor. Desktop and synchronous owners must supply
+their actual recipe poses and keep their final token/terrain/owner fences.
+
+The subsequent [ordinary synchronous demo checkpoint](../audits/2026-10-25-lcb003-ordinary-demo-host.md)
+on source89baee16 adds explicit Exploratory apply and retained Restart for the
+four curated body-free demos, keeping their exact recipes, sampled player and
+actual quality/view/cadence. Imported labels never identify authored recipes;
+physical/showcase routes remain outside the allowlist. Final six strict Windows
+processes pass against the unchanged135-input development DLL, including117
+new assertions and a real native failure/refused prepared Restart/explicit Current
+recovery. Prepared same-policy quarantine recovery remains shared #200/#202
+lifecycle work. Root's separate desktop-default/native recipe and Brine IN
+contact repair must integrate before fresh final runtime/platform qualification.
+
+The subsequent [normal-menu level-import checkpoint](../audits/2026-10-25-lcb003-level-import-host.md)
+uses released native thermal preparation for explicit Exploratory ordinary
+body-free imports. Actual panel/Import/Restart callbacks preserve saved metadata,
+sampled player and retained reset input; refusals keep old World/owners/receipts.
+Source46471b24 has eight affected passing local Windows processes against the
+unchanged verified135-input DLL. Continue remaining constructors, physical import,
+complete host identity and fresh final Windows/Linux/Web/publication gates.
+The [new publisher preparation](../audits/2026-10-25-lcb003-runtime-publication.md)
+is unarmed; it is not a release result. Current imports remain the default.
+Its expanded 34-case profile additionally requires ordinary/pose/Physics Pit
+structured results and the reserved default API/desktop-owner cases. Desktop
+default FM/CY play and three pressure-capacity refusals are distinct outcomes;
+nonzero process exit remains a blocker despite a successful terminal summary.
+Follow-up sourcecccae86f corrects the inherited-setting gap by refusing unsupported
+interaction/diagnostic laws and independent transport before any token. Its
+known Baseline exemption binds actual native component/generation/receipt;
+73 import/UI105/Web-prerequisite33 checks pass. The earlier44 proof remains
+Baseline-only. Final native integration must also consume the separately owned
+Brine IN resting-body contact repair before publication/acceptance.
+
+The later [desktop reference-body checkpoint](../audits/2026-10-25-lcb003-water-reference-body.md)
+adds permanent-space staging for the original supported-body Water Feel recipe,
+actual frozen poses/native masks, retained-graph refusal and ordinary unpaused
+feedback across pressure variants plus an FM control. Its fresh native133 DLL
+includes the separately authored moving-mask gas-label repair; prior runtime
+seals remain immutable. This is bounded local Windows #202 work. Continue with
+the real body-free import owner now recorded above, then remaining constructors,
+complete host identity and final platform/publication
+gates. Web bodies and host-mask CYPS continuation remain explicit gaps.
 
 The [local Water main refresh](../audits/2026-10-25-water-inertial-publication.md#main-flight-lease-refresh-and-native-binary-reuse--2026-10-25)
 normally merges accepted main9935d569 into e2411469 as38cb593d on the separate
@@ -81,6 +262,77 @@ comparison and final packaging remain #202/#203. Capability admission changes
 policy-bound hashes while Current tuple/material behavior stays an exact control.
 
 
+## Desktop native-default owner checkpoint — 2026-10-25
+
+Unmerged native705a2e2d and owner66bf30f8 now stage the authoritative default
+recipe through exclusive worker, private sampled player and original permanent
+body graph. R retains selection; F6/F7/PENV refusal/adoption is transactional.
+The original default PF scene exceeds1024 initial gas compartments, so all three
+pressure variants now refuse natively before replacement, preserving the healthy
+World and actual attempt receipt. FM/CY actual body cohorts retain exact Water628320.
+The [dated checkpoint](../audits/2026-10-25-lcb003-desktop-native-default-host.md)
+records46 focused native/ASan+UBSan assertions, seven affected1078 assertions,
+final86-assertion host execution, independent review and every rejected shutdown
+experiment. Separate preloaded test resources remove the inner-class ownership
+context; definitive upstream cause, integrated native union, final Linux/Web,
+full host identity and matching runtime publication remain open.
+
+
+## Native desktop default recipe — 2026-10-25
+
+Unmerged source `afe19c2d` shares the original native ordered demo recipe with
+explicit prepared compilation, retains Water/transport and restores production
+reset/lifecycle semantics. Native constructor origin binds actual generation and
+retires on other replacements. The [dated API proof](../audits/2026-10-25-lcb003-native-default-demo-preparation.md)
+records old-DLL tuple controls, the preserved diagnostic-lifecycle failure,
+its original Windows167/493/72 and independent review. The later owner/capacity
+checkpoint above supersedes its pending Main/worker scope; repaired IN union
+and final platforms/publication remain open.
+
+Shared helper381bae3d now accepts copied optional three-position/rotation arrays,
+with finite/length preflight and unchanged omitted Water Feel defaults. Fresh50
+pose/native-mask/frozen-frame assertions plus the original75 actual Water Feel
+body assertions pass against unchanged native135. The [additive record](../audits/2026-10-25-lcb003-water-reference-body.md#shared-explicit-pose-helper)
+does not admit another constructor. Desktop and synchronous owners must supply
+their actual recipe poses and keep their final token/terrain/owner fences.
+
+The subsequent [ordinary synchronous demo checkpoint](../audits/2026-10-25-lcb003-ordinary-demo-host.md)
+on source89baee16 adds explicit Exploratory apply and retained Restart for the
+four curated body-free demos, keeping their exact recipes, sampled player and
+actual quality/view/cadence. Imported labels never identify authored recipes;
+physical/showcase routes remain outside the allowlist. Final six strict Windows
+processes pass against the unchanged135-input development DLL, including117
+new assertions and a real native failure/refused prepared Restart/explicit Current
+recovery. Prepared same-policy quarantine recovery remains shared #200/#202
+lifecycle work. Root's separate desktop-default/native recipe and Brine IN
+contact repair must integrate before fresh final runtime/platform qualification.
+
+The subsequent [normal-menu level-import checkpoint](../audits/2026-10-25-lcb003-level-import-host.md)
+uses released native thermal preparation for explicit Exploratory ordinary
+body-free imports. Actual panel/Import/Restart callbacks preserve saved metadata,
+sampled player and retained reset input; refusals keep old World/owners/receipts.
+Source46471b24 has eight affected passing local Windows processes against the
+unchanged verified135-input DLL. Continue remaining constructors, physical import,
+complete host identity and fresh final Windows/Linux/Web/publication gates.
+The [new publisher preparation](../audits/2026-10-25-lcb003-runtime-publication.md)
+is unarmed; it is not a release result. Current imports remain the default.
+Follow-up sourcecccae86f corrects the inherited-setting gap by refusing unsupported
+interaction/diagnostic laws and independent transport before any token. Its
+known Baseline exemption binds actual native component/generation/receipt;
+73 import/UI105/Web-prerequisite33 checks pass. The earlier44 proof remains
+Baseline-only. Final native integration must also consume the separately owned
+Brine IN resting-body contact repair before publication/acceptance.
+
+The later [desktop reference-body checkpoint](../audits/2026-10-25-lcb003-water-reference-body.md)
+adds permanent-space staging for the original supported-body Water Feel recipe,
+actual frozen poses/native masks, retained-graph refusal and ordinary unpaused
+feedback across pressure variants plus an FM control. Its fresh native133 DLL
+includes the separately authored moving-mask gas-label repair; prior runtime
+seals remain immutable. This is bounded local Windows #202 work. Continue with
+the real body-free import owner now recorded above, then remaining constructors,
+complete host identity and final platform/publication
+gates. Web bodies and host-mask CYPS continuation remain explicit gaps.
+
 ## Corrected Brine IN runtime publication — 2026-10-25
 
 Sequence3 [actual Windows/Linux publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-sequence3-publication-of-the-contact-repair)
@@ -108,22 +360,139 @@ contracts remain intact. The earlier sequence2 artifacts remain preserved and
 do not qualify this correction. Do not treat zero velocity as permission to
 omit shared material/body work or infer Water-IN/full-host completion.
 
-## Moving-body pressure gas blocker — 2026-10-25
+## LCB-003 thermal import API — 2026-10-25
 
-Ordinary moving reference bodies exposed retired gas labels beneath masks;
-the failing World quarantines despite closing Water/gas ledgers. Repair commit
-`7ebcd0e9` adds the six-arm native regression and retains still-live identities.
-Local LLVM/MSVC141, focused sanitizer16 and actual application body tests pass.
-Fresh #201 Windows/Linux scoped publication `40157133977` passes at source
-`eebd0c98`, with four-path bot append `65f1f3b5`. The updated90-child total-cost
-campaign also passes exact parity and preserves slower churn/fallback results.
-At that finding PRs #253/#250 returned to draft. Their later source-matched
-exact-head gates and independent review pass; accepted main merges are66051129
-anddc915f2b respectively. Earlier
-greens retain their original scope. See the
-[dated failure and repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
+The isolated `codex/lcb003-thermal-import` slice adds
+[`prepare_liquid_level`](../architecture/liquid-prepared-setup-and-receipts.md#imported-cysd-payload-preparation)
+over the existing pending World/token/capture/commit slot. C++ source177ae236 and
+test checkpoint76dc6912 retain signed CYSD temperatures, nonambient Empty and
+explicit normalization. [Local Windows proof](../audits/2026-10-25-lcb003-thermal-level-preparation.md)
+passes493 new assertions plus seven retained scripts and import. Legacy Current
+import is unchanged. The bounded ordinary owner above follows separately;
+physical/complete host adoption and final platforms remain.
+
+## LCB-003 combined-source integration — 2026-10-25
+
+The fresh [combined host and Web prerequisite](../audits/2026-10-25-lcb003-combined-host-web-prerequisite.md)
+seals sixteen actual native Windows/headless passes on `871fba33`. Source
+`3b4db1dd` adds a 33-check explicit Web-owner apparatus with its native
+prerequisite, truthful export-only metadata, complete Web native source list
+and the independently reviewed 3589-assertion actual Rapier PF/worker regression.
+Actual browser profiles, matching publication and remaining constructors are
+still separate work; earlier source/runtime seals remain immutable.
+
+The application branch now incorporates the released source union
+`713ee3abd093bf52ca1e02796e996d7017a51d95`, joining accepted #246 main,
+the #201 pressure variants and the #212 standalone IN adapter with the
+prepared application owners, Tower, qualified observations and Water Feel
+selection described below. The optional legacy construction radius remains
+explicit with default2; prepared IN candidate/comparator geometry remains
+explicit3. Protected Current constructors remain radius2.
+
+This is a source integration checkpoint. Earlier application, standalone IN
+and pressure runtime seals retain their original input/platform scope. A fresh
+combined application DLL, focused host/native/readback tests, matching
+Windows/Linux publication and real compat/threaded browsers remain required.
+The frozen native outer receipt-v1 and qualified host observations still have
+false full matched eligibility; Water IN remains unsupported.
+
+## Integrated LCB-003 IN host — 2026-10-25
+
+The subsequent [Water Feel checkpoint](../audits/2026-10-25-lcb003-water-feel-constructor.md)
+adds actual ordinary dispatcher/panel/reset solver selection for unblinded
+body-free sampled Exploratory runs. Exact serial/applied/definition acknowledgement
+protects same-semantic-hash refusal; original recipes/player/actions/ledger and
+Current/blind controls are retained. Blind/body and whole-cell fractional future
+sources refuse before mutation. Review the [constructor matrix](lcb-manual-comparison-ux.md#constructor-coverage-at-this-checkpoint)
+before extending body/import routes or claiming actual browser acceptance.
+
+`codex/lcb003-application-host` has merged accepted #246 main
+`ec58d919b3d904fbd338eaccc25de35782c41a24` and stable #250 IN checkpoint
+`028fc7b6893a57ca816b5221ce1b9067f0c2c01d`. The subsequent adapter/UI slice
+supplies actual applied IN damping/extension readback, instance hash/CYPS3,
+explicit radius3 for candidate/comparator and exact Original Current radius2.
+It includes actual articulated actors/equipment/initial masks; earlier host
+ledgers remain historical pre-final-#246 evidence. Read the
+[fresh integrated ledger](../audits/2026-10-25-lcb003-integrated-inertial-host.md)
+and [constructor matrix](lcb-manual-comparison-ux.md#constructor-coverage-at-this-checkpoint).
+Remaining constructors, complete separately versioned host evidence, final
+source-matched publication, Linux and actual Web qualification stay open.
+The later source-union integration above supersedes this checkpoint's earlier
+#201 integration gap without relabelling its runtime evidence.
+
+The subsequent [ordinary Tower preparation](../architecture/liquid-prepared-setup-and-receipts.md#ordinary-experiment-tower-preparation)
+extends explicit solver selection to the existing Tower dispatcher, preserving
+its floor/release/schedule/manual controls and independent transport. The final
+floor/player/camera precede capture; reset/profile retain accepted selection;
+refusal retains the applied session. Read its
+[separate GDScript/runtime ledger](../audits/2026-10-25-lcb003-tower-constructor.md)
+before continuing the remaining constructor rows and host-evidence layer.
+
+The later [owner observation checkpoint](../audits/2026-10-25-lcb003-owner-observation.md)
+stages immutable record collection before final commit and carries its compact
+identity through normal selection/restart. Refusal preserves prior record and
+actual body graph; default constructors retire it. Full executed host identity,
+matching Windows/Linux publication and actual browsers remain open. The initial
+draft #252 Documentation failure was a genuine stale generated registry after
+IN capability integration; its derived Brine availability repair preserves all
+measured arms and leaves Water-IN unsupported.
+
+## LCB-003 controlled host preparation — 2026-10-24
+
+The subsequent [qualified observation foundation](../architecture/liquid-prepared-setup-and-receipts.md#qualified-host-observation-foundation)
+adds copied native path/current-file and qualified host-record values, with
+[separate evidence](../audits/2026-10-25-lcb003-qualified-host-observation.md).
+Windows editor shadow-copy behavior is verified and remains qualified. Normal
+construction/restart binding, remaining constructors, matching publication and
+actual browsers remain open; native and host full matched eligibility stay false.
+
+The first bounded #202 source slice lives on
+`codex/lcb003-application-host`, based on frozen #246 head `9e91a9f7` while its
+acceptance runs. It adds explicit native normalization and immutable typed
+receipt copies to fixed actor-free MicroScenarios in the actual desktop and
+synchronous application owners. One candidate/token slot and the worker's final
+request/reset/stop fence preserve live state and host cursors on refusal.
+Read the [bounded contract](../architecture/liquid-prepared-setup-and-receipts.md#controlled-application-host-preparation-slice)
+and [local evidence and remaining gaps](../audits/2026-10-24-lcb003-controlled-host-slice.md).
+The next source checkpoint `0a702eb3` adds actual native-validated per-material
+choices/presets in the normal launcher and MicroScenario panel, explicit
+normalization, native readback and protected Current/mixed fixture controls. Read
+the [constructor coverage matrix](lcb-manual-comparison-ux.md#constructor-coverage-at-this-checkpoint)
+and [UI evidence](../audits/2026-10-25-lcb003-liquid-comparison-ui.md). This is not
+all #202 constructors/UI or browser qualification. Integrate onto
+fresh main after #246; preserve the normal #201/#202/#212 → #203 sequence and
+all native-v1 provenance/host qualifications.
+
+Subsequent `da800552` adds explicit body-free Exploratory mode, privately staged
+sampled actor/equipment/character ownership, native candidate collision queries,
+final PENV/settings fences and accepted initial-frame acknowledgement. The
+[sampled evidence](../audits/2026-10-25-lcb003-sampled-exploratory-host.md) records
+71 new assertions and the complete local ten-process matrix. Its native base is
+still `9e91a9f7`, before final #246 checked-scalar fixes. Physical-body staging,
+remaining constructors, full provenance and actual browsers remain open.
+
+The subsequent [articulated preparation slice](../architecture/liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners)
+adds a nonblocking desktop worker/main continuation, permanent frozen private
+Rapier space, actual initial native masks before receipt capture, exact internal
+continuation binding and retained admitted-work disposition. The normal Liquids
+panel can rebuild supported articulated exploratory maps. Other body/constructor
+routes, a separately versioned truthful host-evidence layer and actual browsers
+remain open; frozen native-v1 qualifications and false full-match eligibility
+remain unchanged. The integration update above supersedes the earlier integration
+gap; the dated physical ledger continues to describe its original source only.
+
 
 ## Combined pressure and IN source — 2026-10-25
+The #212 integration joins standalone checkpoint `0af161b4` with the frozen
+#201 source `12d76736`, including accepted-main documentation merge
+`d70699b6`. It admits Brine IN/reference and all three Water PF variants in
+one running catalogue. Separate #201 and #212 proof remains historical to
+its stated source; fresh combined LLVM/MSVC, DLL and fourteen-case Godot
+qualification is required before the still-unarmed #212 publisher.
+Capability identity changes when the two admissions join: regenerate policy,
+receipt and IN vectors plus the adapter oracle from the combined semantic
+catalogue, then obtain fresh native physical facts. Do not select a parent's
+generated hashes or relabel its runtime as combined evidence.
 
 The latest [moving-mask repair union](../audits/2026-10-25-lcb005-pressure-union-integration.md#moving-mask-repair-integration-and-second-publication--2026-10-25)
 is normal merge `4a594db5`. Only the reviewed pressure gas relabel hunk and new
@@ -167,6 +536,30 @@ instance versions, legacy/default radius2 and explicit IN3 geometry; no silent
 upgrade. Local Windows headless proof is not cross-platform publication,
 verified host evidence, owner feel or full #212 completion.
 
+
+## Moving-body pressure gas blocker — 2026-10-25
+Ordinary Main/worker reference-body Water play exposed a native retired gas
+label beneath a moving body mask around completed tick45–47. The World
+quarantines even though Water quantity and the gas ledger remain exact.
+A compact native control reproduces the failure in all three pressure
+variants with configured1/4 workers. The repair is under qualification;
+PRs #253 and #250 are draft and must receive fresh source-matched
+Windows/Linux runtimes and exact-head gates before merging. Earlier
+scoped/full greens retain their original source and coverage. See the
+[dated failure and repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
+
+Ordinary moving reference bodies exposed retired gas labels beneath masks;
+the failing World quarantines despite closing Water/gas ledgers. Repair commit
+`7ebcd0e9` adds the six-arm native regression and retains still-live identities.
+Local LLVM/MSVC141, focused sanitizer16 and actual application body tests pass.
+Fresh #201 Windows/Linux scoped publication `40157133977` passes at source
+`eebd0c98`, with four-path bot append `65f1f3b5`. The updated90-child total-cost
+campaign also passes exact parity and preserves slower churn/fallback results.
+At that finding PRs #253/#250 returned to draft. Their later source-matched
+exact-head gates and independent review pass; accepted main merges are66051129
+anddc915f2b respectively. Earlier
+greens retain their original scope. See the
+[dated failure and repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
 
 ## LCB-002 branch source and qualification — 2026-10-25
 

@@ -10,6 +10,186 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Published and development identity-test controls
+
+The [two-test correction ledger](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)
+records actual published-e3 and same-native-source development46a cohorts:
+import240s plus host-evidence38/owner-observation29 cases, each180s. All six
+actual Windows processes pass with held source/project, Native80 and compiled139
+maps. The tests independently read real file/manifest hashes and add copied
+match/mismatch/unavailable controls while retaining unverified module/scripts
+and full-host=false. Neither cohort invents actual matching artifact bytes.
+Historical535 build inputs have exactly two changed test entries; no Native,
+profile/request/runtime/manifest edit or rebuild is required. The failed Linux
+40232042725 mismatch premises remain preserved, and corrected Linux/new-head full
+CI still needs execution. Older72-process proof stays at source5f02. Web deferred.
+
+## Current scoped application runtime publication — 2026-10-25
+
+The [actual003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source
+`5f02d089ee4cff8b34421cc4ca58bb4ef50dd92c`, run40226343524 and four-path bot
+`0c9b197754d57e1eb579a52d745a1ca8fd0d2b32`. Windows runtimee3f17363
+(4,824,064 bytes) and Linux02ea0661 (4,222,304 bytes) each pass import plus
+all35 strict host/control cases:72 actual processes total, with matched
+native80/build535 input ledgers and642 policy assertions per OS. The
+earlier eight App provenance comparisons describe pre-publication inputs;
+the new manifests cover all80 current native inputs.
+
+The six approval-held bot follow-ups are not validation greens. Final
+exact-head CI/review, remaining constructors and complete host/scientific/
+manual qualification stay open; #202 and #203 are not complete. The owner
+defers additional Web/browser/shader work until after this epic. Historical
+Web functional success and rendering failure are retained; no rendering
+pass or fallback is claimed. All non-Web requirements remain in force.
+
+PR #254 is now accepted on main
+`06451f8ac9e8ac9b23a105d2fe22393375dc2d6b`, after its exact02c Documentation,
+Native, GDExtension/Godot and #49 gates and bounded reviews passed. The
+[publication ledger](../audits/2026-10-25-lcb003-runtime-publication.md#accepted-water-main-and-content-identical-integration--2026-10-25)
+binds those receipts. Local normal mergea704ce50 consumes that main with the
+unchanged bot0c9 tree; all615 publication inputs and139 compiled inputs remain
+exact. This does not substitute Water's gates for the application's final
+exact-head CI or close #202/#203.
+
+## Historical preparation and Water-artifact consumption
+
+The earlier source-bound records below retain their original unarmed,
+runtime-mismatch and pending-publication statements. They do not describe
+the actual003 publication above or relabel older executions.
+
+The application branch now normally consumes reviewed Water source/publication
+checkpoint02c33341 through merge108b84d1, including actual sequence2 sourceaa8af247,
+run40220697738 and bot03cccd8f. Merge1d376fb3 also consumes the separately reviewed
+Web evidencec8bd9623. All139 inputs of the development DLL46a remain equal to
+compiled18d/tested3d. The local164 native/39 sanitizer/import-plus35-host results
+retain those source identities. Relative to the696-source executed snapshot,
+691 entries stay exact; four published runtime/provenance paths and Water's
+sequence2 request are explicit later exceptions, with no native or host-code
+change. This is not a fresh host execution at the new merge head.
+
+Fresh proper-companion provenance reports eight remaining App input mismatches,
+four per OS: cyber_demo_bridge.hpp, cyber_native_cell_world.cpp/.hpp and
+prepared_world.hpp. The published kernel clears the earlier world.cpp pair;
+no mismatch is waived. The [runtime-consumption record](../audits/2026-10-25-lcb003-final-integration.md#published-water-sequence2-consumption--2026-10-25)
+binds the source/artifact exceptions and six passing cheap gates.003 remains
+unarmed/request absent with no push. Its source-matched Windows/Linux runtime
+publication and fresh35-case execution, final exact-head gates, remaining host
+constructors and scientific/feel acceptance remain required. The consumed
+[Web evidence](../audits/2026-10-25-lcb003-web-common-water.md) retains77/76 functional success and the rendering failure;
+minimal-palette diagnostics do not qualify full appearance or manual play.
+
+**Earlier local execution, before this runtime-artifact merge:**
+
+The [packed worker storage and startup local preparation](../audits/2026-10-25-lcb003-final-integration.md#packed-worker-storage-and-startup-local-preparation--2026-10-25)
+records18d compiled/tested3d, native139/DLL46a8b4d9, native164 and focusedSAN39.
+Fresh import plus all35 host cases pass with696 source,646 post-import project
+and139 native inputs held. The first matrix's sampled-test process crash,
+old-DLL A/B and exact helper-only correction are preserved. Earlier dd00/f34
+and source4948 browser records stay source-qualified.003 remains unarmed,
+with ten real C9 source/runtime blockers pending final Water sequence2 bot/docs
+and combined publication; actual browser functional proof does not clear the
+observed shader/black-viewport visual failure.
+
+The [final local host matrix](../audits/2026-10-25-lcb003-final-integration.md#complete-local-host-matrix-and-actual-web-result)
+passes all36 processes with unchanged budgets, no errors/warnings/skips and
+held693 source/643 staged project/139 native inputs. The [separate Web build
+and actual browser record](../audits/2026-10-25-lcb003-web-common-water.md)
+binds both85-input Wasm modules/exports and original201 POSTs: compat77 checks,
+threaded76, six common Water/four mixed arms. Ordinary visual/manual play and
+combined Windows/Linux publication still require their own acceptance.
+
+The [final application integration record](../audits/2026-10-25-lcb003-final-integration.md)
+binds native139/DLL93d3ee3f, LLVM163 ordinary groups plus seven receipt byte
+oracles and38 focused ASan/UBSan groups with the ordinary1MiB PE stack. Focused
+host cases pass167 default API,76 Water Feel and93 synchronous Water assertions.
+The unarmed003 profile now preserves the complete Water005 proof and requires
+35 cases plus import and a76-check/six-Water native Web prerequisite. Local
+Windows development results remain separate from combined publication,
+Windows/Linux exact-head CI, actual compat/threaded browser and visual acceptance.
+
+The subsequent [synchronous Water Feel body checkpoint](../audits/2026-10-25-lcb003-synchronous-water-reference-body.md)
+at source45b6ed9d reuses verified unchanged native135/DLL79f35666 and passes
+eight strict processes/656 assertions: new Water91, corrected PhysicsPit73,
+WaterFeel72, import73, UI105, poses50, desktopWater75 and ordinary117. Each
+uses its own180s timeout, complete source/project fences and strict exit/
+error checks. Actual native readback verifies all threePF variants and FM;
+the first label-only family coverage and other apparatus failures remain
+preserved and are superseded only in their stated scope. No new DLL build
+or final Wasm/release/Brine-contact/Water-IN acceptance is claimed. Before
+arming003, integrate this new case plus the incoming strict Water005 proof
+and final native/default sources into its still-unarmed publisher.
+
+The [synchronous Physics Pit checkpoint](../audits/2026-10-25-lcb003-synchronous-reference-body.md)
+reuses unchanged native135/DLL79f35666 and passes six strict Godot processes,
+490 assertions including the new70 actual normal Apply/Restart/body transaction
+checks. Three PF variants each execute240 authored native/Rapier ticks with
+positive consumed signed feedback, exact937,125 Water and closing gas ledgers.
+The first96-tick premise and a strict-caught diagnostic array-type error remain
+retained; none is acceptance. This does not qualify final merged native source,
+Wasm/visual flow, released runtime or Brine IN rest contacts.
+
+The [shared explicit-pose helper proof](../audits/2026-10-25-lcb003-water-reference-body.md#shared-explicit-pose-helper)
+passes50 focused assertions plus the retained75-assertion actual Water Feel body
+case on unchanged135-input development DLL79f35666. Omitted/default native masks
+match exactly; explicit rotations survive32 actual frozen physics frames and
+invalid length/nonfinite arrays refuse before private allocation. It qualifies
+the shared helper only, with no newly supported constructor or final release.
+
+The [four ordinary synchronous demo checkpoint](../audits/2026-10-25-lcb003-ordinary-demo-host.md)
+reuses the unchanged135-input development DLL after before/after verification.
+`test_liquid_ordinary_demo_host.gd` passes117 assertions through actual normal
+Apply/Restart/Import controls: eight quality0/2 cohorts, initial tuple equality,
+private sampled refusal/final barrier, matched IN/Current geometry and real native
+quarantine recovery. Five affected cases separately pass on the final copied
+source, including73 import assertions and33 native Web-prerequisite checks.
+Native headless execution does not qualify the final Wasm/visual, released runtime
+or known Brine IN resting-body repair; later native integration needs a fresh DLL.
+
+The [explicit normal-menu level-import proof](../audits/2026-10-25-lcb003-level-import-host.md)
+reuses the unchanged135-input development DLL after verifying every native input,
+then runs fresh import and eight affected Godot processes. The original44-assertion
+`test_liquid_level_import_host.gd` requires all five JSON sections true and uses
+actual panel/Import/Restart callbacks. This does not claim a new native build or
+Wasm execution. The prepared [LCB-003 publisher profile](../audits/2026-10-25-lcb003-runtime-publication.md)
+is unarmed; its dedicated Windows/Linux gates and source-matched publication
+must qualify the frozen final source before release/full exact-head acceptance.
+The expanded profile requires 34 cases plus import per target OS, retaining
+existing case deadlines and adding ordinary demos, explicit poses, Physics Pit
+and reserved native/default desktop-owner cases. Missing reserved source refuses
+admission; a successful terminal JSON never overrides a crashed process.
+The settings-refusal correction separately passes73 import assertions/all five
+sections, UI105 and33 native Web-prerequisite checks. It preserves inherited
+nondefault-law/transport refusal, native component identity and the older proof
+as Baseline-only; it does not qualify Brine IN resting-body contact.
+
+The later [prepared Water Feel reference-body checkpoint](../audits/2026-10-25-lcb003-water-reference-body.md)
+adds `test_liquid_water_reference_body.gd`: actual frozen poses across32 physics
+frames, deterministic refusal/retained receipts and four fresh ordinary unpaused
+pressure/FM application cohorts through96 native ticks. It uses a new DLL after
+the narrow native moving-mask gas repair; older runtime seals cannot qualify it.
+The focused case checks positive age-bounded accepted feedback and exact
+Water/gas accounting. Its local Windows proof leaves Web bodies, complete
+host-mask continuation and source-matched release/platform gates open.
+
+The [combined LCB host checkpoint](../audits/2026-10-25-lcb003-combined-host-web-prerequisite.md) records
+sixteen fresh Windows native/headless passes on `871fba33`, then the explicit
+Web apparatus prerequisite and actual Rapier applied-feedback parity on
+`3b4db1dd`. The actual process commands and before-input fences are retained
+with its local evidence. `test_liquid_host_web_probe.gd` runs the same explicit
+apparatus natively; `test_liquid_pressure_rapier.gd` compares all PF variants
+and one/four-worker actual body/authority traces. Both are ordinary discovered
+Godot regression cases. Native execution does not qualify Wasm/browser execution.
+
+For fresh Web builds retain Emscripten4.0.20, SCons4.10.1, Godot4.7 and pinned
+godot-cpp; the binding profile includes `FileAccess`, and the source list includes
+the generator's semantic-plane implementation. Materialize the exact pinned
+Rapier compat/threaded LFS objects before export. Export metadata remains
+explicitly unqualified for browser execution. In actual browser runs capture
+console/network before navigation, wait for terminal
+`?test=1&liquid-host-test=1` JSON and successful `/physics-results` capture, and
+perform an ordinary user walkthrough separately. Historical9704 exports and
+their retained POST501/early-capture gaps are not current qualification.
+
 ## Water publisher guards and publication checks
 
 `python tools/ci/test_lcb005_water_inertial_runtime_publication.py` exercises the
@@ -382,7 +562,6 @@ hosted gates. Earlier ACT-004 or sampled USABLE-001 results do not certify this
 changed physical integration.
 
 ## Semantic plane generation and native fixtures
-
 GEN-005 adds [`test_generation_planes.cpp`](../../native/tests/test_generation_planes.cpp)
 to both existing generation targets. Its oracle compares all four material
 arrays and canonical registration unions across reversed negative-coordinate
@@ -460,6 +639,143 @@ records their hashes and exact coverage. Full non-draft acceptance remains
 separate. Scratch Windows proof does not reattest retained libraries. The
 Godot normalization opt-in and full application host are separate integration
 work, and no new #201/#212 implementation is included in this checkpoint.
+
+### Controlled liquid application-host slice
+
+The later integrated [`test_liquid_inertial_host.gd`](../../godot/tests/test_liquid_inertial_host.gd)
+requires a fresh DLL from accepted #246 main plus the stable IN checkpoint and
+owned adapter delta. It reads the independent sibling
+`docs/reference/inertial-parameter-vectors.json`, exercises all17 actual damping
+values, radius2 refusal/radius3 admission, actual native extension/instance
+versions, three families at workers1/4, CYPS3 continuation, normal controls and
+articulated graph/equipment/mask adoption. The
+[integrated ledger](../audits/2026-10-25-lcb003-integrated-inertial-host.md) records
+artifact/input/log hashes and the wider scoped local regression matrix.
+
+On `codex/lcb003-application-host`, the focused
+[`test_liquid_prepared_host.gd`](../../godot/tests/test_liquid_prepared_host.gd)
+executes the typed native preparation/token API, explicit normalization,
+canonical copied receipts and actual desktop/synchronous application controller
+routes. It uses Semaphore barriers at the preparation/commit boundary to test
+same-definition supersession, ordinary reset and stop deterministically. It
+also retains masked stored Water, host event cursors and applied receipts on
+refusal. Run with a freshly built source-matched development DLL:
+
+```text
+godot --headless --path godot --script res://tests/test_liquid_prepared_host.gd
+```
+
+The [dated host ledger](../audits/2026-10-24-lcb003-controlled-host-slice.md)
+separates Windows headless execution of `web_main.tscn` from actual browser
+execution, records artifact/source inputs and preserves the first test-harness
+failure. Retain policy, worker, MicroScenario, native-observation, workbench and
+Water Feel lifecycle regressions alongside this focused case. No release
+runtime is supplied by this local source checkpoint; Linux, real Wasm/browser,
+hosted publication and final exact-head acceptance remain separate gates.
+
+### Normal liquid-comparison UI slice
+
+The subsequent [`test_liquid_water_feel_host.gd`](../../godot/tests/test_liquid_water_feel_host.gd)
+checks72 assertions: original35 recipe identity/player/action preservation,
+exact Current native control, explicit initial normalization/refusal, final
+request/reset/stop fences, ordinary Water Feel activity and source ledger,
+same-semantic-hash refusal acknowledgement, actual panel/reset/semantic change,
+blind/body/future-source refusal and native synchronous controller. Retain the
+existing Water Feel controller/blind/10-exit,24-policy/70-build native integration,
+35-recipe and shared owner regressions. The [dated evidence](../audits/2026-10-25-lcb003-water-feel-constructor.md)
+identifies the unchanged native DLL separately from new GDScript and preserves
+the typed-array fixture failure with recoverable before-test source snapshots.
+
+The subsequent [`test_liquid_owner_observation.gd`](../../godot/tests/test_liquid_owner_observation.gd)
+checks28 assertions through actual Host/Main panel/synchronous owners: staged
+collection refusal, final-guard refusal, copied full record versus compact
+publication, native receipt/generation binding, normalized whole-cell selection,
+restart and default retirement. The physical transaction test additionally
+retains the old actual articulated graph's record on terrain refusal. The
+[owner ledger](../audits/2026-10-25-lcb003-owner-observation.md) records seven
+scoped Windows processes, fresh DLL inputs and the genuine hosted stale-registry
+failure/derived repair. Run this only with the new token-bound capture adapter.
+
+The later [`test_liquid_host_evidence.gd`](../../godot/tests/test_liquid_host_evidence.gd)
+requires a fresh observation-enabled DLL and checks34 assertions: actual API path
+and current file hash, real stale-publication mismatch, typed native byte/digest
+consistency, immutable canonical host values, exact signed identities, retained
+qualifications and explicit malformed/depth/capacity refusal. Its optional
+external process barrier supports an OS-module query; the clean editor shadow
+probe instead uses a scratch-only EditorPlugin and Godot's real editor MainLoop.
+The [observation ledger](../audits/2026-10-25-lcb003-qualified-host-observation.md)
+records both clean controlled launches and the failed custom-editor harnesses.
+These local Windows proofs do not establish actual Wasm/browser execution or
+full source-matched publication/host eligibility.
+
+The subsequent [`test_liquid_tower_host.gd`](../../godot/tests/test_liquid_tower_host.gd)
+exercises ordinary Tower dispatch with the existing integrated development DLL:
+original Current constructor parity, final floor/player preparation, independent
+transport, releases, deterministic request/reset/stop commit fences, actual Main
+and native synchronous panel apply/refuse/reset/profile, typed identity retirement
+and committed observer-fault classification. Its
+[dated ledger](../audits/2026-10-25-lcb003-tower-constructor.md) qualifies unchanged
+native inputs and the separate GDScript checkpoint; no new published runtime or
+actual browser execution follows.
+
+The later [`test_liquid_comparison_ui.gd`](../../godot/tests/test_liquid_comparison_ui.gd)
+executes actual feature-launcher and desktop/synchronous panel button routes,
+native availability and immutable requests, apply/refuse/reset, explicit gross
+normalization counters, disabled unsupported actor routes, a mixed-liquid World
+step and complete-hash agreement with the original Current control. It requires
+the updated native bridge and exact fixture files. Keep sibling `examples/`
+fixtures beside a staged `godot/` project for the existing semantic-depth launcher
+regression. Run:
+
+```text
+godot --headless --path godot --script res://tests/test_liquid_comparison_ui.gd
+```
+
+[UI evidence](../audits/2026-10-25-lcb003-liquid-comparison-ui.md) records the fresh
+local development DLL, source input manifests, commands, timeouts, failures and
+remaining platform gates. The [constructor matrix](lcb-manual-comparison-ux.md#constructor-coverage-at-this-checkpoint)
+is the authoritative boundary of this UI slice. No browser, release provenance
+or complete constructor acceptance follows from native headless execution.
+
+### Staged sampled/exploratory host slice
+
+[`test_liquid_sampled_preparation.gd`](../../godot/tests/test_liquid_sampled_preparation.gd)
+adds real candidate-versus-live collision and spawn-recovery checks, declared
+precommit equipment refusal, retained actor/equipment/epoch and masked native
+state, deterministic supersession/settings barriers, final independent PENV
+configuration, owner-frame acknowledgement and actual main/panel/F5/reset and
+synchronous controller routes. Run with the freshly built adapter:
+
+```text
+godot --headless --path godot --script res://tests/test_liquid_sampled_preparation.gd
+```
+
+Retain actor session/rig/usables, existing host/UI/controller/workbench, exploratory
+actor selection and Water Feel lifecycle cases. The [sampled evidence](../audits/2026-10-25-lcb003-sampled-exploratory-host.md)
+records final source/runtime, exact ten-process matrix and failures. Its shared
+native base is still pre-final-fix `9e91a9f7`; repeat the full applicable matrix
+after accepted #246 integration. Physical-body staging, source/runtime
+publication and actual browser qualification remain separate required gates.
+
+### Staged articulated physical host slice
+
+The [physical preparation contract](../architecture/liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners)
+adds three focused cases, all requiring a fresh adapter DLL and actual Rapier:
+
+```text
+godot --headless --path godot --script res://tests/test_prepared_physical_owner.gd
+godot --headless --path godot --script res://tests/test_liquid_physical_preparation.gd
+godot --headless --path godot --script res://tests/test_liquid_physical_transaction.gd
+```
+
+They verify actual frozen poses across real physics frames, shared native mask
+raster parity and stored Water, tick-zero mask/receipt equality, copied pending
+facts, stale/tampered continuation refusal, final request/reset/settings/stop
+fences, admitted paint/profile disposition and actual panel/application graph
+adoption or retained-owner refusal. Keep ordinary physical integration/equipment,
+sampled/controlled/UI, MicroScenario, actor-selection and Water Feel cases in the
+same scoped matrix. This local pre-final-#246 native base still needs fresh main
+integration, published source-matched runtimes, Linux and actual Web gates.
 
 ### Branch-scoped runtime publishers
 
@@ -1196,15 +1512,32 @@ Linux/Windows execution to exact source and runtime bytes; the ready-for-review
 full repository gates remain separate.
 
 ## Native Brine IN checkpoint
-
 The isolated #212 [Brine reference](../architecture/inertial-cellular-v1.md) is exercised with `make build/tests` then `./build/tests "LCB-005"`; the full native suite remains required. [Dated local evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) distinguishes Windows LLVM execution, failed fixture premises, actual worker participation and memory components from future Linux/MSVC/Godot/runtime qualification. No Water IN or application adapter follows from this native-only checkpoint.
 
-
 For the native damping parameter, run `python tools/lcb/inertial_parameter_contract.py --check` and the LCB Python suite as well as the native groups. The optional IN family blockv2 applies `damping_numerator`0..16/16(default1); actual readback/identity and save/restore are native-owned. The worker fixture observes four actual participants at0/default1/16, while the matched tail fixture records rounding/retained-motion outcomes without assuming every arm settles. Existing illustrative v1 vectors remain separate; use the family reference for the exact schema and qualifications.
-
 
 The [corrected Brine IN publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-sequence3-publication-of-the-contact-repair)
 passes actual Windows/Linux import and14 scoped cases perOS at source
 `c11983c2`, run `40160900817`. IN10192 includes the mandatory resting-contact
 regression. The runtime-only append is `fcf0e9b6`; full exact-head ready-PR
 matrix remains a separate gate.
+
+The unmerged native default-demo API has a focused
+`test_liquid_default_demo_preparation.gd` case. It requires a fresh staged DLL
+with the new binding, compares the complete old-DLL tuple controls at four
+Water/transport configurations and exercises candidate masks, token/refusal,
+geometry and constructor-origin lifetime. Its [dated Windows proof](../audits/2026-10-25-lcb003-native-default-demo-preparation.md)
+retains the diagnostic-lifecycle failure and 167/493/72 final regression results.
+This native API case does not test Main/worker adoption or published platforms.
+
+The later [desktop native-default owner checkpoint](../audits/2026-10-25-lcb003-desktop-native-default-host.md)
+adds `test_liquid_desktop_default_host.gd` plus five non-discovered helper scripts
+under `tests/fixtures/lcb/desktop_default_*.gd`. It requires actual86/0, successful
+process exit, two healthy FM/CY moving-body rows and three native pressure-capacity
+refusals. A success footer followed by0xC0000005 is a failure. The corrected API
+case is164/six sections; its earlier167 result predates the initial-capacity
+preflight. Registered native capacity46 and focused ASan+UBSan46 are bounded
+separate results; seven affected Godot processes pass1078 assertions. Keep old
+failures, final EOF-only transition, raw/canonical source bindings and actual
+runtime identities. Fresh integrated native/publication/full platform gates
+remain required; do not substitute the old development DLL for them.

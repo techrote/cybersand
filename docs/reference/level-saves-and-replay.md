@@ -10,6 +10,13 @@ related-documents: [interfaces-and-message-contracts.md, ../architecture/pressur
 
 # Level saves and exact replay
 
+The later [synchronous Water Feel body route](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel)
+reconstructs its accepted original recipe/policy/normalization on Restart. A
+generic import of identical native tuples retires its native generation and
+cannot acquire Water recipe/transport origin from the UI label. This adds no
+save schema or policy persistence; moving-body imports and separately restored
+host masks remain unsupported work.
+
 ## Does an identical save reproduce the next tick?
 
 **Current: no such guarantee.** CYSD1 restores a fixed demo level and selected
@@ -75,12 +82,43 @@ support from the unchanged format version alone.
 
 `CyberDemoBridge::import_level` validates and builds a replacement World and
 render exchange before no-throw ownership swaps. CYSD1 stores no liquid solver
-policy: an import always reconstructs on every liquid's default family (LCB NC-10),
+policy: this original API reconstructs every liquid's default family (LCB NC-10),
 whatever the live World's policy. Invalid codec/native payloads
 leave the active World intact. The Web controller rejects a Physics Pit save
 when Rapier is unavailable before native import. This guarantee concerns the
 checked import paths; it is not a general transaction guarantee for simulation
 ticks or arbitrary later scene allocation failures.
+
+**Current bounded unmerged #202 source:** the normal synchronous application's
+liquid panel can explicitly arm the next ordinary body-free import with a copied
+policy, normalization opt-in and geometry in Exploratory mode. The separate
+`prepare_liquid_level` API preserves thermal tuples and stages native World,
+sampled player, metadata-derived execution and qualified host observation before
+the final commit. Refusal retains the prior World/player/receipt/record. The
+[prepared import contract](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
+owns those bounds and unsupported body/Tower/showcase routes. Restart retains the
+accepted in-memory payload and selection; CYSD1 serialization is unchanged and
+unarmed import still uses Current defaults. No full replay or browser/release
+qualification follows from this opt-in reconstruction.
+The follow-up preflight explicitly refuses unsupported inherited interaction,
+diagnostic-law or independent transport settings rather than replacing them
+with preparation defaults. The accepted private Baseline may restart only with
+matching native component/generation/receipt identity. Unarmed legacy import
+continues to preserve its inherited configuration. Optional enabled preparation
+telemetry is observational and remains qualified separately.
+
+The later [four authored ordinary-demo route](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-synchronous-demo-rebuilding)
+keeps its accepted recipe separate from an imported level even when both carry
+the same demo label. Only an actual curated constructor and matching native
+generation supply authored identity. An accepted import restarts its copied
+payload/metadata; an accepted curated demo restarts its copied authored recipe.
+Neither in-memory request is persisted by CYSD1. Quarantined prepared Restart
+currently refuses; explicit Current construction or unarmed import is recovery.
+
+The later authored Physics Pit route also retains its own original recipe/body
+poses and selection privately for Restart. This does not admit a saved physical
+level for family conversion: an imported same-label three-body graph has no
+authored source-generation identity, and its direct experimental apply refuses.
 
 ## What continuation state is missing?
 

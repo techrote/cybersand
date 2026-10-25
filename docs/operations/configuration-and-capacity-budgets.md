@@ -10,6 +10,13 @@ related-documents: [../reference/configuration-reference.md, ../systems/world-st
 
 # Configuration and capacity budgets
 
+The bounded [synchronous Water body constructor](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel)
+reuses one native pending World/token, one permanent three-body private graph,
+the existing terrain chunk/time budget, at least two frozen physics frames and
+the20-second explicit readiness refusal. It adds no native capacity, tick-time
+allocation, fallback or physics-law change. Native capacity outcomes and future
+failed-world quarantine stay authoritative; no final platform acceptance follows.
+
 **Current:** native World construction, region/temperature reservation, event
 capacity, and snapshot slot/patch/byte limits exist. **Planned:** general saved
 configuration and safe live pause/drain/resize/publish. Explicit capacity failure

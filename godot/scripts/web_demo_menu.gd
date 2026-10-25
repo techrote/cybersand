@@ -96,7 +96,7 @@ func setup(controller: Control) -> void:
 	var session: HBoxContainer = HBoxContainer.new()
 	home.add_child(session)
 	_button(session, "continue", "Continue", close_menu)
-	_button(session, "restart", "Restart world", func() -> void: host.select_demo(host.demo_id))
+	_button(session, "restart", "Restart world", func() -> void: host.restart_world())
 	_button(session, "save_load", "Save / Load", func() -> void: show_page("save"))
 	var quality_row: HBoxContainer = HBoxContainer.new()
 	home.add_child(quality_row)

@@ -6,6 +6,15 @@ const PhysicalSession = preload("res://scripts/physical_actor_session.gd")
 const PhysicalOverlay = preload("res://scripts/physical_actor_overlay.gd")
 const PhysicalLoadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const PhysicalEquipment = preload("res://scripts/physical_usable_equipment.gd")
+const PreparedPhysical = preload("res://scripts/prepared_physical_session.gd")
+const PreparedReferenceBody = preload("res://scripts/prepared_reference_body_session.gd")
+var _pending_physical_candidate: RefCounted
+var _accepted_physical_candidate: RefCounted
+var _prepared_physical_identity: Dictionary = {}
+var _prepared_physical_ready_sent: bool = false
+var _prepared_physical_factory: Callable = Callable()
+var _prepared_reference_factory: Callable = Callable()
+var _accepted_reference_candidate: RefCounted
 var exploratory_actor_configuration: Dictionary = {}
 var physical_trial_arm: String = ""
 var physical_trial_input = PhysicalTrial.new()
@@ -263,6 +272,12 @@ var pending_microscenario_apply: Dictionary = {}
 var _microscenario_request_serial: int = 0
 var microscenario_capture_seen: int = 0
 var microscenario_definition: Dictionary = {}
+var microscenario_liquid_policy: Variant = null
+var microscenario_liquid_setup: Dictionary = {}
+var _liquid_tower_active: bool = false
+var _liquid_water_active: bool = false
+var _liquid_default_active: bool = false
+var _liquid_default_generation: int = 0
 var showcase_presentation: CyberShowcasePresentation
 var blacksite_nine_presentation: CyberBlacksiteNinePresentation
 
@@ -293,10 +308,229 @@ func microscenario_launch(scenario_id: String, mode: String = "Inspect", seed: i
 func microscenario_apply_definition(definition: Dictionary, mode: String = "Inspect") -> bool:
 	return _apply_microscenario_definition(definition, mode)
 
+func microscenario_apply_controlled_liquid(definition: Dictionary, liquid_policy: PackedInt32Array,
+		normalize_water: bool = false, mode: String = "Inspect", maximum_rule_radius: int = 2) -> bool:
+	return _apply_microscenario_definition(definition, mode, {}, liquid_policy,
+		{"normalization":"water-normalize-v1" if normalize_water else "","maximum_rule_radius":maximum_rule_radius})
 
-func _apply_microscenario_definition(definition: Dictionary, mode: String, actor_configuration: Dictionary = {}) -> bool:
+func liquid_comparison_active_definition() -> Dictionary:
+	if tower_context.get("water_active",false): return CyberMicroScenarioCatalogue.prepared_water(water_policy_resolved)
+	if tower_active and tower_context.get("active",false) and not tower_context.get("micro_active",false) \
+		and not tower_context.get("water_active",false):
+		return CyberMicroScenarioCatalogue.prepared_tower(tower_profile,tower_floor)
+	return microscenario_definition.duplicate(true)
+
+func liquid_comparison_can_apply_active(exploratory: bool) -> bool:
+	# This is the native constructor's copied origin, published by its exclusive
+	# owner. A demo label or an imported copy of the same pixels is insufficient.
+	var origin: Dictionary = tower_context.get("native_default_demo",{})
+	return (exploratory and origin.get("native_recipe_id","") == "cybersand-desktop-default-demo-v1"
+		and not tower_active and not tower_context.get("active",false)
+		and physical_actor_session == null and physical_rig_id == &"" and actor_model_selection == &""
+		and not player_uses_barrel() and _actor_reset_receipt == 0
+		and pending_microscenario_apply.is_empty() and pending_water_apply.is_empty()
+		and pending_water_exit.is_empty() and water_blind_set.is_empty() and water_active_blind_label.is_empty())
+
+func liquid_comparison_apply_active(policy: PackedInt32Array, normalize_water: bool, exploratory: bool,
+		mode: String, radius: int) -> bool:
+	if not tower_context.get("native_default_demo",{}).is_empty() and not tower_active:
+		return _apply_prepared_liquid_default(policy,normalize_water,radius,exploratory)
+	if tower_context.get("water_active",false):
+		if not exploratory:
+			microscenario_error = "Water Feel requires Exploratory mode with its existing sampled player"
+			return false
+		return _apply_prepared_liquid_water(policy,normalize_water,radius,water_policy_resolved)
+	if tower_active and tower_context.get("active",false) and not tower_context.get("micro_active",false) \
+		and not tower_context.get("water_active",false):
+		if not exploratory:
+			microscenario_error = "Experiment Tower requires Exploratory mode with its existing sampled player"
+			return false
+		return _apply_prepared_liquid_tower(policy,normalize_water,radius,CyberTransportProfiles.resolve(tower_profile))
+	return (microscenario_apply_exploratory_liquid(microscenario_definition,policy,normalize_water,mode,{},radius)
+		if exploratory else microscenario_apply_controlled_liquid(microscenario_definition,policy,normalize_water,mode,radius))
+
+func _apply_prepared_liquid_default(policy: PackedInt32Array, normalize_water: bool, radius: int,
+		exploratory: bool = true, requested_recovery: Variant = null, requested_profile: Dictionary = {}) -> bool:
+	if not liquid_comparison_can_apply_active(exploratory):
+		microscenario_error = "Native default demo requires Exploratory with its ordinary sampled player and reference bodies"
+		return false
+	if simulation_worker.has_failed() or not tower_context.native_default_demo.get("healthy",false):
+		microscenario_error = "Prepared Restart requires a healthy World; load Current or another setup to recover"
+		return false
+	var staged: RefCounted = _prepared_reference_factory.call() if _prepared_reference_factory.is_valid() else PreparedReferenceBody.new()
+	var positions := PackedVector2Array()
+	var rotations := PackedFloat32Array()
+	for index: int in range(3):
+		positions.append(test_rigid_body_spawn(index));rotations.append(test_rigid_body_rotation(index))
+	var templates: Array[RigidBody2D] = [test_rigid_body_1,test_rigid_body_2,test_rigid_body_3]
+	if not staged.prepare_reference(self,templates,TEST_RIGID_BODY_SIZE,positions,rotations):
+		microscenario_error = staged.last_error;staged.close()
+		return false
+	var origin: Vector2 = clamped_camera_origin(CHARACTER_SPAWN+CyberSampledCharacter.BODY_SIZE*0.5-Vector2(current_view_size)*0.5)
+	var owner: Dictionary = {"view_origin":Vector2i(origin.floor()),"view_size":current_view_size,
+		"horizontal_buffer":simulation_margin.x,"vertical_buffer":simulation_margin.y,
+		"simulation_window_enabled":simulation_window_enabled,"cadence_lod_enabled":cadence_lod_enabled,
+		"liquid_surface_adhesion_enabled":liquid_surface_adhesion_enabled}
+	var setup: Dictionary = {"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else "",
+		"maximum_rule_radius":radius,"physical_owner":{"kind":"reference_body","epoch":0,
+			"instance_id":staged.get_instance_id(),"initial_bodies":staged.initial_body_states()}}
+	_microscenario_request_serial += 1
+	var recovery: bool = sampled_runtime_recovery_enabled if requested_recovery == null else bool(requested_recovery)
+	_pending_physical_candidate = staged
+	_prepared_physical_identity = {};_prepared_physical_ready_sent = false
+	pending_microscenario_apply = {"route":"native_default","serial":_microscenario_request_serial,
+		"previous_paused":paused,"previous_mode":microscenario_mode,"liquid_policy":policy.duplicate(),
+		"controlled_liquid_setup":setup.duplicate(true),"owner_execution":owner.duplicate(true),"runtime_recovery":recovery,
+		"profile_request":not requested_profile.is_empty()}
+	paused = true
+	var command: Dictionary = {"default_liquid_reset":true,"expected_default_generation":int(tower_context.native_default_demo.session_generation),
+		"scenario_request_serial":_microscenario_request_serial,"sampled_character_enabled":true,
+		"runtime_enclosure_recovery_enabled":recovery,
+		"liquid_policy":policy.duplicate(),"controlled_liquid_setup":setup,"default_owner_execution":owner}
+	if not requested_profile.is_empty(): command["_prepared_player_environment_profile"] = requested_profile.duplicate(true)
+	simulation_worker.queue_lab(command)
+	return true
+
+func _prepared_liquid_default_installed() -> void:
+	_liquid_default_active = true
+	_liquid_default_generation = int(tower_context.native_default_demo.session_generation)
+	_liquid_tower_active = false;_liquid_water_active = false
+	microscenario_error = "";microscenario_definition = {}
+	microscenario_liquid_policy = pending_microscenario_apply.liquid_policy.duplicate()
+	microscenario_liquid_setup = pending_microscenario_apply.controlled_liquid_setup.duplicate(true)
+	microscenario_liquid_setup.erase("physical_owner")
+	sampled_runtime_recovery_enabled = bool(pending_microscenario_apply.runtime_recovery)
+	character_position = CHARACTER_SPAWN;camera_follow_enabled = true;paused = true
+	camera_origin = Vector2(pending_microscenario_apply.owner_execution.view_origin)
+	_adopt_prepared_physical_candidate()
+	simulation_worker.acknowledge_prepared_liquid_configuration(int(pending_microscenario_apply.serial))
+
+func _apply_prepared_liquid_tower(policy: PackedInt32Array, normalize_water: bool, radius: int,
+		resolved: Dictionary) -> bool:
+	if not resolved.get("ok",false) or not pending_microscenario_apply.is_empty() \
+		or not pending_water_apply.is_empty() or not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return false
+	if physical_actor_session != null or not rigid_bodies.is_empty() or player_uses_barrel():
+		microscenario_error = "Prepared Tower requires its existing sampled owner; prior session retained"
+		return false
+	var checked: Dictionary = CyberMicroScenarioContract.validate(CyberMicroScenarioCatalogue.prepared_tower(resolved.profile,tower_floor))
+	if not checked.ok:
+		microscenario_error = str(checked.error)
+		return false
+	_microscenario_request_serial += 1
+	var setup: Dictionary = {"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else "",
+		"maximum_rule_radius":radius}
+	pending_microscenario_apply = {"route":"tower","serial":_microscenario_request_serial,"hash":checked.hash,
+		"definition":checked.definition,"previous_paused":paused,"previous_mode":microscenario_mode,
+		"liquid_policy":policy.duplicate(),"controlled_liquid_setup":setup,"profile":resolved.profile.duplicate(true),"floor":tower_floor}
+	paused = true
+	simulation_worker.queue_lab({"reset":true,"floor":tower_floor,"profile":resolved,"scenario_mode":microscenario_mode,
+		"scenario_request_serial":_microscenario_request_serial,"sampled_character_enabled":true,
+		"runtime_enclosure_recovery_enabled":sampled_runtime_recovery_enabled,"liquid_policy":policy.duplicate(),
+		"controlled_liquid_setup":setup})
+	return true
+
+func _prepared_liquid_tower_installed() -> void:
+	_liquid_tower_active = true
+	_liquid_water_active = false
+	microscenario_error = ""
+	microscenario_definition = pending_microscenario_apply.definition.duplicate(true)
+	microscenario_liquid_policy = pending_microscenario_apply.liquid_policy.duplicate()
+	microscenario_liquid_setup = pending_microscenario_apply.controlled_liquid_setup.duplicate(true)
+	tower_profile = pending_microscenario_apply.profile.duplicate(true)
+	tower_floor = int(pending_microscenario_apply.floor)
+	paused = true;current_view_size = Vector2i(480,270);camera_follow_enabled = false
+	camera_origin = Vector2(microscenario_definition.camera_origin[0],microscenario_definition.camera_origin[1])
+	character_position = Vector2(microscenario_definition.player_start[0],microscenario_definition.player_start[1])
+	simulation_worker.acknowledge_prepared_liquid_configuration(int(pending_microscenario_apply.serial))
+
+func _apply_prepared_liquid_water(policy: PackedInt32Array, normalize_water: bool, radius: int,
+		result: Dictionary) -> bool:
+	if not result.get("ok",false) or not tower_context.get("water_active",false) \
+		or not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty() or not pending_water_exit.is_empty() \
+		or not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return false
+	var resolved: Dictionary = CyberWaterExperimentProfiles.resolve({},{},result.policy)
+	if not resolved.ok or resolved.hash != result.hash: return false
+	var recipe: Dictionary = CyberWaterFeelScenarios.recipe(str(resolved.policy.scenario_id),int(resolved.policy.seed))
+	if recipe.is_empty(): return false
+	if physical_actor_session != null or player_uses_barrel():
+		microscenario_error = "Prepared Water Feel requires its sampled player and reference body owner; prior session retained"
+		return false
+	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+	var admitted: Dictionary = bridge.validate_liquid_policy(policy)
+	var source_refusal: String = CyberMicroScenarioCatalogue.prepared_water_source_refusal(admitted.get("receipt",{}),recipe)
+	if not source_refusal.is_empty():
+		microscenario_error = source_refusal
+		return false
+	var checked: Dictionary = CyberMicroScenarioContract.validate(CyberMicroScenarioCatalogue.prepared_water(resolved))
+	if not checked.ok:
+		microscenario_error = str(checked.error)
+		return false
+	_microscenario_request_serial += 1
+	var setup: Dictionary = {"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else "",
+		"maximum_rule_radius":radius}
+	if recipe.body_enabled:
+		var staged: RefCounted = _prepared_reference_factory.call() if _prepared_reference_factory.is_valid() else PreparedReferenceBody.new()
+		var templates: Array[RigidBody2D] = [test_rigid_body_1,test_rigid_body_2,test_rigid_body_3]
+		if not staged.prepare_reference(self,templates,TEST_RIGID_BODY_SIZE):
+			microscenario_error = staged.last_error
+			staged.close()
+			return false
+		_pending_physical_candidate = staged
+		_prepared_physical_identity = {};_prepared_physical_ready_sent = false
+		# Ordinary reference rectangles carry no actor/equipment authority.
+		setup.physical_owner = {"kind":"reference_body","epoch":0,"instance_id":staged.get_instance_id(),
+			"initial_bodies":staged.initial_body_states()}
+	pending_microscenario_apply = {"route":"water","serial":_microscenario_request_serial,"hash":checked.hash,
+		"definition":checked.definition,"previous_paused":paused,"previous_mode":microscenario_mode,
+		"liquid_policy":policy.duplicate(),"controlled_liquid_setup":setup,"water_result":result.duplicate(true),"water_recipe":recipe}
+	paused = true
+	simulation_worker.queue_lab({"water_reset":true,"water_policy":resolved.policy,"water_policy_hash":resolved.hash,
+		"water_policy_provenance":result.get("provenance",{}),"blind_label":"","scenario_mode":microscenario_mode,
+		"scenario_request_serial":_microscenario_request_serial,"sampled_character_enabled":true,
+		"runtime_enclosure_recovery_enabled":sampled_runtime_recovery_enabled,"liquid_policy":policy.duplicate(),
+		"controlled_liquid_setup":setup})
+	return true
+
+func _prepared_liquid_water_installed() -> void:
+	_liquid_water_active = true;_liquid_tower_active = false;microscenario_error = ""
+	microscenario_definition = pending_microscenario_apply.definition.duplicate(true)
+	microscenario_liquid_policy = pending_microscenario_apply.liquid_policy.duplicate()
+	microscenario_liquid_setup = pending_microscenario_apply.controlled_liquid_setup.duplicate(true)
+	microscenario_liquid_setup.erase("physical_owner")
+	water_policy_resolved = pending_microscenario_apply.water_result.duplicate(true)
+	water_policy_available = true;water_active_blind_label = ""
+	paused = true;tower_active = true;current_view_size = Vector2i(480,270);camera_follow_enabled = false
+	camera_origin = Vector2(microscenario_definition.camera_origin[0],microscenario_definition.camera_origin[1])
+	character_position = Vector2(microscenario_definition.player_start[0],microscenario_definition.player_start[1])
+	$Layout/Title.text = "CYBERSAND / EXPERIMENT TOWER / WATER FEEL"
+	if _pending_physical_candidate != null: _adopt_prepared_physical_candidate()
+	else:
+		_close_prepared_reference_bodies()
+		for body: RigidBody2D in [test_rigid_body_1,test_rigid_body_2,test_rigid_body_3]:
+			body.freeze = true;body.collision_layer = 0;body.collision_mask = 0
+		rapier_bridge.shutdown();rigid_bodies.clear()
+	simulation_worker.acknowledge_prepared_liquid_configuration(int(pending_microscenario_apply.serial))
+
+func microscenario_apply_exploratory_liquid(definition: Dictionary, liquid_policy: PackedInt32Array,
+		normalize_water: bool = false, mode: String = "Play", actor_configuration: Dictionary = {}, maximum_rule_radius: int = 2) -> bool:
+	return _apply_microscenario_definition(definition, mode, actor_configuration, liquid_policy,
+		{"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else "","maximum_rule_radius":maximum_rule_radius})
+
+func microscenario_supports_prepared_physical_liquid(definition: Dictionary) -> bool:
+	if tower_context.get("water_active",false):
+		return bool(definition.get("body_enabled",false)) and physical_actor_session == null and not player_uses_barrel()
+	return physical_rig_id != &"" and microscenario_mode != "Benchmark" \
+		and CyberMicroScenarioCatalogue.exploratory_actor_map(definition)
+
+func _apply_microscenario_definition(definition: Dictionary, mode: String, actor_configuration: Dictionary = {},
+		liquid_policy: Variant = null, controlled_setup: Dictionary = {}) -> bool:
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return false
 	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return false
+	# F5 rebuilds retain an explicitly accepted exploratory solver selection.
+	if (not actor_configuration.is_empty() and liquid_policy == null and controlled_setup.is_empty()
+		and microscenario_liquid_setup.get("intent", "controlled") == "exploratory"):
+		liquid_policy = microscenario_liquid_policy
+		controlled_setup = microscenario_liquid_setup.duplicate(true)
 	definition = definition.duplicate(true)
 	var exploratory: bool = CyberMicroScenarioCatalogue.exploratory_actor_map(definition) and mode != "Benchmark"
 	var selected_actor: Dictionary = actor_configuration if not actor_configuration.is_empty() else exploratory_actor_configuration
@@ -314,11 +548,47 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 	if not checked.get("ok", false) or not mode in CyberMicroScenarioContract.MODES:
 		microscenario_error = str(checked.get("error", "Invalid mode"))
 		return false
+	if not controlled_setup.is_empty():
+		var prepared_exploratory: bool = controlled_setup.get("intent", "controlled") == "exploratory"
+		var articulated: bool = prepared_exploratory and exploratory \
+			and not str(selected_actor.get("physical_rig", "")).is_empty()
+		if int(checked.definition.schema_version) != 2 or (checked.definition.body_enabled and not articulated):
+			microscenario_error = "Prepared liquid setup requires schema 2; this body route is not staged"
+			return false
+		if (not prepared_exploratory and (checked.definition.player_enabled
+			or checked.definition.execution.policy != "fixed" or checked.definition.interest.policy != "fixed")):
+			microscenario_error = "Controlled liquid setup requires a fixed actor-free MicroScenario"
+			return false
 	var player_configuration: Dictionary = (selected_actor.duplicate(true)
 		if exploratory and not selected_actor.is_empty()
 		else _player_configuration_for_microscenario(checked.definition))
 	if player_configuration.is_empty():
 		return false
+	var prepared_physical: bool = not controlled_setup.is_empty() \
+		and not str(player_configuration.get("physical_rig", "")).is_empty()
+	if not controlled_setup.is_empty() and player_configuration.get("representation", "sampled") == "barrel-rapier":
+		if not prepared_physical or not exploratory or mode == "Benchmark" \
+			or controlled_setup.get("intent","controlled") != "exploratory":
+			microscenario_error = "This prepared physical route is unavailable; current session retained"
+			return false
+	if prepared_physical:
+		var staged: RefCounted = _prepared_physical_factory.call() if _prepared_physical_factory.is_valid() else PreparedPhysical.new()
+		var definitions: Array = physical_actor_definitions(StringName(str(player_configuration.physical_rig)),
+			StringName(str(player_configuration.get("actor_producer","human"))),
+			bool(player_configuration.get("actor_demo_npcs",false)),
+			Vector2(checked.definition.player_start[0],checked.definition.player_start[1]))
+		if not staged.prepare(self,definitions,_physical_epoch+1):
+			microscenario_error = staged.last_error
+			staged.close()
+			return false
+		# Signal connection and all rig/equipment/space construction precede the
+		# native preparation. The exact same graph survives successful adoption.
+		staged.session.input_cancelled.connect(_on_physical_actor_input_cancelled)
+		_pending_physical_candidate = staged
+		_prepared_physical_identity = {};_prepared_physical_ready_sent = false
+		controlled_setup = controlled_setup.duplicate(true)
+		controlled_setup.physical_owner = {"epoch":_physical_epoch+1,"instance_id":staged.get_instance_id(),
+			"initial_bodies":staged.initial_body_states()}
 	if microscenario_panel != null: microscenario_panel.workbench.cancel_declared_window()
 	_microscenario_request_serial += 1
 	pending_microscenario_apply = {
@@ -326,7 +596,10 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 		"hash":checked.hash,
 		"definition":checked.definition,
 		"previous_paused":paused,
+		"previous_mode":microscenario_mode,
 		"player_configuration":player_configuration.duplicate(true),
+		"liquid_policy":liquid_policy.duplicate() if liquid_policy != null else null,
+		"controlled_liquid_setup":controlled_setup.duplicate(true),
 	}
 	microscenario_mode = mode
 	paused = true
@@ -338,16 +611,22 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 		"scenario_request_serial":_microscenario_request_serial,
 		"scenario_mode":mode,
 		"sampled_character_enabled":(
-			requested_representation != CyberPlayerRepresentation.BARREL_RAPIER
+			(controlled_setup.is_empty() or controlled_setup.get("intent", "controlled") == "exploratory")
+			and requested_representation != CyberPlayerRepresentation.BARREL_RAPIER
 		),
 		"runtime_enclosure_recovery_enabled":bool(
 			player_configuration.get("runtime_recovery_enabled", true)
 		),
 		"exploratory_actor_definitions":player_configuration.get("actor_definitions", []),
+		"liquid_policy":liquid_policy,
+		"controlled_liquid_setup":controlled_setup,
 	})
 	return true
 
 func _microscenario_installed(definition: Dictionary) -> void:
+	_liquid_tower_active = false
+	_liquid_water_active = false
+	microscenario_error = ""
 	var player_configuration: Dictionary = pending_microscenario_apply.get(
 		"player_configuration",
 		{
@@ -358,13 +637,18 @@ func _microscenario_installed(definition: Dictionary) -> void:
 	)
 	_apply_microscenario_player_configuration(definition, player_configuration)
 	microscenario_definition = definition.duplicate(true)
+	microscenario_liquid_policy = pending_microscenario_apply.get("liquid_policy", null)
+	microscenario_liquid_setup = pending_microscenario_apply.get("controlled_liquid_setup", {}).duplicate(true)
+	microscenario_liquid_setup.erase("physical_owner")
 	tower_active = true
 	paused = true
 	current_view_size = Vector2i(480, 270)
 	camera_follow_enabled = false
 	camera_origin = Vector2(definition.camera_origin[0], definition.camera_origin[1])
 	character_position = Vector2(definition.player_start[0], definition.player_start[1])
-	if physical_rig_id != &"":
+	if _pending_physical_candidate != null:
+		_adopt_prepared_physical_candidate()
+	elif physical_rig_id != &"":
 		_activate_articulated_actor_rigs(character_position)
 	elif player_uses_barrel():
 		_activate_microscenario_barrel_player(character_position)
@@ -375,11 +659,23 @@ func _microscenario_installed(definition: Dictionary) -> void:
 		showcase_presentation.installed(definition)
 	if blacksite_nine_presentation != null:
 		blacksite_nine_presentation.installed(definition)
+	if not microscenario_liquid_setup.is_empty():
+		simulation_worker.acknowledge_prepared_liquid_configuration(int(pending_microscenario_apply.get("serial",0)))
 
 func microscenario_reset() -> void:
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return
 	if tower_context.get("micro_active", false):
-		microscenario_apply_definition(microscenario_definition, microscenario_mode)
+		if not microscenario_liquid_setup.is_empty() and microscenario_liquid_policy != null:
+			if microscenario_liquid_setup.get("intent", "controlled") == "exploratory":
+				microscenario_apply_exploratory_liquid(microscenario_definition, microscenario_liquid_policy,
+					microscenario_liquid_setup.get("normalization", "") == "water-normalize-v1", microscenario_mode,{},
+					int(microscenario_liquid_setup.get("maximum_rule_radius",2)))
+			else:
+				microscenario_apply_controlled_liquid(microscenario_definition, microscenario_liquid_policy,
+					microscenario_liquid_setup.get("normalization", "") == "water-normalize-v1", microscenario_mode,
+					int(microscenario_liquid_setup.get("maximum_rule_radius",2)))
+		else:
+			microscenario_apply_definition(microscenario_definition, microscenario_mode)
 	elif water_controlled_run_active():
 		water_lab_reset()
 	else:
@@ -542,6 +838,10 @@ func water_controlled_run_active() -> bool:
 func water_lab_apply_result(result: Dictionary, blind_label: String = "") -> void:
 	if not result.get("ok",false): return
 	if not _water_blind_application_allowed(result,blind_label): return
+	if _liquid_water_active and tower_context.get("water_active",false):
+		_apply_prepared_liquid_water(microscenario_liquid_policy,microscenario_liquid_setup.get("normalization","") == "water-normalize-v1",
+			int(microscenario_liquid_setup.get("maximum_rule_radius",2)),result)
+		return
 	_force_sampled_player_for_lab()
 	var checked: Dictionary=CyberWaterExperimentProfiles.resolve({},{},result.policy)
 	if not checked.get("ok",false) or str(checked.hash)!=str(result.hash): return
@@ -567,6 +867,9 @@ func water_lab_prepare_blind(
 		blind_seed: int = -1
 	) -> bool:
 	if not water_policy_available: return false
+	if _liquid_water_active:
+		microscenario_error = "Prepared solver Water Feel is Exploratory; return to the original constructor before starting a blind run"
+		return false
 	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty():
 		return false
 	var candidates: Array=[]
@@ -608,6 +911,7 @@ func water_lab_apply_blind(index: int = -1) -> bool:
 	return true
 
 func _activate_water_body_scenario(active: bool) -> void:
+	_close_prepared_reference_bodies()
 	_close_physical_actors()
 	var default_shape := RectangleShape2D.new()
 	default_shape.size = TEST_RIGID_BODY_SIZE
@@ -660,6 +964,11 @@ func tower_floor_select(index: int) -> void:
 	tower_command({"floor":tower_floor})
 
 func tower_reset() -> void:
+	if _liquid_tower_active and tower_active and not tower_context.get("micro_active",false) and not tower_context.get("water_active",false):
+		_apply_prepared_liquid_tower(microscenario_liquid_policy,microscenario_liquid_setup.get("normalization","") == "water-normalize-v1",
+			int(microscenario_liquid_setup.get("maximum_rule_radius",2)),CyberTransportProfiles.resolve(tower_profile))
+		return
+	_liquid_tower_active = false
 	_force_sampled_player_for_lab()
 	pending_microscenario_apply.clear()
 	_water_exit_request_serial += 1
@@ -692,6 +1001,10 @@ func tower_focus_tube(index: int) -> void:
 	camera_origin=Vector2(clampf(float(tubes[index][0])-100.0,0.0,1024.0-current_view_size.x),CyberExperimentTower.floor_y(tower_floor))
 
 func tower_apply_profile(resolved: Dictionary) -> void:
+	if _liquid_tower_active and not tower_context.get("micro_active",false) and not tower_context.get("water_active",false):
+		_apply_prepared_liquid_tower(microscenario_liquid_policy,microscenario_liquid_setup.get("normalization","") == "water-normalize-v1",
+			int(microscenario_liquid_setup.get("maximum_rule_radius",2)),resolved)
+		return
 	pending_microscenario_apply.clear()
 	_water_exit_request_serial += 1
 	pending_water_exit={"kind":"profile","request_serial":_water_exit_request_serial}
@@ -751,6 +1064,9 @@ func _reconcile_water_exit(context: Dictionary) -> void:
 		pending_water_exit.clear()
 	elif not bool(context.get("water_active",true)) and context.has("profile"):
 		_water_end_blind_session()
+		_liquid_water_active = false
+		if not _liquid_tower_active and not context.get("micro_active",false):
+			microscenario_liquid_policy = null;microscenario_liquid_setup = {};microscenario_definition = {}
 		pending_water_exit.clear()
 
 func water_runtime_identity() -> Dictionary:
@@ -1042,6 +1358,15 @@ func apply_player_environment_profile(candidate: Dictionary) -> void:
 			"Rejected: " + str(resolved.get("error", "invalid profile"))
 		)
 		return
+	if _liquid_default_active:
+		# Profile tuning remains a fresh reset. Keep the request inside its
+		# private candidate rather than modifying the retained player first.
+		if _apply_prepared_liquid_default(microscenario_liquid_policy,
+			microscenario_liquid_setup.get("normalization","") == "water-normalize-v1",
+			int(microscenario_liquid_setup.get("maximum_rule_radius",2)),true,null,resolved.profile):
+			pending_player_environment_profile = resolved.profile.duplicate(true)
+		else: player_environment_panel.set_error(microscenario_error)
+		return
 	if not simulation_worker.queue_player_environment_profile(resolved.profile):
 		player_environment_panel.set_error("Worker rejected the player/environment profile.")
 		return
@@ -1182,6 +1507,8 @@ func _ready() -> void:
 		showcase_presentation.launch.call_deferred()
 	elif feature == "actors":
 		toggle_actor_prototypes.call_deferred()
+	elif feature == "liquid_comparison":
+		microscenario_panel.open_liquids.call_deferred(true)
 	elif feature.is_empty() and "--blacksite-nine" in OS.get_cmdline_user_args():
 		blacksite_nine_presentation.launch.call_deferred()
 	elif feature.is_empty() and "--showcase" in OS.get_cmdline_user_args():
@@ -1192,6 +1519,8 @@ func _exit_tree() -> void:
 	if gameplay_recorder.is_active():
 		var stopped: Dictionary = gameplay_recorder.stop_recording()
 		print("REC-001 recording finalized at exit: ", JSON.stringify(stopped))
+	_close_pending_physical_candidate()
+	_close_prepared_reference_bodies()
 	_close_physical_actors()
 	simulation_worker.stop_worker()
 	rapier_bridge.shutdown()
@@ -1203,7 +1532,8 @@ func _process(delta: float) -> void:
 	frame_time_ms = delta * 1000.0
 	maximum_frame_time_ms = maxf(maximum_frame_time_ms, frame_time_ms)
 	consume_worker_snapshot()
-	refresh_actor_usables()
+	_advance_prepared_physical_candidate()
+	if _pending_physical_candidate == null: refresh_actor_usables()
 	gameplay_recorder.poll_finalization()
 	_refresh_recording_button()
 	sync_player_presentation_position()
@@ -1247,6 +1577,11 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	if _pending_physical_candidate != null:
+		# The retained manually stepped space stays at its actual prior pose.
+		# Do not reconfigure its equipment, revoke its leases or publish stale
+		# body frames while the separate replacement graph is being prepared.
+		return
 	if physical_actor_session != null:
 		physical_actor_session.set_suspended(paused or simulation_worker.has_failed()
 			or not _physical_terrain_ready or _actor_reset_receipt != 0
@@ -1760,6 +2095,9 @@ func refresh_player_representation_button() -> void:
 
 
 func cycle_player_representation() -> bool:
+	if _liquid_default_active:
+		microscenario_error = "Prepared native default demo retains its sampled player; load a Current setup before changing player representation"
+		return false
 	if (
 		tower_active
 		or water_controlled_run_active()
@@ -1797,8 +2135,15 @@ func toggle_sampled_runtime_recovery() -> bool:
 		or tower_active
 		or water_controlled_run_active()
 		or tower_context.get("micro_active", false)
+		or not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty()
 	):
 		return false
+	if _liquid_default_active:
+		# The requested flag belongs to the candidate player. Main adopts it only
+		# with the accepted native World and physical graph; refusal retains it.
+		return _apply_prepared_liquid_default(microscenario_liquid_policy,
+			microscenario_liquid_setup.get("normalization","") == "water-normalize-v1",
+			int(microscenario_liquid_setup.get("maximum_rule_radius",2)),true,not sampled_runtime_recovery_enabled)
 	sampled_runtime_recovery_enabled = not sampled_runtime_recovery_enabled
 	reset_world()
 	return true
@@ -1975,6 +2320,11 @@ func sync_player_presentation_position() -> void:
 
 func reset_world() -> void:
 	if water_controlled_run_active(): return
+	if _liquid_default_active:
+		_apply_prepared_liquid_default(microscenario_liquid_policy,
+			microscenario_liquid_setup.get("normalization","") == "water-normalize-v1",
+			int(microscenario_liquid_setup.get("maximum_rule_radius",2)))
+		return
 	if physical_rig_id != &"":
 		apply_actor_prototype_configuration(StringName("rapier/" + str(physical_rig_id)),
 			actor_producer_selection, actor_demo_npcs)
@@ -2090,17 +2440,47 @@ func consume_worker_snapshot() -> void:
 	latest_snapshot = snapshot
 	_reconcile_actor_prototype_reset()
 	tower_context = snapshot.lab_context
+	if _liquid_default_active and pending_microscenario_apply.is_empty() \
+		and int(tower_context.get("liquid_solver_policy",{}).get("session_generation",0)) != _liquid_default_generation:
+		_liquid_default_active = false
 	if not pending_microscenario_apply.is_empty():
-		if (tower_context.get("micro_active", false)
+		if (pending_microscenario_apply.get("route","") == "native_default"
+			and int(tower_context.get("scenario_request_serial",0)) == int(pending_microscenario_apply.serial)
+			and tower_context.get("scenario_request_applied",false)
+			and tower_context.get("native_default_demo",{}).get("prepared",false)):
+			_prepared_liquid_default_installed()
+			pending_microscenario_apply.clear()
+		elif (pending_microscenario_apply.get("route","") == "water" and tower_context.get("water_active",false)
+			and int(tower_context.get("scenario_request_serial",0)) == int(pending_microscenario_apply.serial)
+			and bool(tower_context.get("scenario_request_applied",false))
+			and str(tower_context.get("microscenario",{}).get("definition_hash","")) == str(pending_microscenario_apply.hash)):
+			_prepared_liquid_water_installed()
+			if tower_context.get("microscenario",{}).get("failed",false):
+				microscenario_error = "Installed session apparatus failed: " + str(tower_context.microscenario.get("error","unavailable"))
+			pending_microscenario_apply.clear()
+		elif (pending_microscenario_apply.get("route","") == "tower" and not tower_context.get("micro_active",false)
+			and int(tower_context.get("scenario_request_serial",0)) == int(pending_microscenario_apply.serial)
+			and bool(tower_context.get("scenario_request_applied",false))
+			and str(tower_context.get("microscenario",{}).get("definition_hash","")) == str(pending_microscenario_apply.hash)):
+			_prepared_liquid_tower_installed()
+			if tower_context.get("microscenario",{}).get("failed",false):
+				microscenario_error = "Installed session apparatus failed: " + str(tower_context.microscenario.get("error","unavailable"))
+			pending_microscenario_apply.clear()
+		elif (tower_context.get("micro_active", false)
 			and int(tower_context.get("scenario_request_serial", 0)) == int(pending_microscenario_apply.serial)
 			and bool(tower_context.get("scenario_request_applied", false))
 			and str(tower_context.get("microscenario", {}).get("definition_hash", "")) == str(pending_microscenario_apply.hash)):
 			_microscenario_installed(pending_microscenario_apply.definition)
+			if tower_context.get("microscenario", {}).get("failed", false):
+				microscenario_error = "Installed session apparatus failed: " + str(tower_context.microscenario.get("error", "unavailable"))
 			pending_microscenario_apply.clear()
 		elif (int(tower_context.get("scenario_request_serial", 0)) == int(pending_microscenario_apply.serial)
 			and not bool(tower_context.get("scenario_request_applied", true))):
+			if pending_microscenario_apply.get("profile_request",false): pending_player_environment_profile = {}
 			paused = bool(pending_microscenario_apply.previous_paused)
+			microscenario_mode = str(pending_microscenario_apply.get("previous_mode", microscenario_mode))
 			microscenario_error = str(tower_context.status)
+			_close_pending_physical_candidate()
 			pending_microscenario_apply.clear()
 	var capture_serial: int = int(tower_context.get("micro_capture_serial", 0))
 	if capture_serial > microscenario_capture_seen and not tower_context.get("micro_capture", {}).is_empty():
@@ -2113,6 +2493,7 @@ func consume_worker_snapshot() -> void:
 			var applied: Dictionary=pending_water_apply
 			var recipe: Dictionary=applied.recipe
 			water_policy_resolved=applied.result.duplicate(true)
+			_liquid_water_active = false
 			water_policy_available=true
 			water_active_blind_label=str(applied.blind_label)
 			tower_active=true
@@ -2275,7 +2656,7 @@ func actor_prototypes_allowed() -> bool:
 		and CyberMicroScenarioCatalogue.exploratory_actor_map(microscenario_definition)
 		and microscenario_mode != "Benchmark")
 	return ((exploratory or (not tower_active and not tower_context.get("micro_active", false)))
-		and not water_controlled_run_active()
+		and not water_controlled_run_active() and not _liquid_default_active
 		and pending_microscenario_apply.is_empty() and pending_water_apply.is_empty())
 
 
@@ -2332,6 +2713,81 @@ func physical_actor_definitions(model_id: StringName, producer: StringName, demo
 	return definitions
 
 
+func _close_pending_physical_candidate() -> void:
+	if _pending_physical_candidate != null: _pending_physical_candidate.close()
+	_pending_physical_candidate = null
+	_prepared_physical_identity = {};_prepared_physical_ready_sent = false
+
+func _advance_prepared_physical_candidate() -> void:
+	if _pending_physical_candidate == null or _prepared_physical_ready_sent: return
+	var publication: Dictionary = simulation_worker.prepared_physical_liquid_values()
+	if publication.is_empty(): return
+	if int(publication.get("serial",0)) != int(pending_microscenario_apply.get("serial",-1)) \
+		or int(publication.get("instance_id",0)) != _pending_physical_candidate.get_instance_id(): return
+	if _prepared_physical_identity.is_empty():
+		_prepared_physical_identity = publication.duplicate(true)
+		if publication.initial_bodies != _pending_physical_candidate.initial_body_states() \
+			or not _pending_physical_candidate.install_terrain(publication.terrain):
+			simulation_worker.complete_prepared_physical_liquid(_prepared_physical_identity,false,
+				"initial body identity or terrain refused")
+			_prepared_physical_ready_sent = true
+			return
+	if not _pending_physical_candidate.verify_physics_frame() \
+		or not _pending_physical_candidate.prepare_terrain_budget(HARD_SURFACE_CHUNKS_PER_FRAME,HARD_SURFACE_FRAME_BUDGET_USEC):
+		simulation_worker.complete_prepared_physical_liquid(_prepared_physical_identity,false,
+			_pending_physical_candidate.last_error)
+		_prepared_physical_ready_sent = true
+		return
+	if _pending_physical_candidate.ready():
+		_prepared_physical_ready_sent = simulation_worker.complete_prepared_physical_liquid(
+			_prepared_physical_identity,true)
+
+func _adopt_prepared_physical_candidate() -> void:
+	# Every declared fallible operation completed before main sent readiness.
+	# Retire the old owner only after native and worker state accepted this graph.
+	var accepted: RefCounted = _pending_physical_candidate
+	_pending_physical_candidate = null
+	_close_physical_actors()
+	_close_prepared_reference_bodies()
+	for body: RigidBody2D in [test_rigid_body_1,test_rigid_body_2,test_rigid_body_3]:
+		body.freeze = true;body.collision_layer = 0;body.collision_mask = 0
+	rapier_bridge.shutdown()
+	if accepted.owner_kind() == "reference_body":
+		_accepted_reference_candidate = accepted
+		rapier_bridge = accepted.physics_bridge()
+		rigid_bodies = accepted.bodies()
+		_physical_terrain_ready = true
+		rapier_start_error = OK
+		last_hard_surface_revision = latest_snapshot.hard_surface_revision
+		hard_surface_rebuild_cooldown = 0.0
+		accepted.adopt()
+		_prepared_physical_identity = {};_prepared_physical_ready_sent = false
+		return
+	_accepted_physical_candidate = accepted
+	physical_actor_session = accepted.session
+	_physical_epoch = physical_actor_session.epoch
+	rapier_bridge = physical_actor_session.bridge
+	rigid_bodies = physical_actor_session.bodies()
+	_physical_terrain_ready = true
+	rapier_start_error = OK
+	last_hard_surface_revision = latest_snapshot.hard_surface_revision
+	hard_surface_rebuild_cooldown = 0.0
+	var loadout: Dictionary = PhysicalLoadouts.entry(physical_rig_id)
+	actor_usable_index = int(loadout.get("usable_index",-1))
+	_actor_usable_requested_index = actor_usable_index
+	_actor_usable_power = float(loadout.get("power",0.8))
+	_actor_usable_transition_pending = false;_actor_usable_pointer_rearm = true
+	simulation_worker.set_physical_actor_epoch(_physical_epoch)
+	accepted.adopt()
+	_prepared_physical_identity = {};_prepared_physical_ready_sent = false
+
+func _close_prepared_reference_bodies() -> void:
+	if _accepted_reference_candidate == null: return
+	_accepted_reference_candidate.close()
+	_accepted_reference_candidate = null
+	rigid_bodies.clear()
+	last_hard_surface_revision = -1
+
 func _activate_articulated_actor_rigs(spawn: Vector2) -> bool:
 	var definitions: Array = physical_actor_definitions(physical_rig_id,
 		actor_producer_selection, actor_demo_npcs, spawn)
@@ -2372,8 +2828,12 @@ func _close_physical_actors() -> void:
 	if physical_actor_session == null:
 		return
 	simulation_worker.set_physical_actor_epoch(0)
-	physical_actor_session.close()
-	physical_actor_session.free()
+	if _accepted_physical_candidate != null:
+		_accepted_physical_candidate.close()
+		_accepted_physical_candidate = null
+	else:
+		physical_actor_session.close()
+		physical_actor_session.free()
 	physical_actor_session = null
 	rigid_bodies.clear()
 	rapier_bridge = CyberRapierPhysicsBridge.new()

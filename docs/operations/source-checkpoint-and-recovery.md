@@ -10,6 +10,85 @@ related-documents: [local-build-and-validation.md, ../reference/validation-evide
 
 # Source checkpoint and recovery
 
+## Recoverable post-publication identity-test overlay
+
+The current App checkpoint is ea96 plus exactly two frozen GDScript test changes,
+with their raw/LF hashes, failed Linux40232042725 packet62322347 and two actual
+Windows artifact-cohort receipts54ac62ab/cb29759a in the [correction ledger](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25).
+All80 native manifest entries and139 recorded compiled inputs stay exact.
+Historical build535 has exactly two changed test paths and no added paths;
+the other533 remain equal. Do not rewrite the original source5f02 publication,
+a704/all615 maps, runtimes, manifests, profiles or requests. No later commit is
+claimed as executed before its own gates. Root owns the corrected source/docs
+commit, push and fresh #256 final-head CI; #257 must consume it before readiness.
+No new Native build/publication or Web work is part of this test correction.
+
+## Current scoped application runtime publication — 2026-10-25
+
+The [actual003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source
+`5f02d089ee4cff8b34421cc4ca58bb4ef50dd92c`, run40226343524 and four-path bot
+`0c9b197754d57e1eb579a52d745a1ca8fd0d2b32`. Windows runtimee3f17363
+(4,824,064 bytes) and Linux02ea0661 (4,222,304 bytes) each pass import plus
+all35 strict host/control cases:72 actual processes total, with matched
+native80/build535 input ledgers and642 policy assertions per OS. The
+earlier eight App provenance comparisons describe pre-publication inputs;
+the new manifests cover all80 current native inputs.
+
+The six approval-held bot follow-ups are not validation greens. Final
+exact-head CI/review, remaining constructors and complete host/scientific/
+manual qualification stay open; #202 and #203 are not complete. The owner
+defers additional Web/browser/shader work until after this epic. Historical
+Web functional success and rendering failure are retained; no rendering
+pass or fallback is claimed. All non-Web requirements remain in force.
+
+PR #254 is now accepted on main
+`06451f8ac9e8ac9b23a105d2fe22393375dc2d6b`, after its exact02c Documentation,
+Native, GDExtension/Godot and #49 gates and bounded reviews passed. The
+[publication ledger](../audits/2026-10-25-lcb003-runtime-publication.md#accepted-water-main-and-content-identical-integration--2026-10-25)
+binds those receipts. Local normal mergea704ce50 consumes that main with the
+unchanged bot0c9 tree; all615 publication inputs and139 compiled inputs remain
+exact. This does not substitute Water's gates for the application's final
+exact-head CI or close #202/#203.
+
+The recoverable checkout is `C:/Users/_/.codex/worktrees/lcb003-final-integration/khybersand`,
+branch `codex/lcb003-final-integration`. Published source5f02 has tree
+`18f7cb7c481b2aa1be59e955f2d13d9e9a224558`; bot0c9b has tree
+`0f652ef5d898a5803cf4694f24e87ad559e74386` and sole parent5f02.
+Root accepted the independent publication review and materialized all18
+LFS payloads before releasing the branch freeze. The later authorized normal
+merge is `a704ce50de7c69c8dd66550c762caccb33a960a6`, with parents0c9b and
+accepted main06451f8a and the same tree0f652ef5. All twelve uncommitted
+documentation files survive that merge with identical pre-merge bytes; their
+publication-only checkpoint00fd41b1 remains immutable historical evidence.
+Later constructor trials in separate worktrees are outside this checkpoint.
+
+## Historical preparation and Water-artifact consumption
+
+The earlier source-bound records below retain their original unarmed,
+runtime-mismatch and pending-publication statements. They do not describe
+the actual003 publication above or relabel older executions.
+
+The application branch now normally consumes reviewed Water source/publication
+checkpoint02c33341 through merge108b84d1, including actual sequence2 sourceaa8af247,
+run40220697738 and bot03cccd8f. Merge1d376fb3 also consumes the separately reviewed
+Web evidencec8bd9623. All139 inputs of the development DLL46a remain equal to
+compiled18d/tested3d. The local164 native/39 sanitizer/import-plus35-host results
+retain those source identities. Relative to the696-source executed snapshot,
+691 entries stay exact; four published runtime/provenance paths and Water's
+sequence2 request are explicit later exceptions, with no native or host-code
+change. This is not a fresh host execution at the new merge head.
+
+Fresh proper-companion provenance reports eight remaining App input mismatches,
+four per OS: cyber_demo_bridge.hpp, cyber_native_cell_world.cpp/.hpp and
+prepared_world.hpp. The published kernel clears the earlier world.cpp pair;
+no mismatch is waived. The [runtime-consumption record](../audits/2026-10-25-lcb003-final-integration.md#published-water-sequence2-consumption--2026-10-25)
+binds the source/artifact exceptions and six passing cheap gates.003 remains
+unarmed/request absent with no push. Its source-matched Windows/Linux runtime
+publication and fresh35-case execution, final exact-head gates, remaining host
+constructors and scientific/feel acceptance remain required. The consumed
+[Web evidence](../audits/2026-10-25-lcb003-web-common-water.md) retains77/76 functional success and the rendering failure;
+minimal-palette diagnostics do not qualify full appearance or manual play.
+
 ## Current recoverable Water sequence2 checkpoint — 2026-10-25
 
 The original isolated checkout is
@@ -36,7 +115,51 @@ its later metadata drift is separately disclosed. Full ready-head, scientific
 and host/Web acceptance remain separate. Earlier recovery records below are
 historical, including the Main/Flight refresh and sequence1.
 
-The historical unchanged-native [Water main refresh](../audits/2026-10-25-water-inertial-publication.md#main-flight-lease-refresh-and-native-binary-reuse--2026-10-25)
+**Earlier source-bound application evidence, before this Water artifact merge:**
+
+Local application preparation now normally integrates reviewed Water c97f68ec
+at18d20740, then commits only the sampled-test helper extraction at3d338356.
+Fresh DLL46a8b4d9, compiled18d with all139 inputs equal at tested3d, passes164
+ordinary native groups, seven receipt-byte oracles and39 focused ASan/UBSan
+groups. Fresh import plus all35 host cases pass:36 exit0 processes with696
+source files,646 post-import project inputs and139 native inputs held. The
+[packed storage/startup preparation](../audits/2026-10-25-lcb003-final-integration.md#packed-worker-storage-and-startup-local-preparation--2026-10-25)
+records receiptbbbea760 and preserves the failed first matrix, old-DLL A/B
+crash and exact helper-only correction. Normal merge1371a250 adds reviewed
+Water documentation34e0979b without changing those compiled/executed inputs.
+Earlier dd00/f34 and source4948 browser proof remain source-qualified; actual
+18d browser functional checks do not clear the observed shader/black-viewport
+visual failure. Final Water sequence2 bot/docs and combined publication remain
+required;003 stays unarmed, with ten real C9 source/runtime blockers and no
+local push or runtime/manifest commit.
+
+Before003 arming, accepted main9935d569 (#249) normally merges into the final
+application branch as c3cde29f. Exactly five incoming flight paths are preserved,
+including the shared interface contract's flight section. The [additive source
+qualification](../audits/2026-10-25-lcb003-final-integration.md#fresh-main-flight-lease-merge--2026-10-25)
+binds fresh import/actual8,284-assertion Flight execution, unchanged139 native
+inputs and the two explicit Flight exceptions to the old693 source map. The
+earlier36-process host matrix remains sourcee8f1d37b evidence; it is not
+relabeled as a whole-current-head run. The003 request remains absent.
+
+## Recoverable final application integration source — 2026-10-25
+
+The separate managed checkout is
+`C:/Users/_/.codex/worktrees/lcb003-final-integration/khybersand`, branch
+`codex/lcb003-final-integration`. Normal merge97a0a904 consumes accepted main
+dc915f2b; f1d05312 consumes desktop5f3f0c21;84cafad9 consumes published Water
+c9e52b52; c4a29355 consumes final Water docse2411469. Functional5249d67c and
+publisher41a5fc27/e8f1d37b preserve old fixtures and require exact new identities.
+Normal merged2f7f56 consumes the separately tested Web apparatus4948db7c;
+d12b7858 consumes its separately reviewed actual-browser evidenceb8cfdf24.
+The complete local matrix binds the earlier unchanged functionale8f1d37b.
+The [integration ledger](../audits/2026-10-25-lcb003-final-integration.md) binds
+local source/runtime/proof hashes and retained apparatus failures. Frozen
+applicationf23f3d35/PR252 and desktop5f3f0c21/PR255 stay recoverable and separate.
+The003 request remains absent; this source checkpoint is not publication or
+final programme acceptance.
+
+The [Water main refresh](../audits/2026-10-25-water-inertial-publication.md#main-flight-lease-refresh-and-native-binary-reuse--2026-10-25)
 is isolated at `C:/Users/_/.codex/worktrees/lcb005-water-main-refresh/khybersand`,
 branch `codex/lcb005-water-main-refresh`. Normal merge38cb593d has parents
 e2411469 and accepted main9935d569. All76 native inputs, published libraries,
@@ -234,3 +357,16 @@ C:/kybersand/worktrees/issue-17-state-precision. [Evidence](../audits/2026-09-11
 records exact compiler/executable/local-delta hashes and all retained samples.
 C:/kybersand/source remains at f3fb9de with its deliberately dirty DLL untouched.
 No experiment branch is merged into production. Raw data and toolchains stay local.
+
+
+## Unmerged desktop native-default owner — 2026-10-25
+
+Recover `codex/lcb003-desktop-default` at native705a2e2d and owner/test66bf30f8,
+whose full identity and immutable local evidence are recorded in the
+[dated checkpoint](../audits/2026-10-25-lcb003-desktop-native-default-host.md).
+The original dirty source checkout and companion pins are untouched. This source
+requires final normal integration with repaired Brine/Water-IN and the application
+branch, fresh source-matched Windows/Linux runtimes and actual Web/full-host gates.
+The development DLL and preserved failed shutdown experiments are not released
+runtime acceptance. Native capacity and owner/test changes are separate commits;
+documentation is an additive follow-up checkpoint.

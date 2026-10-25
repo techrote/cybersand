@@ -11,6 +11,33 @@ last-reviewed: 2026-10-25
 
 # Data ownership and lifetimes
 
+The [final application union](liquid-prepared-setup-and-receipts.md#final-application-source-union)
+extends the existing precommit fractional future-source refusal to both admitted
+whole-cell Water families CY/IN. Initial normalization is setup-only. Refusal
+retains the live World/player/body graph, copied native receipt/host observation
+and accepted reset input. No native worker calls Godot and no additional live
+World or body-space owner is introduced by this integration.
+
+The later synchronous [supported-body Water Feel owner](liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel)
+uses one exact copied request, native token and permanently private frozen graph.
+Actual initial masks/final execution precede capture; mode/profile/settings,
+source generation/semantic identity, serial/lifetime and native fences precede
+adoption. Refusal retains old World/player/graph/receipt/record/cursors; successful
+body-free change closes the old graph after commit. No duplicate live World,
+physics rebind or Godot API crosses a native worker boundary.
+
+## Explicit imported-level ownership
+
+The unmerged #202 synchronous [normal import route](liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
+keeps the running World/player/receipt/record until native preparation, private
+sampled-player configuration, qualified observation and final serial guard all
+pass. Native exclusively owns the pending World; the private level session owns
+copied decoded payload/metadata/selection. Commit consumes the token once, then
+the controller adopts staged values. Restart reconstructs that retained input;
+ordinary default replacement retires it. Unsupported physical/tower/showcase
+owners refuse without detaching or rebinding their actual graph. No live scene
+object crosses a worker boundary, and this synchronous route adds no tick work.
+
 ## Water IN actual carrier and scratch ownership
 
 **Current isolated Water successor:** the native slot follows its complete Water
@@ -139,6 +166,7 @@ but must not touch live scene-tree or Rapier objects.
 | Delayed pair deadline | Workers report through fixed disjoint job spans into two preallocated `ParallelState` flag/deadline buffers; the coordinator reduces the earliest deadline into shared block metadata after the phase barrier and wakes it at healthy tick entry | One persistent scalar per block plus bounded scheduler scratch; buffers outlive job spans and pool, excluded blocks retain deadlines, clear/replacement discards them |
 | Native snapshot slots | One serialized producer writes only an unleased slot | Shared exchange state outlives its facade while leases exist; no-slot/capacity failure retains dirty state |
 | Desktop world, sampled character and optional actor prototypes | Godot pacing Thread after startup handoff | Worker lifetime; stopped/joined before destruction; actor session reset invalidates old input epochs |
+| Controlled liquid preparation candidate and token (experimental #202 source) | The exclusive native adapter owns one pending World, render exchange, final setup and copied native receipt | Final configuration precedes capture; one-use token commit checks retained state and the desktop queue-mutex request/reset/stop fence. Discard/supersession/refusal retain the applied session; [sampled owners](liquid-prepared-setup-and-receipts.md#staged-sampled-actors-and-exploratory-owners) and [desktop articulated physical owners](liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners) prepare before commit. Physical graph/space stays main-owned, frozen and permanent; copied readiness and actual initial masks bind its nonblocking continuation. Other constructors and full evidence stay open |
 | Live body nodes, RIDs and physics state | Main-thread Rapier bridge and PhysicsServer2D | Scene/bridge lifetime; never passed to cellular workers |
 | Physical actor rigs, joints and local controllers | Main-thread `CyberPhysicalActorSession`; at most eight rigs/eight total parts each | Run/actor/epoch-bound command leases; cancel discards future work, close retires bodies/joints |
 | 4LY profile and local force/torque response | Validated copied profile and a main-thread pure controller under the same physical session; own velocity/attitude inputs only | Single chassis with explicit absent equipment; cancellation/expiry reset response state and select passive fallback without changing body momentum; see [free-flight contract](../systems/physical-free-flight.md) |
@@ -478,3 +506,19 @@ candidates preserve the accepted recipe, cache and history. Undo/redo restores
 recipe content with fresh session/request identities so old results cannot be
 readmitted. Auxiliary seed/comparison owners are private, finite and cancelled
 on identity changes. This is authoring isolation, not world mutation rebasing.
+
+
+## Prepared native-default owner transaction
+
+On unmerged66bf30f8 the exclusive desktop worker owns the native default candidate
+and private sampled owner; Main owns the frozen permanent body graph and live
+Rapier objects. Copied native origin/session identity authorizes this constructor;
+Main reads immutable published host records rather than the live World. Final
+request/settings/native/token guards and observation construction precede commit.
+Success alone adopts both owners and F7/PENV preferences. Initial native gas
+capacity refusal precedes capture/token/swap; retained World/graph/receipt/record
+remain usable. Construction-only capacity vectors never enter tick execution.
+The [canonical prepared boundary](liquid-prepared-setup-and-receipts.md#desktop-native-default-owner-and-initial-pressure-capacity)
+and [dated proof](../audits/2026-10-25-lcb003-desktop-native-default-host.md) keep
+local Windows qualification, test-resource lifetime remediation and final
+combined/platform/full-host gaps separate.

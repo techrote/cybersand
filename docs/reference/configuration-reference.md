@@ -10,6 +10,70 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 # Configuration reference
 
+The [final application union](../architecture/liquid-prepared-setup-and-receipts.md#final-application-source-union)
+preserves Current default tuples/clocks, protected radius2 and explicit IN
+radius3. Water capability admission changes the embedded policy namespace:
+default policy4b7922ad…cab53a/capability33c608f8…276e237/hash-version2 uses its
+separately frozen fixture, while the old6e005e61/55141a32 fixture is immutable.
+Unknown namespaces refuse. CY/IN fractional future sources refuse despite an
+initial normalization opt-in. The default PF gas-capacity limit remains1024;
+the authored default's three PF choices return typed initial admission refusal.
+
+Synchronous [supported-body Water Feel](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel)
+retains its actual Current poses(124,90),(244,90),(384,90),8×14 bodies at rest,
+fixed480×270 Water view, recipe camera/player/actions and actual quality buffers/
+publication cadence. Low quality is explicitly tested with margins16/18 and
+30Hz publication; selecting Water still keeps its original fixed view. The
+existing two-frozen-frame/20,000ms readiness and per-frame terrain budgets stay.
+These synchronous poses differ from desktop Water Feel helper defaults.
+
+The bounded synchronous Physics Pit route preserves its actual original three
+8×14 bodies at(124,90),(244,90),(384,90), zero angles/velocities and sampled
+player(24,222). These differ from desktop Water Feel's default helper poses. Pending
+terrain work uses the existing per-frame chunk/time budget, requires at least
+two actual frozen physics frames and refuses after20,000ms readiness wait.
+That construction bound is not a simulation-tick deadline or a Web ownership
+change. Current view/quality/cadence/adhesion are captured before native receipt.
+
+The shared prepared three-body helper accepts optional copied positions and
+rotations. Empty arrays retain the existing Water Feel centers(160,176),
+(212,176),(264,176) and zero angles independently; supplied arrays must each
+contain exactly three finite values before any private viewport allocation.
+This is caller-supplied constructor data, not a new global spawn/default or
+admission route. Original size/mass/physical settings and readiness remain.
+
+The unmerged #202 [four ordinary synchronous demo route](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-synchronous-demo-rebuilding)
+requires explicit Exploratory apply and copies its recipe/policy/normalization/
+radius for Restart. It captures actual quality/view: tested quality0 gives
+buffered region(0,0,336,198), quality2 gives(0,0,704,432), with original player
+(24,222), camera(0,0) and unchanged render cadence. Explicit IN/control geometry3
+and default Current geometry2 remain distinct. Unsupported inherited laws and
+independent transport refuse; prepared-owned Baseline is component/generation/
+receipt bound. No global policy default or settings persistence is introduced.
+
+The unmerged #202 [explicit level-import selection](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
+is initially unarmed. Exploratory opt-in copies the native-validated liquid
+policy, empty or `water-normalize-v1` rule and explicit radius2/3 for the next
+ordinary body-free import. Its accepted private reconstruction holds one fixed
+5,242,880-byte decoded payload plus bounded CYSD metadata and copied selection;
+it is not serialized policy configuration. Saved quality0/1/2 selects the existing
+320×180/480×270/640×360 views, margins16×18/32×36/64×72 and publication30/45/60Hz.
+Those values, final camera/region, current cadence and saved adhesion are applied
+before native capture. Existing Current import/defaults and format limits remain.
+Prepared import currently accepts production interaction component `8:9:30` and
+diagnostic-law component `0:-1` only. Other support/period/exchange/viscosity or
+independent transport settings refuse transactionally. A private accepted
+configured Baseline is admitted only with matching native component/generation/
+applied receipt identity. The prepared builder enables observational diagnostics;
+this does not claim the telemetry flag is preserved from ordinary Current.
+
+The explicit LCB Web apparatus flag is `?test=1&liquid-host-test=1`. It uses
+actual synchronous prepared-owner calls and emits a terminal copied result;
+normal startup is unchanged. This is a test selector, not a solver or gameplay
+default. Browser execution/POST/ordinary walkthrough remain distinct from the
+exporter's qualified build identity. The [combined host checkpoint](../audits/2026-10-25-lcb003-combined-host-web-prerequisite.md)
+records the native prerequisite and remaining platform gates.
+
 **Current:** the following values are inspected source/configuration at the
 [secured checkpoint](../operations/source-checkpoint-and-recovery.md). They are
 prototype/runtime values, not automatically approved production defaults or
@@ -309,13 +373,72 @@ default 0. Its law version is 1; the illustrative material-block v1
 `flow_rate_permille` schema is not reinterpreted. Whole-cell Water requires
 `maximum()` at ingress. Explicit native `water-normalize-v1` preparation admits
 3–8 mass bits, at most 1024 cells per domain side and 1,048,576 final unique tuple
-records (caller may lower the record budget). There is no Godot typed
-normalization opt-in route yet.
+records (caller may lower the record budget). The subsequent experimental
+`codex/lcb003-application-host` slice adds typed normalization opt-in for fixed,
+actor-free schema-2 MicroScenarios in both existing application owners. Its
+`normalize_water` bool maps only to the explicit `water-normalize-v1` rule;
+false never rounds silently. Unknown native rule strings refuse. There is one
+pending preparation token per adapter, and Reset retains the accepted option.
+See the [bounded host contract](../architecture/liquid-prepared-setup-and-receipts.md#controlled-application-host-preparation-slice)
+for its constructor and platform limits. Subsequent explicit Exploratory source
+stages body-free sampled ownership. Candidate collision queries keep the same
+32×32 maximum box and four modes as the existing native owner query. Initial
+owner interest uses the definition camera, existing 480×270 view and selected
+buffers/window; request/settings/profile changes fence commit. The subsequent
+desktop articulated route stages at most the existing 8 actors/64 body parts,
+strict 11-float copied body records and actual masks before receipt capture.
+Its permanent private physics space remains inactive with frozen bodies through
+at least two distinct real physics frames and complete initial terrain setup.
+The app retains its existing 32-chunk/750-microsecond collider budget. Other body
+constructors remain open; see [staged physical ownership](../architecture/liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners).
+
+**Integrated #202 IN application control:** prepared options accept explicit
+`maximum_rule_radius`2 or3(default2). Brine IN requires3; its Current comparator
+must select the same geometry. Original Current and ordinary default
+reconstruction restore protected2. The native-backed panel edits the optional
+family4/block2 `damping_numerator`0..16 over denominator16(default1), and Reset
+retains accepted geometry/parameters. Actual World readback supplies the value,
+effective identity and instance hash/CYPS3; non-IN remains version2. Water IN
+still refuses. These controls do not complete the remaining constructor matrix
+or full source/runtime/host qualification.
+
+**Qualified #202 host-observation foundation:** collection runs only at evidence
+boundaries. Version1 bounds manifests/current script files at2MiB each, the
+manifest-listed script subset at1024 entries, claim depth at24, pure claim values
+at131072, each container at32768, claim UTF8 text at2MiB, keys at256 characters
+and canonical host bytes at4MiB. Signed integer claims become decimal strings.
+Capacity or non-value claims refuse; no capacity outcome upgrades native/host
+full matched eligibility. Library path/current-file observation is not mapped
+module proof. See the [ownership and scope](../architecture/liquid-prepared-setup-and-receipts.md#qualified-host-observation-foundation).
+
+The subsequent ordinary Water Feel family route retains the independent existing
+Water semantic policy/recipe and requires explicit Exploratory with a body-free
+sampled owner. It retains accepted policy/normalization/radius on reset and
+semantic/scenario change. Blind/unstaged bodies and CY Water fractional future
+sources refuse; initial normalization never changes scheduled actions. No new
+Water policy field, body capacity or default is introduced. See [route bounds](../architecture/liquid-prepared-setup-and-receipts.md#ordinary-water-feel-preparation).
+
+The later desktop reference-body stage retains that same policy/recipe and
+requires Exploratory. It copies the original three 8×14, mass1 reference bodies
+at (160,176), (212,176), (264,176) with epoch0 into a permanent physics space;
+no geometry padding, automatic family selection or new body capacity is added.
+Their actual poses stay frozen through terrain/native readiness and final
+commit. The existing asynchronous response age limit still rejects old samples.
+The later synchronous supported-body route uses its own actual poses; barrel owners and actual Web qualification remain open. See
+[prepared reference-body ownership](../architecture/liquid-prepared-setup-and-receipts.md#prepared-water-feel-reference-bodies).
+
+The ordinary Experiment Tower additionally accepts these explicit settings only
+in Exploratory mode with its existing sampled owner. Selected floor0..4, landing,
+camera and resolved transport profile are final preparation input. Native worker
+and synchronous controller retain existing floor/release/schedule/manual tools;
+reset and transport-profile rebuild keep accepted solver/normalization/radius.
+Default constructors still retire that typed setup and use protected radius2.
 
 The [native prepared setup/receipt/accounting contract](../architecture/liquid-prepared-setup-and-receipts.md)
 owns these bounds, native-issued refusal/failure outcomes, source/host
 qualifications and the narrow owner-requested codec freeze. Complete physical
-hash/CYPS use version2, with unknown formats and historical CYPS1 refused.
+hash/CYPS use version2 for non-IN and actual instance version3 for IN, with
+unknown formats and historical CYPS1 refused.
 Defaults, historical content/state hashes and the C64-E8 Cell ABI are unchanged.
 Exact shared accounting adds fixed per-job scratch 3816 bytes: 15,630,336 bytes
 at default `active_core_capacity` 4096, plus a 6088-byte World snapshot in the

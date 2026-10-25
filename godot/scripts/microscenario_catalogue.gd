@@ -32,6 +32,45 @@ static func tower(profile: Dictionary = {}) -> Dictionary:
 	out.source_recipe_hash = JSON.stringify(out.rectangles).sha256_text()
 	return out
 
+# A copied view for explicit policy preparation. Keep the original Tower/default
+# route and its identity intact; selected floor is final construction input.
+static func prepared_tower(profile: Dictionary, floor_index: int) -> Dictionary:
+	var out: Dictionary = tower(profile)
+	out.schema_version = 2
+	var selected: int = clampi(floor_index,0,4)
+	out.player_start = [20,int(Tower.landing(selected).y)]
+	out.camera_origin = [0,int(Tower.floor_y(selected))]
+	out["presentation"] = {"title":"Experiment Tower", "instructions":"Existing floor, release, schedule and manual tools remain exploratory.",
+		"duration_ticks":Contract.MAX_TICK,"baseline":"Original Current Tower constructor",
+		"profile":"Explicit solver policy with retained transport profile","regions":[]}
+	return out
+
+static func prepared_ordinary_demo(id: String) -> Dictionary:
+	if id not in ["material_lab","waterworks","foundry","neon_works"]: return {}
+	var out: Dictionary = Contract.base("ordinary-demo/"+id,1,0)
+	out.schema_version = 2
+	out.rectangles = Array(CyberDemoWorlds.rectangles(id))
+	out.player_enabled = true;out.player_start = [24,222]
+	out.tools = ["paint","erase","player"]
+	out.source_recipe = "CyberDemoWorlds/"+id
+	out.source_recipe_hash = JSON.stringify(out.rectangles).sha256_text()
+	out["presentation"] = {"title":CyberDemoWorlds.title(id),
+		"instructions":"Explicit Exploratory rebuild; ordinary demo controls remain active.",
+		"duration_ticks":Contract.MAX_TICK,"baseline":"Original Current demo constructor",
+		"profile":"Explicit solver policy with production Baseline and Current Water semantics","regions":[]}
+	return out
+
+static func prepared_physics_pit() -> Dictionary:
+	var out: Dictionary = Contract.base("ordinary-demo/physics_pit",1,0)
+	out.schema_version = 2;out.rectangles = Array(CyberDemoWorlds.rectangles("physics_pit"))
+	out.player_enabled = true;out.body_enabled = true;out.player_start = [24,222]
+	out.tools = ["paint","erase","player"];out.source_recipe = "CyberDemoWorlds/physics_pit"
+	out.source_recipe_hash = JSON.stringify(out.rectangles).sha256_text()
+	out["presentation"] = {"title":"Physics Pit","instructions":"Explicit Exploratory rebuild with the original three bodies.",
+		"duration_ticks":Contract.MAX_TICK,"baseline":"Original Current Physics Pit constructor",
+		"profile":"Explicit solver policy with staged original sampled and physical owners","regions":[]}
+	return out
+
 static func water(policy_result: Dictionary) -> Dictionary:
 	if not policy_result.get("ok", false): return {}
 	var policy: Dictionary = policy_result.policy
@@ -51,6 +90,30 @@ static func water(policy_result: Dictionary) -> Dictionary:
 	out.source_recipe = "CyberWaterFeelScenarios/v1/" + str(policy.scenario_id)
 	out.source_recipe_hash = Water.recipe_hash(recipe)
 	return out
+
+# Explicit family preparation retains Water Feel's sampled player, ordinary
+# actions, semantic policy and recipe identity. The original schema1 is intact.
+static func prepared_water(policy_result: Dictionary) -> Dictionary:
+	var out: Dictionary = water(policy_result)
+	if out.is_empty(): return {}
+	out.schema_version = 2
+	out["presentation"] = {"title":"Water Feel Lab","instructions":"Explicit Exploratory solver rebuild; ordinary Water Feel controls and scheduled actions remain active.",
+		"duration_ticks":Contract.MAX_TICK,"baseline":"Original Current Water Feel constructor",
+		"profile":"Explicit solver policy with retained Water semantic policy","regions":[]}
+	return out
+
+static func whole_cell_water_family(family: String) -> bool:
+	return family == "cellular_yield_v1" or family == "inertial_cellular_v1"
+
+static func prepared_water_source_refusal(policy_readback: Dictionary, recipe: Dictionary) -> String:
+	var whole_cell_water: bool = false
+	for assignment: Dictionary in policy_readback.get("assignments",[]):
+		if int(assignment.material) == 3 and whole_cell_water_family(str(assignment.applied_family)): whole_cell_water = true
+	if not whole_cell_water: return ""
+	for action: Dictionary in recipe.actions:
+		if action.kind == "fill" and int(action.normalized_mass) != 255:
+			return "Prepared Water Feel refused: whole-cell Water fractional scheduled sources need separate qualification; initial normalization does not change actions"
+	return ""
 
 # Only authored exploratory play maps opt into actor replacement. Apparatus IDs
 # and fixed execution never inherit this permission from maturity alone.

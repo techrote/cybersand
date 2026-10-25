@@ -18,7 +18,7 @@
     "architecture/liquid-state-transition-matrix.md",
     "architecture/lcb-pressure-inertial-handoff.md",
     "architecture/pressure-flow-v1.md",
-    "architecture/pressure-optimization.md",
+    "architecture/inertial-cellular-v1.md",
     "architecture/simulation-tick-and-threading.md",
     "decisions/ADR-001-native-simulation-core.md",
     "decisions/ADR-002-double-buffered-tile-jobs.md",
@@ -117,7 +117,7 @@
     "decisions/ADR-014-semantic-plane-admission.md",
     "systems/generation-workbench-2.md",
     "operations/procedural-qualification.md",
-    "architecture/inertial-cellular-v1.md"
+    "architecture/pressure-optimization.md"
   ],
   "navigation": [
     "README.md",
@@ -415,6 +415,42 @@
       "reason": "Dated integrated repair admission and source-bound qualification; retrieve through the build/test guides with exact source/runtime/platform identities, separate prior campaigns and explicit remaining uncertainty."
     },
     {
+      "path": "audits/2026-10-24-lcb003-controlled-host-slice.md",
+      "reason": "Dated source-only #202 controlled host preparation, local Windows headless artifact/normal-controller evidence and explicit remaining platform/publication/UX gaps; retrieve through the canonical prepared-setup host section."
+    },
+    {
+      "path": "audits/2026-10-25-lcb003-liquid-comparison-ui.md",
+      "reason": "Dated unmerged normal UI/source runtime checkpoint; retrieve explicitly for measured local Windows coverage, while canonical UX and constructor matrix own Current/Planned status"
+    },
+    {
+      "path": "audits/2026-10-25-lcb003-sampled-exploratory-host.md",
+      "reason": "Dated unmerged sampled/exploratory source and local Windows runtime evidence; canonical prepared host and UX matrix own Current coverage and remaining qualification"
+    },
+    {
+      "path": "audits/2026-10-25-lcb003-articulated-host.md",
+      "reason": "Dated unmerged articulated-owner preparation and local Windows source/runtime evidence; canonical prepared-host contract and constructor matrix own actual coverage and remaining full-host/platform gaps."
+    },
+    {
+      "path": "audits/2026-10-25-lcb003-integrated-inertial-host.md",
+      "reason": "Dated accepted-main/IN adapter and scoped local Windows host evidence; canonical prepared-host contract and UX constructor matrix own implemented readback, explicit geometry and remaining qualification gaps."
+    },
+    {
+      "path": "audits/2026-10-25-lcb003-tower-constructor.md",
+      "reason": "Dated ordinary Tower constructor and scoped Windows native headless evidence; canonical prepared host contract and constructor matrix own actual retained controls, refusal and remaining full host/platform gaps."
+    },
+    {
+      "path": "audits/2026-10-25-lcb003-qualified-host-observation.md",
+      "reason": "Dated scoped Windows qualified host/runtime observation, controlled process-module evidence and retained failed harnesses; canonical prepared-host contract owns value scopes and remaining owner/publication/browser gaps."
+    },
+    {
+      "path": "audits/2026-10-25-lcb003-owner-observation.md",
+      "reason": "Dated bounded owner transaction/compact publication/local Windows proof and registry repair; canonical prepared-host contract owns current adoption/refusal/restart and remaining full host/platform scope."
+    },
+    {
+      "path": "audits/2026-10-25-lcb003-water-feel-constructor.md",
+      "reason": "Dated bounded ordinary Water Feel family routing/local Windows proof; canonical prepared-host contract and UX matrix own current sampler/ack/source/blind/body restrictions and remaining qualification."
+    },
+    {
       "path": "audits/2026-10-25-lcb001-shared-contract-acceptance.md",
       "reason": "Dated accepted #246 source/tree and Windows/Linux execution, independent receipts, preserved failures and remaining host ownership. Retrieve explicitly through canonical setup/receipt, pressure or validation pages with those source/platform limits; this is not a default contract or full-host qualification."
     },
@@ -431,6 +467,34 @@
       "reason": "Dated combined-source integration, native oracles, corrected Windows/Linux publication and retained failures; the exact parent250 later passes full gates and merges as main dc915f2b. Retrieve through IN/pressure routes with source/platform and full-host qualifiers. Parent proof is not Water successor or product acceptance."
     },
     {
+      "path": "audits/2026-10-25-lcb003-combined-host-web-prerequisite.md",
+      "reason": "Dated combined app/DLL, native Web-apparatus and actual Rapier proof; retrieve explicitly with source/platform/failure limits, not as default actual browser or published-runtime acceptance"
+    },
+    {
+      "path": "audits/2026-10-25-lcb003-water-reference-body.md",
+      "reason": "Dated unmerged desktop reference-body transaction and actual ordinary unpaused feedback, preserved moving-mask native failure and fresh local DLL proof; canonical host/UX routes own current scope, Web body/host-mask/publication gaps and unchanged false full-match eligibility"
+    },
+    {
+      "path": "audits/2026-10-25-lcb003-thermal-level-preparation.md",
+      "reason": "Dated local Windows native CYSD thermal/preparation/refusal proof; canonical prepared-setup contract owns API identity and thermal limits. Ordinary importer/host/released platforms remain open."
+    },
+    {
+      "path": "audits/2026-10-25-lcb003-ordinary-demo-host.md",
+      "reason": "Dated unmerged local Windows four-demo constructor/retained-recipe/quarantine-refusal evidence. Canonical prepared setup and UX matrix own current scope; no final browser, runtime publication, complete host or Brine IN rest-contact qualification follows."
+    },
+    {
+      "path": "audits/2026-10-25-lcb003-synchronous-reference-body.md",
+      "reason": "Dated unmerged actual Windows synchronous Physics Pit body transaction, retained apparatus failures and native/Rapier feedback proof. Canonical prepared setup and constructor matrix own current admission, same-label imported refusal and final platform/full-host limits."
+    },
+    {
+      "path": "audits/2026-10-25-lcb003-synchronous-water-reference-body.md",
+      "reason": "Dated unmerged native Windows synchronous Water Feel body transaction and actual-family/feedback proof, preserved apparatus failures and corrected PhysicsPit label-only coverage. Canonical host/UX routes own current source, refusal/restart, old-runtime and final Web/publication/full-host limits."
+    },
+    {
+      "path": "audits/2026-10-25-lcb003-desktop-native-default-host.md",
+      "reason": "Dated unmerged native-default owner/capacity/local Windows proof and preserved shutdown counterevidence. Canonical prepared setup and UX own current scope; final union, source-matched platforms, Web and full-host acceptance remain explicit."
+    },
+    {
       "path": "audits/2026-10-25-water-inertial-registration.md",
       "reason": "Prospective isolated Water IN adapter/carrier/stencil and test registration; retrieve through the IN canonical contract, never as runtime or Gate D acceptance."
     },
@@ -441,7 +505,15 @@
     {
       "path": "audits/2026-10-25-water-inertial-publication.md",
       "reason": "Dated actual Water sequence1 and native-repair sequence2 Windows/Linux publications, independent567-input/artifact/LFS/lease/floor review and preserved historical unarmed/local/composite failures. Retrieve through release/IN contracts; scoped publication does not establish final ready-PR, scientific or host/Web acceptance."
+    },
+    {
+      "path": "audits/2026-10-25-lcb003-final-integration.md",
+      "reason": "Dated unmerged application integration and actual scoped003 Windows/Linux publication atsource5f02/run40226343524/bot0c9b1977:72 actual processes,native80/build535 matched ledgers,642 policy assertions perOS and source/runtime/floor/LFS/lease review. Earlier compiled18d/tested3d local proof, failed matrix/A-B/helper correction and unarmed/mismatch records keep historical scope. Current prepared setup and UX own identity, normalization/refusal and constructor support; final exact-head CI, remaining constructors, scientific/manual/packaged acceptance remain separate. Additional Web/browser/shader work is owner-deferred until after the epic, preserving functional results and rendering failures without fallback. The later two-test identity correction preserves failed Linux40232042725, actual published/development Windows controls and unverified full-host bindings; Native80/compiled139 remain exact with two explicit historical535 test differences, no runtime rewrite and new final-head acceptance still required."
+    },
+    {
+      "path": "audits/2026-10-25-lcb003-web-common-water.md",
+      "reason": "Dated source-bound native and actualcompat77/threaded76 terminal POST functional proof for six body-free Water and four mixed arms. Canonical host/UX routes retain ordinary rendered/manual/body-bearing browser, combined desktop provenance, remaining constructors and scientific/full-host gates."
     }
   ],
-  "integration_note": "Retains scene, generation, actor, sampled and physical actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions remain separately scoped. Deepworks routes cover full-size four-plane exhibitions, independent native source schedules and parameterized depth dimensions; its dated audit remains explicitly scoped. Player playground adds seven human movement presets, native material-field authority and circular-wheel approximation routes; dated execution remains separately scoped. GEN-003 typed-spatial and operator-reference routes from main are retained alongside player playground routes. GEN-004 hierarchy and ADR-013 canonical routes coexist with the player and GEN-003 routes; both GEN-004 and player completion audits remain explicitly excluded from ordinary retrieval. The accepted main #246 native prepared-setup, normalization, typed receipt and exact quantity contract is an explicit Current route. Its earlier local checkpoint and final accepted source/platform audit remain excluded from default retrieval; native-v1 full-host qualification and #202 ownership remain explicit. The #201 optimization contract is an explicit branch-Current route; its dated evidence remains separately scoped, with historical execution1/2 and current execution3, actual host/platform gates and no universal speedup kept explicit. The combined #212 source also retains the IN canonical route and separately qualified standalone adapter evidence; fresh combined native and actual Windows/Linux scoped publication are recorded separately from pending full ready-PR/host acceptance. 2026-10-25 Water checkpoint preserves source4b/botC9 sequence1 and records native-repair sourceaa8/bot03 sequence2 with independent review separately from final ready-head, scientific and host/Web gates; dated preparation and all historical failures remain excluded from ordinary current answers."
+  "integration_note": "Retains scene, generation, actor, sampled and physical actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions remain separately scoped. Deepworks routes cover full-size four-plane exhibitions, independent native source schedules and parameterized depth dimensions; its dated audit remains explicitly scoped. Player playground adds seven human movement presets, native material-field authority and circular-wheel approximation routes; dated execution remains separately scoped. GEN-003 typed-spatial and operator-reference routes from main are retained alongside player playground routes. GEN-004 hierarchy and ADR-013 canonical routes coexist with the player and GEN-003 routes; both GEN-004 and player completion audits remain explicitly excluded from ordinary retrieval. The accepted main #246 native prepared-setup, normalization, typed receipt and exact quantity contract is an explicit Current route. Its earlier local checkpoint and final accepted source/platform audit remain excluded from default retrieval; native-v1 full-host qualification and #202 ownership remain explicit. The #201 optimization contract is an explicit branch-Current route; its dated evidence remains separately scoped, with historical execution1/2 and current execution3, actual host/platform gates and no universal speedup kept explicit. The combined #212 source also retains the IN canonical route and separately qualified standalone adapter evidence; fresh combined-source proof is required before publication. The #202 canonical host extensions and separately excluded dated UI/actor/observation/Tower/Water Feel records are retained; earlier application/runtime seals are not relabelled as combined-source qualification. The native CYSD thermal preparation API and LCB-CYSD-PREP-01 are retained with ordinary importer/host and final qualification still open. Moving-mask repair and LCB-MASK-GAS-01 are retained. Historical pressure LCB10/LCB11 aliases remain under the existing LCB-MAIN-ACCEPTANCE-01/LCB-PRESSURE-OPT-01 IDs with exact query wording; all current source requires fresh matching publication. The bounded ordinary synchronous four-demo recipe route and LCB-ORDINARY-DEMO-01 are additive; its dated proof remains excluded and source-qualified, with imported labels, healthy-World recovery and remaining constructors/platforms explicit. Authored synchronous Physics Pit and LCB-SYNC-BODY-01 are additive routes; their local Windows proof is separately excluded and does not qualify actual Wasm/visual, other physical constructors, same-policy quarantine recovery or final publication. Synchronous supported-body Water Feel and LCB-SYNC-WATER-BODY-01 are additive current routes with separately excluded local Windows evidence; actual native family readback supersedes older label-only PhysicsPit coverage without rewriting its hashes or claiming final source-matched/Web acceptance. Final application union and LCB-HOST-UNION-01 add exact immutable default namespaces, both whole-cell future-source refusals and strict Water005/native-Web functional evidence; dated integration results remain excluded and publication/browser/scientific gates stay separate. The separate actual common-Water Web record qualifies source4948 terminal functional execution on both profiles; ordinary visual/manual/body-bearing browser and final desktop publication remain separate. Post-publication identity regressions now test actual manifest/path equality in either artifact state while preserving full-host/module/script qualification; original publication and failed Linux evidence remain source-bound. All151 query strings and other150 question objects remain unchanged; only the existing UNION fact is appended."
 }

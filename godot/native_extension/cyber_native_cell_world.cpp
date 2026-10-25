@@ -1,6 +1,7 @@
 #include "cyber_native_cell_world.hpp"
 
 #include "cybersand/material_rules.hpp"
+#include "cybersand/default_demo_recipe.hpp"
 
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/classes/project_settings.hpp>
@@ -13,6 +14,7 @@
 #include <cmath>
 #include <numbers>
 #include <span>
+#include <stdexcept>
 #include <string>
 #include <thread>
 #include <unordered_map>
@@ -99,10 +101,13 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("inspect_pressure_optimization"),
                          &CyberNativeCellWorld::inspect_pressure_optimization);
     ClassDB::bind_method(D_METHOD("get_liquid_run_receipt", "setup"), &CyberNativeCellWorld::get_liquid_run_receipt);
+    ClassDB::bind_method(D_METHOD("get_applied_liquid_construction_receipt"), &CyberNativeCellWorld::get_applied_liquid_construction_receipt);
+    ClassDB::bind_method(D_METHOD("get_liquid_construction_attempt"), &CyberNativeCellWorld::get_liquid_construction_attempt);
     ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("auto_worker_threads", "logical_threads"), &CyberNativeCellWorld::auto_worker_threads);
     ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("logical_processor_count"), &CyberNativeCellWorld::logical_processor_count);
     ClassDB::bind_method(D_METHOD("reset_demo_world"),
                          &CyberNativeCellWorld::reset_demo_world);
+    ClassDB::bind_method(D_METHOD("get_default_demo_identity"), &CyberNativeCellWorld::get_default_demo_identity);
     ClassDB::bind_method(D_METHOD("simulation_tick"),
                          &CyberNativeCellWorld::simulation_tick);
     ClassDB::bind_method(D_METHOD("has_failed"), &CyberNativeCellWorld::has_failed);
@@ -287,58 +292,16 @@ bool CyberNativeCellWorld::reset_demo_world() {
         candidate->configure_transient_obstacles({0, 0, kWorldWidth, kWorldHeight});
         candidate->set_liquid_surface_adhesion_enabled(liquid_surface_adhesion_enabled_);
 
-        for (std::int32_t x = 0; x < kWorldWidth; ++x) {
-            candidate->set(x, kWorldHeight - 1, cybersand::Material::Wall);
-        }
-        for (std::int32_t y = 0; y < kWorldHeight; ++y) {
-            candidate->set(0, y, cybersand::Material::Wall);
-            candidate->set(kWorldWidth - 1, y, cybersand::Material::Wall);
-        }
-        for (std::int32_t x = 1; x < kWorldWidth - 1; ++x) {
-            auto floor_y = (kWorldHeight - 79) +
-                           static_cast<std::int32_t>(18.0 * std::sin(x * 0.018));
-            floor_y += static_cast<std::int32_t>(7.0 * std::sin(x * 0.071));
-            for (std::int32_t y = floor_y; y < kWorldHeight - 1; ++y) {
-                candidate->set(x, y, cybersand::Material::Wall);
-            }
-        }
-        for (std::int32_t x = 18; x < 338; ++x) {
-            candidate->set(x, 172, cybersand::Material::Wall);
-        }
-        for (std::int32_t y = 24; y < 112; ++y) {
-            for (std::int32_t x = 55; x < 108; ++x) {
-                if (((x * 17 + y * 31) % 7) < 4) candidate->set(x, y, cybersand::Material::Sand);
-            }
-        }
-        for (std::int32_t y = 128; y < 172; ++y) {
-            for (std::int32_t x = 216; x < 300; ++x) {
-                if (((x + y) % 3) != 0) candidate->set(x, y, cybersand::Material::Water);
-            }
-        }
-        for (std::int32_t platform = 0; platform < 5; ++platform) {
-            const auto start_x = 360 + platform * 112;
-            const auto platform_y = 128 + ((platform * 67) % 260);
-            const auto end_x = std::min(kWorldWidth - 18, start_x + 92);
-            for (auto x = start_x; x < end_x; ++x) {
-                candidate->set(x, platform_y, cybersand::Material::Wall);
-            }
-        }
-        for (std::int32_t y = kWorldHeight - 164; y < kWorldHeight - 106; ++y) {
-            for (std::int32_t x = 430; x < 492; ++x) {
-                if (((x * 13 + y * 19) % 9) < 5) candidate->set(x, y, cybersand::Material::Smoke);
-            }
-        }
+        cybersand::demo::visit_default_demo_recipe([&](std::int32_t x, std::int32_t y, cybersand::Material material) {
+            candidate->set(x, y, material);
+        });
 
         candidate->set_simulation_region(world_->simulation_region());
         world_.swap(candidate);
+        retire_liquid_construction_identity();
         ++liquid_policy_session_generation_;
-        diagnostic_fixture_ = false;
-        body_diagnostics_.reset();
-        displacement_gain_ = kBodyDisplacementReactionImpulse;
-        boundary_gain_ = kBodyBoundaryPressureImpulse;
-        contact_gain_ = kBodyPixelContactImpulse;
-        impulse_cap_ = kMaximumBodyImpulsePerTick;
-        density_limit_ = 1.6;
+        default_demo_recipe_active_ = true;
+        reset_demo_coupling_parameters();
         render_snapshot_full_refresh_required_ = true;
         current_bodies_ = {};
         previous_bodies_ = {};
@@ -358,6 +321,26 @@ bool CyberNativeCellWorld::reset_demo_world() {
         last_tick_error_ = String("Reset failed: ") + error.what();
         return false;
     }
+}
+
+Dictionary CyberNativeCellWorld::get_default_demo_identity() const {
+    if (!world_ || !default_demo_recipe_active_) return {};
+    Dictionary identity;
+    identity["native_recipe_id"] = String(cybersand::demo::kDefaultRecipeIdentity.data());
+    identity["session_generation"] = static_cast<std::int64_t>(liquid_policy_session_generation_);
+    identity["prepared"] = !applied_liquid_construction_receipt_.is_empty();
+    identity["healthy"] = !world_->has_failed();
+    return identity;
+}
+
+void CyberNativeCellWorld::reset_demo_coupling_parameters() noexcept {
+    diagnostic_fixture_ = false;
+    body_diagnostics_.reset();
+    displacement_gain_ = kBodyDisplacementReactionImpulse;
+    boundary_gain_ = kBodyBoundaryPressureImpulse;
+    contact_gain_ = kBodyPixelContactImpulse;
+    impulse_cap_ = kMaximumBodyImpulsePerTick;
+    density_limit_ = 1.6;
 }
 
 bool CyberNativeCellWorld::simulation_tick() {
@@ -462,7 +445,15 @@ void CyberNativeCellWorld::clear_observations() {
 }
 
 void CyberNativeCellWorld::parse_body_states(const PackedFloat32Array& states) {
-    current_bodies_ = {};
+    current_bodies_ = parse_body_state_values(states, false);
+}
+
+CyberNativeCellWorld::BodyStates CyberNativeCellWorld::parse_body_state_values(
+    const PackedFloat32Array& states, bool strict) {
+    BodyStates bodies{};
+    if (strict && (states.size() % kInputStride != 0 ||
+        states.size() / kInputStride > cybersand::World::kMaximumTransientBodies))
+        throw std::invalid_argument("Initial body input exceeds its fixed record bound");
     const auto count = std::min<std::int64_t>(
         cybersand::World::kMaximumTransientBodies, states.size() / kInputStride);
     for (std::int64_t body_index = 0; body_index < count; ++body_index) {
@@ -471,7 +462,10 @@ void CyberNativeCellWorld::parse_body_states(const PackedFloat32Array& states) {
         for (std::int32_t field = 0; field < kInputStride; ++field) {
             finite_record = finite_record && std::isfinite(states[offset + field]);
         }
-        if (!finite_record) continue;
+        if (!finite_record) {
+            if (strict) throw std::invalid_argument("Initial body input contains a nonfinite value");
+            continue;
+        }
         const double input_id = states[offset + kInputBodyId];
         const double serial = states[offset + kInputSampleSerial];
         if (input_id < 1.0 || input_id > cybersand::World::kMaximumTransientBodies ||
@@ -479,10 +473,16 @@ void CyberNativeCellWorld::parse_body_states(const PackedFloat32Array& states) {
             serial > kMaximumBodySampleSerial || std::trunc(serial) != serial ||
             states[offset + kInputSizeX] <= 0.0F ||
             states[offset + kInputSizeY] <= 0.0F ||
-            states[offset + kInputMass] <= 0.0F) continue;
+            states[offset + kInputMass] <= 0.0F) {
+            if (strict) throw std::invalid_argument("Initial body input has invalid identity, size, mass or serial");
+            continue;
+        }
         const auto id_value = static_cast<std::int64_t>(input_id);
-        auto& body = current_bodies_[static_cast<std::size_t>(id_value)];
-        if (body.valid) continue;
+        auto& body = bodies[static_cast<std::size_t>(id_value)];
+        if (body.valid) {
+            if (strict) throw std::invalid_argument("Initial body input duplicates a body identity");
+            continue;
+        }
         body.id = static_cast<std::uint16_t>(id_value);
         body.center = {states[offset + kInputCenterX], states[offset + kInputCenterY]};
         body.rotation = states[offset + kInputRotation];
@@ -496,6 +496,7 @@ void CyberNativeCellWorld::parse_body_states(const PackedFloat32Array& states) {
         body.sample_serial = static_cast<std::int32_t>(serial);
         body.valid = true;
     }
+    return bodies;
 }
 
 void CyberNativeCellWorld::rasterize_body(const BodyState& body) {
@@ -533,6 +534,12 @@ void CyberNativeCellWorld::rasterize_body_sweep(const BodyState& body,
 
 void CyberNativeCellWorld::rasterize_transform(std::uint16_t body_id, Vector2 center,
                                                double rotation, Vector2 half_size) {
+    rasterize_transform_in(*world_, &raster_indices_, body_id, center, rotation, half_size);
+}
+
+void CyberNativeCellWorld::rasterize_transform_in(cybersand::World& world,
+    std::vector<std::int32_t>* indices, std::uint16_t body_id, Vector2 center,
+    double rotation, Vector2 half_size) {
     const auto cosine = std::cos(rotation);
     const auto sine = std::sin(rotation);
     const Vector2 extent{
@@ -556,8 +563,8 @@ void CyberNativeCellWorld::rasterize_transform(std::uint16_t body_id, Vector2 ce
             const Vector2 local{cosine * delta.x + sine * delta.y,
                                 -sine * delta.x + cosine * delta.y};
             if (std::abs(local.x) > half_size.x || std::abs(local.y) > half_size.y) continue;
-            if (world_->set_transient_obstacle(x, y, body_id)) {
-                raster_indices_.push_back(y * kWorldWidth + x);
+            if (world.set_transient_obstacle(x, y, body_id)) {
+                if (indices) indices->push_back(y * kWorldWidth + x);
             }
         }
     }
@@ -865,23 +872,28 @@ bool CyberNativeCellWorld::box_collides(Vector2 origin, Vector2 size) const {
 }
 
 bool CyberNativeCellWorld::character_box_collides(Vector2 origin, Vector2 size, std::int64_t mode) const {
+    return character_box_collides_in(world_.get(), origin, size, mode);
+}
+
+bool CyberNativeCellWorld::character_box_collides_in(
+    const cybersand::World* world, Vector2 origin, Vector2 size, std::int64_t mode) {
     // 0: enclosure/volume, 1: downward feet, 2: sides, 3: upward head.
     // Bounded owner query; malformed/out-of-world queries fail closed.
     if (!origin.is_finite() || !size.is_finite() || size.x <= 0 || size.y <= 0 ||
         size.x > 32 || size.y > 32 || mode < 0 || mode > 3 ||
         origin.x < 0 || origin.y < 0 || origin.x + size.x > kWorldWidth ||
-        origin.y + size.y > kWorldHeight || world_ == nullptr) return true;
+        origin.y + size.y > kWorldHeight || world == nullptr) return true;
     const auto first_x = static_cast<std::int32_t>(std::floor(origin.x + 0.001));
     const auto first_y = static_cast<std::int32_t>(std::floor(origin.y + 0.001));
     const auto last_x = static_cast<std::int32_t>(std::ceil(origin.x + size.x - 0.001)) - 1;
     const auto last_y = static_cast<std::int32_t>(std::ceil(origin.y + size.y - 0.001)) - 1;
     for (auto y = first_y; y <= last_y; ++y) for (auto x = first_x; x <= last_x; ++x) {
-        const auto material = world_->get(x, y);
+        const auto material = world->get(x, y);
         if (cybersand::MaterialRules::is_hard_surface(material)) return true;
         if ((mode == 1 && y != last_y) ||
             (mode == 2 && x != first_x && x != last_x) ||
             (mode == 3 && y != first_y)) continue;
-        if (world_->granular_support_at(x, y, mode >= 2)) return true;
+        if (world->granular_support_at(x, y, mode >= 2)) return true;
     }
     return false;
 }
@@ -1122,6 +1134,18 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_rectangles() const {
 PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const {
     if (has_failed()) return hard_surface_chunk_rectangles_;
     if (world_ == nullptr) return {};
+    const auto hard_revision = static_cast<std::uint64_t>(get_hard_surface_revision());
+    if (hard_surface_chunk_rectangles_revision_ == hard_revision) return hard_surface_chunk_rectangles_;
+    if (render_cells_revision_ != revision_) refresh_render_cells();
+    hard_surface_chunk_rectangles_ = hard_surface_chunks_from_cells(render_cells_);
+    hard_surface_chunk_rectangles_revision_ = hard_revision;
+    return hard_surface_chunk_rectangles_;
+}
+
+PackedInt32Array CyberNativeCellWorld::hard_surface_chunks_from_cells(const PackedByteArray& material_cells) {
+    if (material_cells.size() != static_cast<std::int64_t>(kWorldWidth) * kWorldHeight)
+        throw std::invalid_argument("Finite material projection has an invalid size");
+    PackedInt32Array result;
     // Collision chunks are intentionally smaller than storage chunks. The
     // main-thread PhysicsServer budget can stop only between complete chunks,
     // so 64x64 bounds a pathological fragmented replacement far better than
@@ -1131,12 +1155,6 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const
     constexpr std::int32_t chunk_rows = kWorldHeight / chunk_size;
     constexpr std::int32_t chunk_count = chunk_columns * chunk_rows;
     static_assert(kWorldWidth % chunk_size == 0 && kWorldHeight % chunk_size == 0);
-
-    const auto hard_revision = static_cast<std::uint64_t>(get_hard_surface_revision());
-    if (hard_surface_chunk_rectangles_revision_ == hard_revision) {
-        return hard_surface_chunk_rectangles_;
-    }
-    if (render_cells_revision_ != revision_) refresh_render_cells();
 
     struct Rectangle {
         std::int32_t x = 0;
@@ -1150,7 +1168,7 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const
     };
 
     std::array<std::vector<Rectangle>, chunk_count> chunk_rectangles;
-    const auto* cells = render_cells_.ptr();
+    const auto* cells = material_cells.ptr();
     for (std::int32_t chunk_y = 0; chunk_y < chunk_rows; ++chunk_y) {
         for (std::int32_t chunk_x = 0; chunk_x < chunk_columns; ++chunk_x) {
             const auto chunk_index = chunk_y * chunk_columns + chunk_x;
@@ -1216,9 +1234,9 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const
     std::size_t rectangle_count = 0;
     for (const auto& rectangles : chunk_rectangles) rectangle_count += rectangles.size();
     const auto header_size = static_cast<std::size_t>(chunk_count + 2);
-    hard_surface_chunk_rectangles_.resize(static_cast<std::int64_t>(
+    result.resize(static_cast<std::int64_t>(
         header_size + rectangle_count * 4U));
-    auto* packed = hard_surface_chunk_rectangles_.ptrw();
+    auto* packed = result.ptrw();
     packed[0] = chunk_count;
     auto cursor = header_size;
     for (std::size_t chunk_index = 0; chunk_index < chunk_rectangles.size(); ++chunk_index) {
@@ -1231,8 +1249,7 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const
         }
     }
     packed[1U + chunk_rectangles.size()] = static_cast<std::int32_t>(cursor);
-    hard_surface_chunk_rectangles_revision_ = hard_revision;
-    return hard_surface_chunk_rectangles_;
+    return result;
 }
 
 void CyberNativeCellWorld::set_interest_center(Vector2i world_cell) {
@@ -1426,6 +1443,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         auto diagnostics = config.physics_diagnostics.enabled
             ? std::make_unique<BodyDiagnostics>() : nullptr;
         world_.swap(candidate);
+        retire_liquid_construction_identity();
         ++liquid_policy_session_generation_;
         body_diagnostics_ = std::move(diagnostics);
         diagnostic_fixture_ = true;
@@ -1857,6 +1875,24 @@ Dictionary CyberNativeCellWorld::get_liquid_run_receipt(const Dictionary& setup)
     out["components"] = components;
     out["tick"] = static_cast<std::int64_t>(world_->completed_tick_index());
     return out;
+}
+
+Dictionary CyberNativeCellWorld::get_applied_liquid_construction_receipt() const {
+    // This is the immutable tick-zero value; ordinary ticks do not recapture it.
+    return applied_liquid_construction_receipt_.duplicate(true);
+}
+
+void CyberNativeCellWorld::retire_liquid_construction_identity() {
+    default_demo_recipe_active_ = false;
+    pending_liquid_world_.reset();
+    applied_liquid_construction_receipt_.clear();
+    liquid_construction_attempt_.clear();
+    applied_liquid_setup_ = {};
+    applied_liquid_setup_.domain = {0, 0, kWorldWidth, kWorldHeight};
+}
+
+Dictionary CyberNativeCellWorld::get_liquid_construction_attempt() const {
+    return liquid_construction_attempt_.duplicate(true);
 }
 
 

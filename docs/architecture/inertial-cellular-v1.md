@@ -2,7 +2,7 @@
 title: Inertial cellular reference
 status: Current
 document-kind: reference
-scope: Accepted-main Brine IN and isolated Water IN successor with actual Windows/Linux publication; whole-cell admission, material hooks, carrier ownership and complete stencil; final ready-PR, application and scientific qualification retain separate scope
+scope: Accepted-main Brine IN and source-matched published Water IN successor with bounded application-owner integration; exact copied identities, whole-cell admission and carrier semantics retain separate final ready-PR, host, Web and scientific qualification
 canonical-for: [inertial-cellular-v1-brine, inertial-cellular-v1-water]
 last-reviewed: 2026-10-25
 related-documents: [lcb-pressure-inertial-handoff.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb005-native-brine-checkpoint.md]
@@ -119,6 +119,16 @@ d7681a5c as main dc915f2b. Earlier publication and numerical-law evidence retain
 original source and scope; no Water-IN or full-host qualification follows.
 
 ## What executes at this native checkpoint?
+
+**Separate application integration, 2026-10-25:** the #202 branch merges this
+stable native checkpoint onto accepted #246 main and adds native-backed damping
+controls, actual instance hash/CYPS3 and parameter readback, explicit matched
+radius3, three-family worker parity and an articulated-owner/mask regression.
+The [host contract](liquid-prepared-setup-and-receipts.md#inertial-application-readback-and-explicit-geometry)
+and [dated host evidence](../audits/2026-10-25-lcb003-integrated-inertial-host.md)
+qualify that local Windows native headless scope. The native evidence below
+retains its original checkpoint boundaries. Matching application runtimes, complete #202
+constructors, actual browsers and owner feel remain open.
 
 **Current on main through accepted PR #250:** explicitly selecting Brine material24 / `inertial_cellular_v1/reference` executes retained signed motion and subcell accumulators. The default Brine CellularYield law and every other default remain unchanged. The combined source passed [actual Windows/Linux scoped publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-windowslinux-union-publication--2026-10-25) at `bc0bfed9` in run `40153980594`, with runtime-only bot append `52ee560a`. At that parent checkpoint Water IN was unavailable; the isolated successor above admits it in source. Alternate IN materials/cached variants and full application qualification remain separate. The earlier [standalone adapter proof](../audits/2026-10-25-lcb005-standalone-adapter.md) keeps its local Windows source identity; [native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) retains its base, local input seal and tests. This is neither full #212 completion nor owner feel acceptance.
 

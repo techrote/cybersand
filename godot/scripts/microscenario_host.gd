@@ -6,6 +6,9 @@ extends RefCounted
 const Contract = preload("res://scripts/microscenario_contract.gd")
 const MAX_TIMINGS: int = 3600
 const Telemetry = preload("res://scripts/microscenario_telemetry.gd")
+const HostEvidence = preload("res://scripts/liquid_host_evidence.gd")
+var _host_observation: RefCounted
+var _host_observation_identity: Dictionary = {}
 var _inspection_bridge: Variant
 var _telemetry: CyberMicroScenarioTelemetry
 var _before_elapsed_us: int = 0
@@ -41,7 +44,8 @@ var _timing_count: int = 0
 var _last_completed_tick: int = 0
 
 func install(world: Variant, value: Variant, mode: String = "Inspect", instrumentation: bool = true,
-		liquid_policy: Variant = null) -> bool:
+		liquid_policy: Variant = null, controlled_setup: Dictionary = {}, commit_guard: Callable = Callable(),
+		prepared_token: int = 0) -> bool:
 	# All schema/profile validation precedes the existing candidate-and-swap
 	# builder. A rejected replacement leaves the old World AND host cursor intact.
 	# liquid_policy: null keeps every liquid on its default; otherwise the LCB-001
@@ -61,6 +65,8 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 		last_error = "MicroScenarios require the current native backend"
 		return false
 	var candidate: Dictionary = checked.definition
+	var staged_observation: RefCounted
+	var staged_identity: Dictionary = {}
 	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
 	if int(candidate.schema_version) == 2 and (not bridge.has_method(&"inspect_cell")
 		or not bridge.has_method(&"inspect_statistics")
@@ -68,7 +74,69 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 		or not bridge.has_method(&"inspect_interaction")):
 		last_error = "Schema 2 requires the rebuilt native observation adapter; prior world preserved"
 		return false
-	if liquid_policy != null:
+	if not controlled_setup.is_empty():
+		var intent: String = str(controlled_setup.get("intent", "controlled"))
+		var physical: Dictionary = controlled_setup.get("physical_owner", {})
+		if not intent in ["controlled", "exploratory"] or int(candidate.schema_version) != 2 \
+			or (candidate.body_enabled and (intent != "exploratory" or physical.is_empty())):
+			last_error = "Prepared liquid setup requires schema 2 and staged ownership"
+			return false
+		if intent == "controlled" and (candidate.player_enabled \
+			or candidate.execution.policy != "fixed" or candidate.interest.policy != "fixed"):
+			last_error = "Controlled liquid preparation requires a fixed actor-free schema-2 scenario"
+			return false
+		var owner: Dictionary = controlled_setup.get("owner_execution", {})
+		if intent == "exploratory" and (owner.is_empty() or not commit_guard.is_valid()):
+			last_error = "Exploratory liquid preparation requires staged owner configuration"
+			return false
+		if not world.has_method(&"get_applied_liquid_construction_receipt") or not bridge.has_method(&"prepare_liquid_world"):
+			last_error = "Controlled liquid preparation requires the rebuilt native adapter"
+			return false
+		var request: PackedInt32Array = bridge.default_liquid_policy() if liquid_policy == null else liquid_policy
+		var options: Dictionary = {"definition_hash":checked.hash, "seed":candidate.seed,
+			"region":PackedInt32Array(candidate.interest.region),
+			"cadence_lod_enabled":candidate.execution.cadence_lod_enabled,
+			"liquid_surface_adhesion_enabled":candidate.execution.liquid_surface_adhesion_enabled,
+			"normalization":controlled_setup.get("normalization", ""), "intent":intent,
+			"maximum_rule_radius":controlled_setup.get("maximum_rule_radius",2),
+			"pacing":"host_paced" if intent == "exploratory" else "fixed_steps"}
+		if intent == "exploratory":
+			if candidate.interest.policy == "owner":
+				options.region = PackedInt32Array(owner.region)
+				options.simulation_window_enabled = owner.simulation_window_enabled
+			if candidate.execution.policy == "owner":
+				options.cadence_lod_enabled = owner.cadence_lod_enabled
+				options.liquid_surface_adhesion_enabled = owner.liquid_surface_adhesion_enabled
+		if not physical.is_empty(): options.initial_bodies = physical.initial_bodies
+		# Only the exclusive owner retains this opaque token between its two
+		# preparation turns. Revalidation above still precedes final commit.
+		var token: int = prepared_token
+		if token == 0:
+			token = bridge.prepare_liquid_world(world, PackedInt32Array(candidate.rectangles),
+				checked.transport.packed, PackedInt32Array(candidate.water_semantics),
+				PackedInt32Array(candidate.partial_water_fills), request, options)
+		if token == 0:
+			last_liquid_policy_refusal = bridge.get_last_liquid_policy_refusal()
+			last_error = str(bridge.get_last_error())
+			return false
+		var observed: Dictionary = _prepare_liquid_host_observation(bridge,world,token,checked,mode,instrumentation,options)
+		if not observed.get("ok",false):
+			bridge.discard_liquid_world(world,token)
+			last_error = str(observed.get("error","Prepared host observation refused; prior session retained"))
+			return false
+		staged_observation = observed.evidence
+		staged_identity = observed.identity
+		var result: Variant = commit_guard.call(bridge, token) if commit_guard.is_valid() else bridge.commit_liquid_world(world, token)
+		if result is Dictionary and result.get("deferred", false):
+			# The exclusive owner retains the candidate while main prepares its
+			# permanent physics space. No host cursor or World has been installed.
+			return false
+		var committed: bool = result is bool and result
+		if not committed:
+			bridge.discard_liquid_world(world, token)
+			last_error = "Controlled liquid replacement retired before commit; " + str(bridge.get_last_error())
+			return false
+	elif liquid_policy != null:
 		if not bridge.has_method(&"build_liquid_policy_world") or not world.has_method(&"get_liquid_solver_policy"):
 			last_liquid_policy_refusal = {"code":"platform_unsupported", "material":null,
 				"detail":"host has no native policy handshake"}
@@ -86,6 +154,8 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 		last_error = str(bridge.get_last_error())
 		return false
 	_world = world
+	_host_observation = staged_observation
+	_host_observation_identity = staged_identity
 	_inspection_bridge = bridge if int(candidate.schema_version) == 2 else null
 	_telemetry = Telemetry.new()
 	_before_elapsed_us = 0
@@ -132,10 +202,15 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 	_timing_total_ms = 0.0
 	_timing_count = 0
 	_last_completed_tick = 0
-	apply_interest()
+	# Controlled preparation already installed these exact final selections
+	# before native receipt capture. Ordinary constructors retain their old tail.
+	if controlled_setup.is_empty(): apply_interest()
 	_observe_due() # Tick zero describes initial state, before tick-zero events.
 	if _instrumentation and _inspection_bridge != null: _telemetry.sample(_world, _inspection_bridge, false)
-	return not _failed
+	# Controlled native replacement has committed. Its initial observer failure
+	# is an installed session fault, never a retained-World construction refusal.
+	# Preserve legacy ordinary-host return semantics outside this new route.
+	return true if not controlled_setup.is_empty() else not _failed
 
 func active() -> bool:
 	return not _definition.is_empty()
@@ -145,8 +220,51 @@ func liquid_solver_policy() -> Dictionary:
 	if _world == null or not _world.has_method(&"get_liquid_solver_policy"): return {}
 	return _world.get_liquid_solver_policy()
 
+func _prepare_liquid_host_observation(bridge: Variant, world: Variant, token: int, checked: Dictionary,
+		mode: String, instrumentation: bool, options: Dictionary) -> Dictionary:
+	if not bridge.has_method(&"prepared_liquid_run_capture"):
+		return {"ok":false,"error":"Prepared host observation requires the rebuilt native adapter"}
+	var captured: Dictionary = bridge.prepared_liquid_run_capture(world,token)
+	if captured.get("lifecycle","") != "prepared" or captured.get("token",0) != token:
+		return {"ok":false,"error":"Prepared host observation token was retired"}
+	var receipt: Dictionary = captured.native_run_encoding
+	var owner_inputs: Dictionary = {"scope":"prepared_recipe_and_owner_inputs_v1",
+		"input_owner":"exclusive_scenario_owner","definition":checked.definition,
+		"definition_hash":checked.hash,"transport_hash":checked.transport.hash,
+		"mode":mode,"instrumentation":instrumentation,
+		"native_initial_execution":{"intent":receipt.run_intent,"pacing":receipt.pacing,
+			"region":Array(receipt.region),"simulation_window_enabled":receipt.simulation_window_enabled,
+			"cadence_lod_enabled":receipt.cadence_lod_enabled,"liquid_surface_adhesion_enabled":receipt.liquid_surface_adhesion_enabled,
+			"worker_threads":receipt.worker_threads,"maximum_rule_radius":receipt.maximum_rule_radius},
+		"native_initial_body_input":{"values":Array(options.get("initial_bodies",PackedFloat32Array())),
+			"sha256":receipt.initial_body_state_sha256,"body_count":receipt.initial_body_count}}
+	var result: Dictionary = HostEvidence.collect(bridge,receipt,owner_inputs)
+	if not result.ok: return result
+	var values: Dictionary = result.evidence.snapshot()
+	var identity: Dictionary = {"schema_version":1,"kind":"qualified_liquid_host_observation_identity",
+		"digest":result.evidence.digest(),"native_receipt_hash":receipt.receipt_hash,
+		"session_generation":receipt.session_generation,"definition_hash":checked.hash,
+		"run_intent":receipt.run_intent,"host_eligible_for_full_matched_evidence":false,
+		"publication_matches_current_path_file":values.runtime.publication_manifest.artifact_matches_current_path_file,
+		"mapped_module_binding":"unverified","complete_host_binding":"unverified"}
+	identity.make_read_only()
+	return {"ok":true,"evidence":result.evidence,"identity":identity}
+
+func liquid_host_observation() -> Dictionary:
+	if _host_observation == null or _world == null or _host_observation_identity.is_empty(): return {}
+	# Accepted ordinary constructors retire native generation/typed identity.
+	if _world.get_liquid_policy_session_generation() != _host_observation_identity.session_generation: return {}
+	return _host_observation_identity.duplicate(true)
+
+func liquid_host_observation_record() -> Dictionary:
+	if liquid_host_observation().is_empty(): return {}
+	return {"identity":liquid_host_observation(),"values":_host_observation.snapshot(),
+		"canonical_bytes_hex":_host_observation.canonical_bytes().hex_encode()}
+
 func clear() -> void:
 	_world = null
+	_host_observation = null
+	_host_observation_identity = {}
 	_inspection_bridge = null
 	_telemetry = null
 	_material_ids.clear()
@@ -337,6 +455,7 @@ func legacy_water_state() -> Dictionary:
 func summary() -> Dictionary:
 	if not active(): return {}
 	return {"id":_definition.id, "schema_version":_definition.schema_version,
+		"liquid_host_observation":liquid_host_observation(),
 		"completed_tick":int(_world.get_tick_index()),
 		"presentation":_definition.get("presentation", {}).duplicate(true),
 		"source_recipe":_definition.source_recipe, "source_recipe_hash":_definition.source_recipe_hash,
@@ -385,6 +504,7 @@ func capture(identity: Dictionary = {}) -> Dictionary:
 		timing["max_ms"] = sorted.back()
 	var report: Dictionary = summary()
 	report.merge({"definition":definition(), "runtime_identity":identity.duplicate(true),
+		"liquid_host_observation_record":liquid_host_observation_record(),
 		"interaction_profile_full":_interaction_profile.duplicate(true),
 		"interaction_inspection":_interaction_inspection.duplicate(true),
 		"kinetic_contact_baseline":{"source_runtime_identity":identity.duplicate(true),

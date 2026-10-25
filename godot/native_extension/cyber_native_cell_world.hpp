@@ -2,6 +2,7 @@
 
 #include "cybersand/render_snapshot.hpp"
 #include "cybersand/world.hpp"
+#include "cybersand/prepared_world.hpp"
 
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/variant/dictionary.hpp>
@@ -36,6 +37,7 @@ public:
     [[nodiscard]] static std::int64_t logical_processor_count();
 
     bool reset_demo_world();
+    [[nodiscard]] Dictionary get_default_demo_identity() const;
     [[nodiscard]] bool simulation_tick();
     [[nodiscard]] bool has_failed() const;
     [[nodiscard]] std::int64_t get_attempted_tick_index() const;
@@ -127,6 +129,9 @@ public:
     // Run receipt: binds the applied policy and every World execution input with
     // the caller's setup identity into one SHA-256 receipt hash.
     [[nodiscard]] Dictionary get_liquid_run_receipt(const Dictionary& setup) const;
+    // Typed native v1 construction values, copied at the exclusive owner boundary.
+    [[nodiscard]] Dictionary get_applied_liquid_construction_receipt() const;
+    [[nodiscard]] Dictionary get_liquid_construction_attempt() const;
     // Isolated fresh-world experiment API. Called only by the exclusive owner.
     bool diagnostic_reset(const Dictionary& options);
     bool diagnostic_fill_rect(Vector2i origin, Vector2i size, std::int64_t material,
@@ -159,6 +164,8 @@ private:
         bool valid = false;
     };
 
+    using BodyStates = std::array<BodyState, cybersand::World::kMaximumTransientBodies + 1U>;
+
     struct BodyObservation {
         Vector2 impulse{};
         Vector2 bearing{};
@@ -179,6 +186,7 @@ private:
         std::array<BodyDiagnostic, cybersand::World::kMaximumTransientBodies + 1U>;
     std::unique_ptr<BodyDiagnostics> body_diagnostics_;
     bool diagnostic_fixture_ = false;
+    bool default_demo_recipe_active_ = false;
     double displacement_gain_ = 0.18;
     double boundary_gain_ = 0.19;
     double contact_gain_ = 0.025;
@@ -189,8 +197,8 @@ private:
     std::unique_ptr<cybersand::World> world_;
     std::unique_ptr<cybersand::RenderSnapshotExchange> render_exchange_;
     cybersand::TickStats last_stats_{};
-    std::array<BodyState, cybersand::World::kMaximumTransientBodies + 1U> current_bodies_{};
-    std::array<BodyState, cybersand::World::kMaximumTransientBodies + 1U> previous_bodies_{};
+    BodyStates current_bodies_{};
+    BodyStates previous_bodies_{};
     std::array<BodyObservation, cybersand::World::kMaximumTransientBodies + 1U> observations_{};
     std::vector<std::int32_t> raster_indices_;
     mutable PackedByteArray render_cells_;
@@ -209,6 +217,29 @@ private:
     std::uint64_t hard_surface_revision_ = 0;
     std::uint64_t tick_failure_count_ = 0;
     std::uint64_t liquid_policy_session_generation_ = 0;
+    struct PendingLiquidWorld {
+        std::unique_ptr<cybersand::World> world;
+        std::unique_ptr<cybersand::RenderSnapshotExchange> exchange;
+        cybersand::setup::SetupDescriptor setup;
+        Dictionary receipt;
+        BodyStates initial_bodies{};
+        PackedFloat32Array initial_body_input;
+        String initial_body_digest;
+        std::uint64_t token = 0, retained_generation = 0, retained_revision = 0, retained_hash = 0;
+        Vector2i origin{}, size{};
+        bool cadence = false, adhesion = true, window = true;
+        bool reset_demo_coupling = false;
+        bool retained_cadence = false, retained_window = true;
+    };
+    std::unique_ptr<PendingLiquidWorld> pending_liquid_world_;
+    std::uint64_t next_liquid_preparation_token_ = 0;
+    cybersand::setup::SetupDescriptor applied_liquid_setup_ = [] {
+        cybersand::setup::SetupDescriptor value;
+        value.domain = {0, 0, kWorldWidth, kWorldHeight};
+        return value;
+    }();
+    Dictionary applied_liquid_construction_receipt_;
+    Dictionary liquid_construction_attempt_;
     String last_tick_error_{};
     double simulation_time_ms_ = 0.0;
     bool simulation_window_enabled_ = true;
@@ -216,10 +247,17 @@ private:
     bool liquid_surface_adhesion_enabled_ = true;
     bool render_snapshot_full_refresh_required_ = true;
 
+    [[nodiscard]] static bool character_box_collides_in(const cybersand::World* world, Vector2 origin, Vector2 size, std::int64_t mode);
     void create_world();
+    void retire_liquid_construction_identity();
+    void reset_demo_coupling_parameters() noexcept;
     void refresh_simulation_region();
     void refresh_render_cells() const;
     void clear_observations();
+    [[nodiscard]] static BodyStates parse_body_state_values(const PackedFloat32Array& states, bool strict);
+    [[nodiscard]] static PackedInt32Array hard_surface_chunks_from_cells(const PackedByteArray& cells);
+    static void rasterize_transform_in(cybersand::World& world, std::vector<std::int32_t>* indices,
+        std::uint16_t body_id, Vector2 center, double rotation, Vector2 half_size);
     void parse_body_states(const PackedFloat32Array& states);
     void rasterize_body(const BodyState& body);
     void rasterize_body_sweep(const BodyState& body, const BodyState& previous);

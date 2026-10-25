@@ -48,6 +48,7 @@ func _ready() -> void:
 	_button(column, "Neon Reliquary — four showcase districts", "showcase")
 	_button(column, "Actor sandbox — 46 articulated Rapier rigs / F5", "actors")
 	_button(column, "Materials sandbox / Experiment Tower — F9", "sandbox")
+	_button(column, "Liquid comparison — solver policies and protected Dam Break", "liquid_comparison")
 	_button(column, "Thunderbowl — actor control arena", "thunderbowl")
 	_button(column, "Physical Thunderbowl — articulated actors, tools and scripted pilots", "physical_actors")
 	_button(column, "Physical usable course — 32 tools, payloads and processors", "physical_usables")

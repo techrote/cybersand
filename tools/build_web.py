@@ -29,6 +29,7 @@ SOURCES = [
     "native/src/generation_typed_fields.cpp",
     "native/src/generation_spatial.cpp",
     "native/src/generation_grammar.cpp",
+    "native/src/generation_planes.cpp",
     "native/src/material_rules.cpp", "native/src/scheduler_geometry.cpp",
 ]
 
@@ -151,13 +152,14 @@ def write_runtime_identity(stage: Path, library: Path, args: argparse.Namespace)
     data = library.read_bytes()
     identity = {
         "schema_version": 1,
-        "status": "issue-19-browser-validated-export",
+        "status": "source-built-web-export-unqualified",
         "source_commit": args.source_commit or output(["git", "-C", str(ROOT), "rev-parse", "HEAD"]),
         "source_identity_kind": "snapshot-base-with-local-setup-changes" if args.source_commit else "git-checkout",
         "artifact": library.name,
         "sha256": hashlib.sha256(data).hexdigest(),
         "size": len(data),
-        "validated_platform": "Godot Web " + args.profile,
+        "build_target": "Godot Web " + args.profile,
+        "browser_execution_status": "not-established-by-export",
         "profile": args.profile,
         "godot": GODOT_VERSION,
         "godot_cpp": CPP_REV,

@@ -5,8 +5,12 @@
 #include "cybersand/demo_snapshot.hpp"
 #include "cybersand/interaction_rules.hpp"
 #include "cybersand/material_rules.hpp"
+#include <bit>
+#include <algorithm>
 #include <godot_cpp/classes/ref.hpp>
+#include <godot_cpp/classes/file_access.hpp>
 #include <godot_cpp/core/class_db.hpp>
+#include <godot_cpp/godot.hpp>
 
 namespace godot {
 
@@ -16,6 +20,30 @@ class CyberDemoBridge final : public RefCounted {
     GDCLASS(CyberDemoBridge, RefCounted)
     String error_;
     Dictionary last_liquid_policy_refusal_;
+
+    static PackedInt32Array policy_request_values(const cybersand::LiquidSolverPolicy& policy,
+        std::span<const cybersand::LiquidSolverAssignment> assignments,
+        std::span<const cybersand::LiquidParameterBlock> family_blocks,
+        std::span<const cybersand::LiquidParameterBlock> material_blocks) {
+        auto words = policy.envelope();
+        words.resize(cybersand::LiquidSolverPolicy::kHeaderWords);
+        words.push_back(static_cast<std::int32_t>(assignments.size()));
+        for (const auto& item : assignments) {
+            words.push_back(item.material); words.push_back(static_cast<std::int32_t>(item.family));
+            words.push_back(static_cast<std::int32_t>(item.variant));
+        }
+        for (const auto blocks : {family_blocks,material_blocks}) {
+            words.push_back(static_cast<std::int32_t>(blocks.size()));
+            for (const auto& block : blocks) {
+                words.push_back(block.owner); words.push_back(block.version);
+                words.push_back(static_cast<std::int32_t>(block.values.size()));
+                words.insert(words.end(),block.values.begin(),block.values.end());
+            }
+        }
+        PackedInt32Array result;
+        for (const auto word : words) result.push_back(word);
+        return result;
+    }
 
     static String interaction_string(std::string_view value) {
         if (value.empty()) return String();
@@ -86,6 +114,7 @@ class CyberDemoBridge final : public RefCounted {
         // All fallible allocation and validation precede these no-throw swaps.
         adapter.world_.swap(candidate);
         adapter.render_exchange_.swap(exchange);
+        adapter.retire_liquid_construction_identity();
         ++adapter.liquid_policy_session_generation_;
         adapter.current_bodies_ = {};
         adapter.previous_bodies_ = {};
@@ -104,6 +133,38 @@ class CyberDemoBridge final : public RefCounted {
     }
 
 public:
+    // The API reports the loader's library path, which can differ from an
+    // editor shadow copy. Observe current bytes at that path; this alone does
+    // not identify mapped bytes. The caller supplies no path/digest. Hash only
+    // at evidence boundaries, never from a native pool job or simulation tick.
+    [[nodiscard]] Dictionary loaded_native_runtime_values() const {
+        String path;
+        gdextension_interface::get_library_path(gdextension_interface::library,path._native_ptr());
+        Dictionary out;
+        out["schema_version"] = 1;
+        out["observation_source"] = "godot_library_path_current_file_v1";
+        out["api_reported_library_path"] = path;
+        out["mapped_module_binding"] = "unverified";
+        out["status"] = "unavailable";
+        out["current_file_sha256"] = Variant();
+        out["current_file_size"] = Variant();
+        if (path.is_empty() || !FileAccess::file_exists(path)) {
+            out["detail"] = "The API-reported path bytes are unavailable to FileAccess";
+            return out;
+        }
+        const auto file = FileAccess::open(path,FileAccess::READ);
+        const auto digest = FileAccess::get_sha256(path);
+        if (file.is_null() || digest.length() != 64) {
+            out["detail"] = "The API-reported path bytes could not be read completely";
+            return out;
+        }
+        out["current_file_size"] = static_cast<std::int64_t>(file->get_length());
+        out["current_file_sha256"] = digest;
+        out["status"] = "path_file_observed";
+        out["detail"] = "API-reported library path and current file hash; mapped-module and source/publication binding require separate evidence";
+        return out;
+    }
+
     [[nodiscard]] Dictionary inspect_interaction_profile() const {
         Dictionary out;
         out["schema_id"] = interaction_string(cybersand::kInteractionSchemaId);
@@ -474,6 +535,150 @@ public:
 
     [[nodiscard]] Dictionary get_last_liquid_policy_refusal() const { return last_liquid_policy_refusal_; }
 
+    // The UI receives native-generated request values and actual admission
+    // outcomes. GDScript never reconstructs the policy wire layout or infers
+    // availability from a design-only matrix cell.
+    [[nodiscard]] Array liquid_policy_assignment_choices(const PackedInt32Array& request, std::int64_t material) {
+        error_ = String();
+        Array choices;
+        const auto decoded = cybersand::LiquidSolverPolicy::decode(std::span<const std::int32_t>(
+            request.ptr(), static_cast<std::size_t>(request.size())));
+        if (!decoded.accepted()) { error_ = String(decoded.refusal.message().c_str()); return choices; }
+        std::size_t index = 0;
+        for (const auto& row : cybersand::liquid_policy_catalogue::kLiquidRows) {
+            if (material != row.material_id) { ++index; continue; }
+            for (std::uint8_t family = 1; family <= cybersand::LiquidSolverPolicy::kFamilyCount; ++family) {
+                const auto mask = row.variant_mask[family-1];
+                for (std::uint8_t variant = 0; variant < cybersand::LiquidSolverPolicy::kVariantCount; ++variant) {
+                    if (variant != 0 && (mask & (1U << variant)) == 0U) continue;
+                    auto assignments = std::vector<cybersand::LiquidSolverAssignment>(
+                        decoded.policy->assignments().begin(),decoded.policy->assignments().end());
+                    const auto former = assignments[index].family;
+                    assignments[index].family = static_cast<cybersand::LiquidSolverFamily>(family);
+                    assignments[index].variant = static_cast<cybersand::LiquidSolverVariant>(variant);
+                    std::vector<cybersand::LiquidParameterBlock> families,materials;
+                    for (const auto& block : decoded.policy->family_blocks())
+                        if (std::any_of(assignments.begin(),assignments.end(),[&](const auto& item) {
+                            return static_cast<std::uint16_t>(item.family) == block.owner;
+                        })) families.push_back(block);
+                    for (const auto& block : decoded.policy->material_blocks())
+                        if (block.owner != material || former == assignments[index].family) materials.push_back(block);
+                    auto edited = policy_request_values(*decoded.policy,assignments,families,materials);
+                    auto choice = validate_liquid_policy(edited);
+                    choice["request"] = edited;
+                    choice["material"] = material;
+                    choice["family"] = String(std::string(cybersand::liquid_solver_family_id(
+                        static_cast<cybersand::LiquidSolverFamily>(family))).c_str());
+                    choice["variant"] = String(std::string(cybersand::liquid_solver_variant_id(
+                        static_cast<cybersand::LiquidSolverVariant>(variant))).c_str());
+                    choice["current_default"] = family == row.default_family && variant == 0;
+                    choices.push_back(choice);
+                }
+            }
+            return choices;
+        }
+        error_ = "Material has no liquid solver assignment";
+        return choices;
+    }
+
+    [[nodiscard]] Dictionary liquid_policy_with_inertial_damping(const PackedInt32Array& request, std::int64_t numerator) const {
+        auto decoded = cybersand::LiquidSolverPolicy::decode(std::span<const std::int32_t>(
+            request.ptr(),static_cast<std::size_t>(request.size())));
+        if (!decoded.accepted()) return validate_liquid_policy(request);
+        const bool used = std::any_of(decoded.policy->assignments().begin(),decoded.policy->assignments().end(),
+            [](const auto& item) { return item.family == cybersand::LiquidSolverFamily::InertialCellularV1; });
+        if (!used || numerator < 0 || numerator > cybersand::InertialParameters::kDampingDenominator) {
+            Dictionary result; result["accepted"] = false; result["receipt"] = Variant();
+            result["refusal"] = refusal_dictionary({cybersand::LiquidPolicyRefusalCode::UnknownParameter, std::nullopt,
+                "IN damping requires an active IN family and an integer numerator from 0 through 16"});
+            return result;
+        }
+        std::vector<cybersand::LiquidParameterBlock> blocks;
+        for (const auto& block : decoded.policy->family_blocks()) if (block.owner != 4U) blocks.push_back(block);
+        blocks.push_back({4U,cybersand::InertialParameters::kFamilyBlockVersion,{static_cast<std::int32_t>(numerator)}});
+        auto edited = policy_request_values(*decoded.policy,decoded.policy->assignments(),blocks,decoded.policy->material_blocks());
+        auto result = validate_liquid_policy(edited);
+        result["request"] = edited;
+        return result;
+    }
+
+    // Construction is deliberately split: the simulation owner may prepare
+    // without holding its queue mutex, then fence the one-use commit under it.
+    [[nodiscard]] std::int64_t prepare_liquid_world(const Ref<CyberNativeCellWorld>& adapter,
+        const PackedInt32Array& rectangles, const PackedInt32Array& profile,
+        const PackedInt32Array& policy, const PackedInt32Array& water_fills,
+        const PackedInt32Array& liquid_policy, const Dictionary& options);
+    [[nodiscard]] std::int64_t prepare_liquid_level(const Ref<CyberNativeCellWorld>& adapter,
+        const PackedByteArray& payload, const PackedInt32Array& profile,
+        const PackedInt32Array& policy, const PackedInt32Array& liquid_policy, const Dictionary& options);
+    [[nodiscard]] std::int64_t prepare_liquid_default_demo(const Ref<CyberNativeCellWorld>& adapter,
+        const PackedInt32Array& liquid_policy, const Dictionary& options);
+private:
+    [[nodiscard]] std::int64_t prepare_liquid_candidate(const Ref<CyberNativeCellWorld>& adapter,
+        const PackedInt32Array& rectangles, const PackedInt32Array& profile,
+        const PackedInt32Array& policy, const PackedInt32Array& water_fills,
+        const PackedInt32Array& liquid_policy, const Dictionary& options, const PackedByteArray* level_payload, bool default_demo = false);
+public:
+    [[nodiscard]] bool prepared_liquid_character_box_collides(const Ref<CyberNativeCellWorld>& adapter,
+        std::int64_t token, Vector2 origin, Vector2 size, std::int64_t mode) const {
+        // A stale view fails closed; no World reference, mutable storage or
+        // tick/edit capability crosses the exclusive preparation boundary.
+        if (adapter.is_null() || token <= 0 || !adapter->pending_liquid_world_ ||
+            adapter->pending_liquid_world_->token != static_cast<std::uint64_t>(token)) return true;
+        return CyberNativeCellWorld::character_box_collides_in(
+            adapter->pending_liquid_world_->world.get(), origin, size, mode);
+    }
+    [[nodiscard]] Dictionary prepared_liquid_world_values(const Ref<CyberNativeCellWorld>& adapter, std::int64_t token) {
+        error_ = String();
+        if (adapter.is_null() || token <= 0 || !adapter->pending_liquid_world_ ||
+            adapter->pending_liquid_world_->token != static_cast<std::uint64_t>(token)) {
+            error_ = "Preparation token is absent or retired";
+            return {};
+        }
+        try {
+            const auto& pending = *adapter->pending_liquid_world_;
+            PackedByteArray cells;
+            const auto size = static_cast<std::int64_t>(CyberNativeCellWorld::kWorldWidth) * CyberNativeCellWorld::kWorldHeight;
+            if (cells.resize(size) != OK) throw std::bad_alloc();
+            pending.world->copy_material_cells({0,0,CyberNativeCellWorld::kWorldWidth,CyberNativeCellWorld::kWorldHeight},
+                std::span<std::uint8_t>{cells.ptrw(),static_cast<std::size_t>(size)},CyberNativeCellWorld::kWorldWidth);
+            Dictionary out;
+            out["token"] = token;
+            out["terrain"] = CyberNativeCellWorld::hard_surface_chunks_from_cells(cells);
+            out["initial_bodies"] = pending.initial_body_input.duplicate();
+            out["initial_body_state_sha256"] = pending.initial_body_digest;
+            out["candidate_physical_state_hash"] = String::num_uint64(pending.world->physical_state_hash(),16).lpad(16,"0");
+            // Candidate facts are explicitly pending values. No applied receipt
+            // or mutable native storage is exposed before the final owner swap.
+            return out;
+        } catch (const std::exception& error) {
+            error_ = String(error.what());
+            return {};
+        }
+    }
+    [[nodiscard]] Dictionary prepared_liquid_run_capture(const Ref<CyberNativeCellWorld>& adapter, std::int64_t token) {
+        error_ = String();
+        if (adapter.is_null() || token <= 0 || !adapter->pending_liquid_world_ ||
+            adapter->pending_liquid_world_->token != static_cast<std::uint64_t>(token)) {
+            error_ = "Preparation token is absent or retired";
+            return {};
+        }
+        // The encoding was captured during preparation. This copied wrapper
+        // explicitly remains pending; it does not install or expose a World.
+        Dictionary out;
+        out["schema_version"] = 1;
+        out["lifecycle"] = "prepared";
+        out["token"] = token;
+        out["native_run_encoding"] = adapter->pending_liquid_world_->receipt.duplicate(true);
+        return out;
+    }
+    [[nodiscard]] bool commit_liquid_world(const Ref<CyberNativeCellWorld>& adapter, std::int64_t token);
+    void discard_liquid_world(const Ref<CyberNativeCellWorld>& adapter, std::int64_t token) {
+        if (adapter.is_valid() && adapter->pending_liquid_world_ &&
+            adapter->pending_liquid_world_->token == static_cast<std::uint64_t>(token))
+            adapter->pending_liquid_world_.reset();
+    }
+
 private:
     [[nodiscard]] static Dictionary refusal_dictionary(const cybersand::LiquidPolicyRefusal& refusal) {
         Dictionary out;
@@ -750,6 +955,7 @@ public:
 
 protected:
     static void _bind_methods() {
+        ClassDB::bind_method(D_METHOD("loaded_native_runtime_values"), &CyberDemoBridge::loaded_native_runtime_values);
         ClassDB::bind_method(D_METHOD("inspect_cell", "world", "point"), &CyberDemoBridge::inspect_cell);
         ClassDB::bind_method(D_METHOD("inspect_statistics", "world"), &CyberDemoBridge::inspect_statistics);
         ClassDB::bind_method(D_METHOD("inspect_interaction_profile"), &CyberDemoBridge::inspect_interaction_profile);
@@ -770,6 +976,22 @@ protected:
                              &CyberDemoBridge::build_liquid_policy_world,
                              DEFVAL(CyberNativeCellWorld::kProtectedCurrentRuleRadius));
         ClassDB::bind_method(D_METHOD("default_liquid_policy"), &CyberDemoBridge::default_liquid_policy);
+        ClassDB::bind_method(D_METHOD("liquid_policy_assignment_choices", "request", "material"),
+                             &CyberDemoBridge::liquid_policy_assignment_choices);
+        ClassDB::bind_method(D_METHOD("liquid_policy_with_inertial_damping", "request", "numerator"),
+                             &CyberDemoBridge::liquid_policy_with_inertial_damping);
+        ClassDB::bind_method(D_METHOD("prepare_liquid_world", "world", "rectangles", "profile", "policy",
+            "water_fills", "liquid_policy", "options"), &CyberDemoBridge::prepare_liquid_world);
+        ClassDB::bind_method(D_METHOD("prepare_liquid_level", "world", "payload", "profile", "policy",
+            "liquid_policy", "options"), &CyberDemoBridge::prepare_liquid_level);
+        ClassDB::bind_method(D_METHOD("prepared_liquid_character_box_collides", "world", "token", "origin", "size", "mode"),
+            &CyberDemoBridge::prepared_liquid_character_box_collides);
+        ClassDB::bind_method(D_METHOD("prepare_liquid_default_demo", "world", "liquid_policy", "options"),
+            &CyberDemoBridge::prepare_liquid_default_demo);
+        ClassDB::bind_method(D_METHOD("prepared_liquid_world_values", "world", "token"), &CyberDemoBridge::prepared_liquid_world_values);
+        ClassDB::bind_method(D_METHOD("prepared_liquid_run_capture", "world", "token"), &CyberDemoBridge::prepared_liquid_run_capture);
+        ClassDB::bind_method(D_METHOD("commit_liquid_world", "world", "token"), &CyberDemoBridge::commit_liquid_world);
+        ClassDB::bind_method(D_METHOD("discard_liquid_world", "world", "token"), &CyberDemoBridge::discard_liquid_world);
         ClassDB::bind_method(D_METHOD("validate_liquid_policy", "liquid_policy"),
                              &CyberDemoBridge::validate_liquid_policy);
         ClassDB::bind_method(D_METHOD("get_last_liquid_policy_refusal"),
@@ -780,3 +1002,5 @@ protected:
 };
 
 }  // namespace godot
+
+#include "cyber_prepared_liquid_world.hpp"

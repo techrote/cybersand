@@ -11,6 +11,47 @@ last-reviewed: 2026-10-25
 
 # Interfaces and message contracts
 
+The [actual common-Water Web terminal result](../audits/2026-10-25-lcb003-web-common-water.md)
+uses the same source4948 JSON contract: compat77 checks (extra one-worker
+assertion), threaded76, six Water and four mixed rows. Original POST201 bodies
+and native/source equivalence are bound independently. A successful terminal
+value still does not establish an ordinary rendered/manual control walkthrough.
+
+The [final application union](../architecture/liquid-prepared-setup-and-receipts.md#final-application-source-union)
+keeps existing native APIs/receipt-v1 unchanged. The native Web prerequisite now
+reports `water_runs`: six ordered FM/CY/PF0/PF1/PF2/IN Water rows with copied
+policy/receipt/payload hashes, radius/hash version, gross normalization,
+30-tick quantity and whole-cell/IN-motion readback. All76 named checks and the
+four original mixed rows are required by the003 parser; native process success
+does not substitute for an actual browser terminal POST or visible user flow.
+
+The private synchronous reference continuation now also owns a checked, copied
+[supported-body Water Feel request](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel).
+It captures the actual Water constructor kind, result/recipe, final480×270
+execution and initial body values before native receipt creation, retaining
+the existing one-use token and final guards. Its Water-specific installed tail
+adopts the permanent graph and original actions; a refused construction never
+reports successful installation. Known Baseline exemption binds actual source
+generation/semantic hash/native component/applied receipt, never an import label.
+
+## Explicit LCB application Web apparatus
+
+`?test=1&liquid-host-test=1` runs a bounded startup apparatus through existing
+synchronous application-owner APIs. It pauses normal processing only for this
+explicit test. `cybersand-liquid-host-result` contains a terminal JSON value
+with `schema_version`, `ok`, `terminal`, every named check/failure and copied
+native identities/quantity/variant observations. The same terminal value is
+POSTed to `/physics-results`; failed POST is an explicit console error. A DOM
+readiness message is not a completed result or successful capture.
+
+Native Windows headless execution qualifies the apparatus only. Browser
+console/network and successful result receipt, actual compat/threaded execution
+and ordinary user walkthrough are separate gates. Export identity has status
+`source-built-web-export-unqualified` and
+`browser_execution_status=not-established-by-export`; it supplies build target,
+artifact hash and source claim without a validated-platform assertion. Read the
+[qualified combined checkpoint](../audits/2026-10-25-lcb003-combined-host-web-prerequisite.md).
+
 ## Exploratory actor replacement acknowledgement
 
 **Current desktop:** `scenario_reset` may carry copied
@@ -629,13 +670,6 @@ in [`world.hpp`](../../native/include/cybersand/world.hpp) and
 [`pressure_flow.hpp`](../../native/include/cybersand/pressure_flow.hpp). No C API
 entry point exposes them. The C API/global ABI is not frozen by these additions.
 
-CYPS omits host-owned transient masks and body graphs. Exact body-coupled
-continuation requires separate restoration of the same mask configuration and
-future sampled body inputs; the adapter physical-import call alone does not
-provide that complete prepared owner restoration. The
-[moving-mask gas repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md)
-retains this #202/#203 qualification and the strict native live-label invariant.
-
 ### LCB-005 standalone instance readback
 
 Current #212 branch source exposes copied `get_physical_state_format_version()`
@@ -651,6 +685,13 @@ to2. CYPS continuation retains saved geometry. Calls remain serialized to the
 exclusive adapter owner; outputs expose no mutable World storage. The
 [IN reference](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry)
 owns fields, refusal behavior and the local Windows-only qualification.
+
+CYPS omits host-owned transient masks and body graphs. Exact body-coupled
+continuation requires separate restoration of the same mask configuration and
+future sampled body inputs; the adapter physical-import call alone does not
+provide that complete prepared owner restoration. The
+[moving-mask gas repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md)
+retains this #202/#203 qualification and the strict native live-label invariant.
 
 The isolated Water successor adds native `World::whole_cell_water_enabled()`:
 true for Water CY or Water IN, distinct from the CY-only dispatch accessor.
@@ -698,11 +739,198 @@ setup/normalization identities, complete hash2 and exact accounting. Shaped
 source/runtime values remain caller claims and full matched eligibility stays
 false until #202 supplies actual verification. The older Godot dictionary
 getter above remains a different encoding; no Godot typed normalization opt-in
-or full comparison host is supplied here. Detailed shapes, absence rules,
+or full comparison host is supplied by that residual native checkpoint. Detailed shapes, absence rules,
 capacities and the narrow native codec freeze belong to
 [native prepared setup and receipts](../architecture/liquid-prepared-setup-and-receipts.md).
 
+**Subsequent #202 source slice:** `CyberDemoBridge.prepare_liquid_world(world,
+rectangles, profile, policy, water_fills, liquid_policy, options)` returns one
+positive opaque token or zero. Options bind the definition SHA256 claim, seed,
+final four-word region, cadence/adhesion and explicit normalization rule. The
+unchanged native builder supplies normalization and typed outcomes. No pending
+World is exposed. `commit_liquid_world(world, token)` consumes that token at the
+exclusive owner boundary after a retained-state fence; `discard_liquid_world`
+retires it. There is one pending candidate per adapter.
+
+The separate `prepare_liquid_level(world, payload, profile, policy, liquid_policy,
+options)` shares that pending slot and commit API for decoded CYSD1 bytes.
+It binds actual raw payload SHA256 in NativeCellFixture/schema1, keeps payload-only
+coverage/all gaps, preserves signed thermal tuples and explicitly normalizes only
+on opt-in. `definition_hash` is refused; import-only copied `setup_kind` and
+`source_payload_sha256` distinguish source bytes from canonical native setup hashes.
+Legacy immediate `import_level` remains Current/default radius2. The [thermal
+preparation contract](../architecture/liquid-prepared-setup-and-receipts.md#imported-cysd-payload-preparation)
+owns exact lane/refusal/identity limits. The subsequent bounded
+[ordinary importer](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
+is explicit Exploratory/body-free, retaining copied metadata/player/receipt and
+its accepted reset input. Physical import and final platforms remain open.
+
+The synchronous owner adds `liquid_comparison_arm_import(policy, normalize_water,
+exploratory, radius=2)`, `liquid_comparison_clear_import()` and copied
+`liquid_comparison_import_state()`. Arming changes only a next-import request.
+`restart_world()` reconstructs an accepted imported setup or follows the ordinary
+demo reset. `liquid_level_host_observation_record()` explicitly copies the
+qualified imported-owner record; it grants no full-host eligibility. Final
+owner serial/lifetime and native one-use commit fences precede adoption.
+Native run-component v1 preflight refuses unsupported inherited interaction or
+diagnostic law and independent transport before issuing a token. The accepted
+level's configured Baseline exemption binds actual copied transport component,
+native generation and immutable applied receipt hash. No new native codec or
+configuration mutator is added; observational telemetry remains the existing
+prepared-builder behavior.
+
+The later synchronous four-demo route supplies a copied schema2
+`CyberMicroScenarioCatalogue.prepared_ordinary_demo(id)` through the existing
+`liquid_comparison_active_definition()`/`liquid_comparison_apply_active(...)`
+owner interface. It uses `prepare_liquid_world` with the existing one-use token,
+private sampled stage, final actual execution and serial/lifetime/native fences;
+there is no new native codec or constructor API. The owner keeps an accepted
+copied recipe/selection and source-ID/native-generation identity for Restart.
+Its configured Baseline exemption additionally binds actual transport component
+and applied receipt hash. Imported demo labels never supply that source identity.
+See [ordinary demo rebuilding](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-synchronous-demo-rebuilding)
+for the four-route allowlist, retained refusal and healthy-World recovery limit.
+
+`prepared_reference_body_session.gd.prepare_reference(parent, templates, size,
+positions=PackedVector2Array(), rotations=PackedFloat32Array())` is a main-thread
+private-graph helper, not a native or worker message API. Each optional array is
+copied; nonempty arrays require exactly three finite entries before viewport
+allocation. Omitted positions/rotations retain the Water Feel defaults. Actual
+captured packed body values still cross the owner boundary as immutable values;
+no Node/RID is published to native workers, and constructor admission remains
+the calling owner's responsibility.
+
+The later `prepared_synchronous_reference_session.gd` retains one exact copied
+request and native preparation token privately across main-thread construction
+frames for authored Physics Pit. Its existing host commit guard first defers
+with token-bound copied terrain and staged sampled/body owners, then revalidates
+the same stored request after frozen-frame/terrain readiness. No caller token is
+accepted as a reusable request. Existing pending-owner acknowledgement carries
+serial/applied status to the panel; final native commit consumes the token.
+Only packed body/terrain values cross the native adapter boundary. See the
+[synchronous reference-body contract](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-physics-pit-reference-bodies)
+for retained-state, settings/cancellation and qualification limits.
+
+`get_applied_liquid_construction_receipt()` and
+`get_liquid_construction_attempt()` return distinct owned dictionaries containing
+the original native canonical `PackedByteArray`, its SHA256, qualifications and
+eligibility. Applied readback includes the actual tick-zero policy, prepared
+payload/setup, generation, final region, execution selections and optional
+normalization digest/counters. Both application owners accept
+`microscenario_apply_controlled_liquid(definition, policy, normalize_water,
+mode, maximum_rule_radius=2)` for the fixed actor-free schema-2 route. Desktop commands carry
+`controlled_liquid_setup`; the worker issues its own queue revision and fences
+the actual native commit against newer requests/reset/stop. Details and current
+gaps belong to the [bounded host contract](../architecture/liquid-prepared-setup-and-receipts.md#controlled-application-host-preparation-slice).
+
+The subsequent normal comparison panel calls
+`liquid_policy_assignment_choices(request, material)` for native-decoded,
+catalogue-declared family/variant choices. Each owns a copied request and actual
+validator result/refusal plus material/family/variant/Current metadata. Editing a
+choice preserves foreign assignments/blocks and retires blocks whose owner no longer applies;
+invalid or incompatible blocks remain explicit refusals. This value API reads
+no World and changes no applied policy. GDScript owns pending selection and
+observes the existing owner acknowledgement before treating it as applied. See
+the [normal UI and constructor coverage](../operations/lcb-manual-comparison-ux.md)
+for actual supported routes and retained qualification.
+
+`microscenario_apply_exploratory_liquid(definition, policy, normalize_water,
+mode, actor_configuration, maximum_rule_radius=2)` is the subsequent schema-2 route; desktop
+stages allowlisted sampled rigs/equipment, while the synchronous controller
+stages its existing sampled character. Native preparation options additionally
+select `intent` (`controlled`/`exploratory`), `pacing`
+(`fixed_steps`/`host_paced`) and `simulation_window_enabled`; disabled window
+requires the full finite World region. Readback copies these actual encoded
+native execution/intent values. The frozen native codec and its qualifications
+remain unchanged.
+
+`prepared_liquid_character_box_collides(world, token, origin, size, mode)` reads
+only the matching native candidate, using the existing live collision law;
+missing/retired tokens and invalid queries fail closed. It exposes no native
+World or edit/tick API. The worker's final commit swaps the privately prepared
+sampled owners under the same mutex fence as native replacement. Matching
+`acknowledge_prepared_liquid_configuration(serial)` releases the initial
+accepted owner frame only after main installs its new camera/configuration.
+Details belong to the [staged owner contract](../architecture/liquid-prepared-setup-and-receipts.md#staged-sampled-actors-and-exploratory-owners).
+
+The desktop articulated route additionally supplies copied `initial_bodies`
+(maximum 64 existing 11-float records) before native facts capture.
+`prepared_liquid_world_values(world, token)` returns owned pending terrain, body
+values/digest and physical hash. The exclusive worker publishes these copied
+facts through `prepared_physical_liquid_values()`; main completes the permanent
+physics-space setup and calls `complete_prepared_physical_liquid(identity, ready,
+reason)`. Token/request/epoch/instance/body-digest identity and the final owner
+fence bind this continuation. No scene node, RID or mutable World crosses it.
+Native canonical bytes bind actual initial masks; the copied body digest remains
+host metadata with existing qualifications. See [physical ownership and queued-work disposition](../architecture/liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners).
+
+The integrated IN adapter adds native
+`liquid_policy_with_inertial_damping(request, numerator)` for an active IN family
+and integer numerator0..16. It returns copied native-validated request/receipt or
+typed refusal without mutating a World. Applied `get_liquid_solver_policy()` adds
+actual `maximum_rule_radius`, instance hash/format versions and IN
+`family_parameters` with the native effective identity and `readback_source`.
+`get_physical_state_hash_version()` and `get_physical_state_format_version()`
+query the actual instance (IN3, non-IN2). `inspect_inertial_cell(point)` copies
+healthy finite cell material/family/availability and signed motion/accumulators.
+Invalid points or failed Worlds return an explicit error.
+
+Prepared options admit explicit rule radius2 or3, default2; IN never silently
+upgrades it. Construction readback additionally copies actual
+`solver_state_extensions` and rule radius from native facts. Hex physical-hash
+metadata is consistently sixteen digits; the canonical hash value/bytes do not
+change. See [IN host scope and qualifications](../architecture/liquid-prepared-setup-and-receipts.md#inertial-application-readback-and-explicit-geometry).
+
+The subsequent ordinary Tower route exposes
+`liquid_comparison_active_definition()` and
+`liquid_comparison_apply_active(policy, normalize_water, exploratory, mode,
+radius)` to the existing panel. The copied preparation definition keeps the
+actual Tower recipe/profile and final selected floor. Desktop `reset` commands
+carry the same explicit policy/setup and owner-issued request revision; copied
+scenario serial/applied acknowledgement identifies successful ordinary Tower
+installation without setting `micro_active`. Existing reset/profile controls
+retain accepted selection. Default construction retires typed setup metadata.
+See [Tower owner lifetime and scope](../architecture/liquid-prepared-setup-and-receipts.md#ordinary-experiment-tower-preparation).
+
 ### Read-only native MicroScenario inspection
+
+The subsequent ordinary Water Feel route passes explicit `liquid_policy`,
+`controlled_liquid_setup` with Exploratory intent and `scenario_request_serial`
+through `water_reset`, retaining `water_active` rather than entering MicroScenario
+mode. The same serial/applied/definition acknowledgement used by prepared owners
+qualifies success; the semantic Water policy hash alone cannot. The original
+default/blind command route remains available. See [Water Feel route restrictions,
+source actions and ownership](../architecture/liquid-prepared-setup-and-receipts.md#ordinary-water-feel-preparation).
+
+The subsequent desktop reference-body route adds owner-internal
+`physical_owner = {kind: reference_body, epoch: 0, instance_id, initial_bodies}`
+to the same prepared command. The packed three-body input is copied from the
+actual frozen Rapier space. Native candidate identity, main-thread terrain and
+pose readiness, exact continuation binding and final owner fences precede
+installation. Refusal retains the old graph/receipt/record; success adopts the
+permanent space without rebind. It carries no actor/equipment authority. The
+later synchronous controller has its own staged supported-body Water route with its original y90 poses. See [reference-body lifetime and actual feedback](../architecture/liquid-prepared-setup-and-receipts.md#prepared-water-feel-reference-bodies).
+
+The subsequent qualified host observation API
+`CyberDemoBridge.loaded_native_runtime_values()` accepts no caller path/hash and
+returns copied version1 API-reported library path/current file SHA256/size, with
+mapped-module binding explicitly unverified. The separately versioned
+`liquid_host_evidence.gd.collect(bridge, native_readback, host_claims)` preserves
+native canonical bytes and frozen qualifications, collects actual manifest/config
+and bounded current script-file observations, labels caller values unverified and
+returns an immutable copied value or explicit refusal. Its native-byte checksum
+check is not an independent native codec decoder. Normal owner integration and
+full evidence eligibility remain open at that foundation checkpoint; see the [qualified foundation](../architecture/liquid-prepared-setup-and-receipts.md#qualified-host-observation-foundation).
+
+The subsequent `prepared_liquid_run_capture(world, token)` returns a copied
+`{schema_version:1, lifecycle:"prepared", token, native_run_encoding}` wrapper
+for that pending candidate only. It exposes no World or installation claim.
+`CyberMicroScenarioHost` collects the qualified record before its final guard,
+adopts it only after successful commit and retains the old record on refusal.
+`liquid_host_observation()` returns compact copied identity;
+`liquid_host_observation_record()` and explicit capture return full copied
+canonical values. Default construction/generation retirement clears readback;
+native and host eligibility remain false. See [owner lifetime](../architecture/liquid-prepared-setup-and-receipts.md#owner-bound-construction-observation).
 
 The MS-001 adapter preparation adds `CyberDemoBridge.inspect_cell(world, point)`
 and `inspect_statistics(world)`. Call these only from the same serialized external
@@ -1171,3 +1399,18 @@ unchanged and are reported separately. Subsequent changes to the private owner
 cannot mutate the adopted plans.
 Neither explanation nor stage output supplies authority to install or mutate a
 World; existing material/semantic admission interfaces keep that responsibility.
+
+
+## Native default-demo construction values
+
+The unmerged [native default-demo preparation API](../architecture/liquid-prepared-setup-and-receipts.md#native-desktop-default-demo-preparation)
+accepts `(world, liquid_policy, options)` at the exclusive owner boundary. Its
+one-use token is the same private candidate slot used by prepared rectangles and
+thermal levels. No World storage crosses the adapter. Copied native constructor
+origin reports recipe ID, session generation, prepared status and health; it is
+retired by other World replacements and is not inferred from equal tuples or a
+scene label. The later [desktop owner/capacity checkpoint](../architecture/liquid-prepared-setup-and-receipts.md#desktop-native-default-owner-and-initial-pressure-capacity)
+uses copied origin/qualified observation slots and exact request/settings/native
+guards for owner adoption. Actual initial pressure-capacity excess produces a
+native typed refusal before capture/token/swap, with actual attempt readback.
+Complete host binding and final platform publication remain separate.

@@ -10,6 +10,16 @@ related-documents: [../architecture/liquid-solver-family-policy.md, lcb-manual-c
 
 # LCB Water comparison contract and reference fixtures
 
+The unmerged [final application union](../architecture/liquid-prepared-setup-and-receipts.md#final-application-source-union)
+can functionally select all four Water families and all three PF variants through
+one synchronous prepared body-free owner with explicit normalization and radius3.
+Its six common-Water arms use one exact normalized payload and exact
+per-tick quantity, now also exercised in actual [compat/threaded browsers](../audits/2026-10-25-lcb003-web-common-water.md)
+with successful terminal POSTs. These bounded30-tick functional arms do not execute the
+registered dam/head/feel campaign, alter any117 registry classification or
+establish #203 Gate D/scientific acceptance. Original protected fixtures and
+their historical measured controls remain unchanged.
+
 ## Status
 
 **Approved bounded comparison design and fixtures — Gates D/E PASS.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current in source; Brine IN is accepted on main through #250; the isolated Water-IN source/runtime successor remains outside accepted main until its own final gates pass. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.

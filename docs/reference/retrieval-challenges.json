@@ -1,7 +1,7 @@
 {
   "version": 1,
   "frozen_date": "2026-09-08",
-  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits. SCENE01/SCENE02 cover Neon Reliquary entry and view controls, and the four-district descent with explicit scene-state boundaries. ACT04-ACT09 cover the 29-rig sets, parametric input, consumed-action identity, fictional personas, bounded tool/rope authority and SetA compatibility. SCENE03 covers the connected Blacksite Nine route, camera-only district views, shared-world continuity and whole-complex reset. USABLE01 covers the separate 32-item actor equipment catalogue, ownership and work limits. ACT-005 USABLE02-USABLE04 add independent physical equipment lifetime/admission, real processor lifecycle/stock and physical usable course questions. MAT03, TEST01 and TEST02 cover the 2026-10-19 catalogue integration, required rendered-test acceptance and CLI corrections. TEST03 covers actual retained-DLL Windows execution, current native source identity and applicable test scope. SCENE04 and DEP02 cover the 2026-10-20 Deepworks map/replay boundaries and parameterized depth dimensions/publication admission. PLAY01-PLAY05 independently cover the seven human presets, acrobat chains, native material field bounds, input lifetime/gamepad mapping and circular-wheel approximation. GEN005-1–GEN005-3 cover coherent plane projection, identity-bound admission/events and actual finite fixture/capture evidence. 4LY01-4LY05 cover the flight family selection and candidate calibration distinction, goal-blind bounded velocity controller, neutral/lifecycle, evidence/learning gates, and copied policy-visible static capabilities. LCB01 covers final bounded admission, landed evidence, the native successor scope and separately deferred host/family work. LCB06-LCB09 independently challenge final-tuple normalization and comparator identity, native-issued construction outcomes, exact Water accounting and typed receipt/provenance boundaries in the native contract accepted on main through #246. LCB10 separately asks accepted checkpoint evidence and remaining host ownership. LCB11 independently asks optimized head/gas/certificate obligations, cost admission and execution identity without changing earlier queries. LCB-IN-ADAPTER-01 independently covers actual IN binding values and explicit/reset geometry in the combined source.",
+  "purpose": "Supplementary source-discovered challenges, reported separately from the frozen 32-question development set without a before/after improvement claim. C03/C04 cover coordinated failure/re-entry. C05/C06 originated in the physics plan; C05 now routes current issue #10 policy. C07-C10 distinguish historical measured physics from current boundaries. C11/C12 cover current granular support and scheduled permeability. WEX01-WEX03 cover the 2026-09-20 Water hybrid/pressure extension. REC01-REC03 and SOL04 cover the 2026-09-24 recovered CI, #65/runtime and Stage-3B routing. MAT01/MAT02 cover the 2026-10-18 persistent-reaction and body-mask wake repair. ACT01-ACT03 cover provisional actor capabilities, player/policy input lifetime and bounded-work limits. SCENE01/SCENE02 cover Neon Reliquary entry and view controls, and the four-district descent with explicit scene-state boundaries. ACT04-ACT09 cover the 29-rig sets, parametric input, consumed-action identity, fictional personas, bounded tool/rope authority and SetA compatibility. SCENE03 covers the connected Blacksite Nine route, camera-only district views, shared-world continuity and whole-complex reset. USABLE01 covers the separate 32-item actor equipment catalogue, ownership and work limits. ACT-005 USABLE02-USABLE04 add independent physical equipment lifetime/admission, real processor lifecycle/stock and physical usable course questions. MAT03, TEST01 and TEST02 cover the 2026-10-19 catalogue integration, required rendered-test acceptance and CLI corrections. TEST03 covers actual retained-DLL Windows execution, current native source identity and applicable test scope. SCENE04 and DEP02 cover the 2026-10-20 Deepworks map/replay boundaries and parameterized depth dimensions/publication admission. PLAY01-PLAY05 independently cover the seven human presets, acrobat chains, native material field bounds, input lifetime/gamepad mapping and circular-wheel approximation. GEN005-1–GEN005-3 cover coherent plane projection, identity-bound admission/events and actual finite fixture/capture evidence. 4LY01-4LY05 cover the flight family selection and candidate calibration distinction, goal-blind bounded velocity controller, neutral/lifecycle, evidence/learning gates, and copied policy-visible static capabilities. LCB01 covers final bounded admission, landed evidence, the native successor scope and separately deferred host/family work. LCB06-LCB09 independently challenge final-tuple normalization and comparator identity, native-issued construction outcomes, exact Water accounting and typed receipt/provenance boundaries in the native contract accepted on main through #246. LCB10 separately asks accepted checkpoint evidence and remaining host ownership. LCB11 independently asks optimized head/gas/certificate obligations, cost admission and execution identity without changing earlier queries. LCB-IN-ADAPTER-01 independently covers actual IN binding values and explicit/reset geometry in the combined source. The existing #202 host challenges LCB10–LCB18 remain; independently added incoming acceptance/pressure queries are retained as LCB-MAIN-ACCEPTANCE-01 and LCB-PRESSURE-OPT-01 because LCB10/LCB11 were already occupied on this branch.",
   "questions": [
     {
       "id": "C05",
@@ -2132,9 +2132,9 @@
       ],
       "facts": [
         "The 2026-10-24 #200 foundation implements LiquidSolverPolicy decoding, validation precedence, canonical SHA-256 identity, refusal and applied readback, reproducing every registered wire vector.",
-        "Accepted #246 main admits Water pressure reference and CellularYield with Water material blockv2 viscosity0..255/default0 and whole-cell ingress. All three Water pressure variants are later accepted on main through #253; Brine IN/reference through #250. Their source-matched publication and exact-head gates retain source qualification and do not complete the full host.",
+        "Accepted main dc915f2b includes Water pressure reference/cached/cached_dormant, Water CellularYield and opt-in Brine IN after exact-head gates. The integrated Water successor additionally admits Water IN/reference with source-matched scoped Windows/Linux publication at4b588279/run40166210470/botc9e52b52. Current default families remain unchanged; full host/scientific qualification is separate.",
         "A refused candidate keeps the live World, its applied receipt and session_generation. Native whole-cell preparation requires explicit water-normalize-v1 opt-in for fractional setup; a native-issued attempt outcome stays separate from the live applied receipt. CYSD1 import reconstructs on default families.",
-        "Accepted Brine IN supports optional actual damping block2. The isolated Water successor additionally admits whole-cell Water/reference with actual carrier/coherence proof and Windows/Linux native-repair sourceaa8 publication; final ready-PR/scientific/full-host qualification remains separate. Godot IN construction requires explicit radius3 and separates predicted from actual instance readback."
+        "Brine and Water IN use the actual damping block2 and explicit radius3. Native whole-cell ingress and explicit setup normalization apply to Water CY and IN; instance readback is distinct from validation predictions. Bounded application owners, final combined runtimes and full-host/Web qualification remain separately evidenced. The isolated Water native-repair sequence2 sourceaa8af247 is published for Windows/Linux; final ready-PR, scientific and complete-host acceptance remain separate."
       ],
       "sources": [
         "architecture/liquid-solver-family-policy.md",
@@ -2219,7 +2219,7 @@
         "Native preparation takes unique final cell tuples after overwrite resolution, refuses duplicate coordinates, sorts row-major, omits ambient Empty and preserves nonambient Empty thermal authority; it never normalizes an edit history or reveals an overwritten earlier rectangle.",
         "Whole-cell preparation with fractional Water refuses normalization_required without explicit water-normalize-v1; an explicit request also normalizes the fractional-capable comparator and retains a receipt even for zero net delta. Source Water coherence is validated before rounding can remove a cell.",
         "The native builder verifies the actual installed payload and attaches before/after payload/setup identities plus normalization digest once at tick zero. Seed remains unchanged; normalization identity is not part of the setup hash, avoiding a cycle.",
-        "This is Current on accepted #246 main. Godot has no typed normalization opt-in here, and full registered-definition compiler and host proof remain #202 work."
+        "The native contract is Current on accepted #246 main. The bounded #202 branch additionally exposes explicit typed normalization opt-in for supported prepared constructors; remaining constructor coverage, complete host proof and actual Web qualification remain open."
       ],
       "sources": [
         "architecture/liquid-prepared-setup-and-receipts.md",
@@ -2317,6 +2317,168 @@
     },
     {
       "id": "LCB10",
+      "query": "Can the normal application explicitly normalize whole-cell Water and reject stale same-definition prepared resets without replacing its live World or receipt?",
+      "canonical": [
+        "architecture/liquid-prepared-setup-and-receipts.md"
+      ],
+      "facts": [
+        "The first #202 source slice supports fixed actor-free schema-2 MicroScenarios through actual desktop and synchronous controllers, with an explicit policy and water-normalize-v1 opt-in; unsupported actor/owner routes refuse before replacement.",
+        "One native pending candidate owns World/rendering/final setup/receipt, and one-use tokens reject replay, discard, supersession and changed retained state. Final execution/interest is captured before commit.",
+        "The desktop owner checks its queue-issued request revision, reset and stop under the queue mutex at the actual native commit; same-definition newer requests have distinct identities. Refusal keeps the prior World, host cursor, generation and applied receipt, while native refusals have separate attempt bytes.",
+        "Copied native v1 canonical bytes keep their qualification flags and false full-match eligibility. Windows headless web_main.tscn is not browser/Wasm qualification, and full constructor/actor/UI/provenance/Web/publication acceptance remains open."
+      ],
+      "sources": [
+        "architecture/liquid-prepared-setup-and-receipts.md",
+        "../godot/native_extension/cyber_prepared_liquid_world.hpp",
+        "../godot/scripts/microscenario_host.gd",
+        "../godot/scripts/simulation_worker.gd",
+        "../godot/tests/test_liquid_prepared_host.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "LCB11",
+      "query": "Where do I select a liquid solver in the normal app, does Original Current control use pending normalization, and which constructor routes still refuse the new controlled apply?",
+      "canonical": [
+        "operations/lcb-manual-comparison-ux.md"
+      ],
+      "facts": [
+        "The experimental Liquids panel in the existing MicroScenario dialog uses native validated per-material choices and presets, explicit normalization, and owner-prepared rebuilds for fixed actor-free schema-2 definitions. Pending selection does not alter the running World; Original Current control uses the unchanged original default constructor and exact fixture.",
+        "The constructor matrix keeps Controlled fixed and actor-free. Explicit Exploratory stages sampled ownership or supported desktop articulated Rapier actors/equipment/terrain in a permanent private space. Remaining body/constructor routes, full provenance and actual browser qualification remain open #202 scope."
+      ],
+      "sources": [
+        "../godot/scripts/liquid_comparison_panel.gd",
+        "../godot/scripts/main.gd",
+        "../godot/scripts/web_demo_controller.gd"
+      ]
+    },
+    {
+      "id": "LCB12",
+      "query": "How are sampled actors and equipment staged against the candidate terrain before an exploratory liquid World commits, and what preserves the old masked World on refusal or a stale owner frame?",
+      "canonical": [
+        "architecture/liquid-prepared-setup-and-receipts.md"
+      ],
+      "facts": [
+        "The explicit body-free exploratory route configures private sampled actor, usable and character owners with token-bound native read-only collision queries, monotonic epochs and final player/execution settings before the native queue-mutex commit fence.",
+        "Declared configuration refusal and newer request/reset/stop/settings preserve the old World, stored masked Water, canonical receipt and actor/equipment state. Initial owner frames wait for matching accepted acknowledgement. A separate bounded desktop articulated continuation is now implemented; other body routes and complete native-v1 host/provenance verification remain open."
+      ],
+      "sources": [
+        "../godot/scripts/prepared_sampled_session.gd",
+        "../godot/scripts/simulation_worker.gd",
+        "../godot/native_extension/cyber_prepared_liquid_world.hpp"
+      ]
+    },
+    {
+      "id": "LCB13",
+      "query": "How can a real articulated actor and terrain be prepared without moving its bodies before the liquid World commits, and what happens to admitted paint or profile changes if main refuses readiness?",
+      "canonical": [
+        "architecture/liquid-prepared-setup-and-receipts.md"
+      ],
+      "facts": [
+        "Main stages the actual existing rig/equipment in a permanent private World2D with inactive space and frozen dynamic bodies, verifies actual poses across real physics frames and completes copied native terrain before readiness. Accepted adoption retains exactly that graph and space without a fallible rebind.",
+        "The worker retains one opaque token and original definition/policy/options binding, captures actual native initial masks before canonical receipt bytes, and fences readiness/request/settings/reset/stop. Existing admitted mutation work stays queued through refusal while new paint explicitly refuses; profile and reset/prototype changes retain their ordinary disposition. Native-v1 qualifications and false full-match eligibility remain unchanged."
+      ],
+      "sources": [
+        "../godot/scripts/prepared_physical_session.gd",
+        "../godot/scripts/simulation_worker.gd",
+        "../godot/scripts/main.gd",
+        "../godot/tests/test_liquid_physical_transaction.gd"
+      ]
+    },
+    {
+      "id": "LCB14",
+      "query": "Which normal liquid-comparison controls select actual Brine IN damping and explicit matched geometry, what do the instance hash and CYPS versions read back, and does Original Current keep its exact radius-two preset?",
+      "canonical": [
+        "architecture/liquid-prepared-setup-and-receipts.md",
+        "operations/lcb-manual-comparison-ux.md"
+      ],
+      "facts": [
+        "The native-backed damping editor applies optional IN family block version2 numerator0..16 over denominator16, default1, only on rebuild. Actual native World parameters and effective identity drive applied readback; GDScript never edits wire offsets.",
+        "IN uses actual instance hash/CYPS3 and explicitly selected radius3; radius2 refuses without replacing retained state. Current comparators can explicitly match radius3, while Original Current and ordinary defaults restore protected radius2. Native outer receipt-v1 qualifications and false full-match eligibility remain unchanged. The local Windows native proof does not qualify remaining constructors, final publication, Linux or real browsers."
+      ],
+      "sources": [
+        "../godot/scripts/liquid_comparison_panel.gd",
+        "../godot/native_extension/cyber_demo_bridge.hpp",
+        "../godot/native_extension/cyber_native_cell_world.cpp",
+        "../godot/tests/test_liquid_inertial_host.gd"
+      ]
+    },
+    {
+      "id": "LCB15",
+      "query": "Can the ordinary Experiment Tower rebuild an explicit liquid solver policy without losing floor navigation, release and schedule controls, independent transport settings, or the old session when preparation refuses?",
+      "canonical": [
+        "architecture/liquid-prepared-setup-and-receipts.md",
+        "operations/lcb-manual-comparison-ux.md"
+      ],
+      "facts": [
+        "Explicit Exploratory selection uses a copied preparation view of the existing Tower recipe/profile and final floor/player/camera, native candidate token and shared owner final fence. Accepted installation remains ordinary Tower, with its floor/release/schedule/manual controls; it does not become MicroScenario mode.",
+        "Reset and transport-profile rebuild retain accepted solver/normalization/geometry. Refusal retains old World/cursor/player/receipt/UI; a committed observation fault is installed, not refused. The original default constructor stays separate and retires typed setup. Remaining constructor rows, complete host evidence, actual browsers and final publication remain open."
+      ],
+      "sources": [
+        "../godot/scripts/microscenario_catalogue.gd",
+        "../godot/scripts/simulation_worker.gd",
+        "../godot/scripts/main.gd",
+        "../godot/scripts/web_demo_controller.gd",
+        "../godot/tests/test_liquid_tower_host.gd"
+      ]
+    },
+    {
+      "id": "LCB16",
+      "query": "Does the liquid host record identify the actually mapped DLL in the Windows editor, or only Godot reported path and current file bytes, and can caller claims upgrade native full matched eligibility?",
+      "canonical": [
+        "architecture/liquid-prepared-setup-and-receipts.md"
+      ],
+      "facts": [
+        "The version1 native observation accepts no caller path/hash and observes the Godot API-reported library path and current file SHA256/size. Windows editor uses a shadow DLL while the API reports the original, even when reloadable is false; standalone and real-editor controlled OS module probes qualify those exact launches only.",
+        "The separate immutable qualified host observation copies native canonical bytes/digest and frozen qualifications, actual config/publication/current script files, and labels caller values unverified. Native-v1 qualifications15 and false native/host full matched eligibility remain. The subsequent owner slice carries the record through construction/restart; complete executed setup/host verification and matching publication/browser gates remain open."
+      ],
+      "sources": [
+        "../godot/native_extension/cyber_demo_bridge.hpp",
+        "../godot/scripts/liquid_host_evidence.gd",
+        "../godot/tests/test_liquid_host_evidence.gd"
+      ]
+    },
+    {
+      "id": "LCB17",
+      "query": "When does a normal liquid setup adopt its host observation record, what survives a refused rebuild or restart, and do ordinary frame publications copy the complete runtime file observations?",
+      "canonical": [
+        "architecture/liquid-prepared-setup-and-receipts.md"
+      ],
+      "facts": [
+        "Token-bound native run capture is explicitly prepared copied encoding. The exclusive scenario owner collects the immutable qualified record before its final commit guard and adopts only on successful commit; deferral, collection refusal or final-fence refusal preserves the old World/cursor/graph/record.",
+        "Actual normal selection/reset carries compact digest/native receipt/generation identity; restart records a new actual generation with retained setup and normalization. Full canonical record is copied only for explicit capture; accepted default construction retires it. Native and host full matched eligibility remain false, and complete executed host identity, matching publication and real browser/remaining constructor gates stay open."
+      ],
+      "sources": [
+        "../godot/native_extension/cyber_demo_bridge.hpp",
+        "../godot/scripts/microscenario_host.gd",
+        "../godot/scripts/simulation_worker.gd",
+        "../godot/scripts/web_demo_controller.gd",
+        "../godot/tests/test_liquid_owner_observation.gd"
+      ]
+    },
+    {
+      "id": "LCB18",
+      "query": "Can ordinary Water Feel select a liquid family without losing its player, semantic policy, actions or ledger, and how does same-policy-hash refusal differ from success or future fractional source support?",
+      "canonical": [
+        "architecture/liquid-prepared-setup-and-receipts.md",
+        "operations/lcb-manual-comparison-ux.md"
+      ],
+      "facts": [
+        "The unblinded sampled Water Feel route explicitly requires Exploratory, keeps original schema1 recipe/player/semantic policy/events, and stays water_active rather than MicroScenario. Its copied schema2 preparation uses existing owner fences; exact request serial/applied/definition acknowledgement prevents an unchanged Water policy hash from falsely accepting a refused solver rebuild. The subsequent desktop supported-body route stages the original three reference bodies in a permanent private physics space, freezes actual poses through initial native mask/receipt capture and terrain readiness, then adopts the same graph after final fences.",
+        "Reset and ordinary Water semantic/scenario changes retain accepted family/normalization/radius; refusal retains old World/player/body graph/record and ordinary exit retires it. Actual normal unpaused pressure reference/cached/dormant/FM cohorts prove motion, signed age-bounded feedback, exact Water quantity and gas closure after the narrow native moving-mask label repair. Blind, synchronous unstaged body routes and CY Water future fractional sources refuse before mutation. Initial normalization never rewrites scheduled sources. Water-IN remains unsupported; Web bodies, host-mask CYPS continuation, full host identity and publication remain open."
+      ],
+      "sources": [
+        "../godot/scripts/microscenario_catalogue.gd",
+        "../godot/scripts/simulation_worker.gd",
+        "../godot/scripts/main.gd",
+        "../godot/scripts/web_demo_controller.gd",
+        "../godot/tests/test_liquid_water_feel_host.gd",
+        "../godot/scripts/prepared_reference_body_session.gd",
+        "../godot/tests/test_liquid_water_reference_body.gd"
+      ]
+    },
+    {
+      "id": "LCB-MAIN-ACCEPTANCE-01",
       "query": "Has the shared liquid setup and receipt checkpoint reached main, what validation accepted it, and which application-host work remains?",
       "canonical": [
         "architecture/liquid-prepared-setup-and-receipts.md",
@@ -2325,7 +2487,7 @@
       "facts": [
         "PR #246 merged as ec58d919 after final head 560f9a4 passed the required Documentation/provenance, Native, Godot and #49 gates at the same tree e8e999899.",
         "Accepted main uses typed native-v1 setup/run/attempt/accounting codecs and physical hash/CYPS2; historical CYPS1 explicitly refuses. The source-matched Windows/Linux matrix is accepted, while old local checkpoints retain their own source/results.",
-        "Native-v1 caller source/runtime/host claims remain qualified and full matched eligibility remains false. Normal application constructors, typed host evidence, normalization opt-in, UX and Web remain #202 work; #200 stays open pending ownership reconciliation."
+        "Native-v1 caller source/runtime/host claims remain qualified and full matched eligibility remains false. Bounded #202 prepared constructors, typed observations, normalization opt-in and controls are Current on the application branch; remaining constructors, verified host evidence, matching publication and actual Web remain open. #200 stays open pending ownership reconciliation."
       ],
       "sources": [
         "architecture/liquid-prepared-setup-and-receipts.md",
@@ -2336,13 +2498,13 @@
       "revision_sensitive": true
     },
     {
-      "id": "LCB11",
+      "id": "LCB-PRESSURE-OPT-01",
       "query": "When may an optimized pressure pool skip Water motion, how do distant head or gas changes wake it, and what do identity and total cost actually prove?",
       "canonical": [
         "architecture/pressure-optimization.md"
       ],
       "facts": [
-        "Reference/cached/cached_dormant share the pressure law and unchanged defaults; source-matched publication and exact-head gates pass before accepted #253 main integration. Scientific/full-product qualification and universal speedup claims remain separate.",
+        "Current #201 branch admits reference/cached/cached_dormant with the same pressure law and unchanged defaults; source-matched runtime and final ready-PR acceptance remain separate pending gates.",
         "Complete vertical/row head closure and global resident gas identity/order include paused contributors. Component BFS reuse preserves global census/reducer/history/relabel; incomplete proofs fall back completely, and remote gas resolution revokes motion certificates.",
         "Certificates prove a bounded motion no-op and preserve stationary failed-motion contacts, mandatory material/lifecycle/other-liquid work, cadence and pending obligations. Same-job touched stencils select ordinary motion; execution3 uses one ordinary warmup visit and eight eligible failed-proof deferrals, and restore is cold. Execution3 additionally gates the whole certificate layer on usable heads and prior Water work, charges fixed8-tick work-credit trials and suspends32 eligible-head ticks after deficit/uncertainty; off/cold invalidation is constant work and reactivation clears stale tags before use.",
         "Execution identity encoding1 binds execution3, variant and four requested budgets separately from physical authority. Godot copied unsigned counters/budgets use decimal strings; prepared heads may be stale after transport/edits and never authorize skipping. A no-partial-write copied chunk roster permits complete actual resident head sampling, including gas-discovery allocations; fixed coordinate envelopes do not establish complete coverage.",
@@ -2377,7 +2539,50 @@
         "reference/configuration-reference.md",
         "audits/2026-10-25-lcb005-standalone-adapter.md",
         "../godot/tests/test_lcb_inertial_adapter.gd"
-      ]
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "LCB-HOST-WEB-01",
+      "query": "Does a successful Web export or native Web-scene test establish actual browser acceptance, and what must the explicit liquid-host probe return?",
+      "canonical": [
+        "reference/interfaces-and-message-contracts.md",
+        "architecture/liquid-prepared-setup-and-receipts.md"
+      ],
+      "facts": [
+        "The exporter records a source-built-web-export-unqualified build target, artifact hash and source claim; it explicitly cannot establish browser execution.",
+        "The explicit test=1 and liquid-host-test=1 apparatus calls actual synchronous owner methods and emits terminal per-check JSON plus a result POST. A DOM readiness message alone is not completion; console/network capture and successful POST must be observed separately.",
+        "The local Windows native prerequisite checks normalization/refusal/state/receipt/reset and mixed families. Actual Rapier parity separately requires consumed feedback and exact body/authority traces. These local results do not qualify Wasm execution, ordinary browser UX, final platform publication, full host eligibility or Water IN."
+      ],
+      "sources": [
+        "reference/interfaces-and-message-contracts.md",
+        "architecture/liquid-prepared-setup-and-receipts.md",
+        "../godot/scripts/liquid_host_web_probe.gd",
+        "../godot/tests/test_liquid_pressure_rapier.gd",
+        "../tools/build_web.py"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "LCB-CYSD-PREP-01",
+      "query": "How are CYSD imported temperatures and heated Empty cells preserved when preparing another liquid solver, and does the native API complete the normal importer?",
+      "canonical": [
+        "architecture/liquid-prepared-setup-and-receipts.md"
+      ],
+      "facts": [
+        "prepare_liquid_level decodes the existing finite CYSD1 payload into exact state and signed LE16 thermal tuples, including nonambient Empty; original Water lanes validate before Water0 canonicalization.",
+        "Actual payload SHA binds NativeCellFixture/schema1 with NativePayloadOnly/all gaps; definition_hash is refused, native-v1 codec/qualifications remain and full matched eligibility is false.",
+        "Whole-cell fractional Water requires explicit water-normalize-v1 with native ledger/digest/counters; one-use pending/retained-World commit and typed-native versus parser-refusal distinction remain.",
+        "Original Current import_level still reconstructs defaults/radius2. The native API alone does not complete the normal importer; a later explicit synchronous Exploratory body-free route stages metadata/player and retains accepted restart input. Physical imports, complete host identity and final Windows/Linux/Web qualification remain open."
+      ],
+      "sources": [
+        "architecture/liquid-prepared-setup-and-receipts.md",
+        "operations/lcb-manual-comparison-ux.md",
+        "reference/interfaces-and-message-contracts.md",
+        "audits/2026-10-25-lcb003-thermal-level-preparation.md",
+        "../godot/tests/test_liquid_level_preparation.gd"
+      ],
+      "revision_sensitive": true
     },
     {
       "id": "LCB-MASK-GAS-01",
@@ -2400,13 +2605,145 @@
       "revision_sensitive": true
     },
     {
+      "id": "LCB-CYSD-HOST-01",
+      "query": "How do I import a saved level with an explicit liquid solver policy, preserve its player and thermal state on refusal, and restart its accepted setup after edits?",
+      "canonical": [
+        "architecture/liquid-prepared-setup-and-receipts.md",
+        "reference/level-saves-and-replay.md"
+      ],
+      "facts": [
+        "The normal synchronous liquid panel requires explicit Exploratory next-import arming; it copies policy, normalization and radius without changing the live World. Unarmed imports remain Current defaults.",
+        "Native thermal preparation, private sampled player and metadata-derived final execution plus qualified observation precede serial/lifetime and one-use native commit. Unsupported inherited interaction/diagnostic laws and independent transport refuse before preparation. Known private Baseline exemption binds actual component/generation/applied receipt. Refusal retains old World/player/receipt/record; physical/Tower/showcase imports explicitly refuse.",
+        "R/Restart reconstructs copied accepted payload/metadata/selection after edits, with a new native generation and host observation. CYSD1 still stores no liquid policy or complete continuation state.",
+        "Local Windows actual menu tests do not establish Wasm, published/exact-head platform acceptance or complete host eligibility; frozen native-v1 and qualified-host eligibility remain false."
+      ],
+      "sources": [
+        "architecture/liquid-prepared-setup-and-receipts.md",
+        "reference/level-saves-and-replay.md",
+        "operations/lcb-manual-comparison-ux.md",
+        "../godot/scripts/prepared_level_session.gd",
+        "../godot/tests/test_liquid_level_import_host.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "LCB-ORDINARY-DEMO-01",
+      "query": "Can I change the liquid solver in Material Lab, Waterworks, Foundry or Neon Works while retaining ordinary player controls and restart the selected authored recipe after edits?",
+      "canonical": [
+        "architecture/liquid-prepared-setup-and-receipts.md",
+        "operations/lcb-manual-comparison-ux.md"
+      ],
+      "facts": [
+        "Only four curated synchronous body-free demos admit explicit Exploratory active rebuilding. Exact ordered authored rectangles, sampled player and actual final quality/view/cadence are prepared before the final serial/lifetime and native one-use commit.",
+        "Refusal retains the old World/player/receipt/host cursor/record. Accepted Restart reconstructs copied recipe/policy/normalization/geometry; authored-source ID plus native generation is distinct from an imported save label.",
+        "Known prepared Baseline exemption binds actual native component/generation/applied receipt. Unsupported inherited laws/independent transport and physical/showcase/arbitrary recipe routes remain explicit refusals or separate routes; Current defaults/radius2 remain available.",
+        "Prepared same-policy quarantine recovery remains open: actual stopped guidance names explicit Current demo or unarmed import, and Restart refuses while retaining the failed owner. Local Windows headless proof is not final Wasm/visual, released runtime, full-host or Brine IN rest-contact qualification."
+      ],
+      "sources": [
+        "architecture/liquid-prepared-setup-and-receipts.md",
+        "operations/lcb-manual-comparison-ux.md",
+        "../godot/scripts/web_demo_controller.gd",
+        "../godot/scripts/microscenario_catalogue.gd",
+        "../godot/tests/test_liquid_ordinary_demo_host.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "LCB-SYNC-BODY-01",
+      "query": "Can synchronous Physics Pit rebuild with a selected liquid solver while preserving its original three bodies, player and recipe, and what happens to pending state, refusal and imported same-label saves?",
+      "canonical": [
+        "architecture/liquid-prepared-setup-and-receipts.md",
+        "operations/lcb-manual-comparison-ux.md"
+      ],
+      "facts": [
+        "Only the actual authored Physics Pit constructor admits this explicit Exploratory route: exact rectangles, original three8x14 bodies at124/90,244/90,384/90 with zero angles and sampled player24/222 are staged; imported same-label body saves gain no source-generation identity.",
+        "One private continuation copies the same request/token and final execution, installs actual initial native masks and prepares token-bound terrain plus sampled owner in a permanent frozen body space. At least two real physics frames and bounded20second readiness precede serial/source/generation/settings/lifetime plus native retained-state commit; main-thread deferred construction is not asynchronous Web simulation ownership.",
+        "Refusal/cancel retains old World/player/body graph/applied receipt/cursors/record and refreshes actual native attempt only. Success adopts the same permanent graph; Restart retains accepted recipe/selection/original poses, while explicit Current replacement retires prepared identity.",
+        "Local Windows actual normal-owner proof reaches original tank contents after240authored ticks with positive consumed signed feedback and exact Water/gas accounting. Frozen native-v1 and host eligibility stay false; other bodies/imports, failed-World same-policy recovery, final Wasm/visual and source-matched platform publication remain open."
+      ],
+      "sources": [
+        "architecture/liquid-prepared-setup-and-receipts.md",
+        "operations/lcb-manual-comparison-ux.md",
+        "../godot/scripts/web_demo_controller.gd",
+        "../godot/scripts/prepared_synchronous_reference_session.gd",
+        "../godot/tests/test_liquid_synchronous_reference_body.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "LCB-SYNC-WATER-BODY-01",
+      "query": "Can synchronous supported-body Water Feel rebuild with selected liquid solvers while preserving its actual y90 bodies, player, recipe actions and quality, and how do refusal, Restart and actual-family evidence work?",
+      "canonical": [
+        "architecture/liquid-prepared-setup-and-receipts.md",
+        "operations/lcb-manual-comparison-ux.md"
+      ],
+      "facts": [
+        "Explicit unblinded Exploratory Water Feel uses the exact original synchronous three8x14 poses124/90,244/90,384/90, zero initial motion, original recipe/actions/player24/222 and fixed480x270 Water view while preserving actual quality buffers/publication cadence.",
+        "One frozen permanent private graph and native token retain the old World/player/graph/receipt/cursors across bounded terrain/two-real-frame readiness. Source generation/semantic identity, configured Baseline component/applied receipt, serial/lifetime/settings/profile and native retained-state fences precede commit; imported identical payloads gain no constructor origin.",
+        "Restart and semantic/body-free transitions retain the accepted explicit policy/normalization and original actions. Blind/Controlled bodies and unsupported fractional future sources refuse. Actual native family/variant/hash readback corrects older label-only coverage; local Windows proof does not establish actual Wasm, final publication, WaterIN or full matched eligibility."
+      ],
+      "sources": [
+        "architecture/liquid-prepared-setup-and-receipts.md",
+        "operations/lcb-manual-comparison-ux.md",
+        "../godot/scripts/web_demo_controller.gd",
+        "../godot/scripts/prepared_synchronous_reference_session.gd",
+        "../godot/tests/test_liquid_synchronous_water_reference_body.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "LCB-DEFAULT-DEMO-01",
+      "query": "How can the desktop default demo use a selected liquid solver without duplicating its native recipe or mistaking an imported level for that constructor?",
+      "canonical": [
+        "architecture/liquid-prepared-setup-and-receipts.md",
+        "reference/interfaces-and-message-contracts.md"
+      ],
+      "facts": [
+        "The native ordered visitor supplies both original reset and prepared default tuples; Water precision/coherence and independent transport inherit, while production interaction/diagnostic/gain/editing lifecycle resets on success.",
+        "The new native API reuses the private one-use candidate, final native fence, initial body masks and qualified copied receipts, with actual native recipe/payload identity and no caller definition hash.",
+        "Copied native origin binds actual generation and retires on other World replacement, including an import with identical tuples. Edits retain constructor origin without proving replay.",
+        "The original local Windows adapter proof remains API-only. Subsequent705a2e2d/66bf30f8 adds bounded desktop Main/worker owner adoption and typed initial gas-capacity refusal; final combined union, Linux/Web, publication and complete host identity remain open."
+      ],
+      "sources": [
+        "architecture/liquid-prepared-setup-and-receipts.md",
+        "reference/invariants.md",
+        "reference/interfaces-and-message-contracts.md",
+        "audits/2026-10-25-lcb003-native-default-demo-preparation.md",
+        "audits/2026-10-25-lcb003-desktop-native-default-host.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "LCB-DEFAULT-HOST-02",
+      "query": "Can the ordinary desktop default scene apply a selected solver and retain bodies, player profile and restart identity, and what happens when its pressure gas regions exceed capacity?",
+      "canonical": [
+        "architecture/liquid-prepared-setup-and-receipts.md",
+        "operations/lcb-manual-comparison-ux.md"
+      ],
+      "facts": [
+        "Explicit Exploratory Apply binds actual native constructor origin and shared recipe, actual sampled settings/masks and frozen permanent bodies before final request/settings/native/token guards; no save-label identity or duplicated GDScript cell recipe.",
+        "R retains policy/normalization/geometry; F6/actors and Controlled ordinary player/body admission refuse. F7/PENV preferences are staged with fresh owners and adopt only on success; refusal retains World/graph/receipt/record.",
+        "The default authored Water pattern exceeds fixed initial gas capacity for all three PF variants. Native CapacityRefused precedes capture/token/swap and records actual attempt readback; FM/CY real body cohorts retain exact Water628320. No capacity/law weakening or fallback.",
+        "Original post-footer crashes remain failures. Separate preloaded test helpers and bounded final Windows proof do not establish an upstream cause, combined Water-IN/Brine union, released Linux/Web, full-host eligibility or complete programme acceptance."
+      ],
+      "sources": [
+        "architecture/liquid-prepared-setup-and-receipts.md",
+        "operations/lcb-manual-comparison-ux.md",
+        "../godot/scripts/main.gd",
+        "../godot/scripts/simulation_worker.gd",
+        "../native/include/cybersand/pressure_setup_capacity.hpp",
+        "../godot/tests/test_liquid_desktop_default_host.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
       "id": "LCB-WATER-IN-01",
       "query": "How does whole-cell Water inertial keep retained motion and coherence after two grain pickups, and does its new capability identity change Current physics?",
       "canonical": [
         "architecture/inertial-cellular-v1.md"
       ],
       "facts": [
-        "Water/reference admission remains isolated in draft254, preserving Current defaults/C64-E8/Brine law/hash3/CYPS3. Actual sequence2 sourceaa8af247 Windows/Linux publication passes15 processes/642 policy assertions perOS and independent artifact reviewd2da; full ready-PR/scientific/full-host qualification remains pending.",
+        "Water/reference admission remains isolated in PR254, preserving Current defaults/C64-E8/Brine law/hash3/CYPS3. Actual sequence2 sourceaa8af247 Windows/Linux publication passes15 processes/642 policy assertions perOS and independent artifact reviewd2da; full ready-PR/scientific/full-host qualification remains pending.",
         "Each immediate carrying callback returns the actual Water carrier after a grain swap. Later submoves, final state and support probes use that owner; original-origin packing/bracing guards prove read3/write2 with explicit radius3.",
         "Original positive coherence suppresses horizontal-only U6 opportunities while vertical/diagonal gravity, body feedback and WaterUpdate remain mandatory. vx follows ordinary law and ax remains bounded q16 phase without catch-up debt.",
         "The shared CY-or-IN whole-Water predicate refuses partial live/CYSD/CYPS ingress; explicit setup water-normalize-v1 retains gross counters and digest.",
@@ -2454,8 +2791,31 @@
         "audits/2026-10-25-water-inertial-publication.md"
       ],
       "revision_sensitive": true
+    },
+    {
+      "id": "LCB-HOST-UNION-01",
+      "query": "After integrating Water inertial admission, why does the default physical hash change, can normalization authorize later fractional Water sources, and what does the six-Water Web prerequisite actually prove?",
+      "canonical": [
+        "architecture/liquid-prepared-setup-and-receipts.md"
+      ],
+      "facts": [
+        "Current default tuples and clocks remain exact; Water capability admission changes the embedded policy identity. The old legacy fixture remains immutable and the new exact vectors are keyed by policy4b7922ad/capability33c608f8/hash-version2; unknown namespaces refuse.",
+        "Both CY and IN Water refuse fractional future scheduled sources before swapping World/owner/receipt/record. Initial water-normalize-v1 only normalizes setup and never rewrites future actions.",
+        "The003 profile preserves Water005 and requires35 cases plus import,76 named native API prerequisite checks, six actual Water families/variants with one normalized payload and four original mixed arms. Actual source5f02/run40226343524 executes all36 processes on each OS; these native checks do not establish browser/visual, full-host, scientific or release acceptance.",
+        "Historical source4948 compat77/threaded76 terminal checks and originalHTTP201 POSTs qualify six body-free common-Water/four mixed functional arms in their exact source scope. They did not clear the then-stale desktop runtime comparisons. Additional Web/browser/shader work is owner-deferred until after the epic, with rendering failure retained and no fallback or visual pass.",
+        "The earlier packed/startup proof remains compiled18d/tested3d with local native164/SAN39,139 compiled inputs and36 Windows host processes; its failed matrix, old-DLL A/B and helper-only correction are preserved. Actual003 source5f02/bot0c9b1977 publishes Windows e3f17363 and Linux02ea0661,72 actual processes,615 matched native80/build535 inputs and642 policy assertions perOS. Six bot followups are action_required, not greens; final exact-head CI, remaining constructors and complete host/scientific/manual/packaged qualification remain separate. Water PR254 later passed all four exact02c gates including Native163/163/163 and merged as main06451f8a; content-identical App mergea704ce50 keeps all615 inputs unchanged and still requires its own final application gates.",
+        "A later test-only correction after actual003 publication replaces unconditional mismatch assumptions with independent actual manifest/path SHA equality and positive/mismatch/unavailable controls; module/scripts remain unverified and full-host false. Native80/compiled139 stay exact, only two historical535 test entries change, and new final-head CI is still required."
+      ],
+      "sources": [
+        "../godot/scripts/microscenario_catalogue.gd",
+        "../godot/tests/test_liquid_default_demo_preparation.gd",
+        "../tools/ci/lcb003_application_host_runtime_publication.py",
+        "audits/2026-10-25-lcb003-final-integration.md",
+        "audits/2026-10-25-lcb003-web-common-water.md"
+      ],
+      "revision_sensitive": true
     }
   ],
-  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: SCENE01 adds independent demo-level entry/view/ownership routing; the frozen 32-question set is unchanged. 2026-10-18: SCENE02 adds the owner-requested four-tile descent and state-boundary question; all prior and frozen questions remain unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged. 2026-10-18: SCENE03 adds the nine-district route and continuity question; all 47 prior supplementary questions, including SCENE01/SCENE02 and ACT01-ACT09, and the frozen 32-question set remain unchanged. 2026-10-18 ACT-004: ACT10/ACT11 expected facts reconciled with retained hull references and implemented full physical roster; ACT12-ACT15 add independent physical fidelity, producer lifetime, usable and arena-version challenges. Frozen query wording is unchanged; Q10 capacity correction is disclosed in the frozen fixture metadata. 2026-10-18 USABLE-001: USABLE01 adds the independent actor-equipment catalogue/ownership/budget question without changing the frozen 32-question set. 2026-10-19 ACT-005: ACT14 now also routes to the expanded actor-usables canonical contract; ACT14 and USABLE01 expected facts and source routes distinguish the implemented physical equipment catalogue from retained sampled authority. Existing question IDs and query wording are unchanged. USABLE02-USABLE04 add supplementary source-discovered lifetime, processor and course challenges; the frozen 32-question fixture is unchanged, and new question results are reported separately from the prior 70-question baseline. 2026-10-19: MAT03 and TEST01 add catalogue integration and actual graphical-test execution questions; TEST02 adds standalone CLI admission and sampled accounting. 2026-10-19 resumed MAT-002 review: MAT03 scopes sampled-rig digging separately from authored sampled and physical equipment. TEST03 adds the current Windows execution gate; all upstream USABLE01-USABLE04 questions and the frozen 32-question set are preserved. 2026-10-19 Windows follow-up: TEST03 distinguishes the four text descriptor newline comparisons from byte-exact source and binary evidence; existing questions and query wording are unchanged. 2026-10-20: SCENE04 and DEP02 add independent full-map exhibition/replay and depth-size/stale-packet challenges. DEP01 preserves Strata Theatre defaults while admitting the new shared dimensions; TEST03 now refers to dynamically discovered rendered cases instead of a stale count. Existing question IDs and query wording, and the frozen 32-question fixture, are unchanged. The two new challenges are reported separately from the prior 77-question set. 2026-10-20 player playground: PLAY01-PLAY05 add five supplementary source-discovered questions; all prior 79 supplementary objects and the frozen 32-question fixture remain unchanged. New results are reported separately from the prior set. 2026-10-21 PR #189 integration: retains all ten GEN-003 questions GEN09-GEN18 from main alongside PLAY01-PLAY05, for 94 supplementary questions; the frozen 32-question fixture remains unchanged. 2026-10-21: GEN19–GEN26 add independently scoped semantic identity, hierarchy constraints/fallback, structural curve, final-raster override, immutable geometry, bounded publication, authoring and final support-contact questions. All prior 89 supplementary queries and the frozen 32-question set remain unchanged. 2026-10-21 PR #189 GEN-004 reintegration: preserves all 94 player/GEN-003 supplementary questions and all 97 questions from GEN-004 main, yielding 102 distinct questions with unchanged IDs, query wording and expected facts; the frozen 32-question fixture remains unchanged. 2026-10-21 GEN-005: adds three supplementary semantic-plane questions; the original frozen 32-question fixture and all 102 prior supplementary objects remain unchanged. New question results are reported separately. 2026-10-21 GEN-007: adds four independent workbench/procedural qualification questions; frozen 32 and all 105 prior supplementary objects are preserved. 2026-10-22 Water exit correction: adds WATER-EXIT-01 for stale desktop receipt rejection; the frozen 32-question fixture and all 109 prior supplemental objects are unchanged. 2026-10-22 4LY-001: adds four independent free-flight challenges; the frozen 32-question fixture and all 110 prior supplementary objects remain unchanged. New question results are reported separately. 2026-10-24 LCB-001 #200 foundation: LCB01 expected fact 2 records the bounded hold lift; LCB02 adds the native policy foundation question. Query wording, the frozen 32-question fixture and all other supplementary objects are unchanged; new results are reported separately. 2026-10-24 LCB-001 pressure reference: LCB01 facts 2-3 and LCB02 fact 2 now record the owner implementation decision and the admitted Water pressure reference; LCB03-LCB05 add pressure-family, exact-persistence and characterization questions. Query wording, the frozen 32-question fixture and all other supplementary objects are unchanged; new results are reported separately. 2026-10-24 residual #200 native checkpoint: LCB01-LCB04 expected facts/source routes now distinguish the narrow owner-requested native codec freeze, native W-CY admission, exact shared quantity accounting, physical hash v2 and CYPS2 with explicit v1 refusal. LCB05 expected facts retain the source-qualified 349d593 pressure characterization rather than claiming a residual rerun. All 121 prior supplementary IDs and query wording and the separate frozen 32-question fixture remain unchanged. Four independent supplementary questions LCB06-LCB09 are added; their lexical retrieval results are reported separately and are not an answer-correctness or before/after improvement claim. issue #234 integration: retains every current-main question object and adds the prior PR #236 CI-HANG-01 evidence/provenance challenge. Frozen 32 questions unchanged. 2026-10-24 merged #234 repair: TEST04 distinguishes the 180-second outer bound from 45-second idle failure; CI-HANG-01 records independent guards, standard 600 versus prior paired 300 scope and completed ordinary admission with fresh qualification still in progress. Query wording and all other question objects remain unchanged. Later 2026-10-24 qualification readback: TEST04 and CI-HANG-01 now record completed source-bound campaign 40129364630, 600/600 physical passes and 20/20 imports, while retaining prior failures and acceptance limits. 2026-10-25: LCB02/LCB03/LCB04/LCB06 facts now distinguish accepted #246 main v2 from historical #245/local residual records; existing question strings and frozen 32 are unchanged. New supplementary LCB10 asks accepted checkpoint and remaining application-host ownership; report it separately from the prior set. 2026-10-25 LCB-002 branch route: LCB02/LCB03 expected facts distinguish admitted cached/dormant source from accepted #246 main. LCB11 independently asks hydraulic/gas/certificate obligations, deterministic execution3 cost admission and separate execution identity. All 127 earlier query strings and the frozen 32-question fixture are unchanged; final source-matched runtime and ready-PR acceptance remain pending. 2026-10-25 standalone IN adapter: LCB02 adds the branch-current Brine scope; LCB-IN-ADAPTER-01 adds actual instance versions/parameters and geometry obligations. Every previous query string and the frozen32 remain unchanged; local Windows proof is separate from final platform/full-host acceptance. Combined #201/#212 integration preserves every parent query string and frozen32; prior separate-source runtime evidence does not qualify the union. 2026-10-25 Water IN isolated successor adds LCB-WATER-IN-01 without changing previous query strings or frozen32; native source behavior and capability identity remain separately qualified from publication/scientific/host acceptance. 2026-10-25 final Water publication docs: current facts for LCB02/LCB11/LCB-IN-ADAPTER-01/LCB-WATER-IN-01/LCB-WATER-PUB-01 now distinguish accepted parent250 and actual4b/C9 publication from pending final ready-head/scientific/host gates. All132 prior query strings and frozen32 are unchanged; new independent LCB-WATER-PUB-02 is reported separately. 2026-10-25 activity-storage follow-up: MAT01 adds the two contiguous owners and fixed job-span setup boundary; all133 query strings and the frozen32 fixture remain unchanged. 2026-10-25 native-repair sequence2 publication: current facts in LCB02, LCB-WATER-IN-01, LCB-WATER-PUB-01 and LCB-WATER-PUB-02 route to sourceaa8/bot03 and independent reviewd2da. All133 query strings and frozen32 remain unchanged; sequence1 and failed checkpoints retain dated evidence.",
-  "integration_note": "Retains all scene, generation, sampled and physical actor-usable, Thunderbowl, physical-actor, building-material and presentation routes; historical questions are preserved. Deepworks scene controls, finite source replay and full-size/non-square depth dimensions are additive routes; existing historical scope remains intact. Player playground controls, native field ownership and conservative wheel-mask routing are additive; original and historical questions remain unchanged. GEN-004 semantic identity, hierarchy constraints, structural routes, final-raster qualification, immutable geometry, bounded publication, authoring and support-contact routes coexist with all five player questions. Accepted #246 main adds native prepared setup, explicit comparator normalization, native-issued refused/failed attempts, shared exact quantity accounting and qualified typed receipts. Accepted-main native scope and source/platform qualifications remain explicit; application-host verification remains #202. LCB11 adds branch-Current pressure optimization obligations and pending acceptance; prior question strings and the frozen32 remain unchanged. The combined branch retains actual IN instance readback and explicit radius alongside pressure execution3; their previous standalone evidence remains source-qualified."
+  "expectations_reviewed": "2026-09-09 issue #10: frozen 32 questions unchanged; C05/C07/C09 expectations now distinguish current policy from historical #9/#11 scope. C11/C12 are supplementary current-policy challenges, not a before/after improvement claim. C13/C14 add issue #13 profile ownership and measured approximation questions; original questions remain unchanged. 2026-09-10: C15/C16 add Coal residue and Water lateral relaxation questions; frozen 32 unchanged. 2026-09-19: MS01-MS03 add independent harness/capture/owner questions; frozen 32 unchanged. 2026-09-19: MS04/MS05 add independently scoped Lab readiness/A-B/inspection questions; frozen questions unchanged. 2026-09-19: SOL01-SOL03 are supplementary issue #12 scope/ownership/discovery questions; frozen 32 unchanged. 2026-09-19: MS06 adds full-pack Flood/Stress world-state and telemetry routing; MS04 updated for completed first-pack source. 2026-09-20: C06/C09/C10 now distinguish historical #11 bounded evidence from audited current-main integration; REM01/REM02 add closure-state and remediation-routing questions. 2026-09-24: REM02 updated for recovered Stage-3B state; REC01-REC03 and SOL04 add current CI/recovery/runtime/next-work routing without changing the frozen 32-question set. 2026-10-18: MAT01/MAT02 add independent persistent-contact and interior mask-wake questions; the frozen 32 and prior questions are unchanged. 2026-10-18: SCENE01 adds independent demo-level entry/view/ownership routing; the frozen 32-question set is unchanged. 2026-10-18: SCENE02 adds the owner-requested four-tile descent and state-boundary question; all prior and frozen questions remain unchanged. 2026-10-18: ACT01-ACT03 add independent actor model/input/performance-boundary questions; the frozen 32-question set is unchanged. 2026-10-18 ACT-002: ACT04-ACT09 add independent expanded-rig/control/observation/persona/budget/compatibility questions. ACT03 now explicitly scopes original numeric limits to SetA and names the additive extension; the frozen 32-question set remains unchanged. 2026-10-18: SCENE03 adds the nine-district route and continuity question; all 47 prior supplementary questions, including SCENE01/SCENE02 and ACT01-ACT09, and the frozen 32-question set remain unchanged. 2026-10-18 ACT-004: ACT10/ACT11 expected facts reconciled with retained hull references and implemented full physical roster; ACT12-ACT15 add independent physical fidelity, producer lifetime, usable and arena-version challenges. Frozen query wording is unchanged; Q10 capacity correction is disclosed in the frozen fixture metadata. 2026-10-18 USABLE-001: USABLE01 adds the independent actor-equipment catalogue/ownership/budget question without changing the frozen 32-question set. 2026-10-19 ACT-005: ACT14 now also routes to the expanded actor-usables canonical contract; ACT14 and USABLE01 expected facts and source routes distinguish the implemented physical equipment catalogue from retained sampled authority. Existing question IDs and query wording are unchanged. USABLE02-USABLE04 add supplementary source-discovered lifetime, processor and course challenges; the frozen 32-question fixture is unchanged, and new question results are reported separately from the prior 70-question baseline. 2026-10-19: MAT03 and TEST01 add catalogue integration and actual graphical-test execution questions; TEST02 adds standalone CLI admission and sampled accounting. 2026-10-19 resumed MAT-002 review: MAT03 scopes sampled-rig digging separately from authored sampled and physical equipment. TEST03 adds the current Windows execution gate; all upstream USABLE01-USABLE04 questions and the frozen 32-question set are preserved. 2026-10-19 Windows follow-up: TEST03 distinguishes the four text descriptor newline comparisons from byte-exact source and binary evidence; existing questions and query wording are unchanged. 2026-10-20: SCENE04 and DEP02 add independent full-map exhibition/replay and depth-size/stale-packet challenges. DEP01 preserves Strata Theatre defaults while admitting the new shared dimensions; TEST03 now refers to dynamically discovered rendered cases instead of a stale count. Existing question IDs and query wording, and the frozen 32-question fixture, are unchanged. The two new challenges are reported separately from the prior 77-question set. 2026-10-20 player playground: PLAY01-PLAY05 add five supplementary source-discovered questions; all prior 79 supplementary objects and the frozen 32-question fixture remain unchanged. New results are reported separately from the prior set. 2026-10-21 PR #189 integration: retains all ten GEN-003 questions GEN09-GEN18 from main alongside PLAY01-PLAY05, for 94 supplementary questions; the frozen 32-question fixture remains unchanged. 2026-10-21: GEN19â€“GEN26 add independently scoped semantic identity, hierarchy constraints/fallback, structural curve, final-raster override, immutable geometry, bounded publication, authoring and final support-contact questions. All prior 89 supplementary queries and the frozen 32-question set remain unchanged. 2026-10-21 PR #189 GEN-004 reintegration: preserves all 94 player/GEN-003 supplementary questions and all 97 questions from GEN-004 main, yielding 102 distinct questions with unchanged IDs, query wording and expected facts; the frozen 32-question fixture remains unchanged. 2026-10-21 GEN-005: adds three supplementary semantic-plane questions; the original frozen 32-question fixture and all 102 prior supplementary objects remain unchanged. New question results are reported separately. 2026-10-21 GEN-007: adds four independent workbench/procedural qualification questions; frozen 32 and all 105 prior supplementary objects are preserved. 2026-10-22 Water exit correction: adds WATER-EXIT-01 for stale desktop receipt rejection; the frozen 32-question fixture and all 109 prior supplemental objects are unchanged. 2026-10-22 4LY-001: adds four independent free-flight challenges; the frozen 32-question fixture and all 110 prior supplementary objects remain unchanged. New question results are reported separately. 2026-10-24 LCB-001 #200 foundation: LCB01 expected fact 2 records the bounded hold lift; LCB02 adds the native policy foundation question. Query wording, the frozen 32-question fixture and all other supplementary objects are unchanged; new results are reported separately. 2026-10-24 LCB-001 pressure reference: LCB01 facts 2-3 and LCB02 fact 2 now record the owner implementation decision and the admitted Water pressure reference; LCB03-LCB05 add pressure-family, exact-persistence and characterization questions. Query wording, the frozen 32-question fixture and all other supplementary objects are unchanged; new results are reported separately. 2026-10-24 residual #200 native checkpoint: LCB01-LCB04 expected facts/source routes now distinguish the narrow owner-requested native codec freeze, native W-CY admission, exact shared quantity accounting, physical hash v2 and CYPS2 with explicit v1 refusal. LCB05 expected facts retain the source-qualified 349d593 pressure characterization rather than claiming a residual rerun. All 121 prior supplementary IDs and query wording and the separate frozen 32-question fixture remain unchanged. Four independent supplementary questions LCB06-LCB09 are added; their lexical retrieval results are reported separately and are not an answer-correctness or before/after improvement claim. issue #234 integration: retains every current-main question object and adds the prior PR #236 CI-HANG-01 evidence/provenance challenge. Frozen 32 questions unchanged. 2026-10-24 merged #234 repair: TEST04 distinguishes the 180-second outer bound from 45-second idle failure; CI-HANG-01 records independent guards, standard 600 versus prior paired 300 scope and completed ordinary admission with fresh qualification still in progress. Query wording and all other question objects remain unchanged. Later 2026-10-24 qualification readback: TEST04 and CI-HANG-01 now record completed source-bound campaign 40129364630, 600/600 physical passes and 20/20 imports, while retaining prior failures and acceptance limits. 2026-10-24: LCB10 adds an independent controlled application-host/token/request-fence question before retrieval execution; frozen32 and existing126 questions retain their queries. 2026-10-25 source-union integration: native acceptance facts LCB01–LCB04/LCB06 are reconciled with accepted #246 and integrated #201/#212 source. The incoming independently added LCB10/LCB11 queries retain their exact wording under LCB-MAIN-ACCEPTANCE-01/LCB-PRESSURE-OPT-01; existing app LCB10/LCB11 IDs and query wording, all other prior queries and the frozen32 fixture remain unchanged. LCB-IN-ADAPTER-01 is additive. These are separate supplementary retrieval results, not answer-correctness or a before/after improvement claim. 2026-10-25: LCB-HOST-WEB-01 adds an independent explicit-terminal/browser-acceptance boundary question before retrieval execution; all prior IDs/query wording and the frozen32 fixture are unchanged. New lexical results are reported separately from answer correctness. 2026-10-25 LCB-CYSD-HOST-01 independently challenges explicit ordinary import/restart ownership; earlier question wording remains unchanged and LCB-CYSD-PREP-01 facts distinguish the later bounded route from native API proof. 2026-10-25 LCB-ORDINARY-DEMO-01 independently challenges explicit four-demo rebuilding, authored/imported identity, sampled ownership and healthy-World restart limits before retrieval execution. All142 earlier supplementary IDs/query wording and the frozen32 remain unchanged. 2026-10-25 LCB-SYNC-BODY-01 adds an independent authored synchronous Physics Pit transaction/imported-identity question before retrieval evaluation. All143 earlier supplementary question objects and the separate frozen32 fixture remain unchanged; this bounded route does not complete other physical constructors or actual Web acceptance. 2026-10-25 LCB-SYNC-WATER-BODY-01 adds the independent synchronous Water Feel body/identity/actual-family coverage challenge. All144 prior supplementary question objects and the frozen32 remain unchanged; prior label-only PhysicsPit evidence is corrected additively, not rewritten. 2026-10-25 LCB-HOST-UNION-01 adds the independent exact-default-namespace, CY/IN future-ingress and native-Web functional-scope question. All150 prior supplementary objects and frozen32 remain unchanged; normal merge collisions retain their disclosed existing aliases. The new union question is finalized before the final evaluation with the separately completed4948 browser functional result and visual gap; all150 pre-existing question objects remain unchanged. 2026-10-25 activity-storage follow-up: MAT01 adds the two contiguous owners and fixed job-span setup boundary; all previous query strings and the frozen32 fixture remain unchanged. 2026-10-25 Water sequence2 integration updates four existing publication facts through sourceaa8/03 without changing any of the151 App query strings, existing aliases or the separate frozen32 fixture.",
+  "integration_note": "Retains all scene, generation, sampled and physical actor-usable, Thunderbowl, physical-actor, building-material and presentation routes; historical questions are preserved. Deepworks scene controls, finite source replay and full-size/non-square depth dimensions are additive routes; existing historical scope remains intact. Player playground controls, native field ownership and conservative wheel-mask routing are additive; original and historical questions remain unchanged. GEN-004 semantic identity, hierarchy constraints, structural routes, final-raster qualification, immutable geometry, bounded publication, authoring and support-contact routes coexist with all five player questions. Accepted #246 main adds native prepared setup, explicit comparator normalization, native-issued refused/failed attempts, shared exact quantity accounting and qualified typed receipts. Accepted-main native scope and source/platform qualifications remain explicit; application-host verification remains #202. LCB11 adds branch-Current pressure optimization obligations and pending acceptance; prior question strings and the frozen32 remain unchanged. The combined branch retains actual IN instance readback and explicit radius alongside pressure execution3; their previous standalone evidence remains source-qualified. The #202 branch retains prepared-owner, controls, sampled/physical ownership, Tower, qualified observation and Water Feel routes; their dated runtime seals remain scoped to their original inputs. The native CYSD thermal preparation API and LCB-CYSD-PREP-01 are retained with ordinary importer/host and final qualification still open. Moving-mask repair and LCB-MASK-GAS-01 are retained. Historical pressure LCB10/LCB11 aliases remain under the existing LCB-MAIN-ACCEPTANCE-01/LCB-PRESSURE-OPT-01 IDs with exact query wording; all current source requires fresh matching publication."
 }

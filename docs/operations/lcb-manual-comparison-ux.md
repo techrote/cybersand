@@ -1,19 +1,224 @@
 ---
 title: LCB manual liquid comparison UX flow
-status: Planned
+status: Current
 document-kind: design
-scope: LCB-003 (#202) preparation — proposed manual feel-testing flow inside the normal CyberSand application: entry points, comparison panel, per-material family picker driven by the capability matrix, validate-reconstruct-commit apply, controlled versus exploratory sessions, presets, overlays and refusal states; no UI is implemented
+scope: LCB-003 (#202) bounded experimental comparison UI, native availability, explicit normalization and constructor coverage, followed by remaining planned manual feel-testing flow
 canonical-for: [lcb-manual-comparison-ux]
-last-reviewed: 2026-10-23
+last-reviewed: 2026-10-25
 related-documents: [../architecture/liquid-solver-family-policy.md, lcb-water-comparison-and-fixtures.md, experiment-tower.md, microscenarios.md, ../systems/player-control-playground.md]
 ---
 
 # LCB manual liquid comparison UX flow
 
+The [actual003 Windows/Linux publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
+now executes import plus35 strict host/control cases on both target OSes at
+source5f02d089/bot0c9b1977. The actual default, ordinary demo, import, sampled/
+physical/Tower and synchronous-body observations keep their bounded constructor
+scope. Positive FM/CY default play remains distinct from three typed initial
+PF capacity refusals; CY/IN future fractional Water sources still refuse.
+
+The owner defers additional Web/browser/shader testing, analysis and
+implementation until after this epic. The [historical Web record](../audits/2026-10-25-lcb003-web-common-water.md)
+retains its functional success, rendering failure and diagnostic limits; no
+rendering pass or fallback is selected. This is a scheduling/acceptance-boundary
+amendment, not a change to non-Web quantity/refusal/parity/provenance, remaining
+constructor, scientific or packaged-build requirements. Full #202/#203 acceptance
+and final application exact-head CI/review remain open. Water PR #254 is now
+accepted main06451f8a after all four final02c gates; that native acceptance is
+consumed by content-identical application mergea704ce50 and does not qualify
+remaining constructors or complete manual/scientific comparisons.
+
+The [final application source union](../architecture/liquid-prepared-setup-and-receipts.md#final-application-source-union)
+adds the reviewed desktop native-default owner and published Water IN. Actual
+runtime admission controls the menu; radius3 and setup normalization are explicit.
+Whole-cell CY/IN fractional future sources refuse without replacing the accepted
+owner. The matrix below retains unsupported constructors and identity limits;
+separate future trial constructors are not Current in this checkpoint.
+
+The later [synchronous supported-body Water Feel route](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel)
+uses existing **Liquids… → Exploratory → Apply & rebuild active**, Water Apply/
+Reset and **Restart world**. It retains original recipe/actions/player, actual
+y90 body poses and quality with the fixed Water view. Pending/refused/applied
+states stay distinct; unsupported blind/future-source/import/body routes and
+native/host full-match limitations remain explicit. The [dated local proof](../audits/2026-10-25-lcb003-synchronous-water-reference-body.md)
+also corrects earlier label-only variant coverage without rewriting old records.
+
 ## Status and scope
 
-**Planned design for LCB-003 ([#202](https://github.com/techrote/cybersand/issues/202)).
-No widget, route or setting described here exists yet.**
+**Historical first experimental, unmerged source:** `0a702eb304ebf1e9e1302a15250cdd159f0371f7`
+on `codex/lcb003-application-host`, based on frozen #246 head `9e91a9f7`.
+The normal application now has a bounded liquid-comparison panel for fixed,
+actor-free schema-2 MicroScenarios. Subsequent source `da800552` adds the explicit
+Exploratory mode and privately staged sampled ownership described below. The [UI evidence](../audits/2026-10-25-lcb003-liquid-comparison-ui.md)
+records the source-matched local Windows development runtime and exact tested
+scope. This does not complete [#202](https://github.com/techrote/cybersand/issues/202).
+
+**Integration update, 2026-10-25:** the branch now includes accepted main
+`ec58d919` and stable IN source `028fc7b6`. Its subsequent
+[IN adapter/control checkpoint](../audits/2026-10-25-lcb003-integrated-inertial-host.md)
+adds actual Brine IN readback and explicit matched geometry; prior dated UI and
+physical evidence retains its earlier source qualification.
+
+The subsequent [ordinary Tower slice](../architecture/liquid-prepared-setup-and-receipts.md#ordinary-experiment-tower-preparation)
+makes **Apply & rebuild active** available in explicit Exploratory mode on the
+existing Experiment Tower. It retains that Tower's floor, release, schedule,
+manual tools and independent transport controls. Final floor/player/camera are
+prepared before capture; reset and profile rebuild retain accepted solver,
+normalization and geometry. Controlled mode still requires a fixed actor-free
+setup. Existing **Original Current control** continues to load the selected
+protected comparison fixture through its original constructor.
+
+## Current controls and ownership
+
+The subsequent [synchronous Physics Pit route](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-physics-pit-reference-bodies)
+enables explicit Exploratory active apply for its actual authored constructor.
+The original three bodies and sampled player stage privately; the existing UI
+shows a pending request while actual frozen frames and bounded terrain readiness
+complete. Old state stays held. Success starts paused with the original recipe,
+poses and current view/cadence; Restart retains the accepted selection. Imported
+same-label bodies and other physical maps remain outside this route; the later Water Feel route has its own checked owner. Native/host qualifications remain visible, and [local Windows
+proof](../audits/2026-10-25-lcb003-synchronous-reference-body.md) is not browser acceptance.
+
+The subsequent [ordinary synchronous demo route](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-synchronous-demo-rebuilding)
+enables **Apply & rebuild active** for Material Lab, Waterworks, Foundry and
+Neon Works after choosing Exploratory. It retains the exact original recipe,
+sampled player, ordinary tools and actual quality/view/cadence; it starts paused.
+**R / Restart world** retains the accepted recipe/policy/normalization/geometry
+after edits. Choosing an original Current demo retires prepared identity and
+restores default radius2. A save sharing a demo label is not treated as its
+authored recipe. Physics Pit/showcase/body routes remain outside this allowlist.
+The [117-assertion local proof](../audits/2026-10-25-lcb003-ordinary-demo-host.md)
+includes actual native failure: prepared Restart requires a healthy retained
+World, so the stopped hint names explicit Current demo/unarmed-import recovery.
+Same-policy quarantine recovery and final browser/publication remain open.
+
+The subsequent [ordinary level-import route](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
+adds two controls in the synchronous normal application's liquid panel. Choose
+Exploratory, policy, normalization and geometry, then **Use selection for next
+level import**; the running World stays unchanged. The normal Save/Load Import
+button then stages an ordinary body-free level and sampled player. It starts
+paused, and **R / Restart world** reconstructs that accepted input after edits.
+**Use Current defaults for next import** clears the pending choice; default
+imports and ordinary demo choices retire prepared identity. Physical/Tower/
+showcase imports explicitly refuse. The [local menu proof](../audits/2026-10-25-lcb003-level-import-host.md)
+is Windows headless execution, with full host and final platform gates open.
+Unsupported inherited interaction/diagnostic laws and independent transport
+profiles also refuse before preparation. A known accepted Baseline restart binds
+its actual native component, generation and applied receipt; existing optional
+diagnostic telemetry is observational, not an implicit physics-law selection.
+
+The subsequent [qualified host-observation foundation](../architecture/liquid-prepared-setup-and-receipts.md#qualified-host-observation-foundation)
+separates actual API path/current file observations from publication claims and
+unverified caller values. The [subsequent owner slice](../architecture/liquid-prepared-setup-and-receipts.md#owner-bound-construction-observation)
+stages it before commit, carries its compact record hash/native receipt identity
+through normal apply and restart, and retains the old record on refusal. It
+keeps native/host full matched eligibility false. A Windows editor
+shadow DLL makes the distinction between API path and mapped module observable.
+This does not complete another constructor row or qualify a release/browser.
+
+The feature launcher offers **Liquid comparison — solver policies and protected
+Dam Break**. Its `liquid_comparison` destination opens the existing `main.tscn`
+with **Liquids…** inside the existing MicroScenario dialog and the protected Dam
+Break paused. The same dialog exists in `web_main.tscn`; that synchronous
+controller has local native Windows headless proof, not actual Wasm/browser
+qualification of this new code.
+
+The panel owns copied pending policy selection, never the live World. The
+native `liquid_policy_assignment_choices(request, material)` method decodes the
+request, builds catalogue-declared choices and calls the existing native
+validator. GDScript does not edit wire offsets or invent availability. It lists
+all eleven liquid materials, including absent species, with Current or
+experimental labels and visible unavailable choices/reasons. A request edits
+only the selected assignment, preserves foreign native parameter blocks and
+retires blocks whose family/material owner no longer applies. An incompatible
+retained block can refuse explicitly.
+
+Current presets are Current defaults, whole-cell Water, pressure reference,
+pressure cached, pressure dormant, Water inertial, and pressure Water with
+inertial Brine, plus Current Water with inertial Brine. Each is enabled only if
+that actual runtime validates it. The final integration admits actual Water IN and Brine IN with explicit radius3;
+older dated runtime seals retain their original material availability. The later integrated #201 source also admits pressure cached and
+dormant through the actual native validator; its earlier dated evidence remains
+qualified to its original inputs.
+
+**Matched IN geometry (radius 3)** is an explicit selection, distinct from
+default radius2. An IN policy with radius2 refuses; selecting IN never changes
+geometry automatically. Choose radius3 for its Current comparator as well.
+The native-backed **IN damping numerator /16** control accepts0..16(default1)
+and changes only the pending request. Applied readback shows the actual native
+numerator, instance hash/CYPS version and geometry. Reset retains all three.
+
+**Apply & rebuild active** retains the active MicroScenario mode and uses the
+[prepared host contract](../architecture/liquid-prepared-setup-and-receipts.md#controlled-application-host-preparation-slice).
+**Load selected comparison** reconstructs the existing protected Dam Break or
+existing Water/Oil/Brine lock exchange in Inspect mode. Selecting a preset does
+not mutate the live World. **Normalize Water to whole cells on rebuild** is an
+explicit `water-normalize-v1` opt-in and the readback shows its exact gross added,
+gross removed and net Water counts. Fractional whole-cell construction without
+opt-in refuses, retaining the previous native World, policy and receipt. Reset
+retains the accepted request and normalization choice. The existing pause,
+step, reset and scene controls remain available.
+
+**Original Current control** calls the unchanged original default constructor
+with the selected exact fixture. Pending solver and normalization choices do
+not alter that control; it explicitly restores protected radius2 after IN or
+matched-radius3 execution. The regression compares its complete native physical
+hash with an independently constructed original Current World after joining the
+worker. Readback separates native policy from the copied typed setup receipt;
+legacy construction correctly has no typed setup receipt. Applied receipt
+qualifications and false full-match eligibility remain visible. Source/runtime
+and complete host/setup verification remain open.
+
+The session picker defaults to **Controlled • fixed actor-free**. Explicit
+**Exploratory • staged owner** admits body-free schema-2 definitions, including
+owner-paced interest and the existing allowlisted sampled actor/equipment route.
+Replacement owners are configured privately against native candidate collision
+queries before the actual mutex-fenced swap. Reset and F5 sampled-rig changes
+retain the selected solver and normalization. Supported desktop exploratory maps
+also stage articulated Rapier actors, equipment, actual initial body masks and
+terrain in a permanent private physics space before commit. Other body routes
+refuse while their ordinary Current routes remain available. Host-only refusal does
+not synthesize a native attempt. Pending choices, applied policy, owner
+acknowledgement and error text stay distinct. Blind/read-only apparatus disable
+rebuild controls. See the [staged host contract](../architecture/liquid-prepared-setup-and-receipts.md#staged-sampled-actors-and-exploratory-owners)
+and [sampled evidence](../audits/2026-10-25-lcb003-sampled-exploratory-host.md).
+The native receipt records the initial construction intent and retains all
+full-host qualifications; these controls do not establish verified full matched
+comparison, complete manual-input replay or a complete host provenance envelope.
+
+## Constructor coverage at this checkpoint
+
+The subsequent [Water Feel route](../architecture/liquid-prepared-setup-and-receipts.md#ordinary-water-feel-preparation)
+retains the existing sampled player and requires Exploratory. Apply/reset and
+normal Water semantic/scenario changes retain selected solver/normalization/
+geometry, ordinary controls and scheduled actions. Blind routes remain refused
+for experimental families. The subsequent desktop
+[reference-body stage](../architecture/liquid-prepared-setup-and-receipts.md#prepared-water-feel-reference-bodies)
+also admits the original supported-body Water Feel recipe with its sampled
+player. The later synchronous route stages its actual original y90 bodies and fixed Water view, retaining actual quality/actions/player and native source identity. Actual Wasm/visual qualification remains open. Whole-cell Water recipes with fractional
+future sources refuse; initial normalization never rewrites those actions.
+
+“Default” below means the existing constructor route remains supported; it does
+not imply new typed receipts or a global selected-policy coordinator. The new
+controlled API is narrower than older explicit-policy diagnostic APIs.
+
+| Route | Current result | Remaining #202 work |
+|---|---|---|
+| Fixed actor-free schema-2 MicroScenario, protected Dam Break and mixed fixture | Native prepared policy/normalization and explicit geometry, immutable typed receipt, actual IN parameters/instance versions, final owner fence, actual panel/controller apply/refuse/reset; desktop worker and synchronous controller | Complete verified definition/host/provenance collection and final integrated platform qualification |
+| Fixed player-enabled or body-enabled MicroScenario | Ordinary default route retained; Controlled refuses; explicit Exploratory stages the existing sampled character when body-free | Stage physical body/terrain/equipment candidate before supporting rigid bodies |
+| Owner-paced/exploratory MicroScenario | Explicit Exploratory stages allowlisted sampled owners, the existing sampled character, or desktop articulated Rapier actor/equipment/terrain in a permanent space; native facts include actual initial masks and final execution; Controlled refuses | Remaining barrel/reference-body routes, complete verified host/actor envelope and retained edit/import semantics |
+| Bootstrap `create_world` / ordinary `reset_demo_world` | Original Current defaults retained; explicit desktop Exploratory native-default rebuild stages actual shared recipe/origin, sampled owner and three frozen bodies. R retains accepted selection. FM/CY positive body play; PF0/1/2 typed initial gas-capacity refusal before swap | Controlled player/body, other bootstrap callers, complete host identity and final source-matched platforms remain separate |
+| `build_world` rectangle showcases / Blacksite | Existing Current constructor retained; four curated synchronous body-free demos explicitly stage exact recipes, sampled player and actual view/cadence in Exploratory mode. A separate authored Physics Pit route stages its original three bodies/permanent space with final native masks; both retain accepted recipe/selection on Restart | Desktop counterparts, imported physical saves, Blacksite/showcase/other physical owners and arbitrary rectangle callers remain separate; complete host identity and final platforms remain open |
+| `build_tuned_world` / Experiment Tower | Original default constructor retained; ordinary application Tower explicitly stages sampled-owner policy/normalization/geometry with final floor and retains floor/release/schedule/transport controls; reset/profile rebuild retain accepted policy | Other direct tuned-world callers, complete host evidence and final platform qualification |
+| `build_water_feel_world` / Water Feel controlled and blind apparatus | Original defaults/blind routes retained; explicit unblinded sampled Exploratory dispatcher/panel/reset carries typed policy/normalization/geometry and qualified owner record, preserving actions/ledger; desktop and synchronous owners additionally stage their respective original three reference bodies/terrain in a permanent space and prove ordinary unpaused feedback | Actual Web/visual qualification, barrel owners, blind-family study and positive whole-cell schedule qualification; fractional future actions stay refused; visual/publication gates |
+| CYSD `import_level` | Existing default reconstruction retained; explicit synchronous Exploratory next-import selection prepares copied thermal payload/policy/normalization, saved metadata and a private sampled player before commit; refusal retains old owner/receipts and Restart reconstructs accepted input | Physical/Tower/showcase imports and unsupported inherited interaction/diagnostic/transport settings explicitly refused; complete verified host identity, persisted policy/setup design and final source-matched platforms remain open |
+| CYPS `import_physical_state` | Exact saved-policy continuation; old typed construction identity retired | Preserve exact continuation; never use it as a family-conversion rebuild |
+| Diagnostic reset / depth / arena / player playground / Thunderbowl | Existing diagnostic policy options and ordinary controls | Shared application coordinator/readback where supported, preserving plane and actor semantics |
+| Procedural WorldGenerator | Separate generator ownership | Native recipe/final tuples and actor/plane gaps, coordinated with GEN ownership |
+| Actual Web compat/threaded | Source4948 actual compat77/threaded76 terminal checks and original201 POSTs qualify the opt-in six body-free Water/four mixed arms; native owner/body paths have separate Windows proof | Ordinary rendered/manual controls, body-bearing browser play, complete console inventory, remaining owners and final combined source-matched publication stay open |
+
+The rest of this document is **Planned** design beyond the bounded Current slice
+above. Tables and acceptance hooks below are targets, not implemented coverage.
 
 - **Ground rule:** every control is backed by the native policy and receipt
   from the [solver-family policy](../architecture/liquid-solver-family-policy.md).
@@ -27,7 +232,7 @@ No widget, route or setting described here exists yet.**
 - **Out of scope:** the four-family runtime itself (#200/#212), packaging
   (#203), and timing (#203 runs it sequentially and isolated).
 
-## Entry points
+## Planned entry points
 
 | Entry | Route | Default state |
 |---|---|---|
@@ -41,7 +246,7 @@ selection and the Web 11-demo menu are unchanged. The panel appears only where
 a native World exists. GDScript fallback scenes show it read-only, with
 "native solver families unavailable in fallback".
 
-## Comparison panel
+## Planned comparison panel
 
 ```text
 ┌ Liquid comparison ────────────────────────────── [Controlled ▾] ┐
@@ -80,7 +285,7 @@ a native World exists. GDScript fallback scenes show it read-only, with
   precision/coherence and transport profiles, linked rather than duplicated.
   Changing a family never resets tuning, and the reverse holds too.
 
-## Apply flow (validate → reconstruct → commit)
+## Planned complete apply flow (validate → reconstruct → commit)
 
 ```text
 edit rows ──► [Apply & rebuild]
@@ -109,7 +314,7 @@ edit rows ──► [Apply & rebuild]
   active/configured, policy hash, or "frozen — configured inactive". Visibility
   and camera never change policy.
 
-## Controlled versus exploratory
+## Planned controlled versus exploratory coverage
 
 | | Controlled | Exploratory |
 |---|---|---|
@@ -120,7 +325,7 @@ edit rows ──► [Apply & rebuild]
 | Records | eligible for matched comparison exports | exported only as exploratory notes or feel-review entries |
 | Timing | not shown as performance evidence; #203 uses isolated runs | never |
 
-## Preset library
+## Planned preset library
 
 Grouped and searchable, with a ★ favourite. Protected presets are read-only:
 "Duplicate to edit" creates a new ID and version.
@@ -141,7 +346,7 @@ Grouped and searchable, with a ★ favourite. Protected presets are read-only:
   (`user://lcb/`). A setup is JSON holding the MicroScenario definition, the
   policy and a receipt. Import validates before replacing anything.
 
-## Inspection and presentation
+## Planned inspection and presentation
 
 - **Overlays** are optional and presentation-only, and are recorded in the
   receipt's presentation block:
@@ -161,7 +366,7 @@ Grouped and searchable, with a ★ favourite. Protected presets are read-only:
 - **Cell inspection.** The existing schema-2 `inspect_cell` probe gains a
   "family / family state" section once a family exports state.
 
-## Feel review (owner, optional)
+## Planned feel review (owner, optional)
 
 After any session the user can record a dated review against the #203
 template. The fields are:
@@ -174,7 +379,7 @@ template. The fields are:
 Reviews are stored separately from technical results and never change
 defaults.
 
-## Platform behaviour
+## Planned platform behaviour
 
 | Platform | Behaviour |
 |---|---|
@@ -182,7 +387,7 @@ defaults.
 | Web compat/threaded | same panel inside the existing Web demo menu; families offered only where Web qualification exists, otherwise `platform_unsupported` |
 | GDScript fallback | read-only panel; all non-default rows refused |
 
-## Acceptance hooks for #202
+## Remaining acceptance hooks for #202
 
 - The UI state equals the native receipt after every apply, refusal, reset,
   scene navigation, actor/material swap, load and #199 exit.
@@ -191,3 +396,19 @@ defaults.
 - Protected presets reset to an identical tick-0 state. `test_lcb_fixture_manifests.gd`
   already pins their definitions and initial proofs.
 - The Exploratory flag is set by every input path listed above.
+
+
+## Desktop native-default Exploratory owner
+
+On unmerged source66bf30f8 the ordinary default constructor can Apply explicitly
+in Exploratory mode using its actual native origin, with original bodies/player
+and no fabricated MicroScenario definition. R reconstructs the accepted policy,
+normalization and geometry. Controlled player/body runs and unsupported barrel/
+actor changes refuse. F7 and PENV stage desired replacement settings and adopt
+only on success; refusal keeps the old World/owners/receipt/observation.
+The original default Water pattern exceeds initial gas capacity for all three
+PF variants, which now return typed native refusal before replacement. FM/CY
+actual moving-body qualification and preserved test shutdown failures are in the
+[dated checkpoint](../audits/2026-10-25-lcb003-desktop-native-default-host.md).
+Current remains the ordinary default; no fallback, complete-host eligibility or
+final released-platform claim follows from this bounded route.
