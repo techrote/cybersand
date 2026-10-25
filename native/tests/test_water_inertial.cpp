@@ -12,6 +12,7 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include <type_traits>
 
 namespace {
 using namespace cybersand;
@@ -132,6 +133,59 @@ void normalization_case(std::uint8_t bits) {
             "normalization changed nonquantity state or failed threshold");
     const auto ledger=world.quantity_ledger();
     require(ledger.construction&&ledger.construction->normalization_receipt_digest==receipt.receipt_hash(),"IN setup ledger lost normalization digest");
+}
+struct QuantityFixtureEncoder {
+    std::vector<std::uint8_t> bytes;
+    template<class Integer> void put(Integer value) {
+        const auto word=static_cast<std::make_unsigned_t<Integer>>(value);
+        for(std::size_t i=0;i<sizeof(Integer);++i)bytes.push_back(static_cast<std::uint8_t>(word>>(8U*i)));
+    }
+};
+// Independently spell the public ledger snapshot encoding only to locate the
+// unique prepared-count field. No fixed absolute CYPS offset or blind byte
+// search may accidentally mutate another metadata field instead.
+std::pair<std::vector<std::uint8_t>,std::size_t> encoded_quantity(const QuantityLedgerSnapshot& v) {
+    QuantityFixtureEncoder e;e.put(v.schema_version);e.put(v.mass_bits);e.put(v.baseline_water);
+    e.put(v.water_visible);e.put(v.water_overfill);
+    const auto flows=[&](const auto& rows){for(const auto& f:rows){e.put(f.produced);e.put(f.consumed);}};
+    flows(v.kinds);flows(v.pair_rules);for(auto n:v.pair_events)e.put(n);flows(v.kernel_rules);
+    for(auto n:v.material_cells)e.put(n);
+    const auto prepared_offset=e.bytes.size();for(auto n:v.prepared_material_cells)e.put(n);
+    e.put(static_cast<std::uint8_t>(v.construction.has_value()));
+    require(v.construction.has_value(),"forged prepared-population fixture needs actual construction binding");
+    const auto& seed=*v.construction;e.put(seed.mass_bits);e.put(seed.baseline_water);e.put(seed.normalization_produced);
+    e.put(seed.normalization_consumed);e.put(seed.expected_final_water);
+    for(const auto* digest:{&seed.original_setup_identity,&seed.prepared_setup_identity,&seed.original_payload_digest,&seed.prepared_payload_digest})
+        for(auto b:*digest)e.put(b);
+    e.put(static_cast<std::uint8_t>(seed.normalization_receipt_digest.has_value()));
+    if(seed.normalization_receipt_digest)for(auto b:*seed.normalization_receipt_digest)e.put(b);
+    return {std::move(e.bytes),prepared_offset};
+}
+void prepared_restore_population(std::uint8_t bits) {
+    for(int family:{2,4}) {
+        auto cfg=config(1,bits);auto request=LiquidSolverPolicy::default_request();request[21]=family;
+        const auto decoded=LiquidSolverPolicy::decode(std::span<const std::int32_t>(request));
+        require(decoded.accepted(),"prepared-population family admission");cfg.liquid_solver_policy=*decoded.policy;
+        normalization::FinalSetupInput input;input.mass_bits=bits;input.setup.domain={0,0,16,16};
+        input.cells={{3,3,Material::Water,cfg.water_experiment_policy.maximum(),0,300}};
+        auto result=PreparedWorldBuilder::prepare(cfg,input,normalization::NormalizationOptIn::None);
+        require(std::get_if<PreparedWorld>(&result),"already-full unnormalized prepared fixture refused");
+        const auto& world=std::get<PreparedWorld>(result).world();const auto original=world.save_physical_state();
+        const auto valid_restore=World::restore_physical_state(cfg,original);
+        require(valid_restore->save_physical_state()==original,"valid prepared-population capture does not round trip");
+        const auto ledger=world.quantity_ledger();require(ledger.prepared_material_cells[3]==1&&
+            !ledger.construction->normalization_receipt_digest,"control must exercise unnormalized full Water setup");
+        auto bytes=original;const auto [encoded,relative]=encoded_quantity(ledger);
+        const auto at=std::search(bytes.begin(),bytes.end()-32,encoded.begin(),encoded.end());
+        require(at!=bytes.end()-32&&std::search(at+1,bytes.end()-32,encoded.begin(),encoded.end())==bytes.end()-32,
+                "prepared-population ledger encoding not unique in actual capture");
+        const auto offset=static_cast<std::size_t>(at-bytes.begin())+relative+8U*static_cast<unsigned>(Material::Water);
+        require(bytes[offset]==1,"prepared-population counterexample field not selected");bytes[offset]=2;reseal(bytes);
+        bool refused=false;std::string detail;try{(void)World::restore_physical_state(cfg,bytes);}
+        catch(const std::invalid_argument& error){detail=error.what();refused=detail.find("invalid quantity ledger")!=std::string::npos;}
+        require(refused&&world.save_physical_state()==original,
+                "valid-digest forged prepared Water population admitted for family"+std::to_string(family)+" mass"+std::to_string(bits)+" detail="+detail);
+    }
 }
 void coherence_case(std::uint8_t delay, int vx) {
     auto cfg=config(1,8,0);cfg.sleep_after_quiet_ticks=1;cfg.physics_diagnostics.enabled=true;
@@ -389,7 +443,7 @@ void test_water_inertial_admission() {
     auto current=std::make_unique<World>();
     require(!current->whole_cell_water_enabled()&&!current->inertial_enabled()&&current->physical_state_hash_version()==2,
             "protected Current defaults changed");
-    for(std::uint8_t bits=3;bits<=8;++bits) {precision_ingress(bits);normalization_case(bits);}
+    for(std::uint8_t bits=3;bits<=8;++bits) {precision_ingress(bits);normalization_case(bits);prepared_restore_population(bits);}
 }
 void test_water_inertial_coherence_contact() {
     for(std::uint8_t delay=0;delay<=12;++delay) for(int vx:{-32,32}) coherence_case(delay,vx);

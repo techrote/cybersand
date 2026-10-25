@@ -149,7 +149,8 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
     // One directional eligibility rule for support, re-aim, side selection and
     // every travel move: Empty for any move; a lighter foreign material only
     // downward under Current density/exchange controls; never Wall, mask or
-    // same family. Eligibility reads do not allocate serial sparse chunks.
+    // same material. A foreign lighter material retains density exchange even
+    // when both materials select IN. Reads do not allocate serial sparse chunks.
     const auto eligible = [&](std::int64_t dx, std::int64_t dy) {
         const auto tx = cx + dx;
         const auto ty = cy + dy;
