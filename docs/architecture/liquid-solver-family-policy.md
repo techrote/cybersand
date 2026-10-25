@@ -59,6 +59,18 @@ Claim labels used below:
 | **Proposed** | This Gate C design; awaiting review |
 | **Deferred to B** | Depends on the #204 storage handoff |
 
+## LCB-005 branch admission and standalone adapter
+
+The isolated #212 source additionally admits Brine24 /
+`inertial_cellular_v1/reference`, including its optional actual family block2
+with damping numerator0..16 over16. Water IN stays unavailable; unsupported IN
+variants and materials retain typed refusal. Policy validation does not choose
+execution geometry: the standalone Godot factory defaults to radius2 and IN
+requires explicit3. Applied instance readback, physical hash3/CYPS3, the
+non-IN2 control and local Windows evidence are owned by the
+[Brine IN reference](inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry).
+This is branch source/adapter qualification, not accepted main or full #202.
+
 ## What exists today (Current)
 
 - **Two motion families, one per descriptor.** `LateralFlowMode` in
@@ -283,7 +295,7 @@ source-matched rebuild as for any native edit.
 | `freemass_v1` | Current fractional conserved pairwise Water | existing source | Yes, Water only (default) |
 | `cellular_yield_v1` | Whole-cell yielding motion plus material hooks | existing source; #200 W-CY | Ten liquids by default; Water opt-in in residual native source with its own v2 viscosity block |
 | `pressure_flow_v1` | Corrected pressure/overfill/flow/gas | #200 | `reference` only, Water, opt-in: Current on main since #245 ([design](pressure-flow-v1.md)); `cached`/`cached_dormant` no (#201) |
-| `inertial_cellular_v1` | Non-pressure motion with retained velocity/accumulator | #212 | No |
+| `inertial_cellular_v1` | Non-pressure motion with retained velocity/accumulator | #212 | Brine/reference on the isolated #212 branch, with explicit radius3 and [qualified standalone readback](inertial-cellular-v1.md); no Water IN or accepted release |
 
 **Implementation variants** (an axis independent of family):
 

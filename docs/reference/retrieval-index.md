@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -24,6 +24,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 
 | Question family | Canonical route |
 |---|---|
+| How does the Godot Brine IN adapter report actual damping and hash/save versions, and what happens when radius two or an ordinary reset is requested? | [Actual instance readback and explicit geometry](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry), [local Windows proof and remaining gates](../audits/2026-10-25-lcb005-standalone-adapter.md). No full host or published-platform qualification follows. |
 | What does the native Brine IN checkpoint implement, why does it require radius3, and what state/memory/capture is qualified? | [Brine reference law, ownership and qualification](../architecture/inertial-cellular-v1.md), [native checkpoint evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) |
 | How do I investigate intermittent physical actor Godot timeouts and interpret stress hang frequencies? | [Live diagnostics and stress invocation](../operations/local-build-and-validation.md#physical-actor-timeout-investigation), [#234 source-bound qualification](../audits/2026-10-24-issue-234-physical-hang-repair.md), [captured call, paired repair and selected desktop provenance](../audits/2026-10-24-physical-actor-bvh-validation.md) |
 | Are Trainer, Hauler, Drifter and Dart four calibrated drones, and can I select them in ordinary play yet? | [4LY implementation scope and programme](../systems/physical-free-flight.md#what-does-4ly-001-implement-and-which-4ly-002-drone-profiles-can-i-select), [profile values](configuration-reference.md#physical-free-flight-values) |

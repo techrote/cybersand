@@ -87,6 +87,9 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_physical_state_hash"), &CyberNativeCellWorld::get_physical_state_hash);
     ClassDB::bind_method(D_METHOD("get_physical_state_hash_version"),
                          &CyberNativeCellWorld::get_physical_state_hash_version);
+    ClassDB::bind_method(D_METHOD("get_physical_state_format_version"),
+                         &CyberNativeCellWorld::get_physical_state_format_version);
+    ClassDB::bind_method(D_METHOD("inspect_inertial_cell", "point"), &CyberNativeCellWorld::inspect_inertial_cell);
     ClassDB::bind_method(D_METHOD("inspect_gas_compartments"), &CyberNativeCellWorld::inspect_gas_compartments);
     ClassDB::bind_method(D_METHOD("inspect_pressure_cell", "point"), &CyberNativeCellWorld::inspect_pressure_cell);
     ClassDB::bind_method(D_METHOD("get_pressure_flow_ledger"), &CyberNativeCellWorld::get_pressure_flow_ledger);
@@ -273,6 +276,7 @@ bool CyberNativeCellWorld::reset_demo_world() {
         config.physics_diagnostics = {};
         config.interaction_policy = {};
         config.liquid_solver_policy = {}; // The ordinary demo runs every liquid's default.
+        config.maximum_rule_radius = kProtectedCurrentRuleRadius;
         auto candidate = std::make_unique<cybersand::World>(config);
         candidate->reserve_region({0, 0, kWorldWidth, kWorldHeight});
         candidate->configure_transient_obstacles({0, 0, kWorldWidth, kWorldHeight});
@@ -1537,7 +1541,8 @@ Dictionary CyberNativeCellWorld::get_water_experiment_policy() const {
 }
 
 Dictionary CyberNativeCellWorld::liquid_policy_receipt(
-    const cybersand::LiquidSolverPolicy& policy, std::int64_t session_generation) {
+    const cybersand::LiquidSolverPolicy& policy, std::int64_t session_generation,
+    const cybersand::World* actual) {
     Dictionary result;
     result["version"] = static_cast<std::int64_t>(policy.policy_version());
     result["wire_version"] = static_cast<std::int64_t>(cybersand::LiquidSolverPolicy::kEnvelopeVersion);
@@ -1592,6 +1597,21 @@ Dictionary CyberNativeCellWorld::liquid_policy_receipt(
         result[family_blocks ? "family_blocks" : "material_blocks"] = blocks;
     }
     Dictionary parameters;
+    bool inertial = false;
+    for (const auto& assignment : policy.assignments())
+        inertial = inertial || assignment.family == cybersand::LiquidSolverFamily::InertialCellularV1;
+    if (inertial) {
+        const auto effective = actual ? actual->inertial_parameters() : cybersand::inertial_parameters_for_policy(policy);
+        Dictionary value;
+        value["family_version"] = static_cast<std::int64_t>(cybersand::InertialParameters::kVersion);
+        value["block_version"] = static_cast<std::int64_t>(cybersand::InertialParameters::kFamilyBlockVersion);
+        value["damping_numerator"] = static_cast<std::int64_t>(effective.damping_numerator);
+        value["damping_denominator"] = static_cast<std::int64_t>(cybersand::InertialParameters::kDampingDenominator);
+        value["minimum_rule_radius"] = static_cast<std::int64_t>(cybersand::InertialParameters::kExecutionRadius);
+        value["extension_identity"] = String(cybersand::Sha256::hex(cybersand::inertial_extension_identity(effective)).c_str());
+        value["readback_source"] = actual ? "applied_world" : "validated_policy";
+        parameters["inertial_cellular_v1"] = value;
+    }
     if (const auto water = policy.assignment(static_cast<std::uint16_t>(cybersand::Material::Water));
         water && water->family == cybersand::LiquidSolverFamily::PressureFlowV1) {
         cybersand::PressureFlowParameters effective;
@@ -1622,7 +1642,10 @@ Dictionary CyberNativeCellWorld::liquid_policy_receipt(
         parameters["pressure_flow_v1"] = pressure;
     }
     result["family_parameters"] = parameters;
-    result["physical_state_hash_version"] = static_cast<std::int64_t>(cybersand::World::kPhysicalStateHashVersion);
+    result["physical_state_hash_version"] = static_cast<std::int64_t>(actual ? actual->physical_state_hash_version() : (inertial ? 3 : 2));
+    result["physical_state_format_version"] = static_cast<std::int64_t>(actual ? actual->physical_state_format_version() : (inertial ? 3 : 2));
+    result["minimum_rule_radius"] = static_cast<std::int64_t>(inertial ? cybersand::InertialParameters::kExecutionRadius : 2);
+    result["maximum_rule_radius"] = actual ? Variant(static_cast<std::int64_t>(actual->config().maximum_rule_radius)) : Variant();
     result["normalization"] = Variant();
     result["refusal"] = Variant();
     return result;
@@ -1636,7 +1659,27 @@ String CyberNativeCellWorld::get_physical_state_hash() const {
 }
 
 std::int64_t CyberNativeCellWorld::get_physical_state_hash_version() const {
-    return static_cast<std::int64_t>(cybersand::World::kPhysicalStateHashVersion);
+    return world_ ? static_cast<std::int64_t>(world_->physical_state_hash_version()) : 0;
+}
+
+std::int64_t CyberNativeCellWorld::get_physical_state_format_version() const {
+    return world_ ? static_cast<std::int64_t>(world_->physical_state_format_version()) : 0;
+}
+
+Dictionary CyberNativeCellWorld::inspect_inertial_cell(Vector2i point) const {
+    if (!world_ || world_->has_failed() || point.x < 0 || point.y < 0 || point.x >= kWorldWidth || point.y >= kWorldHeight) {
+        Dictionary refused; refused["ok"] = false; refused["error"] = "Healthy finite native cell required";
+        return refused;
+    }
+    const auto state = world_->inertial_cell(point.x,point.y);
+    Dictionary out;
+    out["ok"] = true;
+    out["available"] = state.available;
+    out["material"] = static_cast<std::int64_t>(world_->stored_material(point.x,point.y));
+    out["inertial_family"] = world_->inertial_family(world_->stored_material(point.x,point.y));
+    out["vx"] = state.vx; out["vy"] = state.vy; out["ax"] = state.ax; out["ay"] = state.ay;
+    out["physical_state_hash_version"] = static_cast<std::int64_t>(world_->physical_state_hash_version());
+    return out;
 }
 
 namespace {
@@ -1797,7 +1840,9 @@ Dictionary CyberNativeCellWorld::get_liquid_run_receipt(const Dictionary& setup)
     const auto region = world_->simulation_region();
     add("simulation_region", region ? concat(region->x, ":", region->y, ":", region->width, ":", region->height)
                                      : std::string("unrestricted"));
-    add("physical_state_hash_version", concat(cybersand::World::kPhysicalStateHashVersion));
+    add("physical_state_hash_version", concat(world_->physical_state_hash_version()));
+    if (world_->inertial_enabled())
+        add("inertial_parameter_identity", cybersand::Sha256::hex(cybersand::inertial_extension_identity(world_->inertial_parameters())));
     for (const char* key : {"setup_hash", "seed", "normalization_receipt", "source_revision", "native_binary_sha256",
                             "catalogue_digest"}) {
         const auto value = setup.has(key) ? std::string(String(setup[key]).utf8().get_data()) : std::string("none");
@@ -1813,7 +1858,7 @@ Dictionary CyberNativeCellWorld::get_liquid_run_receipt(const Dictionary& setup)
 Dictionary CyberNativeCellWorld::get_liquid_solver_policy() const {
     if (world_ == nullptr) return {};
     return liquid_policy_receipt(world_->liquid_solver_policy(),
-                                 static_cast<std::int64_t>(liquid_policy_session_generation_));
+                                 static_cast<std::int64_t>(liquid_policy_session_generation_),world_.get());
 }
 
 std::int64_t CyberNativeCellWorld::get_liquid_policy_session_generation() const {

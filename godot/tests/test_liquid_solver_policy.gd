@@ -241,7 +241,7 @@ func _transactional_refusals(bridge: Variant, definition: Dictionary, request: P
 		["NC-2 Water pressure cached", _with(request, 3, 3, 1), "family_unavailable", 3],
 		["NC-2 Water pressure cached_dormant", _with(request, 3, 3, 2), "family_unavailable", 3],
 		["NC-2 Water inertial", _with(request, 3, 4), "family_unavailable", 3],
-		["Brine inertial", _with(request, 24, 4), "family_unavailable", 24],
+		["Brine inertial cached", _with(request, 24, 4, 1), "variant_unsupported", 24],
 		["Toxic Sludge alternate", _with(request, 32, 4), "not_selectable", 32],
 		["Oil pressure", _with(request, 16, 3), "combination_rejected", 16],
 		["Water FreeMass cached", _with(request, 3, 1, 1), "variant_unsupported", 3],

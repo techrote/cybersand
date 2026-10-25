@@ -6,7 +6,7 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 ---
 
 # Architectural and simulation invariants
@@ -27,7 +27,7 @@ Existing IDs are retained, including when an earlier description was corrected.
 | CUR-003 | Current: phased core/phase/effect order is deterministic | [Ordering](../architecture/determinism-and-boundary-transfers.md) |
 | CUR-004 | Current: native default chunk size is 128; compatible configured sizes are permitted | [Geometry](../architecture/chunk-tile-and-buffer-model.md) |
 | CUR-005 | Current: desktop may select fallback; Web requires native; no synchronized second authority | [Architecture](../architecture/overview.md) |
-| CUR-006 | Current: every valid catalogue ID has a descriptor/kernel selection and radius ≤2; inert entries use no rule | [Materials](../systems/materials-and-rule-kernels.md) |
+| CUR-006 | Current default catalogue: every valid ID has descriptor/kernel selection and radius ≤2; inert entries use no rule. Opt-in branch Brine IN separately requires radius3 | [Materials](../systems/materials-and-rule-kernels.md) |
 | CUR-007 | Current: accepted external explosions commit in enqueue order at tick entry and are hashed while pending | [Ordering](../architecture/determinism-and-boundary-transfers.md) |
 | CUR-008 | Current: native leased bytes stay immutable; publication pressure retains dirty state | [Lifetimes](../architecture/data-ownership-and-lifetimes.md) |
 | CUR-009 | Current: rectangle samples create separate endpoint occupancy and bounded observations | [Coupling](../architecture/rigid-body-and-cellular-coupling.md) |
@@ -311,6 +311,18 @@ and [family material hooks](../architecture/liquid-solver-family-policy.md).
 | WATER-012 | Current residual native: typed-v1 setup/run/attempt/accounting codecs and physical hash/CYPS2 preserve immutable native facts; historical CYPS1 explicitly refuses; historical content/state hashes and C64-E8 layout are unchanged |
 | WATER-013 | Current residual native: caller source/runtime claims cannot select verified provenance or full matched eligibility; the old Godot dictionary getter is not typed native-v1 proof |
 | WATER-014 | Planned #201: a Water rest certificate preserves body-contact probes, mandatory material/future work and unrelated materials; it proves rest instead of freezing nonzero flow and confers no #12 skip ownership |
+
+## Brine IN standalone adapter invariants
+
+| ID | Status and requirement |
+|---|---|
+| IN-ADAPTER-001 | Current #212 branch: hash/save versions and IN parameters/digest are copied from the actual applied World; policy-only predictions are labelled separately |
+| IN-ADAPTER-002 | Current #212 branch: legacy factory defaults2, IN explicitly requests3, and ordinary/default/CYSD1 reconstruction resets2; insufficient/unsupported geometry preserves the old session |
+| IN-ADAPTER-003 | Current #212 branch: returned motion/parameter dictionaries own their copies; native pool workers call no Godot API; old dictionary receipt identity remains separate from qualified typed native-v1 host evidence |
+
+The [standalone IN contract](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry)
+owns the exact interfaces. Local Windows execution does not qualify the full
+application, actual browsers or released runtimes.
 
 ## GPU and rejected-approach invariants
 

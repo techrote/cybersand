@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md]
 ---
 
@@ -333,6 +333,17 @@ validation imposes the active-catalogue radius requirement.
 
 These constraints do not make serial and phased interest filtering equivalent;
 see the [region contract](../systems/world-storage-and-interest-region.md#interest-filtering-and-re-entry).
+
+## LCB-005 explicit standalone execution geometry
+
+The #212 branch's Godot `build_liquid_policy_world` adds one optional final
+`maximum_rule_radius` integer: default2, accepted values2 and3. Brine IN requires
+explicit3; refusal preserves the live session. Ordinary World/demo/tuned/Water
+Feel construction, reset and CYSD1 reconstruction use2 rather than inheriting
+IN geometry. Exact CYPS imports use the saved geometry. Native scheduler/core
+constraints still apply; this does not enlarge a protected Current comparator.
+Actual applied radius and effective damping numerator0..16/denominator16 are
+copied readback, not live settings. See the [IN binding contract](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry).
 
 ## Finite native adapter overrides
 

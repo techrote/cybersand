@@ -4,11 +4,23 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
 # Development handover
+
+## LCB-005 standalone adapter checkpoint — 2026-10-25
+
+The #212 branch exposes actual Brine IN damping/identity, read-only motion,
+instance hash/save versions and explicit construction radius through the legacy
+Godot adapter. Start with the [IN interface and geometry contract](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry)
+and [dated local proof](../audits/2026-10-25-lcb005-standalone-adapter.md).
+Native kernel/codec/policy inputs remain the sealed `028fc7b6` source. The
+standalone binding adds no #202 prepared host/UI. Preserve Current2 versus IN3
+instance versions, legacy/default radius2 and explicit IN3 geometry; no silent
+upgrade. Local Windows headless proof is not cross-platform publication,
+verified host evidence, owner feel or full #212 completion.
 
 ## Residual LCB-001 continuation — 2026-10-24
 
@@ -724,7 +736,7 @@ read that record and the current-main #49 v2 rerun it cites.
 The owner-approved opt-in Liquid Comparison Build (#200) is a separate
 experimental lane. Its pressure family is bounded by the
 [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
-**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current in source; #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
+**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current in source; #212 is no longer held; its later branch-current Brine implementation and standalone adapter are [qualified separately](../architecture/inertial-cellular-v1.md). This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
 
 ### LCB-001 pressure reference operations (2026-10-24)
 

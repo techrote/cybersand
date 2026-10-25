@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -12,7 +12,7 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 ## Choose a reading route
 
-For the native-only opt-in **Brine IN** checkpoint, use the [family reference](architecture/inertial-cellular-v1.md) and [dated evidence](audits/2026-10-24-lcb005-native-brine-checkpoint.md). Water IN, application integration and release/runtime qualification remain separate.
+For opt-in **Brine IN**, use the [family/native and standalone adapter reference](architecture/inertial-cellular-v1.md), [native evidence](audits/2026-10-24-lcb005-native-brine-checkpoint.md) and [local Windows binding proof](audits/2026-10-25-lcb005-standalone-adapter.md). Water IN, full application integration and published platform qualification remain separate.
 
 For intermittent physical actor Godot timeouts, start with the [#234 qualified repair and acceptance ledger](audits/2026-10-24-issue-234-physical-hang-repair.md) and [live diagnostics/stress guide](operations/local-build-and-validation.md#physical-actor-timeout-investigation). The [admitted #233 baseline](audits/2026-10-24-issue-233-physical-regression-timeouts.md) retains its 600-attempt failures and causal limits. Separate [native-stack / paired evidence](audits/2026-10-24-physical-actor-bvh-validation.md) supports the selected desktop BVH backport. PR #236's integrated head passed ordinary admission and merged as `13b8e631f3e8fbaa2176ed41afc02c434b11e558`; fresh standard qualification run `40129364630` completed 600/600 physical passes, 0/600 timeouts, zero other failures and 20/20 import passes at that immutable source. This qualifies the registered Windows/Linux x86_64 workload and exact artifacts; native-worker count was not varied and the precise scheduler trigger remains unproven.
 

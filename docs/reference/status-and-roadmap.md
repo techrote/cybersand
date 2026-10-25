@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
@@ -12,7 +12,7 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## LCB-005 native Brine checkpoint — 2026-10-24
 
-**Current on the isolated LCB-005 branch only:** [Brine IN reference](../architecture/inertial-cellular-v1.md) selectively ports the genuine fixed-point law onto the shared quantity/prepared-state foundation, including an optional versioned native damping numerator0..16 over16(default1). [Native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) qualifies its stated source/platform scope. Default behavior remains retained; Water IN, Godot adapter/host integration, source-matched runtime publication, owner feel and full #212 completion remain unqualified here. No Cell-carrier migration or generic Rapier force follows.
+**Current on the isolated LCB-005 branch only:** [Brine IN reference](../architecture/inertial-cellular-v1.md) selectively ports the genuine fixed-point law onto the shared quantity/prepared-state foundation, including an optional versioned native damping numerator0..16 over16(default1). [Native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) qualifies its stated source/platform scope. Default behavior remains retained. The later [standalone Godot adapter](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry) adds actual instance readback and explicit radius3 with [local Windows proof](../audits/2026-10-25-lcb005-standalone-adapter.md). Water IN, full application integration, source-matched runtime publication, owner feel and full #212 completion remain unqualified here. No Cell-carrier migration or generic Rapier force follows.
 
 ## Physical actor regression hangs — 2026-10-23
 
@@ -764,7 +764,7 @@ measurements remain in the dated evidence record.
 | Host provenance/collection proof and remaining normal-application constructors | #202, Planned; preserve native shared interfaces from #200 |
 | `cached`/`cached_dormant`, incremental caches and dormancy (the reference is O(resident cells) per tick) | [#201](https://github.com/techrote/cybersand/issues/201), Planned |
 | Comparison host and UI; re-dispositioning the registered candidate arms | [#202](https://github.com/techrote/cybersand/issues/202), Planned |
-| `inertial_cellular_v1` (W-IN, Brine), M1/M2 | #212, Planned; no longer owner-held |
+| `inertial_cellular_v1` (W-IN, Brine), M1/M2 | #212: Brine/reference source and standalone adapter Current on its branch; Water IN, integrated/runtime/final acceptance remain pending |
 | Packaged builds and isolated timing | [#203](https://github.com/techrote/cybersand/issues/203), Planned |
 
 **Publisher.** The temporary pressure-reference workflow, helper, unittest and

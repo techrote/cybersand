@@ -4,11 +4,22 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md]
 ---
 
 # Validation evidence ledger
+
+## LCB-005 standalone adapter — 2026-10-25
+
+[The standalone IN ledger](../audits/2026-10-25-lcb005-standalone-adapter.md)
+records a fresh local Windows DLL, exact native/adapter/dependency input fences,
+all17 independent parameter/identity vectors, actual mixed-family density and
+worker controls, CYPS3 continuation, radius refusal and unchanged Current
+reconstruction. The inherited native140 proof remains tied to `028fc7b6`;
+this checkpoint changes only bindings/tests/docs. Preserved failed fixture and
+parse controls are distinct from native defects. Linux/release publication,
+full ready-PR gates, actual Web and application qualification remain pending.
 
 ## Intermittent physical actor timeouts — 2026-10-23
 
