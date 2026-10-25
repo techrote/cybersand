@@ -1171,3 +1171,10 @@ The isolated #212 [Brine reference](../architecture/inertial-cellular-v1.md) is 
 
 
 For the native damping parameter, run `python tools/lcb/inertial_parameter_contract.py --check` and the LCB Python suite as well as the native groups. The optional IN family blockv2 applies `damping_numerator`0..16/16(default1); actual readback/identity and save/restore are native-owned. The worker fixture observes four actual participants at0/default1/16, while the matched tail fixture records rounding/retained-motion outcomes without assuming every arm settles. Existing illustrative v1 vectors remain separate; use the family reference for the exact schema and qualifications.
+
+
+The [corrected Brine IN publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-sequence3-publication-of-the-contact-repair)
+passes actual Windows/Linux import and14 scoped cases perOS at source
+`c11983c2`, run `40160900817`. IN10192 includes the mandatory resting-contact
+regression. The runtime-only append is `fcf0e9b6`; full exact-head ready-PR
+matrix remains a separate gate.

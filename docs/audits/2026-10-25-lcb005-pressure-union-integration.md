@@ -520,6 +520,14 @@ every Python-oracle state/ledger tuple and read3/write2 bounds: receipt
 `lcb212-independent-rest-contact-repair-v1/PROBE-RECEIPT.json`, SHA
 `ca559da3e432344558031d1a6d045e73b86596dfde4245ec54a41f3609037b85`.
 
+The non-author review receipt `REVIEW-RECEIPT.json`, SHA
+`bde0c705e1e29fb603fca2a16dd55c5cdf9cba6525dd58574e5dc35c159828a3`,
+binds all three corrected native/test raw hashes and report
+`30e9ad854adfd26f0971fe776ca2a6c3c056600d68a87dd61f71f8ba8fb633e3`.
+It has no open finding in the bounded native scope; initial review
+`914176fd…` retains the original omission. Final target-OS/ready qualification
+and the Water-IN requirement remain separate.
+
 The new Godot assertion also fails against the actual published sequence2
 Windows DLL `e0220557…`, after a successful import:869 assertions, one failure,
 `mixed_workers=false`, exit1 in5.992/180seconds. It reaches the intended
@@ -538,3 +546,137 @@ PF15 and IN13; the intended focused sanitizer set becomes29 with the separate
 head API group. Full proof, fresh local Godot execution and actual sequence3
 Windows/Linux publication remain pending at this source checkpoint. Historical
 153/28/sequence2 records above retain their original qualification.
+
+### Fresh local correction proof
+
+Clean source `68f74906e481fd4410694b2863678828931f1d3c` seals the numerical
+operator-preserving repair, native regression, Godot control and initial failure
+record. Fresh LLVM23.1.0 passes all154 ordinary groups in56.953/600seconds,
+PF15 in4.891/240 and IN13 in15.485/240. Seven actual full native receipt byte
+oracles remain exact against the independent Python encoder. The executable
+`9dfc149e497477984a5d61caf6781db2e8473262756bbccb51fd5c4be785f91e`
+retains1MiB reserve/4KiB commit. Receipt
+`lcb212-rest-body-repair/native/normal/receipt.json`, SHA
+`7074b0bcf2d2a0b1c0ada077d665f0b77bcd9c722cbd99ec02522e847ad995ef`,
+binds64 compiled inputs and13 reused objects, each admitted only after complete
+dependency, compiler/flags, object and dependency-file hash agreement.
+
+Focused ASan/UBSan passes29 groups in106.890/600seconds: PF15, IN13 and the
+standalone head API control. Executable
+`5f070c24c86bb9498df024ded61962df7fa661dbe4e0fbd1d3886d3bd0d471a7`
+also retains1MiB/4KiB. Receipt `native/sanitized/receipt.json`, SHA
+`02cf540933175839940071bcbd633adde5d14c8c5e1c74eb58a8a1a6570ea4af`,
+binds53 compiled inputs and seven exact reused objects. This is not full-suite
+sanitizer proof; Windows leak detection is disabled, and no local TSan or
+MSVC154 execution is claimed. Both complete raw/canonical source fences hold.
+
+A separate133-input DLL build passes in63.901/600seconds with pinned
+LLVM-MinGW20260826 UCRT/Clang23.1.0 and clean godot-cpp
+`101ae38034304346a46ea9ea84ae156d3e860496`. The local DLL is4,529,152bytes,
+SHA `b108080aec2ca51bd1f799e40ed728e14c9825ff233d9e6bd0e735be5f3aa690`.
+Receipt `binding-build-v1/build-receipt.json`, SHA
+`af904b4d781acd5d7580b3052c83cdd0ce8d04afbd3e1f39885c2f99b0e2d8b2`,
+keeps build commands/tools, raw source fences and dependency archive identity.
+It is a local non-release DLL, not a replacement for target-OS publication.
+
+After import, all six selected actual Windows Godot4.7 cases pass with the
+fresh DLL; this is seven processes, not the full fourteen-case publisher suite.
+Accepted patched Rapier and all eighteen staged payloads retain their exact
+identities. Only the source-matched test project path is redirected; original
+case arguments, timeouts, process monitoring and warning/error rules remain.
+
+| Process | Assertions / strict sections | Seconds / timeout |
+|---|---|---:|
+| Import | passed |3.682 /240|
+| Liquid policy |385 / required markers|4.791 /360|
+| Physics contracts |174|52.710 /180|
+| Pressure reference |1934 /12|27.025 /900|
+| Policy worker |29|1.960 /360|
+| Pressure optimization |4152 /6|10.951 /360|
+| IN adapter |10192 /6|8.199 /360|
+
+The IN log contains ten `LCB_INERTIAL_BODY_CONTACTS` records: damping1/16 and
+16/16 crossed with five normals,32ticks/four bodies per arm. Each configured1/4
+arm records128 contacts and exact copied-trace equality. With diagnostic contact
+gain1, nonzero signed component totals are143.360076904297 in accumulated copied
+float32 coupling units; native regression/probes separately require exact integer
+density feedback. Every Brine cell remains in place with zero vx/vy/ax/ay.
+The configured-four arms execute multi-job dispatches; this does not establish
+four distinct claimants per small fixture or an actual Rapier trajectory.
+Receipt `scoped-godot-v1/receipt.json`, SHA
+`1b71a1be0c98444d42e12ffbd20fe68aa37b84393c0736c29dc661f61bb1eeee`,
+binds467 staged inputs and the complete logs/contact records with unchanged
+before/after fences. The failed old-DLL control remains separate and retained.
+
+Fresh companion-backed validation passes documentation, historical M11,
+frozen32/challenge130 retrieval, provider, whitespace and all eight generators.
+Repository/provenance correctly **fails** with exactly two stale native-source
+entries for `world_inertial.inc`, one perOS; no vendor/Rapier errors occur. This
+is a release blocker pending actual sequence3 publication, not a waiver. All18
+materialized payloads,1578 tracked raw files and five pinned companion files
+retain their fences. Frozen32 scores top1=20/top5=32, MRR0.7745; supplementary130
+scores top1=99/top5=130, MRR0.8615, without an answer-correctness or improvement
+claim. Receipt `docs-prepublication/VALIDATION-RECEIPT.json`, SHA
+`de9d309114b845d32e2b4a07af116db2eb0e8000e55217b3134781f4c59cca4a`,
+preserves the failed gate. Final factual documentation receives a separate
+recheck; native/adapter/test inputs remain exactly those of the frozen proof.
+
+
+### Actual sequence3 publication of the contact repair
+
+The publication requested at source
+`c11983c2bdeb4b9fd1863784ca857f707f1388f5` (tree
+`d5f516fa2f6c5897d147e39448ad26c92faa915f`) passed all six jobs in
+[run 40160900817](https://github.com/techrote/cybersand/actions/runs/40160900817).
+Both actual target operating systems execute a fresh Godot editor import and
+all fourteen registered cases. IN now reports 10,192 assertions and all six
+strict sections, including the ten resting-contact cohorts; optimization
+4,152/six, pressure reference 1,934/twelve, policy 385, worker 29 and the
+sixteen-case WEX control also pass. Every retained process exits zero without
+engine errors or warnings and retains its original timeout. These static mask
+contact cohorts do not claim a real Rapier trajectory or four actual worker
+participants.
+
+| Actual platform | Runtime SHA-256 | Bytes |
+|---|---|---:|
+| Windows x86_64 | `3d2b381ff1bdaeab8f7d5a47be220fa3c851a8be01b5f8c34f6c932a18568592` | 4,529,152 |
+| Linux x86_64 | `ff3fb29e2260a587ab0f65b902abdd3f3e132885a31ed3a3b3a85cb80ab102cc` | 3,899,552 |
+
+Fresh non-author verification resolves all 76 native and 485 build-input
+canonical Git blobs on each OS, recomputes the runtime/manifest/validation/log
+hashes, checks actual Windows2022 and Ubuntu24.04 job identities and verifies
+all three artifact ZIP digests. The published append
+`fcf0e9b6271613a8673a2f5e93d6cf0e28f87a7b` has the exact source as its sole
+parent and changes only the two runtimes and two provenance manifests. The
+publisher's Linux floor remains GLIBC2.34 for the bundle (CyberSand2.32,
+GLIBCXX3.4.30/CXXABI1.3.9; unchanged Rapier2.34). No historical result is
+relabelled.
+
+External evidence is retained beneath
+`C:/Users/_/.codex/tmp/lcb212-publication3-independent`:
+
+- `FINAL-PUBLICATION3-INDEPENDENT-REVIEW.json`, SHA-256
+  `f6e7b99d22c1112f846e5ca7da00312592388837788e55e6765c6cecd23a6c90`;
+- bundle verification `290092b25644b7c74678912c5c3378d431bbaab00cf87e2f3797983417126b63`;
+- append verification `f0797f2a3c0115b764520ce4612bd696d18462b928e29faf92852d107134a4cf`;
+- Windows execution ZIP `5da25bf238786c1df3578eb57c59535c1f7a3d31e5d60a7b6a380875e1d451cb`,
+  Linux ZIP `9ffca74c203a32d43f7f4e25d48b85e1fe921668b06cb23ffb3a22f742950712`,
+  Windows build ZIP `ada62f59ec19552ac3156458032f9a621ce3b1bc5f2ef328bd22c375a33e5f42`.
+
+The managed branch fast-forwards to the verified append before documentation
+validation. Full exact-head ready-PR Documentation/provenance, Native including
+sanitizers/TSan, GDExtension/Godot and applicable #49 gates remain mandatory.
+Their actual synthetic merge tree must be checked against the eventual main
+base. Water IN remains unavailable on this branch; its separately reviewed
+successor, full application/Web and four-family packaging remain open.
+
+
+Companion-backed postpublication checks at the verified append plus this six-
+document delta pass all21 commands, including repository provenance with zero
+stale inputs, Documentation, M11, provider policy, all generators and whitespace.
+The frozen corpus is32/32 top-five,20 top-one/MRR0.7745; additive challenges
+are130/130 top-five,99 top-one/MRR0.8615. Receipt
+`C:/Users/_/.codex/tmp/lcb212-publication3-docs-validation/checks-v1/VALIDATION-RECEIPT.json`
+has SHA-256 `4a08c41eb51763d0e080bdfcf88df9c599bb3e58e2c81fbdd80654c8fea75ba2`.
+All18 LFS payloads and five companion pins were verified and held. This local
+pass permits requesting full ready-PR gates; it is not their replacement.

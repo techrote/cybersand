@@ -25,14 +25,29 @@ Full source-matched Windows/Linux/exact-head/independent review and common-Water
 scientific/host/Web qualification are pending. This does not close #212/#203.
 
 
+## Corrected Brine IN runtime publication — 2026-10-25
+
+Sequence3 [actual Windows/Linux publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-sequence3-publication-of-the-contact-repair)
+passes all six jobs in run `40160900817` at exact source `c11983c2`, followed
+by verified four-path bot append `fcf0e9b6`. Each OS executes import plus14
+cases, including IN10192/six strict sections and the new resting-contact
+regression. Fresh non-author verification checks all76/485 input blobs,
+artifacts, actual OS execution and the Linux runtime floor. The corrected
+runtime publication blocker is resolved; full ready-PR exact-head gates remain
+required before merge. Prior omitted-contact and moving-mask failures below
+retain their exact source scope. Water-IN, complete host/Web and #203 remain
+separate.
+
 ## Brine IN body-contact blocker — 2026-10-25
 
 Fresh independent review of `98595ac8` finds that resting Brine IN omits
 body-mask contact feedback even when its material update executes. The narrow
 [contact correction](../architecture/inertial-cellular-v1.md#mandatory-resting-body-contact-correction--2026-10-25)
 preserves the numerical law and adds target/normal-specific shared contact
-observation. PR #250 remains Draft; sequence2 runtime proof is historical to the
-omitting source, and new source-matched publication plus full gates are required.
+observation. LLVM154/focused sanitizer29 and fresh local Windows import plus six
+selected Godot cases pass at `68f74906`. PR #250 remains Draft; sequence2 runtime
+proof is historical to the omitting source, and new source-matched publication
+plus full gates are required.
 Water IN, full application/Web and owner-feel qualification remain separate.
 
 ## Moving-body pressure gas blocker — 2026-10-25
