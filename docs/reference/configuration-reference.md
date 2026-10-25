@@ -329,10 +329,21 @@ at least two distinct real physics frames and complete initial terrain setup.
 The app retains its existing 32-chunk/750-microsecond collider budget. Other body
 constructors remain open; see [staged physical ownership](../architecture/liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners).
 
+**Integrated #202 IN application control:** prepared options accept explicit
+`maximum_rule_radius`2 or3(default2). Brine IN requires3; its Current comparator
+must select the same geometry. Original Current and ordinary default
+reconstruction restore protected2. The native-backed panel edits the optional
+family4/block2 `damping_numerator`0..16 over denominator16(default1), and Reset
+retains accepted geometry/parameters. Actual World readback supplies the value,
+effective identity and instance hash/CYPS3; non-IN remains version2. Water IN
+still refuses. These controls do not complete the remaining constructor matrix
+or full source/runtime/host qualification.
+
 The [native prepared setup/receipt/accounting contract](../architecture/liquid-prepared-setup-and-receipts.md)
 owns these bounds, native-issued refusal/failure outcomes, source/host
 qualifications and the narrow owner-requested codec freeze. Complete physical
-hash/CYPS use version2, with unknown formats and historical CYPS1 refused.
+hash/CYPS use version2 for non-IN and actual instance version3 for IN, with
+unknown formats and historical CYPS1 refused.
 Defaults, historical content/state hashes and the C64-E8 Cell ABI are unchanged.
 Exact shared accounting adds fixed per-job scratch 3816 bytes: 15,630,336 bytes
 at default `active_core_capacity` 4096, plus a 6088-byte World snapshot in the

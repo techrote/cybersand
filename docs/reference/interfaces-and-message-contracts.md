@@ -666,7 +666,7 @@ eligibility. Applied readback includes the actual tick-zero policy, prepared
 payload/setup, generation, final region, execution selections and optional
 normalization digest/counters. Both application owners accept
 `microscenario_apply_controlled_liquid(definition, policy, normalize_water,
-mode)` for the initial fixed actor-free schema-2 route. Desktop commands carry
+mode, maximum_rule_radius=2)` for the fixed actor-free schema-2 route. Desktop commands carry
 `controlled_liquid_setup`; the worker issues its own queue revision and fences
 the actual native commit against newer requests/reset/stop. Details and current
 gaps belong to the [bounded host contract](../architecture/liquid-prepared-setup-and-receipts.md#controlled-application-host-preparation-slice).
@@ -675,7 +675,7 @@ The subsequent normal comparison panel calls
 `liquid_policy_assignment_choices(request, material)` for native-decoded,
 catalogue-declared family/variant choices. Each owns a copied request and actual
 validator result/refusal plus material/family/variant/Current metadata. Editing a
-choice preserves foreign assignments and existing native parameter blocks;
+choice preserves foreign assignments/blocks and retires blocks whose owner no longer applies;
 invalid or incompatible blocks remain explicit refusals. This value API reads
 no World and changes no applied policy. GDScript owns pending selection and
 observes the existing owner acknowledgement before treating it as applied. See
@@ -683,7 +683,7 @@ the [normal UI and constructor coverage](../operations/lcb-manual-comparison-ux.
 for actual supported routes and retained qualification.
 
 `microscenario_apply_exploratory_liquid(definition, policy, normalize_water,
-mode, actor_configuration)` is the subsequent body-free schema-2 route; desktop
+mode, actor_configuration, maximum_rule_radius=2)` is the subsequent schema-2 route; desktop
 stages allowlisted sampled rigs/equipment, while the synchronous controller
 stages its existing sampled character. Native preparation options additionally
 select `intent` (`controlled`/`exploratory`), `pacing`
@@ -711,6 +711,23 @@ reason)`. Token/request/epoch/instance/body-digest identity and the final owner
 fence bind this continuation. No scene node, RID or mutable World crosses it.
 Native canonical bytes bind actual initial masks; the copied body digest remains
 host metadata with existing qualifications. See [physical ownership and queued-work disposition](../architecture/liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners).
+
+The integrated IN adapter adds native
+`liquid_policy_with_inertial_damping(request, numerator)` for an active IN family
+and integer numerator0..16. It returns copied native-validated request/receipt or
+typed refusal without mutating a World. Applied `get_liquid_solver_policy()` adds
+actual `maximum_rule_radius`, instance hash/format versions and IN
+`family_parameters` with the native effective identity and `readback_source`.
+`get_physical_state_hash_version()` and `get_physical_state_format_version()`
+query the actual instance (IN3, non-IN2). `inspect_inertial_cell(point)` copies
+healthy finite cell material/family/availability and signed motion/accumulators.
+Invalid points or failed Worlds return an explicit error.
+
+Prepared options admit explicit rule radius2 or3, default2; IN never silently
+upgrades it. Construction readback additionally copies actual
+`solver_state_extensions` and rule radius from native facts. Hex physical-hash
+metadata is consistently sixteen digits; the canonical hash value/bytes do not
+change. See [IN host scope and qualifications](../architecture/liquid-prepared-setup-and-receipts.md#inertial-application-readback-and-explicit-geometry).
 
 ### Read-only native MicroScenario inspection
 

@@ -811,6 +811,18 @@ cannot be a cross-tick static-rest predicate.
 
 ## LCB-003 controlled application-host slice — 2026-10-24
 
+**Integrated #202 checkpoint, 2026-10-25:** the application branch now contains
+accepted #246 main `ec58d919` and stable #250 IN source `028fc7b6`. Native-backed
+normal controls expose actual damping/extension identity and instance hash/CYPS3;
+candidate/control radius3 is explicit and Original Current restores radius2.
+Fresh scoped local Windows headless tests include all17 parameter values,
+three interacting families under workers1/4, exact continuation and actual
+articulated actor/equipment/mask adoption. See the
+[integrated evidence](../audits/2026-10-25-lcb003-integrated-inertial-host.md).
+This closes the accepted-main/IN integration gap in the earlier local ledgers;
+it does not complete remaining constructors, separately versioned full host
+evidence, published runtimes, Linux, actual Web, owner feel or #202/#212 acceptance.
+
 **Subsequent unmerged #202 source, 2026-10-25:** supported desktop exploratory
 maps additionally stage articulated Rapier actors/equipment and complete initial
 terrain in a permanent private World2D. Actual frozen poses produce initial

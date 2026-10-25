@@ -14,6 +14,12 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 For the native-only opt-in **Brine IN** checkpoint, use the [family reference](architecture/inertial-cellular-v1.md) and [dated evidence](audits/2026-10-24-lcb005-native-brine-checkpoint.md). Water IN, application integration and release/runtime qualification remain separate.
 
+The subsequent unmerged [IN application-host slice](architecture/liquid-prepared-setup-and-receipts.md#inertial-application-readback-and-explicit-geometry)
+qualifies actual damping/instance readback, explicit matched geometry and local
+normal-app/articulated-owner execution on accepted #246 main. Its
+[integrated ledger](audits/2026-10-25-lcb003-integrated-inertial-host.md) preserves
+the remaining complete host, platform and publication gaps.
+
 For intermittent physical actor Godot timeouts, start with the [#234 qualified repair and acceptance ledger](audits/2026-10-24-issue-234-physical-hang-repair.md) and [live diagnostics/stress guide](operations/local-build-and-validation.md#physical-actor-timeout-investigation). The [admitted #233 baseline](audits/2026-10-24-issue-233-physical-regression-timeouts.md) retains its 600-attempt failures and causal limits. Separate [native-stack / paired evidence](audits/2026-10-24-physical-actor-bvh-validation.md) supports the selected desktop BVH backport. PR #236's integrated head passed ordinary admission and merged as `13b8e631f3e8fbaa2176ed41afc02c434b11e558`; fresh standard qualification run `40129364630` completed 600/600 physical passes, 0/600 timeouts, zero other failures and 20/20 import passes at that immutable source. This qualifies the registered Windows/Linux x86_64 workload and exact artifacts; native-worker count was not varied and the precise scheduler trigger remains unproven.
 
 For **Generation Workbench 2**, use the [inspection and authoring contract](systems/generation-workbench-2.md): truthful native replay, actual intermediate stages, graph/hierarchy tools, transactional undo/redo and bounded seed/recipe comparisons. The [procedural qualification guide](operations/procedural-qualification.md) routes the 1024 Ã— 1024 scene, final-raster paths, native exhibits and visual evidence.

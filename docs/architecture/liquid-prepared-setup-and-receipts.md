@@ -10,7 +10,7 @@ related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, liquid-
 
 # Native liquid prepared setup, receipts and quantity accounting
 
-**Native #212 branch extension:** [Brine IN](inertial-cellular-v1.md) reuses this preparation boundary and outer receipt-v1 extension mechanism. Its actual instances expose hash3/CYPS3 and family4/state1/identity1. Non-IN version2 field emission remains retained; capability admission changes legitimately update embedded policy identities. Application-host qualification remains separate.
+**Native #212 branch extension:** [Brine IN](inertial-cellular-v1.md) reuses this preparation boundary and outer receipt-v1 extension mechanism. Its actual instances expose hash3/CYPS3 and family4/state1/identity1. Non-IN version2 field emission remains retained; capability admission changes legitimately update embedded policy identities. The [integrated application slice](#inertial-application-readback-and-explicit-geometry) qualifies its stated local host scope separately.
 
 ## Source and completion boundary
 
@@ -39,6 +39,13 @@ It is a different encoding and does not supply this typed native contract or
 application-host proof.
 
 ## Controlled application-host preparation slice
+
+**Integration update, 2026-10-25:** the application branch has merged accepted
+main `ec58d919b3d904fbd338eaccc25de35782c41a24` (#246) and stable IN checkpoint
+`028fc7b6893a57ca816b5221ce1b9067f0c2c01d` (#250). The earlier dated host
+evidence retains its original pre-final-#246 qualifiers. Fresh integrated
+adapter/application evidence is recorded separately in the
+[IN host checkpoint](../audits/2026-10-25-lcb003-integrated-inertial-host.md).
 
 **Current experimental source on `codex/lcb003-application-host`, based on
 `9e91a9f75d47b9a9aa4a8ba2d3ce78ba2fbfd882`:** the normal desktop
@@ -204,6 +211,40 @@ executed runtime and source-matched provenance, complete actor/body/equipment an
 execution setup, and bind its immutable native run bytes. A receipt panel or
 caller-supplied digest cannot supply that proof. This slice introduces no new
 host-evidence schema or native codec version.
+
+## Inertial application readback and explicit geometry
+
+The integrated #202 branch exposes actual immutable IN parameters through
+`get_liquid_solver_policy().family_parameters.inertial_cellular_v1`, including
+the applied numerator, denominator16, block version2 and native effective-law
+identity. `readback_source` distinguishes `applied_world` from `validated_policy`.
+The physical hash and CYPS format getters query the actual World instance:
+IN uses version3; non-IN keeps version2. Copied construction readback includes
+the native-captured family4/state1/identity1 extension and actual rule radius.
+The canonical outer native receipt-v1 bytes, qualifications and false full-match
+eligibility remain unchanged.
+
+The native `liquid_policy_with_inertial_damping(request, numerator)` helper edits
+the explicit optional family4/block2 using the native schema and validator.
+It accepts integers0..16 only when the policy uses IN; it changes no World.
+Assignment editing retains foreign assignments/blocks, retires unused family
+blocks and retires a material block when its owner changes families. GDScript
+never edits wire offsets or interprets illustrative blockv1 as the running law.
+
+Prepared application construction takes explicit `maximum_rule_radius`2 or3,
+default2. Brine IN refuses radius2 and retains the old World/receipt. The normal
+Liquids panel offers a separate matched radius3 selection and native damping
+control; choosing IN never silently changes geometry. Current comparator arms
+can explicitly use the same radius3. **Original Current control** and ordinary
+default reconstruction restore protected radius2 even after an IN World.
+Reset retains accepted geometry, policy, normalization and damping.
+
+The local regression exercises all17 applied damping values against independent
+canonical parameter vectors; three genuine families interacting in one World
+under workers1/4; actual CYPS3 continuation; and normal UI and articulated
+actor/equipment adoption with initial masks. This is scoped Windows native
+headless proof. Remaining constructors, complete versioned host evidence,
+source-matched published runtimes, Linux and actual Web profiles remain open.
 
 ## Source map
 

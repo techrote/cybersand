@@ -421,6 +421,16 @@ work, and no new #201/#212 implementation is included in this checkpoint.
 
 ### Controlled liquid application-host slice
 
+The later integrated [`test_liquid_inertial_host.gd`](../../godot/tests/test_liquid_inertial_host.gd)
+requires a fresh DLL from accepted #246 main plus the stable IN checkpoint and
+owned adapter delta. It reads the independent sibling
+`docs/reference/inertial-parameter-vectors.json`, exercises all17 actual damping
+values, radius2 refusal/radius3 admission, actual native extension/instance
+versions, three families at workers1/4, CYPS3 continuation, normal controls and
+articulated graph/equipment/mask adoption. The
+[integrated ledger](../audits/2026-10-25-lcb003-integrated-inertial-host.md) records
+artifact/input/log hashes and the wider scoped local regression matrix.
+
 On `codex/lcb003-application-host`, the focused
 [`test_liquid_prepared_host.gd`](../../godot/tests/test_liquid_prepared_host.gd)
 executes the typed native preparation/token API, explicit normalization,

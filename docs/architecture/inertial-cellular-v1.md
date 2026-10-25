@@ -2,7 +2,7 @@
 title: Brine inertial cellular reference
 status: Current
 document-kind: reference
-scope: Native-only opt-in Brine IN checkpoint on the LCB-005 branch; current defaults retained, no Water-IN, Godot or runtime-publication qualification
+scope: Native opt-in Brine IN checkpoint and separately qualified integrated application-host route; defaults retained, no Water-IN or runtime-publication qualification
 canonical-for: [inertial-cellular-v1-brine]
 last-reviewed: 2026-10-25
 related-documents: [lcb-pressure-inertial-handoff.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb005-native-brine-checkpoint.md]
@@ -11,6 +11,16 @@ related-documents: [lcb-pressure-inertial-handoff.md, liquid-solver-family-polic
 # Brine inertial cellular reference
 
 ## What executes at this native checkpoint?
+
+**Separate application integration, 2026-10-25:** the #202 branch merges this
+stable native checkpoint onto accepted #246 main and adds native-backed damping
+controls, actual instance hash/CYPS3 and parameter readback, explicit matched
+radius3, three-family worker parity and an articulated-owner/mask regression.
+The [host contract](liquid-prepared-setup-and-receipts.md#inertial-application-readback-and-explicit-geometry)
+and [dated host evidence](../audits/2026-10-25-lcb003-integrated-inertial-host.md)
+qualify that local Windows native headless scope. The native evidence below
+retains its original checkpoint boundaries. Published runtimes, complete #202
+constructors, actual browsers and owner feel remain open.
 
 **Current on the LCB-005 branch only:** explicitly selecting Brine material24 / `inertial_cellular_v1/reference` executes retained signed motion and subcell accumulators. The default Brine CellularYield law and every other default remain unchanged. Water IN, alternate IN materials, cached/dormant IN variants, Godot presentation and released native artifacts are not qualified by this checkpoint. The [dated evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) names the base, local input seal, executable and actual tests. This is neither full #212 completion nor owner feel acceptance.
 

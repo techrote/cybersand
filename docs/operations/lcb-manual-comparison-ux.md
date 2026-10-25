@@ -20,6 +20,12 @@ Exploratory mode and privately staged sampled ownership described below. The [UI
 records the source-matched local Windows development runtime and exact tested
 scope. This does not complete [#202](https://github.com/techrote/cybersand/issues/202).
 
+**Integration update, 2026-10-25:** the branch now includes accepted main
+`ec58d919` and stable IN source `028fc7b6`. Its subsequent
+[IN adapter/control checkpoint](../audits/2026-10-25-lcb003-integrated-inertial-host.md)
+adds actual Brine IN readback and explicit matched geometry; prior dated UI and
+physical evidence retains its earlier source qualification.
+
 ## Current controls and ownership
 
 The feature launcher offers **Liquid comparison — solver policies and protected
@@ -35,14 +41,22 @@ request, builds catalogue-declared choices and calls the existing native
 validator. GDScript does not edit wire offsets or invent availability. It lists
 all eleven liquid materials, including absent species, with Current or
 experimental labels and visible unavailable choices/reasons. A request edits
-only the selected assignment and preserves native parameter blocks; an
-incompatible block can refuse explicitly.
+only the selected assignment, preserves foreign native parameter blocks and
+retires blocks whose family/material owner no longer applies. An incompatible
+retained block can refuse explicitly.
 
 Current presets are Current defaults, whole-cell Water, pressure reference,
 pressure cached, pressure dormant, Water inertial, and pressure Water with
-inertial Brine. Each is enabled only if that actual runtime validates it. On
-this source checkpoint, the #201 variants and #212 inertial choices remain
-unavailable. Their labels are not a claim that those kernels are implemented.
+inertial Brine, plus Current Water with inertial Brine. Each is enabled only if
+that actual runtime validates it. Integrated Brine IN is available; Water IN
+and the separately developed #201 variants remain unavailable in this checkpoint.
+
+**Matched IN geometry (radius 3)** is an explicit selection, distinct from
+default radius2. An IN policy with radius2 refuses; selecting IN never changes
+geometry automatically. Choose radius3 for its Current comparator as well.
+The native-backed **IN damping numerator /16** control accepts0..16(default1)
+and changes only the pending request. Applied readback shows the actual native
+numerator, instance hash/CYPS version and geometry. Reset retains all three.
 
 **Apply & rebuild active** retains the active MicroScenario mode and uses the
 [prepared host contract](../architecture/liquid-prepared-setup-and-receipts.md#controlled-application-host-preparation-slice).
@@ -57,7 +71,8 @@ step, reset and scene controls remain available.
 
 **Original Current control** calls the unchanged original default constructor
 with the selected exact fixture. Pending solver and normalization choices do
-not alter that control. The regression compares its complete native physical
+not alter that control; it explicitly restores protected radius2 after IN or
+matched-radius3 execution. The regression compares its complete native physical
 hash with an independently constructed original Current World after joining the
 worker. Readback separates native policy from the copied typed setup receipt;
 legacy construction correctly has no typed setup receipt. Applied receipt
@@ -89,7 +104,7 @@ controlled API is narrower than older explicit-policy diagnostic APIs.
 
 | Route | Current result | Remaining #202 work |
 |---|---|---|
-| Fixed actor-free schema-2 MicroScenario, protected Dam Break and mixed fixture | Native prepared policy/normalization, immutable typed receipt, final owner fence, actual panel/controller apply/refuse/reset; desktop worker and synchronous controller | Complete verified definition/host/provenance collection and final integrated platform qualification |
+| Fixed actor-free schema-2 MicroScenario, protected Dam Break and mixed fixture | Native prepared policy/normalization and explicit geometry, immutable typed receipt, actual IN parameters/instance versions, final owner fence, actual panel/controller apply/refuse/reset; desktop worker and synchronous controller | Complete verified definition/host/provenance collection and final integrated platform qualification |
 | Fixed player-enabled or body-enabled MicroScenario | Ordinary default route retained; Controlled refuses; explicit Exploratory stages the existing sampled character when body-free | Stage physical body/terrain/equipment candidate before supporting rigid bodies |
 | Owner-paced/exploratory MicroScenario | Explicit Exploratory stages allowlisted sampled owners, the existing sampled character, or desktop articulated Rapier actor/equipment/terrain in a permanent space; native facts include actual initial masks and final execution; Controlled refuses | Remaining barrel/reference-body routes, complete verified host/actor envelope and retained edit/import semantics |
 | Bootstrap `create_world` / ordinary `reset_demo_world` | Defaults; ordinary reset retires typed setup identity | Explicit retained-policy coordinator without changing Current defaults |

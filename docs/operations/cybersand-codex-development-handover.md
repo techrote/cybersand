@@ -10,6 +10,21 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Integrated LCB-003 IN host — 2026-10-25
+
+`codex/lcb003-application-host` has merged accepted #246 main
+`ec58d919b3d904fbd338eaccc25de35782c41a24` and stable #250 IN checkpoint
+`028fc7b6893a57ca816b5221ce1b9067f0c2c01d`. The subsequent adapter/UI slice
+supplies actual applied IN damping/extension readback, instance hash/CYPS3,
+explicit radius3 for candidate/comparator and exact Original Current radius2.
+It includes actual articulated actors/equipment/initial masks; earlier host
+ledgers remain historical pre-final-#246 evidence. Read the
+[fresh integrated ledger](../audits/2026-10-25-lcb003-integrated-inertial-host.md)
+and [constructor matrix](lcb-manual-comparison-ux.md#constructor-coverage-at-this-checkpoint).
+Remaining constructors, complete separately versioned host evidence, final
+source-matched publication, Linux and actual Web qualification stay open.
+#201 remains separate until its coordinated stable checkpoint is released.
+
 ## LCB-003 controlled host preparation — 2026-10-24
 
 The first bounded #202 source slice lives on
@@ -44,8 +59,8 @@ continuation binding and retained admitted-work disposition. The normal Liquids
 panel can rebuild supported articulated exploratory maps. Other body/constructor
 routes, a separately versioned truthful host-evidence layer and actual browsers
 remain open; frozen native-v1 qualifications and false full-match eligibility
-remain unchanged. Source still needs accepted #246/main integration before final
-qualification, followed by the coordinated stable IN interface checkpoint.
+remain unchanged. The integration update above supersedes the earlier integration
+gap; the dated physical ledger continues to describe its original source only.
 
 
 ## Residual LCB-001 continuation — 2026-10-24
