@@ -29,6 +29,8 @@ var normalize_water: CheckBox
 var apply_button: Button
 var dam_button: Button
 var control_button: Button
+var import_button: Button
+var clear_import_button: Button
 var receipt_label: Label
 var status: Label
 var requested_policy := PackedInt32Array()
@@ -109,6 +111,10 @@ func setup(controller: Control) -> void:
 	dam_button = _button(actions, "Load selected comparison", load_selected)
 	control_button = _button(actions, "Original Current control", load_current_control)
 	control_button.tooltip_text = "Uses the unchanged protected definition and original default constructor; pending family and normalization choices are not applied."
+	if host.has_method(&"liquid_comparison_arm_import"):
+		import_button = _button(actions,"Use selection for next level import",arm_import)
+		import_button.tooltip_text = "Explicit Exploratory only. The next ordinary body-free CYSD import uses this copied policy/normalization/geometry. Current imports remain the default until armed."
+		clear_import_button = _button(actions,"Use Current defaults for next import",clear_import)
 	receipt_label = Label.new()
 	receipt_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(receipt_label)
@@ -249,6 +255,18 @@ func _request(definition: Dictionary, original_control: bool = false, mode: Stri
 func apply_active() -> bool:
 	return _request(host.liquid_comparison_active_definition(),false,host.microscenario_mode,true)
 
+func arm_import() -> bool:
+	if import_button == null: return false
+	var accepted: bool = host.liquid_comparison_arm_import(requested_policy,normalize_water.button_pressed,
+		session_picker.selected==1,geometry_picker.get_selected_id())
+	_refusal = "" if accepted else str(host.microscenario_error)
+	_dirty = true
+	return accepted
+
+func clear_import() -> void:
+	if import_button != null: host.liquid_comparison_clear_import()
+	_refusal = ""
+
 func _selected_definition() -> Dictionary:
 	var checked: Dictionary = Contract.parse(FileAccess.get_file_as_string(DAM_PATH if setup_picker.selected == 0 else MIXED_PATH))
 	if not checked.get("ok",false):
@@ -282,12 +300,15 @@ func refresh(context: Dictionary) -> void:
 	var available: bool = bridge != null and bridge.has_method(&"liquid_policy_assignment_choices")
 	var pending: bool = not host.pending_microscenario_apply.is_empty() or not host.pending_water_apply.is_empty()
 	var blind: bool = not host.water_blind_set.is_empty() or not host.water_active_blind_label.is_empty()
+	var import_state: Dictionary = host.liquid_comparison_import_state() if import_button != null else {}
 	if _waiting_serial != 0 and not pending and int(context.get("scenario_request_serial",0)) == _waiting_serial:
 		if context.get("scenario_request_applied",false): _dirty = false
 		else: _refusal = str(host.microscenario_error)
 		_waiting_serial = 0
 	var generation: int = int(context.get("liquid_solver_policy",{}).get("session_generation",-1))
-	if available and generation != _applied_generation: _sync_applied(context)
+	if available and generation != _applied_generation:
+		if import_state.get("applied",false) and requested_policy == context.get("liquid_solver_policy",{}).get("envelope",null): _dirty = false
+		_sync_applied(context)
 	session_picker.disabled = not available or pending or blind
 	geometry_picker.disabled = not available or pending or blind or not bridge.has_method(&"liquid_policy_with_inertial_damping")
 	damping_numerator.editable = not pending and not blind and available \
@@ -301,6 +322,9 @@ func refresh(context: Dictionary) -> void:
 	dam_button.disabled = not available or pending or blind
 	control_button.disabled = not available or pending or blind
 	apply_button.disabled = not available or pending or blind or not _definition_supported(host.liquid_comparison_active_definition())
+	if import_button != null:
+		import_button.disabled = not available or pending or blind or session_picker.selected!=1
+		clear_import_button.disabled = pending or blind or not import_state.get("armed",false)
 	var applied: Dictionary = context.get("liquid_solver_policy",{})
 	var typed: Dictionary = context.get("liquid_construction_receipt",{})
 	receipt_label.text = "Applied native policy: " + str(applied.get("policy_hash","unavailable")).left(16)
@@ -324,6 +348,8 @@ func refresh(context: Dictionary) -> void:
 	elif pending: status.text = "Rebuilding at the existing owner boundary…"
 	elif context.get("microscenario",{}).get("failed",false): status.text = "Installed session apparatus failed: " + str(context.microscenario.get("error","unavailable"))
 	elif not _refusal.is_empty(): status.text = "Refused; applied session retained. " + _refusal
+	elif import_state.get("armed",false): status.text = "Next ordinary body-free level import uses the captured selection " + str(import_state.pending_policy_hash).left(16) + ". The running World is unchanged."
+	elif import_state.get("applied",false) and not _dirty: status.text = "Imported setup is applied. P runs; R / Restart rebuilds its accepted payload and selected liquids. Level saves still reconstruct Current defaults unless a policy is explicitly armed."
 	elif not _definition_supported(host.liquid_comparison_active_definition()): status.text = "Controlled needs a fixed actor-free setup. Exploratory retains sampled owners in Tower or supported MicroScenarios and desktop articulated owners; other routes remain pending."
 	elif _dirty:
 		status.text = "Pending solver/normalization selection. The running World keeps its applied policy until rebuild."

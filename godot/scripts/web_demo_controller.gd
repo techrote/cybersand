@@ -2,6 +2,7 @@ extends "res://scripts/main.gd"
 
 const WaterFeelWebProbe = preload("res://scripts/water_feel_web_probe.gd")
 const LiquidHostWebProbe = preload("res://scripts/liquid_host_web_probe.gd")
+const PreparedLevel = preload("res://scripts/prepared_level_session.gd")
 
 # Web compatibility owner. The original desktop scene/worker remains intact.
 # Every native call here runs on Godot's main thread; cellular ticks remain
@@ -34,6 +35,11 @@ var test_clock: float = 0.0
 var worker_probe: Dictionary = {}
 var rapier_test: Dictionary = {}
 var tick_failure_test: Dictionary = {}
+var _next_level_selection: Dictionary = {}
+var _accepted_level: RefCounted
+var _level_import_serial: int = 0
+var _prepared_level_character_factory: Callable = Callable()
+var _prepared_level_commit_barrier: Callable = Callable()
 var interest_region_test: Dictionary = {}
 var benchmark_running: bool = false
 var benchmark_cancelled: bool = false
@@ -563,6 +569,10 @@ func _update_liquid_context(force: bool = false) -> void:
 	_liquid_context_generation = generation
 	tower_context["liquid_solver_policy"] = native_world.get_liquid_solver_policy()
 	tower_context["liquid_host_observation"] = micro_host.liquid_host_observation()
+	if _accepted_level != null:
+		var imported_identity: Dictionary = _accepted_level.identity(native_world)
+		if imported_identity.is_empty(): _accepted_level = null
+		else: tower_context["liquid_host_observation"] = imported_identity
 	tower_context["liquid_construction_receipt"] = native_world.get_applied_liquid_construction_receipt() \
 		if native_world.has_method(&"get_applied_liquid_construction_receipt") else {}
 	tower_context["liquid_construction_attempt"] = native_world.get_liquid_construction_attempt() \
@@ -846,6 +856,7 @@ func select_demo(id: String, close: bool = true) -> void:
 	if not built:
 		ui.message(str(demo_bridge.get_last_error()))
 		return
+	_accepted_level = null
 	_liquid_tower_active = false
 	_liquid_water_active = false
 	_water_end_blind_session()
@@ -888,6 +899,100 @@ func set_quality(index: int) -> bool:
 		native_world.set_simulation_window(Vector2i(camera_origin.floor()), current_view_size, simulation_margin.x, simulation_margin.y)
 	if ui != null and ui.notice != null:
 		ui.message("%s / %d×%d view / %d Hz publication" % [["LOW", "NORMAL", "HIGH"][quality], current_view_size.x, current_view_size.y, render_snapshot_hz])
+	return true
+
+func liquid_comparison_arm_import(policy: PackedInt32Array, normalize_water: bool,
+		exploratory: bool, radius: int = 2) -> bool:
+	if not ready_to_play or not demo_bridge.has_method(&"prepare_liquid_level") or not exploratory:
+		microscenario_error = "Prepared level imports require Exploratory and the rebuilt native importer"
+		return false
+	var checked: Dictionary = demo_bridge.validate_liquid_policy(policy)
+	if not checked.get("accepted",false) or radius not in [2,3] \
+		or int(checked.get("receipt",{}).get("minimum_rule_radius",2))>radius:
+		microscenario_error = "Level import policy or explicit geometry refused";return false
+	_level_import_serial += 1
+	_next_level_selection = {"policy":policy.duplicate(),"normalization":"water-normalize-v1" if normalize_water else "",
+		"maximum_rule_radius":radius,"intent":"exploratory","policy_hash":str(checked.receipt.policy_hash)}
+	microscenario_error = ""
+	return true
+
+func liquid_comparison_clear_import() -> void:
+	_level_import_serial += 1;_next_level_selection = {}
+
+func liquid_comparison_import_state() -> Dictionary:
+	var applied: bool = _accepted_level != null and not _accepted_level.identity(native_world).is_empty()
+	return {"armed":not _next_level_selection.is_empty(),"applied":applied,
+		"pending_policy_hash":str(_next_level_selection.get("policy_hash",""))}
+
+func liquid_level_host_observation_record() -> Dictionary:
+	return _accepted_level.record(native_world) if _accepted_level != null else {}
+
+func restart_world() -> bool:
+	if _accepted_level != null and not _accepted_level.identity(native_world).is_empty():
+		var reconstruction: Dictionary = _accepted_level.reconstruction()
+		return _import_prepared_level(reconstruction.payload,reconstruction.metadata,reconstruction.selection)
+	select_demo(demo_id)
+	return true
+
+func _prepared_import_configuration(metadata: Dictionary, selection: Dictionary) -> Dictionary:
+	var index: int = int(metadata.quality)
+	var views: Array[Vector2i] = [Vector2i(320,180),Vector2i(480,270),Vector2i(640,360)]
+	var margins: Array[Vector2i] = [Vector2i(16,18),Vector2i(32,36),Vector2i(64,72)]
+	var view: Vector2i = views[index]
+	var centre := Vector2(metadata.player[0],metadata.player[1])+CyberSampledCharacter.BODY_SIZE*0.5
+	var camera := Vector2(clampf(centre.x-view.x*0.5,0,1024-view.x),clampf(centre.y-view.y*0.5,0,1024-view.y))
+	var margin: Vector2i = margins[index]
+	var first := Vector2i(maxi(0,int(floor(camera.x))-margin.x),maxi(0,int(floor(camera.y))-margin.y))
+	var last := Vector2i(mini(1024,int(floor(camera.x))+view.x+margin.x),mini(1024,int(floor(camera.y))+view.y+margin.y))
+	var window: bool = native_world.get_simulation_window_enabled()
+	var options: Dictionary = {"region":PackedInt32Array([first.x,first.y,last.x-first.x,last.y-first.y]) if window else PackedInt32Array([0,0,1024,1024]),
+		"intent":"exploratory","pacing":"host_paced","normalization":selection.normalization,
+		"maximum_rule_radius":selection.maximum_rule_radius,"simulation_window_enabled":window,
+		"cadence_lod_enabled":native_world.get_cadence_lod_enabled(),"liquid_surface_adhesion_enabled":bool(metadata.adhesion)}
+	return {"view":view,"margin":margin,"camera":camera,"options":options,"render_hz":[30,45,60][index]}
+
+func _import_prepared_level(payload: PackedByteArray, metadata: Dictionary, selection: Dictionary) -> bool:
+	var issue: String = CyberDemoSaveCodec.validate_metadata(metadata)
+	if not issue.is_empty(): last_save_error = issue;ui.message(issue);return false
+	if tower_active or showcase_presentation.active() or blacksite_nine_presentation.active() \
+		or not rigid_bodies.is_empty() or physical_actor_session != null or str(metadata.demo) in ["physics_pit","experiment_tower"] \
+		or not metadata.get("bodies",[]).is_empty() or CyberShowcaseTiles.contains(str(metadata.demo)) \
+		or str(metadata.demo)==CyberDemoWorlds.BlacksiteNine.ID:
+		last_save_error = "Prepared level imports currently support ordinary body-free demos; prior World and owners retained"
+		ui.message(last_save_error);return false
+	_level_import_serial += 1
+	var serial: int = _level_import_serial
+	var configuration: Dictionary = _prepared_import_configuration(metadata,selection)
+	var transport: Dictionary = CyberTransportProfiles.resolve(CyberTransportProfiles.preset(0))
+	var water: Dictionary = native_world.get_water_experiment_policy()
+	var staged := PreparedLevel.new()
+	if not staged.prepare(demo_bridge,native_world,payload,metadata,selection,transport.packed,
+		PackedInt32Array([water.version,water.mass_bits,water.coherence_ticks,water.rest_policy]),configuration.options,
+		player.active_profile(),player.runtime_enclosure_recovery_enabled,_prepared_level_character_factory):
+		last_save_error = staged.last_error;ui.message(last_save_error);_update_liquid_context(true);return false
+	if _prepared_level_commit_barrier.is_valid(): _prepared_level_commit_barrier.call()
+	if serial != _level_import_serial or not is_inside_tree() or is_queued_for_deletion():
+		staged.close_pending();last_save_error = "Level import owner request changed before commit; prior session retained"
+		ui.message(last_save_error);return false
+	if not staged.commit():
+		last_save_error = staged.last_error;ui.message(last_save_error);_update_liquid_context(true);return false
+	# Every fallible construction/observation step precedes native commit. This
+	# tail adopts prepared values and existing presentation objects only.
+	_accepted_level = staged;_next_level_selection = {}
+	player = staged.staged_player;character_position = player.position
+	micro_host.clear();tower_context = {};tower_active = false
+	_liquid_tower_active = false;_liquid_water_active = false
+	microscenario_definition = {};microscenario_liquid_policy = selection.policy.duplicate()
+	microscenario_liquid_setup = selection.duplicate(true);microscenario_liquid_setup.erase("policy")
+	tower_schedule.clear();tower_inputs.clear();water_actions.clear();tower_single_step = false
+	demo_id = str(metadata.demo);quality = int(metadata.quality)
+	current_view_size = configuration.view;simulation_margin = configuration.margin;render_snapshot_hz = configuration.render_hz
+	camera_origin = configuration.camera;camera_follow_enabled = false;paused = true
+	selected_material_id = int(metadata.material);coherent_liquid_emission = bool(metadata.coherent)
+	liquid_surface_adhesion_enabled = bool(metadata.adhesion);set_glow_enabled(bool(metadata.glow))
+	force_publication = true;imported_count += 1;last_save_error = "";microscenario_error = ""
+	_update_liquid_context(true);_publish_world();update_shader_parameters();update_status()
+	ui.message("Prepared level restored paused. P resumes; Restart retains its imported setup and selected liquids.")
 	return true
 
 func update_status() -> void:
@@ -948,7 +1053,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			paused = not paused
 		KEY_R:
 			if tower_context.get("micro_active", false): microscenario_reset()
-			else: select_demo(demo_id)
+			else: restart_world()
 		KEY_F:
 			set_camera_follow(not camera_follow_enabled)
 		KEY_C:
@@ -1017,6 +1122,9 @@ func _import_decoded(decoded: Dictionary) -> void:
 		ui.message(last_save_error)
 		return
 	var metadata: Dictionary = decoded.metadata
+	if not _next_level_selection.is_empty():
+		_import_prepared_level(decoded.world,metadata,_next_level_selection.duplicate(true))
+		return
 	if str(metadata.demo) == "physics_pit" and not rapier_available:
 		last_save_error = "This save requires Rapier; current world unchanged."
 		ui.message(last_save_error)
@@ -1025,6 +1133,10 @@ func _import_decoded(decoded: Dictionary) -> void:
 		last_save_error = str(demo_bridge.get_last_error())
 		ui.message(last_save_error)
 		return
+	if _accepted_level != null:
+		microscenario_liquid_policy = null;microscenario_liquid_setup = {};microscenario_definition = {}
+		micro_host.clear();tower_context = {};tower_active = false
+	_accepted_level = null
 	demo_id = str(metadata.demo)
 	player.position = Vector2(metadata.player[0], metadata.player[1])
 	player.velocity = Vector2(metadata.player[2], metadata.player[3])
@@ -1039,6 +1151,7 @@ func _import_decoded(decoded: Dictionary) -> void:
 	camera_origin = clamped_camera_origin(player.centre() - Vector2(current_view_size) * 0.5)
 	camera_follow_enabled = false
 	_activate_physics(demo_id == "physics_pit", metadata.get("bodies", []))
+	_update_liquid_context(true)
 	force_publication = true
 	_publish_world()
 	imported_count += 1
