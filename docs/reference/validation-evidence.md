@@ -10,6 +10,15 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+The [ordinary synchronous demo proof](../audits/2026-10-25-lcb003-ordinary-demo-host.md)
+binds source89baee16, three exact candidate sources and unchanged135-input local
+Windows DLL. Six final strict processes pass: ordinary117, import73, UI105,
+Tower41, Water Feel72 and33 named native Web-prerequisite checks. The new case
+proves exact initial authored tuples/quality0/2, owner refusal, real12-tick prefixes,
+retained Restart/import identity, explicit IN/Current geometry and actual native
+quarantine/refused Restart/Current recovery. A prior failed extension-array-order
+test premise is retained. No final browser/release/rest-contact proof follows.
+
 The [import settings correction](../audits/2026-10-25-lcb003-level-import-host.md#inherited-setting-refusal-correction)
 on sourcecccae86f adds native-component preflight for unsupported inherited
 interaction/diagnostic laws and transport. Three fresh strict processes pass:

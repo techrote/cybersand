@@ -10,6 +10,17 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+The subsequent [ordinary synchronous demo checkpoint](../audits/2026-10-25-lcb003-ordinary-demo-host.md)
+on source89baee16 adds explicit Exploratory apply and retained Restart for the
+four curated body-free demos, keeping their exact recipes, sampled player and
+actual quality/view/cadence. Imported labels never identify authored recipes;
+physical/showcase routes remain outside the allowlist. Final six strict Windows
+processes pass against the unchanged135-input development DLL, including117
+new assertions and a real native failure/refused prepared Restart/explicit Current
+recovery. Prepared same-policy quarantine recovery remains shared #200/#202
+lifecycle work. Root's separate desktop-default/native recipe and Brine IN
+contact repair must integrate before fresh final runtime/platform qualification.
+
 The subsequent [normal-menu level-import checkpoint](../audits/2026-10-25-lcb003-level-import-host.md)
 uses released native thermal preparation for explicit Exploratory ordinary
 body-free imports. Actual panel/Import/Restart callbacks preserve saved metadata,

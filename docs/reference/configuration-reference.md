@@ -10,6 +10,15 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 # Configuration reference
 
+The unmerged #202 [four ordinary synchronous demo route](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-synchronous-demo-rebuilding)
+requires explicit Exploratory apply and copies its recipe/policy/normalization/
+radius for Restart. It captures actual quality/view: tested quality0 gives
+buffered region(0,0,336,198), quality2 gives(0,0,704,432), with original player
+(24,222), camera(0,0) and unchanged render cadence. Explicit IN/control geometry3
+and default Current geometry2 remain distinct. Unsupported inherited laws and
+independent transport refuse; prepared-owned Baseline is component/generation/
+receipt bound. No global policy default or settings persistence is introduced.
+
 The unmerged #202 [explicit level-import selection](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
 is initially unarmed. Exploratory opt-in copies the native-validated liquid
 policy, empty or `water-normalize-v1` rule and explicit radius2/3 for the next

@@ -747,6 +747,18 @@ native generation and immutable applied receipt hash. No new native codec or
 configuration mutator is added; observational telemetry remains the existing
 prepared-builder behavior.
 
+The later synchronous four-demo route supplies a copied schema2
+`CyberMicroScenarioCatalogue.prepared_ordinary_demo(id)` through the existing
+`liquid_comparison_active_definition()`/`liquid_comparison_apply_active(...)`
+owner interface. It uses `prepare_liquid_world` with the existing one-use token,
+private sampled stage, final actual execution and serial/lifetime/native fences;
+there is no new native codec or constructor API. The owner keeps an accepted
+copied recipe/selection and source-ID/native-generation identity for Restart.
+Its configured Baseline exemption additionally binds actual transport component
+and applied receipt hash. Imported demo labels never supply that source identity.
+See [ordinary demo rebuilding](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-synchronous-demo-rebuilding)
+for the four-route allowlist, retained refusal and healthy-World recovery limit.
+
 `get_applied_liquid_construction_receipt()` and
 `get_liquid_construction_attempt()` return distinct owned dictionaries containing
 the original native canonical `PackedByteArray`, its SHA256, qualifications and

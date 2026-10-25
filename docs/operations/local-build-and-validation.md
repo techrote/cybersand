@@ -10,6 +10,16 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+The [four ordinary synchronous demo checkpoint](../audits/2026-10-25-lcb003-ordinary-demo-host.md)
+reuses the unchanged135-input development DLL after before/after verification.
+`test_liquid_ordinary_demo_host.gd` passes117 assertions through actual normal
+Apply/Restart/Import controls: eight quality0/2 cohorts, initial tuple equality,
+private sampled refusal/final barrier, matched IN/Current geometry and real native
+quarantine recovery. Five affected cases separately pass on the final copied
+source, including73 import assertions and33 native Web-prerequisite checks.
+Native headless execution does not qualify the final Wasm/visual, released runtime
+or known Brine IN resting-body repair; later native integration needs a fresh DLL.
+
 The [explicit normal-menu level-import proof](../audits/2026-10-25-lcb003-level-import-host.md)
 reuses the unchanged135-input development DLL after verifying every native input,
 then runs fresh import and eight affected Godot processes. The original44-assertion

@@ -10,6 +10,13 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The subsequent [four ordinary synchronous demo route](architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-synchronous-demo-rebuilding)
+adds explicit Exploratory rebuilding while retaining exact authored recipes,
+sampled player, actual quality/view and accepted Restart input. Its [dated local
+proof](audits/2026-10-25-lcb003-ordinary-demo-host.md) keeps imported labels,
+unsupported body/showcase routes, failed-World recovery and final platform limits
+explicit; it does not complete #202.
+
 The subsequent [explicit normal level-import route](architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
 stages ordinary body-free CYSD thermal payloads, saved metadata and a sampled
 player only after an Exploratory next-import selection. Refusal retains the old

@@ -832,6 +832,52 @@ ordinary synchronous owner with explicit radius3 and actual damping readback;
 Water IN remains unsupported. Physical imports, complete host identity, later
 Wasm execution and source-matched publication remain open.
 
+## Explicit ordinary synchronous demo rebuilding
+
+**Current bounded unmerged #202 source:** the four curated synchronous demos
+Material Lab, Waterworks, Foundry and Neon Works accept **Apply & rebuild active**
+in explicit Exploratory mode. [`prepared_ordinary_demo`](../../godot/scripts/microscenario_catalogue.gd)
+copies their exact ordered `CyberDemoWorlds` rectangle recipes into schema2,
+with the existing sampled player at(24,222), ordinary tools and no apparatus
+events. This does not route the demo through Tower presentation or change its
+Current constructor. The [dated proof](../audits/2026-10-25-lcb003-ordinary-demo-host.md)
+binds source89baee16 and actual normal controller/panel/Restart callbacks.
+
+The synchronous controller tracks authored-source ID and actual native session
+generation independently of the save's demo label. Imported CYSD may carry the
+same label but cannot gain a curated recipe identity. Final current quality/view,
+buffered interest, cadence, adhesion and recipe camera are captured before the
+native receipt. The private sampled stage configures the candidate player before
+the last owner serial/lifetime guard and one-use native commit. Refusal retains
+the previous World/player/receipt/host cursor/observation record. Success adopts
+the staged player, keeps ordinary menus/tools/quality/cadence and starts paused;
+the host is uninstrumented and does not turn the demo into an apparatus session.
+
+The shared application preflight refuses unsupported interaction/diagnostic
+laws and independently configured transport before preparation. A previously
+accepted ordinary demo may retain its configured Baseline only while actual
+native component, generation and immutable applied receipt hash match its
+copied identity. This also permits a later explicitly armed body-free level
+import; accepted import retires the curated identity. Unarmed import never
+promotes a save label into an authored recipe, and retires old prepared cursors.
+
+**R / Restart world** reconstructs copied accepted recipe/policy/normalization/
+geometry after edits. Explicit radius3 supports the admitted Brine IN arm and
+an explicitly matched Current comparator; original Current construction restores
+radius2 and retires typed identity. Physics Pit, Blacksite/showcase, Tower,
+physical owners and arbitrary rectangle builders remain outside this four-demo
+allowlist. They retain their own supported routes or refuse before replacement.
+
+The retained World must still be healthy for native preparation. A quarantined
+prepared World cannot currently perform same-policy Restart. The actual stopped
+hint names an explicit Current demo or unarmed level import as recovery; no
+implicit solver fallback is made. A real bounded-capacity failure regression
+checks refusal retains the failed World/receipt/owner and explicit Current demo
+construction recovers. Prepared same-policy quarantine recovery remains shared
+#200/#202 lifecycle work. Native outer-v1 qualifications15 and native/host false
+full matched eligibility stay unchanged. This local native Windows proof does
+not qualify final Wasm/visual flow, released platforms or Brine IN rest contacts.
+
 ## Downstream ownership
 
 **Planned #201:** a rest certificate must preserve stationary body-contact
