@@ -10,6 +10,32 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Local IN ledger observer checks — 2026-10-25
+
+Water IN is now accepted on main through PR #254 at
+`06451f8ac9e8ac9b23a105d2fe22393375dc2d6b`, after final02c33341's four
+required exact-head gates. This observer's execution remains source0c9 plus the
+frozen five-file overlay; main acceptance does not publish the new observation
+API or complete scientific/full-host qualification. Further Web work is deferred.
+
+The [observer audit](../audits/2026-10-25-lcb004-inertial-ledger-observer.md)
+binds the initial source5f02 two-adapter-input ledger change and its focused
+test, later replayed
+at inherited Appbot0c9. The final worker/ledger overlay then builds DLL2b351995
+with all139 recorded native inputs held and passes import/new worker265/ledger504/
+retained10192/100. Worker availability distinguishes measured Phased zero from
+unmeasured Serial raw zero, with actual participant counts qualified to their
+own workload. External
+earlier Windows DLL25e38920 passes fresh import and `test_lcb_inertial_observation.gd`
+(504 assertions), retained IN adapter10192 and native observation100. Run these
+through the existing strict runner with import240s/case180s; source and staged
+inputs must remain held. Their complete commands, hashes and actual durations
+are in the audit. This is local source-matched development evidence, not Linux,
+a new published observer runtime, numeric-extrema or scientific acceptance.
+The inherited App source5f02/bot0c9 publication is real; the cohesive cpp/hpp/observation-values
+overlay requires new publication. Older App union paragraphs below describe the earlier
+prepublication snapshots. Further Web work remains owner-deferred.
+
 The application branch now normally consumes reviewed Water source/publication
 checkpoint02c33341 through merge108b84d1, including actual sequence2 sourceaa8af247,
 run40220697738 and bot03cccd8f. Merge1d376fb3 also consumes the separately reviewed

@@ -10,6 +10,32 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## IN observer preparation for later qualification — 2026-10-25
+
+Water IN is now accepted on main through PR #254 at
+`06451f8ac9e8ac9b23a105d2fe22393375dc2d6b`, after final02c33341's four
+required exact-head gates. This observer's execution remains source0c9 plus the
+frozen five-file overlay; main acceptance does not publish the new observation
+API or complete scientific/full-host qualification. Further Web work is deferred.
+
+**Current isolated source, bounded local Windows proof:** the [copied cumulative
+IN ledger](../architecture/inertial-cellular-v1.md#copied-cumulative-inertial-ledger-observer--2026-10-25)
+provides nineteen exact-decimal copied values with actual policy/parameter,
+completed-tick and adapter-generation binding. The [dated checkpoint](../audits/2026-10-25-lcb004-inertial-ledger-observer.md)
+records504 assertions with an independent finite Brine24 census, configured1/4
+parity, retirement, CYPS3 and quarantine refusal. The final DLL2b351995 adds265
+worker-readback assertions plus retained10192/100 checks: Current Water/Sand
+observes1/4 actual participants in eight moving ticks, while explicit availability
+separates Phased idle0 from unmeasured Serial0. Those actual counts do not qualify
+the separate Brine fixture or every future arm. It is an observation substrate,
+not global closure or a registered scientific result; all117 campaign statuses
+remain unchanged. Water-positive observer, nonzero external injection, numeric
+extrema, final platforms/publication and full #203 acceptance remain open.
+This branch inherits accepted App source5f02/bot0c9 runtimes but changes three
+adapter inputs, requiring a new source-matched publication. The older App union
+paragraphs below retain their earlier prepublication scope. Further Web work is
+owner-deferred until the epic is complete.
+
 The application branch now normally consumes reviewed Water source/publication
 checkpoint02c33341 through merge108b84d1, including actual sequence2 sourceaa8af247,
 run40220697738 and bot03cccd8f. Merge1d376fb3 also consumes the separately reviewed

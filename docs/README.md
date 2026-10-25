@@ -10,6 +10,24 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## Isolated inertial observer checkpoint
+
+Water IN is now accepted on main through PR #254 at
+`06451f8ac9e8ac9b23a105d2fe22393375dc2d6b`, after final02c33341's four
+required exact-head gates. This observer's execution remains source0c9 plus the
+frozen five-file overlay; main acceptance does not publish the new observation
+API or complete scientific/full-host qualification. Further Web work is deferred.
+
+The [copied IN ledger contract](architecture/inertial-cellular-v1.md#copied-cumulative-inertial-ledger-observer--2026-10-25)
+and [dated Windows proof](audits/2026-10-25-lcb004-inertial-ledger-observer.md)
+add a nineteen-field, exact-decimal, owner-serialized observation API only.
+Brine24 fixture closure and copied-value isolation do not establish global
+conservation, a scientific campaign or Water-positive observation coverage.
+This branch inherits actual App source5f02/bot0c9 Windows/Linux publication;
+its new adapter overlay still needs fresh publication. The older App union
+paragraphs below retain their prepublication snapshot scope. Further Web work
+is owner-deferred until the epic is complete.
+
 The application branch now normally consumes reviewed Water source/publication
 checkpoint02c33341 through merge108b84d1, including actual sequence2 sourceaa8af247,
 run40220697738 and bot03cccd8f. Merge1d376fb3 also consumes the separately reviewed

@@ -670,6 +670,20 @@ in [`world.hpp`](../../native/include/cybersand/world.hpp) and
 [`pressure_flow.hpp`](../../native/include/cybersand/pressure_flow.hpp). No C API
 entry point exposes them. The C API/global ABI is not frozen by these additions.
 
+### Copied cumulative inertial ledger
+
+**Current isolated observer source:** `CyberNativeCellWorld.get_inertial_ledger()`
+returns schema `lcb-inertial-ledger-observation-v1`, `ok`/`available`, decimal-string
+completed tick/adapter generation, actual policy hash and, when IN is available,
+effective parameter identity plus nineteen copied values. Healthy non-IN omits
+values/extension; absent or quarantined World refuses without partial tick or
+values. All numeric values are canonical signed/unsigned decimal strings,
+including retained maxima, never JSON numbers. The owner must serialize calls;
+there is no cell scan or tick work. The [canonical ledger schema and bounded
+proof](../architecture/inertial-cellular-v1.md#copied-cumulative-inertial-ledger-observer--2026-10-25)
+owns exact keys, lifetime, no-global-closure qualification and publication gap.
+No C API/ABI, receipt-v1 or CYPS3 format changes accompany this adapter read.
+
 ### LCB-005 standalone instance readback
 
 Current #212 branch source exposes copied `get_physical_state_format_version()`
@@ -945,7 +959,21 @@ is unavailable: the underlying occupancy-aware query's ambient fallback is not
 represented as the hidden cell's temperature. There is no new heat solver or
 per-cell awake flag. Statistics export existing completed-tick counters and
 actual configured limits; missing utilization/queue/allocation counters remain
-explicitly unavailable.
+explicitly unavailable. The isolated observer adds integer
+`values.worker_threads_configured` from configuration and
+`values.worker_threads_observed` from `TickStats` for the last completed tick,
+plus Boolean `values.worker_threads_observed_available` (true for PhasedInPlace,
+false for SerialInPlace).
+Observed measures the maximum distinct native participants in any one Phased
+dispatch of that tick, zero before a tick. SerialInPlace does not measure this
+counter and reports available=false/raw zero despite real work. Phased tickzero
+and completed idle zero remain available=true; zero alone never establishes
+no execution or idle state. It is neither total distinct workers across the tick
+nor utilization or a promise all configured workers participated. The caller must
+retain the actual execution backend alongside this observation.
+These are copied existing counters, without a scheduler/law change. The
+[observer evidence](../audits/2026-10-25-lcb004-inertial-ledger-observer.md)
+keeps configured, actual and fixture qualification separate.
 
 INT-000 extends the same serialized read-only bridge with
 `inspect_interaction_profile()` and

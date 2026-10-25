@@ -10,6 +10,28 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Isolated IN ledger observer — 2026-10-25
+
+Water IN is now accepted on main through PR #254 at
+`06451f8ac9e8ac9b23a105d2fe22393375dc2d6b`, after final02c33341's four
+required exact-head gates. This observer's execution remains source0c9 plus the
+frozen five-file overlay; main acceptance does not publish the new observation
+API or complete scientific/full-host qualification. Further Web work is deferred.
+
+The [observer checkpoint](../audits/2026-10-25-lcb004-inertial-ledger-observer.md)
+starts from actual App source5f02/runtime-only bot0c9. Its cohesive observation
+overlay adds three adapter inputs and two focused tests, including separate
+configured/actual last-tick worker participation readback. Its copied cumulative19-field ledger binds actual
+policy/parameters/completed tick/adapter generation, refuses quarantined state
+and exposes exact decimal strings. Final local Windows import/new worker265/ledger504/retained10192/100
+checks pass on DLL2b351995; Brine24 finite-census closure does not qualify a
+common-Water campaign, all materials, Linux or a new release. The new cpp/hpp/observation-values
+inputs require fresh source-matched publication; inherited App runtime acceptance
+is not observer acceptance. Older App union paragraphs below are historical
+prepublication snapshots. Continue qualification from registered fixtures and
+explicit sources/sinks, preserving all117 registry classifications; no #203
+completion or new campaign is claimed. Web work remains owner-deferred.
+
 The application branch now normally consumes reviewed Water source/publication
 checkpoint02c33341 through merge108b84d1, including actual sequence2 sourceaa8af247,
 run40220697738 and bot03cccd8f. Merge1d376fb3 also consumes the separately reviewed

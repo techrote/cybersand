@@ -10,6 +10,31 @@ related-documents: [local-build-and-validation.md, ../reference/validation-evide
 
 # Source checkpoint and recovery
 
+## Recoverable isolated IN ledger observation — 2026-10-25
+
+Water IN is now accepted on main through PR #254 at
+`06451f8ac9e8ac9b23a105d2fe22393375dc2d6b`, after final02c33341's four
+required exact-head gates. This observer's execution remains source0c9 plus the
+frozen five-file overlay; main acceptance does not publish the new observation
+API or complete scientific/full-host qualification. Further Web work is deferred.
+
+The [observer source/runtime ledger](../audits/2026-10-25-lcb004-inertial-ledger-observer.md)
+records `codex/lcb004-observer`: source5f02 plus three explicitly hashed local
+files, source freeze72304450, native139/DLL25e38920 and focused receipts47264eeb
+and9c6dac66. The checkout later fast-forwarded to accepted runtime-only Appbot
+`0c9b197754d57e1eb579a52d745a1ca8fd0d2b32`; exactly four inherited runtime and
+provenance paths changed, with observer code/native inputs held. These immutable
+external maps and the three source hashes recover the local overlay without
+relabelling old execution as a new release. This branch is not the separate
+trial-body branch. The later configured/actual worker observation adds only the existing copied
+statistics header and its new test, with final DLL2b351995/recorded139 inputs
+and focused-v6 receipted60f9c2 (import plus265/504/10192/100 assertions), bound
+by the final five-file freeze12febf9e. Root owns
+the observer code and separate docs review; no
+new observer runtime is published. Earlier App union paragraphs below retain
+prepublication history; inherited App publication and new adapter freshness are
+separate. Further Web work is owner-deferred.
+
 The application branch now normally consumes reviewed Water source/publication
 checkpoint02c33341 through merge108b84d1, including actual sequence2 sourceaa8af247,
 run40220697738 and bot03cccd8f. Merge1d376fb3 also consumes the separately reviewed

@@ -338,8 +338,9 @@ records actual execution and retained failures.
 |---|---|
 | IN-ADAPTER-001 | Current #212 branch: hash/save versions and IN parameters/digest are copied from the actual applied World; policy-only predictions are labelled separately |
 | IN-ADAPTER-002 | Current #212 branch: legacy factory defaults2, IN explicitly requests3, and ordinary/default/CYSD1 reconstruction resets2; insufficient/unsupported geometry preserves the old session |
-| IN-ADAPTER-003 | Current #212 branch: returned motion/parameter dictionaries own their copies; native pool workers call no Godot API; old dictionary receipt identity remains separate from qualified typed native-v1 host evidence |
+| IN-ADAPTER-003 | Current #212 branch motion/parameter copies and isolated observer cumulative ledger copies expose no mutable World storage. The ledger binds actual policy/parameters, completed tick and adapter generation through canonical decimal strings, refuses failed state, and adds no cell scan or tick work. Native pool workers call no Godot API; copied observations remain separate from qualified typed native-v1 host evidence |
 
+The [copied ledger contract](../architecture/inertial-cellular-v1.md#copied-cumulative-inertial-ledger-observer--2026-10-25) owns the isolated observer scope and Brine24 proof limits.
 The [standalone IN contract](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry)
 owns the exact interfaces. Local Windows execution does not qualify the full
 application, actual browsers or released runtimes.
