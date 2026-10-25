@@ -1,6 +1,7 @@
 #include "cyber_native_cell_world.hpp"
 
 #include "cybersand/material_rules.hpp"
+#include "cybersand/default_demo_recipe.hpp"
 
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/classes/project_settings.hpp>
@@ -106,6 +107,7 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("logical_processor_count"), &CyberNativeCellWorld::logical_processor_count);
     ClassDB::bind_method(D_METHOD("reset_demo_world"),
                          &CyberNativeCellWorld::reset_demo_world);
+    ClassDB::bind_method(D_METHOD("get_default_demo_identity"), &CyberNativeCellWorld::get_default_demo_identity);
     ClassDB::bind_method(D_METHOD("simulation_tick"),
                          &CyberNativeCellWorld::simulation_tick);
     ClassDB::bind_method(D_METHOD("has_failed"), &CyberNativeCellWorld::has_failed);
@@ -290,59 +292,16 @@ bool CyberNativeCellWorld::reset_demo_world() {
         candidate->configure_transient_obstacles({0, 0, kWorldWidth, kWorldHeight});
         candidate->set_liquid_surface_adhesion_enabled(liquid_surface_adhesion_enabled_);
 
-        for (std::int32_t x = 0; x < kWorldWidth; ++x) {
-            candidate->set(x, kWorldHeight - 1, cybersand::Material::Wall);
-        }
-        for (std::int32_t y = 0; y < kWorldHeight; ++y) {
-            candidate->set(0, y, cybersand::Material::Wall);
-            candidate->set(kWorldWidth - 1, y, cybersand::Material::Wall);
-        }
-        for (std::int32_t x = 1; x < kWorldWidth - 1; ++x) {
-            auto floor_y = (kWorldHeight - 79) +
-                           static_cast<std::int32_t>(18.0 * std::sin(x * 0.018));
-            floor_y += static_cast<std::int32_t>(7.0 * std::sin(x * 0.071));
-            for (std::int32_t y = floor_y; y < kWorldHeight - 1; ++y) {
-                candidate->set(x, y, cybersand::Material::Wall);
-            }
-        }
-        for (std::int32_t x = 18; x < 338; ++x) {
-            candidate->set(x, 172, cybersand::Material::Wall);
-        }
-        for (std::int32_t y = 24; y < 112; ++y) {
-            for (std::int32_t x = 55; x < 108; ++x) {
-                if (((x * 17 + y * 31) % 7) < 4) candidate->set(x, y, cybersand::Material::Sand);
-            }
-        }
-        for (std::int32_t y = 128; y < 172; ++y) {
-            for (std::int32_t x = 216; x < 300; ++x) {
-                if (((x + y) % 3) != 0) candidate->set(x, y, cybersand::Material::Water);
-            }
-        }
-        for (std::int32_t platform = 0; platform < 5; ++platform) {
-            const auto start_x = 360 + platform * 112;
-            const auto platform_y = 128 + ((platform * 67) % 260);
-            const auto end_x = std::min(kWorldWidth - 18, start_x + 92);
-            for (auto x = start_x; x < end_x; ++x) {
-                candidate->set(x, platform_y, cybersand::Material::Wall);
-            }
-        }
-        for (std::int32_t y = kWorldHeight - 164; y < kWorldHeight - 106; ++y) {
-            for (std::int32_t x = 430; x < 492; ++x) {
-                if (((x * 13 + y * 19) % 9) < 5) candidate->set(x, y, cybersand::Material::Smoke);
-            }
-        }
+        cybersand::demo::visit_default_demo_recipe([&](std::int32_t x, std::int32_t y, cybersand::Material material) {
+            candidate->set(x, y, material);
+        });
 
         candidate->set_simulation_region(world_->simulation_region());
         world_.swap(candidate);
         retire_liquid_construction_identity();
         ++liquid_policy_session_generation_;
-        diagnostic_fixture_ = false;
-        body_diagnostics_.reset();
-        displacement_gain_ = kBodyDisplacementReactionImpulse;
-        boundary_gain_ = kBodyBoundaryPressureImpulse;
-        contact_gain_ = kBodyPixelContactImpulse;
-        impulse_cap_ = kMaximumBodyImpulsePerTick;
-        density_limit_ = 1.6;
+        default_demo_recipe_active_ = true;
+        reset_demo_coupling_parameters();
         render_snapshot_full_refresh_required_ = true;
         current_bodies_ = {};
         previous_bodies_ = {};
@@ -362,6 +321,26 @@ bool CyberNativeCellWorld::reset_demo_world() {
         last_tick_error_ = String("Reset failed: ") + error.what();
         return false;
     }
+}
+
+Dictionary CyberNativeCellWorld::get_default_demo_identity() const {
+    if (!world_ || !default_demo_recipe_active_) return {};
+    Dictionary identity;
+    identity["native_recipe_id"] = String(cybersand::demo::kDefaultRecipeIdentity.data());
+    identity["session_generation"] = static_cast<std::int64_t>(liquid_policy_session_generation_);
+    identity["prepared"] = !applied_liquid_construction_receipt_.is_empty();
+    identity["healthy"] = !world_->has_failed();
+    return identity;
+}
+
+void CyberNativeCellWorld::reset_demo_coupling_parameters() noexcept {
+    diagnostic_fixture_ = false;
+    body_diagnostics_.reset();
+    displacement_gain_ = kBodyDisplacementReactionImpulse;
+    boundary_gain_ = kBodyBoundaryPressureImpulse;
+    contact_gain_ = kBodyPixelContactImpulse;
+    impulse_cap_ = kMaximumBodyImpulsePerTick;
+    density_limit_ = 1.6;
 }
 
 bool CyberNativeCellWorld::simulation_tick() {
@@ -1904,6 +1883,7 @@ Dictionary CyberNativeCellWorld::get_applied_liquid_construction_receipt() const
 }
 
 void CyberNativeCellWorld::retire_liquid_construction_identity() {
+    default_demo_recipe_active_ = false;
     pending_liquid_world_.reset();
     applied_liquid_construction_receipt_.clear();
     liquid_construction_attempt_.clear();

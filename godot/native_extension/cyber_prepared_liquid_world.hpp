@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cyber_prepared_level_payload.hpp"
+#include "cybersand/default_demo_recipe.hpp"
 
 // Implementation of the adapter-owned preparation slot. No native World
 // pointer crosses the Godot boundary; only a token and copied value receipts do.
@@ -40,11 +41,19 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_level(
     return prepare_liquid_candidate(adapter, {}, profile, policy, {}, liquid_policy, options, &payload);
 }
 
+inline std::int64_t CyberDemoBridge::prepare_liquid_default_demo(
+    const Ref<CyberNativeCellWorld>& adapter, const PackedInt32Array& liquid_policy,
+    const Dictionary& options) {
+    // Water precision and independent transport tuning are inherited exactly as
+    // in reset_demo_world(), rather than replaced by an implicit Baseline.
+    return prepare_liquid_candidate(adapter, {}, {}, {}, {}, liquid_policy, options, nullptr, true);
+}
+
 inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
     const Ref<CyberNativeCellWorld>& adapter, const PackedInt32Array& rectangles,
     const PackedInt32Array& profile, const PackedInt32Array& policy,
     const PackedInt32Array& water_fills, const PackedInt32Array& liquid_policy,
-    const Dictionary& options, const PackedByteArray* level_payload) {
+    const Dictionary& options, const PackedByteArray* level_payload, bool default_demo) {
     error_ = String();
     last_liquid_policy_refusal_.clear();
     if (adapter.is_null() || !adapter->world_ || adapter->world_->has_failed()) {
@@ -79,8 +88,8 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             return 0;
         }
         const auto decoded = cybersand::LiquidSolverPolicy::decode(request);
-        if (policy.size() != 4 || policy[0] != 1 || policy[1] < 3 || policy[1] > 8 ||
-            policy[2] < 0 || policy[2] > 12 || policy[3] != 0)
+        if (!default_demo && (policy.size() != 4 || policy[0] != 1 || policy[1] < 3 || policy[1] > 8 ||
+            policy[2] < 0 || policy[2] > 12 || policy[3] != 0))
             throw std::invalid_argument("Invalid Water experiment policy");
         const PackedInt32Array region = options.get("region", PackedInt32Array());
         if (region.size() != 4 || region[0] < 0 || region[1] < 0 || region[2] < 1 || region[3] < 1 ||
@@ -103,15 +112,19 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         if (seed < 0) throw std::invalid_argument("Negative setup seed");
         const String definition_hash = options.get("definition_hash", String());
         const auto definition_bytes = definition_hash.hex_decode();
-        if (level_payload == nullptr && (definition_hash.length() != 64 || definition_bytes.size() != 32))
+        if (level_payload == nullptr && !default_demo && (definition_hash.length() != 64 || definition_bytes.size() != 32))
             throw std::invalid_argument("Controlled preparation requires a definition SHA256 claim");
-        if (level_payload != nullptr && options.has("definition_hash"))
-            throw std::invalid_argument("Prepared CYSD1 uses its actual payload digest, not a definition hash claim");
+        if ((level_payload != nullptr || default_demo) && options.has("definition_hash"))
+            throw std::invalid_argument("Native prepared input does not accept a caller definition hash claim");
+        if (default_demo && seed != 0)
+            throw std::invalid_argument("The native default demo recipe has fixed seed zero");
         auto config = std::make_unique<cybersand::WorldConfig>(adapter->world_->config());
-        config->transport_policy = cybersand::TransportPolicy::unpack(
-            {profile.ptr(), static_cast<std::size_t>(profile.size())});
-        config->water_experiment_policy = cybersand::WaterExperimentPolicy(
-            static_cast<std::uint8_t>(policy[1]), static_cast<std::uint8_t>(policy[2]));
+        if (!default_demo) {
+            config->transport_policy = cybersand::TransportPolicy::unpack(
+                {profile.ptr(), static_cast<std::size_t>(profile.size())});
+            config->water_experiment_policy = cybersand::WaterExperimentPolicy(
+                static_cast<std::uint8_t>(policy[1]), static_cast<std::uint8_t>(policy[2]));
+        }
         config->liquid_solver_policy = *decoded.policy;
         const auto radius = static_cast<std::int64_t>(options.get("maximum_rule_radius",
             std::int64_t{CyberNativeCellWorld::kProtectedCurrentRuleRadius}));
@@ -123,7 +136,36 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         config->physics_diagnostics.enabled = true;
 
         cybersand::normalization::FinalSetupInput input;
-        if (level_payload != nullptr) {
+        if (default_demo) {
+            // Resolve the same ordered native recipe before normalization. The
+            // finite dense material map is construction-only; no tick allocates it.
+            std::vector<cybersand::Material> materials(
+                std::size_t{cybersand::demo::kWidth} * cybersand::demo::kHeight, cybersand::Material::Empty);
+            cybersand::demo::visit_default_demo_recipe([&](std::int32_t x, std::int32_t y, cybersand::Material material) {
+                materials[static_cast<std::size_t>(y) * cybersand::demo::kWidth + x] = material;
+            });
+            input.mass_bits = config->water_experiment_policy.mass_bits();
+            input.ambient_temperature = config->ambient_temperature;
+            input.setup.kind = cybersand::setup::SetupKind::NativeCellFixture;
+            input.setup.definition_schema = 1;
+            const auto recipe = cybersand::demo::kDefaultRecipeIdentity;
+            input.setup.definition_digest = cybersand::Sha256::of({
+                reinterpret_cast<const std::uint8_t*>(recipe.data()), recipe.size()});
+            input.setup.seed = 0;
+            input.setup.domain = {0, 0, cybersand::demo::kWidth, cybersand::demo::kHeight};
+            input.setup.coverage = cybersand::setup::SetupCoverage::NativePayloadOnly;
+            input.setup.gaps = cybersand::setup::kKnownSetupGaps;
+            for (std::int32_t y = 0; y < cybersand::demo::kHeight; ++y) {
+                for (std::int32_t x = 0; x < cybersand::demo::kWidth; ++x) {
+                    const auto material = materials[static_cast<std::size_t>(y) * cybersand::demo::kWidth + x];
+                    if (material == cybersand::Material::Empty) continue;
+                    const auto& initial = cybersand::MaterialRules::descriptor(material);
+                    const auto a = material == cybersand::Material::Water
+                        ? config->water_experiment_policy.maximum() : initial.initial_state_a;
+                    input.cells.push_back({x, y, material, a, initial.initial_state_b, config->ambient_temperature});
+                }
+            }
+        } else if (level_payload != nullptr) {
             input = prepared_liquid_detail::level_setup(
                 {level_payload->ptr(), static_cast<std::size_t>(level_payload->size())}, *config,
                 static_cast<std::uint64_t>(seed));
@@ -202,6 +244,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             throw std::length_error("Construction generation space exhausted");
         auto pending = std::make_unique<CyberNativeCellWorld::PendingLiquidWorld>();
         pending->world = prepared.take_world();
+        pending->reset_demo_coupling = default_demo;
         pending->world->configure_transient_obstacles({0, 0, cybersand::demo::kWidth, cybersand::demo::kHeight});
         if (options.has("initial_bodies") && options["initial_bodies"].get_type() != Variant::PACKED_FLOAT32_ARRAY)
             throw std::invalid_argument("Initial body input must be a PackedFloat32Array");
@@ -242,6 +285,11 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         if (level_payload != nullptr) {
             pending->receipt["setup_kind"] = "native_cell_fixture";
             pending->receipt["source_payload_sha256"] = prepared_liquid_detail::digest(*input.setup.definition_digest);
+        }
+        if (default_demo) {
+            pending->receipt["setup_kind"] = "native_cell_fixture";
+            pending->receipt["native_recipe_id"] = String(cybersand::demo::kDefaultRecipeIdentity.data());
+            pending->receipt["native_recipe_identity_sha256"] = prepared_liquid_detail::digest(*input.setup.definition_digest);
         }
         pending->receipt["policy_hash"] = String(pending->world->liquid_solver_policy().policy_hash_hex().c_str());
         pending->receipt["physical_state_hash"] = String::num_uint64(facts->values().physical_hash, 16).lpad(16,"0");
@@ -318,6 +366,8 @@ inline bool CyberDemoBridge::commit_liquid_world(const Ref<CyberNativeCellWorld>
     // No allocations, capture, configuration changes or host callbacks after
     // this fence. All final native facts and copied receipts were prepared.
     adapter->world_.swap(pending->world);
+    adapter->default_demo_recipe_active_ = pending->reset_demo_coupling;
+    if (pending->reset_demo_coupling) adapter->reset_demo_coupling_parameters();
     adapter->render_exchange_.swap(pending->exchange);
     adapter->applied_liquid_setup_ = pending->setup;
     std::swap(adapter->applied_liquid_construction_receipt_, pending->receipt);

@@ -37,6 +37,7 @@ public:
     [[nodiscard]] static std::int64_t logical_processor_count();
 
     bool reset_demo_world();
+    [[nodiscard]] Dictionary get_default_demo_identity() const;
     [[nodiscard]] bool simulation_tick();
     [[nodiscard]] bool has_failed() const;
     [[nodiscard]] std::int64_t get_attempted_tick_index() const;
@@ -185,6 +186,7 @@ private:
         std::array<BodyDiagnostic, cybersand::World::kMaximumTransientBodies + 1U>;
     std::unique_ptr<BodyDiagnostics> body_diagnostics_;
     bool diagnostic_fixture_ = false;
+    bool default_demo_recipe_active_ = false;
     double displacement_gain_ = 0.18;
     double boundary_gain_ = 0.19;
     double contact_gain_ = 0.025;
@@ -226,6 +228,7 @@ private:
         std::uint64_t token = 0, retained_generation = 0, retained_revision = 0, retained_hash = 0;
         Vector2i origin{}, size{};
         bool cadence = false, adhesion = true, window = true;
+        bool reset_demo_coupling = false;
         bool retained_cadence = false, retained_window = true;
     };
     std::unique_ptr<PendingLiquidWorld> pending_liquid_world_;
@@ -247,6 +250,7 @@ private:
     [[nodiscard]] static bool character_box_collides_in(const cybersand::World* world, Vector2 origin, Vector2 size, std::int64_t mode);
     void create_world();
     void retire_liquid_construction_identity();
+    void reset_demo_coupling_parameters() noexcept;
     void refresh_simulation_region();
     void refresh_render_cells() const;
     void clear_observations();

@@ -1,0 +1,136 @@
+{
+  "schema": "cybersand-default-desktop-recipe-control-v1",
+  "source": "674789ae7ada98623bd9f1c541824a16e884ad82 native inputs unchanged from ebb5b842 development DLL",
+  "runtime_sha256": "79f3566622fdc3ad8428fda50367d028e5d89882185faa2a5b06d92b0902ca37",
+  "scope": "old native default demo, no bodies, four Water/transport cohorts, one worker and320x180 window; no browser/package claim",
+  "cohorts": [
+    {
+      "coherence_ticks": 12,
+      "components": {
+        "backend": "1",
+        "catalogue_digest": "none",
+        "diagnostic_physics": "0:-1",
+        "execution": "window:nolod:adhesion",
+        "interaction_policy": "8:9:30",
+        "native_binary_sha256": "none",
+        "normalization_receipt": "none",
+        "physical_state_hash_version": "2",
+        "policy_hash": "6e005e61219c01421e3fb404b1df4773120885d02f94eab1558efa6cc5c2ec10",
+        "scheduler": "128:32:64:2:3",
+        "seed": "none",
+        "setup_hash": "none",
+        "simulation_region": "0:0:320:180",
+        "source_revision": "none",
+        "transport_profile": "baseline",
+        "water_policy": "1:8:12:0",
+        "workers": "1"
+      },
+      "mass_bits": 8,
+      "payload_sha256": "5fb22947ad8f2538dc88d4f419248dd7ffc4b4caf14935ad0c9ee948a01e7261",
+      "physical_hash": "09985b22a7aa79d2",
+      "profile": -1,
+      "ticks": [
+        "6c04833c2378ccd3",
+        "c0f5f734a1165c21",
+        "5d8baea29838ff18",
+        "c26cf13ef74ddd09"
+      ]
+    },
+    {
+      "coherence_ticks": 0,
+      "components": {
+        "backend": "1",
+        "catalogue_digest": "none",
+        "diagnostic_physics": "0:-1",
+        "execution": "window:nolod:adhesion",
+        "interaction_policy": "8:9:30",
+        "native_binary_sha256": "none",
+        "normalization_receipt": "none",
+        "physical_state_hash_version": "2",
+        "policy_hash": "6e005e61219c01421e3fb404b1df4773120885d02f94eab1558efa6cc5c2ec10",
+        "scheduler": "128:32:64:2:3",
+        "seed": "none",
+        "setup_hash": "none",
+        "simulation_region": "0:0:320:180",
+        "source_revision": "none",
+        "transport_profile": "08567de537114b3970190f422b2c61b94af0950cfa5fd795f1779e374af05eee",
+        "water_policy": "1:3:0:0",
+        "workers": "1"
+      },
+      "mass_bits": 3,
+      "payload_sha256": "e71ea9846802abdab6d8d2c21acbe10bb1554af7ebb43da907b0f541ef7ae69c",
+      "physical_hash": "2e95f459c2087344",
+      "profile": 1,
+      "ticks": [
+        "590e1d3f55237c1b",
+        "e43938e1088c805b",
+        "ac01bf8e704ce738",
+        "60eb7ad7c005d80f"
+      ]
+    },
+    {
+      "coherence_ticks": 5,
+      "components": {
+        "backend": "1",
+        "catalogue_digest": "none",
+        "diagnostic_physics": "0:-1",
+        "execution": "window:nolod:adhesion",
+        "interaction_policy": "8:9:30",
+        "native_binary_sha256": "none",
+        "normalization_receipt": "none",
+        "physical_state_hash_version": "2",
+        "policy_hash": "6e005e61219c01421e3fb404b1df4773120885d02f94eab1558efa6cc5c2ec10",
+        "scheduler": "128:32:64:2:3",
+        "seed": "none",
+        "setup_hash": "none",
+        "simulation_region": "0:0:320:180",
+        "source_revision": "none",
+        "transport_profile": "89eb9b9ac12349de69d9c58e540610037e4b6410c1da7dc2fe3ef90593143fb4",
+        "water_policy": "1:5:5:0",
+        "workers": "1"
+      },
+      "mass_bits": 5,
+      "payload_sha256": "9df80800044454fb3d8d030207aa2184bc3264f4105849e6fc04cb889ccbdcdd",
+      "physical_hash": "336e61b784dd3656",
+      "profile": 0,
+      "ticks": [
+        "12b0c3bab7abb672",
+        "b78bef12f2cb415a",
+        "9e0cc7a0d54e4b7a",
+        "9cee2957e5b576c7"
+      ]
+    },
+    {
+      "coherence_ticks": 12,
+      "components": {
+        "backend": "1",
+        "catalogue_digest": "none",
+        "diagnostic_physics": "0:-1",
+        "execution": "window:nolod:adhesion",
+        "interaction_policy": "8:9:30",
+        "native_binary_sha256": "none",
+        "normalization_receipt": "none",
+        "physical_state_hash_version": "2",
+        "policy_hash": "6e005e61219c01421e3fb404b1df4773120885d02f94eab1558efa6cc5c2ec10",
+        "scheduler": "128:32:64:2:3",
+        "seed": "none",
+        "setup_hash": "none",
+        "simulation_region": "0:0:320:180",
+        "source_revision": "none",
+        "transport_profile": "08567de537114b3970190f422b2c61b94af0950cfa5fd795f1779e374af05eee",
+        "water_policy": "1:8:12:0",
+        "workers": "1"
+      },
+      "mass_bits": 8,
+      "payload_sha256": "5fb22947ad8f2538dc88d4f419248dd7ffc4b4caf14935ad0c9ee948a01e7261",
+      "physical_hash": "11a04791eb50cd7a",
+      "profile": 1,
+      "ticks": [
+        "386ca5d22e6805bf",
+        "b7a6df705ed7866d",
+        "f3a51cbe0031fa28",
+        "9ce5db8b675967d1"
+      ]
+    }
+  ]
+}
