@@ -7,11 +7,14 @@ const PhysicalOverlay = preload("res://scripts/physical_actor_overlay.gd")
 const PhysicalLoadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const PhysicalEquipment = preload("res://scripts/physical_usable_equipment.gd")
 const PreparedPhysical = preload("res://scripts/prepared_physical_session.gd")
+const PreparedReferenceBody = preload("res://scripts/prepared_reference_body_session.gd")
 var _pending_physical_candidate: RefCounted
 var _accepted_physical_candidate: RefCounted
 var _prepared_physical_identity: Dictionary = {}
 var _prepared_physical_ready_sent: bool = false
 var _prepared_physical_factory: Callable = Callable()
+var _prepared_reference_factory: Callable = Callable()
+var _accepted_reference_candidate: RefCounted
 var exploratory_actor_configuration: Dictionary = {}
 var physical_trial_arm: String = ""
 var physical_trial_input = PhysicalTrial.new()
@@ -378,8 +381,8 @@ func _apply_prepared_liquid_water(policy: PackedInt32Array, normalize_water: boo
 	if not resolved.ok or resolved.hash != result.hash: return false
 	var recipe: Dictionary = CyberWaterFeelScenarios.recipe(str(resolved.policy.scenario_id),int(resolved.policy.seed))
 	if recipe.is_empty(): return false
-	if recipe.body_enabled or physical_actor_session != null or not rigid_bodies.is_empty() or player_uses_barrel():
-		microscenario_error = "Prepared Water Feel requires a body-free sampled owner; prior session retained"
+	if physical_actor_session != null or player_uses_barrel():
+		microscenario_error = "Prepared Water Feel requires its sampled player and reference body owner; prior session retained"
 		return false
 	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
 	var admitted: Dictionary = bridge.validate_liquid_policy(policy)
@@ -394,6 +397,18 @@ func _apply_prepared_liquid_water(policy: PackedInt32Array, normalize_water: boo
 	_microscenario_request_serial += 1
 	var setup: Dictionary = {"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else "",
 		"maximum_rule_radius":radius}
+	if recipe.body_enabled:
+		var staged: RefCounted = _prepared_reference_factory.call() if _prepared_reference_factory.is_valid() else PreparedReferenceBody.new()
+		var templates: Array[RigidBody2D] = [test_rigid_body_1,test_rigid_body_2,test_rigid_body_3]
+		if not staged.prepare_reference(self,templates,TEST_RIGID_BODY_SIZE):
+			microscenario_error = staged.last_error
+			staged.close()
+			return false
+		_pending_physical_candidate = staged
+		_prepared_physical_identity = {};_prepared_physical_ready_sent = false
+		# Ordinary reference rectangles carry no actor/equipment authority.
+		setup.physical_owner = {"kind":"reference_body","epoch":0,"instance_id":staged.get_instance_id(),
+			"initial_bodies":staged.initial_body_states()}
 	pending_microscenario_apply = {"route":"water","serial":_microscenario_request_serial,"hash":checked.hash,
 		"definition":checked.definition,"previous_paused":paused,"previous_mode":microscenario_mode,
 		"liquid_policy":policy.duplicate(),"controlled_liquid_setup":setup,"water_result":result.duplicate(true),"water_recipe":recipe}
@@ -410,12 +425,19 @@ func _prepared_liquid_water_installed() -> void:
 	microscenario_definition = pending_microscenario_apply.definition.duplicate(true)
 	microscenario_liquid_policy = pending_microscenario_apply.liquid_policy.duplicate()
 	microscenario_liquid_setup = pending_microscenario_apply.controlled_liquid_setup.duplicate(true)
+	microscenario_liquid_setup.erase("physical_owner")
 	water_policy_resolved = pending_microscenario_apply.water_result.duplicate(true)
 	water_policy_available = true;water_active_blind_label = ""
 	paused = true;tower_active = true;current_view_size = Vector2i(480,270);camera_follow_enabled = false
 	camera_origin = Vector2(microscenario_definition.camera_origin[0],microscenario_definition.camera_origin[1])
 	character_position = Vector2(microscenario_definition.player_start[0],microscenario_definition.player_start[1])
 	$Layout/Title.text = "CYBERSAND / EXPERIMENT TOWER / WATER FEEL"
+	if _pending_physical_candidate != null: _adopt_prepared_physical_candidate()
+	else:
+		_close_prepared_reference_bodies()
+		for body: RigidBody2D in [test_rigid_body_1,test_rigid_body_2,test_rigid_body_3]:
+			body.freeze = true;body.collision_layer = 0;body.collision_mask = 0
+		rapier_bridge.shutdown();rigid_bodies.clear()
 	simulation_worker.acknowledge_prepared_liquid_configuration(int(pending_microscenario_apply.serial))
 
 func microscenario_apply_exploratory_liquid(definition: Dictionary, liquid_policy: PackedInt32Array,
@@ -424,6 +446,8 @@ func microscenario_apply_exploratory_liquid(definition: Dictionary, liquid_polic
 		{"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else "","maximum_rule_radius":maximum_rule_radius})
 
 func microscenario_supports_prepared_physical_liquid(definition: Dictionary) -> bool:
+	if tower_context.get("water_active",false):
+		return bool(definition.get("body_enabled",false)) and physical_actor_session == null and not player_uses_barrel()
 	return physical_rig_id != &"" and microscenario_mode != "Benchmark" \
 		and CyberMicroScenarioCatalogue.exploratory_actor_map(definition)
 
@@ -816,6 +840,7 @@ func water_lab_apply_blind(index: int = -1) -> bool:
 	return true
 
 func _activate_water_body_scenario(active: bool) -> void:
+	_close_prepared_reference_bodies()
 	_close_physical_actors()
 	var default_shape := RectangleShape2D.new()
 	default_shape.size = TEST_RIGID_BODY_SIZE
@@ -1415,6 +1440,7 @@ func _exit_tree() -> void:
 		var stopped: Dictionary = gameplay_recorder.stop_recording()
 		print("REC-001 recording finalized at exit: ", JSON.stringify(stopped))
 	_close_pending_physical_candidate()
+	_close_prepared_reference_bodies()
 	_close_physical_actors()
 	simulation_worker.stop_worker()
 	rapier_bridge.shutdown()
@@ -2617,9 +2643,21 @@ func _adopt_prepared_physical_candidate() -> void:
 	var accepted: RefCounted = _pending_physical_candidate
 	_pending_physical_candidate = null
 	_close_physical_actors()
+	_close_prepared_reference_bodies()
 	for body: RigidBody2D in [test_rigid_body_1,test_rigid_body_2,test_rigid_body_3]:
 		body.freeze = true;body.collision_layer = 0;body.collision_mask = 0
 	rapier_bridge.shutdown()
+	if accepted.owner_kind() == "reference_body":
+		_accepted_reference_candidate = accepted
+		rapier_bridge = accepted.physics_bridge()
+		rigid_bodies = accepted.bodies()
+		_physical_terrain_ready = true
+		rapier_start_error = OK
+		last_hard_surface_revision = latest_snapshot.hard_surface_revision
+		hard_surface_rebuild_cooldown = 0.0
+		accepted.adopt()
+		_prepared_physical_identity = {};_prepared_physical_ready_sent = false
+		return
 	_accepted_physical_candidate = accepted
 	physical_actor_session = accepted.session
 	_physical_epoch = physical_actor_session.epoch
@@ -2637,6 +2675,13 @@ func _adopt_prepared_physical_candidate() -> void:
 	simulation_worker.set_physical_actor_epoch(_physical_epoch)
 	accepted.adopt()
 	_prepared_physical_identity = {};_prepared_physical_ready_sent = false
+
+func _close_prepared_reference_bodies() -> void:
+	if _accepted_reference_candidate == null: return
+	_accepted_reference_candidate.close()
+	_accepted_reference_candidate = null
+	rigid_bodies.clear()
+	last_hard_surface_revision = -1
 
 func _activate_articulated_actor_rigs(spawn: Vector2) -> bool:
 	var definitions: Array = physical_actor_definitions(physical_rig_id,

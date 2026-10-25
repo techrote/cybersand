@@ -1,5 +1,10 @@
 extends SceneTree
 
+class ReferencePreparationRefusal extends "res://scripts/prepared_reference_body_session.gd":
+	func prepare_reference(_parent: Node, _templates: Array[RigidBody2D], _size: Vector2) -> bool:
+		last_error = "fixture declared reference body preparation refusal"
+		return false
+
 const Catalogue = preload("res://scripts/microscenario_catalogue.gd")
 const Contract = preload("res://scripts/microscenario_contract.gd")
 const Worker = preload("res://scripts/simulation_worker.gd")
@@ -143,9 +148,11 @@ func application(shallow: Dictionary, whole: PackedInt32Array) -> void:
 		and desktop.water_policy_resolved.hash == deep.hash and desktop.tower_context.water_policy.mass_bits == 5
 		and desktop.microscenario_liquid_policy == whole,"ordinary Water Feel semantic/scenario change retains independent family selection")
 	accepted = desktop.tower_context.liquid_host_observation.duplicate(true)
+	desktop._prepared_reference_factory = func() -> RefCounted: return ReferencePreparationRefusal.new()
 	desktop.water_lab_apply_result(resolved("supported-body-water"))
 	expect(desktop.pending_microscenario_apply.is_empty() and desktop.tower_context.liquid_host_observation == accepted
-		and desktop.water_policy_resolved.hash == deep.hash,"unsupported body scenario retains old actual Water Feel policy/receipt")
+		and desktop.water_policy_resolved.hash == deep.hash,"declared reference body preparation refusal retains actual Water Feel policy/receipt")
+	desktop._prepared_reference_factory = Callable()
 	expect(not desktop.water_lab_prepare_blind(BLIND_CANDIDATES,77) and desktop.water_blind_set.is_empty()
 		and desktop.tower_context.liquid_host_observation == accepted,"experimental owner refuses blind transition before creating a hidden mapping")
 	desktop.tower_reset()

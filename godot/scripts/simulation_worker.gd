@@ -221,6 +221,16 @@ func _advance_prepared_physical_liquid() -> Dictionary:
 	command["_prepared_physical_commit"] = true
 	return command
 
+func _prepared_liquid_continuation_token(command: Dictionary) -> int:
+	if not command.get("_prepared_physical_commit",false): return 0
+	var original: Dictionary = command.duplicate(true)
+	original.erase("_prepared_physical_commit")
+	if _pending_physical_liquid.is_empty() or original != _pending_physical_liquid.get("command",{}):
+		_lab_status = "Prepared physical continuation binding changed; retained session preserved"
+		_retire_prepared_physical_liquid()
+		return -1
+	return int(_pending_physical_liquid.token)
+
 func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_revision: int,
 		settings_revision: int, command: Dictionary, definition: Dictionary, profile: Dictionary,
 		owner_execution: Dictionary) -> Variant:
@@ -437,11 +447,22 @@ func _apply_lab(command: Dictionary) -> bool:
 			CyberTransportProfiles.preset(0))
 		var water_definition: Dictionary = MicroCatalogue.water(resolved)
 		var water_guard: Callable = Callable()
+		var continuation_token: int = _prepared_liquid_continuation_token(command)
+		if continuation_token < 0: return false
 		if not water_setup.is_empty():
-			if water_setup.get("intent","") != "exploratory" or bool(recipe.body_enabled) \
+			var physical: Dictionary = water_setup.get("physical_owner",{})
+			var reference_body: bool = not physical.is_empty()
+			if water_setup.get("intent","") != "exploratory" \
 				or not str(command.get("blind_label","")).is_empty() or not _water_blind_label.is_empty() \
-				or not command.get("sampled_character_enabled",false) or not water_setup.get("physical_owner",{}).is_empty():
-				_lab_status = "Prepared Water Feel rejected; requires an unblinded body-free sampled Exploratory owner"
+				or not command.get("sampled_character_enabled",false) or bool(recipe.body_enabled) != reference_body:
+				_lab_status = "Prepared Water Feel rejected; requires an unblinded sampled Exploratory owner and staged reference bodies"
+				return false
+			if reference_body and (physical.get("kind","") != "reference_body" \
+				or not physical.get("epoch") is int or physical.epoch != 0 \
+				or not physical.get("instance_id") is int or physical.instance_id == 0 \
+				or not physical.get("initial_bodies") is PackedFloat32Array \
+				or physical.initial_bodies.size() != 3*CyberRigidBodyCoupling.INPUT_STRIDE):
+				_lab_status = "Prepared Water Feel reference body values rejected; retained owner preserved"
 				return false
 			var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
 			var admitted: Dictionary = bridge.validate_liquid_policy(command.get("liquid_policy",bridge.default_liquid_policy()))
@@ -453,10 +474,18 @@ func _apply_lab(command: Dictionary) -> bool:
 			var prepared: Dictionary = _prepared_liquid_install_options(command,water_definition,water_setup)
 			if not prepared.ok: return false
 			water_definition = prepared.definition;water_setup = prepared.setup;water_guard = prepared.guard
+		var retained_host_error: String = _scenario_host.last_error
+		var retained_host_refusal: Dictionary = _scenario_host.last_liquid_policy_refusal
 		if not _scenario_host.install(_world,water_definition,str(command.get("scenario_mode","Inspect")),true,
-			command.get("liquid_policy",null),water_setup,water_guard):
+			command.get("liquid_policy",null),water_setup,water_guard,continuation_token):
+			if not _pending_physical_liquid.is_empty() and not command.get("_prepared_physical_commit",false):
+				_scenario_host.last_error = retained_host_error
+				_scenario_host.last_liquid_policy_refusal = retained_host_refusal
+				return false
 			_lab_status="Water Apply + Reset rejected; "+_scenario_host.last_error
+			if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
 			return false
+		if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
 		_world_generation += 1
 		_lab_profile=profile_result.profile.duplicate(true)
 		_lab_profile_hash=str(profile_result.hash)
@@ -506,15 +535,8 @@ func _apply_lab(command: Dictionary) -> bool:
 		var controlled_setup: Dictionary = command.get("controlled_liquid_setup", {})
 		var exploratory_liquid: bool = controlled_setup.get("intent", "controlled") == "exploratory"
 		var physical: Dictionary = controlled_setup.get("physical_owner",{})
-		var continuation_token: int = 0
-		if command.get("_prepared_physical_commit",false):
-			var original: Dictionary = command.duplicate(true)
-			original.erase("_prepared_physical_commit")
-			if _pending_physical_liquid.is_empty() or original != _pending_physical_liquid.get("command",{}):
-				_lab_status = "Prepared physical continuation binding changed; retained session preserved"
-				_retire_prepared_physical_liquid()
-				return false
-			continuation_token = int(_pending_physical_liquid.token)
+		var continuation_token: int = _prepared_liquid_continuation_token(command)
+		if continuation_token < 0: return false
 		if not physical.is_empty() and (not exploratory_liquid
 			or not MicroCatalogue.exploratory_actor_map(command.scenario_reset)
 			or str(command.get("scenario_mode","Inspect")) == "Benchmark"

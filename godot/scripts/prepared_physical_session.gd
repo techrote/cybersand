@@ -38,10 +38,22 @@ func prepare(parent: Node, definitions: Array, epoch: int) -> bool:
 	# Bridge initialization disables automatic integration for this exact space.
 	# Frozen dynamic bodies add a second explicit hold across asynchronous frames.
 	session.set_suspended(true)
+	return _capture_frozen_pose()
+
+func physics_bridge() -> CyberRapierPhysicsBridge:
+	return session.bridge if session != null else null
+
+func bodies() -> Array[RigidBody2D]:
+	return session.bodies() if session != null else []
+
+func owner_kind() -> String:
+	return "articulated"
+
+func _capture_frozen_pose() -> bool:
 	PhysicsServer2D.space_set_active(viewport.world_2d.space,false)
-	for body: RigidBody2D in session.bodies(): body.freeze = true
-	session.bridge.refresh_all_states()
-	_initial_states = session.bridge.pack_body_states()
+	for body: RigidBody2D in bodies(): body.freeze = true
+	physics_bridge().refresh_all_states()
+	_initial_states = physics_bridge().pack_body_states()
 	_initial_pose = _pose_values(_initial_states)
 	_last_physics_frame = Engine.get_physics_frames()
 	if _initial_states.is_empty():
@@ -62,11 +74,12 @@ func initial_body_states() -> PackedFloat32Array:
 	return _initial_states.duplicate()
 
 func pose_unchanged() -> bool:
-	if viewport == null or session == null or _adopted or not session.bridge.is_initialized(): return false
-	for body: RigidBody2D in session.bodies():
+	var bridge: CyberRapierPhysicsBridge = physics_bridge()
+	if viewport == null or bridge == null or _adopted or not bridge.is_initialized(): return false
+	for body: RigidBody2D in bodies():
 		if not body.freeze: return false
-	session.bridge.refresh_all_states()
-	return _pose_values(session.bridge.pack_body_states()) == _initial_pose
+	bridge.refresh_all_states()
+	return _pose_values(bridge.pack_body_states()) == _initial_pose
 
 func verify_physics_frame() -> bool:
 	if not pose_unchanged():
@@ -79,7 +92,7 @@ func verify_physics_frame() -> bool:
 	return true
 
 func install_terrain(chunks: PackedInt32Array) -> bool:
-	if _terrain_installed or not pose_unchanged() or not session.bridge.queue_hard_surface_chunk_snapshot(chunks):
+	if _terrain_installed or not pose_unchanged() or not physics_bridge().queue_hard_surface_chunk_snapshot(chunks):
 		last_error = "Provisional terrain snapshot refused"
 		return false
 	_terrain_installed = true
@@ -89,8 +102,8 @@ func prepare_terrain_budget(chunks: int = 8, microseconds: int = 2000) -> bool:
 	if not _terrain_installed or not pose_unchanged():
 		last_error = "Provisional physical pose or terrain preparation is unavailable"
 		return false
-	session.bridge.process_hard_surface_collider_budget(chunks,microseconds)
-	_terrain_ready = session.bridge.pending_hard_surface_chunks() == 0
+	physics_bridge().process_hard_surface_collider_budget(chunks,microseconds)
+	_terrain_ready = physics_bridge().pending_hard_surface_chunks() == 0
 	return true
 
 func ready() -> bool:
@@ -101,14 +114,17 @@ func adopt() -> void:
 	# candidate. This path performs no construction, validation or physics rebind.
 	if _adopted: return
 	_adopted = true
-	for body: RigidBody2D in session.bodies(): body.freeze = false
+	for body: RigidBody2D in bodies(): body.freeze = false
 
 func close() -> void:
-	if session != null:
-		session.close()
-		session = null
+	_close_prepared_owner()
 	if viewport != null:
 		viewport.free()
 		viewport = null
 	_terrain_installed = false
 	_terrain_ready = false
+
+func _close_prepared_owner() -> void:
+	if session != null:
+		session.close()
+		session = null

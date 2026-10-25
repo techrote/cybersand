@@ -190,6 +190,10 @@ func microscenario_apply_exploratory_liquid(definition: Dictionary, liquid_polic
 	return _install_web_microscenario(definition,mode,liquid_policy,
 		{"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else "","maximum_rule_radius":maximum_rule_radius})
 
+func microscenario_supports_prepared_physical_liquid(_definition: Dictionary) -> bool:
+	# Synchronous reference-body staging is a separate constructor checkpoint.
+	return false
+
 func _commit_web_prepared_sampled(bridge: Variant, token: int, definition: Dictionary) -> bool:
 	var staged: Dictionary = CyberSimulationWorker.PreparedSampled.prepare(bridge,native_world,token,
 		Vector2(definition.player_start[0],definition.player_start[1]),bool(definition.player_enabled),
