@@ -500,11 +500,11 @@
     },
     {
       "path": "audits/2026-10-25-water-inertial-native.md",
-      "reason": "Dated isolated native proof, exact Current behavior/identity reduction and preserved failures. Later Windows/Linux sequence1 publication is separately bound through the IN/release contracts; full ready-PR, scientific and host/Web qualification remain open."
+      "reason": "Dated isolated native proof, exact Current behavior/identity reduction and preserved failures. Later Windows/Linux publications and worker activity/pool lifecycle repairs are separately bound through the IN/release contracts; full ready-PR, scientific and host/Web qualification remain open."
     },
     {
       "path": "audits/2026-10-25-water-inertial-publication.md",
-      "reason": "Dated actual Water sequence1 Windows/Linux publication, independent567-input/artifact/LFS/lease/floor review and preserved historical unarmed/local/composite failures. Retrieve through release/IN contracts; scoped publication does not establish final ready-PR, scientific or host/Web acceptance."
+      "reason": "Dated actual Water sequence1 and native-repair sequence2 Windows/Linux publications, independent567-input/artifact/LFS/lease/floor review and preserved historical unarmed/local/composite failures. Retrieve through release/IN contracts; scoped publication does not establish final ready-PR, scientific or host/Web acceptance."
     },
     {
       "path": "audits/2026-10-25-lcb003-final-integration.md",

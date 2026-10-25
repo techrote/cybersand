@@ -326,7 +326,7 @@ and [family material hooks](../architecture/liquid-solver-family-policy.md).
 | IN-WATER-002 | Current isolated source: immediate coupling returns the actual carrier after each pickup; subsequent submoves/probes/final state follow the Water tuple, with grain/vacancy state zero and exact compact/thermal payloads |
 | IN-WATER-003 | Current isolated source: complete original-owner helper reads/writes are bounded3/2, including second packing census and exchange bracing; explicit radius3 never expands protected Current2 automatically |
 | IN-WATER-004 | Current isolated source: original coherence and cadence gate horizontal-only opportunities; mandatory gravity, WaterUpdate, body/material/future work remain. Retained velocity and bounded q16 phase do not accrue catch-up debt |
-| IN-WATER-005 | Current isolated evidence: capability admission changes policy-bound hashes, while Current tuple/temperature bytes, quantity ledger and historical content/state controls remain exact. Actual source4b588279 Windows/Linux publication is separately qualified; final ready CI/review, scientific and full-host acceptance remain separate |
+| IN-WATER-005 | Current isolated evidence: capability admission changes policy-bound hashes, while Current tuple/temperature bytes, quantity ledger and historical content/state controls remain exact. Actual sourceaa8af247 Windows/Linux publication is separately qualified; final ready CI/review, scientific and full-host acceptance remain separate |
 
 [Water semantics and qualification](../architecture/inertial-cellular-v1.md#water-in-native-successor--2026-10-25)
 own these rules; [dated evidence](../audits/2026-10-25-water-inertial-native.md)

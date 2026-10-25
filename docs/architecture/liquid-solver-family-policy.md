@@ -36,8 +36,8 @@ variants are Current on main through #253 (`66051129`); Brine IN/reference is
 accepted through #250 (`dc915f2b`) after corrected publication and its full
 exact-head gates. Earlier union proofs keep their dated source scope. The
 isolated [Water IN successor](inertial-cellular-v1.md#water-in-native-successor--2026-10-25)
-adds Water admission and actual Windows/Linux source4b588279 publication, bot
-C9e52b52, with independent review and15 processes/642 policy assertions perOS.
+adds Water admission and actual Windows/Linux sourceaa8af247 publication, bot
+03cccd8f, with independent review and15 processes/642 policy assertions perOS.
 Its final ready-PR gates, common-Water scientific and full-host/Web qualification
 remain pending. Remaining #202 constructors and comparison UI keep their
 separately qualified integration scope.
@@ -180,7 +180,7 @@ identities; it does not imply changed Current physics. The following table disti
 | Matrix `rejected` cell (e.g. Oil × `inertial_cellular_v1`, NC-1; any non-Water liquid × `pressure_flow_v1`) | `combination_rejected` |
 | `proposed_alternate` cell (Toxic Sludge × inertial) | `not_selectable` |
 | A variant the cell does not offer (e.g. Water FreeMass `cached`) | `variant_unsupported` |
-| Water / `inertial_cellular_v1/reference` | Admitted only in the isolated native Water successor; [adapter and complete footprint](inertial-cellular-v1.md#water-in-native-successor--2026-10-25), actual source4b588279 Windows/Linux publication passes; final ready-PR/scientific/full-host qualification pending |
+| Water / `inertial_cellular_v1/reference` | Admitted only in the isolated native Water successor; [adapter and complete footprint](inertial-cellular-v1.md#water-in-native-successor--2026-10-25), actual sourceaa8af247 Windows/Linux publication passes; final ready-PR/scientific/full-host qualification pending |
 | Water / `inertial_cellular_v1/cached` (successor NC-2) | `variant_unsupported`; admission never substitutes another law |
 | Brine / `inertial_cellular_v1/reference` | **Accepted on main through #250**, with explicit execution radius3; [law, storage and evidence](inertial-cellular-v1.md) |
 | Water × `cellular_yield_v1/reference`, with no Water block or its v2 viscosity block | **Accepted** on main through #246; whole-cell Water law below |
@@ -321,7 +321,7 @@ source-matched rebuild as for any native edit.
 | `freemass_v1` | Current fractional conserved pairwise Water | existing source | Yes, Water only (default) |
 | `cellular_yield_v1` | Whole-cell yielding motion plus material hooks | existing source; #200 W-CY | Ten liquids by default; Water opt-in on main through #246 with its own v2 viscosity block |
 | `pressure_flow_v1` | Corrected pressure/overfill/flow/gas | #200 | Water opt-in; reference since #245 and all three variants accepted on main through #253, with source-matched publication and full exact-head gates ([optimization contract](pressure-optimization.md)) |
-| `inertial_cellular_v1` | Non-pressure motion with retained velocity/accumulator | #212 | Brine/reference accepted on main through #250; isolated Water/reference source4b588279 and Windows/Linux publication separately qualified; explicit radius3 and [actual readback/publication](inertial-cellular-v1.md); Water final ready-PR/scientific/full-application acceptance pending |
+| `inertial_cellular_v1` | Non-pressure motion with retained velocity/accumulator | #212 | Brine/reference accepted on main through #250; isolated Water/reference sourceaa8af247 and Windows/Linux publication separately qualified; explicit radius3 and [actual readback/publication](inertial-cellular-v1.md); Water final ready-PR/scientific/full-application acceptance pending |
 
 **Implementation variants** (an axis independent of family):
 

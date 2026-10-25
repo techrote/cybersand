@@ -35,8 +35,8 @@ their historical measured controls remain unchanged.
   are recorded in their dated evidence. Cached/dormant pressure variants are
   accepted on main through #253, with source-matched publication and exact-head
   gates. Brine IN is accepted through #250. Isolated Water IN executes natively
-  with [actual Windows/Linux publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
-  at4b588279/botC9e52b52; its final ready-PR gates and the registered common-Water
+  with [actual Windows/Linux publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25)
+  ataa8af247/bot03cccd8f; its final ready-PR gates and the registered common-Water
   scientific/full-host campaign remain required. Historical measured fixtures
   and117 registry classifications below are unchanged.
 
@@ -50,7 +50,7 @@ Families, variants, refusal codes and receipts are defined in the
 | `W-FM` | `freemass_v1/reference` | protected native Current: mass8, coherence12, fractional | **executes** |
 | `W-CY` | `cellular_yield_v1/reference` | **experimental whole-cell**: every Water cell contains `maximum()`; Water's own yielding law and material block v2 (`viscosity_index` 0–255, default 0) retain its material hooks | Current on accepted main through #246; source-matched Windows/Linux publication and final required matrix pass ([contract](../architecture/liquid-prepared-setup-and-receipts.md)) |
 | `W-PF` | `pressure_flow_v1/{reference,cached,cached_dormant}` | experimental pressure/overfill/gas candidate, Water-only v1 | `reference` **executes**, opt-in: Current from merged #245 ([design](../architecture/pressure-flow-v1.md)); `cached`/`cached_dormant` are accepted on main through #253 ([optimization contract](../architecture/pressure-optimization.md)); source-matched Windows/Linux publication and exact-head gates pass |
-| `W-IN` | `inertial_cellular_v1/reference` | experimental whole-cell Water at precision maximum, retained velocity/accumulator and its own coherence/carrying adapter | executes on isolated Water successor; source4b588279 Windows/Linux publication passes15 processes/642 policy assertions perOS with independent review. Final ready-PR, common-Water scientific/full-host qualification pending |
+| `W-IN` | `inertial_cellular_v1/reference` | experimental whole-cell Water at precision maximum, retained velocity/accumulator and its own coherence/carrying adapter | executes on isolated Water successor; sourceaa8af247 Windows/Linux publication passes15 processes/642 policy assertions perOS with independent review. Final ready-PR, common-Water scientific/full-host qualification pending |
 
 Rules:
 

@@ -10,6 +10,28 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Qualified Water sequence2 publication — 2026-10-25
+
+PR #254's [actual sequence2 publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25) qualifies source
+`aa8af2473a59ab92cc81dfff1dda17be0f41a46d`, run40220697738 and four-path bot
+`03cccd8fd133b505c6fad7911d3cb8d528ef5f22`. Both target OSes pass15 real
+processes,642 policy assertions and the strict Water-IN motion/refusal/continuation
+proof. Independent artifact/source/LFS/lease/floor review
+`d2da3ffd58c319347b8add077a09ea315e7b87d370e899dbc0d55df509211cfc`
+has no actionable bounded finding. All18 LFS payloads match their committed
+pointer hashes/sizes. Source Native tree remains the reviewed c97 pool/activity
+repair; the earlier race, timeout, constructor hang and sequence1 evidence remain
+preserved in the dated ledgers.
+
+This scoped publication does not establish full final ready-head CI/review,
+common-Water scientific screens, full normal host/Web/rendered/manual acceptance
+or #203 completion. The five bot03 approval-held follow-ups have no jobs and are
+not greens. Current defaults, protected fixtures and all117 registered campaign
+classifications remain unchanged. Earlier checkpoint sections below retain their
+own source/date/acceptance scope.
+
+**Earlier source-bound application evidence, before this Water artifact merge:**
+
 Local application preparation now normally integrates reviewed Water c97f68ec
 at18d20740, then commits only the sampled-test helper extraction at3d338356.
 Fresh DLL46a8b4d9, compiled18d with all139 inputs equal at tested3d, passes164
@@ -126,9 +148,14 @@ normally merges accepted main9935d569 into e2411469 as38cb593d on the separate
 unchanged; only two incoming Godot Flight inputs extend the historical491
 execution ledger's drift. Fresh published-Water import/Flight passes8,284
 assertions. Old publication and synthetic-merge gates keep their source scope;
-the refreshed head still needs its full exact-head gates. No sequence2 follows.
+that unchanged-native refresh needed its own exact-head gates and did not itself
+require sequence2. The later native repairs require the separately qualified
+sequence2 above; the old reuse conclusion is not applied to changed native code.
 
 ## Accepted parent and qualified Water publication — 2026-10-25
+
+**Historical sequence1 checkpoint:** the following records the accepted parent
+and first Water publication, before the native repairs and sequence2 above.
 
 Parent PR #250 accepts exactd7681a5c after all required exact-head gates and
 independent review, merged as main `dc915f2b2cc1261501058d0e967a98f32ecdee9d`.

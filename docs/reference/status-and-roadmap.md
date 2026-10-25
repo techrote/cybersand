@@ -10,6 +10,28 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Qualified Water sequence2 publication — 2026-10-25
+
+PR #254's [actual sequence2 publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25) qualifies source
+`aa8af2473a59ab92cc81dfff1dda17be0f41a46d`, run40220697738 and four-path bot
+`03cccd8fd133b505c6fad7911d3cb8d528ef5f22`. Both target OSes pass15 real
+processes,642 policy assertions and the strict Water-IN motion/refusal/continuation
+proof. Independent artifact/source/LFS/lease/floor review
+`d2da3ffd58c319347b8add077a09ea315e7b87d370e899dbc0d55df509211cfc`
+has no actionable bounded finding. All18 LFS payloads match their committed
+pointer hashes/sizes. Source Native tree remains the reviewed c97 pool/activity
+repair; the earlier race, timeout, constructor hang and sequence1 evidence remain
+preserved in the dated ledgers.
+
+This scoped publication does not establish full final ready-head CI/review,
+common-Water scientific screens, full normal host/Web/rendered/manual acceptance
+or #203 completion. The five bot03 approval-held follow-ups have no jobs and are
+not greens. Current defaults, protected fixtures and all117 registered campaign
+classifications remain unchanged. Earlier checkpoint sections below retain their
+own source/date/acceptance scope.
+
+**Earlier source-bound application evidence, before this Water artifact merge:**
+
 Local application preparation now normally integrates reviewed Water c97f68ec
 at18d20740, then commits only the sampled-test helper extraction at3d338356.
 Fresh DLL46a8b4d9, compiled18d with all139 inputs equal at tested3d, passes164
@@ -89,9 +111,13 @@ consumes accepted main9935d569 without native or artifact changes. Its two Fligh
 Godot inputs have fresh published-Water import/8,284-assertion proof, while the
 old491 execution ledger remains historical. The existing native-input reuse
 rule permits the retained libraries; full fresh exact-head gates remain required
-and no new publication sequence or final #212/#203 acceptance is implied.
+and that GDScript-only change did not itself require a new publication. Later
+native repairs receive sequence2 above, without final #212/#203 acceptance.
 
 ## Accepted parent and qualified Water publication — 2026-10-25
+
+**Historical sequence1 checkpoint:** the following records the accepted parent
+and first Water publication, before the native repairs and sequence2 above.
 
 Parent PR #250 accepts exactd7681a5c after all required exact-head gates and
 independent review, merged as main `dc915f2b2cc1261501058d0e967a98f32ecdee9d`.
@@ -124,9 +150,11 @@ explicit actual-carrier continuation preserve two successive pickups. Shared
 whole-Water refusal and setup-only normalization retain native receipts/ledger.
 [Source contract](../architecture/inertial-cellular-v1.md#water-in-native-successor--2026-10-25)
 and [dated native evidence](../audits/2026-10-25-water-inertial-native.md) distinguish
-local native proof from the later source4b588279 qualified target artifacts. C64-E8, defaults,
+local proof and its later activity/storage/pool repairs from sequence2 sourceaa8af247
+qualified target artifacts. C64-E8, defaults,
 Brine law, IN sidecar/codec and explicit Current2/IN3 geometry remain intact.
-Local162 native,37 focused sanitizer and124 Python groups pass; a fresh
+Original162/37 native/sanitizer proof and later c97 full163/focused23 repairs retain
+their distinct source scopes;124 Python groups pass. The original fresh
 non-release Windows DLL passes import plus14 strict scoped Godot cases. Native
 and tooling reviews have no open bounded findings. Source-matched Windows/Linux
 publication and independent artifact review now pass as above. Full exact-head
@@ -1021,6 +1049,7 @@ front t240 220 (71); depth-160 retained t1800 0.371 (0.851); vented two-limb
 two-limb differs from vented (levels 152/175, gap 23), remains unsettled and has
 no sealed-law acceptance. Quantity was exact in all twelve runs. Earlier-source
 measurements remain in the dated evidence record.
+
 
 **Publisher.** The temporary pressure-reference workflow, helper, unittest and
 source-bound request, integrated from draft PR #244, are retired after PR #245.

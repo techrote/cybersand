@@ -106,7 +106,7 @@ the qualified full-host/publication boundary.
 ## Choose a reading route
 
 For the isolated **Water IN** successor, use the [native/material/carrier contract](architecture/inertial-cellular-v1.md#water-in-native-successor--2026-10-25)
-and [actual sequence1 Windows/Linux publication](audits/2026-10-25-water-inertial-publication.md#actual-sequence1-windowslinux-publication--2026-10-25).
+and [actual sequence2 Windows/Linux publication](audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25).
 Both target suites and independent artifact review pass; final ready-PR,
 common-Water scientific and normal-host/Web/#203 qualification remain separate.
 Brine IN is accepted on main through #250; dated parent proofs keep their scope.
@@ -118,7 +118,8 @@ For opt-in **Brine IN**, use the [family/native and standalone adapter reference
 The isolated [Water IN successor](architecture/inertial-cellular-v1.md#water-in-native-successor--2026-10-25)
 adds whole-cell native admission and complete carrying ownership. Its
 [separate publisher](operations/github-development-and-release.md#isolated-water-inertial-runtime-publication)
-completed sequence1 after independent review and source freeze; full application
+completed sequence1 and the later native-repair sequence2 after independent
+review and source freeze; full application
 integration and common-Water scientific qualification remain separate.
 
 The subsequent unmerged [IN application-host slice](architecture/liquid-prepared-setup-and-receipts.md#inertial-application-readback-and-explicit-geometry)

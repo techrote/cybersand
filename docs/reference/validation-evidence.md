@@ -10,6 +10,28 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## Qualified Water sequence2 publication — 2026-10-25
+
+PR #254's [actual sequence2 publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25) qualifies source
+`aa8af2473a59ab92cc81dfff1dda17be0f41a46d`, run40220697738 and four-path bot
+`03cccd8fd133b505c6fad7911d3cb8d528ef5f22`. Both target OSes pass15 real
+processes,642 policy assertions and the strict Water-IN motion/refusal/continuation
+proof. Independent artifact/source/LFS/lease/floor review
+`d2da3ffd58c319347b8add077a09ea315e7b87d370e899dbc0d55df509211cfc`
+has no actionable bounded finding. All18 LFS payloads match their committed
+pointer hashes/sizes. Source Native tree remains the reviewed c97 pool/activity
+repair; the earlier race, timeout, constructor hang and sequence1 evidence remain
+preserved in the dated ledgers.
+
+This scoped publication does not establish full final ready-head CI/review,
+common-Water scientific screens, full normal host/Web/rendered/manual acceptance
+or #203 completion. The five bot03 approval-held follow-ups have no jobs and are
+not greens. Current defaults, protected fixtures and all117 registered campaign
+classifications remain unchanged. Earlier checkpoint sections below retain their
+own source/date/acceptance scope.
+
+**Earlier source-bound application evidence, before this Water artifact merge:**
+
 The [final local matrix](../audits/2026-10-25-lcb003-final-integration.md#complete-local-host-matrix-and-actual-web-result)
 at functionale8f1d37b passes36 real processes/import-plus35 cases, strict003
 verification and all held inputs (receipt69479670). The separately source-bound
@@ -88,6 +110,9 @@ receipts are retained. Source-matched publication/full exact-head CI, actual
 compat/threaded browsers and ordinary visual walkthrough remain separate gates.
 
 ## Accepted parent and qualified Water publication — 2026-10-25
+
+**Historical sequence1 checkpoint:** the following records the accepted parent
+and first Water publication, before the native repairs and sequence2 above.
 
 Parent PR #250 accepts exactd7681a5c after all required exact-head gates and
 independent review, merged as main `dc915f2b2cc1261501058d0e967a98f32ecdee9d`.

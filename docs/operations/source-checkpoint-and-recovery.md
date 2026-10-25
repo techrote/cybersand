@@ -10,6 +10,36 @@ related-documents: [local-build-and-validation.md, ../reference/validation-evide
 
 # Source checkpoint and recovery
 
+## Current recoverable Water sequence2 checkpoint — 2026-10-25
+
+The original isolated checkout is
+`C:/Users/_/.codex/worktrees/lcb005-water-inertial/khybersand`, branch
+`codex/lcb005-water-inertial`, PR #254. Native repairs are committed through
+`c97f68ec6dd5d92aec94c874a6510b16e3a81847`; reviewed six-doc checkpoint34e0979
+is followed by request-only sequence2 source
+`aa8af2473a59ab92cc81dfff1dda17be0f41a46d`, tree
+`906445ff96d38931a0d25b4525700ad13ff636fe`. Actual run40220697738 publishes
+four-path bot `03cccd8fd133b505c6fad7911d3cb8d528ef5f22`, tree
+`80945c95f85464e19b6b013be2037c5f9afc68b7`, with sole parentaa8. Native tree
+`d5f9017a787e5bdbd87ca478dfd864d70a5e533d` is unchanged by request/publication.
+
+Both OSes pass15 real processes/642 policy assertions plus actual Water-IN
+proof; independent reviewd2da3ffd and Root acceptance6352fdaf close this bounded
+publication. All18 LFS objects are materialized and rehashed after ff-only03cc;
+local materialization receipt is
+`fe7b5ce0f19cafb618365efc2ac38ac4f23df0f339dbd03155335ff44a4a33b5`.
+The [publication ledger](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25)
+owns full runtime/archive/request/review identities. Its immutable76 native and
+491 build/execution hashes bind sourceaa8. Later docs-only checkpoints do not
+rewrite those ledgers; only the publication audit is a documentation input, so
+its later metadata drift is separately disclosed. Full ready-head, scientific
+and host/Web acceptance remain separate. Earlier recovery records below are
+historical, including the Main/Flight refresh and sequence1.
+
+The historical unchanged-native [Water main refresh](../audits/2026-10-25-water-inertial-publication.md#main-flight-lease-refresh-and-native-binary-reuse--2026-10-25)
+
+**Earlier source-bound application evidence, before this Water artifact merge:**
+
 Local application preparation now normally integrates reviewed Water c97f68ec
 at18d20740, then commits only the sampled-test helper extraction at3d338356.
 Fresh DLL46a8b4d9, compiled18d with all139 inputs equal at tested3d, passes164
