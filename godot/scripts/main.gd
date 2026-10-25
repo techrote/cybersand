@@ -302,14 +302,14 @@ func microscenario_apply_definition(definition: Dictionary, mode: String = "Insp
 	return _apply_microscenario_definition(definition, mode)
 
 func microscenario_apply_controlled_liquid(definition: Dictionary, liquid_policy: PackedInt32Array,
-		normalize_water: bool = false, mode: String = "Inspect") -> bool:
+		normalize_water: bool = false, mode: String = "Inspect", maximum_rule_radius: int = 2) -> bool:
 	return _apply_microscenario_definition(definition, mode, {}, liquid_policy,
-		{"normalization":"water-normalize-v1" if normalize_water else ""})
+		{"normalization":"water-normalize-v1" if normalize_water else "","maximum_rule_radius":maximum_rule_radius})
 
 func microscenario_apply_exploratory_liquid(definition: Dictionary, liquid_policy: PackedInt32Array,
-		normalize_water: bool = false, mode: String = "Play", actor_configuration: Dictionary = {}) -> bool:
+		normalize_water: bool = false, mode: String = "Play", actor_configuration: Dictionary = {}, maximum_rule_radius: int = 2) -> bool:
 	return _apply_microscenario_definition(definition, mode, actor_configuration, liquid_policy,
-		{"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else ""})
+		{"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else "","maximum_rule_radius":maximum_rule_radius})
 
 func microscenario_supports_prepared_physical_liquid(definition: Dictionary) -> bool:
 	return physical_rig_id != &"" and microscenario_mode != "Benchmark" \
@@ -459,10 +459,12 @@ func microscenario_reset() -> void:
 		if not microscenario_liquid_setup.is_empty() and microscenario_liquid_policy != null:
 			if microscenario_liquid_setup.get("intent", "controlled") == "exploratory":
 				microscenario_apply_exploratory_liquid(microscenario_definition, microscenario_liquid_policy,
-					microscenario_liquid_setup.get("normalization", "") == "water-normalize-v1", microscenario_mode)
+					microscenario_liquid_setup.get("normalization", "") == "water-normalize-v1", microscenario_mode,{},
+					int(microscenario_liquid_setup.get("maximum_rule_radius",2)))
 			else:
 				microscenario_apply_controlled_liquid(microscenario_definition, microscenario_liquid_policy,
-					microscenario_liquid_setup.get("normalization", "") == "water-normalize-v1", microscenario_mode)
+					microscenario_liquid_setup.get("normalization", "") == "water-normalize-v1", microscenario_mode,
+					int(microscenario_liquid_setup.get("maximum_rule_radius",2)))
 		else:
 			microscenario_apply_definition(microscenario_definition, microscenario_mode)
 	elif water_controlled_run_active():

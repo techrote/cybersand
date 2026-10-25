@@ -132,17 +132,17 @@ func microscenario_apply_definition(definition: Dictionary, mode: String = "Insp
 	return _install_web_microscenario(definition, mode)
 
 func microscenario_apply_controlled_liquid(definition: Dictionary, liquid_policy: PackedInt32Array,
-		normalize_water: bool = false, mode: String = "Inspect") -> bool:
+		normalize_water: bool = false, mode: String = "Inspect", maximum_rule_radius: int = 2) -> bool:
 	return _install_web_microscenario(definition, mode, liquid_policy,
-		{"normalization":"water-normalize-v1" if normalize_water else ""})
+		{"normalization":"water-normalize-v1" if normalize_water else "","maximum_rule_radius":maximum_rule_radius})
 
 func microscenario_apply_exploratory_liquid(definition: Dictionary, liquid_policy: PackedInt32Array,
-		normalize_water: bool = false, mode: String = "Play", actor_configuration: Dictionary = {}) -> bool:
+		normalize_water: bool = false, mode: String = "Play", actor_configuration: Dictionary = {}, maximum_rule_radius: int = 2) -> bool:
 	if not actor_configuration.is_empty():
 		microscenario_error = "Web sampled rig/equipment owner staging remains pending; current session retained"
 		return false
 	return _install_web_microscenario(definition,mode,liquid_policy,
-		{"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else ""})
+		{"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else "","maximum_rule_radius":maximum_rule_radius})
 
 func _commit_web_prepared_sampled(bridge: Variant, token: int, definition: Dictionary) -> bool:
 	var staged: Dictionary = CyberSimulationWorker.PreparedSampled.prepare(bridge,native_world,token,

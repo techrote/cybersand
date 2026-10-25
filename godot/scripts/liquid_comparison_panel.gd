@@ -14,6 +14,7 @@ const PRESETS: Array[Dictionary] = [
 	{"label":"Water: pressure dormant", "assignments":[[3,"pressure_flow_v1","cached_dormant"]]},
 	{"label":"Water: inertial", "assignments":[[3,"inertial_cellular_v1","reference"]]},
 	{"label":"Mixed: pressure Water + inertial Brine", "assignments":[[3,"pressure_flow_v1","reference"],[24,"inertial_cellular_v1","reference"]]},
+	{"label":"Mixed: Current Water + inertial Brine", "assignments":[[24,"inertial_cellular_v1","reference"]]},
 ]
 var host: Control
 var bridge: Variant
@@ -22,6 +23,8 @@ var setup_picker: OptionButton
 var material_picker: OptionButton
 var family_picker: OptionButton
 var session_picker: OptionButton
+var geometry_picker: OptionButton
+var damping_numerator: SpinBox
 var normalize_water: CheckBox
 var apply_button: Button
 var dam_button: Button
@@ -67,6 +70,12 @@ func setup(controller: Control) -> void:
 	session_picker.tooltip_text = "Exploratory setup stages sampled actors or desktop articulated actors in supported maps. Other body routes remain unavailable; full matched evidence remains pending."
 	session_picker.item_selected.connect(func(_index: int) -> void: _dirty = true; _refusal = "")
 	presets.add_child(session_picker)
+	geometry_picker = OptionButton.new()
+	geometry_picker.add_item("Original Current geometry (radius 2)",2)
+	geometry_picker.add_item("Matched IN geometry (radius 3)",3)
+	geometry_picker.tooltip_text = "IN Brine requires explicit radius three. Use the same geometry for its Current comparator. Original Current control always restores radius two."
+	geometry_picker.item_selected.connect(func(_index: int) -> void: _dirty = true;_refusal = "")
+	presets.add_child(geometry_picker)
 	preset_picker = OptionButton.new()
 	preset_picker.tooltip_text = "Presets replace the solver policy. The active definition's independent Water precision, coherence and transport settings stay unchanged."
 	preset_picker.item_selected.connect(select_preset)
@@ -80,6 +89,15 @@ func setup(controller: Control) -> void:
 	family_picker = OptionButton.new()
 	family_picker.item_selected.connect(select_family)
 	rows.add_child(family_picker)
+	var damping_row := HBoxContainer.new()
+	var damping_label := Label.new();damping_label.text = "IN damping numerator / 16"
+	damping_row.add_child(damping_label)
+	damping_numerator = SpinBox.new()
+	damping_numerator.min_value = 0;damping_numerator.max_value = 16;damping_numerator.step = 1
+	damping_numerator.value = 1
+	damping_numerator.tooltip_text = "Native family block v2. Zero retains motion; sixteen removes velocity before travel. Applies only on rebuild, with actual native readback."
+	damping_numerator.value_changed.connect(select_inertial_damping)
+	damping_row.add_child(damping_numerator);add_child(damping_row)
 	normalize_water = CheckBox.new()
 	normalize_water.text = "Normalize Water to whole cells on rebuild"
 	normalize_water.tooltip_text = "Explicit water-normalize-v1: final Water cells round at one-half of the native maximum. The receipt records exact Water added and removed, including zero net change. Check this for both comparator arms when matching whole-cell setups."
@@ -160,6 +178,20 @@ func _refresh_choices() -> void:
 		if not choice.accepted:
 			family_picker.set_item_tooltip(index, str(choice.refusal.code) + ": " + str(choice.refusal.detail))
 	if selected >= 0: family_picker.select(selected)
+	var inertial: Dictionary = _validation.get("receipt",{}).get("family_parameters",{}).get("inertial_cellular_v1",{})
+	damping_numerator.set_value_no_signal(float(inertial.get("damping_numerator",1)))
+	damping_numerator.get_parent().visible = not inertial.is_empty()
+	damping_numerator.editable = not inertial.is_empty() and bridge.has_method(&"liquid_policy_with_inertial_damping")
+
+func select_inertial_damping(value: float) -> void:
+	if bridge == null or not bridge.has_method(&"liquid_policy_with_inertial_damping"): return
+	var result: Dictionary = bridge.liquid_policy_with_inertial_damping(requested_policy,int(value))
+	if not result.get("accepted",false):
+		_refusal = str(result.get("refusal",{}).get("detail","IN damping refused"))
+		return
+	requested_policy = result.request
+	_dirty = true;_refusal = ""
+	_refresh_choices()
 
 func select_family(index: int) -> void:
 	if index < 0 or index >= _choices.size(): return
@@ -192,11 +224,15 @@ func _request(definition: Dictionary, original_control: bool = false, mode: Stri
 	if not _definition_supported(definition):
 		_refusal = "This route is not yet wired for experimental policies. Choose a fixed actor-free MicroScenario or load Dam Break."
 		return false
+	if not original_control and geometry_picker.get_selected_id() == 3 \
+		and not bridge.has_method(&"liquid_policy_with_inertial_damping"):
+		_refusal = "This runtime has no explicit matched-IN geometry support"
+		return false
 	var admitted: bool
 	if original_control: admitted = host.microscenario_apply_definition(definition, mode)
 	elif session_picker.selected == 1:
-		admitted = host.microscenario_apply_exploratory_liquid(definition, requested_policy, normalize_water.button_pressed, mode)
-	else: admitted = host.microscenario_apply_controlled_liquid(definition, requested_policy, normalize_water.button_pressed, mode)
+		admitted = host.microscenario_apply_exploratory_liquid(definition, requested_policy, normalize_water.button_pressed, mode,{},geometry_picker.get_selected_id())
+	else: admitted = host.microscenario_apply_controlled_liquid(definition, requested_policy, normalize_water.button_pressed, mode,geometry_picker.get_selected_id())
 	if not admitted:
 		_refusal = str(host.microscenario_error)
 		return false
@@ -233,6 +269,7 @@ func _sync_applied(context: Dictionary) -> void:
 	_applied_generation = int(applied.session_generation)
 	if not _dirty:
 		requested_policy = applied.envelope.duplicate()
+		geometry_picker.select(1 if int(applied.get("maximum_rule_radius",2)) == 3 else 0)
 		session_picker.select(1 if host.microscenario_liquid_setup.get("intent", "controlled") == "exploratory" else 0)
 		normalize_water.set_pressed_no_signal(not host.microscenario_liquid_setup.is_empty() \
 			and host.microscenario_liquid_setup.get("normalization","") == "water-normalize-v1")
@@ -249,6 +286,10 @@ func refresh(context: Dictionary) -> void:
 	var generation: int = int(context.get("liquid_solver_policy",{}).get("session_generation",-1))
 	if available and generation != _applied_generation: _sync_applied(context)
 	session_picker.disabled = not available or pending or blind
+	geometry_picker.disabled = not available or pending or blind or not bridge.has_method(&"liquid_policy_with_inertial_damping")
+	damping_numerator.editable = not pending and not blind and available \
+		and bridge.has_method(&"liquid_policy_with_inertial_damping") \
+		and not _validation.get("receipt",{}).get("family_parameters",{}).get("inertial_cellular_v1",{}).is_empty()
 	preset_picker.disabled = not available or pending or blind
 	setup_picker.disabled = not available or pending or blind
 	material_picker.disabled = not available or pending or blind
@@ -268,6 +309,9 @@ func refresh(context: Dictionary) -> void:
 		var normalized: Dictionary = typed.get("normalization",{})
 		if not normalized.is_empty():
 			receipt_label.text += " • Water added %s / removed %s / net %s" % [normalized.positive_delta, normalized.negative_delta, normalized.net_delta]
+		var inertial: Dictionary = applied.get("family_parameters",{}).get("inertial_cellular_v1",{})
+		if not inertial.is_empty():
+			receipt_label.text += "\nApplied IN damping %s/%s • hash/CYPS v%s • radius %s" % [inertial.damping_numerator,inertial.damping_denominator,applied.physical_state_hash_version,applied.maximum_rule_radius]
 	else:
 		receipt_label.text += " • original constructor; no typed setup receipt"
 	if not available: status.text = "This runtime has no liquid comparison editor; a source-matched native rebuild is required."
@@ -276,5 +320,8 @@ func refresh(context: Dictionary) -> void:
 	elif context.get("microscenario",{}).get("failed",false): status.text = "Installed session apparatus failed: " + str(context.microscenario.get("error","unavailable"))
 	elif not _refusal.is_empty(): status.text = "Refused; applied session retained. " + _refusal
 	elif not _definition_supported(host.microscenario_definition): status.text = "Load Dam Break, or choose a fixed actor-free MicroScenario. Exploratory stages sampled and supported desktop articulated owners; other body and constructor routes remain pending."
-	elif _dirty: status.text = "Pending solver/normalization selection. The running World keeps its applied policy until rebuild."
+	elif _dirty:
+		status.text = "Pending solver/normalization selection. The running World keeps its applied policy until rebuild."
+		if int(_validation.get("receipt",{}).get("minimum_rule_radius",2)) > geometry_picker.get_selected_id():
+			status.text += " IN Brine requires the explicit matched geometry selection."
 	else: status.text = "Applied setup is ready. Reset keeps its accepted policy and normalization selection."

@@ -94,6 +94,11 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_world(
         config->water_experiment_policy = cybersand::WaterExperimentPolicy(
             static_cast<std::uint8_t>(policy[1]), static_cast<std::uint8_t>(policy[2]));
         config->liquid_solver_policy = *decoded.policy;
+        const auto radius = static_cast<std::int64_t>(options.get("maximum_rule_radius",
+            std::int64_t{CyberNativeCellWorld::kProtectedCurrentRuleRadius}));
+        if (radius != CyberNativeCellWorld::kProtectedCurrentRuleRadius && radius != cybersand::InertialParameters::kExecutionRadius)
+            throw std::invalid_argument("Prepared application geometry requires explicit rule radius two or three");
+        config->maximum_rule_radius = static_cast<std::int32_t>(radius);
         config->interaction_policy = {};
         config->physics_diagnostics = {};
         config->physics_diagnostics.enabled = true;
@@ -210,9 +215,21 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_world(
         pending->receipt["prepared_setup_hash"] = prepared_liquid_detail::digest(prepared.setup().setup_hash());
         pending->receipt["prepared_payload_hash"] = prepared_liquid_detail::digest(prepared.setup().native_payload_hash());
         pending->receipt["policy_hash"] = String(pending->world->liquid_solver_policy().policy_hash_hex().c_str());
-        pending->receipt["physical_state_hash"] = String::num_uint64(facts->values().physical_hash, 16);
+        pending->receipt["physical_state_hash"] = String::num_uint64(facts->values().physical_hash, 16).lpad(16,"0");
         pending->receipt["physical_state_hash_version"] = static_cast<std::int64_t>(facts->values().physical_hash_version);
+        Array extensions;
+        for (const auto& extension : facts->values().solver_state_extensions) {
+            Dictionary value;
+            value["family"] = static_cast<std::int64_t>(extension.family);
+            value["state_contract_version"] = static_cast<std::int64_t>(extension.state_contract_version);
+            value["extension_identity_version"] = static_cast<std::int64_t>(extension.extension_identity_version);
+            value["extension_digest"] = extension.extension_digest
+                ? Variant(prepared_liquid_detail::digest(*extension.extension_digest)) : Variant();
+            extensions.push_back(value);
+        }
+        pending->receipt["solver_state_extensions"] = extensions;
         pending->receipt["worker_threads"] = static_cast<std::int64_t>(config->worker_threads);
+        pending->receipt["maximum_rule_radius"] = static_cast<std::int64_t>(pending->world->config().maximum_rule_radius);
         pending->receipt["completed_tick"] = static_cast<std::int64_t>(facts->values().completed_tick);
         pending->receipt["region"] = region;
         pending->receipt["run_intent"] = intent; pending->receipt["pacing"] = pacing;

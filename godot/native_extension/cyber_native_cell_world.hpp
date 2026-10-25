@@ -27,6 +27,7 @@ class CyberNativeCellWorld final : public RefCounted {
 public:
     static constexpr std::int32_t kWorldWidth = 1024;
     static constexpr std::int32_t kWorldHeight = 1024;
+    static constexpr std::int32_t kProtectedCurrentRuleRadius = 2;
     static constexpr std::int32_t kInputStride = 11;
     static constexpr std::int32_t kResultStride = 9;
     CyberNativeCellWorld();
@@ -103,7 +104,8 @@ public:
     [[nodiscard]] Dictionary get_liquid_solver_policy() const;
     [[nodiscard]] std::int64_t get_liquid_policy_session_generation() const;
     [[nodiscard]] static Dictionary liquid_policy_receipt(
-        const cybersand::LiquidSolverPolicy& policy, std::int64_t session_generation);
+        const cybersand::LiquidSolverPolicy& policy, std::int64_t session_generation,
+        const cybersand::World* actual = nullptr);
     bool water_experiment_fill_rect(Vector2i origin, Vector2i size,
                                     std::int64_t normalized_mass,
                                     std::int64_t coherence);
@@ -114,6 +116,8 @@ public:
     // immutable values; nothing exposes live World storage.
     [[nodiscard]] String get_physical_state_hash() const;
     [[nodiscard]] std::int64_t get_physical_state_hash_version() const;
+    [[nodiscard]] std::int64_t get_physical_state_format_version() const;
+    [[nodiscard]] Dictionary inspect_inertial_cell(Vector2i point) const;
     [[nodiscard]] Dictionary inspect_gas_compartments() const;
     [[nodiscard]] Dictionary inspect_pressure_cell(Vector2i point) const;
     [[nodiscard]] Dictionary get_pressure_flow_ledger() const;

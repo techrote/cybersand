@@ -93,6 +93,7 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 			"cadence_lod_enabled":candidate.execution.cadence_lod_enabled,
 			"liquid_surface_adhesion_enabled":candidate.execution.liquid_surface_adhesion_enabled,
 			"normalization":controlled_setup.get("normalization", ""), "intent":intent,
+			"maximum_rule_radius":controlled_setup.get("maximum_rule_radius",2),
 			"pacing":"host_paced" if intent == "exploratory" else "fixed_steps"}
 		if intent == "exploratory":
 			if candidate.interest.policy == "owner":

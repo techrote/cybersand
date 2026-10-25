@@ -6,6 +6,7 @@
 #include "cybersand/interaction_rules.hpp"
 #include "cybersand/material_rules.hpp"
 #include <bit>
+#include <algorithm>
 #include <godot_cpp/classes/ref.hpp>
 #include <godot_cpp/core/class_db.hpp>
 
@@ -17,6 +18,30 @@ class CyberDemoBridge final : public RefCounted {
     GDCLASS(CyberDemoBridge, RefCounted)
     String error_;
     Dictionary last_liquid_policy_refusal_;
+
+    static PackedInt32Array policy_request_values(const cybersand::LiquidSolverPolicy& policy,
+        std::span<const cybersand::LiquidSolverAssignment> assignments,
+        std::span<const cybersand::LiquidParameterBlock> family_blocks,
+        std::span<const cybersand::LiquidParameterBlock> material_blocks) {
+        auto words = policy.envelope();
+        words.resize(cybersand::LiquidSolverPolicy::kHeaderWords);
+        words.push_back(static_cast<std::int32_t>(assignments.size()));
+        for (const auto& item : assignments) {
+            words.push_back(item.material); words.push_back(static_cast<std::int32_t>(item.family));
+            words.push_back(static_cast<std::int32_t>(item.variant));
+        }
+        for (const auto blocks : {family_blocks,material_blocks}) {
+            words.push_back(static_cast<std::int32_t>(blocks.size()));
+            for (const auto& block : blocks) {
+                words.push_back(block.owner); words.push_back(block.version);
+                words.push_back(static_cast<std::int32_t>(block.values.size()));
+                words.insert(words.end(),block.values.begin(),block.values.end());
+            }
+        }
+        PackedInt32Array result;
+        for (const auto word : words) result.push_back(word);
+        return result;
+    }
 
     static String interaction_string(std::string_view value) {
         if (value.empty()) return String();
@@ -406,6 +431,7 @@ public:
             config.interaction_policy = {};
             config.water_experiment_policy = cybersand::WaterExperimentPolicy{};
             config.liquid_solver_policy = {};
+            config.maximum_rule_radius = CyberNativeCellWorld::kProtectedCurrentRuleRadius;
             auto candidate=cybersand::demo::construct(config,
                 {rectangles.ptr(),static_cast<std::size_t>(rectangles.size())});
             install(*adapter.ptr(),std::move(candidate));
@@ -488,9 +514,19 @@ public:
                 const auto mask = row.variant_mask[family-1];
                 for (std::uint8_t variant = 0; variant < cybersand::LiquidSolverPolicy::kVariantCount; ++variant) {
                     if (variant != 0 && (mask & (1U << variant)) == 0U) continue;
-                    auto edited = request.duplicate();
-                    const auto offset = static_cast<std::int64_t>(cybersand::LiquidSolverPolicy::kHeaderWords + 1 + index*3);
-                    edited.set(offset+1, family); edited.set(offset+2, variant);
+                    auto assignments = std::vector<cybersand::LiquidSolverAssignment>(
+                        decoded.policy->assignments().begin(),decoded.policy->assignments().end());
+                    const auto former = assignments[index].family;
+                    assignments[index].family = static_cast<cybersand::LiquidSolverFamily>(family);
+                    assignments[index].variant = static_cast<cybersand::LiquidSolverVariant>(variant);
+                    std::vector<cybersand::LiquidParameterBlock> families,materials;
+                    for (const auto& block : decoded.policy->family_blocks())
+                        if (std::any_of(assignments.begin(),assignments.end(),[&](const auto& item) {
+                            return static_cast<std::uint16_t>(item.family) == block.owner;
+                        })) families.push_back(block);
+                    for (const auto& block : decoded.policy->material_blocks())
+                        if (block.owner != material || former == assignments[index].family) materials.push_back(block);
+                    auto edited = policy_request_values(*decoded.policy,assignments,families,materials);
                     auto choice = validate_liquid_policy(edited);
                     choice["request"] = edited;
                     choice["material"] = material;
@@ -506,6 +542,27 @@ public:
         }
         error_ = "Material has no liquid solver assignment";
         return choices;
+    }
+
+    [[nodiscard]] Dictionary liquid_policy_with_inertial_damping(const PackedInt32Array& request, std::int64_t numerator) const {
+        auto decoded = cybersand::LiquidSolverPolicy::decode(std::span<const std::int32_t>(
+            request.ptr(),static_cast<std::size_t>(request.size())));
+        if (!decoded.accepted()) return validate_liquid_policy(request);
+        const bool used = std::any_of(decoded.policy->assignments().begin(),decoded.policy->assignments().end(),
+            [](const auto& item) { return item.family == cybersand::LiquidSolverFamily::InertialCellularV1; });
+        if (!used || numerator < 0 || numerator > cybersand::InertialParameters::kDampingDenominator) {
+            Dictionary result; result["accepted"] = false; result["receipt"] = Variant();
+            result["refusal"] = refusal_dictionary({cybersand::LiquidPolicyRefusalCode::UnknownParameter, std::nullopt,
+                "IN damping requires an active IN family and an integer numerator from 0 through 16"});
+            return result;
+        }
+        std::vector<cybersand::LiquidParameterBlock> blocks;
+        for (const auto& block : decoded.policy->family_blocks()) if (block.owner != 4U) blocks.push_back(block);
+        blocks.push_back({4U,cybersand::InertialParameters::kFamilyBlockVersion,{static_cast<std::int32_t>(numerator)}});
+        auto edited = policy_request_values(*decoded.policy,decoded.policy->assignments(),blocks,decoded.policy->material_blocks());
+        auto result = validate_liquid_policy(edited);
+        result["request"] = edited;
+        return result;
     }
 
     // Construction is deliberately split: the simulation owner may prepare
@@ -542,7 +599,7 @@ public:
             out["terrain"] = CyberNativeCellWorld::hard_surface_chunks_from_cells(cells);
             out["initial_bodies"] = pending.initial_body_input.duplicate();
             out["initial_body_state_sha256"] = pending.initial_body_digest;
-            out["candidate_physical_state_hash"] = String::num_uint64(pending.world->physical_state_hash(),16);
+            out["candidate_physical_state_hash"] = String::num_uint64(pending.world->physical_state_hash(),16).lpad(16,"0");
             // Candidate facts are explicitly pending values. No applied receipt
             // or mutable native storage is exposed before the final owner swap.
             return out;
@@ -627,6 +684,9 @@ private:
                 static_cast<std::uint8_t>(policy[2]),
                 cybersand::WaterRestPolicy::CurrentNormalizedV1);
             config.liquid_solver_policy = liquid_policy;
+            // This older constructor has no explicit execution-geometry input.
+            // IN uses the prepared route with an explicit matched radius three.
+            config.maximum_rule_radius = CyberNativeCellWorld::kProtectedCurrentRuleRadius;
             auto candidate = cybersand::demo::construct(
                 config, {rectangles.ptr(), static_cast<std::size_t>(rectangles.size())});
             const auto& water_policy = candidate->config().water_experiment_policy;
@@ -776,6 +836,7 @@ public:
             // A CYSD1 level is a finite-level reconstruction on default families.
             auto config = adapter->world_->config();
             config.liquid_solver_policy = {};
+            config.maximum_rule_radius = CyberNativeCellWorld::kProtectedCurrentRuleRadius;
             auto candidate = cybersand::demo::reconstruct(config,
                 {bytes.ptr(), static_cast<std::size_t>(bytes.size())});
             install(*adapter.ptr(), std::move(candidate));
@@ -797,6 +858,7 @@ public:
             config.transport_policy = {}; // Ordinary demos retain production Baseline.
             config.water_experiment_policy = cybersand::WaterExperimentPolicy{};
             config.liquid_solver_policy = {};
+            config.maximum_rule_radius = CyberNativeCellWorld::kProtectedCurrentRuleRadius;
             auto candidate = cybersand::demo::construct(config,
                 {rectangles.ptr(), static_cast<std::size_t>(rectangles.size())});
             install(*adapter.ptr(), std::move(candidate));
@@ -849,6 +911,8 @@ protected:
         ClassDB::bind_method(D_METHOD("default_liquid_policy"), &CyberDemoBridge::default_liquid_policy);
         ClassDB::bind_method(D_METHOD("liquid_policy_assignment_choices", "request", "material"),
                              &CyberDemoBridge::liquid_policy_assignment_choices);
+        ClassDB::bind_method(D_METHOD("liquid_policy_with_inertial_damping", "request", "numerator"),
+                             &CyberDemoBridge::liquid_policy_with_inertial_damping);
         ClassDB::bind_method(D_METHOD("prepare_liquid_world", "world", "rectangles", "profile", "policy",
             "water_fills", "liquid_policy", "options"), &CyberDemoBridge::prepare_liquid_world);
         ClassDB::bind_method(D_METHOD("prepared_liquid_character_box_collides", "world", "token", "origin", "size", "mode"),
