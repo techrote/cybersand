@@ -720,3 +720,201 @@ with report `d0fbd99f833001583bc0d3ac756a23037232f83fc92373e71f974b8bf4198f79`
 preserves original source/counter/memory boundaries and every slower row.
 This fresh cost proof does not qualify target-runtime publication or the final
 hosted matrix. Earlier pressure timings and failures retain their original scope.
+
+## Contiguous activity storage and constructor retirement — 2026-10-25
+
+**Second hosted attempt, incomplete:** manual Native run40214472284 tested
+`0d7c80e66074626ac697d529cbfb5062bf67c769`. Its first TSan stage compiled and
+passed148 registered groups, then hit the unchanged15-minute execution limit,
+exit124. No ThreadSanitizer race report occurred before termination. This is
+incomplete sanitizer evidence, not a pass. The last completed group was moving
+gas-mask identity; the next registered group was the exhaustive C API allocation-
+failure sweep. Later Native stages were skipped; no physics-CLI artifact existed.
+The complete failed APIs/log capture is retained at
+`tmp/lcb-water-activity-repair-v1/FAILED-NATIVE-40214472284`, receipt
+`408fea7432b23084af96ae651af9d199bc7a95f71cc066768dfd3ce9ca5d82de`.
+The earlier exit66 race and this exit124 remain separate failed gates.
+
+An unchanged public C API allocation census linked to authenticated old/current
+six-core objects measured31 original constructor allocations and8223 with the
+per-job owning activity vectors: exactly8192 additional calls, two per4096
+scheduling slots. The complete Nth-allocation sweep revisits at least33,558,528
+additional allocation prefixes. Receipt
+`be698bb1151ff6158deca809eaa57e3be24381010cc1ee3d982e58032b9e9170`
+and independent mechanism assessment
+`b6484f8e1abec58961790c0a744a0fdf908a9d20ac5dc16a9a5a0cb693176763`
+bind those observations. There is no captured timeout program counter or claim
+that later TSan groups are race-free. Every original sweep case, the20000
+convergence bound and all process deadlines are retained.
+
+**Packed checkpoint, preserved independently:**
+`a52834719ca87b10db9d97ea091bebd7386f5dd6` moves the same flag/deadline payload
+into two contiguous `ParallelState` vectors. `JobEffects` holds fixed disjoint
+spans; buffers never resize after binding, and pool retirement precedes their
+destruction. Checked `active_core_capacity * slots_per_job` precedes allocation
+and span binding; vector length/allocation failure still refuses construction.
+Geometry, checked axis arithmetic, record/clear/reduction work, observer
+independence, defaults and all physical laws remain unchanged. Constructor grid
+ownership is two allocations per World; the measured complete constructor uses33
+ordinary allocations. Complete one-worker sweeps at capacities1 and4096 have
+equal allocation-point counts. All four prior C API failure contracts remain.
+
+Packed-source full163 ordinary groups pass50.844s/600, receipt
+`7e1b37c0bf7e39e28afbb5970331061316ed0e84aaebbe356621c38a334048a1`;
+focused23 ASan/UBSan groups pass73.891s/600,
+`7167990e4f5ec4c144e7b69ed784ae528e3874edfc07f077fe629438aa2cf6cb`.
+The unchanged Current control freshly matches264 raw output rows, receipt
+`6abffe9676f284e433aba55c761281d641d8a9f88af78b6cbe4599d28fbddf40`.
+Census/fault receipt is
+`9784774a24514923e84d430806a232653ffc28e54a348f3ab0f5cc35bd953218`;
+the allocation group alone passes0.078s/120. Independent packing review
+`017597a415e1f3f5a1ea298766b8c1a52a19e70a050c42689e2ea882edd741d3`
+authenticates97,996 arithmetic boundaries,518 span partitions and these source-
+scoped proofs. It separately leaves the preexisting worker-startup concern open.
+These are correctness timings, not controlled performance ratios or Linux TSan
+qualification. The preceding pressure-cost campaign remains bound to unpacked
+`dab388f6`; no timing result is silently reassigned to the packed implementation.
+
+**Confirmed preexisting constructor failure:** the independent public C API probe
+uses the actual packed six-core implementation with phased4 workers/capacity4.
+Healthy construction finishes with47 allocations; injected failures0..36 return.
+At Nth37, the second `jthread` stop-state allocation throws after the first worker
+starts: live OS threads rise from4 to5 and no C API result returns within the
+external2-second bound. The probe kills/reaps only its own child. The same Nth37
+control with one worker finishes. LLDB confirms the main thread at the actual
+second `jthread` construction and the already-started native worker waiting in
+the same pool's `worker_loop`. This is a real failed-constructor lifetime defect,
+independent of packed span ownership, not a reimplemented pool model. Original
+failure receipt is
+`7c5e4ec293cda8c369c2a6494372c9229ca90769d295c22a8dc0fcbafde877ba`;
+final stack-bound assessment is
+`5e9f424069fb718e8703e6e198b0968084983b1b32a54922e8e01eaacb54afcf`
+under `tmp/lcb-pool-constructor-failure-independent-v2`.
+
+**Retirement repair:** `c97f68ec6dd5d92aec94c874a6510b16e3a81847`, parenta528,
+wraps pool reserve/startup in a catch that calls the same `noexcept`
+stop/notify/join helper as ordinary destruction, then rethrows. A failed
+constructor does not run its own destructor; the catch joins every started
+worker while the mutex/condition variables and predicate state still live.
+This preserves typed construction refusal, without reducing requested workers
+or changing task/phase/physical behavior. The existing C API group adds the
+complete four-worker Nth-allocation sweep, including before-first-worker and
+partial-startup failures; failure injection is main-thread-local and disarmed
+before destruction. It keeps all previous sweeps and the20000 bound.
+
+Exact source SHA256 is
+`b4ab1dbf2277eb3213d827f00ddd1dbb3e1294b27e312062cb877b83ee083728`
+for `world.cpp` and
+`5c010144f6955418522222356806945edf8d9e3abafb66ed3de970712e9f39ae`
+for `test_liquid_solver_policy.cpp`; source snapshot receipt is
+`92f2270ec8037901d3568dda9ff7cd8b9e90d1a870591314b3473fa6b038e571`.
+Commit binding `d56313b394ae0b20ece4d99cfb30ebda954051c5a4ffcf8d2e721375a79cdb3f`
+records clean c97, its source blobs and unchanged sequence1 request.
+
+Fresh source/dependency-bound local LLVM-MinGW20260826 UCRT x64 C++20 `-O1 -g`
+full163 groups pass59.484s/600, including the complete four-worker failure sweep
+and seven native receipt vectors; receipt
+`bbe3e870cd6186dba87e04f13753736bf8f18a8133f5d06864f1b1676d87fb06`.
+Focused23 ASan/UBSan groups pass86.391s/600, normal1MiB stack,
+`cb0d855cb28443f678ed46a092b7f4471b32719e03d502a3455b2f3693062dcd`.
+This local sanitizer subset excludes the known Windows custom-allocation
+override collision; the ordinary full suite retains that complete C API group.
+The freshly linked unchanged Current control matches all264 raw rows against
+the original5f8, vector and packed controls, receipt
+`56ed6cdf1f913991bb962a40b8a604bac9c1489be586ce50b653284619c81927`.
+Its first receipt-schema and missing compiler-runtime-PATH apparatus attempts
+remain external; the successful v3 records the corrected harness environment.
+Commands,120/600-second bounds, all compiled input/object identities, logs and
+receipts remain under `tmp/lcb-water-activity-repair-v1`; no generated output is
+committed. No Linux TSan, fresh runtime or final ready-head acceptance follows.
+
+The unchanged independent exact37 probe now returns typed construction failure,
+no World, in0.282s; live threads return from5 at the injected throw to the4-thread
+baseline before C API return. Healthy4-worker, failure0/4 and same37/1 controls
+also finish. Replay receipt
+`925df348113a249e8d16e1ee796a7e47ac7c06eb9394bce3622f26de58de0674`
+and additive committed binding
+`1a095dfed42a850231705970d73e5cae8397acae9d7763e69d31966b92deefd2`
+authenticate unchanged external harness and all six compiled-core fences.
+
+Independent c97 source review closes with no actionable bounded finding,
+receipt `9d8ca24640e2740202d75fc27ecb779a5fe3b02ce0368463f82c1787049197db`
+under `tmp/lcb-water-startup-unwind-independent-v1`. It authenticates both
+committed source blobs, the frozen snapshot, local163/23/264 proof and unchanged
+external exact37 replay. Catch ordering joins the started prefix before member
+unwind, including late-start workers; the four-worker sweep retains the20000
+bound and prior cases. Hosted Linux and fresh publication are separate gates.
+
+### Fresh packed-source total-cost repeat
+
+The final c97/b4ab source receives a separate prospective repeat under
+`tmp/lcb-water-packed-pressure-cost-20261025-v2`. Plan
+`0c495236caaf76133201d94520ca8aeadad7dde605da50b6f3aae7c0e16224ee`
+is registered before its build and observations; build receipt
+`2a7732936c0288e878992bd00fbd7c1a08f3d74a96d938e59d4da6e5a4bd2e99`
+binds64 unchanged compiler inputs and optimized Windows x64 binary
+`2517939e2d3dc2f2c24869c7c7513dafd4753ecc20aade6068b6e3a457e1e3c7`.
+The unchanged apparatus retains all six profiles, variants, worker settings1/4,
+five rotated replicates and fallback cases. All18 qualification and90 measured
+children finish with exit0/empty stderr; complete comparisons retain53 counters,
+23,760 measured ticks and28,836 snapshots. Source/artifact seal
+`e2d0006e82f1387d316c7e9939f0adf4e9a87f1ec5e127f21df7d16886a4ec17`
+binds all442 recorded artifacts; qualification and measured summaries are
+`bf29ec22c49fa9406ea981ae865849c5b91e8509c171b332d440335e5322be66` and
+`ed55dc6c30b282f1a6008fffbd22af1bd799c81014af7b20d256d1c26ec2ed9f`.
+
+Awake warm cached/dormant-to-reference median ratios are0.904676/0.356669 for
+one worker and0.774858/0.414603 for configured4. Fresh source-bound savings are
+737,280 motion calls plus3,840 other-liquid calls per worker setting. Every awake
+configured4 phase aggregate reaches four actual participants; each such complete
+run also records all arms reaching4. Small gas/churn/fallback cases observe at
+most one, while sleeping cases can record0/1/4. Configured capacity alone is not
+worker participation or proof of useful motion skipping in sleeping controls.
+
+Slower intervals remain explicit. Disturbed churn cached/dormant ratios are
+1.083510/1.078905 at one worker and1.060474/1.070289 at configured4. Forced head
+fallback over all88 ticks is also slower:1.096028/1.076441 at one worker and
+1.059804/1.047144 at configured4. These complete-tick ratios include flag clear
+and metadata reduction, but do not establish a universal speedup, production
+default, target-PC guarantee or gameplay feel. No credit model, fixture
+threshold or mandatory material/contact work was weakened.
+
+The geometry still adds20,736 common logical activity-grid payload bytes per
+World,62,208 for the three simultaneous Worlds; the existing pressure counters
+omit that payload and vector/span/scalar/allocator costs remain separate. Peak
+process RSS13,557,760..21,614,592 bytes includes the Worlds/pools, observers and
+apparatus. Fresh tick counters record70 chunk allocations per arm and zero
+temperature allocations; host edits are separate. This is neither a complete
+memory census nor a claim that the campaign is allocation-free. Competing local
+builds/tests ended before timing, and source HEAD stayed fixed; process snapshots
+do not establish continuous desktop scheduling isolation.
+
+An earlier packed repeat is preserved in the sibling directory with
+`REGISTRATION-AMBIGUITY.json`: its top-level registration selected packed source,
+but inherited nested `source_update` still named the older c29 source. Actual
+build fences did bind c97/b4ab. The v2 plan archives that field as historical and
+binds current source before its new build and complete repeat; the first record
+is not rewritten or presented as this prospectively unambiguous run.
+
+Independent v2 reduction
+`d82baf3d11d82e6f400f2af0c760a70a0c9479f973835ad2ca4d0ff4fe4d15de`,
+report `c32a27825133694aa37c6322c57e20ea654e070bda82b9aa6b22150e33033772`,
+authenticates the new source/registration, every artifact and the positive and
+negative comparisons above. Native apparatus checks complete pressure/gas/
+quantity structures outside timers; exported scalar rows do not independently
+reconstruct every undumped structure or qualify actual Rapier execution.
+Linux TSan, new Windows/Linux runtime publication and final exact-head gates
+remain separate from this local total-cost evidence.
+
+The c97 six-document draft also receives the full23 local documentation,
+contract, registry, publisher/provider and124 Python checks in the pinned
+companion mirror. Twenty-two checks pass; repository/provenance correctly
+refuses the Windows and Linux runtimes for the changed `world.cpp`, exactly two
+errors. All18 materialized LFS payloads and source/mirror/companion fences hold.
+Receipt `2594e0e25ceee1a486d7f38477c3e376860892c0a546b54e9977d269e72db1e6`
+preserves that draft's exact bytes; final cost/prose additions receive a new
+seven-gate fence before the documentation commit. MAT01 adds only the contiguous
+owner/span fact; all133 challenge query strings and the frozen32 fixture remain
+unchanged. Retrieval finds an expected canonical route for every question within
+its five results, a routing observation rather than answer-correctness evidence. No stale
+runtime requirement is waived or historical manifest rewritten.

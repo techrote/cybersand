@@ -58,7 +58,10 @@ capacity does not depend on the optional discovery observer's 64-record report
 arrays. Metadata reduction runs before the discovery-disabled, overflowed or
 halted observer paths; lost observer coverage cannot discard scheduling work.
 An authoritative grid-bound failure throws and quarantines the World. Serial
-work without `JobEffects` retains its direct metadata path. The
+work without `JobEffects` retains its direct metadata path. The grids use two
+contiguous `ParallelState` buffers with fixed disjoint spans for each job;
+construction checks the complete capacity product before binding those spans,
+and neither owner resizes during ticks. The
 [configuration reference](../reference/configuration-reference.md#native-worldconfig-defaults)
 records setup storage and clear/reduction work; the
 [dated native evidence](../audits/2026-10-25-water-inertial-native.md#worker-activity-publication-repair--2026-10-25)

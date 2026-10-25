@@ -43,7 +43,16 @@ adds geometry-bounded per-job signal grids, flag clearing and serial reduction.
 Its [capacity accounting](../reference/configuration-reference.md) includes real
 setup storage and work even for jobs that emit no activity signal. Earlier
 pressure/cache/dormancy timings retain their original source and do not qualify
-this scheduler's total cost. `TickStats` chunk/temperature allocation counters
+this scheduler's total cost. The follow-up contiguous layout preserves the same
+payload and clear/reduction work while reducing grid ownership to two buffers
+per World; its constructor-allocation counts and failure-sweep timings are
+source-bound correctness evidence, not controlled speedup ratios. The earlier
+unpacked pressure campaign keeps its own source. The
+[fresh packed-source repeat](../audits/2026-10-25-water-inertial-native.md#fresh-packed-source-total-cost-repeat)
+has its own prospective registration, complete total-cost accounting and
+independent reduction; it retains faster awake warm medians and slower disturbed
+churn/forced-head intervals, rather than implying a universal improvement.
+`TickStats` chunk/temperature allocation counters
 also do not count all ordinary heap allocations; explicit probes and source
 inspection have their own recorded boundary.
 

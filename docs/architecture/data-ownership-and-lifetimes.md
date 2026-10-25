@@ -163,7 +163,7 @@ but must not touch live scene-tree or Rapier objects.
 | `World::chunks_` and chunk cell arrays | World coordinator creates/reserves chunks; serial work or phase-exclusive jobs mutate cells | Until World/chunk destruction; construction capacity bounds growth |
 | Optional temperatures | Chunk owns optional SoA; owner prepares it, permitted rules/movement use it | Allocated on demand or reservation; counted tick allocations |
 | Activity/dirty metadata and job effects | Job-local observations, then coordinator merge after the phase barrier | Persistent chunk metadata and reusable bounded scratch; dirty bounds survive unsuccessful publication |
-| Delayed pair deadline | Workers report into a preallocated job-owned activity grid; the coordinator reduces the earliest deadline into shared block metadata after the phase barrier and wakes it at healthy tick entry | One persistent scalar per block plus bounded scheduler scratch; excluded blocks retain it, clear/replacement discards it |
+| Delayed pair deadline | Workers report through fixed disjoint job spans into two preallocated `ParallelState` flag/deadline buffers; the coordinator reduces the earliest deadline into shared block metadata after the phase barrier and wakes it at healthy tick entry | One persistent scalar per block plus bounded scheduler scratch; buffers outlive job spans and pool, excluded blocks retain deadlines, clear/replacement discards them |
 | Native snapshot slots | One serialized producer writes only an unleased slot | Shared exchange state outlives its facade while leases exist; no-slot/capacity failure retains dirty state |
 | Desktop world, sampled character and optional actor prototypes | Godot pacing Thread after startup handoff | Worker lifetime; stopped/joined before destruction; actor session reset invalidates old input epochs |
 | Controlled liquid preparation candidate and token (experimental #202 source) | The exclusive native adapter owns one pending World, render exchange, final setup and copied native receipt | Final configuration precedes capture; one-use token commit checks retained state and the desktop queue-mutex request/reset/stop fence. Discard/supersession/refusal retain the applied session; [sampled owners](liquid-prepared-setup-and-receipts.md#staged-sampled-actors-and-exploratory-owners) and [desktop articulated physical owners](liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners) prepare before commit. Physical graph/space stays main-owned, frozen and permanent; copied readiness and actual initial masks bind its nonblocking continuation. Other constructors and full evidence stay open |
@@ -296,6 +296,17 @@ Setup, reset, reservation, rule/configuration replacement, level export/import
 and World destruction must not overlap job views or producer access. Jobs may
 not retain a view beyond their barrier. Native pool workers never call Godot;
 the desktop owner only calls its exclusive adapter/value APIs.
+
+`ParallelState` constructs its complete activity buffers before binding job
+spans and never resizes them afterward. Its pool retires before those spans and
+owners. A native pool constructor that fails after starting a worker must also
+stop, notify and join the started prefix before mutex/condition-variable member
+unwind; its destructor would not run for the failed constructor. The shared
+cleanup helper covers that exceptional path and ordinary destruction. C API
+construction publishes typed refusal only after this retirement, with no worker
+count fallback; the existing live World remains owned by its caller. The
+[dated reproduction and repair](../audits/2026-10-25-water-inertial-native.md#contiguous-activity-storage-and-constructor-retirement--2026-10-25)
+separates the original hang, packed-storage proof and final source proof.
 
 Level export clears transient obstacles; coupling must be rebuilt before the
 next cellular tick. Import builds a validated candidate before replacing World.
