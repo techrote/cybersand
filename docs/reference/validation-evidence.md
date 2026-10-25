@@ -10,6 +10,16 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## LCB-003 thermal level preparation — 2026-10-25
+
+[Source177ae236 plus the tested new case](../audits/2026-10-25-lcb003-thermal-level-preparation.md)
+passes493 assertions/all six sections on a fresh134-input Windows development
+DLL. Import plus seven retained prepared/body/receipt/Water Feel/IN/pressure
+scripts also pass:6,082 assertions total. Exact thermal tuples, native
+normalization/quantity/identity, refusals and commit fences are exercised. Initial
+parser/import-metadata-fence failures remain retained. Ordinary importer UI,
+released Linux/Windows, Web execution and full #202 acceptance remain separate.
+
 ## LCB-005 standalone adapter — 2026-10-25
 
 [The standalone IN ledger](../audits/2026-10-25-lcb005-standalone-adapter.md)
