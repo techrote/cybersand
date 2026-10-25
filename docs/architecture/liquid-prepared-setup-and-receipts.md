@@ -241,10 +241,44 @@ loads a `~` shadow DLL while the path API reports the original file, even with
 `reloadable = false`. The [dated observation evidence](../audits/2026-10-25-lcb003-qualified-host-observation.md)
 records independent OS module readback at controlled standalone and real editor
 process barriers, unchanged current file hashes, the actual stale-manifest
-mismatch, scoped tests and retained failed harnesses. This foundation is not yet
-installed into the normal owner's construction/restart transaction. That binding,
-remaining constructors, actual browsers and source-matched publication remain
-#202 work; the API does not upgrade a local DLL to a release runtime.
+mismatch, scoped tests and retained failed harnesses. At that foundation
+checkpoint it was not yet installed into the normal owner's construction/restart
+transaction. The subsequent owner slice below supplies that bounded binding.
+Remaining constructors, complete verified setup/host identity, actual browsers
+and source-matched publication remain #202 work; the API does not upgrade a
+local DLL to a release runtime.
+
+### Owner-bound construction observation
+
+**Current source `e1262efc` on the same branch:**
+`prepared_liquid_run_capture(world, token)` returns only copied native encoding
+inside a `lifecycle = prepared` wrapper. Its opaque token must still name the
+exclusive pending candidate; stale tokens refuse. This read does not install a
+World or claim that the candidate is applied. The canonical native encoding was
+already captured with final native execution and initial masks during preparation.
+
+The scenario owner collects a qualified immutable host observation before calling
+its final commit guard. It binds the actual validated definition/profile, mode,
+instrumentation, final native execution readback and copied initial body input/
+digest to those native canonical bytes. It accepts no caller-supplied replacement
+host observation. Collection failure discards the candidate and retains the old
+World, host cursor and record. Deferral and final owner-fence refusal never
+publish the prepared record; successful native/owner commit alone adopts it.
+Post-commit apparatus failure retains its existing installed-fault classification.
+
+Normal desktop publications and synchronous context expose a compact copied
+identity: host digest, native receipt digest, generation, definition and qualified
+status. The panel shows its short record hash. Full canonical values are copied
+only for explicit capture, with legacy caller identity kept separate. Per-frame
+publications do not hash files or copy the large current-script observation list.
+Restart rebuilds the accepted setup/normalization and records its actual new native
+generation. An accepted default constructor or cleared owner retires the record;
+refusal retains the prior value and actual articulated graph. Native and host
+eligibility stay false. Actor/equipment inputs in this bounded record do not yet
+prove complete executed host identity or matching publication. The
+[owner observation evidence](../audits/2026-10-25-lcb003-owner-observation.md)
+records actual normal user selection/restart, deterministic collection/fence
+refusal, physical graph/record preservation and remaining constructor/platform gaps.
 
 ## Inertial application readback and explicit geometry
 

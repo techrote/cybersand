@@ -454,6 +454,16 @@ hosted publication and final exact-head acceptance remain separate gates.
 
 ### Normal liquid-comparison UI slice
 
+The subsequent [`test_liquid_owner_observation.gd`](../../godot/tests/test_liquid_owner_observation.gd)
+checks28 assertions through actual Host/Main panel/synchronous owners: staged
+collection refusal, final-guard refusal, copied full record versus compact
+publication, native receipt/generation binding, normalized whole-cell selection,
+restart and default retirement. The physical transaction test additionally
+retains the old actual articulated graph's record on terrain refusal. The
+[owner ledger](../audits/2026-10-25-lcb003-owner-observation.md) records seven
+scoped Windows processes, fresh DLL inputs and the genuine hosted stale-registry
+failure/derived repair. Run this only with the new token-bound capture adapter.
+
 The later [`test_liquid_host_evidence.gd`](../../godot/tests/test_liquid_host_evidence.gd)
 requires a fresh observation-enabled DLL and checks34 assertions: actual API path
 and current file hash, real stale-publication mismatch, typed native byte/digest

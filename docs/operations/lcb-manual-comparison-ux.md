@@ -39,10 +39,12 @@ protected comparison fixture through its original constructor.
 
 The subsequent [qualified host-observation foundation](../architecture/liquid-prepared-setup-and-receipts.md#qualified-host-observation-foundation)
 separates actual API path/current file observations from publication claims and
-unverified caller values. It is not yet carried by normal construction/restart
-ownership, and keeps native/host full matched eligibility false. A Windows editor
+unverified caller values. The [subsequent owner slice](../architecture/liquid-prepared-setup-and-receipts.md#owner-bound-construction-observation)
+stages it before commit, carries its compact record hash/native receipt identity
+through normal apply and restart, and retains the old record on refusal. It
+keeps native/host full matched eligibility false. A Windows editor
 shadow DLL makes the distinction between API path and mapped module observable.
-This foundation does not complete a constructor row or qualify a release/browser.
+This does not complete another constructor row or qualify a release/browser.
 
 The feature launcher offers **Liquid comparison — solver policies and protected
 Dam Break**. Its `liquid_comparison` destination opens the existing `main.tscn`

@@ -820,6 +820,14 @@ and [dated evidence](../audits/2026-10-25-lcb003-qualified-host-observation.md)
 retain false native/host full matched eligibility. Normal owner integration,
 complete setup identity, matching publication and actual browsers remain open.
 
+**Subsequent owner binding:** immutable qualified observation collection now
+precedes the actual final commit guard and is adopted only on success. Normal
+selected setup/reset publications carry compact record/native receipt identity;
+explicit capture carries copied canonical values. Refusal retains the old
+record and articulated graph; accepted defaults retire identity. [The contract](../architecture/liquid-prepared-setup-and-receipts.md#owner-bound-construction-observation)
+and [local proof](../audits/2026-10-25-lcb003-owner-observation.md) preserve the
+remaining complete host/source/publication/browser gaps and false eligibility.
+
 **Subsequent ordinary Tower constructor:** explicit Exploratory solver rebuilds
 retain the existing sampled player, selected floor, release/schedule/manual tools
 and independent transport profile. Reset/profile rebuild preserve accepted

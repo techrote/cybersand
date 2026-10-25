@@ -33,6 +33,15 @@ refusal retains the applied session. Read its
 [separate GDScript/runtime ledger](../audits/2026-10-25-lcb003-tower-constructor.md)
 before continuing the remaining constructor rows and host-evidence layer.
 
+The later [owner observation checkpoint](../audits/2026-10-25-lcb003-owner-observation.md)
+stages immutable record collection before final commit and carries its compact
+identity through normal selection/restart. Refusal preserves prior record and
+actual body graph; default constructors retire it. Full executed host identity,
+matching Windows/Linux publication and actual browsers remain open. The initial
+draft #252 Documentation failure was a genuine stale generated registry after
+IN capability integration; its derived Brine availability repair preserves all
+measured arms and leaves Water-IN unsupported.
+
 ## LCB-003 controlled host preparation — 2026-10-24
 
 The subsequent [qualified observation foundation](../architecture/liquid-prepared-setup-and-receipts.md#qualified-host-observation-foundation)

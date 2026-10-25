@@ -751,7 +751,17 @@ native canonical bytes and frozen qualifications, collects actual manifest/confi
 and bounded current script-file observations, labels caller values unverified and
 returns an immutable copied value or explicit refusal. Its native-byte checksum
 check is not an independent native codec decoder. Normal owner integration and
-full evidence eligibility remain open; see the [qualified foundation](../architecture/liquid-prepared-setup-and-receipts.md#qualified-host-observation-foundation).
+full evidence eligibility remain open at that foundation checkpoint; see the [qualified foundation](../architecture/liquid-prepared-setup-and-receipts.md#qualified-host-observation-foundation).
+
+The subsequent `prepared_liquid_run_capture(world, token)` returns a copied
+`{schema_version:1, lifecycle:"prepared", token, native_run_encoding}` wrapper
+for that pending candidate only. It exposes no World or installation claim.
+`CyberMicroScenarioHost` collects the qualified record before its final guard,
+adopts it only after successful commit and retains the old record on refusal.
+`liquid_host_observation()` returns compact copied identity;
+`liquid_host_observation_record()` and explicit capture return full copied
+canonical values. Default construction/generation retirement clears readback;
+native and host eligibility remain false. See [owner lifetime](../architecture/liquid-prepared-setup-and-receipts.md#owner-bound-construction-observation).
 
 The MS-001 adapter preparation adds `CyberDemoBridge.inspect_cell(world, point)`
 and `inspect_statistics(world)`. Call these only from the same serialized external

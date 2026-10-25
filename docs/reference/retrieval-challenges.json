@@ -2424,12 +2424,30 @@
       ],
       "facts": [
         "The version1 native observation accepts no caller path/hash and observes the Godot API-reported library path and current file SHA256/size. Windows editor uses a shadow DLL while the API reports the original, even when reloadable is false; standalone and real-editor controlled OS module probes qualify those exact launches only.",
-        "The separate immutable qualified host observation copies native canonical bytes/digest and frozen qualifications, actual config/publication/current script files, and labels caller values unverified. Native-v1 qualifications15 and false native/host full matched eligibility remain. Normal owner construction/restart binding, complete setup and matching publication/browser gates remain open."
+        "The separate immutable qualified host observation copies native canonical bytes/digest and frozen qualifications, actual config/publication/current script files, and labels caller values unverified. Native-v1 qualifications15 and false native/host full matched eligibility remain. The subsequent owner slice carries the record through construction/restart; complete executed setup/host verification and matching publication/browser gates remain open."
       ],
       "sources": [
         "../godot/native_extension/cyber_demo_bridge.hpp",
         "../godot/scripts/liquid_host_evidence.gd",
         "../godot/tests/test_liquid_host_evidence.gd"
+      ]
+    },
+    {
+      "id": "LCB17",
+      "query": "When does a normal liquid setup adopt its host observation record, what survives a refused rebuild or restart, and do ordinary frame publications copy the complete runtime file observations?",
+      "canonical": [
+        "architecture/liquid-prepared-setup-and-receipts.md"
+      ],
+      "facts": [
+        "Token-bound native run capture is explicitly prepared copied encoding. The exclusive scenario owner collects the immutable qualified record before its final commit guard and adopts only on successful commit; deferral, collection refusal or final-fence refusal preserves the old World/cursor/graph/record.",
+        "Actual normal selection/reset carries compact digest/native receipt/generation identity; restart records a new actual generation with retained setup and normalization. Full canonical record is copied only for explicit capture; accepted default construction retires it. Native and host full matched eligibility remain false, and complete executed host identity, matching publication and real browser/remaining constructor gates stay open."
+      ],
+      "sources": [
+        "../godot/native_extension/cyber_demo_bridge.hpp",
+        "../godot/scripts/microscenario_host.gd",
+        "../godot/scripts/simulation_worker.gd",
+        "../godot/scripts/web_demo_controller.gd",
+        "../godot/tests/test_liquid_owner_observation.gd"
       ]
     }
   ],

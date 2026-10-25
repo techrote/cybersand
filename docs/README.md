@@ -16,6 +16,12 @@ native receipt-v1 eligibility. Its [dated Windows proof](audits/2026-10-25-lcb00
 retains clean standalone/editor shadow-module observations and remaining owner,
 source-matched publication and browser gaps.
 
+The subsequent [owner-bound record](architecture/liquid-prepared-setup-and-receipts.md#owner-bound-construction-observation)
+is prepared before the final commit guard and carried through actual user
+selection/restart, with old record/physical graph retained on refusal. Its
+[separate local proof](audits/2026-10-25-lcb003-owner-observation.md) preserves
+the qualified full-host/publication boundary.
+
 ## Choose a reading route
 
 For the native-only opt-in **Brine IN** checkpoint, use the [family reference](architecture/inertial-cellular-v1.md) and [dated evidence](audits/2026-10-24-lcb005-native-brine-checkpoint.md). Water IN, application integration and release/runtime qualification remain separate.
