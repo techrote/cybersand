@@ -442,7 +442,9 @@ unpaused main-thread Rapier and asynchronous native-worker feedback path. The
 focused regression checks positive motion, manual steps, native completed ticks,
 contacts and accepted signed forces for pressure reference/cached/dormant and a
 FreeMass control. Received samples obey the existing age bound; an old rejected
-sample applies no impulse. Whole-World Water source/sink balance remains exact
+sample is required to apply no impulse. The fresh four-cohort proof observes
+ages0–3; the older age20 rejection trace remains separate evidence.
+Whole-World Water source/sink balance remains exact
 and pressure gas accounting closes. Pressure `contact_loss` is stopped momentum,
 not a Water sink. These functional cohorts are not performance or cross-arm
 trajectory comparisons; the independent direct fixture owns exact worker parity.

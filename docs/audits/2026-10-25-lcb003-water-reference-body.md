@@ -121,6 +121,13 @@ translation and signed accepted feedback; no quarantine occurs. Initial native
 Water is measured before play as332×50×224, not the separate normalized
 whole-cell target332×50×255. Final whole-World quantity/source/sink balance is
 exact. Pressure gas ledgers close. Existing age policy remains intact.
+The fresh four cohorts observe ages0–3 with no stale rejections; they verify
+accepted-age behavior and conditionally reject invalid old application, rather
+than newly exercising age>8 rejection. Earlier failed-premise runs separately
+observe age20 and three correctly rejected responses. A later review also adds
+an explicit stopped native `has_failed()` guard beside the snapshot guard; the
+v11 source and raw proof remain unchanged and later integrated execution is
+separately qualified.
 
 All12 fresh processes pass without engine error/warning lines. The campaign
 additionally runs articulated transaction/preparation,

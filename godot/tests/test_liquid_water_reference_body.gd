@@ -259,7 +259,7 @@ func ordinary_play_prefix(policy: PackedInt32Array, variant: String) -> void:
 	for body: int in range(3):
 		var offset: int = body*Coupling.INPUT_STRIDE
 		translated = translated or final[offset+1]!=initial[offset+1] or final[offset+2]!=initial[offset+2]
-	expect(not desktop.latest_snapshot.simulation_failed and world.get_tick_index()>=96
+	expect(not desktop.latest_snapshot.simulation_failed and not world.has_failed() and world.get_tick_index()>=96
 		and physics.manual_step_count()>0 and translated,"ordinary unpaused owner advances native ticks and actual adopted bodies")
 	expect(received>0 and applied>0 and contacts>0 and accepted_impulse!=Vector2.ZERO and invalid_age_application==0,
 		"ordinary native contacts produce signed accepted feedback within age bounds; stale responses apply no impulse")
