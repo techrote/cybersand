@@ -10,6 +10,15 @@ related-documents: [local-build-and-validation.md, ../reference/validation-evide
 
 # Source checkpoint and recovery
 
+Before003 arming, accepted main9935d569 (#249) normally merges into the final
+application branch as c3cde29f. Exactly five incoming flight paths are preserved,
+including the shared interface contract's flight section. The [additive source
+qualification](../audits/2026-10-25-lcb003-final-integration.md#fresh-main-flight-lease-merge--2026-10-25)
+binds fresh import/actual8,284-assertion Flight execution, unchanged139 native
+inputs and the two explicit Flight exceptions to the old693 source map. The
+earlier36-process host matrix remains sourcee8f1d37b evidence; it is not
+relabeled as a whole-current-head run. The003 request remains absent.
+
 ## Recoverable final application integration source — 2026-10-25
 
 The separate managed checkout is

@@ -10,6 +10,15 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+The final application branch additionally consumes fresh accepted main9935d569
+(#249) through normal mergec3cde29f before publication arming. Fresh import and
+the actual affected Flight test pass8,284 assertions/ten development episodes.
+The [qualified source exception](../audits/2026-10-25-lcb003-final-integration.md#fresh-main-flight-lease-merge--2026-10-25)
+preserves the old host matrix at e8f1d37b:691 of693 sources are unchanged and
+only the two incoming Flight Godot files differ; native139 is unchanged. Full
+003 publication must freshly execute all35 host cases; no request is added by
+this integration. Original visual/release/full-host gaps remain explicit.
+
 The current [application integration checkpoint](../audits/2026-10-25-lcb003-final-integration.md)
 is isolated on `codex/lcb003-final-integration`; frozen PR252/PR255 branches are
 preserved. It combines accepted main dc915f2b, desktop5f3f0c21 and Water

@@ -10,6 +10,11 @@ related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../op
 
 # LCB-003 final application source integration checkpoint
 
+The later [fresh-main flight lease merge](#fresh-main-flight-lease-merge--2026-10-25)
+changes two unrelated Godot files after the retained full host matrix. Fresh
+import/affected-flight execution qualifies that addition; it does not relabel
+the earlier693-file fence as a whole-current-source host run.
+
 ## Inputs and recoverable source
 
 This is the isolated source checkout
@@ -282,3 +287,46 @@ The native receipt-v1 envelope deliberately remains qualified; neither a copied
 panel record nor a source-matched DLL alone proves complete host eligibility.
 No safety threshold, failed-world quarantine, source/runtime provenance or
 transactional refusal is weakened to make this integration pass.
+
+## Fresh main flight lease merge — 2026-10-25
+
+Before003 arming, accepted main advances fromdc915f2b to
+`9935d5696721d2c72a8273ea70454ab0c5b11361` through unrelated #249. Normal merge
+`c3cde29f119415c930a6dab806831ccf1569d196`, tree
+`b17b61baa2b6b976569704252b7dc16b2a9aa181`, retains9ec13880 and9935d569
+as parents. It cleanly incorporates exactly five incoming paths: the flight
+lease episode/test, physical-flight-lab/free-flight contracts, and the deeper
+flight section of the shared interfaces document. Existing liquid-host text
+is preserved. Stable patch-id agrees with the entire incoming main change;
+there is no hand-edited flight law, native/profile/request delta or fallback.
+
+The new flight behavior carries an already-live lease across a missing fresh
+decision only to its unchanged physical deadline. It submits no replacement
+command or renewal, fences revoked observations and distinguishes passive
+expired assistance from explicit power-off. This is the accepted flight lane's
+change, not an LCB mechanism or a new solver qualification.
+
+Fresh isolated Godot4.7/Rapier import passes in6.278s under240s; actual
+`test_physical_flight_lab.gd` passes8,284 assertions/0 failures across ten
+development episodes in5.388s under its unchanged180s budget. Both processes
+exit0 without errors, warnings, skips or timeouts, using the same verified
+combined DLL93d3ee3f. Actual final scoring remains false. Source/project/native
+maps remain held, with the same four explicitly recorded import line-ending
+transitions. Receipt
+`tmp/lcb202-final-integration/flight-merge-v1/RECEIPT.json`,
+SHA`9932d32211a0f43415a027d07391ee61460ffa74ca85348d2a16418e91e7d508`,
+binds actual commands/processes/logs and the retained development evidence.
+
+Exactly691 of the old693 host source files remain raw-identical. The two
+exceptions are `godot/scripts/physical_flight_episode.gd` and
+`godot/tests/test_physical_flight_lab.gd`; both equal accepted9935 Git blobs
+after canonical line-ending comparison. All139 native inputs remain unchanged.
+`flight-merge-v1/SOURCE-EXCEPTION-QUALIFICATION.json`,
+SHA`937384d5bb407ee17b18135a7e177b8ef2445141e2bad1d13577ed29411f8b78`,
+explicitly records that the retained e8f1d37b36-process host matrix is **not**
+an exact-current-head execution. Earlier actual browser4948 evidence also
+retains its original source identity. The forthcoming003 publication must run
+all35 host cases afresh; exact-head CI and the remaining visual/provenance gates
+remain required. No publisher request or new runtime append accompanies this
+merge. Its final documentation/provider/provenance/retrieval closure is bound
+at `tmp/lcb202-final-integration/docs-validation-flight/checks-v1/VALIDATION-RECEIPT.json`.
