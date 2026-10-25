@@ -3762,6 +3762,10 @@ void test_lcb_pressure_cached_gas();
 void test_lcb_pressure_affected_gas();
 void test_lcb_pressure_gas_cache_capacity();
 void test_lcb_pressure_dormant_obligations();
+void test_lcb_pressure_variants_remote_acceptance();
+void test_lcb_pressure_variants_mask_acceptance();
+void test_lcb_pressure_variants_obligation_acceptance();
+void test_lcb_pressure_variants_basins_acceptance();
 void test_water_cy_admission_ingress();
 void test_water_cy_coherence_masks();
 void test_water_cy_material_hooks();
@@ -3902,6 +3906,10 @@ int main(int argc, char** argv) {
         {"LCB-002 affected gas component discovery and continuation", test_lcb_pressure_affected_gas},
         {"LCB-002 gas component capacity and pair-budget fallback", test_lcb_pressure_gas_cache_capacity},
         {"LCB-002 dormant motion and stationary body obligations", test_lcb_pressure_dormant_obligations},
+        {"LCB-002 acceptance remote hydraulic wake and sparse interest", test_lcb_pressure_variants_remote_acceptance},
+        {"LCB-002 acceptance rotating native masks", test_lcb_pressure_variants_mask_acceptance},
+        {"LCB-002 acceptance mandatory obligations and reconstruction", test_lcb_pressure_variants_obligation_acceptance},
+        {"LCB-002 acceptance communicating narrow and broad passages", test_lcb_pressure_variants_basins_acceptance},
         {"LCB-001 liquid policy C API allocation failures", test_liquid_policy_c_api_allocation_failures},
         {"LCB-001 W-CY admission and ingress", test_water_cy_admission_ingress},
         {"LCB-001 W-CY coherence, viscosity and masks", test_water_cy_coherence_masks},
