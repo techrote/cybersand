@@ -27,6 +27,7 @@ EVIDENCE = "docs/audits/2026-10-24-lcb001-residual-shared-contract.md"
 WORKFLOW = ".github/workflows/lcb001-shared-contract-runtime-publication.yml"
 REQUEST = "tools/ci/lcb001_shared_contract_publish_request.json"
 PRESSURE_CASE = "godot/tests/test_lcb_pressure_reference.gd"
+BUNDLE_PREFIX = "lcb001-shared-contract-runtime"
 REQUEST_VALUE = {
     "schema": "lcb001-shared-contract-publish-request-v1",
     "family": "pressure_flow_v1",
@@ -458,7 +459,7 @@ def execute(args: argparse.Namespace) -> None:
         "status": "validated-development-runtime", "workflow_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
         "validated_platform": args.platform.title() + " x86_64 Godot 4.7 (actual GitHub-hosted headless execution)",
         "acceptance": "This exact source-matched runtime passed " + EXECUTION_SCOPE + ". Every required helper completed with no skips or errors.",
-        "validation_output": "lcb001-shared-contract-runtime-" + args.platform + "-" + os.environ["GITHUB_RUN_ID"] + "/validation.json",
+        "validation_output": BUNDLE_PREFIX + "-" + args.platform + "-" + os.environ["GITHUB_RUN_ID"] + "/validation.json",
         "validation_sha256": runner.sha256(report_path),
         "other_platforms": "This publisher claims only its recorded target-OS headless scope. It does not establish graphical pixel, browser/WebAssembly, owner visual, target-PC or GPU acceptance.",
     })

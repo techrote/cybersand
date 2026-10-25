@@ -87,6 +87,19 @@ This adds no prepared token, UI, constructor coordinator, verified provenance,
 Web qualification or new physics. Full application integration remains #202;
 Linux/Windows publication and exact-head ready-PR acceptance remain pending.
 
+The staged `lcb005-inertial-runtime-publication.yml` profile reuses the accepted
+shared-contract verifier in an isolated module. Preparation leaves
+`tools/ci/lcb005_inertial_publish_request.json` absent. An explicit committed
+request, exact candidate branch/source/workflow lease and unchanged source
+are required before either target build. After the separately frozen #201
+checkpoint is integrated, both actual Windows and Linux executions must pass
+all fourteen scoped cases plus import, including the twelve retained cases,
+all six pressure-optimization sections and all six standalone IN sections.
+The IN-only checkpoint cannot qualify that union. Only the two runtime LFS
+paths and their two manifests may append in one source-parent commit; the
+atomic branch lease refuses a changed remote tip. Local preparation does not
+publish, arm a request or replace ready-PR acceptance.
+
 ## What does the storage readback measure?
 
 `inertial_storage_usage()` reports actual slot size/alignment, resident optional arrays, capacity and nonzero slots; array bytes; vector/pointer owner components; per-job IN ledger capacity; fixed World IN members; and their declared component sum. Allocator bookkeeping, inter-member padding, shared World/scheduler/PF/temperature/snapshot resources and process RSS are explicit exclusions. `resident_cell_bytes()` keeps its legacy meaning and is not a complete IN memory metric.

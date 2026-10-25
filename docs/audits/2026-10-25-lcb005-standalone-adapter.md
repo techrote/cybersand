@@ -172,3 +172,27 @@ ready-PR exact-head Documentation/provenance, Native, Godot and applicable Water
 gates remain required. PR #250 stays draft. The prepared application host,
 verified host envelope, remaining constructors/UI and actual Web remain #202;
 joined packaging remains #203.
+
+## Unarmed combined publication preparation
+
+The subsequent publisher preparation adds a branch-scoped LCB-005 workflow,
+an isolated configuration of the accepted LCB-001 engine and profile guards.
+The shared engine's sole reusable seam is a configurable bundle prefix whose
+historical default is unchanged; the same two-line seam is present in #201.
+No native/adapter/test/runtime byte changes accompany that preparation.
+
+The new request path remains absent. Normal source edits cannot start a build;
+preparation changes exercise only lightweight guards. Arming requires a
+separate committed request with the IN/reference plus pressure execution3
+union scope, source/workflow/branch identity and exact remote lease. The
+eventual frozen #201 source must first be integrated and requalified. Missing
+either positive helper refuses the campaign; all fourteen scoped cases plus
+import, both six-boolean section maps, exact log digests and no errors/skips
+are mandatory on actual Windows and Linux. Existing case and job deadlines
+remain unchanged; the two additional cases each have a finite360s bound.
+
+Publication may append only the two canonical native runtime paths and their
+two provenance manifests. Complete source/build ledgers, accepted Rapier and
+toolchain pins, both target bundles, one exact source parent and an atomic
+branch lease remain mandatory. This preparation records no Windows/Linux
+publication result and grants no full-application or ready-PR acceptance.
