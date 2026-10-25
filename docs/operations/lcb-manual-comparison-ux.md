@@ -37,6 +37,13 @@ protected comparison fixture through its original constructor.
 
 ## Current controls and ownership
 
+The subsequent [qualified host-observation foundation](../architecture/liquid-prepared-setup-and-receipts.md#qualified-host-observation-foundation)
+separates actual API path/current file observations from publication claims and
+unverified caller values. It is not yet carried by normal construction/restart
+ownership, and keeps native/host full matched eligibility false. A Windows editor
+shadow DLL makes the distinction between API path and mapped module observable.
+This foundation does not complete a constructor row or qualify a release/browser.
+
 The feature launcher offers **Liquid comparison — solver policies and protected
 Dam Break**. Its `liquid_comparison` destination opens the existing `main.tscn`
 with **Liquids…** inside the existing MicroScenario dialog and the protected Dam

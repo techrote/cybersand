@@ -210,7 +210,41 @@ a separately versioned host-evidence/readback envelope must identify the actuall
 executed runtime and source-matched provenance, complete actor/body/equipment and
 execution setup, and bind its immutable native run bytes. A receipt panel or
 caller-supplied digest cannot supply that proof. This slice introduces no new
-host-evidence schema or native codec version.
+host-evidence schema or native codec version at that physical checkpoint.
+
+### Qualified host observation foundation
+
+**Current source `4b05a15e` on the unmerged #202 branch:**
+`CyberDemoBridge.loaded_native_runtime_values()` uses Godot's own library-path
+API and reads the current file at that path. Its version1 value labels these
+facts `godot_library_path_current_file_v1`, `api_reported_library_path`,
+`current_file_sha256` and `current_file_size`. `mapped_module_binding` remains
+`unverified`. The caller supplies no path or digest. This is an evidence-boundary
+operation, never a simulation-tick or native-pool operation.
+
+`liquid_host_evidence.gd` collects a separately versioned
+`qualified_liquid_host_observation`: copied native canonical bytes/digest and
+frozen qualifications, actual path/file and extension-config observations,
+the actual platform publication manifest and its bounded current resource-script
+file observations. Caller host values remain under `host_claims.status =
+unverified`; signed integer identities use decimal strings. Nested values and
+canonical JSON bytes are copied and frozen. Explicit depth, value, text, file
+and byte capacities refuse cleanly. The exclusive owner supplies the native
+readback; checksum agreement is a consistency check rather than an independent
+GDScript decoder of the native codec.
+
+The native outer-v1 stays at qualifications15 and false full matched eligibility.
+This host schema also keeps false full matched eligibility. A matching current
+file alone cannot prove mapped bytes, executed scripts, complete setup or a
+source-matched publication. In particular, pinned Windows Godot editor execution
+loads a `~` shadow DLL while the path API reports the original file, even with
+`reloadable = false`. The [dated observation evidence](../audits/2026-10-25-lcb003-qualified-host-observation.md)
+records independent OS module readback at controlled standalone and real editor
+process barriers, unchanged current file hashes, the actual stale-manifest
+mismatch, scoped tests and retained failed harnesses. This foundation is not yet
+installed into the normal owner's construction/restart transaction. That binding,
+remaining constructors, actual browsers and source-matched publication remain
+#202 work; the API does not upgrade a local DLL to a release runtime.
 
 ## Inertial application readback and explicit geometry
 

@@ -811,6 +811,15 @@ cannot be a cross-tick static-rest predicate.
 
 ## LCB-003 controlled application-host slice — 2026-10-24
 
+**Subsequent qualified host observation foundation:** version1 records native
+API-reported library path/current-file facts, actual config/publication files and
+bounded current-script observations separately from unverified caller values.
+Controlled Windows standalone and real editor module probes confirm the editor
+shadow-path distinction. [The contract](../architecture/liquid-prepared-setup-and-receipts.md#qualified-host-observation-foundation)
+and [dated evidence](../audits/2026-10-25-lcb003-qualified-host-observation.md)
+retain false native/host full matched eligibility. Normal owner integration,
+complete setup identity, matching publication and actual browsers remain open.
+
 **Subsequent ordinary Tower constructor:** explicit Exploratory solver rebuilds
 retain the existing sampled player, selected floor, release/schedule/manual tools
 and independent transport profile. Reset/profile rebuild preserve accepted

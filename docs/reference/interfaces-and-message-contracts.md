@@ -742,6 +742,17 @@ See [Tower owner lifetime and scope](../architecture/liquid-prepared-setup-and-r
 
 ### Read-only native MicroScenario inspection
 
+The subsequent qualified host observation API
+`CyberDemoBridge.loaded_native_runtime_values()` accepts no caller path/hash and
+returns copied version1 API-reported library path/current file SHA256/size, with
+mapped-module binding explicitly unverified. The separately versioned
+`liquid_host_evidence.gd.collect(bridge, native_readback, host_claims)` preserves
+native canonical bytes and frozen qualifications, collects actual manifest/config
+and bounded current script-file observations, labels caller values unverified and
+returns an immutable copied value or explicit refusal. Its native-byte checksum
+check is not an independent native codec decoder. Normal owner integration and
+full evidence eligibility remain open; see the [qualified foundation](../architecture/liquid-prepared-setup-and-receipts.md#qualified-host-observation-foundation).
+
 The MS-001 adapter preparation adds `CyberDemoBridge.inspect_cell(world, point)`
 and `inspect_statistics(world)`. Call these only from the same serialized external
 owner that may call `simulation_tick`; they are not concurrent-reader APIs.

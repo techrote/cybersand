@@ -35,6 +35,13 @@ before continuing the remaining constructor rows and host-evidence layer.
 
 ## LCB-003 controlled host preparation — 2026-10-24
 
+The subsequent [qualified observation foundation](../architecture/liquid-prepared-setup-and-receipts.md#qualified-host-observation-foundation)
+adds copied native path/current-file and qualified host-record values, with
+[separate evidence](../audits/2026-10-25-lcb003-qualified-host-observation.md).
+Windows editor shadow-copy behavior is verified and remains qualified. Normal
+construction/restart binding, remaining constructors, matching publication and
+actual browsers remain open; native and host full matched eligibility stay false.
+
 The first bounded #202 source slice lives on
 `codex/lcb003-application-host`, based on frozen #246 head `9e91a9f7` while its
 acceptance runs. It adds explicit native normalization and immutable typed

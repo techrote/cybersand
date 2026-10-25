@@ -339,6 +339,15 @@ effective identity and instance hash/CYPS3; non-IN remains version2. Water IN
 still refuses. These controls do not complete the remaining constructor matrix
 or full source/runtime/host qualification.
 
+**Qualified #202 host-observation foundation:** collection runs only at evidence
+boundaries. Version1 bounds manifests/current script files at2MiB each, the
+manifest-listed script subset at1024 entries, claim depth at24, pure claim values
+at131072, each container at32768, claim UTF8 text at2MiB, keys at256 characters
+and canonical host bytes at4MiB. Signed integer claims become decimal strings.
+Capacity or non-value claims refuse; no capacity outcome upgrades native/host
+full matched eligibility. Library path/current-file observation is not mapped
+module proof. See the [ownership and scope](../architecture/liquid-prepared-setup-and-receipts.md#qualified-host-observation-foundation).
+
 The ordinary Experiment Tower additionally accepts these explicit settings only
 in Exploratory mode with its existing sampled owner. Selected floor0..4, landing,
 camera and resolved transport profile are final preparation input. Native worker

@@ -10,6 +10,12 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The unmerged #202 [qualified host observation foundation](architecture/liquid-prepared-setup-and-receipts.md#qualified-host-observation-foundation)
+records actual API-reported library path/current-file facts without upgrading
+native receipt-v1 eligibility. Its [dated Windows proof](audits/2026-10-25-lcb003-qualified-host-observation.md)
+retains clean standalone/editor shadow-module observations and remaining owner,
+source-matched publication and browser gaps.
+
 ## Choose a reading route
 
 For the native-only opt-in **Brine IN** checkpoint, use the [family reference](architecture/inertial-cellular-v1.md) and [dated evidence](audits/2026-10-24-lcb005-native-brine-checkpoint.md). Water IN, application integration and release/runtime qualification remain separate.

@@ -323,6 +323,7 @@ additionally owns these application preparation invariants:
 | LCBH-004 | Planned full host evidence remains separate: frozen native-v1 qualifications and false full-match eligibility cannot be relabeled by a panel, caller claim or unverified host envelope |
 | LCBH-005 | Current on integrated branch: IN instance versions, effective parameter identity and actual damping come from native World readback; geometry3 is explicit for candidate and comparator, while Original Current restores protected2 |
 | LCBH-006 | Current on branch: ordinary Tower prepares final floor/player/camera/profile before capture, retains ordinary control routing and accepted reset/profile selection, and treats a committed observer failure as an installed fault; refusal retains old owner/World/receipt/UI |
+| LCBH-007 | Current qualified foundation on branch: API-reported library path/current file hash, manifest/current script files and caller claims keep their distinct observation scopes; editor shadow paths require explicit qualification. Immutable host observation values preserve native-v1 qualifications15 and false native/host full-match eligibility; normal owner integration and matching publication remain open |
 
 ## GPU and rejected-approach invariants
 

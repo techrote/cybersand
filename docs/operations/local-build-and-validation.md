@@ -454,6 +454,18 @@ hosted publication and final exact-head acceptance remain separate gates.
 
 ### Normal liquid-comparison UI slice
 
+The later [`test_liquid_host_evidence.gd`](../../godot/tests/test_liquid_host_evidence.gd)
+requires a fresh observation-enabled DLL and checks34 assertions: actual API path
+and current file hash, real stale-publication mismatch, typed native byte/digest
+consistency, immutable canonical host values, exact signed identities, retained
+qualifications and explicit malformed/depth/capacity refusal. Its optional
+external process barrier supports an OS-module query; the clean editor shadow
+probe instead uses a scratch-only EditorPlugin and Godot's real editor MainLoop.
+The [observation ledger](../audits/2026-10-25-lcb003-qualified-host-observation.md)
+records both clean controlled launches and the failed custom-editor harnesses.
+These local Windows proofs do not establish actual Wasm/browser execution or
+full source-matched publication/host eligibility.
+
 The subsequent [`test_liquid_tower_host.gd`](../../godot/tests/test_liquid_tower_host.gd)
 exercises ordinary Tower dispatch with the existing integrated development DLL:
 original Current constructor parity, final floor/player preparation, independent
