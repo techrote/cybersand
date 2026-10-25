@@ -12,14 +12,16 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 ## Moving-body pressure gas blocker — 2026-10-25
 
-Ordinary Main/worker reference-body Water play exposed a native retired gas
-label beneath a moving body mask around completed tick45–47. The World
-quarantines even though Water quantity and the gas ledger remain exact.
-A compact native control reproduces the failure in all three pressure
-variants with configured1/4 workers. The repair is under qualification;
-PRs #253 and #250 are draft and must receive fresh source-matched
-Windows/Linux runtimes and exact-head gates before merging. Earlier
-scoped/full greens retain their original source and coverage. See the
+Ordinary moving reference bodies exposed retired gas labels beneath masks;
+the failing World quarantines despite closing Water/gas ledgers. Repair commit
+`7ebcd0e9` adds the six-arm native regression and retains still-live identities.
+Local LLVM/MSVC141, focused sanitizer16 and actual application body tests pass.
+Fresh #201 Windows/Linux scoped publication `40157133977` passes at source
+`eebd0c98`, with four-path bot append `65f1f3b5`. The updated90-child total-cost
+campaign also passes exact parity and preserves slower churn/fallback results.
+PRs #253/#250 returned to draft after the finding; each still requires its own
+complete source-matched exact-head gates and review before merge. Earlier
+greens retain their original scope. See the
 [dated failure and repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
 
 ## LCB-002 pressure variants branch — 2026-10-25
