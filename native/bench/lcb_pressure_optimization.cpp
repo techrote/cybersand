@@ -144,11 +144,79 @@ bool edit(World& w, std::string_view profile, int t) {
     return changed && profile==kProfiles[2];
 }
 
+// The bounded domains cover every resident chunk created by these fixtures,
+// including churn's last chunk x408..415,y16..23. Coverage is checked each tick.
+RectI64 head_domain(std::string_view profile) {
+    if (boxed(profile)) return {0,0,128,128};
+    return profile==kProfiles[4] ? RectI64{0,0,416,24} : RectI64{0,0,88,8};
+}
+RectI64 flux_roi(std::string_view profile) {
+    return boxed(profile) ? RectI64{0,0,32,128} : RectI64{0,0,8,8};
+}
+struct HeadCoverage {
+    std::uint64_t sampled=0, resident=0, prepared=0, no_head=0, unresolved=0;
+    std::int64_t prepared_head_sum=0;
+    std::int32_t minimum_head=0, maximum_head=0;
+};
+HeadCoverage sample_heads(const World& w, RectI64 domain, std::span<PressureHeadSnapshot> slots) {
+    HeadCoverage out;
+    require(slots.size()==static_cast<std::size_t>(domain.width*domain.height),"head sample buffer matches declared domain");
+    for (std::int64_t dy=0;dy<domain.height;++dy) for (std::int64_t dx=0;dx<domain.width;++dx) {
+        const auto head=w.prepared_pressure_head(domain.x+dx,domain.y+dy);
+        slots[static_cast<std::size_t>(dy*domain.width+dx)]=head; ++out.sampled;
+        require(head.status!=PressureHeadStatus::FamilyUnavailable,"all measured arms must expose the pressure head field");
+        if (head.status==PressureHeadStatus::NonResident) continue;
+        ++out.resident;
+        if (head.status==PressureHeadStatus::Prepared) {
+            if (out.prepared==0U) out.minimum_head=out.maximum_head=head.head;
+            out.minimum_head=std::min(out.minimum_head,head.head); out.maximum_head=std::max(out.maximum_head,head.head);
+            out.prepared_head_sum+=head.head; ++out.prepared;
+        }
+        if (head.status==PressureHeadStatus::NoHead) ++out.no_head;
+        if (head.status==PressureHeadStatus::Unresolved) ++out.unresolved;
+    }
+    const auto size=static_cast<std::uint64_t>(w.config().chunk_size);
+    require(out.resident==w.chunk_count()*size*size,"declared head domain must cover EVERY resident cell, including paused/churn chunks");
+    require(out.unresolved==0U,"completed pre-kernel head field must have no unresolved interpolation sentinel");
+    return out;
+}
+struct HeadDifference {
+    std::uint64_t status_mismatches=0, numeric_comparisons=0, nonzero_errors=0;
+    std::int64_t signed_error_sum=0;
+    std::uint64_t absolute_error_sum=0, max_absolute_error=0;
+};
+HeadDifference compare_heads(std::span<const PressureHeadSnapshot> reference, std::span<const PressureHeadSnapshot> candidate) {
+    require(reference.size()==candidate.size(),"head domains must match");
+    HeadDifference out;
+    for (std::size_t i=0;i<reference.size();++i) {
+        const auto& a=reference[i]; const auto& b=candidate[i];
+        if (a.status!=b.status) { ++out.status_mismatches; continue; }
+        if (a.status!=PressureHeadStatus::Prepared) continue;
+        ++out.numeric_comparisons;
+        const auto error=static_cast<std::int64_t>(b.head)-a.head;
+        const auto absolute=static_cast<std::uint64_t>(error<0 ? -error : error);
+        out.signed_error_sum+=error; out.absolute_error_sum+=absolute;
+        out.max_absolute_error=std::max(out.max_absolute_error,absolute);
+        if (error!=0) ++out.nonzero_errors;
+    }
+    require(out.status_mismatches==0U && out.nonzero_errors==0U,"prepared head status/numeric discrepancy against reference");
+    return out;
+}
+void rect_json(RectI64 r) { std::cout<<'['<<r.x<<','<<r.y<<','<<r.width<<','<<r.height<<']'; }
+void heads_json(const HeadCoverage& c, const HeadDifference& d) {
+    std::cout<<"{\"sampled_cells\":"<<c.sampled<<",\"resident_cells\":"<<c.resident
+        <<",\"prepared_cells\":"<<c.prepared<<",\"no_head_cells\":"<<c.no_head<<",\"unresolved_cells\":"<<c.unresolved
+        <<",\"prepared_head_sum\":"<<c.prepared_head_sum<<",\"minimum_head\":"<<c.minimum_head<<",\"maximum_head\":"<<c.maximum_head
+        <<",\"status_mismatches\":"<<d.status_mismatches<<",\"numeric_comparisons\":"<<d.numeric_comparisons
+        <<",\"nonzero_errors\":"<<d.nonzero_errors<<",\"signed_error_sum\":"<<d.signed_error_sum
+        <<",\"absolute_error_sum\":"<<d.absolute_error_sum<<",\"max_absolute_error\":"<<d.max_absolute_error<<'}';
+}
+
 auto compartment_key(const GasCompartmentSnapshot& c) {
     return std::tie(c.id,c.generation,c.parents,c.parent_count,c.amount,c.volume,c.anchor_x,c.anchor_y,c.created_tick,c.revision,c.gauge);
 }
 struct Observation {
-    std::uint64_t projection=0, quantity=0, revision=0;
+    std::uint64_t projection=0, quantity=0, revision=0, roi_quantity=0;
     std::uint32_t next=0;
     QuantityLedgerSnapshot quantities;
     GasLedger gas;
@@ -159,7 +227,7 @@ struct Observation {
     std::uint64_t contacts=0;
     std::int64_t impulse_x=0, impulse_y=0;
 };
-Observation observe(const World& w) {
+Observation observe(const World& w, RectI64 roi) {
     Observation o;
     require(!w.has_failed(),"World must remain usable");
     o.projection=w.liquid_comparison_hash(LiquidStateProjection::PressureVariantEquivalenceV1);
@@ -167,7 +235,7 @@ Observation observe(const World& w) {
     o.diagnostics=w.pressure_flow_diagnostics();
     o.compartments=w.gas_compartments(); o.history=w.gas_history();
     o.next=w.gas_next_id(); o.revision=w.gas_topology_revision();
-    o.quantity=w.water_quantity({0,0,128,128});
+    o.quantity=w.water_quantity({0,0,128,128}); o.roi_quantity=w.water_quantity(roi);
     require(o.quantity==o.quantities.water_visible+o.quantities.water_overfill,"fixture query and complete stored quantity ledger agree");
     o.contacts=w.transient_contact_count(7); o.impulse_x=w.transient_contact_impulse_x(7); o.impulse_y=w.transient_contact_impulse_y(7);
     return o;
@@ -175,6 +243,7 @@ Observation observe(const World& w) {
 void equivalent(const Observation& a, const Observation& b) {
     require(a.projection==b.projection,"same-tick pressure-variant projection mismatch");
     require(a.quantity==b.quantity && a.quantities==b.quantities,"complete quantity ledger mismatch");
+    require(a.roi_quantity==b.roi_quantity,"declared ROI quantity mismatch");
     require(a.next==b.next && a.revision==b.revision,"global gas allocator/revision mismatch");
     require(std::tie(a.gas.created,a.gas.absorbed,a.gas.vented,a.gas.collapsed,a.gas.merges,a.gas.splits,a.gas.creations,a.gas.vents,a.gas.collapses,a.gas.amount_live)==
             std::tie(b.gas.created,b.gas.absorbed,b.gas.vented,b.gas.collapsed,b.gas.merges,b.gas.splits,b.gas.creations,b.gas.vents,b.gas.collapses,b.gas.amount_live),"gas ledger mismatch");
@@ -234,10 +303,19 @@ int run(std::string_view profile, std::string_view fallback, std::uint32_t worke
         auto start=Clock::now(); worlds[arm]=std::make_unique<World>(config); constructor_ns[arm]=nanos(start);
         start=Clock::now(); setup(*worlds[arm],profile); setup_ns[arm]=nanos(start);
     }
-    std::cout<<"{\"event\":\"header\",\"schema\":\"lcb002-total-cost-v1\",\"profile\":\""<<profile
+    const auto domain=head_domain(profile), roi=flux_roi(profile);
+    std::array<std::vector<PressureHeadSnapshot>,3> head_samples;
+    // Apparatus storage is fixed before all tick timers; no per-tick growth.
+    for (auto& samples : head_samples) samples.resize(static_cast<std::size_t>(domain.width*domain.height));
+    std::cout<<"{\"event\":\"header\",\"schema\":\"lcb002-total-cost-v2\",\"execution\":2,\"profile\":\""<<profile
         <<"\",\"fallback\":\""<<fallback<<"\",\"workers\":"<<workers<<",\"replicate\":"<<replicate
         <<",\"phase_ticks\":["<<kCold<<','<<kWarm<<','<<kDisturbed<<"],\"sizeof_world\":"<<sizeof(World)
-        <<",\"sizeof_world_config\":"<<sizeof(WorldConfig)
+        <<",\"sizeof_world_config\":"<<sizeof(WorldConfig)<<",\"chunk_size\":"<<worlds[0]->config().chunk_size
+        <<",\"sizeof_pressure_head_snapshot\":"<<sizeof(PressureHeadSnapshot)
+        <<",\"apparatus_head_buffer_capacity_bytes\":"<<(head_samples[0].capacity()+head_samples[1].capacity()+head_samples[2].capacity())*sizeof(PressureHeadSnapshot)
+        <<",\"head_scope\":\"last pre-kernel prepared slot; may be stale after transport or writes; not current authority; all resident cells sampled outside timers; errors in Water mass units\""
+        <<",\"flux_scope\":\"ROI end minus start at zero tick Water sources/sinks and zero host Water edits; inferred NET boundary inflow only, not gross or per-face transport\""
+        <<",\"head_sample_domain\":"; rect_json(domain); std::cout<<",\"boundary_flux_roi\":"; rect_json(roi); std::cout
         <<",\"participant_scope\":\"maximum distinct pool threads claiming at least one task in any dispatch of this tick; serial reports1 only with jobs\""
         <<",\"counter_scope\":\"since preceding tick snapshot, including separately timed host edits and their producer invalidation\""
         <<",\"memory_scope\":\"process peak includes all three simultaneous Worlds, three pools when configured, parity observations, apparatus and allocator; declared fields are not a complete World footprint\"}\n";
@@ -257,11 +335,19 @@ int run(std::string_view profile, std::string_view fallback, std::uint32_t worke
     }
     for (int t=0;t<kTicks;++t) {
         bool require_bfs_reuse=false;
-        std::array<std::uint64_t,3> edit_ns{}, tick_ns{};
+        std::array<std::uint64_t,3> edit_ns{}, tick_ns{}, roi_before_tick{};
+        std::array<std::array<WaterQuantityFlow,kQuantityKindCount>,3> water_kinds_before_tick{};
         std::array<TickStats,3> stats{};
         if (t==kCold) warm_start=previous;
         for (std::size_t arm=0;arm<3;++arm) {
+            const auto before_edit=worlds[arm]->quantity_ledger().kinds[static_cast<std::size_t>(QuantityKind::ExternalEdit)];
+            const auto before_edit_roi=worlds[arm]->water_quantity(roi);
             const auto start=Clock::now(); const auto changed=edit(*worlds[arm],profile,t); edit_ns[arm]=nanos(start);
+            const auto after_edit=worlds[arm]->quantity_ledger();
+            require(before_edit==after_edit.kinds[static_cast<std::size_t>(QuantityKind::ExternalEdit)],"registered host edits must produce/consume no Water, including inside the ROI");
+            roi_before_tick[arm]=worlds[arm]->water_quantity(roi);
+            require(before_edit_roi==roi_before_tick[arm],"host edits must preserve ROI Water");
+            water_kinds_before_tick[arm]=after_edit.kinds;
             require_bfs_reuse=require_bfs_reuse || changed;
         }
         for (int position=0;position<3;++position) {
@@ -270,11 +356,16 @@ int run(std::string_view profile, std::string_view fallback, std::uint32_t worke
         }
         // Every World is observed exactly once, after all three tick timers.
         std::array<Observation,3> observations;
+        std::array<HeadCoverage,3> head_coverage{};
+        std::array<HeadDifference,3> head_difference{};
         for (int position=0;position<3;++position) {
             const auto arm=static_cast<std::size_t>((replicate+t+position)%3);
-            observations[arm]=observe(*worlds[arm]);
+            observations[arm]=observe(*worlds[arm],roi);
+            head_coverage[arm]=sample_heads(*worlds[arm],domain,head_samples[arm]);
+            require(observations[arm].quantities.kinds==water_kinds_before_tick[arm],"net boundary measurement requires zero tick Water sources AND sinks of every kind");
         }
         equivalent(observations[0],observations[1]); equivalent(observations[0],observations[2]);
+        for (std::size_t arm=0;arm<3;++arm) head_difference[arm]=compare_heads(head_samples[0],head_samples[arm]);
         for (std::size_t arm=0;arm<3;++arm) {
             const auto now=worlds[arm]->pressure_optimization_snapshot();
             if (require_bfs_reuse && arm!=0U)
@@ -302,6 +393,10 @@ int run(std::string_view profile, std::string_view fallback, std::uint32_t worke
                 <<",\"gas_visited\":"<<diagnostic.gas_visited<<",\"gas_regions\":"<<diagnostic.gas_regions
                 <<",\"atmosphere_regions\":"<<diagnostic.atmosphere_regions<<",\"chunk_allocations\":"<<diagnostic.chunk_allocations
                 <<",\"woken_blocks\":"<<diagnostic.woken_blocks<<"},\"counter_delta\":"; counters_json(previous[arm].counters,now.counters);
+            const auto net_inflow=static_cast<std::int64_t>(observations[arm].roi_quantity)-static_cast<std::int64_t>(roi_before_tick[arm]);
+            std::cout<<",\"prepared_head\":"; heads_json(head_coverage[arm],head_difference[arm]);
+            std::cout<<",\"boundary_water\":{\"start_quantity\":"<<roi_before_tick[arm]<<",\"end_quantity\":"<<observations[arm].roi_quantity
+                <<",\"host_produced\":0,\"host_consumed\":0,\"tick_produced\":0,\"tick_consumed\":0,\"net_inflow\":"<<net_inflow<<",\"balance_residual\":0}";
             std::cout<<",\"memory\":"; snapshot_json(*worlds[arm],now); std::cout<<"}\n";
             previous[arm]=now;
         }

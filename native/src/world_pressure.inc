@@ -73,6 +73,18 @@ PressureCellState World::pressure_cell(std::int64_t x, std::int64_t y) const noe
     return out;
 }
 
+PressureHeadSnapshot World::prepared_pressure_head(std::int64_t x, std::int64_t y) const noexcept {
+    if (pressure_ == nullptr) return {};
+    const auto target = address(x, y);
+    const auto* chunk = find_chunk(target.chunk);
+    if (chunk == nullptr || chunk->pressure == nullptr)
+        return {PressureHeadStatus::NonResident, 0};
+    const auto head = chunk->pressure->head[target.index];
+    if (head == PressureChunk::kNoHead) return {PressureHeadStatus::NoHead, 0};
+    if (is_unknown_head(head)) return {PressureHeadStatus::Unresolved, head};
+    return {PressureHeadStatus::Prepared, head};
+}
+
 std::vector<GasCompartmentSnapshot> World::gas_compartments() const {
     std::vector<GasCompartmentSnapshot> out;
     if (pressure_ == nullptr) return out;
