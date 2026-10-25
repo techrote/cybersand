@@ -2,10 +2,10 @@
 title: Liquid solver family policy and API specification
 status: Approved design
 document-kind: design
-scope: LCB-000 Gate C accepted design and Current main LCB-001 native contract — four-family identities, immutable per-World per-material policy, admission/readback, W-CY motion/material block v2, pressure reference and cross-issue mapping; native setup/receipt/accounting detail has a separate canonical owner, while inertial and cached/dormant execution remain outside this accepted checkpoint
+scope: LCB-000 Gate C accepted design, Current main LCB-001 native contract and branch-Current LCB-002 pressure variants — four-family identities, immutable per-World per-material policy, admission/readback, W-CY motion/material block v2 and cross-issue mapping; native setup/receipts and pressure optimization mechanisms have separate canonical owners, while inertial and final branch qualification remain outside this checkpoint
 canonical-for: [liquid-solver-family-policy]
 last-reviewed: 2026-10-25
-related-documents: [pressure-flow-v1.md, liquid-prepared-setup-and-receipts.md, ../systems/water-design.md, ../systems/materials-and-rule-kernels.md, ../systems/flow-transport-and-profiles.md, ../decisions/ADR-005-water-model.md, ../operations/lcb-water-comparison-and-fixtures.md, ../operations/lcb-manual-comparison-ux.md, ../audits/2026-10-23-lcb000-gates-cde-design-evidence.md]
+related-documents: [pressure-flow-v1.md, liquid-prepared-setup-and-receipts.md, ../systems/water-design.md, ../systems/materials-and-rule-kernels.md, ../systems/flow-transport-and-profiles.md, ../decisions/ADR-005-water-model.md, ../operations/lcb-water-comparison-and-fixtures.md, ../operations/lcb-manual-comparison-ux.md, ../audits/2026-10-23-lcb000-gates-cde-design-evidence.md, pressure-optimization.md]
 ---
 
 # Liquid solver family policy and API specification
@@ -31,7 +31,7 @@ canonical contract is [native prepared setup and receipts](liquid-prepared-setup
 The owner requested a narrow freeze of those native versioned codecs; this
 does not freeze the production Cell carrier, global ABI, physics calibration
 or full host replay. The C64-E8 layout, defaults and historical content/state
-hashes are unchanged. W-IN, Brine inertial, #201 variants, the remaining #202
+hashes are unchanged. W-IN, Brine inertial, the remaining #202
 constructors and comparison UI remain **Planned**.
 
 - Without an explicit request every material executes its **current default**
@@ -61,6 +61,17 @@ Claim labels used below:
 | **Owner-approved** | Recorded owner decision in #200/#213 |
 | **Proposed** | This Gate C design; awaiting review |
 | **Deferred to B** | Depends on the #204 storage handoff |
+
+## Current pressure-variant branch qualification
+
+**Current on `codex/lcb002-pressure-variants`, pending final acceptance:**
+Water × `pressure_flow_v1/reference`, `cached` and `cached_dormant` are admitted
+distinctly by `LiquidPolicyBuild::running()`. The [optimization contract](pressure-optimization.md)
+owns the derived mechanisms and execution3 identity. No physical parameter,
+default family or unsupported material mapping changes. Accepted #246 main
+still describes its reference-only pressure checkpoint; source admission on
+this branch does not reattest its retained runtimes as #201 execution.
+Full host constructor, actual Rapier and Web qualification remain separate.
 
 ## What exists today (Current)
 
@@ -131,12 +142,13 @@ two illustrative contract schemas remain historical contract-test schemas.
 The accepted #246 main build additionally qualifies Water ×
 `cellular_yield_v1/reference` and appends its actual optional Water material
 block **v2**, `{viscosity_index 0..255}`, default 0. It does not reinterpret
-the illustrative v1 `flow_rate_permille` block. Current main outcomes are:
+the illustrative v1 `flow_rate_permille` block. The following table distinguishes
+accepted #246 main from current #201 branch source:
 
 | Request | Outcome |
 |---|---|
 | Water × `pressure_flow_v1/reference`, with or without its family block | **Accepted** on main; Water runs the [pressure reference](pressure-flow-v1.md) |
-| Water × `pressure_flow_v1/cached` or `cached_dormant` (#201) | `family_unavailable`, detail `pressure_flow_v1/<variant> is not compiled/qualified for material 3 in this build` |
+| Water × `pressure_flow_v1/cached` or `cached_dormant` (#201) | Accepted in current #201 branch source with distinct applied variant; [optimization qualification](pressure-optimization.md) remains separate from reference-only accepted #246 main |
 | Matrix `rejected` cell (e.g. Oil × `inertial_cellular_v1`, NC-1; any non-Water liquid × `pressure_flow_v1`) | `combination_rejected` |
 | `proposed_alternate` cell (Toxic Sludge × inertial) | `not_selectable` |
 | A variant the cell does not offer (e.g. Water FreeMass `cached`) | `variant_unsupported` |
@@ -278,7 +290,7 @@ source-matched rebuild as for any native edit.
 |---|---|---|---|
 | `freemass_v1` | Current fractional conserved pairwise Water | existing source | Yes, Water only (default) |
 | `cellular_yield_v1` | Whole-cell yielding motion plus material hooks | existing source; #200 W-CY | Ten liquids by default; Water opt-in on main through #246 with its own v2 viscosity block |
-| `pressure_flow_v1` | Corrected pressure/overfill/flow/gas | #200 | `reference` only, Water, opt-in: Current on main since #245 ([design](pressure-flow-v1.md)); `cached`/`cached_dormant` no (#201) |
+| `pressure_flow_v1` | Corrected pressure/overfill/flow/gas | #200 | `reference`, Water, opt-in on main since #245; `cached`/`cached_dormant` Current in #201 branch source, pending runtime/final CI ([optimization contract](pressure-optimization.md)) |
 | `inertial_cellular_v1` | Non-pressure motion with retained velocity/accumulator | #212 | No |
 
 **Implementation variants** (an axis independent of family):
@@ -642,7 +654,7 @@ a typed refusal and leaves the live session untouched, as
 | `unknown_material` | ID outside the catalogue or reserved (10) |
 | `not_a_liquid` | assignment to a non-liquid descriptor |
 | `unknown_family` / `unknown_variant` | code not in this build's catalogue |
-| `family_unavailable` | family, cell or variant not compiled/qualified; accepted main still refuses `inertial_cellular_v1` and pressure `cached`/`cached_dormant`, while admitting Water reference PF and W-CY |
+| `family_unavailable` | family, cell or variant not compiled/qualified; accepted #246 main refuses `inertial_cellular_v1` and pressure `cached`/`cached_dormant`; current #201 branch admits all three Water PF variants, while unsupported material/family combinations still refuse |
 | `combination_rejected` | matrix status `rejected` for that material×family |
 | `variant_unsupported` | variant not offered by that family |
 | `water_semantics_incompatible` | family cannot honour the requested Water mass bits/coherence |

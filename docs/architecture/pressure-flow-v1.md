@@ -2,10 +2,10 @@
 title: pressure_flow_v1 reference — corrected Water pressure family
 status: Current
 document-kind: design
-scope: LCB-001 (#200) accepted main opt-in Water pressure_flow_v1/reference and hash v2/CYPS2 accounting — admission, solver-owned state, gas-compartment topology and identity, head snapshot, kernel laws, declared parameters and bounds, lifecycle per mutation path, physical-state hash, CYPS persistence, inspection APIs and known limits; cached/dormant variants (#201) and the comparison host (#202) are not here
+scope: LCB-001 (#200) accepted main opt-in Water pressure_flow_v1/reference and hash v2/CYPS2 accounting — admission, solver-owned state, gas-compartment topology and identity, head snapshot, kernel laws, declared parameters and bounds, lifecycle per mutation path, physical-state hash, CYPS persistence, inspection APIs and known limits; branch-Current cached/dormant mechanisms (#201) and the comparison host (#202) have separate canonical owners
 canonical-for: [pressure-flow-v1, gas-compartments, physical-state-hash, physical-state-persistence]
 last-reviewed: 2026-10-25
-related-documents: [lcb-pressure-inertial-handoff.md, liquid-state-transition-matrix.md, liquid-solver-family-policy.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb001-pressure-reference-publication.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md]
+related-documents: [lcb-pressure-inertial-handoff.md, liquid-state-transition-matrix.md, liquid-solver-family-policy.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb001-pressure-reference-publication.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, pressure-optimization.md]
 ---
 
 # pressure_flow_v1 reference — corrected Water pressure family
@@ -23,13 +23,14 @@ family on 2026-10-24 (LCB continuous-execution instruction). Evidence, including
 failed attempts and runtime identities, is in the
 [publication record](../audits/2026-10-24-lcb001-pressure-reference-publication.md).
 
-The implemented pressure family admits Water with variant `reference`. It stores
-overfill and retained horizontal flow in an optional per-cell sidecar, plus
-Empty-cell gas labels and a World-owned compartment table. Requests for cached
-or dormant variants currently refuse; they do not execute a different Water
-solver. Other materials retain their own kernels, and default Water remains
-FreeMass. The storage, admission and refusal details below describe that native
-implementation separately from later application-host acceptance.
+Accepted #246 main admits Water with variant `reference`. Current source on
+`codex/lcb002-pressure-variants` also admits `cached` and `cached_dormant` with
+the same pressure law. Its [optimization contract](pressure-optimization.md)
+owns derived head/component caches, motion certificates, execution identity and
+cost admission; source-matched publication and final ready-PR acceptance remain
+pending. These variants are implementations of one family, not new physics.
+All retain the optional overfill/flow/gas sidecar and World compartment table.
+Other materials keep their kernels and default Water remains FreeMass.
 
 Accepted main also supplies W-CY, explicit normalization, typed native
 receipts and exact shared quantity accounting. Their construction, ownership,
@@ -46,7 +47,8 @@ This page retains the pressure laws; its characterization remains the recorded
 `349d593` #245 evidence, not a rerun of that campaign on the residual delta.
 
 What this page does **not** claim:
-- `cached` and `cached_dormant` (#201) are refused (`family_unavailable`);
+- #201 branch source admission is not accepted Windows/Linux runtime or full-host qualification;
+  see the [dated optimization evidence](../audits/2026-10-25-lcb002-pressure-variants.md);
 - native W-CY and normalization do not supply a Godot normalization opt-in or
   complete #202 comparison host; the other host constructors still run defaults;
 - Web/WASM execution has not been run.
@@ -55,7 +57,7 @@ What this page does **not** claim:
 
 | Piece | Location |
 |---|---|
-| Admission (running build), optional family block | `LiquidPolicyBuild::running()` in [`liquid_solver_policy.hpp`](../../native/include/cybersand/liquid_solver_policy.hpp): Water × family 3 qualified for variant `reference` only (`qualified_variants`); schema `pressure_flow_v1` v1 `{gas_enabled 0..1, atmospheric_head_rows 16..4096}`, optional |
+| Admission (running build), optional family block | `LiquidPolicyBuild::running()` in [`liquid_solver_policy.hpp`](../../native/include/cybersand/liquid_solver_policy.hpp): Water × family 3 qualified for `reference` on accepted #246 main and for all three variants in current #201 branch source (`qualified_variants`); schema `pressure_flow_v1` v1 `{gas_enabled 0..1, atmospheric_head_rows 16..4096}`, optional |
 | Public value types and declared constants | [`pressure_flow.hpp`](../../native/include/cybersand/pressure_flow.hpp): `PressureFlowParameters`, `PressureCellState`, `GasCompartmentSnapshot`, `GasHistoryRecord`, `GasLedger`, `PressureFlowLedger`, `PressureFlowDiagnostics`, `kAtmosphereLabel`, `kVacuumLabel` |
 | World-owned state and scratch | [`world_pressure_state.inc`](../../native/src/world_pressure_state.inc): `World::PressureState` |
 | Gas resolution, heads, kernel, hash, persistence | [`world_pressure.inc`](../../native/src/world_pressure.inc) |
@@ -366,11 +368,13 @@ they do not describe source `349d593`.
 
 ## Known limits
 
-- **Cost.** Preparation scans every resident chunk each tick (gas seeds, relabel,
+- **Reference cost.** Preparation scans every resident chunk each tick (gas seeds, relabel,
   column and row passes): the reference is O(resident cells). A 1024² dam runs at
-  roughly 1.5× Current single-threaded in the harness. Incremental caches and
-  dormancy are #201.
-- **Dormancy remains Planned.** A #201 rest certificate must preserve body
+  roughly 1.5× Current single-threaded in the source-qualified harness above.
+  The [#201 branch contract](pressure-optimization.md) separately owns derived
+  caches, retained global gas work and complete-tick cost evidence.
+- **Dormancy is Current in #201 branch source; acceptance is pending.** Its
+  [motion certificate](pressure-optimization.md#motion-certificates-preserve-ordinary-obligations) preserves body
   contact reports even when a failed gravity/diagonal probe moves no Water:
   those reports feed actual body coupling. It must preserve material stages,
   prove future motion is a no-op rather than freeze nonzero flow, and demonstrate

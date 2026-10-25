@@ -5,7 +5,7 @@ canonical-for: [public-and-adapter-interface-layouts]
 status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
-related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md]
+related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
 last-reviewed: 2026-10-25
 ---
 
@@ -628,6 +628,26 @@ Native counterparts on `World` are `pressure_flow_enabled`,
 in [`world.hpp`](../../native/include/cybersand/world.hpp) and
 [`pressure_flow.hpp`](../../native/include/cybersand/pressure_flow.hpp). No C API
 entry point exposes them. The C API/global ABI is not frozen by these additions.
+
+### LCB-002 copied pressure optimization observations
+
+**Current in #201 branch source, pending runtime and final CI:** the exclusive
+adapter owner serializes these calls with ticks. No result exposes mutable
+World/cache storage or authorizes simulation skipping.
+
+| Call | Copied result |
+|---|---|
+| `CyberNativeCellWorld.get_liquid_comparison_hash(1 or 2)` | Sixteen hexadecimal digits in the named same-tick or quiescent diagnostic domain; unknown IDs/unavailable World return an empty string. Complete continuation hashes retain their separate meaning. |
+| `CyberNativeCellWorld.inspect_pressure_optimization()` | Schema1 status, actual cached/dormant flags, execution3/identity-encoding1, requested budgets, observed capacities and cumulative work. Unsigned fields are decimal strings; status/version fields are small integers. Attempts count actual proofs; declines include warmup/backoff and obligation deferrals. |
+| `World::prepared_pressure_head(x, y)` | A value/status copy of the last prepared slot: family unavailable, nonresident, no head, unresolved encoded sentinel, or prepared numeric head. Valid zero differs from no head. It can be stale after transport/edits and unprepared after restore; it is not current cell pressure or certificate authority. |
+| `World::copy_pressure_head_chunk_coordinates(span)` | Required actual resident chunk count in a pressure World, including chunks allocated by gas discovery; sufficient caller storage receives copied coordinates, while a short span receives no partial result. A World without pressure returns zero. The call allocates and mutates nothing; the caller can sort its own roster and verify complete sampling. |
+
+Native `pressure_optimization_snapshot()` and `pressure_optimization_identity()`
+provide the underlying copied values. The [canonical optimization page](../architecture/pressure-optimization.md)
+owns the fields and limits. `get_pressure_flow_ledger().last_tick` reports work
+diagnostics and can legitimately differ across variants; compare authoritative
+PF fields separately. Prepared-head errors and declared-region net Water
+balances are diagnostic observations, not gross per-face flux or Rapier forces.
 
 ### Native prepared liquid setup and receipts
 

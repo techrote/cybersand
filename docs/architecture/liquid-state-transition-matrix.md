@@ -2,10 +2,10 @@
 title: Liquid material and solver state-transition matrix
 status: Approved design
 document-kind: design
-scope: Operation-by-operation transition rules for default liquids, native W-CY and pressure reference, plus Planned inertial/cache/dormancy requirements — ownership, state movement, exact quantity/source-sink, invalidation and family applicability; no production Cell layout choice
+scope: Operation-by-operation transition rules for default liquids, native W-CY, pressure reference and branch-Current pressure caches/motion certificates, plus Planned inertial requirements — ownership, state movement, exact quantity/source-sink, invalidation and family applicability; no production Cell layout choice
 canonical-for: [liquid-state-transition-matrix]
 last-reviewed: 2026-10-25
-related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-prepared-setup-and-receipts.md, lcb-pressure-inertial-handoff.md, data-ownership-and-lifetimes.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, ../systems/water-design.md]
+related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-prepared-setup-and-receipts.md, lcb-pressure-inertial-handoff.md, data-ownership-and-lifetimes.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, ../systems/water-design.md, pressure-optimization.md]
 ---
 
 # Liquid material and solver state-transition matrix
@@ -33,7 +33,8 @@ related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-
   [Native prepared setup and receipts](liquid-prepared-setup-and-receipts.md)
   owns normalization, native-issued outcomes, typed receipt and accounting
   codecs. This owner-requested narrow native freeze is not a production Cell or
-  global ABI freeze. IN and #201 caches/dormancy remain Planned.
+  global ABI freeze. IN remains outside this source; #201 caches/dormancy are
+  Current on their branch, with [separate qualification](pressure-optimization.md).
 - **Storage** follows the [Gate B bounded handoff](../audits/2026-10-23-lcb000-gate-b-state-handoff.md) (accepted; [refresh](../audits/2026-10-23-lcb000-admission-gatea-gateb-refresh.md)):
   - the C64-E8 Cell is unchanged;
   - family state lives in **optional, versioned, solver-owned storage**, plus
@@ -218,7 +219,7 @@ corner travel, and lighter-below non-support.
 
 | Operation | Rule |
 |---|---|
-| Sleep | Current: ordinary quiet threshold 3; W-CY retains deadlines for legal future cadence/yield opportunities and blocked pools may sleep. Planned #201 dormancy needs analytical future rest, preserves no-motion body contacts/material work and cannot freeze nonzero flow or suppress other families (`dormant-water-active-oil`). |
+| Sleep | Current: ordinary quiet threshold 3; W-CY retains deadlines for legal future cadence/yield opportunities and blocked pools may sleep. Current #201 branch motion certificates prove a bounded no-op and preserve no-motion body contacts/material work; they cannot freeze nonzero flow or suppress other families. Execution3 warmup/backoff selects ordinary motion during deferred proofs; final qualification remains pending ([contract](pressure-optimization.md)). |
 | Wake | any write, cross-family contact, topology change, gas change or remote head change affecting a dormant certificate |
 | Reset/rebuild | a new World with fresh optional storage and gas table; no state carried from the old World; validate → reconstruct → commit |
 | Save/readback | Current on main: typed-v1 prepared setup/receipts/accounting, complete physical hash2 and CYPS2 continuation; unknown schema/format and historical CYPS1 refuse. Qualified provenance is not full host replay proof. CYSD1 loads defaults and is never a continuation. |
@@ -257,4 +258,4 @@ completed N+1.
 | Executable now (Current) | `test_lcb_physics_contracts.gd` (ownership swap, ledgers, dormancy, deep-release characterization, heads) and `test_lcb_negative_contracts.gd` |
 | Executable on main (PF reference, #245) | native `test_lcb_pressure.cpp` (13 cases: admission, gas fixtures, Empty-only chunks, quantity/worker parity, two-limb, barriers, static rest/wake, lifecycle ledgers, physical hash and CYPS persistence, default goldens) and `test_lcb_pressure_reference.gd` (12 sections) |
 | Native residual #200 | `test_water_cellular_yield.cpp`, `test_water_normalization.cpp`, `test_liquid_construction_refusal.cpp`, `test_liquid_run_receipt.cpp`, `test_quantity_ledger.cpp`; qualified native evidence in the [canonical contract](liquid-prepared-setup-and-receipts.md#tests-and-qualified-evidence) |
-| Remaining campaign dependencies | #202 host/normalization UI, #212 IN, #201 cached/dormant and their registered mixed arms remain pending; native W-CY tests do not imply those campaign gates passed |
+| Remaining campaign dependencies | #201 cached/dormant source exists with separate runtime/final-CI gates; #202 host/normalization UI, #212 IN and registered integrated arms retain their own qualification. Native W-CY tests do not imply those gates passed |

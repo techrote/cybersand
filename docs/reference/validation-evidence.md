@@ -5,10 +5,28 @@ document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
 last-reviewed: 2026-10-25
-related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md]
+related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md, ../audits/2026-10-25-lcb002-pressure-variants.md]
 ---
 
 # Validation evidence ledger
+
+## LCB-002 pressure variants branch — 2026-10-25
+
+[The dated #201 ledger](../audits/2026-10-25-lcb002-pressure-variants.md) retains
+exact implementation/test/campaign checkpoints and failures for the unmerged
+branch. [The optimization contract](../architecture/pressure-optimization.md)
+owns the Current source behavior; this is separate from accepted #246 main.
+Execution1 local Windows complete-tick measurements retain ordinary-sleep,
+topology-churn and forced-fallback negatives. Configured1/4 is distinct from
+observed task claimants, and process RSS includes all three Worlds/apparatus.
+No global or cross-platform speedup follows. Execution2 correctness and fixture
+qualification are retained separately. Execution3 adds whole-layer work-credit
+admission and suspension to warmup/backoff; numerical prepared-head/net-boundary
+observations and fresh source proofs must be recorded separately, not inferred
+from the older campaign. The fixed credits do not establish wall-clock break-even.
+Final source-matched Windows/Linux publication and ready-PR gates remain pending.
+Native rotating mask/contact parity does not qualify actual Rapier motion,
+displacement, full application constructors, Web or #203 packaging.
 
 ## Accepted LCB-001 shared native contract — 2026-10-25
 

@@ -5,7 +5,7 @@ document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
 last-reviewed: 2026-10-25
-related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
+related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
@@ -758,7 +758,7 @@ measurements remain in the dated evidence record.
 |---|---|
 | W-CY, `water-normalize-v1`, native typed receipts and exact quantity accounting | #200, Accepted on main through #246; scope and remaining ownership [below](#lcb-001-shared-contract-accepted--2026-10-25) |
 | Host provenance/collection proof and remaining normal-application constructors | #202, Planned; preserve native shared interfaces from #200 |
-| `cached`/`cached_dormant`, incremental caches and dormancy (the reference is O(resident cells) per tick) | [#201](https://github.com/techrote/cybersand/issues/201), Planned |
+| `cached`/`cached_dormant`, incremental caches and motion certificates | [#201](https://github.com/techrote/cybersand/issues/201), Current in branch source; [runtime/final acceptance pending](#lcb-002-pressure-variants-branch--2026-10-25) |
 | Comparison host and UI; re-dispositioning the registered candidate arms | [#202](https://github.com/techrote/cybersand/issues/202), Planned |
 | `inertial_cellular_v1` (W-IN, Brine), M1/M2 | #212, Planned; no longer owner-held |
 | Packaged builds and isolated timing | [#203](https://github.com/techrote/cybersand/issues/203), Planned |
@@ -818,6 +818,26 @@ mandatory material stages, other liquids and future cadence/stochastic work.
 Zero rounded flow is not rest; a complete tick-inclusive hash cannot be a
 cross-tick static-rest predicate. Every successor native change needs fresh
 source-matched runtimes and its applicable exact-head gates.
+
+## LCB-002 pressure variants branch — 2026-10-25
+
+**Current on `codex/lcb002-pressure-variants`, not accepted main:** Water admits
+`pressure_flow_v1/reference`, `cached` and `cached_dormant` as implementations of
+the same physical law. [The optimization contract](../architecture/pressure-optimization.md)
+owns sparse head repair, sealed-component discovery reuse, conservative motion
+certificates and deterministic execution3 proof-cost admission. Default Water
+remains FreeMass. Generic #12 Stage4, pressure-to-Rapier forces and #45 selection
+are not admitted by this work.
+
+The [dated #201 evidence](../audits/2026-10-25-lcb002-pressure-variants.md) owns
+exact checkpoints, local tests, retained failures and complete-tick cost scopes.
+Old execution1 measurements retain sleeping/churn/fallback negatives and cannot
+be reattested as execution3 performance. New prepared-head discrepancy and net
+boundary-balance observations are separate from equal projection or work counts.
+No global speedup is claimed. Source-matched Windows/Linux publication and the
+ready-PR Documentation/provenance, Native, Godot and applicable Water gates
+remain pending. Actual Rapier rotation/displacement, full host constructors and
+Web/integrated packaging retain #202/#203 ownership.
 
 ## Opt-in transport profiles
 
