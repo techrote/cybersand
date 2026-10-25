@@ -132,11 +132,17 @@ func _whole_cell_census(bridge: Variant, world: Variant, maximum: int) -> Dictio
 	return {"count":count, "full":full, "quantity":int(observation.water_integer)}
 
 func _whole_cell_water(bridge: Variant, definition: Dictionary, request: PackedInt32Array) -> void:
-	var whole_request: PackedInt32Array = _with(request, 3, 2)
+	for family: int in [2, 4]:
+		_whole_cell_family(bridge, definition, request, family)
+
+func _whole_cell_family(bridge: Variant, definition: Dictionary, request: PackedInt32Array, family: int) -> void:
+	var radius: int = 3 if family == 4 else 2
+	var format_version: int = 3 if family == 4 else PHYSICAL_STATE_VERSION
+	var whole_request: PackedInt32Array = _with(request, 3, family)
 	var validation: Dictionary = bridge.validate_liquid_policy(whole_request)
 	expect(validation.accepted and validation.refusal == null, "whole-cell Water policy must be admitted")
 	if not validation.accepted: return
-	expect(validation.receipt.assignments[0].applied_family == "cellular_yield_v1"
+	expect(validation.receipt.assignments[0].applied_family == ("inertial_cellular_v1" if family == 4 else "cellular_yield_v1")
 		and validation.receipt.admission == "qualified_candidate" and validation.receipt.normalization == null,
 		"whole-cell Water validation receipt")
 	var checked: Dictionary = Contract.validate(definition)
@@ -153,7 +159,7 @@ func _whole_cell_water(bridge: Variant, definition: Dictionary, request: PackedI
 			expect(world.diagnostic_reset({"workers":workers}), "whole-cell worker configuration rejected")
 			world.set_simulation_window_enabled(false)
 			var ok: bool = bridge.build_liquid_policy_world(world, basin, profile,
-				PackedInt32Array([1, bits, 12, 0]), PackedInt32Array(), whole_request)
+				PackedInt32Array([1, bits, 12, 0]), PackedInt32Array(), whole_request, radius)
 			expect(ok, "whole-cell construction failed: " + str(bridge.get_last_error()))
 			if not ok: return
 			expect(int(world.get_worker_threads()) == workers
@@ -165,6 +171,16 @@ func _whole_cell_water(bridge: Variant, definition: Dictionary, request: PackedI
 		for tick: int in range(21):
 			if tick > 0:
 				for world: Variant in runs: expect(world.simulation_tick(), "whole-cell Water tick faulted")
+			if family == 4 and tick == 1:
+				for world: Variant in runs:
+					var retained: bool = false
+					for y: int in range(8, 41):
+						for x: int in range(8, 56):
+							if world.material_at(x, y) != 3: continue
+							var motion: Dictionary = world.inspect_inertial_cell(Vector2i(x, y))
+							retained = retained or (motion.inertial_family and (motion.vx != 0 or motion.vy != 0 or motion.ax != 0 or motion.ay != 0))
+					expect(retained and world.get_liquid_solver_policy().maximum_rule_radius == 3,
+						"actual Water IN executes retained motion with explicit radius3, without fallback")
 			if tick % 10 != 0: continue
 			for world: Variant in runs:
 				var census: Dictionary = _whole_cell_census(bridge, world, maximum)
@@ -175,17 +191,17 @@ func _whole_cell_water(bridge: Variant, definition: Dictionary, request: PackedI
 		expect(str(runs[0].water_experiment_observation(Vector2i.ZERO, Vector2i(64, 64)).content_hash) != initial_hash,
 			"whole-cell Water did not move")
 		var saved: PackedByteArray = bridge.export_physical_state(runs[0])
-		expect(int(runs[0].get_physical_state_hash_version()) == PHYSICAL_STATE_VERSION
-			and saved.size() > 8 and saved.decode_u32(4) == PHYSICAL_STATE_VERSION,
-			"whole-cell quantity ledger requires CYPS/hash v2")
+		expect(int(runs[0].get_physical_state_hash_version()) == format_version
+			and saved.size() > 8 and saved.decode_u32(4) == format_version,
+			"whole-cell quantity ledger binds the actual family CYPS/hash version")
 		var restored: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
-		expect(bridge.import_physical_state(restored, saved), "whole-cell CYPS2 import failed")
+		expect(bridge.import_physical_state(restored, saved), "whole-cell family CYPS import failed")
 		expect(restored.get_physical_state_hash() == runs[0].get_physical_state_hash(),
-			"whole-cell CYPS2 restore changed continuation state")
+			"whole-cell family CYPS restore changed continuation state")
 		for tick: int in range(5):
 			expect(runs[0].simulation_tick() and restored.simulation_tick(), "whole-cell continuation tick failed")
 			expect(restored.get_physical_state_hash() == runs[0].get_physical_state_hash(),
-				"whole-cell CYPS2 continuation diverged at +%d" % (tick + 1))
+				"whole-cell family CYPS continuation diverged at +%d" % (tick + 1))
 	completed["whole_cell_admission_parity"] = true
 	# Final overlays decide admission. Intermediate fractional fills can be
 	# overwritten; an explicit zero fill remains a no-op even over another role.
@@ -196,7 +212,7 @@ func _whole_cell_water(bridge: Variant, definition: Dictionary, request: PackedI
 		12, 12, 1, 1, 128, 5, 12, 12, 1, 1, 255, 7,
 		13, 12, 1, 1, 255, 0, 14, 12, 1, 1, 0, 12])
 	expect(bridge.build_liquid_policy_world(world, rectangles, profile, PackedInt32Array([1, 8, 12, 0]),
-		overlays, whole_request), "resolved full overlays must be accepted: " + str(bridge.get_last_error()))
+		overlays, whole_request, radius), "resolved full overlays must be accepted: " + str(bridge.get_last_error()))
 	var selected: Dictionary = bridge.inspect_cell(world, Vector2i(12, 12))
 	expect(int(selected.state_a) == 255 and int(selected.state_b) == 7
 		and int(world.material_at(13, 12)) == 3 and int(world.material_at(14, 12)) == 2,
@@ -210,7 +226,7 @@ func _whole_cell_water(bridge: Variant, definition: Dictionary, request: PackedI
 		PackedInt32Array([12, 12, 2, 1, 128, 4, 12, 12, 1, 1, 255, 0])]
 	for fills: PackedInt32Array in fractional_cases:
 		expect(not bridge.build_liquid_policy_world(world, rectangles, profile, PackedInt32Array([1, 8, 12, 0]),
-			fills, whole_request), "final fractional Water must require explicit normalization")
+			fills, whole_request, radius), "final fractional Water must require explicit normalization")
 		var refusal: Dictionary = bridge.get_last_liquid_policy_refusal()
 		expect(refusal.get("code", "") == "normalization_required" and int(refusal.get("material", -1)) == 3
 			and str(refusal.get("detail", "")).contains("water-normalize-v1"), "fractional setup needs a typed refusal")
