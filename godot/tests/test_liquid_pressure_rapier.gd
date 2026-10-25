@@ -118,7 +118,11 @@ func cohort(bridge: Variant, workers: int) -> bool:
 			if results.size() == 9:
 				arm.contacts += int(results[5])
 				arm.impulse += absf(results[1]) + absf(results[2])
-			arm.physics.apply_cellular_results(tick + 1, results)
+			ok = expect(arm.physics.apply_cellular_results(tick + 1, results) == 1
+				and arm.physics.last_results_applied() == 1
+				and arm.physics.last_stale_results_rejected() == 0
+				and arm.physics.manual_step_count() == tick + 1,
+				"exactly one fresh cellular response is applied after exactly one manual Rapier step") and ok
 			var current: Dictionary = snapshot(arm.world)
 			ok = expect(int(current.water) == initial_water, "closed basin quantity stays exact") and ok
 			arm.translated = arm.translated or states[1] != arm.initial[1] or states[2] != arm.initial[2]
