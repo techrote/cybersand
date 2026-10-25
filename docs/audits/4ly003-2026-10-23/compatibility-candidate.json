@@ -1,0 +1,104 @@
+{
+  "schema": "4ly004-host-compatibility-candidate/v1",
+  "status": "4LY003_HOST_AND_TEACHER_QUALIFIED__4LY004_LEARNER_NOT_ADMITTED",
+  "source_scope": {
+    "upstream_4ly002_merge": "1f9336388f11be39abaae340a781a5eef52115d4",
+    "implementation_pr": "https://github.com/techrote/cybersand/pull/229",
+    "actual_4ly003_merge_sha": null,
+    "final_head_sha": null,
+    "final_head_note": "Recorded in the PR/issue completion receipt after exact-head CI; not embedded here because changing this file would create a new head.",
+    "teacher_qualification_checkout": "2bc2b6cfa9ad62512266df5804c5662b5ba8bd04",
+    "teacher_sha256": "0fb571cfd314a53fc86b3517fb5a8258a77d7215fcbcb43fc7f53519e7e29761",
+    "teacher_final_suite_sha256": "4bd18d728581f64fa770c4dc29f765eff956f61999b96d03d8e378d54efc3401",
+    "retired_public_final_scenario_rules": true,
+    "teacher_final_may_be_reused_as_learner_final": false,
+    "external_sealed_learner_final_required": true
+  },
+  "runtime_scope": {
+    "godot": "4.7",
+    "rapier": "0.35.2",
+    "native_source_sha": "source-bound by retained CI identity/readback; see 2026-10-24-4ly003-final-qualification.md",
+    "host": "CyberPhysicalActorArena native material + Rapier",
+    "physics_hz": 60,
+    "headless_physics": "actual_manual_stepping",
+    "desktop_parity_claim": false
+  },
+  "versions": {
+    "episode": "4ly-episode/v1",
+    "observation": "4ly-observation/v1",
+    "flat_observation": "4ly-flat-observation/v1",
+    "flat_channels": 54,
+    "action": "4ly-action/v1",
+    "physical_action_profile": "4ly_velocity_v1",
+    "producer_session": "physical_wire_action-v2",
+    "course": "4ly-flight-course/v1",
+    "split_geometry_version": 3
+  },
+  "decision": {
+    "decision_interval_ticks": 6,
+    "lease_ticks": 12,
+    "physics_ticks_per_second": 60,
+    "first_terminal_tick_stop": true,
+    "administrative_timeout_separate": true
+  },
+  "plant": {
+    "calibration_literal": "candidate_4ly002",
+    "controller_source_sha256": "fb86190c68c6a87e7d2ef7e845b1fb97305f188723a326f67f07caa6971cc8ae",
+    "profiles": {
+      "4ly_trainer": "f1f9286a27b929c96caca5aaf2be70cbd82e0fd933f29968c1aaaa43ac8f1704",
+      "4ly_hauler": "e9979ed9e437d2fcdf5c4c52fb4385e788d4ccd6f40c7494308c60c26c11e10d",
+      "4ly_drifter": "c195dd35677dcbdb76c85c798d0c1fbc103dcc40182932be7d70c755b1dbac24",
+      "4ly_dart": "a48a58c388fb0826f5b5b29005a7469d2cd081dd2c0ed3bfe6c028d88cd04084"
+    }
+  },
+  "teacher_qualification": {
+    "qualified": true,
+    "final_split_scored": true,
+    "episodes_read_back": 224,
+    "physical_ticks_read_back": 149534,
+    "navigation_recovery_credit": "157/160",
+    "retained_failures": "3 Hauler obstacle episodes",
+    "negative_controls_without_navigation_credit": "48/48",
+    "unsupported_hover_without_navigation_credit": "16/16",
+    "physics_faults": 0,
+    "invalid_actions": 0,
+    "custody_limit": "The one-use teacher-final generator source was visible in transient CI and its reviewer label was automation-supplied; this does not provide blind external custody and must not be transferred to the learner final."
+  },
+  "training_admission": {
+    "allowed": false,
+    "reason": "4LY-003 qualifies the actual-host interface and scripted reference only. 4LY-004 learner admission, training allocation and independently sealed learned-policy final evaluation are separate decisions.",
+    "final_teacher_split_scored": true,
+    "actual_host_throughput_measured": true,
+    "policy_success_claim": false,
+    "throughput_interpretation": "Prospectively bounded source-specific actual-host cost input only; no production realtime, transport or inference claim.",
+    "sealed_learner_final_suite_status": "Required downstream; the scored teacher suite is explicitly ineligible for reuse as an untouched learner final.",
+    "evaluator_reward": "Implemented task-only bounded terms; not policy observation"
+  },
+  "4ly003_acceptance_evidence": {
+    "plant_profile_controller_identity": "PASS",
+    "actual_host_teacher_score": "PASS",
+    "independent_trace_readback": "PASS",
+    "negative_controls": "PASS",
+    "final_geometry_separated_from_development": "PASS_WITH_CUSTODY_LIMIT_RECORDED",
+    "terminal_first_stepping": "PASS",
+    "resource_pilot": "PASS_AS_SOURCE_SPECIFIC_COST_INPUT",
+    "exact_head_ci": "Recorded externally on PR #229 and the #207 completion receipt after final-head validation"
+  },
+  "historical_source_bound_pilot": {
+    "tested_implementation_pr_head": "689ed94b0c0fb5ab05481d14eb1008cf35a6e23c",
+    "tested_synthetic_merge": "095ff8c3f7565062b3fcfaf77bd948881aa1d02f",
+    "github_actions_url": "https://github.com/techrote/cybersand/actions/runs/39940305048",
+    "platform": "GitHub hosted Ubuntu, AMD EPYC 7763 / 4 logical processors, Godot 4.7 / Rapier 0.35.2",
+    "physical_ticks": 906,
+    "wall_seconds": 1.761273,
+    "physics_ticks_per_sec": 514.400663610922,
+    "policy_decisions": 151,
+    "policy_decisions_per_sec": 85.7334439351537,
+    "host_count": 1,
+    "reset_time_total_us": 111321,
+    "observation_json_serialization_us": 43327,
+    "peak_static_memory_bytes": 73041849,
+    "transport_inference_overhead_us": null,
+    "admission": "Accepted as a source-bound prospective cost input for 4LY-004 planning; not a final-head performance or realtime guarantee."
+  }
+}
