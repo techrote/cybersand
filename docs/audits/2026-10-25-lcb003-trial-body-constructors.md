@@ -10,7 +10,47 @@ related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../op
 
 # LCB-003 desktop barrel and Ripper constructor checkpoint
 
+## App publication integration: preparation only — 2026-10-25
+
+Normal integration consumes App checkpoint
+`ea96d4851621c4bed37d5e6997a0320215450f79`, tree
+`493ab99d6a72ab2d671889ce9d7524cce4a7f650`, into the clean Trial checkpoint
+`7a3fe50f3b4c5031f1abd035c1e75c9fe462823f`. The ten source files fromf65f3de9
+remain exact; only additive documentation conflicts are resolved. Accepted main
+`06451f8ac9e8ac9b23a105d2fe22393375dc2d6b` is in the incoming ancestry, after
+Water #254's four exact02c required gates. The separately reviewed App
+[actual003 publication](2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
+retains source5f02/bot0c9, Windows runtimee3f17363 and Linux02ea0661,
+72 actual processes and the original615-entry input ledger. It did not execute
+the later Trial constructor code. Earlier Windows117 proofs below keep their
+original exact source, test-leaf and DLL qualifications; this merge runs no
+engine, browser or simulation test and makes no new platform or host-play claim.
+
+Both new manifests match all80 current native inputs, and all139 recorded native
+build inputs remain identical. Against the original535 build/execution hashes,
+exactly four files differ: `godot/scripts/actor_prototype_panel.gd`,
+`godot/scripts/main.gd`, `godot/scripts/simulation_worker.gd` and
+`godot/tests/test_liquid_desktop_default_host.gd`. The other531 hashes remain
+exact. The unchanged profile predicate additionally identifies six new files:
+`prepared_trial_body_session.gd`, `test_liquid_trial_body.gd` and the four
+`trial_body_*` leaf fixtures; current tracked build coverage would therefore be
+541 paths. The original ledger is not rewritten or represented as current Trial
+execution. No publication request or profile is changed.
+
+`check_repository.py` checks source-sensitive native inputs and runtime/LFS
+bytes; it does not require equality to every historical GDScript/test execution
+hash. The existing [GDScript-only reuse rule](../operations/local-build-and-validation.md#physical-usable-validation)
+therefore permits the same native libraries while requiring fresh acceptance of
+changed host scripts. This is not a native-input waiver or a new source-matched
+Trial execution result. Fresh applicable Trial exact-head/runtime gates remain
+open. All previous failures, full-match qualifications and owner Web deferral
+remain in force. The former eight native rebuild comparisons recorded below
+apply to the old inherited Water libraries, which this normal merge replaces
+with the actual validated App libraries and unchanged matching manifests.
+
 ## Source and ownership
+
+**Historical original isolated checkpoint, before the App merge above:**
 
 This local checkpoint is on `codex/lcb003-trial-body` in
 `C:/Users/_/.codex/worktrees/lcb003-trial-body/khybersand`, based on

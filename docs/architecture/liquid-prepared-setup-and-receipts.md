@@ -10,9 +10,33 @@ related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, liquid-
 
 # Native liquid prepared setup, receipts and quantity accounting
 
+The [actual003 Windows/Linux publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
+qualifies source5f02d089/bot0c9b1977 with import plus35 strict cases on each OS,
+72 actual processes and native80/build535 source ledgers. Existing prepared
+transaction/identity rules below are unchanged. It does not qualify every
+constructor or full host/scientific/manual acceptance. Additional Web/browser/
+shader work is owner-deferred until after the epic; historical Web functional
+results and rendering failures retain their original scope. Accepted Water
+main06451f8a now includes final02c after all four required gates, including
+ordinary/TSan/ASan-UBSan163 groups each. The application consumes that main via
+content-identical mergea704ce50; its own final exact-head acceptance stays
+separate from Water native acceptance.
 ## Desktop single-trial-body preparation
 
-**Current isolated unmerged trial branch, based on5f02d089:** desktop Exploratory
+This unmerged Trial successor now consumes App checkpoint
+`ea96d4851621c4bed37d5e6997a0320215450f79`, including the actual source5f02/
+bot0c9 publication and accepted main06451f8a. The ten Trial source files remain
+exactly sourcef65f3de9; its recorded Windows executions are not relabeled as
+tests of this merged head. All80 native manifest inputs and139 recorded native
+build inputs still match. The original535-entry build/execution ledger has
+four changed GDScript/test entries and omits six new Trial source paths; it
+retains its original5f02 execution identity. Those historical build-input changes
+are separate from native-source provenance, not eight native rebuild errors.
+The [dated Trial integration record](../audits/2026-10-25-lcb003-trial-body-constructors.md#app-publication-integration-preparation-only--2026-10-25)
+owns the exact drift and remaining fresh acceptance. No new engine test, request,
+profile, runtime publication or Web work occurs in this merge.
+
+**Current unmerged Trial successor, exact sourcef65f3de9 after App integration:** desktop Exploratory
 Liquids Apply stages the existing barrel8×14 or Ripper18×8 in the native-origin
 default demo and allowlisted exploratory MicroScenario maps. The default path
 still calls the shared native recipe, not GDScript geometry. Other actor/default
@@ -49,6 +73,8 @@ capacity refusal remains explicit. Positive IN trial-body, other constructor,
 full-host/host-mask continuation, Linux and exact-head gates remain open.
 Additional Web/browser/shader work is owner-deferred until after the epic.
 
+**Historical pre-publication App evidence, separate from this Trial head:**
+
 The final union's [local36-process host matrix](../audits/2026-10-25-lcb003-final-integration.md#complete-local-host-matrix-and-actual-web-result)
 passes import plus all35 cases against DLL93d3ee3f with held source/runtime
 inputs. Separately, [actual compat77/77 and threaded76/76 Web execution](../audits/2026-10-25-lcb003-web-common-water.md)
@@ -59,7 +85,7 @@ exact-head CI, remaining constructors and scientific/full-host acceptance.
 
 ## Final application source union
 
-**Current unmerged integration source, 2026-10-25:**
+**Historical first final-integration source, 2026-10-25:**
 `codex/lcb003-final-integration` combines accepted main `dc915f2b`, reviewed
 desktop native-default checkpoint `5f3f0c21`, published Water IN `c9e52b52`
 and final Water documentation `e2411469`, preserving their normal merge history.
@@ -88,9 +114,10 @@ physical hash version2. The test refuses an unknown identity; it never accepts a
 arbitrary hash. Paired old/new runtime execution reproduces all four original
 vectors and exact initial/four-tick tuple bytes and clocks in both namespaces.
 
-The still-unarmed LCB-003 publication profile privately consumes the complete
-Water005 proof and requires import plus35 cases, including actual synchronous
-Water bodies. Its native Web prerequisite requires76 named checks, six ordered
+At that preparation checkpoint the LCB-003 profile was still unarmed. Its
+unchanged contract privately consumes the complete Water005 proof and requires
+import plus35 cases, now executed by the actual5f02 publication on both OSes,
+including synchronous Water bodies. Its native Web prerequisite requires76 named checks, six ordered
 Water arms FM/CY/PF0/PF1/PF2/IN with one normalized payload, and all four retained
 mixed-family arms. Exact gross normalization, per-tick quantity, actual native
 family/variant/identity and Water IN motion accompany successful process exit.
@@ -99,15 +126,17 @@ Native receipt-v1 qualifications/false full-match eligibility remain unchanged.
 
 **Native #212 branch extension:** [Brine IN](inertial-cellular-v1.md) reuses this preparation boundary and outer receipt-v1 extension mechanism. Its actual instances expose hash3/CYPS3 and family4/state1/identity1. Non-IN version2 field emission remains retained; capability admission changes legitimately update embedded policy identities. The [integrated application slice](#inertial-application-readback-and-explicit-geometry) qualifies its stated local host scope separately.
 
-**Isolated Water IN native successor:** the same builder already classifies
+**Water IN native successor, now accepted main06451f8a:** the same builder already classifies
 Water CY or IN as WholeCell. New Water admission executes that existing
 setup-only water-normalize-v1 path, gross source/sink counters and digest; live
 partial writes still refuse. The [Water adapter](inertial-cellular-v1.md#water-in-native-successor--2026-10-25)
 adds no parallel normalizer, receipt schema or live family converter. Its
 local proof retains its exact source scope; later [actual sourceaa8af247 Water
 publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25)
-qualifies both target runtimes separately. Full ready-PR, scientific and host/Web
-qualification remain open.
+qualifies both target runtimes separately. Its final02c four-gate acceptance and
+main06451f8a merge are recorded in the [current publication ledger](../audits/2026-10-25-lcb003-runtime-publication.md#accepted-water-main-and-content-identical-integration--2026-10-25).
+Common-Water scientific, full-host/manual and packaging qualification remain
+open; additional Web work is owner-deferred until after the epic.
 
 ## Source and completion boundary
 

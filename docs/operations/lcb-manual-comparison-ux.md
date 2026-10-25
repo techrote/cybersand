@@ -10,7 +10,37 @@ related-documents: [../architecture/liquid-solver-family-policy.md, lcb-water-co
 
 # LCB manual liquid comparison UX flow
 
+The [actual003 Windows/Linux publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
+now executes import plus35 strict host/control cases on both target OSes at
+source5f02d089/bot0c9b1977. The actual default, ordinary demo, import, sampled/
+physical/Tower and synchronous-body observations keep their bounded constructor
+scope. Positive FM/CY default play remains distinct from three typed initial
+PF capacity refusals; CY/IN future fractional Water sources still refuse.
+
+The owner defers additional Web/browser/shader testing, analysis and
+implementation until after this epic. The [historical Web record](../audits/2026-10-25-lcb003-web-common-water.md)
+retains its functional success, rendering failure and diagnostic limits; no
+rendering pass or fallback is selected. This is a scheduling/acceptance-boundary
+amendment, not a change to non-Web quantity/refusal/parity/provenance, remaining
+constructor, scientific or packaged-build requirements. Full #202/#203 acceptance
+and final application exact-head CI/review remain open. Water PR #254 is now
+accepted main06451f8a after all four final02c gates; that native acceptance is
+consumed by content-identical application mergea704ce50 and does not qualify
+remaining constructors or complete manual/scientific comparisons.
 ## Desktop barrel and Ripper selection
+
+This unmerged Trial successor now consumes App checkpoint
+`ea96d4851621c4bed37d5e6997a0320215450f79`, including the actual source5f02/
+bot0c9 publication and accepted main06451f8a. The ten Trial source files remain
+exactly sourcef65f3de9; its recorded Windows executions are not relabeled as
+tests of this merged head. All80 native manifest inputs and139 recorded native
+build inputs still match. The original535-entry build/execution ledger has
+four changed GDScript/test entries and omits six new Trial source paths; it
+retains its original5f02 execution identity. Those historical build-input changes
+are separate from native-source provenance, not eight native rebuild errors.
+The [dated Trial integration record](../audits/2026-10-25-lcb003-trial-body-constructors.md#app-publication-integration-preparation-only--2026-10-25)
+owns the exact drift and remaining fresh acceptance. No new engine test, request,
+profile, runtime publication or Web work occurs in this merge.
 
 The isolated trial-body extension adds desktop Exploratory **Liquids → Apply &
 rebuild** for the existing barrel and Ripper in native-origin default and
@@ -28,6 +58,8 @@ live feedback from generic native admission and remaining constructors/full-host
 gates. Water Feel barrels and physical imports remain separate. Further Web,
 browser and shader work stays deferred by the owner until the epic completes.
 
+**Historical pre-publication App/browser evidence:**
+
 The [actual common-Water Web record](../audits/2026-10-25-lcb003-web-common-water.md)
 now qualifies the explicit body-free functional apparatus on both profiles,
 with original successful POSTs. It does not qualify ordinary visible controls:
@@ -38,9 +70,8 @@ The [final application source union](../architecture/liquid-prepared-setup-and-r
 adds the reviewed desktop native-default owner and published Water IN. Actual
 runtime admission controls the menu; radius3 and setup normalization are explicit.
 Whole-cell CY/IN fractional future sources refuse without replacing the accepted
-owner. The updated matrix below retains unsupported constructors and distinguishes
-positive FM/CY default play from three typed PF initial-capacity refusals.
-Complete host identity, final publication and actual browser/visual gates remain open.
+owner. The matrix below retains unsupported constructors and identity limits;
+separate future trial constructors are not Current in this checkpoint.
 
 The later [synchronous supported-body Water Feel route](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel)
 uses existing **Liquids… → Exploratory → Apply & rebuild active**, Water Apply/
@@ -52,7 +83,7 @@ also corrects earlier label-only variant coverage without rewriting old records.
 
 ## Status and scope
 
-**Current experimental, unmerged source:** `0a702eb304ebf1e9e1302a15250cdd159f0371f7`
+**Historical first experimental, unmerged source:** `0a702eb304ebf1e9e1302a15250cdd159f0371f7`
 on `codex/lcb003-application-host`, based on frozen #246 head `9e91a9f7`.
 The normal application now has a bounded liquid-comparison panel for fixed,
 actor-free schema-2 MicroScenarios. Subsequent source `da800552` adds the explicit
