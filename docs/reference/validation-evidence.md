@@ -49,6 +49,18 @@ this checkpoint changes only bindings/tests/docs. Preserved failed fixture and
 parse controls are distinct from native defects. Linux/release publication,
 full ready-PR gates, actual Web and application qualification remain pending.
 
+## Moving-body pressure gas blocker — 2026-10-25
+
+Ordinary Main/worker reference-body Water play exposed a native retired gas
+label beneath a moving body mask around completed tick45–47. The World
+quarantines even though Water quantity and the gas ledger remain exact.
+A compact native control reproduces the failure in all three pressure
+variants with configured1/4 workers. The repair is under qualification;
+PRs #253 and #250 are draft and must receive fresh source-matched
+Windows/Linux runtimes and exact-head gates before merging. Earlier
+scoped/full greens retain their original source and coverage. See the
+[dated failure and repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
+
 ## LCB-002 pressure variants branch — 2026-10-25
 
 [The dated #201 ledger](../audits/2026-10-25-lcb002-pressure-variants.md) retains
@@ -63,7 +75,15 @@ qualification are retained separately. Execution3 adds whole-layer work-credit
 admission and suspension to warmup/backoff; numerical prepared-head/net-boundary
 observations and fresh source proofs must be recorded separately, not inferred
 from the older campaign. The fixed credits do not establish wall-clock break-even.
-Final source-matched Windows/Linux publication and ready-PR gates remain pending.
+Source-matched Windows/Linux scoped publication
+[`40152121412`](https://github.com/techrote/cybersand/actions/runs/40152121412)
+passed at exact source `8354e3a6424ad80d4a5a82647ef78d1681a92e3c`:
+import plus all13 cases perOS, optimization4152/0 across all six sections,
+reference1934/0 across all twelve, and all16 WEX cases. Bot append
+`d726bf34edcc9da96e918fd2fd88786937e4015a` changes only both runtime payloads
+and their matching manifests. The [publication record](../audits/2026-10-25-lcb002-pressure-variants.md#source-matched-windowslinux-publication--2026-10-25)
+binds exact DLL/ELF and independent artifact/log/source checks. Full ready-PR
+Documentation/provenance, Native, Godot and applicable Water gates remain pending.
 Native rotating mask/contact parity does not qualify actual Rapier motion,
 displacement, full application constructors, Web or #203 packaging.
 

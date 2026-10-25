@@ -42,6 +42,18 @@ importer/host adoption and final platform qualification remain #202 ownership.
 
 **Current on the isolated LCB-005 branch only:** [Brine IN reference](../architecture/inertial-cellular-v1.md) selectively ports the genuine fixed-point law onto the shared quantity/prepared-state foundation, including an optional versioned native damping numerator0..16 over16(default1). [Native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) qualifies its stated source/platform scope. Default behavior remains retained. The later [standalone Godot adapter](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry) adds actual instance readback and explicit radius3 with [local Windows proof](../audits/2026-10-25-lcb005-standalone-adapter.md). Water IN, full application integration, source-matched runtime publication, owner feel and full #212 completion remain unqualified here. No Cell-carrier migration or generic Rapier force follows.
 
+## Moving-body pressure gas blocker — 2026-10-25
+
+Ordinary Main/worker reference-body Water play exposed a native retired gas
+label beneath a moving body mask around completed tick45–47. The World
+quarantines even though Water quantity and the gas ledger remain exact.
+A compact native control reproduces the failure in all three pressure
+variants with configured1/4 workers. The repair is under qualification;
+PRs #253 and #250 are draft and must receive fresh source-matched
+Windows/Linux runtimes and exact-head gates before merging. Earlier
+scoped/full greens retain their original source and coverage. See the
+[dated failure and repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
+
 ## Physical actor regression hangs — 2026-10-23
 
 **Current qualified desktop repair, 2026-10-24:** #234 adopts
@@ -866,9 +878,12 @@ exact checkpoints, local tests, retained failures and complete-tick cost scopes.
 Old execution1 measurements retain sleeping/churn/fallback negatives and cannot
 be reattested as execution3 performance. New prepared-head discrepancy and net
 boundary-balance observations are separate from equal projection or work counts.
-No global speedup is claimed. Source-matched Windows/Linux publication and the
-ready-PR Documentation/provenance, Native, Godot and applicable Water gates
-remain pending. Actual Rapier rotation/displacement, full host constructors and
+No global speedup is claimed. Source-matched Windows/Linux scoped publication
+[`40152121412`](https://github.com/techrote/cybersand/actions/runs/40152121412)
+passed actual import plus all13 cases on each OS at source `8354e3a6`, followed
+by the single-parent four-path bot append `d726bf34`. The full ready-PR
+Documentation/provenance, Native, Godot and applicable Water gates remain pending.
+Actual Rapier rotation/displacement, full host constructors and
 Web/integrated packaging retain #202/#203 ownership.
 
 ## LCB-003 controlled application-host slice — 2026-10-24

@@ -2,7 +2,7 @@
 title: LCB-002 pressure optimization implementation and qualification
 status: Current
 document-kind: evidence
-scope: Source-qualified cached and dormant pressure branch, preserved failures, exact native/readback tests and complete optimization-cost campaign; publication and final acceptance are recorded separately when executed
+scope: Source-qualified cached and dormant pressure branch, preserved failures, exact native/readback tests, complete optimization-cost campaign and actual Windows/Linux scoped publication; full ready-PR acceptance remains pending
 canonical-for: [lcb002-pressure-qualification]
 last-reviewed: 2026-10-25
 related-documents: [../architecture/pressure-optimization.md, ../architecture/pressure-flow-v1.md, ../reference/status-and-roadmap.md, ../reference/validation-evidence.md, ../operations/local-build-and-validation.md]
@@ -28,8 +28,9 @@ Prepared-head measurement/readback were sealed at `65482ca5`; the actual-residen
 roster correction and remaining independent-World negative were sealed at
 `05d784cc948322a8e59f7427c07999cb25eb234c`. Those execution2 proofs remain
 source-bound; the execution3 freeze and fresh qualification are recorded below.
-This record does not yet claim source-matched
-Windows/Linux publication, exact-head full CI, actual Rapier acceptance or Web.
+Source-matched Windows/Linux scoped publication now passes at `8354e3a6`, with
+single-parent bot append `d726bf34`, as recorded in the final section. Exact-head
+full ready-PR CI, actual Rapier acceptance and Web remain separate pending gates.
 
 The original `C:/khybersand` checkout and earlier Claude worktrees are preserved.
 Build products, raw logs, receipts and failed controls remain outside Git under
@@ -161,8 +162,9 @@ The six new native Godot helper groups must all report actual completion.
 
 At that preparation point, final execution2 proof/campaign and source-matched
 publication were pending. The later sections retain its completed correctness
-proof and explain why the final campaign instead targets execution3. Actual
-Windows/Linux publication and the ready-PR exact-head matrix remain pending. This branch does not claim full normal-app constructors,
+proof and explain why the final campaign instead targets execution3. The final
+section records actual Windows/Linux scoped publication; the full ready-PR
+exact-head matrix remains pending. This branch does not claim full normal-app constructors,
 actual Rapier movement, browser execution, owner feel or #203 packaging. Those
 checks continue in the separate application/integrated lanes.
 
@@ -326,8 +328,8 @@ That stage retains the old generated scenario registry. A later source-derived
 registry repair changes only capability metadata/executable variant declarations;
 measured ledger statuses and historical controls remain unchanged. The original
 stage is not overwritten; a separately fenced affected-case followup is required
-and recorded separately. Actual final Windows/Linux publication will execute the
-complete final scoped suite again.
+and recorded separately. At that local checkpoint actual final Windows/Linux
+publication was still pending; the final section records its complete scoped rerun.
 
 Independent documentation review identified three corrections: distinguish the
 old05d execution2 proof from current68991 execution3, qualify execution2 in corpus
@@ -370,3 +372,121 @@ inertial-oracle Python contract tests pass. Initial module-style publisher unit
 invocation failed import because those scripts require their own directory on
 `sys.path`; the supported direct-file invocations then pass11 profile+30 shared
 publisher tests. No test or source change was made for that command error.
+
+## Source-matched Windows/Linux publication — 2026-10-25
+
+**Passed scoped runtime publication; full ready-PR acceptance pending.**
+[Run `40152121412`](https://github.com/techrote/cybersand/actions/runs/40152121412),
+attempt1, built exact source `8354e3a6424ad80d4a5a82647ef78d1681a92e3c`, tree
+`ddab93af973e13226403fb688681627fd2b61cda`. All six jobs passed, including actual
+Linux and Windows headless execution. The explicit source-bound request passed
+the recorded source-lease checks and atomic final push lease. The publisher appended
+`d726bf34edcc9da96e918fd2fd88786937e4015a` with exactly that one source parent
+and only the two runtime LFS pointers plus their two matching provenance manifests.
+No native, policy, default, physics, workflow or request bytes changed in the append.
+
+| Published target/runtime | Bytes | SHA-256 |
+|---|---:|---|
+| Windows x86_64 DLL | 4,496,384 | `2c49158cb659dc22d6685ad75528cc8958cd1de38d691bc457008f722fbb80c7` |
+| Linux x86_64 ELF shared object | 3,877,008 | `21dc5434b82ce770410ed97b339084c97a42fd1fd6774c2d1f27a7373d177bc7` |
+
+Windows was cross-built on GitHub-hosted Ubuntu24.04 using LLVM-MinGW20260826
+UCRT, Clang/LLD23.1.0, archive SHA
+`cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65`, then
+executed on GitHub-hosted Windows2022. Linux was built and executed on
+GitHub-hosted Ubuntu24.04 with GCC13.3.0. Both builds use SCons4.10.1 and
+godot-cpp `101ae38034304346a46ea9ea84ae156d3e860496`; exact compiler/linker and
+static-library identities remain in each runtime manifest. Linux's actual floor
+check passed: bundle GLIBC2.34, CyberSand GLIBC2.32/GLIBCXX3.4.30/CXXABI1.3.9,
+Rapier GLIBC2.34. Both execute official Godot4.7 `4.7.stable.official.5b4e0cb0f`
+with its pinned platform archive. Accepted patched Rapier hashes remain Windows
+`b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7` and Linux
+`566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a`.
+
+**Actual execution:** import plus all13 required cases perOS, 28 real processes
+total, every returncode0, no launch/capture/diagnostic/timeout failure and no
+skipped/error log. Both platforms complete optimization4152 assertions/all six
+strict helper sections, pressure reference1934/all twelve sections, policy385
+(including11 refusals and W-CY admission/isolation), worker29 (including3
+refusals), MicroScenarios/controllers/native observation, all four LCB contract
+controls, Water Feel, and WEX16 body-mask baseline cases. The optimization test
+also checks execution3 identity, 53 u64-safe decimal counters, copied admission
+state, exact projections, cold restore and mandatory material behavior. Its
+logged work distinguishes configured1/4 workers; it does not record four distinct
+observed participants. The separately fenced cost campaign owns that evidence.
+
+| Real process | Windows seconds / timeout | Linux seconds / timeout |
+|---|---:|---:|
+| Optimization | 7.617 /360 | 11.420 /360 |
+| Pressure reference | 19.038 /900 | 39.874 /900 |
+| MicroScenarios | 71.518 /180 | 143.267 /180 |
+| WEX body baseline | 91.937 /600 | 156.410 /600 |
+
+Independent read-only verification downloaded all three artifact ZIPs, checked
+their API archive digests, then checked every case log digest and strict completed
+section. Each platform's same74 native and480 build/test inputs were independently
+hashed against the selected canonical Git blobs. The built Windows DLL equals
+the executed bytes; both runtime/report/manifest chains match, and the bot's
+committed manifest bytes and canonical LF LFS pointers identify those exact
+payloads. The tools/engine binaries themselves are not bundled for independent
+local rehashing; their pins and identities are recorded by the source-bound
+workflow and build/execution receipts, rather than claimed as a separate local
+toolchain execution.
+
+| Retained artifact ZIP | SHA-256 |
+|---|---|
+| `lcb002-pressure-variants-build-windows-40152121412` | `64c45e4c7f6a5df415c4171e3e3495f20dd3405eb103cfe7255d5e03a7c1bb8c` |
+| `lcb002-pressure-variants-runtime-windows-40152121412` | `ec4cf25e0621391e31aac4fdcd0f02fbaaf4daa212c6afb6ca86731e35d1f310` |
+| `lcb002-pressure-variants-runtime-linux-40152121412` | `3d6dba2a497c652e927f5e817aca2627b973541bc96fc08469d266a15d41af13` |
+
+Independent receipt
+`lcb201-publication1-review/FINAL-PUBLICATION1-INDEPENDENT-REVIEW.json`, SHA
+`34cb625bae646cbca960522eb46d03b4cead08465de54297869dbe149e998a71`, binds
+the raw archives/files, immutable API snapshots, complete workflow log, both
+target-OS jobs and final append. No actionable finding remains. One reviewer-only
+assertion expected redirected step-summary echo text to appear expanded in the
+workflow log; the corrected check uses actual commit/push output plus the
+immutable commit API. The initial script/evidence remain retained. This was no
+publisher/runtime failure. Earlier solver, local import-pointer, observation and
+cost-control failures above remain historical and unchanged.
+
+The reviewed two-page canonical reconciliation is independently bound by patch
+SHA `87d49fbb70a2c91e235991b39d2ea458dd5b389873c7141edf4466c066699f41` and
+`lcb201-canonical-followup-independent/FINAL-DOC-RECONCILIATION-RECEIPT.json`, SHA
+`3aa20960a81d7a38535799bc7ef0a6f84473a4beeddbe71facd66666f03f4e90`.
+It was committed as `5fbfe7ba`; normal merge `689e7589` combines it with the
+verified runtime append without changing the runtime inputs. Its pre-publication
+20 stale-native-input errors were expected then, not a post-publication waiver.
+
+The draft PR's earlier [Documentation run `40152144867`](https://github.com/techrote/cybersand/actions/runs/40152144867)
+passed at source `8354e3a6`. It does not attest later documentation or replace the
+remaining ready transition. **Still pending:** the full exact-head ready-PR Documentation/provenance, Native
+(including full Linux sanitizers/TSan), GDExtension/Godot and applicable #49 Water
+matrix. This scoped publisher does not establish main acceptance, graphical
+pixels, browser/WebAssembly, owner feel, target-PC performance, pressure-to-Rapier
+movement, full normal-app constructors or #202/#203 completion. Registry campaign
+statuses and historical source-matched controls remain unchanged.
+
+## Publication documentation checkpoint
+
+The source/behavior map is unchanged: no native authority, ownership/lifetime,
+ABI, physical policy, execution identity, capacity, user control or dependency
+changes. The two operational routes, optimization/reference contracts, roadmap,
+handover, validation ledger and retrieval-corpus evidence qualifier now separate
+actual scoped publication from pending full acceptance. Existing indexes and
+retrieval questions already route to those canonical homes; no new canonical
+topic or historical result is introduced.
+
+A fresh detached companion-backed mirror, `source201-publication-docs`, uses the
+five unchanged materialized companion files pinned at
+`6a58311982941b75f46e22109a0829e5acb83c7e`. The parent is not a Git repository.
+All18 required LFS payloads are checked against committed size/SHA identities;
+the two native bytes come from the independently reviewed publication bundles.
+Documentation, retained M11 integrity, `check_repository.py --require-materialized`,
+provider policy and whitespace checks pass with **zero stale provenance entries**.
+Frozen retrieval retains20/32 top1,32/32 top5,MRR0.7729; the128-question challenge
+retains98/128 top1,128/128 top5,MRR0.8633. The1558 tracked raw files and all five
+companion files are fenced before/after. Raw commands/results, initial/final
+document overlays and source binding remain in `lcb201-publication-docs/`.
+These documentation/materialization gates do not replace the pending ready-PR
+runtime matrix or independently reproduce the recorded compiler toolchains.

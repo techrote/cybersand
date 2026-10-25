@@ -166,6 +166,17 @@ instance versions, legacy/default radius2 and explicit IN3 geometry; no silent
 upgrade. Local Windows headless proof is not cross-platform publication,
 verified host evidence, owner feel or full #212 completion.
 
+## Moving-body pressure gas blocker — 2026-10-25
+
+Ordinary Main/worker reference-body Water play exposed a native retired gas
+label beneath a moving body mask around completed tick45–47. The World
+quarantines even though Water quantity and the gas ledger remain exact.
+A compact native control reproduces the failure in all three pressure
+variants with configured1/4 workers. The repair is under qualification;
+PRs #253 and #250 are draft and must receive fresh source-matched
+Windows/Linux runtimes and exact-head gates before merging. Earlier
+scoped/full greens retain their original source and coverage. See the
+[dated failure and repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
 
 ## LCB-002 branch source and qualification — 2026-10-25
 
@@ -176,8 +187,11 @@ and [dated branch evidence](../audits/2026-10-25-lcb002-pressure-variants.md).
 Reference laws/defaults are unchanged. Execution3 bounds repeated proof cost;
 gas/head/certificate obligations and copied u64-safe readbacks remain native.
 Prepared-head snapshots can be stale after transport and are not skip authority.
-Full native/Godot, exact-source cost and Windows/Linux publication/ready-PR
-acceptance retain their separate pending gates. Keep execution1 negatives and
+The dated evidence records execution3 local native/Godot and exact-source cost
+proof. Source-matched Windows/Linux scoped publication `40152121412` now passes
+import plus all13 cases perOS at source `8354e3a6`, with runtime-only bot append
+`d726bf34`. Full ready-PR Documentation/provenance, Native, Godot and applicable
+Water gates remain pending. Keep execution1 negatives and
 failures; do not infer target-PC speedup or actual Rapier displacement from
 native masks. The accepted #246 main checkpoint below remains its own record.
 

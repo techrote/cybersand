@@ -12,8 +12,13 @@ related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-
 
 ## Source and admission boundary
 
-**Current in source on `codex/lcb002-pressure-variants`; acceptance and runtime
-publication are still pending.** This branch extends the accepted #246 native
+**Current on `codex/lcb002-pressure-variants`; source-matched Windows/Linux
+scoped publication passed, while full ready-PR acceptance remains pending.**
+[Publication run `40152121412`](https://github.com/techrote/cybersand/actions/runs/40152121412)
+executed import plus all13 required cases on each target OS; the
+[dated publication record](../audits/2026-10-25-lcb002-pressure-variants.md#source-matched-windowslinux-publication--2026-10-25)
+binds source `8354e3a6`, bot append `d726bf34`, exact payloads and strict coverage.
+This branch extends the accepted #246 native
 contract. Water admits `pressure_flow_v1` variants `reference` (0), `cached` (1)
 and `cached_dormant` (2), with the same physical parameters, material stages,
 gas identity and Water quantity law. Other material/family compatibility remains
@@ -68,7 +73,11 @@ uncached restart **before** authoritative gas reduction. Successful fallback
 uses an explicit flag rather than an exception as control flow.
 
 A whole-operator fixed point requires both table/topology and final gas labels
-to be unchanged, with no discovery allocations. Equal compartment amounts alone
+to be unchanged, with no discovery allocations. This includes final sanitation
+of unvisited labels whose compartment retired beneath a body mask; reference,
+cached and dormant variants share that authority repair. Still-live masked
+labels remain intact. The [repair evidence](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md)
+retains the six-arm failing control and pending acceptance. Equal compartment amounts alone
 do not establish that fixed point. Gas resolution revokes all Water motion
 certificates because a remote volume/gauge change can alter a local gradient.
 

@@ -663,6 +663,13 @@ exclusive adapter owner; outputs expose no mutable World storage. The
 [IN reference](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry)
 owns fields, refusal behavior and the local Windows-only qualification.
 
+CYPS omits host-owned transient masks and body graphs. Exact body-coupled
+continuation requires separate restoration of the same mask configuration and
+future sampled body inputs; the adapter physical-import call alone does not
+provide that complete prepared owner restoration. The
+[moving-mask gas repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md)
+retains this #202/#203 qualification and the strict native live-label invariant.
+
 ### LCB-002 copied pressure optimization observations
 
 **Current in #201 branch source, pending runtime and final CI:** the exclusive
