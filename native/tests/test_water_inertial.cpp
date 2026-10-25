@@ -437,6 +437,158 @@ void pause_and_capacity() {
             "IN allocation capacity silently fell back or exposed a completed tick");
     require(!failed->set_cell_state(4,7,Material::Water,255,0),"quarantined Water accepted a live edit");
 }
+
+void same_diagnostics(const World& one, const World& four) {
+    const auto* a=one.physics_diagnostics();const auto* b=four.physics_diagnostics();
+    require(a&&b&&a->overflow==0&&b->overflow==0,"activity diagnostics overflowed");
+    require(a->used==b->used,"activity diagnostics lost a worker event");
+    for(const auto& entry:a->entries) {
+        if(entry.key==0)continue;
+        const auto found=std::find_if(b->entries.begin(),b->entries.end(),
+            [&](const auto& other){return other.key==entry.key;});
+        require(found!=b->entries.end()&&found->count==entry.count,
+                "worker activity transition was lost or counted twice");
+    }
+}
+
+void dense_activity(bool discovery) {
+    auto a=config(),b=config(4);
+    for(auto* cfg:{&a,&b}) {
+        cfg->chunk_size=64;cfg->scheduling_core_size=16;cfg->activity_block_size=1;
+        // gather_active_cores reserves one entry per awake block before its
+        // existing deduplication: four256-cell chambers plus their wall seams.
+        cfg->active_core_capacity=4096;cfg->sleep_after_quiet_ticks=1;
+        cfg->physics_diagnostics.enabled=true;cfg->settled_discovery_enabled=discovery;
+    }
+    auto one=std::make_unique<World>(a),four=std::make_unique<World>(b);
+    for(auto* world:{one.get(),four.get()}) {
+        world->reserve_region({-64,-64,256,192});
+        for(int origin:{0,32,64,96}) {
+            rect(*world,origin-1,-1,18,18,Material::Wall);
+            for(int y=0;y<16;++y)for(int x=origin;x<origin+16;++x)
+                require(world->set_cell_state(x,y,Material::Water,255,12),"dense activity seed");
+        }
+    }
+    const auto quantity=one->water_quantity({-64,-64,256,192});
+    std::uint32_t participants=0;
+    for(int tick=1;tick<=20;++tick) {
+        const auto sa=one->tick(),sb=four->tick();
+        participants=std::max(participants,sb.worker_threads_observed);
+        require(sa.chunk_allocations+sb.chunk_allocations+
+                    sa.temperature_field_allocations+sb.temperature_field_allocations==0,
+                "dense authoritative activity allocated during a tick");
+        require(one->state_hash()==four->state_hash()&&
+                    one->physical_state_hash()==four->physical_state_hash()&&
+                    (discovery||one->save_physical_state()==four->save_physical_state()),
+                "dense activity/deadline metadata diverged across real workers");
+        same_diagnostics(*one,*four);
+        require(!one->has_failed()&&!four->has_failed()&&
+                    four->water_quantity({-64,-64,256,192})==quantity,
+                "optional discovery loss suppressed authoritative scheduling");
+        for(int origin:{0,32,64,96})for(int y=0;y<16;++y)for(int x=origin;x<origin+16;++x)
+            require(four->stored_state_b(x,y)==std::max(12-tick,0),
+                    "more than64 activity targets lost future Water work");
+    }
+    require(participants>1,"dense activity did not execute genuine workers");
+    if(discovery)
+        require(four->settled_discovery_halted()!=soliding::DiscoveryHalt::None,
+                "dense fixture did not exercise optional observer report overflow");
+    closed(*four,{-64,-64,256,192});
+}
+
+void shared_activity_halo() {
+    auto a=config(1,8,0),b=config(4,8,0);
+    for(auto* cfg:{&a,&b}) {
+        cfg->chunk_size=64;cfg->scheduling_core_size=16;cfg->activity_block_size=16;
+        cfg->active_core_capacity=128;cfg->sleep_after_quiet_ticks=1;
+        cfg->physics_diagnostics.enabled=true;
+    }
+    auto one=std::make_unique<World>(a),four=std::make_unique<World>(b);
+    for(auto* world:{one.get(),four.get()}) {
+        world->reserve_region({-128,-64,384,192});
+        for(int origin:{-64,0,64,128}) {
+            rect(*world,origin,8,48,1,Material::Wall);
+            world->set(origin+15,7,Material::Water);world->set(origin+32,7,Material::Water);
+            require(world->diagnostic_set_inertial_cell(origin+15,7,32,0,0,0)&&
+                        world->diagnostic_set_inertial_cell(origin+32,7,-32,0,0,0),"shared block seed");
+        }
+    }
+    std::uint32_t participants=0;
+    for(int tick=0;tick<8;++tick) {
+        (void)one->tick();const auto stats=four->tick();
+        participants=std::max(participants,stats.worker_threads_observed);
+        require(one->state_hash()==four->state_hash()&&
+                    one->inertial_ledger()==four->inertial_ledger(),"shared halo block changed worker outcome");
+        same_diagnostics(*one,*four);
+        if(tick==0)for(int origin:{-64,0,64,128})
+            require(four->stored_material(origin+17,7)==Material::Water&&
+                        four->stored_material(origin+30,7)==Material::Water,
+                    "same-phase carriers did not reach the shared middle activity block");
+    }
+    require(participants>1,"shared activity block did not execute genuine workers");
+    closed(*four,{-128,-64,384,192});
+}
+
+void unaligned_and_serial_activity() {
+    for(const auto [chunk,block]:std::array<std::pair<int,int>,2>{{{10,3},{34,33}}})
+    for(bool serial:{false,true}) {
+        auto cfg=config();cfg.chunk_size=chunk;cfg.scheduling_core_size=8;cfg.activity_block_size=block;
+        // Coarse unaligned blocks wake every intersecting small core, including
+        // the partial tail blocks of the preallocated negative chunk seams.
+        cfg.active_core_capacity=512;cfg.sleep_after_quiet_ticks=1;
+        if(serial)cfg.backend=SimulationBackend::SerialInPlace;
+        auto world=std::make_unique<World>(cfg);world->reserve_region({-40,-40,80,80});
+        rect(*world,-12,-12,20,20,Material::Wall);
+        for(int y=-11;y<7;++y)for(int x=-11;x<7;++x)
+            require(world->set_cell_state(x,y,Material::Water,255,12),"unaligned activity seed");
+        for(int tick=1;tick<=16;++tick) {
+            (void)world->tick();
+            require(world->stored_state_b(-1,-1)==std::max(12-tick,0),
+                    "unaligned negative chunk seam or serial activity lost future work");
+        }
+        auto restored=World::restore_physical_state(cfg,world->save_physical_state());
+        for(int tick=0;tick<3;++tick) {
+            (void)world->tick();(void)restored->tick();
+            require(world->save_physical_state()==restored->save_physical_state(),"unaligned activity continuation changed");
+        }
+    }
+}
+
+void current_deadline_activity() {
+    WorldConfig a;a.chunk_size=64;a.scheduling_core_size=16;a.activity_block_size=16;
+    a.active_core_capacity=128;a.sleep_after_quiet_ticks=1;a.parallel_job_threshold=1;
+    a.physics_diagnostics.enabled=true;auto b=a;b.worker_threads=4;
+    auto awake_config=a;awake_config.backend=SimulationBackend::SerialInPlace;
+    awake_config.sleep_after_quiet_ticks=1024;
+    auto one=std::make_unique<World>(a),four=std::make_unique<World>(b);
+    auto awake=std::make_unique<World>(awake_config);
+    for(auto* world:{one.get(),four.get(),awake.get()}) {
+        world->reserve_region({-64,-64,256,192});
+        for(int origin:{0,32,64,96})for(int row:{0,8}) {
+            rect(*world,origin+3,row+3,4,3,Material::Wall);
+            world->set(origin+4,row+4,Material::Ice);world->set(origin+5,row+4,Material::Water);
+        }
+    }
+    std::uint32_t participants=0;
+    bool slept=false,reacted=false;
+    for(int tick=0;tick<128;++tick) {
+        (void)one->tick();const auto stats=four->tick();(void)awake->tick();
+        participants=std::max(participants,stats.worker_threads_observed);
+        slept|=stats.scheduled_cores==0;
+        require(one->state_hash()==four->state_hash()&&
+                    one->save_physical_state()==four->save_physical_state(),
+                "Current earliest block deadlines diverged across workers");
+        same_diagnostics(*one,*four);
+        for(int origin:{0,32,64,96})for(int row:{0,8}) {
+            const auto actual=four->stored_material(origin+5,row+4);
+            require(actual==awake->stored_material(origin+5,row+4),
+                    "Current pending contact missed its awake serial reference opportunity");
+            reacted|=actual==Material::Ice;
+        }
+    }
+    require(participants>1&&slept&&reacted,
+            "Current deadline fixture missed real workers, quiet sleep or a future reaction");
+}
 } // namespace
 
 void test_water_inertial_admission() {
@@ -468,3 +620,10 @@ void test_water_inertial_cadence_exchange() {
     for(int backend:{0,1,2}) for(bool telemetry:{false,true}) for(bool disabled:{false,true}) powder_control(backend,telemetry,disabled);
 }
 void test_water_inertial_storage_pause_capacity() {for(int size:{128,1024,2048})storage_case(size);pause_and_capacity();}
+void test_worker_activity_publication() {
+    dense_activity(false);std::cout<<"activity:256 targets/job without discovery passed\n";
+    dense_activity(true);std::cout<<"activity:optional discovery overflow independent passed\n";
+    shared_activity_halo();std::cout<<"activity:same-phase shared middle block passed\n";
+    unaligned_and_serial_activity();std::cout<<"activity:unaligned negative seams and serial passed\n";
+    current_deadline_activity();std::cout<<"activity:Current deadlines and diagnostics passed\n";
+}

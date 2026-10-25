@@ -356,6 +356,19 @@ struct World::JobEffects {
         discovery_mutations{};
     std::array<DiscoverySignalReport, kMaximumDiscoverySignalReports>
         discovery_signals{};
+    // Authoritative scheduling signals are independent of the optional bounded
+    // discovery observer. Workers own these dense grids exclusively; only the
+    // phase barrier publishes them to shared chunk/activity-block metadata.
+    // A chunk-local block ordinal is monotone across positive and negative
+    // chunk seams, including the single-worker unaligned geometry.
+    std::vector<std::uint8_t> activity_flags;
+    std::vector<std::uint64_t> activity_deadlines;
+    std::int64_t activity_origin_x = 0;
+    std::int64_t activity_origin_y = 0;
+    std::int32_t activity_width = 0;
+    std::int32_t activity_height = 0;
+    std::int32_t activity_blocks_per_chunk = 0;
+    bool activity_overflow = false;
     std::size_t chunk_count = 0;
     std::size_t discovery_mutation_count = 0;
     std::size_t discovery_signal_count = 0;
@@ -372,6 +385,67 @@ struct World::JobEffects {
     std::uint64_t pf_contact_loss = 0;
     std::uint64_t pf_relief_cells = 0;
     InertialLedger inertial{};
+
+    void allocate_activity(const WorldConfig& config) {
+        const auto span = static_cast<std::size_t>(config.scheduling_core_size) +
+                          2U * static_cast<std::size_t>(config.maximum_rule_radius);
+        const auto block = static_cast<std::size_t>(config.activity_block_size);
+        // Aligned chunk boundaries introduce no extra partial blocks. In the
+        // general single-worker geometry every cell could start a block, so
+        // span is a conservative bound on the number of chunk-local blocks.
+        const auto axis = config.chunk_size % config.activity_block_size == 0
+            ? (span + block - 2U) / block + 1U : span;
+        if (axis > std::numeric_limits<std::size_t>::max() / axis)
+            throw std::length_error("per-job activity geometry capacity overflow");
+        activity_flags.resize(axis * axis);
+        activity_deadlines.resize(axis * axis);
+        activity_blocks_per_chunk =
+            (config.chunk_size + config.activity_block_size - 1) /
+            config.activity_block_size;
+    }
+
+    void prepare_activity(CellRect core, const WorldConfig& config) noexcept {
+        const auto ordinal = [&](std::int64_t cell) {
+            const auto chunk = floor_div(cell, config.chunk_size);
+            return chunk * activity_blocks_per_chunk +
+                   positive_mod(cell, config.chunk_size) / config.activity_block_size;
+        };
+        const auto radius = config.maximum_rule_radius;
+        activity_origin_x = ordinal(core.x - radius);
+        activity_origin_y = ordinal(core.y - radius);
+        activity_width = static_cast<std::int32_t>(
+            ordinal(core.x + core.width - 1 + radius) - activity_origin_x + 1);
+        activity_height = static_cast<std::int32_t>(
+            ordinal(core.y + core.height - 1 + radius) - activity_origin_y + 1);
+        activity_overflow = activity_width <= 0 || activity_height <= 0 ||
+            static_cast<std::size_t>(activity_width) *
+                static_cast<std::size_t>(activity_height) > activity_flags.size();
+        std::fill(activity_flags.begin(), activity_flags.end(), 0);
+    }
+
+    void record_activity(const Address& target, std::int32_t block_size,
+                         bool keep_awake, std::uint64_t due = 0) noexcept {
+        const auto x = target.chunk.x * activity_blocks_per_chunk +
+                       target.local_x / block_size - activity_origin_x;
+        const auto y = target.chunk.y * activity_blocks_per_chunk +
+                       target.local_y / block_size - activity_origin_y;
+        if (x < 0 || y < 0 || x >= activity_width || y >= activity_height) {
+            activity_overflow = true;
+            return;
+        }
+        const auto index = static_cast<std::size_t>(y) *
+                               static_cast<std::size_t>(activity_width) +
+                           static_cast<std::size_t>(x);
+        if (index >= activity_flags.size()) {
+            activity_overflow = true;
+            return;
+        }
+        auto& flags = activity_flags[index];
+        auto& deadline = activity_deadlines[index];
+        if (flags == 0) deadline = 0;
+        flags |= static_cast<std::uint8_t>(keep_awake ? 3U : 1U);
+        if (due != 0 && (deadline == 0 || due < deadline)) deadline = due;
+    }
 
     void reset() noexcept {
         quantity = {};
@@ -481,14 +555,17 @@ struct World::ParallelState {
         JobEffects effects;
     };
 
-    ParallelState(std::uint32_t worker_count, std::size_t capacity, bool diagnostics)
-        : results(capacity) {
-        if (diagnostics) {
-            physics.resize(capacity);
-            for (std::size_t i = 0; i < capacity; ++i) results[i].effects.physics = &physics[i];
+    explicit ParallelState(const WorldConfig& config)
+        : results(config.active_core_capacity) {
+        for (auto& result : results) result.effects.allocate_activity(config);
+        if (config.physics_diagnostics.enabled) {
+            physics.resize(config.active_core_capacity);
+            for (std::size_t i = 0; i < results.size(); ++i)
+                results[i].effects.physics = &physics[i];
         }
-        phase_job_indices.reserve(capacity);
-        if (worker_count > 1) pool = std::make_unique<PersistentWorkerPool>(worker_count);
+        phase_job_indices.reserve(config.active_core_capacity);
+        if (config.worker_threads > 1)
+            pool = std::make_unique<PersistentWorkerPool>(config.worker_threads);
     }
 
     std::unique_ptr<PersistentWorkerPool> pool;
@@ -637,9 +714,7 @@ World::World(WorldConfig config)
         }
     }
     if (config_.backend == SimulationBackend::PhasedInPlace) {
-        parallel_ = std::make_unique<ParallelState>(config_.worker_threads,
-                                                    config_.active_core_capacity,
-                                                    config_.physics_diagnostics.enabled);
+        parallel_ = std::make_unique<ParallelState>(config_);
     }
     transient_obstacles_ = std::make_unique<TransientObstacleState>();
     if (pressure_requested) {
@@ -1767,6 +1842,12 @@ void World::keep_cell_active(std::int64_t x, std::int64_t y, JobEffects* effects
     const auto source = address(x, y);
     auto* chunk = find_chunk(source.chunk);
     if (chunk == nullptr) return;
+    if (effects != nullptr) {
+        effects->record_activity(source, config_.activity_block_size, true);
+        if (settled_discovery_ != nullptr)
+            effects->record_discovery_signal(source, config_.activity_block_size, true);
+        return;
+    }
     const auto block_x = source.local_x / config_.activity_block_size;
     const auto block_y = source.local_y / config_.activity_block_size;
     const auto block_index =
@@ -1782,12 +1863,8 @@ void World::keep_cell_active(std::int64_t x, std::int64_t y, JobEffects* effects
     block.changed_this_tick = true;
     block.quiet_ticks = 0;
     chunk->active = true;
-    if (settled_discovery_ != nullptr) {
-        if (effects != nullptr)
-            effects->record_discovery_signal(source, config_.activity_block_size, true);
-        else
-            witness_discovery_activity(source.chunk, block_index);
-    }
+    if (settled_discovery_ != nullptr)
+        witness_discovery_activity(source.chunk, block_index);
 }
 
 void World::schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint64_t due,
@@ -1800,15 +1877,17 @@ void World::schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint6
         static_cast<std::size_t>(a.local_x / config_.activity_block_size);
     auto& next = chunk->activity_blocks[index].next_interaction_tick;
     if (next == 0 || due < next) {
+        if (effects != nullptr) {
+            effects->record_activity(a, config_.activity_block_size, false, due);
+            if (settled_discovery_ != nullptr)
+                effects->record_discovery_signal(a, config_.activity_block_size, false, due);
+            return;
+        }
         next = due;
         if (settled_discovery_ != nullptr) {
-            if (effects != nullptr)
-                effects->record_discovery_signal(a, config_.activity_block_size, false, due);
-            else {
-                (void)settled_discovery_->schedule_deadline(
-                    discovery_parent_key(a.chunk, index), due);
-                observe_discovery_activity_parent(a.chunk, index);
-            }
+            (void)settled_discovery_->schedule_deadline(
+                discovery_parent_key(a.chunk, index), due);
+            observe_discovery_activity_parent(a.chunk, index);
         }
     }
 }
@@ -4206,6 +4285,8 @@ void World::merge_job_effects(const JobEffects& effects) {
     if (effects.overflow) {
         throw std::runtime_error("per-job touched-chunk capacity exhausted");
     }
+    if (effects.activity_overflow)
+        throw std::runtime_error("per-job authoritative activity capacity exhausted");
     merge_quantity_effects(effects);
     if (effects.physics != nullptr) {
         for (const auto& entry : effects.physics->entries)
@@ -4295,6 +4376,47 @@ void World::merge_job_effects(const JobEffects& effects) {
                     world_origin_x + local_right, world_origin_y + local_bottom, false);
             }
         }
+    }
+
+    // Workers cannot publish even an idempotent true store: another core may
+    // read the same chunk, or two disjoint cell halos may share an activity
+    // block. Reduce each keepalive/deadline here, regardless of observer state.
+    // This also records each actual BlockWake transition exactly once.
+    const auto signal_count = static_cast<std::size_t>(effects.activity_width) *
+                              static_cast<std::size_t>(effects.activity_height);
+    for (std::size_t index = 0; index < signal_count; ++index) {
+        const auto flags = effects.activity_flags[index];
+        if (flags == 0) continue;
+        const auto ordinal_x = effects.activity_origin_x +
+            static_cast<std::int64_t>(index % effects.activity_width);
+        const auto ordinal_y = effects.activity_origin_y +
+            static_cast<std::int64_t>(index / effects.activity_width);
+        const ChunkCoord coord{
+            floor_div(ordinal_x, effects.activity_blocks_per_chunk),
+            floor_div(ordinal_y, effects.activity_blocks_per_chunk)};
+        auto* chunk = find_chunk(coord);
+        if (chunk == nullptr)
+            throw std::logic_error("activity job effect references missing chunk");
+        const auto block_index =
+            static_cast<std::size_t>(positive_mod(
+                ordinal_y, effects.activity_blocks_per_chunk)) *
+                static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
+            static_cast<std::size_t>(positive_mod(
+                ordinal_x, effects.activity_blocks_per_chunk));
+        auto& block = chunk->activity_blocks[block_index];
+        if ((flags & 2U) != 0U) {
+            if (!block.active)
+                record_physics(PhysicsEvent::BlockWake, Material::Empty,
+                               Material::Empty, 0, 0, nullptr);
+            block.active = true;
+            block.changed_this_tick = true;
+            block.quiet_ticks = 0;
+            chunk->active = true;
+        }
+        const auto due = effects.activity_deadlines[index];
+        if (due != 0 &&
+            (block.next_interaction_tick == 0 || due < block.next_interaction_tick))
+            block.next_interaction_tick = due;
     }
 
     if (settled_discovery_ == nullptr) return;
@@ -4424,6 +4546,7 @@ TickStats World::tick_phased() {
             auto& result = parallel_->results[core_index];
             result.stats = {};
             result.effects.reset();
+            result.effects.prepare_activity(scheduler_geometry_.core_rect(core), config_);
             ++stats.phase_jobs[phase];
         }
 
