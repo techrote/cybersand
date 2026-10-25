@@ -147,21 +147,21 @@ public:
     using TaskFunction = void (*)(void*, std::size_t) noexcept;
 
     explicit PersistentWorkerPool(std::uint32_t worker_count) {
-        workers_.reserve(worker_count);
-        for (std::uint32_t index = 0; index < worker_count; ++index) {
-            workers_.emplace_back([this,index] { worker_loop(index); });
+        try {
+            workers_.reserve(worker_count);
+            for (std::uint32_t index = 0; index < worker_count; ++index) {
+                workers_.emplace_back([this,index] { worker_loop(index); });
+            }
+        } catch (...) {
+            // A throwing constructor does not run our destructor. Wake/join
+            // the already-started prefix while mutex/CVs and state still live;
+            // jthread's stop token alone cannot wake this predicate-based wait.
+            stop_and_join();
+            throw;
         }
     }
 
-    ~PersistentWorkerPool() {
-        {
-            std::lock_guard lock(mutex_);
-            stopping_ = true;
-            ++generation_;
-        }
-        start_condition_.notify_all();
-        workers_.clear();
-    }
+    ~PersistentWorkerPool() { stop_and_join(); }
 
     PersistentWorkerPool(const PersistentWorkerPool&) = delete;
     PersistentWorkerPool& operator=(const PersistentWorkerPool&) = delete;
@@ -191,6 +191,16 @@ public:
         return count;
     }
 private:
+    void stop_and_join() noexcept {
+        {
+            std::lock_guard lock(mutex_);
+            stopping_ = true;
+            ++generation_;
+        }
+        start_condition_.notify_all();
+        workers_.clear();
+    }
+
     void worker_loop(std::uint32_t worker_index) noexcept {
         std::uint64_t observed_generation = 0;
         for (;;) {

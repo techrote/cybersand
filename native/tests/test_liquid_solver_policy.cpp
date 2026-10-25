@@ -772,6 +772,27 @@ void test_liquid_policy_c_api_allocation_failures() {
                 refusal.code == CYBERSAND_LIQUID_POLICY_ACCEPTED &&
                 small_world_sweep.second == world_sweep.second,
             "scheduling slot capacity multiplied constructor allocation points");
+    // A later worker startup can fail after earlier threads are waiting. Every
+    // injected main-thread allocation must return a construction refusal after
+    // retiring that prefix, including failures before the first thread starts.
+    auto parallel = expected;
+    parallel.worker_threads = 4U;
+    auto parallel_world_sweep = sweep_allocation_failures(
+        [&] {
+            auto* built = cybersand_world_create_with_liquid_policy_v1(
+                &parallel, request.data(), request.size(), &refusal);
+            liquid_policy_allocation_probe::fail_after = -1;
+            const bool constructed = built != nullptr;
+            cybersand_world_destroy(built);
+            return constructed;
+        },
+        [&](bool constructed, long long nth) {
+            require(!constructed && refusal.code == CYBERSAND_LIQUID_POLICY_CONSTRUCTION_FAILED,
+                    "four-worker create failure " + std::to_string(nth) + " escaped refusal");
+        });
+    require(parallel_world_sweep.second > world_sweep.second &&
+                refusal.code == CYBERSAND_LIQUID_POLICY_ACCEPTED,
+            "four-worker create sweep did not exercise worker startup allocations");
     // The converged run built a World; read it back under failures, then release it.
     cybersand_world* world = cybersand_world_create_with_liquid_policy_v1(&expected, request.data(),
                                                                           request.size(), &refusal);
