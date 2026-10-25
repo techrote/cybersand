@@ -311,12 +311,12 @@ masked-gas questions. All fourteen publisher cases and their strict sections
 remain unchanged. `lcb212-moving-mask-union/UNION-SOURCE-VERIFICATION.json`
 binds the comparison and resolution.
 
-The merge retains all four `52ee560a` runtime pointer/manifest blobs together.
-Those historical bytes are now stale for the repaired source and must be
-replaced by a source-bound request sequence2, with actual import and all14
-cases on each target OS. The incoming #201 request remains inert on the #212
-branch. No native source, test, workflow or request may change while the new
-publication lease runs.
+The prepublication merge retained all four `52ee560a` runtime pointer/manifest
+blobs together. Those historical bytes were stale for the repaired source and
+required replacement by source-bound request sequence2, with actual import and
+all14 cases on each target OS. The incoming #201 request remains inert on the
+#212 branch. Source, tests, documentation, workflow and request remained frozen
+throughout the sequence2 publication lease.
 
 The new native regression retains the original six-arm failure and covers
 collapse, split, merge, vent and still-live masked identity. It checks exact
@@ -356,7 +356,72 @@ top1=98/top5=130, MRR0.8577. These are lexical retrieval metrics, not answer
 correctness. Raw failures, results and before/after source/companion fences
 remain in `lcb212-moving-mask-union/docs-prepublication/`.
 
-Fresh Windows/Linux publication, final ready-PR gates,
-actual repaired normal-app trajectory and full host/Web/Water-IN qualification
-remain separate. No owner feel acceptance, carrier migration or Water-IN
-implementation is introduced.
+The second publication below supplies fresh scoped Windows/Linux runtimes.
+Final ready-PR gates, actual repaired normal-app trajectory and full
+host/Web/Water-IN qualification remain separate. No owner feel acceptance,
+carrier migration or Water-IN implementation is introduced.
+
+### Actual sequence2 publication
+
+The frozen docs/source checkpoint `d5b9cc2280fdd9a9c88efdb23989158520737a47`
+has exactly the compiled inputs proved at `4a594db5`. Request-only child
+`661a96ae90968eda430c92155a008bfa2a21c2fc`, tree
+`11aad90c19fdf89b0fe93063a425ea377e0c50cc`, changes only
+`request_sequence` from1 to2. Actual GitHub-hosted run
+[`40157525237`](https://github.com/techrote/cybersand/actions/runs/40157525237)
+passes all six jobs. The exact single-parent runtime append is
+`a9f1b875a97855a73a2564c07a56ce39c37d4d8d`, tree
+`ac2c653d6c15321be83e328f91743978aa8a6b39`; only the two runtime LFS pointers
+and their two provenance manifests change. The local branch fast-forwards to
+that verified bot commit without changing source authority.
+
+| Repaired-source runtime | Bytes | SHA-256 |
+|---|---:|---|
+| Windows x86_64 DLL |4,529,152| `e022055760a8c9e8893485a169ad784e081eed122864ef6aa8f106ca2bec9ff8` |
+| Linux x86_64 ELF |3,903,648| `dfa689e66d1b9c38f413df2a033e1d5184b2afeab3da65c72d0977b19a6c39e7` |
+
+All30 actual processes pass: import plus all14 ordered cases perOS, no
+skips/errors/timeouts, strict IN862/all six sections and17 parameter oracles,
+optimization4152/all six, pressure reference1934/all twelve, policy385,
+worker29 and WEX16. Windows builds on GitHub-hosted Ubuntu24.04 with pinned
+LLVM-MinGW20260826 UCRT/Clang23.1.0, then executes on Windows2022; Linux builds
+and executes on Ubuntu24.04/GCC13.3.0. Godot4.7, godot-cpp/SCons and accepted
+patched Rapier pins retain the identities recorded above. Windows built and
+executed DLL bytes are identical; the Linux ABI-floor check passes. Configured
+worker and dispatch coverage does not claim four distinct participants in each
+Godot process or target-PC performance.
+
+| Case | Windows seconds / timeout | Linux seconds / timeout |
+|---|---:|---:|
+| IN adapter |7.256 /360|7.143 /360|
+| Pressure optimization |13.307 /360|13.122 /360|
+| Pressure reference |31.689 /900|40.729 /900|
+| MicroScenarios |112.129 /180|149.260 /180|
+| WEX baseline |134.819 /600|161.965 /600|
+
+Owner artifact verification rehashes all76 native and485 build/test canonical
+Git inputs perOS, every case log, all three archive/API digests, runtime/report/
+manifest chains, actual OS job identities and the bot's exact four-path,
+single-parent append. Committed manifests equal the downloaded bytes and LF
+LFS pointers bind the exact payloads. Receipt
+`lcb212-publication2-review/FINAL-PUBLICATION2-OWNER-VERIFICATION.json`, SHA
+`da9fb7ad5b04c0ef4cb00ce43cbea76efcef87b278e1a04572981b025630cbfb`,
+records no artifact finding. It is publisher-owner verification, not a fresh
+independent IN source review; the author's separately labelled self-review
+does not replace non-author assessment.
+
+The preliminary two stale fingerprints above remain a preserved failed gate,
+not a waiver. Fresh postpublication validation passes all fifteen documentation,
+M11, materialized repository/provenance, retrieval, provider, whitespace and
+generator checks with zero stale entries. All eighteen payloads match and1578
+tracked raw inputs plus the five pinned companion files retain their fences.
+The companion-backed mirror is a fresh sibling source repository; its parent
+is a materialized companion copy, not a Git repository. Receipt
+`lcb212-moving-mask-union/docs-postpublication/VALIDATION-RECEIPT.json`, SHA
+`f7bc947825a97c586ced63c191662fe06aeb6f938e7375585adb602909b65b93`,
+binds that publication-doc overlay. The final factual append receives a separate
+documentation/provenance/retrieval recheck; unchanged generator inputs retain
+their prior exact checks. Full exact-head ready-PR Native/Godot/Documentation and applicable
+Water acceptance remain pending. These fourteen scoped Godot controls do not
+reproduce the separately owned asynchronous normal-Main body trajectory, and
+they do not qualify full host restoration, Web, Water-IN or #203 packaging.

@@ -27,8 +27,9 @@ scoped/full greens retain their original source and coverage. See the
 Later normal merge `4a594db5` integrates the reviewed moving-mask pressure
 gas-label repair while retaining the IN law/damping/codec and all fourteen
 scoped publisher cases. The [union repair ledger](../audits/2026-10-25-lcb005-pressure-union-integration.md#moving-mask-repair-integration-and-second-publication--2026-10-25)
-separates fresh combined native proof and pending sequence2 target-OS publication
-from the historical `52ee560a` runtimes. PR #250 remains draft; full ready-PR,
+separates fresh combined native proof and actual sequence2 target-OS publication
+at `661a96ae`/run `40157525237`/bot `a9f1b875` from the historical `52ee560a`
+runtimes. Import plus14 cases perOS pass. PR #250 remains draft; full ready-PR,
 actual repaired application trajectory, Water-IN and Web gates are not complete.
 
 The later [combined #201/#212 integration](../audits/2026-10-25-lcb005-pressure-union-integration.md)

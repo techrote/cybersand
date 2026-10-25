@@ -19,10 +19,11 @@ The source owners are `native/include/cybersand/inertial_cellular.hpp`, `native/
 The later [moving-mask repair integration](../audits/2026-10-25-lcb005-pressure-union-integration.md#moving-mask-repair-integration-and-second-publication--2026-10-25)
 at `4a594db5` changes only the shared pressure gas-label retirement path and its
 native regression/build registration. IN law, damping, sidecar, hash3/CYPS3
-suffix and policy identity remain unchanged. The earlier `52ee560a` runtimes
-qualify their recorded source and are stale for this repaired source until
-publication sequence2 and actual target-OS execution complete. PR #250 is draft;
-full ready-PR/application qualification remains separate.
+suffix and policy identity remain unchanged. Source-bound publication sequence2
+at `661a96ae`, run `40157525237`, now passes actual import plus14 cases perOS;
+runtime-only bot `a9f1b875` replaces the earlier `52ee560a` payloads for this
+repaired source. PR #250 is draft; full ready-PR/application qualification
+remains separate.
 
 ## Which fields, parameters and law are authoritative?
 
