@@ -227,7 +227,7 @@ func _request(definition: Dictionary, original_control: bool = false, mode: Stri
 	if bridge == null or not bridge.has_method(&"liquid_policy_assignment_choices"):
 		_refusal = "This runtime has no native liquid comparison editor"
 		return false
-	if not _definition_supported(definition):
+	if not _definition_supported(definition) and not (active_route and _active_owner_supported()):
 		_refusal = "This route is not yet wired for experimental policies. Choose a fixed actor-free MicroScenario or load Dam Break."
 		return false
 	if not original_control and geometry_picker.get_selected_id() == 3 \
@@ -254,6 +254,10 @@ func _request(definition: Dictionary, original_control: bool = false, mode: Stri
 
 func apply_active() -> bool:
 	return _request(host.liquid_comparison_active_definition(),false,host.microscenario_mode,true)
+
+func _active_owner_supported() -> bool:
+	return host.has_method(&"liquid_comparison_can_apply_active") \
+		and host.liquid_comparison_can_apply_active(session_picker.selected == 1)
 
 func arm_import() -> bool:
 	if import_button == null: return false
@@ -321,7 +325,7 @@ func refresh(context: Dictionary) -> void:
 	normalize_water.disabled = not available or pending or blind
 	dam_button.disabled = not available or pending or blind
 	control_button.disabled = not available or pending or blind
-	apply_button.disabled = not available or pending or blind or not _definition_supported(host.liquid_comparison_active_definition())
+	apply_button.disabled = not available or pending or blind or not (_definition_supported(host.liquid_comparison_active_definition()) or _active_owner_supported())
 	if import_button != null:
 		import_button.disabled = not available or pending or blind or session_picker.selected!=1
 		clear_import_button.disabled = pending or blind or not import_state.get("armed",false)
@@ -350,7 +354,7 @@ func refresh(context: Dictionary) -> void:
 	elif not _refusal.is_empty(): status.text = "Refused; applied session retained. " + _refusal
 	elif import_state.get("armed",false): status.text = "Next ordinary body-free level import uses the captured selection " + str(import_state.pending_policy_hash).left(16) + ". The running World is unchanged."
 	elif import_state.get("applied",false) and not _dirty: status.text = "Imported setup is applied. P runs; R / Restart rebuilds its accepted payload and selected liquids. Level saves still reconstruct Current defaults unless a policy is explicitly armed."
-	elif not _definition_supported(host.liquid_comparison_active_definition()): status.text = "Controlled needs a fixed actor-free setup. Exploratory retains sampled owners in Tower or supported MicroScenarios and desktop articulated owners; other routes remain pending."
+	elif not (_definition_supported(host.liquid_comparison_active_definition()) or _active_owner_supported()): status.text = "Controlled needs a fixed actor-free setup. Exploratory retains sampled owners in Tower or supported MicroScenarios and desktop articulated owners; other routes remain pending."
 	elif _dirty:
 		status.text = "Pending solver/normalization selection. The running World keeps its applied policy until rebuild."
 		if int(_validation.get("receipt",{}).get("minimum_rule_radius",2)) > geometry_picker.get_selected_id():
