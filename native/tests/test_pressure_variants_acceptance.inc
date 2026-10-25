@@ -142,7 +142,60 @@ void test_variants_communicating_basins_acceptance() {
             rect(*world, 12, 40 - passage_height, 16, passage_height, Material::Water);
         }
         const auto quantity_before = worlds[0]->water_quantity({0, 0, 48, 48});
-        acceptance_tick(worlds, 240, "vented communicating basin passage " + std::to_string(passage_height));
+        // Copy every resident prepared head slot, including non-Water and
+        // paused cells. This observes the last pre-kernel field, which can be
+        // stale after transport; it is never a current-pressure/rest authority.
+        const RectI64 sample_domain{-8, -8, 64, 64};
+        const RectI64 lower_limb{28, 3, 8, 37};
+        std::uint64_t resident_samples = 0, prepared_samples = 0, positive_inflow_ticks = 0;
+        std::int64_t maximum_net_inflow = 0;
+        for (int t = 0; t < 240; ++t) {
+            std::array<std::uint64_t,3> start_quantity{};
+            std::array<std::array<cybersand::WaterQuantityFlow,cybersand::kQuantityKindCount>,3> start_kinds{};
+            for (std::size_t arm = 0; arm < 3; ++arm) {
+                start_quantity[arm] = worlds[arm]->water_quantity(lower_limb);
+                start_kinds[arm] = worlds[arm]->quantity_ledger().kinds;
+            }
+            acceptance_tick(worlds, 1, "vented communicating basin passage " + std::to_string(passage_height));
+            std::array<std::uint64_t,3> resident{};
+            std::array<std::int64_t,3> net_inflow{};
+            for (std::int64_t dy = 0; dy < sample_domain.height; ++dy)
+                for (std::int64_t dx = 0; dx < sample_domain.width; ++dx) {
+                    const auto x = sample_domain.x + dx, y = sample_domain.y + dy;
+                    const auto reference = worlds[0]->prepared_pressure_head(x, y);
+                    for (std::size_t arm = 0; arm < 3; ++arm) {
+                        const auto copied = worlds[arm]->prepared_pressure_head(x, y);
+                        require(copied == reference, "every copied prepared head status/value agrees exactly");
+                        require(copied.status != cybersand::PressureHeadStatus::FamilyUnavailable &&
+                                    copied.status != cybersand::PressureHeadStatus::Unresolved,
+                                "completed prepared field contains neither missing family nor unresolved sentinel");
+                        if (copied.status != cybersand::PressureHeadStatus::NonResident) ++resident[arm];
+                    }
+                    if (reference.status == cybersand::PressureHeadStatus::Prepared) ++prepared_samples;
+                }
+            for (std::size_t arm = 0; arm < 3; ++arm) {
+                const auto size = static_cast<std::uint64_t>(worlds[arm]->config().chunk_size);
+                require(resident[arm] == worlds[arm]->chunk_count() * size * size,
+                        "sample domain covers every resident cell rather than just the active Water");
+                require(worlds[arm]->quantity_ledger().kinds == start_kinds[arm],
+                        "net-boundary control has zero tick Water sources/sinks and no host Water edits");
+                net_inflow[arm] = static_cast<std::int64_t>(worlds[arm]->water_quantity(lower_limb)) -
+                                  static_cast<std::int64_t>(start_quantity[arm]);
+            }
+            require(net_inflow[0] == net_inflow[1] && net_inflow[0] == net_inflow[2],
+                    "declared lower-limb net Water boundary inflow agrees each tick");
+            if (net_inflow[0] > 0) ++positive_inflow_ticks;
+            maximum_net_inflow = std::max(maximum_net_inflow, net_inflow[0]);
+            resident_samples += resident[0];
+        }
+        require(prepared_samples > 0 && positive_inflow_ticks > 0,
+                "full resident head comparisons and a real positive boundary inflow are exercised");
+        std::cout << "LCB002_BASIN_DIAGNOSTICS: workers=" << workers << " passage_height=" << passage_height
+                  << " resident_samples_per_arm=" << resident_samples << " prepared_samples_per_arm=" << prepared_samples
+                  << " max_head_error=0 status_mismatches=0 positive_net_inflow_ticks=" << positive_inflow_ticks
+                  << " maximum_net_inflow=" << maximum_net_inflow << " tick_sources=0 tick_sinks=0\n";
+        // Signed ROI delta is NET boundary inflow under zero sources/sinks;
+        // it does not measure gross individual face transfers or both-way flux.
         require(worlds[0]->water_quantity({0, 0, 48, 48}) == quantity_before,
                 "communicating basins preserve exact visible plus overfill quantity");
         bool raised = false;

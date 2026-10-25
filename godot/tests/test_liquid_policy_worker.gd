@@ -113,8 +113,8 @@ func run() -> void:
 
 	# 3. Refusals keep the running World, its receipt and its generation.
 	var refusals: Array = [
-		# pressure_flow_v1/reference is admitted since LCB-001; cached stays refused.
-		[2, _with(request, 3, 3, 1), "family_unavailable"],
+		# Cached Water is admitted; an unsupported Oil/PF assignment still refuses.
+		[2, _with(request, 16, 3, 1), "combination_rejected"],
 		[3, _with(request, 16, 4), "combination_rejected"],
 		[4, [3, 1, 0], "PackedInt32Array"],
 	]
