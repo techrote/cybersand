@@ -869,7 +869,7 @@ LiquidSolverPolicy damping_policy(int numerator) {
     return *decoded.policy;
 }
 
-void test_inertial_damping_parameters() {
+void check_inertial_damping_vectors() {
     const auto default_identity = cybersand::inertial_extension_identity();
     for (const auto& vector : inertial_parameter_vectors::kCases) {
         auto decoded = LiquidSolverPolicy::decode(std::span<const std::int32_t>(vector.words));
@@ -909,6 +909,9 @@ void test_inertial_damping_parameters() {
                     "valid-digest policy/actual-parameter identity mismatch refuses without changing source");
         }
     }
+}
+
+void check_inertial_damping_refusal() {
     // A contract-only relaxed schema cannot install an out-of-range policy in
     // the running World; refusal preserves an already live session candidate.
     auto relaxed = cybersand::LiquidPolicyBuild::running();
@@ -927,6 +930,9 @@ void test_inertial_damping_parameters() {
     }
     require(install_refused && retained.save_physical_state() == retained_bytes,
             "invalid actual damping refuses before a new candidate can replace retained authority");
+}
+
+void check_inertial_damping_tails() {
     std::array<int, 4> final_x{}, final_vx{};
     std::size_t arm = 0;
     for (const auto numerator : {0, 1, 8, 16}) {
@@ -960,6 +966,9 @@ void test_inertial_damping_parameters() {
     require(final_vx == std::array<int,4>{24, 15, 0, 0} && final_x[0] > final_x[1] &&
                 final_x[1] > final_x[2] && final_x[2] >= final_x[3],
             "matched damping arms retain different actual tails; zero and rounded default need not settle");
+}
+
+void check_inertial_damping_radius() {
     // Zero damping still saturates at32; accumulator15 gives exactly two moves.
     // Signed x endpoints and final support probe retain write2/read3 geometry.
     for (const auto vx : {-32, 32}) {
@@ -974,6 +983,9 @@ void test_inertial_damping_parameters() {
                 "zero damping preserves complete radius3 and two-cell signed travel without tick allocation");
         closed(world, {0, 0, 128, 128});
     }
+}
+
+void check_inertial_damping_rounding() {
     for (const auto vx : {-17, 17}) {
         auto cfg = config(1); cfg.liquid_solver_policy = damping_policy(8);
         World world(cfg); world.reserve_region({0,0,64,64}); rect(world,0,30,64,2,Material::Wall);
@@ -984,6 +996,17 @@ void test_inertial_damping_parameters() {
                 "damping truncates signed half-units toward zero and books support plus exact speed loss");
         closed(world,{0,0,64,64});
     }
+}
+
+void test_inertial_damping_parameters() {
+    // Keep independent fixture lifetimes in separate frames. MSVC /Od reserves
+    // all scoped World locals at function entry; the combined fixture exceeded
+    // the ordinary 1 MiB Windows stack before executing its first assertion.
+    check_inertial_damping_vectors();
+    check_inertial_damping_refusal();
+    check_inertial_damping_tails();
+    check_inertial_damping_radius();
+    check_inertial_damping_rounding();
 }
 
 void test_inertial_residual_motion() {
