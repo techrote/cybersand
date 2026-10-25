@@ -834,9 +834,12 @@ exact checkpoints, local tests, retained failures and complete-tick cost scopes.
 Old execution1 measurements retain sleeping/churn/fallback negatives and cannot
 be reattested as execution3 performance. New prepared-head discrepancy and net
 boundary-balance observations are separate from equal projection or work counts.
-No global speedup is claimed. Source-matched Windows/Linux publication and the
-ready-PR Documentation/provenance, Native, Godot and applicable Water gates
-remain pending. Actual Rapier rotation/displacement, full host constructors and
+No global speedup is claimed. Source-matched Windows/Linux scoped publication
+[`40152121412`](https://github.com/techrote/cybersand/actions/runs/40152121412)
+passed actual import plus all13 cases on each OS at source `8354e3a6`, followed
+by the single-parent four-path bot append `d726bf34`. The full ready-PR
+Documentation/provenance, Native, Godot and applicable Water gates remain pending.
+Actual Rapier rotation/displacement, full host constructors and
 Web/integrated packaging retain #202/#203 ownership.
 
 ## Opt-in transport profiles

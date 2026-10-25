@@ -27,8 +27,10 @@ Accepted #246 main admits Water with variant `reference`. Current source on
 `codex/lcb002-pressure-variants` also admits `cached` and `cached_dormant` with
 the same pressure law. Its [optimization contract](pressure-optimization.md)
 owns derived head/component caches, motion certificates, execution identity and
-cost admission; source-matched publication and final ready-PR acceptance remain
-pending. These variants are implementations of one family, not new physics.
+cost admission. Source-matched Windows/Linux scoped publication passed at
+`8354e3a6` through bot append `d726bf34`; the full ready-PR matrix remains pending
+([publication evidence](../audits/2026-10-25-lcb002-pressure-variants.md#source-matched-windowslinux-publication--2026-10-25)).
+These variants are implementations of one family, not new physics.
 All retain the optional overfill/flow/gas sidecar and World compartment table.
 Other materials keep their kernels and default Water remains FreeMass.
 
@@ -47,7 +49,7 @@ This page retains the pressure laws; its characterization remains the recorded
 `349d593` #245 evidence, not a rerun of that campaign on the residual delta.
 
 What this page does **not** claim:
-- #201 branch source admission is not accepted Windows/Linux runtime or full-host qualification;
+- #201's recorded target-OS headless publication is separate from full ready-PR acceptance and full-host qualification;
   see the [dated optimization evidence](../audits/2026-10-25-lcb002-pressure-variants.md);
 - native W-CY and normalization do not supply a Godot normalization opt-in or
   complete #202 comparison host; the other host constructors still run defaults;

@@ -23,8 +23,10 @@ related-documents: [../architecture/liquid-solver-family-policy.md, lcb-manual-c
 - **Current in source:** opt-in W-PF reference and W-CY on main through accepted #246
   (`ec58d919`). Their source/runtime qualifications
   are recorded in their dated evidence. The #201 branch admits cached/dormant
-  source with local correctness/cost proof; actual source-matched publication and
-  final required gates remain pending. Water inertial remains Planned/refused,
+  source with local correctness/cost proof and actual source-matched Windows/Linux
+  scoped publication; the full ready-PR gates remain pending
+  ([publication record](../audits/2026-10-25-lcb002-pressure-variants.md#source-matched-windowslinux-publication--2026-10-25)).
+  Water inertial remains Planned/refused,
   with its registered invariants still required.
 
 Families, variants, refusal codes and receipts are defined in the
@@ -36,7 +38,7 @@ Families, variants, refusal codes and receipts are defined in the
 |---|---|---|---|
 | `W-FM` | `freemass_v1/reference` | protected native Current: mass8, coherence12, fractional | **executes** |
 | `W-CY` | `cellular_yield_v1/reference` | **experimental whole-cell**: every Water cell contains `maximum()`; Water's own yielding law and material block v2 (`viscosity_index` 0–255, default 0) retain its material hooks | Current on accepted main through #246; source-matched Windows/Linux publication and final required matrix pass ([contract](../architecture/liquid-prepared-setup-and-receipts.md)) |
-| `W-PF` | `pressure_flow_v1/{reference,cached,cached_dormant}` | experimental pressure/overfill/gas candidate, Water-only v1 | `reference` **executes**, opt-in: Current from merged #245 ([design](../architecture/pressure-flow-v1.md)); `cached`/`cached_dormant` execute in the unmerged #201 branch ([optimization contract](../architecture/pressure-optimization.md)); real publication/final gates pending |
+| `W-PF` | `pressure_flow_v1/{reference,cached,cached_dormant}` | experimental pressure/overfill/gas candidate, Water-only v1 | `reference` **executes**, opt-in: Current from merged #245 ([design](../architecture/pressure-flow-v1.md)); `cached`/`cached_dormant` execute in the unmerged #201 branch ([optimization contract](../architecture/pressure-optimization.md)); source-matched Windows/Linux scoped publication passed, full ready-PR gates pending |
 | `W-IN` | `inertial_cellular_v1/reference` | experimental inertial regime with retained velocity/accumulator | proposed (#212); refused today |
 
 Rules:
