@@ -85,12 +85,23 @@ func run() -> void:
 	sections.recipe_and_law_parity = failures==before
 	before = failures
 	var selected: Variant = configured(cohorts[0])
-	for request: PackedInt32Array in [choose(defaults,"cellular_yield_v1"),choose(defaults,"pressure_flow_v1"),choose(defaults,"pressure_flow_v1","cached"),choose(defaults,"pressure_flow_v1","cached_dormant")]:
+	for request: PackedInt32Array in [choose(defaults,"cellular_yield_v1")]:
 		var token: int = prepare(selected,request)
 		if expect(token>0,"full native Water recipe admits selected family"):
 			expect(bridge.commit_liquid_world(selected,token),"selected native default commits")
 			expect(selected.get_liquid_solver_policy().envelope==request,"readback is the actual selected policy")
 			expect(sha(bridge.export_level(selected))==cohorts[0].payload_sha256,"selected whole-cell recipe does not alter initial Water")
+	# The original sparse Water checker contains more than the fixed gas-table
+	# capacity of initially sealed, Water-adjacent Empty components. Refuse at
+	# construction; the retained World must not become a tick-one quarantine.
+	for variant: String in ["reference","cached","cached_dormant"]:
+		var retained: Dictionary = snapshot(selected)
+		expect(prepare(selected,choose(defaults,"pressure_flow_v1",variant))==0 and intact(selected,retained),
+			"actual initial pressure capacity refuses transactionally for "+variant)
+		expect(bridge.get_last_liquid_policy_refusal().get("code","")=="capacity_refused"
+			and bridge.get_last_error().contains("capacity"),"pressure capacity refusal is native typed admission")
+		expect(selected.get_liquid_construction_attempt().get("kind","")=="construction_attempt"
+			and not selected.has_failed(),"actual refusal attempt retains a healthy accepted World")
 	var inertial: PackedInt32Array = choose(defaults,"inertial_cellular_v1","reference",CyberCellWorld.BRINE)
 	if not inertial.is_empty():
 		var retained: Dictionary = snapshot(selected)

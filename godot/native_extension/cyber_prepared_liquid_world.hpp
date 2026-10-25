@@ -260,6 +260,17 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             CyberNativeCellWorld::rasterize_transform_in(*pending->world, nullptr,
                 body.id, body.center, body.rotation, body.half_size);
 
+        // The authored default contains many isolated Water-adjacent voids.
+        // Admit its actual initial topology after body masks, before any token,
+        // applied receipt or authority replacement can escape preparation.
+        if (default_demo) {
+            if (const auto refused = cybersand::PreparedWorldBuilder::validate_initial_pressure_capacity(
+                    *pending->world, prepared.setup().domain())) {
+                record_refusal(*refused);
+                return 0;
+            }
+        }
+
         pending->origin = Vector2i(region[0], region[1]); pending->size = Vector2i(region[2], region[3]);
         pending->window = window;
         pending->cadence = options.get("cadence_lod_enabled", false);
