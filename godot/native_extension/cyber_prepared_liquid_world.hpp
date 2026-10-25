@@ -1,5 +1,7 @@
 #pragma once
 
+#include "cyber_prepared_level_payload.hpp"
+
 // Implementation of the adapter-owned preparation slot. No native World
 // pointer crosses the Godot boundary; only a token and copied value receipts do.
 namespace godot {
@@ -28,6 +30,21 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_world(
     const PackedInt32Array& profile, const PackedInt32Array& policy,
     const PackedInt32Array& water_fills, const PackedInt32Array& liquid_policy,
     const Dictionary& options) {
+    return prepare_liquid_candidate(adapter, rectangles, profile, policy, water_fills, liquid_policy, options, nullptr);
+}
+
+inline std::int64_t CyberDemoBridge::prepare_liquid_level(
+    const Ref<CyberNativeCellWorld>& adapter, const PackedByteArray& payload,
+    const PackedInt32Array& profile, const PackedInt32Array& policy,
+    const PackedInt32Array& liquid_policy, const Dictionary& options) {
+    return prepare_liquid_candidate(adapter, {}, profile, policy, {}, liquid_policy, options, &payload);
+}
+
+inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
+    const Ref<CyberNativeCellWorld>& adapter, const PackedInt32Array& rectangles,
+    const PackedInt32Array& profile, const PackedInt32Array& policy,
+    const PackedInt32Array& water_fills, const PackedInt32Array& liquid_policy,
+    const Dictionary& options, const PackedByteArray* level_payload) {
     error_ = String();
     last_liquid_policy_refusal_.clear();
     if (adapter.is_null() || !adapter->world_ || adapter->world_->has_failed()) {
@@ -86,8 +103,10 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_world(
         if (seed < 0) throw std::invalid_argument("Negative setup seed");
         const String definition_hash = options.get("definition_hash", String());
         const auto definition_bytes = definition_hash.hex_decode();
-        if (definition_hash.length() != 64 || definition_bytes.size() != 32)
+        if (level_payload == nullptr && (definition_hash.length() != 64 || definition_bytes.size() != 32))
             throw std::invalid_argument("Controlled preparation requires a definition SHA256 claim");
+        if (level_payload != nullptr && options.has("definition_hash"))
+            throw std::invalid_argument("Prepared CYSD1 uses its actual payload digest, not a definition hash claim");
         auto config = std::make_unique<cybersand::WorldConfig>(adapter->world_->config());
         config->transport_policy = cybersand::TransportPolicy::unpack(
             {profile.ptr(), static_cast<std::size_t>(profile.size())});
@@ -103,67 +122,73 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_world(
         config->physics_diagnostics = {};
         config->physics_diagnostics.enabled = true;
 
-        // Resolve rectangle and nonzero-fill overwrite order once, before the
-        // native normalization law sees any tuple. The dense four-lane staging
-        // map exists only during construction, never in tick execution.
-        struct Tuple { cybersand::Material material = cybersand::Material::Empty;
-            std::uint16_t a = 0; std::uint8_t b = 0; };
-        std::vector<Tuple> map(std::size_t{cybersand::demo::kWidth} * cybersand::demo::kHeight);
-        if (rectangles.is_empty() || rectangles.size() % 5 ||
-            rectangles.size() / 5 > static_cast<std::int64_t>(cybersand::demo::kMaximumRectangles))
-            throw std::invalid_argument("Invalid demo rectangle count");
-        std::uint64_t area = 0;
-        const auto check_rect = [&](std::int32_t x, std::int32_t y, std::int32_t w, std::int32_t h) {
-            if (x < 0 || y < 0 || w < 1 || h < 1 || w > cybersand::demo::kWidth || h > cybersand::demo::kHeight ||
-                x > cybersand::demo::kWidth - w || y > cybersand::demo::kHeight - h)
-                throw std::invalid_argument("Invalid construction rectangle");
-        };
-        for (std::int64_t i = 0; i < rectangles.size(); i += 5) {
-            const auto x = rectangles[i], y = rectangles[i+1], w = rectangles[i+2], h = rectangles[i+3], id = rectangles[i+4];
-            check_rect(x, y, w, h);
-            if (!cybersand::demo::valid_material(id)) throw std::invalid_argument("Invalid material ID");
-            area += static_cast<std::uint64_t>(w) * h;
-            if (area > 8ULL * cybersand::demo::kWidth * cybersand::demo::kHeight)
-                throw std::invalid_argument("Demo construction budget exceeded");
-            const auto material = static_cast<cybersand::Material>(id);
-            const auto& initial = cybersand::MaterialRules::descriptor(material);
-            const auto a = material == cybersand::Material::Water ? config->water_experiment_policy.maximum() : initial.initial_state_a;
-            for (auto dy = y; dy < y+h; ++dy) for (auto dx = x; dx < x+w; ++dx)
-                map[static_cast<std::size_t>(dy) * cybersand::demo::kWidth + dx] = {material, a, initial.initial_state_b};
-        }
-        if (water_fills.size() % 6 || water_fills.size() / 6 > static_cast<std::int64_t>(cybersand::demo::kMaximumRectangles))
-            throw std::invalid_argument("Invalid Water fill count");
-        area = 0;
-        for (std::int64_t i = 0; i < water_fills.size(); i += 6) {
-            const auto x = water_fills[i], y = water_fills[i+1], w = water_fills[i+2], h = water_fills[i+3];
-            check_rect(x, y, w, h);
-            if (water_fills[i+4] < 0 || water_fills[i+4] > 255 || water_fills[i+5] < 0 || water_fills[i+5] > 12)
-                throw std::invalid_argument("Invalid Water fill value");
-            area += static_cast<std::uint64_t>(w) * h;
-            if (area > static_cast<std::uint64_t>(cybersand::demo::kWidth) * cybersand::demo::kHeight)
-                throw std::invalid_argument("Water fill budget exceeded");
-            const auto mass = static_cast<std::uint16_t>((2U * water_fills[i+4] * config->water_experiment_policy.maximum() + 255U) / 510U);
-            const auto coherence = static_cast<std::uint8_t>((2U * water_fills[i+5] * config->water_experiment_policy.coherence_ticks() + 12U) / 24U);
-            if (mass == 0) continue; // Registered zero source is a no-op.
-            for (auto dy = y; dy < y+h; ++dy) for (auto dx = x; dx < x+w; ++dx)
-                map[static_cast<std::size_t>(dy) * cybersand::demo::kWidth + dx] = {cybersand::Material::Water, mass, coherence};
-        }
         cybersand::normalization::FinalSetupInput input;
-        input.mass_bits = config->water_experiment_policy.mass_bits();
-        input.ambient_temperature = config->ambient_temperature;
-        input.setup.kind = cybersand::setup::SetupKind::MicroScenario;
-        input.setup.definition_schema = 2;
-        input.setup.definition_digest.emplace();
-        std::copy(definition_bytes.ptr(), definition_bytes.ptr()+32, input.setup.definition_digest->begin());
-        input.setup.seed = static_cast<std::uint64_t>(seed);
-        input.setup.domain = {0, 0, cybersand::demo::kWidth, cybersand::demo::kHeight};
-        // Binding a host digest does not establish a native definition compiler.
-        input.setup.coverage = cybersand::setup::SetupCoverage::RegisteredDefinitionAndPayload;
-        input.setup.gaps = cybersand::setup::kKnownSetupGaps;
-        for (std::int32_t y = 0; y < cybersand::demo::kHeight; ++y) for (std::int32_t x = 0; x < cybersand::demo::kWidth; ++x) {
-            const auto& cell = map[static_cast<std::size_t>(y) * cybersand::demo::kWidth+x];
-            if (cell.material != cybersand::Material::Empty)
-                input.cells.push_back({x, y, cell.material, cell.a, cell.b, config->ambient_temperature});
+        if (level_payload != nullptr) {
+            input = prepared_liquid_detail::level_setup(
+                {level_payload->ptr(), static_cast<std::size_t>(level_payload->size())}, *config,
+                static_cast<std::uint64_t>(seed));
+        } else {
+            // Resolve rectangle and nonzero-fill overwrite order once, before the
+            // native normalization law sees any tuple. The dense four-lane staging
+            // map exists only during construction, never in tick execution.
+            struct Tuple { cybersand::Material material = cybersand::Material::Empty;
+                std::uint16_t a = 0; std::uint8_t b = 0; };
+            std::vector<Tuple> map(std::size_t{cybersand::demo::kWidth} * cybersand::demo::kHeight);
+            if (rectangles.is_empty() || rectangles.size() % 5 ||
+                rectangles.size() / 5 > static_cast<std::int64_t>(cybersand::demo::kMaximumRectangles))
+                throw std::invalid_argument("Invalid demo rectangle count");
+            std::uint64_t area = 0;
+            const auto check_rect = [&](std::int32_t x, std::int32_t y, std::int32_t w, std::int32_t h) {
+                if (x < 0 || y < 0 || w < 1 || h < 1 || w > cybersand::demo::kWidth || h > cybersand::demo::kHeight ||
+                    x > cybersand::demo::kWidth - w || y > cybersand::demo::kHeight - h)
+                    throw std::invalid_argument("Invalid construction rectangle");
+            };
+            for (std::int64_t i = 0; i < rectangles.size(); i += 5) {
+                const auto x = rectangles[i], y = rectangles[i+1], w = rectangles[i+2], h = rectangles[i+3], id = rectangles[i+4];
+                check_rect(x, y, w, h);
+                if (!cybersand::demo::valid_material(id)) throw std::invalid_argument("Invalid material ID");
+                area += static_cast<std::uint64_t>(w) * h;
+                if (area > 8ULL * cybersand::demo::kWidth * cybersand::demo::kHeight)
+                    throw std::invalid_argument("Demo construction budget exceeded");
+                const auto material = static_cast<cybersand::Material>(id);
+                const auto& initial = cybersand::MaterialRules::descriptor(material);
+                const auto a = material == cybersand::Material::Water ? config->water_experiment_policy.maximum() : initial.initial_state_a;
+                for (auto dy = y; dy < y+h; ++dy) for (auto dx = x; dx < x+w; ++dx)
+                    map[static_cast<std::size_t>(dy) * cybersand::demo::kWidth + dx] = {material, a, initial.initial_state_b};
+            }
+            if (water_fills.size() % 6 || water_fills.size() / 6 > static_cast<std::int64_t>(cybersand::demo::kMaximumRectangles))
+                throw std::invalid_argument("Invalid Water fill count");
+            area = 0;
+            for (std::int64_t i = 0; i < water_fills.size(); i += 6) {
+                const auto x = water_fills[i], y = water_fills[i+1], w = water_fills[i+2], h = water_fills[i+3];
+                check_rect(x, y, w, h);
+                if (water_fills[i+4] < 0 || water_fills[i+4] > 255 || water_fills[i+5] < 0 || water_fills[i+5] > 12)
+                    throw std::invalid_argument("Invalid Water fill value");
+                area += static_cast<std::uint64_t>(w) * h;
+                if (area > static_cast<std::uint64_t>(cybersand::demo::kWidth) * cybersand::demo::kHeight)
+                    throw std::invalid_argument("Water fill budget exceeded");
+                const auto mass = static_cast<std::uint16_t>((2U * water_fills[i+4] * config->water_experiment_policy.maximum() + 255U) / 510U);
+                const auto coherence = static_cast<std::uint8_t>((2U * water_fills[i+5] * config->water_experiment_policy.coherence_ticks() + 12U) / 24U);
+                if (mass == 0) continue; // Registered zero source is a no-op.
+                for (auto dy = y; dy < y+h; ++dy) for (auto dx = x; dx < x+w; ++dx)
+                    map[static_cast<std::size_t>(dy) * cybersand::demo::kWidth + dx] = {cybersand::Material::Water, mass, coherence};
+            }
+            input.mass_bits = config->water_experiment_policy.mass_bits();
+            input.ambient_temperature = config->ambient_temperature;
+            input.setup.kind = cybersand::setup::SetupKind::MicroScenario;
+            input.setup.definition_schema = 2;
+            input.setup.definition_digest.emplace();
+            std::copy(definition_bytes.ptr(), definition_bytes.ptr()+32, input.setup.definition_digest->begin());
+            input.setup.seed = static_cast<std::uint64_t>(seed);
+            input.setup.domain = {0, 0, cybersand::demo::kWidth, cybersand::demo::kHeight};
+            // Binding a host digest does not establish a native definition compiler.
+            input.setup.coverage = cybersand::setup::SetupCoverage::RegisteredDefinitionAndPayload;
+            input.setup.gaps = cybersand::setup::kKnownSetupGaps;
+            for (std::int32_t y = 0; y < cybersand::demo::kHeight; ++y) for (std::int32_t x = 0; x < cybersand::demo::kWidth; ++x) {
+                const auto& cell = map[static_cast<std::size_t>(y) * cybersand::demo::kWidth+x];
+                if (cell.material != cybersand::Material::Empty)
+                    input.cells.push_back({x, y, cell.material, cell.a, cell.b, config->ambient_temperature});
+            }
         }
         auto result = std::make_unique<cybersand::PreparedWorldBuilder::Result>(cybersand::PreparedWorldBuilder::prepare(
             *config, input, rule.is_empty() ? cybersand::normalization::NormalizationOptIn::None :
@@ -214,6 +239,10 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_world(
         pending->receipt["session_generation"] = static_cast<std::int64_t>(adapter->liquid_policy_session_generation_+1);
         pending->receipt["prepared_setup_hash"] = prepared_liquid_detail::digest(prepared.setup().setup_hash());
         pending->receipt["prepared_payload_hash"] = prepared_liquid_detail::digest(prepared.setup().native_payload_hash());
+        if (level_payload != nullptr) {
+            pending->receipt["setup_kind"] = "native_cell_fixture";
+            pending->receipt["source_payload_sha256"] = prepared_liquid_detail::digest(*input.setup.definition_digest);
+        }
         pending->receipt["policy_hash"] = String(pending->world->liquid_solver_policy().policy_hash_hex().c_str());
         pending->receipt["physical_state_hash"] = String::num_uint64(facts->values().physical_hash, 16).lpad(16,"0");
         pending->receipt["physical_state_hash_version"] = static_cast<std::int64_t>(facts->values().physical_hash_version);

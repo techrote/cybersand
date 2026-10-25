@@ -608,6 +608,15 @@ public:
         const PackedInt32Array& rectangles, const PackedInt32Array& profile,
         const PackedInt32Array& policy, const PackedInt32Array& water_fills,
         const PackedInt32Array& liquid_policy, const Dictionary& options);
+    [[nodiscard]] std::int64_t prepare_liquid_level(const Ref<CyberNativeCellWorld>& adapter,
+        const PackedByteArray& payload, const PackedInt32Array& profile,
+        const PackedInt32Array& policy, const PackedInt32Array& liquid_policy, const Dictionary& options);
+private:
+    [[nodiscard]] std::int64_t prepare_liquid_candidate(const Ref<CyberNativeCellWorld>& adapter,
+        const PackedInt32Array& rectangles, const PackedInt32Array& profile,
+        const PackedInt32Array& policy, const PackedInt32Array& water_fills,
+        const PackedInt32Array& liquid_policy, const Dictionary& options, const PackedByteArray* level_payload);
+public:
     [[nodiscard]] bool prepared_liquid_character_box_collides(const Ref<CyberNativeCellWorld>& adapter,
         std::int64_t token, Vector2 origin, Vector2 size, std::int64_t mode) const {
         // A stale view fails closed; no World reference, mutable storage or
@@ -971,6 +980,8 @@ protected:
                              &CyberDemoBridge::liquid_policy_with_inertial_damping);
         ClassDB::bind_method(D_METHOD("prepare_liquid_world", "world", "rectangles", "profile", "policy",
             "water_fills", "liquid_policy", "options"), &CyberDemoBridge::prepare_liquid_world);
+        ClassDB::bind_method(D_METHOD("prepare_liquid_level", "world", "payload", "profile", "policy",
+            "liquid_policy", "options"), &CyberDemoBridge::prepare_liquid_level);
         ClassDB::bind_method(D_METHOD("prepared_liquid_character_box_collides", "world", "token", "origin", "size", "mode"),
             &CyberDemoBridge::prepared_liquid_character_box_collides);
         ClassDB::bind_method(D_METHOD("prepared_liquid_world_values", "world", "token"), &CyberDemoBridge::prepared_liquid_world_values);
