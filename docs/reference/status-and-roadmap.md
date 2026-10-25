@@ -10,6 +10,17 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Native default-demo constructor — 2026-10-25
+
+Unmerged source `afe19c2d` shares the original native ordered demo recipe with
+explicit prepared compilation, retains Water/transport and restores production
+reset/lifecycle semantics. Native constructor origin binds actual generation and
+retires on other replacements. The [dated API proof](../audits/2026-10-25-lcb003-native-default-demo-preparation.md)
+records old-DLL tuple controls, the preserved diagnostic-lifecycle failure,
+fresh Windows167/493/72 and independent review. Main/worker owner adoption,
+repaired IN parent integration and final platforms/publication remain open.
+
+
 The subsequent unmerged [normal level-import checkpoint](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
 adds explicit Exploratory next-import selection and actual menu adoption of
 ordinary body-free CYSD payloads, metadata and sampled owner. Refusal retains

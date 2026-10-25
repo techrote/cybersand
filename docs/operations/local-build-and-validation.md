@@ -1334,3 +1334,12 @@ The isolated #212 [Brine reference](../architecture/inertial-cellular-v1.md) is 
 
 
 For the native damping parameter, run `python tools/lcb/inertial_parameter_contract.py --check` and the LCB Python suite as well as the native groups. The optional IN family blockv2 applies `damping_numerator`0..16/16(default1); actual readback/identity and save/restore are native-owned. The worker fixture observes four actual participants at0/default1/16, while the matched tail fixture records rounding/retained-motion outcomes without assuming every arm settles. Existing illustrative v1 vectors remain separate; use the family reference for the exact schema and qualifications.
+
+
+The unmerged native default-demo API has a focused
+`test_liquid_default_demo_preparation.gd` case. It requires a fresh staged DLL
+with the new binding, compares the complete old-DLL tuple controls at four
+Water/transport configurations and exercises candidate masks, token/refusal,
+geometry and constructor-origin lifetime. Its [dated Windows proof](../audits/2026-10-25-lcb003-native-default-demo-preparation.md)
+retains the diagnostic-lifecycle failure and 167/493/72 final regression results.
+This native API case does not test Main/worker adoption or published platforms.

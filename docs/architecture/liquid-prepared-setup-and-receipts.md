@@ -847,3 +847,24 @@ not a substitute for compiler proof. **#212** inertial qualification and **#203*
 packaged comparison coverage remain pending. Existing family and campaign gates
 continue to own acceptance; this native checkpoint supplies no completion claim
 for those streams.
+
+
+## Native desktop default-demo preparation
+
+**Current unmerged native API, `afe19c2d`:** the authoritative native default-demo
+recipe is shared by ordinary reset and `prepare_liquid_default_demo(world,
+liquid_policy, options)`. Final tuples are compiled natively; no GDScript copy of
+the sinusoidal floor or sparse materials defines this constructor. Inherited
+Water precision/coherence and independent transport survive, while interaction,
+diagnostic laws and default adapter coupling/lifecycle state follow native reset.
+The native recipe ID and final payload bind a qualified `NativeCellFixture`;
+caller definition-hash/nonzero-seed claims refuse. Existing token, final native
+fence, initial body masks and copied receipt semantics apply.
+
+Copied `get_default_demo_identity()` binds native constructor origin to the
+actual generation; imports and other World replacements retire it even when
+cell bytes match. Edits retain constructor origin without claiming replay.
+[LCBH-015](../reference/invariants.md) and the [dated local proof](../audits/2026-10-25-lcb003-native-default-demo-preparation.md)
+record the old-DLL four-cohort controls, corrected diagnostic lifecycle failure
+and fresh 167-assertion Windows API case. Main/worker owner adoption, repaired IN
+parent integration, full host binding and final platform publication are Planned.

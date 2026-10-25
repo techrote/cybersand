@@ -10,6 +10,12 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The unmerged [native desktop default-demo preparation](architecture/liquid-prepared-setup-and-receipts.md#native-desktop-default-demo-preparation)
+shares the authoritative ordered recipe, inherited laws, native constructor
+origin and one-use prepared fence. The [dated local proof](audits/2026-10-25-lcb003-native-default-demo-preparation.md)
+qualifies the adapter API; Main/worker adoption and final platforms remain open.
+
+
 The subsequent [explicit normal level-import route](architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
 stages ordinary body-free CYSD thermal payloads, saved metadata and a sampled
 player only after an Exploratory next-import selection. Refusal retains the old

@@ -10,6 +10,17 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## Native default-demo API proof — 2026-10-25
+
+Unmerged source `afe19c2d` shares the original native ordered demo recipe with
+explicit prepared compilation, retains Water/transport and restores production
+reset/lifecycle semantics. Native constructor origin binds actual generation and
+retires on other replacements. The [dated API proof](../audits/2026-10-25-lcb003-native-default-demo-preparation.md)
+records old-DLL tuple controls, the preserved diagnostic-lifecycle failure,
+fresh Windows167/493/72 and independent review. Main/worker owner adoption,
+repaired IN parent integration and final platforms/publication remain open.
+
+
 The [import settings correction](../audits/2026-10-25-lcb003-level-import-host.md#inherited-setting-refusal-correction)
 on sourcecccae86f adds native-component preflight for unsupported inherited
 interaction/diagnostic laws and transport. Three fresh strict processes pass:
