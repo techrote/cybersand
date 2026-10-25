@@ -102,10 +102,13 @@ static func prepared_water(policy_result: Dictionary) -> Dictionary:
 		"profile":"Explicit solver policy with retained Water semantic policy","regions":[]}
 	return out
 
+static func whole_cell_water_family(family: String) -> bool:
+	return family == "cellular_yield_v1" or family == "inertial_cellular_v1"
+
 static func prepared_water_source_refusal(policy_readback: Dictionary, recipe: Dictionary) -> String:
 	var whole_cell_water: bool = false
 	for assignment: Dictionary in policy_readback.get("assignments",[]):
-		if int(assignment.material) == 3 and assignment.applied_family == "cellular_yield_v1": whole_cell_water = true
+		if int(assignment.material) == 3 and whole_cell_water_family(str(assignment.applied_family)): whole_cell_water = true
 	if not whole_cell_water: return ""
 	for action: Dictionary in recipe.actions:
 		if action.kind == "fill" and int(action.normalized_mass) != 255:

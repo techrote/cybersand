@@ -1,0 +1,143 @@
+{
+  "cohorts": [
+    {
+      "coherence_ticks": 12,
+      "components": {
+        "backend": "1",
+        "catalogue_digest": "none",
+        "diagnostic_physics": "0:-1",
+        "execution": "window:nolod:adhesion",
+        "interaction_policy": "8:9:30",
+        "native_binary_sha256": "none",
+        "normalization_receipt": "none",
+        "physical_state_hash_version": "2",
+        "policy_hash": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+        "scheduler": "128:32:64:2:3",
+        "seed": "none",
+        "setup_hash": "none",
+        "simulation_region": "0:0:320:180",
+        "source_revision": "none",
+        "transport_profile": "baseline",
+        "water_policy": "1:8:12:0",
+        "workers": "1"
+      },
+      "mass_bits": 8,
+      "payload_sha256": "5fb22947ad8f2538dc88d4f419248dd7ffc4b4caf14935ad0c9ee948a01e7261",
+      "physical_hash": "f542ff909e18a0d9",
+      "profile": -1,
+      "ticks": [
+        "b966db03ca6d132c",
+        "cb1e317d4b43d052",
+        "52b85c9761064d39",
+        "6722ff22b8c782e4"
+      ]
+    },
+    {
+      "coherence_ticks": 0,
+      "components": {
+        "backend": "1",
+        "catalogue_digest": "none",
+        "diagnostic_physics": "0:-1",
+        "execution": "window:nolod:adhesion",
+        "interaction_policy": "8:9:30",
+        "native_binary_sha256": "none",
+        "normalization_receipt": "none",
+        "physical_state_hash_version": "2",
+        "policy_hash": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+        "scheduler": "128:32:64:2:3",
+        "seed": "none",
+        "setup_hash": "none",
+        "simulation_region": "0:0:320:180",
+        "source_revision": "none",
+        "transport_profile": "08567de537114b3970190f422b2c61b94af0950cfa5fd795f1779e374af05eee",
+        "water_policy": "1:3:0:0",
+        "workers": "1"
+      },
+      "mass_bits": 3,
+      "payload_sha256": "e71ea9846802abdab6d8d2c21acbe10bb1554af7ebb43da907b0f541ef7ae69c",
+      "physical_hash": "e68995db0a63e123",
+      "profile": 1,
+      "ticks": [
+        "cda40e9796c43f44",
+        "0e3dcba3d1712e84",
+        "2d354f5ab8b30e8d",
+        "564ecb7fc0b9a0ea"
+      ]
+    },
+    {
+      "coherence_ticks": 5,
+      "components": {
+        "backend": "1",
+        "catalogue_digest": "none",
+        "diagnostic_physics": "0:-1",
+        "execution": "window:nolod:adhesion",
+        "interaction_policy": "8:9:30",
+        "native_binary_sha256": "none",
+        "normalization_receipt": "none",
+        "physical_state_hash_version": "2",
+        "policy_hash": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+        "scheduler": "128:32:64:2:3",
+        "seed": "none",
+        "setup_hash": "none",
+        "simulation_region": "0:0:320:180",
+        "source_revision": "none",
+        "transport_profile": "89eb9b9ac12349de69d9c58e540610037e4b6410c1da7dc2fe3ef90593143fb4",
+        "water_policy": "1:5:5:0",
+        "workers": "1"
+      },
+      "mass_bits": 5,
+      "payload_sha256": "9df80800044454fb3d8d030207aa2184bc3264f4105849e6fc04cb889ccbdcdd",
+      "physical_hash": "d6dc149d408c543d",
+      "profile": 0,
+      "ticks": [
+        "948386edffd02b51",
+        "8c1a984415856521",
+        "49bf2198a0cbb7a3",
+        "c73d3e5eb20a596a"
+      ]
+    },
+    {
+      "coherence_ticks": 12,
+      "components": {
+        "backend": "1",
+        "catalogue_digest": "none",
+        "diagnostic_physics": "0:-1",
+        "execution": "window:nolod:adhesion",
+        "interaction_policy": "8:9:30",
+        "native_binary_sha256": "none",
+        "normalization_receipt": "none",
+        "physical_state_hash_version": "2",
+        "policy_hash": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+        "scheduler": "128:32:64:2:3",
+        "seed": "none",
+        "setup_hash": "none",
+        "simulation_region": "0:0:320:180",
+        "source_revision": "none",
+        "transport_profile": "08567de537114b3970190f422b2c61b94af0950cfa5fd795f1779e374af05eee",
+        "water_policy": "1:8:12:0",
+        "workers": "1"
+      },
+      "mass_bits": 8,
+      "payload_sha256": "5fb22947ad8f2538dc88d4f419248dd7ffc4b4caf14935ad0c9ee948a01e7261",
+      "physical_hash": "6717a03c4ae359b1",
+      "profile": 1,
+      "ticks": [
+        "d2e341cb69846648",
+        "6629d5a1970c1cce",
+        "1619cc5b3b7ffb49",
+        "f90af88b7cb61abc"
+      ]
+    }
+  ],
+  "legacy_fixture": "default-desktop-demo-legacy.json",
+  "legacy_fixture_sha256": "c557604e68790f289633b6b8a0d496ed5d5a084f451f2ca1143528da595dcb4d",
+  "namespace": {
+    "capability_matrix_digest": "33c608f875e3d8b5730f1d3b81a54dbeff9579b433e061535610a8bfa276e237",
+    "physical_state_hash_version": 2,
+    "policy_hash": "4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a"
+  },
+  "runtime_sha256": "93d3ee3f5c68b23e0a96b9f836914e634ac0c3632bca332c797c9814138cfd94",
+  "schema": "cybersand-default-desktop-recipe-capability-control-v1",
+  "scope": "Four exact default native recipe controls in Water-IN capability namespace. Old fixture unchanged; all initial/full-CYSD and four per-tick tuple hashes and clocks match old DLL. No browser/publication claim.",
+  "source": "84cafad9987d5463acc193393138267c72ee09d4 native merge; independent paired old/new DLL controls"
+}

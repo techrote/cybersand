@@ -39,20 +39,21 @@ func apply(worker: CyberSimulationWorker, command: Dictionary) -> bool:
 	worker._mutex.lock();var owned: Dictionary = worker._lab_request;worker._lab_request = {};worker._mutex.unlock()
 	return worker._apply_lab(owned)
 
-func request(result: Dictionary, policy: PackedInt32Array, serial: int, normalize_water: bool = false) -> Dictionary:
+func request(result: Dictionary, policy: PackedInt32Array, serial: int, normalize_water: bool = false, radius: int = 2) -> Dictionary:
 	return {"water_reset":true,"water_policy":result.policy,"water_policy_hash":result.hash,"scenario_mode":"Inspect",
 		"scenario_request_serial":serial,"sampled_character_enabled":true,"liquid_policy":policy,
 		"controlled_liquid_setup":{"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else "",
-			"maximum_rule_radius":2}}
+			"maximum_rule_radius":radius}}
 
 func run() -> void:
 	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
 	var current: PackedInt32Array = bridge.default_liquid_policy()
-	var whole := PackedInt32Array();var pressure := PackedInt32Array()
+	var whole := PackedInt32Array();var pressure := PackedInt32Array();var inertial := PackedInt32Array()
 	for choice: Dictionary in bridge.liquid_policy_assignment_choices(current,3):
 		if choice.accepted and choice.family == "cellular_yield_v1": whole = choice.request
 		if choice.accepted and choice.family == "pressure_flow_v1" and choice.variant == "reference": pressure = choice.request
-	expect(not whole.is_empty() and not pressure.is_empty(),"actual native Water families are available")
+		if choice.accepted and choice.family == "inertial_cellular_v1" and choice.variant == "reference": inertial = choice.request
+	expect(not whole.is_empty() and not pressure.is_empty() and not inertial.is_empty(),"actual native Water CY/PF/IN families are available")
 	for scenario: String in CyberWaterFeelScenarios.ids():
 		var result: Dictionary = resolved(scenario)
 		var original: Dictionary = Catalogue.water(result)
@@ -105,8 +106,16 @@ func run() -> void:
 		"initial normalization cannot silently change future fractional source actions")
 	expect(worker._world.get_physical_state_hash() == retained_hash and worker._scenario_host.liquid_host_observation_record() == retained_record,
 		"blind/body/future-source refusals preserve the old construction record")
-	expect(apply(worker,request(resolved("drips"),pressure,7)),"pressure Water retains registered fractional scheduled sources")
-	worker.acknowledge_prepared_liquid_configuration(7)
+	var retained_generation: int = worker._world.get_liquid_policy_session_generation()
+	expect(not apply(worker,request(resolved("drips"),inertial,8,true,3)) and worker._lab_status.contains("scheduled sources"),
+		"admitted Water IN with explicit radius/normalization still refuses fractional future sources")
+	expect(worker._world.get_physical_state_hash()==retained_hash and worker._character==retained_character
+		and worker._world.get_liquid_policy_session_generation()==retained_generation
+		and worker._world.get_applied_liquid_construction_receipt()==receipt
+		and worker._scenario_host.liquid_host_observation_record()==retained_record,
+		"Water IN future-source refusal retains exact worker World/player/receipt/record/generation")
+	expect(apply(worker,request(resolved("drips"),pressure,9)),"pressure Water retains registered fractional scheduled sources")
+	worker.acknowledge_prepared_liquid_configuration(9)
 	var advanced: bool = true
 	for tick: int in range(32): advanced = worker._scenario_host.advance() and advanced
 	var state: Dictionary = worker._scenario_host.legacy_water_state()
@@ -115,11 +124,11 @@ func run() -> void:
 	expect(state.current == state.initial_integer+state.explicit_source-state.explicit_sink,
 		"retained scheduled ledger stays exact under actual pressure-family execution")
 	worker._running = false
-	await application(shallow,whole)
+	await application(shallow,whole,inertial)
 	await synchronous(shallow,whole)
 	finish()
 
-func application(shallow: Dictionary, whole: PackedInt32Array) -> void:
+func application(shallow: Dictionary, whole: PackedInt32Array, inertial: PackedInt32Array) -> void:
 	root.size = Vector2i(1600,1000)
 	desktop = load("res://main.tscn").instantiate();root.add_child(desktop);await process_frame
 	desktop.water_lab_apply_result(shallow)
@@ -156,6 +165,21 @@ func application(shallow: Dictionary, whole: PackedInt32Array) -> void:
 	desktop._prepared_reference_factory = Callable()
 	expect(not desktop.water_lab_prepare_blind(BLIND_CANDIDATES,77) and desktop.water_blind_set.is_empty()
 		and desktop.tower_context.liquid_host_observation == accepted,"experimental owner refuses blind transition before creating a hidden mapping")
+	expect(desktop.liquid_comparison_apply_active(inertial,true,true,"Inspect",3)
+		and await wait_for(func() -> bool: return desktop.pending_microscenario_apply.is_empty())
+		and desktop.microscenario_liquid_policy==inertial,
+		"actual desktop owner admits explicit normalized Water IN before future-source control")
+	accepted = desktop.tower_context.liquid_host_observation.duplicate(true)
+	var retained_player: Array = [desktop.character_position,desktop.player_representation]
+	var retained_bodies: Array = desktop.rigid_bodies.duplicate()
+	var retained_policy: String = desktop.water_policy_resolved.hash
+	desktop.water_lab_apply_result(resolved("drips"))
+	expect(desktop.pending_microscenario_apply.is_empty() and desktop.microscenario_error.contains("scheduled sources")
+		and desktop.tower_context.liquid_host_observation==accepted
+		and [desktop.character_position,desktop.player_representation]==retained_player
+		and desktop.rigid_bodies==retained_bodies and desktop.water_policy_resolved.hash==retained_policy
+		and desktop.microscenario_liquid_policy==inertial,
+		"actual desktop Water callback refuses IN drips and retains accepted policy/owners/copied identity")
 	desktop.tower_reset()
 	expect(await wait_for(func() -> bool: return desktop.pending_water_exit.is_empty())
 		and not desktop._liquid_water_active and desktop.tower_context.liquid_host_observation.is_empty(),"accepted ordinary exit retires Water-only selection/record")

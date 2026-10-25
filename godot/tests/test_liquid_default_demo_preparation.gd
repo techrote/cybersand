@@ -5,6 +5,12 @@ extends SceneTree
 # browser, retained-momentum contact or complete-host qualification is implied.
 const Profiles = preload("res://scripts/transport_profiles.gd")
 const FIXTURE: String = "res://tests/fixtures/lcb/default-desktop-demo-legacy.json"
+const WATER_IN_FIXTURE: String = "res://tests/fixtures/lcb/default-desktop-demo-water-in-capability.json"
+const LEGACY_FIXTURE_SHA256: String = "c557604e68790f289633b6b8a0d496ed5d5a084f451f2ca1143528da595dcb4d"
+const LEGACY_NAMESPACE: Dictionary = {"policy_hash":"6e005e61219c01421e3fb404b1df4773120885d02f94eab1558efa6cc5c2ec10",
+	"capability_matrix_digest":"55141a323670eac6c50971463cd5b0ba2d4e13b036739d9f69b25aac3c4d54c1","physical_state_hash_version":2}
+const WATER_IN_NAMESPACE: Dictionary = {"policy_hash":"4b7922ad7badb443556d82ea0c624c259da7b75e85f92f87cdab216f95cab53a",
+	"capability_matrix_digest":"33c608f875e3d8b5730f1d3b81a54dbeff9579b433e061535610a8bfa276e237","physical_state_hash_version":2}
 var assertions: int = 0
 var failures: int = 0
 var sections: Dictionary = {}
@@ -49,6 +55,17 @@ func snapshot(world: Variant) -> Dictionary:
 func intact(world: Variant, before: Dictionary) -> bool: return snapshot(world)==before
 func prepare(world: Variant, request: PackedInt32Array, opts: Dictionary = {}) -> int:
 	return bridge.prepare_liquid_default_demo(world,request,options() if opts.is_empty() else opts)
+func namespace_matches(identity: Dictionary, known: Dictionary) -> bool:
+	return identity.size()==known.size() and identity.get("policy_hash","")==known.policy_hash \
+		and identity.get("capability_matrix_digest","")==known.capability_matrix_digest \
+		and identity.get("physical_state_hash_version",-1)==known.physical_state_hash_version
+func control_fixture(legacy: Dictionary, identity: Dictionary) -> Dictionary:
+	if namespace_matches(identity,LEGACY_NAMESPACE): return legacy
+	if not namespace_matches(identity,WATER_IN_NAMESPACE): return {}
+	var candidate: Variant = JSON.parse_string(FileAccess.get_file_as_string(WATER_IN_FIXTURE))
+	if not candidate is Dictionary or not namespace_matches(candidate.get("namespace",{}),WATER_IN_NAMESPACE) \
+		or candidate.get("legacy_fixture_sha256","")!=LEGACY_FIXTURE_SHA256: return {}
+	return candidate
 func run() -> void:
 	bridge = ClassDB.instantiate(&"CyberDemoBridge")
 	if not expect(bridge!=null and bridge.has_method(&"prepare_liquid_default_demo"),"native default recipe API is required"):
@@ -57,7 +74,17 @@ func run() -> void:
 	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(FIXTURE))
 	if not expect(parsed is Dictionary and parsed.get("cohorts",[]).size()==4,"four immutable old-DLL controls"):
 		finish();return
-	cohorts = parsed.cohorts
+	expect(sha(FileAccess.get_file_as_bytes(FIXTURE))==LEGACY_FIXTURE_SHA256,"original pre-Water fixture remains byte-for-byte immutable")
+	var applied: Dictionary = bridge.validate_liquid_policy(defaults).receipt
+	var identity: Dictionary = {"policy_hash":applied.policy_hash,"capability_matrix_digest":applied.capability_matrix_digest,
+		"physical_state_hash_version":int(applied.physical_state_hash_version)}
+	var selected_controls: Dictionary = control_fixture(parsed,identity)
+	if not expect(not selected_controls.is_empty() and selected_controls.get("cohorts",[]).size()==4,
+		"actual policy/capability/hash-version selects one separately frozen default namespace"):
+		finish();return
+	var unknown: Dictionary = identity.duplicate();unknown.capability_matrix_digest = "0".repeat(64)
+	expect(control_fixture(parsed,unknown).is_empty(),"an unregistered identity cannot accept arbitrary new physical hashes")
+	cohorts = selected_controls.cohorts
 	var before: int = failures
 	for row: Dictionary in cohorts:
 		var legacy: Variant = configured(row)

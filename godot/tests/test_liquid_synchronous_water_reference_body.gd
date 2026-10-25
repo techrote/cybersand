@@ -157,6 +157,13 @@ func run() -> void:
 		"fractional initial whole-cell Water refuses before authority replacement")
 	expect(not owner._apply_prepared_liquid_water(panel.requested_policy,true,2,resolved("drips")) and snapshot()==prior,
 		"explicit initial normalization does not admit unsupported future fractional whole-cell sources")
+	panel.select_preset(5)
+	var inertial: Dictionary = owner.demo_bridge.validate_liquid_policy(panel.requested_policy)
+	expect(inertial.accepted and Catalogue.whole_cell_water_family("inertial_cellular_v1"),
+		"future-source control uses an actually admitted whole-cell Water IN policy")
+	expect(not owner._apply_prepared_liquid_water(panel.requested_policy,true,3,resolved("drips"))
+		and owner.microscenario_error.contains("scheduled sources") and owner._pending_web_reference==null and snapshot()==prior,
+		"explicit IN normalization/radius cannot admit future fractional sources or replace retained synchronous bodies")
 	expect(not owner.water_lab_prepare_blind(BLIND_CANDIDATES,77) and owner.water_blind_set.is_empty() and snapshot()==prior,
 		"prepared body route cannot silently enter blind selection")
 	var old: RefCounted = owner._accepted_reference_candidate
@@ -252,7 +259,8 @@ func _play(preset: int) -> void:
 
 func finish() -> void:
 	print("LIQUID_SYNCHRONOUS_WATER_REFERENCE_BODY_RESULT ",JSON.stringify({"ok":failures==0,"cohorts":cohorts,
-		"scope":"actual synchronous supported-body Water Feel staging/feedback; local native Windows only, pre-Water-IN runtime"}))
+		"whole_cell_source_refusal_families":["cellular_yield_v1","inertial_cellular_v1"],
+		"scope":"actual synchronous supported-body Water Feel FM/PF staging/feedback and CY/IN future-source refusal; local native Windows only"}))
 	print("LIQUID_SYNCHRONOUS_WATER_REFERENCE_BODY: %d assertions; %d failures" % [assertions,failures])
 	if owner!=null: owner.queue_free()
 	quit(1 if failures else 0)
