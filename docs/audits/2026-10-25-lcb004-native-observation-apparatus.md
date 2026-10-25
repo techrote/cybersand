@@ -325,3 +325,79 @@ FM versus matched radius3 controls, PF implementation equivalence versus distinc
 family differences and static rest versus continuation. Full-host/performance/
 human-feel/packaging and #203 acceptance remain Planned. Additional Web testing
 is owner-deferred until after the epic.
+
+## Additive Release infrastructure checkpoint, 2026-10-25
+
+Source base is apparatus checkpoint `e98d2b15801c67ec6bfa6db32d79242fea53842b`
+plus exactly three infrastructure files: the Linux-host five-TU Release builder,
+its pure guards and the scoped GitHub-hosted workflow. The existing six apparatus
+code files, Makefile, all80 published Native source bindings, runtime payloads,
+profiles, requests, defaults, fixtures and117 historical registry records remain
+unchanged. The earlier O1 engine executions and every prior failure/receipt keep
+their original scope; none is relabelled Release execution.
+
+The new helper records `-O3 -DNDEBUG -flto`, all five actual per-object depfiles,
+complete input union, object/executable/compiler-driver/library hashes, commands,
+deadlines, logs and exact bundle identity. Source changes, incomplete maps,
+changed transfer bytes, missing dependencies and existing/in-repository outputs
+refuse. Linux180s compile/link timeouts kill the compiler process group. The
+Windows PE is built on Linux with the existing locked archive and runs only
+after the actual Windows LF checkout matches its complete raw compiled-input
+map. The selected Linux-host compiler/driver file is hash-only identity data in
+that execution job; its hash alone does not bind every compiler transitive input.
+Pinned archive/version and explicit dependency file identities remain separate.
+
+Local qualification consists of **34 pure tests**,13 new builder controls and21
+retained producer/runner controls, plus provider policy and workflow structure
+checks. The final command is `python -B -m unittest discover -s tools/lcb -p
+'test_*science*.py' -v`, exit0 in0.609s. The new tests include complete five-TU
+orchestration with synthetic object bytes, exact map/bundle transfer and hostile
+changes, failed compile partial evidence, source mutation, toolchain member
+binding, Linux dependency refusal, child failure/timeout cleanup and separate
+Linux=true/Windows=false compiler-execution metadata. No actual native physics
+compiler or engine is invoked by these tests. Workflow YAML, read-only hosted
+routing, draft/dispatch conditions and always-on partial uploads are checked.
+
+The initial pure test fixture accidentally contained a literal plus after a
+Make continuation (seven passes/one error). A later Linux-timeout mock on the
+Windows host omitted the platform-specific SIGKILL constant (nine passes/one
+error). Both failed apparatus attempts remain in the external packet/transcript;
+only those fixtures were corrected. Root review then required the target-specific
+compiler-execution flag and compiler/driver wording, with explicit controls for
+both values. The initial33-test proof remains immutable beside the corrected
+34-test proof.
+
+Evidence is outside Git at `C:/Users/_/.codex/tmp/lcb004-science-release-infra-v1`:
+`final-proof-v1/RECEIPT.json` SHA256
+`8a2c06bdf5325a9fafec7891f0534eac5cb1b3c63d77a2388ce22afd0556a56d`,
+and corrected `final-proof-v2/RECEIPT.json` SHA256
+`d42e7f077c1bed5b4ee163ec98a94448d4c6091e3a2615151fe531c2e0142bd3`.
+Both retain exact source copies and raw stdout/stderr. The corrected builder is
+`b4a1606ddd2763b3277337a10f5ab1c003de0bdc73ef3c22867fb3a6815a9f4b`,
+test `5569bf80b1d5e702ea800e405e192acbff1c6407383a29d13ec813ca5b0940ef`,
+workflow `21f401ab185dfa14c2ca56bd4d8e20bbdf53b348c68ebb59b397f8b166fe4605`.
+
+At this checkpoint the new workflow has not executed, and the O3 target/build
+helper has not compiled an actual consumer. Actual Linux and Windows Release
+three-precursor/six-child30-tick/25-guard jobs and independent exact-source review
+remain required before apparatus merge. A newly introduced workflow may need
+the ready-PR event before default-branch dispatch is available. No timeout is
+raised and no full campaign, residual threshold, long-horizon, browser, visual,
+whole-application or #203 acceptance is claimed. Current documentation validation
+for this additive infrastructure prose is recorded separately after its freeze.
+
+The additive infrastructure prose has now passed all seven proper-companion
+checks: documentation, historical M11, current materialized repository/provenance,
+frozen and supplementary retrieval, provider policy and whitespace. Receipt
+`lcb004-science-release-infra-v1/docs-checks-v1/VALIDATION-RECEIPT.json`, SHA256
+`3b20b6c5dd250eaef58d4e37301da01ed546280ac843e3a1fc820f98363a1080`,
+binds1668 source inputs, five unchanged companion files at pin6a583119 and18
+verified actual payloads; all fences hold and repository errors are0. Retrieval
+remains32/32 frozen and151/152 supplementary routes within5, retaining the
+existing LCB03 miss. Independent source review of the three new infrastructure
+files closes with no open bounded finding in
+`lcb004-science-release-infra-independent-v1-20261025/REVIEW-RECEIPT.json`,
+SHA256 `19ab806f240566d76ac4fbf8a924128cb95bd88197a6c5d0a65e64f8278a2bee`.
+It independently passes13 helper guards and authenticates the34-test/provider
+streams, unchanged seven apparatus paths and published Native80. Neither this
+review nor documentation validation executes the pending Release/platform jobs.

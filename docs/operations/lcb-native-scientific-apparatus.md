@@ -215,6 +215,48 @@ The dated Windows record separates the original24-guard run from the later
 25-guard corrected-reader replay. The earlier acceptance of coverage128.0
 and its exact one-check correction remain evidence; neither is erased.
 
+## Bounded Release qualification infrastructure
+
+`tools/lcb/build_science_consumer.py` is a separate Linux-host build helper for
+exactly five existing translation units. It uses `-O3 -DNDEBUG -flto`, records
+all five actual compiler depfiles and their complete source union, and hashes
+every object, executable, compiler/driver file, command/log and dependency
+library file. A prospective plan precedes compiler output; source fences repeat
+between commands. Compile/link bounds remain180s each. Failed or timed-out
+commands retain partial logs and cannot issue a successful build receipt;
+Linux timeout cleanup stops the compiler process group. Output must be new and
+outside the repository. No reuse, retry, Native publication or source fallback
+is provided.
+
+The Linux arm runs the recorded host GNU13.3.0 compiler and GNU ld2.42. The
+Windows arm cross-compiles on Linux using the already locked LLVM-MinGW archive,
+authenticates the selected compiler/driver member and hashes the selected target
+DLL files. The Windows execution job receives exact bundle/source-map bytes and
+verifies its LF checkout against every actual compiled input before running the
+PE consumer. `compiler.bin` there is Linux-host compiler/driver identity data,
+not a compiler executed on Windows. Its file hash alone does not identify all
+transitive compiler dependencies; the complete pinned cross archive and version
+remain separate recorded bindings. Library file hashes likewise do not prove
+which modules an operating system actually mapped.
+
+`.github/workflows/lcb-science-apparatus.yml` defines only GitHub-hosted Linux
+build/execution, Linux-to-Windows cross-build and actual Windows execution jobs.
+Each actual platform runs the existing three registered precursors, six30-tick
+children and25 raw-report guards, with unchanged import240s, prepare180s and
+Native-child120s limits. Published Native80 and selected Rapier identities remain
+mandatory. Jobs use read-only permissions, skip expensive draft execution, and
+retain build/qualification partial evidence even on failure. A ready PR or an
+available workflow dispatch starts qualification; a newly added workflow may
+not yet be dispatchable before default-branch registration.
+
+The dated infrastructure checkpoint records34 passing local pure tests and
+provider/workflow checks. Those tests exercise synthetic compiler orchestration,
+source-map transfer/refusal and both target metadata values; they perform no
+actual Release compilation, Godot preparation or Native qualification. Linux and
+Windows Release results remain pending until their actual scoped jobs complete
+and receive exact-source review. Neither this infrastructure nor that bounded
+qualification runs a full scientific campaign or changes acceptance thresholds.
+
 ## Remaining campaign registration
 
 Before a full campaign, freeze/review exact fixture versions, requested/readback

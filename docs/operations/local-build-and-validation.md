@@ -43,6 +43,33 @@ inputs while historical build-input/host/module/script qualifications remain
 separate. This apparatus does not publish a runtime, run a full scientific
 campaign or establish Web/visual/full-host acceptance.
 
+### Separate bounded Release build helper and hosted qualification
+
+The [apparatus guide](lcb-native-scientific-apparatus.md#bounded-release-qualification-infrastructure)
+owns the new five-TU build/bundle interface and platform qualifications. Its local
+pure guards are:
+
+```text
+python -B -m unittest discover -s tools/lcb -p test_build_science_consumer.py
+python tools/ci/check_ci_provider_policy.py
+```
+
+On the actual Linux build host, select `/usr/bin/g++-13`, `--target linux` and a
+new external `--out` when invoking `tools/lcb/build_science_consumer.py`. For
+`--target windows`, supply the existing pinned Linux-host LLVM-MinGW compiler,
+`--toolchain-root` and original `--toolchain-archive`. Build output includes the
+complete actual depfile union, flat receipt and exact transfer-bundle manifest.
+Use `--verify-bundle DIR --target linux|windows --expected-source COMMIT` before
+qualification; the actual Windows LF checkout must match the complete raw source
+map. The transferred Linux-host compiler/driver file is identity data on Windows.
+
+The new hosted workflow supplies the pinned Godot and source-matched published
+Native/selected Rapier inputs to the existing portable runner. Its three-fixture,
+six-child30-tick execution is still required on actual Linux and Windows Release.
+The34 local pure passes are not either platform result. Draft suppression and a
+new workflow's dispatch-registration boundary remain explicit; no runtime is
+republished merely to add this apparatus-only build/validation lane.
+
 ## Published and development identity-test controls
 
 The [two-test correction ledger](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)
