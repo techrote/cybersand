@@ -1055,6 +1055,21 @@ regressions. The discovered full Godot runner remains the acceptance route; thes
 focused commands do not by themselves prove target-PC feel or Windows/Web
 interactive acceptance.
 
+## Native worker-race feedback order
+
+**Current CI configuration, 2026-10-25:** the complete `build/tests_tsan`
+compile and execution run before the ordinary and ASan/UBSan build stages.
+The GitHub-hosted Ubuntu runner, full test executable, `halt_on_error=1`,
+separate fifteen-minute compile/run limits and ninety-minute job limit are
+unchanged. All existing Native stages still apply. This order exposes worker
+ownership failures earlier; it does not qualify a repair without actual
+successful execution and the complete required final-head matrix.
+
+The [Water IN publication record](../audits/2026-10-25-water-inertial-publication.md)
+preserves failed Native run `40205443189` at `e2411469`, whose TSan check found
+shared chunk-activity access after the ordinary and ASan/UBSan groups passed.
+Native repairs still require fresh source-matched runtimes and final-head gates.
+
 ## Soliding successor validation
 
 `make soliding-test` and `make soliding-sanitize` compile the standalone lifecycle
