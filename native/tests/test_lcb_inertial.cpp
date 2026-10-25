@@ -176,8 +176,8 @@ void test_inertial_admission() {
         words[kFamilyWord(row)] = family;
         return LiquidSolverPolicy::decode(std::span<const std::int32_t>(words)).refusal.code;
     };
-    require(refused(0, 4) == LiquidPolicyRefusalCode::FamilyUnavailable,
-            "Water inertial needs whole-cell Water");
+    require(refused(0, 4) == LiquidPolicyRefusalCode::None,
+            "whole-cell Water inertial reference is admitted by the successor");
     require(refused(3, 4) == LiquidPolicyRefusalCode::CombinationRejected, "Oil inertial rejected (NC-1)");
     require(refused(8, 4) == LiquidPolicyRefusalCode::NotSelectable, "Toxic Sludge alternate not selectable");
     World world(config(1));
@@ -189,9 +189,15 @@ void test_inertial_admission() {
             "default World has no state");
 }
 
-void test_inertial_contract_examples() {
+void test_inertial_contract_examples(Material carrier = Material::Brine) {
     for (const auto &example : kExamples) {
         auto example_config = config(1);
+        if (carrier == Material::Water) {
+            auto request = LiquidSolverPolicy::default_request(); request[21] = 4;
+            const auto decoded = LiquidSolverPolicy::decode(std::span<const std::int32_t>(request));
+            require(decoded.accepted(), "Water IN arithmetic policy");
+            example_config.liquid_solver_policy = *decoded.policy;
+        }
         example_config.sleep_after_quiet_ticks = 1;
         World world(example_config);
         world.reserve_region({0, 0, 64, 64});
@@ -211,7 +217,7 @@ void test_inertial_contract_examples() {
                 case '#':
                     break;
                 case 'W':
-                    rect(world, x, y, 1, 1, Material::Brine);
+                    rect(world, x, y, 1, 1, carrier);
                     break;
                 case 'o':
                     rect(world, x, y, 1, 1, Material::Dust);
@@ -243,7 +249,7 @@ void test_inertial_contract_examples() {
             require(stats.active_blocks_after != 0U, std::string(example.name) + ": active eligibility");
         const auto ex = ox + example.end_x;
         const auto ey = oy + example.end_y;
-        require(world.stored_material(ex, ey) == Material::Brine,
+        require(world.stored_material(ex, ey) == carrier,
                 std::string(example.name) + ": cell not at the contract end position");
         const auto s = world.inertial_cell(ex, ey);
         require(s.vx == example.end_vx && s.vy == example.end_vy && s.ax == example.end_ax &&
@@ -1275,3 +1281,5 @@ void test_lcb_inertial_damping_parameters() { test_inertial_damping_parameters()
 void test_lcb_inertial_comparison_projections() { test_inertial_comparison_projections(); }
 
 void test_lcb_inertial_body_contact() { test_inertial_body_contact(); }
+
+void test_water_inertial_arithmetic() { test_inertial_contract_examples(Material::Water); }

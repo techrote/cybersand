@@ -4,11 +4,73 @@ status: Current
 document-kind: guide
 scope: Actual local Git roots, preserved baseline, recovery boundaries and source-versus-artifact identity
 canonical-for: [source-identity, local-checkpoints, recovery-coverage]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-10-25
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md]
 ---
 
 # Source checkpoint and recovery
+
+## Current recoverable Water sequence2 checkpoint — 2026-10-25
+
+The original isolated checkout is
+`C:/Users/_/.codex/worktrees/lcb005-water-inertial/khybersand`, branch
+`codex/lcb005-water-inertial`, PR #254. Native repairs are committed through
+`c97f68ec6dd5d92aec94c874a6510b16e3a81847`; reviewed six-doc checkpoint34e0979
+is followed by request-only sequence2 source
+`aa8af2473a59ab92cc81dfff1dda17be0f41a46d`, tree
+`906445ff96d38931a0d25b4525700ad13ff636fe`. Actual run40220697738 publishes
+four-path bot `03cccd8fd133b505c6fad7911d3cb8d528ef5f22`, tree
+`80945c95f85464e19b6b013be2037c5f9afc68b7`, with sole parentaa8. Native tree
+`d5f9017a787e5bdbd87ca478dfd864d70a5e533d` is unchanged by request/publication.
+
+Both OSes pass15 real processes/642 policy assertions plus actual Water-IN
+proof; independent reviewd2da3ffd and Root acceptance6352fdaf close this bounded
+publication. All18 LFS objects are materialized and rehashed after ff-only03cc;
+local materialization receipt is
+`fe7b5ce0f19cafb618365efc2ac38ac4f23df0f339dbd03155335ff44a4a33b5`.
+The [publication ledger](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25)
+owns full runtime/archive/request/review identities. Its immutable76 native and
+491 build/execution hashes bind sourceaa8. Later docs-only checkpoints do not
+rewrite those ledgers; only the publication audit is a documentation input, so
+its later metadata drift is separately disclosed. Full ready-head, scientific
+and host/Web acceptance remain separate. Earlier recovery records below are
+historical, including the Main/Flight refresh and sequence1.
+
+The historical unchanged-native [Water main refresh](../audits/2026-10-25-water-inertial-publication.md#main-flight-lease-refresh-and-native-binary-reuse--2026-10-25)
+is isolated at `C:/Users/_/.codex/worktrees/lcb005-water-main-refresh/khybersand`,
+branch `codex/lcb005-water-main-refresh`. Normal merge38cb593d has parents
+e2411469 and accepted main9935d569. All76 native inputs, published libraries,
+manifests and sequence1 request remain unchanged. The two incoming Flight
+Godot files have fresh published-Water import/8,284-assertion execution; the
+original491 execution ledger stays source4b history. This local review checkpoint
+does not replace the original Water branch or establish final-head acceptance.
+
+## Recoverable Water IN publication checkpoint — 2026-10-25
+
+The isolated source checkout is
+`C:/Users/_/.codex/worktrees/lcb005-water-inertial/khybersand`, branch
+`codex/lcb005-water-inertial`, PR #254. It is separate from the primary
+`C:/khybersand` checkout and the companion workspace. Reviewed native5f8baf6f and
+profile24a6ffec lead to request-only source4b588279, tree
+`f6f589ce09836878dbcc3731a46e815d812bb83d`. Actual run40166210470 publishes
+four-path botC9e52b52, tree `f66890cdf1164dc37e3fa1f0aaebe74a79c49bb3`;
+both OSes execute15 processes/642 policy assertions and receive independent
+artifact review `b15ea7cb`. The [publication ledger](../audits/2026-10-25-water-inertial-publication.md)
+owns full runtime/request/archive/review hashes and preserved failures.
+
+Accepted parent #250 head d7681a5c merges as main dc915f2b. Normal merge8e586b17
+retains C9 anddc915 as parents with the **entire C9 tree unchanged**. All18 LFS
+payloads are materialized and equal committed pointer hashes/sizes. Subsequent
+docs-only commits through e2411469 are identified by their historical Git heads;
+no native/bridge/test/tool/workflow/request/law change or new sequence follows
+within that checkpoint. Git stores source plus LFS
+pointers; preserve access to their actual LFS objects and the external evidence
+receipts. Current tuple/quantity physics controls remain distinct from the
+changed capability/policy-bound identity namespace. Full ready-PR and scientific/
+host/Web/#203 acceptance remain separately required.
+
+Earlier source/recovery checkpoints below retain their original dates, hashes
+and coverage; none is relabelled as this later publication.
 
 ## Which version is the working source?
 

@@ -420,7 +420,7 @@
     },
     {
       "path": "audits/2026-10-25-lcb002-pressure-variants.md",
-      "reason": "Dated unmerged #201 source, preserved failures, qualified local cost evidence and actual source-matched Windows/Linux scoped publication; retrieve through the optimization contract or validation ledger with pending full ready-PR CI, host and platform limits. It does not establish universal speedup or main acceptance."
+      "reason": "Dated pressure-variant source, retained failures, cost evidence and actual Windows/Linux publication, later accepted on main through #253. Retrieve via the optimization contract with exact source/platform limits and slower cases; it does not establish universal speedup or complete product acceptance."
     },
     {
       "path": "audits/2026-10-25-lcb005-standalone-adapter.md",
@@ -428,8 +428,20 @@
     },
     {
       "path": "audits/2026-10-25-lcb005-pressure-union-integration.md",
-      "reason": "Dated combined-source integration, measured native oracle facts and actual source-matched Windows/Linux scoped publication; retrieve explicitly through IN/pressure canonical routes with exact source/platform and pending full ready-PR/full-host qualifiers. Separate parent proof is not union acceptance."
+      "reason": "Dated combined-source integration, native oracles, corrected Windows/Linux publication and retained failures; the exact parent250 later passes full gates and merges as main dc915f2b. Retrieve through IN/pressure routes with source/platform and full-host qualifiers. Parent proof is not Water successor or product acceptance."
+    },
+    {
+      "path": "audits/2026-10-25-water-inertial-registration.md",
+      "reason": "Prospective isolated Water IN adapter/carrier/stencil and test registration; retrieve through the IN canonical contract, never as runtime or Gate D acceptance."
+    },
+    {
+      "path": "audits/2026-10-25-water-inertial-native.md",
+      "reason": "Dated isolated native proof, exact Current behavior/identity reduction and preserved failures. Later Windows/Linux publications and worker activity/pool lifecycle repairs are separately bound through the IN/release contracts; full ready-PR, scientific and host/Web qualification remain open."
+    },
+    {
+      "path": "audits/2026-10-25-water-inertial-publication.md",
+      "reason": "Dated actual Water sequence1 and native-repair sequence2 Windows/Linux publications, independent567-input/artifact/LFS/lease/floor review and preserved historical unarmed/local/composite failures. Retrieve through release/IN contracts; scoped publication does not establish final ready-PR, scientific or host/Web acceptance."
     }
   ],
-  "integration_note": "Retains scene, generation, actor, sampled and physical actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions remain separately scoped. Deepworks routes cover full-size four-plane exhibitions, independent native source schedules and parameterized depth dimensions; its dated audit remains explicitly scoped. Player playground adds seven human movement presets, native material-field authority and circular-wheel approximation routes; dated execution remains separately scoped. GEN-003 typed-spatial and operator-reference routes from main are retained alongside player playground routes. GEN-004 hierarchy and ADR-013 canonical routes coexist with the player and GEN-003 routes; both GEN-004 and player completion audits remain explicitly excluded from ordinary retrieval. The accepted main #246 native prepared-setup, normalization, typed receipt and exact quantity contract is an explicit Current route. Its earlier local checkpoint and final accepted source/platform audit remain excluded from default retrieval; native-v1 full-host qualification and #202 ownership remain explicit. The #201 optimization contract is an explicit branch-Current route; its dated evidence remains separately scoped, with historical execution1/2 and current execution3, actual host/platform gates and no universal speedup kept explicit. The combined #212 source also retains the IN canonical route and separately qualified standalone adapter evidence; fresh combined native and actual Windows/Linux scoped publication are recorded separately from pending full ready-PR/host acceptance."
+  "integration_note": "Retains scene, generation, actor, sampled and physical actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions remain separately scoped. Deepworks routes cover full-size four-plane exhibitions, independent native source schedules and parameterized depth dimensions; its dated audit remains explicitly scoped. Player playground adds seven human movement presets, native material-field authority and circular-wheel approximation routes; dated execution remains separately scoped. GEN-003 typed-spatial and operator-reference routes from main are retained alongside player playground routes. GEN-004 hierarchy and ADR-013 canonical routes coexist with the player and GEN-003 routes; both GEN-004 and player completion audits remain explicitly excluded from ordinary retrieval. The accepted main #246 native prepared-setup, normalization, typed receipt and exact quantity contract is an explicit Current route. Its earlier local checkpoint and final accepted source/platform audit remain excluded from default retrieval; native-v1 full-host qualification and #202 ownership remain explicit. The #201 optimization contract is an explicit branch-Current route; its dated evidence remains separately scoped, with historical execution1/2 and current execution3, actual host/platform gates and no universal speedup kept explicit. The combined #212 source also retains the IN canonical route and separately qualified standalone adapter evidence; fresh combined native and actual Windows/Linux scoped publication are recorded separately from pending full ready-PR/host acceptance. 2026-10-25 Water checkpoint preserves source4b/botC9 sequence1 and records native-repair sourceaa8/bot03 sequence2 with independent review separately from final ready-head, scientific and host/Web gates; dated preparation and all historical failures remain excluded from ordinary current answers."
 }

@@ -11,6 +11,7 @@ import policy_contract as pc
 ROOT = Path(__file__).resolve().parents[2]
 JSON_PATH = ROOT / "docs/reference/inertial-parameter-vectors.json"
 HEADER_PATH = ROOT / "native/tests/inertial_parameter_vectors.inc"
+ADAPTER_PATH = ROOT / "godot/tests/fixtures/lcb/inertial-adapter-parameters.json"
 SCHEMAS = {("family", 4, 2): {"fields": (("damping_numerator", 0, 16),), "mandatory": False}}
 
 
@@ -25,7 +26,7 @@ def identity(numerator: int = 1) -> str:
 def build():
     matrix = pc.MATRIX.read_bytes()
     return pc.make_build(matrix, pc.catalogue_digest(), available=(1, 2, 3, 4),
-                         qualified=pc.current_default_cells(matrix) | {(3, 3), (3, 2), (24, 4)},
+                         qualified=pc.current_default_cells(matrix) | {(3, 3), (3, 2), (3, 4), (24, 4)},
                          schemas=SCHEMAS)
 
 
@@ -92,7 +93,21 @@ def main():
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
     data = vectors()
-    expected = {JSON_PATH: json.dumps(data, indent=2) + "\n", HEADER_PATH: header(data)}
+    native_json = json.dumps(data, indent=2) + "\n"
+    native = build()
+    assignments = [(m, 4 if m == 24 else f, v) for m, f, v in pc.default_assignments(native)]
+    damping = []
+    for numerator in range(17):
+        request = pc.encode(pc.policy_for(native, assignments, [(4, 2, [numerator])]))
+        applied = pc.decode(request, native)
+        damping.append({"damping_numerator": numerator, "words": request,
+                        "policy_hash": pc.policy_hash(applied), "extension_identity": identity(numerator)})
+    adapter = {"schema": "lcb-inertial-adapter-vectors-v1",
+               "generator": "tools/lcb/inertial_parameter_contract.py identity/build and policy_contract.py encode/decode/policy_hash; no native executable",
+               "canonical_native_vectors_sha256": hashlib.sha256(native_json.encode()).hexdigest(),
+               "native_cases": data["cases"], "damping_cases": damping}
+    expected = {JSON_PATH: native_json, HEADER_PATH: header(data),
+                ADAPTER_PATH: json.dumps(adapter, indent=2) + "\n"}
     for path, text in expected.items():
         if args.check:
             if not path.is_file() or path.read_text(encoding="utf-8") != text:

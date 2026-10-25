@@ -111,6 +111,16 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
         return false;
     const auto start_index = address(x, y).index;
     const auto initial = (*start_chunk->inertial)[start_index];
+    MotionFootprint footprint{x,y};
+    const bool water = material == Material::Water;
+    const auto coherence = water ? state_b(x,y) : std::uint8_t{0};
+    bool water_changed = false;
+    if (water) {
+        record_physics(PhysicsEvent::WaterUpdate, material, Material::Empty, 0, 0, effects);
+        if (coherence != 0U)
+            water_changed = write_cell(x,y,material,config_.water_experiment_policy.maximum(),
+                static_cast<std::uint8_t>(coherence-1U),effects);
+    }
     std::int32_t vx = initial.vx;
     std::int32_t vy = initial.vy;
     std::int32_t ax = initial.ax;
@@ -139,16 +149,15 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
     // One directional eligibility rule for support, re-aim, side selection and
     // every travel move: Empty for any move; a lighter foreign material only
     // downward under Current density/exchange controls; never Wall, mask or
-    // same family. Eligibility reads do not allocate serial sparse chunks.
+    // same material. A foreign lighter material retains density exchange even
+    // when both materials select IN. Reads do not allocate serial sparse chunks.
     const auto eligible = [&](std::int64_t dx, std::int64_t dy) {
         const auto tx = cx + dx;
         const auto ty = cy + dy;
         if (tx < x - P::kExecutionRadius || tx > x + P::kExecutionRadius || ty < y - P::kExecutionRadius ||
             ty > y + P::kExecutionRadius)
             throw std::logic_error("IN read/write outside complete execution radius");
-        book.maximum_read_reach =
-            std::max(book.maximum_read_reach,
-                     static_cast<std::uint64_t>(std::max(std::abs(tx - x), std::abs(ty - y))));
+        footprint.read(tx,ty);
         if (const auto body = transient_obstacle_at(tx, ty); body != 0U) {
             constexpr auto width = 2 * P::kExecutionRadius + 1;
             const auto target_bit = std::uint64_t{1} <<
@@ -254,6 +263,7 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
     std::int32_t done_x = 0;
     std::int32_t done_y = 0;
     bool moved = false;
+    std::optional<bool> lateral_allowed;
     for (std::int32_t i = 1; i <= steps; ++i) {
         const auto want_y = std::abs(ny) * i / steps - done_y;
         const auto want_x = std::abs(nx) * i / steps - done_x;
@@ -270,15 +280,27 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
         bool stop = false;
         for (std::size_t p = 0; p < count && !stop; ++p) {
             const auto [dx, dy] = plan[p];
+            if (water && dy == 0) {
+                if (!lateral_allowed)
+                    lateral_allowed = coherence == 0U && lateral_due(material,x,y,effects);
+                if (!*lateral_allowed) {
+                    // Coherence/cadence is a scheduling gate, not a collision.
+                    // Velocity and bounded fractional phase remain under U1-U7;
+                    // consumed opportunities never become catch-up travel.
+                    done_x += std::abs(dx);
+                    continue;
+                }
+            }
             const auto tx = cx + dx;
             const auto ty = cy + dy;
             if (tx < x - P::kExecutionRadius || tx > x + P::kExecutionRadius ||
                 ty < y - P::kExecutionRadius || ty > y + P::kExecutionRadius)
                 throw std::logic_error("IN read/write outside complete execution radius");
             bool permitted = eligible(dx, dy);
+            footprint.read(tx,ty);
             const auto target = stored_material(tx, ty);
             if (permitted && target != Material::Empty &&
-                !exchange_permitted(material, target, cx, cy, tx, ty, effects))
+                !exchange_permitted(material, target, cx, cy, tx, ty, effects, &footprint))
                 permitted = false;
             if (!permitted) {
                 if (dy != 0) {
@@ -294,6 +316,10 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
                 stop = true;
                 break;
             }
+            footprint.read(cx,cy);
+            footprint.write(cx,cy);
+            footprint.write(tx,ty);
+            auto carrier = std::pair{tx,ty};
             if (target != Material::Empty) {
                 const Snapshot before{vx, vy};
                 const auto drag_x = trunc_mul(vx, P::kDragNumerator, P::kDragDenominator);
@@ -307,13 +333,10 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
             } else {
                 move_cell(cx, cy, tx, ty, false, effects);
                 if (stored_material(tx, ty) == material && stored_material(cx, cy) == Material::Empty)
-                    mix_after_motion(material, cx, cy, tx, ty, state_a(tx, ty), effects);
+                    carrier = mix_after_motion(material, cx, cy, tx, ty, state_a(tx, ty), effects, &footprint);
             }
-            book.maximum_write_reach =
-                std::max(book.maximum_write_reach,
-                         static_cast<std::uint64_t>(std::max(std::abs(tx - x), std::abs(ty - y))));
-            cx = tx;
-            cy = ty;
+            cx = carrier.first;
+            cy = carrier.second;
             moved = true;
             ++book.unit_moves;
             done_x += std::abs(dx);
@@ -333,8 +356,14 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
         ax = 0;
         ay = 0;
     }
-    const bool sleep_eligible = rested && vx == 0 && vy == 0 && ax == 0 && ay == 0;
+    const bool sleep_eligible = rested && vx == 0 && vy == 0 && ax == 0 && ay == 0 && coherence <= 1U;
     // Store at the cell's final position (move_cell carried the old values).
+    footprint.read(cx,cy);
+    footprint.write(cx,cy);
+    if (stored_material(cx,cy) != material)
+        throw std::logic_error("IN final state lost actual material carrier");
+    book.maximum_read_reach = footprint.reads;
+    book.maximum_write_reach = footprint.writes;
     const auto final_address = address(cx, cy);
     auto *final_chunk = find_chunk(final_address.chunk);
     auto &state = (*final_chunk->inertial)[final_address.index];
@@ -389,7 +418,7 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
         ledger.maximum_write_reach = std::max(ledger.maximum_write_reach, book.maximum_write_reach);
         ++ledger.updates;
     }
-    return moved || state_changed;
+    return moved || state_changed || water_changed;
 }
 
 InertialStorageUsage World::inertial_storage_usage() const noexcept {

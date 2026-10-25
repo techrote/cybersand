@@ -751,22 +751,34 @@ class RetainedRecords(unittest.TestCase):
             self.assertTrue(ok, (version, notes))
 
     def test_altered_historical_record_fails(self):
-        commit, path = reg.HISTORICAL_LEDGERS["v4"]
-        with tempfile.TemporaryDirectory(dir=reg.ROOT / "docs/reference") as tmp:
-            altered = Path(tmp, path.name)
-            altered.write_bytes(path.read_bytes().replace(b'"closed"', b'"OPEN"', 1))
-            saved = reg.HISTORICAL_LEDGERS["v4"]
-            reg.HISTORICAL_LEDGERS["v4"] = (commit, altered)
-            try:
-                ok, notes = reg.verify_historical("v4")
-            finally:
-                reg.HISTORICAL_LEDGERS["v4"] = saved
-        self.assertFalse(ok)
+        for version in ("v4", "v7"):
+            commit, path = reg.HISTORICAL_LEDGERS[version]
+            with tempfile.TemporaryDirectory(dir=reg.ROOT / "docs/reference") as tmp:
+                altered = Path(tmp, path.name)
+                altered.write_bytes(path.read_bytes().replace(b'"closed"', b'"OPEN"', 1))
+                saved = reg.HISTORICAL_LEDGERS[version]
+                reg.HISTORICAL_LEDGERS[version] = (commit, altered)
+                try:
+                    ok, notes = reg.verify_historical(version)
+                finally:
+                    reg.HISTORICAL_LEDGERS[version] = saved
+            self.assertFalse(ok, version)
 
-    def test_v7_current_and_classifications(self):
-        expected = json.dumps(reg.reledger(), indent=2) + "\n"
-        self.assertEqual(reg.LEDGER_V7.read_text(encoding="utf-8").replace("\r\n", "\n"), expected)
-        v6 = json.loads(expected)
+    def test_v7_retained_producer_and_current_classifications(self):
+        # Live admission-reason edits change the whole-file producer hash, not
+        # the signed accounting law. Prove the immutable record with its actual
+        # old producer, then compare every current reduction field except that
+        # deliberately different producer-file identity.
+        ok, notes = reg.verify_historical("v7")
+        self.assertTrue(ok, notes)
+        retained = reg.load(reg.LEDGER_V7)
+        current = json.loads(json.dumps(reg.reledger()))
+        self.assertEqual(current["input"]["reducer_sha256_lf"], reg.lf_sha256(Path(reg.__file__)))
+        self.assertEqual(retained["input"].pop("reducer_sha256_lf"),
+                         "e34ef2f75391ac31ec5ce29f416256dc6945df08977f7e755303d2a258f98998")
+        current["input"].pop("reducer_sha256_lf")
+        self.assertEqual(retained, current)
+        v6 = current
         self.assertEqual(v6["rule"], "lcb-signed-ledger-v7")
         self.assertEqual(v6["open_unexplained_or_malformed"], [])
         self.assertEqual(v6["changed_from_v6"], [])

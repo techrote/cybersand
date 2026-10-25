@@ -1,0 +1,9 @@
+{
+  "schema": "lcb005-water-inertial-publish-request-v1",
+  "family": "inertial_cellular_v1",
+  "material": "water",
+  "variant": "reference",
+  "scope": "water-inertial-admission-coherence-ingress-restore-and-complete005-pressure-union",
+  "intent": "publish-source-matched-runtimes",
+  "request_sequence": 2
+}

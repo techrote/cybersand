@@ -12,6 +12,16 @@ related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, liquid-
 
 **Native #212 branch extension:** [Brine IN](inertial-cellular-v1.md) reuses this preparation boundary and outer receipt-v1 extension mechanism. Its actual instances expose hash3/CYPS3 and family4/state1/identity1. Non-IN version2 field emission remains retained; capability admission changes legitimately update embedded policy identities. Application-host qualification remains separate.
 
+**Isolated Water IN native successor:** the same builder already classifies
+Water CY or IN as WholeCell. New Water admission executes that existing
+setup-only water-normalize-v1 path, gross source/sink counters and digest; live
+partial writes still refuse. The [Water adapter](inertial-cellular-v1.md#water-in-native-successor--2026-10-25)
+adds no parallel normalizer, receipt schema or live family converter. Its
+local proof retains its exact source scope; later [actual sourceaa8af247 Water
+publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25)
+qualifies both target runtimes separately. Full ready-PR, scientific and host/Web
+qualification remain open.
+
 ## Source and completion boundary
 
 **Current on main, accepted through [PR #246](https://github.com/techrote/cybersand/pull/246)**

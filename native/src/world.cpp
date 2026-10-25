@@ -147,21 +147,21 @@ public:
     using TaskFunction = void (*)(void*, std::size_t) noexcept;
 
     explicit PersistentWorkerPool(std::uint32_t worker_count) {
-        workers_.reserve(worker_count);
-        for (std::uint32_t index = 0; index < worker_count; ++index) {
-            workers_.emplace_back([this,index] { worker_loop(index); });
+        try {
+            workers_.reserve(worker_count);
+            for (std::uint32_t index = 0; index < worker_count; ++index) {
+                workers_.emplace_back([this,index] { worker_loop(index); });
+            }
+        } catch (...) {
+            // A throwing constructor does not run our destructor. Wake/join
+            // the already-started prefix while mutex/CVs and state still live;
+            // jthread's stop token alone cannot wake this predicate-based wait.
+            stop_and_join();
+            throw;
         }
     }
 
-    ~PersistentWorkerPool() {
-        {
-            std::lock_guard lock(mutex_);
-            stopping_ = true;
-            ++generation_;
-        }
-        start_condition_.notify_all();
-        workers_.clear();
-    }
+    ~PersistentWorkerPool() { stop_and_join(); }
 
     PersistentWorkerPool(const PersistentWorkerPool&) = delete;
     PersistentWorkerPool& operator=(const PersistentWorkerPool&) = delete;
@@ -191,6 +191,16 @@ public:
         return count;
     }
 private:
+    void stop_and_join() noexcept {
+        {
+            std::lock_guard lock(mutex_);
+            stopping_ = true;
+            ++generation_;
+        }
+        start_condition_.notify_all();
+        workers_.clear();
+    }
+
     void worker_loop(std::uint32_t worker_index) noexcept {
         std::uint64_t observed_generation = 0;
         for (;;) {
@@ -356,6 +366,19 @@ struct World::JobEffects {
         discovery_mutations{};
     std::array<DiscoverySignalReport, kMaximumDiscoverySignalReports>
         discovery_signals{};
+    // Authoritative scheduling signals are independent of the optional bounded
+    // discovery observer. Workers own these dense grids exclusively; only the
+    // phase barrier publishes them to shared chunk/activity-block metadata.
+    // A chunk-local block ordinal is monotone across positive and negative
+    // chunk seams, including the single-worker unaligned geometry.
+    std::span<std::uint8_t> activity_flags;
+    std::span<std::uint64_t> activity_deadlines;
+    std::int64_t activity_origin_x = 0;
+    std::int64_t activity_origin_y = 0;
+    std::int32_t activity_width = 0;
+    std::int32_t activity_height = 0;
+    std::int32_t activity_blocks_per_chunk = 0;
+    bool activity_overflow = false;
     std::size_t chunk_count = 0;
     std::size_t discovery_mutation_count = 0;
     std::size_t discovery_signal_count = 0;
@@ -372,6 +395,75 @@ struct World::JobEffects {
     std::uint64_t pf_contact_loss = 0;
     std::uint64_t pf_relief_cells = 0;
     InertialLedger inertial{};
+
+    static std::size_t activity_slot_capacity(const WorldConfig& config) {
+        const auto span = static_cast<std::size_t>(config.scheduling_core_size) +
+                          2U * static_cast<std::size_t>(config.maximum_rule_radius);
+        const auto block = static_cast<std::size_t>(config.activity_block_size);
+        // Aligned chunk boundaries introduce no extra partial blocks. In the
+        // general single-worker geometry every cell could start a block, so
+        // span is a conservative bound on the number of chunk-local blocks.
+        // span >= 2. This equivalent ceiling avoids span+block overflow on
+        // wasm32, so extreme geometry reaches the checked setup refusal below.
+        const auto axis = config.chunk_size % config.activity_block_size == 0
+            ? (span - 2U) / block + 2U : span;
+        if (axis > std::numeric_limits<std::size_t>::max() / axis)
+            throw std::length_error("per-job activity geometry capacity overflow");
+        return axis * axis;
+    }
+
+    void bind_activity(const WorldConfig& config,
+                       std::span<std::uint8_t> flags,
+                       std::span<std::uint64_t> deadlines) noexcept {
+        activity_flags = flags;
+        activity_deadlines = deadlines;
+        activity_blocks_per_chunk =
+            (config.chunk_size + config.activity_block_size - 1) /
+            config.activity_block_size;
+    }
+
+    void prepare_activity(CellRect core, const WorldConfig& config) noexcept {
+        const auto ordinal = [&](std::int64_t cell) {
+            const auto chunk = floor_div(cell, config.chunk_size);
+            return chunk * activity_blocks_per_chunk +
+                   positive_mod(cell, config.chunk_size) / config.activity_block_size;
+        };
+        const auto radius = config.maximum_rule_radius;
+        activity_origin_x = ordinal(core.x - radius);
+        activity_origin_y = ordinal(core.y - radius);
+        activity_width = static_cast<std::int32_t>(
+            ordinal(core.x + core.width - 1 + radius) - activity_origin_x + 1);
+        activity_height = static_cast<std::int32_t>(
+            ordinal(core.y + core.height - 1 + radius) - activity_origin_y + 1);
+        activity_overflow = activity_width <= 0 || activity_height <= 0 ||
+            static_cast<std::size_t>(activity_width) *
+                static_cast<std::size_t>(activity_height) > activity_flags.size();
+        std::fill(activity_flags.begin(), activity_flags.end(), 0);
+    }
+
+    void record_activity(const Address& target, std::int32_t block_size,
+                         bool keep_awake, std::uint64_t due = 0) noexcept {
+        const auto x = target.chunk.x * activity_blocks_per_chunk +
+                       target.local_x / block_size - activity_origin_x;
+        const auto y = target.chunk.y * activity_blocks_per_chunk +
+                       target.local_y / block_size - activity_origin_y;
+        if (x < 0 || y < 0 || x >= activity_width || y >= activity_height) {
+            activity_overflow = true;
+            return;
+        }
+        const auto index = static_cast<std::size_t>(y) *
+                               static_cast<std::size_t>(activity_width) +
+                           static_cast<std::size_t>(x);
+        if (index >= activity_flags.size()) {
+            activity_overflow = true;
+            return;
+        }
+        auto& flags = activity_flags[index];
+        auto& deadline = activity_deadlines[index];
+        if (flags == 0) deadline = 0;
+        flags |= static_cast<std::uint8_t>(keep_awake ? 3U : 1U);
+        if (due != 0 && (deadline == 0 || due < deadline)) deadline = due;
+    }
 
     void reset() noexcept {
         quantity = {};
@@ -481,20 +573,41 @@ struct World::ParallelState {
         JobEffects effects;
     };
 
-    ParallelState(std::uint32_t worker_count, std::size_t capacity, bool diagnostics)
-        : results(capacity) {
-        if (diagnostics) {
-            physics.resize(capacity);
-            for (std::size_t i = 0; i < capacity; ++i) results[i].effects.physics = &physics[i];
+    explicit ParallelState(const WorldConfig& config) {
+        const auto slots_per_job = JobEffects::activity_slot_capacity(config);
+        if (config.active_core_capacity >
+            std::numeric_limits<std::size_t>::max() / slots_per_job)
+            throw std::length_error("world activity geometry capacity overflow");
+        const auto total_slots = config.active_core_capacity * slots_per_job;
+        results.resize(config.active_core_capacity);
+        // Two owning allocations per World, rather than two per scheduling
+        // slot. Every job receives a fixed disjoint span; the owners never
+        // resize after binding, and outlive both the pool and these spans.
+        activity_flags.resize(total_slots);
+        activity_deadlines.resize(total_slots);
+        for (std::size_t i = 0; i < results.size(); ++i) {
+            const auto offset = i * slots_per_job;
+            results[i].effects.bind_activity(config,
+                std::span(activity_flags).subspan(offset, slots_per_job),
+                std::span(activity_deadlines).subspan(offset, slots_per_job));
         }
-        phase_job_indices.reserve(capacity);
-        if (worker_count > 1) pool = std::make_unique<PersistentWorkerPool>(worker_count);
+        if (config.physics_diagnostics.enabled) {
+            physics.resize(config.active_core_capacity);
+            for (std::size_t i = 0; i < results.size(); ++i)
+                results[i].effects.physics = &physics[i];
+        }
+        phase_job_indices.reserve(config.active_core_capacity);
+        if (config.worker_threads > 1)
+            pool = std::make_unique<PersistentWorkerPool>(config.worker_threads);
     }
 
-    std::unique_ptr<PersistentWorkerPool> pool;
+    std::vector<std::uint8_t> activity_flags;
+    std::vector<std::uint64_t> activity_deadlines;
     std::vector<JobResult> results;
     std::vector<PhysicsJobHistogram> physics;
     std::vector<std::size_t> phase_job_indices;
+    // Retire/join pool threads before releasing any job or signal storage.
+    std::unique_ptr<PersistentWorkerPool> pool;
 };
 
 struct World::TransientObstacleState {
@@ -637,9 +750,7 @@ World::World(WorldConfig config)
         }
     }
     if (config_.backend == SimulationBackend::PhasedInPlace) {
-        parallel_ = std::make_unique<ParallelState>(config_.worker_threads,
-                                                    config_.active_core_capacity,
-                                                    config_.physics_diagnostics.enabled);
+        parallel_ = std::make_unique<ParallelState>(config_);
     }
     transient_obstacles_ = std::make_unique<TransientObstacleState>();
     if (pressure_requested) {
@@ -1605,7 +1716,7 @@ bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
     if (material == Material::Water &&
         (state_a_value == 0U ||
          state_a_value > config_.water_experiment_policy.maximum() ||
-         (water_cellular_yield_ && state_a_value != config_.water_experiment_policy.maximum()) ||
+         (whole_cell_water_enabled() && state_a_value != config_.water_experiment_policy.maximum()) ||
          state_b_value > config_.water_experiment_policy.coherence_ticks())) {
         throw std::logic_error("internal Water state outside experiment policy");
     }
@@ -1767,6 +1878,12 @@ void World::keep_cell_active(std::int64_t x, std::int64_t y, JobEffects* effects
     const auto source = address(x, y);
     auto* chunk = find_chunk(source.chunk);
     if (chunk == nullptr) return;
+    if (effects != nullptr) {
+        effects->record_activity(source, config_.activity_block_size, true);
+        if (settled_discovery_ != nullptr)
+            effects->record_discovery_signal(source, config_.activity_block_size, true);
+        return;
+    }
     const auto block_x = source.local_x / config_.activity_block_size;
     const auto block_y = source.local_y / config_.activity_block_size;
     const auto block_index =
@@ -1782,12 +1899,8 @@ void World::keep_cell_active(std::int64_t x, std::int64_t y, JobEffects* effects
     block.changed_this_tick = true;
     block.quiet_ticks = 0;
     chunk->active = true;
-    if (settled_discovery_ != nullptr) {
-        if (effects != nullptr)
-            effects->record_discovery_signal(source, config_.activity_block_size, true);
-        else
-            witness_discovery_activity(source.chunk, block_index);
-    }
+    if (settled_discovery_ != nullptr)
+        witness_discovery_activity(source.chunk, block_index);
 }
 
 void World::schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint64_t due,
@@ -1800,15 +1913,17 @@ void World::schedule_interaction_wake(std::int64_t x, std::int64_t y, std::uint6
         static_cast<std::size_t>(a.local_x / config_.activity_block_size);
     auto& next = chunk->activity_blocks[index].next_interaction_tick;
     if (next == 0 || due < next) {
+        if (effects != nullptr) {
+            effects->record_activity(a, config_.activity_block_size, false, due);
+            if (settled_discovery_ != nullptr)
+                effects->record_discovery_signal(a, config_.activity_block_size, false, due);
+            return;
+        }
         next = due;
         if (settled_discovery_ != nullptr) {
-            if (effects != nullptr)
-                effects->record_discovery_signal(a, config_.activity_block_size, false, due);
-            else {
-                (void)settled_discovery_->schedule_deadline(
-                    discovery_parent_key(a.chunk, index), due);
-                observe_discovery_activity_parent(a.chunk, index);
-            }
+            (void)settled_discovery_->schedule_deadline(
+                discovery_parent_key(a.chunk, index), due);
+            observe_discovery_activity_parent(a.chunk, index);
         }
     }
 }
@@ -1884,7 +1999,7 @@ bool World::set_cell_state(std::int64_t x, std::int64_t y, Material material,
                            std::uint8_t state_b_value) {
     // Setup normalization is an explicit pre-construction operation. A live
     // partial write never rounds, allocates a chunk or mutates the prior cell.
-    if (material == Material::Water && water_cellular_yield_ && state_a_value != 0U &&
+    if (material == Material::Water && whole_cell_water_enabled() && state_a_value != 0U &&
         state_a_value != config_.water_experiment_policy.maximum()) return false;
     if (material == Material::Water &&
         (state_a_value > config_.water_experiment_policy.maximum() ||
@@ -2646,16 +2761,41 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
     }
 }
 
+// Stack-owned complete-motion witness. Optional helpers retain their existing
+// non-IN behavior; IN supplies one origin for every submove and callback.
+struct World::MotionFootprint {
+    std::int64_t x, y;
+    std::uint64_t reads = 0, writes = 0;
+    void read(std::int64_t rx, std::int64_t ry) {
+        const auto reach = static_cast<std::uint64_t>(std::max(std::abs(rx-x), std::abs(ry-y)));
+        if (reach > InertialParameters::kExecutionRadius)
+            throw std::logic_error("IN complete helper read outside original-owner radius three");
+        reads = std::max(reads, reach);
+    }
+    void write(std::int64_t wx, std::int64_t wy) {
+        const auto reach = static_cast<std::uint64_t>(std::max(std::abs(wx-x), std::abs(wy-y)));
+        if (reach > 2U)
+            throw std::logic_error("IN complete helper write outside original-owner radius two");
+        writes = std::max(writes, reach);
+    }
+};
+
 bool World::exchange_permitted(Material source, Material target, std::int64_t x,
-    std::int64_t y, std::int64_t target_x, std::int64_t target_y, JobEffects* effects) {
+    std::int64_t y, std::int64_t target_x, std::int64_t target_y, JobEffects* effects,
+    MotionFootprint* footprint) {
     const bool powder_source = MaterialRules::supports_granular_load(source);
     const bool powder_target = MaterialRules::supports_granular_load(target);
     if (!powder_source && !powder_target) return true; // gas/liquid behavior unchanged
     const auto liquid = powder_source ? target : source;
     if (MaterialRules::descriptor(liquid).state != MaterialState::Liquid) return true;
-    const auto braced_stone = [this](Material m, std::int64_t sx, std::int64_t sy) {
-        return m == Material::Stone && state_b(sx,sy) == 0 &&
-            get(sx-1,sy-1) == Material::Stone && get(sx+1,sy-1) == Material::Stone;
+    const auto braced_stone = [this, footprint](Material m, std::int64_t sx, std::int64_t sy) {
+        if (m != Material::Stone) return false;
+        if (footprint) footprint->read(sx,sy);
+        if (state_b(sx,sy) != 0) return false;
+        if (footprint) footprint->read(sx-1,sy-1);
+        if (get(sx-1,sy-1) != Material::Stone) return false;
+        if (footprint) footprint->read(sx+1,sy-1);
+        return get(sx+1,sy-1) == Material::Stone;
     };
     if (braced_stone(source,x,y) || braced_stone(target,target_x,target_y)) return false;
     {
@@ -2670,6 +2810,7 @@ bool World::exchange_permitted(Material source, Material target, std::int64_t x,
     // All alternatives/initiators share a lane, and each endpoint may take part
     // once on it. A displaced grain/liquid cannot be reused by another attempt.
     const auto a = address(target_x,target_y);
+    if (footprint) footprint->read(target_x,target_y);
     const auto* chunk = find_chunk(a.chunk);
     return chunk && chunk->cells[a.index].epoch_value() != update_epoch_;
 }
@@ -2713,7 +2854,7 @@ std::uint16_t World::transfer_water(std::int64_t from_x, std::int64_t from_y,
                                     std::int64_t to_x, std::int64_t to_y,
                                     std::uint16_t requested, JobEffects* effects) {
     if (requested == 0 || (from_x == to_x && from_y == to_y)) return 0;
-    if (pressure_ != nullptr || water_cellular_yield_)
+    if (pressure_ != nullptr || whole_cell_water_enabled())
         throw std::logic_error("FreeMass transfer reached a non-FreeMass Water family");
     const auto obstacle = transient_obstacle_at(to_x, to_y);
     if (obstacle != 0U) {
@@ -2804,44 +2945,48 @@ std::uint16_t World::transfer_water(std::int64_t from_x, std::int64_t from_y,
     return amount;
 }
 
-void World::mix_after_motion(Material carrier, std::int64_t x, std::int64_t y,
-    std::int64_t to_x, std::int64_t to_y, std::uint16_t mass, JobEffects* effects) {
-    if(!config_.transport_policy.configured) return;
+std::pair<std::int64_t, std::int64_t> World::mix_after_motion(Material carrier, std::int64_t x, std::int64_t y,
+    std::int64_t to_x, std::int64_t to_y, std::uint16_t mass, JobEffects* effects,
+    MotionFootprint* footprint) {
+    const auto unchanged = std::pair{to_x,to_y};
+    if(!config_.transport_policy.configured) return unchanged;
     const bool powder = MaterialRules::supports_granular_load(carrier);
-    if(powder ? !flow_mixing_enabled_ : !flow_carrying_enabled_) return;
+    if(powder ? !flow_mixing_enabled_ : !flow_carrying_enabled_) return unchanged;
     // Initial entrainment is lateral Water transport. Gravity and minor film
     // equalization are not interpreted as strong shear. No stored disturbance.
     const auto normalized_mass = carrier == Material::Water
         ? config_.water_experiment_policy.normalized_mass(mass) : mass;
-    if(!powder && (carrier!=Material::Water || to_y!=y || normalized_mass<64)) return;
-    if(powder && (to_y!=y+1 || to_x!=x)) return;
+    if(!powder && (carrier!=Material::Water || to_y!=y || normalized_mass<64)) return unchanged;
+    if(powder && (to_y!=y+1 || to_x!=x)) return unchanged;
     const auto grain_x = powder ? x+deterministic_direction(x,y) : x;
     const auto grain_y = powder ? y : y+1;
     const auto read = [&](std::int64_t rx,std::int64_t ry) {
         // Every new read and write fits the calling cell's declared radius 2.
         if(rx<x-2||rx>x+2||ry<y-2||ry>y+2) throw std::logic_error("flow read outside rule radius");
+        if (footprint) footprint->read(rx,ry);
         const auto m=get(rx,ry);
         record_physics(PhysicsEvent::FlowProbe,carrier,m,rx-x,ry-y,effects);
         return m;
     };
     const auto grain=read(grain_x,grain_y);
-    if(!MaterialRules::supports_granular_load(grain) || grain==carrier) return;
+    if(!MaterialRules::supports_granular_load(grain) || grain==carrier) return unchanged;
     const auto& p=config_.transport_policy.pair(static_cast<std::uint8_t>(carrier),static_cast<std::uint8_t>(grain));
-    if((powder && p.mixing==0) || (!powder && p.carrying==0)) return;
-    if(transient_obstacle_at(x,y) || transient_obstacle_at(grain_x,grain_y) || transient_obstacle_at(to_x,to_y)) return;
-    if(read(to_x,to_y)!=carrier) return;
+    if((powder && p.mixing==0) || (!powder && p.carrying==0)) return unchanged;
+    if (footprint) { footprint->read(x,y); footprint->read(grain_x,grain_y); footprint->read(to_x,to_y); }
+    if(transient_obstacle_at(x,y) || transient_obstacle_at(grain_x,grain_y) || transient_obstacle_at(to_x,to_y)) return unchanged;
+    if(read(to_x,to_y)!=carrier) return unchanged;
     const auto a=address(grain_x,grain_y);const auto* chunk=find_chunk(a.chunk);
-    if(!chunk || chunk->cells[a.index].epoch_value()==update_epoch_) return;
+    if(!chunk || chunk->cells[a.index].epoch_value()==update_epoch_) return unchanged;
     // The route above the grain must be clear. This tests the intermediate
     // cell of the diagonal carry, so a destination alone cannot bypass a wall.
     const auto above=read(grain_x,grain_y-1);
     if(powder) {
         // A coflowing column can be exposed underneath while another grain
         // still lies above it. A real downward void is evidence of looseness.
-        if(above!=Material::Empty && read(grain_x,grain_y+1)!=Material::Empty) return;
-    } else if(above!=Material::Empty && above!=Material::Water) return;
+        if(above!=Material::Empty && read(grain_x,grain_y+1)!=Material::Empty) return unchanged;
+    } else if(above!=Material::Empty && above!=Material::Water) return unchanged;
     if(grain==Material::Stone && state_b(grain_x,grain_y)==0 &&
-        read(grain_x-1,grain_y-1)==Material::Stone && read(grain_x+1,grain_y-1)==Material::Stone) return;
+        read(grain_x-1,grain_y-1)==Material::Stone && read(grain_x+1,grain_y-1)==Material::Stone) return unchanged;
     unsigned packing=0;
     for(int dy=-1;dy<=1;++dy)for(int dx=-1;dx<=1;++dx) {
         if(dx==0&&dy==0)continue;
@@ -2851,19 +2996,21 @@ void World::mix_after_motion(Material carrier, std::int64_t x, std::int64_t y,
     if(powder) {
         // A falling/avalanching grain may interleave with an exposed loose
         // unlike grain. No density sorting and no rearrangement at rest.
-        if(packing>5 || deterministic_random(x,y,211U)>=p.mixing) return;
+        if(packing>5 || deterministic_random(x,y,211U)>=p.mixing) return unchanged;
     } else {
-        if(packing>=4 && !p.erosion) return;
+        if(packing>=4 && !p.erosion) return unchanged;
         const unsigned disturbance=static_cast<unsigned>(normalized_mass)*p.carrying/255U;
-        if(disturbance<64U || disturbance<static_cast<unsigned>(p.pickup)+packing*p.packing) return;
+        if(disturbance<64U || disturbance<static_cast<unsigned>(p.pickup)+packing*p.packing) return unchanged;
         // At most one pickup per source per four-tick lane, with no retained
         // debt or wakeup: cessation of actual flow immediately removes pickup.
-        if(tick_index_%4U != (mix64(static_cast<std::uint64_t>(x)^std::rotl(static_cast<std::uint64_t>(y),23))%4U)) return;
+        if(tick_index_%4U != (mix64(static_cast<std::uint64_t>(x)^std::rotl(static_cast<std::uint64_t>(y),23))%4U)) return unchanged;
     }
     // Whole identity, both compact bytes and optional temperature travel via
     // the existing conservative swap. Water fill is never recreated or lost.
+    if (footprint) { footprint->write(grain_x,grain_y); footprint->write(to_x,to_y); }
     move_cell(grain_x,grain_y,to_x,to_y,true,effects,
         powder ? PhysicsEvent::PowderMix : PhysicsEvent::GrainTransport);
+    return {grain_x,grain_y};
 }
 
 bool World::lateral_due(Material material, std::int64_t x, std::int64_t y,
@@ -3127,6 +3274,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             // differs. No fallback: each candidate selects its actual law.
             if (pressure_ != nullptr) return update_water_pressure(x, y, effects);
             if (water_cellular_yield_) return update_water_cellular_yield(x, y, effects);
+            if (inertial_family(Material::Water)) return update_inertial(material,x,y,effects);
             return update_water(x, y, effects);
 
         case RuleKernel::YieldingLiquid: {
@@ -4173,6 +4321,8 @@ void World::merge_job_effects(const JobEffects& effects) {
     if (effects.overflow) {
         throw std::runtime_error("per-job touched-chunk capacity exhausted");
     }
+    if (effects.activity_overflow)
+        throw std::runtime_error("per-job authoritative activity capacity exhausted");
     merge_quantity_effects(effects);
     if (effects.physics != nullptr) {
         for (const auto& entry : effects.physics->entries)
@@ -4262,6 +4412,47 @@ void World::merge_job_effects(const JobEffects& effects) {
                     world_origin_x + local_right, world_origin_y + local_bottom, false);
             }
         }
+    }
+
+    // Workers cannot publish even an idempotent true store: another core may
+    // read the same chunk, or two disjoint cell halos may share an activity
+    // block. Reduce each keepalive/deadline here, regardless of observer state.
+    // This also records each actual BlockWake transition exactly once.
+    const auto signal_count = static_cast<std::size_t>(effects.activity_width) *
+                              static_cast<std::size_t>(effects.activity_height);
+    for (std::size_t index = 0; index < signal_count; ++index) {
+        const auto flags = effects.activity_flags[index];
+        if (flags == 0) continue;
+        const auto ordinal_x = effects.activity_origin_x +
+            static_cast<std::int64_t>(index % effects.activity_width);
+        const auto ordinal_y = effects.activity_origin_y +
+            static_cast<std::int64_t>(index / effects.activity_width);
+        const ChunkCoord coord{
+            floor_div(ordinal_x, effects.activity_blocks_per_chunk),
+            floor_div(ordinal_y, effects.activity_blocks_per_chunk)};
+        auto* chunk = find_chunk(coord);
+        if (chunk == nullptr)
+            throw std::logic_error("activity job effect references missing chunk");
+        const auto block_index =
+            static_cast<std::size_t>(positive_mod(
+                ordinal_y, effects.activity_blocks_per_chunk)) *
+                static_cast<std::size_t>(chunk->activity_blocks_per_axis) +
+            static_cast<std::size_t>(positive_mod(
+                ordinal_x, effects.activity_blocks_per_chunk));
+        auto& block = chunk->activity_blocks[block_index];
+        if ((flags & 2U) != 0U) {
+            if (!block.active)
+                record_physics(PhysicsEvent::BlockWake, Material::Empty,
+                               Material::Empty, 0, 0, nullptr);
+            block.active = true;
+            block.changed_this_tick = true;
+            block.quiet_ticks = 0;
+            chunk->active = true;
+        }
+        const auto due = effects.activity_deadlines[index];
+        if (due != 0 &&
+            (block.next_interaction_tick == 0 || due < block.next_interaction_tick))
+            block.next_interaction_tick = due;
     }
 
     if (settled_discovery_ == nullptr) return;
@@ -4391,6 +4582,7 @@ TickStats World::tick_phased() {
             auto& result = parallel_->results[core_index];
             result.stats = {};
             result.effects.reset();
+            result.effects.prepare_activity(scheduler_geometry_.core_rect(core), config_);
             ++stats.phase_jobs[phase];
         }
 

@@ -232,8 +232,11 @@ executable contract model `tools/lcb/inertial_contract.py`). Per tick:
 4. U4: saturation.
 5. U5: damping, truncated toward zero.
 6. U6: accumulator travel with a recheck of every target. The first contact
-   ends travel. One contact rule covers Wall, body mask and same-family
-   cells; same-family contact is inelastic in v1.
+   ends travel. Wall, body mask and same-material cells block; same-material
+   contact is inelastic in v1. Lighter foreign material may still exchange only
+   on eligible downward moves, including when both materials select IN. Family
+   equality alone does not make a foreign material an inelastic same-material
+   contact.
 7. U7: rest and sleep eligibility.
 
 Properties of this update:
@@ -266,7 +269,7 @@ Also:
 - no Rapier force.
 
 The worked examples (right/left deflection, negative-velocity damping,
-supported rest with a free side, same-family contact, re-aim, saturation,
+supported rest with a free side, same-material contact, re-aim, saturation,
 mid-travel contact, body-mask landing and drag) are #212's native
 registrations. They are a contract model, not an executed inertial World.
 
@@ -295,6 +298,7 @@ Oil, Lava, Acid, Cement and Molten Glass are not admitted in v1.
   - fixtures `viscous.lane-gallery` (Brine lane),
     `density.water-brine-lock-exchange` and the mixed M1 arm.
 - **Water W-IN:**
+  - isolated successor executes the [Water adapter and actual-carrier contract](inertial-cellular-v1.md#water-in-native-successor--2026-10-25) with qualified sourceaa8af247 Windows/Linux publication; final ready-PR/scientific/full-host qualification remains pending;
   - whole cells at `maximum()`;
   - fractional setups refused or explicitly normalized;
   - coherence honoured; adhesion not applicable (declared);

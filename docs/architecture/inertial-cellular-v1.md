@@ -1,14 +1,100 @@
 ---
-title: Brine inertial cellular reference
+title: Inertial cellular reference
 status: Current
 document-kind: reference
-scope: Opt-in Brine IN native law, standalone Godot instance/readback and source-matched Windows/Linux scoped publication on the LCB-005 branch; defaults retained, Water-IN and full ready-PR/application qualification remain pending
-canonical-for: [inertial-cellular-v1-brine]
+scope: Accepted-main Brine IN and isolated Water IN successor with actual Windows/Linux publication; whole-cell admission, material hooks, carrier ownership and complete stencil; final ready-PR, application and scientific qualification retain separate scope
+canonical-for: [inertial-cellular-v1-brine, inertial-cellular-v1-water]
 last-reviewed: 2026-10-25
 related-documents: [lcb-pressure-inertial-handoff.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb005-native-brine-checkpoint.md]
 ---
 
-# Brine inertial cellular reference
+# Inertial cellular reference
+
+## Water IN native successor — 2026-10-25
+
+**Current only on isolated `codex/lcb005-water-inertial`:** Water3 and Brine24
+can select `inertial_cellular_v1/reference`; Current Water remains FreeMass.
+Water uses its own whole-cell adapter around the shared integer IN law. Its
+[prospective registration and complete path model](../audits/2026-10-25-water-inertial-registration.md)
+start from reviewed Brine contact repair `68f74906`. Brine IN is accepted on main
+through PR #250 (`dc915f2b`); Water IN remains isolated in draft PR #254. Later
+[actual Water publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25)
+qualifies sequence2 sourceaa8af247 and runtime-only bot03cccd8f on Windows/Linux. It does
+not qualify normal hosts, common-Water scientific screens, owner feel or full
+Gate D/#203 completion.
+The [dated successor record](../audits/2026-10-25-water-inertial-native.md)
+preserves the original162/37 native/sanitizer proof and later163/23 activity
+and pool-retirement repair proof, plus124 Python tests and the separately
+qualified actual runtime processes. The original non-release DLL evidence keeps
+its exact source scope.
+Independent native/tooling reviews have no open findings in those bounded
+scopes. Actual publication passes15 processes perOS/642 policy assertions, with
+independent sequence2 artifact review `d2da3ffd` and no actionable bounded finding. Full
+exact-head ready acceptance remains pending; approval-held bot follow-ups are
+not greens.
+
+Water executes shared chemistry first, records WaterUpdate and decrements its
+original positive coherence once through `write_cell`. The original delay gates
+only horizontal-only U6 submoves; vertical/eligible diagonal gravity remains
+active. Cadence uses that same lateral-only gate and retains its bounded wake.
+A denied opportunity is not a collision: vx still follows ordinary damping and
+contacts, ax still adds/truncates to its signed q16 remainder, and logical DDA
+x progress advances without motion, catch-up debt or a fabricated impulse.
+Remaining coherence and retained nonzero motion keep required work active.
+The adapter imports no Paste/Slush viscosity, FreeMass merge, adhesion or head
+term. Water quantity is always the selected precision's actual `maximum()`.
+Same-material occupancy blocks travel. A lighter foreign material keeps Current
+downward density exchange even when Water and that material both select IN;
+family selection does not replace the shared material law.
+
+`World::mix_after_motion` returns the actual carrier coordinate. A lateral
+pickup puts Water at the grain's former address; the nominal destination now
+contains grain. Each later IN submove, support probe and final state store
+follows that explicit returned owner, preserving Water coherence, temperature,
+epoch and six-byte motion slot. Coupling runs immediately after each completed
+Empty move. No neighbour search or end-of-DDA deferred pickup supplies authority.
+
+The exhaustive persisted-occupancy DDA model includes364 path strata and two
+successive carrying swaps. Failed diagonal eligibility and later fallback
+horizontal movement retain their shared target dependency. Actual native
+`MotionFootprint` guards carry the original scheduled coordinate through all
+eligibility, exchange bracing, mask/epoch and packing-census accesses. They
+require read3/write2; a second pickup's packing census supplies the read3
+witness. Explicit IN radius3 admission and matched candidate/control geometry
+remain required; protected Current radius2 never expands automatically.
+
+`whole_cell_water_enabled()` is the shared native CY-or-IN quantity predicate;
+`water_cellular_yield_enabled()` still names only the CY motion law. Internal and
+live writers, the FreeMass tripwire, final legacy overlay, CYSD helper preflight
+and valid-digest CYPS restore use the whole-cell regime, including exact
+construction-population validation for unnormalized prepared captures. The
+[dated independent counterexample and repair](../audits/2026-10-25-water-inertial-native.md#independent-prepared-population-finding-and-repair)
+retain the original missed guard and all12 regression cohorts. Partial live writes
+refuse without rounding/allocation. Prepared setup reuses the existing explicit
+water-normalize-v1 gross counters, digest and source/sink ledger; it does not
+convert an exposed session. Unknown IN materials/cached variants and historical
+illustrative parameter blocks retain their precise refusal.
+
+No Cell ABI, sidecar field/width, generic U1–U7 law, damping, Brine contract,
+physical hash/save version or Current defaults change. IN remains hash3/CYPS3;
+non-IN remains2. New Water capability admission changes the capability digest
+and resulting policy-bound physical/receipt identities even for Current. The
+historical content/state hashes and actual Current tuples/temperatures/material
+work are separate controls; this identity change does not mean changed Current
+physics. Old source-bound facts and failures remain historical.
+
+## Separate Water publication
+
+The [Water successor publisher](../operations/github-development-and-release.md#isolated-water-inertial-runtime-publication)
+is an isolated005/001 profile on its own branch. Reviewed profile24a is followed
+by request sequence1/source4b588279 and actual run40166210470, then four-path
+botC9e52b52. Later sequence2/sourceaa8af247/run40220697738/bot03cccd8f
+republishes the reviewed native activity/storage/pool repairs. It retains all15
+processes, deadlines and strict summaries and adds
+actual Water motion, whole-cell quantity, coherence, transactional refusal and
+CYPS continuation evidence. Both OS artifacts and input ledgers receive fresh
+independent review. Common-Water/full-host/scientific and final ready-PR
+acceptance remain separate.
 
 ## Mandatory resting-body contact correction — 2026-10-25
 
@@ -27,13 +113,14 @@ preserves the failed native and runtime controls. Published sequence2 runtimes
 still contain the omission. Fresh local LLVM154, focused ASan/UBSan29 and a
 new Windows DLL/import plus six selected Godot cases now pass at `68f74906`;
 the IN case reports10192 assertions/all six sections and ten explicit resting
-contact traces. PR #250 stays Draft pending source-matched sequence3 publication
-and full ready-PR gates. Earlier publication and numerical-law evidence retain their
+contact traces. That repair checkpoint was Draft; later source-matched sequence3
+publication and all required exact-head gates pass, and PR #250 merges exact
+d7681a5c as main dc915f2b. Earlier publication and numerical-law evidence retain their
 original source and scope; no Water-IN or full-host qualification follows.
 
 ## What executes at this native checkpoint?
 
-**Current on the LCB-005 branch only:** explicitly selecting Brine material24 / `inertial_cellular_v1/reference` executes retained signed motion and subcell accumulators. The default Brine CellularYield law and every other default remain unchanged. The combined source passed [actual Windows/Linux scoped publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-windowslinux-union-publication--2026-10-25) at `bc0bfed9` in run `40153980594`, with runtime-only bot append `52ee560a`. Water IN, alternate IN materials, cached/dormant IN variants, full ready-PR acceptance and full application integration remain unqualified. The earlier [standalone adapter proof](../audits/2026-10-25-lcb005-standalone-adapter.md) keeps its local Windows source identity; [native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) retains its base, local input seal and tests. This is neither full #212 completion nor owner feel acceptance.
+**Current on main through accepted PR #250:** explicitly selecting Brine material24 / `inertial_cellular_v1/reference` executes retained signed motion and subcell accumulators. The default Brine CellularYield law and every other default remain unchanged. The combined source passed [actual Windows/Linux scoped publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-windowslinux-union-publication--2026-10-25) at `bc0bfed9` in run `40153980594`, with runtime-only bot append `52ee560a`. At that parent checkpoint Water IN was unavailable; the isolated successor above admits it in source. Alternate IN materials/cached variants and full application qualification remain separate. The earlier [standalone adapter proof](../audits/2026-10-25-lcb005-standalone-adapter.md) keeps its local Windows source identity; [native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) retains its base, local input seal and tests. This is neither full #212 completion nor owner feel acceptance.
 
 The source owners are `native/include/cybersand/inertial_cellular.hpp`, `native/src/world_inertial.inc` and narrow integration in `World`. Shared pair chemistry precedes the Brine yielding-liquid motion gate. The implementation contains no pressure/head term and applies no Rapier force.
 
@@ -51,7 +138,7 @@ plus full application/host qualification, remain separate.
 
 The optional slot has signed16 `vx/vy` and signed8 `ax/ay`. Velocity/accumulators use16 quanta per cell. Admitted ranges are vx −32…32, vy0…32 and each accumulator −15…15. New products, paint and reconstruction default to zero. The actual stored slot is six bytes/alignment2 on the measured Windows LLVM ABI; this is not a production Cell ABI change or a portable raw-struct save format.
 
-The reference law retains q16, gravity4, vmax32, turn1/8, deflect3/4, density-swap drag1/4 and rest threshold1. Damping defaults to1/16; the optional native family block(owner4, version2) contains exactly one signed int32 `damping_numerator` in0..16, over the fixed denominator16. Omission applies1; all seventeen values execute in the same Brine/reference law. This is not the historical illustrative IN blockv1(`damping_q16`, `speed_cap_q8`), which remains refused by the running native schema. Unsupported versions, lengths, ranges or blocks on an unused family refuse before candidate installation. The existing `inertial-update-v1` order is U1 support; U2 one gravity application; U3 diagonal re-aim or support cancellation and carried-velocity deflection; U4 saturation; U5 signed truncating damping; U6 accumulator travel with every target rechecked; U7 rest/sleep eligibility. First contact ends travel. Wall, body mask and same-family contact are inelastic; only Empty is horizontally enterable. A lighter foreign material is exchangeable only downward under the existing density/exchange gate. The immutable `physics_diagnostics.disable_powder_exchange_targets` causal control denies every Powder target before U1 support, U3 diagonal re-aim and every U6 travel recheck, including when telemetry is disabled; it does not change default eligibility. See the existing [diagnostic-control contract](../operations/physics-characterisation.md#which-variants-are-isolated-from-production-defaults).
+The reference law retains q16, gravity4, vmax32, turn1/8, deflect3/4, density-swap drag1/4 and rest threshold1. Damping defaults to1/16; the optional native family block(owner4, version2) contains exactly one signed int32 `damping_numerator` in0..16, over the fixed denominator16. Omission applies1; all seventeen values execute in the same Brine/reference law. This is not the historical illustrative IN blockv1(`damping_q16`, `speed_cap_q8`), which remains refused by the running native schema. Unsupported versions, lengths, ranges or blocks on an unused family refuse before candidate installation. The existing `inertial-update-v1` order is U1 support; U2 one gravity application; U3 diagonal re-aim or support cancellation and carried-velocity deflection; U4 saturation; U5 signed truncating damping; U6 accumulator travel with every target rechecked; U7 rest/sleep eligibility. First contact ends travel. Wall, body mask and same-material contact are inelastic; only Empty is horizontally enterable. A lighter foreign material is exchangeable only downward under the existing density/exchange gate. The immutable `physics_diagnostics.disable_powder_exchange_targets` causal control denies every Powder target before U1 support, U3 diagonal re-aim and every U6 travel recheck, including when telemetry is disabled; it does not change default eligibility. See the existing [diagnostic-control contract](../operations/physics-characterisation.md#which-variants-are-isolated-from-production-defaults).
 
 `World::inertial_parameters()` returns the actual immutable applied damping numerator. The complete parameter/state/update identity is canonical little-endian data hashed by `inertial_extension_identity(actual)`. Default1 retains the earlier identity bytes exactly. An explicit1 block has the same effective-law identity as omission but a distinct policy hash because the requested/applied block is retained. Other numerators change both effective identity and policy hash; native capture never substitutes a host-supplied parameter claim. The [native parameter vectors](../reference/inertial-parameter-vectors.json) independently bind accepted/refused policy envelopes, policy hashes and actual identity digests through `tools/lcb/inertial_parameter_contract.py`; historical illustrative vectors remain unchanged.
 
@@ -65,7 +152,7 @@ Absent storage reads as Empty on the exclusive serial owner path, as in Current 
 
 An IN World therefore explicitly requires `maximum_rule_radius>=3`. The existing scheduler validates radius≤half an even core, prepares neighbor chunks, and separates same-phase expanded domains. Candidate/control comparisons must use identical admitted execution geometry; the protected exact Current preset retains radius2. Native boundary tests exercise signed coordinates, core8/core64, chunk seams, observed read3/write2 reach, no prepared tick allocation and actual four-worker execution. Configured workers and observed task participants are separate `TickStats` values.
 
-Water IN remains unavailable. Its carrying callback can reach farther relative to a later submove than to the original owner. It needs a separate complete stencil proof, real `maximum()` quantity, coherence, direct ingress refusal and the existing normalization preparation before admission. Radius3 Brine proof does not qualify it.
+The Water successor above adds its own complete carrying/packing proof, actual `maximum()` quantity, coherence, direct-ingress refusal and existing normalization preparation. The historical radius3 Brine proof alone never qualified that mapping.
 
 ## How does optional state follow its cell and session?
 
@@ -169,6 +256,8 @@ matched publication: run `40160900817`, exact source `c11983c2`, bot append
 `fcf0e9b6`. Both operating systems pass import plus14 cases, including
 IN10192/all six sections. [The union evidence](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-sequence3-publication-of-the-contact-repair)
 records the two runtime hashes, preserved failing controls and independent
-76/485-input verification. This resolves that runtime blocker while full
-exact-head PR gates remain required. It does not admit Water IN or complete
-application/Rapier/Web/four-family qualification.
+76/485-input verification. That runtime blocker is resolved, and later all
+exact-head gates pass before #250 merges as main dc915f2b. This Brine repair
+record does not supply Water-IN qualification; the later Water successor is
+separately published above. Application/Rapier/Web/four-family qualification
+remains open.

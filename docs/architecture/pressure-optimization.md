@@ -2,7 +2,7 @@
 title: Bounded pressure cache and Water motion certificates
 status: Current
 document-kind: design
-scope: LCB-002 branch implementation of pressure_flow_v1 cached and cached_dormant — derived head and sealed-component discovery caches, conservative motion certificates, execution identity, cost observations and explicit remaining platform acceptance
+scope: Accepted-main LCB-002 cached and cached_dormant implementation — derived head and sealed-component caches, conservative motion certificates, execution identity, source-qualified cost and remaining product/platform boundaries
 canonical-for: [pressure-optimization, pressure-motion-certificates]
 last-reviewed: 2026-10-25
 related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../reference/configuration-reference.md, ../reference/invariants.md, ../audits/2026-10-25-lcb002-pressure-variants.md]
@@ -12,8 +12,15 @@ related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-
 
 ## Source and admission boundary
 
-**Current on `codex/lcb002-pressure-variants`; source-matched Windows/Linux
-scoped publication passed, while full ready-PR acceptance remains pending.**
+**Accepted on main through [PR #253](https://github.com/techrote/cybersand/pull/253)**
+at merge66051129, with the moving-mask gas correction, source-matched runtimes,
+full exact-head gates and independent review. Accepted Brine union #250 later
+merges as dc915f2b with the same pressure law. The branch checkpoints below
+retain their historical source, cost/failure and then-pending acceptance scope;
+they do not constitute new full-host/Web or universal speedup evidence.
+
+**Historical checkpoint on `codex/lcb002-pressure-variants`; Windows/Linux
+scoped publication passed, while full ready-PR acceptance was then pending.**
 [Publication run `40152121412`](https://github.com/techrote/cybersand/actions/runs/40152121412)
 executed import plus all13 required cases on each target OS; the
 [dated publication record](../audits/2026-10-25-lcb002-pressure-variants.md#source-matched-windowslinux-publication--2026-10-25)

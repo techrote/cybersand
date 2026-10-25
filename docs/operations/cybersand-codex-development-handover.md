@@ -10,6 +10,77 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Qualified Water sequence2 publication — 2026-10-25
+
+PR #254's [actual sequence2 publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25) qualifies source
+`aa8af2473a59ab92cc81dfff1dda17be0f41a46d`, run40220697738 and four-path bot
+`03cccd8fd133b505c6fad7911d3cb8d528ef5f22`. Both target OSes pass15 real
+processes,642 policy assertions and the strict Water-IN motion/refusal/continuation
+proof. Independent artifact/source/LFS/lease/floor review
+`d2da3ffd58c319347b8add077a09ea315e7b87d370e899dbc0d55df509211cfc`
+has no actionable bounded finding. All18 LFS payloads match their committed
+pointer hashes/sizes. Source Native tree remains the reviewed c97 pool/activity
+repair; the earlier race, timeout, constructor hang and sequence1 evidence remain
+preserved in the dated ledgers.
+
+This scoped publication does not establish full final ready-head CI/review,
+common-Water scientific screens, full normal host/Web/rendered/manual acceptance
+or #203 completion. The five bot03 approval-held follow-ups have no jobs and are
+not greens. Current defaults, protected fixtures and all117 registered campaign
+classifications remain unchanged. Earlier checkpoint sections below retain their
+own source/date/acceptance scope.
+
+The [local Water main refresh](../audits/2026-10-25-water-inertial-publication.md#main-flight-lease-refresh-and-native-binary-reuse--2026-10-25)
+normally merges accepted main9935d569 into e2411469 as38cb593d on the separate
+`codex/lcb005-water-main-refresh` branch. Native76 and published artifacts are
+unchanged; only two incoming Godot Flight inputs extend the historical491
+execution ledger's drift. Fresh published-Water import/Flight passes8,284
+assertions. Old publication and synthetic-merge gates keep their source scope;
+that unchanged-native refresh needed its own exact-head gates and did not itself
+require sequence2. The later native repairs require the separately qualified
+sequence2 above; the old reuse conclusion is not applied to changed native code.
+
+## Accepted parent and qualified Water publication — 2026-10-25
+
+**Historical sequence1 checkpoint:** the following records the accepted parent
+and first Water publication, before the native repairs and sequence2 above.
+
+Parent PR #250 accepts exactd7681a5c after all required exact-head gates and
+independent review, merged as main `dc915f2b2cc1261501058d0e967a98f32ecdee9d`.
+All three Water PF variants and Brine IN/reference are now accepted native main
+scope; full application/Web and programme completion remain separate.
+
+The isolated Water successor, PR #254, has [actual source-matched Windows/Linux publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
+at source4b588279/run40166210470, four-path botC9e52b52. Both OSes pass15 real
+processes/642 policy assertions, strict original sections and the Water proof.
+Independent artifact/source/LFS/lease/floor review `b15ea7cb` has no actionable
+bounded finding. Normal main merge8e586b17 preserves the complete C9 tree; all18
+LFS payloads are materialized. Full ready exact-head Documentation/provenance,
+Native/Godot/49 and final review remain pending. Bot follow-ups marked
+action_required await maintainer approval with zero jobs; they are not greens.
+
+Common-Water FM/CY/PF/IN scientific campaigns, full normal host/Web/rendered/manual
+qualification and #203 packaging stay open. Water-IN/Oil-CY/Brine-IN is a
+two-family control; actual three-family contact uses Water-FM (and separately
+PF)/Oil-CY/Brine-IN in one World. Current defaults, protected fixtures,117
+registry classifications, old measured ledgers and historical failures remain
+unchanged. Sections below retain earlier checkpoint scope where stated.
+
+
+## Water IN isolated successor - 2026-10-25
+
+`codex/lcb005-water-inertial` starts from Brine contact repair68f74906 and adds
+Water/reference native admission, whole-cell ingress/normalization and actual
+carrier ownership through repeated packing/pickup hooks. Use the
+[Water adapter contract](../architecture/inertial-cellular-v1.md#water-in-native-successor--2026-10-25)
+and [dated source-bound native proof](../audits/2026-10-25-water-inertial-native.md).
+The original source-only checkpoint is followed by reviewed sequence1 publication
+and accepted-parent merge as above. Its full ready exact-head CI/review still
+gates acceptance. Common-Water scientific screens, actual host/Web/rendered
+comparison and final packaging remain #202/#203. Capability admission changes
+policy-bound hashes while Current tuple/material behavior stays an exact control.
+
+
 ## Corrected Brine IN runtime publication — 2026-10-25
 
 Sequence3 [actual Windows/Linux publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-sequence3-publication-of-the-contact-repair)
@@ -18,17 +89,18 @@ by verified four-path bot append `fcf0e9b6`. Each OS executes import plus14
 cases, including IN10192/six strict sections and the new resting-contact
 regression. Fresh non-author verification checks all76/485 input blobs,
 artifacts, actual OS execution and the Linux runtime floor. The corrected
-runtime publication blocker is resolved; full ready-PR exact-head gates remain
-required before merge. Prior omitted-contact and moving-mask failures below
+runtime publication blocker was resolved at that checkpoint; later PR #250
+passes all exact-head gates and merges as main dc915f2b. Prior omitted-contact and moving-mask failures below
 retain their exact source scope. Water-IN, complete host/Web and #203 remain
 separate.
 
 ## Brine IN contact review blocker — 2026-10-25
 
 Independent review at `98595ac8` reproduces omitted body feedback from resting
-Brine IN. PR #250 stays Draft while the [bounded correction and its failed
+Brine IN. At that checkpoint PR #250 stayed Draft while the [bounded correction and its failed
 controls](../audits/2026-10-25-lcb005-pressure-union-integration.md#mandatory-resting-brine-body-contact-correction)
-receive sequence3 publication and full ready gates. Local source `68f74906`
+received sequence3 publication and full ready gates; those later pass and #250
+merges as above. Local source `68f74906`
 already passes LLVM154, focused sanitizer29 and fresh Windows import plus six
 selected Godot cases, including IN10192/all six sections. The source
 repair changes contact observation only; numerical motion, damping and codec
@@ -45,8 +117,9 @@ Local LLVM/MSVC141, focused sanitizer16 and actual application body tests pass.
 Fresh #201 Windows/Linux scoped publication `40157133977` passes at source
 `eebd0c98`, with four-path bot append `65f1f3b5`. The updated90-child total-cost
 campaign also passes exact parity and preserves slower churn/fallback results.
-PRs #253/#250 returned to draft after the finding; each still requires its own
-complete source-matched exact-head gates and review before merge. Earlier
+At that finding PRs #253/#250 returned to draft. Their later source-matched
+exact-head gates and independent review pass; accepted main merges are66051129
+anddc915f2b respectively. Earlier
 greens retain their original scope. See the
 [dated failure and repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
 

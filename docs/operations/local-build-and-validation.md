@@ -10,6 +10,34 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Water publisher guards and publication checks
+
+`python tools/ci/test_lcb005_water_inertial_runtime_publication.py` exercises the
+separate branch/schema/source lease, unchanged15-process schedule, strict Water
+proof, complete input/four-path guards and same-process profile isolation.
+Retain the original005/001 guard suites and run
+`python tools/ci/check_ci_provider_policy.py` for its new workflow. The [preparation record](../audits/2026-10-25-water-inertial-publication.md)
+keeps historical unarmed/sequence1 preparation separate from actual sequence2 at
+sourceaa8af247/run40220697738/bot03cccd8f. Both target OSes pass all15 processes
+and642 policy assertions with fresh independent artifact/source/LFS/floor review.
+Synthetic guards alone remain insufficient. Approval-held bot PR runs have no
+job results; root must obtain the actual final ready-head full matrix.
+
+## Water IN native successor checks
+
+On the isolated Water successor, build the ordinary native executable with
+`make build/tests`, then run `build/tests "Water IN"` for its focused groups.
+`python tools/lcb/water_inertial_footprint.py` separately checks the complete
+persisted-occupancy DDA/carrier stencil. Existing `LCB-005`, `LCB-002`, whole-Water
+and complete receipt-byte gates remain mandatory. No test selects a larger
+geometry implicitly: IN requests3 and matched controls use identical geometry;
+ordinary Current stays2. The [dated native record](../audits/2026-10-25-water-inertial-native.md)
+owns exact Windows LLVM inputs, normal1MiB stack,120s focused and600s ordinary
+limits and raw failures. The [separate Water publication record](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25)
+qualifies both target runtimes; full ready-PR and scientific/full-host gates
+remain open.
+
+
 ## Which build inputs are required?
 
 **Current:** build scripts and locks select the following inputs. A pin is a
@@ -1026,6 +1054,21 @@ require the existing actor-rig, recording, publication and desktop integration
 regressions. The discovered full Godot runner remains the acceptance route; these
 focused commands do not by themselves prove target-PC feel or Windows/Web
 interactive acceptance.
+
+## Native worker-race feedback order
+
+**Current CI configuration, 2026-10-25:** the complete `build/tests_tsan`
+compile and execution run before the ordinary and ASan/UBSan build stages.
+The GitHub-hosted Ubuntu runner, full test executable, `halt_on_error=1`,
+separate fifteen-minute compile/run limits and ninety-minute job limit are
+unchanged. All existing Native stages still apply. This order exposes worker
+ownership failures earlier; it does not qualify a repair without actual
+successful execution and the complete required final-head matrix.
+
+The [Water IN publication record](../audits/2026-10-25-water-inertial-publication.md)
+preserves failed Native run `40205443189` at `e2411469`, whose TSan check found
+shared chunk-activity access after the ordinary and ASan/UBSan groups passed.
+Native repairs still require fresh source-matched runtimes and final-head gates.
 
 ## Soliding successor validation
 

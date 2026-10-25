@@ -393,7 +393,7 @@ void test_liquid_policy_running_build_admits_only_defaults() {
         for (std::uint8_t family = 1; family <= 4U; ++family) {
             for (std::uint8_t variant = 0; variant < 3U; ++variant) {
                 if (family == row.default_family && variant == 0U) continue;
-                if ((row.material_id == 3U && ((family == 2U && variant == 0U) || family == 3U)) ||
+                if ((row.material_id == 3U && (((family == 2U || family == 4U) && variant == 0U) || family == 3U)) ||
                     (row.material_id == 24U && family == 4U && variant == 0U)) {
                     // Preserve every distinct admitted Water and Brine candidate.
                     auto words = request;
@@ -458,10 +458,9 @@ void test_liquid_policy_world_construction_and_refusal() {
     try {
         World world(config);
     } catch (const cybersand::LiquidPolicyRefused& error) {
-        refused = error.refusal().code == LiquidPolicyRefusalCode::FamilyUnavailable &&
-                  error.refusal().material == std::optional<std::uint16_t>{std::uint16_t{3}};
+        refused = error.refusal().code == LiquidPolicyRefusalCode::UnknownParameter;
     }
-    require(refused, "World constructed with an unavailable family");
+    require(refused, "World reinterpreted the historical illustrative IN parameter block");
     require(inertial.admission_refusal().has_value() && !LiquidSolverPolicy{}.admission_refusal(),
             "admission check");
     World world;
@@ -750,6 +749,50 @@ void test_liquid_policy_c_api_allocation_failures() {
                     "create failure " + std::to_string(nth) + " returned a World or a policy refusal");
         });
     require(world_sweep.first >= 1U && refusal.code == CYBERSAND_LIQUID_POLICY_ACCEPTED, "create sweep");
+    // Scheduling capacity scales the two contiguous activity payloads, not
+    // the number of owning allocations. Sweep every failure point again at a
+    // single slot: per-job owning vectors would multiply the default4096-slot
+    // construction sweep quadratically and regress bounded setup work.
+    auto small = expected;
+    small.active_core_capacity = 1U;
+    auto small_world_sweep = sweep_allocation_failures(
+        [&] {
+            auto* built = cybersand_world_create_with_liquid_policy_v1(
+                &small, request.data(), request.size(), &refusal);
+            liquid_policy_allocation_probe::fail_after = -1;
+            const bool constructed = built != nullptr;
+            cybersand_world_destroy(built);
+            return constructed;
+        },
+        [&](bool constructed, long long nth) {
+            require(!constructed && refusal.code == CYBERSAND_LIQUID_POLICY_CONSTRUCTION_FAILED,
+                    "single-slot create failure " + std::to_string(nth) + " escaped refusal");
+        });
+    require(small_world_sweep.first >= 1U &&
+                refusal.code == CYBERSAND_LIQUID_POLICY_ACCEPTED &&
+                small_world_sweep.second == world_sweep.second,
+            "scheduling slot capacity multiplied constructor allocation points");
+    // A later worker startup can fail after earlier threads are waiting. Every
+    // injected main-thread allocation must return a construction refusal after
+    // retiring that prefix, including failures before the first thread starts.
+    auto parallel = expected;
+    parallel.worker_threads = 4U;
+    auto parallel_world_sweep = sweep_allocation_failures(
+        [&] {
+            auto* built = cybersand_world_create_with_liquid_policy_v1(
+                &parallel, request.data(), request.size(), &refusal);
+            liquid_policy_allocation_probe::fail_after = -1;
+            const bool constructed = built != nullptr;
+            cybersand_world_destroy(built);
+            return constructed;
+        },
+        [&](bool constructed, long long nth) {
+            require(!constructed && refusal.code == CYBERSAND_LIQUID_POLICY_CONSTRUCTION_FAILED,
+                    "four-worker create failure " + std::to_string(nth) + " escaped refusal");
+        });
+    require(parallel_world_sweep.second > world_sweep.second &&
+                refusal.code == CYBERSAND_LIQUID_POLICY_ACCEPTED,
+            "four-worker create sweep did not exercise worker startup allocations");
     // The converged run built a World; read it back under failures, then release it.
     cybersand_world* world = cybersand_world_create_with_liquid_policy_v1(&expected, request.data(),
                                                                           request.size(), &refusal);
