@@ -107,12 +107,16 @@ fails closed. No final geometry is passed to a policy.
 seed,split,source)` creates fresh native World, isolated Rapier space,
 physical chassis, new session epoch/run ID, and invalidates all previous
 action authority. `observe()` publishes a fresh copied policy view.
-`tick(action, observation_id, repeat_ticks)` accepts new action **only**
+`tick(action, observation_id, repeat_ticks)` accepts a new action **only**
 at 6-tick decision boundaries, with 1-6 real 60 Hz physical steps per
-call and never beyond the next decision boundary. Intermediate ticks
-carry the admitted controller request while its v2 lease remains live.
-Use `tick(null, "", 1)` on intermediate steps. The maximum lease is
-12 ticks; a new decision is required every six. An action is rejected
+call and never beyond the next decision boundary. Omitted actions carry
+only an already-admitted controller request while its v2 lease remains
+live; this includes a missed fresh decision at a six-tick boundary and
+never creates or renews authority. `tick(null, "", n)` therefore may
+advance the current lease to the next decision boundary or physical lease
+deadline. If no live lease exists, a boundary call without an action fails
+`missing_decision` before physics advances. The maximum lease remains
+12 ticks and fresh policy decisions remain admitted only every six. An action is rejected
 *before* any physical step if malformed, nonfinite, stale, wrong epoch,
 wrong producer, or made from a revoked observation. One actual Rapier
 step and native tick are recorded for each consumed physics tick.
@@ -126,9 +130,10 @@ the circle, reducing speed to at most 2.5 cells/s and holding for
 36 **consecutive physical ticks**. A high-speed pass-through cannot
 meet the dwell condition. A complete episode `record()` holds the
 actual `world_tick`, owner-observation identity, action request and
-admission, flight force/torque receipt, physical pose, contact count,
-dwell and termination. No direct velocity, position or actuator
-force writes originate in this layer.
+admission, post-step authority snapshot (`producer`, `control_generation`,
+`command_live`, `lease_remaining_ticks`, `actuator_mode`, `fallback_reason`),
+flight force/torque receipt, physical pose, contact count, dwell and termination.
+No direct velocity, position or actuator force writes originate in this layer.
 
 ## Policy observation and normalization
 
@@ -141,8 +146,10 @@ real owner and task goal. Fields in canonical insertion order:
    `arrival_radius_cells` (scalar positive)
 3. `velocity_cells_per_second` (Vector2), `orientation_sin`,
    `orientation_cos` (dimensionless), `angular_velocity_rad_per_second`
-4. `actuator_mode` (string), `assistance_valid`,
-   `command_age_ticks` (-1 if absent), `command_live`,
+4. `actuator_mode` (string), `assistance_valid` (true only while a live
+   admitted command owns a structurally valid controller response; false after
+   expiry or cancellation even though the configured controller's reset receipt
+   remains structurally valid), `command_age_ticks` (-1 if absent), `command_live`,
    `lease_remaining_ticks`
 5. `resources` (continuous authored supply, powered,
    fuel measurement invalid), `capabilities` (copied immutable
