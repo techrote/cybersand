@@ -1,0 +1,8 @@
+{
+  "schema": "lcb003-application-host-publish-request-v1",
+  "family": "multi_solver",
+  "variant": "fm-cy-pf0-pf1-pf2-in-water-brine",
+  "scope": "lcb003-prepared-world-owners-cysd-and-application-host",
+  "intent": "publish-source-matched-runtimes",
+  "request_sequence": 1
+}
