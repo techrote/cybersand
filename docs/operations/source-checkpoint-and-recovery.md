@@ -10,6 +10,51 @@ related-documents: [local-build-and-validation.md, ../reference/validation-evide
 
 # Source checkpoint and recovery
 
+## Current scoped application runtime publication — 2026-10-25
+
+The [actual003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source
+`5f02d089ee4cff8b34421cc4ca58bb4ef50dd92c`, run40226343524 and four-path bot
+`0c9b197754d57e1eb579a52d745a1ca8fd0d2b32`. Windows runtimee3f17363
+(4,824,064 bytes) and Linux02ea0661 (4,222,304 bytes) each pass import plus
+all35 strict host/control cases:72 actual processes total, with matched
+native80/build535 input ledgers and642 policy assertions per OS. The
+earlier eight App provenance comparisons describe pre-publication inputs;
+the new manifests cover all80 current native inputs.
+
+The six approval-held bot follow-ups are not validation greens. Final
+exact-head CI/review, remaining constructors and complete host/scientific/
+manual qualification stay open; #202 and #203 are not complete. The owner
+defers additional Web/browser/shader work until after this epic. Historical
+Web functional success and rendering failure are retained; no rendering
+pass or fallback is claimed. All non-Web requirements remain in force.
+
+PR #254 is now accepted on main
+`06451f8ac9e8ac9b23a105d2fe22393375dc2d6b`, after its exact02c Documentation,
+Native, GDExtension/Godot and #49 gates and bounded reviews passed. The
+[publication ledger](../audits/2026-10-25-lcb003-runtime-publication.md#accepted-water-main-and-content-identical-integration--2026-10-25)
+binds those receipts. Local normal mergea704ce50 consumes that main with the
+unchanged bot0c9 tree; all615 publication inputs and139 compiled inputs remain
+exact. This does not substitute Water's gates for the application's final
+exact-head CI or close #202/#203.
+
+The recoverable checkout is `C:/Users/_/.codex/worktrees/lcb003-final-integration/khybersand`,
+branch `codex/lcb003-final-integration`. Published source5f02 has tree
+`18f7cb7c481b2aa1be59e955f2d13d9e9a224558`; bot0c9b has tree
+`0f652ef5d898a5803cf4694f24e87ad559e74386` and sole parent5f02.
+Root accepted the independent publication review and materialized all18
+LFS payloads before releasing the branch freeze. The later authorized normal
+merge is `a704ce50de7c69c8dd66550c762caccb33a960a6`, with parents0c9b and
+accepted main06451f8a and the same tree0f652ef5. All twelve uncommitted
+documentation files survive that merge with identical pre-merge bytes; their
+publication-only checkpoint00fd41b1 remains immutable historical evidence.
+Later constructor trials in separate worktrees are outside this checkpoint.
+
+## Historical preparation and Water-artifact consumption
+
+The earlier source-bound records below retain their original unarmed,
+runtime-mismatch and pending-publication statements. They do not describe
+the actual003 publication above or relabel older executions.
+
 The application branch now normally consumes reviewed Water source/publication
 checkpoint02c33341 through merge108b84d1, including actual sequence2 sourceaa8af247,
 run40220697738 and bot03cccd8f. Merge1d376fb3 also consumes the separately reviewed

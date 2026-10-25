@@ -934,3 +934,15 @@ table **and** landing the owning implementation with evidence.
 | LCB-005 [#212](https://github.com/techrote/cybersand/issues/212) | `inertial_cellular_v1` state, Brine (or Toxic Sludge) qualification, inertial boundary rules | Oil/kernel-specialized inertial support |
 | LCB-004 [#203](https://github.com/techrote/cybersand/issues/203) | the matrix as coverage oracle; receipts in packaged builds | default changes |
 | MAT-003PREPASS [#204](https://github.com/techrote/cybersand/issues/204) (Gate B) | the per-family field list above | n/a — owns width/sidecar/save |
+
+### Owner scheduling amendment — 2026-10-25
+
+The owner defers additional Web/browser/shader testing, analysis and
+implementation until after the current LCB epic. This amends the scheduling/
+acceptance boundary of #202/#203; it does not turn retained browser functional
+results or rendering failures into visual acceptance. All non-Web constructor,
+quantity/refusal, worker parity, source/runtime, scientific/manual comparison
+and packaged receipt requirements remain unchanged. The [scoped003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
+qualifies its72 actual Windows/Linux headless processes, not complete #202/#203.
+The [rest-certificate/body-contact invariant](lcb-pressure-inertial-handoff.md)
+and pressure motion-only skip boundary also remain in force.

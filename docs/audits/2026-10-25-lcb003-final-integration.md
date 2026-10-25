@@ -2,13 +2,56 @@
 title: LCB-003 final application source integration checkpoint
 status: Current
 document-kind: evidence
-scope: Unmerged application source union, exact default identity namespaces, whole-cell future-source refusal, local native and host qualification, strict unarmed publication profile and preserved failures; final publication, exact-head platforms, browser and complete programme gates remain separate
+scope: Unmerged application source union and actual scoped003 Windows/Linux publication with exact identity/refusal proof and preserved historical preparation; final exact-head CI, remaining constructors, scientific and manual programme gates remain separate
 canonical-for: [lcb003-final-integration-evidence]
 last-reviewed: 2026-10-25
 related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../operations/lcb-manual-comparison-ux.md, ../operations/local-build-and-validation.md, ../operations/source-checkpoint-and-recovery.md, 2026-10-25-lcb003-runtime-publication.md, 2026-10-25-lcb003-desktop-native-default-host.md, 2026-10-25-lcb003-synchronous-water-reference-body.md, 2026-10-25-water-inertial-publication.md]
 ---
 
 # LCB-003 final application source integration checkpoint
+
+## Actual combined application publication — 2026-10-25
+
+The later [actual003 publication](2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
+now qualifies source`5f02d089ee4cff8b34421cc4ca58bb4ef50dd92c`, run40226343524
+and four-path bot`0c9b197754d57e1eb579a52d745a1ca8fd0d2b32`. Windows DLL
+`e3f17363d21260690682dfaa9e5e118253544c1b9b19e69e50c03af567712343`
+is4,824,064 bytes; Linux SO
+`02ea0661d3a62e2ab346c3fe46f9f85b808c6a0099c639144f053dc70a5c3d46`
+is4,222,304 bytes. All six actual jobs pass; each OS imports and executes35
+strict cases,72 actual processes total. Native80/build535 source ledgers match,
+both actual policy processes supply642 assertions and strict Water-IN proof,
+and host observations preserve actual family/variant work, exact Water, receipts,
+prepared-body transactions, positive FM/CY default play and typed PF admission
+refusal. No label-only aggregate, silent fallback or extended deadline is used.
+
+Independent acceptance`8b0bb0641f15719eb2d82f3bf43d1e22f1ebd3910cf6223cdaa5a86c8f31fb8e`
+binds fresh raw API/job logs, three digest-matched ZIPs/82 files, both target
+reports, all615 canonical inputs, Linux floor,18 actual LFS identities and the
+single-parent/source-lease append. Root accepted this scope and ff-only
+materialized bot0c9 before releasing the freeze. Six bot follow-ups remain
+`action_required`, not greens. Final exact-head CI/review, remaining constructor
+and full-host/scientific/manual acceptance remain separate; #202/#203 stay open.
+Future constructor work in other worktrees is not Current in this checkpoint.
+
+This hosted5f02 result is new evidence. Earlier compiled18d/tested3d/local36-
+process, unarmed profile, failed matrix/A-B, Water sourceaa8/03 and Web records
+below keep their original identities. The eight pre-publication App native
+comparisons are not waived: the new manifests now cover the actual80 inputs.
+The older full default fixture, normalization/receipt refusal semantics and all
+117 registry classifications remain intact. Owner-directed Web/browser/shader
+deferral until after the epic remains in force; historical functional success
+and rendering failure are preserved, with no new visual pass or fallback.
+
+The later [accepted Water main and content-identical integration](2026-10-25-lcb003-runtime-publication.md#accepted-water-main-and-content-identical-integration--2026-10-25)
+records PR #254 merged as06451f8a after all four exact02c gates, including final
+Native163/163/163. Local normal mergea704ce50 has the exact bot0c9 tree and no
+code/runtime/request delta; all615 publication and139 compiled inputs remain
+unchanged. Older pending-Native/no-254-merge statements below remain historical.
+Water acceptance does not replace final application gates or complete #202/#203.
+
+**Historical pre-003 integration checkpoints follow.** Their pending-publication,
+request-absent and mismatch statements describe the source/date they record.
 
 ## Published Water sequence2 consumption — 2026-10-25
 
