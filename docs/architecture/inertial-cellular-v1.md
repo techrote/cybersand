@@ -16,6 +16,14 @@ related-documents: [lcb-pressure-inertial-handoff.md, liquid-solver-family-polic
 
 The source owners are `native/include/cybersand/inertial_cellular.hpp`, `native/src/world_inertial.inc` and narrow integration in `World`. Shared pair chemistry precedes the Brine yielding-liquid motion gate. The implementation contains no pressure/head term and applies no Rapier force.
 
+The later [moving-mask repair integration](../audits/2026-10-25-lcb005-pressure-union-integration.md#moving-mask-repair-integration-and-second-publication--2026-10-25)
+at `4a594db5` changes only the shared pressure gas-label retirement path and its
+native regression/build registration. IN law, damping, sidecar, hash3/CYPS3
+suffix and policy identity remain unchanged. The earlier `52ee560a` runtimes
+qualify their recorded source and are stale for this repaired source until
+publication sequence2 and actual target-OS execution complete. PR #250 is draft;
+full ready-PR/application qualification remains separate.
+
 ## Which fields, parameters and law are authoritative?
 
 The optional slot has signed16 `vx/vy` and signed8 `ax/ay`. Velocity/accumulators use16 quanta per cell. Admitted ranges are vx −32…32, vy0…32 and each accumulator −15…15. New products, paint and reconstruction default to zero. The actual stored slot is six bytes/alignment2 on the measured Windows LLVM ABI; this is not a production Cell ABI change or a portable raw-struct save format.

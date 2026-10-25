@@ -24,6 +24,12 @@ scoped/full greens retain their original source and coverage. See the
 
 ## Combined pressure and IN source — 2026-10-25
 
+The latest [moving-mask repair union](../audits/2026-10-25-lcb005-pressure-union-integration.md#moving-mask-repair-integration-and-second-publication--2026-10-25)
+is normal merge `4a594db5`. Only the reviewed pressure gas relabel hunk and new
+native regression/registration change the prior compiled union; IN law and
+codec remain intact. Its old published runtimes are stale until source-bound
+sequence2 executes. PR #250 is draft and final ready-PR gates remain pending.
+
 The #212 integration joins standalone checkpoint `0af161b4` with the frozen
 #201 source `12d76736`, including accepted-main documentation merge
 `d70699b6`. It admits Brine IN/reference and all three Water PF variants in

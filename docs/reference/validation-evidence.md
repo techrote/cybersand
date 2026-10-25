@@ -24,6 +24,11 @@ scoped/full greens retain their original source and coverage. See the
 
 ## Combined LCB-005 pressure/IN local proof — 2026-10-25
 
+The subsequent [moving-mask repair union](../audits/2026-10-25-lcb005-pressure-union-integration.md#moving-mask-repair-integration-and-second-publication--2026-10-25)
+at normal merge `4a594db5` needs fresh source-matched proof and sequence2
+publication. The historical native152/publication records below retain their
+exact older source; they are not an acceptance waiver for the gas-label repair.
+
 The [combined-source ledger](../audits/2026-10-25-lcb005-pressure-union-integration.md)
 binds clean `713ee3ab`, both exact parents and the capability-identity collision.
 Fresh ordinary LLVM152/MSVC152 and both sets of seven complete native receipt

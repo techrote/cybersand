@@ -24,6 +24,13 @@ scoped/full greens retain their original source and coverage. See the
 
 ## LCB-005 native Brine checkpoint — 2026-10-24
 
+Later normal merge `4a594db5` integrates the reviewed moving-mask pressure
+gas-label repair while retaining the IN law/damping/codec and all fourteen
+scoped publisher cases. The [union repair ledger](../audits/2026-10-25-lcb005-pressure-union-integration.md#moving-mask-repair-integration-and-second-publication--2026-10-25)
+separates fresh combined native proof and pending sequence2 target-OS publication
+from the historical `52ee560a` runtimes. PR #250 remains draft; full ready-PR,
+actual repaired application trajectory, Water-IN and Web gates are not complete.
+
 The later [combined #201/#212 integration](../audits/2026-10-25-lcb005-pressure-union-integration.md)
 at `713ee3ab` passes fresh152-group LLVM/MSVC ordinary execution, seven full
 receipt oracles per compiler, a132-input Windows DLL/import and all14 scoped

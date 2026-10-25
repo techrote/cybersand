@@ -287,3 +287,76 @@ Fresh materialized companion-backed documentation/provenance, M11, frozen and
 supplementary retrieval, provider, whitespace and generator checks are retained
 with source/input fences in `lcb212-postpublication/`. No full ready-PR runtime
 or public-release acceptance is claimed by that documentation checkpoint.
+
+## Moving-mask repair integration and second publication — 2026-10-25
+
+The later ordinary Main/worker trajectory exposed the native
+[moving-mask gas retirement defect](2026-10-25-pressure-moving-mask-gas-retirement.md).
+The earlier publication above remains valid evidence for its exact registered
+scope and source; it does not accept this newly reproduced body trajectory.
+PR #250 returned to draft. The source repair requires fresh publication and
+exact-head ready-PR gates before merge.
+
+Normal merge `4a594db5832796b704503a0ca469c5ef12812976` joins exact released
+repair/docs head `3ff685edb7385da1b07c2693958cdaa3ef0a6ef7` to the published
+union documentation checkpoint `bd87109a`. Relative to native union `713ee3ab`,
+the complete native/adapter/dependency comparison admits exactly three changed
+paths: the reviewed seventeen-line relabel hunk in `world_pressure.inc`, the
+released `test_pressure_moving_mask.cpp`, and two registration additions in
+`test_world.cpp`. Every other native input, the IN operator/damping/codec suffix,
+both family identities and the capability/receipt vectors remain unchanged.
+Both ordinary build lists retain the IN TU and add the moving-mask TU. All
+parent retrieval IDs/query strings survive, including the IN adapter and new
+masked-gas questions. All fourteen publisher cases and their strict sections
+remain unchanged. `lcb212-moving-mask-union/UNION-SOURCE-VERIFICATION.json`
+binds the comparison and resolution.
+
+The merge retains all four `52ee560a` runtime pointer/manifest blobs together.
+Those historical bytes are now stale for the repaired source and must be
+replaced by a source-bound request sequence2, with actual import and all14
+cases on each target OS. The incoming #201 request remains inert on the #212
+branch. No native source, test, workflow or request may change while the new
+publication lease runs.
+
+The new native regression retains the original six-arm failure and covers
+collapse, split, merge, vent and still-live masked identity. It checks exact
+Water quantity, gas/PF/quantity ledgers, all gas/history/allocator/revision fields,
+every resident positive label and the complete same-tick projection across
+PF0/1/2 and configured1/4. Configured workers do not prove four distinct pool
+participants in this compact fixture. Native CYPS bytes restore exactly while
+masked; because the body raster is host-owned and omitted by CYPS, both warm
+and restored arms explicitly reinstall identical masks and wake inputs before
+physical comparison and unmask continuation. The original failed mask/hash
+premise and fixed-volume premise remain in the failure record rather than
+being called native defects.
+
+The combined source `4a594db5` passed fresh LLVM153/153 ordinary groups in
+55.187seconds, filtered PF15/15 and IN12/12, and all seven actual native
+receipt-bin comparisons against the independent Python codec. Focused
+ASan/UBSan passed28 groups in114.078seconds: fifteen registered PF groups,
+twelve IN groups and the standalone head API group. This is not full-suite
+sanitizer or target-OS qualification. Both executables retain the ordinary
+1MiB stack. Complete raw/canonical source fences held;64 ordinary and53
+sanitized compiled inputs, compiler/flags, every dependency/object and output
+identity are retained under `lcb212-moving-mask-union/native/`. Ordinary
+receipt SHA-256 is `b06c7f0572440637a2fc05efb933e12f5fe0be021ed83cc6362c5f3f7c9a2620`;
+sanitized receipt is `3cfdcdc8e768c7202be4a94e43331b0cdf0001ebcf2081bae2ca2b612774fdbf`.
+The separate non-IN141/focused16 repair proof remains its own source-qualified
+record. Cache reuse requires complete dependency, compiler, flags, object and
+dependency-file hash agreement; no old object is assumed current.
+
+Fresh materialized companion-backed checks pass documentation, historical M11,
+provider, whitespace and all eight policy/scenario/physics/normalization
+generators. All eighteen retained payloads materialize and match. Preliminary
+repository validation correctly reports exactly two stale native-source
+fingerprints, one perOS for `world_pressure.inc`; it is a failed provenance
+gate until republication, with no vendor/Rapier errors or waiver. Frozen32
+retrieval retains top1=20/top5=32, MRR0.7745; supplementary130 retains
+top1=98/top5=130, MRR0.8577. These are lexical retrieval metrics, not answer
+correctness. Raw failures, results and before/after source/companion fences
+remain in `lcb212-moving-mask-union/docs-prepublication/`.
+
+Fresh Windows/Linux publication, final ready-PR gates,
+actual repaired normal-app trajectory and full host/Web/Water-IN qualification
+remain separate. No owner feel acceptance, carrier migration or Water-IN
+implementation is introduced.
