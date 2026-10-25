@@ -45,6 +45,21 @@ static func prepared_tower(profile: Dictionary, floor_index: int) -> Dictionary:
 		"profile":"Explicit solver policy with retained transport profile","regions":[]}
 	return out
 
+static func prepared_ordinary_demo(id: String) -> Dictionary:
+	if id not in ["material_lab","waterworks","foundry","neon_works"]: return {}
+	var out: Dictionary = Contract.base("ordinary-demo/"+id,1,0)
+	out.schema_version = 2
+	out.rectangles = Array(CyberDemoWorlds.rectangles(id))
+	out.player_enabled = true;out.player_start = [24,222]
+	out.tools = ["paint","erase","player"]
+	out.source_recipe = "CyberDemoWorlds/"+id
+	out.source_recipe_hash = JSON.stringify(out.rectangles).sha256_text()
+	out["presentation"] = {"title":CyberDemoWorlds.title(id),
+		"instructions":"Explicit Exploratory rebuild; ordinary demo controls remain active.",
+		"duration_ticks":Contract.MAX_TICK,"baseline":"Original Current demo constructor",
+		"profile":"Explicit solver policy with production Baseline and Current Water semantics","regions":[]}
+	return out
+
 static func water(policy_result: Dictionary) -> Dictionary:
 	if not policy_result.get("ok", false): return {}
 	var policy: Dictionary = policy_result.policy

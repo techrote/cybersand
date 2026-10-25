@@ -100,6 +100,14 @@ matching native component/generation/receipt identity. Unarmed legacy import
 continues to preserve its inherited configuration. Optional enabled preparation
 telemetry is observational and remains qualified separately.
 
+The later [four authored ordinary-demo route](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-synchronous-demo-rebuilding)
+keeps its accepted recipe separate from an imported level even when both carry
+the same demo label. Only an actual curated constructor and matching native
+generation supply authored identity. An accepted import restarts its copied
+payload/metadata; an accepted curated demo restarts its copied authored recipe.
+Neither in-memory request is persisted by CYSD1. Quarantined prepared Restart
+currently refuses; explicit Current construction or unarmed import is recovery.
+
 ## What continuation state is missing?
 
 CYSD1 omits tick/epoch, scheduler activity and sleep state, queued explosions and

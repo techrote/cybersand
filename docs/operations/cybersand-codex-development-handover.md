@@ -20,6 +20,23 @@ records old-DLL tuple controls, the preserved diagnostic-lifecycle failure,
 fresh Windows167/493/72 and independent review. Main/worker owner adoption,
 repaired IN parent integration and final platforms/publication remain open.
 
+Shared helper381bae3d now accepts copied optional three-position/rotation arrays,
+with finite/length preflight and unchanged omitted Water Feel defaults. Fresh50
+pose/native-mask/frozen-frame assertions plus the original75 actual Water Feel
+body assertions pass against unchanged native135. The [additive record](../audits/2026-10-25-lcb003-water-reference-body.md#shared-explicit-pose-helper)
+does not admit another constructor. Desktop and synchronous owners must supply
+their actual recipe poses and keep their final token/terrain/owner fences.
+
+The subsequent [ordinary synchronous demo checkpoint](../audits/2026-10-25-lcb003-ordinary-demo-host.md)
+on source89baee16 adds explicit Exploratory apply and retained Restart for the
+four curated body-free demos, keeping their exact recipes, sampled player and
+actual quality/view/cadence. Imported labels never identify authored recipes;
+physical/showcase routes remain outside the allowlist. Final six strict Windows
+processes pass against the unchanged135-input development DLL, including117
+new assertions and a real native failure/refused prepared Restart/explicit Current
+recovery. Prepared same-policy quarantine recovery remains shared #200/#202
+lifecycle work. Root's separate desktop-default/native recipe and Brine IN
+contact repair must integrate before fresh final runtime/platform qualification.
 
 The subsequent [normal-menu level-import checkpoint](../audits/2026-10-25-lcb003-level-import-host.md)
 uses released native thermal preparation for explicit Exploratory ordinary

@@ -199,3 +199,74 @@ exports and cannot qualify this later native/body source. Complete host identity
 remaining constructors, synchronous bodies, imported host masks and Water-IN's
 separate qualification remain open. Brine IN does not supply a fourth Water
 model or GateD acceptance.
+
+## Shared explicit-pose helper
+
+The subsequent source `381bae3ded64e871b5919d122850591b039e0fa7`, tree
+`66bd4e37e3fd1ec913eae00e995c848deda7375c`, changes only
+`prepared_reference_body_session.gd` and the new
+`test_liquid_reference_body_poses.gd`. The helper accepts independently optional
+copied `PackedVector2Array` positions and `PackedFloat32Array` rotations.
+Omitted arrays retain the original Water Feel centers(160,176),(212,176),
+(264,176) and zero angles. Supplied arrays require exactly three finite entries
+before viewport allocation. The same copies configure nodes and Rapier reset;
+no native API, physics law, constructor admission or default recipe changes.
+
+Fresh immutable root `C:/Users/_/.codex/tmp/lcb202-reference-body-poses/` verifies
+all135 native/dependency digests before stage/seal and reuses the unchanged
+development DLL79f35666 above. Official Godot4.7 on Windows11 imports the copied
+project and runs two strict processes, each independently bounded by180 seconds,
+with raw logs/argv/elapsed/input manifests and no engine errors/warnings:
+
+- New pose helper case:50 assertions,0 failures in2.000s. Omitted and explicitly
+  supplied old defaults match every actual pose/size/velocity/mass field and
+  the complete sampled native mask bytes, including all three body IDs. Raw
+  mask SHA256 is
+  `833e43d77592b83de190ee6d93e9fc78576a0322c89a7fe062d96fa1d31e98d3`.
+  Explicit centers(124,92),(140,72),(176,52) and rotations0,0.12,−0.1 remain
+  fixed across32 real physics frames. Caller mutation does not change copies;
+  short arrays/Inf/NaN refuse before private allocation. Terrain/readiness and
+  same-permanent-graph adoption work, leaving original templates untouched.
+- Existing Water Feel case:75 assertions,0 failures in30.000s. Original default
+  poses/receipts and full normal Main/worker lifecycle pass. Its four fresh PF
+  reference/cached/dormant/FM ordinary cohorts complete97–98 ticks, preserve
+  exact3,718,400 Water, keep World/snapshot healthy and pressure gas ledgers
+  closed, with positive actual contacts/applied signed feedback at accepted
+  ages0..3. They are asynchronous functional observations, not parity/performance
+  measurements or a positive exercise of rejection above age8.
+
+New-case log SHA256 is
+`032696a3f2d873737aaab652d28f84e00b2f4191b9d90566354c7e64b176d2e5`;
+the Water case log is
+`eba8ad453b907568ace7d176af2de60308028c10a552c890a655193aa53df91f`.
+`source-candidate-v2.json` SHA256
+`1e7b6694cd5b2d564bbd084b1475ce7c4f019cfc557dfc905aa846f1a554cb28`
+binds both copied raw sources. `CHECKPOINT.json` SHA256 is
+`4d3c778a214d4ad7aaba5d3683578bf1a36c1461825bc8d67e017485619282ac`;
+`MANIFEST.sha256` SHA256 is
+`270084ae6787d830a4314133c46f9012a0d6999a738527fb5dc9b1445d0f8706`,
+41 files outside the generated project. Final execution input fences hold.
+
+The first new-case execution fails because its mask helper supplies an empty
+demo command list, which native construction correctly refuses. The test then
+attempts to digest the empty result and emits a separate engine error. Both raw
+source/log remain retained. A single remote Wall makes the test fixture valid;
+the production helper does not change. Import precedes test-only valid terrain-
+header/raw-digest refinements; per-process manifests record actual executed
+inputs rather than treating that earlier import as the final source fence.
+
+This is shared helper and retained Water Feel proof only. It supplies no new
+desktop/synchronous constructor, final publication/Wasm/visual qualification,
+complete host identity, masked CYPS continuation or Brine IN rest-contact proof.
+
+The additive8-document helper delta maps ownership, interfaces, configuration,
+invariantLCBH-012, build/evidence and handover. It changes no constructor-matrix
+admission, roadmap milestone, capacity default or physics/ADR decision. Existing
+retrieval questions remain unchanged because this refines the same body-owner
+contract rather than adding a route. Companion-backed checks in
+`tmp/lcb202-reference-body-poses-doc-checks/` pass Documentation115/227,
+historical M11 integrity18/28 and provider policy. Frozen retrieval remains
+32/32 top5,19 top1, MRR0.7573; supplementary142/143 top5,111 top1, MRR0.8677.
+The earlier ordinary-demo checkpoint's disclosed unchanged LCB03 lexical miss
+remains; this is no answer-correctness claim. Current provenance reports only
+the expected18 stale native inputs against older platform publications.

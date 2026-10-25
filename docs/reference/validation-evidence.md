@@ -20,6 +20,21 @@ records old-DLL tuple controls, the preserved diagnostic-lifecycle failure,
 fresh Windows167/493/72 and independent review. Main/worker owner adoption,
 repaired IN parent integration and final platforms/publication remain open.
 
+The subsequent [shared explicit-pose helper proof](../audits/2026-10-25-lcb003-water-reference-body.md#shared-explicit-pose-helper)
+binds381bae3d, unchanged native135/DLL79f35666,50 focused assertions and the75
+Water Feel body assertions. Exact default pose/native-mask equality, copied
+explicit poses/rotations,32 frozen frames, preallocation refusal and same-space
+adoption pass. Its first invalid empty-recipe fixture is retained and corrected
+only in the test; no new constructor/platform/Brine IN contact claim follows.
+
+The [ordinary synchronous demo proof](../audits/2026-10-25-lcb003-ordinary-demo-host.md)
+binds source89baee16, three exact candidate sources and unchanged135-input local
+Windows DLL. Six final strict processes pass: ordinary117, import73, UI105,
+Tower41, Water Feel72 and33 named native Web-prerequisite checks. The new case
+proves exact initial authored tuples/quality0/2, owner refusal, real12-tick prefixes,
+retained Restart/import identity, explicit IN/Current geometry and actual native
+quarantine/refused Restart/Current recovery. A prior failed extension-array-order
+test premise is retained. No final browser/release/rest-contact proof follows.
 
 The [import settings correction](../audits/2026-10-25-lcb003-level-import-host.md#inherited-setting-refusal-correction)
 on sourcecccae86f adds native-component preflight for unsupported inherited

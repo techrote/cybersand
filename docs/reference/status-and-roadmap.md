@@ -1009,6 +1009,19 @@ integrated tests/publication remain required.
 The work is prepared independently while #246 completes its acceptance gates;
 integration still follows fresh accepted main.
 
+**Subsequent ordinary synchronous demos:** source89baee16 explicitly rebuilds
+Material Lab, Waterworks, Foundry and Neon Works in Exploratory mode using exact
+ordered recipes, privately staged sampled player and actual view/cadence before
+the final native commit. Restart retains accepted recipe/policy/geometry;
+imported labels cannot impersonate authored recipe identity. Six strict local
+Windows processes pass, including117 new ordinary-demo assertions and actual
+quarantined prepared Restart refusal/explicit Current recovery. See [scope and
+evidence](../audits/2026-10-25-lcb003-ordinary-demo-host.md) and the
+[constructor matrix](../operations/lcb-manual-comparison-ux.md#constructor-coverage-at-this-checkpoint).
+Desktop counterparts, body/showcase/arbitrary recipe routes, same-policy failed-
+World recovery, final native repair/integration and complete platform/host gates
+remain open; this does not complete #202 or qualify Brine IN rest contacts.
+
 ## Opt-in transport profiles
 
 **Current:** the [profile contract](../systems/flow-transport-and-profiles.md)
