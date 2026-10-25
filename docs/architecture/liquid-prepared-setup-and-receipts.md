@@ -1003,3 +1003,53 @@ not a substitute for compiler proof. **#212** inertial qualification and **#203*
 packaged comparison coverage remain pending. Existing family and campaign gates
 continue to own acceptance; this native checkpoint supplies no completion claim
 for those streams.
+
+
+## Native desktop default-demo preparation
+
+**Current unmerged native API, `afe19c2d`:** the authoritative native default-demo
+recipe is shared by ordinary reset and `prepare_liquid_default_demo(world,
+liquid_policy, options)`. Final tuples are compiled natively; no GDScript copy of
+the sinusoidal floor or sparse materials defines this constructor. Inherited
+Water precision/coherence and independent transport survive, while interaction,
+diagnostic laws and default adapter coupling/lifecycle state follow native reset.
+The native recipe ID and final payload bind a qualified `NativeCellFixture`;
+caller definition-hash/nonzero-seed claims refuse. Existing token, final native
+fence, initial body masks and copied receipt semantics apply.
+
+Copied `get_default_demo_identity()` binds native constructor origin to the
+actual generation; imports and other World replacements retire it even when
+cell bytes match. Edits retain constructor origin without claiming replay.
+[LCBH-015](../reference/invariants.md) and the [dated local proof](../audits/2026-10-25-lcb003-native-default-demo-preparation.md)
+record the old-DLL four-cohort controls, corrected diagnostic lifecycle failure
+and its original167-assertion Windows API case. The subsequent owner and
+capacity checkpoint below supplies bounded Main/worker evidence; repaired IN
+integration, complete host and final platform publication remain open.
+
+
+## Desktop native-default owner and initial pressure capacity
+
+**Current unmerged source705a2e2d/66bf30f8:** explicit Exploratory active Apply
+uses copied native constructor origin and the authoritative shared default
+recipe. The exclusive worker prepares native tuples, sampled player/profile,
+actual final settings and initial body masks; Main stages the original three
+poses/rotations in one permanent frozen space. Final request/settings/native
+and token guards precede adoption. Qualified immutable observation collection
+precedes commit; published Main readback is copied and full-match eligibility
+remains false. R retains accepted policy/normalization/geometry. F6/actors refuse
+unsupported changes, and F7/PENV preferences adopt only with successful fresh
+owners. Controlled ordinary player/body admission remains refused.
+
+The authored default pattern exceeds the fixed initial gas-compartment capacity
+for PF0/PF1/PF2. Native construction now counts actual Water-adjacent closed
+Empty regions with actual masks before capture/token/swap, returning typed
+CapacityRefused and actual attempt readback while retaining the healthy World.
+FM/CY run real moving-body cohorts with exact Water628320; PF variants have
+explicit capacity refusals, without capacity/law changes or fallback. Future
+dynamic exhaustion retains quarantine. [LCBH-019](../reference/invariants.md)
+and the [dated source/runtime/failure record](../audits/2026-10-25-lcb003-desktop-native-default-host.md)
+qualify46 focused native/sanitized assertions, seven affected1078-assertion
+processes and final86-assertion host execution. Test helper resources have
+one-way external ownership; earlier post-footer crashes remain rejected.
+Final union, actual Web, complete constructor/host-mask lifecycle and fresh
+source-matched Windows/Linux publication/full CI remain separate acceptance.

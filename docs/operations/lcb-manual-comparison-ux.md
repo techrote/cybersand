@@ -371,3 +371,19 @@ defaults.
 - Protected presets reset to an identical tick-0 state. `test_lcb_fixture_manifests.gd`
   already pins their definitions and initial proofs.
 - The Exploratory flag is set by every input path listed above.
+
+
+## Desktop native-default Exploratory owner
+
+On unmerged source66bf30f8 the ordinary default constructor can Apply explicitly
+in Exploratory mode using its actual native origin, with original bodies/player
+and no fabricated MicroScenario definition. R reconstructs the accepted policy,
+normalization and geometry. Controlled player/body runs and unsupported barrel/
+actor changes refuse. F7 and PENV stage desired replacement settings and adopt
+only on success; refusal keeps the old World/owners/receipt/observation.
+The original default Water pattern exceeds initial gas capacity for all three
+PF variants, which now return typed native refusal before replacement. FM/CY
+actual moving-body qualification and preserved test shutdown failures are in the
+[dated checkpoint](../audits/2026-10-25-lcb003-desktop-native-default-host.md).
+Current remains the ordinary default; no fallback, complete-host eligibility or
+final released-platform claim follows from this bounded route.

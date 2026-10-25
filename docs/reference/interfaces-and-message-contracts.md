@@ -1374,3 +1374,18 @@ unchanged and are reported separately. Subsequent changes to the private owner
 cannot mutate the adopted plans.
 Neither explanation nor stage output supplies authority to install or mutate a
 World; existing material/semantic admission interfaces keep that responsibility.
+
+
+## Native default-demo construction values
+
+The unmerged [native default-demo preparation API](../architecture/liquid-prepared-setup-and-receipts.md#native-desktop-default-demo-preparation)
+accepts `(world, liquid_policy, options)` at the exclusive owner boundary. Its
+one-use token is the same private candidate slot used by prepared rectangles and
+thermal levels. No World storage crosses the adapter. Copied native constructor
+origin reports recipe ID, session generation, prepared status and health; it is
+retired by other World replacements and is not inferred from equal tuples or a
+scene label. The later [desktop owner/capacity checkpoint](../architecture/liquid-prepared-setup-and-receipts.md#desktop-native-default-owner-and-initial-pressure-capacity)
+uses copied origin/qualified observation slots and exact request/settings/native
+guards for owner adoption. Actual initial pressure-capacity excess produces a
+native typed refusal before capture/token/swap, with actual attempt readback.
+Complete host binding and final platform publication remain separate.

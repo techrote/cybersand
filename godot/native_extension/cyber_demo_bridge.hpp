@@ -611,11 +611,13 @@ public:
     [[nodiscard]] std::int64_t prepare_liquid_level(const Ref<CyberNativeCellWorld>& adapter,
         const PackedByteArray& payload, const PackedInt32Array& profile,
         const PackedInt32Array& policy, const PackedInt32Array& liquid_policy, const Dictionary& options);
+    [[nodiscard]] std::int64_t prepare_liquid_default_demo(const Ref<CyberNativeCellWorld>& adapter,
+        const PackedInt32Array& liquid_policy, const Dictionary& options);
 private:
     [[nodiscard]] std::int64_t prepare_liquid_candidate(const Ref<CyberNativeCellWorld>& adapter,
         const PackedInt32Array& rectangles, const PackedInt32Array& profile,
         const PackedInt32Array& policy, const PackedInt32Array& water_fills,
-        const PackedInt32Array& liquid_policy, const Dictionary& options, const PackedByteArray* level_payload);
+        const PackedInt32Array& liquid_policy, const Dictionary& options, const PackedByteArray* level_payload, bool default_demo = false);
 public:
     [[nodiscard]] bool prepared_liquid_character_box_collides(const Ref<CyberNativeCellWorld>& adapter,
         std::int64_t token, Vector2 origin, Vector2 size, std::int64_t mode) const {
@@ -984,6 +986,8 @@ protected:
             "liquid_policy", "options"), &CyberDemoBridge::prepare_liquid_level);
         ClassDB::bind_method(D_METHOD("prepared_liquid_character_box_collides", "world", "token", "origin", "size", "mode"),
             &CyberDemoBridge::prepared_liquid_character_box_collides);
+        ClassDB::bind_method(D_METHOD("prepare_liquid_default_demo", "world", "liquid_policy", "options"),
+            &CyberDemoBridge::prepare_liquid_default_demo);
         ClassDB::bind_method(D_METHOD("prepared_liquid_world_values", "world", "token"), &CyberDemoBridge::prepared_liquid_world_values);
         ClassDB::bind_method(D_METHOD("prepared_liquid_run_capture", "world", "token"), &CyberDemoBridge::prepared_liquid_run_capture);
         ClassDB::bind_method(D_METHOD("commit_liquid_world", "world", "token"), &CyberDemoBridge::commit_liquid_world);

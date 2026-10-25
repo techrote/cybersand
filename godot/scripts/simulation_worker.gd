@@ -10,6 +10,7 @@ const PlayerEnvironmentProfiles = preload("res://scripts/player_environment_prof
 const ActorSession = preload("res://scripts/actor_prototype_session.gd")
 const UsableSession = preload("res://scripts/usable_session.gd")
 const PreparedSampled = preload("res://scripts/prepared_sampled_session.gd")
+const LiquidHostEvidence = preload("res://scripts/liquid_host_evidence.gd")
 const PhysicalEffects = preload("res://scripts/physical_actor_effects.gd")
 const PhysicalUsables = preload("res://scripts/physical_usable_runtime.gd")
 const SIMULATION_HZ: float = 60.0
@@ -102,6 +103,8 @@ var _prepared_physical_publication: Dictionary = {}
 var _prepared_physical_ready: Dictionary = {}
 var _prepared_physical_frame_hold: Dictionary = {}
 var _prepared_liquid_owner_error: String = ""
+var _default_liquid_identity: Dictionary = {}
+var _default_liquid_published_record: Dictionary = {} # Mutex-owned immutable slot.
 # Private dependency seams exercise declared precommit actor/equipment failures.
 var _prepared_actor_factory: Callable = Callable()
 var _prepared_usable_factory: Callable = Callable()
@@ -149,7 +152,7 @@ func queue_lab(command: Dictionary) -> void:
 	_lab_request["_owner_request_revision"] = _lab_request_revision
 	_pending_physical_effects.clear()
 	_cancel_physical_usables_locked()
-	if command.has("step") or command.has("reset") or command.has("water_reset") or command.has("scenario_reset") or command.has("floor"): _paused = true
+	if command.has("step") or command.has("reset") or command.has("water_reset") or command.has("scenario_reset") or command.has("default_liquid_reset") or command.has("floor"): _paused = true
 	_mutex.unlock()
 
 static func prepared_owner_execution(definition: Dictionary, settings: Dictionary) -> Dictionary:
@@ -372,8 +375,133 @@ func _prepared_liquid_install_options(command: Dictionary, definition: Dictionar
 		int(command.get("_owner_request_revision",-1)),settings_revision,command,validated.definition,profile,owner)
 	return {"ok":true,"definition":validated.definition,"transport":validated.transport,"setup":final_setup,"guard":guard}
 
+func _default_liquid_origin() -> Dictionary:
+	return _world.get_default_demo_identity() if _world.has_method(&"get_default_demo_identity") else {}
+
+func liquid_default_host_observation_record() -> Dictionary:
+	# Main reads only the immutable accepted slot and published generation. It
+	# never calls the live World, or copies the full record on every render frame.
+	_mutex.lock()
+	var generation: int = int(_published_snapshot.lab_context.get("native_default_demo",{}).get("session_generation",-1)) \
+		if _published_snapshot != null else -1
+	var result: Dictionary = _default_liquid_published_record.duplicate(true) \
+		if generation == int(_default_liquid_published_record.get("identity",{}).get("session_generation",-2)) else {}
+	_mutex.unlock()
+	return result
+
+func _apply_prepared_default_liquid(command: Dictionary) -> bool:
+	_scenario_request_serial = int(command.get("scenario_request_serial",0))
+	_scenario_request_applied = false
+	var origin: Dictionary = _default_liquid_origin()
+	var setup: Dictionary = command.get("controlled_liquid_setup",{})
+	var physical: Dictionary = setup.get("physical_owner",{})
+	if origin.get("native_recipe_id","") != "cybersand-desktop-default-demo-v1" \
+		or not origin.get("healthy",false) or origin.get("session_generation",-1) != command.get("expected_default_generation",-2) \
+		or _lab_active or _micro_active or _water_lab_active or _actor_session.active() \
+		or not _sampled_character_enabled or not command.get("sampled_character_enabled",false) \
+		or setup.get("intent","") != "exploratory" or not command.get("exploratory_actor_definitions",[]).is_empty() \
+		or physical.get("kind","") != "reference_body" or physical.get("epoch",-1) != 0 \
+		or not physical.get("instance_id") is int or physical.instance_id == 0 \
+		or not physical.get("initial_bodies") is PackedFloat32Array \
+		or physical.initial_bodies.size() != 3*CyberRigidBodyCoupling.INPUT_STRIDE:
+		_lab_status = "Prepared native default demo refused; original constructor, healthy sampled owner and staged reference bodies required"
+		if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
+		return false
+	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+	if bridge == null or not bridge.has_method(&"prepare_liquid_default_demo"):
+		_lab_status = "Native default demo preparation requires the rebuilt native adapter"
+		return false
+	_mutex.lock()
+	var settings_revision: int = _construction_settings_revision
+	var profile: Dictionary = command.get("_prepared_player_environment_profile",_player_environment_profile).duplicate(true)
+	var pending_profile: bool = not _pending_player_environment_profile.is_empty()
+	var owner: Dictionary = command.get("default_owner_execution",{}).duplicate(true)
+	var settings_match: bool = (owner.get("view_size") == _view_size
+		and owner.get("horizontal_buffer") == _horizontal_buffer and owner.get("vertical_buffer") == _vertical_buffer
+		and owner.get("simulation_window_enabled") == _simulation_window_enabled
+		and owner.get("cadence_lod_enabled") == _cadence_lod_enabled
+		and owner.get("liquid_surface_adhesion_enabled") == _liquid_surface_adhesion_enabled)
+	_mutex.unlock()
+	if pending_profile or not settings_match or not owner.get("view_origin") is Vector2i:
+		_lab_status = "Prepared native default demo retired by owner settings or player profile"
+		if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
+		return false
+	var first := Vector2i(clampi(owner.view_origin.x-owner.horizontal_buffer,0,1023),clampi(owner.view_origin.y-owner.vertical_buffer,0,1023))
+	var last := Vector2i(clampi(owner.view_origin.x+owner.view_size.x+owner.horizontal_buffer,first.x+1,1024),
+		clampi(owner.view_origin.y+owner.view_size.y+owner.vertical_buffer,first.y+1,1024))
+	owner.region = [first.x,first.y,last.x-first.x,last.y-first.y] if owner.simulation_window_enabled else [0,0,1024,1024]
+	var options: Dictionary = {"region":PackedInt32Array(owner.region),"intent":"exploratory","pacing":"host_paced",
+		"simulation_window_enabled":owner.simulation_window_enabled,"cadence_lod_enabled":owner.cadence_lod_enabled,
+		"liquid_surface_adhesion_enabled":owner.liquid_surface_adhesion_enabled,
+		"normalization":setup.get("normalization",""),"maximum_rule_radius":setup.get("maximum_rule_radius",2),
+		"initial_bodies":physical.initial_bodies}
+	var token: int = _prepared_liquid_continuation_token(command)
+	if token < 0: return false
+	if token == 0: token = bridge.prepare_liquid_default_demo(_world,command.get("liquid_policy",PackedInt32Array()),options)
+	if token == 0:
+		_lab_status = "Prepared native default demo refused; " + str(bridge.get_last_error())
+		return false
+	var captured: Dictionary = bridge.prepared_liquid_run_capture(_world,token)
+	if captured.get("lifecycle","") != "prepared" or captured.get("token",0) != token:
+		bridge.discard_liquid_world(_world,token)
+		_lab_status = "Prepared native default demo capture retired"
+		if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
+		return false
+	var receipt: Dictionary = captured.native_run_encoding
+	# Profile finalization adds its hash through GDScript member syntax, whose
+	# key is a StringName. Copy keys explicitly into the frozen pure-value claim
+	# vocabulary while retaining every actual profile value and its hash.
+	var claim_profile: Dictionary = {}
+	for key: Variant in profile: claim_profile[str(key)] = profile[key]
+	var owner_inputs: Dictionary = {"scope":"native_default_recipe_and_owner_inputs_v1",
+		"input_owner":"exclusive_desktop_simulation_owner","native_recipe_id":origin.native_recipe_id,
+		"player_start":[150,145],"player_environment_profile":claim_profile,
+		"sampled_runtime_recovery_enabled":command.get("runtime_enclosure_recovery_enabled",true),
+		"native_initial_execution":{"intent":receipt.run_intent,"pacing":receipt.pacing,"region":Array(receipt.region),
+			"simulation_window_enabled":receipt.simulation_window_enabled,"cadence_lod_enabled":receipt.cadence_lod_enabled,
+			"liquid_surface_adhesion_enabled":receipt.liquid_surface_adhesion_enabled,
+			"worker_threads":receipt.worker_threads,"maximum_rule_radius":receipt.maximum_rule_radius},
+		"native_initial_body_input":{"values":Array(physical.initial_bodies),"sha256":receipt.initial_body_state_sha256,
+			"body_count":receipt.initial_body_count}}
+	var observed: Dictionary = LiquidHostEvidence.collect(bridge,receipt,owner_inputs)
+	if not observed.get("ok",false):
+		bridge.discard_liquid_world(_world,token)
+		_lab_status = "Prepared native default observation refused; " + str(observed.get("error","unknown"))
+		if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
+		return false
+	var staged_identity: Dictionary = {"schema_version":1,"kind":"qualified_liquid_host_observation_identity",
+		"digest":observed.evidence.digest(),"native_receipt_hash":receipt.receipt_hash,
+		"session_generation":receipt.session_generation,"native_recipe_id":origin.native_recipe_id,
+		"run_intent":receipt.run_intent,"host_eligible_for_full_matched_evidence":false,
+		"publication_matches_current_path_file":observed.evidence.snapshot().runtime.publication_manifest.artifact_matches_current_path_file,
+		"mapped_module_binding":"unverified","complete_host_binding":"unverified"}
+	staged_identity.make_read_only()
+	var record: Dictionary = {"identity":staged_identity,"values":observed.evidence.snapshot(),
+		"canonical_bytes_hex":observed.evidence.canonical_bytes().hex_encode()}
+	_freeze_capture(record)
+	# Owner adapter data supplies no MicroScenario or caller-authored geometry.
+	var sampled_owner: Dictionary = {"player_start":[150,145],"interest":{"policy":"owner"},"execution":{"policy":"owner"}}
+	var result: Variant = _commit_controlled_liquid_candidate(bridge,token,int(command.get("_owner_request_revision",-1)),
+		settings_revision,command,sampled_owner,profile,owner)
+	if result is Dictionary and result.get("deferred",false): return false
+	if not result is bool or not result:
+		bridge.discard_liquid_world(_world,token)
+		_lab_status = "Prepared native default replacement retired; " + _prepared_liquid_owner_error
+		if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
+		return false
+	if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
+	_default_liquid_identity = staged_identity
+	_mutex.lock();_default_liquid_published_record = record;_mutex.unlock()
+	_world_generation += 1
+	_scenario_host.clear();_lab_active = false;_micro_active = false;_water_lab_active = false
+	_micro_capture = {};_lab_schedule.clear();_lab_inputs.clear()
+	_simulation_failed = false;_scenario_request_applied = true
+	_lab_status = "Native default demo installed with selected liquids and original reference bodies"
+	return true
+
 func _apply_lab(command: Dictionary) -> bool:
 	if command.is_empty(): return false
+	if command.has("default_liquid_reset"): return _apply_prepared_default_liquid(command)
 	if command.has("reset"):
 		_water_exit_request_serial = int(command.get("water_exit_request_serial",0))
 		_water_exit_request_applied = false
@@ -896,7 +1024,7 @@ func set_frame_state(
 			_physical_effect_generations[actor] += 1
 	_paused = paused
 	if _prepared_frame_hold.is_empty():
-		if _simulation_window_enabled != simulation_window_enabled or _cadence_lod_enabled != cadence_lod_enabled \
+		if _view_size != view_size or _simulation_window_enabled != simulation_window_enabled or _cadence_lod_enabled != cadence_lod_enabled \
 			or _liquid_surface_adhesion_enabled != liquid_surface_adhesion_enabled \
 			or _horizontal_buffer != horizontal_buffer or _vertical_buffer != vertical_buffer:
 			_construction_settings_revision += 1
@@ -1894,7 +2022,10 @@ func _publish_snapshot(
 		"water_exit_request_applied":_water_exit_request_applied,
 		"micro_active":_micro_active,
 		"liquid_solver_policy":_liquid_policy_receipt_snapshot(),
-		"liquid_host_observation":_scenario_host.liquid_host_observation(),
+		"native_default_demo":_default_liquid_origin(),
+		"liquid_host_observation":_default_liquid_identity.duplicate(true) \
+			if int(_default_liquid_origin().get("session_generation",-1)) == int(_default_liquid_identity.get("session_generation",-2)) \
+			else _scenario_host.liquid_host_observation(),
 		"liquid_construction_receipt":_world.get_applied_liquid_construction_receipt() \
 			if _world.has_method(&"get_applied_liquid_construction_receipt") else {},
 		"liquid_construction_attempt":_world.get_liquid_construction_attempt() \

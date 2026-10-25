@@ -80,6 +80,77 @@ the real body-free import owner now recorded above, then remaining constructors,
 complete host identity and final platform/publication
 gates. Web bodies and host-mask CYPS continuation remain explicit gaps.
 
+## Desktop native-default owner checkpoint — 2026-10-25
+
+Unmerged native705a2e2d and owner66bf30f8 now stage the authoritative default
+recipe through exclusive worker, private sampled player and original permanent
+body graph. R retains selection; F6/F7/PENV refusal/adoption is transactional.
+The original default PF scene exceeds1024 initial gas compartments, so all three
+pressure variants now refuse natively before replacement, preserving the healthy
+World and actual attempt receipt. FM/CY actual body cohorts retain exact Water628320.
+The [dated checkpoint](../audits/2026-10-25-lcb003-desktop-native-default-host.md)
+records46 focused native/ASan+UBSan assertions, seven affected1078 assertions,
+final86-assertion host execution, independent review and every rejected shutdown
+experiment. Separate preloaded test resources remove the inner-class ownership
+context; definitive upstream cause, integrated native union, final Linux/Web,
+full host identity and matching runtime publication remain open.
+
+
+## Native desktop default recipe — 2026-10-25
+
+Unmerged source `afe19c2d` shares the original native ordered demo recipe with
+explicit prepared compilation, retains Water/transport and restores production
+reset/lifecycle semantics. Native constructor origin binds actual generation and
+retires on other replacements. The [dated API proof](../audits/2026-10-25-lcb003-native-default-demo-preparation.md)
+records old-DLL tuple controls, the preserved diagnostic-lifecycle failure,
+its original Windows167/493/72 and independent review. The later owner/capacity
+checkpoint above supersedes its pending Main/worker scope; repaired IN union
+and final platforms/publication remain open.
+
+Shared helper381bae3d now accepts copied optional three-position/rotation arrays,
+with finite/length preflight and unchanged omitted Water Feel defaults. Fresh50
+pose/native-mask/frozen-frame assertions plus the original75 actual Water Feel
+body assertions pass against unchanged native135. The [additive record](../audits/2026-10-25-lcb003-water-reference-body.md#shared-explicit-pose-helper)
+does not admit another constructor. Desktop and synchronous owners must supply
+their actual recipe poses and keep their final token/terrain/owner fences.
+
+The subsequent [ordinary synchronous demo checkpoint](../audits/2026-10-25-lcb003-ordinary-demo-host.md)
+on source89baee16 adds explicit Exploratory apply and retained Restart for the
+four curated body-free demos, keeping their exact recipes, sampled player and
+actual quality/view/cadence. Imported labels never identify authored recipes;
+physical/showcase routes remain outside the allowlist. Final six strict Windows
+processes pass against the unchanged135-input development DLL, including117
+new assertions and a real native failure/refused prepared Restart/explicit Current
+recovery. Prepared same-policy quarantine recovery remains shared #200/#202
+lifecycle work. Root's separate desktop-default/native recipe and Brine IN
+contact repair must integrate before fresh final runtime/platform qualification.
+
+The subsequent [normal-menu level-import checkpoint](../audits/2026-10-25-lcb003-level-import-host.md)
+uses released native thermal preparation for explicit Exploratory ordinary
+body-free imports. Actual panel/Import/Restart callbacks preserve saved metadata,
+sampled player and retained reset input; refusals keep old World/owners/receipts.
+Source46471b24 has eight affected passing local Windows processes against the
+unchanged verified135-input DLL. Continue remaining constructors, physical import,
+complete host identity and fresh final Windows/Linux/Web/publication gates.
+The [new publisher preparation](../audits/2026-10-25-lcb003-runtime-publication.md)
+is unarmed; it is not a release result. Current imports remain the default.
+Follow-up sourcecccae86f corrects the inherited-setting gap by refusing unsupported
+interaction/diagnostic laws and independent transport before any token. Its
+known Baseline exemption binds actual native component/generation/receipt;
+73 import/UI105/Web-prerequisite33 checks pass. The earlier44 proof remains
+Baseline-only. Final native integration must also consume the separately owned
+Brine IN resting-body contact repair before publication/acceptance.
+
+The later [desktop reference-body checkpoint](../audits/2026-10-25-lcb003-water-reference-body.md)
+adds permanent-space staging for the original supported-body Water Feel recipe,
+actual frozen poses/native masks, retained-graph refusal and ordinary unpaused
+feedback across pressure variants plus an FM control. Its fresh native133 DLL
+includes the separately authored moving-mask gas-label repair; prior runtime
+seals remain immutable. This is bounded local Windows #202 work. Continue with
+the real body-free import owner now recorded above, then remaining constructors,
+complete host identity and final platform/publication
+gates. Web bodies and host-mask CYPS continuation remain explicit gaps.
+
 ## Corrected Brine IN runtime publication — 2026-10-25
 
 Sequence3 [actual Windows/Linux publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-sequence3-publication-of-the-contact-repair)

@@ -71,6 +71,68 @@ Rapier PF/worker regression. Original failures and independent review/resolution
 receipts are retained. Source-matched publication/full exact-head CI, actual
 compat/threaded browsers and ordinary visual walkthrough remain separate gates.
 
+## Native default-demo API proof — 2026-10-25
+
+Unmerged source `afe19c2d` shares the original native ordered demo recipe with
+explicit prepared compilation, retains Water/transport and restores production
+reset/lifecycle semantics. Native constructor origin binds actual generation and
+retires on other replacements. The [dated API proof](../audits/2026-10-25-lcb003-native-default-demo-preparation.md)
+records old-DLL tuple controls, the preserved diagnostic-lifecycle failure,
+fresh Windows167/493/72 and independent review. Main/worker owner adoption,
+repaired IN parent integration and final platforms/publication remain open.
+
+The subsequent [shared explicit-pose helper proof](../audits/2026-10-25-lcb003-water-reference-body.md#shared-explicit-pose-helper)
+binds381bae3d, unchanged native135/DLL79f35666,50 focused assertions and the75
+Water Feel body assertions. Exact default pose/native-mask equality, copied
+explicit poses/rotations,32 frozen frames, preallocation refusal and same-space
+adoption pass. Its first invalid empty-recipe fixture is retained and corrected
+only in the test; no new constructor/platform/Brine IN contact claim follows.
+
+The [ordinary synchronous demo proof](../audits/2026-10-25-lcb003-ordinary-demo-host.md)
+binds source89baee16, three exact candidate sources and unchanged135-input local
+Windows DLL. Six final strict processes pass: ordinary117, import73, UI105,
+Tower41, Water Feel72 and33 named native Web-prerequisite checks. The new case
+proves exact initial authored tuples/quality0/2, owner refusal, real12-tick prefixes,
+retained Restart/import identity, explicit IN/Current geometry and actual native
+quarantine/refused Restart/Current recovery. A prior failed extension-array-order
+test premise is retained. No final browser/release/rest-contact proof follows.
+
+The [import settings correction](../audits/2026-10-25-lcb003-level-import-host.md#inherited-setting-refusal-correction)
+on sourcecccae86f adds native-component preflight for unsupported inherited
+interaction/diagnostic laws and transport. Three fresh strict processes pass:
+73 actual-import assertions/all five sections, UI105 and33 native Web-prerequisite
+checks, against the unchanged135-input development DLL. Independent review's
+P2 and older44/eight-process Baseline-only proof remain retained. This does not
+qualify the separately discovered Brine IN resting-body contact defect.
+
+The [normal-menu level-import proof](../audits/2026-10-25-lcb003-level-import-host.md)
+binds source46471b24 and the unchanged135-input local Windows development DLL.
+Fresh import and eight affected processes pass:44 actual-user transaction
+assertions/all five sections, UI105, Tower41, glow30, Water Feel72, owner record28,
+33 named native Web-apparatus checks and the retained Web demo save/setup fixture.
+The first packed-body sample comparison failures remain preserved and corrected
+for the existing advancing readback serial; actual body poses were unchanged.
+No new native compile, published runtime, Wasm or ordinary visual acceptance is
+claimed. All native/qualified-host full matched eligibility remains false.
+
+The later [prepared Water Feel reference-body proof](../audits/2026-10-25-lcb003-water-reference-body.md)
+records a new native133 development DLL after the moving-mask gas-label repair
+and12 passing local Windows Godot processes. The new75-assertion case preserves
+frozen-pose/receipt/refusal checks and adds actual normal unpaused pressure
+reference/cached/dormant/FM play through96 ticks. Native contacts, signed accepted
+feedback, age handling and Water/gas accounting are observed directly. The
+historical failed actual-body trace and compact native reduction remain retained.
+This does not qualify synchronous bodies, host-mask CYPS continuation, later Web
+source, complete host identity or published/exact-head platform acceptance.
+
+The [combined LCB-003 host and Web prerequisite](../audits/2026-10-25-lcb003-combined-host-web-prerequisite.md)
+records actual local non-release Windows native/headless execution on
+`871fba33` (fresh DLL, sixteen passing processes), plus `3b4db1dd`'s explicit
+33-check synchronous-owner Web apparatus prerequisite and 3589-assertion actual
+Rapier PF/worker regression. Original failures and independent review/resolution
+receipts are retained. Source-matched publication/full exact-head CI, actual
+compat/threaded browsers and ordinary visual walkthrough remain separate gates.
+
 ## Corrected Brine IN runtime publication — 2026-10-25
 
 Sequence3 [actual Windows/Linux publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-sequence3-publication-of-the-contact-repair)

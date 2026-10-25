@@ -51,6 +51,66 @@ gates, actual compat/threaded browsers and ordinary visual walkthrough remain
 open. Water IN remains unsupported; Brine IN does not meet the fourth Water
 model requirement.
 
+## Desktop native-default owner checkpoint — 2026-10-25
+
+Unmerged native705a2e2d and owner66bf30f8 now stage the authoritative default
+recipe through exclusive worker, private sampled player and original permanent
+body graph. R retains selection; F6/F7/PENV refusal/adoption is transactional.
+The original default PF scene exceeds1024 initial gas compartments, so all three
+pressure variants now refuse natively before replacement, preserving the healthy
+World and actual attempt receipt. FM/CY actual body cohorts retain exact Water628320.
+The [dated checkpoint](../audits/2026-10-25-lcb003-desktop-native-default-host.md)
+records46 focused native/ASan+UBSan assertions, seven affected1078 assertions,
+final86-assertion host execution, independent review and every rejected shutdown
+experiment. Separate preloaded test resources remove the inner-class ownership
+context; definitive upstream cause, integrated native union, final Linux/Web,
+full host identity and matching runtime publication remain open.
+
+
+## Native default-demo constructor — 2026-10-25
+
+Unmerged source `afe19c2d` shares the original native ordered demo recipe with
+explicit prepared compilation, retains Water/transport and restores production
+reset/lifecycle semantics. Native constructor origin binds actual generation and
+retires on other replacements. The [dated API proof](../audits/2026-10-25-lcb003-native-default-demo-preparation.md)
+records old-DLL tuple controls, the preserved diagnostic-lifecycle failure,
+its original Windows167/493/72 and independent review. The later owner/capacity
+checkpoint above supersedes its pending Main/worker scope; repaired IN union
+and final platforms/publication remain open.
+
+
+The subsequent unmerged [normal level-import checkpoint](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
+adds explicit Exploratory next-import selection and actual menu adoption of
+ordinary body-free CYSD payloads, metadata and sampled owner. Refusal retains
+World/player/receipt/record; Restart reconstructs accepted input. Its [Windows
+proof](../audits/2026-10-25-lcb003-level-import-host.md) reuses the verified unchanged
+135-input development DLL and passes eight affected processes. Physical/Tower/
+showcase imports, remaining constructors, complete host identity and final
+source-matched platform/visual gates remain open; Current imports stay default.
+The later sourcecccae86f explicitly refuses unsupported inherited interaction/
+diagnostic-law and independent transport settings before preparation. Its73
+import assertions include retired-generation/private-Baseline controls; the
+earlier44/eight-process proof remains Baseline-only historical evidence.
+
+The subsequent unmerged [desktop Water Feel reference-body slice](../architecture/liquid-prepared-setup-and-receipts.md#prepared-water-feel-reference-bodies)
+stages the unchanged three reference rectangles and terrain with actual frozen
+poses, retains old World/graph/receipts on refusal and proves normal unpaused
+pressure reference/cached/dormant/FM feedback. Its [fresh local proof](../audits/2026-10-25-lcb003-water-reference-body.md)
+also preserves the native retired-gas-label defect exposed by play and its narrow
+repair. Synchronous bodies, remaining constructors, host-mask continuation,
+complete host identity and matching publication remain open.
+
+The #202 application branch's [combined local checkpoint](../audits/2026-10-25-lcb003-combined-host-web-prerequisite.md)
+integrates exact released pressure/IN union `713ee3ab` as `871fba33` and passes
+sixteen fresh Windows native/headless processes. Follow-up `3b4db1dd` adds an
+explicit synchronous Web-owner apparatus (33 native prerequisite checks),
+truthful build/export identity and actual Rapier PF/worker applied-feedback
+parity (3589 assertions). This is bounded local qualification: complete host
+identity, remaining constructors, source-matched publication/full exact-head
+gates, actual compat/threaded browsers and ordinary visual walkthrough remain
+open. Water IN remains unsupported; Brine IN does not meet the fourth Water
+model requirement.
+
 ## Corrected Brine IN runtime publication — 2026-10-25
 
 Sequence3 [actual Windows/Linux publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-sequence3-publication-of-the-contact-repair)
@@ -976,7 +1036,6 @@ Actual Rapier rotation/displacement, full host constructors and
 Web/integrated packaging retain #202/#203 ownership.
 
 ## LCB-003 controlled application-host slice — 2026-10-24
-
 **Subsequent Water Feel constructor:** explicit unblinded body-free sampled
 Exploratory rebuilds retain original Water policy/recipe/player/actions and
 ordinary controls/ledger. Reset/semantic changes retain accepted family choice;

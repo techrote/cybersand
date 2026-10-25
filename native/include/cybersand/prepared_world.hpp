@@ -3,6 +3,7 @@
 #include "cybersand/liquid_run_receipt_native_capture.hpp"
 #include "cybersand/quantity_ledger.hpp"
 #include "cybersand/liquid_construction_refusal.hpp"
+#include "cybersand/pressure_setup_capacity.hpp"
 
 #include <limits>
 #include <new>
@@ -29,6 +30,28 @@ private:
 class PreparedWorldBuilder final {
 public:
     using Result = std::variant<PreparedWorld, ConstructionRefusal>;
+    // Call only for a fresh finite prepared World whose complete payload and
+    // initial masks lie in domain. The actual candidate is inspected after mask
+    // rasterization; no caller-supplied count or refusal reason is accepted.
+    static std::optional<ConstructionRefusal> validate_initial_pressure_capacity(
+        const World& candidate, const setup::SetupDomain& domain) {
+        const auto refused = [&](LiquidPolicyRefusalCode code, std::string detail) {
+            return ConstructionRefusal::for_setup(candidate.liquid_solver_policy(),
+                {code, static_cast<std::uint16_t>(Material::Water), std::move(detail)});
+        };
+        try {
+            if (initial_pressure_capacity(candidate, domain).exceeds_capacity())
+                return refused(LiquidPolicyRefusalCode::CapacityRefused,
+                    "initial pressure gas compartment capacity exceeds 1024");
+            return std::nullopt;
+        } catch (const std::bad_alloc&) {
+            return refused(LiquidPolicyRefusalCode::CapacityRefused, "initial pressure capacity allocation refused");
+        } catch (const std::length_error& rejected) {
+            return refused(LiquidPolicyRefusalCode::CapacityRefused, rejected.what());
+        } catch (const std::invalid_argument& rejected) {
+            return refused(LiquidPolicyRefusalCode::MalformedPolicy, rejected.what());
+        }
+    }
     static Result prepare(const WorldConfig& requested_config, const normalization::FinalSetupInput& input,
                           normalization::NormalizationOptIn opt_in,
                           normalization::PreparationLimits limits = {}) {
