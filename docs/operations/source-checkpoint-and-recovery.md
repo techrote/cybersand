@@ -10,6 +10,34 @@ related-documents: [local-build-and-validation.md, ../reference/validation-evide
 
 # Source checkpoint and recovery
 
+## Current Trial consumption of corrected App — preparation only
+
+This Trial branch consumes exact Appdc2eee94 (sourcefix152a5074), retaining all
+ten f65f3de9 Trial files and the two incoming identity-test hashes. Native80 and
+compiled139 remain exact. The historical535 build set now has six changed
+entries (four Trial plus two App tests), other529 exact, and six new Trial
+paths give current541. The following App-only two-test/533-entry statements
+retain that narrower source scope; they do not describe the combined Trial set.
+
+The [combined-source qualification](../audits/2026-10-25-lcb003-trial-body-constructors.md#corrected-app-consumption--preparation-only--2026-10-25)
+keeps actual117/86 proof at ad3 and actual corrected38/29 App cohorts separate.
+This merge has no engine execution. Root's corrected #256 is ready for fresh
+gates/review; #257 Trial remains draft/downstream. Earlier ea96 gate greens do
+not cover either successor. Runtimes/profiles/requests stay inherited; Web deferred.
+
+## Recoverable post-publication identity-test overlay
+
+The current App checkpoint is ea96 plus exactly two frozen GDScript test changes,
+with their raw/LF hashes, failed Linux40232042725 packet62322347 and two actual
+Windows artifact-cohort receipts54ac62ab/cb29759a in the [correction ledger](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25).
+All80 native manifest entries and139 recorded compiled inputs stay exact.
+Historical build535 has exactly two changed test paths and no added paths;
+the other533 remain equal. Do not rewrite the original source5f02 publication,
+a704/all615 maps, runtimes, manifests, profiles or requests. No later commit is
+claimed as executed before its own gates. Root owns the corrected source/docs
+commit, push and fresh #256 final-head CI; #257 must consume it before readiness.
+No new Native build/publication or Web work is part of this test correction.
+
 ## Consumed App publication — source5f02 and checkpoint ea96 — 2026-10-25
 
 The [actual003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source

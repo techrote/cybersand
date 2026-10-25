@@ -10,6 +10,32 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## Current Trial consumption of corrected App — preparation only
+
+This Trial branch consumes exact Appdc2eee94 (sourcefix152a5074), retaining all
+ten f65f3de9 Trial files and the two incoming identity-test hashes. Native80 and
+compiled139 remain exact. The historical535 build set now has six changed
+entries (four Trial plus two App tests), other529 exact, and six new Trial
+paths give current541. The following App-only two-test/533-entry statements
+retain that narrower source scope; they do not describe the combined Trial set.
+
+The [combined-source qualification](audits/2026-10-25-lcb003-trial-body-constructors.md#corrected-app-consumption--preparation-only--2026-10-25)
+keeps actual117/86 proof at ad3 and actual corrected38/29 App cohorts separate.
+This merge has no engine execution. Root's corrected #256 is ready for fresh
+gates/review; #257 Trial remains draft/downstream. Earlier ea96 gate greens do
+not cover either successor. Runtimes/profiles/requests stay inherited; Web deferred.
+
+## Post-publication test checkpoint
+
+The [identity-test correction](audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)
+preserves failed Linux40232042725 and corrects two obsolete mismatch assumptions.
+Actual published e3 and development46a Windows cohorts pass import/host38/owner29;
+publication equality does not upgrade loaded-module/script/full-host claims.
+Native80/compiled139 remain exact; historical build535 differs only in two test
+entries, with no added paths or runtime/manifest rewrite. Older source5f02/a704
+publication facts below remain source-bound. #256 is draft pending new exact-head
+gates/review; old ea96 Docs/#49 greens do not cover the successor. Web is deferred.
+
 ## Consumed App publication — source5f02 and checkpoint ea96 — 2026-10-25
 
 The [actual003 publication](audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source

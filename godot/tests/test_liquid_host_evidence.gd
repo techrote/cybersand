@@ -8,6 +8,11 @@ const PATH: String = "res://tests/fixtures/lcb/lcb.dam.water.freemass.reference.
 var assertions: int = 0
 var failures: int = 0
 
+class FixturePathBridge extends RefCounted:
+	var values: Dictionary
+	func loaded_native_runtime_values() -> Dictionary:
+		return values.duplicate(true)
+
 func _initialize() -> void:
 	run.call_deferred()
 
@@ -34,8 +39,30 @@ func run() -> void:
 	expect(runtime.editor_hint == Engine.is_editor_hint() and runtime.platform == OS.get_name(),"host collects actual execution mode")
 	expect(runtime.path_file == observed and runtime.extension_config.status == "observed" and not runtime.extension_config.reloadable,
 		"host retains native values and actual extension configuration")
-	expect(runtime.publication_manifest.status == "observed" and not runtime.publication_manifest.artifact_matches_current_path_file,
-		"new local runtime remains qualified against the actual older publication manifest")
+	var manifest: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(runtime.publication_manifest.path))
+	var declared_hash: String = str(manifest.get("sha256",""))
+	expect(runtime.publication_manifest.status == "observed" and declared_hash.length() == 64
+		and runtime.publication_manifest.declared_artifact_sha256 == declared_hash
+		and runtime.publication_manifest.artifact_matches_current_path_file == (declared_hash == FileAccess.get_sha256(path)),
+		"publication match follows independently read manifest and actual current path bytes")
+	# Both publication states are valid observations. Neither grants loaded-module
+	# or executed-script identity; fixtures alter only the copied path observation.
+	var fixture := FixturePathBridge.new()
+	fixture.values = observed.duplicate(true)
+	fixture.values.current_file_sha256 = declared_hash
+	var matching: Dictionary = Evidence.runtime_observation(fixture)
+	expect(matching.publication_manifest.artifact_matches_current_path_file
+		and matching.mapped_module_binding == "unverified" and matching.source_execution_binding == "unverified",
+		"matching path publication never upgrades loaded-module or executed-script binding")
+	fixture.values.current_file_sha256 = ("0" if declared_hash != "0".repeat(64) else "1").repeat(64)
+	var mismatching: Dictionary = Evidence.runtime_observation(fixture)
+	expect(not mismatching.publication_manifest.artifact_matches_current_path_file
+		and mismatching.mapped_module_binding == "unverified" and mismatching.source_execution_binding == "unverified",
+		"mismatching path publication retains the same explicit binding qualifications")
+	fixture.values.status = "unavailable"
+	fixture.values.current_file_sha256 = declared_hash
+	expect(not Evidence.runtime_observation(fixture).publication_manifest.artifact_matches_current_path_file,
+		"a matching hash without a current path-file observation cannot qualify publication match")
 	expect(runtime.publication_manifest.script_status == "observed" and not runtime.publication_manifest.resource_script_observations.is_empty(),
 		"manifest-listed script files are bounded current-file observations")
 	expect(runtime.source_execution_binding == "unverified" and runtime.mapped_module_binding == "unverified",
@@ -47,6 +74,11 @@ func run() -> void:
 	expect(checked.ok and host.install(world,checked.definition,"Benchmark",true,bridge.default_liquid_policy(),
 		{"normalization":"water-normalize-v1"}),"real controlled native construction supplies a typed receipt")
 	var receipt: Dictionary = world.get_applied_liquid_construction_receipt()
+	fixture.values.status = "path_file_observed"
+	var matching_record: Dictionary = Evidence.collect(fixture,receipt)
+	expect(matching_record.ok and matching_record.evidence.snapshot().runtime.publication_manifest.artifact_matches_current_path_file
+		and not matching_record.evidence.snapshot().host_eligible_for_full_matched_evidence,
+		"even a matching publication record cannot grant full-host evidence")
 	var native_bytes: PackedByteArray = receipt.canonical_bytes.duplicate()
 	expect(receipt.qualifications == 15 and not receipt.eligible_for_full_matched_evidence,"native outer-v1 remains frozen and qualified")
 	var claims: Dictionary = {"runtime_hash":"pretend-matched","eligible_for_full_matched_evidence":true,

@@ -10,6 +10,34 @@ related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../op
 
 # LCB-003 desktop barrel and Ripper constructor checkpoint
 
+## Corrected App consumption — preparation only — 2026-10-25
+
+The Trial successor normally merges exact reviewed App
+`dc2eee9408b959956153608a7ee6d212a5d21672` into prior Trial
+`fdb12069ed08e688f20cc4a274fb21adee31c185`. The ten Trial source files stay
+exactly f65f3de9. The two incoming identity tests stay exactly corrected App
+source152a5074: host raw SHAfada2038 and ownerf45cacf4. Those are twelve later
+script/test differences from the old published App; there is no Native,
+production-law, runtime, profile, request or manifest change in this merge.
+
+Native80 and recorded139 compiled inputs remain equal to the inherited actual
+publication. In the historical535 build paths, exactly six entries differ:
+four Trial modifications plus the two incoming identity tests; the other529
+stay exact. Six new Trial paths make the current pathset541. The original
+535 manifest and72 source5f02 processes remain historical and are not rewritten.
+No native-source rebuild error or implicit fresh publication follows from
+these script/test differences.
+
+The existing actual published-e3 import/Trial117/default86 proof below remains
+at tested ad3fca18, not this merge. Corrected App published-e3/development46a
+import/host38/owner29 cohorts stay at ea96 plus their exact two-test overlay.
+[Actual failed Linux40232042725 and correction](2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)
+remain preserved, including unverified mapped-module/scripts and full-host=false.
+This new combined merge is **not engine-tested** here. Root has pushed dc2 App
+and marked #256 ready; fresh exact-head gates/review remain required. Trial
+#257 stays draft/downstream; old ea96 Docs/#49 greens validate neither later
+head. No Runtime/Godot/CI rerun or Web work occurs in this integration lane.
+
 ## Fresh integrated Windows replay — 2026-10-25
 
 After normal App integration, Root independently executes committed head

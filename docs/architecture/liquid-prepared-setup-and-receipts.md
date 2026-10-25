@@ -10,6 +10,34 @@ related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, liquid-
 
 # Native liquid prepared setup, receipts and quantity accounting
 
+## Combined Trial successor scope
+
+The [corrected-App Trial integration](../audits/2026-10-25-lcb003-trial-body-constructors.md#corrected-app-consumption--preparation-only--2026-10-25)
+consumes dc2eee94 into fdb12069 without changing ten Trial source files or the
+two incoming identity tests. The App-only test-correction records below keep
+their ea96-overlay scope. Combined Trial Native80/compiled139 remain exact,
+while historical build535 has six changed entries and six new Trial paths give
+current541. Old ad3 117/86 and corrected App38/29 engine results are not relabelled
+as a test of this merge. Root's #256 is ready for fresh gates/review; #257 stays
+draft, with no runtime/manifest/profile/request rewrite or Web work here.
+
+## Current publication-file equality and identity-test correction
+
+After source5f02's actual003 publication, the API-reported path file can correctly
+match its manifest. The bounded [post-publication test correction](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)
+compares independently read actual manifest/path SHA values and separately tests
+match, mismatch and unavailable copied observations. Either real equality state
+preserves mapped-module/executed-script binding as unverified and full matched
+host eligibility false; equality alone never grants complete host identity.
+The existing receipt-v1 qualifiers and application transaction are unchanged.
+
+The later test-only overlay at ea96 changes two historical build535 entries;
+Native80 and compiled139 stay exact. Root's two actual Windows artifact cohorts
+pass host38/owner29 plus import, while the original Linux mismatch-assumption
+failures and old72-process publication proof keep their own source scope.
+Fresh corrected-head Linux/full CI remains required, without Native rebuild or
+manifest rewrite. Additional Web work is owner-deferred.
+
 The [actual003 Windows/Linux publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
 qualifies source5f02d089/bot0c9b1977 with import plus35 strict cases on each OS,
 72 actual processes and native80/build535 source ledgers. Existing prepared
@@ -23,13 +51,14 @@ content-identical mergea704ce50; its own final exact-head acceptance stays
 separate from Water native acceptance.
 ## Desktop single-trial-body preparation
 
-This unmerged Trial successor now consumes App checkpoint
-`ea96d4851621c4bed37d5e6997a0320215450f79`, including the actual source5f02/
+This unmerged Trial successor now consumes corrected App checkpoint
+`dc2eee9408b959956153608a7ee6d212a5d21672`, including the actual source5f02/
 bot0c9 publication and accepted main06451f8a. The ten Trial source files remain
 exactly sourcef65f3de9; its recorded Windows executions are not relabeled as
 tests of this merged head. All80 native manifest inputs and139 recorded native
 build inputs still match. The original535-entry build/execution ledger has
-four changed GDScript/test entries and omits six new Trial source paths; it
+six changed GDScript/test entries (four Trial plus two App identity tests) and
+omits six new Trial source paths; it
 retains its original5f02 execution identity. Those historical build-input changes
 are separate from native-source provenance, not eight native rebuild errors.
 The [dated Trial integration record](../audits/2026-10-25-lcb003-trial-body-constructors.md#app-publication-integration-preparation-only--2026-10-25)

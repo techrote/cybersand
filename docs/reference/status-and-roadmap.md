@@ -10,6 +10,36 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Current Trial consumption of corrected App — preparation only
+
+This Trial branch consumes exact Appdc2eee94 (sourcefix152a5074), retaining all
+ten f65f3de9 Trial files and the two incoming identity-test hashes. Native80 and
+compiled139 remain exact. The historical535 build set now has six changed
+entries (four Trial plus two App tests), other529 exact, and six new Trial
+paths give current541. The following App-only two-test/533-entry statements
+retain that narrower source scope; they do not describe the combined Trial set.
+
+The [combined-source qualification](../audits/2026-10-25-lcb003-trial-body-constructors.md#corrected-app-consumption--preparation-only--2026-10-25)
+keeps actual117/86 proof at ad3 and actual corrected38/29 App cohorts separate.
+This merge has no engine execution. Root's corrected #256 is ready for fresh
+gates/review; #257 Trial remains draft/downstream. Earlier ea96 gate greens do
+not cover either successor. Runtimes/profiles/requests stay inherited; Web deferred.
+
+## Post-publication identity-test correction
+
+**Current bounded test overlay, new final-head gates pending:** actual Linux
+run40232042725 at ea96/checkout56bd fails only the two identity expectations
+that unconditionally demand a mismatch after published02ea now matches. The
+[correction evidence](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)
+retains both failures and fresh published-e3/development46a Windows import/
+host38/owner29 passes. Correct real equality remains distinct from unverified
+loaded-module/scripts and full-host=false. This is no physics/law/default
+change: Native80/compiled139 stay exact, historical build535 changes exactly
+two tests and no paths are added. No runtime/manifest rewrite or Native rebuild
+is required. Older72-process/source5f02/a704 evidence stays scoped; #256 remains
+draft for fresh final-head CI/review and #257 is downstream. Old ea96 Docs/#49
+greens are not successor greens. Additional Web work remains owner-deferred.
+
 ## Consumed App publication — source5f02 and checkpoint ea96 — 2026-10-25
 
 The [actual003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source

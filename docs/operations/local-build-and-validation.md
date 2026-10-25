@@ -10,6 +10,35 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Current Trial consumption of corrected App — preparation only
+
+This Trial branch consumes exact Appdc2eee94 (sourcefix152a5074), retaining all
+ten f65f3de9 Trial files and the two incoming identity-test hashes. Native80 and
+compiled139 remain exact. The historical535 build set now has six changed
+entries (four Trial plus two App tests), other529 exact, and six new Trial
+paths give current541. The following App-only two-test/533-entry statements
+retain that narrower source scope; they do not describe the combined Trial set.
+
+The [combined-source qualification](../audits/2026-10-25-lcb003-trial-body-constructors.md#corrected-app-consumption--preparation-only--2026-10-25)
+keeps actual117/86 proof at ad3 and actual corrected38/29 App cohorts separate.
+This merge has no engine execution. Root's corrected #256 is ready for fresh
+gates/review; #257 Trial remains draft/downstream. Earlier ea96 gate greens do
+not cover either successor. Runtimes/profiles/requests stay inherited; Web deferred.
+
+## Published and development identity-test controls
+
+The [two-test correction ledger](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)
+records actual published-e3 and same-native-source development46a cohorts:
+import240s plus host-evidence38/owner-observation29 cases, each180s. All six
+actual Windows processes pass with held source/project, Native80 and compiled139
+maps. The tests independently read real file/manifest hashes and add copied
+match/mismatch/unavailable controls while retaining unverified module/scripts
+and full-host=false. Neither cohort invents actual matching artifact bytes.
+Historical535 build inputs have exactly two changed test entries; no Native,
+profile/request/runtime/manifest edit or rebuild is required. The failed Linux
+40232042725 mismatch premises remain preserved, and corrected Linux/new-head full
+CI still needs execution. Older72-process proof stays at source5f02. Web deferred.
+
 ## Consumed App publication — source5f02 and checkpoint ea96 — 2026-10-25
 
 The [actual003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source

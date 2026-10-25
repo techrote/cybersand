@@ -10,6 +10,36 @@ related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../op
 
 # LCB-003 final application source integration checkpoint
 
+## Combined Trial successor scope
+
+The [corrected-App Trial integration](2026-10-25-lcb003-trial-body-constructors.md#corrected-app-consumption--preparation-only--2026-10-25)
+consumes dc2eee94 into fdb12069 without changing ten Trial source files or the
+two incoming identity tests. The App-only test-correction records below keep
+their ea96-overlay scope. Combined Trial Native80/compiled139 remain exact,
+while historical build535 has six changed entries and six new Trial paths give
+current541. Old ad3 117/86 and corrected App38/29 engine results are not relabelled
+as a test of this merge. Root's #256 is ready for fresh gates/review; #257 stays
+draft, with no runtime/manifest/profile/request rewrite or Web work here.
+
+## Post-publication identity-test correction — 2026-10-25
+
+The [actual failure and bounded correction](2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)
+retain failed Linux run40232042725 at ea96/checkout56bd: actual published02ea
+matches its manifest, while two old identity tests asserted mismatch. The
+corrected tests independently compare actual file/manifest identity and retain
+mapped-module/script-unverified and full-host=false; controlled match/mismatch/
+unavailable cases add meaningful coverage. Root's published e3 and same-native
+source development46a Windows cohorts each pass import/host38/owner29, all six
+strict processes exit0, with held source/project/Native80/compiled139 maps.
+
+This overlay changes exactly the two test entries in historical build535, with
+no added paths and all80 native inputs/139 compiled inputs unchanged. The
+original source5f02 publication72-process proof and earlier a704/all615-input
+facts below remain exact for those old sources. No Native rebuild, runtime/
+manifest/profile/request rewrite or production change is made. New #256 final
+head CI/review and corrected Linux execution remain required; earlier ea96
+Docs/#49 greens are not successor greens. Web work remains owner-deferred.
+
 ## Actual combined application publication — 2026-10-25
 
 The later [actual003 publication](2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
