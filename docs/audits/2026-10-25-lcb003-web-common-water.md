@@ -12,6 +12,12 @@ related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../ar
 
 ## Source and acceptance boundary
 
+The later [worker-activity rebuild](#worker-activity-rebuild-at-dd00e49a)
+records fresh compiler, export and actual browser execution at `dd00e49a`.
+The original `4948db7c` results below retain their original source identities.
+Both are bounded functional records; subsequent native changes require their
+own source-matched qualification.
+
 Source `4948db7cb22d565aaeae5f4291889297ed7c3f03` on
 `codex/lcb003-web-qualification` adds only the explicit startup apparatus in
 [`liquid_host_web_probe.gd`](../../godot/scripts/liquid_host_web_probe.gd) and its
@@ -179,3 +185,90 @@ remaining constructor/lifecycle ownership and the registered common-Water
 scientific/total-cost/package work under #202/#203. This evidence does not
 change Current defaults, claim four distinct solver families in one World, or
 implement the separately open retained-host recovery route.
+
+## Worker-activity rebuild at dd00e49a
+
+On2026-10-25, both native Web modules were rebuilt from committed integrated
+source `dd00e49ac5b766cec970f8a23c3cc26830de4223`, tree
+`f271c83e365723796e4dc9839c7db9a6143b9e5c`, after the worker-activity repair.
+The isolated record is
+`C:/Users/_/.codex/tmp/lcb202-web-race-repair-20261025`.
+All85 actual archived compiler inputs are held through final export, all1,653
+tracked export inputs remain held, and all18 required LFS payloads are verified.
+Raw Git LF and archive CRLF representations are recorded separately; the
+compiler-to-export proof compares actual archived bytes. This is a rebuild,
+with no reuse of the original `4948db7c` Wasm artifacts.
+
+The toolchain remains Emscripten4.0.20, SCons4.10.1, official Godot4.7 templates,
+godot-cpp `101ae38034304346a46ea9ea84ae156d3e860496` and Rapier0.35.2.
+Compilation uses two workers and1800s bounds. Each export retains the600s
+outer bound and unchanged240s import/export bounds; neither reports an error
+or changed source input.
+
+| Profile | Native build | Wasm SHA256 / bytes | Export |
+|---|---|---|---|
+| Compatibility | Exit0,95.234s | `44dab3df559de1899d6e887333f5cc18911e674f665eb1566b58a5a66553dfee` /4,245,331 | Exit0,21.109s,19 files |
+| Threaded | Exit0,89.781s | `4500e26fc7047ad1224633b20286c2e3f9f44edada2044d5c9407642bd2408d5` /4,249,822 | Exit0,21.531s,19 files |
+
+The compilation snapshot receipt is
+`7bed794ac683f254fb6eeacaf7ece1962937e8f21f2f10253ccbda0a86275576`;
+the archived LFS verification is
+`89c9f75dffa57279af16004d0c0e1bce6b7f527e947f0d23dff3151805b48bfc`.
+The export snapshot is
+`a7a522c7684f7c0567c7d300a1822b8cd65ce9fceec117a5b6077d657c7bf2a8`.
+Compatibility and threaded export receipts are respectively
+`0ef9c27d65c778f3e7d6ad6cd35d3c478aec2db137b6d9340009487c70cad16a`
+and `9f4f75fa0965b9172171c747213910ab2a1ce37b3d9ef9be30b05ae48dd61fd4`.
+
+Actual Chromium155 execution uses fresh loopback origins127.0.0.1:8167/8168,
+with COOP same-origin and COEP require-corp. Both original apparatus POSTs
+receive HTTP201. The original raw POST bodies, request receipts and redirected
+server stdout/stderr are retained, rather than reconstructing results from
+the terminal UI.
+
+| Profile | UTC terminal POST on2026-10-25 | Passed checks | Actual native workers | Original POST body SHA256 |
+|---|---|---|---|---|
+| Compatibility | 17:17:13 |77/77 |1 | `5d57d1412754e07d1bb1f39e506ffe897ee57f6a610d3cde480cc973bb1b1ac8` |
+| Threaded | 17:24:52 |76/76 |6 | `08c1e6ab77046d00c01e81f8e70030f7afc3cf2acc5689110d768bddf2cfe86d` |
+
+Each reports terminal success, isolation, no failed named check, all six Water
+arms and all four mixed arms. The six Water arms preserve integer12495 on each
+of30 ticks, the common normalization payload remains
+`ef16e3501a39436ba4c3067cf16d09c64a39fcea8c02cbab7823d3aa58cb3e3f`,
+and the pressure substitutions retain mixed projection`3e385a1307de82b5`.
+Actual IN motion, whole-cell census, refusal/retained-host checks and restored
+ordinary Current constructor checks pass. Physical fields agree across both
+profiles; worker-bound native receipt identities are compared separately.
+
+The raw POST body hashes equal the earlier bodies because the tested public
+outputs are unchanged. Those hashes alone do not establish which binary ran.
+The separate live process/command/port binding rehashes all19 served HTTP
+assets per profile against the fresh pre-browser export records. Its receipt
+is `95655b4cb6635011b02c55a6d16de094b5ccdfce92172ba5d86123ccc322c76e`.
+The complete semantic reduction and held-input check is
+`receipts/ACTUAL-BROWSER-SEMANTICS-v1.json`, SHA256
+`fff6a286c99b2d645b67945d9dcbfd0f26f0e7c5e6a4adaf095479e924b4040e`.
+
+Both1200s loopback servers exit0 at17:35:42/43 UTC. The final original-log
+binding is`receipts/FINAL-SERVER-LOGS-v1.json`, SHA256
+`936a0a8a53bf51f94cf3c1f19734fa52b6aacc6243a50339e3d5a2ddca6ca216`.
+It seals all30 compatibility and62 threaded GET lines, exactly one original
+successful terminal POST per profile, both original redirected log hashes,
+start/end process receipts and the earlier live asset/semantic bindings.
+
+The first threaded-tab creation timed out before any server request. Reusing
+that blank tab navigated successfully and produced the retained GET/POST
+traffic; its DOM snapshot then timed out. Closing the completed test tab also
+timed out. These browser-control failures do not supply a screenshot, ordinary
+manual control walkthrough or console-error absence. No visual acceptance is
+inferred from the successful structured terminal result.
+
+This qualification is restricted to source`dd00e49a`. Its desktop provenance
+has ten real source mismatches, five per OS, including`native/src/world.cpp`;
+the [final integration record](2026-10-25-lcb003-final-integration.md) retains
+their exact identities. Linux run40214472284 at the Water source checkpoint
+exited124 after148 passing groups during the allocation-failure sweep; this
+Web result does not establish a complete TSan pass or clear desktop runtime
+publication. The subsequent contiguous-buffer native follow-up needs fresh
+qualification. Ordinary visual Web play, final exact-head platform gates and
+the registered #202/#203 scientific, total-cost and packaging work remain open.
