@@ -13,6 +13,7 @@ var _selection: Dictionary = {}
 var _evidence: RefCounted
 var _identity: Dictionary = {}
 var _receipt: Dictionary = {}
+var _accepted_transport_component: String = ""
 var staged_player: CyberSampledCharacter
 var last_error: String = ""
 
@@ -71,7 +72,15 @@ func commit() -> bool:
 	if _token == 0: return false
 	if not _bridge.commit_liquid_world(_world,_token): return _refuse(str(_bridge.get_last_error()))
 	_token = 0
+	# Native configuration is construction-only. Keep its actual copied readback
+	# for later rebuild admission; this observation cannot refuse an applied run.
+	_accepted_transport_component = str(_world.get_liquid_run_receipt({}).get("components",{}).get("transport_profile",""))
 	return true
+
+func retains_prepared_transport(world: Variant, current: String) -> bool:
+	return not identity(world).is_empty() and not _accepted_transport_component.is_empty() \
+		and current == _accepted_transport_component \
+		and world.get_applied_liquid_construction_receipt().get("receipt_hash","") == _receipt.get("receipt_hash","")
 
 func identity(world: Variant) -> Dictionary:
 	if _token != 0 or _identity.is_empty() or world != _world \

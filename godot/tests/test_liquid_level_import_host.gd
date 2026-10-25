@@ -51,11 +51,12 @@ func arm(preset: int, normalized: bool = false, radius: int = 2) -> bool:
 func intact(before: Dictionary) -> bool:
 	return owner.native_world.get_physical_state_hash()==before.hash \
 		and owner.native_world.get_applied_liquid_construction_receipt()==before.receipt \
+		and owner.native_world.get_liquid_run_receipt({})==before.run_receipt \
 		and owner.player==before.player and owner.liquid_level_host_observation_record()==before.record
 
 func snapshot() -> Dictionary:
 	return {"hash":owner.native_world.get_physical_state_hash(),"receipt":owner.native_world.get_applied_liquid_construction_receipt(),
-		"player":owner.player,"record":owner.liquid_level_host_observation_record()}
+		"run_receipt":owner.native_world.get_liquid_run_receipt({}),"player":owner.player,"record":owner.liquid_level_host_observation_record()}
 
 func payload_sha256(bytes: PackedByteArray) -> String:
 	var context := HashingContext.new()
@@ -160,6 +161,14 @@ func _restart_identity() -> void:
 	expect(owner.player.position==Vector2(400,300) and owner.player.velocity==Vector2(2,-3)
 		and owner.liquid_level_host_observation_record().identity.digest!=applied_record.identity.digest,
 		"restart adopts a fresh sampled owner and copied observation for the new native generation")
+	var retired_owner: RefCounted = owner._accepted_level
+	var baseline: Dictionary = CyberTransportProfiles.resolve(CyberTransportProfiles.preset(0))
+	expect(owner.native_world.diagnostic_reset({"transport":baseline.packed}),"separate native construction changes the owned generation")
+	var changed: Dictionary = snapshot()
+	if arm(2): user_import(encoded.text)
+	expect(not owner.last_save_error.is_empty() and intact(changed) and owner._accepted_level==retired_owner,
+		"an old private owner cannot exempt configured Baseline after native generation/receipt retirement")
+	owner.select_demo("neon_works",false)
 	if not arm(6,false,3): return
 	panel.damping_numerator.value = 7
 	panel.import_button.pressed.emit()
@@ -204,6 +213,26 @@ func _legacy_preservation() -> void:
 	expect(not owner.last_save_error.is_empty() and intact(before) and owner.rigid_bodies==bodies
 		and PhysicalCandidate._pose_values(owner.rapier_bridge.pack_body_states())==poses,
 		"unsupported current physical owner retains actual old World/body graph/poses on prepared import refusal")
+	_nondefault_setting_refusals()
+
+func _nondefault_setting_refusals() -> void:
+	var tuned: Dictionary = CyberTransportProfiles.resolve(CyberTransportProfiles.preset(1))
+	var cases: Array[Dictionary] = [{"support_cells":1},{"mercury_period":1},{"exchange_off":true},{"viscosity":5},{"transport":tuned.packed}]
+	for index: int in cases.size():
+		owner.liquid_comparison_clear_import();owner.select_demo("neon_works",false)
+		expect(owner.native_world.diagnostic_reset(cases[index]),"native nondefault configuration installs for cohort "+str(index))
+		# The original user import retains inherited laws/profiles. It also retires
+		# the earlier private prepared generation, even for a configured profile.
+		user_import(encoded.text)
+		var before: Dictionary = snapshot()
+		expect(owner.last_save_error.is_empty() and before.receipt.is_empty() and before.record.is_empty(),
+			"ordinary Current import preserves the independently configured owner for cohort "+str(index))
+		if arm(2): user_import(encoded.text)
+		expect(not owner.last_save_error.is_empty() and intact(before) and owner.liquid_comparison_import_state().armed,
+			"explicit import refuses unsupported inherited settings before mutation, cohort "+str(index))
+		observations["nondefault_"+str(index)] = {"interaction":before.run_receipt.components.interaction_policy,
+			"diagnostic":before.run_receipt.components.diagnostic_physics,"transport":before.run_receipt.components.transport_profile,
+			"error":owner.last_save_error,"world_and_receipts_retained":intact(before)}
 
 func _finish() -> void:
 	print("LIQUID_LEVEL_IMPORT_HOST_RESULT ",JSON.stringify({"ok":failures==0,"sections":sections,"observations":observations,

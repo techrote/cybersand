@@ -960,6 +960,9 @@ func _import_prepared_level(payload: PackedByteArray, metadata: Dictionary, sele
 		or str(metadata.demo)==CyberDemoWorlds.BlacksiteNine.ID:
 		last_save_error = "Prepared level imports currently support ordinary body-free demos; prior World and owners retained"
 		ui.message(last_save_error);return false
+	var settings_refusal: String = _prepared_level_settings_refusal()
+	if not settings_refusal.is_empty():
+		last_save_error = settings_refusal;ui.message(last_save_error);return false
 	_level_import_serial += 1
 	var serial: int = _level_import_serial
 	var configuration: Dictionary = _prepared_import_configuration(metadata,selection)
@@ -994,6 +997,19 @@ func _import_prepared_level(payload: PackedByteArray, metadata: Dictionary, sele
 	_update_liquid_context(true);_publish_world();update_shader_parameters();update_status()
 	ui.message("Prepared level restored paused. P resumes; Restart retains its imported setup and selected liquids.")
 	return true
+
+func _prepared_level_settings_refusal() -> String:
+	# Native run-component v1 readback is authoritative. The prepared builder
+	# supports production interaction/diagnostic laws and configured Baseline;
+	# independently tuned laws/profiles must not silently reset during import.
+	var actual: Dictionary = native_world.get_liquid_run_receipt({}).get("components",{})
+	if actual.get("interaction_policy","") != "8:9:30" or actual.get("diagnostic_physics","") != "0:-1":
+		return "Prepared level import cannot yet retain the current interaction or diagnostic settings; prior World and owners retained"
+	var transport: String = str(actual.get("transport_profile",""))
+	if transport != "baseline" and (_accepted_level == null \
+		or not _accepted_level.retains_prepared_transport(native_world,transport)):
+		return "Prepared level import cannot yet retain this independent transport profile; prior World and owners retained"
+	return ""
 
 func update_status() -> void:
 	if native_world == null:
