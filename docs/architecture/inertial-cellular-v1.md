@@ -63,6 +63,14 @@ neither parent's separate proof is reused as union acceptance. The
 owns those source and qualification facts. The standalone Windows evidence
 below remains attributed to its original IN-only source.
 
+At combined source `713ee3ab`, fresh LLVM and actual MSVC each pass all152
+ordinary native groups and seven complete receipt byte oracles. A fresh132-input
+DLL and actual Windows import/all14 scoped cases pass, including IN862 and
+pressure optimization4,152 assertions, plus a new90-child pressure cost repeat.
+The ledger retains exact identities, slower cases, independent reviews and the
+ordinary-only native scope. Windows/Linux publication and full ready-PR gates
+remain required; no prepared host, owner feel or Web acceptance follows.
+
 Current source in `cyber_native_cell_world.hpp/.cpp` exposes owner-serialized
 copies, with no native pool worker calling Godot:
 

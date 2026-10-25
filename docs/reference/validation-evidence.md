@@ -10,6 +10,19 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## Combined LCB-005 pressure/IN local proof — 2026-10-25
+
+The [combined-source ledger](../audits/2026-10-25-lcb005-pressure-union-integration.md)
+binds clean `713ee3ab`, both exact parents and the capability-identity collision.
+Fresh ordinary LLVM152/MSVC152 and both sets of seven complete native receipt
+bytes pass; MSVC keeps1MiB stack. A separate132-input DLL and actual Windows
+import/all14 scoped Godot cases pass with no errors/warnings/skips, including
+optimization4,152 and IN862 assertions. Fresh pressure cost90/23,760 observations
+pass independent parity/work/head/ROI reduction; slower churn/head-fallback
+ratios remain. Parent sanitizer/cost records keep their source identity.
+Combined Linux/publication/full ready-PR gates and host/Web/owner acceptance
+remain separate. The native-v1 full matched eligibility remains false.
+
 ## LCB-005 standalone adapter — 2026-10-25
 
 [The standalone IN ledger](../audits/2026-10-25-lcb005-standalone-adapter.md)

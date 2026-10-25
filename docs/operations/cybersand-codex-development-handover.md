@@ -16,11 +16,15 @@ The #212 integration joins standalone checkpoint `0af161b4` with the frozen
 #201 source `12d76736`, including accepted-main documentation merge
 `d70699b6`. It admits Brine IN/reference and all three Water PF variants in
 one running catalogue. Separate #201 and #212 proof remains historical to
-its stated source; fresh combined LLVM/MSVC, DLL and fourteen-case Godot
-qualification is required before the still-unarmed #212 publisher.
+its stated source. Combined `713ee3ab` freshly passes152 LLVM and152 actual
+MSVC ordinary groups, both seven-byte-oracle comparisons, a separate DLL,
+all14 scoped Godot cases and a new90-child pressure cost repeat. The
+[integration ledger](../audits/2026-10-25-lcb005-pressure-union-integration.md)
+retains exact source/artifact/timeout identities and negative timings.
+Windows/Linux publication and full ready-PR qualification still gate release.
 Capability identity changes when the two admissions join: regenerate policy,
 receipt and IN vectors plus the adapter oracle from the combined semantic
-catalogue, then obtain fresh native physical facts. Do not select a parent's
+catalogue and obtain fresh native physical facts, as recorded in that ledger. Do not select a parent's
 generated hashes or relabel its runtime as combined evidence.
 
 ## LCB-005 standalone adapter checkpoint — 2026-10-25

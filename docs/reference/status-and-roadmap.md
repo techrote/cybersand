@@ -12,6 +12,14 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## LCB-005 native Brine checkpoint — 2026-10-24
 
+The later [combined #201/#212 integration](../audits/2026-10-25-lcb005-pressure-union-integration.md)
+at `713ee3ab` passes fresh152-group LLVM/MSVC ordinary execution, seven full
+receipt oracles per compiler, a132-input Windows DLL/import and all14 scoped
+Godot cases. All PF variants coexist with Brine IN; a separate90-child
+pressure cost repeat retains slower churn/fallback results. This local source
+proof is separate from either parent's evidence and from pending combined
+Windows/Linux publication, ready-PR CI, host/Web/owner acceptance.
+
 **Current on the isolated LCB-005 branch only:** [Brine IN reference](../architecture/inertial-cellular-v1.md) selectively ports the genuine fixed-point law onto the shared quantity/prepared-state foundation, including an optional versioned native damping numerator0..16 over16(default1). [Native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) qualifies its stated source/platform scope. Default behavior remains retained. The later [standalone Godot adapter](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry) adds actual instance readback and explicit radius3 with [local Windows proof](../audits/2026-10-25-lcb005-standalone-adapter.md). Water IN, full application integration, source-matched runtime publication, owner feel and full #212 completion remain unqualified here. No Cell-carrier migration or generic Rapier force follows.
 
 ## Physical actor regression hangs — 2026-10-23
