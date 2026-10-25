@@ -729,6 +729,17 @@ upgrades it. Construction readback additionally copies actual
 metadata is consistently sixteen digits; the canonical hash value/bytes do not
 change. See [IN host scope and qualifications](../architecture/liquid-prepared-setup-and-receipts.md#inertial-application-readback-and-explicit-geometry).
 
+The subsequent ordinary Tower route exposes
+`liquid_comparison_active_definition()` and
+`liquid_comparison_apply_active(policy, normalize_water, exploratory, mode,
+radius)` to the existing panel. The copied preparation definition keeps the
+actual Tower recipe/profile and final selected floor. Desktop `reset` commands
+carry the same explicit policy/setup and owner-issued request revision; copied
+scenario serial/applied acknowledgement identifies successful ordinary Tower
+installation without setting `micro_active`. Existing reset/profile controls
+retain accepted selection. Default construction retires typed setup metadata.
+See [Tower owner lifetime and scope](../architecture/liquid-prepared-setup-and-receipts.md#ordinary-experiment-tower-preparation).
+
 ### Read-only native MicroScenario inspection
 
 The MS-001 adapter preparation adds `CyberDemoBridge.inspect_cell(world, point)`

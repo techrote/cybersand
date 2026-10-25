@@ -454,6 +454,16 @@ hosted publication and final exact-head acceptance remain separate gates.
 
 ### Normal liquid-comparison UI slice
 
+The subsequent [`test_liquid_tower_host.gd`](../../godot/tests/test_liquid_tower_host.gd)
+exercises ordinary Tower dispatch with the existing integrated development DLL:
+original Current constructor parity, final floor/player preparation, independent
+transport, releases, deterministic request/reset/stop commit fences, actual Main
+and native synchronous panel apply/refuse/reset/profile, typed identity retirement
+and committed observer-fault classification. Its
+[dated ledger](../audits/2026-10-25-lcb003-tower-constructor.md) qualifies unchanged
+native inputs and the separate GDScript checkpoint; no new published runtime or
+actual browser execution follows.
+
 The later [`test_liquid_comparison_ui.gd`](../../godot/tests/test_liquid_comparison_ui.gd)
 executes actual feature-launcher and desktop/synchronous panel button routes,
 native availability and immutable requests, apply/refuse/reset, explicit gross

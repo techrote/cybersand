@@ -26,6 +26,15 @@ scope. This does not complete [#202](https://github.com/techrote/cybersand/issue
 adds actual Brine IN readback and explicit matched geometry; prior dated UI and
 physical evidence retains its earlier source qualification.
 
+The subsequent [ordinary Tower slice](../architecture/liquid-prepared-setup-and-receipts.md#ordinary-experiment-tower-preparation)
+makes **Apply & rebuild active** available in explicit Exploratory mode on the
+existing Experiment Tower. It retains that Tower's floor, release, schedule,
+manual tools and independent transport controls. Final floor/player/camera are
+prepared before capture; reset and profile rebuild retain accepted solver,
+normalization and geometry. Controlled mode still requires a fixed actor-free
+setup. Existing **Original Current control** continues to load the selected
+protected comparison fixture through its original constructor.
+
 ## Current controls and ownership
 
 The feature launcher offers **Liquid comparison — solver policies and protected
@@ -109,7 +118,7 @@ controlled API is narrower than older explicit-policy diagnostic APIs.
 | Owner-paced/exploratory MicroScenario | Explicit Exploratory stages allowlisted sampled owners, the existing sampled character, or desktop articulated Rapier actor/equipment/terrain in a permanent space; native facts include actual initial masks and final execution; Controlled refuses | Remaining barrel/reference-body routes, complete verified host/actor envelope and retained edit/import semantics |
 | Bootstrap `create_world` / ordinary `reset_demo_world` | Defaults; ordinary reset retires typed setup identity | Explicit retained-policy coordinator without changing Current defaults |
 | `build_world` rectangle showcases / Blacksite | Existing default constructor | Prepared tuples and explicit setup/mode qualification |
-| `build_tuned_world` / Experiment Tower | Existing default constructor | Policy propagation while preserving independent transport and actor paths |
+| `build_tuned_world` / Experiment Tower | Original default constructor retained; ordinary application Tower explicitly stages sampled-owner policy/normalization/geometry with final floor and retains floor/release/schedule/transport controls; reset/profile rebuild retain accepted policy | Other direct tuned-world callers, complete host evidence and final platform qualification |
 | `build_water_feel_world` / Water Feel controlled and blind apparatus | Existing defaults and separate older explicit-policy API | Typed family choice without changing hidden blind identity, source ledger or body ownership |
 | CYSD `import_level` | Existing default reconstruction | Imported thermal tuples, explicit policy/normalization preparation and transactional refusal |
 | CYPS `import_physical_state` | Exact saved-policy continuation; old typed construction identity retired | Preserve exact continuation; never use it as a family-conversion rebuild |

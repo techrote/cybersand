@@ -322,6 +322,7 @@ additionally owns these application preparation invariants:
 | LCBH-003 | Current on branch: exact continuation binding and final request/settings/reset/stop fences preserve the retained World/owners/receipt on refusal; already-admitted work keeps its explicit mailbox disposition |
 | LCBH-004 | Planned full host evidence remains separate: frozen native-v1 qualifications and false full-match eligibility cannot be relabeled by a panel, caller claim or unverified host envelope |
 | LCBH-005 | Current on integrated branch: IN instance versions, effective parameter identity and actual damping come from native World readback; geometry3 is explicit for candidate and comparator, while Original Current restores protected2 |
+| LCBH-006 | Current on branch: ordinary Tower prepares final floor/player/camera/profile before capture, retains ordinary control routing and accepted reset/profile selection, and treats a committed observer failure as an installed fault; refusal retains old owner/World/receipt/UI |
 
 ## GPU and rejected-approach invariants
 

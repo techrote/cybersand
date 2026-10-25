@@ -339,6 +339,13 @@ effective identity and instance hash/CYPS3; non-IN remains version2. Water IN
 still refuses. These controls do not complete the remaining constructor matrix
 or full source/runtime/host qualification.
 
+The ordinary Experiment Tower additionally accepts these explicit settings only
+in Exploratory mode with its existing sampled owner. Selected floor0..4, landing,
+camera and resolved transport profile are final preparation input. Native worker
+and synchronous controller retain existing floor/release/schedule/manual tools;
+reset and transport-profile rebuild keep accepted solver/normalization/radius.
+Default constructors still retire that typed setup and use protected radius2.
+
 The [native prepared setup/receipt/accounting contract](../architecture/liquid-prepared-setup-and-receipts.md)
 owns these bounds, native-issued refusal/failure outcomes, source/host
 qualifications and the narrow owner-requested codec freeze. Complete physical

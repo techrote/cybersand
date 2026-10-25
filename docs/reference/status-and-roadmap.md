@@ -811,6 +811,15 @@ cannot be a cross-tick static-rest predicate.
 
 ## LCB-003 controlled application-host slice — 2026-10-24
 
+**Subsequent ordinary Tower constructor:** explicit Exploratory solver rebuilds
+retain the existing sampled player, selected floor, release/schedule/manual tools
+and independent transport profile. Reset/profile rebuild preserve accepted
+policy/normalization/geometry, while ordinary defaults retain their separate
+constructor and retire typed identity. See [the owner contract](../architecture/liquid-prepared-setup-and-receipts.md#ordinary-experiment-tower-preparation)
+and [dated local scope](../audits/2026-10-25-lcb003-tower-constructor.md). Remaining
+constructor rows, complete host evidence and actual browser/publication gates
+remain open.
+
 **Integrated #202 checkpoint, 2026-10-25:** the application branch now contains
 accepted #246 main `ec58d919` and stable #250 IN source `028fc7b6`. Native-backed
 normal controls expose actual damping/extension identity and instance hash/CYPS3;

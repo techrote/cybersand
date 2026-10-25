@@ -25,6 +25,14 @@ Remaining constructors, complete separately versioned host evidence, final
 source-matched publication, Linux and actual Web qualification stay open.
 #201 remains separate until its coordinated stable checkpoint is released.
 
+The subsequent [ordinary Tower preparation](../architecture/liquid-prepared-setup-and-receipts.md#ordinary-experiment-tower-preparation)
+extends explicit solver selection to the existing Tower dispatcher, preserving
+its floor/release/schedule/manual controls and independent transport. The final
+floor/player/camera precede capture; reset/profile retain accepted selection;
+refusal retains the applied session. Read its
+[separate GDScript/runtime ledger](../audits/2026-10-25-lcb003-tower-constructor.md)
+before continuing the remaining constructor rows and host-evidence layer.
+
 ## LCB-003 controlled host preparation — 2026-10-24
 
 The first bounded #202 source slice lives on

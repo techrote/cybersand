@@ -246,6 +246,40 @@ actor/equipment adoption with initial masks. This is scoped Windows native
 headless proof. Remaining constructors, complete versioned host evidence,
 source-matched published runtimes, Linux and actual Web profiles remain open.
 
+## Ordinary Experiment Tower preparation
+
+The subsequent #202 branch slice routes explicit **Exploratory** solver rebuilds
+through the ordinary Tower dispatcher. It uses a copied schema-2 preparation
+view of the existing Tower recipe and transport profile, with the selected
+floor landing and camera as final input. It retains the original schema-1
+Tower/default constructor and its exact fixture identity separately.
+
+The worker shares its construction-settings/profile capture and final native
+commit guard with MicroScenarios. It stages the actual sampled player against
+the pending native candidate, with request/settings/profile/reset/stop fences.
+The selected floor is configured before native facts and receipt capture; the
+ordinary floor tail does not reconfigure the freshly staged character or erase
+its initial owner-frame hold. Matching main acknowledgement releases that hold.
+The applied route stays ordinary Tower: floor navigation, releases, schedules,
+paint/erase and independent transport-profile controls retain their existing
+semantics. These inputs remain exploratory and do not rewrite the initial
+construction receipt into a replay record.
+
+Main retains the old World, host cursor, sampled owner, canonical receipt and
+applied UI on refusal. A successfully committed observer fault is an installed
+apparatus failure, never a construction refusal. Reset and transport-profile
+rebuild retain accepted policy, normalization, geometry and IN parameters.
+Returning to an ordinary default constructor retires typed setup metadata and
+restores protected radius2. The synchronous controller uses the same native
+prepared boundary while retaining Tower controls; Windows native execution does
+not qualify actual Web profiles.
+
+The [Tower checkpoint](../audits/2026-10-25-lcb003-tower-constructor.md) records
+the focused actual-owner tests and local runtime/input scope. This closes one
+row of the normal constructor matrix, not rectangle/default bootstrap, body,
+CYSD import, diagnostic/plane or procedural routing. Full host evidence and
+final source/runtime/platform qualification remain separate.
+
 ## Source map
 
 | Responsibility | Current source |
