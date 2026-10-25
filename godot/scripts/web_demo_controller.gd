@@ -1,6 +1,7 @@
 extends "res://scripts/main.gd"
 
 const WaterFeelWebProbe = preload("res://scripts/water_feel_web_probe.gd")
+const LiquidHostWebProbe = preload("res://scripts/liquid_host_web_probe.gd")
 
 # Web compatibility owner. The original desktop scene/worker remains intact.
 # Every native call here runs on Godot's main thread; cellular ticks remain
@@ -442,6 +443,12 @@ func _ready() -> void:
 	ui.message(rapier_reason if not rapier_available else "")
 	_init_browser_test()
 	print("WEB_DEMO_READY ", ui.capability.text)
+	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('liquid-host-test') === '1'",true)):
+		set_process(false);set_physics_process(false)
+		var result: Dictionary = LiquidHostWebProbe.run(self)
+		print("WEB_LIQUID_HOST ",JSON.stringify(result))
+		JavaScriptBridge.eval("var p=document.createElement('pre');p.id='cybersand-liquid-host-result';p.textContent="+JSON.stringify(JSON.stringify(result))+";document.body.appendChild(p);fetch('/physics-results',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userAgent:navigator.userAgent,isolated:crossOriginIsolated,result:"+JSON.stringify(result)+"})}).then(r=>{if(!r.ok)throw new Error('liquid host result POST '+r.status);console.log('LIQUID_HOST_EVIDENCE_SAVED',r.status)}).catch(e=>console.error('LIQUID_HOST_EVIDENCE_POST_FAILED',String(e)));",true)
+		return
 	if test_enabled and bool(JavaScriptBridge.eval("new URLSearchParams(location.search).get('water') === '1'", true)):
 		set_process(false)
 		set_physics_process(false)
