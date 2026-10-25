@@ -9,11 +9,14 @@ const SECTIONS: Array[String] = ["native_variants", "readback_encoding", "exact_
 	"gas_invalidation", "cold_restore", "default_preservation"]
 const OBSERVED: Array[String] = ["index_incarnation", "indexed_chunks", "column_groups", "row_groups",
 	"dirty_column_groups", "dirty_row_groups", "index_chunk_capacity", "head_repair_cell_budget",
-	"derived_capacity_bytes", "worker_counter_capacity_bytes", "common_counter_bytes", "gas_components",
+	"derived_capacity_bytes", "worker_counter_capacity_bytes", "common_counter_bytes", "certificate_buffer_capacity_bytes", "gas_components",
 	"gas_valid_components", "gas_members", "gas_member_capacity", "gas_dirty_chunks", "gas_capacity_bytes",
 	"gas_invalidation_pair_budget"]
 const COUNTERS: Array[String] = ["water_material_calls", "water_motion_calls", "other_liquid_calls",
 	"certificate_attempts", "certificate_reuses", "certificate_saved_calls", "certificate_declines",
+	"certificate_work_charged", "certificate_work_credited", "certificate_work_windows", "certificate_work_suspensions",
+	"certificate_unavailable_ticks", "certificate_suspended_ticks", "certificate_cold_resets", "certificate_cold_reset_cells",
+	"certificate_layer_activations",
 	"index_rebuilds", "invalidation_rects", "columns_recomputed", "rows_recomputed", "base_cells_written",
 	"final_cells_written", "gas_reuses", "gas_reference_passes", "reference_fallbacks", "fallback_resident_cells",
 	"certificate_invalidation_cells", "preparation_nanoseconds", "gas_nanoseconds", "head_nanoseconds",
@@ -129,13 +132,28 @@ func _encoded_fields(values: Dictionary, names: Array[String], label: String) ->
 func _inspection(world: Variant, variant: int) -> Dictionary:
 	var facts: Dictionary = world.inspect_pressure_optimization()
 	expect(facts.get("schema_version", 0) == 1 and facts.get("unsigned_encoding", "") == "decimal_string"
-		and facts.get("execution_version", 0) == 2 and facts.get("certificate_warmup_visits", 0) == 1
+		and facts.get("execution_version", 0) == 3 and facts.get("certificate_warmup_visits", 0) == 1
 		and facts.get("certificate_backoff_visits", 0) == 8, "readback schema/derived admission version differs")
 	expect(facts.get("available", false) and bool(facts.cached) == (variant > 0)
 		and bool(facts.dormant) == (variant == 2), "readback does not distinguish the actual implementation")
 	_encoded_fields(facts.get("requested_config", {}), CONFIG, "requested_config")
 	_encoded_fields(facts.get("observed", {}), OBSERVED, "observed")
 	_encoded_fields(facts.get("counters", {}), COUNTERS, "counters")
+	var admission: Dictionary = facts.get("certificate_admission", {})
+	expect(admission.get("model", "") == "certificate_work_credits_v1"
+		and admission.get("enabled") is bool and admission.get("contents_cold") is bool
+		and int(admission.get("trial_ticks", 0)) == 8 and int(admission.get("suspension_ticks", 0)) == 32
+		and int(admission.get("window_ticks", -1)) >= 0 and int(admission.get("window_ticks", 9)) <= 8
+		and int(admission.get("suspend_remaining", -1)) >= 0 and int(admission.get("suspend_remaining", 33)) <= 32,
+		"whole-layer admission must expose its actual bounded model/state")
+	for field: String in ["window_charge", "window_credit", "last_window_charge", "last_window_credit",
+		"invalidation_charge", "proof_charge", "reuse_charge", "saved_call_credit"]:
+		expect(_decimal(admission.get(field)), "certificate_admission." + field + " must preserve unsigned work credits")
+	expect(admission.invalidation_charge == "1" and admission.proof_charge == "40"
+		and admission.reuse_charge == "1" and admission.saved_call_credit == "8", "work-credit weights differ")
+	if variant != 2:
+		expect(not admission.enabled and facts.observed.certificate_buffer_capacity_bytes == "0"
+			and facts.counters.certificate_invalidation_cells == "0", "non-dormant arms must not maintain unused certificates")
 	expect(facts.requested_config == {"index_chunk_capacity":"4096", "head_repair_cell_budget":"4194304",
 		"gas_member_capacity":"1048576", "gas_invalidation_pair_budget":"4194304"}, "requested native budget values differ")
 	var identity: String = str(facts.get("extension_identity_sha256", ""))

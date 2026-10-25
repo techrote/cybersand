@@ -453,6 +453,9 @@ private:
     [[nodiscard]] bool update_water_cellular_yield(std::int64_t x, std::int64_t y, JobEffects* effects);
     [[nodiscard]] bool update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* effects);
     void prepare_pressure_tick();
+    void account_pressure_certificate_work() noexcept;
+    void prepare_pressure_certificates() noexcept;
+    void finish_pressure_certificate_tick() noexcept;
     void resolve_gas_topology(bool allow_cache = true);
     void prepare_pressure_gas_cache();
     [[nodiscard]] bool replay_pressure_gas_region(std::int64_t x, std::int64_t y,

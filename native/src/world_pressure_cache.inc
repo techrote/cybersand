@@ -1,9 +1,130 @@
 // Owner-only preparation/invalidation. No renderer-owned dirty bounds are read.
 // Existing producer JobEffects rectangles are reduced at every phase barrier.
 
+namespace {
+std::uint64_t certificate_budget_add(std::uint64_t a, std::uint64_t b, bool& overflow) noexcept {
+    if (a>std::numeric_limits<std::uint64_t>::max()-b) {
+        overflow=true; return std::numeric_limits<std::uint64_t>::max();
+    }
+    return a+b;
+}
+std::uint64_t certificate_budget_multiply(std::uint64_t value, std::uint64_t weight, bool& overflow) noexcept {
+    if (value>std::numeric_limits<std::uint64_t>::max()/weight) {
+        overflow=true; return std::numeric_limits<std::uint64_t>::max();
+    }
+    return value*weight;
+}
+void certificate_counter_add(std::uint64_t& value, std::uint64_t amount) noexcept {
+    bool overflow=false; value=certificate_budget_add(value,amount,overflow);
+}
+}
+
+void World::account_pressure_certificate_work() noexcept {
+    auto& cache=*pressure_->cache; auto& work=pressure_->optimization;
+    // Source instrumentation predates this admission layer. A wrapped or
+    // saturated lifetime observation is uncertainty, never free work.
+    const auto uncertain=[](std::uint64_t value,std::uint64_t prior) {
+        return value<prior || value==std::numeric_limits<std::uint64_t>::max();
+    };
+    bool overflow=uncertain(work.certificate_invalidation_cells,cache.certificate_accounted_invalidations) ||
+        uncertain(work.certificate_attempts,cache.certificate_accounted_attempts) ||
+        uncertain(work.certificate_reuses,cache.certificate_accounted_reuses) ||
+        uncertain(work.certificate_saved_calls,cache.certificate_accounted_saved);
+    const auto invalidations=work.certificate_invalidation_cells-cache.certificate_accounted_invalidations;
+    const auto attempts=work.certificate_attempts-cache.certificate_accounted_attempts;
+    const auto reuses=work.certificate_reuses-cache.certificate_accounted_reuses;
+    const auto saved=work.certificate_saved_calls-cache.certificate_accounted_saved;
+    cache.certificate_accounted_invalidations=work.certificate_invalidation_cells;
+    cache.certificate_accounted_attempts=work.certificate_attempts;
+    cache.certificate_accounted_reuses=work.certificate_reuses;
+    cache.certificate_accounted_saved=work.certificate_saved_calls;
+    auto charge=certificate_budget_multiply(invalidations,kPressureCertificateInvalidationCharge,overflow);
+    charge=certificate_budget_add(charge,certificate_budget_multiply(attempts,kPressureCertificateProofCharge,overflow),overflow);
+    charge=certificate_budget_add(charge,certificate_budget_multiply(reuses,kPressureCertificateReuseCharge,overflow),overflow);
+    const auto credit=certificate_budget_multiply(saved,kPressureCertificateSavedCallCredit,overflow);
+    certificate_counter_add(work.certificate_work_charged,charge);
+    certificate_counter_add(work.certificate_work_credited,credit);
+    if (cache.certificate_window_active) {
+        cache.certificate_window_charge=certificate_budget_add(cache.certificate_window_charge,charge,overflow);
+        cache.certificate_window_credit=certificate_budget_add(cache.certificate_window_credit,credit,overflow);
+        cache.certificate_window_overflow=cache.certificate_window_overflow || overflow;
+        if (cache.certificate_window_overflow) {
+            // Arithmetic uncertainty can only reject a window, never admit it.
+            cache.certificate_window_charge=std::numeric_limits<std::uint64_t>::max();
+            cache.certificate_window_credit=0;
+        }
+    }
+}
+
+void World::prepare_pressure_certificates() noexcept {
+    if (pressure_==nullptr || pressure_->cache==nullptr || !pressure_->cache->dormant) return;
+    auto& cache=*pressure_->cache; auto& work=pressure_->optimization;
+    const auto begin_window=[&] {
+        cache.certificate_window_active=true; cache.certificate_window_overflow=false;
+        cache.certificate_window_ticks=0; cache.certificate_window_charge=0; cache.certificate_window_credit=0;
+    };
+    // A continuing admitted layer owns maintenance between completed windows.
+    if (!cache.certificate_window_active && cache.certificate_layer_enabled) begin_window();
+    account_pressure_certificate_work();
+    cache.certificate_water_calls_begin=work.water_material_calls;
+    cache.certificate_tick_eligible=false;
+    if (!cache.complete || !cache.use_heads) {
+        cache.certificate_layer_enabled=false; cache.certificate_contents_cold=true;
+        certificate_counter_add(work.certificate_unavailable_ticks,1); return;
+    }
+    if (cache.certificate_suspend_remaining!=0U) {
+        --cache.certificate_suspend_remaining;
+        cache.certificate_layer_enabled=false; cache.certificate_contents_cold=true;
+        certificate_counter_add(work.certificate_suspended_ticks,1); return;
+    }
+    // Sleeping is already cheap. An off/cold layer requires an actual prior
+    // Water-material visit: the first newly woken tick always runs ordinary.
+    if ((!cache.certificate_layer_enabled || cache.certificate_contents_cold) && cache.certificate_prior_water_calls==0U) {
+        cache.certificate_layer_enabled=false; return;
+    }
+    if (!cache.certificate_window_active) begin_window();
+    if (!cache.certificate_layer_enabled) certificate_counter_add(work.certificate_layer_activations,1);
+    cache.certificate_layer_enabled=true; cache.certificate_tick_eligible=true;
+    if (cache.certificate_contents_cold) {
+        // Only admission may touch all certificate storage. Every byte is
+        // charged before a worker can observe any old Valid tag.
+        std::uint64_t cells=0;
+        for (auto& [coord,chunk] : chunks_) {
+            (void)coord; auto& certificates=chunk->pressure->rest_certificate;
+            std::fill(certificates.begin(),certificates.end(),PressureChunk::kCertificateWarmup);
+            bool overflow=false; cells=certificate_budget_add(cells,certificates.size(),overflow);
+            if (overflow) cache.certificate_window_overflow=true;
+        }
+        certificate_counter_add(work.certificate_invalidation_cells,cells);
+        certificate_counter_add(work.certificate_cold_reset_cells,cells);
+        certificate_counter_add(work.certificate_cold_resets,1);
+        cache.certificate_contents_cold=false;
+    }
+}
+
+void World::finish_pressure_certificate_tick() noexcept {
+    if (pressure_==nullptr || pressure_->cache==nullptr || !pressure_->cache->dormant) return;
+    auto& cache=*pressure_->cache; auto& work=pressure_->optimization;
+    // Called only after a successful whole tick and every worker reduction.
+    cache.certificate_prior_water_calls=work.water_material_calls-cache.certificate_water_calls_begin;
+    account_pressure_certificate_work();
+    if (!cache.certificate_tick_eligible || !cache.certificate_layer_enabled) return;
+    if (++cache.certificate_window_ticks<kPressureCertificateTrialTicks) return;
+    cache.certificate_last_window_charge=cache.certificate_window_charge;
+    cache.certificate_last_window_credit=cache.certificate_window_credit;
+    certificate_counter_add(work.certificate_work_windows,1);
+    cache.certificate_window_active=false;
+    if (cache.certificate_window_overflow || cache.certificate_window_charge>cache.certificate_window_credit) {
+        cache.certificate_layer_enabled=false; cache.certificate_contents_cold=true;
+        cache.certificate_suspend_remaining=kPressureCertificateSuspensionTicks;
+        certificate_counter_add(work.certificate_work_suspensions,1);
+    }
+}
+
 void World::rebuild_pressure_index() {
     auto& cache = *pressure_->cache;
     cache.gas_ready = false;
+    cache.certificate_contents_cold=true; cache.certificate_layer_enabled=false;
     cache.gas_dirty_chunks.clear();
     for (auto& [coord, chunk] : chunks_) {
         (void)coord;
@@ -20,7 +141,6 @@ void World::rebuild_pressure_index() {
     cache.dirty_columns.clear(); cache.dirty_rows.clear();
     for (const auto& [coord, chunk] : chunks_) {
         cache.column_order.push_back(coord);
-        std::fill(chunk->pressure->rest_certificate.begin(), chunk->pressure->rest_certificate.end(), PressureChunk::kCertificateWarmup);
     }
     std::sort(cache.column_order.begin(), cache.column_order.end(), [](auto a, auto b) {
         return a.x != b.x ? a.x < b.x : a.y < b.y;
@@ -63,7 +183,12 @@ void World::rebuild_pressure_index() {
 
 void World::invalidate_pressure_certificates(ChunkCoord coord, std::int32_t min_x, std::int32_t min_y,
                                             std::int32_t max_x, std::int32_t max_y) {
-    if (pressure_ == nullptr || pressure_->cache == nullptr) return;
+    if (pressure_ == nullptr || pressure_->cache == nullptr || !pressure_->cache->dormant) return;
+    auto& cache=*pressure_->cache;
+    if (!cache.certificate_layer_enabled || cache.certificate_contents_cold || !cache.complete || !cache.use_heads) {
+        cache.certificate_contents_cold=true;
+        return;
+    }
     const auto size = config_.chunk_size;
     // Every certified no-op reads at most two cells from its owner. The chunk
     // size is at least eight, so the touched old/new union spans at most 3x3
@@ -121,6 +246,14 @@ PressureOptimizationSnapshot World::pressure_optimization_snapshot() const {
     const auto& cache = *pressure_->cache;
     out.status = cache.status; out.cached = true; out.dormant = cache.dormant;
     out.gas_pending = cache.gas_dirty; out.index_incarnation = cache.incarnation;
+    out.certificate_layer_enabled=cache.certificate_layer_enabled;
+    out.certificate_contents_cold=cache.dormant && cache.certificate_contents_cold;
+    out.certificate_window_ticks=cache.certificate_window_ticks;
+    out.certificate_suspend_remaining=cache.certificate_suspend_remaining;
+    out.certificate_window_charge=cache.certificate_window_charge;
+    out.certificate_window_credit=cache.certificate_window_credit;
+    out.certificate_last_window_charge=cache.certificate_last_window_charge;
+    out.certificate_last_window_credit=cache.certificate_last_window_credit;
     out.indexed_chunks = cache.column_order.size(); out.column_groups = cache.columns.size();
     out.row_groups = cache.rows.size(); out.dirty_column_groups = cache.dirty_columns.size();
     out.dirty_row_groups = cache.dirty_rows.size(); out.index_chunk_capacity = cache.capacity;
@@ -142,6 +275,7 @@ PressureOptimizationSnapshot World::pressure_optimization_snapshot() const {
         out.derived_capacity_bytes += sizeof(chunk->pressure->gas_chunk_slot) + sizeof(chunk->pressure->gas_dirty_queued);
         out.derived_capacity_bytes += chunk->pressure->base_head.capacity() * sizeof(std::int32_t) +
                                      chunk->pressure->rest_certificate.capacity();
+        out.certificate_buffer_capacity_bytes+=chunk->pressure->rest_certificate.capacity();
     }
     return out;
 }

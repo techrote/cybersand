@@ -92,6 +92,7 @@ struct World::PressureState {
     void reset() noexcept {
         if (cache != nullptr) {
             cache->cold();
+            cache->reset_certificate_admission();
             cache->gas_dirty_chunks.clear();
             cache->gas_components.clear();
             cache->gas_members.clear();

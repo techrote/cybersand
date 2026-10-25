@@ -225,12 +225,7 @@ void World::prepare_pressure_tick() {
                 // A remote compartment change can alter that gradient without
                 // changing any lidded Water head. Revoke those assumptions
                 // before kernels run, including paused/outside-interest gas.
-                if (cache->dormant) for (auto& [coord, chunk] : chunks_) {
-                    (void)coord;
-                    auto& certificates=chunk->pressure->rest_certificate;
-                    std::fill(certificates.begin(),certificates.end(),PressureChunk::kCertificateWarmup);
-                    state.optimization.certificate_invalidation_cells+=certificates.size();
-                }
+                if (cache->dormant) cache->certificate_contents_cold=true;
                 for (std::size_t i = 0; i < cache->columns.size(); ++i)
                     cache->mark(true, i, 0, config_.chunk_size - 1);
             }
@@ -260,6 +255,7 @@ void World::prepare_pressure_tick() {
         }
     }
     compute_pressure_heads();
+    prepare_pressure_certificates();
     if (cache != nullptr && cache->use_heads) cache->status = PressureOptimizationStatus::Ready;
     const auto end = Clock::now();
     const auto nanos = [](auto duration) {
@@ -1113,7 +1109,8 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
         ? *effects->pressure_work : pressure_->optimization;
     ++work.water_material_calls;
     if (pressure_->cache != nullptr && pressure_->cache->dormant &&
-        pressure_->cache->complete && pressure_->cache->use_heads && pressure_motion_is_noop(x, y, effects)) {
+        pressure_->cache->complete && pressure_->cache->use_heads && pressure_->cache->certificate_layer_enabled &&
+        !pressure_->cache->certificate_contents_cold && pressure_motion_is_noop(x, y, effects)) {
         ++work.certificate_saved_calls;
         return false;
     }

@@ -53,10 +53,10 @@ void test_pressure_optimization_identity_readback() {
         // Independent Python hashlib/struct '<6Q' known answers: execution
         // version, variant and the four requested budgets after the domain.
         const auto expected = variant == 1
-            ? "5cb90321b69b062f7d6c9d9f6f7b71d8cfb7dd5ad99194f250c85e875da571e9"
-            : "ea3815aa533f0ae0960e76772108b70dd6589eb4fa6e3770421ef894deeb6ec0";
+            ? "ff6c0ec10b50db0095e96b7d67e61494aea2b55ca618c60edcac2cf0b9aac60d"
+            : "bb3da4cf065ebca4ba39363b246ec365c08f15e1d50f2bfa2d307abd4dd95964";
         require(identity && cybersand::Sha256::hex(*identity) == expected && extensions[0].extension_identity_version == 1U,
-                "cached/dormant execution2 has its declared native identity encoding1");
+                "cached/dormant execution3 has its declared native identity encoding1");
         const auto full = world->physical_state_hash();
         std::vector<std::array<std::uint8_t,32>> observations{*identity};
         for (int field = 0; field < 4; ++field) {
@@ -81,49 +81,171 @@ void test_pressure_optimization_identity_readback() {
     }
 }
 
-void test_dormant_cost_admission() {
-    std::array<std::unique_ptr<World>,3> worlds;
-    for (int arm=0; arm<3; ++arm) {
-        auto world=std::make_unique<World>(cached_config(arm,false));
-        world->reserve_region({0,0,128,128});
-        rect(*world,1,1,14,14,Material::Wall);
-        require(world->set_cell_state(3,11,Material::Water,128,0), "partial stationary cost control");
-        require(world->set_cell_state(11,12,Material::Oil,0,200), "independent awake-block lifecycle");
+using CostWorlds=std::array<std::unique_ptr<World>,3>;
+CostWorlds cost_worlds(std::uint32_t workers, bool full, bool awake=true, int fallback=0, bool spare=false) {
+    CostWorlds worlds;
+    for (int arm=0;arm<3;++arm) {
+        auto cfg=cached_config(arm,false,workers);
+        cfg.chunk_size=8; cfg.activity_block_size=8; cfg.scheduling_core_size=8;
+        cfg.parallel_job_threshold=1; cfg.initial_chunk_reserve=8;
+        cfg.maximum_chunk_count=64; cfg.active_chunk_capacity=64; cfg.active_core_capacity=64;
+        if (fallback==1) cfg.pressure_optimization.index_chunk_capacity=1;
+        if (fallback==2) cfg.pressure_optimization.head_repair_cell_budget=0;
+        auto world=std::make_unique<World>(cfg);
+        for (const auto offset:{0,16,32,48}) {
+            world->reserve_region({offset,0,8,8}); rect(*world,offset,0,8,8,Material::Wall);
+            if (full) rect(*world,offset+2,4,4,2,Material::Water);
+            else require(world->set_cell_state(offset+3,5,Material::Water,128,0),"stationary partial Water cost control");
+            // Same activity block, beyond Water's radius-two certificate reads.
+            if (awake) require(world->set_cell_state(offset+6,1,Material::Oil,0,200),"independent awake Oil control");
+        }
+        if (spare) for (int i=0;i<8;++i) {
+            world->reserve_region({128+i*16,0,8,8}); rect(*world,128+i*16,0,8,8,Material::Wall);
+        }
         worlds[static_cast<std::size_t>(arm)]=std::move(world);
     }
-    for (int t=0;t<48;++t) {
-        const auto before=worlds[2]->pressure_optimization_snapshot().counters;
-        for (auto& world:worlds) tick(*world);
-        for (std::size_t arm=1;arm<3;++arm) require_pressure_equivalent(*worlds[0],*worlds[arm]);
-        const auto after=worlds[2]->pressure_optimization_snapshot().counters;
-        if (t==0) require(after.certificate_attempts==before.certificate_attempts &&
-                             after.water_motion_calls>before.water_motion_calls,
-                         "cold certificate defers proof and executes ordinary motion");
+    return worlds;
+}
+std::uint64_t cost_tick(CostWorlds& worlds) {
+    std::uint64_t jobs=0;
+    for (auto& world:worlds) {
+        const auto stats=world->tick();
+        for (const auto count:stats.phase_jobs) jobs=std::max(jobs,count);
     }
-    const auto denied=worlds[2]->pressure_optimization_snapshot().counters;
-    require(denied.certificate_attempts>0U && denied.certificate_attempts<=6U &&
-                denied.certificate_declines>=40U && denied.certificate_saved_calls==0U &&
-                denied.water_motion_calls==denied.water_material_calls && denied.water_material_calls>=40U,
-            "failed proofs have bounded visit-based retry cost while all ordinary work continues");
-    for (auto& world:worlds) require(world->set_cell_state(3,11,Material::Water,64,0), "changed proof input");
-    for (auto& world:worlds) tick(*world);
     for (std::size_t arm=1;arm<3;++arm) require_pressure_equivalent(*worlds[0],*worlds[arm]);
-    require(worlds[2]->pressure_optimization_snapshot().counters.certificate_attempts==denied.certificate_attempts,
-            "changed inputs revoke the old state and require an ordinary warmup visit");
-
-    auto warm=std::make_unique<World>(cached_config(2,false));
-    warm->reserve_region({0,0,128,128});
-    rect(*warm,1,1,14,14,Material::Wall); rect(*warm,3,11,4,2,Material::Water);
-    require(warm->set_cell_state(11,12,Material::Oil,0,200), "warm positive independent lifecycle");
-    tick(*warm,16);
-    require(warm->pressure_optimization_snapshot().counters.certificate_reuses>0U,
-            "positive unchanged input still amortizes proof through genuine reuse");
-    auto restored=World::restore_physical_state(cached_config(2,false),warm->save_physical_state());
-    tick(*warm); tick(*restored);
-    require(warm->physical_state_hash()==restored->physical_state_hash() &&
-                restored->pressure_optimization_snapshot().counters.certificate_attempts==0U &&
-                restored->pressure_optimization_snapshot().counters.certificate_saved_calls==0U,
-            "restored derived certificates start cold and cannot interpret countdown bytes as valid");
+    const auto cached=worlds[1]->pressure_optimization_snapshot();
+    require(cached.certificate_buffer_capacity_bytes==0U && cached.counters.certificate_invalidation_cells==0U &&
+                cached.counters.certificate_attempts==0U && cached.counters.certificate_saved_calls==0U,
+            "cached1 never allocates or stamps unused motion certificates");
+    return jobs;
+}
+void cost_require_worker_parity(const CostWorlds& one,const CostWorlds& four) {
+    for (std::size_t arm=0;arm<3;++arm)
+        require(one[arm]->physical_state_hash()==four[arm]->physical_state_hash(),"execution-budget admission preserves exact actual1/4-configured-worker continuation");
+}
+void test_cost_fallbacks_and_zero_saving() {
+    for (const auto workers:{1U,4U}) for (const auto fallback:{1,2}) {
+        auto worlds=cost_worlds(workers,true,true,fallback);
+        for (int t=0;t<12;++t) {
+            for (auto& world:worlds) world->set(6,2,t%2 ? Material::Wall : Material::Empty);
+            (void)cost_tick(worlds);
+            const auto observed=worlds[2]->pressure_optimization_snapshot();
+            require(!observed.certificate_layer_enabled && observed.certificate_contents_cold &&
+                        observed.counters.certificate_cold_resets==0U && observed.counters.certificate_invalidation_cells==0U &&
+                        observed.counters.certificate_attempts==0U && observed.counters.certificate_saved_calls==0U &&
+                        observed.counters.certificate_unavailable_ticks==static_cast<std::uint64_t>(t+1),
+                    "unusable index/head fallback bypasses every certificate reset, stamp, proof and skip");
+        }
+    }
+    auto one=cost_worlds(1,false),four=cost_worlds(4,false);
+    for (int t=0;t<9;++t) {
+        for (auto* cohort:{&one,&four}) for (auto& world:*cohort)
+            for (const auto offset:{0,16,32,48}) world->set(offset+3,1,t%2 ? Material::Wall : Material::Empty);
+        (void)cost_tick(one);(void)cost_tick(four);cost_require_worker_parity(one,four);
+    }
+    const auto denied=four[2]->pressure_optimization_snapshot();
+    require(denied.counters.certificate_work_windows==1U && denied.counters.certificate_work_suspensions==1U &&
+                denied.certificate_suspend_remaining==32U && !denied.certificate_layer_enabled && denied.certificate_contents_cold &&
+                denied.certificate_last_window_charge>0U && denied.certificate_last_window_credit==0U &&
+                denied.counters.certificate_saved_calls==0U && denied.counters.certificate_attempts>0U,
+            "actual no-saving topology churn pays a bounded trial then suspends the entire certificate layer");
+    require(denied.counters.certificate_work_charged==denied.counters.certificate_invalidation_cells+
+                40U*denied.counters.certificate_attempts+denied.counters.certificate_reuses &&
+                denied.counters.certificate_work_credited==8U*denied.counters.certificate_saved_calls &&
+                denied.counters.certificate_cold_reset_cells>0U,
+            "declared independent 1/40/1 charge and8 saved-call credit include the actual cold reset");
+}
+void test_cost_heavy_maintenance_and_reactivation() {
+    auto one=cost_worlds(1,true,true,0,true),four=cost_worlds(4,true,true,0,true);
+    for (int t=0;t<9;++t) {
+        for (auto* cohort:{&one,&four}) for (auto& world:*cohort)
+            for(int i=0;i<8;++i) world->set(131+i*16,2,t%2 ? Material::Wall : Material::Empty);
+        (void)cost_tick(one);(void)cost_tick(four);cost_require_worker_parity(one,four);
+    }
+    const auto denied=four[2]->pressure_optimization_snapshot();
+    require(denied.counters.certificate_saved_calls>0U && denied.certificate_last_window_credit>0U &&
+                denied.certificate_last_window_charge>denied.certificate_last_window_credit &&
+                denied.counters.certificate_work_suspensions==1U && denied.certificate_suspend_remaining==32U,
+            "small real savings cannot admit expensive resident reset and continuing unrelated maintenance");
+    const auto before=denied.counters;
+    for (int t=0;t<32;++t) {
+        for (auto* cohort:{&one,&four}) for (auto& world:*cohort)
+            for(int i=0;i<8;++i) world->set(131+i*16,2,t%2 ? Material::Wall : Material::Empty);
+        // Change previously certified authority while all certificate stamps are off.
+        if(t==7) for (auto* cohort:{&one,&four}) for(auto& world:*cohort)
+            require(world->set_cell_state(2,4,Material::Water,128,0),"suspended formerly certified Water changed");
+        (void)cost_tick(one);(void)cost_tick(four);cost_require_worker_parity(one,four);
+        const auto now=four[2]->pressure_optimization_snapshot();
+        require(!now.certificate_layer_enabled && now.certificate_contents_cold &&
+                    now.certificate_suspend_remaining==static_cast<std::uint8_t>(31-t) &&
+                    now.counters.certificate_invalidation_cells==before.certificate_invalidation_cells &&
+                    now.counters.certificate_cold_resets==before.certificate_cold_resets &&
+                    now.counters.certificate_attempts==before.certificate_attempts &&
+                    now.counters.certificate_saved_calls==before.certificate_saved_calls,
+                "all32 usable-head suspension ticks run ordinary motion with zero certificate maintenance or stale reads");
+    }
+    (void)cost_tick(one);(void)cost_tick(four);cost_require_worker_parity(one,four);
+    const auto cold=four[2]->pressure_optimization_snapshot();
+    require(cold.certificate_layer_enabled && !cold.certificate_contents_cold && cold.certificate_window_ticks==1U &&
+                cold.counters.certificate_cold_resets==before.certificate_cold_resets+1U &&
+                cold.counters.certificate_cold_reset_cells>before.certificate_cold_reset_cells &&
+                cold.counters.certificate_saved_calls==before.certificate_saved_calls &&
+                cold.counters.certificate_attempts==before.certificate_attempts,
+            "reactivation charges one full cold reset before any old valid byte can skip its warmup visit");
+}
+CostWorlds cost_dense_awake_worlds(std::uint32_t workers) {
+    CostWorlds worlds;
+    for(int arm=0;arm<3;++arm) {
+        auto cfg=cached_config(arm,false,workers);
+        cfg.chunk_size=32;cfg.activity_block_size=32;cfg.scheduling_core_size=32;
+        cfg.parallel_job_threshold=1;cfg.initial_chunk_reserve=8;
+        cfg.maximum_chunk_count=32;cfg.active_chunk_capacity=32;cfg.active_core_capacity=32;
+        auto world=std::make_unique<World>(cfg);
+        for(const auto offset:{0,64,128,192}) {
+            world->reserve_region({offset,0,32,32});rect(*world,offset,0,32,32,Material::Wall);
+            rect(*world,offset+3,5,26,24,Material::Water);
+            require(world->set_cell_state(offset+29,2,Material::Oil,0,200),"dense independently awake admission control");
+        }
+        worlds[static_cast<std::size_t>(arm)]=std::move(world);
+    }
+    return worlds;
+}
+void test_cost_positive_and_sleep() {
+    auto one=cost_dense_awake_worlds(1),four=cost_dense_awake_worlds(4);
+    std::uint64_t max_jobs=0;
+    for(int t=0;t<64;++t) { (void)cost_tick(one);max_jobs=std::max(max_jobs,cost_tick(four));cost_require_worker_parity(one,four); }
+    const auto warm=four[2]->pressure_optimization_snapshot();
+    std::cout<<"LCB002_CERTIFICATE_COST_POSITIVE jobs="<<max_jobs<<" enabled="<<warm.certificate_layer_enabled<<" suspend="<<warm.counters.certificate_work_suspensions<<" saved="<<warm.counters.certificate_saved_calls<<" reuse="<<warm.counters.certificate_reuses<<" charge="<<warm.certificate_last_window_charge<<" credit="<<warm.certificate_last_window_credit<<" resets="<<warm.counters.certificate_cold_resets<<" invalid="<<warm.counters.certificate_invalidation_cells<<" attempts="<<warm.counters.certificate_attempts<<" coldcells="<<warm.counters.certificate_cold_reset_cells<<" chunks="<<four[2]->chunk_count()<<" water="<<warm.counters.water_material_calls<<"\n";
+    require(max_jobs>=4U && warm.certificate_layer_enabled && warm.counters.certificate_work_suspensions==0U &&
+                warm.counters.certificate_saved_calls>1000U && warm.counters.certificate_reuses>0U &&
+                warm.certificate_last_window_charge<=warm.certificate_last_window_credit && warm.counters.certificate_cold_resets==1U &&
+                warm.counters.water_motion_calls<four[0]->pressure_optimization_snapshot().counters.water_motion_calls/2U,
+            "genuine four-job dispatch and unchanged dense awake stencils amortize the conservative work budget");
+    auto sleep=cost_worlds(4,true,false);for(int t=0;t<16;++t)(void)cost_tick(sleep);
+    const auto quiet=sleep[2]->pressure_optimization_snapshot().counters;
+    for(int t=0;t<80;++t) {
+        for(auto& world:sleep) require(world->tick().visited_cells==0U,"ordinary sleeping control has actual zero Water visits");
+        for(std::size_t arm=1;arm<3;++arm)require_pressure_equivalent(*sleep[0],*sleep[arm]);
+    }
+    const auto rested=sleep[2]->pressure_optimization_snapshot().counters;
+    require(rested.certificate_invalidation_cells==quiet.certificate_invalidation_cells && rested.certificate_cold_resets==quiet.certificate_cold_resets &&
+                rested.certificate_attempts==quiet.certificate_attempts && rested.water_material_calls==quiet.water_material_calls,
+            "off/cold ordinary sleep never periodically resets full resident storage or probes zero-visit work");
+    for(auto& world:sleep) for(const auto offset:{0,16,32,48})
+        require(world->set_cell_state(offset+6,1,Material::Oil,0,200),"new real Oil wake after suspension");
+    (void)cost_tick(sleep);const auto first=sleep[2]->pressure_optimization_snapshot();
+    require(first.counters.water_material_calls>rested.water_material_calls && first.counters.certificate_cold_resets==rested.certificate_cold_resets &&
+                first.counters.certificate_saved_calls==rested.certificate_saved_calls,
+            "first newly woken Water tick runs ordinary before any reactivation reset");
+    (void)cost_tick(sleep);const auto next=sleep[2]->pressure_optimization_snapshot();
+    require(next.counters.certificate_cold_resets==rested.certificate_cold_resets+1U && next.counters.certificate_saved_calls==rested.certificate_saved_calls,
+            "actual prior Water work admits one charged cold reset and ordinary warmup");
+}
+void test_dormant_cost_admission() {
+    static_assert(sizeof(cybersand::PressureKernelWork)==56U);
+    test_cost_fallbacks_and_zero_saving();
+    test_cost_heavy_maintenance_and_reactivation();
+    test_cost_positive_and_sleep();
 }
 
 void test_cached_incremental_heads() {
@@ -228,7 +350,16 @@ void test_dormant_motion_and_body_obligations() {
             if (t==80) for (auto* world : {&reference,&cached,&dormant})
                 require(world->set_transient_obstacle(3,13,7), "mask approaches warm stationary Water");
             if (t==96) for (auto* world : {&reference,&cached,&dormant}) world->clear_transient_obstacles();
+            const auto before=dormant.pressure_optimization_snapshot();
             tick(reference); tick(cached); tick(dormant);
+            if (before.certificate_suspend_remaining!=0U) {
+                const auto after=dormant.pressure_optimization_snapshot();
+                require(!after.certificate_layer_enabled && after.certificate_contents_cold &&
+                            after.counters.certificate_invalidation_cells==before.counters.certificate_invalidation_cells &&
+                            after.counters.certificate_attempts==before.counters.certificate_attempts &&
+                            after.counters.certificate_saved_calls==before.counters.certificate_saved_calls,
+                        "maintenance-heavy body control performs no certificate stamps, proofs or stale skips while suspended");
+            }
             require_pressure_equivalent(reference,cached);
             require_pressure_equivalent(reference,dormant);
             require(reference.transient_contact_count(7)==dormant.transient_contact_count(7) &&
@@ -245,9 +376,15 @@ void test_dormant_motion_and_body_obligations() {
                 r.other_liquid_calls==c.other_liquid_calls && r.other_liquid_calls==d.other_liquid_calls &&
                 d.other_liquid_calls>=100U && reference.stored_state_b(11,12)<200U,
                 "mandatory material stages and actual Oil lifecycle continue in the shared awake block");
-        require(c.certificate_saved_calls==0U && d.certificate_saved_calls>500U &&
-                d.certificate_reuses>0U && d.water_motion_calls<r.water_motion_calls/2U,
-                "positive certificate removes actual pressure motion beyond ordinary block sleep");
+        const auto admission=dormant.pressure_optimization_snapshot();
+        std::cout<<"LCB002_BODY_COST_NEGATIVE workers="<<workers<<" saved="<<d.certificate_saved_calls<<" reuse="<<d.certificate_reuses<<" refmotion="<<r.water_motion_calls<<" motion="<<d.water_motion_calls<<" attempts="<<d.certificate_attempts<<" charge="<<admission.certificate_last_window_charge<<" credit="<<admission.certificate_last_window_credit<<" reset="<<d.certificate_cold_resets<<" suspended="<<d.certificate_work_suspensions<<"\n";
+        require(c.certificate_saved_calls==0U && d.certificate_saved_calls>0U && d.certificate_reuses>0U &&
+                    d.water_motion_calls+d.certificate_saved_calls==r.water_motion_calls,
+                "bounded body-control trials remove actual motion calls and preserve every remaining ordinary call");
+        require(admission.certificate_last_window_charge>admission.certificate_last_window_credit &&
+                    d.certificate_work_windows>0U && d.certificate_work_suspensions>0U && d.certificate_suspended_ticks>0U &&
+                    !admission.certificate_layer_enabled && admission.certificate_contents_cold,
+                "sparse body-control savings cannot admit its larger resident maintenance cost; the whole layer suspends");
     }
 }
 

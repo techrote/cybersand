@@ -64,9 +64,23 @@ struct World::PressureCache {
         status = PressureOptimizationStatus::Pending;
     }
 
+    void reset_certificate_admission() noexcept {
+        certificate_layer_enabled=false; certificate_contents_cold=true;
+        certificate_window_active=false; certificate_tick_eligible=false;
+        certificate_window_overflow=false;
+        certificate_window_ticks=0; certificate_suspend_remaining=0;
+        certificate_window_charge=0; certificate_window_credit=0;
+        certificate_last_window_charge=0; certificate_last_window_credit=0;
+        certificate_accounted_invalidations=0; certificate_accounted_attempts=0;
+        certificate_accounted_reuses=0; certificate_accounted_saved=0;
+        certificate_water_calls_begin=0; certificate_prior_water_calls=0;
+    }
+
     void cold() noexcept {
         complete = false; membership_dirty = true; gas_dirty = true;
         use_heads = false;
+        certificate_layer_enabled=false; certificate_contents_cold=true;
+        certificate_tick_eligible=false;
         gas_ready = false;
         status = PressureOptimizationStatus::Cold;
     }
@@ -83,6 +97,15 @@ struct World::PressureCache {
     bool membership_dirty = true;
     bool gas_dirty = true;
     bool dormant = false;
+    bool certificate_layer_enabled=false, certificate_contents_cold=true;
+    bool certificate_window_active=false, certificate_tick_eligible=false;
+    bool certificate_window_overflow=false;
+    std::uint8_t certificate_window_ticks=0, certificate_suspend_remaining=0;
+    std::uint64_t certificate_window_charge=0, certificate_window_credit=0;
+    std::uint64_t certificate_last_window_charge=0, certificate_last_window_credit=0;
+    std::uint64_t certificate_accounted_invalidations=0, certificate_accounted_attempts=0;
+    std::uint64_t certificate_accounted_reuses=0, certificate_accounted_saved=0;
+    std::uint64_t certificate_water_calls_begin=0, certificate_prior_water_calls=0;
     bool use_heads = false;
     bool gas_ready = false;
     std::size_t gas_member_limit = 0;

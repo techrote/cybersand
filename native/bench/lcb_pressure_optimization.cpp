@@ -39,6 +39,8 @@ constexpr std::array<std::string_view, 4> kFallbacks{"index", "head", "member", 
 #define LCB_OPT_COUNTERS(X) \
  X(water_material_calls) X(water_motion_calls) X(other_liquid_calls) \
  X(certificate_attempts) X(certificate_reuses) X(certificate_saved_calls) X(certificate_declines) \
+ X(certificate_work_charged) X(certificate_work_credited) X(certificate_work_windows) X(certificate_work_suspensions) \
+ X(certificate_unavailable_ticks) X(certificate_suspended_ticks) X(certificate_cold_resets) X(certificate_cold_reset_cells) X(certificate_layer_activations) \
  X(index_rebuilds) X(invalidation_rects) X(columns_recomputed) X(rows_recomputed) \
  X(base_cells_written) X(final_cells_written) X(gas_reuses) X(gas_reference_passes) \
  X(reference_fallbacks) X(fallback_resident_cells) X(certificate_invalidation_cells) \
@@ -278,7 +280,14 @@ void snapshot_json(const World& w, const PressureOptimizationSnapshot& s) {
         <<",\"dirty_column_groups\":"<<s.dirty_column_groups<<",\"dirty_row_groups\":"<<s.dirty_row_groups<<",\"gas_dirty_chunks\":"<<s.gas_dirty_chunks
         <<",\"gas_members\":"<<s.gas_members<<",\"gas_member_capacity\":"<<s.gas_member_capacity
         <<",\"index_chunk_capacity\":"<<s.index_chunk_capacity<<",\"head_repair_cell_budget\":"<<s.head_repair_cell_budget
-        <<",\"gas_invalidation_pair_budget\":"<<s.gas_invalidation_pair_budget<<'}';
+        <<",\"gas_invalidation_pair_budget\":"<<s.gas_invalidation_pair_budget
+        <<",\"certificate_buffer_capacity_bytes\":"<<s.certificate_buffer_capacity_bytes
+        <<",\"certificate_layer_enabled\":"<<(s.certificate_layer_enabled ? "true" : "false")
+        <<",\"certificate_contents_cold\":"<<(s.certificate_contents_cold ? "true" : "false")
+        <<",\"certificate_window_ticks\":"<<static_cast<unsigned>(s.certificate_window_ticks)
+        <<",\"certificate_suspend_remaining\":"<<static_cast<unsigned>(s.certificate_suspend_remaining)
+        <<",\"certificate_window_charge\":"<<s.certificate_window_charge<<",\"certificate_window_credit\":"<<s.certificate_window_credit
+        <<",\"certificate_last_window_charge\":"<<s.certificate_last_window_charge<<",\"certificate_last_window_credit\":"<<s.certificate_last_window_credit<<'}';
 }
 std::uint64_t peak_rss_bytes() {
 #if defined(_WIN32)
@@ -317,7 +326,7 @@ int run(std::string_view profile, std::string_view fallback, std::uint32_t worke
         chunk_coordinates[arm].resize(cfg.maximum_chunk_count);
         head_samples[arm].resize(cfg.maximum_chunk_count*area);
     }
-    std::cout<<"{\"event\":\"header\",\"schema\":\"lcb002-total-cost-v2\",\"execution\":2,\"profile\":\""<<profile
+    std::cout<<"{\"event\":\"header\",\"schema\":\"lcb002-total-cost-v2\",\"execution\":"<<kPressureOptimizationExecutionVersion<<",\"profile\":\""<<profile
         <<"\",\"fallback\":\""<<fallback<<"\",\"workers\":"<<workers<<",\"replicate\":"<<replicate
         <<",\"phase_ticks\":["<<kCold<<','<<kWarm<<','<<kDisturbed<<"],\"sizeof_world\":"<<sizeof(World)
         <<",\"sizeof_world_config\":"<<sizeof(WorldConfig)<<",\"chunk_size\":"<<worlds[0]->config().chunk_size
@@ -326,6 +335,12 @@ int run(std::string_view profile, std::string_view fallback, std::uint32_t worke
         <<",\"apparatus_chunk_roster_capacity_bytes\":"<<(chunk_coordinates[0].capacity()+chunk_coordinates[1].capacity()+chunk_coordinates[2].capacity())*sizeof(ChunkCoord)
         <<",\"head_scope\":\"last pre-kernel prepared slot; may be stale after transport or writes; not current authority; all actual resident chunks copied/sorted/sampled outside timers; errors in Water mass units\""
         <<",\"flux_scope\":\"ROI end minus start at zero tick Water sources/sinks and zero host Water edits; inferred NET boundary inflow only, not gross or per-face transport\""
+        <<",\"certificate_work_model\":{\"id\":\"certificate_work_credits_v1\",\"trial_ticks\":"<<static_cast<unsigned>(kPressureCertificateTrialTicks)
+        <<",\"suspension_ticks\":"<<static_cast<unsigned>(kPressureCertificateSuspensionTicks)
+        <<",\"warmup_visits\":"<<static_cast<unsigned>(kPressureCertificateWarmupVisits)
+        <<",\"backoff_visits\":"<<static_cast<unsigned>(kPressureCertificateBackoffVisits)
+        <<",\"invalidation_charge\":"<<kPressureCertificateInvalidationCharge<<",\"proof_charge\":"<<kPressureCertificateProofCharge
+        <<",\"reuse_charge\":"<<kPressureCertificateReuseCharge<<",\"saved_call_credit\":"<<kPressureCertificateSavedCallCredit<<'}'
         <<",\"head_coverage\":\"copied_sorted_native_resident_chunk_roster\""
         <<",\"head_sample_domain_hint\":"; rect_json(domain); std::cout<<",\"boundary_flux_roi\":"; rect_json(roi); std::cout
         <<",\"participant_scope\":\"maximum distinct pool threads claiming at least one task in any dispatch of this tick; serial reports1 only with jobs\""

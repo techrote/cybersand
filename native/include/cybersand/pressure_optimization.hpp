@@ -5,12 +5,17 @@
 
 namespace cybersand {
 
-// Execution v2 adds deterministic proof-cost admission. A cold/invalidated
-// stencil runs ordinary motion once; a failed proof waits eight eligible visits.
-// These are derived-work limits, never changes to pressure physics or cadence.
-inline constexpr std::uint64_t kPressureOptimizationExecutionVersion = 2;
+// Execution v3's deterministic certificate work budget is not a wall-clock
+// break-even model. Fixed weights and windows are bound by execution identity.
+inline constexpr std::uint64_t kPressureOptimizationExecutionVersion = 3;
 inline constexpr std::uint8_t kPressureCertificateWarmupVisits = 1;
 inline constexpr std::uint8_t kPressureCertificateBackoffVisits = 8;
+inline constexpr std::uint8_t kPressureCertificateTrialTicks = 8;
+inline constexpr std::uint8_t kPressureCertificateSuspensionTicks = 32;
+inline constexpr std::uint64_t kPressureCertificateInvalidationCharge = 1;
+inline constexpr std::uint64_t kPressureCertificateProofCharge = 40;
+inline constexpr std::uint64_t kPressureCertificateReuseCharge = 1;
+inline constexpr std::uint64_t kPressureCertificateSavedCallCredit = 8;
 
 // Execution budgets, not different pressure physics. Incomplete derived state
 // selects the complete admitted reference operator, charged in the counters.
@@ -41,6 +46,12 @@ struct PressureKernelWork {
 };
 
 struct PressureOptimizationCounters : PressureKernelWork {
+    // Owner-only work-budget bookkeeping; worker scratch stays seven words.
+    std::uint64_t certificate_work_charged = 0, certificate_work_credited = 0;
+    std::uint64_t certificate_work_windows = 0, certificate_work_suspensions = 0;
+    std::uint64_t certificate_unavailable_ticks = 0, certificate_suspended_ticks = 0;
+    std::uint64_t certificate_cold_resets = 0, certificate_cold_reset_cells = 0;
+    std::uint64_t certificate_layer_activations = 0;
     std::uint64_t index_rebuilds = 0;
     std::uint64_t invalidation_rects = 0;
     std::uint64_t columns_recomputed = 0;
@@ -66,6 +77,11 @@ struct PressureOptimizationCounters : PressureKernelWork {
 };
 
 struct PressureOptimizationSnapshot {
+    bool certificate_layer_enabled = false, certificate_contents_cold = false;
+    std::uint8_t certificate_window_ticks = 0, certificate_suspend_remaining = 0;
+    std::uint64_t certificate_window_charge = 0, certificate_window_credit = 0;
+    std::uint64_t certificate_last_window_charge = 0, certificate_last_window_credit = 0;
+    std::size_t certificate_buffer_capacity_bytes = 0;
     PressureOptimizationStatus status = PressureOptimizationStatus::Disabled;
     bool cached = false;
     bool dormant = false;

@@ -34,7 +34,12 @@ PROFILES = (
 )
 FALLBACKS = ("index", "head", "member", "pair")
 ARMS = ("reference", "cached", "dormant")
-EXECUTION = 2
+EXECUTION = 3
+CERTIFICATE_WORK_MODEL = {
+    "id": "certificate_work_credits_v1", "trial_ticks": 8, "suspension_ticks": 32,
+    "warmup_visits": 1, "backoff_visits": 8,
+    "invalidation_charge": 1, "proof_charge": 40, "reuse_charge": 1, "saved_call_credit": 8,
+}
 PHASES = {"cold": 8, "warm": 48, "disturbed": 32}
 CORE = ["world.cpp", "material_rules.cpp", "scheduler_geometry.cpp",
         "settled_world_discovery.cpp", "render_snapshot.cpp", "c_api.cpp"]
@@ -175,6 +180,8 @@ def validate_rows(rows: list[dict], profile: str, fallback: str, workers: int, r
             header.get("profile") != profile or header.get("fallback") != fallback or
             header.get("workers") != workers or header.get("replicate") != replicate or header.get("phase_ticks") != list(PHASES.values())):
         raise ValueError("native header differs from requested immutable profile")
+    if header.get("certificate_work_model") != CERTIFICATE_WORK_MODEL:
+        raise ValueError("certificate work model differs from prospective execution3 registration")
     boxed = profile in PROFILES[:2]
     domain = [0, 0, 128, 128] if boxed else [0, 0, 416, 24] if profile == PROFILES[4] else [0, 0, 88, 8]
     roi = [0, 0, 32, 128] if boxed else [0, 0, 8, 8]

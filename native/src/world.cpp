@@ -255,9 +255,10 @@ struct World::PressureChunk {
     static constexpr std::uint8_t kCertificateValid = 1;
     static constexpr std::uint8_t kCertificateWarmup = kPressureCertificateWarmupVisits + 1;
     static constexpr std::uint8_t kCertificateBackoff = kPressureCertificateBackoffVisits + 1;
-    explicit PressureChunk(std::size_t count, bool cached = false)
+    explicit PressureChunk(std::size_t count, bool cached = false, bool dormant = false)
         : cells(count), head(count, kNoHead), visit(count, 0U) {
-        if (cached) { base_head.assign(count, kNoHead); rest_certificate.assign(count, kCertificateWarmup); }
+        if (cached) base_head.assign(count, kNoHead);
+        if (dormant) rest_certificate.resize(count);
     }
     std::vector<Cell> cells;
     std::vector<std::int32_t> head;
@@ -1404,7 +1405,8 @@ World::Chunk& World::ensure_chunk(ChunkCoord coord) {
     }
     auto chunk = std::make_unique<Chunk>(config_.chunk_size, config_.activity_block_size);
     if (pressure_ != nullptr) {
-        chunk->pressure = std::make_unique<PressureChunk>(chunk->cells.size(), pressure_->cache != nullptr);
+        chunk->pressure = std::make_unique<PressureChunk>(chunk->cells.size(), pressure_->cache != nullptr,
+            pressure_->cache != nullptr && pressure_->cache->dormant);
         chunk->pressure->coordinate = coord;
         if (pressure_->cache != nullptr) pressure_->cache->cold();
     }
@@ -4409,6 +4411,7 @@ TickStats World::tick() {
             (void)advance_settled_discovery(config_.settled_discovery_tick_budget);
         if (settled_discovery_ != nullptr && config_.settled_region_tick_budget != 0)
             (void)advance_settled_regions(config_.settled_region_tick_budget);
+        finish_pressure_certificate_tick();
         return stats;
     } catch (...) {
         // Partial cell/event/epoch/metadata progress is diagnostic only. Workers
