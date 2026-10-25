@@ -65,13 +65,14 @@ qualifications and false full-match eligibility remain visible. Source/runtime
 and complete host/setup verification remain open.
 
 The session picker defaults to **Controlled • fixed actor-free**. Explicit
-**Exploratory • sampled owner** admits body-free schema-2 definitions, including
+**Exploratory • staged owner** admits body-free schema-2 definitions, including
 owner-paced interest and the existing allowlisted sampled actor/equipment route.
 Replacement owners are configured privately against native candidate collision
 queries before the actual mutex-fenced swap. Reset and F5 sampled-rig changes
-retain the selected solver and normalization. Physical bodies still refuse
-before queueing through this new route, preserving the accepted physical/actor
-session; their ordinary Current route remains available. Host-only refusal does
+retain the selected solver and normalization. Supported desktop exploratory maps
+also stage articulated Rapier actors, equipment, actual initial body masks and
+terrain in a permanent private physics space before commit. Other body routes
+refuse while their ordinary Current routes remain available. Host-only refusal does
 not synthesize a native attempt. Pending choices, applied policy, owner
 acknowledgement and error text stay distinct. Blind/read-only apparatus disable
 rebuild controls. See the [staged host contract](../architecture/liquid-prepared-setup-and-receipts.md#staged-sampled-actors-and-exploratory-owners)
@@ -90,7 +91,7 @@ controlled API is narrower than older explicit-policy diagnostic APIs.
 |---|---|---|
 | Fixed actor-free schema-2 MicroScenario, protected Dam Break and mixed fixture | Native prepared policy/normalization, immutable typed receipt, final owner fence, actual panel/controller apply/refuse/reset; desktop worker and synchronous controller | Complete verified definition/host/provenance collection and final integrated platform qualification |
 | Fixed player-enabled or body-enabled MicroScenario | Ordinary default route retained; Controlled refuses; explicit Exploratory stages the existing sampled character when body-free | Stage physical body/terrain/equipment candidate before supporting rigid bodies |
-| Owner-paced/exploratory MicroScenario | Explicit Exploratory route stages allowlisted sampled actor/equipment owners or the existing sampled character, final initial interest/settings and native Exploratory/HostPaced receipt; Controlled refuses | Physical-body staging, complete verified host/actor envelope and retained edit/import semantics |
+| Owner-paced/exploratory MicroScenario | Explicit Exploratory stages allowlisted sampled owners, the existing sampled character, or desktop articulated Rapier actor/equipment/terrain in a permanent space; native facts include actual initial masks and final execution; Controlled refuses | Remaining barrel/reference-body routes, complete verified host/actor envelope and retained edit/import semantics |
 | Bootstrap `create_world` / ordinary `reset_demo_world` | Defaults; ordinary reset retires typed setup identity | Explicit retained-policy coordinator without changing Current defaults |
 | `build_world` rectangle showcases / Blacksite | Existing default constructor | Prepared tuples and explicit setup/mode qualification |
 | `build_tuned_world` / Experiment Tower | Existing default constructor | Policy propagation while preserving independent transport and actor paths |

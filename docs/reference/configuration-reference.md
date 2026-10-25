@@ -321,8 +321,13 @@ for its constructor and platform limits. Subsequent explicit Exploratory source
 stages body-free sampled ownership. Candidate collision queries keep the same
 32×32 maximum box and four modes as the existing native owner query. Initial
 owner interest uses the definition camera, existing 480×270 view and selected
-buffers/window; request/settings/profile changes fence commit. Physical bodies
-remain refused through this new route pending staged actual mask capture.
+buffers/window; request/settings/profile changes fence commit. The subsequent
+desktop articulated route stages at most the existing 8 actors/64 body parts,
+strict 11-float copied body records and actual masks before receipt capture.
+Its permanent private physics space remains inactive with frozen bodies through
+at least two distinct real physics frames and complete initial terrain setup.
+The app retains its existing 32-chunk/750-microsecond collider budget. Other body
+constructors remain open; see [staged physical ownership](../architecture/liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners).
 
 The [native prepared setup/receipt/accounting contract](../architecture/liquid-prepared-setup-and-receipts.md)
 owns these bounds, native-issued refusal/failure outcomes, source/host

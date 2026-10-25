@@ -483,6 +483,26 @@ native base is still pre-final-fix `9e91a9f7`; repeat the full applicable matrix
 after accepted #246 integration. Physical-body staging, source/runtime
 publication and actual browser qualification remain separate required gates.
 
+### Staged articulated physical host slice
+
+The [physical preparation contract](../architecture/liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners)
+adds three focused cases, all requiring a fresh adapter DLL and actual Rapier:
+
+```text
+godot --headless --path godot --script res://tests/test_prepared_physical_owner.gd
+godot --headless --path godot --script res://tests/test_liquid_physical_preparation.gd
+godot --headless --path godot --script res://tests/test_liquid_physical_transaction.gd
+```
+
+They verify actual frozen poses across real physics frames, shared native mask
+raster parity and stored Water, tick-zero mask/receipt equality, copied pending
+facts, stale/tampered continuation refusal, final request/reset/settings/stop
+fences, admitted paint/profile disposition and actual panel/application graph
+adoption or retained-owner refusal. Keep ordinary physical integration/equipment,
+sampled/controlled/UI, MicroScenario, actor-selection and Water Feel cases in the
+same scoped matrix. This local pre-final-#246 native base still needs fresh main
+integration, published source-matched runtimes, Linux and actual Web gates.
+
 ### Branch-scoped runtime publishers
 
 Source-matched Linux and Windows runtimes have been published by **temporary,

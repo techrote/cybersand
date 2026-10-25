@@ -701,6 +701,17 @@ sampled owners under the same mutex fence as native replacement. Matching
 accepted owner frame only after main installs its new camera/configuration.
 Details belong to the [staged owner contract](../architecture/liquid-prepared-setup-and-receipts.md#staged-sampled-actors-and-exploratory-owners).
 
+The desktop articulated route additionally supplies copied `initial_bodies`
+(maximum 64 existing 11-float records) before native facts capture.
+`prepared_liquid_world_values(world, token)` returns owned pending terrain, body
+values/digest and physical hash. The exclusive worker publishes these copied
+facts through `prepared_physical_liquid_values()`; main completes the permanent
+physics-space setup and calls `complete_prepared_physical_liquid(identity, ready,
+reason)`. Token/request/epoch/instance/body-digest identity and the final owner
+fence bind this continuation. No scene node, RID or mutable World crosses it.
+Native canonical bytes bind actual initial masks; the copied body digest remains
+host metadata with existing qualifications. See [physical ownership and queued-work disposition](../architecture/liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners).
+
 ### Read-only native MicroScenario inspection
 
 The MS-001 adapter preparation adds `CyberDemoBridge.inspect_cell(world, point)`

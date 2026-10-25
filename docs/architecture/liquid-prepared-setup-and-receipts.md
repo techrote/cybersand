@@ -133,8 +133,8 @@ the same owner turn joins the candidate character before swap; an unconsumed
 newer profile refuses preparation. Settings remain independent of solver choice.
 
 Reset and F5 sampled-rig reconstruction retain the accepted exploratory policy,
-normalization and intent. Physical/rigid-body reconstruction still refuses before
-queueing through this new route; the old physical session remains accepted.
+normalization and intent. The subsequent desktop articulated route below stages
+actual physical ownership; other body constructors remain explicitly unsupported.
 The synchronous controller stages its existing sampled character through the
 same native view and commits on its main thread; sampled rig/equipment ownership
 there remains separate work. Main-thread Rapier objects never enter native pool
@@ -147,6 +147,61 @@ records actual owner/app routes, deterministic declared failure/supersession,
 prior masked Water preservation and Current actor regressions. These local tests
 still require fresh accepted #246 native integration and the final platform
 matrix; they do not qualify that newer native source.
+
+### Staged articulated physical owners
+
+**Current on the unmerged #202 branch, locally qualified Windows native source:**
+the explicit Exploratory route additionally supports the existing allowlisted
+schema-2 play maps with an articulated Rapier actor and its existing loadout.
+Controlled fixed fixtures remain actor-free. Barrel/reference bodies, Water Feel,
+Tower, imports, generation and actual browser execution remain separate routes in
+the [constructor matrix](../operations/lcb-manual-comparison-ux.md#constructor-coverage-at-this-checkpoint).
+
+Main prepares the complete existing PhysicalActorSession, rig, equipment and
+terrain bridge inside a private permanent `SubViewport`/`World2D`. Its space has
+automatic integration disabled and its dynamic bodies remain frozen. Actual
+PhysicsServer poses/velocities are read back, copied and verified across at least
+two distinct real physics frames. Candidate terrain uses the existing bounded
+collider budget. Accepted adoption keeps exactly this graph and space; no physics
+rebind or fallible reconstruction follows native commit. Old scene/space and
+equipment remain installed through refusal. No scene object or RID enters the
+simulation worker or native pool workers.
+
+The native preparation option `initial_bodies` admits at most 64 existing
+11-float body records. The strict construction parser refuses malformed stride,
+nonfinite values, invalid IDs/sizes/mass/serials and duplicate IDs. Its accepted
+mask raster shares the ordinary adapter law. Actual initial masks are installed
+before native facts and canonical receipt capture, without sweep resolution or
+erasing stored Water. `prepared_liquid_world_values` returns copied pending terrain,
+body input, its SHA256 and candidate physical hash, never a World reference or an
+applied receipt. The canonical native physical hash binds the actual initial mask;
+the body-input digest/count are explicitly additional host readback metadata,
+not a new field or stronger claim in the frozen native-v1 encoding.
+
+The worker keeps one nonblocking continuation. Main's copied readiness binds its
+token, request serial, epoch, Godot instance ID and body-input digest. Continuation
+resumption requires exact equality with the original definition, policy, complete
+setup/options and request revision; the token is retained internally, never read
+from a caller's setup dictionary. Final request/settings/reset/stop fences still
+run under the owner mutex. Wrong readiness, changed definitions or superseding
+requests cannot install a stale candidate. Stop discards it without waiting for a
+main callback. An initial body-frame hold rejects stale predecessor publications
+until main adopts the accepted graph and acknowledges the matching serial.
+
+While preparation waits, the worker leaves already-admitted cell/disc paint and
+physical work in their mailboxes. New paint explicitly refuses during this
+interval. Independently admitted settings or reset/prototype changes retire the
+candidate and keep their ordinary disposition; unconsumed profile values remain
+queued until the retained owner can apply them. Main suspends old-owner mutation
+and input publication while its separate physical replacement is pending.
+
+Native-v1 full-match eligibility stays false with source/runtime/host claim and
+setup-coverage qualifications. **Planned:** after constructor coverage is stable,
+a separately versioned host-evidence/readback envelope must identify the actually
+executed runtime and source-matched provenance, complete actor/body/equipment and
+execution setup, and bind its immutable native run bytes. A receipt panel or
+caller-supplied digest cannot supply that proof. This slice introduces no new
+host-evidence schema or native codec version.
 
 ## Source map
 

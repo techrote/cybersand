@@ -37,6 +37,16 @@ final PENV/settings fences and accepted initial-frame acknowledgement. The
 still `9e91a9f7`, before final #246 checked-scalar fixes. Physical-body staging,
 remaining constructors, full provenance and actual browsers remain open.
 
+The subsequent [articulated preparation slice](../architecture/liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners)
+adds a nonblocking desktop worker/main continuation, permanent frozen private
+Rapier space, actual initial native masks before receipt capture, exact internal
+continuation binding and retained admitted-work disposition. The normal Liquids
+panel can rebuild supported articulated exploratory maps. Other body/constructor
+routes, a separately versioned truthful host-evidence layer and actual browsers
+remain open; frozen native-v1 qualifications and false full-match eligibility
+remain unchanged. Source still needs accepted #246/main integration before final
+qualification, followed by the coordinated stable IN interface checkpoint.
+
 
 ## Residual LCB-001 continuation — 2026-10-24
 

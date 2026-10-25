@@ -312,6 +312,16 @@ and [family material hooks](../architecture/liquid-solver-family-policy.md).
 | WATER-013 | Current residual native: caller source/runtime claims cannot select verified provenance or full matched eligibility; the old Godot dictionary getter is not typed native-v1 proof |
 | WATER-014 | Planned #201: a Water rest certificate preserves body-contact probes, mandatory material/future work and unrelated materials; it proves rest instead of freezing nonzero flow and confers no #12 skip ownership |
 
+The bounded unmerged #202 [articulated host contract](../architecture/liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners)
+additionally owns these application preparation invariants:
+
+| ID | Status and requirement |
+|---|---|
+| LCBH-001 | Current on branch: actual main-thread body poses stay frozen in their permanent private physics space until complete terrain readiness and native/worker commit; accepted adoption performs no rebind |
+| LCBH-002 | Current on branch: strict copied initial body input produces native masks before receipt capture; canonical physical hash binds those masks, while body digest/count remain qualified host metadata |
+| LCBH-003 | Current on branch: exact continuation binding and final request/settings/reset/stop fences preserve the retained World/owners/receipt on refusal; already-admitted work keeps its explicit mailbox disposition |
+| LCBH-004 | Planned full host evidence remains separate: frozen native-v1 qualifications and false full-match eligibility cannot be relabeled by a panel, caller claim or unverified host envelope |
+
 ## GPU and rejected-approach invariants
 
 Rationale: [principles](../architecture/principles-and-non-goals.md),

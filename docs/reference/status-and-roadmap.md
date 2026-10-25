@@ -801,6 +801,18 @@ cannot be a cross-tick static-rest predicate.
 
 ## LCB-003 controlled application-host slice — 2026-10-24
 
+**Subsequent unmerged #202 source, 2026-10-25:** supported desktop exploratory
+maps additionally stage articulated Rapier actors/equipment and complete initial
+terrain in a permanent private World2D. Actual frozen poses produce initial
+native masks before receipt capture. The nonblocking worker/main continuation
+preserves old owners and admitted work on refusal, with final request/settings/
+reset/stop and exact definition/policy/options binding. See the [physical host contract](../architecture/liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners)
+and [constructor matrix](../operations/lcb-manual-comparison-ux.md#constructor-coverage-at-this-checkpoint).
+Barrel/reference bodies, remaining normal constructors, a separately versioned
+complete host-evidence layer, final source/runtime integration and actual browser
+qualification remain open. Native outer receipt-v1 keeps its qualifications and
+false full-match eligibility.
+
 **Current experimental source on `codex/lcb003-application-host`, based on
 the frozen #246 head `9e91a9f7`:** fixed actor-free schema-2 MicroScenarios can
 request an explicit family policy and `water-normalize-v1` through the normal
