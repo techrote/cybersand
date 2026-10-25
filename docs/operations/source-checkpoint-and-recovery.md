@@ -172,3 +172,16 @@ C:/kybersand/worktrees/issue-17-state-precision. [Evidence](../audits/2026-09-11
 records exact compiler/executable/local-delta hashes and all retained samples.
 C:/kybersand/source remains at f3fb9de with its deliberately dirty DLL untouched.
 No experiment branch is merged into production. Raw data and toolchains stay local.
+
+
+## Unmerged desktop native-default owner — 2026-10-25
+
+Recover `codex/lcb003-desktop-default` at native705a2e2d and owner/test66bf30f8,
+whose full identity and immutable local evidence are recorded in the
+[dated checkpoint](../audits/2026-10-25-lcb003-desktop-native-default-host.md).
+The original dirty source checkout and companion pins are untouched. This source
+requires final normal integration with repaired Brine/Water-IN and the application
+branch, fresh source-matched Windows/Linux runtimes and actual Web/full-host gates.
+The development DLL and preserved failed shutdown experiments are not released
+runtime acceptance. Native capacity and owner/test changes are separate commits;
+documentation is an additive follow-up checkpoint.

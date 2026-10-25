@@ -10,10 +10,16 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The later [desktop native-default owner checkpoint](audits/2026-10-25-lcb003-desktop-native-default-host.md)
+records actual owner/reset controls, typed initial pressure-capacity refusal,
+local Windows proof and preserved shutdown failures; final combined-source
+platform/publication and complete-host acceptance remain open.
+
 The unmerged [native desktop default-demo preparation](architecture/liquid-prepared-setup-and-receipts.md#native-desktop-default-demo-preparation)
 shares the authoritative ordered recipe, inherited laws, native constructor
 origin and one-use prepared fence. The [dated local proof](audits/2026-10-25-lcb003-native-default-demo-preparation.md)
-qualifies the adapter API; Main/worker adoption and final platforms remain open.
+qualifies the earlier adapter API; the later owner checkpoint above and final
+combined platforms/publication have separate evidence.
 
 The subsequent [four ordinary synchronous demo route](architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-synchronous-demo-rebuilding)
 adds explicit Exploratory rebuilding while retaining exact authored recipes,

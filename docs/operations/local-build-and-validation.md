@@ -1360,3 +1360,16 @@ Water/transport configurations and exercises candidate masks, token/refusal,
 geometry and constructor-origin lifetime. Its [dated Windows proof](../audits/2026-10-25-lcb003-native-default-demo-preparation.md)
 retains the diagnostic-lifecycle failure and 167/493/72 final regression results.
 This native API case does not test Main/worker adoption or published platforms.
+
+
+The later [desktop native-default owner checkpoint](../audits/2026-10-25-lcb003-desktop-native-default-host.md)
+adds `test_liquid_desktop_default_host.gd` plus five non-discovered helper scripts
+under `tests/fixtures/lcb/desktop_default_*.gd`. It requires actual86/0, successful
+process exit, two healthy FM/CY moving-body rows and three native pressure-capacity
+refusals. A success footer followed by0xC0000005 is a failure. The corrected API
+case is164/six sections; its earlier167 result predates the initial-capacity
+preflight. Registered native capacity46 and focused ASan+UBSan46 are bounded
+separate results; seven affected Godot processes pass1078 assertions. Keep old
+failures, final EOF-only transition, raw/canonical source bindings and actual
+runtime identities. Fresh integrated native/publication/full platform gates
+remain required; do not substitute the old development DLL for them.

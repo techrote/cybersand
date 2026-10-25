@@ -1365,4 +1365,8 @@ one-use token is the same private candidate slot used by prepared rectangles and
 thermal levels. No World storage crosses the adapter. Copied native constructor
 origin reports recipe ID, session generation, prepared status and health; it is
 retired by other World replacements and is not inferred from equal tuples or a
-scene label. Complete host binding and desktop owner adoption remain separate.
+scene label. The later [desktop owner/capacity checkpoint](../architecture/liquid-prepared-setup-and-receipts.md#desktop-native-default-owner-and-initial-pressure-capacity)
+uses copied origin/qualified observation slots and exact request/settings/native
+guards for owner adoption. Actual initial pressure-capacity excess produces a
+native typed refusal before capture/token/swap, with actual attempt readback.
+Complete host binding and final platform publication remain separate.

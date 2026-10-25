@@ -10,6 +10,22 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Desktop native-default owner checkpoint — 2026-10-25
+
+Unmerged native705a2e2d and owner66bf30f8 now stage the authoritative default
+recipe through exclusive worker, private sampled player and original permanent
+body graph. R retains selection; F6/F7/PENV refusal/adoption is transactional.
+The original default PF scene exceeds1024 initial gas compartments, so all three
+pressure variants now refuse natively before replacement, preserving the healthy
+World and actual attempt receipt. FM/CY actual body cohorts retain exact Water628320.
+The [dated checkpoint](../audits/2026-10-25-lcb003-desktop-native-default-host.md)
+records46 focused native/ASan+UBSan assertions, seven affected1078 assertions,
+final86-assertion host execution, independent review and every rejected shutdown
+experiment. Separate preloaded test resources remove the inner-class ownership
+context; definitive upstream cause, integrated native union, final Linux/Web,
+full host identity and matching runtime publication remain open.
+
+
 ## Native desktop default recipe — 2026-10-25
 
 Unmerged source `afe19c2d` shares the original native ordered demo recipe with
@@ -17,8 +33,9 @@ explicit prepared compilation, retains Water/transport and restores production
 reset/lifecycle semantics. Native constructor origin binds actual generation and
 retires on other replacements. The [dated API proof](../audits/2026-10-25-lcb003-native-default-demo-preparation.md)
 records old-DLL tuple controls, the preserved diagnostic-lifecycle failure,
-fresh Windows167/493/72 and independent review. Main/worker owner adoption,
-repaired IN parent integration and final platforms/publication remain open.
+its original Windows167/493/72 and independent review. The later owner/capacity
+checkpoint above supersedes its pending Main/worker scope; repaired IN union
+and final platforms/publication remain open.
 
 Shared helper381bae3d now accepts copied optional three-position/rotation arrays,
 with finite/length preflight and unchanged omitted Water Feel defaults. Fresh50

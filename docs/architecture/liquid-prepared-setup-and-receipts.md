@@ -924,5 +924,34 @@ actual generation; imports and other World replacements retire it even when
 cell bytes match. Edits retain constructor origin without claiming replay.
 [LCBH-015](../reference/invariants.md) and the [dated local proof](../audits/2026-10-25-lcb003-native-default-demo-preparation.md)
 record the old-DLL four-cohort controls, corrected diagnostic lifecycle failure
-and fresh 167-assertion Windows API case. Main/worker owner adoption, repaired IN
-parent integration, full host binding and final platform publication are Planned.
+and its original167-assertion Windows API case. The subsequent owner and
+capacity checkpoint below supplies bounded Main/worker evidence; repaired IN
+integration, complete host and final platform publication remain open.
+
+
+## Desktop native-default owner and initial pressure capacity
+
+**Current unmerged source705a2e2d/66bf30f8:** explicit Exploratory active Apply
+uses copied native constructor origin and the authoritative shared default
+recipe. The exclusive worker prepares native tuples, sampled player/profile,
+actual final settings and initial body masks; Main stages the original three
+poses/rotations in one permanent frozen space. Final request/settings/native
+and token guards precede adoption. Qualified immutable observation collection
+precedes commit; published Main readback is copied and full-match eligibility
+remains false. R retains accepted policy/normalization/geometry. F6/actors refuse
+unsupported changes, and F7/PENV preferences adopt only with successful fresh
+owners. Controlled ordinary player/body admission remains refused.
+
+The authored default pattern exceeds the fixed initial gas-compartment capacity
+for PF0/PF1/PF2. Native construction now counts actual Water-adjacent closed
+Empty regions with actual masks before capture/token/swap, returning typed
+CapacityRefused and actual attempt readback while retaining the healthy World.
+FM/CY run real moving-body cohorts with exact Water628320; PF variants have
+explicit capacity refusals, without capacity/law changes or fallback. Future
+dynamic exhaustion retains quarantine. [LCBH-019](../reference/invariants.md)
+and the [dated source/runtime/failure record](../audits/2026-10-25-lcb003-desktop-native-default-host.md)
+qualify46 focused native/sanitized assertions, seven affected1078-assertion
+processes and final86-assertion host execution. Test helper resources have
+one-way external ownership; earlier post-footer crashes remain rejected.
+Final union, actual Web, complete constructor/host-mask lifecycle and fresh
+source-matched Windows/Linux publication/full CI remain separate acceptance.
