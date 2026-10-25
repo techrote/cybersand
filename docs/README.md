@@ -10,6 +10,19 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## Native scientific apparatus checkpoint — 2026-10-25
+
+The [native apparatus guide](operations/lcb-native-scientific-apparatus.md) now
+routes real actor-free prepared CYPS inputs, complete resident Water/IN census,
+ordered post-event accounting and the portable qualification runner. The
+[dated Windows O1 proof](audits/2026-10-25-lcb004-native-observation-apparatus.md)
+records three fresh30-tick precursors, six Native1/4-worker children and the
+corrected-reader six-positive/25-negative raw replay. Initial prepared/restored
+legacy hashes remain distinct with their exact quiet-cache diagnosis; physical
+projections and all31 host baselines are checked. Actual Linux/Windows Release
+CI and full scientific registration remain pending. This is not a long-horizon
+campaign, new runtime publication, solver acceptance or Web execution.
+
 ## Post-publication test checkpoint
 
 The [identity-test correction](audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)

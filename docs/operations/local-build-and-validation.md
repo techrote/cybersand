@@ -10,6 +10,76 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Bounded native scientific apparatus
+
+The [apparatus guide](lcb-native-scientific-apparatus.md) owns the standalone
+consumer and portable prepare/run/replay interface; the [dated O1 Windows
+record](../audits/2026-10-25-lcb004-native-observation-apparatus.md) owns actual
+compiler, binary, runtime and failure identities. Current local qualification
+is LLVM-MinGW23.1.0 `-O1 -g`, three actual Godot30-tick precursors and six Native
+children at120s each. It checks complete resident authority, all31 host
+baselines, worker parity and independently closed ledgers. The corrected-reader
+six-positive/25-negative replay is a reduction of those retained outputs.
+
+`make lcb-science` now builds the separate Release consumer with the existing
+`-O3 -DNDEBUG -flto` flags. **This target has not been executed by the O1
+record.** Actual Linux and Windows Release scoped CI is required before
+apparatus merge; no local Windows result substitutes for that matrix.
+Pure source/accounting guards can be run without physics output:
+
+```text
+make lcb-science-apparatus-test
+python -B -m unittest discover -s tools/lcb -p test_qualify_science_apparatus.py
+```
+
+The first command runs the producer/reducer tests; the second runs the
+portable-runner identity tests. `qualify_science_apparatus.py run` requires
+explicit Godot/Native/Rapier/consumer/compiler paths, a complete compiler-source
+map and build receipt, explicit shared libraries where needed and a new
+external output directory. It builds nothing, preserves strict child logs
+and never retries or overwrites. `replay` executes no engine/Godot process.
+Current manifest-native equality permits the published runtime to prepare
+inputs while historical build-input/host/module/script qualifications remain
+separate. This apparatus does not publish a runtime, run a full scientific
+campaign or establish Web/visual/full-host acceptance.
+
+### Separate bounded Release build helper and hosted qualification
+
+The [apparatus guide](lcb-native-scientific-apparatus.md#bounded-release-qualification-infrastructure)
+owns the new five-TU build/bundle interface and platform qualifications. Its local
+pure guards are:
+
+```text
+python -B -m unittest discover -s tools/lcb -p test_build_science_consumer.py
+python tools/ci/check_ci_provider_policy.py
+```
+
+On the actual Linux build host, select `/usr/bin/g++-13`, `--target linux` and a
+new external `--out` when invoking `tools/lcb/build_science_consumer.py`. For
+`--target windows`, supply the existing pinned Linux-host LLVM-MinGW compiler,
+`--toolchain-root` and original `--toolchain-archive`. Build output includes the
+complete actual depfile union, flat receipt and exact transfer-bundle manifest.
+Use `--verify-bundle DIR --target linux|windows --expected-source COMMIT` before
+qualification; the actual Windows LF checkout must match the complete raw source
+map. The transferred Linux-host compiler/driver file is identity data on Windows.
+
+The new hosted workflow supplies the pinned Godot and source-matched published
+Native/selected Rapier inputs to the existing portable runner. Its three-fixture,
+six-child30-tick execution is still required on actual Linux and Windows Release.
+The34 local pure passes are not either platform result. Draft suppression and a
+new workflow's dispatch-registration boundary remain explicit; no runtime is
+republished merely to add this apparatus-only build/validation lane.
+
+The first scoped hosted attempt40243375312 fails before qualification: GCC13
+rejects an apparatus span initialization and Windows byte verification detects
+CRLF `world_inertial.inc`, while its actual Windows cross-build succeeds. The
+[dated correction](../audits/2026-10-25-lcb004-native-observation-apparatus.md#first-actual-hosted-scope-failure-and-bounded-repair)
+retains all three jobs/artifacts and the old O1 proofs separately. Windows bundle
+verification now additionally accepts `--restore-compiled-checkout NEW_EXTERNAL`
+to restore only complete compiled Native text paths from authenticated Git-index
+LF bytes. Exact map equality remains mandatory. Corrected local36-guard and
+Clang syntax-only results do not replace pending actual GCC/Windows qualification.
+
 ## Published and development identity-test controls
 
 The [two-test correction ledger](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)

@@ -1,0 +1,201 @@
+name: LCB scientific apparatus Release qualification
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft]
+    paths:
+      - '.github/workflows/lcb-science-apparatus.yml'
+      - 'tools/lcb/**'
+      - 'native/include/**'
+      - 'native/src/**'
+      - 'native/bench/lcb_science.cpp'
+      - 'godot/native_extension/**'
+      - 'godot/tests/lcb_science_prepare.gd'
+      - 'godot/tests/fixtures/lcb/**'
+      - 'godot/addons/cybersand_native/**'
+      - 'godot/addons/godot-rapier2d/runtime-provenance.*.json'
+      - 'third_party/**'
+      - 'Makefile'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lcb-science-apparatus-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHONUTF8: '1'
+  GODOT_SILENCE_ROOT_WARNING: '1'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  linux:
+    if: github.repository == 'techrote/cybersand' && (github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - name: Keep source bytes LF
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - name: Pure apparatus and provider guards
+        run: |
+          set -euo pipefail
+          python3 -B -m unittest discover -s tools/lcb -p 'test_*science*.py'
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Build actual Linux five-TU Release consumer
+        timeout-minutes: 20
+        run: |
+          set -euo pipefail
+          python3 -B tools/lcb/build_science_consumer.py --compiler /usr/bin/g++-13 --target linux --out "$RUNNER_TEMP/science-linux-build"
+          python3 -B tools/lcb/build_science_consumer.py --target linux --verify-bundle "$RUNNER_TEMP/science-linux-build" --expected-source "$GITHUB_SHA"
+      - name: Materialize published Linux runtime and selected Rapier
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          tools/check_linux_runtime_floor.sh
+      - name: Verify pinned Linux Godot
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          curl --fail --location --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/godot-linux.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,subprocess,zipfile
+          lock=json.loads(pathlib.Path('third_party/godot-runtime.lock.json').read_text())
+          archive=pathlib.Path(os.environ['RUNNER_TEMP'])/'godot-linux.zip'
+          assert archive.stat().st_size==lock['editor']['size'] and hashlib.sha256(archive.read_bytes()).hexdigest()==lock['editor']['sha256']
+          out=archive.with_suffix('')
+          with zipfile.ZipFile(archive) as z:
+              assert z.testzip() is None
+              z.extractall(out)
+          exe=out/'Godot_v4.7-stable_linux.x86_64';exe.chmod(0o755)
+          assert subprocess.check_output([str(exe),'--version'],text=True,timeout=30).strip()==lock['godot_version']
+          PY
+      - name: Three actual precursors and six bounded Linux children
+        timeout-minutes: 40
+        run: |
+          set -euo pipefail
+          python3 -B tools/lcb/qualify_science_apparatus.py run --godot "$RUNNER_TEMP/godot-linux/Godot_v4.7-stable_linux.x86_64" --native-runtime "$GITHUB_WORKSPACE/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so" --rapier-runtime "$GITHUB_WORKSPACE/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --consumer "$RUNNER_TEMP/science-linux-build/lcb_science" --compiler "$RUNNER_TEMP/science-linux-build/compiler.bin" --build-receipt "$RUNNER_TEMP/science-linux-build/build-receipt.json" --compiler-source-map "$RUNNER_TEMP/science-linux-build/source-map.json" --out "$RUNNER_TEMP/science-linux-qualification"
+      - name: Retain actual Linux build and partial qualification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lcb-science-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/science-linux-build/
+            ${{ runner.temp }}/science-linux-qualification/
+          if-no-files-found: error
+          retention-days: 30
+
+  windows-build:
+    if: github.repository == 'techrote/cybersand' && (github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Keep source bytes LF
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - name: Provider and build-helper guards
+        run: |
+          set -euo pipefail
+          python3 -B -m unittest discover -s tools/lcb -p test_build_science_consumer.py
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Fetch existing pinned Linux-host LLVM-MinGW archive
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          curl --fail --location --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" 'https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz'
+          echo "cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+      - name: Build and authenticate actual Windows PE Release consumer
+        timeout-minutes: 20
+        run: |
+          set -euo pipefail
+          python3 -B tools/lcb/build_science_consumer.py --compiler "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-g++" --target windows --toolchain-root "$RUNNER_TEMP/llvm-mingw" --toolchain-archive "$RUNNER_TEMP/llvm-mingw.tar.xz" --out "$RUNNER_TEMP/science-windows-build"
+          python3 -B tools/lcb/build_science_consumer.py --target windows --verify-bundle "$RUNNER_TEMP/science-windows-build" --expected-source "$GITHUB_SHA"
+      - name: Retain exact cross-build and partial failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lcb-science-windows-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/science-windows-build/
+          if-no-files-found: error
+          retention-days: 30
+
+  windows-execution:
+    needs: windows-build
+    if: github.repository == 'techrote/cybersand' && needs.windows-build.result == 'success' && (github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false)
+    runs-on: windows-2022
+    timeout-minutes: 55
+    steps:
+      - name: Keep raw compiled inputs LF before checkout
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: lcb-science-windows-build-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/science-windows-build
+      - name: Authenticate cross-build and actual checkout before execution
+        run: |
+          set -euo pipefail
+          python -B tools/lcb/build_science_consumer.py --target windows --verify-bundle "$RUNNER_TEMP/science-windows-build" --expected-source "$GITHUB_SHA" --restore-compiled-checkout "$RUNNER_TEMP/science-windows-checkout"
+          python -B -m unittest discover -s tools/lcb -p 'test_*science*.py'
+          python tools/ci/check_ci_provider_policy.py
+      - name: Materialize published Windows runtime and selected Rapier
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+      - name: Verify pinned official Windows Godot
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          curl --fail --location --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/godot-windows.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          python - <<'PY'
+          import os,pathlib,sys
+          sys.path.insert(0,'tools/ci')
+          import run_windows_godot_regressions as w
+          w.prepare_godot(pathlib.Path(os.environ['RUNNER_TEMP'])/'godot-windows.zip')
+          PY
+      - name: Three actual precursors and six bounded Windows children
+        timeout-minutes: 40
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json,os,pathlib,subprocess,sys
+          temp=pathlib.Path(os.environ['RUNNER_TEMP']);build=temp/'science-windows-build'
+          args=[sys.executable,'-B','tools/lcb/qualify_science_apparatus.py','run','--godot',str(temp/'godot-windows/Godot_v4.7-stable_win64_console.exe'),'--native-runtime',str(pathlib.Path('godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll').resolve()),'--rapier-runtime',str(pathlib.Path('godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll').resolve()),'--consumer',str(build/'lcb_science.exe'),'--compiler',str(build/'compiler.bin'),'--build-receipt',str(build/'build-receipt.json'),'--compiler-source-map',str(build/'source-map.json'),'--out',str(temp/'science-windows-qualification')]
+          for value in json.loads((build/'libraries.json').read_text())['files'].values():args+=['--consumer-library',str(build/value['path'])]
+          subprocess.run(args,check=True)
+          PY
+      - name: Retain actual Windows and partial qualification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: lcb-science-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/science-windows-build/
+            ${{ runner.temp }}/science-windows-checkout/
+            ${{ runner.temp }}/science-windows-qualification/
+          if-no-files-found: error
+          retention-days: 30
