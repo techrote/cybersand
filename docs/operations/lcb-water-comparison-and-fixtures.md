@@ -22,8 +22,10 @@ related-documents: [../architecture/liquid-solver-family-policy.md, lcb-manual-c
   ([evidence](../audits/2026-10-23-lcb000-gates-cde-design-evidence.md)).
 - **Current in source:** opt-in W-PF reference and W-CY on main through accepted #246
   (`ec58d919`). Their source/runtime qualifications
-  are recorded in their dated evidence. Cached/dormant and inertial arms remain
-  Planned, with their registered invariants still required.
+  are recorded in their dated evidence. The #201 branch admits cached/dormant
+  source with local correctness/cost proof; actual source-matched publication and
+  final required gates remain pending. Water inertial remains Planned/refused,
+  with its registered invariants still required.
 
 Families, variants, refusal codes and receipts are defined in the
 [solver-family policy](../architecture/liquid-solver-family-policy.md).
@@ -34,7 +36,7 @@ Families, variants, refusal codes and receipts are defined in the
 |---|---|---|---|
 | `W-FM` | `freemass_v1/reference` | protected native Current: mass8, coherence12, fractional | **executes** |
 | `W-CY` | `cellular_yield_v1/reference` | **experimental whole-cell**: every Water cell contains `maximum()`; Water's own yielding law and material block v2 (`viscosity_index` 0–255, default 0) retain its material hooks | Current on accepted main through #246; source-matched Windows/Linux publication and final required matrix pass ([contract](../architecture/liquid-prepared-setup-and-receipts.md)) |
-| `W-PF` | `pressure_flow_v1/{reference,cached,cached_dormant}` | experimental pressure/overfill/gas candidate, Water-only v1 | `reference` **executes**, opt-in: Current from merged #245 ([design](../architecture/pressure-flow-v1.md)); `cached`/`cached_dormant` refused `family_unavailable` (#201) |
+| `W-PF` | `pressure_flow_v1/{reference,cached,cached_dormant}` | experimental pressure/overfill/gas candidate, Water-only v1 | `reference` **executes**, opt-in: Current from merged #245 ([design](../architecture/pressure-flow-v1.md)); `cached`/`cached_dormant` execute in the unmerged #201 branch ([optimization contract](../architecture/pressure-optimization.md)); real publication/final gates pending |
 | `W-IN` | `inertial_cellular_v1/reference` | experimental inertial regime with retained velocity/accumulator | proposed (#212); refused today |
 
 Rules:
@@ -283,7 +285,7 @@ source-derived registry. It leaves both protected fixtures unchanged.
 | ID | Control | Expected |
 |---|---|---|
 | NC-1 | Request `inertial_cellular_v1` for Oil | `combination_rejected` before construction; prior session intact [#200] |
-| NC-2 | Request `pressure_flow_v1` or `inertial_cellular_v1` on today's build | `family_unavailable`; no fallback to Current [#200]. On the pressure branch `pressure_flow_v1/reference` is admitted, so the regressions exercise NC-2 with `cached`, `cached_dormant` and inertial |
+| NC-2 | Request a declared but unavailable mapping, such as Brine/inertial on the #201 source | `family_unavailable`; no fallback to Current [#200]. Accepted #246 main admits pressure reference; the #201 branch admits all three Water PF variants. Its transactional negatives use unsupported Oil/PF mappings and inertial instead of a now-executable Water variant |
 | NC-3 | Fractional-Water setup under `W-CY` without an explicit `water-normalize-v1` opt-in | `normalization_required` [#200] |
 | NC-4 | Pressure Water at rest beside actively flowing Oil (M2b) | Oil motion and chemistry continue; Water dormancy never suppresses them [#201] |
 | NC-5 | Salt dissolution under M1 | Products at inertial default state; ledger closes as above [#212/#160] |
