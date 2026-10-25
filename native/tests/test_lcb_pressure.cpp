@@ -5,6 +5,7 @@
 #include "cybersand/liquid_solver_policy.hpp"
 #include "cybersand/sha256.hpp"
 #include "cybersand/world.hpp"
+#include "cybersand/liquid_run_receipt_native_capture.hpp"
 
 #include <algorithm>
 #include <array>
@@ -17,6 +18,7 @@
 #include <span>
 #include <stdexcept>
 #include <string>
+#include <tuple>
 #include <vector>
 
 namespace {
@@ -346,12 +348,12 @@ void test_pressure_admission_and_refusal() {
     require(running.available_families == 0x07U && running.schemas.size() == 2U, "running build profile");
     const auto policy = pressure_policy();
     require(policy.assignment(3)->family == LiquidSolverFamily::PressureFlowV1, "Water applied family");
-    for (std::int32_t variant : {1, 2}) {
+    for (std::int32_t variant : {0, 1, 2}) {
         const auto words = pressure_request(std::nullopt, variant);
-        const auto refused = LiquidSolverPolicy::decode(std::span<const std::int32_t>(words));
-        require(!refused.accepted() && refused.refusal.code == LiquidPolicyRefusalCode::FamilyUnavailable &&
-                    refused.refusal.material == std::optional<std::uint16_t>{3},
-                "cached/cached_dormant must stay refused until #201");
+        const auto decoded = LiquidSolverPolicy::decode(std::span<const std::int32_t>(words));
+        require(decoded.accepted() && decoded.policy->assignment(3)->variant ==
+                    static_cast<cybersand::LiquidSolverVariant>(variant),
+                "running pressure implementation preserves the exact selected variant");
     }
     // Parameter block: accepted in range, refused outside it.
     const auto with_block = pressure_policy(std::pair{0, 64});
@@ -1094,6 +1096,9 @@ void test_physical_hash_and_persistence() {
     require(edited->content_hash() == a.content_hash(), "cells unchanged by the gas-only edit");
 }
 
+#include "test_pressure_optimization.inc"
+#include "test_pressure_gas_cache.inc"
+
 void test_default_policy_untouched() {
     // A default World never allocates or runs pressure state, and its historic
     // hashes are those of Current (protected by the existing golden tests).
@@ -1129,3 +1134,13 @@ void test_lcb_pressure_persistence() { test_physical_hash_and_persistence(); }
 void test_lcb_pressure_default_untouched() { test_default_policy_untouched(); }
 void test_lcb_pressure_comparison_rest() { test_comparison_projection_rest_and_authority(); }
 void test_lcb_pressure_comparison_policy() { test_comparison_projection_policy_scope(); }
+void test_lcb_pressure_cached_heads() { test_cached_incremental_heads(); }
+void test_lcb_pressure_cached_gas() { test_cached_gas_and_fallback(); }
+void test_lcb_pressure_affected_gas() { test_affected_gas_components(); test_gas_component_worker_parity(); }
+void test_lcb_pressure_gas_cache_capacity() { test_gas_component_capacity_fallbacks(); }
+void test_lcb_pressure_dormant_obligations() {
+    test_dormant_motion_and_body_obligations();
+    test_dormant_remote_gas_dependency();
+}
+
+void test_lcb_pressure_optimization_identity() { test_pressure_optimization_identity_readback(); }

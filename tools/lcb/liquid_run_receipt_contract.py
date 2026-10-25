@@ -27,11 +27,11 @@ PHYSICAL_FACTS = {
     "captured_date": "2026-10-24", "platform": "Windows x86_64",
     "compiler": "LLVM-MinGW 20260826 UCRT, clang++ -O1 C++20",
     "stack_reserve_bytes": 1048576, "stack_commit_bytes": 4096,
-    "binary_sha256": "5b1bc5a3cce3e3695afa4ba4747717ce5d5217995c869cf92238845648e284c3",
+    "binary_sha256": "527a06158fd80e1ef35a68127785ac7e285d034b72f2091440868c1d6260928e",
     "qualification": "Measured native fixture facts; this oracle does not validate the physical-state hash algorithm",
     "hash_version": 2,
-    "hashes": {"empty": 16165131874597650402, "selected": 8342982264491895429,
-               "pressure": 16049781087787453878, "normalized": 3660450907820741656},
+    "hashes": {"empty": 9415002630067955296, "selected": 6690082968909786843,
+               "pressure": 5678000854211230257, "normalized": 8099572871718572666},
 }
 DEFAULT_CONFIG = {
     "water_semantics": [1, 8, 12, 0], "interaction": [1, 8, 9, 30],

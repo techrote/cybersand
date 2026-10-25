@@ -183,8 +183,8 @@ struct LiquidPolicyBuild {
 
     // This binary: FreeMass and CellularYield qualified for each liquid's current
     // default, plus Water x pressure_flow_v1/reference and whole-cell
-    // cellular_yield_v1/reference (#200). cached and
-    // cached_dormant (#201) and every other candidate remain refused.
+    // cellular_yield_v1/reference (#200), plus candidate cached/cached_dormant
+    // pressure implementations (#201). Other cells remain explicitly refused.
     [[nodiscard]] static const LiquidPolicyBuild& running() {
         static const LiquidPolicyBuild build = [] {
             LiquidPolicyBuild result;
@@ -194,7 +194,7 @@ struct LiquidPolicyBuild {
                 result.qualified_variants.push_back({row.material_id, row.default_family, 0x01U});
             }
             result.qualified_cells.emplace_back(std::uint16_t{3}, std::uint8_t{3});
-            result.qualified_variants.push_back({3, 3, 0x01U});
+            result.qualified_variants.push_back({3, 3, 0x07U});
             result.qualified_cells.emplace_back(std::uint16_t{3}, std::uint8_t{2});
             result.qualified_variants.push_back({3, 2, 0x01U});
             result.schemas.push_back({true, 3, kPressureBlockVersion, false, 0,
