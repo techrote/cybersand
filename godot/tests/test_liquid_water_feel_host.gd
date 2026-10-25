@@ -1,7 +1,8 @@
 extends SceneTree
 
 class ReferencePreparationRefusal extends "res://scripts/prepared_reference_body_session.gd":
-	func prepare_reference(_parent: Node, _templates: Array[RigidBody2D], _size: Vector2) -> bool:
+	func prepare_reference(_parent: Node, _templates: Array[RigidBody2D], _size: Vector2,
+			_positions: PackedVector2Array = PackedVector2Array(), _rotations: PackedFloat32Array = PackedFloat32Array()) -> bool:
 		last_error = "fixture declared reference body preparation refusal"
 		return false
 

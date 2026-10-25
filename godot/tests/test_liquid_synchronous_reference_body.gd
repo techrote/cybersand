@@ -34,6 +34,7 @@ func snapshot() -> Dictionary:
 		"bodies":owner.rigid_bodies.duplicate(),"poses":Prepared._pose_values(owner.rapier_bridge.pack_body_states())}
 
 func start(preset: int = 2) -> bool:
+	owner.microscenario_panel.open_liquids()
 	panel.select_preset(preset);panel.session_picker.select(1);panel.geometry_picker.select(0)
 	panel.refresh(owner.tower_context)
 	if not expect(not panel.apply_button.disabled,"actual authored Physics Pit Apply control admits Exploratory"): return false
@@ -45,7 +46,9 @@ func complete() -> bool:
 	while owner._pending_web_reference!=null and Time.get_ticks_msec()<deadline:
 		await physics_frame
 		owner._advance_web_reference()
-	return owner._pending_web_reference==null and owner.microscenario_error.is_empty()
+	var applied: bool = owner._pending_web_reference==null and owner.microscenario_error.is_empty()
+	if applied: owner._process(0)
+	return applied
 
 func original_pose(states: PackedFloat32Array) -> bool:
 	if states.size()!=3*Coupling.INPUT_STRIDE: return false
@@ -149,8 +152,18 @@ func run() -> void:
 	finish()
 
 func _play(preset: int) -> void:
+	var actual: Dictionary = owner.native_world.get_liquid_solver_policy()
+	var water_assignment: Dictionary = {}
+	for assignment: Dictionary in actual.assignments:
+		if int(assignment.material)==3: water_assignment = assignment
+	var variant: String = "cached_dormant" if preset==4 else ("cached" if preset==3 else "reference")
+	expect(water_assignment.get("applied_family","")=="pressure_flow_v1"
+		and water_assignment.get("applied_variant","")==variant
+		and actual.policy_hash==owner.demo_bridge.validate_liquid_policy(panel.requested_policy).receipt.policy_hash,
+		"actual native pressure family/variant/hash matches the selected physical cohort")
 	var initial: PackedFloat32Array = owner.rapier_bridge.pack_body_states()
 	var water: int = owner.native_world.water_experiment_observation(Vector2i.ZERO,Vector2i(1024,1024)).water_integer
+	owner.microscenario_panel.liquid_dialog.hide()
 	owner.ui.close_menu();owner.paused = false;owner.focused = true;owner.input_armed = false
 	var contacts: int = 0
 	var applications: int = 0
@@ -178,7 +191,9 @@ func _play(preset: int) -> void:
 		and (current[1]!=initial[1] or current[2]!=initial[2]),"ordinary synchronous body/native feedback executes four authored seconds with positive translation and consumed signed feedback")
 	expect(owner.native_world.water_experiment_observation(Vector2i.ZERO,Vector2i(1024,1024)).water_integer==water and gas.get("closes",false),
 		"closed authored recipe preserves exact initial Water and closing pressure gas ledger")
-	cohorts.append({"preset":preset,"completed_ticks":owner.native_world.get_tick_index(),"manual_steps":owner.rapier_bridge.manual_step_count(),
+	cohorts.append({"preset":preset,"family":water_assignment.get("applied_family",""),
+		"variant":water_assignment.get("applied_variant",""),"policy_hash":actual.policy_hash,
+		"completed_ticks":owner.native_world.get_tick_index(),"manual_steps":owner.rapier_bridge.manual_step_count(),
 		"contacts":contacts,"water":water,"gas_closes":gas.get("closes",false),"applications":applications,
 		"accepted_impulse":[accepted_impulse.x,accepted_impulse.y],"absolute_impulse":absolute_impulse,
 		"max_accepted_age":accepted_ages.max() if not accepted_ages.is_empty() else -1,
