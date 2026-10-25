@@ -889,8 +889,10 @@ introduces a task-layer `4ly-episode/v1`, copied
 `4ly-observation/v1`, `4ly-action/v1` and normalized
 `4ly-flat-observation/v1` (54 floats). Only two admitted
 desired-velocity outputs cross into the existing session;
-each decision is bound to a current issued observation and epoch
-before consuming up to six real 60 Hz native/Rapier ticks.
+each fresh decision is bound to a current issued observation and epoch
+before consuming up to six real 60 Hz native/Rapier ticks. A missing fresh
+decision may carry only an already-live lease to its unchanged physical deadline;
+it submits no replacement command and cannot renew stale authority.
 Task rewards, course geometry, evaluator contact count and terminal
 status are not policy-readable. The prospective
 [registration](../../godot/tests/fixtures/4ly003_qualification_registration.json)

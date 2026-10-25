@@ -10,6 +10,13 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+The [local Water main refresh](../audits/2026-10-25-water-inertial-publication.md#main-flight-lease-refresh-and-native-binary-reuse--2026-10-25)
+consumes accepted main9935d569 without native or artifact changes. Its two Flight
+Godot inputs have fresh published-Water import/8,284-assertion proof, while the
+old491 execution ledger remains historical. The existing native-input reuse
+rule permits the retained libraries; full fresh exact-head gates remain required
+and no new publication sequence or final #212/#203 acceptance is implied.
+
 ## Accepted parent and qualified Water publication — 2026-10-25
 
 Parent PR #250 accepts exactd7681a5c after all required exact-head gates and
@@ -17,7 +24,7 @@ independent review, merged as main `dc915f2b2cc1261501058d0e967a98f32ecdee9d`.
 All three Water PF variants and Brine IN/reference are now accepted native main
 scope; full application/Web and programme completion remain separate.
 
-The isolated Water successor, draft PR #254, has [actual source-matched Windows/Linux publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
+The isolated Water successor, PR #254, has [actual source-matched Windows/Linux publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
 at source4b588279/run40166210470, four-path botC9e52b52. Both OSes pass15 real
 processes/642 policy assertions, strict original sections and the Water proof.
 Independent artifact/source/LFS/lease/floor review `b15ea7cb` has no actionable

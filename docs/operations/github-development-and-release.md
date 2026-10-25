@@ -171,6 +171,14 @@ is complete. This does not imply another request or an active Brine publication.
 
 ### Actual publication and remaining final-head gates
 
+The later [main #249 refresh](../audits/2026-10-25-water-inertial-publication.md#main-flight-lease-refresh-and-native-binary-reuse--2026-10-25)
+retains all76 native inputs and published artifacts. The existing
+[GDScript-only reuse rule](local-build-and-validation.md#physical-usable-validation)
+permits those libraries with fresh acceptance of the changed Flight scripts;
+the original491 build/test ledger remains evidence only for source4b. Its two
+Godot changes do not alone require sequence2 or a rewritten manifest. Fresh
+final-head required gates remain necessary after incorporating accepted main.
+
 **Current source-matched sequence1 on `codex/lcb005-water-inertial`:** the
 separate Water profile privately loads005/001, retains import plus14 processes,
 all deadlines and strict policy/Brine/pressure sections, and requires the actual
