@@ -33,6 +33,17 @@ $(BUILD_DIR)/tests: $(CORE_SOURCES) $(CORE_HEADERS) $(TEST_SOURCES) $(TEST_HEADE
 $(BUILD_DIR)/benchmark: $(SIMULATION_SOURCES) $(CORE_HEADERS) $(BENCH_SOURCES) | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) $(RELEASE_FLAGS) $(SIMULATION_SOURCES) $(BENCH_SOURCES) -o $@
 
+# Apparatus-only consumer of an immutable, real prepared CYPS precursor. It
+# does not construct a substitute fixture or select a scientific campaign.
+.PHONY: lcb-science lcb-science-apparatus-test
+lcb-science: $(BUILD_DIR)/lcb_science
+
+$(BUILD_DIR)/lcb_science: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/bench/lcb_science.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(RELEASE_FLAGS) -pthread $(SIMULATION_SOURCES) native/bench/lcb_science.cpp -o $@
+
+lcb-science-apparatus-test:
+	python3 -B -m unittest discover -s tools/lcb -p test_science_apparatus.py
+
 $(BUILD_DIR)/libcybersand.so: $(CORE_SOURCES) $(CORE_HEADERS) | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) $(RELEASE_FLAGS) -DCYBERSAND_BUILD_SHARED -fPIC -shared $(CORE_SOURCES) -o $@
 
