@@ -1,0 +1,8 @@
+{
+  "schema": "lcb001-shared-contract-publish-request-v1",
+  "family": "pressure_flow_v1",
+  "variant": "reference",
+  "scope": "residual200-shared-contract-and-water-cellular-yield",
+  "intent": "publish-source-matched-runtimes",
+  "request_sequence": 3
+}

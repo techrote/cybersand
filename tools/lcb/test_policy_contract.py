@@ -1,6 +1,7 @@
 """Regressions for the standalone Gate C liquid-policy wire/hash contract oracle.
 
-These test the Proposed contract only; no native policy or solver exists.
+These preserve the registered oracle profiles; running native qualification is
+checked separately and does not reinterpret the historical today profile.
 """
 from __future__ import annotations
 
@@ -167,7 +168,8 @@ class Refusals(unittest.TestCase):
             self.assertEqual(caught.exception.code, "family_unavailable")
 
     def test_compiled_family_is_qualified_per_material_cell(self):
-        # cellular_yield_v1 executes for ten liquids, but no Water route through it exists.
+        # Historical today profile retains default-only per-cell qualification,
+        # independently of new candidate cells in the running native build.
         b = pc.make_build(MATRIX_BYTES, VEC_CAT, (1, 2), qualified=pc.current_default_cells(MATRIX_BYTES))
         self.assertEqual(pc.policy_hash(pc.decode(pc.encode(pc.policy_for(b)), b)),
                          pc.policy_hash(pc.decode(pc.encode(pc.policy_for(hypo())), hypo())))

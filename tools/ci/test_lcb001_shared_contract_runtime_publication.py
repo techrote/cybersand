@@ -1,22 +1,23 @@
 #!/usr/bin/env python3
-"""Adversarial checks for the requested LCB-001 pressure-reference runtime publisher."""
+"""Adversarial checks for the requested LCB-001 residual shared-contract runtime publisher."""
 
 import argparse
 import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import struct
 import subprocess
 import tempfile
 import unittest
 from unittest import mock
 
-import lcb001_pressure_reference_runtime_publication as subject
+import lcb001_shared_contract_runtime_publication as subject
 
 
-BRANCH = "claude/lcb001-pressure-reference"
-WORKFLOW = "techrote/cybersand/.github/workflows/lcb001-pressure-reference-runtime-publication.yml@refs/heads/" + BRANCH
+BRANCH = "codex/lcb001-shared-contract"
+WORKFLOW = "techrote/cybersand/.github/workflows/lcb001-shared-contract-runtime-publication.yml@refs/heads/" + BRANCH
 RUNTIMES = {
     "linux": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
     "windows": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
@@ -28,15 +29,18 @@ MANIFESTS = {
 # An independent fixture: omitting a policy, host, LCB or Water case from the
 # implementation must invalidate the otherwise passing complete receipt below.
 SUCCESS_LOGS = {
-    "test_liquid_solver_policy": 'LIQUID_SOLVER_POLICY: 180 assertions; 0 failures; completed={"validation":true,"default_readback":true,"refusals":12,"parity_checkpoints":5,"cysd1_defaults":true}\n',
+    "test_liquid_solver_policy": 'LIQUID_SOLVER_POLICY: 385 assertions; 0 failures; completed={"validation":true,"default_readback":true,"refusals":11,"parity_checkpoints":5,"cysd1_defaults":true,"whole_cell_admission_parity":true,"whole_cell_overlay_refusals":true}\n',
     "test_microscenarios": "MICROSCENARIOS: 300 assertions; 0 failures\n",
     "test_microscenario_controllers": "MICROSCENARIO_CONTROLLERS: 90 assertions; 0 failures\n",
     "test_lcb_physics_contracts": "LCB physics contracts: 174 assertions, 0 failures\n",
     "test_lcb_negative_contracts": "LCB negative contracts: 74 assertions, 0 failures\n",
     "test_lcb_fixture_manifests": "LCB fixture manifests: 26 assertions, 0 failures\n",
-    "test_lcb_scenario_catalogue": "LCB scenario catalogue: 25 scenarios, 774 assertions, 0 failures\n",
+    "test_lcb_scenario_catalogue": "LCB scenario catalogue: 27 scenarios, 774 assertions, 0 failures\n",
     "test_water_feel_integration": "WATER_FEEL_INTEGRATION: 24 policy cases + 70 scenario builds/reset/invalid/actions/RG8/authority passed default_hash=123456789\n",
     "test_lcb_pressure_reference": 'LCB_PRESSURE_REFERENCE: 250 assertions; 0 failures; completed={"native_dispatch":true,"no_fallback":true,"gas_identity":true,"gas_merge_split":true,"vent_reseal":true,"empty_only_gas":true,"quantity_ledger":true,"physical_state_hash":true,"save_roundtrip":true,"refusal_isolation":true,"default_goldens":true,"worker_parity":true}\n',
+    "test_liquid_policy_worker": 'LIQUID_POLICY_WORKER: 29 assertions; 0 failures; completed={"initial":true,"explicit":true,"isolation":true,"refusals":3,"normalized":true,"no_request":true}\n',
+    "test_microscenario_native_observation": "MICROSCENARIO_NATIVE_OBSERVATION: 100 assertions; 0 failures\n",
+    "test_wex001_water_body_baseline": 'WEX001_SUMMARY {"schema":"wex001-summary-v1","cases":16,"shallow_control_peak_above":0,"moderate_displaced":1234,"moderate_peak_above":5678,"moderate_forbidden_peak":0,"moderate_first_forbidden_tick":-1,"moderate_body_floor_penetration":0.002,"hard_control_body_floor_penetration":0.0003,"deep_short_floor_contact":-1,"mirror_left_peak_above":7395,"mirror_right_peak_above":7395,"translated_peak_above":7395,"worker_shallow_hash":"123456789","worker_deep_hash":"234567890","observer_hash":"345678901"}\n',
 }
 
 
@@ -60,7 +64,7 @@ class RepositoryFixture(unittest.TestCase):
         self.git("config", "user.name", "Publisher guard fixture")
         self.git("config", "user.email", "publisher-fixture@example.invalid")
         self.git("config", "commit.gpgsign", "false")
-        for relative in ["README.md", *RUNTIMES.values(), *MANIFESTS.values(), subject.REQUEST, subject.PRESSURE_CASE, subject.EVIDENCE]:
+        for relative in ["README.md", *RUNTIMES.values(), *MANIFESTS.values(), subject.REQUEST, subject.EVIDENCE, *["godot/tests/" + name + ".gd" for name in SUCCESS_LOGS]]:
             path = self.root / relative
             path.parent.mkdir(parents=True, exist_ok=True)
             content = json.dumps(dict(subject.REQUEST_VALUE, request_sequence=1)) + "\n" if relative == subject.REQUEST else "original\n"
@@ -93,7 +97,7 @@ class ContextTests(RepositoryFixture):
             "GITHUB_REPOSITORY": "someone/cybersand",
             "GITHUB_REF": "refs/heads/main",
             "GITHUB_EVENT_NAME": "pull_request",
-            "GITHUB_WORKFLOW_REF": WORKFLOW.replace("lcb001-pressure-reference-runtime", "gen007-runtime"),
+            "GITHUB_WORKFLOW_REF": WORKFLOW.replace("lcb001-shared-contract-runtime", "gen007-runtime"),
             "GITHUB_SHA": "f" * 40,
             "GITHUB_RUN_ATTEMPT": "0",
         }
@@ -120,7 +124,14 @@ class ContextTests(RepositoryFixture):
 
 
 
-class PressureAdmissionTests(RepositoryFixture):
+class SharedContractAdmissionTests(RepositoryFixture):
+    def test_unarmed_publisher_refuses_before_remote_or_build_work(self):
+        (self.root / subject.REQUEST).unlink()
+        with mock.patch.object(subject, "git", wraps=subject.git) as git:
+            with self.assertRaisesRegex(RuntimeError, "Missing explicit shared-contract publish request"):
+                subject.check_source(self.args)
+        self.assertFalse(any(call.args[0] == "ls-remote" for call in git.call_args_list))
+
     def test_request_is_bound_to_original_source(self):
         subject.require_publication_request(self.source)
         path = self.root / subject.REQUEST
@@ -147,8 +158,37 @@ class PressureAdmissionTests(RepositoryFixture):
                 self.git("add", "--", subject.REQUEST)
                 self.git("commit", "--quiet", "-m", "Invalid request sequence fixture")
                 invalid_sha = self.git("rev-parse", "HEAD").decode().strip()
-                with self.assertRaisesRegex(RuntimeError, "Invalid pressure-reference publish request"):
+                with self.assertRaisesRegex(RuntimeError, "Invalid shared-contract publish request"):
                     subject.require_publication_request(invalid_sha)
+
+    def test_retired_or_other_scope_request_cannot_arm_this_publisher(self):
+        path = self.root / subject.REQUEST
+        variants = [
+            dict(subject.REQUEST_VALUE, schema="lcb001-pressure-reference-publish-request-v1"),
+            dict(subject.REQUEST_VALUE, scope="residual201-pressure-cache"),
+            dict(subject.REQUEST_VALUE, family="inertial_flow_v1"),
+            dict(subject.REQUEST_VALUE, variant="cached"),
+            dict(subject.REQUEST_VALUE, intent="build-only"),
+            dict(subject.REQUEST_VALUE, unexpected="extension"),
+        ]
+        for payload in variants:
+            with self.subTest(payload=payload):
+                path.write_text(json.dumps(dict(payload, request_sequence=1)) + "\n", encoding="utf-8", newline="\n")
+                self.git("add", "--", subject.REQUEST)
+                self.git("commit", "--quiet", "-m", "Foreign scope request fixture")
+                source = self.git("rev-parse", "HEAD").decode().strip()
+                with self.assertRaisesRegex(RuntimeError, "Invalid shared-contract publish request"):
+                    subject.require_publication_request(source)
+
+    def test_every_required_case_must_exist_before_build_admission(self):
+        for name in SUCCESS_LOGS:
+            with self.subTest(name=name):
+                path = self.root / "godot/tests" / (name + ".gd")
+                data = path.read_bytes()
+                path.unlink()
+                with self.assertRaisesRegex(RuntimeError, "regression is not implemented"):
+                    subject.require_publication_request(self.source)
+                path.write_bytes(data)
 
 
 class InputLedgerTests(RepositoryFixture):
@@ -167,6 +207,9 @@ class InputLedgerTests(RepositoryFixture):
             "godot/tests/test_worldgen_grammar.gd": b"# grammar adapter regression\n",
             "godot/tests/test_gen007_reactions.gd": b"# paired native reaction qualification\n",
             "examples/worldgen/gen007-deepworks.json": b'{"example":"GEN-007"}\n',
+            "godot/tests/fixtures/lcb/lcb-scenario-registry.json": b'{"registry":"current"}\n',
+            "godot/tests/fixtures/lcb/lcb-physics-contracts.json": b'{"contracts":"current"}\n',
+            "godot/tests/fixtures/wex001_water_body_baseline.json": b'[{"id":"W0"}]\n',
         }
         for relative in subject.BUILD_EXACT:
             path = self.root / relative
@@ -186,6 +229,11 @@ class InputLedgerTests(RepositoryFixture):
         for relative in (
             "godot/native_extension/generation_grammar_adapter.inc",
             "examples/worldgen/hierarchy-multi-district.json",
+            "godot/tests/fixtures/lcb/lcb-scenario-registry.json",
+            "godot/tests/fixtures/wex001_water_body_baseline.json",
+            "godot/addons/godot-rapier2d/runtime-provenance.linux.json",
+            "third_party/rapier-bvh-build.lock.json",
+            "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch",
         ):
             with self.subTest(changed=relative):
                 path = self.root / relative
@@ -227,7 +275,7 @@ class EvidenceTests(unittest.TestCase):
             subject.write_json(path, {"source": "fixture", "passed": True})
         self.assertEqual(path.read_bytes(), b'{\n  "passed": true,\n  "source": "fixture"\n}\n')
 
-    def test_complete_ordered_all_retained_and_semantic_plane_cases_are_required(self):
+    def test_complete_ordered_shared_contract_and_retained_cases_are_required(self):
         subject.verify_case_results(self.root, self.report)
         for omitted in SUCCESS_LOGS:
             with self.subTest(omitted=omitted):
@@ -272,14 +320,14 @@ class EvidenceTests(unittest.TestCase):
         prefix, raw = SUCCESS_LOGS[name].split("completed=", 1)
         sections = json.loads(raw)
         mutations = [{key: value for key, value in sections.items() if key != omitted} for omitted in sections]
-        mutations += [dict(sections, refusals=11), dict(sections, refusals=True), dict(sections, parity_checkpoints=0),
+        mutations += [dict(sections, refusals=10), dict(sections, refusals=True), dict(sections, parity_checkpoints=0),
                       dict(sections, cysd1_defaults=False), dict(sections, validation=1), [], "done"]
         for value in mutations:
             with self.subTest(sections=value):
                 self.write_log(name, prefix + "completed=" + json.dumps(value) + "\n")
                 with self.assertRaisesRegex(RuntimeError, "Incomplete liquid-policy helper sections"):
                     subject.verify_case_results(self.root, self.report)
-        for output in (SUCCESS_LOGS[name] + SUCCESS_LOGS[name], SUCCESS_LOGS[name].replace("180 assertions", "0 assertions"),
+        for output in (SUCCESS_LOGS[name] + SUCCESS_LOGS[name], SUCCESS_LOGS[name].replace("385 assertions", "0 assertions"),
                        SUCCESS_LOGS[name].replace("0 failures", "2 failures")):
             with self.subTest(output=output):
                 self.write_log(name, output)
@@ -297,6 +345,86 @@ class EvidenceTests(unittest.TestCase):
                 self.write_log(name, prefix + "completed=" + json.dumps(value) + "\n")
                 with self.assertRaises(RuntimeError):
                     subject.verify_case_results(self.root, self.report)
+
+    def test_worker_policy_sections_cannot_be_omitted_or_noops(self):
+        name = "test_liquid_policy_worker"
+        prefix, raw = SUCCESS_LOGS[name].split("completed=", 1)
+        sections = json.loads(raw)
+        variants = [{key: value for key, value in sections.items() if key != omitted} for omitted in sections]
+        variants += [dict(sections, refusals=2), dict(sections, refusals=True),
+                     dict(sections, explicit=False), dict(sections, normalized=1), [], "done"]
+        for value in variants:
+            with self.subTest(sections=value):
+                self.write_log(name, prefix + "completed=" + json.dumps(value) + "\n")
+                with self.assertRaises(RuntimeError):
+                    subject.verify_case_results(self.root, self.report)
+
+    def test_each_assertion_case_requires_one_positive_error_free_summary(self):
+        for name, original in SUCCESS_LOGS.items():
+            if name in ("test_wex001_water_body_baseline", "test_water_feel_integration"):
+                continue
+            for output in (re.sub(r"[1-9][0-9]* assertions", "0 assertions", original, count=1),
+                    original.replace("0 failures", "1 failures"), original + original):
+                with self.subTest(name=name, output=output):
+                    self.write_log(name, output)
+                    with self.assertRaises(RuntimeError):
+                        subject.verify_case_results(self.root, self.report)
+            self.write_log(name, original)
+
+    def test_wex_requires_exactly_one_complete_sixteen_case_summary(self):
+        name = "test_wex001_water_body_baseline"
+        original = SUCCESS_LOGS[name]
+        prefix, raw = original.split(" ", 1)
+        summary = json.loads(raw)
+        variants = [dict(summary, cases=value) for value in (0, 15, 17, True, "16")]
+        variants += [dict(summary, schema="other-summary"), {"schema":"wex001-summary-v1", "cases":16}]
+        for value in variants:
+            with self.subTest(summary=value):
+                self.write_log(name, prefix + " " + json.dumps(value) + "\n")
+                with self.assertRaisesRegex(RuntimeError, "Incomplete WEX-001"):
+                    subject.verify_case_results(self.root, self.report)
+        for output in (original + original, "WEX001_SUMMARY {broken}\n", original + "ERROR: failure after summary\n"):
+            with self.subTest(output=output):
+                self.write_log(name, output)
+                with self.assertRaises(RuntimeError):
+                    subject.verify_case_results(self.root, self.report)
+
+
+class FocusedExecutionTests(unittest.TestCase):
+    def test_all_cases_have_finite_bounds_and_preserve_discovered_flags(self):
+        discovered = {name: subject.runner.Case(name, ("--script", "res://tests/" + name + ".gd"), 180, 5.0)
+                      for name in SUCCESS_LOGS}
+        cases = subject.focused_cases(discovered)
+        self.assertEqual([case.name for case in cases], ["import", *SUCCESS_LOGS])
+        expected = {"test_liquid_solver_policy":360, "test_lcb_pressure_reference":900,
+                    "test_liquid_policy_worker":360, "test_microscenario_native_observation":240,
+                    "test_wex001_water_body_baseline":600}
+        for case in cases[1:]:
+            self.assertEqual(case.flags, discovered[case.name].flags)
+            self.assertEqual(case.requires_display, discovered[case.name].requires_display)
+            self.assertEqual(case.timeout, expected.get(case.name, 180))
+        del discovered["test_wex001_water_body_baseline"]
+        with self.assertRaisesRegex(RuntimeError, "Required focused regression is missing"):
+            subject.focused_cases(discovered)
+
+    def test_cross_os_execution_is_refused_before_bundle_or_tool_access(self):
+        for platform, host in (("windows", "linux"), ("linux", "win32")):
+            with self.subTest(platform=platform), mock.patch.object(subject.sys, "platform", host), \
+                    mock.patch.object(subject, "verify_bundle") as verify:
+                with self.assertRaisesRegex(RuntimeError, "Actual target-OS execution is required"):
+                    subject.execute(argparse.Namespace(platform=platform))
+                verify.assert_not_called()
+
+    def test_selected_rapier_backport_pins_match_the_current_provenance(self):
+        expected = {
+            "linux":"566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+            "windows":"b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        }
+        for platform, digest in expected.items():
+            with self.subTest(platform=platform):
+                self.assertEqual(subject.RAPIER[platform][1], digest)
+                path = subject.ROOT / "godot/addons/godot-rapier2d" / ("runtime-provenance." + platform + ".json")
+                self.assertEqual(json.loads(path.read_text(encoding="utf-8"))["sha256"], digest)
 
 
 class PublicationIndexTests(RepositoryFixture):

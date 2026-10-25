@@ -44,6 +44,10 @@ jobs:
           timeout 1m python3 tools/lcb/policy_contract.py --check
           timeout 1m python3 -m unittest discover -s tools/lcb -p test_policy_contract.py
           timeout 1m python3 tools/lcb/native_policy_artifacts.py --check
+      - name: Check native LCB setup and run receipt canonical vectors
+        run: |
+          timeout 1m python3 tools/lcb/water_normalization_contract.py --check
+          timeout 1m python3 tools/lcb/liquid_run_receipt_contract.py --check
       - name: Check LCB scenario definitions and registry are source-derived
         run: |
           timeout 2m python3 tools/lcb/scenario_catalogue.py --check

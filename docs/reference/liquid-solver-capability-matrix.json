@@ -1,6 +1,6 @@
 {
   "schema": "lcb-liquid-capability-matrix-v1",
-  "status": "LCB-000 Gate C proposal. Descriptor fields are parsed source facts; family statuses, variants and kernel_specialization text are reviewed hand-authored design classifications, not executable solver coverage. Only current_default cells execute today.",
+  "status": "LCB-000 Gate C classifications with source-qualified execution. Descriptor fields are parsed source facts; family statuses, variants and kernel_specialization text remain reviewed design classifications. Current defaults execute unchanged; executable_today and executable_variants identify qualified opt-in candidates.",
   "sources": {
     "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
     "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5"
@@ -53,7 +53,7 @@
   },
   "status_vocabulary": {
     "current_default": "executes today as the unchanged production default",
-    "proposed_experimental": "Gate C/D design target; not implemented, must be refused until its owner lands it",
+    "proposed_experimental": "Gate C/D design classification; only explicitly qualified executable_today/executable_variants run, all other variants must be refused",
     "proposed_alternate": "documented substitute candidate; NOT selectable (refused as not_selectable) until its owner qualifies it",
     "rejected": "construction must refuse this mapping before replacing any session"
   },
@@ -126,13 +126,16 @@
         },
         "cellular_yield_v1": {
           "status": "proposed_experimental",
-          "executable_today": false,
+          "executable_today": true,
           "selectable": true,
           "variants": [
             "reference"
           ],
           "classification": "reviewed design classification (PROPOSED table)",
-          "note": "Gate D experimental whole-cell Water regime; no Water route through flow_as_yielding_liquid exists"
+          "note": "LCB-001 #200 whole-cell Water reference executes with Water-specific viscosity material block v2; no fractional transfer or adhesion",
+          "executable_variants": [
+            "reference"
+          ]
         },
         "pressure_flow_v1": {
           "status": "proposed_experimental",

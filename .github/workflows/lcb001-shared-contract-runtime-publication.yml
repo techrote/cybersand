@@ -1,30 +1,31 @@
-name: LCB-001 pressure-reference scoped runtime publication
+name: LCB-001 residual shared-contract scoped runtime publication
 
 # Temporary branch-scoped publisher. Runtime/manifests are deliberately absent
 # from this filter, and existing ready-for-review acceptance gates are unchanged.
-# Each target OS executes the pressure-reference, liquid-policy, MicroScenario, LCB and Water Feel cases after import.
+# Each target OS executes W-CY admission, pressure-reference, worker, native
+# observation, WEX body-mask, MicroScenario, four LCB and Water Feel controls.
 on:
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
-      - '.github/workflows/lcb001-pressure-reference-runtime-publication.yml'
-      - 'tools/ci/lcb001_pressure_reference_runtime_publication.py'
-      - 'tools/ci/test_lcb001_pressure_reference_runtime_publication.py'
+      - '.github/workflows/lcb001-shared-contract-runtime-publication.yml'
+      - 'tools/ci/lcb001_shared_contract_runtime_publication.py'
+      - 'tools/ci/test_lcb001_shared_contract_runtime_publication.py'
   push:
-    branches: [chatgpt/lcb001-pressure-publisher-prep, claude/lcb001-pressure-reference]
+    branches: [codex/lcb001-shared-contract]
     # Explicit source-bound publication request; normal native edits do not dispatch a publisher.
-    # Workflow/helper changes run only the lightweight guard job on the prep branch.
+    # Workflow/helper changes run lightweight guards; absent request means no build.
     paths:
-      - 'tools/ci/lcb001_pressure_reference_publish_request.json'
-      - '.github/workflows/lcb001-pressure-reference-runtime-publication.yml'
-      - 'tools/ci/lcb001_pressure_reference_runtime_publication.py'
-      - 'tools/ci/test_lcb001_pressure_reference_runtime_publication.py'
+      - 'tools/ci/lcb001_shared_contract_publish_request.json'
+      - '.github/workflows/lcb001-shared-contract-runtime-publication.yml'
+      - 'tools/ci/lcb001_shared_contract_runtime_publication.py'
+      - 'tools/ci/test_lcb001_shared_contract_runtime_publication.py'
 
 permissions:
   contents: read
 
 concurrency:
-  group: lcb001-pressure-reference-runtime-publication-${{ github.ref }}
+  group: lcb001-shared-contract-runtime-publication-${{ github.ref }}
   cancel-in-progress: true
 
 env:
@@ -42,7 +43,7 @@ defaults:
 jobs:
   publisher-guards:
     name: validate staged publisher without building runtimes
-    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/chatgpt/lcb001-pressure-publisher-prep') || (github.event_name == 'pull_request' && github.head_ref == 'chatgpt/lcb001-pressure-publisher-prep' && github.base_ref == 'main'))
+    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/codex/lcb001-shared-contract') || (github.event_name == 'pull_request' && github.head_ref == 'codex/lcb001-shared-contract' && github.base_ref == 'main'))
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
@@ -54,12 +55,12 @@ jobs:
       - name: Run adversarial publisher guards and CI-provider policy
         run: |
           set -euo pipefail
-          python3 tools/ci/test_lcb001_pressure_reference_runtime_publication.py
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
           python3 tools/ci/check_ci_provider_policy.py
 
   admission:
-    name: require an explicit pressure-reference publication request
-    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/claude/lcb001-pressure-reference'
+    name: require an explicit residual shared-contract publication request
+    if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/codex/lcb001-shared-contract'
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     outputs:
@@ -74,19 +75,19 @@ jobs:
         id: gate
         run: |
           set -euo pipefail
-          python3 tools/ci/test_lcb001_pressure_reference_runtime_publication.py
-          if test -f 'tools/ci/lcb001_pressure_reference_publish_request.json'; then
-            python3 tools/ci/lcb001_pressure_reference_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          if test -f 'tools/ci/lcb001_shared_contract_publish_request.json'; then
+            python3 tools/ci/lcb001_shared_contract_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
             echo 'armed=true' >> "$GITHUB_OUTPUT"
           else
             echo 'armed=false' >> "$GITHUB_OUTPUT"
-            echo 'No explicit pressure-reference publish request. Build and publication disabled.' >> "$GITHUB_STEP_SUMMARY"
+            echo 'No explicit shared-contract publish request. Build and publication disabled.' >> "$GITHUB_STEP_SUMMARY"
           fi
 
   linux:
     needs: admission
-    name: build and execute the Linux pressure-reference runtime
-    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/claude/lcb001-pressure-reference' && needs.admission.outputs.armed == 'true'
+    name: build and execute the Linux shared-contract runtime
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/lcb001-shared-contract' && needs.admission.outputs.armed == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 55
     steps:
@@ -99,8 +100,8 @@ jobs:
       - name: Validate publisher guards and unchanged source
         run: |
           set -euo pipefail
-          python3 tools/ci/test_lcb001_pressure_reference_runtime_publication.py
-          python3 tools/ci/lcb001_pressure_reference_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python3 tools/ci/lcb001_shared_contract_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
 
       - name: Fetch pinned Linux Rapier only
         run: |
@@ -141,28 +142,28 @@ jobs:
             ld --version | head -n 1
             sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.linux.template_debug.x86_64.a"
           } > "$RUNNER_TEMP/toolchain.txt"
-          python3 tools/ci/lcb001_pressure_reference_runtime_publication.py record --platform linux --source-sha "$GITHUB_SHA" --runtime "$CYBERSAND_NATIVE_OUTPUT" --toolchain "$RUNNER_TEMP/toolchain.txt" --bundle build/lcb001-pressure-reference-linux
+          python3 tools/ci/lcb001_shared_contract_runtime_publication.py record --platform linux --source-sha "$GITHUB_SHA" --runtime "$CYBERSAND_NATIVE_OUTPUT" --toolchain "$RUNNER_TEMP/toolchain.txt" --bundle build/lcb001-shared-contract-linux
 
-      - name: Execute pressure-reference, liquid-policy, MicroScenario, LCB and Water Feel cases on Linux
+      - name: Execute all required shared-contract and retained control cases on Linux
         run: |
           set -euo pipefail
           timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot-linux.zip" "$GODOT_URL"
-          python3 tools/ci/lcb001_pressure_reference_runtime_publication.py test --platform linux --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-linux.zip" --bundle build/lcb001-pressure-reference-linux
+          python3 tools/ci/lcb001_shared_contract_runtime_publication.py test --platform linux --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-linux.zip" --bundle build/lcb001-shared-contract-linux
 
       - name: Retain Linux runtime and execution evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: lcb001-pressure-reference-runtime-linux-${{ github.run_id }}
-          path: build/lcb001-pressure-reference-linux/
+          name: lcb001-shared-contract-runtime-linux-${{ github.run_id }}
+          path: build/lcb001-shared-contract-linux/
           if-no-files-found: error
           overwrite: true
           retention-days: 30
 
   windows-build:
     needs: admission
-    name: cross-build the Windows pressure-reference runtime
-    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/claude/lcb001-pressure-reference' && needs.admission.outputs.armed == 'true'
+    name: cross-build the Windows shared-contract runtime
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/lcb001-shared-contract' && needs.admission.outputs.armed == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 55
     steps:
@@ -175,8 +176,8 @@ jobs:
       - name: Validate publisher guards and unchanged source
         run: |
           set -euo pipefail
-          python3 tools/ci/test_lcb001_pressure_reference_runtime_publication.py
-          python3 tools/ci/lcb001_pressure_reference_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python3 tools/ci/lcb001_shared_contract_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
 
       - name: Prepare pinned SCons and godot-cpp
         run: |
@@ -215,8 +216,8 @@ jobs:
           set -euo pipefail
           timeout 35m tools/build_pinned_godot_cpp.sh windows
           timeout 20m tools/build_native_extension_windows.sh
-          mkdir -p build/lcb001-pressure-reference-windows
-          "$LLVM_MINGW_ROOT/bin/llvm-objdump" -p "$CYBERSAND_NATIVE_OUTPUT" > build/lcb001-pressure-reference-windows/windows-imports.txt
+          mkdir -p build/lcb001-shared-contract-windows
+          "$LLVM_MINGW_ROOT/bin/llvm-objdump" -p "$CYBERSAND_NATIVE_OUTPUT" > build/lcb001-shared-contract-windows/windows-imports.txt
           {
             echo 'Build host: GitHub-hosted Ubuntu 24.04; Windows x86_64 target'
             echo "godot-cpp=$GODOT_CPP_COMMIT; SCons=4.10.1"
@@ -225,21 +226,21 @@ jobs:
             "$LLVM_MINGW_ROOT/bin/ld.lld" --version
             sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.windows.template_debug.x86_64.a"
           } > "$RUNNER_TEMP/toolchain.txt"
-          python3 tools/ci/lcb001_pressure_reference_runtime_publication.py record --platform windows --source-sha "$GITHUB_SHA" --runtime "$CYBERSAND_NATIVE_OUTPUT" --toolchain "$RUNNER_TEMP/toolchain.txt" --bundle build/lcb001-pressure-reference-windows
+          python3 tools/ci/lcb001_shared_contract_runtime_publication.py record --platform windows --source-sha "$GITHUB_SHA" --runtime "$CYBERSAND_NATIVE_OUTPUT" --toolchain "$RUNNER_TEMP/toolchain.txt" --bundle build/lcb001-shared-contract-windows
 
       - name: Retain Windows build for actual Windows execution
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: lcb001-pressure-reference-build-windows-${{ github.run_id }}
-          path: build/lcb001-pressure-reference-windows/
+          name: lcb001-shared-contract-build-windows-${{ github.run_id }}
+          path: build/lcb001-shared-contract-windows/
           if-no-files-found: error
           overwrite: true
           retention-days: 30
 
   windows-execution:
-    name: execute Windows pressure-reference cases
+    name: execute Windows shared-contract cases
     needs: windows-build
-    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/claude/lcb001-pressure-reference'
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/lcb001-shared-contract'
     runs-on: windows-2022
     timeout-minutes: 25
     env:
@@ -259,14 +260,14 @@ jobs:
       - name: Validate publisher guards and unchanged source
         run: |
           set -euo pipefail
-          python tools/ci/test_lcb001_pressure_reference_runtime_publication.py
-          python tools/ci/lcb001_pressure_reference_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          python tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python tools/ci/lcb001_shared_contract_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
 
       - name: Restore exact Windows build
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: lcb001-pressure-reference-build-windows-${{ github.run_id }}
-          path: build/lcb001-pressure-reference-windows
+          name: lcb001-shared-contract-build-windows-${{ github.run_id }}
+          path: build/lcb001-shared-contract-windows
 
       - name: Fetch pinned Windows Rapier only
         run: |
@@ -275,18 +276,18 @@ jobs:
           git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
           echo "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" | sha256sum --check --strict
 
-      - name: Execute pressure-reference, liquid-policy, MicroScenario, LCB and Water Feel cases on Windows
+      - name: Execute all required shared-contract and retained control cases on Windows
         run: |
           set -euo pipefail
           curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
-          python tools/ci/lcb001_pressure_reference_runtime_publication.py test --platform windows --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-windows.zip" --bundle build/lcb001-pressure-reference-windows
+          python tools/ci/lcb001_shared_contract_runtime_publication.py test --platform windows --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-windows.zip" --bundle build/lcb001-shared-contract-windows
 
       - name: Retain Windows runtime and execution evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: lcb001-pressure-reference-runtime-windows-${{ github.run_id }}
-          path: build/lcb001-pressure-reference-windows/
+          name: lcb001-shared-contract-runtime-windows-${{ github.run_id }}
+          path: build/lcb001-shared-contract-windows/
           if-no-files-found: error
           overwrite: true
           retention-days: 30
@@ -294,7 +295,7 @@ jobs:
   publish:
     name: fast-forward the source branch with both validated runtimes
     needs: [linux, windows-execution]
-    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/claude/lcb001-pressure-reference'
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/lcb001-shared-contract'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     permissions:
@@ -310,36 +311,36 @@ jobs:
       - name: Require the feature branch to remain at the built source
         run: |
           set -euo pipefail
-          python3 tools/ci/test_lcb001_pressure_reference_runtime_publication.py
-          python3 tools/ci/lcb001_pressure_reference_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python3 tools/ci/lcb001_shared_contract_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
           git lfs install --local
 
       - name: Restore passed Linux runtime and evidence
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: lcb001-pressure-reference-runtime-linux-${{ github.run_id }}
-          path: build/lcb001-pressure-reference-linux
+          name: lcb001-shared-contract-runtime-linux-${{ github.run_id }}
+          path: build/lcb001-shared-contract-linux
 
       - name: Restore passed Windows runtime and evidence
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: lcb001-pressure-reference-runtime-windows-${{ github.run_id }}
-          path: build/lcb001-pressure-reference-windows
+          name: lcb001-shared-contract-runtime-windows-${{ github.run_id }}
+          path: build/lcb001-shared-contract-windows
 
       - name: Verify complete matching provenance and stage only the four runtime paths
         run: |
           set -euo pipefail
-          python3 tools/ci/lcb001_pressure_reference_runtime_publication.py stage --source-sha "$GITHUB_SHA" --linux-bundle build/lcb001-pressure-reference-linux --windows-bundle build/lcb001-pressure-reference-windows
+          python3 tools/ci/lcb001_shared_contract_runtime_publication.py stage --source-sha "$GITHUB_SHA" --linux-bundle build/lcb001-shared-contract-linux --windows-bundle build/lcb001-shared-contract-windows
           git add -- godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/runtime-provenance.linux.json godot/addons/cybersand_native/runtime-provenance.json
-          python3 tools/ci/lcb001_pressure_reference_runtime_publication.py check-index --source-sha "$GITHUB_SHA"
+          python3 tools/ci/lcb001_shared_contract_runtime_publication.py check-index --source-sha "$GITHUB_SHA"
           git diff --check --cached
           git diff --exit-code
 
       - name: Commit and fast-forward only the unchanged feature branch
         run: |
           set -euo pipefail
-          python3 tools/ci/lcb001_pressure_reference_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
-          python3 tools/ci/lcb001_pressure_reference_runtime_publication.py check-index --source-sha "$GITHUB_SHA"
+          python3 tools/ci/lcb001_shared_contract_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          python3 tools/ci/lcb001_shared_contract_runtime_publication.py check-index --source-sha "$GITHUB_SHA"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'build(lcb001): publish source-matched Linux and Windows runtimes'
@@ -348,11 +349,11 @@ jobs:
           # the built SHA. The lease atomically refuses any changed remote tip,
           # including a concurrent reset; it cannot overwrite concurrent work.
           # The LFS pre-push hook uploads only the new runtime objects.
-          git push --force-with-lease="refs/heads/claude/lcb001-pressure-reference:$GITHUB_SHA" origin HEAD:refs/heads/claude/lcb001-pressure-reference
+          git push --force-with-lease="refs/heads/codex/lcb001-shared-contract:$GITHUB_SHA" origin HEAD:refs/heads/codex/lcb001-shared-contract
           {
-            echo '### LCB-001 pressure-reference runtime publication'
+            echo '### LCB-001 residual shared-contract runtime publication'
             echo "Built source: $GITHUB_SHA"
             echo "Runtime publication commit: $(git rev-parse HEAD)"
-            echo 'Both exact runtimes passed import plus the pressure-reference, liquid-policy, MicroScenario, LCB and Water Feel cases on their target OS.'
+            echo 'Both exact runtimes passed import, W-CY admission, pressure-reference, worker, native observation, WEX body-mask, MicroScenario, four LCB and Water Feel controls on their target OS.'
             echo 'The existing full ready-for-review validation gates remain required on the resulting PR head.'
           } >> "$GITHUB_STEP_SUMMARY"

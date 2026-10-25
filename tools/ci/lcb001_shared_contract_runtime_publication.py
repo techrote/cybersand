@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Record, exercise and verify scoped LCB-001 pressure-reference runtime bundles.
+"""Record, exercise and verify scoped LCB-001 residual shared-contract runtime bundles.
 
 This helper never pushes. The explicit-request branch-limited workflow owns the final exact-head,
 four-path, fast-forward publication. Existing full acceptance gates stay separate.
 """
 
 import argparse
+from dataclasses import replace
 import hashlib
 import json
 import os
@@ -21,15 +22,16 @@ import run_godot_regressions as runner
 import run_windows_godot_regressions as windows
 
 ROOT = runner.ROOT
-BRANCH = "claude/lcb001-pressure-reference"
-EVIDENCE = "docs/audits/2026-10-24-lcb001-pressure-reference-publication.md"
-WORKFLOW = ".github/workflows/lcb001-pressure-reference-runtime-publication.yml"
-REQUEST = "tools/ci/lcb001_pressure_reference_publish_request.json"
+BRANCH = "codex/lcb001-shared-contract"
+EVIDENCE = "docs/audits/2026-10-24-lcb001-residual-shared-contract.md"
+WORKFLOW = ".github/workflows/lcb001-shared-contract-runtime-publication.yml"
+REQUEST = "tools/ci/lcb001_shared_contract_publish_request.json"
 PRESSURE_CASE = "godot/tests/test_lcb_pressure_reference.gd"
 REQUEST_VALUE = {
-    "schema": "lcb001-pressure-reference-publish-request-v1",
+    "schema": "lcb001-shared-contract-publish-request-v1",
     "family": "pressure_flow_v1",
     "variant": "reference",
+    "scope": "residual200-shared-contract-and-water-cellular-yield",
     "intent": "publish-source-matched-runtimes",
 }
 GODOT_VERSION = windows.GODOT_VERSION
@@ -60,10 +62,32 @@ CASE_MARKERS = {
     "test_lcb_scenario_catalogue": r"(?m)^LCB scenario catalogue: [1-9][0-9]* scenarios, [1-9][0-9]* assertions, 0 failures\s*$",
     "test_water_feel_integration": r"(?m)^WATER_FEEL_INTEGRATION: 24 policy cases \+ 70 scenario builds/reset/invalid/actions/RG8/authority passed default_hash=\S+\s*$",
     "test_lcb_pressure_reference": r"(?m)^LCB_PRESSURE_REFERENCE: [1-9][0-9]* assertions; 0 failures; completed=(.+)$",
+    "test_liquid_policy_worker": r"(?m)^LIQUID_POLICY_WORKER: [1-9][0-9]* assertions; 0 failures; completed=(.+)$",
+    "test_microscenario_native_observation": r"(?m)^MICROSCENARIO_NATIVE_OBSERVATION: [1-9][0-9]* assertions; 0 failures\s*$",
+    "test_wex001_water_body_baseline": r"(?m)^WEX001_SUMMARY (\{.+\})\s*$",
 }
 # Every helper section of the liquid-policy regression must report real work.
-LIQUID_POLICY_SECTIONS = {"validation": True, "default_readback": True, "refusals": 12,
-                          "parity_checkpoints": 5, "cysd1_defaults": True}
+LIQUID_POLICY_SECTIONS = {"validation": True, "default_readback": True, "refusals": 11,
+                          "parity_checkpoints": 5, "cysd1_defaults": True,
+                          "whole_cell_admission_parity": True, "whole_cell_overlay_refusals": True}
+LIQUID_POLICY_WORKER_SECTIONS = {"initial": True, "explicit": True, "isolation": True,
+                                "refusals": 3, "normalized": True, "no_request": True}
+WEX_SUMMARY_KEYS = {
+    "schema", "cases", "shallow_control_peak_above", "moderate_displaced", "moderate_peak_above",
+    "moderate_forbidden_peak", "moderate_first_forbidden_tick", "moderate_body_floor_penetration",
+    "hard_control_body_floor_penetration", "deep_short_floor_contact", "mirror_left_peak_above",
+    "mirror_right_peak_above", "translated_peak_above", "worker_shallow_hash", "worker_deep_hash",
+    "observer_hash",
+}
+# Explicit scoped bounds retain the observed slower WEX execution and final
+# policy/pressure controls without changing the shared full-suite runner.
+CASE_TIMEOUTS = {
+    "test_liquid_solver_policy": 360,
+    "test_lcb_pressure_reference": 900,
+    "test_liquid_policy_worker": 360,
+    "test_microscenario_native_observation": 240,
+    "test_wex001_water_body_baseline": 600,
+}
 PRESSURE_REFERENCE_SECTIONS = {
     "native_dispatch": True,
     "no_fallback": True,
@@ -79,8 +103,9 @@ PRESSURE_REFERENCE_SECTIONS = {
     "worker_parity": True,
 }
 EXECUTION_SCOPE = (
-    "Import plus the existing liquid-policy, MicroScenario, LCB and Water Feel controls "
-    "and a mandatory new positive pressure_flow_v1/reference regression; "
+    "Import plus controlled Water CellularYield admission/refusal, positive pressure_flow_v1/reference, "
+    "worker-policy, native-observation, WEX-001 body-mask baseline and the existing "
+    "MicroScenario, four LCB contract and Water Feel controls on each target OS; "
     "full ready-PR CI remains separate"
 )
 BUILD_EXACT = {
@@ -88,11 +113,17 @@ BUILD_EXACT = {
     "tools/build_native_extension.sh", "tools/build_native_extension_windows.sh",
     "tools/build_pinned_godot_cpp.sh", "tools/requirements-build.txt",
     "tools/toolchains/g++", "tools/check_linux_runtime_floor.sh",
-    "tools/verify_pinned_source_tree.py", "tools/ci/lcb001_pressure_reference_runtime_publication.py",
-    "tools/ci/test_lcb001_pressure_reference_runtime_publication.py",
+    "tools/verify_pinned_source_tree.py", "tools/ci/lcb001_shared_contract_runtime_publication.py",
+    "tools/ci/test_lcb001_shared_contract_runtime_publication.py",
     "tools/ci/run_godot_regressions.py", "tools/ci/run_windows_godot_regressions.py",
+    "tools/ci/godot_timeout_diagnostics.py", "tools/ci/godot_process_monitor.py",
+    "tools/ci/physical_progress_watchdog.py",
     "third_party/native-toolchain.lock.json", "third_party/godot-runtime.lock.json",
     "godot/third_party/rapier2d.lock.json", "godot/project.godot",
+    "third_party/rapier-bvh-build.lock.json",
+    "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch",
+    "godot/addons/godot-rapier2d/runtime-provenance.linux.json",
+    "godot/addons/godot-rapier2d/runtime-provenance.windows.json",
     "godot/addons/cybersand_native/cybersand_native.gdextension",
     "godot/addons/godot-rapier2d/godot-rapier2d.gdextension",
 }
@@ -120,7 +151,7 @@ def context(source: str) -> dict:
     require(git("rev-parse", "HEAD").decode().strip() == source, "Checkout is not the built source SHA")
     require(os.environ.get("GITHUB_REPOSITORY") == "techrote/cybersand", "Unexpected repository")
     require(os.environ.get("GITHUB_EVENT_NAME") == "push", "Publisher requires a feature-branch push")
-    require(os.environ.get("GITHUB_REF") == "refs/heads/" + BRANCH, "Publisher is limited to the LCB-001 pressure-reference implementation branch")
+    require(os.environ.get("GITHUB_REF") == "refs/heads/" + BRANCH, "Publisher is limited to the LCB-001 residual shared-contract implementation branch")
     require(os.environ.get("GITHUB_WORKFLOW_REF") == "techrote/cybersand/" + WORKFLOW + "@refs/heads/" + BRANCH,
             "Unexpected publication workflow or source ref")
     require(os.environ.get("GITHUB_SHA") == source, "Workflow source differs from built source")
@@ -140,20 +171,22 @@ def require_publication_request(source: str) -> None:
     """Fail closed until the candidate explicitly opts into source-bound publication."""
     path = ROOT / REQUEST
     require(path.is_file() and not path.is_symlink(),
-            "Missing explicit pressure-reference publish request")
+            "Missing explicit shared-contract publish request")
     payload = path.read_bytes().replace(b"\r\n", b"\n")
     require(git("show", source + ":" + REQUEST) == payload,
-            "Pressure-reference publish request differs from source commit")
+            "Shared-contract publish request differs from source commit")
     try:
         request = json.loads(payload)
     except (ValueError, UnicodeDecodeError) as exc:
-        raise RuntimeError("Invalid pressure-reference publish request JSON") from exc
+        raise RuntimeError("Invalid shared-contract publish request JSON") from exc
     require(isinstance(request, dict) and set(request) == set(REQUEST_VALUE) | {"request_sequence"}
             and all(type(request.get(key)) is type(value) and request[key] == value
                     for key, value in REQUEST_VALUE.items())
             and type(request.get("request_sequence")) is int and request["request_sequence"] > 0,
-            "Invalid pressure-reference publish request identity or sequence")
+            "Invalid shared-contract publish request identity or sequence")
     require((ROOT / PRESSURE_CASE).is_file(), "Pressure-reference native regression is not implemented")
+    require(all((ROOT / "godot/tests" / (name + ".gd")).is_file() for name in CASE_MARKERS),
+            "Required focused regression is not implemented")
     require((ROOT / EVIDENCE).is_file(), "Pressure-reference candidate evidence file is missing")
 
 
@@ -203,6 +236,26 @@ def verify_case_results(directory: Path, report: dict) -> None:
             require(sections == PRESSURE_REFERENCE_SECTIONS
                     and all(type(sections[key]) is bool for key in PRESSURE_REFERENCE_SECTIONS),
                     "Incomplete pressure-reference helper sections")
+        if name == "test_liquid_policy_worker":
+            summaries = re.findall(CASE_MARKERS[name], output)
+            try:
+                sections = json.loads(summaries[0])
+            except (ValueError, TypeError) as exc:
+                raise RuntimeError("Malformed worker-policy helper sections") from exc
+            require(sections == LIQUID_POLICY_WORKER_SECTIONS
+                    and all(type(sections[key]) is type(value)
+                            for key, value in LIQUID_POLICY_WORKER_SECTIONS.items()),
+                    "Incomplete worker-policy helper sections")
+        if name == "test_wex001_water_body_baseline":
+            summaries = re.findall(CASE_MARKERS[name], output)
+            try:
+                summary = json.loads(summaries[0])
+            except (ValueError, TypeError) as exc:
+                raise RuntimeError("Malformed WEX-001 summary") from exc
+            require(isinstance(summary, dict) and set(summary) == WEX_SUMMARY_KEYS
+                    and summary.get("schema") == "wex001-summary-v1"
+                    and type(summary.get("cases")) is int and summary["cases"] == 16,
+                    "Incomplete WEX-001 body-mask baseline")
 
 
 def check_index(args: argparse.Namespace) -> None:
@@ -249,7 +302,7 @@ def input_ledgers(source: str) -> dict:
             ".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx", ".inc", ".inl", ".tpp",
         }:
             tracked_native.add(path)
-        build = path in BUILD_EXACT or path.startswith(("native/tests/", "examples/worldgen/")) or (
+        build = path in BUILD_EXACT or path.startswith(("native/tests/", "examples/worldgen/", "godot/tests/fixtures/")) or (
             path.startswith("godot/") and Path(path).suffix in {".gd", ".tscn", ".tres", ".gdshader"}
         )
         if path in native or build:
@@ -370,7 +423,7 @@ def execute(args: argparse.Namespace) -> None:
         subprocess.run(["bash", "tools/check_linux_runtime_floor.sh"], cwd=ROOT, check=True, timeout=60)
     discovered = {case.name: case for case in runner.discover_cases()}
     require(set(CASE_MARKERS).issubset(discovered), "Required focused regression is missing")
-    cases = [runner.Case("import", ("--editor", "--quit"), 240, 3.0)] + [discovered[name] for name in CASE_MARKERS]
+    cases = focused_cases(discovered)
     require(not any(case.requires_display for case in cases), "Focused publisher requires headless cases")
     report = {
         "schema_version": 1, "source_commit": args.source_sha, "platform": args.platform,
@@ -405,12 +458,21 @@ def execute(args: argparse.Namespace) -> None:
         "status": "validated-development-runtime", "workflow_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
         "validated_platform": args.platform.title() + " x86_64 Godot 4.7 (actual GitHub-hosted headless execution)",
         "acceptance": "This exact source-matched runtime passed " + EXECUTION_SCOPE + ". Every required helper completed with no skips or errors.",
-        "validation_output": "lcb001-pressure-reference-runtime-" + args.platform + "-" + os.environ["GITHUB_RUN_ID"] + "/validation.json",
+        "validation_output": "lcb001-shared-contract-runtime-" + args.platform + "-" + os.environ["GITHUB_RUN_ID"] + "/validation.json",
         "validation_sha256": runner.sha256(report_path),
         "other_platforms": "This publisher claims only its recorded target-OS headless scope. It does not establish graphical pixel, browser/WebAssembly, owner visual, target-PC or GPU acceptance.",
     })
     write_json(manifest_path(args.bundle, args.platform), manifest)
     verify_bundle(args.bundle, args.platform, args.source_sha, validated=True)
+
+
+def focused_cases(discovered: dict[str, runner.Case]) -> list[runner.Case]:
+    """Select the complete ordered campaign with explicit finite scoped bounds."""
+    require(set(CASE_MARKERS).issubset(discovered), "Required focused regression is missing")
+    return [runner.Case("import", ("--editor", "--quit"), 240, 3.0)] + [
+        replace(discovered[name], timeout=CASE_TIMEOUTS.get(name, discovered[name].timeout))
+        for name in CASE_MARKERS
+    ]
 
 
 def stage(args: argparse.Namespace) -> None:

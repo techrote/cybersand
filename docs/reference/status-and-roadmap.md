@@ -672,7 +672,7 @@ bounded LCB implementation, including the previously held #200 pressure referenc
 production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production
 Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a
 schema/ABI freeze. The policy foundation is Current on main; `pressure_flow_v1/reference`
-is Current on an unmerged branch; the other candidate kernels remain **Planned**.
+is Current in source; the other candidate kernels remain **Planned**.
 #201/#202/#203 remain open; the scenario apparatus delivered part of
 #202, not the complete comparison host or its [manual UX](../operations/lcb-manual-comparison-ux.md).
 
@@ -719,7 +719,7 @@ listed below.
 
 ## LCB-001 pressure reference — 2026-10-24
 
-**Current on branch `claude/lcb001-pressure-reference` (unmerged).** The opt-in
+**Current on main from merged PR #245 (`03785c3`).** The opt-in
 Water family [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md)
 runs only in a World whose applied policy assigns it; production defaults, every
 Current golden, `content_hash`/`state_hash` and CYSD1 are unchanged. Source
@@ -737,14 +737,14 @@ does not admit new pressure-to-Rapier forces, a schema/ABI freeze or a #45
 mechanism: `pressure_flow_v1` is a comparison family, and its characterization
 does not freeze #45 thresholds.
 
-| Item (branch) | Status |
+| Item at the accepted #245 main checkpoint | Status |
 |---|---|
 | Running-build admission of Water × `pressure_flow_v1/reference`, optional family block `{gas_enabled 0..1, atmospheric_head_rows 16..4096}` (defaults 1, 32); `cached`/`cached_dormant` refused `family_unavailable` | Current |
 | Solver-owned per-chunk sidecars, World gas table with label-overlap identity and exact ledgers, immutable head snapshot, phased kernel | Current ([design](../architecture/pressure-flow-v1.md)) |
 | Physical-state hash v1, CYPS v1 save/restore, GDExtension inspection and ledgers, `water_visible`/`water_overfill`, receipt `family_parameters`, experimental run-receipt hash | Current ([interfaces](interfaces-and-message-contracts.md#lcb-001-pressure-reference-inspection-and-persistence-experimental)) |
 | Capability matrix Water × pressure `executable_today: true`, `executable_variants: ["reference"]`; regenerated digest and vector identity words, with no acceptance/refusal change in the 47 cases | Current |
 | Native `test_lcb_pressure.cpp` (13 cases), Godot `test_lcb_pressure_reference.gd` (12 sections), native characterization harness | Current; results in the evidence record |
-| Linux, sanitizer/TSan and Web/WASM execution | CI only for Linux/sanitizers; Web not built or run |
+| Linux/Windows Godot, sanitizer/TSan and apparatus execution | Exact-head required matrix passed for #245; Web not built or run ([acceptance](../audits/2026-10-24-lcb001-pressure-reference-publication.md#exact-head-acceptance-and-merge)) |
 
 **Characterization screens, not admission criteria** (native harness, 1 worker):
 at repaired source `349d593`: depth response t240 1.69 (Current 1.06); depth-160
@@ -756,24 +756,54 @@ measurements remain in the dated evidence record.
 
 | Remaining | Owner and status |
 |---|---|
-| W-CY (whole-cell Water `cellular_yield_v1`), `water-normalize-v1` and `normalization_required` (NC-3) | #200, Planned |
-| Frozen run-receipt schema; the remaining #202 constructors | #200, Planned |
+| W-CY, `water-normalize-v1`, native typed receipts and exact quantity accounting | #200, Current in unmerged successor; local proof and remaining acceptance [below](#lcb-001-residual-shared-contract--2026-10-24) |
+| Host provenance/collection proof and remaining normal-application constructors | #202, Planned; preserve native shared interfaces from #200 |
 | `cached`/`cached_dormant`, incremental caches and dormancy (the reference is O(resident cells) per tick) | [#201](https://github.com/techrote/cybersand/issues/201), Planned |
 | Comparison host and UI; re-dispositioning the registered candidate arms | [#202](https://github.com/techrote/cybersand/issues/202), Planned |
 | `inertial_cellular_v1` (W-IN, Brine), M1/M2 | #212, Planned; no longer owner-held |
 | Packaged builds and isolated timing | [#203](https://github.com/techrote/cybersand/issues/203), Planned |
 
-**Publisher.** The temporary branch-scoped workflow
-`lcb001-pressure-reference-runtime-publication.yml`, integrated from draft PR
-#244, publishes source-matched Linux/Windows runtimes only after
-`tools/ci/lcb001_pressure_reference_publish_request.json` is committed on this
-branch. After the retained failed/cancelled attempts and takeover repairs,
+**Publisher.** The temporary pressure-reference workflow, helper, unittest and
+source-bound request, integrated from draft PR #244, are retired after PR #245.
+Their original implementation remains recoverable at `48fb275`.
+After the retained failed/cancelled attempts and takeover repairs,
 publication run `40100666514` passed Linux and actual Windows headless execution
 and published both source-matched runtimes at `101758d`; the evidence
-record holds their hashes and scope. Final exact-head ready-PR gates remain
-separate. After the branch merges, retire the workflow, helper and
-unittest as described for [branch-scoped publishers](../operations/local-build-and-validation.md#branch-scoped-runtime-publishers).
+record holds their hashes and scope. The final exact-head ready-PR matrix passed
+at `e48c5aa` before merge; the [acceptance receipt](../audits/2026-10-24-lcb001-pressure-reference-publication.md#exact-head-acceptance-and-merge)
+records all four required runs. Retirement is part of this successor branch.
+Successor native changes require fresh source-matched publication,
+as described for [branch-scoped publishers](../operations/local-build-and-validation.md#branch-scoped-runtime-publishers).
 #200 itself stays open (see the [issue-state correction](#lcb-001-policy-foundation--2026-10-24)).
+
+## LCB-001 residual shared contract — 2026-10-24
+
+**Current in unmerged source:** `codex/lcb001-shared-contract` consolidates
+whole-cell Water admission/refusal, its own yielding law/material block v2,
+rare-yield liveness, explicit final-tuple `water-normalize-v1`, native-issued
+construction outcomes, immutable prepared Worlds, typed v1 run/attempt receipts
+and exact quantity aggregates. Physical hash and CYPS advance to **2** for the
+shared accounting continuation. Historical content/state hashes, Cell carrier,
+Current defaults and retained failures remain preserved. The narrow native
+encoding freeze does not establish a global ABI or full-host evidence freeze.
+
+Read the [canonical native contract](../architecture/liquid-prepared-setup-and-receipts.md)
+and [dated evidence](../audits/2026-10-24-lcb001-residual-shared-contract.md).
+Final LLVM-MinGW and MSVC builds pass **126/126** at the ordinary 1 MiB stack;
+eight normalization and seven complete receipt byte vectors match independent
+Python oracles. Source-matched Windows/Linux development runtimes passed import
+and all twelve scoped regression cases, including the 16 WEX body-mask cases,
+in publication run `40138333825`, appended as `888a39f0`. Full final-head
+non-draft CI remains required before merge. Godot typed normalization opt-in
+and actual host coverage/provenance remain #202 integration work.
+
+**Owner execution boundary:** finish residual #200 acceptance first, then fan out
+#201/#202/#212 where write sets permit, and complete #203 after integration.
+This checkpoint begins no substantial cache/dormancy or inertial implementation.
+The #201 rest certificate must preserve stationary failed-motion body-contact
+reports, required material stages, other-liquid work and future stochastic/
+cadence work. Zero rounded flow is not rest, and a complete tick-inclusive hash
+cannot be a cross-tick static-rest predicate.
 
 ## Opt-in transport profiles
 

@@ -2,36 +2,39 @@
 title: Liquid solver family policy and API specification
 status: Approved design
 document-kind: design
-scope: LCB-000 Gate C accepted design — versioned four-family liquid solver identities, immutable per-World per-material policy, construction/readback/refusal contracts, source-derived capability matrix and cross-issue mapping for LCB-001..005; the native policy foundation (admission, identity, refusal and readback) is Current, Water × pressure_flow_v1/reference is the one admitted candidate (Current on branch claude/lcb001-pressure-reference) and the other candidate families remain Planned
+scope: LCB-000 Gate C accepted design, Current main pressure reference and unmerged residual LCB-001 native source — four-family identities, immutable per-World per-material policy, admission/readback, W-CY motion/material block v2, pressure reference and cross-issue mapping; native setup/receipt/accounting detail has a separate canonical owner, while inertial and cached/dormant execution remain Planned
 canonical-for: [liquid-solver-family-policy]
 last-reviewed: 2026-10-24
-related-documents: [pressure-flow-v1.md, ../systems/water-design.md, ../systems/materials-and-rule-kernels.md, ../systems/flow-transport-and-profiles.md, ../decisions/ADR-005-water-model.md, ../operations/lcb-water-comparison-and-fixtures.md, ../operations/lcb-manual-comparison-ux.md, ../audits/2026-10-23-lcb000-gates-cde-design-evidence.md]
+related-documents: [pressure-flow-v1.md, liquid-prepared-setup-and-receipts.md, ../systems/water-design.md, ../systems/materials-and-rule-kernels.md, ../systems/flow-transport-and-profiles.md, ../decisions/ADR-005-water-model.md, ../operations/lcb-water-comparison-and-fixtures.md, ../operations/lcb-manual-comparison-ux.md, ../audits/2026-10-23-lcb000-gates-cde-design-evidence.md]
 ---
 
 # Liquid solver family policy and API specification
 
 ## Status
 
-**Approved design — Gate C PASS.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](pressure-flow-v1.md) is Current on branch `claude/lcb001-pressure-reference` (unmerged); #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
+**Approved design — Gate C PASS.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). The initial opt-in #200 start was separately scoped. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](pressure-flow-v1.md) is Current on main since #245 merged at `03785c3`, with its recorded pressure evidence; #212 is no longer owner-held but remains unimplemented and unqualified in this shared source. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a global schema/ABI freeze.
 
 The [native policy foundation](#native-policy-foundation-current-2026-10-24)
 (object, wire decoding, validation, canonical identity, refusal, applied readback
-and transactional construction) is **Current** on main for the default mappings.
-On branch `claude/lcb001-pressure-reference` (unmerged) the running build also
-admits exactly one candidate cell, Water × [`pressure_flow_v1/reference`](pressure-flow-v1.md),
-with a versioned physical-state hash, CYPS v1 exact persistence and an
-experimental GDExtension run-receipt hash
-([evidence](../audits/2026-10-24-lcb001-pressure-reference-publication.md)).
-Every other candidate mapping is still refused. W-CY, W-IN, Brine inertial, the
-#201 variants, normalization, a frozen run-receipt schema, the remaining #202
-constructors and the comparison UI remain **Planned**. The source-derived matrix
-and contract-model checks remain Current apparatus.
+and transactional construction) is **Current on main** for defaults and the
+#245 pressure reference, including its hash v1/CYPS1 and experimental GDExtension
+run-receipt hash. The source-derived matrix and contract-model checks remain
+Current apparatus. The unmerged residual #200 source on `codex/lcb001-shared-contract` also admits Water ×
+`cellular_yield_v1/reference` (W-CY), alongside Water ×
+[`pressure_flow_v1/reference`](pressure-flow-v1.md). It adds native setup
+normalization, native-issued outcomes, typed native receipts and exact shared
+quantity accounting, with complete physical hash/CYPS version 2. Their detailed
+canonical contract is [native prepared setup and receipts](liquid-prepared-setup-and-receipts.md).
+The owner requested a narrow freeze of those native versioned codecs; this
+does not freeze the production Cell carrier, global ABI, physics calibration
+or full host replay. The C64-E8 layout, defaults and historical content/state
+hashes are unchanged. W-IN, Brine inertial, #201 variants, the remaining #202
+constructors and comparison UI remain **Planned**.
 
 - Without an explicit request every material executes its **current default**
   in the [capability matrix](../reference/liquid-solver-capability-matrix.json).
-  The only executable non-default cell is the opt-in Water ×
-  `pressure_flow_v1/reference` (matrix `executable_variants: ["reference"]`,
-  branch).
+  Main also executes opt-in Water × `pressure_flow_v1/reference`; residual
+  native source additionally executes Water × `cellular_yield_v1/reference`.
 - Implementation belongs to LCB-001
   [#200](https://github.com/techrote/cybersand/issues/200) (policy, state and
   pressure) and LCB-005 [#212](https://github.com/techrote/cybersand/issues/212)
@@ -83,7 +86,7 @@ Claim labels used below:
   per-material family receipt described below. Under the default policy every
   liquid executes its current default kernel; a World whose policy assigns Water
   to `pressure_flow_v1/reference` runs the [pressure reference](pressure-flow-v1.md)
-  for Water instead (branch).
+  for Water instead (Current on main).
 - **Liquids already meet in one World.** Density exchange (`DensityMotion`,
   `accepts_density_exchange`) and pair rules
   ([interaction_rules.hpp](../../native/include/cybersand/interaction_rules.hpp))
@@ -111,51 +114,55 @@ bytes and normalized envelope. Nothing here selects or runs another solver.
 | GDExtension | `CyberNativeCellWorld.get_liquid_solver_policy()`/`get_liquid_policy_session_generation()`; `CyberDemoBridge.default_liquid_policy()`, `validate_liquid_policy()`, `build_liquid_policy_world()`, `get_last_liquid_policy_refusal()` |
 | Hosts | `CyberMicroScenarioHost.install(..., liquid_policy)` and `liquid_solver_policy()`; desktop worker `scenario_reset.liquid_policy` and `lab_context.liquid_solver_policy` |
 
-**Admission in this build.** On main (`1e032e4`) `freemass_v1` and
+**Admission history and residual native build.** At the foundation checkpoint (`1e032e4`) `freemass_v1` and
 `cellular_yield_v1` are compiled (`available_families` 0x03), only each liquid's
 **current-default cell** is qualified, and no parameter-block schema is
-registered. On branch `claude/lcb001-pressure-reference` (unmerged)
+registered. With #245 on main,
 `LiquidPolicyBuild::running()` also compiles `pressure_flow_v1`
 (`available_families` 0x07) and qualifies exactly one more cell, Water ×
 `pressure_flow_v1`, limited by `qualified_variants` to variant `reference`. It
 registers one optional family block, `pressure_flow_v1` v1
 `{gas_enabled 0..1, atmospheric_head_rows 16..4096}`; omitted, the defaults are 1
 and 32 ([declared parameters](pressure-flow-v1.md#declared-parameters-v1)). The
-two illustrative contract schemas still exist only in the contract-test build.
-Outcomes therefore are:
+two illustrative contract schemas remain historical contract-test schemas.
+The residual native build additionally qualifies Water ×
+`cellular_yield_v1/reference` and appends its actual optional Water material
+block **v2**, `{viscosity_index 0..255}`, default 0. It does not reinterpret
+the illustrative v1 `flow_rate_permille` block. Residual outcomes are:
 
 | Request | Outcome |
 |---|---|
-| Water × `pressure_flow_v1/reference`, with or without its family block | **Accepted** (branch); Water runs the [pressure reference](pressure-flow-v1.md) |
+| Water × `pressure_flow_v1/reference`, with or without its family block | **Accepted** on main and in residual source; Water runs the [pressure reference](pressure-flow-v1.md) |
 | Water × `pressure_flow_v1/cached` or `cached_dormant` (#201) | `family_unavailable`, detail `pressure_flow_v1/<variant> is not compiled/qualified for material 3 in this build` |
 | Matrix `rejected` cell (e.g. Oil × `inertial_cellular_v1`, NC-1; any non-Water liquid × `pressure_flow_v1`) | `combination_rejected` |
 | `proposed_alternate` cell (Toxic Sludge × inertial) | `not_selectable` |
 | A variant the cell does not offer (e.g. Water FreeMass `cached`) | `variant_unsupported` |
 | `inertial_cellular_v1` (NC-2), Brine × inertial | `family_unavailable` (not compiled) |
-| Water × `cellular_yield_v1` | `family_unavailable` (compiled, not qualified for Water) |
+| Water × `cellular_yield_v1/reference`, with no Water block or its v2 viscosity block | **Accepted** in residual native source; whole-cell Water law below |
 | Stale digests, malformed envelopes, any other parameter block, an out-of-range pressure block | as the precedence above |
 
 On main, before the pressure reference, every `pressure_flow_v1` request was
-refused `family_unavailable` (not compiled). The 47 registered wire-vector cases
+refused `family_unavailable` (not compiled). At the #245 checkpoint, the 47 registered wire-vector cases
 kept their acceptance, refusal code and detail; only identity words and hashes
 were regenerated for the changed capability matrix.
 
-`water_semantics_incompatible`, `capacity_refused` and `normalization_required`
-exist as codes but remain unreachable in this build; no whole-cell Water family
-is admitted. NC-3 therefore stays blocked.
+`normalization_required` and `capacity_refused` are now exercised by native
+prepared construction. Whole-cell fractional ingress without explicit
+normalization refuses before installation; setup/allocation capacity has a
+native-issued outcome. Godot has no typed normalization opt-in route yet, so
+these native proofs do not close the #202 application acceptance campaign.
 
-**Contract reconciliation (2026-10-24).** The oracle's `today` build treated
+**Historical foundation reconciliation (2026-10-24).** The oracle's `today` build treated
 availability per family, so it would have accepted Water × `cellular_yield_v1`
 although no Water route through that family exists. The oracle now also
 qualifies per material × family cell (`make_build(..., qualified=...)`), and an
 appended vector `water_cellular_yield_today` registers the refusal. All earlier
 vector cases, the transcript and the build identity are unchanged.
 
-**Dispatch.** Kernels remain keyed by `RuleKernel`. On the pressure branch the
-`RuleKernel::Water` case calls `update_water_pressure` instead of `update_water`
-only when the World's applied policy assigns Water to `pressure_flow_v1`
-(`World::pressure_flow_enabled()`); every other kernel and every default World is
-unchanged ([kernel](pressure-flow-v1.md#kernel-update_water_pressure)). `World::World`
+**Dispatch.** Kernels remain keyed by `RuleKernel`. `RuleKernel::Water` selects
+`update_water_pressure`, `update_water_cellular_yield` or default `update_water`
+from the admitted policy; it preserves generic chemistry before motion.
+Other specialized kernels retain their defaults ([pressure kernel](pressure-flow-v1.md#kernel-update_water_pressure)). `World::World`
 re-validates the policy's normalized envelope against the running build before
 any World-owned storage (chunks, scratch, worker pool) is allocated, and throws
 `LiquidPolicyRefused` otherwise. The validation itself allocates temporary policy
@@ -167,17 +174,17 @@ path exists to be taken silently.
 `wire_version`, `envelope`, `session_generation`, `policy_hash`,
 `catalogue_digest`, `capability_matrix_digest`, `platform`, `admission`
 (`current_defaults_only` when the applied policy equals the default; on the
-pressure branch `qualified_candidate` otherwise), `assignments` (`material`, `name`,
+pressure reference `qualified_candidate` otherwise), `assignments` (`material`, `name`,
 `requested_family`, `applied_family`, `applied_variant`), `family_blocks`,
 `material_blocks`, `normalization` (null) and `refusal` (null; refusals are
-returned by the constructing call). The pressure branch adds
+returned by the constructing call). The #245 pressure adapter adds
 `family_parameters` (empty, or `pressure_flow_v1`: `family_version`,
 `gas_enabled`, `atmospheric_head_rows`, `flow_scale`, compartment limits,
 acceleration, retain, friction, dead bands, `overfill_limit`, `adhesion_film`)
-and `physical_state_hash_version` (1). `source_revision` and `native_binary_sha256`
+and `physical_state_hash_version` (1 on main; 2 in residual native source). `source_revision` and `native_binary_sha256`
 are **not** in the native receipt; the host's runtime identity supplies them.
 
-**Run receipt hash (experimental, branch).**
+**Run receipt hash (experimental GDExtension dictionary, Current on main).**
 `CyberNativeCellWorld.get_liquid_run_receipt(setup)` returns `receipt_hash`
 (SHA-256 over the length-prefixed tag `lcb-run-receipt-v1` and key/value pairs),
 `components` and `tick`. It binds the policy hash, Water policy, transport
@@ -186,17 +193,22 @@ settings (window, LOD, adhesion and actual simulation-region rectangle),
 physics-changing diagnostic overrides and the physical-state hash version, plus the
 caller-supplied `setup_hash`, `seed`, `normalization_receipt`, `source_revision`,
 `native_binary_sha256` and `catalogue_digest` (`none` when absent). Its fields are
-not a frozen #200 receipt schema.
+not the typed native-v1 receipt schema. That distinct native encoding binds
+actual captured facts, prepared/normalization identities and shared accounting;
+source/runtime claims remain unverified and full matched eligibility stays false
+([contract](liquid-prepared-setup-and-receipts.md#native-issued-outcomes-and-typed-receipts)).
 `session_generation` counts the World replacements committed by that adapter
 (the constructor's demo, `reset_demo_world`, `diagnostic_reset` and every bridge
 install). A refusal never advances it.
 
 **Constructors.** Every World constructor takes the policy from its
 `WorldConfig`. Only two paths accept a request: `build_liquid_policy_world` and
-the C API's `create_with_liquid_policy_v1`. On the pressure branch a third path
-restores one: `CyberDemoBridge.import_physical_state` (CYPS v1) decodes the
+the C API's `create_with_liquid_policy_v1`. The #245 pressure adapter also
+restores one: `CyberDemoBridge.import_physical_state` (CYPS1 on main, CYPS2 in residual source) decodes the
 saved policy envelope with the running build, so a refused or stale policy keeps
-the running World ([persistence](pressure-flow-v1.md#persistence-cyps-v1)). All
+the running World ([persistence](pressure-flow-v1.md#persistence-cyps-v2)). The
+native-only `PreparedWorldBuilder` additionally constructs and validates an
+unexposed candidate; it is not a new Godot opt-in constructor. All
 other paths reach a World as follows:
 
 | Path | Policy |
@@ -209,10 +221,12 @@ other paths reach a World as follows:
 A copied `WorldConfig` can carry only an admitted policy, and `World::World`
 re-validates it in every case.
 
-**Not frozen.** The C API is marked experimental, the receipt is a dictionary
-rather than a schema, and the default policy is not persisted in CYSD1. CYPS v1
-(branch) persists the policy envelope as an experimental exact-continuation
-format, not a frozen save schema.
+**Freeze boundary.** The C API and older GDExtension dictionary remain
+experimental; CYSD1 still does not persist solver policy. The owner-requested
+narrow native setup/normalization/run/attempt/accounting codec freeze and CYPS2
+continuation are documented in the [shared contract](liquid-prepared-setup-and-receipts.md).
+The residual build explicitly refuses historical CYPS1. This does not freeze production Cell
+layout, a global ABI, source/runtime verification or complete application replay.
 
 **Fallback hosts (deliberate host/oracle difference).** The oracle's
 `gdscript_fallback` build models a host that can *decode* a request. It accepts a
@@ -260,8 +274,8 @@ source-matched rebuild as for any native edit.
 | Family ID | Physics | Owner | Executes today |
 |---|---|---|---|
 | `freemass_v1` | Current fractional conserved pairwise Water | existing source | Yes, Water only (default) |
-| `cellular_yield_v1` | Current whole-cell yielding motion plus kernel specializations | existing source | Yes, 10 liquids (default) |
-| `pressure_flow_v1` | Corrected pressure/overfill/flow/gas | #200 | `reference` only, Water, opt-in: Current on branch `claude/lcb001-pressure-reference` ([design](pressure-flow-v1.md)); `cached`/`cached_dormant` no (#201) |
+| `cellular_yield_v1` | Whole-cell yielding motion plus material hooks | existing source; #200 W-CY | Ten liquids by default; Water opt-in in residual native source with its own v2 viscosity block |
+| `pressure_flow_v1` | Corrected pressure/overfill/flow/gas | #200 | `reference` only, Water, opt-in: Current on main since #245 ([design](pressure-flow-v1.md)); `cached`/`cached_dormant` no (#201) |
 | `inertial_cellular_v1` | Non-pressure motion with retained velocity/accumulator | #212 | No |
 
 **Implementation variants** (an axis independent of family):
@@ -325,7 +339,7 @@ LiquidSolverPolicy v1
   capability_matrix_digest     : 32 bytes; binds source facts AND reviewed classifications
   assignments[material_id]     : { family_code, variant_code }   // only for liquid descriptors; others must be default
   family_parameters[family]    : versioned typed parameter block owned by that family (e.g. inertial damping)
-  material_parameters[material]: versioned typed per-material block (e.g. the W-CY Water flow-rate parameter), or absent
+  material_parameters[material]: versioned typed per-material block (Current W-CY Water v2 viscosity_index), or absent
   policy_hash                  : see canonical hashing below
 ```
 
@@ -340,7 +354,10 @@ A separate **run receipt hash** binds everything that affects execution:
 the interaction policy hash, the canonical setup hash and seed, the normalization
 receipt hash (or none), workers/scheduler, interest/execution settings and
 source/binary/catalogue identity. A comparison is matched only when every
-receipt component except the compared family/variant is equal.
+comparison component except the declared compared family/variant is equal and
+the required provenance/execution proof is present. Native-v1 receipts preserve
+qualifications and currently report full matched eligibility false; raw receipt
+hash equality alone is not that proof ([canonical contract](liquid-prepared-setup-and-receipts.md)).
 
 - **Default.** A default-constructed policy assigns every liquid its current
   default (`freemass_v1/reference` for Water, `cellular_yield_v1/reference`
@@ -361,8 +378,8 @@ receipt component except the compared family/variant is equal.
 ## Material hooks versus motion (Gate C correction, 2026-10-23)
 
 Correction requested by the [independent review](../audits/2026-10-23-lcb000-independent-admission-review.md).
-Source anchors are `world.cpp` at `9012425`; that file is unchanged at main
-`4caa2c3`.
+Historical prepass anchors are `world.cpp` at `9012425`/`4caa2c3`; those line
+numbers identify the baseline, not the merged pressure or residual-native files.
 
 **Current dispatch, per cell.** The sequence is:
 
@@ -424,6 +441,31 @@ are identical, apart from the declared stage-3 differences. Cases:
 
 Each case also needs a negative control showing that a Water cell under W-CY
 never runs `flow_as_yielding_liquid` with Paste/Slush descriptor parameters.
+
+### Whole-cell Water law (Current residual native source)
+
+`World::update_water_cellular_yield` keeps material identity, generic pair
+chemistry, coherence countdown, density exchange, temperature, body contact and
+actual-moved-mass coupling. Its stage 3 moves whole tuples only: gravity then
+diagonals, followed by cadence-gated lateral yield into Empty. There is no
+same-Water merge, FreeMass relaxation, fractional adhesion film or
+Paste/Slush-descriptor fallback. Every Water cell contains `maximum()`.
+
+[`WaterCellularYieldParameters`](../../native/include/cybersand/water_cellular_yield.hpp)
+declares law version 1 and optional Water material block **version 2**:
+`viscosity_index` 0..255, default 0. The deterministic lateral roll succeeds with
+probability `(256 - viscosity_index) / 256`. Coherence suppresses lateral motion
+for its full delay while gravity remains responsive. Configured Water cadence
+and one-/two-side transport settings retain their own meanings.
+
+A legal future side keeps an interaction deadline when cadence defers work, a
+viscosity roll misses, or one-side sampling chooses the blocked side. Thus a
+slow/stochastic lane cannot sleep permanently before its next opportunity;
+permanently blocked pools can still reach ordinary block sleep. Regressions are
+[`test_water_cellular_yield.cpp`](../../native/tests/test_water_cellular_yield.cpp),
+including liveness, material hooks and 1/4-worker continuation. Fractional ingress,
+explicit normalization and exact source/sink accounting are owned by
+[native prepared setup](liquid-prepared-setup-and-receipts.md).
 
 ### Request envelope and canonical hash (Gate C correction 2, 2026-10-23)
 
@@ -547,8 +589,10 @@ contract-test schemas only to exercise the rules:
 - an optional Water v1 block, valid only under `cellular_yield_v1`
   (`flow_rate_permille` 1..1000).
 
-#200/#212 replace them by appending block versions. **No parameter name, range
-or default is frozen here.**
+#200 appends the actual W-CY material block v2 described above; v1 is not
+reinterpreted as viscosity. The inertial illustrative block is still only a
+contract-test schema. The owner-requested native shared-codec freeze does not
+freeze an inertial law, pressure calibration or production ABI.
 
 **Applied readback.** The readback is the normalized applied policy, never the
 request:
@@ -573,7 +617,7 @@ readback, `policy_hash` and `session_generation` equal their prior values.
 | Changed identity | changed `catalogue_digest` and changed `capability_matrix_digest`: a different hash, and refused `stale_capability_matrix` |
 | Changed parameters | changed family (default vs W-IN vs W-CY vs W-PF), family-block value and material-block value: all hashes pairwise distinct |
 | Malformed | empty, truncated header, bad magic, unknown envelope/policy version, trailing word, short/negative/oversize count, a word above int32, block past end, block over 64 words, schema length mismatch, unknown block version, missing mandatory block, extra family block, material block under the wrong family, field out of range, duplicate block, unsorted/duplicate/missing assignment, non-liquid, reserved, outside catalogue, unknown family/variant code, code 0 with a non-reference variant, unsupported variant, rejected and `proposed_alternate` combinations |
-| Build profiles | the oracle's `today` build (the main foundation build) refuses W-IN/W-PF as `family_unavailable`; the GDScript fallback refuses non-defaults as `platform_unsupported` and accepts defaults. The oracle has no profile for the pressure-reference running build; native tests check that build directly |
+| Build profiles | the oracle's `today` build (the historical foundation build) refuses W-IN/W-PF as `family_unavailable`; the GDScript fallback refuses non-defaults as `platform_unsupported` and accepts defaults. The oracle has no profile for the pressure-reference running build; native tests check that build directly |
 | Session | default → W-IN accepted (generation 1) → stale catalogue, stale capability and truncated envelope refused with the W-IN hash unchanged → W-CY accepted (generation 2) |
 
 The "all families" build in the vectors is a **hypothetical contract build**, so
@@ -593,7 +637,7 @@ a typed refusal and leaves the live session untouched, as
 | `unknown_material` | ID outside the catalogue or reserved (10) |
 | `not_a_liquid` | assignment to a non-liquid descriptor |
 | `unknown_family` / `unknown_variant` | code not in this build's catalogue |
-| `family_unavailable` | family, cell or variant not compiled/qualified in this build (on main: `pressure_flow_v1` and `inertial_cellular_v1`; on the pressure branch: `inertial_cellular_v1`, Water × `cellular_yield_v1` and the `pressure_flow_v1` `cached`/`cached_dormant` variants) |
+| `family_unavailable` | family, cell or variant not compiled/qualified; residual native source still refuses `inertial_cellular_v1` and pressure `cached`/`cached_dormant`, while admitting Water reference PF and W-CY |
 | `combination_rejected` | matrix status `rejected` for that material×family |
 | `variant_unsupported` | variant not offered by that family |
 | `water_semantics_incompatible` | family cannot honour the requested Water mass bits/coherence |
@@ -605,14 +649,23 @@ a typed refusal and leaves the live session untouched, as
 | `not_selectable` | the matrix lists the cell as `proposed_alternate` (e.g. Toxic Sludge inertial M1-alt), or the variant list is empty |
 | `normalization_required` | the setup holds fractional Water and the selected Water family is whole-cell, with no explicit normalization opt-in |
 
-All codes are evaluated before any World allocation and before the previous
-session is released.
+Policy decoding/admission precedes World allocation. Setup/capacity checks can
+discard an unexposed candidate; they never release or replace the previous
+session. Native-issued policy/setup refusal and preparation-failure outcomes
+remain distinct ([construction boundary](liquid-prepared-setup-and-receipts.md#native-issued-outcomes-and-typed-receipts)).
 
 There is **no hidden fallback**. A refused or unavailable family is never
 replaced by Current, another family or the GDScript fallback. The GDScript
 fallback reports every non-default assignment as `platform_unsupported`.
 
 ### Effective readback (Proposed)
+
+This is the **Planned #202 host requirement**, including constructor coverage
+and dictionary projection below. Current adapter fields are listed in the native
+foundation section; typed native-v1 receipts have their own
+[canonical contract](liquid-prepared-setup-and-receipts.md). The existing Godot
+dictionary does not obtain verified provenance or native normalization merely
+by adopting this proposed shape.
 
 `World::liquid_solver_policy()` returns the applied policy. It surfaces as:
 
@@ -670,7 +723,7 @@ handoff; no Cell layout change is implied.
 |---|---|---|
 | `freemass_v1` | none: `state_a` = Water mass (policy-scaled), `state_b` = coherence delay | Current |
 | `cellular_yield_v1` | none beyond kernel use: Oil `state_b` burn, Cement/Molten Glass lifecycle, `initial_state_a` per descriptor | Current |
-| `pressure_flow_v1` | overfill quantity, signed horizontal velocity, gas pocket identity/generation and amount, derived per-tick head (scratch, not state) | Current on branch `claude/lcb001-pressure-reference`: a per-chunk solver-owned `PressureChunk` (`overfill u16`, `flow i16`, `gas u32`) plus the World gas table; no Cell bits ([storage](pressure-flow-v1.md#storage-gate-b-handoff-kept)). 7ef2aac's bits 40–55 are not used |
+| `pressure_flow_v1` | overfill quantity, signed horizontal velocity, gas pocket identity/generation and amount, derived per-tick head (scratch, not state) | Current in source: a per-chunk solver-owned `PressureChunk` (`overfill u16`, `flow i16`, `gas u32`) plus the World gas table; no Cell bits ([storage](pressure-flow-v1.md#storage-gate-b-handoff-kept)). 7ef2aac's bits 40–55 are not used |
 | `inertial_cellular_v1` | signed vx/vy (or momentum), subcell accumulator, saturation/rounding rules | Proposed (#212) |
 
 Rules every family must meet, which become Gate B and #200 acceptance:
@@ -712,7 +765,10 @@ or Solid by default. Family-specific rules:
   follows the declared #160 quantity rule.
 - **Sleep and wake.** Pressure caching and dormancy never suppress
   non-pressure motion, chemistry or lifecycle work (#201). Cross-family contact
-  wakes both sides.
+  wakes both sides. A rest certificate must also retain no-motion body-contact
+  probes consumed by coupling, cadence/future-event obligations and exact
+  analytical rest; it cannot freeze nonzero residual flow or reuse #12 discovery
+  as Water skip authority.
 
 ## State and quantity boundaries (Gate C correction, 2026-10-23)
 
@@ -747,7 +803,10 @@ Normative summary. The operation-by-operation
    creates two whole Brine cells. Steam expiry writes Water at `maximum()`
    (L2849).
    - Both are explicit **source/sink** events, not conserved transfers. LCB
-     ledgers book the signed Water delta per reaction.
+     residual native accounting books actual consumed visible+overfill Water
+     and initialized products separately per catalogue rule, including
+     Water-to-Water products. Material populations are separate cell units
+     ([shared ledger](liquid-prepared-setup-and-receipts.md#quantity-aggregates-producers-and-continuation)).
    - #160 owns the quantity rule change (PR #162 is unmerged and covers
      Steam/Ice/quench, not Salt).
    - No document may assert whole-cell mass conservation from a partial-Water
@@ -777,16 +836,17 @@ JSON has two kinds of content:
   rejected statuses and the variant lists.
 
 Each row records which fields are which. **The matrix is not mechanically
-derived executable solver coverage.** `current_default` cells execute; the
-only other executable cell is Water × `pressure_flow_v1` variant `reference`
-(branch), marked `executable_today: true` and `executable_variants: ["reference"]`
-by the tool's `EXECUTABLE_CANDIDATES` table.
+derived executable solver coverage.** `current_default` cells execute. The
+`EXECUTABLE_CANDIDATES` table also marks Water × `pressure_flow_v1/reference`
+(Current on main) and Water × `cellular_yield_v1/reference` (Current in unmerged
+residual native source) as `executable_today: true` with
+`executable_variants: ["reference"]`. Other candidate mappings remain refused.
 Unusual chemistry, temperature and flow-rate cases are validated by #200/#212
 implementation tests, not by this table.
 
 | Material (ID) | freemass_v1 | cellular_yield_v1 | pressure_flow_v1 | inertial_cellular_v1 |
 |---|---|---|---|---|
-| Water (3) | **current default** | proposed experimental (Gate D) | proposed experimental (#200); `reference` executable (branch) | proposed experimental (Gate D, #212) |
+| Water (3) | **current default** | proposed experimental (Gate D); `reference` executable in residual native source | proposed experimental (#200); `reference` executable on main | proposed experimental (Gate D, #212) |
 | Brine (24) | rejected | **current default** | rejected | **proposed experimental** (first non-Water candidate) |
 | Toxic Sludge (32) | rejected | **current default** | rejected | proposed alternate |
 | Oil (16) | rejected | **current default** (Oil kernel kept) | rejected | rejected (v1) |

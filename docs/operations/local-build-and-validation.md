@@ -23,7 +23,7 @@ requirement, not evidence that every platform artifact was built or tested.
 | Windows compiler | LLVM-MinGW 20260826, Clang 23.1.0, UCRT; native lock pins the Linux-host archive; local Windows ZIP is a distinct input |
 | Linux compiler/linker | GCC/G++ 13.3.0 / binutils 2.42; native lock |
 | Web compiler | Emscripten **4.0.20**, checked by [build_web.py](../../tools/build_web.py) |
-| Rapier2D | Official single-precision 2D **v0.35.2**; [Rapier lock](../../godot/third_party/rapier2d.lock.json) |
+| Rapier2D | Single-precision 2D **v0.35.2** base; qualified cooperative deferred-BVH join backport on Windows/Linux x86_64, official bytes on other targets; [Rapier lock](../../godot/third_party/rapier2d.lock.json) |
 | Web templates | Exact Godot 4.7 dlink templates: `web_dlink_nothreads_{debug,release}.zip` for compat, `web_dlink_{debug,release}.zip` for threaded |
 
 Keep native and Web godot-cpp checkouts separate: generated bindings and archives
@@ -123,11 +123,13 @@ Windows cross-builds use `build_pinned_godot_cpp.sh windows` and
 with `LLVM_MINGW_ROOT`/`WINDOWS_CXX`. PE/import inspection alone cannot prove a
 Windows runtime launch.
 
-The GitHub-hosted Native job has a 45-minute overall allowance. Its individual
+The GitHub-hosted Native job has a 90-minute overall allowance. Its individual
 build, test and benchmark commands retain their separate deadlines; increasing
 the job allowance does not skip cases or relax sanitizer failures. The
-[MAT-002 completion audit](../audits/2026-10-19-mat002-review-and-validation.md#completion-resumed--2258-utc)
-records the observed 35-minute cancellation and preceding successful durations.
+[pressure-reference acceptance](../audits/2026-10-24-lcb001-pressure-reference-publication.md#exact-head-acceptance-and-merge)
+records the 45-minute aggregate cancellation and successful 50-minute rerun.
+The [MAT-002 completion audit](../audits/2026-10-19-mat002-review-and-validation.md#completion-resumed--2258-utc)
+retains the earlier 35-minute cancellation and preceding successful durations.
 
 ## Linux GDExtension CI sharding
 
@@ -387,6 +389,36 @@ semantic records and live ownership unchanged. The [authoring guide](semantic-de
 documents reproducible composites, isolated planes, region details and capture
 manifests. Headless rendering does not substitute for those captures.
 
+### Residual LCB-001 native setup and receipt checks
+
+The unmerged `codex/lcb001-shared-contract` checkpoint registers its whole-cell
+Water, normalization, native-issued refusal, typed receipt and quantity-ledger
+cases in the ordinary `make test` and `build_windows_msvc.bat` suites. The
+[native contract](../architecture/liquid-prepared-setup-and-receipts.md) owns
+the interfaces and qualifications; the [dated evidence](../audits/2026-10-24-lcb001-residual-shared-contract.md)
+records the earlier two 121-case native builds and scoped fresh Windows Godot
+proof, followed by five new rectangle/event/gas-ID regressions. The latest native
+suite has 126 cases; use the dated final receipt for the tested source/delta.
+
+```sh
+python tools/lcb/water_normalization_contract.py --check
+python tools/lcb/liquid_run_receipt_contract.py --check
+python tools/lcb/derive_capability_matrix.py --check
+python tools/lcb/policy_contract.py --check
+python tools/lcb/native_policy_artifacts.py --check
+python tools/lcb/lcb_registry.py build --check
+python -m unittest discover -s tools/lcb -p 'test_*.py'
+```
+
+The two new oracles compare complete canonical byte vectors with independent
+Python encoders. Source-sensitive runtime publication remains required before
+ready-PR acceptance. Both development runtimes passed scoped publication in
+run `40138333825` at source `29c7c4d`, appended as `888a39f0`; the dated audit
+records their hashes and exact coverage. Full non-draft acceptance remains
+separate. Scratch Windows proof does not reattest retained libraries. The
+Godot normalization opt-in and full application host are separate integration
+work, and no new #201/#212 implementation is included in this checkpoint.
+
 ### Branch-scoped runtime publishers
 
 Source-matched Linux and Windows runtimes have been published by **temporary,
@@ -421,15 +453,29 @@ Re-scoping means renaming it and changing its branch guard, evidence path, case
 list and markers, and running `python3 tools/ci/check_ci_provider_policy.py`.
 Retire it again once its branch merges.
 
-**Active, 2026-10-24:** the LCB-001 pressure-reference publisher
+**Retired, 2026-10-24:** the LCB-001 pressure-reference publisher
 (`.github/workflows/lcb001-pressure-reference-runtime-publication.yml`,
 `tools/ci/lcb001_pressure_reference_runtime_publication.py` and
 `tools/ci/test_lcb001_pressure_reference_runtime_publication.py`, re-scoped in
-draft PR #244) exists on branch `claude/lcb001-pressure-reference`. It builds and
-publishes only after `tools/ci/lcb001_pressure_reference_publish_request.json` is
-committed on that branch, and records its outcome in the
+draft PR #244) is removed with its source-bound request after PR #245.
+Its implementation remains recoverable at
+[`48fb275`](https://github.com/techrote/cybersand/tree/48fb275f506b05b00461e43df813c11d68acb274).
+It published only after an explicit request on the implementation branch and recorded its outcome in the
 [evidence record](../audits/2026-10-24-lcb001-pressure-reference-publication.md).
-Retire the three files and the request after that branch merges.
+A later native checkpoint must use a newly scoped publisher and fresh execution;
+the historical artifacts qualify their recorded source only.
+
+**Prepared residual checkpoint, 2026-10-24:**
+[`lcb001-shared-contract-runtime-publication.yml`](../../.github/workflows/lcb001-shared-contract-runtime-publication.yml)
+and its [helper](../../tools/ci/lcb001_shared_contract_runtime_publication.py)
+are limited to `codex/lcb001-shared-contract`. Its own explicit request arms
+the immutable source checkpoint; ordinary native edits do not request a build.
+Both target OSes must pass import and all twelve scoped cases, including W-CY,
+pressure, worker, native observation and WEX body-mask controls. The
+[residual audit](../audits/2026-10-24-lcb001-residual-shared-contract.md#resumed-execution-and-fresh-main-integration)
+records guard preparation and actual publication status. Full non-draft
+exact-head gates remain separate. Retire this publisher after its bounded
+checkpoint merges.
 
 ## Hierarchical generation example and acceptance
 
@@ -973,6 +1019,15 @@ interactive acceptance.
 and discovery suites. They change no installed native runtime artifact. See the
 [control measurement procedure](soliding-measurement.md) for immutable-source
 benchmark compilation; builds/tests must stop during registered local timing.
+
+Native CI prebuilds the eight soliding sanitizer executables under a separate
+twenty-minute compilation bound, then runs the unchanged `make soliding-sanitize`
+group under its ten-minute execution bound with ASan/UBSan failure handling.
+The same Makefile prerequisites, compiler flags, tests and hosted runner apply;
+the ninety-minute overall job bound remains. The
+[residual shared-contract audit](../audits/2026-10-24-lcb001-residual-shared-contract.md#native-aggregate-compilation-timeout-and-separate-build-budget)
+preserves the preceding aggregate timeout while compiling the final executable
+and distinguishes partial earlier passes from complete final-head acceptance.
 
 `make soliding-benchmark-smoke` compiles the isolated journal characterization
 with warnings as errors and exercises its bounded-work/fairness assertions on a

@@ -3737,6 +3737,11 @@ void test_liquid_policy_default_preserves_behavior_and_workers();
 void test_liquid_policy_c_api_transaction();
 void test_liquid_policy_c_api_allocation_failures();
 void test_lcb_pressure_admission();
+void test_lcb_pressure_gas_id_restore_bounds();
+void test_lcb_pressure_gas_id_creation_exhaustion();
+void test_lcb_pressure_gas_id_split_exhaustion();
+void test_lcb_pressure_quantity_bounds();
+void test_lcb_pressure_event_restore_bounds();
 void test_lcb_pressure_gas_pockets();
 void test_lcb_pressure_gas_merge();
 void test_lcb_pressure_gas_vent_reseal();
@@ -3749,6 +3754,20 @@ void test_lcb_pressure_static_rest();
 void test_lcb_pressure_lifecycle();
 void test_lcb_pressure_persistence();
 void test_lcb_pressure_default_untouched();
+void test_water_cy_admission_ingress();
+void test_water_cy_coherence_masks();
+void test_water_cy_material_hooks();
+void test_water_cy_workers_persistence_transport();
+void test_water_cy_liveness_cadence();
+void test_water_normalization_rounding();
+void test_water_normalization_refusals();
+void test_water_normalization_final_identity();
+void test_water_normalization_thermal();
+void test_water_normalization_arithmetic();
+void test_water_normalization_canonical_vectors();
+void test_liquid_run_receipt_native_identity();
+void test_liquid_construction_refusal_native_issuance();
+void test_quantity_ledger();
 
 int main(int argc, char** argv) {
     struct Test {
@@ -3850,6 +3869,11 @@ int main(int argc, char** argv) {
         {"LCB-001 liquid policy default behavior and workers", test_liquid_policy_default_preserves_behavior_and_workers},
         {"LCB-001 liquid policy C API transaction", test_liquid_policy_c_api_transaction},
         {"LCB-001 pressure admission and refusal", test_lcb_pressure_admission},
+        {"LCB-001 pressure gas ID restore bounds", test_lcb_pressure_gas_id_restore_bounds},
+        {"LCB-001 pressure gas ID creation exhaustion", test_lcb_pressure_gas_id_creation_exhaustion},
+        {"LCB-001 pressure gas ID split exhaustion", test_lcb_pressure_gas_id_split_exhaustion},
+        {"LCB-001 pressure quantity rectangle bounds", test_lcb_pressure_quantity_bounds},
+        {"LCB-001 pressure pending event restore bounds", test_lcb_pressure_event_restore_bounds},
         {"LCB-001 pressure gas single and twin pockets", test_lcb_pressure_gas_pockets},
         {"LCB-001 pressure gas unequal merge", test_lcb_pressure_gas_merge},
         {"LCB-001 pressure gas compress, vent and reseal", test_lcb_pressure_gas_vent_reseal},
@@ -3863,6 +3887,20 @@ int main(int argc, char** argv) {
         {"LCB-001 pressure physical hash and exact persistence", test_lcb_pressure_persistence},
         {"LCB-001 pressure default policy untouched", test_lcb_pressure_default_untouched},
         {"LCB-001 liquid policy C API allocation failures", test_liquid_policy_c_api_allocation_failures},
+        {"LCB-001 W-CY admission and ingress", test_water_cy_admission_ingress},
+        {"LCB-001 W-CY coherence, viscosity and masks", test_water_cy_coherence_masks},
+        {"LCB-001 W-CY material hooks", test_water_cy_material_hooks},
+        {"LCB-001 W-CY workers, persistence and transport", test_water_cy_workers_persistence_transport},
+        {"LCB-001 W-CY liveness and cadence", test_water_cy_liveness_cadence},
+        {"LCB-001 Water normalization rounding", test_water_normalization_rounding},
+        {"LCB-001 Water normalization refusals", test_water_normalization_refusals},
+        {"LCB-001 Water normalization final identity", test_water_normalization_final_identity},
+        {"LCB-001 Water normalization thermal fields", test_water_normalization_thermal},
+        {"LCB-001 Water normalization arithmetic", test_water_normalization_arithmetic},
+        {"LCB-001 Water normalization canonical vectors", test_water_normalization_canonical_vectors},
+        {"LCB-001 native run receipt identity", test_liquid_run_receipt_native_identity},
+        {"LCB-001 native-issued construction refusals", test_liquid_construction_refusal_native_issuance},
+        {"LCB-001 native quantity ledger", test_quantity_ledger},
     };
 
     std::size_t passed = 0;

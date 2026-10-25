@@ -25,6 +25,14 @@ constexpr std::int64_t kHeadClamp = std::int64_t{1} << 28;
     return value != std::numeric_limits<std::int32_t>::min() && value <= kUnknownHeadBase;
 }
 
+[[nodiscard]] std::uint32_t allocate_gas_compartment_id(std::uint32_t& next_id) {
+    // IDs never reuse the unresolved/vacuum/atmosphere labels. kVacuumLabel is
+    // the exhausted next-ID sentinel after the last valid identity is issued.
+    if (next_id == 0U || next_id >= kVacuumLabel)
+        throw std::runtime_error("pressure gas identity capacity exhausted");
+    return next_id++;
+}
+
 // Inverse of TransportPolicy::unpack (schema v1) for persistence.
 [[nodiscard]] std::vector<std::int32_t> pack_transport(const TransportPolicy& policy) {
     std::vector<std::int32_t> words;
@@ -99,9 +107,18 @@ PressureFlowDiagnostics World::pressure_flow_diagnostics() const noexcept {
 
 std::uint64_t World::water_quantity(RectI64 region) const {
     if (region.width < 0 || region.height < 0) throw std::invalid_argument("region dimensions must not be negative");
+    if (region.width == 0 || region.height == 0) return 0;
+    const auto maximum = std::numeric_limits<std::int64_t>::max();
+    if (region.x > maximum - (region.width - 1) ||
+        region.y > maximum - (region.height - 1))
+        throw std::overflow_error("quantity region exceeds coordinate range");
     std::uint64_t total = 0;
-    for (std::int64_t y = region.y; y < region.y + region.height; ++y) {
-        for (std::int64_t x = region.x; x < region.x + region.width; ++x) {
+    // Offsets avoid forming an exclusive endpoint or incrementing a coordinate
+    // past INT64_MAX when the final included cell is exactly at that boundary.
+    for (std::int64_t dy = 0; dy < region.height; ++dy) {
+        const auto y = region.y + dy;
+        for (std::int64_t dx = 0; dx < region.width; ++dx) {
+            const auto x = region.x + dx;
             const auto target = address(x, y);
             const auto* chunk = find_chunk(target.chunk);
             if (chunk == nullptr) continue;
@@ -473,7 +490,7 @@ void World::resolve_gas_topology() {
                 throw std::runtime_error("pressure gas compartment capacity exhausted");
             auto& region = state.regions[r];
             State::Compartment made;
-            made.id = state.next_id++;
+            made.id = allocate_gas_compartment_id(state.next_id);
             // Newly sealed gas is atmospheric; kernel-vacated cells are vacuum.
             made.amount = region.fresh_cells + region.atmosphere_cells;
             made.volume = region.volume;
@@ -575,7 +592,7 @@ void World::resolve_gas_topology() {
                 throw std::runtime_error("pressure gas compartment capacity exhausted");
             auto& region = state.regions[r];
             State::Compartment made;
-            made.id = state.next_id++;
+            made.id = allocate_gas_compartment_id(state.next_id);
             made.generation = generation + 1U;
             made.parents = ids;
             made.parent_count = parent_count;
@@ -946,8 +963,14 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
         auto& cell = r.chunk->cells[r.at.index];
         auto& side = r.chunk->pressure->cells[r.at.index];
         const auto from_overfill = std::min<std::int64_t>(amount, side.overfill);
+        const auto old_visible = cell.state_a_value();
+        const auto old_overfill = side.overfill;
         side.overfill = static_cast<std::uint16_t>(side.overfill - from_overfill);
         const auto remaining = static_cast<std::int64_t>(cell.state_a_value()) - (amount - from_overfill);
+        record_quantity_transition(Material::Water, old_visible, old_overfill,
+            remaining <= 0 ? Material::Empty : Material::Water,
+            static_cast<std::uint16_t>(std::max<std::int64_t>(0, remaining)), side.overfill,
+            effects, {}, false);
         if (remaining <= 0) {
             cell = Chunk::Cell::for_material(Material::Empty);
             side = {};
@@ -966,6 +989,9 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
                           std::int64_t wx, std::int64_t wy) {
         auto& cell = r.chunk->cells[r.at.index];
         auto& side = r.chunk->pressure->cells[r.at.index];
+        const auto old_material = cell.material_value();
+        const auto old_visible = cell.state_a_value();
+        const auto old_overfill = side.overfill;
         std::int64_t delta = 0;
         std::int64_t before = 0;
         if (cell.material_value() == Material::Empty) {
@@ -981,6 +1007,8 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
         cell.set_state_a(static_cast<std::uint16_t>(cell.state_a_value() + visible));
         cell.set_state_b(std::max(cell.state_b_value(), incoming_coherence));
         side.overfill = static_cast<std::uint16_t>(side.overfill + (amount - visible));
+        record_quantity_transition(old_material, old_visible, old_overfill, Material::Water,
+            cell.state_a_value(), side.overfill, effects, {}, false);
         // Mass-weighted velocity merge; the truncation remainder is booked.
         const auto numerator = before * side.flow + amount * incoming_flow;
         const auto after = before + amount;
@@ -1047,7 +1075,10 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
             const auto target = ref(x, y - 1);
             if (target.chunk != nullptr) {
                 const auto amount = std::min(o, maximum);
-                self_side->overfill = static_cast<std::uint16_t>(o - amount);
+                record_quantity_transition(Material::Water, self.chunk->cells[self.at.index].state_a_value(),
+                        self_side->overfill, Material::Water, self.chunk->cells[self.at.index].state_a_value(),
+                        static_cast<std::uint16_t>(o - amount), effects, {}, false);
+                    self_side->overfill = static_cast<std::uint16_t>(o - amount);
                 give(target, amount, self_side->flow, self.chunk->cells[self.at.index].state_b_value(), true, x, y - 1);
                 mix_after_motion(Material::Water, x, y, x, y - 1, static_cast<std::uint16_t>(amount), effects);
                 if (effects != nullptr) ++effects->pf_relief_cells;
@@ -1067,6 +1098,9 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
                 if (visible < maximum) amount = std::min(o, maximum - visible);
                 else amount = std::min(o, overfill_limit - other);
                 if (amount > 0) {
+                    record_quantity_transition(Material::Water, self.chunk->cells[self.at.index].state_a_value(),
+                        self_side->overfill, Material::Water, self.chunk->cells[self.at.index].state_a_value(),
+                        static_cast<std::uint16_t>(o - amount), effects, {}, false);
                     self_side->overfill = static_cast<std::uint16_t>(o - amount);
                     give(target, amount, self_side->flow, self.chunk->cells[self.at.index].state_b_value(), false, x, y - 1);
                     mix_after_motion(Material::Water, x, y, x, y - 1, static_cast<std::uint16_t>(amount), effects);
@@ -1098,6 +1132,9 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
                 if (visible < maximum) amount = std::min(o, maximum - visible);
                 else if (o - other >= 2) amount = std::min((o - other) / 2, overfill_limit - other);
                 if (amount > 0) {
+                    record_quantity_transition(Material::Water, self.chunk->cells[self.at.index].state_a_value(),
+                        self_side->overfill, Material::Water, self.chunk->cells[self.at.index].state_a_value(),
+                        static_cast<std::uint16_t>(o - amount), effects, {}, false);
                     self_side->overfill = static_cast<std::uint16_t>(o - amount);
                     give(target, amount, self_side->flow, self.chunk->cells[self.at.index].state_b_value(), false, *best, y);
                     mix_after_motion(Material::Water, x, y, *best, y, static_cast<std::uint16_t>(amount), effects);
@@ -1299,6 +1336,8 @@ std::uint64_t World::physical_state_hash() const {
     std::uint64_t hash = 1469598103934665603ULL;
     for (const char c : std::string_view{"cybersand-physical-state"}) hash_byte(hash, static_cast<std::uint8_t>(c));
     hash_integer(hash, kPhysicalStateHashVersion);
+    QuantityHashWriter quantity_hash{hash};
+    quantity_write(quantity_hash, quantity_);
     hash_integer(hash, tick_index_);
     hash_integer(hash, completed_tick_index_);
     hash_integer(hash, static_cast<std::uint8_t>(tick_failed_));
@@ -1484,6 +1523,7 @@ std::vector<std::uint8_t> World::save_physical_state() const {
     if (tick_in_progress_) throw std::logic_error("cannot save during a world tick");
     if (settled_discovery_ != nullptr)
         throw std::invalid_argument("physical state persistence does not support settled discovery");
+    validate_quantity_ledger(true);
     StateWriter out;
     out.put(kPhysicalStateMagic);
     out.put(kPhysicalStateFormatVersion);
@@ -1576,6 +1616,7 @@ std::vector<std::uint8_t> World::save_physical_state() const {
             }
         }
     }
+    quantity_write(out, quantity_);
     out.put(static_cast<std::uint8_t>(pressure_ != nullptr));
     if (pressure_ != nullptr) {
         const auto& state = *pressure_;
@@ -1620,7 +1661,7 @@ std::vector<std::uint8_t> World::save_physical_state() const {
     return std::move(out.bytes);
 }
 
-std::unique_ptr<World> World::restore_physical_state(WorldConfig execution, std::span<const std::uint8_t> bytes) {
+std::unique_ptr<World> World::restore_physical_state(const WorldConfig& execution, std::span<const std::uint8_t> bytes) {
     if (bytes.size() < 8U + 32U) refuse_state("payload is too short");
     const auto body = bytes.first(bytes.size() - 32U);
     const auto digest = Sha256::of(body);
@@ -1628,7 +1669,10 @@ std::unique_ptr<World> World::restore_physical_state(WorldConfig execution, std:
     StateReader in(body);
     if (in.get<std::uint32_t>() != kPhysicalStateMagic) refuse_state("bad magic");
     if (in.get<std::uint32_t>() != kPhysicalStateFormatVersion) refuse_state("unknown format version");
-    WorldConfig config = std::move(execution);
+    // WorldConfig contains the fixed transport catalogue. Keep preparation's
+    // copy off the caller/decoder stack (notably MSVC debug's 1 MiB default).
+    auto config_owner = std::make_unique<WorldConfig>(execution);
+    auto& config = *config_owner;
     config.chunk_size = in.get<std::int32_t>();
     config.activity_block_size = in.get<std::int32_t>();
     config.scheduling_core_size = in.get<std::int32_t>();
@@ -1703,8 +1747,10 @@ std::unique_ptr<World> World::restore_physical_state(WorldConfig execution, std:
         event.y = in.get<std::int64_t>();
         event.radius = in.get<std::int32_t>();
         event.collapse_strength = in.get<std::uint8_t>();
-        if (event.radius <= 0 || event.radius > w.config_.maximum_explosion_radius) refuse_state("bad pending event");
-        w.pending_explosions_.push_back(event);
+        // Discovery is disabled for this unexposed candidate. Reuse ingress's
+        // exact radius/capacity/R+2 coordinate checks before admitting the event.
+        if (!w.queue_explosion(event.x, event.y, event.radius, event.collapse_strength))
+            refuse_state("bad pending event");
     }
     const auto chunk_count = in.get<std::uint32_t>();
     if (chunk_count > w.config_.maximum_chunk_count) refuse_state("chunk count exceeds capacity");
@@ -1745,6 +1791,8 @@ std::unique_ptr<World> World::restore_physical_state(WorldConfig execution, std:
             const auto value = static_cast<Material>(material);
             if (value == Material::Water && (a == 0U || a > maximum_water || b > coherence_limit))
                 refuse_state("Water state outside the experiment policy");
+            if (value == Material::Water && w.water_cellular_yield_ && a != maximum_water)
+                refuse_state("whole-cell Water requires maximum() quantity");
             if (value != Material::Water && a > 255U) refuse_state("byte state out of domain");
             cell = Chunk::Cell::for_material(value);
             cell.set_state_a(a);
@@ -1792,11 +1840,15 @@ std::unique_ptr<World> World::restore_physical_state(WorldConfig execution, std:
         chunk.dirty_max_x = w.config_.chunk_size - 1;
         chunk.dirty_max_y = w.config_.chunk_size - 1;
     }
+    try { w.quantity_ = quantity_read(in); }
+    catch (const std::exception&) { refuse_state("invalid quantity ledger encoding"); }
     const bool has_pressure = in.get<std::uint8_t>() != 0U;
     if (has_pressure != (w.pressure_ != nullptr)) refuse_state("pressure section presence mismatch");
     if (has_pressure) {
         auto& state = *w.pressure_;
         state.next_id = in.get<std::uint32_t>();
+        if (state.next_id == 0U || state.next_id > kVacuumLabel)
+            refuse_state("next compartment id outside its allocated/exhausted domain");
         state.topology_revision = in.get<std::uint64_t>();
         const auto get_compartment = [&in]() {
             GasCompartmentSnapshot c;
@@ -1883,5 +1935,7 @@ std::unique_ptr<World> World::restore_physical_state(WorldConfig execution, std:
         refuse_state("gas labels without a pressure family");
     }
     if (!in.done()) refuse_state("trailing bytes");
+    try { w.validate_quantity_ledger(true); }
+    catch (const std::exception&) { refuse_state("invalid quantity ledger"); }
     return world;
 }

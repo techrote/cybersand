@@ -603,31 +603,52 @@ the C entry points are experimental and not a frozen ABI.
 
 ### LCB-001 pressure reference inspection and persistence (experimental)
 
-**Current on branch `claude/lcb001-pressure-reference` (unmerged).** These calls
+**Current pressure APIs from merged #245, retained in the residual native branch.** These calls
 serve the opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md)
 and follow the same serialized-owner rule as the bridge calls above. Results own
 their dictionaries; none exposes live World storage.
 
 | Call | Result |
 |---|---|
-| `CyberNativeCellWorld.get_physical_state_hash()` / `get_physical_state_hash_version()` | 16-hex-digit FNV-1a `World::physical_state_hash()`; version 1 (`kPhysicalStateHashVersion`). `content_hash`/`state_hash` are unchanged |
+| `CyberNativeCellWorld.get_physical_state_hash()` / `get_physical_state_hash_version()` | 16-hex-digit FNV-1a `World::physical_state_hash()`; residual native version 2 includes exact shared accounting. Historical #245 version 1 is retained evidence; `content_hash`/`state_hash` are unchanged |
 | `inspect_gas_compartments()` | `available` (false outside pressure Worlds), parameters, `topology_revision`, `next_id`, `completed_tick`, `compartments` (id, generation, ancestry, amount, volume, anchor, created tick, topology revision, `gauge_mass`, `vent_state`), retirement `history` with reason and successors, and the `ledger` with `closes` |
 | `inspect_pressure_cell(point)` | `available`, material, `state_a`, `overfill`, `flow`, `gas` (`compartment`/`atmosphere`/`vacuum`/`unresolved`) and `gas_compartment` |
 | `get_pressure_flow_ledger()` | overfill converted/external, flow remainder, contact loss, relief cells and `last_tick` diagnostics |
-| `get_liquid_run_receipt(setup)` | experimental run-receipt hash and components, including the actual simulation-region rectangle (or `unrestricted`) and physics-changing diagnostic overrides ([fields](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)) |
+| `get_liquid_run_receipt(setup)` | older experimental dictionary/string hash and components, including actual simulation-region and physics-changing diagnostic overrides; this is not the typed native-v1 receipt ([fields](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)) |
 | `get_liquid_solver_policy()` | adds `family_parameters` and `physical_state_hash_version`; `admission` is `current_defaults_only` or `qualified_candidate` |
 | `water_experiment_observation` | adds `water_visible` and `water_overfill`; `water_integer` = visible + overfill (overfill is 0 outside pressure Worlds) |
 | `CyberDemoBridge.inspect_cell(world, point)` | adds `family_state` (`family`, `overfill`, `flow`, `gas_label`) in pressure Worlds |
-| `CyberDemoBridge.export_physical_state(world)` / `import_physical_state(world, bytes)` | CYPS v1 bytes; import is transactional, re-admits the saved policy with the running build, and on refusal returns false with "running world preserved" ([persistence](../architecture/pressure-flow-v1.md#persistence-cyps-v1)) |
+| `CyberDemoBridge.export_physical_state(world)` / `import_physical_state(world, bytes)` | residual source writes CYPS2 and explicitly refuses historical CYPS1; import re-admits saved policy and preserves the running World on refusal ([persistence](../architecture/pressure-flow-v1.md#persistence-cyps-v2)) |
 
 Native counterparts on `World` are `pressure_flow_enabled`,
 `pressure_flow_parameters`, `pressure_cell`, `gas_compartments`, `gas_history`,
 `gas_ledger`, `gas_topology_revision`, `gas_next_id`, `pressure_flow_ledger`,
 `pressure_flow_diagnostics`, `water_quantity`, `physical_state_hash` and
-`save_physical_state`/`restore_physical_state` (`kPhysicalStateFormatVersion` 1)
+`save_physical_state`/`restore_physical_state` (`kPhysicalStateFormatVersion` 2)
 in [`world.hpp`](../../native/include/cybersand/world.hpp) and
 [`pressure_flow.hpp`](../../native/include/cybersand/pressure_flow.hpp). No C API
-entry point exposes them. None is a frozen ABI or schema.
+entry point exposes them. The C API/global ABI is not frozen by these additions.
+
+### Native prepared liquid setup and receipts
+
+**Current in unmerged residual native #200 source:** `PreparedWorldBuilder`
+validates final unique tuples, optionally normalizes Water and builds an
+unexposed candidate. Its native-issued `ConstructionRefusal` distinguishes
+policy/setup refusal from preparation failure, binding exact raw request scope
+only where that request was actually received. A refused attempt is separate
+from the applied run and cannot replace its World, receipt or generation.
+
+`World::stored_temperature`, selected/applied core getters and `quantity_ledger`
+provide copied completed-boundary native facts. Exclusive-owner capture creates
+the immutable `NativeFacts`; caller setup dictionaries cannot construct it.
+Typed native-v1 applied/attempt receipts bind actual policy/configuration,
+setup/normalization identities, complete hash2 and exact accounting. Shaped
+source/runtime values remain caller claims and full matched eligibility stays
+false until #202 supplies actual verification. The older Godot dictionary
+getter above remains a different encoding; no Godot typed normalization opt-in
+or full comparison host is supplied here. Detailed shapes, absence rules,
+capacities and the narrow native codec freeze belong to
+[native prepared setup and receipts](../architecture/liquid-prepared-setup-and-receipts.md).
 
 ### Read-only native MicroScenario inspection
 

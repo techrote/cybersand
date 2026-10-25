@@ -92,7 +92,8 @@ std::optional<PairReactionResult> MaterialRules::pair_reaction(
     Material source, Material target, std::uint8_t probability_roll) noexcept {
     const auto resolved = InteractionRules::resolve_pair(source, target, probability_roll);
     if (!resolved.selected) return std::nullopt;
-    return PairReactionResult{resolved.source_product, resolved.target_product};
+    return PairReactionResult{resolved.source_product, resolved.target_product,
+                              static_cast<std::uint16_t>(resolved.rule_index)};
 }
 
 std::uint8_t MaterialRules::discrete_lateral_flow_rate(

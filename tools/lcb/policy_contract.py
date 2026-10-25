@@ -465,8 +465,9 @@ def build_vectors(matrix_bytes: bytes, catalogue: str) -> dict:
                            "readback_hash": result["readback"]["policy_hash"], "generation": session.generation})
     return {
         "schema": "lcb-liquid-policy-wire-vectors-v1",
-        "status": "Proposed Gate C contract vectors from the standalone oracle tools/lcb/policy_contract.py. "
-                  "No native policy, World or solver exists; #200/#212 must reproduce these bit for bit.",
+        "status": "Registered Gate C contract vectors from tools/lcb/policy_contract.py. "
+                  "The historical today/hypothetical/fallback profiles retain their registered outcomes; "
+                  "source-qualified running-build candidates are additionally checked by native tests.",
         "constants": {"magic": MAGIC, "envelope_version": ENVELOPE_VERSION, "policy_version": POLICY_VERSION,
                       "header_words": HEADER_WORDS, "max_block_words": MAX_BLOCK_WORDS,
                       "family_codes": FAMILIES, "variant_codes": VARIANTS, "material_default_request_code": 0,

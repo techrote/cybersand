@@ -11,6 +11,7 @@ namespace cybersand {
 struct PairReactionResult {
     Material source_product = Material::Empty;
     Material target_product = Material::Empty;
+    std::uint16_t rule_index = 0;
 };
 
 // Immutable descriptor catalogue for the executable compact kernels owned by

@@ -264,7 +264,8 @@ to the complete complex: 4,096 rectangles, eight world areas of construction
 writes, 1 MiB JSON and at most twelve presentation regions (nine are used).
 
 Source: [world.hpp::WorldConfig](../../native/include/cybersand/world.hpp).
-All members are construction-time; `cybersand_config_v2` mirrors the configuration.
+All members are construction-time; `cybersand_config_v2` mirrors its declared
+subset, with the separate liquid-policy entry point noted below.
 
 | Member | Default | Meaning |
 |---|---:|---|
@@ -285,7 +286,7 @@ All members are construction-time; `cybersand_config_v2` mirrors the configurati
 | `maximum_explosion_radius` | 64 | Largest accepted radius |
 | `liquid_solver_policy` | every liquid's current default | Immutable LCB-001 policy; construction refuses any mapping this build has not qualified ([foundation](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)). Not mirrored by `cybersand_config_v2`; use `cybersand_world_create_with_liquid_policy_v1`. |
 
-**LCB pressure family block (branch `claude/lcb001-pressure-reference`, unmerged; experimental).**
+**LCB pressure family block (#245 law, retained in residual native source; experimental).**
 When `liquid_solver_policy` assigns Water to `pressure_flow_v1/reference`, the
 optional family block `pressure_flow_v1` version 1 sets two construction-time
 values. Omitting the block applies the defaults. Out-of-range values are refused
@@ -301,6 +302,26 @@ The fixed v1 kernel constants (`kFlowScale` 1024, acceleration 3/1, retain
 limit `maximum()`, compartment volume limit 16 384, capacity 1024, history 64) are
 not configurable; they are Proposed values recorded in the receipt's
 `family_parameters` ([declared parameters](../architecture/pressure-flow-v1.md#declared-parameters-v1)).
+
+**Residual native #200 W-CY and setup codecs (unmerged
+`codex/lcb001-shared-contract`).** Water × `cellular_yield_v1/reference` accepts
+its own optional material block **v2**, one `viscosity_index` integer 0..255,
+default 0. Its law version is 1; the illustrative material-block v1
+`flow_rate_permille` schema is not reinterpreted. Whole-cell Water requires
+`maximum()` at ingress. Explicit native `water-normalize-v1` preparation admits
+3–8 mass bits, at most 1024 cells per domain side and 1,048,576 final unique tuple
+records (caller may lower the record budget). There is no Godot typed
+normalization opt-in route yet.
+
+The [native prepared setup/receipt/accounting contract](../architecture/liquid-prepared-setup-and-receipts.md)
+owns these bounds, native-issued refusal/failure outcomes, source/host
+qualifications and the narrow owner-requested codec freeze. Complete physical
+hash/CYPS use version2, with unknown formats and historical CYPS1 refused.
+Defaults, historical content/state hashes and the C64-E8 Cell ABI are unchanged.
+Exact shared accounting adds fixed per-job scratch 3816 bytes: 15,630,336 bytes
+at default `active_core_capacity` 4096, plus a 6088-byte World snapshot in the
+measured x64 builds. These costs are separate from pressure storage and imply
+no performance qualification.
 
 [World::World](../../native/src/world.cpp) checks chunk edge 8–1024, activity edge
 1–1024, workers 1–256, explosion maximum 1–256, and nonzero quiet/reservation/
