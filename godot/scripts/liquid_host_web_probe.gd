@@ -50,11 +50,99 @@ static func _census(world: Variant) -> Dictionary:
 				motion = motion or state.vx != 0 or state.vy != 0 or state.ax != 0 or state.ay != 0
 	return {"counts":counts,"motion":motion}
 
+static func _water_census(bridge: Variant, world: Variant) -> Dictionary:
+	var count: int = 0
+	var full: bool = true
+	var motion: bool = false
+	for y: int in range(80):
+		for x: int in range(96):
+			if world.material_at(x,y) != 3: continue
+			count += 1
+			var cell: Dictionary = bridge.inspect_cell(world,Vector2i(x,y))
+			full = full and cell.get("ok",false) and int(cell.get("state_a",0)) == 255
+			var state: Dictionary = world.inspect_inertial_cell(Vector2i(x,y))
+			motion = motion or (state.inertial_family and (state.vx != 0 or state.vy != 0 or state.ax != 0 or state.ay != 0))
+	return {"count":count,"full":full,"motion":motion,
+		"quantity":int(world.water_experiment_observation(Vector2i.ZERO,Vector2i(96,96)).water_integer)}
+
+static func _water_families(controller: Variant, report: Dictionary, definition: Dictionary,
+		defaults: PackedInt32Array) -> bool:
+	var world: Variant = controller.native_world
+	var bridge: Variant = controller.demo_bridge
+	var water: Dictionary = definition.duplicate(true)
+	water.rectangles = [0,0,96,96,0,0,80,96,1,1,0,0,1,80,1,95,0,1,80,1,28,24,8,6,3]
+	water.partial_water_fills = [52,24,1,1,127,0,53,24,1,1,128,0]
+	water.interest.region = [0,0,96,96]
+	var payloads: Array[String] = []
+	for arm: Array in [["freemass_v1","reference"],["cellular_yield_v1","reference"],
+			["pressure_flow_v1","reference"],["pressure_flow_v1","cached"],
+			["pressure_flow_v1","cached_dormant"],["inertial_cellular_v1","reference"]]:
+		var family: String = arm[0]
+		var variant: String = arm[1]
+		var label: String = family+"/"+variant
+		var policy: PackedInt32Array = defaults if family == "freemass_v1" else _choose(bridge,defaults,3,family,variant)
+		if not _check(report,not policy.is_empty(),"actual runtime admits common Water arm "+label): return false
+		var validation: Dictionary = bridge.validate_liquid_policy(policy)
+		if not _check(report,validation.accepted,"native validates common Water request "+label): return false
+		var whole: bool = family == "cellular_yield_v1" or family == "inertial_cellular_v1"
+		if whole:
+			if not _check(report,controller.microscenario_apply_controlled_liquid(water,defaults,false,"Inspect",3),
+					"fractional Current control precedes Water refusal "+label): return false
+			var retained: Dictionary = {"hash":world.get_physical_state_hash(),
+				"receipt":world.get_applied_liquid_construction_receipt().canonical_bytes.duplicate(),
+				"generation":world.get_liquid_policy_session_generation(),"owner":controller.player.get_instance_id(),
+				"observation":controller.micro_host.liquid_host_observation_record()}
+			_check(report,not controller.microscenario_apply_controlled_liquid(water,policy,false,"Inspect",3),
+				"fractional Water refuses without normalization "+label)
+			_check(report,world.get_physical_state_hash()==retained.hash
+				and world.get_applied_liquid_construction_receipt().canonical_bytes==retained.receipt
+				and world.get_liquid_policy_session_generation()==retained.generation
+				and controller.player.get_instance_id()==retained.owner
+				and controller.micro_host.liquid_host_observation_record()==retained.observation,
+				"whole-cell refusal retains World/receipt/generation/owner/observation "+label)
+		if not _check(report,controller.microscenario_apply_controlled_liquid(water,policy,true,"Inspect",3),
+				"normal owner installs normalized common Water arm "+label): return false
+		var receipt: Dictionary = world.get_applied_liquid_construction_receipt()
+		var actual: Dictionary = world.get_liquid_solver_policy()
+		var assignment: Dictionary = {}
+		for entry: Dictionary in actual.assignments:
+			if int(entry.material)==3: assignment = entry
+		_check(report,assignment.get("applied_family","")==family and assignment.get("applied_variant","")==variant
+			and actual.policy_hash==validation.receipt.policy_hash and actual.maximum_rule_radius==3
+			and receipt.physical_state_hash_version==(3 if family=="inertial_cellular_v1" else 2),
+			"native family/variant/policy/hash-version/radius match common Water arm "+label)
+		var normal: Dictionary = receipt.normalization
+		_check(report,normal.rule=="water-normalize-v1" and normal.water_before==49*255 and normal.water_after==49*255
+			and normal.positive_delta==127 and normal.negative_delta==127 and normal.net_delta==0
+			and normal.cells_up==1 and normal.cells_down==1,
+			"common Water uses exact gross and net setup ledger "+label)
+		payloads.append(normal.payload_after_hash)
+		var advanced: bool = true
+		var quantity_exact: bool = true
+		var observed_motion: bool = false
+		for tick: int in range(30):
+			if not controller.micro_host.advance(): advanced = false;break
+			quantity_exact = quantity_exact and int(world.water_experiment_observation(Vector2i.ZERO,Vector2i(96,96)).water_integer)==49*255
+			if tick==3 and family=="inertial_cellular_v1": observed_motion = _water_census(bridge,world).motion
+		var census: Dictionary = _water_census(bridge,world)
+		_check(report,advanced and quantity_exact and census.quantity==49*255 and world.get_tick_index()==30 and census.count>0
+			and (not whole or (census.full and census.count==49))
+			and (family!="inertial_cellular_v1" or observed_motion),
+			"common Water advances30 ticks with exact quantity and actual whole-cell/IN semantics "+label)
+		report.water_runs.append({"family":assignment.get("applied_family",""),"variant":assignment.get("applied_variant",""),
+			"policy_sha256":actual.policy_hash,"native_receipt_sha256":receipt.receipt_hash,
+			"normalized_payload_sha256":normal.payload_after_hash,"positive_delta":normal.positive_delta,
+			"negative_delta":normal.negative_delta,"water_integer":census.quantity,"ticks":world.get_tick_index(),
+			"quantity_exact_each_tick":quantity_exact,"observed_retained_motion":observed_motion,"census":census,
+			"hash_version":receipt.physical_state_hash_version,"physical_hash":world.get_physical_state_hash(),"radius":actual.maximum_rule_radius})
+	return _check(report,payloads.size()==6 and payloads.all(func(value: String) -> bool: return value==payloads[0]),
+		"all four Water families and three pressure variants use one exact normalized setup payload")
+
 static func run(controller: Variant) -> Dictionary:
 	var report: Dictionary = {"schema_version":1,"ok":false,"terminal":false,
 		"scope":"actual synchronous application owner; native receipt-v1 remains qualified",
 		"web":OS.has_feature("web"),"threads":OS.has_feature("threads"),
-		"checks":[],"failures":[],"mixed_runs":[]}
+		"checks":[],"failures":[],"mixed_runs":[],"water_runs":[]}
 	if not _check(report,controller.ready_to_play,"normal owner reached actual setup"): return _finish(report)
 	var world: Variant = controller.native_world
 	var bridge: Variant = controller.demo_bridge
@@ -142,6 +230,7 @@ static func run(controller: Variant) -> Dictionary:
 		report.mixed_runs.append(run)
 	_check(report,projections.size() == 3 and projections[0] == projections[1] and projections[1] == projections[2],
 		"three PF variants have exact mixed-family authority projection")
+	if not _water_families(controller,report,definition,defaults): return _finish(report)
 	_check(report,controller.microscenario_apply_definition(definition,"Inspect"),"ordinary Current constructor remains available")
 	_check(report,world.get_applied_liquid_construction_receipt().is_empty()
 		and controller.micro_host.liquid_host_observation().is_empty()
