@@ -130,6 +130,12 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
     std::int64_t cx = x;
     std::int64_t cy = y;
     const auto direction = deterministic_direction(x, y);
+    // Support/re-aim/rest probes owe the same material/body feedback as travel,
+    // including at zero velocity. A repeated target and normal in this update
+    // is one contact (U1/U7 and travel rechecks); after travel a different normal
+    // at that target remains a distinct signed impulse. The complete radius-3
+    // domain has 49 targets, so this scratch is fixed and never enters authority.
+    std::array<std::uint64_t, 9> body_contact_targets{};
     // One directional eligibility rule for support, re-aim, side selection and
     // every travel move: Empty for any move; a lighter foreign material only
     // downward under Current density/exchange controls; never Wall, mask or
@@ -143,8 +149,18 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
         book.maximum_read_reach =
             std::max(book.maximum_read_reach,
                      static_cast<std::uint64_t>(std::max(std::abs(tx - x), std::abs(ty - y))));
-        if (transient_obstacle_at(tx, ty) != 0U)
+        if (const auto body = transient_obstacle_at(tx, ty); body != 0U) {
+            constexpr auto width = 2 * P::kExecutionRadius + 1;
+            const auto target_bit = std::uint64_t{1} <<
+                ((ty - y + P::kExecutionRadius) * width + tx - x + P::kExecutionRadius);
+            const auto normal = static_cast<std::size_t>((dy + 1) * 3 + dx + 1);
+            if ((body_contact_targets[normal] & target_bit) == 0U) {
+                body_contact_targets[normal] |= target_bit;
+                record_physics(PhysicsEvent::BodyContact, material, Material::Empty, dx, dy, effects);
+                record_transient_contact(body, material, dx, dy);
+            }
             return false;
+        }
         const auto target_address = address(tx, ty);
         const auto *chunk = find_chunk(target_address.chunk);
         if (chunk == nullptr)
@@ -265,10 +281,6 @@ bool World::update_inertial(Material material, std::int64_t x, std::int64_t y, J
                 !exchange_permitted(material, target, cx, cy, tx, ty, effects))
                 permitted = false;
             if (!permitted) {
-                if (const auto body = transient_obstacle_at(tx, ty); body != 0U) {
-                    record_physics(PhysicsEvent::BodyContact, material, Material::Empty, dx, dy, effects);
-                    record_transient_contact(body, material, dx, dy);
-                }
                 if (dy != 0) {
                     land(vy);
                     saturate();

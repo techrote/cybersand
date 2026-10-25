@@ -4,10 +4,12 @@
 // Brine chemistry lifecycle, 1/4-worker parity, three families executing in one
 // World (and the pressure-Water substitution) and exact persistence.
 #include "cybersand/liquid_solver_policy.hpp"
+#include "cybersand/material_rules.hpp"
 #include "cybersand/world.hpp"
 
 #include "cybersand/liquid_run_receipt_native_capture.hpp"
 #include "inertial_parameter_vectors.inc"
+#include <algorithm>
 #include <array>
 #include <chrono>
 #include <cstdint>
@@ -875,6 +877,150 @@ LiquidSolverPolicy damping_policy(int numerator) {
     return *decoded.policy;
 }
 
+// A body contact is a material/World obligation even when the IN law has no
+// integer travel. Keep four separate same-phase cells so configured-four also
+// executes an actual multi-job batch; participant count is a separate metric.
+constexpr std::array<std::pair<int, int>, 4> kContactOrigins{{{11, 11}, {27, 11}, {11, 27}, {27, 27}}};
+
+WorldConfig contact_config(int backend, int damping) {
+    auto cfg = config(backend == 2 ? 4 : 1);
+    cfg.chunk_size = cfg.activity_block_size = cfg.scheduling_core_size = 8;
+    cfg.parallel_job_threshold = 1;
+    cfg.sleep_after_quiet_ticks = 1;
+    cfg.physics_diagnostics.enabled = true;
+    if (backend == 0)
+        cfg.backend = cybersand::SimulationBackend::SerialInPlace;
+    cfg.liquid_solver_policy = damping < 0 ? LiquidSolverPolicy{} : damping_policy(damping);
+    return cfg;
+}
+
+std::uint64_t body_event_count(const World &world) {
+    std::uint64_t result = 0;
+    for (const auto &entry : world.physics_diagnostics()->entries)
+        if ((entry.key >> 24U) == static_cast<std::uint32_t>(cybersand::PhysicsEvent::BodyContact))
+            result += entry.count;
+    return result;
+}
+
+std::uint64_t check_resting_body_contact(int backend, int damping, int dx, int dy) {
+    const auto cfg = contact_config(backend, damping);
+    World world(cfg);
+    world.reserve_region({0, 0, 40, 40});
+    world.configure_transient_obstacles({0, 0, 40, 40});
+    for (const auto [x, y] : kContactOrigins) {
+        rect(world, x - 2, y - 2, 5, 5, Material::Wall);
+        world.set(x, y, Material::Brine);
+        world.set(x + dx, y + dy, Material::Empty);
+    }
+    const auto initial_quantity = world.quantity_ledger();
+    const auto density = cybersand::MaterialRules::descriptor(Material::Brine).density;
+    std::uint64_t total_contacts = 0, maximum_phase_jobs = 0;
+    std::unique_ptr<World> restored;
+    for (int t = 0; t < 32; ++t) {
+        if (t == 16) {
+            restored = World::restore_physical_state(cfg, world.save_physical_state());
+            restored->configure_transient_obstacles({0, 0, 40, 40});
+        }
+        for (auto *w : {&world, restored.get()}) {
+            if (w == nullptr)
+                continue;
+            w->clear_transient_obstacles();
+            for (std::size_t i = 0; i < kContactOrigins.size(); ++i) {
+                const auto [x, y] = kContactOrigins[i];
+                require(w->set_transient_obstacle(x + dx, y + dy, static_cast<std::uint16_t>(i + 1U)),
+                        "resting body mask installed");
+            }
+            const auto before = w->inertial_ledger();
+            const auto stats = tick(*w);
+            for (const auto jobs : stats.phase_jobs)
+                maximum_phase_jobs = std::max(maximum_phase_jobs, jobs);
+            require(stats.visited_cells >= 4U && stats.chunk_allocations == 0U && !w->has_failed(),
+                    "resting contact witness executes ordinary preallocated material work");
+            if (damping >= 0)
+                require(w->inertial_ledger().updates == before.updates + 4U,
+                        "every resting IN cell executes exactly one update");
+            for (std::size_t i = 0; i < kContactOrigins.size(); ++i) {
+                const auto [x, y] = kContactOrigins[i];
+                const auto motion = w->inertial_cell(x, y);
+                require(w->stored_material(x, y) == Material::Brine && motion.vx == 0 && motion.vy == 0 &&
+                            motion.ax == 0 && motion.ay == 0,
+                        "contact observation preserves the exact zero-motion fixed point");
+                const auto body = static_cast<std::uint16_t>(i + 1U);
+                const auto contacts = w->transient_contact_count(body);
+                if (damping >= 0)
+                    require(contacts == 1U, "one resting contact per target/normal, including repeated support");
+                require(w->transient_contact_impulse_x(body) == static_cast<std::int64_t>(contacts) * dx * density &&
+                            w->transient_contact_impulse_y(body) == static_cast<std::int64_t>(contacts) * dy * density,
+                        "resting body feedback uses the actual signed normal and material density");
+                if (w == &world)
+                    total_contacts += contacts;
+            }
+            require(w->quantity_ledger() == initial_quantity, "resting contact leaves the complete quantity ledger unchanged");
+            closed(*w, {0, 0, 40, 40});
+        }
+        if (restored)
+            require(restored->physical_state_hash() == world.physical_state_hash() &&
+                        restored->inertial_ledger() == world.inertial_ledger(),
+                    "reapplied host masks retain exact restored contact continuation");
+    }
+    require(total_contacts > 0U && body_event_count(world) == total_contacts,
+            "shared body-contact histogram and signed coupling both observe resting cells");
+    if (backend == 2)
+        require(maximum_phase_jobs >= 4U, "configured-four contact fixture dispatches at least four jobs");
+    return world.physical_state_hash();
+}
+
+void check_travel_body_contact(int backend, bool oblique) {
+    const auto cfg = contact_config(backend, 1);
+    World world(cfg);
+    world.reserve_region({0, 0, 40, 40});
+    world.configure_transient_obstacles({0, 0, 40, 40});
+    for (std::size_t i = 0; i < kContactOrigins.size(); ++i) {
+        const auto [x, y] = kContactOrigins[i];
+        rect(world, x - 2, y - 2, 7, 7, Material::Wall);
+        world.set(x, y, Material::Brine);
+        world.set(x + (oblique ? 1 : 0), y + 1, Material::Empty);
+        world.set(x, y + (oblique ? 1 : 2), Material::Empty);
+        require(world.set_transient_obstacle(x, y + (oblique ? 1 : 2), static_cast<std::uint16_t>(i + 1U)),
+                "travel contact mask installed");
+        require(world.diagnostic_set_inertial_cell(x, y, oblique ? 32 : 0, 32, oblique ? 15 : 0, 15),
+                "travel contact retained momentum seed");
+    }
+    const auto quantity = world.quantity_ledger();
+    tick(world);
+    const auto density = cybersand::MaterialRules::descriptor(Material::Brine).density;
+    for (std::size_t i = 0; i < kContactOrigins.size(); ++i) {
+        const auto [x, y] = kContactOrigins[i];
+        const auto body = static_cast<std::uint16_t>(i + 1U);
+        require(world.stored_material(x + (oblique ? 1 : 0), y + 1) == Material::Brine,
+                "body contact keeps the registered first unit of travel");
+        const auto motion = world.inertial_cell(x + (oblique ? 1 : 0), y + 1);
+        require(motion.vx == (oblique ? 29 : 0) && motion.vy == 0 && motion.ax == (oblique ? 12 : 0) && motion.ay == 0,
+                "body contact does not retune U1-U7 momentum or accumulator resolution");
+        require(world.transient_contact_count(body) == (oblique ? 2U : 1U) &&
+                    world.transient_contact_impulse_x(body) == (oblique ? -density : 0) &&
+                    world.transient_contact_impulse_y(body) == density,
+                "same target/same normal books once; a later different normal retains its signed impulse");
+    }
+    require(world.quantity_ledger() == quantity && world.inertial_ledger().unit_moves == 4U &&
+                body_event_count(world) == (oblique ? 8U : 4U),
+            "travel contact preserves quantity, move counts and one matching physics observation");
+    closed(world, {0, 0, 40, 40});
+}
+
+void test_inertial_body_contact() {
+    for (const auto damping : {-1, 0, 1, 16})
+        for (const auto [dx, dy] : std::array<std::pair<int, int>, 5>{{{0, 1}, {-1, 0}, {1, 0}, {-1, 1}, {1, 1}}}) {
+            (void)check_resting_body_contact(0, damping, dx, dy);
+            const auto one = check_resting_body_contact(1, damping, dx, dy);
+            const auto four = check_resting_body_contact(2, damping, dx, dy);
+            require(one == four, "resting body contact has exact phased 1/4-worker physical parity");
+        }
+    for (const auto backend : {0, 1, 2})
+        for (const bool oblique : {false, true})
+            check_travel_body_contact(backend, oblique);
+}
+
 void check_inertial_damping_vectors() {
     const auto default_identity = cybersand::inertial_extension_identity();
     for (const auto& vector : inertial_parameter_vectors::kCases) {
@@ -1127,3 +1273,5 @@ void test_lcb_inertial_residual_motion() { test_inertial_residual_motion(); }
 void test_lcb_inertial_damping_parameters() { test_inertial_damping_parameters(); }
 
 void test_lcb_inertial_comparison_projections() { test_inertial_comparison_projections(); }
+
+void test_lcb_inertial_body_contact() { test_inertial_body_contact(); }

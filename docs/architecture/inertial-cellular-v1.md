@@ -10,6 +10,25 @@ related-documents: [lcb-pressure-inertial-handoff.md, liquid-solver-family-polic
 
 # Brine inertial cellular reference
 
+## Mandatory resting-body contact correction — 2026-10-25
+
+Independent review of `98595ac8` reproduces missing signed body feedback from
+resting Brine IN:32 actual updates retain exact zero motion but report zero
+contacts, while the CY control reports floor/side contacts. The current source
+centralizes the existing material/World contact hooks at masked eligibility
+probes, including support, re-aim, side, travel and rest. Repeated target and
+signed normal pairs book once per cell update; a later different normal at the
+same target remains a separate signed impulse. The bounded scratch is nine
+64-bit target masks, not stored family state. Numerical U1–U7, damping,
+momentum/loss ledgers, sleep, sidecar and codec identity remain unchanged.
+
+The [dated union record](../audits/2026-10-25-lcb005-pressure-union-integration.md#mandatory-resting-brine-body-contact-correction)
+preserves the failed native and runtime controls. Published sequence2 runtimes
+still contain the omission. PR #250 stays Draft until the repair receives fresh
+native/sanitizer/Godot proof, source-matched sequence3 publication and full
+ready-PR gates. Earlier publication and numerical-law evidence retain their
+original source and scope; no Water-IN or full-host qualification follows.
+
 ## What executes at this native checkpoint?
 
 **Current on the LCB-005 branch only:** explicitly selecting Brine material24 / `inertial_cellular_v1/reference` executes retained signed motion and subcell accumulators. The default Brine CellularYield law and every other default remain unchanged. The combined source passed [actual Windows/Linux scoped publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-windowslinux-union-publication--2026-10-25) at `bc0bfed9` in run `40153980594`, with runtime-only bot append `52ee560a`. Water IN, alternate IN materials, cached/dormant IN variants, full ready-PR acceptance and full application integration remain unqualified. The earlier [standalone adapter proof](../audits/2026-10-25-lcb005-standalone-adapter.md) keeps its local Windows source identity; [native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) retains its base, local input seal and tests. This is neither full #212 completion nor owner feel acceptance.

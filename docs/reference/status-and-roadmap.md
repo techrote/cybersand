@@ -10,6 +10,16 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Brine IN body-contact blocker — 2026-10-25
+
+Fresh independent review of `98595ac8` finds that resting Brine IN omits
+body-mask contact feedback even when its material update executes. The narrow
+[contact correction](../architecture/inertial-cellular-v1.md#mandatory-resting-body-contact-correction--2026-10-25)
+preserves the numerical law and adds target/normal-specific shared contact
+observation. PR #250 remains Draft; sequence2 runtime proof is historical to the
+omitting source, and new source-matched publication plus full gates are required.
+Water IN, full application/Web and owner-feel qualification remain separate.
+
 ## Moving-body pressure gas blocker — 2026-10-25
 
 Ordinary moving reference bodies exposed retired gas labels beneath masks;

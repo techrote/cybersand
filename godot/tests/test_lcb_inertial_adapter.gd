@@ -208,6 +208,61 @@ func _mixed_workers() -> void:
 			expect(_build(contact, policy, tube), "closed mixed density tube constructs")
 			for tick: int in range(30): expect(contact.simulation_tick(), "density contact tick succeeds")
 			expect(contact.material_at(20, 22) == 24 and contact.material_at(20, 21) == 3 and contact.material_at(20, 20) == 16, "Brine exchanges through Oil and Water under every admitted Water substitution")
+	_resting_body_contacts()
+
+func _resting_body_contacts() -> void:
+	# Mandatory part of mixed_workers: copied static masks isolate the native
+	# material contact hook. This is not an actual Rapier trajectory or timing test.
+	var origins: Array[Vector2i] = [Vector2i(20, 20), Vector2i(148, 20), Vector2i(20, 148), Vector2i(148, 148)]
+	for numerator: int in [1, 16]:
+		for normal: Vector2i in [Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT, Vector2i(-1, 1), Vector2i(1, 1)]:
+			var rectangles: PackedInt32Array = PackedInt32Array()
+			for origin: Vector2i in origins:
+				rectangles.append_array(PackedInt32Array([origin.x - 2, origin.y - 2, 5, 5, 1,
+					origin.x, origin.y, 1, 1, 24, origin.x + normal.x, origin.y + normal.y, 1, 1, 0]))
+			var worlds: Array = []
+			for workers: int in [1, 4]:
+				var world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
+				expect(world.diagnostic_reset({"workers":workers, "contact":1.0}), "resting contact worker/gain controls construct")
+				world.set_simulation_window_enabled(false)
+				if not expect(_build(world, _policy(numerator), rectangles), "resting IN body fixture constructs"): return
+				worlds.append(world)
+			var contacts: Array[int] = [0, 0]
+			var impulse: Array[Vector2] = [Vector2.ZERO, Vector2.ZERO]
+			var traces: Array[Array] = [[], []]
+			var parallel: bool = false
+			for tick: int in range(32):
+				for arm: int in range(worlds.size()):
+					var world: Variant = worlds[arm]
+					var states: PackedFloat32Array = PackedFloat32Array()
+					for body: int in range(origins.size()):
+						var point: Vector2i = origins[body] + normal
+						states.append_array(PackedFloat32Array([body + 1, point.x + 0.5, point.y + 0.5, 0, 1, 1, 0, 0, 0, 1, tick + 1]))
+					world.prepare_rigid_body_coupling(states, false)
+					expect(world.simulation_tick() and world.get_scanned_last_tick() >= 4, "no-motion contact still executes material work")
+					var results: PackedFloat32Array = world.rigid_body_results()
+					if not expect(results.size() == 4 * 9, "copied contact results contain all four exact body records"): return
+					for body: int in range(origins.size()):
+						var offset: int = body * 9
+						if not expect(results[offset] == body + 1 and results[offset + 5] == 1
+							and is_equal_approx(results[offset + 1], normal.x * 1.12) and is_equal_approx(results[offset + 2], normal.y * 1.12),
+							"one resting target/normal reports actual Brine density-scaled signed feedback"): return
+						expect(results[offset + 3] == 0 and results[offset + 4] == 0 and results[offset + 6] == 0 and results[offset + 7] == 0
+							and results[offset + 8] == tick + 1, "mask-only contact has no displacement/correction and retains the consumed sample serial")
+						var origin: Vector2i = origins[body]
+						var state: Dictionary = world.inspect_inertial_cell(origin)
+						expect(world.material_at(origin.x, origin.y) == 24 and state.vx == 0 and state.vy == 0 and state.ax == 0 and state.ay == 0
+							and world.rigid_body_id_at(origin.x + normal.x, origin.y + normal.y) == body + 1, "resting contact retains the exact cell/motion and intended mask")
+						contacts[arm] += int(results[offset + 5])
+						impulse[arm] += Vector2(results[offset + 1], results[offset + 2])
+					traces[arm].append(Array(results))
+				parallel = parallel or worlds[1].get_scheduler_parallel_phases_last_tick() > 0
+				expect(worlds[0].get_physical_state_hash() == worlds[1].get_physical_state_hash()
+					and traces[0][-1] == traces[1][-1], "resting contacts and complete continuation agree for configured1/4 each tick")
+			expect(contacts == [128, 128] and parallel, "all resting contacts execute and configured-four uses an actual multi-job dispatch")
+			print("LCB_INERTIAL_BODY_CONTACTS: ", JSON.stringify({"damping_numerator":numerator, "normal":[normal.x, normal.y], "ticks":32, "bodies":4,
+				"contacts_per_arm":contacts, "impulse_x_per_arm":[impulse[0].x, impulse[1].x], "impulse_y_per_arm":[impulse[0].y, impulse[1].y],
+				"trace_sha256":JSON.stringify(traces[0]).sha256_text(), "configured_workers":[1, 4], "actual_multijob_dispatch":parallel}))
 
 func _cyps_continuation() -> void:
 	var world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")

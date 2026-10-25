@@ -469,3 +469,72 @@ matrix and fresh independent IN assessment. Before acceptance, compare its
 actual GitHub synthetic merge tree with its head against actual main, then
 repeat that comparison after #253 merges. A base-only change is harmless only
 when that later tree equality is actually verified; ancestry alone is not proof.
+
+## Mandatory resting Brine body-contact correction
+
+Fresh non-author review of clean `98595ac8bd8517cf55fd3eeab030c84d71dbb29a`
+finds a real shared-hook omission. Eighteen cohorts combine serial/phased1/
+configured4, CY/default IN/damping16 and floor/side masks. Every cohort runs32
+actual material updates and retains the cell at exact zero motion. CY reports
+floor32 contacts/Y35840 and side30/X33600; both IN arms report zero feedback.
+The failed proof is retained at
+`lcb212-independent-review-v2/BODY-CONTACT-COUNTEREXAMPLE.json`. Closed quantity
+and correct momentum do not excuse omitted body work. The published sequence2
+DLL/ELF contain this defect, so PR #250 remains Draft and requires a new source
+publication rather than an evidence waiver.
+
+The narrow native repair records the existing `BodyContact` physics observation
+and density-scaled signed coupling when a mask blocks the shared IN eligibility
+rule. U1 support, U3 re-aim/side, U6 travel and U7 rest all use that rule. It
+deduplicates only identical absolute target/signed-normal pairs within one cell
+update. This prevents repeated support/travel rechecks from double booking,
+while retaining a different signed normal after travel at the same target.
+Nine64-bit local masks cover the complete49-target radius-three domain without
+allocation or persistent state. The U6-only duplicate hook is removed. No
+numerical U1–U7, damping, ledger, rest/sleep, tuple/sidecar or hash/CYPS field
+identity changes; the default CY operator is untouched.
+
+The new registered native group executes four separate same-phase cells and32
+ticks for floor, left, right and both downward diagonals, with Current controls
+and IN damping0/1/16 across serial/phased1/configured4. It checks exact per-body
+count and signed density feedback, matching physics observations, unchanged
+zero-motion fixed points and complete quantity ledgers, explicit mask reapply
+after CYPS restore, phased1/4 complete hashes and an actual four-job batch.
+Additional U6 landing and oblique travel controls distinguish same-normal
+rechecks from a new normal at the same absolute mask target. A four-job batch
+is not a claim of four distinct pool participants.
+
+The new regression first fails with the six unchanged, dependency-fenced
+ordinary core objects from the153 proof. Its baseline executable is
+`5ad2b3097a9a0c2f841c55577abf16cf9ed0e5eba4228b1a7aa6029684543b5a`;
+receipt `lcb212-rest-body-repair/baseline-new-test/receipt.json`, SHA
+`dd5823d319f65536b41dc63602820bd862468d049fb48c2e7c2961c7fa792000`,
+records the expected one-contact assertion failure. Fresh repaired `world.o`
+passes the same regression; executable
+`246ef9b311f943bdbaa5ed83cfd165429f785e1cd5983ccb4976a57417e8f093`,
+receipt `fixed-initial/receipt.json`, SHA
+`9c43deafe094943250258d2f1ba4b7219b9640bda99ebd7fa4f35a4287b236f4`.
+Both before/after source fences hold. Non-author relinking independently passes
+the18 cohorts and680 numeric examples across all17 damping values, preserving
+every Python-oracle state/ledger tuple and read3/write2 bounds: receipt
+`lcb212-independent-rest-contact-repair-v1/PROBE-RECEIPT.json`, SHA
+`ca559da3e432344558031d1a6d045e73b86596dfde4245ec54a41f3609037b85`.
+
+The new Godot assertion also fails against the actual published sequence2
+Windows DLL `e0220557…`, after a successful import:869 assertions, one failure,
+`mixed_workers=false`, exit1 in5.992/180seconds. It reaches the intended
+density-scaled resting-contact assertion without a parse error. Source/test and
+all18 staged payloads are fenced; receipt
+`lcb212-rest-body-repair/godot-baseline-proof/BASELINE-RECEIPT.json` and the
+complete old-DLL log preserve this separate runtime failure.
+
+The existing mandatory Godot IN case adds the same resting mask obligation to
+`mixed_workers` while retaining all six strict completion sections and all14
+publisher cases. Explicit `LCB_INERTIAL_BODY_CONTACTS` records expose actual
+counts, signed impulses and trace identities for each default/16 and five-normal
+cohort. These are copied mask/native contacts, not actual Rapier trajectories
+or performance evidence. The native registered count becomes154, including
+PF15 and IN13; the intended focused sanitizer set becomes29 with the separate
+head API group. Full proof, fresh local Godot execution and actual sequence3
+Windows/Linux publication remain pending at this source checkpoint. Historical
+153/28/sequence2 records above retain their original qualification.

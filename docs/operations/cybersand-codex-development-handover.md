@@ -10,6 +10,17 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Brine IN contact review blocker — 2026-10-25
+
+Independent review at `98595ac8` reproduces omitted body feedback from resting
+Brine IN. PR #250 stays Draft while the [bounded correction and its failed
+controls](../audits/2026-10-25-lcb005-pressure-union-integration.md#mandatory-resting-brine-body-contact-correction)
+receive fresh native/sanitizer/Godot proof and sequence3 publication. The source
+repair changes contact observation only; numerical motion, damping and codec
+contracts remain intact. The earlier sequence2 artifacts remain preserved and
+do not qualify this correction. Do not treat zero velocity as permission to
+omit shared material/body work or infer Water-IN/full-host completion.
+
 ## Moving-body pressure gas blocker — 2026-10-25
 
 Ordinary moving reference bodies exposed retired gas labels beneath masks;

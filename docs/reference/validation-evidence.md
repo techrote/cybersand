@@ -10,6 +10,18 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## Resting Brine body-contact correction — 2026-10-25
+
+Independent native review of `98595ac8` records18 actual cohorts with executed
+updates and unchanged zero motion: CY reports floor/side feedback; default and
+maximum-damping IN omit it. The [union correction record](../audits/2026-10-25-lcb005-pressure-union-integration.md#mandatory-resting-brine-body-contact-correction)
+preserves that counterexample and the new regression's failing control. The
+repaired focused native case passes, and a non-author rerun passes18 contact
+cohorts plus680 arithmetic cases across all17 damping values without changing
+numeric state/ledger results. Full native/sanitizer, fresh Godot and sequence3
+publication remain required; PR #250 stays Draft and sequence2 artifacts are
+not relabelled as corrected runtime evidence.
+
 ## Moving-body pressure gas blocker — 2026-10-25
 
 Ordinary moving reference bodies exposed retired gas labels beneath masks;
