@@ -173,3 +173,18 @@ is not tuned to improve this score. Expected-fact source review separately check
 authored/imported identity, same-request/token/owner fences, truthful refusal,
 actual consumed feedback and current platform/qualification limits. Lexical
 rank is not answer correctness or an unseen-query improvement claim.
+
+## Independent source and evidence review
+
+A subsequent non-author review binds the exact five source files at 5d5c75ed,
+all 88 retained artifacts, 135 native/dependency inputs, 5268 staged-file hashes
+and the six final processes/490 assertions. It finds no open finding within
+this bounded synchronous Physics Pit slice. Its receipt is
+`tmp/lcb202-synchronous-reference-independent-v1/REVIEW-RECEIPT.json`, SHA256
+`b04e02ec74fac254fd301e0dca6699a5e31e518416c0fb040915e85d0bb08ea9`;
+the report SHA256 is
+`35dd6a8b96cca731aad5781cc5b74ea0263502d67ac998025506c573ac75e852`.
+It verifies all three actual 240-tick pressure/body arms and the preserved
+failed apparatus versions. This review remains qualified to the original
+Windows development DLL and Brine-IN source; it does not qualify later native
+integrations, source-matched publication or actual Web rendering.

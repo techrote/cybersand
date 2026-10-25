@@ -5,7 +5,7 @@ document-kind: evidence
 scope: Unarmed GitHub-hosted branch-scoped publication preparation and its strict host execution checks; actual publication and browser acceptance remain pending
 canonical-for: [lcb003-runtime-publication-evidence]
 last-reviewed: 2026-10-25
-related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../architecture/inertial-cellular-v1.md, ../operations/lcb-manual-comparison-ux.md, ../operations/local-build-and-validation.md, ../operations/github-development-and-release.md, 2026-10-25-lcb003-water-reference-body.md, 2026-10-25-lcb003-thermal-level-preparation.md, 2026-10-25-pressure-moving-mask-gas-retirement.md]
+related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../architecture/inertial-cellular-v1.md, ../operations/lcb-manual-comparison-ux.md, ../operations/local-build-and-validation.md, ../operations/github-development-and-release.md, 2026-10-25-lcb003-water-reference-body.md, 2026-10-25-lcb003-thermal-level-preparation.md, 2026-10-25-pressure-moving-mask-gas-retirement.md, 2026-10-25-lcb003-ordinary-demo-host.md, 2026-10-25-lcb003-synchronous-reference-body.md]
 ---
 
 # LCB-003 application-host runtime publication
@@ -37,15 +37,18 @@ profile, and their historical defaults are not mutated by the isolated import.
 
 ## Mandatory scoped execution
 
-Each target OS must import the project and run29 cases. The fourteen retained
+The expanded profile requires each target OS to import the project and run 34 cases. The fourteen retained
 shared-contract, pressure-optimization and IN cases preserve all existing
 deadlines, completed-section checks and strict no-error/no-skip outcomes.
-Fifteen additional host/API cases cover prepared owner transactions, actual
+Twenty additional host/API cases cover prepared owner transactions, actual
 reference-body adoption, Water Feel, sampled/physical/Tower construction,
 normalization, native host observations, direct Rapier comparison, thermal CYSD
-preparation, explicit decoded-level user import and the native prerequisite of
-the Web host probe. The user-import case is reserved during preparation and must
-exist and pass before the request can be admitted.
+preparation, explicit decoded-level user import, four ordinary synchronous demos,
+explicit reference poses, synchronous Physics Pit bodies, native desktop-default
+preparation/adoption and the native prerequisite of the Web host probe. The
+default API and desktop-owner cases are reserved until their source integration;
+both must exist and pass before the request can be admitted. An unarmed profile
+does not claim that those source files have already landed on this branch.
 
 A positive aggregate summary cannot replace the structured moving-body result.
 The profile additionally requires exactly four ordered ordinary cohorts:
@@ -54,6 +57,27 @@ and snapshot state, at least96 completed/snapshot ticks, a successful final
 attempt, actual Rapier steps, contacts, received/applied feedback, finite nonzero
 signed accepted impulse and exact3718400 Water. Pressure gas ledgers must close.
 These are asynchronous functional results, not cross-arm trajectory parity.
+
+The ordinary-demo JSON must identify all eight ordered demo/quality 0 or 2 arms,
+positive native execution and retained Restart identity, exact initial player
+and finite native regions, plus matching IN/native extension and Current
+radius 3 controls. The shared pose case requires 32 frozen frames, the copied
+actual three positions and a full mask digest. Physics Pit requires all three
+pressure arms through 240 synchronous native/manual Rapier steps, positive
+consumed signed feedback, accepted age 0..8, actual body movement, exact 937125
+Water and closing gas. These checks preserve their original Windows-only proof;
+target-platform publication must execute them again.
+
+Native default preparation must complete all six recipe/law, selected-policy,
+mask, refusal/token, reset and origin-lifetime groups. The actual desktop owner
+must report exactly two positive ordinary FM/CY body cohorts, at least 96
+completed native ticks, healthy final native/snapshot state, actual steps,
+contacts, signed applied feedback and exact 628320 Water. Separately it must
+report all three pressure variants refusing initial gas capacity, with a healthy
+retained tick-zero World, unchanged native receipt hash and actual native attempt
+readback. They are admission refusals, not five positive default simulation arms.
+The diagnostic age histogram includes rejected old responses; the test's
+assertions separately verify correct stale disposition.
 
 The thermal-level test must complete all six named groups. The user-import test
 must complete actual route, transactional refusal, thermal/normalization,
@@ -65,13 +89,38 @@ Brine IN does not substitute for the remaining common-Water Gate D requirement.
 
 ## Guard validation and retained failure
 
-Local profile guards pass9 tests, the unchanged IN-profile guards pass14, and
+The original 032079b1 preparation's local profile guards pass 9 tests, the unchanged IN-profile guards pass 14, and
 the shared engine's adversarial suite passes30:53 total. CI-provider policy
 passes. They cover missing/altered logs, exact case coverage, wrong refs/source,
 absent user-import implementation, malformed/incomplete helper sections,
 unhealthy or short body cohorts, missing signed feedback, quantity/gas failure,
 duplicate/incomplete probe checks, errors/skips and the four-path branch lease.
 These are publisher guard tests, not actual runtime or browser executions.
+
+The expanded profile adds adversarial controls for complete ordinary/pose/body
+JSON, malformed or duplicate terminal records, missing native default source,
+all six default sections, both healthy FM/CY arms and all three retained native
+capacity refusals. Nonzero process exit remains decisive even after a successful
+assertion summary and valid body JSON. In particular, root's retained
+`tmp/lcb202-desktop-default/desktop-host-v8/` prints 86 assertions/0 failures and
+the intended structured rows but exits with access violation 0xC0000005 after
+the terminal line. That run is not acceptance. The new guard reproduces this
+nonzero process disposition and rejects it; parser/schema checks do not resolve
+or qualify the pending Godot/Rapier teardown investigation.
+
+The expansion is source checkpoint `e433a318`. Fresh local profile guards pass 16,
+unchanged IN-profile guards pass 14 and the shared engine guards pass 30: 60 total;
+provider policy passes. Independent 180-second process bounds, raw logs and
+the three unchanged workflow/helper/test hashes are retained at
+`tmp/lcb202-publisher-extension-guards-v1/RESULT.json`. The request remains absent.
+The current parser also consumes the three original successful ordinary/pose/
+Physics Pit logs and the unaccepted desktop 86-result schema at
+`tmp/lcb202-publisher-actual-schema-check-v2/RESULT.json`. That second record is
+schema compatibility only and explicitly retains the desktop process failure;
+it is not a new runtime execution or a publication result. All original case
+deadlines, inherited engines and actual target-OS publication requirements stay
+in place. Ordinary constructor/readback gaps remain in the canonical matrix;
+this source change supplies no new constructor, physics law, ABI or host schema.
 
 The first guard fixture failed because its failed-summary mutation matched only
 semicolon summaries, leaving the existing comma-format host-evidence summary
@@ -85,9 +134,30 @@ source files and raw failing logs remain at
 The current actual application evidence remains source-bound to its own dated
 body/thermal integration receipts. No new Windows/Linux runtime publication is
 claimed by this preparation record. After the final constructor checkpoint,
-record source/tree, runtime and manifest hashes, platform receipts, all30
+record source/tree, runtime and manifest hashes, platform receipts, all 35
 processes perOS, minimum Linux runtime floor, immutable input comparison and
 the runtime-only bot append. Then run required exact-head Documentation,
 Native, GDExtension/Godot and applicable apparatus gates with fresh adversarial
 review before merging the bounded host PR. Actual Web execution remains a
 separate source-matched gate. Preserve every prior failure and incomplete route.
+
+## Expansion documentation checks
+
+The four affected documents are checked against source `e433a318` in the
+established companion-backed mirror. Commands, raw logs, independent 180-second
+bounds and input hashes are at `tmp/lcb202-publisher-extension-doc-checks/`.
+Documentation passes 115 documents/227 claims; historical M11 integrity passes
+18 records/28 source hashes; CI-provider policy passes. Current repository
+identity fails only the same 18 stale native-input comparisons, nine per target
+platform, against the older separate runtime publications. Those are real
+source-sensitive blockers for release, retained without rewriting manifests.
+
+Frozen retrieval remains 32/32 top 5, 19 top 1, MRR 0.7573. Supplementary
+retrieval remains 143/144 top 5, 111 top 1, MRR 0.8652; its previously disclosed
+LCB03 pressure-family lexical miss remains. No query or corpus-manifest object
+is changed to improve these scores. Separate expected-fact review checks the
+34-case/import count, unchanged deadlines and native-v1 qualifications, absent
+request, reserved source refusal, distinct FM/CY play versus pressure admission
+refusal, and nonzero-exit rejection. Ranking does not prove those source facts
+or actual execution. The independent Physics Pit review is recorded additively
+in its own dated evidence; it does not review or qualify this publisher code.

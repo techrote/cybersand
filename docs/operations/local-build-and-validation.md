@@ -44,6 +44,10 @@ actual panel/Import/Restart callbacks. This does not claim a new native build or
 Wasm execution. The prepared [LCB-003 publisher profile](../audits/2026-10-25-lcb003-runtime-publication.md)
 is unarmed; its dedicated Windows/Linux gates and source-matched publication
 must qualify the frozen final source before release/full exact-head acceptance.
+The expanded profile requires 34 cases plus import per target OS, retaining
+existing case deadlines and adding ordinary demos, explicit poses, Physics Pit
+and reserved native/default desktop-owner cases. Missing reserved source refuses
+admission; a successful terminal JSON never overrides a crashed process.
 The settings-refusal correction separately passes73 import assertions/all five
 sections, UI105 and33 native Web-prerequisite checks. It preserves inherited
 nondefault-law/transport refusal, native component identity and the older proof

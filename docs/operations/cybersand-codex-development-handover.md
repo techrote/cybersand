@@ -47,6 +47,10 @@ unchanged verified135-input DLL. Continue remaining constructors, physical impor
 complete host identity and fresh final Windows/Linux/Web/publication gates.
 The [new publisher preparation](../audits/2026-10-25-lcb003-runtime-publication.md)
 is unarmed; it is not a release result. Current imports remain the default.
+Its expanded 34-case profile additionally requires ordinary/pose/Physics Pit
+structured results and the reserved default API/desktop-owner cases. Desktop
+default FM/CY play and three pressure-capacity refusals are distinct outcomes;
+nonzero process exit remains a blocker despite a successful terminal summary.
 Follow-up sourcecccae86f corrects the inherited-setting gap by refusing unsupported
 interaction/diagnostic laws and independent transport before any token. Its
 known Baseline exemption binds actual native component/generation/receipt;
