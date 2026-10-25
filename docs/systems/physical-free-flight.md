@@ -271,10 +271,12 @@ The top-level applied impulse fields account for this actuator's force or
 torque multiplied by the admitted step duration; they do not describe a
 pre-step impulse motor or the sum of all forces on the body.
 
-The 60 Hz physical cadence and existing six-tick demo decision interval are
-separate from the command lease. A long-lived producer must use newly issued
-observations and fresh sequence numbers; an old observation cannot prolong its
-command by being submitted late.
+The 60 Hz physical cadence and existing six-tick decision interval are
+separate from the command lease. A missed fresh decision does not manufacture
+neutral input or renew authority: an already-live lease may continue only to its
+original deadline, where the completed physical tick retires it into passive
+fallback. Any later fresh command still requires a newly issued observation and
+sequence; an old observation cannot prolong its command by being submitted late.
 
 ## What follows this implementation checkpoint?
 
