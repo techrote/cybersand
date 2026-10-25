@@ -10,6 +10,17 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+The #202 application branch's [combined local checkpoint](../audits/2026-10-25-lcb003-combined-host-web-prerequisite.md)
+integrates exact released pressure/IN union `713ee3ab` as `871fba33` and passes
+sixteen fresh Windows native/headless processes. Follow-up `3b4db1dd` adds an
+explicit synchronous Web-owner apparatus (33 native prerequisite checks),
+truthful build/export identity and actual Rapier PF/worker applied-feedback
+parity (3589 assertions). This is bounded local qualification: complete host
+identity, remaining constructors, source-matched publication/full exact-head
+gates, actual compat/threaded browsers and ordinary visual walkthrough remain
+open. Water IN remains unsupported; Brine IN does not meet the fourth Water
+model requirement.
+
 ## LCB-005 native Brine checkpoint — 2026-10-24
 
 **Current on the isolated LCB-005 branch only:** [Brine IN reference](../architecture/inertial-cellular-v1.md) selectively ports the genuine fixed-point law onto the shared quantity/prepared-state foundation, including an optional versioned native damping numerator0..16 over16(default1). [Native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) qualifies its stated source/platform scope. Default behavior remains retained. The later [standalone Godot adapter](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry) adds actual instance readback and explicit radius3 with [local Windows proof](../audits/2026-10-25-lcb005-standalone-adapter.md). Water IN, full application integration, source-matched runtime publication, owner feel and full #212 completion remain unqualified here. No Cell-carrier migration or generic Rapier force follows.

@@ -10,6 +10,14 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+The [combined LCB-003 host and Web prerequisite](../audits/2026-10-25-lcb003-combined-host-web-prerequisite.md)
+records actual local non-release Windows native/headless execution on
+`871fba33` (fresh DLL, sixteen passing processes), plus `3b4db1dd`'s explicit
+33-check synchronous-owner Web apparatus prerequisite and 3589-assertion actual
+Rapier PF/worker regression. Original failures and independent review/resolution
+receipts are retained. Source-matched publication/full exact-head CI, actual
+compat/threaded browsers and ordinary visual walkthrough remain separate gates.
+
 ## LCB-005 standalone adapter — 2026-10-25
 
 [The standalone IN ledger](../audits/2026-10-25-lcb005-standalone-adapter.md)

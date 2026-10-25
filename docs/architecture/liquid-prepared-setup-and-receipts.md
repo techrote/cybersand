@@ -50,6 +50,19 @@ application/runtime seals below remain evidence for their original inputs.
 Combined application runtime, platform publication and actual browser
 qualification are separate gates; this merge does not establish them.
 
+The subsequent [combined local qualification](../audits/2026-10-25-lcb003-combined-host-web-prerequisite.md)
+records a fresh `871fba33` non-release Windows DLL with sixteen passing Godot
+processes, retaining all native-v1/host qualifications. Source `3b4db1dd` adds
+an explicit `?test=1&liquid-host-test=1` startup apparatus through the actual
+synchronous owner. Its native prerequisite checks admission/normalization,
+retained state/receipt/player/observation on refusal, selected reset and mixed
+FM/PF+OilCY+BrineIN execution; terminal browser result and successful POST are
+separate observations. An actual Rapier regression now checks applied feedback
+and exact native/body traces across all three PF variants and one/four workers.
+Fresh compat/threaded browser execution, ordinary visual walkthrough, matching
+publication and complete host acceptance remain open. Export metadata identifies
+a build/export only and cannot establish browser validation.
+
 **Integration update, 2026-10-25:** the application branch has merged accepted
 main `ec58d919b3d904fbd338eaccc25de35782c41a24` (#246) and stable IN checkpoint
 `028fc7b6893a57ca816b5221ce1b9067f0c2c01d` (#250). The earlier dated host

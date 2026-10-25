@@ -12,6 +12,14 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## LCB-003 combined-source integration — 2026-10-25
 
+The fresh [combined host and Web prerequisite](../audits/2026-10-25-lcb003-combined-host-web-prerequisite.md)
+seals sixteen actual native Windows/headless passes on `871fba33`. Source
+`3b4db1dd` adds a 33-check explicit Web-owner apparatus with its native
+prerequisite, truthful export-only metadata, complete Web native source list
+and the independently reviewed 3589-assertion actual Rapier PF/worker regression.
+Actual browser profiles, matching publication and remaining constructors are
+still separate work; earlier source/runtime seals remain immutable.
+
 The application branch now incorporates the released source union
 `713ee3abd093bf52ca1e02796e996d7017a51d95`, joining accepted #246 main,
 the #201 pressure variants and the #212 standalone IN adapter with the

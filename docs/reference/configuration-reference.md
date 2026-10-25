@@ -10,6 +10,13 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 # Configuration reference
 
+The explicit LCB Web apparatus flag is `?test=1&liquid-host-test=1`. It uses
+actual synchronous prepared-owner calls and emits a terminal copied result;
+normal startup is unchanged. This is a test selector, not a solver or gameplay
+default. Browser execution/POST/ordinary walkthrough remain distinct from the
+exporter's qualified build identity. The [combined host checkpoint](../audits/2026-10-25-lcb003-combined-host-web-prerequisite.md)
+records the native prerequisite and remaining platform gates.
+
 **Current:** the following values are inspected source/configuration at the
 [secured checkpoint](../operations/source-checkpoint-and-recovery.md). They are
 prototype/runtime values, not automatically approved production defaults or

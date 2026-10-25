@@ -10,6 +10,25 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+The [combined LCB host checkpoint](../audits/2026-10-25-lcb003-combined-host-web-prerequisite.md) records
+sixteen fresh Windows native/headless passes on `871fba33`, then the explicit
+Web apparatus prerequisite and actual Rapier applied-feedback parity on
+`3b4db1dd`. The actual process commands and before-input fences are retained
+with its local evidence. `test_liquid_host_web_probe.gd` runs the same explicit
+apparatus natively; `test_liquid_pressure_rapier.gd` compares all PF variants
+and one/four-worker actual body/authority traces. Both are ordinary discovered
+Godot regression cases. Native execution does not qualify Wasm/browser execution.
+
+For fresh Web builds retain Emscripten4.0.20, SCons4.10.1, Godot4.7 and pinned
+godot-cpp; the binding profile includes `FileAccess`, and the source list includes
+the generator's semantic-plane implementation. Materialize the exact pinned
+Rapier compat/threaded LFS objects before export. Export metadata remains
+explicitly unqualified for browser execution. In actual browser runs capture
+console/network before navigation, wait for terminal
+`?test=1&liquid-host-test=1` JSON and successful `/physics-results` capture, and
+perform an ordinary user walkthrough separately. Historical9704 exports and
+their retained POST501/early-capture gaps are not current qualification.
+
 ## Which build inputs are required?
 
 **Current:** build scripts and locks select the following inputs. A pin is a

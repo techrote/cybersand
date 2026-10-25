@@ -140,7 +140,7 @@ controlled API is narrower than older explicit-policy diagnostic APIs.
 | CYPS `import_physical_state` | Exact saved-policy continuation; old typed construction identity retired | Preserve exact continuation; never use it as a family-conversion rebuild |
 | Diagnostic reset / depth / arena / player playground / Thunderbowl | Existing diagnostic policy options and ordinary controls | Shared application coordinator/readback where supported, preserving plane and actor semantics |
 | Procedural WorldGenerator | Separate generator ownership | Native recipe/final tuples and actor/plane gaps, coordinated with GEN ownership |
-| Actual Web compat/threaded | UI/controller source present; Windows native synchronous Controlled and Exploratory sampled-character routes tested; sampled rigs/equipment remain separate | Rebuild final integrated source for both profiles and execute the actual browsers |
+| Actual Web compat/threaded | UI/controller source present; Windows native synchronous Controlled and Exploratory sampled-character routes tested; explicit terminal host apparatus has a native prerequisite; sampled rigs/equipment remain separate | Rebuild final integrated source for both profiles and execute actual browsers with earliest console/network, terminal POST and ordinary visual walkthrough |
 
 The rest of this document is **Planned** design beyond the bounded Current slice
 above. Tables and acceptance hooks below are targets, not implemented coverage.

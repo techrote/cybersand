@@ -11,6 +11,24 @@ last-reviewed: 2026-10-25
 
 # Interfaces and message contracts
 
+## Explicit LCB application Web apparatus
+
+`?test=1&liquid-host-test=1` runs a bounded startup apparatus through existing
+synchronous application-owner APIs. It pauses normal processing only for this
+explicit test. `cybersand-liquid-host-result` contains a terminal JSON value
+with `schema_version`, `ok`, `terminal`, every named check/failure and copied
+native identities/quantity/variant observations. The same terminal value is
+POSTed to `/physics-results`; failed POST is an explicit console error. A DOM
+readiness message is not a completed result or successful capture.
+
+Native Windows headless execution qualifies the apparatus only. Browser
+console/network and successful result receipt, actual compat/threaded execution
+and ordinary user walkthrough are separate gates. Export identity has status
+`source-built-web-export-unqualified` and
+`browser_execution_status=not-established-by-export`; it supplies build target,
+artifact hash and source claim without a validated-platform assertion. Read the
+[qualified combined checkpoint](../audits/2026-10-25-lcb003-combined-host-web-prerequisite.md).
+
 ## Exploratory actor replacement acknowledgement
 
 **Current desktop:** `scenario_reset` may carry copied
