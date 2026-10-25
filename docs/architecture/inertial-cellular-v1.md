@@ -22,8 +22,9 @@ native regression/build registration. IN law, damping, sidecar, hash3/CYPS3
 suffix and policy identity remain unchanged. Source-bound publication sequence2
 at `661a96ae`, run `40157525237`, now passes actual import plus14 cases perOS;
 runtime-only bot `a9f1b875` replaces the earlier `52ee560a` payloads for this
-repaired source. PR #250 is draft; full ready-PR/application qualification
-remains separate.
+repaired source. The branch also contains final #201 head `096b7eeb`, retaining
+the complete IN publication set. Fresh full ready-PR and independent IN review,
+plus full application/host qualification, remain separate.
 
 ## Which fields, parameters and law are authoritative?
 

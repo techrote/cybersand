@@ -357,8 +357,9 @@ correctness. Raw failures, results and before/after source/companion fences
 remain in `lcb212-moving-mask-union/docs-prepublication/`.
 
 The second publication below supplies fresh scoped Windows/Linux runtimes.
-Final ready-PR gates, actual repaired normal-app trajectory and full
-host/Web/Water-IN qualification remain separate. No owner feel acceptance,
+Final ready-PR gates and full host/Web/Water-IN qualification remain separate;
+the later #201 parent adds the separately qualified pressure body trajectory.
+No owner feel acceptance,
 carrier migration or Water-IN implementation is introduced.
 
 ### Actual sequence2 publication
@@ -410,6 +411,14 @@ records no artifact finding. It is publisher-owner verification, not a fresh
 independent IN source review; the author's separately labelled self-review
 does not replace non-author assessment.
 
+Root subsequently verifies all three API archive digests, all30 actual process
+logs, both76/485 input ledgers, payload/report/manifest chains and the exact
+single-parent/four-path append independently. Receipt
+`lcb212-publication2-independent/FINAL-PUBLICATION2-INDEPENDENT-REVIEW.json`, SHA
+`c412a768c1e1a25a94deaa61b890fa3c0a5e098111b156f5c3f11ccb8d1830d4`,
+records no finding. This independent artifact review remains distinct from the
+fresh non-author IN semantic assessment and full exact-head CI.
+
 The preliminary two stale fingerprints above remain a preserved failed gate,
 not a waiver. Fresh postpublication validation passes all fifteen documentation,
 M11, materialized repository/provenance, retrieval, provider, whitespace and
@@ -425,3 +434,38 @@ their prior exact checks. Full exact-head ready-PR Native/Godot/Documentation an
 Water acceptance remain pending. These fourteen scoped Godot controls do not
 reproduce the separately owned asynchronous normal-Main body trajectory, and
 they do not qualify full host restoration, Web, Water-IN or #203 packaging.
+
+## Final #201 consolidation before ready validation
+
+The later normal merge consumes exact final #201 head
+`096b7eeb84cd229fa40298ac6b72d712f78ea9ec`, tree
+`089003ccf15a8a44f256a97ad42e54ed38482564`, as a parent of the combined IN
+branch after checkpoint `5a5f0ae9`. This includes the final #201 repair/cost/
+publication documentation. #201 is ready for its own full matrix; this does
+not claim it is already accepted on main.
+
+The four runtime conflicts retain the entire `a9f1b875` IN set together:
+Windows `e0220557…` and Linux `dfa689e6…`, with their exact matching manifests.
+The #201-only publication set is not substituted. Incoming #201 request
+sequence2 stays branch-limited and inert here, and is explicitly outside the
+#212 build-input set. Both retained IN manifests still match all76 native and
+485 build/test Git inputs exactly. All64 compiled inputs match the fresh153
+ordinary proof; IN/damping/codec, pressure law/repair, adapter, build lists,
+fourteen publisher cases and all parameter/receipt vectors remain unchanged.
+`lcb212-final201-integration/MERGE-INPUT-VERIFICATION.json` records the resolved
+tree and explicit four-path conflict resolution.
+
+The incoming #201 Native141/MSVC141, sanitizer16, actual import+13 perOS and
+source-specific90-child cost evidence keep their own source/runtime identities.
+The combined IN branch retains its Native153, focused28 and import+14 perOS
+proofs. The separately qualified normal-Main pressure body trajectory is
+functional evidence on its recorded application source; it does not supply full
+host restoration, all constructors, browser or Water-IN qualification.
+
+Fresh companion-backed materialized documentation/provenance, M11, retrieval,
+provider, whitespace and generator checks accompany this integration, with no
+source-sensitive rebuild waiver. PR #250 requests the new exact-head complete
+matrix and fresh independent IN assessment. Before acceptance, compare its
+actual GitHub synthetic merge tree with its head against actual main, then
+repeat that comparison after #253 merges. A base-only change is harmless only
+when that later tree equality is actually verified; ancestry alone is not proof.

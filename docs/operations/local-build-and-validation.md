@@ -403,14 +403,16 @@ regression supplies actual Rapier motion and asynchronous feedback evidence;
 neither test alone establishes performance or final platform acceptance. See the
 [dated repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
 
-The unmerged `codex/lcb001-shared-contract` checkpoint registers its whole-cell
+The accepted #246 native shared-contract checkpoint registers its whole-cell
 Water, normalization, native-issued refusal, typed receipt and quantity-ledger
 cases in the ordinary `make test` and `build_windows_msvc.bat` suites. The
 [native contract](../architecture/liquid-prepared-setup-and-receipts.md) owns
 the interfaces and qualifications; the [dated evidence](../audits/2026-10-24-lcb001-residual-shared-contract.md)
 records the earlier two 121-case native builds and scoped fresh Windows Godot
 proof, followed by five new rectangle/event/gas-ID regressions. The latest native
-suite has 126 cases; use the dated final receipt for the tested source/delta.
+accepted shared-contract baseline has126 cases; the #201 moving-mask repair
+branch has141 ordinary cases and the combined #212 IN branch has153. Use each dated receipt for its exact tested
+source/delta rather than treating historical counts as a current global total.
 
 ```sh
 python tools/lcb/water_normalization_contract.py --check

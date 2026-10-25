@@ -12,14 +12,16 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## Moving-body pressure gas blocker — 2026-10-25
 
-Ordinary Main/worker reference-body Water play exposed a native retired gas
-label beneath a moving body mask around completed tick45–47. The World
-quarantines even though Water quantity and the gas ledger remain exact.
-A compact native control reproduces the failure in all three pressure
-variants with configured1/4 workers. The repair is under qualification;
-PRs #253 and #250 are draft and must receive fresh source-matched
-Windows/Linux runtimes and exact-head gates before merging. Earlier
-scoped/full greens retain their original source and coverage. See the
+Ordinary moving reference bodies exposed retired gas labels beneath masks;
+the failing World quarantines despite closing Water/gas ledgers. Repair commit
+`7ebcd0e9` adds the six-arm native regression and retains still-live identities.
+Local LLVM/MSVC141, focused sanitizer16 and actual application body tests pass.
+Fresh #201 Windows/Linux scoped publication `40157133977` passes at source
+`eebd0c98`, with four-path bot append `65f1f3b5`. The updated90-child total-cost
+campaign also passes exact parity and preserves slower churn/fallback results.
+PRs #253/#250 returned to draft after the finding; each still requires its own
+complete source-matched exact-head gates and review before merge. Earlier
+greens retain their original scope. See the
 [dated failure and repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
 
 ## Combined pressure and IN source — 2026-10-25
@@ -29,7 +31,9 @@ is normal merge `4a594db5`. Only the reviewed pressure gas relabel hunk and new
 native regression/registration change the prior compiled union; IN law and
 codec remain intact. Source-bound sequence2 at `661a96ae`, run `40157525237`,
 passes actual import plus14 cases perOS and publishes runtime-only bot
-`a9f1b875`. PR #250 is draft and final ready-PR/normal-app gates remain pending.
+`a9f1b875`. Final #201 head `096b7eeb` is integrated while retaining all four
+IN runtime paths. PR #250 requests fresh exact-head ready-PR gates and
+independent IN assessment; full application/host qualification remains separate.
 
 The #212 integration joins standalone checkpoint `0af161b4` with the frozen
 #201 source `12d76736`, including accepted-main documentation merge
