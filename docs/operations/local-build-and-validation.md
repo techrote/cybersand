@@ -391,6 +391,18 @@ manifests. Headless rendering does not substitute for those captures.
 
 ### Residual LCB-001 native setup and receipt checks
 
+The moving-body gas repair additionally registers
+`LCB-002 moving gas masks retire and preserve exact identities` in ordinary,
+ASan/UBSan and TSan Makefile suites and the Windows MSVC test source list.
+With an already built ordinary binary, `build/tests "moving gas masks"` selects
+the focused group. It covers all four retirement reasons plus a still-live
+negative control, reference/cached/dormant with configured1/4 workers, immediate
+masked save/restore and exact authority/ledger/history continuation. Configured
+workers do not prove actual task participation. The separate ordinary Main
+regression supplies actual Rapier motion and asynchronous feedback evidence;
+neither test alone establishes performance or final platform acceptance. See the
+[dated repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
+
 The unmerged `codex/lcb001-shared-contract` checkpoint registers its whole-cell
 Water, normalization, native-issued refusal, typed receipt and quantity-ledger
 cases in the ordinary `make test` and `build_windows_msvc.bat` suites. The

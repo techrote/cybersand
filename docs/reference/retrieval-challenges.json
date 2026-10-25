@@ -2377,6 +2377,25 @@
         "reference/configuration-reference.md",
         "audits/2026-10-25-lcb005-standalone-adapter.md",
         "../godot/tests/test_lcb_inertial_adapter.gd"
+      ]
+    },
+    {
+      "id": "LCB-MASK-GAS-01",
+      "query": "What happens to a gas label hidden under a moving body mask when its compartment retires, and why must it become vacuum rather than unresolved gas?",
+      "canonical": [
+        "architecture/pressure-flow-v1.md",
+        "reference/invariants.md"
+      ],
+      "facts": [
+        "Body-masked Empty cells do not contribute gas volume or overlap. A still-live masked label retains its identity.",
+        "After reduction, an unvisited positive label absent from the new live table becomes vacuum; its old amount has already gone to successors or vent/collapse sinks. Unresolved would manufacture atmospheric gas and successor remapping would invent overlap.",
+        "Sanitation changes labels_changed and prevents a gas fixed point. CYPS still refuses dangling labels. Native reference/cached/dormant with configured1/4 workers require regression and fresh runtime/exact-head qualification; a closing ledger does not accept a quarantined World."
+      ],
+      "sources": [
+        "../native/src/world_pressure.inc",
+        "architecture/pressure-flow-v1.md",
+        "reference/invariants.md",
+        "audits/2026-10-25-pressure-moving-mask-gas-retirement.md"
       ],
       "revision_sensitive": true
     }

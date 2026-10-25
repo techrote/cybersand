@@ -774,7 +774,22 @@ void World::resolve_gas_topology(bool allow_cache) {
         for (std::size_t index = 0; index < cells.size(); ++index) {
             ++state.optimization.gas_relabel_cells;
             const auto mark = visits[index];
-            if ((mark & 0xFFFF0000U) != stamp) continue;
+            if ((mark & 0xFFFF0000U) != stamp) {
+                // Masked Empty cells do not contribute volume or overlap, but
+                // can retain an old label while its compartment is retired by
+                // this pass. The reducer has already assigned all of that gas
+                // to successors or a vent/collapse sink. Retire only dangling
+                // labels to vacuum: unresolved would create atmospheric gas,
+                // and remapping to a successor would invent overlap identity.
+                // Still-live labels retain their continuity under the mask.
+                const auto label = cells[index].gas;
+                if (label != 0U && label != kAtmosphereLabel && label != kVacuumLabel &&
+                    state.find(label) == nullptr) {
+                    cells[index].gas = kVacuumLabel;
+                    labels_changed = true;
+                }
+                continue;
+            }
             const auto label = state.regions[mark & 0xFFFFU].label;
             labels_changed = labels_changed || cells[index].gas != label;
             cells[index].gas = label;

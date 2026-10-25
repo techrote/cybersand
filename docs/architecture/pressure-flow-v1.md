@@ -159,6 +159,19 @@ is `kVacuumLabel`: it adds volume, never amount. A host paint/erase leaves
 `0` (unresolved). This distinction prevents water-born voids from being created
 as atmospheric gas (a defect found during development; see evidence).
 
+**Masked labels at retirement (Current repair branch, acceptance pending).**
+A transient body excludes an Empty cell from gas volume and overlap; it does
+not replace the stored cell. After the identity reducer installs the next live
+table, the existing resident relabel pass changes any unvisited positive label
+absent from that table to `kVacuumLabel`. Still-live labels retain their
+identity beneath the mask. The retired amount has already gone to successors
+or the vent/collapse sink: clearing to unresolved would invent atmospheric
+gas, and remapping to a successor would invent overlap. This sanitation
+contributes to `labels_changed`, so a changed label prevents a gas fixed point.
+The strict CYPS live-label check remains in force. The
+[moving-body failure and repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md) qualifies the source, tests
+and publication boundary.
+
 **Phase convention.** Topology resolves at tick entry: inspection at completed
 tick N reports the compartments resolved at the entry of tick N, i.e. after the
 events indexed N−1. That matches the registered gas fixtures (merge first
@@ -332,8 +345,12 @@ physics settings from the payload, including physics-changing diagnostic
 overrides. Restore checks the complete gas conservation equation with checked
 sums as well as agreement between the table and `amount_live`; a valid digest
 does not admit a contradictory ledger. Transient body masks are host-owned and not
-saved; settled discovery must be disabled. A restored World continues
+saved; settled discovery must be disabled. Mask-free fixtures continue
 bit-identically (physical and state hash, including at a different worker count).
+A host using bodies must separately restore the same transient-mask region and
+sampled masks before claiming exact continuation. Native CYPS alone does not
+restore a Rapier owner or its future inputs; complete adapter body restoration
+remains #202/#203 work.
 Restore also checks native quantity schema, source/sink roles and quanta,
 aggregate closure, prepared Water count/mass consistency and restored authority.
 Pending events reuse ordinary queue admission, including radius, capacity and

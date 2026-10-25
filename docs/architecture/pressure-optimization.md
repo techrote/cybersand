@@ -73,7 +73,11 @@ uncached restart **before** authoritative gas reduction. Successful fallback
 uses an explicit flag rather than an exception as control flow.
 
 A whole-operator fixed point requires both table/topology and final gas labels
-to be unchanged, with no discovery allocations. Equal compartment amounts alone
+to be unchanged, with no discovery allocations. This includes final sanitation
+of unvisited labels whose compartment retired beneath a body mask; reference,
+cached and dormant variants share that authority repair. Still-live masked
+labels remain intact. The [repair evidence](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md)
+retains the six-arm failing control and pending acceptance. Equal compartment amounts alone
 do not establish that fixed point. Gas resolution revokes all Water motion
 certificates because a remote volume/gauge change can alter a local gradient.
 

@@ -10,6 +10,18 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Moving-body pressure gas blocker — 2026-10-25
+
+Ordinary Main/worker reference-body Water play exposed a native retired gas
+label beneath a moving body mask around completed tick45–47. The World
+quarantines even though Water quantity and the gas ledger remain exact.
+A compact native control reproduces the failure in all three pressure
+variants with configured1/4 workers. The repair is under qualification;
+PRs #253 and #250 are draft and must receive fresh source-matched
+Windows/Linux runtimes and exact-head gates before merging. Earlier
+scoped/full greens retain their original source and coverage. See the
+[dated failure and repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
+
 ## Combined pressure and IN source — 2026-10-25
 
 The #212 integration joins standalone checkpoint `0af161b4` with the frozen
