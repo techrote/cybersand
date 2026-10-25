@@ -6,7 +6,7 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 ---
 
 # Data ownership and lifetimes
@@ -115,7 +115,7 @@ but must not touch live scene-tree or Rapier objects.
 | Delayed pair deadline | A phase-exclusive source activity block stores its earliest due tick; coordinator wakes it at healthy tick entry | One scalar per block; excluded blocks retain it, clear/replacement discards it |
 | Native snapshot slots | One serialized producer writes only an unleased slot | Shared exchange state outlives its facade while leases exist; no-slot/capacity failure retains dirty state |
 | Desktop world, sampled character and optional actor prototypes | Godot pacing Thread after startup handoff | Worker lifetime; stopped/joined before destruction; actor session reset invalidates old input epochs |
-| Controlled liquid preparation candidate and token (experimental #202 source) | The exclusive native adapter owns one pending World, render exchange, final setup and copied native receipt | Final configuration precedes capture; one-use token commit checks retained state and the desktop queue-mutex request/reset/stop fence. Discard/supersession/refusal retain the applied session; [bounded host scope](liquid-prepared-setup-and-receipts.md#controlled-application-host-preparation-slice) excludes actors and remaining constructors |
+| Controlled liquid preparation candidate and token (experimental #202 source) | The exclusive native adapter owns one pending World, render exchange, final setup and copied native receipt | Final configuration precedes capture; one-use token commit checks retained state and the desktop queue-mutex request/reset/stop fence. Discard/supersession/refusal retain the applied session; [bounded host scope](liquid-prepared-setup-and-receipts.md#staged-sampled-actors-and-exploratory-owners) additionally stages private sampled actor/equipment owners and a token-bound read-only collision view; physical bodies and remaining constructors stay open |
 | Live body nodes, RIDs and physics state | Main-thread Rapier bridge and PhysicsServer2D | Scene/bridge lifetime; never passed to cellular workers |
 | Physical actor rigs, joints and local controllers | Main-thread `CyberPhysicalActorSession`; at most eight rigs/eight total parts each | Run/actor/epoch-bound command leases; cancel discards future work, close retires bodies/joints |
 | 4LY profile and local force/torque response | Validated copied profile and a main-thread pure controller under the same physical session; own velocity/attitude inputs only | Single chassis with explicit absent equipment; cancellation/expiry reset response state and select passive fallback without changing body momentum; see [free-flight contract](../systems/physical-free-flight.md) |

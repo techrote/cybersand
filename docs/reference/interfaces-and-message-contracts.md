@@ -6,7 +6,7 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 ---
 
 # Interfaces and message contracts
@@ -681,6 +681,25 @@ no World and changes no applied policy. GDScript owns pending selection and
 observes the existing owner acknowledgement before treating it as applied. See
 the [normal UI and constructor coverage](../operations/lcb-manual-comparison-ux.md)
 for actual supported routes and retained qualification.
+
+`microscenario_apply_exploratory_liquid(definition, policy, normalize_water,
+mode, actor_configuration)` is the subsequent body-free schema-2 route; desktop
+stages allowlisted sampled rigs/equipment, while the synchronous controller
+stages its existing sampled character. Native preparation options additionally
+select `intent` (`controlled`/`exploratory`), `pacing`
+(`fixed_steps`/`host_paced`) and `simulation_window_enabled`; disabled window
+requires the full finite World region. Readback copies these actual encoded
+native execution/intent values. The frozen native codec and its qualifications
+remain unchanged.
+
+`prepared_liquid_character_box_collides(world, token, origin, size, mode)` reads
+only the matching native candidate, using the existing live collision law;
+missing/retired tokens and invalid queries fail closed. It exposes no native
+World or edit/tick API. The worker's final commit swaps the privately prepared
+sampled owners under the same mutex fence as native replacement. Matching
+`acknowledge_prepared_liquid_configuration(serial)` releases the initial
+accepted owner frame only after main installs its new camera/configuration.
+Details belong to the [staged owner contract](../architecture/liquid-prepared-setup-and-receipts.md#staged-sampled-actors-and-exploratory-owners).
 
 ### Read-only native MicroScenario inspection
 

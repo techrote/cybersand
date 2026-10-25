@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md]
 ---
 
@@ -317,7 +317,12 @@ actor-free schema-2 MicroScenarios in both existing application owners. Its
 false never rounds silently. Unknown native rule strings refuse. There is one
 pending preparation token per adapter, and Reset retains the accepted option.
 See the [bounded host contract](../architecture/liquid-prepared-setup-and-receipts.md#controlled-application-host-preparation-slice)
-for its constructor and platform limits.
+for its constructor and platform limits. Subsequent explicit Exploratory source
+stages body-free sampled ownership. Candidate collision queries keep the same
+32×32 maximum box and four modes as the existing native owner query. Initial
+owner interest uses the definition camera, existing 480×270 view and selected
+buffers/window; request/settings/profile changes fence commit. Physical bodies
+remain refused through this new route pending staged actual mask capture.
 
 The [native prepared setup/receipt/accounting contract](../architecture/liquid-prepared-setup-and-receipts.md)
 owns these bounds, native-issued refusal/failure outcomes, source/host

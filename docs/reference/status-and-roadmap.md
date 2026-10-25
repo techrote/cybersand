@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
@@ -817,7 +817,7 @@ The [host contract](../architecture/liquid-prepared-setup-and-receipts.md#contro
 and [dated evidence](../audits/2026-10-24-lcb003-controlled-host-slice.md) own exact
 scope. Native-v1 setup/source/runtime/host qualifications and false full-match
 eligibility remain intact. Linux/hosted publication, real Web execution of this
-new path, verified definition/provenance collection, actor/equipment staging,
+new path, verified definition/provenance collection, physical actor/body staging,
 remaining normal constructors, full comparison exhibition and complete UI coverage remain #202 work.
 The subsequent source checkpoint `0a702eb3` adds a native-validated per-material
 picker/presets, explicit normalization, actual launcher/panel Apply/readback and
@@ -826,6 +826,15 @@ coverage](../operations/lcb-manual-comparison-ux.md) distinguish this bounded
 Current UI from remaining Planned actor/exploratory/import/plane routes; the
 [UI evidence](../audits/2026-10-25-lcb003-liquid-comparison-ui.md) records local
 Windows controller execution and preserved Current physical hashes.
+The next source checkpoint `da800552` stages sampled characters and allowlisted
+sampled actor/equipment owners against native candidate collision queries before
+swap. Explicit Exploratory mode captures actual initial owner interest/settings,
+retains solver choice through F5/reset and holds initial presentation frames until
+the matching accepted acknowledgement. The [sampled contract](../architecture/liquid-prepared-setup-and-receipts.md#staged-sampled-actors-and-exploratory-owners)
+and [evidence](../audits/2026-10-25-lcb003-sampled-exploratory-host.md) keep physical
+bodies, remaining constructors and complete verified host/provenance open. Shared
+native source is still `9e91a9f7`, before final #246 checked-scalar fixes; final
+integrated tests/publication remain required.
 The work is prepared independently while #246 completes its acceptance gates;
 integration still follows fresh accepted main.
 

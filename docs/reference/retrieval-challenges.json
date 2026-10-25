@@ -2338,12 +2338,28 @@
       ],
       "facts": [
         "The experimental Liquids panel in the existing MicroScenario dialog uses native validated per-material choices and presets, explicit normalization, and owner-prepared rebuilds for fixed actor-free schema-2 definitions. Pending selection does not alter the running World; Original Current control uses the unchanged original default constructor and exact fixture.",
-        "The constructor coverage matrix retains ordinary actor and exploratory routes but refuses them through the new controlled editor before replacement; remaining constructors, full provenance and actual browser qualification are open #202 scope."
+        "The constructor matrix keeps Controlled fixed and actor-free, while explicit Exploratory now stages body-free sampled characters or allowlisted sampled actors/equipment. Physical bodies and remaining constructors still refuse through this new route; full provenance and actual browser qualification remain open #202 scope."
       ],
       "sources": [
         "../godot/scripts/liquid_comparison_panel.gd",
         "../godot/scripts/main.gd",
         "../godot/scripts/web_demo_controller.gd"
+      ]
+    },
+    {
+      "id": "LCB12",
+      "query": "How are sampled actors and equipment staged against the candidate terrain before an exploratory liquid World commits, and what preserves the old masked World on refusal or a stale owner frame?",
+      "canonical": [
+        "architecture/liquid-prepared-setup-and-receipts.md"
+      ],
+      "facts": [
+        "The explicit body-free exploratory route configures private sampled actor, usable and character owners with token-bound native read-only collision queries, monotonic epochs and final player/execution settings before the native queue-mutex commit fence.",
+        "Declared configuration refusal and newer request/reset/stop/settings preserve the old World, stored masked Water, canonical receipt and actor/equipment state. Initial owner frames wait for matching accepted acknowledgement; physical bodies and complete native-v1 host/provenance verification remain open."
+      ],
+      "sources": [
+        "../godot/scripts/prepared_sampled_session.gd",
+        "../godot/scripts/simulation_worker.gd",
+        "../godot/native_extension/cyber_prepared_liquid_world.hpp"
       ]
     }
   ],

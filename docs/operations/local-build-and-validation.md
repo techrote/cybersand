@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
@@ -462,6 +462,26 @@ local development DLL, source input manifests, commands, timeouts, failures and
 remaining platform gates. The [constructor matrix](lcb-manual-comparison-ux.md#constructor-coverage-at-this-checkpoint)
 is the authoritative boundary of this UI slice. No browser, release provenance
 or complete constructor acceptance follows from native headless execution.
+
+### Staged sampled/exploratory host slice
+
+[`test_liquid_sampled_preparation.gd`](../../godot/tests/test_liquid_sampled_preparation.gd)
+adds real candidate-versus-live collision and spawn-recovery checks, declared
+precommit equipment refusal, retained actor/equipment/epoch and masked native
+state, deterministic supersession/settings barriers, final independent PENV
+configuration, owner-frame acknowledgement and actual main/panel/F5/reset and
+synchronous controller routes. Run with the freshly built adapter:
+
+```text
+godot --headless --path godot --script res://tests/test_liquid_sampled_preparation.gd
+```
+
+Retain actor session/rig/usables, existing host/UI/controller/workbench, exploratory
+actor selection and Water Feel lifecycle cases. The [sampled evidence](../audits/2026-10-25-lcb003-sampled-exploratory-host.md)
+records final source/runtime, exact ten-process matrix and failures. Its shared
+native base is still pre-final-fix `9e91a9f7`; repeat the full applicable matrix
+after accepted #246 integration. Physical-body staging, source/runtime
+publication and actual browser qualification remain separate required gates.
 
 ### Branch-scoped runtime publishers
 

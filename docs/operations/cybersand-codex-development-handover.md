@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
@@ -28,6 +28,15 @@ and [UI evidence](../audits/2026-10-25-lcb003-liquid-comparison-ui.md). This is 
 all #202 constructors/UI or browser qualification. Integrate onto
 fresh main after #246; preserve the normal #201/#202/#212 → #203 sequence and
 all native-v1 provenance/host qualifications.
+
+Subsequent `da800552` adds explicit body-free Exploratory mode, privately staged
+sampled actor/equipment/character ownership, native candidate collision queries,
+final PENV/settings fences and accepted initial-frame acknowledgement. The
+[sampled evidence](../audits/2026-10-25-lcb003-sampled-exploratory-host.md) records
+71 new assertions and the complete local ten-process matrix. Its native base is
+still `9e91a9f7`, before final #246 checked-scalar fixes. Physical-body staging,
+remaining constructors, full provenance and actual browsers remain open.
+
 
 ## Residual LCB-001 continuation — 2026-10-24
 

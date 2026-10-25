@@ -15,7 +15,8 @@ related-documents: [../architecture/liquid-solver-family-policy.md, lcb-water-co
 **Current experimental, unmerged source:** `0a702eb304ebf1e9e1302a15250cdd159f0371f7`
 on `codex/lcb003-application-host`, based on frozen #246 head `9e91a9f7`.
 The normal application now has a bounded liquid-comparison panel for fixed,
-actor-free schema-2 MicroScenarios. The [UI evidence](../audits/2026-10-25-lcb003-liquid-comparison-ui.md)
+actor-free schema-2 MicroScenarios. Subsequent source `da800552` adds the explicit
+Exploratory mode and privately staged sampled ownership described below. The [UI evidence](../audits/2026-10-25-lcb003-liquid-comparison-ui.md)
 records the source-matched local Windows development runtime and exact tested
 scope. This does not complete [#202](https://github.com/techrote/cybersand/issues/202).
 
@@ -63,13 +64,21 @@ legacy construction correctly has no typed setup receipt. Applied receipt
 qualifications and false full-match eligibility remain visible. Source/runtime
 and complete host/setup verification remain open.
 
-Actor/body/player-enabled definitions and owner-paced/exploratory definitions
-remain available through their ordinary Current routes. The new controlled
-editor refuses them before queuing replacement. It does not synthesize a native
-attempt for a host-only refusal. Pending choices, applied policy, owner
+The session picker defaults to **Controlled • fixed actor-free**. Explicit
+**Exploratory • sampled owner** admits body-free schema-2 definitions, including
+owner-paced interest and the existing allowlisted sampled actor/equipment route.
+Replacement owners are configured privately against native candidate collision
+queries before the actual mutex-fenced swap. Reset and F5 sampled-rig changes
+retain the selected solver and normalization. Physical bodies still refuse
+before queueing through this new route, preserving the accepted physical/actor
+session; their ordinary Current route remains available. Host-only refusal does
+not synthesize a native attempt. Pending choices, applied policy, owner
 acknowledgement and error text stay distinct. Blind/read-only apparatus disable
-rebuild controls. This preserves existing actor/equipment ownership until that
-construction can be staged transactionally.
+rebuild controls. See the [staged host contract](../architecture/liquid-prepared-setup-and-receipts.md#staged-sampled-actors-and-exploratory-owners)
+and [sampled evidence](../audits/2026-10-25-lcb003-sampled-exploratory-host.md).
+The native receipt records the initial construction intent and retains all
+full-host qualifications; these controls do not establish verified full matched
+comparison, complete manual-input replay or a complete host provenance envelope.
 
 ## Constructor coverage at this checkpoint
 
@@ -80,8 +89,8 @@ controlled API is narrower than older explicit-policy diagnostic APIs.
 | Route | Current result | Remaining #202 work |
 |---|---|---|
 | Fixed actor-free schema-2 MicroScenario, protected Dam Break and mixed fixture | Native prepared policy/normalization, immutable typed receipt, final owner fence, actual panel/controller apply/refuse/reset; desktop worker and synchronous controller | Complete verified definition/host/provenance collection and final integrated platform qualification |
-| Fixed actor/body/player-enabled MicroScenario | Ordinary default route retained; new controlled editor/API refuses before swap | Stage actor/equipment/body candidate and all fallible owner work before commit |
-| Owner-paced/exploratory MicroScenario | Ordinary default route retained; new controlled editor/API refuses before swap | Explicit exploratory setup/interest/execution receipt and retained edit/import semantics |
+| Fixed player-enabled or body-enabled MicroScenario | Ordinary default route retained; Controlled refuses; explicit Exploratory stages the existing sampled character when body-free | Stage physical body/terrain/equipment candidate before supporting rigid bodies |
+| Owner-paced/exploratory MicroScenario | Explicit Exploratory route stages allowlisted sampled actor/equipment owners or the existing sampled character, final initial interest/settings and native Exploratory/HostPaced receipt; Controlled refuses | Physical-body staging, complete verified host/actor envelope and retained edit/import semantics |
 | Bootstrap `create_world` / ordinary `reset_demo_world` | Defaults; ordinary reset retires typed setup identity | Explicit retained-policy coordinator without changing Current defaults |
 | `build_world` rectangle showcases / Blacksite | Existing default constructor | Prepared tuples and explicit setup/mode qualification |
 | `build_tuned_world` / Experiment Tower | Existing default constructor | Policy propagation while preserving independent transport and actor paths |
@@ -90,7 +99,7 @@ controlled API is narrower than older explicit-policy diagnostic APIs.
 | CYPS `import_physical_state` | Exact saved-policy continuation; old typed construction identity retired | Preserve exact continuation; never use it as a family-conversion rebuild |
 | Diagnostic reset / depth / arena / player playground / Thunderbowl | Existing diagnostic policy options and ordinary controls | Shared application coordinator/readback where supported, preserving plane and actor semantics |
 | Procedural WorldGenerator | Separate generator ownership | Native recipe/final tuples and actor/plane gaps, coordinated with GEN ownership |
-| Actual Web compat/threaded | UI/controller source present; Windows native synchronous scene tested | Rebuild final integrated source for both profiles and execute the actual browsers |
+| Actual Web compat/threaded | UI/controller source present; Windows native synchronous Controlled and Exploratory sampled-character routes tested; sampled rigs/equipment remain separate | Rebuild final integrated source for both profiles and execute the actual browsers |
 
 The rest of this document is **Planned** design beyond the bounded Current slice
 above. Tables and acceptance hooks below are targets, not implemented coverage.

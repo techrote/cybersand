@@ -4,7 +4,7 @@ status: Current
 document-kind: design
 scope: Unmerged LCB-001 native construction contract on codex/lcb001-shared-contract — immutable final tuples, explicit Water normalization, prepared World ownership, typed native outcomes, native run and attempt receipts, exact quantity aggregates, physical hash/CYPS2 and qualified local evidence; application-host proof and downstream family work remain open
 canonical-for: [liquid-prepared-setup, liquid-native-run-receipt, liquid-quantity-accounting]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, liquid-state-transition-matrix.md, lcb-pressure-inertial-handoff.md, ../operations/lcb-water-comparison-and-fixtures.md, ../operations/lcb-manual-comparison-ux.md, ../operations/current-and-historical-validation.md, ../reference/status-and-roadmap.md]
 ---
 
@@ -91,9 +91,62 @@ The [dated host evidence](../audits/2026-10-24-lcb003-controlled-host-slice.md)
 records deterministic preparation/commit barriers, masked-Water refusal,
 normalization totals, actual normal-app routes and retained legacy regressions.
 The synchronous `web_main.tscn` check executes in Windows Godot; it is not a
-browser/Wasm result. Actor/loadout staging, exploratory and remaining constructor
-routing, comparison controls/exhibition, provenance verification, browser runs
-and hosted source-matched runtime publication remain #202 work.
+browser/Wasm result. Subsequent bounded UI and sampled/exploratory source are
+Current on this same branch as described below. Physical-body staging, remaining
+constructor routing, full exhibition, complete definition/actor/loadout and
+provenance verification, browser runs and hosted source-matched runtime
+publication remain #202 work.
+
+### Staged sampled actors and exploratory owners
+
+**Current experimental source `da800552` on the same pre-quantity-fix `9e91a9f7`
+base:** `microscenario_apply_exploratory_liquid` is an explicit additional route
+for body-free schema-2 definitions. It retains ordinary manual tools and owner
+execution/interest, and stages sampled characters or the existing allowlisted
+sampled actor/equipment sessions. The original Controlled API remains fixed and
+actor-free. The normal panel selects Controlled or Exploratory explicitly;
+Original Current control still uses the unchanged original default constructor.
+The [constructor matrix](../operations/lcb-manual-comparison-ux.md#constructor-coverage-at-this-checkpoint)
+owns per-route availability and platform limits.
+
+The worker privately configures replacement `CyberActorPrototypeSession`,
+`CyberUsableSession` and character before native commit. Spawn recovery uses a
+read-only token-bound candidate collision view with the exact live collision
+query law, never the retained old terrain. Retired tokens fail closed; this
+view offers no tick/edit operation or pending native World reference. Existing
+bounded blocked-spawn semantics remain unchanged. Actor epochs advance beyond
+the retained session's epoch, including inactive periods. Producers acquire a
+retained session reference under the owner mutex; the World/session swap shares
+the final request/reset/stop/settings fence. A refused staged actor/equipment
+configuration mutates no old owner, epoch, equipment, mask or native receipt.
+A host-only refusal fabricates no native construction outcome.
+
+Initial native facts bind the actual region, window/cadence/adhesion, explicit
+`Exploratory` intent and `HostPaced` execution. The initial owner view is derived
+from the accepted definition camera, existing 480×270 MicroScenario view and
+selected buffers/window. The worker holds that initial frame until main installs
+the acknowledged camera/configuration; older presentation frames cannot rewrite
+its tick-zero facts. Only the matching scenario acknowledgement releases it.
+Ordinary accepted constructors retire the hold. An execution/buffer or player
+profile change during preparation retires the candidate. A profile extracted in
+the same owner turn joins the candidate character before swap; an unconsumed
+newer profile refuses preparation. Settings remain independent of solver choice.
+
+Reset and F5 sampled-rig reconstruction retain the accepted exploratory policy,
+normalization and intent. Physical/rigid-body reconstruction still refuses before
+queueing through this new route; the old physical session remains accepted.
+The synchronous controller stages its existing sampled character through the
+same native view and commits on its main thread; sampled rig/equipment ownership
+there remains separate work. Main-thread Rapier objects never enter native pool
+workers or this GDScript worker. Native-v1 actor/loadout, setup, execution and
+source/runtime gaps remain; native receipt eligibility stays false. No extension
+of the frozen native codec or final full-host acceptance is claimed.
+
+The [sampled/exploratory evidence](../audits/2026-10-25-lcb003-sampled-exploratory-host.md)
+records actual owner/app routes, deterministic declared failure/supersession,
+prior masked Water preservation and Current actor regressions. These local tests
+still require fresh accepted #246 native integration and the final platform
+matrix; they do not qualify that newer native source.
 
 ## Source map
 
