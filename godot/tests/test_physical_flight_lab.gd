@@ -177,6 +177,91 @@ func _run() -> void:
 	var neutral: Dictionary = _run_episode(&"4ly_trainer", "neutral_control", &"teacher", 240)
 	if not neutral.is_empty():
 		check(not bool(neutral.terminal.navigation_credit), "neutral cannot earn distant-target success")
+	# A missed six-tick decision carries only the already admitted 12-tick
+	# lease. The episode must preserve its own trace/observation accounting while
+	# the real actor session retires authority at the physical deadline.
+	check(episode.reset(&"4ly_trainer", "horizontal_reach", 101, "development", &"policy"),
+		"fresh owner for lease-expiry conformance")
+	var lease_start: Dictionary = episode.observe()
+	var lease_partial: Dictionary = episode.tick(
+		{"move": Vector2.RIGHT}, str(lease_start.observation_id), 3)
+	var lease_after_partial: Dictionary = episode.observe()
+	check(int(lease_partial.ticks_consumed) == 3 and not bool(lease_partial.episode_done)
+		and int(lease_after_partial.observed_tick) == 3
+		and bool(lease_after_partial.command_live)
+		and int(lease_after_partial.lease_remaining_ticks) == 9,
+		"partial decision consumes exactly three real ticks without retiring authority")
+	var lease_boundary: Dictionary = episode.tick(null, "", 3)
+	var lease_at_six: Dictionary = episode.observe()
+	check(int(lease_boundary.ticks_consumed) == 3 and int(lease_at_six.observed_tick) == 6
+		and bool(lease_at_six.command_live)
+		and int(lease_at_six.lease_remaining_ticks) == 6
+		and int(lease_at_six.control_generation) == int(lease_start.control_generation),
+		"partial continuation reaches the decision boundary under the original lease")
+	var lease_carry: Dictionary = episode.tick(null, "", 5)
+	var lease_at_eleven: Dictionary = episode.observe()
+	check(int(lease_carry.ticks_consumed) == 5 and int(lease_at_eleven.observed_tick) == 11
+		and bool(lease_at_eleven.command_live)
+		and int(lease_at_eleven.lease_remaining_ticks) == 1
+		and int(lease_at_eleven.control_generation) == int(lease_start.control_generation),
+		"missed fresh decision does not renew or replace the admitted lease")
+	var stale_before_expiry: String = str(lease_at_eleven.observation_id)
+	var lease_expiry: Dictionary = episode.tick(null, "", 1)
+	var expired: Dictionary = episode.observe()
+	check(int(lease_expiry.ticks_consumed) == 1 and int(expired.observed_tick) == 12
+		and not bool(lease_expiry.episode_done) and not bool(lease_expiry.failed),
+		"lease deadline remains an ordinary physical transition, not task failure")
+	check(not bool(expired.command_live) and int(expired.lease_remaining_ticks) == 0
+		and str(expired.actuator_mode) == "passive_no_lease"
+		and not bool(expired.assistance_valid),
+		"expiry publishes passive no-lease assistance rather than neutral or power-off")
+	var lease_record: Dictionary = episode.record()
+	check(lease_record.trace.size() == 12,
+		"partial/carry/expiry path retains one trace row per real physical tick")
+	var before_expiry: Dictionary = lease_record.trace[10]
+	var expiry_tick: Dictionary = lease_record.trace[11]
+	var expiry_authority: Dictionary = expiry_tick.get("authority", {})
+	check(int(expired.control_generation) == int(lease_start.control_generation) + 1
+		and int(expiry_authority.get("control_generation", -1)) == int(expired.control_generation)
+		and str(expiry_authority.get("producer", "")) == "policy"
+		and str(expiry_authority.get("fallback_reason", "")) == "expired"
+		and str(expiry_authority.get("actuator_mode", "")) == "passive_no_lease"
+		and not bool(expiry_authority.get("command_live", true))
+		and int(expiry_authority.get("lease_remaining_ticks", -1)) == 0,
+		"episode trace exposes the completed expiry authority transition")
+	check(Vector2(expired.velocity_cells_per_second).length() > 0.001
+		and Vector2(expiry_tick.centre).distance_to(Vector2(before_expiry.centre)) > 0.001,
+		"expiry preserves real physical momentum and does not reconstruct the pose")
+	for receipt: Dictionary in lease_record.trace:
+		check(int(receipt.get("world_tick", -1)) >= 0
+			and not receipt.get("physical_receipt", {}).is_empty(),
+			"lease carry retains authoritative physical receipt for every consumed tick")
+	var late_after_expiry: Dictionary = episode.tick(
+		{"move": Vector2.ZERO}, stale_before_expiry, 1)
+	check(bool(late_after_expiry.failed) and int(late_after_expiry.ticks_consumed) == 0
+		and int(late_after_expiry.physical_ticks_total) == 12,
+		"pre-expiry observation cannot acquire fresh authority after lease retirement")
+
+	check(episode.reset(&"4ly_trainer", "horizontal_reach", 101, "development", &"policy"),
+		"fresh owner for neutral-mode distinction")
+	var neutral_start: Dictionary = episode.observe()
+	var neutral_step: Dictionary = episode.tick(
+		{"move": Vector2.ZERO}, str(neutral_start.observation_id), 1)
+	check(int(neutral_step.ticks_consumed) == 1
+		and str(episode.observe().actuator_mode) == "neutral"
+		and bool(episode.observe().command_live),
+		"a newly admitted zero action is explicit live neutral, unlike expired fallback")
+
+	check(episode.reset(&"4ly_trainer", "power_off", 101, "development", &"policy"),
+		"fresh owner for power-off distinction")
+	var power_start_observation: Dictionary = episode.observe()
+	var power_mode_step: Dictionary = episode.tick(
+		{"move": Vector2.ZERO}, str(power_start_observation.observation_id), 1)
+	check(int(power_mode_step.ticks_consumed) == 1
+		and str(episode.observe().actuator_mode) == "power_off"
+		and not bool(episode.observe().resources.powered),
+		"explicit host power-off remains distinct from expired passive fallback")
+
 	# A stale issued observation after cancellation must never produce a step.
 	check(episode.reset(&"4ly_trainer", "horizontal_reach", 0, "development", &"policy"),
 		"fresh owner for action-fencing negative fixture")
