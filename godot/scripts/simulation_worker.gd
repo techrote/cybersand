@@ -414,6 +414,10 @@ func _apply_lab(command: Dictionary) -> bool:
 		_micro_capture={}
 		_water_exit_request_applied = true
 	if command.has("water_reset"):
+		var water_setup: Dictionary = command.get("controlled_liquid_setup",{})
+		if not water_setup.is_empty():
+			_scenario_request_serial = int(command.get("scenario_request_serial",0))
+			_scenario_request_applied = false
 		if not ClassDB.class_exists(&"CyberDemoBridge") or not _world.has_method(&"get_water_experiment_policy"):
 			_lab_status="Water Feel Lab requires the current native backend"
 			return false
@@ -431,7 +435,26 @@ func _apply_lab(command: Dictionary) -> bool:
 			return false
 		var profile_result: Dictionary=CyberTransportProfiles.resolve(
 			CyberTransportProfiles.preset(0))
-		if not _scenario_host.install(_world, MicroCatalogue.water(resolved), str(command.get("scenario_mode", "Inspect"))):
+		var water_definition: Dictionary = MicroCatalogue.water(resolved)
+		var water_guard: Callable = Callable()
+		if not water_setup.is_empty():
+			if water_setup.get("intent","") != "exploratory" or bool(recipe.body_enabled) \
+				or not str(command.get("blind_label","")).is_empty() or not _water_blind_label.is_empty() \
+				or not command.get("sampled_character_enabled",false) or not water_setup.get("physical_owner",{}).is_empty():
+				_lab_status = "Prepared Water Feel rejected; requires an unblinded body-free sampled Exploratory owner"
+				return false
+			var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+			var admitted: Dictionary = bridge.validate_liquid_policy(command.get("liquid_policy",bridge.default_liquid_policy()))
+			var source_refusal: String = MicroCatalogue.prepared_water_source_refusal(admitted.get("receipt",{}),recipe)
+			if not source_refusal.is_empty():
+				_lab_status = source_refusal
+				return false
+			water_definition = MicroCatalogue.prepared_water(resolved)
+			var prepared: Dictionary = _prepared_liquid_install_options(command,water_definition,water_setup)
+			if not prepared.ok: return false
+			water_definition = prepared.definition;water_setup = prepared.setup;water_guard = prepared.guard
+		if not _scenario_host.install(_world,water_definition,str(command.get("scenario_mode","Inspect")),true,
+			command.get("liquid_policy",null),water_setup,water_guard):
 			_lab_status="Water Apply + Reset rejected; "+_scenario_host.last_error
 			return false
 		_world_generation += 1
@@ -465,7 +488,8 @@ func _apply_lab(command: Dictionary) -> bool:
 			_water_initial_integer*255-_water_initial_requested_numerator_255)
 		_lab_schedule.clear();_lab_inputs.clear()
 		_simulation_failed=false
-		_activate_sampled_character(Vector2(recipe.player_start), true)
+		if water_setup.is_empty(): _activate_sampled_character(Vector2(recipe.player_start), true)
+		else: _scenario_request_applied = true
 		if _water_blind_label!="":
 			_lab_status="Water Feel candidate %s / scenario %s / seed %d" % [
 				_water_blind_label,str(_water_policy.scenario_id),int(_water_policy.seed)]
@@ -473,6 +497,8 @@ func _apply_lab(command: Dictionary) -> bool:
 			_lab_status="Water Feel unblinded / policy %s / recipe %s / seed %d" % [
 				_water_policy_hash.left(12),_water_recipe_hash.left(12),
 				int(_water_policy.seed)]
+		if not water_setup.is_empty() and _scenario_host.summary().get("failed",false):
+			_lab_status = "Water Feel installed; apparatus failed: " + _scenario_host.last_error
 	if command.has("scenario_reset"):
 		_scenario_request_serial = int(command.get("scenario_request_serial", 0))
 		_scenario_request_applied = false

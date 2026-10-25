@@ -65,6 +65,27 @@ static func water(policy_result: Dictionary) -> Dictionary:
 	out.source_recipe_hash = Water.recipe_hash(recipe)
 	return out
 
+# Explicit family preparation retains Water Feel's sampled player, ordinary
+# actions, semantic policy and recipe identity. The original schema1 is intact.
+static func prepared_water(policy_result: Dictionary) -> Dictionary:
+	var out: Dictionary = water(policy_result)
+	if out.is_empty(): return {}
+	out.schema_version = 2
+	out["presentation"] = {"title":"Water Feel Lab","instructions":"Explicit Exploratory solver rebuild; ordinary Water Feel controls and scheduled actions remain active.",
+		"duration_ticks":Contract.MAX_TICK,"baseline":"Original Current Water Feel constructor",
+		"profile":"Explicit solver policy with retained Water semantic policy","regions":[]}
+	return out
+
+static func prepared_water_source_refusal(policy_readback: Dictionary, recipe: Dictionary) -> String:
+	var whole_cell_water: bool = false
+	for assignment: Dictionary in policy_readback.get("assignments",[]):
+		if int(assignment.material) == 3 and assignment.applied_family == "cellular_yield_v1": whole_cell_water = true
+	if not whole_cell_water: return ""
+	for action: Dictionary in recipe.actions:
+		if action.kind == "fill" and int(action.normalized_mass) != 255:
+			return "Prepared Water Feel refused: whole-cell Water fractional scheduled sources need separate qualification; initial normalization does not change actions"
+	return ""
+
 # Only authored exploratory play maps opt into actor replacement. Apparatus IDs
 # and fixed execution never inherit this permission from maturity alone.
 static func exploratory_actor_map(definition: Dictionary) -> bool:

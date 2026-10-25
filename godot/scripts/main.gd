@@ -272,6 +272,7 @@ var microscenario_definition: Dictionary = {}
 var microscenario_liquid_policy: Variant = null
 var microscenario_liquid_setup: Dictionary = {}
 var _liquid_tower_active: bool = false
+var _liquid_water_active: bool = false
 var showcase_presentation: CyberShowcasePresentation
 var blacksite_nine_presentation: CyberBlacksiteNinePresentation
 
@@ -308,6 +309,7 @@ func microscenario_apply_controlled_liquid(definition: Dictionary, liquid_policy
 		{"normalization":"water-normalize-v1" if normalize_water else "","maximum_rule_radius":maximum_rule_radius})
 
 func liquid_comparison_active_definition() -> Dictionary:
+	if tower_context.get("water_active",false): return CyberMicroScenarioCatalogue.prepared_water(water_policy_resolved)
 	if tower_active and tower_context.get("active",false) and not tower_context.get("micro_active",false) \
 		and not tower_context.get("water_active",false):
 		return CyberMicroScenarioCatalogue.prepared_tower(tower_profile,tower_floor)
@@ -315,6 +317,11 @@ func liquid_comparison_active_definition() -> Dictionary:
 
 func liquid_comparison_apply_active(policy: PackedInt32Array, normalize_water: bool, exploratory: bool,
 		mode: String, radius: int) -> bool:
+	if tower_context.get("water_active",false):
+		if not exploratory:
+			microscenario_error = "Water Feel requires Exploratory mode with its existing sampled player"
+			return false
+		return _apply_prepared_liquid_water(policy,normalize_water,radius,water_policy_resolved)
 	if tower_active and tower_context.get("active",false) and not tower_context.get("micro_active",false) \
 		and not tower_context.get("water_active",false):
 		if not exploratory:
@@ -350,6 +357,7 @@ func _apply_prepared_liquid_tower(policy: PackedInt32Array, normalize_water: boo
 
 func _prepared_liquid_tower_installed() -> void:
 	_liquid_tower_active = true
+	_liquid_water_active = false
 	microscenario_error = ""
 	microscenario_definition = pending_microscenario_apply.definition.duplicate(true)
 	microscenario_liquid_policy = pending_microscenario_apply.liquid_policy.duplicate()
@@ -359,6 +367,55 @@ func _prepared_liquid_tower_installed() -> void:
 	paused = true;current_view_size = Vector2i(480,270);camera_follow_enabled = false
 	camera_origin = Vector2(microscenario_definition.camera_origin[0],microscenario_definition.camera_origin[1])
 	character_position = Vector2(microscenario_definition.player_start[0],microscenario_definition.player_start[1])
+	simulation_worker.acknowledge_prepared_liquid_configuration(int(pending_microscenario_apply.serial))
+
+func _apply_prepared_liquid_water(policy: PackedInt32Array, normalize_water: bool, radius: int,
+		result: Dictionary) -> bool:
+	if not result.get("ok",false) or not tower_context.get("water_active",false) \
+		or not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty() or not pending_water_exit.is_empty() \
+		or not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return false
+	var resolved: Dictionary = CyberWaterExperimentProfiles.resolve({},{},result.policy)
+	if not resolved.ok or resolved.hash != result.hash: return false
+	var recipe: Dictionary = CyberWaterFeelScenarios.recipe(str(resolved.policy.scenario_id),int(resolved.policy.seed))
+	if recipe.is_empty(): return false
+	if recipe.body_enabled or physical_actor_session != null or not rigid_bodies.is_empty() or player_uses_barrel():
+		microscenario_error = "Prepared Water Feel requires a body-free sampled owner; prior session retained"
+		return false
+	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+	var admitted: Dictionary = bridge.validate_liquid_policy(policy)
+	var source_refusal: String = CyberMicroScenarioCatalogue.prepared_water_source_refusal(admitted.get("receipt",{}),recipe)
+	if not source_refusal.is_empty():
+		microscenario_error = source_refusal
+		return false
+	var checked: Dictionary = CyberMicroScenarioContract.validate(CyberMicroScenarioCatalogue.prepared_water(resolved))
+	if not checked.ok:
+		microscenario_error = str(checked.error)
+		return false
+	_microscenario_request_serial += 1
+	var setup: Dictionary = {"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else "",
+		"maximum_rule_radius":radius}
+	pending_microscenario_apply = {"route":"water","serial":_microscenario_request_serial,"hash":checked.hash,
+		"definition":checked.definition,"previous_paused":paused,"previous_mode":microscenario_mode,
+		"liquid_policy":policy.duplicate(),"controlled_liquid_setup":setup,"water_result":result.duplicate(true),"water_recipe":recipe}
+	paused = true
+	simulation_worker.queue_lab({"water_reset":true,"water_policy":resolved.policy,"water_policy_hash":resolved.hash,
+		"water_policy_provenance":result.get("provenance",{}),"blind_label":"","scenario_mode":microscenario_mode,
+		"scenario_request_serial":_microscenario_request_serial,"sampled_character_enabled":true,
+		"runtime_enclosure_recovery_enabled":sampled_runtime_recovery_enabled,"liquid_policy":policy.duplicate(),
+		"controlled_liquid_setup":setup})
+	return true
+
+func _prepared_liquid_water_installed() -> void:
+	_liquid_water_active = true;_liquid_tower_active = false;microscenario_error = ""
+	microscenario_definition = pending_microscenario_apply.definition.duplicate(true)
+	microscenario_liquid_policy = pending_microscenario_apply.liquid_policy.duplicate()
+	microscenario_liquid_setup = pending_microscenario_apply.controlled_liquid_setup.duplicate(true)
+	water_policy_resolved = pending_microscenario_apply.water_result.duplicate(true)
+	water_policy_available = true;water_active_blind_label = ""
+	paused = true;tower_active = true;current_view_size = Vector2i(480,270);camera_follow_enabled = false
+	camera_origin = Vector2(microscenario_definition.camera_origin[0],microscenario_definition.camera_origin[1])
+	character_position = Vector2(microscenario_definition.player_start[0],microscenario_definition.player_start[1])
+	$Layout/Title.text = "CYBERSAND / EXPERIMENT TOWER / WATER FEEL"
 	simulation_worker.acknowledge_prepared_liquid_configuration(int(pending_microscenario_apply.serial))
 
 func microscenario_apply_exploratory_liquid(definition: Dictionary, liquid_policy: PackedInt32Array,
@@ -473,6 +530,7 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 
 func _microscenario_installed(definition: Dictionary) -> void:
 	_liquid_tower_active = false
+	_liquid_water_active = false
 	microscenario_error = ""
 	var player_configuration: Dictionary = pending_microscenario_apply.get(
 		"player_configuration",
@@ -685,6 +743,10 @@ func water_controlled_run_active() -> bool:
 func water_lab_apply_result(result: Dictionary, blind_label: String = "") -> void:
 	if not result.get("ok",false): return
 	if not _water_blind_application_allowed(result,blind_label): return
+	if _liquid_water_active and tower_context.get("water_active",false):
+		_apply_prepared_liquid_water(microscenario_liquid_policy,microscenario_liquid_setup.get("normalization","") == "water-normalize-v1",
+			int(microscenario_liquid_setup.get("maximum_rule_radius",2)),result)
+		return
 	_force_sampled_player_for_lab()
 	var checked: Dictionary=CyberWaterExperimentProfiles.resolve({},{},result.policy)
 	if not checked.get("ok",false) or str(checked.hash)!=str(result.hash): return
@@ -710,6 +772,9 @@ func water_lab_prepare_blind(
 		blind_seed: int = -1
 	) -> bool:
 	if not water_policy_available: return false
+	if _liquid_water_active:
+		microscenario_error = "Prepared solver Water Feel is Exploratory; return to the original constructor before starting a blind run"
+		return false
 	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty():
 		return false
 	var candidates: Array=[]
@@ -903,6 +968,7 @@ func _reconcile_water_exit(context: Dictionary) -> void:
 		pending_water_exit.clear()
 	elif not bool(context.get("water_active",true)) and context.has("profile"):
 		_water_end_blind_session()
+		_liquid_water_active = false
 		if not _liquid_tower_active and not context.get("micro_active",false):
 			microscenario_liquid_policy = null;microscenario_liquid_setup = {};microscenario_definition = {}
 		pending_water_exit.clear()
@@ -2254,7 +2320,15 @@ func consume_worker_snapshot() -> void:
 	_reconcile_actor_prototype_reset()
 	tower_context = snapshot.lab_context
 	if not pending_microscenario_apply.is_empty():
-		if (pending_microscenario_apply.get("route","") == "tower" and not tower_context.get("micro_active",false)
+		if (pending_microscenario_apply.get("route","") == "water" and tower_context.get("water_active",false)
+			and int(tower_context.get("scenario_request_serial",0)) == int(pending_microscenario_apply.serial)
+			and bool(tower_context.get("scenario_request_applied",false))
+			and str(tower_context.get("microscenario",{}).get("definition_hash","")) == str(pending_microscenario_apply.hash)):
+			_prepared_liquid_water_installed()
+			if tower_context.get("microscenario",{}).get("failed",false):
+				microscenario_error = "Installed session apparatus failed: " + str(tower_context.microscenario.get("error","unavailable"))
+			pending_microscenario_apply.clear()
+		elif (pending_microscenario_apply.get("route","") == "tower" and not tower_context.get("micro_active",false)
 			and int(tower_context.get("scenario_request_serial",0)) == int(pending_microscenario_apply.serial)
 			and bool(tower_context.get("scenario_request_applied",false))
 			and str(tower_context.get("microscenario",{}).get("definition_hash","")) == str(pending_microscenario_apply.hash)):
@@ -2288,6 +2362,7 @@ func consume_worker_snapshot() -> void:
 			var applied: Dictionary=pending_water_apply
 			var recipe: Dictionary=applied.recipe
 			water_policy_resolved=applied.result.duplicate(true)
+			_liquid_water_active = false
 			water_policy_available=true
 			water_active_blind_label=str(applied.blind_label)
 			tower_active=true
