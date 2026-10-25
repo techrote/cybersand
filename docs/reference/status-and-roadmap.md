@@ -10,6 +10,27 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+The observer preparation is currently a1cc with exact inherited App ea96;
+Root's corrected App source152a5074/docs dc2eee94 must be normally merged
+**after preparation commit and before arming**. Current inherited535 hashes
+are exact; that later test-only integration changes two entries with no new
+paths, retaining Native80/compiled139 equivalence. No old gate is a new-head
+acceptance, and the observer's six provenance blockers remain unwaived.
+
+## Copied observer publisher preparation
+
+**Current unarmed infrastructure, no new publication:** the [isolated004
+profile](../operations/github-development-and-release.md#isolated-observer-runtime-publication)
+retains the complete003 chain and adds ledger504/worker265, requiring38 future
+processes per OS with unchanged deadlines. The [dated preparation](../audits/2026-10-25-lcb004-observer-publication.md)
+retains local Windows/Brine/worker scope, all failures and six source-runtime
+rebuild blockers. Newrequest absent; Root must first consume the corrected App head after #256
+Linux found two stale identity-test expectations. Earlier ea96 gates do not
+validate that successor. No target run, new runtime, scientific
+campaign, registry promotion or #203 completion is claimed. Final applicable
+CI/review and complete host/scientific/manual qualification remain separate;
+further Web work stays owner-deferred.
+
 ## Current scoped application runtime publication — 2026-10-25
 
 The [actual003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source

@@ -10,6 +10,13 @@ related-documents: [source-checkpoint-and-recovery.md, local-build-and-validatio
 
 # Repository development and release
 
+The observer preparation is currently a1cc with exact inherited App ea96;
+Root's corrected App source152a5074/docs dc2eee94 must be normally merged
+**after preparation commit and before arming**. Current inherited535 hashes
+are exact; that later test-only integration changes two entries with no new
+paths, retaining Native80/compiled139 equivalence. No old gate is a new-head
+acceptance, and the observer's six provenance blockers remain unwaived.
+
 ## Current checkout and repository policy
 
 The active source now has upstream-derived history and a local checkpoint branch.
@@ -155,6 +162,41 @@ Keep third-party notices and exact Rapier/godot-cpp provenance in every bundle.
 Use the [documentation checklist](documentation-maintenance.md) before tagging;
 publication itself requires an authorized release task.
 
+
+## Isolated observer runtime publication
+
+**Current unarmed preparation on `codex/lcb004-observer`:** the separate
+`lcb004-observer-runtime-publication.yml` and private004 profile preserve the
+complete003 target chain and add the copied IN ledger504 and worker265 cases.
+Future execution requires38 actual processes per OS (import +35 +2), with
+unchanged finite deadlines and strict inherited Water/pressure/host proof.
+The native headless Web-probe case remains a prerequisite only; further
+Web/browser/shader work is owner-deferred until the epic is complete.
+
+The new `tools/ci/lcb004_observer_publish_request.json` is absent. Only that
+profile's exact branch/schema/request can arm it; inherited requests never do.
+Preparation/guards do not execute or publish runtimes. Private loading of
+003/Water005/Brine005/shared001 preserves their globals, paths, cases, deadlines
+and wrapper bindings. The workflow retains literal GitHub-hosted runners,
+pinned dependencies, separate artifact prefix and exact source/run/attempt,
+remote lease and four-path runtime-only single-parent append. No competing
+source/docs push is allowed during an explicitly armed publication lease.
+
+The native source ledger remains80; historical build535 must be retained and
+the final committed build pathset recomputed.542 is a forecast for the planned
+new paths, not an actual manifest count. The separate139-input local build map
+cannot replace source/runtime ledgers. Source-matched Linux-floor and actual
+Windows execution, complete38-process target proofs and independent artifact
+review must precede any accepted bot append. Six current native-source
+comparisons remain release blockers until new builds; no manual manifest edit
+or local DLL substitutes for publication.
+
+The [dated preparation record](../audits/2026-10-25-lcb004-observer-publication.md)
+owns exact files, source/local proof, pure guard results, failures and remaining
+steps. The [copied observation contract](../architecture/inertial-cellular-v1.md#copied-cumulative-inertial-ledger-observer--2026-10-25)
+retains Brine finite-census and Phased-availability limits. A future successful
+publication still does not replace final applicable exact-head gates, full
+host/scientific/manual qualification or #203 acceptance.
 
 ## Isolated Water inertial runtime publication
 

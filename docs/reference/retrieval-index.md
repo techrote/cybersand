@@ -10,6 +10,8 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+- [Unarmed copied-observer runtime publication](../operations/github-development-and-release.md#isolated-observer-runtime-publication): private004 retains all003 controls and adds two observer cases, with its own absent request,38 future processes/OS, exact source/lease/four-path append and six current rebuild blockers. Preparation is not publication or scientific acceptance.
+
 - [Copied cumulative inertial ledger observer](../architecture/inertial-cellular-v1.md#copied-cumulative-inertial-ledger-observer--2026-10-25): nineteen signed/unsigned decimal-string values, actual owner/policy/parameter binding, quarantine refusal, copied isolation and finite Brine24 closure; global/scientific, Water-positive and final publication qualification stay separate.
 
 - [Actual common-Water Web functional proof](../audits/2026-10-25-lcb003-web-common-water.md): compat77/threaded76 terminal POSTs, six body-free Water/four mixed arms and source-bound native reuse; ordinary visual/manual/body-bearing browser and full scientific/host gates remain open.

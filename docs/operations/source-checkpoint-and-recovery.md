@@ -10,6 +10,26 @@ related-documents: [local-build-and-validation.md, ../reference/validation-evide
 
 # Source checkpoint and recovery
 
+The observer preparation is currently a1cc with exact inherited App ea96;
+Root's corrected App source152a5074/docs dc2eee94 must be normally merged
+**after preparation commit and before arming**. Current inherited535 hashes
+are exact; that later test-only integration changes two entries with no new
+paths, retaining Native80/compiled139 equivalence. No old gate is a new-head
+acceptance, and the observer's six provenance blockers remain unwaived.
+
+## Observer App merge and unarmed preparation
+
+Normal merge `a1cc50ab04ec67f571f4c5e0672fc7fe07ec04e4`, tree
+`c3f136ad41817c7070b14fae8c915e014fe05b28`, has parents observerd832424e and
+reviewed App ea96d485. All925 non-document Git blobs, five observer raw/Git
+files and139 recorded native inputs remain held; the external merge receipt
+is84211c2c. The App publication and observer14-doc records remain recoverable at
+their own original commits; no execution is relabelled at this merge.
+The [separate004 preparation](../audits/2026-10-25-lcb004-observer-publication.md)
+adds only its own workflow/helper/guard/audit and small documentation routes.
+Its new request is absent, inherited requests/runtimes/profiles stay unchanged,
+and six native-source provenance comparisons still require actual new builds.
+
 ## Current scoped application runtime publication — 2026-10-25
 
 The [actual003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source

@@ -10,6 +10,26 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+The observer preparation is currently a1cc with exact inherited App ea96;
+Root's corrected App source152a5074/docs dc2eee94 must be normally merged
+**after preparation commit and before arming**. Current inherited535 hashes
+are exact; that later test-only integration changes two entries with no new
+paths, retaining Native80/compiled139 equivalence. No old gate is a new-head
+acceptance, and the observer's six provenance blockers remain unwaived.
+
+## Observer publisher preparation — 2026-10-25
+
+After the reviewed observer source/docs checkpoint, normal mergea1cc50ab consumes
+App ea96 without changing the five observer files or139 recorded native inputs.
+The separate [unarmed004 profile](github-development-and-release.md#isolated-observer-runtime-publication)
+retains import+35 controls and adds ledger504/worker265:38 required future
+processes per OS. Its own request is absent; no new runtime/manifest or Linux
+observer proof exists. Preserve the [dated preparation/failures](../audits/2026-10-25-lcb004-observer-publication.md),
+six current rebuild blockers, source freeze and later independent artifact/final
+exact-head gates. A later #256 Linux run exposes two stale identity-test
+expectations; Root owns their correction, and the reviewed corrected App head
+must be consumed before004 arming. Earlier ea96 gates do not validate it. No new scientific campaign or Web work starts here.
+
 ## Current scoped application runtime publication — 2026-10-25
 
 The [actual003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source

@@ -10,6 +10,23 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The observer preparation is currently a1cc with exact inherited App ea96;
+Root's corrected App source152a5074/docs dc2eee94 must be normally merged
+**after preparation commit and before arming**. Current inherited535 hashes
+are exact; that later test-only integration changes two entries with no new
+paths, retaining Native80/compiled139 equivalence. No old gate is a new-head
+acceptance, and the observer's six provenance blockers remain unwaived.
+
+## Unarmed observer publication preparation
+
+The [isolated observer publication contract](operations/github-development-and-release.md#isolated-observer-runtime-publication)
+and [dated preparation](audits/2026-10-25-lcb004-observer-publication.md) retain
+all003 controls and add ledger/worker proofs for38 prospective processes per OS.
+Its new request is absent; no observer runtime has been published and six native
+source comparisons remain blockers. Earlier App publication and local observer
+proof keep their exact scopes. Final gates/scientific/full-host qualification
+remain separate; Web work stays deferred.
+
 ## Current scoped application runtime publication — 2026-10-25
 
 The [actual003 publication](audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source

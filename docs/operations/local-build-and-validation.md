@@ -10,6 +10,25 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+The observer preparation is currently a1cc with exact inherited App ea96;
+Root's corrected App source152a5074/docs dc2eee94 must be normally merged
+**after preparation commit and before arming**. Current inherited535 hashes
+are exact; that later test-only integration changes two entries with no new
+paths, retaining Native80/compiled139 equivalence. No old gate is a new-head
+acceptance, and the observer's six provenance blockers remain unwaived.
+
+## Unarmed observer publisher validation
+
+The [004 preparation record](../audits/2026-10-25-lcb004-observer-publication.md)
+separates pure guard/provider/proper-companion checks from actual target Godot
+execution. The private profile retains all35 parent cases/import and appends
+ledger504/worker265, each180s, requiring38 future processes per OS; existing
+budgets/strict contracts remain unchanged. Its new request is absent. Inherited
+App runtime manifests still mismatch the three new adapter inputs per OS; six
+release blockers are not waived by local Windows proof or pure fixtures.
+Read the [canonical publication boundary](github-development-and-release.md#isolated-observer-runtime-publication)
+before a later authorized freeze/arming. Web work remains owner-deferred.
+
 ## Current scoped application runtime publication — 2026-10-25
 
 The [actual003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source
