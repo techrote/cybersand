@@ -272,3 +272,159 @@ Web result does not establish a complete TSan pass or clear desktop runtime
 publication. The subsequent contiguous-buffer native follow-up needs fresh
 qualification. Ordinary visual Web play, final exact-head platform gates and
 the registered #202/#203 scientific, total-cost and packaging work remain open.
+
+## Packed-buffer and startup-cleanup rebuild at 18d20740
+
+Both Web modules were rebuilt again from committed App source
+`18d207405923246fb1ae428cdce5d81b16f1fafb`, tree
+`cf7ee7033bcee4ef95f4b37b669f18c6dcad33cf`. It consumes reviewed Native
+`c97f68ec6dd5d92aec94c874a6510b16e3a81847`: two World-owned activity buffers
+with disjoint job spans and exception-safe partial worker-pool retirement.
+This record is retained in
+`C:/Users/_/.codex/tmp/lcb202-web-packed-startup-20261025`.
+All85 recorded native-source inputs,1,653 exported source inputs and18 LFS payloads
+are held. Toolchain, two compiler workers and1800s compile/600s export bounds
+are unchanged from the preceding record.
+The85-file map includes the Native README and is not a complete compiler
+dependency graph; pinned compiler, library and engine identities are recorded
+separately in the build receipts.
+
+| Profile | Native build | Wasm SHA256 / bytes | Export |
+|---|---|---|---|
+| Compatibility | Exit0,81.547s | `c713d886f42750e0096efbb603982d85bb5b45326173565f82d238ce5a3190ae` /4,245,579 | Exit0,19.250s,19 files |
+| Threaded | Exit0,90.375s | `3f00c282e3e9250a73ec3ce1071a9c471a7b9800ed5523de425caec5861c6e6e` /4,250,072 | Exit0,18.281s,19 files |
+
+The compile snapshot is
+`457f6cdaa42798ddc6677f65aaab64e6ecc4f811d6b5f8a4f1043d0ea2a2c0ec`;
+the actual18-payload LFS verification is
+`8a137219cec89b989a6f81c68a650bd2b6974e1ca0cf683aad6464f952c467e9`.
+The final export snapshot is
+`6c9ccdfd5a54f65aca30b476d5100259b82438f651afffa0d5511df3fa9ac9a4`.
+Both compilation and export processes exit0 with no source drift or export
+error. The first LFS-check invocation omitted its required source-head
+environment variable and stopped before checking or writing a receipt; the
+corrected explicit-head invocation verifies all18 payloads. That setup failure
+is retained separately and is not a failed runtime observation.
+
+Actual Chromium155 terminal POSTs at18:10:20 UTC compatibility and18:11:49
+threaded receive HTTP201. They pass77 checks with one native worker and76
+with six. All six common-Water arms retain quantity12495 on each30 ticks,
+the normalization payload`ef16e3501a39436ba4c3067cf16d09c64a39fcea8c02cbab7823d3aa58cb3e3f`,
+four mixed arms and pressure projection`3e385a1307de82b5`. Physical fields agree
+across profiles. The unchanged output-body hashes do not identify the binary;
+the separate live process/port/38-asset binding verifies the fresh artifacts.
+
+The semantic receipt is
+`ca6d235c1642194ed78a708612b3ebe50e588e4ccaffe635d9fcd91cd9254835`,
+live asset binding`24c0e686a00ed4d897bb800e478509945142a7d8616145a923e6473e6d7fec7c`,
+and final original-log binding
+`7beb74e904eca1a5684bfefbd77f4dbf3ab5b1063b01f8b6e4ceeddac542cf7c`.
+Both300s loopback servers exit0 with30/62 GET lines and exactly one original
+terminal POST per profile. All earlier compiler/export/POST records remain
+under their original source identities.
+
+### Observed rendering failures and ordinary control
+
+Functional terminal execution is passing, but rendered/manual acceptance is
+still **OPEN**. Bounded browser console queries captured compatibility Canvas
+program-linking and vertex-compilation failures, and two threaded Canvas
+vertex-compilation error groups, with empty driver detail. A successful
+compatibility screenshot after the functional run showed a black viewport.
+The selected transcription is`receipts/OBSERVED-RENDERING-ERRORS.json`, SHA256
+`ad37d8fff7fdfb4b35b80f522fe05fe8685d5b1662be43a517427fbb937296d2`;
+the original console queries/images remain in the tool transcript. This is not
+a complete console archive or an established shader/driver root cause.
+
+A separate sole compatibility tab then loaded the identical assets without
+test/query mode at127.0.0.1:8171. Its first screenshot query timed out; after
+recovery and further runtime/audio loading, a fresh screenshot succeeded and
+also showed a black viewport. No reliable ordinary controls or tick/publication
+walkthrough was established. The post-reset empty console query cannot prove
+absence of earlier errors. Both start/end receipts and original access logs
+are retained in`ordinary-compat-control-v1`; all19 assets remain held and the
+300s server exits0. Its end receipt is
+`9faf4d517074044d02c9ed6d0a66696b66136508448b41aec40be0704531ab52`.
+
+Independent source audit`37afdde064f9dca5861d77897876ee6fd54bb55e1bd8aa29a5ab6645655f9b8b`
+confirms all12 inspected render/configuration files equal the prior dd00
+source. The fragment palette has28 uniforms/five samplers and no user vertex
+function; these facts do not establish a device-capacity cause. Low quality
+does not remove the palette/HDR pipeline. A plain-Canvas engine control and
+separate palette/HDR isolation remain diagnostic next steps. No Native causal
+attribution, console-clean result, visual pass or default change follows.
+
+The later App fixture-only helper checkpoint`3d338356` preserves the same139
+native inputs and DLL; its failed71/0-then-crash process, old-DLL reproduction
+and separate helper fix are owned by the final integration record. This Web
+execution remains bound to18d, not relabeled as a later source or final
+publication gate. Windows/Linux runtime provenance, full exact-head required
+checks and complete #202/#203 qualification remain separate.
+
+### Isolated in-app rendering controls
+
+The subsequent controls use the same official compatibility engine files
+`index.js`, `index.wasm` and `index.side.wasm`, with byte hashes checked before
+export/serving. They are diagnostic exports outside the source repository;
+none changes the production shader, renderer, native solver or runtime manifest.
+Original failed observations remain above.
+
+A pure builtin-Canvas project, without application Native/Rapier registration,
+palette, HDR or glow, renders its blue background, orange rectangle and white
+`Canvas control ready` text in the same in-app browser. Its post-draw marker
+appears at18:40:40.993 UTC and ordinary frame markers continue through2,520 at
+18:41:22.968. No error entries appear in that captured interval. This establishes
+a working basic engine/canvas control, not application rendering acceptance.
+The final preparation receipt is
+`58490eb78d7ae37a986bde088e14507c11644b42aa0ad0c43ae6862a9a122b05`,
+under`C:/Users/_/.codex/tmp/lcb202-web-plain-canvas-control-v1`.
+Its15-asset server ends normally with all hashes held; the original screenshot
+and public console outputs are retained in the browser-tool transcript.
+Two earlier control preparations retained application extension registration
+and their editor imports exited`C0000005`, without a logged error. Their
+projects/logs remain preserved; no specific Native/Rapier cause is established.
+The successful pure control removes all application extension registration.
+
+Two further compatibility exports clone the held18d staged application and
+register exactly one changed source path each. Import and export processes
+exit0 within240s bounds, with no recorded errors and no registered input drift.
+The HDR control changes only the three`use_hdr_2d` assignments in`main.gd` to
+false, retaining the full palette and other rendering setup. Startup reaches
+the successful Rapier probe and`WEB_DEMO_READY`, but its later ordinary
+screenshot remains black. The first screenshot query times out before a later
+successful capture; an empty subsequent console response is not proof of a
+complete error-free history. HDR=false alone does not restore visible rendering.
+Its registration is
+`c0b626792bb9920359a747a5dad28513f5d654eb8a76d2acc88d3aa5068e0b50`,
+under`C:/Users/_/.codex/tmp/lcb202-web-render-hdr-control-v1`.
+
+The palette control instead retains the original HDR/glow/vapour setup and
+replaces only`material_palette.gdshader` with a minimal unshaded texture sample.
+The ordinary screenshot now shows the full Web menu and text, while startup
+still reports the original Native/Rapier profile. This narrows the in-app
+failure to the full palette path; it does not identify a failing GLSL construct
+or qualify the deliberately replaced material appearance. No production
+fallback is selected. Its registration is
+`ffc57a360fe559200a13be17555fc1219a43e41625c6e014692d1170013438bb`,
+under`C:/Users/_/.codex/tmp/lcb202-web-render-palette-control-v1`.
+
+The owner requested an external Chrome comparison. The browser-control
+inventory exposes only the in-app browser and MCP Apps; an explicit Chrome
+selection reports unavailable. The unchanged original19-asset compatibility
+package is therefore separately served for an owner-run Chrome observation,
+with all bytes equal to the18d export. Its staging receipt is under
+`C:/Users/_/.codex/tmp/lcb202-web-external-chrome-original-v1`; the asset map is
+`9bd797136fc9185f83a08c3bf66cf0e25c033e2bba1a6e1b43c0a5b05f176fd6`.
+External Chrome behavior and the possibility of an in-app-specific failure
+remain unresolved. No shader rewrite or default change follows from these
+diagnostics, and ordinary application rendering/manual acceptance stays open.
+
+The subsequent owner-run Chrome observation reports that Chrome "completely
+locks up" after the supplied Godot loading-screen image. That image contains
+no application menu/world or browser URL; it is retained with SHA256
+`05bf5ea238079de77a06009dd1f84085bc282c7ebd12c9f1120eda3f508a2f33`.
+The original server logs show successful engine/PCK/Native/Rapier requests and
+later audio worklets, with no missing-file request in the inspected interval.
+This is an attributed external-browser failure, not independently automated
+Chrome execution or an established driver/compiler cause. A failure confined
+to the in-app browser is no longer the sole working explanation. Production
+material appearance and rendered/manual Web acceptance remain open.
