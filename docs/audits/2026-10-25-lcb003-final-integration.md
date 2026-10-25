@@ -10,6 +10,75 @@ related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../op
 
 # LCB-003 final application source integration checkpoint
 
+## Published Water sequence2 consumption — 2026-10-25
+
+Normal merge108b84d1 consumes reviewed Water head
+`02c333411f096fcf93ac385748785abbcb3fba03` in one operation, including source
+`aa8af2473a59ab92cc81dfff1dda17be0f41a46d`, actual publication run40220697738
+and four-path bot`03cccd8fd133b505c6fad7911d3cb8d528ef5f22`. The incoming
+[publication ledger](2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25)
+retains its independent artifact/source/LFS/lease/floor reviewd2da3ffd and both
+OSes'15 actual processes/642 policy assertions. The App merge preserves the
+151 query strings and existing aliases, adds no questions, retains all App
+owner/receipt/mask/refusal evidence, and adopts the updated Water facts. The
+roadmap's duplicate Current table is reduced to the incoming accepted-main/
+sourceaa8-qualified table. Earlier sequence1 and failed native/apparatus records
+remain historical rather than rewritten.
+
+The new published Windows runtime is
+SHA`ff22ee972f5b640153c7bc56ba68418ecff79f8d886471cb23a91cc12bab9dca`,
+4,537,856 bytes; Linux is
+SHA`941b91af8c005b82e799cdbc061ffb9794b6b8afe25d10fa794c939d947bdaec`,
+3,912,384 bytes. Both are materialized from their committed LFS objects.
+Their two provenance manifests are the other bot paths. Water's request-only
+source also updates its separate sequence2 request. These five source-map
+exceptions are recorded in
+`tmp/lcb202-final-integration/water-seq2-app-merge-v1/PRECOMMIT-SOURCE-ARTIFACTS.json`;
+they do not change any of139 captured compilation inputs. The remaining691 of
+696 executed-source entries are exact. No GDScript, native, workflow, policy,
+default fixture or solver law changes in this integration. The local DLL46a
+remains compiled18d/tested3d; native164/SAN39 and the36-process matrix below
+are not relabeled as executions of a later artifact/manifest configuration.
+
+Normal merge1d376fb3 then consumes the separately reviewed one-document Web
+checkpointc8bd9623. Its [18d rebuild/browser and rendering record](2026-10-25-lcb003-web-common-water.md#packed-buffer-and-startup-cleanup-rebuild-at-18d20740)
+records actual compatibility77/one worker and threaded76/six worker terminal
+POSTs, with all six Water/four mixed arms, and preserves observed rendering
+failure. PlainCanvas, HDR-only, minimal-palette and attributed external-Chrome
+controls are diagnostics. No production shader, visual/manual acceptance,
+Native causal attribution or rendering fallback is selected here. Later
+shader-trace investigations are separate from that committed Web record.
+
+The first fresh proper-companion check after both merges, before this additive
+qualification, is
+`tmp/lcb202-final-integration/docs-validation-waterseq2/checks-v1/VALIDATION-RECEIPT.json`,
+SHA`e03ed24c10b766a522360f30f8d3ec209e0af0c5838662548649b37b70504f3b`.
+It holds1,656 mirror inputs,18 materialized LFS payloads and the five pinned
+companion files; Docs, historical M11, provider, whitespace and both retrieval
+gates pass. Repository validation now has exactly eight real App source/runtime
+blockers, four per OS: `cyber_demo_bridge.hpp`, `cyber_native_cell_world.cpp`,
+`cyber_native_cell_world.hpp` and `prepared_world.hpp`. The earlier world.cpp
+mismatch pair is cleared by the published kernel; no remaining comparison is
+waived. Frozen32 top5 remains32/32; supplementary151 top5 remains150/151, with
+no answer-correctness claim. Final overlay checks bind the later eight-document
+qualification separately.
+
+**Owner-directed execution scope — 2026-10-25.** The owner directed:
+"Forget web testing for now. We will address it after LCM epic is completed."
+Additional Web/browser/shader testing, analysis and implementation are deferred
+until after this epic. Historical functional results, rendering failures and
+diagnostic records keep their original scope; this is no rendering pass,
+appearance fallback or new Web-publication claim. Current Windows/Linux
+publication and standard Native/headless-Godot host gates continue. The deferred
+Web follow-up does not block this owner-directed checkpoint, and it does not
+weaken quantity, refusal, worker parity or source/runtime provenance checks.
+
+The003 request is absent and no push or new publisher request occurs in this
+local integration. Combined source-matched App runtimes, the publisher's fresh
+35-case execution on each OS, full required exact-head CI/review, remaining
+constructors and full-host/scientific/feel acceptance are still required. This
+consumption does not merge #254, complete #202/#203 or qualify a changed shader.
+
 ## Packed worker storage and startup local preparation — 2026-10-25
 
 Source `18d207405923246fb1ae428cdce5d81b16f1fafb` normally merges reviewed
