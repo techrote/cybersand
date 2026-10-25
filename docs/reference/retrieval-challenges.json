@@ -581,7 +581,7 @@
       "facts": [
         "MAT-001 preserves the next existing opportunity for persistent compact-pair and Ice contacts through the existing earliest block deadline.",
         "Pair contact keeps its four-tick phase; Ice melting uses four ticks and freezing sixteen. Products, probabilities, neighbor order and random streams are unchanged.",
-        "The source epoch check includes neighbor-only successful writes, while contact eligibility respects body masks. Other specialized lifecycle kernels retain their existing waiting behavior."
+        "The source epoch check includes neighbor-only successful writes, while contact eligibility respects body masks. Other specialized lifecycle kernels retain their existing waiting behavior. Workers publish keepalive and earliest-deadline requests through geometry-bounded job grids; only the serial phase barrier changes shared block/chunk metadata, independently of optional discovery overflow."
       ],
       "sources": [
         "../native/src/world.cpp",

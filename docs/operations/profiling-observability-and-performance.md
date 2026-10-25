@@ -4,7 +4,7 @@ document-kind: runbook
 canonical-for: [performance-measurement, metric-interpretation]
 status: Current
 scope: Current native/Godot observations, benchmark procedure, metric boundaries, and unimplemented production telemetry
-last-reviewed: 2026-09-09
+last-reviewed: 2026-10-25
 related-documents: [configuration-and-capacity-budgets.md, web-threading.md, testing-validation-and-replay.md, ../reference/validation-evidence.md, ../audits/2026-09-08-performance-history.md]
 ---
 
@@ -37,6 +37,15 @@ excluded from ordinary Current-behavior retrieval.
 it is not a conserved quantity or physical mass. Native facade counters with
 fallback-like names are not automatically equivalent to fallback activity
 metrics.
+
+The 2026-10-25 [worker activity repair](../audits/2026-10-25-water-inertial-native.md#worker-activity-publication-repair--2026-10-25)
+adds geometry-bounded per-job signal grids, flag clearing and serial reduction.
+Its [capacity accounting](../reference/configuration-reference.md) includes real
+setup storage and work even for jobs that emit no activity signal. Earlier
+pressure/cache/dormancy timings retain their original source and do not qualify
+this scheduler's total cost. `TickStats` chunk/temperature allocation counters
+also do not count all ordinary heap allocations; explicit probes and source
+inspection have their own recorded boundary.
 
 ## Current benchmark entry points
 
