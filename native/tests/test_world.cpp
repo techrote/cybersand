@@ -3766,6 +3766,7 @@ void test_lcb_pressure_variants_remote_acceptance();
 void test_lcb_pressure_variants_mask_acceptance();
 void test_lcb_pressure_variants_obligation_acceptance();
 void test_lcb_pressure_variants_basins_acceptance();
+void test_lcb_pressure_variants_vent_acceptance();
 void test_water_cy_admission_ingress();
 void test_water_cy_coherence_masks();
 void test_water_cy_material_hooks();
@@ -3910,6 +3911,7 @@ int main(int argc, char** argv) {
         {"LCB-002 acceptance rotating native masks", test_lcb_pressure_variants_mask_acceptance},
         {"LCB-002 acceptance mandatory obligations and reconstruction", test_lcb_pressure_variants_obligation_acceptance},
         {"LCB-002 acceptance communicating narrow and broad passages", test_lcb_pressure_variants_basins_acceptance},
+        {"LCB-002 acceptance isolated vent into certified target", test_lcb_pressure_variants_vent_acceptance},
         {"LCB-001 liquid policy C API allocation failures", test_liquid_policy_c_api_allocation_failures},
         {"LCB-001 W-CY admission and ingress", test_water_cy_admission_ingress},
         {"LCB-001 W-CY coherence, viscosity and masks", test_water_cy_coherence_masks},

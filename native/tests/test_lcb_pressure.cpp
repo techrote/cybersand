@@ -1149,3 +1149,4 @@ void test_lcb_pressure_variants_remote_acceptance() { test_variants_remote_hydra
 void test_lcb_pressure_variants_mask_acceptance() { test_variants_rotating_mask_acceptance(); }
 void test_lcb_pressure_variants_obligation_acceptance() { test_variants_obligation_reconstruction_acceptance(); }
 void test_lcb_pressure_variants_basins_acceptance() { test_variants_communicating_basins_acceptance(); }
+void test_lcb_pressure_variants_vent_acceptance() { test_variants_isolated_vent_acceptance(); }

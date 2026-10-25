@@ -239,3 +239,41 @@ void test_variants_obligation_reconstruction_acceptance() {
                 "event sink and unrelated material lifecycle remain live");
     }
 }
+
+void test_variants_isolated_vent_acceptance() {
+    for (const auto workers : {1U, 4U}) {
+        auto worlds = acceptance_worlds(workers, true);
+        for (auto& world : worlds) {
+            rect(*world, 0, 0, 32, 8, Material::Wall);
+            rect(*world, 1, 1, 5, 2, Material::Empty);
+            rect(*world, 26, 1, 5, 2, Material::Empty);
+            rect(*world, 3, 3, 1, 3, Material::Water);
+            rect(*world, 28, 3, 1, 3, Material::Water);
+            rect(*world, 3, 6, 26, 1, Material::Water);
+            require(world->set_cell_state(10, 3, Material::Oil, 0, 200), "vent target remains awake");
+            world->set_simulation_region(RectI64{8, 0, 16, 8});
+        }
+        acceptance_tick(worlds, 2, "equal isolated pocket creation");
+        require(worlds[0]->gas_compartments().size() == 2U, "vent fixture begins with two independent sealed pockets");
+        // Compress both pockets equally, leaving two Empty cells over each
+        // paused Water column. Equal endpoint pressures leave the full target
+        // at rest while storing a real pressure difference from atmosphere.
+        for (auto& world : worlds) {
+            for (int x = 1; x <= 5; ++x) if (x != 3) rect(*world, x, 1, 1, 2, Material::Wall);
+            for (int x = 26; x <= 30; ++x) if (x != 28) rect(*world, x, 1, 1, 2, Material::Wall);
+        }
+        acceptance_tick(worlds, 12, "equal sealed compression and certified target");
+        const auto pockets = worlds[0]->gas_compartments();
+        require(pockets.size() == 2U && pockets[0].gauge > 0 && pockets[0].gauge == pockets[1].gauge &&
+                    worlds[2]->pressure_optimization_snapshot().counters.certificate_reuses > 0 &&
+                    worlds[2]->pressure_cell(12, 6).flow == 0,
+                "equal positive gas pressures leave a genuinely certified full target at rest");
+        const auto before = worlds[0]->gas_ledger();
+        for (auto& world : worlds) world->set(3, 0, Material::Empty);
+        acceptance_tick(worlds, 4, "one isolated remote vent opens");
+        bool target_flow = false;
+        for (int x = 8; x < 24; ++x) target_flow = target_flow || worlds[0]->pressure_cell(x, 6).flow != 0;
+        require(worlds[0]->gas_ledger().vents > before.vents && target_flow,
+                "isolated vent retirement actually wakes the full core without any target material edit");
+    }
+}
