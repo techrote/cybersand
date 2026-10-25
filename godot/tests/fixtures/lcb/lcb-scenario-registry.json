@@ -2,7 +2,7 @@
   "schema": "lcb-scenario-registry-v1",
   "status": "LCB-003 preparation. Only arms with status starting 'measured' have executed; every blocked arm names its dependency.",
   "sources": {
-    "capability_matrix": "7201367eb6b08611c0bc430124045de7a69568ca7dab6e22ae978d845bb8bcac",
+    "capability_matrix": "47b6b5ef629749ccc6ceab2964cca0eb8266a72a779b5ea2ab06c93f45b26f95",
     "protected_manifest": "d5c922c39fe04a7981b7a14a6a6f2d14064674337e6afedb3acf3e83eb8553f3",
     "controls": "989ff70dba646285991a2a5e8ca5c3b0aa94b9381dc44c849528518e4238fac1",
     "ledger_v7": "b42012a672f468534efa9421beeca28d1ccea8ef1c1f2ce798d2cd80c336834d",
@@ -854,13 +854,16 @@
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification"
+            "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification",
+            "executable_variants": [
+              "reference"
+            ]
           }
         },
         "oil": {
@@ -6126,13 +6129,16 @@
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification"
+            "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification",
+            "executable_variants": [
+              "reference"
+            ]
           }
         },
         "mercury": {
@@ -6905,13 +6911,16 @@
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification"
+            "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification",
+            "executable_variants": [
+              "reference"
+            ]
           }
         },
         "mercury": {
@@ -7472,13 +7481,16 @@
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification"
+            "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification",
+            "executable_variants": [
+              "reference"
+            ]
           }
         },
         "oil": {
@@ -8341,13 +8353,16 @@
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification"
+            "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification",
+            "executable_variants": [
+              "reference"
+            ]
           }
         },
         "water": {
@@ -10421,13 +10436,16 @@
           },
           "inertial_cellular_v1": {
             "status": "proposed_experimental",
-            "executable_today": false,
+            "executable_today": true,
             "selectable": true,
             "variants": [
               "reference"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification"
+            "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification",
+            "executable_variants": [
+              "reference"
+            ]
           }
         },
         "oil": {
