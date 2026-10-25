@@ -80,6 +80,32 @@ the real body-free import owner now recorded above, then remaining constructors,
 complete host identity and final platform/publication
 gates. Web bodies and host-mask CYPS continuation remain explicit gaps.
 
+## Corrected Brine IN runtime publication — 2026-10-25
+
+Sequence3 [actual Windows/Linux publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-sequence3-publication-of-the-contact-repair)
+passes all six jobs in run `40160900817` at exact source `c11983c2`, followed
+by verified four-path bot append `fcf0e9b6`. Each OS executes import plus14
+cases, including IN10192/six strict sections and the new resting-contact
+regression. Fresh non-author verification checks all76/485 input blobs,
+artifacts, actual OS execution and the Linux runtime floor. The corrected
+runtime publication blocker is resolved; full ready-PR exact-head gates remain
+required before merge. Prior omitted-contact and moving-mask failures below
+retain their exact source scope. Water-IN, complete host/Web and #203 remain
+separate.
+
+## Brine IN contact review blocker — 2026-10-25
+
+Independent review at `98595ac8` reproduces omitted body feedback from resting
+Brine IN. PR #250 stays Draft while the [bounded correction and its failed
+controls](../audits/2026-10-25-lcb005-pressure-union-integration.md#mandatory-resting-brine-body-contact-correction)
+receive sequence3 publication and full ready gates. Local source `68f74906`
+already passes LLVM154, focused sanitizer29 and fresh Windows import plus six
+selected Godot cases, including IN10192/all six sections. The source
+repair changes contact observation only; numerical motion, damping and codec
+contracts remain intact. The earlier sequence2 artifacts remain preserved and
+do not qualify this correction. Do not treat zero velocity as permission to
+omit shared material/body work or infer Water-IN/full-host completion.
+
 ## LCB-003 thermal import API — 2026-10-25
 
 The isolated `codex/lcb003-thermal-import` slice adds
@@ -203,7 +229,6 @@ gap; the dated physical ledger continues to describe its original source only.
 
 
 ## Combined pressure and IN source — 2026-10-25
-
 The #212 integration joins standalone checkpoint `0af161b4` with the frozen
 #201 source `12d76736`, including accepted-main documentation merge
 `d70699b6`. It admits Brine IN/reference and all three Water PF variants in
@@ -215,8 +240,37 @@ receipt and IN vectors plus the adapter oracle from the combined semantic
 catalogue, then obtain fresh native physical facts. Do not select a parent's
 generated hashes or relabel its runtime as combined evidence.
 
-## LCB-005 standalone adapter checkpoint — 2026-10-25
+The latest [moving-mask repair union](../audits/2026-10-25-lcb005-pressure-union-integration.md#moving-mask-repair-integration-and-second-publication--2026-10-25)
+is normal merge `4a594db5`. Only the reviewed pressure gas relabel hunk and new
+native regression/registration change the prior compiled union; IN law and
+codec remain intact. Source-bound sequence2 at `661a96ae`, run `40157525237`,
+passes actual import plus14 cases perOS and publishes runtime-only bot
+`a9f1b875`. Final #201 head `096b7eeb` is integrated while retaining all four
+IN runtime paths. PR #250 requests fresh exact-head ready-PR gates and
+independent IN assessment; full application/host qualification remains separate.
 
+The #212 integration joins standalone checkpoint `0af161b4` with the frozen
+#201 source `12d76736`, including accepted-main documentation merge
+`d70699b6`. It admits Brine IN/reference and all three Water PF variants in
+one running catalogue. Separate #201 and #212 proof remains historical to
+its stated source. Combined `713ee3ab` freshly passes152 LLVM and152 actual
+MSVC ordinary groups, both seven-byte-oracle comparisons, a separate DLL,
+all14 scoped Godot cases and a new90-child pressure cost repeat. The
+[integration ledger](../audits/2026-10-25-lcb005-pressure-union-integration.md)
+retains exact source/artifact/timeout identities and negative timings.
+Actual Windows/Linux scoped publication `40153980594` now passes at source
+`bc0bfed9`, with single-parent runtime-only append `52ee560a`: import plus all14
+required cases perOS, IN862/all6, pressure optimization4152/all6 and retained
+reference1934/all12. Full ready-PR qualification still gates acceptance.
+Postpublication merge `736cd8f1` consumes exact #201 final docs `c03011a1` while
+retaining all four #212 runtime/provenance paths exactly from `52ee560a`.
+#201 is not accepted main merely because its final docs are integrated here.
+Capability identity changes when the two admissions join: regenerate policy,
+receipt and IN vectors plus the adapter oracle from the combined semantic
+catalogue and obtain fresh native physical facts, as recorded in that ledger. Do not select a parent's
+generated hashes or relabel its runtime as combined evidence.
+
+## LCB-005 standalone adapter checkpoint — 2026-10-25
 The #212 branch exposes actual Brine IN damping/identity, read-only motion,
 instance hash/save versions and explicit construction radius through the legacy
 Godot adapter. Start with the [IN interface and geometry contract](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry)
@@ -228,7 +282,6 @@ upgrade. Local Windows headless proof is not cross-platform publication,
 verified host evidence, owner feel or full #212 completion.
 
 ## Moving-body pressure gas blocker — 2026-10-25
-
 Ordinary Main/worker reference-body Water play exposed a native retired gas
 label beneath a moving body mask around completed tick45–47. The World
 quarantines even though Water quantity and the gas ledger remain exact.
@@ -237,6 +290,18 @@ variants with configured1/4 workers. The repair is under qualification;
 PRs #253 and #250 are draft and must receive fresh source-matched
 Windows/Linux runtimes and exact-head gates before merging. Earlier
 scoped/full greens retain their original source and coverage. See the
+[dated failure and repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
+
+Ordinary moving reference bodies exposed retired gas labels beneath masks;
+the failing World quarantines despite closing Water/gas ledgers. Repair commit
+`7ebcd0e9` adds the six-arm native regression and retains still-live identities.
+Local LLVM/MSVC141, focused sanitizer16 and actual application body tests pass.
+Fresh #201 Windows/Linux scoped publication `40157133977` passes at source
+`eebd0c98`, with four-path bot append `65f1f3b5`. The updated90-child total-cost
+campaign also passes exact parity and preserves slower churn/fallback results.
+PRs #253/#250 returned to draft after the finding; each still requires its own
+complete source-matched exact-head gates and review before merge. Earlier
+greens retain their original scope. See the
 [dated failure and repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
 
 ## LCB-002 branch source and qualification — 2026-10-25

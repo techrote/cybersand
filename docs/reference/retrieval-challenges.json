@@ -170,7 +170,7 @@
       "facts": [
         "The issue #9 full-world accounting control preserved all recorded Water mass and showed the cropped deficit below the hard floor: the defect was displacement across the barrier, not Water destruction.",
         "Historical #11 work added bounded barrier/body-mask-aware ejection in its recorded source-matched envelope, but current-main reconciliation must not describe that bounded result as owner acceptance.",
-        "WEX-001 freezes the current generic Rapierâ†”Water splash/displacement and hard-floor failure before later hybrid architecture changes."
+        "WEX-001 freezes the current generic Rapier↔Water splash/displacement and hard-floor failure before later hybrid architecture changes."
       ],
       "sources": [
         "../godot/native_extension/cyber_native_cell_world.cpp::find_ejection_target",
@@ -464,7 +464,7 @@
       ],
       "facts": [
         "Current native Water already uses fractional conserved FreeMass while most other liquids use whole-cell CellularYield-style paths, so another explicit Water pressure mechanism would add another bulk-motion authority rather than replace an already unified solver.",
-        "A generic Rapier body entering Water can already create convincing splash/wave displacement; WEX therefore tests whether at most roughly 3â€“5 segmented upper-volume Water tiers can reuse the generic hybrid substrate to create depth-dependent surge.",
+        "A generic Rapier body entering Water can already create convincing splash/wave displacement; WEX therefore tests whether at most roughly 3–5 segmented upper-volume Water tiers can reuse the generic hybrid substrate to create depth-dependent surge.",
         "The candidate is experimental, must preserve exact Water quantity and generic ownership, and must actively test slab/membrane, floor-reaction, chatter and boundary-penetration failure modes."
       ],
       "sources": [
@@ -796,7 +796,7 @@
     },
     {
       "id": "SCENE03",
-      "query": "How do I explore Blacksite Nine's connected 3Ã—3 map from the surface lab through the underground districts, and do tile views, boundary crossings and reset preserve edits?",
+      "query": "How do I explore Blacksite Nine's connected 3×3 map from the surface lab through the underground districts, and do tile views, boundary crossings and reset preserve edits?",
       "canonical": [
         "operations/blacksite-nine-demo.md"
       ],
@@ -1773,7 +1773,7 @@
       ],
       "facts": [
         "The schema-3 hierarchy-multi-district.json profile covers four 128-cell canonical regions at negative and positive coordinates using 64-cell chunks.",
-        "It contains nested foundries, rooms, floor/ceiling/wall-constrained apparatus and two embedded dais lights, a 10â€“25 percent machinery occupancy constraint, primary passages, loops and service/liquid trunks.",
+        "It contains nested foundries, rooms, floor/ceiling/wall-constrained apparatus and two embedded dais lights, a 10–25 percent machinery occupancy constraint, primary passages, loops and service/liquid trunks.",
         "The Workbench hierarchy example loads the authored JSON, while get_semantic_plan, inspect_cell and validate_routes return copied inspection and qualification data.",
         "The example also composes candidate strategies, a prepared native module, ordinary aggregate materials and a typed distance mask from immutable semantic geometry.",
         "The example uses order-1 Hilbert sites and bounded four-site service tours; both route passed and supports_passed must be checked."
@@ -2531,7 +2531,7 @@
         "The older six-argument factory defaults2; IN requires explicit3 and failed radius requests preserve the live World. Ordinary/default/Water Feel/reset/CYSD1 reconstruction restores2, while CYPS2/3 retains saved policy and geometry.",
         "Read-only cell vx/vy/ax/ay and parameter dictionaries expose no mutable World storage; old dictionary run identity binds actual IN/version fields but does not become typed host provenance proof. Native pool workers call no Godot APIs.",
         "Independent parameter bytes/digests, actual three-family density contacts with FM/PF Water and configured1/4 workers, CYPS3 exact continuation and Current controls have local Windows source/delta-bound proof. Water quantity is visible+overfill, distinct from whole-cell Oil/Brine populations.",
-        "Native kernel/codec/policy inputs are unchanged. Full #202 app/verified host/Web integration, fresh Windows/Linux publication and final ready-PR acceptance remain separate pending gates."
+        "The standalone adapter preserves the native law/codec/policy inputs. Accepted main dc915f2b includes the corrected Brine resting-contact source and its source-matched sequence3 Windows/Linux runtimes after exact-head gates and review. Earlier sequence2 and local adapter proofs retain their original scope. Water IN and full #202 verified host/Web integration remain separate."
       ],
       "sources": [
         "architecture/inertial-cellular-v1.md",

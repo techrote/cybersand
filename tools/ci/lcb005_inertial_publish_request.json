@@ -1,0 +1,8 @@
+{
+  "schema": "lcb005-inertial-publish-request-v1",
+  "family": "inertial_cellular_v1",
+  "variant": "reference",
+  "scope": "lcb005-inertial-and-lcb002-pressure-execution3-union",
+  "intent": "publish-source-matched-runtimes",
+  "request_sequence": 3
+}

@@ -21,7 +21,7 @@ _spec.loader.exec_module(engine)
 engine.BRANCH = "codex/lcb005-inertial"
 engine.WORKFLOW = ".github/workflows/lcb005-inertial-runtime-publication.yml"
 engine.REQUEST = "tools/ci/lcb005_inertial_publish_request.json"
-engine.EVIDENCE = "docs/audits/2026-10-25-lcb005-standalone-adapter.md"
+engine.EVIDENCE = "docs/audits/2026-10-25-lcb005-pressure-union-integration.md"
 engine.BUNDLE_PREFIX = "lcb005-inertial-runtime"
 engine.PRESSURE_CASE = "godot/tests/test_lcb_inertial_adapter.gd"
 engine.REQUEST_VALUE = {

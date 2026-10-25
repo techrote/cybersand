@@ -2,13 +2,34 @@
 title: Brine inertial cellular reference
 status: Current
 document-kind: reference
-scope: Opt-in Brine IN native law, standalone Godot instance/readback and separately qualified bounded application-host routes; defaults retained, no Water-IN or full host/platform qualification
+scope: Opt-in Brine IN law, actual standalone readbacks, source-matched Windows/Linux scoped publication and separately qualified bounded application owners; defaults retained, complete host and Water successor acceptance remain separate
 canonical-for: [inertial-cellular-v1-brine]
 last-reviewed: 2026-10-25
 related-documents: [lcb-pressure-inertial-handoff.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb005-native-brine-checkpoint.md]
 ---
 
 # Brine inertial cellular reference
+
+## Mandatory resting-body contact correction — 2026-10-25
+
+Independent review of `98595ac8` reproduces missing signed body feedback from
+resting Brine IN:32 actual updates retain exact zero motion but report zero
+contacts, while the CY control reports floor/side contacts. The current source
+centralizes the existing material/World contact hooks at masked eligibility
+probes, including support, re-aim, side, travel and rest. Repeated target and
+signed normal pairs book once per cell update; a later different normal at the
+same target remains a separate signed impulse. The bounded scratch is nine
+64-bit target masks, not stored family state. Numerical U1–U7, damping,
+momentum/loss ledgers, sleep, sidecar and codec identity remain unchanged.
+
+The [dated union record](../audits/2026-10-25-lcb005-pressure-union-integration.md#mandatory-resting-brine-body-contact-correction)
+preserves the failed native and runtime controls. Published sequence2 runtimes
+still contain the omission. Fresh local LLVM154, focused ASan/UBSan29 and a
+new Windows DLL/import plus six selected Godot cases now pass at `68f74906`;
+the IN case reports10192 assertions/all six sections and ten explicit resting
+contact traces. PR #250 stays Draft pending source-matched sequence3 publication
+and full ready-PR gates. Earlier publication and numerical-law evidence retain their
+original source and scope; no Water-IN or full-host qualification follows.
 
 ## What executes at this native checkpoint?
 
@@ -19,12 +40,22 @@ radius3, three-family worker parity and an articulated-owner/mask regression.
 The [host contract](liquid-prepared-setup-and-receipts.md#inertial-application-readback-and-explicit-geometry)
 and [dated host evidence](../audits/2026-10-25-lcb003-integrated-inertial-host.md)
 qualify that local Windows native headless scope. The native evidence below
-retains its original checkpoint boundaries. Published runtimes, complete #202
+retains its original checkpoint boundaries. Matching application runtimes, complete #202
 constructors, actual browsers and owner feel remain open.
 
-**Current on the LCB-005 branch only:** explicitly selecting Brine material24 / `inertial_cellular_v1/reference` executes retained signed motion and subcell accumulators. The default Brine CellularYield law and every other default remain unchanged. Water IN, alternate IN materials, cached/dormant IN variants, full application integration and released native artifacts are not qualified by this checkpoint. The later [standalone adapter proof](../audits/2026-10-25-lcb005-standalone-adapter.md) separately qualifies copied instance values and explicit construction geometry on a local Windows runtime. The [dated evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) names the base, local input seal, executable and actual tests. This is neither full #212 completion nor owner feel acceptance.
+**Current on the LCB-005 branch only:** explicitly selecting Brine material24 / `inertial_cellular_v1/reference` executes retained signed motion and subcell accumulators. The default Brine CellularYield law and every other default remain unchanged. The combined source passed [actual Windows/Linux scoped publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-windowslinux-union-publication--2026-10-25) at `bc0bfed9` in run `40153980594`, with runtime-only bot append `52ee560a`. Water IN, alternate IN materials, cached/dormant IN variants, full ready-PR acceptance and full application integration remain unqualified. The earlier [standalone adapter proof](../audits/2026-10-25-lcb005-standalone-adapter.md) keeps its local Windows source identity; [native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) retains its base, local input seal and tests. This is neither full #212 completion nor owner feel acceptance.
 
 The source owners are `native/include/cybersand/inertial_cellular.hpp`, `native/src/world_inertial.inc` and narrow integration in `World`. Shared pair chemistry precedes the Brine yielding-liquid motion gate. The implementation contains no pressure/head term and applies no Rapier force.
+
+The later [moving-mask repair integration](../audits/2026-10-25-lcb005-pressure-union-integration.md#moving-mask-repair-integration-and-second-publication--2026-10-25)
+at `4a594db5` changes only the shared pressure gas-label retirement path and its
+native regression/build registration. IN law, damping, sidecar, hash3/CYPS3
+suffix and policy identity remain unchanged. Source-bound publication sequence2
+at `661a96ae`, run `40157525237`, now passes actual import plus14 cases perOS;
+runtime-only bot `a9f1b875` replaces the earlier `52ee560a` payloads for this
+repaired source. The branch also contains final #201 head `096b7eeb`, retaining
+the complete IN publication set. Fresh full ready-PR and independent IN review,
+plus full application/host qualification, remain separate.
 
 ## Which fields, parameters and law are authoritative?
 
@@ -73,6 +104,15 @@ neither parent's separate proof is reused as union acceptance. The
 owns those source and qualification facts. The standalone Windows evidence
 below remains attributed to its original IN-only source.
 
+At combined source `713ee3ab`, fresh LLVM and actual MSVC each pass all152
+ordinary native groups and seven complete receipt byte oracles. A fresh132-input
+DLL and actual Windows import/all14 scoped cases pass, including IN862 and
+pressure optimization4,152 assertions, plus a new90-child pressure cost repeat.
+The ledger retains exact identities, slower cases, independent reviews and the
+ordinary-only native scope. Later Windows/Linux scoped publication passes at
+`bc0bfed9`; full ready-PR gates remain required. No prepared host, owner feel or
+Web acceptance follows from these native/standalone records.
+
 Current source in `cyber_native_cell_world.hpp/.cpp` exposes owner-serialized
 copies, with no native pool worker calling Godot:
 
@@ -104,10 +144,10 @@ visible+overfill, while whole-cell Oil/Brine populations use cell counts.
 
 This adds no prepared token, UI, constructor coordinator, verified provenance,
 Web qualification or new physics. Full application integration remains #202;
-Linux/Windows publication and exact-head ready-PR acceptance remain pending.
+exact-head ready-PR acceptance remains pending after the recorded scoped publication.
 
-The staged `lcb005-inertial-runtime-publication.yml` profile reuses the accepted
-shared-contract verifier in an isolated module. Preparation leaves
+The `lcb005-inertial-runtime-publication.yml` profile reuses the accepted
+shared-contract verifier in an isolated module. Its initial preparation left
 `tools/ci/lcb005_inertial_publish_request.json` absent. An explicit committed
 request, exact candidate branch/source/workflow lease and unchanged source
 are required before either target build. After the separately frozen #201
@@ -117,7 +157,9 @@ all six pressure-optimization sections and all six standalone IN sections.
 The IN-only checkpoint cannot qualify that union. Only the two runtime LFS
 paths and their two manifests may append in one source-parent commit; the
 atomic branch lease refuses a changed remote tip. Local preparation does not
-publish, arm a request or replace ready-PR acceptance.
+publish, arm a request or replace ready-PR acceptance. The later explicit request
+and actual import-plus14-case execution on both OSes are recorded in the union
+publication ledger; no fresh publication is started by this documentation update.
 
 ## What does the storage readback measure?
 
@@ -128,3 +170,15 @@ At128² one dense six-byte array is98,304 bytes; at1024² it is6MiB; at2048² it
 ## How is this checkpoint exercised?
 
 `make build/tests` followed by `./build/tests "LCB-005"` selects the native IN groups. `build_windows_msvc.bat` includes the same source; platform execution must still be recorded separately. The saved eleven numeric examples retain their exact expectations, including sleep after the final dirty-state publication. Added checks cover complete radius, observed worker participation, same-visible paint/products, mask refusal, generated defaults, actual storage, native receipt identity, valid-digest incompatible states and continuation through epoch wrap. Three-family controls execute FreeMass Water/CY Oil/IN Brine and a PF Water substitution with exact counts/Water quantity and ledger comparison. Native success does not qualify the separately owned application adapter or released binaries.
+
+
+### Corrected target-OS runtime publication
+
+The mandatory Brine body-contact repair now has actual Windows/Linux source-
+matched publication: run `40160900817`, exact source `c11983c2`, bot append
+`fcf0e9b6`. Both operating systems pass import plus14 cases, including
+IN10192/all six sections. [The union evidence](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-sequence3-publication-of-the-contact-repair)
+records the two runtime hashes, preserved failing controls and independent
+76/485-input verification. This resolves that runtime blocker while full
+exact-head PR gates remain required. It does not admit Water IN or complete
+application/Rapier/Web/four-family qualification.

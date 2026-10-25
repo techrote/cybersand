@@ -490,3 +490,14 @@ companion files are fenced before/after. Raw commands/results, initial/final
 document overlays and source binding remain in `lcb201-publication-docs/`.
 These documentation/materialization gates do not replace the pending ready-PR
 runtime matrix or independently reproduce the recorded compiler toolchains.
+
+## Moving-body lifecycle repair and second publication
+
+A later actual ordinary-play regression found a retired gas label retained under
+a moving body mask. The [separate dated repair record](2026-10-25-pressure-moving-mask-gas-retirement.md)
+preserves the failed native/application controls, narrow reviewed repair,
+141-case LLVM/MSVC and focused sanitizer proofs, fresh source-specific90-child
+cost repeat and actual second Windows/Linux publication `40157133977`.
+Its source is `eebd0c98`, runtime-only bot append `65f1f3b5`. Earlier source,
+publication1, costs and CI remain their own historical evidence. The repaired
+final head still needs its complete required ready-PR matrix before merge.

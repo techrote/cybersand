@@ -2,7 +2,7 @@
 title: Pressure gas retirement beneath moving body masks
 status: Current
 document-kind: evidence
-scope: Preserved ordinary-play and six-arm native failure, narrow gas-label lifecycle repair and explicitly pending qualification/publication
+scope: Preserved ordinary-play and six-arm native failure, reviewed gas-label repair, local/native cost proof and actual source-matched Windows/Linux scoped publication; full ready-PR acceptance pending
 canonical-for: [pressure-moving-mask-gas-retirement-evidence]
 last-reviewed: 2026-10-25
 related-documents: [../architecture/pressure-flow-v1.md, ../architecture/pressure-optimization.md, ../reference/invariants.md, ../reference/validation-evidence.md, ../reference/status-and-roadmap.md, 2026-10-25-lcb002-pressure-variants.md]
@@ -197,3 +197,82 @@ qualifiers. The dated record remains outside the default current-answer corpus.
 The initial mirror validation receipt is SHA-256
 `e080f296fb26e1708a2e03aa02831d0d2d7d0a559aacba1abfc2a6dbf8a4b054`;
 this additive outcome section receives a subsequent final documentation check.
+
+## Post-repair Windows/Linux publication and final cost repeat
+
+The repair's native/test commit is `7ebcd0e9`, its pure documentation successor
+`3ff685ed`, and request sequence2 source
+`eebd0c981508f18cabc7b19b474f3207f7293446`. Actual publication run
+[`40157133977`](https://github.com/techrote/cybersand/actions/runs/40157133977)
+passes all six jobs. Single-parent bot append
+`65f1f3b575694b23f1327afe197585bcdb083b89` changes exactly two LFS runtime
+pointers and their two matching manifests. This is fresh publication after the
+native change; earlier publication1 stays historical.
+
+| Actual target | Runtime SHA-256 | Bytes | Execution |
+|---|---|---:|---|
+| Windows x86_64 | `1985f3746ff4b3a92d4812cae951351a438c29259fd19b4c3226caad92e48d30` | 4496896 | Import +13 scoped cases |
+| Linux x86_64 | `83722be933d4407e91dd57c9faadd1dc37005d535151e2a3244dfe0616afd0f8` | 3877008 | Import +13 scoped cases |
+
+Every native74 and build/test481 canonical input perOS is independently checked
+against the built Git source. Windows built and executed DLL bytes agree;
+Linux passes the unchanged GLIBC2.34 bundle floor (CyberSand GLIBC2.32,
+GLIBCXX3.4.30/CXXABI1.3.9; Rapier GLIBC2.34). Both actual OS reports pass
+optimization4152 assertions/all6 groups, reference1934/all12, policy385,
+worker29 and all16 WEX cases, with no engine error, warning or skip.
+The actual job labels remain GitHub-hosted Ubuntu24.04 and Windows2022.
+API archive digests, extracted logs/receipts, binary formats, manifests, committed
+LFS pointers and four-path parent/source lease are verified separately.
+
+The publication review is retained at
+`C:/Users/_/.codex/tmp/lcb201-publication2-review/FINAL-PUBLICATION2-INDEPENDENT-REVIEW.json`,
+SHA-256 `775840df7e08a164800faa4b5c9e0a846d4e17a2019b107d73e810be50800bfe`.
+Its bundle/source receipt is `114695c9712be084b5dbb81eb6a3235d917eac4ff7b0fcb088b65969dc1d4325`;
+the bot-append receipt is `cf420491c761670f6eb7c7617134ff0c7bc426b304c592592f490aff54674cbd`.
+These28 actual Godot processes do not replace the new full exact-head matrix
+or the separately qualified normal-application body branch.
+
+An additional fresh MSVC19.38 Windows native build passes141/141 in272.430s
+under600s, retaining the ordinary1MiB/4KiB PE stack and unchanged source fences
+at `3ff685ed`. Executable SHA-256 is
+`4f31cbed6b0a63c2dee44b992e90b68d22370d96367d24744f58ad6decbff158`;
+receipt SHA-256 `0f5488567769fc0a16db83208507d0fb82babd8c22090fabfaa8374ede7290ca`.
+The existing `getenv` deprecation compiler warning is preserved; no warning
+suppression, stack enlargement or assertion/deadline reduction was introduced.
+
+The new source-specific cost registration, before compilation, is SHA-256
+`2265e89d34520991fc419c3da3d95380338cb6914b375f0ab515ae6cdc2f6a94`.
+LLVM-MinGW optimized executable `7f4c245bed09690de073f0417419e373004be625a36fa60eaa0d9fd9520a24a3`
+at clean `3ff685ed` first passes18 qualification children, then90 final children
+and23760 timed per-arm ticks. Final summary is
+`C:/Users/_/.codex/tmp/lcb-moving-mask-cost/campaign/summary.json`, SHA-256
+`944aba68981b09a0e34b93ffa0b209afaa11b4506ae9be85a60af6a4d1f84f6d`.
+Profiles, workers1/4, five rotated replicates, geometry, credits and phases are
+unchanged. The actual relabel scan and bounded live-table lookups are inside
+tick timers; the counter counts cells, not individual membership comparisons.
+
+| Phase/control | Cached/reference, workers1 /4 | Dormant/reference, workers1 /4 |
+|---|---|---|
+| Awake warm | 0.901167 /0.768600 | 0.364115 /0.409259 |
+| Disturbed topology churn | 1.081488 /1.038242 | 1.074618 /1.043574 |
+
+Ratios above1 remain slower results. Head fallback is also slower; ordinary
+sleep has zero Water/certificate work and zero saved calls. Awake dormancy saves
+737280 reference motion calls per worker setting across five replicates while
+3840 Oil updates continue. No speed threshold is fitted or universal benefit
+claimed. The campaign ran after the competing local native/Godot/build work
+ended, while desktop background scheduling remains uncontrolled.
+
+Fresh independent reduction verifies442 artifact hashes/sizes,62 immutable
+source inputs, all108 qualification/final children,54 phase comparisons,
+53 counters/work-credit equations, capacities, resident heads and net ROI
+observations with no exported parity discrepancy. Review receipt is
+`C:/Users/_/.codex/tmp/lcb-moving-mask-cost-independent/REVIEW-RECEIPT.json`,
+SHA-256 `5f78c1b249210ab559a32c8fe04e16507f0d084a3c2b58f8dce524472a4a6cc7`;
+primary reduction is `d78a8f0d30ee8fbb8eb27ff0da408fab08f24415fc2c331e4b3f1f0feb990448`.
+Raw rows do not dump complete gas tables/ledgers again; the native apparatus
+compares them. Prepared heads are last-pre-kernel diagnostics, net ROI is not
+gross face flux, configured workers are not task participants, and process RSS
+includes three Worlds/pools/apparatus with incomplete component attribution.
+The source-specific local repeat grants no target-PC, cross-platform, browser
+or owner-feel acceptance. Full required exact-head CI remains pending.

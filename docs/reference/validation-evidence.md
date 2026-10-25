@@ -71,6 +71,64 @@ Rapier PF/worker regression. Original failures and independent review/resolution
 receipts are retained. Source-matched publication/full exact-head CI, actual
 compat/threaded browsers and ordinary visual walkthrough remain separate gates.
 
+## Corrected Brine IN runtime publication — 2026-10-25
+
+Sequence3 [actual Windows/Linux publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-sequence3-publication-of-the-contact-repair)
+passes all six jobs in run `40160900817` at exact source `c11983c2`, followed
+by verified four-path bot append `fcf0e9b6`. Each OS executes import plus14
+cases, including IN10192/six strict sections and the new resting-contact
+regression. Fresh non-author verification checks all76/485 input blobs,
+artifacts, actual OS execution and the Linux runtime floor. The corrected
+runtime publication blocker is resolved; full ready-PR exact-head gates remain
+required before merge. Prior omitted-contact and moving-mask failures below
+retain their exact source scope. Water-IN, complete host/Web and #203 remain
+separate.
+
+## Resting Brine body-contact correction — 2026-10-25
+
+Independent native review of `98595ac8` records18 actual cohorts with executed
+updates and unchanged zero motion: CY reports floor/side feedback; default and
+maximum-damping IN omit it. The [union correction record](../audits/2026-10-25-lcb005-pressure-union-integration.md#mandatory-resting-brine-body-contact-correction)
+preserves that counterexample and the new regression's failing control. The
+repaired focused native case passes, and a non-author rerun passes18 contact
+cohorts plus680 arithmetic cases across all17 damping values without changing
+numeric state/ledger results. Fresh `68f74906` passes LLVM154 ordinary, PF15/IN13,
+seven actual byte oracles and focused ASan/UBSan29 with ordinary1MiB stack, plus
+a133-input DLL/import and six selected Windows Godot cases. IN reports10192/all
+six strict sections and ten explicit resting-contact traces. Sequence3 target-OS
+publication and full ready gates remain required; PR #250 stays Draft and
+sequence2 artifacts are not relabelled as corrected runtime evidence.
+
+## Combined LCB-005 pressure/IN local proof — 2026-10-25
+
+The subsequent [moving-mask repair union](../audits/2026-10-25-lcb005-pressure-union-integration.md#moving-mask-repair-integration-and-second-publication--2026-10-25)
+at normal merge `4a594db5` passes fresh LLVM153 ordinary, PF15/IN12 and focused
+ASan/UBSan28 groups. Sequence2 at `661a96ae`, run `40157525237`, passes actual
+import plus14 cases perOS and appends runtimes at bot `a9f1b875`; full ready-PR
+and full application/host acceptance remain pending. Final #201 head `096b7eeb`
+is integrated with the exact IN runtime set and unchanged76/485 source ledgers.
+The historical native152/publication records below retain their
+exact older source; they are not an acceptance waiver for the gas-label repair.
+
+The [combined-source ledger](../audits/2026-10-25-lcb005-pressure-union-integration.md)
+binds clean `713ee3ab`, both exact parents and the capability-identity collision.
+Fresh ordinary LLVM152/MSVC152 and both sets of seven complete native receipt
+bytes pass; MSVC keeps1MiB stack. A separate132-input DLL and actual Windows
+import/all14 scoped Godot cases pass with no errors/warnings/skips, including
+optimization4,152 and IN862 assertions. Fresh pressure cost90/23,760 observations
+pass independent parity/work/head/ROI reduction; slower churn/head-fallback
+ratios remain. Parent sanitizer/cost records keep their source identity.
+Later actual combined Windows/Linux scoped publication
+[`40153980594`](https://github.com/techrote/cybersand/actions/runs/40153980594)
+passes at `bc0bfed94ca9a1e51e296253c0fe27a4cee4c3f7`, tree
+`54a2a8fa03de6be991402af277d46e694698c5d0`, with runtime-only bot append
+`52ee560a14455f4c1237e1fc468a1301c1e7c558`. All30 real processes pass:
+import plus14 cases perOS, IN862/all6, optimization4152/all6, pressure1934/all12
+and WEX16. The [publication ledger](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-windowslinux-union-publication--2026-10-25)
+binds exact artifacts, independent verification and the four-path merge resolution.
+Full ready-PR gates and host/Web/owner acceptance remain separate. The native-v1
+full matched eligibility remains false.
+
 ## LCB-003 thermal level preparation — 2026-10-25
 
 [Source177ae236 plus the tested new case](../audits/2026-10-25-lcb003-thermal-level-preparation.md)
@@ -93,7 +151,6 @@ parse controls are distinct from native defects. Linux/release publication,
 full ready-PR gates, actual Web and application qualification remain pending.
 
 ## Moving-body pressure gas blocker — 2026-10-25
-
 Ordinary Main/worker reference-body Water play exposed a native retired gas
 label beneath a moving body mask around completed tick45–47. The World
 quarantines even though Water quantity and the gas ledger remain exact.
@@ -102,6 +159,18 @@ variants with configured1/4 workers. The repair is under qualification;
 PRs #253 and #250 are draft and must receive fresh source-matched
 Windows/Linux runtimes and exact-head gates before merging. Earlier
 scoped/full greens retain their original source and coverage. See the
+[dated failure and repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
+
+Ordinary moving reference bodies exposed retired gas labels beneath masks;
+the failing World quarantines despite closing Water/gas ledgers. Repair commit
+`7ebcd0e9` adds the six-arm native regression and retains still-live identities.
+Local LLVM/MSVC141, focused sanitizer16 and actual application body tests pass.
+Fresh #201 Windows/Linux scoped publication `40157133977` passes at source
+`eebd0c98`, with four-path bot append `65f1f3b5`. The updated90-child total-cost
+campaign also passes exact parity and preserves slower churn/fallback results.
+PRs #253/#250 returned to draft after the finding; each still requires its own
+complete source-matched exact-head gates and review before merge. Earlier
+greens retain their original scope. See the
 [dated failure and repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
 
 ## LCB-002 pressure variants branch — 2026-10-25

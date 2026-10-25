@@ -34,7 +34,9 @@ or full host replay. The C64-E8 layout, defaults and historical content/state
 hashes retain their separately recorded source identities. On the combined
 #212 branch, Brine IN/reference and all three Water PF variants are Current
 in source, with their separate native/standalone proof retained below. Fresh
-combined-source qualification and publication remain pending. Water IN, the
+combined native/standalone proof and actual Windows/Linux scoped publication now
+pass at `bc0bfed9` ([union ledger](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-windowslinux-union-publication--2026-10-25));
+full ready-PR acceptance remains pending. Water IN, the
 remaining #202 constructors and comparison UI remain **Planned**.
 
 - Without an explicit request every material executes its **current default**
@@ -312,8 +314,8 @@ source-matched rebuild as for any native edit.
 |---|---|---|---|
 | `freemass_v1` | Current fractional conserved pairwise Water | existing source | Yes, Water only (default) |
 | `cellular_yield_v1` | Whole-cell yielding motion plus material hooks | existing source; #200 W-CY | Ten liquids by default; Water opt-in on main through #246 with its own v2 viscosity block |
-| `pressure_flow_v1` | Corrected pressure/overfill/flow/gas | #200 | `reference`, Water, opt-in on main since #245; `cached`/`cached_dormant` Current in #201 branch source, pending runtime/final CI ([optimization contract](pressure-optimization.md)) |
-| `inertial_cellular_v1` | Non-pressure motion with retained velocity/accumulator | #212 | Brine/reference on the isolated #212 branch, with explicit radius3 and [qualified standalone readback](inertial-cellular-v1.md); no Water IN or accepted release |
+| `pressure_flow_v1` | Corrected pressure/overfill/flow/gas | #200 | `reference`, Water, opt-in on main since #245; all three variants Current in #201 and combined #212 source, with actual scoped Windows/Linux publication and full ready-PR acceptance pending ([optimization contract](pressure-optimization.md)) |
+| `inertial_cellular_v1` | Non-pressure motion with retained velocity/accumulator | #212 | Brine/reference on the isolated #212 branch, explicit radius3 and [qualified readback/publication](inertial-cellular-v1.md); no Water IN or full ready-PR acceptance |
 
 **Implementation variants** (an axis independent of family):
 

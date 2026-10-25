@@ -3748,6 +3748,7 @@ void test_lcb_inertial_ledgers_rest_parity();
 void test_lcb_inertial_no_tunnelling();
 void test_lcb_inertial_lifecycle();
 void test_lcb_inertial_three_families();
+void test_lcb_inertial_body_contact();
 void test_lcb_pressure_admission();
 void test_lcb_pressure_gas_id_restore_bounds();
 void test_lcb_pressure_gas_id_creation_exhaustion();
@@ -3907,6 +3908,7 @@ int main(int argc, char** argv) {
         {"LCB-005 inertial no tunnelling", test_lcb_inertial_no_tunnelling},
         {"LCB-005 inertial lifecycle", test_lcb_inertial_lifecycle},
         {"LCB-005 inertial three families", test_lcb_inertial_three_families},
+        {"LCB-005 inertial body contact", test_lcb_inertial_body_contact},
         {"LCB-001 pressure admission and refusal", test_lcb_pressure_admission},
         {"LCB-001 pressure gas ID restore bounds", test_lcb_pressure_gas_id_restore_bounds},
         {"LCB-001 pressure gas ID creation exhaustion", test_lcb_pressure_gas_id_creation_exhaustion},
