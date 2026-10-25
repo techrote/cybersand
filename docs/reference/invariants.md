@@ -5,7 +5,7 @@ canonical-for: [invariant-register]
 status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
-related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md]
+related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md, ../architecture/pressure-optimization.md]
 last-reviewed: 2026-10-25
 ---
 
@@ -305,12 +305,17 @@ and [family material hooks](../architecture/liquid-solver-family-policy.md).
 
 | ID | Status and requirement |
 |---|---|
-| WATER-009 | Current residual native: W-CY holds `maximum()` Water per cell; fractional ingress refuses or uses explicit setup-only normalization, never a silent FreeMass fallback |
-| WATER-010 | Current residual native: same-material reaction products reset family state and book gross actual Water inputs/products; species cell counts are separate units |
-| WATER-011 | Current residual native: fixed job aggregates merge serially; checked external/generated overflow refuses before authority changes, while tick overflow quarantines partial progress |
-| WATER-012 | Current residual native: typed-v1 setup/run/attempt/accounting codecs and physical hash/CYPS2 preserve immutable native facts; historical CYPS1 explicitly refuses; historical content/state hashes and C64-E8 layout are unchanged |
-| WATER-013 | Current residual native: caller source/runtime claims cannot select verified provenance or full matched eligibility; the old Godot dictionary getter is not typed native-v1 proof |
-| WATER-014 | Planned #201: a Water rest certificate preserves body-contact probes, mandatory material/future work and unrelated materials; it proves rest instead of freezing nonzero flow and confers no #12 skip ownership |
+| WATER-009 | Current main native: W-CY holds `maximum()` Water per cell; fractional ingress refuses or uses explicit setup-only normalization, never a silent FreeMass fallback |
+| WATER-010 | Current main native: same-material reaction products reset family state and book gross actual Water inputs/products; species cell counts are separate units |
+| WATER-011 | Current main native: fixed job aggregates merge serially; checked external/generated overflow refuses before authority changes, while tick overflow quarantines partial progress |
+| WATER-012 | Current main native: typed-v1 setup/run/attempt/accounting codecs and physical hash/CYPS2 preserve immutable native facts; historical CYPS1 explicitly refuses; historical content/state hashes and C64-E8 layout are unchanged |
+| WATER-013 | Current main native: caller source/runtime claims cannot select verified provenance or full matched eligibility; the old Godot dictionary getter is not typed native-v1 proof |
+| WATER-014 | Current #201 branch source, pending acceptance: a Water motion certificate preserves failed-motion body contacts, mandatory material/cadence/event work and unrelated liquids; it proves a no-op instead of freezing nonzero flow and grants no #12 skip ownership ([contract](../architecture/pressure-optimization.md)) |
+| WATER-015 | Current #201 source: incomplete derived heads/index/member proofs select complete admitted reference evaluation; no stale/partial summary is consumed as a valid cached head |
+| WATER-016 | Current #201 source: gas fixed point includes final labels and zero discovery allocation; component reuse retains global seed order, identity/history and relabelling, including paused contributors |
+| WATER-017 | Current #201 execution3: cold/invalidated inputs take ordinary warmup; failed proof defers eight eligible visits; only the exact valid tag skips motion. Usable heads/prior Water work admit bounded8-tick cost trials; deficit/uncertainty suspends32 eligible-head ticks. Off/cold invalidation never scans certificates; reactivation resets them before reading. Derived state is cold on restore and execution identity is separate from physical authority |
+| WATER-018 | Current #201 diagnostic interface: copied prepared heads may be stale after transport/edits; complete roster coverage and exact numerical errors do not grant freshness or rest authority. Net ROI Water balance is not gross face flux |
+| WATER-019 | Current #201 adapter source: copied unsigned budget/capacity/counter values use decimal strings without signed-u64 truncation; all adapter observations remain exclusive-owner calls, not worker-owned Godot APIs |
 
 ## Brine IN standalone adapter invariants
 

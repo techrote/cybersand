@@ -13,6 +13,7 @@
 #include <cmath>
 #include <numbers>
 #include <span>
+#include <string>
 #include <thread>
 #include <unordered_map>
 
@@ -93,6 +94,10 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("inspect_gas_compartments"), &CyberNativeCellWorld::inspect_gas_compartments);
     ClassDB::bind_method(D_METHOD("inspect_pressure_cell", "point"), &CyberNativeCellWorld::inspect_pressure_cell);
     ClassDB::bind_method(D_METHOD("get_pressure_flow_ledger"), &CyberNativeCellWorld::get_pressure_flow_ledger);
+    ClassDB::bind_method(D_METHOD("get_liquid_comparison_hash", "projection_id"),
+                         &CyberNativeCellWorld::get_liquid_comparison_hash);
+    ClassDB::bind_method(D_METHOD("inspect_pressure_optimization"),
+                         &CyberNativeCellWorld::inspect_pressure_optimization);
     ClassDB::bind_method(D_METHOD("get_liquid_run_receipt", "setup"), &CyberNativeCellWorld::get_liquid_run_receipt);
     ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("auto_worker_threads", "logical_threads"), &CyberNativeCellWorld::auto_worker_threads);
     ClassDB::bind_static_method("CyberNativeCellWorld", D_METHOD("logical_processor_count"), &CyberNativeCellWorld::logical_processor_count);
@@ -2052,5 +2057,7 @@ String CyberNativeCellWorld::get_last_tick_error() const { return last_tick_erro
 std::int64_t CyberNativeCellWorld::get_tick_failure_count() const {
     return static_cast<std::int64_t>(tick_failure_count_);
 }
+
+#include "pressure_optimization_inspection.inc"
 
 }  // namespace godot

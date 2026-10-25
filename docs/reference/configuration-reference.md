@@ -5,7 +5,7 @@ canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
 last-reviewed: 2026-10-25
-related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md]
+related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
 ---
 
 # Configuration reference
@@ -286,7 +286,7 @@ subset, with the separate liquid-policy entry point noted below.
 | `maximum_explosion_radius` | 64 | Largest accepted radius |
 | `liquid_solver_policy` | every liquid's current default | Immutable LCB-001 policy; construction refuses any mapping this build has not qualified ([foundation](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)). Not mirrored by `cybersand_config_v2`; use `cybersand_world_create_with_liquid_policy_v1`. |
 
-**LCB pressure family block (#245 law, retained in residual native source; experimental).**
+**LCB pressure family block (#245 law, retained by accepted #246 main; experimental).**
 When `liquid_solver_policy` assigns Water to `pressure_flow_v1/reference`, the
 optional family block `pressure_flow_v1` version 1 sets two construction-time
 values. Omitting the block applies the defaults. Out-of-range values are refused
@@ -303,8 +303,7 @@ limit `maximum()`, compartment volume limit 16 384, capacity 1024, history 64) a
 not configurable; they are Proposed values recorded in the receipt's
 `family_parameters` ([declared parameters](../architecture/pressure-flow-v1.md#declared-parameters-v1)).
 
-**Residual native #200 W-CY and setup codecs (unmerged
-`codex/lcb001-shared-contract`).** Water × `cellular_yield_v1/reference` accepts
+**Accepted main #200 W-CY and setup codecs (#246, `ec58d919`).** Water × `cellular_yield_v1/reference` accepts
 its own optional material block **v2**, one `viscosity_index` integer 0..255,
 default 0. Its law version is 1; the illustrative material-block v1
 `flow_rate_permille` schema is not reinterpreted. Whole-cell Water requires
@@ -344,6 +343,30 @@ IN geometry. Exact CYPS imports use the saved geometry. Native scheduler/core
 constraints still apply; this does not enlarge a protected Current comparator.
 Actual applied radius and effective damping numerator0..16/denominator16 are
 copied readback, not live settings. See the [IN binding contract](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry).
+
+## LCB-002 derived pressure execution limits
+
+**Current in `codex/lcb002-pressure-variants`; final acceptance pending.**
+`WorldConfig::pressure_optimization` controls construction-only derived work,
+not pressure calibration: `index_chunk_capacity` 4096 chunks,
+`head_repair_cell_budget` 4,194,304 cells, `gas_member_capacity` 1,048,576
+members and `gas_invalidation_pair_budget` 4,194,304 classification pairs.
+Incomplete head/index or gas discovery selects the complete admitted reference
+operator, with explicit status and charged fallback work.
+
+Execution3 uses one eligible ordinary warmup visit and eight deferred eligible
+visits after failed proof. Whole-layer admission requires usable heads and prior
+Water work. Eight eligible-tick trials charge each invalidated/reset cell1,
+complete proof40 and valid reuse1, crediting an actually saved motion call8; a
+deficit or saturated uncertainty suspends the layer for32 eligible-head ticks.
+Cold/off invalidation is constant work and admission resets stale certificates
+before reading them. These fixed work credits are not wall-clock break-even
+evidence and change no material cadence or physical law. The [optimization contract](../architecture/pressure-optimization.md)
+owns mechanism, capacities, storage and the six-u64 native execution identity.
+Godot copied budgets/capacities/counters use exact unsigned decimal strings;
+they are not live settings or rest authority. Reference has no optimization
+extension identity. Derived budgets and caches do not alter physical authority
+or serialize certificates; restore rebuilds them cold.
 
 ## Finite native adapter overrides
 

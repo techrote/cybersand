@@ -54,6 +54,15 @@ Static-rest observations require zero vx/vy/ax/ay and stable physical content. T
 
 ## Standalone Godot readback and explicit geometry
 
+The combined #212 source integrates the frozen #201 checkpoint `12d76736`
+with the standalone adapter source. Brine IN/reference and all three Water PF
+variants coexist in the running catalogue. Their combined capability digest
+requires regenerated identity/receipt oracles and fresh native/DLL/Godot proof;
+neither parent's separate proof is reused as union acceptance. The
+[integration ledger](../audits/2026-10-25-lcb005-pressure-union-integration.md)
+owns those source and qualification facts. The standalone Windows evidence
+below remains attributed to its original IN-only source.
+
 Current source in `cyber_native_cell_world.hpp/.cpp` exposes owner-serialized
 copies, with no native pool worker calling Godot:
 

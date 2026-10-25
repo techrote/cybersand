@@ -12,6 +12,7 @@
 #include <array>
 #include <atomic>
 #include <bit>
+#include <chrono>
 #include <condition_variable>
 #include <cmath>
 #include <limits>
@@ -185,7 +186,8 @@ public:
 
     [[nodiscard]] std::uint32_t participating_workers() const noexcept {
         std::uint32_t count=0;
-        for (const auto& mask:participants_) count+=static_cast<std::uint32_t>(std::popcount(mask.load(std::memory_order_relaxed)));
+        for (const auto& mask:participants_)
+            count+=static_cast<std::uint32_t>(std::popcount(mask.load(std::memory_order_relaxed)));
         return count;
     }
 private:
@@ -256,10 +258,24 @@ struct World::PressureChunk {
         std::uint32_t gas = 0;
     };
     static constexpr std::int32_t kNoHead = std::numeric_limits<std::int32_t>::min();
-    explicit PressureChunk(std::size_t count) : cells(count), head(count, kNoHead), visit(count, 0U) {}
+    static constexpr std::uint8_t kCertificateValid = 1;
+    static constexpr std::uint8_t kCertificateWarmup = kPressureCertificateWarmupVisits + 1;
+    static constexpr std::uint8_t kCertificateBackoff = kPressureCertificateBackoffVisits + 1;
+    explicit PressureChunk(std::size_t count, bool cached = false, bool dormant = false)
+        : cells(count), head(count, kNoHead), visit(count, 0U) {
+        if (cached) base_head.assign(count, kNoHead);
+        if (dormant) rest_certificate.resize(count);
+    }
     std::vector<Cell> cells;
     std::vector<std::int32_t> head;
     std::vector<std::uint32_t> visit;
+    std::vector<std::int32_t> base_head;
+    std::vector<std::uint8_t> rest_certificate;
+    std::size_t column_group = std::numeric_limits<std::size_t>::max();
+    std::size_t row_group = std::numeric_limits<std::size_t>::max();
+    ChunkCoord coordinate{};
+    std::uint32_t gas_chunk_slot = std::numeric_limits<std::uint32_t>::max();
+    bool gas_dirty_queued = false;
 };
 
 struct World::Chunk {
@@ -347,7 +363,9 @@ struct World::JobEffects {
     bool discovery_mutation_overflow = false;
     bool discovery_signal_overflow = false;
     bool hard_surface_changed = false;
+    bool pressure_gas_changed = false;
     PhysicsJobHistogram* physics = nullptr;
+    PressureKernelWork* pressure_work = nullptr;
     // pressure_flow_v1 per-job accounting, merged after the phase barrier.
     std::uint64_t pf_overfill_converted = 0;
     std::int64_t pf_flow_remainder = 0;
@@ -369,7 +387,9 @@ struct World::JobEffects {
         discovery_mutation_overflow = false;
         discovery_signal_overflow = false;
         hard_surface_changed = false;
+        pressure_gas_changed = false;
         if (physics != nullptr) *physics = {};
+        if (pressure_work != nullptr) *pressure_work = {};
     }
 
     void record(const Address& address_value, std::int64_t non_empty_delta = 0) noexcept {
@@ -494,6 +514,7 @@ struct World::TransientObstacleState {
     }
 };
 
+#include "world_pressure_cache_state.inc"
 #include "world_pressure_state.inc"
 
 World::World(WorldConfig config)
@@ -624,6 +645,20 @@ World::World(WorldConfig config)
     if (pressure_requested) {
         pressure_ = std::make_unique<PressureState>(pressure_parameters_from(config_.liquid_solver_policy));
         pressure_->sorted_coordinates.reserve(config_.maximum_chunk_count);
+        if (parallel_ != nullptr) {
+            pressure_->job_optimization.resize(parallel_->results.size());
+            for (std::size_t i = 0; i < parallel_->results.size(); ++i)
+                parallel_->results[i].effects.pressure_work = &pressure_->job_optimization[i];
+        }
+        const auto selection = config_.liquid_solver_policy.assignment(3U);
+        if (selection->variant != LiquidSolverVariant::Reference) {
+            if (config_.pressure_optimization.index_chunk_capacity == 0U)
+                throw std::invalid_argument("pressure index capacity must be positive");
+            pressure_->cache = std::make_unique<PressureCache>(config_.maximum_chunk_count,
+                static_cast<std::size_t>(config_.chunk_size) * static_cast<std::size_t>(config_.chunk_size),
+                pressure_->parameters.gas_enabled, config_.pressure_optimization);
+            pressure_->cache->dormant = selection->variant == LiquidSolverVariant::CachedDormant;
+        }
     }
     initialize_settled_discovery();
 }
@@ -1386,7 +1421,12 @@ World::Chunk& World::ensure_chunk(ChunkCoord coord) {
         throw std::runtime_error("maximum chunk capacity exhausted");
     }
     auto chunk = std::make_unique<Chunk>(config_.chunk_size, config_.activity_block_size);
-    if (pressure_ != nullptr) chunk->pressure = std::make_unique<PressureChunk>(chunk->cells.size());
+    if (pressure_ != nullptr) {
+        chunk->pressure = std::make_unique<PressureChunk>(chunk->cells.size(), pressure_->cache != nullptr,
+            pressure_->cache != nullptr && pressure_->cache->dormant);
+        chunk->pressure->coordinate = coord;
+        if (pressure_->cache != nullptr) pressure_->cache->cold();
+    }
     if (inertial_enabled_) chunk->inertial = std::make_unique<std::vector<InertialSlot>>(chunk->cells.size());
     const auto [iterator, inserted] = chunks_.try_emplace(coord, std::move(chunk));
     if (inserted) register_discovery_chunk(coord, *iterator->second);
@@ -1626,11 +1666,14 @@ bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
 
     if (effects != nullptr) {
         effects->record(target, delta);
+        effects->pressure_gas_changed = effects->pressure_gas_changed || before != material;
         if (settled_discovery_ != nullptr)
             effects->record_discovery_mutation(target, config_.activity_block_size);
         effects->hard_surface_changed =
             effects->hard_surface_changed || hard_surface_changed;
     } else {
+        invalidate_pressure_input(target.chunk, target.local_x, target.local_y,
+                                  target.local_x, target.local_y, before != material);
         chunk->non_empty_cell_count = static_cast<std::size_t>(
             static_cast<std::int64_t>(chunk->non_empty_cell_count) + delta);
         chunk->changed_this_tick = true;
@@ -1643,6 +1686,8 @@ bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
 }
 
 void World::mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t local_y) {
+    if (chunk.pressure != nullptr)
+        invalidate_pressure_input(chunk.pressure->coordinate, local_x, local_y, local_x, local_y, false);
     const auto block_x = local_x / config_.activity_block_size;
     const auto block_y = local_y / config_.activity_block_size;
     const auto block_index =
@@ -1826,6 +1871,8 @@ void World::set_with_quantity_kind(std::int64_t x, std::int64_t y, Material mate
     }
     chunk.cells[target.index].set_epoch(update_epoch_);
     chunk.changed_this_tick = true;
+    invalidate_pressure_input(target.chunk, target.local_x, target.local_y,
+                              target.local_x, target.local_y, previous_material != material);
     mark_cell_dirty(chunk, target.local_x, target.local_y);
     wake_cell_neighborhood(x, y);
     if (hard_surface_changed) ++hard_surface_revision_;
@@ -1875,6 +1922,8 @@ void World::set_simulation_region(std::optional<RectI64> region) {
     const auto previous_selected = selected_core_region_;
     simulation_region_ = region;
     selected_core_region_ = selected;
+    if (pressure_ != nullptr && pressure_->cache != nullptr && selected_core_region_ != previous_selected)
+        pressure_->cache->cold();
     if (settled_discovery_ != nullptr && selected_core_region_ != previous_selected) {
         const auto outcome = settled_discovery_->begin_inclusion_request();
         if (outcome == soliding::DiscoveryOutcome::Accepted)
@@ -1885,6 +1934,7 @@ void World::set_simulation_region(std::optional<RectI64> region) {
 void World::set_liquid_surface_adhesion_enabled(bool enabled) noexcept {
     if (liquid_surface_adhesion_enabled_ == enabled) return;
     liquid_surface_adhesion_enabled_ = enabled;
+    if (pressure_ != nullptr && pressure_->cache != nullptr) pressure_->cache->cold();
     fence_discovery(soliding::ProducerReason::SemanticFence);
 }
 
@@ -1928,6 +1978,8 @@ void World::clear_transient_obstacles() {
             state.body_ids[index] = 0U;
             const auto local_x = static_cast<std::int64_t>(index % static_cast<std::size_t>(width));
             const auto local_y = static_cast<std::int64_t>(index / static_cast<std::size_t>(width));
+            const auto at = address(state.region.x + local_x, state.region.y + local_y);
+            invalidate_pressure_input(at.chunk, at.local_x, at.local_y, at.local_x, at.local_y, true);
             // A mask change has no material write to wake its own block.
             keep_cell_active(state.region.x + local_x, state.region.y + local_y, nullptr);
             wake_cell_neighborhood(state.region.x + local_x, state.region.y + local_y);
@@ -1976,6 +2028,8 @@ bool World::set_transient_obstacle(std::int64_t x, std::int64_t y,
     auto& slot = state.body_ids[index];
     if (slot != 0U) return false;
     slot = body_id;
+    const auto at = address(x, y);
+    invalidate_pressure_input(at.chunk, at.local_x, at.local_y, at.local_x, at.local_y, true);
     state.occupied_indices.push_back(index);
     keep_cell_active(x, y, nullptr);
     wake_cell_neighborhood(x, y);
@@ -2567,6 +2621,8 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
     if (effects != nullptr) {
         effects->record(source_address, source_delta);
         effects->record(destination_address, destination_delta);
+        effects->pressure_gas_changed = effects->pressure_gas_changed ||
+            source_material != source_replacement || destination_material != source_material;
         if (settled_discovery_ != nullptr) {
             effects->record_discovery_mutation(source_address, config_.activity_block_size);
             effects->record_discovery_mutation(destination_address, config_.activity_block_size);
@@ -2574,6 +2630,10 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
         effects->hard_surface_changed =
             effects->hard_surface_changed || hard_surface_changed;
     } else {
+        invalidate_pressure_input(source_address.chunk, source_address.local_x, source_address.local_y,
+            source_address.local_x, source_address.local_y, true);
+        invalidate_pressure_input(destination_address.chunk, destination_address.local_x, destination_address.local_y,
+            destination_address.local_x, destination_address.local_y, true);
         source.changed_this_tick = true;
         destination.changed_this_tick = true;
         mark_cell_dirty(source, source_address.local_x, source_address.local_y);
@@ -2939,6 +2999,13 @@ bool World::update_water_cellular_yield(std::int64_t x, std::int64_t y, JobEffec
 bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                                std::int64_t x, std::int64_t y,
                                JobEffects* effects) {
+    if (pressure_ != nullptr && source_material != Material::Water &&
+        MaterialRules::descriptor(source_material).state == MaterialState::Liquid) {
+        auto& work = effects != nullptr && effects->pressure_work != nullptr
+            ? *effects->pressure_work : pressure_->optimization;
+        ++work.other_liquid_calls;
+    }
+
     const auto material = source_material;
     const auto direction = deterministic_direction(x, y);
     const auto neighbour = [this, x, y](std::size_t index) {
@@ -4130,6 +4197,8 @@ void World::merge_job_effects(const JobEffects& effects) {
     // so an activity wake cannot create a second revision for the same mutation.
     for (std::size_t effect_index = 0; effect_index < effects.chunk_count; ++effect_index) {
         const auto& effect = effects.chunks[effect_index];
+        invalidate_pressure_input(effect.chunk, effect.minimum_x, effect.minimum_y,
+                                  effect.maximum_x, effect.maximum_y, effects.pressure_gas_changed);
         auto* chunk = find_chunk(effect.chunk);
         if (chunk == nullptr) {
             throw std::logic_error("job effect references missing chunk");
@@ -4389,6 +4458,7 @@ TickStats World::tick() {
             (void)advance_settled_discovery(config_.settled_discovery_tick_budget);
         if (settled_discovery_ != nullptr && config_.settled_region_tick_budget != 0)
             (void)advance_settled_regions(config_.settled_region_tick_budget);
+        finish_pressure_certificate_tick();
         return stats;
     } catch (...) {
         // Partial cell/event/epoch/metadata progress is diagnostic only. Workers
@@ -4675,6 +4745,8 @@ void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::
 
 
 #include "world_quantity.inc"
+#include "world_pressure_cache.inc"
+#include "world_pressure_gas_cache.inc"
 #include "world_pressure.inc"
 #include "world_inertial.inc"
 

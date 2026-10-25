@@ -59,9 +59,10 @@ func _finish() -> void:
 	print("LCB_INERTIAL_ADAPTER: %d assertions; %d failures; completed=%s" % [assertions, failures, JSON.stringify(completed)])
 	quit(1 if failures else 0)
 
-func _with(request: PackedInt32Array, material: int, family: int) -> PackedInt32Array:
+func _with(request: PackedInt32Array, material: int, family: int, variant: int = 0) -> PackedInt32Array:
 	var words: PackedInt32Array = request.duplicate()
 	words[20 + LIQUIDS.find(material) * 3 + 1] = family
+	words[20 + LIQUIDS.find(material) * 3 + 2] = variant
 	return words
 
 func _policy(numerator: int = 1) -> PackedInt32Array:
@@ -172,8 +173,10 @@ func _mixed_workers() -> void:
 		var room: PackedInt32Array = _box()
 		for index: int in range(0, room.size(), 5): room[index] += offset
 		rectangles.append_array(room)
-	for pressure: bool in [false, true]:
-		var policy: PackedInt32Array = _with(_policy(), 3, 3) if pressure else _policy()
+	# The merged source must execute IN beside each admitted PF implementation,
+	# as well as protected FreeMass. A separate-lane pass cannot prove this union.
+	for water_variant: int in [-1, 0, 1, 2]:
+		var policy: PackedInt32Array = _with(_policy(), 3, 3, water_variant) if water_variant >= 0 else _policy()
 		var worlds: Array = []
 		for workers: int in [1, 4]:
 			var world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
@@ -189,7 +192,7 @@ func _mixed_workers() -> void:
 			if tick == 3: motion = _census(worlds[0]).motion
 			expect(worlds[0].get_physical_state_hash() == worlds[1].get_physical_state_hash(), "complete mixed continuation agrees at every tick for configured1/4")
 		var totals: Dictionary = _census(worlds[0])
-		print("LCB_INERTIAL_ADAPTER_MIXED: ", JSON.stringify({"pressure_water":pressure, "motion":motion,
+		print("LCB_INERTIAL_ADAPTER_MIXED: ", JSON.stringify({"water_family":"pressure_flow_v1" if water_variant >= 0 else "freemass_v1", "water_variant":water_variant, "motion":motion,
 			"parallel":parallel, "totals":totals, "water_integer":worlds[0].water_experiment_observation(Vector2i.ZERO, FRAME).water_integer,
 			"worker4":worlds[1].get_worker_threads(), "backend":worlds[1].get_backend_name()}))
 		# FreeMass/PF Water can split its conserved quantity across more cells;
@@ -204,7 +207,7 @@ func _mixed_workers() -> void:
 			var tube: PackedInt32Array = PackedInt32Array([19, 19, 3, 5, 1, 20, 20, 1, 1, 24, 20, 21, 1, 1, 16, 20, 22, 1, 1, 3])
 			expect(_build(contact, policy, tube), "closed mixed density tube constructs")
 			for tick: int in range(30): expect(contact.simulation_tick(), "density contact tick succeeds")
-			expect(contact.material_at(20, 22) == 24 and contact.material_at(20, 21) == 3 and contact.material_at(20, 20) == 16, "Brine exchanges through Oil and Water under both Water substitutions")
+			expect(contact.material_at(20, 22) == 24 and contact.material_at(20, 21) == 3 and contact.material_at(20, 20) == 16, "Brine exchanges through Oil and Water under every admitted Water substitution")
 
 func _cyps_continuation() -> void:
 	var world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")

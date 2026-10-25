@@ -5,10 +5,23 @@ document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
 last-reviewed: 2026-10-25
-related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
+related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## Combined pressure and IN source — 2026-10-25
+
+The #212 integration joins standalone checkpoint `0af161b4` with the frozen
+#201 source `12d76736`, including accepted-main documentation merge
+`d70699b6`. It admits Brine IN/reference and all three Water PF variants in
+one running catalogue. Separate #201 and #212 proof remains historical to
+its stated source; fresh combined LLVM/MSVC, DLL and fourteen-case Godot
+qualification is required before the still-unarmed #212 publisher.
+Capability identity changes when the two admissions join: regenerate policy,
+receipt and IN vectors plus the adapter oracle from the combined semantic
+catalogue, then obtain fresh native physical facts. Do not select a parent's
+generated hashes or relabel its runtime as combined evidence.
 
 ## LCB-005 standalone adapter checkpoint — 2026-10-25
 
@@ -16,42 +29,57 @@ The #212 branch exposes actual Brine IN damping/identity, read-only motion,
 instance hash/save versions and explicit construction radius through the legacy
 Godot adapter. Start with the [IN interface and geometry contract](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry)
 and [dated local proof](../audits/2026-10-25-lcb005-standalone-adapter.md).
-Native kernel/codec/policy inputs remain the sealed `028fc7b6` source. The
+That standalone proof keeps native kernel/codec/policy inputs at `028fc7b6`. The
 standalone binding adds no #202 prepared host/UI. Preserve Current2 versus IN3
 instance versions, legacy/default radius2 and explicit IN3 geometry; no silent
 upgrade. Local Windows headless proof is not cross-platform publication,
 verified host evidence, owner feel or full #212 completion.
 
-## Residual LCB-001 continuation — 2026-10-24
 
-After PR #245's exact-head acceptance/merge, continue from the focused
-`codex/lcb001-shared-contract` checkpoint. The [native prepared setup/receipt
-contract](../architecture/liquid-prepared-setup-and-receipts.md),
-[roadmap status](../reference/status-and-roadmap.md#lcb-001-residual-shared-contract--2026-10-24)
-and [dated evidence](../audits/2026-10-24-lcb001-residual-shared-contract.md)
-own completed scope and gaps. The successor provides W-CY admission/refusal and
-liveness, explicit native normalization, exact ledger, typed native receipt/
-readback identity and prepared-World/masked-state checks. It retains qualified
-caller provenance and host coverage; no full matched-evidence claim follows.
+## LCB-002 branch source and qualification — 2026-10-25
 
-Local final native suites pass 126/126 with LLVM-MinGW and MSVC at 1 MiB stack,
-including rectangle/event bounds and non-wrapping gas-ID continuation.
-Scoped source-matched Windows/Linux publication passed in run 40138333825,
-appended as `888a39f0`; full final-head CI remains checkpoint acceptance work.
-The Godot normalization
-route and host verification remain #202 work. Preserve the original material checkout, the prepared #202
-adapter work and the old pushed #212 branch; neither old branch is a substitute
-for integration onto fresh main.
+The current `codex/lcb002-pressure-variants` source admits all three Water PF
+variants. Start with the [optimization contract](../architecture/pressure-optimization.md),
+[roadmap route](../reference/status-and-roadmap.md#lcb-002-pressure-variants-branch--2026-10-25)
+and [dated branch evidence](../audits/2026-10-25-lcb002-pressure-variants.md).
+Reference laws/defaults are unchanged. Execution3 bounds repeated proof cost;
+gas/head/certificate obligations and copied u64-safe readbacks remain native.
+Prepared-head snapshots can be stale after transport and are not skip authority.
+Full native/Godot, exact-source cost and Windows/Linux publication/ready-PR
+acceptance retain their separate pending gates. Keep execution1 negatives and
+failures; do not infer target-PC speedup or actual Rapier displacement from
+native masks. The accepted #246 main checkpoint below remains its own record.
 
-Finish residual #200, then parallelize #201/#202/#212 and integrate/package via
-#203. For #201, retain failed-motion stationary body-contact reports when
-certifying rest; preserve material stages, other liquids and future cadence/
-stochastic work. No cache or dormancy is implemented here. The owner first
-requested a clean pushed successor and handover at this boundary, then resumed
-execution: finish residual #200, fan out #201/#202/#212 where write sets permit,
-and integrate/qualify/package through #203. Preserve the earlier checkpoint
-evidence and require fresh runtime publication and exact-head gates at each
-implementation merge.
+## Accepted LCB-001 shared contract — 2026-10-25
+
+Start from main after [PR #246](https://github.com/techrote/cybersand/pull/246),
+merge `ec58d919b3d904fbd338eaccc25de35782c41a24`. Its final tested head `560f9a4…`
+and main share tree `e8e999899bd35bf20df4b03cf9c0620d86089ff1`. The
+[native prepared setup/receipt contract](../architecture/liquid-prepared-setup-and-receipts.md),
+[roadmap](../reference/status-and-roadmap.md#lcb-001-shared-contract-accepted--2026-10-25)
+and [accepted evidence](../audits/2026-10-25-lcb001-shared-contract-acceptance.md)
+own completed scope and qualifiers. Main admits W-CY and PF reference, native
+explicit normalization, exact accounting, typed native-v1 receipts and prepared
+World checks; complete physical hash/CYPS are v2 and CYPS1 explicitly refuses.
+Defaults, C64-E8 and historical content/state hashes remain unchanged.
+
+The final required Docs/Native/Godot/#49 matrix passed. Native executes all
+126 cases in ordinary/ASan+UBSan/TSan builds; Godot executes 145 Linux + 133
+Windows cases and five imports. The original Windows exploratory-construction
+failure is retained; final source passes in 71.240 s under its 180 s limit.
+The audit distinguishes actual retained-runtime execution from cross-builds and
+records exact source/runtime/receipt hashes. Earlier local and scoped publisher
+records remain historical, not substitutes for the accepted final matrix.
+
+#200 remains open pending ownership reconciliation. Full normal-application
+constructors, typed host evidence, normalization UI/opt-in and Web belong to #202.
+Native-v1 caller source/runtime/host qualifications and full matched eligibility
+false remain explicit. Continue #201/#202/#212 where write sets permit; integrate,
+qualify and package through #203. Preserve the original checkout and isolated
+branches; integrate onto accepted main rather than treating old branches as
+current runtime proof. Successor native edits require fresh publication and
+exact-head gates. For #201, stationary body-contact reports, material stages,
+other liquids and future cadence/stochastic work remain mandatory.
 
 ## Physical actor timeout investigation — 2026-10-23
 
@@ -738,7 +766,7 @@ experimental lane. Its pressure family is bounded by the
 [LCB-000 Gate A record](../audits/2026-10-23-lcb000-gate-a-water-pressure-admission.md).
 **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current in source; #212 is no longer held; its later branch-current Brine implementation and standalone adapter are [qualified separately](../architecture/inertial-cellular-v1.md). This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
 
-### LCB-001 pressure reference operations (2026-10-24)
+### LCB-001 pressure reference operations (accepted 2026-10-25)
 
 In source Water ×
 `pressure_flow_v1/reference` is admitted and runs opt-in. Read the
@@ -748,14 +776,16 @@ and the [evidence record](../audits/2026-10-24-lcb001-pressure-reference-publica
 before changing it. Keep it separate from #45: its screens select nothing there.
 
 - **Tests.** Native `native/tests/test_lcb_pressure.cpp` (13 `LCB-001 pressure`
-  cases at accepted #245; residual source adds five rectangle/event/gas-ID
+  cases at accepted #245; accepted #246 adds five rectangle/event/gas-ID
   regressions, for 18 registered in `test_world.cpp`; listed in `Makefile` `TEST_SOURCES` and
   `build_windows_msvc.bat`). Godot `godot/tests/test_lcb_pressure_reference.gd`
   prints exactly one `LCB_PRESSURE_REFERENCE:` summary over 12 sections and has
   a 45 s weight in `tools/ci/run_godot_regressions.py`.
-  `test_liquid_solver_policy.gd` and `test_liquid_policy_worker.gd` now use
-  pressure `cached` as their unavailable-family refusal, because the reference is
-  admitted. `native/bench/lcb_pressure_characterisation.cpp` is a standalone
+  `test_liquid_solver_policy.gd` and `test_liquid_policy_worker.gd` used pressure
+  `cached` as unavailable at accepted #246. Current #201 branch tests admit all
+  three Water variants and retain meaningful transactional negatives through
+  unsupported Oil/PF mappings; the new optimization test checks actual execution.
+  `native/bench/lcb_pressure_characterisation.cpp` is a standalone
   screen harness (build line in its header), not a CI test or admission gate.
 - **Identity.** Admitting another cell or variant changes the matrix through
   `EXECUTABLE_CANDIDATES` in `tools/lcb/derive_capability_matrix.py`; follow the
@@ -765,17 +795,21 @@ before changing it. Keep it separate from #45: its screens select nothing there.
   `tools/ci/lcb001_pressure_reference_runtime_publication.py` and its unittest
   came from draft PR #244 and are retired with the source-bound request after
   PR #245. The publication evidence and original implementation at `48fb275`
-  are retained. The residual successor prepares
+  are retained. The successor
   `.github/workflows/lcb001-shared-contract-runtime-publication.yml` and
-  `tools/ci/lcb001_shared_contract_runtime_publication.py` with its guard tests.
-  It remains limited to `codex/lcb001-shared-contract` and requires its own
-  explicit source-bound request; preparation alone does not publish runtimes.
+  `tools/ci/lcb001_shared_contract_runtime_publication.py` published the accepted
+  #246 runtimes in run `40143202793` after its explicit source-bound request.
+  The [final acceptance record](../audits/2026-10-25-lcb001-shared-contract-acceptance.md)
+  joins that publication to the complete ready-PR gates. The publisher remains
+  limited to `codex/lcb001-shared-contract`; a later source checkpoint needs a
+  fresh scoped publisher/request and must not reuse the accepted request.
   Follow [branch-scoped publishers](local-build-and-validation.md#branch-scoped-runtime-publishers)
   and run `python3 tools/ci/check_ci_provider_policy.py` after any CI change.
 - **Issue state.** #200 was auto-closed when PR #239 merged, because GitHub read
   "does not close #200" as a closing keyword; it was reopened on 2026-10-24. Avoid
   negated closing keywords in PR bodies; #200 still owns shared native
-  W-CY/normalization/receipt acceptance. Full-application constructor propagation
+  ownership reconciliation for the accepted shared W-CY/normalization/receipt
+  checkpoint. Full-application constructor propagation
   and verified host collection remain #202 work.
 
 

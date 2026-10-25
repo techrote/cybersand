@@ -25,6 +25,10 @@ namespace {
 }  // namespace
 
 struct World::PressureState {
+    std::unique_ptr<PressureCache> cache;
+    PressureOptimizationCounters optimization;
+    std::vector<PressureKernelWork> job_optimization;
+    bool gas_fixed_point = false;
     struct Compartment {
         std::uint32_t id = 0;
         std::uint32_t generation = 0;
@@ -86,6 +90,15 @@ struct World::PressureState {
     }
 
     void reset() noexcept {
+        if (cache != nullptr) {
+            cache->cold();
+            cache->reset_certificate_admission();
+            cache->gas_dirty_chunks.clear();
+            cache->gas_components.clear();
+            cache->gas_members.clear();
+        }
+        optimization = {};
+        gas_fixed_point = false;
         compartments.clear();
         next_compartments.clear();
         history.clear();

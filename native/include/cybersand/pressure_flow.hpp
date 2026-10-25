@@ -56,6 +56,25 @@ struct PressureCellState {
     std::uint32_t gas = 0;       // 0 unresolved, kVacuumLabel, kAtmosphereLabel or a compartment id
 };
 
+// Read-only derived head-slot diagnostic, copied by the serialized World owner.
+// This is the last pre-kernel prepared field, not current cell authority: later
+// transport, host writes or restore can leave it stale/unprepared. NoHead is
+// distinct from a valid zero head. Unresolved exposes the encoded temporary
+// interpolation sentinel rather than treating it as a physical numeric head.
+enum class PressureHeadStatus : std::uint8_t {
+    FamilyUnavailable = 0,
+    NonResident = 1,
+    NoHead = 2,
+    Unresolved = 3,
+    Prepared = 4,
+};
+
+struct PressureHeadSnapshot {
+    PressureHeadStatus status = PressureHeadStatus::FamilyUnavailable;
+    std::int32_t head = 0;  // Water mass units only when status == Prepared
+    friend bool operator==(const PressureHeadSnapshot&, const PressureHeadSnapshot&) = default;
+};
+
 // Label of an Empty cell vented to the atmosphere at the last resolution.
 inline constexpr std::uint32_t kAtmosphereLabel = 0xFFFFFFFFU;
 // Label of an Empty cell a kernel vacated since the last resolution (Water or

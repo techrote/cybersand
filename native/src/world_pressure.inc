@@ -73,6 +73,30 @@ PressureCellState World::pressure_cell(std::int64_t x, std::int64_t y) const noe
     return out;
 }
 
+PressureHeadSnapshot World::prepared_pressure_head(std::int64_t x, std::int64_t y) const noexcept {
+    if (pressure_ == nullptr) return {};
+    const auto target = address(x, y);
+    const auto* chunk = find_chunk(target.chunk);
+    if (chunk == nullptr || chunk->pressure == nullptr)
+        return {PressureHeadStatus::NonResident, 0};
+    const auto head = chunk->pressure->head[target.index];
+    if (head == PressureChunk::kNoHead) return {PressureHeadStatus::NoHead, 0};
+    if (is_unknown_head(head)) return {PressureHeadStatus::Unresolved, head};
+    return {PressureHeadStatus::Prepared, head};
+}
+
+std::size_t World::copy_pressure_head_chunk_coordinates(std::span<ChunkCoord> output) const noexcept {
+    if (pressure_ == nullptr) return 0;
+    const auto required = chunks_.size();
+    if (output.size() < required) return required;
+    std::size_t index = 0;
+    for (const auto& [coordinate, chunk] : chunks_) {
+        (void)chunk;
+        output[index++] = coordinate;
+    }
+    return required;
+}
+
 std::vector<GasCompartmentSnapshot> World::gas_compartments() const {
     std::vector<GasCompartmentSnapshot> out;
     if (pressure_ == nullptr) return out;
@@ -154,6 +178,13 @@ void World::merge_pressure_effects(const JobEffects& effects) noexcept {
     flow.overfill_converted += effects.pf_overfill_converted;
     flow.flow_remainder += effects.pf_flow_remainder;
     flow.contact_loss += effects.pf_contact_loss;
+    if (effects.pressure_work != nullptr) {
+        for (const auto member : {&PressureOptimizationCounters::water_material_calls,
+                &PressureOptimizationCounters::water_motion_calls, &PressureOptimizationCounters::other_liquid_calls,
+                &PressureOptimizationCounters::certificate_attempts, &PressureOptimizationCounters::certificate_reuses,
+                &PressureOptimizationCounters::certificate_saved_calls, &PressureOptimizationCounters::certificate_declines})
+            pressure_->optimization.*member += effects.pressure_work->*member;
+    }
     flow.relief_cells += effects.pf_relief_cells;
 }
 
@@ -169,15 +200,76 @@ void World::wake_activity_block(ChunkCoord coord, Chunk& chunk, std::size_t bloc
 }
 
 void World::prepare_pressure_tick() {
+    using Clock = std::chrono::steady_clock;
+    const auto start = Clock::now();
     auto& state = *pressure_;
     state.diagnostics = {};
-    if (state.parameters.gas_enabled) resolve_gas_topology();
+    auto* cache = state.cache.get();
+    const auto gas_start = Clock::now();
+    bool gas_ran = false;
+    if (state.parameters.gas_enabled) {
+        if (cache == nullptr || !cache->complete || cache->gas_dirty) {
+            resolve_gas_topology();
+            ++state.optimization.gas_reference_passes;
+            gas_ran = true;
+        } else ++state.optimization.gas_reuses;
+    }
+    const auto head_start = Clock::now();
+    if (cache != nullptr) {
+        if (cache->membership_dirty) rebuild_pressure_index();
+        cache->gas_dirty = state.parameters.gas_enabled && !state.gas_fixed_point;
+        cache->use_heads = false;
+        if (cache->complete) {
+            if (gas_ran) {
+                // The motion stencil samples gas gauges directly at x+-2.
+                // A remote compartment change can alter that gradient without
+                // changing any lidded Water head. Revoke those assumptions
+                // before kernels run, including paused/outside-interest gas.
+                if (cache->dormant) cache->certificate_contents_cold=true;
+                for (std::size_t i = 0; i < cache->columns.size(); ++i)
+                    cache->mark(true, i, 0, config_.chunk_size - 1);
+            }
+            std::uint64_t estimated = 0;
+            for (const auto group : cache->dirty_columns) {
+                const auto& column = cache->columns[group];
+                std::uint64_t count = 0;
+                for (const auto word : column.dirty) count += static_cast<std::uint64_t>(std::popcount(word));
+                estimated += count * (column.last - column.first) * static_cast<std::uint64_t>(config_.chunk_size);
+            }
+            // A changed base column may alter a complete row interpolation.
+            // Reserve the full resident row closure before publishing any head.
+            if (!cache->dirty_columns.empty() || !cache->dirty_rows.empty())
+                estimated += static_cast<std::uint64_t>(chunks_.size()) *
+                    static_cast<std::uint64_t>(config_.chunk_size) * static_cast<std::uint64_t>(config_.chunk_size);
+            if (estimated <= cache->config.head_repair_cell_budget) cache->use_heads = true;
+            else cache->status = PressureOptimizationStatus::ReferenceBudgetFallback;
+        }
+        if (!cache->use_heads) {
+            ++state.optimization.reference_fallbacks;
+            state.optimization.fallback_resident_cells += static_cast<std::uint64_t>(chunks_.size()) *
+                static_cast<std::uint64_t>(config_.chunk_size) * static_cast<std::uint64_t>(config_.chunk_size);
+            // The reference operator replaces the entire snapshot this tick.
+            // Any later cache reuse starts cold; no partially repaired answer.
+            const auto status = cache->status;
+            cache->cold(); cache->status = status;
+        }
+    }
     compute_pressure_heads();
+    prepare_pressure_certificates();
+    if (cache != nullptr && cache->use_heads) cache->status = PressureOptimizationStatus::Ready;
+    const auto end = Clock::now();
+    const auto nanos = [](auto duration) {
+        return static_cast<std::uint64_t>(std::chrono::duration_cast<std::chrono::nanoseconds>(duration).count());
+    };
+    state.optimization.gas_nanoseconds += nanos(head_start - gas_start);
+    state.optimization.head_nanoseconds += nanos(end - head_start);
+    state.optimization.preparation_nanoseconds += nanos(end - start);
 }
 
-void World::resolve_gas_topology() {
+void World::resolve_gas_topology(bool allow_cache) {
     using State = PressureState;
     auto& state = *pressure_;
+    state.gas_fixed_point = false;
     constexpr auto kNone = State::kNone;
     const auto limit = static_cast<std::uint64_t>(PressureFlowParameters::kCompartmentVolumeLimit);
     const auto size = config_.chunk_size;
@@ -223,11 +315,22 @@ void World::resolve_gas_topology() {
         }
     }
 
+    if (allow_cache && state.cache != nullptr) {
+        // A fixed-point pass may be the last gas pass before quiet reuse. Build
+        // its fitting resident index now so that pass can certify discovery;
+        // otherwise the later head-index rebuild would leave no member proof.
+        if (state.cache->membership_dirty && chunks_.size() <= state.cache->capacity) rebuild_pressure_index();
+        prepare_pressure_gas_cache();
+    }
+    auto* gas_cache = state.cache.get();
+    const auto discovery_diagnostics = state.diagnostics;
     if (++state.pass_stamp == 0U) {
         for (auto& [coord, chunk] : chunks_) {
             (void)coord;
-            if (chunk->pressure != nullptr)
+            if (chunk->pressure != nullptr) {
                 std::fill(chunk->pressure->visit.begin(), chunk->pressure->visit.end(), 0U);
+                state.optimization.gas_stamp_clear_cells += chunk->pressure->visit.size();
+            }
         }
         state.pass_stamp = 1;
     }
@@ -259,6 +362,7 @@ void World::resolve_gas_topology() {
     // changes the topology.
     std::size_t head = 0;
     bool stop = false;
+    bool retry_requested = false;
     std::uint32_t current = 0;
 
     const auto touch = [&](std::uint32_t other) {
@@ -273,6 +377,7 @@ void World::resolve_gas_topology() {
     constexpr std::int64_t kNodeMarker = std::numeric_limits<std::int64_t>::min();
 
     const auto visit = [&](std::int64_t x, std::int64_t y) {
+        ++state.optimization.gas_bfs_probes;
         if (stop) return;
         if (state.queue.size() == state.queue.capacity())
             throw std::logic_error("pressure gas queue exceeded its reserved bound");
@@ -288,6 +393,7 @@ void World::resolve_gas_topology() {
             }
             if (state.nodes.size() >= State::kChunkNodeCapacity)
                 throw std::runtime_error("pressure gas chunk-node capacity exhausted");
+            ++state.optimization.gas_bfs_nodes;
             state.nodes.push_back({target.chunk, current, region.first_node});
             region.first_node = static_cast<std::uint32_t>(state.nodes.size() - 1U);
             region.volume += area;
@@ -307,6 +413,10 @@ void World::resolve_gas_topology() {
             return;
         }
         if (chunk->cells[target.index].material_value() != Material::Empty) return;
+        if (allow_cache && gas_cache != nullptr && gas_cache->gas_ready) {
+            const auto* certified = gas_cache->gas_component(chunk->pressure->cells[target.index].gas);
+            if (certified != nullptr && certified->valid) { retry_requested = true; stop = true; return; }
+        }
         auto& mark = chunk->pressure->visit[target.index];
         if ((mark & 0xFFFF0000U) == stamp) {
             const auto other = mark & 0xFFFFU;
@@ -316,6 +426,7 @@ void World::resolve_gas_topology() {
         mark = stamp | current;
         ++region.volume;
         ++state.diagnostics.gas_visited;
+        ++state.optimization.gas_bfs_cells;
         if (y < region.lowest_y || (y == region.lowest_y && x < region.lowest_x)) {
             region.lowest_x = x;
             region.lowest_y = y;
@@ -348,6 +459,7 @@ void World::resolve_gas_topology() {
     };
 
     const auto seed_needed = [&](std::int64_t x, std::int64_t y) {
+        ++state.optimization.gas_seed_probes;
         if (transient_obstacle_at(x, y) != 0U) return false;
         const auto target = address(x, y);
         const auto* chunk = find_chunk(target.chunk);
@@ -366,6 +478,10 @@ void World::resolve_gas_topology() {
         current = static_cast<std::uint32_t>(state.regions.size() - 1U);
         state.regions[current].lowest_x = x;
         state.regions[current].lowest_y = y;
+        if (allow_cache) {
+            const auto reused = replay_pressure_gas_region(x, y, current, stamp, retry_requested);
+            if (reused || retry_requested) return;
+        }
         state.queue.clear();
         head = 0;
         stop = false;
@@ -396,13 +512,15 @@ void World::resolve_gas_topology() {
     // still carrying a live compartment label (so no compartment is ever skipped,
     // including one held entirely by Empty or unallocated cells).
     for (const auto coord : coordinates) {
+        if (retry_requested) break;
         auto* chunk = find_chunk(coord);
         const auto origin_x = coord.x * size;
         const auto origin_y = coord.y * size;
-        for (std::int32_t local_y = 0; local_y < size; ++local_y) {
-            for (std::int32_t local_x = 0; local_x < size; ++local_x) {
+        for (std::int32_t local_y = 0; local_y < size && !retry_requested; ++local_y) {
+            for (std::int32_t local_x = 0; local_x < size && !retry_requested; ++local_x) {
                 const auto index = static_cast<std::size_t>(local_y) * static_cast<std::size_t>(size) +
                                    static_cast<std::size_t>(local_x);
+                ++state.optimization.gas_seed_cells;
                 const auto material = chunk->cells[index].material_value();
                 const auto x = origin_x + local_x;
                 const auto y = origin_y + local_y;
@@ -410,8 +528,10 @@ void World::resolve_gas_topology() {
                     if (transient_obstacle_at(x, y) != 0U) continue;
                     const std::array<std::pair<std::int64_t, std::int64_t>, 4> around{{
                         {x, y - 1}, {x - 1, y}, {x + 1, y}, {x, y + 1}}};
-                    for (const auto& [nx, ny] : around)
+                    for (const auto& [nx, ny] : around) {
                         if (seed_needed(nx, ny)) fill(nx, ny);
+                        if (retry_requested) break;
+                    }
                 } else if (material == Material::Empty) {
                     const auto label = chunk->pressure->cells[index].gas;
                     if (label != 0U && label != kAtmosphereLabel && label != kVacuumLabel && seed_needed(x, y))
@@ -420,11 +540,22 @@ void World::resolve_gas_topology() {
             }
         }
     }
+    if (retry_requested) {
+        // No compartment/label/history reducer work has started. Discard only
+        // derived discovery and run exactly one complete uncached operator.
+        if (!allow_cache) throw std::logic_error("uncached gas discovery requested cache restart");
+        ++state.optimization.gas_restart_fallbacks;
+        if (gas_cache != nullptr) gas_cache->gas_ready = false;
+        state.diagnostics = discovery_diagnostics;
+        resolve_gas_topology(false);
+        return;
+    }
     state.diagnostics.gas_regions = state.regions.size();
 
     // Identity: union compartments with the regions they overlap.
     const auto compartment_count = static_cast<std::uint32_t>(state.compartments.size());
     const auto region_count = static_cast<std::uint32_t>(state.regions.size());
+    state.optimization.gas_identity_nodes += static_cast<std::uint64_t>(compartment_count) + region_count;
     state.uf_parent.resize(compartment_count + region_count);
     for (std::uint32_t i = 0; i < compartment_count + region_count; ++i) state.uf_parent[i] = i;
     for (std::uint32_t r = 0; r < region_count; ++r) {
@@ -633,18 +764,28 @@ void World::resolve_gas_topology() {
         auto& chunk = ensure_chunk(node.coord);
         // An unallocated chunk is unresolved Empty: it was counted as fresh volume.
         ++state.diagnostics.chunk_allocations;
-        for (auto& cell : chunk.pressure->cells) cell.gas = label;
+        for (auto& cell : chunk.pressure->cells) { cell.gas = label; ++state.optimization.gas_relabel_cells; }
     }
+    bool labels_changed = false;
     for (const auto coord : coordinates) {
         auto* chunk = find_chunk(coord);
         auto& visits = chunk->pressure->visit;
         auto& cells = chunk->pressure->cells;
         for (std::size_t index = 0; index < cells.size(); ++index) {
+            ++state.optimization.gas_relabel_cells;
             const auto mark = visits[index];
             if ((mark & 0xFFFF0000U) != stamp) continue;
-            cells[index].gas = state.regions[mark & 0xFFFFU].label;
+            const auto label = state.regions[mark & 0xFFFFU].label;
+            labels_changed = labels_changed || cells[index].gas != label;
+            cells[index].gas = label;
         }
     }
+    // Bounded atmosphere exploration can still extend its authoritative label
+    // prefix after a topology edit. Unchanged Water/amount is insufficient for
+    // reuse: require a complete reference pass that is a fixed point of the
+    // label/table operator, including its resident-allocation footprint.
+    state.gas_fixed_point = !topology_changed && !labels_changed && state.diagnostics.chunk_allocations == 0U;
+    rebuild_pressure_gas_cache(stamp);
 }
 
 void World::compute_pressure_heads() {
@@ -653,16 +794,39 @@ void World::compute_pressure_heads() {
     const auto maximum = static_cast<std::int64_t>(config_.water_experiment_policy.maximum());
     constexpr auto kNoHead = PressureChunk::kNoHead;
 
-    auto& coordinates = state.sorted_coordinates;
-    coordinates.clear();
-    for (const auto& [coord, chunk] : chunks_) {
-        (void)chunk;
-        coordinates.push_back(coord);
+    auto* cache = state.cache.get();
+    const bool cached = cache != nullptr && cache->use_heads;
+    auto& coordinates = cached ? cache->column_order : state.sorted_coordinates;
+    if (!cached) {
+        coordinates.clear();
+        for (const auto& [coord, chunk] : chunks_) {
+            (void)chunk;
+            coordinates.push_back(coord);
+        }
+        std::sort(coordinates.begin(), coordinates.end(), [](const ChunkCoord& a, const ChunkCoord& b) {
+            return a.x != b.x ? a.x < b.x : a.y < b.y;
+        });
     }
-    // Column pass: chunk columns top to bottom.
-    std::sort(coordinates.begin(), coordinates.end(), [](const ChunkCoord& a, const ChunkCoord& b) {
-        return a.x != b.x ? a.x < b.x : a.y < b.y;
-    });
+    const auto put_base = [&](Chunk& chunk, std::size_t index, std::int32_t value) {
+        ++state.optimization.base_cells_written;
+        if (!cached) { chunk.pressure->head[index] = value; return; }
+        auto& old = chunk.pressure->base_head[index];
+        if (old != value) {
+            old = value;
+            const auto row = static_cast<std::int32_t>(index / static_cast<std::size_t>(size));
+            cache->mark(false, chunk.pressure->row_group, row, row);
+        }
+    };
+    const auto put_final = [&](Chunk& chunk, std::size_t index, std::int32_t value) {
+        ++state.optimization.final_cells_written;
+        auto& old = chunk.pressure->head[index];
+        if (cached && old != value) {
+            const auto local_x = static_cast<std::int32_t>(index % static_cast<std::size_t>(size));
+            const auto local_y = static_cast<std::int32_t>(index / static_cast<std::size_t>(size));
+            invalidate_pressure_certificates(chunk.pressure->coordinate, local_x, local_y, local_x, local_y);
+        }
+        old = value;
+    };
 
     const auto cell_quantity = [](const Chunk& chunk, std::size_t index) -> std::int64_t {
         return static_cast<std::int64_t>(chunk.cells[index].state_a_value()) +
@@ -690,10 +854,20 @@ void World::compute_pressure_heads() {
     };
 
     std::size_t begin = 0;
-    while (begin < coordinates.size()) {
+    std::size_t column_task = 0;
+    while (cached ? column_task < cache->dirty_columns.size() : begin < coordinates.size()) {
         auto end = begin;
-        while (end < coordinates.size() && coordinates[end].x == coordinates[begin].x) ++end;
+        std::size_t group = 0;
+        if (cached) {
+            group = cache->dirty_columns[column_task++];
+            begin = cache->columns[group].first;
+            end = cache->columns[group].last;
+        } else {
+            while (end < coordinates.size() && coordinates[end].x == coordinates[begin].x) ++end;
+        }
         for (std::int32_t local_x = 0; local_x < size; ++local_x) {
+            if (cached && !cache->columns[group].test(local_x)) continue;
+            ++state.optimization.columns_recomputed;
             const auto x = coordinates[begin].x * size + local_x;
             // Walk the chunk column; runs never bridge an unallocated chunk.
             bool open = false;
@@ -713,14 +887,14 @@ void World::compute_pressure_heads() {
                     std::int64_t value = 0;
                     if (!supported) {
                         value = cell_quantity(chunk, index) + top.value_or(0);
-                        chunk.pressure->head[index] = static_cast<std::int32_t>(clamp_head(value));
+                        put_base(chunk, index, static_cast<std::int32_t>(clamp_head(value)));
                     } else {
                         const auto compacted = std::max<std::int64_t>(0, total - (floor_y - y) * maximum);
                         if (top.has_value()) {
-                            chunk.pressure->head[index] = static_cast<std::int32_t>(clamp_head(*top + compacted));
+                            put_base(chunk, index, static_cast<std::int32_t>(clamp_head(*top + compacted)));
                         } else {
-                            chunk.pressure->head[index] = static_cast<std::int32_t>(
-                                kUnknownHeadBase - std::min(compacted, kHeadClamp));
+                            put_base(chunk, index, static_cast<std::int32_t>(
+                                kUnknownHeadBase - std::min(compacted, kHeadClamp)));
                             ++state.diagnostics.unknown_heads;
                         }
                     }
@@ -759,7 +933,7 @@ void World::compute_pressure_heads() {
                         total += cell_quantity(chunk, index);
                         continue;
                     }
-                    chunk.pressure->head[index] = kNoHead;
+                    put_base(chunk, index, kNoHead);
                     if (open) {
                         const bool supported = !(material == Material::Empty && transient_obstacle_at(x, y) == 0U);
                         close_run(position, local_y, y - 1, supported);
@@ -771,21 +945,27 @@ void World::compute_pressure_heads() {
                 close_run(end - 1, size - 1, last.y * size + size - 1, false);
             }
         }
+        if (cached) { cache->columns[group].dirty = {}; cache->columns[group].queued = false; }
         begin = end;
     }
+    if (cached) cache->dirty_columns.clear();
 
     // Row pass: resolve lidded heads within contiguous Water row segments, then
     // wake sleeping blocks whose cells have an actionable gradient.
-    std::sort(coordinates.begin(), coordinates.end(), [](const ChunkCoord& a, const ChunkCoord& b) {
+    auto& row_coordinates = cached ? cache->row_order : coordinates;
+    if (!cached) std::sort(row_coordinates.begin(), row_coordinates.end(), [](const ChunkCoord& a, const ChunkCoord& b) {
         return a.y != b.y ? a.y < b.y : a.x < b.x;
     });
     const auto start_band = std::max<std::int64_t>(1, (PressureFlowParameters::kStartDeadBand255 * maximum + 127) / 255);
     begin = 0;
-    while (begin < coordinates.size()) {
+    while (begin < row_coordinates.size()) {
         auto end = begin;
-        while (end < coordinates.size() && coordinates[end].y == coordinates[begin].y) ++end;
+        while (end < row_coordinates.size() && row_coordinates[end].y == row_coordinates[begin].y) ++end;
+        const auto group = cached ? find_chunk(row_coordinates[begin])->pressure->row_group : 0U;
         for (std::int32_t local_y = 0; local_y < size; ++local_y) {
-            const auto y = coordinates[begin].y * size + local_y;
+            const auto y = row_coordinates[begin].y * size + local_y;
+            if (!cached || cache->rows[group].test(local_y)) {
+            ++state.optimization.rows_recomputed;
             // Segment state.
             struct Known {
                 bool valid = false;
@@ -800,9 +980,10 @@ void World::compute_pressure_heads() {
                 for (std::int64_t x = from; x <= to; ++x) {
                     const auto target = address(x, y);
                     auto& chunk = *find_chunk(target.chunk);
-                    auto& slot = chunk.pressure->head[target.index];
-                    if (!is_unknown_head(slot)) continue;
-                    const auto compacted = static_cast<std::int64_t>(kUnknownHeadBase) - slot;
+                    const auto base = cached ? chunk.pressure->base_head[target.index]
+                                             : chunk.pressure->head[target.index];
+                    if (!is_unknown_head(base)) continue;
+                    const auto compacted = static_cast<std::int64_t>(kUnknownHeadBase) - base;
                     std::int64_t value = compacted;
                     if (left.valid && right.valid) {
                         value = left.value + (right.value - left.value) * (x - left.x) / (right.x - left.x);
@@ -811,13 +992,13 @@ void World::compute_pressure_heads() {
                     } else if (right.valid) {
                         value = right.value;
                     }
-                    slot = static_cast<std::int32_t>(clamp_head(value));
+                    put_final(chunk, target.index, static_cast<std::int32_t>(clamp_head(value)));
                 }
             };
             std::int64_t previous_x = 0;
             bool have_previous = false;
             for (auto position = begin; position < end; ++position) {
-                const auto coord = coordinates[position];
+                const auto coord = row_coordinates[position];
                 if (have_previous && previous_x + 1 != coord.x * size && segment_open) {
                     if (pending) resolve(pending_from, previous_x, {});
                     segment_open = false;
@@ -829,7 +1010,8 @@ void World::compute_pressure_heads() {
                     const auto x = coord.x * size + local_x;
                     const auto index = static_cast<std::size_t>(local_y) * static_cast<std::size_t>(size) +
                                        static_cast<std::size_t>(local_x);
-                    const auto value = chunk.pressure->head[index];
+                    const auto value = cached ? chunk.pressure->base_head[index] : chunk.pressure->head[index];
+                    if (cached && !is_unknown_head(value)) put_final(chunk, index, value);
                     previous_x = x;
                     have_previous = true;
                     if (value == kNoHead) {
@@ -860,10 +1042,11 @@ void World::compute_pressure_heads() {
             }
             if (segment_open && pending) resolve(pending_from, previous_x, {});
 
+            }
             // Actionable-gradient wake for cells in sleeping blocks (same stencil
             // and start dead band as the kernel).
             for (auto position = begin; position < end; ++position) {
-                const auto coord = coordinates[position];
+                const auto coord = row_coordinates[position];
                 auto& chunk = *find_chunk(coord);
                 const auto block_y = local_y / config_.activity_block_size;
                 for (std::int32_t block_x = 0; block_x < chunk.activity_blocks_per_axis; ++block_x) {
@@ -914,26 +1097,40 @@ void World::compute_pressure_heads() {
                 }
             }
         }
+        if (cached) { cache->rows[group].dirty = {}; cache->rows[group].queued = false; }
         begin = end;
     }
+    if (cached) cache->dirty_rows.clear();
 }
 
 bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* effects) {
     record_physics(PhysicsEvent::WaterUpdate, Material::Water, Material::Empty, 0, 0, effects);
+    auto& work = effects != nullptr && effects->pressure_work != nullptr
+        ? *effects->pressure_work : pressure_->optimization;
+    ++work.water_material_calls;
+    if (pressure_->cache != nullptr && pressure_->cache->dormant &&
+        pressure_->cache->complete && pressure_->cache->use_heads && pressure_->cache->certificate_layer_enabled &&
+        !pressure_->cache->certificate_contents_cold && pressure_motion_is_noop(x, y, effects)) {
+        ++work.certificate_saved_calls;
+        return false;
+    }
+    ++work.water_motion_calls;
     const auto maximum = static_cast<std::int64_t>(config_.water_experiment_policy.maximum());
     const auto overfill_limit = maximum;
     bool changed = false;
     const auto direction = deterministic_direction(x, y);
-    constexpr auto kNoHead = PressureChunk::kNoHead;
 
     // Witness a direct authoritative write exactly as transfer_water does.
     const auto witness = [this, effects](Chunk& chunk, const Address& at, std::int64_t non_empty_delta,
                                          std::int64_t wx, std::int64_t wy) {
         if (effects != nullptr) {
             effects->record(at, non_empty_delta);
+            effects->pressure_gas_changed = effects->pressure_gas_changed || non_empty_delta != 0;
             if (settled_discovery_ != nullptr)
                 effects->record_discovery_mutation(at, config_.activity_block_size);
         } else {
+            invalidate_pressure_input(at.chunk, at.local_x, at.local_y,
+                                      at.local_x, at.local_y, non_empty_delta != 0);
             chunk.non_empty_cell_count = static_cast<std::size_t>(
                 static_cast<std::int64_t>(chunk.non_empty_cell_count) + non_empty_delta);
             chunk.changed_this_tick = true;
@@ -1170,36 +1367,7 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
 
     // Stage 3c: velocity from the immutable head snapshot. Samples never cross a
     // wall, foreign liquid or body mask: x+-2 requires both faces open.
-    const auto stiffness = maximum * PressureFlowParameters::kOverfillStiffnessRows;
-    const auto own_head = [&]() -> std::int64_t {
-        const auto h = self.chunk->pressure->head[self.at.index];
-        const auto compression = stiffness * self.chunk->pressure->cells[self.at.index].overfill;
-        return (h == kNoHead ? quantity(self) : static_cast<std::int64_t>(h)) + compression;
-    }();
-    const auto sample = [&](std::int64_t nx) -> std::optional<std::int64_t> {
-        if (transient_obstacle_at(nx, y) != 0U) return std::nullopt;
-        const auto target = address(nx, y);
-        const auto* chunk = find_chunk(target.chunk);
-        if (chunk == nullptr) return 0;
-        const auto material = chunk->cells[target.index].material_value();
-        if (material == Material::Empty) return pressure_->gauge_of_label(chunk->pressure->cells[target.index].gas);
-        if (material != Material::Water) return std::nullopt;
-        const auto h = chunk->pressure->head[target.index];
-        const auto compression = stiffness * chunk->pressure->cells[target.index].overfill;
-        if (h == kNoHead)
-            return static_cast<std::int64_t>(chunk->cells[target.index].state_a_value()) +
-                   chunk->pressure->cells[target.index].overfill + compression;
-        return static_cast<std::int64_t>(h) + compression;
-    };
-    const auto l1 = sample(x - 1);
-    const auto l2 = l1 ? sample(x - 2) : std::nullopt;
-    const auto r1 = sample(x + 1);
-    const auto r2 = r1 ? sample(x + 2) : std::nullopt;
-    const auto a = l1.value_or(own_head);
-    const auto b = l2.value_or(a);
-    const auto c = r1.value_or(own_head);
-    const auto d = r2.value_or(c);
-    const auto gradient = (b + a - c - d) / 2;
+    const auto gradient = pressure_lateral_gradient(x, y);
     const auto band = std::max<std::int64_t>(1, ((flow == 0 ? PressureFlowParameters::kStartDeadBand255
                                                              : PressureFlowParameters::kMovingDeadBand255) *
                                                      maximum + 127) / 255);

@@ -4,7 +4,7 @@ status: Approved design
 document-kind: design
 scope: LCB-000 Gates D and E — four-model controlled Water comparison contract, quantity normalization, supported/refused combinations, the protected lcb.dam.water.freemass.reference.v1 Dam Break fixture and the one-World mixed-liquid fixture with arm overlays, negative controls and commands
 canonical-for: [lcb-water-comparison-contract, lcb-reference-fixtures]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [../architecture/liquid-solver-family-policy.md, lcb-manual-comparison-ux.md, lcb-scenario-catalogue.md, ../systems/water-design.md, microscenarios.md, experiment-tower.md, ../audits/2026-10-23-lcb000-gates-cde-design-evidence.md]
 ---
 
@@ -12,7 +12,7 @@ related-documents: [../architecture/liquid-solver-family-policy.md, lcb-manual-c
 
 ## Status
 
-**Approved bounded comparison design and fixtures — Gates D/E PASS.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current in source; #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
+**Approved bounded comparison design and fixtures — Gates D/E PASS.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current in source; #212 is no longer held but is outside this accepted main checkpoint. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
 
 - **Owner-approved:** Water must be a common controlled test material for all
   four families (#213 Gate D; #200 amendment of 2026-10-22).
@@ -20,10 +20,12 @@ related-documents: [../architecture/liquid-solver-family-policy.md, lcb-manual-c
   schema-2 definitions run on unchanged native Current liquids. Their
   Current-default control observations were measured on 2026-10-23
   ([evidence](../audits/2026-10-23-lcb000-gates-cde-design-evidence.md)).
-- **Current in source:** opt-in W-PF reference, plus W-CY on the unmerged
-  `codex/lcb001-shared-contract` successor. Their source/runtime qualifications
-  are recorded in their dated evidence. Cached/dormant and inertial arms remain
-  Planned, with their registered invariants still required.
+- **Current in source:** opt-in W-PF reference and W-CY on main through accepted #246
+  (`ec58d919`). Their source/runtime qualifications
+  are recorded in their dated evidence. The #201 branch admits cached/dormant
+  source with local correctness/cost proof; actual source-matched publication and
+  final required gates remain pending. Water inertial remains Planned/refused,
+  with its registered invariants still required.
 
 Families, variants, refusal codes and receipts are defined in the
 [solver-family policy](../architecture/liquid-solver-family-policy.md).
@@ -33,8 +35,8 @@ Families, variants, refusal codes and receipts are defined in the
 | Arm ID | Water mapping | Regime | State today |
 |---|---|---|---|
 | `W-FM` | `freemass_v1/reference` | protected native Current: mass8, coherence12, fractional | **executes** |
-| `W-CY` | `cellular_yield_v1/reference` | **experimental whole-cell**: every Water cell contains `maximum()`; Water's own yielding law and material block v2 (`viscosity_index` 0–255, default 0) retain its material hooks | Current in unmerged residual #200 source; native and scoped Windows/Linux publication pass, full final-head acceptance pending ([contract](../architecture/liquid-prepared-setup-and-receipts.md)) |
-| `W-PF` | `pressure_flow_v1/{reference,cached,cached_dormant}` | experimental pressure/overfill/gas candidate, Water-only v1 | `reference` **executes**, opt-in: Current from merged #245 ([design](../architecture/pressure-flow-v1.md)); `cached`/`cached_dormant` refused `family_unavailable` (#201) |
+| `W-CY` | `cellular_yield_v1/reference` | **experimental whole-cell**: every Water cell contains `maximum()`; Water's own yielding law and material block v2 (`viscosity_index` 0–255, default 0) retain its material hooks | Current on accepted main through #246; source-matched Windows/Linux publication and final required matrix pass ([contract](../architecture/liquid-prepared-setup-and-receipts.md)) |
+| `W-PF` | `pressure_flow_v1/{reference,cached,cached_dormant}` | experimental pressure/overfill/gas candidate, Water-only v1 | `reference` **executes**, opt-in: Current from merged #245 ([design](../architecture/pressure-flow-v1.md)); `cached`/`cached_dormant` execute in the unmerged #201 branch ([optimization contract](../architecture/pressure-optimization.md)); real publication/final gates pending |
 | `W-IN` | `inertial_cellular_v1/reference` | experimental inertial regime with retained velocity/accumulator | proposed (#212); refused today |
 
 Rules:
@@ -67,8 +69,8 @@ Rules:
 - **Fractional cells.** For a whole-cell (`W-CY`) or any regime without
   fractional support, a setup containing fractional Water is **refused**
   (`normalization_required`) unless the caller explicitly opts in to a
-  registered setup conversion. The registered rule, implemented in unmerged
-  native residual #200 source, is
+  registered setup conversion. The registered rule, implemented in accepted main
+  native #200 source through #246, is
   **`water-normalize-v1` (corrected 2026-10-23)**:
   - **Rounding.** A Water cell of mass `m` (1 ≤ m ≤ `maximum()`) becomes one
     full cell (`maximum()`) when `2·m ≥ maximum()`, evaluated in at least
@@ -94,7 +96,7 @@ Rules:
   seed to the receipt. The explicit Godot constructor refuses partial final
   Water; its normalization opt-in and full normal-application routing remain
   integration gaps. See the [native setup/receipt contract](../architecture/liquid-prepared-setup-and-receipts.md)
-  and [dated local proof](../audits/2026-10-24-lcb001-residual-shared-contract.md).
+  and [accepted evidence](../audits/2026-10-25-lcb001-shared-contract-acceptance.md).
 - **Reverse direction.** A whole-cell or inertial Water cell entering a
   FreeMass-valued observation counts as `maximum()`.
 
@@ -283,7 +285,7 @@ source-derived registry. It leaves both protected fixtures unchanged.
 | ID | Control | Expected |
 |---|---|---|
 | NC-1 | Request `inertial_cellular_v1` for Oil | `combination_rejected` before construction; prior session intact [#200] |
-| NC-2 | Request `pressure_flow_v1` or `inertial_cellular_v1` on today's build | `family_unavailable`; no fallback to Current [#200]. On the pressure branch `pressure_flow_v1/reference` is admitted, so the regressions exercise NC-2 with `cached`, `cached_dormant` and inertial |
+| NC-2 | Request a declared but unavailable mapping, such as Water/inertial on the combined #212 source | `family_unavailable`; no fallback to Current [#200]. Accepted #246 main admits pressure reference; #201 and the combined #212 source admit all three Water PF variants. Transactional negatives use unsupported Oil/PF mappings and Water/inertial instead of executable Water PF or Brine IN |
 | NC-3 | Fractional-Water setup under `W-CY` without an explicit `water-normalize-v1` opt-in | `normalization_required` [#200] |
 | NC-4 | Pressure Water at rest beside actively flowing Oil (M2b) | Oil motion and chemistry continue; Water dormancy never suppresses them [#201] |
 | NC-5 | Salt dissolution under M1 | Products at inertial default state; ledger closes as above [#212/#160] |

@@ -2,10 +2,10 @@
 title: pressure_flow_v1 reference — corrected Water pressure family
 status: Current
 document-kind: design
-scope: LCB-001 (#200) Current main opt-in Water family pressure_flow_v1/reference plus unmerged residual hash v2/CYPS2 accounting — admission, solver-owned state, gas-compartment topology and identity, head snapshot, kernel laws, declared parameters and bounds, lifecycle per mutation path, physical-state hash, CYPS persistence, inspection APIs and known limits; cached/dormant variants (#201) and the comparison host (#202) are not here
+scope: LCB-001 (#200) accepted main opt-in Water pressure_flow_v1/reference and hash v2/CYPS2 accounting — admission, solver-owned state, gas-compartment topology and identity, head snapshot, kernel laws, declared parameters and bounds, lifecycle per mutation path, physical-state hash, CYPS persistence, inspection APIs and known limits; branch-Current cached/dormant mechanisms (#201) and the comparison host (#202) have separate canonical owners
 canonical-for: [pressure-flow-v1, gas-compartments, physical-state-hash, physical-state-persistence]
-last-reviewed: 2026-10-24
-related-documents: [lcb-pressure-inertial-handoff.md, liquid-state-transition-matrix.md, liquid-solver-family-policy.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb001-pressure-reference-publication.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md]
+last-reviewed: 2026-10-25
+related-documents: [lcb-pressure-inertial-handoff.md, liquid-state-transition-matrix.md, liquid-solver-family-policy.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb001-pressure-reference-publication.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, pressure-optimization.md]
 ---
 
 # pressure_flow_v1 reference — corrected Water pressure family
@@ -13,9 +13,9 @@ related-documents: [lcb-pressure-inertial-handoff.md, liquid-state-transition-ma
 ## Implementation status and admission
 
 **Current on main** since [PR #245](https://github.com/techrote/cybersand/pull/245)
-merged at `03785c3`, and retained in unmerged residual
-[#200](https://github.com/techrote/cybersand/issues/200) source on
-`codex/lcb001-shared-contract`. It is **opt-in**: only
+merged at `03785c3`, with the shared native successor accepted through
+[PR #246](../audits/2026-10-25-lcb001-shared-contract-acceptance.md) at
+`ec58d919` on 2026-10-25. It is **opt-in**: only
 a World whose applied liquid policy assigns Water to `pressure_flow_v1/reference`
 runs it. The production default stays `freemass_v1` and every Current golden is
 unchanged. The owner lifted the hold on the pressure reference and the inertial
@@ -23,28 +23,32 @@ family on 2026-10-24 (LCB continuous-execution instruction). Evidence, including
 failed attempts and runtime identities, is in the
 [publication record](../audits/2026-10-24-lcb001-pressure-reference-publication.md).
 
-The implemented pressure family admits Water with variant `reference`. It stores
-overfill and retained horizontal flow in an optional per-cell sidecar, plus
-Empty-cell gas labels and a World-owned compartment table. Requests for cached
-or dormant variants currently refuse; they do not execute a different Water
-solver. Other materials retain their own kernels, and default Water remains
-FreeMass. The storage, admission and refusal details below describe that native
-implementation separately from later application-host acceptance.
+Accepted #246 main admits Water with variant `reference`. Current source on
+`codex/lcb002-pressure-variants` also admits `cached` and `cached_dormant` with
+the same pressure law. Its [optimization contract](pressure-optimization.md)
+owns derived head/component caches, motion certificates, execution identity and
+cost admission; source-matched publication and final ready-PR acceptance remain
+pending. These variants are implementations of one family, not new physics.
+All retain the optional overfill/flow/gas sidecar and World compartment table.
+Other materials keep their kernels and default Water remains FreeMass.
 
-The residual native source adds W-CY, explicit normalization, typed native
+Accepted main also supplies W-CY, explicit normalization, typed native
 receipts and exact shared quantity accounting. Their construction, ownership,
 codec freeze and qualification rules belong to
 [native prepared setup and receipts](liquid-prepared-setup-and-receipts.md).
-The hash v2 and CYPS2 sections describe the unmerged residual native source;
-main at the #245 merge retains its source-matched hash v1/CYPS1 contract.
-The [publication and acceptance record](../audits/2026-10-24-lcb001-pressure-reference-publication.md)
-owns the exact #245 gates and runtime identities.
+The hash v2 and CYPS2 sections describe **Current main after #246**. Hash v1
+and CYPS1 belong to the historical #245 source/artifact contract; the current
+decoder refuses CYPS1. The [original pressure publication record](../audits/2026-10-24-lcb001-pressure-reference-publication.md)
+retains the exact #245 gates and runtime identities, and the
+[shared acceptance audit](../audits/2026-10-25-lcb001-shared-contract-acceptance.md)
+records the later accepted source, published bytes and complete final matrix.
 
 This page retains the pressure laws; its characterization remains the recorded
 `349d593` #245 evidence, not a rerun of that campaign on the residual delta.
 
 What this page does **not** claim:
-- `cached` and `cached_dormant` (#201) are refused (`family_unavailable`);
+- #201 branch source admission is not accepted Windows/Linux runtime or full-host qualification;
+  see the [dated optimization evidence](../audits/2026-10-25-lcb002-pressure-variants.md);
 - native W-CY and normalization do not supply a Godot normalization opt-in or
   complete #202 comparison host; the other host constructors still run defaults;
 - Web/WASM execution has not been run.
@@ -53,14 +57,14 @@ What this page does **not** claim:
 
 | Piece | Location |
 |---|---|
-| Admission (running build), optional family block | `LiquidPolicyBuild::running()` in [`liquid_solver_policy.hpp`](../../native/include/cybersand/liquid_solver_policy.hpp): Water × family 3 qualified for variant `reference` only (`qualified_variants`); schema `pressure_flow_v1` v1 `{gas_enabled 0..1, atmospheric_head_rows 16..4096}`, optional |
+| Admission (running build), optional family block | `LiquidPolicyBuild::running()` in [`liquid_solver_policy.hpp`](../../native/include/cybersand/liquid_solver_policy.hpp): Water × family 3 qualified for `reference` on accepted #246 main and for all three variants in current #201 branch source (`qualified_variants`); schema `pressure_flow_v1` v1 `{gas_enabled 0..1, atmospheric_head_rows 16..4096}`, optional |
 | Public value types and declared constants | [`pressure_flow.hpp`](../../native/include/cybersand/pressure_flow.hpp): `PressureFlowParameters`, `PressureCellState`, `GasCompartmentSnapshot`, `GasHistoryRecord`, `GasLedger`, `PressureFlowLedger`, `PressureFlowDiagnostics`, `kAtmosphereLabel`, `kVacuumLabel` |
 | World-owned state and scratch | [`world_pressure_state.inc`](../../native/src/world_pressure_state.inc): `World::PressureState` |
 | Gas resolution, heads, kernel, hash, persistence | [`world_pressure.inc`](../../native/src/world_pressure.inc) |
 | Shared quantity accounting, typed setup and receipts | [`world_quantity.inc`](../../native/src/world_quantity.inc); [canonical native contract](liquid-prepared-setup-and-receipts.md) |
 | Hooks into Current paths | [`world.cpp`](../../native/src/world.cpp): `World::PressureChunk`, `ensure_chunk`, `write_cell(..., external)`, `set`, `move_cell`, `transfer_water` guard, `RuleKernel::Water` dispatch, `begin_tick`, `merge_job_effects`, `clear` |
 | GDExtension | `CyberNativeCellWorld.get_physical_state_hash()`, `get_physical_state_hash_version()`, `inspect_gas_compartments()`, `inspect_pressure_cell()`, `get_pressure_flow_ledger()`, `get_liquid_run_receipt(setup)`; `water_experiment_observation` adds `water_visible`/`water_overfill`; `CyberDemoBridge.export_physical_state()`/`import_physical_state()`; `inspect_cell` adds `family_state` |
-| Regressions | [`test_lcb_pressure.cpp`](../../native/tests/test_lcb_pressure.cpp) (18 native cases in residual source; 13 at accepted #245), [`test_lcb_pressure_reference.gd`](../../godot/tests/test_lcb_pressure_reference.gd) (publisher candidate regression) |
+| Regressions | [`test_lcb_pressure.cpp`](../../native/tests/test_lcb_pressure.cpp) (18 native cases on accepted #246 main; 13 at accepted #245), [`test_lcb_pressure_reference.gd`](../../godot/tests/test_lcb_pressure_reference.gd) (publisher candidate regression) |
 | Characterization harness | [`lcb_pressure_characterisation.cpp`](../../native/bench/lcb_pressure_characterisation.cpp) |
 
 ## Storage (Gate B handoff kept)
@@ -78,7 +82,7 @@ The World owns the gas-compartment table (`PressureState`: id, generation,
 ancestry ≤ 8, amount, volume, anchor, created tick, revision, gauge), a
 64-entry retirement history, pressure/gas ledgers and fixed-capacity scratch
 reserved at construction. A default World allocates no pressure state. The
-residual shared quantity ledger exists in every native World; its fixed worker
+shared quantity ledger exists in every native World; its fixed worker
 scratch and measured storage cost are recorded in the
 [accounting contract](liquid-prepared-setup-and-receipts.md#quantity-aggregates-producers-and-continuation).
 
@@ -334,10 +338,10 @@ Pending events reuse ordinary queue admission, including radius, capacity and
 the radius-plus-two coordinate margin. Direct rectangle quantity readback
 rejects negative dimensions and overflowing inclusive endpoints; zero-area
 reads remain zero, and valid final cells at `INT64_MAX` need no overflowing
-exclusive endpoint. These residual fixes retain ordinary event continuation,
+exclusive endpoint. These accepted #246 fixes retain ordinary event continuation,
 worker parity and quantity accounting; their earlier failures and validation
 are in the [residual audit](../audits/2026-10-24-lcb001-residual-shared-contract.md#publication-attempt-1-stopped-for-coordinate-boundary-defects).
-In residual source, historical CYPS1 explicitly refuses as an unknown format; #245's saved format-1
+On accepted main, historical CYPS1 explicitly refuses as an unknown format; #245's saved format-1
 evidence remains historical. The owner-requested narrow native codec freeze is
 described in the [shared contract](liquid-prepared-setup-and-receipts.md); it is
 not a production Cell/global ABI or full application replay freeze.
@@ -364,11 +368,13 @@ they do not describe source `349d593`.
 
 ## Known limits
 
-- **Cost.** Preparation scans every resident chunk each tick (gas seeds, relabel,
+- **Reference cost.** Preparation scans every resident chunk each tick (gas seeds, relabel,
   column and row passes): the reference is O(resident cells). A 1024² dam runs at
-  roughly 1.5× Current single-threaded in the harness. Incremental caches and
-  dormancy are #201.
-- **Dormancy remains Planned.** A #201 rest certificate must preserve body
+  roughly 1.5× Current single-threaded in the source-qualified harness above.
+  The [#201 branch contract](pressure-optimization.md) separately owns derived
+  caches, retained global gas work and complete-tick cost evidence.
+- **Dormancy is Current in #201 branch source; acceptance is pending.** Its
+  [motion certificate](pressure-optimization.md#motion-certificates-preserve-ordinary-obligations) preserves body
   contact reports even when a failed gravity/diagonal probe moves no Water:
   those reports feed actual body coupling. It must preserve material stages,
   prove future motion is a no-op rather than freeze nonzero flow, and demonstrate

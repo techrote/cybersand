@@ -23,22 +23,28 @@ LIQUIDS = ((3, 1), (8, 2), (12, 2), (16, 2), (20, 2), (21, 2), (24, 2),
            (30, 2), (32, 2), (33, 2), (36, 2))
 SETUP = {"kind": 1, "definition_schema": 1, "definition_digest": None, "seed": 7,
          "domain": [0, 0, 8, 8], "coverage": 1, "gaps": 63}
-PHYSICAL_FACTS = {
-    "captured_date": "2026-10-24",
-    "platform": "Windows x86_64",
-    "compiler": "LLVM-MinGW 20260826 UCRT, clang++ -O1 C++20",
-    "stack_reserve_bytes": 1048576,
-    "stack_commit_bytes": 4096,
-    "binary_sha256": "d0e95dcdd0df57349fcc565046fa6bfc1caaa7330a65af5178fc18f9501dcf5e",
-    "qualification": "Measured current-policy native fixture facts; frozen9e91 World and IN-capable World match all eight legacy hash/CYPS observations and four fixture hashes under identical new admission identities. Capability-digest change is not physics drift. Encoding oracle remains independent.",
-    "hash_version": 2,
-    "hashes": {
-        "empty": 16642348853124720943,
-        "selected": 16302555753175075060,
-        "pressure": 8415393922628065281,
-        "normalized": 3877769997849147379
-    }
-}
+# Measured fixture facts from the combined-source native capture below.
+# Parent captures remain historical and are never reattested as this source.
+PHYSICAL_FACTS = {'captured_date': '2026-10-25',
+ 'platform': 'Windows x86_64',
+ 'compiler': 'LLVM-MinGW 20260826 UCRT, clang++23.1.0 -O1 C++20',
+ 'stack_reserve_bytes': 1048576,
+ 'stack_commit_bytes': 4096,
+ 'binary_sha256': '05e1ea6f385c16c48ff78048e498954d61eeaa305e9965eedc177a06645ab5a9',
+ 'capture_receipt_sha256': 'efad0f0bf3770c4bfaaafd7d4162925bd4b1d27a7d2a56c8a5639779abf266d9',
+ 'source_parents': ['0af161b45ce80d071fa5aae404fcb4b8950349b4',
+                    '12d76736b2c437afe3466822b0072532e4e730a8'],
+ 'native_input_manifest_sha256': '22694006cd575d6f1956c7c0a5c523b5ec5a285a2576a63acc390b8757221f59',
+ 'qualification': 'Measured combined-source native fixture hashes only, captured from the fenced '
+                  'merged include/src delta before merge commit. Both parent fact sets and the '
+                  'failed first temporary harness build remain retained. This supplies physical '
+                  'facts to independent encoding expectations, not an independent physics proof or '
+                  'published runtime qualification.',
+ 'hash_version': 2,
+ 'hashes': {'empty': 1695277046478572469,
+            'normalized': 1546994162050679665,
+            'pressure': 4336100411226104392,
+            'selected': 1789391941043314826}}
 
 DEFAULT_CONFIG = {
     "water_semantics": [1, 8, 12, 0], "interaction": [1, 8, 9, 30],
