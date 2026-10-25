@@ -361,8 +361,8 @@ struct World::JobEffects {
     // phase barrier publishes them to shared chunk/activity-block metadata.
     // A chunk-local block ordinal is monotone across positive and negative
     // chunk seams, including the single-worker unaligned geometry.
-    std::vector<std::uint8_t> activity_flags;
-    std::vector<std::uint64_t> activity_deadlines;
+    std::span<std::uint8_t> activity_flags;
+    std::span<std::uint64_t> activity_deadlines;
     std::int64_t activity_origin_x = 0;
     std::int64_t activity_origin_y = 0;
     std::int32_t activity_width = 0;
@@ -386,7 +386,7 @@ struct World::JobEffects {
     std::uint64_t pf_relief_cells = 0;
     InertialLedger inertial{};
 
-    void allocate_activity(const WorldConfig& config) {
+    static std::size_t activity_slot_capacity(const WorldConfig& config) {
         const auto span = static_cast<std::size_t>(config.scheduling_core_size) +
                           2U * static_cast<std::size_t>(config.maximum_rule_radius);
         const auto block = static_cast<std::size_t>(config.activity_block_size);
@@ -399,8 +399,14 @@ struct World::JobEffects {
             ? (span - 2U) / block + 2U : span;
         if (axis > std::numeric_limits<std::size_t>::max() / axis)
             throw std::length_error("per-job activity geometry capacity overflow");
-        activity_flags.resize(axis * axis);
-        activity_deadlines.resize(axis * axis);
+        return axis * axis;
+    }
+
+    void bind_activity(const WorldConfig& config,
+                       std::span<std::uint8_t> flags,
+                       std::span<std::uint64_t> deadlines) noexcept {
+        activity_flags = flags;
+        activity_deadlines = deadlines;
         activity_blocks_per_chunk =
             (config.chunk_size + config.activity_block_size - 1) /
             config.activity_block_size;
@@ -557,9 +563,24 @@ struct World::ParallelState {
         JobEffects effects;
     };
 
-    explicit ParallelState(const WorldConfig& config)
-        : results(config.active_core_capacity) {
-        for (auto& result : results) result.effects.allocate_activity(config);
+    explicit ParallelState(const WorldConfig& config) {
+        const auto slots_per_job = JobEffects::activity_slot_capacity(config);
+        if (config.active_core_capacity >
+            std::numeric_limits<std::size_t>::max() / slots_per_job)
+            throw std::length_error("world activity geometry capacity overflow");
+        const auto total_slots = config.active_core_capacity * slots_per_job;
+        results.resize(config.active_core_capacity);
+        // Two owning allocations per World, rather than two per scheduling
+        // slot. Every job receives a fixed disjoint span; the owners never
+        // resize after binding, and outlive both the pool and these spans.
+        activity_flags.resize(total_slots);
+        activity_deadlines.resize(total_slots);
+        for (std::size_t i = 0; i < results.size(); ++i) {
+            const auto offset = i * slots_per_job;
+            results[i].effects.bind_activity(config,
+                std::span(activity_flags).subspan(offset, slots_per_job),
+                std::span(activity_deadlines).subspan(offset, slots_per_job));
+        }
         if (config.physics_diagnostics.enabled) {
             physics.resize(config.active_core_capacity);
             for (std::size_t i = 0; i < results.size(); ++i)
@@ -570,10 +591,13 @@ struct World::ParallelState {
             pool = std::make_unique<PersistentWorkerPool>(config.worker_threads);
     }
 
-    std::unique_ptr<PersistentWorkerPool> pool;
+    std::vector<std::uint8_t> activity_flags;
+    std::vector<std::uint64_t> activity_deadlines;
     std::vector<JobResult> results;
     std::vector<PhysicsJobHistogram> physics;
     std::vector<std::size_t> phase_job_indices;
+    // Retire/join pool threads before releasing any job or signal storage.
+    std::unique_ptr<PersistentWorkerPool> pool;
 };
 
 struct World::TransientObstacleState {
