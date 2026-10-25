@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
 ---
 
@@ -741,7 +741,7 @@ does not freeze #45 thresholds.
 |---|---|
 | Running-build admission of Water × `pressure_flow_v1/reference`, optional family block `{gas_enabled 0..1, atmospheric_head_rows 16..4096}` (defaults 1, 32); `cached`/`cached_dormant` refused `family_unavailable` | Current |
 | Solver-owned per-chunk sidecars, World gas table with label-overlap identity and exact ledgers, immutable head snapshot, phased kernel | Current ([design](../architecture/pressure-flow-v1.md)) |
-| Physical-state hash v1, CYPS v1 save/restore, GDExtension inspection and ledgers, `water_visible`/`water_overfill`, receipt `family_parameters`, experimental run-receipt hash | Current ([interfaces](interfaces-and-message-contracts.md#lcb-001-pressure-reference-inspection-and-persistence-experimental)) |
+| Physical-state hash v1 and CYPS1 at the historical #245 checkpoint; retained inspection/ledger APIs | Historical codec; accepted main now uses v2 [below](#lcb-001-shared-contract-accepted--2026-10-25). Original APIs ([interfaces](interfaces-and-message-contracts.md#lcb-001-pressure-reference-inspection-and-persistence-experimental)) |
 | Capability matrix Water × pressure `executable_today: true`, `executable_variants: ["reference"]`; regenerated digest and vector identity words, with no acceptance/refusal change in the 47 cases | Current |
 | Native `test_lcb_pressure.cpp` (13 cases), Godot `test_lcb_pressure_reference.gd` (12 sections), native characterization harness | Current; results in the evidence record |
 | Linux/Windows Godot, sanitizer/TSan and apparatus execution | Exact-head required matrix passed for #245; Web not built or run ([acceptance](../audits/2026-10-24-lcb001-pressure-reference-publication.md#exact-head-acceptance-and-merge)) |
@@ -756,7 +756,7 @@ measurements remain in the dated evidence record.
 
 | Remaining | Owner and status |
 |---|---|
-| W-CY, `water-normalize-v1`, native typed receipts and exact quantity accounting | #200, Current in unmerged successor; local proof and remaining acceptance [below](#lcb-001-residual-shared-contract--2026-10-24) |
+| W-CY, `water-normalize-v1`, native typed receipts and exact quantity accounting | #200, Accepted on main through #246; scope and remaining ownership [below](#lcb-001-shared-contract-accepted--2026-10-25) |
 | Host provenance/collection proof and remaining normal-application constructors | #202, Planned; preserve native shared interfaces from #200 |
 | `cached`/`cached_dormant`, incremental caches and dormancy (the reference is O(resident cells) per tick) | [#201](https://github.com/techrote/cybersand/issues/201), Planned |
 | Comparison host and UI; re-dispositioning the registered candidate arms | [#202](https://github.com/techrote/cybersand/issues/202), Planned |
@@ -776,34 +776,48 @@ Successor native changes require fresh source-matched publication,
 as described for [branch-scoped publishers](../operations/local-build-and-validation.md#branch-scoped-runtime-publishers).
 #200 itself stays open (see the [issue-state correction](#lcb-001-policy-foundation--2026-10-24)).
 
-## LCB-001 residual shared contract — 2026-10-24
+<a id="lcb-001-residual-shared-contract--2026-10-24"></a>
 
-**Current in unmerged source:** `codex/lcb001-shared-contract` consolidates
-whole-cell Water admission/refusal, its own yielding law/material block v2,
-rare-yield liveness, explicit final-tuple `water-normalize-v1`, native-issued
-construction outcomes, immutable prepared Worlds, typed v1 run/attempt receipts
-and exact quantity aggregates. Physical hash and CYPS advance to **2** for the
-shared accounting continuation. Historical content/state hashes, Cell carrier,
-Current defaults and retained failures remain preserved. The narrow native
-encoding freeze does not establish a global ABI or full-host evidence freeze.
+## LCB-001 shared contract accepted — 2026-10-25
 
-Read the [canonical native contract](../architecture/liquid-prepared-setup-and-receipts.md)
-and [dated evidence](../audits/2026-10-24-lcb001-residual-shared-contract.md).
-Final LLVM-MinGW and MSVC builds pass **126/126** at the ordinary 1 MiB stack;
-eight normalization and seven complete receipt byte vectors match independent
-Python oracles. Source-matched Windows/Linux development runtimes passed import
-and all twelve scoped regression cases, including the 16 WEX body-mask cases,
-in publication run `40138333825`, appended as `888a39f0`. Full final-head
-non-draft CI remains required before merge. Godot typed normalization opt-in
-and actual host coverage/provenance remain #202 integration work.
+**Current on main through [PR #246](https://github.com/techrote/cybersand/pull/246),
+merged as `ec58d919b3d904fbd338eaccc25de35782c41a24`.** Final tested head
+`560f9a4143852c5a508b5f33a4a7f2059edbcbdc`, its synthetic checkout and the merge
+share tree `e8e999899bd35bf20df4b03cf9c0620d86089ff1`.
+The [shared native contract](../architecture/liquid-prepared-setup-and-receipts.md)
+now supplies whole-cell Water admission/refusal and liveness, explicit final-tuple
+`water-normalize-v1`, native-issued outcomes, immutable prepared Worlds, typed
+v1 run/attempt receipts and exact quantity aggregates. Complete physical hash
+and CYPS are **version 2**; main explicitly refuses historical CYPS1.
+Historical content/state hashes, C64-E8, production defaults and prior failures
+are preserved. This is a narrow native codec checkpoint, not a global ABI or
+full-host replay freeze.
 
-**Owner execution boundary:** finish residual #200 acceptance first, then fan out
-#201/#202/#212 where write sets permit, and complete #203 after integration.
-This checkpoint begins no substantial cache/dormancy or inertial implementation.
-The #201 rest certificate must preserve stationary failed-motion body-contact
-reports, required material stages, other-liquid work and future stochastic/
-cadence work. Zero rounded flow is not rest, and a complete tick-inclusive hash
-cannot be a cross-tick static-rest predicate.
+The [final acceptance audit](../audits/2026-10-25-lcb001-shared-contract-acceptance.md)
+records Documentation/provenance `40144712901`, Native `40144712872`, Godot
+`40144712946` and #49 `40144712913`, all passing at that tree. Native runs all
+126 cases ordinarily, with ASan+UBSan and with TSan, plus the required additional
+lanes. Godot records 145 Linux + 133 Windows cases, five imports, twelve rendered
+Linux cases and 55 physical timing observations without timeouts/other failures.
+Windows exploratory construction passes in 71.240 seconds under the original
+180-second limit. Source-matched publication and the earlier failed/cancelled
+attempts retain their own records; the final audit does not rewrite them.
+
+**Remaining ownership:** #200 stays open pending ownership reconciliation.
+#202 retains the normal application constructors, typed host evidence,
+normalization opt-in, UX and Web integration. Native-v1 source/runtime/host
+qualifications remain explicit and full matched eligibility remains false.
+#201 and #212 are separate successor integration/qualification lanes; #203 owns
+packaged comparison coverage after integration. Their isolated work does not
+change this accepted main checkpoint's capability matrix.
+
+**Owner execution boundary:** after this accepted native checkpoint, fan out
+#201/#202/#212 where write sets permit, then integrate and qualify/package via
+#203. A #201 rest certificate must retain stationary failed-motion body contacts,
+mandatory material stages, other liquids and future cadence/stochastic work.
+Zero rounded flow is not rest; a complete tick-inclusive hash cannot be a
+cross-tick static-rest predicate. Every successor native change needs fresh
+source-matched runtimes and its applicable exact-head gates.
 
 ## Opt-in transport profiles
 
