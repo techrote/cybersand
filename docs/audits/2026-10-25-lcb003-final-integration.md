@@ -10,6 +10,116 @@ related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../op
 
 # LCB-003 final application source integration checkpoint
 
+## Packed worker storage and startup local preparation — 2026-10-25
+
+Source `18d207405923246fb1ae428cdce5d81b16f1fafb` normally merges reviewed
+Water `c97f68ec6dd5d92aec94c874a6510b16e3a81847` into Root's Web-evidence
+checkpoint3ae274af. Exactly two of139 captured native inputs change from dd00:
+`world.cpp` SHA`b4ab1dbf2277eb3213d827f00ddd1dbb3e1294b27e312062cb877b83ee083728`
+and `test_liquid_solver_policy.cpp`
+SHA`5c010144f6955418522222356806945edf8d9e3abafb66ed3de970712e9f39ae`.
+All prepared/default bridge, owner, policy, recipe, mask and receipt inputs remain
+exact. Independent merge review646c2141 authenticates all139 inputs and the
+164 distinct registered groups; the two changed files match reviewed c97.
+
+The [native repair ledger](2026-10-25-water-inertial-native.md) records the
+packing and startup corrections separately. Linux Native40214472284 timed out
+at the exhaustive C API allocation-failure sweep after148 passing groups, with
+no TSan warning. Two activity-grid allocations per possible job inflated the
+construction allocation census from31 to8223. Fixed disjoint job spans now
+borrow two setup-owned contiguous buffers. Separately, a bounded external
+worker4/nth37 construction-allocation failure reproduced a partial-pool startup
+hang after an earlier worker started. The shared noexcept stop/notify/join path
+now retires those workers before constructor unwinding; the unchanged external
+counterexample returns typed refusal and its healthy controls pass. This does
+not alter solver laws, Current defaults, geometry admission or tick-time work.
+
+A fresh local Windows development DLL, compiled from18d, is
+SHA`46a8b4d92727ce3f083f519330c0e5d53ccbea4c122f9fa3db494160e2ece953`,
+4,824,576 bytes, built60.922s/600 with all139 captured inputs held. The external
+`tmp/lcb202-final-integration/packed-startup-native-build-v1/build.json` retains
+its command, pinned tools/dependencies and full before/after source map. LLVM
+23.1.0 ordinary execution passes164 groups52.250s/600, focused15 pressure/13 IN/
+8 Water/capacity/activity groups and seven receipt-byte oracles. Its receipt is
+`tmp/lcb202-final-integration/native/normal-retrypackedstartup/receipt.json`,
+SHA`72e7aa89a8de74de0f5c333a4dd7d2b7d5d54fcc3a4d22c5bfa558cd3998ea13`.
+Focused ASan/UBSan passes39 groups117.547s/600 with ordinary1MiB reserve/4KiB
+commit and Windows leak checking disabled; receipt
+`tmp/lcb202-final-integration/native/sanitizer/sanitized-retrypackedstartup/receipt.json`,
+SHA`fbefb21cb070b9e06ed9112388c9f8833167b7d84e744f01180bc06defd81575`.
+These are local Windows results; they do not establish Linux/TSan CI acceptance.
+
+The first full host matrix is retained as failed: its21st process,
+`test_liquid_sampled_preparation`, exited `0xC0000005` after printing71 assertions
+and0 failures. No complete-matrix verifier ran. A bounded debug capture reached
+Godot executable cleanup with freed-heap registers and no native DLL frame in
+the captured main stack, but that stack does not exclude earlier corruption.
+The debug run itself had pacing/acknowledgement failures and is diagnostic only.
+Root-authorized A/B retained the immediate `finish()->quit()` contract: the
+original test with the older DLLf34 also crashed after71/0; the new DLL46a with
+only its three helper classes externalized passed71/0 and exited0. All three
+leaf method bodies are exact deindents, all71 assertions/control flow/deadlines
+are preserved, and only their final blank EOF line was removed for strict
+whitespace. No EOF-finalization workaround, timeout change or native/product
+change is included. Independent A/B review07f07cd9 and strict source
+closure7e5e474a authenticate that correction, without claiming absolute native
+exoneration. The original failure, diagnostic pacing failures and successful
+B inputs remain immutable under `packed-startup-host-failure-v1`.
+
+The four-file apparatus correction is committed separately at
+`3d3383566fa630e898ff912415c820f458439099`. Fresh import and five prespecified
+focused71-assertion repetitions all exit0 before the complete matrix starts.
+The complete fresh import plus35 host cases then pass:36 actual processes,
+every exit0, no engine errors, warnings, skips or timeouts. The unchanged strict
+003 reader accepts the full report, including actual PF variants, Water005,
+76 native Web prerequisite checks and six common-Water arms. The sampled case
+passes71/0 and exits0 in14.365s/180; the identical footer is never used as a
+substitute for process success. Aggregate process time is657.053s; the longest
+case is the WEX body baseline98.423s/600. Godot is4.7.stable.official.5b4e0cb0f,
+with pinned Rapier Windows SHA`b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7`.
+
+The matrix receipt
+`tmp/lcb202-final-integration/packed-startup-host-matrix-v2/RECEIPT.json`,
+SHA`bbbea760e03c1cf38bcb9dd5ce498807e7a5df79e002d34ace6f28fdf4aec6d5`,
+holds696 source files,646 post-import project inputs and139 native inputs.
+Four exact vendor import carriage-return normalizations precede the post-import
+fence; no other drift is accepted. DLL46a is explicitly compiled18d/tested3d:
+all139 compiled inputs are equal, while the only four intervening files are the
+test helper extraction. The later normal documentation merge1371a250 consumes
+reviewed34e0979b; only MAT01 receives its incoming storage fact, all151 query
+strings are retained, and the original App retrieval history is preserved.
+This documentation merge does not relabel3d's executed-source identity.
+
+The baseline proper-companion check at18d passes Docs, historical M11, provider,
+whitespace and both retrieval evaluations, with all18 LFS payloads materialized.
+Repository validation retains ten real source/runtime blockers, five per OS:
+`cyber_demo_bridge.hpp`, `cyber_native_cell_world.cpp`,
+`cyber_native_cell_world.hpp`, `prepared_world.hpp` and `world.cpp`, against C9
+runtimes. Receipt30686e00 predates this additive evidence; final overlay checks
+are recorded separately. No source mismatch is waived. Final Water sequence2
+bot/docs must still normally integrate before003 arming, holding every compiled
+input or rebuilding when needed. The003 request remains absent; no push or
+runtime/manifest commit occurs in this local preparation.
+
+The subsequent proper-companion check at1371a250 with this eight-document
+overlay passes Docs, historical M11, provider policy, whitespace and both
+retrieval evaluations. Receipt
+`tmp/lcb202-final-integration/docs-validation-packed-startup/checks-v2/VALIDATION-RECEIPT.json`,
+SHA`44787536c45c3c0fceb20b251cc0032ec5875c426b1a8784290ac0d05a2ca973`,
+holds all1,656 tracked mirror inputs,18 materialized LFS payloads and the five
+pinned companion files. Repository validation reports exactly the same ten
+source/runtime blockers, with no other failure or waiver. Frozen32 canonical
+top5 is32/32; supplementary151 top5 is150/151. These lexical retrieval results
+do not establish answer correctness. This paragraph follows that receipt;
+the final additive check binds its later bytes separately.
+
+Earlier dd00/f34 and source4948 browser proof retain their original identities.
+Root's18d functional browser results are separately recorded and do not clear
+ordinary visual play: actual GLES3 shader/link errors and a black viewport were
+observed. Combined Windows/Linux publication, exact-head required greens,
+remaining constructors and complete host/scientific/feel acceptance remain
+open. None of this local evidence authorizes a publication or merge.
+
 ## Repaired worker activity local preparation — 2026-10-25
 
 Normal merged source `dd00e49ac5b766cec970f8a23c3cc26830de4223`, tree

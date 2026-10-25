@@ -10,17 +10,21 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
-Local application preparation at dd00e49a now consumes reviewed Water
-checkpoint0d7c80e6, including corrected worker activity/deadline source dab388f6,
-accepted main9935 and the early-TSan workflow. Its fresh native139 Windows DLL
-f34b42ac passes164 ordinary groups, seven receipt-byte oracles and39 focused
-ASan/UBSan groups. Fresh import plus all35 host cases pass on that repaired
-DLL, with693 source files,643 post-import project inputs and139 native inputs
-held unchanged. The [current local preparation](../audits/2026-10-25-lcb003-final-integration.md#repaired-worker-activity-local-preparation--2026-10-25)
-records receipt adee2a57 and its scope. Earlier DLL93d3/36-process and
-source4948 browser77/76 results below retain their original source identities.
-Final Water sequence2 runtime/docs integration and combined publication remain
-required;003 stays unarmed and this local checkpoint is not pushed.
+Local application preparation now normally integrates reviewed Water c97f68ec
+at18d20740, then commits only the sampled-test helper extraction at3d338356.
+Fresh DLL46a8b4d9, compiled18d with all139 inputs equal at tested3d, passes164
+ordinary native groups, seven receipt-byte oracles and39 focused ASan/UBSan
+groups. Fresh import plus all35 host cases pass:36 exit0 processes with696
+source files,646 post-import project inputs and139 native inputs held. The
+[packed storage/startup preparation](../audits/2026-10-25-lcb003-final-integration.md#packed-worker-storage-and-startup-local-preparation--2026-10-25)
+records receiptbbbea760 and preserves the failed first matrix, old-DLL A/B
+crash and exact helper-only correction. Normal merge1371a250 adds reviewed
+Water documentation34e0979b without changing those compiled/executed inputs.
+Earlier dd00/f34 and source4948 browser proof remain source-qualified; actual
+18d browser functional checks do not clear the observed shader/black-viewport
+visual failure. Final Water sequence2 bot/docs and combined publication remain
+required;003 stays unarmed, with ten real C9 source/runtime blockers and no
+local push or runtime/manifest commit.
 
 The [complete local host matrix](../audits/2026-10-25-lcb003-final-integration.md#complete-local-host-matrix-and-actual-web-result)
 now passes36 Windows processes on the unchanged combined DLL. Separate

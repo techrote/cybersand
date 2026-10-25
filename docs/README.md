@@ -10,12 +10,15 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
-The [repaired worker activity local preparation](audits/2026-10-25-lcb003-final-integration.md#repaired-worker-activity-local-preparation--2026-10-25)
-records dd00e49a/native139, fresh DLLf34b42ac, native164 and focusedSAN39.
-Fresh import plus all35 host cases pass with693 source,643 post-import project
-and139 native inputs held unchanged. Old source4948 browser77/76 and earlier
-DLL93d3 host proof remain historical after this kernel change.003 stays unarmed
-pending final Water sequence2 integration and combined publication.
+The [packed worker storage and startup local preparation](audits/2026-10-25-lcb003-final-integration.md#packed-worker-storage-and-startup-local-preparation--2026-10-25)
+records18d compiled/tested3d, native139/DLL46a8b4d9, native164 and focusedSAN39.
+Fresh import plus all35 host cases pass with696 source,646 post-import project
+and139 native inputs held. The first matrix's sampled-test process crash,
+old-DLL A/B and exact helper-only correction are preserved. Earlier dd00/f34
+and source4948 browser records stay source-qualified.003 remains unarmed,
+with ten real C9 source/runtime blockers pending final Water sequence2 bot/docs
+and combined publication; actual browser functional proof does not clear the
+observed shader/black-viewport visual failure.
 
 The [fresh full local host matrix and actual Web functional result](audits/2026-10-25-lcb003-final-integration.md#complete-local-host-matrix-and-actual-web-result)
 records36 passing Windows processes and the separately bound compat77/threaded76
