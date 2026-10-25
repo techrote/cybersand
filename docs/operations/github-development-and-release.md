@@ -158,18 +158,42 @@ publication itself requires an authorized release task.
 
 ## Isolated Water inertial runtime publication
 
-**Current unarmed preparation on `codex/lcb005-water-inertial`:** the separate
-Water profile/workflow loads its own005/001 engine, retains import plus14
-processes, all deadlines and strict policy/Brine/pressure sections, and requires
-an additional actual Water motion/whole-cell/coherence/refusal/CYPS proof. Its
-artifact prefix is `lcb005-water-inertial-runtime`. The [dated preparation](../audits/2026-10-25-water-inertial-publication.md)
-records exact source scope and failures; it is not target-OS publication proof.
+### Water and Brine publication ownership
 
-`tools/ci/lcb005_water_inertial_publish_request.json` remains absent until fresh
-independent guard review and final owner/source-freeze coordination. The older
-Brine request does not arm this workflow. Admission checks the Water request's
-exact schema/material/scope/sequence, source commit and branch before build or
-remote append. Only the same four runtime/manifest paths may be appended with
-an exact source parent and atomic lease on the Water branch. Parent PR #250's
-branch, request, concurrency group, artifacts and active gates remain separate.
-Fresh Water Windows/Linux execution and full ready-PR gates remain required.
+The Water publisher owns its exact branch `codex/lcb005-water-inertial`, Water
+request/schema, workflow, artifact prefix and concurrency group. The Brine
+publisher retains its separate branch/profile/request and artifact namespace.
+Water privately loads the 005/001 engine; it changes no shared imported profile
+or runner state and never pushes the Brine branch. Source-matched runtimes must
+come from the Water workflow's exact source and lease. The Water request is now
+committed and armed as sequence1 at source `4b588279`; the resulting publication
+is complete. This does not imply another request or an active Brine publication.
+
+### Actual publication and remaining final-head gates
+
+**Current source-matched sequence1 on `codex/lcb005-water-inertial`:** the
+separate Water profile privately loads005/001, retains import plus14 processes,
+all deadlines and strict policy/Brine/pressure sections, and requires the actual
+Water motion/whole-cell/coherence/refusal/CYPS proof. Artifact prefix remains
+`lcb005-water-inertial-runtime`. The [dated publication/preparation ledger](../audits/2026-10-25-water-inertial-publication.md)
+preserves the unarmed24a checkpoint, failed apparatus iterations and local-only
+composite proof, then records actual source4b588279/run40166210470/botC9e52b52.
+Both OSes pass15 processes/642 policy assertions and receive independent
+artifact/source/LFS/floor review `b15ea7cb` with no actionable bounded finding.
+
+The new Water request was added only after independent profile review and final
+owner/source-freeze coordination. The older Brine request cannot arm it.
+Admission binds exact schema/material/scope/sequence, source and branch before
+build or append. Only the four runtime/manifest paths may be appended with a
+single exact source parent and atomic Water-branch lease. No competing source/doc
+push changed the lease before the four-path publication append; the resulting
+commit contains only those four paths.
+Parent #250 is now accepted on main atdc915f2b; its historical publications keep
+their source identity. No new request sequence is part of this docs checkpoint.
+
+Five bot-C9 PR follow-ups are approval-held before any jobs; approving them is
+not a test green. A maintainer must approve applicable actual final-head runs.
+The ready PR still requires full Documentation including runtime provenance,
+Native/sanitizer/worker, Windows/Linux Godot and scoped49 gates plus final review.
+Draft skips, scoped publication and old-head approvals cannot replace them.
+Common-Water scientific, normal-host/Web/manual and #203 packaging remain separate.

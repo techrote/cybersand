@@ -4,11 +4,37 @@ status: Current
 document-kind: guide
 scope: Actual local Git roots, preserved baseline, recovery boundaries and source-versus-artifact identity
 canonical-for: [source-identity, local-checkpoints, recovery-coverage]
-last-reviewed: 2026-09-10
+last-reviewed: 2026-10-25
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md]
 ---
 
 # Source checkpoint and recovery
+
+## Recoverable Water IN publication checkpoint — 2026-10-25
+
+The isolated source checkout is
+`C:/Users/_/.codex/worktrees/lcb005-water-inertial/khybersand`, branch
+`codex/lcb005-water-inertial`, draft PR #254. It is separate from the primary
+`C:/khybersand` checkout and the companion workspace. Reviewed native5f8baf6f and
+profile24a6ffec lead to request-only source4b588279, tree
+`f6f589ce09836878dbcc3731a46e815d812bb83d`. Actual run40166210470 publishes
+four-path botC9e52b52, tree `f66890cdf1164dc37e3fa1f0aaebe74a79c49bb3`;
+both OSes execute15 processes/642 policy assertions and receive independent
+artifact review `b15ea7cb`. The [publication ledger](../audits/2026-10-25-water-inertial-publication.md)
+owns full runtime/request/archive/review hashes and preserved failures.
+
+Accepted parent #250 head d7681a5c merges as main dc915f2b. Normal merge8e586b17
+retains C9 anddc915 as parents with the **entire C9 tree unchanged**. All18 LFS
+payloads are materialized and equal committed pointer hashes/sizes. Subsequent
+docs-only commits are identified by the branch HEAD; no native/bridge/test/tool/
+workflow/request/law change or new sequence follows. Git stores source plus LFS
+pointers; preserve access to their actual LFS objects and the external evidence
+receipts. Current tuple/quantity physics controls remain distinct from the
+changed capability/policy-bound identity namespace. Full ready-PR and scientific/
+host/Web/#203 acceptance remain separately required.
+
+Earlier source/recovery checkpoints below retain their original dates, hashes
+and coverage; none is relabelled as this later publication.
 
 ## Which version is the working source?
 
