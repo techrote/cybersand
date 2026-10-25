@@ -151,6 +151,44 @@ Repository/provenance correctly fails22 source-input freshness comparisons
 was bypassed or historical hash changed. Fresh source-matched publication and
 the applicable exact-head CI/review matrix remain required.
 
+## Subsequent clean source integration
+
+Source `ebb5b8428f17019eb2bea0e52c4fbe769643ff46`, tree
+`ea7fb038dafbafb5d5ef2ff6f3313a7c788b872f`, normally merges the released thermal
+API `7e2100e7` through `7e3ed79b` and moving-mask repair `3ff685ed` through
+`52c8ada4`, then adds the stopped native health guard. IN and moving-mask native
+test registrations are both retained. Web/CYSD/body invariants010/011/012 and
+all141 supplementary queries coexist; older pressure query aliases retain their
+established distinct IDs. The newer accepted-main scene wording is preserved.
+
+A fresh135-input DLL builds in62.140/600 seconds, SHA256
+`79f3566622fdc3ad8428fda50367d028e5d89882185faa2a5b06d92b0902ca37`,
+4,790,272 bytes. All13 staged Godot processes pass5,045 assertions with no
+engine error/warning lines, including the guarded75 body assertions and493
+native CYSD preparation assertions. Strict parsing independently checks all four
+normal-play JSON cohorts for completed ticks≥96, positive contacts/applications,
+healthy stopped/native and snapshot states and exact3,718,400 Water. These remain
+functional asynchronous observations, not performance/parity measurements.
+
+The new immutable root `C:/Users/_/.codex/tmp/lcb202-body-thermal-integrated/`
+retains build135/initial-import/per-process input fences; all hold at seal.
+`CHECKPOINT.json` SHA256 is
+`566bad2c75109c393058c971a9e98b0f52c4aec612954209d20e2ed2621f868d`;
+`MANIFEST.sha256` SHA256 is
+`2b003393230263f04eb9602dd2377a7569e966ddbbbcb13963b8b2d6a37ae7f7`,
+71 evidence files outside the generated project tree. The source-qualified
+independent review `tmp/lcb202-reference-body-independent/FINAL-REVIEW.json`,
+SHA256 `c67d03cc6b8c11ec55f02dfa0773c539c540409283f48ff7536ceb5c0c6da47b`,
+binds the preceding v11/133-input/12-process proof and has no blocking production
+finding. It is not relabelled as an independent execution of this later source.
+
+The clean companion-backed integration also passes Documentation115/227,
+historical M11 integrity18/28 and provider policy. Frozen lexical retrieval
+remains32/32 top5 and supplementary retrieval141/141 top5. Current repository
+freshness correctly fails18 source comparisons (9 per platform) against the
+imported separately scoped pressure-publication artifacts. Those older artifacts
+do not qualify this IN/body/thermal/gas source; matching publication remains due.
+
 ## Remaining qualification
 
 Native-v1 and qualified host full matched eligibility remain false. This local

@@ -37,6 +37,17 @@ protected comparison fixture through its original constructor.
 
 ## Current controls and ownership
 
+The subsequent [ordinary level-import route](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
+adds two controls in the synchronous normal application's liquid panel. Choose
+Exploratory, policy, normalization and geometry, then **Use selection for next
+level import**; the running World stays unchanged. The normal Save/Load Import
+button then stages an ordinary body-free level and sampled player. It starts
+paused, and **R / Restart world** reconstructs that accepted input after edits.
+**Use Current defaults for next import** clears the pending choice; default
+imports and ordinary demo choices retire prepared identity. Physical/Tower/
+showcase imports explicitly refuse. The [local menu proof](../audits/2026-10-25-lcb003-level-import-host.md)
+is Windows headless execution, with full host and final platform gates open.
+
 The subsequent [qualified host-observation foundation](../architecture/liquid-prepared-setup-and-receipts.md#qualified-host-observation-foundation)
 separates actual API path/current file observations from publication claims and
 unverified caller values. The [subsequent owner slice](../architecture/liquid-prepared-setup-and-receipts.md#owner-bound-construction-observation)
@@ -141,7 +152,7 @@ controlled API is narrower than older explicit-policy diagnostic APIs.
 | `build_world` rectangle showcases / Blacksite | Existing default constructor | Prepared tuples and explicit setup/mode qualification |
 | `build_tuned_world` / Experiment Tower | Original default constructor retained; ordinary application Tower explicitly stages sampled-owner policy/normalization/geometry with final floor and retains floor/release/schedule/transport controls; reset/profile rebuild retain accepted policy | Other direct tuned-world callers, complete host evidence and final platform qualification |
 | `build_water_feel_world` / Water Feel controlled and blind apparatus | Original defaults/blind routes retained; explicit unblinded sampled Exploratory dispatcher/panel/reset carries typed policy/normalization/geometry and qualified owner record, preserving actions/ledger; desktop additionally stages the original three reference bodies/terrain in their permanent space and proves ordinary unpaused feedback | Synchronous/Web reference bodies, barrel owners, blind-family study and whole-cell fractional future-source qualification; visual/publication gates |
-| CYSD `import_level` | Existing default reconstruction retained; separate native `prepare_liquid_level` prepares copied thermal payloads with explicit policy/normalization and one-use commit | Route ordinary importer/host adoption through that API, retain outer metadata/owners and qualify final platforms; native API proof alone does not complete this row |
+| CYSD `import_level` | Existing default reconstruction retained; explicit synchronous Exploratory next-import selection prepares copied thermal payload/policy/normalization, saved metadata and a private sampled player before commit; refusal retains old owner/receipts and Restart reconstructs accepted input | Physical/Tower/showcase imports explicitly refused; complete verified host identity, persisted policy/setup design and final source-matched platforms remain open |
 | CYPS `import_physical_state` | Exact saved-policy continuation; old typed construction identity retired | Preserve exact continuation; never use it as a family-conversion rebuild |
 | Diagnostic reset / depth / arena / player playground / Thunderbowl | Existing diagnostic policy options and ordinary controls | Shared application coordinator/readback where supported, preserving plane and actor semantics |
 | Procedural WorldGenerator | Separate generator ownership | Native recipe/final tuples and actor/plane gaps, coordinated with GEN ownership |

@@ -10,6 +10,12 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The subsequent [explicit normal level-import route](architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
+stages ordinary body-free CYSD thermal payloads, saved metadata and a sampled
+player only after an Exploratory next-import selection. Refusal retains the old
+owner/receipt/record; Restart reconstructs accepted input. The [dated menu proof](audits/2026-10-25-lcb003-level-import-host.md)
+is local Windows execution, with body imports and full host/platform gates open.
+
 The subsequent [prepared Water Feel reference-body route](architecture/liquid-prepared-setup-and-receipts.md#prepared-water-feel-reference-bodies)
 stages actual frozen desktop bodies/terrain and retains the old graph and native
 receipt on refusal. Its [dated local proof](audits/2026-10-25-lcb003-water-reference-body.md)
@@ -20,8 +26,9 @@ host/platform/publication qualification remain open.
 The unmerged #202 [thermal level preparation](architecture/liquid-prepared-setup-and-receipts.md#imported-cysd-payload-preparation)
 preserves signed temperatures and heated Empty cells through explicit solver/
 normalization preparation and the existing native commit fence. Its [local
-evidence](audits/2026-10-25-lcb003-thermal-level-preparation.md) does not complete
-ordinary importer routing, host evidence or final platform publication.
+evidence](audits/2026-10-25-lcb003-thermal-level-preparation.md) is adapter-only;
+the bounded ordinary route above follows separately. Neither completes physical
+import, verified host evidence or final platform publication.
 
 The subsequent unmerged [Water Feel family route](architecture/liquid-prepared-setup-and-receipts.md#ordinary-water-feel-preparation)
 preserves the sampled player, original recipes/actions and ordinary lab/reset

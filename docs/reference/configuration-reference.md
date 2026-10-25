@@ -10,6 +10,16 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 # Configuration reference
 
+The unmerged #202 [explicit level-import selection](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
+is initially unarmed. Exploratory opt-in copies the native-validated liquid
+policy, empty or `water-normalize-v1` rule and explicit radius2/3 for the next
+ordinary body-free import. Its accepted private reconstruction holds one fixed
+5,242,880-byte decoded payload plus bounded CYSD metadata and copied selection;
+it is not serialized policy configuration. Saved quality0/1/2 selects the existing
+320×180/480×270/640×360 views, margins16×18/32×36/64×72 and publication30/45/60Hz.
+Those values, final camera/region, current cadence and saved adhesion are applied
+before native capture. Existing Current import/defaults and format limits remain.
+
 The explicit LCB Web apparatus flag is `?test=1&liquid-host-test=1`. It uses
 actual synchronous prepared-owner calls and emits a terminal copied result;
 normal startup is unchanged. This is a test selector, not a solver or gameplay

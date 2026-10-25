@@ -728,7 +728,18 @@ on opt-in. `definition_hash` is refused; import-only copied `setup_kind` and
 `source_payload_sha256` distinguish source bytes from canonical native setup hashes.
 Legacy immediate `import_level` remains Current/default radius2. The [thermal
 preparation contract](../architecture/liquid-prepared-setup-and-receipts.md#imported-cysd-payload-preparation)
-owns exact lane/refusal/identity limits; ordinary importer routing remains open.
+owns exact lane/refusal/identity limits. The subsequent bounded
+[ordinary importer](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
+is explicit Exploratory/body-free, retaining copied metadata/player/receipt and
+its accepted reset input. Physical import and final platforms remain open.
+
+The synchronous owner adds `liquid_comparison_arm_import(policy, normalize_water,
+exploratory, radius=2)`, `liquid_comparison_clear_import()` and copied
+`liquid_comparison_import_state()`. Arming changes only a next-import request.
+`restart_world()` reconstructs an accepted imported setup or follows the ordinary
+demo reset. `liquid_level_host_observation_record()` explicitly copies the
+qualified imported-owner record; it grants no full-host eligibility. Final
+owner serial/lifetime and native one-use commit fences precede adoption.
 
 `get_applied_liquid_construction_receipt()` and
 `get_liquid_construction_attempt()` return distinct owned dictionaries containing

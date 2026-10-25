@@ -11,6 +11,18 @@ last-reviewed: 2026-10-25
 
 # Data ownership and lifetimes
 
+## Explicit imported-level ownership
+
+The unmerged #202 synchronous [normal import route](liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
+keeps the running World/player/receipt/record until native preparation, private
+sampled-player configuration, qualified observation and final serial guard all
+pass. Native exclusively owns the pending World; the private level session owns
+copied decoded payload/metadata/selection. Commit consumes the token once, then
+the controller adopts staged values. Restart reconstructs that retained input;
+ordinary default replacement retires it. Unsupported physical/tower/showcase
+owners refuse without detaching or rebinding their actual graph. No live scene
+object crosses a worker boundary, and this synchronous route adds no tick work.
+
 ## Pressure gas labels beneath host body masks
 
 **Current repair branch, acceptance pending:** native World owns retained gas

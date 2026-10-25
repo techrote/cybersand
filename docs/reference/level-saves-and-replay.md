@@ -75,12 +75,24 @@ support from the unchanged format version alone.
 
 `CyberDemoBridge::import_level` validates and builds a replacement World and
 render exchange before no-throw ownership swaps. CYSD1 stores no liquid solver
-policy: an import always reconstructs on every liquid's default family (LCB NC-10),
+policy: this original API reconstructs every liquid's default family (LCB NC-10),
 whatever the live World's policy. Invalid codec/native payloads
 leave the active World intact. The Web controller rejects a Physics Pit save
 when Rapier is unavailable before native import. This guarantee concerns the
 checked import paths; it is not a general transaction guarantee for simulation
 ticks or arbitrary later scene allocation failures.
+
+**Current bounded unmerged #202 source:** the normal synchronous application's
+liquid panel can explicitly arm the next ordinary body-free import with a copied
+policy, normalization opt-in and geometry in Exploratory mode. The separate
+`prepare_liquid_level` API preserves thermal tuples and stages native World,
+sampled player, metadata-derived execution and qualified host observation before
+the final commit. Refusal retains the prior World/player/receipt/record. The
+[prepared import contract](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
+owns those bounds and unsupported body/Tower/showcase routes. Restart retains the
+accepted in-memory payload and selection; CYSD1 serialization is unchanged and
+unarmed import still uses Current defaults. No full replay or browser/release
+qualification follows from this opt-in reconstruction.
 
 ## What continuation state is missing?
 

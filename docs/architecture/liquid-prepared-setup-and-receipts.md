@@ -746,7 +746,7 @@ source changes again require fresh source-matched publication and applicable gat
 liquid_policy, options)` accepts the existing decoded CYSD1 finite cell payload.
 The [dated local proof](../audits/2026-10-25-lcb003-thermal-level-preparation.md)
 binds source, development DLL, tests and remaining host/platform gaps. This native
-adapter API does not yet route the ordinary application's import UI.
+adapter-only checkpoint is followed by the explicit normal-owner route below.
 
 [`cyber_prepared_level_payload.hpp`](../../godot/native_extension/cyber_prepared_level_payload.hpp)
 decodes exactly1024×1024 five-byte tuples: material, state_a, state_b and signed
@@ -777,8 +777,48 @@ a newer request retires the prior token.
 Legacy `import_level` still reconstructs Current defaults with radius2. The new
 API can explicitly prepare admitted PF or Brine IN with radius3 where required;
 it reconstructs initial state rather than converting a running World or supplying
-CYPS continuation. Ordinary importer/host adoption and final source-matched
-Windows/Linux/Web qualification of this API remain #202/#203 requirements.
+CYPS continuation. Final source-matched Windows/Linux/Web qualification remains
+a #202/#203 requirement.
+
+## Explicit ordinary level import and retained restart
+
+**Current bounded unmerged #202 source:** the synchronous normal application
+[`web_demo_controller.gd`](../../godot/scripts/web_demo_controller.gd) routes
+the existing Save/Load Import button through `prepare_liquid_level` only after
+the user selects **Exploratory** and **Use selection for next level import**
+in the liquid panel. Arming copies policy, normalization and explicit geometry;
+it does not mutate the running World. Unarmed imports keep the original Current
+constructor. **Use Current defaults for next import** clears the pending choice.
+The [dated Windows proof](../audits/2026-10-25-lcb003-level-import-host.md)
+exercises those actual menu/panel callbacks; it is not browser qualification.
+
+[`prepared_level_session.gd`](../../godot/scripts/prepared_level_session.gd)
+owns the copied accepted payload/metadata/selection and a private sampled player.
+Native owns the exclusive pending World and token. Saved position/velocity,
+current sampled profile/recovery policy, final quality/view buffers, clamped
+camera, interest region, cadence and adhesion are complete before receipt
+capture. The actual raw payload digest comes from native copied readback.
+Qualified host observation collection precedes the final owner serial/lifetime
+guard and native retained-state commit fence. Success adopts only staged values;
+refusal retains the old World, player, applied native bytes and owner record.
+The native-v1 qualifications and false native/host full matched eligibility stay
+unchanged; outer metadata/player claims remain explicitly unverified host values.
+
+This route supports ordinary body-free demos. Current Tower, showcase, Blacksite,
+physical owners and saved physical/tower/showcase/body routes refuse before
+replacement. Controlled/active apparatus retain their existing import guard.
+No body is detached or physics space rebound by an import attempt. These refusal
+boundaries are remaining constructor ownership, not implemented body conversion.
+
+Accepted import starts paused. **R / Restart world** rebuilds its original copied
+payload with its accepted policy/normalization/geometry and metadata after edits,
+creating a new native generation and owner observation. Ordinary default import
+or demo construction retires that prepared identity. CYSD1 still stores no liquid
+policy or complete continuation state: exporting does not persist this private
+in-memory reconstruction request. Mixed PF Water/Oil/Brine IN runs through the
+ordinary synchronous owner with explicit radius3 and actual damping readback;
+Water IN remains unsupported. Physical imports, complete host identity, later
+Wasm execution and source-matched publication remain open.
 
 ## Downstream ownership
 

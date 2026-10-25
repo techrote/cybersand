@@ -10,6 +10,16 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+The [normal-menu level-import proof](../audits/2026-10-25-lcb003-level-import-host.md)
+binds source46471b24 and the unchanged135-input local Windows development DLL.
+Fresh import and eight affected processes pass:44 actual-user transaction
+assertions/all five sections, UI105, Tower41, glow30, Water Feel72, owner record28,
+33 named native Web-apparatus checks and the retained Web demo save/setup fixture.
+The first packed-body sample comparison failures remain preserved and corrected
+for the existing advancing readback serial; actual body poses were unchanged.
+No new native compile, published runtime, Wasm or ordinary visual acceptance is
+claimed. All native/qualified-host full matched eligibility remains false.
+
 The later [prepared Water Feel reference-body proof](../audits/2026-10-25-lcb003-water-reference-body.md)
 records a new native133 development DLL after the moving-mask gas-label repair
 and12 passing local Windows Godot processes. The new75-assertion case preserves

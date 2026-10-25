@@ -10,14 +10,24 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+The subsequent [normal-menu level-import checkpoint](../audits/2026-10-25-lcb003-level-import-host.md)
+uses released native thermal preparation for explicit Exploratory ordinary
+body-free imports. Actual panel/Import/Restart callbacks preserve saved metadata,
+sampled player and retained reset input; refusals keep old World/owners/receipts.
+Source46471b24 has eight affected passing local Windows processes against the
+unchanged verified135-input DLL. Continue remaining constructors, physical import,
+complete host identity and fresh final Windows/Linux/Web/publication gates.
+The [new publisher preparation](../audits/2026-10-25-lcb003-runtime-publication.md)
+is unarmed; it is not a release result. Current imports remain the default.
+
 The later [desktop reference-body checkpoint](../audits/2026-10-25-lcb003-water-reference-body.md)
 adds permanent-space staging for the original supported-body Water Feel recipe,
 actual frozen poses/native masks, retained-graph refusal and ordinary unpaused
 feedback across pressure variants plus an FM control. Its fresh native133 DLL
 includes the separately authored moving-mask gas-label repair; prior runtime
 seals remain immutable. This is bounded local Windows #202 work. Continue with
-the released native CYSD preparation API and real body-free import owner, then
-remaining constructors, complete host identity and final platform/publication
+the real body-free import owner now recorded above, then remaining constructors,
+complete host identity and final platform/publication
 gates. Web bodies and host-mask CYPS continuation remain explicit gaps.
 
 ## LCB-003 thermal import API — 2026-10-25
@@ -28,7 +38,8 @@ over the existing pending World/token/capture/commit slot. C++ source177ae236 an
 test checkpoint76dc6912 retain signed CYSD temperatures, nonambient Empty and
 explicit normalization. [Local Windows proof](../audits/2026-10-25-lcb003-thermal-level-preparation.md)
 passes493 new assertions plus seven retained scripts and import. Legacy Current
-import is unchanged. Ordinary importer/host adoption and final platforms remain.
+import is unchanged. The bounded ordinary owner above follows separately;
+physical/complete host adoption and final platforms remain.
 
 ## LCB-003 combined-source integration — 2026-10-25
 

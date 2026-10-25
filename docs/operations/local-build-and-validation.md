@@ -10,12 +10,21 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+The [explicit normal-menu level-import proof](../audits/2026-10-25-lcb003-level-import-host.md)
+reuses the unchanged135-input development DLL after verifying every native input,
+then runs fresh import and eight affected Godot processes. The new44-assertion
+`test_liquid_level_import_host.gd` requires all five JSON sections true and uses
+actual panel/Import/Restart callbacks. This does not claim a new native build or
+Wasm execution. The prepared [LCB-003 publisher profile](../audits/2026-10-25-lcb003-runtime-publication.md)
+is unarmed; its dedicated Windows/Linux gates and source-matched publication
+must qualify the frozen final source before release/full exact-head acceptance.
+
 The later [prepared Water Feel reference-body checkpoint](../audits/2026-10-25-lcb003-water-reference-body.md)
 adds `test_liquid_water_reference_body.gd`: actual frozen poses across32 physics
 frames, deterministic refusal/retained receipts and four fresh ordinary unpaused
 pressure/FM application cohorts through96 native ticks. It uses a new DLL after
 the narrow native moving-mask gas repair; older runtime seals cannot qualify it.
-The focused case checks positive accepted feedback, age rejection and exact
+The focused case checks positive age-bounded accepted feedback and exact
 Water/gas accounting. Its local Windows proof leaves Web bodies, complete
 host-mask continuation and source-matched release/platform gates open.
 

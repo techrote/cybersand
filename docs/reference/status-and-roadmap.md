@@ -10,6 +10,15 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+The subsequent unmerged [normal level-import checkpoint](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
+adds explicit Exploratory next-import selection and actual menu adoption of
+ordinary body-free CYSD payloads, metadata and sampled owner. Refusal retains
+World/player/receipt/record; Restart reconstructs accepted input. Its [Windows
+proof](../audits/2026-10-25-lcb003-level-import-host.md) reuses the verified unchanged
+135-input development DLL and passes eight affected processes. Physical/Tower/
+showcase imports, remaining constructors, complete host identity and final
+source-matched platform/visual gates remain open; Current imports stay default.
+
 The subsequent unmerged [desktop Water Feel reference-body slice](../architecture/liquid-prepared-setup-and-receipts.md#prepared-water-feel-reference-bodies)
 stages the unchanged three reference rectangles and terrain with actual frozen
 poses, retains old World/graph/receipts on refusal and proves normal unpaused
@@ -35,8 +44,9 @@ The unmerged [native CYSD preparation slice](../architecture/liquid-prepared-set
 adds copied thermal tuples, actual payload identity, explicit normalization and
 the existing one-use native transaction. [Local Windows evidence](../audits/2026-10-25-lcb003-thermal-level-preparation.md)
 passes493 new assertions and seven retained scripts plus import. No native codec,
-physics law, dependency, Current default or legacy importer changes. Ordinary
-importer/host adoption and final platform qualification remain #202 ownership.
+physics law, dependency, Current default or legacy importer changes. The later
+bounded ordinary route above follows separately; physical importer/complete
+host adoption and final platform qualification remain #202 ownership.
 
 ## LCB-005 native Brine checkpoint — 2026-10-24
 
