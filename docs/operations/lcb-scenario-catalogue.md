@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: LCB-003 (#202) / LCB-000 Gate E (#213) — versioned liquid comparison scenario catalogue v1, source-derived scenario registry for the LCB UI, controlled native-only runner, regressions, negative contracts and blocked future-family arms
 canonical-for: [lcb-scenario-catalogue]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [lcb-water-comparison-and-fixtures.md, lcb-manual-comparison-ux.md, ../architecture/liquid-solver-family-policy.md, microscenarios.md, ../audits/2026-10-23-lcb003-scenario-qualification.md]
 ---
 
@@ -12,7 +12,7 @@ related-documents: [lcb-water-comparison-and-fixtures.md, lcb-manual-comparison-
 
 ## Status
 
-**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current in source; #212 is no longer held but is not implemented. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
+**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current in source; #212 is no longer held but is outside this accepted main checkpoint. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
 
 The #213 prerequisite is satisfied. Remaining arm dependencies below still
 block execution; the registered historical inventories are unchanged.
@@ -72,12 +72,13 @@ owning dependency (#200, #201, #212). No arm runs on a fallback solver.
 In source W-PF `reference`
 executes natively ([design](../architecture/pressure-flow-v1.md)) and in
 [`test_lcb_pressure_reference.gd`](../../godot/tests/test_lcb_pressure_reference.gd)
-on registered geometries. The unmerged residual #200 checkpoint additionally
+on registered geometries. Accepted main #246 additionally
 admits W-CY natively and through the explicit policy constructor, with
 transactional partial-Water refusal. Current capability metadata is regenerated,
 but the registry's campaign arm records remain blocked; #202 owns consuming and
 re-dispositioning them. A qualified candidate capability is not measured campaign
-evidence. See the [native setup/receipt contract](../architecture/liquid-prepared-setup-and-receipts.md).
+evidence. See the [native setup/receipt contract](../architecture/liquid-prepared-setup-and-receipts.md)
+and [accepted checkpoint](../audits/2026-10-25-lcb001-shared-contract-acceptance.md).
 Families and refusal codes are defined in the
 [solver-family policy](../architecture/liquid-solver-family-policy.md).
 

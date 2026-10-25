@@ -6,7 +6,7 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 ---
 
 # Interfaces and message contracts
@@ -603,14 +603,14 @@ the C entry points are experimental and not a frozen ABI.
 
 ### LCB-001 pressure reference inspection and persistence (experimental)
 
-**Current pressure APIs from merged #245, retained in the residual native branch.** These calls
+**Current pressure APIs from #245, with shared hash2/CYPS2 accepted on main in #246.** These calls
 serve the opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md)
 and follow the same serialized-owner rule as the bridge calls above. Results own
 their dictionaries; none exposes live World storage.
 
 | Call | Result |
 |---|---|
-| `CyberNativeCellWorld.get_physical_state_hash()` / `get_physical_state_hash_version()` | 16-hex-digit FNV-1a `World::physical_state_hash()`; residual native version 2 includes exact shared accounting. Historical #245 version 1 is retained evidence; `content_hash`/`state_hash` are unchanged |
+| `CyberNativeCellWorld.get_physical_state_hash()` / `get_physical_state_hash_version()` | 16-hex-digit FNV-1a `World::physical_state_hash()`; Current main version 2 includes exact shared accounting. Historical #245 version 1 is retained evidence; `content_hash`/`state_hash` are unchanged |
 | `inspect_gas_compartments()` | `available` (false outside pressure Worlds), parameters, `topology_revision`, `next_id`, `completed_tick`, `compartments` (id, generation, ancestry, amount, volume, anchor, created tick, topology revision, `gauge_mass`, `vent_state`), retirement `history` with reason and successors, and the `ledger` with `closes` |
 | `inspect_pressure_cell(point)` | `available`, material, `state_a`, `overfill`, `flow`, `gas` (`compartment`/`atmosphere`/`vacuum`/`unresolved`) and `gas_compartment` |
 | `get_pressure_flow_ledger()` | overfill converted/external, flow remainder, contact loss, relief cells and `last_tick` diagnostics |
@@ -618,7 +618,7 @@ their dictionaries; none exposes live World storage.
 | `get_liquid_solver_policy()` | adds `family_parameters` and `physical_state_hash_version`; `admission` is `current_defaults_only` or `qualified_candidate` |
 | `water_experiment_observation` | adds `water_visible` and `water_overfill`; `water_integer` = visible + overfill (overfill is 0 outside pressure Worlds) |
 | `CyberDemoBridge.inspect_cell(world, point)` | adds `family_state` (`family`, `overfill`, `flow`, `gas_label`) in pressure Worlds |
-| `CyberDemoBridge.export_physical_state(world)` / `import_physical_state(world, bytes)` | residual source writes CYPS2 and explicitly refuses historical CYPS1; import re-admits saved policy and preserves the running World on refusal ([persistence](../architecture/pressure-flow-v1.md#persistence-cyps-v2)) |
+| `CyberDemoBridge.export_physical_state(world)` / `import_physical_state(world, bytes)` | Current main writes CYPS2 and explicitly refuses historical CYPS1; import re-admits saved policy and preserves the running World on refusal ([persistence](../architecture/pressure-flow-v1.md#persistence-cyps-v2)) |
 
 Native counterparts on `World` are `pressure_flow_enabled`,
 `pressure_flow_parameters`, `pressure_cell`, `gas_compartments`, `gas_history`,
@@ -631,7 +631,7 @@ entry point exposes them. The C API/global ABI is not frozen by these additions.
 
 ### Native prepared liquid setup and receipts
 
-**Current in unmerged residual native #200 source:** `PreparedWorldBuilder`
+**Current on main through accepted PR #246:** `PreparedWorldBuilder`
 validates final unique tuples, optionally normalizes Water and builds an
 unexposed candidate. Its native-issued `ConstructionRefusal` distinguishes
 policy/setup refusal from preparation failure, binding exact raw request scope

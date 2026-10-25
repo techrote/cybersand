@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md]
 ---
 
@@ -286,7 +286,7 @@ subset, with the separate liquid-policy entry point noted below.
 | `maximum_explosion_radius` | 64 | Largest accepted radius |
 | `liquid_solver_policy` | every liquid's current default | Immutable LCB-001 policy; construction refuses any mapping this build has not qualified ([foundation](../architecture/liquid-solver-family-policy.md#native-policy-foundation-current-2026-10-24)). Not mirrored by `cybersand_config_v2`; use `cybersand_world_create_with_liquid_policy_v1`. |
 
-**LCB pressure family block (#245 law, retained in residual native source; experimental).**
+**LCB pressure family block (#245 law, retained by accepted #246 main; experimental).**
 When `liquid_solver_policy` assigns Water to `pressure_flow_v1/reference`, the
 optional family block `pressure_flow_v1` version 1 sets two construction-time
 values. Omitting the block applies the defaults. Out-of-range values are refused
@@ -303,8 +303,7 @@ limit `maximum()`, compartment volume limit 16 384, capacity 1024, history 64) a
 not configurable; they are Proposed values recorded in the receipt's
 `family_parameters` ([declared parameters](../architecture/pressure-flow-v1.md#declared-parameters-v1)).
 
-**Residual native #200 W-CY and setup codecs (unmerged
-`codex/lcb001-shared-contract`).** Water × `cellular_yield_v1/reference` accepts
+**Accepted main #200 W-CY and setup codecs (#246, `ec58d919`).** Water × `cellular_yield_v1/reference` accepts
 its own optional material block **v2**, one `viscosity_index` integer 0..255,
 default 0. Its law version is 1; the illustrative material-block v1
 `flow_rate_permille` schema is not reinterpreted. Whole-cell Water requires
