@@ -394,7 +394,7 @@ retain accepted solver/normalization/geometry; accepted ordinary exit retires it
 
 Blind runs and non-sampled owners refuse before mutation. The initial body-free
 checkpoint also refused reference bodies; the later desktop stage below admits
-the original supported-body owner while synchronous bodies remain unsupported.
+the original supported-body owner; the later synchronous route below stages its own original y90 poses.
 Starting a blind session from experimental Water Feel
 also refuses before creating its hidden mapping. Original Current blind and body
 routes remain available through their existing constructors. For whole-cell CY
@@ -408,7 +408,7 @@ The [Water Feel checkpoint](../audits/2026-10-25-lcb003-water-feel-constructor.m
 records actual desktop/synchronous routes, deterministic refusals/fences, exact
 Current recipe/default controls and the unchanged local native-runtime identity.
 That earlier proof closes the bounded unblinded body-free row only. The later
-desktop reference-body proof is separate; synchronous bodies, blind-family
+desktop and synchronous reference-body proofs are separate; blind-family
 study qualification, whole-cell future-source qualification, other constructors,
 complete executed host/source identity and actual browser/publication gates remain
 open. Native and host full matched eligibility remain false.
@@ -455,7 +455,7 @@ successors or the existing vent/collapse ledger, retaining still-live labels.
 The historical failed ordinary run and compact six-arm native reduction remain
 evidence. The fix does not erase cell authority or weaken quarantine.
 
-Synchronous/Web reference-body staging, blind-family qualification, barrel
+Actual Wasm/visual execution, blind-family qualification, barrel
 owners, whole-cell fractional future sources, remaining constructors and full
 executed host/publication identity remain open. CYPS omits host body masks; an
 import alone does not establish complete masked physical continuation.
@@ -898,7 +898,7 @@ uses the exact existing ordered rectangle recipe, sampled player(24,222) and
 three original8×14 scene templates at(124,90),(244,90),(384,90), all initially
 unrotated and at rest. This is a separate physical route from the four body-free
 demos above. Imported same-label physical saves cannot gain authored identity;
-other bodies/imports, Water Feel synchronous bodies and generic physical
+other bodies/imports and generic physical
 MicroScenarios remain separate admission work. [Dated local evidence](../audits/2026-10-25-lcb003-synchronous-reference-body.md)
 records actual normal menu/panel callbacks and remaining platform limits.
 
@@ -937,6 +937,56 @@ earlier96-tick apparatus premise is retained as failed: bodies had not reached
 the liquid. This is functional execution, not complete trace parity/performance,
 actual Wasm/visual or source-matched release qualification. Existing desktop
 Water Feel and IN motion/rest-contact qualifications remain separately scoped.
+
+## Synchronous supported-body Water Feel
+
+**Current bounded unmerged source45b6ed9d:** explicit unblinded Exploratory
+Water Feel can stage its original supported-body recipe through the same private
+synchronous continuation. It retains the exact fractional Water/actions/seed,
+sampled player(24,222), camera and fixed480×270 Water view, plus actual selected
+quality/margins/publication cadence. Its three8×14 scene templates start at
+(124,90),(244,90),(384,90), zero rotation and velocity. These are the actual
+synchronous Current poses, distinct from desktop helper defaults. Current
+constructors, physics laws and protected radius2 remain unchanged.
+
+The owner copies the resolved Water result, checked recipe, complete final
+execution and selected policy before capture. One permanent private graph stays
+frozen while actual packed bodies produce native masks/receipt and token-bound
+terrain drives existing bounded preparation. At least two real physics frames,
+the20-second readiness bound, source generation/semantic identity, mode/player
+profile/recovery/settings, final request serial/lifetime and native retained-state
+fences all precede commit. Refusal retains old World/player/body graph/applied
+receipt/record/actions/cursors; a concurrent accepted old-world edit is retained,
+not rolled back. Success adopts that same graph without a fallible rebind.
+
+Only an actual successful Water constructor supplies its generation-bound
+configured Baseline origin. The exemption also checks the native component and
+actual applied-receipt hash; an imported identical payload or an independent
+native reconstruction cannot borrow it. Unsupported interaction/diagnostic laws
+and independent transport still refuse before candidate allocation. Host-only
+failures do not invent a native attempt. A committed observer fault remains an
+installed-session fault, never a retained-World refusal.
+
+Normal Water semantic/scenario changes and **Restart world** retain accepted
+family/normalization/geometry, original recipe and actions. Body-free replacement
+closes the old graph only after successful native commit; returning to the body
+recipe stages a new graph. Explicit Current replacement cancels pending work and
+retires identity. Blind studies and Controlled body construction still refuse.
+Initial normalization never rewrites fractional future sources; Water IN remains
+unavailable on this tested pre-union runtime and requires fresh integration and
+source-compatibility qualification. Physical imports/barrel/other bodies and
+same-policy quarantined Restart remain separate work.
+
+The [dated native Windows proof](../audits/2026-10-25-lcb003-synchronous-water-reference-body.md)
+passes656 assertions in eight processes, including91 new actual-owner checks and
+73 corrected Physics Pit checks. Actual native readback verifies FM and all three
+PF variants through240 synchronous ticks with positive signed feedback, exact
+Water and applicable gas accounting, plus the original tick180 observation.
+Earlier label-only cohort coverage is corrected additively; equal final aggregates
+alone do not prove actual variants or trace parity. Frozen native-v1
+qualifications15 and false native/host full-match eligibility remain. This local
+development DLL proof does not qualify released runtimes, Water IN/Brine IN rest
+contacts, actual Wasm/visual execution, performance or full #202/#203 acceptance.
 
 ## Downstream ownership
 

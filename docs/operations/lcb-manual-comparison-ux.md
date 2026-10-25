@@ -10,6 +10,14 @@ related-documents: [../architecture/liquid-solver-family-policy.md, lcb-water-co
 
 # LCB manual liquid comparison UX flow
 
+The later [synchronous supported-body Water Feel route](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel)
+uses existing **Liquids… → Exploratory → Apply & rebuild active**, Water Apply/
+Reset and **Restart world**. It retains original recipe/actions/player, actual
+y90 body poses and quality with the fixed Water view. Pending/refused/applied
+states stay distinct; unsupported blind/future-source/import/body routes and
+native/host full-match limitations remain explicit. The [dated local proof](../audits/2026-10-25-lcb003-synchronous-water-reference-body.md)
+also corrects earlier label-only variant coverage without rewriting old records.
+
 ## Status and scope
 
 **Current experimental, unmerged source:** `0a702eb304ebf1e9e1302a15250cdd159f0371f7`
@@ -43,8 +51,7 @@ The original three bodies and sampled player stage privately; the existing UI
 shows a pending request while actual frozen frames and bounded terrain readiness
 complete. Old state stays held. Success starts paused with the original recipe,
 poses and current view/cadence; Restart retains the accepted selection. Imported
-same-label bodies, other physical maps and synchronous Water Feel bodies remain
-outside this route. Native/host qualifications remain visible, and [local Windows
+same-label bodies and other physical maps remain outside this route; the later Water Feel route has its own checked owner. Native/host qualifications remain visible, and [local Windows
 proof](../audits/2026-10-25-lcb003-synchronous-reference-body.md) is not browser acceptance.
 
 The subsequent [ordinary synchronous demo route](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-synchronous-demo-rebuilding)
@@ -163,7 +170,7 @@ geometry, ordinary controls and scheduled actions. Blind routes remain refused
 for experimental families. The subsequent desktop
 [reference-body stage](../architecture/liquid-prepared-setup-and-receipts.md#prepared-water-feel-reference-bodies)
 also admits the original supported-body Water Feel recipe with its sampled
-player; synchronous/Web body staging remains open. Whole-cell Water recipes with fractional
+player. The later synchronous route stages its actual original y90 bodies and fixed Water view, retaining actual quality/actions/player and native source identity. Actual Wasm/visual qualification remains open. Whole-cell Water recipes with fractional
 future sources refuse; initial normalization never rewrites those actions.
 
 “Default” below means the existing constructor route remains supported; it does
@@ -178,7 +185,7 @@ controlled API is narrower than older explicit-policy diagnostic APIs.
 | Bootstrap `create_world` / ordinary `reset_demo_world` | Defaults; ordinary reset retires typed setup identity | Explicit retained-policy coordinator without changing Current defaults |
 | `build_world` rectangle showcases / Blacksite | Existing Current constructor retained; four curated synchronous body-free demos explicitly stage exact recipes, sampled player and actual view/cadence in Exploratory mode. A separate authored Physics Pit route stages its original three bodies/permanent space with final native masks; both retain accepted recipe/selection on Restart | Desktop counterparts, imported physical saves, Blacksite/showcase/other physical owners and arbitrary rectangle callers remain separate; complete host identity and final platforms remain open |
 | `build_tuned_world` / Experiment Tower | Original default constructor retained; ordinary application Tower explicitly stages sampled-owner policy/normalization/geometry with final floor and retains floor/release/schedule/transport controls; reset/profile rebuild retain accepted policy | Other direct tuned-world callers, complete host evidence and final platform qualification |
-| `build_water_feel_world` / Water Feel controlled and blind apparatus | Original defaults/blind routes retained; explicit unblinded sampled Exploratory dispatcher/panel/reset carries typed policy/normalization/geometry and qualified owner record, preserving actions/ledger; desktop additionally stages the original three reference bodies/terrain in their permanent space and proves ordinary unpaused feedback | Synchronous/Web reference bodies, barrel owners, blind-family study and whole-cell fractional future-source qualification; visual/publication gates |
+| `build_water_feel_world` / Water Feel controlled and blind apparatus | Original defaults/blind routes retained; explicit unblinded sampled Exploratory dispatcher/panel/reset carries typed policy/normalization/geometry and qualified owner record, preserving actions/ledger; desktop and synchronous owners additionally stage their respective original three reference bodies/terrain in a permanent space and prove ordinary unpaused feedback | Actual Web/visual qualification, barrel owners, blind-family study and whole-cell fractional future-source qualification; visual/publication gates |
 | CYSD `import_level` | Existing default reconstruction retained; explicit synchronous Exploratory next-import selection prepares copied thermal payload/policy/normalization, saved metadata and a private sampled player before commit; refusal retains old owner/receipts and Restart reconstructs accepted input | Physical/Tower/showcase imports and unsupported inherited interaction/diagnostic/transport settings explicitly refused; complete verified host identity, persisted policy/setup design and final source-matched platforms remain open |
 | CYPS `import_physical_state` | Exact saved-policy continuation; old typed construction identity retired | Preserve exact continuation; never use it as a family-conversion rebuild |
 | Diagnostic reset / depth / arena / player playground / Thunderbowl | Existing diagnostic policy options and ordinary controls | Shared application coordinator/readback where supported, preserving plane and actor semantics |

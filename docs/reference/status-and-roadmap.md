@@ -10,6 +10,15 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+The later unmerged [synchronous supported-body Water Feel checkpoint](../audits/2026-10-25-lcb003-synchronous-water-reference-body.md)
+at source45b6ed9d retains exact original y90 poses/recipe/actions/player and
+actual quality in the existing private frozen transaction. Eight native
+Windows processes pass656 assertions, including91 Water and73 corrected
+Physics Pit checks with actual native family/variant/hash readback. Earlier
+label-only arm evidence does not establish distinct-family execution. Final
+native/default/Water-IN union, source-matched publication/full exact-head
+gates, remaining constructors and actual Web/visual work stay open.
+
 The subsequent unmerged [normal level-import checkpoint](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
 adds explicit Exploratory next-import selection and actual menu adoption of
 ordinary body-free CYSD payloads, metadata and sampled owner. Refusal retains
@@ -28,7 +37,7 @@ stages the unchanged three reference rectangles and terrain with actual frozen
 poses, retains old World/graph/receipts on refusal and proves normal unpaused
 pressure reference/cached/dormant/FM feedback. Its [fresh local proof](../audits/2026-10-25-lcb003-water-reference-body.md)
 also preserves the native retired-gas-label defect exposed by play and its narrow
-repair. Synchronous bodies, remaining constructors, host-mask continuation,
+repair. Remaining physical constructors, host-mask continuation,
 complete host identity and matching publication remain open.
 
 The #202 application branch's [combined local checkpoint](../audits/2026-10-25-lcb003-combined-host-web-prerequisite.md)
@@ -1019,7 +1028,7 @@ refusal retain old state. Six local Windows processes pass490 assertions,
 including70 new normal-owner checks and three original240-tick PF arms with
 consumed positive feedback/exact quantity. See [the owner contract](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-physics-pit-reference-bodies)
 and [dated proof](../audits/2026-10-25-lcb003-synchronous-reference-body.md).
-Imported physical saves, other physical routes, synchronous Water Feel bodies,
+Imported physical saves and other physical routes,
 complete host identity and final source-matched/browser gates remain open.
 
 ## Opt-in transport profiles

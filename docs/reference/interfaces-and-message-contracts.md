@@ -11,6 +11,15 @@ last-reviewed: 2026-10-25
 
 # Interfaces and message contracts
 
+The private synchronous reference continuation now also owns a checked, copied
+[supported-body Water Feel request](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel).
+It captures the actual Water constructor kind, result/recipe, final480×270
+execution and initial body values before native receipt creation, retaining
+the existing one-use token and final guards. Its Water-specific installed tail
+adopts the permanent graph and original actions; a refused construction never
+reports successful installation. Known Baseline exemption binds actual source
+generation/semantic hash/native component/applied receipt, never an import label.
+
 ## Explicit LCB application Web apparatus
 
 `?test=1&liquid-host-test=1` runs a bounded startup apparatus through existing
@@ -877,8 +886,7 @@ actual frozen Rapier space. Native candidate identity, main-thread terrain and
 pose readiness, exact continuation binding and final owner fences precede
 installation. Refusal retains the old graph/receipt/record; success adopts the
 permanent space without rebind. It carries no actor/equipment authority. The
-synchronous controller explicitly refuses this body route until it has its own
-staged owner. See [reference-body lifetime and actual feedback](../architecture/liquid-prepared-setup-and-receipts.md#prepared-water-feel-reference-bodies).
+later synchronous controller has its own staged supported-body Water route with its original y90 poses. See [reference-body lifetime and actual feedback](../architecture/liquid-prepared-setup-and-receipts.md#prepared-water-feel-reference-bodies).
 
 The subsequent qualified host observation API
 `CyberDemoBridge.loaded_native_runtime_values()` accepts no caller path/hash and

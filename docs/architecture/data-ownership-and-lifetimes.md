@@ -11,6 +11,14 @@ last-reviewed: 2026-10-25
 
 # Data ownership and lifetimes
 
+The later synchronous [supported-body Water Feel owner](liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel)
+uses one exact copied request, native token and permanently private frozen graph.
+Actual initial masks/final execution precede capture; mode/profile/settings,
+source generation/semantic identity, serial/lifetime and native fences precede
+adoption. Refusal retains old World/player/graph/receipt/record/cursors; successful
+body-free change closes the old graph after commit. No duplicate live World,
+physics rebind or Godot API crosses a native worker boundary.
+
 ## Explicit imported-level ownership
 
 The unmerged #202 synchronous [normal import route](liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)

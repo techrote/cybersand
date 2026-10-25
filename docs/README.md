@@ -10,6 +10,13 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The later [synchronous supported-body Water Feel route](architecture/liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel)
+retains its original recipe/actions/player and y90 bodies through private
+frozen preparation, native masks/final fences, refusal and accepted Restart.
+Its [dated local Windows proof](audits/2026-10-25-lcb003-synchronous-water-reference-body.md)
+includes actual family readback and a correction to earlier label-only
+Physics Pit coverage. Final Web/publication/full-host gates remain separate.
+
 The subsequent [synchronous Physics Pit body route](architecture/liquid-prepared-setup-and-receipts.md#synchronous-physics-pit-reference-bodies)
 prepares its original three bodies and sampled player with explicit Exploratory
 selection, actual frozen-frame/terrain readiness and final native masks. Its
@@ -34,7 +41,7 @@ The subsequent [prepared Water Feel reference-body route](architecture/liquid-pr
 stages actual frozen desktop bodies/terrain and retains the old graph and native
 receipt on refusal. Its [dated local proof](audits/2026-10-25-lcb003-water-reference-body.md)
 includes ordinary unpaused pressure/FM feedback and the native gas-label repair
-exposed by that play. Synchronous bodies, host-mask continuation and complete
+exposed by that play. Host-mask continuation and complete
 host/platform/publication qualification remain open.
 
 The unmerged #202 [thermal level preparation](architecture/liquid-prepared-setup-and-receipts.md#imported-cysd-payload-preparation)

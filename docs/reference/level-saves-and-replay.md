@@ -10,6 +10,13 @@ related-documents: [interfaces-and-message-contracts.md, ../architecture/pressur
 
 # Level saves and exact replay
 
+The later [synchronous Water Feel body route](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel)
+reconstructs its accepted original recipe/policy/normalization on Restart. A
+generic import of identical native tuples retires its native generation and
+cannot acquire Water recipe/transport origin from the UI label. This adds no
+save schema or policy persistence; moving-body imports and separately restored
+host masks remain unsupported work.
+
 ## Does an identical save reproduce the next tick?
 
 **Current: no such guarantee.** CYSD1 restores a fixed demo level and selected

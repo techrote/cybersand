@@ -10,9 +10,17 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 # Configuration reference
 
+Synchronous [supported-body Water Feel](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel)
+retains its actual Current poses(124,90),(244,90),(384,90),8×14 bodies at rest,
+fixed480×270 Water view, recipe camera/player/actions and actual quality buffers/
+publication cadence. Low quality is explicitly tested with margins16/18 and
+30Hz publication; selecting Water still keeps its original fixed view. The
+existing two-frozen-frame/20,000ms readiness and per-frame terrain budgets stay.
+These synchronous poses differ from desktop Water Feel helper defaults.
+
 The bounded synchronous Physics Pit route preserves its actual original three
 8×14 bodies at(124,90),(244,90),(384,90), zero angles/velocities and sampled
-player(24,222). These differ from Water Feel's default helper poses. Pending
+player(24,222). These differ from desktop Water Feel's default helper poses. Pending
 terrain work uses the existing per-frame chunk/time budget, requires at least
 two actual frozen physics frames and refuses after20,000ms readiness wait.
 That construction bound is not a simulation-tick deadline or a Web ownership
@@ -407,7 +415,7 @@ at (160,176), (212,176), (264,176) with epoch0 into a permanent physics space;
 no geometry padding, automatic family selection or new body capacity is added.
 Their actual poses stay frozen through terrain/native readiness and final
 commit. The existing asynchronous response age limit still rejects old samples.
-Synchronous/Web body staging and barrel owners remain unsupported. See
+The later synchronous supported-body route uses its own actual poses; barrel owners and actual Web qualification remain open. See
 [prepared reference-body ownership](../architecture/liquid-prepared-setup-and-receipts.md#prepared-water-feel-reference-bodies).
 
 The ordinary Experiment Tower additionally accepts these explicit settings only

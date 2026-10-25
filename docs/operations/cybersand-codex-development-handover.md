@@ -10,6 +10,18 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+The subsequent [synchronous Water Feel body checkpoint](../audits/2026-10-25-lcb003-synchronous-water-reference-body.md)
+at source45b6ed9d reuses verified unchanged native135/DLL79f35666 and passes
+eight strict processes/656 assertions: new Water91, corrected PhysicsPit73,
+WaterFeel72, import73, UI105, poses50, desktopWater75 and ordinary117. Each
+uses its own180s timeout, complete source/project fences and strict exit/
+error checks. Actual native readback verifies all threePF variants and FM;
+the first label-only family coverage and other apparatus failures remain
+preserved and are superseded only in their stated scope. No new DLL build
+or final Wasm/release/Brine-contact/Water-IN acceptance is claimed. Before
+arming003, integrate this new case plus the incoming strict Water005 proof
+and final native/default sources into its still-unarmed publisher.
+
 The [synchronous Physics Pit checkpoint](../audits/2026-10-25-lcb003-synchronous-reference-body.md)
 on source5d5c75ed stages exact authored rectangles, original three8×14 bodies
 and sampled player with private same-request/token state, bounded real frozen

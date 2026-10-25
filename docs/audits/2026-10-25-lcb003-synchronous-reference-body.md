@@ -10,6 +10,15 @@ related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../op
 
 # LCB-003 synchronous Physics Pit prepared body checkpoint
 
+**Additive coverage correction,2026-10-25:** the later [supported-body Water checkpoint](2026-10-25-lcb003-synchronous-water-reference-body.md)
+finds that this70-assertion fixture selected subsequent presets without opening
+the Liquids dialog/consuming its previous acknowledgement. Its three labels
+did not verify distinct actual native variants; do not rely on them for that
+claim. All original source/log/hashes remain unchanged. Source45b6ed9d retains
+the70 checks, executes the actual dialog/open acknowledgement and adds three
+native family/variant/hash assertions; its fresh73/0 proof verifies all three
+PF variants. The rest of this dated record retains its original source scope.
+
 ## Source and actual owner behavior
 
 Source `5d5c75edda191771f3bbaade220955f092d81daf`, tree
