@@ -3,6 +3,7 @@ extends "res://scripts/main.gd"
 const WaterFeelWebProbe = preload("res://scripts/water_feel_web_probe.gd")
 const LiquidHostWebProbe = preload("res://scripts/liquid_host_web_probe.gd")
 const PreparedLevel = preload("res://scripts/prepared_level_session.gd")
+const PreparedSynchronousReference = preload("res://scripts/prepared_synchronous_reference_session.gd")
 
 # Web compatibility owner. The original desktop scene/worker remains intact.
 # Every native call here runs on Godot's main thread; cellular ticks remain
@@ -45,6 +46,12 @@ var _curated_demo_generation: int = -1
 var _accepted_demo: Dictionary = {}
 var _prepared_demo_actor_factory: Callable = Callable()
 var _prepared_demo_commit_barrier: Callable = Callable()
+var _physics_pit_generation: int = -1
+var _accepted_physics_demo: Dictionary = {}
+var _pending_web_reference: RefCounted
+var _prepared_web_reference_factory: Callable = Callable()
+var _prepared_web_reference_actor_factory: Callable = Callable()
+var _prepared_web_reference_commit_barrier: Callable = Callable()
 var interest_region_test: Dictionary = {}
 var benchmark_running: bool = false
 var benchmark_cancelled: bool = false
@@ -98,6 +105,7 @@ func _water_apply_due_web_actions() -> bool:
 func water_lab_apply_result(result: Dictionary, blind_label: String = "") -> void:
 	if not ready_to_play or not result.get("ok",false): return
 	if not _water_blind_application_allowed(result,blind_label): return
+	_cancel_web_reference("Superseded by a Water Feel request")
 	if _liquid_water_active and tower_context.get("water_active",false):
 		_apply_prepared_liquid_water(microscenario_liquid_policy,microscenario_liquid_setup.get("normalization","") == "water-normalize-v1",
 			int(microscenario_liquid_setup.get("maximum_rule_radius",2)),result)
@@ -209,7 +217,16 @@ func _curated_demo_is_current() -> bool:
 		and not tower_context.get("water_active",false) and rigid_bodies.is_empty() \
 		and physical_actor_session == null and not showcase_presentation.active() and not blacksite_nine_presentation.active()
 
+func _physics_pit_is_current() -> bool:
+	return demo_id=="physics_pit" and _physics_pit_generation==native_world.get_liquid_policy_session_generation() \
+		and rigid_bodies.size()==3 and rapier_bridge.is_initialized() and physical_actor_session==null \
+		and not tower_active and not tower_context.get("micro_active",false) and not tower_context.get("water_active",false) \
+		and not showcase_presentation.active() and not blacksite_nine_presentation.active()
+
 func liquid_comparison_active_definition() -> Dictionary:
+	if _physics_pit_is_current():
+		return _accepted_physics_demo.definition.duplicate(true) if not _accepted_physics_demo.is_empty() \
+			else CyberMicroScenarioCatalogue.prepared_physics_pit()
 	if _curated_demo_is_current():
 		return _accepted_demo.definition.duplicate(true) if not _accepted_demo.is_empty() \
 			else CyberMicroScenarioCatalogue.prepared_ordinary_demo(_curated_demo_id)
@@ -222,6 +239,10 @@ func liquid_comparison_can_apply_active(_exploratory: bool) -> bool:
 
 func liquid_comparison_apply_active(policy: PackedInt32Array, normalize_water: bool, exploratory: bool,
 		mode: String, radius: int) -> bool:
+	if _physics_pit_is_current():
+		if not exploratory:
+			microscenario_error = "Physics Pit requires Exploratory mode with its original physical and sampled owners";return false
+		return _begin_web_reference(policy,normalize_water,radius)
 	if _curated_demo_is_current():
 		if not exploratory:
 			microscenario_error = "Ordinary demos require Exploratory mode with their sampled player";return false
@@ -287,9 +308,73 @@ func _accepted_demo_retains_transport(transport: String) -> bool:
 		and transport == _accepted_demo.transport \
 		and native_world.get_applied_liquid_construction_receipt().get("receipt_hash","") == _accepted_demo.receipt_hash
 
-func microscenario_supports_prepared_physical_liquid(_definition: Dictionary) -> bool:
-	# Synchronous reference-body staging is a separate constructor checkpoint.
-	return false
+func microscenario_supports_prepared_physical_liquid(definition: Dictionary) -> bool:
+	return _physics_pit_is_current() and definition==liquid_comparison_active_definition()
+
+func _begin_web_reference(policy: PackedInt32Array, normalize_water: bool, radius: int) -> bool:
+	if not ready_to_play or not _physics_pit_is_current() or not water_blind_set.is_empty() \
+		or not water_active_blind_label.is_empty(): return false
+	var refusal: String = _prepared_application_settings_refusal()
+	if not refusal.is_empty(): microscenario_error = refusal;return false
+	_cancel_web_reference("Superseded by a newer Physics Pit request")
+	_level_import_serial += 1
+	var staged := PreparedSynchronousReference.new()
+	if not staged.prepare(self,liquid_comparison_active_definition(),policy,normalize_water,radius,
+		_prepared_web_reference_factory,_prepared_web_reference_actor_factory,_prepared_web_reference_commit_barrier):
+		microscenario_error = staged.last_error;return false
+	_pending_web_reference = staged
+	pending_microscenario_apply = {"serial":_level_import_serial}
+	if not staged.begin(self):
+		_cancel_web_reference(staged.last_error);return false
+	microscenario_error = ""
+	return true
+
+func _advance_web_reference() -> void:
+	if _pending_web_reference==null: return
+	var staged: RefCounted = _pending_web_reference
+	var outcome: String = staged.advance(self)
+	if outcome=="waiting": return
+	if outcome!="committed": _cancel_web_reference(staged.last_error);return
+	_pending_web_reference = null;pending_microscenario_apply.clear()
+	_physics_pit_generation = native_world.get_liquid_policy_session_generation()
+	var receipt: Dictionary = native_world.get_applied_liquid_construction_receipt()
+	_accepted_physics_demo = {"definition":staged.definition.duplicate(true),"policy":staged.policy.duplicate(),
+		"normalization":staged.setup.normalization,"maximum_rule_radius":staged.setup.maximum_rule_radius,
+		"generation":_physics_pit_generation,"receipt_hash":receipt.receipt_hash,
+		"transport":str(native_world.get_liquid_run_receipt({}).components.transport_profile)}
+	_curated_demo_id = "";_accepted_demo = {};_accepted_level = null
+	_liquid_tower_active = false;_liquid_water_active = false
+	microscenario_definition = staged.definition.duplicate(true);microscenario_liquid_policy = staged.policy.duplicate()
+	microscenario_liquid_setup = {"intent":"exploratory","normalization":staged.setup.normalization,
+		"maximum_rule_radius":staged.setup.maximum_rule_radius}
+	tower_context = {"active":false,"micro_active":false,"water_active":false,"status":"Physics Pit / explicit liquid policy",
+		"scenario_request_serial":staged.serial,"scenario_request_applied":true}
+	tower_active = false;tower_schedule.clear();tower_inputs.clear();water_actions.clear();tower_single_step = false
+	camera_origin = Vector2(staged.definition.camera_origin[0],staged.definition.camera_origin[1]);camera_follow_enabled = false
+	character_position = player.position;paused = true;microscenario_error = ""
+	_update_liquid_context(true);force_publication = true;_publish_world();update_shader_parameters();update_status()
+
+func _adopt_web_reference_candidate(candidate: RefCounted, character: CyberSampledCharacter) -> void:
+	_close_prepared_reference_bodies()
+	for body: RigidBody2D in [test_rigid_body_1,test_rigid_body_2,test_rigid_body_3]:
+		body.freeze = true;body.collision_layer = 0;body.collision_mask = 0
+	rapier_bridge.shutdown()
+	_accepted_reference_candidate = candidate;rapier_bridge = candidate.physics_bridge();rigid_bodies = candidate.bodies()
+	player = character;last_hard_surface_revision = native_world.get_hard_surface_revision();rapier_start_error = OK
+	candidate.adopt()
+
+func _cancel_web_reference(reason: String = "Prepared Physics Pit retired") -> void:
+	if _pending_web_reference==null: return
+	var staged: RefCounted = _pending_web_reference
+	_pending_web_reference = null;pending_microscenario_apply.clear()
+	staged.close();microscenario_error = reason
+	tower_context["scenario_request_serial"] = staged.serial;tower_context["scenario_request_applied"] = false
+	_update_liquid_context(true)
+
+func _accepted_physics_retains_transport(transport: String) -> bool:
+	return not _accepted_physics_demo.is_empty() and _physics_pit_is_current() \
+		and _accepted_physics_demo.generation==_physics_pit_generation and transport==_accepted_physics_demo.transport \
+		and native_world.get_applied_liquid_construction_receipt().get("receipt_hash","")==_accepted_physics_demo.receipt_hash
 
 func _commit_web_prepared_sampled(bridge: Variant, token: int, definition: Dictionary) -> bool:
 	var staged: Dictionary = CyberSimulationWorker.PreparedSampled.prepare(bridge,native_world,token,
@@ -336,6 +421,7 @@ func _install_web_microscenario(definition: Dictionary, mode: String, liquid_pol
 		controlled_setup: Dictionary = {}) -> bool:
 	if str(definition.get("id", "")).begins_with("experimental/blacksite/"): return false
 	if not ready_to_play or not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return false
+	_cancel_web_reference("Superseded by a MicroScenario request")
 	if not CyberMicroScenarioCatalogue.player_configuration(
 		str(definition.get("id", ""))
 	).is_empty():
@@ -642,6 +728,8 @@ func _ready() -> void:
 		_publish_test_state()
 
 func _exit_tree() -> void:
+	_cancel_web_reference("Application closed")
+	_close_prepared_reference_bodies()
 	rapier_bridge.shutdown()
 
 func _notification(what: int) -> void:
@@ -672,12 +760,14 @@ func _update_liquid_context(force: bool = false) -> void:
 		if native_world.has_method(&"get_liquid_construction_attempt") else {}
 
 func _process(delta: float) -> void:
+	_advance_web_reference()
 	if native_world != null: tower_context["tick"]=int(native_world.get_tick_index());tower_context["paused"]=paused
 	_update_liquid_context()
 	if native_world != null: _update_water_web_context()
 	tower_context["microscenario"] = micro_host.summary()
 	tower_panel.refresh(tower_active,tower_floor,tower_context)
 	_refresh_microscenario_controls()
+	if _pending_web_reference!=null: return
 	if not ready_to_play:
 		return
 	frame_time_ms = delta * 1000.0
@@ -712,7 +802,7 @@ func _process(delta: float) -> void:
 			_publish_test_state()
 
 func _physics_process(_delta: float) -> void:
-	if not ready_to_play or ui.open or not focused:
+	if not ready_to_play or ui.open or not focused or _pending_web_reference!=null:
 		return
 	native_world.set_simulation_window(Vector2i(camera_origin.floor()), current_view_size, simulation_margin.x, simulation_margin.y)
 	micro_host.apply_interest()
@@ -892,6 +982,8 @@ func _sync_web_colliders() -> void:
 	rapier_bridge.process_hard_surface_collider_budget(HARD_SURFACE_CHUNKS_PER_FRAME, HARD_SURFACE_FRAME_BUDGET_USEC)
 
 func _activate_physics(active: bool, saved_bodies: Array = []) -> void:
+	_close_prepared_reference_bodies()
+	_accepted_physics_demo = {};_physics_pit_generation = -1
 	for body: RigidBody2D in [test_rigid_body_1, test_rigid_body_2, test_rigid_body_3]:
 		body.freeze = true
 		body.collision_layer = 0
@@ -929,6 +1021,7 @@ func _activate_physics(active: bool, saved_bodies: Array = []) -> void:
 	_sync_web_colliders()
 
 func select_demo(id: String, close: bool = true) -> void:
+	_cancel_web_reference("Superseded by a Current demo request")
 	if not ready_to_play or not CyberDemoWorlds.valid_id(id):
 		return
 	if id == CyberDemoWorlds.BlacksiteNine.ID:
@@ -977,6 +1070,7 @@ func select_demo(id: String, close: bool = true) -> void:
 		set_quality(quality)
 	total_moves = 0
 	_activate_physics(id == "physics_pit")
+	if id=="physics_pit": _physics_pit_generation = native_world.get_liquid_policy_session_generation()
 	native_world.set_liquid_surface_adhesion_enabled(liquid_surface_adhesion_enabled)
 	force_publication = true
 	_publish_world()
@@ -1028,6 +1122,9 @@ func liquid_level_host_observation_record() -> Dictionary:
 	return _accepted_level.record(native_world) if _accepted_level != null else {}
 
 func restart_world() -> bool:
+	if not _accepted_physics_demo.is_empty() and _physics_pit_is_current():
+		return _begin_web_reference(_accepted_physics_demo.policy.duplicate(),
+			_accepted_physics_demo.normalization=="water-normalize-v1",int(_accepted_physics_demo.maximum_rule_radius))
 	if _accepted_level != null and not _accepted_level.identity(native_world).is_empty():
 		var reconstruction: Dictionary = _accepted_level.reconstruction()
 		return _import_prepared_level(reconstruction.payload,reconstruction.metadata,reconstruction.selection)
@@ -1110,7 +1207,8 @@ func _prepared_application_settings_refusal() -> String:
 	if actual.get("interaction_policy","") != "8:9:30" or actual.get("diagnostic_physics","") != "0:-1":
 		return "Prepared solver rebuild cannot yet retain the current interaction or diagnostic settings; prior World and owners retained"
 	var transport: String = str(actual.get("transport_profile",""))
-	if transport != "baseline" and not _accepted_demo_retains_transport(transport) and (_accepted_level == null \
+	if transport != "baseline" and not _accepted_demo_retains_transport(transport) \
+		and not _accepted_physics_retains_transport(transport) and (_accepted_level == null \
 		or not _accepted_level.retains_prepared_transport(native_world,transport)):
 		return "Prepared solver rebuild cannot yet retain this independent transport profile; prior World and owners retained"
 	return ""
@@ -1233,6 +1331,7 @@ func import_save(text: String) -> void:
 	_import_decoded(CyberDemoSaveCodec.decode_text(text))
 
 func _import_decoded(decoded: Dictionary) -> void:
+	_cancel_web_reference("Superseded by a level import request")
 	if water_controlled_run_active() or tower_context.get("micro_active", false):
 		last_save_error="Leave the controlled scenario before importing a level"
 		ui.message(last_save_error)
@@ -1253,7 +1352,7 @@ func _import_decoded(decoded: Dictionary) -> void:
 		last_save_error = str(demo_bridge.get_last_error())
 		ui.message(last_save_error)
 		return
-	if _accepted_level != null or not _accepted_demo.is_empty():
+	if _accepted_level != null or not _accepted_demo.is_empty() or not _accepted_physics_demo.is_empty():
 		microscenario_liquid_policy = null;microscenario_liquid_setup = {};microscenario_definition = {}
 		micro_host.clear();tower_context = {};tower_active = false
 	_accepted_level = null

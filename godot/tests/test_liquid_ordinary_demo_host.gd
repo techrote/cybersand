@@ -97,12 +97,13 @@ func _refusals() -> void:
 	expect(not apply(1) and intact(before),"newer owner choice at final guard preserves complete accepted ordinary session")
 	owner._prepared_demo_commit_barrier = Callable()
 	owner.select_demo("physics_pit",false)
+	owner.export_save();owner.import_save(owner.export_text)
 	before = snapshot()
 	var bodies: Array = owner.rigid_bodies.duplicate()
 	var poses: PackedFloat32Array = PhysicalCandidate._pose_values(owner.rapier_bridge.pack_body_states())
 	panel.refresh(owner.tower_context)
 	expect(bodies.size()==3 and owner.rapier_bridge.is_initialized() and panel.apply_button.disabled,
-		"actual Physics Pit body owner remains outside ordinary prepared allowlist")
+		"imported Physics Pit body owner remains outside authored prepared allowlist")
 	expect(not owner.liquid_comparison_apply_active(bridge.default_liquid_policy(),false,true,"Play",2)
 		and intact(before) and owner.rigid_bodies==bodies
 		and PhysicalCandidate._pose_values(owner.rapier_bridge.pack_body_states())==poses,

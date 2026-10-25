@@ -60,6 +60,17 @@ static func prepared_ordinary_demo(id: String) -> Dictionary:
 		"profile":"Explicit solver policy with production Baseline and Current Water semantics","regions":[]}
 	return out
 
+static func prepared_physics_pit() -> Dictionary:
+	var out: Dictionary = Contract.base("ordinary-demo/physics_pit",1,0)
+	out.schema_version = 2;out.rectangles = Array(CyberDemoWorlds.rectangles("physics_pit"))
+	out.player_enabled = true;out.body_enabled = true;out.player_start = [24,222]
+	out.tools = ["paint","erase","player"];out.source_recipe = "CyberDemoWorlds/physics_pit"
+	out.source_recipe_hash = JSON.stringify(out.rectangles).sha256_text()
+	out["presentation"] = {"title":"Physics Pit","instructions":"Explicit Exploratory rebuild with the original three bodies.",
+		"duration_ticks":Contract.MAX_TICK,"baseline":"Original Current Physics Pit constructor",
+		"profile":"Explicit solver policy with staged original sampled and physical owners","regions":[]}
+	return out
+
 static func water(policy_result: Dictionary) -> Dictionary:
 	if not policy_result.get("ok", false): return {}
 	var policy: Dictionary = policy_result.policy
