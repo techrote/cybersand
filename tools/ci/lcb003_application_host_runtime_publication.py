@@ -45,6 +45,10 @@ HOST_MARKERS = {
     "test_liquid_host_evidence": "LIQUID_HOST_EVIDENCE",
     "test_liquid_pressure_rapier": "LIQUID_PRESSURE_RAPIER",
     "test_liquid_level_import_host": "LIQUID_LEVEL_IMPORT_HOST",
+    "test_liquid_ordinary_demo_host": "LIQUID_ORDINARY_DEMO_HOST",
+    "test_liquid_reference_body_poses": "LIQUID_REFERENCE_BODY_POSES",
+    "test_liquid_synchronous_reference_body": "LIQUID_SYNCHRONOUS_REFERENCE_BODY",
+    "test_liquid_desktop_default_host": "LIQUID_DESKTOP_DEFAULT_HOST",
 }
 engine.CASE_MARKERS = dict(engine.CASE_MARKERS) | {
     name: rf"(?m)^{prefix}: [1-9][0-9]* assertions[;,] 0 failures\s*$"
@@ -52,13 +56,18 @@ engine.CASE_MARKERS = dict(engine.CASE_MARKERS) | {
 } | {
     "test_liquid_level_preparation":
         r"(?m)^LIQUID_LEVEL_PREPARATION: [1-9][0-9]* assertions; 0 failures; completed=(.+)$",
+    "test_liquid_default_demo_preparation":
+        r"(?m)^LIQUID_DEFAULT_DEMO_PREPARATION: [1-9][0-9]* assertions; 0 failures; completed=(.+)$",
     "test_liquid_host_web_probe": r"(?m)^LIQUID_HOST_WEB_PROBE_NATIVE: (\{.+\})\s*$",
 }
 engine.EXECUTION_SCOPE = (
     "Import plus all fourteen retained shared-contract/IN/pressure cases and "
-    "fifteen implemented host/API cases on each target OS: prepared owner "
+    "twenty implemented host/API cases on each target OS: prepared owner "
     "adoption/refusal, normalization, real Main/worker moving reference bodies, "
-    "thermal CYSD preparation and explicit user import, receipt observations, "
+    "thermal CYSD preparation and explicit user import, four ordinary demos, "
+    "actual synchronous Physics Pit bodies, explicit reference poses, receipt observations, "
+    "native-authored desktop default adoption, positive FM/CY body play and "
+    "three typed initial pressure-capacity refusals, "
     "direct Rapier parity and the native prerequisite of the Web host probe. "
     "Water IN remains unavailable; actual browser execution, complete constructor "
     "coverage, human feel and full ready-PR CI are separate gates"
@@ -77,16 +86,26 @@ IMPORT_SECTIONS = {name: True for name in (
     "actual_user_route", "refusal_atomicity", "thermal_normalization",
     "restart_identity", "legacy_preservation",
 )}
+DEFAULT_SECTIONS = {name: True for name in (
+    "recipe_and_law_parity", "selected_policy", "prepared_masks",
+    "refusal_and_token_fences", "default_lifecycle", "origin_lifetime",
+)}
 BODY_VARIANTS = ("reference", "cached", "cached_dormant", "freemass")
+ORDINARY_DEMOS = ("material_lab", "waterworks", "foundry", "neon_works")
+SYNCHRONOUS_BODY_PRESETS = (2, 3, 4)
+DEFAULT_PLAY_VARIANTS = ("freemass", "whole")
+DEFAULT_CAPACITY_VARIANTS = ("reference", "cached", "cached_dormant")
 _verify_union = engine.verify_case_results
 
 
 def json_rows(directory: Path, name: str, prefix: str) -> list:
     output = (directory / (name + ".log")).read_text(encoding="utf-8")
     try:
-        return [json.loads(value) for value in re.findall(r"(?m)^" + re.escape(prefix) + r" (\{.+\})\s*$", output)]
+        values = [json.loads(value) for value in re.findall(r"(?m)^" + re.escape(prefix) + r" (.*)$", output)]
     except (ValueError, TypeError) as exc:
         raise RuntimeError("Malformed host observation: " + prefix) from exc
+    engine.require(all(isinstance(value, dict) for value in values), "Non-object host observation: " + prefix)
+    return values
 
 
 def exact_sections(value: object, expected: dict, message: str) -> None:
@@ -94,15 +113,126 @@ def exact_sections(value: object, expected: dict, message: str) -> None:
                    all(type(value.get(key)) is bool for key in expected), message)
 
 
+def completed_host_result(directory: Path, name: str, prefix: str) -> dict:
+    values = json_rows(directory, name, prefix)
+    engine.require(len(values) == 1 and isinstance(values[0], dict) and values[0].get("ok") is True,
+                   "Missing completed host result: " + prefix)
+    return values[0]
+
+
+def finite_pair(value: object) -> bool:
+    return isinstance(value, list) and len(value) == 2 and all(
+        type(item) in (int, float) and math.isfinite(item) for item in value)
+
+
+def sha256_text(value: object) -> bool:
+    return isinstance(value, str) and re.fullmatch(r"[0-9a-f]{64}", value) is not None
+
+
+def verify_ordinary_routes(directory: Path) -> None:
+    value = completed_host_result(directory, "test_liquid_ordinary_demo_host", "LIQUID_ORDINARY_DEMO_HOST_RESULT")
+    cohorts = value.get("cohorts")
+    engine.require(isinstance(cohorts, list) and all(isinstance(row, dict) for row in cohorts) and
+                   [(row.get("demo"), row.get("quality")) for row in cohorts] ==
+                   [(demo, quality) for demo in ORDINARY_DEMOS for quality in (0, 2)],
+                   "Incomplete ordinary demo/quality cohorts")
+    for row in cohorts:
+        engine.require(type(row.get("quality")) is int and type(row.get("executed_ticks")) is int and
+                       row["executed_ticks"] >= 12 and type(row.get("reset_generation")) is int and
+                       row["reset_generation"] > 0 and row.get("initial_player") == [24, 222] and
+                       sha256_text(row.get("policy_hash")), "Incomplete ordinary execution/restart identity")
+        region = row.get("region")
+        engine.require(isinstance(region, list) and len(region) == 4 and all(type(v) is int for v in region) and
+                       region[:2] == [0, 0] and all(0 < v <= 1024 for v in region[2:]),
+                       "Invalid ordinary final execution region")
+    matched = value.get("matched_geometry")
+    engine.require(isinstance(matched, dict), "Missing ordinary matched-geometry controls")
+    inertial, current = matched.get("inertial"), matched.get("current_comparator")
+    engine.require(isinstance(inertial, dict) and type(inertial.get("geometry")) is int and inertial["geometry"] == 3 and
+                   type(inertial.get("physical_hash_version")) is int and inertial["physical_hash_version"] == 3 and
+                   sha256_text(inertial.get("extension")) and
+                   isinstance(inertial.get("native_extension"), dict) and
+                   inertial["native_extension"].get("family") == 4 and
+                   inertial["native_extension"].get("extension_digest") == inertial["extension"] and
+                   current == {"geometry": 3, "physical_hash_version": 2},
+                   "Incomplete native IN/Current matched-geometry readback")
+
+    value = completed_host_result(directory, "test_liquid_reference_body_poses", "LIQUID_REFERENCE_BODY_POSES_RESULT")
+    engine.require(type(value.get("frozen_frames")) is int and value["frozen_frames"] >= 32 and
+                   sha256_text(value.get("default_mask_sha256")) and
+                   value.get("explicit_positions") == [[124, 92], [140, 72], [176, 52]],
+                   "Incomplete frozen reference-pose/mask controls")
+
+    value = completed_host_result(directory, "test_liquid_synchronous_reference_body", "LIQUID_SYNCHRONOUS_REFERENCE_BODY_RESULT")
+    cohorts = value.get("cohorts")
+    engine.require(isinstance(cohorts, list) and all(isinstance(row, dict) for row in cohorts) and
+                   [row.get("preset") for row in cohorts] == list(SYNCHRONOUS_BODY_PRESETS),
+                   "Incomplete synchronous pressure-body cohorts")
+    for row in cohorts:
+        engine.require(type(row.get("preset")) is int and type(row.get("completed_ticks")) is int and
+                       row["completed_ticks"] >= 240 and type(row.get("manual_steps")) is int and
+                       row["manual_steps"] == row["completed_ticks"], "Incomplete synchronous body continuation")
+        for key in ("contacts", "applications"):
+            engine.require(type(row.get(key)) is int and row[key] > 0, "Missing synchronous body feedback: " + key)
+        engine.require(type(row.get("water")) is int and row["water"] == 937125 and row.get("gas_closes") is True,
+                       "Synchronous body quantity/gas ledger differs")
+        impulse, magnitude = row.get("accepted_impulse"), row.get("absolute_impulse")
+        engine.require(finite_pair(impulse) and any(v != 0 for v in impulse) and
+                       type(magnitude) in (int, float) and math.isfinite(magnitude) and magnitude > 0 and
+                       type(row.get("max_accepted_age")) is int and 0 <= row["max_accepted_age"] <= 8,
+                       "Missing finite age-bounded synchronous accepted impulse")
+        engine.require(row.get("initial_body0") == [124, 90] and finite_pair(row.get("final_body0")) and
+                       row["final_body0"] != row["initial_body0"], "Synchronous authored body did not move")
+
+
+def verify_default_routes(directory: Path) -> None:
+    name = "test_liquid_desktop_default_host"
+    rows = json_rows(directory, name, "LIQUID_DESKTOP_DEFAULT_PLAY:")
+    engine.require([row.get("variant") for row in rows] == list(DEFAULT_PLAY_VARIANTS),
+                   "Missing or duplicated FM/CY desktop default play")
+    for row in rows:
+        engine.require(row.get("failed") is False and row.get("snapshot_failed") is False,
+                       "Desktop default play quarantined")
+        engine.require(type(row.get("completed_ticks")) is int and row["completed_ticks"] >= 96 and
+                       type(row.get("attempted_tick")) is int and row["attempted_tick"] == row["completed_ticks"],
+                       "Incomplete healthy desktop default continuation")
+        for key in ("rapier_steps", "contacts", "applications"):
+            engine.require(type(row.get(key)) is int and row[key] > 0, "Missing desktop default body feedback: " + key)
+        impulse = row.get("signed_impulse")
+        engine.require(finite_pair(impulse) and any(v != 0 for v in impulse), "Missing finite signed default feedback")
+        engine.require(type(row.get("water")) is int and type(row.get("initial_water")) is int and
+                       row["water"] == row["initial_water"] == 628320, "Desktop default quantity differs")
+        ages = row.get("ages")
+        # The diagnostic histogram includes rejected old results as well as
+        # accepted results. The test separately asserts correct stale disposal.
+        engine.require(isinstance(ages, dict) and bool(ages) and
+                       all(isinstance(age, str) and re.fullmatch(r"[0-9]+", age) and
+                           type(count) is int and count > 0 for age, count in ages.items()) and
+                       any(int(age) <= 8 for age in ages), "Missing desktop default response-age observations")
+    rows = json_rows(directory, name, "LIQUID_DESKTOP_DEFAULT_CAPACITY_REFUSAL:")
+    engine.require([row.get("variant") for row in rows] == list(DEFAULT_CAPACITY_VARIANTS),
+                   "Missing or duplicated typed pressure-default capacity refusals")
+    for row in rows:
+        engine.require(row.get("healthy") is True and type(row.get("tick")) is int and row["tick"] == 0 and
+                       sha256_text(row.get("retained_receipt_hash")) and
+                       row["retained_receipt_hash"] == row.get("actual_receipt_hash") and
+                       row.get("attempt_kind") == "construction_attempt" and
+                       isinstance(row.get("error"), str) and "capacity_refused" in row["error"],
+                       "Pressure-default refusal lost retained healthy owner or actual native attempt")
+
+
 def verify_case_results(directory: Path, report: dict) -> None:
     _verify_union(directory, report)
-    name = "test_liquid_level_preparation"
-    summaries = re.findall(engine.CASE_MARKERS[name], (directory / (name + ".log")).read_text(encoding="utf-8"))
-    try:
-        sections = json.loads(summaries[0])
-    except (ValueError, TypeError, IndexError) as exc:
-        raise RuntimeError("Malformed prepared CYSD sections") from exc
-    exact_sections(sections, LEVEL_SECTIONS, "Incomplete prepared CYSD sections")
+    verify_ordinary_routes(directory)
+    verify_default_routes(directory)
+    for name, expected in (("test_liquid_level_preparation", LEVEL_SECTIONS),
+                           ("test_liquid_default_demo_preparation", DEFAULT_SECTIONS)):
+        summaries = re.findall(engine.CASE_MARKERS[name], (directory / (name + ".log")).read_text(encoding="utf-8"))
+        try:
+            sections = json.loads(summaries[0])
+        except (ValueError, TypeError, IndexError) as exc:
+            raise RuntimeError("Malformed prepared sections: " + name) from exc
+        exact_sections(sections, expected, "Incomplete prepared sections: " + name)
     values = json_rows(directory, "test_liquid_level_import_host", "LIQUID_LEVEL_IMPORT_HOST_RESULT")
     engine.require(len(values) == 1 and isinstance(values[0], dict) and values[0].get("ok") is True,
                    "Missing completed CYSD user route")

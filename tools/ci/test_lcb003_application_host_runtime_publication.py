@@ -39,6 +39,47 @@ def probe():
             "checks": [{"name": "check" + str(i), "passed": True} for i in range(33)]}
 
 
+def ordinary_result():
+    return {"ok": True, "cohorts": [{"demo": demo, "quality": quality, "region": [0, 0, 600, 420],
+            "policy_hash": "a" * 64, "initial_player": [24, 222], "executed_ticks": 12, "reset_generation": 3}
+            for demo in profile.ORDINARY_DEMOS for quality in (0, 2)], "matched_geometry": {
+                "inertial": {"geometry": 3, "physical_hash_version": 3, "extension": "b" * 64,
+                             "native_extension": {"family": 4, "extension_digest": "b" * 64}},
+                "current_comparator": {"geometry": 3, "physical_hash_version": 2}}}
+
+
+def poses_result():
+    return {"ok": True, "frozen_frames": 32, "default_mask_sha256": "c" * 64,
+            "explicit_positions": [[124, 92], [140, 72], [176, 52]]}
+
+
+def synchronous_result():
+    return {"ok": True, "cohorts": [{"preset": preset, "completed_ticks": 240, "manual_steps": 240,
+            "contacts": 34670, "water": 937125, "gas_closes": True, "applications": 270,
+            "accepted_impulse": [-102.8, -9.5], "absolute_impulse": 876.6, "max_accepted_age": 0,
+            "initial_body0": [124, 90], "final_body0": [124, 159.0]} for preset in profile.SYNCHRONOUS_BODY_PRESETS]}
+
+
+def default_play(variant):
+    return {"variant": variant, "completed_ticks": 97, "attempted_tick": 97, "rapier_steps": 96,
+            "contacts": 137, "applications": 6, "signed_impulse": [9.95, -1.14], "ages": {"0": 117, "1": 66},
+            "water": 628320, "initial_water": 628320, "gas": {}, "failed": False, "snapshot_failed": False}
+
+
+def capacity_refusal(variant):
+    return {"variant": variant, "healthy": True, "tick": 0, "retained_receipt_hash": "d" * 64,
+            "actual_receipt_hash": "d" * 64, "attempt_kind": "construction_attempt",
+            "error": "capacity_refused: initial pressure gas compartment capacity exceeds 1024"}
+
+
+def default_log(plays=None, refusals=None):
+    plays = [default_play(v) for v in profile.DEFAULT_PLAY_VARIANTS] if plays is None else plays
+    refusals = [capacity_refusal(v) for v in profile.DEFAULT_CAPACITY_VARIANTS] if refusals is None else refusals
+    return "".join("LIQUID_DESKTOP_DEFAULT_PLAY: " + json.dumps(row) + "\n" for row in plays) + \
+        "".join("LIQUID_DESKTOP_DEFAULT_CAPACITY_REFUSAL: " + json.dumps(row) + "\n" for row in refusals) + \
+        "LIQUID_DESKTOP_DEFAULT_HOST: 86 assertions; 0 failures\n"
+
+
 def successful_logs():
     values = {"import": "import complete\n", **SUCCESS_LOGS}
     for name, prefix, sections in (
@@ -50,7 +91,15 @@ def successful_logs():
     values["test_liquid_host_evidence"] = "LIQUID_HOST_EVIDENCE: 34 assertions, 0 failures\n"
     values["test_liquid_water_reference_body"] = body_log()
     values["test_liquid_level_preparation"] = "LIQUID_LEVEL_PREPARATION: 493 assertions; 0 failures; completed=" + json.dumps(profile.LEVEL_SECTIONS) + "\n"
+    values["test_liquid_default_demo_preparation"] = "LIQUID_DEFAULT_DEMO_PREPARATION: 100 assertions; 0 failures; completed=" + json.dumps(profile.DEFAULT_SECTIONS) + "\n"
     values["test_liquid_level_import_host"] += "LIQUID_LEVEL_IMPORT_HOST_RESULT " + json.dumps({"ok": True, "sections": profile.IMPORT_SECTIONS}) + "\n"
+    for name, prefix, result in (
+        ("test_liquid_ordinary_demo_host", "LIQUID_ORDINARY_DEMO_HOST_RESULT", ordinary_result()),
+        ("test_liquid_reference_body_poses", "LIQUID_REFERENCE_BODY_POSES_RESULT", poses_result()),
+        ("test_liquid_synchronous_reference_body", "LIQUID_SYNCHRONOUS_REFERENCE_BODY_RESULT", synchronous_result()),
+    ):
+        values[name] += prefix + " " + json.dumps(result) + "\n"
+    values["test_liquid_desktop_default_host"] = default_log()
     values["test_liquid_host_web_probe"] = "LIQUID_HOST_WEB_PROBE_NATIVE: " + json.dumps(probe()) + "\n"
     return values
 
@@ -100,9 +149,10 @@ class ApplicationHostProfileTests(unittest.TestCase):
         self.assertEqual(historical_union.engine.BRANCH, "codex/lcb005-inertial")
         self.assertEqual(len(historical_union.engine.CASE_MARKERS), 14)
         self.assertEqual(subject.BRANCH, "codex/lcb003-application-host")
-        self.assertEqual(len(subject.CASE_MARKERS), 29)
+        self.assertEqual(len(subject.CASE_MARKERS), 34)
         self.assertEqual(list(subject.CASE_MARKERS), list(successful_logs())[1:])
         self.assertNotIn("tools/ci/lcb005_inertial_publish_request.json", subject.BUILD_EXACT)
+        self.assertEqual(subject.CASE_TIMEOUTS, historical_union.engine.CASE_TIMEOUTS)
         subject.verify_case_results(self.root, self.report)
         subject.require_publication_request(self.source)
         self.assertEqual(subject.context(self.source)["source_commit"], self.source)
@@ -113,10 +163,13 @@ class ApplicationHostProfileTests(unittest.TestCase):
             with self.subTest(field=field), mock.patch.dict(os.environ, {field: value}):
                 with self.assertRaises(RuntimeError): subject.context(self.source)
 
-    def test_missing_actual_cysd_user_case_refuses_even_with_request(self):
-        (self.root / "godot/tests/test_liquid_level_import_host.gd").unlink()
-        with self.assertRaisesRegex(RuntimeError, "Required focused regression"):
-            subject.require_publication_request(self.source)
+    def test_missing_actual_owner_cases_refuse_even_with_request(self):
+        for name in ("test_liquid_level_import_host", "test_liquid_default_demo_preparation", "test_liquid_desktop_default_host"):
+            path = self.root / ("godot/tests/" + name + ".gd")
+            path.unlink()
+            with self.subTest(name=name), self.assertRaisesRegex(RuntimeError, "Required focused regression"):
+                subject.require_publication_request(self.source)
+            path.write_text("fixture\n", encoding="utf-8")
 
     def test_each_missing_case_and_changed_log_refuse(self):
         for name in subject.CASE_MARKERS:
@@ -153,6 +206,8 @@ class ApplicationHostProfileTests(unittest.TestCase):
              "LIQUID_LEVEL_PREPARATION: 493 assertions; 0 failures; completed=", "\n"),
             ("test_liquid_level_import_host", profile.IMPORT_SECTIONS,
              'LIQUID_LEVEL_IMPORT_HOST: 100 assertions; 0 failures\nLIQUID_LEVEL_IMPORT_HOST_RESULT {"ok": true, "sections": ', "}\n"),
+            ("test_liquid_default_demo_preparation", profile.DEFAULT_SECTIONS,
+             "LIQUID_DEFAULT_DEMO_PREPARATION: 100 assertions; 0 failures; completed=", "\n"),
         ):
             for key in expected:
                 for value in (False, 1, "true", None):
@@ -175,6 +230,88 @@ class ApplicationHostProfileTests(unittest.TestCase):
         for value in values:
             self.log("test_liquid_host_web_probe", "LIQUID_HOST_WEB_PROBE_NATIVE: " + json.dumps(value) + "\n")
             with self.assertRaises(RuntimeError): subject.verify_case_results(self.root, self.report)
+
+    def test_ordinary_demo_coverage_execution_restart_and_native_identity(self):
+        name, prefix = "test_liquid_ordinary_demo_host", "LIQUID_ORDINARY_DEMO_HOST_RESULT"
+        values = []
+        for key, replacement in (("cohorts", []), ("ok", 1), ("matched_geometry", {})):
+            changed = ordinary_result(); changed[key] = replacement; values.append(changed)
+        for key, replacement in (("quality", False), ("executed_ticks", 11), ("reset_generation", 0),
+                                 ("policy_hash", ""), ("initial_player", [400, 300]), ("region", [0, 0, 0, 420])):
+            changed = ordinary_result(); changed["cohorts"][0][key] = replacement; values.append(changed)
+        changed = ordinary_result(); changed["cohorts"].reverse(); values.append(changed)
+        changed = ordinary_result(); changed["cohorts"][0] = changed["cohorts"][1]; values.append(changed)
+        changed = ordinary_result(); changed["matched_geometry"]["inertial"]["native_extension"]["extension_digest"] = "d" * 64; values.append(changed)
+        changed = ordinary_result(); changed["matched_geometry"]["current_comparator"]["geometry"] = 2; values.append(changed)
+        for value in values:
+            self.log(name, "LIQUID_ORDINARY_DEMO_HOST: 117 assertions; 0 failures\n" + prefix + " " + json.dumps(value) + "\n")
+            with self.subTest(value=value), self.assertRaises(RuntimeError): subject.verify_case_results(self.root, self.report)
+
+    def test_reference_poses_require_frozen_frames_and_actual_original_coordinates(self):
+        name, prefix = "test_liquid_reference_body_poses", "LIQUID_REFERENCE_BODY_POSES_RESULT"
+        for key, replacement in (("ok", 1), ("frozen_frames", 31), ("default_mask_sha256", ""),
+                                 ("explicit_positions", [[160, 176], [212, 176], [264, 176]])):
+            changed = poses_result(); changed[key] = replacement
+            self.log(name, "LIQUID_REFERENCE_BODY_POSES: 50 assertions; 0 failures\n" + prefix + " " + json.dumps(changed) + "\n")
+            with self.subTest(key=key), self.assertRaises(RuntimeError): subject.verify_case_results(self.root, self.report)
+
+    def test_synchronous_bodies_need_all_three_healthy_positive_prefixes(self):
+        name, prefix = "test_liquid_synchronous_reference_body", "LIQUID_SYNCHRONOUS_REFERENCE_BODY_RESULT"
+        values = []
+        for key, replacement in (("completed_ticks", 239), ("manual_steps", 239), ("contacts", 0),
+                                 ("applications", 0), ("water", 937124), ("gas_closes", 1),
+                                 ("accepted_impulse", [0, 0]), ("accepted_impulse", [float("nan"), 1]),
+                                 ("absolute_impulse", 0), ("max_accepted_age", 9), ("max_accepted_age", -1),
+                                 ("final_body0", [124, 90]), ("initial_body0", [124, 92])):
+            changed = synchronous_result(); changed["cohorts"][0][key] = replacement; values.append(changed)
+        changed = synchronous_result(); changed["cohorts"].pop(); values.append(changed)
+        changed = synchronous_result(); changed["cohorts"].reverse(); values.append(changed)
+        for value in values:
+            self.log(name, "LIQUID_SYNCHRONOUS_REFERENCE_BODY: 70 assertions; 0 failures\n" + prefix + " " + json.dumps(value) + "\n")
+            with self.subTest(value=value), self.assertRaises(RuntimeError): subject.verify_case_results(self.root, self.report)
+
+    def test_new_host_json_must_be_present_unique_and_terminal(self):
+        for name, prefix in (("test_liquid_ordinary_demo_host", "LIQUID_ORDINARY_DEMO_HOST_RESULT"),
+                             ("test_liquid_reference_body_poses", "LIQUID_REFERENCE_BODY_POSES_RESULT"),
+                             ("test_liquid_synchronous_reference_body", "LIQUID_SYNCHRONOUS_REFERENCE_BODY_RESULT")):
+            original = successful_logs()[name]
+            summary, result = original.split(prefix, 1)
+            for changed in (summary, original + prefix + result, summary + prefix + " {malformed}\n",
+                            original + prefix + " malformed trailing record\n", summary + prefix + " []\n",
+                            original + "SCRIPT ERROR: Invalid assignment of property\n"):
+                self.log(name, changed)
+                with self.subTest(name=name), self.assertRaises(RuntimeError): subject.verify_case_results(self.root, self.report)
+            self.log(name, original)
+
+    def test_default_play_requires_both_healthy_fm_cy_prefixes(self):
+        original = [default_play(v) for v in profile.DEFAULT_PLAY_VARIANTS]
+        values = [original[:-1], original + [original[-1]], list(reversed(original))]
+        for key, replacement in (("failed", True), ("snapshot_failed", 1), ("completed_ticks", 95),
+                                 ("attempted_tick", 98), ("rapier_steps", 0), ("contacts", 0), ("applications", 0),
+                                 ("water", 628319), ("initial_water", 628319), ("signed_impulse", [0, 0]),
+                                 ("signed_impulse", [float("inf"), 1]), ("ages", {}), ("ages", {"0": 0}),
+                                 ("ages", {"old": 1}), ("ages", {"9": 10})):
+            changed = copy.deepcopy(original); changed[0][key] = replacement; values.append(changed)
+        for rows in values:
+            self.log("test_liquid_desktop_default_host", default_log(plays=rows))
+            with self.subTest(rows=rows), self.assertRaises(RuntimeError): subject.verify_case_results(self.root, self.report)
+
+    def test_all_three_default_pressure_refusals_retain_healthy_native_identity(self):
+        original = [capacity_refusal(v) for v in profile.DEFAULT_CAPACITY_VARIANTS]
+        values = [original[:-1], original + [original[-1]], list(reversed(original))]
+        for key, replacement in (("healthy", 1), ("tick", 1), ("actual_receipt_hash", "e" * 64),
+                                 ("retained_receipt_hash", ""), ("attempt_kind", "host_invented"),
+                                 ("error", "some setup failed")):
+            changed = copy.deepcopy(original); changed[0][key] = replacement; values.append(changed)
+        for rows in values:
+            self.log("test_liquid_desktop_default_host", default_log(refusals=rows))
+            with self.subTest(rows=rows), self.assertRaises(RuntimeError): subject.verify_case_results(self.root, self.report)
+
+    def test_completed_default_json_cannot_override_process_crash(self):
+        row = next(row for row in self.report["results"] if row["name"] == "test_liquid_desktop_default_host")
+        row["returncode"] = 0xC0000005
+        with self.assertRaisesRegex(RuntimeError, "Non-passing execution record"):
+            subject.verify_case_results(self.root, self.report)
 
     def test_errors_skips_and_zero_assertions_cannot_publish(self):
         for name in profile.HOST_MARKERS:
