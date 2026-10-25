@@ -10,6 +10,16 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+Local application preparation now consumes reviewed Water checkpoint0d7c80e6,
+including corrected native worker activity/deadline source dab388f6 and the
+accepted main9935/early-TSan workflow changes. This changes the native kernel.
+The earlier DLL93d3/36-process and source4948 browser77/76 results below retain
+their original source identities; neither the old native-input reuse nor the
+#249 two-Godot-file exception qualifies this repaired kernel. Fresh combined
+local native/DLL/35-case checks and final Water publication integration are
+pending at this merge. The003 request remains absent; no release, final-head
+or complete-host acceptance is claimed.
+
 The final application branch additionally consumes fresh accepted main9935d569
 (#249) through normal mergec3cde29f before publication arming. Fresh import and
 the actual affected Flight test pass8,284 assertions/ten development episodes.
@@ -104,6 +114,14 @@ the real body-free import owner now recorded above, then remaining constructors,
 complete host identity and final platform/publication
 gates. Web bodies and host-mask CYPS continuation remain explicit gaps.
 
+The [local Water main refresh](../audits/2026-10-25-water-inertial-publication.md#main-flight-lease-refresh-and-native-binary-reuse--2026-10-25)
+normally merges accepted main9935d569 into e2411469 as38cb593d on the separate
+`codex/lcb005-water-main-refresh` branch. Native76 and published artifacts are
+unchanged; only two incoming Godot Flight inputs extend the historical491
+execution ledger's drift. Fresh published-Water import/Flight passes8,284
+assertions. Old publication and synthetic-merge gates keep their source scope;
+the refreshed head still needs its full exact-head gates. No sequence2 follows.
+
 ## Accepted parent and qualified Water publication — 2026-10-25
 
 Parent PR #250 accepts exactd7681a5c after all required exact-head gates and
@@ -111,7 +129,7 @@ independent review, merged as main `dc915f2b2cc1261501058d0e967a98f32ecdee9d`.
 All three Water PF variants and Brine IN/reference are now accepted native main
 scope; full application/Web and programme completion remain separate.
 
-The isolated Water successor, draft PR #254, has [actual source-matched Windows/Linux publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
+The isolated Water successor, PR #254, has [actual source-matched Windows/Linux publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
 at source4b588279/run40166210470, four-path botC9e52b52. Both OSes pass15 real
 processes/642 policy assertions, strict original sections and the Water proof.
 Independent artifact/source/LFS/lease/floor review `b15ea7cb` has no actionable

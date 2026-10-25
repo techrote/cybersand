@@ -16,8 +16,10 @@ The native records below retain their original source/failure/local-platform
 scope. Later [actual sequence1 Windows/Linux publication](2026-10-25-water-inertial-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
 passes15 processes perOS at source4b588279, with642 policy assertions/no failures,
 and appends only four runtime paths at botC9e52b52. Fresh independent artifact
-review `b15ea7cb` has no actionable bounded finding. Reviewed native5f8baf6f
-inputs remain unchanged. The earlier18 stale-runtime errors are preserved as
+review `b15ea7cb` has no actionable bounded finding. At that publication, reviewed native5f8baf6f
+inputs were unchanged. The later worker-activity repair below changes native
+source and requires new source-matched Windows/Linux runtimes; sequence1 cannot
+qualify the repaired executable. The earlier18 stale-runtime errors are preserved as
 failed historical checks; current materialized provenance must pass separately.
 Final exact-head ready CI/review, common-Water scientific and full host/Web/#203
 acceptance remain open; no local proof below is retroactively promoted.
@@ -496,3 +498,162 @@ All17 non-repository checks pass, including both retrieval sets and own-producer
 v7 replay. The18 stale Windows/Linux source-runtime errors remain explicit.
 The source/docs checkpoint is suitable for a focused draft successor; readiness
 still requires its own source-matched publication and full exact-head matrix.
+
+## Worker activity publication repair — 2026-10-25
+
+**Failed hosted gate, retained:** Native run40205443189 tested e2411469 at merge
+8c7ffea5/tree0f54620c. All162 ordinary and162 ASan/UBSan groups passed, along with
+generation, soliding and their sanitized apparatus. TSan then failed with an
+actual read/write race and exit66; the final shared-library/benchmark step was
+skipped. `keep_cell_active` wrote `chunk.active` while another same-phase
+`scan_rect` read it, reached from Water IN continuation. Different jobs can share
+a storage chunk; final moved carriers from disjoint cell halos can also share an
+activity block. The audit found additional worker stores to block activity,
+quiet/change flags, the global `BlockWake` histogram, and the earliest deadline.
+This is not an environment-only TSan startup failure. Full failed APIs/logs/310
+artifact files are retained externally at
+`tmp/lcb-water-exact-head-independent-v1/FAILED-NATIVE-40205443189`, capture
+`9a45e9d81b1ee5696785eaa43a23af21b34a6d40632827be718a995069b5bf80`;
+independent failed assessment is `12834413e4b50c1aac85855b9d96ed913c76d9859710938313adf87182c6ff3d`.
+
+**Source repair:** worker keepalive/deadline requests now update only their
+preallocated geometry-bounded flag/deadline grid. The existing deterministic
+phase barrier reduces shared block/chunk metadata and records actual wake
+transitions once. That authoritative reduction occurs before any discovery
+observer early return; its capacity failure quarantines the World. Optional
+64-record discovery overflow remains an observer failure. No Cell/bridge ABI,
+Current policy/default, material numerical law, IN sidecar/coherence/contact law,
+atomics/locks or TSan suppressions changed. Serial work retains its direct path.
+The canonical [activity contract](../systems/activity-dirty-regions-and-waking.md)
+and [capacity reference](../reference/configuration-reference.md) own phase
+semantics and the real additional setup/per-job work.
+
+The first candidate is e241 plus three native paths. Raw source SHA256:
+`world.cpp` is `0f4e860688d21c9382b7c14a0199517164f93c6107fbeb50c87041bcea37a15c`;
+`test_water_inertial.cpp` is `c031a42ad647338114dcb4cf6f6849ac73615ff711df21e865901f764d0c1dea`;
+`test_world.cpp` is `259c80a9ffe0095acfc4667eebc961a92fcf41add5605858a5469a8939e66a71`.
+The bounded model checks2,592,308 core intervals and11,751,276 target encodings,
+including negative and partial-tail chunk seams; the monotone ordinal proof
+covers admitted geometry independently of those samples. Model receipt
+`d471e5fd2e0e038c0b2495a1c29e2e9fb5fdb45bbb057cd1f697d17bb110ae67` preserves
+its exact boundary. Dense payload costs include589,824 bytes at the default
+4096 jobs,170,459,136 bytes at default core/radius with activity1, and180,633,600
+bytes for that block1 geometry at explicit IN radius3; headers/allocators and
+existing scratch are separate. Every job clears reserved flags and the barrier
+scans its actual rectangular ordinal grid. Historical pressure cost results do
+not cover this scheduler change.
+
+**Fresh local ordinary proof:** LLVM-MinGW20260826 UCRT x64 clang C++20 `-O1 -g`,
+normal1MiB stack, all163 registered groups passed in126.75s/600, followed by the
+unchanged15 pressure,13 IN and8 Water focused filters and seven independent
+receipt-vector checks. Complete dependency-bound receipt is
+`tmp/lcb-water-activity-repair-v1/normal-retry3/receipt.json`, SHA256
+`163edc169f62858311de113e0293db0a1c58f4c8c09acaae3a1d395dcaa2ff04`.
+The new163rd group exercises256 activity targets per job with discovery absent
+and overflowing, genuine multiple workers, shared middle-block final carriers,
+exact diagnostic parity, unaligned negative chunk10/block3 and34/block33 seams,
+serial work, CYPS continuation, and Current sleeping contact deadlines matched
+every tick to an always-awake serial reference. Existing assertions, bounds,
+fixture thresholds and deadlines are unchanged.
+
+New fixture-only failures are retained under that external campaign root:
+initial128 core reservation exhausted before gather deduplication for dense
+block1, discovery-enabled CYPS was correctly refused, and an arbitrary all-eight
+Ice contacts-by128 expectation was invalid. The corrected fixtures preserve the
+existing pre-dedup capacity contract, use hash comparisons where persistence is
+unsupported, and compare every reaction opportunity to the independent awake
+serial control. These failures are not rewritten into production passes.
+
+Focused sanitizer proof, independent candidate review, fresh actual Linux TSan,
+new source-matched Windows/Linux publication and the final complete exact-head
+matrix remain pending at this source checkpoint. No clean/full-head acceptance
+or merge follows from the ordinary local pass. Scientific four-family, full
+host/body/browser-play and integrated #203 qualification remain separate.
+
+### Independent32-bit arithmetic finding and correction
+
+After commit `ab45318db1844ec19ff07a0627f3dcd1c714dc06`, independent review found
+that the original `(span + block - 2) / block + 1` ceiling could overflow32-bit
+`size_t` for an already admitted extreme single-worker geometry. Core2147483646,
+radius1073741823, chunk8/activity8 gives span4294967292; the old expression wrapped
+to axis1 instead of536870913. This was a real setup-under-reservation defect,
+separate from the original TSan race. The prior ab453 local passes and review
+remain bounded normal-geometry evidence; their unchanged-byte source binding
+is not final approval of this arithmetic.
+
+The correction uses `(span - 2) / block + 2`. The even-core contract guarantees
+`span >= 2`, and the result is at most span. It is algebraically the same ceiling
+without an overflowing addition. Existing checked square/vector capacity then
+explicitly refuses the extreme setup before any worker grid is used; no admitted
+parameter limit, material behavior or ABI changes. The uint32 C++20/UBSan probe
+checks14,336 bounds against an independent64-bit ceiling, including the exact
+counterexample and3072 checked square refusals. Receipt
+`tmp/lcb-water-activity-repair-v1/uint32-capacity/RECEIPT.json` SHA256
+`57ae9234e91ef37eae30ea2e66071772bbd2161e86f102dad012e17467777f2e`
+preserves original/repaired arithmetic and source freeze. This is explicit
+uint32 arithmetic on the recorded Windows compiler, not a claim of actual huge
+World construction or completed Web execution. Fresh corrected-source native
+execution/review follows separately.
+
+Before this small correction, the separate exact Current control reran264 rows
+against native5f8baf6f: cell/state/temperature and quantity digests; complete
+state/content/physical hashes; policy/capability/catalogue identities; work and
+allocation counts; workers1/4, mass3/8, carrying off/on,32 ticks with region
+pause/re-entry. Every output field and the raw output bytes were identical;
+there was no identity namespace change. Receipt
+`39bebeaced1777132460dafe4f1916bdab1eb4b3c49e07b8adb88eb978875313`
+and the earlier focused38-group ASan/UBSan pass120.469s/600 at
+`cbf0345e8dd7cebc3b4e23e44dc39148b63a08755fa1b399d07e46531a26e385`
+remain scoped to the first ceiling. The independent public-API probe recorded
+68,060 checks,120 watched allocation-free ticks, actual max4 workers, wake-only
+Current Smoke, observer halt independence, Water/Brine shared blocks, distinct
+negative chunk26/block25 seams and decoded CYPS earliest due15/13→13. Its
+`3e9731b0439b364673fb369e32aa5c6f71ff9cc7f324be6f855d826d04e28189`
+receipt and normal-geometry review `94c4a00f` remain preserved with the later
+explicit wasm32 open-finding addendum `a6391472`. No old proof is silently
+rebound to corrected bytes.
+
+### Corrected source checkpoint and remaining gates
+
+The corrected native source is committed at
+`dab388f61b5357659f103979f86753ca9be71384`, following the original activity
+repair at `ab45318db1844ec19ff07a0627f3dcd1c714dc06`; no runtime request was
+changed. Fresh full163 ordinary execution passes124.297s/600, dependency-bound
+receipt `c9e6408f4981c520254a9835e399f421ce08ba12ddcd3a91a01a2e7b4e92e979`.
+Fresh focused23 ASan/UBSan groups (13 Brine IN,8 Water IN, the new activity group
+and standalone head API) pass86.469s/600, receipt
+`498fc3cee7f60eabb07c16da8c1430559413e675542d39fce43f26e76a98ddef`.
+This is focused sanitizer evidence; complete hosted sanitized/TSan acceptance
+remains separate. Compiler flags and normal1MiB stack are unchanged. Corrected
+Current264 outputs freshly relinked/executed against the original5f8 control
+remain byte-exact, with no changed field or identity namespace; receipt
+`88764c8e3623fde7c231295601b3bb88fb40b57507e00e536d41ef57b25f4b78`.
+
+Independent arithmetic review checks7,343,104 span/block pairs and accepts the
+correction in its bounded scope, receipt
+`2e80259e5864d498951dd219e4c03070ca2ea0e55ab26bb3ece5ec958c283498`.
+The unchanged independent public-API harness is freshly linked to the corrected
+object:68,060 checks,120 allocation-watched ticks, max4 actual workers, zero
+watched tick allocations and earliest combined deadline13; receipt
+`f773f185c66abcf6ce3ec21ff1c1b80a18547027d1fcb59e7a688deabdd5b5f5`.
+All relevant object/complete dependency/source fences hold. These proofs preserve
+the original native race, the later32-bit finding and every intervening failure.
+
+The proper pinned-companion23-check checkpoint records22 successful source
+checks, including124 Python contracts, Docs/M11/registry/retained-v7 replay,
+provider/publisher guards and retrieval32/32 plus133/133 at top5. The materialized
+repository check correctly fails with exactly two source-sensitive errors:
+Windows and Linux both require a rebuild for `native/src/world.cpp`. Receipt
+`236a1aa3833865bfeafe12be4dc7eb11a26b98ffb0f0819aa18b301eb8246822`
+preserves those errors; no provenance waiver or manifest rewrite is applied.
+The first direct-worktree Docs invocation also preserves its six absent companion
+path errors separately; proper-companion validation supplies the authoritative
+source-structure result. Final prose additions and subsequent approved merge
+identities receive their own binding. Genuine Linux TSan, new source-matched
+Windows/Linux publication, and all applicable final exact-head gates/review are
+required before readiness or merge. Older pressure-cost measurements do not
+cover this repair; the coordinator owns a separately registered rerun.
+
+The only retrieval change appends the worker metadata ownership fact to existing
+MAT01. All133 challenge query strings are preserved; existing canonical corpus
+and index routes already own activity, capacity and material cadence.

@@ -3745,6 +3745,7 @@ void test_water_inertial_admission();
 void test_water_inertial_coherence_contact();
 void test_water_inertial_carrying();
 void test_water_inertial_workers_continuation();
+void test_worker_activity_publication();
 void test_water_inertial_material_hooks();
 void test_water_inertial_arithmetic();
 void test_water_inertial_cadence_exchange();
@@ -3914,6 +3915,7 @@ int main(int argc, char** argv) {
         {"Water IN coherence and resting contacts",test_water_inertial_coherence_contact},
         {"Water IN actual carrier and complete footprint",test_water_inertial_carrying},
         {"Water IN real workers and continuation",test_water_inertial_workers_continuation},
+        {"worker activity publication and observer independence",test_worker_activity_publication},
         {"Water IN mandatory material hooks and lifecycle",test_water_inertial_material_hooks},
         {"Water IN independent arithmetic examples",test_water_inertial_arithmetic},
         {"Water IN cadence and powder exchange control",test_water_inertial_cadence_exchange},

@@ -10,9 +10,73 @@ related-documents: [2026-10-25-water-inertial-native.md, ../architecture/inertia
 
 # Water inertial publication and preparation ledger
 
+## Main flight-lease refresh and native binary reuse — 2026-10-25
+
+Accepted main advances to `9935d5696721d2c72a8273ea70454ab0c5b11361`
+through PR #249. The separate local review branch
+`codex/lcb005-water-main-refresh` normally merges it as
+`38cb593d92691b7edbd4543ba6e8c5d1f384f452`, with parents e2411469 and
+9935d569. The incoming change is exactly the flight episode/test and three
+flight/interface documents. It changes no native input, library, dependency,
+publisher, request sequence or liquid law. The original Water branch and its
+source4b/C9 publication are preserved while this refresh is reviewed.
+
+All76 native inputs and both published library identities remain exact. The
+immutable491 build/test ledger still describes the original source4b execution,
+not this later head. Current drift is exactly this audit's later metadata plus
+`godot/scripts/physical_flight_episode.gd` and
+`godot/tests/test_physical_flight_lab.gd`; the remaining488 inputs are unchanged.
+The earlier e241 audit-only/remaining490 comparison below retains that checkpoint's
+scope. No old ledger, manifest, runtime or acceptance receipt is rewritten.
+
+The existing [GDScript-only binary reuse rule](../operations/local-build-and-validation.md#physical-usable-validation)
+allows reuse when native `source_inputs` match; historical `build_inputs` do not
+qualify changed scripts or new tests. This refresh therefore needs fresh script
+acceptance and final-head gates, rather than a second Water publication solely
+for these two Godot changes. Fresh exact-head Documentation/provenance, Native,
+Godot and scoped apparatus gates remain required; prior synthetic-merge results
+are not relabelled as this new head.
+
+Fresh Windows Godot4.7 import and the actual affected Flight test use published
+Water DLL `67320027aa564309f024e4641fe6c4cdb4639228c89c4b51c56237763ffee36c`
+and pinned Rapier. Import passes in5.804s under240s; Flight passes8,284 assertions,
+zero failures and ten development episodes in5.122s under180s. Both exit0 with
+no errors, warnings or skips; final scoring is false. Receipt
+`C:/Users/_/.codex/tmp/lcb-water-main-refresh-20261025/flight-v2/RECEIPT.json`,
+SHA-256 `874bd74e99ed22d39f48843abe37050222943dfba4707fb3b395e5b9fb57bae3`,
+binds the source,76 native hashes, runtime bytes, commands and logs. It is not a
+new15-process publication, full final-head acceptance or host/scientific proof.
+
+Prior-head [Native run40205443189](https://github.com/techrote/cybersand/actions/runs/40205443189)
+failed on2026-10-25. Its retained diagnostics and native repair belong to a
+separate follow-up. This intermediate unchanged-native refresh neither repairs
+that failure nor treats earlier successes as refreshed-head acceptance. A later
+native repair requires fresh source-matched Windows/Linux publication and its
+full exact-head gates; the GDScript-only reuse conclusion does not cover it.
+
+The first isolated import exited0, then its external raw fence stopped on the
+four already documented vendor `.import` carriage-return normalizations before
+Flight ran. That failed apparatus remains at `flight-v1`. Fresh v2 accepts only
+those exact four path/hash transitions, verifies carriage-return-only content
+equivalence and freezes all subsequent staged raw bytes. No product source,
+test assertion, timeout or import setting changes to obtain the passing result.
+The local source/ledger and documentation validation receipts remain outside Git
+under `C:/Users/_/.codex/tmp/lcb-water-main-refresh-20261025`.
+
+The initial five-document local validation passes all seven checks in the
+established pinned companion layout: Docs, historical M11, current repository
+provenance with `--require-materialized`, frozen and supplementary retrieval,
+CI provider and whitespace. All18 LFS payloads are actual and current native
+provenance has zero errors. Receipt `docs-v1/VALIDATION-RECEIPT.json`, SHA-256
+`a6c16bca419ec7e26892c8a31e167bb562d66f52ae618b4c8679411438a20061`,
+binds that overlay before this result paragraph and final qualification wording.
+Fresh final-overlay validation is retained at `docs-v2/VALIDATION-RECEIPT.json`
+under the same external evidence directory. These local documentation/Flight
+checks do not replace the failed Native gate or establish full acceptance.
+
 ## Actual sequence1 Windows/Linux publication — 2026-10-25
 
-**Current qualified publication, PR #254 still draft:** the independent profile
+**Qualified sequence1 publication, draft at that checkpoint:** the independent profile
 review passed at `24a6ffece165008b39c80d43df163e2eb423214d`, receipt SHA-256
 `989bec50d5ad79c636eb224861b3fd450204c0934d88da258dfea244a706a539`.
 The owner then authorized the source-bound Water request, sequence1. Commit
@@ -93,8 +157,8 @@ it adds no native/bridge/test/tool/workflow/request/law change or new sequence.
 The immutable published491 build-input ledger includes this audit at its
 pre-publication SHA-256 `53d1590d666d51ed5d4771d343cdf05d4811ce6af1cd2c8487fe3660476bf07c`.
 This later evidence append changes that metadata file; it does not claim that
-all567 current working bytes equal source4b. The final drift receipt must
-distinguish this audit-only metadata delta from the unchanged76 native and
+all567 current working bytes equal source4b. At e2411469, the final drift receipt
+distinguished this audit-only metadata delta from the unchanged76 native and
 remaining490 build/test/tool/workflow/request/compiler inputs. Runtime manifests
 retain the original source4b hashes. Current repository provenance checks the
 source-sensitive native inputs and actual pinned LFS payloads; no input-ledger
@@ -107,8 +171,8 @@ are not test failures or greens. The provider packet
 `post-publication-approval-checklist-v2/CHECKLIST.json` has SHA-256
 `1c5a105094eb1e53f21db9d9be38707bea700bcea2988f72f712e096970e3380`.
 An authorized maintainer must approve applicable runs on the eventual **final**
-head; oldC9 approval and draft skips do not satisfy its gates. PR #254 remains
-draft until root coordinates that final head and actual Documentation/provenance,
+head; oldC9 approval and draft skips do not satisfy its gates. At e2411469, PR #254
+remained draft pending root's final-head coordination and actual Documentation/provenance,
 Native/sanitizer/worker, Windows/Linux Godot and scoped49 gates plus final review.
 
 Source-matched publication does not execute the registered common-Water

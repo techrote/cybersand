@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [cell-activity-sleep-wake, simulation-render-dirty-state]
 status: Current
 scope: Native activity and dirty-state lifecycle; separate fallback behavior and future wake requirements
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-25
 related-documents: [world-storage-and-interest-region.md, materials-and-rule-kernels.md, ../architecture/chunk-tile-and-buffer-model.md, ../architecture/rendering-and-gameplay-bridges.md]
 ---
 
@@ -36,6 +36,11 @@ block is independent of the 64×64 scheduling core and 128×128 storage chunk;
    every write to the exact camera rectangle.
 3. Each phase mutates its exclusive cell domains. Jobs collect bounded
    `JobEffects`; the coordinator merges them in deterministic job order.
+   Workers read phase-stable activity/chunk flags and deadlines. Keepalive and
+   earliest-deadline requests go to preallocated job-owned grids; shared flags,
+   quiet counters, deadlines and actual `BlockWake` transitions are published
+   only at the phase barrier. Disjoint cell halos can share a chunk or activity
+   block, so those metadata stores are not worker-exclusive.
 4. `finish_tick` resets quiet time for changed blocks. Unchanged active blocks
    age toward `sleep_after_quiet_ticks` only when their whole core coverage is
    selected; excluded/straddling blocks retain quiet/activity state. Serial ages
@@ -46,6 +51,18 @@ commit. Some delayed secondary rules use `keep_cell_active` to set activity/chan
 metadata without changing cell bytes or render dirtiness. Persistent compact-pair
 and Ice contacts instead retain their next opportunity through the existing block
 deadline. Their cadence belongs to [material kernels](materials-and-rule-kernels.md).
+
+The authoritative grids cover the complete scheduled core plus its configured
+write-radius halo, including the IN operator's final actual carrier. Their
+capacity does not depend on the optional discovery observer's 64-record report
+arrays. Metadata reduction runs before the discovery-disabled, overflowed or
+halted observer paths; lost observer coverage cannot discard scheduling work.
+An authoritative grid-bound failure throws and quarantines the World. Serial
+work without `JobEffects` retains its direct metadata path. The
+[configuration reference](../reference/configuration-reference.md#native-worldconfig-defaults)
+records setup storage and clear/reduction work; the
+[dated native evidence](../audits/2026-10-25-water-inertial-native.md#worker-activity-publication-repair--2026-10-25)
+preserves the Linux TSan failure and the repair's exact local scope.
 
 ## What wakes a region?
 
