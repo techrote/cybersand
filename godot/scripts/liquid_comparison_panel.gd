@@ -309,6 +309,8 @@ func refresh(context: Dictionary) -> void:
 			receipt_label.text += " • Water " + str(assignment.applied_family) + "/" + str(assignment.applied_variant)
 	if not typed.is_empty():
 		receipt_label.text += "\nNative receipt " + str(typed.receipt_hash).left(16) + " • " + str(typed.get("run_intent","controlled")) + " • host/source proof pending"
+		var observed: Dictionary = context.get("liquid_host_observation",{})
+		if not observed.is_empty(): receipt_label.text += "\nHost record " + str(observed.digest).left(16) + " • qualified"
 		var normalized: Dictionary = typed.get("normalization",{})
 		if not normalized.is_empty():
 			receipt_label.text += " • Water added %s / removed %s / net %s" % [normalized.positive_delta, normalized.negative_delta, normalized.net_delta]

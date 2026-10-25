@@ -504,6 +504,7 @@ func _update_liquid_context(force: bool = false) -> void:
 	if not force and generation == _liquid_context_generation: return
 	_liquid_context_generation = generation
 	tower_context["liquid_solver_policy"] = native_world.get_liquid_solver_policy()
+	tower_context["liquid_host_observation"] = micro_host.liquid_host_observation()
 	tower_context["liquid_construction_receipt"] = native_world.get_applied_liquid_construction_receipt() \
 		if native_world.has_method(&"get_applied_liquid_construction_receipt") else {}
 	tower_context["liquid_construction_attempt"] = native_world.get_liquid_construction_attempt() \

@@ -1846,6 +1846,7 @@ func _publish_snapshot(
 		"water_exit_request_applied":_water_exit_request_applied,
 		"micro_active":_micro_active,
 		"liquid_solver_policy":_liquid_policy_receipt_snapshot(),
+		"liquid_host_observation":_scenario_host.liquid_host_observation(),
 		"liquid_construction_receipt":_world.get_applied_liquid_construction_receipt() \
 			if _world.has_method(&"get_applied_liquid_construction_receipt") else {},
 		"liquid_construction_attempt":_world.get_liquid_construction_attempt() \

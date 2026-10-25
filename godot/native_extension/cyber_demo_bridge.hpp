@@ -642,6 +642,22 @@ public:
             return {};
         }
     }
+    [[nodiscard]] Dictionary prepared_liquid_run_capture(const Ref<CyberNativeCellWorld>& adapter, std::int64_t token) {
+        error_ = String();
+        if (adapter.is_null() || token <= 0 || !adapter->pending_liquid_world_ ||
+            adapter->pending_liquid_world_->token != static_cast<std::uint64_t>(token)) {
+            error_ = "Preparation token is absent or retired";
+            return {};
+        }
+        // The encoding was captured during preparation. This copied wrapper
+        // explicitly remains pending; it does not install or expose a World.
+        Dictionary out;
+        out["schema_version"] = 1;
+        out["lifecycle"] = "prepared";
+        out["token"] = token;
+        out["native_run_encoding"] = adapter->pending_liquid_world_->receipt.duplicate(true);
+        return out;
+    }
     [[nodiscard]] bool commit_liquid_world(const Ref<CyberNativeCellWorld>& adapter, std::int64_t token);
     void discard_liquid_world(const Ref<CyberNativeCellWorld>& adapter, std::int64_t token) {
         if (adapter.is_valid() && adapter->pending_liquid_world_ &&
@@ -953,6 +969,7 @@ protected:
         ClassDB::bind_method(D_METHOD("prepared_liquid_character_box_collides", "world", "token", "origin", "size", "mode"),
             &CyberDemoBridge::prepared_liquid_character_box_collides);
         ClassDB::bind_method(D_METHOD("prepared_liquid_world_values", "world", "token"), &CyberDemoBridge::prepared_liquid_world_values);
+        ClassDB::bind_method(D_METHOD("prepared_liquid_run_capture", "world", "token"), &CyberDemoBridge::prepared_liquid_run_capture);
         ClassDB::bind_method(D_METHOD("commit_liquid_world", "world", "token"), &CyberDemoBridge::commit_liquid_world);
         ClassDB::bind_method(D_METHOD("discard_liquid_world", "world", "token"), &CyberDemoBridge::discard_liquid_world);
         ClassDB::bind_method(D_METHOD("validate_liquid_policy", "liquid_policy"),

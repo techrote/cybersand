@@ -166,6 +166,10 @@ func application_route(definition: Dictionary, policy: PackedInt32Array) -> void
 		and staged.viewport.world_2d.space == exact_space and desktop._physical_epoch > old_epoch
 		and desktop._physical_terrain_ready,"accepted application adopts exact prepared graph/space with fresh epoch and complete terrain")
 	var canonical: PackedByteArray = desktop.tower_context.liquid_construction_receipt.canonical_bytes.duplicate()
+	var retained_observation: Dictionary = desktop.tower_context.liquid_host_observation.duplicate(true)
+	expect(not retained_observation.is_empty()
+		and retained_observation.native_receipt_hash == desktop.tower_context.liquid_construction_receipt.receipt_hash,
+		"actual accepted physical graph carries its prepared native/host observation identity")
 	var accepted_hash: String = desktop.tower_context.liquid_construction_receipt.physical_state_hash
 	var exact_pose: PackedFloat32Array = Candidate._pose_values(staged.session.bridge.pack_body_states())
 	var exact_equipment: PackedByteArray = var_to_bytes(staged.session.observation(0).equipment)
@@ -180,6 +184,8 @@ func application_route(definition: Dictionary, policy: PackedInt32Array) -> void
 		"refused replacement retains prior actual graph, permanent space, complete pose and equipment")
 	expect(desktop.tower_context.liquid_construction_receipt.canonical_bytes == canonical,
 		"host-only main refusal keeps accepted native bytes")
+	expect(desktop.tower_context.liquid_host_observation == retained_observation,
+		"main terrain refusal retains the old actual graph's complete observation identity")
 	desktop.simulation_worker.stop_worker()
 	var receipt: Dictionary = desktop.simulation_worker._world.get_applied_liquid_construction_receipt()
 	expect(receipt.initial_body_count == desktop.rigid_bodies.size() and receipt.run_intent == "exploratory"
