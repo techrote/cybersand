@@ -216,7 +216,7 @@ func _definition_supported(definition: Dictionary) -> bool:
 		and definition.get("execution",{}).get("policy","") == "fixed"
 		and definition.get("interest",{}).get("policy","") == "fixed")
 
-func _request(definition: Dictionary, original_control: bool = false, mode: String = "Inspect") -> bool:
+func _request(definition: Dictionary, original_control: bool = false, mode: String = "Inspect", active_route: bool = false) -> bool:
 	_refusal = ""
 	if bridge == null or not bridge.has_method(&"liquid_policy_assignment_choices"):
 		_refusal = "This runtime has no native liquid comparison editor"
@@ -230,6 +230,9 @@ func _request(definition: Dictionary, original_control: bool = false, mode: Stri
 		return false
 	var admitted: bool
 	if original_control: admitted = host.microscenario_apply_definition(definition, mode)
+	elif active_route:
+		admitted = host.liquid_comparison_apply_active(requested_policy,normalize_water.button_pressed,
+			session_picker.selected == 1,mode,geometry_picker.get_selected_id())
 	elif session_picker.selected == 1:
 		admitted = host.microscenario_apply_exploratory_liquid(definition, requested_policy, normalize_water.button_pressed, mode,{},geometry_picker.get_selected_id())
 	else: admitted = host.microscenario_apply_controlled_liquid(definition, requested_policy, normalize_water.button_pressed, mode,geometry_picker.get_selected_id())
@@ -244,7 +247,7 @@ func _request(definition: Dictionary, original_control: bool = false, mode: Stri
 	return true
 
 func apply_active() -> bool:
-	return _request(host.microscenario_definition.duplicate(true), false, host.microscenario_mode)
+	return _request(host.liquid_comparison_active_definition(),false,host.microscenario_mode,true)
 
 func _selected_definition() -> Dictionary:
 	var checked: Dictionary = Contract.parse(FileAccess.get_file_as_string(DAM_PATH if setup_picker.selected == 0 else MIXED_PATH))
@@ -297,7 +300,7 @@ func refresh(context: Dictionary) -> void:
 	normalize_water.disabled = not available or pending or blind
 	dam_button.disabled = not available or pending or blind
 	control_button.disabled = not available or pending or blind
-	apply_button.disabled = not available or pending or blind or not _definition_supported(host.microscenario_definition)
+	apply_button.disabled = not available or pending or blind or not _definition_supported(host.liquid_comparison_active_definition())
 	var applied: Dictionary = context.get("liquid_solver_policy",{})
 	var typed: Dictionary = context.get("liquid_construction_receipt",{})
 	receipt_label.text = "Applied native policy: " + str(applied.get("policy_hash","unavailable")).left(16)
@@ -319,7 +322,7 @@ func refresh(context: Dictionary) -> void:
 	elif pending: status.text = "Rebuilding at the existing owner boundary…"
 	elif context.get("microscenario",{}).get("failed",false): status.text = "Installed session apparatus failed: " + str(context.microscenario.get("error","unavailable"))
 	elif not _refusal.is_empty(): status.text = "Refused; applied session retained. " + _refusal
-	elif not _definition_supported(host.microscenario_definition): status.text = "Load Dam Break, or choose a fixed actor-free MicroScenario. Exploratory stages sampled and supported desktop articulated owners; other body and constructor routes remain pending."
+	elif not _definition_supported(host.liquid_comparison_active_definition()): status.text = "Controlled needs a fixed actor-free setup. Exploratory retains sampled owners in Tower or supported MicroScenarios and desktop articulated owners; other routes remain pending."
 	elif _dirty:
 		status.text = "Pending solver/normalization selection. The running World keeps its applied policy until rebuild."
 		if int(_validation.get("receipt",{}).get("minimum_rule_radius",2)) > geometry_picker.get_selected_id():

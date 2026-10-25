@@ -32,6 +32,19 @@ static func tower(profile: Dictionary = {}) -> Dictionary:
 	out.source_recipe_hash = JSON.stringify(out.rectangles).sha256_text()
 	return out
 
+# A copied view for explicit policy preparation. Keep the original Tower/default
+# route and its identity intact; selected floor is final construction input.
+static func prepared_tower(profile: Dictionary, floor_index: int) -> Dictionary:
+	var out: Dictionary = tower(profile)
+	out.schema_version = 2
+	var selected: int = clampi(floor_index,0,4)
+	out.player_start = [20,int(Tower.landing(selected).y)]
+	out.camera_origin = [0,int(Tower.floor_y(selected))]
+	out["presentation"] = {"title":"Experiment Tower", "instructions":"Existing floor, release, schedule and manual tools remain exploratory.",
+		"duration_ticks":Contract.MAX_TICK,"baseline":"Original Current Tower constructor",
+		"profile":"Explicit solver policy with retained transport profile","regions":[]}
+	return out
+
 static func water(policy_result: Dictionary) -> Dictionary:
 	if not policy_result.get("ok", false): return {}
 	var policy: Dictionary = policy_result.policy

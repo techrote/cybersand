@@ -155,6 +155,34 @@ func _commit_web_prepared_sampled(bridge: Variant, token: int, definition: Dicti
 	player = staged.character
 	return true
 
+func _apply_prepared_liquid_tower(policy: PackedInt32Array, normalize_water: bool, radius: int,
+		resolved: Dictionary) -> bool:
+	if not ready_to_play or not resolved.get("ok",false) or not water_blind_set.is_empty() or not water_active_blind_label.is_empty(): return false
+	if not rigid_bodies.is_empty():
+		microscenario_error = "Prepared Tower requires its existing sampled owner; prior session retained"
+		return false
+	var definition: Dictionary = CyberMicroScenarioCatalogue.prepared_tower(resolved.profile,tower_floor)
+	var setup: Dictionary = {"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else "",
+		"maximum_rule_radius":radius,"owner_execution":CyberSimulationWorker.prepared_owner_execution(definition, {
+			"simulation_window_enabled":native_world.get_simulation_window_enabled(),
+			"cadence_lod_enabled":native_world.get_cadence_lod_enabled(),"liquid_surface_adhesion_enabled":liquid_surface_adhesion_enabled,
+			"horizontal_buffer":simulation_margin.x,"vertical_buffer":simulation_margin.y})}
+	if not micro_host.install(native_world,definition,microscenario_mode,true,policy,setup,_commit_web_prepared_sampled.bind(definition)):
+		microscenario_error = micro_host.last_error
+		return false
+	_liquid_tower_active = true
+	microscenario_error = "Installed session apparatus failed: " + micro_host.last_error if micro_host.summary().get("failed",false) else ""
+	microscenario_definition = definition.duplicate(true);microscenario_liquid_policy = policy.duplicate()
+	microscenario_liquid_setup = setup.duplicate(true);microscenario_liquid_setup.erase("owner_execution")
+	tower_profile = resolved.profile.duplicate(true)
+	tower_context = {"active":true,"micro_active":false,"water_active":false,"profile":tower_profile.duplicate(true),
+		"profile_hash":str(resolved.hash),"status":"Experiment Tower / explicit liquid policy","microscenario":micro_host.summary()}
+	tower_schedule.clear();tower_inputs.clear();tower_single_step = false
+	paused = true;camera_follow_enabled = false
+	camera_origin = Vector2(definition.camera_origin[0],definition.camera_origin[1]);character_position = player.position
+	_update_liquid_context(true);force_publication = true;_publish_world()
+	return true
+
 func _install_web_microscenario(definition: Dictionary, mode: String, liquid_policy: Variant = null,
 		controlled_setup: Dictionary = {}) -> bool:
 	if str(definition.get("id", "")).begins_with("experimental/blacksite/"): return false
@@ -187,6 +215,7 @@ func _install_web_microscenario(definition: Dictionary, mode: String, liquid_pol
 		return false
 	if microscenario_panel != null: microscenario_panel.workbench.cancel_declared_window()
 	var installed: Dictionary = micro_host.definition()
+	_liquid_tower_active = false
 	microscenario_definition = installed.duplicate(true)
 	microscenario_liquid_policy = liquid_policy.duplicate() if liquid_policy != null else null
 	microscenario_liquid_setup = controlled_setup.duplicate(true)
@@ -246,11 +275,19 @@ func _update_water_web_context() -> void:
 		"outflow":0,"current":water_current_integer}
 
 func tower_reset() -> void:
+	if _liquid_tower_active and tower_active and not tower_context.get("micro_active",false) and not tower_context.get("water_active",false):
+		_apply_prepared_liquid_tower(microscenario_liquid_policy,microscenario_liquid_setup.get("normalization","") == "water-normalize-v1",
+			int(microscenario_liquid_setup.get("maximum_rule_radius",2)),CyberTransportProfiles.resolve(tower_profile))
+		return
 	tower_schedule.clear();tower_inputs.clear()
 	water_actions.clear();water_action_history.clear();water_observations.clear()
 	select_demo("experiment_tower")
 
 func tower_apply_profile(resolved: Dictionary) -> void:
+	if _liquid_tower_active and not tower_context.get("micro_active",false) and not tower_context.get("water_active",false):
+		_apply_prepared_liquid_tower(microscenario_liquid_policy,microscenario_liquid_setup.get("normalization","") == "water-normalize-v1",
+			int(microscenario_liquid_setup.get("maximum_rule_radius",2)),resolved)
+		return
 	if not resolved.get("ok", false) or not micro_host.install(native_world, CyberMicroScenarioCatalogue.tower(resolved.profile), microscenario_mode):
 		tower_context["status"] = "Rejected / "+micro_host.last_error
 		return
@@ -744,13 +781,15 @@ func select_demo(id: String, close: bool = true) -> void:
 	if id == "experiment_tower":
 		var resolved: Dictionary = CyberTransportProfiles.resolve(tower_profile)
 		built = micro_host.install(native_world, CyberMicroScenarioCatalogue.tower(resolved.profile), microscenario_mode)
-		if built: tower_context = {"profile":tower_profile.duplicate(true),"profile_hash":str(resolved.hash),"status":str(tower_profile.name)+" / profile v1 "+str(resolved.hash).left(12),"water_active":false}
+		if built: tower_context = {"active":true,"profile":tower_profile.duplicate(true),"profile_hash":str(resolved.hash),"status":str(tower_profile.name)+" / profile v1 "+str(resolved.hash).left(12),"water_active":false}
 	else:
 		built = demo_bridge.build_world(native_world, CyberDemoWorlds.rectangles(id))
 	if not built:
 		ui.message(str(demo_bridge.get_last_error()))
 		return
+	_liquid_tower_active = false
 	_water_end_blind_session()
+	microscenario_liquid_policy = null;microscenario_liquid_setup = {};microscenario_definition = {}
 	if id != "experiment_tower":
 		micro_host.clear()
 		tower_context = {}

@@ -337,6 +337,31 @@ func _apply_due_water_actions() -> bool:
 	if not ok: _lab_status = _scenario_host.last_error
 	return ok
 
+func _prepared_liquid_install_options(command: Dictionary, definition: Dictionary,
+		setup: Dictionary) -> Dictionary:
+	_prepared_liquid_owner_error = ""
+	var validated: Dictionary = CyberMicroScenarioContract.validate(definition)
+	if not validated.ok:
+		_lab_status = "Prepared setup rejected; " + str(validated.error)
+		return {"ok":false}
+	_mutex.lock()
+	var settings_revision: int = _construction_settings_revision
+	var profile: Dictionary = command.get("_prepared_player_environment_profile",_player_environment_profile).duplicate(true)
+	var pending_profile: bool = not _pending_player_environment_profile.is_empty()
+	var owner: Dictionary = prepared_owner_execution(validated.definition, {
+		"simulation_window_enabled":_simulation_window_enabled,"cadence_lod_enabled":_cadence_lod_enabled,
+		"liquid_surface_adhesion_enabled":_liquid_surface_adhesion_enabled,
+		"horizontal_buffer":_horizontal_buffer,"vertical_buffer":_vertical_buffer})
+	_mutex.unlock()
+	if pending_profile:
+		_lab_status = "Prepared liquid request retired by a pending player environment profile"
+		return {"ok":false}
+	var final_setup: Dictionary = setup.duplicate(true)
+	final_setup.owner_execution = owner
+	var guard: Callable = _commit_controlled_liquid_candidate.bind(
+		int(command.get("_owner_request_revision",-1)),settings_revision,command,validated.definition,profile,owner)
+	return {"ok":true,"definition":validated.definition,"transport":validated.transport,"setup":final_setup,"guard":guard}
+
 func _apply_lab(command: Dictionary) -> bool:
 	if command.is_empty(): return false
 	if command.has("reset"):
@@ -350,27 +375,40 @@ func _apply_lab(command: Dictionary) -> bool:
 			_lab_status = "Profile rejected; running world preserved"
 			return false
 		var tower_definition: Dictionary = MicroCatalogue.tower(resolved.profile)
+		var tower_setup: Dictionary = command.get("controlled_liquid_setup",{})
+		var tower_guard: Callable = Callable()
+		if not tower_setup.is_empty():
+			_scenario_request_serial = int(command.get("scenario_request_serial",0))
+			_scenario_request_applied = false
+			if tower_setup.get("intent","") != "exploratory" or not command.get("sampled_character_enabled",false) \
+				or not tower_setup.get("physical_owner",{}).is_empty():
+				_lab_status = "Prepared Tower requires its sampled exploratory owner"
+				return false
+			tower_definition = MicroCatalogue.prepared_tower(resolved.profile,int(command.get("floor",_lab_floor)))
+			var prepared: Dictionary = _prepared_liquid_install_options(command,tower_definition,tower_setup)
+			if not prepared.ok: return false
+			tower_definition = prepared.definition;tower_setup = prepared.setup;tower_guard = prepared.guard
+			resolved = prepared.transport
 		if not _scenario_host.install(
 			_world,
 			tower_definition,
-			str(command.get("scenario_mode", "Inspect"))
+			str(command.get("scenario_mode", "Inspect")),true,command.get("liquid_policy",null),tower_setup,tower_guard
 		):
 			_lab_status = _scenario_host.last_error
 			return false
 		_world_generation += 1
-		_activate_sampled_character(
-			Vector2(
-				tower_definition.player_start[0],
-				tower_definition.player_start[1]
-			),
-			true
-		)
+		if tower_setup.is_empty():
+			_activate_sampled_character(Vector2(tower_definition.player_start[0],tower_definition.player_start[1]),true)
+		else:
+			_scenario_request_applied = true
 		_lab_profile = resolved.profile.duplicate(true)
 		_lab_profile_hash = str(resolved.hash)
 		_lab_active = true
 		_lab_schedule.clear();_lab_inputs.clear()
 		_simulation_failed = false
 		_lab_status = "%s / profile v1 %s / recipe v%d / seed 0" % [str(_lab_profile.name),_lab_profile_hash.left(12),CyberExperimentTower.VERSION]
+		if not tower_setup.is_empty() and _scenario_host.summary().get("failed",false):
+			_lab_status = "Experiment Tower installed; apparatus failed: " + _scenario_host.last_error
 		_water_lab_active=false
 		_micro_active=false
 		_micro_capture={}
@@ -473,34 +511,12 @@ func _apply_lab(command: Dictionary) -> bool:
 			or not ActorSession.valid_definitions(actor_definitions)):
 			_lab_status = "Refused actor configuration for controlled scenario"
 			return false
-		var prepared_owner: Dictionary = {}
-		var settings_revision: int = -1
-		var profile: Dictionary = {}
-		var prepared_definition: Dictionary = command.scenario_reset
+		var guard: Callable = Callable()
 		_prepared_liquid_owner_error = ""
 		if not controlled_setup.is_empty():
-			var validated: Dictionary = CyberMicroScenarioContract.validate(command.scenario_reset)
-			if not validated.ok:
-				_lab_status = "MicroScenario rejected; " + str(validated.error)
-				return false
-			prepared_definition = validated.definition
-			_mutex.lock()
-			settings_revision = _construction_settings_revision
-			profile = command.get("_prepared_player_environment_profile",_player_environment_profile).duplicate(true)
-			var pending_profile: bool = not _pending_player_environment_profile.is_empty()
-			prepared_owner = prepared_owner_execution(validated.definition, {
-				"simulation_window_enabled":_simulation_window_enabled,"cadence_lod_enabled":_cadence_lod_enabled,
-				"liquid_surface_adhesion_enabled":_liquid_surface_adhesion_enabled,
-				"horizontal_buffer":_horizontal_buffer,"vertical_buffer":_vertical_buffer})
-			_mutex.unlock()
-			if pending_profile:
-				_lab_status = "Prepared liquid request retired by a pending player environment profile"
-				return false
-			controlled_setup = controlled_setup.duplicate(true)
-			controlled_setup.owner_execution = prepared_owner
-		var guard: Callable = _commit_controlled_liquid_candidate.bind(
-			int(command.get("_owner_request_revision",-1)),settings_revision,command,prepared_definition,
-			profile,prepared_owner) if not controlled_setup.is_empty() else Callable()
+			var prepared: Dictionary = _prepared_liquid_install_options(command,command.scenario_reset,controlled_setup)
+			if not prepared.ok: return false
+			controlled_setup = prepared.setup;guard = prepared.guard
 		var retained_host_error: String = _scenario_host.last_error
 		var retained_host_refusal: Dictionary = _scenario_host.last_liquid_policy_refusal
 		if not _scenario_host.install(_world, command.scenario_reset, str(command.get("scenario_mode", "Inspect")),
@@ -557,7 +573,9 @@ func _apply_lab(command: Dictionary) -> bool:
 	if command.has("floor"):
 		_lab_schedule.clear() # Navigation abandons scheduled inputs; no catch-up.
 		_lab_floor = clampi(int(command.floor),0,4)
-		_activate_sampled_character(CyberExperimentTower.landing(_lab_floor), true)
+		# Prepared Tower already staged this exact floor landing before capture.
+		if not command.has("reset") or command.get("controlled_liquid_setup",{}).is_empty():
+			_activate_sampled_character(CyberExperimentTower.landing(_lab_floor), true)
 	if command.has("release"):
 		_lab_release(int(command.release))
 		if command.get("adjacent",false): _lab_release(int(command.release)+1)
