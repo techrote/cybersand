@@ -146,6 +146,7 @@ func _publish_observation() -> Dictionary:
 	if not goal.is_finite():
 		goal = Vector2(owner.centre)
 	var command: Dictionary = owner.flight.get("command", {})
+	var command_live: bool = bool(owner.flight.get("command_live", false))
 	var static_capabilities: Dictionary = owner.flight.get("capabilities", {}).get("capabilities", {})
 	var sensors: Dictionary = arena.local_flight_rays(0, 80.0)
 	var valid: bool = bool(sensors.get("available", false))
@@ -161,9 +162,9 @@ func _publish_observation() -> Dictionary:
 		"orientation_cos": cos(float(owner.rotation)),
 		"angular_velocity_rad_per_second": float(owner.angular_velocity),
 		"actuator_mode": str(owner.flight.get("mode", "unavailable")),
-		"assistance_valid": bool(owner.flight.get("controller", {}).get("valid", false)),
+		"assistance_valid": command_live and bool(owner.flight.get("controller", {}).get("valid", false)),
 		"command_age_ticks": int(owner.tick) - int(command.get("observed_tick", owner.tick)) if not command.is_empty() else -1,
-		"command_live": bool(owner.flight.get("command_live", false)),
+		"command_live": command_live,
 		"lease_remaining_ticks": int(owner.lease_remaining),
 		"resources": {"supply": "continuous_authored_power",
 			"powered": bool(owner.flight.get("propulsion_enabled", false)),
@@ -186,8 +187,14 @@ func tick(action: Variant = null, observation_id: String = "", repeat_ticks: int
 		return transition(0)
 	var must_decide: bool = _ticks % DECISION_TICKS == 0
 	if must_decide and action == null:
-		_fail("missing_decision")
-		return transition(0)
+		# A missed fresh decision may consume only the remainder of an already
+		# admitted lease. This submits no command, renews no authority and lets
+		# the real session retire the lease at its physical deadline.
+		var lease_owner: Dictionary = arena.observation(0)
+		var lease_flight: Dictionary = lease_owner.get("flight", {})
+		if lease_owner.is_empty() or not bool(lease_flight.get("command_live", false)):
+			_fail("missing_decision")
+			return transition(0)
 	if not must_decide and action != null:
 		_fail("action_outside_decision_boundary")
 		return transition(0)
@@ -300,11 +307,18 @@ func _assess_tick(owner: Dictionary, frame: Dictionary,
 	_step_reward += reward
 	_episode_reward += reward
 	_last_reward_terms = terms.duplicate(true)
-	var received: Dictionary = owner.flight.get("last_step", {}).duplicate(true)
+	var flight: Dictionary = owner.get("flight", {})
+	var received: Dictionary = flight.get("last_step", {}).duplicate(true)
 	_trace.append({"tick": _ticks, "world_tick": int(frame.get("world_tick", -1)),
 		"observation_id": str(owner.observation_id),
 		"requested_action": requested.get("action", {}).duplicate(true) if not requested.is_empty() else {},
 		"admitted": accepted if not requested.is_empty() else null,
+		"authority": {"producer": str(owner.get("producer", "")),
+			"control_generation": int(owner.get("control_generation", -1)),
+			"command_live": bool(flight.get("command_live", false)),
+			"lease_remaining_ticks": int(owner.get("lease_remaining", 0)),
+			"actuator_mode": str(flight.get("mode", "unavailable")),
+			"fallback_reason": str(flight.get("fallback_reason", ""))},
 		"physical_receipt": received,
 		"centre": centre, "velocity": velocity, "distance": distance,
 		"dwell": observed_dwell, "contact": contact, "contact_count": contact_count,
