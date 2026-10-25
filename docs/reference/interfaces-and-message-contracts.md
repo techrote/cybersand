@@ -679,6 +679,15 @@ provide that complete prepared owner restoration. The
 [moving-mask gas repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md)
 retains this #202/#203 qualification and the strict native live-label invariant.
 
+The isolated Water successor adds native `World::whole_cell_water_enabled()`:
+true for Water CY or Water IN, distinct from the CY-only dispatch accessor.
+Internal/live ingress, CYSD preflight, final legacy overlays and CYPS validation
+share that regime. `mix_after_motion` now returns the actual native carrier
+coordinate, which IN consumes immediately after each physical Empty move.
+These are engine-internal ownership interfaces, not host mutation/value APIs.
+Outer receipts, IN sidecar fields, parameter schemas and saved versions retain
+their contracts; capability/policy digests are freshly regenerated.
+
 ### LCB-002 copied pressure optimization observations
 
 **Current in #201 branch source, pending runtime and final CI:** the exclusive

@@ -156,13 +156,16 @@
         },
         "inertial_cellular_v1": {
           "status": "proposed_experimental",
-          "executable_today": false,
+          "executable_today": true,
           "selectable": true,
           "variants": [
             "reference"
           ],
           "classification": "reviewed design classification (PROPOSED table)",
-          "note": "Gate D experimental inertial regime; LCB-005 #212 not implemented"
+          "note": "LCB-005 #212 native whole-cell Water adapter with coherence, body contact and actual-carrier transport hooks; full Gate D/application/platform qualification remains separate",
+          "executable_variants": [
+            "reference"
+          ]
         }
       }
     },

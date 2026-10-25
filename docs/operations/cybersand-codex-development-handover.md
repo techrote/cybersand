@@ -80,6 +80,20 @@ the real body-free import owner now recorded above, then remaining constructors,
 complete host identity and final platform/publication
 gates. Web bodies and host-mask CYPS continuation remain explicit gaps.
 
+## Water IN isolated successor - 2026-10-25
+
+`codex/lcb005-water-inertial` starts from Brine contact repair68f74906 and adds
+Water/reference native admission, whole-cell ingress/normalization and actual
+carrier ownership through repeated packing/pickup hooks. Use the
+[Water adapter contract](../architecture/inertial-cellular-v1.md#water-in-native-successor--2026-10-25)
+and [dated source-bound native proof](../audits/2026-10-25-water-inertial-native.md).
+No new runtime request/payload is part of this source checkpoint. It must consume
+final accepted parent #250 and receive fresh native/OS/runtime/CI/review proof
+before acceptance. Common-Water scientific screens, actual host/Web/rendered
+comparison and final packaging remain #202/#203. Capability admission changes
+policy-bound hashes while Current tuple/material behavior stays an exact control.
+
+
 ## Desktop native-default owner checkpoint — 2026-10-25
 
 Unmerged native705a2e2d and owner66bf30f8 now stage the authoritative default

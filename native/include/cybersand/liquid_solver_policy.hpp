@@ -201,6 +201,8 @@ struct LiquidPolicyBuild {
             result.qualified_variants.push_back({3, 2, 0x01U});
             result.qualified_cells.emplace_back(std::uint16_t{24},std::uint8_t{4});
             result.qualified_variants.push_back({24,4,0x01U});
+            result.qualified_cells.emplace_back(std::uint16_t{3},std::uint8_t{4});
+            result.qualified_variants.push_back({3,4,0x01U});
             result.schemas.push_back({true, 3, kPressureBlockVersion, false, 0,
                                       {{"gas_enabled", 0, 1}, {"atmospheric_head_rows", 16, 4096}}});
             result.schemas.push_back({false, 3, kWaterCellularYieldBlockVersion, false, 2,

@@ -71,6 +71,25 @@ Rapier PF/worker regression. Original failures and independent review/resolution
 receipts are retained. Source-matched publication/full exact-head CI, actual
 compat/threaded browsers and ordinary visual walkthrough remain separate gates.
 
+## Water IN native source and Current identity control - 2026-10-25
+
+The isolated [Water native record](../audits/2026-10-25-water-inertial-native.md)
+retains prospective stencil registration, actual two-pickup ownership/temperature/
+sidecar proof, whole-cell ingress and normalization, all coherence delays,
+mandatory body/material work and real-worker continuation. Parent runtime
+payloads are stale and no new publication is armed. Independent encoding keeps
+all seven complete receipt vectors; four physical fixture facts are freshly
+measured after capability admission.264 paired Current observations preserve
+exact tuple bytes, quantity ledger, historical state/content hashes, material
+work and allocations; only capability/policy-bound physical identity changes.
+Preserved apparatus failures, source fences, tool/deadline/stack identities and
+remaining full platform/scientific/application gates are in the dated record.
+Repaired native source5f8baf6f passes162 ordinary/37 focused sanitizer groups;
+its fresh post-parent-merge Windows DLL at8ad5d916 passes import plus14 scoped
+Godot cases. Independent native/tooling reviews close their bounded findings.
+These local Windows results do not qualify the retained parent payloads.
+
+
 ## Native default-demo API proof — 2026-10-25
 
 Unmerged source `afe19c2d` shares the original native ordered demo recipe with

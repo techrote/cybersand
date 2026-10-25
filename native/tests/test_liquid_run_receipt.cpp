@@ -207,9 +207,9 @@ void test_liquid_run_receipt_native_identity() {
         PlaneActivity::Active,{}, {},1,forged_setup.normalization_receipt()); });
     refuses([&] { (void)build_applied_run_receipt(normalized_native,setup,request,RunIntent::Controlled,
         PlaneActivity::Active,{}, {},1); });
-    auto bad_request=request;bad_request[21]=4;
+    auto bad_request=request;bad_request[21]=4;bad_request[22]=1;
     const auto decoded=LiquidSolverPolicy::decode(std::span<const std::int32_t>(bad_request));
-    expect(!decoded.accepted(),"unsupported family unexpectedly admitted");
+    expect(!decoded.accepted(),"unsupported IN cached variant unexpectedly admitted");
     const auto issued = validate_liquid_policy_request(bad_request);
     expect(issued.has_value(),"actual native refusal was not issued");
     expect(!validate_liquid_policy_request(request),"accepted policy fabricated a native refusal");

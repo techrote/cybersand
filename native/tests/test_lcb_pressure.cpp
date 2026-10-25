@@ -367,7 +367,7 @@ void test_pressure_admission_and_refusal() {
     const auto refused = LiquidSolverPolicy::decode(std::span<const std::int32_t>(bad));
     require(!refused.accepted() && refused.refusal.code == LiquidPolicyRefusalCode::MalformedPolicy,
             "atmospheric_head_rows below range refused");
-    // Oil x pressure and Water x inertial stay refused.
+    // Oil x pressure and cached Water x inertial stay refused.
     auto oil = LiquidSolverPolicy::default_request();
     oil[20U + 3U * 3U + 1U] = 3;
     require(LiquidSolverPolicy::decode(std::span<const std::int32_t>(oil)).refusal.code ==
@@ -375,9 +375,10 @@ void test_pressure_admission_and_refusal() {
             "Oil x pressure rejected");
     auto inertial = LiquidSolverPolicy::default_request();
     inertial[kWaterFamilyWord] = 4;
+    inertial[kWaterFamilyWord + 1U] = 1;
     require(LiquidSolverPolicy::decode(std::span<const std::int32_t>(inertial)).refusal.code ==
-                LiquidPolicyRefusalCode::FamilyUnavailable,
-            "Water x inertial unavailable");
+                LiquidPolicyRefusalCode::VariantUnsupported,
+            "Water x inertial cached remains unsupported");
     World pressure(pressure_config());
     World current;
     require(pressure.pressure_flow_enabled() && !current.pressure_flow_enabled(), "family dispatch identity");

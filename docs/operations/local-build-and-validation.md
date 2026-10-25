@@ -93,6 +93,29 @@ console/network before navigation, wait for terminal
 perform an ordinary user walkthrough separately. Historical9704 exports and
 their retained POST501/early-capture gaps are not current qualification.
 
+## Unarmed Water publisher guards
+
+`python tools/ci/test_lcb005_water_inertial_runtime_publication.py` exercises the
+separate branch/schema/source lease, unchanged15-process schedule, strict Water
+proof, complete input/four-path guards and same-process profile isolation.
+Retain the original005/001 guard suites and run
+`python tools/ci/check_ci_provider_policy.py` for its new workflow. The [preparation record](../audits/2026-10-25-water-inertial-publication.md)
+keeps the Water request absent until independent review/source freeze; passing
+synthetic guards is not actual target-OS runtime publication.
+
+## Water IN native successor checks
+
+On the isolated Water successor, build the ordinary native executable with
+`make build/tests`, then run `build/tests "Water IN"` for its focused groups.
+`python tools/lcb/water_inertial_footprint.py` separately checks the complete
+persisted-occupancy DDA/carrier stencil. Existing `LCB-005`, `LCB-002`, whole-Water
+and complete receipt-byte gates remain mandatory. No test selects a larger
+geometry implicitly: IN requests3 and matched controls use identical geometry;
+ordinary Current stays2. The [dated native record](../audits/2026-10-25-water-inertial-native.md)
+owns exact Windows LLVM inputs, normal1MiB stack,120s focused and600s ordinary
+limits, raw failures and pending source-matched OS/publication/full-host gates.
+
+
 ## Which build inputs are required?
 
 **Current:** build scripts and locks select the following inputs. A pin is a
@@ -437,7 +460,6 @@ hosted gates. Earlier ACT-004 or sampled USABLE-001 results do not certify this
 changed physical integration.
 
 ## Semantic plane generation and native fixtures
-
 GEN-005 adds [`test_generation_planes.cpp`](../../native/tests/test_generation_planes.cpp)
 to both existing generation targets. Its oracle compares all four material
 arrays and canonical registration unions across reversed negative-coordinate
@@ -1373,12 +1395,9 @@ Linux/Windows execution to exact source and runtime bytes; the ready-for-review
 full repository gates remain separate.
 
 ## Native Brine IN checkpoint
-
 The isolated #212 [Brine reference](../architecture/inertial-cellular-v1.md) is exercised with `make build/tests` then `./build/tests "LCB-005"`; the full native suite remains required. [Dated local evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) distinguishes Windows LLVM execution, failed fixture premises, actual worker participation and memory components from future Linux/MSVC/Godot/runtime qualification. No Water IN or application adapter follows from this native-only checkpoint.
 
-
 For the native damping parameter, run `python tools/lcb/inertial_parameter_contract.py --check` and the LCB Python suite as well as the native groups. The optional IN family blockv2 applies `damping_numerator`0..16/16(default1); actual readback/identity and save/restore are native-owned. The worker fixture observes four actual participants at0/default1/16, while the matched tail fixture records rounding/retained-motion outcomes without assuming every arm settles. Existing illustrative v1 vectors remain separate; use the family reference for the exact schema and qualifications.
-
 
 The [corrected Brine IN publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-sequence3-publication-of-the-contact-repair)
 passes actual Windows/Linux import and14 scoped cases perOS at source
@@ -1393,7 +1412,6 @@ Water/transport configurations and exercises candidate masks, token/refusal,
 geometry and constructor-origin lifetime. Its [dated Windows proof](../audits/2026-10-25-lcb003-native-default-demo-preparation.md)
 retains the diagnostic-lifecycle failure and 167/493/72 final regression results.
 This native API case does not test Main/worker adoption or published platforms.
-
 
 The later [desktop native-default owner checkpoint](../audits/2026-10-25-lcb003-desktop-native-default-host.md)
 adds `test_liquid_desktop_default_host.gd` plus five non-discovered helper scripts

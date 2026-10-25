@@ -51,6 +51,24 @@ gates, actual compat/threaded browsers and ordinary visual walkthrough remain
 open. Water IN remains unsupported; Brine IN does not meet the fourth Water
 model requirement.
 
+## Isolated Water IN native successor - 2026-10-25
+
+**Current on `codex/lcb005-water-inertial`, pending integration and publication:**
+Water/reference now executes the retained-momentum IN law with its own whole-cell
+coherence/carrying adapter. Complete original-owner read3/write2 guards and
+explicit actual-carrier continuation preserve two successive pickups. Shared
+whole-Water refusal and setup-only normalization retain native receipts/ledger.
+[Source contract](../architecture/inertial-cellular-v1.md#water-in-native-successor--2026-10-25)
+and [dated native evidence](../audits/2026-10-25-water-inertial-native.md) distinguish
+local native proof from unchanged parent runtime artifacts. C64-E8, defaults,
+Brine law, IN sidecar/codec and explicit Current2/IN3 geometry remain intact.
+Local162 native,37 focused sanitizer and124 Python groups pass; a fresh
+non-release Windows DLL passes import plus14 strict scoped Godot cases. Native
+and tooling reviews have no open bounded findings. Source-matched Windows/Linux
+publication, full exact-head gates/integrated review and common-Water scientific/
+host/Web qualification remain pending. This does not close #212/#203.
+
+
 ## Desktop native-default owner checkpoint — 2026-10-25
 
 Unmerged native705a2e2d and owner66bf30f8 now stage the authoritative default

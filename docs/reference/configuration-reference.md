@@ -458,6 +458,14 @@ constraints still apply; this does not enlarge a protected Current comparator.
 Actual applied radius and effective damping numerator0..16/denominator16 are
 copied readback, not live settings. See the [IN binding contract](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry).
 
+The isolated Water IN successor also explicitly requires3. Its original-owner
+MotionFootprint guards include repeated carrying packing and exchange bracing,
+with actual read3/write2 witnesses. Water coherence0..12 gates horizontal-only
+opportunities; retained vx and signed ax remainder follow the declared adapter.
+Precision3..8 uses actual `maximum()` with no fractional adhesion or implicit
+rounding. [Water adapter semantics](../architecture/inertial-cellular-v1.md#water-in-native-successor--2026-10-25)
+add no material/family parameter schema, default geometry or Cell ABI change.
+
 ## LCB-002 derived pressure execution limits
 
 **Current in `codex/lcb002-pressure-variants`; final acceptance pending.**

@@ -7,7 +7,7 @@ Standard-library only.
                                           file (refuses to overwrite: evidence is immutable)
   reledger [--check] [--version v7|v6|v5|v4|v3|v2]
                                           re-reduce the retained 2026-10-23 controls into the
-                                          versioned v7 record; v2-v6 are check-only: each is
+                                          versioned v7 record; v2-v7 are check-only: each is
                                           replayed by its own producer at its recorded revision
                                           in an isolated snapshot (H4)
   build   [--check]                       write/check godot/tests/fixtures/lcb/lcb-scenario-registry.json
@@ -45,7 +45,9 @@ LEDGER_V5 = ROOT / "docs/reference/lcb-scenario-ledger-2026-10-23.v5.json"
 LEDGER_V6 = ROOT / "docs/reference/lcb-scenario-ledger-2026-10-23.v6.json"
 LEDGER_V7 = ROOT / "docs/reference/lcb-scenario-ledger-2026-10-23.v7.json"
 LEDGER_RULE = "lcb-signed-ledger-v7"
-# Each superseded record and the revision whose own producer wrote it (H4).
+# Each retained record and the revision whose own producer wrote it (H4).
+# v7 still owns the latest accounting semantics; unrelated live-registry edits
+# must not rewrite its dated whole-file producer identity.
 # Verification replays that producer in an isolated snapshot of its revision,
 # so current catalogue, loader or manifest changes cannot alter or break it.
 HISTORICAL_LEDGERS = {
@@ -54,6 +56,7 @@ HISTORICAL_LEDGERS = {
     "v4": ("b2d522299db1664548b82046b9dec8b63cc08bae", LEDGER_V4),
     "v5": ("3248bf3b076f06a76d50582afdf1b95fe04a82dd", LEDGER_V5),
     "v6": ("db3fa22e1d9ec0d4e5f96ae7941cb110a29daee0", LEDGER_V6),
+    "v7": ("e0d26fdf1ae6889fcc75325ce5e9018a95841945", LEDGER_V7),
 }
 SNAPSHOT_PATHS = ("tools/lcb", "docs/reference", "godot/tests/fixtures/lcb")
 # Declared reactions that may change the Water integer, per reactive species.
@@ -69,11 +72,11 @@ UNVERIFIED_STATES = {"UNVERIFIED_REACTION_AMOUNT", "UNVERIFIED_PARTIAL_WATER_160
 PROBLEM_STATES = {"OPEN_UNEXPLAINED", "MALFORMED_EVIDENCE"}
 
 BLOCKED = {
-    "cellular_yield_v1": ("#200 per-material policy; Gate D whole-cell Water regime not implemented",
+    "cellular_yield_v1": ("native whole-cell Water CY exists; this registered apparatus arm has no source-matched execution",
                           ["#213 LCB-000 PASS", "#200"]),
-    "pressure_flow_v1": ("pressure_flow_v1 not implemented; port of corrected 7ef2aac candidate is LCB-001",
+    "pressure_flow_v1": ("native Water pressure reference/cached/dormant exist; this registered apparatus arm has no source-matched execution",
                          ["#213 LCB-000 PASS", "#200", "#201 (cached, cached_dormant)"]),
-    "inertial_cellular_v1": ("inertial_cellular_v1 not implemented; Brine qualification belongs to LCB-005",
+    "inertial_cellular_v1": ("native Brine IN and isolated whole-cell Water IN exist; this registered apparatus arm has no source-matched execution",
                              ["#200 per-material policy", "#212"]),
 }
 
@@ -596,7 +599,7 @@ def inventories() -> dict:
 
 
 def verify_historical(version: str) -> tuple[bool, list]:
-    """Verify a superseded record against its own producer at its recorded revision (H4).
+    """Verify a retained record against its own producer at its recorded revision (H4).
 
     1. The current file must equal, byte for byte after LF normalization, the
        record as committed at that revision.
@@ -742,7 +745,7 @@ def arms_for(sid: str, liquids: list, control: dict | None, sealed: bool) -> lis
                            *(BLOCKED["pressure_flow_v1"][1] if "pressure" in water else [])})
             arms.append({"id": arm, "mapping": {**defaults, "water": water, "brine": brine}, "families_active": count,
                          "status": "blocked", "executable_today": False, "depends_on": deps,
-                         "reason": "requires families that do not exist in this build"})
+                         "reason": "native families exist; this registered mixed-family apparatus arm has no source-matched execution"})
     return arms
 
 
@@ -770,7 +773,8 @@ def entry(sid, meta, definition_path, control, matrix, protected_fixture=None, l
     if protected_fixture:
         # One availability rule for protected and generic arms (H1): only a
         # measured Current-default mapping is executable. A candidate mapping is
-        # blocked whatever its manifest label, until native admission exists.
+        # blocked whatever its manifest label until this registered arm has a
+        # source-matched qualification run. Native admission alone is insufficient.
         arms = []
         for a in protected_fixture["arms"]:
             current = current_default_mapping(a["policy"], rows)
@@ -779,7 +783,7 @@ def entry(sid, meta, definition_path, control, matrix, protected_fixture=None, l
                    "executable_today": measured, "manifest_status": a["status"]}
             if not measured:
                 arm["depends_on"] = a.get("blocked_by") or ["#213 LCB-000 PASS", "#200"]
-                arm["reason"] = ("candidate mapping; not executable until its family is natively admitted" if not current
+                arm["reason"] = ("candidate mapping; this registered apparatus arm has no source-matched execution" if not current
                                  else "Current mapping without a measured control")
             arms.append(arm)
     for arm in arms:

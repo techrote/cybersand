@@ -82,7 +82,7 @@ the qualified full-host/publication boundary.
 
 ## Choose a reading route
 
-For opt-in **Brine IN**, use the [family/native and standalone adapter reference](architecture/inertial-cellular-v1.md), [native evidence](audits/2026-10-24-lcb005-native-brine-checkpoint.md) and [local Windows binding proof](audits/2026-10-25-lcb005-standalone-adapter.md). Water IN, full application integration and published platform qualification remain separate.
+For opt-in **Brine IN**, use the [family/native and standalone adapter reference](architecture/inertial-cellular-v1.md), [native evidence](audits/2026-10-24-lcb005-native-brine-checkpoint.md) and [local Windows binding proof](audits/2026-10-25-lcb005-standalone-adapter.md). The isolated [Water IN successor](architecture/inertial-cellular-v1.md#water-in-native-successor--2026-10-25) adds whole-cell native admission and complete carrying ownership; its fresh publication, full application integration and common-Water scientific qualification remain separate. Its [separate publisher preparation](operations/github-development-and-release.md#isolated-water-inertial-runtime-publication) remains unarmed until independent review and final source freeze.
 
 The subsequent unmerged [IN application-host slice](architecture/liquid-prepared-setup-and-receipts.md#inertial-application-readback-and-explicit-geometry)
 qualifies actual damping/instance readback, explicit matched geometry and local

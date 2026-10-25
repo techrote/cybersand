@@ -2132,9 +2132,9 @@
       ],
       "facts": [
         "The 2026-10-24 #200 foundation implements LiquidSolverPolicy decoding, validation precedence, canonical SHA-256 identity, refusal and applied readback, reproducing every registered wire vector.",
-        "Accepted #246 main admits Water x pressure_flow_v1/reference and Water x cellular_yield_v1/reference beside default liquid families. W-CY has its optional Water material block v2 viscosity_index0..255, default0, and whole-cell ingress. Current #201 branch also admits Water pressure cached/cached_dormant distinctly with the same law; source-matched runtime/final-CI acceptance remains pending. The combined application branch also integrates the opt-in Brine IN source described below.",
+        "Accepted main dc915f2b includes Water pressure reference/cached/cached_dormant, Water CellularYield and opt-in Brine IN after exact-head gates. The integrated Water successor additionally admits Water IN/reference with source-matched scoped Windows/Linux publication at4b588279/run40166210470/botc9e52b52. Current default families remain unchanged; full host/scientific qualification is separate.",
         "A refused candidate keeps the live World, its applied receipt and session_generation. Native whole-cell preparation requires explicit water-normalize-v1 opt-in for fractional setup; a native-issued attempt outcome stays separate from the live applied receipt. CYSD1 import reconstructs on default families.",
-        "The integrated #212 source additionally admits Brine IN/reference with optional actual damping block2; Water IN remains unavailable. Standalone Godot construction requires explicit radius3 and distinguishes predicted from actual instance readback. Its local Windows proof is not main/full-host/platform acceptance."
+        "Brine and Water IN use the actual damping block2 and explicit radius3. Native whole-cell ingress and explicit setup normalization apply to Water CY and IN; instance readback is distinct from validation predictions. Bounded application owners, final combined runtimes and full-host/Web qualification remain separately evidenced."
       ],
       "sources": [
         "architecture/liquid-solver-family-policy.md",
@@ -2733,6 +2733,44 @@
         "../godot/scripts/simulation_worker.gd",
         "../native/include/cybersand/pressure_setup_capacity.hpp",
         "../godot/tests/test_liquid_desktop_default_host.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "LCB-WATER-IN-01",
+      "query": "How does whole-cell Water inertial keep retained motion and coherence after two grain pickups, and does its new capability identity change Current physics?",
+      "canonical": [
+        "architecture/inertial-cellular-v1.md"
+      ],
+      "facts": [
+        "Only isolated Water/reference successor admission is source-Current. It retains Current defaults, C64-E8, generic Brine law and IN hash3/CYPS3; fresh OS/runtime/CI/scientific/full-host qualification remains pending.",
+        "Each immediate carrying callback returns the actual Water carrier after a grain swap. Later submoves, final state and support probes use that owner; original-origin packing/bracing guards prove read3/write2 with explicit radius3.",
+        "Original positive coherence suppresses horizontal-only U6 opportunities while vertical/diagonal gravity, body feedback and WaterUpdate remain mandatory. vx follows ordinary law and ax remains bounded q16 phase without catch-up debt.",
+        "The shared CY-or-IN whole-Water predicate refuses partial live/CYSD/CYPS ingress; explicit setup water-normalize-v1 retains gross counters and digest.",
+        "New capability/policy-bound physical hashes differ, while264 paired Current observations retain exact tuple/temperature bytes, quantity ledger, historical content/state hashes, material work and allocations."
+      ],
+      "sources": [
+        "architecture/inertial-cellular-v1.md",
+        "audits/2026-10-25-water-inertial-native.md",
+        "../native/src/world_inertial.inc",
+        "../native/src/world.cpp"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "LCB-WATER-PUB-01",
+      "query": "How can the Water inertial branch publish source-matched runtimes without disturbing the Brine publisher, and is its request armed?",
+      "canonical": [
+        "operations/github-development-and-release.md"
+      ],
+      "facts": [
+        "The Water profile privately loads005/001 and uses its own exact branch, workflow, schema, artifact prefix and lease; it preserves all15 processes/deadlines and strict seven-field policy plus IN/pressure summaries.",
+        "The separate Water request is absent until independent review and final source freeze. The old Brine request cannot arm it. Actual Water motion/whole-cell/coherence/refusal/CYPS evidence, both target runtimes and full ready-PR gates remain mandatory."
+      ],
+      "sources": [
+        "../tools/ci/lcb005_water_inertial_runtime_publication.py",
+        "../.github/workflows/lcb005-water-inertial-runtime-publication.yml",
+        "operations/github-development-and-release.md"
       ],
       "revision_sensitive": true
     }

@@ -2043,7 +2043,7 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
             const auto value = static_cast<Material>(material);
             if (value == Material::Water && (a == 0U || a > maximum_water || b > coherence_limit))
                 refuse_state("Water state outside the experiment policy");
-            if (value == Material::Water && w.water_cellular_yield_ && a != maximum_water)
+            if (value == Material::Water && w.whole_cell_water_enabled() && a != maximum_water)
                 refuse_state("whole-cell Water requires maximum() quantity");
             if (value != Material::Water && a > 255U) refuse_state("byte state out of domain");
             cell = Chunk::Cell::for_material(value);

@@ -27,7 +27,7 @@ Existing IDs are retained, including when an earlier description was corrected.
 | CUR-003 | Current: phased core/phase/effect order is deterministic | [Ordering](../architecture/determinism-and-boundary-transfers.md) |
 | CUR-004 | Current: native default chunk size is 128; compatible configured sizes are permitted | [Geometry](../architecture/chunk-tile-and-buffer-model.md) |
 | CUR-005 | Current: desktop may select fallback; Web requires native; no synchronized second authority | [Architecture](../architecture/overview.md) |
-| CUR-006 | Current default catalogue: every valid ID has descriptor/kernel selection and radius ≤2; inert entries use no rule. Opt-in branch Brine IN separately requires radius3 | [Materials](../systems/materials-and-rule-kernels.md) |
+| CUR-006 | Current default catalogue: every valid ID has descriptor/kernel selection and radius ≤2; inert entries use no rule. Opt-in Brine IN and isolated Water IN separately require radius3 | [Materials](../systems/materials-and-rule-kernels.md) |
 | CUR-007 | Current: accepted external explosions commit in enqueue order at tick entry and are hashed while pending | [Ordering](../architecture/determinism-and-boundary-transfers.md) |
 | CUR-008 | Current: native leased bytes stay immutable; publication pressure retains dirty state | [Lifetimes](../architecture/data-ownership-and-lifetimes.md) |
 | CUR-009 | Current: rectangle samples create separate endpoint occupancy and bounded observations | [Coupling](../architecture/rigid-body-and-cellular-coupling.md) |
@@ -317,6 +317,20 @@ and [family material hooks](../architecture/liquid-solver-family-policy.md).
 | WATER-018 | Current #201 diagnostic interface: copied prepared heads may be stale after transport/edits; complete roster coverage and exact numerical errors do not grant freshness or rest authority. Net ROI Water balance is not gross face flux |
 | WATER-020 | Current repair branch, pending acceptance: final gas relabel changes unvisited labels absent from the new live table to vacuum, retains still-live masked identity, preserves already-reduced amounts/history, and treats sanitation as a non-fixed-point label change; CYPS still refuses dangling gas labels ([contract](../architecture/pressure-flow-v1.md#gas-compartments)) |
 | WATER-019 | Current #201 adapter source: copied unsigned budget/capacity/counter values use decimal strings without signed-u64 truncation; all adapter observations remain exclusive-owner calls, not worker-owned Godot APIs |
+
+## Water IN isolated native invariants
+
+| ID | Status and requirement |
+|---|---|
+| IN-WATER-001 | Current isolated source: Water/reference executes retained IN with actual precision maximum; the shared CY-or-IN whole-Water predicate refuses partial live/CYSD/CYPS ingress without rounding. Setup-only normalization keeps native gross counters and digest |
+| IN-WATER-002 | Current isolated source: immediate coupling returns the actual carrier after each pickup; subsequent submoves/probes/final state follow the Water tuple, with grain/vacancy state zero and exact compact/thermal payloads |
+| IN-WATER-003 | Current isolated source: complete original-owner helper reads/writes are bounded3/2, including second packing census and exchange bracing; explicit radius3 never expands protected Current2 automatically |
+| IN-WATER-004 | Current isolated source: original coherence and cadence gate horizontal-only opportunities; mandatory gravity, WaterUpdate, body/material/future work remain. Retained velocity and bounded q16 phase do not accrue catch-up debt |
+| IN-WATER-005 | Current isolated evidence: capability admission changes policy-bound hashes, while Current tuple/temperature bytes, quantity ledger and historical content/state controls remain exact. Source-matched publication, final CI/review, scientific and full-host acceptance remain separate |
+
+[Water semantics and qualification](../architecture/inertial-cellular-v1.md#water-in-native-successor--2026-10-25)
+own these rules; [dated evidence](../audits/2026-10-25-water-inertial-native.md)
+records actual execution and retained failures.
 
 ## Brine IN standalone adapter invariants
 

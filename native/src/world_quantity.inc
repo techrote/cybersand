@@ -392,7 +392,7 @@ void World::validate_quantity_ledger(bool scan_authority) const {
         const auto prepared_water = quantity_.prepared_material_cells[static_cast<std::uint8_t>(Material::Water)];
         if (prepared_water > std::numeric_limits<std::uint64_t>::max() / maximum ||
             seed.expected_final_water < prepared_water || seed.expected_final_water > prepared_water * maximum ||
-            ((seed.normalization_receipt_digest || water_cellular_yield_) &&
+            ((seed.normalization_receipt_digest || whole_cell_water_enabled()) &&
              seed.expected_final_water != prepared_water * maximum))
             throw std::invalid_argument("quantity prepared Water population does not match initial mass");
     } else if (quantity_.baseline_water != 0U || quantity_.kinds[0] != WaterQuantityFlow{}) {

@@ -52,6 +52,7 @@ KERNEL_SPECIALIZATION = {
 # executes (LCB-001 #200 and the unmerged native #201 candidate). This is
 # executable source admission, not full application/platform acceptance.
 EXECUTABLE_CANDIDATES = {
+    ("water", "inertial_cellular_v1"): ["reference"],
     ("brine", "inertial_cellular_v1"): ["reference"],
     ("water", "pressure_flow_v1"): ["reference", "cached", "cached_dormant"],
     ("water", "cellular_yield_v1"): ["reference"],
@@ -63,7 +64,7 @@ PROPOSED = {
     ("water", "pressure_flow_v1"): ("proposed_experimental",
         "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate"),
     ("water", "inertial_cellular_v1"): ("proposed_experimental",
-        "Gate D experimental inertial regime; LCB-005 #212 not implemented"),
+        "LCB-005 #212 native whole-cell Water adapter with coherence, body contact and actual-carrier transport hooks; full Gate D/application/platform qualification remains separate"),
     ("brine", "inertial_cellular_v1"): ("proposed_experimental",
         "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification"),
     ("toxic-sludge", "inertial_cellular_v1"): ("proposed_alternate",
