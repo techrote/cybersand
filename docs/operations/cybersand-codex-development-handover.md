@@ -10,6 +10,21 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Post-publication two-test correction — 2026-10-25
+
+Actual Linux run40232042725 at ea96/checkout56bd fails host34/1 and owner28/1
+because the old tests demand runtime/manifest mismatch after the published02ea
+artifact actually matches. Preserve that failed evidence and the [corrected
+identity assertions/cohorts](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25).
+Root's frozen test-only correction passes import/host38/owner29 on actual
+published e3 and same-native-source development46a, retaining full-host=false
+and unverified mapped-module/scripts. All80 Native/139 compiled inputs stay
+exact; build535 has exactly two changed test entries, no added paths. No Native
+rebuild, profile/request/runtime or manifest change is needed. Old source5f02
+72-process/a704 records remain historical, not new-test execution. #256 remains
+draft pending fresh corrected-head gates/review; #257 must consume that head.
+Old ea96 Docs/#49 greens do not cover it. All additional Web work is deferred.
+
 ## Current scoped application runtime publication — 2026-10-25
 
 The [actual003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source

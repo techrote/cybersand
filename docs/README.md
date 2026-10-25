@@ -10,6 +10,17 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## Post-publication test checkpoint
+
+The [identity-test correction](audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)
+preserves failed Linux40232042725 and corrects two obsolete mismatch assumptions.
+Actual published e3 and development46a Windows cohorts pass import/host38/owner29;
+publication equality does not upgrade loaded-module/script/full-host claims.
+Native80/compiled139 remain exact; historical build535 differs only in two test
+entries, with no added paths or runtime/manifest rewrite. Older source5f02/a704
+publication facts below remain source-bound. #256 is draft pending new exact-head
+gates/review; old ea96 Docs/#49 greens do not cover the successor. Web is deferred.
+
 ## Current scoped application runtime publication — 2026-10-25
 
 The [actual003 publication](audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source

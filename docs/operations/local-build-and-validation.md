@@ -10,6 +10,20 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Published and development identity-test controls
+
+The [two-test correction ledger](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)
+records actual published-e3 and same-native-source development46a cohorts:
+import240s plus host-evidence38/owner-observation29 cases, each180s. All six
+actual Windows processes pass with held source/project, Native80 and compiled139
+maps. The tests independently read real file/manifest hashes and add copied
+match/mismatch/unavailable controls while retaining unverified module/scripts
+and full-host=false. Neither cohort invents actual matching artifact bytes.
+Historical535 build inputs have exactly two changed test entries; no Native,
+profile/request/runtime/manifest edit or rebuild is required. The failed Linux
+40232042725 mismatch premises remain preserved, and corrected Linux/new-head full
+CI still needs execution. Older72-process proof stays at source5f02. Web deferred.
+
 ## Current scoped application runtime publication — 2026-10-25
 
 The [actual003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source

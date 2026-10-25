@@ -10,6 +10,19 @@ related-documents: [local-build-and-validation.md, ../reference/validation-evide
 
 # Source checkpoint and recovery
 
+## Recoverable post-publication identity-test overlay
+
+The current App checkpoint is ea96 plus exactly two frozen GDScript test changes,
+with their raw/LF hashes, failed Linux40232042725 packet62322347 and two actual
+Windows artifact-cohort receipts54ac62ab/cb29759a in the [correction ledger](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25).
+All80 native manifest entries and139 recorded compiled inputs stay exact.
+Historical build535 has exactly two changed test paths and no added paths;
+the other533 remain equal. Do not rewrite the original source5f02 publication,
+a704/all615 maps, runtimes, manifests, profiles or requests. No later commit is
+claimed as executed before its own gates. Root owns the corrected source/docs
+commit, push and fresh #256 final-head CI; #257 must consume it before readiness.
+No new Native build/publication or Web work is part of this test correction.
+
 ## Current scoped application runtime publication — 2026-10-25
 
 The [actual003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source

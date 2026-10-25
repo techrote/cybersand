@@ -10,6 +10,21 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Post-publication identity-test correction
+
+**Current bounded test overlay, new final-head gates pending:** actual Linux
+run40232042725 at ea96/checkout56bd fails only the two identity expectations
+that unconditionally demand a mismatch after published02ea now matches. The
+[correction evidence](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)
+retains both failures and fresh published-e3/development46a Windows import/
+host38/owner29 passes. Correct real equality remains distinct from unverified
+loaded-module/scripts and full-host=false. This is no physics/law/default
+change: Native80/compiled139 stay exact, historical build535 changes exactly
+two tests and no paths are added. No runtime/manifest rewrite or Native rebuild
+is required. Older72-process/source5f02/a704 evidence stays scoped; #256 remains
+draft for fresh final-head CI/review and #257 is downstream. Old ea96 Docs/#49
+greens are not successor greens. Additional Web work remains owner-deferred.
+
 ## Current scoped application runtime publication — 2026-10-25
 
 The [actual003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source
