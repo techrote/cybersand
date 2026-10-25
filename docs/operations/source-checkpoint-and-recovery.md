@@ -10,11 +10,20 @@ related-documents: [local-build-and-validation.md, ../reference/validation-evide
 
 # Source checkpoint and recovery
 
+The [Water main refresh](../audits/2026-10-25-water-inertial-publication.md#main-flight-lease-refresh-and-native-binary-reuse--2026-10-25)
+is isolated at `C:/Users/_/.codex/worktrees/lcb005-water-main-refresh/khybersand`,
+branch `codex/lcb005-water-main-refresh`. Normal merge38cb593d has parents
+e2411469 and accepted main9935d569. All76 native inputs, published libraries,
+manifests and sequence1 request remain unchanged. The two incoming Flight
+Godot files have fresh published-Water import/8,284-assertion execution; the
+original491 execution ledger stays source4b history. This local review checkpoint
+does not replace the original Water branch or establish final-head acceptance.
+
 ## Recoverable Water IN publication checkpoint — 2026-10-25
 
 The isolated source checkout is
 `C:/Users/_/.codex/worktrees/lcb005-water-inertial/khybersand`, branch
-`codex/lcb005-water-inertial`, draft PR #254. It is separate from the primary
+`codex/lcb005-water-inertial`, PR #254. It is separate from the primary
 `C:/khybersand` checkout and the companion workspace. Reviewed native5f8baf6f and
 profile24a6ffec lead to request-only source4b588279, tree
 `f6f589ce09836878dbcc3731a46e815d812bb83d`. Actual run40166210470 publishes
@@ -26,8 +35,9 @@ owns full runtime/request/archive/review hashes and preserved failures.
 Accepted parent #250 head d7681a5c merges as main dc915f2b. Normal merge8e586b17
 retains C9 anddc915 as parents with the **entire C9 tree unchanged**. All18 LFS
 payloads are materialized and equal committed pointer hashes/sizes. Subsequent
-docs-only commits are identified by the branch HEAD; no native/bridge/test/tool/
-workflow/request/law change or new sequence follows. Git stores source plus LFS
+docs-only commits through e2411469 are identified by their historical Git heads;
+no native/bridge/test/tool/workflow/request/law change or new sequence follows
+within that checkpoint. Git stores source plus LFS
 pointers; preserve access to their actual LFS objects and the external evidence
 receipts. Current tuple/quantity physics controls remain distinct from the
 changed capability/policy-bound identity namespace. Full ready-PR and scientific/
