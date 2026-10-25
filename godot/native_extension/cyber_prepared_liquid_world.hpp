@@ -173,6 +173,20 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_world(
         auto pending = std::make_unique<CyberNativeCellWorld::PendingLiquidWorld>();
         pending->world = prepared.take_world();
         pending->world->configure_transient_obstacles({0, 0, cybersand::demo::kWidth, cybersand::demo::kHeight});
+        if (options.has("initial_bodies") && options["initial_bodies"].get_type() != Variant::PACKED_FLOAT32_ARRAY)
+            throw std::invalid_argument("Initial body input must be a PackedFloat32Array");
+        pending->initial_body_input = options.get("initial_bodies", PackedFloat32Array());
+        pending->initial_bodies = CyberNativeCellWorld::parse_body_state_values(pending->initial_body_input, true);
+        cybersand::setup::encoding::Writer body_identity;
+        body_identity.text("cybersand-prepared-physical-input-v1");
+        body_identity.integer(static_cast<std::uint32_t>(pending->initial_body_input.size()));
+        for (std::int64_t index = 0; index < pending->initial_body_input.size(); ++index)
+            body_identity.integer(std::bit_cast<std::uint32_t>(pending->initial_body_input[index]));
+        pending->initial_body_digest = prepared_liquid_detail::digest(cybersand::Sha256::of(body_identity.bytes));
+        for (const auto& body : pending->initial_bodies) if (body.valid)
+            CyberNativeCellWorld::rasterize_transform_in(*pending->world, nullptr,
+                body.id, body.center, body.rotation, body.half_size);
+
         pending->origin = Vector2i(region[0], region[1]); pending->size = Vector2i(region[2], region[3]);
         pending->window = window;
         pending->cadence = options.get("cadence_lod_enabled", false);
@@ -205,6 +219,8 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_world(
         pending->receipt["simulation_window_enabled"] = pending->window;
         pending->receipt["cadence_lod_enabled"] = pending->cadence;
         pending->receipt["liquid_surface_adhesion_enabled"] = pending->adhesion;
+        pending->receipt["initial_body_count"] = pending->initial_body_input.size() / CyberNativeCellWorld::kInputStride;
+        pending->receipt["initial_body_state_sha256"] = pending->initial_body_digest;
         pending->receipt["normalization"] = Dictionary();
         if (const auto& norm = prepared.setup().normalization_receipt()) {
             Dictionary normalized;
@@ -266,7 +282,7 @@ inline bool CyberDemoBridge::commit_liquid_world(const Ref<CyberNativeCellWorld>
     adapter->last_horizontal_buffer_ = adapter->last_vertical_buffer_ = 0;
     adapter->cadence_lod_enabled_ = pending->cadence;
     adapter->liquid_surface_adhesion_enabled_ = pending->adhesion;
-    adapter->current_bodies_ = {}; adapter->previous_bodies_ = {}; adapter->clear_observations();
+    adapter->current_bodies_ = pending->initial_bodies; adapter->previous_bodies_ = pending->initial_bodies; adapter->clear_observations();
     adapter->raster_indices_.clear(); adapter->last_stats_ = {};
     adapter->simulation_time_ms_ = 0; adapter->tick_failure_count_ = 0; adapter->last_tick_error_ = String();
     adapter->render_cells_revision_ = adapter->hard_surface_rectangles_revision_ = adapter->hard_surface_chunk_rectangles_revision_ = UINT64_MAX;

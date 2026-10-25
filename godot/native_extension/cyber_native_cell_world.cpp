@@ -13,6 +13,7 @@
 #include <cmath>
 #include <numbers>
 #include <span>
+#include <stdexcept>
 #include <thread>
 #include <unordered_map>
 
@@ -456,7 +457,15 @@ void CyberNativeCellWorld::clear_observations() {
 }
 
 void CyberNativeCellWorld::parse_body_states(const PackedFloat32Array& states) {
-    current_bodies_ = {};
+    current_bodies_ = parse_body_state_values(states, false);
+}
+
+CyberNativeCellWorld::BodyStates CyberNativeCellWorld::parse_body_state_values(
+    const PackedFloat32Array& states, bool strict) {
+    BodyStates bodies{};
+    if (strict && (states.size() % kInputStride != 0 ||
+        states.size() / kInputStride > cybersand::World::kMaximumTransientBodies))
+        throw std::invalid_argument("Initial body input exceeds its fixed record bound");
     const auto count = std::min<std::int64_t>(
         cybersand::World::kMaximumTransientBodies, states.size() / kInputStride);
     for (std::int64_t body_index = 0; body_index < count; ++body_index) {
@@ -465,7 +474,10 @@ void CyberNativeCellWorld::parse_body_states(const PackedFloat32Array& states) {
         for (std::int32_t field = 0; field < kInputStride; ++field) {
             finite_record = finite_record && std::isfinite(states[offset + field]);
         }
-        if (!finite_record) continue;
+        if (!finite_record) {
+            if (strict) throw std::invalid_argument("Initial body input contains a nonfinite value");
+            continue;
+        }
         const double input_id = states[offset + kInputBodyId];
         const double serial = states[offset + kInputSampleSerial];
         if (input_id < 1.0 || input_id > cybersand::World::kMaximumTransientBodies ||
@@ -473,10 +485,16 @@ void CyberNativeCellWorld::parse_body_states(const PackedFloat32Array& states) {
             serial > kMaximumBodySampleSerial || std::trunc(serial) != serial ||
             states[offset + kInputSizeX] <= 0.0F ||
             states[offset + kInputSizeY] <= 0.0F ||
-            states[offset + kInputMass] <= 0.0F) continue;
+            states[offset + kInputMass] <= 0.0F) {
+            if (strict) throw std::invalid_argument("Initial body input has invalid identity, size, mass or serial");
+            continue;
+        }
         const auto id_value = static_cast<std::int64_t>(input_id);
-        auto& body = current_bodies_[static_cast<std::size_t>(id_value)];
-        if (body.valid) continue;
+        auto& body = bodies[static_cast<std::size_t>(id_value)];
+        if (body.valid) {
+            if (strict) throw std::invalid_argument("Initial body input duplicates a body identity");
+            continue;
+        }
         body.id = static_cast<std::uint16_t>(id_value);
         body.center = {states[offset + kInputCenterX], states[offset + kInputCenterY]};
         body.rotation = states[offset + kInputRotation];
@@ -490,6 +508,7 @@ void CyberNativeCellWorld::parse_body_states(const PackedFloat32Array& states) {
         body.sample_serial = static_cast<std::int32_t>(serial);
         body.valid = true;
     }
+    return bodies;
 }
 
 void CyberNativeCellWorld::rasterize_body(const BodyState& body) {
@@ -527,6 +546,12 @@ void CyberNativeCellWorld::rasterize_body_sweep(const BodyState& body,
 
 void CyberNativeCellWorld::rasterize_transform(std::uint16_t body_id, Vector2 center,
                                                double rotation, Vector2 half_size) {
+    rasterize_transform_in(*world_, &raster_indices_, body_id, center, rotation, half_size);
+}
+
+void CyberNativeCellWorld::rasterize_transform_in(cybersand::World& world,
+    std::vector<std::int32_t>* indices, std::uint16_t body_id, Vector2 center,
+    double rotation, Vector2 half_size) {
     const auto cosine = std::cos(rotation);
     const auto sine = std::sin(rotation);
     const Vector2 extent{
@@ -550,8 +575,8 @@ void CyberNativeCellWorld::rasterize_transform(std::uint16_t body_id, Vector2 ce
             const Vector2 local{cosine * delta.x + sine * delta.y,
                                 -sine * delta.x + cosine * delta.y};
             if (std::abs(local.x) > half_size.x || std::abs(local.y) > half_size.y) continue;
-            if (world_->set_transient_obstacle(x, y, body_id)) {
-                raster_indices_.push_back(y * kWorldWidth + x);
+            if (world.set_transient_obstacle(x, y, body_id)) {
+                if (indices) indices->push_back(y * kWorldWidth + x);
             }
         }
     }
@@ -1121,6 +1146,18 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_rectangles() const {
 PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const {
     if (has_failed()) return hard_surface_chunk_rectangles_;
     if (world_ == nullptr) return {};
+    const auto hard_revision = static_cast<std::uint64_t>(get_hard_surface_revision());
+    if (hard_surface_chunk_rectangles_revision_ == hard_revision) return hard_surface_chunk_rectangles_;
+    if (render_cells_revision_ != revision_) refresh_render_cells();
+    hard_surface_chunk_rectangles_ = hard_surface_chunks_from_cells(render_cells_);
+    hard_surface_chunk_rectangles_revision_ = hard_revision;
+    return hard_surface_chunk_rectangles_;
+}
+
+PackedInt32Array CyberNativeCellWorld::hard_surface_chunks_from_cells(const PackedByteArray& material_cells) {
+    if (material_cells.size() != static_cast<std::int64_t>(kWorldWidth) * kWorldHeight)
+        throw std::invalid_argument("Finite material projection has an invalid size");
+    PackedInt32Array result;
     // Collision chunks are intentionally smaller than storage chunks. The
     // main-thread PhysicsServer budget can stop only between complete chunks,
     // so 64x64 bounds a pathological fragmented replacement far better than
@@ -1130,12 +1167,6 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const
     constexpr std::int32_t chunk_rows = kWorldHeight / chunk_size;
     constexpr std::int32_t chunk_count = chunk_columns * chunk_rows;
     static_assert(kWorldWidth % chunk_size == 0 && kWorldHeight % chunk_size == 0);
-
-    const auto hard_revision = static_cast<std::uint64_t>(get_hard_surface_revision());
-    if (hard_surface_chunk_rectangles_revision_ == hard_revision) {
-        return hard_surface_chunk_rectangles_;
-    }
-    if (render_cells_revision_ != revision_) refresh_render_cells();
 
     struct Rectangle {
         std::int32_t x = 0;
@@ -1149,7 +1180,7 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const
     };
 
     std::array<std::vector<Rectangle>, chunk_count> chunk_rectangles;
-    const auto* cells = render_cells_.ptr();
+    const auto* cells = material_cells.ptr();
     for (std::int32_t chunk_y = 0; chunk_y < chunk_rows; ++chunk_y) {
         for (std::int32_t chunk_x = 0; chunk_x < chunk_columns; ++chunk_x) {
             const auto chunk_index = chunk_y * chunk_columns + chunk_x;
@@ -1215,9 +1246,9 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const
     std::size_t rectangle_count = 0;
     for (const auto& rectangles : chunk_rectangles) rectangle_count += rectangles.size();
     const auto header_size = static_cast<std::size_t>(chunk_count + 2);
-    hard_surface_chunk_rectangles_.resize(static_cast<std::int64_t>(
+    result.resize(static_cast<std::int64_t>(
         header_size + rectangle_count * 4U));
-    auto* packed = hard_surface_chunk_rectangles_.ptrw();
+    auto* packed = result.ptrw();
     packed[0] = chunk_count;
     auto cursor = header_size;
     for (std::size_t chunk_index = 0; chunk_index < chunk_rectangles.size(); ++chunk_index) {
@@ -1230,8 +1261,7 @@ PackedInt32Array CyberNativeCellWorld::get_hard_surface_chunk_rectangles() const
         }
     }
     packed[1U + chunk_rectangles.size()] = static_cast<std::int32_t>(cursor);
-    hard_surface_chunk_rectangles_revision_ = hard_revision;
-    return hard_surface_chunk_rectangles_;
+    return result;
 }
 
 void CyberNativeCellWorld::set_interest_center(Vector2i world_cell) {

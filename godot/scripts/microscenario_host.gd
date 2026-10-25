@@ -41,7 +41,8 @@ var _timing_count: int = 0
 var _last_completed_tick: int = 0
 
 func install(world: Variant, value: Variant, mode: String = "Inspect", instrumentation: bool = true,
-		liquid_policy: Variant = null, controlled_setup: Dictionary = {}, commit_guard: Callable = Callable()) -> bool:
+		liquid_policy: Variant = null, controlled_setup: Dictionary = {}, commit_guard: Callable = Callable(),
+		prepared_token: int = 0) -> bool:
 	# All schema/profile validation precedes the existing candidate-and-swap
 	# builder. A rejected replacement leaves the old World AND host cursor intact.
 	# liquid_policy: null keeps every liquid on its default; otherwise the LCB-001
@@ -70,8 +71,10 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 		return false
 	if not controlled_setup.is_empty():
 		var intent: String = str(controlled_setup.get("intent", "controlled"))
-		if not intent in ["controlled", "exploratory"] or int(candidate.schema_version) != 2 or candidate.body_enabled:
-			last_error = "Prepared liquid setup requires schema 2 and staged body-free ownership"
+		var physical: Dictionary = controlled_setup.get("physical_owner", {})
+		if not intent in ["controlled", "exploratory"] or int(candidate.schema_version) != 2 \
+			or (candidate.body_enabled and (intent != "exploratory" or physical.is_empty())):
+			last_error = "Prepared liquid setup requires schema 2 and staged ownership"
 			return false
 		if intent == "controlled" and (candidate.player_enabled \
 			or candidate.execution.policy != "fixed" or candidate.interest.policy != "fixed"):
@@ -98,14 +101,24 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 			if candidate.execution.policy == "owner":
 				options.cadence_lod_enabled = owner.cadence_lod_enabled
 				options.liquid_surface_adhesion_enabled = owner.liquid_surface_adhesion_enabled
-		var token: int = bridge.prepare_liquid_world(world, PackedInt32Array(candidate.rectangles),
-			checked.transport.packed, PackedInt32Array(candidate.water_semantics),
-			PackedInt32Array(candidate.partial_water_fills), request, options)
+		if not physical.is_empty(): options.initial_bodies = physical.initial_bodies
+		# Only the exclusive owner retains this opaque token between its two
+		# preparation turns. Revalidation above still precedes final commit.
+		var token: int = prepared_token
+		if token == 0:
+			token = bridge.prepare_liquid_world(world, PackedInt32Array(candidate.rectangles),
+				checked.transport.packed, PackedInt32Array(candidate.water_semantics),
+				PackedInt32Array(candidate.partial_water_fills), request, options)
 		if token == 0:
 			last_liquid_policy_refusal = bridge.get_last_liquid_policy_refusal()
 			last_error = str(bridge.get_last_error())
 			return false
-		var committed: bool = commit_guard.call(bridge, token) if commit_guard.is_valid() else bridge.commit_liquid_world(world, token)
+		var result: Variant = commit_guard.call(bridge, token) if commit_guard.is_valid() else bridge.commit_liquid_world(world, token)
+		if result is Dictionary and result.get("deferred", false):
+			# The exclusive owner retains the candidate while main prepares its
+			# permanent physics space. No host cursor or World has been installed.
+			return false
+		var committed: bool = result is bool and result
 		if not committed:
 			bridge.discard_liquid_world(world, token)
 			last_error = "Controlled liquid replacement retired before commit; " + str(bridge.get_last_error())

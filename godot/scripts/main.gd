@@ -6,6 +6,12 @@ const PhysicalSession = preload("res://scripts/physical_actor_session.gd")
 const PhysicalOverlay = preload("res://scripts/physical_actor_overlay.gd")
 const PhysicalLoadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const PhysicalEquipment = preload("res://scripts/physical_usable_equipment.gd")
+const PreparedPhysical = preload("res://scripts/prepared_physical_session.gd")
+var _pending_physical_candidate: RefCounted
+var _accepted_physical_candidate: RefCounted
+var _prepared_physical_identity: Dictionary = {}
+var _prepared_physical_ready_sent: bool = false
+var _prepared_physical_factory: Callable = Callable()
 var exploratory_actor_configuration: Dictionary = {}
 var physical_trial_arm: String = ""
 var physical_trial_input = PhysicalTrial.new()
@@ -305,6 +311,10 @@ func microscenario_apply_exploratory_liquid(definition: Dictionary, liquid_polic
 	return _apply_microscenario_definition(definition, mode, actor_configuration, liquid_policy,
 		{"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else ""})
 
+func microscenario_supports_prepared_physical_liquid(definition: Dictionary) -> bool:
+	return physical_rig_id != &"" and microscenario_mode != "Benchmark" \
+		and CyberMicroScenarioCatalogue.exploratory_actor_map(definition)
+
 func _apply_microscenario_definition(definition: Dictionary, mode: String, actor_configuration: Dictionary = {},
 		liquid_policy: Variant = null, controlled_setup: Dictionary = {}) -> bool:
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return false
@@ -333,8 +343,10 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 		return false
 	if not controlled_setup.is_empty():
 		var prepared_exploratory: bool = controlled_setup.get("intent", "controlled") == "exploratory"
-		if int(checked.definition.schema_version) != 2 or checked.definition.body_enabled:
-			microscenario_error = "Prepared liquid setup requires schema 2; physical/body staging remains pending"
+		var articulated: bool = prepared_exploratory and exploratory \
+			and not str(selected_actor.get("physical_rig", "")).is_empty()
+		if int(checked.definition.schema_version) != 2 or (checked.definition.body_enabled and not articulated):
+			microscenario_error = "Prepared liquid setup requires schema 2; this body route is not staged"
 			return false
 		if (not prepared_exploratory and (checked.definition.player_enabled
 			or checked.definition.execution.policy != "fixed" or checked.definition.interest.policy != "fixed")):
@@ -345,10 +357,31 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 		else _player_configuration_for_microscenario(checked.definition))
 	if player_configuration.is_empty():
 		return false
-	if (not controlled_setup.is_empty() and (player_configuration.get("representation", "sampled") == "barrel-rapier"
-		or not str(player_configuration.get("physical_rig", "")).is_empty())):
-		microscenario_error = "Prepared physical actor/terrain staging remains pending; current session retained"
-		return false
+	var prepared_physical: bool = not controlled_setup.is_empty() \
+		and not str(player_configuration.get("physical_rig", "")).is_empty()
+	if not controlled_setup.is_empty() and player_configuration.get("representation", "sampled") == "barrel-rapier":
+		if not prepared_physical or not exploratory or mode == "Benchmark" \
+			or controlled_setup.get("intent","controlled") != "exploratory":
+			microscenario_error = "This prepared physical route is unavailable; current session retained"
+			return false
+	if prepared_physical:
+		var staged: RefCounted = _prepared_physical_factory.call() if _prepared_physical_factory.is_valid() else PreparedPhysical.new()
+		var definitions: Array = physical_actor_definitions(StringName(str(player_configuration.physical_rig)),
+			StringName(str(player_configuration.get("actor_producer","human"))),
+			bool(player_configuration.get("actor_demo_npcs",false)),
+			Vector2(checked.definition.player_start[0],checked.definition.player_start[1]))
+		if not staged.prepare(self,definitions,_physical_epoch+1):
+			microscenario_error = staged.last_error
+			staged.close()
+			return false
+		# Signal connection and all rig/equipment/space construction precede the
+		# native preparation. The exact same graph survives successful adoption.
+		staged.session.input_cancelled.connect(_on_physical_actor_input_cancelled)
+		_pending_physical_candidate = staged
+		_prepared_physical_identity = {};_prepared_physical_ready_sent = false
+		controlled_setup = controlled_setup.duplicate(true)
+		controlled_setup.physical_owner = {"epoch":_physical_epoch+1,"instance_id":staged.get_instance_id(),
+			"initial_bodies":staged.initial_body_states()}
 	if microscenario_panel != null: microscenario_panel.workbench.cancel_declared_window()
 	_microscenario_request_serial += 1
 	pending_microscenario_apply = {
@@ -397,13 +430,16 @@ func _microscenario_installed(definition: Dictionary) -> void:
 	microscenario_definition = definition.duplicate(true)
 	microscenario_liquid_policy = pending_microscenario_apply.get("liquid_policy", null)
 	microscenario_liquid_setup = pending_microscenario_apply.get("controlled_liquid_setup", {}).duplicate(true)
+	microscenario_liquid_setup.erase("physical_owner")
 	tower_active = true
 	paused = true
 	current_view_size = Vector2i(480, 270)
 	camera_follow_enabled = false
 	camera_origin = Vector2(definition.camera_origin[0], definition.camera_origin[1])
 	character_position = Vector2(definition.player_start[0], definition.player_start[1])
-	if physical_rig_id != &"":
+	if _pending_physical_candidate != null:
+		_adopt_prepared_physical_candidate()
+	elif physical_rig_id != &"":
 		_activate_articulated_actor_rigs(character_position)
 	elif player_uses_barrel():
 		_activate_microscenario_barrel_player(character_position)
@@ -1242,6 +1278,7 @@ func _exit_tree() -> void:
 	if gameplay_recorder.is_active():
 		var stopped: Dictionary = gameplay_recorder.stop_recording()
 		print("REC-001 recording finalized at exit: ", JSON.stringify(stopped))
+	_close_pending_physical_candidate()
 	_close_physical_actors()
 	simulation_worker.stop_worker()
 	rapier_bridge.shutdown()
@@ -1253,7 +1290,8 @@ func _process(delta: float) -> void:
 	frame_time_ms = delta * 1000.0
 	maximum_frame_time_ms = maxf(maximum_frame_time_ms, frame_time_ms)
 	consume_worker_snapshot()
-	refresh_actor_usables()
+	_advance_prepared_physical_candidate()
+	if _pending_physical_candidate == null: refresh_actor_usables()
 	gameplay_recorder.poll_finalization()
 	_refresh_recording_button()
 	sync_player_presentation_position()
@@ -1297,6 +1335,11 @@ func _process(delta: float) -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	if _pending_physical_candidate != null:
+		# The retained manually stepped space stays at its actual prior pose.
+		# Do not reconfigure its equipment, revoke its leases or publish stale
+		# body frames while the separate replacement graph is being prepared.
+		return
 	if physical_actor_session != null:
 		physical_actor_session.set_suspended(paused or simulation_worker.has_failed()
 			or not _physical_terrain_ready or _actor_reset_receipt != 0
@@ -2144,6 +2187,7 @@ func consume_worker_snapshot() -> void:
 			paused = bool(pending_microscenario_apply.previous_paused)
 			microscenario_mode = str(pending_microscenario_apply.get("previous_mode", microscenario_mode))
 			microscenario_error = str(tower_context.status)
+			_close_pending_physical_candidate()
 			pending_microscenario_apply.clear()
 	var capture_serial: int = int(tower_context.get("micro_capture_serial", 0))
 	if capture_serial > microscenario_capture_seen and not tower_context.get("micro_capture", {}).is_empty():
@@ -2375,6 +2419,62 @@ func physical_actor_definitions(model_id: StringName, producer: StringName, demo
 	return definitions
 
 
+func _close_pending_physical_candidate() -> void:
+	if _pending_physical_candidate != null: _pending_physical_candidate.close()
+	_pending_physical_candidate = null
+	_prepared_physical_identity = {};_prepared_physical_ready_sent = false
+
+func _advance_prepared_physical_candidate() -> void:
+	if _pending_physical_candidate == null or _prepared_physical_ready_sent: return
+	var publication: Dictionary = simulation_worker.prepared_physical_liquid_values()
+	if publication.is_empty(): return
+	if int(publication.get("serial",0)) != int(pending_microscenario_apply.get("serial",-1)) \
+		or int(publication.get("instance_id",0)) != _pending_physical_candidate.get_instance_id(): return
+	if _prepared_physical_identity.is_empty():
+		_prepared_physical_identity = publication.duplicate(true)
+		if publication.initial_bodies != _pending_physical_candidate.initial_body_states() \
+			or not _pending_physical_candidate.install_terrain(publication.terrain):
+			simulation_worker.complete_prepared_physical_liquid(_prepared_physical_identity,false,
+				"initial body identity or terrain refused")
+			_prepared_physical_ready_sent = true
+			return
+	if not _pending_physical_candidate.verify_physics_frame() \
+		or not _pending_physical_candidate.prepare_terrain_budget(HARD_SURFACE_CHUNKS_PER_FRAME,HARD_SURFACE_FRAME_BUDGET_USEC):
+		simulation_worker.complete_prepared_physical_liquid(_prepared_physical_identity,false,
+			_pending_physical_candidate.last_error)
+		_prepared_physical_ready_sent = true
+		return
+	if _pending_physical_candidate.ready():
+		_prepared_physical_ready_sent = simulation_worker.complete_prepared_physical_liquid(
+			_prepared_physical_identity,true)
+
+func _adopt_prepared_physical_candidate() -> void:
+	# Every declared fallible operation completed before main sent readiness.
+	# Retire the old owner only after native and worker state accepted this graph.
+	var accepted: RefCounted = _pending_physical_candidate
+	_pending_physical_candidate = null
+	_close_physical_actors()
+	for body: RigidBody2D in [test_rigid_body_1,test_rigid_body_2,test_rigid_body_3]:
+		body.freeze = true;body.collision_layer = 0;body.collision_mask = 0
+	rapier_bridge.shutdown()
+	_accepted_physical_candidate = accepted
+	physical_actor_session = accepted.session
+	_physical_epoch = physical_actor_session.epoch
+	rapier_bridge = physical_actor_session.bridge
+	rigid_bodies = physical_actor_session.bodies()
+	_physical_terrain_ready = true
+	rapier_start_error = OK
+	last_hard_surface_revision = latest_snapshot.hard_surface_revision
+	hard_surface_rebuild_cooldown = 0.0
+	var loadout: Dictionary = PhysicalLoadouts.entry(physical_rig_id)
+	actor_usable_index = int(loadout.get("usable_index",-1))
+	_actor_usable_requested_index = actor_usable_index
+	_actor_usable_power = float(loadout.get("power",0.8))
+	_actor_usable_transition_pending = false;_actor_usable_pointer_rearm = true
+	simulation_worker.set_physical_actor_epoch(_physical_epoch)
+	accepted.adopt()
+	_prepared_physical_identity = {};_prepared_physical_ready_sent = false
+
 func _activate_articulated_actor_rigs(spawn: Vector2) -> bool:
 	var definitions: Array = physical_actor_definitions(physical_rig_id,
 		actor_producer_selection, actor_demo_npcs, spawn)
@@ -2415,8 +2515,12 @@ func _close_physical_actors() -> void:
 	if physical_actor_session == null:
 		return
 	simulation_worker.set_physical_actor_epoch(0)
-	physical_actor_session.close()
-	physical_actor_session.free()
+	if _accepted_physical_candidate != null:
+		_accepted_physical_candidate.close()
+		_accepted_physical_candidate = null
+	else:
+		physical_actor_session.close()
+		physical_actor_session.free()
 	physical_actor_session = null
 	rigid_bodies.clear()
 	rapier_bridge = CyberRapierPhysicsBridge.new()

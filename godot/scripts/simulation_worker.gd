@@ -95,6 +95,12 @@ var _lab_request_revision: int = 0
 var _construction_settings_revision: int = 0
 var _prepared_frame_hold: Dictionary = {}
 var _prepared_frame_serial: int = 0
+# The continuation itself belongs exclusively to the simulation owner. Only
+# copied value publications/readiness cross the mutex to the main-thread owner.
+var _pending_physical_liquid: Dictionary = {}
+var _prepared_physical_publication: Dictionary = {}
+var _prepared_physical_ready: Dictionary = {}
+var _prepared_physical_frame_hold: Dictionary = {}
 var _prepared_liquid_owner_error: String = ""
 # Private dependency seams exercise declared precommit actor/equipment failures.
 var _prepared_actor_factory: Callable = Callable()
@@ -168,20 +174,85 @@ func acknowledge_prepared_liquid_configuration(serial: int) -> void:
 	if serial == _prepared_frame_serial:
 		_prepared_frame_hold = {}
 		_prepared_frame_serial = 0
+	if serial == int(_prepared_physical_frame_hold.get("serial",-1)):
+		_prepared_physical_frame_hold = {}
 	_mutex.unlock()
+
+func prepared_physical_liquid_values() -> Dictionary:
+	_mutex.lock()
+	var copied: Dictionary = _prepared_physical_publication.duplicate(true)
+	_mutex.unlock()
+	return copied
+
+func complete_prepared_physical_liquid(identity: Dictionary, ready: bool, reason: String = "") -> bool:
+	_mutex.lock()
+	var current: bool = not _prepared_physical_publication.is_empty() and _prepared_physical_ready.is_empty()
+	for key: String in ["token","serial","epoch","instance_id","initial_body_state_sha256"]:
+		current = current and identity.get(key) == _prepared_physical_publication.get(key)
+	if current: _prepared_physical_ready = {"ready":ready,"reason":reason}
+	_mutex.unlock()
+	return current
+
+func _retire_prepared_physical_liquid(reason: String = "") -> void:
+	if _pending_physical_liquid.is_empty(): return
+	_pending_physical_liquid.bridge.discard_liquid_world(_world,int(_pending_physical_liquid.token))
+	_pending_physical_liquid = {}
+	_mutex.lock()
+	_prepared_physical_publication = {};_prepared_physical_ready = {}
+	_mutex.unlock()
+	if not reason.is_empty(): _lab_status = "Prepared physical replacement refused; " + reason
+
+func _advance_prepared_physical_liquid() -> Dictionary:
+	if _pending_physical_liquid.is_empty(): return {}
+	_mutex.lock()
+	var current: bool = _running and not _reset_requested \
+		and int(_pending_physical_liquid.request_revision) == _lab_request_revision \
+		and int(_pending_physical_liquid.settings_revision) == _construction_settings_revision
+	var readiness: Dictionary = _prepared_physical_ready.duplicate(true)
+	_mutex.unlock()
+	if not current:
+		_retire_prepared_physical_liquid("request, settings or owner lifetime changed")
+		return {}
+	if readiness.is_empty(): return {}
+	if not readiness.ready:
+		_retire_prepared_physical_liquid(str(readiness.reason))
+		return {}
+	var command: Dictionary = _pending_physical_liquid.command.duplicate(true)
+	command["_prepared_physical_commit"] = true
+	return command
 
 func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_revision: int,
 		settings_revision: int, command: Dictionary, definition: Dictionary, profile: Dictionary,
-		owner_execution: Dictionary) -> bool:
-	var staged: Dictionary = PreparedSampled.prepare(bridge, _world, token,
+		owner_execution: Dictionary) -> Variant:
+	var physical: Dictionary = command.get("controlled_liquid_setup",{}).get("physical_owner",{})
+	var completing: bool = bool(command.get("_prepared_physical_commit",false))
+	var staged: Dictionary = _pending_physical_liquid.get("staged",{}) if completing else PreparedSampled.prepare(bridge, _world, token,
 		Vector2(definition.player_start[0],definition.player_start[1]),
 		bool(command.get("sampled_character_enabled",false)),
 		bool(command.get("runtime_enclosure_recovery_enabled",true)), profile,
 		command.get("exploratory_actor_definitions",[]), _actor_session.identity_epoch(),
 		_prepared_actor_factory, _prepared_usable_factory)
-	if not staged.ok:
-		_prepared_liquid_owner_error = staged.error
+	if not staged.get("ok",false):
+		_prepared_liquid_owner_error = str(staged.get("error","Prepared owner was retired"))
 		return false
+	if not physical.is_empty() and not completing:
+		var values: Dictionary = bridge.prepared_liquid_world_values(_world,token)
+		if values.is_empty():
+			_prepared_liquid_owner_error = bridge.get_last_error()
+			return false
+		values.serial = int(command.get("scenario_request_serial",0))
+		values.epoch = int(physical.epoch)
+		values.instance_id = int(physical.instance_id)
+		_mutex.lock()
+		var current: bool = _running and not _reset_requested and request_revision == _lab_request_revision \
+			and settings_revision == _construction_settings_revision
+		if current:
+			_pending_physical_liquid = {"bridge":bridge,"token":token,"command":command.duplicate(true),
+				"request_revision":request_revision,"settings_revision":settings_revision,"staged":staged}
+			_prepared_physical_publication = values
+			_prepared_physical_ready = {}
+		_mutex.unlock()
+		return {"deferred":true} if current else false
 	if _controlled_liquid_prepare_barrier.is_valid(): _controlled_liquid_prepare_barrier.call()
 	# Retain the previous sessions through the no-fail swap; refusal never calls
 	# clear/configure on them or changes their epochs, equipment or actor state.
@@ -190,12 +261,22 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 	_mutex.lock()
 	var current: bool = _running and not _reset_requested and request_revision == _lab_request_revision \
 		and settings_revision == _construction_settings_revision
+	if completing:
+		current = current and not _pending_physical_liquid.is_empty() \
+			and token == int(_pending_physical_liquid.get("token",0)) and bool(_prepared_physical_ready.get("ready",false))
 	var committed: bool = bridge.commit_liquid_world(_world, token) if current else false
 	if committed:
 		_actor_session = staged.actors
 		_usable_session = staged.usables
 		_character = staged.character
 		_sampled_character_enabled = staged.enabled
+		if completing:
+			_rigid_body_states = physical.initial_bodies.duplicate()
+			_rigid_body_epoch = int(physical.epoch)
+			_prepared_physical_frame_hold = {"serial":int(command.get("scenario_request_serial",0)),
+				"epoch":int(physical.epoch)}
+			_player_environment_profile = profile.duplicate(true)
+			_set_physical_actor_epoch_locked(int(physical.epoch))
 		if definition.interest.policy == "owner" or definition.execution.policy == "owner":
 			_prepared_frame_hold = owner_execution
 			_prepared_frame_serial = int(command.get("scenario_request_serial",0))
@@ -360,6 +441,26 @@ func _apply_lab(command: Dictionary) -> bool:
 		var actor_definitions: Array = command.get("exploratory_actor_definitions", [])
 		var controlled_setup: Dictionary = command.get("controlled_liquid_setup", {})
 		var exploratory_liquid: bool = controlled_setup.get("intent", "controlled") == "exploratory"
+		var physical: Dictionary = controlled_setup.get("physical_owner",{})
+		var continuation_token: int = 0
+		if command.get("_prepared_physical_commit",false):
+			var original: Dictionary = command.duplicate(true)
+			original.erase("_prepared_physical_commit")
+			if _pending_physical_liquid.is_empty() or original != _pending_physical_liquid.get("command",{}):
+				_lab_status = "Prepared physical continuation binding changed; retained session preserved"
+				_retire_prepared_physical_liquid()
+				return false
+			continuation_token = int(_pending_physical_liquid.token)
+		if not physical.is_empty() and (not exploratory_liquid
+			or not MicroCatalogue.exploratory_actor_map(command.scenario_reset)
+			or str(command.get("scenario_mode","Inspect")) == "Benchmark"
+			or not bool(command.scenario_reset.body_enabled) or bool(command.scenario_reset.player_enabled)
+			or bool(command.get("sampled_character_enabled",true)) or not actor_definitions.is_empty()
+			or not physical.get("epoch") is int or int(physical.epoch) < 1
+			or not physical.get("instance_id") is int or int(physical.instance_id) == 0
+			or not physical.get("initial_bodies") is PackedFloat32Array or physical.initial_bodies.is_empty()):
+			_lab_status = "Prepared physical ownership requires a bounded exploratory body request"
+			return false
 		if not controlled_setup.is_empty() and not exploratory_liquid and (not actor_definitions.is_empty() \
 			or bool(command.get("sampled_character_enabled", true))):
 			_lab_status = "Controlled liquid preparation requires an actor-free request"
@@ -400,11 +501,19 @@ func _apply_lab(command: Dictionary) -> bool:
 		var guard: Callable = _commit_controlled_liquid_candidate.bind(
 			int(command.get("_owner_request_revision",-1)),settings_revision,command,prepared_definition,
 			profile,prepared_owner) if not controlled_setup.is_empty() else Callable()
+		var retained_host_error: String = _scenario_host.last_error
+		var retained_host_refusal: Dictionary = _scenario_host.last_liquid_policy_refusal
 		if not _scenario_host.install(_world, command.scenario_reset, str(command.get("scenario_mode", "Inspect")),
-			true, command.get("liquid_policy", null), controlled_setup, guard):
+			true, command.get("liquid_policy", null), controlled_setup, guard, continuation_token):
+			if not _pending_physical_liquid.is_empty() and not command.get("_prepared_physical_commit",false):
+				_scenario_host.last_error = retained_host_error
+				_scenario_host.last_liquid_policy_refusal = retained_host_refusal
+				return false
 			_lab_status = "MicroScenario rejected; " + (_prepared_liquid_owner_error \
 				if not _prepared_liquid_owner_error.is_empty() else _scenario_host.last_error)
+			if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
 			return false
+		if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
 		_world_generation += 1
 		var definition: Dictionary = _scenario_host.definition()
 		var transport: Dictionary = CyberTransportProfiles.resolve(definition.transport_profile)
@@ -536,6 +645,7 @@ func _configure_sampled_character(
 	_mutex.lock()
 	_prepared_frame_hold = {}
 	_prepared_frame_serial = 0
+	_prepared_physical_frame_hold = {}
 	_mutex.unlock()
 	_actor_session.clear()
 	_usable_session.clear()
@@ -585,6 +695,7 @@ func start_worker(spawn_position: Vector2) -> Error:
 
 func stop_worker() -> void:
 	if not _thread.is_started():
+		_retire_prepared_physical_liquid()
 		return
 	_mutex.lock()
 	_running = false
@@ -740,6 +851,11 @@ func set_rigid_body_states(states: PackedFloat32Array, body_epoch: int = 0, effe
 	# of effect admission. A nonempty effects batch is queued wholly or refused;
 	# previously queued work is never replaced to make room for a newer batch.
 	_mutex.lock()
+	if not _prepared_physical_frame_hold.is_empty():
+		var held: Dictionary = {"epoch":body_epoch,"status":"refused","reason":"prepared_owner_adoption_pending",
+			"requested":effects.size(),"queued":0,"refused":effects.size()}
+		_mutex.unlock()
+		return held
 	_rigid_body_states = states.duplicate()
 	_rigid_body_epoch = body_epoch
 	var requested: int = effects.size()
@@ -954,6 +1070,13 @@ func _consume_physical_usables(requests: Array, body_epoch: int, allowed: bool, 
 func set_physical_actor_epoch(epoch: int) -> void:
 	# Switching owners retires pending effects; no node/RID enters this boundary.
 	_mutex.lock()
+	if not _prepared_physical_frame_hold.is_empty() and epoch != int(_prepared_physical_frame_hold.epoch):
+		_mutex.unlock()
+		return
+	_set_physical_actor_epoch_locked(epoch)
+	_mutex.unlock()
+
+func _set_physical_actor_epoch_locked(epoch: int) -> void:
 	_physical_effect_epoch = maxi(0, epoch)
 	_pending_physical_effects.clear()
 	_pending_physical_usables.clear()
@@ -969,7 +1092,6 @@ func set_physical_actor_epoch(epoch: int) -> void:
 	_physical_effect_last_admission.clear()
 	for actor: int in range(PhysicalEffects.MAX_ACTORS):
 		_physical_effect_generations[actor] += 1
-	_mutex.unlock()
 
 
 func cancel_physical_actor_effects(epoch: int, actor_id: int = -1) -> bool:
@@ -1021,6 +1143,10 @@ func queue_emit_disc(
 	var packed_material: int = (material_id & EMISSION_MATERIAL_MASK) | packed_flags
 	var emission_command: Vector4i = Vector4i(world_x, world_y, radius, packed_material)
 	_mutex.lock()
+	if not _prepared_physical_publication.is_empty() \
+		or not _lab_request.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty():
+		_mutex.unlock()
+		return false
 	if _published_snapshot != null and _published_snapshot.simulation_failed:
 		_mutex.unlock()
 		return false
@@ -1050,6 +1176,10 @@ func queue_emit_cells(
 		"packed_material": packed_material,
 	}
 	_mutex.lock()
+	if not _prepared_physical_publication.is_empty() \
+		or not _lab_request.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty():
+		_mutex.unlock()
+		return false
 	if _published_snapshot != null and _published_snapshot.simulation_failed:
 		_mutex.unlock()
 		return false
@@ -1196,17 +1326,21 @@ func _worker_loop() -> void:
 		local_cadence_enabled = _cadence_lod_enabled
 		local_liquid_adhesion_enabled = _liquid_surface_adhesion_enabled
 		local_render_snapshot_interval_usec = _render_snapshot_interval_usec
+		var physical_wait: bool = not _prepared_physical_publication.is_empty() \
+			or not _lab_request.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty()
 		local_rigid_body_states = _rigid_body_states
 		local_rigid_body_epoch = _rigid_body_epoch
-		local_physical_effects = _pending_physical_effects
-		_pending_physical_effects = []
+		if not physical_wait:
+			local_physical_effects = _pending_physical_effects
+			_pending_physical_effects = []
 		local_physical_usable_frame = _physical_usable_frame.duplicate(true)
-		local_physical_usables = _pending_physical_usables
-		_pending_physical_usables = []
-		local_emissions = _pending_emissions
-		_pending_emissions = []
-		local_cell_emissions = _pending_cell_emissions
-		_pending_cell_emissions = []
+		if not physical_wait:
+			local_physical_usables = _pending_physical_usables
+			_pending_physical_usables = []
+			local_emissions = _pending_emissions
+			_pending_emissions = []
+			local_cell_emissions = _pending_cell_emissions
+			_pending_cell_emissions = []
 		local_reset_requested = _reset_requested
 		local_reset_spawn = _reset_spawn
 		local_reset_sampled_character_enabled = _reset_sampled_character_enabled
@@ -1218,13 +1352,15 @@ func _worker_loop() -> void:
 		local_actor_prototype_serial = _reset_actor_prototype_serial
 		_reset_actor_prototype_serial = 0
 		_reset_requested = false
-		local_player_environment_profile = _pending_player_environment_profile
-		_pending_player_environment_profile = {}
+		if not physical_wait:
+			local_player_environment_profile = _pending_player_environment_profile
+			_pending_player_environment_profile = {}
 		local_lab = _lab_request
 		_lab_request = {}
 		_mutex.unlock()
 
 		if not local_running:
+			_retire_prepared_physical_liquid()
 			return
 
 		var step_start_usec: int = Time.get_ticks_usec()
@@ -1239,6 +1375,21 @@ func _worker_loop() -> void:
 			# A profile extracted in this same owner turn is part of the final
 			# staged character configuration, before native replacement commits.
 			local_lab["_prepared_player_environment_profile"] = local_player_environment_profile
+		if local_reset_requested and not local_lab.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty():
+			# An already admitted reset/prototype request keeps its ordinary
+			# disposition. Do not begin a continuation that could swallow it.
+			_scenario_request_serial = int(local_lab.get("scenario_request_serial",0))
+			_scenario_request_applied = false
+			_lab_status = "Prepared physical replacement refused by an admitted reset"
+			local_lab = {}
+		var continuation: Dictionary = _advance_prepared_physical_liquid()
+		if not continuation.is_empty(): local_lab = continuation
+		if not _pending_physical_liquid.is_empty() and continuation.is_empty():
+			# Main owns the live Rapier graph. Never block waiting for it, call
+			# its APIs, or advance/edit the retained native World while it stages.
+			OS.delay_usec(1000)
+			next_tick_usec = Time.get_ticks_usec()
+			continue
 		if _apply_lab(local_lab):
 			# Candidate Worlds may reuse a hard-surface revision number. Their
 			# initial terrain must replace the previous World's retained packet.
@@ -1261,9 +1412,16 @@ func _worker_loop() -> void:
 				local_horizontal_buffer = _horizontal_buffer; local_vertical_buffer = _vertical_buffer
 				local_window_enabled = _simulation_window_enabled; local_cadence_enabled = _cadence_lod_enabled
 				local_liquid_adhesion_enabled = _liquid_surface_adhesion_enabled
+				if not _prepared_physical_frame_hold.is_empty():
+					local_rigid_body_states = _rigid_body_states
+					local_rigid_body_epoch = _rigid_body_epoch
 				_mutex.unlock()
 			local_paused = true
 			_last_render_snapshot_usec = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
+		if not _pending_physical_liquid.is_empty():
+			OS.delay_usec(1000)
+			next_tick_usec = Time.get_ticks_usec()
+			continue
 		if not local_player_environment_profile.is_empty():
 			_player_environment_profile = local_player_environment_profile.duplicate(true)
 			if not _actor_session.active():

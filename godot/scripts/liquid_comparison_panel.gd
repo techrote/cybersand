@@ -52,7 +52,7 @@ func setup(controller: Control) -> void:
 	heading.add_theme_font_size_override("font_size", 20)
 	add_child(heading)
 	var explanation := Label.new()
-	explanation.text = "Choose a solver policy, then rebuild the active scenario. Exploratory mode supports sampled actors. Use the existing pause and step controls to run."
+	explanation.text = "Choose a solver policy, then rebuild the active scenario. Exploratory mode stages sampled or articulated actors in supported maps. Use the existing pause and step controls to run."
 	explanation.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(explanation)
 	var presets := HFlowContainer.new()
@@ -63,8 +63,8 @@ func setup(controller: Control) -> void:
 	presets.add_child(setup_picker)
 	session_picker = OptionButton.new()
 	session_picker.add_item("Controlled • fixed actor-free")
-	session_picker.add_item("Exploratory • sampled owner")
-	session_picker.tooltip_text = "Exploratory setup admits staged sampled actors and owner-paced interest. Physical body preparation remains pending; neither option qualifies full matched evidence."
+	session_picker.add_item("Exploratory • staged owner")
+	session_picker.tooltip_text = "Exploratory setup stages sampled actors or desktop articulated actors in supported maps. Other body routes remain unavailable; full matched evidence remains pending."
 	session_picker.item_selected.connect(func(_index: int) -> void: _dirty = true; _refusal = "")
 	presets.add_child(session_picker)
 	preset_picker = OptionButton.new()
@@ -173,8 +173,13 @@ func select_family(index: int) -> void:
 	_refresh_choices()
 
 func _definition_supported(definition: Dictionary) -> bool:
-	if definition.is_empty() or int(definition.get("schema_version",0)) != 2 or definition.get("body_enabled",true): return false
-	if session_picker.selected == 1: return host.has_method(&"microscenario_apply_exploratory_liquid")
+	if definition.is_empty() or int(definition.get("schema_version",0)) != 2: return false
+	if session_picker.selected == 1:
+		if definition.get("body_enabled",true):
+			return host.has_method(&"microscenario_supports_prepared_physical_liquid") \
+				and host.microscenario_supports_prepared_physical_liquid(definition)
+		return host.has_method(&"microscenario_apply_exploratory_liquid")
+	if definition.get("body_enabled",true): return false
 	return (not definition.get("player_enabled",true)
 		and definition.get("execution",{}).get("policy","") == "fixed"
 		and definition.get("interest",{}).get("policy","") == "fixed")
@@ -270,6 +275,6 @@ func refresh(context: Dictionary) -> void:
 	elif pending: status.text = "Rebuilding at the existing owner boundary…"
 	elif context.get("microscenario",{}).get("failed",false): status.text = "Installed session apparatus failed: " + str(context.microscenario.get("error","unavailable"))
 	elif not _refusal.is_empty(): status.text = "Refused; applied session retained. " + _refusal
-	elif not _definition_supported(host.microscenario_definition): status.text = "Load Dam Break, or choose a fixed actor-free MicroScenario. Choose Exploratory for staged sampled ownership; physical bodies and other constructors remain pending."
+	elif not _definition_supported(host.microscenario_definition): status.text = "Load Dam Break, or choose a fixed actor-free MicroScenario. Exploratory stages sampled and supported desktop articulated owners; other body and constructor routes remain pending."
 	elif _dirty: status.text = "Pending solver/normalization selection. The running World keeps its applied policy until rebuild."
 	else: status.text = "Applied setup is ready. Reset keeps its accepted policy and normalization selection."

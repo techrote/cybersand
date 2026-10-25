@@ -5,6 +5,7 @@
 #include "cybersand/demo_snapshot.hpp"
 #include "cybersand/interaction_rules.hpp"
 #include "cybersand/material_rules.hpp"
+#include <bit>
 #include <godot_cpp/classes/ref.hpp>
 #include <godot_cpp/core/class_db.hpp>
 
@@ -522,6 +523,34 @@ public:
         return CyberNativeCellWorld::character_box_collides_in(
             adapter->pending_liquid_world_->world.get(), origin, size, mode);
     }
+    [[nodiscard]] Dictionary prepared_liquid_world_values(const Ref<CyberNativeCellWorld>& adapter, std::int64_t token) {
+        error_ = String();
+        if (adapter.is_null() || token <= 0 || !adapter->pending_liquid_world_ ||
+            adapter->pending_liquid_world_->token != static_cast<std::uint64_t>(token)) {
+            error_ = "Preparation token is absent or retired";
+            return {};
+        }
+        try {
+            const auto& pending = *adapter->pending_liquid_world_;
+            PackedByteArray cells;
+            const auto size = static_cast<std::int64_t>(CyberNativeCellWorld::kWorldWidth) * CyberNativeCellWorld::kWorldHeight;
+            if (cells.resize(size) != OK) throw std::bad_alloc();
+            pending.world->copy_material_cells({0,0,CyberNativeCellWorld::kWorldWidth,CyberNativeCellWorld::kWorldHeight},
+                std::span<std::uint8_t>{cells.ptrw(),static_cast<std::size_t>(size)},CyberNativeCellWorld::kWorldWidth);
+            Dictionary out;
+            out["token"] = token;
+            out["terrain"] = CyberNativeCellWorld::hard_surface_chunks_from_cells(cells);
+            out["initial_bodies"] = pending.initial_body_input.duplicate();
+            out["initial_body_state_sha256"] = pending.initial_body_digest;
+            out["candidate_physical_state_hash"] = String::num_uint64(pending.world->physical_state_hash(),16);
+            // Candidate facts are explicitly pending values. No applied receipt
+            // or mutable native storage is exposed before the final owner swap.
+            return out;
+        } catch (const std::exception& error) {
+            error_ = String(error.what());
+            return {};
+        }
+    }
     [[nodiscard]] bool commit_liquid_world(const Ref<CyberNativeCellWorld>& adapter, std::int64_t token);
     void discard_liquid_world(const Ref<CyberNativeCellWorld>& adapter, std::int64_t token) {
         if (adapter.is_valid() && adapter->pending_liquid_world_ &&
@@ -824,6 +853,7 @@ protected:
             "water_fills", "liquid_policy", "options"), &CyberDemoBridge::prepare_liquid_world);
         ClassDB::bind_method(D_METHOD("prepared_liquid_character_box_collides", "world", "token", "origin", "size", "mode"),
             &CyberDemoBridge::prepared_liquid_character_box_collides);
+        ClassDB::bind_method(D_METHOD("prepared_liquid_world_values", "world", "token"), &CyberDemoBridge::prepared_liquid_world_values);
         ClassDB::bind_method(D_METHOD("commit_liquid_world", "world", "token"), &CyberDemoBridge::commit_liquid_world);
         ClassDB::bind_method(D_METHOD("discard_liquid_world", "world", "token"), &CyberDemoBridge::discard_liquid_world);
         ClassDB::bind_method(D_METHOD("validate_liquid_policy", "liquid_policy"),

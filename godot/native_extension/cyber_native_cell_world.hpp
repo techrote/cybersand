@@ -155,6 +155,8 @@ private:
         bool valid = false;
     };
 
+    using BodyStates = std::array<BodyState, cybersand::World::kMaximumTransientBodies + 1U>;
+
     struct BodyObservation {
         Vector2 impulse{};
         Vector2 bearing{};
@@ -185,8 +187,8 @@ private:
     std::unique_ptr<cybersand::World> world_;
     std::unique_ptr<cybersand::RenderSnapshotExchange> render_exchange_;
     cybersand::TickStats last_stats_{};
-    std::array<BodyState, cybersand::World::kMaximumTransientBodies + 1U> current_bodies_{};
-    std::array<BodyState, cybersand::World::kMaximumTransientBodies + 1U> previous_bodies_{};
+    BodyStates current_bodies_{};
+    BodyStates previous_bodies_{};
     std::array<BodyObservation, cybersand::World::kMaximumTransientBodies + 1U> observations_{};
     std::vector<std::int32_t> raster_indices_;
     mutable PackedByteArray render_cells_;
@@ -210,6 +212,9 @@ private:
         std::unique_ptr<cybersand::RenderSnapshotExchange> exchange;
         cybersand::setup::SetupDescriptor setup;
         Dictionary receipt;
+        BodyStates initial_bodies{};
+        PackedFloat32Array initial_body_input;
+        String initial_body_digest;
         std::uint64_t token = 0, retained_generation = 0, retained_revision = 0, retained_hash = 0;
         Vector2i origin{}, size{};
         bool cadence = false, adhesion = true, window = true;
@@ -237,6 +242,10 @@ private:
     void refresh_simulation_region();
     void refresh_render_cells() const;
     void clear_observations();
+    [[nodiscard]] static BodyStates parse_body_state_values(const PackedFloat32Array& states, bool strict);
+    [[nodiscard]] static PackedInt32Array hard_surface_chunks_from_cells(const PackedByteArray& cells);
+    static void rasterize_transform_in(cybersand::World& world, std::vector<std::int32_t>* indices,
+        std::uint16_t body_id, Vector2 center, double rotation, Vector2 half_size);
     void parse_body_states(const PackedFloat32Array& states);
     void rasterize_body(const BodyState& body);
     void rasterize_body_sweep(const BodyState& body, const BodyState& previous);
