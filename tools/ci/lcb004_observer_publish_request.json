@@ -1,0 +1,8 @@
+{
+  "family": "multi_solver",
+  "intent": "publish-source-matched-runtimes",
+  "request_sequence": 1,
+  "schema": "lcb004-observer-publish-request-v1",
+  "scope": "lcb004-copied-inertial-ledger-and-phased-worker-participation-with-complete003-host-controls",
+  "variant": "fm-cy-pf0-pf1-pf2-in-water-brine"
+}
