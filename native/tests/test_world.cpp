@@ -3765,6 +3765,8 @@ void test_lcb_pressure_static_rest();
 void test_lcb_pressure_lifecycle();
 void test_lcb_pressure_persistence();
 void test_lcb_pressure_default_untouched();
+void test_lcb_pressure_comparison_rest();
+void test_lcb_pressure_comparison_policy();
 void test_water_cy_admission_ingress();
 void test_water_cy_coherence_masks();
 void test_water_cy_material_hooks();
@@ -3908,6 +3910,8 @@ int main(int argc, char** argv) {
         {"LCB-001 pressure lifecycle state and ledgers", test_lcb_pressure_lifecycle},
         {"LCB-001 pressure physical hash and exact persistence", test_lcb_pressure_persistence},
         {"LCB-001 pressure default policy untouched", test_lcb_pressure_default_untouched},
+        {"LCB-002 comparison static content and retained authority", test_lcb_pressure_comparison_rest},
+        {"LCB-002 comparison pressure variant normalization", test_lcb_pressure_comparison_policy},
         {"LCB-001 liquid policy C API allocation failures", test_liquid_policy_c_api_allocation_failures},
         {"LCB-001 W-CY admission and ingress", test_water_cy_admission_ingress},
         {"LCB-001 W-CY coherence, viscosity and masks", test_water_cy_coherence_masks},

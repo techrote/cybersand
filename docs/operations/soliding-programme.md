@@ -34,6 +34,14 @@ Fracture partitions material into coherent moving/stationary children and only
 locally loose cellular debris. Rest does not authorize rigid cohesion. Sand and
 Stone stationary opportunities remain independent of dynamic admission.
 
+The separately authorized LCB-002 / #201 pressure-specific optimization may
+extend ordinary Water motion sleep while retaining all authoritative cells and
+mandatory material work. Its [pressure contract](../architecture/pressure-flow-v1.md#known-limits)
+requires exact invalidation, future-work and body-contact equivalence. It does
+not promote discovery observations into skip authority, create a rigid mask or
+admit generic Stage 4. Generic discovered-region acceleration retains this
+programme's gates; #201 must route any such additional dependency here.
+
 ## Stage 3B live checkpoint — 2026-09-20
 
 The read-only architecture review and parent reconciliation are complete. #56-#61,

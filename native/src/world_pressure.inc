@@ -1333,15 +1333,42 @@ bool World::update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* ef
 // ---------------------------------------------------------------- hashing
 
 std::uint64_t World::physical_state_hash() const {
+    return physical_state_hash_impl(std::nullopt);
+}
+
+std::uint64_t World::liquid_comparison_hash(LiquidStateProjection projection) const {
+    if (liquid_state_projection_domain(projection).empty())
+        throw std::invalid_argument("unknown liquid state projection");
+    return physical_state_hash_impl(projection);
+}
+
+std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjection> projection) const {
+    const bool quiescent = projection == LiquidStateProjection::QuiescentPhysicalContentV1;
     std::uint64_t hash = 1469598103934665603ULL;
+    if (projection) {
+        for (const char c : liquid_state_projection_domain(*projection))
+            hash_byte(hash, static_cast<std::uint8_t>(c));
+        hash_byte(hash, 0U);
+    }
     for (const char c : std::string_view{"cybersand-physical-state"}) hash_byte(hash, static_cast<std::uint8_t>(c));
     hash_integer(hash, physical_state_hash_version());
     QuantityHashWriter quantity_hash{hash};
-    quantity_write(quantity_hash, quantity_);
-    hash_integer(hash, tick_index_);
-    hash_integer(hash, completed_tick_index_);
+    if (quiescent) {
+        // Keep the original construction binding, baseline and exact present
+        // populations/quantity. Exclude only cumulative source/sink counters.
+        auto observed = quantity_;
+        observed.kinds = {};
+        observed.pair_rules = {};
+        observed.pair_events = {};
+        observed.kernel_rules = {};
+        quantity_write(quantity_hash, observed);
+    } else {
+        quantity_write(quantity_hash, quantity_);
+        hash_integer(hash, tick_index_);
+        hash_integer(hash, completed_tick_index_);
+    }
     hash_integer(hash, static_cast<std::uint8_t>(tick_failed_));
-    hash_integer(hash, update_epoch_);
+    if (!quiescent) hash_integer(hash, update_epoch_);
     for (const auto& region : {selected_core_region_, applied_core_region_}) {
         hash_integer(hash, static_cast<std::uint8_t>(region.has_value()));
         if (region) {
@@ -1378,7 +1405,10 @@ std::uint64_t World::physical_state_hash() const {
         }
     }
     hash_integer(hash, static_cast<std::uint8_t>(liquid_surface_adhesion_enabled_));
-    for (const auto byte : config_.liquid_solver_policy.policy_hash()) hash_byte(hash, byte);
+    const auto policy_identity = projection
+        ? config_.liquid_solver_policy.pressure_variant_equivalence_hash()
+        : config_.liquid_solver_policy.policy_hash();
+    for (const auto byte : policy_identity) hash_byte(hash, byte);
     if (inertial_enabled_) {
         for (const auto byte:inertial_extension_identity(inertial_parameters_)) hash_byte(hash,byte);
     }
@@ -1422,12 +1452,14 @@ std::uint64_t World::physical_state_hash() const {
         // inactive chunk is indistinguishable from an unallocated one.
         for (std::size_t index = 0; index < chunk->activity_blocks.size(); ++index) {
             const auto& block = chunk->activity_blocks[index];
-            if (!block.active && block.next_interaction_tick == 0U) continue;
+            if ((quiescent || !block.active) && block.next_interaction_tick == 0U) continue;
             hash_integer(hash, coord.x);
             hash_integer(hash, coord.y);
             hash_integer(hash, static_cast<std::uint64_t>(index));
-            hash_integer(hash, static_cast<std::uint8_t>(block.active));
-            hash_integer(hash, block.active ? block.quiet_ticks : 0U);
+            if (!quiescent) {
+                hash_integer(hash, static_cast<std::uint8_t>(block.active));
+                hash_integer(hash, block.active ? block.quiet_ticks : 0U);
+            }
             hash_integer(hash, block.next_interaction_tick);
         }
         for (std::size_t index = 0; index < chunk->cells.size(); ++index) {
@@ -1448,7 +1480,8 @@ std::uint64_t World::physical_state_hash() const {
             hash_integer(hash, static_cast<std::uint16_t>(material));
             hash_integer(hash, cell.state_a_value());
             hash_integer(hash, cell.state_b_value());
-            hash_integer(hash, material == Material::Empty ? std::uint8_t{0} : cell.epoch_value());
+            if (!quiescent)
+                hash_integer(hash, material == Material::Empty ? std::uint8_t{0} : cell.epoch_value());
             hash_integer(hash, temperature);
             hash_integer(hash, side.overfill);
             hash_integer(hash, side.flow);

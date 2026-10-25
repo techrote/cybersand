@@ -122,7 +122,7 @@ correctness property that justifies the scenario.
 | `lcb.head.vented-two-limb.v1` | communicating-head | Vented 160/40-row limbs through an 8-row roofed passage. Equal levels are valid **only** because both headspaces are open (#49 boundary assumption). |
 | `lcb.head.narrow-passage.v1` | communicating-head | Same limbs through a 2-row passage |
 | `lcb.head.sealed-two-limb.v1` | communicating-head | Roofed (enclosed) limbs. Current has no gas state, so its result is labelled **`measured_not_a_sealed_control`**. A valid sealed target needs W-PF gas (#200). On the pressure branch W-PF gas runs it: it differs from vented but was 4.9 rows from the isothermal law at t2400, still settling (characterization). |
-| `lcb.rest.deep-quiet-pool.v1` | rest-wake | Closed full-cell pool with no input: rest, constant hash |
+| `lcb.rest.deep-quiet-pool.v1` | rest-wake | Closed full-cell pool with no input: zero motion state and constant `lcb.quiescent-physical-content.v1`; complete hashes retain clocks |
 | `lcb.rest.remote-disturbance.v1` | rest-wake | Remote source (t300) and sink (t900) in a deep pool; ledger closes to the initial mass |
 | `lcb.rest.two-pool-partial-activity.v1` | rest-wake | Disturb pool A only; pool B must stay unchanged; activity counters show locality |
 | `lcb.viscous.lane-gallery.v1` | viscous | Equal blocks of Water, Oil, Brine, Slush, Paste and Mercury in separate lanes: spreading against viscosity, kernel specializations kept |
