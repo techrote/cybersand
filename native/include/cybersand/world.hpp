@@ -319,6 +319,9 @@ public:
     // Opt-in W-CY owns only Water motion/quantity; material identity and hooks
     // remain Water. No sidecar is needed for its indivisible full-cell state.
     [[nodiscard]] bool water_cellular_yield_enabled() const noexcept { return water_cellular_yield_; }
+    [[nodiscard]] bool whole_cell_water_enabled() const noexcept {
+        return water_cellular_yield_ || inertial_family(Material::Water);
+    }
     [[nodiscard]] WaterCellularYieldParameters water_cellular_yield_parameters() const noexcept {
         return water_cellular_yield_parameters_;
     }
@@ -451,15 +454,17 @@ private:
                                    JobEffects* effects) noexcept;
     void schedule_pending_reaction_wake(Material material, std::int64_t x,
                                         std::int64_t y, JobEffects* effects) noexcept;
+    struct MotionFootprint;
     [[nodiscard]] bool exchange_permitted(Material source, Material target,
         std::int64_t x, std::int64_t y, std::int64_t target_x, std::int64_t target_y,
-        JobEffects* effects);
+        JobEffects* effects, MotionFootprint* footprint = nullptr);
     void mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t local_y);
     void move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_x,
                    std::int64_t to_y, bool swap, JobEffects* effects,
                    PhysicsEvent swap_event = PhysicsEvent::DensitySwap);
-    void mix_after_motion(Material carrier, std::int64_t x, std::int64_t y,
-        std::int64_t to_x, std::int64_t to_y, std::uint16_t mass, JobEffects* effects);
+    std::pair<std::int64_t, std::int64_t> mix_after_motion(Material carrier, std::int64_t x, std::int64_t y,
+        std::int64_t to_x, std::int64_t to_y, std::uint16_t mass, JobEffects* effects,
+        MotionFootprint* footprint = nullptr);
     [[nodiscard]] bool lateral_due(Material material, std::int64_t x, std::int64_t y,
                                   JobEffects* effects, bool retain_wake = true) noexcept;
     [[nodiscard]] bool try_lateral(Material material, std::int64_t x, std::int64_t y,

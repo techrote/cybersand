@@ -3741,6 +3741,14 @@ void test_lcb_inertial_reset_products();
 void test_lcb_inertial_storage_capture();
 void test_lcb_inertial_residual_motion();
 void test_lcb_inertial_admission();
+void test_water_inertial_admission();
+void test_water_inertial_coherence_contact();
+void test_water_inertial_carrying();
+void test_water_inertial_workers_continuation();
+void test_water_inertial_material_hooks();
+void test_water_inertial_arithmetic();
+void test_water_inertial_cadence_exchange();
+void test_water_inertial_storage_pause_capacity();
 void test_lcb_inertial_damping_parameters();
 void test_lcb_inertial_comparison_projections();
 void test_lcb_inertial_contract_examples();
@@ -3901,6 +3909,14 @@ int main(int argc, char** argv) {
         {"LCB-005 inertial storage capture",test_lcb_inertial_storage_capture},
         {"LCB-005 inertial residual motion",test_lcb_inertial_residual_motion},
         {"LCB-005 inertial admission", test_lcb_inertial_admission},
+        {"Water IN admission and normalization",test_water_inertial_admission},
+        {"Water IN coherence and resting contacts",test_water_inertial_coherence_contact},
+        {"Water IN actual carrier and complete footprint",test_water_inertial_carrying},
+        {"Water IN real workers and continuation",test_water_inertial_workers_continuation},
+        {"Water IN mandatory material hooks and lifecycle",test_water_inertial_material_hooks},
+        {"Water IN independent arithmetic examples",test_water_inertial_arithmetic},
+        {"Water IN cadence and powder exchange control",test_water_inertial_cadence_exchange},
+        {"Water IN storage pause and capacity",test_water_inertial_storage_pause_capacity},
         {"LCB-005 inertial damping parameters", test_lcb_inertial_damping_parameters},
         {"LCB-005 inertial comparison projections", test_lcb_inertial_comparison_projections},
         {"LCB-005 inertial contract examples", test_lcb_inertial_contract_examples},

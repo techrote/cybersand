@@ -393,7 +393,7 @@ void test_liquid_policy_running_build_admits_only_defaults() {
         for (std::uint8_t family = 1; family <= 4U; ++family) {
             for (std::uint8_t variant = 0; variant < 3U; ++variant) {
                 if (family == row.default_family && variant == 0U) continue;
-                if ((row.material_id == 3U && ((family == 2U && variant == 0U) || family == 3U)) ||
+                if ((row.material_id == 3U && (((family == 2U || family == 4U) && variant == 0U) || family == 3U)) ||
                     (row.material_id == 24U && family == 4U && variant == 0U)) {
                     // Preserve every distinct admitted Water and Brine candidate.
                     auto words = request;
@@ -458,10 +458,9 @@ void test_liquid_policy_world_construction_and_refusal() {
     try {
         World world(config);
     } catch (const cybersand::LiquidPolicyRefused& error) {
-        refused = error.refusal().code == LiquidPolicyRefusalCode::FamilyUnavailable &&
-                  error.refusal().material == std::optional<std::uint16_t>{std::uint16_t{3}};
+        refused = error.refusal().code == LiquidPolicyRefusalCode::UnknownParameter;
     }
-    require(refused, "World constructed with an unavailable family");
+    require(refused, "World reinterpreted the historical illustrative IN parameter block");
     require(inertial.admission_refusal().has_value() && !LiquidSolverPolicy{}.admission_refusal(),
             "admission check");
     World world;

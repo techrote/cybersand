@@ -560,7 +560,7 @@ private:
             // intermediate overlay. Zero-mass fills keep their existing no-op
             // meaning. This bounded construction-only map records the last
             // nonzero fill at each cell; no live World is converted or rounded.
-            const bool whole_cell = candidate->water_cellular_yield_enabled();
+            const bool whole_cell = candidate->whole_cell_water_enabled();
             std::vector<std::uint16_t> final_fill;
             if (whole_cell) {
                 final_fill.resize(std::size_t{cybersand::demo::kWidth} * cybersand::demo::kHeight);

@@ -63,7 +63,8 @@ inline void copy_level(World& world, std::span<std::uint8_t> bytes) {
     if (auto refusal = config.liquid_solver_policy.admission_refusal())
         throw LiquidPolicyRefused(std::move(*refusal));
     const auto water = config.liquid_solver_policy.assignment(static_cast<std::uint16_t>(Material::Water));
-    if (water && water->family == LiquidSolverFamily::CellularYieldV1) {
+    if (water && (water->family == LiquidSolverFamily::CellularYieldV1 ||
+                  water->family == LiquidSolverFamily::InertialCellularV1)) {
         const auto maximum = config.water_experiment_policy.maximum();
         for (std::size_t i = 0; i < bytes.size(); i += kCellBytes) {
             if (bytes[i] != static_cast<std::uint8_t>(Material::Water)) continue;

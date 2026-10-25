@@ -28,23 +28,20 @@ SETUP = {"kind": 1, "definition_schema": 1, "definition_digest": None, "seed": 7
 PHYSICAL_FACTS = {'captured_date': '2026-10-25',
  'platform': 'Windows x86_64',
  'compiler': 'LLVM-MinGW 20260826 UCRT, clang++23.1.0 -O1 C++20',
- 'stack_reserve_bytes': 1048576,
- 'stack_commit_bytes': 4096,
- 'binary_sha256': '05e1ea6f385c16c48ff78048e498954d61eeaa305e9965eedc177a06645ab5a9',
- 'capture_receipt_sha256': 'efad0f0bf3770c4bfaaafd7d4162925bd4b1d27a7d2a56c8a5639779abf266d9',
- 'source_parents': ['0af161b45ce80d071fa5aae404fcb4b8950349b4',
-                    '12d76736b2c437afe3466822b0072532e4e730a8'],
- 'native_input_manifest_sha256': '22694006cd575d6f1956c7c0a5c523b5ec5a285a2576a63acc390b8757221f59',
- 'qualification': 'Measured combined-source native fixture hashes only, captured from the fenced '
-                  'merged include/src delta before merge commit. Both parent fact sets and the '
-                  'failed first temporary harness build remain retained. This supplies physical '
-                  'facts to independent encoding expectations, not an independent physics proof or '
-                  'published runtime qualification.',
+ 'reserve_bytes': 1048576,
+ 'commit_bytes': 4096,
+ 'binary_sha256': 'ddc8ba937535b3071b124d78b167c8ac413cc3bde4acf27b21d612d98cdc64b0',
+ 'capture_receipt_sha256': 'a4360754d6ba76647f72efc1fc0e54e7f570cdadb122e190d95a7911c26e0a94',
+ 'source_base': 'dfa6d742bbeef75a9a8d927467f5b6c5d5aba1bb',
+ 'native_input_manifest_sha256': '76b842845d99f30b2513083a1415048d303af8aa59f02acaf22cc13a9275b8e1',
+ 'qualification': 'Four measured fixture physical hashes only; no receipt decoding or native bytes '
+                  'supply Python encoding expectations. Historical parent facts retained '
+                  'separately. Not published-runtime or independent physics proof.',
  'hash_version': 2,
- 'hashes': {'empty': 1695277046478572469,
-            'normalized': 1546994162050679665,
-            'pressure': 4336100411226104392,
-            'selected': 1789391941043314826}}
+ 'hashes': {'empty': 5616549901072788646,
+            'selected': 3978184822077514841,
+            'pressure': 1353700890374999180,
+            'normalized': 8248698509232541560}}
 
 DEFAULT_CONFIG = {
     "water_semantics": [1, 8, 12, 0], "interaction": [1, 8, 9, 30],
@@ -231,10 +228,11 @@ def canonical(case, identity):
     if case == "refused_attempt":
         request = policy_request(identity)
         request[21] = 4
+        request[22] = 1
         request_hash = sha(text("cybersand-construction-request-v1") + p("HB", 1, 1) + words(request))
         payload = sha(payload_bytes([]))
         return text("cybersand-construction-attempt-v1") + p("HQBB", 1, 5, 1, 1) + request_hash + words(request) + \
-            p("BBBH", 1, 5, 1, 3) + text("inertial_cellular_v1 is not qualified for material 3 in this build") + text("") + \
+            p("BBBH", 1, 7, 1, 3) + text("cached for inertial_cellular_v1") + text("") + \
             native(case, identity) + descriptor() + payload + setup_hash(payload)
     normalized = case == "normalized_bound"
     payload = sha(payload_bytes(normalization_values()["after_cells"] if normalized else []))

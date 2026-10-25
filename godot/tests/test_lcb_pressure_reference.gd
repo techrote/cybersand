@@ -405,7 +405,7 @@ func _refusal_isolation() -> void:
 	var cases: Array = [
 		["Oil pressure cached", _with(default_request, 16, 3, 1), "combination_rejected"],
 		["Oil pressure cached_dormant", _with(default_request, 16, 3, 2), "combination_rejected"],
-		["Water inertial", _with(default_request, 3, 4), "family_unavailable"],
+		["Water inertial cached", _with(default_request, 3, 4, 1), "variant_unsupported"],
 		["Oil pressure", _with(default_request, 16, 3), "combination_rejected"],
 		["pressure atmosphere below range", bad_block, "malformed_policy"],
 	]

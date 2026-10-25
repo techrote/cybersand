@@ -240,7 +240,7 @@ func _transactional_refusals(bridge: Variant, definition: Dictionary, request: P
 		# still refuse transactionally instead of substituting Water's solver.
 		["Oil pressure cached", _with(request, 16, 3, 1), "combination_rejected", 16],
 		["Oil pressure cached_dormant", _with(request, 16, 3, 2), "combination_rejected", 16],
-		["NC-2 Water inertial", _with(request, 3, 4), "family_unavailable", 3],
+		["NC-2 Water inertial cached", _with(request, 3, 4, 1), "variant_unsupported", 3],
 		["Brine inertial cached", _with(request, 24, 4, 1), "variant_unsupported", 24],
 		["Toxic Sludge alternate", _with(request, 32, 4), "not_selectable", 32],
 		["Oil pressure", _with(request, 16, 3), "combination_rejected", 16],

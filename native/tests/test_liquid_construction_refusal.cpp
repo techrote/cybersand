@@ -64,7 +64,7 @@ void test_liquid_construction_refusal_native_issuance() {
     const auto empty=validate_liquid_policy_request({});
     require(empty && empty->requested_policy().empty(),"empty malformed request lost exact bounded input");
 
-    auto unsupported=code_zero;unsupported[21]=4;
+    auto unsupported=code_zero;unsupported[21]=4;unsupported[22]=1;
     const auto refused=validate_liquid_policy_request(unsupported);
     const auto decoded=LiquidSolverPolicy::decode(std::span<const std::int32_t>(unsupported));
     require(refused && !decoded.accepted() && refused->policy_refusal()->code==decoded.refusal.code &&
