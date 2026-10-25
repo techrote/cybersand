@@ -160,3 +160,15 @@ At128² one dense six-byte array is98,304 bytes; at1024² it is6MiB; at2048² it
 ## How is this checkpoint exercised?
 
 `make build/tests` followed by `./build/tests "LCB-005"` selects the native IN groups. `build_windows_msvc.bat` includes the same source; platform execution must still be recorded separately. The saved eleven numeric examples retain their exact expectations, including sleep after the final dirty-state publication. Added checks cover complete radius, observed worker participation, same-visible paint/products, mask refusal, generated defaults, actual storage, native receipt identity, valid-digest incompatible states and continuation through epoch wrap. Three-family controls execute FreeMass Water/CY Oil/IN Brine and a PF Water substitution with exact counts/Water quantity and ledger comparison. Native success does not qualify the separately owned application adapter or released binaries.
+
+
+### Corrected target-OS runtime publication
+
+The mandatory Brine body-contact repair now has actual Windows/Linux source-
+matched publication: run `40160900817`, exact source `c11983c2`, bot append
+`fcf0e9b6`. Both operating systems pass import plus14 cases, including
+IN10192/all six sections. [The union evidence](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-sequence3-publication-of-the-contact-repair)
+records the two runtime hashes, preserved failing controls and independent
+76/485-input verification. This resolves that runtime blocker while full
+exact-head PR gates remain required. It does not admit Water IN or complete
+application/Rapier/Web/four-family qualification.

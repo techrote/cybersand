@@ -620,3 +620,63 @@ claim. Receipt `docs-prepublication/VALIDATION-RECEIPT.json`, SHA
 `de9d309114b845d32e2b4a07af116db2eb0e8000e55217b3134781f4c59cca4a`,
 preserves the failed gate. Final factual documentation receives a separate
 recheck; native/adapter/test inputs remain exactly those of the frozen proof.
+
+
+### Actual sequence3 publication of the contact repair
+
+The publication requested at source
+`c11983c2bdeb4b9fd1863784ca857f707f1388f5` (tree
+`d5f516fa2f6c5897d147e39448ad26c92faa915f`) passed all six jobs in
+[run 40160900817](https://github.com/techrote/cybersand/actions/runs/40160900817).
+Both actual target operating systems execute a fresh Godot editor import and
+all fourteen registered cases. IN now reports 10,192 assertions and all six
+strict sections, including the ten resting-contact cohorts; optimization
+4,152/six, pressure reference 1,934/twelve, policy 385, worker 29 and the
+sixteen-case WEX control also pass. Every retained process exits zero without
+engine errors or warnings and retains its original timeout. These static mask
+contact cohorts do not claim a real Rapier trajectory or four actual worker
+participants.
+
+| Actual platform | Runtime SHA-256 | Bytes |
+|---|---|---:|
+| Windows x86_64 | `3d2b381ff1bdaeab8f7d5a47be220fa3c851a8be01b5f8c34f6c932a18568592` | 4,529,152 |
+| Linux x86_64 | `ff3fb29e2260a587ab0f65b902abdd3f3e132885a31ed3a3b3a85cb80ab102cc` | 3,899,552 |
+
+Fresh non-author verification resolves all 76 native and 485 build-input
+canonical Git blobs on each OS, recomputes the runtime/manifest/validation/log
+hashes, checks actual Windows2022 and Ubuntu24.04 job identities and verifies
+all three artifact ZIP digests. The published append
+`fcf0e9b6271613a8673a2f5e93d6cf0e28f87a7b` has the exact source as its sole
+parent and changes only the two runtimes and two provenance manifests. The
+publisher's Linux floor remains GLIBC2.34 for the bundle (CyberSand2.32,
+GLIBCXX3.4.30/CXXABI1.3.9; unchanged Rapier2.34). No historical result is
+relabelled.
+
+External evidence is retained beneath
+`C:/Users/_/.codex/tmp/lcb212-publication3-independent`:
+
+- `FINAL-PUBLICATION3-INDEPENDENT-REVIEW.json`, SHA-256
+  `f6e7b99d22c1112f846e5ca7da00312592388837788e55e6765c6cecd23a6c90`;
+- bundle verification `290092b25644b7c74678912c5c3378d431bbaab00cf87e2f3797983417126b63`;
+- append verification `f0797f2a3c0115b764520ce4612bd696d18462b928e29faf92852d107134a4cf`;
+- Windows execution ZIP `5da25bf238786c1df3578eb57c59535c1f7a3d31e5d60a7b6a380875e1d451cb`,
+  Linux ZIP `9ffca74c203a32d43f7f4e25d48b85e1fe921668b06cb23ffb3a22f742950712`,
+  Windows build ZIP `ada62f59ec19552ac3156458032f9a621ce3b1bc5f2ef328bd22c375a33e5f42`.
+
+The managed branch fast-forwards to the verified append before documentation
+validation. Full exact-head ready-PR Documentation/provenance, Native including
+sanitizers/TSan, GDExtension/Godot and applicable #49 gates remain mandatory.
+Their actual synthetic merge tree must be checked against the eventual main
+base. Water IN remains unavailable on this branch; its separately reviewed
+successor, full application/Web and four-family packaging remain open.
+
+
+Companion-backed postpublication checks at the verified append plus this six-
+document delta pass all21 commands, including repository provenance with zero
+stale inputs, Documentation, M11, provider policy, all generators and whitespace.
+The frozen corpus is32/32 top-five,20 top-one/MRR0.7745; additive challenges
+are130/130 top-five,99 top-one/MRR0.8615. Receipt
+`C:/Users/_/.codex/tmp/lcb212-publication3-docs-validation/checks-v1/VALIDATION-RECEIPT.json`
+has SHA-256 `4a08c41eb51763d0e080bdfcf88df9c599bb3e58e2c81fbdd80654c8fea75ba2`.
+All18 LFS payloads and five companion pins were verified and held. This local
+pass permits requesting full ready-PR gates; it is not their replacement.
