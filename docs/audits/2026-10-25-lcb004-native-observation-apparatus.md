@@ -465,3 +465,38 @@ corrected platform CI result in this local proof. No retry, raised deadline or
 full scientific campaign is implied. Exact corrected-head platform qualification
 and independent review remain required; current proper documentation validation
 will be bound separately after this additive prose freeze.
+
+## Second hosted attempt and test-fixture root correction
+
+Run40244829655 at `7ebadf1e9d6c009e77604104ab2e177ee4bc65a6` reports a
+successful Linux job, including actual GCC13 Release build and the three
+precursors/six bounded children; detailed artifact acceptance remains separate.
+Its Windows cross-build also succeeds. Actual Windows then authenticates all38
+compiled raw source inputs, demonstrating the Git LF restoration, but stops in
+two Python refusal-test fixtures before runtime/Godot/physics qualification.
+The failed Windows job121324281108 and skipped physics steps remain failures.
+Independent raw log SHA256 is
+`3b5f7bd1fca12ac94c5accf3df49574aa8c0e42c42b83530163c0c67991b8474`,
+retained under `lcb004-science-fixture-alias-failure-40244829655` outside Git.
+
+Both failed fixtures mocked ROOT with an unresolved temporary path, unlike the
+production `Path(__file__).resolve()` root. Their output paths are resolved
+before the existing inside-repository refusal check. An independent real Windows
+GetShortPathNameW counterexample proves a short/long alias can therefore bypass
+that fixture comparison; packet
+`lcb004-science-release-corrected-independent-v1-20261025/WINDOWS-PATH-ALIAS-COUNTEREXAMPLE.json`,
+SHA256 `9c4ea3d28a802a4e915358555796cdda044e07b14553abdd67a9f99fdf5d4350`.
+The hosted log does not print its TEMP spelling, so the particular hosted alias
+is inferred from the matching source/behavior, not directly observed.
+
+The bounded correction adds `.resolve()` only to the two mocked root initializers
+in `test_build_science_consumer.py` and `test_qualify_science_apparatus.py`.
+Every output-admission/refusal/error assertion remains unchanged. The production
+builder, qualifier, workflow, consumer, World/law/API, runtime and thresholds do
+not change. All36 local guards pass in2.551s; provider and whitespace pass.
+Source proof `correction-proof-v1/SOURCE-FREEZE.json` under the failure root,
+SHA256 `87fd223c941ed910820b00cf7a42da03eb79b13489d43910865a76b45e923efd`,
+binds the exact two-line delta and unchanged production hashes. This local
+fixture correction is not a new compiler/physics execution or corrected Windows
+qualification. Both earlier failed runs, actual Linux results and old O1 source
+proofs retain their own identities; final exact-head gates remain required.

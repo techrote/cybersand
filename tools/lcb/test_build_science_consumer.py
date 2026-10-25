@@ -37,7 +37,7 @@ class Orchestration(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
-        self.root = Path(self.temp.name) / "source"
+        self.root = (Path(self.temp.name) / "source").resolve()
         self.root.mkdir()
         self.addCleanup(patch.stopall)
         patch.object(b, "ROOT", self.root).start()

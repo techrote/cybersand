@@ -91,7 +91,7 @@ class BuildIdentity(unittest.TestCase):
 class OutputAdmission(unittest.TestCase):
     def test_new_external_output_only(self):
         with tempfile.TemporaryDirectory() as temp:
-            root = Path(temp) / "source"
+            root = (Path(temp) / "source").resolve()
             root.mkdir()
             with patch.object(q, "ROOT", root):
                 with self.assertRaisesRegex(ValueError, "new and outside"):
