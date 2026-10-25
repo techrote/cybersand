@@ -37,8 +37,26 @@ def body_log(values=None):
 
 
 def probe():
-    return {"terminal": True, "ok": True,
-            "checks": [{"name": "check" + str(i), "passed": True} for i in range(33)]}
+    mixed = [{"variant": variant, "census": {"counts": {"water": 55, "oil": 48, "brine": 48}, "motion": True},
+              "water_integer": 12240, "observed_retained_motion": True, "physical_hash": "a" * 16,
+              "policy_sha256": str(i) * 64, "native_receipt_sha256": "b" * 64}
+             for i, variant in enumerate(profile.WEB_MIXED_VARIANTS)]
+    for row in mixed[1:]:
+        row.update(projection="c" * 16, optimization_execution_version=3)
+    return {"schema_version": 1, "terminal": True, "ok": True, "failures": [],
+            "normalization": {"rule": "water-normalize-v1", "water_after": 255,
+                              "payload_sha256": "a" * 64, "receipt_sha256": "b" * 64},
+            "checks": [{"name": name, "passed": True} for name in profile.web_check_names()],
+            "mixed_runs": mixed,
+            "water_runs": [{"family": family, "variant": variant, "policy_sha256": str(i) * 64,
+                            "native_receipt_sha256": "b" * 64, "normalized_payload_sha256": "c" * 64,
+                            "positive_delta": 127, "negative_delta": 127, "water_integer": 12495,
+                            "ticks": 30, "quantity_exact_each_tick": True,
+                            "observed_retained_motion": family == "inertial_cellular_v1",
+                            "census": {"count": 49, "full": True, "motion": False, "quantity": 12495},
+                            "hash_version": 3 if family == "inertial_cellular_v1" else 2,
+                            "radius": 3, "physical_hash": "d" * 16}
+                           for i, (family, variant) in enumerate(profile.WEB_WATER_ARMS)]}
 
 
 def ordinary_result():
@@ -247,9 +265,57 @@ class ApplicationHostProfileTests(unittest.TestCase):
         changed = probe();changed["checks"].pop();values.append(changed)
         changed = probe();changed["checks"][0]["passed"] = 1;values.append(changed)
         changed = probe();changed["checks"][0] = changed["checks"][1];values.append(changed)
+        changed = probe();changed["checks"][0]["name"] = "different check";values.append(changed)
+        changed = probe();changed["checks"][0], changed["checks"][1] = changed["checks"][1], changed["checks"][0];values.append(changed)
+        changed = probe();changed["schema_version"] = True;values.append(changed)
+        changed = probe();changed["failures"] = ["retained failure"];values.append(changed)
         for value in values:
             self.log("test_liquid_host_web_probe", "LIQUID_HOST_WEB_PROBE_NATIVE: " + json.dumps(value) + "\n")
             with self.assertRaises(RuntimeError): subject.verify_case_results(self.root, self.report)
+
+    def test_web_common_water_requires_six_actual_normalized_family_arms(self):
+        original = probe()
+        values = []
+        for replacement in ([], original["water_runs"][:-1], list(reversed(original["water_runs"])),
+                            original["water_runs"] + [original["water_runs"][-1]]):
+            value = copy.deepcopy(original);value["water_runs"] = replacement;values.append(value)
+        for key, replacement in (("family", "inertial_cellular_v1"), ("variant", "cached"),
+                                 ("policy_sha256", ""), ("native_receipt_sha256", "x" * 64),
+                                 ("normalized_payload_sha256", "e" * 64), ("physical_hash", ""),
+                                 ("radius", 2), ("radius", True), ("hash_version", 3),
+                                 ("positive_delta", 0), ("negative_delta", 0), ("water_integer", 12494),
+                                 ("ticks", 29), ("quantity_exact_each_tick", 1)):
+            value = copy.deepcopy(original);value["water_runs"][0][key] = replacement;values.append(value)
+        for index, key, replacement in ((0, "quantity", 12494), (0, "count", 0),
+                                        (1, "full", 1), (1, "count", 48)):
+            value = copy.deepcopy(original);value["water_runs"][index]["census"][key] = replacement;values.append(value)
+        value = copy.deepcopy(original);value["water_runs"][-1]["observed_retained_motion"] = False;values.append(value)
+        value = copy.deepcopy(original);value["water_runs"][-1]["hash_version"] = 2;values.append(value)
+        value = copy.deepcopy(original);value["water_runs"][1]["policy_sha256"] = value["water_runs"][0]["policy_sha256"];values.append(value)
+        for value in values:
+            self.log("test_liquid_host_web_probe", "LIQUID_HOST_WEB_PROBE_NATIVE: " + json.dumps(value) + "\n")
+            with self.subTest(value=value), self.assertRaises(RuntimeError):
+                subject.verify_case_results(self.root, self.report)
+
+    def test_web_retains_original_mixed_and_normalization_proof(self):
+        original = probe()
+        values = []
+        for key, replacement in (("mixed_runs", []), ("normalization", {})):
+            value = copy.deepcopy(original);value[key] = replacement;values.append(value)
+        for key, replacement in (("water_integer", 12239), ("observed_retained_motion", False),
+                                 ("physical_hash", ""), ("policy_sha256", ""), ("native_receipt_sha256", "")):
+            value = copy.deepcopy(original);value["mixed_runs"][0][key] = replacement;values.append(value)
+        value = copy.deepcopy(original);value["mixed_runs"].reverse();values.append(value)
+        for key, replacement in (("oil", 47), ("brine", 47), ("water", 0)):
+            value = copy.deepcopy(original);value["mixed_runs"][0]["census"]["counts"][key] = replacement;values.append(value)
+        value = copy.deepcopy(original);value["mixed_runs"][1]["optimization_execution_version"] = 2;values.append(value)
+        value = copy.deepcopy(original);value["mixed_runs"][1]["projection"] = "e" * 16;values.append(value)
+        value = copy.deepcopy(original);value["mixed_runs"][1]["policy_sha256"] = value["mixed_runs"][0]["policy_sha256"];values.append(value)
+        value = copy.deepcopy(original);value["normalization"]["water_after"] = 254;values.append(value)
+        for value in values:
+            self.log("test_liquid_host_web_probe", "LIQUID_HOST_WEB_PROBE_NATIVE: " + json.dumps(value) + "\n")
+            with self.subTest(value=value), self.assertRaises(RuntimeError):
+                subject.verify_case_results(self.root, self.report)
 
     def test_ordinary_demo_coverage_execution_restart_and_native_identity(self):
         name, prefix = "test_liquid_ordinary_demo_host", "LIQUID_ORDINARY_DEMO_HOST_RESULT"

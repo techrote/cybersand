@@ -99,7 +99,45 @@ SYNCHRONOUS_BODY_PRESETS = (2, 3, 4)
 SYNCHRONOUS_WATER_PRESETS = (2, 3, 4, 0)
 DEFAULT_PLAY_VARIANTS = ("freemass", "whole")
 DEFAULT_CAPACITY_VARIANTS = ("reference", "cached", "cached_dormant")
+WEB_WATER_ARMS = (("freemass_v1", "reference"), ("cellular_yield_v1", "reference"),
+                  ("pressure_flow_v1", "reference"), ("pressure_flow_v1", "cached"),
+                  ("pressure_flow_v1", "cached_dormant"), ("inertial_cellular_v1", "reference"))
+WEB_MIXED_VARIANTS = ("freemass", "reference", "cached", "cached_dormant")
 _verify_union = engine.verify_case_results
+
+
+def web_check_names() -> list[str]:
+    """The frozen native prerequisite, including all original thirty-three checks."""
+    names = ["normal owner reached actual setup", "registered fixture parses",
+             "actual runtime admits Water CY", "normal owner installs fractional Current control",
+             "normal owner explicitly refuses missing normalization",
+             "refusal retains actual World, copied receipt, sampled owner and owner observation",
+             "normal owner installs explicit water-normalize-v1",
+             "actual native normalization and frozen qualification read back",
+             "ordinary reset retains explicit selection, normalized payload and new copied identity",
+             "actual runtime admits Brine IN", "native damping7 edit admits"]
+    for variant in WEB_MIXED_VARIANTS:
+        names += [prefix + variant for prefix in ("native selected mixed arm ",
+                  "normal owner installs mixed arm ", "actual IN instance geometry/damping/extension agree ",
+                  "mixed families advance with exact quantity ")]
+        if variant != "freemass":
+            names.append("actual PF execution readback " + variant)
+    names.append("three PF variants have exact mixed-family authority projection")
+    for family, variant in WEB_WATER_ARMS:
+        label = family + "/" + variant
+        names += ["actual runtime admits common Water arm " + label,
+                  "native validates common Water request " + label]
+        if family in ("cellular_yield_v1", "inertial_cellular_v1"):
+            names += [prefix + label for prefix in ("fractional Current control precedes Water refusal ",
+                      "fractional Water refuses without normalization ",
+                      "whole-cell refusal retains World/receipt/generation/owner/observation ")]
+        names += [prefix + label for prefix in ("normal owner installs normalized common Water arm ",
+                  "native family/variant/policy/hash-version/radius match common Water arm ",
+                  "common Water uses exact gross and net setup ledger ",
+                  "common Water advances30 ticks with exact quantity and actual whole-cell/IN semantics ")]
+    return names + ["all four Water families and three pressure variants use one exact normalized setup payload",
+                    "ordinary Current constructor remains available",
+                    "ordinary Current constructor retires prepared identity and restores protected radius2"]
 
 
 def unique_json_object(pairs: list) -> dict:
@@ -140,6 +178,74 @@ def finite_pair(value: object) -> bool:
 
 def sha256_text(value: object) -> bool:
     return isinstance(value, str) and re.fullmatch(r"[0-9a-f]{64}", value) is not None
+
+
+def hash64_text(value: object) -> bool:
+    return isinstance(value, str) and re.fullmatch(r"[0-9a-f]{16}", value) is not None
+
+
+def verify_web_prerequisite(value: dict) -> None:
+    engine.require(value.get("terminal") is True and value.get("ok") is True and
+                   type(value.get("schema_version")) is int and value["schema_version"] == 1 and
+                   value.get("failures") == [], "Native Web-host prerequisite did not complete")
+    checks = value.get("checks")
+    engine.require(isinstance(checks, list) and len(checks) == 76 and
+                   all(isinstance(check, dict) and check.get("passed") is True for check in checks) and
+                   [check.get("name") for check in checks] == web_check_names(),
+                   "Incomplete native Web-host prerequisite checks")
+    normalization = value.get("normalization")
+    engine.require(isinstance(normalization, dict) and normalization.get("rule") == "water-normalize-v1" and
+                   type(normalization.get("water_after")) is int and normalization["water_after"] == 255 and
+                   all(sha256_text(normalization.get(key)) for key in ("payload_sha256", "receipt_sha256")),
+                   "Missing original native Web normalization/restart identity")
+    mixed = value.get("mixed_runs")
+    engine.require(isinstance(mixed, list) and all(isinstance(row, dict) for row in mixed) and
+                   [row.get("variant") for row in mixed] == list(WEB_MIXED_VARIANTS),
+                   "Incomplete original native Web mixed-family arms")
+    for row in mixed:
+        census = row.get("census")
+        counts = census.get("counts") if isinstance(census, dict) else None
+        engine.require(isinstance(counts, dict) and type(counts.get("water")) is int and counts["water"] > 0 and
+                       all(type(counts.get(key)) is int and counts[key] == 48 for key in ("oil", "brine")) and
+                       type(row.get("water_integer")) is int and row["water_integer"] == 12240 and
+                       row.get("observed_retained_motion") is True and hash64_text(row.get("physical_hash")) and
+                       all(sha256_text(row.get(key)) for key in ("policy_sha256", "native_receipt_sha256")),
+                       "Incomplete original native Web mixed quantity/motion/identity")
+        if row["variant"] != "freemass":
+            engine.require(hash64_text(row.get("projection")) and
+                           type(row.get("optimization_execution_version")) is int and
+                           row["optimization_execution_version"] == 3, "Missing original native Web pressure execution")
+    engine.require(len({row["policy_sha256"] for row in mixed}) == 4 and
+                   len({row["projection"] for row in mixed[1:]}) == 1,
+                   "Original native Web pressure projection or distinct policies differ")
+    water = value.get("water_runs")
+    engine.require(isinstance(water, list) and all(isinstance(row, dict) for row in water) and
+                   [(row.get("family"), row.get("variant")) for row in water] == list(WEB_WATER_ARMS),
+                   "Incomplete native Web common-Water arms")
+    for row in water:
+        family = row["family"]
+        census = row.get("census")
+        engine.require(all(sha256_text(row.get(key)) for key in
+                           ("policy_sha256", "native_receipt_sha256", "normalized_payload_sha256")) and
+                       hash64_text(row.get("physical_hash")) and
+                       type(row.get("radius")) is int and row["radius"] == 3 and
+                       type(row.get("hash_version")) is int and
+                       row["hash_version"] == (3 if family == "inertial_cellular_v1" else 2),
+                       "Native Web common-Water identity/geometry differs")
+        engine.require(all(type(row.get(key)) is int and row[key] == expected for key, expected in
+                           (("positive_delta", 127), ("negative_delta", 127), ("water_integer", 12495), ("ticks", 30))) and
+                       row.get("quantity_exact_each_tick") is True and isinstance(census, dict) and
+                       type(census.get("quantity")) is int and census["quantity"] == 12495 and
+                       type(census.get("count")) is int and census["count"] > 0,
+                       "Native Web common-Water normalization/continuation differs")
+        if family in ("cellular_yield_v1", "inertial_cellular_v1"):
+            engine.require(census.get("full") is True and census["count"] == 49,
+                           "Native Web whole-cell Water population differs")
+        if family == "inertial_cellular_v1":
+            engine.require(row.get("observed_retained_motion") is True, "Native Web Water IN motion is absent")
+    engine.require(len({row["normalized_payload_sha256"] for row in water}) == 1 and
+                   len({row["policy_sha256"] for row in water}) == 6,
+                   "Native Web common-Water payload or distinct policies differ")
 
 
 def verify_ordinary_routes(directory: Path) -> None:
@@ -314,14 +420,8 @@ def verify_case_results(directory: Path, report: dict) -> None:
             engine.require(isinstance(value.get("gas"), dict) and value["gas"].get("closes") is True,
                            "Ordinary pressure-body gas ledger does not close")
     values = json_rows(directory, "test_liquid_host_web_probe", "LIQUID_HOST_WEB_PROBE_NATIVE:")
-    engine.require(len(values) == 1 and values[0].get("terminal") is True and values[0].get("ok") is True,
-                   "Native Web-host prerequisite did not complete")
-    checks = values[0].get("checks")
-    engine.require(isinstance(checks, list) and len(checks) == 33 and
-                   all(isinstance(check, dict) and isinstance(check.get("name"), str) and
-                       check.get("passed") is True for check in checks) and
-                   len({check["name"] for check in checks}) == len(checks),
-                   "Incomplete native Web-host prerequisite checks")
+    engine.require(len(values) == 1, "Missing or duplicate native Web-host prerequisite")
+    verify_web_prerequisite(values[0])
 
 
 engine.verify_case_results = verify_case_results
