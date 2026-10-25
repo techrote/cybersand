@@ -236,10 +236,10 @@ func _transactional_refusals(bridge: Variant, definition: Dictionary, request: P
 	var truncated: PackedInt32Array = request.slice(0, request.size() - 1)
 	var cases: Array = [
 		["NC-1 Oil inertial", _with(request, 16, 4), "combination_rejected", 16],
-		# pressure_flow_v1/reference is admitted since LCB-001 (see
-		# test_lcb_pressure_reference.gd); its #201 variants remain unavailable.
-		["NC-2 Water pressure cached", _with(request, 3, 3, 1), "family_unavailable", 3],
-		["NC-2 Water pressure cached_dormant", _with(request, 3, 3, 2), "family_unavailable", 3],
+		# Water pressure variants are admitted; unsupported Oil assignments must
+		# still refuse transactionally instead of substituting Water's solver.
+		["Oil pressure cached", _with(request, 16, 3, 1), "combination_rejected", 16],
+		["Oil pressure cached_dormant", _with(request, 16, 3, 2), "combination_rejected", 16],
 		["NC-2 Water inertial", _with(request, 3, 4), "family_unavailable", 3],
 		["Brine inertial", _with(request, 24, 4), "family_unavailable", 24],
 		["Toxic Sludge alternate", _with(request, 32, 4), "not_selectable", 32],
@@ -268,8 +268,8 @@ func _transactional_refusals(bridge: Variant, definition: Dictionary, request: P
 	# An unrelated World keeps its own policy session through those refusals.
 	var other: Dictionary = _install(1, definition, null)
 	var other_generation: int = int(other.world.get_liquid_policy_session_generation())
-	expect(not other.host.install(other.world, definition, "Benchmark", true, _with(request, 3, 3, 2)),
-		"independent World admitted pressure_flow_v1/cached_dormant")
+	expect(not other.host.install(other.world, definition, "Benchmark", true, _with(request, 16, 3, 2)),
+		"independent World admitted unsupported Oil pressure_flow_v1/cached_dormant")
 	expect(int(other.world.get_liquid_policy_session_generation()) == other_generation
 		and other.world.get_liquid_solver_policy().policy_hash == receipt.policy_hash
 		and int(run.world.get_liquid_policy_session_generation()) == int(before.policy.session_generation),

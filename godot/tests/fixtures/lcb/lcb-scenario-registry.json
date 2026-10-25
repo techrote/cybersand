@@ -2,7 +2,7 @@
   "schema": "lcb-scenario-registry-v1",
   "status": "LCB-003 preparation. Only arms with status starting 'measured' have executed; every blocked arm names its dependency.",
   "sources": {
-    "capability_matrix": "7201367eb6b08611c0bc430124045de7a69568ca7dab6e22ae978d845bb8bcac",
+    "capability_matrix": "57bfe4fbb6f4313bd6ff8040d468f4ba56dca956b7c57b2639d2420340363fcb",
     "protected_manifest": "d5c922c39fe04a7981b7a14a6a6f2d14064674337e6afedb3acf3e83eb8553f3",
     "controls": "989ff70dba646285991a2a5e8ca5c3b0aa94b9381dc44c849528518e4238fac1",
     "ledger_v7": "b42012a672f468534efa9421beeca28d1ccea8ef1c1f2ce798d2cd80c336834d",
@@ -370,9 +370,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -933,9 +935,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -1429,9 +1433,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -1898,9 +1904,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -2367,9 +2375,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -3136,9 +3146,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -3605,9 +3617,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -3966,9 +3980,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -4327,9 +4343,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -4688,9 +4706,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -4933,9 +4953,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -5259,9 +5281,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -5574,9 +5598,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -6313,9 +6339,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -7551,9 +7579,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -7967,9 +7997,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -8384,9 +8416,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -8813,9 +8847,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -9251,9 +9287,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -9685,9 +9723,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -9996,9 +10036,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -10500,9 +10542,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -11004,9 +11048,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -11371,9 +11417,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {
@@ -11686,9 +11734,11 @@
               "cached_dormant"
             ],
             "classification": "reviewed design classification (PROPOSED table)",
-            "note": "LCB-001 #200 corrected pressure family; reference executes in this build, cached/cached_dormant are #201",
+            "note": "LCB-001 #200 reference plus unmerged #201 cached/cached_dormant native candidates; full gas-repair, application and platform acceptance remain separate",
             "executable_variants": [
-              "reference"
+              "reference",
+              "cached",
+              "cached_dormant"
             ]
           },
           "inertial_cellular_v1": {

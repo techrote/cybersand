@@ -5,10 +5,41 @@ document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
 last-reviewed: 2026-10-25
-related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md]
+related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## Moving-body pressure gas blocker — 2026-10-25
+
+Ordinary moving reference bodies exposed retired gas labels beneath masks;
+the failing World quarantines despite closing Water/gas ledgers. Repair commit
+`7ebcd0e9` adds the six-arm native regression and retains still-live identities.
+Local LLVM/MSVC141, focused sanitizer16 and actual application body tests pass.
+Fresh #201 Windows/Linux scoped publication `40157133977` passes at source
+`eebd0c98`, with four-path bot append `65f1f3b5`. The updated90-child total-cost
+campaign also passes exact parity and preserves slower churn/fallback results.
+PRs #253/#250 returned to draft after the finding; each still requires its own
+complete source-matched exact-head gates and review before merge. Earlier
+greens retain their original scope. See the
+[dated failure and repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
+
+## LCB-002 branch source and qualification — 2026-10-25
+
+The current `codex/lcb002-pressure-variants` source admits all three Water PF
+variants. Start with the [optimization contract](../architecture/pressure-optimization.md),
+[roadmap route](../reference/status-and-roadmap.md#lcb-002-pressure-variants-branch--2026-10-25)
+and [dated branch evidence](../audits/2026-10-25-lcb002-pressure-variants.md).
+Reference laws/defaults are unchanged. Execution3 bounds repeated proof cost;
+gas/head/certificate obligations and copied u64-safe readbacks remain native.
+Prepared-head snapshots can be stale after transport and are not skip authority.
+The dated evidence records execution3 local native/Godot and exact-source cost
+proof. Source-matched Windows/Linux scoped publication `40152121412` now passes
+import plus all13 cases perOS at source `8354e3a6`, with runtime-only bot append
+`d726bf34`. Full ready-PR Documentation/provenance, Native, Godot and applicable
+Water gates remain pending. Keep execution1 negatives and
+failures; do not infer target-PC speedup or actual Rapier displacement from
+native masks. The accepted #246 main checkpoint below remains its own record.
 
 ## Accepted LCB-001 shared contract — 2026-10-25
 
@@ -741,9 +772,11 @@ before changing it. Keep it separate from #45: its screens select nothing there.
   `build_windows_msvc.bat`). Godot `godot/tests/test_lcb_pressure_reference.gd`
   prints exactly one `LCB_PRESSURE_REFERENCE:` summary over 12 sections and has
   a 45 s weight in `tools/ci/run_godot_regressions.py`.
-  `test_liquid_solver_policy.gd` and `test_liquid_policy_worker.gd` now use
-  pressure `cached` as their unavailable-family refusal, because the reference is
-  admitted. `native/bench/lcb_pressure_characterisation.cpp` is a standalone
+  `test_liquid_solver_policy.gd` and `test_liquid_policy_worker.gd` used pressure
+  `cached` as unavailable at accepted #246. Current #201 branch tests admit all
+  three Water variants and retain meaningful transactional negatives through
+  unsupported Oil/PF mappings; the new optimization test checks actual execution.
+  `native/bench/lcb_pressure_characterisation.cpp` is a standalone
   screen harness (build line in its header), not a CI test or admission gate.
 - **Identity.** Admitting another cell or variant changes the matrix through
   `EXECUTABLE_CANDIDATES` in `tools/lcb/derive_capability_matrix.py`; follow the

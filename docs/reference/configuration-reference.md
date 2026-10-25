@@ -5,7 +5,7 @@ canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
 last-reviewed: 2026-10-25
-related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md]
+related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
 ---
 
 # Configuration reference
@@ -332,6 +332,30 @@ validation imposes the active-catalogue radius requirement.
 
 These constraints do not make serial and phased interest filtering equivalent;
 see the [region contract](../systems/world-storage-and-interest-region.md#interest-filtering-and-re-entry).
+
+## LCB-002 derived pressure execution limits
+
+**Current in `codex/lcb002-pressure-variants`; final acceptance pending.**
+`WorldConfig::pressure_optimization` controls construction-only derived work,
+not pressure calibration: `index_chunk_capacity` 4096 chunks,
+`head_repair_cell_budget` 4,194,304 cells, `gas_member_capacity` 1,048,576
+members and `gas_invalidation_pair_budget` 4,194,304 classification pairs.
+Incomplete head/index or gas discovery selects the complete admitted reference
+operator, with explicit status and charged fallback work.
+
+Execution3 uses one eligible ordinary warmup visit and eight deferred eligible
+visits after failed proof. Whole-layer admission requires usable heads and prior
+Water work. Eight eligible-tick trials charge each invalidated/reset cell1,
+complete proof40 and valid reuse1, crediting an actually saved motion call8; a
+deficit or saturated uncertainty suspends the layer for32 eligible-head ticks.
+Cold/off invalidation is constant work and admission resets stale certificates
+before reading them. These fixed work credits are not wall-clock break-even
+evidence and change no material cadence or physical law. The [optimization contract](../architecture/pressure-optimization.md)
+owns mechanism, capacities, storage and the six-u64 native execution identity.
+Godot copied budgets/capacities/counters use exact unsigned decimal strings;
+they are not live settings or rest authority. Reference has no optimization
+extension identity. Derived budgets and caches do not alter physical authority
+or serialize certificates; restore rebuilds them cold.
 
 ## Finite native adapter overrides
 

@@ -4,7 +4,9 @@
 #include "cybersand/physics_diagnostics.hpp"
 #include "cybersand/interaction_policy.hpp"
 #include "cybersand/liquid_solver_policy.hpp"
+#include "cybersand/liquid_comparison.hpp"
 #include "cybersand/pressure_flow.hpp"
+#include "cybersand/pressure_optimization.hpp"
 #include "cybersand/quantity_ledger.hpp"
 #include "cybersand/transport_policy.hpp"
 #include "cybersand/scheduler_geometry.hpp"
@@ -61,6 +63,7 @@ struct WorldConfig {
     // Defaults and source-qualified candidate cells are admitted; every other
     // assignment is refused at construction and never reaches a kernel.
     LiquidSolverPolicy liquid_solver_policy{};
+    PressureOptimizationConfig pressure_optimization{};
 };
 
 struct ChunkCoord {
@@ -113,6 +116,9 @@ struct TickStats {
     std::uint64_t chunk_allocations = 0;
     std::uint64_t temperature_field_allocations = 0;
     std::uint64_t deferred_events = 0;
+    // Maximum distinct pool workers that executed tasks in one tick dispatch;
+    // configured workers and actual participation are separate observations.
+    std::uint32_t worker_threads_observed = 0;
 };
 
 struct DirtyChunk {
@@ -292,6 +298,15 @@ public:
     [[nodiscard]] bool pressure_flow_enabled() const noexcept;
     [[nodiscard]] PressureFlowParameters pressure_flow_parameters() const noexcept;
     [[nodiscard]] PressureCellState pressure_cell(std::int64_t x, std::int64_t y) const noexcept;
+    // Copies the last pre-kernel derived head slot without preparing/allocating.
+    // May be stale after transport/writes or unprepared after restore; no
+    // freshness, authority or optimization-skip permission is implied.
+    [[nodiscard]] PressureHeadSnapshot prepared_pressure_head(std::int64_t x, std::int64_t y) const noexcept;
+    // Copies the actual resident chunk roster for head observations. Returns
+    // the required count (zero without pressure); a short span is untouched.
+    // Unordered copied coordinates may be sorted by the caller. No allocation,
+    // preparation, storage exposure or freshness/skip authority is implied.
+    [[nodiscard]] std::size_t copy_pressure_head_chunk_coordinates(std::span<ChunkCoord> output) const noexcept;
     [[nodiscard]] std::vector<GasCompartmentSnapshot> gas_compartments() const;
     [[nodiscard]] std::vector<GasHistoryRecord> gas_history() const;
     [[nodiscard]] GasLedger gas_ledger() const noexcept;
@@ -318,6 +333,15 @@ public:
     static constexpr std::uint32_t kPhysicalStateHashVersion = 2;
     [[nodiscard]] std::uint64_t physical_state_hash() const;
 
+    // Explicit diagnostic domains. Same-tick equivalence normalizes only the
+    // pressure implementation variant. Quiescent content additionally excludes
+    // clocks, cell epochs, activity aging and cumulative accounting counters;
+    // it retains pending events/deadlines, construction bindings and authority.
+    // A constant quiescent hash does not establish future rest or justify skips.
+    [[nodiscard]] std::uint64_t liquid_comparison_hash(LiquidStateProjection projection) const;
+    [[nodiscard]] PressureOptimizationSnapshot pressure_optimization_snapshot() const;
+    [[nodiscard]] std::optional<std::array<std::uint8_t,32>> pressure_optimization_identity() const noexcept;
+
     // Candidate-capable tick-boundary persistence ("CYPS" v2): exact
     // continuation of every physical value above. Transient body masks are
     // host-owned and not saved. restore validates everything before returning
@@ -339,12 +363,15 @@ public:
     void copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::size_t stride_bytes) const;
 
 private:
+    [[nodiscard]] std::uint64_t physical_state_hash_impl(
+        std::optional<LiquidStateProjection> projection) const;
     friend class PreparedWorldBuilder;
     friend class RenderSnapshotExchange;
 
     struct Chunk;
     struct PressureChunk;
     struct PressureState;
+    struct PressureCache;
     struct Address;
     struct JobEffects;
     struct ParallelState;
@@ -426,8 +453,23 @@ private:
     [[nodiscard]] bool update_water_cellular_yield(std::int64_t x, std::int64_t y, JobEffects* effects);
     [[nodiscard]] bool update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* effects);
     void prepare_pressure_tick();
-    void resolve_gas_topology();
+    void account_pressure_certificate_work() noexcept;
+    void prepare_pressure_certificates() noexcept;
+    void finish_pressure_certificate_tick() noexcept;
+    void resolve_gas_topology(bool allow_cache = true);
+    void prepare_pressure_gas_cache();
+    [[nodiscard]] bool replay_pressure_gas_region(std::int64_t x, std::int64_t y,
+                                                 std::uint32_t current, std::uint32_t stamp,
+                                                 bool& retry_requested);
+    void rebuild_pressure_gas_cache(std::uint32_t stamp);
     void compute_pressure_heads();
+    void rebuild_pressure_index();
+    void invalidate_pressure_input(ChunkCoord coord, std::int32_t min_x, std::int32_t min_y,
+                                   std::int32_t max_x, std::int32_t max_y, bool gas);
+    void invalidate_pressure_certificates(ChunkCoord coord, std::int32_t min_x, std::int32_t min_y,
+                                          std::int32_t max_x, std::int32_t max_y);
+    [[nodiscard]] std::int64_t pressure_lateral_gradient(std::int64_t x, std::int64_t y) const;
+    [[nodiscard]] bool pressure_motion_is_noop(std::int64_t x, std::int64_t y, JobEffects* effects);
     void reset_pressure_cell(Chunk& chunk, std::size_t index, Material before, Material after,
                              bool external, JobEffects* effects) noexcept;
     void wake_activity_block(ChunkCoord coord, Chunk& chunk, std::size_t block_index);

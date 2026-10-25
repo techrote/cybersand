@@ -183,8 +183,8 @@ struct LiquidPolicyBuild {
 
     // This binary: FreeMass and CellularYield qualified for each liquid's current
     // default, plus Water x pressure_flow_v1/reference and whole-cell
-    // cellular_yield_v1/reference (#200). cached and
-    // cached_dormant (#201) and every other candidate remain refused.
+    // cellular_yield_v1/reference (#200), plus candidate cached/cached_dormant
+    // pressure implementations (#201). Other cells remain explicitly refused.
     [[nodiscard]] static const LiquidPolicyBuild& running() {
         static const LiquidPolicyBuild build = [] {
             LiquidPolicyBuild result;
@@ -194,7 +194,7 @@ struct LiquidPolicyBuild {
                 result.qualified_variants.push_back({row.material_id, row.default_family, 0x01U});
             }
             result.qualified_cells.emplace_back(std::uint16_t{3}, std::uint8_t{3});
-            result.qualified_variants.push_back({3, 3, 0x01U});
+            result.qualified_variants.push_back({3, 3, 0x07U});
             result.qualified_cells.emplace_back(std::uint16_t{3}, std::uint8_t{2});
             result.qualified_variants.push_back({3, 2, 0x01U});
             result.schemas.push_back({true, 3, kPressureBlockVersion, false, 0,
@@ -278,6 +278,18 @@ public:
 
     // The exact bytes hashed into policy_hash (all integers little-endian).
     [[nodiscard]] std::vector<std::uint8_t> canonical_bytes() const {
+        return canonical_bytes_impl(false);
+    }
+
+    // Comparison-only identity: exactly the canonical policy with PressureFlowV1
+    // implementation variants normalized to Reference. Every family assignment,
+    // parameter, material and catalogue/capability identity remains significant.
+    [[nodiscard]] Sha256::Digest pressure_variant_equivalence_hash() const {
+        return Sha256::of(canonical_bytes_impl(true));
+    }
+
+private:
+    [[nodiscard]] std::vector<std::uint8_t> canonical_bytes_impl(bool pressure_reference) const {
         std::vector<std::uint8_t> out;
         constexpr std::string_view kDomain{"lcb-liquid-policy\0", 18};
         out.insert(out.end(), kDomain.begin(), kDomain.end());
@@ -288,7 +300,9 @@ public:
         for (const auto& item : assignments_) {
             put_le(out, item.material, 2);
             out.push_back(static_cast<std::uint8_t>(item.family));
-            out.push_back(static_cast<std::uint8_t>(item.variant));
+            out.push_back(static_cast<std::uint8_t>(pressure_reference &&
+                item.family == LiquidSolverFamily::PressureFlowV1
+                    ? LiquidSolverVariant::Reference : item.variant));
         }
         put_le(out, family_blocks_.size(), 1);
         for (const auto& block : family_blocks_) put_block(out, block, 1);
@@ -297,6 +311,7 @@ public:
         return out;
     }
 
+public:
     // The normalized applied policy as the single flat int32 wire form.
     [[nodiscard]] std::vector<std::int32_t> envelope() const {
         std::vector<std::int32_t> words{kMagic, kEnvelopeVersion, static_cast<std::int32_t>(policy_version_)};

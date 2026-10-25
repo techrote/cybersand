@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
@@ -391,14 +391,28 @@ manifests. Headless rendering does not substitute for those captures.
 
 ### Residual LCB-001 native setup and receipt checks
 
-The unmerged `codex/lcb001-shared-contract` checkpoint registers its whole-cell
+The moving-body gas repair additionally registers
+`LCB-002 moving gas masks retire and preserve exact identities` in ordinary,
+ASan/UBSan and TSan Makefile suites and the Windows MSVC test source list.
+With an already built ordinary binary, `build/tests "moving gas masks"` selects
+the focused group. It covers all four retirement reasons plus a still-live
+negative control, reference/cached/dormant with configured1/4 workers, immediate
+masked save/restore and exact authority/ledger/history continuation. Configured
+workers do not prove actual task participation. The separate ordinary Main
+regression supplies actual Rapier motion and asynchronous feedback evidence;
+neither test alone establishes performance or final platform acceptance. See the
+[dated repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
+
+The accepted #246 native shared-contract checkpoint registers its whole-cell
 Water, normalization, native-issued refusal, typed receipt and quantity-ledger
 cases in the ordinary `make test` and `build_windows_msvc.bat` suites. The
 [native contract](../architecture/liquid-prepared-setup-and-receipts.md) owns
 the interfaces and qualifications; the [dated evidence](../audits/2026-10-24-lcb001-residual-shared-contract.md)
 records the earlier two 121-case native builds and scoped fresh Windows Godot
 proof, followed by five new rectangle/event/gas-ID regressions. The latest native
-suite has 126 cases; use the dated final receipt for the tested source/delta.
+accepted shared-contract baseline has126 cases; the #201 moving-mask repair
+branch has141 ordinary cases. Use each dated receipt for its exact tested
+source/delta rather than treating historical counts as a current global total.
 
 ```sh
 python tools/lcb/water_normalization_contract.py --check

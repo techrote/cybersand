@@ -5,6 +5,7 @@
 #include "cybersand/liquid_solver_policy.hpp"
 #include "cybersand/sha256.hpp"
 #include "cybersand/world.hpp"
+#include "cybersand/liquid_run_receipt_native_capture.hpp"
 
 #include <algorithm>
 #include <array>
@@ -17,6 +18,7 @@
 #include <span>
 #include <stdexcept>
 #include <string>
+#include <tuple>
 #include <vector>
 
 namespace {
@@ -346,12 +348,12 @@ void test_pressure_admission_and_refusal() {
     require(running.available_families == 0x07U && running.schemas.size() == 2U, "running build profile");
     const auto policy = pressure_policy();
     require(policy.assignment(3)->family == LiquidSolverFamily::PressureFlowV1, "Water applied family");
-    for (std::int32_t variant : {1, 2}) {
+    for (std::int32_t variant : {0, 1, 2}) {
         const auto words = pressure_request(std::nullopt, variant);
-        const auto refused = LiquidSolverPolicy::decode(std::span<const std::int32_t>(words));
-        require(!refused.accepted() && refused.refusal.code == LiquidPolicyRefusalCode::FamilyUnavailable &&
-                    refused.refusal.material == std::optional<std::uint16_t>{3},
-                "cached/cached_dormant must stay refused until #201");
+        const auto decoded = LiquidSolverPolicy::decode(std::span<const std::int32_t>(words));
+        require(decoded.accepted() && decoded.policy->assignment(3)->variant ==
+                    static_cast<cybersand::LiquidSolverVariant>(variant),
+                "running pressure implementation preserves the exact selected variant");
     }
     // Parameter block: accepted in range, refused outside it.
     const auto with_block = pressure_policy(std::pair{0, 64});
@@ -794,6 +796,81 @@ void test_static_rest_and_sleep() {
     require(world.water_quantity({10, 60, 56, 40}) < drained_before, "opened outlet drains the rested pool");
 }
 
+void test_comparison_projection_rest_and_authority() {
+    using cybersand::LiquidStateProjection;
+    constexpr auto equivalent = LiquidStateProjection::PressureVariantEquivalenceV1;
+    constexpr auto quiet = LiquidStateProjection::QuiescentPhysicalContentV1;
+    auto config = pressure_config();
+    config.liquid_solver_policy = pressure_policy({{0, 32}});
+    World world(config);
+    world.reserve_region({0, 0, 128, 128});
+    rect(world, 8, 8, 3, 3, Material::Wall);
+    rect(world, 9, 9, 1, 1, Material::Water);
+    tick(world, 20);
+    const auto full = world.physical_state_hash();
+    const auto same_tick = world.liquid_comparison_hash(equivalent);
+    const auto physical = world.liquid_comparison_hash(quiet);
+    const auto bytes = world.save_physical_state();
+    require(full != same_tick && same_tick != physical && physical != full,
+            "comparison projections have separate domains");
+    require(bytes == world.save_physical_state(), "projection inspection is pure");
+    // Cross the byte-epoch rollover with no physical change. The complete and
+    // same-tick observations retain clocks; only the declared static diagnostic
+    // remains constant. This observation is not itself a future rest proof.
+    for (int t = 0; t < 300; ++t) {
+        const auto stats = world.tick();
+        require(stats.active_blocks_after == 0U, "closed pool remains ordinarily asleep");
+        require(world.liquid_comparison_hash(quiet) == physical,
+                "static physical content remains constant across clock/epoch aging");
+    }
+    require(world.physical_state_hash() != full && world.liquid_comparison_hash(equivalent) != same_tick,
+            "complete and same-tick hashes retain time");
+    const auto restore = [&]() { return World::restore_physical_state(config, bytes); };
+    auto other = restore();
+    require(other->liquid_comparison_hash(equivalent) == same_tick &&
+                other->liquid_comparison_hash(quiet) == physical,
+            "exact continuation retains each comparison observation");
+    other->set_temperature(9, 9, 201);
+    require(other->liquid_comparison_hash(quiet) != physical, "stored temperature is physical content");
+    other = restore();
+    other->configure_transient_obstacles({0, 0, 128, 128});
+    require(other->set_transient_obstacle(9, 9, 7), "mask installed over authoritative Water");
+    require(other->liquid_comparison_hash(quiet) != physical, "mask authority remains significant");
+    other = restore();
+    require(other->queue_explosion(20, 20, 1), "future event admitted");
+    require(other->liquid_comparison_hash(quiet) != physical, "future event obligations remain significant");
+    other = restore();
+    other->set_liquid_surface_adhesion_enabled(!other->liquid_surface_adhesion_enabled());
+    require(other->liquid_comparison_hash(quiet) != physical, "material controls remain significant");
+    bool refused = false;
+    try { (void)world.liquid_comparison_hash(static_cast<LiquidStateProjection>(255)); }
+    catch (const std::invalid_argument&) { refused = true; }
+    require(refused, "unknown projection identities refuse");
+}
+
+void test_comparison_projection_policy_scope() {
+    auto build = LiquidPolicyBuild::running();
+    for (auto& variants : build.qualified_variants)
+        if (variants.material == 3U && variants.family == 3U) variants.variant_mask = 7U;
+    std::array<LiquidSolverPolicy, 3> policies;
+    for (std::int32_t variant = 0; variant < 3; ++variant) {
+        const auto request = pressure_request(std::nullopt, variant);
+        const auto decoded = LiquidSolverPolicy::decode(std::span<const std::int32_t>(request), build);
+        require(decoded.accepted(), "comparison contract build admits each pressure variant");
+        policies[static_cast<std::size_t>(variant)] = *decoded.policy;
+    }
+    for (std::size_t i = 1; i < policies.size(); ++i) {
+        require(policies[i].policy_hash() != policies[0].policy_hash(), "variant retains canonical identity");
+        require(policies[i].pressure_variant_equivalence_hash() == policies[0].policy_hash(),
+                "projection normalizes exactly the pressure variant to the reference policy");
+    }
+    require(LiquidSolverPolicy{}.pressure_variant_equivalence_hash() !=
+                policies[0].pressure_variant_equivalence_hash(), "projection retains solver-family selection");
+    require(pressure_policy({{0, 32}}).pressure_variant_equivalence_hash() !=
+                pressure_policy({{0, 33}}).pressure_variant_equivalence_hash(),
+            "projection retains complete effective family parameter blocks");
+}
+
 void test_lifecycle_ledgers() {
     World world(pressure_config(1));
     world.reserve_region({0, 0, 64, 64});
@@ -1019,6 +1096,10 @@ void test_physical_hash_and_persistence() {
     require(edited->content_hash() == a.content_hash(), "cells unchanged by the gas-only edit");
 }
 
+#include "test_pressure_optimization.inc"
+#include "test_pressure_gas_cache.inc"
+#include "test_pressure_variants_acceptance.inc"
+
 void test_default_policy_untouched() {
     // A default World never allocates or runs pressure state, and its historic
     // hashes are those of Current (protected by the existing golden tests).
@@ -1052,3 +1133,21 @@ void test_lcb_pressure_static_rest() { test_static_rest_and_sleep(); }
 void test_lcb_pressure_lifecycle() { test_lifecycle_ledgers(); test_pressure_material_hooks(); }
 void test_lcb_pressure_persistence() { test_physical_hash_and_persistence(); }
 void test_lcb_pressure_default_untouched() { test_default_policy_untouched(); }
+void test_lcb_pressure_comparison_rest() { test_comparison_projection_rest_and_authority(); }
+void test_lcb_pressure_comparison_policy() { test_comparison_projection_policy_scope(); }
+void test_lcb_pressure_cached_heads() { test_cached_incremental_heads(); }
+void test_lcb_pressure_cached_gas() { test_cached_gas_and_fallback(); }
+void test_lcb_pressure_affected_gas() { test_affected_gas_components(); test_gas_component_worker_parity(); }
+void test_lcb_pressure_gas_cache_capacity() { test_gas_component_capacity_fallbacks(); }
+void test_lcb_pressure_dormant_obligations() {
+    test_dormant_motion_and_body_obligations();
+    test_dormant_remote_gas_dependency();
+}
+
+void test_lcb_pressure_optimization_identity() { test_pressure_optimization_identity_readback(); }
+void test_lcb_pressure_cost_admission() { test_dormant_cost_admission(); }
+void test_lcb_pressure_variants_remote_acceptance() { test_variants_remote_hydraulic_acceptance(); }
+void test_lcb_pressure_variants_mask_acceptance() { test_variants_rotating_mask_acceptance(); }
+void test_lcb_pressure_variants_obligation_acceptance() { test_variants_obligation_reconstruction_acceptance(); }
+void test_lcb_pressure_variants_basins_acceptance() { test_variants_communicating_basins_acceptance(); }
+void test_lcb_pressure_variants_vent_acceptance() { test_variants_isolated_vent_acceptance(); }

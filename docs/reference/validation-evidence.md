@@ -5,10 +5,50 @@ document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
 last-reviewed: 2026-10-25
-related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md]
+related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md, ../audits/2026-10-25-lcb002-pressure-variants.md]
 ---
 
 # Validation evidence ledger
+
+## Moving-body pressure gas blocker — 2026-10-25
+
+Ordinary moving reference bodies exposed retired gas labels beneath masks;
+the failing World quarantines despite closing Water/gas ledgers. Repair commit
+`7ebcd0e9` adds the six-arm native regression and retains still-live identities.
+Local LLVM/MSVC141, focused sanitizer16 and actual application body tests pass.
+Fresh #201 Windows/Linux scoped publication `40157133977` passes at source
+`eebd0c98`, with four-path bot append `65f1f3b5`. The updated90-child total-cost
+campaign also passes exact parity and preserves slower churn/fallback results.
+PRs #253/#250 returned to draft after the finding; each still requires its own
+complete source-matched exact-head gates and review before merge. Earlier
+greens retain their original scope. See the
+[dated failure and repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
+
+## LCB-002 pressure variants branch — 2026-10-25
+
+[The dated #201 ledger](../audits/2026-10-25-lcb002-pressure-variants.md) retains
+exact implementation/test/campaign checkpoints and failures for the unmerged
+branch. [The optimization contract](../architecture/pressure-optimization.md)
+owns the Current source behavior; this is separate from accepted #246 main.
+Execution1 local Windows complete-tick measurements retain ordinary-sleep,
+topology-churn and forced-fallback negatives. Configured1/4 is distinct from
+observed task claimants, and process RSS includes all three Worlds/apparatus.
+No global or cross-platform speedup follows. Execution2 correctness and fixture
+qualification are retained separately. Execution3 adds whole-layer work-credit
+admission and suspension to warmup/backoff; numerical prepared-head/net-boundary
+observations and fresh source proofs must be recorded separately, not inferred
+from the older campaign. The fixed credits do not establish wall-clock break-even.
+Source-matched Windows/Linux scoped publication
+[`40152121412`](https://github.com/techrote/cybersand/actions/runs/40152121412)
+passed at exact source `8354e3a6424ad80d4a5a82647ef78d1681a92e3c`:
+import plus all13 cases perOS, optimization4152/0 across all six sections,
+reference1934/0 across all twelve, and all16 WEX cases. Bot append
+`d726bf34edcc9da96e918fd2fd88786937e4015a` changes only both runtime payloads
+and their matching manifests. The [publication record](../audits/2026-10-25-lcb002-pressure-variants.md#source-matched-windowslinux-publication--2026-10-25)
+binds exact DLL/ELF and independent artifact/log/source checks. Full ready-PR
+Documentation/provenance, Native, Godot and applicable Water gates remain pending.
+Native rotating mask/contact parity does not qualify actual Rapier motion,
+displacement, full application constructors, Web or #203 packaging.
 
 ## Accepted LCB-001 shared native contract — 2026-10-25
 

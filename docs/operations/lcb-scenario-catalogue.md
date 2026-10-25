@@ -66,9 +66,11 @@ inventory, tick-30 hashes and 1/4-worker parity for all 27 scenarios. The
 full-length values are author-reported characterization; see the
 [evidence scope](../audits/2026-10-23-lcb003-scenario-qualification.md#accepted-evidence-scope-stated-2026-10-23-for-the-gate-e-review).
 
-**Planned arms.** Every `pressure_flow_v1`, `inertial_cellular_v1` and Water
-`cellular_yield_v1` arm is registered but **blocked**. Each one names its
-owning dependency (#200, #201, #212). No arm runs on a fallback solver.
+**Retained campaign status and current admission are separate.** Experimental
+registry arms remain unmeasured/blocked in the retained campaign until their
+owning execution is qualified; underlying native support is no longer uniformly
+unavailable. Each arm names its dependency (#200, #201, #212). No arm runs on a
+fallback solver.
 In source W-PF `reference`
 executes natively ([design](../architecture/pressure-flow-v1.md)) and in
 [`test_lcb_pressure_reference.gd`](../../godot/tests/test_lcb_pressure_reference.gd)
@@ -123,7 +125,7 @@ correctness property that justifies the scenario.
 | `lcb.head.vented-two-limb.v1` | communicating-head | Vented 160/40-row limbs through an 8-row roofed passage. Equal levels are valid **only** because both headspaces are open (#49 boundary assumption). |
 | `lcb.head.narrow-passage.v1` | communicating-head | Same limbs through a 2-row passage |
 | `lcb.head.sealed-two-limb.v1` | communicating-head | Roofed (enclosed) limbs. Current has no gas state, so its result is labelled **`measured_not_a_sealed_control`**. A valid sealed target needs W-PF gas (#200). On the pressure branch W-PF gas runs it: it differs from vented but was 4.9 rows from the isothermal law at t2400, still settling (characterization). |
-| `lcb.rest.deep-quiet-pool.v1` | rest-wake | Closed full-cell pool with no input: rest, constant hash |
+| `lcb.rest.deep-quiet-pool.v1` | rest-wake | Closed full-cell pool with no input: zero motion state and constant `lcb.quiescent-physical-content.v1`; complete hashes retain clocks |
 | `lcb.rest.remote-disturbance.v1` | rest-wake | Remote source (t300) and sink (t900) in a deep pool; ledger closes to the initial mass |
 | `lcb.rest.two-pool-partial-activity.v1` | rest-wake | Disturb pool A only; pool B must stay unchanged; activity counters show locality |
 | `lcb.viscous.lane-gallery.v1` | viscous | Equal blocks of Water, Oil, Brine, Slush, Paste and Mercury in separate lanes: spreading against viscosity, kernel specializations kept |
@@ -177,8 +179,8 @@ UI rules (to be enforced by #202):
 | Arm | Mapping | Status |
 |---|---|---|
 | `W-FM` / `C0` | Current defaults | **measured** on Current |
-| `W-CY` | Water `cellular_yield_v1/reference` | campaign arm blocked; admitted in residual #200 native/explicit-constructor source with local proof, release publication and host campaign integration pending |
-| `W-PF` | Water `pressure_flow_v1/reference\|cached\|cached_dormant` | registered blocked: #200, #201. Branch: `reference` admitted natively, not yet run as a registry arm; `cached`/`cached_dormant` blocked on #201 |
+| `W-CY` | Water `cellular_yield_v1/reference` | campaign arm unmeasured; native/explicit-constructor admission accepted on main in #246 with Windows/Linux publication and required matrix; registry host campaign integration remains pending |
+| `W-PF` | Water `pressure_flow_v1/reference\|cached\|cached_dormant` | retained registry campaign unmeasured. Reference is accepted on main; all three variants execute in the unmerged #201 branch with separate native/local-Godot/cost proof, pending source-matched publication and final gates |
 | `W-IN` | Water `inertial_cellular_v1/reference` | blocked: #200, #212 |
 | `BRINE-IN` | Brine `inertial_cellular_v1/reference` | blocked: #200, #212 |
 | `M1` | Water FreeMass + Oil CellularYield + Brine Inertial | blocked: #200, #212 |
@@ -194,11 +196,11 @@ the rest.
 
 | PR #215 NC | Coverage on current source |
 |---|---|
-| NC-1, NC-2, NC-10 | **Executed by the #200 foundation** in [`test_liquid_solver_policy.gd`](../../godot/tests/test_liquid_solver_policy.gd) through the MicroScenario host: Oil × inertial `combination_rejected`, pressure/inertial `family_unavailable` with the live session intact, and CYSD1 import on default families. On the pressure branch NC-2 uses pressure `cached`/`cached_dormant` and inertial, because `pressure_flow_v1/reference` is admitted. The registry entries are unchanged. A definition carrying a `solver_family` field is still refused as an unknown root field. |
-| NC-3 | Native preparation and explicit Godot policy-constructor regressions now exercise `normalization_required` on residual #200 source, preserving the live session. The retained registry/negative-contract record remains blocked pending #202 consumption; Godot explicit normalization opt-in is still absent. |
-| NC-4 | **Blocked (#201):** pressure dormancy does not exist |
+| NC-1, NC-2, NC-10 | **Executed by the #200 foundation** in [`test_liquid_solver_policy.gd`](../../godot/tests/test_liquid_solver_policy.gd) through the MicroScenario host: Oil × inertial `combination_rejected`, pressure/inertial `family_unavailable` with the live session intact, and CYSD1 import on default families. Accepted #246 main admits pressure reference; #201 admits all three Water PF variants, so its transactional negatives use unsupported Oil/PF mappings and inertial. Retained registry campaign statuses are not retroactively promoted. A definition carrying a `solver_family` field is still refused as an unknown root field. |
+| NC-3 | Native preparation and explicit Godot policy-constructor regressions exercise `normalization_required` on accepted #246 native/explicit-constructor source, preserving the live session. The retained registry/negative-contract record remains blocked pending #202 consumption; Godot explicit normalization opt-in is still absent. |
+| NC-4 | Current #201 branch executes certificate/revocation and exact body/material/authority tests. This separate local proof does not promote the retained registry NC-4 arm or final platform acceptance |
 | NC-5 | **Blocked (#212)** under M1. The Current equivalent is measured (`salt-dissolution`, mixed M0). |
-| NC-6 | **Blocked (#200/#212)** across families. Current same-family density exchange is measured (lock exchanges, inverted column, Mercury drop). The versioned physical-state hash it needs exists on the pressure branch. |
+| NC-6 | **Blocked (#200/#212)** across families. Current same-family density exchange is measured (lock exchanges, inverted column, Mercury drop). Physical hash/CYPS2 exist on accepted #246 main; inertial-family qualification remains #212. |
 | NC-7 | **Executed:** campaign 1/4-worker parity plus regression tick-30 parity |
 | NC-8, NC-9 | **Blocked (#202):** presentation/exploratory flags live in the UI. Partial cover: the native-only runner refuses player-enabled definitions. |
 
@@ -274,13 +276,16 @@ it is an explicit, reviewed change.
      versioned physical-state hash, CYPS v1 persistence and per-family
      observation (`inspect_cell.family_state`, gas inspection, overfill in
      `water_integer`);
-   - residual unmerged #200 source adds W-CY and `normalization_required`, native
-     normalization, immutable typed v1 setup/run/attempt receipts and exact
-     quantity accounting; physical hash/CYPS2 include that continuation. Local
-     native and scoped Windows proof is recorded in the [dated evidence](../audits/2026-10-24-lcb001-residual-shared-contract.md);
-     source-matched publication and full final-head acceptance remain open.
-2. **#212:** `inertial_cellular_v1` plus Brine qualification. This unblocks
-   W-IN, BRINE-IN, M1 and M2. M1 is the first real three-family run.
+   - accepted #246 main at `ec58d919` adds W-CY and `normalization_required`,
+     native normalization, immutable typed v1 setup/run/attempt receipts and exact
+     quantity accounting; physical hash/CYPS2 include that continuation and old
+     CYPS1 refuses. Actual Windows/Linux publication and all required gates pass
+     at the [accepted checkpoint](../audits/2026-10-25-lcb001-shared-contract-acceptance.md).
+     Full host/registry campaign qualification remains #202/#203.
+2. **#212:** `inertial_cellular_v1` plus Brine qualification unblocks BRINE-IN,
+   M1 and M2. W-IN requires its own real Water admission/qualification; a Brine
+   proof does not satisfy the approved four-model controlled-Water contract.
+   M1 is the first registered three-family campaign target.
 3. **#201:** pressure `cached`/`cached_dormant` variants with equivalence to
    `reference`, and cross-family invalidation (NC-4).
 4. **#202:**

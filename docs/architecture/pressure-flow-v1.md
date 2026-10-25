@@ -2,10 +2,10 @@
 title: pressure_flow_v1 reference — corrected Water pressure family
 status: Current
 document-kind: design
-scope: LCB-001 (#200) accepted main opt-in Water pressure_flow_v1/reference and hash v2/CYPS2 accounting — admission, solver-owned state, gas-compartment topology and identity, head snapshot, kernel laws, declared parameters and bounds, lifecycle per mutation path, physical-state hash, CYPS persistence, inspection APIs and known limits; cached/dormant variants (#201) and the comparison host (#202) are not here
+scope: LCB-001 (#200) accepted main opt-in Water pressure_flow_v1/reference and hash v2/CYPS2 accounting — admission, solver-owned state, gas-compartment topology and identity, head snapshot, kernel laws, declared parameters and bounds, lifecycle per mutation path, physical-state hash, CYPS persistence, inspection APIs and known limits; branch-Current cached/dormant mechanisms (#201) and the comparison host (#202) have separate canonical owners
 canonical-for: [pressure-flow-v1, gas-compartments, physical-state-hash, physical-state-persistence]
 last-reviewed: 2026-10-25
-related-documents: [lcb-pressure-inertial-handoff.md, liquid-state-transition-matrix.md, liquid-solver-family-policy.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb001-pressure-reference-publication.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md]
+related-documents: [lcb-pressure-inertial-handoff.md, liquid-state-transition-matrix.md, liquid-solver-family-policy.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb001-pressure-reference-publication.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, pressure-optimization.md]
 ---
 
 # pressure_flow_v1 reference — corrected Water pressure family
@@ -23,13 +23,16 @@ family on 2026-10-24 (LCB continuous-execution instruction). Evidence, including
 failed attempts and runtime identities, is in the
 [publication record](../audits/2026-10-24-lcb001-pressure-reference-publication.md).
 
-The implemented pressure family admits Water with variant `reference`. It stores
-overfill and retained horizontal flow in an optional per-cell sidecar, plus
-Empty-cell gas labels and a World-owned compartment table. Requests for cached
-or dormant variants currently refuse; they do not execute a different Water
-solver. Other materials retain their own kernels, and default Water remains
-FreeMass. The storage, admission and refusal details below describe that native
-implementation separately from later application-host acceptance.
+Accepted #246 main admits Water with variant `reference`. Current source on
+`codex/lcb002-pressure-variants` also admits `cached` and `cached_dormant` with
+the same pressure law. Its [optimization contract](pressure-optimization.md)
+owns derived head/component caches, motion certificates, execution identity and
+cost admission. Source-matched Windows/Linux scoped publication passed at
+`8354e3a6` through bot append `d726bf34`; the full ready-PR matrix remains pending
+([publication evidence](../audits/2026-10-25-lcb002-pressure-variants.md#source-matched-windowslinux-publication--2026-10-25)).
+These variants are implementations of one family, not new physics.
+All retain the optional overfill/flow/gas sidecar and World compartment table.
+Other materials keep their kernels and default Water remains FreeMass.
 
 Accepted main also supplies W-CY, explicit normalization, typed native
 receipts and exact shared quantity accounting. Their construction, ownership,
@@ -46,7 +49,8 @@ This page retains the pressure laws; its characterization remains the recorded
 `349d593` #245 evidence, not a rerun of that campaign on the residual delta.
 
 What this page does **not** claim:
-- `cached` and `cached_dormant` (#201) are refused (`family_unavailable`);
+- #201's recorded target-OS headless publication is separate from full ready-PR acceptance and full-host qualification;
+  see the [dated optimization evidence](../audits/2026-10-25-lcb002-pressure-variants.md);
 - native W-CY and normalization do not supply a Godot normalization opt-in or
   complete #202 comparison host; the other host constructors still run defaults;
 - Web/WASM execution has not been run.
@@ -55,7 +59,7 @@ What this page does **not** claim:
 
 | Piece | Location |
 |---|---|
-| Admission (running build), optional family block | `LiquidPolicyBuild::running()` in [`liquid_solver_policy.hpp`](../../native/include/cybersand/liquid_solver_policy.hpp): Water × family 3 qualified for variant `reference` only (`qualified_variants`); schema `pressure_flow_v1` v1 `{gas_enabled 0..1, atmospheric_head_rows 16..4096}`, optional |
+| Admission (running build), optional family block | `LiquidPolicyBuild::running()` in [`liquid_solver_policy.hpp`](../../native/include/cybersand/liquid_solver_policy.hpp): Water × family 3 qualified for `reference` on accepted #246 main and for all three variants in current #201 branch source (`qualified_variants`); schema `pressure_flow_v1` v1 `{gas_enabled 0..1, atmospheric_head_rows 16..4096}`, optional |
 | Public value types and declared constants | [`pressure_flow.hpp`](../../native/include/cybersand/pressure_flow.hpp): `PressureFlowParameters`, `PressureCellState`, `GasCompartmentSnapshot`, `GasHistoryRecord`, `GasLedger`, `PressureFlowLedger`, `PressureFlowDiagnostics`, `kAtmosphereLabel`, `kVacuumLabel` |
 | World-owned state and scratch | [`world_pressure_state.inc`](../../native/src/world_pressure_state.inc): `World::PressureState` |
 | Gas resolution, heads, kernel, hash, persistence | [`world_pressure.inc`](../../native/src/world_pressure.inc) |
@@ -154,6 +158,19 @@ kernel-vacated cell (Water drained by a transfer, a kernel conversion to Empty)
 is `kVacuumLabel`: it adds volume, never amount. A host paint/erase leaves
 `0` (unresolved). This distinction prevents water-born voids from being created
 as atmospheric gas (a defect found during development; see evidence).
+
+**Masked labels at retirement (Current repair branch, acceptance pending).**
+A transient body excludes an Empty cell from gas volume and overlap; it does
+not replace the stored cell. After the identity reducer installs the next live
+table, the existing resident relabel pass changes any unvisited positive label
+absent from that table to `kVacuumLabel`. Still-live labels retain their
+identity beneath the mask. The retired amount has already gone to successors
+or the vent/collapse sink: clearing to unresolved would invent atmospheric
+gas, and remapping to a successor would invent overlap. This sanitation
+contributes to `labels_changed`, so a changed label prevents a gas fixed point.
+The strict CYPS live-label check remains in force. The
+[moving-body failure and repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md) qualifies the source, tests
+and publication boundary.
 
 **Phase convention.** Topology resolves at tick entry: inspection at completed
 tick N reports the compartments resolved at the entry of tick N, i.e. after the
@@ -276,6 +293,43 @@ silently reinterpreted. The hash includes policy/variant and clock, so #201
 equivalence must define its comparison projection rather than demand equal raw
 hashes across variants or across ticks.
 
+### Liquid comparison projections
+
+**Current in unmerged `codex/lcb002-pressure-variants` source:**
+`World::liquid_comparison_hash(LiquidStateProjection)` supplies two explicitly
+named diagnostic observations. Each prefixes its own domain, then binds the
+underlying physical-hash version and its declared field stream. The original
+physical-hash v2 stream and CYPS2 bytes are unchanged by this extraction.
+
+| Domain | Included state and explicit exclusions | Intended comparison |
+|---|---|---|
+| `lcb.pressure-variant-equivalence.v1` | Complete physical-hash fields, with only each `pressure_flow_v1` implementation variant normalized to `reference` in the canonical policy. Other assignments, catalogue/capability digests, all parameter blocks, clocks, epochs, activity, deadlines, construction bindings, quantity accounting and all authority remain significant. Derived caches and their diagnostics have no authority in this stream. | Reference/cached/dormant at the **same completed tick**, with separately compared gas and momentum ledgers/history where outside the complete hash. |
+| `lcb.quiescent-physical-content.v1` | The same physical authority/configuration and normalized policy, excluding tick/completed-tick clocks, update/cell epochs, activity/quiet aging and cumulative quantity source/sink/event counters. Retains failure state, selected/applied regions, future event/deadline obligations, original construction bindings/baselines, current quantities/populations, exact material/state/temperature tuples, overfill/flow/gas labels and the full gas table. | A cross-tick static-content diagnostic. It is **not a future rest certificate** and cannot authorize skipped work. |
+
+Unknown projection identities refuse. Observations allocate only on the caller's
+inspection path, never in worker kernels; no World state changes during capture.
+The comparison policy is built from the canonical encoder, not a policy-hash
+mask: changing family, material or parameter remains visible. Future authoritative
+family extensions must enter each applicable projection or remain unsupported.
+The quiescent diagnostic does not prove the absence of future chemistry,
+stochastic, cadence, body-contact or remote pressure work. Dormancy needs its
+separate positive proof and invalidation before every reuse.
+
+The initial 2026-10-24 local LLVM-MinGW 20260826/Clang 23.1.0 C++20 `-O1`
+projection checkpoint passes **128/128** native cases in 27.297 s, including
+two new groups. A supported static pool remains constant through 300 ticks and
+epoch rollover only in the quiescent observation; complete/same-tick hashes
+change. Tests retain thermal, mask, future-event and adhesion distinctions,
+exact restore, variant-only canonical normalization and family/parameter
+distinctions. All 120 Python LCB tests and generated-contract checks pass.
+Separately compiled source `9e91a9f7` and the projection delta produce identical
+original physical hashes and SHA-256 digests of CYPS bytes at all eight
+registered default/pressure fixture observations, including masked and thermal
+state. Commands, complete input fences, executables and logs are retained under
+`C:/Users/_/.codex/tmp/lcb201-projections/validation.json`. This is local source
+proof for the projection extraction; caching, dormancy, new runtime publication
+and platform/full-PR acceptance are not credited by it.
+
 ## Persistence (CYPS v2)
 
 `World::save_physical_state()` / `World::restore_physical_state(execution, bytes)`:
@@ -291,8 +345,12 @@ physics settings from the payload, including physics-changing diagnostic
 overrides. Restore checks the complete gas conservation equation with checked
 sums as well as agreement between the table and `amount_live`; a valid digest
 does not admit a contradictory ledger. Transient body masks are host-owned and not
-saved; settled discovery must be disabled. A restored World continues
+saved; settled discovery must be disabled. Mask-free fixtures continue
 bit-identically (physical and state hash, including at a different worker count).
+A host using bodies must separately restore the same transient-mask region and
+sampled masks before claiming exact continuation. Native CYPS alone does not
+restore a Rapier owner or its future inputs; complete adapter body restoration
+remains #202/#203 work.
 Restore also checks native quantity schema, source/sink roles and quanta,
 aggregate closure, prepared Water count/mass consistency and restored authority.
 Pending events reuse ordinary queue admission, including radius, capacity and
@@ -329,11 +387,13 @@ they do not describe source `349d593`.
 
 ## Known limits
 
-- **Cost.** Preparation scans every resident chunk each tick (gas seeds, relabel,
+- **Reference cost.** Preparation scans every resident chunk each tick (gas seeds, relabel,
   column and row passes): the reference is O(resident cells). A 1024² dam runs at
-  roughly 1.5× Current single-threaded in the harness. Incremental caches and
-  dormancy are #201.
-- **Dormancy remains Planned.** A #201 rest certificate must preserve body
+  roughly 1.5× Current single-threaded in the source-qualified harness above.
+  The [#201 branch contract](pressure-optimization.md) separately owns derived
+  caches, retained global gas work and complete-tick cost evidence.
+- **Dormancy is Current in #201 branch source; acceptance is pending.** Its
+  [motion certificate](pressure-optimization.md#motion-certificates-preserve-ordinary-obligations) preserves body
   contact reports even when a failed gravity/diagonal probe moves no Water:
   those reports feed actual body coupling. It must preserve material stages,
   prove future motion is a no-op rather than freeze nonzero flow, and demonstrate

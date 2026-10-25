@@ -277,7 +277,7 @@ registrations. They are a contract model, not an executed inertial World.
 | Residual motion after support removal | lateral travel continuing ≥ N ticks after the source stops, with N declared |
 | Over-run past a step | travel beyond where the gravity-only path stops |
 | Depth-dependent surge | **characterization screen, not an admission criterion**: depth response ≥ 1.25 at t240; depth-160 front ≥ 142; retained ≤ 0.70 at t1800. The result is recorded either way. |
-| Static rest | **mandatory**: a fully supported closed pool keeps every velocity at exactly 0 and its physical-state hash constant |
+| Static rest | **mandatory**: a fully supported closed pool keeps all velocity and accumulator components at exactly 0 and its explicit `lcb.quiescent-physical-content.v1` observation constant; complete continuation hashes retain clocks and are compared at the same completed tick ([projections](pressure-flow-v1.md#liquid-comparison-projections)) |
 | Momentum ledger | **mandatory**: the per-tick identity closes exactly on the dam ladder and the lock exchanges |
 
 **Material specialization survives:** stages 1, 2, 4 and 5 of the material
