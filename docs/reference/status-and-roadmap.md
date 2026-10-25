@@ -17,10 +17,12 @@ at `713ee3ab` passes fresh152-group LLVM/MSVC ordinary execution, seven full
 receipt oracles per compiler, a132-input Windows DLL/import and all14 scoped
 Godot cases. All PF variants coexist with Brine IN; a separate90-child
 pressure cost repeat retains slower churn/fallback results. This local source
-proof is separate from either parent's evidence and from pending combined
-Windows/Linux publication, ready-PR CI, host/Web/owner acceptance.
+proof is separate from either parent's evidence. Later combined Windows/Linux
+scoped publication `40153980594` passes actual import plus14 cases perOS at
+`bc0bfed9`, followed by runtime-only bot `52ee560a`; full ready-PR CI and
+host/Web/owner acceptance remain pending.
 
-**Current on the isolated LCB-005 branch only:** [Brine IN reference](../architecture/inertial-cellular-v1.md) selectively ports the genuine fixed-point law onto the shared quantity/prepared-state foundation, including an optional versioned native damping numerator0..16 over16(default1). [Native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) qualifies its stated source/platform scope. Default behavior remains retained. The later [standalone Godot adapter](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry) adds actual instance readback and explicit radius3 with [local Windows proof](../audits/2026-10-25-lcb005-standalone-adapter.md). Water IN, full application integration, source-matched runtime publication, owner feel and full #212 completion remain unqualified here. No Cell-carrier migration or generic Rapier force follows.
+**Current on the isolated LCB-005 branch only:** [Brine IN reference](../architecture/inertial-cellular-v1.md) selectively ports the genuine fixed-point law onto the shared quantity/prepared-state foundation, including optional native damping numerator0..16 over16(default1). [Native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) keeps its stated scope; the [standalone adapter](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry) and [combined publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-windowslinux-union-publication--2026-10-25) record later actual instance/radius/platform proof. Defaults remain unchanged. Water IN, full application integration, owner feel and full #212 completion remain unqualified. No Cell-carrier migration or generic Rapier force follows.
 
 ## Physical actor regression hangs — 2026-10-23
 
@@ -770,9 +772,9 @@ measurements remain in the dated evidence record.
 |---|---|
 | W-CY, `water-normalize-v1`, native typed receipts and exact quantity accounting | #200, Accepted on main through #246; scope and remaining ownership [below](#lcb-001-shared-contract-accepted--2026-10-25) |
 | Host provenance/collection proof and remaining normal-application constructors | #202, Planned; preserve native shared interfaces from #200 |
-| `cached`/`cached_dormant`, incremental caches and motion certificates | [#201](https://github.com/techrote/cybersand/issues/201), Current in branch source; [runtime/final acceptance pending](#lcb-002-pressure-variants-branch--2026-10-25) |
+| `cached`/`cached_dormant`, incremental caches and motion certificates | [#201](https://github.com/techrote/cybersand/issues/201), Current in branch source; [scoped publication passed, full acceptance pending](#lcb-002-pressure-variants-branch--2026-10-25) |
 | Comparison host and UI; re-dispositioning the registered candidate arms | [#202](https://github.com/techrote/cybersand/issues/202), Planned |
-| `inertial_cellular_v1` (W-IN, Brine), M1/M2 | #212: Brine/reference source and standalone adapter Current on its branch; Water IN, integrated/runtime/final acceptance remain pending |
+| `inertial_cellular_v1` (W-IN, Brine), M1/M2 | #212: Brine/reference and standalone adapter Current, actual combined Windows/Linux scoped publication passed; Water IN, full host/final acceptance remain pending |
 | Packaged builds and isolated timing | [#203](https://github.com/techrote/cybersand/issues/203), Planned |
 
 **Publisher.** The temporary pressure-reference workflow, helper, unittest and

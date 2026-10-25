@@ -21,7 +21,13 @@ MSVC ordinary groups, both seven-byte-oracle comparisons, a separate DLL,
 all14 scoped Godot cases and a new90-child pressure cost repeat. The
 [integration ledger](../audits/2026-10-25-lcb005-pressure-union-integration.md)
 retains exact source/artifact/timeout identities and negative timings.
-Windows/Linux publication and full ready-PR qualification still gate release.
+Actual Windows/Linux scoped publication `40153980594` now passes at source
+`bc0bfed9`, with single-parent runtime-only append `52ee560a`: import plus all14
+required cases perOS, IN862/all6, pressure optimization4152/all6 and retained
+reference1934/all12. Full ready-PR qualification still gates acceptance.
+Postpublication merge `736cd8f1` consumes exact #201 final docs `c03011a1` while
+retaining all four #212 runtime/provenance paths exactly from `52ee560a`.
+#201 is not accepted main merely because its final docs are integrated here.
 Capability identity changes when the two admissions join: regenerate policy,
 receipt and IN vectors plus the adapter oracle from the combined semantic
 catalogue and obtain fresh native physical facts, as recorded in that ledger. Do not select a parent's

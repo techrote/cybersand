@@ -20,8 +20,16 @@ import/all14 scoped Godot cases pass with no errors/warnings/skips, including
 optimization4,152 and IN862 assertions. Fresh pressure cost90/23,760 observations
 pass independent parity/work/head/ROI reduction; slower churn/head-fallback
 ratios remain. Parent sanitizer/cost records keep their source identity.
-Combined Linux/publication/full ready-PR gates and host/Web/owner acceptance
-remain separate. The native-v1 full matched eligibility remains false.
+Later actual combined Windows/Linux scoped publication
+[`40153980594`](https://github.com/techrote/cybersand/actions/runs/40153980594)
+passes at `bc0bfed94ca9a1e51e296253c0fe27a4cee4c3f7`, tree
+`54a2a8fa03de6be991402af277d46e694698c5d0`, with runtime-only bot append
+`52ee560a14455f4c1237e1fc468a1301c1e7c558`. All30 real processes pass:
+import plus14 cases perOS, IN862/all6, optimization4152/all6, pressure1934/all12
+and WEX16. The [publication ledger](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-windowslinux-union-publication--2026-10-25)
+binds exact artifacts, independent verification and the four-path merge resolution.
+Full ready-PR gates and host/Web/owner acceptance remain separate. The native-v1
+full matched eligibility remains false.
 
 ## LCB-005 standalone adapter — 2026-10-25
 

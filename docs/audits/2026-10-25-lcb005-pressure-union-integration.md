@@ -2,7 +2,7 @@
 title: LCB-005 pressure and IN integration qualification
 status: Current
 document-kind: evidence
-scope: Exact frozen LCB-002 source integration into the standalone LCB-005 branch, retained capability-identity collision, regenerated oracles and fresh combined qualification; published Windows/Linux and full-host acceptance remain separately gated
+scope: Exact frozen LCB-002 integration into LCB-005, retained identity collision and failures, fresh combined proof and actual Windows/Linux scoped publication; full ready-PR and full-host acceptance remain pending
 canonical-for: [lcb005-pressure-union-integration-evidence]
 last-reviewed: 2026-10-25
 related-documents: [../architecture/inertial-cellular-v1.md, ../architecture/pressure-optimization.md, ../architecture/liquid-solver-family-policy.md, 2026-10-25-lcb005-standalone-adapter.md, 2026-10-25-lcb002-pressure-variants.md, ../reference/validation-evidence.md]
@@ -17,15 +17,17 @@ on `codex/lcb005-inertial` and merges exactly the frozen #201 source
 `12d76736b2c437afe3466822b0072532e4e730a8`. That parent contains the
 pressure execution3 native checkpoint `68991f14`, final documentation/registry
 `63fccc90` and accepted-main documentation merge `d70699b6`.
-It does not consume the later #201 publication request or runtime append.
+That initial integration did not consume the later #201 publication request or
+runtime append; the postpublication documentation merge is recorded below.
 
 The two parents' local native, Godot and cost observations retain their own
 source identities. They do not qualify this combined source. Fresh full LLVM,
 actual MSVC at ordinary1MiB stack, a separate DLL/import and all fourteen
 scoped Godot cases pass at the combined source recorded below.
-The request remains absent during integration. Full ready-PR exact-head CI,
-actual Windows/Linux publication, #202 application-host and #203 joined
-packaging remain separate gates.
+The request remained absent during that initial integration. Later actual
+Windows/Linux scoped publication passes at `bc0bfed9` through bot `52ee560a`.
+Full ready-PR exact-head CI, #202 application-host and #203 joined packaging
+remain separate gates.
 
 ## Deliberate resolutions
 
@@ -178,9 +180,110 @@ source-input fingerprints, eleven per OS; no Rapier/pin/LFS failure is bypassed.
 Receipt SHA-256 is
 `59cca73b4460585dae6b2e1612aa254f1199acdbf0796425c79eaf70daaaf17e`.
 
-The publisher evidence route now points here. Request remains absent until
-final evidence/profile review. Actual source-matched Windows/Linux14-case
-publication and ready-PR exact-head full CI remain required. #201's later
-separate publication cannot substitute for this combined runtime. Full host,
+At that preparation checkpoint the publisher evidence route pointed here and
+the request remained absent pending final evidence/profile review. The later
+source-matched Windows/Linux14-case publication is recorded below; ready-PR
+exact-head full CI remains required. #201's separate publication cannot
+substitute for this combined runtime. Full host,
 verified host envelope, actual Web, owner feel and joined packaging are not
 accepted by these local results.
+
+## Actual Windows/Linux union publication — 2026-10-25
+
+**Passed scoped publication; full ready-PR acceptance remains pending.**
+[Run `40153980594`](https://github.com/techrote/cybersand/actions/runs/40153980594),
+attempt1, built exact `bc0bfed94ca9a1e51e296253c0fe27a4cee4c3f7`, tree
+`54a2a8fa03de6be991402af277d46e694698c5d0`. All six jobs passed. The explicit
+source-bound request, recorded branch-lease checks and atomic final lease
+preceded the single-source-parent append
+`52ee560a14455f4c1237e1fc468a1301c1e7c558`. Only both runtime LFS pointers and
+their two provenance manifests changed; the append changes no compiled inputs.
+
+| Actual published runtime | Bytes | SHA-256 |
+|---|---:|---|
+| Windows x86_64 DLL |4,529,152| `a39c71ea405fe850e70653283c8eba268a854e8f722fc5b717013ce4cec126fb` |
+| Linux x86_64 ELF |3,903,648| `180c914b115e9e9faafc3a70d0c879979fb419ad6e2af4afffdefa3d02171c58` |
+
+Windows cross-build uses GitHub-hosted Ubuntu24.04, LLVM-MinGW20260826 UCRT,
+Clang/LLD23.1.0 and archive SHA
+`cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65`;
+actual execution uses GitHub-hosted Windows2022. Linux builds and executes on
+GitHub-hosted Ubuntu24.04 with GCC13.3.0. Both use SCons4.10.1 and godot-cpp
+`101ae38034304346a46ea9ea84ae156d3e860496`. Exact compiler/linker/static-library
+identities remain in the manifests. The actual Linux ABI-floor check passes.
+Official Godot4.7 `4.7.stable.official.5b4e0cb0f` uses the pinned platform
+archive. Accepted patched Rapier identities remain Windows
+`b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7` and Linux
+`566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a`.
+
+**Actual execution:** import plus all14 ordered cases perOS, 30 real processes,
+all returncode0 and no launch/capture/diagnostic/timeout failure or skipped/error
+log. Both platforms complete IN862 assertions/all six strict sections (including
+17 actual parameter oracles, instance identity, radius2 refusal/radius3 admission,
+mixed FM/CY/IN and all PF substitutions, continuation and defaults), pressure
+optimization4152/all six, reference1934/all twelve, policy385/refusals11,
+worker29/refusals3, all four LCB contract controls, MicroScenarios/controllers/
+native observation, Water Feel and WEX16 body-mask controls. Configured1/4 and
+parallel-dispatch checks do not claim four distinct pool participants. This
+campaign is functional scope, not a throughput benchmark.
+
+| Actual case | Windows seconds / timeout | Linux seconds / timeout |
+|---|---:|---:|
+| IN adapter |7.463 /360|6.875 /360|
+| Pressure optimization |13.876 /360|12.725 /360|
+| Pressure reference |31.789 /900|39.597 /900|
+| MicroScenarios |113.104 /180|142.917 /180|
+| WEX baseline |135.073 /600|156.751 /600|
+
+Independent review verifies all three artifact archive digests, every raw case
+log and strict completed section, the same76 native plus484 build/test canonical
+Git-blob inputs perOS, unchanged source files, matching built/executed Windows
+DLL bytes, both runtime/report/manifest chains and the committed four-path
+single-parent append. Both committed manifests equal the downloaded bytes;
+canonical LF LFS pointers bind the exact payloads. The compiler/engine archives
+are identified by the source-bound workflow/records, not independently reproduced
+as local tools. Final review
+`lcb212-publication1-review/FINAL-PUBLICATION1-INDEPENDENT-REVIEW.json`, SHA
+`7151ce397d67d36524d2d92c41cf608fd42b01c99fb6f5e8d30ec9e40e08ece2`, has no
+actionable findings. Its raw snapshots/logs retain the complete evidence chain.
+
+| Artifact ZIP | SHA-256 |
+|---|---|
+| `lcb005-inertial-build-windows-40153980594` | `7124a99421d67639eb37c40aee8d4091ddbbb9b59a9969729f18eb900b661350` |
+| `lcb005-inertial-runtime-windows-40153980594` | `31459f1e13666d255d9e638164f6ee2a5dc63b7cfbad2eca314a5270bce19f33` |
+| `lcb005-inertial-runtime-linux-40153980594` | `f7c5f1bf3178b9bfa809904b6724f6172dcb8c4e22ebe7758606c07568c2a7cf` |
+
+All earlier namespace/capture, policy-identity, fixture, compiler, import and
+performance failures keep their original source/artifact records. The22 stale
+native fingerprints at713 above describe that prepublication checkpoint; they
+are not a postpublication provenance waiver.
+
+## Postpublication #201 documentation consolidation
+
+Normal merge `736cd8f1` joins exact #201 final docs
+`c03011a1320fde7360a7ee3c28570f53d4a05856` to #212 bot `52ee560a`. All four
+runtime/pointer/manifest conflicts deliberately retain the complete #212 set,
+byte-for-byte and Git-blob-for-Git-blob; the #201-only runtimes never replace
+them. The two documentation conflicts keep incoming #201 scoped-publication
+facts and union IN routes, with Water-IN as the unavailable negative rather
+than executable Brine-IN. No native, adapter, capability, vector, fixture,
+generator or build input changes. Both published manifests still match the
+same76/484 input ledgers. `lcb212-postpublication/merge-resolution.json` records
+the before/after identities and exact resolution.
+
+The incoming #201 request remains branch-limited and inert on
+`codex/lcb005-inertial`; neither the #201 nor #212 publisher is rearmed by these
+documentation changes. This merge does not claim #201 accepted on main.
+PR #250 stays draft while the #201/#253 accepted-main refresh is resolved;
+the full required matrix is still pending and is not replaced by scoped
+publication, local ordinary proof or historical parent sanitizer results.
+
+Canonical IN/policy, roadmap, handover, validation and retrieval routes now name
+the actual union publication while retaining Water-IN, full application/typed
+host qualification, actual Web, owner feel and #203 packaging as separate gaps.
+Defaults, carrier ABI, ownership/lifetime, laws, capacities, formats and controls
+are unchanged. Existing indexes/questions retain their canonical routes.
+Fresh materialized companion-backed documentation/provenance, M11, frozen and
+supplementary retrieval, provider, whitespace and generator checks are retained
+with source/input fences in `lcb212-postpublication/`. No full ready-PR runtime
+or public-release acceptance is claimed by that documentation checkpoint.

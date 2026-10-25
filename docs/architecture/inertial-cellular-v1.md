@@ -2,7 +2,7 @@
 title: Brine inertial cellular reference
 status: Current
 document-kind: reference
-scope: Opt-in Brine IN native law and standalone Godot instance/readback on the LCB-005 branch; current defaults retained, no Water-IN, full application or published platform qualification
+scope: Opt-in Brine IN native law, standalone Godot instance/readback and source-matched Windows/Linux scoped publication on the LCB-005 branch; defaults retained, Water-IN and full ready-PR/application qualification remain pending
 canonical-for: [inertial-cellular-v1-brine]
 last-reviewed: 2026-10-25
 related-documents: [lcb-pressure-inertial-handoff.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb005-native-brine-checkpoint.md]
@@ -12,7 +12,7 @@ related-documents: [lcb-pressure-inertial-handoff.md, liquid-solver-family-polic
 
 ## What executes at this native checkpoint?
 
-**Current on the LCB-005 branch only:** explicitly selecting Brine material24 / `inertial_cellular_v1/reference` executes retained signed motion and subcell accumulators. The default Brine CellularYield law and every other default remain unchanged. Water IN, alternate IN materials, cached/dormant IN variants, full application integration and released native artifacts are not qualified by this checkpoint. The later [standalone adapter proof](../audits/2026-10-25-lcb005-standalone-adapter.md) separately qualifies copied instance values and explicit construction geometry on a local Windows runtime. The [dated evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) names the base, local input seal, executable and actual tests. This is neither full #212 completion nor owner feel acceptance.
+**Current on the LCB-005 branch only:** explicitly selecting Brine material24 / `inertial_cellular_v1/reference` executes retained signed motion and subcell accumulators. The default Brine CellularYield law and every other default remain unchanged. The combined source passed [actual Windows/Linux scoped publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-windowslinux-union-publication--2026-10-25) at `bc0bfed9` in run `40153980594`, with runtime-only bot append `52ee560a`. Water IN, alternate IN materials, cached/dormant IN variants, full ready-PR acceptance and full application integration remain unqualified. The earlier [standalone adapter proof](../audits/2026-10-25-lcb005-standalone-adapter.md) keeps its local Windows source identity; [native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) retains its base, local input seal and tests. This is neither full #212 completion nor owner feel acceptance.
 
 The source owners are `native/include/cybersand/inertial_cellular.hpp`, `native/src/world_inertial.inc` and narrow integration in `World`. Shared pair chemistry precedes the Brine yielding-liquid motion gate. The implementation contains no pressure/head term and applies no Rapier force.
 
@@ -68,8 +68,9 @@ ordinary native groups and seven complete receipt byte oracles. A fresh132-input
 DLL and actual Windows import/all14 scoped cases pass, including IN862 and
 pressure optimization4,152 assertions, plus a new90-child pressure cost repeat.
 The ledger retains exact identities, slower cases, independent reviews and the
-ordinary-only native scope. Windows/Linux publication and full ready-PR gates
-remain required; no prepared host, owner feel or Web acceptance follows.
+ordinary-only native scope. Later Windows/Linux scoped publication passes at
+`bc0bfed9`; full ready-PR gates remain required. No prepared host, owner feel or
+Web acceptance follows from these native/standalone records.
 
 Current source in `cyber_native_cell_world.hpp/.cpp` exposes owner-serialized
 copies, with no native pool worker calling Godot:
@@ -102,10 +103,10 @@ visible+overfill, while whole-cell Oil/Brine populations use cell counts.
 
 This adds no prepared token, UI, constructor coordinator, verified provenance,
 Web qualification or new physics. Full application integration remains #202;
-Linux/Windows publication and exact-head ready-PR acceptance remain pending.
+exact-head ready-PR acceptance remains pending after the recorded scoped publication.
 
-The staged `lcb005-inertial-runtime-publication.yml` profile reuses the accepted
-shared-contract verifier in an isolated module. Preparation leaves
+The `lcb005-inertial-runtime-publication.yml` profile reuses the accepted
+shared-contract verifier in an isolated module. Its initial preparation left
 `tools/ci/lcb005_inertial_publish_request.json` absent. An explicit committed
 request, exact candidate branch/source/workflow lease and unchanged source
 are required before either target build. After the separately frozen #201
@@ -115,7 +116,9 @@ all six pressure-optimization sections and all six standalone IN sections.
 The IN-only checkpoint cannot qualify that union. Only the two runtime LFS
 paths and their two manifests may append in one source-parent commit; the
 atomic branch lease refuses a changed remote tip. Local preparation does not
-publish, arm a request or replace ready-PR acceptance.
+publish, arm a request or replace ready-PR acceptance. The later explicit request
+and actual import-plus14-case execution on both OSes are recorded in the union
+publication ledger; no fresh publication is started by this documentation update.
 
 ## What does the storage readback measure?
 
