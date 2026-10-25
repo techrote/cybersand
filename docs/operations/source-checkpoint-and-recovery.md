@@ -10,6 +10,23 @@ related-documents: [local-build-and-validation.md, ../reference/validation-evide
 
 # Source checkpoint and recovery
 
+## Recoverable final application integration source — 2026-10-25
+
+The separate managed checkout is
+`C:/Users/_/.codex/worktrees/lcb003-final-integration/khybersand`, branch
+`codex/lcb003-final-integration`. Normal merge97a0a904 consumes accepted main
+dc915f2b; f1d05312 consumes desktop5f3f0c21;84cafad9 consumes published Water
+c9e52b52; c4a29355 consumes final Water docse2411469. Functional5249d67c and
+publisher41a5fc27/e8f1d37b preserve old fixtures and require exact new identities.
+Normal merged2f7f56 consumes the separately tested Web apparatus4948db7c;
+d12b7858 consumes its separately reviewed actual-browser evidenceb8cfdf24.
+The complete local matrix binds the earlier unchanged functionale8f1d37b.
+The [integration ledger](../audits/2026-10-25-lcb003-final-integration.md) binds
+local source/runtime/proof hashes and retained apparatus failures. Frozen
+applicationf23f3d35/PR252 and desktop5f3f0c21/PR255 stay recoverable and separate.
+The003 request remains absent; this source checkpoint is not publication or
+final programme acceptance.
+
 ## Recoverable Water IN publication checkpoint — 2026-10-25
 
 The isolated source checkout is

@@ -11,6 +11,13 @@ last-reviewed: 2026-10-25
 
 # Data ownership and lifetimes
 
+The [final application union](liquid-prepared-setup-and-receipts.md#final-application-source-union)
+extends the existing precommit fractional future-source refusal to both admitted
+whole-cell Water families CY/IN. Initial normalization is setup-only. Refusal
+retains the live World/player/body graph, copied native receipt/host observation
+and accepted reset input. No native worker calls Godot and no additional live
+World or body-space owner is introduced by this integration.
+
 The later synchronous [supported-body Water Feel owner](liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel)
 uses one exact copied request, native token and permanently private frozen graph.
 Actual initial masks/final execution precede capture; mode/profile/settings,

@@ -10,6 +10,20 @@ related-documents: [../architecture/liquid-solver-family-policy.md, lcb-water-co
 
 # LCB manual liquid comparison UX flow
 
+The [actual common-Water Web record](../audits/2026-10-25-lcb003-web-common-water.md)
+now qualifies the explicit body-free functional apparatus on both profiles,
+with original successful POSTs. It does not qualify ordinary visible controls:
+screenshot/control observation timed out, and that gate remains open. The
+full local35-case/import matrix separately passes against the combined DLL.
+
+The [final application source union](../architecture/liquid-prepared-setup-and-receipts.md#final-application-source-union)
+adds the reviewed desktop native-default owner and published Water IN. Actual
+runtime admission controls the menu; radius3 and setup normalization are explicit.
+Whole-cell CY/IN fractional future sources refuse without replacing the accepted
+owner. The updated matrix below retains unsupported constructors and distinguishes
+positive FM/CY default play from three typed PF initial-capacity refusals.
+Complete host identity, final publication and actual browser/visual gates remain open.
+
 The later [synchronous supported-body Water Feel route](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel)
 uses existing **Liquids… → Exploratory → Apply & rebuild active**, Water Apply/
 Reset and **Restart world**. It retains original recipe/actions/player, actual
@@ -111,8 +125,8 @@ retained block can refuse explicitly.
 Current presets are Current defaults, whole-cell Water, pressure reference,
 pressure cached, pressure dormant, Water inertial, and pressure Water with
 inertial Brine, plus Current Water with inertial Brine. Each is enabled only if
-that actual runtime validates it. Integrated Brine IN is available; Water IN
-is unsupported. The later integrated #201 source also admits pressure cached and
+that actual runtime validates it. The final integration admits actual Water IN and Brine IN with explicit radius3;
+older dated runtime seals retain their original material availability. The later integrated #201 source also admits pressure cached and
 dormant through the actual native validator; its earlier dated evidence remains
 qualified to its original inputs.
 
@@ -182,15 +196,15 @@ controlled API is narrower than older explicit-policy diagnostic APIs.
 | Fixed actor-free schema-2 MicroScenario, protected Dam Break and mixed fixture | Native prepared policy/normalization and explicit geometry, immutable typed receipt, actual IN parameters/instance versions, final owner fence, actual panel/controller apply/refuse/reset; desktop worker and synchronous controller | Complete verified definition/host/provenance collection and final integrated platform qualification |
 | Fixed player-enabled or body-enabled MicroScenario | Ordinary default route retained; Controlled refuses; explicit Exploratory stages the existing sampled character when body-free | Stage physical body/terrain/equipment candidate before supporting rigid bodies |
 | Owner-paced/exploratory MicroScenario | Explicit Exploratory stages allowlisted sampled owners, the existing sampled character, or desktop articulated Rapier actor/equipment/terrain in a permanent space; native facts include actual initial masks and final execution; Controlled refuses | Remaining barrel/reference-body routes, complete verified host/actor envelope and retained edit/import semantics |
-| Bootstrap `create_world` / ordinary `reset_demo_world` | Defaults; ordinary reset retires typed setup identity | Explicit retained-policy coordinator without changing Current defaults |
+| Bootstrap `create_world` / ordinary `reset_demo_world` | Original Current defaults retained; explicit desktop Exploratory native-default rebuild stages actual shared recipe/origin, sampled owner and three frozen bodies. R retains accepted selection. FM/CY positive body play; PF0/1/2 typed initial gas-capacity refusal before swap | Controlled player/body, other bootstrap callers, complete host identity and final source-matched platforms remain separate |
 | `build_world` rectangle showcases / Blacksite | Existing Current constructor retained; four curated synchronous body-free demos explicitly stage exact recipes, sampled player and actual view/cadence in Exploratory mode. A separate authored Physics Pit route stages its original three bodies/permanent space with final native masks; both retain accepted recipe/selection on Restart | Desktop counterparts, imported physical saves, Blacksite/showcase/other physical owners and arbitrary rectangle callers remain separate; complete host identity and final platforms remain open |
 | `build_tuned_world` / Experiment Tower | Original default constructor retained; ordinary application Tower explicitly stages sampled-owner policy/normalization/geometry with final floor and retains floor/release/schedule/transport controls; reset/profile rebuild retain accepted policy | Other direct tuned-world callers, complete host evidence and final platform qualification |
-| `build_water_feel_world` / Water Feel controlled and blind apparatus | Original defaults/blind routes retained; explicit unblinded sampled Exploratory dispatcher/panel/reset carries typed policy/normalization/geometry and qualified owner record, preserving actions/ledger; desktop and synchronous owners additionally stage their respective original three reference bodies/terrain in a permanent space and prove ordinary unpaused feedback | Actual Web/visual qualification, barrel owners, blind-family study and whole-cell fractional future-source qualification; visual/publication gates |
+| `build_water_feel_world` / Water Feel controlled and blind apparatus | Original defaults/blind routes retained; explicit unblinded sampled Exploratory dispatcher/panel/reset carries typed policy/normalization/geometry and qualified owner record, preserving actions/ledger; desktop and synchronous owners additionally stage their respective original three reference bodies/terrain in a permanent space and prove ordinary unpaused feedback | Actual Web/visual qualification, barrel owners, blind-family study and positive whole-cell schedule qualification; fractional future actions stay refused; visual/publication gates |
 | CYSD `import_level` | Existing default reconstruction retained; explicit synchronous Exploratory next-import selection prepares copied thermal payload/policy/normalization, saved metadata and a private sampled player before commit; refusal retains old owner/receipts and Restart reconstructs accepted input | Physical/Tower/showcase imports and unsupported inherited interaction/diagnostic/transport settings explicitly refused; complete verified host identity, persisted policy/setup design and final source-matched platforms remain open |
 | CYPS `import_physical_state` | Exact saved-policy continuation; old typed construction identity retired | Preserve exact continuation; never use it as a family-conversion rebuild |
 | Diagnostic reset / depth / arena / player playground / Thunderbowl | Existing diagnostic policy options and ordinary controls | Shared application coordinator/readback where supported, preserving plane and actor semantics |
 | Procedural WorldGenerator | Separate generator ownership | Native recipe/final tuples and actor/plane gaps, coordinated with GEN ownership |
-| Actual Web compat/threaded | UI/controller source present; Windows native synchronous Controlled and Exploratory sampled-character routes tested; explicit terminal host apparatus has a native prerequisite; sampled rigs/equipment remain separate | Rebuild final integrated source for both profiles and execute actual browsers with earliest console/network, terminal POST and ordinary visual walkthrough |
+| Actual Web compat/threaded | Source4948 actual compat77/threaded76 terminal checks and original201 POSTs qualify the opt-in six body-free Water/four mixed arms; native owner/body paths have separate Windows proof | Ordinary rendered/manual controls, body-bearing browser play, complete console inventory, remaining owners and final combined source-matched publication stay open |
 
 The rest of this document is **Planned** design beyond the bounded Current slice
 above. Tables and acceptance hooks below are targets, not implemented coverage.

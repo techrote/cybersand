@@ -11,6 +11,20 @@ last-reviewed: 2026-10-25
 
 # Interfaces and message contracts
 
+The [actual common-Water Web terminal result](../audits/2026-10-25-lcb003-web-common-water.md)
+uses the same source4948 JSON contract: compat77 checks (extra one-worker
+assertion), threaded76, six Water and four mixed rows. Original POST201 bodies
+and native/source equivalence are bound independently. A successful terminal
+value still does not establish an ordinary rendered/manual control walkthrough.
+
+The [final application union](../architecture/liquid-prepared-setup-and-receipts.md#final-application-source-union)
+keeps existing native APIs/receipt-v1 unchanged. The native Web prerequisite now
+reports `water_runs`: six ordered FM/CY/PF0/PF1/PF2/IN Water rows with copied
+policy/receipt/payload hashes, radius/hash version, gross normalization,
+30-tick quantity and whole-cell/IN-motion readback. All76 named checks and the
+four original mixed rows are required by the003 parser; native process success
+does not substitute for an actual browser terminal POST or visible user flow.
+
 The private synchronous reference continuation now also owns a checked, copied
 [supported-body Water Feel request](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel).
 It captures the actual Water constructor kind, result/recipe, final480×270

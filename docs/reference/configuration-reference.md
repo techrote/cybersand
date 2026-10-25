@@ -10,6 +10,15 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 # Configuration reference
 
+The [final application union](../architecture/liquid-prepared-setup-and-receipts.md#final-application-source-union)
+preserves Current default tuples/clocks, protected radius2 and explicit IN
+radius3. Water capability admission changes the embedded policy namespace:
+default policy4b7922ad…cab53a/capability33c608f8…276e237/hash-version2 uses its
+separately frozen fixture, while the old6e005e61/55141a32 fixture is immutable.
+Unknown namespaces refuse. CY/IN fractional future sources refuse despite an
+initial normalization opt-in. The default PF gas-capacity limit remains1024;
+the authored default's three PF choices return typed initial admission refusal.
+
 Synchronous [supported-body Water Feel](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel)
 retains its actual Current poses(124,90),(244,90),(384,90),8×14 bodies at rest,
 fixed480×270 Water view, recipe camera/player/actions and actual quality buffers/

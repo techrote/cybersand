@@ -10,6 +10,21 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+The current [application integration checkpoint](../audits/2026-10-25-lcb003-final-integration.md)
+is isolated on `codex/lcb003-final-integration`; frozen PR252/PR255 branches are
+preserved. It combines accepted main dc915f2b, desktop5f3f0c21 and Water
+c9e52b52/e2411469. Native139 produces fresh local Windows DLL93d3ee3f;
+LLVM163 groups, seven receipt oracles and38 focused ASan/UBSan groups pass.
+The original default fixture stays frozen; separately keyed capability vectors
+and CY/IN future-source refusals have focused actual-owner proof. The003 request
+is absent. Its complete local35-case plus import matrix now passes on clean
+functionale8f1d37b, receipt69479670, preserving all source/project/native inputs.
+The [separate source4948 Web proof](../audits/2026-10-25-lcb003-web-common-water.md)
+passes actualcompat77/threaded76 terminal checks/HTTP201 and all6+4 arms;
+ordinary visual/manual play remains open. Combined Windows/Linux publication,
+exact-head gates, remaining constructors and scientific/full-host acceptance
+remain separate. Earlier135-input proofs below remain historical scope.
+
 The subsequent [synchronous Water Feel body checkpoint](../audits/2026-10-25-lcb003-synchronous-water-reference-body.md)
 at source45b6ed9d reuses verified unchanged native135/DLL79f35666 and passes
 eight strict processes/656 assertions: new Water91, corrected PhysicsPit73,

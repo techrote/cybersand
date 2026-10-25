@@ -10,6 +10,13 @@ related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-
 
 # Liquid material and solver state-transition matrix
 
+**Unmerged application integration:** the [final source union](liquid-prepared-setup-and-receipts.md#final-application-source-union)
+applies the existing WholeCell ingress rule to scheduled Water actions for both
+CY and IN before any owner swap. Setup normalization cannot authorize future
+fractional ingress. Actual desktop and synchronous refusal controls retain the
+old owner/receipt/record. The integration adds no new state-transition law,
+cell ABI or physical-save host-mask/body continuation claim.
+
 **Current source and qualification:** the [Brine IN reference](inertial-cellular-v1.md) implements its declared ownership/law scope and is accepted on main through #250. The isolated [Water IN successor](inertial-cellular-v1.md#water-in-native-successor--2026-10-25) adds its material/carrier contract and actual source4b588279 Windows/Linux publication. Final ready-PR and full application/scientific qualification remain pending. The standalone model and historical Proposed rows below retain their separate evidence meaning.
 
 ## Status and inputs

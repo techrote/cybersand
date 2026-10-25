@@ -10,6 +10,54 @@ related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, liquid-
 
 # Native liquid prepared setup, receipts and quantity accounting
 
+The final union's [local36-process host matrix](../audits/2026-10-25-lcb003-final-integration.md#complete-local-host-matrix-and-actual-web-result)
+passes import plus all35 cases against DLL93d3ee3f with held source/runtime
+inputs. Separately, [actual compat77/77 and threaded76/76 Web execution](../audits/2026-10-25-lcb003-web-common-water.md)
+qualifies the opt-in six-body-free-Water/four-mixed functional apparatus and
+successful terminal POSTs. Ordinary visual/manual Web play and body-bearing
+browser qualification remain open, alongside combined desktop publication,
+exact-head CI, remaining constructors and scientific/full-host acceptance.
+
+## Final application source union
+
+**Current unmerged integration source, 2026-10-25:**
+`codex/lcb003-final-integration` combines accepted main `dc915f2b`, reviewed
+desktop native-default checkpoint `5f3f0c21`, published Water IN `c9e52b52`
+and final Water documentation `e2411469`, preserving their normal merge history.
+Functional correction `5249d67c` and publisher checkpoint `e8f1d37b` follow.
+The [dated integration record](../audits/2026-10-25-lcb003-final-integration.md)
+owns exact local source/runtime/test identities and preserved apparatus failures.
+Earlier sections and audits retain their explicitly dated source qualifications.
+This source union does not merge the application PR or qualify a published
+combined runtime, every constructor, scientific comparison or actual browser UI.
+
+`MicroScenarioCatalogue.whole_cell_water_family` explicitly recognizes both
+Water CY and Water IN. An initial `water-normalize-v1` opt-in never changes a
+later scheduled fractional source. Real desktop worker/Main and synchronous
+Water Feel requests refuse those actions before replacement, preserving the
+accepted World, owner/body graph, policy, receipt, observation and cursors.
+Unblinded body-free controlled setups may select actual Water IN with explicit
+radius3. Positive moving-body qualification here covers FM/PF0/PF1/PF2; the
+CY/IN future-source tests establish refusal, not positive whole-cell body play.
+
+The Water capability update changes embedded policy identity while preserving
+Current default cell tuples, clocks and the hash-version2 encoding. The original
+`default-desktop-demo-legacy.json` remains byte-for-byte frozen. The separate
+`default-desktop-demo-water-in-capability.json` contains exact new namespace
+vectors keyed by policy `4b7922ad…cab53a`, capability `33c608f8…276e237` and
+physical hash version2. The test refuses an unknown identity; it never accepts an
+arbitrary hash. Paired old/new runtime execution reproduces all four original
+vectors and exact initial/four-tick tuple bytes and clocks in both namespaces.
+
+The still-unarmed LCB-003 publication profile privately consumes the complete
+Water005 proof and requires import plus35 cases, including actual synchronous
+Water bodies. Its native Web prerequisite requires76 named checks, six ordered
+Water arms FM/CY/PF0/PF1/PF2/IN with one normalized payload, and all four retained
+mixed-family arms. Exact gross normalization, per-tick quantity, actual native
+family/variant/identity and Water IN motion accompany successful process exit.
+This is functional application evidence, not Gate D or a scientific score.
+Native receipt-v1 qualifications/false full-match eligibility remain unchanged.
+
 **Native #212 branch extension:** [Brine IN](inertial-cellular-v1.md) reuses this preparation boundary and outer receipt-v1 extension mechanism. Its actual instances expose hash3/CYPS3 and family4/state1/identity1. Non-IN version2 field emission remains retained; capability admission changes legitimately update embedded policy identities. The [integrated application slice](#inertial-application-readback-and-explicit-geometry) qualifies its stated local host scope separately.
 
 **Isolated Water IN native successor:** the same builder already classifies

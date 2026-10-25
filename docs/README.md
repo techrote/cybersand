@@ -10,6 +10,19 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The [fresh full local host matrix and actual Web functional result](audits/2026-10-25-lcb003-final-integration.md#complete-local-host-matrix-and-actual-web-result)
+records36 passing Windows processes and the separately bound compat77/threaded76
+terminal POSTs. [Ordinary visual Web play remains open](audits/2026-10-25-lcb003-web-common-water.md#preserved-apparatus-failures-and-remaining-gaps);
+native/browser functional results do not clear combined desktop publication,
+remaining constructors, scientific or complete-host gates.
+
+The [final application source union](architecture/liquid-prepared-setup-and-receipts.md#final-application-source-union)
+combines the reviewed desktop-default owner and published Water IN without
+changing Current recipes. Its [dated local integration proof](audits/2026-10-25-lcb003-final-integration.md)
+records exact default-identity namespaces, CY/IN future-source refusal and the
+unarmed35-case publisher with six-Water native Web prerequisite. Complete
+constructor, final publication/browser and scientific gates remain separate.
+
 The later [synchronous supported-body Water Feel route](architecture/liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel)
 retains its original recipe/actions/player and y90 bodies through private
 frozen preparation, native masks/final fences, refusal and accepted Restart.

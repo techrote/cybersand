@@ -10,6 +10,22 @@ related-documents: [local-build-and-validation.md, ../reference/validation-evide
 
 # Testing, validation, and replay
 
+The [completed local35-case plus import run](../audits/2026-10-25-lcb003-final-integration.md#complete-local-host-matrix-and-actual-web-result)
+passes every actual process and the strict current003 result verifier on
+functionale8f1d37b/DLL93d3ee3f. Separate [compat77/threaded76 actual Web tests](../audits/2026-10-25-lcb003-web-common-water.md)
+qualify only the body-free6+4 functional apparatus/POST outcome. Rendered/manual
+Web, body-bearing browser play, source-matched desktop publication and complete
+programme acceptance remain separate; no test deadlines were weakened.
+
+The [final application integration](../audits/2026-10-25-lcb003-final-integration.md)
+retains every Water-IN and initial-capacity registration in the ordinary suite:
+163 groups plus seven independently encoded receipt vectors pass locally.
+Focused ASan/UBSan runs37 registered pressure/IN/Water/capacity groups plus the
+retained head API group; they are not a full sanitizer/platform matrix. The
+003 host profile requires import plus35 real cases with original finite budgets,
+strict Water005 and actual structured body/native-family results. Exact-head
+publication/browser/scientific gates remain separately required.
+
 The subsequent [synchronous Water Feel body checkpoint](../audits/2026-10-25-lcb003-synchronous-water-reference-body.md)
 at source45b6ed9d reuses verified unchanged native135/DLL79f35666 and passes
 eight strict processes/656 assertions: new Water91, corrected PhysicsPit73,

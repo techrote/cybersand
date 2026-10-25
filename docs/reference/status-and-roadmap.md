@@ -10,6 +10,23 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+The [complete local host matrix](../audits/2026-10-25-lcb003-final-integration.md#complete-local-host-matrix-and-actual-web-result)
+now passes36 Windows processes on the unchanged combined DLL. Separate
+[source-bound actual Web terminal execution](../audits/2026-10-25-lcb003-web-common-water.md)
+passes77 compat/76 threaded checks, six common-Water arms and four mixed arms.
+Ordinary rendered/manual Web play remains open. Neither clears the eight stale
+desktop runtime source comparisons, final publication/exact-head CI, remaining
+constructors or scientific/full-host gates;003 remains unarmed.
+
+The unmerged [final #202 integration source](../architecture/liquid-prepared-setup-and-receipts.md#final-application-source-union)
+now includes reviewed desktop native-default adoption/capacity refusal and
+published Water IN. The [dated checkpoint](../audits/2026-10-25-lcb003-final-integration.md)
+records fresh local native163/receipt-oracle and38 focused sanitizer results,
+the exact Current default identity namespace and actual CY/IN future-source
+refusal. The00335-case profile stays unarmed. Remaining constructor/host identity,
+combined Windows/Linux publication, exact-head CI, actual Web/visual and common
+Water scientific/feel gates remain open; this does not complete #202 or #203.
+
 The later unmerged [synchronous supported-body Water Feel checkpoint](../audits/2026-10-25-lcb003-synchronous-water-reference-body.md)
 at source45b6ed9d retains exact original y90 poses/recipe/actions/player and
 actual quality in the existing private frozen transaction. Eight native

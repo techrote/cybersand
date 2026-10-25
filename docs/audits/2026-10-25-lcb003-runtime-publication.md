@@ -10,45 +10,68 @@ related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../ar
 
 # LCB-003 application-host runtime publication
 
+## Final integration profile — 2026-10-25
+
+Clean sourcee8f1d37b consumes the reviewed Water native/runtime checkpoint and
+actual desktop-default owner, without arming003. The [integration ledger](2026-10-25-lcb003-final-integration.md)
+binds exact source and fresh local DLL93d3ee3f, original fixture/new namespace,
+CY/IN future-source refusal and actual native/Web prerequisite scope.
+
+Fresh first-stage guards pass19 host,27 Water,14 Brine,30 shared plus provider
+and Water stencil checks; independent44f917 authenticates all six processes.
+The stronger76-check/six-Water reader then passes21 host guards/provider, plus
+independentb656fdc0 review of the actual native4ef21728 proof and28 rejected
+meaningful mutations. Exact workflow/case deadlines and request absence hold.
+Prior guard records below retain their historical source/count/availability.
+
+The final local35-case/import matrix now passes all36 processes with strict
+current verification and held inputs at functionale8f1d37b, receipt69479670.
+The [separate actual Web record](2026-10-25-lcb003-web-common-water.md) passes
+compat77/threaded76 terminal checks and201 POSTs, preserving ordinary visual
+play as open. Actual Windows/Linux publication and every applicable exact-head
+required green remain necessary; neither local nor browser proof authorizes a
+stale desktop runtime. Current repository checking reports exactly8 rebuild
+comparisons, four native/bridge inputs per OS, as named in the integration audit.
+
 ## Unarmed source preparation
 
 The branch-local helper
 `tools/ci/lcb003_application_host_runtime_publication.py` and workflow
 `.github/workflows/lcb003-application-host-runtime-publication.yml` reuse the
-isolated #212 IN/pressure profile and accepted #200 publication engine. Their
+isolated Water005→IN/pressure profile and accepted #200 publication engine. Their
 byte verification, actual target-OS execution, exact source lease, single-parent
 fast-forward and four permitted runtime/manifest paths remain intact. The
-profile is limited to `codex/lcb003-application-host`, with literal GitHub-hosted
+profile is limited to `codex/lcb003-final-integration`, with literal GitHub-hosted
 Ubuntu24.04 and Windows2022 runners and pinned tools/dependencies.
 
 **No LCB-003 request is present at preparation.** Normal source edits do not
 dispatch expensive publication. An explicit request-only commit is needed after
 the application source, tests and documentation are frozen. Its identity is
 `lcb003-application-host-publish-request-v1`, family `multi_solver`, variant
-`fm-cy-pf0-pf1-pf2-in-brine`, scope
+`fm-cy-pf0-pf1-pf2-in-water-brine`, scope
 `lcb003-prepared-world-owners-cysd-and-application-host`, intent
 `publish-source-matched-runtimes`, with a positive integer `request_sequence`.
 There is no arbitrary dispatch or other-branch publication route.
 
-The imported #212 profile is unarmed here; its absent request is excluded from
-required build inputs rather than creating an inertial publication request.
+The inherited Brine request cannot arm003. Only the separate003 request/schema/branch
+may do so; existing Water/Brine request records remain source-bound history.
 The #212 profile/helper/test/workflow sources remain identified inputs of this
 profile, and their historical defaults are not mutated by the isolated import.
 
 ## Mandatory scoped execution
 
-The expanded profile requires each target OS to import the project and run 34 cases. The fourteen retained
+The expanded profile requires each target OS to import the project and run35 cases. The fourteen retained
 shared-contract, pressure-optimization and IN cases preserve all existing
 deadlines, completed-section checks and strict no-error/no-skip outcomes.
-Twenty additional host/API cases cover prepared owner transactions, actual
+Twenty-one additional host/API cases cover prepared owner transactions, actual
 reference-body adoption, Water Feel, sampled/physical/Tower construction,
 normalization, native host observations, direct Rapier comparison, thermal CYSD
 preparation, explicit decoded-level user import, four ordinary synchronous demos,
-explicit reference poses, synchronous Physics Pit bodies, native desktop-default
+explicit reference poses, synchronous Physics Pit and Water Feel bodies, native desktop-default
 preparation/adoption and the native prerequisite of the Web host probe. The
-default API and desktop-owner cases are reserved until their source integration;
-both must exist and pass before the request can be admitted. An unarmed profile
-does not claim that those source files have already landed on this branch.
+default API and desktop-owner cases are now integrated from5f3f0c21; both must
+execute successfully on each target OS before publication. Unarmed source
+preparation alone does not qualify either platform.
 
 A positive aggregate summary cannot replace the structured moving-body result.
 The profile additionally requires exactly four ordered ordinary cohorts:
@@ -82,12 +105,18 @@ assertions separately verify correct stale disposition.
 The thermal-level test must complete all six named groups. The user-import test
 must complete actual route, transactional refusal, thermal/normalization,
 restart identity and legacy preservation. The native Web-host prerequisite must
-complete33 distinct checks. Its desktop execution does not establish actual
-Web compatibility/threaded execution, rendered UI, human feel or full
-application constructor coverage. Water IN remains unavailable at this source;
-Brine IN does not substitute for the remaining common-Water Gate D requirement.
+complete76 exact named checks, retaining the original33 and four mixed arms, plus
+six ordered Water FM/CY/PF0/PF1/PF2/IN arms. The reader requires actual native
+policy/receipt/hash-version/radius3, one normalized payload, gross+127/−127,
+quantity12495 at every30 ticks,49 whole CY/IN cells and actual Water IN motion.
+Synchronous Water body results separately require four actual FM/PF policies,
+240 native/manual steps, positive signed feedback and exact quantity/gas controls,
+plus future-source refusal for both CY and IN. Desktop execution does not
+establish actual compat/threaded browser execution, rendered UI, human feel or
+full application constructor coverage. These functional common-Water arms do not
+execute the scientific Gate D campaign.
 
-## Guard validation and retained failure
+## Historical guard validation and retained failure
 
 The original 032079b1 preparation's local profile guards pass 9 tests, the unchanged IN-profile guards pass 14, and
 the shared engine's adversarial suite passes30:53 total. CI-provider policy
@@ -106,14 +135,16 @@ assertion summary and valid body JSON. In particular, root's retained
 the intended structured rows but exits with access violation 0xC0000005 after
 the terminal line. That run is not acceptance. The new guard reproduces this
 nonzero process disposition and rejects it; parser/schema checks do not resolve
-or qualify the pending Godot/Rapier teardown investigation.
+or establish a teardown cause. The later reviewed desktop66bf30f8 fixture
+ownership/EOF correction and successful processes are separately recorded in
+[its dated checkpoint](2026-10-25-lcb003-desktop-native-default-host.md); original crashes remain retained.
 
 The expansion is source checkpoint `e433a318`. Fresh local profile guards pass 16,
 unchanged IN-profile guards pass 14 and the shared engine guards pass 30: 60 total;
 provider policy passes. Independent 180-second process bounds, raw logs and
 the three unchanged workflow/helper/test hashes are retained at
 `tmp/lcb202-publisher-extension-guards-v1/RESULT.json`. The request remains absent.
-The current parser also consumes the three original successful ordinary/pose/
+That historical parser also consumes the three original successful ordinary/pose/
 Physics Pit logs and the unaccepted desktop 86-result schema at
 `tmp/lcb202-publisher-actual-schema-check-v2/RESULT.json`. That second record is
 schema compatibility only and explicitly retains the desktop process failure;
@@ -134,8 +165,8 @@ source files and raw failing logs remain at
 The current actual application evidence remains source-bound to its own dated
 body/thermal integration receipts. No new Windows/Linux runtime publication is
 claimed by this preparation record. After the final constructor checkpoint,
-record source/tree, runtime and manifest hashes, platform receipts, all 35
-processes perOS, minimum Linux runtime floor, immutable input comparison and
+record source/tree, runtime and manifest hashes, platform receipts, all36
+processes perOS (import plus35 cases), minimum Linux runtime floor, immutable input comparison and
 the runtime-only bot append. Then run required exact-head Documentation,
 Native, GDExtension/Godot and applicable apparatus gates with fresh adversarial
 review before merging the bounded host PR. Actual Web execution remains a

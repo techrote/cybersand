@@ -10,6 +10,23 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+The [final local host matrix](../audits/2026-10-25-lcb003-final-integration.md#complete-local-host-matrix-and-actual-web-result)
+passes all36 processes with unchanged budgets, no errors/warnings/skips and
+held693 source/643 staged project/139 native inputs. The [separate Web build
+and actual browser record](../audits/2026-10-25-lcb003-web-common-water.md)
+binds both85-input Wasm modules/exports and original201 POSTs: compat77 checks,
+threaded76, six common Water/four mixed arms. Ordinary visual/manual play and
+combined Windows/Linux publication still require their own acceptance.
+
+The [final application integration record](../audits/2026-10-25-lcb003-final-integration.md)
+binds native139/DLL93d3ee3f, LLVM163 ordinary groups plus seven receipt byte
+oracles and38 focused ASan/UBSan groups with the ordinary1MiB PE stack. Focused
+host cases pass167 default API,76 Water Feel and93 synchronous Water assertions.
+The unarmed003 profile now preserves the complete Water005 proof and requires
+35 cases plus import and a76-check/six-Water native Web prerequisite. Local
+Windows development results remain separate from combined publication,
+Windows/Linux exact-head CI, actual compat/threaded browser and visual acceptance.
+
 The subsequent [synchronous Water Feel body checkpoint](../audits/2026-10-25-lcb003-synchronous-water-reference-body.md)
 at source45b6ed9d reuses verified unchanged native135/DLL79f35666 and passes
 eight strict processes/656 assertions: new Water91, corrected PhysicsPit73,

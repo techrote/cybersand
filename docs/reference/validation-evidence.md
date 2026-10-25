@@ -10,6 +10,22 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+The [final local matrix](../audits/2026-10-25-lcb003-final-integration.md#complete-local-host-matrix-and-actual-web-result)
+at functionale8f1d37b passes36 real processes/import-plus35 cases, strict003
+verification and all held inputs (receipt69479670). The separately source-bound
+[common-Water Web record](../audits/2026-10-25-lcb003-web-common-water.md) has
+actualcompat77/threaded76 passes, successful original201 POSTs and independent
+review6aa3e165. Ordinary visual/manual Web remains open, and eight real native
+source comparisons still block combined desktop release provenance.
+
+The [final application integration proof](../audits/2026-10-25-lcb003-final-integration.md)
+binds clean functional sourcee8f1d37b and fresh Windows DLL93d3ee3f from unchanged
+native139. LLVM163 ordinary groups/seven receipt oracles and38 focused
+ASan/UBSan groups pass; paired default namespace and three actual host processes
+pass336 assertions. Earlier native135 proofs below retain their original scope.
+Combined runtime publication, full exact-head gates, actual browser/visual and
+scientific acceptance require separate final evidence.
+
 The [synchronous Physics Pit proof](../audits/2026-10-25-lcb003-synchronous-reference-body.md)
 binds5d5c75ed, five exact raw sources and unchanged native135/DLL79f35666.
 Six strict processes pass490 assertions:70 Physics Pit,117 ordinary demos,
