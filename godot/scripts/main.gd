@@ -9,6 +9,7 @@ const PhysicalEquipment = preload("res://scripts/physical_usable_equipment.gd")
 const PreparedPhysical = preload("res://scripts/prepared_physical_session.gd")
 const PreparedReferenceBody = preload("res://scripts/prepared_reference_body_session.gd")
 const PreparedTrialBody = preload("res://scripts/prepared_trial_body_session.gd")
+const PreparedDefaultActor = preload("res://scripts/prepared_default_actor_session.gd")
 var _pending_physical_candidate: RefCounted
 var _accepted_physical_candidate: RefCounted
 var _prepared_physical_identity: Dictionary = {}
@@ -16,6 +17,7 @@ var _prepared_physical_ready_sent: bool = false
 var _prepared_physical_factory: Callable = Callable()
 var _prepared_reference_factory: Callable = Callable()
 var _prepared_trial_factory: Callable = Callable()
+var _prepared_default_actor_factory: Callable = Callable()
 var _accepted_reference_candidate: RefCounted
 var exploratory_actor_configuration: Dictionary = {}
 var physical_trial_arm: String = ""
@@ -328,8 +330,8 @@ func liquid_comparison_can_apply_active(exploratory: bool) -> bool:
 	var origin: Dictionary = tower_context.get("native_default_demo",{})
 	return (exploratory and origin.get("native_recipe_id","") == "cybersand-desktop-default-demo-v1"
 		and not tower_active and not tower_context.get("active",false)
-		and physical_actor_session == null and physical_rig_id == &"" and actor_model_selection == &""
-		and (not player_uses_barrel() or physical_trial_arm in ["barrel","ripper"]) and _actor_reset_receipt == 0
+		and _default_actor_configuration_supported(_default_trial_player_configuration())
+		and _actor_reset_receipt == 0
 		and pending_microscenario_apply.is_empty() and pending_water_apply.is_empty()
 		and pending_water_exit.is_empty() and water_blind_set.is_empty() and water_active_blind_label.is_empty())
 
@@ -355,16 +357,35 @@ func _apply_prepared_liquid_default(policy: PackedInt32Array, normalize_water: b
 		exploratory: bool = true, requested_recovery: Variant = null, requested_profile: Dictionary = {},
 		requested_player: Dictionary = {}, retain_trial_motion: bool = true) -> bool:
 	if not liquid_comparison_can_apply_active(exploratory):
-		microscenario_error = "Native default demo requires its ordinary Exploratory reference or single trial owner"
+		microscenario_error = "Native default demo requires a complete single Exploratory actor owner"
 		return false
 	if simulation_worker.has_failed() or not tower_context.native_default_demo.get("healthy",false):
 		microscenario_error = "Prepared Restart requires a healthy World; load Current or another setup to recover"
 		return false
 	var player_configuration: Dictionary = requested_player.duplicate(true) if not requested_player.is_empty() else _default_trial_player_configuration()
+	if not _default_actor_configuration_supported(player_configuration):
+		microscenario_error = "Prepared native default requires a registered single actor; NPC/multi-owner configuration remains unsupported"
+		return false
 	var arm: String = str(player_configuration.get("physical_trial",""))
+	var rig: String = str(player_configuration.get("physical_rig",""))
+	var actor: String = str(player_configuration.get("actor_model",""))
+	var retain_actor: bool = retain_trial_motion and requested_player.is_empty() and (not rig.is_empty() or not actor.is_empty())
+	if retain_actor and (not requested_profile.is_empty() or requested_recovery != null):
+		microscenario_error = "Retained actor Apply cannot change player-environment configuration; current owner retained"
+		return false
 	var retain_motion: bool = retain_trial_motion and requested_player.is_empty() and arm in ["barrel","ripper"]
 	var staged: RefCounted
-	if not arm.is_empty():
+	if retain_actor:
+		staged = _prepared_default_actor_factory.call() if _prepared_default_actor_factory.is_valid() else PreparedDefaultActor.new()
+		if not staged.prepare_retained(rapier_bridge,rigid_bodies,"articulated" if not rig.is_empty() else "reference_body",
+			_body_owner_epoch(),_default_actor_source_values):
+			microscenario_error = staged.last_error;staged.close();return false
+	elif not rig.is_empty():
+		staged = PreparedPhysical.new()
+		if not staged.prepare(self,physical_actor_definitions(StringName(rig),StringName(player_configuration.actor_producer),false,CHARACTER_SPAWN),_physical_epoch+1):
+			microscenario_error = staged.last_error;staged.close();return false
+		staged.session.input_cancelled.connect(_on_physical_actor_input_cancelled)
+	elif not arm.is_empty():
 		staged = _prepare_trial_candidate(arm,CHARACTER_SPAWN,retain_motion)
 	else:
 		staged = _prepared_reference_factory.call() if _prepared_reference_factory.is_valid() else PreparedReferenceBody.new()
@@ -380,15 +401,18 @@ func _apply_prepared_liquid_default(policy: PackedInt32Array, normalize_water: b
 	if not staged.pose_unchanged():
 		microscenario_error = staged.last_error;staged.close()
 		return false
-	var origin: Vector2 = clamped_camera_origin(CHARACTER_SPAWN+CyberSampledCharacter.BODY_SIZE*0.5-Vector2(current_view_size)*0.5)
+	var origin: Vector2 = camera_origin if retain_actor else clamped_camera_origin(CHARACTER_SPAWN+CyberSampledCharacter.BODY_SIZE*0.5-Vector2(current_view_size)*0.5)
 	var owner: Dictionary = {"view_origin":Vector2i(origin.floor()),"view_size":current_view_size,
 		"horizontal_buffer":simulation_margin.x,"vertical_buffer":simulation_margin.y,
 		"simulation_window_enabled":simulation_window_enabled,"cadence_lod_enabled":cadence_lod_enabled,
 		"liquid_surface_adhesion_enabled":liquid_surface_adhesion_enabled}
 	var setup: Dictionary = {"intent":"exploratory","normalization":"water-normalize-v1" if normalize_water else "",
-		"maximum_rule_radius":radius,"physical_owner":{"kind":staged.owner_kind(),"epoch":0 if arm.is_empty() else staged.epoch,
+		"maximum_rule_radius":radius,"physical_owner":{"kind":staged.owner_kind(),"epoch":(staged.epoch if retain_actor else staged.session.epoch) if not rig.is_empty() else (staged.epoch if not arm.is_empty() else 0),
 			"instance_id":staged.get_instance_id(),"initial_bodies":staged.initial_body_states()}}
 	if not arm.is_empty(): setup.physical_owner.trial_arm = arm
+	if retain_actor:
+		setup.physical_owner.base_kind = staged.base_kind
+		setup.physical_owner.retained_state_digest = staged.state_digest()
 	_microscenario_request_serial += 1
 	var recovery: bool = bool(player_configuration.get("runtime_recovery_enabled",sampled_runtime_recovery_enabled)) if requested_recovery == null else bool(requested_recovery)
 	player_configuration.runtime_recovery_enabled=recovery
@@ -398,11 +422,13 @@ func _apply_prepared_liquid_default(policy: PackedInt32Array, normalize_water: b
 		"previous_paused":paused,"previous_mode":microscenario_mode,"liquid_policy":policy.duplicate(),
 		"controlled_liquid_setup":setup.duplicate(true),"owner_execution":owner.duplicate(true),"runtime_recovery":recovery,
 		"profile_request":not requested_profile.is_empty(),"player_configuration":player_configuration,
-		"retain_trial_input":retain_motion,"trial_source":_trial_source_binding() if retain_motion else {}}
+		"retain_trial_input":retain_motion,"trial_source":_trial_source_binding() if retain_motion else {},
+		"retain_default_actor":retain_actor,"fresh_actor_effort":float(player_configuration.get("prepared_actor_effort",_actor_effort))}
 	paused = true
 	var command: Dictionary = {"default_liquid_reset":true,"expected_default_generation":int(tower_context.native_default_demo.session_generation),
-		"scenario_request_serial":_microscenario_request_serial,"sampled_character_enabled":arm.is_empty(),
-		"source_sampled_character_enabled":not player_uses_barrel(),"expected_rigid_body_epoch":_body_owner_epoch(),
+		"scenario_request_serial":_microscenario_request_serial,"sampled_character_enabled":arm.is_empty() and rig.is_empty(),
+		"source_sampled_character_enabled":not player_uses_barrel(),
+		"retain_default_actor":retain_actor,"exploratory_actor_definitions":player_configuration.get("actor_definitions",[]).duplicate(true),"expected_rigid_body_epoch":_body_owner_epoch(),
 		"default_player_configuration":player_configuration.duplicate(true),
 		"runtime_enclosure_recovery_enabled":recovery,
 		"liquid_policy":policy.duplicate(),"controlled_liquid_setup":setup,"default_owner_execution":owner}
@@ -419,6 +445,16 @@ func _prepared_liquid_default_installed() -> void:
 	microscenario_liquid_setup = pending_microscenario_apply.controlled_liquid_setup.duplicate(true)
 	microscenario_liquid_setup.erase("physical_owner")
 	sampled_runtime_recovery_enabled = bool(pending_microscenario_apply.runtime_recovery)
+	if pending_microscenario_apply.get("retain_default_actor",false):
+		# Native committed, but the actual graph/controller/equipment owner stays.
+		# The disposable borrower cannot close or reset that installed owner.
+		_pending_physical_candidate.adopt();_pending_physical_candidate.close()
+		_pending_physical_candidate = null
+		_prepared_physical_identity = {};_prepared_physical_ready_sent = false
+		paused = true
+		simulation_worker.acknowledge_prepared_liquid_configuration(int(pending_microscenario_apply.serial))
+		return
+	_actor_effort = float(pending_microscenario_apply.get("fresh_actor_effort",_actor_effort))
 	var retained_input: RefCounted = physical_trial_input
 	_apply_microscenario_player_configuration({"player_start":[CHARACTER_SPAWN.x,CHARACTER_SPAWN.y]},pending_microscenario_apply.player_configuration)
 	if pending_microscenario_apply.get("retain_trial_input",false): physical_trial_input = retained_input
@@ -428,9 +464,23 @@ func _prepared_liquid_default_installed() -> void:
 	simulation_worker.acknowledge_prepared_liquid_configuration(int(pending_microscenario_apply.serial))
 
 func _default_trial_player_configuration() -> Dictionary:
-	return {"representation":"barrel-rapier" if physical_trial_arm in ["barrel","ripper"] else "sampled",
+	return {"representation":"barrel-rapier" if player_uses_barrel() else "sampled",
 		"runtime_recovery_enabled":sampled_runtime_recovery_enabled,"physical_trial":physical_trial_arm,
-		"physical_rig":"","actor_model":"","actor_producer":"human","actor_demo_npcs":false,"actor_definitions":[]}
+		"physical_rig":str(physical_rig_id),"actor_model":str(actor_model_selection),
+		"actor_producer":str(actor_producer_selection),"actor_demo_npcs":actor_demo_npcs,
+		"actor_definitions":actor_prototype_definitions(actor_model_selection,actor_producer_selection,false,CHARACTER_SPAWN)}
+
+func _default_actor_configuration_supported(configuration: Dictionary) -> bool:
+	return PreparedDefaultActor.valid_single_configuration(configuration)
+
+func _default_actor_source_values() -> Dictionary:
+	return {"session":physical_actor_session,"bodies":rigid_bodies.duplicate(),
+		"physical_epoch":_physical_epoch,"representation":player_representation,
+		"rig":physical_rig_id,"actor":actor_model_selection,"producer":actor_producer_selection,
+		"npcs":actor_demo_npcs,"effort":_actor_effort,"input_rearm":_actor_input_rearm,
+		"usable_index":actor_usable_index,"usable_requested":_actor_usable_requested_index,
+		"usable_power":_actor_usable_power,"usable_pending":_actor_usable_transition_pending,
+		"usable_rearm":_actor_usable_pointer_rearm}
 
 func _prepare_trial_candidate(arm: String, spawn: Vector2, retain_motion: bool) -> RefCounted:
 	var states := PackedFloat32Array()
@@ -2795,11 +2845,19 @@ func _advance_prepared_physical_candidate() -> void:
 		_prepared_physical_ready_sent=true;return
 	if _prepared_physical_identity.is_empty():
 		_prepared_physical_identity = publication.duplicate(true)
-		if publication.initial_bodies != _pending_physical_candidate.initial_body_states() \
-			or not _pending_physical_candidate.install_terrain(publication.terrain):
+		var initial: PackedFloat32Array=_pending_physical_candidate.initial_body_states()
+		if publication.initial_bodies != initial:
+			var mismatch: int=-1
+			for index: int in range(mini(publication.initial_bodies.size(),initial.size())):
+				if publication.initial_bodies[index]!=initial[index]: mismatch=index;break
 			simulation_worker.complete_prepared_physical_liquid(_prepared_physical_identity,false,
-				"initial body identity or terrain refused")
-			_prepared_physical_ready_sent = true
+				"initial body identity refused at element %d (lengths %d/%d)" % [mismatch,publication.initial_bodies.size(),initial.size()])
+			_prepared_physical_ready_sent=true
+			return
+		if not _pending_physical_candidate.install_terrain(publication.terrain):
+			simulation_worker.complete_prepared_physical_liquid(_prepared_physical_identity,false,
+				_pending_physical_candidate.last_error)
+			_prepared_physical_ready_sent=true
 			return
 	if not _pending_physical_candidate.verify_physics_frame() \
 		or not _pending_physical_candidate.prepare_terrain_budget(HARD_SURFACE_CHUNKS_PER_FRAME,HARD_SURFACE_FRAME_BUDGET_USEC):
@@ -3020,9 +3078,10 @@ func apply_actor_prototype_configuration(model_id: StringName, producer: StringN
 		"actor_definitions":definitions,
 	}
 	if _liquid_default_active:
-		if not (trial or model_id==&"") or (not trial and (producer!=&"human" or demo_npcs)):
-			actor_prototype_panel.set_error("Prepared native default supports the sampled baseline, barrel and Ripper; current owner retained.")
+		if demo_npcs or not _default_actor_configuration_supported(configuration):
+			actor_prototype_panel.set_error("Prepared native default requires a complete registered single actor; NPC owners remain unsupported.")
 			return false
+		configuration.prepared_actor_effort=actor_prototype_panel.effort_slider.value
 		var accepted: bool=_apply_prepared_liquid_default(microscenario_liquid_policy,
 			microscenario_liquid_setup.get("normalization","")=="water-normalize-v1",
 			int(microscenario_liquid_setup.get("maximum_rule_radius",2)),true,null,{},configuration,false)
@@ -3172,6 +3231,7 @@ func _actor_usable_input_allowed() -> bool:
 
 
 func _publish_actor_usable_buttons(trigger: bool, alternate: bool) -> void:
+	if _pending_physical_candidate != null: return
 	if physical_actor_session != null:
 		_publish_physical_keyboard_input(trigger, alternate)
 		return
@@ -3555,6 +3615,8 @@ func queue_brush_footprint_mutation(
 
 
 func handle_painting() -> void:
+	# A staged owner holds its input edge/rearm state through final adoption.
+	if _pending_physical_candidate != null: return
 	if _actor_usable_transition_pending or actor_equipment_active():
 		return
 	if _actor_usable_pointer_rearm:

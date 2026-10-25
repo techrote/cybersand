@@ -97,9 +97,9 @@ func _run() -> void:
 		and desktop.pending_microscenario_apply.is_empty() and desktop._accepted_reference_candidate==held,
 		"unsupported barrel switch refuses before changing Main representation or accepted graph")
 	expect(desktop.actor_prototypes_allowed()
-		and not desktop.apply_actor_prototype_configuration(&"rapier/runner",&"human",false)
+		and not desktop.apply_actor_prototype_configuration(&"rapier/runner",&"human",true)
 		and desktop._accepted_reference_candidate==held and desktop.pending_microscenario_apply.is_empty(),
-		"F5 permits the bounded reference/trial selector while unsupported articulated default construction retains the owner")
+		"F5 permits registered single owners while unsupported NPC/multi-owner default construction retains the owner")
 	var observed: Dictionary = desktop.simulation_worker.liquid_default_host_observation_record()
 	expect(prior.initial_body_count==3 and prior.initial_body_state_sha256==publication.initial_body_state_sha256
 		and prior.run_intent=="exploratory" and prior.pacing=="host_paced"
