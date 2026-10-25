@@ -84,6 +84,30 @@ The immutable `CHECKPOINT.json` SHA256 is
 `MANIFEST.sha256` SHA256 is
 **`2aaf423ddf4f296202c8bcd913c517c63b4b594ca0df2b196d5377a82af8eb4f`**.
 
+### Additive retention correction
+
+After sealing, the editor staging helper was mistakenly reused for the next
+Tower slice. It overwrote the original editor-import log and five staged script
+copies. The original `CHECKPOINT.json`, `MANIFEST.sha256`, recorded original
+import hash, DLL, final22 execution logs/records, source-input manifests and build
+receipt/log remain unchanged. **The original raw editor-import log is no longer
+retained.** The original manifest remains its historical point-in-time record,
+not a claim of present log completeness. No runtime test result is lost or
+reclassified.
+
+The five staged scripts were restored from `d498e80d` to their exact original
+recorded byte hashes, including checkout line endings. The additive
+`POST-SEAL-RECOVERY.json` SHA256 is
+**`3cae4b067a990e6ac5914b48de869acdbfe61e26b151c02ca14c945e514b3ee9`**.
+The subsequent editor import on those restored inputs exited zero in
+**3.781/180 seconds**, with no errors/warnings, and writes distinct
+`restored-input-editor-import.log` SHA256
+**`415e459346fbcdf2fbecb6e0fad6095d4b1a02e89c7e1d53b02e2dfe3e727977`**.
+Its JSON explicitly records that this is fresh import scope, not the original
+log or a rerun of final22 tests. The additive `RECOVERED-MANIFEST.sha256` SHA256 is
+**`389c07f6b125332af51ad706d84470c9aa028e391ae5bf0220aa2284aca451bd`**.
+Tower work now uses separate `C:/Users/_/.codex/tmp/lcb202-tower-host/` storage.
+
 ## Final scoped regression and documentation matrix
 
 All22 final processes exit zero with no engine errors or warnings. Each uses
