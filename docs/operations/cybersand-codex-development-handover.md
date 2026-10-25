@@ -10,6 +10,19 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Trial successor correction after accepted App — 2026-10-25
+
+App #256 is merged as main56422c05 after all four exact-dc2 required gates.
+The [Trial correction record](../audits/2026-10-25-lcb003-trial-body-constructors.md#failed-full-matrix-and-unsupported-rig-correction--2026-10-25)
+preserves the actual ff2 Windows/Linux failed obsolete barrel-refusal assertion,
+the catalog-unsupported negative with unchanged old-owner/no-queue fences and
+fresh actual E3 Windows sampled71/Trial117/default86 successful assertions.
+Native80/compiled139 and runtime bytes remain exact; historical535 has seven
+explicit script/test differences. Corrected-head CI/review remain required;
+local proof does not close other constructors, full-host/scientific or #203
+qualification. Older preparation/pending-App sections retain their source
+snapshots. Further Web testing is owner-deferred until after the epic.
+
 ## Current Trial consumption of corrected App — preparation only
 
 This Trial branch consumes exact Appdc2eee94 (sourcefix152a5074), retaining all
