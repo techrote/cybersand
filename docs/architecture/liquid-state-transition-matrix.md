@@ -4,7 +4,7 @@ status: Approved design
 document-kind: design
 scope: Operation-by-operation transition rules for default liquids, native W-CY and pressure reference, plus Planned inertial/cache/dormancy requirements — ownership, state movement, exact quantity/source-sink, invalidation and family applicability; no production Cell layout choice
 canonical-for: [liquid-state-transition-matrix]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-prepared-setup-and-receipts.md, lcb-pressure-inertial-handoff.md, data-ownership-and-lifetimes.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, ../systems/water-design.md]
 ---
 
@@ -12,7 +12,7 @@ related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-
 
 ## Status and inputs
 
-- **Default-family baseline rows** retain the historical prepass at `9012425`/`4caa2c3`. Current PF and residual W-CY refinements are identified separately below.
+- **Default-family baseline rows** retain the historical prepass at `9012425`/`4caa2c3`. Current PF and W-CY refinements are identified separately below.
 - **Proposed rows** are the contract that #200 (policy, `pressure_flow_v1`,
   whole-cell Water) and #212 (`inertial_cellular_v1`) must implement and
   test.
@@ -23,12 +23,12 @@ related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-
   Current per-path result. Refinements of the Proposed PF text: the overfill
   bound is `maximum()`; a kernel-vacated cell carries a vacuum label (volume, not
   amount); `transfer_water` throws in a pressure World; vented and collapsed gas
-  amounts are booked in `GasLedger`. Residual native #200 source advances exact
-  hash/persistence to version 2 with the shared quantity ledger; historical
-  CYPS1 explicitly refuses in that residual build; main retains CYPS1. CYSD1
-  stays a default-family reconstruction.
-- **W-CY rows are Current in residual native source** on
-  `codex/lcb001-shared-contract`: whole-cell Water law version 1 and optional
+  amounts are booked in `GasLedger`. Accepted [PR #246](../audits/2026-10-25-lcb001-shared-contract-acceptance.md)
+  advances main to exact hash/persistence version **2** with the shared quantity
+  ledger and construction bindings. Main explicitly refuses historical CYPS1;
+  its #245 evidence is retained. CYSD1 stays a default-family reconstruction.
+- **W-CY rows are Current on main through #246** at merge `ec58d919`:
+  whole-cell Water law version 1 and optional
   viscosity material block v2, with retained cadence/stochastic liveness.
   [Native prepared setup and receipts](liquid-prepared-setup-and-receipts.md)
   owns normalization, native-issued outcomes, typed receipt and accounting
@@ -221,7 +221,7 @@ corner travel, and lighter-below non-support.
 | Sleep | Current: ordinary quiet threshold 3; W-CY retains deadlines for legal future cadence/yield opportunities and blocked pools may sleep. Planned #201 dormancy needs analytical future rest, preserves no-motion body contacts/material work and cannot freeze nonzero flow or suppress other families (`dormant-water-active-oil`). |
 | Wake | any write, cross-family contact, topology change, gas change or remote head change affecting a dormant certificate |
 | Reset/rebuild | a new World with fresh optional storage and gas table; no state carried from the old World; validate → reconstruct → commit |
-| Save/readback | Current in residual native source: typed-v1 prepared setup/receipts/accounting, complete physical hash2 and CYPS2 continuation; unknown schema/format and historical CYPS1 refuse. Qualified provenance is not full host replay proof. CYSD1 loads defaults and is never a continuation. |
+| Save/readback | Current on main: typed-v1 prepared setup/receipts/accounting, complete physical hash2 and CYPS2 continuation; unknown schema/format and historical CYPS1 refuse. Qualified provenance is not full host replay proof. CYSD1 loads defaults and is never a continuation. |
 
 ## 10. Pressure gas compartments (PF, World-owned)
 

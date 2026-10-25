@@ -2,9 +2,9 @@
 title: Level saves and exact replay
 status: Current
 document-kind: contract
-scope: CYSD1 finite-level format, ownership and omitted continuation state; residual native LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps
+scope: CYSD1 finite-level format, ownership and omitted continuation state; accepted main LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps
 canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-25
 related-documents: [interfaces-and-message-contracts.md, ../architecture/pressure-flow-v1.md, ../architecture/determinism-and-boundary-transfers.md, validation-evidence.md]
 ---
 
@@ -96,7 +96,7 @@ explicit strict-mode implementation. Do not infer those contracts from CYSD1.
 
 ## How does CYPS2 differ from CYSD1?
 
-**Current in unmerged residual native #200 source on `codex/lcb001-shared-contract`.**
+**Current on main through accepted PR #246 (`ec58d919`, 2026-10-25).**
 `World::save_physical_state()`/`restore_physical_state()` and the bridge's
 `export_physical_state`/`import_physical_state` write and read **CYPS2**
 (`kPhysicalStateFormatVersion` 2), an exact tick-boundary continuation for LCB
