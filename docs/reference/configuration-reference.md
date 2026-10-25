@@ -348,6 +348,13 @@ Capacity or non-value claims refuse; no capacity outcome upgrades native/host
 full matched eligibility. Library path/current-file observation is not mapped
 module proof. See the [ownership and scope](../architecture/liquid-prepared-setup-and-receipts.md#qualified-host-observation-foundation).
 
+The subsequent ordinary Water Feel family route retains the independent existing
+Water semantic policy/recipe and requires explicit Exploratory with a body-free
+sampled owner. It retains accepted policy/normalization/radius on reset and
+semantic/scenario change. Blind/unstaged bodies and CY Water fractional future
+sources refuse; initial normalization never changes scheduled actions. No new
+Water policy field, body capacity or default is introduced. See [route bounds](../architecture/liquid-prepared-setup-and-receipts.md#ordinary-water-feel-preparation).
+
 The ordinary Experiment Tower additionally accepts these explicit settings only
 in Exploratory mode with its existing sampled owner. Selected floor0..4, landing,
 camera and resolved transport profile are final preparation input. Native worker

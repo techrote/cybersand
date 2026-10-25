@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Preregistered Issue 19 V1 presentation and V2 H-preparation experiments
 canonical-for: [water-feel-lab-experiment, water-presentation-experiment]
-last-reviewed: 2026-09-12
+last-reviewed: 2026-10-25
 related-documents: [architecture-programme.md, architecture-programme-water-feel-addendum.md, architecture-programme-prompts/fractional-presentation.md, experiment-tower.md, state-precision-experiment.md, ../systems/water-design.md, ../architecture/rendering-and-gameplay-bridges.md, ../audits/2026-09-12-issue-19-water-feel-lab.md]
 ---
 
@@ -37,6 +37,17 @@ the later-human-evaluation boundary. The frozen sections remain here so current
 behavior can be checked against the pre-code contract.
 
 ## Frozen normalized policy
+
+**Subsequent unmerged LCB-003 extension, 2026-10-25:** the normal liquid panel
+can rebuild an unblinded body-free Water Feel run under an explicit family.
+It retains the sampled player, original recipe/actions, independent version1
+Water policy and ordinary control/ledger behavior, and requires Exploratory.
+Solver reset/semantic changes preserve accepted selection transactionally;
+blind/body/future fractional whole-cell source routes refuse as documented in
+the [owner contract](../architecture/liquid-prepared-setup-and-receipts.md#ordinary-water-feel-preparation).
+The [dated local proof](../audits/2026-10-25-lcb003-water-feel-constructor.md)
+does not requalify #19's frozen blind study, select a perceptual winner, or supply
+actual new Web/publication acceptance. The frozen registration below is unchanged.
 
 One version-1 `WaterExperimentPolicy` is the only normalized representation
 consumed by World construction and every selection surface. Its fields are:

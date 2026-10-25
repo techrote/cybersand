@@ -811,6 +811,15 @@ cannot be a cross-tick static-rest predicate.
 
 ## LCB-003 controlled application-host slice — 2026-10-24
 
+**Subsequent Water Feel constructor:** explicit unblinded body-free sampled
+Exploratory rebuilds retain original Water policy/recipe/player/actions and
+ordinary controls/ledger. Reset/semantic changes retain accepted family choice;
+same-hash native refusal requires exact serial/applied acknowledgement. Blind,
+unstaged bodies and fractional whole-cell future sources refuse before commit.
+See [the route contract](../architecture/liquid-prepared-setup-and-receipts.md#ordinary-water-feel-preparation)
+and [dated local qualification](../audits/2026-10-25-lcb003-water-feel-constructor.md).
+Body/blind/future-source qualification, other constructors and real Web remain open.
+
 **Subsequent qualified host observation foundation:** version1 records native
 API-reported library path/current-file facts, actual config/publication files and
 bounded current-script observations separately from unverified caller values.

@@ -454,6 +454,17 @@ hosted publication and final exact-head acceptance remain separate gates.
 
 ### Normal liquid-comparison UI slice
 
+The subsequent [`test_liquid_water_feel_host.gd`](../../godot/tests/test_liquid_water_feel_host.gd)
+checks72 assertions: original35 recipe identity/player/action preservation,
+exact Current native control, explicit initial normalization/refusal, final
+request/reset/stop fences, ordinary Water Feel activity and source ledger,
+same-semantic-hash refusal acknowledgement, actual panel/reset/semantic change,
+blind/body/future-source refusal and native synchronous controller. Retain the
+existing Water Feel controller/blind/10-exit,24-policy/70-build native integration,
+35-recipe and shared owner regressions. The [dated evidence](../audits/2026-10-25-lcb003-water-feel-constructor.md)
+identifies the unchanged native DLL separately from new GDScript and preserves
+the typed-array fixture failure with recoverable before-test source snapshots.
+
 The subsequent [`test_liquid_owner_observation.gd`](../../godot/tests/test_liquid_owner_observation.gd)
 checks28 assertions through actual Host/Main panel/synchronous owners: staged
 collection refusal, final-guard refusal, copied full record versus compact

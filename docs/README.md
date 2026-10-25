@@ -10,6 +10,12 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The subsequent unmerged [Water Feel family route](architecture/liquid-prepared-setup-and-receipts.md#ordinary-water-feel-preparation)
+preserves the sampled player, original recipes/actions and ordinary lab/reset
+controls in explicit unblinded body-free Exploratory mode. Its
+[dated proof](audits/2026-10-25-lcb003-water-feel-constructor.md) retains Current
+controls, blind/body/future-source refusal and remaining platform qualification.
+
 The unmerged #202 [qualified host observation foundation](architecture/liquid-prepared-setup-and-receipts.md#qualified-host-observation-foundation)
 records actual API-reported library path/current-file facts without upgrading
 native receipt-v1 eligibility. Its [dated Windows proof](audits/2026-10-25-lcb003-qualified-host-observation.md)

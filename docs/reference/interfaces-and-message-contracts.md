@@ -742,6 +742,14 @@ See [Tower owner lifetime and scope](../architecture/liquid-prepared-setup-and-r
 
 ### Read-only native MicroScenario inspection
 
+The subsequent ordinary Water Feel route passes explicit `liquid_policy`,
+`controlled_liquid_setup` with Exploratory intent and `scenario_request_serial`
+through `water_reset`, retaining `water_active` rather than entering MicroScenario
+mode. The same serial/applied/definition acknowledgement used by prepared owners
+qualifies success; the semantic Water policy hash alone cannot. The original
+default/blind command route remains available. See [Water Feel route restrictions,
+source actions and ownership](../architecture/liquid-prepared-setup-and-receipts.md#ordinary-water-feel-preparation).
+
 The subsequent qualified host observation API
 `CyberDemoBridge.loaded_native_runtime_values()` accepts no caller path/hash and
 returns copied version1 API-reported library path/current file SHA256/size, with

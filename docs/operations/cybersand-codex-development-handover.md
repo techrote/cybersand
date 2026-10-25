@@ -12,6 +12,14 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## Integrated LCB-003 IN host — 2026-10-25
 
+The subsequent [Water Feel checkpoint](../audits/2026-10-25-lcb003-water-feel-constructor.md)
+adds actual ordinary dispatcher/panel/reset solver selection for unblinded
+body-free sampled Exploratory runs. Exact serial/applied/definition acknowledgement
+protects same-semantic-hash refusal; original recipes/player/actions/ledger and
+Current/blind controls are retained. Blind/body and whole-cell fractional future
+sources refuse before mutation. Review the [constructor matrix](lcb-manual-comparison-ux.md#constructor-coverage-at-this-checkpoint)
+before extending body/import routes or claiming actual browser acceptance.
+
 `codex/lcb003-application-host` has merged accepted #246 main
 `ec58d919b3d904fbd338eaccc25de35782c41a24` and stable #250 IN checkpoint
 `028fc7b6893a57ca816b5221ce1b9067f0c2c01d`. The subsequent adapter/UI slice

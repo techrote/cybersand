@@ -348,6 +348,45 @@ row of the normal constructor matrix, not rectangle/default bootstrap, body,
 CYSD import, diagnostic/plane or procedural routing. Full host evidence and
 final source/runtime/platform qualification remain separate.
 
+## Ordinary Water Feel preparation
+
+**Current source `bf33c0e5` on the unmerged #202 branch:** the actual Water Feel
+dispatcher additionally accepts explicit solver/normalization/geometry rebuilds
+for an unblinded body-free sampled owner. Its copied schema2 preparation view
+retains the original schema1 recipe, semantic policy, sampled player, camera and
+scheduled actions. Because ordinary Water Feel is owner-paced and player-enabled,
+this route explicitly requires **Exploratory**. It does not remove the player
+to claim a Controlled run or change the protected actor-free LCB fixtures.
+
+The ordinary `water_reset` dispatcher uses the existing prepared native token,
+private sampled-owner stage and request/settings/profile/reset/stop fence. Final
+native execution and initial owner are captured before commit. Its tail does not
+reset the prepared character or clear the initial frame hold. Main waits for
+the exact owner-issued scenario serial, `applied = true` and validated definition
+hash before adopting UI/setup state. An unchanged Water semantic-policy hash
+cannot falsely acknowledge a refused family rebuild. Accepted installation stays
+`water_active = true`, `micro_active = false`, with existing Water Feel actions,
+ledgers and controls. Reset and normal Water Feel semantic/scenario changes
+retain accepted solver/normalization/geometry; accepted ordinary exit retires it.
+
+Blind runs, unstaged supported-body/reference owners and non-sampled owners
+refuse before mutation. Starting a blind session from experimental Water Feel
+also refuses before creating its hidden mapping. Original Current blind and body
+routes remain available through their existing constructors. For whole-cell CY
+Water, recipes with fractional scheduled fill sources refuse before commit:
+initial `water-normalize-v1` does not normalize future events. Current and
+pressure Water keep those actions unchanged, with actual source-ledger proof.
+When Water-IN is separately admitted, its whole-cell source compatibility must
+join this check; Brine IN does not admit Water-IN.
+
+The [Water Feel checkpoint](../audits/2026-10-25-lcb003-water-feel-constructor.md)
+records actual desktop/synchronous routes, deterministic refusals/fences, exact
+Current recipe/default controls and the unchanged local native-runtime identity.
+This closes the bounded unblinded body-free row only. Body staging, blind-family
+study qualification, whole-cell future-source qualification, other constructors,
+complete executed host/source identity and actual browser/publication gates remain
+open. Native and host full matched eligibility remain false.
+
 ## Source map
 
 | Responsibility | Current source |
