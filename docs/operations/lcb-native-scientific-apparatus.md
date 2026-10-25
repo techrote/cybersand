@@ -257,6 +257,39 @@ Windows Release results remain pending until their actual scoped jobs complete
 and receive exact-source review. Neither this infrastructure nor that bounded
 qualification runs a full scientific campaign or changes acceptance thresholds.
 
+### First hosted Release attempt and bounded portability correction
+
+The first actual scope run40243375312 at `baab6d75143bbdfd4bd409238f5525f6aeda6c6c`
+fails before any Godot preparation or Native qualification. Its Windows cross-build
+successfully compiles all five units and links an O3/LTO PE with38 actual compiled
+inputs. Linux GCC13 rejects the roster reader's parenthesized deduced-span
+initialization; the bounded correction makes the const-byte span explicit and
+uses braces. Five statement line breaks also remove GCC indentation warnings.
+These apparatus-only edits change no native World/header/ABI/law/runtime. Earlier
+O1 binary/CLI proofs retain their original21f5 source and are not relabelled as
+executions of this corrected consumer.
+
+The actual Windows job refuses its exact source map at `world_inertial.inc`:
+`text=auto` uses native CRLF when no explicit LF checkout is selected. Global
+`core.autocrlf=false` alone was insufficient. The bounded transfer step now
+sets local autocrlf=false, then uses scoped `core.eol=lf` with
+`checkout-index --temp --stdin -z` for only the complete compiled Native text
+pathset. It verifies each temporary file against HEAD/index Git bytes and the
+complete source map before atomically replacing those exact paths. Plain
+`checkout-index --force` can retain a stat-cached working file; the temporary
+extraction avoids that premise. No broad checkout, LFS smudge or hash/parser
+normalization occurs. Before raw/canonical/Git identities, after raw hashes and
+partial errors are retained separately; normal byte-exact bundle/source
+verification still follows. The optional `--restore-compiled-checkout` takes a
+new external evidence directory and is only admitted for Windows verification.
+
+The corrected local source passes36 guards, including real temporary-Git CRLF
+restoration, an unchanged unrelated file, and hostile non-Native or changed-Git
+source refusal. A pinned Windows Clang23 syntax-only check of the consumer exits0
+with empty streams. This is not a repaired GCC build, linked consumer, engine
+execution or platform qualification. The first failed run remains retained;
+actual corrected Linux and Windows scoped jobs are still required.
+
 ## Remaining campaign registration
 
 Before a full campaign, freeze/review exact fixture versions, requested/readback

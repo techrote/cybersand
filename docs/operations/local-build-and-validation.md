@@ -70,6 +70,16 @@ The34 local pure passes are not either platform result. Draft suppression and a
 new workflow's dispatch-registration boundary remain explicit; no runtime is
 republished merely to add this apparatus-only build/validation lane.
 
+The first scoped hosted attempt40243375312 fails before qualification: GCC13
+rejects an apparatus span initialization and Windows byte verification detects
+CRLF `world_inertial.inc`, while its actual Windows cross-build succeeds. The
+[dated correction](../audits/2026-10-25-lcb004-native-observation-apparatus.md#first-actual-hosted-scope-failure-and-bounded-repair)
+retains all three jobs/artifacts and the old O1 proofs separately. Windows bundle
+verification now additionally accepts `--restore-compiled-checkout NEW_EXTERNAL`
+to restore only complete compiled Native text paths from authenticated Git-index
+LF bytes. Exact map equality remains mandatory. Corrected local36-guard and
+Clang syntax-only results do not replace pending actual GCC/Windows qualification.
+
 ## Published and development identity-test controls
 
 The [two-test correction ledger](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)

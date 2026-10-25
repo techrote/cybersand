@@ -401,3 +401,67 @@ SHA256 `19ab806f240566d76ac4fbf8a924128cb95bd88197a6c5d0a65e64f8278a2bee`.
 It independently passes13 helper guards and authenticates the34-test/provider
 streams, unchanged seven apparatus paths and published Native80. Neither this
 review nor documentation validation executes the pending Release/platform jobs.
+
+## First actual hosted scope failure and bounded repair
+
+Actual run40243375312, source `baab6d75143bbdfd4bd409238f5525f6aeda6c6c`,
+finishes failure at23:09:29UTC. Independent capture retains fresh run/three-job
+APIs, all three raw job logs and all three artifact ZIPs authenticated against
+GitHub's API SHA256 digests. Packet
+`lcb004-science-release-infra-failure-40243375312/CAPTURE-RECEIPT.json`, SHA256
+`a8777b560963b9615c4e371760a59c5bea4d01b9ff10e9bdb06479caf3c69f37`,
+preserves the complete first attempt. The gh client initially refuses raw
+terminal-escape bytes; archival `--allow-escape-sequences` captures those logs,
+with that capture-apparatus failure retained and no test/source change.
+
+- Linux job121319740243 fails compile4 of the apparatus consumer. GCC13 parses
+  `Reader in(std::span(bytes).first(...))` as a declaration and reports the
+  missing template argument/placeholder error. The first four core objects
+  compile; no Linux link, runtime import or qualification follows.
+- Windows cross-build job121319740078 succeeds, including all five actual
+  compilations, O3/LTO link, PE/import inspection, locked archive/member bindings
+  and38-input source verification. Its actual consumer SHA256 is
+  `af5fcb28b00bbbdba1dcc82e1cf1ca8b50f326d91d782d83402123175764a2c4`. This is a successful build of the prior consumer, not successful
+  Windows physics qualification or proof of the later correction.
+- Actual Windows job121319939960 refuses `native/src/world_inertial.inc` raw
+  equality before runtime/Godot/preparations/Native children. Other scopes are
+  skipped, not green. `*.inc` has text=auto; native Windows eol remains CRLF
+  despite the preceding global autocrlf=false setting.
+
+The bounded consumer repair uses explicit `std::span<const std::uint8_t>` and
+brace initialization with the same checksum-excluding bounds. Five warning-only
+statement line breaks remove GCC misleading-indentation diagnostics. No World,
+header, ABI, codec, law, fixture or published Native80 input changes. The original
+21f5/O1/CLI semantic review and63.328s engine cohort remain historical and intact.
+
+The Windows setup repair authenticates the complete bundle, actual Git HEAD,
+unchanged index and every compiled Native text Git blob. It sets local
+`core.autocrlf=false`, extracts only those paths with scoped `core.eol=lf`
+`checkout-index --temp --stdin -z`, authenticates every temporary byte sequence,
+and atomically replaces the corresponding paths. It records each before raw,
+canonical-LF and Git blob identity plus after raw SHA. Canonical hashes are
+diagnostic only: final complete raw source-map equality is unchanged. No broad
+checkout, LFS smudge or data-parser normalization is used. Always-upload also
+retains this separate setup evidence/partial failure directory.
+
+Real temporary-Git controls caught and preserve intermediate setup premises:
+plain forced checkout can skip a stat-cached file; refreshing the fixture index
+stops before restoration; temporary extraction without explicit core.eol=lf
+still produces native CRLF and correctly fails exact hashes. The final positive
+control starts with actual CRLF, restores exact Git LF, leaves an unrelated file
+unchanged and passes the original verifier. Non-Native and changed-Git map
+mutations refuse before restoration. These controls execute Git only, not World.
+
+Corrected source proof is
+`repair-proof-v1/REPAIR-FREEZE.json` under the capture root, SHA256
+`0fc237952dca835338eb5d43cb8848567ae27931e16f81023107b49bb7b5196f`.
+All36 pure controls pass in2.403s, provider/whitespace pass, and actual pinned
+Windows Clang23 syntax-only exits0 in6.640s with empty streams. The four source
+hashes are builder4af40379, testa3ee62cc, workflowb7eb6a16 and consumer075bb236;
+full hashes/copies/commands are retained externally. Both published Native80
+sets and the other six apparatus/Makefile paths remain unchanged. There is no
+repaired GCC build, newly linked consumer, new physics execution or actual
+corrected platform CI result in this local proof. No retry, raised deadline or
+full scientific campaign is implied. Exact corrected-head platform qualification
+and independent review remain required; current proper documentation validation
+will be bound separately after this additive prose freeze.
