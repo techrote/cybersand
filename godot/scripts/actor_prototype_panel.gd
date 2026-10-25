@@ -27,6 +27,7 @@ var _equipment_physical: bool = false
 var _equip_only_button: Button
 var status: Label
 var _visible_models: Array[StringName] = []
+var _prepared_default_only: bool = false
 
 
 func _ready() -> void:
@@ -158,6 +159,15 @@ func configure_selection(model_id: StringName, producer: StringName, demo_npcs: 
 	npc_choice.button_pressed = demo_npcs
 	_refresh_description(model_choice.selected)
 
+func restrict_prepared_default(enabled: bool) -> void:
+	_prepared_default_only=enabled
+	set_choice.disabled=enabled
+	for index: int in range(_visible_models.size()):
+		model_choice.set_item_disabled(index,enabled and _visible_models[index] not in [&"",&"physical/barrel",&"physical/ripper"])
+	_refresh_description(model_choice.selected)
+	if enabled:
+		status.text="Prepared native default: sampled baseline, barrel or Ripper. F5 restores the authored map and fresh pose; Liquids Apply retains live trial motion. Other actor constructors remain unavailable."
+
 
 func configure_equipment(usable_index: int, power: float, physical: bool = false) -> void:
 	_equipment_physical = physical
@@ -242,6 +252,9 @@ func _refresh_description(index: int) -> void:
 	var physical: bool = str(rig_id).begins_with("physical/")
 	producer_choice.disabled = rig_id == &"" or physical
 	npc_choice.disabled = rig_id == &"" or physical
+	if _prepared_default_only:
+		producer_choice.select(0);producer_choice.disabled=true
+		npc_choice.button_pressed=false;npc_choice.disabled=true
 	effort_label.get_parent().visible = not physical
 	if physical:
 		producer_choice.select(0)
@@ -300,6 +313,9 @@ func show_selection() -> void:
 
 
 func set_context(map_name: String) -> void:
+	if _prepared_default_only:
+		status.text="Prepared native default: sampled baseline, barrel or Ripper. F5 restores the authored map and fresh pose; Liquids Apply retains live trial motion. Other actor constructors remain unavailable."
+		return
 	status.text = "Map: %s\nApplying restores this map's starting layout; edits and motion reset. External policy waits for actions. [ / ] changes keyboard power. P resumes play after applying." % map_name
 
 
