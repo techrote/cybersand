@@ -10,15 +10,18 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
-## Unarmed Water publisher guards
+## Water publisher guards and publication checks
 
 `python tools/ci/test_lcb005_water_inertial_runtime_publication.py` exercises the
 separate branch/schema/source lease, unchanged15-process schedule, strict Water
 proof, complete input/four-path guards and same-process profile isolation.
 Retain the original005/001 guard suites and run
 `python tools/ci/check_ci_provider_policy.py` for its new workflow. The [preparation record](../audits/2026-10-25-water-inertial-publication.md)
-keeps the Water request absent until independent review/source freeze; passing
-synthetic guards is not actual target-OS runtime publication.
+keeps the historical unarmed preparation separate from actual sequence1 at
+source4b588279/run40166210470/botC9e52b52. Both target OSes pass all15 processes
+and642 policy assertions with fresh independent artifact/source/LFS/floor review.
+Synthetic guards alone remain insufficient. Approval-held bot PR runs have no
+job results; root must obtain the actual final ready-head full matrix.
 
 ## Water IN native successor checks
 
@@ -30,7 +33,9 @@ and complete receipt-byte gates remain mandatory. No test selects a larger
 geometry implicitly: IN requests3 and matched controls use identical geometry;
 ordinary Current stays2. The [dated native record](../audits/2026-10-25-water-inertial-native.md)
 owns exact Windows LLVM inputs, normal1MiB stack,120s focused and600s ordinary
-limits, raw failures and pending source-matched OS/publication/full-host gates.
+limits and raw failures. The [separate Water publication record](../audits/2026-10-25-water-inertial-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
+qualifies both target runtimes; full ready-PR and scientific/full-host gates
+remain open.
 
 
 ## Which build inputs are required?

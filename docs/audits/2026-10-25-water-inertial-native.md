@@ -2,13 +2,25 @@
 title: Water inertial native successor evidence
 status: Current
 document-kind: audit
-scope: Isolated Water IN native implementation, complete carrying stencil, Current behavior and changed identity namespace; publication and full Gate D remain pending
+scope: Isolated Water IN native implementation, complete carrying stencil, Current behavior and changed identity namespace; later qualified Windows/Linux publication is separately bound, full ready-PR and Gate D remain pending
 canonical-for: []
 last-reviewed: 2026-10-25
 related-documents: [2026-10-25-water-inertial-registration.md, ../architecture/inertial-cellular-v1.md, ../architecture/liquid-solver-family-policy.md, ../operations/lcb-water-comparison-and-fixtures.md]
 ---
 
 # Water inertial native successor evidence
+
+## Later source-matched publication
+
+The native records below retain their original source/failure/local-platform
+scope. Later [actual sequence1 Windows/Linux publication](2026-10-25-water-inertial-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
+passes15 processes perOS at source4b588279, with642 policy assertions/no failures,
+and appends only four runtime paths at botC9e52b52. Fresh independent artifact
+review `b15ea7cb` has no actionable bounded finding. Reviewed native5f8baf6f
+inputs remain unchanged. The earlier18 stale-runtime errors are preserved as
+failed historical checks; current materialized provenance must pass separately.
+Final exact-head ready CI/review, common-Water scientific and full host/Web/#203
+acceptance remain open; no local proof below is retroactively promoted.
 
 ## Source and recoverable checkpoint
 
@@ -25,9 +37,9 @@ The canonical [Water IN adapter](../architecture/inertial-cellular-v1.md#water-i
 owns source behavior. C64-E8, dense optional six-byte IN slots, actual damping,
 shared Brine numerical law, pressure law, physical hash 3/CYPS 3 for IN and
 non-IN2 remain unchanged. Water reference admission, actual-carrier continuation
-and the shared whole-Water ingress regime are new. No runtime request is armed
-or payload replaced. The retained Windows/Linux runtimes belong to the parent
-and are stale for this source.
+and the shared whole-Water ingress regime are new. At this initial native
+checkpoint no runtime request was armed or payload replaced; the retained
+Windows/Linux runtimes belonged to the parent and were stale for that source.
 
 ## Prospective footprint and actual carrying
 

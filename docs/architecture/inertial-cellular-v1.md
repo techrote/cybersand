@@ -2,7 +2,7 @@
 title: Inertial cellular reference
 status: Current
 document-kind: reference
-scope: Brine parent qualification and isolated Water IN native successor; whole-cell admission, material hooks, explicit carrier ownership and complete stencil; publication, full application and scientific qualification retain separate scope
+scope: Accepted-main Brine IN and isolated Water IN successor with actual Windows/Linux publication; whole-cell admission, material hooks, carrier ownership and complete stencil; final ready-PR, application and scientific qualification retain separate scope
 canonical-for: [inertial-cellular-v1-brine, inertial-cellular-v1-water]
 last-reviewed: 2026-10-25
 related-documents: [lcb-pressure-inertial-handoff.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb005-native-brine-checkpoint.md]
@@ -16,14 +16,20 @@ related-documents: [lcb-pressure-inertial-handoff.md, liquid-solver-family-polic
 can select `inertial_cellular_v1/reference`; Current Water remains FreeMass.
 Water uses its own whole-cell adapter around the shared integer IN law. Its
 [prospective registration and complete path model](../audits/2026-10-25-water-inertial-registration.md)
-start from reviewed Brine contact repair `68f74906`. Local native proof does not
-qualify the retained parent runtimes, normal application hosts, common-Water
-scientific screens, owner feel or full Gate D/#203 completion.
+start from reviewed Brine contact repair `68f74906`. Brine IN is accepted on main
+through PR #250 (`dc915f2b`); Water IN remains isolated in draft PR #254. Later
+[actual Water publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
+qualifies source4b588279 and runtime-only botC9e52b52 on Windows/Linux. It does
+not qualify normal hosts, common-Water scientific screens, owner feel or full
+Gate D/#203 completion.
 The [dated successor record](../audits/2026-10-25-water-inertial-native.md)
 records162 ordinary groups,37 focused sanitizer groups,124 Python tests and a
 fresh non-release Windows DLL passing import plus14 strict scoped Godot cases.
 Independent native/tooling reviews have no open findings in those bounded
-scopes; source-matched publication and full exact-head acceptance remain pending.
+scopes. Actual publication passes15 processes perOS/642 policy assertions, with
+independent artifact review `b15ea7cb` and no actionable bounded finding. Full
+exact-head ready acceptance remains pending; approval-held bot follow-ups are
+not greens.
 
 Water executes shared chemistry first, records WaterUpdate and decrements its
 original positive coherence once through `write_cell`. The original delay gates
@@ -75,15 +81,16 @@ historical content/state hashes and actual Current tuples/temperatures/material
 work are separate controls; this identity change does not mean changed Current
 physics. Old source-bound facts and failures remain historical.
 
-## Separate unarmed Water publication
+## Separate Water publication
 
 The [Water successor publisher](../operations/github-development-and-release.md#isolated-water-inertial-runtime-publication)
-is an isolated005/001 profile on its own branch. Its request is absent until
-independent review and final source freeze. It retains every existing process,
-deadline and strict summary and adds actual Water motion, whole-cell quantity,
-coherence, transactional refusal and CYPS continuation evidence. Preparation and
-local Windows execution do not qualify published Windows/Linux artifacts or
-common-Water/full-host/scientific acceptance.
+is an isolated005/001 profile on its own branch. Reviewed profile24a is followed
+by request sequence1/source4b588279 and actual run40166210470, then four-path
+botC9e52b52. It retains all15 processes, deadlines and strict summaries and adds
+actual Water motion, whole-cell quantity, coherence, transactional refusal and
+CYPS continuation evidence. Both OS artifacts and input ledgers receive fresh
+independent review. Common-Water/full-host/scientific and final ready-PR
+acceptance remain separate.
 
 ## Mandatory resting-body contact correction — 2026-10-25
 
@@ -102,13 +109,14 @@ preserves the failed native and runtime controls. Published sequence2 runtimes
 still contain the omission. Fresh local LLVM154, focused ASan/UBSan29 and a
 new Windows DLL/import plus six selected Godot cases now pass at `68f74906`;
 the IN case reports10192 assertions/all six sections and ten explicit resting
-contact traces. PR #250 stays Draft pending source-matched sequence3 publication
-and full ready-PR gates. Earlier publication and numerical-law evidence retain their
+contact traces. That repair checkpoint was Draft; later source-matched sequence3
+publication and all required exact-head gates pass, and PR #250 merges exact
+d7681a5c as main dc915f2b. Earlier publication and numerical-law evidence retain their
 original source and scope; no Water-IN or full-host qualification follows.
 
 ## What executes at this native checkpoint?
 
-**Current on the LCB-005 branch only:** explicitly selecting Brine material24 / `inertial_cellular_v1/reference` executes retained signed motion and subcell accumulators. The default Brine CellularYield law and every other default remain unchanged. The combined source passed [actual Windows/Linux scoped publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-windowslinux-union-publication--2026-10-25) at `bc0bfed9` in run `40153980594`, with runtime-only bot append `52ee560a`. At that parent checkpoint Water IN was unavailable; the isolated successor above admits it in source. Alternate IN materials/cached variants and full application qualification remain separate. The earlier [standalone adapter proof](../audits/2026-10-25-lcb005-standalone-adapter.md) keeps its local Windows source identity; [native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) retains its base, local input seal and tests. This is neither full #212 completion nor owner feel acceptance.
+**Current on main through accepted PR #250:** explicitly selecting Brine material24 / `inertial_cellular_v1/reference` executes retained signed motion and subcell accumulators. The default Brine CellularYield law and every other default remain unchanged. The combined source passed [actual Windows/Linux scoped publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-windowslinux-union-publication--2026-10-25) at `bc0bfed9` in run `40153980594`, with runtime-only bot append `52ee560a`. At that parent checkpoint Water IN was unavailable; the isolated successor above admits it in source. Alternate IN materials/cached variants and full application qualification remain separate. The earlier [standalone adapter proof](../audits/2026-10-25-lcb005-standalone-adapter.md) keeps its local Windows source identity; [native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) retains its base, local input seal and tests. This is neither full #212 completion nor owner feel acceptance.
 
 The source owners are `native/include/cybersand/inertial_cellular.hpp`, `native/src/world_inertial.inc` and narrow integration in `World`. Shared pair chemistry precedes the Brine yielding-liquid motion gate. The implementation contains no pressure/head term and applies no Rapier force.
 
@@ -244,6 +252,8 @@ matched publication: run `40160900817`, exact source `c11983c2`, bot append
 `fcf0e9b6`. Both operating systems pass import plus14 cases, including
 IN10192/all six sections. [The union evidence](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-sequence3-publication-of-the-contact-repair)
 records the two runtime hashes, preserved failing controls and independent
-76/485-input verification. This resolves that runtime blocker while full
-exact-head PR gates remain required. It does not admit Water IN or complete
-application/Rapier/Web/four-family qualification.
+76/485-input verification. That runtime blocker is resolved, and later all
+exact-head gates pass before #250 merges as main dc915f2b. This Brine repair
+record does not supply Water-IN qualification; the later Water successor is
+separately published above. Application/Rapier/Web/four-family qualification
+remains open.

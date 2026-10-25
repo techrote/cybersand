@@ -1,14 +1,166 @@
 ---
-title: Water inertial publisher preparation
+title: Water inertial publication and preparation ledger
 status: Current
 document-kind: audit
-scope: Isolated unarmed Water-IN successor workflow, strict actual Water proof, source lease and retained 005/001 controls; no target-OS publication acceptance
+scope: Actual source-matched Windows/Linux Water-IN sequence1 publication, independent artifact review, exact source lease and retained preparation failures; full ready-PR, scientific and host/Web acceptance remain separate
 canonical-for: []
 last-reviewed: 2026-10-25
 related-documents: [2026-10-25-water-inertial-native.md, ../architecture/inertial-cellular-v1.md, ../operations/github-development-and-release.md]
 ---
 
-# Water inertial publisher preparation
+# Water inertial publication and preparation ledger
+
+## Actual sequence1 Windows/Linux publication — 2026-10-25
+
+**Current qualified publication, PR #254 still draft:** the independent profile
+review passed at `24a6ffece165008b39c80d43df163e2eb423214d`, receipt SHA-256
+`989bec50d5ad79c636eb224861b3fd450204c0934d88da258dfea244a706a539`.
+The owner then authorized the source-bound Water request, sequence1. Commit
+`4b5882791b880a6b8e3863263616f41082a41412`, tree
+`f6f589ce09836878dbcc3731a46e815d812bb83d`, adds only
+`tools/ci/lcb005_water_inertial_publish_request.json`. Its schema is
+`lcb005-water-inertial-publish-request-v1`, material `water`, family
+`inertial_cellular_v1`, variant `reference`, scope
+`water-inertial-admission-coherence-ingress-restore-and-complete005-pressure-union`,
+intent `publish-source-matched-runtimes`, request_sequence1. The exact request
+SHA-256 is `bafe28b07a314e5c348962e9e2069d1d8e5f4143e264d1549674f3a062a387ef`.
+All12 reviewed profile/docs/test bindings and six parent-profile bindings remain
+unchanged; native/bridge/dependency inputs still equal reviewed `5f8baf6f`.
+
+[Actual hosted run40166210470](https://github.com/techrote/cybersand/actions/runs/40166210470),
+attempt1, passes all six jobs. Each target OS executes **import plus14 cases**
+with the original flags/deadlines and no failed/skipped/error sections. Each
+policy case reports **642 assertions, zero failures**, all seven original policy
+fields and the additional strict Water proof. Both six-field IN/pressure helper
+summaries remain exact. Four Water mass3/8 × configured-worker1/4 cohorts retain
+actual motion, full144-cell quantities1008/36720 and exact parity; two CYPS3
+restores retain five tick21..25 hash pairs; three fractional-ingress refusals
+preserve the old session; four coherence controls retain mandatory vertical
+work and exact7→0 countdown. The complete Water proof objects are identical
+between Windows and Linux. Actual multijob native proof remains in the separate
+native record; configured worker counts alone are not substituted for it.
+
+| Actual target | Native runtime SHA-256 | Bytes | Validation JSON SHA-256 |
+|---|---|---:|---|
+| Windows x86_64 | `67320027aa564309f024e4641fe6c4cdb4639228c89c4b51c56237763ffee36c` | 4,534,272 | `067d033c3ab69dfdf546096d437e7866d7d55bf4aaeb4212501943f857a262d8` |
+| Linux x86_64 | `401569c2674175df9c257bef7d6bdd2420d1cea198d6e6da33d8cfae580903ac` | 3,904,064 | `6fc61301b64c6324a9ff08c87f115286ea82ec769a38bfe5c54de9e6e630d1e7` |
+
+The artifact names are `lcb005-water-inertial-runtime-{windows,linux}-40166210470`.
+Their original archive SHA-256 values are respectively
+`73f7d17cee5827fddab438ff41cb1bdafb564ee036e2db8f91bf67d914b3329d`
+and `93d3ae63a1f7113cd6f421b1ab6de43b4dd15c44f7d6aec8acf75d50add2d29a`;
+both equal fresh GitHub artifact metadata. All76 native source and491 build/test
+Git blobs (567 inputs) match exact source4b and each other across the two OSes.
+Godot4.7, godot-cpp `101ae38034304346a46ea9ea84ae156d3e860496`, SCons4.10.1,
+the locked LLVM-MinGW Windows cross-toolchain, GCC13 Linux build, action pins
+and both selected desktop Rapier payloads remain unchanged. Linux job121087708703
+explicitly passes the GLIBC2.34 bundle floor: CyberSand GLIBC2.32,
+GLIBCXX3.4.30/CXXABI1.3.9; Rapier GLIBC2.34.
+
+The publisher appends only the two native LFS pointers and two matching manifests
+in `c9e52b52198b31b4885d31379accf24a173fc706`, tree
+`f66890cdf1164dc37e3fa1f0aaebe74a79c49bb3`, with sole parent4b588279. Committed
+LFS OIDs/sizes and manifest bytes equal the validated artifacts. No competing
+source/doc push changed the lease before that four-path publication append.
+The author API/artifact reduction receipt at
+`C:/Users/_/.codex/tmp/lcb-water-inertial-native/publication-sequence1-monitor/verified-publication-append/RECEIPT.json`
+has SHA-256 `1e648d109bf857285fb27351d3d958ab022ee9826455e9fd87377676ecdb24d9`.
+Original archives, all six hosted job logs and all platform/API reductions remain
+beside that receipt.
+
+Fresh **non-author** review independently downloads all three original archives,
+checks fresh APIs/logs,567 Git inputs, all15 actual processes perOS, both642
+proofs, Linux floor, single-parent/four-path commit, LFS, manifests and source
+lease. It has no actionable bounded finding. Its immutable receipt is
+`C:/Users/_/.codex/tmp/lcb-water-publication-independent-v3-20261025/REVIEW-RECEIPT.json`,
+SHA-256 `b15ea7cbef86c75dfe34b75ef26d6d3a14a4497c4a308f81cb4896508c2f7d53`.
+This review is separate from native/profile/tooling reviews and full ready-PR CI.
+
+## Parent integration, recoverability and remaining gates
+
+Parent PR #250 accepted exact head `d7681a5c6eb1ab5ee390f48c7ce0b12bf5da449d`
+after its complete exact-head gates and independent review; main merge is
+`dc915f2b2cc1261501058d0e967a98f32ecdee9d` (2026-10-25 14:16:50UTC).
+Normal merge `8e586b17534bcc4f4f432e8a72b19ac14f004202` preserves parentsC9 and
+dc915. Its **entire tree is byte-identical to C9**, including all native/runtime
+inputs. All18 pinned LFS payloads are now materialized with exact pointer OIDs/
+sizes and no pointer changes. The preparation receipt SHA-256 is
+`ef1d02abb1e121c0303a96fd83f2eecb506eeb691e5fbb4cfcc29d5e9734fd13` at
+`C:/Users/_/.codex/tmp/lcb-water-inertial-native/final-docs-preparation-v1/RECEIPT.json`.
+The subsequent docs-only checkpoint is recoverable from this branch's Git HEAD;
+it adds no native/bridge/test/tool/workflow/request/law change or new sequence.
+
+The immutable published491 build-input ledger includes this audit at its
+pre-publication SHA-256 `53d1590d666d51ed5d4771d343cdf05d4811ce6af1cd2c8487fe3660476bf07c`.
+This later evidence append changes that metadata file; it does not claim that
+all567 current working bytes equal source4b. The final drift receipt must
+distinguish this audit-only metadata delta from the unchanged76 native and
+remaining490 build/test/tool/workflow/request/compiler inputs. Runtime manifests
+retain the original source4b hashes. Current repository provenance checks the
+source-sensitive native inputs and actual pinned LFS payloads; no input-ledger
+exception, stale-source waiver or new runtime sequence is introduced.
+
+The five bot-C9 PR follow-ups40167287515,40167287524,40167287552,40167287564
+and40167287604 are **action_required**,
+each with zero jobs/check-runs and an explicit maintainer-approval banner. They
+are not test failures or greens. The provider packet
+`post-publication-approval-checklist-v2/CHECKLIST.json` has SHA-256
+`1c5a105094eb1e53f21db9d9be38707bea700bcea2988f72f712e096970e3380`.
+An authorized maintainer must approve applicable runs on the eventual **final**
+head; oldC9 approval and draft skips do not satisfy its gates. PR #254 remains
+draft until root coordinates that final head and actual Documentation/provenance,
+Native/sanitizer/worker, Windows/Linux Godot and scoped49 gates plus final review.
+
+Source-matched publication does not execute the registered common-Water
+FM/CY/PF/IN scientific campaign, complete normal host/Web/rendered/manual
+qualification or #203 packaging. Water-IN/Oil-CY/Brine-IN contains two distinct
+families; the real three-family control remains Water-FM (and separately PF)/
+Oil-CY/Brine-IN in one native World. The protected Current fixture, 117 registry
+classifications, old measured ledgers, failures and producer-revision replay
+remain unchanged. No owner preference, default solver or generic #12 admission
+is inferred.
+
+## Historical preparation scope
+
+The sections below preserve the earlier unarmed24a preparation, local-only
+Windows/composite proof, failures and stale-runtime checks. Their then-current
+absence of a request and18 provenance errors are historical; the actual source4b
+publication above supersedes those blockers without rewriting old receipts.
+
+## Final documentation and provenance checkpoint
+
+The first final-doc candidate is normal merge8e586b17 plus its explicit21-file
+docs-only overlay. Fresh checks use a detached materialized mirror and the five
+unchanged companion files pinned at their recorded revision. All20 checks pass:
+documentation, M11 historical consistency, current repository provenance with
+`--require-materialized`, frozen/supplementary retrieval, CI provider and its
+failure contracts,124 LCB Python tests, whitespace, capability/policy/native
+vectors, receipt/IN parameters, scenarios/registry, original-v7 producer replay,
+physics/normalization contracts and the independent carrying-footprint model.
+Current repository provenance reports **zero errors**, with all18 payloads
+materialized. It does not waive the historical18-error failed checks below.
+
+`C:/Users/_/.codex/tmp/lcb-water-inertial-native/docs-final-water-v1/VALIDATION-RECEIPT.json`
+has SHA-256 `c172e8c9e85314a462096cbff865ba0d14e863440bd205106606fdb43cdacaf6`.
+Its exact raw overlay/mirror/companion fences hold. The567-ledger drift is exactly
+this publication audit's later metadata; all76 native and remaining490 inputs
+are unchanged. The124 tests pass in50.237s under the unchanged180s bound.
+Frozen retrieval retains20/32 top1,32/32 top5, MRR0.7745. The133 supplementary
+questions retain all132 prior query strings and add one separately reported
+approval/final-head question;101/133 hit top1,132/133 top5, MRR0.8584. The one
+canonical miss is LCB-WATER-PUB-01. Its actual release contract now explicitly
+states the separate Water/Brine namespace and lease ownership; the raw earlier
+result remains preserved. Retrieval is lexical routing, not answer correctness
+or a before/after quality claim. An initial external query-comparison command
+used the Windows default encoding and failed on Unicode; explicit UTF-8 confirms
+all132 old query strings unchanged, without editing the fixture.
+
+This results paragraph and the bounded release-contract wording follow that
+first candidate. The eventual final commit receives a fresh exact-head check
+and immutable external binding; no recursive self-hash or old runtime manifest
+is rewritten. Full hosted ready-PR CI and independent final-doc review remain
+separate from this local documentation/contract validation.
+
 
 ## Source and intentionally unarmed state
 

@@ -2,7 +2,7 @@
 title: Liquid material and solver state-transition matrix
 status: Approved design
 document-kind: design
-scope: Operation-by-operation transition rules for default liquids, native W-CY, pressure reference and branch-Current pressure caches/motion certificates, plus Planned inertial requirements — ownership, state movement, exact quantity/source-sink, invalidation and family applicability; no production Cell layout choice
+scope: Operation-by-operation rules for default liquids, accepted native W-CY/pressure variants/Brine IN and isolated published Water IN; historical Proposed requirements retain their source qualification — ownership, state movement, exact quantity/source-sink, invalidation and family applicability; no production Cell layout choice
 canonical-for: [liquid-state-transition-matrix]
 last-reviewed: 2026-10-25
 related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-prepared-setup-and-receipts.md, lcb-pressure-inertial-handoff.md, data-ownership-and-lifetimes.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, ../systems/water-design.md, pressure-optimization.md]
@@ -10,7 +10,7 @@ related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-
 
 # Liquid material and solver state-transition matrix
 
-**Native #212 branch checkpoint:** the [Brine IN reference](inertial-cellular-v1.md) now implements the declared Brine ownership/law scope. The isolated [Water IN native successor](inertial-cellular-v1.md#water-in-native-successor--2026-10-25) adds its own material/carrier qualification; source-matched runtime and full application/scientific qualification remain pending. The standalone model below retains its separate evidence meaning.
+**Current source and qualification:** the [Brine IN reference](inertial-cellular-v1.md) implements its declared ownership/law scope and is accepted on main through #250. The isolated [Water IN successor](inertial-cellular-v1.md#water-in-native-successor--2026-10-25) adds its material/carrier contract and actual source4b588279 Windows/Linux publication. Final ready-PR and full application/scientific qualification remain pending. The standalone model and historical Proposed rows below retain their separate evidence meaning.
 
 ## Status and inputs
 
