@@ -611,6 +611,12 @@ void test_three_families_one_world() {
             require(one.physical_state_hash() == four.physical_state_hash(),
                     std::string(pressure ? "pressure" : "freemass") + " three-family 1/4 divergence at t" +
                         std::to_string(t));
+            if (t == 1 || t == 255 || t == 256 || t == 600) {
+                for (const auto projection : {cybersand::LiquidStateProjection::PressureVariantEquivalenceV1,
+                                              cybersand::LiquidStateProjection::QuiescentPhysicalContentV1})
+                    require(one.liquid_comparison_hash(projection) == four.liquid_comparison_hash(projection),
+                            "three-family comparison projections preserve actual IN authority and worker parity");
+            }
         }
         require(counts(one)[0] == start[0] && counts(one)[1] == start[1],
                 "Brine/Oil whole-cell counts conserved");
@@ -1009,6 +1015,68 @@ void test_inertial_damping_parameters() {
     check_inertial_damping_rounding();
 }
 
+void test_inertial_comparison_projections() {
+    using cybersand::LiquidStateProjection;
+    constexpr auto equivalent = LiquidStateProjection::PressureVariantEquivalenceV1;
+    constexpr auto quiet = LiquidStateProjection::QuiescentPhysicalContentV1;
+    auto cfg = config(1);
+    cfg.chunk_size = 16; cfg.activity_block_size = 8; cfg.scheduling_core_size = 8;
+    const auto build = [](World& world) {
+        world.reserve_region({0, 0, 16, 16});
+        rect(world, 4, 4, 3, 3, Material::Wall);
+        world.set(5, 5, Material::Brine);
+    };
+    auto world = std::make_unique<World>(cfg);
+    build(*world); tick(*world, 20);
+    require(world->physical_state_hash_version() == 3U, "IN projections bind the actual version3 instance");
+    const auto physical = world->liquid_comparison_hash(quiet);
+    const auto continuation = world->physical_state_hash();
+    const auto same_tick = world->liquid_comparison_hash(equivalent);
+    const auto saved = world->save_physical_state();
+    require(physical != continuation && physical != same_tick && continuation != same_tick,
+            "IN comparison and continuation domains are distinct");
+    require(world->save_physical_state() == saved, "projection readback leaves IN authority and ledgers intact");
+    for (int t = 0; t < 300; ++t) {
+        const auto stats = world->tick();
+        const auto motion = world->inertial_cell(5, 5);
+        require(stats.active_blocks_after == 0U && motion.vx == 0 && motion.vy == 0 && motion.ax == 0 && motion.ay == 0,
+                "zero-motion boxed Brine remains ordinarily asleep");
+        require(world->liquid_comparison_hash(quiet) == physical,
+                "quiescent IN observation excludes only declared clock and activity aging");
+    }
+    require(world->physical_state_hash() != continuation && world->liquid_comparison_hash(equivalent) != same_tick,
+            "IN continuation and same-tick projection retain advancing clocks");
+    // Change each retained field independently, keeping visible pixels and
+    // temperatures identical. Signed subcell state is physical even at rest.
+    std::vector<std::uint64_t> motion_hashes;
+    struct Motion { std::int16_t vx, vy; std::int8_t ax, ay; };
+    for (const auto motion : std::array<Motion, 7>{{
+             {1,0,0,0}, {-1,0,0,0}, {0,1,0,0}, {0,0,1,0}, {0,0,-1,0}, {0,0,0,1}, {0,0,0,-1}}}) {
+        auto changed = World::restore_physical_state(cfg, saved);
+        require(changed->diagnostic_set_inertial_cell(5, 5, motion.vx, motion.vy, motion.ax, motion.ay),
+                "independent retained-field fixture installs");
+        require(changed->content_hash() == world->content_hash() &&
+                    changed->stored_temperature(5,5) == world->stored_temperature(5,5),
+                "retained-field controls preserve visible content and temperature");
+        const auto observed = changed->liquid_comparison_hash(quiet);
+        require(observed != physical && changed->liquid_comparison_hash(equivalent) != same_tick,
+                "both projections retain each actual IN motion field");
+        require(std::find(motion_hashes.begin(), motion_hashes.end(), observed) == motion_hashes.end(),
+                "signed velocity and accumulator observations remain distinct");
+        motion_hashes.push_back(observed);
+        require(changed->diagnostic_set_inertial_cell(5,5,0,0,0,0) &&
+                    changed->liquid_comparison_hash(quiet) == physical,
+                "removing the retained field restores physical content despite cumulative diagnostic history");
+    }
+    cfg.liquid_solver_policy = damping_policy(8);
+    auto different_parameters = std::make_unique<World>(cfg);
+    build(*different_parameters); tick(*different_parameters, 20);
+    require(different_parameters->content_hash() == world->content_hash() &&
+                different_parameters->inertial_parameters().damping_numerator == 8 &&
+                different_parameters->liquid_comparison_hash(quiet) != physical,
+            "actual IN damping and identity remain significant with identical stationary pixels");
+}
+
 void test_inertial_residual_motion() {
     World w(config(1));
     w.reserve_region({0, 0, 128, 128});
@@ -1057,3 +1125,5 @@ void test_lcb_inertial_storage_capture() { test_inertial_storage_capture(); }
 void test_lcb_inertial_residual_motion() { test_inertial_residual_motion(); }
 
 void test_lcb_inertial_damping_parameters() { test_inertial_damping_parameters(); }
+
+void test_lcb_inertial_comparison_projections() { test_inertial_comparison_projections(); }

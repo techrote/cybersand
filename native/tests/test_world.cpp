@@ -3742,6 +3742,7 @@ void test_lcb_inertial_storage_capture();
 void test_lcb_inertial_residual_motion();
 void test_lcb_inertial_admission();
 void test_lcb_inertial_damping_parameters();
+void test_lcb_inertial_comparison_projections();
 void test_lcb_inertial_contract_examples();
 void test_lcb_inertial_ledgers_rest_parity();
 void test_lcb_inertial_no_tunnelling();
@@ -3887,6 +3888,7 @@ int main(int argc, char** argv) {
         {"LCB-005 inertial residual motion",test_lcb_inertial_residual_motion},
         {"LCB-005 inertial admission", test_lcb_inertial_admission},
         {"LCB-005 inertial damping parameters", test_lcb_inertial_damping_parameters},
+        {"LCB-005 inertial comparison projections", test_lcb_inertial_comparison_projections},
         {"LCB-005 inertial contract examples", test_lcb_inertial_contract_examples},
         {"LCB-005 inertial ledgers rest parity", test_lcb_inertial_ledgers_rest_parity},
         {"LCB-005 inertial no tunnelling", test_lcb_inertial_no_tunnelling},
