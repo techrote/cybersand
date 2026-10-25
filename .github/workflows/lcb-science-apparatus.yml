@@ -157,7 +157,7 @@ jobs:
       - name: Authenticate cross-build and actual checkout before execution
         run: |
           set -euo pipefail
-          python -B tools/lcb/build_science_consumer.py --target windows --verify-bundle "$RUNNER_TEMP/science-windows-build" --expected-source "$GITHUB_SHA"
+          python -B tools/lcb/build_science_consumer.py --target windows --verify-bundle "$RUNNER_TEMP/science-windows-build" --expected-source "$GITHUB_SHA" --restore-compiled-checkout "$RUNNER_TEMP/science-windows-checkout"
           python -B -m unittest discover -s tools/lcb -p 'test_*science*.py'
           python tools/ci/check_ci_provider_policy.py
       - name: Materialize published Windows runtime and selected Rapier
@@ -195,6 +195,7 @@ jobs:
           name: lcb-science-windows-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             ${{ runner.temp }}/science-windows-build/
+            ${{ runner.temp }}/science-windows-checkout/
             ${{ runner.temp }}/science-windows-qualification/
           if-no-files-found: error
           retention-days: 30

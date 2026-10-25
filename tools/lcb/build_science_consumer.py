@@ -296,7 +296,7 @@ def build(args: argparse.Namespace) -> None:
         raise
 
 
-def verify_bundle(folder: Path, expected_source: str, target: str) -> dict:
+def bundle_inputs(folder: Path, expected_source: str, target: str) -> tuple[dict, dict]:
     folder = folder.resolve()
     manifest = json.loads((folder / "bundle-sha256.json").read_text(encoding="utf8"))
     require(type(manifest) is dict and manifest, "complete bundle manifest required")
@@ -314,6 +314,78 @@ def verify_bundle(folder: Path, expected_source: str, target: str) -> dict:
             "bundle source/target/completion mismatch")
     sources = json.loads((folder / "source-map.json").read_text(encoding="utf8"))
     require(sources == receipt["source_inputs"] and set(SOURCES) <= sources.keys(), "complete bundle source map mismatch")
+    return receipt, sources
+
+
+def restore_compiled_checkout(folder: Path, expected_source: str, target: str, out: Path) -> None:
+    """Restore only complete compiled Native text paths from the exact Git index.
+
+    This is checkout repair, never hash normalization or admission of changed
+    source. The normal exact bundle/source verifier still runs afterward.
+    """
+    out = out.resolve()
+    require(not out.exists() and not out.is_relative_to(ROOT) and not out.is_relative_to(folder.resolve()),
+            "new external checkout-repair output required")
+    require(target == "windows", "checkout restoration is only for actual Windows transfer")
+    _, sources = bundle_inputs(folder, expected_source, target)
+    require(subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, timeout=30).decode().strip() == expected_source,
+            "checkout Git head differs from build")
+    before = {}
+    for name, digest in sources.items():
+        path = PurePosixPath(name)
+        require(not path.is_absolute() and ".." not in path.parts and "\\" not in name
+                and name == path.as_posix() and name.startswith(("native/include/", "native/src/", "native/bench/"))
+                and path.suffix in {".h", ".hpp", ".cpp", ".inc"} and (ROOT / name).is_file(),
+                "checkout repair admits only compiled Native text paths")
+        data = subprocess.check_output(["git", "show", "HEAD:" + name], cwd=ROOT, timeout=30)
+        require(hashlib.sha256(data).hexdigest() == digest, "compiled source differs from actual Git blob")
+        actual = (ROOT / name).read_bytes()
+        before[name] = {"raw_sha256": hashlib.sha256(actual).hexdigest(),
+                        "canonical_lf_sha256": hashlib.sha256(actual.replace(b"\r\n", b"\n")).hexdigest(),
+                        "git_blob_content_sha256": digest,
+                        "git_blob": subprocess.check_output(["git", "rev-parse", "HEAD:" + name], cwd=ROOT, timeout=30).decode().strip()}
+    subprocess.run(["git", "diff", "--cached", "--quiet", "--", *sources], cwd=ROOT, check=True, timeout=30)
+    out.mkdir(parents=True)
+    save(out / "PROSPECTIVE-CHECKOUT.json", {"head": expected_source, "paths": before,
+         "scope": "Git index checkout of only compiled Native text; no LFS or parser/source-map normalization"})
+    try:
+        subprocess.run(["git", "config", "--local", "core.autocrlf", "false"], cwd=ROOT, check=True, timeout=30)
+        data = b"".join(name.encode("utf8") + b"\0" for name in sources)
+        # --force alone can retain a stat-cached CRLF working file after a
+        # config change. --temp always materializes the actual index content.
+        # text=auto also observes core.eol=native on Windows, independently
+        # of autocrlf=false. Scope an explicit LF checkout to this command.
+        args = ["git", "-c", "core.eol=lf", "checkout-index", "--temp", "--stdin", "-z"]
+        result = subprocess.run(args, cwd=ROOT, input=data, capture_output=True, timeout=30)
+        (out / "checkout.stdout").write_bytes(result.stdout)
+        (out / "checkout.stderr").write_bytes(result.stderr)
+        require(result.returncode == 0, "compiled text checkout failed")
+        extracted = {}
+        for item in result.stdout.split(b"\0"):
+            if not item:
+                continue
+            temporary, name = item.decode("utf8").split("\t", 1)
+            temp_path = (ROOT / temporary).resolve()
+            require(name in sources and name not in extracted and temp_path.parent == ROOT.resolve()
+                    and temp_path.name.startswith(".merge_file_") and temp_path.is_file()
+                    and sha(temp_path) == sources[name], "Git temporary checkout differs from complete source map")
+            extracted[name] = temp_path
+        require(set(extracted) == set(sources), "Git temporary checkout omitted/duplicated source")
+        for name, temp_path in extracted.items():
+            os.replace(temp_path, ROOT / name)
+        after = {name: sha(ROOT / name) for name in sources}
+        require(after == sources, "restored checkout still differs from complete compiled input map")
+        save(out / "CHECKOUT-RECEIPT.json", {"head": expected_source, "before": before, "after_raw_sha256": after,
+             "command": args, "returncode": result.returncode, "timeout_seconds": 30,
+             "local_core_autocrlf": "false", "complete_raw_equality": True,
+             "scope": "Actual Git-index LF restoration; canonical hashes are diagnostic only"})
+    except Exception as error:
+        save(out / "FAILURE.json", {"error": str(error), "partial_outputs_retained": True})
+        raise
+
+
+def verify_bundle(folder: Path, expected_source: str, target: str) -> dict:
+    receipt, sources = bundle_inputs(folder, expected_source, target)
     for name, digest in sources.items():
         path = PurePosixPath(name)
         require(not path.is_absolute() and ".." not in path.parts and "\\" not in name
@@ -335,14 +407,18 @@ def main() -> None:
     parser.add_argument("--toolchain-archive", type=Path)
     parser.add_argument("--verify-bundle", type=Path)
     parser.add_argument("--expected-source")
+    parser.add_argument("--restore-compiled-checkout", type=Path)
     args = parser.parse_args()
     try:
         if args.verify_bundle is not None:
             require(args.expected_source is not None and args.compiler is None and args.out is None
                     and args.toolchain_root is None and args.toolchain_archive is None, "exclusive bundle verification arguments required")
+            if args.restore_compiled_checkout is not None:
+                restore_compiled_checkout(args.verify_bundle, args.expected_source, args.target, args.restore_compiled_checkout)
             print(json.dumps(verify_bundle(args.verify_bundle, args.expected_source, args.target)))
         else:
-            require(args.compiler is not None and args.out is not None and args.expected_source is None, "build compiler/output required")
+            require(args.compiler is not None and args.out is not None and args.expected_source is None
+                    and args.restore_compiled_checkout is None, "build compiler/output required")
             build(args)
     except (ValueError, KeyError, OSError, subprocess.SubprocessError, tarfile.TarError) as error:
         print("LCB science build refused: " + str(error), file=sys.stderr)

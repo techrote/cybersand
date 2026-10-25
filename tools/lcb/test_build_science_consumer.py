@@ -234,5 +234,78 @@ class LinuxLibraries(unittest.TestCase):
                     b.linux_library_paths(value)
 
 
+class CheckoutRestoration(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name) / "source"
+        self.root.mkdir()
+        self.bundle = Path(self.temp.name) / "bundle"
+        self.bundle.mkdir()
+        self.proof = Path(self.temp.name) / "repair"
+        self.addCleanup(patch.stopall)
+        patch.object(b, "ROOT", self.root).start()
+        self.git("init", "-q")
+        self.git("config", "core.autocrlf", "false")
+        (self.root / ".gitattributes").write_bytes(b"* text=auto\n*.cpp text eol=lf\n")
+        self.names = (*b.SOURCES, "native/src/fixture.inc")
+        for name in self.names:
+            path = self.root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b"pure source fixture\nsecond line\n")
+        self.git("add", ".")
+        self.git("-c", "user.name=Fixture", "-c", "user.email=fixture@example.invalid", "commit", "-qm", "fixture")
+        self.head = self.git("rev-parse", "HEAD").decode().strip()
+        self.sources = {name: b.sha(self.root / name) for name in self.names}
+        (self.bundle / "lcb_science.exe").write_bytes(b"MZ pure executable fixture")
+        (self.bundle / "compiler.bin").write_bytes(b"pure driver identity fixture")
+        self.receipt = {"schema": "lcb-science-consumer-build-v1", "source_commit": self.head,
+                        "toolchain": {"target": "windows"}, "complete_source_fences_held": True,
+                        "source_inputs": self.sources, "exe_sha256": b.sha(self.bundle / "lcb_science.exe"),
+                        "compiler_sha256": b.sha(self.bundle / "compiler.bin")}
+        self.reseal()
+
+    def git(self, *args):
+        return subprocess.run(["git", *args], cwd=self.root, check=True, capture_output=True, timeout=30).stdout
+
+    def reseal(self):
+        (self.bundle / "source-map.json").write_text(json.dumps(self.sources), encoding="utf8")
+        (self.bundle / "build-receipt.json").write_text(json.dumps(self.receipt), encoding="utf8")
+        manifest = {p.name: b.sha(p) for p in self.bundle.iterdir() if p.is_file() and p.name != "bundle-sha256.json"}
+        (self.bundle / "bundle-sha256.json").write_text(json.dumps(manifest), encoding="utf8")
+
+    def test_actual_git_crlf_restore_then_unchanged_raw_map_verification(self):
+        self.git("config", "core.autocrlf", "true")
+        inc = self.root / "native/src/fixture.inc"
+        inc.write_bytes(inc.read_bytes().replace(b"\n", b"\r\n"))
+        self.assertIn(b"\r\n", (self.root / "native/src/fixture.inc").read_bytes())
+        with self.assertRaisesRegex(ValueError, "actual target checkout source mismatch"):
+            b.verify_bundle(self.bundle, self.head, "windows")
+        unrelated = self.root / "unrelated.txt"
+        unrelated.write_bytes(b"unchanged unrelated CRLF\r\n")
+        b.restore_compiled_checkout(self.bundle, self.head, "windows", self.proof)
+        self.assertEqual(b.verify_bundle(self.bundle, self.head, "windows")["status"], "verified")
+        self.assertNotIn(b"\r\n", (self.root / "native/src/fixture.inc").read_bytes())
+        self.assertEqual(unrelated.read_bytes(), b"unchanged unrelated CRLF\r\n")
+        proof = json.loads((self.proof / "CHECKOUT-RECEIPT.json").read_text(encoding="utf8"))
+        self.assertEqual(proof["after_raw_sha256"], self.sources)
+        old = proof["before"]["native/src/fixture.inc"]
+        self.assertNotEqual(old["raw_sha256"], old["git_blob_content_sha256"])
+        self.assertEqual(old["canonical_lf_sha256"], old["git_blob_content_sha256"])
+
+    def test_non_native_path_and_changed_git_source_refuse_before_restore(self):
+        self.sources["outside.md"] = "0" * 64
+        self.reseal()
+        with self.assertRaisesRegex(ValueError, "only compiled Native text"):
+            b.restore_compiled_checkout(self.bundle, self.head, "windows", self.proof)
+        self.assertFalse(self.proof.exists())
+        del self.sources["outside.md"]
+        self.sources["native/src/fixture.inc"] = "0" * 64
+        self.reseal()
+        with self.assertRaisesRegex(ValueError, "differs from actual Git blob"):
+            b.restore_compiled_checkout(self.bundle, self.head, "windows", self.proof)
+        self.assertFalse(self.proof.exists())
+
+
 if __name__ == "__main__":
     unittest.main()

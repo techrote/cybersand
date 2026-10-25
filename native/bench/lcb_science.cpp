@@ -70,7 +70,8 @@ std::string boolean(bool value) { return value?"true":"false"; }
 struct Object {
     std::string text="{"; bool first=true;
     void put(std::string_view key, const std::string& encoded) {
-        if (!first) text+=','; first=false; text+=quote(key)+':'+encoded;
+        if (!first) text+=',';
+        first=false; text+=quote(key)+':'+encoded;
     }
     std::string finish() const { return text+'}'; }
 };
@@ -101,7 +102,8 @@ std::int64_t parse_integer(std::string_view token) {
 }
 std::vector<std::string> tokens(std::string_view line) {
     std::istringstream stream{std::string(line)}; std::vector<std::string> out;
-    for (std::string token;stream>>token;) out.push_back(token); return out;
+    for (std::string token;stream>>token;) out.push_back(token);
+    return out;
 }
 struct Event { std::int64_t tick,kind,x,y,width,height,material,a,b; };
 std::vector<Event> events_for(const std::vector<std::uint8_t>& bytes, const World& world, std::int64_t horizon) {
@@ -146,7 +148,8 @@ private:
     std::span<const std::uint8_t> data; std::size_t position=0;
 };
 std::vector<ChunkCoord> roster(const std::vector<std::uint8_t>& bytes,const World& world) {
-    require(bytes.size()>=40,"CYPS too short"); Reader in(std::span(bytes).first(bytes.size()-32));
+    require(bytes.size()>=40,"CYPS too short");
+    Reader in{std::span<const std::uint8_t>(bytes).first(bytes.size()-32)};
     require(in.get<std::uint32_t>()==0x53505943U,"CYPS magic"); const auto version=in.get<std::uint32_t>();
     require(version==2 || version==3,"CYPS roster version");
     const auto side=in.get<std::int32_t>(); const auto activity=in.get<std::int32_t>();
@@ -229,7 +232,8 @@ Census census(const World& world,const std::vector<ChunkCoord>& coordinates) {
                 std::abs(static_cast<int>(state.ax))<InertialParameters::kQ && std::abs(static_cast<int>(state.ay))<InertialParameters::kQ,"IN state bound");
             c.vx=add(c.vx,state.vx);c.vy=add(c.vy,state.vy);c.ax=add(c.ax,state.ax);c.ay=add(c.ay,state.ay);
             c.l1=uadd(c.l1,static_cast<std::uint64_t>(std::abs(static_cast<int>(state.vx))+std::abs(static_cast<int>(state.vy))));
-            if(nonzero)c.nonzero=uadd(c.nonzero,1);c.max_vx=std::max(c.max_vx,std::abs(static_cast<int>(state.vx)));c.max_vy=std::max(c.max_vy,static_cast<int>(state.vy));
+            if(nonzero)c.nonzero=uadd(c.nonzero,1);
+            c.max_vx=std::max(c.max_vx,std::abs(static_cast<int>(state.vx)));c.max_vy=std::max(c.max_vy,static_cast<int>(state.vy));
             c.max_ax=std::max(c.max_ax,std::abs(static_cast<int>(state.ax)));c.max_ay=std::max(c.max_ay,std::abs(static_cast<int>(state.ay)));
         }
         if(material==Material::Water) {
@@ -300,7 +304,8 @@ struct Observations {
         const auto entire=Clock::now();require(!world.has_failed() && world.chunk_count()==coordinates.size(),"World failed/resident roster changed");
         const auto start=Clock::now();const auto current=census(world,coordinates);const auto book=world.quantity_ledger();const auto ledger=world.inertial_ledger();
         require(book.material_cells==current.materials && book.water_visible==current.visible && book.water_overfill==current.overfill,"global census/quantity snapshot mismatch");
-        if(have_previous)closure(previous,previous_ledger,current,ledger);previous=current;previous_ledger=ledger;have_previous=true;
+        if(have_previous)closure(previous,previous_ledger,current,ledger);
+        previous=current;previous_ledger=ledger;have_previous=true;
         const auto census_time=ns(start);const auto hash_start=Clock::now();Object hashes;
         hashes.put("physical",hash64(world.physical_state_hash()));hashes.put("state",hash64(world.state_hash()));hashes.put("content",hash64(world.content_hash()));
         hashes.put("quiescent",hash64(world.liquid_comparison_hash(LiquidStateProjection::QuiescentPhysicalContentV1)));
@@ -332,7 +337,8 @@ int run(int argc,char** argv) {
     coverage.put("slots",integer(static_cast<std::uint64_t>(coordinates.size())*static_cast<std::uint64_t>(world->config().chunk_size)*static_cast<std::uint64_t>(world->config().chunk_size)));
     if(!coordinates.empty()){std::int64_t minx=0,maxx=0,miny=0,maxy=0;bool first=true;for(auto c:coordinates){const auto x=mul(c.x,world->config().chunk_size),y=mul(c.y,world->config().chunk_size);if(first){minx=maxx=x;miny=maxy=y;first=false;}minx=std::min(minx,x);maxx=std::max(maxx,add(x,world->config().chunk_size-1));miny=std::min(miny,y);maxy=std::max(maxy,add(y,world->config().chunk_size-1));}
         coverage.put("min_x",integer(minx));coverage.put("max_x",integer(maxx));coverage.put("min_y",integer(miny));coverage.put("max_y",integer(maxy));}
-    else for(auto key:{"min_x","max_x","min_y","max_y"})coverage.put(key,"null");header.put("coverage",coverage.finish());
+    else for(auto key:{"min_x","max_x","min_y","max_y"})coverage.put(key,"null");
+    header.put("coverage",coverage.finish());
     const auto startup_time=ns(begin);Output output(argv[5]);output.line(header.finish());Observations observer{*world,coordinates,output};TickStats last{};
     observer.emit("completed",0,0,0,last,0);std::size_t cursor=0;std::vector<std::uint64_t> tick_times;
     for(std::int64_t tick=0;tick<horizon;++tick){const auto before=cursor;
