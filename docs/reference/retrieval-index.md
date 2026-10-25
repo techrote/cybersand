@@ -10,7 +10,7 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
-- [Unarmed copied-observer runtime publication](../operations/github-development-and-release.md#isolated-observer-runtime-publication): private004 retains all003 controls and adds two observer cases, with its own absent request,38 future processes/OS, exact source/lease/four-path append and six current rebuild blockers. Preparation is not publication or scientific acceptance.
+- [Copied-observer runtime publication](../operations/github-development-and-release.md#isolated-observer-runtime-publication): private004 retains all003 controls and adds two observer cases. Actual sequence1 now passes38 processes/OS and independent source/lease/four-path append/LFS/floor review; final-head gates and scientific acceptance remain separate. Historical unarmed preparation and six source mismatches retain their old scope.
 
 - [Copied cumulative inertial ledger observer](../architecture/inertial-cellular-v1.md#copied-cumulative-inertial-ledger-observer--2026-10-25): nineteen signed/unsigned decimal-string values, actual owner/policy/parameter binding, quarantine refusal, copied isolation and finite Brine24 closure; global/scientific, Water-positive and final publication qualification stay separate.
 

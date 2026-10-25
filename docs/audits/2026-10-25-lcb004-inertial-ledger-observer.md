@@ -10,6 +10,17 @@ related-documents: [../architecture/inertial-cellular-v1.md, ../architecture/dat
 
 # LCB-004 copied inertial ledger observer checkpoint
 
+## Later actual publication status — 2026-10-25
+
+The [actual source2e1/run40237132659 publication](2026-10-25-lcb004-observer-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
+now supplies rebuilt Windowsba357334/Linux30bcfaf7, both complete80/542
+input ledgers and38 actual successful processes per OS. Independent receiptc5356cfd
+accepts artifacts, lease/four-path bot871ff, all18 LFS payloads and Linux floor.
+App #256 is merged as main56422c05; final #258 head CI/review remains required.
+The local developmental proofs, old six mismatches and pending-publication
+statements below remain scoped to their original source, not relabelled as
+new target execution. Global scientific/full-host/#203 qualification remains open.
+
 ## Implemented scope and qualification
 
 Water IN itself is accepted on main through PR #254 at

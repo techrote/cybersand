@@ -1,16 +1,109 @@
 ---
-title: LCB-004 observer runtime publication preparation
+title: LCB-004 observer runtime publication and retained preparation
 status: Current
 document-kind: audit
-scope: Isolated unarmed observer publisher preparation; retained complete003 target controls plus copied ledger/worker proofs, with no actual publication or final acceptance
+scope: Actual source-matched Windows/Linux observer publication, independent artifact and lease review, retained preparation failures and separate final-head qualification
 canonical-for: []
 last-reviewed: 2026-10-25
 related-documents: [../operations/github-development-and-release.md, ../operations/local-build-and-validation.md, ../operations/source-checkpoint-and-recovery.md, ../architecture/inertial-cellular-v1.md, 2026-10-25-lcb004-inertial-ledger-observer.md, 2026-10-25-lcb003-runtime-publication.md]
 ---
 
-# LCB-004 observer runtime publication preparation
+# LCB-004 observer runtime publication and retained preparation
 
-## Current corrected-App consumption — 2026-10-25
+## Actual sequence1 Windows/Linux publication — 2026-10-25
+
+**Current published observer checkpoint, not yet merged:** source
+`2e1e99892a396d17ddc063c84b2d32c825aeef80`, tree
+`23d805f10cccf45c14b23d8b7ea04947e408c685`, executes the explicit sequence1
+request in [run40237132659](https://github.com/techrote/cybersand/actions/runs/40237132659).
+All six publication jobs succeed. Sole-parent bot
+`871ff20271bf872bfd4fad0e6ca4d9a5369ab0d8`, tree
+`bb48f596dcf64f243959c09d3cb357fb8e82f1ba`, appends exactly the two native
+LFS libraries and their two manifests. Source/docs remained held throughout
+the publisher lease. Root consumes that exact bot only after independent
+artifact review and materializes all eighteen required LFS payloads.
+
+| Target | Actual SHA-256 | Bytes | Strict process outcomes |
+|---|---|---:|---|
+| Windows x86_64 | `ba357334a2c3b73c5d631442a164593ec9826acc6767e7283f8ffb55753ac4ff` | 4,831,232 | import +37 cases,38/38 exit0 |
+| Linux x86_64 | `30bcfaf7902d286c077b0c457bce57144952ed6cefbd94704d310ea0d312df25` | 4,231,248 | import +37 cases,38/38 exit0 |
+
+The actual committed ledgers contain80 native and542 build/execution inputs,
+each checked against the built Git source; the earlier541/542 forecasts below
+retain their preparation scope. Each platform executes every inherited003 /
+Water005 / Brine005 / shared001 control, all642 policy assertions, copied
+ledger504 and worker265. Both observer proofs bind the exact runtime and case
+log SHA. All nineteen ledger values use canonical lossless decimal strings;
+the worker proof has twenty ordered rows. Configured4 moving work observes
+Windows4 and Linux3 maximum participants; these workload/schedule-dependent
+values do not measure utilization or require every configured worker.
+
+Independent review downloads three API-digest-matched archives,86 files and
+six raw job logs; rechecks both complete input maps, all76 actual processes,
+source/run/attempt/branch identity, final lease, sole-parent four-path append
+and all eighteen actual LFS payloads. Independent ELF inspection agrees with
+the actual minimum-runtime check: bundle GLIBC2.34, CyberSand GLIBC2.32 /
+GLIBCXX3.4.30 / CXXABI1.3.9, Rapier GLIBC2.34. No native floor is raised.
+Pinned Godot4.7/godot-cpp101ae380/Rapier0.35.2 and GitHub-hosted routing remain.
+
+The independent final receipt is
+`tmp/lcb004-observer-publication-seq1-independent-v1-20261025/REVIEW-RECEIPT.json`,
+SHA-256 `c5356cfddf7dbc169f878b0057b6edc0a33bc6965fb5491158b89cd5e0e54f41`.
+Its source-preparation receipt iscc7586c5; reduction66fdc61c;
+reporte532b88e; supplementef4256e5. Root separately captures all three archives
+and86 files (receiptd9c55cef) and independently invokes the unchanged private
+bundle verifier with actual API-derived identities and both542/80 maps
+(receiptadf8ed46); the latter explicitly excludes the independent LFS/ELF work
+and therefore does not substitute for it. Root's request/source freeze is
+`4a24624c03df0ae7a8655930e5d7119e6c5f38e7a50cc52fa7e0f6e2ee0826c1`.
+The first external arming helper failed before request creation/commit because
+its Python module search path omitted tools/ci; the corrected v2 preparation
+completes. That retained driver failure is not an engine or publication failure.
+
+App #256 now passes all four exact-dc2 required gates and merges as main
+`56422c050bd5ed2ceb5f816b1269748764e2dcb7`, tree
+`f79b861fbb84fe40c3e99f170c937aac7b521021`. Root's normal main integration
+`f935e146fbeedd2204ffb79396606787d3184d35` has parents871ff/56422 and the
+same observer treebb48: all published native/build inputs and runtimes remain
+unchanged. PR #258 is retargeted to main. Four approval-held bot follow-ups
+are `action_required`, not validation greens. Publication acceptance does not
+replace final ready-PR exact-head Documentation/provenance, Native,
+GDExtension/Godot and applicable apparatus gates or final adversarial review.
+
+The earlier six adapter-source provenance blockers are resolved by these actual
+rebuilt source-matched libraries, not waived. A direct root-tree provenance
+invocation verifies all18 materialized payloads and zero native mismatches but
+reports six missing companion expected-fact paths; the canonical checks must
+run in the separate pinned companion-parent mirror. Preserve that incomplete
+environment result and record the final proper-companion checks separately.
+
+The proper pinned-companion check now passes all seven commands, including
+zero repository/provenance errors,18 actual runtime payloads, historical M11,
+documentation, both retrieval suites, provider policy and whitespace. Receipt
+`tmp/lcb-observer-actual-publication-docs/validation/checks-v1/VALIDATION-RECEIPT.json`
+has SHA-256 `15e99732ccbdb8ee74814ce0a70f1a65a9fe0a2289d596830e7758af69ece84e`.
+Docs115/229 claims have no errors; frozen32 remains19 rank1/32 top5,
+MRR0.7589; supplementary152 remains116 rank1/151 top5, MRR0.8607.
+The retained LCB03 lexical miss remains explicit. All old question objects and
+the separately pinned five companion files remain unchanged. This paragraph
+postdates that check; the final source freeze binds a subsequent fresh check.
+All80 native inputs remain equal to both new manifests. Of the542 historical
+build/execution entries, only this dated audit changes to record the actual
+publication;541 remain exact. No original ledger, runtime or process identity
+is rewritten, and this audit-only delta requires no native republication.
+
+The following preparation, local-Windows and inherited-App sections retain
+their original dated source/runtime/request state. Statements such as absent
+request, future38 processes, unpublished APIs and six rebuild blockers describe
+those historical checkpoints. This actual publication supersedes their current
+publication status without rewriting their failures or evidence. It does not
+establish global Water-IN scientific closure, numeric-extrema engine execution,
+complete host continuation, per-worker utilization, manual feel or #203 completion.
+All117 registry classifications remain unchanged. Further Web testing remains
+owner-deferred until after the epic; a native headless prerequisite is not Web
+visual acceptance.
+
+## Historical corrected-App consumption — 2026-10-25
 
 The observer branch now normally merges exact reviewed App
 `dc2eee9408b959956153608a7ee6d212a5d21672` after unarmed preparation
@@ -31,7 +124,7 @@ engine execution, observer publication or Web work is claimed at this merge.
 
 ## Implemented preparation and exact limits
 
-**Current unarmed preparation on `codex/lcb004-observer`:** the separate
+**Historical unarmed preparation on `codex/lcb004-observer`:** the separate
 `.github/workflows/lcb004-observer-runtime-publication.yml`,
 `tools/ci/lcb004_observer_runtime_publication.py` and its pure guard test prepare
 a source-matched Windows/Linux publication for the copied IN ledger and worker

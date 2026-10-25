@@ -10,31 +10,24 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
-## Current corrected-App consumption — 2026-10-25
+## Current observer publication and accepted App — 2026-10-25
 
-The observer branch now normally merges exact reviewed App
-`dc2eee9408b959956153608a7ee6d212a5d21672` after unarmed preparation
-`944feaa58a6408356ad31e82f5334756d0e9dd7f`. The earlier a1cc/ea96 preparation
-statements below, including the pending corrected-App merge, describe their
-original checkpoints; that merge prerequisite is now satisfied. The incoming
-App correction retains its dated Draft/gate snapshots; Root subsequently pushed
-the corrected source/docs and marked #256 ready for fresh required gates.
-Neither the retained old gates nor this merge proves those new gates passed.
+App #256 is merged at main56422c05 after all four exact-dc2 required gates;
+the accepted file tree isf79b861f. The separate observer #258 now consumes that
+main content without changing its published inputs. Its [actual publication
+record](../audits/2026-10-25-lcb004-observer-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
+binds source2e1e9989/run40237132659/bot871ff202,80 native/542 execution inputs,
+Windowsba357334/Linux30bcfaf7,38 successful processes per OS, independent
+artifact/LFS/ELF-floor/lease review and all18 materialized runtime payloads.
+The earlier six observer source/runtime mismatches are resolved by actual
+republication. Final observer-head required CI/review and broader #202/#203
+qualification remain separate; approval-held bot follow-ups are not greens.
 
-The two incoming tests retain exact reviewed hashes. Observer source5,
-publisher3, recorded Native139, inherited runtimes/profiles/requests and Current
-defaults remain unchanged. Historical build535 now differs only in the two
-corrected tests; the other533 entries remain exact, with no added incoming
-paths. There are still541 present build paths and no004 request. The six
-Windows/Linux observer adapter-source rebuild blockers remain unwaived. No
-engine execution, observer publication or Web work is claimed at this merge.
-
-The observer preparation is currently a1cc with exact inherited App ea96;
-Root's corrected App source152a5074/docs dc2eee94 must be normally merged
-**after preparation commit and before arming**. Current inherited535 hashes
-are exact; that later test-only integration changes two entries with no new
-paths, retaining Native80/compiled139 equivalence. No old gate is a new-head
-acceptance, and the observer's six provenance blockers remain unwaived.
+Earlier preparation/local-execution sections below retain their own source and
+request state. Their absent-request/unpublished/future-target wording and old
+rebuild blockers describe historical snapshots, not current publication status.
+All117 registry classifications and historical failures are retained. Further
+Web testing is owner-deferred until after the epic.
 
 ## Observer publisher preparation — 2026-10-25
 
