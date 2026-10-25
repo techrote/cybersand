@@ -130,6 +130,7 @@
     "../.github/pull_request_template.md"
   ],
   "excluded": [
+    {"path": "audits/2026-10-25-mat003-secondary-original-archive-reduction.md", "reason": "Dated original-ZIP independent re-reduction and later Windows author-evidence freshness; retrieve explicitly through the MAT-003 ADR and navigation, not as adopted production-carrier acceptance"},
     {"path": "audits/2026-10-23-mat003-independent-carrier-audit.md", "reason": "Dated independent read-only source/artifact evidence audit; retrieve explicitly via ADR-016 and the MAT-003 continuation route, not as a universal production runtime claim"},
     {
       "path": "audits/2026-10-22-mat003-s2f-preflight.md",
