@@ -10,6 +10,34 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## Trial successor correction after accepted App — 2026-10-25
+
+App #256 is merged as main56422c05 after all four exact-dc2 required gates.
+The [Trial correction record](audits/2026-10-25-lcb003-trial-body-constructors.md#failed-full-matrix-and-unsupported-rig-correction--2026-10-25)
+preserves the actual ff2 Windows/Linux failed obsolete barrel-refusal assertion,
+the catalog-unsupported negative with unchanged old-owner/no-queue fences and
+fresh actual E3 Windows sampled71/Trial117/default86 successful assertions.
+Native80/compiled139 and runtime bytes remain exact; historical535 has seven
+explicit script/test differences. Corrected-head CI/review remain required;
+local proof does not close other constructors, full-host/scientific or #203
+qualification. Older preparation/pending-App sections retain their source
+snapshots. Further Web testing is owner-deferred until after the epic.
+
+## Current Trial consumption of corrected App — preparation only
+
+This Trial branch consumes exact Appdc2eee94 (sourcefix152a5074), retaining all
+ten f65f3de9 Trial files and the two incoming identity-test hashes. Native80 and
+compiled139 remain exact. The historical535 build set now has six changed
+entries (four Trial plus two App tests), other529 exact, and six new Trial
+paths give current541. The following App-only two-test/533-entry statements
+retain that narrower source scope; they do not describe the combined Trial set.
+
+The [combined-source qualification](audits/2026-10-25-lcb003-trial-body-constructors.md#corrected-app-consumption--preparation-only--2026-10-25)
+keeps actual117/86 proof at ad3 and actual corrected38/29 App cohorts separate.
+This merge has no engine execution. Root's corrected #256 is ready for fresh
+gates/review; #257 Trial remains draft/downstream. Earlier ea96 gate greens do
+not cover either successor. Runtimes/profiles/requests stay inherited; Web deferred.
+
 ## Post-publication test checkpoint
 
 The [identity-test correction](audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)
@@ -21,7 +49,7 @@ entries, with no added paths or runtime/manifest rewrite. Older source5f02/a704
 publication facts below remain source-bound. #256 is draft pending new exact-head
 gates/review; old ea96 Docs/#49 greens do not cover the successor. Web is deferred.
 
-## Current scoped application runtime publication — 2026-10-25
+## Consumed App publication — source5f02 and checkpoint ea96 — 2026-10-25
 
 The [actual003 publication](audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source
 `5f02d089ee4cff8b34421cc4ca58bb4ef50dd92c`, run40226343524 and four-path bot
@@ -47,6 +75,23 @@ binds those receipts. Local normal mergea704ce50 consumes that main with the
 unchanged bot0c9 tree; all615 publication inputs and139 compiled inputs remain
 exact. This does not substitute Water's gates for the application's final
 exact-head CI or close #202/#203.
+
+## Integrated Trial successor
+
+This unmerged Trial successor now consumes App checkpoint
+`ea96d4851621c4bed37d5e6997a0320215450f79`, including the actual source5f02/
+bot0c9 publication and accepted main06451f8a. The ten Trial source files remain
+exactly sourcef65f3de9; its recorded Windows executions are not relabeled as
+tests of this merged head. All80 native manifest inputs and139 recorded native
+build inputs still match. The original535-entry build/execution ledger has
+four changed GDScript/test entries and omits six new Trial source paths; it
+retains its original5f02 execution identity. Those historical build-input changes
+are separate from native-source provenance, not eight native rebuild errors.
+The [dated Trial integration record](audits/2026-10-25-lcb003-trial-body-constructors.md#app-publication-integration-preparation-only--2026-10-25)
+owns the exact drift and remaining fresh acceptance. No new engine test, request,
+profile, runtime publication or Web work occurs in this merge.
+
+- [Desktop barrel/Ripper preparation](audits/2026-10-25-lcb003-trial-body-constructors.md): exact retained Apply motion, fresh Restart/F5, transactional one-body admission/refusal and Windows-only proof; [canonical owner contract](architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation) owns semantics.
 
 ## Historical preparation and Water-artifact consumption
 

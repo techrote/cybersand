@@ -10,6 +10,8 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+- [Desktop barrel/Ripper preparation](../audits/2026-10-25-lcb003-trial-body-constructors.md): exact retained Apply motion, fresh Restart/F5, transactional one-body admission/refusal and Windows-only proof; [canonical owner contract](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation) owns semantics.
+
 - [Actual common-Water Web functional proof](../audits/2026-10-25-lcb003-web-common-water.md): compat77/threaded76 terminal POSTs, six body-free Water/four mixed arms and source-bound native reuse; ordinary visual/manual/body-bearing browser and full scientific/host gates remain open.
 
 - [Final application source union and exact default namespaces](../architecture/liquid-prepared-setup-and-receipts.md#final-application-source-union): published Water admission, immutable legacy fixture, separately keyed capability hashes, CY/IN future-source refusal and strict unarmed host/native-Web evidence; final platforms, constructors and scientific gates stay separate.

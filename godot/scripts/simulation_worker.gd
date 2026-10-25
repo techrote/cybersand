@@ -10,6 +10,7 @@ const PlayerEnvironmentProfiles = preload("res://scripts/player_environment_prof
 const ActorSession = preload("res://scripts/actor_prototype_session.gd")
 const UsableSession = preload("res://scripts/usable_session.gd")
 const PreparedSampled = preload("res://scripts/prepared_sampled_session.gd")
+const PreparedTrialBody = preload("res://scripts/prepared_trial_body_session.gd")
 const LiquidHostEvidence = preload("res://scripts/liquid_host_evidence.gd")
 const PhysicalEffects = preload("res://scripts/physical_actor_effects.gd")
 const PhysicalUsables = preload("res://scripts/physical_usable_runtime.gd")
@@ -395,16 +396,29 @@ func _apply_prepared_default_liquid(command: Dictionary) -> bool:
 	var origin: Dictionary = _default_liquid_origin()
 	var setup: Dictionary = command.get("controlled_liquid_setup",{})
 	var physical: Dictionary = setup.get("physical_owner",{})
+	var player_configuration: Dictionary=command.get("default_player_configuration",{})
+	var trial: bool=physical.get("kind","")=="trial_body"
+	var sampled: bool=bool(command.get("sampled_character_enabled",false))
+	var valid_reference: bool=(not trial and physical.get("kind","")=="reference_body" and physical.get("epoch",-1)==0 \
+		and physical.get("initial_bodies") is PackedFloat32Array \
+		and physical.initial_bodies.size()==3*CyberRigidBodyCoupling.INPUT_STRIDE and sampled \
+		and str(player_configuration.get("physical_trial","" )).is_empty() and player_configuration.get("representation","")=="sampled")
+	var valid_trial: bool=(_prepared_trial_values_valid(physical) and not sampled \
+		and player_configuration.get("representation","")=="barrel-rapier" \
+		and player_configuration.get("physical_trial","")==physical.get("trial_arm","") \
+		and not player_configuration.get("runtime_recovery_enabled",true))
 	if origin.get("native_recipe_id","") != "cybersand-desktop-default-demo-v1" \
 		or not origin.get("healthy",false) or origin.get("session_generation",-1) != command.get("expected_default_generation",-2) \
 		or _lab_active or _micro_active or _water_lab_active or _actor_session.active() \
-		or not _sampled_character_enabled or not command.get("sampled_character_enabled",false) \
+		or command.get("source_sampled_character_enabled")!=_sampled_character_enabled \
+		or command.get("expected_rigid_body_epoch",-1)!=_rigid_body_epoch \
 		or setup.get("intent","") != "exploratory" or not command.get("exploratory_actor_definitions",[]).is_empty() \
-		or physical.get("kind","") != "reference_body" or physical.get("epoch",-1) != 0 \
+		or not player_configuration.get("physical_rig","").is_empty() or not player_configuration.get("actor_model","").is_empty() \
+		or player_configuration.get("actor_producer","")!="human" or player_configuration.get("actor_demo_npcs",true) \
+		or not player_configuration.get("actor_definitions",[]).is_empty() or not (valid_reference or valid_trial) \
 		or not physical.get("instance_id") is int or physical.instance_id == 0 \
-		or not physical.get("initial_bodies") is PackedFloat32Array \
-		or physical.initial_bodies.size() != 3*CyberRigidBodyCoupling.INPUT_STRIDE:
-		_lab_status = "Prepared native default demo refused; original constructor, healthy sampled owner and staged reference bodies required"
+		or not physical.get("initial_bodies") is PackedFloat32Array:
+		_lab_status = "Prepared native default demo refused; original healthy constructor and staged reference or single trial owner required"
 		if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
 		return false
 	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
@@ -457,6 +471,8 @@ func _apply_prepared_default_liquid(command: Dictionary) -> bool:
 		"input_owner":"exclusive_desktop_simulation_owner","native_recipe_id":origin.native_recipe_id,
 		"player_start":[150,145],"player_environment_profile":claim_profile,
 		"sampled_runtime_recovery_enabled":command.get("runtime_enclosure_recovery_enabled",true),
+		"player_representation":player_configuration.get("representation",""),"physical_trial":player_configuration.get("physical_trial",""),
+		"physical_owner_epoch":physical.epoch,
 		"native_initial_execution":{"intent":receipt.run_intent,"pacing":receipt.pacing,"region":Array(receipt.region),
 			"simulation_window_enabled":receipt.simulation_window_enabled,"cadence_lod_enabled":receipt.cadence_lod_enabled,
 			"liquid_surface_adhesion_enabled":receipt.liquid_surface_adhesion_enabled,
@@ -496,8 +512,14 @@ func _apply_prepared_default_liquid(command: Dictionary) -> bool:
 	_scenario_host.clear();_lab_active = false;_micro_active = false;_water_lab_active = false
 	_micro_capture = {};_lab_schedule.clear();_lab_inputs.clear()
 	_simulation_failed = false;_scenario_request_applied = true
-	_lab_status = "Native default demo installed with selected liquids and original reference bodies"
+	_lab_status = "Native default demo installed with selected liquids and " + ("single trial body" if trial else "original reference bodies")
 	return true
+
+func _prepared_trial_values_valid(physical: Dictionary) -> bool:
+	return physical.get("kind","")=="trial_body" and physical.get("epoch") is int and physical.epoch>=1 \
+		and physical.get("instance_id") is int and physical.instance_id!=0 \
+		and physical.get("initial_bodies") is PackedFloat32Array \
+		and PreparedTrialBody.valid_input(physical.initial_bodies,str(physical.get("trial_arm","")))
 
 func _apply_lab(command: Dictionary) -> bool:
 	if command.is_empty(): return false
@@ -675,6 +697,8 @@ func _apply_lab(command: Dictionary) -> bool:
 			or not physical.get("initial_bodies") is PackedFloat32Array or physical.initial_bodies.is_empty()):
 			_lab_status = "Prepared physical ownership requires a bounded exploratory body request"
 			return false
+		if physical.get("kind","")=="trial_body" and not _prepared_trial_values_valid(physical):
+			_lab_status="Prepared trial body geometry or identity refused";return false
 		if not controlled_setup.is_empty() and not exploratory_liquid and (not actor_definitions.is_empty() \
 			or bool(command.get("sampled_character_enabled", true))):
 			_lab_status = "Controlled liquid preparation requires an actor-free request"

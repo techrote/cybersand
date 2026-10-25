@@ -10,6 +10,15 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 # Configuration reference
 
+The bounded [desktop trial-body constructor](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
+has exactly one existing barrel8×14 or Ripper18×8 rectangle and uses the shared
+body packet/capacity limits unchanged. At least two actual physics frames and
+bounded terrain readiness precede commit. Native policy/radius/normalization
+validation remains authoritative; the default PF0/PF1/PF2 recipe still refuses
+initial gas capacity1024. No limit increase, fallback or implicit geometry
+change accompanies this host route. Full-host/physical-import/continuation
+qualification remains separate from the [dated local proof](../audits/2026-10-25-lcb003-trial-body-constructors.md).
+
 The [final application union](../architecture/liquid-prepared-setup-and-receipts.md#final-application-source-union)
 preserves Current default tuples/clocks, protected radius2 and explicit IN
 radius3. Water capability admission changes the embedded policy namespace:

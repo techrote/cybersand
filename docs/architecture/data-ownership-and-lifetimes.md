@@ -11,6 +11,15 @@ last-reviewed: 2026-10-25
 
 # Data ownership and lifetimes
 
+The bounded [desktop single-trial-body owner](liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
+retains one dynamic barrel/Ripper in an automatically inactive permanent private
+space. Actual motion is verified exactly across real physics frames before
+native/body commit; only copied packet/epoch/token values cross to the worker.
+Apply preserves that captured owner, while Restart/F5 stage fresh authored state.
+Refusal retires only the candidate and preserves the old graph/World/receipt.
+This adds no mutable native view, shared Rapier object or complete host/replay
+claim; the dated proof is [separately scoped](../audits/2026-10-25-lcb003-trial-body-constructors.md).
+
 The [final application union](liquid-prepared-setup-and-receipts.md#final-application-source-union)
 extends the existing precommit fractional future-source refusal to both admitted
 whole-cell Water families CY/IN. Initial normalization is setup-only. Refusal
