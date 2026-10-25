@@ -37,6 +37,16 @@ protected comparison fixture through its original constructor.
 
 ## Current controls and ownership
 
+The subsequent [synchronous Physics Pit route](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-physics-pit-reference-bodies)
+enables explicit Exploratory active apply for its actual authored constructor.
+The original three bodies and sampled player stage privately; the existing UI
+shows a pending request while actual frozen frames and bounded terrain readiness
+complete. Old state stays held. Success starts paused with the original recipe,
+poses and current view/cadence; Restart retains the accepted selection. Imported
+same-label bodies, other physical maps and synchronous Water Feel bodies remain
+outside this route. Native/host qualifications remain visible, and [local Windows
+proof](../audits/2026-10-25-lcb003-synchronous-reference-body.md) is not browser acceptance.
+
 The subsequent [ordinary synchronous demo route](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-synchronous-demo-rebuilding)
 enables **Apply & rebuild active** for Material Lab, Waterworks, Foundry and
 Neon Works after choosing Exploratory. It retains the exact original recipe,
@@ -166,7 +176,7 @@ controlled API is narrower than older explicit-policy diagnostic APIs.
 | Fixed player-enabled or body-enabled MicroScenario | Ordinary default route retained; Controlled refuses; explicit Exploratory stages the existing sampled character when body-free | Stage physical body/terrain/equipment candidate before supporting rigid bodies |
 | Owner-paced/exploratory MicroScenario | Explicit Exploratory stages allowlisted sampled owners, the existing sampled character, or desktop articulated Rapier actor/equipment/terrain in a permanent space; native facts include actual initial masks and final execution; Controlled refuses | Remaining barrel/reference-body routes, complete verified host/actor envelope and retained edit/import semantics |
 | Bootstrap `create_world` / ordinary `reset_demo_world` | Defaults; ordinary reset retires typed setup identity | Explicit retained-policy coordinator without changing Current defaults |
-| `build_world` rectangle showcases / Blacksite | Existing Current constructor retained; four curated synchronous body-free demos explicitly stage their exact recipes, sampled player, actual view/cadence and qualified record in Exploratory mode; restart retains accepted recipe/policy/geometry | Desktop counterparts, Physics Pit/Blacksite/showcase/physical owners and arbitrary rectangle callers remain outside the four-demo allowlist; full host and final platforms remain open |
+| `build_world` rectangle showcases / Blacksite | Existing Current constructor retained; four curated synchronous body-free demos explicitly stage exact recipes, sampled player and actual view/cadence in Exploratory mode. A separate authored Physics Pit route stages its original three bodies/permanent space with final native masks; both retain accepted recipe/selection on Restart | Desktop counterparts, imported physical saves, Blacksite/showcase/other physical owners and arbitrary rectangle callers remain separate; complete host identity and final platforms remain open |
 | `build_tuned_world` / Experiment Tower | Original default constructor retained; ordinary application Tower explicitly stages sampled-owner policy/normalization/geometry with final floor and retains floor/release/schedule/transport controls; reset/profile rebuild retain accepted policy | Other direct tuned-world callers, complete host evidence and final platform qualification |
 | `build_water_feel_world` / Water Feel controlled and blind apparatus | Original defaults/blind routes retained; explicit unblinded sampled Exploratory dispatcher/panel/reset carries typed policy/normalization/geometry and qualified owner record, preserving actions/ledger; desktop additionally stages the original three reference bodies/terrain in their permanent space and proves ordinary unpaused feedback | Synchronous/Web reference bodies, barrel owners, blind-family study and whole-cell fractional future-source qualification; visual/publication gates |
 | CYSD `import_level` | Existing default reconstruction retained; explicit synchronous Exploratory next-import selection prepares copied thermal payload/policy/normalization, saved metadata and a private sampled player before commit; refusal retains old owner/receipts and Restart reconstructs accepted input | Physical/Tower/showcase imports and unsupported inherited interaction/diagnostic/transport settings explicitly refused; complete verified host identity, persisted policy/setup design and final source-matched platforms remain open |

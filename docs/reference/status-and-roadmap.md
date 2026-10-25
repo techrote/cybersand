@@ -1011,6 +1011,17 @@ Desktop counterparts, body/showcase/arbitrary recipe routes, same-policy failed-
 World recovery, final native repair/integration and complete platform/host gates
 remain open; this does not complete #202 or qualify Brine IN rest contacts.
 
+**Subsequent synchronous Physics Pit:** source5d5c75ed adds explicit Exploratory
+apply to its actual authored rectangle/three-body/sampled-player owner. Private
+frozen permanent-space preparation, copied request/token, actual final masks
+and serial/source/generation/settings fences precede adoption; cancellation and
+refusal retain old state. Six local Windows processes pass490 assertions,
+including70 new normal-owner checks and three original240-tick PF arms with
+consumed positive feedback/exact quantity. See [the owner contract](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-physics-pit-reference-bodies)
+and [dated proof](../audits/2026-10-25-lcb003-synchronous-reference-body.md).
+Imported physical saves, other physical routes, synchronous Water Feel bodies,
+complete host identity and final source-matched/browser gates remain open.
+
 ## Opt-in transport profiles
 
 **Current:** the [profile contract](../systems/flow-transport-and-profiles.md)

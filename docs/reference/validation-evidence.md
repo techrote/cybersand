@@ -10,6 +10,15 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+The [synchronous Physics Pit proof](../audits/2026-10-25-lcb003-synchronous-reference-body.md)
+binds5d5c75ed, five exact raw sources and unchanged native135/DLL79f35666.
+Six strict processes pass490 assertions:70 Physics Pit,117 ordinary demos,
+73 import,105 UI,50 shared poses and75 desktop Water bodies. Each new PF arm
+completes240 actual native/manual steps with270 nonzero feedback applications,
+positive signed impulses,34,670 contacts, exact937,125 Water and closing gas.
+Three initial red apparatus attempts and earlier passes remain source-qualified;
+there is no final browser/release/performance/complete-host proof.
+
 The subsequent [shared explicit-pose helper proof](../audits/2026-10-25-lcb003-water-reference-body.md#shared-explicit-pose-helper)
 binds381bae3d, unchanged native135/DLL79f35666,50 focused assertions and the75
 Water Feel body assertions. Exact default pose/native-mask equality, copied

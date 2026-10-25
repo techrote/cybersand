@@ -10,6 +10,14 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 # Configuration reference
 
+The bounded synchronous Physics Pit route preserves its actual original three
+8×14 bodies at(124,90),(244,90),(384,90), zero angles/velocities and sampled
+player(24,222). These differ from Water Feel's default helper poses. Pending
+terrain work uses the existing per-frame chunk/time budget, requires at least
+two actual frozen physics frames and refuses after20,000ms readiness wait.
+That construction bound is not a simulation-tick deadline or a Web ownership
+change. Current view/quality/cadence/adhesion are captured before native receipt.
+
 The shared prepared three-body helper accepts optional copied positions and
 rotations. Empty arrays retain the existing Water Feel centers(160,176),
 (212,176),(264,176) and zero angles independently; supplied arrays must each

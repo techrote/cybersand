@@ -768,6 +768,17 @@ captured packed body values still cross the owner boundary as immutable values;
 no Node/RID is published to native workers, and constructor admission remains
 the calling owner's responsibility.
 
+The later `prepared_synchronous_reference_session.gd` retains one exact copied
+request and native preparation token privately across main-thread construction
+frames for authored Physics Pit. Its existing host commit guard first defers
+with token-bound copied terrain and staged sampled/body owners, then revalidates
+the same stored request after frozen-frame/terrain readiness. No caller token is
+accepted as a reusable request. Existing pending-owner acknowledgement carries
+serial/applied status to the panel; final native commit consumes the token.
+Only packed body/terrain values cross the native adapter boundary. See the
+[synchronous reference-body contract](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-physics-pit-reference-bodies)
+for retained-state, settings/cancellation and qualification limits.
+
 `get_applied_liquid_construction_receipt()` and
 `get_liquid_construction_attempt()` return distinct owned dictionaries containing
 the original native canonical `PackedByteArray`, its SHA256, qualifications and

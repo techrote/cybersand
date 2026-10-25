@@ -108,6 +108,11 @@ payload/metadata; an accepted curated demo restarts its copied authored recipe.
 Neither in-memory request is persisted by CYSD1. Quarantined prepared Restart
 currently refuses; explicit Current construction or unarmed import is recovery.
 
+The later authored Physics Pit route also retains its own original recipe/body
+poses and selection privately for Restart. This does not admit a saved physical
+level for family conversion: an imported same-label three-body graph has no
+authored source-generation identity, and its direct experimental apply refuses.
+
 ## What continuation state is missing?
 
 CYSD1 omits tick/epoch, scheduler activity and sleep state, queued explosions and

@@ -10,6 +10,16 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+The [synchronous Physics Pit checkpoint](../audits/2026-10-25-lcb003-synchronous-reference-body.md)
+on source5d5c75ed stages exact authored rectangles, original three8×14 bodies
+and sampled player with private same-request/token state, bounded real frozen
+readiness and retained cancellation/refusal. Final six strict Windows processes
+pass490 assertions including70 new checks and three240-tick PF arms with actual
+signed feedback/closed quantity. Imported same-label bodies remain unsupported
+for conversion. Native135/DLL79f35666 is an unchanged intermediate development
+runtime; final native repairs/default-route integration and release/Web gates
+remain required. Original red apparatus proofs remain preserved.
+
 Shared helper381bae3d now accepts copied optional three-position/rotation arrays,
 with finite/length preflight and unchanged omitted Water Feel defaults. Fresh50
 pose/native-mask/frozen-frame assertions plus the original75 actual Water Feel

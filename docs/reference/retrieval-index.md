@@ -10,6 +10,8 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+- [Synchronous Physics Pit reference bodies](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-physics-pit-reference-bodies): original authored poses, copied pending request/token, bounded frozen readiness and retained refusal/Restart; native Windows execution is not final Wasm/visual qualification.
+
 - [Explicit ordinary synchronous demo rebuilding](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-synchronous-demo-rebuilding): four exact authored recipes, retained sampled ownership/view and Restart; imported labels, body routes, quarantine recovery and final qualification remain distinct.
 
 - [Explicit ordinary level import and retained restart](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart): native thermal preparation, copied sampled metadata/record and atomic refusal; Current defaults, body refusal and final platform limits remain explicit.

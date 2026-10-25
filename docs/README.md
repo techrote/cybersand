@@ -10,6 +10,13 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The subsequent [synchronous Physics Pit body route](architecture/liquid-prepared-setup-and-receipts.md#synchronous-physics-pit-reference-bodies)
+prepares its original three bodies and sampled player with explicit Exploratory
+selection, actual frozen-frame/terrain readiness and final native masks. Its
+[dated local proof](audits/2026-10-25-lcb003-synchronous-reference-body.md)
+keeps imported bodies, other constructors, full-host and final browser/platform
+qualification separate.
+
 The subsequent [four ordinary synchronous demo route](architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-synchronous-demo-rebuilding)
 adds explicit Exploratory rebuilding while retaining exact authored recipes,
 sampled player, actual quality/view and accepted Restart input. Its [dated local

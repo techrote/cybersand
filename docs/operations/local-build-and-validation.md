@@ -10,6 +10,15 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+The [synchronous Physics Pit checkpoint](../audits/2026-10-25-lcb003-synchronous-reference-body.md)
+reuses unchanged native135/DLL79f35666 and passes six strict Godot processes,
+490 assertions including the new70 actual normal Apply/Restart/body transaction
+checks. Three PF variants each execute240 authored native/Rapier ticks with
+positive consumed signed feedback, exact937,125 Water and closing gas ledgers.
+The first96-tick premise and a strict-caught diagnostic array-type error remain
+retained; none is acceptance. This does not qualify final merged native source,
+Wasm/visual flow, released runtime or Brine IN rest contacts.
+
 The [shared explicit-pose helper proof](../audits/2026-10-25-lcb003-water-reference-body.md#shared-explicit-pose-helper)
 passes50 focused assertions plus the retained75-assertion actual Water Feel body
 case on unchanged135-input development DLL79f35666. Omitted/default native masks

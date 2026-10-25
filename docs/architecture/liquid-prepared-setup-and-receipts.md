@@ -890,6 +890,54 @@ construction recovers. Prepared same-policy quarantine recovery remains shared
 full matched eligibility stay unchanged. This local native Windows proof does
 not qualify final Wasm/visual flow, released platforms or Brine IN rest contacts.
 
+## Synchronous Physics Pit reference bodies
+
+**Current bounded unmerged #202 source:**5d5c75ed adds explicit Exploratory
+**Apply & rebuild active** for the actual authored Physics Pit constructor. It
+uses the exact existing ordered rectangle recipe, sampled player(24,222) and
+three original8×14 scene templates at(124,90),(244,90),(384,90), all initially
+unrotated and at rest. This is a separate physical route from the four body-free
+demos above. Imported same-label physical saves cannot gain authored identity;
+other bodies/imports, Water Feel synchronous bodies and generic physical
+MicroScenarios remain separate admission work. [Dated local evidence](../audits/2026-10-25-lcb003-synchronous-reference-body.md)
+records actual normal menu/panel callbacks and remaining platform limits.
+
+[`prepared_synchronous_reference_session.gd`](../../godot/scripts/prepared_synchronous_reference_session.gd)
+owns one copied definition/policy/options request, native token, privately frozen
+permanent body space and staged sampled player. Native preparation receives the
+actual packed initial bodies and final current view/cadence/adhesion. Its
+token-bound copied terrain drives bounded collider setup while at least two
+actual physics frames verify frozen poses. The retained World/player/body graph
+and presentation stay held during this preparation; no queued user edit or live
+graph is consumed to build the candidate. Readiness has an explicit20-second
+refusal bound. Construction spans main-thread frames; synchronous native runtime
+ownership and the Deferred asynchronous Web simulation policy do not change.
+
+Final owner serial/source/native generation, copied configuration and lifetime
+guards precede the same-request host observation and native retained-state
+commit fence. Body readiness is rechecked after the optional deterministic test
+barrier. Success adopts the same permanent graph/space and sampled player without
+fallible physics rebind; old bodies close only after native commit. Newer choices,
+settings, terrain/player refusal or readiness expiry discard the pending token
+and graph while retaining old World/player/receipt/cursors/record. Cancellation
+copies the actual native attempt readback; host-only refusal never invents one.
+
+Accepted Restart reconstructs the copied original recipe/selection and original
+poses. Current replacement or legacy import retires prepared physical identity;
+the source-generation tag is supplied only by actual authored construction.
+Known prepared Baseline retains the same actual native component/generation/
+applied-receipt binding as other ordinary routes. Native-v1 qualifications15
+and false native/host full matched eligibility remain. Same-policy quarantined
+Restart still requires shared lifecycle work; explicit Current recovery remains.
+
+Fresh local Windows proof includes32 actual held frames and three PF variants
+through240 synchronous native/Rapier ticks, reaching the original tank contents
+and consuming positive signed feedback with exact Water/gas accounting. The
+earlier96-tick apparatus premise is retained as failed: bodies had not reached
+the liquid. This is functional execution, not complete trace parity/performance,
+actual Wasm/visual or source-matched release qualification. Existing desktop
+Water Feel and IN motion/rest-contact qualifications remain separately scoped.
+
 ## Downstream ownership
 
 **Planned #201:** a rest certificate must preserve stationary body-contact
