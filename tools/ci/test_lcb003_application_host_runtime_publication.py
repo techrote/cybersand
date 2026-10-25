@@ -13,8 +13,10 @@ from unittest import mock
 
 import lcb001_shared_contract_runtime_publication as shared
 import lcb005_inertial_runtime_publication as historical_union
+import lcb005_water_inertial_runtime_publication as historical_water
 import lcb003_application_host_runtime_publication as profile
 from test_lcb001_shared_contract_runtime_publication import SUCCESS_LOGS
+from test_lcb005_water_inertial_runtime_publication import water_line, water_proof
 
 subject = profile.engine
 REPOSITORY = shared.ROOT
@@ -54,10 +56,23 @@ def poses_result():
 
 
 def synchronous_result():
-    return {"ok": True, "cohorts": [{"preset": preset, "completed_ticks": 240, "manual_steps": 240,
+    return {"ok": True, "cohorts": [{"preset": preset, "family": "pressure_flow_v1",
+            "variant": {2:"reference",3:"cached",4:"cached_dormant"}[preset], "policy_hash": str(preset)*64,
+            "completed_ticks": 240, "manual_steps": 240,
             "contacts": 34670, "water": 937125, "gas_closes": True, "applications": 270,
             "accepted_impulse": [-102.8, -9.5], "absolute_impulse": 876.6, "max_accepted_age": 0,
             "initial_body0": [124, 90], "final_body0": [124, 159.0]} for preset in profile.SYNCHRONOUS_BODY_PRESETS]}
+
+
+def synchronous_water_result():
+    return {"ok": True, "whole_cell_source_refusal_families": ["cellular_yield_v1", "inertial_cellular_v1"],
+            "cohorts": [{"preset": preset, "family": "freemass_v1" if preset == 0 else "pressure_flow_v1",
+            "variant": {0:"reference",2:"reference",3:"cached",4:"cached_dormant"}[preset],
+            "policy_hash": str(preset)*64, "quality": 0, "completed_ticks": 240, "manual_steps": 240,
+            "contacts": 83046, "water": 3718400, "gas_available": preset != 0, "gas_closes": preset != 0,
+            "pressure_accounting_valid": True, "applications": 421, "observation_tick": 180,
+            "accepted_impulse": [36.5, 772.0], "absolute_impulse": 1394.2, "max_accepted_age": 0,
+            "initial_body0": [124, 90], "final_body0": [123.5, 245.0]} for preset in profile.SYNCHRONOUS_WATER_PRESETS]}
 
 
 def default_play(variant):
@@ -82,6 +97,7 @@ def default_log(plays=None, refusals=None):
 
 def successful_logs():
     values = {"import": "import complete\n", **SUCCESS_LOGS}
+    values["test_liquid_solver_policy"] += water_line()
     for name, prefix, sections in (
         ("test_lcb_pressure_optimization", "LCB_PRESSURE_OPTIMIZATION", profile.union.OPTIMIZATION_SECTIONS),
         ("test_lcb_inertial_adapter", "LCB_INERTIAL_ADAPTER", profile.union.INERTIAL_SECTIONS),
@@ -97,6 +113,7 @@ def successful_logs():
         ("test_liquid_ordinary_demo_host", "LIQUID_ORDINARY_DEMO_HOST_RESULT", ordinary_result()),
         ("test_liquid_reference_body_poses", "LIQUID_REFERENCE_BODY_POSES_RESULT", poses_result()),
         ("test_liquid_synchronous_reference_body", "LIQUID_SYNCHRONOUS_REFERENCE_BODY_RESULT", synchronous_result()),
+        ("test_liquid_synchronous_water_reference_body", "LIQUID_SYNCHRONOUS_WATER_REFERENCE_BODY_RESULT", synchronous_water_result()),
     ):
         values[name] += prefix + " " + json.dumps(result) + "\n"
     values["test_liquid_desktop_default_host"] = default_log()
@@ -148,8 +165,10 @@ class ApplicationHostProfileTests(unittest.TestCase):
         self.assertEqual(shared.BRANCH, "codex/lcb001-shared-contract")
         self.assertEqual(historical_union.engine.BRANCH, "codex/lcb005-inertial")
         self.assertEqual(len(historical_union.engine.CASE_MARKERS), 14)
-        self.assertEqual(subject.BRANCH, "codex/lcb003-application-host")
-        self.assertEqual(len(subject.CASE_MARKERS), 34)
+        self.assertEqual(historical_water.engine.BRANCH, "codex/lcb005-water-inertial")
+        self.assertEqual(len(historical_water.engine.CASE_MARKERS), 14)
+        self.assertEqual(subject.BRANCH, "codex/lcb003-final-integration")
+        self.assertEqual(len(subject.CASE_MARKERS), 35)
         self.assertEqual(list(subject.CASE_MARKERS), list(successful_logs())[1:])
         self.assertNotIn("tools/ci/lcb005_inertial_publish_request.json", subject.BUILD_EXACT)
         self.assertEqual(subject.CASE_TIMEOUTS, historical_union.engine.CASE_TIMEOUTS)
@@ -164,7 +183,8 @@ class ApplicationHostProfileTests(unittest.TestCase):
                 with self.assertRaises(RuntimeError): subject.context(self.source)
 
     def test_missing_actual_owner_cases_refuse_even_with_request(self):
-        for name in ("test_liquid_level_import_host", "test_liquid_default_demo_preparation", "test_liquid_desktop_default_host"):
+        for name in ("test_liquid_level_import_host", "test_liquid_default_demo_preparation", "test_liquid_desktop_default_host",
+                     "test_liquid_synchronous_water_reference_body"):
             path = self.root / ("godot/tests/" + name + ".gd")
             path.unlink()
             with self.subTest(name=name), self.assertRaisesRegex(RuntimeError, "Required focused regression"):
@@ -259,6 +279,7 @@ class ApplicationHostProfileTests(unittest.TestCase):
         name, prefix = "test_liquid_synchronous_reference_body", "LIQUID_SYNCHRONOUS_REFERENCE_BODY_RESULT"
         values = []
         for key, replacement in (("completed_ticks", 239), ("manual_steps", 239), ("contacts", 0),
+                                 ("family", "freemass_v1"), ("variant", "cached"), ("policy_hash", ""),
                                  ("applications", 0), ("water", 937124), ("gas_closes", 1),
                                  ("accepted_impulse", [0, 0]), ("accepted_impulse", [float("nan"), 1]),
                                  ("absolute_impulse", 0), ("max_accepted_age", 9), ("max_accepted_age", -1),
@@ -273,7 +294,8 @@ class ApplicationHostProfileTests(unittest.TestCase):
     def test_new_host_json_must_be_present_unique_and_terminal(self):
         for name, prefix in (("test_liquid_ordinary_demo_host", "LIQUID_ORDINARY_DEMO_HOST_RESULT"),
                              ("test_liquid_reference_body_poses", "LIQUID_REFERENCE_BODY_POSES_RESULT"),
-                             ("test_liquid_synchronous_reference_body", "LIQUID_SYNCHRONOUS_REFERENCE_BODY_RESULT")):
+                             ("test_liquid_synchronous_reference_body", "LIQUID_SYNCHRONOUS_REFERENCE_BODY_RESULT"),
+                             ("test_liquid_synchronous_water_reference_body", "LIQUID_SYNCHRONOUS_WATER_REFERENCE_BODY_RESULT")):
             original = successful_logs()[name]
             summary, result = original.split(prefix, 1)
             for changed in (summary, original + prefix + result, summary + prefix + " {malformed}\n",
@@ -282,6 +304,51 @@ class ApplicationHostProfileTests(unittest.TestCase):
                 self.log(name, changed)
                 with self.subTest(name=name), self.assertRaises(RuntimeError): subject.verify_case_results(self.root, self.report)
             self.log(name, original)
+
+    def test_synchronous_water_requires_actual_four_policies_and_accounting(self):
+        name = "test_liquid_synchronous_water_reference_body"
+        prefix = "LIQUID_SYNCHRONOUS_WATER_REFERENCE_BODY_RESULT "
+        values = []
+        for key, replacement in (("family", "cellular_yield_v1"), ("variant", "cached"), ("policy_hash", ""),
+                                 ("quality", 2), ("completed_ticks", 239), ("manual_steps", 239),
+                                 ("water", 3718399), ("observation_tick", 179), ("contacts", 0),
+                                 ("applications", 0), ("gas_available", False), ("gas_closes", 1),
+                                 ("pressure_accounting_valid", False), ("accepted_impulse", [0, 0]),
+                                 ("absolute_impulse", 0), ("max_accepted_age", 9), ("final_body0", [124, 90])):
+            changed = synchronous_water_result();changed["cohorts"][0][key] = replacement;values.append(changed)
+        changed = synchronous_water_result();changed["cohorts"].pop();values.append(changed)
+        changed = synchronous_water_result();changed["cohorts"].reverse();values.append(changed)
+        changed = synchronous_water_result();changed["cohorts"][1]["policy_hash"] = changed["cohorts"][0]["policy_hash"];values.append(changed)
+        changed = synchronous_water_result();changed["cohorts"][-1]["gas_available"] = True;values.append(changed)
+        changed = synchronous_water_result();changed["whole_cell_source_refusal_families"].pop();values.append(changed)
+        for value in values:
+            self.log(name, "LIQUID_SYNCHRONOUS_WATER_REFERENCE_BODY: 93 assertions; 0 failures\n" + prefix + json.dumps(value) + "\n")
+            with self.subTest(value=value), self.assertRaises(RuntimeError):
+                subject.verify_case_results(self.root, self.report)
+
+    def test_water_native_proof_cannot_be_dropped_or_substituted(self):
+        name = "test_liquid_solver_policy"
+        original = successful_logs()[name].split("WATER_INERTIAL_POLICY_PROOF:", 1)[0]
+        self.log(name, original)
+        with self.assertRaisesRegex(RuntimeError, "Missing or duplicate Water IN proof"):
+            subject.verify_case_results(self.root, self.report)
+        values = []
+        for section in ("cohorts", "coherence", "restores"):
+            value = water_proof();value[section].pop();values.append(value)
+        value = water_proof();value["cohorts"][1]["physical_hash"] = "f" * 16;values.append(value)
+        value = water_proof();value["coherence"][0]["observed"][-1] = 1;values.append(value)
+        value = water_proof();value["refusals"]["rows"][0]["unchanged_session"] = False;values.append(value)
+        for value in values:
+            self.log(name, original + water_line(value))
+            with self.subTest(value=value), self.assertRaises(RuntimeError):
+                subject.verify_case_results(self.root, self.report)
+
+    def test_duplicate_host_fields_refuse_even_with_passing_summary(self):
+        name = "test_liquid_synchronous_water_reference_body"
+        output = successful_logs()[name].replace('"ok": true', '"ok": false, "ok": true', 1)
+        self.log(name, output)
+        with self.assertRaisesRegex(RuntimeError, "Duplicate host observation field"):
+            subject.verify_case_results(self.root, self.report)
 
     def test_default_play_requires_both_healthy_fm_cy_prefixes(self):
         original = [default_play(v) for v in profile.DEFAULT_PLAY_VARIANTS]
@@ -331,6 +398,7 @@ class ApplicationHostProfileTests(unittest.TestCase):
         self.assertIn("needs.admission.outputs.armed == 'true'", text)
         self.assertIn("runs-on: windows-2022", text)
         self.assertIn("runs-on: ubuntu-24.04", text)
+        self.assertIn("tools/ci/test_lcb005_water_inertial_runtime_publication.py", text)
         self.assertEqual(text.count("contents: write"), 1)
         self.assertIn('test "$(git rev-list --parents -n 1 HEAD)" = "$(git rev-parse HEAD) $GITHUB_SHA"', text)
         self.assertIn('git push --force-with-lease="refs/heads/' + subject.BRANCH + ':$GITHUB_SHA" origin HEAD:refs/heads/' + subject.BRANCH, text)

@@ -3,7 +3,7 @@ name: LCB-003 application host scoped runtime publication
 # Temporary branch-scoped publisher. Runtime/manifests are deliberately absent
 # from this filter, and existing ready-for-review acceptance gates are unchanged.
 # No request is present in the preparation checkpoint. Each target OS executes
-# 34 cases plus import: retained IN/pressure/shared-contract controls and all
+# 35 cases plus import: retained IN/pressure/shared-contract controls and all
 # implemented prepared-owner, ordinary body, CYSD and application-host cases.
 # The native Web-host prerequisite does not replace actual browser execution.
 on:
@@ -13,10 +13,14 @@ on:
       - '.github/workflows/lcb003-application-host-runtime-publication.yml'
       - 'tools/ci/lcb001_shared_contract_runtime_publication.py'
       - 'tools/ci/test_lcb001_shared_contract_runtime_publication.py'
+      - 'tools/ci/lcb005_inertial_runtime_publication.py'
+      - 'tools/ci/test_lcb005_inertial_runtime_publication.py'
+      - 'tools/ci/lcb005_water_inertial_runtime_publication.py'
+      - 'tools/ci/test_lcb005_water_inertial_runtime_publication.py'
       - 'tools/ci/lcb003_application_host_runtime_publication.py'
       - 'tools/ci/test_lcb003_application_host_runtime_publication.py'
   push:
-    branches: [codex/lcb003-application-host]
+    branches: [codex/lcb003-final-integration]
     # Explicit source-bound publication request; normal native edits do not dispatch a publisher.
     # Workflow/helper changes run lightweight guards; absent request means no build.
     paths:
@@ -24,6 +28,10 @@ on:
       - '.github/workflows/lcb003-application-host-runtime-publication.yml'
       - 'tools/ci/lcb001_shared_contract_runtime_publication.py'
       - 'tools/ci/test_lcb001_shared_contract_runtime_publication.py'
+      - 'tools/ci/lcb005_inertial_runtime_publication.py'
+      - 'tools/ci/test_lcb005_inertial_runtime_publication.py'
+      - 'tools/ci/lcb005_water_inertial_runtime_publication.py'
+      - 'tools/ci/test_lcb005_water_inertial_runtime_publication.py'
       - 'tools/ci/lcb003_application_host_runtime_publication.py'
       - 'tools/ci/test_lcb003_application_host_runtime_publication.py'
 
@@ -49,7 +57,7 @@ defaults:
 jobs:
   publisher-guards:
     name: validate staged publisher without building runtimes
-    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/codex/lcb003-application-host') || (github.event_name == 'pull_request' && github.head_ref == 'codex/lcb003-application-host' && github.base_ref == 'main'))
+    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/codex/lcb003-final-integration') || (github.event_name == 'pull_request' && github.head_ref == 'codex/lcb003-final-integration' && github.base_ref == 'main'))
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
@@ -62,13 +70,14 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/ci/test_lcb003_application_host_runtime_publication.py
+          python3 tools/ci/test_lcb005_water_inertial_runtime_publication.py
           python3 tools/ci/test_lcb005_inertial_runtime_publication.py
           python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
           python3 tools/ci/check_ci_provider_policy.py
 
   admission:
     name: require an explicit application-host publication request
-    if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/codex/lcb003-application-host'
+    if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/codex/lcb003-final-integration'
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     outputs:
@@ -84,6 +93,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/ci/test_lcb003_application_host_runtime_publication.py
+          python3 tools/ci/test_lcb005_water_inertial_runtime_publication.py
           python3 tools/ci/test_lcb005_inertial_runtime_publication.py
           python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
           if test -f 'tools/ci/lcb003_application_host_publish_request.json'; then
@@ -97,7 +107,7 @@ jobs:
   linux:
     needs: admission
     name: build and execute the Linux application-host runtime
-    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/lcb003-application-host' && needs.admission.outputs.armed == 'true'
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/lcb003-final-integration' && needs.admission.outputs.armed == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 55
     steps:
@@ -111,6 +121,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/ci/test_lcb003_application_host_runtime_publication.py
+          python3 tools/ci/test_lcb005_water_inertial_runtime_publication.py
           python3 tools/ci/test_lcb005_inertial_runtime_publication.py
           python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
           python3 tools/ci/lcb003_application_host_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
@@ -175,7 +186,7 @@ jobs:
   windows-build:
     needs: admission
     name: cross-build the Windows application-host runtime
-    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/lcb003-application-host' && needs.admission.outputs.armed == 'true'
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/lcb003-final-integration' && needs.admission.outputs.armed == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 55
     steps:
@@ -189,6 +200,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/ci/test_lcb003_application_host_runtime_publication.py
+          python3 tools/ci/test_lcb005_water_inertial_runtime_publication.py
           python3 tools/ci/test_lcb005_inertial_runtime_publication.py
           python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
           python3 tools/ci/lcb003_application_host_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
@@ -254,7 +266,7 @@ jobs:
   windows-execution:
     name: execute Windows application-host cases
     needs: windows-build
-    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/lcb003-application-host'
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/lcb003-final-integration'
     runs-on: windows-2022
     timeout-minutes: 25
     env:
@@ -275,6 +287,7 @@ jobs:
         run: |
           set -euo pipefail
           python tools/ci/test_lcb003_application_host_runtime_publication.py
+          python tools/ci/test_lcb005_water_inertial_runtime_publication.py
           python tools/ci/test_lcb001_shared_contract_runtime_publication.py
           python tools/ci/lcb003_application_host_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
 
@@ -310,7 +323,7 @@ jobs:
   publish:
     name: fast-forward the source branch with both validated runtimes
     needs: [linux, windows-execution]
-    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/lcb003-application-host'
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/lcb003-final-integration'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     permissions:
@@ -327,6 +340,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/ci/test_lcb003_application_host_runtime_publication.py
+          python3 tools/ci/test_lcb005_water_inertial_runtime_publication.py
           python3 tools/ci/test_lcb005_inertial_runtime_publication.py
           python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
           python3 tools/ci/lcb003_application_host_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
@@ -366,11 +380,11 @@ jobs:
           # the built SHA. The lease atomically refuses any changed remote tip,
           # including a concurrent reset; it cannot overwrite concurrent work.
           # The LFS pre-push hook uploads only the new runtime objects.
-          git push --force-with-lease="refs/heads/codex/lcb003-application-host:$GITHUB_SHA" origin HEAD:refs/heads/codex/lcb003-application-host
+          git push --force-with-lease="refs/heads/codex/lcb003-final-integration:$GITHUB_SHA" origin HEAD:refs/heads/codex/lcb003-final-integration
           {
             echo '### LCB-003 application host runtime publication'
             echo "Built source: $GITHUB_SHA"
             echo "Runtime publication commit: $(git rev-parse HEAD)"
-            echo 'Both exact runtimes passed all 34 mandatory host/IN/pressure/shared-contract cases plus import on their actual target OS, including four healthy Water Feel moving-body cohorts, three synchronous pressure-body arms, two healthy FM/CY desktop-default cohorts, three typed default pressure-capacity refusals and complete prepared CYSD/default/user-import sections. Actual browser execution and full ready-PR CI remain separate.'
+            echo 'Both exact runtimes passed all 35 mandatory host/IN/pressure/shared-contract cases plus import on their actual target OS, including strict actual Water IN native admission/coherence/continuation, four healthy desktop Water Feel moving-body cohorts, three synchronous pressure-body arms, four actual synchronous Water Feel FM/PF arms, two healthy FM/CY desktop-default cohorts, three typed default pressure-capacity refusals and complete prepared CYSD/default/user-import sections. Actual browser execution and full ready-PR CI remain separate.'
             echo 'The existing full ready-for-review validation gates remain required on the resulting PR head.'
           } >> "$GITHUB_STEP_SUMMARY"

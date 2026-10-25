@@ -12,13 +12,13 @@ from pathlib import Path
 import re
 
 _spec = spec_from_file_location(
-    "_lcb003_union_publication_profile",
-    Path(__file__).with_name("lcb005_inertial_runtime_publication.py"),
+    "_lcb003_water_union_publication_profile",
+    Path(__file__).with_name("lcb005_water_inertial_runtime_publication.py"),
 )
 union = module_from_spec(_spec)
 _spec.loader.exec_module(union)
 engine = union.engine
-engine.BRANCH = "codex/lcb003-application-host"
+engine.BRANCH = "codex/lcb003-final-integration"
 engine.WORKFLOW = ".github/workflows/lcb003-application-host-runtime-publication.yml"
 engine.REQUEST = "tools/ci/lcb003_application_host_publish_request.json"
 engine.EVIDENCE = "docs/audits/2026-10-25-lcb003-runtime-publication.md"
@@ -27,7 +27,7 @@ engine.PRESSURE_CASE = "godot/tests/test_liquid_water_reference_body.gd"
 engine.REQUEST_VALUE = {
     "schema": "lcb003-application-host-publish-request-v1",
     "family": "multi_solver",
-    "variant": "fm-cy-pf0-pf1-pf2-in-brine",
+    "variant": "fm-cy-pf0-pf1-pf2-in-water-brine",
     "scope": "lcb003-prepared-world-owners-cysd-and-application-host",
     "intent": "publish-source-matched-runtimes",
 }
@@ -48,6 +48,7 @@ HOST_MARKERS = {
     "test_liquid_ordinary_demo_host": "LIQUID_ORDINARY_DEMO_HOST",
     "test_liquid_reference_body_poses": "LIQUID_REFERENCE_BODY_POSES",
     "test_liquid_synchronous_reference_body": "LIQUID_SYNCHRONOUS_REFERENCE_BODY",
+    "test_liquid_synchronous_water_reference_body": "LIQUID_SYNCHRONOUS_WATER_REFERENCE_BODY",
     "test_liquid_desktop_default_host": "LIQUID_DESKTOP_DEFAULT_HOST",
 }
 engine.CASE_MARKERS = dict(engine.CASE_MARKERS) | {
@@ -62,14 +63,16 @@ engine.CASE_MARKERS = dict(engine.CASE_MARKERS) | {
 }
 engine.EXECUTION_SCOPE = (
     "Import plus all fourteen retained shared-contract/IN/pressure cases and "
-    "twenty implemented host/API cases on each target OS: prepared owner "
+    "twenty-one implemented host/API cases on each target OS, preserving the "
+    "strict actual Water IN native proof for both mass precisions and worker counts: prepared owner "
     "adoption/refusal, normalization, real Main/worker moving reference bodies, "
     "thermal CYSD preparation and explicit user import, four ordinary demos, "
-    "actual synchronous Physics Pit bodies, explicit reference poses, receipt observations, "
+    "actual synchronous Physics Pit and Water Feel FM/PF bodies, CY/IN future-source refusal, "
+    "explicit reference poses, receipt observations, "
     "native-authored desktop default adoption, positive FM/CY body play and "
     "three typed initial pressure-capacity refusals, "
     "direct Rapier parity and the native prerequisite of the Web host probe. "
-    "Water IN remains unavailable; actual browser execution, complete constructor "
+    "Actual browser execution, complete constructor "
     "coverage, human feel and full ready-PR CI are separate gates"
 )
 # The imported IN profile is present but deliberately unarmed on this branch.
@@ -93,15 +96,25 @@ DEFAULT_SECTIONS = {name: True for name in (
 BODY_VARIANTS = ("reference", "cached", "cached_dormant", "freemass")
 ORDINARY_DEMOS = ("material_lab", "waterworks", "foundry", "neon_works")
 SYNCHRONOUS_BODY_PRESETS = (2, 3, 4)
+SYNCHRONOUS_WATER_PRESETS = (2, 3, 4, 0)
 DEFAULT_PLAY_VARIANTS = ("freemass", "whole")
 DEFAULT_CAPACITY_VARIANTS = ("reference", "cached", "cached_dormant")
 _verify_union = engine.verify_case_results
 
 
+def unique_json_object(pairs: list) -> dict:
+    value = {}
+    for key, item in pairs:
+        engine.require(key not in value, "Duplicate host observation field")
+        value[key] = item
+    return value
+
+
 def json_rows(directory: Path, name: str, prefix: str) -> list:
     output = (directory / (name + ".log")).read_text(encoding="utf-8")
     try:
-        values = [json.loads(value) for value in re.findall(r"(?m)^" + re.escape(prefix) + r" (.*)$", output)]
+        values = [json.loads(value, object_pairs_hook=unique_json_object)
+                  for value in re.findall(r"(?m)^" + re.escape(prefix) + r" (.*)$", output)]
     except (ValueError, TypeError) as exc:
         raise RuntimeError("Malformed host observation: " + prefix) from exc
     engine.require(all(isinstance(value, dict) for value in values), "Non-object host observation: " + prefix)
@@ -169,6 +182,9 @@ def verify_ordinary_routes(directory: Path) -> None:
                    [row.get("preset") for row in cohorts] == list(SYNCHRONOUS_BODY_PRESETS),
                    "Incomplete synchronous pressure-body cohorts")
     for row in cohorts:
+        variant = {2: "reference", 3: "cached", 4: "cached_dormant"}.get(row.get("preset"))
+        engine.require(row.get("family") == "pressure_flow_v1" and row.get("variant") == variant and
+                       sha256_text(row.get("policy_hash")), "Synchronous body native assignment differs")
         engine.require(type(row.get("preset")) is int and type(row.get("completed_ticks")) is int and
                        row["completed_ticks"] >= 240 and type(row.get("manual_steps")) is int and
                        row["manual_steps"] == row["completed_ticks"], "Incomplete synchronous body continuation")
@@ -183,6 +199,44 @@ def verify_ordinary_routes(directory: Path) -> None:
                        "Missing finite age-bounded synchronous accepted impulse")
         engine.require(row.get("initial_body0") == [124, 90] and finite_pair(row.get("final_body0")) and
                        row["final_body0"] != row["initial_body0"], "Synchronous authored body did not move")
+    engine.require(len({row["policy_hash"] for row in cohorts}) == 3,
+                   "Synchronous pressure bodies did not execute three distinct native policies")
+
+
+def verify_synchronous_water(directory: Path) -> None:
+    value = completed_host_result(directory, "test_liquid_synchronous_water_reference_body",
+                                  "LIQUID_SYNCHRONOUS_WATER_REFERENCE_BODY_RESULT")
+    engine.require(value.get("whole_cell_source_refusal_families") == ["cellular_yield_v1", "inertial_cellular_v1"],
+                   "Missing synchronous CY/IN future-source refusal controls")
+    cohorts = value.get("cohorts")
+    engine.require(isinstance(cohorts, list) and all(isinstance(row, dict) for row in cohorts) and
+                   [row.get("preset") for row in cohorts] == list(SYNCHRONOUS_WATER_PRESETS),
+                   "Incomplete synchronous Water Feel cohorts")
+    for row in cohorts:
+        preset = row["preset"]
+        family = "freemass_v1" if preset == 0 else "pressure_flow_v1"
+        variant = {0: "reference", 2: "reference", 3: "cached", 4: "cached_dormant"}[preset]
+        engine.require(type(preset) is int and row.get("family") == family and row.get("variant") == variant and
+                       sha256_text(row.get("policy_hash")), "Synchronous Water native assignment differs")
+        engine.require(type(row.get("quality")) is int and row["quality"] == 0 and
+                       type(row.get("completed_ticks")) is int and row["completed_ticks"] == 240 and
+                       type(row.get("manual_steps")) is int and row["manual_steps"] == 240 and
+                       type(row.get("water")) is int and row["water"] == 3718400 and
+                       type(row.get("observation_tick")) is int and row["observation_tick"] == 180,
+                       "Incomplete synchronous Water quantity/execution/registered observation")
+        for key in ("contacts", "applications"):
+            engine.require(type(row.get(key)) is int and row[key] > 0, "Missing actual synchronous Water feedback")
+        engine.require(row.get("pressure_accounting_valid") is True and row.get("gas_available") is (preset != 0) and
+                       row.get("gas_closes") is (preset != 0), "Synchronous Water pressure/FM accounting differs")
+        impulse, magnitude = row.get("accepted_impulse"), row.get("absolute_impulse")
+        engine.require(finite_pair(impulse) and any(v != 0 for v in impulse) and
+                       type(magnitude) in (int, float) and math.isfinite(magnitude) and magnitude > 0 and
+                       type(row.get("max_accepted_age")) is int and 0 <= row["max_accepted_age"] <= 8,
+                       "Missing finite age-bounded synchronous Water impulse")
+        engine.require(row.get("initial_body0") == [124, 90] and finite_pair(row.get("final_body0")) and
+                       row["final_body0"] != row["initial_body0"], "Synchronous Water body did not move")
+    engine.require(len({row["policy_hash"] for row in cohorts}) == 4,
+                   "Synchronous Water bodies did not execute four distinct native policies")
 
 
 def verify_default_routes(directory: Path) -> None:
@@ -224,6 +278,7 @@ def verify_default_routes(directory: Path) -> None:
 def verify_case_results(directory: Path, report: dict) -> None:
     _verify_union(directory, report)
     verify_ordinary_routes(directory)
+    verify_synchronous_water(directory)
     verify_default_routes(directory)
     for name, expected in (("test_liquid_level_preparation", LEVEL_SECTIONS),
                            ("test_liquid_default_demo_preparation", DEFAULT_SECTIONS)):
