@@ -10,6 +10,13 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+The [repaired worker activity local preparation](audits/2026-10-25-lcb003-final-integration.md#repaired-worker-activity-local-preparation--2026-10-25)
+records dd00e49a/native139, fresh DLLf34b42ac, native164 and focusedSAN39.
+Fresh import plus all35 host cases pass with693 source,643 post-import project
+and139 native inputs held unchanged. Old source4948 browser77/76 and earlier
+DLL93d3 host proof remain historical after this kernel change.003 stays unarmed
+pending final Water sequence2 integration and combined publication.
+
 The [fresh full local host matrix and actual Web functional result](audits/2026-10-25-lcb003-final-integration.md#complete-local-host-matrix-and-actual-web-result)
 records36 passing Windows processes and the separately bound compat77/threaded76
 terminal POSTs. [Ordinary visual Web play remains open](audits/2026-10-25-lcb003-web-common-water.md#preserved-apparatus-failures-and-remaining-gaps);

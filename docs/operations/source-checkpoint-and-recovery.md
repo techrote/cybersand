@@ -10,15 +10,17 @@ related-documents: [local-build-and-validation.md, ../reference/validation-evide
 
 # Source checkpoint and recovery
 
-Local application preparation now consumes reviewed Water checkpoint0d7c80e6,
-including corrected native worker activity/deadline source dab388f6 and the
-accepted main9935/early-TSan workflow changes. This changes the native kernel.
-The earlier DLL93d3/36-process and source4948 browser77/76 results below retain
-their original source identities; neither the old native-input reuse nor the
-#249 two-Godot-file exception qualifies this repaired kernel. Fresh combined
-local native/DLL/35-case checks and final Water publication integration are
-pending at this merge. The003 request remains absent; no release, final-head
-or complete-host acceptance is claimed.
+Local application preparation at dd00e49a now consumes reviewed Water
+checkpoint0d7c80e6, including corrected worker activity/deadline source dab388f6,
+accepted main9935 and the early-TSan workflow. Its fresh native139 Windows DLL
+f34b42ac passes164 ordinary groups, seven receipt-byte oracles and39 focused
+ASan/UBSan groups. Fresh import plus all35 host cases pass on that repaired
+DLL, with693 source files,643 post-import project inputs and139 native inputs
+held unchanged. The [current local preparation](../audits/2026-10-25-lcb003-final-integration.md#repaired-worker-activity-local-preparation--2026-10-25)
+records receipt adee2a57 and its scope. Earlier DLL93d3/36-process and
+source4948 browser77/76 results below retain their original source identities.
+Final Water sequence2 runtime/docs integration and combined publication remain
+required;003 stays unarmed and this local checkpoint is not pushed.
 
 Before003 arming, accepted main9935d569 (#249) normally merges into the final
 application branch as c3cde29f. Exactly five incoming flight paths are preserved,

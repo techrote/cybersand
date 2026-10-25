@@ -10,15 +10,17 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
-Local application preparation now consumes reviewed Water checkpoint0d7c80e6,
-including corrected native worker activity/deadline source dab388f6 and the
-accepted main9935/early-TSan workflow changes. This changes the native kernel.
-The earlier DLL93d3/36-process and source4948 browser77/76 results below retain
-their original source identities; neither the old native-input reuse nor the
-#249 two-Godot-file exception qualifies this repaired kernel. Fresh combined
-local native/DLL/35-case checks and final Water publication integration are
-pending at this merge. The003 request remains absent; no release, final-head
-or complete-host acceptance is claimed.
+Local application preparation at dd00e49a now consumes reviewed Water
+checkpoint0d7c80e6, including corrected worker activity/deadline source dab388f6,
+accepted main9935 and the early-TSan workflow. Its fresh native139 Windows DLL
+f34b42ac passes164 ordinary groups, seven receipt-byte oracles and39 focused
+ASan/UBSan groups. Fresh import plus all35 host cases pass on that repaired
+DLL, with693 source files,643 post-import project inputs and139 native inputs
+held unchanged. The [current local preparation](../audits/2026-10-25-lcb003-final-integration.md#repaired-worker-activity-local-preparation--2026-10-25)
+records receipt adee2a57 and its scope. Earlier DLL93d3/36-process and
+source4948 browser77/76 results below retain their original source identities.
+Final Water sequence2 runtime/docs integration and combined publication remain
+required;003 stays unarmed and this local checkpoint is not pushed.
 
 The [complete local host matrix](../audits/2026-10-25-lcb003-final-integration.md#complete-local-host-matrix-and-actual-web-result)
 now passes36 Windows processes on the unchanged combined DLL. Separate
@@ -1001,7 +1003,7 @@ does not freeze #45 thresholds.
 
 | Item at the accepted #245 main checkpoint | Status |
 |---|---|
-| Accepted #246 main admits Water × `pressure_flow_v1/reference`, optional family block `{gas_enabled 0..1, atmospheric_head_rows 16..4096}` (defaults 1, 32); the unmerged #201 branch additionally admits `cached`/`cached_dormant`, with local proof and separate pending publication/final gates | Current |
+| At the accepted #246 checkpoint, Water admitted `pressure_flow_v1/reference`, optional family block `{gas_enabled 0..1, atmospheric_head_rows 16..4096}` (defaults 1, 32); then-unmerged #201 separately added `cached`/`cached_dormant` | Historical checkpoint; #201 is now accepted on main through #253 as recorded below |
 | Solver-owned per-chunk sidecars, World gas table with label-overlap identity and exact ledgers, immutable head snapshot, phased kernel | Current ([design](../architecture/pressure-flow-v1.md)) |
 | Physical-state hash v1 and CYPS1 at the historical #245 checkpoint; retained inspection/ledger APIs | Historical codec; accepted main now uses v2 [below](#lcb-001-shared-contract-accepted--2026-10-25). Original APIs ([interfaces](interfaces-and-message-contracts.md#lcb-001-pressure-reference-inspection-and-persistence-experimental)) |
 | Capability matrix Water × pressure `executable_today: true`, `executable_variants: ["reference"]`; regenerated digest and vector identity words, with no acceptance/refusal change in the 47 cases | Current |
@@ -1015,15 +1017,6 @@ front t240 220 (71); depth-160 retained t1800 0.371 (0.851); vented two-limb
 two-limb differs from vented (levels 152/175, gap 23), remains unsettled and has
 no sealed-law acceptance. Quantity was exact in all twelve runs. Earlier-source
 measurements remain in the dated evidence record.
-
-| Remaining | Owner and status |
-|---|---|
-| W-CY, `water-normalize-v1`, native typed receipts and exact quantity accounting | #200, Accepted on main through #246; scope and remaining ownership [below](#lcb-001-shared-contract-accepted--2026-10-25) |
-| Host provenance/collection proof and remaining normal-application constructors | #202, Planned; preserve native shared interfaces from #200 |
-| `cached`/`cached_dormant`, incremental caches and motion certificates | [#201](https://github.com/techrote/cybersand/issues/201), Current in branch source; [runtime/final acceptance pending](#lcb-002-pressure-variants-branch--2026-10-25) |
-| Comparison host and UI; re-dispositioning the registered candidate arms | [#202](https://github.com/techrote/cybersand/issues/202), Planned |
-| `inertial_cellular_v1` (W-IN, Brine), M1/M2 | #212: Brine/reference source and standalone adapter Current on its branch; Water IN, integrated/runtime/final acceptance remain pending |
-| Packaged builds and isolated timing | [#203](https://github.com/techrote/cybersand/issues/203), Planned |
 
 **Publisher.** The temporary pressure-reference workflow, helper, unittest and
 source-bound request, integrated from draft PR #244, are retired after PR #245.
@@ -1048,6 +1041,14 @@ as described for [branch-scoped publishers](../operations/local-build-and-valida
 | Comparison host and UI; re-dispositioning the registered candidate arms | [#202](https://github.com/techrote/cybersand/issues/202), Planned |
 | `inertial_cellular_v1` (W-IN, Brine), M1/M2 | #212: Brine/reference accepted on main through #250. Isolated Water native/source4b publication passes both OSes; final ready-PR, registered scientific campaign and full host acceptance remain pending. M1/M2 retained campaign classifications do not change |
 | Packaged builds and isolated timing | [#203](https://github.com/techrote/cybersand/issues/203), Planned |
+
+The accepted #201/#250 main status above is distinct from the later Water worker
+activity repair at dab388f6. Water IN remains implemented in source; the original
+sequence1 publication keeps its source4b identity. The repaired kernel requires
+new sequence2 source-matched publication and final ready gates. Local application
+preparation at dd00 does not replace either publication or full #212/#203
+acceptance. The inherited duplicate table with stale branch-only statuses has
+been removed; dated branch evidence remains retained below.
 
 ## LCB-001 shared contract accepted — 2026-10-25
 
@@ -1092,8 +1093,8 @@ source-matched runtimes and its applicable exact-head gates.
 
 ## LCB-002 pressure variants branch — 2026-10-25
 
-**Current on `codex/lcb002-pressure-variants`, not accepted main:** Water admits
-`pressure_flow_v1/reference`, `cached` and `cached_dormant` as implementations of
+**Dated branch evidence; #201 is now accepted on main through #253:** Water
+admits `pressure_flow_v1/reference`, `cached` and `cached_dormant` as implementations of
 the same physical law. [The optimization contract](../architecture/pressure-optimization.md)
 owns sparse head repair, sealed-component discovery reuse, conservative motion
 certificates and deterministic execution3 proof-cost admission. Default Water
@@ -1108,8 +1109,9 @@ boundary-balance observations are separate from equal projection or work counts.
 No global speedup is claimed. Source-matched Windows/Linux scoped publication
 [`40152121412`](https://github.com/techrote/cybersand/actions/runs/40152121412)
 passed actual import plus all13 cases on each OS at source `8354e3a6`, followed
-by the single-parent four-path bot append `d726bf34`. The full ready-PR
-Documentation/provenance, Native, Godot and applicable Water gates remain pending.
+by the single-parent four-path bot append `d726bf34`. Those branch records
+precede the later full exact-head gates and #253 acceptance; the new Water
+activity repair still requires its own source-matched publication and gates.
 Actual Rapier rotation/displacement, full host constructors and
 Web/integrated packaging retain #202/#203 ownership.
 

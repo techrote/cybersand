@@ -10,6 +10,13 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+The [repaired worker activity local preparation](../audits/2026-10-25-lcb003-final-integration.md#repaired-worker-activity-local-preparation--2026-10-25)
+records dd00e49a/native139, fresh DLLf34b42ac, native164 and focusedSAN39.
+Fresh import plus all35 host cases pass with693 source,643 post-import project
+and139 native inputs held unchanged. Old source4948 browser77/76 and earlier
+DLL93d3 host proof remain historical after this kernel change.003 stays unarmed
+pending final Water sequence2 integration and combined publication.
+
 The [final local host matrix](../audits/2026-10-25-lcb003-final-integration.md#complete-local-host-matrix-and-actual-web-result)
 passes all36 processes with unchanged budgets, no errors/warnings/skips and
 held693 source/643 staged project/139 native inputs. The [separate Web build

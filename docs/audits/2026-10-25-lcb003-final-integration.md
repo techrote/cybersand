@@ -10,6 +10,82 @@ related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../op
 
 # LCB-003 final application source integration checkpoint
 
+## Repaired worker activity local preparation — 2026-10-25
+
+Normal merged source `dd00e49ac5b766cec970f8a23c3cc26830de4223`, tree
+`f271c83e365723796e4dc9839c7db9a6143b9e5c`, has parents13c3e02d and approved
+Water0d7c80e6. All source/actor/receipt/default owner changes remain intact.
+The three documentation conflicts preserve both preceding source histories;
+the native test table contains164 distinct registered groups, retaining both
+prepared gas-capacity admission and the new worker activity regression.
+The incoming early-TSan workflow preserves its command/time limits and changes
+only order. CI provider policy and whitespace checks pass.
+
+This changes the native kernel. Water's source dab388f6 defers awake/deadline
+publication to the phase barrier, independently of optional discovery reports;
+it preserves exact minimum nonzero deadlines and serial diagnostic transitions.
+The overflow-free setup bound covers the separately found wasm32 arithmetic
+edge. The [native repair ledger](2026-10-25-water-inertial-native.md) preserves
+original failed Native40205443189, ab453's arithmetic defect and their respective
+corrections. No cap increase, fallback or default identity change is introduced.
+
+The fresh local Windows DLL is
+`f34b42ac5af9cb9c0067b30d8e7eef040a0ef9b189fa9e6084b3026cd5d615d2`,
+4,823,552 bytes, built47.469s/600s from all139 unchanged captured inputs at dd00.
+`tmp/lcb202-final-integration/worker-wake-native-build-v1/build.json` records the
+exact command, pinned tool/dependency reuse, copied source and before/after map.
+This is a development artifact; no runtime or manifest file is committed.
+
+Actual combined Windows LLVM execution passes164 ordinary groups118.531s/600s,
+focused15 pressure/13 IN/8 Water/1 capacity/1 activity groups and seven receipt
+byte oracles. Receipt `tmp/lcb202-final-integration/native/normal-retryworkerwake/receipt.json`,
+SHA`ca357a51c04762bfeab559aaf018ff0283bc05c6df00b066927ec58f639077ea`,
+holds the source fence and authenticates every reused object's complete input map.
+The fresh focused sanitizer run passes39 groups154.438s/600s:38 registered
+pressure/IN/Water/capacity/activity groups plus the head API probe, ordinary
+1MiB reserve/4KiB commit stack, Windows leak checking disabled. Its receipt is
+`tmp/lcb202-final-integration/native/sanitizer/sanitized-retryworkerwake/receipt.json`,
+SHA`722cfb68470f4e13a270dd69dd310a3a6fd0dea500a1425fa42b9fa5c3bc1425`.
+These are local Windows results, with no LinuxTSan or source-matched release claim.
+
+Fresh import plus all35 host cases pass against this DLL at source dd00:
+36 actual processes, every exit0, no engine errors, warnings, skips or timeouts.
+The current strict003 verifier accepts the complete report, including native
+Water005 proof, actual PF variants,76 native Web prerequisite checks and six
+common-Water arms. All693 source files,643 post-import project inputs and139
+native inputs are held unchanged. Four exact vendor import carriage-return
+normalizations are recorded before the post-import fence; no other input drift
+is accepted. Aggregate serial process time is694.854s; the longest case is the
+WEX body baseline104.073s/600s. Receipt
+`tmp/lcb202-final-integration/worker-wake-host-matrix-v1/RECEIPT.json`,
+SHA`adee2a57b0855affb709ba7d15f9a7b6edff9551d92e7c53efb0bb6be5422bdc`,
+binds all retained logs and validation output. This is local Windows headless
+functional proof, with no Linux, browser or release execution claim.
+
+The preliminary proper-companion validation receipt
+`tmp/lcb202-final-integration/docs-validation-worker-wake/checks-v1/VALIDATION-RECEIPT.json`,
+SHA`736188dd81655d66b28ac64d820ee5eca321d13caf6868d950a458026da3d74a`,
+passes Docs, historical M11, provider policy, whitespace and both retrieval
+evaluations. Repository validation has ten real source/runtime blockers, five
+per OS: `cyber_demo_bridge.hpp`, `cyber_native_cell_world.cpp`,
+`cyber_native_cell_world.hpp`, `prepared_world.hpp` and `world.cpp`. All18 required
+LFS payloads are materialized; these are source mismatches against retained C9
+runtimes, with no waiver. This preliminary receipt precedes the eight-document
+evidence closure; final checks bind that later overlay separately. The earlier
+eight-blocker record below remains historical to its original source.
+
+Original host69479670 and browser4948/77/76 proof remain historical; the earlier
+#249 two-Godot-file exception cannot qualify a changed kernel. The003 request is
+absent. Final Water sequence2 bot/docs must be normally integrated, with every
+compiled native input held or rebuilt as needed, before003 can be armed.
+Combined target-OS publication, required exact-head gates, ordinary visual Web,
+remaining constructors and complete host/scientific/feel acceptance remain
+separate. No push or publication is authorized by this record.
+
+Later Linux Native run40214472284 failed its early TSan step. Its cause remains
+under investigation at this local checkpoint; the Windows results above do not
+establish Linux CI acceptance or authorize a publication retry.
+
 The later [fresh-main flight lease merge](#fresh-main-flight-lease-merge--2026-10-25)
 changes two unrelated Godot files after the retained full host matrix. Fresh
 import/affected-flight execution qualifies that addition; it does not relabel
