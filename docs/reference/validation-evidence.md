@@ -10,6 +10,21 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## Water IN native source and Current identity control - 2026-10-25
+
+The isolated [Water native record](../audits/2026-10-25-water-inertial-native.md)
+retains prospective stencil registration, actual two-pickup ownership/temperature/
+sidecar proof, whole-cell ingress and normalization, all coherence delays,
+mandatory body/material work and real-worker continuation. Parent runtime
+payloads are stale and no new publication is armed. Independent encoding keeps
+all seven complete receipt vectors; four physical fixture facts are freshly
+measured after capability admission.264 paired Current observations preserve
+exact tuple bytes, quantity ledger, historical state/content hashes, material
+work and allocations; only capability/policy-bound physical identity changes.
+Preserved apparatus failures, source fences, tool/deadline/stack identities and
+remaining full platform/scientific/application gates are in the dated record.
+
+
 ## Resting Brine body-contact correction — 2026-10-25
 
 Independent native review of `98595ac8` records18 actual cohorts with executed

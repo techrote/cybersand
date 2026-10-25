@@ -10,6 +10,20 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Water IN isolated successor - 2026-10-25
+
+`codex/lcb005-water-inertial` starts from Brine contact repair68f74906 and adds
+Water/reference native admission, whole-cell ingress/normalization and actual
+carrier ownership through repeated packing/pickup hooks. Use the
+[Water adapter contract](../architecture/inertial-cellular-v1.md#water-in-native-successor--2026-10-25)
+and [dated source-bound native proof](../audits/2026-10-25-water-inertial-native.md).
+No new runtime request/payload is part of this source checkpoint. It must consume
+final accepted parent #250 and receive fresh native/OS/runtime/CI/review proof
+before acceptance. Common-Water scientific screens, actual host/Web/rendered
+comparison and final packaging remain #202/#203. Capability admission changes
+policy-bound hashes while Current tuple/material behavior stays an exact control.
+
+
 ## Brine IN contact review blocker — 2026-10-25
 
 Independent review at `98595ac8` reproduces omitted body feedback from resting

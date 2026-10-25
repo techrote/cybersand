@@ -10,6 +10,19 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Water IN native successor checks
+
+On the isolated Water successor, build the ordinary native executable with
+`make build/tests`, then run `build/tests "Water IN"` for its focused groups.
+`python tools/lcb/water_inertial_footprint.py` separately checks the complete
+persisted-occupancy DDA/carrier stencil. Existing `LCB-005`, `LCB-002`, whole-Water
+and complete receipt-byte gates remain mandatory. No test selects a larger
+geometry implicitly: IN requests3 and matched controls use identical geometry;
+ordinary Current stays2. The [dated native record](../audits/2026-10-25-water-inertial-native.md)
+owns exact Windows LLVM inputs, normal1MiB stack,120s focused and600s ordinary
+limits, raw failures and pending source-matched OS/publication/full-host gates.
+
+
 ## Which build inputs are required?
 
 **Current:** build scripts and locks select the following inputs. A pin is a

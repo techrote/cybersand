@@ -11,6 +11,19 @@ last-reviewed: 2026-10-25
 
 # Data ownership and lifetimes
 
+## Water IN actual carrier and scratch ownership
+
+**Current isolated Water successor:** the native slot follows its complete Water
+tuple through every immediate carrying swap. `mix_after_motion` returns the
+actual carrier coordinate; later IN movement/probes/final store use it, while
+foreign grain/vacancy slots remain zero. `MotionFootprint` and body-contact target
+masks are bounded stack scratch for one scheduled owner, never World authority
+or a per-cell heap allocation. Every helper access is charged relative to that
+original owner; explicit read3/write2 and scheduler geometry remain mandatory.
+Whole-cell admission/refusal and native setup normalization never convert a live
+World. [The Water adapter contract](inertial-cellular-v1.md#water-in-native-successor--2026-10-25)
+owns coherence/cadence, future work and remaining qualification.
+
 ## Pressure gas labels beneath host body masks
 
 **Current repair branch, acceptance pending:** native World owns retained gas

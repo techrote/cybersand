@@ -10,7 +10,7 @@ related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-
 
 # Liquid material and solver state-transition matrix
 
-**Native #212 branch checkpoint:** the [Brine IN reference](inertial-cellular-v1.md) now implements the declared Brine ownership/law scope. Water IN and full application/runtime qualification remain Planned; the standalone model below retains its separate evidence meaning.
+**Native #212 branch checkpoint:** the [Brine IN reference](inertial-cellular-v1.md) now implements the declared Brine ownership/law scope. The isolated [Water IN native successor](inertial-cellular-v1.md#water-in-native-successor--2026-10-25) adds its own material/carrier qualification; source-matched runtime and full application/scientific qualification remain pending. The standalone model below retains its separate evidence meaning.
 
 ## Status and inputs
 
@@ -103,7 +103,7 @@ related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-
 | Operation | Owner | Rule |
 |---|---|---|
 | FreeMass partial transfer | `transfer_water` | Current: `amount = min(requested, source, capacity)`. Zero source → Empty; Empty destination → Water. |
-| Whole-cell Water (W-CY; IN v1 Planned) | family | Current native W-CY: every Water cell holds exactly `maximum()`. Fractional ingress refuses or uses explicit native `water-normalize-v1` preparation (up when `2·m ≥ maximum()`, exact setup-only source/sink); no Godot normalization opt-in yet. |
+| Whole-cell Water (W-CY main; isolated Water IN successor) | family | Current native W-CY and isolated Water IN successor: every Water cell holds exactly `maximum()`. Fractional ingress refuses or uses explicit native `water-normalize-v1` preparation (up when `2·m ≥ maximum()`, exact setup-only source/sink); no Godot normalization opt-in yet. |
 | Overfill (PF) | family | Current: Water can hold `maximum()` + overfill, with overfill ≤ `maximum()`. Overfill enters native quantity accounting and observations and is never rendered as an extra cell. |
 | Observation of quantity | host | `water_integer` for FM/PF (visible + overfill for PF); `maximum()` per cell for whole-cell families |
 
@@ -145,7 +145,7 @@ always, because v1 has no upward impulse source.
 | Momentum ledger | Per component, exactly: `v_after = v_before + gravity + Σ signed impulses`, where gravity is `(0, g)` and the impulses are support, re-aim, deflect, contact, saturate, damping, drag and rest. **Signed impulses are distinct from loss.** |
 | Speed-loss ledger | Separate, with L1 speed `S = |vx| + |vy|`: `S_after = S_before + g − Σ loss`, and every non-gravity loss ≥ 0. `support` is booked as a constraint, the rest as dissipation. The quadratic energy is not claimed. |
 | Rounding | Every rational product truncates toward zero. The signed remainder numerator is audited per entry and never stored. |
-| Collision with Wall/solid/body mask/same family, or a lighter liquid entered horizontally | **One rule for every ineligible move**: vertical = the U3b landing, horizontal = zero `vx`. Same-family contact is **inelastic** in v1: no velocity exchange, and the occupied cell is unchanged. This resolves the earlier "preserves velocity" row, which would have stored unbounded pending motion. No Rapier force is applied. |
+| Collision with Wall/solid/body mask/same material, or a lighter material entered horizontally | **One rule for every ineligible move**: vertical = the U3b landing, horizontal = zero `vx`. Same-material contact is **inelastic** in v1: no velocity exchange, and the occupied cell is unchanged. A lighter foreign material retains Current downward density exchange even when both select IN. This resolves the earlier "preserves velocity" row, which would have stored unbounded pending motion. No Rapier force is applied. |
 | No other lateral source | There is no column-height scan, pressure or neighbour push; that is `pressure_flow_v1`'s role. |
 | Displacing a lighter liquid (vertical swap, `dy = +1` only) | Drag is booked per U6. The displaced cell keeps its own (or zero) state, and no velocity is written into a foreign family. |
 | Split/merge (PF partial flux) | Outgoing flux carries the source's updated velocity (the #200 defect fix); the receiver mass-weights it; rounding remainders are booked. |
@@ -206,9 +206,9 @@ corner travel, and lighter-below non-support.
 
 | Operation | Owner | Rule |
 |---|---|---|
-| Paint/fill | host → `set_cell_state`/`water_experiment_fill_rect` | Current native: Water fill uses selected precision; painted family state resets. W-CY requires `maximum()`; fractional bool ingress returns false before allocation/mutation. Family-only reset still emits mutation/wake witnesses. Native prepared construction is the explicit normalization path. |
+| Paint/fill | host → `set_cell_state`/`water_experiment_fill_rect` | Current native: Water fill uses selected precision; painted family state resets. W-CY and isolated Water IN require `maximum()`; fractional bool ingress returns false before allocation/mutation. Family-only reset still emits mutation/wake witnesses. Native prepared construction is the explicit normalization path. |
 | Erase | host | the cell becomes Empty; optional state is retired; a ledgered sink |
-| Scheduled source/sink | MicroScenario/World owners | Native shared accounting books actual Water source/sink including PF overfill, independently of the host observation window; IN retirement remains Planned. Host `water_ledger` is a separate apparatus projection. |
+| Scheduled source/sink | MicroScenario/World owners | Native shared accounting books actual Water source/sink including PF overfill, independently of the host observation window; Brine IN and isolated Water IN retire optional motion through the shared writer. Host `water_ledger` is a separate apparatus projection. |
 | Explosions / tools | native queue | material removal is a sink; family state is retired; ledgers attribute the source |
 
 ## 8. Body displacement and boundary changes

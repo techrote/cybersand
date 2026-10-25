@@ -10,6 +10,21 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Isolated Water IN native successor - 2026-10-25
+
+**Current on `codex/lcb005-water-inertial`, pending integration and publication:**
+Water/reference now executes the retained-momentum IN law with its own whole-cell
+coherence/carrying adapter. Complete original-owner read3/write2 guards and
+explicit actual-carrier continuation preserve two successive pickups. Shared
+whole-Water refusal and setup-only normalization retain native receipts/ledger.
+[Source contract](../architecture/inertial-cellular-v1.md#water-in-native-successor--2026-10-25)
+and [dated native evidence](../audits/2026-10-25-water-inertial-native.md) distinguish
+local native proof from unchanged parent runtime artifacts. C64-E8, defaults,
+Brine law, IN sidecar/codec and explicit Current2/IN3 geometry remain intact.
+Full source-matched Windows/Linux/exact-head/independent review and common-Water
+scientific/host/Web qualification are pending. This does not close #212/#203.
+
+
 ## Brine IN body-contact blocker — 2026-10-25
 
 Fresh independent review of `98595ac8` finds that resting Brine IN omits

@@ -295,6 +295,7 @@ Oil, Lava, Acid, Cement and Molten Glass are not admitted in v1.
   - fixtures `viscous.lane-gallery` (Brine lane),
     `density.water-brine-lock-exchange` and the mixed M1 arm.
 - **Water W-IN:**
+  - isolated native successor now executes the [Water adapter and actual-carrier contract](inertial-cellular-v1.md#water-in-native-successor--2026-10-25); fresh runtime/scientific/full-host qualification remains pending;
   - whole cells at `maximum()`;
   - fractional setups refused or explicitly normalized;
   - coherence honoured; adhesion not applicable (declared);
