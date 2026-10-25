@@ -19,6 +19,11 @@ Water uses its own whole-cell adapter around the shared integer IN law. Its
 start from reviewed Brine contact repair `68f74906`. Local native proof does not
 qualify the retained parent runtimes, normal application hosts, common-Water
 scientific screens, owner feel or full Gate D/#203 completion.
+The [dated successor record](../audits/2026-10-25-water-inertial-native.md)
+records162 ordinary groups,37 focused sanitizer groups,124 Python tests and a
+fresh non-release Windows DLL passing import plus14 strict scoped Godot cases.
+Independent native/tooling reviews have no open findings in those bounded
+scopes; source-matched publication and full exact-head acceptance remain pending.
 
 Water executes shared chemistry first, records WaterUpdate and decrements its
 original positive coherence once through `write_cell`. The original delay gates
@@ -30,6 +35,9 @@ x progress advances without motion, catch-up debt or a fabricated impulse.
 Remaining coherence and retained nonzero motion keep required work active.
 The adapter imports no Paste/Slush viscosity, FreeMass merge, adhesion or head
 term. Water quantity is always the selected precision's actual `maximum()`.
+Same-material occupancy blocks travel. A lighter foreign material keeps Current
+downward density exchange even when Water and that material both select IN;
+family selection does not replace the shared material law.
 
 `World::mix_after_motion` returns the actual carrier coordinate. A lateral
 pickup puts Water at the grain's former address; the nominal destination now

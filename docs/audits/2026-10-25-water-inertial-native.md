@@ -23,7 +23,7 @@ original checkout is untouched.
 
 The canonical [Water IN adapter](../architecture/inertial-cellular-v1.md#water-in-native-successor--2026-10-25)
 owns source behavior. C64-E8, dense optional six-byte IN slots, actual damping,
-shared Brine numerical law, pressure law, physical hash3/CYPS3 for IN and
+shared Brine numerical law, pressure law, physical hash 3/CYPS 3 for IN and
 non-IN2 remain unchanged. Water reference admission, actual-carrier continuation
 and the shared whole-Water ingress regime are new. No runtime request is armed
 or payload replaced. The retained Windows/Linux runtimes belong to the parent
@@ -32,25 +32,25 @@ and are stale for this source.
 ## Prospective footprint and actual carrying
 
 `python tools/lcb/water_inertial_footprint.py` enumerates364 persisted-occupancy
-DDA path strata. It observes maximum read3/write2,118 read3 witnesses,134 write2
+DDA path strata. It observes maximum read 3/write 2,118 read 3 witnesses,134 write 2
 witnesses and two two-carry witnesses. This is an abstract stencil proof:
 eligibility and packing can overapproximate actual material decisions. It is
 neither a standalone physics implementation nor actual worker evidence.
 
 Fresh native carrying fixtures use exactly two registered tick-one four-lane
-origins `(55,40)` and `(10,-24)`, actual core/chunk8, workers1/4, mass3/8,
+origins `(55,40)` and `(10,-24)`, actual core/chunk8, workers 1/4, mass 3/8,
 damping0, initial `(vx,vy,ax,ay)=(32,32,15,-15)`, Water temperature333 and two
 Sand tuples `(17,23,777)` and `(18,24,888)`. Enabled carrying yields two pickups,
 Water at the second grain's previous address with `(30,30,13,15)`, both grain
 tuples at their nominal destinations, exact Water `maximum()` and a complete
-packing read3/write2 witness. Disabled carrying and zero-real-motion controls
+packing read 3/write 2 witness. Disabled carrying and zero-real-motion controls
 yield zero pickups. Native original-owner guards include every helper packing,
 Stone-bracing, epoch/mask and tuple endpoint; telemetry is not needed for guards.
 
 ## First focused proof and preserved failures
 
-All commands use actual Windows x86_64 LLVM-MinGW20260826/UCRT Clang23.1.0,
-C++20 `-O1 -g`, normal PE stack reserve1MiB/commit4KiB. External commands and
+All commands use actual Windows x86_64 LLVM-MinGW20260826/UCRT Clang 23.1.0,
+C++20 `-O1 -g`, normal PE stack reserve 1MiB/commit 4KiB. External commands and
 individual raw logs are retained under
 `C:/Users/_/.codex/tmp/lcb-water-inertial-native/`; no generated binary or log is
 committed. Individual focused limits are120s; complete ordinary limit600s.
@@ -65,7 +65,7 @@ API and explicitly requires unchanged authority after that exception.
 Focused v2 receipt
 `0e30d09526373a0320bc7bfbbdbac2e60aaf26d44db05630b9215ff2fbd03ce1`
 passes five groups: all six precisions' direct/CYSD/valid-digest-CYPS refusal and
-explicit normalization counters/digest; every coherence0..12 and signed retained
+explicit normalization counters/digest; every coherence 0..12 and signed retained
 impulse; resting and after-travel signed body feedback;24 carrying/control arms;
 actual-worker mixed Water-IN + Oil-CY + Brine-IN continuation; and shared
 chemistry/product/paint/generated/clear lifecycle. Native/input fences hold.
@@ -84,11 +84,11 @@ receipt assertion, native arithmetic oracle or expected physics is weakened.
 
 ## Current behavior versus capability-bound identity
 
-The independently compiled paired control compares exact base68f74906 with this
-successor for264 rows: eight matched profiles (workers1/4, mass3/8,
-Baseline/strong carrying), each including tick0 and32 actual ticks, plus region
+The independently compiled paired control compares exact base 68f74906 with this
+successor for 264 rows: eight matched profiles (workers 1/4, mass 3/8,
+Baseline/strong carrying), each including tick0 and 32 actual ticks, plus region
 exclusion/re-entry within that fixed horizon. Source/core/compiler/object fences
-and ordinary1MiB stacks hold. Receipt
+and ordinary 1MiB stacks hold. Receipt
 `current-default-control-v2/CURRENT-DEFAULT-IDENTITY-DELTA.json` has SHA-256
 `851501caf2651a707ebc42cad198945b405fcc5aa9c32a17975455224375616c`.
 
@@ -121,7 +121,7 @@ in that apparatus attempt.
 Only four measured native fixture hashes are refreshed after capability
 admission: empty `5616549901072788646`, selected-region
 `3978184822077514841`, PF reference `1353700890374999180` and explicitly
-normalized comparator `8248698509232541560`, all physical hash2.
+normalized comparator `8248698509232541560`, all physical hash 2.
 `physical-facts-v1/CAPTURE-RECEIPT.json`, SHA-256
 `a4360754d6ba76647f72efc1fc0e54e7f570cdadb122e190d95a7911c26e0a94`,
 binds identical native core inputs before/after and complete fresh object
@@ -134,14 +134,14 @@ fact remains historical. Independent Python `struct`/`hashlib` encoding also
 constructs the changed exact raw request, native-issued detail and complete
 construction receipt. The historical illustrative blockv1 remains refused as
 `unknown_parameter`; it is not reinterpreted as the native blockv2 law.
-The parameter generator now generates/checks all17 adapter parameter vectors
+The parameter generator now generates/checks all 17 adapter parameter vectors
 alongside native vectors, preventing stale capability words in the adapter.
 
 ## Remaining qualification
 
-The source67 ordinary/sanitizer and local non-release Windows adapter results
+The source 67 ordinary/sanitizer and local non-release Windows adapter results
 below remain bound to their exact inputs. Independent review later found the
-prepared-population restore defect, corrected at5f8baf6f; fresh repaired-source
+prepared-population restore defect, corrected at 5f8baf6f; fresh repaired-source
 results are recorded separately. No Linux, actual browser/Web, rendered-host or
 new publication result is claimed here. The parent PR #250 must be consumed
 at its final accepted source before successor acceptance. Fresh Windows/Linux
@@ -153,8 +153,8 @@ checkpoint does not close those issues or declare feel acceptance.
 
 ## Sealed native ordinary and sanitizer execution
 
-At native commit `67c03308`, all162 ordinary groups pass in44.422s under600s.
-Separate focused repeats pass15 pressure,13 Brine-IN and8 Water-IN groups.
+At native commit `67c03308`, all 162 ordinary groups pass in 44.422s under 600s.
+Separate focused repeats pass15 pressure,13 Brine-IN and 8 Water-IN groups.
 All seven complete independently encoded receipt fixtures match the actual
 native byte files. The ordinary receipt is
 `full/normal-retry3/receipt.json`, SHA-256
@@ -164,12 +164,12 @@ executable SHA-256
 Its65 compiled inputs and raw/canonical source fences hold.
 
 Focused ASan+UBSan passes37 groups (15 pressure,13 Brine,8 Water and standalone
-head API) in93.078s under600s. Receipt
+head API) in 93.078s under 600s. Receipt
 `sanitizer/sanitized/receipt.json`, SHA-256
 `3dd53b1ac0a3140f8d6aa894d23135901fd9e15b27189707f35880ff9f121c94`,
 binds56 compiled inputs and unchanged source. Executable SHA-256 is
 `912c56106f6143423520b9796a0cb82c8e43394cf4cf1748940b6d56565b5652`.
-Both binaries retain PE stack reserve1MiB/commit4KiB. Sanitizer flags add
+Both binaries retain PE stack reserve 1MiB/commit 4KiB. Sanitizer flags add
 `-fno-omit-frame-pointer -fsanitize=address,undefined`; Windows leak detection is
 disabled explicitly. This is focused sanitizer proof, not the full162-group
 sanitizer suite, TSan or another platform. No source/test/deadline/stack is relaxed.
@@ -177,7 +177,7 @@ sanitizer suite, TSan or another platform. No source/test/deadline/stack is rela
 Post-commit `SEALED-NATIVE-BINDING.json`, SHA-256
 `290ccc1702e0dd376620fa146868da91a6260c31778e7c1f6c029f1c2559021e`,
 compares every repository compiled input's raw bytes and canonical Git bytes
-with67c03308; the external sanitizer harness is separately identified. It also
+with 67c03308; the external sanitizer harness is separately identified. It also
 rebinds all compiled candidate inputs from the264-row Current control. Thus a
 HEAD-plus-delta run is not simply renamed a committed-source result.
 
@@ -194,38 +194,38 @@ alone: enabling another material does not allocate a second per-material array.
 | 1024 | 6,291,456 | 2,048 | 622,592 | 289 | 6,916,385 | 13,832,770 |
 | 2048 | 25,165,824 | 8,192 | 622,592 | 289 | 25,796,897 | 51,593,794 |
 
-Measured slot size6/alignment2 is shared by Water and Brine. The original Brine
+Measured slot size 6/alignment 2 is shared by Water and Brine. The original Brine
 test freshly reports the same1024-square6,916,385 component bytes in this run;
 the earlier6,916,381 observation remains historical to its older source/ABI.
 Sparse nonzero slots do not reduce array allocation. These component sums
 exclude allocator bookkeeping, padding between World members, base Cell and
 activity storage, shared scheduler, thermal/render/PF resources, captures and
 serialization buffers, and process RSS. Legacy `resident_cell_bytes()` separately
-reports131,328 /8,404,992 /33,619,968 for these unheated Worlds; it includes its
+reports 131,328 /8,404,992 /33,619,968 for these unheated Worlds; it includes its
 own base/activity components and is not a total-process metric. No new RSS or
 neutral-array speed claim is made. This consumes the current #204 optional-state
 evidence without selecting a Cell ABI migration.
 
 
-## Actual local Windows adapter execution at67c03308
+## Actual local Windows adapter execution at 67c03308
 
 The fresh non-release Windows DLL has SHA-256
 `46d039f81ce872f486897b4f9333e7a072296b75b8118600112c0391be37d350`
-and4,534,272 bytes. Its134 source/build inputs match67c03308, with unchanged
-pinned godot-cpp101ae38034304346a46ea9ea84ae156d3e860496 and Clang23.1;
+and 4,534,272 bytes. Its134 source/build inputs match67c03308, with unchanged
+pinned godot-cpp101ae38034304346a46ea9ea84ae156d3e860496 and Clang 23.1;
 `C:/Users/_/.codex/tmp/lcb-water-inertial-godot/binding-build-v1/build-receipt.json`
-retains the exact command,600s limit and45.936s execution. Godot is actual
+retains the exact command,600s limit and 45.936s execution. Godot is actual
 4.7.stable.official.5b4e0cb0f Windows x86_64. A separate staged project retains
-all18 exact LFS payloads, overrides only the Windows native DLL and keeps the
+all 18 exact LFS payloads, overrides only the Windows native DLL and keeps the
 qualified Rapier Windows artifact. The retained Linux native payload is unused.
 
-After a clean staging import, the strict publisher's import plus all14 scoped
+After a clean staging import, the strict publisher's import plus all 14 scoped
 Godot cases pass at unchanged flags, deadlines, process monitors and section
 inventory. The new whole-Water CY/IN policy matrix runs542 assertions, actual
-precision3/8 and workers1/4, full Water authority, actual IN retained-motion
+precision 3/8 and workers 1/4, full Water authority, actual IN retained-motion
 readback,21-tick execution plus restore/continuation, and transactional final
 legacy-overlay refusal. All seven summary fields retain their exact expected
-counts. Other scoped cases include pressure variants, all10 Brine body-contact
+counts. Other scoped cases include pressure variants, all 10 Brine body-contact
 cohorts with actual multijob dispatch, shared physics contracts, WEX and scenario
 catalogue controls. The local test GDScript delta is recorded in the staged input
 manifest; no host implementation is claimed.
@@ -276,10 +276,10 @@ All12 corrupt captures now refuse and original Worlds remain unchanged. Receipt
 has SHA-256
 `8826b0ee6dcfef6175671cdf86438805ad99a19e88bacd135e318336667bcc6f`.
 The frozen67 review also independently checks680 static model cases,2652
-closed-form coherence/damping cases, six dual-IN cohorts with24 Water/Brine
-density swaps and three actual workers, plus768 seeded granular neighbourhoods.
+closed-form coherence/damping cases, six dual-IN cohorts with 24 Water/Brine
+density swaps and three actual workers, plus 768 seeded granular neighbourhoods.
 The latter exercise six carrying pickups with exact quantity, temperature,
-slot/ledger closure, zero tick allocation and read3/write2. Those results retain
+slot/ledger closure, zero tick allocation and read 3/write 2. Those results retain
 their67 identity and are not substituted for refreshed repaired-source gates.
 
 ## Registered apparatus qualification remains separate
@@ -314,15 +314,15 @@ retrieval; no old audit or frozen retrieval question is rewritten.
 
 ## Repaired-source native and documentation checkpoint
 
-At exact native source `5f8baf6f`, all162 ordinary groups pass in53.719s under
-600s. The15 PF,13 Brine and8 Water focused repeats also pass. All seven complete
+At exact native source `5f8baf6f`, all 162 ordinary groups pass in 53.719s under
+600s. The15 PF,13 Brine and 8 Water focused repeats also pass. All seven complete
 independently encoded receipt byte files still match; no physical fixture fact
 changes after the quantity-validation repair. Receipt
 `full/normal-retry4/receipt.json` has SHA-256
 `e4aea9cff23ccd169fdf2a29a4fb6ba53c4522a60c4ca1c37d94f7ecf5769d9a`;
 executable SHA-256 is
 `68cd3ab726c593bc2392a9a2a30362235ea48deb9e5b7dea055e718de0fd16f6`.
-Focused37 ASan+UBSan groups pass in104.468s under600s, with the same scope,
+Focused37 ASan+UBSan groups pass in 104.468s under 600s, with the same scope,
 ordinary stack and explicit Windows leak setting as the earlier run. Receipt
 `sanitizer/sanitized-retry2/receipt.json` has SHA-256
 `c9f2fda815a163e876476080825280321f1896e60c73e8539cdef738a782015e`;
@@ -331,25 +331,25 @@ executable SHA-256 is
 
 The repaired candidate is freshly relinked into the independent Current control.
 All264 paired rows again preserve every authoritative tuple/temperature,
-quantity, historical content/state, work and allocation field against base68;
+quantity, historical content/state, work and allocation field against base 68;
 only capability/policy/physical identity differs. Both candidate and baseline
 output bytes exactly match their original v2 outputs. The new v3 receipt has
 SHA-256 `bd38b3cf08afa7575f99274230c36f25ce113169a110588f736fa2b1cd0bc909`.
 `SEALED-REPAIRED-NATIVE-BINDING.json`, SHA-256
 `9e43632b75595e3c449c9875c8fe12d894ac15eed924014b3823ebfeac5251df`,
-compares every ordinary65/sanitizer55 repository compiled input to exact Git
-source5f8baf6f and identifies the external sanitizer harness separately. The
-Current40 compiled inputs are also rebound. Inputs are not merely inferred from
+compares every ordinary 65/sanitizer 55 repository compiled input to exact Git
+source 5f8baf6f and identifies the external sanitizer harness separately. The
+Current 40 compiled inputs are also rebound. Inputs are not merely inferred from
 an unchanged branch name.
 
 Documentation mirror `docs-v2/VALIDATION-RECEIPT.json`, SHA-256
 `9cb85606562fd1f648f7e9de66d586b2fcc65102afc5cc79714b676d59d8237b`,
-uses exact source5f8baf6f plus its explicitly retained documentation/Godot-test/
+uses exact source 5f8baf6f plus its explicitly retained documentation/Godot-test/
 registry overlay. All18 LFS payloads are materialized, and the five companion
-workspace inputs stay pinned at6a583. Docs, M11, provider, whitespace, every
+workspace inputs stay pinned at 6a583. Docs, M11, provider, whitespace, every
 capability/policy/receipt/parameter/normalization/physics/scenario/registry check
 and the364-strata footprint model pass. Frozen retrieval remains20/32 top1,
-32/32 top5, MRR0.7745; all131 challenge destinations hit top5,100 top1,
+32/32 top5, MRR0.7745; all 131 challenge destinations hit top5,100 top1,
 MRR0.8639. These routing scores require separate source/answer review and do not
 establish runtime acceptance.
 
@@ -357,13 +357,13 @@ Repository validation deliberately remains failed: nine changed native source
 inputs require rebuilt Windows and Linux runtimes, yielding18 source-provenance
 errors. This is an actual release/merge blocker pending fresh publication, not a
 waiver or an ignored check. The earlier docs-v1 attempt retains its stale-registry
-failure and16 pre-repair source comparisons. No source-sensitive gate is claimed
+failure and 16 pre-repair source comparisons. No source-sensitive gate is claimed
 green until the successor's own published artifacts and exact-head CI exist.
 
 
 ## Non-author repaired-source review
 
-The independent repaired-source report at5f8baf6f has no open finding in its
+The independent repaired-source report at 5f8baf6f has no open finding in its
 bounded native scope. In addition to relinking the original12 failing captures,
 it runs30 valid prepared-capture controls and authenticates all refreshed162/37
 native proof inputs, the264 Current pairs, source, objects and raw outcomes.
@@ -398,8 +398,89 @@ registry is then regenerated once more for its actual generator SHA.
 
 Final `python-unit-v4/receipt.json`, SHA-256
 `b8d2ab648ed591043b0812e9c887e408b625feed54b2c7f68410ea9c416e06b1`,
-passes both live registry generation and original-producer v7 replay, then all124
-Python tests in43.438s under180s. Its83 source/reference/fixture raw+canonical
+passes both live registry generation and original-producer v7 replay, then all 124
+Python tests in 43.438s under 180s. Its83 source/reference/fixture raw+canonical
 input hashes are unchanged before/after. Test/registry checkpoint is
 `9881fc7be20d65788c9a368ed153353215618256`; native implementation inputs are
 byte-identical to reviewed5f8baf6f. No historical record or measured label changes.
+
+
+## Parent publication integration and repaired local runtime
+
+Normal merge `8ad5d9160214d0548e1801ce2a2c1a15e9040284` consumes exact parent
+`d7681a5c6eb1ab5ee390f48c7ce0b12bf5da449d`. Three documentation-top conflicts
+retain both the Water source and corrected Brine publication sections. The
+parent brings actual Brine sequence 3 artifacts at source c11983c2/run40160900817
+and its runtime-only bot append; these remain stale for the new Water source.
+No publication request is armed or rewritten by the Water lane.
+
+`POST-MERGE-BINDING.json`, SHA-256
+`079a3ae3b2c41b6f18fda01ffdd621562b497892be4f93aa24608b84dc1a8ed7`,
+compares all ordinary 65, sanitizer 55 and Current 40 repository compiled inputs
+against reviewed5f8baf6f and merged8ad5d916. All native/include/src/tests,
+GDExtension source and third-party inputs are byte-identical. Of83 broad Python
+snapshot inputs,81 are unchanged; only roadmap/validation Markdown incorporates
+new parent publication evidence. This is exact input rebinding after a normal
+merge, not a claim that the whole native matrix reran at a different Git head.
+
+Separate non-author tooling review at 8e7bd838 authenticates all 83 source inputs,
+124 successful tests, all 117 unchanged arm states and original v7 record/producer
+bytes. It has no open finding in the bounded tooling scope. Receipt
+`C:/Users/_/.codex/tmp/lcb-water-inertial-independent-tooling-v1/REVIEW-RECEIPT.json`
+has SHA-256
+`131c05149017e2066f42ebbd2fa6fa2df2cc281dcf04d87a7fae7eaf9c15ff50`;
+its report has SHA-256
+`65be98a013ef81497aba08ec058744f1fce6ad2c05de772209be4d28ea4d85f1`.
+The author binding `SEALED-TOOLING-BINDING.json` has SHA-256
+`51a0b5168ff111fc150f898fb3861ae581db4dd0ecaffd1945cdc0f36c4485d8`.
+
+A fresh repaired-source non-release Windows DLL is built at 8ad5d916 in 45.990s
+under 600s, with 134 frozen native/build inputs and the same pinned toolchain and
+godot-cpp. It is4,534,272 bytes, SHA-256
+`d99a96da534f5752ca2308a1e24a4bbf10e519f5fe27f85035ca9a47822ac9d8`.
+Exact commands/dependency and source manifests are in
+`C:/Users/_/.codex/tmp/lcb-water-inertial-godot/binding-build-v2/build-receipt.json`.
+The fresh stage preserves all 18 parent LFS payloads, overrides only this local
+Windows DLL and uses the unchanged qualified Rapier library. Import plus all 14
+strict scoped cases execute separately; the completed receipt is recorded below.
+
+Merged-source documentation mirror `docs-v3/VALIDATION-RECEIPT.json`, SHA-256
+`a6acf16f7f3ebe235dece07f6dc966521e343d7600d97393168ba6ff072d08f7`,
+passes all 17 non-repository checks, now also replaying dated v7 with its original
+producer. Frozen/challenge retrieval scores remain unchanged. Repository retains
+exactly the18 expected Water-source/runtime mismatches. The merged parent keeps
+its original platform proof; it is never relabelled as Water publication.
+
+
+## Completed repaired-source Windows scoped execution
+
+Fresh stage-v2 import passes in 8.286s under 180s; import receipt SHA-256 is
+`2c00a8ed156d00a927dcb8fcd39bc337fcc0c2ec56c8fad636e889d2d8e6fcc7`.
+The final build receipt has SHA-256
+`d913369f2ef439f999d0da20f940d070644a7fec683409dc705e26cb86114823`.
+The strict run then passes its separate import and all 14 scoped cases against
+the repaired8ad5d916 DLL. Source/467 staged input fences hold; only the staged
+project path is redirected. No warnings, timeout/deadline changes, skipped
+sections or profile changes are accepted. The policy matrix reports 542
+assertions, zero failures and all seven exact summary fields, including the
+actual whole-cell CY/IN admission/parity and final-overlay refusal sections.
+All ten Brine contact cohorts retain 128 contacts per arm and actual multijob
+execution. Existing pressure optimization strict sections also remain exact.
+
+`C:/Users/_/.codex/tmp/lcb-water-inertial-godot/scoped-godot-v2/receipt.json`
+has SHA-256
+`92ed829c7740581961ace9549dce46eb9531f87145a389a6722e854ce5d9fd04`.
+Its local non-release DLL remains
+`d99a96da534f5752ca2308a1e24a4bbf10e519f5fe27f85035ca9a47822ac9d8`.
+This repaired-source execution supersedes only the local Windows coverage of
+source 67; that older successful receipt and DLL remain historical. It supplies
+no Linux, published-payload, full ready-PR, browser/Web, owner-feel or common-Water
+scientific acceptance.
+
+Final canonical/documentation overlay check `docs-v4/VALIDATION-RECEIPT.json`
+has SHA-256
+`23d9fd385d076805d2aa80ee6f08cb6dc468c4610f20b6c36ca28a3862801b68`.
+All17 non-repository checks pass, including both retrieval sets and own-producer
+v7 replay. The18 stale Windows/Linux source-runtime errors remain explicit.
+The source/docs checkpoint is suitable for a focused draft successor; readiness
+still requires its own source-matched publication and full exact-head matrix.

@@ -21,8 +21,11 @@ whole-Water refusal and setup-only normalization retain native receipts/ledger.
 and [dated native evidence](../audits/2026-10-25-water-inertial-native.md) distinguish
 local native proof from unchanged parent runtime artifacts. C64-E8, defaults,
 Brine law, IN sidecar/codec and explicit Current2/IN3 geometry remain intact.
-Full source-matched Windows/Linux/exact-head/independent review and common-Water
-scientific/host/Web qualification are pending. This does not close #212/#203.
+Local162 native,37 focused sanitizer and124 Python groups pass; a fresh
+non-release Windows DLL passes import plus14 strict scoped Godot cases. Native
+and tooling reviews have no open bounded findings. Source-matched Windows/Linux
+publication, full exact-head gates/integrated review and common-Water scientific/
+host/Web qualification remain pending. This does not close #212/#203.
 
 
 ## Corrected Brine IN runtime publication — 2026-10-25

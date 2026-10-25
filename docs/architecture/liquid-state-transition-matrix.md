@@ -133,7 +133,7 @@ always, because v1 has no upward impulse source.
 
 | Step | Rule |
 |---|---|
-| Eligibility (N1 correction) | One **directional** rule `eligible(dx, dy)` serves support, re-aim, side selection and every travel move. Empty: any move. A lighter foreign liquid: **only a move with `dy = +1`**, straight or diagonal down. This is the vertical density exchange Current `can_density_exchange` admits (vertical delta ≠ 0). A horizontal move (`dy = 0`) never swaps; a lighter neighbour beside the cell is a horizontal contact. Wall, solid, transient body mask and an occupied same-family cell are never eligible and share one contact rule. No new foreign-liquid boundary law is introduced. |
+| Eligibility (N1 correction) | One **directional** rule `eligible(dx, dy)` serves support, re-aim, side selection and every travel move. Empty: any move. A lighter foreign material admitted by Current density/exchange controls: **only a move with `dy = +1`**, straight or diagonal down. This is the vertical density exchange Current `can_density_exchange` admits (vertical delta ≠ 0). A horizontal move (`dy = 0`) never swaps; a lighter neighbour beside the cell is a horizontal contact. Wall, solid, transient body mask and an occupied same-material cell are never eligible and share one contact rule. Selecting IN for both materials does not remove a permitted foreign-material density exchange. No new foreign-liquid boundary law is introduced. |
 | U1 support | `supported` := `not eligible(0, +1)`, evaluated before any velocity change. A lighter liquid below is therefore not support. |
 | U2 gravity | `vy += g`, **exactly once per tick**, booked as the only speed-adding entry. |
 | U3a diagonal re-aim (lateral source A) | If supported and `eligible(±1, +1)`: the `sign(vx)` side first, else `deterministic_direction` order. Then `S = |vx| + vy` (including this tick's `g`), `turn = trunc(S·1/8)`, `S' = S − turn`, `|vx| = S' // 2` toward the diagonal, `vy = S' − |vx|`. A cell at rest gains only `g` along the diagonal. |
@@ -162,7 +162,7 @@ always, because v1 has no upward impulse source.
 | deflect left, opposing vx (review N2) | (2,1, 40,32, 0,0) | (2,1, 15,0, 15,0) | deflect −24x −32y, loss 40+32−16 = **56**; damping −1x |
 | damp negative vx | (2,1, −40,0, 0,0) | (0,1, −38,0, −6,0) | gravity +4y; support −4y; damping **+2x**, loss 2, remainder −8 |
 | supported rest, free side | (2,1, 0,0, 0,0) | unchanged, sleep-eligible | gravity +4y; support −4y |
-| blocked by same family | (2,1, 0,20, 0,0) | (2,1, 0,0, 0,0), sleep-eligible | gravity +4y; support −4y; contact −20y, loss 20 |
+| blocked by same material | (2,1, 0,20, 0,0) | (2,1, 0,0, 0,0), sleep-eligible | gravity +4y; support −4y; contact −20y, loss 20 |
 | re-aim from rest | (2,1, 0,0, 0,0) | (2,1, 2,2, 2,2) | gravity +4y; re-aim +2x −2y, loss 0, remainder 4 |
 | re-aim carried | (2,1, 0,40, 0,0) | (3,2, 18,19, 2,3), one diagonal move | re-aim +19x −24y, loss 5 (44 → 39); damping −1x −1y |
 | saturation and bounds | (2,1, 0,62, 0,15) | (2,5, 0,60, 0,11), 4 cells | saturate −2y; damping −4y |
@@ -191,7 +191,7 @@ The sweep checks ledger closure, bounds and swap direction. It does **not**
 by itself prove agreement with the written U3b formula. Separate analytic
 tests do that: they compute impulses and loss independently for both sides,
 for aligned and opposing `vx`, and for several `vy_in`. Further directional
-tests cover Wall, body mask, same-family and lighter horizontal contacts,
+tests cover Wall, body mask, same-material and lighter horizontal contacts,
 corner travel, and lighter-below non-support.
 
 ## 6. Reactions and material conversion

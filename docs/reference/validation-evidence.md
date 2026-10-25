@@ -23,6 +23,10 @@ exact tuple bytes, quantity ledger, historical state/content hashes, material
 work and allocations; only capability/policy-bound physical identity changes.
 Preserved apparatus failures, source fences, tool/deadline/stack identities and
 remaining full platform/scientific/application gates are in the dated record.
+Repaired native source5f8baf6f passes162 ordinary/37 focused sanitizer groups;
+its fresh post-parent-merge Windows DLL at8ad5d916 passes import plus14 scoped
+Godot cases. Independent native/tooling reviews close their bounded findings.
+These local Windows results do not qualify the retained parent payloads.
 
 
 ## Corrected Brine IN runtime publication — 2026-10-25
