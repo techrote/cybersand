@@ -420,7 +420,7 @@
     },
     {
       "path": "audits/2026-10-25-lcb002-pressure-variants.md",
-      "reason": "Dated unmerged #201 source, preserved failures and qualified local cost evidence; retrieve through the optimization contract or validation ledger with pending publication/final-CI, host and platform limits. It does not establish universal speedup or main acceptance."
+      "reason": "Dated unmerged #201 source, preserved failures, qualified local cost evidence and actual source-matched Windows/Linux scoped publication; retrieve through the optimization contract or validation ledger with pending full ready-PR CI, host and platform limits. It does not establish universal speedup or main acceptance."
     },
     {
       "path": "audits/2026-10-25-lcb005-standalone-adapter.md",

@@ -48,7 +48,15 @@ qualification are retained separately. Execution3 adds whole-layer work-credit
 admission and suspension to warmup/backoff; numerical prepared-head/net-boundary
 observations and fresh source proofs must be recorded separately, not inferred
 from the older campaign. The fixed credits do not establish wall-clock break-even.
-Final source-matched Windows/Linux publication and ready-PR gates remain pending.
+Source-matched Windows/Linux scoped publication
+[`40152121412`](https://github.com/techrote/cybersand/actions/runs/40152121412)
+passed at exact source `8354e3a6424ad80d4a5a82647ef78d1681a92e3c`:
+import plus all13 cases perOS, optimization4152/0 across all six sections,
+reference1934/0 across all twelve, and all16 WEX cases. Bot append
+`d726bf34edcc9da96e918fd2fd88786937e4015a` changes only both runtime payloads
+and their matching manifests. The [publication record](../audits/2026-10-25-lcb002-pressure-variants.md#source-matched-windowslinux-publication--2026-10-25)
+binds exact DLL/ELF and independent artifact/log/source checks. Full ready-PR
+Documentation/provenance, Native, Godot and applicable Water gates remain pending.
 Native rotating mask/contact parity does not qualify actual Rapier motion,
 displacement, full application constructors, Web or #203 packaging.
 
