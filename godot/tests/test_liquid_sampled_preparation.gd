@@ -243,10 +243,10 @@ func application_routes(definition: Dictionary, policy: PackedInt32Array) -> voi
 	expect(desktop.tower_context.liquid_solver_policy.policy_hash == policy_hash
 		and desktop.latest_snapshot.actor_prototypes.models[0] == &"gyrocrate","F5 applies new sampled owner with accepted policy retained")
 	var generation: int = desktop.tower_context.liquid_solver_policy.session_generation
-	expect(not desktop.apply_actor_prototype_configuration(&"physical/barrel",&"human",false)
-		and desktop.pending_microscenario_apply.is_empty(),"unstaged physical actor rebuild refuses before queue")
+	expect(not desktop.apply_actor_prototype_configuration(&"rapier/lcb-unsupported-rig",&"human",false)
+		and desktop.pending_microscenario_apply.is_empty(),"unregistered physical actor rebuild refuses before queue")
 	expect(desktop.tower_context.liquid_solver_policy.session_generation == generation
-		and desktop.latest_snapshot.actor_prototypes.models[0] == &"gyrocrate","physical refusal retains old native and actor session")
+		and desktop.latest_snapshot.actor_prototypes.models[0] == &"gyrocrate","unregistered physical refusal retains old native and actor session")
 	desktop.microscenario_reset()
 	expect(await wait_for(func() -> bool: return desktop.pending_microscenario_apply.is_empty()),"exploratory reset acknowledges")
 	expect(desktop.tower_context.liquid_solver_policy.policy_hash == policy_hash
