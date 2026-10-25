@@ -333,6 +333,17 @@ validation imposes the active-catalogue radius requirement.
 These constraints do not make serial and phased interest filtering equivalent;
 see the [region contract](../systems/world-storage-and-interest-region.md#interest-filtering-and-re-entry).
 
+## LCB-005 explicit standalone execution geometry
+
+The #212 branch's Godot `build_liquid_policy_world` adds one optional final
+`maximum_rule_radius` integer: default2, accepted values2 and3. Brine IN requires
+explicit3; refusal preserves the live session. Ordinary World/demo/tuned/Water
+Feel construction, reset and CYSD1 reconstruction use2 rather than inheriting
+IN geometry. Exact CYPS imports use the saved geometry. Native scheduler/core
+constraints still apply; this does not enlarge a protected Current comparator.
+Actual applied radius and effective damping numerator0..16/denominator16 are
+copied readback, not live settings. See the [IN binding contract](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry).
+
 ## LCB-002 derived pressure execution limits
 
 **Current in `codex/lcb002-pressure-variants`; final acceptance pending.**

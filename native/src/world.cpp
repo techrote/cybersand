@@ -245,6 +245,12 @@ private:
 // LCB-001 pressure_flow_v1 optional solver-owned storage (Gate B): one sidecar
 // per cell, allocated with its chunk only in a pressure World. head and visit are
 // derived scratch rebuilt serially before every tick's kernels.
+struct InertialSlot {
+    std::int16_t vx = 0, vy = 0;
+    std::int8_t ax = 0, ay = 0;
+};
+static_assert(sizeof(InertialSlot) == 6, "IN slot ABI must be measured and admitted");
+
 struct World::PressureChunk {
     struct Cell {
         std::uint16_t overfill = 0;
@@ -295,6 +301,7 @@ struct World::Chunk {
     std::vector<Cell> cells;
     std::unique_ptr<std::vector<std::int16_t>> temperatures;
     std::unique_ptr<PressureChunk> pressure;
+    std::unique_ptr<std::vector<InertialSlot>> inertial;
     std::int32_t activity_blocks_per_axis = 0;
     std::vector<ActivityBlock> activity_blocks;
     std::size_t non_empty_cell_count = 0;
@@ -364,9 +371,11 @@ struct World::JobEffects {
     std::int64_t pf_flow_remainder = 0;
     std::uint64_t pf_contact_loss = 0;
     std::uint64_t pf_relief_cells = 0;
+    InertialLedger inertial{};
 
     void reset() noexcept {
         quantity = {};
+        inertial = {};
         pf_overfill_converted = 0;
         pf_flow_remainder = 0;
         pf_contact_loss = 0;
@@ -517,7 +526,15 @@ World::World(WorldConfig config)
     // builds temporary policy data); no other family or fallback runs.
     if (auto refusal = config_.liquid_solver_policy.admission_refusal())
         throw LiquidPolicyRefused(std::move(*refusal));
+    inertial_parameters_ = inertial_parameters_for_policy(config_.liquid_solver_policy);
     const bool pressure_requested = policy_selects_pressure(config_.liquid_solver_policy);
+    for (const auto& item : config_.liquid_solver_policy.assignments()) {
+        if (item.family != LiquidSolverFamily::InertialCellularV1) continue;
+        inertial_materials_[item.material] = true;
+        inertial_enabled_ = true;
+    }
+    if (inertial_enabled_ && config_.maximum_rule_radius < InertialParameters::kExecutionRadius)
+        throw std::invalid_argument("inertial_cellular_v1 requires complete execution radius three");
     const auto water_assignment = config_.liquid_solver_policy.assignment(static_cast<std::uint16_t>(Material::Water));
     water_cellular_yield_ = water_assignment && water_assignment->family == LiquidSolverFamily::CellularYieldV1;
     if (water_cellular_yield_) {
@@ -1410,6 +1427,7 @@ World::Chunk& World::ensure_chunk(ChunkCoord coord) {
         chunk->pressure->coordinate = coord;
         if (pressure_->cache != nullptr) pressure_->cache->cold();
     }
+    if (inertial_enabled_) chunk->inertial = std::make_unique<std::vector<InertialSlot>>(chunk->cells.size());
     const auto [iterator, inserted] = chunks_.try_emplace(coord, std::move(chunk));
     if (inserted) register_discovery_chunk(coord, *iterator->second);
     if (tick_in_progress_) ++tick_chunk_allocations_;
@@ -1623,6 +1641,11 @@ bool World::write_cell(std::int64_t x, std::int64_t y, Material material,
         family_changed = previous.overfill != current.overfill || previous.flow != current.flow ||
                          previous.gas != current.gas;
     }
+    if (chunk->inertial != nullptr && (external || reaction_product || before != material)) {
+        const auto previous = (*chunk->inertial)[target.index];
+        retire_inertial_cell(*chunk, target.index, effects);
+        family_changed = family_changed || previous.vx != 0 || previous.vy != 0 || previous.ax != 0 || previous.ay != 0;
+    }
     if (!family_changed && cell.material_value() == material && cell.state_a_value() == state_a_value &&
         cell.state_b_value() == state_b_value) {
         return false;
@@ -1823,6 +1846,11 @@ void World::set_with_quantity_kind(std::int64_t x, std::int64_t y, Material mate
         const auto& current = chunk.pressure->cells[target.index];
         family_changed = previous.overfill != current.overfill || previous.flow != current.flow ||
                          previous.gas != current.gas;
+    }
+    if (chunk.inertial != nullptr) {
+        const auto previous = (*chunk.inertial)[target.index];
+        retire_inertial_cell(chunk, target.index, nullptr);
+        family_changed = family_changed || previous.vx != 0 || previous.vy != 0 || previous.ax != 0 || previous.ay != 0;
     }
     if (previous_material == material && !family_changed) {
         return;
@@ -2487,6 +2515,7 @@ void World::clear() {
     tick_temperature_field_allocations_ = 0;
     ++hard_surface_revision_;
     if (pressure_ != nullptr) pressure_->reset();
+    inertial_ledger_ = {};
     initialize_settled_discovery();
 }
 
@@ -2563,6 +2592,13 @@ void World::move_cell(std::int64_t from_x, std::int64_t from_y, std::int64_t to_
         if (source_material != Material::Empty) destination_state.gas = 0;
         if (source_after != Material::Water) source_state.overfill = 0, source_state.flow = 0;
         if (source_after != Material::Empty) source_state.gas = 0;
+    }
+    if (source.inertial != nullptr && destination.inertial != nullptr) {
+        auto& a = (*source.inertial)[source_address.index];
+        auto& b = (*destination.inertial)[destination_address.index];
+        std::swap(a,b);
+        if (!inertial_family(source_material)) b = {};
+        if (!inertial_family(swap ? destination_material : Material::Empty)) a = {};
     }
     destination.cells[destination_address.index] = source_cell;
     record_physics(!tick_in_progress_ ? PhysicsEvent::BodyDisplacement :
@@ -3097,6 +3133,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             // Viscosity affects only lateral yield. Gravity and density exchange
             // remain responsive, while paste/slush deliberately retain stable
             // heap-capable behaviour unavailable to free-leveling Water.
+            if (inertial_family(material)) return update_inertial(material,x,y,effects);
             return flow_as_yielding_liquid(91U);
         }
 
@@ -4144,6 +4181,16 @@ void World::merge_job_effects(const JobEffects& effects) {
     }
     if (effects.hard_surface_changed) ++hard_surface_revision_;
     if (pressure_ != nullptr) merge_pressure_effects(effects);
+    if (inertial_enabled_) {
+        auto& a=inertial_ledger_; const auto& b=effects.inertial;
+        a.gravity_y+=b.gravity_y; a.impulse_x+=b.impulse_x; a.impulse_y+=b.impulse_y;
+        a.loss+=b.loss; a.support+=b.support; a.remainder+=b.remainder;
+        a.updates+=b.updates; a.unit_moves+=b.unit_moves; a.density_swaps+=b.density_swaps;
+        a.contacts+=b.contacts; a.rests+=b.rests; a.velocity_retired+=b.velocity_retired;
+        a.retired_x+=b.retired_x; a.retired_y+=b.retired_y;
+        a.maximum_read_reach=std::max(a.maximum_read_reach,b.maximum_read_reach);
+        a.maximum_write_reach=std::max(a.maximum_write_reach,b.maximum_write_reach);
+    }
 
     // Merge authoritative block/chunk state first. Discovery reconciliation is
     // deliberately deferred until the exact #61 payload records are invalidated,
@@ -4701,5 +4748,6 @@ void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::
 #include "world_pressure_cache.inc"
 #include "world_pressure_gas_cache.inc"
 #include "world_pressure.inc"
+#include "world_inertial.inc"
 
 }  // namespace cybersand

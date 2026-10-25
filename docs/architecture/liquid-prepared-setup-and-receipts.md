@@ -10,6 +10,8 @@ related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, liquid-
 
 # Native liquid prepared setup, receipts and quantity accounting
 
+**Native #212 branch extension:** [Brine IN](inertial-cellular-v1.md) reuses this preparation boundary and outer receipt-v1 extension mechanism. Its actual instances expose hash3/CYPS3 and family4/state1/identity1. Non-IN version2 field emission remains retained; capability admission changes legitimately update embedded policy identities. Application-host qualification remains separate.
+
 ## Source and completion boundary
 
 **Current on main, accepted through [PR #246](https://github.com/techrote/cybersand/pull/246)**

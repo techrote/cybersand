@@ -10,6 +10,31 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Corrected Brine IN runtime publication — 2026-10-25
+
+Sequence3 [actual Windows/Linux publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-sequence3-publication-of-the-contact-repair)
+passes all six jobs in run `40160900817` at exact source `c11983c2`, followed
+by verified four-path bot append `fcf0e9b6`. Each OS executes import plus14
+cases, including IN10192/six strict sections and the new resting-contact
+regression. Fresh non-author verification checks all76/485 input blobs,
+artifacts, actual OS execution and the Linux runtime floor. The corrected
+runtime publication blocker is resolved; full ready-PR exact-head gates remain
+required before merge. Prior omitted-contact and moving-mask failures below
+retain their exact source scope. Water-IN, complete host/Web and #203 remain
+separate.
+
+## Brine IN body-contact blocker — 2026-10-25
+
+Fresh independent review of `98595ac8` finds that resting Brine IN omits
+body-mask contact feedback even when its material update executes. The narrow
+[contact correction](../architecture/inertial-cellular-v1.md#mandatory-resting-body-contact-correction--2026-10-25)
+preserves the numerical law and adds target/normal-specific shared contact
+observation. LLVM154/focused sanitizer29 and fresh local Windows import plus six
+selected Godot cases pass at `68f74906`. PR #250 remains Draft; sequence2 runtime
+proof is historical to the omitting source, and new source-matched publication
+plus full gates are required.
+Water IN, full application/Web and owner-feel qualification remain separate.
+
 ## Moving-body pressure gas blocker — 2026-10-25
 
 Ordinary moving reference bodies exposed retired gas labels beneath masks;
@@ -23,6 +48,31 @@ PRs #253/#250 returned to draft after the finding; each still requires its own
 complete source-matched exact-head gates and review before merge. Earlier
 greens retain their original scope. See the
 [dated failure and repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md).
+
+## LCB-005 native Brine checkpoint — 2026-10-24
+
+Later normal merge `4a594db5` integrates the reviewed moving-mask pressure
+gas-label repair while retaining the IN law/damping/codec and all fourteen
+scoped publisher cases. The [union repair ledger](../audits/2026-10-25-lcb005-pressure-union-integration.md#moving-mask-repair-integration-and-second-publication--2026-10-25)
+separates fresh combined native proof and actual sequence2 target-OS publication
+at `661a96ae`/run `40157525237`/bot `a9f1b875` from the historical `52ee560a`
+runtimes. Import plus14 cases perOS pass. Final #201 head `096b7eeb` is now
+integrated without changing native/build inputs or replacing IN runtimes.
+Fresh full ready-PR and independent IN assessment remain required. The separately
+qualified pressure body trajectory does not complete application/host, Water-IN
+or Web qualification.
+
+The later [combined #201/#212 integration](../audits/2026-10-25-lcb005-pressure-union-integration.md)
+at `713ee3ab` passes fresh152-group LLVM/MSVC ordinary execution, seven full
+receipt oracles per compiler, a132-input Windows DLL/import and all14 scoped
+Godot cases. All PF variants coexist with Brine IN; a separate90-child
+pressure cost repeat retains slower churn/fallback results. This local source
+proof is separate from either parent's evidence. Later combined Windows/Linux
+scoped publication `40153980594` passes actual import plus14 cases perOS at
+`bc0bfed9`, followed by runtime-only bot `52ee560a`; full ready-PR CI and
+host/Web/owner acceptance remain pending.
+
+**Current on the isolated LCB-005 branch only:** [Brine IN reference](../architecture/inertial-cellular-v1.md) selectively ports the genuine fixed-point law onto the shared quantity/prepared-state foundation, including optional native damping numerator0..16 over16(default1). [Native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) keeps its stated scope; the [standalone adapter](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry) and [combined publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-windowslinux-union-publication--2026-10-25) record later actual instance/radius/platform proof. Defaults remain unchanged. Water IN, full application integration, owner feel and full #212 completion remain unqualified. No Cell-carrier migration or generic Rapier force follows.
 
 ## Physical actor regression hangs — 2026-10-23
 
@@ -753,7 +803,7 @@ does not freeze #45 thresholds.
 
 | Item at the accepted #245 main checkpoint | Status |
 |---|---|
-| Running-build admission of Water × `pressure_flow_v1/reference`, optional family block `{gas_enabled 0..1, atmospheric_head_rows 16..4096}` (defaults 1, 32); `cached`/`cached_dormant` refused `family_unavailable` | Current |
+| Accepted #246 main admits Water × `pressure_flow_v1/reference`, optional family block `{gas_enabled 0..1, atmospheric_head_rows 16..4096}` (defaults 1, 32); the unmerged #201 branch additionally admits `cached`/`cached_dormant`, with local proof and separate pending publication/final gates | Current |
 | Solver-owned per-chunk sidecars, World gas table with label-overlap identity and exact ledgers, immutable head snapshot, phased kernel | Current ([design](../architecture/pressure-flow-v1.md)) |
 | Physical-state hash v1 and CYPS1 at the historical #245 checkpoint; retained inspection/ledger APIs | Historical codec; accepted main now uses v2 [below](#lcb-001-shared-contract-accepted--2026-10-25). Original APIs ([interfaces](interfaces-and-message-contracts.md#lcb-001-pressure-reference-inspection-and-persistence-experimental)) |
 | Capability matrix Water × pressure `executable_today: true`, `executable_variants: ["reference"]`; regenerated digest and vector identity words, with no acceptance/refusal change in the 47 cases | Current |
@@ -772,9 +822,9 @@ measurements remain in the dated evidence record.
 |---|---|
 | W-CY, `water-normalize-v1`, native typed receipts and exact quantity accounting | #200, Accepted on main through #246; scope and remaining ownership [below](#lcb-001-shared-contract-accepted--2026-10-25) |
 | Host provenance/collection proof and remaining normal-application constructors | #202, Planned; preserve native shared interfaces from #200 |
-| `cached`/`cached_dormant`, incremental caches and motion certificates | [#201](https://github.com/techrote/cybersand/issues/201), Current in branch source; [runtime/final acceptance pending](#lcb-002-pressure-variants-branch--2026-10-25) |
+| `cached`/`cached_dormant`, incremental caches and motion certificates | [#201](https://github.com/techrote/cybersand/issues/201), Current in branch source; [scoped publication passed, full acceptance pending](#lcb-002-pressure-variants-branch--2026-10-25) |
 | Comparison host and UI; re-dispositioning the registered candidate arms | [#202](https://github.com/techrote/cybersand/issues/202), Planned |
-| `inertial_cellular_v1` (W-IN, Brine), M1/M2 | #212, Planned; no longer owner-held |
+| `inertial_cellular_v1` (W-IN, Brine), M1/M2 | #212: Brine/reference and standalone adapter Current, actual combined Windows/Linux scoped publication passed; Water IN, full host/final acceptance remain pending |
 | Packaged builds and isolated timing | [#203](https://github.com/techrote/cybersand/issues/203), Planned |
 
 **Publisher.** The temporary pressure-reference workflow, helper, unittest and

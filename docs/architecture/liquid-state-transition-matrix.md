@@ -10,6 +10,8 @@ related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-
 
 # Liquid material and solver state-transition matrix
 
+**Native #212 branch checkpoint:** the [Brine IN reference](inertial-cellular-v1.md) now implements the declared Brine ownership/law scope. Water IN and full application/runtime qualification remain Planned; the standalone model below retains its separate evidence meaning.
+
 ## Status and inputs
 
 - **Default-family baseline rows** retain the historical prepass at `9012425`/`4caa2c3`. Current PF and W-CY refinements are identified separately below.
@@ -33,8 +35,10 @@ related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-
   [Native prepared setup and receipts](liquid-prepared-setup-and-receipts.md)
   owns normalization, native-issued outcomes, typed receipt and accounting
   codecs. This owner-requested narrow native freeze is not a production Cell or
-  global ABI freeze. IN remains outside this source; #201 caches/dormancy are
-  Current on their branch, with [separate qualification](pressure-optimization.md).
+  global ABI freeze. Brine IN/reference and #201 caches/dormancy are Current
+  in the combined #212 source, with [IN](inertial-cellular-v1.md) and
+  [pressure](pressure-optimization.md) qualifications separately retained;
+  fresh combined-source qualification remains required.
 - **Storage** follows the [Gate B bounded handoff](../audits/2026-10-23-lcb000-gate-b-state-handoff.md) (accepted; [refresh](../audits/2026-10-23-lcb000-admission-gatea-gateb-refresh.md)):
   - the C64-E8 Cell is unchanged;
   - family state lives in **optional, versioned, solver-owned storage**, plus

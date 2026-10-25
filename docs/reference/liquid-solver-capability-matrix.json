@@ -631,13 +631,16 @@
         },
         "inertial_cellular_v1": {
           "status": "proposed_experimental",
-          "executable_today": false,
+          "executable_today": true,
           "selectable": true,
           "variants": [
             "reference"
           ],
           "classification": "reviewed design classification (PROPOSED table)",
-          "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification"
+          "note": "first non-Water inertial candidate: generic YieldingLiquid kernel; aqueous pair rules need #212 qualification",
+          "executable_variants": [
+            "reference"
+          ]
         }
       }
     },

@@ -636,6 +636,22 @@ provide that complete prepared owner restoration. The
 [moving-mask gas repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md)
 retains this #202/#203 qualification and the strict native live-label invariant.
 
+### LCB-005 standalone instance readback
+
+Current #212 branch source exposes copied `get_physical_state_format_version()`
+and `inspect_inertial_cell(point)` beside the actual instance hash-version
+getter. Non-IN instances report2 and IN instances3. Applied policy readback
+includes the actual IN damping/extension digest and execution radius; policy-only
+validation labels its values as predictions. The old dictionary run identity
+binds actual version and IN parameter identity without becoming typed host proof.
+
+`build_liquid_policy_world(..., maximum_rule_radius=2)` accepts exactly2/3 and
+requires explicit3 for Brine IN. Ordinary/default/CYSD1 reconstruction returns
+to2. CYPS continuation retains saved geometry. Calls remain serialized to the
+exclusive adapter owner; outputs expose no mutable World storage. The
+[IN reference](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry)
+owns fields, refusal behavior and the local Windows-only qualification.
+
 ### LCB-002 copied pressure optimization observations
 
 **Current in #201 branch source, pending runtime and final CI:** the exclusive

@@ -1534,7 +1534,7 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
         hash_byte(hash, 0U);
     }
     for (const char c : std::string_view{"cybersand-physical-state"}) hash_byte(hash, static_cast<std::uint8_t>(c));
-    hash_integer(hash, kPhysicalStateHashVersion);
+    hash_integer(hash, physical_state_hash_version());
     QuantityHashWriter quantity_hash{hash};
     if (quiescent) {
         // Keep the original construction binding, baseline and exact present
@@ -1592,6 +1592,9 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
         ? config_.liquid_solver_policy.pressure_variant_equivalence_hash()
         : config_.liquid_solver_policy.policy_hash();
     for (const auto byte : policy_identity) hash_byte(hash, byte);
+    if (inertial_enabled_) {
+        for (const auto byte:inertial_extension_identity(inertial_parameters_)) hash_byte(hash,byte);
+    }
     hash_integer(hash, static_cast<std::uint8_t>(pressure_ != nullptr));
     if (pressure_ != nullptr) {
         hash_integer(hash, PressureFlowParameters::kVersion);
@@ -1648,8 +1651,10 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
                                                                      : (*chunk->temperatures)[index];
             const PressureChunk::Cell side = chunk->pressure == nullptr ? PressureChunk::Cell{}
                                                                         : chunk->pressure->cells[index];
+            const InertialSlot motion = chunk->inertial == nullptr ? InertialSlot{} : (*chunk->inertial)[index];
             const auto material = cell.material_value();
-            if (material == Material::Empty && temperature == config_.ambient_temperature && side.gas == 0U)
+            if (material == Material::Empty && temperature == config_.ambient_temperature && side.gas == 0U &&
+                motion.vx == 0 && motion.vy == 0 && motion.ax == 0 && motion.ay == 0)
                 continue;
             hash_integer(hash, coord.x * config_.chunk_size +
                                    static_cast<std::int64_t>(index % static_cast<std::size_t>(config_.chunk_size)));
@@ -1664,6 +1669,10 @@ std::uint64_t World::physical_state_hash_impl(std::optional<LiquidStateProjectio
             hash_integer(hash, side.overfill);
             hash_integer(hash, side.flow);
             hash_integer(hash, side.gas);
+            if (inertial_enabled_) {
+                hash_integer(hash,motion.vx); hash_integer(hash,motion.vy);
+                hash_integer(hash,motion.ax); hash_integer(hash,motion.ay);
+            }
         }
     }
     if (pressure_ != nullptr) {
@@ -1740,9 +1749,10 @@ std::vector<std::uint8_t> World::save_physical_state() const {
     if (settled_discovery_ != nullptr)
         throw std::invalid_argument("physical state persistence does not support settled discovery");
     validate_quantity_ledger(true);
+    validate_inertial_ledger();
     StateWriter out;
     out.put(kPhysicalStateMagic);
-    out.put(kPhysicalStateFormatVersion);
+    out.put(physical_state_format_version());
     // Physics configuration.
     out.put(config_.chunk_size);
     out.put(config_.activity_block_size);
@@ -1767,6 +1777,10 @@ std::vector<std::uint8_t> World::save_physical_state() const {
     const auto envelope = config_.liquid_solver_policy.envelope();
     out.put(static_cast<std::uint32_t>(envelope.size()));
     for (const auto word : envelope) out.put(word);
+    if (inertial_enabled_) {
+        out.put(InertialParameters::kVersion);
+        for (const auto byte:inertial_extension_identity(inertial_parameters_)) out.put(byte);
+    }
     // Clock, interest and events.
     out.put(tick_index_);
     out.put(completed_tick_index_);
@@ -1808,7 +1822,8 @@ std::vector<std::uint8_t> World::save_physical_state() const {
         out.put(coord.x);
         out.put(coord.y);
         const std::uint8_t flags = static_cast<std::uint8_t>((chunk.temperatures != nullptr ? 1U : 0U) |
-                                                             (chunk.pressure != nullptr ? 2U : 0U));
+                                                             (chunk.pressure != nullptr ? 2U : 0U) |
+                                                             (chunk.inertial != nullptr ? 4U : 0U));
         out.put(flags);
         out.put(static_cast<std::uint32_t>(chunk.activity_blocks.size()));
         for (const auto& block : chunk.activity_blocks) {
@@ -1830,6 +1845,9 @@ std::vector<std::uint8_t> World::save_physical_state() const {
                 out.put(side.flow);
                 out.put(side.gas);
             }
+        }
+        if (chunk.inertial != nullptr) for (const auto& s:*chunk.inertial) {
+            out.put(s.vx); out.put(s.vy); out.put(s.ax); out.put(s.ay);
         }
     }
     quantity_write(out, quantity_);
@@ -1872,6 +1890,12 @@ std::vector<std::uint8_t> World::save_physical_state() const {
         out.put(state.flow.contact_loss);
         out.put(state.flow.relief_cells);
     }
+    if (inertial_enabled_) {
+        const auto& s=inertial_ledger_;
+        for (const auto v:{s.gravity_y,s.impulse_x,s.impulse_y,s.loss,s.support,s.remainder,
+                          s.retired_x,s.retired_y,s.external_x,s.external_y,s.external_speed}) out.put(v);
+        for (const auto v:{s.updates,s.unit_moves,s.density_swaps,s.contacts,s.rests,s.velocity_retired,s.maximum_read_reach,s.maximum_write_reach}) out.put(v);
+    }
     const auto digest = Sha256::of(out.bytes);
     out.bytes.insert(out.bytes.end(), digest.begin(), digest.end());
     return std::move(out.bytes);
@@ -1884,7 +1908,8 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
     if (!std::equal(digest.begin(), digest.end(), bytes.end() - 32)) refuse_state("integrity digest mismatch");
     StateReader in(body);
     if (in.get<std::uint32_t>() != kPhysicalStateMagic) refuse_state("bad magic");
-    if (in.get<std::uint32_t>() != kPhysicalStateFormatVersion) refuse_state("unknown format version");
+    const auto format=in.get<std::uint32_t>();
+    if (format != 2U && format != 3U) refuse_state("unknown format version");
     // WorldConfig contains the fixed transport catalogue. Keep preparation's
     // copy off the caller/decoder stack (notably MSVC debug's 1 MiB default).
     auto config_owner = std::make_unique<WorldConfig>(execution);
@@ -1926,6 +1951,16 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
     auto decoded = LiquidSolverPolicy::decode(std::span<const std::int32_t>(envelope));
     if (!decoded.accepted()) throw LiquidPolicyRefused(decoded.refusal);
     config.liquid_solver_policy = *decoded.policy;
+    const bool has_inertial=std::any_of(config.liquid_solver_policy.assignments().begin(),
+        config.liquid_solver_policy.assignments().end(),[](const auto& a) {
+            return a.family==LiquidSolverFamily::InertialCellularV1;
+        });
+    if (has_inertial != (format==3U)) refuse_state("IN requires its explicit CYPS3 format");
+    if (has_inertial) {
+        if (in.get<std::uint16_t>() != InertialParameters::kVersion) refuse_state("unknown IN state contract");
+        for (const auto expected:inertial_extension_identity(inertial_parameters_for_policy(config.liquid_solver_policy)))
+            if (in.get<std::uint8_t>() != expected) refuse_state("unknown IN parameter/state identity");
+    }
     config.settled_discovery_enabled = false;
     config.settled_region_connectivity_enabled = false;
     auto world = std::make_unique<World>(config);
@@ -1983,7 +2018,8 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
             refuse_state("chunk coordinate overflow");
         if (w.find_chunk(coord) != nullptr) refuse_state("duplicate chunk");
         const auto flags = in.get<std::uint8_t>();
-        if ((flags & ~3U) != 0U) refuse_state("unknown chunk flags");
+        if ((flags & ~(format==3U ? 7U:3U)) != 0U) refuse_state("unknown chunk flags");
+        if (((flags & 4U)!=0U)!=w.inertial_enabled_) refuse_state("IN sidecar presence mismatch");
         if (((flags & 2U) != 0U) != (w.pressure_ != nullptr)) refuse_state("pressure sidecar presence mismatch");
         auto& chunk = w.ensure_chunk(coord);
         if (in.get<std::uint32_t>() != static_cast<std::uint32_t>(blocks_per_axis * blocks_per_axis))
@@ -2049,6 +2085,17 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
                     }
                 }
             }
+        }
+        if ((flags&4U)!=0U) for (std::size_t i=0;i<chunk.inertial->size();++i) {
+            auto& s=(*chunk.inertial)[i];
+            s.vx=in.get<std::int16_t>(); s.vy=in.get<std::int16_t>();
+            s.ax=in.get<std::int8_t>(); s.ay=in.get<std::int8_t>();
+            if ((s.vx || s.vy || s.ax || s.ay) && !w.inertial_family(chunk.cells[i].material_value()))
+                refuse_state("IN motion on another family");
+            if (s.vx < -InertialParameters::kVmax || s.vx > InertialParameters::kVmax ||
+                s.vy < 0 || s.vy > InertialParameters::kVmax ||
+                std::abs(s.ax)>=InertialParameters::kQ || std::abs(s.ay)>=InertialParameters::kQ)
+                refuse_state("IN motion outside its declared domain");
         }
         chunk.dirty = true;
         chunk.dirty_min_x = 0;
@@ -2150,7 +2197,19 @@ std::unique_ptr<World> World::restore_physical_state(const WorldConfig& executio
     } else if (!labelled.empty()) {
         refuse_state("gas labels without a pressure family");
     }
+    if (format==3U) {
+        auto& s=w.inertial_ledger_;
+        for (auto* v:{&s.gravity_y,&s.impulse_x,&s.impulse_y,&s.loss,&s.support,&s.remainder,
+                     &s.retired_x,&s.retired_y,&s.external_x,&s.external_y,&s.external_speed}) *v=in.get<std::int64_t>();
+        for (auto* v:{&s.updates,&s.unit_moves,&s.density_swaps,&s.contacts,&s.rests,&s.velocity_retired,&s.maximum_read_reach,&s.maximum_write_reach})
+            *v=in.get<std::uint64_t>();
+        if (s.gravity_y<0 || s.loss<0 || s.support<0 || s.support>s.loss ||
+            s.maximum_read_reach>3U || s.maximum_write_reach>2U)
+            refuse_state("IN ledger outside its declared domain");
+    }
     if (!in.done()) refuse_state("trailing bytes");
+    try { w.validate_inertial_ledger(); }
+    catch (const std::exception&) { refuse_state("invalid IN ledger"); }
     try { w.validate_quantity_ledger(true); }
     catch (const std::exception&) { refuse_state("invalid quantity ledger"); }
     return world;

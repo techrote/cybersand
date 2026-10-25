@@ -411,7 +411,7 @@ the interfaces and qualifications; the [dated evidence](../audits/2026-10-24-lcb
 records the earlier two 121-case native builds and scoped fresh Windows Godot
 proof, followed by five new rectangle/event/gas-ID regressions. The latest native
 accepted shared-contract baseline has126 cases; the #201 moving-mask repair
-branch has141 ordinary cases. Use each dated receipt for its exact tested
+branch has141 ordinary cases and the combined #212 IN branch has153. Use each dated receipt for its exact tested
 source/delta rather than treating historical counts as a current global total.
 
 ```sh
@@ -1151,3 +1151,17 @@ The scoped GEN-007 publisher (retired; see
 [branch-scoped runtime publishers](#branch-scoped-runtime-publishers)) bound
 Linux/Windows execution to exact source and runtime bytes; the ready-for-review
 full repository gates remain separate.
+
+## Native Brine IN checkpoint
+
+The isolated #212 [Brine reference](../architecture/inertial-cellular-v1.md) is exercised with `make build/tests` then `./build/tests "LCB-005"`; the full native suite remains required. [Dated local evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) distinguishes Windows LLVM execution, failed fixture premises, actual worker participation and memory components from future Linux/MSVC/Godot/runtime qualification. No Water IN or application adapter follows from this native-only checkpoint.
+
+
+For the native damping parameter, run `python tools/lcb/inertial_parameter_contract.py --check` and the LCB Python suite as well as the native groups. The optional IN family blockv2 applies `damping_numerator`0..16/16(default1); actual readback/identity and save/restore are native-owned. The worker fixture observes four actual participants at0/default1/16, while the matched tail fixture records rounding/retained-motion outcomes without assuming every arm settles. Existing illustrative v1 vectors remain separate; use the family reference for the exact schema and qualifications.
+
+
+The [corrected Brine IN publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-sequence3-publication-of-the-contact-repair)
+passes actual Windows/Linux import and14 scoped cases perOS at source
+`c11983c2`, run `40160900817`. IN10192 includes the mandatory resting-contact
+regression. The runtime-only append is `fcf0e9b6`; full exact-head ready-PR
+matrix remains a separate gate.

@@ -52,6 +52,7 @@ KERNEL_SPECIALIZATION = {
 # executes (LCB-001 #200 and the unmerged native #201 candidate). This is
 # executable source admission, not full application/platform acceptance.
 EXECUTABLE_CANDIDATES = {
+    ("brine", "inertial_cellular_v1"): ["reference"],
     ("water", "pressure_flow_v1"): ["reference", "cached", "cached_dormant"],
     ("water", "cellular_yield_v1"): ["reference"],
 }

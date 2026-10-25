@@ -23,16 +23,29 @@ LIQUIDS = ((3, 1), (8, 2), (12, 2), (16, 2), (20, 2), (21, 2), (24, 2),
            (30, 2), (32, 2), (33, 2), (36, 2))
 SETUP = {"kind": 1, "definition_schema": 1, "definition_digest": None, "seed": 7,
          "domain": [0, 0, 8, 8], "coverage": 1, "gaps": 63}
-PHYSICAL_FACTS = {
-    "captured_date": "2026-10-24", "platform": "Windows x86_64",
-    "compiler": "LLVM-MinGW 20260826 UCRT, clang++ -O1 C++20",
-    "stack_reserve_bytes": 1048576, "stack_commit_bytes": 4096,
-    "binary_sha256": "527a06158fd80e1ef35a68127785ac7e285d034b72f2091440868c1d6260928e",
-    "qualification": "Measured native fixture facts; this oracle does not validate the physical-state hash algorithm",
-    "hash_version": 2,
-    "hashes": {"empty": 9415002630067955296, "selected": 6690082968909786843,
-               "pressure": 5678000854211230257, "normalized": 8099572871718572666},
-}
+# Measured fixture facts from the combined-source native capture below.
+# Parent captures remain historical and are never reattested as this source.
+PHYSICAL_FACTS = {'captured_date': '2026-10-25',
+ 'platform': 'Windows x86_64',
+ 'compiler': 'LLVM-MinGW 20260826 UCRT, clang++23.1.0 -O1 C++20',
+ 'stack_reserve_bytes': 1048576,
+ 'stack_commit_bytes': 4096,
+ 'binary_sha256': '05e1ea6f385c16c48ff78048e498954d61eeaa305e9965eedc177a06645ab5a9',
+ 'capture_receipt_sha256': 'efad0f0bf3770c4bfaaafd7d4162925bd4b1d27a7d2a56c8a5639779abf266d9',
+ 'source_parents': ['0af161b45ce80d071fa5aae404fcb4b8950349b4',
+                    '12d76736b2c437afe3466822b0072532e4e730a8'],
+ 'native_input_manifest_sha256': '22694006cd575d6f1956c7c0a5c523b5ec5a285a2576a63acc390b8757221f59',
+ 'qualification': 'Measured combined-source native fixture hashes only, captured from the fenced '
+                  'merged include/src delta before merge commit. Both parent fact sets and the '
+                  'failed first temporary harness build remain retained. This supplies physical '
+                  'facts to independent encoding expectations, not an independent physics proof or '
+                  'published runtime qualification.',
+ 'hash_version': 2,
+ 'hashes': {'empty': 1695277046478572469,
+            'normalized': 1546994162050679665,
+            'pressure': 4336100411226104392,
+            'selected': 1789391941043314826}}
+
 DEFAULT_CONFIG = {
     "water_semantics": [1, 8, 12, 0], "interaction": [1, 8, 9, 30],
     "geometry": [128, 32, 64, 2], "sleep_after_quiet_ticks": 3,
@@ -221,7 +234,7 @@ def canonical(case, identity):
         request_hash = sha(text("cybersand-construction-request-v1") + p("HB", 1, 1) + words(request))
         payload = sha(payload_bytes([]))
         return text("cybersand-construction-attempt-v1") + p("HQBB", 1, 5, 1, 1) + request_hash + words(request) + \
-            p("BBBH", 1, 5, 1, 3) + text("inertial_cellular_v1 is not compiled/qualified in this build") + text("") + \
+            p("BBBH", 1, 5, 1, 3) + text("inertial_cellular_v1 is not qualified for material 3 in this build") + text("") + \
             native(case, identity) + descriptor() + payload + setup_hash(payload)
     normalized = case == "normalized_bound"
     payload = sha(payload_bytes(normalization_values()["after_cells"] if normalized else []))

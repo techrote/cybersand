@@ -6,6 +6,7 @@
 #include "cybersand/liquid_solver_policy.hpp"
 #include "cybersand/liquid_comparison.hpp"
 #include "cybersand/pressure_flow.hpp"
+#include "cybersand/inertial_cellular.hpp"
 #include "cybersand/pressure_optimization.hpp"
 #include "cybersand/quantity_ledger.hpp"
 #include "cybersand/transport_policy.hpp"
@@ -324,30 +325,43 @@ public:
     // Authoritative Water quantity (visible state_a plus pressure overfill) of
     // stored cells, including cells under a transient body mask.
     [[nodiscard]] std::uint64_t water_quantity(RectI64 region) const;
+    [[nodiscard]] bool inertial_enabled() const noexcept { return inertial_enabled_; }
+    [[nodiscard]] bool inertial_family(Material material) const noexcept;
+    [[nodiscard]] InertialParameters inertial_parameters() const noexcept { return inertial_parameters_; }
+    [[nodiscard]] InertialCellState inertial_cell(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] InertialLedger inertial_ledger() const noexcept;
+    [[nodiscard]] InertialStorageUsage inertial_storage_usage() const noexcept;
+    // Serialized diagnostic owner only; true no-op seeds retain all witnesses.
+    [[nodiscard]] bool diagnostic_set_inertial_cell(std::int64_t x,std::int64_t y,
+        std::int16_t vx,std::int16_t vy,std::int8_t ax,std::int8_t ay);
 
     // Versioned complete physical-state hash (LCB-001). Covers every
     // future-affecting value: cells, epochs, temperatures, activity/deadlines,
     // pending events, policies, pressure sidecars and the gas table. Independent
     // of whether all-Empty, inactive chunks are allocated. content_hash() and
     // state_hash() keep their historical definitions.
+    // Legacy non-IN stream. IN instances report and emit version3.
     static constexpr std::uint32_t kPhysicalStateHashVersion = 2;
+    [[nodiscard]] std::uint32_t physical_state_hash_version() const noexcept { return inertial_enabled_ ? 3U : 2U; }
     [[nodiscard]] std::uint64_t physical_state_hash() const;
 
     // Explicit diagnostic domains. Same-tick equivalence normalizes only the
     // pressure implementation variant. Quiescent content additionally excludes
     // clocks, cell epochs, activity aging and cumulative accounting counters;
-    // it retains pending events/deadlines, construction bindings and authority.
+    // it retains pending events/deadlines, construction bindings and authority,
+    // including actual IN parameters, velocity and subcell accumulators.
     // A constant quiescent hash does not establish future rest or justify skips.
     [[nodiscard]] std::uint64_t liquid_comparison_hash(LiquidStateProjection projection) const;
     [[nodiscard]] PressureOptimizationSnapshot pressure_optimization_snapshot() const;
     [[nodiscard]] std::optional<std::array<std::uint8_t,32>> pressure_optimization_identity() const noexcept;
 
-    // Candidate-capable tick-boundary persistence ("CYPS" v2): exact
+    // Candidate-capable tick-boundary persistence (CYPS2, or IN-only CYPS3): exact
     // continuation of every physical value above. Transient body masks are
     // host-owned and not saved. restore validates everything before returning
     // a new World and throws std::invalid_argument for unknown, corrupt or
     // incompatible payloads; the caller's live World is never touched.
     static constexpr std::uint32_t kPhysicalStateFormatVersion = 2;
+    [[nodiscard]] std::uint32_t physical_state_format_version() const noexcept { return inertial_enabled_ ? 3U : 2U; }
     [[nodiscard]] std::vector<std::uint8_t> save_physical_state() const;
     [[nodiscard]] static std::unique_ptr<World> restore_physical_state(
         const WorldConfig& execution, std::span<const std::uint8_t> bytes);
@@ -398,6 +412,10 @@ private:
     std::unique_ptr<PhysicsTotals> physics_totals_;
     std::unique_ptr<soliding::SettledWorldDiscoveryCoordinator> settled_discovery_;
     std::unique_ptr<PressureState> pressure_;
+    bool inertial_enabled_ = false;
+    std::array<bool,kMaterialDefinitions.size()> inertial_materials_{};
+    InertialLedger inertial_ledger_{};
+    InertialParameters inertial_parameters_{};
     QuantityLedgerSnapshot quantity_{};
     void record_physics(PhysicsEvent kind, Material source, Material target,
                         std::int64_t dx, std::int64_t dy, JobEffects* effects,
@@ -452,6 +470,9 @@ private:
     [[nodiscard]] bool update_water(std::int64_t x, std::int64_t y, JobEffects* effects);
     [[nodiscard]] bool update_water_cellular_yield(std::int64_t x, std::int64_t y, JobEffects* effects);
     [[nodiscard]] bool update_water_pressure(std::int64_t x, std::int64_t y, JobEffects* effects);
+    [[nodiscard]] bool update_inertial(Material,std::int64_t,std::int64_t,JobEffects*);
+    void retire_inertial_cell(Chunk&,std::size_t,JobEffects*) noexcept;
+    void validate_inertial_ledger() const;
     void prepare_pressure_tick();
     void account_pressure_certificate_work() noexcept;
     void prepare_pressure_certificates() noexcept;

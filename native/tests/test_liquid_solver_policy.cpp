@@ -279,9 +279,9 @@ void test_liquid_policy_identity_matches_source() {
     const auto& running = LiquidPolicyBuild::running();
     // LCB-001 pressure reference: FreeMass, CellularYield and pressure_flow_v1
     // compiled; optional pressure family and Water CellularYield v2 schemas.
-    require(running.catalogue_digest == catalogue_digest && running.native && running.schemas.size() == 2U &&
+    require(running.catalogue_digest == catalogue_digest && running.native && running.schemas.size() == 3U &&
                 running.schemas.front().family_owner && running.schemas.front().owner == 3U &&
-                !running.schemas.front().mandatory && running.available_families == 0x07U,
+                !running.schemas.front().mandatory && running.available_families == 0x0FU,
             "running build identity");
 }
 
@@ -373,7 +373,7 @@ void test_liquid_policy_session_transcript() {
 }
 
 void test_liquid_policy_running_build_admits_only_defaults() {
-    // Defaults plus the two qualified #200 Water reference candidates.
+    // Defaults, qualified Water candidates and Brine IN/reference.
     const auto request = LiquidSolverPolicy::default_request();
     const auto applied = accept(request, LiquidPolicyBuild::running(), "running default");
     require(applied == LiquidSolverPolicy{} && applied.envelope() == request, "explicit default equals implicit");
@@ -393,15 +393,16 @@ void test_liquid_policy_running_build_admits_only_defaults() {
         for (std::uint8_t family = 1; family <= 4U; ++family) {
             for (std::uint8_t variant = 0; variant < 3U; ++variant) {
                 if (family == row.default_family && variant == 0U) continue;
-                if (row.material_id == 3U && ((family == 2U && variant == 0U) || family == 3U)) {
-                    // Each admitted candidate dispatches its own Water law.
+                if ((row.material_id == 3U && ((family == 2U && variant == 0U) || family == 3U)) ||
+                    (row.material_id == 24U && family == 4U && variant == 0U)) {
+                    // Preserve every distinct admitted Water and Brine candidate.
                     auto words = request;
                     words[20U + row_index * 3U + 1U] = family;
                     words[20U + row_index * 3U + 2U] = variant;
-                    const auto admitted = accept(words, LiquidPolicyBuild::running(), "Water native candidate");
-                    require(admitted.assignment(3)->family == static_cast<LiquidSolverFamily>(family) &&
-                            admitted.assignment(3)->variant == static_cast<LiquidSolverVariant>(variant),
-                            "Water candidate applied");
+                    const auto admitted = accept(words, LiquidPolicyBuild::running(), "qualified native candidate");
+                    require(admitted.assignment(row.material_id)->family == static_cast<LiquidSolverFamily>(family) &&
+                            admitted.assignment(row.material_id)->variant == static_cast<LiquidSolverVariant>(variant),
+                            "native candidate applied");
                     ++cells;
                     continue;
                 }

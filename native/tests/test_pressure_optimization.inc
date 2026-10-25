@@ -416,4 +416,3 @@ void test_dormant_remote_gas_dependency() {
     require_pressure_equivalent(reference,cached);
     require_pressure_equivalent(reference,dormant);
 }
-

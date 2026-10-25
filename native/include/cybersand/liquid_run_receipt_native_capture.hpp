@@ -27,13 +27,15 @@ inline NativeFacts capture_native_facts(const World& world, const SetupDescripto
     value.applied_cores = world.applied_simulation_cores();
     value.attempted_tick = world.tick_index(); value.completed_tick = world.completed_tick_index();
     value.quantity = world.quantity_ledger();
-    value.physical_hash = world.physical_state_hash(); value.physical_hash_version = World::kPhysicalStateHashVersion;
+    value.physical_hash = world.physical_state_hash(); value.physical_hash_version = world.physical_state_hash_version();
     if (world.pressure_flow_enabled()) {
         const auto optimization_identity=world.pressure_optimization_identity();
         value.solver_state_extensions.push_back({3, PressureFlowParameters::kVersion,
             static_cast<std::uint16_t>(optimization_identity ? 1 : 0), optimization_identity});
         value.effective_pressure=world.pressure_flow_parameters();
     }
+    if (world.inertial_enabled())
+        value.solver_state_extensions.push_back({4,InertialParameters::kVersion,1,inertial_extension_identity(world.inertial_parameters())});
     return NativeFacts(std::move(value));
 }
 } // namespace cybersand::receipt

@@ -182,8 +182,8 @@ UI rules (to be enforced by #202):
 | `W-CY` | Water `cellular_yield_v1/reference` | campaign arm unmeasured; native/explicit-constructor admission accepted on main in #246 with Windows/Linux publication and required matrix; registry host campaign integration remains pending |
 | `W-PF` | Water `pressure_flow_v1/reference\|cached\|cached_dormant` | retained registry campaign unmeasured. Reference is accepted on main; all three variants execute in the unmerged #201 branch with separate native/local-Godot/cost proof, pending source-matched publication and final gates |
 | `W-IN` | Water `inertial_cellular_v1/reference` | blocked: #200, #212 |
-| `BRINE-IN` | Brine `inertial_cellular_v1/reference` | blocked: #200, #212 |
-| `M1` | Water FreeMass + Oil CellularYield + Brine Inertial | blocked: #200, #212 |
+| `BRINE-IN` | Brine `inertial_cellular_v1/reference` | retained campaign unmeasured/blocked; Brine IN source and standalone adapter exist in #212 with separate proof, while combined/source-matched publication and campaign qualification remain gated |
+| `M1` | Water FreeMass + Oil CellularYield + Brine Inertial | retained campaign unmeasured/blocked; local #212 mixed controls exist, with fresh combined-source and registry campaign qualification separate |
 | `M2` | pressure Water + Oil + inertial Brine | blocked: #200, #201, #212 |
 | `M2b` | pressure Water + Oil/Brine CellularYield | blocked: #200, #201 |
 | `M1-alt` | Toxic Sludge inertial (protected mixed fixture only) | proposed alternate; needs #212 and a new geometry version |

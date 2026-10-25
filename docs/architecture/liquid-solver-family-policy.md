@@ -2,7 +2,7 @@
 title: Liquid solver family policy and API specification
 status: Approved design
 document-kind: design
-scope: LCB-000 Gate C accepted design, Current main LCB-001 native contract and branch-Current LCB-002 pressure variants — four-family identities, immutable per-World per-material policy, admission/readback, W-CY motion/material block v2 and cross-issue mapping; native setup/receipts and pressure optimization mechanisms have separate canonical owners, while inertial and final branch qualification remain outside this checkpoint
+scope: LCB-000 Gate C accepted design, Current main LCB-001 native contract and combined branch-Current LCB-002 pressure variants plus LCB-005 Brine IN — four-family identities, immutable per-World per-material policy, admission/readback, W-CY material block v2 and IN family block v2; subsystem mechanics and source/platform qualification remain separately owned
 canonical-for: [liquid-solver-family-policy]
 last-reviewed: 2026-10-25
 related-documents: [pressure-flow-v1.md, liquid-prepared-setup-and-receipts.md, ../systems/water-design.md, ../systems/materials-and-rule-kernels.md, ../systems/flow-transport-and-profiles.md, ../decisions/ADR-005-water-model.md, ../operations/lcb-water-comparison-and-fixtures.md, ../operations/lcb-manual-comparison-ux.md, ../audits/2026-10-23-lcb000-gates-cde-design-evidence.md, pressure-optimization.md]
@@ -31,8 +31,13 @@ canonical contract is [native prepared setup and receipts](liquid-prepared-setup
 The owner requested a narrow freeze of those native versioned codecs; this
 does not freeze the production Cell carrier, global ABI, physics calibration
 or full host replay. The C64-E8 layout, defaults and historical content/state
-hashes are unchanged. W-IN, Brine inertial, the remaining #202
-constructors and comparison UI remain **Planned**.
+hashes retain their separately recorded source identities. On the combined
+#212 branch, Brine IN/reference and all three Water PF variants are Current
+in source, with their separate native/standalone proof retained below. Fresh
+combined native/standalone proof and actual Windows/Linux scoped publication now
+pass at `bc0bfed9` ([union ledger](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-windowslinux-union-publication--2026-10-25));
+full ready-PR acceptance remains pending. Water IN, the
+remaining #202 constructors and comparison UI remain **Planned**.
 
 - Without an explicit request every material executes its **current default**
   in the [capability matrix](../reference/liquid-solver-capability-matrix.json).
@@ -62,9 +67,22 @@ Claim labels used below:
 | **Proposed** | This Gate C design; awaiting review |
 | **Deferred to B** | Depends on the #204 storage handoff |
 
+## LCB-005 branch admission and standalone adapter
+
+The combined #212 source additionally admits Brine24 /
+`inertial_cellular_v1/reference`, including its optional actual family block2
+with damping numerator0..16 over16. Water IN stays unavailable; unsupported IN
+variants and materials retain typed refusal. Policy validation does not choose
+execution geometry: the standalone Godot factory defaults to radius2 and IN
+requires explicit3. Applied instance readback, physical hash3/CYPS3, the
+non-IN2 control and local Windows evidence are owned by the
+[Brine IN reference](inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry).
+This is branch source/adapter qualification, not accepted main or full #202.
+
 ## Current pressure-variant branch qualification
 
-**Current on `codex/lcb002-pressure-variants`, pending final acceptance:**
+**Current on `codex/lcb002-pressure-variants` and integrated into the #212
+branch, pending final acceptance:**
 Water × `pressure_flow_v1/reference`, `cached` and `cached_dormant` are admitted
 distinctly by `LiquidPolicyBuild::running()`. The [optimization contract](pressure-optimization.md)
 owns the derived mechanisms and execution3 identity. No physical parameter,
@@ -142,17 +160,23 @@ two illustrative contract schemas remain historical contract-test schemas.
 The accepted #246 main build additionally qualifies Water ×
 `cellular_yield_v1/reference` and appends its actual optional Water material
 block **v2**, `{viscosity_index 0..255}`, default 0. It does not reinterpret
-the illustrative v1 `flow_rate_permille` block. The following table distinguishes
-accepted #246 main from current #201 branch source:
+the illustrative v1 `flow_rate_permille` block.
+
+The #212 native checkpoint additionally compiles family4
+(`available_families` 0x0F) and admits only Brine/reference. It binds fixed
+parameters through native state-extension identity1, not the illustrative caller
+damping schema. This admission updates the capability digest and policy/receipt
+identities; it does not imply changed Current physics. The following table distinguishes accepted #246 main from the combined #201/#212 branch source:
 
 | Request | Outcome |
 |---|---|
 | Water × `pressure_flow_v1/reference`, with or without its family block | **Accepted** on main; Water runs the [pressure reference](pressure-flow-v1.md) |
-| Water × `pressure_flow_v1/cached` or `cached_dormant` (#201) | Accepted in current #201 branch source with distinct applied variant; [optimization qualification](pressure-optimization.md) remains separate from reference-only accepted #246 main |
+| Water × `pressure_flow_v1/cached` or `cached_dormant` (#201) | Accepted in #201 and combined #212 source with distinct applied variant; [optimization qualification](pressure-optimization.md) remains separate from reference-only accepted #246 main |
 | Matrix `rejected` cell (e.g. Oil × `inertial_cellular_v1`, NC-1; any non-Water liquid × `pressure_flow_v1`) | `combination_rejected` |
 | `proposed_alternate` cell (Toxic Sludge × inertial) | `not_selectable` |
 | A variant the cell does not offer (e.g. Water FreeMass `cached`) | `variant_unsupported` |
-| `inertial_cellular_v1` (NC-2), Brine × inertial | `family_unavailable` (not compiled) |
+| Water / `inertial_cellular_v1` (NC-2) | `family_unavailable`; complete Water carrying stencil remains unqualified |
+| Brine / `inertial_cellular_v1/reference` | **Accepted in current #212 branch source**, with explicit execution radius3; [law, storage and evidence](inertial-cellular-v1.md) |
 | Water × `cellular_yield_v1/reference`, with no Water block or its v2 viscosity block | **Accepted** on main through #246; whole-cell Water law below |
 | Stale digests, malformed envelopes, any other parameter block, an out-of-range pressure block | as the precedence above |
 
@@ -290,8 +314,8 @@ source-matched rebuild as for any native edit.
 |---|---|---|---|
 | `freemass_v1` | Current fractional conserved pairwise Water | existing source | Yes, Water only (default) |
 | `cellular_yield_v1` | Whole-cell yielding motion plus material hooks | existing source; #200 W-CY | Ten liquids by default; Water opt-in on main through #246 with its own v2 viscosity block |
-| `pressure_flow_v1` | Corrected pressure/overfill/flow/gas | #200 | `reference`, Water, opt-in on main since #245; `cached`/`cached_dormant` Current in #201 branch source, pending runtime/final CI ([optimization contract](pressure-optimization.md)) |
-| `inertial_cellular_v1` | Non-pressure motion with retained velocity/accumulator | #212 | No |
+| `pressure_flow_v1` | Corrected pressure/overfill/flow/gas | #200 | `reference`, Water, opt-in on main since #245; all three variants Current in #201 and combined #212 source, with actual scoped Windows/Linux publication and full ready-PR acceptance pending ([optimization contract](pressure-optimization.md)) |
+| `inertial_cellular_v1` | Non-pressure motion with retained velocity/accumulator | #212 | Brine/reference on the isolated #212 branch, explicit radius3 and [qualified readback/publication](inertial-cellular-v1.md); no Water IN or full ready-PR acceptance |
 
 **Implementation variants** (an axis independent of family):
 
@@ -599,7 +623,7 @@ has exactly one refusal:
 checks after step 8. Each refusal returns `{code, material|null, detail}` and
 leaves the live session, its readback and its `policy_hash` untouched.
 
-**Parameter-block schemas are illustrative.** The oracle registers two
+**Historical oracle schemas are illustrative.** The original profiles register two
 contract-test schemas only to exercise the rules:
 - a mandatory `inertial_cellular_v1` v1 block (`damping_q16` 0..65536,
   `speed_cap_q8` 256..2048);
@@ -607,8 +631,13 @@ contract-test schemas only to exercise the rules:
   (`flow_rate_permille` 1..1000).
 
 #200 appends the actual W-CY material block v2 described above; v1 is not
-reinterpreted as viscosity. The inertial illustrative block is still only a
-contract-test schema. The owner-requested native shared-codec freeze does not
+reinterpreted as viscosity. #212 appends optional native IN family owner4/blockv2,
+with one `damping_numerator` field0..16 over fixed denominator16 and default1;
+[the IN reference](inertial-cellular-v1.md) owns its actual execution/identity.
+The inertial illustrative blockv1 remains only a contract-test schema and is
+refused by the running build. The native successor vectors are separately
+registered in [inertial-parameter-vectors.json](../reference/inertial-parameter-vectors.json);
+existing illustrative profiles and outcomes are preserved. The owner-requested native shared-codec freeze does not
 freeze an inertial law, pressure calibration or production ABI.
 
 **Applied readback.** The readback is the normalized applied policy, never the

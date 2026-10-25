@@ -287,7 +287,7 @@ source-derived registry. It leaves both protected fixtures unchanged.
 | ID | Control | Expected |
 |---|---|---|
 | NC-1 | Request `inertial_cellular_v1` for Oil | `combination_rejected` before construction; prior session intact [#200] |
-| NC-2 | Request a declared but unavailable mapping, such as Brine/inertial on the #201 source | `family_unavailable`; no fallback to Current [#200]. Accepted #246 main admits pressure reference; the #201 branch admits all three Water PF variants. Its transactional negatives use unsupported Oil/PF mappings and inertial instead of a now-executable Water variant |
+| NC-2 | Request a declared but unavailable mapping, such as Water/inertial on the combined #212 source | `family_unavailable`; no fallback to Current [#200]. Accepted #246 main admits pressure reference; #201 and the combined #212 source admit all three Water PF variants. Transactional negatives use unsupported Oil/PF mappings and Water/inertial instead of executable Water PF or Brine IN |
 | NC-3 | Fractional-Water setup under `W-CY` without an explicit `water-normalize-v1` opt-in | `normalization_required` [#200] |
 | NC-4 | Pressure Water at rest beside actively flowing Oil (M2b) | Oil motion and chemistry continue; Water dormancy never suppresses them [#201] |
 | NC-5 | Salt dissolution under M1 | Products at inertial default state; ledger closes as above [#212/#160] |

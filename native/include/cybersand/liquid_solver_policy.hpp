@@ -22,9 +22,9 @@
 // ("Request envelope and canonical hash"); tools/lcb/policy_contract.py is its
 // executable oracle and the native tests replay its registered vectors.
 //
-// This build executes only each material's current default family. Every other
-// mapping is refused before any World is built; nothing here selects, dispatches
-// or falls back to another solver, and no wire/ABI layout is frozen.
+// The running build qualifies Current defaults and explicit opt-in cells;
+// every other mapping refuses before World storage is built. Policy admission
+// never silently falls back, and no production Cell ABI is frozen here.
 namespace cybersand {
 
 namespace liquid_policy_detail {
@@ -180,15 +180,17 @@ struct LiquidPolicyBuild {
     static constexpr std::int32_t kPressureDefaultGasEnabled = 1;
     static constexpr std::int32_t kPressureDefaultAtmosphericRows = 32;
     static constexpr std::uint16_t kWaterCellularYieldBlockVersion = 2;
+    // IN v1 remains the historical illustrative schema; v2 is the native law.
+    static constexpr std::uint16_t kInertialBlockVersion = 2;
 
     // This binary: FreeMass and CellularYield qualified for each liquid's current
     // default, plus Water x pressure_flow_v1/reference and whole-cell
-    // cellular_yield_v1/reference (#200), plus candidate cached/cached_dormant
-    // pressure implementations (#201). Other cells remain explicitly refused.
+    // cellular_yield_v1/reference (#200), Brine IN/reference (#212), and
+    // cached/cached_dormant pressure implementations (#201). Other cells refuse.
     [[nodiscard]] static const LiquidPolicyBuild& running() {
         static const LiquidPolicyBuild build = [] {
             LiquidPolicyBuild result;
-            result.available_families = 0x07U;
+            result.available_families = 0x0FU;
             for (const auto& row : liquid_policy_catalogue::kLiquidRows) {
                 result.qualified_cells.emplace_back(row.material_id, row.default_family);
                 result.qualified_variants.push_back({row.material_id, row.default_family, 0x01U});
@@ -197,10 +199,14 @@ struct LiquidPolicyBuild {
             result.qualified_variants.push_back({3, 3, 0x07U});
             result.qualified_cells.emplace_back(std::uint16_t{3}, std::uint8_t{2});
             result.qualified_variants.push_back({3, 2, 0x01U});
+            result.qualified_cells.emplace_back(std::uint16_t{24},std::uint8_t{4});
+            result.qualified_variants.push_back({24,4,0x01U});
             result.schemas.push_back({true, 3, kPressureBlockVersion, false, 0,
                                       {{"gas_enabled", 0, 1}, {"atmospheric_head_rows", 16, 4096}}});
             result.schemas.push_back({false, 3, kWaterCellularYieldBlockVersion, false, 2,
                                       {{"viscosity_index", 0, 255}}});
+            result.schemas.push_back({true, 4, kInertialBlockVersion, false, 0,
+                                      {{"damping_numerator", 0, 16}}});
             return result;
         }();
         return build;
