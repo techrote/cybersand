@@ -19,7 +19,16 @@ rebase. Architecture inspection source:
 [ADR-015](../decisions/ADR-015-player-playground-asynchronous-owner.md),
 [exact protocol](../architecture/player-playground-asynchronous-contract.md)
 and [baseline limits](../audits/2026-10-26-play-async-001-baseline.md).
-Use isolated branches/worktrees. Scope: five mechanical Player Playground
+Use isolated branches/worktrees. **Critical #265 identity join:** use
+`CyberPhysicalActorSession.run_id` as the mechanical command/equipment
+`run_id`; keep the Session's own `epoch` within existing nested effects,
+equipment and issued observations. Separately stamp new mailbox messages
+with the monotonic facade-owned `owner_epoch` (mailbox `epoch`) to fence
+new Arenas even when their Session epochs restart at 1. Never use the
+wrapper's independently minted `_run_id` for mechanical usable packets.
+Test this across preset replacement and stale acknowledgements.
+
+Scope: five mechanical Player Playground
 actors on Linux/Windows only. Leave native material laws, unrelated LCB
 changes, ordinary desktop sandbox, physical evaluation lab schedule,
 Web and two swarms unchanged. The swarms are #271, **not blockers** for the
