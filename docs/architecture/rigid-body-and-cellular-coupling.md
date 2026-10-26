@@ -11,6 +11,13 @@ last-reviewed: 2026-10-22
 
 # Rigid-body and cellular coupling
 
+**Approved design, not Current (#264):** the mechanical Player Playground's
+proposed [asynchronous coupling contract](player-playground-asynchronous-contract.md)
+uses copied pre-Rapier-step pose/event frames, bounded stale cellular feedback
+and a generation-fenced main-thread hard-terrain installation barrier.
+Current synchronous Arena and ordinary desktop sandbox coupling below are
+unchanged; their differing orders are not assumed equivalent.
+
 ## When a crate moves through sand, are its pixels erased and restored?
 
 **Current:** native World owns cellular materials; Rapier2D owns independent

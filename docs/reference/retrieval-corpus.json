@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-10-25",
+  "reviewed": "2026-10-26",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -20,6 +20,7 @@
     "architecture/pressure-flow-v1.md",
     "architecture/inertial-cellular-v1.md",
     "architecture/simulation-tick-and-threading.md",
+    "architecture/player-playground-asynchronous-contract.md",
     "decisions/ADR-001-native-simulation-core.md",
     "decisions/ADR-002-double-buffered-tile-jobs.md",
     "decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
@@ -107,6 +108,7 @@
     "systems/physical-free-flight.md",
     "systems/physical-flight-lab.md",
     "operations/deepworks-exhibition.md",
+    "operations/player-playground-async-handoff.md",
     "systems/player-control-playground.md",
     "systems/procedural-typed-spatial-fields.md",
     "reference/procedural-spatial-operators.md",
@@ -115,6 +117,7 @@
     "systems/procedural-semantic-planes.md",
     "operations/semantic-depth-authoring.md",
     "decisions/ADR-014-semantic-plane-admission.md",
+    "decisions/ADR-015-player-playground-asynchronous-owner.md",
     "systems/generation-workbench-2.md",
     "operations/procedural-qualification.md",
     "architecture/pressure-optimization.md"
@@ -130,6 +133,10 @@
     "../.github/pull_request_template.md"
   ],
   "excluded": [
+    {
+      "path": "audits/2026-10-26-play-async-001-baseline.md",
+      "reason": "Dated PLAY-ASYNC-001 exact-main Windows/Linux test records, source inspection and explicitly missing on-screen pacing measurements; access through the Approved mechanical player owner contract, not as Current asynchronous player implementation."
+    },
     {
       "path": "audits/2026-10-18-act002-actor-rigs.md",
       "reason": "Dated ACT-002 source/runtime, preserved failure and scoped rig validation evidence; retrieve explicitly through the rig contract or validation ledger, not as a default Current runtime contract"

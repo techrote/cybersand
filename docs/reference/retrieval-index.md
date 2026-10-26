@@ -276,6 +276,21 @@ separate; the programme graph owns admission.
 
 Integrated launch and retained hull comparisons route to the [physical actor programme](../operations/physical-actor-programme.md). Current articulation, the 46-rig roster, scripted feedback, command freshness and usable lifecycle route to the [physical actor contract](../systems/physical-actor-rigs.md).
 
+## Mechanical Player Playground asynchronous architecture (approved)
+
+For #264 and future #265/#266, route questions about **who owns the native
+World versus Rapier, how multicore Auto and independent pacing work, what
+messages and capacities cross threads, snapshot age, terrain readiness,
+input edges, equipment receipts, pause/reset/shutdown and overload** to the
+[approved exact contract](../architecture/player-playground-asynchronous-contract.md)
+(and [ADR-015](../decisions/ADR-015-player-playground-asynchronous-owner.md)).
+For implementation order use the [parallel agent handoff](../operations/player-playground-async-handoff.md);
+for actual Windows/Linux tests versus missing frame-rate measurements use the
+[dated baseline](../audits/2026-10-26-play-async-001-baseline.md).
+**Current** Player Playground remains synchronous/one-worker; the future
+mechanical async/Auto target must not be confused with **Deferred** swarms #271
+or the ordinary desktop async sandbox, which is already Current.
+
 ## Human player controls, acrobat chains and material swarms
 
 Use the [player playground](../systems/player-control-playground.md) for all seven

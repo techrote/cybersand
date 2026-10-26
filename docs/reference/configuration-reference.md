@@ -1168,6 +1168,16 @@ redefine the legacy physical actor delta clamp above.
 
 ## Player playground values
 
+**Approved design, not Current:** after #265–#270, desktop mechanical Player
+Playground requests `0=Auto` and resolves the actual 2/4/6 native worker
+pool explicitly **before** calling `diagnostic_reset`, which itself defaults
+to `workers=1`. Async ownership and 60-Hz pacing are separate from the
+worker count. Single-worker and synchronous paths are named test/compatibility
+exceptions, not gameplay defaults. Limits and exact requested/actual readback
+are in [the async player contract](../architecture/player-playground-asynchronous-contract.md)
+and [ADR-015](../decisions/ADR-015-player-playground-asynchronous-owner.md).
+The values immediately below describe **Current** synchronous source.
+
 **Current experimental source:** [course](../../godot/scripts/player_playground_course.gd),
 [runtime](../../godot/scripts/player_playground_runtime.gd),
 [input](../../godot/scripts/player_playground_input.gd),

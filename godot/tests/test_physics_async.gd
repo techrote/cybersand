@@ -5,6 +5,24 @@ const Observer = preload("res://tests/physics_async_worker.gd")
 func _init() -> void:
 	call_deferred("_run")
 
+static func _timing_statistics(samples: Array[float]) -> Dictionary:
+	if samples.is_empty():
+		return {"count": 0}
+	var sorted: Array[float] = samples.duplicate()
+	sorted.sort()
+	var total: float = 0.0
+	for value: float in samples:
+		total += value
+	var count: int = samples.size()
+	return {
+		"count": count, "mean": total / float(count),
+		"p50": sorted[clampi(ceili(float(count) * 0.50) - 1, 0, count - 1)],
+		"p95": sorted[clampi(ceili(float(count) * 0.95) - 1, 0, count - 1)],
+		"p99": sorted[clampi(ceili(float(count) * 0.99) - 1, 0, count - 1)],
+		"max": sorted[count - 1],
+	}
+
+
 func _run() -> void:
 	var args: PackedStringArray = OS.get_cmdline_user_args()
 	var ticks: int = int(args[1]) if args.size()>1 else 120
@@ -101,12 +119,18 @@ func _run() -> void:
 			if bridge.manual_step_count()%60==0:
 				rows.append({"cell_tick":snapshot.tick_index,"rapier_tick":bridge.manual_step_count(),"depth":depth,"rotation":transform.get_rotation(),"x":transform.origin.x,"y":transform.origin.y})
 		worker.stop_worker()
+		# The test-only trace is safe to read only AFTER the worker has joined.
+		# This is the existing asynchronous sandbox fixture, not the player World.
+		var native_tick_timings: Array[float] = []
+		for tick_index: int in range(1, mini(ticks, worker.recorded_tick) + 1):
+			native_tick_timings.append(float(worker.diagnostic_trace[tick_index * 12 + 1]))
+		var async_tick_stats: Dictionary = _timing_statistics(native_tick_timings)
 		var final: Dictionary = world.diagnostic_snapshot(Vector2i(left-1,surface-128),Vector2i(98,513),true)
 		final.erase("cells")
 		var report: Dictionary = {"ok":true,"mode":"desktop-asynchronous","seed":seed,"completed_ticks":final.completed_ticks,
 			"rapier_ticks":bridge.manual_step_count(),"peak_depth":peak,"floor_contact_tick":floor_tick,"age_histogram":ages,
 			"applied_impulse":[applied.x,applied.y],"initial":initial,"final":final,"rows":rows,
-			"worker_trace":worker.diagnostic_trace,"worker_overruns":snapshot.worker_overruns,"platform":OS.get_name()}
+			"worker_trace":worker.diagnostic_trace,"worker_overruns":snapshot.worker_overruns,"async_native_tick_ms":async_tick_stats,"platform":OS.get_name()}
 		if not args.is_empty():
 			var file: FileAccess = FileAccess.open(args[0].path_join("async-s%02d.json"%seed),FileAccess.WRITE)
 			if file == null:

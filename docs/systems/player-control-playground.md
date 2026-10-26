@@ -10,6 +10,16 @@ related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-l
 
 # Player control playground
 
+**Current:** the five mechanical presets advance through synchronous
+`CyberPhysicalActorArena.step` on the physics callback with one native worker;
+the two material swarms also use their own synchronous World. **Approved
+(#264), not yet implemented:** an independent, multicore-Auto, asynchronous
+native World owner for the five mechanical presets, preserving main-thread
+Rapier and input. See [ADR-015](../decisions/ADR-015-player-playground-asynchronous-owner.md),
+[thread/event/snapshot contract](../architecture/player-playground-asynchronous-contract.md)
+and [Windows/Linux evidence limits](../audits/2026-10-26-play-async-001-baseline.md).
+Sand/Water migration is **Deferred** to #271.
+
 ## Open the seven-preset movement course
 
 **Current experimental source:** choose **Player playground** in the feature

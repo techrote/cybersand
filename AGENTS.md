@@ -26,6 +26,19 @@ Runtime results need dated source/artifact/platform evidence. Investigate and
 record contradictions before changing implementation; do not silently choose a
 design from conflicting source, ADR or historical claims.
 
+## Approved desktop Player Playground threading directive (PLAY-ASYNC-001)
+
+For Windows/Linux **desktop gameplay**, independently paced async simulation and
+native multicore Auto are the **Approved target defaults**, not Current Player
+Playground behavior. Synchronous or explicit one-worker operation requires an
+identified testing/compatibility exception. Source at main `9e53a5b1` still
+runs the five mechanical player presets on a synchronous one-worker native
+World. #265–#270 own migration and promotion; #271 alone owns Sand/Water swarms.
+Never move Rapier, physics RIDs, scene nodes or live World storage across the
+new boundary. Follow [ADR-015](docs/decisions/ADR-015-player-playground-asynchronous-owner.md),
+the [bounded execution contract](docs/architecture/player-playground-asynchronous-contract.md)
+and [parallel handoff](docs/operations/player-playground-async-handoff.md).
+
 ## CI and merge safety
 
 Routine active CI is GitHub-hosted. Do not add `.circleci/config.yml`, external
