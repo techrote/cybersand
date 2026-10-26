@@ -34,6 +34,8 @@ CASE_WEIGHTS_SECONDS = {
     # LCB scenario catalogue: 27 installs plus 1/4-worker 30-tick prefixes
     # (32 s on a 2026-10-23 Windows workstation; CI hosts are slower).
     "test_lcb_scenario_catalogue": 60.0,
+    # 336 real native/Rapier setups, each followed by actual Water/player ticks.
+    "test_player_playground_maps": 120.0,
     # LCB physics contracts: 43 s on the same workstation (dam ladder to t240 at 1/4 workers).
     "test_lcb_physics_contracts": 80.0,
     # LCB-001 pressure reference: 23 s on a 2026-10-24 Windows workstation
@@ -96,6 +98,7 @@ def discover_cases(root: Path = ROOT) -> list[Case]:
             420 if p.stem in {
                 "test_physical_flight_teacher_dev_free",
                 "test_physical_flight_teacher_dev_obstacle",
+                "test_player_playground_maps",
             } else 180,
             _weight(p.stem),
             # Actual-pixel fixtures use this suffix so newly added render tests

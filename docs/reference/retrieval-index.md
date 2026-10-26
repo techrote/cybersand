@@ -290,6 +290,13 @@ Circle hard contact versus square native masks belongs to
 Execution and human/platform qualification route to the
 [dated evidence](../audits/2026-10-20-player-control-playground.md).
 
+The same guide owns the [seven tailored maps, Water solver picker and native
+painting/spawning controls](../systems/player-control-playground.md#seven-tailored-maps-water-selection-and-painting).
+All seven players can select all eight maps; player changes keep map/Water,
+map/solver changes restart, and edits mark practice laps. The
+[2026-10-26 qualification](../audits/2026-10-26-player-playground-maps.md) separates
+local Windows execution from complete route, human feel and hosted acceptance.
+
 Layered material worlds, Strata Theatre, quantized relief and explicit interlayer event questions route to the [depth prototype contract](../systems/depth-layers-and-parallax.md).
 
 ## Deepworks exhibition and full-size depth worlds

@@ -18,8 +18,13 @@ item. Sampled rigs and the original physical hull trials remain reference choice
 Choose **Player playground** in the launcher or pass **`--player-playground`**
 for seven human movement presets: a loose-jointed stunt buggy, trials bike,
 momentum acrobat, arcade lander, real Sand cloud, real Water blob and jetpack
-barrel. The shared course has a ramp, low tunnel, air slalom, landing decks and
-material sieve. **1–7** selects, **Tab** cycles, **R** restarts, **P** pauses and
+barrel. Choose from **seven tailored maps plus the original mixed course**;
+every map is available to every player. The Water selector offers FreeMass,
+CellularYield, pressure reference/cached/dormant and inertial Water. Changing
+map or solver restarts the course; changing player retains both selections.
+Choose a material and brush radius, enable **Paint tool** for left-draw/right-erase,
+or use **Spawn a burst above player**. Painting works while paused; reset clears
+edits. **1–7** selects a player, **Tab** cycles, **R** restarts, **P** pauses and
 **F** switches overview/follow. A standard gamepad can supply movement and actions.
 
 The acrobat chains slides, rolls, bullet jumps, double jumps, jump cancels and a

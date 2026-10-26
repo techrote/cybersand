@@ -10,6 +10,15 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## Playground maps, native Water selection and painting — 2026-10-26
+
+The [dedicated checkpoint](../audits/2026-10-26-player-playground-maps.md)
+records the eight-map/seven-player/six-Water native setup matrix, actual receipt
+readback, bounded authoring and original/shared-owner regressions. Actual local
+Windows headless proof is distinct from Linux/hosted checks, full course
+traversal and interactive feel. Native source and published runtime bytes are
+unchanged; the new scripts/tests are separately identified from old build maps.
+
 ## Qualified Water sequence2 publication — 2026-10-25
 
 PR #254's [actual sequence2 publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25) qualifies source

@@ -10,6 +10,17 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## Playground maps and controls — 2026-10-26
+
+The [player playground](../systems/player-control-playground.md#seven-tailored-maps-water-selection-and-painting)
+adds seven tailored maps alongside the original course, all available to every
+player, plus six existing native Water choices and bounded paused/running
+material spawning and painting. Current initial map/FreeMass defaults remain.
+[Dated evidence](../audits/2026-10-26-player-playground-maps.md) scopes actual
+Windows tests and remaining review/platform/manual gates. This separate player
+usability checkpoint neither advances nor closes #202/#203 scientific or full
+application acceptance. Web remains owner-deferred until after the epic.
+
 ## Trial successor correction after accepted App — 2026-10-25
 
 App #256 is merged as main56422c05 after all four exact-dc2 required gates.

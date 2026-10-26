@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Experimental seven-preset human movement course, shared mechanical control, bounded native Sand and Water fields, input lifetime and qualified validation
 canonical-for: [player-control-playground, player-movement-presets, player-material-field]
-last-reviewed: 2026-10-21
+last-reviewed: 2026-10-26
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
 ---
 
@@ -20,7 +20,7 @@ godot --path godot -- --player-playground
 godot --path godot -- --player-playground --player=acrobat
 ```
 
-The optional player value is an ID from the table below. The course combines a
+The optional player value is an ID from the table below. The original course combines a
 ramp, low tunnel, airborne slalom, landing decks and a material sieve in a
 512 × 256 view of one native world. Four ordered checkpoints give each preset
 a route and a simulation-time lap counter. The timer starts when active movement
@@ -29,6 +29,76 @@ physics tick. Elapsed time advances only with simulation ticks and continues
 while coasting with neutral input. Best times are kept only during this scene's
 lifetime. Authored routes and
 checkpoint detection do not establish that every route has been completed.
+
+## Seven tailored maps, Water selection and painting
+
+**Current branch implementation, local Windows qualification:** the independent
+**Map** selector retains the original mixed course and adds these seven maps.
+Every map is selectable with all seven players; the suggested player describes
+the emphasis, not an admission restriction or proof of complete traversal.
+
+| Map ID / displayed name | Suggested player | Exercise |
+|---|---|---|
+| `cannon_run` / Cannon Run | Loose Cannon buggy | Long rideable ramp, landing straight and braking bumps |
+| `rat_steps` / Rat Steps | Trials Rat bike | Low stepped ascent, narrow balance spine and stepped descent |
+| `afterimage_works` / Afterimage Works | Afterimage acrobat | Low slide tunnel and upper decks for bullet jumps and gliding |
+| `vector_port` / Vector Port | Vector Rush lander | Alternating broad flight slots, braking and landing decks |
+| `dust_foundry` / Dust Foundry | Dust Devil Sand cloud | Three combs with five-cell apertures and loose Sand beyond them |
+| `undertow_lab` / Undertow Lab | Undertow Water blob | Low channels, overhead shelves and three catch basins |
+| `rocket_yard` / Rocket Yard | Barrel Rocket | Five staggered precision landing pads and a clear lower lane |
+
+`mixed` remains the initial map and Current FreeMass remains the initial Water
+solver. `--playground-map=undertow_lab` optionally selects a map at launch.
+Changing player keeps map and Water selections. Changing either map or solver
+constructs a fresh setup and clears edits/timing; R retains all three selections.
+Best times are separated by player, map and solver; any successful material
+edit marks the run **PRACTICE** and prevents that lap updating a clean best time.
+Best times remain scene-local; solver names do not imply comparable difficulty.
+
+The **Water** picker offers Current FreeMass, whole-cell CellularYield,
+pressure reference, pressure cached, pressure cached-dormant and retained-momentum
+inertial Water. The applied family/variant and execution radius come from native
+readback. All other liquids retain Current assignments. IN explicitly uses
+radius three; the other choices retain radius two, so this is exploratory play,
+not a matched-geometry scientific comparison. All authored and painted Water
+starts as whole cells. Selection rebuilds from authored rectangles, never
+rounds a live fractional FreeMass World and never silently falls back on refusal.
+These are the existing native solvers; no new law, defaults or C64/E8 ABI change.
+
+Choose Sand, Water, Oil, Brine, Smoke, Fire, Lava, Acid or Wall and a **1–12 cell
+brush radius**. **Spawn a burst above player** adds one disc 32 cells right and
+32 cells above the player, clamped inside the course. Enable **Paint tool** to
+draw with left mouse or erase with right mouse in the actual fitted play view;
+overview and follow camera coordinates both apply. Disable it to resume player
+control. Open selectors and focused numeric fields also hold movement input.
+Click the play view to release numeric focus. Ordinary mouse aiming remains
+available when the tool is off.
+
+Default spawning fills Empty cells only; **Replace existing material / terrain**
+explicitly enables replacement. Erase clears occupied cells independently of
+that checkbox. Discs are clipped to the course interior and skip the current
+mechanical body mask, including when paused. Up to 625 candidate positions and
+441 disc cells are visited per radius-12 stamp. Continuous painting issues one
+stamp per physics callback; the initial click can add another stamp. No brush
+command enters native pool threads or borrows an asynchronous owner's World.
+Painted hard terrain is synchronized to the existing private Rapier space.
+Changes are authoring operations, not conserved-material field movement or a
+scientific continuation guarantee. Water painting creates full quantity; it does
+not replenish an occupied cell unless that cell is first explicitly erased.
+
+`CyberPlayerPlaygroundWorld.build` uses the existing prepared-native constructor
+with Baseline transport, exploratory/host-paced intent, full finite region,
+disabled cadence LOD and a copied initial mechanical body state (or empty for
+material players). It records a tick-zero native setup receipt covering the map
+and initial swarm seed. Receipts identify the initial setup, not later painting.
+A failed candidate leaves the live owner and accepted selections in place.
+This synchronous playground route does not close #202/#203 full-host acceptance.
+
+Sources: [map definitions](../../godot/scripts/player_playground_course.gd),
+[native setup](../../godot/scripts/player_playground_world.gd),
+[exclusive authoring owner](../../godot/scripts/player_playground_runtime.gd),
+[scene controls](../../godot/scripts/player_playground.gd) and
+[dated qualification](../audits/2026-10-26-player-playground-maps.md).
 
 Five mechanical presets also appear in **F5 → Rapier → SetP**, among the
 46 retained physical actor IDs and original eight sets. The separate 4LY
@@ -108,9 +178,10 @@ Gamepad mapping is implemented; physical controller qualification is separate.
 
 | Control | Scene operation |
 |---|---|
-| 1–7 or preset buttons | Select a preset and construct a fresh course/session |
+| Map picker / Water picker | Rebuild with the selected map / native Water law; every player remains available |
+| 1–7 or preset buttons | Select a preset and construct a fresh session, retaining map and Water selections |
 | Tab / Shift+Tab | Select next / previous preset |
-| R or Restart | Reset the selected preset and course; keep this scene's best times |
+| R or Restart | Reset selected preset/map/Water and discard edits; keep this scene's best times |
 | P, Escape or gamepad Start | Pause/resume; pause revokes current input |
 | F or camera button | Toggle course overview and player-follow view |
 | F2 or Menu | Close the current owner and return to the feature launcher |

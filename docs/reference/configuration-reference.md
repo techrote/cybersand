@@ -1168,6 +1168,16 @@ redefine the legacy physical actor delta clamp above.
 
 ## Player playground values
 
+The [map/solver/authoring controls](../systems/player-control-playground.md#seven-tailored-maps-water-selection-and-painting)
+add seven maps alongside the original `mixed` default, independently selectable
+with every player. Six Water choices use radius two except explicit radius-three
+IN. Brush radii are 1–12; radius twelve scans 625 candidates with 441 disc cells,
+clipped to interior `(132,132,504,220)` and skipping actual bodies. A burst is
+offset `(32,-32)` from the player, clamped to centres x145..623/y145..339. Edits
+mark practice laps; clean best times are keyed by player/map/solver. No save or
+native layout change follows. Setup uses Baseline transport, eight-bit Water,
+12-tick coherence, exploratory host pacing and a disabled full-world window/LOD.
+
 **Current experimental source:** [course](../../godot/scripts/player_playground_course.gd),
 [runtime](../../godot/scripts/player_playground_runtime.gd),
 [input](../../godot/scripts/player_playground_input.gd),

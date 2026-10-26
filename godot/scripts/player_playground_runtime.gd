@@ -4,6 +4,7 @@ extends Node2D
 # The mechanical lane reuses the ACT-004/005 synchronous owner. The material
 # lane exclusively owns a separate native World; no cells become rigid bodies.
 const Course = preload("res://scripts/player_playground_course.gd")
+const WorldSetup = preload("res://scripts/player_playground_world.gd")
 const Arena = preload("res://scripts/physical_actor_arena.gd")
 const Session = preload("res://scripts/physical_actor_session.gd")
 const Catalog = preload("res://scripts/physical_actor_catalog.gd")
@@ -14,6 +15,9 @@ const BUTTON_KEYS: Array[String] = ["primary", "secondary", "auxiliary"]
 const SWARM_ORIGIN := Vector2(178, 304)
 
 var selection: StringName = &""
+var map_id: StringName = &"mixed"
+var water_solver: int = 0
+var authoring_revision: int = 0
 var epoch: int = 0
 var tick: int = 0
 var paused: bool = false
@@ -34,8 +38,9 @@ var _accepted_buttons: Dictionary = {}
 var _applied_buttons: Dictionary = {}
 
 
-func configure(id: StringName) -> bool:
-	if id not in Course.PRESETS or not is_inside_tree():
+func configure(id: StringName, next_map: StringName = &"mixed", next_water: int = 0) -> bool:
+	if id not in Course.PRESETS or next_map not in Course.MAP_IDS or next_water < 0 \
+		or next_water >= WorldSetup.WATER_NAMES.size() or not is_inside_tree():
 		last_error = "Unknown player preset or missing scene owner."
 		return false
 	var candidate_arena: CyberPhysicalActorArena
@@ -53,15 +58,12 @@ func configure(id: StringName) -> bool:
 			return false
 		candidate_world.set_simulation_window_enabled(false)
 		candidate_world.set_cadence_lod_enabled(false)
-		for rectangle: Dictionary in Course.layout():
-			if not candidate_world.diagnostic_fill_rect(rectangle.origin, rectangle.size, rectangle.material):
-				last_error = "Material course construction refused."
-				return false
 		# Only construction creates parcels. Steering moves those real native
 		# parcels and never paints replacements or restores lost quantity.
 		var material: int = 2 if id == &"dryswarm" else 3
-		if not candidate_world.diagnostic_fill_rect(Vector2i(SWARM_ORIGIN) - Vector2i(8, 8), Vector2i(16, 16), material):
-			last_error = "Initial material seed refused."
+		var built: Dictionary = WorldSetup.build(candidate_world, next_map, next_water, material)
+		if not built.accepted:
+			last_error = built.error
 			return false
 	else:
 		candidate_arena = Arena.new()
@@ -71,7 +73,7 @@ func configure(id: StringName) -> bool:
 		if id in [&"arcadelander", &"jetbarrel"]:
 			spawn.y = 304.0
 		var config: Dictionary = {"version": Arena.VERSION, "seed": 0, "max_ticks": Arena.MAX_TICKS,
-			"local_patch_radius": 0, "course": Course.ID,
+			"local_patch_radius": 0, "course": Course.ID, "playground_map": next_map, "playground_water": next_water,
 			"actors": [{"model": str(id), "producer": "human", "position": spawn}]}
 		if not candidate_arena.configure(config):
 			last_error = candidate_arena.last_error
@@ -79,6 +81,9 @@ func configure(id: StringName) -> bool:
 			return false
 	close()
 	selection = id
+	map_id = next_map
+	water_solver = next_water
+	authoring_revision = 0
 	_arena = candidate_arena
 	_world = candidate_world
 	epoch += 1
@@ -101,6 +106,37 @@ func configure(id: StringName) -> bool:
 
 func active() -> bool:
 	return _arena != null or _world != null
+
+
+func liquid_readback() -> Dictionary:
+	if not active(): return {}
+	var world: Object = _world if _world != null else _arena._world
+	return {"policy": world.get_liquid_solver_policy(), "receipt": world.get_applied_liquid_construction_receipt()}
+
+
+func paint(cell: Vector2i, radius: int, material: int, replace: bool = false) -> Dictionary:
+	# This synchronous owner is called only between ticks on the scene thread.
+	# A small explicit palette, protected boundary and current body mask bound edits.
+	if not active() or failed or radius < 1 or radius > 12 or material not in [0, 1, 2, 3, 4, 6, 8, 12, 16, 24] \
+		or not Rect2i(132, 132, 504, 220).has_point(cell):
+		return {"accepted": false, "reason": "Invalid brush, unavailable owner or point outside the editable course.", "changed": 0}
+	var world: Object = _world if _world != null else _arena._world
+	if _arena != null:
+		world.prepare_rigid_body_coupling(_arena.session.bridge.pack_body_states(), false)
+	var changed: int = 0
+	for y: int in range(cell.y - radius, cell.y + radius + 1):
+		for x: int in range(cell.x - radius, cell.x + radius + 1):
+			if Vector2i(x, y).distance_squared_to(cell) > radius * radius \
+				or not Rect2i(132, 132, 504, 220).has_point(Vector2i(x, y)) or world.rigid_body_id_at(x, y) != 0:
+				continue
+			var before: int = world.material_at(x, y)
+			if before == material or (material != 0 and not replace and before != 0): continue
+			world.paint_disc(x, y, 0, material)
+			if world.material_at(x, y) == material: changed += 1
+	if changed > 0:
+		authoring_revision += 1
+		if _arena != null: _arena._sync_terrain()
+	return {"accepted": true, "reason": "painted", "changed": changed}
 
 
 func observation() -> Dictionary:

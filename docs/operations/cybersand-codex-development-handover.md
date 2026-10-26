@@ -10,6 +10,18 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Playground maps and authoring checkpoint — 2026-10-26
+
+The new scoped player request adds seven maps, six existing native Water choices
+and material spawning/painting to the dedicated playground. Start with the
+[canonical controls](../systems/player-control-playground.md#seven-tailored-maps-water-selection-and-painting)
+and [dated checkpoint](../audits/2026-10-26-player-playground-maps.md).
+The isolated `codex/player-playground-maps` branch starts from accepted
+`9e53a5b1b501e0667037b8502d3c1d15089211f5`; the dirty primary material branch is
+preserved. Native source/runtime pins and C64/E8/default assignments remain
+unchanged. This task does not resume or close the broader LCB qualification;
+Web/browser/shader work remains deferred under the owner's earlier direction.
+
 ## Trial successor correction after accepted App — 2026-10-25
 
 App #256 is merged as main56422c05 after all four exact-dc2 required gates.

@@ -11,6 +11,15 @@ last-reviewed: 2026-10-25
 
 # Data ownership and lifetimes
 
+The [player playground map/Water/painting owner](../systems/player-control-playground.md#seven-tailored-maps-water-selection-and-painting)
+retains its existing synchronous ownership: provisional native World plus
+private mechanical session commit only after setup succeeds; material players
+own a separate exclusive World. The prepared receipt includes initial copied
+mechanical masks or the authored swarm seed. Bounded brush stamps run between
+ticks, skip current body masks and synchronize hard terrain to the same private
+space, including while paused. Setup receipts describe tick zero; later player
+authoring marks practice state and does not extend scientific qualification.
+
 The bounded [desktop single-trial-body owner](liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 retains one dynamic barrel/Ripper in an automatically inactive permanent private
 space. Actual motion is verified exactly across real physics frames before

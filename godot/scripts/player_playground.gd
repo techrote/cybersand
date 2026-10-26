@@ -5,9 +5,23 @@ const Course = preload("res://scripts/player_playground_course.gd")
 const PlayerInput = preload("res://scripts/player_playground_input.gd")
 const Surface = preload("res://scripts/depth/depth_layer_surface.gd")
 const Overlay = preload("res://scripts/player_playground_overlay.gd")
+const WorldSetup = preload("res://scripts/player_playground_world.gd")
+const PAINT_IDS: Array[int] = [2, 3, 16, 24, 4, 6, 8, 12, 1]
+const PAINT_NAMES: Array[String] = ["Sand", "Water", "Oil", "Brine", "Smoke", "Fire", "Lava", "Acid", "Wall"]
 
 var runtime: CyberPlayerPlaygroundRuntime
 var selected: int = 0
+var selected_map: int = 0
+var selected_water: int = 0
+var _map_picker: OptionButton
+var _water_picker: OptionButton
+var _water_readback: Label
+var _paint_toggle: CheckBox
+var _material_picker: OptionButton
+var _brush_size: SpinBox
+var _replace: CheckBox
+var _authoring_status: Label
+var _painting: bool = false
 var _focused: bool = true
 var _rearm: bool = true
 var _follow: bool = false
@@ -46,6 +60,9 @@ func _ready() -> void:
 			var id := StringName(argument.trim_prefix("--player="))
 			if id in Course.PRESETS:
 				select_preset(Course.PRESETS.find(id))
+		elif argument.begins_with("--playground-map="):
+			var map_id := StringName(argument.trim_prefix("--playground-map="))
+			if map_id in Course.MAP_IDS: select_map(Course.MAP_IDS.find(map_id))
 
 
 func _build_ui() -> void:
@@ -78,10 +95,54 @@ func _build_ui() -> void:
 	row.add_theme_constant_override("separation", 20)
 	row.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	column.add_child(row)
+	var scroll := ScrollContainer.new()
+	scroll.custom_minimum_size.x = 330
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	row.add_child(scroll)
 	var side := VBoxContainer.new()
-	side.custom_minimum_size.x = 300
+	side.custom_minimum_size.x = 305
+	side.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	side.add_theme_constant_override("separation", 8)
-	row.add_child(side)
+	scroll.add_child(side)
+	_label(side, "MAP · every player can use every map", 13, Color("7895a9"))
+	_map_picker = OptionButton.new()
+	_map_picker.focus_mode = Control.FOCUS_NONE
+	for map_name: String in Course.MAP_NAMES: _map_picker.add_item(map_name)
+	_map_picker.item_selected.connect(select_map)
+	side.add_child(_map_picker)
+	_label(side, "WATER · changing solver restarts the map", 13, Color("7895a9"))
+	_water_picker = OptionButton.new()
+	_water_picker.focus_mode = Control.FOCUS_NONE
+	for water_name: String in WorldSetup.WATER_NAMES: _water_picker.add_item(water_name)
+	_water_picker.item_selected.connect(select_water)
+	side.add_child(_water_picker)
+	_water_readback = _label(side, "", 13, Color("91a8ba"))
+	_water_readback.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_label(side, "MATERIALS", 13, Color("7895a9"))
+	_material_picker = OptionButton.new()
+	_material_picker.focus_mode = Control.FOCUS_NONE
+	for material_name: String in PAINT_NAMES: _material_picker.add_item(material_name)
+	side.add_child(_material_picker)
+	var brush_row := HBoxContainer.new()
+	side.add_child(brush_row)
+	_label(brush_row, "Brush radius", 14, Color("adc0ce"))
+	_brush_size = SpinBox.new()
+	_brush_size.min_value = 1
+	_brush_size.max_value = 12
+	_brush_size.value = 4
+	brush_row.add_child(_brush_size)
+	_paint_toggle = CheckBox.new()
+	_paint_toggle.focus_mode = Control.FOCUS_NONE
+	_paint_toggle.text = "Paint tool · left draw / right erase"
+	_paint_toggle.toggled.connect(func(_value: bool) -> void: _cancel_input())
+	side.add_child(_paint_toggle)
+	_replace = CheckBox.new()
+	_replace.focus_mode = Control.FOCUS_NONE
+	_replace.text = "Replace existing material / terrain"
+	side.add_child(_replace)
+	_button(side, "Spawn a burst above player", _spawn_material)
+	_authoring_status = _label(side, "Paint while running or paused. Reset clears edits.", 13, Color("91a8ba"))
+	_authoring_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_label(side, "PICK YOUR BAD IDEA", 13, Color("7895a9"))
 	for index: int in range(Course.PRESETS.size()):
 		var button: Button = _button(side, "%d   %s" % [index + 1, Course.NAMES[index]], func() -> void: select_preset(index))
@@ -114,6 +175,7 @@ func _build_ui() -> void:
 	_canvas.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_canvas.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_canvas.mouse_filter = Control.MOUSE_FILTER_STOP
+	_canvas.gui_input.connect(_canvas_input)
 	right.add_child(_canvas)
 	_terrain = TextureRect.new()
 	_terrain.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -129,7 +191,7 @@ func _build_ui() -> void:
 	_hint = _label(right, "", 15, Color("9bb0bf"))
 	_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_hint.custom_minimum_size.y = 52
-	_label(column, "RAMP / PRELOAD     ·     LOW TUNNEL / TUCK     ·     SLALOM / AIR CONTROL     ·     SIEVE / MATERIAL FLOW", 13, Color("698597"))
+	_label(column, "MAP + WATER CHANGES RESTART     ·     PAINTING = PRACTICE LAP     ·     ALL MAPS OPEN TO ALL PLAYERS", 13, Color("698597"))
 
 
 func _label(parent: Node, text: String, font_size: int, color: Color) -> Label:
@@ -166,8 +228,9 @@ func select_preset(index: int) -> bool:
 	if runtime == null or index < 0 or index >= Course.PRESETS.size():
 		return false
 	_cancel_input()
-	if not runtime.configure(Course.PRESETS[index]):
+	if not runtime.configure(Course.PRESETS[index], Course.MAP_IDS[selected_map], selected_water):
 		_status.text = "Could not start: " + runtime.last_error
+		_authoring_status.text = "Setup refused: " + runtime.last_error
 		return false
 	selected = index
 	_target = 0
@@ -180,11 +243,75 @@ func select_preset(index: int) -> bool:
 	_tagline.text = Course.TAGLINES[index]
 	_controls.text = Course.controls(Course.PRESETS[index])
 	_pause_button.text = "Pause  ·  P"
+	var readback: Dictionary = runtime.liquid_readback()
+	for assignment: Dictionary in readback.policy.assignments:
+		if int(assignment.material) == 3:
+			_water_readback.text = "Applied: %s / %s · radius %d" % [assignment.applied_family, assignment.applied_variant, int(readback.policy.maximum_rule_radius)]
+	_authoring_status.text = "Paint while running or paused. Reset clears edits."
 	_surface.set_render_enabled(true)
 	for button_index: int in range(_buttons.size()):
 		_buttons[button_index].modulate = Course.COLORS[index] if button_index == selected else Color.WHITE
 	_present(runtime.snapshot(), true)
 	return true
+
+
+func select_map(index: int) -> bool:
+	if index < 0 or index >= Course.MAP_IDS.size(): return false
+	var previous: int = selected_map
+	selected_map = index
+	var accepted: bool = select_preset(selected)
+	if not accepted: selected_map = previous
+	_map_picker.select(selected_map)
+	return accepted
+
+
+func select_water(index: int) -> bool:
+	if index < 0 or index >= WorldSetup.WATER_NAMES.size(): return false
+	var previous: int = selected_water
+	selected_water = index
+	var accepted: bool = select_preset(selected)
+	if not accepted: selected_water = previous
+	_water_picker.select(selected_water)
+	return accepted
+
+
+func _lap_key() -> String:
+	return "%s:%s:%d" % [Course.PRESETS[selected], Course.MAP_IDS[selected_map], selected_water]
+
+
+func _spawn_material() -> void:
+	_cancel_input()
+	var position: Vector2 = runtime.snapshot().actor.get("position", Vector2(178, 304))
+	_author(Vector2i(clampi(roundi(position.x) + 32, 145, 623), clampi(roundi(position.y) - 32, 145, 339)), false)
+
+
+func _author(cell: Vector2i, erase: bool) -> void:
+	var receipt: Dictionary = runtime.paint(cell, int(_brush_size.value), 0 if erase else PAINT_IDS[_material_picker.selected], _replace.button_pressed)
+	_authoring_status.text = ("%d cells changed · practice lap" % int(receipt.changed)) if receipt.accepted else str(receipt.reason)
+	if receipt.accepted and int(receipt.changed) > 0:
+		_present(runtime.snapshot(), true)
+
+
+func _canvas_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
+		var focus: Control = get_viewport().gui_get_focus_owner()
+		if focus != null: focus.release_focus()
+		if event.pressed and _paint_toggle.button_pressed and _focused:
+			_cancel_input()
+			_painting = true
+			_paint_at_view_position(event.position, event.button_index == MOUSE_BUTTON_RIGHT)
+			_canvas.accept_event()
+
+
+func _paint_at_pointer() -> void:
+	_paint_at_view_position(_canvas.get_local_mouse_position(), Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT))
+
+
+func _paint_at_view_position(pointer: Vector2, erase: bool) -> void:
+	var content: Rect2 = _content_rect()
+	if content.size.x <= 0.0 or not content.has_point(pointer): return
+	var cell := Vector2i((Vector2(_view.position) + (pointer - content.position) / content.size * Vector2(_view.size)).floor())
+	_author(cell, erase)
 
 
 func _restart() -> void:
@@ -213,6 +340,7 @@ func _toggle_camera() -> void:
 
 func _cancel_input() -> void:
 	_rearm = true
+	_painting = false
 	if runtime != null:
 		runtime.cancel()
 
@@ -227,6 +355,11 @@ func _notification(what: int) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and not event.pressed:
+		_painting = false
+	if _ui_captures_input():
+		_cancel_input()
+		return
 	if event is InputEventKey and event.pressed and not event.echo:
 		var key: Key = event.physical_keycode if event.physical_keycode != 0 else event.keycode
 		if key >= KEY_1 and key <= KEY_7:
@@ -264,7 +397,12 @@ func _input(event: InputEvent) -> void:
 
 func _can_control() -> bool:
 	return runtime != null and runtime.active() and not runtime.paused and not runtime.failed \
-		and _focused and get_viewport().gui_get_focus_owner() == null
+		and _focused and not _ui_captures_input() and not _paint_toggle.button_pressed
+
+
+func _ui_captures_input() -> bool:
+	return get_viewport().gui_get_focus_owner() != null or _map_picker.get_popup().visible \
+		or _water_picker.get_popup().visible or _material_picker.get_popup().visible
 
 
 func _sample_action() -> Dictionary:
@@ -283,6 +421,9 @@ func _sample_action() -> Dictionary:
 func _physics_process(_delta: float) -> void:
 	if runtime == null or not runtime.active():
 		return
+	if _painting and _paint_toggle.button_pressed and _focused \
+		and (Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT) or Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)):
+		_paint_at_pointer()
 	advance_frame(_sample_action(), _can_control())
 
 
@@ -307,21 +448,20 @@ func advance_frame(action: Dictionary, allowed: bool) -> void:
 	var before: int = runtime.tick
 	var state: Dictionary = runtime.step()
 	if runtime.tick > before:
-		if _lap_started and _target < Course.checkpoints(Course.PRESETS[selected]).size():
+		if _lap_started and _target < Course.checkpoints(Course.PRESETS[selected], Course.MAP_IDS[selected_map]).size():
 			_lap_ticks += runtime.tick - before
 		_check_targets(state)
 	_present(state)
 
 
 func _check_targets(state: Dictionary) -> void:
-	var points: PackedVector2Array = Course.checkpoints(Course.PRESETS[selected])
+	var points: PackedVector2Array = Course.checkpoints(Course.PRESETS[selected], Course.MAP_IDS[selected_map])
 	if _target >= points.size() or state.actor.is_empty():
 		return
 	if Vector2(state.actor.position).distance_to(points[_target]) <= 15.0:
 		_target += 1
-		if _target == points.size():
-			var id: StringName = Course.PRESETS[selected]
-			_best_times[id] = mini(_lap_ticks, int(_best_times.get(id, 2147483647)))
+		if _target == points.size() and runtime.authoring_revision == 0:
+			_best_times[_lap_key()] = mini(_lap_ticks, int(_best_times.get(_lap_key(), 2147483647)))
 
 
 func _content_rect() -> Rect2:
@@ -347,7 +487,7 @@ func _present(state: Dictionary, force: bool = false) -> void:
 			presentation_error = "Presentation refused: " + _surface.last_rejection
 		_last_packet_epoch = runtime.epoch
 		_last_draw_tick = runtime.tick
-	_overlay.targets = Course.checkpoints(Course.PRESETS[selected])
+	_overlay.targets = Course.checkpoints(Course.PRESETS[selected], Course.MAP_IDS[selected_map])
 	_overlay.target_index = _target
 	_overlay.accent = Course.COLORS[selected]
 	_overlay.actor_position = position
@@ -359,14 +499,17 @@ func _present(state: Dictionary, force: bool = false) -> void:
 	_overlay.queue_redraw()
 	var complete: bool = _target >= _overlay.targets.size()
 	_timing.text = ("COURSE CLEAR" if complete else "GATES  %d / %d" % [_target, _overlay.targets.size()]) + "    %05.2f s" % (float(_lap_ticks) / 60.0)
-	if _best_times.has(Course.PRESETS[selected]):
-		_timing.text += "    BEST  %.2f s" % (float(_best_times[Course.PRESETS[selected]]) / 60.0)
+	if runtime.authoring_revision > 0: _timing.text += "    PRACTICE"
+	elif _best_times.has(_lap_key()):
+		_timing.text += "    BEST  %.2f s" % (float(_best_times[_lap_key()]) / 60.0)
 	if not presentation_error.is_empty():
 		_status.text = presentation_error
 	elif runtime.failed:
 		_status.text = "Stopped: " + runtime.last_error
 	elif runtime.paused:
 		_status.text = "Ten-minute run complete — press R or P for a fresh run." if runtime.last_error == "tick_limit" else "PAUSED — press P to resume."
+	elif _paint_toggle.button_pressed:
+		_status.text = "PAINT TOOL — left draw / right erase. Turn the tool off to control the player."
 	elif _rearm:
 		_status.text = "Release movement buttons to take control."
 	elif state.material_mode:
@@ -376,7 +519,9 @@ func _present(state: Dictionary, force: bool = false) -> void:
 		var movement: Dictionary = actor.get("player_movement", {})
 		var mode: String = str(movement.get("movement_mode", movement.get("mode", "ready"))).replace("_", " ").to_upper()
 		_status.text = "%s   ·   SPEED %.1f cells/s   ·   %s" % [mode, Vector2(actor.get("velocity", Vector2.ZERO)).length(), "SUPPORTED" if bool(actor.get("grounded", false)) else "AIRBORNE"]
-	if state.material_mode:
+	if selected_map > 0:
+		_hint.text = Course.MAP_HINTS[selected_map]
+	elif state.material_mode:
 		_hint.text = "The faint ring shows your local control field. Nearby matching material can join it. Solid walls block the parcels; try the narrow sieve on the right."
 	elif selected == 2:
 		_hint.text = "Try: build speed → hold Shift → aim the mouse → Space for a bullet jump → C to glide. Tuck early for the low tunnel; releasing a short slide starts a roll."

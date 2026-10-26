@@ -1133,7 +1133,16 @@ godot --headless --path godot --script res://tests/test_player_acrobat.gd
 godot --headless --path godot --script res://tests/test_player_acrobat_physics.gd
 godot --headless --path godot --script res://tests/test_player_playground_runtime.gd
 godot --headless --path godot --script res://tests/test_player_playground_course.gd
+godot --headless --path godot --script res://tests/test_player_playground_maps.gd
 ```
+
+The map runner constructs all 8 maps × 7 players × 6 Water choices (336 actual
+setups), reads native policy/receipt/body-count identities, spawns Water and
+advances actual ticks. It also checks paused authoring, occupied-cell refusal,
+explicit replacement/erasure, body/boundary protection, reset, real selector UI
+and overview/follow painting coordinates. Its finite CI timeout is 420 seconds;
+the full route and human feel remain manual gates. See the
+[dated map evidence](../audits/2026-10-26-player-playground-maps.md).
 
 The native executable accepts an optional name substring; no match fails and
 omitting the filter runs the complete suite. Its field groups check complete

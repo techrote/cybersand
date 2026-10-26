@@ -11,6 +11,7 @@ const UsableRuntime = preload("res://scripts/physical_usable_runtime.gd")
 const UsableCatalog = preload("res://scripts/usable_catalog.gd")
 const UsableCourse = preload("res://scripts/physical_usable_course.gd")
 const PlayerCourse = preload("res://scripts/player_playground_course.gd")
+const PlaygroundWorld = preload("res://scripts/player_playground_world.gd")
 const FlightCourse = preload("res://scripts/physical_flight_course.gd")
 const FlightProfile = preload("res://scripts/physical_flight_profile.gd")
 const VERSION: int = 2
@@ -65,10 +66,14 @@ static func usable_course_config(model: StringName = &"digger", count: int = 8) 
 
 
 func _validated_config(value: Variant) -> Dictionary:
-	if not value is Dictionary or value.size() > 8:
+	if not value is Dictionary or value.size() > 10:
 		return {}
 	for key: Variant in value:
-		if str(key) not in ["version", "seed", "max_ticks", "actors", "local_patch_radius", "course", "flight_scenario", "flight_split"]:
+		if str(key) not in ["version", "seed", "max_ticks", "actors", "local_patch_radius", "course", "flight_scenario", "flight_split", "playground_map", "playground_water"]:
+			return {}
+	if value.has("playground_map") or value.has("playground_water"):
+		if value.get("course", "") != PlayerCourse.ID or not value.get("playground_map", &"mixed") in PlayerCourse.MAP_IDS \
+			or not Session._integer(value.get("playground_water", 0), 0, PlaygroundWorld.WATER_NAMES.size() - 1):
 			return {}
 	if not value.get("course", "manoeuvre") is String or str(value.get("course", "manoeuvre")) not in ["manoeuvre", UsableCourse.ID, PlayerCourse.ID, FlightCourse.ID]:
 		return {}
@@ -114,10 +119,14 @@ func _validated_config(value: Variant) -> Dictionary:
 		if definitions.size() != 1 or not FlightProfile.has_rig(definitions[0].model) \
 			or Vector2(definitions[0].position).distance_to(Vector2(flight_scenario.start)) > 0.0001:
 			return {}
-	return {"version": VERSION, "seed": int(value.get("seed", 0)),
+	var result: Dictionary = {"version": VERSION, "seed": int(value.get("seed", 0)),
 		"max_ticks": int(value.get("max_ticks", 600)), "actors": definitions,
 		"local_patch_radius": int(value.get("local_patch_radius", 6)), "course": str(value.get("course", "manoeuvre")),
 		"flight_scenario": str(value.get("flight_scenario", "")), "flight_split": str(value.get("flight_split", "development"))}
+	if result.course == PlayerCourse.ID:
+		result.playground_map = StringName(value.get("playground_map", &"mixed"))
+		result.playground_water = int(value.get("playground_water", 0))
+	return result
 
 
 func configure(value: Variant) -> bool:
@@ -141,7 +150,8 @@ func configure(value: Variant) -> bool:
 	if validated.course == UsableCourse.ID:
 		rectangles = UsableCourse.layout()
 	elif validated.course == PlayerCourse.ID:
-		rectangles = PlayerCourse.layout()
+		# The complete provisional body pose is included in typed construction below.
+		rectangles = []
 	elif validated.course == FlightCourse.ID:
 		rectangles = FlightCourse.layout(validated.flight_scenario, validated.seed, validated.flight_split)
 	for rectangle: Dictionary in rectangles:
@@ -161,6 +171,14 @@ func configure(value: Variant) -> bool:
 		candidate.close()
 		viewport.free()
 		return false
+	if validated.course == PlayerCourse.ID:
+		var built: Dictionary = PlaygroundWorld.build(world, validated.playground_map,
+			validated.playground_water, 0, candidate.bridge.pack_body_states())
+		if not built.accepted:
+			last_error = built.error
+			candidate.close()
+			viewport.free()
+			return false
 	# Commit only after validation, native layout and the complete articulated
 	# assembly succeed. A malformed reset cannot destroy a running environment.
 	close()
