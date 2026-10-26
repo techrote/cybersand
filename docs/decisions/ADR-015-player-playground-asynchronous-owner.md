@@ -37,6 +37,11 @@ and usable runtime, terrain extraction and render publication. Native phased
 pool workers execute only within the owning World's tick; they never use Godot
 APIs. The simulation thread may call the existing native GDExtension's
 value-only methods, but never a Node, RID, scene or PhysicsServer API.
+The mechanical authority for existing action/equipment `run_id` and
+`session_epoch` is the **physical Session**, not the playground wrapper.
+A separate monotonic **`owner_epoch`** fences worker generations because a
+freshly allocated Arena can reuse Session epoch 1; the precise two-epoch
+mapping is specified in the [protocol](../architecture/player-playground-asynchronous-contract.md).
 
 Construction qualification: the main may **allocate an inert
 `CyberNativeCellWorld` adapter** using `ClassDB.instantiate` before starting
