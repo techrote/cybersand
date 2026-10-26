@@ -1415,8 +1415,8 @@
       ],
       "facts": [
         "The dedicated exclusive owner applies a between-tick native field to local Sand or Water, then runs the normal native simulation. Complete stored cells and temperature move through existing relocation; partial Water quantity is exact within the call. No per-cell Rapier objects, erase/repaint or Water kernel rewrite is introduced.",
-        "The radius-32 selection scans at most 4225 candidate positions, snapshots at most 512 sources once and attempts at most four axis-adjacent moves each. Occupied cells, terrain, transient bodies, bounds and unavailable destination storage refuse moves; invalid commands refuse mutation.",
-        "The field selects matching material by location, so environmental material may join and material outside the circle is uncontrolled. Centre following uses the observed quantity-weighted centroid, not a remote cursor or hidden persistent parcel cohort."
+        "Each native radius-32 call scans at most 4225 positions, captures at most 512 sources once and attempts at most four axis-adjacent moves per captured parcel. The expanded owner composes five overlapping calls over radius 60, retaining all subreceipts; aggregate sample/move counters are not unique parcels. Occupied cells, terrain, bodies, bounds and missing storage refuse moves; invalid native commands refuse mutation.",
+        "Matching local material can join; no persistent parcel cohort is assigned. The owner follows a returned native quantity-weighted centroid by at most four cells per tick. Admitted idle commands produce bounded periodic swirling; lease loss stops field calls."
       ],
       "sources": [
         "../native/include/cybersand/world.hpp",
@@ -1435,7 +1435,7 @@
       "facts": [
         "The dedicated sampler combines WASD/arrows and the first connected gamepad left stick with a 0.18 radial deadzone; A/B/X map primary/secondary/auxiliary, shoulders trim and Start pauses. Hardware controller execution requires separate evidence.",
         "Focus loss, GUI focus, mouse-button press, pause and replacement cancel intent; movement buttons must be released before rearming. Focus loss alone permits normal physics to continue while pause stops stepping.",
-        "Mechanical input uses shared physical v2 leases; material v1 commands validate run/epoch/sequence and an actually issued observation with at most six ticks of authority measured from that observation. Cancel/reset retires the generation; a late response cannot renew authority. Neutral material hover is an admitted command, and cancellation/expiry stops the field entirely."
+        "Mechanical input uses shared physical v2 leases; material v1 commands validate run/epoch/sequence and an actually issued observation with at most six ticks of authority measured from that observation. Cancel/reset retires the generation; a late response cannot renew authority. Neutral material idle flow is an admitted command, and cancellation/expiry stops the field entirely."
       ],
       "sources": [
         "../godot/scripts/player_playground_input.gd",
@@ -2845,7 +2845,7 @@
         "reference/configuration-reference.md"
       ],
       "facts": [
-        "The Map selector adds Cannon Run, Rat Steps, Afterimage Works, Vector Port, Dust Foundry, Undertow Lab and Rocket Yard alongside the original mixed course. All maps are selectable with every player; changing player retains map and Water selections.",
+        "The Map selector offers eight 1024 by 768 districts: Mixed Works, Cannon Run, Rat Steps, Afterimage Works, Vector Port, Dust Foundry, Undertow Lab and Rocket Yard. Every map is six times the first sample area and selectable with every player; changing player retains map and Water selections. The original small course is only a legacy regression fixture.",
         "The Water selector rebuilds with FreeMass, CellularYield, pressure reference/cached/dormant or inertial Water. It reads actual native family and variant; IN explicitly uses radius three and other choices radius two. Defaults remain mixed and Current FreeMass; no live fractional conversion or silent fallback occurs.",
         "Select material and radius 1-12, spawn one burst above the player or enable Paint tool for left draw and right erase. Default painting fills Empty only; explicit replace allows terrain replacement. Paused/running stamps skip current bodies and clip to the protected map interior; authoring marks practice laps and reset discards edits."
       ],
@@ -2855,6 +2855,26 @@
         "../godot/scripts/player_playground_world.gd",
         "../godot/scripts/player_playground_runtime.gd",
         "../godot/tests/test_player_playground_maps.gd"
+      ]
+    },
+    {
+      "id": "PLAY07",
+      "query": "How do I test tools, projectiles and processors with all seven playground players, and how were rear-wheel lean, jump height, gravity, swarm idle radius and barrel inertia tuned?",
+      "canonical": [
+        "systems/player-control-playground.md",
+        "reference/configuration-reference.md"
+      ],
+      "facts": [
+        "All 32 usables are selectable. Mouse aims, M triggers and B alternates. Mechanical players use actual mounted equipment, N drops/deploys and U reattaches; swarms have no held body and use a visible material-only emitter 68 cells along aim. Paused commands refuse, charge/cooldown persist across selection, and reset clears old devices.",
+        "Buggy/bike lean uses bounded impulses around the actual rear axle without setting transforms. Upward hop impulse is multiplied by sqrt(2); measured flat-floor heights are about 1.91 and 1.95 times the prior controls. Lander gravity is 96 damped and 32 drift; barrel inertia is scaled to 0.85 at the same mass and the soft speed target is 175.",
+        "Material players compose five existing native radius-32 fields over radius 60 with active periodic idle flows, native-centre clamping and copied subreceipts. Sample/move counts may overlap. Eight selectable maps are 1024 by 768 with service targets, varied materials, multi-level structures and alternate challenges; full traversal/feel is manual qualification."
+      ],
+      "sources": [
+        "../godot/scripts/player_vehicle_controller.gd",
+        "../godot/scripts/physical_actor_rig.gd",
+        "../godot/scripts/player_playground_runtime.gd",
+        "../godot/scripts/player_playground_districts.gd",
+        "../godot/tests/test_player_playground_tuning.gd"
       ]
     }
   ],

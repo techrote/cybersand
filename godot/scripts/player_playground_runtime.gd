@@ -9,15 +9,21 @@ const Arena = preload("res://scripts/physical_actor_arena.gd")
 const Session = preload("res://scripts/physical_actor_session.gd")
 const Catalog = preload("res://scripts/physical_actor_catalog.gd")
 const Equipment = preload("res://scripts/physical_usable_equipment.gd")
+const UsableCatalog = preload("res://scripts/usable_catalog.gd")
+const MaterialUsables = preload("res://scripts/usable_runtime.gd")
 const MAX_LEASE: int = 6
 const MAX_BUTTON_EDGES: int = 32
-const BUTTON_KEYS: Array[String] = ["primary", "secondary", "auxiliary"]
+const BUTTON_KEYS: Array[String] = ["primary", "secondary", "auxiliary", "tool", "usable_alternate"]
 const SWARM_ORIGIN := Vector2(178, 304)
 
 var selection: StringName = &""
 var map_id: StringName = &"mixed"
 var water_solver: int = 0
 var authoring_revision: int = 0
+var usable_index: int = -1
+var _material_usables := MaterialUsables.new()
+var _usable_previous: bool = false
+var _alternate_previous: bool = false
 var epoch: int = 0
 var tick: int = 0
 var paused: bool = false
@@ -39,7 +45,7 @@ var _applied_buttons: Dictionary = {}
 
 
 func configure(id: StringName, next_map: StringName = &"mixed", next_water: int = 0) -> bool:
-	if id not in Course.PRESETS or next_map not in Course.MAP_IDS or next_water < 0 \
+	if id not in Course.PRESETS or (next_map not in Course.MAP_IDS and next_map != &"legacy") or next_water < 0 \
 		or next_water >= WorldSetup.WATER_NAMES.size() or not is_inside_tree():
 		last_error = "Unknown player preset or missing scene owner."
 		return false
@@ -69,9 +75,9 @@ func configure(id: StringName, next_map: StringName = &"mixed", next_water: int 
 		candidate_arena = Arena.new()
 		add_child(candidate_arena)
 		var prepared: Dictionary = Equipment.definition(Catalog.entry(id))
-		var spawn := Vector2(178, Course.FLOOR_Y - float(prepared.get("spawn_floor_clearance", 20.0)))
+		var spawn := Vector2(Course.spawn(next_map).x, Course.floor_y(next_map) - float(prepared.get("spawn_floor_clearance", 20.0)))
 		if id in [&"arcadelander", &"jetbarrel"]:
-			spawn.y = 304.0
+			spawn.y = Course.spawn(next_map).y
 		var config: Dictionary = {"version": Arena.VERSION, "seed": 0, "max_ticks": Arena.MAX_TICKS,
 			"local_patch_radius": 0, "course": Course.ID, "playground_map": next_map, "playground_water": next_water,
 			"actors": [{"model": str(id), "producer": "human", "position": spawn}]}
@@ -91,7 +97,7 @@ func configure(id: StringName, next_map: StringName = &"mixed", next_water: int 
 	paused = false
 	failed = false
 	last_error = ""
-	_centre = SWARM_ORIGIN
+	_centre = Course.spawn(next_map)
 	_run_id = Crypto.new().generate_random_bytes(16).hex_encode()
 	_generation = 0
 	_sequence = -1
@@ -100,8 +106,20 @@ func configure(id: StringName, next_map: StringName = &"mixed", next_water: int 
 	_issued.fill(-1)
 	_receipt = {"accepted": true, "reason": "seeded", "observed_cells": 256,
 		"controlled_cells": 256, "moved_cells": 0,
-		"centroid": SWARM_ORIGIN - Vector2(0.5, 0.5), "radius": 32, "truncated": false}
+		"centroid": _centre - Vector2(0.5, 0.5), "radius": 60, "truncated": false}
+	_material_usables.configure(1)
 	return true
+
+
+func select_usable(index: int) -> bool:
+	if index < -1 or index >= UsableCatalog.count(): return false
+	cancel()
+	usable_index = index
+	return true
+
+
+func usable_snapshot() -> Dictionary:
+	return _arena._usables.snapshot() if _arena != null else _material_usables.snapshot()
 
 
 func active() -> bool:
@@ -118,7 +136,7 @@ func paint(cell: Vector2i, radius: int, material: int, replace: bool = false) ->
 	# This synchronous owner is called only between ticks on the scene thread.
 	# A small explicit palette, protected boundary and current body mask bound edits.
 	if not active() or failed or radius < 1 or radius > 12 or material not in [0, 1, 2, 3, 4, 6, 8, 12, 16, 24] \
-		or not Rect2i(132, 132, 504, 220).has_point(cell):
+		or not Course.editable(map_id).has_point(cell):
 		return {"accepted": false, "reason": "Invalid brush, unavailable owner or point outside the editable course.", "changed": 0}
 	var world: Object = _world if _world != null else _arena._world
 	if _arena != null:
@@ -127,7 +145,7 @@ func paint(cell: Vector2i, radius: int, material: int, replace: bool = false) ->
 	for y: int in range(cell.y - radius, cell.y + radius + 1):
 		for x: int in range(cell.x - radius, cell.x + radius + 1):
 			if Vector2i(x, y).distance_squared_to(cell) > radius * radius \
-				or not Rect2i(132, 132, 504, 220).has_point(Vector2i(x, y)) or world.rigid_body_id_at(x, y) != 0:
+				or not Course.editable(map_id).has_point(Vector2i(x, y)) or world.rigid_body_id_at(x, y) != 0:
 				continue
 			var before: int = world.material_at(x, y)
 			if before == material or (material != 0 and not replace and before != 0): continue
@@ -157,6 +175,7 @@ func _view(issue: bool) -> Dictionary:
 		"suspended": paused or failed, "lease_remaining": maxi(0, _deadline - tick),
 		"material": 2 if selection == &"dryswarm" else 3,
 		"field": _receipt.duplicate(true), "pending_input_edges": _button_edges.size(),
+		"usable": _material_usables.snapshot().actors[0] if _material_usables.actor_count() else {},
 		"scope": "matching local material; no persistent parcel identity"}
 
 
@@ -195,11 +214,16 @@ func submit(command: Variant) -> bool:
 	if not command.action is Dictionary:
 		return _reject("Material action is not an object.")
 	for key: Variant in command.action:
-		if str(key) not in ["move", "aim", "effort", "trim", "primary", "secondary", "auxiliary"]:
+		if str(key) not in ["move", "aim", "effort", "trim", "primary", "secondary", "auxiliary", "tool", "usable_alternate", "release_usable", "attach_usable"]:
 			return _reject("Unsupported material action field.")
-	var normalized: Dictionary = Session.normalized_action(command.action)
+	if not command.action.get("usable_alternate", false) is bool:
+		return _reject("Malformed alternate usable input.")
+	var input: Dictionary = command.action.duplicate(true)
+	input.erase("usable_alternate")
+	var normalized: Dictionary = Session.normalized_action(input)
 	if normalized.is_empty():
 		return _reject("Invalid material action.")
+	normalized.usable_alternate = command.action.get("usable_alternate", false)
 	var edges: Array[Dictionary] = []
 	for button: String in BUTTON_KEYS:
 		if bool(normalized[button]) != bool(_accepted_buttons.get(button, false)):
@@ -218,7 +242,16 @@ func submit(command: Variant) -> bool:
 
 func submit_action(action: Dictionary) -> bool:
 	var view: Dictionary = observation()
-	return not view.is_empty() and submit(make_command(view, int(view.last_sequence) + 1, action))
+	var request: Dictionary = action.duplicate(true)
+	if _arena != null:
+		request.equipment = {"usable_index": usable_index, "trigger": bool(request.get("tool", false)),
+			"alternate": bool(request.get("usable_alternate", false)), "drop": bool(request.get("release_usable", false)),
+			"attach": bool(request.get("attach_usable", false)), "aim": request.get("aim", Vector2.RIGHT), "power": 1.0}
+		request.erase("usable_alternate")
+	var accepted: bool=not view.is_empty() and submit(make_command(view,int(view.last_sequence)+1,request))
+	if accepted and (bool(action.get("tool",false)) or bool(action.get("usable_alternate",false)) \
+		or bool(action.get("release_usable",false)) or bool(action.get("attach_usable",false))): authoring_revision+=1
+	return accepted
 
 
 func _token(observed: int) -> String:
@@ -237,6 +270,8 @@ func cancel() -> void:
 	_button_edges.clear()
 	_accepted_buttons.clear()
 	_applied_buttons.clear()
+	_usable_previous = false
+	_alternate_previous = false
 	_deadline = -1
 	_generation += 1
 	_issued.fill(-1)
@@ -277,8 +312,7 @@ func step() -> Dictionary:
 		if bool(_applied_buttons.get("auxiliary", false)): mode = 3
 		elif bool(_applied_buttons.get("secondary", false)): mode = 2
 		elif bool(_applied_buttons.get("primary", false)): mode = 1
-		_receipt = _world.apply_player_material_field(Vector2i(_centre.round()),
-			Vector2(_command.move), 2 if selection == &"dryswarm" else 3, mode, tick)
+		_receipt = _wide_material_field(mode)
 		if not bool(_receipt.get("accepted", false)):
 			failed = true
 			last_error = "Material field refused: " + str(_receipt.get("reason", "unknown"))
@@ -290,12 +324,67 @@ func step() -> Dictionary:
 				# The field follows the material it actually observed. Input never
 				# teleports a selection cursor to a distant reservoir.
 				_centre = _centre.move_toward(centroid, 4.0)
+	var tool: bool = not _command.is_empty() and bool(_applied_buttons.get("tool", false))
+	var alternate: bool = not _command.is_empty() and bool(_applied_buttons.get("usable_alternate", false))
+	# Material players have no held rigid body. Their usable origin is the
+	# visible field edge, so a nozzle/projectile does not start inside the cloud.
+	var usable_aim: Vector2=Vector2(_command.get("aim",Vector2.RIGHT)).normalized()
+	if usable_aim.length_squared()<0.001: usable_aim=Vector2.RIGHT
+	var bounds: Rect2i=Course.editable(map_id)
+	var muzzle: Vector2=(_centre+usable_aim*68.0).clamp(Vector2(bounds.position)+Vector2(3,3),Vector2(bounds.end)-Vector2(4,4))
+	_material_usables.step(1.0/60.0, _world, PackedVector2Array([muzzle]), [Rect2()],
+		[{"usable_index":usable_index, "aim":_command.get("aim",Vector2.RIGHT), "power":1.0,
+		"trigger":tool, "trigger_pressed":tool and not _usable_previous,
+		"alternate_pressed":alternate and not _alternate_previous}])
+	_usable_previous = tool
+	_alternate_previous = alternate
+	if _material_usables.write_count_last > 0: authoring_revision += 1
 	if not bool(_world.simulation_tick()):
 		failed = true
 		last_error = "Native material tick failed."
 		cancel()
 	tick += 1
 	return snapshot()
+
+
+func _wide_material_field(mode: int) -> Dictionary:
+	# Five existing native radius-32 fields cover radius 60. Each call retains
+	# its 4225-read / 512-parcel bound; aggregate counts are samples/move
+	# operations, not a unique particle inventory. No native ABI changes.
+	var offsets: Array[Vector2i] = [Vector2i.ZERO,Vector2i(-28,0),Vector2i(28,0),Vector2i(0,-28),Vector2i(0,28)]
+	var result: Dictionary = {}
+	var observed: int = 0
+	var moved: int = 0
+	var fields: Array[Dictionary]=[]
+	var truncated: bool=false
+	var direction: Vector2 = _command.move
+	var idle: bool = direction.length_squared() < 0.001
+	for offset: Vector2i in offsets:
+		var flow: Vector2 = direction
+		if idle:
+			var angle: float = float(tick) * (0.065 if selection == &"dryswarm" else 0.043)
+			flow = Vector2(cos(angle),sin(angle*1.3))*0.38
+		if offset != Vector2i.ZERO:
+			flow += -Vector2(offset).normalized()*0.30
+			if idle: flow += Vector2(-offset.y,offset.x).normalized()*0.24
+		var field_centre: Vector2i=(Vector2i(_centre.round())+offset).clamp(Vector2i.ZERO,Vector2i(1023,1023))
+		var receipt: Dictionary = _world.apply_player_material_field(field_centre,
+			flow.limit_length(1.0),2 if selection == &"dryswarm" else 3,mode,tick)
+		if not receipt.get("accepted",false): return receipt
+		fields.append(receipt.duplicate(true))
+		truncated=truncated or bool(receipt.get("truncated",false))
+		if result.is_empty() or (int(result.get("observed_cells",0))==0 and int(receipt.observed_cells)>0): result=receipt.duplicate(true)
+		observed += int(receipt.observed_cells)
+		moved += int(receipt.moved_cells)
+	result.observed_cells=observed
+	result.controlled_cells=observed
+	result.moved_cells=moved
+	result.radius=60
+	result.native_calls=5
+	result.idle_pattern=idle
+	result.native_fields=fields
+	result.truncated=truncated
+	return result
 
 
 func snapshot() -> Dictionary:
@@ -319,17 +408,18 @@ func take_render_packet(force: bool = false) -> Dictionary:
 
 
 func presentation_cells() -> PackedByteArray:
+	var view: Rect2i = Course.map_view(map_id)
 	if _arena != null:
-		return _arena.presentation_cells(Course.VIEW)
+		return _arena.presentation_cells(view)
 	if _world == null:
 		return PackedByteArray()
 	var source: PackedByteArray = _world.get_cells()
 	var result := PackedByteArray()
-	result.resize(Course.VIEW.size.x * Course.VIEW.size.y)
-	for y: int in range(Course.VIEW.size.y):
-		var first: int = (Course.VIEW.position.y + y) * 1024 + Course.VIEW.position.x
-		for x: int in range(Course.VIEW.size.x):
-			result[y * Course.VIEW.size.x + x] = source[first + x]
+	result.resize(view.size.x * view.size.y)
+	for y: int in range(view.size.y):
+		var first: int = (view.position.y + y) * 1024 + view.position.x
+		for x: int in range(view.size.x):
+			result[y * view.size.x + x] = source[first + x]
 	return result
 
 

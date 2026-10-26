@@ -4,13 +4,19 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-26
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md, ../audits/2026-10-25-lcb002-pressure-variants.md]
 ---
 
 # Validation evidence ledger
 
 ## Playground maps, native Water selection and painting — 2026-10-26
+
+The [expanded successor record](../audits/2026-10-26-player-playground-expanded-and-usables.md)
+adds real same-fixture jump-height ratios, stronger rear-wheel steering,
+mode-dependent gravity, actual barrel inertia/speed, larger bounded idle fields
+and material/physical usable paths. Every playable map is now 1024×768;
+historical first-pass evidence below retains its smaller geometry/source scope.
 
 The [dedicated checkpoint](../audits/2026-10-26-player-playground-maps.md)
 records the eight-map/seven-player/six-Water native setup matrix, actual receipt

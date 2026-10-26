@@ -72,7 +72,7 @@ func _validated_config(value: Variant) -> Dictionary:
 		if str(key) not in ["version", "seed", "max_ticks", "actors", "local_patch_radius", "course", "flight_scenario", "flight_split", "playground_map", "playground_water"]:
 			return {}
 	if value.has("playground_map") or value.has("playground_water"):
-		if value.get("course", "") != PlayerCourse.ID or not value.get("playground_map", &"mixed") in PlayerCourse.MAP_IDS \
+		if value.get("course", "") != PlayerCourse.ID or not value.get("playground_map", &"legacy") in PlayerCourse.MAP_IDS + [&"legacy"] \
 			or not Session._integer(value.get("playground_water", 0), 0, PlaygroundWorld.WATER_NAMES.size() - 1):
 			return {}
 	if not value.get("course", "manoeuvre") is String or str(value.get("course", "manoeuvre")) not in ["manoeuvre", UsableCourse.ID, PlayerCourse.ID, FlightCourse.ID]:
@@ -108,7 +108,8 @@ func _validated_config(value: Variant) -> Dictionary:
 		if position is Array and position.size() == 2 \
 			and (position[0] is int or position[0] is float) and (position[1] is int or position[1] is float):
 			position = Vector2(float(position[0]), float(position[1]))
-		if not position is Vector2 or not position.is_finite() or not Rect2(ARENA_RECT).has_point(position):
+		var arena_rect: Rect2i = PlayerCourse.map_view(StringName(value.get("playground_map", &"legacy"))) if value.get("course", "") == PlayerCourse.ID else ARENA_RECT
+		if not position is Vector2 or not position.is_finite() or not Rect2(arena_rect).has_point(position):
 			return {}
 		definitions.append({"model": model, "producer": producer, "position": position})
 	if not Session.valid_definitions(definitions):
@@ -124,7 +125,7 @@ func _validated_config(value: Variant) -> Dictionary:
 		"local_patch_radius": int(value.get("local_patch_radius", 6)), "course": str(value.get("course", "manoeuvre")),
 		"flight_scenario": str(value.get("flight_scenario", "")), "flight_split": str(value.get("flight_split", "development"))}
 	if result.course == PlayerCourse.ID:
-		result.playground_map = StringName(value.get("playground_map", &"mixed"))
+		result.playground_map = StringName(value.get("playground_map", &"legacy"))
 		result.playground_water = int(value.get("playground_water", 0))
 	return result
 

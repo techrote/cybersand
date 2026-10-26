@@ -35,6 +35,11 @@ func run() -> void:
 	root.add_child(runtime)
 	var layouts: Dictionary = {}
 	for map_id: StringName in Course.MAP_IDS:
+		var extent: Rect2i=Course.map_view(map_id)
+		expect(extent.get_area() >= 4*Course.VIEW.get_area(), "every playable map has at least quadruple area")
+		var materials: Dictionary={}
+		for item: Dictionary in Course.layout(map_id): materials[item.material]=true
+		expect(materials.size()>=15 and Course.layout(map_id).size()>=100,"district has varied materials and complex authored structures")
 		var signature: String = str(Course.layout(map_id)).sha256_text()
 		expect(not layouts.has(signature), "map has independent native geometry: " + str(map_id))
 		layouts[signature] = true
@@ -54,7 +59,7 @@ func run() -> void:
 				var body_count: int = runtime.render_parts().size()
 				expect(int(readback.receipt.initial_body_count) == body_count, "receipt covers actual initial bodies " + label)
 				for target: Vector2 in Course.checkpoints(player, map_id):
-					expect(Course.VIEW.has_point(Vector2i(target)) and world().material_at(int(target.x), int(target.y)) == 0,
+					expect(extent.has_point(Vector2i(target)) and world().material_at(int(target.x), int(target.y)) == 0,
 						"gate centre is inside map and free of terrain " + label)
 				# Activate Water in every setup, including maps authored without it.
 				expect(runtime.paint(Vector2i(212, 250), 3, 3).changed > 0, "bounded whole-cell Water spawn " + label)
@@ -78,7 +83,7 @@ func test_authoring() -> void:
 		expect(runtime.configure(player, &"undertow_lab", 5), "authoring fixture configures")
 		runtime.set_paused(true)
 		var before: String = world().get_physical_state_hash()
-		for invalid: Array in [[Vector2i(130, 200), 4, 3], [Vector2i(212, 250), 13, 3], [Vector2i(212, 250), 4, 255]]:
+		for invalid: Array in [[Vector2i(2, 200), 4, 3], [Vector2i(212, 250), 13, 3], [Vector2i(212, 250), 4, 255]]:
 			expect(not runtime.paint(invalid[0], invalid[1], invalid[2]).accepted, "invalid paint refuses")
 		expect(world().get_physical_state_hash() == before and runtime.authoring_revision == 0, "refused paint preserves exact World")
 		var count: int = runtime.paint(Vector2i(212, 250), 4, 3).changed
@@ -93,8 +98,8 @@ func test_authoring() -> void:
 				var point := Vector2i(Transform2D(part.transform).origin.floor())
 				expect(world().inspect_inertial_cell(point).material == 0 and world().rigid_body_id_at(point.x, point.y) > 0,
 					"painting protects every actual body centre")
-		runtime.paint(Vector2i(134, 134), 12, 0)
-		expect(world().material_at(130, 134) == 62 and world().material_at(134, 130) == 62, "brush clips before boundary")
+		runtime.paint(Vector2i(8,8),12,0)
+		expect(world().material_at(2,8)==1 and world().material_at(8,2)==1,"brush clips before boundary")
 		var old_epoch: int = runtime.epoch
 		var old_hash: String = world().get_physical_state_hash()
 		expect(not runtime.configure(player, &"missing", 5) and runtime.epoch == old_epoch
@@ -130,8 +135,8 @@ func test_ui() -> void:
 	expect(scene.runtime.authoring_revision == revision, "outside canvas / letterbox paint cannot mutate world")
 	scene._follow = true
 	scene._present(scene.runtime.snapshot())
-	pointer = scene._content_rect().position + Vector2(0.45, 0.3) * scene._content_rect().size
-	painted_cell = Vector2i(Vector2(scene._view.position) + Vector2(0.45, 0.3) * Vector2(scene._view.size))
+	pointer = scene._content_rect().position + Vector2(0.65, 0.45) * scene._content_rect().size
+	painted_cell = Vector2i(Vector2(scene._view.position) + Vector2(0.65, 0.45) * Vector2(scene._view.size))
 	scene._paint_at_view_position(pointer, false)
 	expect(scene.runtime._world.material_at(painted_cell.x, painted_cell.y) == 3, "follow camera painting uses actual zoom origin and extent")
 	scene._paint_toggle.button_pressed = false

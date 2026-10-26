@@ -1,0 +1,92 @@
+{
+  "utc": "2026-10-26T03:07:00.328665+00:00",
+  "scope": "retained actual intermediate failure/success log identities; see dated audit for classifications",
+  "logs": [
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\playground-expanded-tuning-v1.log",
+      "sha256": "f809835e6725965e3750e512b09d5d609dbc26a986ca3aaba726022555920c8a",
+      "bytes": 5558,
+      "footers": [],
+      "engine_script_error": true,
+      "error_line_count": 13,
+      "scope": "historical intermediate; not final acceptance"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\playground-expanded-tuning-v2.log",
+      "sha256": "653143274a44e8613d51fe5208c94cecc4aa30bdad6b8b8c28163f55f2edbb39",
+      "bytes": 4047,
+      "footers": [
+        "PLAYER_TUNING: 92 assertions, 6 failures"
+      ],
+      "engine_script_error": false,
+      "error_line_count": 6,
+      "scope": "historical intermediate; not final acceptance"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\playground-expanded-tuning-v3.log",
+      "sha256": "e4a95f51457b9f638ed187bf801a2be556a3fbbab2fca068ce2789af89c67306",
+      "bytes": 2967,
+      "footers": [
+        "PLAYER_TUNING: 92 assertions, 4 failures"
+      ],
+      "engine_script_error": false,
+      "error_line_count": 4,
+      "scope": "historical intermediate; not final acceptance"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\playground-expanded-tuning-v4.log",
+      "sha256": "146b13871ba9f5198ed29a7a92865dc26e5aa09aeb50d38c636407e7c787136f",
+      "bytes": 1775,
+      "footers": [
+        "PLAYER_TUNING: 92 assertions, 2 failures"
+      ],
+      "engine_script_error": false,
+      "error_line_count": 2,
+      "scope": "historical intermediate; not final acceptance"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\playground-expanded-course-v1.log",
+      "sha256": "3f585b2302033b0a8ad2d08e7c216f3aff452e368fd5d115e046a7b2debb285a",
+      "bytes": 1343,
+      "footers": [
+        "PLAYER_COURSE: 1592 assertions, 1 failures"
+      ],
+      "engine_script_error": false,
+      "error_line_count": 1,
+      "scope": "historical intermediate; not final acceptance"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\playground-expanded-maps-v1.log",
+      "sha256": "510ebfbd76c4922eec2d92a04a7b9f057b89d03b20b15136285ea98be03e0c45",
+      "bytes": 623,
+      "footers": [
+        "PLAYER_MAPS: 4770 assertions, 0 failures; 8 maps x 7 players x 6 Water choices"
+      ],
+      "engine_script_error": false,
+      "error_line_count": 0,
+      "scope": "historical intermediate; not final acceptance"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\playground-expanded-tuning-v5.log",
+      "sha256": "b44011e3dd6a2ac8b36daeed72bd96e121dec3b82e41f8df7be69ff21ce8669b",
+      "bytes": 647,
+      "footers": [
+        "PLAYER_TUNING: 98 assertions, 0 failures"
+      ],
+      "engine_script_error": false,
+      "error_line_count": 0,
+      "scope": "historical intermediate; not final acceptance"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\playground-expanded-tuning-v6.log",
+      "sha256": "eac77073a7710fde6d6d581d56808177aea7d3c5049f163b576ef3322ae2ef8f",
+      "bytes": 648,
+      "footers": [
+        "PLAYER_TUNING: 112 assertions, 0 failures"
+      ],
+      "engine_script_error": false,
+      "error_line_count": 0,
+      "scope": "historical intermediate; not final acceptance"
+    }
+  ]
+}

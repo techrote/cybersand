@@ -6,10 +6,21 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-26
 ---
 
 # Data ownership and lifetimes
+
+The [expanded player controls and usables](../systems/player-control-playground.md#stronger-player-controls-and-usable-testing)
+reuse the private synchronous arena's equipment owner for mechanical players,
+and an existing bounded material-only usable runtime for each material player.
+Both require issued/leased input; focus cancellation stops future triggers,
+while already launched/deployed devices retain ordinary unpaused autonomous
+continuation. Material emitters are copied positions, not fictitious bodies.
+The five-call field keeps native per-call bounds and copied subreceipts; its
+aggregate counters describe samples/operations. Map replacement resets those
+devices and old authority. Detached equipment is excluded from lander gravity
+mode updates; no new World, thread, body ABI or mutable storage view is added.
 
 The [player playground map/Water/painting owner](../systems/player-control-playground.md#seven-tailored-maps-water-selection-and-painting)
 retains its existing synchronous ownership: provisional native World plus

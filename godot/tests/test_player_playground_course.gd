@@ -28,7 +28,7 @@ func expect(value: bool, message: String) -> void:
 
 
 func configure(id: StringName, staging: Vector2 = Vector2.ZERO) -> bool:
-	var accepted: bool = runtime.configure(id)
+	var accepted: bool = runtime.configure(id, &"legacy")
 	expect(accepted, "course configures " + str(id))
 	if accepted and staging != Vector2.ZERO:
 		# This isolated fixture starts next to the tunnel so it measures physical
@@ -159,7 +159,7 @@ func flight_action(view: Dictionary, target: Vector2) -> Dictionary:
 	var position: Vector2 = view.position
 	var velocity: Vector2 = view.velocity
 	var desired := Vector2(clampf((target.x - position.x) * 2.4 - velocity.x * 4.0, -140.0, 140.0),
-		clampf((target.y - position.y) * 3.2 - velocity.y * 4.0 - 32.0, -260.0, 60.0))
+		clampf((target.y - position.y) * 3.2 - velocity.y * 4.0 - 96.0, -260.0, 60.0))
 	var angle_error: float = wrapf(desired.angle() + PI * 0.5 - float(view.rotation), -PI, PI)
 	var lean: float = clampf(angle_error * 0.9 - float(view.angular_velocity) * 0.25, -1.0, 1.0)
 	var throttle: float = minf(desired.length() / 440.0, 0.85)

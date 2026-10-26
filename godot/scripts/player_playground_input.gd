@@ -4,7 +4,7 @@ extends RefCounted
 # One local sampler for keyboard and standard gamepads. Physics owners consume
 # copied actions; they never query global Input or take ownership of UI focus.
 const KEYS: Array[Key] = [KEY_W, KEY_A, KEY_S, KEY_D, KEY_UP, KEY_LEFT, KEY_DOWN,
-	KEY_RIGHT, KEY_Q, KEY_E, KEY_SPACE, KEY_SHIFT, KEY_C]
+	KEY_RIGHT, KEY_Q, KEY_E, KEY_SPACE, KEY_SHIFT, KEY_C, KEY_M, KEY_B, KEY_N, KEY_U]
 const DEADZONE: float = 0.18
 
 
@@ -45,10 +45,14 @@ static func from_state(keys: Dictionary, stick: Vector2 = Vector2.ZERO,
 	return {"move": movement.limit_length(1.0), "aim": movement.normalized(), "effort": 1.0,
 		"trim": clampf(trim, -1.0, 1.0), "primary": bool(keys.get(KEY_SPACE, false)) or buttons.x != 0,
 		"secondary": bool(keys.get(KEY_SHIFT, false)) or buttons.y != 0,
-		"auxiliary": bool(keys.get(KEY_C, false)) or buttons.z != 0}
+		"auxiliary": bool(keys.get(KEY_C, false)) or buttons.z != 0,
+		"tool":bool(keys.get(KEY_M,false)),"usable_alternate":bool(keys.get(KEY_B,false)),
+		"release_usable":bool(keys.get(KEY_N,false)),"attach_usable":bool(keys.get(KEY_U,false))}
 
 
 static func active(action: Dictionary) -> bool:
 	return Vector2(action.get("move", Vector2.ZERO)).length_squared() > 0.0001 \
 		or absf(float(action.get("trim", 0.0))) > 0.01 or bool(action.get("primary", false)) \
-		or bool(action.get("secondary", false)) or bool(action.get("auxiliary", false))
+		or bool(action.get("secondary", false)) or bool(action.get("auxiliary", false)) \
+		or bool(action.get("tool",false)) or bool(action.get("usable_alternate",false)) \
+		or bool(action.get("release_usable",false)) or bool(action.get("attach_usable",false))

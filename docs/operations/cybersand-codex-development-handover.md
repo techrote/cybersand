@@ -4,13 +4,21 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-26
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
 
 ## Playground maps and authoring checkpoint — 2026-10-26
+
+The follow-up request expands every selected map to six times the original
+area and tunes lean/hops/gravity/fields/barrel response. The
+[expanded dated record](../audits/2026-10-26-player-playground-expanded-and-usables.md)
+also owns usable testing: actual physical mounts for mechanical players and
+bounded material-only emitters for swarms, with existing 32-item catalogue and
+M/B/N/U controls. PR #262 is the continuing focused branch; it was returned to
+draft during iteration. Prior-head checks do not certify this later source.
 
 The new scoped player request adds seven maps, six existing native Water choices
 and material spawning/painting to the dedicated playground. Start with the

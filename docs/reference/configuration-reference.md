@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-26
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -1169,11 +1169,11 @@ redefine the legacy physical actor delta clamp above.
 ## Player playground values
 
 The [map/solver/authoring controls](../systems/player-control-playground.md#seven-tailored-maps-water-selection-and-painting)
-add seven maps alongside the original `mixed` default, independently selectable
+offer eight large districts with the `mixed` default, independently selectable
 with every player. Six Water choices use radius two except explicit radius-three
 IN. Brush radii are 1–12; radius twelve scans 625 candidates with 441 disc cells,
-clipped to interior `(132,132,504,220)` and skipping actual bodies. A burst is
-offset `(32,-32)` from the player, clamped to centres x145..623/y145..339. Edits
+clipped to interior `(6,6,1012,730)` and skipping actual bodies. A burst is
+offset `(32,-32)` from the player, clamped to centres x18..1005/y18..723. Edits
 mark practice laps; clean best times are keyed by player/map/solver. No save or
 native layout change follows. Setup uses Baseline transport, eight-bit Water,
 12-tick coherence, exploratory host pacing and a disabled full-world window/LOD.
@@ -1189,19 +1189,23 @@ native layout change follows. Setup uses Baseline transport, eight-bit Water,
 | Value | Current bound or default |
 |---|---|
 | Scene / presets | `res://player_playground.tscn`; seven, of which five mechanical entries also form F5 SetP; dry/liquid remain scene-only |
-| Native world / course view | 1024 × 1024 cells; `Rect2i(128,128,512,256)` course view; follow view 256 × 128 |
+| Native world / course view | 1024 × 1024 cells; each public map view 1024 × 768; follow view 384 × 288; original 512 × 256 is the explicit legacy test fixture |
 | Local owner | One native worker, synchronous calls, simulation window and cadence LOD disabled for the dedicated course |
-| Material seed | 16 × 16 = 256 cells centred near (178,304); Sand count 256 or full Water mass 65,280 at construction |
+| Material seed | 16 × 16 = 256 cells centred near (96,688), legacy (178,304); added player Sand count 256 or Water mass 65,280, separately from authored reservoirs |
 | Human material lease | 1–6 ticks from issued observation; seven issuance-history slots; sequence 0–9,007,199,254,740,991 and strictly increasing |
 | Gamepad | First connected pad; left-stick radial deadzone 0.18; combined movement length capped at one |
-| Field source scan | Fixed radius 32; 65 × 65 = 4,225 attempted positions per call, circle and domain filtered |
-| Field source budget | At most 512 original parcels; phase-rotated scan then deterministic priority order; `truncated` if more observed |
-| Field movement | At most four axis-adjacent steps per parcel, 2,048 attempts total; outer write reach at most radius 36, clipped to domain |
+| Field source scan | Native radius 32; 65 × 65 = 4,225 attempted positions per call, circle/domain filtered; five owner calls cover radius 60, at most 21,125 attempted positions |
+| Field source budget | At most 512 original parcels per native call; 2,560 capture samples across five overlapping calls, not unique parcels; aggregate truncation is the OR of copied subreceipts |
+| Field movement | Per native call, at most four axis-adjacent steps per captured parcel and 2,048 attempts; five overlapping calls permit 10,240 attempts, with overall write reach at most radius 64, clipped to domain |
 | Field storage | No missing chunk or thermal-storage allocation; unavailable storage refuses the step and increments its receipt counter |
 | Field input | Finite direction components in −1..1 and squared length ≤1.000001; Sand/Water only; mode 0–3; phase 0–2,147,483,647 |
 | Native C++ domain | Each span 1–4,096; origin in ±1,000,000,000; centre inside domain; Godot adapter fixes domain to 0..1,023 on each axis |
 | Material centre following | At most four cells per owner step toward observed quantity-weighted centroid |
 | Vehicle hop | Buggy requires support; bike preload reaches full at 0.42 s and requires supported release; 0.5 s hop cooldown |
+| Vehicle lean / hop strength | Rear-axle impulse target 11/12 rad/s and acceleration ceiling 90/95 rad/s² for buggy/bike; rider angle 0.86 rad; former upward impulse ×√2 gives about double actual hop height |
+| Player flight tuning | Lander gravity 96 damped / 32 drift cells/s²; barrel inertia ×0.85 at unchanged mass, soft speed target 175 cells/s (finite-force limiter permits overshoot) |
+| Idle field pattern | Five radius-32 calls, centres offset (0,0), (±28,0), (0,±28) and clamped to 0..1023; periodic amplitude 0.38, outer inward 0.30 and tangential 0.24, unit-clamped before native calls |
+| Playground usables | All 32 catalogue choices; M trigger, B alternate, N/U physical drop/attach; material-only emitter offset 68 cells along aim, clamped at least three cells inside the editable course |
 | Acrobat jump timing | 0.11 s coyote; 0.14 s buffer; 0.05 s confirmed support; 0.14 s launch lock |
 | Acrobat roll / glide | Roll 0.28 s; cooldown 0.32 s; grounded tap at most 0.15 s; glide reserve 1.6 s per confirmed landing |
 | Acrobat airborne inventory | One extra jump, one bullet jump and one air roll per confirmed landing; cancel does not reload them |

@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-26
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
@@ -1134,7 +1134,16 @@ godot --headless --path godot --script res://tests/test_player_acrobat_physics.g
 godot --headless --path godot --script res://tests/test_player_playground_runtime.gd
 godot --headless --path godot --script res://tests/test_player_playground_course.gd
 godot --headless --path godot --script res://tests/test_player_playground_maps.gd
+godot --headless --path godot --script res://tests/test_player_playground_tuning.gd
 ```
+
+The tuning runner measures actual same-fixture pre/post hop heights, rear-axle
+lean, damped/drift gravity and barrel inertia/speed; it exercises larger idle
+fields, exact material conservation, actual tools/projectiles/processors for
+material players, all five mounted-player tool paths, quick taps, paused refusal
+and safe field centres near map boundaries. The retained small course is an
+explicit `legacy` fixture; its lander controller uses the actual new gravity
+feed-forward while retaining the same physical target and admission gate.
 
 The map runner constructs all 8 maps × 7 players × 6 Water choices (336 actual
 setups), reads native policy/receipt/body-count identities, spawns Water and

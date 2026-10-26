@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Articulated desktop roster with ACT-005 physical equipment and SetP human movement presets, authored mechanics, local scripted control and leased input; sampled references and scientific material acceptance remain separate
 canonical-for: [physical-actor-rigs, physical-actor-control-v2, physical-actor-usables]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-26
 related-documents: [physical-free-flight.md, actor-usables.md, actor-rigs.md, thunderbowl-control-reference.md, ../operations/physical-actor-programme.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../operations/local-build-and-validation.md, ../audits/2026-10-19-act005-physical-usables.md]
 ---
 
@@ -36,6 +36,10 @@ call a corresponding model or make a claim about its abilities.
 [`physical_actor_catalog.gd`](../../godot/scripts/physical_actor_catalog.gd)
 owns the copied part, joint, profile, mount and script definitions, with SetP
 authored in [the player catalogue](../../godot/scripts/player_actor_catalog.gd).
+The [player control tuning](player-control-playground.md#stronger-player-controls-and-usable-testing)
+also applies to F5 SetP: stronger rear-wheel vehicle lean, approximately doubled
+hop height, lander damped gravity and lighter-inertia/faster barrel response.
+These authored controls remain separate from the immutable 4LY flight profiles.
 Each part has an actual rectangular or declared circular collider with its own
 mass, offset and orientation. Graphics use its shape, dimensions and published
 transform. Circular wheels retain conservative circumscribed rectangular native

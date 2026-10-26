@@ -311,6 +311,8 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 		body.rotation = float(part.get("angle", 0.0))
 		body.mass = float(part.get("mass", 1.0))
 		body.inertia = maxf(0.01, body.mass * Vector2(part.size).length_squared() / 12.0)
+		if rig_id == &"jetbarrel":
+			body.inertia *= float(_profile.get("player_inertia_scale", 1.0))
 		if _flight_controller != null:
 			body.inertia = float(_definition.flight_profile.inertia)
 		if str(part.get("shape", "rectangle")) == "circle":
@@ -928,6 +930,30 @@ func _gyro(target_angle: float, dt: float, gain: float = 1.0) -> void:
 func _angular_target(target: float, dt: float, maximum: float) -> void:
 	var acceleration: float = clampf((target - _angular_velocities[0]) * 5.0, -maximum, maximum)
 	_apply_angular_impulse(0, acceleration * _inertias[0] * dt)
+
+
+func _set_player_gravity(value: float) -> void:
+	var gravity_scale: float = clampf(value, 0.0, 500.0) / maxf(1.0, float(ProjectSettings.get_setting("physics/2d/default_gravity", 980.0)))
+	for index: int in range(_parts.size()):
+		if not _detached.has(index): _parts[index].gravity_scale=gravity_scale
+
+
+func _angular_target_about_part(part_id: String, target: float, dt: float, maximum: float) -> void:
+	# A bounded angular velocity increment about the actual rear axle: each
+	# attached mass gets its tangential impulse, with zero translation at the
+	# pivot itself. Rapier contacts/joints integrate the result; no pose is set.
+	var pivot: int = -1
+	for index: int in range(_part_defs.size()):
+		if str(_part_defs[index].id) == part_id: pivot = index
+	if pivot < 0 or _detached.has(pivot): return
+	var change: float = clampf((target - _angular_velocities[0]) * 5.0, -maximum, maximum) * dt
+	for index: int in range(_parts.size()):
+		if _detached.has(index): continue
+		var arm: Vector2 = _transforms[index].origin - _transforms[pivot].origin
+		var impulse: Vector2 = Vector2(-arm.y, arm.x) * change * _parts[index].mass
+		_last_impulse += _apply_part_impulse(index, impulse)
+		if str(_part_defs[index].get("role", "")) != "wheel":
+			_apply_angular_impulse(index, change * _inertias[index])
 
 
 func _drive_joints(buttons: Vector3i, dt: float, effort: float) -> void:

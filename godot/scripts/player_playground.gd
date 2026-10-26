@@ -6,6 +6,7 @@ const PlayerInput = preload("res://scripts/player_playground_input.gd")
 const Surface = preload("res://scripts/depth/depth_layer_surface.gd")
 const Overlay = preload("res://scripts/player_playground_overlay.gd")
 const WorldSetup = preload("res://scripts/player_playground_world.gd")
+const UsableCatalog = preload("res://scripts/usable_catalog.gd")
 const PAINT_IDS: Array[int] = [2, 3, 16, 24, 4, 6, 8, 12, 1]
 const PAINT_NAMES: Array[String] = ["Sand", "Water", "Oil", "Brine", "Smoke", "Fire", "Lava", "Acid", "Wall"]
 
@@ -22,6 +23,8 @@ var _brush_size: SpinBox
 var _replace: CheckBox
 var _authoring_status: Label
 var _painting: bool = false
+var _usable_picker: OptionButton
+var _usable_status: Label
 var _focused: bool = true
 var _rearm: bool = true
 var _follow: bool = false
@@ -52,7 +55,7 @@ func _ready() -> void:
 	_build_ui()
 	_surface = Surface.new()
 	add_child(_surface)
-	_surface.configure("player-playground", false, Course.VIEW.size)
+	_surface.configure("player-playground", false, Course.map_view(&"mixed").size)
 	_terrain.texture = _surface.get_texture()
 	select_preset(0)
 	for argument: String in OS.get_cmdline_user_args():
@@ -118,6 +121,17 @@ func _build_ui() -> void:
 	side.add_child(_water_picker)
 	_water_readback = _label(side, "", 13, Color("91a8ba"))
 	_water_readback.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_label(side,"USABLES · aim with mouse, M use / B alternate",13,Color("7895a9"))
+	_usable_picker=OptionButton.new()
+	_usable_picker.focus_mode=Control.FOCUS_NONE
+	_usable_picker.add_item("None",-1)
+	for index: int in range(UsableCatalog.count()): _usable_picker.add_item(UsableCatalog.name_for(index),index)
+	_usable_picker.item_selected.connect(func(index: int) -> void:
+		_cancel_input()
+		runtime.select_usable(_usable_picker.get_item_id(index)))
+	side.add_child(_usable_picker)
+	_usable_status=_label(side,"All players: tools, projectiles, processors.\nMechanical players: N drop / U reattach.",13,Color("91a8ba"))
+	_usable_status.autowrap_mode=TextServer.AUTOWRAP_WORD_SMART
 	_label(side, "MATERIALS", 13, Color("7895a9"))
 	_material_picker = OptionButton.new()
 	_material_picker.focus_mode = Control.FOCUS_NONE
@@ -175,6 +189,7 @@ func _build_ui() -> void:
 	_canvas.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_canvas.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	_canvas.mouse_filter = Control.MOUSE_FILTER_STOP
+	_canvas.clip_contents = true
 	_canvas.gui_input.connect(_canvas_input)
 	right.add_child(_canvas)
 	_terrain = TextureRect.new()
@@ -282,7 +297,8 @@ func _lap_key() -> String:
 func _spawn_material() -> void:
 	_cancel_input()
 	var position: Vector2 = runtime.snapshot().actor.get("position", Vector2(178, 304))
-	_author(Vector2i(clampi(roundi(position.x) + 32, 145, 623), clampi(roundi(position.y) - 32, 145, 339)), false)
+	var bounds: Rect2i=Course.editable(runtime.map_id)
+	_author(Vector2i(clampi(roundi(position.x)+32,bounds.position.x+12,bounds.end.x-13),clampi(roundi(position.y)-32,bounds.position.y+12,bounds.end.y-13)),false)
 
 
 func _author(cell: Vector2i, erase: bool) -> void:
@@ -402,7 +418,7 @@ func _can_control() -> bool:
 
 func _ui_captures_input() -> bool:
 	return get_viewport().gui_get_focus_owner() != null or _map_picker.get_popup().visible \
-		or _water_picker.get_popup().visible or _material_picker.get_popup().visible
+		or _water_picker.get_popup().visible or _material_picker.get_popup().visible or _usable_picker.get_popup().visible
 
 
 func _sample_action() -> Dictionary:
@@ -465,8 +481,9 @@ func _check_targets(state: Dictionary) -> void:
 
 
 func _content_rect() -> Rect2:
-	var fit: float = minf(_canvas.size.x / float(Course.VIEW.size.x), _canvas.size.y / float(Course.VIEW.size.y))
-	var dimensions: Vector2 = Vector2(Course.VIEW.size) * maxf(0.0, fit)
+	var extent: Vector2i=Course.map_view(Course.MAP_IDS[selected_map]).size
+	var fit: float = minf(_canvas.size.x / float(extent.x), _canvas.size.y / float(extent.y))
+	var dimensions: Vector2 = Vector2(extent) * maxf(0.0, fit)
 	return Rect2((_canvas.size - dimensions) * 0.5, dimensions)
 
 
@@ -475,9 +492,9 @@ func _present(state: Dictionary, force: bool = false) -> void:
 		return
 	var actor: Dictionary = state.actor
 	var position: Vector2 = actor.get("position", Vector2(178, 310))
-	_view = Course.VIEW
+	_view = Course.map_view(Course.MAP_IDS[selected_map])
 	if _follow:
-		_view = Rect2i(clampi(floori(position.x) - 128, 128, 384), clampi(floori(position.y) - 64, 128, 256), 256, 128)
+		_view = Rect2i(clampi(floori(position.x)-192,0,640),clampi(floori(position.y)-144,0,480),384,288)
 	_surface._material.set_shader_parameter("camera_origin_px", Vector2(_view.position))
 	_surface._material.set_shader_parameter("view_size_px", Vector2(_view.size))
 	var presentation_error: String = ""
@@ -492,6 +509,8 @@ func _present(state: Dictionary, force: bool = false) -> void:
 	_overlay.accent = Course.COLORS[selected]
 	_overlay.actor_position = position
 	_overlay.material_field = bool(state.material_mode)
+	_overlay.field_radius = 60.0
+	_overlay.usables = runtime.usable_snapshot()
 	_overlay.movement = actor.get("player_movement", {})
 	_overlay.preset = Course.PRESETS[selected]
 	_overlay.present(runtime.render_parts(), Vector2(_view.position), _view.size, _content_rect())
@@ -514,7 +533,7 @@ func _present(state: Dictionary, force: bool = false) -> void:
 		_status.text = "Release movement buttons to take control."
 	elif state.material_mode:
 		var field: Dictionary = actor.get("field", {})
-		_status.text = "%s   ·   %d local parcels   ·   %d moved this tick" % ["SAND CLOUD" if selected == 4 else "WATER BLOB", int(field.get("controlled_cells", 0)), int(field.get("moved_cells", 0))]
+		_status.text = "%s   ·   %d local samples   ·   %d moves this tick" % ["SAND CLOUD" if selected == 4 else "WATER BLOB", int(field.get("controlled_cells", 0)), int(field.get("moved_cells", 0))]
 	else:
 		var movement: Dictionary = actor.get("player_movement", {})
 		var mode: String = str(movement.get("movement_mode", movement.get("mode", "ready"))).replace("_", " ").to_upper()
@@ -529,6 +548,8 @@ func _present(state: Dictionary, force: bool = false) -> void:
 		_hint.text = "Use the ramp to clear the tunnel roof. Lean before landing, then brake to settle. The empty equipment mount can be equipped later from F5 in the actor sandbox."
 	else:
 		_hint.text = "Thread the numbered flight gates. Main thrust follows your body's orientation; use rotation and airbraking to turn the next corner."
+	var equipment: Dictionary=actor.get("equipment",actor.get("usable",{}))
+	_usable_status.text="%s · %s\nCharge %.0f · cooldown %.2fs\nM use / B alternate · N drop / U attach (mechanical)" % [UsableCatalog.name_for(runtime.usable_index),equipment.get("last_result","selection applies on next admitted tick"),float(equipment.get("charge",100.0)),float(equipment.get("cooldown",0.0))]
 
 
 func _exit_tree() -> void:

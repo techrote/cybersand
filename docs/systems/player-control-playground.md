@@ -20,9 +20,11 @@ godot --path godot -- --player-playground
 godot --path godot -- --player-playground --player=acrobat
 ```
 
-The optional player value is an ID from the table below. The original course combines a
-ramp, low tunnel, airborne slalom, landing decks and a material sieve in a
-512 × 256 view of one native world. Four ordered checkpoints give each preset
+The optional player value is an ID from the table below. Eight selectable
+1024 × 768 districts combine ramps, low tunnels, flight routes, landing decks,
+material apparatus and usable targets in one native world. The original
+512 × 256 course is retained only as an explicitly selected `legacy` test fixture.
+Four ordered checkpoints give each map
 a route and a simulation-time lap counter. The timer starts when active movement
 or action input is admitted, including a quick press/release before the next
 physics tick. Elapsed time advances only with simulation ticks and continues
@@ -33,7 +35,10 @@ checkpoint detection do not establish that every route has been completed.
 ## Seven tailored maps, Water selection and painting
 
 **Current branch implementation, local Windows qualification:** the independent
-**Map** selector retains the original mixed course and adds these seven maps.
+**Map** selector offers Mixed Works plus these seven focused districts. Every
+selectable map has six times the first sample's area, with multi-level
+structures, alternate paths, editable targets and varied building/material
+samples. All include a service bay, catch basins, upper bridges and salvage racks.
 Every map is selectable with all seven players; the suggested player describes
 the emphasis, not an admission restriction or proof of complete traversal.
 
@@ -43,16 +48,16 @@ the emphasis, not an admission restriction or proof of complete traversal.
 | `rat_steps` / Rat Steps | Trials Rat bike | Low stepped ascent, narrow balance spine and stepped descent |
 | `afterimage_works` / Afterimage Works | Afterimage acrobat | Low slide tunnel and upper decks for bullet jumps and gliding |
 | `vector_port` / Vector Port | Vector Rush lander | Alternating broad flight slots, braking and landing decks |
-| `dust_foundry` / Dust Foundry | Dust Devil Sand cloud | Three combs with five-cell apertures and loose Sand beyond them |
-| `undertow_lab` / Undertow Lab | Undertow Water blob | Low channels, overhead shelves and three catch basins |
-| `rocket_yard` / Rocket Yard | Barrel Rocket | Five staggered precision landing pads and a clear lower lane |
+| `dust_foundry` / Dust Foundry | Dust Devil Sand cloud | Four ten-tooth combs with seven-cell gaps, granular beds, catch basins and overhead foundries |
+| `undertow_lab` / Undertow Lab | Undertow Water blob | Four lower Water/Brine/Oil basins, upper reservoirs, scooping shelves, glass channels and an ice specimen |
+| `rocket_yard` / Rocket Yard | Barrel Rocket | Eight staggered heat-shield landing pads, offset baffles, fuel/Water targets and an upper gantry |
 
 `mixed` remains the initial map and Current FreeMass remains the initial Water
 solver. `--playground-map=undertow_lab` optionally selects a map at launch.
 Changing player keeps map and Water selections. Changing either map or solver
 constructs a fresh setup and clears edits/timing; R retains all three selections.
 Best times are separated by player, map and solver; any successful material
-edit marks the run **PRACTICE** and prevents that lap updating a clean best time.
+edit or admitted usable operation marks the run **PRACTICE** and prevents that lap updating a clean best time.
 Best times remain scene-local; solver names do not imply comparable difficulty.
 
 The **Water** picker offers Current FreeMass, whole-cell CellularYield,
@@ -95,10 +100,67 @@ A failed candidate leaves the live owner and accepted selections in place.
 This synchronous playground route does not close #202/#203 full-host acceptance.
 
 Sources: [map definitions](../../godot/scripts/player_playground_course.gd),
+[large district authoring](../../godot/scripts/player_playground_districts.gd),
 [native setup](../../godot/scripts/player_playground_world.gd),
 [exclusive authoring owner](../../godot/scripts/player_playground_runtime.gd),
 [scene controls](../../godot/scripts/player_playground.gd) and
 [dated qualification](../audits/2026-10-26-player-playground-maps.md).
+
+## Stronger player controls and usable testing
+
+The [expanded checkpoint](../audits/2026-10-26-player-playground-expanded-and-usables.md)
+records actual local Windows execution and retained first-pass failures. These
+are authored player-control changes, including F5 SetP for mechanical players:
+
+- Loose Cannon and Trials Rat lean using bounded tangential impulses around
+  the actual rear wheel plus attached-part torque. No body transform is set or
+  wheel pinned to a world position. Requested angular speeds are 11/12 rad/s,
+  capped accelerations 90/95 rad/s², with rider lean up to 0.86 rad. Rapier's
+  contacts and joints still determine the resulting motion.
+- Both vehicles multiply their former upward hop impulses by √2, targeting
+  approximately double ballistic height under unchanged gravity. Actual flat
+  fixtures measure 1.91× buggy and 1.95× full-preload bike height. Bike charge,
+  support, release and cancellation rules remain intact.
+- Vector Rush uses gravity 96 cells/s² in damped mode and 32 in drift; C still
+  toggles mode, and forces/damping remain finite. Detached equipment is not
+  retuned when the owner changes gravity mode.
+- Barrel Rocket scales physical rotational inertia by 0.85 without reducing
+  mass and raises its soft speed target from 155 to 175 cells/s. Thrust remains
+  finite; the measured unladen sustained-thrust speed is about 182 because the
+  limiter is a bounded braking impulse, not an exact velocity clamp.
+- Sand and Water players use a radius-60 composite field: five existing native
+  radius-32 calls at centre and four offsets of 28 cells. Centres are clamped
+  to native bounds. Admitted idle commands add bounded, periodic swirling and
+  inward flow instead of static hovering. Lease loss still stops field calls;
+  it does not start an autonomous player controller. Subreceipts are retained;
+  summed sample/move counts can count a parcel more than once.
+
+The **Usables** picker exposes the existing 32-item catalogue: tools,
+projectiles and processors. Select an item, release action keys, aim with the
+mouse and hold/press **M** to use it. **B** invokes its alternate action.
+Mechanical players use the existing physical mount, charge/cooldown, exact
+equipment identity and native-effect feedback. **N** drops/deploys a held body;
+**U** reattaches a nearby compatible body. Selection while released/deployed can
+refuse until the equipment is recovered. A newly selected item applies on the
+next admitted unpaused tick; selection does not refill charge or cooldown.
+
+Material players use the existing bounded material-only usable runtime at a
+visible emitter 68 cells from their centre in the aiming direction, clamped
+inside the map. This keeps projectiles/nozzles outside the player's own cloud.
+They can use tools, launch projectiles and deploy/retrieve catalogue processors;
+they have no physical held body, so N/U applies only to mechanical players.
+Use B for catalogue alternate actions, including retrieval of a material-only
+processor or early activation of an eligible payload. Obstacles and unavailable
+space still refuse placement; a blocked use is not replaced with a fallback.
+
+Painting and usable operation are separate controls. Pausing refuses usable
+commands and stops cooldown/projectile/device time; painting remains available.
+Focus/GUI/selection cancellation revokes player/trigger input, while previously
+launched projectiles and deployed devices retain their normal autonomous
+continuation when unpaused. Quick press/release edges before a tick are retained.
+Reset destroys the old devices/projectiles and starts a fresh selected map;
+the selected usable is retained as a requested loadout. Copied projectiles,
+processors, effects and actual result/charge state are presented in the view.
 
 Five mechanical presets also appear in **F5 → Rapier → SetP**, among the
 46 retained physical actor IDs and original eight sets. The separate 4LY
@@ -220,7 +282,7 @@ quantity-weighted material centroid with a bounded centre adjustment. WASD moves
 material rather than a remote selection cursor. The visible ring shows this
 local selection boundary.
 
-The native call scans at most 4,225 candidate positions within a radius-32
+Each native call scans at most 4,225 candidate positions within a radius-32
 selection, captures at most 512 source parcels once, and attempts at most four
 axis-adjacent moves per parcel. Stable ordering and phase-based scan rotation
 prevent repeated source processing. Occupied cells, hard terrain, transient

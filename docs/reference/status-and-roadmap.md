@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-26
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -12,8 +12,16 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## Playground maps and controls — 2026-10-26
 
+The owner's follow-up adds stronger [player controls and usable testing](../systems/player-control-playground.md#stronger-player-controls-and-usable-testing)
+and expands every public map to 1024×768 with varied material/structural
+challenges. All 32 existing usables are selectable; mechanical owners keep
+their physical mounts and material owners use the bounded material-only
+runtime. See the [expanded evidence](../audits/2026-10-26-player-playground-expanded-and-usables.md)
+for measured motion and explicit local/hosted/manual scope. The old small map
+is retained only as a regression fixture, with no scientific/epic closure.
+
 The [player playground](../systems/player-control-playground.md#seven-tailored-maps-water-selection-and-painting)
-adds seven tailored maps alongside the original course, all available to every
+offers seven tailored districts alongside Mixed Works, all available to every
 player, plus six existing native Water choices and bounded paused/running
 material spawning and painting. Current initial map/FreeMass defaults remain.
 [Dated evidence](../audits/2026-10-26-player-playground-maps.md) scopes actual

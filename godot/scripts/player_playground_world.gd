@@ -12,7 +12,7 @@ const VARIANTS: Array[String] = ["reference", "reference", "reference", "cached"
 
 static func build(world: Object, map_id: StringName, water: int, seed_material: int = 0,
 	bodies: PackedFloat32Array = PackedFloat32Array()) -> Dictionary:
-	if map_id not in Course.MAP_IDS or water < 0 or water >= WATER_NAMES.size():
+	if (map_id not in Course.MAP_IDS and map_id != &"legacy") or water < 0 or water >= WATER_NAMES.size():
 		return {"accepted": false, "error": "Unknown map or Water solver."}
 	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
 	var request: PackedInt32Array = bridge.default_liquid_policy()
@@ -30,7 +30,8 @@ static func build(world: Object, map_id: StringName, water: int, seed_material: 
 		rectangles.append_array(PackedInt32Array([rectangle.origin.x, rectangle.origin.y,
 			rectangle.size.x, rectangle.size.y, rectangle.material]))
 	if seed_material != 0:
-		rectangles.append_array(PackedInt32Array([170, 296, 16, 16, seed_material]))
+		var seed := Vector2i(Course.spawn(map_id)) - Vector2i(8,8)
+		rectangles.append_array(PackedInt32Array([seed.x, seed.y, 16, 16, seed_material]))
 	var profile: Dictionary = Transport.resolve(Transport.preset(0))
 	var token: int = bridge.prepare_liquid_world(world, rectangles, profile.packed,
 		PackedInt32Array([1, 8, 12, 0]), PackedInt32Array(), request,

@@ -71,7 +71,7 @@ static func build(data: Dictionary, id: StringName) -> void:
 			data.color = Color("ffb44a")
 			data.description = "A heavy barrel with an overpowered jet and deliberate high-authority rotational controls. Hold the stabilizer only when you want help staying upright."
 			data.profile.merge({"movement": "flight", "gravity": 110.0, "thrust": 510.0,
-				"speed": 155.0, "angular_drag": 0.12, "gyro": 75.0}, true)
+				"speed": 175.0, "angular_drag": 0.12, "gyro": 75.0, "player_inertia_scale": 0.85}, true)
 			_part(data, "barrel", Vector2.ZERO, Vector2(9, 12), 2.4)
 	# Keep ACT-005's ordinary physical mounting chassis and optional equipment
 	# lifecycle. The player loadout starts empty, leaving movement controls free.

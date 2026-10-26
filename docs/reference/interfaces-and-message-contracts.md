@@ -6,7 +6,7 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-26
 ---
 
 # Interfaces and message contracts
@@ -991,6 +991,14 @@ witnesses and cross-owner queues remain Planned.
 The [physical Blacksite experiment](../operations/physical-actor-programme.md) reuses the current body input/result ABI with one rectangle. `apply_trial_impulses` is a main-thread bridge method; no native field layout or sampled actor action/observation stride changes.
 
 ## Player material field control
+
+The [expanded playground owner](../systems/player-control-playground.md#stronger-player-controls-and-usable-testing)
+composes five calls to the unchanged native API for a radius-60 field and
+retains all five copied native subreceipts. Its aggregate sample/move counters
+can count the same parcel in multiple calls. This does not enlarge the native
+per-call scan or introduce persistent parcel identity. Usable selection and
+M/B/N/U input reuse existing material-only/physical equipment owners and the
+same issued observation/lease checks; no native binding or message ABI changes.
 
 **Current experimental, dedicated playground:** the GDExtension method is
 `apply_player_material_field(center: Vector2i, direction: Vector2,

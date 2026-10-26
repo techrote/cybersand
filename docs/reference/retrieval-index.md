@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-26
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -292,10 +292,16 @@ Execution and human/platform qualification route to the
 
 The same guide owns the [seven tailored maps, Water solver picker and native
 painting/spawning controls](../systems/player-control-playground.md#seven-tailored-maps-water-selection-and-painting).
-All seven players can select all eight maps; player changes keep map/Water,
-map/solver changes restart, and edits mark practice laps. The
+All seven players can select all eight 1024×768 districts; player changes keep
+map/Water, map/solver changes restart, and edits/usables mark practice laps. The
 [2026-10-26 qualification](../audits/2026-10-26-player-playground-maps.md) separates
 local Windows execution from complete route, human feel and hosted acceptance.
+
+The same contract's [stronger controls and usable testing](../systems/player-control-playground.md#stronger-player-controls-and-usable-testing)
+owns rear-axle lean, doubled vehicle jumps, damped/drift gravity, barrel inertia,
+radius-60 idle fields and M/B/N/U. The
+[expanded evidence](../audits/2026-10-26-player-playground-expanded-and-usables.md)
+retains actual physics measurements, native usable results and remaining gates.
 
 Layered material worlds, Strata Theatre, quantized relief and explicit interlayer event questions route to the [depth prototype contract](../systems/depth-layers-and-parallax.md).
 
