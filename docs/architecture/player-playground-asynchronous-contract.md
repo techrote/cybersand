@@ -42,9 +42,20 @@ retire active bodies/world until successfully admitted. On thread termination,
 join only after confirmed completion, then drop the last adapter reference.
 
 Every crossing value carries:
-- `run_id`: fresh random ID on accepted preset replacement;
-- `epoch`: monotonically increasing physical owner incarnation, never reused;
-- `control_generation`: per-actor cancellation/suspension generation;
+- `run_id`: the existing **mechanical `CyberPhysicalActorSession.run_id`**,
+  freshly generated when Session configures. This is the authority in
+  human command, equipment and usable records; do not stamp a second
+  worker `run_id` from the wrapper's separate `_run_id`;
+- `owner_epoch`: monotonically increasing **facade-owned** incarnation
+  across accepted replacements, never reused. The new mailbox's `epoch`
+  means **`owner_epoch`** everywhere below;
+- `session_epoch`: actual `CyberPhysicalActorSession.epoch`, preserved
+  unchanged in the **existing** nested command/equipment/effect schemas
+  and passed to Session APIs including `cancel_input`. A newly created
+  Arena may restart this epoch at 1; **never substitute it for the
+  monotonic owner epoch** or rewrite it in nested usable requests;
+- `control_generation`: per-actor **Session** cancellation/suspension
+  generation (not the swarm wrapper's generation);
 - `physics_tick`: **completed** main `session.tick` when the pre-step
   body sample was taken; `body_sample_serial`: actual
   `bridge.pack_body_states()` serial (modulo 1,000,000);
