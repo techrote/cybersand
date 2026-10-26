@@ -2,22 +2,97 @@
 title: Inertial cellular reference
 status: Current
 document-kind: reference
-scope: Accepted-main Brine IN and source-matched published Water IN successor with bounded application-owner integration; exact copied identities, whole-cell admission and carrier semantics retain separate final ready-PR, host, Web and scientific qualification
-canonical-for: [inertial-cellular-v1-brine, inertial-cellular-v1-water]
+scope: Accepted-main Brine and Water IN with separately qualified application-owner integration and isolated copied-observer source; exact identities, whole-cell/carrier semantics, full-host and scientific qualification remain explicit
+canonical-for: [inertial-cellular-v1-brine, inertial-cellular-v1-water, inertial-ledger-observation]
 last-reviewed: 2026-10-25
 related-documents: [lcb-pressure-inertial-handoff.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb005-native-brine-checkpoint.md]
 ---
 
 # Inertial cellular reference
 
+## Copied cumulative inertial ledger observer — 2026-10-25
+
+Water IN is now accepted on main through PR #254 at
+`06451f8ac9e8ac9b23a105d2fe22393375dc2d6b`, after final02c33341's four
+required exact-head gates. This observer's execution remains source0c9 plus the
+frozen five-file overlay; main acceptance does not publish the new observation
+API or complete scientific/full-host qualification. Further Web work is deferred.
+
+**Current on isolated `codex/lcb004-observer`, locally tested on Windows:**
+`CyberNativeCellWorld.get_inertial_ledger()` exposes a copied cumulative ledger
+for the exclusive serialized adapter owner. It does not tick, wake, clear or scan
+cells, and native pool workers call no Godot APIs. Its fixed nineteen-field copy
+creates owned Godot dictionaries/decimal strings at the explicit query boundary;
+it adds no native tick-time work or allocation. No law, World state, defaults,
+configuration, CYPS codec or native-v1 receipt bytes change.
+
+The envelope schema is `lcb-inertial-ledger-observation-v1`. `ok` means a native
+World exists and is healthy. `available` additionally requires an enabled IN
+family. A healthy non-IN World returns `ok=true`, `available=false`, decimal
+`completed_tick`/`session_generation` and actual `policy_hash`, with no `values`
+or `extension_identity`. A missing or quarantined World returns both flags false
+and an error, without tick/identity/values; it cannot expose a partial failed
+ledger or retry a failed tick. A healthy IN World adds the effective actual
+parameter `extension_identity` and a fresh nested `values` dictionary.
+
+Every numeric field, including unsigned completed tick and adapter session
+generation, is a canonical base-ten **string**. The native formatter preserves
+signed int64 and unsigned uint64 without converting through floating point or
+Godot's signed integer slot. Consumers needing the full range must retain the
+string or parse an appropriate integer type; this is not a signed-Variant or
+JSON-number interface. The local fixture observes small values, not execution at
+2^53/uint64 extrema. The nineteen values are:
+
+| Native type | Keys and meaning |
+|---|---|
+| signed int64 | `gravity_y`; non-gravity signed `impulse_x`, `impulse_y`; nonnegative L1 `loss`, its included `support` part, audited truncation-numerator `remainder`; material-removal `retired_x`, `retired_y`; diagnostic owner-set `external_x`, `external_y`; `external_speed`, the signed L1 change before aggregation |
+| unsigned uint64 | `updates`, `unit_moves`, `density_swaps`, `contacts`, `rests`, removed L1 speed `velocity_retired`; retained maxima `maximum_read_reach`, `maximum_write_reach` |
+
+`remainder` is accounting, never additional motion state; `support` is already
+included in `loss`. Reach fields are maxima rather than additive event totals.
+The copied tick, adapter generation, actual policy hash and effective parameter
+digest bind the observation. They do not identify every host setup or establish
+full matched eligibility. Mutation of either returned dictionary cannot change
+native authority, ledger, clocks or serialized bytes. CYPS3 retains the native
+cumulative ledger as before; the new getter does not extend the codec.
+
+**Bounded evidence:** the [dated observer record](../audits/2026-10-25-lcb004-inertial-ledger-observer.md)
+binds the three-file overlay, recorded139 native inputs, local DLL25e38920 and
+504 assertions. A finite 256×96, 24-Brine-cell fixture independently censuses
+actual signed velocity/L1 state, verifies ledger parity for configured1/4 with
+an observed eligible parallel phase, material retirement, copied isolation,
+CYPS3 continuation and real quarantine refusal. Configuring four workers does
+not establish four observed OS workers. The `external_*` fields remain zero in
+this fixture; their nonzero injection and numeric extrema are not tested.
+A ledger alone is not a global conservation certificate: initial state, actual
+carrier census, boundaries, sources/sinks and protocol still need independent
+qualification. No common-Water scientific campaign or Water-positive observer,
+Linux/new published observer runtime, full application or #203 acceptance follows.
+The companion existing `CyberDemoBridge.inspect_statistics(world)` route also
+copies integer `worker_threads_configured`, integer `worker_threads_observed`
+and Boolean `worker_threads_observed_available`. The observed integer is
+the maximum distinct native participants (including inline execution) in any one
+Phased dispatch of the last completed tick, zero before a tick. SerialInPlace
+leaves this counter unmeasured at raw zero with available=false even when doing
+real work; Phased tickzero/completed idle are available=true/raw zero. Zero alone
+cannot prove idle/no execution. It is not utilization or the distinct total
+across a tick; future qualification must retain the actual execution backend,
+configured count and any measured participation together. This general statistics read does not change the
+nineteen-field IN ledger envelope.
+The inherited App source5f02/bot0c9 publication does not contain this getter;
+the three changed adapter inputs require new source-matched publication. Further
+Web work remains owner-deferred until the epic is complete.
+
 ## Water IN native successor — 2026-10-25
 
-**Current only on isolated `codex/lcb005-water-inertial`:** Water3 and Brine24
+**Current accepted native source on main through PR #254 (`06451f8a`):** Water3 and Brine24
 can select `inertial_cellular_v1/reference`; Current Water remains FreeMass.
 Water uses its own whole-cell adapter around the shared integer IN law. Its
 [prospective registration and complete path model](../audits/2026-10-25-water-inertial-registration.md)
 start from reviewed Brine contact repair `68f74906`. Brine IN is accepted on main
-through PR #250 (`dc915f2b`); Water IN remains isolated in draft PR #254. Later
+through PR #250 (`dc915f2b`); Water IN was subsequently accepted through #254
+at final head02c33341. Its four exact-head Documentation, Native, Godot and #49
+Current-Water gates pass before merge06451f8a. Later
 [actual Water publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25)
 qualifies sequence2 sourceaa8af247 and runtime-only bot03cccd8f on Windows/Linux. It does
 not qualify normal hosts, common-Water scientific screens, owner feel or full
@@ -29,9 +104,9 @@ qualified actual runtime processes. The original non-release DLL evidence keeps
 its exact source scope.
 Independent native/tooling reviews have no open findings in those bounded
 scopes. Actual publication passes15 processes perOS/642 policy assertions, with
-independent sequence2 artifact review `d2da3ffd` and no actionable bounded finding. Full
-exact-head ready acceptance remains pending; approval-held bot follow-ups are
-not greens.
+independent sequence2 artifact review `d2da3ffd` and no actionable bounded finding. Final02c exact-head ready acceptance is complete through #254; the earlier
+approval-held bot follow-ups remain historical and are not relabelled as greens.
+Scientific/full-host qualification and owner feel remain separate.
 
 Water executes shared chemistry first, records WaterUpdate and decrements its
 original positive coherence once through `write_cell`. The original delay gates
@@ -130,7 +205,7 @@ qualify that local Windows native headless scope. The native evidence below
 retains its original checkpoint boundaries. Matching application runtimes, complete #202
 constructors, actual browsers and owner feel remain open.
 
-**Current on main through accepted PR #250:** explicitly selecting Brine material24 / `inertial_cellular_v1/reference` executes retained signed motion and subcell accumulators. The default Brine CellularYield law and every other default remain unchanged. The combined source passed [actual Windows/Linux scoped publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-windowslinux-union-publication--2026-10-25) at `bc0bfed9` in run `40153980594`, with runtime-only bot append `52ee560a`. At that parent checkpoint Water IN was unavailable; the isolated successor above admits it in source. Alternate IN materials/cached variants and full application qualification remain separate. The earlier [standalone adapter proof](../audits/2026-10-25-lcb005-standalone-adapter.md) keeps its local Windows source identity; [native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) retains its base, local input seal and tests. This is neither full #212 completion nor owner feel acceptance.
+**Current on main through accepted PR #250:** explicitly selecting Brine material24 / `inertial_cellular_v1/reference` executes retained signed motion and subcell accumulators. The default Brine CellularYield law and every other default remain unchanged. The combined source passed [actual Windows/Linux scoped publication](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-windowslinux-union-publication--2026-10-25) at `bc0bfed9` in run `40153980594`, with runtime-only bot append `52ee560a`. At that parent checkpoint Water IN was unavailable; the successor above admits it in source and is now accepted through #254. Alternate IN materials/cached variants and full application qualification remain separate. The earlier [standalone adapter proof](../audits/2026-10-25-lcb005-standalone-adapter.md) keeps its local Windows source identity; [native evidence](../audits/2026-10-24-lcb005-native-brine-checkpoint.md) retains its base, local input seal and tests. This is neither full #212 completion nor owner feel acceptance.
 
 The source owners are `native/include/cybersand/inertial_cellular.hpp`, `native/src/world_inertial.inc` and narrow integration in `World`. Shared pair chemistry precedes the Brine yielding-liquid motion gate. The implementation contains no pressure/head term and applies no Rapier force.
 

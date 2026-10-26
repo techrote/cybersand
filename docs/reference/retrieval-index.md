@@ -12,6 +12,10 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 - [Desktop barrel/Ripper preparation](../audits/2026-10-25-lcb003-trial-body-constructors.md): exact retained Apply motion, fresh Restart/F5, transactional one-body admission/refusal and Windows-only proof; [canonical owner contract](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation) owns semantics.
 
+- [Copied-observer runtime publication](../operations/github-development-and-release.md#isolated-observer-runtime-publication): private004 retains all003 controls and adds two observer cases. Actual sequence1 now passes38 processes/OS and independent source/lease/four-path append/LFS/floor review; final-head gates and scientific acceptance remain separate. Historical unarmed preparation and six source mismatches retain their old scope.
+
+- [Copied cumulative inertial ledger observer](../architecture/inertial-cellular-v1.md#copied-cumulative-inertial-ledger-observer--2026-10-25): nineteen signed/unsigned decimal-string values, actual owner/policy/parameter binding, quarantine refusal, copied isolation and finite Brine24 closure; global/scientific, Water-positive and final publication qualification stay separate.
+
 - [Actual common-Water Web functional proof](../audits/2026-10-25-lcb003-web-common-water.md): compat77/threaded76 terminal POSTs, six body-free Water/four mixed arms and source-bound native reuse; ordinary visual/manual/body-bearing browser and full scientific/host gates remain open.
 
 - [Final application source union and exact default namespaces](../architecture/liquid-prepared-setup-and-receipts.md#final-application-source-union): published Water admission, immutable legacy fixture, separately keyed capability hashes, CY/IN future-source refusal and strict unarmed host/native-Web evidence; final platforms, constructors and scientific gates stay separate.

@@ -10,6 +10,32 @@ related-documents: [local-build-and-validation.md, ../reference/validation-evide
 
 # Source checkpoint and recovery
 
+## Observer integration after accepted Trial — 2026-10-25
+
+Accepted main is `9e53a5b1b501e0667037b8502d3c1d15089211f5`, tree
+`af6778f4329a000a7b4ab04904a2811cb0df735a`, after #257's exact900 head passed
+Documentation40241199943, Native40241200007 and Godot40241200038 plus independent
+review. This unmerged Observer checkpoint normally consumes that accepted main;
+all incoming Trial implementation/test blobs and original Observer Native,
+runtime, profile and request blobs remain exact to their respective parents.
+Only additive documentation conflicts were reconciled. Both parents'152
+supplementary question objects survive intact in the153-question union, with
+frozen32 unchanged.
+
+Original Observer publication source2e1/run40237132659/bot871ff remains
+source-bound: Windowsba357334/Linux30bcfaf7, Native80 and compiled139 exact,
+76 actual processes. Its historical542 build entries now have536 equal and six
+explicit differences (five Trial script/test paths plus the publication audit),
+with six new Trial paths/current548. No runtime/manifest rewrite or new publisher
+lease is needed or armed. Original fb60/base564 Documentation40241133697,
+Native40241133702 and Godot40241133760 are independently accepted only for that
+original tree; fresh applicable exact-head gates/review are required for this
+integrated candidate. Further full-host/scientific/packaged acceptance remains
+open; Web/browser/shader work stays owner-deferred. Older intermediate status
+sections below retain their recorded source/epoch rather than overriding this
+current integration boundary.
+
+
 ## Trial successor correction after accepted App — 2026-10-25
 
 App #256 is merged as main56422c05 after all four exact-dc2 required gates.
@@ -38,6 +64,38 @@ This merge has no engine execution. Root's corrected #256 is ready for fresh
 gates/review; #257 Trial remains draft/downstream. Earlier ea96 gate greens do
 not cover either successor. Runtimes/profiles/requests stay inherited; Web deferred.
 
+## Current observer publication and accepted App — 2026-10-25
+
+App #256 is merged at main56422c05 after all four exact-dc2 required gates;
+the accepted file tree isf79b861f. The separate observer #258 now consumes that
+main content without changing its published inputs. Its [actual publication
+record](../audits/2026-10-25-lcb004-observer-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
+binds source2e1e9989/run40237132659/bot871ff202,80 native/542 execution inputs,
+Windowsba357334/Linux30bcfaf7,38 successful processes per OS, independent
+artifact/LFS/ELF-floor/lease review and all18 materialized runtime payloads.
+The earlier six observer source/runtime mismatches are resolved by actual
+republication. Final observer-head required CI/review and broader #202/#203
+qualification remain separate; approval-held bot follow-ups are not greens.
+
+Earlier preparation/local-execution sections below retain their own source and
+request state. Their absent-request/unpublished/future-target wording and old
+rebuild blockers describe historical snapshots, not current publication status.
+All117 registry classifications and historical failures are retained. Further
+Web testing is owner-deferred until after the epic.
+
+## Observer App merge and unarmed preparation
+
+Normal merge `a1cc50ab04ec67f571f4c5e0672fc7fe07ec04e4`, tree
+`c3f136ad41817c7070b14fae8c915e014fe05b28`, has parents observerd832424e and
+reviewed App ea96d485. All925 non-document Git blobs, five observer raw/Git
+files and139 recorded native inputs remain held; the external merge receipt
+is84211c2c. The App publication and observer14-doc records remain recoverable at
+their own original commits; no execution is relabelled at this merge.
+The [separate004 preparation](../audits/2026-10-25-lcb004-observer-publication.md)
+adds only its own workflow/helper/guard/audit and small documentation routes.
+Its new request is absent, inherited requests/runtimes/profiles stay unchanged,
+and six native-source provenance comparisons still require actual new builds.
+
 ## Recoverable post-publication identity-test overlay
 
 The current App checkpoint is ea96 plus exactly two frozen GDScript test changes,
@@ -60,7 +118,7 @@ The [actual003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#a
 all35 strict host/control cases:72 actual processes total, with matched
 native80/build535 input ledgers and642 policy assertions per OS. The
 earlier eight App provenance comparisons describe pre-publication inputs;
-the new manifests cover all80 current native inputs.
+the new manifests cover all80 inputs of that published App source.
 
 The six approval-held bot follow-ups are not validation greens. Final
 exact-head CI/review, remaining constructors and complete host/scientific/
@@ -121,6 +179,31 @@ request/runtime files are changed in this slice. The inherited parent request
 stays unchanged across the later App merge; the old runtime/test proof keeps
 its original source identity. Further Web/browser/
 shader work remains owner-deferred until after the epic.
+
+## Recoverable isolated IN ledger observation — 2026-10-25
+
+Water IN is now accepted on main through PR #254 at
+`06451f8ac9e8ac9b23a105d2fe22393375dc2d6b`, after final02c33341's four
+required exact-head gates. This observer's execution remains source0c9 plus the
+frozen five-file overlay; main acceptance does not publish the new observation
+API or complete scientific/full-host qualification. Further Web work is deferred.
+
+The [observer source/runtime ledger](../audits/2026-10-25-lcb004-inertial-ledger-observer.md)
+records `codex/lcb004-observer`: source5f02 plus three explicitly hashed local
+files, source freeze72304450, native139/DLL25e38920 and focused receipts47264eeb
+and9c6dac66. The checkout later fast-forwarded to accepted runtime-only Appbot
+`0c9b197754d57e1eb579a52d745a1ca8fd0d2b32`; exactly four inherited runtime and
+provenance paths changed, with observer code/native inputs held. These immutable
+external maps and the three source hashes recover the local overlay without
+relabelling old execution as a new release. This branch is not the separate
+trial-body branch. The later configured/actual worker observation adds only the existing copied
+statistics header and its new test, with final DLL2b351995/recorded139 inputs
+and focused-v6 receipted60f9c2 (import plus265/504/10192/100 assertions), bound
+by the final five-file freeze12febf9e. Root owns
+the observer code and separate docs review; no
+new observer runtime is published. Earlier App union paragraphs below retain
+prepublication history; inherited App publication and new adapter freshness are
+separate. Further Web work is owner-deferred.
 
 ## Historical preparation and Water-artifact consumption
 

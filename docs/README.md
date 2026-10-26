@@ -10,6 +10,32 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## Observer integration after accepted Trial — 2026-10-25
+
+Accepted main is `9e53a5b1b501e0667037b8502d3c1d15089211f5`, tree
+`af6778f4329a000a7b4ab04904a2811cb0df735a`, after #257's exact900 head passed
+Documentation40241199943, Native40241200007 and Godot40241200038 plus independent
+review. This unmerged Observer checkpoint normally consumes that accepted main;
+all incoming Trial implementation/test blobs and original Observer Native,
+runtime, profile and request blobs remain exact to their respective parents.
+Only additive documentation conflicts were reconciled. Both parents'152
+supplementary question objects survive intact in the153-question union, with
+frozen32 unchanged.
+
+Original Observer publication source2e1/run40237132659/bot871ff remains
+source-bound: Windowsba357334/Linux30bcfaf7, Native80 and compiled139 exact,
+76 actual processes. Its historical542 build entries now have536 equal and six
+explicit differences (five Trial script/test paths plus the publication audit),
+with six new Trial paths/current548. No runtime/manifest rewrite or new publisher
+lease is needed or armed. Original fb60/base564 Documentation40241133697,
+Native40241133702 and Godot40241133760 are independently accepted only for that
+original tree; fresh applicable exact-head gates/review are required for this
+integrated candidate. Further full-host/scientific/packaged acceptance remains
+open; Web/browser/shader work stays owner-deferred. Older intermediate status
+sections below retain their recorded source/epoch rather than overriding this
+current integration boundary.
+
+
 ## Trial successor correction after accepted App — 2026-10-25
 
 App #256 is merged as main56422c05 after all four exact-dc2 required gates.
@@ -38,6 +64,35 @@ This merge has no engine execution. Root's corrected #256 is ready for fresh
 gates/review; #257 Trial remains draft/downstream. Earlier ea96 gate greens do
 not cover either successor. Runtimes/profiles/requests stay inherited; Web deferred.
 
+## Current observer publication and accepted App — 2026-10-25
+
+App #256 is merged at main56422c05 after all four exact-dc2 required gates;
+the accepted file tree isf79b861f. The separate observer #258 now consumes that
+main content without changing its published inputs. Its [actual publication
+record](audits/2026-10-25-lcb004-observer-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
+binds source2e1e9989/run40237132659/bot871ff202,80 native/542 execution inputs,
+Windowsba357334/Linux30bcfaf7,38 successful processes per OS, independent
+artifact/LFS/ELF-floor/lease review and all18 materialized runtime payloads.
+The earlier six observer source/runtime mismatches are resolved by actual
+republication. Final observer-head required CI/review and broader #202/#203
+qualification remain separate; approval-held bot follow-ups are not greens.
+
+Earlier preparation/local-execution sections below retain their own source and
+request state. Their absent-request/unpublished/future-target wording and old
+rebuild blockers describe historical snapshots, not current publication status.
+All117 registry classifications and historical failures are retained. Further
+Web testing is owner-deferred until after the epic.
+
+## Unarmed observer publication preparation
+
+The [isolated observer publication contract](operations/github-development-and-release.md#isolated-observer-runtime-publication)
+and [dated preparation](audits/2026-10-25-lcb004-observer-publication.md) retain
+all003 controls and add ledger/worker proofs for38 prospective processes per OS.
+Its new request is absent; no observer runtime has been published and six native
+source comparisons remain blockers. Earlier App publication and local observer
+proof keep their exact scopes. Final gates/scientific/full-host qualification
+remain separate; Web work stays deferred.
+
 ## Post-publication test checkpoint
 
 The [identity-test correction](audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)
@@ -58,7 +113,7 @@ The [actual003 publication](audits/2026-10-25-lcb003-runtime-publication.md#actu
 all35 strict host/control cases:72 actual processes total, with matched
 native80/build535 input ledgers and642 policy assertions per OS. The
 earlier eight App provenance comparisons describe pre-publication inputs;
-the new manifests cover all80 current native inputs.
+the new manifests cover all80 inputs of that published App source.
 
 The six approval-held bot follow-ups are not validation greens. Final
 exact-head CI/review, remaining constructors and complete host/scientific/
@@ -92,6 +147,24 @@ owns the exact drift and remaining fresh acceptance. No new engine test, request
 profile, runtime publication or Web work occurs in this merge.
 
 - [Desktop barrel/Ripper preparation](audits/2026-10-25-lcb003-trial-body-constructors.md): exact retained Apply motion, fresh Restart/F5, transactional one-body admission/refusal and Windows-only proof; [canonical owner contract](architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation) owns semantics.
+
+## Isolated inertial observer checkpoint
+
+Water IN is now accepted on main through PR #254 at
+`06451f8ac9e8ac9b23a105d2fe22393375dc2d6b`, after final02c33341's four
+required exact-head gates. This observer's execution remains source0c9 plus the
+frozen five-file overlay; main acceptance does not publish the new observation
+API or complete scientific/full-host qualification. Further Web work is deferred.
+
+The [copied IN ledger contract](architecture/inertial-cellular-v1.md#copied-cumulative-inertial-ledger-observer--2026-10-25)
+and [dated Windows proof](audits/2026-10-25-lcb004-inertial-ledger-observer.md)
+add a nineteen-field, exact-decimal, owner-serialized observation API only.
+Brine24 fixture closure and copied-value isolation do not establish global
+conservation, a scientific campaign or Water-positive observation coverage.
+This branch inherits actual App source5f02/bot0c9 Windows/Linux publication;
+its new adapter overlay still needs fresh publication. The older App union
+paragraphs below retain their prepublication snapshot scope. Further Web work
+is owner-deferred until the epic is complete.
 
 ## Historical preparation and Water-artifact consumption
 

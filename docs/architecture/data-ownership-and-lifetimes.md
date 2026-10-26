@@ -20,6 +20,20 @@ Refusal retires only the candidate and preserves the old graph/World/receipt.
 This adds no mutable native view, shared Rapier object or complete host/replay
 claim; the dated proof is [separately scoped](../audits/2026-10-25-lcb003-trial-body-constructors.md).
 
+## Copied cumulative IN observations
+
+The exclusive serialized adapter owner may call `get_inertial_ledger()` between
+native operations. It copies the cumulative native record into a new envelope
+and nested dictionary; returned decimal strings have no mutable reference to
+World storage. The method performs no cell scan, tick, wake or reset. Native
+pool workers call no Godot APIs. A failed World exposes no partial ledger.
+Output dictionaries/strings allocate only at the explicit query boundary; no
+native hot-path allocation or world-law change is introduced. See the [typed
+ledger contract](inertial-cellular-v1.md#copied-cumulative-inertial-ledger-observer--2026-10-25)
+for identities, range-safe representation, cumulative/maxima semantics and the
+finite Brine24 proof boundary. This is a copied observation, not an immutable
+host receipt or global conservation certificate.
+
 The [final application union](liquid-prepared-setup-and-receipts.md#final-application-source-union)
 extends the existing precommit fractional future-source refusal to both admitted
 whole-cell Water families CY/IN. Initial normalization is setup-only. Refusal

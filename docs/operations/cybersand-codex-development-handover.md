@@ -10,6 +10,32 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Observer integration after accepted Trial — 2026-10-25
+
+Accepted main is `9e53a5b1b501e0667037b8502d3c1d15089211f5`, tree
+`af6778f4329a000a7b4ab04904a2811cb0df735a`, after #257's exact900 head passed
+Documentation40241199943, Native40241200007 and Godot40241200038 plus independent
+review. This unmerged Observer checkpoint normally consumes that accepted main;
+all incoming Trial implementation/test blobs and original Observer Native,
+runtime, profile and request blobs remain exact to their respective parents.
+Only additive documentation conflicts were reconciled. Both parents'152
+supplementary question objects survive intact in the153-question union, with
+frozen32 unchanged.
+
+Original Observer publication source2e1/run40237132659/bot871ff remains
+source-bound: Windowsba357334/Linux30bcfaf7, Native80 and compiled139 exact,
+76 actual processes. Its historical542 build entries now have536 equal and six
+explicit differences (five Trial script/test paths plus the publication audit),
+with six new Trial paths/current548. No runtime/manifest rewrite or new publisher
+lease is needed or armed. Original fb60/base564 Documentation40241133697,
+Native40241133702 and Godot40241133760 are independently accepted only for that
+original tree; fresh applicable exact-head gates/review are required for this
+integrated candidate. Further full-host/scientific/packaged acceptance remains
+open; Web/browser/shader work stays owner-deferred. Older intermediate status
+sections below retain their recorded source/epoch rather than overriding this
+current integration boundary.
+
+
 ## Trial successor correction after accepted App — 2026-10-25
 
 App #256 is merged as main56422c05 after all four exact-dc2 required gates.
@@ -38,6 +64,38 @@ This merge has no engine execution. Root's corrected #256 is ready for fresh
 gates/review; #257 Trial remains draft/downstream. Earlier ea96 gate greens do
 not cover either successor. Runtimes/profiles/requests stay inherited; Web deferred.
 
+## Current observer publication and accepted App — 2026-10-25
+
+App #256 is merged at main56422c05 after all four exact-dc2 required gates;
+the accepted file tree isf79b861f. The separate observer #258 now consumes that
+main content without changing its published inputs. Its [actual publication
+record](../audits/2026-10-25-lcb004-observer-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
+binds source2e1e9989/run40237132659/bot871ff202,80 native/542 execution inputs,
+Windowsba357334/Linux30bcfaf7,38 successful processes per OS, independent
+artifact/LFS/ELF-floor/lease review and all18 materialized runtime payloads.
+The earlier six observer source/runtime mismatches are resolved by actual
+republication. Final observer-head required CI/review and broader #202/#203
+qualification remain separate; approval-held bot follow-ups are not greens.
+
+Earlier preparation/local-execution sections below retain their own source and
+request state. Their absent-request/unpublished/future-target wording and old
+rebuild blockers describe historical snapshots, not current publication status.
+All117 registry classifications and historical failures are retained. Further
+Web testing is owner-deferred until after the epic.
+
+## Observer publisher preparation — 2026-10-25
+
+After the reviewed observer source/docs checkpoint, normal mergea1cc50ab consumes
+App ea96 without changing the five observer files or139 recorded native inputs.
+The separate [unarmed004 profile](github-development-and-release.md#isolated-observer-runtime-publication)
+retains import+35 controls and adds ledger504/worker265:38 required future
+processes per OS. Its own request is absent; no new runtime/manifest or Linux
+observer proof exists. Preserve the [dated preparation/failures](../audits/2026-10-25-lcb004-observer-publication.md),
+six current rebuild blockers, source freeze and later independent artifact/final
+exact-head gates. A later #256 Linux run exposes two stale identity-test
+expectations; Root owns their correction, and the reviewed corrected App head
+must be consumed before004 arming. Earlier ea96 gates do not validate it. No new scientific campaign or Web work starts here.
+
 ## Post-publication two-test correction — 2026-10-25
 
 Actual Linux run40232042725 at ea96/checkout56bd fails host34/1 and owner28/1
@@ -62,7 +120,7 @@ The [actual003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#a
 all35 strict host/control cases:72 actual processes total, with matched
 native80/build535 input ledgers and642 policy assertions per OS. The
 earlier eight App provenance comparisons describe pre-publication inputs;
-the new manifests cover all80 current native inputs.
+the new manifests cover all80 inputs of that published App source.
 
 The six approval-held bot follow-ups are not validation greens. Final
 exact-head CI/review, remaining constructors and complete host/scientific/
@@ -111,6 +169,28 @@ request/runtime files are changed in this slice. The inherited parent request
 stays unchanged across the later App merge; the old runtime/test proof keeps
 its original source identity. Further Web/browser/
 shader work remains owner-deferred until after the epic.
+
+## Isolated IN ledger observer — 2026-10-25
+
+Water IN is now accepted on main through PR #254 at
+`06451f8ac9e8ac9b23a105d2fe22393375dc2d6b`, after final02c33341's four
+required exact-head gates. This observer's execution remains source0c9 plus the
+frozen five-file overlay; main acceptance does not publish the new observation
+API or complete scientific/full-host qualification. Further Web work is deferred.
+
+The [observer checkpoint](../audits/2026-10-25-lcb004-inertial-ledger-observer.md)
+starts from actual App source5f02/runtime-only bot0c9. Its cohesive observation
+overlay adds three adapter inputs and two focused tests, including separate
+configured/actual last-tick worker participation readback. Its copied cumulative19-field ledger binds actual
+policy/parameters/completed tick/adapter generation, refuses quarantined state
+and exposes exact decimal strings. Final local Windows import/new worker265/ledger504/retained10192/100
+checks pass on DLL2b351995; Brine24 finite-census closure does not qualify a
+common-Water campaign, all materials, Linux or a new release. The new cpp/hpp/observation-values
+inputs require fresh source-matched publication; inherited App runtime acceptance
+is not observer acceptance. Older App union paragraphs below are historical
+prepublication snapshots. Continue qualification from registered fixtures and
+explicit sources/sinks, preserving all117 registry classifications; no #203
+completion or new campaign is claimed. Web work remains owner-deferred.
 
 ## Historical preparation and Water-artifact consumption
 

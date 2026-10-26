@@ -93,6 +93,7 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("get_physical_state_format_version"),
                          &CyberNativeCellWorld::get_physical_state_format_version);
     ClassDB::bind_method(D_METHOD("inspect_inertial_cell", "point"), &CyberNativeCellWorld::inspect_inertial_cell);
+    ClassDB::bind_method(D_METHOD("get_inertial_ledger"), &CyberNativeCellWorld::get_inertial_ledger);
     ClassDB::bind_method(D_METHOD("inspect_gas_compartments"), &CyberNativeCellWorld::inspect_gas_compartments);
     ClassDB::bind_method(D_METHOD("inspect_pressure_cell", "point"), &CyberNativeCellWorld::inspect_pressure_cell);
     ClassDB::bind_method(D_METHOD("get_pressure_flow_ledger"), &CyberNativeCellWorld::get_pressure_flow_ledger);
@@ -1687,6 +1688,50 @@ std::int64_t CyberNativeCellWorld::get_physical_state_hash_version() const {
 
 std::int64_t CyberNativeCellWorld::get_physical_state_format_version() const {
     return world_ ? static_cast<std::int64_t>(world_->physical_state_format_version()) : 0;
+}
+
+Dictionary CyberNativeCellWorld::get_inertial_ledger() const {
+    Dictionary out;
+    out["schema"] = "lcb-inertial-ledger-observation-v1";
+    out["ok"] = world_ != nullptr && !world_->has_failed();
+    out["available"] = world_ != nullptr && !world_->has_failed() && world_->inertial_enabled();
+    if (world_ == nullptr || world_->has_failed()) {
+        out["error"] = "Healthy native World required; quarantined state is not an observation";
+        return out;
+    }
+    using cybersand::liquid_policy_detail::concat;
+    out["completed_tick"] = String(concat(world_->completed_tick_index()).c_str());
+    out["session_generation"] = String(concat(liquid_policy_session_generation_).c_str());
+    out["policy_hash"] = String(world_->liquid_solver_policy().policy_hash_hex().c_str());
+    if (!world_->inertial_enabled()) return out;
+    out["extension_identity"] = String(cybersand::Sha256::hex(
+        cybersand::inertial_extension_identity(world_->inertial_parameters())).c_str());
+    const auto ledger = world_->inertial_ledger();
+    Dictionary values;
+    const auto put = [&values](const char* name, auto value) {
+        values[name] = String(cybersand::liquid_policy_detail::concat(value).c_str());
+    };
+    put("gravity_y", ledger.gravity_y);
+    put("impulse_x", ledger.impulse_x);
+    put("impulse_y", ledger.impulse_y);
+    put("loss", ledger.loss);
+    put("support", ledger.support);
+    put("remainder", ledger.remainder);
+    put("updates", ledger.updates);
+    put("unit_moves", ledger.unit_moves);
+    put("density_swaps", ledger.density_swaps);
+    put("contacts", ledger.contacts);
+    put("rests", ledger.rests);
+    put("velocity_retired", ledger.velocity_retired);
+    put("retired_x", ledger.retired_x);
+    put("retired_y", ledger.retired_y);
+    put("external_x", ledger.external_x);
+    put("external_y", ledger.external_y);
+    put("maximum_read_reach", ledger.maximum_read_reach);
+    put("maximum_write_reach", ledger.maximum_write_reach);
+    put("external_speed", ledger.external_speed);
+    out["values"] = values;
+    return out;
 }
 
 Dictionary CyberNativeCellWorld::inspect_inertial_cell(Vector2i point) const {

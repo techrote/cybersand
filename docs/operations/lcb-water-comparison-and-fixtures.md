@@ -18,11 +18,14 @@ per-tick quantity, now also exercised in actual [compat/threaded browsers](../au
 with successful terminal POSTs. These bounded30-tick functional arms do not execute the
 registered dam/head/feel campaign, alter any117 registry classification or
 establish #203 Gate D/scientific acceptance. Original protected fixtures and
-their historical measured controls remain unchanged.
+their historical measured controls remain unchanged. These browser records are
+historical/source-qualified; further Web testing, shader work and visual/manual
+qualification are owner-deferred until the epic is complete. Headless required
+Native/Godot gates continue.
 
 ## Status
 
-**Approved bounded comparison design and fixtures — Gates D/E PASS.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current in source; Brine IN is accepted on main through #250; the isolated Water-IN source/runtime successor remains outside accepted main until its own final gates pass. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
+**Approved bounded comparison design and fixtures — Gates D/E PASS.** **LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current in source; Brine IN is accepted on main through #250; Water IN is accepted through #254 at main06451f8a after final head02c33341 passes all four required exact-head gates. Its registered common-Water scientific and full-host qualification remains separate. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
 
 - **Owner-approved:** Water must be a common controlled test material for all
   four families (#213 Gate D; #200 amendment of 2026-10-22).
@@ -34,11 +37,14 @@ their historical measured controls remain unchanged.
   (`ec58d919`). Their source/runtime qualifications
   are recorded in their dated evidence. Cached/dormant pressure variants are
   accepted on main through #253, with source-matched publication and exact-head
-  gates. Brine IN is accepted through #250. Isolated Water IN executes natively
-  with [actual Windows/Linux publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25)
-  ataa8af247/bot03cccd8f; its final ready-PR gates and the registered common-Water
-  scientific/full-host campaign remain required. Historical measured fixtures
-  and117 registry classifications below are unchanged.
+  gates. Brine IN is accepted through #250. Water IN is accepted through #254
+  at `06451f8ac9e8ac9b23a105d2fe22393375dc2d6b`, with
+  [actual Windows/Linux publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25)
+  ataa8af247/bot03cccd8f. Final head02c33341 passes Documentation40224164431,
+  Native40224164452, Godot40224164530 and #4940224164684. Registered common-Water
+  scientific/full-host qualification, owner feel and #203 completion remain
+  separate. Historical measured fixtures and117 registry classifications below
+  are unchanged; no acceptance of those screens follows from source admission.
 
 Families, variants, refusal codes and receipts are defined in the
 [solver-family policy](../architecture/liquid-solver-family-policy.md).
@@ -50,7 +56,7 @@ Families, variants, refusal codes and receipts are defined in the
 | `W-FM` | `freemass_v1/reference` | protected native Current: mass8, coherence12, fractional | **executes** |
 | `W-CY` | `cellular_yield_v1/reference` | **experimental whole-cell**: every Water cell contains `maximum()`; Water's own yielding law and material block v2 (`viscosity_index` 0–255, default 0) retain its material hooks | Current on accepted main through #246; source-matched Windows/Linux publication and final required matrix pass ([contract](../architecture/liquid-prepared-setup-and-receipts.md)) |
 | `W-PF` | `pressure_flow_v1/{reference,cached,cached_dormant}` | experimental pressure/overfill/gas candidate, Water-only v1 | `reference` **executes**, opt-in: Current from merged #245 ([design](../architecture/pressure-flow-v1.md)); `cached`/`cached_dormant` are accepted on main through #253 ([optimization contract](../architecture/pressure-optimization.md)); source-matched Windows/Linux publication and exact-head gates pass |
-| `W-IN` | `inertial_cellular_v1/reference` | experimental whole-cell Water at precision maximum, retained velocity/accumulator and its own coherence/carrying adapter | executes on isolated Water successor; sourceaa8af247 Windows/Linux publication passes15 processes/642 policy assertions perOS with independent review. Final ready-PR, common-Water scientific/full-host qualification pending |
+| `W-IN` | `inertial_cellular_v1/reference` | experimental whole-cell Water at precision maximum, retained velocity/accumulator and its own coherence/carrying adapter | Current on accepted main through #254 (`06451f8a`): sourceaa8af247 Windows/Linux publication passes15 processes/642 policy assertions perOS with independent review; final02c33341 required four gates pass. Registered common-Water scientific/full-host qualification and owner feel remain pending |
 
 Rules:
 
