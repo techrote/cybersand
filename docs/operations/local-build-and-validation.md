@@ -1117,6 +1117,27 @@ describes the bounded native-only JSON runner. Its result is not a Windows or
 browser run merely because it exercises the synchronous controller on Linux.
 Use actual platform artifacts and retain their identities for platform acceptance.
 
+## Expedition map checks
+
+The [Expedition audit](../audits/2026-10-26-player-playground-expeditions.md) binds
+15-map execution to source deltas and runtime identity. Run the new regression:
+
+```text
+godot --headless --path godot --script res://tests/test_player_playground_expeditions.gd
+```
+
+Use the normal invocation for all static, real wheel-route, valve and featured
+mechanic checks; `--static-only` and `--feature-only` intentionally cover less.
+The shared map matrix follows the full `Course.MAP_IDS` list. NPC tests admit all
+three models on every map with both physical/material player representations.
+The discovered matrix has a finite900-second budget; route/neutral-field cases
+have420 seconds, with explicit measured-work scheduling hints. This accommodates
+the expanded catalogue without dropping combinations or altering pass thresholds.
+The unchanged planner tests pass25 cases and CI provider policy remains GitHub-hosted.
+
+Check process exit status as well as failure footers; the preserved import
+cleanup crash demonstrates why a printed zero-failure footer is insufficient.
+
 ## Playground district, agility, swarm and NPC checks
 
 The [polish audit](../audits/2026-10-26-player-playground-polish-and-npcs.md) records

@@ -42,6 +42,7 @@ var _overlay: Control
 var _canvas: Control
 var _terrain: TextureRect
 var _title: Label
+var _map_title: Label
 var _tagline: Label
 var _controls: Label
 var _status: Label
@@ -115,7 +116,9 @@ func _build_ui() -> void:
 	_label(side, "MAP · every player can use every map", 13, Color("7895a9"))
 	_map_picker = OptionButton.new()
 	_map_picker.focus_mode = Control.FOCUS_NONE
-	for map_name: String in Course.MAP_NAMES: _map_picker.add_item(map_name)
+	for index: int in range(Course.MAP_NAMES.size()):
+		_map_picker.add_item(Course.MAP_NAMES[index])
+		_map_picker.set_item_tooltip(index, Course.MAP_HINTS[index])
 	_map_picker.item_selected.connect(select_map)
 	side.add_child(_map_picker)
 	_label(side, "WATER · changing solver restarts the map", 13, Color("7895a9"))
@@ -209,6 +212,7 @@ func _build_ui() -> void:
 	right.add_theme_constant_override("separation", 8)
 	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(right)
+	_map_title = _label(right, "", 19, Color("b9d7e7"))
 	var progress := HBoxContainer.new()
 	right.add_child(progress)
 	_timing = _label(progress, "", 19, Color("a3e8f4"))
@@ -285,9 +289,10 @@ func select_preset(index: int) -> bool:
 	_last_draw_tick = -1
 	_last_packet_epoch = -1
 	_npc_stage = 0
-	_npc_status.text = "Three loose Rapier props restored. %s\nNPCs use local demo controls; maximum 8 physical actors / 64 bodies." % \
+	_npc_status.text = "Three loose objects restored. %s\nNPCs roam on their own. If a stage is occupied, click the map to choose a clear spot." % \
 		("An NPC is included · practice lap." if _include_npcs.button_pressed else "No starting NPC.")
 	_title.text = Course.NAMES[index]
+	_map_title.text = Course.MAP_NAMES[selected_map]
 	_title.add_theme_color_override("font_color", Course.COLORS[index])
 	_tagline.text = Course.TAGLINES[index]
 	_controls.text = Course.controls(Course.PRESETS[index])
@@ -339,9 +344,19 @@ func _spawn_npc(position: Vector2) -> bool:
 	_cancel_input()
 	var receipt: Dictionary = runtime.spawn_npc(Runtime.NPC_IDS[_npc_picker.selected], position)
 	_npc_status.text = ("NPC added · actor %d · practice lap.\nExisting player, terrain and liquid state retained." % int(receipt.actor_id)) \
-		if receipt.get("accepted", false) else "Placement refused: " + str(receipt.get("reason", "Unknown refusal"))
+		if receipt.get("accepted", false) else "Placement refused: " + _npc_refusal(str(receipt.get("reason", "")))
 	if receipt.get("accepted", false): _present(runtime.snapshot(), true)
 	return bool(receipt.get("accepted", false))
+
+
+func _npc_refusal(reason: String) -> String:
+	match reason:
+		"npc_spawn_body_overlap": return "Choose a spot clear of the player, NPCs and loose objects."
+		"npc_spawn_occupied_cells": return "Choose an empty space clear of terrain and liquid."
+		"npc_spawn_outside_map": return "Keep the whole actor inside the map."
+		"actor_append_configuration_or_capacity", "actor_append_body_capacity":
+			return "This run has reached its actor limit. Reset to clear added NPCs."
+	return "Try a clear location, or reset the map to restore the starting setup."
 
 
 func _spawn_npc_at_stage() -> void:
@@ -597,16 +612,11 @@ func _present(state: Dictionary, force: bool = false) -> void:
 		var movement: Dictionary = actor.get("player_movement", {})
 		var mode: String = str(movement.get("movement_mode", movement.get("mode", "ready"))).replace("_", " ").to_upper()
 		_status.text = "%s   ·   SPEED %.1f cells/s   ·   %s" % [mode, Vector2(actor.get("velocity", Vector2.ZERO)).length(), "SUPPORTED" if bool(actor.get("grounded", false)) else "AIRBORNE"]
-	if selected_map > 0:
-		_hint.text = Course.MAP_HINTS[selected_map]
+	_hint.text = Course.MAP_HINTS[selected_map]
+	if selected == 2:
+		_hint.text += "  Afterimage: Shift/S + Space bullet jump; hold Ctrl in air to glide."
 	elif state.material_mode:
-		_hint.text = "The faint ring shows your local control field. Nearby matching material can join it. Solid walls block the parcels; try the narrow sieve on the right."
-	elif selected == 2:
-		_hint.text = "Try: build speed → hold Shift → aim the mouse → Space for a bullet jump → C to glide. Tuck early for the low tunnel; releasing a short slide starts a roll."
-	elif selected in [0, 1]:
-		_hint.text = "Use the ramp to clear the tunnel roof. Lean before landing, then brake to settle. The empty equipment mount can be equipped later from F5 in the actor sandbox."
-	else:
-		_hint.text = "Thread the numbered flight gates. Main thrust follows your body's orientation; use rotation and airbraking to turn the next corner."
+		_hint.text += "  The ring marks your control area. Idle motion stays around its fixed centre; nearby matching material can join."
 	var equipment: Dictionary=actor.get("equipment",actor.get("usable",{}))
 	_usable_status.text="%s · %s\nCharge %.0f · cooldown %.2fs\nM use / B alternate · N drop / U attach (mechanical)" % [UsableCatalog.name_for(runtime.usable_index),equipment.get("last_result","selection applies on next admitted tick"),float(equipment.get("charge",100.0)),float(equipment.get("cooldown",0.0))]
 

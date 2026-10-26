@@ -110,6 +110,45 @@ Sources: [map definitions](../../godot/scripts/player_playground_course.gd),
 [scene controls](../../godot/scripts/player_playground.gd) and
 [dated qualification](../audits/2026-10-26-player-playground-maps.md).
 
+## Expedition collection and second district review
+
+**Current branch source, PR #262:** the map picker contains 15 maps: the original
+eight districts and these seven Expeditions. Every player can select every map;
+map/player/Water defaults and preparation contracts are unchanged. All are
+1024×768. The [dated Expedition record](../audits/2026-10-26-player-playground-expeditions.md)
+separates actual Windows physics, source-derived composition review and remaining
+human/hosted qualification.
+
+| Map | Suggested player | Structure and challenge |
+|---|---|---|
+| Stormbreak Viaduct | Loose Cannon | Coastal overpass, service yard and lighthouse road |
+| Rootbound Conservatory | Trials Rat | Greenhouse nave, timber roots and graded irrigation bridge |
+| Prism Archive | Afterimage | Descending gallery, open atrium, compact passage and excavation vault |
+| Eventide Station | Vector Rush | Mountain saddle, inspection courts and asymmetric weather mast |
+| Buried Baths | Dust Devil | Broken bathhouse, real cuttable Sand stopper, grille and catch trough |
+| Saltglass Sinkhole | Undertow | Karst terraces, two deep stores and open side-cavern apertures |
+| Starfall Amphitheatre | Barrel Rocket | Offset seating, open auditorium and irregular flight scenery |
+
+Each adds three loose Rapier props, two clear NPC stages and large liquid stores.
+Marked glass drain plates connect stored Water to a visible release channel.
+Select **Glass Scorer**, aim at the glass and use **M** while unpaused. Reset
+restores the store. The Baths' Sand stopper uses **Line Cutter**. These are real
+material/tool interactions, not decorative completion switches. Props and NPCs
+use the existing shared physics host and capacity/refusal semantics.
+
+The second review also adds district-specific recovery shelves, receiving trays,
+filter galleries, clear flight landing space and rooftop/service details to the
+original eight. Optional upper routes have separately scoped tests; a staged
+compact-passage proof does not prove an entire expert lap from default spawn.
+Source-derived raster review uses the native palette but does not qualify the
+rendered shader or interactive appearance. The owner's subsequent cyberpunk
+collection is the next scoped map stage, after this review; it is not present in
+this 15-map checkpoint.
+
+Sources: [Expedition maps](../../godot/scripts/player_playground_expeditions.gd),
+[district maps](../../godot/scripts/player_playground_districts.gd),
+[shared selector](../../godot/scripts/player_playground_course.gd).
+
 ## Detailed districts, live NPCs and agile Afterimage
 
 The [polish checkpoint](../audits/2026-10-26-player-playground-polish-and-npcs.md)

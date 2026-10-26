@@ -294,7 +294,7 @@ Execution and human/platform qualification route to the
 
 The same guide owns the [seven tailored maps, Water solver picker and native
 painting/spawning controls](../systems/player-control-playground.md#seven-tailored-maps-water-selection-and-painting).
-All seven players can select all eight 1024×768 districts; player changes keep
+All seven players can select all 15 1024×768 maps (eight districts plus seven Expeditions); player changes keep
 map/Water, map/solver changes restart, and edits/usables mark practice laps. The
 [2026-10-26 qualification](../audits/2026-10-26-player-playground-maps.md) separates
 local Windows execution from complete route, human feel and hosted acceptance.

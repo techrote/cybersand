@@ -6,6 +6,8 @@ extends RefCounted
 const VIEW := Rect2i(0, 0, 1024, 768)
 const FLOOR: int = 736 # Compatibility only; new callers use floor_y(id).
 const SPAWN := Vector2(96, 672)
+const IDS: Array[StringName] = [&"mixed", &"cannon_run", &"rat_steps", &"afterimage_works",
+	&"vector_port", &"dust_foundry", &"undertow_lab", &"rocket_yard"]
 
 
 static func rect(out: Array, x: int, y: int, w: int, h: int, material: int) -> void:
@@ -190,11 +192,22 @@ static func _mixed(out: Array) -> void:
 	canopy(out,738,580,162,47)
 	for i: int in range(4): cargo(out,750+i*36,628,28,32,[81,87,102,91][i])
 	pipe(out,730,616,210,4,69)
-	lamps(out,[Vector2i(32,672),Vector2i(290,672),Vector2i(734,672),Vector2i(984,672)])
+	lamps(out,[Vector2i(32,672),Vector2i(290,672),Vector2i(734,672),Vector2i(1008,616)])
 	for i: int in range(4):
 		rect(out,78+i*34,284,22,10,[77,78,79,80][i])
 		rect(out,82+i*34,287,14,4,72)
 	for i: int in range(5): rect(out,742+i*44,734,24,3,[53,52,50,56,98][i])
+	# An eastern service stair connects the street, canopy and covered bazaar.
+	# Its first tread is beyond the universal bypass; subsequent treads remain
+	# overhead, so a missed jump always returns to the open market street.
+	# The first thin shelf leaves38cells above the full street; the light loose
+	# crate beside it is an optional movable step, never a static road barrier.
+	rect(out,984,662,30,4,46)
+	for step: Vector2i in [Vector2i(946,654),Vector2i(982,628),
+		Vector2i(934,602),Vector2i(978,576),Vector2i(914,550),Vector2i(866,526)]:
+		deck(out,step.x,step.y,30,46,79)
+	deck(out,704,504,150,46,79)
+	rect(out,982,540,8,56,0)
 
 
 static func _cannon(out: Array) -> void:
@@ -244,6 +257,9 @@ static func _cannon(out: Array) -> void:
 	for i: int in range(7): rect(out,36+i*39,740,24,2,77 if i%2 else 79)
 	pipe(out,300,538,5,112,69)
 	rect(out,280,650,46,8,76)
+	# The first landing remains clear; these flush braking stripes lead into
+	# the loose-load bay, with the lower pit road available after any overshoot.
+	for x: int in [836,876,916]: rect(out,x,684,10,1,104)
 
 
 static func _rat(out: Array) -> void:
@@ -289,6 +305,15 @@ static func _rat(out: Array) -> void:
 	pipe(out,284,268,630,4,69)
 	lamps(out,[Vector2i(26,664),Vector2i(306,664),Vector2i(706,664),Vector2i(994,664)],79)
 	for i: int in range(10): rect(out,34+i*27,724,16,2,40 if i%2 else 39)
+	# Optional balance branch above the graded road: entry shelves, a broad
+	# refuge, then an open descent back to the road. No ceiling is added within
+	# the vehicle envelope of the proven shallow universal ascent/descent.
+	deck(out,706,580,34,46,79)
+	deck(out,788,548,42,46,79)
+	deck(out,744,516,38,46,79)
+	deck(out,842,530,100,46,77)
+	deck(out,940,594,54,46,79)
+	rect(out,928,500,10,80,0)
 
 
 static func _afterimage(out: Array) -> void:
@@ -297,7 +322,7 @@ static func _afterimage(out: Array) -> void:
 	rect(out,6,700,1012,62,57)
 	rect(out,6,700,1012,3,59)
 	deck(out,334,630,118,63,76)
-	rect(out,306,630,28,7,63)
+	rect(out,320,630,14,7,63)
 	rect(out,338,610,110,8,64)
 	# Both mouths stay open; the former left cheek filled the entire gap.
 	route_frame(out,346,582,94,18,78)
@@ -337,8 +362,15 @@ static func _afterimage(out: Array) -> void:
 		rect(out,710+i*42,424,3,26,74)
 		rect(out,704+i*42,414,16,9,[77,78,80,79,77,78][i])
 	for i: int in range(4): cargo(out,34+i*56,510,44,36,[81,87,102,91][i])
-	lamps(out,[Vector2i(24,668),Vector2i(306,668),Vector2i(472,668),Vector2i(978,668)],78)
+	lamps(out,[Vector2i(24,668),Vector2i(340,668),Vector2i(472,668),Vector2i(978,668)],78)
 	for i: int in range(6): rect(out,726+i*43,730,26,3,[53,52,98,38,81,50][i])
+	# A light loose crate beside the thin entry shelf supplies the optional
+	# twenty-cell first step. Every static shelf leaves the full street clear;
+	# a wheeled player can push the crate aside instead of entering the course.
+	rect(out,304,656,30,7,63)
+	rect(out,282,640,18,5,63)
+	deck(out,458,598,38,63,78)
+	deck(out,476,566,40,63,78)
 
 
 static func _vector(out: Array) -> void:
@@ -364,9 +396,12 @@ static func _vector(out: Array) -> void:
 	tank(out,384,518,194,128,3,71)
 	tank(out,622,512,182,134,24,120)
 	deck(out,838,630,144,114,77)
-	for i: int in range(4):
-		cargo(out,848+i*32,592,24,30,[62,87,128,131][i])
-		windows(out,702+i*46,286,1,46,72)
+	# Edge cargo frames a broad, genuinely empty touchdown area instead of
+	# filling the entire landing deck with static boxes.
+	cargo(out,842,592,24,30,62)
+	cargo(out,956,592,20,30,131)
+	route_frame(out,868,552,84,68,77)
+	for i: int in range(4): windows(out,702+i*46,286,1,46,72)
 	for i: int in range(8):
 		rect(out,626+i*12,134+i*6,12,4,129)
 		rect(out,626+i*12,138+i*6,3,12,50)
@@ -424,6 +459,14 @@ static func _dust(out: Array) -> void:
 		rect(out,342+i*44,632,26,8,76)
 	lamps(out,[Vector2i(26,672),Vector2i(310,672),Vector2i(576,672),Vector2i(992,672)],79)
 	for i: int in range(6): rect(out,760+i*35,730,20,3,[53,52,28,50,100,131][i])
+	# Separate open receiving trays make the two comb stages visibly useful.
+	# The first tray stays below the existing y452 powder-flow observation.
+	deck(out,368,468,114,104,79)
+	rect(out,364,450,4,25,104)
+	rect(out,482,450,4,25,104)
+	deck(out,638,612,110,104,77)
+	rect(out,634,594,4,25,104)
+	rect(out,748,594,4,25,104)
 
 
 static func _undertow(out: Array) -> void:
@@ -465,6 +508,14 @@ static func _undertow(out: Array) -> void:
 		rect(out,62+i*42,450,20,8,[2,23,27,13,29][i])
 	lamps(out,[Vector2i(26,668),Vector2i(286,668),Vector2i(616,668),Vector2i(982,668)],77)
 	for i: int in range(8): rect(out,46+i*30,730,18,3,[98,55,54,52,53,50,70,111][i])
+	# The upper water organ has a visible glass outlet into a real filter comb
+	# and catch terrace. A dry western lip lets any visitor retreat to the nave.
+	rect(out,500,338,16,7,35)
+	for x: int in [476,492,524,540]: rect(out,x,358,8,7,66)
+	rect(out,508,358,8,7,0)
+	deck(out,468,382,84,120,78)
+	deck(out,302,570,38,38,77)
+	deck(out,288,622,40,38,77)
 
 
 static func _rocket(out: Array) -> void:
@@ -475,7 +526,10 @@ static func _rocket(out: Array) -> void:
 	tank(out,664,474,154,172,3,131)
 	tank(out,846,456,146,190,16,71)
 	ribs(out,346,292,18,370,131,20)
-	ribs(out,526,220,18,370,131,20)
+	# A full-height right wall trapped the inner slalom. The mid-height opening
+	# now connects its378 pad and permits a controlled retreat into the well.
+	ribs(out,526,220,18,94,131,20)
+	ribs(out,526,410,18,180,131,20)
 	deck(out,348,664,138,131,79)
 	deck(out,424,542,118,131,77)
 	deck(out,348,418,110,131,78)
@@ -514,12 +568,14 @@ static func checkpoints(id: StringName) -> PackedVector2Array:
 	match id:
 		&"cannon_run": return PackedVector2Array([first,Vector2(570,656),Vector2(650,656),Vector2(986,724)])
 		&"rat_steps": return PackedVector2Array([first,Vector2(590,618),Vector2(780,638),Vector2(978,684)])
-		&"afterimage_works": return PackedVector2Array([first,Vector2(350,688),Vector2(650,688),Vector2(1000,688)])
-		&"vector_port": return PackedVector2Array([first,Vector2(450,698),Vector2(704,698),Vector2(1000,698)])
-		&"dust_foundry": return PackedVector2Array([first,Vector2(360,692),Vector2(650,692),Vector2(1000,692)])
-		&"undertow_lab": return PackedVector2Array([first,Vector2(360,688),Vector2(704,688),Vector2(1000,688)])
-		&"rocket_yard": return PackedVector2Array([first,Vector2(392,708),Vector2(716,708),Vector2(1000,708)])
-	return PackedVector2Array([first,Vector2(360,692),Vector2(666,692),Vector2(1000,692)])
+		&"afterimage_works": return PackedVector2Array([first,Vector2(350,688),Vector2(650,688),Vector2(992,688)])
+		&"vector_port": return PackedVector2Array([first,Vector2(450,698),Vector2(704,698),Vector2(992,698)])
+		&"dust_foundry": return PackedVector2Array([first,Vector2(360,692),Vector2(650,692),Vector2(992,692)])
+		&"undertow_lab": return PackedVector2Array([first,Vector2(360,688),Vector2(704,688),Vector2(992,688)])
+		&"rocket_yard": return PackedVector2Array([first,Vector2(392,708),Vector2(716,708),Vector2(992,708)])
+	# Keep the final marker reachable by the complete wide buggy before its
+	# front assembly contacts the boundary; the checkpoint radius stays15.
+	return PackedVector2Array([first,Vector2(360,692),Vector2(666,692),Vector2(992,692)])
 
 
 static func reservoir_outlet(id: StringName) -> Vector2i:
@@ -552,13 +608,13 @@ static func props(id: StringName) -> Array[Dictionary]:
 	# These stages avoid the first 200 route cells, liquids and checkpoints.
 	match id:
 		&"cannon_run": return [_prop(846,668,20,16,5.0,"d7a65f"),_prop(888,668,16,16,3.0,"b7c9d3"),_prop(932,662,24,28,7.0,"a56e4d")]
-		&"rat_steps": return [_prop(376,522,18,18,3.0,"a47b51"),_prop(806,470,20,18,4.0,"8d8f92"),_prop(928,406,16,18,2.5,"b79d65")]
-		&"afterimage_works": return [_prop(492,686,20,18,4.0,"d0a16a"),_prop(708,684,20,22,4.5,"939cb1"),_prop(962,680,24,30,6.0,"af7751")]
-		&"vector_port": return [_prop(342,694,18,20,5.0,"9baebb"),_prop(880,694,22,20,6.0,"cdaf6c"),_prop(938,692,24,24,7.0,"7e9da5")]
-		&"dust_foundry": return [_prop(550,688,22,22,5.0,"a87443"),_prop(702,686,20,26,4.5,"8f98a0"),_prop(958,688,22,22,5.0,"af8b55")]
-		&"undertow_lab": return [_prop(306,684,18,22,4.0,"a6cbd4"),_prop(644,684,22,22,5.0,"bc9f67"),_prop(958,682,24,26,7.0,"84b6aa")]
-		&"rocket_yard": return [_prop(602,704,20,20,5.0,"9cacb4"),_prop(638,700,18,28,5.5,"c89860"),_prop(930,340,20,22,4.0,"91aeb8")]
-	return [_prop(746,688,20,22,4.0,"a8885d"),_prop(910,684,24,30,6.0,"a6bcc3"),_prop(964,690,18,18,3.0,"c6a264")]
+		&"rat_steps": return [_prop(376,522,18,18,3.0,"a47b51"),_prop(806,470,20,18,4.0,"8d8f92"),_prop(888,518,16,18,2.5,"b79d65")]
+		&"afterimage_works": return [_prop(290,690,16,20,0.25,"d0a16a"),_prop(496,554,20,22,4.5,"939cb1"),_prop(836,252,24,30,6.0,"af7751")]
+		&"vector_port": return [_prop(430,355,18,20,5.0,"9baebb"),_prop(748,426,22,20,6.0,"cdaf6c"),_prop(854,580,24,24,7.0,"7e9da5")]
+		&"dust_foundry": return [_prop(420,456,22,22,5.0,"a87443"),_prop(700,598,20,26,4.5,"8f98a0"),_prop(584,140,22,22,5.0,"af8b55")]
+		&"undertow_lab": return [_prop(270,488,18,22,4.0,"a6cbd4"),_prop(750,234,22,22,5.0,"bc9f67"),_prop(924,398,24,26,7.0,"84b6aa")]
+		&"rocket_yard": return [_prop(598,366,20,20,5.0,"9cacb4"),_prop(238,430,18,28,5.5,"c89860"),_prop(930,340,20,22,4.0,"91aeb8")]
+	return [_prop(954,695,20,18,0.25,"a8885d"),_prop(929,534,24,30,6.0,"a6bcc3"),_prop(996,653,18,18,3.0,"c6a264")]
 
 
 static func _prop(x: float, y: float, w: float, h: float, mass: float, color: String) -> Dictionary:

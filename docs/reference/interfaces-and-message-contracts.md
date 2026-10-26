@@ -990,6 +990,16 @@ witnesses and cross-owner queues remain Planned.
 
 The [physical Blacksite experiment](../operations/physical-actor-programme.md) reuses the current body input/result ABI with one rectangle. `apply_trial_impulses` is a main-thread bridge method; no native field layout or sampled actor action/observation stride changes.
 
+## Playground map providers
+
+The shared Course routes layout, spawn, floor, checkpoints, props and NPC stages
+to the district or Expedition provider by stable map ID. Metadata arrays have
+the same order as `MAP_IDS`; every public map remains available to every preset.
+Providers return authored rectangles/value metadata, not mutable World storage.
+No native API or setup/receipt identity contract changes with the new maps.
+Sources: [Course](../../godot/scripts/player_playground_course.gd),
+[Expeditions](../../godot/scripts/player_playground_expeditions.gd).
+
 ## Playground live actor admission
 
 `CyberPlayerPlaygroundRuntime.spawn_npc(model, position)` accepts runner, skimmer

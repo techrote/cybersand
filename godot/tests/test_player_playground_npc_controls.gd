@@ -65,10 +65,34 @@ func run() -> void:
 		runtime.close()
 	await process_frame
 	runtime.free()
+	test_map_npcs()
 	await test_ui()
 	await process_frame
 	print("PLAYGROUND_NPC_CONTROLS: %d assertions, %d failures" % [assertions, failures])
 	quit(0 if failures == 0 else 1)
+
+
+func test_map_npcs() -> void:
+	var owner = Runtime.new()
+	root.add_child(owner)
+	for map_id: StringName in Course.MAP_IDS:
+		for player: StringName in [&"stuntbuggy", &"dryswarm"]:
+			for model: StringName in Runtime.NPC_IDS:
+				expect(owner.configure(player, map_id, 0, true, model),
+					"initial full NPC footprint admits " + str(map_id) + "/" + str(player) + "/" + str(model))
+				if not owner.active(): continue
+				var initial: Dictionary = owner.liquid_readback().receipt
+				expect(int(initial.initial_body_count) == owner.render_parts().size(), "map receipt covers actual NPC and prop bodies")
+				var original_world: Object = owner._arena._world
+				var append: Dictionary = owner.spawn_npc(model, Course.npc_spawns(map_id)[1])
+				expect(append.accepted, "second full NPC footprint appends " + str(map_id) + "/" + str(model))
+				expect(owner._arena._world == original_world and owner.tick == 0
+					and owner.liquid_readback().receipt == initial, "map append preserves World, clocks and immutable construction receipt")
+				owner.submit_action({})
+				owner.step()
+				expect(not owner.failed and owner.tick == 1, "all map NPC representations take one shared tick")
+	owner.close()
+	owner.free()
 
 
 func test_ui() -> void:

@@ -1,25 +1,25 @@
 class_name CyberPlayerPlaygroundCourse
 extends RefCounted
 const Districts = preload("res://scripts/player_playground_districts.gd")
+const Expeditions = preload("res://scripts/player_playground_expeditions.gd")
 
 # Native-cell course shared by the articulated and material player owners.
 const ID: String = "player-playground"
 # Retained small regression fixture only; public districts use map_view().
 const VIEW := Rect2i(128, 128, 512, 256)
 const FLOOR_Y: int = 352
-const MAP_IDS: Array[StringName] = [&"mixed", &"cannon_run", &"rat_steps", &"afterimage_works",
-	&"vector_port", &"dust_foundry", &"undertow_lab", &"rocket_yard"]
+const MAP_IDS: Array[StringName] = Districts.IDS + Expeditions.IDS
 const MAP_NAMES: Array[String] = ["Flood Market · all players", "Quarry Rally · buggy", "Terraced Aqueduct · trials bike",
 	"Textile Mill · acrobat", "Crater Port · lander", "Inverted Foundry · Sand cloud",
-	"Filtration Cathedral · Water blob", "Silo Facility · jet barrel"]
+	"Filtration Cathedral · Water blob", "Silo Facility · jet barrel"] + Expeditions.NAMES
 const MAP_HINTS: Array[String] = ["Follow the dry market street, explore the covered bazaar, then take the courier rooftops. Large canal stores overlook the street.",
-	"Carry speed up the broad quarry ramp; land on the suspended road. Explore the flooded excavation and ore conveyor above.",
-	"Preload over the aqueduct steps, balance on the timber shelves, or shelter beneath the stone arches and deep cisterns.",
-	"Run the loading street, slide through the optional mill vent, then chain jumps across staggered roofs, cloth spools and ducts.",
+	"Carry speed across the optional quarry jump, then brake on the suspended landing. The lower recovery road rejoins the baseline route.",
+	"Follow the broad aqueduct grade or take the optional upper balance shelves. Explore the arches and open a cistern valve with a tool.",
+	"Run the loading street and try the movable first step, optional mill vent and staggered roofs. The ground road remains open to every player.",
 	"Launch into the crater's open volume, thread asymmetric gantry apertures and brake onto the arms above the ballast stores.",
 	"Break the plywood hopper throats, gather Sand through hanging combs and follow the discharge terraces. The dry lower street stays open.",
 	"Explore three deep cisterns below the stone/glass cathedral, copper organ and filter gallery. Use a tool to open channels between stores.",
-	"Rise through nested launch wells and land on cantilever pads above the coolant farm. Ground players can use the dry bunker road."]
+	"Rise through nested launch wells and land on cantilever pads above the coolant farm. Ground players can use the dry bunker road."] + Expeditions.HINTS
 const PRESETS: Array[StringName] = [&"stuntbuggy", &"trialsbike", &"acrobat",
 	&"arcadelander", &"dryswarm", &"liquidswarm", &"jetbarrel"]
 const NAMES: Array[String] = ["Loose Cannon", "Trials Rat", "Afterimage",
@@ -44,18 +44,22 @@ static func map_view(map_id: StringName) -> Rect2i:
 
 
 static func floor_y(map_id: StringName) -> int:
+	if map_id in Expeditions.IDS: return Expeditions.floor_y(map_id)
 	return FLOOR_Y if map_id == &"legacy" else Districts.floor_y(map_id)
 
 
 static func spawn(map_id: StringName) -> Vector2:
+	if map_id in Expeditions.IDS: return Expeditions.spawn(map_id)
 	return Vector2(178,304) if map_id == &"legacy" else Districts.spawn(map_id)
 
 
 static func props(map_id: StringName) -> Array:
+	if map_id in Expeditions.IDS: return Expeditions.props(map_id)
 	return [] if map_id == &"legacy" else Districts.props(map_id)
 
 
 static func npc_spawns(map_id: StringName) -> PackedVector2Array:
+	if map_id in Expeditions.IDS: return Expeditions.npc_spawns(map_id)
 	return PackedVector2Array([Vector2(210, 320)]) if map_id == &"legacy" else Districts.npc_spawns(map_id)
 
 
@@ -64,6 +68,7 @@ static func editable(map_id: StringName) -> Rect2i:
 
 
 static func layout(map_id: StringName = &"legacy") -> Array:
+	if map_id in Expeditions.IDS: return Expeditions.layout(map_id)
 	if map_id != &"legacy":
 		return Districts.layout(map_id)
 	var result: Array = []
@@ -108,6 +113,7 @@ static func _rect(result: Array, x: int, y: int, width: int, height: int, materi
 
 
 static func checkpoints(id: StringName, map_id: StringName = &"legacy") -> PackedVector2Array:
+	if map_id in Expeditions.IDS: return Expeditions.checkpoints(map_id)
 	if map_id != &"legacy": return Districts.checkpoints(map_id)
 	if id in [&"arcadelander", &"jetbarrel"]:
 		return PackedVector2Array([Vector2(220, 286), Vector2(337, 195), Vector2(457, 186), Vector2(577, 242)])

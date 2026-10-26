@@ -75,7 +75,7 @@ func run() -> void:
 	runtime.free()
 	await test_ui()
 	await process_frame
-	print("PLAYER_MAPS: %d assertions, %d failures; 8 maps x 7 players x 6 Water choices" % [assertions, failures])
+	print("PLAYER_MAPS: %d assertions, %d failures; %d maps x 7 players x 6 Water choices" % [assertions, failures, Course.MAP_IDS.size()])
 	quit(0 if failures == 0 else 1)
 
 
@@ -115,7 +115,7 @@ func test_ui() -> void:
 	root.add_child(scene)
 	scene.set_physics_process(false)
 	await process_frame
-	expect(scene._map_picker.item_count == 8 and scene._water_picker.item_count == 6, "real scene exposes every map and Water choice")
+	expect(scene._map_picker.item_count == Course.MAP_IDS.size() and scene._water_picker.item_count == 6, "real scene exposes every map and Water choice")
 	expect(scene.select_map(6) and scene.select_water(5) and scene.select_preset(4), "independent selectors admit cross-preset map and solver")
 	expect(scene.runtime.map_id == &"undertow_lab" and scene.runtime.water_solver == 5, "player switch keeps accepted map and Water")
 	expect(scene._water_readback.text.contains("inertial_cellular_v1"), "UI reads applied native identity")

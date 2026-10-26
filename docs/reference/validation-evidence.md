@@ -10,6 +10,18 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## Fifteen-map Expedition checkpoint — 2026-10-26
+
+The [Expedition checkpoint](../audits/2026-10-26-player-playground-expeditions.md)
+and [canonical map collection](../systems/player-control-playground.md#expedition-collection-and-second-district-review)
+add seven independent maps and a second quality review of the original eight.
+The source now has 15 maps, all open to seven players/six Water selections.
+Original accepted main remains `9e53a5b1b501e0667037b8502d3c1d15089211f5`;
+PR #262 remains a branch checkpoint. Native inputs/libraries/defaults, C64/E8,
+owner boundaries and deferred Web/MAT/scientific scope are unchanged.
+The owner requested another seven cyberpunk maps after reviewing this set;
+that next collection is not implemented or accepted by this checkpoint.
+
 ## Playground polish and shared NPC host — 2026-10-26
 
 The [dated polish checkpoint](../audits/2026-10-26-player-playground-polish-and-npcs.md)

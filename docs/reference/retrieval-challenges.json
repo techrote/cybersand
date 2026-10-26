@@ -2867,7 +2867,7 @@
       "facts": [
         "All 32 usables are selectable. Mouse aims, M triggers and B alternates. Mechanical players use actual mounted equipment, N drops/deploys and U reattaches; swarms have no held body and use a visible material-only emitter 68 cells along aim. Paused commands refuse, charge/cooldown persist across selection, and reset clears old devices.",
         "Buggy/bike lean uses bounded impulses around the actual rear axle without setting transforms. Upward hop impulse is multiplied by sqrt(2); measured flat-floor heights are about 1.91 and 1.95 times the prior controls. Lander gravity is 96 damped and 32 drift; barrel inertia is scaled to 0.85 at the same mass and the soft speed target is 175.",
-        "Material players compose five existing native radius-32 fields over radius 60 with active periodic idle flows, native-centre clamping and copied subreceipts. Sample/move counts may overlap. Eight selectable maps are 1024 by 768 with service targets, varied materials, multi-level structures and alternate challenges; full traversal/feel is manual qualification."
+        "Material players compose five existing native radius-32 fields over radius 60 with active periodic idle flows, native-centre clamping and copied subreceipts. Sample/move counts may overlap. Fifteen selectable maps are 1024 by 768 with service targets, varied materials, multi-level structures and alternate challenges; full traversal/feel is manual qualification."
       ],
       "sources": [
         "../godot/scripts/player_vehicle_controller.gd",
@@ -2895,6 +2895,24 @@
         "../godot/scripts/player_playground_material_field.gd",
         "../godot/scripts/player_playground_runtime.gd",
         "../godot/scripts/physical_actor_arena.gd",
+        "../godot/tests/test_player_playground_npc_controls.gd"
+      ]
+    },
+    {
+      "id": "PLAY09",
+      "query": "Which Expedition maps can each player choose, how do the large reservoir valves and bath Sand grille work, and do staged slide tests prove a complete expert route?",
+      "canonical": [
+        "systems/player-control-playground.md",
+        "reference/configuration-reference.md"
+      ],
+      "facts": [
+        "The seven Expeditions are Stormbreak Viaduct, Rootbound Conservatory, Prism Archive, Eventide Station, Buried Baths, Saltglass Sinkhole and Starfall Amphitheatre. All seven players can select every map. All public maps are 1024 by 768; the original eight districts remain available.",
+        "Glass Scorer opens marked glass reservoir outlets using M while unpaused; Line Cutter opens the Bath Sand stopper and feeds a real grille and catch trough. Three actual Rapier props and NPC stages use the shared native World/private physics owner, without a solver/default/receipt ABI change.",
+        "Static composition and staged compact-passage tests do not prove complete expert routes from default spawn or interactive appearance. Actual wheel baseline, valve and NPC tests have source/platform-bound evidence; Web and rendered shader work are deferred."
+      ],
+      "sources": [
+        "../godot/scripts/player_playground_expeditions.gd",
+        "../godot/tests/test_player_playground_expeditions.gd",
         "../godot/tests/test_player_playground_npc_controls.gd"
       ]
     }

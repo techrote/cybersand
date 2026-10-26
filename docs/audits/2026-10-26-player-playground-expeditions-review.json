@@ -1,0 +1,171 @@
+{
+  "schema": "cybersand-source-review-v1",
+  "reviewer": "/root/application_host",
+  "created_utc": "2026-10-26T08:36:31.422490+00:00",
+  "repository": "C:\\Users\\_\\.codex\\worktrees\\player-playground-maps\\khybersand",
+  "base_head": "ac117cf0b57c147b981021d98ec19c63c5335822",
+  "scope": "frozen second collection and current District/Course/UI/NPC source",
+  "source_review_disposition": "no_open_blocking_source_finding",
+  "full24_runtime_cohort": "running_separately; not_reviewed_here",
+  "repository_mutations": false,
+  "engine_executions": 0,
+  "cryptographic_signature": false,
+  "sources": {
+    "godot/scripts/player_playground_expeditions.gd": {
+      "bytes": 19518,
+      "raw_sha256": "373881b0d219ffa1b2bdcd041543ace803e887a097c799118bc24731e22f1872",
+      "canonical_lf_sha256": "373881b0d219ffa1b2bdcd041543ace803e887a097c799118bc24731e22f1872",
+      "canonical_git_blob": "248522e4c27dfd0756ed831a1a50ac8673e5ad33",
+      "at_base": false,
+      "canonical_unchanged_from_base": null
+    },
+    "godot/tests/test_player_playground_expeditions.gd": {
+      "bytes": 14763,
+      "raw_sha256": "b492869af7d7228a9968b0d9fea785649cf16997174e4c94ab17bb1f73756aa1",
+      "canonical_lf_sha256": "b492869af7d7228a9968b0d9fea785649cf16997174e4c94ab17bb1f73756aa1",
+      "canonical_git_blob": "3af97a2c6841f3facfd38f3be5b05643c18b2e0d",
+      "at_base": false,
+      "canonical_unchanged_from_base": null
+    },
+    "godot/scripts/player_playground_districts.gd": {
+      "bytes": 24500,
+      "raw_sha256": "d93126227b1e89c95e21f89a17c16758e29595ff55875886048a188629affdc9",
+      "canonical_lf_sha256": "d93126227b1e89c95e21f89a17c16758e29595ff55875886048a188629affdc9",
+      "canonical_git_blob": "38ed132b9a67d523c723b7bbdc4da20d81696857",
+      "at_base": true,
+      "canonical_unchanged_from_base": false
+    },
+    "godot/tests/test_player_playground_district_routes.gd": {
+      "bytes": 21586,
+      "raw_sha256": "4bc9d59d210135921989763c03d129950df8e7b7dac140cf5afade99a26d67c5",
+      "canonical_lf_sha256": "4bc9d59d210135921989763c03d129950df8e7b7dac140cf5afade99a26d67c5",
+      "canonical_git_blob": "85e2f50b21f927169db9418486ce916d7cf26a3c",
+      "at_base": true,
+      "canonical_unchanged_from_base": false
+    },
+    "godot/scripts/player_playground_course.gd": {
+      "bytes": 7899,
+      "raw_sha256": "ebf088890616cce7359fd6204dbd736fc209132a91327f3530b9eb83d437d11d",
+      "canonical_lf_sha256": "ebf088890616cce7359fd6204dbd736fc209132a91327f3530b9eb83d437d11d",
+      "canonical_git_blob": "60f1c5004d41d366100409c1b03f2bd8a2643536",
+      "at_base": true,
+      "canonical_unchanged_from_base": false
+    },
+    "godot/scripts/player_playground.gd": {
+      "bytes": 27177,
+      "raw_sha256": "74f9339d1e2aba8616141ebf90ae1c13732ce4df8328bf607b84108dd9c57664",
+      "canonical_lf_sha256": "74f9339d1e2aba8616141ebf90ae1c13732ce4df8328bf607b84108dd9c57664",
+      "canonical_git_blob": "50bb921fb99dce7b146845d0965b1456f8af2560",
+      "at_base": true,
+      "canonical_unchanged_from_base": false
+    },
+    "godot/scripts/player_playground_overlay.gd": {
+      "bytes": 4923,
+      "raw_sha256": "b641f7190d26a94d0ccf4b2ab260cf0022bf6974805076de25283c22765637f3",
+      "canonical_lf_sha256": "b641f7190d26a94d0ccf4b2ab260cf0022bf6974805076de25283c22765637f3",
+      "canonical_git_blob": "4cc3e8c933d28bcb0b8459b282c83021cbafd1c7",
+      "at_base": true,
+      "canonical_unchanged_from_base": false
+    },
+    "godot/tests/test_player_playground_maps.gd": {
+      "bytes": 8573,
+      "raw_sha256": "063647334f0b643c63ff1bde518e0e171b222dc00b49495cdd07e4a40b97e0f8",
+      "canonical_lf_sha256": "063647334f0b643c63ff1bde518e0e171b222dc00b49495cdd07e4a40b97e0f8",
+      "canonical_git_blob": "0e9ea8e2e3bf1f9c8b18f3fadaf3442328a3589a",
+      "at_base": true,
+      "canonical_unchanged_from_base": false
+    },
+    "godot/tests/test_player_playground_npc_controls.gd": {
+      "bytes": 7226,
+      "raw_sha256": "e45e9620d978d690b6708ab770597ab369123bc17f887b3c658657dbf538eb2a",
+      "canonical_lf_sha256": "e45e9620d978d690b6708ab770597ab369123bc17f887b3c658657dbf538eb2a",
+      "canonical_git_blob": "f8e5cb4312876fe1d0eb50bd0d685e07f24ab811",
+      "at_base": true,
+      "canonical_unchanged_from_base": false
+    },
+    "godot/scripts/player_playground_runtime.gd": {
+      "bytes": 18993,
+      "raw_sha256": "ff763486fe30dcfb894278c6081bae2c7c9105a8f26e7a77e56a89d40ef511dc",
+      "canonical_lf_sha256": "a87d4629f4a2c90e28c1358c041561b727e3b268d42380748c3d06401a6239d2",
+      "canonical_git_blob": "ae9a70ae724b219b0df3668efd55e1156312ddd9",
+      "at_base": true,
+      "canonical_unchanged_from_base": true
+    },
+    "godot/scripts/physical_actor_arena.gd": {
+      "bytes": 36927,
+      "raw_sha256": "432bda137c32cbba7258ee95d3cd7b9f89fdde2dae6e5646ce0424aa43d76e73",
+      "canonical_lf_sha256": "890ce01e4794938f84bc1ad338e8fa957a209f31c321b9b48472d660a1bb99b2",
+      "canonical_git_blob": "74c5a54ea96c992fd76697290424b167e8c1c3ef",
+      "at_base": true,
+      "canonical_unchanged_from_base": true
+    },
+    "godot/scripts/physical_actor_session.gd": {
+      "bytes": 33994,
+      "raw_sha256": "04b083271f6c11363514a9fb386c2b195cbe07c00cbe9da70bb31c3cdbb8deaa",
+      "canonical_lf_sha256": "55ac282c1e1cffc1324c3df9f1eab8de80f4d26553294d7f17080632e437a1df",
+      "canonical_git_blob": "28c6025e295900270f2d45f2686aaa7a6b3a8b9b",
+      "at_base": true,
+      "canonical_unchanged_from_base": true
+    },
+    "godot/scripts/rapier_physics_bridge.gd": {
+      "bytes": 34515,
+      "raw_sha256": "fada7e397706d83f6026f3ea7414696b6767f0830c3c737655a37c0f950a1c57",
+      "canonical_lf_sha256": "7c6358f8d04bec1fa5fbb78fc42a21a15b6d3de7c5c1f7ae9c45b8770b2851dd",
+      "canonical_git_blob": "6679ff522c7831544473dbfe04c6e38cd72b04a2",
+      "at_base": true,
+      "canonical_unchanged_from_base": true
+    },
+    "godot/scripts/player_playground_world.gd": {
+      "bytes": 2702,
+      "raw_sha256": "af0275536b2fe70f6fd9dc7fb91516762b7822ffeeb3c2069339cf0f6f21849f",
+      "canonical_lf_sha256": "af0275536b2fe70f6fd9dc7fb91516762b7822ffeeb3c2069339cf0f6f21849f",
+      "canonical_git_blob": "82f250485c17b5037e66dc0aef5ad7c92ae11f7d",
+      "at_base": true,
+      "canonical_unchanged_from_base": true
+    },
+    "godot/scripts/usable_runtime.gd": {
+      "bytes": 31729,
+      "raw_sha256": "e50ee634ebd8237f17c72311c225f4e19185ee67f30d360815dfa6c1c3faf05b",
+      "canonical_lf_sha256": "e50ee634ebd8237f17c72311c225f4e19185ee67f30d360815dfa6c1c3faf05b",
+      "canonical_git_blob": "f86a439f659e5dfcb359f704571abc814df4b2c9",
+      "at_base": true,
+      "canonical_unchanged_from_base": true
+    },
+    "godot/scripts/physical_usable_runtime.gd": {
+      "bytes": 29697,
+      "raw_sha256": "37dcf991061b19d183131a3160f80f24e6d080fa0373df6c895f16585f87b314",
+      "canonical_lf_sha256": "37dcf991061b19d183131a3160f80f24e6d080fa0373df6c895f16585f87b314",
+      "canonical_git_blob": "207a53c7f57ba955cbfadbf5fae1a0af698548c2",
+      "at_base": true,
+      "canonical_unchanged_from_base": true
+    }
+  },
+  "source_fences_held": true,
+  "diff_check_exit": 0,
+  "report_sha256": "1af98c0d581ed49f28e77636f3ea64abec358bb1a10d94a54d923b0127b32578",
+  "storm_external_proof": {
+    "original_path": "C:\\Users\\_\\AppData\\Local\\Temp\\cybersand-expedition-review\\prove_storm_hop.gd",
+    "raw_sha256": "de1f1e27a6b3e7fa542b7d0fc0e72b044a4cd461420d47f0846e354f589b7fc3",
+    "canonical_lf_sha256": "66e50b8a0114d9a8663cd3959d29475330ff81e1175e7743601949b167caacca",
+    "execution_log_authenticated": false,
+    "parent_reported": {
+      "ticks": 764,
+      "launch": [
+        676.448,
+        653.366
+      ],
+      "minimum_y": 648.539,
+      "recovery": [
+        770.614,
+        668.011
+      ]
+    }
+  },
+  "remaining_qualifications": [
+    "Mill upper approach explicitly unqualified",
+    "Archive slide staged",
+    "default FreeMass valve apparatus",
+    "full24 engine cohort pending",
+    "no all-preset whole-expert-route claim"
+  ]
+}

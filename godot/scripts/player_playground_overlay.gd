@@ -63,6 +63,16 @@ func _draw() -> void:
 					draw_colored_polygon(PackedVector2Array([_point(pose * Vector2(-1.0, base)),
 						_point(pose * Vector2(1.0, base)), _point(pose * Vector2(0, lerpf(base, tip, 0.55)))]), Color("e9faff"))
 	super._draw()
+	# One small badge per autonomous actor distinguishes NPCs from loose props
+	# and the human without adding any scene object to the physics owner.
+	var labelled: Dictionary = {}
+	for part: Dictionary in _parts:
+		var actor_id: int = int(part.get("actor_id", -1))
+		if actor_id < 0 or (not material_field and actor_id == 0) or labelled.has(actor_id): continue
+		labelled[actor_id] = true
+		var badge: Vector2 = _point(Transform2D(part.transform).origin - Vector2(0, Vector2(part.size).y * 0.5 + 8.0))
+		draw_string(ThemeDB.fallback_font, badge + Vector2(-13, 0), "NPC %d" % (actor_id + 1 if material_field else actor_id),
+			HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color("a8e4bb"))
 	# A spoke makes actual wheel rotation legible without hiding its collider.
 	for part: Dictionary in _parts:
 		if str(part.get("shape", "")) == "circle":
