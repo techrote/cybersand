@@ -356,3 +356,28 @@ may Root release the lease, consume actual bot/runtime docs and seek the final
 applicable exact-head CI/review gates. None of this preparation, local observer
 proof or inherited publication closes #203, scientific/full-host/manual
 acceptance or the broader programme. Web work stays deferred.
+
+## Observer integration after accepted Trial — 2026-10-25
+
+Accepted main is `9e53a5b1b501e0667037b8502d3c1d15089211f5`, tree
+`af6778f4329a000a7b4ab04904a2811cb0df735a`, after #257's exact900 head passed
+Documentation40241199943, Native40241200007 and Godot40241200038 plus independent
+review. This unmerged Observer checkpoint normally consumes that accepted main;
+all incoming Trial implementation/test blobs and original Observer Native,
+runtime, profile and request blobs remain exact to their respective parents.
+Only additive documentation conflicts were reconciled. Both parents'152
+supplementary question objects survive intact in the153-question union, with
+frozen32 unchanged.
+
+Original Observer publication source2e1/run40237132659/bot871ff remains
+source-bound: Windowsba357334/Linux30bcfaf7, Native80 and compiled139 exact,
+76 actual processes. Its historical542 build entries now have536 equal and six
+explicit differences (five Trial script/test paths plus the publication audit),
+with six new Trial paths/current548. No runtime/manifest rewrite or new publisher
+lease is needed or armed. Original fb60/base564 Documentation40241133697,
+Native40241133702 and Godot40241133760 are independently accepted only for that
+original tree; fresh applicable exact-head gates/review are required for this
+integrated candidate. Further full-host/scientific/packaged acceptance remains
+open; Web/browser/shader work stays owner-deferred. Older intermediate status
+sections below retain their recorded source/epoch rather than overriding this
+current integration boundary.

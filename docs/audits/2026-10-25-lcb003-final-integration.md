@@ -10,6 +10,17 @@ related-documents: [../architecture/liquid-prepared-setup-and-receipts.md, ../op
 
 # LCB-003 final application source integration checkpoint
 
+## Combined Trial successor scope
+
+The [corrected-App Trial integration](2026-10-25-lcb003-trial-body-constructors.md#corrected-app-consumption--preparation-only--2026-10-25)
+consumes dc2eee94 into fdb12069 without changing ten Trial source files or the
+two incoming identity tests. The App-only test-correction records below keep
+their ea96-overlay scope. Combined Trial Native80/compiled139 remain exact,
+while historical build535 has six changed entries and six new Trial paths give
+current541. Old ad3 117/86 and corrected App38/29 engine results are not relabelled
+as a test of this merge. Root's #256 is ready for fresh gates/review; #257 stays
+draft, with no runtime/manifest/profile/request rewrite or Web work here.
+
 ## Post-publication identity-test correction — 2026-10-25
 
 The [actual failure and bounded correction](2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)

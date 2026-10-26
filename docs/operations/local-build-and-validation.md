@@ -10,6 +10,60 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Observer integration after accepted Trial — 2026-10-25
+
+Accepted main is `9e53a5b1b501e0667037b8502d3c1d15089211f5`, tree
+`af6778f4329a000a7b4ab04904a2811cb0df735a`, after #257's exact900 head passed
+Documentation40241199943, Native40241200007 and Godot40241200038 plus independent
+review. This unmerged Observer checkpoint normally consumes that accepted main;
+all incoming Trial implementation/test blobs and original Observer Native,
+runtime, profile and request blobs remain exact to their respective parents.
+Only additive documentation conflicts were reconciled. Both parents'152
+supplementary question objects survive intact in the153-question union, with
+frozen32 unchanged.
+
+Original Observer publication source2e1/run40237132659/bot871ff remains
+source-bound: Windowsba357334/Linux30bcfaf7, Native80 and compiled139 exact,
+76 actual processes. Its historical542 build entries now have536 equal and six
+explicit differences (five Trial script/test paths plus the publication audit),
+with six new Trial paths/current548. No runtime/manifest rewrite or new publisher
+lease is needed or armed. Original fb60/base564 Documentation40241133697,
+Native40241133702 and Godot40241133760 are independently accepted only for that
+original tree; fresh applicable exact-head gates/review are required for this
+integrated candidate. Further full-host/scientific/packaged acceptance remains
+open; Web/browser/shader work stays owner-deferred. Older intermediate status
+sections below retain their recorded source/epoch rather than overriding this
+current integration boundary.
+
+
+## Trial successor correction after accepted App — 2026-10-25
+
+App #256 is merged as main56422c05 after all four exact-dc2 required gates.
+The [Trial correction record](../audits/2026-10-25-lcb003-trial-body-constructors.md#failed-full-matrix-and-unsupported-rig-correction--2026-10-25)
+preserves the actual ff2 Windows/Linux failed obsolete barrel-refusal assertion,
+the catalog-unsupported negative with unchanged old-owner/no-queue fences and
+fresh actual E3 Windows sampled71/Trial117/default86 successful assertions.
+Native80/compiled139 and runtime bytes remain exact; historical535 has seven
+explicit script/test differences. Corrected-head CI/review remain required;
+local proof does not close other constructors, full-host/scientific or #203
+qualification. Older preparation/pending-App sections retain their source
+snapshots. Further Web testing is owner-deferred until after the epic.
+
+## Current Trial consumption of corrected App — preparation only
+
+This Trial branch consumes exact Appdc2eee94 (sourcefix152a5074), retaining all
+ten f65f3de9 Trial files and the two incoming identity-test hashes. Native80 and
+compiled139 remain exact. The historical535 build set now has six changed
+entries (four Trial plus two App tests), other529 exact, and six new Trial
+paths give current541. The following App-only two-test/533-entry statements
+retain that narrower source scope; they do not describe the combined Trial set.
+
+The [combined-source qualification](../audits/2026-10-25-lcb003-trial-body-constructors.md#corrected-app-consumption--preparation-only--2026-10-25)
+keeps actual117/86 proof at ad3 and actual corrected38/29 App cohorts separate.
+This merge has no engine execution. Root's corrected #256 is ready for fresh
+gates/review; #257 Trial remains draft/downstream. Earlier ea96 gate greens do
+not cover either successor. Runtimes/profiles/requests stay inherited; Web deferred.
+
 ## Current observer publication and accepted App — 2026-10-25
 
 App #256 is merged at main56422c05 after all four exact-dc2 required gates;
@@ -55,7 +109,7 @@ profile/request/runtime/manifest edit or rebuild is required. The failed Linux
 40232042725 mismatch premises remain preserved, and corrected Linux/new-head full
 CI still needs execution. Older72-process proof stays at source5f02. Web deferred.
 
-## Current scoped application runtime publication — 2026-10-25
+## Consumed App publication — source5f02 and checkpoint ea96 — 2026-10-25
 
 The [actual003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source
 `5f02d089ee4cff8b34421cc4ca58bb4ef50dd92c`, run40226343524 and four-path bot
@@ -81,6 +135,38 @@ binds those receipts. Local normal mergea704ce50 consumes that main with the
 unchanged bot0c9 tree; all615 publication inputs and139 compiled inputs remain
 exact. This does not substitute Water's gates for the application's final
 exact-head CI or close #202/#203.
+
+## Integrated desktop Trial successor — 2026-10-25
+
+This unmerged Trial successor now consumes App checkpoint
+`ea96d4851621c4bed37d5e6997a0320215450f79`, including the actual source5f02/
+bot0c9 publication and accepted main06451f8a. The ten Trial source files remain
+exactly sourcef65f3de9; its recorded Windows executions are not relabeled as
+tests of this merged head. All80 native manifest inputs and139 recorded native
+build inputs still match. The original535-entry build/execution ledger has
+four changed GDScript/test entries and omits six new Trial source paths; it
+retains its original5f02 execution identity. Those historical build-input changes
+are separate from native-source provenance, not eight native rebuild errors.
+The [dated Trial integration record](../audits/2026-10-25-lcb003-trial-body-constructors.md#app-publication-integration-preparation-only--2026-10-25)
+owns the exact drift and remaining fresh acceptance. No new engine test, request,
+profile, runtime publication or Web work occurs in this merge.
+
+The original separate `codex/lcb003-trial-body` worktree started from5f02d089 and added
+bounded desktop barrel8×14/Ripper18×8 preparation. Its ten-file overlay leaves
+native139 and the publishing final-integration branch untouched. Apply retains
+exact actual server motion; Restart/F5 stage authored fresh state. One-body
+epoch/mask/readiness guards and candidate-only F5 preferences preserve the old
+World/graph/receipt/input on refusal. The default PF gas-capacity refusal remains.
+
+The [dated source/runtime/failure ledger](../audits/2026-10-25-lcb003-trial-body-constructors.md) binds final
+source mapb4eae1ba, developmentDLL46a, focused117/0, prior retained regressions
+and Root's independently executed published-runtime117/0 at the preceding
+test-leaf snapshot. This is local Windows host proof, not another platform,
+scientific acceptance, all-constructor or full-host claim. No publication
+request/runtime files are changed in this slice. The inherited parent request
+stays unchanged across the later App merge; the old runtime/test proof keeps
+its original source identity. Further Web/browser/
+shader work remains owner-deferred until after the epic.
 
 ## Local IN ledger observer checks — 2026-10-25
 

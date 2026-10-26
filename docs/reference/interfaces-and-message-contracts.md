@@ -11,6 +11,17 @@ last-reviewed: 2026-10-25
 
 # Interfaces and message contracts
 
+The new bounded desktop [trial-body continuation](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
+keeps the eleven-float body ABI unchanged. Main sends only copied values:
+`kind = trial_body`, barrel/Ripper arm, one valid actual rectangle packet,
+fresh epoch/instance ID and existing request/token/digest bindings. The exclusive
+worker validates exact kind/count/geometry/owner settings before native commit;
+no body, space or RID crosses threads. The packet serial is newly generated;
+every other copied field must reconstruct exactly or construction refuses.
+After native commit, Main adopts the same staged graph without rebind or
+velocity reset; only then does its matching acknowledgement release the
+worker's owner hold. This is a constructor extension, not a codec/ABI change.
+
 The [actual common-Water Web terminal result](../audits/2026-10-25-lcb003-web-common-water.md)
 uses the same source4948 JSON contract: compat77 checks (extra one-worker
 assertion), threaded76, six Water and four mixed rows. Original POST201 bodies
