@@ -64,8 +64,8 @@ Retain buffers through last consumer/ACK, not just last producer reference.
 
 | Message (direction) | Required value fields beyond common identity | Capacity and overload disposition |
 |---|---|---|
-| `PoseSample` main→worker | `physics_tick, body_sample_serial, captured_usec, body_states` packed 11-float input records, optional copied equipment identities | **One latest-value slot**. Replace older *event-free* pose; count coalesces. Never replace an event-bearing batch's pinned pose |
-| `FrameEvents` main→worker | Same frozen pose/source IDs, `actor_id, sequence, control_generation`, `effects[]`, `usable_requests[]`, copied `equipment_frame`, captured suspension | FIFO **eight frames**, globally at most **eight pending effects** and **eight pending usable requests including extracted/in-flight**. Atomically accept all or refuse entire event batch with typed receipt; do not silently drop/coalesce or update main accounting as consumed |
+| `PoseSample` main→worker | `physics_tick, body_sample_serial, captured_usec, body_states` packed 11-float input records, **required** full copied `equipment_frame` (including devices) for native usable-runtime progression | **One latest-value slot**. Replace older *event-free* pose; count coalesces. Never replace an event-bearing batch's pinned pose |
+| `FrameEvents` main→worker | Same frozen pose/source IDs, `actor_id, sequence, control_generation`, `effects[]`, `usable_requests[]`, the **same per-physics-step copied `equipment_frame`**, captured suspension | FIFO **eight frames**, globally at most **eight pending effects** and **eight pending usable requests including extracted/in-flight**. Atomically accept all or refuse entire event batch with typed receipt; do not silently drop/coalesce or update main accounting as consumed |
 | `Control` main→worker | `kind = suspend\|resume\|cancel_actor\|retire\|reset`, `control_serial`, target epoch/generation | One high-priority state slot plus sticky retire flag; consecutive same-epoch pause states may supersede, but retire/cancel never loses priority. Reset/replace: one pending candidate, second unadmitted request explicitly refuses |
 | `Result` worker→main | `cell_tick, source_physics_tick, source_body_serial, body_results` packed 9-float rows, bounded effect/usable receipts and accounting | Latest completed **cellular feedback slot** plus **16-item independent receipt ledger**. Feedback may be superseded only after accounting disposition; receipt ledger must not silently lose entries. Full ledger suspends event admission/native progression until ACK or explicit failure |
 | `Terrain` worker→main | `cell_tick, terrain_revision, chunk_count, packed_chunk_rectangles`, `initial` | **Exactly one unacknowledged complete terrain packet** per epoch; no overwrite. Hold further native ticks/terrain mutation awaiting main `TerrainInstalled` ACK |
@@ -79,7 +79,18 @@ enqueue/dequeue/ACK and immutable publication-pointer swaps. Do not hold it
 while performing `World::tick`, native result copy, `PhysicsServer2D`,
 terrain collider installation, image upload, a join, logging or a callback.
 A mailbox cannot invoke scene callbacks from its worker; main polls copied
-status. Producer-accepted event batches are one-use. The independent receipt
+status. **One main-frame admission is atomic:** take exactly one frozen pre-step
+`PoseSample` and its optional `FrameEvents` together under the mailbox
+mutex, preserving the original equipment frame and event-bearing source pose.
+The worker must not observe a newer coalesced pose before that pose's pending
+event batch has been admitted/refused. Always process the oldest admitted
+event frame first and reject an event frame older than the last already-used
+source physics tick; when no events exist, use newest pose. Both paths advance
+`CyberPhysicalUsableRuntime` with the corresponding full `equipment_frame`
+once per successful cellular tick, even if the request array is empty, so
+cooldowns and deployed-device state cannot silently stop advancing. Do not
+cache a mutable main-thread equipment object across ticks.
+Producer-accepted event batches are one-use. The independent receipt
 watermark/ledger cannot disappear when the render/feedback latest slot advances.
 Protect queued and already-extracted work by **rechecking cancellation
 generation and epoch immediately before native application**, with the
@@ -138,8 +149,8 @@ new user request. No callback waits for a corresponding Rapier step. Never use
 The main physics callback first consumes only matching-epoch completed results
 and receipts, and tests terrain readiness. If ready, it processes actual human
 leases/actuation via `session.advance(1/60)`, snapshots the **pre-integration**
-actual Rapier state once using `pack_body_states()`, submits the pose plus
-same-source events, calls `bridge.step()`, then
+actual Rapier state once using `pack_body_states()`, atomically submits the pose plus
+same-source events (or an explicit event-refusal disposition), calls `bridge.step()`, then
 `session.complete_step()` once. If submission is refused the physical
 integration may continue with refused tools neutralized; never block in a native
 tick or synchronously wait for its completion. 4LY's actual manual-step
