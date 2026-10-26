@@ -8,6 +8,8 @@ const ReferencePack = preload("res://scripts/microscenario_reference_pack.gd")
 const Showcase = preload("res://scripts/showcase_tiles.gd")
 const BlacksiteNine = preload("res://scripts/blacksite_nine.gd")
 const PhysicalTrial = preload("res://scripts/physical_actor_trial.gd")
+const PlayerCourse = preload("res://scripts/player_playground_course.gd")
+const PLAYER_COURSE_ID: String = "playground/player-course"
 
 static func ids() -> Array[String]:
 	var result: Array[String] = ["experiment-tower"]
@@ -19,6 +21,31 @@ static func ids() -> Array[String]:
 	result.append(BlacksiteNine.SCENARIO_ID)
 	for arm: String in PhysicalTrial.ARMS: result.append(PhysicalTrial.PREFIX + arm)
 	return result
+
+# PLAY-COMP-001: narrow existing-host feasibility route. No new native World
+# owner, controller or timing model. Deliberately absent from the normal
+# MicroScenario picker until the gameplay composition issue qualifies its UI.
+static func player_playground_definition(seed: int = 0) -> Dictionary:
+	if seed != 0:
+		return {}
+	var result: Dictionary = Contract.base(PLAYER_COURSE_ID, 1, 0)
+	var rectangles: Array = []
+	for record: Dictionary in PlayerCourse.layout():
+		var origin: Vector2i = record.origin
+		var size: Vector2i = record.size
+		rectangles.append_array([origin.x, origin.y, size.x, size.y, int(record.material)])
+	result.rectangles = rectangles
+	result.player_start = [178, 304]
+	result.camera_origin = [128, 128]
+	result.player_enabled = true
+	result.tools = ["paint", "erase", "player"]
+	result.interest = {"policy":"fixed", "region":[128, 128, 512, 256]}
+	result.execution = {"policy":"owner", "cadence_lod_enabled":false,
+		"liquid_surface_adhesion_enabled":true}
+	result.source_recipe = "CyberPlayerPlaygroundCourse/v1"
+	result.source_recipe_hash = JSON.stringify(rectangles).sha256_text()
+	return result
+
 
 static func tower(profile: Dictionary = {}) -> Dictionary:
 	var out: Dictionary = Contract.base("experiment-tower", Tower.VERSION, 0)
@@ -121,7 +148,8 @@ static func exploratory_actor_map(definition: Dictionary) -> bool:
 	var id: String = str(definition.get("id", ""))
 	return (definition.get("maturity", "") == "exploratory"
 		and definition.get("execution", {}).get("policy", "") == "owner"
-		and (id == BlacksiteNine.SCENARIO_ID or Showcase.contains(id) or PhysicalTrial.contains(id)))
+		and (id == PLAYER_COURSE_ID or id == BlacksiteNine.SCENARIO_ID
+			or Showcase.contains(id) or PhysicalTrial.contains(id)))
 
 static func player_configuration(scenario_id: String) -> Dictionary:
 	if PhysicalTrial.contains(scenario_id): return PhysicalTrial.configuration(scenario_id)
@@ -129,6 +157,7 @@ static func player_configuration(scenario_id: String) -> Dictionary:
 
 
 static func definition(scenario_id: String, seed: int = 0) -> Dictionary:
+	if scenario_id == PLAYER_COURSE_ID: return player_playground_definition(seed)
 	if PhysicalTrial.contains(scenario_id): return PhysicalTrial.definition(scenario_id, seed)
 	if scenario_id == BlacksiteNine.SCENARIO_ID:
 		return BlacksiteNine.definition(seed)
