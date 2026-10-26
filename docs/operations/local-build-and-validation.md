@@ -1117,6 +1117,27 @@ describes the bounded native-only JSON runner. Its result is not a Windows or
 browser run merely because it exercises the synchronous controller on Linux.
 Use actual platform artifacts and retain their identities for platform acceptance.
 
+## Playground district, agility, swarm and NPC checks
+
+The [polish audit](../audits/2026-10-26-player-playground-polish-and-npcs.md) records
+source deltas/runtime identities and the scoped Windows test cohort. Add these
+focused real-native/Rapier regressions to the retained playground suites:
+
+```text
+godot --headless --path godot --script res://tests/test_player_playground_district_routes.gd
+godot --headless --path godot --script res://tests/test_player_afterimage_agility.gd
+godot --headless --path godot --script res://tests/test_player_playground_swarm_anchor.gd
+godot --headless --path godot --script res://tests/test_player_playground_actors.gd
+godot --headless --path godot --script res://tests/test_player_playground_npc_controls.gd
+```
+
+The neutral field test independently reads every material cell after each of
+360 ticks for Sand and all six Water choices. Water quantity uses the native
+Water observation's integer total, including pressure hidden overfill; a visible
+state-a census alone is insufficient. UI checks run headless without a visual,
+shader, Web or human-feel acceptance claim. Spawn success intentionally changes
+the full physical hash through body-mask wake/cache state; refusal retains it.
+
 ## Player playground checks
 
 Use the pinned Godot 4.7/Rapier runtime and a rebuilt source-matched native

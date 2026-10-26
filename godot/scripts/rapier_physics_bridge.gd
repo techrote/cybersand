@@ -138,6 +138,58 @@ func initialize(
 	return OK
 
 
+func body_count() -> int:
+	return _body_rids.size()
+
+
+func body_size(body_index: int) -> Vector2:
+	return _body_sizes[body_index] if body_index >= 0 and body_index < _body_sizes.size() else Vector2.ZERO
+
+
+func append_bodies(bodies: Array[RigidBody2D], body_sizes: PackedVector2Array) -> Error:
+	# Append-only IDs retain every existing actor/equipment/result identity. The
+	# main-thread host calls between steps; the private space remains inactive.
+	if not _initialized or bodies.is_empty() or bodies.size() != body_sizes.size():
+		return ERR_INVALID_PARAMETER
+	if body_count() + bodies.size() > CyberRigidBodyCoupling.MAX_BODIES:
+		return ERR_OUT_OF_MEMORY
+	var seen: Dictionary = {}
+	for index: int in range(bodies.size()):
+		var body: RigidBody2D = bodies[index]
+		if not is_instance_valid(body) or not body.is_inside_tree() or not body.get_rid().is_valid() \
+			or PhysicsServer2D.body_get_space(body.get_rid()) != _space \
+			or _body_index_by_rid.has(body.get_rid()) or seen.has(body.get_rid()) \
+			or not body_sizes[index].is_finite() or body_sizes[index].x <= 0.0 or body_sizes[index].y <= 0.0 \
+			or not is_finite(body.mass) or body.mass <= 0.0:
+			return ERR_INVALID_DATA
+		seen[body.get_rid()] = true
+	# All refusal paths precede publication; existing caches/serials/terrain and
+	# manual-step counters are deliberately not reinitialized.
+	for index: int in range(bodies.size()):
+		var body: RigidBody2D = bodies[index]
+		var rid: RID = body.get_rid()
+		var slot: int = body_count()
+		_bodies.append(body)
+		_body_rids.append(rid)
+		_body_sizes.append(body_sizes[index])
+		_body_masses.append(body.mass)
+		_body_index_by_rid[rid] = slot
+		_transforms.append(PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_TRANSFORM))
+		_linear_velocities.append(PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_LINEAR_VELOCITY))
+		_angular_velocities.append(PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY))
+		_sleeping.append(PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_SLEEPING))
+		_applied_sample_serials.append(-1)
+		if not diagnostic_applications.is_empty():
+			for _field: int in range(6): diagnostic_applications.append(0.0)
+		var material: PhysicsMaterial = body.physics_material_override
+		PhysicsServer2D.body_set_param(rid, PhysicsServer2D.BODY_PARAM_FRICTION,
+			material.friction if material != null else HARD_SURFACE_FRICTION)
+		PhysicsServer2D.body_set_param(rid, PhysicsServer2D.BODY_PARAM_BOUNCE,
+			material.bounce if material != null else HARD_SURFACE_BOUNCE)
+		PhysicsServer2D.body_set_continuous_collision_detection_mode(rid, PhysicsServer2D.CCD_MODE_CAST_SHAPE)
+	return OK
+
+
 func shutdown() -> void:
 	if _initialized and _space.is_valid():
 		PhysicsServer2D.space_set_active(_space, true)

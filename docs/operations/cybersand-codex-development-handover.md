@@ -10,6 +10,20 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Playground polish and shared NPC host — 2026-10-26
+
+The [dated polish checkpoint](../audits/2026-10-26-player-playground-polish-and-npcs.md)
+and [canonical controls](../systems/player-control-playground.md#detailed-districts-live-npcs-and-agile-afterimage)
+cover distinct district architecture, qualified starting exits, large reservoirs,
+three actual Rapier props/map, include/live-spawn NPC controls, higher agile
+Afterimage/Ctrl, and stationary neutral swarm fields. Public material presets
+now share the single physical host with NPCs/props. Initial receipts stay
+immutable across live append. This remains PR #262 branch work until exact-head
+CI/review/merge; local Windows physics is not interactive feel or Linux proof.
+Accepted main remains9e53a5b1b501e0667037b8502d3c1d15089211f5. The owner's next
+request is to review these maps and add a second, higher-detail map per player;
+that request does not advance LCB scientific acceptance or deferred Web/MAT work.
+
 ## Playground maps and authoring checkpoint — 2026-10-26
 
 The follow-up request expands every selected map to six times the original

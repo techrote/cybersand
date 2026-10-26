@@ -1191,7 +1191,7 @@ native layout change follows. Setup uses Baseline transport, eight-bit Water,
 | Scene / presets | `res://player_playground.tscn`; seven, of which five mechanical entries also form F5 SetP; dry/liquid remain scene-only |
 | Native world / course view | 1024 × 1024 cells; each public map view 1024 × 768; follow view 384 × 288; original 512 × 256 is the explicit legacy test fixture |
 | Local owner | One native worker, synchronous calls, simulation window and cadence LOD disabled for the dedicated course |
-| Material seed | 16 × 16 = 256 cells centred near (96,688), legacy (178,304); added player Sand count 256 or Water mass 65,280, separately from authored reservoirs |
+| Material seed | 16 × 16 = 256 cells at the selected map's authored spawn, legacy (178,304); added player Sand count 256 or Water mass 65,280, separately from authored reservoirs |
 | Human material lease | 1–6 ticks from issued observation; seven issuance-history slots; sequence 0–9,007,199,254,740,991 and strictly increasing |
 | Gamepad | First connected pad; left-stick radial deadzone 0.18; combined movement length capped at one |
 | Field source scan | Native radius 32; 65 × 65 = 4,225 attempted positions per call, circle/domain filtered; five owner calls cover radius 60, at most 21,125 attempted positions |
@@ -1200,18 +1200,21 @@ native layout change follows. Setup uses Baseline transport, eight-bit Water,
 | Field storage | No missing chunk or thermal-storage allocation; unavailable storage refuses the step and increments its receipt counter |
 | Field input | Finite direction components in −1..1 and squared length ≤1.000001; Sand/Water only; mode 0–3; phase 0–2,147,483,647 |
 | Native C++ domain | Each span 1–4,096; origin in ±1,000,000,000; centre inside domain; Godot adapter fixes domain to 0..1,023 on each axis |
-| Material centre following | At most four cells per owner step toward observed quantity-weighted centroid |
+| Material centre following | Exactly fixed under neutral input; at most four cells per owner step toward observed quantity-weighted centroid only with admitted directional input |
 | Vehicle hop | Buggy requires support; bike preload reaches full at 0.42 s and requires supported release; 0.5 s hop cooldown |
 | Vehicle lean / hop strength | Rear-axle impulse target 11/12 rad/s and acceleration ceiling 90/95 rad/s² for buggy/bike; rider angle 0.86 rad; former upward impulse ×√2 gives about double actual hop height |
 | Player flight tuning | Lander gravity 96 damped / 32 drift cells/s²; barrel inertia ×0.85 at unchanged mass, soft speed target 175 cells/s (finite-force limiter permits overshoot) |
-| Idle field pattern | Five radius-32 calls, centres offset (0,0), (±28,0), (0,±28) and clamped to 0..1023; periodic amplitude 0.38, outer inward 0.30 and tangential 0.24, unit-clamped before native calls |
+| Idle field pattern | Five radius-32 calls at (0,0), (±28,0), (0,±28), clamped to domain; central periodic flow (0.26 cos phase, 0.14 sin 0.73phase), phase rate 0.061 Sand / 0.043 Water; satellite surge drive cancels its own loft/pull at anchor; copied sample sums are not unique inventory |
 | Playground usables | All 32 catalogue choices; M trigger, B alternate, N/U physical drop/attach; material-only emitter offset 68 cells along aim, clamped at least three cells inside the editable course |
 | Acrobat jump timing | 0.11 s coyote; 0.14 s buffer; 0.05 s confirmed support; 0.14 s launch lock |
 | Acrobat roll / glide | Roll 0.28 s; cooldown 0.32 s; grounded tap at most 0.15 s; glide reserve 1.6 s per confirmed landing |
 | Acrobat airborne inventory | One extra jump, one bullet jump and one air roll per confirmed landing; cancel does not reload them |
 | Acrobat control delta | At most 96 cells/s requested delta velocity per controller call; physical session's finite delta/impulse bounds still apply |
 | Course timing | Four ordered checkpoints, reach radius 15 cells; simulation ticks divided by 60; best times last only for the scene |
-| Mechanical course lifetime | Existing physical arena limit 36,000 ticks; restart creates a fresh owner; material lane does not reuse that arena limit |
+| Public course lifetime | All public presets share the physical arena limit 36,000 ticks; restart creates a fresh owner; body-free legacy material fixture remains separate |
+| Public loose props / NPCs | Three props/map; runner/skimmer/crawler; at most eight physical actors and 64 bodies including props/equipment; append-only until reset, at most 8,192 inspected spawn AABB cells |
+| Afterimage jump / drive | Jump 94, double jump 84 cells/s; ground acceleration 760, air steering 300; Ctrl auxiliary, other players C |
+| Joint command slew | Default 20, admitted finite range 2–120 requested angular velocity units/s²; Afterimage 90; old body states are never overwritten |
 
 No field receipt is a persistent parcel inventory. Native temperature/compact
 state and partial Water mass survive each relocation, while the following

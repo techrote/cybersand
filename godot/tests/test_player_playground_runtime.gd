@@ -57,7 +57,8 @@ func test_input_mapping() -> void:
 	expect(Vector2(action.move) == Vector2.RIGHT and action.trim == 0.0,
 		"invalid gamepad state does not poison valid keyboard input")
 	for key: Key in Controls.KEYS:
-		expect(Controls.active(Controls.from_state({key: true})), "release gate sees held key %d" % key)
+		expect(Controls.active(Controls.from_state({key: true}, Vector2.ZERO, Vector3i.ZERO, 0.0,
+			&"acrobat" if key == KEY_CTRL else &"")), "release gate sees held key %d" % key)
 	expect(not Controls.active(Controls.from_state({})), "released controls are neutral")
 
 

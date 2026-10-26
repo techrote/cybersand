@@ -1,0 +1,23 @@
+{
+  "utc": "2026-10-26T07:14:20.722519+00:00",
+  "records": [
+    {
+      "source": "C:\\Users\\_\\.codex\\tmp\\playground-polish-validation-v1\\RECEIPT.json",
+      "repository_path": "docs/audits/2026-10-26-player-playground-polish-initial-cohort.json",
+      "sha256": "c13edc6d150d41d9549170f76084f0be924de4ba1e91cd187cf60b4c696ab226"
+    },
+    {
+      "source": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-final\\FROZEN-CHECKPOINT.json",
+      "repository_path": "docs/audits/2026-10-26-player-playground-polish-actor-iterations.json",
+      "sha256": "3c2a178f878be08cd399c0877464379aa3a1aa7c9a331ba090385da2d7c507ec"
+    }
+  ],
+  "classifications": [
+    "First full23-suite cohort is NOT accepted: map matrix42 failures all old212,250paint fixture now occupied by new Dust architecture. Real spawn-relative clear staging replaces it; original World preserved.",
+    "Actor suite284/0 footer was followed by actual Windows process3221225477 (C0000005) in full cohort; not a success. Independent prior v6 exit0 is separately retained; lifetime investigation required.",
+    "Root NPC first277 assertion test had7 invalid full-physical-hash success premises; compare material bytes/quantity and held identity/clocks instead, preserve exact refusal hash.",
+    "Root next reader requested1024-wide diagnostic_snapshot though limit512; script error rejected; two512-wide reads replace reader.",
+    "Swarm first all-solver visible-only quantity reader ignored PF overfill, causing1068 assertions. Current strict quantity reader includes visible+overfill; threshold unchanged.",
+    "F5 fixture attempted reconfigure of a live owner and saw five valid refusals; corrected fixture closes old owner before configuration."
+  ]
+}

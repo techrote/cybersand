@@ -1,0 +1,176 @@
+{
+  "utc": "2026-10-26T07:08:24.731988+00:00",
+  "head": "875d09d3f1db05d45bdb419a8a888c5bececb43c",
+  "branch": "codex/player-playground-maps",
+  "worktree": "C:\\Users\\_\\.codex\\worktrees\\player-playground-maps\\khybersand",
+  "scope": "Only three shared-host scripts and one new focused test authored by this agent. Other dirty Root/map/acrobat files preserved; no commits/pushes. Source frozen after v6.",
+  "source": [
+    {
+      "path": "godot/scripts/rapier_physics_bridge.gd",
+      "sha256": "fada7e397706d83f6026f3ea7414696b6767f0830c3c737655a37c0f950a1c57",
+      "canonical_sha256": "7c6358f8d04bec1fa5fbb78fc42a21a15b6d3de7c5c1f7ae9c45b8770b2851dd",
+      "git_blob": "6679ff522c7831544473dbfe04c6e38cd72b04a2",
+      "bytes": 34515
+    },
+    {
+      "path": "godot/scripts/physical_actor_session.gd",
+      "sha256": "04b083271f6c11363514a9fb386c2b195cbe07c00cbe9da70bb31c3cdbb8deaa",
+      "canonical_sha256": "55ac282c1e1cffc1324c3df9f1eab8de80f4d26553294d7f17080632e437a1df",
+      "git_blob": "28c6025e295900270f2d45f2686aaa7a6b3a8b9b",
+      "bytes": 33994
+    },
+    {
+      "path": "godot/scripts/physical_actor_arena.gd",
+      "sha256": "c243e2ce2cf4eb396831fc183c677bf224686d9544633da95ff5b0a1529fb123",
+      "canonical_sha256": "6fac4fa323ad6acf3c485cedd7c78a45c5bedee220a4445ae66374224329d4e3",
+      "git_blob": "be50a3b4574801aa161e9f028d8dbd2d1ab21537",
+      "bytes": 36937
+    },
+    {
+      "path": "godot/tests/test_player_playground_actors.gd",
+      "sha256": "b06508ed0883d80d65efb09321ef50364e0bd009b261e4dcf1783e2f77d4749e",
+      "canonical_sha256": "e52ffaa4eefd2fcd61de822d5d597578794501027557faf6ad1e712b16599a82",
+      "git_blob": "ce657697f4138d8eb6f1da180e339a4779f3d5ba",
+      "bytes": 15590
+    }
+  ],
+  "runtime": [
+    {
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "bytes": 4824064,
+      "sha256": "e3f17363d21260690682dfaa9e5e118253544c1b9b19e69e50c03af567712343"
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "bytes": 9987072,
+      "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+    }
+  ],
+  "native_diff_paths": [],
+  "whitespace_exit": 0,
+  "proofs": [
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-v1\\RESULT.json",
+      "sha256": "d47a1d900a30c013d7c3d03d495009923a46d437721f79098b6a5672b62f296e",
+      "result": {
+        "returncode": 1,
+        "seconds": 4.922000000020489,
+        "log": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-v1\\test.log",
+        "sha256": "70fd117c6c6a4195b8a40ad323eca1021693d54d80b664a91c830b8139977f6d"
+      }
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-v2\\RESULT.json",
+      "sha256": "3aa33a986d047ca5744d1467432a6acae379ea016c2d6147833855835df48c98",
+      "result": {
+        "returncode": 0,
+        "seconds": 4.827999999979511,
+        "log": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-v2\\test.log",
+        "sha256": "8de5bae6106b32c8492dd6780a6dabd953b83b78cc53747d6d56482782136eb7"
+      }
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-v3\\RESULT.json",
+      "sha256": "6d73c104324a9e6ab7aea8771f5c399b9ab256ced0628818508c67d756bfc7c5",
+      "result": {
+        "returncode": 0,
+        "seconds": 7.26500000001397,
+        "log": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-v3\\test.log",
+        "sha256": "ffbd7deee343bdf9bebbc11dbc3835bca4e431df7ab9e8c0d43cd692e0698cc6"
+      }
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-v4\\RESULT.json",
+      "sha256": "b1a57c3005ba44f91bde1974db845abd96c3e46044e3ab5be5f9c217a9360d1e",
+      "result": {
+        "returncode": 1,
+        "seconds": 7.687999999965541,
+        "log": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-v4\\test.log",
+        "sha256": "fa68c3cff770f170a2427694a0871f5f5095f0209615e279439f84f9596b8cd7"
+      }
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-v5\\RESULT.json",
+      "sha256": "634b337a14c99d49b8d6c35ddc2b78b47904cc1514254d967fcfd25ab139d0e4",
+      "result": {
+        "returncode": 1,
+        "seconds": 7.594000000040978,
+        "log": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-v5\\test.log",
+        "sha256": "35a0ef2038ede6c794965fe6bc222b5660725848fda6adcab5306d2fb77f5a4e",
+        "source_before": {
+          "godot/scripts/rapier_physics_bridge.gd": "fada7e397706d83f6026f3ea7414696b6767f0830c3c737655a37c0f950a1c57",
+          "godot/scripts/physical_actor_session.gd": "04b083271f6c11363514a9fb386c2b195cbe07c00cbe9da70bb31c3cdbb8deaa",
+          "godot/scripts/physical_actor_arena.gd": "c243e2ce2cf4eb396831fc183c677bf224686d9544633da95ff5b0a1529fb123",
+          "godot/tests/test_player_playground_actors.gd": "93946a26041aa1cbd66c73cf41663ba2fa8b17af89875449f8de9ba2dc43ca14"
+        },
+        "source_after": {
+          "godot/scripts/rapier_physics_bridge.gd": "fada7e397706d83f6026f3ea7414696b6767f0830c3c737655a37c0f950a1c57",
+          "godot/scripts/physical_actor_session.gd": "04b083271f6c11363514a9fb386c2b195cbe07c00cbe9da70bb31c3cdbb8deaa",
+          "godot/scripts/physical_actor_arena.gd": "c243e2ce2cf4eb396831fc183c677bf224686d9544633da95ff5b0a1529fb123",
+          "godot/tests/test_player_playground_actors.gd": "93946a26041aa1cbd66c73cf41663ba2fa8b17af89875449f8de9ba2dc43ca14"
+        }
+      }
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-v6\\RESULT.json",
+      "sha256": "5baf3210b3d8103aa77e75db07d368227cfaa6861a1e28cae07c09ab5a36c422",
+      "result": {
+        "returncode": 0,
+        "seconds": 7.483999999938533,
+        "log": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-v6\\test.log",
+        "sha256": "ef14902f0e6050ff3090068fdd632029c7393993388eb9bbefeeaa45c4de0488",
+        "source_before": {
+          "godot/scripts/rapier_physics_bridge.gd": "fada7e397706d83f6026f3ea7414696b6767f0830c3c737655a37c0f950a1c57",
+          "godot/scripts/physical_actor_session.gd": "04b083271f6c11363514a9fb386c2b195cbe07c00cbe9da70bb31c3cdbb8deaa",
+          "godot/scripts/physical_actor_arena.gd": "c243e2ce2cf4eb396831fc183c677bf224686d9544633da95ff5b0a1529fb123",
+          "godot/tests/test_player_playground_actors.gd": "b06508ed0883d80d65efb09321ef50364e0bd009b261e4dcf1783e2f77d4749e"
+        },
+        "source_after": {
+          "godot/scripts/rapier_physics_bridge.gd": "fada7e397706d83f6026f3ea7414696b6767f0830c3c737655a37c0f950a1c57",
+          "godot/scripts/physical_actor_session.gd": "04b083271f6c11363514a9fb386c2b195cbe07c00cbe9da70bb31c3cdbb8deaa",
+          "godot/scripts/physical_actor_arena.gd": "c243e2ce2cf4eb396831fc183c677bf224686d9544633da95ff5b0a1529fb123",
+          "godot/tests/test_player_playground_actors.gd": "b06508ed0883d80d65efb09321ef50364e0bd009b261e4dcf1783e2f77d4749e"
+        }
+      }
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-session-retained\\RESULT.json",
+      "sha256": "d28191a2fa56df3a3c04d60d445f8de27edc794b636748673c2fdcaf5f1dede5",
+      "result": {
+        "returncode": 0,
+        "seconds": 0.5630000000819564,
+        "log": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-session-retained\\test.log",
+        "sha256": "b53c36aa74dfe1b78bd6f4cd0fe8f5d8a58b0ad1784de1e2161e247732299d72"
+      }
+    }
+  ],
+  "final_actual": "284 assertions/0 failures, strict exit0,7.484s/180 on Godot4.7/Rapier0.35.2",
+  "retained_actual": "physical_actor_session113 assertions/0 failures exit0",
+  "failure_dispositions": {
+    "v1": "One success-only physical hash invariance premise was false because installing masks wakes/invalidate native activity/pressure. Corrected to exact stored cell content/material bytes and full Water quantity; full physical hash remains exact on every refusal.",
+    "v2": "Narrower263/0 before full stored Water/PF arms",
+    "v3": "277/0 before independent stale-native-mask finding",
+    "v4": "283/4: hidden material at assumed actor origin did not necessarily intersect actual prepared part; accepted negative poisoned later assertions. Rejected.",
+    "v5": "284/5: explicit guard proved public setters refuse Sand writes under transient mask, so hidden material was not seeded. Rejected.",
+    "v6": "284/0. Actual prop movement leaves stale native mask; separate read-control clears mask, seeds Sand, reinstalls actual captured pre-step packet with resolve=false/no tick, proves exact refusal, clears Sand and proves actual vacated-stage success."
+  },
+  "API": {
+    "bridge": "body_count(), body_size(index), append_bodies(bodies,sizes)->Error; append-only IDs/sample history/terrain/counters retained",
+    "session": "configure(definitions,space,epoch=1,extra_bodies=[],extra_sizes=[]); zero actors only with props; actor_count(); append_actor(definition,optional synchronous admission callback)->bool",
+    "arena": "config actors:[] for public swarms, playground_seed_material0/2/3, playground_npcs demo cohort; Districts.props; native_world(), physics_bridge(), roster_snapshot(), spawn_actor(model,position)->copied receipt",
+    "NPC_IDS": [
+      "runner",
+      "skimmer",
+      "crawler"
+    ]
+  },
+  "qualifiers": [
+    "Local Windows functional proof, no new native law/API/ABI or scientific/epic acceptance",
+    "PF observations visible16824900/overfill0/total16824900 each; no positive hidden-overfill fixture claim",
+    "Immutable initial construction receipt binds all initial actor+prop bodies and remains unchanged after spawn; copied host roster revision/readback is separate",
+    "Spawn uses current actual bridge OBBs and stored material; it does not refresh Native mask on refusal",
+    "Single native World and private Rapier space; one Native+Rapier tick per normal frame, including props-only swarms",
+    "No live removal or ID reuse; reset reconstructs initial roster",
+    "No active agent-owned engine process remains; no further writes planned"
+  ]
+}

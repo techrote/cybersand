@@ -1,0 +1,418 @@
+{
+  "utc": "2026-10-26T07:39:33.809734+00:00",
+  "base": "875d09d3f1db05d45bdb419a8a888c5bececb43c",
+  "source_frozen": true,
+  "only_required_source_correction": "Runtime removes eager MaterialUsables preload, dynamically instantiates same exact res://scripts/usable_runtime.gd after module parse; no fallback, script/law/World/body behavior change. Existing test b065 remains byte-identical, all284 assertions retained.",
+  "runtime_full_reversible_before_body": true,
+  "Root_Arena_exception": "Root changed only PlayerCourse.Districts.props to PlayerCourse.props forwarder; captured current hash.",
+  "source": [
+    {
+      "path": "godot/scripts/rapier_physics_bridge.gd",
+      "raw_sha256": "fada7e397706d83f6026f3ea7414696b6767f0830c3c737655a37c0f950a1c57",
+      "canonical_sha256": "7c6358f8d04bec1fa5fbb78fc42a21a15b6d3de7c5c1f7ae9c45b8770b2851dd",
+      "git_blob": "6679ff522c7831544473dbfe04c6e38cd72b04a2"
+    },
+    {
+      "path": "godot/scripts/physical_actor_session.gd",
+      "raw_sha256": "04b083271f6c11363514a9fb386c2b195cbe07c00cbe9da70bb31c3cdbb8deaa",
+      "canonical_sha256": "55ac282c1e1cffc1324c3df9f1eab8de80f4d26553294d7f17080632e437a1df",
+      "git_blob": "28c6025e295900270f2d45f2686aaa7a6b3a8b9b"
+    },
+    {
+      "path": "godot/scripts/physical_actor_arena.gd",
+      "raw_sha256": "432bda137c32cbba7258ee95d3cd7b9f89fdde2dae6e5646ce0424aa43d76e73",
+      "canonical_sha256": "890ce01e4794938f84bc1ad338e8fa957a209f31c321b9b48472d660a1bb99b2",
+      "git_blob": "74c5a54ea96c992fd76697290424b167e8c1c3ef"
+    },
+    {
+      "path": "godot/tests/test_player_playground_actors.gd",
+      "raw_sha256": "b06508ed0883d80d65efb09321ef50364e0bd009b261e4dcf1783e2f77d4749e",
+      "canonical_sha256": "e52ffaa4eefd2fcd61de822d5d597578794501027557faf6ad1e712b16599a82",
+      "git_blob": "ce657697f4138d8eb6f1da180e339a4779f3d5ba"
+    },
+    {
+      "path": "godot/scripts/player_playground_runtime.gd",
+      "raw_sha256": "ff763486fe30dcfb894278c6081bae2c7c9105a8f26e7a77e56a89d40ef511dc",
+      "canonical_sha256": "a87d4629f4a2c90e28c1358c041561b727e3b268d42380748c3d06401a6239d2",
+      "git_blob": "ae9a70ae724b219b0df3668efd55e1156312ddd9"
+    }
+  ],
+  "pinned_dynamic_source": [
+    {
+      "path": "godot/scripts/usable_runtime.gd",
+      "raw_sha256": "e50ee634ebd8237f17c72311c225f4e19185ee67f30d360815dfa6c1c3faf05b",
+      "canonical_sha256": "e50ee634ebd8237f17c72311c225f4e19185ee67f30d360815dfa6c1c3faf05b",
+      "git_blob": "f86a439f659e5dfcb359f704571abc814df4b2c9"
+    },
+    {
+      "path": "godot/scripts/physical_usable_runtime.gd",
+      "raw_sha256": "37dcf991061b19d183131a3160f80f24e6d080fa0373df6c895f16585f87b314",
+      "canonical_sha256": "37dcf991061b19d183131a3160f80f24e6d080fa0373df6c895f16585f87b314",
+      "git_blob": "207a53c7f57ba955cbfadbf5fae1a0af698548c2"
+    }
+  ],
+  "failed_integrated_cohort": {
+    "receipt": {
+      "path": "C:\\Users\\_\\.codex\\tmp\\playground-polish-validation-v1\\RECEIPT.json",
+      "sha256": "c13edc6d150d41d9549170f76084f0be924de4ba1e91cd187cf60b4c696ab226"
+    },
+    "actual_process": {
+      "argv": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\player-playground-maps\\khybersand\\godot",
+        "--script",
+        "res://tests/test_player_playground_actors.gd"
+      ],
+      "exit_code": 3221225477,
+      "footers": [
+        "PLAYER_PLAYGROUND_ACTORS assertions=284 failures=0"
+      ],
+      "seconds": 10.0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "ef14902f0e6050ff3090068fdd632029c7393993388eb9bbefeeaa45c4de0488",
+      "strict_clean": false,
+      "timeout_seconds": 420
+    }
+  },
+  "trigger_reduction": {
+    "plain": 0,
+    "Arena_only": 0,
+    "Field_only": 0,
+    "Arena_plus_Field": 0,
+    "Runtime_only": 3221225477,
+    "Arena_plus_eager_generic_Usables": 3221225477,
+    "Arena_plus_lazy_generic_Usables_actual_instance": 0,
+    "full_Runtime_classless_A": 3221225477,
+    "full_Runtime_classless_B_lazy": 0,
+    "full_Runtime_classless_A_reversion": 3221225477,
+    "actual_named_Runtime_after_fix_no_World": 0,
+    "old875_Runtime_with_CURRENT_dependencies": 3221225477
+  },
+  "qualifications": [
+    "No-World reductions call no World constructors, body creation, fixture/tick or coupling methods; engine/extensions still initialize normally.",
+    "Old875 Runtime control is exact Git Runtime source except class_name removed equally for external registration; dependencies remain current. Not a full old875 tree execution.",
+    "Full external Runtime A/B/A copies remove class_name equally to avoid duplicate global script registration. Actual named source after fix was separately exercised.",
+    "Same engine cleanup freed-memory signature, with no Native/Rapier stack frames; no blanket Native or future cleanup exoneration.",
+    "Earlier three normal exits0 did not supersede Root failed integrated run.",
+    "Failed deferred-finalizer and direct-preload/test-global-type candidates preserved/rejected; none remain adopted.",
+    "One diagnostic harness invocation safely refused preexisting output directory before any child launch."
+  ],
+  "final_debug_controls": [
+    {
+      "attempt": 1,
+      "diagnostic_only": true,
+      "argv": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--disable-crash-handler",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\player-playground-maps\\khybersand\\godot",
+        "--script",
+        "res://tests/test_player_playground_actors.gd"
+      ],
+      "exit_code": 0,
+      "all_process_exits": {
+        "33464": 0,
+        "12652": 0
+      },
+      "seconds": 18.64000000001397,
+      "events": [
+        {
+          "event": "create",
+          "pid": 12652,
+          "tid": 29712,
+          "path": "\\\\?\\C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+          "base": "0x7ff7750a0000"
+        },
+        {
+          "event": "exception",
+          "pid": 12652,
+          "tid": 29712,
+          "code": "0x80000003",
+          "address": "0x7ffc1a2426c9",
+          "first_chance": 1,
+          "parameters": [
+            0
+          ]
+        },
+        {
+          "event": "create",
+          "pid": 33464,
+          "tid": 42076,
+          "path": "\\\\?\\C:\\Godot47\\Godot_v4.7-stable_win64.exe",
+          "base": "0x7ff6e7670000"
+        },
+        {
+          "event": "exception",
+          "pid": 33464,
+          "tid": 42076,
+          "code": "0x80000003",
+          "address": "0x7ffc1a2426c9",
+          "first_chance": 1,
+          "parameters": [
+            0
+          ]
+        }
+      ],
+      "dumps": [],
+      "stage_unchanged": true,
+      "log_sha256": "4b0a35dc6695f03625b174d16cf88a4a7c3243eb68c0f6c1f3cc0425bb1ce990"
+    },
+    {
+      "attempt": 2,
+      "diagnostic_only": true,
+      "argv": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--disable-crash-handler",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\player-playground-maps\\khybersand\\godot",
+        "--script",
+        "res://tests/test_player_playground_actors.gd"
+      ],
+      "exit_code": 0,
+      "all_process_exits": {
+        "41564": 0,
+        "15216": 0
+      },
+      "seconds": 18.70299999997951,
+      "events": [
+        {
+          "event": "create",
+          "pid": 15216,
+          "tid": 33436,
+          "path": "\\\\?\\C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+          "base": "0x7ff7750a0000"
+        },
+        {
+          "event": "exception",
+          "pid": 15216,
+          "tid": 33436,
+          "code": "0x80000003",
+          "address": "0x7ffc1a2426c9",
+          "first_chance": 1,
+          "parameters": [
+            0
+          ]
+        },
+        {
+          "event": "create",
+          "pid": 41564,
+          "tid": 42272,
+          "path": "\\\\?\\C:\\Godot47\\Godot_v4.7-stable_win64.exe",
+          "base": "0x7ff6e7670000"
+        },
+        {
+          "event": "exception",
+          "pid": 41564,
+          "tid": 42272,
+          "code": "0x80000003",
+          "address": "0x7ffc1a2426c9",
+          "first_chance": 1,
+          "parameters": [
+            0
+          ]
+        }
+      ],
+      "dumps": [],
+      "stage_unchanged": true,
+      "log_sha256": "4b0a35dc6695f03625b174d16cf88a4a7c3243eb68c0f6c1f3cc0425bb1ce990"
+    },
+    {
+      "attempt": 3,
+      "diagnostic_only": true,
+      "argv": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--disable-crash-handler",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\player-playground-maps\\khybersand\\godot",
+        "--script",
+        "res://tests/test_player_playground_actors.gd"
+      ],
+      "exit_code": 0,
+      "all_process_exits": {
+        "18524": 0,
+        "32292": 0
+      },
+      "seconds": 20.938000000081956,
+      "events": [
+        {
+          "event": "create",
+          "pid": 32292,
+          "tid": 34336,
+          "path": "\\\\?\\C:\\Godot47\\Godot_v4.7-stable_win64_console.exe",
+          "base": "0x7ff7750a0000"
+        },
+        {
+          "event": "exception",
+          "pid": 32292,
+          "tid": 34336,
+          "code": "0x80000003",
+          "address": "0x7ffc1a2426c9",
+          "first_chance": 1,
+          "parameters": [
+            0
+          ]
+        },
+        {
+          "event": "create",
+          "pid": 18524,
+          "tid": 11440,
+          "path": "\\\\?\\C:\\Godot47\\Godot_v4.7-stable_win64.exe",
+          "base": "0x7ff6e7670000"
+        },
+        {
+          "event": "exception",
+          "pid": 18524,
+          "tid": 11440,
+          "code": "0x80000003",
+          "address": "0x7ffc1a2426c9",
+          "first_chance": 1,
+          "parameters": [
+            0
+          ]
+        }
+      ],
+      "dumps": [],
+      "stage_unchanged": true,
+      "log_sha256": "4b0a35dc6695f03625b174d16cf88a4a7c3243eb68c0f6c1f3cc0425bb1ce990"
+    }
+  ],
+  "final_normal_controls": {
+    "utc": "2026-10-26T07:35:27.517191+00:00",
+    "source": {
+      "godot/scripts/rapier_physics_bridge.gd": "fada7e397706d83f6026f3ea7414696b6767f0830c3c737655a37c0f950a1c57",
+      "godot/scripts/physical_actor_session.gd": "04b083271f6c11363514a9fb386c2b195cbe07c00cbe9da70bb31c3cdbb8deaa",
+      "godot/scripts/physical_actor_arena.gd": "432bda137c32cbba7258ee95d3cd7b9f89fdde2dae6e5646ce0424aa43d76e73",
+      "godot/tests/test_player_playground_actors.gd": "b06508ed0883d80d65efb09321ef50364e0bd009b261e4dcf1783e2f77d4749e",
+      "godot/scripts/player_playground_runtime.gd": "ff763486fe30dcfb894278c6081bae2c7c9105a8f26e7a77e56a89d40ef511dc"
+    },
+    "scope": "Three declared final same-source process controls after actual eager-preload trigger correction; not retry acceptance",
+    "rows": [
+      {
+        "attempt": 1,
+        "pid": 38764,
+        "exit_code": 0,
+        "seconds": 7.688000000081956,
+        "stdout_sha256": "4b0a35dc6695f03625b174d16cf88a4a7c3243eb68c0f6c1f3cc0425bb1ce990",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source_held": true
+      },
+      {
+        "attempt": 2,
+        "pid": 2536,
+        "exit_code": 0,
+        "seconds": 7.671999999904074,
+        "stdout_sha256": "4b0a35dc6695f03625b174d16cf88a4a7c3243eb68c0f6c1f3cc0425bb1ce990",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source_held": true
+      },
+      {
+        "attempt": 3,
+        "pid": 42392,
+        "exit_code": 0,
+        "seconds": 7.687000000034459,
+        "stdout_sha256": "4b0a35dc6695f03625b174d16cf88a4a7c3243eb68c0f6c1f3cc0425bb1ce990",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source_held": true
+      }
+    ]
+  },
+  "actual_result": "Three original284/0 strict normal processes and three original284/0 debugger parent+actual-child process pairs all exit0; actualRuntime noWorld0; allcriticalsource hashes held.",
+  "current_pressure_fixture_quantity": "visible16816740+overfill0=16816740 each PF variant in current Root context; exact before/after spawn. Earlier16824900 belongs earlier context; no quantity/performance attribution to import timing.",
+  "proofs": [
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-crash-normal-v1\\RECEIPT.json",
+      "sha256": "913dd723fc0a2a2a8ad177ffd35477bf0e0af288897d05fcdb2fd47a745bb864"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-crash-debug-v1\\CAPTURE-RECEIPTS.json",
+      "sha256": "171f63900b0e03ce49b5580119683be54ee19d3300fd1c9a5abbb944d9478533"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-crash-debug-v1\\LLDB-COMMAND.json",
+      "sha256": "60dffcd31b3ee5676f726b1b15e9d49bcc01eb13a134d4b3b6464941295ab6fd"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-crash-debug-v2\\CAPTURE-RECEIPTS.json",
+      "sha256": "a2068d3e12e0bb1a2c6f1023150a606effe558cb9ff4d73d49ab1155d50cada1"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-crash-debug-v3\\CAPTURE-RECEIPTS.json",
+      "sha256": "1a5dc274098ecacd3712d802c6096b3907aae5e7a93e10c96ac30b00db9c94e0"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-load-only-debug-v1\\CAPTURE-RECEIPTS.json",
+      "sha256": "3b498e2057d6eb7fec9b9a44790042806c1d6d7884aaff6248d70e7fed374791"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-load-only-untyped-debug-v1\\CAPTURE-RECEIPTS.json",
+      "sha256": "9bbe4e8346546f3b0607e701a2d7f48419269c7cc7f4ddca37470d36e6500dea"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-minimal-plain-debug-v1\\CAPTURE-RECEIPTS.json",
+      "sha256": "3e1c5a03bcfe9d0266b851d96402589b80cfae8bbee0f5dee56181f71b9804de"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-minimal-arena-debug-v1\\CAPTURE-RECEIPTS.json",
+      "sha256": "0b5a3bdf055b8d99cdcec65e5d0355091576804cf9776f3b11e3e15428350686"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-minimal-runtime-debug-v1\\CAPTURE-RECEIPTS.json",
+      "sha256": "ffb444e3446b3c5bcde0067f10f4df276dc7376a312cdc1586bb42b237ed39bb"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-minimal-field-debug-v1\\CAPTURE-RECEIPTS.json",
+      "sha256": "2b9b4d9e7d83994a696b778969bc61c5bf606f1f9b9d25c6ec41a59469a08ee4"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-minimal-arenafield-debug-v1\\CAPTURE-RECEIPTS.json",
+      "sha256": "70d7986241e78b639d911126aa911a5e1b949462c544affa77a001b3897c6a25"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-minimal-arenausables-debug-v1\\CAPTURE-RECEIPTS.json",
+      "sha256": "c1fec93aac448b7e5269ff32f277708d49b688739c6e388f68478f90f3056adb"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-minimal-arenausables-lazy-debug-v1\\CAPTURE-RECEIPTS.json",
+      "sha256": "aaba427920e6955fdc9bea0875f6482194a950b78903a571c1b803a23229a4b2"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-fullruntime-a-debug-v1\\CAPTURE-RECEIPTS.json",
+      "sha256": "9b5e2eaca7808ea4c214e1a384d271b5fb16cef74a4aeb3cc3f0e4dfb115f749"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-fullruntime-b-debug-v1\\CAPTURE-RECEIPTS.json",
+      "sha256": "cd1648e45dbed648eea8a64edbe572fccc4e6a638b4ca25fd7d49db5f6ac006d"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-fullruntime-a-reversion-debug-v1\\CAPTURE-RECEIPTS.json",
+      "sha256": "b5f832dde1c02981cc6dadad3046a0b5c37d2ecc8331a6268d9951f41cf755d6"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-runtime875-currentdeps-debug-v1\\CAPTURE-RECEIPTS.json",
+      "sha256": "3aaf7663c83332c5fb9b19e9c63be4daba7c40cd52990de0eb33380d62ea16f6"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-minimal-runtime-debug-fixed-v1\\CAPTURE-RECEIPTS.json",
+      "sha256": "7c4873362c83586188f58a73a29ac2e8bf25247d8ecc191c8972fa771dfb3a71"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-crash-debug-fixed-v1\\CAPTURE-RECEIPTS.json",
+      "sha256": "178d42294d5a3e2e3b35f2d6a74ffbaa2680c38b3937eb44063b3059d1580009"
+    },
+    {
+      "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-crash-normal-fixed-v1\\RECEIPT.json",
+      "sha256": "e4ad2f3954f8c6d555d1cee9aa4ada45f208665cabecfc8a87efaa10f37b10d6"
+    }
+  ],
+  "original_packet": {
+    "path": "C:\\Users\\_\\.codex\\tmp\\player-playground-actors-final\\FROZEN-CHECKPOINT.json",
+    "sha256": "3c2a178f878be08cd399c0877464379aa3a1aa7c9a331ba090385da2d7c507ec"
+  },
+  "no_commits_pushes": true,
+  "no_own_processes_left": true
+}

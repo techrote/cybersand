@@ -164,7 +164,7 @@ static func validate_definition(definition: Dictionary) -> String:
 			if not _finite_vector(item.get("axis", null)) or item.axis.length_squared() < 0.00001 \
 				or item.axis.length_squared() > 1000000.0:
 				return "invalid slide axis"
-		for key: String in ["rest_length", "stiffness", "damping", "motor_speed", "max_force", "phase", "softness", "deployment_sign"]:
+		for key: String in ["rest_length", "stiffness", "damping", "motor_speed", "max_force", "phase", "softness", "deployment_sign", "command_slew"]:
 			if item.has(key) and not _finite_number(item[key]):
 				return "nonfinite joint parameter"
 		if item.has("deployment_sign") and absf(float(item.deployment_sign)) != 1.0:
@@ -173,6 +173,8 @@ static func validate_definition(definition: Dictionary) -> String:
 			return "joint effort outside bounded profile"
 		if float(item.get("motor_speed", 8.0)) < 0.0 or float(item.get("motor_speed", 8.0)) > 80.0:
 			return "joint speed outside bounded profile"
+		if float(item.get("command_slew", 20.0)) < 2.0 or float(item.get("command_slew", 20.0)) > 120.0:
+			return "joint command slew outside bounded profile"
 	# Reject accidental cosmetic/unconnected parts before allocating any bodies.
 	for _pass: int in range(MAX_PARTS):
 		for item in joints:
@@ -1021,7 +1023,7 @@ func _drive_joints(buttons: Vector3i, dt: float, effort: float) -> void:
 			# locomotion effort to zero while continuing to turn its held nozzle.
 			var motor_effort: float = 1.0 if bool(joint.get("equipment_aim", false)) else minf(effort, 1.2)
 			pin.motor_target_velocity = move_toward(pin.motor_target_velocity,
-				target * motor_effort, 20.0 * dt)
+				target * motor_effort, clampf(float(joint.get("command_slew", 20.0)), 2.0, 120.0) * dt)
 			joint.target = target
 		else:
 			var axis: Vector2 = Vector2(joint.axis_local).rotated(_transforms[a].get_rotation())

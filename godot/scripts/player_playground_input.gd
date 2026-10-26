@@ -4,7 +4,7 @@ extends RefCounted
 # One local sampler for keyboard and standard gamepads. Physics owners consume
 # copied actions; they never query global Input or take ownership of UI focus.
 const KEYS: Array[Key] = [KEY_W, KEY_A, KEY_S, KEY_D, KEY_UP, KEY_LEFT, KEY_DOWN,
-	KEY_RIGHT, KEY_Q, KEY_E, KEY_SPACE, KEY_SHIFT, KEY_C, KEY_M, KEY_B, KEY_N, KEY_U]
+	KEY_RIGHT, KEY_Q, KEY_E, KEY_SPACE, KEY_SHIFT, KEY_C, KEY_CTRL, KEY_M, KEY_B, KEY_N, KEY_U]
 const DEADZONE: float = 0.18
 
 
@@ -14,7 +14,7 @@ static func deadzone(value: Vector2) -> Vector2:
 	return value.normalized() * clampf((value.length() - DEADZONE) / (1.0 - DEADZONE), 0.0, 1.0)
 
 
-static func sample() -> Dictionary:
+static func sample(preset: StringName = &"") -> Dictionary:
 	var keys: Dictionary = {}
 	for key: Key in KEYS:
 		keys[key] = Input.is_physical_key_pressed(key)
@@ -29,11 +29,12 @@ static func sample() -> Dictionary:
 			int(Input.is_joy_button_pressed(pad, JOY_BUTTON_B)), int(Input.is_joy_button_pressed(pad, JOY_BUTTON_X)))
 		lean = float(int(Input.is_joy_button_pressed(pad, JOY_BUTTON_RIGHT_SHOULDER))
 			- int(Input.is_joy_button_pressed(pad, JOY_BUTTON_LEFT_SHOULDER)))
-	return from_state(keys, stick, buttons, lean)
+	return from_state(keys, stick, buttons, lean, preset)
 
 
 static func from_state(keys: Dictionary, stick: Vector2 = Vector2.ZERO,
-		buttons: Vector3i = Vector3i.ZERO, lean: float = 0.0) -> Dictionary:
+		buttons: Vector3i = Vector3i.ZERO, lean: float = 0.0,
+		preset: StringName = &"") -> Dictionary:
 	var movement := Vector2(
 		int(bool(keys.get(KEY_D, false)) or bool(keys.get(KEY_RIGHT, false))) - int(bool(keys.get(KEY_A, false)) or bool(keys.get(KEY_LEFT, false))),
 		int(bool(keys.get(KEY_S, false)) or bool(keys.get(KEY_DOWN, false))) - int(bool(keys.get(KEY_W, false)) or bool(keys.get(KEY_UP, false))))
@@ -45,7 +46,7 @@ static func from_state(keys: Dictionary, stick: Vector2 = Vector2.ZERO,
 	return {"move": movement.limit_length(1.0), "aim": movement.normalized(), "effort": 1.0,
 		"trim": clampf(trim, -1.0, 1.0), "primary": bool(keys.get(KEY_SPACE, false)) or buttons.x != 0,
 		"secondary": bool(keys.get(KEY_SHIFT, false)) or buttons.y != 0,
-		"auxiliary": bool(keys.get(KEY_C, false)) or buttons.z != 0,
+		"auxiliary": bool(keys.get(KEY_CTRL if preset == &"acrobat" else KEY_C, false)) or buttons.z != 0,
 		"tool":bool(keys.get(KEY_M,false)),"usable_alternate":bool(keys.get(KEY_B,false)),
 		"release_usable":bool(keys.get(KEY_N,false)),"attach_usable":bool(keys.get(KEY_U,false))}
 

@@ -18,7 +18,7 @@ item. Sampled rigs and the original physical hull trials remain reference choice
 Choose **Player playground** in the launcher or pass **`--player-playground`**
 for seven human movement presets: a loose-jointed stunt buggy, trials bike,
 momentum acrobat, arcade lander, real Sand cloud, real Water blob and jetpack
-barrel. Choose from **seven tailored districts plus Mixed Works**, each
+barrel. Choose from **seven tailored districts plus Flood Market**, each
 **1024 × 768 cells**, six times the first sample maps' area;
 every map is available to every player. The Water selector offers FreeMass,
 CellularYield, pressure reference/cached/dormant and inertial Water. Changing
@@ -29,6 +29,13 @@ mouse aims, **M** uses, **B** alternates, and mechanical players use **N/U** to
 drop/reattach equipment. Painting works while paused; reset clears
 edits. **1–7** selects a player, **Tab** cycles, **R** restarts, **P** pauses and
 **F** switches overview/follow. A standard gamepad can supply movement and actions.
+
+Each district has its own architecture, deep liquid reservoirs, three loose
+Rapier props and a clear starting exit. Include a demo NPC at reset or spawn
+Runner, Skimmer or Crawler at a clear stage or clicked map position. NPCs and
+props share the player's live world; spawning marks a practice lap. Afterimage's
+auxiliary action uses **Ctrl**; the other six retain **C**. Material-player idle
+circulation stays around a stationary field anchor.
 
 The acrobat chains slides, rolls, bullet jumps, double jumps, jump cancels and a
 finite airglide. The material presets steer native cells through a bounded local

@@ -19,6 +19,8 @@ const PHYSICS_HZ: int = 60
 const MAX_TICKS: int = 36000
 const ARENA_RECT := Rect2i(128, 128, 512, 256)
 const FLOOR_Y: int = 352
+const NPC_IDS: Array[StringName] = [&"runner", &"skimmer", &"crawler"]
+const MAX_SPAWN_CELLS: int = 8192
 const SCHEDULE: String = "synchronous-mask-actuation-effects-material-feedback-terrain-rapier/v1"
 
 var last_error: String = ""
@@ -26,6 +28,12 @@ var session: CyberPhysicalActorSession
 var config: Dictionary = {}
 var _world: Object
 var _viewport: SubViewport
+var _props: Array[RigidBody2D] = []
+var _prop_definitions: Array = []
+var _prop_body_offset: int = 0
+var _roster_revision: int = 0
+var _construction_receipt: Dictionary = {}
+var _spawn_receipts: Array = []
 var _effects := Effects.new()
 var _usables := UsableRuntime.new()
 var _usable_requests_total: int = 0
@@ -66,12 +74,12 @@ static func usable_course_config(model: StringName = &"digger", count: int = 8) 
 
 
 func _validated_config(value: Variant) -> Dictionary:
-	if not value is Dictionary or value.size() > 10:
+	if not value is Dictionary or value.size() > 12:
 		return {}
 	for key: Variant in value:
-		if str(key) not in ["version", "seed", "max_ticks", "actors", "local_patch_radius", "course", "flight_scenario", "flight_split", "playground_map", "playground_water"]:
+		if str(key) not in ["version", "seed", "max_ticks", "actors", "local_patch_radius", "course", "flight_scenario", "flight_split", "playground_map", "playground_water", "playground_npcs", "playground_seed_material"]:
 			return {}
-	if value.has("playground_map") or value.has("playground_water"):
+	if value.has("playground_map") or value.has("playground_water") or value.has("playground_npcs") or value.has("playground_seed_material"):
 		if value.get("course", "") != PlayerCourse.ID or not value.get("playground_map", &"legacy") in PlayerCourse.MAP_IDS + [&"legacy"] \
 			or not Session._integer(value.get("playground_water", 0), 0, PlaygroundWorld.WATER_NAMES.size() - 1):
 			return {}
@@ -86,8 +94,21 @@ func _validated_config(value: Variant) -> Dictionary:
 		or not Session._integer(value.get("local_patch_radius", 6), 0, 8):
 		return {}
 	var actors: Variant = value.get("actors")
-	if not actors is Array or actors.is_empty() or actors.size() > Session.MAX_ACTORS:
+	var playground: bool = value.get("course", "") == PlayerCourse.ID
+	if not actors is Array or (actors.is_empty() and not playground) or actors.size() > Session.MAX_ACTORS:
 		return {}
+	actors = actors.duplicate(true)
+	if playground:
+		if not value.get("playground_seed_material", 0) is int or int(value.get("playground_seed_material", 0)) not in [0, 2, 3]:
+			return {}
+		var npcs: Variant = value.get("playground_npcs", [])
+		if not npcs is Array or actors.size() + npcs.size() > Session.MAX_ACTORS:
+			return {}
+		for npc: Variant in npcs:
+			if not npc is Dictionary or StringName(str(npc.get("model", ""))) not in NPC_IDS \
+				or str(npc.get("producer", "demo")) != "demo":
+				return {}
+			actors.append(npc.duplicate(true))
 	var definitions: Array = []
 	for index: int in range(actors.size()):
 		var actor: Variant = actors[index]
@@ -112,7 +133,7 @@ func _validated_config(value: Variant) -> Dictionary:
 		if not position is Vector2 or not position.is_finite() or not Rect2(arena_rect).has_point(position):
 			return {}
 		definitions.append({"model": model, "producer": producer, "position": position})
-	if not Session.valid_definitions(definitions):
+	if not (definitions.is_empty() and playground) and not Session.valid_definitions(definitions):
 		return {}
 	if str(value.get("course", "")) == FlightCourse.ID:
 		var flight_scenario: Dictionary = FlightCourse.scenario(str(value.get("flight_scenario", "")),
@@ -127,6 +148,7 @@ func _validated_config(value: Variant) -> Dictionary:
 	if result.course == PlayerCourse.ID:
 		result.playground_map = StringName(value.get("playground_map", &"legacy"))
 		result.playground_water = int(value.get("playground_water", 0))
+		result.playground_seed_material = int(value.get("playground_seed_material", 0))
 	return result
 
 
@@ -165,16 +187,43 @@ func configure(value: Variant) -> bool:
 	viewport.disable_3d = true
 	viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
 	add_child(viewport)
+	var prop_definitions: Array = []
+	if validated.course == PlayerCourse.ID and validated.playground_map != &"legacy":
+		prop_definitions = PlayerCourse.props(validated.playground_map)
+	var props: Array[RigidBody2D] = []
+	var prop_sizes := PackedVector2Array()
+	for descriptor: Dictionary in prop_definitions:
+		var body := RigidBody2D.new()
+		body.position = descriptor.position
+		body.rotation = float(descriptor.get("rotation", 0.0))
+		body.mass = float(descriptor.mass)
+		body.gravity_scale = 156.0 / maxf(1.0, float(ProjectSettings.get_setting("physics/2d/default_gravity", 980.0)))
+		body.linear_damp_mode = RigidBody2D.DAMP_MODE_REPLACE
+		body.angular_damp_mode = RigidBody2D.DAMP_MODE_REPLACE
+		body.linear_damp = 0.15
+		body.angular_damp = 0.35
+		body.collision_layer = 1
+		body.collision_mask = 1
+		body.max_contacts_reported = 8
+		body.contact_monitor = true
+		var collider := CollisionShape2D.new()
+		var shape := RectangleShape2D.new()
+		shape.size = descriptor.size
+		collider.shape = shape
+		body.add_child(collider)
+		viewport.add_child(body)
+		props.append(body)
+		prop_sizes.append(descriptor.size)
 	var candidate := Session.new()
 	viewport.add_child(candidate)
-	if not candidate.configure(validated.actors, viewport.world_2d.space, _epoch_counter + 1):
+	if not candidate.configure(validated.actors, viewport.world_2d.space, _epoch_counter + 1, props, prop_sizes):
 		last_error = candidate.last_error
 		candidate.close()
 		viewport.free()
 		return false
 	if validated.course == PlayerCourse.ID:
 		var built: Dictionary = PlaygroundWorld.build(world, validated.playground_map,
-			validated.playground_water, 0, candidate.bridge.pack_body_states())
+			validated.playground_water, validated.playground_seed_material, candidate.bridge.pack_body_states())
 		if not built.accepted:
 			last_error = built.error
 			candidate.close()
@@ -186,6 +235,12 @@ func configure(value: Variant) -> bool:
 	_world = world
 	_viewport = viewport
 	session = candidate
+	_props.assign(props)
+	_prop_definitions = prop_definitions.duplicate(true)
+	_prop_body_offset = candidate.bridge.body_count() - props.size()
+	_roster_revision = 0
+	_spawn_receipts.clear()
+	_construction_receipt = world.get_applied_liquid_construction_receipt().duplicate(true) if validated.course == PlayerCourse.ID else {}
 	config = validated.duplicate(true)
 	_epoch_counter += 1
 	_effects.reset(_epoch_counter)
@@ -210,6 +265,95 @@ func configure(value: Variant) -> bool:
 	if _failed:
 		return false
 	_world.prepare_rigid_body_coupling(session.bridge.pack_body_states(), false)
+	return true
+
+
+func native_world() -> Object:
+	return _world
+
+
+func physics_bridge() -> CyberRapierPhysicsBridge:
+	return session.bridge if session != null else null
+
+
+func roster_snapshot() -> Dictionary:
+	var props: Array = []
+	for index: int in range(_props.size()):
+		var row: Dictionary = _prop_definitions[index].duplicate(true)
+		row["body_id"] = _prop_body_offset + index + 1
+		row["initial_position"] = row.position
+		row["position"] = session.bridge.body_transform(_prop_body_offset + index).origin
+		row["rotation"] = session.bridge.body_transform(_prop_body_offset + index).get_rotation()
+		row["velocity"] = session.bridge.body_linear_velocity(_prop_body_offset + index)
+		props.append(row)
+	return {"revision": _roster_revision, "run_id": session.run_id if session != null else "",
+		"epoch": session.epoch if session != null else 0, "tick": session.tick if session != null else 0,
+		"actors": session.snapshot().actors if session != null else [], "props": props,
+		"spawn_receipts": _spawn_receipts.duplicate(true),
+		"construction_receipt": _construction_receipt.duplicate(true),
+		"scope": "initial construction receipt is immutable; later roster revisions are host observations"}
+
+
+func spawn_actor(model: StringName, position: Vector2) -> Dictionary:
+	var refused: Dictionary = {"accepted": false, "reason": "npc_spawn_unavailable", "actor_id": -1,
+		"roster_revision": _roster_revision}
+	if session == null or _world == null or _failed or _finished or config.get("course") != PlayerCourse.ID:
+		return refused
+	if model not in NPC_IDS or not position.is_finite():
+		refused.reason = "npc_spawn_model_or_position"
+		return refused
+	var actor_id: int = session.actor_count()
+	var first_body_id: int = session.bridge.body_count() + 1
+	if not session.append_actor({"model": model, "producer": &"demo", "position": position}, _spawn_bodies_clear):
+		refused.reason = session.last_error
+		return refused
+	_roster_revision += 1
+	# Install the new actual complete mask without advancing either simulation.
+	var body_states: PackedFloat32Array = session.bridge.pack_body_states()
+	_world.prepare_rigid_body_coupling(body_states, false)
+	var receipt: Dictionary = {"accepted": true, "reason": "spawned", "actor_id": actor_id,
+		"model": str(model), "roster_revision": _roster_revision, "tick": session.tick,
+		"first_body_id": first_body_id, "last_body_id": session.bridge.body_count(),
+		"body_states": body_states.duplicate()}
+	_spawn_receipts.append(receipt.duplicate(true))
+	return receipt
+
+
+func _spawn_bodies_clear(bodies: Array[RigidBody2D], sizes: PackedVector2Array) -> String:
+	# Native cell-centre raster, plus actual OBB overlap. The native mask is the
+	# preceding pre-Rapier sample, so it cannot veto a now-vacated footprint.
+	var domain: Rect2 = Rect2(PlayerCourse.map_view(config.playground_map))
+	var inspected: int = 0
+	for index: int in range(bodies.size()):
+		var transform: Transform2D = PhysicsServer2D.body_get_state(bodies[index].get_rid(), PhysicsServer2D.BODY_STATE_TRANSFORM)
+		var half: Vector2 = sizes[index] * 0.5
+		var extent := Vector2(absf(transform.x.x) * half.x + absf(transform.y.x) * half.y,
+			absf(transform.x.y) * half.x + absf(transform.y.y) * half.y)
+		if not domain.encloses(Rect2(transform.origin - extent, extent * 2.0)):
+			return "npc_spawn_outside_map"
+		for old_index: int in range(session.bridge.body_count()):
+			if _rectangles_overlap(transform, half, session.bridge.body_transform(old_index), session.bridge.body_size(old_index) * 0.5):
+				return "npc_spawn_body_overlap"
+		for y: int in range(floori(transform.origin.y - extent.y), ceili(transform.origin.y + extent.y)):
+			for x: int in range(floori(transform.origin.x - extent.x), ceili(transform.origin.x + extent.x)):
+				inspected += 1
+				if inspected > MAX_SPAWN_CELLS: return "npc_spawn_scan_capacity"
+				var local: Vector2 = transform.affine_inverse() * Vector2(x + 0.5, y + 0.5)
+				if absf(local.x) > half.x or absf(local.y) > half.y: continue
+				# material_at is mask-hidden World::get; this copied read exposes the
+				# actual stored material even under the preceding body's old mask.
+				var stored: Dictionary = _world.inspect_inertial_cell(Vector2i(x, y))
+				if not stored.get("ok", false): return "npc_spawn_material_unavailable"
+				if int(stored.material) != 0: return "npc_spawn_occupied_cells"
+	return ""
+
+
+static func _rectangles_overlap(first: Transform2D, first_half: Vector2, second: Transform2D, second_half: Vector2) -> bool:
+	var delta: Vector2 = second.origin - first.origin
+	for axis: Vector2 in [first.x, first.y, second.x, second.y]:
+		var a: float = absf(axis.dot(first.x)) * first_half.x + absf(axis.dot(first.y)) * first_half.y
+		var b: float = absf(axis.dot(second.x)) * second_half.x + absf(axis.dot(second.y)) * second_half.y
+		if absf(delta.dot(axis)) >= a + b: return false
 	return true
 
 
@@ -457,6 +601,7 @@ func snapshot() -> Dictionary:
 		"finished": _finished, "failed": _failed, "terminated": _failed,
 		"truncated": _reason == "tick_limit", "reason": _reason, "paused": _paused,
 		"world_tick": int(_world.get_tick_index()) if _world != null else 0,
+		"roster_revision": _roster_revision, "prop_count": _props.size(),
 		"command_results": _command_receipts.duplicate(true),
 		"effects": _effect_receipts.duplicate(true),
 		"physical_usables": _usables.snapshot(),
@@ -477,7 +622,12 @@ func snapshot() -> Dictionary:
 
 
 func render_parts() -> Array:
-	return session.render_parts() if session != null else []
+	var result: Array = session.render_parts() if session != null else []
+	for index: int in range(_props.size()):
+		result.append({"actor_id": -1, "part_id": "prop_%d" % index,
+			"transform": session.bridge.body_transform(_prop_body_offset + index),
+			"size": _prop_definitions[index].size, "color": _prop_definitions[index].color, "shape": "rectangle"})
+	return result
 
 
 func course_processor_fixture(actor_id: int, operation: String = "feed") -> Dictionary:
@@ -582,6 +732,12 @@ func close() -> void:
 		_viewport.free()
 	_viewport = null
 	_world = null
+	_props.clear()
+	_prop_definitions.clear()
+	_prop_body_offset = 0
+	_roster_revision = 0
+	_construction_receipt.clear()
+	_spawn_receipts.clear()
 	_effects.reset()
 	_usables.reset()
 	_coupling_results.clear()

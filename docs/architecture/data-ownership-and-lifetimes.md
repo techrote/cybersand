@@ -24,9 +24,10 @@ mode updates; no new World, thread, body ABI or mutable storage view is added.
 
 The [player playground map/Water/painting owner](../systems/player-control-playground.md#seven-tailored-maps-water-selection-and-painting)
 retains its existing synchronous ownership: provisional native World plus
-private mechanical session commit only after setup succeeds; material players
-own a separate exclusive World. The prepared receipt includes initial copied
-mechanical masks or the authored swarm seed. Bounded brush stamps run between
+private physical session commit only after setup succeeds. All public presets
+share that World/space with initial NPCs and props; material players remain native
+cells. The hidden legacy material fixture retains its body-free exclusive World.
+The prepared receipt includes initial copied masks and the authored swarm seed. Bounded brush stamps run between
 ticks, skip current body masks and synchronize hard terrain to the same private
 space, including while paused. Setup receipts describe tick zero; later player
 authoring marks practice state and does not extend scientific qualification.
@@ -111,8 +112,8 @@ old run, command leases, effects and joint graph. See the
 
 **Current experimental source:** the dedicated
 [player playground](../systems/player-control-playground.md) serializes calls on
-its main-thread owner. Its mechanical lane reuses `CyberPhysicalActorArena` and
-the physical session. Its material lane owns a separate native World and calls
+its main-thread owner. Every public preset reuses `CyberPhysicalActorArena`, one
+physical session and private space for props/NPCs. Its material player calls
 `apply_player_material_field` only between ordinary ticks, under a current
 observation-relative input lease. No operation borrows the sandbox worker's World.
 
@@ -124,6 +125,17 @@ and ordinary material rules continue. Reset stages a candidate before retiring
 the old owner, commands and observations. Rendering receives copied packets
 tagged with the new reset generation. This API adds no thread-safety or general
 worker forwarding capability; the caller must already own serialized access.
+
+Public playground actor addition stages a fresh rig/equipment/demo controller,
+checks complete actual bounds against native cells and existing bodies, then
+appends to the existing bridge/session. All refusals precede publication. Body
+IDs are stable bridge indices plus one, including props; new actor offsets use
+the total bridge body count. Original serial/feedback caches and terrain remain
+owned by that bridge. Initial receipts stay immutable; roster revisions/spawn
+packets are copied host records. No removal/compaction occurs before reset.
+The main-thread owner installs the changed full native mask between ticks;
+normal mask wake/cache invalidation is retained. Material field/usables execute
+before the same arena's single native tick and single Rapier step.
 
 ## Generated semantic depth ownership
 

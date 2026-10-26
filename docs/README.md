@@ -275,7 +275,7 @@ Windows evidence and explicit owner-feel limitations. The
 retains the original actual Rapier Trainer data, lifecycle negatives and
 source/runtime identity.
 
-For seven human movement presets, use the [player control playground](systems/player-control-playground.md): buggy, trials bike, momentum acrobat, arcade lander, native Sand cloud, native Water blob and jetpack barrel. The guide owns eight 1024×768 districts, stronger rear-wheel lean/doubled hops, six Water solver choices, material spawning/painting, all 32 usables, keyboard/gamepad controls, acrobat chains, reset/focus rules and bounded composite material-field ownership. The five mechanical presets also appear in F5 SetP.
+For seven human movement presets, use the [player control playground](systems/player-control-playground.md): buggy, trials bike, momentum acrobat, arcade lander, native Sand cloud, native Water blob and jetpack barrel. The guide owns eight distinct 1024×768 districts, large reservoirs, loose props, live NPC spawning, higher agile Afterimage/Ctrl, stationary neutral swarm fields, stronger rear-wheel lean/doubled hops, six Water solver choices, material spawning/painting, all 32 usables, keyboard/gamepad controls, acrobat chains, reset/focus rules and bounded composite material-field ownership. The five mechanical presets also appear in F5 SetP.
 
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).
 

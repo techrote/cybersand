@@ -83,8 +83,11 @@ static func valid_definitions(definitions: Array) -> bool:
 	return parts <= CyberRigidBodyCoupling.MAX_BODIES
 
 
-func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
-	if _active or not is_inside_tree() or not valid_definitions(definitions) or new_epoch < 1:
+func configure(definitions: Array, space: RID, new_epoch: int = 1,
+	extra_bodies: Array[RigidBody2D] = [], extra_sizes: PackedVector2Array = PackedVector2Array()) -> bool:
+	var valid_actors: bool = valid_definitions(definitions) or (definitions.is_empty() and not extra_bodies.is_empty())
+	if _active or not is_inside_tree() or not valid_actors or new_epoch < 1 \
+		or extra_bodies.size() != extra_sizes.size():
 		last_error = "Invalid physical actor configuration or live owner"
 		return false
 	epoch = new_epoch
@@ -138,6 +141,8 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 		history.resize(MAX_LEASE + 1)
 		history.fill(-1)
 		_issued.append(history)
+	all_bodies.append_array(extra_bodies)
+	sizes.append_array(extra_sizes)
 	var error: Error = bridge.initialize(space, all_bodies, sizes)
 	if error != OK:
 		last_error = "Rapier bridge refused physical assembly (%d)" % error
@@ -152,6 +157,73 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 	_flight_completed_step = bridge.manual_step_count()
 	_flight_pause_step = _flight_completed_step
 	_active = true
+	return true
+
+
+func actor_count() -> int:
+	return _rigs.size()
+
+
+func append_actor(definition: Dictionary, admission: Callable = Callable()) -> bool:
+	# Stage only the new owner in the already manually-stepped space. Refusal
+	# retires this provisional rig; it never closes/reset the live session.
+	if not _active or _has_flight or _flight_prepared or actor_count() >= MAX_ACTORS \
+		or not valid_definitions([definition]) or StringName(str(definition.model)) in Flight.IDS:
+		last_error = "actor_append_configuration_or_capacity"
+		return false
+	var data: Dictionary = Equipment.definition(Catalog.entry(StringName(str(definition.model))),
+		Loadouts.entry(StringName(str(definition.model))))
+	if bridge.body_count() + data.parts.size() > CyberRigidBodyCoupling.MAX_BODIES:
+		last_error = "actor_append_body_capacity"
+		return false
+	var index: int = actor_count()
+	var offset: int = bridge.body_count()
+	var rig = Rig.new()
+	add_child(rig)
+	var error: Error = rig.configure(data, definition.position, index, epoch)
+	var item = Equipment.new()
+	var pilot = Scripted.new()
+	if error == OK and not item.configure(rig, run_id, epoch, index, offset,
+		int(definition.get("usable_index", Loadouts.entry(StringName(str(definition.model))).get("usable_index", -1)))):
+		error = ERR_INVALID_DATA
+	if error == OK and not pilot.configure(StringName(str(definition.model)), definition.position, index):
+		error = ERR_INVALID_DATA
+	var refusal: String = "actor_append_preparation"
+	if error == OK and admission.is_valid():
+		var result: Variant = admission.call(rig.bodies(), rig.body_sizes())
+		if not result is String or not str(result).is_empty():
+			error = ERR_INVALID_DATA
+			refusal = str(result) if result is String else "actor_append_admission"
+	if error == OK:
+		error = bridge.append_bodies(rig.bodies(), rig.body_sizes())
+		if error != OK: refusal = "actor_append_bridge_%d" % error
+	if error != OK:
+		rig.close()
+		rig.free()
+		last_error = refusal
+		return false
+	_definitions.append(definition.duplicate(true))
+	_catalogue.append(data)
+	_rigs.append(rig)
+	_scripts.append(pilot)
+	_equipment.append(item)
+	_body_offsets.append(offset)
+	_sequences.append(-1)
+	_deadlines.append(-1)
+	_generations.append(0)
+	_commands.append({})
+	_flight_commands.append({})
+	_flight_applied.append({})
+	_flight_last_step.append({})
+	_fallback_reasons.append("not_commanded")
+	_button_edges.append([])
+	_accepted_buttons.append({})
+	_applied_buttons.append({})
+	var history := PackedInt64Array()
+	history.resize(MAX_LEASE + 1)
+	history.fill(-1)
+	_issued.append(history)
+	last_error = ""
 	return true
 
 
@@ -670,7 +742,7 @@ func snapshot() -> Dictionary:
 		actors.append(_view(index, false))
 	return {"version": VERSION, "run_id": run_id, "epoch": epoch, "tick": tick,
 		"representation": "articulated-rapier", "active": _active, "suspended": _suspended,
-		"actor_count": _rigs.size(), "body_count": bodies().size(), "actors": actors,
+		"actor_count": _rigs.size(), "body_count": bridge.body_count(), "actors": actors,
 		"accepted_commands": accepted_commands, "rejected_commands": rejected_commands,
 		"last_error": last_error}
 

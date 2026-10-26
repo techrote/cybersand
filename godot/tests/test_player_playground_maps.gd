@@ -62,7 +62,8 @@ func run() -> void:
 					expect(extent.has_point(Vector2i(target)) and world().material_at(int(target.x), int(target.y)) == 0,
 						"gate centre is inside map and free of terrain " + label)
 				# Activate Water in every setup, including maps authored without it.
-				expect(runtime.paint(Vector2i(212, 250), 3, 3).changed > 0, "bounded whole-cell Water spawn " + label)
+				var paint_stage := Vector2i(Course.spawn(map_id)) + Vector2i(32, 0)
+				expect(runtime.paint(paint_stage, 3, 3).changed > 0, "bounded whole-cell Water spawn " + label)
 				for tick: int in range(3):
 					expect(runtime.submit_action({"move": Vector2.RIGHT}), "fresh movement admitted " + label)
 					runtime.step()

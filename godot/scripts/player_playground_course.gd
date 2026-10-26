@@ -9,17 +9,17 @@ const VIEW := Rect2i(128, 128, 512, 256)
 const FLOOR_Y: int = 352
 const MAP_IDS: Array[StringName] = [&"mixed", &"cannon_run", &"rat_steps", &"afterimage_works",
 	&"vector_port", &"dust_foundry", &"undertow_lab", &"rocket_yard"]
-const MAP_NAMES: Array[String] = ["Mixed Works · all players", "Cannon Run · buggy", "Rat Steps · trials bike",
-	"Afterimage Works · acrobat", "Vector Port · lander", "Dust Foundry · Sand cloud",
-	"Undertow Lab · Water blob", "Rocket Yard · jet barrel"]
-const MAP_HINTS: Array[String] = ["Ramp, tuck tunnel, flight slalom and material sieve.",
-	"Build speed on the long launch ramp; brake on the landing straight. The lower lane stays open.",
-	"Preload hops up the low steps, then balance across the narrow spine. Try the open lower lane with another player.",
-	"Chain a running slide through the low tunnel, then bullet jump or glide between the upper decks.",
-	"Thread the wide vertical flight slots, brake over the landing pads, then reverse course.",
-	"Spread the Sand through combs, gather it beyond each sieve, or take another player over the top.",
-	"Guide Water through the low channels and catch basins. Paint a reservoir to compare the selected solver.",
-	"Use short thrust bursts and upright assistance to land on the staggered pads. Ground players have a clear lower route."]
+const MAP_NAMES: Array[String] = ["Flood Market · all players", "Quarry Rally · buggy", "Terraced Aqueduct · trials bike",
+	"Textile Mill · acrobat", "Crater Port · lander", "Inverted Foundry · Sand cloud",
+	"Filtration Cathedral · Water blob", "Silo Facility · jet barrel"]
+const MAP_HINTS: Array[String] = ["Follow the dry market street, explore the covered bazaar, then take the courier rooftops. Large canal stores overlook the street.",
+	"Carry speed up the broad quarry ramp; land on the suspended road. Explore the flooded excavation and ore conveyor above.",
+	"Preload over the aqueduct steps, balance on the timber shelves, or shelter beneath the stone arches and deep cisterns.",
+	"Run the loading street, slide through the optional mill vent, then chain jumps across staggered roofs, cloth spools and ducts.",
+	"Launch into the crater's open volume, thread asymmetric gantry apertures and brake onto the arms above the ballast stores.",
+	"Break the plywood hopper throats, gather Sand through hanging combs and follow the discharge terraces. The dry lower street stays open.",
+	"Explore three deep cisterns below the stone/glass cathedral, copper organ and filter gallery. Use a tool to open channels between stores.",
+	"Rise through nested launch wells and land on cantilever pads above the coolant farm. Ground players can use the dry bunker road."]
 const PRESETS: Array[StringName] = [&"stuntbuggy", &"trialsbike", &"acrobat",
 	&"arcadelander", &"dryswarm", &"liquidswarm", &"jetbarrel"]
 const NAMES: Array[String] = ["Loose Cannon", "Trials Rat", "Afterimage",
@@ -44,11 +44,19 @@ static func map_view(map_id: StringName) -> Rect2i:
 
 
 static func floor_y(map_id: StringName) -> int:
-	return FLOOR_Y if map_id == &"legacy" else Districts.FLOOR
+	return FLOOR_Y if map_id == &"legacy" else Districts.floor_y(map_id)
 
 
 static func spawn(map_id: StringName) -> Vector2:
-	return Vector2(178,304) if map_id == &"legacy" else Districts.SPAWN
+	return Vector2(178,304) if map_id == &"legacy" else Districts.spawn(map_id)
+
+
+static func props(map_id: StringName) -> Array:
+	return [] if map_id == &"legacy" else Districts.props(map_id)
+
+
+static func npc_spawns(map_id: StringName) -> PackedVector2Array:
+	return PackedVector2Array([Vector2(210, 320)]) if map_id == &"legacy" else Districts.npc_spawns(map_id)
 
 
 static func editable(map_id: StringName) -> Rect2i:
@@ -114,7 +122,7 @@ static func controls(id: StringName) -> String:
 	match id:
 		&"stuntbuggy": return "W / S   Drive / reverse\nA / D or Q / E   Lean around rear axle\nSPACE   Hop from support\nSHIFT   Brake\nC   Help the buggy recover"
 		&"trialsbike": return "W / S   Throttle / reverse\nA / D or Q / E   Rear-wheel pivot / rider lean\nHold SPACE, release   Preload hop\nSHIFT   Brake / landing control\nC   Recovery assist"
-		&"acrobat": return "A / D   Run and steer in the air\nSPACE   Jump / double jump\nSHIFT   Slide; tap for roll\nSHIFT + SPACE   Bullet jump\nSPACE during roll   Jump cancel\nC   Cancel / brake; hold in air to glide"
+		&"acrobat": return "A / D   Run and steer in the air\nSPACE   Jump / double jump\nSHIFT   Slide; tap for roll\nSHIFT + SPACE   Bullet jump\nSPACE during roll   Jump cancel\nCTRL   Cancel / brake; hold in air to glide"
 		&"arcadelander": return "SPACE or W   Main thruster\nA / D or Q / E   Rotate\nS   Reverse thrust\nSHIFT   Strong airbrake\nC   Toggle damped flight / coast"
 		&"jetbarrel": return "SPACE or W   Body-axis jetpack\nA / D or Q / E   Strong torque\nS   Reverse thrust\nSHIFT   Brake\nHold C   Upright assistance"
 		&"dryswarm": return "WASD   Guide the Sand cloud\nSPACE   Directional surge\nSHIFT   Spread / disperse\nC   Gather / compact\nRelease controls   Swirl / gather idly"

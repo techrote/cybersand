@@ -21,9 +21,9 @@ godot --path godot -- --player-playground --player=acrobat
 ```
 
 The optional player value is an ID from the table below. Eight selectable
-1024 × 768 districts combine ramps, low tunnels, flight routes, landing decks,
+1024 Ã— 768 districts combine ramps, low tunnels, flight routes, landing decks,
 material apparatus and usable targets in one native world. The original
-512 × 256 course is retained only as an explicitly selected `legacy` test fixture.
+512 Ã— 256 course is retained only as an explicitly selected `legacy` test fixture.
 Four ordered checkpoints give each map
 a route and a simulation-time lap counter. The timer starts when active movement
 or action input is admitted, including a quick press/release before the next
@@ -35,22 +35,25 @@ checkpoint detection do not establish that every route has been completed.
 ## Seven tailored maps, Water selection and painting
 
 **Current branch implementation, local Windows qualification:** the independent
-**Map** selector offers Mixed Works plus these seven focused districts. Every
+**Map** selector offers Flood Market plus these seven focused districts. Every
 selectable map has six times the first sample's area, with multi-level
 structures, alternate paths, editable targets and varied building/material
-samples. All include a service bay, catch basins, upper bridges and salvage racks.
+samples. Each has a distinct authored topology and skyline, a clear start
+promenade, substantial liquid stores and three movable Rapier props. The old
+shared blocking service bay is removed.
 Every map is selectable with all seven players; the suggested player describes
 the emphasis, not an admission restriction or proof of complete traversal.
 
 | Map ID / displayed name | Suggested player | Exercise |
 |---|---|---|
-| `cannon_run` / Cannon Run | Loose Cannon buggy | Long rideable ramp, landing straight and braking bumps |
-| `rat_steps` / Rat Steps | Trials Rat bike | Low stepped ascent, narrow balance spine and stepped descent |
-| `afterimage_works` / Afterimage Works | Afterimage acrobat | Low slide tunnel and upper decks for bullet jumps and gliding |
-| `vector_port` / Vector Port | Vector Rush lander | Alternating broad flight slots, braking and landing decks |
-| `dust_foundry` / Dust Foundry | Dust Devil Sand cloud | Four ten-tooth combs with seven-cell gaps, granular beds, catch basins and overhead foundries |
-| `undertow_lab` / Undertow Lab | Undertow Water blob | Four lower Water/Brine/Oil basins, upper reservoirs, scooping shelves, glass channels and an ice specimen |
-| `rocket_yard` / Rocket Yard | Barrel Rocket | Eight staggered heat-shield landing pads, offset baffles, fuel/Water targets and an upper gantry |
+| `mixed` / Flood Market | All players | Covered bazaar, dry market street and courier rooftops |
+| `cannon_run` / Quarry Rally | Loose Cannon buggy | Broad ascent/crest, suspended road, flooded excavation and ore conveyor |
+| `rat_steps` / Terraced Aqueduct | Trials Rat bike | Incremental climb, timber balance shelves, arches and cistern plumbing |
+| `afterimage_works` / Textile Mill | Afterimage acrobat | Optional slide vent, loading street, staggered roofs and cloth spools |
+| `vector_port` / Crater Port | Vector Rush lander | Open launch volume, asymmetric gantries and ballast stores |
+| `dust_foundry` / Inverted Foundry | Dust Devil Sand cloud | Breakable hopper throats, hanging combs and discharge terraces |
+| `undertow_lab` / Filtration Cathedral | Undertow Water blob | Stone/glass arch, copper organ, filter gallery and three deep cisterns |
+| `rocket_yard` / Silo Facility | Barrel Rocket | Nested launch wells, cantilever pads, coolant farm and bunker road |
 
 `mixed` remains the initial map and Current FreeMass remains the initial Water
 solver. `--playground-map=undertow_lab` optionally selects a map at launch.
@@ -70,7 +73,7 @@ starts as whole cells. Selection rebuilds from authored rectangles, never
 rounds a live fractional FreeMass World and never silently falls back on refusal.
 These are the existing native solvers; no new law, defaults or C64/E8 ABI change.
 
-Choose Sand, Water, Oil, Brine, Smoke, Fire, Lava, Acid or Wall and a **1–12 cell
+Choose Sand, Water, Oil, Brine, Smoke, Fire, Lava, Acid or Wall and a **1â€“12 cell
 brush radius**. **Spawn a burst above player** adds one disc 32 cells right and
 32 cells above the player, clamped inside the course. Enable **Paint tool** to
 draw with left mouse or erase with right mouse in the actual fitted play view;
@@ -93,8 +96,9 @@ not replenish an occupied cell unless that cell is first explicitly erased.
 
 `CyberPlayerPlaygroundWorld.build` uses the existing prepared-native constructor
 with Baseline transport, exploratory/host-paced intent, full finite region,
-disabled cadence LOD and a copied initial mechanical body state (or empty for
-material players). It records a tick-zero native setup receipt covering the map
+disabled cadence LOD and copied initial player/NPC/prop body states. Public
+material-player maps use the same private physics host for props and NPCs; the
+hidden legacy material fixture remains the old body-free test owner. It records a tick-zero native setup receipt covering the map
 and initial swarm seed. Receipts identify the initial setup, not later painting.
 A failed candidate leaves the live owner and accepted selections in place.
 This synchronous playground route does not close #202/#203 full-host acceptance.
@@ -106,6 +110,55 @@ Sources: [map definitions](../../godot/scripts/player_playground_course.gd),
 [scene controls](../../godot/scripts/player_playground.gd) and
 [dated qualification](../audits/2026-10-26-player-playground-maps.md).
 
+## Detailed districts, live NPCs and agile Afterimage
+
+The [polish checkpoint](../audits/2026-10-26-player-playground-polish-and-npcs.md)
+replaces the repeated map composition. The eight districts use 243–403 authored
+rectangles and 33–43 materials each. Every map has a clear flat first promenade
+with 112 cells of headroom, deep Water and other-liquid stores, clear prop stages
+and NPC placement stages. Six retain a lower dry bypass; the quarry and aqueduct
+instead use intentional broad grades and recovery ramps. Road-height baseline
+checkpoints stay on the universal route; upper focus frames are optional. Glass
+reservoir valves and the foundry throat/grates now support actual usable-driven
+release and powder-flow challenges. Actual ordinary-throttle tests
+prove both wheeled presets exit all eight starts; full routes and human feel
+remain separate acceptance.
+
+Enable **Start with an NPC** to rebuild with one demo actor. Choose **Runner**,
+**Skimmer** or **Crawler**, then use **Spawn NPC at a clear starting stage** or
+enable **Place NPC** and click the map. Placement also works while paused and
+uses the current overview/follow coordinates. It refuses occupied terrain,
+liquids, existing body bounds, out-of-map geometry and capacity exhaustion.
+Spawning preserves the current player, World, edits and clocks; it marks a
+practice lap. Reset clears appended actors and restores three loose props.
+NPCs use the existing local feedback demo controls, not general pathfinding.
+
+Player, NPCs and props share one native World, one private Rapier space and one
+step of each per frame. The physical roster is append-only until reset, limited
+to eight actors and 64 total bodies including props/equipment. Material players
+do not consume a physical actor slot. Old body IDs, leases and equipment
+identities survive append. The initial prepared receipt includes initial NPCs
+and props and remains immutable; copied roster revisions and spawn receipts
+identify later additions. Installing a new body mask can change wake/pressure
+cache state even without a tick; spawning is not identical physical continuation.
+
+Afterimage uses **Ctrl** for cancel/brake and held air glide. **Shift/S + Space**
+still performs the bullet jump. The other six players retain **C**, and gamepad
+X remains the auxiliary button. A higher jump, stronger finite ground/air drive,
+opposed leg gait, counter-rotated feet and faster bounded joint commands improve
+agility through real Rapier bodies. The local fixture measures a 1.45× apex
+increase while preserving air inventory and actual low-tunnel passage.
+
+Dust Devil and Undertow keep an exactly stationary field anchor under neutral
+input. Their local circulation compensates repeated satellite loft instead of
+raising the whole cloud. Only admitted directional input can follow observed
+material by at most four cells per step; cancellation/lease expiry removes field
+assistance. All six Water laws conserve the seeded 65,280 quantity and stay within
+the static circle in the registered 360-tick neutral fixtures. Radius 60 describes
+bounded influence, not an impermeable material-ownership boundary: arbitrary
+painted, saturated, obstructed or reacting material has no universal containment
+guarantee. Native chemistry and transport remain authoritative.
+
 ## Stronger player controls and usable testing
 
 The [expanded checkpoint](../audits/2026-10-26-player-playground-expanded-and-usables.md)
@@ -115,13 +168,13 @@ are authored player-control changes, including F5 SetP for mechanical players:
 - Loose Cannon and Trials Rat lean using bounded tangential impulses around
   the actual rear wheel plus attached-part torque. No body transform is set or
   wheel pinned to a world position. Requested angular speeds are 11/12 rad/s,
-  capped accelerations 90/95 rad/s², with rider lean up to 0.86 rad. Rapier's
+  capped accelerations 90/95 rad/sÂ², with rider lean up to 0.86 rad. Rapier's
   contacts and joints still determine the resulting motion.
-- Both vehicles multiply their former upward hop impulses by √2, targeting
+- Both vehicles multiply their former upward hop impulses by âˆš2, targeting
   approximately double ballistic height under unchanged gravity. Actual flat
-  fixtures measure 1.91× buggy and 1.95× full-preload bike height. Bike charge,
+  fixtures measure 1.91Ã— buggy and 1.95Ã— full-preload bike height. Bike charge,
   support, release and cancellation rules remain intact.
-- Vector Rush uses gravity 96 cells/s² in damped mode and 32 in drift; C still
+- Vector Rush uses gravity 96 cells/sÂ² in damped mode and 32 in drift; C still
   toggles mode, and forces/damping remain finite. Detached equipment is not
   retuned when the owner changes gravity mode.
 - Barrel Rocket scales physical rotational inertia by 0.85 without reducing
@@ -162,9 +215,9 @@ Reset destroys the old devices/projectiles and starts a fresh selected map;
 the selected usable is retained as a requested loadout. Copied projectiles,
 processors, effects and actual result/charge state are presented in the view.
 
-Five mechanical presets also appear in **F5 → Rapier → SetP**, among the
+Five mechanical presets also appear in **F5 â†’ Rapier â†’ SetP**, among the
 46 retained physical actor IDs and original eight sets. The separate 4LY
-free-flight family appends a ninth **F5 → set4LY** selection group without
+free-flight family appends a ninth **F5 â†’ set4LY** selection group without
 renumbering SetP or replacing this dedicated player playground. They reuse
 the shared physical session, controls and optional equipment lifecycle in exploratory maps.
 Dust Devil and Undertow are available only in this separate playground; they
@@ -177,19 +230,19 @@ Sources: [scene owner](../../godot/scripts/player_playground.gd),
 
 ## Keyboard controls for all seven presets
 
-In `--player-playground` (optionally `--player=ID`), use 1–7 or Tab/Shift+Tab
+In `--player-playground` (optionally `--player=ID`), use 1â€“7 or Tab/Shift+Tab
 to select, R to restart, P/Escape to pause, F for overview/follow, and F2 for the
 launcher. These scene controls accompany the movement actions below.
 
 | Key / ID | Preset | Movement and actions |
 |---|---|---|
-| **1** / `stuntbuggy` | **Loose Cannon** — loose-jointed stunt buggy | W/S drive/reverse; A/D or Q/E lean and rotate in air; Space hops from support; Shift brakes; hold C for recovery assistance. Sprung wheels and a hinged rider carry the motion. |
-| **2** / `trialsbike` | **Trials Rat** — trials bike | W/S throttle/reverse; A/D or Q/E lean; hold Space while supported to preload, then release to hop; Shift brakes; hold C for recovery assistance. The rear wheel drives and the front wheel rolls freely until braking. |
-| **3** / `acrobat` | **Afterimage** — momentum acrobat | A/D run and steer in air; Space jumps, then double jumps; hold Shift or S to slide; tap Shift to roll; Shift+Space or S+Space bullet jumps; C cancels/brakes and, held in air, glides. Mouse position aims bullet jumps. |
-| **4** / `arcadelander` | **Vector Rush** — arcade lander | W or Space fires the body-axis main engine; A/D or Q/E rotates; S gives reverse thrust; Shift applies a strong airbrake; tap C toggles damped flight/coast. |
-| **5** / `dryswarm` | **Dust Devil** — Sand cloud | WASD guides actual Sand; Space surges in the movement direction, or upward from neutral; Shift spreads; C gathers. Neutral admitted input keeps the cohesion/loft field active. |
-| **6** / `liquidswarm` | **Undertow** — Water blob | WASD guides actual Water; Space surges; Shift squeezes transverse to travel into a stream; C gathers. Neutral admitted input keeps the cohesion/loft field active. |
-| **7** / `jetbarrel` | **Barrel Rocket** — barrel with jetpack | W or Space fires the body-axis jet; A/D or Q/E provides strong rotation; S gives reverse thrust; Shift brakes; hold C for upright assistance. |
+| **1** / `stuntbuggy` | **Loose Cannon** â€” loose-jointed stunt buggy | W/S drive/reverse; A/D or Q/E lean and rotate in air; Space hops from support; Shift brakes; hold C for recovery assistance. Sprung wheels and a hinged rider carry the motion. |
+| **2** / `trialsbike` | **Trials Rat** â€” trials bike | W/S throttle/reverse; A/D or Q/E lean; hold Space while supported to preload, then release to hop; Shift brakes; hold C for recovery assistance. The rear wheel drives and the front wheel rolls freely until braking. |
+| **3** / `acrobat` | **Afterimage** â€” momentum acrobat | A/D run and steer in air; Space jumps, then double jumps; hold Shift or S to slide; tap Shift to roll; Shift+Space or S+Space bullet jumps; Ctrl cancels/brakes and, held in air, glides. Mouse position aims bullet jumps. |
+| **4** / `arcadelander` | **Vector Rush** â€” arcade lander | W or Space fires the body-axis main engine; A/D or Q/E rotates; S gives reverse thrust; Shift applies a strong airbrake; tap C toggles damped flight/coast. |
+| **5** / `dryswarm` | **Dust Devil** â€” Sand cloud | WASD guides actual Sand; Space surges in the movement direction, or upward from neutral; Shift spreads; C gathers. Neutral admitted input keeps the cohesion/loft field active. |
+| **6** / `liquidswarm` | **Undertow** â€” Water blob | WASD guides actual Water; Space surges; Shift squeezes transverse to travel into a stream; C gathers. Neutral admitted input keeps the cohesion/loft field active. |
+| **7** / `jetbarrel` | **Barrel Rocket** â€” barrel with jetpack | W or Space fires the body-axis jet; A/D or Q/E provides strong rotation; S gives reverse thrust; Shift brakes; hold C for upright assistance. |
 
 Arrow keys duplicate WASD in the dedicated scene. The lander and barrel thrust
 along their current orientation, so rotation changes the direction of the next
@@ -205,18 +258,18 @@ weaker than running; reversing input changes momentum gradually. A held crouch
 can keep the tuck during a brief loss of support. The controller does not
 teleport the body or replace its velocity with a character trajectory.
 
-- **Run → slide → bullet jump:** gain speed with A/D, hold Shift or S to tuck,
+- **Run â†’ slide â†’ bullet jump:** gain speed with A/D, hold Shift or S to tuck,
   aim with the mouse, then press Space. Grounded bullet jumps include an upward
   component; faster velocity already aligned with the launch is retained.
-- **Jump → double jump → roll → glide:** Space gives the ground jump and one
-  airborne jump. Press Shift in air for the separate air roll. Hold C near the
+- **Jump â†’ double jump â†’ roll â†’ glide:** Space gives the ground jump and one
+  airborne jump. Press Shift in air for the separate air roll. Hold Ctrl near the
   apex or while falling to reduce descent while steering with A/D.
-- **Roll → jump cancel:** press Space during a roll to leave it using an
+- **Roll â†’ jump cancel:** press Space during a roll to leave it using an
   available jump. If Shift/S remains held, the same press requests a bullet
   jump first while that separate launch is available. Release crouch for an
   ordinary jump cancel.
-- **Slide/roll → brake cancel:** press C to end the slide or roll. On support,
-  C brakes; slide stays suppressed until crouch is released. Releasing Space
+- **Slide/roll â†’ brake cancel:** press Ctrl to end the slide or roll. On support,
+  Ctrl brakes; slide stays suppressed until crouch is released. Releasing Space
   early shortens an ordinary jump. Q/E adds airborne attitude trim.
 
 The controller supplies a short coyote window and input buffer. One airborne
@@ -241,7 +294,7 @@ Gamepad mapping is implemented; physical controller qualification is separate.
 | Control | Scene operation |
 |---|---|
 | Map picker / Water picker | Rebuild with the selected map / native Water law; every player remains available |
-| 1–7 or preset buttons | Select a preset and construct a fresh session, retaining map and Water selections |
+| 1â€“7 or preset buttons | Select a preset and construct a fresh session, retaining map and Water selections |
 | Tab / Shift+Tab | Select next / previous preset |
 | R or Restart | Reset selected preset/map/Water and discard edits; keep this scene's best times |
 | P, Escape or gamepad Start | Pause/resume; pause revokes current input |
@@ -264,8 +317,8 @@ The [playground runtime](../../godot/scripts/player_playground_runtime.gd)
 exclusively owns one synchronous native World for a material preset. Setup seeds
 256 Sand or Water cells. Each admitted step applies the native field before the
 ordinary material tick; normal kernels still own gravity, Water flow and
-reactions. Mechanical presets instead use the existing synchronous physical
-arena and its main-thread Rapier session. Neither lane borrows the asynchronous
+reactions. All public presets share the existing synchronous physical arena and
+its main-thread Rapier session for NPCs and props. Neither lane borrows the asynchronous
 sandbox worker's World.
 
 `World::apply_player_material_field` moves complete stored cells through
@@ -277,8 +330,9 @@ does not promise conservation across unrelated chemistry or authoring actions.
 
 Selection is **matching material within a local radius**, not a persistent
 collection of owned particles. Nearby environmental Sand/Water can join; material
-that leaves the field is no longer controlled. The field follows the returned
-quantity-weighted material centroid with a bounded centre adjustment. WASD moves
+that leaves the field is no longer controlled. With directional input only, the
+field follows its sampled quantity-weighted centroid by at most four cells per
+step. Neutral input keeps the anchor exactly fixed. WASD moves
 material rather than a remote selection cursor. The visible ring shows this
 local selection boundary.
 

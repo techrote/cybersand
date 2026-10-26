@@ -25,6 +25,11 @@ var _authoring_status: Label
 var _painting: bool = false
 var _usable_picker: OptionButton
 var _usable_status: Label
+var _include_npcs: CheckBox
+var _npc_picker: OptionButton
+var _npc_paint: CheckBox
+var _npc_status: Label
+var _npc_stage: int = 0
 var _focused: bool = true
 var _rearm: bool = true
 var _follow: bool = false
@@ -121,6 +126,29 @@ func _build_ui() -> void:
 	side.add_child(_water_picker)
 	_water_readback = _label(side, "", 13, Color("91a8ba"))
 	_water_readback.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_label(side, "ACTORS · share the world and physics", 13, Color("7895a9"))
+	_include_npcs = CheckBox.new()
+	_include_npcs.focus_mode = Control.FOCUS_NONE
+	_include_npcs.text = "Start with an NPC · restarts map"
+	_include_npcs.toggled.connect(func(_value: bool) -> void:
+		if not select_preset(selected): _include_npcs.set_pressed_no_signal(runtime.include_npcs))
+	side.add_child(_include_npcs)
+	_npc_picker = OptionButton.new()
+	_npc_picker.focus_mode = Control.FOCUS_NONE
+	for npc_name: String in ["Runner · walking actor", "Skimmer · hovering actor", "Crawler · tracked actor"]:
+		_npc_picker.add_item(npc_name)
+	_npc_picker.item_selected.connect(func(_index: int) -> void: _cancel_input())
+	side.add_child(_npc_picker)
+	_button(side, "Spawn NPC at a clear starting stage", _spawn_npc_at_stage)
+	_npc_paint = CheckBox.new()
+	_npc_paint.focus_mode = Control.FOCUS_NONE
+	_npc_paint.text = "Place NPC · click map"
+	_npc_paint.toggled.connect(func(value: bool) -> void:
+		_cancel_input()
+		if value: _paint_toggle.set_pressed_no_signal(false))
+	side.add_child(_npc_paint)
+	_npc_status = _label(side, "NPCs use local demo controls. Spawning marks a practice lap.\nReset clears added actors and restores loose props.", 13, Color("91a8ba"))
+	_npc_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_label(side,"USABLES · aim with mouse, M use / B alternate",13,Color("7895a9"))
 	_usable_picker=OptionButton.new()
 	_usable_picker.focus_mode=Control.FOCUS_NONE
@@ -148,7 +176,9 @@ func _build_ui() -> void:
 	_paint_toggle = CheckBox.new()
 	_paint_toggle.focus_mode = Control.FOCUS_NONE
 	_paint_toggle.text = "Paint tool · left draw / right erase"
-	_paint_toggle.toggled.connect(func(_value: bool) -> void: _cancel_input())
+	_paint_toggle.toggled.connect(func(value: bool) -> void:
+		_cancel_input()
+		if value: _npc_paint.set_pressed_no_signal(false))
 	side.add_child(_paint_toggle)
 	_replace = CheckBox.new()
 	_replace.focus_mode = Control.FOCUS_NONE
@@ -174,7 +204,7 @@ func _build_ui() -> void:
 	_controls.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_controls.custom_minimum_size.y = 176
 	_label(side, "GAMEPAD", 12, Color("7895a9"))
-	_label(side, "Left stick = WASD\nA / B / X = Space / Shift / C\nShoulders = Q / E   ·   Start = pause", 14, Color("adc0ce"))
+	_label(side, "Left stick = WASD\nA / B / X = jump / brake / auxiliary\nX = Ctrl for Afterimage, C for others\nShoulders = Q / E   ·   Start = pause", 14, Color("adc0ce"))
 	var right := VBoxContainer.new()
 	right.add_theme_constant_override("separation", 8)
 	right.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -243,7 +273,8 @@ func select_preset(index: int) -> bool:
 	if runtime == null or index < 0 or index >= Course.PRESETS.size():
 		return false
 	_cancel_input()
-	if not runtime.configure(Course.PRESETS[index], Course.MAP_IDS[selected_map], selected_water):
+	if not runtime.configure(Course.PRESETS[index], Course.MAP_IDS[selected_map], selected_water,
+		_include_npcs.button_pressed, Runtime.NPC_IDS[_npc_picker.selected]):
 		_status.text = "Could not start: " + runtime.last_error
 		_authoring_status.text = "Setup refused: " + runtime.last_error
 		return false
@@ -253,6 +284,9 @@ func select_preset(index: int) -> bool:
 	_lap_started = false
 	_last_draw_tick = -1
 	_last_packet_epoch = -1
+	_npc_stage = 0
+	_npc_status.text = "Three loose Rapier props restored. %s\nNPCs use local demo controls; maximum 8 physical actors / 64 bodies." % \
+		("An NPC is included · practice lap." if _include_npcs.button_pressed else "No starting NPC.")
 	_title.text = Course.NAMES[index]
 	_title.add_theme_color_override("font_color", Course.COLORS[index])
 	_tagline.text = Course.TAGLINES[index]
@@ -301,6 +335,24 @@ func _spawn_material() -> void:
 	_author(Vector2i(clampi(roundi(position.x)+32,bounds.position.x+12,bounds.end.x-13),clampi(roundi(position.y)-32,bounds.position.y+12,bounds.end.y-13)),false)
 
 
+func _spawn_npc(position: Vector2) -> bool:
+	_cancel_input()
+	var receipt: Dictionary = runtime.spawn_npc(Runtime.NPC_IDS[_npc_picker.selected], position)
+	_npc_status.text = ("NPC added · actor %d · practice lap.\nExisting player, terrain and liquid state retained." % int(receipt.actor_id)) \
+		if receipt.get("accepted", false) else "Placement refused: " + str(receipt.get("reason", "Unknown refusal"))
+	if receipt.get("accepted", false): _present(runtime.snapshot(), true)
+	return bool(receipt.get("accepted", false))
+
+
+func _spawn_npc_at_stage() -> void:
+	var stages: PackedVector2Array = Course.npc_spawns(Course.MAP_IDS[selected_map])
+	for offset: int in range(stages.size()):
+		var stage: int = (_npc_stage + offset) % stages.size()
+		if _spawn_npc(stages[stage]):
+			_npc_stage = (stage + 1) % stages.size()
+			return
+
+
 func _author(cell: Vector2i, erase: bool) -> void:
 	var receipt: Dictionary = runtime.paint(cell, int(_brush_size.value), 0 if erase else PAINT_IDS[_material_picker.selected], _replace.button_pressed)
 	_authoring_status.text = ("%d cells changed · practice lap" % int(receipt.changed)) if receipt.accepted else str(receipt.reason)
@@ -312,6 +364,12 @@ func _canvas_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index in [MOUSE_BUTTON_LEFT, MOUSE_BUTTON_RIGHT]:
 		var focus: Control = get_viewport().gui_get_focus_owner()
 		if focus != null: focus.release_focus()
+		if event.pressed and _npc_paint.button_pressed and _focused:
+			var content: Rect2 = _content_rect()
+			if event.button_index == MOUSE_BUTTON_LEFT and content.has_point(event.position):
+				_spawn_npc(Vector2(_view.position) + (event.position - content.position) / content.size * Vector2(_view.size))
+			_canvas.accept_event()
+			return
 		if event.pressed and _paint_toggle.button_pressed and _focused:
 			_cancel_input()
 			_painting = true
@@ -413,16 +471,17 @@ func _input(event: InputEvent) -> void:
 
 func _can_control() -> bool:
 	return runtime != null and runtime.active() and not runtime.paused and not runtime.failed \
-		and _focused and not _ui_captures_input() and not _paint_toggle.button_pressed
+		and _focused and not _ui_captures_input() and not _paint_toggle.button_pressed and not _npc_paint.button_pressed
 
 
 func _ui_captures_input() -> bool:
 	return get_viewport().gui_get_focus_owner() != null or _map_picker.get_popup().visible \
-		or _water_picker.get_popup().visible or _material_picker.get_popup().visible or _usable_picker.get_popup().visible
+		or _water_picker.get_popup().visible or _material_picker.get_popup().visible or _usable_picker.get_popup().visible \
+		or _npc_picker.get_popup().visible
 
 
 func _sample_action() -> Dictionary:
-	var action: Dictionary = PlayerInput.sample()
+	var action: Dictionary = PlayerInput.sample(Course.PRESETS[selected])
 	var state: Dictionary = runtime.snapshot()
 	var content: Rect2 = _content_rect()
 	var pointer: Vector2 = _canvas.get_local_mouse_position()
