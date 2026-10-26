@@ -508,6 +508,24 @@ generic physical/Jolt/morphology gates remain separate.
 
 **Current implementation with scoped qualification:** [Generation Workbench 2](../systems/generation-workbench-2.md) adds native provenance replay and true stages, transactional visual authoring, graph/hierarchy/plane diagnostics, undo/redo and bounded seed/recipe comparison. The [procedural qualification scene](../operations/procedural-qualification.md) supplies one compact 1024 × 1024 four-plane map: four declared seeds pass final-raster structural and equivalence checks, eight paired-plane native exhibits pass mechanism controls, and retained display captures receive a qualified visual pass for approaching Deepworks. Broad negative spaces, repeated service cabinets and less varied fine machinery remain explicit. Source-matched Linux and Windows publication passed; the [dated ledger](../audits/2026-10-21-gen007-workbench-qualification.md) retains source/runtime identities, the revised 4 GiB graphical envelope and observed authoring hitches. [PR #198](https://github.com/techrote/cybersand/pull/198) records final exact-head repository acceptance and merge verification. GEN-006 remains the subsequent streaming/persistence owner.
 
+## PLAY-ASYNC-001 desktop mechanical owner — approved 2026-10-26
+
+**Current source at main `9e53a5b1`:** Player Playground mechanical
+`physical_actor_arena.gd` still performs a complete synchronous native
+World + Rapier tick on main with `diagnostic_reset(workers=1)`; two swarms
+remain separate synchronous owners. The ordinary desktop sandbox already uses
+`CyberSimulationWorker` independent pacing and native Auto worker policy.
+**Approved design for #264:** [ADR-015](../decisions/ADR-015-player-playground-asynchronous-owner.md)
+chooses a minimal dedicated player cellular owner, main-thread Rapier,
+bounded copied pose/event + terrain/render ACK, separate 60-Hz clocks,
+explicit overload and epoch/failure/retirement fences. The
+[exact implementation protocol](../architecture/player-playground-asynchronous-contract.md),
+[source-bound baseline/gaps](../audits/2026-10-26-play-async-001-baseline.md)
+and [#265/#266 parallel handoff](../operations/player-playground-async-handoff.md)
+are separate canonical routes. **Planned** implementation #265–#270, with
+async/Auto promoted as desktop default only after qualification; swarm
+migration #271 is **Deferred** and cannot block the five mechanical rigs.
+
 ## Player control playground — 2026-10-20
 
 **Current experimental source:** the [player playground](../systems/player-control-playground.md)

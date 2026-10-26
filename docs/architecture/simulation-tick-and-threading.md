@@ -11,6 +11,17 @@ last-reviewed: 2026-10-22
 
 # Simulation tick and threading
 
+**Approved design, not Current (#264):** the five mechanical Player Playground
+presets will move from `player_playground_runtime.gd::step` / synchronous
+`CyberPhysicalActorArena.step` to a dedicated, independently paced native
+World owner. The main Godot thread still steps Rapier and owns input, terrain
+colliders and rendering. Exact event/pose FIFO, terrain installation fence,
+stale sample ages, clocks, lifecycle and overload behavior are specified in the
+[player async contract](player-playground-asynchronous-contract.md), with
+[ADR-015](../decisions/ADR-015-player-playground-asynchronous-owner.md).
+The two material swarms/Web and the physical evaluation lab remain Current
+on their own synchronous paths. Promotion of async+Auto is #270, not #264.
+
 ## Who advances simulation on each platform?
 
 **Current:** desktop has a dedicated Godot pacing Thread. Web advances native

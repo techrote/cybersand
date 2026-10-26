@@ -89,6 +89,15 @@ old run, command leases, effects and joint graph. See the
 
 ## Player playground ownership
 
+**Approved design (#264; not Current):** mechanical Player Playground native
+World, effects and usable runtime move to an exclusive, dedicated asynchronous
+Godot Thread. Their copied bounded poses/events, immutable publications,
+receipts, terrain barrier, generation fences and retirement rules live in the
+[player async contract](player-playground-asynchronous-contract.md).
+`CyberPhysicalActorSession`, Rapier RIDs/step, camera, input, lap clock and
+colliders remain main-thread owned. Never borrow the ordinary desktop sandbox
+worker's World. The two swarm presets remain synchronous until #271.
+
 **Current experimental source:** the dedicated
 [player playground](../systems/player-control-playground.md) serializes calls on
 its main-thread owner. Its mechanical lane reuses `CyberPhysicalActorArena` and
