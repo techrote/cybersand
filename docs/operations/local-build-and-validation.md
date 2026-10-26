@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-26
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
@@ -75,7 +75,7 @@ PR #254 is now accepted on main
 Native, GDExtension/Godot and #49 gates and bounded reviews passed. The
 [publication ledger](../audits/2026-10-25-lcb003-runtime-publication.md#accepted-water-main-and-content-identical-integration--2026-10-25)
 binds those receipts. Local normal mergea704ce50 consumes that main with the
-unchanged bot0c9 tree; all615 publication inputs and139 compiled inputs remain
+unchanged bot0c9 tree; all 615 publication inputs and139 compiled inputs remain
 exact. This does not substitute Water's gates for the application's final
 exact-head CI or close #202/#203.
 
@@ -258,7 +258,7 @@ proof, complete input/four-path guards and same-process profile isolation.
 Retain the original005/001 guard suites and run
 `python tools/ci/check_ci_provider_policy.py` for its new workflow. The [preparation record](../audits/2026-10-25-water-inertial-publication.md)
 keeps historical unarmed/sequence1 preparation separate from actual sequence2 at
-sourceaa8af247/run40220697738/bot03cccd8f. Both target OSes pass all15 processes
+sourceaa8af247/run40220697738/bot03cccd8f. Both target OSes pass all 15 processes
 and642 policy assertions with fresh independent artifact/source/LFS/floor review.
 Synthetic guards alone remain insufficient. Approval-held bot PR runs have no
 job results; root must obtain the actual final ready-head full matrix.
@@ -1117,6 +1117,65 @@ describes the bounded native-only JSON runner. Its result is not a Windows or
 browser run merely because it exercises the synchronous controller on Linux.
 Use actual platform artifacts and retain their identities for platform acceptance.
 
+## Cyberpunk collection checks
+
+The [cyberpunk audit](../audits/2026-10-26-player-playground-cyberpunk.md) scopes
+all 22 public maps,924 map/player/Water setups and full normal-throttle wheel
+baselines separately from optional expert-route or interactive acceptance.
+
+```text
+godot --headless --path godot --script res://tests/test_player_playground_cyberpunk.gd
+```
+
+The normal invocation includes actual native valve release and complete wheel
+routes; `--static-only` covers final authored raster, real liquid counts and
+connected pools, road/prop/NPC footprints and distinct architecture only.
+The shared map and NPC suites follow the full current catalogue. Final scoped
+additional mechanics, failure history and exact process exits belong to the audit.
+
+
+## Expedition map checks
+
+The [Expedition audit](../audits/2026-10-26-player-playground-expeditions.md) binds
+15-map execution to source deltas and runtime identity. Run the new regression:
+
+```text
+godot --headless --path godot --script res://tests/test_player_playground_expeditions.gd
+```
+
+Use the normal invocation for all static, real wheel-route, valve and featured
+mechanic checks; `--static-only` and `--feature-only` intentionally cover less.
+The shared map matrix follows the full `Course.MAP_IDS` list. NPC tests admit all
+three models on every map with both physical/material player representations.
+The discovered matrix has a finite 900-second budget; route/neutral-field cases
+have 420 seconds, with explicit measured-work scheduling hints. This accommodates
+the expanded catalogue without dropping combinations or altering pass thresholds.
+The unchanged planner tests pass25 cases and CI provider policy remains GitHub-hosted.
+
+Check process exit status as well as failure footers; the preserved import
+cleanup crash demonstrates why a printed zero-failure footer is insufficient.
+
+## Playground district, agility, swarm and NPC checks
+
+The [polish audit](../audits/2026-10-26-player-playground-polish-and-npcs.md) records
+source deltas/runtime identities and the scoped Windows test cohort. Add these
+focused real-native/Rapier regressions to the retained playground suites:
+
+```text
+godot --headless --path godot --script res://tests/test_player_playground_district_routes.gd
+godot --headless --path godot --script res://tests/test_player_afterimage_agility.gd
+godot --headless --path godot --script res://tests/test_player_playground_swarm_anchor.gd
+godot --headless --path godot --script res://tests/test_player_playground_actors.gd
+godot --headless --path godot --script res://tests/test_player_playground_npc_controls.gd
+```
+
+The neutral field test independently reads every material cell after each of
+360 ticks for Sand and all six Water choices. Water quantity uses the native
+Water observation's integer total, including pressure hidden overfill; a visible
+state-a census alone is insufficient. UI checks run headless without a visual,
+shader, Web or human-feel acceptance claim. Spawn success intentionally changes
+the full physical hash through body-mask wake/cache state; refusal retains it.
+
 ## Player playground checks
 
 Use the pinned Godot 4.7/Rapier runtime and a rebuilt source-matched native
@@ -1133,7 +1192,25 @@ godot --headless --path godot --script res://tests/test_player_acrobat.gd
 godot --headless --path godot --script res://tests/test_player_acrobat_physics.gd
 godot --headless --path godot --script res://tests/test_player_playground_runtime.gd
 godot --headless --path godot --script res://tests/test_player_playground_course.gd
+godot --headless --path godot --script res://tests/test_player_playground_maps.gd
+godot --headless --path godot --script res://tests/test_player_playground_tuning.gd
 ```
+
+The tuning runner measures actual same-fixture pre/post hop heights, rear-axle
+lean, damped/drift gravity and barrel inertia/speed; it exercises larger idle
+fields, exact material conservation, actual tools/projectiles/processors for
+material players, all five mounted-player tool paths, quick taps, paused refusal
+and safe field centres near map boundaries. The retained small course is an
+explicit `legacy` fixture; its lander controller uses the actual new gravity
+feed-forward while retaining the same physical target and admission gate.
+
+The map runner constructs all 8 maps × 7 players × 6 Water choices (336 actual
+setups), reads native policy/receipt/body-count identities, spawns Water and
+advances actual ticks. It also checks paused authoring, occupied-cell refusal,
+explicit replacement/erasure, body/boundary protection, reset, real selector UI
+and overview/follow painting coordinates. Its finite CI timeout is 420 seconds;
+the full route and human feel remain manual gates. See the
+[dated map evidence](../audits/2026-10-26-player-playground-maps.md).
 
 The native executable accepts an optional name substring; no match fails and
 omitting the filter runs the complete suite. Its field groups check complete

@@ -1,0 +1,323 @@
+{
+  "challenges": {
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+    "canonical_hit_at_1": 124,
+    "canonical_hit_at_k": 155,
+    "mrr_at_k": 0.8755,
+    "questions": 156
+  },
+  "checks": {
+    "challenges": {
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-challenges.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\tmp\\playground-expeditions-docs\\validation\\checks-v1\\challenges.json"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-expeditions",
+      "returncode": 0,
+      "seconds": 1.077999999979511,
+      "timeout_seconds": 180
+    },
+    "docs": {
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/ci/check_docs.py",
+        "--json",
+        "C:\\Users\\_\\.codex\\tmp\\playground-expeditions-docs\\validation\\checks-v1\\docs.json"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-expeditions",
+      "returncode": 0,
+      "seconds": 1.6089999999385327,
+      "timeout_seconds": 180
+    },
+    "frozen": {
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-questions.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\tmp\\playground-expeditions-docs\\validation\\checks-v1\\frozen.json"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-expeditions",
+      "returncode": 0,
+      "seconds": 0.4220000000204891,
+      "timeout_seconds": 180
+    },
+    "m11": {
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/ci/check_m11_consistency.py",
+        "--json",
+        "C:\\Users\\_\\.codex\\tmp\\playground-expeditions-docs\\validation\\checks-v1\\m11.json"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-expeditions",
+      "returncode": 0,
+      "seconds": 0.9369999999180436,
+      "timeout_seconds": 180
+    },
+    "provider": {
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/ci/check_ci_provider_policy.py"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-expeditions",
+      "returncode": 0,
+      "seconds": 0.0940000000409782,
+      "timeout_seconds": 180
+    },
+    "repository": {
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/ci/check_repository.py",
+        "--require-materialized",
+        "--json",
+        "C:\\Users\\_\\.codex\\tmp\\playground-expeditions-docs\\validation\\checks-v1\\repository.json"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-expeditions",
+      "returncode": 0,
+      "seconds": 2.5,
+      "timeout_seconds": 180
+    },
+    "whitespace": {
+      "argv": [
+        "git",
+        "diff",
+        "--check",
+        "HEAD"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-expeditions",
+      "returncode": 0,
+      "seconds": 0.06299999996554106,
+      "timeout_seconds": 180
+    }
+  },
+  "companion_files": {
+    "README.md": "55c14e71a9d7adf7750603d659f949c137b26309e12be8e3fdfffa98ebcbfe76",
+    "SOURCE-CHECKPOINT.json": "6e699bed81d0caa8b467bb58c647e62dcc2cbee7028ebfe65d72099006eec8b0",
+    "docs/BROWSER_VALIDATION.md": "bb7c5f4654a81d375752167793dbba6920d6deeb49c3b560aaf0133e8eff6aa8",
+    "docs/LOCAL_DEVELOPMENT.md": "38d7e2374d0035cab0dca9a7c7b24fb0d9862f7250bc24a0f475aa603880fd03",
+    "docs/WEB_THREADING.md": "07da0f6ad5835ce28a44749f464a99e0b309e80fa4191c93e3a0cb4b1965819c"
+  },
+  "companion_pin": "6a58311982941b75f46e22109a0829e5acb83c7e",
+  "docs": {
+    "canonical_claims": 228,
+    "documents": 115,
+    "errors": [],
+    "heading_anchors": 624,
+    "limitations": [
+      "Does not verify source semantics or runtime claims",
+      "Does not fetch external URLs",
+      "Does not rewrite or reattest historical audits",
+      "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+    ],
+    "local_links": 3368,
+    "navigation_link_documents": 8,
+    "questions": 32,
+    "status": "passed",
+    "warnings": []
+  },
+  "fences_held": true,
+  "frozen": {
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+    "canonical_hit_at_1": 19,
+    "canonical_hit_at_k": 32,
+    "mrr_at_k": 0.7589,
+    "questions": 32
+  },
+  "m11": {
+    "compare_working_tree": false,
+    "errors": [],
+    "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+    "records_checked": 18,
+    "scope": "historical M11 integrity; no current runtime acceptance",
+    "source_hashes_checked": 28,
+    "status": "passed",
+    "working_tree_differences": []
+  },
+  "mirror": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-expeditions",
+  "raw_files": 1695,
+  "repository": {
+    "documentation": {
+      "canonical_claims": 228,
+      "documents": 115,
+      "errors": [],
+      "heading_anchors": 624,
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ],
+      "local_links": 3368,
+      "navigation_link_documents": 8,
+      "questions": 32,
+      "status": "passed",
+      "warnings": []
+    },
+    "errors": [],
+    "limitations": [
+      "Identity is not execution evidence; read the dated runtime acceptance report",
+      "Retained vendor binaries and platform execution have separate dated provenance",
+      "Historical M11 integrity is checked separately by check_m11_consistency.py"
+    ],
+    "materialized_runtime_files": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+    ],
+    "scope": "current source/documentation and artifact identity",
+    "status": "passed",
+    "unmaterialized_runtime_files": []
+  },
+  "source_head": "ac117cf0b57c147b981021d98ec19c63c5335822",
+  "source_overlay": {
+    "README.md": {
+      "canonical_lf_sha256": "3b61f44819c133e0eb1c021349225b5551e0613e9cfccbf673232c7cbfd2561e",
+      "raw_sha256": "3b61f44819c133e0eb1c021349225b5551e0613e9cfccbf673232c7cbfd2561e"
+    },
+    "docs/README.md": {
+      "canonical_lf_sha256": "317bf070e5b245ed318b2181bc375b8867e1daaaedae97b3686f782cec178a4d",
+      "raw_sha256": "317bf070e5b245ed318b2181bc375b8867e1daaaedae97b3686f782cec178a4d"
+    },
+    "docs/audits/2026-10-26-player-playground-expeditions-documentation.json": {
+      "canonical_lf_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "raw_sha256": "e3566b3a06430868d71e9287dfd6c6c520a3da027aabea01951d407ee131dc2f"
+    },
+    "docs/audits/2026-10-26-player-playground-expeditions-iterations.json": {
+      "canonical_lf_sha256": "88ea4f8da1ba083e2512c8134c4b1ae1f1fa7711e6eef018c740a0bda3c6ce05",
+      "raw_sha256": "88ea4f8da1ba083e2512c8134c4b1ae1f1fa7711e6eef018c740a0bda3c6ce05"
+    },
+    "docs/audits/2026-10-26-player-playground-expeditions-review.json": {
+      "canonical_lf_sha256": "f5661f1b4809de4f2e00a537be2eb48501dc3be75b9f7c0ab2ee687045e702f9",
+      "raw_sha256": "f5661f1b4809de4f2e00a537be2eb48501dc3be75b9f7c0ab2ee687045e702f9"
+    },
+    "docs/audits/2026-10-26-player-playground-expeditions-windows.json": {
+      "canonical_lf_sha256": "2d16b3973aadd79ce830f902ca771346dc90445d57ed4f79d256f78c1486c1de",
+      "raw_sha256": "2d16b3973aadd79ce830f902ca771346dc90445d57ed4f79d256f78c1486c1de"
+    },
+    "docs/audits/2026-10-26-player-playground-expeditions.md": {
+      "canonical_lf_sha256": "2ddba00d9a93008300f71c614b55ebcae79fa9ce64d84bfe3f3620d4bfd06094",
+      "raw_sha256": "2ddba00d9a93008300f71c614b55ebcae79fa9ce64d84bfe3f3620d4bfd06094"
+    },
+    "docs/operations/cybersand-codex-development-handover.md": {
+      "canonical_lf_sha256": "190fd53325019043681a1bfc9113bc187337585bf619add915159d2e80609744",
+      "raw_sha256": "190fd53325019043681a1bfc9113bc187337585bf619add915159d2e80609744"
+    },
+    "docs/operations/local-build-and-validation.md": {
+      "canonical_lf_sha256": "c3891fa6964ccdb95ac35145fe788ccbba15a0e8354fdb5764ac9f31488b0ab4",
+      "raw_sha256": "c3891fa6964ccdb95ac35145fe788ccbba15a0e8354fdb5764ac9f31488b0ab4"
+    },
+    "docs/reference/configuration-reference.md": {
+      "canonical_lf_sha256": "2f56fccada442b6550485e005a65e77f17146b01c24926f7ab446ab1148a0c01",
+      "raw_sha256": "2f56fccada442b6550485e005a65e77f17146b01c24926f7ab446ab1148a0c01"
+    },
+    "docs/reference/interfaces-and-message-contracts.md": {
+      "canonical_lf_sha256": "df6f6bb247ac35b33efb35a8eddf19d0bad09c32e72da3af08a0a99047d5d310",
+      "raw_sha256": "df6f6bb247ac35b33efb35a8eddf19d0bad09c32e72da3af08a0a99047d5d310"
+    },
+    "docs/reference/retrieval-challenges.json": {
+      "canonical_lf_sha256": "38fb27249b043d30a45b966af4ea2bb8e4a299135c336b79e1dd88d6335db995",
+      "raw_sha256": "38fb27249b043d30a45b966af4ea2bb8e4a299135c336b79e1dd88d6335db995"
+    },
+    "docs/reference/retrieval-corpus.json": {
+      "canonical_lf_sha256": "690229cbb570670b28051bf45d2acef001146450770207c4d37469d6eb6ff3dd",
+      "raw_sha256": "690229cbb570670b28051bf45d2acef001146450770207c4d37469d6eb6ff3dd"
+    },
+    "docs/reference/retrieval-index.md": {
+      "canonical_lf_sha256": "bde54adf68228973b739d8410478de5f061b76b6ec3d70a55adea02d602630b9",
+      "raw_sha256": "bde54adf68228973b739d8410478de5f061b76b6ec3d70a55adea02d602630b9"
+    },
+    "docs/reference/status-and-roadmap.md": {
+      "canonical_lf_sha256": "82e35ca8082857eec4eb1ac675e0e608493d70dec0baf94bb049f2f64311c9af",
+      "raw_sha256": "82e35ca8082857eec4eb1ac675e0e608493d70dec0baf94bb049f2f64311c9af"
+    },
+    "docs/reference/validation-evidence.md": {
+      "canonical_lf_sha256": "5a88b06afa4c72794c3aa19292e3ec5ad136ea8f0dcf0699c645acb6d172afba",
+      "raw_sha256": "5a88b06afa4c72794c3aa19292e3ec5ad136ea8f0dcf0699c645acb6d172afba"
+    },
+    "docs/systems/player-control-playground.md": {
+      "canonical_lf_sha256": "98f09ee9836b2bfec17a883bffa266e02df3c58b2ae4e04da177efe912fc1720",
+      "raw_sha256": "98f09ee9836b2bfec17a883bffa266e02df3c58b2ae4e04da177efe912fc1720"
+    },
+    "godot/scripts/player_playground.gd": {
+      "canonical_lf_sha256": "74f9339d1e2aba8616141ebf90ae1c13732ce4df8328bf607b84108dd9c57664",
+      "raw_sha256": "74f9339d1e2aba8616141ebf90ae1c13732ce4df8328bf607b84108dd9c57664"
+    },
+    "godot/scripts/player_playground_course.gd": {
+      "canonical_lf_sha256": "ebf088890616cce7359fd6204dbd736fc209132a91327f3530b9eb83d437d11d",
+      "raw_sha256": "ebf088890616cce7359fd6204dbd736fc209132a91327f3530b9eb83d437d11d"
+    },
+    "godot/scripts/player_playground_districts.gd": {
+      "canonical_lf_sha256": "d93126227b1e89c95e21f89a17c16758e29595ff55875886048a188629affdc9",
+      "raw_sha256": "d93126227b1e89c95e21f89a17c16758e29595ff55875886048a188629affdc9"
+    },
+    "godot/scripts/player_playground_expeditions.gd": {
+      "canonical_lf_sha256": "373881b0d219ffa1b2bdcd041543ace803e887a097c799118bc24731e22f1872",
+      "raw_sha256": "373881b0d219ffa1b2bdcd041543ace803e887a097c799118bc24731e22f1872"
+    },
+    "godot/scripts/player_playground_overlay.gd": {
+      "canonical_lf_sha256": "b641f7190d26a94d0ccf4b2ab260cf0022bf6974805076de25283c22765637f3",
+      "raw_sha256": "b641f7190d26a94d0ccf4b2ab260cf0022bf6974805076de25283c22765637f3"
+    },
+    "godot/tests/test_player_playground_district_routes.gd": {
+      "canonical_lf_sha256": "4bc9d59d210135921989763c03d129950df8e7b7dac140cf5afade99a26d67c5",
+      "raw_sha256": "4bc9d59d210135921989763c03d129950df8e7b7dac140cf5afade99a26d67c5"
+    },
+    "godot/tests/test_player_playground_expeditions.gd": {
+      "canonical_lf_sha256": "b492869af7d7228a9968b0d9fea785649cf16997174e4c94ab17bb1f73756aa1",
+      "raw_sha256": "b492869af7d7228a9968b0d9fea785649cf16997174e4c94ab17bb1f73756aa1"
+    },
+    "godot/tests/test_player_playground_maps.gd": {
+      "canonical_lf_sha256": "063647334f0b643c63ff1bde518e0e171b222dc00b49495cdd07e4a40b97e0f8",
+      "raw_sha256": "063647334f0b643c63ff1bde518e0e171b222dc00b49495cdd07e4a40b97e0f8"
+    },
+    "godot/tests/test_player_playground_npc_controls.gd": {
+      "canonical_lf_sha256": "e45e9620d978d690b6708ab770597ab369123bc17f887b3c658657dbf538eb2a",
+      "raw_sha256": "e45e9620d978d690b6708ab770597ab369123bc17f887b3c658657dbf538eb2a"
+    },
+    "tools/ci/run_godot_regressions.py": {
+      "canonical_lf_sha256": "2acc89f7cf0f5b98ff26abe9550afcfcf777a8da393be168a1dfd04766306b34",
+      "raw_sha256": "2acc89f7cf0f5b98ff26abe9550afcfcf777a8da393be168a1dfd04766306b34"
+    }
+  },
+  "source_status": " M README.md\n M docs/README.md\n M docs/operations/cybersand-codex-development-handover.md\n M docs/operations/local-build-and-validation.md\n M docs/reference/configuration-reference.md\n M docs/reference/interfaces-and-message-contracts.md\n M docs/reference/retrieval-challenges.json\n M docs/reference/retrieval-corpus.json\n M docs/reference/retrieval-index.md\n M docs/reference/status-and-roadmap.md\n M docs/reference/validation-evidence.md\n M docs/systems/player-control-playground.md\n M godot/scripts/player_playground.gd\n M godot/scripts/player_playground_course.gd\n M godot/scripts/player_playground_districts.gd\n M godot/scripts/player_playground_overlay.gd\n M godot/tests/test_player_playground_district_routes.gd\n M godot/tests/test_player_playground_maps.gd\n M godot/tests/test_player_playground_npc_controls.gd\n M tools/ci/run_godot_regressions.py\n?? docs/audits/2026-10-26-player-playground-expeditions-documentation.json\n?? docs/audits/2026-10-26-player-playground-expeditions-iterations.json\n?? docs/audits/2026-10-26-player-playground-expeditions-review.json\n?? docs/audits/2026-10-26-player-playground-expeditions-windows.json\n?? docs/audits/2026-10-26-player-playground-expeditions.md\n?? godot/scripts/player_playground_expeditions.gd\n?? godot/tests/test_player_playground_expeditions.gd\n",
+  "source_tree": "9f21b14f84dae2b99e5341513a3474bbb4497e05",
+  "utc": "2026-10-26T08:39:28.323292+00:00"
+}

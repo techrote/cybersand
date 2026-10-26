@@ -32,6 +32,7 @@ func advance(rig, action: Dictionary, dt: float, effort: float) -> void:
 func _ground_vehicle(rig, action: Dictionary, dt: float, effort: float,
 		primary: bool, auxiliary: bool) -> void:
 	var bike: bool = rig.rig_id == &"trialsbike"
+	var jump_multiplier: float = float(rig._profile.get("player_jump_multiplier",sqrt(2.0)))
 	var brake: bool = bool(action.get("secondary", false))
 	var grounded: bool = not rig._support.is_empty()
 	var velocity: Vector2 = rig._velocities[0]
@@ -46,7 +47,7 @@ func _ground_vehicle(rig, action: Dictionary, dt: float, effort: float,
 			# A free front axle must roll, not act as a second brake.
 			if bike and not rear and not brake:
 				rig._player_free_joints[str(joint.id)] = true
-	rig._player_joint_targets["rider_lean"] = _lean * 0.70
+	rig._player_joint_targets["rider_lean"] = _lean * 0.86
 	if grounded:
 		var normal: Vector2 = rig._support.get("normal", Vector2.UP)
 		var tangent: Vector2 = Vector2(-normal.y, normal.x)
@@ -61,7 +62,7 @@ func _ground_vehicle(rig, action: Dictionary, dt: float, effort: float,
 			rig._react_support(-impulse)
 	# Neutral steering leaves natural rotation; explicit lean remains strong in air.
 	if absf(_lean) > 0.01:
-		rig._angular_target(_lean * (6.5 if bike else 5.0), dt, 34.0 if bike else 24.0)
+		rig._angular_target_about_part("wheel_-1", _lean * (12.0 if bike else 11.0), dt, 95.0 if bike else 90.0)
 	elif brake:
 		rig._angular_target(0.0, dt, 30.0)
 	elif grounded:
@@ -80,7 +81,7 @@ func _ground_vehicle(rig, action: Dictionary, dt: float, effort: float,
 			_mode = "preload"
 		elif not primary and _previous_primary and _preload_armed:
 			if grounded and rig.cooldown <= 0.0:
-				var lift: float = (28.0 + _preload * 38.0) * effort
+				var lift: float = (28.0 + _preload * 38.0) * jump_multiplier * effort
 				rig._apply_rig_impulse(Vector2(effective * 13.0, -lift) * rig._total_mass)
 				rig.cooldown = 0.5
 			_preload = 0.0
@@ -91,7 +92,7 @@ func _ground_vehicle(rig, action: Dictionary, dt: float, effort: float,
 			_preload_armed = false
 	else:
 		if primary and not _previous_primary and grounded and rig.cooldown <= 0.0:
-			rig._apply_rig_impulse(Vector2(effective * 11.0, -43.0 * effort) * rig._total_mass)
+			rig._apply_rig_impulse(Vector2(effective * 11.0, -43.0 * jump_multiplier * effort) * rig._total_mass)
 			rig.cooldown = 0.50
 			_mode = "hop"
 	if _preload_armed:
@@ -106,6 +107,7 @@ func _flight(rig, action: Dictionary, dt: float, effort: float,
 	var brake: bool = bool(action.get("secondary", false))
 	if not barrel and auxiliary and not _previous_auxiliary:
 		_drift = not _drift
+	rig._set_player_gravity(rig._gravity * (3.0 if not barrel and not _drift else 1.0))
 	var velocity: Vector2 = rig._velocities[0]
 	var angle: float = rig._transforms[0].get_rotation()
 	var rotation_speed: float = 10.0 if barrel else 6.8

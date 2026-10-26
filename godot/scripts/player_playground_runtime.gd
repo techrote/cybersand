@@ -1,19 +1,34 @@
 class_name CyberPlayerPlaygroundRuntime
 extends Node2D
 
-# The mechanical lane reuses the ACT-004/005 synchronous owner. The material
-# lane exclusively owns a separate native World; no cells become rigid bodies.
+# One synchronous host owns the native World and private Rapier space for the
+# player, NPCs and loose props. Material players remain real native cells.
 const Course = preload("res://scripts/player_playground_course.gd")
+const WorldSetup = preload("res://scripts/player_playground_world.gd")
 const Arena = preload("res://scripts/physical_actor_arena.gd")
 const Session = preload("res://scripts/physical_actor_session.gd")
 const Catalog = preload("res://scripts/physical_actor_catalog.gd")
 const Equipment = preload("res://scripts/physical_usable_equipment.gd")
+const UsableCatalog = preload("res://scripts/usable_catalog.gd")
+const MaterialField = preload("res://scripts/player_playground_material_field.gd")
 const MAX_LEASE: int = 6
 const MAX_BUTTON_EDGES: int = 32
-const BUTTON_KEYS: Array[String] = ["primary", "secondary", "auxiliary"]
+const BUTTON_KEYS: Array[String] = ["primary", "secondary", "auxiliary", "tool", "usable_alternate"]
 const SWARM_ORIGIN := Vector2(178, 304)
+const NPC_IDS: Array[StringName] = [&"runner", &"skimmer", &"crawler"]
 
 var selection: StringName = &""
+var map_id: StringName = &"mixed"
+var water_solver: int = 0
+var authoring_revision: int = 0
+var usable_index: int = -1
+var include_npcs: bool = false
+var npc_model: StringName = &"runner"
+# Avoid the eager Arena/PhysicalEngine/base-script preload diamond. The
+# same pinned generic usable implementation is created after module parsing.
+var _material_usables: Variant = load("res://scripts/usable_runtime.gd").new()
+var _usable_previous: bool = false
+var _alternate_previous: bool = false
 var epoch: int = 0
 var tick: int = 0
 var paused: bool = false
@@ -34,51 +49,56 @@ var _accepted_buttons: Dictionary = {}
 var _applied_buttons: Dictionary = {}
 
 
-func configure(id: StringName) -> bool:
-	if id not in Course.PRESETS or not is_inside_tree():
+func configure(id: StringName, next_map: StringName = &"mixed", next_water: int = 0,
+	with_npcs: bool = false, next_npc: StringName = &"runner") -> bool:
+	if id not in Course.PRESETS or (next_map not in Course.MAP_IDS and next_map != &"legacy") or next_water < 0 \
+		or next_water >= WorldSetup.WATER_NAMES.size() or next_npc not in NPC_IDS or not is_inside_tree():
 		last_error = "Unknown player preset or missing scene owner."
 		return false
 	var candidate_arena: CyberPhysicalActorArena
 	var candidate_world: Object
-	if Course.is_swarm(id):
-		if not ClassDB.class_exists(&"CyberNativeCellWorld"):
-			last_error = "Native material runtime is unavailable."
-			return false
+	var actors: Array = []
+	if not Course.is_swarm(id):
+		var prepared: Dictionary = Equipment.definition(Catalog.entry(id))
+		var spawn := Vector2(Course.spawn(next_map).x, Course.floor_y(next_map) - float(prepared.get("spawn_floor_clearance", 20.0)))
+		if id in [&"arcadelander", &"jetbarrel"]:
+			spawn.y = Course.spawn(next_map).y
+		actors.append({"model": str(id), "producer": "human", "position": spawn})
+	var npcs: Array = []
+	if with_npcs:
+		var stages: PackedVector2Array = Course.npc_spawns(next_map)
+		npcs.append({"model": str(next_npc), "producer": "demo", "position": stages[0]})
+	var config: Dictionary = {"version": Arena.VERSION, "seed": 0, "max_ticks": Arena.MAX_TICKS,
+		"local_patch_radius": 0, "course": Course.ID, "playground_map": next_map, "playground_water": next_water,
+		"playground_seed_material": (2 if id == &"dryswarm" else 3) if Course.is_swarm(id) else 0,
+		"playground_npcs": npcs, "actors": actors}
+	if next_map == &"legacy" and Course.is_swarm(id) and not with_npcs:
+		# Retained pre-host regression fixture: no props or actor assembly.
 		candidate_world = ClassDB.instantiate(&"CyberNativeCellWorld")
-		if not candidate_world.has_method("apply_player_material_field"):
-			last_error = "This native runtime predates player material fields; use the matching rebuilt runtime."
-			return false
-		if not candidate_world.diagnostic_reset({"workers": 1, "telemetry": false}):
+		if candidate_world == null or not candidate_world.diagnostic_reset({"workers": 1, "telemetry": false}):
 			last_error = "Material world reset refused."
 			return false
 		candidate_world.set_simulation_window_enabled(false)
 		candidate_world.set_cadence_lod_enabled(false)
-		for rectangle: Dictionary in Course.layout():
-			if not candidate_world.diagnostic_fill_rect(rectangle.origin, rectangle.size, rectangle.material):
-				last_error = "Material course construction refused."
-				return false
-		# Only construction creates parcels. Steering moves those real native
-		# parcels and never paints replacements or restores lost quantity.
-		var material: int = 2 if id == &"dryswarm" else 3
-		if not candidate_world.diagnostic_fill_rect(Vector2i(SWARM_ORIGIN) - Vector2i(8, 8), Vector2i(16, 16), material):
-			last_error = "Initial material seed refused."
+		var built: Dictionary = WorldSetup.build(candidate_world, next_map, next_water, config.playground_seed_material)
+		if not built.accepted:
+			last_error = built.error
 			return false
 	else:
 		candidate_arena = Arena.new()
 		add_child(candidate_arena)
-		var prepared: Dictionary = Equipment.definition(Catalog.entry(id))
-		var spawn := Vector2(178, Course.FLOOR_Y - float(prepared.get("spawn_floor_clearance", 20.0)))
-		if id in [&"arcadelander", &"jetbarrel"]:
-			spawn.y = 304.0
-		var config: Dictionary = {"version": Arena.VERSION, "seed": 0, "max_ticks": Arena.MAX_TICKS,
-			"local_patch_radius": 0, "course": Course.ID,
-			"actors": [{"model": str(id), "producer": "human", "position": spawn}]}
 		if not candidate_arena.configure(config):
 			last_error = candidate_arena.last_error
 			candidate_arena.free()
 			return false
+		if Course.is_swarm(id): candidate_world = candidate_arena._world
 	close()
 	selection = id
+	map_id = next_map
+	water_solver = next_water
+	include_npcs = with_npcs
+	npc_model = next_npc
+	authoring_revision = 1 if with_npcs else 0
 	_arena = candidate_arena
 	_world = candidate_world
 	epoch += 1
@@ -86,7 +106,7 @@ func configure(id: StringName) -> bool:
 	paused = false
 	failed = false
 	last_error = ""
-	_centre = SWARM_ORIGIN
+	_centre = Course.spawn(next_map)
 	_run_id = Crypto.new().generate_random_bytes(16).hex_encode()
 	_generation = 0
 	_sequence = -1
@@ -95,12 +115,67 @@ func configure(id: StringName) -> bool:
 	_issued.fill(-1)
 	_receipt = {"accepted": true, "reason": "seeded", "observed_cells": 256,
 		"controlled_cells": 256, "moved_cells": 0,
-		"centroid": SWARM_ORIGIN - Vector2(0.5, 0.5), "radius": 32, "truncated": false}
+		"centroid": _centre - Vector2(0.5, 0.5), "radius": 60, "truncated": false}
+	_material_usables.configure(1)
 	return true
+
+
+func select_usable(index: int) -> bool:
+	if index < -1 or index >= UsableCatalog.count(): return false
+	cancel()
+	usable_index = index
+	return true
+
+
+func usable_snapshot() -> Dictionary:
+	return _material_usables.snapshot() if Course.is_swarm(selection) else _arena._usables.snapshot() if _arena != null else {}
+
+
+func spawn_npc(model: StringName, position: Vector2) -> Dictionary:
+	if not active() or failed or model not in NPC_IDS or _arena == null:
+		return {"accepted": false, "reason": "NPC host or model is unavailable."}
+	var receipt: Dictionary = _arena.spawn_actor(model, position)
+	if receipt.get("accepted", false): authoring_revision += 1
+	return receipt
+
+
+func npc_readback() -> Dictionary:
+	return _arena.roster_snapshot() if _arena != null else {}
 
 
 func active() -> bool:
 	return _arena != null or _world != null
+
+
+func liquid_readback() -> Dictionary:
+	if not active(): return {}
+	var world: Object = _world if _world != null else _arena._world
+	return {"policy": world.get_liquid_solver_policy(), "receipt": world.get_applied_liquid_construction_receipt()}
+
+
+func paint(cell: Vector2i, radius: int, material: int, replace: bool = false) -> Dictionary:
+	# This synchronous owner is called only between ticks on the scene thread.
+	# A small explicit palette, protected boundary and current body mask bound edits.
+	if not active() or failed or radius < 1 or radius > 12 or material not in [0, 1, 2, 3, 4, 6, 8, 12, 16, 24] \
+		or not Course.editable(map_id).has_point(cell):
+		return {"accepted": false, "reason": "Invalid brush, unavailable owner or point outside the editable course.", "changed": 0}
+	var world: Object = _world if _world != null else _arena._world
+	if _arena != null:
+		world.prepare_rigid_body_coupling(_arena.session.bridge.pack_body_states(), false)
+	var changed: int = 0
+	for y: int in range(cell.y - radius, cell.y + radius + 1):
+		for x: int in range(cell.x - radius, cell.x + radius + 1):
+			if Vector2i(x, y).distance_squared_to(cell) > radius * radius \
+				or not Course.editable(map_id).has_point(Vector2i(x, y)) or world.rigid_body_id_at(x, y) != 0:
+				continue
+			var before: int = world.material_at(x, y)
+			if before == material or (material != 0 and not replace and before != 0): continue
+			world.paint_disc(x, y, 0, material)
+			if world.material_at(x, y) == material: changed += 1
+	if changed > 0:
+		authoring_revision += 1
+		if _arena != null: _arena._sync_terrain()
+	return {"accepted": true, "reason": "painted", "changed": changed}
 
 
 func observation() -> Dictionary:
@@ -108,7 +183,7 @@ func observation() -> Dictionary:
 
 
 func _view(issue: bool) -> Dictionary:
-	if _arena != null:
+	if _arena != null and not Course.is_swarm(selection):
 		return _arena.observation(0) if issue else _arena.session.snapshot().actors[0]
 	if _world == null:
 		return {}
@@ -121,6 +196,7 @@ func _view(issue: bool) -> Dictionary:
 		"suspended": paused or failed, "lease_remaining": maxi(0, _deadline - tick),
 		"material": 2 if selection == &"dryswarm" else 3,
 		"field": _receipt.duplicate(true), "pending_input_edges": _button_edges.size(),
+		"usable": _material_usables.snapshot().actors[0] if _material_usables.actor_count() else {},
 		"scope": "matching local material; no persistent parcel identity"}
 
 
@@ -136,7 +212,7 @@ static func make_command(view: Dictionary, sequence: int, action: Dictionary, le
 func submit(command: Variant) -> bool:
 	if not active() or paused or failed:
 		return _reject("Player owner is inactive or paused.")
-	if _arena != null:
+	if _arena != null and not Course.is_swarm(selection):
 		var accepted: bool = _arena.submit(command, &"human")
 		if not accepted:
 			last_error = _arena.last_error
@@ -159,11 +235,16 @@ func submit(command: Variant) -> bool:
 	if not command.action is Dictionary:
 		return _reject("Material action is not an object.")
 	for key: Variant in command.action:
-		if str(key) not in ["move", "aim", "effort", "trim", "primary", "secondary", "auxiliary"]:
+		if str(key) not in ["move", "aim", "effort", "trim", "primary", "secondary", "auxiliary", "tool", "usable_alternate", "release_usable", "attach_usable"]:
 			return _reject("Unsupported material action field.")
-	var normalized: Dictionary = Session.normalized_action(command.action)
+	if not command.action.get("usable_alternate", false) is bool:
+		return _reject("Malformed alternate usable input.")
+	var input: Dictionary = command.action.duplicate(true)
+	input.erase("usable_alternate")
+	var normalized: Dictionary = Session.normalized_action(input)
 	if normalized.is_empty():
 		return _reject("Invalid material action.")
+	normalized.usable_alternate = command.action.get("usable_alternate", false)
 	var edges: Array[Dictionary] = []
 	for button: String in BUTTON_KEYS:
 		if bool(normalized[button]) != bool(_accepted_buttons.get(button, false)):
@@ -182,7 +263,16 @@ func submit(command: Variant) -> bool:
 
 func submit_action(action: Dictionary) -> bool:
 	var view: Dictionary = observation()
-	return not view.is_empty() and submit(make_command(view, int(view.last_sequence) + 1, action))
+	var request: Dictionary = action.duplicate(true)
+	if _arena != null and not Course.is_swarm(selection):
+		request.equipment = {"usable_index": usable_index, "trigger": bool(request.get("tool", false)),
+			"alternate": bool(request.get("usable_alternate", false)), "drop": bool(request.get("release_usable", false)),
+			"attach": bool(request.get("attach_usable", false)), "aim": request.get("aim", Vector2.RIGHT), "power": 1.0}
+		request.erase("usable_alternate")
+	var accepted: bool=not view.is_empty() and submit(make_command(view,int(view.last_sequence)+1,request))
+	if accepted and (bool(action.get("tool",false)) or bool(action.get("usable_alternate",false)) \
+		or bool(action.get("release_usable",false)) or bool(action.get("attach_usable",false))): authoring_revision+=1
+	return accepted
 
 
 func _token(observed: int) -> String:
@@ -195,12 +285,14 @@ func _reject(reason: String) -> bool:
 
 
 func cancel() -> void:
-	if _arena != null:
+	if _arena != null and not Course.is_swarm(selection):
 		_arena.cancel(0, &"human")
 	_command.clear()
 	_button_edges.clear()
 	_accepted_buttons.clear()
 	_applied_buttons.clear()
+	_usable_previous = false
+	_alternate_previous = false
 	_deadline = -1
 	_generation += 1
 	_issued.fill(-1)
@@ -216,7 +308,7 @@ func set_paused(value: bool) -> void:
 func step() -> Dictionary:
 	if not active() or paused or failed:
 		return snapshot()
-	if _arena != null:
+	if _arena != null and not Course.is_swarm(selection):
 		var state: Dictionary = _arena.step()
 		tick = int(state.tick)
 		failed = bool(state.failed)
@@ -226,6 +318,10 @@ func step() -> Dictionary:
 		return snapshot()
 	if not _command.is_empty() and _deadline < tick + 1:
 		cancel()
+	if _arena != null:
+		# Last frame's Rapier step moved NPCs/props after its pre-tick mask.
+		# Refresh actual poses before either material fields or tools can write.
+		_world.prepare_rigid_body_coupling(_arena.session.bridge.pack_body_states(), false)
 	if not _command.is_empty():
 		# Keep a quick tap alive for one simulation tick. As in the shared
 		# physical Session, ordered edges change each button at most once/tick.
@@ -241,25 +337,51 @@ func step() -> Dictionary:
 		if bool(_applied_buttons.get("auxiliary", false)): mode = 3
 		elif bool(_applied_buttons.get("secondary", false)): mode = 2
 		elif bool(_applied_buttons.get("primary", false)): mode = 1
-		_receipt = _world.apply_player_material_field(Vector2i(_centre.round()),
-			Vector2(_command.move), 2 if selection == &"dryswarm" else 3, mode, tick)
+		_receipt = _wide_material_field(mode)
 		if not bool(_receipt.get("accepted", false)):
 			failed = true
 			last_error = "Material field refused: " + str(_receipt.get("reason", "unknown"))
 			cancel()
 			return snapshot()
-		if int(_receipt.get("observed_cells", 0)) > 0:
+		if int(_receipt.get("observed_cells", 0)) > 0 and Vector2(_command.move).length_squared() > 0.001:
+			# Only admitted movement moves the field. Neutral input never follows
+			# a drifting centroid, and an empty field cannot travel to remote stores.
 			var centroid: Vector2 = _receipt.get("centroid", _centre)
-			if centroid.is_finite():
-				# The field follows the material it actually observed. Input never
-				# teleports a selection cursor to a distant reservoir.
-				_centre = _centre.move_toward(centroid, 4.0)
-	if not bool(_world.simulation_tick()):
-		failed = true
-		last_error = "Native material tick failed."
-		cancel()
-	tick += 1
+			if centroid.is_finite(): _centre = _centre.move_toward(centroid, 4.0)
+	var tool: bool = not _command.is_empty() and bool(_applied_buttons.get("tool", false))
+	var alternate: bool = not _command.is_empty() and bool(_applied_buttons.get("usable_alternate", false))
+	# Material players have no held rigid body. Their usable origin is the
+	# visible field edge, so a nozzle/projectile does not start inside the cloud.
+	var usable_aim: Vector2=Vector2(_command.get("aim",Vector2.RIGHT)).normalized()
+	if usable_aim.length_squared()<0.001: usable_aim=Vector2.RIGHT
+	var bounds: Rect2i=Course.editable(map_id)
+	var muzzle: Vector2=(_centre+usable_aim*68.0).clamp(Vector2(bounds.position)+Vector2(3,3),Vector2(bounds.end)-Vector2(4,4))
+	_material_usables.step(1.0/60.0, _world, PackedVector2Array([muzzle]), [Rect2()],
+		[{"usable_index":usable_index, "aim":_command.get("aim",Vector2.RIGHT), "power":1.0,
+		"trigger":tool, "trigger_pressed":tool and not _usable_previous,
+		"alternate_pressed":alternate and not _alternate_previous}])
+	_usable_previous = tool
+	_alternate_previous = alternate
+	if _material_usables.write_count_last > 0: authoring_revision += 1
+	if _arena != null:
+		var state: Dictionary = _arena.step()
+		tick = int(state.tick)
+		failed = bool(state.failed)
+		if bool(state.finished):
+			paused = true
+			last_error = str(state.reason)
+	else:
+		if not bool(_world.simulation_tick()):
+			failed = true
+			last_error = "Native material tick failed."
+			cancel()
+		tick += 1
 	return snapshot()
+
+
+func _wide_material_field(mode: int) -> Dictionary:
+	return MaterialField.apply(_world, _centre, Vector2(_command.get("move", Vector2.ZERO)),
+		2 if selection == &"dryswarm" else 3, mode, tick)
 
 
 func snapshot() -> Dictionary:
@@ -283,17 +405,18 @@ func take_render_packet(force: bool = false) -> Dictionary:
 
 
 func presentation_cells() -> PackedByteArray:
+	var view: Rect2i = Course.map_view(map_id)
 	if _arena != null:
-		return _arena.presentation_cells(Course.VIEW)
+		return _arena.presentation_cells(view)
 	if _world == null:
 		return PackedByteArray()
 	var source: PackedByteArray = _world.get_cells()
 	var result := PackedByteArray()
-	result.resize(Course.VIEW.size.x * Course.VIEW.size.y)
-	for y: int in range(Course.VIEW.size.y):
-		var first: int = (Course.VIEW.position.y + y) * 1024 + Course.VIEW.position.x
-		for x: int in range(Course.VIEW.size.x):
-			result[y * Course.VIEW.size.x + x] = source[first + x]
+	result.resize(view.size.x * view.size.y)
+	for y: int in range(view.size.y):
+		var first: int = (view.position.y + y) * 1024 + view.position.x
+		for x: int in range(view.size.x):
+			result[y * view.size.x + x] = source[first + x]
 	return result
 
 

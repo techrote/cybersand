@@ -1,10 +1,26 @@
 class_name CyberPlayerPlaygroundCourse
 extends RefCounted
+const Districts = preload("res://scripts/player_playground_districts.gd")
+const Expeditions = preload("res://scripts/player_playground_expeditions.gd")
+const Cyberpunk = preload("res://scripts/player_playground_cyberpunk.gd")
 
 # Native-cell course shared by the articulated and material player owners.
 const ID: String = "player-playground"
+# Retained small regression fixture only; public districts use map_view().
 const VIEW := Rect2i(128, 128, 512, 256)
 const FLOOR_Y: int = 352
+const MAP_IDS: Array[StringName] = Districts.IDS + Expeditions.IDS + Cyberpunk.IDS
+const MAP_NAMES: Array[String] = ["Flood Market · all players", "Quarry Rally · buggy", "Terraced Aqueduct · trials bike",
+	"Textile Mill · acrobat", "Crater Port · lander", "Inverted Foundry · Sand cloud",
+	"Filtration Cathedral · Water blob", "Silo Facility · jet barrel"] + Expeditions.NAMES + Cyberpunk.NAMES
+const MAP_HINTS: Array[String] = ["Follow the dry market street, explore the covered bazaar, then take the courier rooftops. Large canal stores overlook the street.",
+	"Carry speed across the optional quarry jump, then brake on the suspended landing. The lower recovery road rejoins the baseline route.",
+	"Follow the broad aqueduct grade or take the optional upper balance shelves. Explore the arches and open a cistern valve with a tool.",
+	"Run the loading street and try the movable first step, optional mill vent and staggered roofs. The ground road remains open to every player.",
+	"Launch into the crater's open volume, thread asymmetric gantry apertures and brake onto the arms above the ballast stores.",
+	"Break the plywood hopper throats, gather Sand through hanging combs and follow the discharge terraces. The dry lower street stays open.",
+	"Explore three deep cisterns below the stone/glass cathedral, copper organ and filter gallery. Use a tool to open channels between stores.",
+	"Rise through nested launch wells and land on cantilever pads above the coolant farm. Ground players can use the dry bunker road."] + Expeditions.HINTS + Cyberpunk.HINTS
 const PRESETS: Array[StringName] = [&"stuntbuggy", &"trialsbike", &"acrobat",
 	&"arcadelander", &"dryswarm", &"liquidswarm", &"jetbarrel"]
 const NAMES: Array[String] = ["Loose Cannon", "Trials Rat", "Afterimage",
@@ -24,7 +40,43 @@ static func is_swarm(id: StringName) -> bool:
 	return id in [&"dryswarm", &"liquidswarm"]
 
 
-static func layout() -> Array:
+static func map_view(map_id: StringName) -> Rect2i:
+	return VIEW if map_id == &"legacy" else Districts.VIEW
+
+
+static func floor_y(map_id: StringName) -> int:
+	if map_id in Cyberpunk.IDS: return Cyberpunk.floor_y(map_id)
+	if map_id in Expeditions.IDS: return Expeditions.floor_y(map_id)
+	return FLOOR_Y if map_id == &"legacy" else Districts.floor_y(map_id)
+
+
+static func spawn(map_id: StringName) -> Vector2:
+	if map_id in Cyberpunk.IDS: return Cyberpunk.spawn(map_id)
+	if map_id in Expeditions.IDS: return Expeditions.spawn(map_id)
+	return Vector2(178,304) if map_id == &"legacy" else Districts.spawn(map_id)
+
+
+static func props(map_id: StringName) -> Array:
+	if map_id in Cyberpunk.IDS: return Cyberpunk.props(map_id)
+	if map_id in Expeditions.IDS: return Expeditions.props(map_id)
+	return [] if map_id == &"legacy" else Districts.props(map_id)
+
+
+static func npc_spawns(map_id: StringName) -> PackedVector2Array:
+	if map_id in Cyberpunk.IDS: return Cyberpunk.npc_spawns(map_id)
+	if map_id in Expeditions.IDS: return Expeditions.npc_spawns(map_id)
+	return PackedVector2Array([Vector2(210, 320)]) if map_id == &"legacy" else Districts.npc_spawns(map_id)
+
+
+static func editable(map_id: StringName) -> Rect2i:
+	return Rect2i(132,132,504,220) if map_id == &"legacy" else Rect2i(6,6,1012,730)
+
+
+static func layout(map_id: StringName = &"legacy") -> Array:
+	if map_id in Cyberpunk.IDS: return Cyberpunk.layout(map_id)
+	if map_id in Expeditions.IDS: return Expeditions.layout(map_id)
+	if map_id != &"legacy":
+		return Districts.layout(map_id)
 	var result: Array = []
 	_rect(result, 128, FLOOR_Y, 512, 16, 58)
 	_rect(result, 128, 128, 4, 240, 62)
@@ -66,7 +118,10 @@ static func _rect(result: Array, x: int, y: int, width: int, height: int, materi
 	result.append({"origin": Vector2i(x, y), "size": Vector2i(width, height), "material": material})
 
 
-static func checkpoints(id: StringName) -> PackedVector2Array:
+static func checkpoints(id: StringName, map_id: StringName = &"legacy") -> PackedVector2Array:
+	if map_id in Cyberpunk.IDS: return Cyberpunk.checkpoints(map_id)
+	if map_id in Expeditions.IDS: return Expeditions.checkpoints(map_id)
+	if map_id != &"legacy": return Districts.checkpoints(map_id)
 	if id in [&"arcadelander", &"jetbarrel"]:
 		return PackedVector2Array([Vector2(220, 286), Vector2(337, 195), Vector2(457, 186), Vector2(577, 242)])
 	if is_swarm(id):
@@ -78,11 +133,11 @@ static func checkpoints(id: StringName) -> PackedVector2Array:
 
 static func controls(id: StringName) -> String:
 	match id:
-		&"stuntbuggy": return "W / S   Drive / reverse\nA / D or Q / E   Lean the chassis\nSPACE   Hop from support\nSHIFT   Brake\nC   Help the buggy recover"
-		&"trialsbike": return "W / S   Throttle / reverse\nA / D or Q / E   Rider lean\nHold SPACE, release   Preload hop\nSHIFT   Brake / landing control\nC   Recovery assist"
-		&"acrobat": return "A / D   Run and steer in the air\nSPACE   Jump / double jump\nSHIFT   Slide; tap for roll\nSHIFT + SPACE   Bullet jump\nSPACE during roll   Jump cancel\nC   Cancel / brake; hold in air to glide"
+		&"stuntbuggy": return "W / S   Drive / reverse\nA / D or Q / E   Lean around rear axle\nSPACE   Hop from support\nSHIFT   Brake\nC   Help the buggy recover"
+		&"trialsbike": return "W / S   Throttle / reverse\nA / D or Q / E   Rear-wheel pivot / rider lean\nHold SPACE, release   Preload hop\nSHIFT   Brake / landing control\nC   Recovery assist"
+		&"acrobat": return "A / D   Run and steer in the air\nSPACE   Jump / double jump\nSHIFT   Slide; tap for roll\nSHIFT + SPACE   Bullet jump\nSPACE during roll   Jump cancel\nCTRL   Cancel / brake; hold in air to glide"
 		&"arcadelander": return "SPACE or W   Main thruster\nA / D or Q / E   Rotate\nS   Reverse thrust\nSHIFT   Strong airbrake\nC   Toggle damped flight / coast"
 		&"jetbarrel": return "SPACE or W   Body-axis jetpack\nA / D or Q / E   Strong torque\nS   Reverse thrust\nSHIFT   Brake\nHold C   Upright assistance"
-		&"dryswarm": return "WASD   Guide the Sand cloud\nSPACE   Directional surge\nSHIFT   Spread / disperse\nC   Gather / compact\nRelease controls   Hover together"
-		&"liquidswarm": return "WASD   Guide the Water blob\nSPACE   Directional surge\nSHIFT   Squeeze into a stream\nC   Gather / compact\nRelease controls   Hover together"
+		&"dryswarm": return "WASD   Guide the Sand cloud\nSPACE   Directional surge\nSHIFT   Spread / disperse\nC   Gather / compact\nRelease controls   Swirl / gather idly"
+		&"liquidswarm": return "WASD   Guide the Water blob\nSPACE   Directional surge\nSHIFT   Squeeze into a stream\nC   Gather / compact\nRelease controls   Flow / gather idly"
 	return ""

@@ -41,11 +41,14 @@ var _mode: String = "idle"
 var _stance: String = "standing"
 var _grounded: bool = false
 var _last_delta_velocity := Vector2.ZERO
+var _stride_phase: float = 0.0
 
 
 func advance(rig, action: Dictionary, dt: float, effort: float) -> void:
 	var view: Dictionary = {"velocity": rig._velocities[0],
 		"rotation": rig._transforms[0].get_rotation(), "gravity": rig._gravity,
+		"jump_speed": rig._profile.get("jump", 94.0),
+		"air_jump_speed": rig._profile.get("air_jump", 84.0),
 		"grounded": not rig._support.is_empty(),
 		"contact_normal": rig._support.get("normal", Vector2.ZERO)}
 	var plan: Dictionary = calculate(view, action, dt, effort)
@@ -58,8 +61,7 @@ func advance(rig, action: Dictionary, dt: float, effort: float) -> void:
 	else:
 		rig._gyro(float(plan.target_angle), minf(dt, DT_LIMIT), float(plan.gyro_gain))
 	rig._player_joint_targets = plan.joint_targets.duplicate()
-	rig.gait_phase = fmod(rig.gait_phase + minf(dt, DT_LIMIT) * 10.0
-		* maxf(absf(Vector2(action.get("move", Vector2.ZERO)).x), 0.08), TAU)
+	rig.gait_phase = _stride_phase
 
 
 func calculate(view: Dictionary, action: Dictionary, delta: float, effort: float = 1.0) -> Dictionary:
@@ -78,9 +80,13 @@ func calculate(view: Dictionary, action: Dictionary, delta: float, effort: float
 	var move: Vector2 = Vector2(movement).limit_length(1.0)
 	var speed: Vector2 = velocity
 	var gravity: float = clampf(float(view.get("gravity", 156.0)), 0.0, 500.0)
-	if not is_finite(gravity):
+	var jump_speed: float = float(view.get("jump_speed", 94.0))
+	var air_jump_speed: float = float(view.get("air_jump_speed", 84.0))
+	if not is_finite(gravity) or not is_finite(jump_speed) or not is_finite(air_jump_speed):
 		cancel()
 		return _neutral_plan()
+	jump_speed = clampf(jump_speed, 8.0, MAX_DELTA_SPEED)
+	air_jump_speed = clampf(air_jump_speed, 8.0, MAX_DELTA_SPEED)
 	var buttons := Vector3i(int(bool(action.get("primary", false))),
 		int(bool(action.get("secondary", false))), int(bool(action.get("auxiliary", false))))
 	var pressed := Vector3i(int(buttons.x > _previous_buttons.x),
@@ -116,7 +122,7 @@ func calculate(view: Dictionary, action: Dictionary, delta: float, effort: float
 	if released.y != 0:
 		_slide_suppressed = false
 	if pressed.z != 0:
-		# C can cancel a slide/roll without purchasing another airborne move.
+		# Ctrl can cancel a slide/roll without purchasing another airborne move.
 		_roll_left = 0.0
 		_sliding = false
 		_slide_suppressed = true
@@ -143,11 +149,11 @@ func calculate(view: Dictionary, action: Dictionary, delta: float, effort: float
 			_begin_launch("bullet-jump")
 			launched = true
 		elif can_ground_jump:
-			dv.y = clampf(-78.0 * power - speed.y, -MAX_DELTA_SPEED, 0.0)
+			dv.y = clampf(-jump_speed * power - speed.y, -MAX_DELTA_SPEED, 0.0)
 			_begin_launch("jump")
 			launched = true
 		elif _air_jump_available and not _grounded:
-			dv.y = clampf(-69.0 * power - speed.y, -MAX_DELTA_SPEED, 0.0)
+			dv.y = clampf(-air_jump_speed * power - speed.y, -MAX_DELTA_SPEED, 0.0)
 			_air_jump_available = false
 			_begin_launch("double-jump")
 			launched = true
@@ -175,7 +181,7 @@ func calculate(view: Dictionary, action: Dictionary, delta: float, effort: float
 		dv.y -= minf(310.0, lift) * dt
 	var braking: bool = _grounded and buttons.z != 0
 	var max_speed: float = 108.0 * power
-	var acceleration: float = (520.0 if _grounded else 215.0) * power
+	var acceleration: float = (760.0 if _grounded else 300.0) * power
 	if _sliding:
 		acceleration = 140.0 * power
 	elif _roll_left > 0.0:
@@ -221,7 +227,20 @@ func calculate(view: Dictionary, action: Dictionary, delta: float, effort: float
 		targets = {"hip_-1": 1.25, "hip_1": -1.25, "ankle_-1": -1.10, "ankle_1": 1.10}
 	elif gliding:
 		targets = {"hip_-1": 0.65, "hip_1": -0.65, "ankle_-1": -0.55, "ankle_1": 0.55}
-	var target_angle: float = move.x * 0.10
+	else:
+		# Opposed legs make a readable running stride rather than swinging both
+		# loose limbs behind a dragged torso. Counter-rotated ankles keep feet
+		# close to level. Every pose is a target for the existing Rapier motors.
+		_stride_phase = fmod(_stride_phase + dt * 15.0 * absf(move.x), TAU)
+		var stride: float = sin(_stride_phase) * 0.48 * absf(move.x) if _grounded else 0.0
+		var rear_hip: float = stride - move.x * 0.08
+		var front_hip: float = -stride - move.x * 0.08
+		if not _grounded and speed.y < -8.0:
+			rear_hip = _facing * 0.40
+			front_hip = -_facing * 0.30
+		targets = {"hip_-1": rear_hip, "hip_1": front_hip,
+			"ankle_-1": -rear_hip, "ankle_1": -front_hip}
+	var target_angle: float = move.x * 0.13
 	if _grounded:
 		target_angle += clampf(Vector2(normal).angle() + PI * 0.5, -0.65, 0.65)
 	var trim: float = clampf(float(action.get("trim", 0.0)), -1.0, 1.0)
@@ -233,7 +252,7 @@ func calculate(view: Dictionary, action: Dictionary, delta: float, effort: float
 	_last_delta_velocity = dv.limit_length(MAX_DELTA_SPEED)
 	return {"delta_velocity": _last_delta_velocity, "react_support": _grounded,
 		"spin": _roll_left > 0.0, "angular_speed": _facing * 11.0,
-		"target_angle": target_angle, "gyro_gain": 1.25 if gliding or braking else 0.95,
+		"target_angle": target_angle, "gyro_gain": 1.25 if gliding or braking else 1.0,
 		"joint_targets": targets, "mode": _mode, "stance": _stance}
 
 

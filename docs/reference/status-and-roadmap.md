@@ -4,11 +4,69 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-26
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## Twenty-two-map cyberpunk checkpoint — 2026-10-26
+
+The [cyberpunk checkpoint](../audits/2026-10-26-player-playground-cyberpunk.md)
+follows the completed 15-map review/Windows cohort at 1451e5a7. Seven additional
+[Cyberpunk Backchannels](../systems/player-control-playground.md#cyberpunk-backchannels)
+add connected cutaway architecture, native-cell signs and distinct player-focused
+challenges, all selectable by every player. Final review/test results and gaps
+are source-bound in that audit. Earlier15-map/8-map packets retain their original
+scope. Native80 inputs, both published libraries, C64/E8, Current defaults and
+main-thread ownership remain. PR #262's exact-head hosted gates/merge and manual
+feel are separate; this does not qualify or close #202/#203. Web, shader, MAT
+and material-fidelity/scientific work remain deferred for this task.
+
+## Fifteen-map Expedition checkpoint — 2026-10-26
+
+The [Expedition checkpoint](../audits/2026-10-26-player-playground-expeditions.md)
+and [canonical map collection](../systems/player-control-playground.md#expedition-collection-and-second-district-review)
+add seven independent maps and a second quality review of the original eight.
+The source now has 15 maps, all open to seven players/six Water selections.
+Original accepted main remains `9e53a5b1b501e0667037b8502d3c1d15089211f5`;
+PR #262 remains a branch checkpoint. Native inputs/libraries/defaults, C64/E8,
+owner boundaries and deferred Web/MAT/scientific scope are unchanged.
+The owner requested another seven cyberpunk maps after reviewing this set;
+that next collection is not implemented or accepted by this checkpoint.
+
+## Playground polish and shared NPC host — 2026-10-26
+
+The [dated polish checkpoint](../audits/2026-10-26-player-playground-polish-and-npcs.md)
+and [canonical controls](../systems/player-control-playground.md#detailed-districts-live-npcs-and-agile-afterimage)
+cover distinct district architecture, qualified starting exits, large reservoirs,
+three actual Rapier props/map, include/live-spawn NPC controls, higher agile
+Afterimage/Ctrl, and stationary neutral swarm fields. Public material presets
+now share the single physical host with NPCs/props. Initial receipts stay
+immutable across live append. This remains PR #262 branch work until exact-head
+CI/review/merge; local Windows physics is not interactive feel or Linux proof.
+Accepted main remains9e53a5b1b501e0667037b8502d3c1d15089211f5. The owner's next
+request is to review these maps and add a second, higher-detail map per player;
+that request does not advance LCB scientific acceptance or deferred Web/MAT work.
+
+## Playground maps and controls — 2026-10-26
+
+The owner's follow-up adds stronger [player controls and usable testing](../systems/player-control-playground.md#stronger-player-controls-and-usable-testing)
+and expands every public map to 1024×768 with varied material/structural
+challenges. All 32 existing usables are selectable; mechanical owners keep
+their physical mounts and material owners use the bounded material-only
+runtime. See the [expanded evidence](../audits/2026-10-26-player-playground-expanded-and-usables.md)
+for measured motion and explicit local/hosted/manual scope. The old small map
+is retained only as a regression fixture, with no scientific/epic closure.
+
+The [player playground](../systems/player-control-playground.md#seven-tailored-maps-water-selection-and-painting)
+offers seven tailored districts alongside Mixed Works, all available to every
+player, plus six existing native Water choices and bounded paused/running
+material spawning and painting. Current initial map/FreeMass defaults remain.
+[Dated evidence](../audits/2026-10-26-player-playground-maps.md) scopes actual
+Windows tests and remaining review/platform/manual gates. This separate player
+usability checkpoint neither advances nor closes #202/#203 scientific or full
+application acceptance. Web remains owner-deferred until after the epic.
 
 ## Trial successor correction after accepted App — 2026-10-25
 
@@ -76,7 +134,7 @@ PR #254 is now accepted on main
 Native, GDExtension/Godot and #49 gates and bounded reviews passed. The
 [publication ledger](../audits/2026-10-25-lcb003-runtime-publication.md#accepted-water-main-and-content-identical-integration--2026-10-25)
 binds those receipts. Local normal mergea704ce50 consumes that main with the
-unchanged bot0c9 tree; all615 publication inputs and139 compiled inputs remain
+unchanged bot0c9 tree; all 615 publication inputs and139 compiled inputs remain
 exact. This does not substitute Water's gates for the application's final
 exact-head CI or close #202/#203.
 
@@ -357,7 +415,7 @@ Sequence3 [actual Windows/Linux publication](../audits/2026-10-25-lcb005-pressur
 passes all six jobs in run `40160900817` at exact source `c11983c2`, followed
 by verified four-path bot append `fcf0e9b6`. Each OS executes import plus14
 cases, including IN10192/six strict sections and the new resting-contact
-regression. Fresh non-author verification checks all76/485 input blobs,
+regression. Fresh non-author verification checks all 76/485 input blobs,
 artifacts, actual OS execution and the Linux runtime floor. The corrected
 runtime publication blocker was resolved at that checkpoint; later PR #250
 passes all exact-head gates and merges as main dc915f2b. Prior omitted-contact and moving-mask failures below

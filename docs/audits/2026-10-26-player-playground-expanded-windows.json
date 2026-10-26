@@ -1,0 +1,313 @@
+{
+  "engine": "4.7.stable.official.5b4e0cb0f",
+  "engine_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+  "platform": "Windows x86_64, actual headless native/Rapier; no interactive or Linux/Web claim",
+  "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+  "runtime": {
+    "runtime-provenance.json": {
+      "build_commit": "5f02d089ee4cff8b34421cc4ca58bb4ef50dd92c",
+      "mismatches": [],
+      "sha256": "e3f17363d21260690682dfaa9e5e118253544c1b9b19e69e50c03af567712343",
+      "source_inputs": 80
+    },
+    "runtime-provenance.linux.json": {
+      "build_commit": "5f02d089ee4cff8b34421cc4ca58bb4ef50dd92c",
+      "mismatches": [],
+      "sha256": "02ea0661d3a62e2ab346c3fe46f9f85b808c6a0099c639144f053dc70a5c3d46",
+      "source_inputs": 80
+    }
+  },
+  "source_base": "4329e2f5174a24bbebf939a479e68481ac71bb39",
+  "source_delta": {
+    "godot/scripts/physical_actor_arena.gd": "c6bad6a24457e109a9dd27d5c19878d30fd1975438b93f56595e3bae4f36862a",
+    "godot/scripts/physical_actor_rig.gd": "b0b2cafa672d5aaccf2ffeea8e4259897e917d25d1d4a50c96213819e9d8da73",
+    "godot/scripts/player_actor_catalog.gd": "bc76250abd3e0cac9635e039613e3e5324d6bab31896df34ee4586461a18703b",
+    "godot/scripts/player_playground.gd": "0b0f1e9c5d6b3dc678c47f25a70d29e9c099bc66ccf1f50befcf79ddca2fbab7",
+    "godot/scripts/player_playground_course.gd": "cf24eaa9297dcc56df4601bc10b1555ea86423f698aa6389bb7e28cbecc541ed",
+    "godot/scripts/player_playground_districts.gd": "cf6774b07903a1a70210d9276556591e63163dc94978733794bf7c49e72fe680",
+    "godot/scripts/player_playground_input.gd": "ece6da10351a22b9e4b62f2637d00af8a7a4a2645f77960f8cb6d1a90023bc2e",
+    "godot/scripts/player_playground_overlay.gd": "dc78b8e3aceeff13e1cd5afd1c401c30428f44416b1cf58652ac3a4a6b75eacf",
+    "godot/scripts/player_playground_runtime.gd": "995a425696e334ed345180588e7854a2d8d05b48b5561214ca620706c143b88c",
+    "godot/scripts/player_playground_world.gd": "af0275536b2fe70f6fd9dc7fb91516762b7822ffeeb3c2069339cf0f6f21849f",
+    "godot/scripts/player_vehicle_controller.gd": "61731234ee68ddee67af2109f5374d7803f714735ec64931797a057e7908639b",
+    "godot/tests/test_player_playground_course.gd": "25ad71e8fa141b57ca33739ba38362ab3cf311963241b29903dee62682d4856e",
+    "godot/tests/test_player_playground_maps.gd": "609a7e0044ff0cd2c4efe6595a0e45b4386aaeafac282f5f93e3e4730216bb5e",
+    "godot/tests/test_player_playground_runtime.gd": "1ebc4491a7ef5841f352c3fb33c1591110820617f125e59a9b43395a4e5a637b",
+    "godot/tests/test_player_playground_tuning.gd": "836f2c64ef340b3068470d3cf5112160e770c7b2606f774c19171fbecee06c51"
+  },
+  "tests": {
+    "test_physical_actor_arena": {
+      "argv": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\player-playground-maps\\khybersand\\godot",
+        "--script",
+        "res://tests/test_physical_actor_arena.gd"
+      ],
+      "exit_code": 0,
+      "footers": [
+        "PHYSICAL_ARENA_RESULT assertions=915 failures=0 elapsed_ms=12999.562"
+      ],
+      "seconds": 13.702999999979511,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "6e754b7c201e83c292019067f43648ffcdafc61048eb4e75e63778e34ff2e69c",
+      "strict_clean": true,
+      "timeout_seconds": 420
+    },
+    "test_physical_actor_integration": {
+      "argv": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\player-playground-maps\\khybersand\\godot",
+        "--script",
+        "res://tests/test_physical_actor_integration.gd"
+      ],
+      "exit_code": 0,
+      "footers": [
+        "Physical actor integration: 389 assertions, 0 failures"
+      ],
+      "seconds": 13.546999999904074,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "604d1c2b298116ad5db79cdc449280e5f2d16b7a3927910761d590f03d1a4047",
+      "strict_clean": true,
+      "timeout_seconds": 420
+    },
+    "test_physical_actor_session": {
+      "argv": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\player-playground-maps\\khybersand\\godot",
+        "--script",
+        "res://tests/test_physical_actor_session.gd"
+      ],
+      "exit_code": 0,
+      "footers": [
+        "Physical actor session: 113 assertions, 0 failures"
+      ],
+      "seconds": 0.5940000000409782,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "b53c36aa74dfe1b78bd6f4cd0fe8f5d8a58b0ad1784de1e2161e247732299d72",
+      "strict_clean": true,
+      "timeout_seconds": 420
+    },
+    "test_physical_usable_course": {
+      "argv": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\player-playground-maps\\khybersand\\godot",
+        "--script",
+        "res://tests/test_physical_usable_course.gd"
+      ],
+      "exit_code": 0,
+      "footers": [
+        "PHYSICAL_USABLE_COURSE_RESULT assertions=71 failures=0"
+      ],
+      "seconds": 12.046999999904074,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "dee35926f51b638d13d189487dd71bd727842dd633a8aca7730c93f0770c03f1",
+      "strict_clean": true,
+      "timeout_seconds": 420
+    },
+    "test_physical_usable_equipment": {
+      "argv": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\player-playground-maps\\khybersand\\godot",
+        "--script",
+        "res://tests/test_physical_usable_equipment.gd"
+      ],
+      "exit_code": 0,
+      "footers": [
+        "PHYSICAL_USABLE_AIM_METRICS { \"joint\": { \"id\": \"equipment_grip\", \"type\": \"rotary\", \"a\": 0, \"b\": 2, \"enabled\": true, \"target\": -0.01113299559802, \"angle\": -2.48988917469978, \"speed\": 0.04535420052707, \"limits\": (-2.5, 2.5), \"limits_enabled\": true, \"anchor_error\": 0.00755408685654 }, \"limits\": (-2.5, 2.5), \"body_aim\": (-0.723003, -0.690845), \"requested\": (-1.0, 0.0) }",
+        "Physical usable equipment: 307 assertions, 0 failures"
+      ],
+      "seconds": 0.6570000000065193,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "94e16781920d418f726714d38136df7087520a51727f3865899762618f558fc5",
+      "strict_clean": true,
+      "timeout_seconds": 420
+    },
+    "test_physical_usable_lifecycle": {
+      "argv": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\player-playground-maps\\khybersand\\godot",
+        "--script",
+        "res://tests/test_physical_usable_lifecycle.gd"
+      ],
+      "exit_code": 0,
+      "footers": [
+        "Physical usable lifecycle: 39 assertions, 0 failures"
+      ],
+      "seconds": 0.5620000000344589,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "7328ef3f5d46248780ea126b655e1549b6cdc0b088e1ce794372ca9daf54a9a7",
+      "strict_clean": true,
+      "timeout_seconds": 420
+    },
+    "test_physical_usables_runtime": {
+      "argv": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\player-playground-maps\\khybersand\\godot",
+        "--script",
+        "res://tests/test_physical_usables_runtime.gd"
+      ],
+      "exit_code": 0,
+      "footers": [
+        "USABLE002_NATIVE checks=243 failures=0 native=executed catalogue=32"
+      ],
+      "seconds": 0.9220000000204891,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "61d7152f26832e5cdd285c5bab2a621a59a5bd2dbb7211aced3d618c581e2021",
+      "strict_clean": true,
+      "timeout_seconds": 420
+    },
+    "test_player_material_field": {
+      "argv": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\player-playground-maps\\khybersand\\godot",
+        "--script",
+        "res://tests/test_player_material_field.gd"
+      ],
+      "exit_code": 0,
+      "footers": [
+        "PLAYER_MATERIAL_FIELD: 56 assertions; 0 failures"
+      ],
+      "seconds": 0.39000000001396984,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "415a3a7e331b452258a5eb4694d55a3e38f4cdb81ad41e1ea0902dd520821168",
+      "strict_clean": true,
+      "timeout_seconds": 420
+    },
+    "test_player_playground_course": {
+      "argv": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\player-playground-maps\\khybersand\\godot",
+        "--script",
+        "res://tests/test_player_playground_course.gd"
+      ],
+      "exit_code": 0,
+      "footers": [
+        "PLAYER_COURSE_METRICS {\"acrobat_tunnel\":{\"complete_exit\":true,\"furthest_x\":452.826354980469,\"minimum_slide_height\":9.96780395507813,\"standing_height\":13.5638732910156,\"ticks\":140,\"tunnel_height\":11.4034729003906},\"lander_gate\":{\"nearest_gate\":1.25482058525085,\"position\":\"(349.1032, 193.9166)\",\"staging_points_reached\":3,\"ticks\":748},\"stuntbuggy\":{\"furthest_x\":306.626220703125,\"highest_ramp_y\":316.031951904297,\"nearest_first\":9.34612560272217,\"nearest_ramp\":7.05710411071777,\"ticks\":142},\"trialsbike\":{\"furthest_x\":307.085510253906,\"highest_ramp_y\":317.169555664063,\"nearest_first\":9.64008045196533,\"nearest_ramp\":8.40067958831787,\"ticks\":240}}",
+        "PLAYER_COURSE: 1440 assertions, 0 failures"
+      ],
+      "seconds": 4.719000000040978,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "b6871bd9b5813e34d72631740afa47f09752507a5ae485629ca1a75f22a1c466",
+      "strict_clean": true,
+      "timeout_seconds": 420
+    },
+    "test_player_playground_maps": {
+      "argv": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\player-playground-maps\\khybersand\\godot",
+        "--script",
+        "res://tests/test_player_playground_maps.gd"
+      ],
+      "exit_code": 0,
+      "footers": [
+        "PLAYER_MAPS: 4770 assertions, 0 failures; 8 maps x 7 players x 6 Water choices"
+      ],
+      "seconds": 95.90599999995902,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "02d2b5f3614960152f431a331a4364bef6d2c7bb3a5c66e04f67df51cabca5a4",
+      "strict_clean": true,
+      "timeout_seconds": 420
+    },
+    "test_player_playground_runtime": {
+      "argv": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\player-playground-maps\\khybersand\\godot",
+        "--script",
+        "res://tests/test_player_playground_runtime.gd"
+      ],
+      "exit_code": 0,
+      "footers": [
+        "PLAYER_PLAYGROUND_RUNTIME_METRICS {\"acrobat\":{\"displacement\":53.7336807250977,\"parts\":6},\"arcadelander\":{\"displacement\":71.8389739990234,\"parts\":4},\"dryswarm\":{\"moved_cells_sum\":48683,\"position\":\"(365.4492, 219.7052)\",\"sand_cells\":460,\"water_quantity\":122400},\"jetbarrel\":{\"displacement\":94.3693237304688,\"parts\":2},\"liquidswarm\":{\"moved_cells_sum\":53047,\"position\":\"(357.6216, 213.6648)\",\"sand_cells\":204,\"water_quantity\":187680},\"stuntbuggy\":{\"displacement\":29.5827217102051,\"parts\":8},\"trialsbike\":{\"displacement\":22.1641979217529,\"parts\":8}}",
+        "PLAYER_PLAYGROUND_RUNTIME: 1333 assertions, 0 failures; scope=all-seven-native-and-Rapier"
+      ],
+      "seconds": 16.39000000001397,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "0c3d5b5a039dc6960fb8f79c92dd53978ca748e8bd99b376cbea4dee8c59c542",
+      "strict_clean": true,
+      "timeout_seconds": 420
+    },
+    "test_player_playground_tuning": {
+      "argv": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\player-playground-maps\\khybersand\\godot",
+        "--script",
+        "res://tests/test_player_playground_tuning.gd"
+      ],
+      "exit_code": 0,
+      "footers": [
+        "PLAYER_TUNING_METRICS {\"barrel_speed\":182.375335693359,\"lander_fall\":[25.6003913879395,10.9516887664795],\"stuntbuggy\":{\"baseline_height\":6.602294921875,\"lean_angle\":0.748605370521545,\"ratio\":1.9050493658248,\"tuned_height\":12.5776977539063},\"trialsbike\":{\"baseline_height\":14.8839416503906,\"lean_angle\":0.813518404960632,\"ratio\":1.94566418640318,\"tuned_height\":28.9591522216797}}",
+        "PLAYER_TUNING: 112 assertions, 0 failures"
+      ],
+      "seconds": 4.920999999972992,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "4b38c2b30eb0514274a25fa6d0e8fa6f7fd23a6fe3dd403ef386f603e0b828a8",
+      "strict_clean": true,
+      "timeout_seconds": 420
+    },
+    "test_player_vehicle_controls": {
+      "argv": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\player-playground-maps\\khybersand\\godot",
+        "--script",
+        "res://tests/test_player_vehicle_controls.gd"
+      ],
+      "exit_code": 0,
+      "footers": [
+        "PLAYER_VEHICLE_METRICS {\"brake_velocity\":\"(0.747432, 0.94263)\",\"drive_velocity\":\"(78.23857, 0.500436)\",\"driven\":\"(328.9516, 253.4593)\",\"model\":\"stuntbuggy\",\"start\":\"(239.8505, 253.3455)\"}",
+        "PLAYER_VEHICLE_METRICS {\"brake_velocity\":\"(0.493715, 0.774492)\",\"drive_velocity\":\"(94.37489, 0.384534)\",\"driven\":\"(323.4754, 253.6277)\",\"model\":\"trialsbike\",\"start\":\"(239.5666, 253.8316)\"}",
+        "Player vehicle controls: 79 assertions, 0 failures"
+      ],
+      "seconds": 0.9379999999655411,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "8e0395d5e807c1b9adac0e8fdc162d79436673fa6932ab5a1adae1edd4cd2ea3",
+      "strict_clean": true,
+      "timeout_seconds": 420
+    },
+    "test_usable_session": {
+      "argv": [
+        "C:/Godot47/Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "C:\\Users\\_\\.codex\\worktrees\\player-playground-maps\\khybersand\\godot",
+        "--script",
+        "res://tests/test_usable_session.gd"
+      ],
+      "exit_code": 0,
+      "footers": [
+        "USABLE_SESSION: 28 assertions; 0 failures"
+      ],
+      "seconds": 0.2970000000204891,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "cce2f1ce211c4265aa5d5338bbd3cac7d93b914108ac147661bad7917ad4e1fe",
+      "strict_clean": true,
+      "timeout_seconds": 420
+    }
+  },
+  "utc": "2026-10-26T03:02:47.232888+00:00"
+}

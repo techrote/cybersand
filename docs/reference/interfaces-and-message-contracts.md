@@ -6,7 +6,7 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-26
 ---
 
 # Interfaces and message contracts
@@ -990,7 +990,62 @@ witnesses and cross-owner queues remain Planned.
 
 The [physical Blacksite experiment](../operations/physical-actor-programme.md) reuses the current body input/result ABI with one rectangle. `apply_trial_impulses` is a main-thread bridge method; no native field layout or sampled actor action/observation stride changes.
 
+## Cyberpunk map value providers
+
+Course adds the Cyberpunk provider without changing the native prepared-World
+interface. Its router delegates to Streets/Works modules by stable ID; metadata
+concatenation preserves every previous district/Expedition index. `reservoirs`
+returns copied region/material value metadata for independent final-raster
+qualification, not live World storage. The helper creates bounded signs and
+four-cell road rasters during map construction; no tick-time worker or new
+physics owner is introduced. Native rectangle limits and initial-body receipt
+semantics remain. Sources: [router](../../godot/scripts/player_playground_cyberpunk.gd),
+[helper](../../godot/scripts/player_playground_neon_detail.gd).
+
+
+
+## Playground map providers
+
+The shared Course routes layout, spawn, floor, checkpoints, props and NPC stages
+to the district or Expedition provider by stable map ID. Metadata arrays have
+the same order as `MAP_IDS`; every public map remains available to every preset.
+Providers return authored rectangles/value metadata, not mutable World storage.
+No native API or setup/receipt identity contract changes with the new maps.
+Sources: [Course](../../godot/scripts/player_playground_course.gd),
+[Expeditions](../../godot/scripts/player_playground_expeditions.gd).
+
+## Playground live actor admission
+
+`CyberPlayerPlaygroundRuntime.spawn_npc(model, position)` accepts runner, skimmer
+or crawler and routes to `CyberPhysicalActorArena.spawn_actor`. The copied result
+contains `accepted`, `reason`, `actor_id` and `roster_revision`; success additionally
+records tick, first/last body IDs and the complete copied body-state packet.
+`roster_snapshot()` copies actors, props, spawn receipts and the immutable initial
+construction receipt. These host records do not extend native setup provenance
+to later authoring. `Session.append_actor` and `Bridge.append_bodies` are serialized
+main-thread append operations with stable existing IDs/leases; they never rebuild
+the World or step physics. New body offsets include loose props. Capacity and
+actual full-bound placement refusal precede publication. Eight actor/64 body
+limits and existing native body input/result strides remain unchanged.
+Sources: [arena](../../godot/scripts/physical_actor_arena.gd),
+[session](../../godot/scripts/physical_actor_session.gd),
+[bridge](../../godot/scripts/rapier_physics_bridge.gd).
+
 ## Player material field control
+
+The [expanded playground owner](../systems/player-control-playground.md#stronger-player-controls-and-usable-testing)
+composes five calls to the unchanged native API for a radius-60 field and
+retains all five copied native subreceipts. Its aggregate sample/move counters
+can count the same parcel in multiple calls. This does not enlarge the native
+per-call scan or introduce persistent parcel identity. Usable selection and
+M/B/N/U input reuse existing material-only/physical equipment owners and the
+same issued observation/lease checks; no native binding or message ABI changes.
+
+`CyberPlayerPlaygroundMaterialField.apply` now compensates satellite loft while
+the scene holds a neutral anchor fixed. Its aggregate centroid is weighted by
+sample quantities, including overlapping captures; it is not a unique cohort
+centroid. Radius60 is an influence envelope, not a universal containment claim.
+The existing native method below is unchanged.
 
 **Current experimental, dedicated playground:** the GDExtension method is
 `apply_player_material_field(center: Vector2i, direction: Vector2,
@@ -1039,9 +1094,12 @@ The separate scene command is version 1 with exactly ten fields:
 checks run/epoch/actor, exact finite integer identities, a newer sequence, issued
 observation token and an unexpired observation-relative lease of one through six
 ticks. Cancellation changes control generation and retires issuance history;
-replacement additionally changes the run and epoch. Actions admit only `move`,
-`aim`, `effort`, `trim`, `primary`, `secondary` and `auxiliary`, normalized by
-the shared physical session. Move and buttons drive this fixed-strength field;
+replacement additionally changes the run and epoch. Actions admit `move`,
+`aim`, `effort`, `trim`, `primary`, `secondary`, `auxiliary`, `tool`,
+`usable_alternate`, `release_usable` and `attach_usable`; the alternate value is
+checked separately and the remaining action normalized by the shared physical
+session. Material players have no physical held item, so release/attach do not
+create a body. Move and movement buttons drive this fixed-strength field;
 aim, effort and trim are compatibility values without field effects. Mode
 priority is auxiliary, secondary, primary, neutral. Lease expiry removes the
 command, so even neutral hover assistance stops until fresh input is admitted.

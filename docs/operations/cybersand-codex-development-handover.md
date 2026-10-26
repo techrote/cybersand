@@ -4,11 +4,85 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-26
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## Twenty-two-map cyberpunk checkpoint — 2026-10-26
+
+Complete feature source is pushed at
+`c265983b7c31359209989715a685cb7154a084db` on
+`codex/player-playground-maps`, PR [#262](https://github.com/techrote/cybersand/pull/262),
+against accepted main`9e53a5b1b501e0667037b8502d3c1d15089211f5`.
+Final Windows qualification is27 suites/42,439 checks, all924 setup combinations,
+44 wheel routes and132 NPC cohorts, zero failures/clean process exits. Both
+independent map reviews and CI-budget review close without scoped blockers.
+The [dated recovery section](../audits/2026-10-26-player-playground-cyberpunk.md#recoverable-source-and-desktop-preview--2026-10-26)
+binds the no-compile Windows preview, raw/committed review encodings and worker
+states. c265 Documentation run40301267088 passes; skipped draft Native/Godot
+runs are not acceptance. Read final ready-state exact-head checks before merge.
+Afterhours needs a normal hop to unfold after a slide; the native fractional
+Water/BareIron rust gain remains reproduced and unfixed, avoided in new-map
+structural palettes. No new development or scientific campaign starts here.
+
+The [cyberpunk checkpoint](../audits/2026-10-26-player-playground-cyberpunk.md)
+follows the completed 15-map review/Windows cohort at 1451e5a7. Seven additional
+[Cyberpunk Backchannels](../systems/player-control-playground.md#cyberpunk-backchannels)
+add connected cutaway architecture, native-cell signs and distinct player-focused
+challenges, all selectable by every player. Final review/test results and gaps
+are source-bound in that audit. Earlier15-map/8-map packets retain their original
+scope. Native80 inputs, both published libraries, C64/E8, Current defaults and
+main-thread ownership remain. PR #262's exact-head hosted gates/merge and manual
+feel are separate; this does not qualify or close #202/#203. Web, shader, MAT
+and material-fidelity/scientific work remain deferred for this task.
+
+## Fifteen-map Expedition checkpoint — 2026-10-26
+
+The [Expedition checkpoint](../audits/2026-10-26-player-playground-expeditions.md)
+and [canonical map collection](../systems/player-control-playground.md#expedition-collection-and-second-district-review)
+add seven independent maps and a second quality review of the original eight.
+The source now has 15 maps, all open to seven players/six Water selections.
+Original accepted main remains `9e53a5b1b501e0667037b8502d3c1d15089211f5`;
+PR #262 remains a branch checkpoint. Native inputs/libraries/defaults, C64/E8,
+owner boundaries and deferred Web/MAT/scientific scope are unchanged.
+The owner requested another seven cyberpunk maps after reviewing this set;
+that next collection is not implemented or accepted by this checkpoint.
+
+## Playground polish and shared NPC host — 2026-10-26
+
+The [dated polish checkpoint](../audits/2026-10-26-player-playground-polish-and-npcs.md)
+and [canonical controls](../systems/player-control-playground.md#detailed-districts-live-npcs-and-agile-afterimage)
+cover distinct district architecture, qualified starting exits, large reservoirs,
+three actual Rapier props/map, include/live-spawn NPC controls, higher agile
+Afterimage/Ctrl, and stationary neutral swarm fields. Public material presets
+now share the single physical host with NPCs/props. Initial receipts stay
+immutable across live append. This remains PR #262 branch work until exact-head
+CI/review/merge; local Windows physics is not interactive feel or Linux proof.
+Accepted main remains9e53a5b1b501e0667037b8502d3c1d15089211f5. The owner's next
+request is to review these maps and add a second, higher-detail map per player;
+that request does not advance LCB scientific acceptance or deferred Web/MAT work.
+
+## Playground maps and authoring checkpoint — 2026-10-26
+
+The follow-up request expands every selected map to six times the original
+area and tunes lean/hops/gravity/fields/barrel response. The
+[expanded dated record](../audits/2026-10-26-player-playground-expanded-and-usables.md)
+also owns usable testing: actual physical mounts for mechanical players and
+bounded material-only emitters for swarms, with existing 32-item catalogue and
+M/B/N/U controls. PR #262 is the continuing focused branch; it was returned to
+draft during iteration. Prior-head checks do not certify this later source.
+
+The new scoped player request adds seven maps, six existing native Water choices
+and material spawning/painting to the dedicated playground. Start with the
+[canonical controls](../systems/player-control-playground.md#seven-tailored-maps-water-selection-and-painting)
+and [dated checkpoint](../audits/2026-10-26-player-playground-maps.md).
+The isolated `codex/player-playground-maps` branch starts from accepted
+`9e53a5b1b501e0667037b8502d3c1d15089211f5`; the dirty primary material branch is
+preserved. Native source/runtime pins and C64/E8/default assignments remain
+unchanged. This task does not resume or close the broader LCB qualification;
+Web/browser/shader work remains deferred under the owner's earlier direction.
 
 ## Trial successor correction after accepted App — 2026-10-25
 
@@ -76,7 +150,7 @@ PR #254 is now accepted on main
 Native, GDExtension/Godot and #49 gates and bounded reviews passed. The
 [publication ledger](../audits/2026-10-25-lcb003-runtime-publication.md#accepted-water-main-and-content-identical-integration--2026-10-25)
 binds those receipts. Local normal mergea704ce50 consumes that main with the
-unchanged bot0c9 tree; all615 publication inputs and139 compiled inputs remain
+unchanged bot0c9 tree; all 615 publication inputs and139 compiled inputs remain
 exact. This does not substitute Water's gates for the application's final
 exact-head CI or close #202/#203.
 
@@ -196,7 +270,7 @@ and CY/IN future-source refusals have focused actual-owner proof. The003 request
 is absent. Its complete local35-case plus import matrix now passes on clean
 functionale8f1d37b, receipt69479670, preserving all source/project/native inputs.
 The [separate source4948 Web proof](../audits/2026-10-25-lcb003-web-common-water.md)
-passes actualcompat77/threaded76 terminal checks/HTTP201 and all6+4 arms;
+passes actualcompat77/threaded76 terminal checks/HTTP201 and all 6+4 arms;
 ordinary visual/manual play remains open. Combined Windows/Linux publication,
 exact-head gates, remaining constructors and scientific/full-host acceptance
 remain separate. Earlier135-input proofs below remain historical scope.
@@ -399,7 +473,7 @@ Sequence3 [actual Windows/Linux publication](../audits/2026-10-25-lcb005-pressur
 passes all six jobs in run `40160900817` at exact source `c11983c2`, followed
 by verified four-path bot append `fcf0e9b6`. Each OS executes import plus14
 cases, including IN10192/six strict sections and the new resting-contact
-regression. Fresh non-author verification checks all76/485 input blobs,
+regression. Fresh non-author verification checks all 76/485 input blobs,
 artifacts, actual OS execution and the Linux runtime floor. The corrected
 runtime publication blocker was resolved at that checkpoint; later PR #250
 passes all exact-head gates and merges as main dc915f2b. Prior omitted-contact and moving-mask failures below
@@ -574,7 +648,7 @@ all14 scoped Godot cases and a new90-child pressure cost repeat. The
 retains exact source/artifact/timeout identities and negative timings.
 Actual Windows/Linux scoped publication `40153980594` now passes at source
 `bc0bfed9`, with single-parent runtime-only append `52ee560a`: import plus all14
-required cases perOS, IN862/all6, pressure optimization4152/all6 and retained
+required cases perOS, IN862/all 6, pressure optimization4152/all 6 and retained
 reference1934/all12. Full ready-PR qualification still gates acceptance.
 Postpublication merge `736cd8f1` consumes exact #201 final docs `c03011a1` while
 retaining all four #212 runtime/provenance paths exactly from `52ee560a`.

@@ -1,0 +1,223 @@
+{
+  "challenges": {
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+    "canonical_hit_at_1": 125,
+    "canonical_hit_at_k": 156,
+    "mrr_at_k": 0.8769,
+    "questions": 157
+  },
+  "checks": {
+    "challenges": {
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-challenges.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\tmp\\playground-cyberpunk-final-docs\\validation\\checks-v1\\challenges.json"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-cyberpunk-final",
+      "returncode": 0,
+      "seconds": 1.0940000000409782,
+      "timeout_seconds": 180
+    },
+    "docs": {
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/ci/check_docs.py",
+        "--json",
+        "C:\\Users\\_\\.codex\\tmp\\playground-cyberpunk-final-docs\\validation\\checks-v1\\docs.json"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-cyberpunk-final",
+      "returncode": 0,
+      "seconds": 1.5790000000270084,
+      "timeout_seconds": 180
+    },
+    "frozen": {
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-questions.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\tmp\\playground-cyberpunk-final-docs\\validation\\checks-v1\\frozen.json"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-cyberpunk-final",
+      "returncode": 0,
+      "seconds": 0.4219999999040738,
+      "timeout_seconds": 180
+    },
+    "m11": {
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/ci/check_m11_consistency.py",
+        "--json",
+        "C:\\Users\\_\\.codex\\tmp\\playground-cyberpunk-final-docs\\validation\\checks-v1\\m11.json"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-cyberpunk-final",
+      "returncode": 0,
+      "seconds": 0.9380000000819564,
+      "timeout_seconds": 180
+    },
+    "provider": {
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/ci/check_ci_provider_policy.py"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-cyberpunk-final",
+      "returncode": 0,
+      "seconds": 0.09299999999348074,
+      "timeout_seconds": 180
+    },
+    "repository": {
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/ci/check_repository.py",
+        "--require-materialized",
+        "--json",
+        "C:\\Users\\_\\.codex\\tmp\\playground-cyberpunk-final-docs\\validation\\checks-v1\\repository.json"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-cyberpunk-final",
+      "returncode": 0,
+      "seconds": 2.4540000000270084,
+      "timeout_seconds": 180
+    },
+    "whitespace": {
+      "argv": [
+        "git",
+        "diff",
+        "--check",
+        "HEAD"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-cyberpunk-final",
+      "returncode": 0,
+      "seconds": 0.0470000000204891,
+      "timeout_seconds": 180
+    }
+  },
+  "companion_files": {
+    "README.md": "55c14e71a9d7adf7750603d659f949c137b26309e12be8e3fdfffa98ebcbfe76",
+    "SOURCE-CHECKPOINT.json": "6e699bed81d0caa8b467bb58c647e62dcc2cbee7028ebfe65d72099006eec8b0",
+    "docs/BROWSER_VALIDATION.md": "bb7c5f4654a81d375752167793dbba6920d6deeb49c3b560aaf0133e8eff6aa8",
+    "docs/LOCAL_DEVELOPMENT.md": "38d7e2374d0035cab0dca9a7c7b24fb0d9862f7250bc24a0f475aa603880fd03",
+    "docs/WEB_THREADING.md": "07da0f6ad5835ce28a44749f464a99e0b309e80fa4191c93e3a0cb4b1965819c"
+  },
+  "companion_pin": "6a58311982941b75f46e22109a0829e5acb83c7e",
+  "docs": {
+    "canonical_claims": 229,
+    "documents": 115,
+    "errors": [],
+    "heading_anchors": 628,
+    "limitations": [
+      "Does not verify source semantics or runtime claims",
+      "Does not fetch external URLs",
+      "Does not rewrite or reattest historical audits",
+      "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+    ],
+    "local_links": 3383,
+    "navigation_link_documents": 8,
+    "questions": 32,
+    "status": "passed",
+    "warnings": []
+  },
+  "fences_held": true,
+  "frozen": {
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+    "canonical_hit_at_1": 19,
+    "canonical_hit_at_k": 32,
+    "mrr_at_k": 0.7589,
+    "questions": 32
+  },
+  "m11": {
+    "compare_working_tree": false,
+    "errors": [],
+    "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+    "records_checked": 18,
+    "scope": "historical M11 integrity; no current runtime acceptance",
+    "source_hashes_checked": 28,
+    "status": "passed",
+    "working_tree_differences": []
+  },
+  "mirror": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-cyberpunk-final",
+  "raw_files": 1710,
+  "repository": {
+    "documentation": {
+      "canonical_claims": 229,
+      "documents": 115,
+      "errors": [],
+      "heading_anchors": 628,
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ],
+      "local_links": 3383,
+      "navigation_link_documents": 8,
+      "questions": 32,
+      "status": "passed",
+      "warnings": []
+    },
+    "errors": [],
+    "limitations": [
+      "Identity is not execution evidence; read the dated runtime acceptance report",
+      "Retained vendor binaries and platform execution have separate dated provenance",
+      "Historical M11 integrity is checked separately by check_m11_consistency.py"
+    ],
+    "materialized_runtime_files": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+    ],
+    "scope": "current source/documentation and artifact identity",
+    "status": "passed",
+    "unmaterialized_runtime_files": []
+  },
+  "source_head": "c265983b7c31359209989715a685cb7154a084db",
+  "source_overlay": {
+    "docs/audits/2026-10-26-player-playground-cyberpunk.md": {
+      "canonical_lf_sha256": "7779443bad2390b4d8828db53f01e4977fb7988f4cc2a4892d2073e887a564dd",
+      "raw_sha256": "7779443bad2390b4d8828db53f01e4977fb7988f4cc2a4892d2073e887a564dd"
+    },
+    "docs/operations/cybersand-codex-development-handover.md": {
+      "canonical_lf_sha256": "92723a8adcf1b415d8b65b0037f49976ba0f0173ac597bab7c3cef86478be54e",
+      "raw_sha256": "92723a8adcf1b415d8b65b0037f49976ba0f0173ac597bab7c3cef86478be54e"
+    }
+  },
+  "source_status": " M docs/audits/2026-10-26-player-playground-cyberpunk.md\n M docs/operations/cybersand-codex-development-handover.md\n",
+  "source_tree": "caaf956a8b88fff899a80422dfe4b36ae39a5128",
+  "utc": "2026-10-26T09:48:39.451330+00:00"
+}

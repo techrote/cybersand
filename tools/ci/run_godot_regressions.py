@@ -34,6 +34,16 @@ CASE_WEIGHTS_SECONDS = {
     # LCB scenario catalogue: 27 installs plus 1/4-worker 30-tick prefixes
     # (32 s on a 2026-10-23 Windows workstation; CI hosts are slower).
     "test_lcb_scenario_catalogue": 60.0,
+    # Expanded map catalogue: actual native/Rapier setup/readback/tick matrix.
+    # Map count grows independently of the seven players and six Water choices.
+    "test_player_playground_maps": 400.0,
+    "test_player_playground_district_routes": 130.0,
+    "test_player_playground_expeditions": 75.0,
+    "test_player_playground_cyberpunk": 100.0,
+    "test_player_playground_neon_streets": 30.0,
+    "test_player_playground_neon_works": 40.0,
+    "test_player_playground_swarm_anchor": 100.0,
+    "test_player_playground_npc_controls": 45.0,
     # LCB physics contracts: 43 s on the same workstation (dam ladder to t240 at 1/4 workers).
     "test_lcb_physics_contracts": 80.0,
     # LCB-001 pressure reference: 23 s on a 2026-10-24 Windows workstation
@@ -93,9 +103,13 @@ def discover_cases(root: Path = ROOT) -> list[Case]:
             # Scored native/Rapier development cases can consume tens of
             # thousands of real 60 Hz ticks. Keep their CI budget finite
             # without falsely classifying slower Windows hosts as faults.
-            420 if p.stem in {
+            900 if p.stem == "test_player_playground_maps" else 420 if p.stem in {
                 "test_physical_flight_teacher_dev_free",
                 "test_physical_flight_teacher_dev_obstacle",
+                "test_player_playground_district_routes",
+                "test_player_playground_expeditions",
+                "test_player_playground_cyberpunk",
+                "test_player_playground_swarm_anchor",
             } else 180,
             _weight(p.stem),
             # Actual-pixel fixtures use this suffix so newly added render tests

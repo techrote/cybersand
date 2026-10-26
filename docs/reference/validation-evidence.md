@@ -4,11 +4,65 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-26
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md, ../audits/2026-10-25-lcb002-pressure-variants.md]
 ---
 
 # Validation evidence ledger
+
+## Twenty-two-map cyberpunk checkpoint — 2026-10-26
+
+The [cyberpunk checkpoint](../audits/2026-10-26-player-playground-cyberpunk.md)
+follows the completed 15-map review/Windows cohort at 1451e5a7. Seven additional
+[Cyberpunk Backchannels](../systems/player-control-playground.md#cyberpunk-backchannels)
+add connected cutaway architecture, native-cell signs and distinct player-focused
+challenges, all selectable by every player. Final review/test results and gaps
+are source-bound in that audit. Earlier15-map/8-map packets retain their original
+scope. Native80 inputs, both published libraries, C64/E8, Current defaults and
+main-thread ownership remain. PR #262's exact-head hosted gates/merge and manual
+feel are separate; this does not qualify or close #202/#203. Web, shader, MAT
+and material-fidelity/scientific work remain deferred for this task.
+
+## Fifteen-map Expedition checkpoint — 2026-10-26
+
+The [Expedition checkpoint](../audits/2026-10-26-player-playground-expeditions.md)
+and [canonical map collection](../systems/player-control-playground.md#expedition-collection-and-second-district-review)
+add seven independent maps and a second quality review of the original eight.
+The source now has 15 maps, all open to seven players/six Water selections.
+Original accepted main remains `9e53a5b1b501e0667037b8502d3c1d15089211f5`;
+PR #262 remains a branch checkpoint. Native inputs/libraries/defaults, C64/E8,
+owner boundaries and deferred Web/MAT/scientific scope are unchanged.
+The owner requested another seven cyberpunk maps after reviewing this set;
+that next collection is not implemented or accepted by this checkpoint.
+
+## Playground polish and shared NPC host — 2026-10-26
+
+The [dated polish checkpoint](../audits/2026-10-26-player-playground-polish-and-npcs.md)
+and [canonical controls](../systems/player-control-playground.md#detailed-districts-live-npcs-and-agile-afterimage)
+cover distinct district architecture, qualified starting exits, large reservoirs,
+three actual Rapier props/map, include/live-spawn NPC controls, higher agile
+Afterimage/Ctrl, and stationary neutral swarm fields. Public material presets
+now share the single physical host with NPCs/props. Initial receipts stay
+immutable across live append. This remains PR #262 branch work until exact-head
+CI/review/merge; local Windows physics is not interactive feel or Linux proof.
+Accepted main remains9e53a5b1b501e0667037b8502d3c1d15089211f5. The owner's next
+request is to review these maps and add a second, higher-detail map per player;
+that request does not advance LCB scientific acceptance or deferred Web/MAT work.
+
+## Playground maps, native Water selection and painting — 2026-10-26
+
+The [expanded successor record](../audits/2026-10-26-player-playground-expanded-and-usables.md)
+adds real same-fixture jump-height ratios, stronger rear-wheel steering,
+mode-dependent gravity, actual barrel inertia/speed, larger bounded idle fields
+and material/physical usable paths. Every playable map is now 1024×768;
+historical first-pass evidence below retains its smaller geometry/source scope.
+
+The [dedicated checkpoint](../audits/2026-10-26-player-playground-maps.md)
+records the eight-map/seven-player/six-Water native setup matrix, actual receipt
+readback, bounded authoring and original/shared-owner regressions. Actual local
+Windows headless proof is distinct from Linux/hosted checks, full course
+traversal and interactive feel. Native source and published runtime bytes are
+unchanged; the new scripts/tests are separately identified from old build maps.
 
 ## Qualified Water sequence2 publication — 2026-10-25
 
@@ -224,7 +278,7 @@ Sequence3 [actual Windows/Linux publication](../audits/2026-10-25-lcb005-pressur
 passes all six jobs in run `40160900817` at exact source `c11983c2`, followed
 by verified four-path bot append `fcf0e9b6`. Each OS executes import plus14
 cases, including IN10192/six strict sections and the new resting-contact
-regression. Fresh non-author verification checks all76/485 input blobs,
+regression. Fresh non-author verification checks all 76/485 input blobs,
 artifacts, actual OS execution and the Linux runtime floor. The corrected
 runtime publication blocker was resolved at that checkpoint; later PR #250
 passes all exact-head gates and merges as main dc915f2b. Prior omitted-contact and moving-mask failures below
@@ -271,7 +325,7 @@ Later actual combined Windows/Linux scoped publication
 passes at `bc0bfed94ca9a1e51e296253c0fe27a4cee4c3f7`, tree
 `54a2a8fa03de6be991402af277d46e694698c5d0`, with runtime-only bot append
 `52ee560a14455f4c1237e1fc468a1301c1e7c558`. All30 real processes pass:
-import plus14 cases perOS, IN862/all6, optimization4152/all6, pressure1934/all12
+import plus14 cases perOS, IN862/all 6, optimization4152/all 6, pressure1934/all12
 and WEX16. The [publication ledger](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-windowslinux-union-publication--2026-10-25)
 binds exact artifacts, independent verification and the four-path merge resolution.
 Full ready-PR gates and host/Web/owner acceptance remain separate. The native-v1

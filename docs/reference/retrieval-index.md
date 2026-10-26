@@ -4,11 +4,13 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-26
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
+
+- [Detailed player districts, NPC spawning and agile controls](../systems/player-control-playground.md#detailed-districts-live-npcs-and-agile-afterimage): universal starting exits, large reservoirs, shared Rapier props/NPC host, immutable initial receipt and separate live roster, Ctrl Afterimage and stationary neutral swarm fields; branch-local Windows proof is separate from manual feel and exact-head hosted acceptance.
 
 - [Desktop barrel/Ripper preparation](../audits/2026-10-25-lcb003-trial-body-constructors.md): exact retained Apply motion, fresh Restart/F5, transactional one-body admission/refusal and Windows-only proof; [canonical owner contract](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation) owns semantics.
 
@@ -289,6 +291,19 @@ Circle hard contact versus square native masks belongs to
 [coupling](../architecture/rigid-body-and-cellular-coupling.md#circular-player-wheels-retain-rectangular-native-occupancy).
 Execution and human/platform qualification route to the
 [dated evidence](../audits/2026-10-20-player-control-playground.md).
+
+The same guide owns the [seven tailored maps, Water solver picker and native
+painting/spawning controls](../systems/player-control-playground.md#seven-tailored-maps-water-selection-and-painting).
+All seven players can select all 22 1024×768 maps (eight districts, seven Expeditions and seven Cyberpunk Backchannels); player changes keep
+map/Water, map/solver changes restart, and edits/usables mark practice laps. The
+[2026-10-26 qualification](../audits/2026-10-26-player-playground-maps.md) separates
+local Windows execution from complete route, human feel and hosted acceptance.
+
+The same contract's [stronger controls and usable testing](../systems/player-control-playground.md#stronger-player-controls-and-usable-testing)
+owns rear-axle lean, doubled vehicle jumps, damped/drift gravity, barrel inertia,
+radius-60 idle fields and M/B/N/U. The
+[expanded evidence](../audits/2026-10-26-player-playground-expanded-and-usables.md)
+retains actual physics measurements, native usable results and remaining gates.
 
 Layered material worlds, Strata Theatre, quantized relief and explicit interlayer event questions route to the [depth prototype contract](../systems/depth-layers-and-parallax.md).
 

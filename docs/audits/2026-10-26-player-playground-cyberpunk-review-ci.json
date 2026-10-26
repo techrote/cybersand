@@ -1,0 +1,57 @@
+{
+  "reviewed_utc": "2026-10-26T09:35:34.228918+00:00",
+  "reviewer": "afterimage_agility",
+  "scope": "Independent read-only review of post-cohort GDExtension YAML budget-only diff; supplements prior source reviews without replacing them",
+  "file": ".github/workflows/gdextension.yml",
+  "canonical_lf_sha256": "a7976afccf47f9cdd4b36a2a034da23cb106db14c8a934c0f774a52db3b8e388",
+  "disposition": "No blocking findings. Finite enclosing budgets increased to accommodate larger retained serial workload; no test assertion, discovery/filter, runner/provider, dependency pin, trigger or artifact provenance changes in this YAML diff.",
+  "reviewed_changes": {
+    "windows-regression": {
+      "job_minutes": [
+        45,
+        75
+      ],
+      "regression_step_minutes": [
+        40,
+        55
+      ]
+    },
+    "linux-serial-equivalence": {
+      "job_minutes": [
+        35,
+        65
+      ],
+      "regression_command_minutes": [
+        30,
+        50
+      ]
+    }
+  },
+  "unchanged": {
+    "linux_shards": 4,
+    "linux_shard_job_minutes": 35,
+    "linux_shard_command_minutes": 30,
+    "github_hosted_runners": [
+      "windows-2022",
+      "ubuntu-24.04"
+    ],
+    "serial_equivalence_opt_in": "vars.GDEXT_SERIAL_EQUIVALENCE == '1'",
+    "per_case_timeouts_and_failure_semantics": "unchanged by this YAML diff"
+  },
+  "local_discovery": {
+    "cases": 183,
+    "serial_estimate_seconds": 2227.5,
+    "estimate_is_measured_actual_runtime": false
+  },
+  "verification": {
+    "ci_provider_policy": "exit0",
+    "sharding_planner": "25 tests OK exit0",
+    "godot_retests": "not needed for enclosing YAML budgets; none launched"
+  },
+  "constraints": [
+    "The 37-minute weighted estimate informs finite scheduling budgets; it is not proof that every host would exceed the old limit or finish within the new budget.",
+    "Hosted exact-head outcomes remain separately required for merge.",
+    "Previously completed source-fenced Godot cohort is not reclassified as hosted/Linux acceptance."
+  ],
+  "source_edits": false
+}

@@ -23,7 +23,7 @@ static func controls(id: StringName) -> String:
 		&"trialsbike":
 			return "W/S throttle / reverse · A/D or Q/E lean and air rotation\nHold Space to preload, release to bunny-hop · Shift brake · C hold recovery assist"
 		&"acrobat":
-			return "A/D run and steer · Space jump / double jump · hold Shift slide / tap Shift roll\nShift or S + Space bullet jump · C airglide / brake-cancel · mouse aims bullet jump"
+			return "A/D run and steer · Space jump / double jump · hold Shift slide / tap Shift roll\nShift or S + Space bullet jump · Ctrl airglide / brake-cancel · mouse aims bullet jump"
 		&"arcadelander":
 			return "W or Space thrust · S reverse thrust · A/D or Q/E rotate\nShift airbrake · C toggle damped / drift flight"
 		&"jetbarrel":
@@ -51,13 +51,22 @@ static func build(data: Dictionary, id: StringName) -> void:
 			data.color = Color("56dfcb")
 			data.description = "A momentum runner with folding legs, buffered jumps, slides, rolls, bullet jumps and airborne cancels."
 			data.profile.merge({"movement": "walk", "gravity": 156.0, "speed": 100.0,
-				"accel": 520.0, "jump": 80.0, "gyro": 60.0, "air_control": 0.75}, true)
+				"accel": 760.0, "jump": 94.0, "air_jump": 84.0, "gyro": 100.0,
+				"gyro_kp": 72.0, "damping": 14.0, "play": 0.010, "air_control": 0.85}, true)
 			_part(data, "chassis", Vector2.ZERO, Vector2(7, 9), 1.2)
 			for side: int in [-1, 1]:
 				var leg: int = _part(data, "leg_%d" % side, Vector2(side * 3.0, 5.5), Vector2(2, 4), 0.20, "leg")
 				_pin(data, "hip_%d" % side, 0, leg, Vector2(side * 3.0, 3.5), Vector2(-1.5, 1.5), "leg")
 				var foot: int = _part(data, "foot_%d" % side, Vector2(side * 4.0, 8), Vector2(4, 2), 0.16, "foot")
 				_pin(data, "ankle_%d" % side, leg, foot, Vector2(side * 3.0, 7.5), Vector2(-1.3, 1.3), "foot")
+			for joint: Dictionary in data.joints:
+				joint["max_force"] = 240.0
+				joint["motor_speed"] = 14.0
+				joint["command_slew"] = 90.0
+			# The motor-driven feet retain grip without catching as an unpowered
+			# high-friction ragdoll whenever a foot crosses under the running torso.
+			for part: Dictionary in data.parts:
+				part["friction"] = 0.45 if str(part.role) == "foot" else 0.30
 		&"arcadelander":
 			data.color = Color("a3c8ff")
 			data.description = "A fast body-axis lander: quick rotation, responsive main engine and a strong airbrake. Toggle drift for long inertial arcs."
@@ -71,7 +80,7 @@ static func build(data: Dictionary, id: StringName) -> void:
 			data.color = Color("ffb44a")
 			data.description = "A heavy barrel with an overpowered jet and deliberate high-authority rotational controls. Hold the stabilizer only when you want help staying upright."
 			data.profile.merge({"movement": "flight", "gravity": 110.0, "thrust": 510.0,
-				"speed": 155.0, "angular_drag": 0.12, "gyro": 75.0}, true)
+				"speed": 175.0, "angular_drag": 0.12, "gyro": 75.0, "player_inertia_scale": 0.85}, true)
 			_part(data, "barrel", Vector2.ZERO, Vector2(9, 12), 2.4)
 	# Keep ACT-005's ordinary physical mounting chassis and optional equipment
 	# lifecycle. The player loadout starts empty, leaving movement controls free.

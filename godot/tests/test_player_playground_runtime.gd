@@ -37,7 +37,7 @@ func native_snapshot() -> Dictionary:
 
 
 func configure(id: StringName) -> bool:
-	var result: bool = runtime.configure(id)
+	var result: bool = runtime.configure(id, &"legacy")
 	expect(result, "preset configures: %s (%s)" % [id, runtime.last_error])
 	return result
 
@@ -57,7 +57,8 @@ func test_input_mapping() -> void:
 	expect(Vector2(action.move) == Vector2.RIGHT and action.trim == 0.0,
 		"invalid gamepad state does not poison valid keyboard input")
 	for key: Key in Controls.KEYS:
-		expect(Controls.active(Controls.from_state({key: true})), "release gate sees held key %d" % key)
+		expect(Controls.active(Controls.from_state({key: true}, Vector2.ZERO, Vector3i.ZERO, 0.0,
+			&"acrobat" if key == KEY_CTRL else &"")), "release gate sees held key %d" % key)
 	expect(not Controls.active(Controls.from_state({})), "released controls are neutral")
 
 
@@ -243,7 +244,7 @@ func test_cancel_is_natural_material_step(id: StringName) -> void:
 		return
 	var reference = Runtime.new()
 	owner.add_child(reference)
-	expect(reference.configure(id), "cancel comparison starts identical native world")
+	expect(reference.configure(id, &"legacy"), "cancel comparison starts identical native world")
 	for index: int in range(8):
 		var action: Dictionary = {"move": Vector2.RIGHT}
 		runtime.submit_action(action)
@@ -268,7 +269,7 @@ func test_material_button_edges(id: StringName) -> void:
 	var reference = Runtime.new()
 	owner.add_child(reference)
 	for button: String in ["primary", "secondary", "auxiliary"]:
-		if not configure(id) or not reference.configure(id):
+		if not configure(id) or not reference.configure(id, &"legacy"):
 			expect(false, "quick-tap comparison worlds configure")
 			break
 		var pulse: Dictionary = {button: true}
@@ -291,7 +292,7 @@ func test_material_button_edges(id: StringName) -> void:
 			"material tap releases after one tick and creates no extra pulse")
 	# A button backlog cannot turn an expired one-tick command into a delayed
 	# launch. The comparison owner advances only ordinary native simulation.
-	if configure(id) and reference.configure(id):
+	if configure(id) and reference.configure(id, &"legacy"):
 		var view: Dictionary = runtime.observation()
 		for index: int in range(8):
 			expect(runtime.submit(Runtime.make_command(view, index, {"primary": index % 2 == 0}, 1)),
@@ -306,7 +307,7 @@ func test_material_button_edges(id: StringName) -> void:
 		var expected: Dictionary = reference._world.diagnostic_snapshot(Course.VIEW.position, Course.VIEW.size)
 		expect(native_snapshot().hash == expected.hash and int(runtime.observation().pending_input_edges) == 0,
 			"lease expiry discards a pending material backlog without applying another field")
-	if configure(id) and reference.configure(id):
+	if configure(id) and reference.configure(id, &"legacy"):
 		runtime.submit_action({"primary": true})
 		runtime.submit_action({"primary": false})
 		runtime.cancel()
@@ -428,7 +429,7 @@ func test_playground_ui() -> void:
 	scene._surface.render_target_update_mode = SubViewport.UPDATE_DISABLED
 	key_event(KEY_F, true)
 	key_event(KEY_F, false)
-	expect(scene._view.size == Vector2i(256, 128) and scene._surface.render_target_update_mode == SubViewport.UPDATE_ONCE,
+	expect(scene._view.size == Vector2i(384, 288) and scene._surface.render_target_update_mode == SubViewport.UPDATE_ONCE,
 		"paused camera zoom requests a fresh terrain bake matching the overlay")
 	expect(scene.runtime.tick == paused_tick and world.diagnostic_snapshot(Course.VIEW.position, Course.VIEW.size).hash == paused_native.hash,
 		"paused camera changes affect presentation without advancing the native owner")

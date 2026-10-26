@@ -1714,7 +1714,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if physical_rig_id != &"" and event is InputEventKey \
-		and (event.keycode in ACTOR_CONTROL_KEYS or event.keycode in PHYSICAL_TOOL_KEYS):
+		and (event.keycode in _physical_actor_control_keys() or event.keycode in PHYSICAL_TOOL_KEYS):
 		if actor_human_control_active() and actor_keyboard_allowed() and event.pressed and not event.echo:
 			if event.keycode == KEY_BRACKETLEFT:
 				_actor_effort = clampf(_actor_effort - 0.05, 0.0, 1.0)
@@ -2947,6 +2947,20 @@ func _on_physical_actor_input_cancelled(actor_id: int, actor_epoch: int) -> void
 	simulation_worker.cancel_physical_actor_effects(actor_epoch, actor_id)
 
 
+func _physical_actor_auxiliary_key() -> Key:
+	return KEY_CTRL if physical_rig_id == &"acrobat" else KEY_C
+
+
+func _physical_actor_control_keys() -> Array[int]:
+	# F5 and the dedicated playground share Afterimage's Ctrl auxiliary. The
+	# same mapped set owns both event edges and the all-released rearm barrier.
+	# Other physical and sampled actors retain their existing C controls.
+	if physical_rig_id != &"acrobat": return ACTOR_CONTROL_KEYS
+	var keys: Array[int] = ACTOR_CONTROL_KEYS.duplicate()
+	keys[keys.find(KEY_C)] = KEY_CTRL
+	return keys
+
+
 func _publish_physical_keyboard_input(trigger_override: Variant = null, alternate_override: Variant = null) -> void:
 	if actor_producer_selection != &"human":
 		return
@@ -2956,7 +2970,7 @@ func _publish_physical_keyboard_input(trigger_override: Variant = null, alternat
 		physical_actor_session.cancel_input(0, _physical_epoch, &"human")
 		return
 	if _actor_input_rearm:
-		for key: int in ACTOR_CONTROL_KEYS + PHYSICAL_TOOL_KEYS:
+		for key: int in _physical_actor_control_keys() + PHYSICAL_TOOL_KEYS:
 			if Input.is_key_pressed(key):
 				return
 		_actor_input_rearm = false
@@ -2978,7 +2992,7 @@ func _publish_physical_keyboard_input(trigger_override: Variant = null, alternat
 		"trim": float(Input.is_key_pressed(KEY_E)) - float(Input.is_key_pressed(KEY_Q)),
 		"reel": float(Input.is_key_pressed(KEY_X)) - float(Input.is_key_pressed(KEY_Z)),
 		"primary": Input.is_key_pressed(KEY_SPACE), "secondary": Input.is_key_pressed(KEY_SHIFT),
-		"auxiliary": Input.is_key_pressed(KEY_C),
+		"auxiliary": Input.is_key_pressed(_physical_actor_auxiliary_key()),
 		"equipment": {"usable_index": _actor_usable_requested_index if _actor_usable_transition_pending else actor_usable_index,
 			"aim": actor_pointer_aim(), "power": _actor_usable_power,
 			"trigger": trigger and not _actor_usable_transition_pending,

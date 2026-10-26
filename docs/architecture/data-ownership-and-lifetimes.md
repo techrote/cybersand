@@ -6,10 +6,31 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-26
 ---
 
 # Data ownership and lifetimes
+
+The [expanded player controls and usables](../systems/player-control-playground.md#stronger-player-controls-and-usable-testing)
+reuse the private synchronous arena's equipment owner for mechanical players,
+and an existing bounded material-only usable runtime for each material player.
+Both require issued/leased input; focus cancellation stops future triggers,
+while already launched/deployed devices retain ordinary unpaused autonomous
+continuation. Material emitters are copied positions, not fictitious bodies.
+The five-call field keeps native per-call bounds and copied subreceipts; its
+aggregate counters describe samples/operations. Map replacement resets those
+devices and old authority. Detached equipment is excluded from lander gravity
+mode updates; no new World, thread, body ABI or mutable storage view is added.
+
+The [player playground map/Water/painting owner](../systems/player-control-playground.md#seven-tailored-maps-water-selection-and-painting)
+retains its existing synchronous ownership: provisional native World plus
+private physical session commit only after setup succeeds. All public presets
+share that World/space with initial NPCs and props; material players remain native
+cells. The hidden legacy material fixture retains its body-free exclusive World.
+The prepared receipt includes initial copied masks and the authored swarm seed. Bounded brush stamps run between
+ticks, skip current body masks and synchronize hard terrain to the same private
+space, including while paused. Setup receipts describe tick zero; later player
+authoring marks practice state and does not extend scientific qualification.
 
 The bounded [desktop single-trial-body owner](liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 retains one dynamic barrel/Ripper in an automatically inactive permanent private
@@ -91,8 +112,8 @@ old run, command leases, effects and joint graph. See the
 
 **Current experimental source:** the dedicated
 [player playground](../systems/player-control-playground.md) serializes calls on
-its main-thread owner. Its mechanical lane reuses `CyberPhysicalActorArena` and
-the physical session. Its material lane owns a separate native World and calls
+its main-thread owner. Every public preset reuses `CyberPhysicalActorArena`, one
+physical session and private space for props/NPCs. Its material player calls
 `apply_player_material_field` only between ordinary ticks, under a current
 observation-relative input lease. No operation borrows the sandbox worker's World.
 
@@ -104,6 +125,17 @@ and ordinary material rules continue. Reset stages a candidate before retiring
 the old owner, commands and observations. Rendering receives copied packets
 tagged with the new reset generation. This API adds no thread-safety or general
 worker forwarding capability; the caller must already own serialized access.
+
+Public playground actor addition stages a fresh rig/equipment/demo controller,
+checks complete actual bounds against native cells and existing bodies, then
+appends to the existing bridge/session. All refusals precede publication. Body
+IDs are stable bridge indices plus one, including props; new actor offsets use
+the total bridge body count. Original serial/feedback caches and terrain remain
+owned by that bridge. Initial receipts stay immutable; roster revisions/spawn
+packets are copied host records. No removal/compaction occurs before reset.
+The main-thread owner installs the changed full native mask between ticks;
+normal mask wake/cache invalidation is retained. Material field/usables execute
+before the same arena's single native tick and single Rapier step.
 
 ## Generated semantic depth ownership
 
