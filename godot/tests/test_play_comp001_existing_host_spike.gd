@@ -30,6 +30,36 @@ func wait_for(predicate: Callable, timeout_ms: int = 30000) -> bool:
 	return false
 
 
+# Explicit predicates avoid ambiguous multiline lambda call parsing.
+func course_installed() -> bool:
+	return (desktop.pending_microscenario_apply.is_empty()
+		and bool(desktop.tower_context.get("micro_active", false)))
+
+
+func actor_installed() -> bool:
+	return (desktop.pending_microscenario_apply.is_empty()
+		and desktop._actor_reset_receipt == 0
+		and desktop.physical_actor_session != null)
+
+
+func terrain_installed() -> bool:
+	return desktop._physical_terrain_ready
+
+
+var _initial_physics_tick: int = 0
+
+
+func player_stepped() -> bool:
+	return (desktop.physical_actor_session != null
+		and desktop.physical_actor_session.tick >= _initial_physics_tick + 35)
+
+
+func reset_acknowledged() -> bool:
+	return (desktop.pending_microscenario_apply.is_empty()
+		and desktop._actor_reset_receipt == 0
+		and desktop.physical_rig_id == &"acrobat")
+
+
 func key(code: Key, pressed: bool) -> void:
 	var event := InputEventKey.new()
 	event.keycode = code
@@ -87,9 +117,7 @@ func run() -> void:
 
 	expect(desktop.microscenario_launch(Catalogue.PLAYER_COURSE_ID, "Play", 0),
 		"actual course accepted by ordinary desktop scene")
-	var installed: bool = await wait_for(func() -> bool:
-		return desktop.pending_microscenario_apply.is_empty()
-			and desktop.tower_context.get("micro_active", false))
+	var installed: bool = await wait_for(Callable(self, "course_installed"))
 	expect(installed, "existing worker acknowledged native course installation")
 	if not installed:
 		await finish()
@@ -102,10 +130,7 @@ func run() -> void:
 	expect(desktop.actor_prototypes_allowed(), "normal F5 mechanical actor selector remains available")
 	expect(desktop.apply_actor_prototype_configuration(&"rapier/acrobat", &"human", false),
 		"SetP acrobat selected through existing F5 physical actor path")
-	var actor_ready: bool = await wait_for(func() -> bool:
-		return desktop.pending_microscenario_apply.is_empty()
-			and desktop._actor_reset_receipt == 0
-			and desktop.physical_actor_session != null)
+	var actor_ready: bool = await wait_for(Callable(self, "actor_installed"))
 	expect(actor_ready, "physical actor replacement acknowledged by existing native owner")
 	if not actor_ready:
 		await finish()
@@ -119,21 +144,18 @@ func run() -> void:
 		"live real Rapier session owns the correct human preset")
 	expect(session.bodies().size() > 0, "Rapier geometry exists, not a sampled mock")
 
-	var terrain_ready: bool = await wait_for(func() -> bool:
-		return desktop._physical_terrain_ready, 30000)
+	var terrain_ready: bool = await wait_for(Callable(self, "terrain_installed"), 30000)
 	expect(terrain_ready, "actual hard-terrain collider installation gate released")
 	if not terrain_ready:
 		await finish()
 		return
 
 	var initial_position: Vector2 = actor.get("position", Vector2.ZERO)
-	var initial_tick: int = session.tick
+	_initial_physics_tick = session.tick
 	desktop.paused = false
 	await process_frame
 	key(KEY_D, true)
-	var stepped: bool = await wait_for(func() -> bool:
-		return desktop.physical_actor_session != null
-			and desktop.physical_actor_session.tick >= initial_tick + 35, 30000)
+	var stepped: bool = await wait_for(Callable(self, "player_stepped"), 30000)
 	key(KEY_D, false)
 	expect(stepped, "main-thread Rapier advances while separate native worker is live")
 	if stepped:
@@ -153,9 +175,6 @@ func run() -> void:
 		}))
 	desktop.paused = true
 	desktop.microscenario_reset()
-	var reset_ok: bool = await wait_for(func() -> bool:
-		return desktop.pending_microscenario_apply.is_empty()
-			and desktop._actor_reset_receipt == 0
-			and desktop.physical_rig_id == &"acrobat", 30000)
+	var reset_ok: bool = await wait_for(Callable(self, "reset_acknowledged"), 30000)
 	expect(reset_ok, "reset preserves course + selected mechanical actor through existing owner")
 	await finish()
