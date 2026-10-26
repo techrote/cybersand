@@ -139,3 +139,54 @@ value rectangles. Every implementation checkpoint records its own source/delta.
 Exact-head required hosted checks and independent review are required before merge.
 This map task does not close #202/#203. Web/browser/shader, MAT and material-fidelity
 work remain owner-deferred. No broader LCB scientific campaign is started here.
+
+## Recoverable source and desktop preview — 2026-10-26
+
+The complete implementation is pushed as
+`c265983b7c31359209989715a685cb7154a084db` on
+`codex/player-playground-maps`, based on accepted main
+`9e53a5b1b501e0667037b8502d3c1d15089211f5`. The following handover-only
+commit does not change any engine-tested script or runtime. Hosted
+[Documentation/provenance run40301267088](https://github.com/techrote/cybersand/actions/runs/40301267088)
+passes at c265; draft-suppressed Native40301267288 and GDExtension40301267086
+are skipped, not accepted. Final-head ready-state runs require separate readback
+on [PR #262](https://github.com/techrote/cybersand/pull/262) before any merge.
+
+The local no-compile Windows preview is
+`C:/Users/_/CyberSand Player Playground/preview-c265983b7c31`.
+Its `Launch Player Playground.cmd` and `Playground guide.md` expose all22 maps,
+seven players, six Water choices, usables, NPCs and painting. This is an
+unmerged-branch preview, not a replacement for an accepted-main installation.
+`BUILD-IDENTITY.json` binds653 source files to c265, SHA-256
+`030f37ce94890b50363f2ca5ad97b4b658c6ca5d007872629acaead04e10fa1a`.
+The bundled Windows library remains
+`e3f17363d21260690682dfaa9e5e118253544c1b9b19e69e50c03af567712343`;
+the pinned Godot4.7 engine is
+`d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c`.
+Editor import and45-frame Undertow/Rain Ledger playground boot both exit0,
+with empty stderr. `Logs/PACKAGE-SMOKE.json` records commands, output hashes
+and the restoration of the portable class-cache bootstrap after import.
+All tracked package source bytes subsequently match its build identity.
+This smoke test is headless, not interactive appearance/feel acceptance.
+
+The independent review hashes quoted above identify the original external
+CRLF JSON packets. Git normalizes the adjacent committed copies to LF;
+the content and source-hash findings are identical. Both identities are retained:
+
+| Adjacent review packet | Original external SHA-256 | Committed LF SHA-256 |
+|---|---|---|
+| `2026-10-26-player-playground-cyberpunk-review-works.json` | `3e3b0274461a64d7067213253e6fb1afe112bbb9ff95f3bbd02dce56a745f08c` | `2cbf0452b726e3fd012206168166825b936628f89de377661eee62114311d3a1` |
+| `2026-10-26-player-playground-cyberpunk-review-streets.json` | `b15f16b85de3d2ca7fc5e158747187e4451a41a6eb84efe32f9635ea1eebdc91` | `7c6b49fcf2cf27a6df7c360a2d69815f442160489d4d231961c490162e0bfe81` |
+| `2026-10-26-player-playground-cyberpunk-review-ci.json` | `5253e623c56c6d2e2e09d2b63945a9deca843932d1313e09a39db439192cbd7e` | `07aaaed8173af5812419d29f951ebfff72758c889217c556196781b46e19750a` |
+
+Both map workers are parked with their final reviews preserved. The application
+helper worker stopped on model capacity; root completed its helper/router/test
+ownership and included those files in both independent reviews. No agent starts
+another feature. The dedicated worktree is clean at c265 before this docs-only
+landing; the primary material worktree and previous preview are preserved.
+Recovery: inspect PR head and applicable checks, resolve only concrete failures,
+and merge only after exact-head required gates and review pass. Manual testing
+uses the preview guide and includes BUILD-IDENTITY, map/player/Water/tool/NPC
+settings and exact input sequence with each report. The retained Water/BareIron
+reaction needs a separately scoped native correction/publication, not silent
+acceptance of arbitrary painted material conservation.

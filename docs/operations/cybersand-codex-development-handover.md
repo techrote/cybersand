@@ -12,6 +12,21 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## Twenty-two-map cyberpunk checkpoint — 2026-10-26
 
+Complete feature source is pushed at
+`c265983b7c31359209989715a685cb7154a084db` on
+`codex/player-playground-maps`, PR [#262](https://github.com/techrote/cybersand/pull/262),
+against accepted main`9e53a5b1b501e0667037b8502d3c1d15089211f5`.
+Final Windows qualification is27 suites/42,439 checks, all924 setup combinations,
+44 wheel routes and132 NPC cohorts, zero failures/clean process exits. Both
+independent map reviews and CI-budget review close without scoped blockers.
+The [dated recovery section](../audits/2026-10-26-player-playground-cyberpunk.md#recoverable-source-and-desktop-preview--2026-10-26)
+binds the no-compile Windows preview, raw/committed review encodings and worker
+states. c265 Documentation run40301267088 passes; skipped draft Native/Godot
+runs are not acceptance. Read final ready-state exact-head checks before merge.
+Afterhours needs a normal hop to unfold after a slide; the native fractional
+Water/BareIron rust gain remains reproduced and unfixed, avoided in new-map
+structural palettes. No new development or scientific campaign starts here.
+
 The [cyberpunk checkpoint](../audits/2026-10-26-player-playground-cyberpunk.md)
 follows the completed 15-map review/Windows cohort at 1451e5a7. Seven additional
 [Cyberpunk Backchannels](../systems/player-control-playground.md#cyberpunk-backchannels)
