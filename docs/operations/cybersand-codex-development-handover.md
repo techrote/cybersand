@@ -10,6 +10,23 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Controlled LCB session landing — 2026-10-26
+
+Start with the [dated session handover](../audits/2026-10-26-lcb-controlled-session-handover.md)
+for accepted main, successor heads and their independent exact-head gates,
+parked agents, preserved failures, active external CI and recovery instructions.
+Its native desktop manual-testing guide identifies a separate accepted-main
+project copy using prebuilt libraries; no experimental compilation is required.
+The earlier open-ended programme continuation has ended at this controlled
+checkpoint. Further Web/browser/shader work remains owner-deferred until after
+the epic; MAT and material-fidelity work remain outside this session.
+
+The following post-publication sections retain their original intermediate
+source checkpoints. In particular, their old #256 draft/pending wording is
+historical: #256 subsequently merged as
+`56422c050bd5ed2ceb5f816b1269748764e2dcb7`. Use the dated handover's final
+snapshot for later acceptance rather than treating an earlier status as current.
+
 ## Trial successor correction after accepted App — 2026-10-25
 
 App #256 is merged as main56422c05 after all four exact-dc2 required gates.

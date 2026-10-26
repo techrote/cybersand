@@ -487,6 +487,11 @@ stays read-only with respect to material authority.
 
 ## LCB-000 final admission status
 
+For the controlled landing of the multisolver development session, accepted and
+pending successor PRs, external CI, recovery and practical native desktop feel
+testing, use the [2026-10-26 session handover](audits/2026-10-26-lcb-controlled-session-handover.md).
+It separates accepted-main functionality from unmerged actor/scientific work.
+
 For final Gate Aâ€“E PASS, the landed stack, the bounded #200 policy foundation and the
 2026-10-24 owner decision that lifted the holds on the #200 pressure reference and #212, read
 the [current roadmap checkpoint](reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23),
