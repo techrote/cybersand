@@ -72,7 +72,7 @@ PR #254 is now accepted on main
 Native, GDExtension/Godot and #49 gates and bounded reviews passed. The
 [publication ledger](audits/2026-10-25-lcb003-runtime-publication.md#accepted-water-main-and-content-identical-integration--2026-10-25)
 binds those receipts. Local normal mergea704ce50 consumes that main with the
-unchanged bot0c9 tree; all615 publication inputs and139 compiled inputs remain
+unchanged bot0c9 tree; all 615 publication inputs and139 compiled inputs remain
 exact. This does not substitute Water's gates for the application's final
 exact-head CI or close #202/#203.
 
@@ -275,7 +275,7 @@ Windows evidence and explicit owner-feel limitations. The
 retains the original actual Rapier Trainer data, lifecycle negatives and
 source/runtime identity.
 
-For seven human movement presets, use the [player control playground](systems/player-control-playground.md): buggy, trials bike, momentum acrobat, arcade lander, native Sand cloud, native Water blob and jetpack barrel. The guide owns 15 distinct 1024×768 maps (eight districts plus seven Expeditions), large reservoirs, loose props, live NPC spawning, higher agile Afterimage/Ctrl, stationary neutral swarm fields, stronger rear-wheel lean/doubled hops, six Water solver choices, material spawning/painting, all 32 usables, keyboard/gamepad controls, acrobat chains, reset/focus rules and bounded composite material-field ownership. The five mechanical presets also appear in F5 SetP.
+For seven human movement presets, use the [player control playground](systems/player-control-playground.md): buggy, trials bike, momentum acrobat, arcade lander, native Sand cloud, native Water blob and jetpack barrel. The guide owns 22 distinct 1024×768 maps (eight districts, seven Expeditions and seven Cyberpunk Backchannels), large reservoirs, loose props, live NPC spawning, higher agile Afterimage/Ctrl, stationary neutral swarm fields, stronger rear-wheel lean/doubled hops, six Water solver choices, material spawning/painting, all 32 usables, keyboard/gamepad controls, acrobat chains, reset/focus rules and bounded composite material-field ownership. The five mechanical presets also appear in F5 SetP.
 
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).
 

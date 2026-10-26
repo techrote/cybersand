@@ -3,7 +3,7 @@ title: Player control playground
 status: Current
 document-kind: contract
 scope: Experimental seven-preset human movement course, shared mechanical control, bounded native Sand and Water fields, input lifetime and qualified validation
-canonical-for: [player-control-playground, player-movement-presets, player-material-field]
+canonical-for: [player-control-playground, player-movement-presets, player-material-field, playground-cyberpunk-maps]
 last-reviewed: 2026-10-26
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
 ---
@@ -110,10 +110,61 @@ Sources: [map definitions](../../godot/scripts/player_playground_course.gd),
 [scene controls](../../godot/scripts/player_playground.gd) and
 [dated qualification](../audits/2026-10-26-player-playground-maps.md).
 
+## Cyberpunk Backchannels
+
+**Current experimental branch source, PR #262:** seven additional cyberpunk maps
+bring the public selection to 22. Each remains 1024×768 and is available to every
+player. Suggested players identify a focus, without locking the map or solver.
+The [dated cyberpunk checkpoint](../audits/2026-10-26-player-playground-cyberpunk.md)
+records actual source/platform evidence and the remaining qualification limits.
+
+| Map | Suggested player | Place and mechanical focus |
+|---|---|---|
+| Debtline Interchange | Loose Cannon | Connected repair halls, toll block, rising interchange, supported launch crest and braking court |
+| Patchbay Tenements | Trials Rat | Linked apartments, washing galleries, repair terraces, shallow transfer court and communal bath |
+| Afterhours Arcade | Afterimage | Aquarium frontage, cutaway arcade, compact service passages, standing repair bay and night street |
+| Zero-Stamp Customs | Vector Rush | Inspection canyon, numbered bays, supported customs hall and broad recovery courts |
+| Last Byte Reclamation | Dust Devil | Pawn/scrap rooms, scored side seal, lateral granular sorting arcade and catch |
+| Rain Ledger Exchange | Undertow | Exchange halls, large separate Water/Brine stores, stepped channels and vented shared catch |
+| Pirate Uplink | Barrel Rocket | Rooftop relay rooms, irregular dishes, open flue gaps, lateral hatch and recovery roofs |
+
+Native-cell lettering, repair seams, glazed service bays, supported building
+shells and actual cutaway air rooms provide denser environmental detail. There
+are no new electrical, hacking, navigation-AI or simulation systems hidden behind
+signs. Large liquid stores and three real Rapier props per map retain native
+material behavior and the existing physical host. Glass Scorer opens marked
+Water drain plates; Reclamation's glass side seal also uses Glass Scorer.
+Foundry/Baths' plywood Sand stoppers use Line Cutter. Use tools while unpaused,
+with Paint tool and Place NPC disabled; reset restores the authored setup.
+
+The post-Expedition review also gives Market facades actual footings, Port's
+suspended signs deliberate supports, restores Water displaced by the Cathedral
+pier, and opens a real first-tray chute to Foundry's second comb and catch.
+Shared road clearance, full wheel routes and body/receipt checks remain the
+same acceptance criteria. Optional challenges are separately tested; a staged
+feature proof does not establish a complete expert route from default spawn.
+Afterhours' demonstrated ordinary-spawn expert route includes one ordinary hop
+in the repair bay to unfold after sliding; neutral/brake alone did not restore
+full physical height. That automatic recovery remains a known control limit.
+The new7 comparison maps use already-rusted steel in place of bare iron: the
+existing fractional Water/bare-iron rust reaction can replenish Water quantity.
+Its retained reproduction and source explanation belong to the dated audit;
+no native correction or universal material-contact conservation is claimed here.
+Reclamation's lower Oil store is below the road and requires excavation access.
+Source-palette composition review is distinct from rendered appearance and
+human-feel acceptance. Web/browser/shader testing stays owner-deferred.
+
+Sources: [collection router](../../godot/scripts/player_playground_cyberpunk.gd),
+[street maps](../../godot/scripts/player_playground_neon_streets.gd),
+[works maps](../../godot/scripts/player_playground_neon_works.gd),
+[bounded signage and road helpers](../../godot/scripts/player_playground_neon_detail.gd).
+
+
 ## Expedition collection and second district review
 
-**Current branch source, PR #262:** the map picker contains 15 maps: the original
-eight districts and these seven Expeditions. Every player can select every map;
+The reviewed Expedition checkpoint at 1451e5a7 introduced these seven maps
+alongside the original eight districts. The current 22-map picker also includes
+Cyberpunk Backchannels below. Every player can select every map;
 map/player/Water defaults and preparation contracts are unchanged. All are
 1024×768. The [dated Expedition record](../audits/2026-10-26-player-playground-expeditions.md)
 separates actual Windows physics, source-derived composition review and remaining
@@ -141,9 +192,8 @@ filter galleries, clear flight landing space and rooftop/service details to the
 original eight. Optional upper routes have separately scoped tests; a staged
 compact-passage proof does not prove an entire expert lap from default spawn.
 Source-derived raster review uses the native palette but does not qualify the
-rendered shader or interactive appearance. The owner's subsequent cyberpunk
-collection is the next scoped map stage, after this review; it is not present in
-this 15-map checkpoint.
+rendered shader or interactive appearance. The subsequent cyberpunk collection follows this review and its separately
+qualified 15-map checkpoint; its final source/evidence is described above.
 
 Sources: [Expedition maps](../../godot/scripts/player_playground_expeditions.gd),
 [district maps](../../godot/scripts/player_playground_districts.gd),

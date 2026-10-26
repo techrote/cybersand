@@ -1169,7 +1169,7 @@ redefine the legacy physical actor delta clamp above.
 ## Player playground values
 
 The [map/solver/authoring controls](../systems/player-control-playground.md#seven-tailored-maps-water-selection-and-painting)
-offer 15 large maps (eight districts plus seven Expeditions) with the `mixed` default, independently selectable
+offer 22 large maps (eight districts, seven Expeditions and seven Cyberpunk Backchannels) with the `mixed` default, independently selectable
 with every player. Six Water choices use radius two except explicit radius-three
 IN. Brush radii are 1–12; radius twelve scans 625 candidates with 441 disc cells,
 clipped to interior `(6,6,1012,730)` and skipping actual bodies. A burst is

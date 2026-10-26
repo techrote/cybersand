@@ -10,6 +10,19 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Twenty-two-map cyberpunk checkpoint — 2026-10-26
+
+The [cyberpunk checkpoint](../audits/2026-10-26-player-playground-cyberpunk.md)
+follows the completed 15-map review/Windows cohort at 1451e5a7. Seven additional
+[Cyberpunk Backchannels](../systems/player-control-playground.md#cyberpunk-backchannels)
+add connected cutaway architecture, native-cell signs and distinct player-focused
+challenges, all selectable by every player. Final review/test results and gaps
+are source-bound in that audit. Earlier15-map/8-map packets retain their original
+scope. Native80 inputs, both published libraries, C64/E8, Current defaults and
+main-thread ownership remain. PR #262's exact-head hosted gates/merge and manual
+feel are separate; this does not qualify or close #202/#203. Web, shader, MAT
+and material-fidelity/scientific work remain deferred for this task.
+
 ## Fifteen-map Expedition checkpoint — 2026-10-26
 
 The [Expedition checkpoint](../audits/2026-10-26-player-playground-expeditions.md)
@@ -122,7 +135,7 @@ PR #254 is now accepted on main
 Native, GDExtension/Godot and #49 gates and bounded reviews passed. The
 [publication ledger](../audits/2026-10-25-lcb003-runtime-publication.md#accepted-water-main-and-content-identical-integration--2026-10-25)
 binds those receipts. Local normal mergea704ce50 consumes that main with the
-unchanged bot0c9 tree; all615 publication inputs and139 compiled inputs remain
+unchanged bot0c9 tree; all 615 publication inputs and139 compiled inputs remain
 exact. This does not substitute Water's gates for the application's final
 exact-head CI or close #202/#203.
 
@@ -242,7 +255,7 @@ and CY/IN future-source refusals have focused actual-owner proof. The003 request
 is absent. Its complete local35-case plus import matrix now passes on clean
 functionale8f1d37b, receipt69479670, preserving all source/project/native inputs.
 The [separate source4948 Web proof](../audits/2026-10-25-lcb003-web-common-water.md)
-passes actualcompat77/threaded76 terminal checks/HTTP201 and all6+4 arms;
+passes actualcompat77/threaded76 terminal checks/HTTP201 and all 6+4 arms;
 ordinary visual/manual play remains open. Combined Windows/Linux publication,
 exact-head gates, remaining constructors and scientific/full-host acceptance
 remain separate. Earlier135-input proofs below remain historical scope.
@@ -445,7 +458,7 @@ Sequence3 [actual Windows/Linux publication](../audits/2026-10-25-lcb005-pressur
 passes all six jobs in run `40160900817` at exact source `c11983c2`, followed
 by verified four-path bot append `fcf0e9b6`. Each OS executes import plus14
 cases, including IN10192/six strict sections and the new resting-contact
-regression. Fresh non-author verification checks all76/485 input blobs,
+regression. Fresh non-author verification checks all 76/485 input blobs,
 artifacts, actual OS execution and the Linux runtime floor. The corrected
 runtime publication blocker was resolved at that checkpoint; later PR #250
 passes all exact-head gates and merges as main dc915f2b. Prior omitted-contact and moving-mask failures below
@@ -620,7 +633,7 @@ all14 scoped Godot cases and a new90-child pressure cost repeat. The
 retains exact source/artifact/timeout identities and negative timings.
 Actual Windows/Linux scoped publication `40153980594` now passes at source
 `bc0bfed9`, with single-parent runtime-only append `52ee560a`: import plus all14
-required cases perOS, IN862/all6, pressure optimization4152/all6 and retained
+required cases perOS, IN862/all 6, pressure optimization4152/all 6 and retained
 reference1934/all12. Full ready-PR qualification still gates acceptance.
 Postpublication merge `736cd8f1` consumes exact #201 final docs `c03011a1` while
 retaining all four #212 runtime/provenance paths exactly from `52ee560a`.

@@ -1,0 +1,351 @@
+{
+  "challenges": {
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+    "canonical_hit_at_1": 125,
+    "canonical_hit_at_k": 156,
+    "mrr_at_k": 0.8769,
+    "questions": 157
+  },
+  "checks": {
+    "challenges": {
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-challenges.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\tmp\\playground-cyberpunk-docs\\validation\\checks-v1\\challenges.json"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-cyberpunk",
+      "returncode": 0,
+      "seconds": 1.1400000000139698,
+      "timeout_seconds": 180
+    },
+    "docs": {
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/ci/check_docs.py",
+        "--json",
+        "C:\\Users\\_\\.codex\\tmp\\playground-cyberpunk-docs\\validation\\checks-v1\\docs.json"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-cyberpunk",
+      "returncode": 0,
+      "seconds": 1.5940000000409782,
+      "timeout_seconds": 180
+    },
+    "frozen": {
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/docs/retrieval_eval.py",
+        "--queries",
+        "docs/reference/retrieval-questions.json",
+        "--output",
+        "C:\\Users\\_\\.codex\\tmp\\playground-cyberpunk-docs\\validation\\checks-v1\\frozen.json"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-cyberpunk",
+      "returncode": 0,
+      "seconds": 0.4220000000204891,
+      "timeout_seconds": 180
+    },
+    "m11": {
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/ci/check_m11_consistency.py",
+        "--json",
+        "C:\\Users\\_\\.codex\\tmp\\playground-cyberpunk-docs\\validation\\checks-v1\\m11.json"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-cyberpunk",
+      "returncode": 0,
+      "seconds": 0.9379999999655411,
+      "timeout_seconds": 180
+    },
+    "provider": {
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/ci/check_ci_provider_policy.py"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-cyberpunk",
+      "returncode": 0,
+      "seconds": 0.09399999992456287,
+      "timeout_seconds": 180
+    },
+    "repository": {
+      "argv": [
+        "C:\\Users\\_\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "tools/ci/check_repository.py",
+        "--require-materialized",
+        "--json",
+        "C:\\Users\\_\\.codex\\tmp\\playground-cyberpunk-docs\\validation\\checks-v1\\repository.json"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-cyberpunk",
+      "returncode": 0,
+      "seconds": 2.515999999945052,
+      "timeout_seconds": 180
+    },
+    "whitespace": {
+      "argv": [
+        "git",
+        "diff",
+        "--check",
+        "HEAD"
+      ],
+      "cwd": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-cyberpunk",
+      "returncode": 0,
+      "seconds": 0.062000000034458935,
+      "timeout_seconds": 180
+    }
+  },
+  "companion_files": {
+    "README.md": "55c14e71a9d7adf7750603d659f949c137b26309e12be8e3fdfffa98ebcbfe76",
+    "SOURCE-CHECKPOINT.json": "6e699bed81d0caa8b467bb58c647e62dcc2cbee7028ebfe65d72099006eec8b0",
+    "docs/BROWSER_VALIDATION.md": "bb7c5f4654a81d375752167793dbba6920d6deeb49c3b560aaf0133e8eff6aa8",
+    "docs/LOCAL_DEVELOPMENT.md": "38d7e2374d0035cab0dca9a7c7b24fb0d9862f7250bc24a0f475aa603880fd03",
+    "docs/WEB_THREADING.md": "07da0f6ad5835ce28a44749f464a99e0b309e80fa4191c93e3a0cb4b1965819c"
+  },
+  "companion_pin": "6a58311982941b75f46e22109a0829e5acb83c7e",
+  "docs": {
+    "canonical_claims": 229,
+    "documents": 115,
+    "errors": [],
+    "heading_anchors": 627,
+    "limitations": [
+      "Does not verify source semantics or runtime claims",
+      "Does not fetch external URLs",
+      "Does not rewrite or reattest historical audits",
+      "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+    ],
+    "local_links": 3382,
+    "navigation_link_documents": 8,
+    "questions": 32,
+    "status": "passed",
+    "warnings": []
+  },
+  "fences_held": true,
+  "frozen": {
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness.",
+    "canonical_hit_at_1": 19,
+    "canonical_hit_at_k": 32,
+    "mrr_at_k": 0.7589,
+    "questions": 32
+  },
+  "m11": {
+    "compare_working_tree": false,
+    "errors": [],
+    "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+    "records_checked": 18,
+    "scope": "historical M11 integrity; no current runtime acceptance",
+    "source_hashes_checked": 28,
+    "status": "passed",
+    "working_tree_differences": []
+  },
+  "mirror": "C:\\Users\\_\\.codex\\tmp\\lcb245-validation\\workspace\\source-player-playground-cyberpunk",
+  "raw_files": 1710,
+  "repository": {
+    "documentation": {
+      "canonical_claims": 229,
+      "documents": 115,
+      "errors": [],
+      "heading_anchors": 627,
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ],
+      "local_links": 3382,
+      "navigation_link_documents": 8,
+      "questions": 32,
+      "status": "passed",
+      "warnings": []
+    },
+    "errors": [],
+    "limitations": [
+      "Identity is not execution evidence; read the dated runtime acceptance report",
+      "Retained vendor binaries and platform execution have separate dated provenance",
+      "Historical M11 integrity is checked separately by check_m11_consistency.py"
+    ],
+    "materialized_runtime_files": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+    ],
+    "scope": "current source/documentation and artifact identity",
+    "status": "passed",
+    "unmaterialized_runtime_files": []
+  },
+  "source_head": "1451e5a70d35a2bbc9561e994bb3c915e13873eb",
+  "source_overlay": {
+    ".github/workflows/gdextension.yml": {
+      "canonical_lf_sha256": "a7976afccf47f9cdd4b36a2a034da23cb106db14c8a934c0f774a52db3b8e388",
+      "raw_sha256": "a7976afccf47f9cdd4b36a2a034da23cb106db14c8a934c0f774a52db3b8e388"
+    },
+    "README.md": {
+      "canonical_lf_sha256": "8a06e763f24a724206a3b8c95bf2689fd8c8b334329c60588b206ac131c2d8e5",
+      "raw_sha256": "8a06e763f24a724206a3b8c95bf2689fd8c8b334329c60588b206ac131c2d8e5"
+    },
+    "docs/README.md": {
+      "canonical_lf_sha256": "988d35c47dc4651c88f2afdbb4f7d80d413f764799841d94023d8676f785ab93",
+      "raw_sha256": "988d35c47dc4651c88f2afdbb4f7d80d413f764799841d94023d8676f785ab93"
+    },
+    "docs/audits/2026-10-26-player-playground-cyberpunk-documentation.json": {
+      "canonical_lf_sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "raw_sha256": "e3566b3a06430868d71e9287dfd6c6c520a3da027aabea01951d407ee131dc2f"
+    },
+    "docs/audits/2026-10-26-player-playground-cyberpunk-iterations.json": {
+      "canonical_lf_sha256": "19620a511ec2fbcef372dd3003e6d270903f857a0de3e0d596a18371ffb60191",
+      "raw_sha256": "19620a511ec2fbcef372dd3003e6d270903f857a0de3e0d596a18371ffb60191"
+    },
+    "docs/audits/2026-10-26-player-playground-cyberpunk-reaction-negative.json": {
+      "canonical_lf_sha256": "777362d5e31cf59485770c4297745c72b1224a7a428aa8d8d638bc2c833c0af4",
+      "raw_sha256": "777362d5e31cf59485770c4297745c72b1224a7a428aa8d8d638bc2c833c0af4"
+    },
+    "docs/audits/2026-10-26-player-playground-cyberpunk-review-ci.json": {
+      "canonical_lf_sha256": "07aaaed8173af5812419d29f951ebfff72758c889217c556196781b46e19750a",
+      "raw_sha256": "5253e623c56c6d2e2e09d2b63945a9deca843932d1313e09a39db439192cbd7e"
+    },
+    "docs/audits/2026-10-26-player-playground-cyberpunk-review-streets.json": {
+      "canonical_lf_sha256": "7c6b49fcf2cf27a6df7c360a2d69815f442160489d4d231961c490162e0bfe81",
+      "raw_sha256": "b15f16b85de3d2ca7fc5e158747187e4451a41a6eb84efe32f9635ea1eebdc91"
+    },
+    "docs/audits/2026-10-26-player-playground-cyberpunk-review-works.json": {
+      "canonical_lf_sha256": "2cbf0452b726e3fd012206168166825b936628f89de377661eee62114311d3a1",
+      "raw_sha256": "3e3b0274461a64d7067213253e6fb1afe112bbb9ff95f3bbd02dce56a745f08c"
+    },
+    "docs/audits/2026-10-26-player-playground-cyberpunk-windows.json": {
+      "canonical_lf_sha256": "2c19aec111ad2aadfba2f6413a485bd85136b36525d98ed1be7252fa3a2116e0",
+      "raw_sha256": "2c19aec111ad2aadfba2f6413a485bd85136b36525d98ed1be7252fa3a2116e0"
+    },
+    "docs/audits/2026-10-26-player-playground-cyberpunk.md": {
+      "canonical_lf_sha256": "9e6808e97446bbc1770a036ffc2a422676dad116c007e488ebb668936aff64a1",
+      "raw_sha256": "9e6808e97446bbc1770a036ffc2a422676dad116c007e488ebb668936aff64a1"
+    },
+    "docs/operations/cybersand-codex-development-handover.md": {
+      "canonical_lf_sha256": "4f4767e500850ec1f11d471c335c76ae9891ad1994b2e239f436492d74a08998",
+      "raw_sha256": "4f4767e500850ec1f11d471c335c76ae9891ad1994b2e239f436492d74a08998"
+    },
+    "docs/operations/local-build-and-validation.md": {
+      "canonical_lf_sha256": "cce6cbd6c1386a82adb9e0cd2f3572838ca75791a5cc7a87a0c0ef430a2ab487",
+      "raw_sha256": "cce6cbd6c1386a82adb9e0cd2f3572838ca75791a5cc7a87a0c0ef430a2ab487"
+    },
+    "docs/reference/configuration-reference.md": {
+      "canonical_lf_sha256": "9d5efa163c39a59b04024199eeff5d57fa5462163efe27dd582f871931e95984",
+      "raw_sha256": "9d5efa163c39a59b04024199eeff5d57fa5462163efe27dd582f871931e95984"
+    },
+    "docs/reference/interfaces-and-message-contracts.md": {
+      "canonical_lf_sha256": "3c9ba01a64be8ce06f548d041a493df748dc993bbb5bd19a2be29e6427e03c21",
+      "raw_sha256": "3c9ba01a64be8ce06f548d041a493df748dc993bbb5bd19a2be29e6427e03c21"
+    },
+    "docs/reference/retrieval-challenges.json": {
+      "canonical_lf_sha256": "824510ac9bb0751ef6b008d90a0661675efeab8cbc8eda3fc7f9a55c0e87fc48",
+      "raw_sha256": "824510ac9bb0751ef6b008d90a0661675efeab8cbc8eda3fc7f9a55c0e87fc48"
+    },
+    "docs/reference/retrieval-corpus.json": {
+      "canonical_lf_sha256": "b99b72f6923d90784180add947ff13b97d48baace15f88914aa92362f082bb0a",
+      "raw_sha256": "b99b72f6923d90784180add947ff13b97d48baace15f88914aa92362f082bb0a"
+    },
+    "docs/reference/retrieval-index.md": {
+      "canonical_lf_sha256": "8a48571178add0102cb2e7a6cfb9d7e5441cc170960f7bbecd49f822e44d51cb",
+      "raw_sha256": "8a48571178add0102cb2e7a6cfb9d7e5441cc170960f7bbecd49f822e44d51cb"
+    },
+    "docs/reference/status-and-roadmap.md": {
+      "canonical_lf_sha256": "92b2dd5bd205b2c751c37e20a370f2075356e6f3977c3a5a32e71179b558c375",
+      "raw_sha256": "92b2dd5bd205b2c751c37e20a370f2075356e6f3977c3a5a32e71179b558c375"
+    },
+    "docs/reference/validation-evidence.md": {
+      "canonical_lf_sha256": "8efb405ef0518b625675a4504c5ff0c7ab503f02f6df520f7f66459af6fde1aa",
+      "raw_sha256": "8efb405ef0518b625675a4504c5ff0c7ab503f02f6df520f7f66459af6fde1aa"
+    },
+    "docs/systems/player-control-playground.md": {
+      "canonical_lf_sha256": "bb81242d2b68fcea0db66a00d4a8149ca775009d2a3c4bba163b0cbdbb1d2487",
+      "raw_sha256": "bb81242d2b68fcea0db66a00d4a8149ca775009d2a3c4bba163b0cbdbb1d2487"
+    },
+    "godot/scripts/player_playground.gd": {
+      "canonical_lf_sha256": "260f27875c91816a1b4d402367e5126247c8e9e33b68c9d30c34105934ab8020",
+      "raw_sha256": "260f27875c91816a1b4d402367e5126247c8e9e33b68c9d30c34105934ab8020"
+    },
+    "godot/scripts/player_playground_course.gd": {
+      "canonical_lf_sha256": "a27c18fd3fd6f692d661186c89294755bbb656119d589e36810d3ee6917f893d",
+      "raw_sha256": "a27c18fd3fd6f692d661186c89294755bbb656119d589e36810d3ee6917f893d"
+    },
+    "godot/scripts/player_playground_cyberpunk.gd": {
+      "canonical_lf_sha256": "874f1a0bd1c7f367970ca66c9ac42f79ef06b05b9a82b06c7b3e80b482df160e",
+      "raw_sha256": "874f1a0bd1c7f367970ca66c9ac42f79ef06b05b9a82b06c7b3e80b482df160e"
+    },
+    "godot/scripts/player_playground_districts.gd": {
+      "canonical_lf_sha256": "6e5dc38ba4c0dbe6fc74e0b210c194f2e73d3ab9c8b9c5dd293966ee3949dbf4",
+      "raw_sha256": "6e5dc38ba4c0dbe6fc74e0b210c194f2e73d3ab9c8b9c5dd293966ee3949dbf4"
+    },
+    "godot/scripts/player_playground_neon_detail.gd": {
+      "canonical_lf_sha256": "054fe0b9bf2c2472d65a5e468aad2f063cd72c8fb7f533ecfbe4756a31c2d150",
+      "raw_sha256": "054fe0b9bf2c2472d65a5e468aad2f063cd72c8fb7f533ecfbe4756a31c2d150"
+    },
+    "godot/scripts/player_playground_neon_streets.gd": {
+      "canonical_lf_sha256": "3c2eda10f32e3186cd306c893fd39da11263b36d3ed6c8849d891ce73fb9c3ac",
+      "raw_sha256": "3c2eda10f32e3186cd306c893fd39da11263b36d3ed6c8849d891ce73fb9c3ac"
+    },
+    "godot/scripts/player_playground_neon_works.gd": {
+      "canonical_lf_sha256": "768c6274d65f3e386441af25c2c0748122ebb00db37fd32515f0adef8b468e04",
+      "raw_sha256": "768c6274d65f3e386441af25c2c0748122ebb00db37fd32515f0adef8b468e04"
+    },
+    "godot/tests/test_player_playground_cyberpunk.gd": {
+      "canonical_lf_sha256": "23e4b5e04965a7d1aacdba7c12e0baa03cc3e7fad4b6315269415950d91fe3be",
+      "raw_sha256": "23e4b5e04965a7d1aacdba7c12e0baa03cc3e7fad4b6315269415950d91fe3be"
+    },
+    "godot/tests/test_player_playground_district_routes.gd": {
+      "canonical_lf_sha256": "ec82e10bc657eab830d234017f1af8ebd3be3e8fcf8d14707a65d4ed3fd43147",
+      "raw_sha256": "ec82e10bc657eab830d234017f1af8ebd3be3e8fcf8d14707a65d4ed3fd43147"
+    },
+    "godot/tests/test_player_playground_expeditions.gd": {
+      "canonical_lf_sha256": "26ddd7d178a32dfa78e03f825477a89af0a7f31c683d66bc5de5bc0fcbb27d78",
+      "raw_sha256": "26ddd7d178a32dfa78e03f825477a89af0a7f31c683d66bc5de5bc0fcbb27d78"
+    },
+    "godot/tests/test_player_playground_neon_streets.gd": {
+      "canonical_lf_sha256": "b2bfb83a6d7a66cad83085ada556add3fd234bd0c491e649ee336e8fcf614dff",
+      "raw_sha256": "b2bfb83a6d7a66cad83085ada556add3fd234bd0c491e649ee336e8fcf614dff"
+    },
+    "godot/tests/test_player_playground_neon_works.gd": {
+      "canonical_lf_sha256": "0bf07fec461a2621f0901710636c785d383ea3fc2ba9a273dae249fc516c23a0",
+      "raw_sha256": "0bf07fec461a2621f0901710636c785d383ea3fc2ba9a273dae249fc516c23a0"
+    },
+    "tools/ci/run_godot_regressions.py": {
+      "canonical_lf_sha256": "d7c557de110e7ecbbefa83dfb957020abf9ab7519df77d52c4855cb7e6f2ac19",
+      "raw_sha256": "d7c557de110e7ecbbefa83dfb957020abf9ab7519df77d52c4855cb7e6f2ac19"
+    }
+  },
+  "source_status": " M .github/workflows/gdextension.yml\n M README.md\n M docs/README.md\n M docs/operations/cybersand-codex-development-handover.md\n M docs/operations/local-build-and-validation.md\n M docs/reference/configuration-reference.md\n M docs/reference/interfaces-and-message-contracts.md\n M docs/reference/retrieval-challenges.json\n M docs/reference/retrieval-corpus.json\n M docs/reference/retrieval-index.md\n M docs/reference/status-and-roadmap.md\n M docs/reference/validation-evidence.md\n M docs/systems/player-control-playground.md\n M godot/scripts/player_playground.gd\n M godot/scripts/player_playground_course.gd\n M godot/scripts/player_playground_districts.gd\n M godot/tests/test_player_playground_district_routes.gd\n M godot/tests/test_player_playground_expeditions.gd\n M tools/ci/run_godot_regressions.py\n?? docs/audits/2026-10-26-player-playground-cyberpunk-documentation.json\n?? docs/audits/2026-10-26-player-playground-cyberpunk-iterations.json\n?? docs/audits/2026-10-26-player-playground-cyberpunk-reaction-negative.json\n?? docs/audits/2026-10-26-player-playground-cyberpunk-review-ci.json\n?? docs/audits/2026-10-26-player-playground-cyberpunk-review-streets.json\n?? docs/audits/2026-10-26-player-playground-cyberpunk-review-works.json\n?? docs/audits/2026-10-26-player-playground-cyberpunk-windows.json\n?? docs/audits/2026-10-26-player-playground-cyberpunk.md\n?? godot/scripts/player_playground_cyberpunk.gd\n?? godot/scripts/player_playground_neon_detail.gd\n?? godot/scripts/player_playground_neon_streets.gd\n?? godot/scripts/player_playground_neon_works.gd\n?? godot/tests/test_player_playground_cyberpunk.gd\n?? godot/tests/test_player_playground_neon_streets.gd\n?? godot/tests/test_player_playground_neon_works.gd\n",
+  "source_tree": "4cc62810745b5a45c2aa1d384b3a49c455a4a8f3",
+  "utc": "2026-10-26T09:37:57.998634+00:00"
+}

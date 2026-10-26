@@ -2867,7 +2867,7 @@
       "facts": [
         "All 32 usables are selectable. Mouse aims, M triggers and B alternates. Mechanical players use actual mounted equipment, N drops/deploys and U reattaches; swarms have no held body and use a visible material-only emitter 68 cells along aim. Paused commands refuse, charge/cooldown persist across selection, and reset clears old devices.",
         "Buggy/bike lean uses bounded impulses around the actual rear axle without setting transforms. Upward hop impulse is multiplied by sqrt(2); measured flat-floor heights are about 1.91 and 1.95 times the prior controls. Lander gravity is 96 damped and 32 drift; barrel inertia is scaled to 0.85 at the same mass and the soft speed target is 175.",
-        "Material players compose five existing native radius-32 fields over radius 60 with active periodic idle flows, native-centre clamping and copied subreceipts. Sample/move counts may overlap. Fifteen selectable maps are 1024 by 768 with service targets, varied materials, multi-level structures and alternate challenges; full traversal/feel is manual qualification."
+        "Material players compose five existing native radius-32 fields over radius 60 with active periodic idle flows, native-centre clamping and copied subreceipts. Sample/move counts may overlap. Twenty-two selectable maps are 1024 by 768 with service targets, varied materials, multi-level structures and alternate challenges; full traversal/feel is manual qualification."
       ],
       "sources": [
         "../godot/scripts/player_vehicle_controller.gd",
@@ -2914,6 +2914,25 @@
         "../godot/scripts/player_playground_expeditions.gd",
         "../godot/tests/test_player_playground_expeditions.gd",
         "../godot/tests/test_player_playground_npc_controls.gd"
+      ]
+    },
+    {
+      "id": "PLAY10",
+      "query": "Which cyberpunk maps suit the seven player types, can every player use them, and are neon signs and liquid challenges actual gameplay or new solver systems?",
+      "canonical": [
+        "systems/player-control-playground.md",
+        "reference/configuration-reference.md"
+      ],
+      "facts": [
+        "Cyberpunk Backchannels adds Debtline Interchange, Patchbay Tenements, Afterhours Arcade, Zero-Stamp Customs, Last Byte Reclamation, Rain Ledger Exchange and Pirate Uplink, suggested for buggy, bike, acrobat, lander, Sand, Water and barrel respectively. All22 public1024 by768 maps remain available to all7 players and all6 existing Water choices.",
+        "Connected cutaway rooms, native-cell signs, large real liquid stores and three real Rapier props use existing material/physics ownership. Glass Scorer opens Water plates and the Reclamation glass side seal; Line Cutter opens Foundry/Baths plywood Sand stoppers. There is no new electrical/hacking/AI or solver architecture.",
+        "Source-raster inspection, actual wheel/valve/NPC tests and optional staged features have separate evidence. They do not establish complete expert routes, rendered appearance, human feel, Linux or deferred Web/shader qualification. Current defaults, C64/E8 and source/native runtime provenance remain unchanged."
+      ],
+      "sources": [
+        "../godot/scripts/player_playground_cyberpunk.gd",
+        "../godot/scripts/player_playground_neon_streets.gd",
+        "../godot/scripts/player_playground_neon_works.gd",
+        "../godot/tests/test_player_playground_cyberpunk.gd"
       ]
     }
   ],

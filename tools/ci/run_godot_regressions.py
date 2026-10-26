@@ -39,6 +39,9 @@ CASE_WEIGHTS_SECONDS = {
     "test_player_playground_maps": 400.0,
     "test_player_playground_district_routes": 130.0,
     "test_player_playground_expeditions": 75.0,
+    "test_player_playground_cyberpunk": 100.0,
+    "test_player_playground_neon_streets": 30.0,
+    "test_player_playground_neon_works": 40.0,
     "test_player_playground_swarm_anchor": 100.0,
     "test_player_playground_npc_controls": 45.0,
     # LCB physics contracts: 43 s on the same workstation (dam ladder to t240 at 1/4 workers).
@@ -105,6 +108,7 @@ def discover_cases(root: Path = ROOT) -> list[Case]:
                 "test_physical_flight_teacher_dev_obstacle",
                 "test_player_playground_district_routes",
                 "test_player_playground_expeditions",
+                "test_player_playground_cyberpunk",
                 "test_player_playground_swarm_anchor",
             } else 180,
             _weight(p.stem),

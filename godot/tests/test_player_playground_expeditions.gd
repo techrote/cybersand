@@ -182,7 +182,7 @@ func test_actual_valves() -> void:
 				if world.material_at(x,outlet.y+16) == 3: released += 1
 		var final: Dictionary = world.water_experiment_observation(Vector2i.ZERO,Vector2i(1024,768))
 		expect(released > 0 and final.water_integer == initial.water_integer,
-			"native liquid reaches catch road without quantity creation/loss "+str(id))
+			"native liquid reaches local downstream row without quantity creation/loss "+str(id))
 		metrics[str(id)].valve_release_samples = released
 
 
@@ -231,7 +231,41 @@ func physical_extent(runtime) -> Rect2:
 	return bounds
 
 
+func test_storm_hop() -> void:
+	var runtime = Runtime.new()
+	root.add_child(runtime)
+	expect(runtime.configure(&"stuntbuggy",&"stormbreak_viaduct"),"Storm hop starts from the ordinary map spawn")
+	var jumped: bool = false
+	var airborne: bool = false
+	var landed: bool = false
+	var launch := Vector2.ZERO
+	var minimum_y: float = INF
+	for tick: int in range(1600):
+		var before: Dictionary = runtime.observation()
+		var hop: bool = not jumped and before.position.x >= 676 and before.position.x < 698 and before.grounded
+		if hop:
+			jumped = true
+			launch = before.position
+		runtime.submit_action({"move":Vector2.UP,"primary":hop})
+		runtime.step()
+		var view: Dictionary = runtime.observation()
+		if jumped and view.position.x < 760:
+			minimum_y = minf(minimum_y,view.position.y)
+			airborne = airborne or not view.grounded
+		if jumped and view.position.x >= 770 and view.position.x < 840 and view.grounded:
+			landed = true
+			break
+		if runtime.failed: break
+	expect(not runtime.failed and jumped and airborne and landed,"actual single supported hop over Storm crest lands on the connected road")
+	expect(minimum_y < launch.y-4,"Storm optional hop measurably lifts the physical chassis")
+	metrics["storm_ordinary_hop"] = {"launch":launch,"minimum_y":minimum_y,"landed":landed,
+		"position":runtime.observation().position,"ticks":runtime.tick}
+	runtime.close()
+	runtime.free()
+
+
 func test_featured_mechanics() -> void:
+	test_storm_hop()
 	var world: Object = ClassDB.instantiate(&"CyberNativeCellWorld")
 	expect(world.diagnostic_reset({"workers":1}),"bath powder fixture starts")
 	expect(Setup.build(world,&"buried_baths",0).accepted,"actual buried bath apparatus constructs")

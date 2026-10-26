@@ -990,6 +990,20 @@ witnesses and cross-owner queues remain Planned.
 
 The [physical Blacksite experiment](../operations/physical-actor-programme.md) reuses the current body input/result ABI with one rectangle. `apply_trial_impulses` is a main-thread bridge method; no native field layout or sampled actor action/observation stride changes.
 
+## Cyberpunk map value providers
+
+Course adds the Cyberpunk provider without changing the native prepared-World
+interface. Its router delegates to Streets/Works modules by stable ID; metadata
+concatenation preserves every previous district/Expedition index. `reservoirs`
+returns copied region/material value metadata for independent final-raster
+qualification, not live World storage. The helper creates bounded signs and
+four-cell road rasters during map construction; no tick-time worker or new
+physics owner is introduced. Native rectangle limits and initial-body receipt
+semantics remain. Sources: [router](../../godot/scripts/player_playground_cyberpunk.gd),
+[helper](../../godot/scripts/player_playground_neon_detail.gd).
+
+
+
 ## Playground map providers
 
 The shared Course routes layout, spawn, floor, checkpoints, props and NPC stages

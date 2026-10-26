@@ -136,6 +136,13 @@ func test_challenge_geometry() -> void:
 		"cathedral optional apparatus has distinct retreat ledges above the street")
 	expect(clear(rasters[&"rocket_yard"],Rect2i(526,314,18,96)),
 		"silo inner slalom has a real mid-height opening toward its exterior pad")
+	var restored: int = 0
+	for y: int in range(470,548):
+		for x: int in range(366,374): restored += int(cathedral[y*1024+x] == 3)
+	expect(restored == 624 and cathedral[460*1024+350] == 38,
+		"cathedral dry rim support restores all624 formerly displaced Water cells")
+	expect(clear(foundry,Rect2i(442,468,8,94)) and foundry[580*1024+444] != 0,
+		"foundry first tray now feeds a real second-comb aperture and lower catch")
 
 
 func fire_tool(tool, world: Object, index: int, origin: Vector2, aim: Vector2) -> void:
@@ -178,12 +185,17 @@ func test_reservoir_mechanics() -> void:
 	fire_tool(cutter,world,Usables.index_for(&"line_cutter"),Vector2(428,320),Vector2.UP)
 	expect(cutter.write_count_last > 0 and world.material_at(428,304) == 0,"actual cutter opens hopper throat")
 	var fed: int = 0
-	for tick: int in range(320):
+	var second_fed: int = 0
+	for tick: int in range(520):
 		expect(world.simulation_tick(),"released hopper runs actual native material simulation")
 		for x: int in range(280,610):
 			if world.material_at(x,452) in [2,14,23]: fed += 1
+		for x: int in range(438,454):
+			if world.material_at(x,556) in [2,14,23]: second_fed += 1
 	expect(fed > 0,"authored hopper powder actually passes the first grate and hanging comb")
+	expect(second_fed > 0,"actual opened hopper powder passes the tray chute and second comb toward the lower catch")
 	metrics["foundry_feed_samples"] = fed
+	metrics["foundry_second_stage_samples"] = second_fed
 
 
 func test_long_vehicle_progress() -> void:

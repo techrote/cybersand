@@ -10,6 +10,19 @@ related-documents: [../operations/testing-validation-and-replay.md, level-saves-
 
 # Validation evidence ledger
 
+## Twenty-two-map cyberpunk checkpoint — 2026-10-26
+
+The [cyberpunk checkpoint](../audits/2026-10-26-player-playground-cyberpunk.md)
+follows the completed 15-map review/Windows cohort at 1451e5a7. Seven additional
+[Cyberpunk Backchannels](../systems/player-control-playground.md#cyberpunk-backchannels)
+add connected cutaway architecture, native-cell signs and distinct player-focused
+challenges, all selectable by every player. Final review/test results and gaps
+are source-bound in that audit. Earlier15-map/8-map packets retain their original
+scope. Native80 inputs, both published libraries, C64/E8, Current defaults and
+main-thread ownership remain. PR #262's exact-head hosted gates/merge and manual
+feel are separate; this does not qualify or close #202/#203. Web, shader, MAT
+and material-fidelity/scientific work remain deferred for this task.
+
 ## Fifteen-map Expedition checkpoint — 2026-10-26
 
 The [Expedition checkpoint](../audits/2026-10-26-player-playground-expeditions.md)
@@ -265,7 +278,7 @@ Sequence3 [actual Windows/Linux publication](../audits/2026-10-25-lcb005-pressur
 passes all six jobs in run `40160900817` at exact source `c11983c2`, followed
 by verified four-path bot append `fcf0e9b6`. Each OS executes import plus14
 cases, including IN10192/six strict sections and the new resting-contact
-regression. Fresh non-author verification checks all76/485 input blobs,
+regression. Fresh non-author verification checks all 76/485 input blobs,
 artifacts, actual OS execution and the Linux runtime floor. The corrected
 runtime publication blocker was resolved at that checkpoint; later PR #250
 passes all exact-head gates and merges as main dc915f2b. Prior omitted-contact and moving-mask failures below
@@ -312,7 +325,7 @@ Later actual combined Windows/Linux scoped publication
 passes at `bc0bfed94ca9a1e51e296253c0fe27a4cee4c3f7`, tree
 `54a2a8fa03de6be991402af277d46e694698c5d0`, with runtime-only bot append
 `52ee560a14455f4c1237e1fc468a1301c1e7c558`. All30 real processes pass:
-import plus14 cases perOS, IN862/all6, optimization4152/all6, pressure1934/all12
+import plus14 cases perOS, IN862/all 6, optimization4152/all 6, pressure1934/all12
 and WEX16. The [publication ledger](../audits/2026-10-25-lcb005-pressure-union-integration.md#actual-windowslinux-union-publication--2026-10-25)
 binds exact artifacts, independent verification and the four-path merge resolution.
 Full ready-PR gates and host/Web/owner acceptance remain separate. The native-v1

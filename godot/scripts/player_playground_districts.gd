@@ -176,15 +176,18 @@ static func _mixed(out: Array) -> void:
 	pipe(out,216,300,5,170,69)
 	deck(out,258,392,106,46,78)
 	rect(out,266,360,74,22,45)
+	for x: int in [268,332]: rect(out,x,382,6,10,50)
 	windows(out,274,360,2,34,55)
 	deck(out,414,304,116,52,77)
 	rect(out,432,242,82,52,43)
+	for x: int in [434,506]: rect(out,x,294,6,10,50)
 	windows(out,442,254,2,38,55)
 	deck(out,578,350,126,81,79)
 	route_frame(out,542,326,28,26,78)
 	canopy(out,596,314,92,94)
 	deck(out,744,266,120,54,77)
 	ribs(out,768,164,80,94,54)
+	for x: int in [770,840]: rect(out,x,258,6,8,50)
 	windows(out,780,184,2,30,55)
 	deck(out,890,394,106,46,78)
 	rect(out,904,416,8,180,43)
@@ -401,7 +404,10 @@ static func _vector(out: Array) -> void:
 	cargo(out,842,592,24,30,62)
 	cargo(out,956,592,20,30,131)
 	route_frame(out,868,552,84,68,77)
-	for i: int in range(4): windows(out,702+i*46,286,1,46,72)
+	# Paired narrow hangers make these panes deliberate suspended bay signs.
+	for i: int in range(4):
+		windows(out,702+i*46,286,1,46,72)
+		for xx: int in [704+i*46,712+i*46]: rect(out,xx,254,2,32,50)
 	for i: int in range(8):
 		rect(out,626+i*12,134+i*6,12,4,129)
 		rect(out,626+i*12,138+i*6,3,12,50)
@@ -467,6 +473,14 @@ static func _dust(out: Array) -> void:
 	deck(out,638,612,110,104,77)
 	rect(out,634,594,4,25,104)
 	rect(out,748,594,4,25,104)
+	# A visible narrow chute carries part of the first catch onward through an
+	# actual aperture of the second comb, into a separate lower catch terrace.
+	rect(out,442,468,8,34,0)
+	rect(out,438,484,4,15,68)
+	rect(out,450,484,4,15,68)
+	deck(out,410,580,78,104,79)
+	rect(out,406,562,4,25,104)
+	rect(out,488,562,4,25,104)
 
 
 static func _undertow(out: Array) -> void:
@@ -480,7 +494,11 @@ static func _undertow(out: Array) -> void:
 	deck(out,320,436,292,52,77)
 	deck(out,644,412,292,52,77)
 	deck(out,376,358,278,120,78)
-	rect(out,366,364,8,184,38)
+	# Transfer the upper corbel onto the dry west cistern rim. The former pier
+	# ended78cells down inside this store and displaced624 cells of Water.
+	rect(out,366,358,12,6,38)
+	rect(out,366,364,8,98,38)
+	rect(out,348,458,26,4,38)
 	rect(out,644,364,8,70,38)
 	for i: int in range(6):
 		rect(out,50+i*14,164-i*12,14,28,98)

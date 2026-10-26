@@ -75,7 +75,7 @@ PR #254 is now accepted on main
 Native, GDExtension/Godot and #49 gates and bounded reviews passed. The
 [publication ledger](../audits/2026-10-25-lcb003-runtime-publication.md#accepted-water-main-and-content-identical-integration--2026-10-25)
 binds those receipts. Local normal mergea704ce50 consumes that main with the
-unchanged bot0c9 tree; all615 publication inputs and139 compiled inputs remain
+unchanged bot0c9 tree; all 615 publication inputs and139 compiled inputs remain
 exact. This does not substitute Water's gates for the application's final
 exact-head CI or close #202/#203.
 
@@ -258,7 +258,7 @@ proof, complete input/four-path guards and same-process profile isolation.
 Retain the original005/001 guard suites and run
 `python tools/ci/check_ci_provider_policy.py` for its new workflow. The [preparation record](../audits/2026-10-25-water-inertial-publication.md)
 keeps historical unarmed/sequence1 preparation separate from actual sequence2 at
-sourceaa8af247/run40220697738/bot03cccd8f. Both target OSes pass all15 processes
+sourceaa8af247/run40220697738/bot03cccd8f. Both target OSes pass all 15 processes
 and642 policy assertions with fresh independent artifact/source/LFS/floor review.
 Synthetic guards alone remain insufficient. Approval-held bot PR runs have no
 job results; root must obtain the actual final ready-head full matrix.
@@ -1117,6 +1117,23 @@ describes the bounded native-only JSON runner. Its result is not a Windows or
 browser run merely because it exercises the synchronous controller on Linux.
 Use actual platform artifacts and retain their identities for platform acceptance.
 
+## Cyberpunk collection checks
+
+The [cyberpunk audit](../audits/2026-10-26-player-playground-cyberpunk.md) scopes
+all 22 public maps,924 map/player/Water setups and full normal-throttle wheel
+baselines separately from optional expert-route or interactive acceptance.
+
+```text
+godot --headless --path godot --script res://tests/test_player_playground_cyberpunk.gd
+```
+
+The normal invocation includes actual native valve release and complete wheel
+routes; `--static-only` covers final authored raster, real liquid counts and
+connected pools, road/prop/NPC footprints and distinct architecture only.
+The shared map and NPC suites follow the full current catalogue. Final scoped
+additional mechanics, failure history and exact process exits belong to the audit.
+
+
 ## Expedition map checks
 
 The [Expedition audit](../audits/2026-10-26-player-playground-expeditions.md) binds
@@ -1130,8 +1147,8 @@ Use the normal invocation for all static, real wheel-route, valve and featured
 mechanic checks; `--static-only` and `--feature-only` intentionally cover less.
 The shared map matrix follows the full `Course.MAP_IDS` list. NPC tests admit all
 three models on every map with both physical/material player representations.
-The discovered matrix has a finite900-second budget; route/neutral-field cases
-have420 seconds, with explicit measured-work scheduling hints. This accommodates
+The discovered matrix has a finite 900-second budget; route/neutral-field cases
+have 420 seconds, with explicit measured-work scheduling hints. This accommodates
 the expanded catalogue without dropping combinations or altering pass thresholds.
 The unchanged planner tests pass25 cases and CI provider policy remains GitHub-hosted.
 

@@ -2,16 +2,17 @@ class_name CyberPlayerPlaygroundCourse
 extends RefCounted
 const Districts = preload("res://scripts/player_playground_districts.gd")
 const Expeditions = preload("res://scripts/player_playground_expeditions.gd")
+const Cyberpunk = preload("res://scripts/player_playground_cyberpunk.gd")
 
 # Native-cell course shared by the articulated and material player owners.
 const ID: String = "player-playground"
 # Retained small regression fixture only; public districts use map_view().
 const VIEW := Rect2i(128, 128, 512, 256)
 const FLOOR_Y: int = 352
-const MAP_IDS: Array[StringName] = Districts.IDS + Expeditions.IDS
+const MAP_IDS: Array[StringName] = Districts.IDS + Expeditions.IDS + Cyberpunk.IDS
 const MAP_NAMES: Array[String] = ["Flood Market · all players", "Quarry Rally · buggy", "Terraced Aqueduct · trials bike",
 	"Textile Mill · acrobat", "Crater Port · lander", "Inverted Foundry · Sand cloud",
-	"Filtration Cathedral · Water blob", "Silo Facility · jet barrel"] + Expeditions.NAMES
+	"Filtration Cathedral · Water blob", "Silo Facility · jet barrel"] + Expeditions.NAMES + Cyberpunk.NAMES
 const MAP_HINTS: Array[String] = ["Follow the dry market street, explore the covered bazaar, then take the courier rooftops. Large canal stores overlook the street.",
 	"Carry speed across the optional quarry jump, then brake on the suspended landing. The lower recovery road rejoins the baseline route.",
 	"Follow the broad aqueduct grade or take the optional upper balance shelves. Explore the arches and open a cistern valve with a tool.",
@@ -19,7 +20,7 @@ const MAP_HINTS: Array[String] = ["Follow the dry market street, explore the cov
 	"Launch into the crater's open volume, thread asymmetric gantry apertures and brake onto the arms above the ballast stores.",
 	"Break the plywood hopper throats, gather Sand through hanging combs and follow the discharge terraces. The dry lower street stays open.",
 	"Explore three deep cisterns below the stone/glass cathedral, copper organ and filter gallery. Use a tool to open channels between stores.",
-	"Rise through nested launch wells and land on cantilever pads above the coolant farm. Ground players can use the dry bunker road."] + Expeditions.HINTS
+	"Rise through nested launch wells and land on cantilever pads above the coolant farm. Ground players can use the dry bunker road."] + Expeditions.HINTS + Cyberpunk.HINTS
 const PRESETS: Array[StringName] = [&"stuntbuggy", &"trialsbike", &"acrobat",
 	&"arcadelander", &"dryswarm", &"liquidswarm", &"jetbarrel"]
 const NAMES: Array[String] = ["Loose Cannon", "Trials Rat", "Afterimage",
@@ -44,21 +45,25 @@ static func map_view(map_id: StringName) -> Rect2i:
 
 
 static func floor_y(map_id: StringName) -> int:
+	if map_id in Cyberpunk.IDS: return Cyberpunk.floor_y(map_id)
 	if map_id in Expeditions.IDS: return Expeditions.floor_y(map_id)
 	return FLOOR_Y if map_id == &"legacy" else Districts.floor_y(map_id)
 
 
 static func spawn(map_id: StringName) -> Vector2:
+	if map_id in Cyberpunk.IDS: return Cyberpunk.spawn(map_id)
 	if map_id in Expeditions.IDS: return Expeditions.spawn(map_id)
 	return Vector2(178,304) if map_id == &"legacy" else Districts.spawn(map_id)
 
 
 static func props(map_id: StringName) -> Array:
+	if map_id in Cyberpunk.IDS: return Cyberpunk.props(map_id)
 	if map_id in Expeditions.IDS: return Expeditions.props(map_id)
 	return [] if map_id == &"legacy" else Districts.props(map_id)
 
 
 static func npc_spawns(map_id: StringName) -> PackedVector2Array:
+	if map_id in Cyberpunk.IDS: return Cyberpunk.npc_spawns(map_id)
 	if map_id in Expeditions.IDS: return Expeditions.npc_spawns(map_id)
 	return PackedVector2Array([Vector2(210, 320)]) if map_id == &"legacy" else Districts.npc_spawns(map_id)
 
@@ -68,6 +73,7 @@ static func editable(map_id: StringName) -> Rect2i:
 
 
 static func layout(map_id: StringName = &"legacy") -> Array:
+	if map_id in Cyberpunk.IDS: return Cyberpunk.layout(map_id)
 	if map_id in Expeditions.IDS: return Expeditions.layout(map_id)
 	if map_id != &"legacy":
 		return Districts.layout(map_id)
@@ -113,6 +119,7 @@ static func _rect(result: Array, x: int, y: int, width: int, height: int, materi
 
 
 static func checkpoints(id: StringName, map_id: StringName = &"legacy") -> PackedVector2Array:
+	if map_id in Cyberpunk.IDS: return Cyberpunk.checkpoints(map_id)
 	if map_id in Expeditions.IDS: return Expeditions.checkpoints(map_id)
 	if map_id != &"legacy": return Districts.checkpoints(map_id)
 	if id in [&"arcadelander", &"jetbarrel"]:

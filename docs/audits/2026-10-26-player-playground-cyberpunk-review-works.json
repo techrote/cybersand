@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "reviewer": "/root/playground_distinct_maps",
+  "created_utc": "2026-10-26T09:27:45.294696+00:00",
+  "repository": "techrote/cybersand",
+  "worktree": "C:/Users/_/.codex/worktrees/player-playground-maps/khybersand",
+  "reviewed_canonical_lf_sha256": {
+    "godot/scripts/player_playground_neon_works.gd": "768c6274d65f3e386441af25c2c0748122ebb00db37fd32515f0adef8b468e04",
+    "godot/tests/test_player_playground_neon_works.gd": "0bf07fec461a2621f0901710636c785d383ea3fc2ba9a273dae249fc516c23a0",
+    "godot/scripts/player_playground_neon_detail.gd": "054fe0b9bf2c2472d65a5e468aad2f063cd72c8fb7f533ecfbe4756a31c2d150",
+    "godot/scripts/player_playground_cyberpunk.gd": "874f1a0bd1c7f367970ca66c9ac42f79ef06b05b9a82b06c7b3e80b482df160e",
+    "godot/tests/test_player_playground_cyberpunk.gd": "23e4b5e04965a7d1aacdba7c12e0baa03cc3e7fad4b6315269415950d91fe3be",
+    "godot/scripts/player_playground_course.gd": "a27c18fd3fd6f692d661186c89294755bbb656119d589e36810d3ee6917f893d"
+  },
+  "associated_author_owned_streets_not_independently_reviewed_by_this_agent": {
+    "module_sha256": "3c2eda10f32e3186cd306c893fd39da11263b36d3ed6c8849d891ce73fb9c3ac",
+    "focused_test_sha256": "b2bfb83a6d7a66cad83085ada556add3fd234bd0c491e649ee336e8fcf614dff"
+  },
+  "conclusion": "No outstanding blocking finding in the final reviewed new-map/helper/routing source within the stated scope. Final fenced 27-suite runtime qualification remains owned by root and was pending at review completion.",
+  "checks": [
+    "Inspected all four final Works native-material palette images and staging overlays; connected suspended rooms, supported gantries, actual store bounds, open entry/exit spaces and clear undercroft roads are visible.",
+    "Inspected final Works layout and focused test; Water stores are whole and connected and no new BareIron117 remains in authored comparison geometry after explicit65 substitution.",
+    "Inspected helper bounds, raster road functions and bounded sign stamping; aggregator/provider/Course dependency graph is acyclic and preserves Current solver defaults.",
+    "Inspected generic final-raster census/component assertions, all14 complete wheel routes, final physical bounds/upright readback, Water valve quantity tests, seven distinct suggestions and explicit117 exclusion.",
+    "Focused Works Sand and Water tests are prepared-World native apparatus proofs; they do not establish ordinary-spawn full material-player route completion or flight-control qualification."
+  ],
+  "known_native_issue": {
+    "id": "existing-fractional-water-bare-iron-pair-refill",
+    "status": "REMAINS IN UNCHANGED NATIVE SOURCE AND RUNTIME; map palette workaround only",
+    "source_rule": "int.pair.water-bare-iron.rust.v1: Water3 + BareIron117 -> Water3 + RustedSteel65",
+    "mechanism": "The native pair resolver initializes Water reaction products to policy.maximum() even when their material role is preserved. Native quantity transitions are categorized as PairReaction. Fractional visible Water can increase; this is not floating-point rounding or transport conservation.",
+    "probe": {
+      "path": "C:\\Users\\_\\AppData\\Local\\Temp\\cybersand-neon-works-independent-review\\bare_iron_quantity_probe.gd",
+      "script_sha256": "e6d9b6d74cb77a2c93c57ba79c8e832a4095ba8372df60a707cb53782e89fa51",
+      "log_path": "C:\\Users\\_\\AppData\\Local\\Temp\\cybersand-neon-works-independent-review\\bare_iron_quantity_probe.log",
+      "log_sha256": "02114861ab70fd58a0018008613212149271873ffe67f98c3d3c996130113e87",
+      "command": "C:/Godot47/Godot_v4.7-stable_win64_console.exe --headless --path godot --script C:/Users/_/AppData/Local/Temp/cybersand-neon-works-independent-review/bare_iron_quantity_probe.gd",
+      "working_directory": "C:/Users/_/.codex/worktrees/player-playground-maps/khybersand",
+      "workers": 1,
+      "initial_water_integer": 64,
+      "final_water_integer": 255,
+      "delta": 191,
+      "reaction_tick": 386,
+      "overfill": 0,
+      "iron_result_material": 65,
+      "process_exit": 0
+    },
+    "runtime": {
+      "platform": "Windows x86_64",
+      "godot": "4.7 stable 5b4e0cb0f",
+      "rapier": "0.35.2",
+      "native_dll_sha256": "e3f17363d21260690682dfaa9e5e118253544c1b9b19e69e50c03af567712343"
+    },
+    "historical_map_failure": "The earlier117 Exchange +278 integer observation remains a failed, unaccepted experiment. The probe proves a valid refill mechanism; it does not by itself attribute every one of those278 units to exact individual rust events.",
+    "mitigation": "Root replaces only new seven maps structural117 with already-rusted65 and adds a generic No117 palette assertion. Original native source, original117 layouts, failure records and probe remain preserved. This is not a general conservation claim for painting or spawning reactive materials."
+  },
+  "limits_and_manual_notes": [
+    "Native source-derived palette review uses CPU Image fills; no GPU, shader, browser or Web acceptance is implied.",
+    "Reclamation Oil reservoir lies below its continuous road. Reaching it requires deliberate excavation; ordinary road traversal does not enter it.",
+    "New Works flight apparatus has not been proven by this reviewer as complete ordinary-spawn flight routes with every player.",
+    "Streets Afterhours ordinary-spawn expert proof explicitly includes an in-bay posture-reset hop. Neutral/brake alone did not physically unfold after sliding. Do not claim automatic idle standing.",
+    "Prepared-World cut/sweep fixtures run direct usable/helper APIs. Their positive results are scoped apparatus evidence, not an input/UI/controller parity claim."
+  ],
+  "visual_artifacts_directory": "C:\\Users\\_\\AppData\\Local\\Temp\\cybersand-neon-works-independent-review",
+  "artifacts_sha256": {
+    "bare_iron_quantity_probe.gd": "e6d9b6d74cb77a2c93c57ba79c8e832a4095ba8372df60a707cb53782e89fa51",
+    "bare_iron_quantity_probe.log": "02114861ab70fd58a0018008613212149271873ffe67f98c3d3c996130113e87",
+    "capture_works_independent.gd": "4cefe75a96ee3e4467b2f52611535cbbd5a59d0e0db62dea8423657b340dac39",
+    "last_byte_reclamation-native-palette.png": "043dceeeb595c181ee1b23426e7cf342f58228b62d845a797101a24cf0fac2b6",
+    "last_byte_reclamation-staging.png": "9acfcac33bd7569479d164e3f2fdb11931488a879e915a6b379f3a39623e0877",
+    "pirate_uplink-native-palette.png": "def8076aa9d660252cb481c0d94ef38b0090fd26546c176297181c587e870f4d",
+    "pirate_uplink-staging.png": "de58bc56f99f1302293e666a2dd14072ce7339d940158304d1076f773f35a4db",
+    "rain_ledger_exchange-native-palette.png": "0e5048a9bea4330c78316669032e90e8abbfb888c54eda1e04e32bd7c78324df",
+    "rain_ledger_exchange-staging.png": "bd68d9ba45ba3e3bfa82ab44750b6ad48b9d08eecbdd24a6c1c300e8390f866b",
+    "zero_stamp_customs-native-palette.png": "538121dcdf13f6cd849067f13c66a758f2d7286ddefadc49d889f22449a7cd8a",
+    "zero_stamp_customs-staging.png": "381fcf6864c6f1b2c0305d3265ecf07855308d22aae5d025f4111ccc3e661d12"
+  },
+  "no_repository_edits_during_review": true,
+  "no_native_changes": true
+}

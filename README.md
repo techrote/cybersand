@@ -18,7 +18,7 @@ item. Sampled rigs and the original physical hull trials remain reference choice
 Choose **Player playground** in the launcher or pass **`--player-playground`**
 for seven human movement presets: a loose-jointed stunt buggy, trials bike,
 momentum acrobat, arcade lander, real Sand cloud, real Water blob and jetpack
-barrel. Choose from **15 distinct maps: eight districts and seven Expeditions**, each
+barrel. Choose from **22 distinct maps: eight districts, seven Expeditions and seven Cyberpunk Backchannels**, each
 **1024 × 768 cells**, six times the first sample maps' area;
 every map is available to every player. The Water selector offers FreeMass,
 CellularYield, pressure reference/cached/dormant and inertial Water. Changing

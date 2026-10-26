@@ -113,7 +113,7 @@ func _build_ui() -> void:
 	side.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	side.add_theme_constant_override("separation", 8)
 	scroll.add_child(side)
-	_label(side, "MAP · every player can use every map", 13, Color("7895a9"))
+	_label(side, "MAP · %d maps, all open to every player" % Course.MAP_IDS.size(), 13, Color("7895a9"))
 	_map_picker = OptionButton.new()
 	_map_picker.focus_mode = Control.FOCUS_NONE
 	for index: int in range(Course.MAP_NAMES.size()):

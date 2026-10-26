@@ -1,0 +1,55 @@
+{
+  "reviewed_utc": "2026-10-26T09:29:20.687343+00:00",
+  "reviewer": "afterimage_agility",
+  "mode": "read-only independent cross-review; no own Works implementation reviewed",
+  "canonical_lf_sha256": {
+    "godot/scripts/player_playground_neon_streets.gd": "3c2eda10f32e3186cd306c893fd39da11263b36d3ed6c8849d891ce73fb9c3ac",
+    "godot/tests/test_player_playground_neon_streets.gd": "b2bfb83a6d7a66cad83085ada556add3fd234bd0c491e649ee336e8fcf614dff",
+    "godot/scripts/player_playground_neon_detail.gd": "054fe0b9bf2c2472d65a5e468aad2f063cd72c8fb7f533ecfbe4756a31c2d150",
+    "godot/scripts/player_playground_cyberpunk.gd": "874f1a0bd1c7f367970ca66c9ac42f79ef06b05b9a82b06c7b3e80b482df160e",
+    "godot/tests/test_player_playground_cyberpunk.gd": "23e4b5e04965a7d1aacdba7c12e0baa03cc3e7fad4b6315269415950d91fe3be",
+    "godot/scripts/player_playground_course.gd": "a27c18fd3fd6f692d661186c89294755bbb656119d589e36810d3ee6917f893d",
+    "godot/scripts/player_playground.gd": "260f27875c91816a1b4d402367e5126247c8e9e33b68c9d30c34105934ab8020",
+    "godot/tests/test_player_playground_expeditions.gd": "26ddd7d178a32dfa78e03f825477a89af0a7f31c683d66bc5de5bc0fcbb27d78",
+    "tools/ci/run_godot_regressions.py": "d7c557de110e7ecbbefa83dfb957020abf9ab7519df77d52c4855cb7e6f2ac19"
+  },
+  "blocking_source_findings": [],
+  "scope": [
+    "Streets three distinct layouts, metadata, full native raster voids, supported baselines, store metadata and off-road prop/NPC stages",
+    "Sign/road helper bounds and four-cell raster agreement; no runtime owner or new physics authority",
+    "Collection router, stable Course metadata concatenation, unchanged default and per-player availability, UI count/selection mapping",
+    "Generic final-raster bounds aggregation, connected liquid census, stable route limits and physical body extents, actual valve readback",
+    "Ordinary-spawn Debtline/Patchbay/Afterhours focused proofs and Storm hop regression; actual controls only",
+    "CI discovery/budget additions; no assertion removal beyond combining rectangle bounds into complete per-map boolean"
+  ],
+  "findings_and_limits": [
+    "No blocking source finding within reviewed scope. Applicable source-fenced cohort remains independently required.",
+    "Afterhours proof explicitly uses Ctrl/auxiliary braking pause plus a posture-reset primary hop before grounded expanded body bounds. Neutral automatic unfolding is NOT established. Do not call it neutral recovery or a whole expert course beyond the actually measured route.",
+    "Afterhours standing assertion proves grounded body height greater than the 12.5 compact threshold, not an independent full-posture morphology metric.",
+    "Generic 60-tick valve proof observes local downstream sample and exact Water quantity; it does not qualify every final catch or long-run conservation of arbitrary materials/solvers.",
+    "New seven maps use existing rusted65 instead of reactive BareIron117 with identical geometry; existing native fractional-Water reaction defect must remain preserved as a separate known limitation, not a resolved native bug.",
+    "Full optional Customs/Uplink flight routes remain outside this cross-review acceptance; source-palette images do not qualify actual shader/interactive appearance."
+  ],
+  "draft_documentation_followup": [],
+  "test_execution": "No additional tests launched; root owns the frozen 27-suite cohort and final process/receipt readback.",
+  "source_edits": false,
+  "disposition": "No blocking source findings; independent read-only cross-review sealed for the listed canonical LF hashes. Final exact frozen cohort/process receipt and final documentation acceptance remain root-owned.",
+  "documentation_followup_status": "Canonical player-control-playground now explicitly records Afterhours hop-based unfolding, neutral/brake-only limit, Reclamation excavation access and the new7 bare117-to-rusted65 workaround. Dated audit preserves existing native reaction semantics and historical +278 evidence without claiming native resolution. Final cohort result section is still correctly pending during authoring.",
+  "documentation_reviewed_lf_sha256": {
+    "docs/systems/player-control-playground.md": "bb81242d2b68fcea0db66a00d4a8149ca775009d2a3c4bba163b0cbdbb1d2487",
+    "docs/audits/2026-10-26-player-playground-cyberpunk.md": "615a05a0904ca5c144c1f3a9b9dc52dad90527559c582a0cba369be0a81ab5b2"
+  },
+  "source_palette_review": {
+    "scope": "Regenerated after 117-to65 substitution; native palette source raster and staging overlays only, no shader/browser/interactive qualification",
+    "source_module_lf_sha256": "3c2eda10f32e3186cd306c893fd39da11263b36d3ed6c8849d891ce73fb9c3ac",
+    "composition_findings": "No additional blocking geometry/composition finding. Three distinct connected room/road silhouettes, clear ordinary starts and real reservoirs retained.",
+    "images_sha256": {
+      "C:\\Users\\_\\AppData\\Local\\Temp\\cybersand-neon-streets-final-review\\afterhours_arcade-native-palette.png": "bad320b4ea1882016e6d98bbd5fe3e26dd643f7484d34aae9d1080050fdfb3c4",
+      "C:\\Users\\_\\AppData\\Local\\Temp\\cybersand-neon-streets-final-review\\afterhours_arcade-staging.png": "7135ce09ee8c130c660fb65769d7f9a226f3664c39c1f68ab5fe2ec7ac183f7b",
+      "C:\\Users\\_\\AppData\\Local\\Temp\\cybersand-neon-streets-final-review\\debtline_interchange-native-palette.png": "0820797f57e71d0f78dfb4dabded56b986e9152c46a6c97df87230c906673e2c",
+      "C:\\Users\\_\\AppData\\Local\\Temp\\cybersand-neon-streets-final-review\\debtline_interchange-staging.png": "c266654dd63967062f4853b0aa578370e855e6cc7ffd96673ccdb20ff686f446",
+      "C:\\Users\\_\\AppData\\Local\\Temp\\cybersand-neon-streets-final-review\\patchbay_tenements-native-palette.png": "bf68ab544d2ae20e21616a74148d2645cae46fe6f62f0a4c299ddc81fc52f468",
+      "C:\\Users\\_\\AppData\\Local\\Temp\\cybersand-neon-streets-final-review\\patchbay_tenements-staging.png": "177f656f7aab4cc5ad95ff6c8c81ab5b1242bac9d44dc66dd5c5420b7b4047b3"
+    }
+  }
+}
