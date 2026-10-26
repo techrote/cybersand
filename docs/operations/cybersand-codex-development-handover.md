@@ -10,6 +10,20 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## PLAY-ASYNC-001 mechanical desktop threading decision — 2026-10-26
+
+**Approved design, not Current implementation:** #264 fixes a small dedicated
+asynchronous native player World owner for Windows/Linux mechanical playground;
+Rapier, actors, input, rendering and colliders remain main-thread. The
+[ADR](../decisions/ADR-015-player-playground-asynchronous-owner.md),
+[exact communication and lifecycle contract](../architecture/player-playground-asynchronous-contract.md),
+[actual-main CI readback / missing real-time baseline](../audits/2026-10-26-play-async-001-baseline.md)
+and [parallel #265/#266 handoff](player-playground-async-handoff.md)
+are authoritative. Current main `9e53a5b1` remains synchronous/one-worker
+for these five presets. #270 alone promotes the qualified async/Auto default;
+Sand/Water swarms are deferred #271. Preserve unrelated LCB work.
+
+
 ## Trial successor correction after accepted App — 2026-10-25
 
 App #256 is merged as main56422c05 after all four exact-dc2 required gates.

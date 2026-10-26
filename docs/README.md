@@ -275,6 +275,14 @@ Windows evidence and explicit owner-feel limitations. The
 retains the original actual Rapier Trainer data, lifecycle negatives and
 source/runtime identity.
 
+**Approved future mechanical playground threading (#264):** start with
+[ADR-015](decisions/ADR-015-player-playground-asynchronous-owner.md), the
+[bounded async player protocol](architecture/player-playground-asynchronous-contract.md),
+[exact-main Windows/Linux baseline and measurement gaps](audits/2026-10-26-play-async-001-baseline.md)
+and [parallel #265/#266 implementation handoff](operations/player-playground-async-handoff.md).
+This is not yet the Current runtime; #270 owns desktop async/Auto promotion
+and #271 defers material swarms.
+
 For seven human movement presets, use the [player control playground](systems/player-control-playground.md): buggy, trials bike, momentum acrobat, arcade lander, native Sand cloud, native Water blob and jetpack barrel. The guide owns keyboard/gamepad controls, acrobat chains, reset/focus rules and bounded material-field ownership. The five mechanical presets also appear in F5 SetP.
 
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).

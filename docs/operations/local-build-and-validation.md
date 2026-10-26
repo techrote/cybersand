@@ -1119,6 +1119,19 @@ Use actual platform artifacts and retain their identities for platform acceptanc
 
 ## Player playground checks
 
+For **PLAY-ASYNC-001 #264** source inspection, the
+[exact-main Windows/Linux functional readback and unmeasured pacing gaps](../audits/2026-10-26-play-async-001-baseline.md)
+are the dated evidence. [ADR-015](../decisions/ADR-015-player-playground-asynchronous-owner.md)
+and the [approved mailbox/scheduling contract](../architecture/player-playground-asynchronous-contract.md)
+are not new runtime implementation. When #265/#266 run, use the existing
+`test_physics_async.gd`, `test_player_playground_runtime.gd`,
+`test_player_playground_course.gd`, `test_auto_worker_policy.gd` and
+`CyberWorkerBenchmark.sample` as reference fixtures, then measure actual
+on-screen physics/render pacing and 1/Auto native readback on Windows/Linux
+using the identical course; keep historical process times distinct from FPS.
+Do not skip source-matched runtime provenance, full applicable CI, LFS or the
+#234 idle/outer timeouts.
+
 Use the pinned Godot 4.7/Rapier runtime and a rebuilt source-matched native
 extension. The new field method must exist; a preceding retained binary cannot
 exercise the material presets. On Linux provide writable XDG data/config/cache

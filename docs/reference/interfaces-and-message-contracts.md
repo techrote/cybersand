@@ -11,6 +11,13 @@ last-reviewed: 2026-10-25
 
 # Interfaces and message contracts
 
+**Approved future desktop mechanical Player Playground protocol (#264):**
+The [explicit bounded mailbox, run/epoch/pose/control/tick/terrain/render
+message schemas](../architecture/player-playground-asynchronous-contract.md)
+are an implementation contract for #265/#266 and **not** a new Current
+wire API. Current synchronous Arena, ordinary desktop worker, human leases,
+physical effects and usable message contracts below remain authoritative.
+
 The new bounded desktop [trial-body continuation](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 keeps the eleven-float body ABI unchanged. Main sends only copied values:
 `kind = trial_body`, barrel/Ripper arm, one valid actual rectangle packet,
