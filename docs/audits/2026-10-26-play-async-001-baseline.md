@@ -100,7 +100,7 @@ xvfb-run -a godot --path godot --rendering-method gl_compatibility \
 ```
 
 For **synchronous baseline** run the unmodified `9e53a5b1` Player
-Playground: each of the five mechanical presets (`buggy`, `trialbike`,
+Playground: each of the five mechanical presets (`stuntbuggy`, `trialsbike`,
 `acrobat`, `arcadelander`, `jetbarrel` as actually named by the
 course catalogue), course with authored fixture and unchanged
 `diagnostic_reset(workers=1)`; 60-Hz `_physics_process` calls
