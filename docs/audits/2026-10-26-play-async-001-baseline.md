@@ -19,9 +19,13 @@ from 2026-10-25/26 are **actual GitHub-hosted execution on that same SHA**,
 not execution of this documentation branch or the future asynchronous
 playground implementation. The connector's logs, source-qualified issue
 evidence and actual GDScript/native implementations were inspected. No
-fresh local binary build, target-device input test, dedicated benchmark
-invocation, camera capture, interactive FPS/p95/p99 recording or test of the
-proposed player-cell owner was run during #264's architectural inspection.
+fresh local binary build, target-device input test, camera capture,
+interactive **rendered** FPS/p95/p99 recording or test of the proposed
+player-cell owner was run during #264's architectural inspection. A
+small current-synchronous Playground physics-callback timing test and
+statistics readback for the existing async physics fixture were added on
+the #264 PR **after** the historical exact-main run; their execution
+and outcomes must be recorded separately only when actually available.
 The caller had no source-matched executable/desktop display in this
 environment. Avoid treating a historical benchmark, clean CI result or
 GitHub step wall-clock as a new gameplay-pacing measurement.
@@ -90,6 +94,9 @@ make build/tests
 godot --headless --path godot --script res://tests/test_player_playground_runtime.gd
 godot --headless --path godot --script res://tests/test_player_playground_course.gd
 godot --headless --path godot --script res://tests/test_physics_async.gd
+# Added to the #264 PR: short-run paced synchronous five-mechanical baseline.
+# Writes PLAY_ASYNC_BASELINE_CASE / PLAY_ASYNC_BASELINE JSON to standard output:
+godot --headless --path godot --script res://tests/test_play_async_architecture_baseline.gd
 godot --headless --path godot --script res://tests/test_auto_worker_policy.gd
 # Additional existing native workload independent of the player World:
 # godot/scripts/worker_benchmark.gd -> CyberWorkerBenchmark.sample(tree, workers, side, ticks, ...)
@@ -146,6 +153,15 @@ with controlled hardware/viewport; no measured native1/Auto Player
 Playground multicore speedup or frame-pacing delta; no live human
 gamepad/keyboard/target-GPU feel; no experimental owner protocol/failure
 qualification; no Android/Web or Web regression change (deferred).
+The added `test_play_async_architecture_baseline.gd` intentionally samples only
+30 warm + 120 physics frames per mechanical preset under the actual callback
+and UI presentation-preparation code, with per-tick main/native/Rapier and
+headless frame intervals; `test_physics_async.gd` now reports the *separate*
+existing sandbox's per-native-tick step statistics. They are lightweight
+CI reference probes, **not** the controlled 300+1,800-frame real-renderer
+comparison, and no numbers should be inserted until a source-identical
+Windows/Linux CI run has completed and its log is read independently.
+
 The expected reduced **main-thread** native-tick stall and possible
 multicore throughput gains are **design predictions**, not results.
 
