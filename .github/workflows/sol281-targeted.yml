@@ -184,14 +184,91 @@ jobs:
           run('lifecycle',['--headless','--path','godot','--script','res://tests/test_solid_detachment_lifecycle.gd'],'SOL281_LIFECYCLE')
           lifecycle=json.loads(re.search(r'SOL281_LIFECYCLE (.+)',(result/'lifecycle.txt').read_text(encoding='utf-8')).group(1))
           assert lifecycle['checks']==296 and lifecycle['actual_host_replacement_cycles']==18 and lifecycle['failures']==[]
+          run('compound-coupling',['--headless','--path','godot','--script','res://tests/test_solid_detachment_coupling.gd','--',str(result/'compound-coupling.json')],'SOL281_COMPOUND_COUPLING')
+          coupling=json.loads((result/'compound-coupling.json').read_text())
+          assert coupling['checks']==32 and coupling['failures']==[] and coupling['platform']=='Windows'
+          assert coupling['coupling']['proxy_count']==coupling['shapes'] and coupling['coupling']['contacts']>0 and coupling['coupling']['displaced']>0
           for p,h in manifest['inputs'].items():
               assert hashlib.sha256((root/p).read_bytes()).hexdigest()==h, ('execution source drift',p)
-          report={'source':manifest['source'],'runtime_sha256':manifest['dll_sha256'],'platform':'Windows','cases':results,'lifecycle':lifecycle,'motion':motion,'failure_paths':failure,'scope':'actual scoped Windows host proof; no full native or production publication claim'}
+          report={'source':manifest['source'],'runtime_sha256':manifest['dll_sha256'],'platform':'Windows','cases':results,'lifecycle':lifecycle,'motion':motion,'failure_paths':failure,'compound_coupling':coupling,'scope':'actual scoped Windows host proof including exact compound Sand/Water coupling; no full native or production publication claim'}
           (result/'report.json').write_text(json.dumps(report,indent=2)+'\n')
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: sol281-windows-rapier-${{ github.sha }}
           path: build/sol281-windows/execution/
+          if-no-files-found: error
+          retention-days: 30
+
+
+  linux-rapier:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GODOT_SILENCE_ROOT_WARNING: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: true
+          persist-credentials: false
+      - name: Load hash-verified pinned Godot toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          export GODOT_CPP_ROOT="$RUNNER_TEMP/sol281-tools/godot-cpp"
+          echo "GODOT_CPP_ROOT=$GODOT_CPP_ROOT" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/sol281-tools" build/sol281-linux
+          gh api repos/techrote/cybersand/actions/artifacts/12773321343/zip > "$RUNNER_TEMP/toolchain.zip"
+          echo 'b88ff56fe4b9dc2c4837312f06eb6e12c231042fe8746c8a8aa2281fdfa544c8  '"$RUNNER_TEMP/toolchain.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/toolchain.zip" -d "$RUNNER_TEMP/sol281-tools"
+          tar -xzf "$RUNNER_TEMP/sol281-tools/godot-cpp.tar.gz" -C "$RUNNER_TEMP/sol281-tools"
+          unzip -q "$RUNNER_TEMP/sol281-tools/godot-linux.zip" -d "$RUNNER_TEMP/sol281-tools"
+          chmod +x "$RUNNER_TEMP/sol281-tools/Godot_v4.7-stable_linux.x86_64"
+          git config --global --add safe.directory "$GODOT_CPP_ROOT"
+          test "$(git -C "$GODOT_CPP_ROOT" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+          git rev-parse HEAD > build/sol281-linux/source.txt
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Build exact-source native kernel and GDExtension
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 10m make CXX=g++-13 solid-detachment-test 2>&1 | tee build/sol281-linux/native.txt
+          timeout 15m tools/build_native_extension.sh 2>&1 | tee build/sol281-linux/build.txt
+          sha256sum godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so > build/sol281-linux/runtime.sha256
+      - name: Execute actual Linux Rapier and compound cellular coupling
+        shell: bash
+        run: |
+          set -euo pipefail
+          GODOT="$RUNNER_TEMP/sol281-tools/Godot_v4.7-stable_linux.x86_64"
+          timeout 60s "$GODOT" --headless --path godot --editor --import --quit > build/sol281-linux/import.txt 2>&1
+          timeout 90s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment.gd -- "$PWD/build/sol281-linux/motion.json" 2>&1 | tee build/sol281-linux/motion.txt
+          timeout 60s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_failures.gd 2>&1 | tee build/sol281-linux/failures.txt
+          timeout 180s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_lifecycle.gd 2>&1 | tee build/sol281-linux/lifecycle.txt
+          timeout 180s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_coupling.gd -- "$PWD/build/sol281-linux/compound-coupling.json" 2>&1 | tee build/sol281-linux/compound-coupling.txt
+          python3 - <<'PY2'
+          import json,re
+          from pathlib import Path
+          root=Path('build/sol281-linux')
+          motion=json.loads((root/'motion.json').read_text())
+          assert motion['checks']==21 and motion['failures']==[] and motion['platform']=='Linux'
+          failure=json.loads(re.search(r'SOL281_HOST_FAILURES (.+)',(root/'failures.txt').read_text()).group(1))
+          assert failure['checks']==20 and failure['failures']==[] and failure['actual_rapier']
+          lifecycle=json.loads(re.search(r'SOL281_LIFECYCLE (.+)',(root/'lifecycle.txt').read_text()).group(1))
+          assert lifecycle['checks']==296 and lifecycle['actual_host_replacement_cycles']==18 and lifecycle['failures']==[]
+          coupling=json.loads((root/'compound-coupling.json').read_text())
+          assert coupling['checks']==32 and coupling['failures']==[] and coupling['platform']=='Linux'
+          assert coupling['coupling']['proxy_count']==coupling['shapes'] and coupling['coupling']['contacts']>0 and coupling['coupling']['displaced']>0
+          (root/'report.json').write_text(json.dumps({'source':Path(root/'source.txt').read_text().strip(),'platform':'Linux','motion':motion,'failure_paths':failure,'lifecycle':lifecycle,'compound_coupling':coupling,'scope':'actual current-source Linux Godot/Rapier plus exact compound Sand/Water coupling; no publication or full PR acceptance'},indent=2)+'\n')
+          PY2
+          ! grep -E 'SCRIPT ERROR:|ERROR: Failed to load|FAIL SOL281' build/sol281-linux/import.txt build/sol281-linux/motion.txt build/sol281-linux/failures.txt build/sol281-linux/lifecycle.txt build/sol281-linux/compound-coupling.txt
+          git diff --check
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sol281-linux-rapier-${{ github.sha }}
+          path: build/sol281-linux/
           if-no-files-found: error
           retention-days: 30

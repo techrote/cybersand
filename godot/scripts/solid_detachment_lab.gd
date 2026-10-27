@@ -20,7 +20,7 @@ func _ready() -> void:
 	_status = _label(Vector2(35,65),16)
 	_stats = _label(Vector2(35,760),16)
 	var help := _label(Vector2(35,788),13)
-	help.text = "SPACE cut  ·  P pause  ·  R reset  ·  ESC exit    |    Dry inert proof; reactive Wood, material coupling and arbitrary desoliding not admitted"
+	help.text = "SPACE cut  ·  P pause  ·  R reset  ·  ESC exit    |    Exact compound Sand/Water coupling; reactive Wood and arbitrary desoliding not admitted"
 	var args := OS.get_cmdline_user_args()
 	if args.size() >= 2 and args[0] == "--capture":
 		_capture_prefix = args[1]
@@ -63,7 +63,7 @@ func _release() -> void:
 	if not await session.cut_and_release():
 		_status.text = session.last_error
 	else:
-		_status.text = "AGGREGATE / 520 pixels native-owned / 6 exact Rapier rectangles / gravity + contacts only"
+		_status.text = "AGGREGATE / 520 pixels native-owned / 6 exact Rapier + native proxy rectangles / Sand-Water coupling active"
 	busy = false
 
 func _unhandled_key_input(event: InputEvent) -> void:
@@ -100,7 +100,11 @@ func _process(_delta: float) -> void:
 		session.worker.acknowledge_render_snapshot(snapshot.render_snapshot_serial)
 	var physics_ticks: int = session.bridge.manual_step_count() if session.bridge != null else 0
 	var angle: float = rad_to_deg(session.body_transform().get_rotation()) if session.active else 0.0
-	_stats.text = "Native tick %d   |   Rapier tick %d   |   angle %.1f°   |   %s" % [cell_tick,physics_ticks,angle,"PAUSED" if session.physics_paused else "independent clocks"]
+	var coupling: Dictionary = session.coupling_metrics()
+	_stats.text = "Native %d | Rapier %d | angle %.1f° | proxies %d | contacts %d / displaced %d | %s" % [
+		cell_tick, physics_ticks, angle, int(coupling.get("proxy_count", 0)),
+		int(coupling.get("contacts", 0)), int(coupling.get("displaced", 0)),
+		"PAUSED" if session.physics_paused else "independent clocks"]
 	queue_redraw()
 	if not _capture_prefix.is_empty() and session.active:
 		for t: int in [60,120,240]:

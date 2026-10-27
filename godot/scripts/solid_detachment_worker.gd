@@ -35,6 +35,24 @@ func _apply_lab(command: Dictionary) -> bool:
 		_solid_pending_reply = {"ok":false,"outcome":"NativeAPIUnavailable"}
 	else:
 		_solid_pending_reply = _world.solid_detachment_command(input)
+		# Optional diagnostic values are copied only by the exclusive worker.
+		# They expose neither the native World nor a mutable aggregate payload.
+		var points: Variant = input.get("probe_points", PackedInt32Array())
+		if points is PackedInt32Array and (points.size() & 1) == 0 and points.size() <= 256:
+			var probe_materials := PackedInt32Array()
+			var probe_body_ids := PackedInt32Array()
+			for point: int in range(0, points.size(), 2):
+				probe_materials.append(int(_world.material_at(points[point], points[point + 1])))
+				probe_body_ids.append(int(_world.rigid_body_id_at(points[point], points[point + 1])))
+			_solid_pending_reply["probe_materials"] = probe_materials
+			_solid_pending_reply["probe_body_ids"] = probe_body_ids
+		var snapshot_origin: Variant = input.get("snapshot_origin", Vector2i(-1, -1))
+		var snapshot_size: Variant = input.get("snapshot_size", Vector2i.ZERO)
+		if snapshot_origin is Vector2i and snapshot_size is Vector2i and snapshot_size.x > 0 and snapshot_size.y > 0:
+			_solid_pending_reply["diagnostic_snapshot"] = _world.diagnostic_snapshot(
+				snapshot_origin, snapshot_size, false)
+		if bool(input.get("include_body_metrics", false)):
+			_solid_pending_reply["body_metrics"] = _world.diagnostic_body_metrics()
 	_solid_pending_reply["request_id"] = _solid_last_request
 	_lab_status = "Solid detachment: " + str(_solid_pending_reply.get("outcome", "Invalid"))
 	# Prevent the sampled character from adding unrelated material mutations in
