@@ -1716,7 +1716,8 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if physical_rig_id != &"" and event is InputEventKey \
-		and (event.keycode in ACTOR_CONTROL_KEYS or event.keycode in PHYSICAL_TOOL_KEYS):
+		and (event.keycode in ACTOR_CONTROL_KEYS or event.keycode in PHYSICAL_TOOL_KEYS \
+			or (_playable_course_controls_active() and event.keycode in [KEY_UP, KEY_LEFT, KEY_DOWN, KEY_RIGHT])):
 		if actor_human_control_active() and actor_keyboard_allowed() and event.pressed and not event.echo:
 			if event.keycode == KEY_BRACKETLEFT:
 				_actor_effort = clampf(_actor_effort - 0.05, 0.0, 1.0)
@@ -2958,6 +2959,16 @@ func _on_physical_actor_input_cancelled(actor_id: int, actor_epoch: int) -> void
 	simulation_worker.cancel_physical_actor_effects(actor_epoch, actor_id)
 
 
+# Only the authored PLAY course uses this copied controller adapter. All
+# other F5, flight/scientific, equipment and NPC producer paths remain intact.
+func _playable_course_controls_active() -> bool:
+	return (tower_context.get("micro_active",false)
+		and microscenario_definition.get("id","") == CyberMicroScenarioCatalogue.PLAYER_COURSE_ID
+		and physical_actor_session != null
+		and physical_rig_id in PlayerCourse.MECHANICAL_PRESETS
+		and actor_producer_selection == &"human")
+
+
 func _publish_physical_keyboard_input(trigger_override: Variant = null, alternate_override: Variant = null) -> void:
 	if actor_producer_selection != &"human":
 		return
@@ -2966,10 +2977,19 @@ func _publish_physical_keyboard_input(trigger_override: Variant = null, alternat
 		_actor_usable_pointer_rearm = true
 		physical_actor_session.cancel_input(0, _physical_epoch, &"human")
 		return
+	# Sample only on the Godot main thread. The owned actor session receives
+	# an ordinary copied action and keeps its existing edge, epoch and lease
+	# authority; the cellular worker never sees Input or a gamepad object.
+	var playable: bool = _playable_course_controls_active()
+	var playable_action: Dictionary = CyberPlayerPlaygroundInput.sample(true) if playable else {}
 	if _actor_input_rearm:
 		for key: int in ACTOR_CONTROL_KEYS + PHYSICAL_TOOL_KEYS:
 			if Input.is_key_pressed(key):
 				return
+		# Held gamepad or arrow keys must also be released after focus, F5,
+		# pause and owner replacement; never resume their stale actuation.
+		if playable and CyberPlayerPlaygroundInput.active(playable_action):
+			return
 		_actor_input_rearm = false
 	var trigger: bool = bool(trigger_override) if trigger_override is bool else Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
 	var alternate: bool = bool(alternate_override) if alternate_override is bool else Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT)
@@ -2996,6 +3016,12 @@ func _publish_physical_keyboard_input(trigger_override: Variant = null, alternat
 			"alternate": alternate and not _actor_usable_transition_pending,
 			"drop": Input.is_key_pressed(KEY_N), "attach": Input.is_key_pressed(KEY_U)},
 	}
+	if playable:
+		# Movement/buttons/trim come from the same seven-preset input mapping
+		# without overwriting desktop pointer aim, equipment authority, effort
+		# tuning, reel or the separate specialist 4LY envelope.
+		for field: String in ["move", "trim", "primary", "secondary", "auxiliary"]:
+			action[field] = playable_action[field]
 	if physical_actor_session.is_flight_actor(0):
 		# The reserved 4LY interpretation has exactly two velocity outputs.
 		action = {"move": action.move}
@@ -3391,6 +3417,9 @@ func update_camera(delta: float) -> void:
 		(1.0 if Input.is_key_pressed(KEY_DOWN) else 0.0) - (1.0 if Input.is_key_pressed(KEY_UP) else 0.0)
 	)
 
+	# Course arrows are player controls, not implicit camera-pan requests.
+	if _playable_course_controls_active():
+		pan_input = Vector2.ZERO
 	if pan_input.length_squared() > 0.0:
 		camera_follow_enabled = false
 		camera_origin += pan_input.normalized() * CAMERA_PAN_SPEED * delta
@@ -3403,6 +3432,13 @@ func update_camera(delta: float) -> void:
 
 
 func character_centre() -> Vector2:
+	if _playable_course_controls_active():
+		# Main-thread Rapier produces the observed SetP pose. The ordinary
+		# sampled character can remain elsewhere in this composable map.
+		var view: Dictionary = physical_actor_session.observation(0)
+		var observed: Vector2 = view.get("position",Vector2.INF)
+		if int(view.get("epoch",-1)) == _physical_epoch and observed.is_finite():
+			return observed
 	if (
 		player_uses_barrel()
 		and rapier_bridge.is_initialized()

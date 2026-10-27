@@ -149,6 +149,8 @@ func run() -> void:
 			return
 		var session = desktop.physical_actor_session
 		var first: Dictionary = session.observation(0)
+		expect(desktop.character_centre().distance_to(Vector2(first.get("position",Vector2.INF))) < 0.01,
+			"shared desktop course camera centre observes actual Rapier SetP pose: " + str(model_id))
 		expect(str(first.get("model", "")) == str(model_id)
 			and str(first.get("producer", "")) == "human"
 			and session.bodies().size() > 0,
@@ -191,6 +193,17 @@ func run() -> void:
 				"resolved_native_workers":desktop.latest_snapshot.scheduler_thread_capacity_hint if desktop.latest_snapshot != null else -1,
 				"terrain_ready":desktop._physical_terrain_ready
 			}))
+		# Event ordering remains the production submit_local edge queue. The
+		# two arrow events are delivered without a physics-frame yield.
+		if model_id == &"acrobat" and advanced:
+			var before_edge: int = int(session.observation(0).get("last_sequence",0))
+			key(KEY_RIGHT,true)
+			key(KEY_RIGHT,false)
+			var after_edge: Dictionary = session.observation(0)
+			expect(int(after_edge.get("last_sequence",0)) >= before_edge + 2,
+				"shared course arrow press/release both submit through actor lease before the next physics tick")
+			expect(desktop.camera_follow_enabled,
+				"arrow steering did not silently disable the course's actor-follow camera")
 		expect(desktop.latest_snapshot != null and desktop.latest_snapshot.tick_index > 0,
 			"native cellular World publishes independently of main-thread Rapier: " + str(model_id))
 		desktop.paused = true

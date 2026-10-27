@@ -39,24 +39,34 @@ and [Docs](https://github.com/techrote/cybersand/actions/runs/40452089638)
 CI succeeded for the tested tree. A passing headless test is **not**
 interactive camera/lap/gamepad parity, worker parallel-speedup or subjective feel.
 
-**Remaining #267 solver-policy integration — unqualified candidate:** the
-authored `playground/player-course` definition is being given bounded schema-2
-presentation metadata to expose the existing native per-material solver
-selection through the desktop **Liquid comparison → Exploratory → Apply &
-rebuild active** controls. Requested family, applied native family and typed
-construction receipt remain different facts; policy is admitted only on fresh
-World reconstruction with owner/physical readiness fences. The scenario's
-rectangles, material IDs, recipe digest, default family, protected scientific
-fixtures and native execution owner are unchanged. A focused
-[real-host five-rig regression](../../godot/tests/test_play_comp002_five_rig_course.gd)
-is extended to check policy selection, native receipt, atomic refusal, R/reset
-and F5 actor replacement. **Until independent exact-head Windows/Linux CI
-executes that extension, the course's new policy capability is not qualified.**
-No live solver hot-swap is supported or claimed.
+**Accepted #267 solver-policy slice:** [PR #276](https://github.com/techrote/cybersand/pull/276)
+merged on 2026-10-27 as `e936489d5b731665bf3cbc102be986ca8d67b6cf`
+with Git tree `506f7bf42eae5ddadad925feb686f74392a69a23`
+identical to its qualified source head. Both [Windows and Linux actual-host
+Godot/GDExtension jobs](https://github.com/techrote/cybersand/actions/runs/40469479950)
+returned **87 assertions / 0 failures**, retaining the original course
+rectangles, material IDs and recipe digest `9aa78894...`; the prepared
+World applied Water `pressure_flow_v1` at construction with policy hash
+`f67a65e8...` and immutable native receipt `f01864b2...`. The focused
+regression checks generation 8 → 9 → 10, atomic controlled-route refusal,
+reset and F5 Acrobat retention. Exact-source
+[Native](https://github.com/techrote/cybersand/actions/runs/40469480069)
+and [Docs](https://github.com/techrote/cybersand/actions/runs/40469479883)
+also succeeded. This is a prepared rebuild option, **not** a hot solver swap
+or exhaustive fluid-family validation. The subsequently triggered main
+merge-CI remains a distinct execution record.
 
 The separate [shared controls/UI issue #268](https://github.com/techrote/cybersand/issues/268)
-still owns playable preset menus, the original course `VIEW` camera,
-four checkpoint/lap presentation, quick taps and gamepad/focus parity.
+owns playable preset menus, the original course `VIEW` overview camera,
+four checkpoint/lap presentation, focus and full gamepad feel. The bounded
+**PLAY-UI-001 candidate** reuses the existing `CyberPlayerPlaygroundInput`
+sampler for the real async desktop course only (logical-key fallback, standard
+gamepad, source keyboard arrow press/release), adds a held-gamepad neutral
+rearm fence and follows the actual main-thread SetP pose while reserving
+camera arrows for actor control. It does not alter session command authority,
+lease, equipment, generic F5 producers, native worker or Rapier. This adapter
+requires **fresh exact-head Windows/Linux execution before qualification**;
+a headless input test is not physical gamepad/focus/manual feel proof.
 Native Auto measurements, lifecycle/stress and final desktop feel remain
 #266/#269/#270. Material swarms (#271) remain deferred in the standalone
 seven-preset experimental scene. Specialist scientific and NPC-training
