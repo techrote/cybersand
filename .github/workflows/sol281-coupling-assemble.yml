@@ -1,0 +1,49 @@
+name: SOL281 exact compound coupling assembly
+
+on:
+  push:
+    branches: [work/sol281-native-detachment-20261027]
+    paths: ['.github/workflows/sol281-coupling-assemble.yml']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sol281-coupling-assembly
+  cancel-in-progress: false
+
+jobs:
+  assemble:
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/work/sol281-native-detachment-20261027'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - name: Materialize reviewed compound occupancy and cellular coupling
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = 1baaf3426ca84dd192b1a5aa2ea913be6b0dad56
+          python3 tools/soliding/materialize_issue281_coupling.py
+          git diff --check
+          python3 - <<'PY'
+          from pathlib import Path
+          import yaml
+          workflow = yaml.safe_load(Path('.github/workflows/sol281-targeted.yml').read_text())
+          assert {'source','windows-build','windows-rapier','linux-rapier'} <= set(workflow['jobs'])
+          assert Path('godot/tests/test_solid_detachment_coupling.gd').is_file()
+          PY
+          git add .github/workflows/sol281-targeted.yml \
+            godot/scripts/solid_detachment_lab.gd \
+            godot/scripts/solid_detachment_session.gd \
+            godot/scripts/solid_detachment_worker.gd \
+            godot/tests/test_solid_detachment_coupling.gd
+          git rm tools/soliding/materialize_issue281_coupling.py \
+            .github/workflows/sol281-coupling-assemble.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'feat(sol281): couple exact compound silhouette to cellular materials'
+          git push origin HEAD:refs/heads/work/sol281-native-detachment-20261027
