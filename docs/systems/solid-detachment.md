@@ -2,10 +2,10 @@
 title: Experimental native solid detachment and Rapier tree laboratory
 status: Current
 document-kind: contract
-scope: Branch-local dry inert one-aggregate handoff, session lifetime fences and scoped actual Linux/Windows Rapier proof; not production soliding
+scope: Branch-local dry inert one-aggregate handoff, exact compound cellular coupling, session lifetime fences and scoped Linux/Windows Rapier proof; not production soliding
 canonical-for: [solid-detachment-runtime, solid-detachment-lab]
 last-reviewed: 2026-10-27
-related-documents: [../operations/soliding-structural-detachment-programme.md, ../architecture/soliding-lifecycle.md, ../architecture/rigid-body-and-cellular-coupling.md, ../architecture/simulation-tick-and-threading.md, ../audits/2026-10-27-sol281-native-tree.md]
+related-documents: [../operations/soliding-structural-detachment-programme.md, ../architecture/soliding-lifecycle.md, ../architecture/rigid-body-and-cellular-coupling.md, ../architecture/simulation-tick-and-threading.md, ../audits/2026-10-27-sol281-native-tree.md, ../audits/2026-10-27-sol281-compound-cellular-coupling.md]
 ---
 
 # Experimental native solid detachment
@@ -40,6 +40,42 @@ control structure remain native. An intact tree refuses as `Anchored`.
 This demonstrates the primary mechanical direction, not general reactive Wood,
 bark/leaf cohesion or unrestricted terrain dynamics. No ordinary gameplay mode
 or material policy automatically enables the feature.
+
+## Exact compound cellular coupling — source 41dc25ca
+
+**Current on the implementation branch, not accepted production main.** Source
+`41dc25ca060ecb07cef15c1640feeb9f6cce1eb4` reuses the existing native
+rectangular rigid-body coupling for the detached aggregate without publishing a
+filled tree bounding box. Each of the six exact non-overlapping geometry
+rectangles becomes one stable native proxy record; all proxy observations are
+reduced back to the single Rapier aggregate. Proxy mass sums to the exact 520
+native members. The original one-cell crown opening and a larger empty region
+inside the overall AABB remain unoccupied in native readback.
+
+The main-thread session publishes every proxy's current and previous transform,
+point velocity and a shared sample serial through the existing immutable body
+state packet. The native owner performs its pre-existing swept occupancy,
+ejection, contact, displacement and unresolved accounting per proxy. Copied
+results are combined into one linear impulse, angular impulse and bounded
+position correction for the actual Rapier body. A result with an old sample
+serial is refused; activation remains frozen until the first proxy publication
+is acknowledged. This adds no per-cell Rapier bodies and no second cellular
+integrator.
+
+`godot/tests/test_solid_detachment_coupling.gd` exercises actual Sand and Water
+around the moving compound structure. On both hosted Linux and Windows, all 32
+checks pass: crown/trunk samples are occupied, both declared holes are empty,
+Sand is supported/displaced by the moving crown, Water traverses the open region,
+material quantities remain conserved, proxy count equals shape count, and
+contact/displacement feedback reaches the single body. The exact-source
+[evidence record](../audits/2026-10-27-sol281-compound-cellular-coupling.md)
+contains platform counters, hashes and limitations.
+
+The dense-bank fixture also reports cumulative unresolved interactions: **1,094
+on Linux and 2,190 on Windows**. These are retained diagnostics, not hidden or
+relabelled as success. The test proves bounded hole-preserving interaction and
+conservation, not zero unresolved contact, production tuning or universal
+material coupling.
 
 ## Native owner, shape and transaction contract
 
@@ -185,20 +221,20 @@ review, the full ready-PR matrices, formal runtime publication or owner feel.
 
 ## Dry-fixture limitations that must remain visible
 
-**Not implemented/admitted:** compound native occupancy/sweep and interaction
-with surrounding active liquids/powders; reactive aggregate Wood/heat/chemistry;
-mixed-material bonds; arbitrary fracture; rotated dynamic desoliding;
-aggregate saves/streaming; multiple simultaneous aggregates; full normal-app
-admission; formal source-matched release runtime publication and Web support.
+**Not implemented/admitted:** reactive aggregate Wood/heat/chemistry;
+mixed-material bonds; arbitrary fracture; rotated dynamic desoliding; aggregate
+saves/streaming; multiple simultaneous aggregates; full normal-app admission;
+formal source-matched release runtime publication and Web support.
 
-In particular, the current general native coupling interface expects rectangle
-body records. This laboratory deliberately does **not** publish a filled bounding
-rectangle for a tree with holes. Its dry inert source uses real Rapier contact
-against static terrain, but does not prove general aggregate↔cellular coupling.
-The planned compound-mask/material owner is a named gate, not silently inherited
-from existing barrel tests. The opt-in native feature does not itself prevent a
-future caller from constructing unsupported surrounding material; the diagnostic
-host and its declared workload boundary are part of this qualification.
+The current compound coupling is deliberately one dry homogeneous aggregate and
+six exact rectangular proxies. It proves holes, Sand/Water contact and quantity
+conservation in a registered fixture, but not arbitrary contour decomposition,
+zero unresolved interactions, deep-liquid pressure behaviour, all granular
+materials, multiple aggregates or representative production cost. Proxy-level
+feedback is reduced into one body; it is not yet an independently qualified
+general compound-body interface for every actor. The opt-in native feature does
+not itself prevent a future caller from constructing unsupported surrounding
+material; the diagnostic host and workload boundary remain part of qualification.
 
 `rollback_solid_detachment` is only cancellation of an **inactive staged body**.
 It is not safe arbitrary body-to-cells desoliding. An activated body remains an
@@ -236,6 +272,7 @@ godot --headless --path godot --editor --import --quit
 godot --headless --path godot --script res://tests/test_solid_detachment.gd -- /absolute/path/rapier.json
 godot --headless --path godot --script res://tests/test_solid_detachment_failures.gd
 godot --headless --path godot --script res://tests/test_solid_detachment_lifecycle.gd
+godot --headless --path godot --script res://tests/test_solid_detachment_coupling.gd -- /absolute/path/coupling.json
 ```
 
 The native executable is integrated into `soliding-test`. Its allocation-failure
