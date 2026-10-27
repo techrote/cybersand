@@ -14,10 +14,13 @@ static func deadzone(value: Vector2) -> Vector2:
 	return value.normalized() * clampf((value.length() - DEADZONE) / (1.0 - DEADZONE), 0.0, 1.0)
 
 
-static func sample() -> Dictionary:
+static func sample(include_logical_keys: bool = false) -> Dictionary:
 	var keys: Dictionary = {}
 	for key: Key in KEYS:
-		keys[key] = Input.is_physical_key_pressed(key)
+		# Standalone keeps its physical-key mapping; shared desktop can also
+		# consume its existing logical-key input (including test-issued edges).
+		keys[key] = Input.is_physical_key_pressed(key) \
+			or (include_logical_keys and Input.is_key_pressed(key))
 	var stick := Vector2.ZERO
 	var buttons := Vector3i.ZERO
 	var lean: float = 0.0
