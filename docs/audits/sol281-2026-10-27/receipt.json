@@ -1,0 +1,71 @@
+{
+  "schema": "cybersand.sol281.checkpoint.v1",
+  "date": "2026-10-27",
+  "issue": 281,
+  "status": "experimental_slice_passed_full_issue_open",
+  "main_baseline": "c9ebe39c6cab086b7f7207ee3d80a6de2cb21f59",
+  "documentation_parent": "c087ca8569f1df394d67cdc4dbe1c6b46c2bcfb2",
+  "executed_source": "741bc0775c190be98e2f5d23da3d47dd354fef99",
+  "executed_tree": "8da1f7716e01811d91f30fe7e4c66574e0530363",
+  "workflow_trigger_source": "9ebd36f0f4514c536e7201543fd0c019a5a327c0",
+  "run": 40592308871,
+  "source_identity_note": "Assembly job hash-verified the locally tested source, committed ordinary source and removed one-shot tooling. Execution jobs explicitly checked out executed_source; trigger SHA is not the tested source.",
+  "runtime": {
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "godot_cpp": "101ae38034304346a46ea9ea84ae156d3e860496",
+    "rapier": "0.35.2",
+    "linux_native_sha256": "48ddf4075e17b25c812440f8c1cb2ebcdb9a9b1eb856b56d9c23c7a2ec955b5f",
+    "godot_linux_zip_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+    "published_release_runtime": false
+  },
+  "qualification": {
+    "linux_native": {"job": 122499481803, "compiler": "GCC 13.3.0", "groups": 8, "checks": 13074, "pass": true},
+    "windows_native": {"job": 122499481706, "runner": "windows-2022", "compiler": "MSVC", "groups": 8, "checks": 13074, "pass": true, "actual_godot_rapier": false},
+    "linux_sanitize": {"job": 122499481914, "sanitizers": ["ASan", "UBSan"], "leak_detection": false, "groups": 8, "checks": 13074, "pass": true},
+    "linux_async_rapier": {"job": 122499481803, "checks": 21, "pass": true, "actual_native_world": true, "actual_rapier_objects": true},
+    "linux_rapier_failures": {"job": 122499481803, "checks": 20, "pass": true},
+    "linux_render": {"job": 122499481803, "backend": "Xvfb / GL compatibility / Mesa llvmpipe", "captures": ["tree-anchored.png", "tree-tick060.png", "tree-tick120.png", "tree-tick240.png"], "all_capture_errors_zero": true},
+    "full_repository_gate": "not_qualified",
+    "independent_review": "not_performed",
+    "owner_feel_acceptance": "not_obtained"
+  },
+  "motion": {
+    "material": "RedBrick",
+    "scope": "dry homogeneous ambient inert one-aggregate diagnostic fixture",
+    "members": 520,
+    "source_native_members_before_commit": 520,
+    "source_native_members_after_motion": 0,
+    "aggregate_owned_members_after_motion": 520,
+    "full_payload_tuple_equality": true,
+    "exact_compound_rectangles": 6,
+    "mass_unit_cells": 520,
+    "inertia_cell_units": 70453.6493589743,
+    "rapier_steps": 600,
+    "native_ticks": 600,
+    "configured_native_workers": 4,
+    "actual_worker_participation_claimed": false,
+    "max_down_cells": 20.259220123291,
+    "max_horizontal_cells": 25.6351585388184,
+    "max_rotation_radians": 1.07524764537811,
+    "max_angular_velocity_radians_per_second": 1.27385640144348,
+    "scripted_per_frame_motion": false
+  },
+  "artifacts": [
+    {"id": 12775605462, "name": "sol281-linux-actual-741bc0775c190be98e2f5d23da3d47dd354fef99", "zip_sha256": "715ab3a1c60337b1c2bf5271eb3c37bb5b5eea85187abd25950644de60f0837c", "downloaded_hash_verified": true, "expires": "2026-11-26"},
+    {"id": 12774586889, "name": "sol281-windows-native-741bc0775c190be98e2f5d23da3d47dd354fef99", "zip_sha256": "eb5f6398a399b9d993d2ec530fab30d3b57efc3e74054dc2fbb6585e61b9b8d6", "downloaded_hash_verified": true, "expires": "2027-01-25"},
+    {"id": 12774288832, "name": "sol281-linux-sanitize-741bc0775c190be98e2f5d23da3d47dd354fef99", "zip_sha256": "0cc622e577031f44638b83659eefbecf04955a4bf8a29982d95717f8a1bcc1a1", "downloaded_hash_verified": true, "expires": "2027-01-25"}
+  ],
+  "retained_negative_evidence": [
+    {"kind": "blocked_fall_local", "description": "Original unrelated tree at x88 obstructed toppling and failed the >0.7 rad free-fall criterion. Clear-fall successor moves only unrelated tree to x8. Original outcome is not relabelled as pass."},
+    {"kind": "workflow_validation", "run": 40592095533, "outcome": "failed_before_execution", "repair": "Resolve runner temporary paths inside runner step rather than job environment expressions."},
+    {"kind": "local_general_native_suite", "budget_seconds": 240, "outcome": "incomplete_not_pass", "description": "Broad ordinary suite did not complete within the bounded local attempt; focused green tests do not replace full PR qualification."}
+  ],
+  "remaining": [
+    "Independent architectural/code review and final full PR gates",
+    "Windows Godot/Rapier host execution and source-matched runtime publication",
+    "Compound native material occupancy, sweep and active-material interaction",
+    "Reactive Wood/bark and mixed-material structural policies",
+    "Multiple aggregates, arbitrary fracture, rotated dynamic desoliding and saves",
+    "Normal-application admission, owner feel and representative performance"
+  ]
+}
