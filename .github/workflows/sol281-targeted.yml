@@ -1,0 +1,185 @@
+name: SOL281 scoped Windows Rapier qualification
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [work/sol281-native-detachment-20261027]
+    paths:
+      - '.github/workflows/sol281-targeted.yml'
+      - 'godot/scripts/solid_detachment_*.gd'
+      - 'godot/tests/test_solid_detachment*.gd'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: sol281-targeted-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+
+jobs:
+  source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Preserve exact source and validate provider policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/sol281-source
+          git rev-parse HEAD > build/sol281-source/source.txt
+          git rev-parse HEAD^{tree} > build/sol281-source/tree.txt
+          git -c filter.lfs.process= -c filter.lfs.smudge= -c filter.lfs.required=false archive --format=tar.gz -o build/sol281-source/source.tar.gz HEAD
+          sha256sum build/sol281-source/source.tar.gz > build/sol281-source/archive.sha256
+          python3 tools/ci/check_ci_provider_policy.py
+          git diff --check
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sol281-exact-source-${{ github.sha }}
+          path: build/sol281-source/
+          if-no-files-found: error
+          retention-days: 30
+
+  windows-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - name: Prepare pinned compiler and bindings
+        run: |
+          set -euo pipefail
+          mkdir -p build/sol281-windows
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+          timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          test -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar" || ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+      - name: Build exact-source experimental Windows runtime
+        run: |
+          set -euo pipefail
+          export GODOT_CPP_ROOT="$RUNNER_TEMP/godot-cpp"
+          export SCONS_PYTHON="$RUNNER_TEMP/scons/bin/python" SCONS_JOBS=2
+          export LLVM_MINGW_ROOT="$RUNNER_TEMP/llvm-mingw"
+          export WINDOWS_CXX="$LLVM_MINGW_ROOT/bin/x86_64-w64-mingw32-g++"
+          export CYBERSAND_NATIVE_OUTPUT="$PWD/build/sol281-windows/cybersand_native.windows.x86_64.dll"
+          timeout 30m tools/build_pinned_godot_cpp.sh windows 2>&1 | tee build/sol281-windows/bindings-build.txt
+          timeout 15m tools/build_native_extension_windows.sh 2>&1 | tee build/sol281-windows/native-build.txt
+          "$WINDOWS_CXX" --version > build/sol281-windows/compiler.txt
+          git rev-parse HEAD > build/sol281-windows/source.txt
+          python3 - <<'PY'
+          import hashlib, json, pathlib, subprocess
+          root=pathlib.Path('.')
+          paths=subprocess.check_output(['git','ls-files','native/include','native/src','godot/native_extension','godot/scripts','godot/tests','tools/build_native_extension_windows.sh','tools/build_pinned_godot_cpp.sh'],text=True).splitlines()
+          hashes={p:hashlib.sha256((root/p).read_bytes()).hexdigest() for p in paths}
+          dll=root/'build/sol281-windows/cybersand_native.windows.x86_64.dll'
+          record={'schema':'cybersand.sol281.targeted-runtime.v1','source':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'inputs':hashes,'dll_sha256':hashlib.sha256(dll.read_bytes()).hexdigest(),'scope':'experimental scoped qualification only; not runtime publication or full PR acceptance'}
+          (dll.parent/'manifest.json').write_text(json.dumps(record,indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sol281-windows-build-${{ github.sha }}
+          path: build/sol281-windows/
+          if-no-files-found: error
+          retention-days: 30
+
+  windows-rapier:
+    needs: windows-build
+    runs-on: windows-2022
+    timeout-minutes: 15
+    env:
+      PYTHONUTF8: '1'
+      GODOT_SILENCE_ROOT_WARNING: '1'
+    steps:
+      - shell: bash
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sol281-windows-build-${{ github.sha }}
+          path: build/sol281-windows
+      - name: Materialize pinned Rapier and download pinned Godot
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 --output build/sol281-windows/godot.zip https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+      - name: Verify inputs and execute actual Windows engine cases
+        shell: python
+        run: |
+          import hashlib, json, os, pathlib, re, shutil, subprocess, zipfile
+          root=pathlib.Path.cwd(); out=root/'build/sol281-windows'; result=out/'execution'; result.mkdir()
+          manifest=json.loads((out/'manifest.json').read_text())
+          assert manifest['source']==os.environ['GITHUB_SHA']
+          for p,h in manifest['inputs'].items():
+              assert hashlib.sha256((root/p).read_bytes()).hexdigest()==h, p
+          dll=out/'cybersand_native.windows.x86_64.dll'
+          assert hashlib.sha256(dll.read_bytes()).hexdigest()==manifest['dll_sha256']
+          rapier=root/'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
+          assert hashlib.sha256(rapier.read_bytes()).hexdigest()=='b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7'
+          engine=out/'godot.zip'
+          assert hashlib.sha512(engine.read_bytes()).hexdigest()=='41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9'
+          zipfile.ZipFile(engine).extractall(out/'engine')
+          exe=out/'engine/Godot_v4.7-stable_win64_console.exe'
+          shutil.copy2(dll,root/'godot/addons/cybersand_native/bin'/dll.name)
+          results=[]
+          def run(name,args,footer=None):
+              cmd=[str(exe),*args]
+              try:
+                  p=subprocess.run(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=180)
+                  data=p.stdout
+              except subprocess.TimeoutExpired as exc:
+                  (result/(name+'.txt')).write_bytes(exc.stdout or b'')
+                  raise
+              (result/(name+'.txt')).write_bytes(data)
+              text=data.decode('utf-8','replace')
+              assert p.returncode==0,(name,p.returncode,text[-4000:])
+              assert not re.search(r'(SCRIPT ERROR:|ERROR:|FAIL SOL281)',text),(name,text[-4000:])
+              if footer: assert footer in text,(name,'missing footer')
+              results.append({'name':name,'returncode':p.returncode,'log_sha256':hashlib.sha256(data).hexdigest()})
+          run('import',['--headless','--path','godot','--editor','--import'])
+          run('motion',['--headless','--path','godot','--script','res://tests/test_solid_detachment.gd','--',str(result/'motion.json')],'SOL281_ACTUAL_RAPIER')
+          motion=json.loads((result/'motion.json').read_text()); assert motion['checks']==21 and motion['failures']==[] and motion['platform']=='Windows'
+          run('failure-paths',['--headless','--path','godot','--script','res://tests/test_solid_detachment_failures.gd'],'SOL281')
+          # Run the separately added lifecycle suite once it exists; absence is
+          # explicitly recorded rather than silently described as a pass.
+          lifecycle=root/'godot/tests/test_solid_detachment_lifecycle.gd'
+          if lifecycle.exists():
+              run('lifecycle',['--headless','--path','godot','--script','res://tests/test_solid_detachment_lifecycle.gd'],'SOL281_LIFECYCLE')
+          report={'source':manifest['source'],'runtime_sha256':manifest['dll_sha256'],'platform':'Windows','cases':results,'lifecycle_available':lifecycle.exists(),'motion':motion,'scope':'actual scoped Windows host proof; no full native or production publication claim'}
+          (result/'report.json').write_text(json.dumps(report,indent=2)+'\n')
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sol281-windows-rapier-${{ github.sha }}
+          path: build/sol281-windows/execution/
+          if-no-files-found: error
+          retention-days: 30
