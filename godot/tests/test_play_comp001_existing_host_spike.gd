@@ -46,6 +46,14 @@ func terrain_installed() -> bool:
 	return desktop._physical_terrain_ready
 
 
+# The real desktop owner discards held controls until a neutral physics
+# frame has cleared its post-reset rearm fence.
+func input_rearmed() -> bool:
+	return (desktop.physical_actor_session != null
+		and desktop.physical_actor_session.tick > _initial_physics_tick
+		and not desktop._actor_input_rearm)
+
+
 var _initial_physics_tick: int = 0
 
 
@@ -150,17 +158,29 @@ func run() -> void:
 		await finish()
 		return
 
-	var initial_position: Vector2 = actor.get("position", Vector2.ZERO)
 	_initial_physics_tick = session.tick
 	desktop.paused = false
-	await process_frame
+	var rearmed: bool = await wait_for(Callable(self, "input_rearmed"), 30000)
+	expect(rearmed, "neutral physics frame clears the normal desktop input rearm fence")
+	if not rearmed:
+		await finish()
+		return
+	var initial_position: Vector2 = session.observation(0).get("position", Vector2.ZERO)
+	_initial_physics_tick = session.tick
 	key(KEY_D, true)
+	expect(desktop.get_horizontal_input() > 0.5, "injected D is visible to the real keyboard sampler")
 	var stepped: bool = await wait_for(Callable(self, "player_stepped"), 30000)
 	key(KEY_D, false)
 	expect(stepped, "main-thread Rapier advances while separate native worker is live")
 	if stepped:
 		var later: Dictionary = desktop.physical_actor_session.observation(0)
-		expect(Vector2(later.get("position", Vector2.ZERO)).x > initial_position.x + 0.25,
+		var final_position: Vector2 = later.get("position", Vector2.ZERO)
+		print("PLAY_COMP001_MOTION ", JSON.stringify({
+			"initial_position":initial_position, "final_position":final_position,
+			"delta_x":final_position.x - initial_position.x,
+			"post_reset_rearm_cleared":not desktop._actor_input_rearm
+		}))
+		expect(final_position.x > initial_position.x + 0.25,
 			"real keyboard input moves SetP acrobat through actual native course")
 	expect(desktop.latest_snapshot != null and desktop.latest_snapshot.tick_index > 0,
 		"asynchronous native World completed ordinary material ticks")
