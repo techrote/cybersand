@@ -117,7 +117,8 @@ func run() -> void:
 
 	expect(desktop.microscenario_launch(Catalogue.PLAYER_COURSE_ID, "Play", 0),
 		"real existing desktop admits original course")
-	if not await wait_for(Callable(self, "course_installed")):
+	var installed: bool = await wait_for(Callable(self, "course_installed"))
+	if not installed:
 		expect(false, "course installation was not acknowledged")
 		await finish()
 		return
