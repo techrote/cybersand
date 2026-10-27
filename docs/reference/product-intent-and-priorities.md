@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Approved owner direction and deliberately preserved behavior; not current implementation or performance evidence
 canonical-for: [owner-intent, product-priorities, preserved-material-feel]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-27
 related-documents: [status-and-roadmap.md, ../decisions/ADR-008-bounded-approximate-fidelity.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md]
 ---
 
@@ -124,6 +124,24 @@ The native [Water contract](../systems/water-design.md),
 [appearance contract](../systems/material-appearance-and-rendering.md) own
 Current semantics. Preferences do not authorize weakening conservation,
 collision topology or lifetime safety.
+
+## Owner priority — native solid detachment, 2026-10-27
+
+**Approved owner direction, Planned mechanism:** Cybersand's first
+reversible-soliding gameplay result should let **an existing native-pixel
+solid tree lose its support and become a real falling, toppling and rolling
+Rapier body**. Not just a preauthored sleeping tree, and not an
+optimisation of any liquid. The earlier liquid-sheet investigation was
+a separate tangent and no prerequisite for solids.
+
+[Track-A structural-detachment contract](../operations/soliding-structural-detachment-programme.md)
+and [first implementation/acceptance issue #281](https://github.com/techrote/cybersand/issues/281)
+own that behaviour. Large-world settled-region discovery and stationary
+acceleration remain independently important **Track B**. Their Stage-3B
+#66 → #67 → #68 → #70 chain is not an automatic blocker for a
+bounded local tree proof; neither track silently satisfies the other.
+The dated 2026-09-08/19 physics preferences below remain historical
+requirements, not an override of this implementation priority.
 
 ## Physics direction recorded 2026-09-08
 

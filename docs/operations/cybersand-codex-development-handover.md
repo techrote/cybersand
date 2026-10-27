@@ -4,11 +4,33 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-27
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## #12 native structural detachment priority — 2026-10-27
+
+**Approved owner target; no implementation acceptance:** an existing
+native solid tree should be cut from terrain, undergo a safe
+material/collision-ownership handoff to Rapier and topple/roll via
+real physics. Start with the bounded
+[structural-detachment charter](soliding-structural-detachment-programme.md),
+[issue #281](https://github.com/techrote/cybersand/issues/281)
+and [current-main Stage-3B source review](../audits/2026-10-27-issue12-stage3b-reassessment.md).
+No already-sleeping prefab or scripted rotation qualifies.
+
+**#66 is no longer an automatic first task for this gameplay outcome.**
+The historical #66 → #67 → #68 → #70 sequence below remains
+Track-B global discovery/performance work, with separate parent
+admission and an unchanged #69 preregistration. Dynamic Track A
+must reuse the existing asynchronous native desktop World and
+main-thread Rapier owner, with explicit source/shape/body
+reservations and exclusive collision handoff; do not create a
+duplicate physical runtime. No liquid solver, default or frozen
+scientific result is changed by this documentation.
+
 
 ## Trial successor correction after accepted App — 2026-10-25
 

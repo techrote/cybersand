@@ -4,11 +4,34 @@ status: Approved design
 document-kind: runbook
 scope: Dependency, ownership, gate and validation routing for Stage-3B locality/scalability implementation
 canonical-for: [soliding-stage3b-production-plan]
-last-reviewed: 2026-09-24
+last-reviewed: 2026-10-27
 related-documents: [../audits/issue-12-2026-09-19/stage3b-parent-decision.md, ../audits/2026-09-19-issue-69-stage3b-validation.md, soliding-stage3-freeze.md, soliding-stage3b-astra-review.md, soliding-programme.md]
 ---
 
 # Issue 12 Stage 3B production implementation plan
+
+## 2026-10-27 routing addendum — Track B, not a tree prerequisite
+
+**Approved owner priority; frozen Stage-3B evidence unchanged.**
+The first #12 gameplay milestone is native-cell structural detachment:
+cut an existing solid tree and watch it actually topple/roll as Rapier
+terrain-derived physics. The new [Track-A charter](soliding-structural-detachment-programme.md)
+and [issue #281](https://github.com/techrote/cybersand/issues/281)
+own that work, with the [source reassessment](../audits/2026-10-27-issue12-stage3b-reassessment.md)
+as its evidence boundary.
+
+This plan's `#66 → #67 → #68 → #70` chain remains **Track B**
+large-world **read-only settled-region discovery** work, not an
+automatic gate before a bounded event-driven local Track-A
+handoff. Any actual shared dependency must be identified in source
+and separately reviewed. #69's original frozen 6,488-run
+validation plan stays a Track-B contract, **not** a tree fixture.
+No Stage-4 stationary acceleration, production dynamics, #66
+optimization or #70 parent admission is claimed by this addendum.
+The September checkpoint entries below are date-qualified and
+must not supersede October's gameplay priority or later `main`
+semantics.
+
 
 ## Current base and boundaries
 
@@ -27,7 +50,7 @@ World event/discovery geometry or settled-discovery internals. Stage 3B observes
 authoritative interaction mutations; it does not duplicate INT-000 semantics.
 Recheck current ownership before the later central World producer handoffs.
 
-## Live execution checkpoint — 2026-09-24
+## Execution checkpoint — 2026-09-24 (historical)
 
 The recovery programme is complete through REC-007 and REC-008 records the final
 audit. The inspected pre-REC-008 authoritative main is
