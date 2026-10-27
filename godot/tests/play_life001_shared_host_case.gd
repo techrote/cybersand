@@ -66,22 +66,18 @@ func actor_ready(desktop: Control, rig: StringName) -> bool:
 		and int(desktop.latest_snapshot.rigid_body_epoch) == desktop._physical_epoch)
 
 
-func release_controls() -> void:
-	for code: Key in [KEY_W, KEY_A, KEY_S, KEY_D, KEY_SPACE, KEY_SHIFT,
-		KEY_Q, KEY_E, KEY_Z, KEY_X, KEY_C, KEY_UP, KEY_LEFT, KEY_DOWN, KEY_RIGHT]:
-		var event := InputEventKey.new()
-		event.keycode = code
-		event.pressed = false
-		Input.parse_input_event(event)
-	Input.flush_buffered_events()
-
-
-func set_key(code: Key, pressed: bool) -> void:
+func parse_key(code: Key, pressed: bool) -> void:
 	var event := InputEventKey.new()
 	event.keycode = code
 	event.pressed = pressed
 	Input.parse_input_event(event)
 	Input.flush_buffered_events()
+
+
+func release_controls() -> void:
+	for code: Key in [KEY_W, KEY_A, KEY_S, KEY_D, KEY_SPACE, KEY_SHIFT,
+		KEY_Q, KEY_E, KEY_Z, KEY_X, KEY_C, KEY_UP, KEY_LEFT, KEY_DOWN, KEY_RIGHT]:
+		parse_key(code, false)
 
 
 func close_cycle(desktop: Control, worker: CyberSimulationWorker,
@@ -156,29 +152,34 @@ func run_cycle(rig: StringName, cycle: int) -> bool:
 		await close_cycle(desktop, worker, desktop.physical_actor_session, context)
 		return false
 
-	# Deliver a press and release through the actual Viewport input path before
-	# another physics callback. Do not supplement this with direct submissions:
-	# the assertion must fail if production _unhandled_key_input loses an edge.
-	var movement_key: Key = KEY_D if rig == &"acrobat" else KEY_W
-	var before_edges: Dictionary = desktop.physical_actor_session.observation(0)
-	var commands_before: int = desktop.physical_actor_session.accepted_commands
-	set_key(movement_key, true)
-	set_key(movement_key, false)
-	var after_edges: Dictionary = desktop.physical_actor_session.observation(0)
-	expect(desktop.physical_actor_session.accepted_commands >= commands_before + 2
-		and int(after_edges.last_sequence) >= int(before_edges.last_sequence) + 2,
-		context + "same-frame press/release remains ordered in the real session")
+	# Exercise a real button transition, not merely two changing movement
+	# commands. Input.parse_input_event reaches the production Viewport handler;
+	# there is deliberately no direct test submission to mask a lost edge.
+	var session = desktop.physical_actor_session
+	expect(session._button_edges[0].is_empty(),
+		context + "button edge queue starts empty after neutral rearm")
+	var sequence_before: int = int(session.observation(0).last_sequence)
+	parse_key(KEY_SPACE, true)
+	parse_key(KEY_SPACE, false)
+	var queued_edges: Array = session._button_edges[0].duplicate(true)
+	var after_edges: Dictionary = session.observation(0)
+	expect(queued_edges.size() == 2
+		and str(queued_edges[0].button) == "primary" and bool(queued_edges[0].pressed)
+		and str(queued_edges[1].button) == "primary" and not bool(queued_edges[1].pressed)
+		and int(after_edges.last_sequence) >= sequence_before + 2,
+		context + "production handler preserves ordered primary press/release edges")
 
-	# Focus refusal revokes the live lease and forces release-to-rearm. Only the
-	# existing human producer is cancelled; no policy/NPC owner is introduced.
+	# Focus refusal revokes the live lease and clears those still-unconsumed
+	# edges before requiring release-to-rearm. No policy/NPC owner is introduced.
 	var generation_before: int = int(after_edges.control_generation)
 	desktop.set("test_input_allowed", false)
 	desktop.publish_actor_keyboard_input()
-	var cancelled: Dictionary = desktop.physical_actor_session.observation(0)
+	var cancelled: Dictionary = session.observation(0)
 	expect(desktop._actor_input_rearm
 		and int(cancelled.control_generation) > generation_before
-		and int(cancelled.pending_input_edges) == 0,
-		context + "focus loss cancels input generation and pending edges")
+		and int(cancelled.pending_input_edges) == 0
+		and session._button_edges[0].is_empty(),
+		context + "focus loss cancels the input generation and queued edges")
 	desktop.set("test_input_allowed", true)
 	release_controls()
 	desktop.publish_actor_keyboard_input()
