@@ -1,0 +1,111 @@
+name: SOL281 documentation checkpoint
+on:
+  push:
+    branches: [work/sol281-native-detachment-20261027]
+    paths: ['.github/workflows/sol281-docs-checkpoint.yml']
+permissions:
+  contents: write
+concurrency:
+  group: sol281-docs-checkpoint
+  cancel-in-progress: false
+jobs:
+  document:
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/work/sol281-native-detachment-20261027'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - name: Link current branch runtime without changing executed source
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import json, re, subprocess
+          root=Path('.')
+          source='741bc0775c190be98e2f5d23da3d47dd354fef99'
+          protected=subprocess.check_output(['git','diff','--name-only',source,'HEAD','--','native','godot','Makefile'],text=True)
+          assert not protected.strip(), 'Executable inputs drifted from qualified source: '+protected
+          def insert(path, anchor, text):
+              p=root/path
+              s=p.read_text()
+              assert s.count(anchor)==1, (path,anchor)
+              s=s.replace(anchor,anchor+'\n'+text+'\n',1)
+              s=re.sub(r'^last-reviewed: \d{4}-\d{2}-\d{2}$','last-reviewed: 2026-10-27',s,count=1,flags=re.M)
+              p.write_text(s)
+          insert('docs/operations/soliding-structural-detachment-programme.md','# Structural detachment and reversible solid-body handoff',
+              '## Experimental implementation checkpoint — 2026-10-27\n\n'
+              '**Current on the implementation branch, not production main:** the [native-tree runtime](../systems/solid-detachment.md) '
+              'now transfers 520 actual native RedBrick cells to a compound Rapier body and demonstrates natural toppling/contact motion through the existing async owner. '
+              '[Exact-source evidence](../audits/2026-10-27-sol281-native-tree.md) records Linux real-host/rendered proof, Windows native and sanitizer passes. '
+              'Reactive Wood, compound native material coupling, general dynamic desoliding, Windows Rapier and full issue acceptance remain open. '
+              'The original Approved charter below remains the broader requirement; a narrow slice does not silently complete it.')
+          insert('docs/README.md','## Scalable reversible soliding',
+              '**Experimental source checkpoint:** [real native-tree detachment laboratory](systems/solid-detachment.md) and '
+              '[source-qualified execution record](audits/2026-10-27-sol281-native-tree.md) now demonstrate actual native payload transfer and Linux Rapier toppling. '
+              'This dry inert one-body branch is not main/release acceptance or general reactive-solid coupling; #281 stays open.')
+          insert('docs/reference/retrieval-index.md','## Soliding, settled-region acceleration and coherent fracture',
+              '- **What actually runs for #281, and can I test native-tree toppling?** [Experimental native solid-detachment runtime and controls](../systems/solid-detachment.md), '
+              '[741bc077 Linux/Windows-native/Rapier evidence and unpassed gates](../audits/2026-10-27-sol281-native-tree.md). '
+              'Distinguish actual native terrain transfer from authored bodies, Windows native from Windows Rapier, and inactive rollback from dynamic desoliding.')
+          insert('docs/reference/status-and-roadmap.md','## Issue #12 structural-detachment priority — 2026-10-27',
+              '**Later experimental implementation checkpoint (not merged production):** [native detachment runtime](../systems/solid-detachment.md) '
+              'at source741bc077 has 520 native cells, six exact compound shapes, real async Linux Rapier motion, 13,074-check Linux/Windows native and Linux sanitizer passes, '
+              '21 motion and20 live failure checks, and rendered captures. [The dated record](../audits/2026-10-27-sol281-native-tree.md) preserves all source and platform limits. '
+              'Reactive Wood/compound cellular coupling, dynamic demotion, Windows Rapier, independent review and full qualification remain open; #281 is not closed.')
+          insert('docs/operations/cybersand-codex-development-handover.md','# Development handover',
+              '## #281 executable handover — native tree proof\n\n'
+              'Branch `work/sol281-native-detachment-20261027`, tested source `741bc0775c190be98e2f5d23da3d47dd354fef99`, '
+              'contains the [experimental native-tree laboratory](../systems/solid-detachment.md). '
+              '[Actual execution and failures](../audits/2026-10-27-sol281-native-tree.md) distinguish the dry ambient RedBrick transfer/Rapier proof from still-missing reactive Wood, '
+              'compound native material occupancy, general dynamic desoliding, Windows Rapier, current published runtimes and independent/full review. '
+              'Retain the successful 40592308871 evidence and do not claim #281 closed. Resume from these concrete gaps rather than rebuilding an authored falling-body demo.')
+          insert('docs/architecture/soliding-lifecycle.md','# Scalable soliding representation lifecycle',
+              '**Experimental runtime addition, source741bc077:** [the actual native handoff](../systems/solid-detachment.md) now implements a one-aggregate '
+              'dry Wall/RedBrick prepare/acknowledge/commit/finalize and inactive rollback path in `World`. '
+              'This is distinct from the standalone model discussed below; [actual evidence](../audits/2026-10-27-sol281-native-tree.md) does not qualify arbitrary materials, '
+              'dynamic demotion, general Stage-6/7 lifecycle or production release.')
+          p=Path('docs/reference/configuration-reference.md')
+          s=p.read_text()
+          s+='\n## Experimental native solid detachment\n\n'
+          s+='The opt-in [#281 runtime](../systems/solid-detachment.md) is disabled by default and exposed to the diagnostic host only. '
+          s+='Native `configure_solid_detachment` allocates one bounded store; maximum domain64x64, members1024, shapes256(default admission128). '
+          s+='Only homogeneous ambient Wall/RedBrick and non-pressure/non-inertial Worlds are admitted. '
+          s+='The lab is `godot/solid_detachment_lab.tscn`: Space cut, P pause, R full session reset, Escape exit. '
+          s+='Old checked-in main runtimes lack the new API; build the matching extension. No global default/control or liquid family changes.\n'
+          p.write_text(s)
+          p=Path('docs/reference/retrieval-corpus.json')
+          o=json.loads(p.read_text())
+          runtime='systems/solid-detachment.md'
+          audit='audits/2026-10-27-sol281-native-tree.md'
+          assert runtime not in o['documents']
+          o['documents'].insert(o['documents'].index('systems/settled-region-discovery.md')+1,runtime)
+          assert not any(x['path']==audit for x in o['excluded'])
+          o['excluded'].append({'path':audit,'reason':'Dated source741bc077 native Linux/Windows, actual Linux Rapier/rendered evidence and retained failures; retrieve explicitly through the experimental solid-detachment runtime, not as general production acceptance'})
+          o['reviewed']='2026-10-27'
+          p.write_text(json.dumps(o,indent=2,ensure_ascii=False)+'\n')
+          # No assembly or self-mutating workflow is retained in the final tree.
+          Path('.github/workflows/sol281-docs-checkpoint.yml').unlink()
+          PY
+          mkdir -p build/sol281-docs
+          python3 tools/ci/check_docs.py 2>&1 | tee build/sol281-docs/docs.txt
+          python3 tools/ci/check_ci_provider_policy.py 2>&1 | tee build/sol281-docs/provider.txt
+          python3 tools/docs/retrieval_eval.py --output build/sol281-docs/retrieval.json > build/sol281-docs/retrieval.txt
+          git diff --check
+          git diff --name-only | tee build/sol281-docs/changed-paths.txt
+          git add docs
+          git add -u .github/workflows/sol281-docs-checkpoint.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'docs(sol281): route actual experimental runtime, exact evidence and remaining gates'
+          git rev-parse HEAD > build/sol281-docs/documentation-head.txt
+          git push origin HEAD:refs/heads/work/sol281-native-detachment-20261027
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sol281-documentation-${{ github.run_id }}
+          path: build/sol281-docs/
+          if-no-files-found: warn
