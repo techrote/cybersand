@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-27
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -265,11 +265,21 @@ separate; the programme graph owns admission.
 
 ## Soliding, settled-region acceleration and coherent fracture
 
+- **Can an existing native-cell tree be cut free and physically topple/roll
+  as a Rapier body?** [Track-A owner-priority and tree acceptance](../operations/soliding-structural-detachment-programme.md);
+  [issue #281](https://github.com/techrote/cybersand/issues/281).
+  **Approved direction, Planned implementation**; a preauthored body is not a pass.
+- **Why is Stage-3B #66 not the first blocker for that tree?**
+  [Dated current-main and Noita reassessment](../audits/2026-10-27-issue12-stage3b-reassessment.md);
+  [Track-B performance plan](../operations/soliding-stage3b-production-plan.md).
+  Original #66 → #67 → #68 → #70 and #69 gates remain preserved.
+
+
 - Current programme/dependencies and Phase 0 disposition: [soliding programme](../operations/soliding-programme.md).
 - Owners, lifecycle, eligibility and nonwrapping identities: [soliding lifecycle](../architecture/soliding-lifecycle.md).
 - Dirty/activity discovery, complete summaries and refusal: [discovery substrate](../systems/settled-region-discovery.md).
 - Passed Stage-3A bounded-reference evidence and open Stage-3B locality/scalability gate: [Stage-3 review](../audits/issue-12-2026-09-19/stage3-exit-review.md).
-- Completed read-only Stage-3B review and active implementation route: [Astra architecture-review packet](../operations/soliding-stage3b-astra-review.md), then the [Stage-3B production plan](../operations/soliding-stage3b-production-plan.md). #56-#65/#69 are complete; #65 landed and was verified through the recovery programme. **#66 is next**, followed by #67, #68 and #70.
+- Completed read-only Stage-3B review and active implementation route: [Astra architecture-review packet](../operations/soliding-stage3b-astra-review.md), then the [Stage-3B production plan](../operations/soliding-stage3b-production-plan.md). #56-#65/#69 are complete; #65 landed and was verified through the recovery programme. **#66 is next within Track B**, followed by #67, #68 and #70.
 - Ordinary Current sleep control and measurement gaps: [measurement contract](../operations/soliding-measurement.md).
 
 - Blocked falling/torque/coherent-child motion fixture: [macro-fracture preregistration](../operations/soliding-macro-fracture-fixture.md).
