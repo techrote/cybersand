@@ -1,0 +1,69 @@
+{
+  "schema": "cybersand.sol281.compound-coupling-receipt.v1",
+  "date": "2026-10-27",
+  "source": "41dc25ca060ecb07cef15c1640feeb9f6cce1eb4",
+  "tree": "8d7e650d7a12dc7f9a49f22270257b60fc6c506e",
+  "run": {
+    "id": 40603701831,
+    "url": "https://github.com/techrote/cybersand/actions/runs/40603701831",
+    "conclusion": "success"
+  },
+  "fixture": {
+    "members": 520,
+    "shapes": 6,
+    "initial_body_ids": [2, 0, 0, 6],
+    "sand_average_y": 25.75,
+    "water_average_y": 71.0
+  },
+  "linux": {
+    "checks": 32,
+    "failures": 0,
+    "contacts": 6120,
+    "displaced": 28,
+    "unresolved": 1094,
+    "state_publications": 361,
+    "result_snapshots": 169,
+    "result_records": 1008,
+    "stale_results": 0,
+    "max_rotation": 1.0789840221405,
+    "max_translation": 32.2136840820312,
+    "runtime_sha256": "48ddf4075e17b25c812440f8c1cb2ebcdb9a9b1eb856b56d9c23c7a2ec955b5f",
+    "artifact_id": 12778724981,
+    "artifact_zip_sha256": "7023195c98deba01b22e8bac8fc53edbaf71d4721e41d703b3b85fc1c1d34399"
+  },
+  "windows": {
+    "checks": 32,
+    "failures": 0,
+    "contacts": 9946,
+    "displaced": 26,
+    "unresolved": 2190,
+    "state_publications": 361,
+    "result_snapshots": 294,
+    "result_records": 1716,
+    "stale_results": 0,
+    "max_rotation": 1.12322628498077,
+    "max_translation": 32.8296508789063,
+    "runtime_sha256": "f30a9990dd2fb745345c6d37034b9cfb7b600d265ddbc2c11e1026a9953963fe",
+    "manifest_inputs": 547,
+    "execution_artifact_id": 12780835139,
+    "execution_zip_sha256": "51640622fbdaefd298d1771889dace2df936657b3781922a0341ef471a5474bd",
+    "build_artifact_id": 12779771798,
+    "build_zip_sha256": "783c7c648696e7123684c224149755bb07e6be9b08a0870afdc54862e6388a56"
+  },
+  "source_artifact": {
+    "id": 12779234027,
+    "zip_sha256": "b279a0000680533ebef44ba3cbd51c12f8ef5c60d52212c176a135a75875e86d"
+  },
+  "preserved_failures": [
+    "initial exact patch omitted untracked test file",
+    "corrected assembly push rejected for missing workflow-write permission"
+  ],
+  "limits": [
+    "draft branch only",
+    "one dry homogeneous aggregate",
+    "cumulative unresolved interactions nonzero",
+    "no reactive Wood or mixed-material cohesion",
+    "no dynamic desoliding/fracture/persistence",
+    "no production runtime publication or independent review"
+  ]
+}
