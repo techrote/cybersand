@@ -58,6 +58,11 @@ func _run() -> void:
 		and float(first.frame_interval_ms.p95) > 0.0
 		and float(first.completed_hz) > 0.0,
 		"reference control reports real moves and finite native/frame timing")
+	expect(int(first.maximum_workers_observed) == 1
+		and int(first.worker_participation_ticks) == 0,
+		"one-worker control cannot invent multiple task-claiming participants")
+	expect(float(first.terminal_export_hash_ms) >= 0.0,
+		"terminal serialization cost is recorded separately from measured HZ")
 	expect(bool(cancelled.get("cancelled", false))
 		and bool(cancelled.get("global_setting_unchanged", false)),
 		"bounded cancellation returns without changing process configuration")
@@ -71,18 +76,23 @@ func _run() -> void:
 	var suite: Dictionary = await CyberWorkerBenchmark.run(
 		self, false, 0, progress, cancel, 8)
 	var rows: Array = suite.get("rows", [])
+	var distinct_actual: Array = suite.get("distinct_actual_counts", [])
 	expect(bool(suite.get("ok", false)) and rows.size() == 10,
 		"matrix contains 1/2/4/6/Auto at both reference sizes")
 	expect(bool(suite.get("readback_consistent", false))
 		and bool(suite.get("global_setting_unchanged", false)),
 		"matrix preserves exact worker readback and global configuration")
-	expect(suite.get("parity") == true,
-		"distinct actual worker counts retain fixed-input level parity")
+	if distinct_actual.size() > 1:
+		expect(suite.get("parity") == true,
+			"distinct actual worker counts retain fixed-input level parity")
+	else:
+		expect(suite.get("parity") == null,
+			"one-count runtime reports parity as unavailable, not invented")
 
 	var requests: Dictionary = {}
 	var sizes: Dictionary = {}
 	var hashes: Dictionary = {}
-	var parallel_row: Dictionary = {}
+	var participating_row: Dictionary = {}
 	var multiworker_rows: int = 0
 	for row: Dictionary in rows:
 		requests[int(row.requested_workers)] = true
@@ -97,13 +107,18 @@ func _run() -> void:
 		expect(float(row.native_ms.mean) > 0.0 and float(row.completed_hz) > 0.0
 			and int(row.moves) > 0 and str(row.level_hash).length() == 64,
 			"row has finite native work, throughput and a complete digest")
+		expect(float(row.terminal_export_hash_ms) >= 0.0,
+			"row separates terminal export/hash cost from measured tick interval")
 		expect(int(row.maximum_eligible_blocks) > 0
 			and int(row.maximum_scheduler_jobs) >= 1,
 			"row reports eligible native scheduler work")
+		expect(int(row.maximum_workers_observed) >= 1
+			and int(row.maximum_workers_observed) <= int(row.actual_workers),
+			"copied TickStats participant count is bounded by the actual pool")
 		if int(row.actual_workers) > 1:
 			multiworker_rows += 1
-			if bool(row.parallel_participation):
-				parallel_row = row.duplicate(true)
+			if int(row.maximum_workers_observed) > 1:
+				participating_row = row.duplicate(true)
 
 	for requested: int in CyberWorkerBenchmark.SUPPORTED_REQUESTS:
 		expect(requests.has(requested),
@@ -111,10 +126,12 @@ func _run() -> void:
 	expect(sizes.has(480) and sizes.has(960),
 		"both bounded material workload sizes executed")
 	if bool(suite.get("threaded_runtime", false)) and multiworker_rows > 0:
-		expect(not parallel_row.is_empty()
-			and int(parallel_row.parallel_phase_ticks) > 0
-			and int(parallel_row.maximum_scheduler_jobs) > 1,
-			"at least one eligible multiworker row actually participates in parallel phases")
+		expect(not participating_row.is_empty()
+			and int(participating_row.maximum_workers_observed) > 1
+			and int(participating_row.worker_participation_ticks) > 0
+			and int(participating_row.parallel_phase_ticks) > 0
+			and int(participating_row.maximum_scheduler_jobs) > 1,
+			"at least one eligible row has multiple actual task-claiming pool workers")
 	else:
 		expect(multiworker_rows == 0,
 			"non-threaded runtime truthfully exposes no multiworker row")
@@ -126,19 +143,22 @@ func _run() -> void:
 		"failures": failures,
 		"rows": rows.size(),
 		"requested_counts": suite.get("requested_counts", []),
-		"distinct_actual_counts": suite.get("distinct_actual_counts", []),
+		"distinct_actual_counts": distinct_actual,
 		"logical_threads": suite.get("logical_threads", -1),
 		"auto_workers": suite.get("auto_workers", -1),
 		"parallel_participation_rows": suite.get("parallel_participation_rows", 0),
-		"participating_request": parallel_row.get("requested_workers", null),
-		"participating_actual_workers": parallel_row.get("actual_workers", null),
-		"participating_parallel_ticks": parallel_row.get("parallel_phase_ticks", 0),
+		"participating_request": participating_row.get("requested_workers", null),
+		"participating_actual_workers": participating_row.get("actual_workers", null),
+		"maximum_workers_observed": participating_row.get("maximum_workers_observed", 0),
+		"worker_participation_ticks": participating_row.get("worker_participation_ticks", 0),
+		"participating_parallel_ticks": participating_row.get("parallel_phase_ticks", 0),
 		"global_setting_before": setting_before,
 		"global_setting_after": ProjectSettings.get_setting(
 			"cybersand/native_worker_threads", 0),
 		"fixed_input_parity": suite.get("parity", null),
 		"rendered_gameplay_fps_measured": false,
 		"causal_speedup_claimed": false,
+		"per_worker_utilization_measured": false,
 		"player_world_reconfigured": false
 	}))
 	quit(0 if failures == 0 else 1)
