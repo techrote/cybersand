@@ -94,7 +94,8 @@ func run() -> void:
 
 	expect(desktop.microscenario_launch(Catalogue.PLAYER_COURSE_ID, "Play", 0),
 		"real desktop accepts the original course through the normal picker route")
-	if not await wait_for(Callable(self, "course_ready")):
+	var installed: bool = await wait_for(Callable(self, "course_ready"))
+	if not installed:
 		expect(false, "normal course install did not acknowledge")
 		await finish()
 		return
@@ -106,13 +107,15 @@ func run() -> void:
 
 	expect(desktop.apply_actor_prototype_configuration(&"rapier/acrobat", &"human", false),
 		"same real F5 SetP actor construction is available")
-	if not await wait_for(Callable(self, "rig_ready")):
+	var prepared: bool = await wait_for(Callable(self, "rig_ready"))
+	if not prepared:
 		expect(false, "real Rapier actor or physical terrain was not ready")
 		await finish()
 		return
 
 	desktop.paused = false
-	if not await wait_for(Callable(self, "ticks_ready")):
+	var advanced: bool = await wait_for(Callable(self, "ticks_ready"))
+	if not advanced:
 		expect(false, "independently paced native and Rapier sessions did not advance")
 		await finish()
 		return
