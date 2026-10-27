@@ -4,11 +4,27 @@ status: Planned
 document-kind: runbook
 scope: Blocked Stage 6 and 7 fixture specification for real Rapier rotation and coherent-child motion inheritance; no implementation or acceptance claim
 canonical-for: [soliding-macro-fracture-fixture]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-10-27
 related-documents: [soliding-programme.md, ../architecture/soliding-lifecycle.md, soliding-measurement.md, ../audits/2026-09-19-issue-12-phase0-reuse.md]
 ---
 
 # Macro-dynamics and coherent fracture preregistration
+
+## 2026-10-27 earlier native tree-fixture separation
+
+This full **Stage-6/7** macro-fracture preregistration remains
+**blocked** by its own multi-aggregate ownership/physics gates.
+The owner now prioritizes a **smaller, earlier** first demonstration
+of existing native terrain losing support, transferring exact cells
+and toppling/rolling in real Rapier. Its
+[Track-A A0–A5 ladder](soliding-structural-detachment-programme.md)
+and [#281](https://github.com/techrote/cybersand/issues/281)
+are distinct from this frozen MD/FR suite. Retain the original
+rectangle, torque and coherent-child motion obligations below;
+no historical receipt is upgraded, no authored falling body
+qualifies a native promotion, and Stage 3B remains a separate
+read-only/acceleration lane.
+
 
 ## Entry gate and evidence boundary
 
