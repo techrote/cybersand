@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-10-25",
+  "reviewed": "2026-10-27",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "MATERIAL_LAB.md",
@@ -91,6 +91,7 @@
     "operations/soliding-stage3b-production-plan.md",
     "architecture/soliding-lifecycle.md",
     "systems/settled-region-discovery.md",
+    "systems/solid-detachment.md",
     "operations/soliding-measurement.md",
     "operations/soliding-macro-fracture-fixture.md",
     "operations/soliding-stage3-freeze.md",
@@ -522,6 +523,10 @@
     {
       "path": "audits/2026-10-27-issue12-stage3b-reassessment.md",
       "reason": "Dated 2026-10-27 source-inspection and Noita/Stage-3B reassessment; retrieve explicitly through canonical Track-A soliding programme, not as a standalone future-runtime performance result"
+    },
+    {
+      "path": "audits/2026-10-27-sol281-native-tree.md",
+      "reason": "Dated source 741bc077 native Linux/Windows, actual Linux Rapier/rendered evidence and retained failures; retrieve explicitly through the experimental solid-detachment runtime, not as general production acceptance"
     }
   ],
   "integration_note": "Retains scene, generation, actor, sampled and physical actor-usable, Thunderbowl, physical-actor and presentation routes; historical questions remain separately scoped. Deepworks routes cover full-size four-plane exhibitions, independent native source schedules and parameterized depth dimensions; its dated audit remains explicitly scoped. Player playground adds seven human movement presets, native material-field authority and circular-wheel approximation routes; dated execution remains separately scoped. GEN-003 typed-spatial and operator-reference routes from main are retained alongside player playground routes. GEN-004 hierarchy and ADR-013 canonical routes coexist with the player and GEN-003 routes; both GEN-004 and player completion audits remain explicitly excluded from ordinary retrieval. The accepted main #246 native prepared-setup, normalization, typed receipt and exact quantity contract is an explicit Current route. Its earlier local checkpoint and final accepted source/platform audit remain excluded from default retrieval; native-v1 full-host qualification and #202 ownership remain explicit. The #201 optimization contract is an explicit branch-Current route; its dated evidence remains separately scoped, with historical execution1/2 and current execution3, actual host/platform gates and no universal speedup kept explicit. The combined #212 source also retains the IN canonical route and separately qualified standalone adapter evidence; fresh combined-source proof is required before publication. The #202 canonical host extensions and separately excluded dated UI/actor/observation/Tower/Water Feel records are retained; earlier application/runtime seals are not relabelled as combined-source qualification. The native CYSD thermal preparation API and LCB-CYSD-PREP-01 are retained with ordinary importer/host and final qualification still open. Moving-mask repair and LCB-MASK-GAS-01 are retained. Historical pressure LCB10/LCB11 aliases remain under the existing LCB-MAIN-ACCEPTANCE-01/LCB-PRESSURE-OPT-01 IDs with exact query wording; all current source requires fresh matching publication. The bounded ordinary synchronous four-demo recipe route and LCB-ORDINARY-DEMO-01 are additive; its dated proof remains excluded and source-qualified, with imported labels, healthy-World recovery and remaining constructors/platforms explicit. Authored synchronous Physics Pit and LCB-SYNC-BODY-01 are additive routes; their local Windows proof is separately excluded and does not qualify actual Wasm/visual, other physical constructors, same-policy quarantine recovery or final publication. Synchronous supported-body Water Feel and LCB-SYNC-WATER-BODY-01 are additive current routes with separately excluded local Windows evidence; actual native family readback supersedes older label-only PhysicsPit coverage without rewriting its hashes or claiming final source-matched/Web acceptance. Final application union and LCB-HOST-UNION-01 add exact immutable default namespaces, both whole-cell future-source refusals and strict Water005/native-Web functional evidence; dated integration results remain excluded and publication/browser/scientific gates stay separate. The separate actual common-Water Web record qualifies source4948 terminal functional execution on both profiles; ordinary visual/manual/body-bearing browser and final desktop publication remain separate. Post-publication identity regressions now test actual manifest/path equality in either artifact state while preserving full-host/module/script qualification; original publication and failed Linux evidence remain source-bound. All151 query strings and other150 question objects remain unchanged; only the existing UNION fact is appended. Corrected Appdc2 Trial consumption retains incoming151 question objects plus the separate Trial question/frozen32. Combined historical535 now has six changed entries and six new Trial paths/current541; actual engine proofs remain scoped to ad3 and the App correction overlay."

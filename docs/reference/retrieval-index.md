@@ -264,6 +264,8 @@ claims. Exploratory source acceptance, merged readiness and platform acceptance 
 separate; the programme graph owns admission.
 
 ## Soliding, settled-region acceleration and coherent fracture
+- **What actually runs for #281, and can I test native-tree toppling?** [Experimental native solid-detachment runtime and controls](../systems/solid-detachment.md), [741bc077 Linux/Windows-native/Rapier evidence and unpassed gates](../audits/2026-10-27-sol281-native-tree.md). Distinguish actual native terrain transfer from authored bodies, Windows native from Windows Rapier, and inactive rollback from dynamic desoliding.
+
 
 - **Can an existing native-cell tree be cut free and physically topple/roll
   as a Rapier body?** [Track-A owner-priority and tree acceptance](../operations/soliding-structural-detachment-programme.md);

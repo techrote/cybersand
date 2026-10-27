@@ -9,6 +9,10 @@ related-documents: [soliding-programme.md, soliding-stage3b-production-plan.md, 
 ---
 
 # Structural detachment and reversible solid-body handoff
+## Experimental implementation checkpoint — 2026-10-27
+
+**Current on the implementation branch, not production main:** the [native-tree runtime](../systems/solid-detachment.md) now transfers 520 actual native RedBrick cells to a compound Rapier body and demonstrates natural toppling/contact motion through the existing async owner. [Exact-source evidence](../audits/2026-10-27-sol281-native-tree.md) records Linux real-host/rendered proof, Windows native and sanitizer passes. Reactive Wood, compound native material coupling, general dynamic desoliding, Windows Rapier and full issue acceptance remain open. The original Approved charter below remains the broader requirement; a narrow slice does not silently complete it.
+
 
 ## Approved owner intent — 2026-10-27
 
