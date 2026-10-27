@@ -10,6 +10,15 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## Registered native-default actors
+
+[H1 desktop actor preparation and evidence](../audits/2026-10-25-lcb003-default-actor-host.md): retained single
+actor/controller/equipment Apply, fresh Restart/F5, transactional refusal,
+local Windows122x3/38 checks and explicit normalized Water-IN body play. The
+[canonical owner contract](../architecture/liquid-prepared-setup-and-receipts.md#registered-native-default-actors)
+owns semantics; all-roster, final platform, full-host/scientific and deferred
+Web acceptance remain separate.
+
 - [Desktop barrel/Ripper preparation](../audits/2026-10-25-lcb003-trial-body-constructors.md): exact retained Apply motion, fresh Restart/F5, transactional one-body admission/refusal and Windows-only proof; [canonical owner contract](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation) owns semantics.
 
 - [Actual common-Water Web functional proof](../audits/2026-10-25-lcb003-web-common-water.md): compat77/threaded76 terminal POSTs, six body-free Water/four mixed arms and source-bound native reuse; ordinary visual/manual/body-bearing browser and full scientific/host gates remain open.

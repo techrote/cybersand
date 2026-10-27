@@ -11,6 +11,7 @@ const ActorSession = preload("res://scripts/actor_prototype_session.gd")
 const UsableSession = preload("res://scripts/usable_session.gd")
 const PreparedSampled = preload("res://scripts/prepared_sampled_session.gd")
 const PreparedTrialBody = preload("res://scripts/prepared_trial_body_session.gd")
+const PreparedDefaultActor = preload("res://scripts/prepared_default_actor_session.gd")
 const LiquidHostEvidence = preload("res://scripts/liquid_host_evidence.gd")
 const PhysicalEffects = preload("res://scripts/physical_actor_effects.gd")
 const PhysicalUsables = preload("res://scripts/physical_usable_runtime.gd")
@@ -151,8 +152,9 @@ func queue_lab(command: Dictionary) -> void:
 	_lab_request_revision += 1
 	_lab_request = command.duplicate(true)
 	_lab_request["_owner_request_revision"] = _lab_request_revision
-	_pending_physical_effects.clear()
-	_cancel_physical_usables_locked()
+	if not command.get("retain_default_actor",false):
+		_pending_physical_effects.clear()
+		_cancel_physical_usables_locked()
 	if command.has("step") or command.has("reset") or command.has("water_reset") or command.has("scenario_reset") or command.has("default_liquid_reset") or command.has("floor"): _paused = true
 	_mutex.unlock()
 
@@ -240,12 +242,29 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 		owner_execution: Dictionary) -> Variant:
 	var physical: Dictionary = command.get("controlled_liquid_setup",{}).get("physical_owner",{})
 	var completing: bool = bool(command.get("_prepared_physical_commit",false))
-	var staged: Dictionary = _pending_physical_liquid.get("staged",{}) if completing else PreparedSampled.prepare(bridge, _world, token,
-		Vector2(definition.player_start[0],definition.player_start[1]),
-		bool(command.get("sampled_character_enabled",false)),
-		bool(command.get("runtime_enclosure_recovery_enabled",true)), profile,
-		command.get("exploratory_actor_definitions",[]), _actor_session.identity_epoch(),
-		_prepared_actor_factory, _prepared_usable_factory)
+	var retaining: bool = bool(command.get("retain_default_actor",false))
+	var retained_binding := PackedByteArray()
+	var staged: Dictionary
+	if completing:
+		staged = _pending_physical_liquid.get("staged",{})
+		retained_binding = _pending_physical_liquid.get("retained_worker_state",PackedByteArray())
+	elif retaining:
+		_mutex.lock()
+		var captured: Dictionary = _retained_default_worker_state()
+		_mutex.unlock()
+		if not captured.ok:
+			_prepared_liquid_owner_error = "Retained actor controller/equipment descriptor refused"
+			return false
+		retained_binding = captured.bytes
+		staged = {"ok":true,"actors":_actor_session,"usables":_usable_session,"character":_character,
+			"enabled":_sampled_character_enabled}
+	else:
+		staged = PreparedSampled.prepare(bridge, _world, token,
+			Vector2(definition.player_start[0],definition.player_start[1]),
+			bool(command.get("sampled_character_enabled",false)),
+			bool(command.get("runtime_enclosure_recovery_enabled",true)), profile,
+			command.get("exploratory_actor_definitions",[]), _actor_session.identity_epoch(),
+			_prepared_actor_factory, _prepared_usable_factory)
 	if not staged.get("ok",false):
 		_prepared_liquid_owner_error = str(staged.get("error","Prepared owner was retired"))
 		return false
@@ -262,7 +281,8 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 			and settings_revision == _construction_settings_revision
 		if current:
 			_pending_physical_liquid = {"bridge":bridge,"token":token,"command":command.duplicate(true),
-				"request_revision":request_revision,"settings_revision":settings_revision,"staged":staged}
+				"request_revision":request_revision,"settings_revision":settings_revision,"staged":staged,
+				"retained_worker_state":retained_binding}
 			_prepared_physical_publication = values
 			_prepared_physical_ready = {}
 		_mutex.unlock()
@@ -278,6 +298,14 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 	if completing:
 		current = current and not _pending_physical_liquid.is_empty() \
 			and token == int(_pending_physical_liquid.get("token",0)) and bool(_prepared_physical_ready.get("ready",false))
+	if retaining:
+		# Input admission uses these same locks. Keep them through the native
+		# swap so a command cannot land between the copied-state fence and commit.
+		_actor_session._mutex.lock()
+		_usable_session._mutex.lock()
+		var final_binding: Dictionary = _capture_retained_default_worker_state_locked()
+		current = current and final_binding.ok and final_binding.bytes == retained_binding
+		if not current: _prepared_liquid_owner_error = "Retained actor controller/equipment or admitted mailbox changed"
 	var committed: bool = bridge.commit_liquid_world(_world, token) if current else false
 	if committed:
 		_actor_session = staged.actors
@@ -290,7 +318,7 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 			_prepared_physical_frame_hold = {"serial":int(command.get("scenario_request_serial",0)),
 				"epoch":int(physical.epoch)}
 			_player_environment_profile = profile.duplicate(true)
-			_set_physical_actor_epoch_locked(int(physical.epoch))
+			if not retaining: _set_physical_actor_epoch_locked(int(physical.epoch))
 		if definition.interest.policy == "owner" or definition.execution.policy == "owner":
 			_prepared_frame_hold = owner_execution
 			_prepared_frame_serial = int(command.get("scenario_request_serial",0))
@@ -301,11 +329,33 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 			_simulation_window_enabled = owner_execution.simulation_window_enabled
 			_cadence_lod_enabled = owner_execution.cadence_lod_enabled
 			_liquid_surface_adhesion_enabled = owner_execution.liquid_surface_adhesion_enabled
+	if retaining:
+		_usable_session._mutex.unlock()
+		_actor_session._mutex.unlock()
 	_mutex.unlock()
 	# These references intentionally remain alive until after the mutex fence.
 	retained_actors = null
 	retained_usables = null
 	return committed
+
+func _retained_default_worker_state() -> Dictionary:
+	_actor_session._mutex.lock()
+	_usable_session._mutex.lock()
+	var result: Dictionary = _capture_retained_default_worker_state_locked()
+	_usable_session._mutex.unlock()
+	_actor_session._mutex.unlock()
+	return result
+
+func _capture_retained_default_worker_state_locked() -> Dictionary:
+	# Caller owns the worker and both input-admission mutexes.
+	if _physical_usables._engine.active_world != null: return {"ok":false}
+	return PreparedDefaultActor.capture_state({
+		"actors":_actor_session,"usables":_usable_session,"character":_character,
+		"physical_usables":_physical_usables,"physical_effect_epoch":_physical_effect_epoch,
+		"rigid_body_epoch":_rigid_body_epoch,"effect_generations":_physical_effect_generations,
+		"effects":_pending_physical_effects,"usables_pending":_pending_physical_usables,
+		"usables_inflight":_physical_usable_inflight,"usable_frame":_physical_usable_frame,
+		"cancelled_generations":_physical_usable_cancelled_generations})
 
 func _lab_release(index: int) -> void:
 	if _water_lab_active or _micro_active: return
@@ -398,27 +448,44 @@ func _apply_prepared_default_liquid(command: Dictionary) -> bool:
 	var physical: Dictionary = setup.get("physical_owner",{})
 	var player_configuration: Dictionary=command.get("default_player_configuration",{})
 	var trial: bool=physical.get("kind","")=="trial_body"
+	var retaining: bool=bool(command.get("retain_default_actor",false))
+	var physical_kind: String=str(physical.get("base_kind",physical.get("kind","")))
 	var sampled: bool=bool(command.get("sampled_character_enabled",false))
-	var valid_reference: bool=(not trial and physical.get("kind","")=="reference_body" and physical.get("epoch",-1)==0 \
-		and physical.get("initial_bodies") is PackedFloat32Array \
-		and physical.initial_bodies.size()==3*CyberRigidBodyCoupling.INPUT_STRIDE and sampled \
-		and str(player_configuration.get("physical_trial","" )).is_empty() and player_configuration.get("representation","")=="sampled")
-	var valid_trial: bool=(_prepared_trial_values_valid(physical) and not sampled \
-		and player_configuration.get("representation","")=="barrel-rapier" \
-		and player_configuration.get("physical_trial","")==physical.get("trial_arm","") \
+	var rig: String=str(player_configuration.get("physical_rig",""))
+	var actor: String=str(player_configuration.get("actor_model",""))
+	var definitions: Array=command.get("exploratory_actor_definitions",[])
+	var valid_configuration: bool=PreparedDefaultActor.valid_single_configuration(player_configuration)
+	var registered_actor: bool=not rig.is_empty() or not actor.is_empty()
+	var valid_reference: bool=(physical_kind=="reference_body" and physical.get("epoch",-1)==0
+		and physical.get("initial_bodies") is PackedFloat32Array
+		and physical.initial_bodies.size()==3*CyberRigidBodyCoupling.INPUT_STRIDE and sampled
+		and rig.is_empty() and str(player_configuration.get("physical_trial","")).is_empty())
+	var valid_trial: bool=(_prepared_trial_values_valid(physical) and not sampled
+		and player_configuration.get("representation","")=="barrel-rapier"
+		and player_configuration.get("physical_trial","")==physical.get("trial_arm","")
 		and not player_configuration.get("runtime_recovery_enabled",true))
-	if origin.get("native_recipe_id","") != "cybersand-desktop-default-demo-v1" \
-		or not origin.get("healthy",false) or origin.get("session_generation",-1) != command.get("expected_default_generation",-2) \
-		or _lab_active or _micro_active or _water_lab_active or _actor_session.active() \
-		or command.get("source_sampled_character_enabled")!=_sampled_character_enabled \
-		or command.get("expected_rigid_body_epoch",-1)!=_rigid_body_epoch \
-		or setup.get("intent","") != "exploratory" or not command.get("exploratory_actor_definitions",[]).is_empty() \
-		or not player_configuration.get("physical_rig","").is_empty() or not player_configuration.get("actor_model","").is_empty() \
-		or player_configuration.get("actor_producer","")!="human" or player_configuration.get("actor_demo_npcs",true) \
-		or not player_configuration.get("actor_definitions",[]).is_empty() or not (valid_reference or valid_trial) \
-		or not physical.get("instance_id") is int or physical.instance_id == 0 \
-		or not physical.get("initial_bodies") is PackedFloat32Array:
-		_lab_status = "Prepared native default demo refused; original healthy constructor and staged reference or single trial owner required"
+	var valid_articulated: bool=(physical_kind=="articulated" and not rig.is_empty() and not sampled
+		and physical.get("epoch") is int and physical.epoch>0
+		and physical.get("initial_bodies") is PackedFloat32Array
+		and physical.initial_bodies.size()>=CyberRigidBodyCoupling.INPUT_STRIDE
+		and physical.initial_bodies.size()<=8*CyberRigidBodyCoupling.INPUT_STRIDE
+		and physical.initial_bodies.size()%CyberRigidBodyCoupling.INPUT_STRIDE==0)
+	var valid_retained: bool=(retaining and registered_actor and physical.get("kind","")=="retained_default_actor"
+		and physical.get("retained_state_digest","") is String and physical.retained_state_digest.length()==64
+		and physical.get("epoch",-1)==_rigid_body_epoch
+		and (not sampled or _actor_session.active()))
+	if (origin.get("native_recipe_id","") != "cybersand-desktop-default-demo-v1"
+		or not origin.get("healthy",false) or origin.get("session_generation",-1) != command.get("expected_default_generation",-2)
+		or _lab_active or _micro_active or _water_lab_active
+		or command.get("source_sampled_character_enabled")!=_sampled_character_enabled
+		or command.get("expected_rigid_body_epoch",-1)!=_rigid_body_epoch
+		or setup.get("intent","") != "exploratory" or not valid_configuration
+		or definitions!=player_configuration.get("actor_definitions",[])
+		or (retaining and not valid_retained)
+		or not (valid_reference or valid_trial or valid_articulated)
+		or not physical.get("instance_id") is int or physical.instance_id == 0
+		or not physical.get("initial_bodies") is PackedFloat32Array):
+		_lab_status = "Prepared native default demo refused; complete registered single-owner descriptors required"
 		if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
 		return false
 	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
@@ -472,7 +539,9 @@ func _apply_prepared_default_liquid(command: Dictionary) -> bool:
 		"player_start":[150,145],"player_environment_profile":claim_profile,
 		"sampled_runtime_recovery_enabled":command.get("runtime_enclosure_recovery_enabled",true),
 		"player_representation":player_configuration.get("representation",""),"physical_trial":player_configuration.get("physical_trial",""),
-		"physical_owner_epoch":physical.epoch,
+		"physical_owner_epoch":physical.epoch,"actor_model":actor,"physical_rig":rig,
+		"actor_producer":str(player_configuration.get("actor_producer","")),"retained_actor":retaining,
+		"retained_state_digest":str(physical.get("retained_state_digest","")),
 		"native_initial_execution":{"intent":receipt.run_intent,"pacing":receipt.pacing,"region":Array(receipt.region),
 			"simulation_window_enabled":receipt.simulation_window_enabled,"cadence_lod_enabled":receipt.cadence_lod_enabled,
 			"liquid_surface_adhesion_enabled":receipt.liquid_surface_adhesion_enabled,
@@ -512,7 +581,7 @@ func _apply_prepared_default_liquid(command: Dictionary) -> bool:
 	_scenario_host.clear();_lab_active = false;_micro_active = false;_water_lab_active = false
 	_micro_capture = {};_lab_schedule.clear();_lab_inputs.clear()
 	_simulation_failed = false;_scenario_request_applied = true
-	_lab_status = "Native default demo installed with selected liquids and " + ("single trial body" if trial else "original reference bodies")
+	_lab_status = "Native default demo installed with selected liquids and " + ("retained actor" if retaining else "registered actor" if registered_actor else "single trial body" if trial else "original reference bodies")
 	return true
 
 func _prepared_trial_values_valid(physical: Dictionary) -> bool:
@@ -1612,13 +1681,14 @@ func _worker_loop() -> void:
 			# Candidate Worlds may reuse a hard-surface revision number. Their
 			# initial terrain must replace the previous World's retained packet.
 			_snapshot_hard_surface_revision = -1
-			local_physical_effects.clear()
-			_physical_effect_receipts.clear()
-			local_physical_usables.clear()
-			_physical_usables.reset()
-			_mutex.lock()
-			_physical_usable_frame.clear()
-			_mutex.unlock()
+			if not local_lab.get("retain_default_actor",false):
+				local_physical_effects.clear()
+				_physical_effect_receipts.clear()
+				local_physical_usables.clear()
+				_physical_usables.reset()
+				_mutex.lock()
+				_physical_usable_frame.clear()
+				_mutex.unlock()
 			if local_actor_prototype_request:
 				_actor_prototype_result_serial = local_actor_prototype_serial
 				_actor_prototype_reset_applied = false

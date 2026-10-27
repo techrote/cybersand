@@ -10,6 +10,35 @@ related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, liquid-
 
 # Native liquid prepared setup, receipts and quantity accounting
 
+## Registered native-default actors
+
+**Current isolated unmerged H1/H2 source:** native-origin desktop Exploratory
+Apply admits one registered sampled or articulated actor with complete existing
+descriptors. F5/Restart construct fresh authored owners; Apply replaces cells
+from the unchanged native recipe while retaining the actual graph, motion,
+controller and equipment. The disposable prepared_default_actor_session.gd
+borrower cannot destroy installed resources. Exact nonserial body fields,
+body/RID/space flags, copied owner state and complete ordered hard terrain hold
+through two real physics frames. Changed source/terrain refuses before swap;
+no tolerance, rebind or fallback repairs it after commit.
+
+Worker/actor/usable admission locks span final copied-state comparison through
+native commit. Main pending paint/usable-event callbacks preserve input-rearm state; keyboard edges may deliberately cancel or invalidate the captured source.
+Construction-only copying refuses beyond65536 values/depth32. Native-v1
+qualifications and false full-match eligibility remain. NPC/multiple owners,
+Controlled actors and physical imports retain separate refusals; native default
+PF0/PF1/PF2 capacity negatives are unchanged. Earlier dated default/Trial
+paragraphs describe their original narrower stages; this route supersedes only
+their blanket single-default-actor restriction.
+
+The [dated source/runtime/failure record](../audits/2026-10-25-lcb003-default-actor-host.md) separates
+122x3 actor cohorts,38 extended play checks, retained86/117/105 cases and actual
+Water-IN radius3/initial-normalization/live-Apply-resume proof. Static admission
+of79 descriptors is not79 executed actors. Advanced sampled owners, interacting
+three-family proof, full-host/scientific/final platform gates and owner-deferred
+Web work remain separate. [LCBH-023](../reference/invariants.md) owns the retained
+resource boundary.
+
 ## Combined Trial successor scope
 
 The [corrected-App Trial integration](../audits/2026-10-25-lcb003-trial-body-constructors.md#corrected-app-consumption--preparation-only--2026-10-25)

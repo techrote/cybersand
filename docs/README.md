@@ -10,6 +10,15 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## Registered native-default actors
+
+[H1 desktop actor preparation and evidence](audits/2026-10-25-lcb003-default-actor-host.md): retained single
+actor/controller/equipment Apply, fresh Restart/F5, transactional refusal,
+local Windows122x3/38 checks and explicit normalized Water-IN body play. The
+[canonical owner contract](architecture/liquid-prepared-setup-and-receipts.md#registered-native-default-actors)
+owns semantics; all-roster, final platform, full-host/scientific and deferred
+Web acceptance remain separate.
+
 ## Trial successor correction after accepted App — 2026-10-25
 
 App #256 is merged as main56422c05 after all four exact-dc2 required gates.

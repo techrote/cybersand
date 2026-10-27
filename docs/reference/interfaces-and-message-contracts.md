@@ -11,6 +11,19 @@ last-reviewed: 2026-10-25
 
 # Interfaces and message contracts
 
+## Registered native-default actors
+
+The isolated [H1 continuation](../architecture/liquid-prepared-setup-and-receipts.md#registered-native-default-actors)
+adds host physical_owner kind retained_default_actor, original base_kind,
+actual epoch/instance/body packet and a copied-state digest to the existing
+one-use prepared handshake. This is qualified host metadata, not a new native
+receipt codec or verified full-host identity. Main validates exact body/terrain
+and source state over real frames; worker compares controller/equipment/mailboxes
+under admission locks through native commit. Main retains the owning wrapper,
+disposes only the borrower and then acknowledges the committed configuration.
+Fresh R/F5 stage new owners. Changed source/terrain, NPC/multiple and unsupported
+Controlled/import requests refuse while retaining old World/graph/receipt.
+
 The new bounded desktop [trial-body continuation](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 keeps the eleven-float body ABI unchanged. Main sends only copied values:
 `kind = trial_body`, barrel/Ripper arm, one valid actual rectangle packet,

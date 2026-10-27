@@ -153,8 +153,8 @@ func _run() -> void:
 		and desktop.physical_trial_arm=="ripper" and states()[4]==18 and states()[5]==8 and states()[6]==0
 		and desktop._accepted_reference_candidate!=old and old.viewport==null,"F5 adopts one actual fresh Ripper only after success")
 	var ripper: RefCounted=desktop._accepted_reference_candidate
-	expect(not desktop.apply_actor_prototype_configuration(&"rapier/runner",&"human",false)
-		and desktop._accepted_reference_candidate==ripper and desktop.pending_microscenario_apply.is_empty(),"unsupported native-default articulated route refuses before mutation")
+	expect(not desktop.apply_actor_prototype_configuration(&"rapier/runner",&"human",true)
+		and desktop._accepted_reference_candidate==ripper and desktop.pending_microscenario_apply.is_empty(),"unsupported NPC/multi-owner native-default route refuses before mutation")
 	expect(desktop.apply_actor_prototype_configuration(&"",&"human",false),"actual F5 baseline callback stages sampled/reference return")
 	expect(await wait_for(func() -> bool: return desktop.pending_microscenario_apply.is_empty())
 		and desktop.physical_trial_arm.is_empty() and desktop.rigid_bodies.size()==3 and desktop._body_owner_epoch()==0

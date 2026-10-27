@@ -10,6 +10,23 @@ related-documents: [../architecture/liquid-solver-family-policy.md, lcb-water-co
 
 # LCB manual liquid comparison UX flow
 
+## Registered native-default actors
+
+On the isolated H1 branch, desktop native-origin **Liquids → Exploratory → Apply**
+can retain one registered sampled or articulated actor and equipment. Apply
+reconstructs the native cell recipe while retaining body/controller/item state;
+unchanged hard terrain is required. **R** and **F5** construct fresh authored
+actors/equipment. Single-owner choices are available; NPC/multiple, Controlled
+actor and physical import requests remain explicit refusals. F6 is not a hidden
+conversion/fallback. Original Current defaults remain unchanged.
+
+This later route supersedes the older table's blanket default-other-actor gap;
+dated execution records retain original scope. Actual roster/body and advanced
+Water-IN proof is narrower than generic admission: see the
+[owner contract](../architecture/liquid-prepared-setup-and-receipts.md#registered-native-default-actors)
+and [dated122/38 proof](../audits/2026-10-25-lcb003-default-actor-host.md). No subjective feel or deferred
+Web acceptance is implied.
+
 The [actual003 Windows/Linux publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25)
 now executes import plus35 strict host/control cases on both target OSes at
 source5f02d089/bot0c9b1977. The actual default, ordinary demo, import, sampled/
@@ -245,7 +262,7 @@ controlled API is narrower than older explicit-policy diagnostic APIs.
 | Fixed actor-free schema-2 MicroScenario, protected Dam Break and mixed fixture | Native prepared policy/normalization and explicit geometry, immutable typed receipt, actual IN parameters/instance versions, final owner fence, actual panel/controller apply/refuse/reset; desktop worker and synchronous controller | Complete verified definition/host/provenance collection and final integrated platform qualification |
 | Fixed player-enabled or body-enabled MicroScenario | Ordinary default route retained; Controlled refuses; explicit Exploratory stages the existing sampled character when body-free | Stage physical body/terrain/equipment candidate before supporting rigid bodies |
 | Owner-paced/exploratory MicroScenario | Explicit Exploratory stages allowlisted sampled owners, desktop articulated Rapier actor/equipment/terrain, or one actual barrel8×14/Ripper18×8 in a permanent space; exact captured trial motion, native initial masks and final execution precede commit; Controlled bodies refuse | Other reference-body routes, complete verified host/actor envelope and retained physical edit/import semantics; positive single-trial-body proof is scoped to FM/CY/PF0/1/2 in the original Neon map |
-| Bootstrap `create_world` / ordinary `reset_demo_world` | Original Current defaults retained; explicit desktop Exploratory native-default rebuild stages actual shared recipe/origin with sampled owner/three reference bodies or one actual barrel/Ripper. Trial Apply retains exact actual motion; R/F5 use authored fresh pose, and F5 can return to sampled/reference ownership. PF0/1/2 retain typed initial gas-capacity refusal before swap | Controlled player/body, other actors/bootstrap callers, complete host identity and final platform gates remain separate; the single-trial-body extension has local Windows proof |
+| Bootstrap `create_world` / ordinary `reset_demo_world` | Original Current defaults retained; explicit desktop Exploratory native-default rebuild uses the shared recipe/origin with sampled/reference ownership, one barrel/Ripper or a registered single sampled/articulated actor. Actor Apply retains the actual graph/controller/equipment on exact unchanged terrain; R/F5 use authored fresh state. PF0/1/2 retain typed initial gas-capacity refusal before swap | Controlled players/bodies, NPC/multiple owners, other bootstrap/import callers, complete host identity and final platform gates remain separate. Actual local proof covers skimmer/WaterLance, runner and the separately dated trial bodies; descriptor admission is wider than positive execution |
 | `build_world` rectangle showcases / Blacksite | Existing Current constructor retained; four curated synchronous body-free demos explicitly stage exact recipes, sampled player and actual view/cadence in Exploratory mode. A separate authored Physics Pit route stages its original three bodies/permanent space with final native masks; both retain accepted recipe/selection on Restart | Desktop single-trial-body admission follows the preceding Exploratory row; other desktop counterparts, imported physical saves, other physical owners and arbitrary rectangle callers remain separate; complete host identity and final platforms remain open |
 | `build_tuned_world` / Experiment Tower | Original default constructor retained; ordinary application Tower explicitly stages sampled-owner policy/normalization/geometry with final floor and retains floor/release/schedule/transport controls; reset/profile rebuild retain accepted policy | Other direct tuned-world callers, complete host evidence and final platform qualification |
 | `build_water_feel_world` / Water Feel controlled and blind apparatus | Original defaults/blind routes retained; explicit unblinded sampled Exploratory dispatcher/panel/reset carries typed policy/normalization/geometry and qualified owner record, preserving actions/ledger; desktop and synchronous owners additionally stage their respective original three reference bodies/terrain in a permanent space and prove ordinary unpaused feedback | Actual Web/visual qualification, barrel owners, blind-family study and positive whole-cell schedule qualification; fractional future actions stay refused; visual/publication gates |

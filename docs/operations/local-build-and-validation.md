@@ -10,6 +10,23 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## Registered native-default actors
+
+Local qualification: isolated source2e040037 normally consumes corrected Trial90097178/
+accepted main56422c05 at01e756a9, preserving all ten H1 blobs. The [dated record](../audits/2026-10-25-lcb003-default-actor-host.md)
+binds actor122x3 fresh processes, extended38-check FM/CY/Water-IN body play and
+retained default86/Trial117/physical105 qualification. Advanced IN Apply retains
+actual owner/clocks/equipment/mailboxes while only native generation/tick resets;
+resumed body feedback and exact Water are explicit.
+
+Native80 and139 recorded native/dependency paths remain unchanged and match the
+inherited published E3 runtime. Historical535 build paths have seven later
+script/test differences,528 exact entries and11 new paths/current546. The old
+manifest and its72 source5f02 executions are immutable; no runtime rebuild or
+manifest rewrite follows. Final integrated exact-head gates, NPC/multiowner/
+import/full-host/scientific/feel scope remain separate. Additional Web/browser/
+shader work is owner-deferred until after the epic.
+
 ## Trial successor correction after accepted App — 2026-10-25
 
 App #256 is merged as main56422c05 after all four exact-dc2 required gates.
