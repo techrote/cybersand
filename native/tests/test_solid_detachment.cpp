@@ -3,6 +3,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
+#include <limits>
 #include <new>
 #include <stdexcept>
 #include <string>
@@ -26,6 +27,7 @@ namespace cybersand {
 class PrecisionProbe {
 public:
     static void fail(World& world) { world.tick_failed_ = true; }
+    static void terrain_revision(World& world, std::uint64_t n) { world.hard_surface_revision_ = n; }
 };
 }
 using namespace cybersand;
@@ -274,6 +276,32 @@ void signed_seams_and_worker_configuration_parity() {
         expect(one.world.content_hash() == four.world.content_hash(), "exact source content parity after transfer");
     }
 }
+void generation_and_failed_world_safety() {
+    Fixture f; f.enable(); f.cut(); f.prepare();
+    const auto first = f.world.inspect_solid_detachment();
+    const auto original = f.members();
+    expect(f.world.cancel_solid_detachment(first.token) == SolidOutcome::Accepted, "cancel reference capture");
+    const auto maximum = std::numeric_limits<std::uint64_t>::max();
+    PrecisionProbe::terrain_revision(f.world, maximum - 2U * original.size() + 1U);
+    expect(f.world.prepare_solid_detachment(f.request()) == SolidOutcome::GenerationExhausted,
+        "admission reserves rollback revision headroom, not only commit");
+    payload_equal(f.world, original);
+    PrecisionProbe::terrain_revision(f.world, maximum - 2U * original.size());
+    f.prepare(); f.acknowledge();
+    const auto token = f.world.inspect_solid_detachment().token;
+    expect(f.world.commit_solid_detachment(token) == SolidOutcome::Accepted, "last safe commit revision");
+    expect(f.world.rollback_solid_detachment(token) == SolidOutcome::Accepted, "reserved rollback reaches maximum without wrapping");
+    expect(f.world.hard_surface_revision() == maximum, "revision does not wrap");
+    expect(f.world.complete_solid_rollback(f.synthetic_contact_receipt()) == SolidOutcome::Accepted, "finish exhausted revision rollback");
+    expect(f.world.prepare_solid_detachment(f.request()) == SolidOutcome::GenerationExhausted, "exhausted world cannot start another transfer");
+    Fixture failed; failed.enable(); failed.cut(); failed.prepare(); failed.acknowledge();
+    expect(failed.world.commit_solid_detachment(failed.world.inspect_solid_detachment().token) == SolidOutcome::Accepted, "commit before external failure");
+    const auto owned = failed.world.inspect_solid_detachment().aggregate_owned_count;
+    PrecisionProbe::fail(failed.world);
+    expect(failed.world.finalize_solid_detachment(failed.synthetic_contact_receipt()) == SolidOutcome::WorldFailed, "failed World cannot activate staged body");
+    expect(failed.world.inspect_solid_detachment().aggregate_owned_count == owned, "failure retains aggregate-owned material");
+}
+
 int main() {
     try {
         const auto run = [](const char* name, auto test) { test(); ++cases; std::cout << "PASS " << name << '\n'; };
@@ -284,7 +312,8 @@ int main() {
         run("capacity/unknown/heat/sand/mask/event/exclusion/failure", honest_refusals);
         run("allocation-free prepare/commit/rollback", no_heap_allocation_during_handoff);
         run("signed chunk seams/configured workers1/4 parity", signed_seams_and_worker_configuration_parity);
-        std::cout << "SOL-DETACH-001 A1: " << cases << " groups, " << checks << " checks passed.\n"
+        run("revision exhaustion/rollback headroom/failed World", generation_and_failed_world_safety);
+        std::cout << "SOL-DETACH-001 A1 native precursor: " << cases << " groups, " << checks << " checks passed.\n"
                   << "Actual native World exercised; bridge receipts are synthetic. Rapier motion and async host NOT qualified.\n";
         return 0;
     } catch (const std::exception& error) {
