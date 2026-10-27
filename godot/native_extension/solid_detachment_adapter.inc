@@ -151,7 +151,7 @@ Dictionary CyberNativeCellWorld::solid_detachment_command(const Dictionary& comm
         } else if (action == "cancel") {
             outcome = world_->cancel_solid_detachment(s.token);
         } else if (action == "rollback") {
-            outcome = world_->rollback_solid_detachment(token);
+            outcome = world_->rollback_solid_detachment(s.token);
         } else if (action == "finalize" || action == "finish_rollback") {
             std::int64_t id = 0, generation = 0, epoch = 0;
             if (integer(command, "body_id", 1, 64, id) && integer(command, "body_generation", 1, INT64_MAX, generation) &&

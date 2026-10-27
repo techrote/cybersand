@@ -153,7 +153,7 @@ func queue_lab(command: Dictionary) -> void:
 	_lab_request["_owner_request_revision"] = _lab_request_revision
 	_pending_physical_effects.clear()
 	_cancel_physical_usables_locked()
-	if command.has("step") or command.has("reset") or command.has("water_reset") or command.has("scenario_reset") or command.has("default_liquid_reset") or command.has("floor"): _paused = true
+	if command.has("solid_detachment") or command.has("step") or command.has("reset") or command.has("water_reset") or command.has("scenario_reset") or command.has("default_liquid_reset") or command.has("floor"): _paused = true
 	_mutex.unlock()
 
 static func prepared_owner_execution(definition: Dictionary, settings: Dictionary) -> Dictionary:
@@ -1497,6 +1497,11 @@ func request_render_full_refresh() -> void:
 	_mutex.unlock()
 
 
+func _native_representation_fenced() -> bool:
+	# Called only by the exclusive native owner, never the UI/main thread.
+	return _world.has_method(&"solid_detachment_fenced") and bool(_world.solid_detachment_fenced())
+
+
 func _worker_loop() -> void:
 	var next_tick_usec: int = Time.get_ticks_usec()
 	while true:
@@ -1544,7 +1549,8 @@ func _worker_loop() -> void:
 		local_cadence_enabled = _cadence_lod_enabled
 		local_liquid_adhesion_enabled = _liquid_surface_adhesion_enabled
 		local_render_snapshot_interval_usec = _render_snapshot_interval_usec
-		var physical_wait: bool = not _prepared_physical_publication.is_empty() \
+		var physical_wait: bool = _native_representation_fenced() or _lab_request.has("solid_detachment") \
+			or not _prepared_physical_publication.is_empty() \
 			or not _lab_request.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty()
 		local_rigid_body_states = _rigid_body_states
 		local_rigid_body_epoch = _rigid_body_epoch
@@ -1638,6 +1644,21 @@ func _worker_loop() -> void:
 			_last_render_snapshot_usec = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 		if not _pending_physical_liquid.is_empty():
 			OS.delay_usec(1000)
+			next_tick_usec = Time.get_ticks_usec()
+			continue
+		if _native_representation_fenced():
+			# Paused ordinary loops still refresh configuration and clear body
+			# masks below. A representation transaction must fence those writes
+			# as well as ticks, while continuing copied publication and commands.
+			# A staged live body cannot be discarded by an unrelated UI reset.
+			if local_reset_requested:
+				_lab_status = "Reset refused: finish/cancel the native representation transaction"
+				_actor_prototype_result_serial = local_actor_prototype_serial
+				_actor_prototype_reset_applied = false
+				_actor_prototype_status = _lab_status
+			_publish_snapshot(0.0, true, local_render_snapshot_interval_usec, false,
+				local_rigid_body_states, local_rigid_body_epoch)
+			OS.delay_usec(TICK_INTERVAL_USEC)
 			next_tick_usec = Time.get_ticks_usec()
 			continue
 		if not local_player_environment_profile.is_empty():

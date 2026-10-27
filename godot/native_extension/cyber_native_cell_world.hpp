@@ -36,6 +36,10 @@ public:
     [[nodiscard]] static std::int64_t auto_worker_threads(std::int64_t logical_threads);
     [[nodiscard]] static std::int64_t logical_processor_count();
 
+    // SOL281 diagnostic-only value facade. Exclusive native owner, no RIDs.
+    [[nodiscard]] bool solid_detachment_fenced() const;
+    [[nodiscard]] Dictionary solid_detachment_command(const Dictionary& command);
+
     bool reset_demo_world();
     [[nodiscard]] Dictionary get_default_demo_identity() const;
     [[nodiscard]] bool simulation_tick();
