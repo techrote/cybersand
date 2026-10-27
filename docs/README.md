@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-27
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
@@ -467,6 +467,17 @@ and routed to their real physics owner instead of being hidden in interaction ru
 
 ## Scalable reversible soliding
 
+**New 2026-10-27 owner priority:** native terrain solid that can
+be cut free and actually topple/roll under Rapier is Track A's first
+playable outcome. The [canonical structural-detachment design](operations/soliding-structural-detachment-programme.md)
+and [first acceptance issue #281](https://github.com/techrote/cybersand/issues/281)
+define its material, anchor, collision/ownership, visual and failure gates.
+[Current-main Stage-3B reassessment](audits/2026-10-27-issue12-stage3b-reassessment.md)
+records the source boundary. This is **Planned**, not implemented.
+The earlier Stage-3B sequence described below remains **Track B**;
+its own Stage 4 stationary-acceleration admission is still blocked.
+
+
 The [current #12 programme](operations/soliding-programme.md) supersedes the bounded
 Phase 0 endpoint. Read its [reuse audit](audits/2026-09-19-issue-12-phase0-reuse.md),
 [lifecycle](architecture/soliding-lifecycle.md), [incremental discovery](systems/settled-region-discovery.md),
@@ -480,7 +491,7 @@ The active route is now the
 #56-#65 and #69 are complete; #65 landed through PR #106 as
 `cdf0a0874d4732c41273e10d921bcd5feaac3e3c` with exact-head and landed-main
 Documentation, Water, Native and GDExtension/Godot validation. **#66 is the next
-dependency-ready Stage-3B implementation package**, followed by #67, #68 and the
+Track-B dependency-ready Stage-3B package**, followed by #67, #68 and the
 registered #70 campaign/exit packet. Stage 4 is not admitted.
 Macro-dynamics and coherent-child fracture remain first-class later goals; discovery
 stays read-only with respect to material authority.
