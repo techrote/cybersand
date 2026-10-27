@@ -31,15 +31,19 @@ var physics_epoch: int = 0
 var _tree: SceneTree
 var _parent: Node
 var _shapes: Array[CollisionShape2D] = []
-var _last_request_paused: bool = true
+var _opening: bool = false
+var _release_in_progress: bool = false
 
 func open(parent: Node, workers: int = 4) -> bool:
 	close()
 	_parent = parent
 	_tree = parent.get_tree()
 	generation += 1
+	_opening = true
 	last_error = ""
 	worker = Worker.new()
+	var owner_generation: int = generation
+	var owner_worker: CyberSimulationWorker = worker
 	# Before start_worker(), this thread is the exclusive native owner.
 	var native: Object = worker._world
 	if not native.has_method(&"solid_detachment_command") or not ClassDB.class_exists(&"RapierPhysicsServer2D"):
@@ -58,6 +62,9 @@ func open(parent: Node, workers: int = 4) -> bool:
 	if worker.start_worker(Vector2(400, 400)) != OK:
 		return _fail("Existing asynchronous worker failed to start")
 	var configured: Dictionary = await command({"action":"configure","members":1024,"shapes":128})
+	if not _owns(owner_generation, owner_worker):
+		return false
+	_opening = false
 	if not configured.get("ok",false):
 		return _fail("Native feature admission refused: " + str(configured))
 	status = "anchored native terrain"
@@ -76,31 +83,44 @@ func command(input: Dictionary) -> Dictionary:
 	request_serial += 1
 	var id: int = request_serial
 	var owner_generation: int = generation
+	var owner_worker: CyberSimulationWorker = worker
+	var owner_tree: SceneTree = _tree
 	var request: Dictionary = input.duplicate(true)
 	request["request_id"] = id
-	worker.queue_lab({"solid_detachment":request})
+	owner_worker.queue_lab({"solid_detachment":request})
 	var end: int = Time.get_ticks_msec() + 10000
-	while generation == owner_generation and worker != null and Time.get_ticks_msec() < end:
-		var reply: Dictionary = worker.take_solid_reply(id)
+	while _owns(owner_generation, owner_worker) and Time.get_ticks_msec() < end:
+		var reply: Dictionary = owner_worker.take_solid_reply(id)
 		if not reply.is_empty():
-			transaction_busy = false
+			if request_serial == id:
+				transaction_busy = false
 			return reply
-		await _tree.process_frame
+		await owner_tree.process_frame
 		OS.delay_usec(500)
-	transaction_busy = false
-	return {"ok":false,"outcome":"SessionRetiredOrTimedOut"}
+	# A retired coroutine must not release a replacement owner's command lock.
+	if not _owns(owner_generation, owner_worker):
+		return {"ok":false,"outcome":"SessionRetired"}
+	if request_serial == id:
+		transaction_busy = false
+	_fail("Native command timed out; reset the session before retrying")
+	return {"ok":false,"outcome":"SessionTimedOut"}
+
+func _owns(owner_generation: int, owner_worker: CyberSimulationWorker) -> bool:
+	return generation == owner_generation and worker != null and worker == owner_worker
 
 func observe_intact() -> Dictionary:
 	return await command({"action":"prepare","domain":DOMAIN,"anchors":ANCHORS,"seed":SEED})
 
 func cut_and_release() -> bool:
-	if active or transaction_busy or worker == null:
+	if active or transaction_busy or worker == null or _opening or _release_in_progress:
 		return false
+	_release_in_progress = true
 	set_paused(true)
 	var this_generation: int = generation
+	var owner_worker: CyberSimulationWorker = worker
 	var prepared: Dictionary = await command({"action":"cut_prepare","domain":DOMAIN,"anchors":ANCHORS,
 		"seed":SEED,"cut":CUT})
-	if generation != this_generation:
+	if not _owns(this_generation, owner_worker):
 		return false
 	if not prepared.get("ok",false):
 		return _fail("Cut/extraction refused: " + str(prepared.get("outcome")))
@@ -110,26 +130,40 @@ func cut_and_release() -> bool:
 	source_center = prepared.center
 	# Only copied native values cross this boundary. The source is still native
 	# and fenced while the main thread prepares its inactive actual Rapier RIDs.
-	if not await _prepare_body(prepared):
-		await command({"action":"cancel","token":prepared.token})
-		return _fail("Inactive Rapier geometry preparation failed")
-	if generation != this_generation:
+	var body_ready: bool = await _prepare_body(prepared)
+	if not _owns(this_generation, owner_worker):
 		return false
+	if not body_ready:
+		await command({"action":"cancel","token":prepared.token})
+		if not _owns(this_generation, owner_worker):
+			return false
+		_destroy_physics()
+		return _fail("Inactive Rapier geometry preparation failed")
 	var acknowledged: Dictionary = await command({"action":"acknowledge","token":prepared.token,
-		"body_id":1,"body_generation":generation,"shape_count":_shapes.size(),
+		"body_id":1,"body_generation":this_generation,"shape_count":_shapes.size(),
 		"payload_digest":prepared.payload_digest,"shape_digest":prepared.shape_digest})
+	if not _owns(this_generation, owner_worker):
+		return false
 	if not acknowledged.get("ok",false):
 		await command({"action":"cancel","token":prepared.token})
+		if not _owns(this_generation, owner_worker):
+			return false
 		_destroy_physics()
 		return _fail("Native reservation acknowledgement refused")
-	commit_receipt = await command({"action":"commit","token":prepared.token})
-	if not commit_receipt.get("ok",false):
+	# Store a reply only after proving the receiving session still owns it.
+	var committed: Dictionary = await command({"action":"commit","token":prepared.token})
+	if not _owns(this_generation, owner_worker):
+		return false
+	commit_receipt = committed
+	if not committed.get("ok",false):
 		await command({"action":"cancel","token":prepared.token})
+		if not _owns(this_generation, owner_worker):
+			return false
 		_destroy_physics()
 		return _fail("Native commit refused")
-	if not _install_terrain(commit_receipt):
+	if not _install_terrain(committed):
 		return await _rollback_inactive("Post-commit static terrain repair refused")
-	# Both clocks remain held. There can be no physics step between retiring the
+	# Both clocks remain held. No physics step is permitted between retiring the
 	# old static shapes and activation/finalization of the new compound body.
 	for shape: CollisionShape2D in _shapes:
 		shape.disabled = false
@@ -138,20 +172,29 @@ func cut_and_release() -> bool:
 	body.freeze = false
 	body.sleeping = false
 	physics_epoch += 1
-	final_receipt = await command({"action":"finalize","token":prepared.token,"body_id":1,
-		"body_generation":generation,"terrain_revision":commit_receipt.commit_revision,"physics_epoch":physics_epoch})
-	if not final_receipt.get("ok",false):
+	var finalized: Dictionary = await command({"action":"finalize","token":prepared.token,"body_id":1,
+		"body_generation":this_generation,"terrain_revision":committed.commit_revision,"physics_epoch":physics_epoch})
+	if not _owns(this_generation, owner_worker):
+		return false
+	final_receipt = finalized
+	if not finalized.get("ok",false):
 		body.freeze = true
 		body.collision_layer = 0
 		body.collision_mask = 0
 		return await _rollback_inactive("Final contact receipt refused")
 	bridge.refresh_all_states()
 	active = true
+	_release_in_progress = false
 	status = "native aggregate — live Rapier motion"
 	set_paused(false)
 	return true
 
 func _prepare_body(prepared: Dictionary) -> bool:
+	var owner_generation: int = generation
+	var owner_worker: CyberSimulationWorker = worker
+	var owner_tree: SceneTree = _tree
+	if owner_worker == null or not is_instance_valid(_parent):
+		return false
 	viewport = SubViewport.new()
 	viewport.world_2d = World2D.new()
 	viewport.size = Vector2i(160,128)
@@ -181,7 +224,13 @@ func _prepare_body(prepared: Dictionary) -> bool:
 		body.add_child(collision)
 		_shapes.append(collision)
 	viewport.add_child(body)
-	await _tree.process_frame
+	var prepared_body: RigidBody2D = body
+	var prepared_viewport: SubViewport = viewport
+	await owner_tree.process_frame
+	if not _owns(owner_generation, owner_worker):
+		return false
+	if body != prepared_body or viewport != prepared_viewport:
+		return false
 	if not is_instance_valid(body) or not body.get_rid().is_valid():
 		return false
 	bridge = CyberRapierPhysicsBridge.new()
@@ -207,11 +256,20 @@ func _install_terrain(receipt: Dictionary) -> bool:
 	return bridge.pending_hard_surface_chunks() == 0
 
 func _rollback_inactive(reason: String) -> bool:
-	var restored: Dictionary = await command({"action":"rollback","token":source_receipt.token})
+	var owner_generation: int = generation
+	var owner_worker: CyberSimulationWorker = worker
+	if owner_worker == null or not source_receipt.has("token"):
+		return false
+	var token: String = str(source_receipt.token)
+	var restored: Dictionary = await command({"action":"rollback","token":token})
+	if not _owns(owner_generation, owner_worker):
+		return false
 	if restored.get("ok",false) and _install_terrain(restored):
 		physics_epoch += 1
-		var finished: Dictionary = await command({"action":"finish_rollback","token":source_receipt.token,
-			"body_id":1,"body_generation":generation,"terrain_revision":restored.commit_revision,"physics_epoch":physics_epoch})
+		var finished: Dictionary = await command({"action":"finish_rollback","token":token,
+			"body_id":1,"body_generation":owner_generation,"terrain_revision":restored.commit_revision,"physics_epoch":physics_epoch})
+		if not _owns(owner_generation, owner_worker):
+			return false
 		if not finished.get("ok",false):
 			reason += "; native rollback completion refused"
 	else:
@@ -234,10 +292,17 @@ func angular_velocity() -> float:
 		if is_instance_valid(body) else 0.0
 
 func inspect_active() -> Dictionary:
+	if worker == null or _opening or _release_in_progress or transaction_busy:
+		return {"ok":false,"outcome":"SessionBusyOrClosed"}
+	var owner_generation: int = generation
+	var owner_worker: CyberSimulationWorker = worker
 	var was_paused: bool = physics_paused
 	set_paused(true)
 	var result: Dictionary = await command({"action":"inspect"})
-	set_paused(was_paused)
+	if not _owns(owner_generation, owner_worker):
+		return {"ok":false,"outcome":"SessionRetired"}
+	if result.get("ok", false):
+		set_paused(was_paused)
 	return result
 
 func close() -> void:
@@ -249,6 +314,14 @@ func close() -> void:
 	_destroy_physics()
 	worker = null
 	transaction_busy = false
+	_opening = false
+	_release_in_progress = false
+	source_payload = PackedInt32Array()
+	source_rectangles = PackedInt32Array()
+	source_center = Vector2.ZERO
+	source_receipt = {}
+	commit_receipt = {}
+	final_receipt = {}
 	status = "closed"
 
 func _destroy_physics() -> void:
@@ -270,5 +343,7 @@ func _destroy_physics() -> void:
 func _fail(reason: String) -> bool:
 	last_error = reason
 	status = "REFUSED: " + reason
-	physics_paused = true
+	_opening = false
+	_release_in_progress = false
+	set_paused(true)
 	return false

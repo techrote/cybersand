@@ -137,10 +137,20 @@ jobs:
         run: |
           import hashlib, json, os, pathlib, re, shutil, subprocess, zipfile
           root=pathlib.Path.cwd(); out=root/'build/sol281-windows'; result=out/'execution'; result.mkdir()
+          (result/'attempt.json').write_text(json.dumps({'source':os.environ['GITHUB_SHA'],'phase':'source verification'}))
           manifest=json.loads((out/'manifest.json').read_text())
           assert manifest['source']==os.environ['GITHUB_SHA']
+          restored=[]
           for p,h in manifest['inputs'].items():
+              canonical=subprocess.check_output(['git','show','HEAD:'+p])
+              assert hashlib.sha256(canonical).hexdigest()==h, ('build differs from Git',p)
+              actual=(root/p).read_bytes()
+              if actual!=canonical:
+                  assert actual.replace(b'\r\n',b'\n')==canonical.replace(b'\r\n',b'\n'), ('non-EOL source drift',p)
+                  restored.append({'path':p,'checkout_sha256':hashlib.sha256(actual).hexdigest(),'git_sha256':h})
+                  (root/p).write_bytes(canonical)
               assert hashlib.sha256((root/p).read_bytes()).hexdigest()==h, p
+          (result/'source-verification.json').write_text(json.dumps({'input_count':len(manifest['inputs']),'restored_git_bytes':restored},indent=2)+'\n')
           dll=out/'cybersand_native.windows.x86_64.dll'
           assert hashlib.sha256(dll.read_bytes()).hexdigest()==manifest['dll_sha256']
           rapier=root/'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
@@ -165,16 +175,18 @@ jobs:
               assert not re.search(r'(SCRIPT ERROR:|ERROR:|FAIL SOL281)',text),(name,text[-4000:])
               if footer: assert footer in text,(name,'missing footer')
               results.append({'name':name,'returncode':p.returncode,'log_sha256':hashlib.sha256(data).hexdigest()})
-          run('import',['--headless','--path','godot','--editor','--import'])
+          run('import',['--headless','--path','godot','--editor','--import','--quit'])
           run('motion',['--headless','--path','godot','--script','res://tests/test_solid_detachment.gd','--',str(result/'motion.json')],'SOL281_ACTUAL_RAPIER')
           motion=json.loads((result/'motion.json').read_text()); assert motion['checks']==21 and motion['failures']==[] and motion['platform']=='Windows'
           run('failure-paths',['--headless','--path','godot','--script','res://tests/test_solid_detachment_failures.gd'],'SOL281')
-          # Run the separately added lifecycle suite once it exists; absence is
-          # explicitly recorded rather than silently described as a pass.
-          lifecycle=root/'godot/tests/test_solid_detachment_lifecycle.gd'
-          if lifecycle.exists():
-              run('lifecycle',['--headless','--path','godot','--script','res://tests/test_solid_detachment_lifecycle.gd'],'SOL281_LIFECYCLE')
-          report={'source':manifest['source'],'runtime_sha256':manifest['dll_sha256'],'platform':'Windows','cases':results,'lifecycle_available':lifecycle.exists(),'motion':motion,'scope':'actual scoped Windows host proof; no full native or production publication claim'}
+          failure=json.loads(re.search(r'SOL281_HOST_FAILURES (.+)',(result/'failure-paths.txt').read_text(encoding='utf-8')).group(1))
+          assert failure['checks']==20 and failure['failures']==[] and failure['actual_rapier']
+          run('lifecycle',['--headless','--path','godot','--script','res://tests/test_solid_detachment_lifecycle.gd'],'SOL281_LIFECYCLE')
+          lifecycle=json.loads(re.search(r'SOL281_LIFECYCLE (.+)',(result/'lifecycle.txt').read_text(encoding='utf-8')).group(1))
+          assert lifecycle['checks']==296 and lifecycle['actual_host_replacement_cycles']==18 and lifecycle['failures']==[]
+          for p,h in manifest['inputs'].items():
+              assert hashlib.sha256((root/p).read_bytes()).hexdigest()==h, ('execution source drift',p)
+          report={'source':manifest['source'],'runtime_sha256':manifest['dll_sha256'],'platform':'Windows','cases':results,'lifecycle':lifecycle,'motion':motion,'failure_paths':failure,'scope':'actual scoped Windows host proof; no full native or production publication claim'}
           (result/'report.json').write_text(json.dumps(report,indent=2)+'\n')
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
