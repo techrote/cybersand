@@ -153,6 +153,17 @@ func run() -> void:
 			"authored mechanical course enables actor-follow instead of generic MicroScenario overview: " + str(model_id))
 		expect(desktop.character_centre().distance_to(Vector2(first.get("position",Vector2.INF))) < 0.01,
 			"shared desktop course camera centre observes actual Rapier SetP pose: " + str(model_id))
+		expect(desktop.current_view_size == Vector2i(256,128),
+			"the selected mechanical course defaults to source-authored 256x128 close follow: " + str(model_id))
+		key(KEY_F,true)
+		key(KEY_F,false)
+		expect(not desktop.camera_follow_enabled and desktop.current_view_size == Course.VIEW.size
+			and desktop.camera_origin.distance_to(Vector2(Course.VIEW.position)) < 0.01,
+			"F shows the original 512x256 panorama without a World or Rapier change: " + str(model_id))
+		key(KEY_F,true)
+		key(KEY_F,false)
+		expect(desktop.camera_follow_enabled and desktop.current_view_size == Vector2i(256,128),
+			"the next F restores actor-follow close view: " + str(model_id))
 		expect(str(first.get("model", "")) == str(model_id)
 			and str(first.get("producer", "")) == "human"
 			and session.bodies().size() > 0,
@@ -216,6 +227,8 @@ func run() -> void:
 	var reset_ok: bool = await wait_for(Callable(self, "actor_installed"))
 	expect(reset_ok and desktop.microscenario_definition.rectangles == checked.definition.rectangles,
 		"existing owner resets while retaining course and selected rig")
+	expect(reset_ok and desktop.camera_follow_enabled and desktop.current_view_size == Vector2i(256,128),
+		"R reset restores default close-follow camera, not a stale previous epoch view")
 	# PLAY-COMP-002 follow-on: re-use the shipped native per-material solver
 	# selector and prepared World transaction on the *same* authored course.
 	# This is explicit construction-time admission, never a live native mutation.

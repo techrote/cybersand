@@ -709,11 +709,12 @@ func _microscenario_installed(definition: Dictionary) -> void:
 	microscenario_liquid_setup.erase("physical_owner")
 	tower_active = true
 	paused = true
-	current_view_size = Vector2i(480, 270)
-	# The shared mechanical course defaults to following its real Rapier
-	# player; scientific/default MicroScenarios retain their authored overview.
-	camera_follow_enabled = (str(definition.get("id","")) == CyberMicroScenarioCatalogue.PLAYER_COURSE_ID
+	# Preserve the original course's 256x128 close actor view and its
+	# optional 512x256 overview. Other MicroScenarios keep their 480x270 view.
+	var mechanical_course_view: bool = (str(definition.get("id","")) == CyberMicroScenarioCatalogue.PLAYER_COURSE_ID
 		and StringName(str(player_configuration.get("physical_rig",""))) in PlayerCourse.MECHANICAL_PRESETS)
+	current_view_size = Vector2i(256,128) if mechanical_course_view else Vector2i(480,270)
+	camera_follow_enabled = mechanical_course_view
 	camera_origin = Vector2(definition.camera_origin[0], definition.camera_origin[1])
 	character_position = Vector2(definition.player_start[0], definition.player_start[1])
 	if _pending_physical_candidate != null:
@@ -1851,7 +1852,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		KEY_P:
 			paused = not paused
 		KEY_F:
-			set_camera_follow(not camera_follow_enabled)
+			toggle_playable_course_camera()
 		KEY_L:
 			set_simulation_window(not simulation_window_enabled)
 		KEY_K:
@@ -2063,6 +2064,24 @@ func set_camera_follow(enabled: bool) -> bool:
 		current_view_size = Vector2i(480, 270)
 	camera_follow_enabled=enabled
 	return true
+
+
+# A configurable presentation change only: no native reset, new World or
+# parallel owner. Other MicroScenario and sandbox cameras are unchanged.
+func toggle_playable_course_camera() -> void:
+	if not _playable_course_controls_active():
+		set_camera_follow(not camera_follow_enabled)
+		return
+	if camera_follow_enabled:
+		set_camera_follow(false)
+		current_view_size = PlayerCourse.VIEW.size
+		camera_origin = Vector2(PlayerCourse.VIEW.position)
+	else:
+		current_view_size = Vector2i(256, 128)
+		set_camera_follow(true)
+		camera_origin = clamped_camera_origin(character_centre() - Vector2(current_view_size) * 0.5)
+	# The worker sees only the copied interest/view change.
+	update_worker_frame_state()
 
 
 func set_simulation_window(enabled: bool) -> bool:
