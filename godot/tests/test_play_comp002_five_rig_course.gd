@@ -149,6 +149,8 @@ func run() -> void:
 			return
 		var session = desktop.physical_actor_session
 		var first: Dictionary = session.observation(0)
+		expect(desktop.camera_follow_enabled,
+			"authored mechanical course enables actor-follow instead of generic MicroScenario overview: " + str(model_id))
 		expect(desktop.character_centre().distance_to(Vector2(first.get("position",Vector2.INF))) < 0.01,
 			"shared desktop course camera centre observes actual Rapier SetP pose: " + str(model_id))
 		expect(str(first.get("model", "")) == str(model_id)
