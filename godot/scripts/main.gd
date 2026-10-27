@@ -1680,7 +1680,12 @@ func _physics_process(_delta: float) -> void:
 			apply_barrel_player_control(_delta)
 		rapier_bridge.step()
 		if physical_actor_session != null:
+			var before_completed_tick: int = physical_actor_session.tick
 			physical_actor_session.complete_step()
+			# A gate visited and left between two rendered frames must still
+			# count. This callback owns actual completed Rapier observations.
+			if physical_actor_session.tick > before_completed_tick:
+				_record_completed_playable_course_step()
 	_publish_physical_body_state()
 
 
@@ -2995,8 +3000,17 @@ func _playable_course_progress_identity() -> bool:
 		and int(latest_snapshot.render_world_generation) >= 0)
 
 
-func _update_playable_course_progress() -> void:
-	course_timing_label.visible = false
+# The real physical callback invokes this *only after* a successful
+# complete_step(). This small seam permits a negative test with that one hook
+# absent while using the exact same production native and Rapier owners.
+func _record_completed_playable_course_step() -> void:
+	_observe_playable_course_progress()
+
+
+# Sample only copied native source ticks and the last completed Rapier pose.
+# Both render and physics callbacks may call this: the lap model ignores
+# duplicate physics ticks and counts each completed native delta once.
+func _observe_playable_course_progress() -> void:
 	if not _playable_course_progress_identity():
 		_playable_course_progress.clear_session()
 		return
@@ -3009,6 +3023,15 @@ func _update_playable_course_progress() -> void:
 		int(latest_snapshot.render_world_generation), source_tick):
 		return
 	_playable_course_progress.observe(source_tick, int(observed.get("tick",-1)), position, paused)
+
+
+# HUD text/visibility are published only on the independent presentation
+# callback, never by the Rapier step or native worker.
+func _update_playable_course_progress() -> void:
+	course_timing_label.visible = false
+	_observe_playable_course_progress()
+	if not _playable_course_progress_identity() or _playable_course_progress.rig_id != physical_rig_id:
+		return
 	course_timing_label.text = _playable_course_progress.display_text()
 	course_timing_label.visible = not microscenario_hud_hidden
 
