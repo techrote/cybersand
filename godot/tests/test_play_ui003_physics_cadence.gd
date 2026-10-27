@@ -16,6 +16,7 @@ var assertions: int = 0
 var failures: int = 0
 var real_host_stepped_visits: int = 0
 var negative_control_runs: int = 0
+var reset_epoch_floor: int = -1
 
 
 class CadenceHarness:
@@ -81,6 +82,12 @@ func playable() -> bool:
 	return (actor_installed() and not desktop._actor_input_rearm
 		and desktop.physical_actor_session.tick >= 3
 		and desktop._playable_course_progress.rig_id == RIG)
+
+
+func replacement_ready() -> bool:
+	return (actor_installed() and desktop._physical_epoch > reset_epoch_floor
+		and desktop._playable_course_progress.rig_id == RIG
+		and not desktop._playable_course_progress.started)
 
 
 func key(code: Key, pressed: bool) -> void:
@@ -220,13 +227,12 @@ func exercise(negative: bool) -> void:
 		expect(tracker.target_index == 1,
 			"paused HUD refresh never turns a moved fixture into an admitted step")
 		var old_epoch: int = desktop._physical_epoch
+		reset_epoch_floor = old_epoch
 		desktop.set_process(true)
 		desktop.set_physics_process(true)
 		desktop.microscenario_reset()
-		var reset_ok: bool = await wait_for(func() -> bool:
-			return actor_installed() and desktop._physical_epoch > old_epoch
-				and desktop._playable_course_progress.rig_id == RIG
-				and not desktop._playable_course_progress.started)
+		var reset_ok: bool = await wait_for(Callable(self, "replacement_ready"))
+		reset_epoch_floor = -1
 		expect(reset_ok and tracker.target_index == 0 and tracker.elapsed_ticks == 0,
 			"real native+Rapier reset invalidates the prior session and lap")
 		if reset_ok:
