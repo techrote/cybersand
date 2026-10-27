@@ -201,4 +201,86 @@ func run() -> void:
 	var reset_ok: bool = await wait_for(Callable(self, "actor_installed"))
 	expect(reset_ok and desktop.microscenario_definition.rectangles == checked.definition.rectangles,
 		"existing owner resets while retaining course and selected rig")
+	# PLAY-COMP-002 follow-on: re-use the shipped native per-material solver
+	# selector and prepared World transaction on the *same* authored course.
+	# This is explicit construction-time admission, never a live native mutation.
+	expect(int(desktop.microscenario_definition.get("schema_version",0)) == 2
+		and desktop.microscenario_definition.get("source_recipe","") == "CyberPlayerPlaygroundCourse/v1",
+		"authored gameplay source admits a versioned prepared liquid configuration")
+	var panel: CyberLiquidComparisonPanel = desktop.microscenario_panel.liquid_panel
+	panel.session_picker.select(1)
+	panel.select_preset(2) # Water pressure/reference, all other material assignments retained.
+	panel.refresh(desktop.tower_context)
+	var selection_accepted: bool = bool(panel._validation.get("accepted",false)) and not panel.apply_button.disabled
+	expect(selection_accepted, "existing UI enables an admitted per-material solver rebuild on the course")
+	if selection_accepted:
+		var requested: PackedInt32Array = panel.requested_policy.duplicate()
+		var prior: Dictionary = desktop.tower_context.get("liquid_solver_policy",{}).duplicate(true)
+		var prior_generation: int = int(prior.get("session_generation",-1))
+		expect(panel.apply_active(), "existing UI queues a prepared pressure-Water course replacement")
+		var replaced: bool = await wait_for(func() -> bool:
+			return (desktop.pending_microscenario_apply.is_empty()
+				and int(desktop.tower_context.get("liquid_solver_policy",{}).get("session_generation",-1)) > prior_generation
+				and desktop.physical_actor_session != null and desktop._physical_terrain_ready))
+		expect(replaced, "actual worker and main-thread Rapier jointly acknowledge the new native World")
+		if replaced:
+			var applied: Dictionary = desktop.tower_context.get("liquid_solver_policy",{}).duplicate(true)
+			var receipt: Dictionary = desktop.tower_context.get("liquid_construction_receipt",{}).duplicate(true)
+			var pressure_water: bool = false
+			for assignment: Dictionary in applied.get("assignments",[]):
+				if int(assignment.material) == 3:
+					pressure_water = str(assignment.applied_family) == "pressure_flow_v1" \
+						and str(assignment.applied_variant) == "reference"
+			expect(pressure_water and applied.get("envelope",PackedInt32Array()) == requested
+				and receipt.get("policy_hash","") == applied.get("policy_hash",""),
+				"native readback proves the requested pressure family, variant and immutable envelope")
+			expect(receipt.get("kind","") == "applied_run"
+				and receipt.get("run_intent","") == "exploratory"
+				and not bool(receipt.get("eligible_for_full_matched_evidence",true)),
+				"typed tick-zero receipt records exploratory intent without invented full-host qualification")
+			expect(actor_installed() and desktop.microscenario_definition.rectangles == checked.definition.rectangles
+				and desktop.microscenario_definition.source_recipe_hash == checked.definition.source_recipe_hash,
+				"solver reconstruction retains SetP player, terrain and exact authored recipe identity")
+			var receipt_hash: String = str(receipt.get("receipt_hash",""))
+			var retained_generation: int = int(applied.get("session_generation",-1))
+			expect(not desktop.microscenario_apply_controlled_liquid(
+				desktop.microscenario_definition,requested,false,"Play",2),
+				"controlled/actor-free policy cannot silently replace the playable physical host")
+			expect(desktop.pending_microscenario_apply.is_empty()
+				and str(desktop.tower_context.get("liquid_construction_receipt",{}).get("receipt_hash","")) == receipt_hash
+				and int(desktop.tower_context.get("liquid_solver_policy",{}).get("session_generation",-1)) == retained_generation
+				and actor_installed(),
+				"unsupported route preserves the accepted World, typed receipt and actual actor")
+			desktop.microscenario_reset()
+			var reinstalled: bool = await wait_for(func() -> bool:
+				return (actor_installed() and int(desktop.tower_context.get("liquid_solver_policy",{}).get("session_generation",-1)) > retained_generation))
+			expect(reinstalled, "R/reset rebuilds original map and committed solver through the same owner")
+			if reinstalled:
+				var reset_policy: Dictionary = desktop.tower_context.get("liquid_solver_policy",{})
+				expect(reset_policy.get("policy_hash","") == applied.get("policy_hash","")
+					and desktop.microscenario_definition.rectangles == checked.definition.rectangles,
+					"new generation retains selected per-material family and authored course")
+				# F5 actor change is a separate transaction, retaining the committed
+				# policy while constructing a different real mechanical rig.
+				expected_model = &"acrobat"
+				expect(desktop.apply_actor_prototype_configuration(&"rapier/acrobat",&"human",false),
+					"F5 actor replacement admits on a policy-prepared playground course")
+				var switched: bool = await wait_for(Callable(self,"actor_installed"))
+				expect(switched, "different actual Rapier rig and terrain become ready after F5 rebuild")
+				if switched:
+					expect(desktop.tower_context.get("liquid_solver_policy",{}).get("policy_hash","") == applied.get("policy_hash","")
+						and desktop.microscenario_definition.rectangles == checked.definition.rectangles
+						and str(desktop.physical_actor_session.observation(0).get("model","")) == "acrobat",
+						"F5 retains original course, new SetP controller and committed solver family")
+				print("PLAY_COMP002_LIQUID ", JSON.stringify({
+					"policy_hash":str(applied.get("policy_hash","")),
+					"native_receipt":receipt_hash,
+					"initial_generation":prior_generation,
+					"applied_generation":retained_generation,
+					"reset_generation":int(reset_policy.get("session_generation",-1)),
+					"switched_actor":expected_model,
+					"recipe_hash":str(checked.definition.source_recipe_hash),
+					"selected_water_family":"pressure_flow_v1",
+					"real_frame_pacing_measured":false
+				}))
 	await finish()
