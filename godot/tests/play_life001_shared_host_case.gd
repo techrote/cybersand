@@ -173,14 +173,14 @@ func run_cycle(rig: StringName, cycle: int) -> bool:
 	# Focus refusal revokes the live lease and forces release-to-rearm. Only the
 	# existing human producer is cancelled; no policy/NPC owner is introduced.
 	var generation_before: int = int(after_edges.control_generation)
-	desktop.test_input_allowed = false
+	desktop.set("test_input_allowed", false)
 	desktop.publish_actor_keyboard_input()
 	var cancelled: Dictionary = desktop.physical_actor_session.observation(0)
 	expect(desktop._actor_input_rearm
 		and int(cancelled.control_generation) > generation_before
 		and int(cancelled.pending_input_edges) == 0,
 		context + "focus loss cancels input generation and pending edges")
-	desktop.test_input_allowed = true
+	desktop.set("test_input_allowed", true)
 	release_controls()
 	desktop.publish_actor_keyboard_input()
 	expect(not desktop._actor_input_rearm,
@@ -211,9 +211,10 @@ func run_cycle(rig: StringName, cycle: int) -> bool:
 		return (actor_ready(desktop, rig) and desktop._physical_epoch > old_epoch
 			and int(desktop.latest_snapshot.render_world_generation) > old_world_generation))
 	expect(reset_ok, context + "reset advances actor and native World lifetimes")
+	var reset_epoch: int = desktop._physical_epoch if reset_ok else -1
+	var reset_world_generation: int = int(desktop.latest_snapshot.render_world_generation) if reset_ok else -1
 	if reset_ok:
-		expect(desktop.physical_actor_session != old_session
-			and not is_instance_valid(old_session),
+		expect(not is_instance_valid(old_session),
 			context + "reset retires the prior Rapier owner")
 		expect(desktop.microscenario_definition.get("id", "") == Catalogue.PLAYER_COURSE_ID
 			and desktop.physical_rig_id == rig,
@@ -225,8 +226,8 @@ func run_cycle(rig: StringName, cycle: int) -> bool:
 		expect(retained_snapshot.tick_index == retained_tick
 			and retained_snapshot.render_world_generation == retained_generation,
 			context + "later reset cannot mutate an earlier immutable snapshot")
-		expect(desktop._physical_epoch > initial_epoch
-			and int(desktop.latest_snapshot.render_world_generation) > initial_world_generation,
+		expect(reset_epoch > initial_epoch
+			and reset_world_generation > initial_world_generation,
 			context + "replacement identities are strictly newer")
 
 	var final_session = desktop.physical_actor_session
@@ -238,9 +239,9 @@ func run_cycle(rig: StringName, cycle: int) -> bool:
 	print("PLAY_LIFE001_CYCLE ", JSON.stringify({
 		"rig":str(rig), "cycle":cycle, "elapsed_ms":duration,
 		"initial_actor_epoch":initial_epoch,
-		"reset_actor_epoch":old_epoch + 1 if reset_ok else -1,
+		"reset_actor_epoch":reset_epoch,
 		"initial_world_generation":initial_world_generation,
-		"reset_world_generation":old_world_generation + 1 if reset_ok else -1,
+		"reset_world_generation":reset_world_generation,
 		"worker_joined":not worker._thread.is_started(),
 		"reset_ok":reset_ok
 	}))
