@@ -4,11 +4,43 @@ status: Planned
 document-kind: design
 scope: Issue 12 stage dependencies, acceleration and macro-dynamics objectives, and current-main successor admission
 canonical-for: [scalable-soliding-programme]
-last-reviewed: 2026-09-20
-related-documents: [architecture-programme.md, ../architecture/soliding-lifecycle.md, soliding-measurement.md, soliding-stage3-freeze.md, ../audits/2026-09-19-issue-12-phase0-reuse.md]
+last-reviewed: 2026-10-27
+related-documents: [architecture-programme.md, soliding-structural-detachment-programme.md, ../architecture/soliding-lifecycle.md, soliding-measurement.md, soliding-stage3-freeze.md, ../audits/2026-09-19-issue-12-phase0-reuse.md]
 ---
 
 # Scalable reversible soliding programme
+
+## 2026-10-27 owner-priority amendment — actual native solid detachment first
+
+**Approved owner priority, implementation Planned.** The first gameplay
+milestone is **an existing native-pixel solid tree losing its support
+and then falling, toppling and rolling as a Rapier body**, with exact
+material transfer. A pre-authored or already sleeping rigid tree is
+not sufficient. This is **Track A**, owned by the
+[structural-detachment charter](soliding-structural-detachment-programme.md)
+and [SOL-DETACH-001 #281](https://github.com/techrote/cybersand/issues/281).
+
+**Track B** continues the separate, measured settled-region discovery
+and stationary acceleration goal. Its historical read-only Stage-3B
+[#66 → #67 → #68 → #70](soliding-stage3b-production-plan.md) chain
+remains open and unmodified; #66 is next **within Track B**, but
+is **not an automatic prerequisite** for the smaller local Track-A
+proof. Stage 4 remains blocked on its own source-matched performance
+qualification. Full Stage 6/7 production multi-aggregate/fracture
+and persistence acceptance also remain unpassed.
+
+The September 2026 representation ladder below is retained as the
+historical comprehensive programme, not a mandatory execution order
+for Track A. The original performance and macro-dynamics purposes
+remain co-equal *long-term* objectives; this is a prioritization of
+the first playable mechanical result. The
+[dated current-main reassessment](../audits/2026-10-27-issue12-stage3b-reassessment.md)
+explains the distinction and the need to source-qualify any reused
+Stage-3B observer. No #69 frozen protocol or historical result is
+retrospectively changed.
+
+## September 2026 programme baseline (historical long-term direction)
+
 
 ## What does issue 12 now own?
 
@@ -42,7 +74,7 @@ not promote discovery observations into skip authority, create a rigid mask or
 admit generic Stage 4. Generic discovered-region acceleration retains this
 programme's gates; #201 must route any such additional dependency here.
 
-## Stage 3B live checkpoint — 2026-09-20
+## Stage 3B checkpoint — 2026-09-20 (historical)
 
 The read-only architecture review and parent reconciliation are complete. #56-#61,
 #64 and #69 are complete; #64 landed through PR #98 at
