@@ -156,15 +156,14 @@ func run_cycle(rig: StringName, cycle: int) -> bool:
 		await close_cycle(desktop, worker, desktop.physical_actor_session, context)
 		return false
 
-	# Preserve one press and release before another physics callback through the
-	# real course sampler and existing submit_local edge queue.
+	# Deliver a press and release through the actual Viewport input path before
+	# another physics callback. Do not supplement this with direct submissions:
+	# the assertion must fail if production _unhandled_key_input loses an edge.
 	var movement_key: Key = KEY_D if rig == &"acrobat" else KEY_W
 	var before_edges: Dictionary = desktop.physical_actor_session.observation(0)
 	var commands_before: int = desktop.physical_actor_session.accepted_commands
 	set_key(movement_key, true)
-	desktop._publish_physical_keyboard_input()
 	set_key(movement_key, false)
-	desktop._publish_physical_keyboard_input()
 	var after_edges: Dictionary = desktop.physical_actor_session.observation(0)
 	expect(desktop.physical_actor_session.accepted_commands >= commands_before + 2
 		and int(after_edges.last_sequence) >= int(before_edges.last_sequence) + 2,
