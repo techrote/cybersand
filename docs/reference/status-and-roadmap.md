@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-27
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -1577,6 +1577,27 @@ kernels, select new material tuning, alter Water/granular/soliding/ballistic
 semantics or satisfy independent architecture gates. Final status is not upgraded
 from candidate until exact-head current checks and final diff/acceptance review
 complete.
+
+## Issue #12 structural-detachment priority — 2026-10-27
+
+**Approved direction / implementation Planned:** native solid structures
+should have their **actual native-cell material payload** cut free by
+support loss and transferred under exact ownership to a Rapier
+aggregate that falls, topples and rolls. The
+[Track-A structural-detachment programme](../operations/soliding-structural-detachment-programme.md),
+[first acceptance issue #281](https://github.com/techrote/cybersand/issues/281)
+and [source-bound Stage-3B reassessment](../audits/2026-10-27-issue12-stage3b-reassessment.md)
+are the new forward references. Preauthored falling bodies do not pass
+the native promotion gate.
+
+**Track B** retains the read-only global discovery/performance
+#66 → #67 → #68 → #70 chain and #69's immutable validation
+contract. #66 is **dependency-ready within Track B**, not an
+automatic gate on event-driven native-tree detachment; Stage 4 remains
+unadmitted and Stage 6/7 full-fracture/persistence work remains
+unimplemented. The September 2026 scope and implementation history
+below are preserved with their original evidence and date; do not
+read them as the current Track-A execution order.
 
 ## Issue #12 successor programme, 2026-09-19
 
