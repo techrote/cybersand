@@ -1,0 +1,52 @@
+name: SOL281 isolated source assembly and native proof
+on:
+  push:
+    branches: [work/sol281-native-detachment-20261027]
+    paths: ['.github/workflows/sol281-assemble.yml', 'tools/soliding/materialize_issue281.py']
+permissions:
+  contents: write
+concurrency:
+  group: sol281-assembly
+  cancel-in-progress: false
+jobs:
+  assemble:
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/work/sol281-native-detachment-20261027'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - name: Materialize exact reviewed source changes on this branch only
+        run: |
+          set -euo pipefail
+          python3 tools/soliding/materialize_issue281.py
+          git diff --check
+          git add native/include/cybersand/world.hpp native/src/world.cpp native/src/world_pressure.inc Makefile
+          git add -u tools/soliding/materialize_issue281.py .github/workflows/sol281-assemble.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'feat(sol281): integrate native ownership fences into exact World source'
+          mkdir -p build/sol281
+          git rev-parse HEAD | tee build/sol281/source-head.txt
+          git show --format=fuller HEAD > build/sol281/assembled-source.patch
+          git archive --format=tar.gz -o build/sol281/source.tar.gz HEAD
+          # Ordinary fast-forward push refuses any concurrent branch movement.
+          git push origin HEAD:refs/heads/work/sol281-native-detachment-20261027
+          git status --short
+      - name: Validate GitHub-hosted policy and compile actual native World
+        run: |
+          set -euo pipefail
+          python3 tools/ci/check_ci_provider_policy.py
+          mkdir -p build/sol281
+          git rev-parse HEAD | tee build/sol281/source-head.txt
+          g++-13 --version | tee build/sol281/compiler.txt
+          timeout 10m make CXX=g++-13 solid-detachment-test 2>&1 | tee build/sol281/native.txt
+      - name: Retain all outcomes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sol281-source-assembly-${{ github.run_id }}
+          path: build/sol281/
+          if-no-files-found: warn
