@@ -10,44 +10,64 @@ related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-l
 
 # Player control playground
 
-## PLAY composable existing-host route — candidate, not qualified yet
+## PLAY composable existing-host route — accepted course and five-rig slice
 
-[PLAY-COMP-001 #273](https://github.com/techrote/cybersand/issues/273) was completed
-by [merged PR #274](https://github.com/techrote/cybersand/pull/274) on 2026-10-27:
-one authored course and the real SetP Acrobat moved through the **existing**
-`CyberSimulationWorker` plus main-thread Rapier path. The tested head
-`fc5b2e4` passed 117/117 focused assertions on both Linux and Windows; all
-three mandatory source-head workflows completed. This proves feasibility,
-**not** five-player parity, multithreaded speedup, frame feel or a released game.
+[PLAY-COMP-001 #273](https://github.com/techrote/cybersand/issues/273) was
+completed by [PR #274](https://github.com/techrote/cybersand/pull/274),
+merged on 2026-10-27 as `7500c1cc`. Its focused existing-host
+Player Playground/SetP Acrobat integration passed 117 assertions and zero
+failures on **each** of Linux and Windows, through the existing
+`CyberSimulationWorker` plus **main-thread Rapier**. This proved the
+feasibility of reusing the owner, not five-rig parity or frame pacing.
 
-**Candidate PLAY-COMP-002 / #267 (unqualified until its own exact-head runs):**
-the existing MicroScenario selector admits the authored
-`playground/player-course` in Play mode, while **F5 → SetP** composes the
-stunt buggy, trials bike, acrobat, arcade lander or jet barrel on the same
-asynchronous course. The narrow course-only actor constructor uses the
-original mechanical origin `(178, floor_y - equipment_clearance)` or
-`(178, 304)` for the two flight presets. It does not alter generic
-MicroScenario spawns, any other actor's F5 constructor, native World
-ownership, the original seven-preset standalone scene, or the liquid solver
-family defaults and construction-time admission. A new source-backed
-five-rig Windows/Linux headless test is intended to check controller input,
-native/physical step progress, terrain readiness, authored spawn and reset.
-Its existence **is not a passing execution receipt**.
+**Accepted five-rig #267 slice:** [PR #275](https://github.com/techrote/cybersand/pull/275)
+merged on 2026-10-27 as `6c5b8b45df151e39a026ae23075ae4611826387c`.
+The normal MicroScenario selector now admits the exact authored
+`playground/player-course` layout in **Play** mode; **F5 → SetP** separately
+chooses the stunt buggy, trials bike, acrobat, arcade lander or jet barrel.
+The first actor's physical origin is source-faithful at
+`(178, FLOOR_Y - equipment_clearance)` for the three ground rigs and
+`(178, 304)` for the flight rigs. Normal MicroScenarios and all other
+rig constructors retain their former spawn rules. Source-tree-identical
+[Windows/Linux actual-host tests](https://github.com/techrote/cybersand/pull/275#issuecomment-6436394299)
+passed **73/73 assertions on each OS**, moving each real mechanical rig
+with native/physical ticks, actual Rapier terrain and copied worker state,
+and preserving map identity across actor changes and reset.
+[Native](https://github.com/techrote/cybersand/actions/runs/40452089685),
+[Godot/GDExtension](https://github.com/techrote/cybersand/actions/runs/40452089898)
+and [Docs](https://github.com/techrote/cybersand/actions/runs/40452089638)
+CI succeeded for the tested tree. A passing headless test is **not**
+interactive camera/lap/gamepad parity, worker parallel-speedup or subjective feel.
+
+**Remaining #267 solver-policy integration — unqualified candidate:** the
+authored `playground/player-course` definition is being given bounded schema-2
+presentation metadata to expose the existing native per-material solver
+selection through the desktop **Liquid comparison → Exploratory → Apply &
+rebuild active** controls. Requested family, applied native family and typed
+construction receipt remain different facts; policy is admitted only on fresh
+World reconstruction with owner/physical readiness fences. The scenario's
+rectangles, material IDs, recipe digest, default family, protected scientific
+fixtures and native execution owner are unchanged. A focused
+[real-host five-rig regression](../../godot/tests/test_play_comp002_five_rig_course.gd)
+is extended to check policy selection, native receipt, atomic refusal, R/reset
+and F5 actor replacement. **Until independent exact-head Windows/Linux CI
+executes that extension, the course's new policy capability is not qualified.**
+No live solver hot-swap is supported or claimed.
 
 The separate [shared controls/UI issue #268](https://github.com/techrote/cybersand/issues/268)
-still owns playable preset menus, course `VIEW` camera and checkpoint/lap
-presentation, focus/gamepad parity and original seven-preset UX. Native Auto
-measurement, lifecycle/soak and final desktop feel remain #266/#269/#270.
-The two material swarms (#271) are deferred. Specialist scientific and
-NPC-training fixtures retain independent deterministic admission and execution.
-The dedicated new simulation owner (#265) was retired as unnecessary; the
-existing worker remains authoritative for all native cells.
+still owns playable preset menus, the original course `VIEW` camera,
+four checkpoint/lap presentation, quick taps and gamepad/focus parity.
+Native Auto measurements, lifecycle/stress and final desktop feel remain
+#266/#269/#270. Material swarms (#271) remain deferred in the standalone
+seven-preset experimental scene. Specialist scientific and NPC-training
+fixtures retain independent deterministic admission/execution.
+No second native World owner is introduced; redundant #265 remains closed.
 
-Sources: [course layout and mechanical origin](../../godot/scripts/player_playground_course.gd),
-[opt-in MicroScenario catalogue](../../godot/scripts/microscenario_catalogue.gd),
-[main desktop actor admission](../../godot/scripts/main.gd),
-[initial executable host evidence](../../godot/tests/test_play_comp001_existing_host_spike.gd)
-and [candidate five-rig regression](../../godot/tests/test_play_comp002_five_rig_course.gd).
+Sources: [course geometry and mechanical origins](../../godot/scripts/player_playground_course.gd),
+[versioned MicroScenario catalogue](../../godot/scripts/microscenario_catalogue.gd),
+[existing desktop admission](../../godot/scripts/main.gd),
+[existing-host feasibility test](../../godot/tests/test_play_comp001_existing_host_spike.gd),
+and [current five-rig/solver test](../../godot/tests/test_play_comp002_five_rig_course.gd).
 
 ## Open the seven-preset movement course
 
