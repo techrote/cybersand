@@ -4,11 +4,32 @@ status: Approved design
 document-kind: contract
 scope: Issue12 successor state machine, eligibility boundaries and bounded identity/ownership invariants; executable model is separate from production runtime
 canonical-for: [soliding-representation-lifecycle, soliding-eligibility-tiers]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-10-27
 related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-coupling.md, ../reference/level-saves-and-replay.md, ../systems/granular-interaction-policy.md]
 ---
 
 # Scalable soliding representation lifecycle
+
+## 2026-10-27 sequencing clarification — no new runtime state
+
+Owner direction now prioritizes **native solid terrain detached by
+an actual support-loss event and transferred into a free Rapier
+aggregate**, which then naturally topples and rolls.
+[Track-A structural detachment](../operations/soliding-structural-detachment-programme.md)
+and [#281](https://github.com/techrote/cybersand/issues/281)
+own the earlier bounded tree proof.
+
+The lifecycle invariants below remain mandatory; a complete local
+support/anchor witness may authorize a direct active/sleeping native
+cells → dynamic aggregate transition **without** previously
+passing through global settled-summary and stationary-compaction
+tiers. This changes **sequence**, not prepare/acknowledge/commit/
+finalize, capacity, single-material-owner or collision-owner
+requirements. A sleeping Rapier body is not body-to-cells
+desoliding. `soliding_lifecycle.hpp` remains only an isolated
+contract model, and a native World/Rapier handoff is **Planned**.
+Stage-3B/4 acceleration remains separately gated.
+
 
 ## What is implemented, and what is the approved direction?
 
