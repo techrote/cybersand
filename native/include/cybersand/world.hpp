@@ -1,5 +1,7 @@
 #pragma once
 
+#include "cybersand/solid_detachment.hpp"
+
 #include "cybersand/material.hpp"
 #include "cybersand/physics_diagnostics.hpp"
 #include "cybersand/interaction_policy.hpp"
@@ -254,6 +256,23 @@ public:
                                        std::uint8_t collapse_strength = 255);
     void clear();
 
+    // SOL-DETACH-001/A1: experimental one-aggregate native ownership kernel.
+    // Exclusive owner only. Main-thread physics must remain separately fenced
+    // until a source/geometry-bound contact receipt has been finalized.
+    [[nodiscard]] soliding::SolidOutcome configure_solid_detachment(soliding::SolidLimits limits = {});
+    [[nodiscard]] soliding::SolidOutcome prepare_solid_detachment(const soliding::SolidRequest& request);
+    [[nodiscard]] soliding::SolidOutcome acknowledge_solid_detachment(const soliding::SolidBodyReservation& body);
+    [[nodiscard]] soliding::SolidOutcome commit_solid_detachment(soliding::SolidToken token);
+    [[nodiscard]] soliding::SolidOutcome finalize_solid_detachment(const soliding::SolidCollisionReceipt& receipt);
+    [[nodiscard]] soliding::SolidOutcome cancel_solid_detachment(soliding::SolidToken token);
+    [[nodiscard]] soliding::SolidOutcome rollback_solid_detachment(soliding::SolidToken token);
+    [[nodiscard]] soliding::SolidOutcome complete_solid_rollback(const soliding::SolidCollisionReceipt& receipt);
+    [[nodiscard]] bool solid_detachment_fenced() const noexcept;
+    [[nodiscard]] soliding::SolidSnapshot inspect_solid_detachment() const noexcept;
+    [[nodiscard]] std::size_t solid_detachment_storage_bytes() const noexcept;
+    [[nodiscard]] std::size_t copy_solid_detachment_members(std::span<soliding::SolidMember> output) const noexcept;
+    [[nodiscard]] std::size_t copy_solid_detachment_shapes(std::span<soliding::SolidShape> output) const noexcept;
+
     [[nodiscard]] TickStats tick();
     // tick_index identifies attempts; only completed_tick_index is successful.
     // A thrown tick quarantines this World until clear() or replacement. No
@@ -400,6 +419,8 @@ private:
         std::uint8_t collapse_strength = 0;
     };
 
+    std::unique_ptr<soliding::SolidStore> solid_detachment_;
+    void require_solid_mutation_allowed() const;
     WorldConfig config_;
     bool water_cellular_yield_ = false;
     WaterCellularYieldParameters water_cellular_yield_parameters_{};

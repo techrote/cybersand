@@ -110,7 +110,8 @@ soliding-stage3b-validation-apparatus-test: | $(BUILD_DIR)
 	python3 tools/experiments/stage3b_validation.py generate-plan --apparatus-source-commit=$$(git rev-parse HEAD) --profile smoke --output $(BUILD_DIR)/stage3b-validation-plan-smoke.json
 	python3 tools/experiments/stage3b_validation.py validate-plan $(BUILD_DIR)/stage3b-validation-plan-smoke.json
 
-soliding-test: $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_discovery $(BUILD_DIR)/test_settled_regions $(BUILD_DIR)/test_settled_world_discovery $(BUILD_DIR)/test_stage3b_runtime_storage $(BUILD_DIR)/test_stage3b_bounded_spatial_index $(BUILD_DIR)/test_stage3b_sparse_mutation_witness $(BUILD_DIR)/test_stage3b_sparse_activity_deadline
+soliding-test: $(BUILD_DIR)/test_solid_detachment $(BUILD_DIR)/test_soliding_lifecycle $(BUILD_DIR)/test_settled_discovery $(BUILD_DIR)/test_settled_regions $(BUILD_DIR)/test_settled_world_discovery $(BUILD_DIR)/test_stage3b_runtime_storage $(BUILD_DIR)/test_stage3b_bounded_spatial_index $(BUILD_DIR)/test_stage3b_sparse_mutation_witness $(BUILD_DIR)/test_stage3b_sparse_activity_deadline
+	./$(BUILD_DIR)/test_solid_detachment
 	./$(BUILD_DIR)/test_soliding_lifecycle
 	./$(BUILD_DIR)/test_settled_discovery
 	./$(BUILD_DIR)/test_settled_regions
@@ -277,3 +278,14 @@ $(BUILD_DIR)/test_generation_planes: $(GENERATION_OPT_THREADED_OBJECTS) $(CORE_H
 
 $(BUILD_DIR)/test_generation_planes_sanitized: $(GENERATION_SAN_THREADED_OBJECTS) $(CORE_HEADERS) native/tests/test_generation_planes.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(GENERATION_SAN_THREADED_OBJECTS) native/tests/test_generation_planes.cpp -o $@
+
+# SOL-DETACH-001 experimental native ownership (real World, not the Stage-2 model).
+.PHONY: solid-detachment-test solid-detachment-sanitize
+$(BUILD_DIR)/test_solid_detachment: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_solid_detachment.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) $(DEBUG_FLAGS) -pthread $(CORE_SOURCES) native/tests/test_solid_detachment.cpp -o $@
+solid-detachment-test: $(BUILD_DIR)/test_solid_detachment
+	./$(BUILD_DIR)/test_solid_detachment
+$(BUILD_DIR)/test_solid_detachment_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_solid_detachment.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined -pthread $(CORE_SOURCES) native/tests/test_solid_detachment.cpp -o $@
+solid-detachment-sanitize: $(BUILD_DIR)/test_solid_detachment_sanitized
+	ASAN_OPTIONS=detect_leaks=0 UBSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_solid_detachment_sanitized
