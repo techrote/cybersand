@@ -6,6 +6,7 @@ extends SceneTree
 # One test-only hook override is the negative control (old render-only path).
 const Catalogue = preload("res://scripts/microscenario_catalogue.gd")
 const Course = preload("res://scripts/player_playground_course.gd")
+const Lap = preload("res://scripts/playable_course_lap.gd")
 const RIG: StringName = &"jetbarrel"
 const DELTA: float = 1.0 / 60.0
 const EXIT_POSE: Vector2 = Vector2(275.0, 280.0)
@@ -174,7 +175,7 @@ func exercise(negative: bool) -> void:
 	desktop._physics_process(DELTA)
 	var entered: Vector2 = session.observation(0).get("position", Vector2.INF)
 	var entered_real: bool = (entered.is_finite()
-		and entered.distance_to(gate) <= tracker.GATE_RADIUS)
+		and entered.distance_to(gate) <= Lap.GATE_RADIUS)
 	expect(entered_real and session.tick == before_visit_tick + 1
 		and desktop.rapier_bridge.manual_step_count() == before_visit_step + 1,
 		"real completed Rapier space step, not a synthetic pose, visits the authored gate")
@@ -184,7 +185,7 @@ func exercise(negative: bool) -> void:
 	move_actual_rapier_assembly(EXIT_POSE)
 	desktop._physics_process(DELTA)
 	var exited: Vector2 = session.observation(0).get("position", Vector2.INF)
-	expect(exited.is_finite() and exited.distance_to(gate) > 2.0 * tracker.GATE_RADIUS,
+	expect(exited.is_finite() and exited.distance_to(gate) > 2.0 * Lap.GATE_RADIUS,
 		"next real completed Rapier step leaves the checkpoint entirely")
 	expect(desktop.course_timing_label.text == initial_text,
 		"no render callback occurred during the physical gate visit and exit")
