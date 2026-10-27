@@ -5,6 +5,12 @@ extends RefCounted
 const ID: String = "player-playground"
 const VIEW := Rect2i(128, 128, 512, 256)
 const FLOOR_Y: int = 352
+# The five physical rigs can be selected on the existing async desktop host.
+# Native Sand/Water swarms deliberately remain in the dedicated experiment.
+const MECHANICAL_PRESETS: Array[StringName] = [&"stuntbuggy", &"trialsbike",
+	&"acrobat", &"arcadelander", &"jetbarrel"]
+const MECHANICAL_START_X: float = 178.0
+const FLIGHT_START_Y: float = 304.0
 const PRESETS: Array[StringName] = [&"stuntbuggy", &"trialsbike", &"acrobat",
 	&"arcadelander", &"dryswarm", &"liquidswarm", &"jetbarrel"]
 const NAMES: Array[String] = ["Loose Cannon", "Trials Rat", "Afterimage",
@@ -22,6 +28,17 @@ const TAGLINES: Array[String] = ["A loose-jointed stunt buggy with an unruly pas
 
 static func is_swarm(id: StringName) -> bool:
 	return id in [&"dryswarm", &"liquidswarm"]
+
+
+# Mirrors the original Player Playground mechanical arena's authored origin.
+# This is an actor origin, not the generic sampled-character map spawn. Keep
+# bounds/clearance supplied by the existing equipment-aware physical catalogue.
+static func mechanical_origin(id: StringName, floor_clearance: float) -> Vector2:
+	if id not in MECHANICAL_PRESETS or not is_finite(floor_clearance) or floor_clearance <= 0.0:
+		return Vector2.INF
+	if id in [&"arcadelander", &"jetbarrel"]:
+		return Vector2(MECHANICAL_START_X, FLIGHT_START_Y)
+	return Vector2(MECHANICAL_START_X, float(FLOOR_Y) - floor_clearance)
 
 
 static func layout() -> Array:

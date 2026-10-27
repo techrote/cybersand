@@ -4,11 +4,50 @@ status: Current
 document-kind: contract
 scope: Experimental seven-preset human movement course, shared mechanical control, bounded native Sand and Water fields, input lifetime and qualified validation
 canonical-for: [player-control-playground, player-movement-presets, player-material-field]
-last-reviewed: 2026-10-21
+last-reviewed: 2026-10-27
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
 ---
 
 # Player control playground
+
+## PLAY composable existing-host route — candidate, not qualified yet
+
+[PLAY-COMP-001 #273](https://github.com/techrote/cybersand/issues/273) was completed
+by [merged PR #274](https://github.com/techrote/cybersand/pull/274) on 2026-10-27:
+one authored course and the real SetP Acrobat moved through the **existing**
+`CyberSimulationWorker` plus main-thread Rapier path. The tested head
+`fc5b2e4` passed 117/117 focused assertions on both Linux and Windows; all
+three mandatory source-head workflows completed. This proves feasibility,
+**not** five-player parity, multithreaded speedup, frame feel or a released game.
+
+**Candidate PLAY-COMP-002 / #267 (unqualified until its own exact-head runs):**
+the existing MicroScenario selector admits the authored
+`playground/player-course` in Play mode, while **F5 → SetP** composes the
+stunt buggy, trials bike, acrobat, arcade lander or jet barrel on the same
+asynchronous course. The narrow course-only actor constructor uses the
+original mechanical origin `(178, floor_y - equipment_clearance)` or
+`(178, 304)` for the two flight presets. It does not alter generic
+MicroScenario spawns, any other actor's F5 constructor, native World
+ownership, the original seven-preset standalone scene, or the liquid solver
+family defaults and construction-time admission. A new source-backed
+five-rig Windows/Linux headless test is intended to check controller input,
+native/physical step progress, terrain readiness, authored spawn and reset.
+Its existence **is not a passing execution receipt**.
+
+The separate [shared controls/UI issue #268](https://github.com/techrote/cybersand/issues/268)
+still owns playable preset menus, course `VIEW` camera and checkpoint/lap
+presentation, focus/gamepad parity and original seven-preset UX. Native Auto
+measurement, lifecycle/soak and final desktop feel remain #266/#269/#270.
+The two material swarms (#271) are deferred. Specialist scientific and
+NPC-training fixtures retain independent deterministic admission and execution.
+The dedicated new simulation owner (#265) was retired as unnecessary; the
+existing worker remains authoritative for all native cells.
+
+Sources: [course layout and mechanical origin](../../godot/scripts/player_playground_course.gd),
+[opt-in MicroScenario catalogue](../../godot/scripts/microscenario_catalogue.gd),
+[main desktop actor admission](../../godot/scripts/main.gd),
+[initial executable host evidence](../../godot/tests/test_play_comp001_existing_host_spike.gd)
+and [candidate five-rig regression](../../godot/tests/test_play_comp002_five_rig_course.gd).
 
 ## Open the seven-preset movement course
 

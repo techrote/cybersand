@@ -6,6 +6,7 @@ const PhysicalSession = preload("res://scripts/physical_actor_session.gd")
 const PhysicalOverlay = preload("res://scripts/physical_actor_overlay.gd")
 const PhysicalLoadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const PhysicalEquipment = preload("res://scripts/physical_usable_equipment.gd")
+const PlayerCourse = preload("res://scripts/player_playground_course.gd")
 const PreparedPhysical = preload("res://scripts/prepared_physical_session.gd")
 const PreparedReferenceBody = preload("res://scripts/prepared_reference_body_session.gd")
 const PreparedTrialBody = preload("res://scripts/prepared_trial_body_session.gd")
@@ -637,7 +638,8 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 			var definitions: Array = physical_actor_definitions(StringName(str(player_configuration.physical_rig)),
 				StringName(str(player_configuration.get("actor_producer","human"))),
 				bool(player_configuration.get("actor_demo_npcs",false)),
-				Vector2(checked.definition.player_start[0],checked.definition.player_start[1]))
+				Vector2(checked.definition.player_start[0],checked.definition.player_start[1]),
+				str(checked.definition.id))
 			if not staged.prepare(self,definitions,_physical_epoch+1):
 				microscenario_error = staged.last_error;staged.close();return false
 		# Signal connection and all rig/equipment/space construction precede the
@@ -2753,7 +2755,8 @@ func actor_prototype_definitions(model_id: StringName, producer: StringName, dem
 	return definitions
 
 
-func physical_actor_definitions(model_id: StringName, producer: StringName, demo_npcs: bool, spawn: Vector2) -> Array:
+func physical_actor_definitions(model_id: StringName, producer: StringName, demo_npcs: bool, spawn: Vector2,
+		scenario_id: String = "") -> Array:
 	if not PhysicalCatalog.has_rig(model_id):
 		return []
 	var models: Array[StringName] = [model_id]
@@ -2771,6 +2774,13 @@ func physical_actor_definitions(model_id: StringName, producer: StringName, demo
 		if index > 0:
 			next_x += -bounds.position.x + 8.0
 		var origin := Vector2(next_x, spawn.y + CyberSampledCharacter.BODY_SIZE.y - float(data.spawn_floor_clearance))
+		# Source-faithful actor origin for the authored player course. F5 and
+		# all other exploratory/scientific maps retain their existing spawn rule.
+		if scenario_id == CyberMicroScenarioCatalogue.PLAYER_COURSE_ID and index == 0:
+			var authored_origin: Vector2 = PlayerCourse.mechanical_origin(models[index],
+				float(data.spawn_floor_clearance))
+			if authored_origin.is_finite():
+				origin = authored_origin
 		origin.x = clampf(origin.x, -bounds.position.x + 2.0, 1022.0 - bounds.end.x)
 		origin.y = clampf(origin.y, -bounds.position.y + 2.0, 1022.0 - bounds.end.y)
 		definitions.append({"model": models[index], "producer": producer if index == 0 else &"demo", "position": origin})
@@ -2863,7 +2873,8 @@ func _close_prepared_reference_bodies() -> void:
 
 func _activate_articulated_actor_rigs(spawn: Vector2) -> bool:
 	var definitions: Array = physical_actor_definitions(physical_rig_id,
-		actor_producer_selection, actor_demo_npcs, spawn)
+		actor_producer_selection, actor_demo_npcs, spawn,
+		str(microscenario_definition.get("id", "")) if tower_context.get("micro_active", false) else "")
 	if not PhysicalSession.valid_definitions(definitions):
 		microscenario_error = "Physical actor configuration exceeds its bounded assembly budget"
 		return false
@@ -3006,7 +3017,9 @@ func apply_actor_prototype_configuration(model_id: StringName, producer: StringN
 	if tower_context.get("micro_active", false):
 		spawn = Vector2(microscenario_definition.player_start[0], microscenario_definition.player_start[1])
 	var definitions: Array = [] if physical else actor_prototype_definitions(model_id, producer, demo_npcs, spawn)
-	if articulated and not PhysicalSession.valid_definitions(physical_actor_definitions(bare_id, producer, demo_npcs, spawn)):
+	if articulated and not PhysicalSession.valid_definitions(physical_actor_definitions(
+			bare_id, producer, demo_npcs, spawn,
+			str(microscenario_definition.get("id", "")) if tower_context.get("micro_active", false) else "")):
 		return false
 	var arm: String = str(model_id).trim_prefix("physical/") if trial else ""
 	var configuration: Dictionary = {

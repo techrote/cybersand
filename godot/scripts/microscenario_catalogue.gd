@@ -19,12 +19,15 @@ static func ids() -> Array[String]:
 	result.append_array(ReferencePack.ids())
 	result.append_array(Showcase.scenario_ids())
 	result.append(BlacksiteNine.SCENARIO_ID)
+	# PLAY-COMP-002: opt-in authored course in the existing MicroScenario picker.
+	# The playable mechanical controller is selected separately through F5 SetP.
+	result.append(PLAYER_COURSE_ID)
 	for arm: String in PhysicalTrial.ARMS: result.append(PhysicalTrial.PREFIX + arm)
 	return result
 
-# PLAY-COMP-001: narrow existing-host feasibility route. No new native World
-# owner, controller or timing model. Deliberately absent from the normal
-# MicroScenario picker until the gameplay composition issue qualifies its UI.
+# PLAY-COMP-001/002: reused asynchronous gameplay host. No new native World
+# owner, controller or timing model. Selection uses the ordinary scenario
+# picker plus its independently chosen F5 SetP actor; shared course UI is #268.
 static func player_playground_definition(seed: int = 0) -> Dictionary:
 	if seed != 0:
 		return {}
