@@ -710,7 +710,10 @@ func _microscenario_installed(definition: Dictionary) -> void:
 	tower_active = true
 	paused = true
 	current_view_size = Vector2i(480, 270)
-	camera_follow_enabled = false
+	# The shared mechanical course defaults to following its real Rapier
+	# player; scientific/default MicroScenarios retain their authored overview.
+	camera_follow_enabled = (str(definition.get("id","")) == CyberMicroScenarioCatalogue.PLAYER_COURSE_ID
+		and StringName(str(player_configuration.get("physical_rig",""))) in PlayerCourse.MECHANICAL_PRESETS)
 	camera_origin = Vector2(definition.camera_origin[0], definition.camera_origin[1])
 	character_position = Vector2(definition.player_start[0], definition.player_start[1])
 	if _pending_physical_candidate != null:
