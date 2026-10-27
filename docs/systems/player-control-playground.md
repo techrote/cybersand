@@ -69,12 +69,25 @@ and [Docs](https://github.com/techrote/cybersand/actions/runs/40492528439)
 succeeded on the same reviewed integration tree. This does not establish
 physical gamepad or manual gameplay feel.
 
-**PLAY-UI-002 camera candidate — unqualified:** The actual shared
-mechanical course selects the original 256x128 close-follow viewport and
-offers F to view the exact authored `Rect2i(128,128,512,256)` panorama
-and return, with no World reconstruction. Other default/scientific camera
-behaviors remain unchanged. Added all-five-rig camera/F and reset assertions
-still require source-matched Windows/Linux CI and independent review.
+**Accepted PLAY-UI-002 / #268 camera slice:** [PR #279](https://github.com/techrote/cybersand/pull/279)
+merged on 2026-10-27 at `fc397c6f7ff9807610171a69e340af47f3e04f37`.
+The mechanical course now uses its authored 256x128 close-follow viewport;
+F toggles the exact `Rect2i(128,128,512,256)` panorama and back without
+rebuilding the World. Other scientific/default camera controls retain their
+original behavior. The [Windows/Linux Godot jobs](https://github.com/techrote/cybersand/actions/runs/40515691731)
+each passed 115/115 actual-host five-rig assertions, with
+[Native](https://github.com/techrote/cybersand/actions/runs/40515691552)
+and [Docs](https://github.com/techrote/cybersand/actions/runs/40515691616)
+green at exact reviewed head. No manual camera/feel claim follows.
+
+**PLAY-UI-003 candidate — not yet qualified:** A small main-thread-only lap
+HUD consumes completed native snapshot tick deltas once, sampled actual human
+SetP poses/epochs, and the original four ordered per-rig checkpoints. Timing
+starts only on admitted active human movement, pauses without catch-up,
+resets on actor/World generation replacement and preserves per-rig bests.
+Stale tick/epoch publications cannot credit an old run. A deterministic
+clock fixture and five-rig real-host assertions are prepared; both require
+new-source Windows/Linux qualification and separate patch/CI review.
 The remaining [#268](https://github.com/techrote/cybersand/issues/268)
 scope includes an integrated playable selector, four checkpoints with
 simulation-tick lap HUD, gameplay-rule options, focus and physical-gamepad

@@ -7,6 +7,7 @@ const PhysicalOverlay = preload("res://scripts/physical_actor_overlay.gd")
 const PhysicalLoadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const PhysicalEquipment = preload("res://scripts/physical_usable_equipment.gd")
 const PlayerCourse = preload("res://scripts/player_playground_course.gd")
+const PlayableCourseLap = preload("res://scripts/playable_course_lap.gd")
 const PreparedPhysical = preload("res://scripts/prepared_physical_session.gd")
 const PreparedReferenceBody = preload("res://scripts/prepared_reference_body_session.gd")
 const PreparedTrialBody = preload("res://scripts/prepared_trial_body_session.gd")
@@ -230,6 +231,7 @@ const MATERIAL_GROUP_FIRST_IDS: Array[int] = [
 
 @onready var world_view: TextureRect = $Layout/World
 @onready var status_label: Label = $Layout/Status
+@onready var course_timing_label: Label = $Layout/CourseTiming
 @onready var world_shader: ShaderMaterial = world_view.material as ShaderMaterial
 @onready var test_rigid_body_1: RigidBody2D = $RigidBodies/TestBody1
 @onready var test_rigid_body_2: RigidBody2D = $RigidBodies/TestBody2
@@ -1348,6 +1350,7 @@ var maximum_collider_time_ms: float = 0.0
 var character_position: Vector2 = CHARACTER_SPAWN
 var camera_origin: Vector2 = Vector2.ZERO
 var camera_follow_enabled: bool = true
+var _playable_course_progress = PlayableCourseLap.new()
 var player_representation: StringName = CyberPlayerRepresentation.SAMPLED
 var sampled_runtime_recovery_enabled: bool = true
 var barrel_player_spawn_position: Vector2 = CHARACTER_SPAWN
@@ -1606,6 +1609,7 @@ func _process(delta: float) -> void:
 	gameplay_recorder.poll_finalization()
 	_refresh_recording_button()
 	sync_player_presentation_position()
+	_update_playable_course_progress()
 	refresh_player_representation_button()
 	hard_surface_rebuild_cooldown = maxf(0.0, hard_surface_rebuild_cooldown - delta)
 	if hard_surface_rebuild_cooldown <= 0.0:
@@ -2981,6 +2985,34 @@ func _on_physical_actor_input_cancelled(actor_id: int, actor_epoch: int) -> void
 	simulation_worker.cancel_physical_actor_effects(actor_epoch, actor_id)
 
 
+# Native source-tick and main-thread actor-epoch fence for the course HUD.
+# A stale pre-rebuild worker packet can never advance a newly selected actor.
+func _playable_course_progress_identity() -> bool:
+	return (_playable_course_controls_active() and _physical_terrain_ready
+		and _actor_reset_receipt == 0 and pending_microscenario_apply.is_empty()
+		and latest_snapshot != null and not latest_snapshot.simulation_failed
+		and int(latest_snapshot.rigid_body_epoch) == _physical_epoch
+		and int(latest_snapshot.render_world_generation) >= 0)
+
+
+func _update_playable_course_progress() -> void:
+	course_timing_label.visible = false
+	if not _playable_course_progress_identity():
+		_playable_course_progress.clear_session()
+		return
+	var observed: Dictionary = physical_actor_session.observation(0)
+	var position: Vector2 = observed.get("position", Vector2.INF)
+	if int(observed.get("epoch",-1)) != _physical_epoch or not position.is_finite():
+		return
+	var source_tick: int = int(latest_snapshot.tick_index)
+	if not _playable_course_progress.bind(physical_rig_id, _physical_epoch,
+		int(latest_snapshot.render_world_generation), source_tick):
+		return
+	_playable_course_progress.observe(source_tick, int(observed.get("tick",-1)), position, paused)
+	course_timing_label.text = _playable_course_progress.display_text()
+	course_timing_label.visible = not microscenario_hud_hidden
+
+
 # Only the authored PLAY course uses this copied controller adapter. All
 # other F5, flight/scientific, equipment and NPC producer paths remain intact.
 func _playable_course_controls_active() -> bool:
@@ -3047,7 +3079,13 @@ func _publish_physical_keyboard_input(trigger_override: Variant = null, alternat
 	if physical_actor_session.is_flight_actor(0):
 		# The reserved 4LY interpretation has exactly two velocity outputs.
 		action = {"move": action.move}
-	physical_actor_session.submit_local(0, action, &"human", 6)
+	var admitted_course_action: bool = physical_actor_session.submit_local(0, action, &"human", 6)
+	if admitted_course_action and playable and CyberPlayerPlaygroundInput.active(playable_action) \
+		and _playable_course_progress_identity():
+		var source_tick: int = int(latest_snapshot.tick_index)
+		if _playable_course_progress.bind(physical_rig_id, _physical_epoch,
+			int(latest_snapshot.render_world_generation), source_tick):
+			_playable_course_progress.admit_movement(source_tick)
 
 
 func apply_actor_prototype_configuration(model_id: StringName, producer: StringName, demo_npcs: bool) -> bool:
