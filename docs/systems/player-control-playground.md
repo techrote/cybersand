@@ -56,17 +56,29 @@ also succeeded. This is a prepared rebuild option, **not** a hot solver swap
 or exhaustive fluid-family validation. The subsequently triggered main
 merge-CI remains a distinct execution record.
 
-The separate [shared controls/UI issue #268](https://github.com/techrote/cybersand/issues/268)
-owns playable preset menus, the original course `VIEW` overview camera,
-four checkpoint/lap presentation, focus and full gamepad feel. The bounded
-**PLAY-UI-001 candidate** reuses the existing `CyberPlayerPlaygroundInput`
-sampler for the real async desktop course only (logical-key fallback, standard
-gamepad, source keyboard arrow press/release), adds a held-gamepad neutral
-rearm fence and follows the actual main-thread SetP pose while reserving
-camera arrows for actor control. It does not alter session command authority,
-lease, equipment, generic F5 producers, native worker or Rapier. This adapter
-requires **fresh exact-head Windows/Linux execution before qualification**;
-a headless input test is not physical gamepad/focus/manual feel proof.
+**Accepted #268 initial input/camera slice:** [PR #278](https://github.com/techrote/cybersand/pull/278)
+merged on 2026-10-27 at `3dd28213231e434369356f4040445856faad69d4`.
+The existing async desktop course reuses `CyberPlayerPlaygroundInput` for
+keyboard/arrows and standard gamepad mapping, optional logical-key input,
+neutral rearm and camera following the actual main-thread Rapier actor.
+Both [Windows and Linux actual-host jobs](https://github.com/techrote/cybersand/actions/runs/40492528449)
+passed **99 assertions / 0 failures** each, including quick arrow edges and
+unchanged construction-time Water `pressure_flow_v1` policy receipts.
+[Native](https://github.com/techrote/cybersand/actions/runs/40492528431)
+and [Docs](https://github.com/techrote/cybersand/actions/runs/40492528439)
+succeeded on the same reviewed integration tree. This does not establish
+physical gamepad or manual gameplay feel.
+
+**PLAY-UI-002 camera candidate — unqualified:** The actual shared
+mechanical course selects the original 256x128 close-follow viewport and
+offers F to view the exact authored `Rect2i(128,128,512,256)` panorama
+and return, with no World reconstruction. Other default/scientific camera
+behaviors remain unchanged. Added all-five-rig camera/F and reset assertions
+still require source-matched Windows/Linux CI and independent review.
+The remaining [#268](https://github.com/techrote/cybersand/issues/268)
+scope includes an integrated playable selector, four checkpoints with
+simulation-tick lap HUD, gameplay-rule options, focus and physical-gamepad
+qualification and real frame-pacing/feel validation.
 Native Auto measurements, lifecycle/stress and final desktop feel remain
 #266/#269/#270. Material swarms (#271) remain deferred in the standalone
 seven-preset experimental scene. Specialist scientific and NPC-training
