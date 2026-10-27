@@ -119,3 +119,68 @@ Broader #268 selectors/rules/focus/gamepad, #269 real-host lifecycle/slow-tick
 stress, #266 representative worker participation/performance and #270 manual
 feel/release acceptance remain open. #271 swarms remain deferred; #265 remains
 closed as unnecessary. No additional World owner or Web promotion is proposed.
+
+## Checkpoint-cadence correction after independent P1 review — source candidate
+
+The [independent PR #280 review](https://github.com/techrote/cybersand/pull/280#discussion_r4394229403)
+identified a production discrepancy after the 50-cycle model-only correction:
+the separate physical-tick variable is insufficient if the main desktop reads
+the pose only from `_process`. A real Rapier actor can enter and leave its next
+gate between presentation callbacks. All three CI workflows passed the
+**prior** lifetime-model head `f538132d72d8a0cc13d6ea87cbc58162ffe54749`
+([Native](https://github.com/techrote/cybersand/actions/runs/40584710496),
+[Godot](https://github.com/techrote/cybersand/actions/runs/40584711088),
+[Docs](https://github.com/techrote/cybersand/actions/runs/40584710799)).
+Those historical greens do **not** cover this physics-cadence correction.
+
+The subsequent production patch is
+[`cb4bfe706c2fdb56cdf9bd9cf4add1b57f5e2a85`](https://github.com/techrote/cybersand/commit/cb4bfe706c2fdb56cdf9bd9cf4add1b57f5e2a85).
+It adds the only new observation callback immediately following the **actual**
+`physical_actor_session.complete_step()`, and only if the session tick
+advanced. It samples the completed main-thread Rapier pose and the last
+**copied** native World publication. The original render callback still updates
+the HUD and native elapsed tick, with duplicate physical ticks rejected by the
+existing lap-model fence. It does not call a native tick, acquire a worker-owned
+World handle, add a second World owner or update GUI nodes from the physics
+handler. Paused/failed/pending terrain or actor replacement cannot cause a
+completed Rapier step or bypass the original admission guards.
+
+The [new real-host regression](../../godot/tests/test_play_ui003_physics_cadence.gd)
+was added in `cdec805738e1459aaa5ad6609b490c9958a4edcd`
+with a constant-reference refinement in `b12fc1e770d13f07b1806f5fffe2f51e72ea9774`.
+It exercises the exact authored native course and real F5 `rapier/jetbarrel`
+assembly using `main.tscn`, the existing asynchronous worker, the existing
+main-thread Rapier bridge and original Godot keyboard/lease path. Both
+automatic callbacks are then withheld. The fixture **test-only** translates
+all real articulated Rapier bodies together via existing
+`CyberRapierPhysicsBridge.reset_body()`, preserving relative offsets, and
+completes real `_physics_process`/Rapier steps on the gate and outside it.
+The pose and incremented Rapier manual-step/session ticks are checked after
+completion. A test-only subclass overriding just
+`_record_completed_playable_course_step` runs the otherwise identical
+**negative control**: without the hook the later single render callback
+cannot recover the transient visit. The positive arm checks gate credit
+before rendering and checks HUD-only refresh, duplicate suppression, pause
+and real host reset/actor-epoch refusal.
+
+This is bounded **physical engine** execution once CI has actually run it,
+not ordinary driving/fair racing. The authored gate is artificially reached
+by the test apparatus, not a learned controller or human. The negative and
+positive arms each use their own real native and Rapier lifetime, never two
+simultaneous World owners. The original 50 **model-only** lifecycle cycles
+and five-rig/liquid-policy construction receipt tests remain separate.
+No specialist research/NPC fixtures, native cell/material laws, default
+liquid family, solver construction-time refusal, Web ownership or
+material swarms (#271) are changed; the unnecessary #265 owner stays closed.
+
+**Qualification status:** the completed-step patch, new test and canonical
+[Player control update](../systems/player-control-playground.md) were
+published as source objects, not executed by this connector. Exact-head
+Windows/Linux Godot native/GDExtension/Documentation and a fresh
+independent review must read back this regression's
+`PLAY_UI003_PHYSICS_RESULT` (including successful positive and no-hook
+negative controls), `PLAY_COMP002_RESULT`, `PLAY_UI003_RESULT`, runtime
+hashes, clean-checkout, test process exit and diagnostics before any merge.
+Earlier historical tests remain unchanged. The separate #269 fifty-cycle
+**real-host** failure/slow-tick campaign, #266 performance and #270 manual
+release acceptance remain outstanding.
