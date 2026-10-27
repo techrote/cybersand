@@ -47,6 +47,18 @@ static func player_playground_definition(seed: int = 0) -> Dictionary:
 		"liquid_surface_adhesion_enabled":true}
 	result.source_recipe = "CyberPlayerPlaygroundCourse/v1"
 	result.source_recipe_hash = JSON.stringify(rectangles).sha256_text()
+	# PLAY-COMP-002: the same authored recipe is also a safe prepared gameplay
+	# target for the existing per-material Liquid comparison panel. Schema 2
+	# supplies only bounded presentation metadata; materials, geometry, source
+	# recipe identity, execution policy and construction defaults do not change.
+	# Requested families apply exclusively on explicit owner-boundary rebuild.
+	result.schema_version = 2
+	result["presentation"] = {"title":"Player Playground Course",
+		"instructions":"Select a SetP mechanical rig through F5. Experimental liquid families require explicit Apply & rebuild active; see requested vs applied native policy.",
+		"duration_ticks":Contract.MAX_TICK,
+		"baseline":"Original authored Player Playground course on the existing asynchronous desktop host",
+		"profile":"Per-material solver choice is admitted only on a fresh, versioned World reconstruction",
+		"regions":[]}
 	return result
 
 
