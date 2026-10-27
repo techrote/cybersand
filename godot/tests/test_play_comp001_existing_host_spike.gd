@@ -11,6 +11,17 @@ var assertions: int = 0
 var failures: int = 0
 
 
+class DesktopHarness:
+	extends "res://scripts/main.gd"
+	# Mirror the established headless focus seam in test_physical_usables_desktop:
+	# only the virtual window-focus guard is substituted. Native World, Rapier,
+	# player session, command admission, terrain and physics remain production.
+	func actor_keyboard_allowed() -> bool:
+		return (not paused and actor_prototypes_allowed()
+			and _physical_terrain_ready and _actor_reset_receipt == 0
+			and not actor_prototype_panel.visible)
+
+
 func _initialize() -> void:
 	run.call_deferred()
 
@@ -117,6 +128,7 @@ func run() -> void:
 		return
 
 	desktop = load("res://main.tscn").instantiate()
+	desktop.set_script(DesktopHarness)
 	root.add_child(desktop)
 	await process_frame
 	expect(desktop.worker_start_error == OK
