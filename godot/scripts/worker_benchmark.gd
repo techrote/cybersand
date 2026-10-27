@@ -72,8 +72,11 @@ static func sample(tree: SceneTree, requested_workers: int, side: int, ticks: in
 		return {"ok": false, "error": "Native World unavailable",
 			"requested_workers": requested_workers, "side": side, "ticks": ticks}
 	# diagnostic_reset reconstructs this unshared reference World with an
-	# explicit resolved count. It does not edit ProjectSettings or a live game.
-	if not bool(world.diagnostic_reset({"workers": int(resolution.resolved_workers)})):
+	# explicit resolved count. Disable body telemetry so measured material work
+	# stays aligned with ordinary phased construction. This does not edit
+	# ProjectSettings or a live game World.
+	if not bool(world.diagnostic_reset({
+		"workers": int(resolution.resolved_workers), "telemetry": false})):
 		return {"ok": false, "error": "Per-World worker configuration refused",
 			"requested_workers": requested_workers,
 			"resolved_workers": int(resolution.resolved_workers),
@@ -98,6 +101,8 @@ static func sample(tree: SceneTree, requested_workers: int, side: int, ticks: in
 	var eligible_blocks: int = 0
 	var maximum_eligible_blocks: int = 0
 	var active_blocks: int = 0
+	var maximum_workers_observed: int = 0
+	var worker_participation_ticks: int = 0
 	var last_frame_usec: int = 0
 	var measured_started_usec: int = -1
 	var started_msec: int = Time.get_ticks_msec()
@@ -136,6 +141,19 @@ static func sample(tree: SceneTree, requested_workers: int, side: int, ticks: in
 			eligible_blocks += eligible
 			maximum_eligible_blocks = maxi(maximum_eligible_blocks, eligible)
 			active_blocks += int(world.get_active_blocks_last_tick())
+			# This copied exclusive-owner query exposes TickStats' maximum
+			# distinct task-claiming pool workers for the completed tick. Job
+			# count or a parallel dispatch alone is not worker participation.
+			var copied_stats: Dictionary = bridge.inspect_statistics(world)
+			if not bool(copied_stats.get("ok", false)):
+				return {"ok": false, "error": "Completed native statistics unavailable",
+					"requested_workers": requested_workers,
+					"resolved_workers": int(resolution.resolved_workers),
+					"side": side, "ticks": ticks}
+			var observed: int = int(copied_stats.get("values", {}).get(
+				"worker_threads_observed", 0))
+			maximum_workers_observed = maxi(maximum_workers_observed, observed)
+			worker_participation_ticks += int(observed > 1)
 		last_frame_usec = now_usec
 		if tick % 15 == 0:
 			var label: String = "Auto" if requested_workers == 0 else str(requested_workers)
@@ -143,12 +161,18 @@ static func sample(tree: SceneTree, requested_workers: int, side: int, ticks: in
 				label, int(resolution.resolved_workers), int(world.get_worker_threads()),
 				side, side, maxi(0, tick - WARMUP_TICKS + 1), ticks])
 
+	# End the measured tick/scheduling interval before terminal serialization or
+	# SHA-256. Export cost is recorded separately and never enters completed_hz.
+	var measured_ended_usec: int = Time.get_ticks_usec()
+	var export_started_usec: int = measured_ended_usec
 	var hash: HashingContext = HashingContext.new()
 	hash.start(HashingContext.HASH_SHA256)
 	hash.update(bridge.export_level(world))
+	var terminal_export_hash_ms: float = float(
+		Time.get_ticks_usec() - export_started_usec) / 1000.0
 	var actual_workers: int = int(world.get_worker_threads())
 	var measured_wall_ms: float = maxf(0.001,
-		float(Time.get_ticks_usec() - measured_started_usec) / 1000.0)
+		float(measured_ended_usec - measured_started_usec) / 1000.0)
 	var global_setting_after: int = int(ProjectSettings.get_setting(
 		"cybersand/native_worker_threads", 0))
 	var result: Dictionary = {
@@ -174,6 +198,7 @@ static func sample(tree: SceneTree, requested_workers: int, side: int, ticks: in
 		"frame_interval_ms": statistics(frame_times),
 		"measured_wall_ms": measured_wall_ms,
 		"completed_hz": float(ticks) * 1000.0 / measured_wall_ms,
+		"terminal_export_hash_ms": terminal_export_hash_ms,
 		"moves": moves,
 		"parallel_phases": parallel_phases,
 		"parallel_phase_ticks": parallel_phase_ticks,
@@ -182,7 +207,10 @@ static func sample(tree: SceneTree, requested_workers: int, side: int, ticks: in
 		"eligible_blocks": eligible_blocks,
 		"maximum_eligible_blocks": maximum_eligible_blocks,
 		"active_blocks": active_blocks,
-		"parallel_participation": parallel_phase_ticks > 0 and maximum_scheduler_jobs > 1,
+		"maximum_workers_observed": maximum_workers_observed,
+		"worker_participation_ticks": worker_participation_ticks,
+		"parallel_dispatch_observed": parallel_phase_ticks > 0 and maximum_scheduler_jobs > 1,
+		"parallel_participation": maximum_workers_observed > 1,
 		"backend": str(world.get_backend_name()),
 		"level_hash": hash.finish().hex_encode()
 	}
@@ -196,8 +224,10 @@ static func sample(tree: SceneTree, requested_workers: int, side: int, ticks: in
 
 static func run(tree: SceneTree, stress: bool, host_workers: int,
 		progress: Callable, cancelled: Callable, reference_ticks: int = 120) -> Dictionary:
-	var counts: Array[int] = [0] if stress else SUPPORTED_REQUESTS.duplicate()
-	var sizes: Array[int] = [960] if stress else [480, 960]
+	var counts: Array[int] = []
+	counts.assign([0] if stress else SUPPORTED_REQUESTS)
+	var sizes: Array[int] = []
+	sizes.assign([960] if stress else [480, 960])
 	var rows: Array = []
 	var global_setting_before: int = int(ProjectSettings.get_setting(
 		"cybersand/native_worker_threads", 0))
@@ -218,7 +248,7 @@ static func run(tree: SceneTree, stress: bool, host_workers: int,
 	var parity: bool = true
 	var hashes: Dictionary = {}
 	var actual_counts: Dictionary = {}
-	var parallel_rows: int = 0
+	var participating_rows: int = 0
 	var readback_consistent: bool = true
 	var settings_unchanged: bool = true
 	for row: Dictionary in rows:
@@ -226,7 +256,7 @@ static func run(tree: SceneTree, stress: bool, host_workers: int,
 			parity = false
 		hashes[row.side] = row.level_hash
 		actual_counts[int(row.actual_workers)] = true
-		parallel_rows += int(bool(row.parallel_participation))
+		participating_rows += int(bool(row.parallel_participation))
 		readback_consistent = readback_consistent and bool(row.readback_consistent)
 		settings_unchanged = settings_unchanged and bool(row.global_setting_unchanged)
 	var global_setting_after: int = int(ProjectSettings.get_setting(
@@ -247,9 +277,9 @@ static func run(tree: SceneTree, stress: bool, host_workers: int,
 		"host_workers": host_workers,
 		"requested_counts": counts,
 		"distinct_actual_counts": actual_counts.keys(),
-		"parallel_participation_rows": parallel_rows,
+		"parallel_participation_rows": participating_rows,
 		"runtime": "web" if OS.has_feature("web") else "native",
 		"date": Time.get_datetime_string_from_system(true),
 		"rows": rows,
-		"note": "Separate fresh reference Worlds; no global worker-setting mutation. Frame intervals include test scheduling, not gameplay FPS. First 10 ticks excluded. Stress uses 600 measured ticks; benchmark uses 120 by default. Auto is resolved from the production native policy, then applied per World. Timings are observations, not a speedup claim."
+		"note": "Separate fresh reference Worlds; no global worker-setting mutation. Native time excludes copied statistics and terminal export/hash. Measured wall/HZ includes test scheduling and copied per-tick readback but excludes terminal export/hash; it is not gameplay FPS. First 10 ticks excluded. Auto is resolved from the production native policy, then applied per World. worker_threads_observed is actual task-claiming pool participation, not utilization or a causal speedup claim."
 	}
