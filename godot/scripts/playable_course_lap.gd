@@ -54,12 +54,12 @@ func admit_movement(source_tick: int) -> bool:
 
 
 func observe(source_tick: int, physics_tick: int, position: Vector2, paused: bool) -> bool:
-	if rig_id == &"" or source_tick < last_source_tick or physics_tick < 0 or not position.is_finite():
+	if (rig_id == &"" or source_tick < last_source_tick or physics_tick < last_physics_tick
+		or physics_tick < 0 or not position.is_finite()):
 		return false
-	if source_tick == last_source_tick:
-		return true
-	# Consume each completed native tick delta once, even when intermediate
-	# publications were coalesced. Paused ticks do not advance the lap.
+	# Only completed native tick deltas advance elapsed time; keep the separate
+	# main-thread Rapier cadence for actual checkpoint visits. A new physics
+	# observation may reach a gate before the next native render publication.
 	if started and not paused and not is_complete():
 		elapsed_ticks += source_tick - last_source_tick
 		if physics_tick > last_physics_tick:
@@ -69,7 +69,7 @@ func observe(source_tick: int, physics_tick: int, position: Vector2, paused: boo
 				if is_complete():
 					best_ticks[rig_id] = mini(elapsed_ticks, int(best_ticks.get(rig_id, 2147483647)))
 	last_source_tick = source_tick
-	last_physics_tick = maxi(last_physics_tick, physics_tick)
+	last_physics_tick = physics_tick
 	return true
 
 
