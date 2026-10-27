@@ -13,10 +13,20 @@ jobs:
     if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/work/sol281-native-detachment-20261027'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: workspace/source
     steps:
+      - name: Read pinned companion workspace inputs
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
+          path: workspace
+          persist-credentials: false
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           ref: ${{ github.sha }}
+          path: workspace/source
           fetch-depth: 0
       - name: Link current branch runtime without changing executed source
         shell: bash
@@ -53,8 +63,8 @@ jobs:
               'Distinguish actual native terrain transfer from authored bodies, Windows native from Windows Rapier, and inactive rollback from dynamic desoliding.')
           insert('docs/reference/status-and-roadmap.md','## Issue #12 structural-detachment priority — 2026-10-27',
               '**Later experimental implementation checkpoint (not merged production):** [native detachment runtime](../systems/solid-detachment.md) '
-              'at source741bc077 has 520 native cells, six exact compound shapes, real async Linux Rapier motion, 13,074-check Linux/Windows native and Linux sanitizer passes, '
-              '21 motion and20 live failure checks, and rendered captures. [The dated record](../audits/2026-10-27-sol281-native-tree.md) preserves all source and platform limits. '
+              'at source 741bc077 has 520 native cells, six exact compound shapes, real async Linux Rapier motion, 13,074-check Linux/Windows native and Linux sanitizer passes, '
+              '21 motion and 20 live failure checks, and rendered captures. [The dated record](../audits/2026-10-27-sol281-native-tree.md) preserves all source and platform limits. '
               'Reactive Wood/compound cellular coupling, dynamic demotion, Windows Rapier, independent review and full qualification remain open; #281 is not closed.')
           insert('docs/operations/cybersand-codex-development-handover.md','# Development handover',
               '## #281 executable handover — native tree proof\n\n'
@@ -64,7 +74,7 @@ jobs:
               'compound native material occupancy, general dynamic desoliding, Windows Rapier, current published runtimes and independent/full review. '
               'Retain the successful 40592308871 evidence and do not claim #281 closed. Resume from these concrete gaps rather than rebuilding an authored falling-body demo.')
           insert('docs/architecture/soliding-lifecycle.md','# Scalable soliding representation lifecycle',
-              '**Experimental runtime addition, source741bc077:** [the actual native handoff](../systems/solid-detachment.md) now implements a one-aggregate '
+              '**Experimental runtime addition, source 741bc077:** [the actual native handoff](../systems/solid-detachment.md) now implements a one-aggregate '
               'dry Wall/RedBrick prepare/acknowledge/commit/finalize and inactive rollback path in `World`. '
               'This is distinct from the standalone model discussed below; [actual evidence](../audits/2026-10-27-sol281-native-tree.md) does not qualify arbitrary materials, '
               'dynamic demotion, general Stage-6/7 lifecycle or production release.')
@@ -72,7 +82,7 @@ jobs:
           s=p.read_text()
           s+='\n## Experimental native solid detachment\n\n'
           s+='The opt-in [#281 runtime](../systems/solid-detachment.md) is disabled by default and exposed to the diagnostic host only. '
-          s+='Native `configure_solid_detachment` allocates one bounded store; maximum domain64x64, members1024, shapes256(default admission128). '
+          s+='Native `configure_solid_detachment` allocates one bounded store; maximum domain 64x64, members 1024, shapes 256 (default admission 128). '
           s+='Only homogeneous ambient Wall/RedBrick and non-pressure/non-inertial Worlds are admitted. '
           s+='The lab is `godot/solid_detachment_lab.tscn`: Space cut, P pause, R full session reset, Escape exit. '
           s+='Old checked-in main runtimes lack the new API; build the matching extension. No global default/control or liquid family changes.\n'
@@ -84,10 +94,9 @@ jobs:
           assert runtime not in o['documents']
           o['documents'].insert(o['documents'].index('systems/settled-region-discovery.md')+1,runtime)
           assert not any(x['path']==audit for x in o['excluded'])
-          o['excluded'].append({'path':audit,'reason':'Dated source741bc077 native Linux/Windows, actual Linux Rapier/rendered evidence and retained failures; retrieve explicitly through the experimental solid-detachment runtime, not as general production acceptance'})
+          o['excluded'].append({'path':audit,'reason':'Dated source 741bc077 native Linux/Windows, actual Linux Rapier/rendered evidence and retained failures; retrieve explicitly through the experimental solid-detachment runtime, not as general production acceptance'})
           o['reviewed']='2026-10-27'
           p.write_text(json.dumps(o,indent=2,ensure_ascii=False)+'\n')
-          # No assembly or self-mutating workflow is retained in the final tree.
           Path('.github/workflows/sol281-docs-checkpoint.yml').unlink()
           PY
           mkdir -p build/sol281-docs
@@ -107,5 +116,5 @@ jobs:
         if: always()
         with:
           name: sol281-documentation-${{ github.run_id }}
-          path: build/sol281-docs/
+          path: workspace/source/build/sol281-docs/
           if-no-files-found: warn
