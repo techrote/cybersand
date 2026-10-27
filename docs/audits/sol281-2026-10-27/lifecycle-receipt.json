@@ -1,0 +1,155 @@
+{
+  "schema": "cybersand.sol281.lifecycle-continuation.v1",
+  "date": "2026-10-27",
+  "source_commit": "4d40a59ef33ea9b24c9275dfe2dd7f0f90128913",
+  "source_tree": "9292a338bbf321e0f080aae410924e12fe34a6f3",
+  "base_commit": "088a019c82990dbb3fc89ce9daad7d7f53eea007",
+  "implementation_native_source_unchanged": true,
+  "changed_source": {
+    "godot/scripts/solid_detachment_session.gd": "68fdc23ddac1e4d43f047beb28f5e1eadb7310d7974487da62b59db5cc90fb8b",
+    "godot/tests/test_solid_detachment_lifecycle.gd": "216d1faacb15857fc70c839c4576a073aae8db7bf34726e641e5a1ed116f368a"
+  },
+  "reproduced_failure": {
+    "runtime": "actual Linux native World + Godot/Rapier",
+    "base_session_blob": "642c4b10432f6866e2e6f2bc17ee99522d3e7931",
+    "checks": 14,
+    "failures": 2,
+    "returncode": 1,
+    "controlled_barrier": "after actual native inspect reply; old continuation resumed after real owner replacement",
+    "outcomes": [
+      "retired inspect unpauses replacement",
+      "retired inspect accepted as successful"
+    ]
+  },
+  "local_linux": {
+    "compiler": "GCC 14.2 toolchain-drift experimental build, not pinned release",
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "rapier": "0.35.2",
+    "native_sha256": "73d667f0a2c21d5ab3d9db37b66257bd006d35d10d857e65aae6c5beced21c0a",
+    "lifecycle": {
+      "checks_per_run": 296,
+      "actual_replacement_cycles_per_run": 18,
+      "complete_green_processes": 2,
+      "failures": 0
+    },
+    "motion_checks": 21,
+    "failure_path_checks": 20,
+    "native_checks": 13074,
+    "native_groups": 8
+  },
+  "hosted_windows": {
+    "run": 40597011137,
+    "job": 122518039133,
+    "status": "passed_actual_engine_artifacts_verified",
+    "source": "4d40a59ef33ea9b24c9275dfe2dd7f0f90128913",
+    "runtime_sha256": "bf8e79d1d82a17562a7a2e30914027f75dc1a0e41569ea87eef7fecdf48d0004",
+    "platform": "Windows Server 2022 x86_64",
+    "compiler": "LLVM-MinGW 20260826 UCRT / Clang 23.1.0 pinned cross-build on Ubuntu24.04",
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "rapier": "0.35.2",
+    "source_inputs_verified": 546,
+    "checkout_line_ending_restorations": 92,
+    "motion_checks": 21,
+    "failure_path_checks": 20,
+    "lifecycle_checks": 296,
+    "actual_replacement_cycles": 18,
+    "failures": 0,
+    "cases": [
+      {
+        "name": "import",
+        "returncode": 0,
+        "log_sha256": "d6be652d8bd194453cc18ec1013c2471ba16d6e02f1a097472a7078f11f40d56"
+      },
+      {
+        "name": "motion",
+        "returncode": 0,
+        "log_sha256": "4d55ce40257531d07bb607f33b3392e2436adf63ec2892fc1ac6ac52861847a7"
+      },
+      {
+        "name": "failure-paths",
+        "returncode": 0,
+        "log_sha256": "40ca1d58191d984ac94b7b57093ddcde3a35c820aa2f1588f3fa6ea71fa45eb2"
+      },
+      {
+        "name": "lifecycle",
+        "returncode": 0,
+        "log_sha256": "4b5a397bb4ab793ac191146832394762da02982c79857656c927fcd6078a5ac1"
+      }
+    ],
+    "motion": {
+      "aggregate_owned": 520,
+      "checks": 21,
+      "engine": "4.7-stable (official)",
+      "failures": [],
+      "inertia": 70453.6493589743,
+      "mass": 520.0,
+      "max_angular_velocity": 1.27385640144348,
+      "max_down": 20.259220123291,
+      "max_horizontal": 25.6351585388184,
+      "max_rotation": 1.07524764537811,
+      "members": 520,
+      "native_ticks": 600,
+      "platform": "Windows",
+      "rapier_ticks": 600,
+      "schema": "cybersand.sol281.actual-async-rapier.v1",
+      "scope": "dry homogeneous inert native tree; no compound native material coupling, reactive Wood, general desoliding or full application acceptance",
+      "shapes": 6,
+      "source_native_members": 520
+    }
+  },
+  "prior_hosted_failure": {
+    "run": 40595407030,
+    "source": "088a019c82990dbb3fc89ce9daad7d7f53eea007",
+    "stage": "source validation before Godot",
+    "reason": "Windows checkout line endings differ from exact Linux build bytes",
+    "first_path": "godot/native_extension/generation_grammar_adapter.inc",
+    "engine_executed": false
+  },
+  "local_log_sha256": {
+    "lifecycle-before.txt": "2747d305870521432190fafdbb22208a0b58da465b45746b47d5e69d9647043e",
+    "lifecycle-after.txt": "cccab0705140cbe97f9074262f426c577fdef4e40ddb396623f592a5cff8237e",
+    "lifecycle-fresh-repeat.txt": "cccab0705140cbe97f9074262f426c577fdef4e40ddb396623f592a5cff8237e",
+    "test_solid_detachment-after.txt": "0530929077c64a7c11b12e2baaa5192163344437cd648b99805023daafee33f6",
+    "test_solid_detachment_failures-after.txt": "7a2545da0cee945b66f1d64e105db68bbc0371007b579b4bfc1de1ae75673669",
+    "native-current.txt": "854179e71ef14db3729cf4f59c6aef1af8e433fb92b699d1f12dd33e9ed4bc9b",
+    "local-build.txt": "3c6dd63a0154e164713a95015a906963147f99b71c973e89c99916f93dcfc014"
+  },
+  "scope": "branch-local lifetime repair and scoped engine qualification; no compound cellular coupling, material policy change, release runtime publication, independent review or issue closure",
+  "artifacts": [
+    {
+      "id": 12776283006,
+      "kind": "Windows build + source manifest",
+      "zip_sha256": "f7c9b04687e866c2d7c39a14a3a0f942fe666206a9de95b9eff149f198f8b39b",
+      "downloaded_and_verified": true,
+      "expires": "2026-11-26"
+    },
+    {
+      "id": 12776352960,
+      "kind": "actual Windows engine execution",
+      "zip_sha256": "8a0690509db14087d89c282b8f1698ca656d08ae0c3cb9c77ccbe0d42efecdff",
+      "downloaded_and_verified": true,
+      "expires": "2026-11-26"
+    }
+  ],
+  "cross_platform_recorded_motion_fields_equal": true,
+  "compared_motion_fields": [
+    "history",
+    "max_down",
+    "max_horizontal",
+    "max_rotation",
+    "max_angular_velocity",
+    "members",
+    "shapes",
+    "mass",
+    "inertia",
+    "aggregate_owned",
+    "rapier_ticks"
+  ],
+  "release_qualification": {
+    "full_pr_native_godot_matrix": "not_run_draft",
+    "formal_runtime_publication": false,
+    "independent_review": false,
+    "owner_feel": false,
+    "compound_cellular_material_coupling": false
+  }
+}

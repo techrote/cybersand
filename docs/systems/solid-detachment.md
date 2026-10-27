@@ -2,7 +2,7 @@
 title: Experimental native solid detachment and Rapier tree laboratory
 status: Current
 document-kind: contract
-scope: Branch-local dry inert one-aggregate detachment, native ownership fences and actual Linux asynchronous Rapier proof; not general production soliding
+scope: Branch-local dry inert one-aggregate handoff, session lifetime fences and scoped actual Linux/Windows Rapier proof; not production soliding
 canonical-for: [solid-detachment-runtime, solid-detachment-lab]
 last-reviewed: 2026-10-27
 related-documents: [../operations/soliding-structural-detachment-programme.md, ../architecture/soliding-lifecycle.md, ../architecture/rigid-body-and-cellular-coupling.md, ../architecture/simulation-tick-and-threading.md, ../audits/2026-10-27-sol281-native-tree.md]
@@ -13,16 +13,22 @@ related-documents: [../operations/soliding-structural-detachment-programme.md, .
 ## Implemented scope and source identity
 
 **Current on the implementation branch, not accepted production main.**
-[Issue #281](https://github.com/techrote/cybersand/issues/281) now has a
-bounded actual-native-cell → live Rapier handoff and an inspectable tree-shaped
-fixture. Executed source is
-[`741bc0775c190be98e2f5d23da3d47dd354fef99`](https://github.com/techrote/cybersand/commit/741bc0775c190be98e2f5d23da3d47dd354fef99),
-stacked on the [#282 documentation proposal](https://github.com/techrote/cybersand/pull/282).
-The [dated evidence](../audits/2026-10-27-sol281-native-tree.md) distinguishes
-native Linux/Windows conformance, actual Linux Godot/Rapier motion, rendered
-frames and remaining acceptance. Later documentation does not retest changed
-executable source. The issue stays open pending the missing integration,
-platform and independent review gates.
+[Issue #281](https://github.com/techrote/cybersand/issues/281) has a bounded
+actual-native-cell → live Rapier handoff and an inspectable tree-shaped fixture
+in [draft PR #283](https://github.com/techrote/cybersand/pull/283), stacked on
+[#282](https://github.com/techrote/cybersand/pull/282).
+
+The initial native/Linux-Rapier proof remains tied to
+`741bc0775c190be98e2f5d23da3d47dd354fef99` and its
+[dated evidence](../audits/2026-10-27-sol281-native-tree.md).
+The later session-lifetime repair and actual Windows engine qualification are
+bound to **`4d40a59ef33ea9b24c9275dfe2dd7f0f90128913`**, tree
+`9292a338bbf321e0f080aae410924e12fe34a6f3`, with a separate
+[continuation receipt](../audits/sol281-2026-10-27/lifecycle-receipt.json).
+That repair changes the GDScript session, adds a lifecycle test and a scoped
+read-only qualification workflow; **native C++ and material laws are unchanged**.
+Older missing-Windows statements in the first audit retain their historical
+source scope; the current scoped platform result is below. The issue stays open.
 
 The fixture starts as **real RedBrick native cells**, not a pre-authored body.
 An actual trunk cut identifies 520 unsupported cells; those exact cells become
@@ -81,7 +87,7 @@ decimal strings rather than lossy floating-point identifiers.
 
 `godot/scripts/solid_detachment_worker.gd` subclasses the existing
 `CyberSimulationWorker`, reusing its pacing loop, native World and snapshot
-exchange. The shared worker now recognizes a representation fence so ordinary
+exchange. The shared worker recognizes a representation fence so ordinary
 paused-loop configuration and body-mask refresh cannot mutate a staged source.
 The special lane introduces no alternate cellular integrator or second native
 clock. Main-thread consumers never read its live native World after thread start.
@@ -102,13 +108,88 @@ restore the native source and static collision while the body remains inactive.
 Session teardown joins the native owner before retiring its Rapier space/body;
 old transaction tokens cannot revive a new session's payload.
 
+## Session replacement and awaited-continuation ownership
+
+**Current on source 4d40a59e:** native transaction tokens do not alone protect a
+GDScript coroutine that resumes after `close()`/`open()` has replaced its owner.
+Each awaited configure, body preparation, acknowledge, commit, cancel, finalize,
+rollback, rollback-repair and inspection continuation now validates **both the
+captured session generation and exact worker identity** before touching shared
+session state or issuing another command.
+
+Command polling retains the original worker and SceneTree. A retired command
+returns `SessionRetired` without releasing a newer request's lock. Body creation
+also retains the exact body/viewport across its frame yield. Local reply values
+are assigned to shared receipts only after lifetime validation. Inspection cannot
+restore the old pause state onto a new owner. Full close clears copied payload,
+source/commit/final receipts and operation flags; request serials remain monotonic.
+An overlapping release is refused throughout the whole release operation,
+including the body-creation frame yield. Failure pauses the actual worker frame
+state as well as main-thread physics. None of this adds material coupling.
+
+**Retained negative:** a deterministic continuation barrier after a real native
+inspection reply, followed by a real owner replacement, failed two assertions on
+the original session source: the old inspection unpaused the replacement and
+returned an accepted stale result. This is a test-controlled interleaving, not a
+claim about its frequency in normal play. The before/after log hashes and original
+session blob are retained in the continuation receipt.
+
+`godot/tests/test_solid_detachment_lifecycle.gd` performs **18 actual host
+replacement cycles / 296 checks** at nine boundaries with configured worker
+counts 1 and 4. These use real native Worlds, actual Rapier resources and real
+replies; a test subclass controls only the continuation barrier. Each replacement
+must remain intact/healthy and then successfully detach its own tree. The normal
+Godot test discovery includes this new suite automatically; it is not only a
+one-off CI test.
+
+## Source-qualified continuation results — 2026-10-27
+
+[Scoped run 40597011137](https://github.com/techrote/cybersand/actions/runs/40597011137)
+checks out exact source **4d40a59e**, builds an experimental Windows DLL with
+pinned LLVM-MinGW 20260826/Clang 23.1.0 and godot-cpp
+`101ae38034304346a46ea9ea84ae156d3e860496`, then actually executes on
+**Windows Server 2022 x86_64** with Godot 4.7 and Rapier2D 0.35.2.
+This is now **Windows Godot/Rapier execution**, not only a C++ cross-build.
+
+| Suite | Actual Windows hosted result | Actual Linux local result |
+|---|---|---|
+| Native-to-Rapier motion, 600 physics steps | 21 checks, zero failures | 21 checks, zero failures |
+| Inactive rollback, collision repair and reset | 20 checks, zero failures | 20 checks, zero failures |
+| Awaited-session replacement | 296 checks, 18 cycles, zero failures | 296 checks, 18 cycles, zero failures; two fresh processes |
+| Focused native ownership | Previous 741bc077 Windows result retained, not rerun by this workflow | Fresh 8 groups / 13,074 checks, zero failures |
+
+The Windows DLL SHA-256 is
+`bf8e79d1d82a17562a7a2e30914027f75dc1a0e41569ea87eef7fecdf48d0004`.
+All **546 declared native/adapter/script/test/build-script inputs** matched the
+build manifest and canonical Git bytes before execution and were rechecked after.
+Windows checkout changed line endings on 92 files: the harness first verifies
+the authenticated Git blob matches the build hash, permits only a pure line-ending
+difference, restores those exact Git bytes and then repeats byte-exact checks.
+It does not accept arbitrary drift or weaken source equality.
+
+The prior [run 40595407030](https://github.com/techrote/cybersand/actions/runs/40595407030)
+built successfully but **failed before Godot execution** at the source check for
+`generation_grammar_adapter.inc`; that failure remains preserved. The corrected
+build and execution archives were downloaded, ZIP hashes/CRCs checked, and every
+reported execution-log hash, exit code and required result revalidated.
+Artifact IDs, expiry dates and SHA-256 identities are in the continuation receipt.
+
+The local Linux continuation uses a freshly compiled **GCC14.2 experimental
+runtime with the explicit toolchain-drift override**. It is supplementary actual
+engine proof, not a new pinned Linux release publication. Its runtime hash remains
+`73d667f0a2c21d5ab3d9db37b66257bd006d35d10d857e65aae6c5beced21c0a`.
+Recorded Windows/Linux motion samples and extrema match for this fixture;
+that is not proof of universal cross-platform replay or identical frame timing.
+Neither these scoped tests nor a draft documentation green replaces independent
+review, the full ready-PR matrices, formal runtime publication or owner feel.
+
 ## Dry-fixture limitations that must remain visible
 
 **Not implemented/admitted:** compound native occupancy/sweep and interaction
 with surrounding active liquids/powders; reactive aggregate Wood/heat/chemistry;
 mixed-material bonds; arbitrary fracture; rotated dynamic desoliding;
 aggregate saves/streaming; multiple simultaneous aggregates; full normal-app
-admission; Windows Godot/Rapier qualification and Web support.
+admission; formal source-matched release runtime publication and Web support.
 
 In particular, the current general native coupling interface expects rectangle
 body records. This laboratory deliberately does **not** publish a filled bounding
@@ -154,13 +235,15 @@ make solid-detachment-sanitize
 godot --headless --path godot --editor --import --quit
 godot --headless --path godot --script res://tests/test_solid_detachment.gd -- /absolute/path/rapier.json
 godot --headless --path godot --script res://tests/test_solid_detachment_failures.gd
+godot --headless --path godot --script res://tests/test_solid_detachment_lifecycle.gd
 ```
 
 The native executable is integrated into `soliding-test`. Its allocation-failure
 control, capacity/unknown/thermal/mask/event/exclusion refusals, exact payload and
 shape coverage, source ABA, revision exhaustion, reset and configured workers
 1/4 checks do not establish general threaded performance or body physics.
-The two Godot suites separately exercise actual async native transfer, real
-Rapier motion, source/contact fences and rollback/reset. Numerical pass is not
-owner feel approval. No independent review or full release gate is claimed by
-this page; consult the source-qualified audit before using any result.
+The three Godot suites separately exercise actual async native transfer, real
+Rapier motion, source/contact fences, inactive rollback and session replacement.
+Numerical pass is not owner feel approval. No independent review or full release
+gate is claimed by this page; consult the source-qualified receipts before using
+any result. #281 and parent #12 remain open.
