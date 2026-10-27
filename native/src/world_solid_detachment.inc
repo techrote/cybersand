@@ -188,7 +188,8 @@ soliding::SolidOutcome World::prepare_solid_detachment(const soliding::SolidRequ
         hash_integer(out.shape_digest, shape.x); hash_integer(out.shape_digest, shape.y);
         hash_integer(out.shape_digest, shape.width); hash_integer(out.shape_digest, shape.height);
     }
-    if (hard_surface_revision_ > std::numeric_limits<std::uint64_t>::max() - out.member_count)
+    // Reserve revision room for BOTH commit and a failed-body rollback.
+    if (hard_surface_revision_ > std::numeric_limits<std::uint64_t>::max() - 2U * out.member_count)
         return refuse(SolidOutcome::GenerationExhausted);
     out.source_tick = tick_index_;
     out.source_terrain_revision = hard_surface_revision_;
@@ -307,6 +308,10 @@ soliding::SolidOutcome World::rollback_solid_detachment(soliding::SolidToken tok
             --s.aggregate_owned_count;
         }
     } catch (...) {
+        s.aggregate_owned_count = 0;
+        for (std::size_t i = 0; i < s.member_count; ++i)
+            if (stored_material(store.members[i].x, store.members[i].y) == Material::Empty)
+                ++s.aggregate_owned_count;
         s.phase = SolidPhase::Quarantined; tick_failed_ = true;
         if (settled_discovery_) settled_discovery_->fail();
         return SolidOutcome::Quarantined;
