@@ -74,6 +74,9 @@ inline Dictionary statistics(const cybersand::World& world, const cybersand::Tic
     values["visited_cells"] = static_cast<int64_t>(last.visited_cells);
     values["moved_cells"] = static_cast<int64_t>(last.moved_cells);
     values["scheduled_cores"] = static_cast<int64_t>(last.scheduled_cores);
+    // Maximum distinct task-claiming pool workers observed in any dispatch of
+    // the completed tick. This is participation, not per-worker utilization.
+    values["worker_threads_observed"] = static_cast<int64_t>(last.worker_threads_observed);
     values["chunk_allocations"] = static_cast<int64_t>(last.chunk_allocations);
     values["temperature_field_allocations"] = static_cast<int64_t>(last.temperature_field_allocations);
     values["deferred_events_processed"] = static_cast<int64_t>(last.deferred_events);
@@ -85,10 +88,10 @@ inline Dictionary statistics(const cybersand::World& world, const cybersand::Tic
     out["limits"] = limits;
     out["values"] = values;
     out["phase_jobs_last_tick"] = phases;
-    out["scope"] = "completed native tick counts and current storage; phase jobs are not per-worker utilization";
+    out["scope"] = "completed native tick counts and current storage; worker_threads_observed is maximum distinct task-claiming participants in one dispatch, not utilization";
     Array unavailable;
     unavailable.append("total heap allocations");
-    unavailable.append("per-worker utilization");
+    unavailable.append("per-worker utilization or time share");
     unavailable.append("pending queue occupancy/high-water");
     unavailable.append("per-cell sleeping status");
     out["unavailable"] = unavailable;
