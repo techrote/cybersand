@@ -10,44 +10,65 @@ related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-l
 
 # Player control playground
 
-## PLAY composable existing-host route — candidate, not qualified yet
+## PLAY composable existing-host route — mechanical composition qualified
 
-[PLAY-COMP-001 #273](https://github.com/techrote/cybersand/issues/273) was completed
-by [merged PR #274](https://github.com/techrote/cybersand/pull/274) on 2026-10-27:
-one authored course and the real SetP Acrobat moved through the **existing**
-`CyberSimulationWorker` plus main-thread Rapier path. The tested head
-`fc5b2e4` passed 117/117 focused assertions on both Linux and Windows; all
-three mandatory source-head workflows completed. This proves feasibility,
-**not** five-player parity, multithreaded speedup, frame feel or a released game.
+[PLAY-COMP-001 #273](https://github.com/techrote/cybersand/issues/273) is
+accepted through [merged PR #274](https://github.com/techrote/cybersand/pull/274).
+The real Acrobat and original course ran through the **existing**
+`CyberSimulationWorker` and main-thread Rapier; its
+`fc5b2e4` head passed 117/117 focused assertions on Windows and Linux.
+No dedicated second World owner is required.
 
-**Candidate PLAY-COMP-002 / #267 (unqualified until its own exact-head runs):**
-the existing MicroScenario selector admits the authored
-`playground/player-course` in Play mode, while **F5 → SetP** composes the
-stunt buggy, trials bike, acrobat, arcade lander or jet barrel on the same
-asynchronous course. The narrow course-only actor constructor uses the
-original mechanical origin `(178, floor_y - equipment_clearance)` or
-`(178, 304)` for the two flight presets. It does not alter generic
-MicroScenario spawns, any other actor's F5 constructor, native World
-ownership, the original seven-preset standalone scene, or the liquid solver
-family defaults and construction-time admission. A new source-backed
-five-rig Windows/Linux headless test is intended to check controller input,
-native/physical step progress, terrain readiness, authored spawn and reset.
-Its existence **is not a passing execution receipt**.
+[PLAY-COMP-002 / #267](https://github.com/techrote/cybersand/pull/275)
+was merged as `6c5b8b45df151e39a026ae23075ae4611826387c`
+on 2026-10-27. The reviewed PR's tested integration merge tree
+`062ba113da8cbd5d944151e6d4c2b3396f95f3e3` combines the unchanged
+`d005ef8` patch and preceding `7500c1c` main. Its actual Windows and
+Linux `test_play_comp002_five_rig_course` executions each report
+**73 assertions, zero failures**, with all five real SetP mechanical
+actors, source-matched original spawn positions, native/physical tick
+progress, keyboard movement, terrain readiness and reset. Native,
+GDExtension/Godot and Documentation required workflows succeeded:
+[Native](https://github.com/techrote/cybersand/actions/runs/40452089685),
+[Godot](https://github.com/techrote/cybersand/actions/runs/40452089898),
+[Documentation](https://github.com/techrote/cybersand/actions/runs/40452089638).
 
-The separate [shared controls/UI issue #268](https://github.com/techrote/cybersand/issues/268)
-still owns playable preset menus, course `VIEW` camera and checkpoint/lap
-presentation, focus/gamepad parity and original seven-preset UX. Native Auto
-measurement, lifecycle/soak and final desktop feel remain #266/#269/#270.
-The two material swarms (#271) are deferred. Specialist scientific and
-NPC-training fixtures retain independent deterministic admission and execution.
-The dedicated new simulation owner (#265) was retired as unnecessary; the
-existing worker remains authoritative for all native cells.
+The selectable `playground/player-course` reuses the original
+`CyberPlayerPlaygroundCourse.layout()` with F5 → SetP in the regular
+asynchronous desktop MicroScenario host. Its first mechanical actor
+origin is `(178, floor_y - equipment_clearance)` for ground rigs and
+`(178, 304)` for the lander and barrel. Generic map constructors,
+native ownership, protected science/NPC fixtures, material solver
+defaults and construction-time liquid-policy validation are unchanged.
+The separate original seven-preset scene remains available.
 
-Sources: [course layout and mechanical origin](../../godot/scripts/player_playground_course.gd),
-[opt-in MicroScenario catalogue](../../godot/scripts/microscenario_catalogue.gd),
-[main desktop actor admission](../../godot/scripts/main.gd),
-[initial executable host evidence](../../godot/tests/test_play_comp001_existing_host_spike.gd)
-and [candidate five-rig regression](../../godot/tests/test_play_comp002_five_rig_course.gd).
+**PLAY-AUTO-001 / #266 is a candidate, not qualified by the above
+runs.** [Focused source-backed test](../../godot/tests/test_play_auto001_shared_course.gd)
+checks that desktop setting `cybersand/native_worker_threads=0`
+resolves the existing native 2/4/6 Auto policy in the actual
+shared-course/Acrobat session, using only copied
+`CyberSimulationWorker` snapshot worker capacity and scheduler
+metrics. Its source-head Windows/Linux execution is pending. It does
+not retune a live native World, prove actual concurrent worker
+utilization or speedup, measure rendered FPS or replace a benchmark.
+
+The remaining [#268 controls/UI](https://github.com/techrote/cybersand/issues/268)
+scope includes dedicated-scene quick-tap/gamepad parity, camera/overview,
+checkpoint/lap presentation and profile selection. #266 also requires
+native-pool utilization and fair measured controls; #269 requires
+lifecycle/failure/soak verification, and #270 final desktop/manual
+qualification. The five-rig test does **not** qualify those areas.
+Per-material liquid families remain selectable through the validated
+native construction/rebuild contract; no global family/default or live
+hot-switch was introduced by PLAY-COMP-002. Material swarms #271 remain
+deferred; the dedicated-worker alternative #265 remains closed.
+
+Sources: [authored course](../../godot/scripts/player_playground_course.gd),
+[MicroScenario catalogue](../../godot/scripts/microscenario_catalogue.gd),
+[desktop actor session](../../godot/scripts/main.gd),
+[initial existing-host test](../../godot/tests/test_play_comp001_existing_host_spike.gd),
+[five-rig source regression](../../godot/tests/test_play_comp002_five_rig_course.gd)
+and [native Auto readback candidate](../../godot/tests/test_play_auto001_shared_course.gd).
 
 ## Open the seven-preset movement course
 
