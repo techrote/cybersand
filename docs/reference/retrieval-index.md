@@ -264,7 +264,7 @@ claims. Exploratory source acceptance, merged readiness and platform acceptance 
 separate; the programme graph owns admission.
 
 ## Soliding, settled-region acceleration and coherent fracture
-- **What actually runs for #281, and can I test native-tree toppling?** [Experimental native solid-detachment runtime and controls](../systems/solid-detachment.md), [741bc077 Linux/Windows-native/Rapier evidence and unpassed gates](../audits/2026-10-27-sol281-native-tree.md). Distinguish actual native terrain transfer from authored bodies, Windows native from Windows Rapier, and inactive rollback from dynamic desoliding.
+- **What actually runs for #281, including compound cellular coupling?** [Experimental native solid-detachment runtime and controls](../systems/solid-detachment.md), [initial native-tree evidence](../audits/2026-10-27-sol281-native-tree.md), then [41dc25ca Linux/Windows Sand/Water coupling evidence](../audits/2026-10-27-sol281-compound-cellular-coupling.md). Distinguish exact six-proxy holes from a filled AABB, scoped coupling from reactive Wood/general desoliding, and retained unresolved counts from a production-acceptance claim.
 
 
 - **Can an existing native-cell tree be cut free and physically topple/roll

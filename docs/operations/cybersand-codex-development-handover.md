@@ -11,7 +11,7 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 # Development handover
 ## #281 executable handover — native tree proof
 
-Branch `work/sol281-native-detachment-20261027`, tested source `741bc0775c190be98e2f5d23da3d47dd354fef99`, contains the [experimental native-tree laboratory](../systems/solid-detachment.md). [Actual execution and failures](../audits/2026-10-27-sol281-native-tree.md) distinguish the dry ambient RedBrick transfer/Rapier proof from still-missing reactive Wood, compound native material occupancy, general dynamic desoliding, Windows Rapier, current published runtimes and independent/full review. Retain the successful 40592308871 evidence and do not claim #281 closed. Resume from these concrete gaps rather than rebuilding an authored falling-body demo.
+Branch `work/sol281-native-detachment-20261027`, executed source `41dc25ca060ecb07cef15c1640feeb9f6cce1eb4`, contains the [experimental native-tree laboratory](../systems/solid-detachment.md). [Initial motion evidence](../audits/2026-10-27-sol281-native-tree.md) and [compound Sand/Water evidence](../audits/2026-10-27-sol281-compound-cellular-coupling.md) now cover actual Linux/Windows Rapier, six exact hole-preserving proxies and session replacement. Preserve cumulative unresolved counts and do not claim production coupling. Next: reactive Wood/heterogeneous bonds, broader material cases, dynamic desoliding/fracture, persistence, cost/feel, runtime publication and independent/full review. #281 remains open.
 
 
 ## #12 native structural detachment priority — 2026-10-27

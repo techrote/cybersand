@@ -466,7 +466,7 @@ and routed to their real physics owner instead of being hidden in interaction ru
 
 
 ## Scalable reversible soliding
-**Experimental source checkpoint:** [real native-tree detachment laboratory](systems/solid-detachment.md) and [source-qualified execution record](audits/2026-10-27-sol281-native-tree.md) now demonstrate actual native payload transfer and Linux Rapier toppling. This dry inert one-body branch is not main/release acceptance or general reactive-solid coupling; #281 stays open.
+**Experimental source checkpoint:** [real native-tree detachment laboratory](systems/solid-detachment.md) now demonstrates actual native payload transfer, Linux/Windows Rapier toppling and hole-preserving six-proxy Sand/Water coupling at source `41dc25ca`. Read the [initial proof](audits/2026-10-27-sol281-native-tree.md) and [compound-coupling evidence](audits/2026-10-27-sol281-compound-cellular-coupling.md). This dry inert one-body branch is not main/release acceptance, reactive Wood or general desoliding; #281 stays open.
 
 
 **New 2026-10-27 owner priority:** native terrain solid that can

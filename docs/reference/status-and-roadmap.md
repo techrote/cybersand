@@ -1579,7 +1579,7 @@ from candidate until exact-head current checks and final diff/acceptance review
 complete.
 
 ## Issue #12 structural-detachment priority — 2026-10-27
-**Later experimental implementation checkpoint (not merged production):** [native detachment runtime](../systems/solid-detachment.md) at source 741bc077 has 520 native cells, six exact compound shapes, real async Linux Rapier motion, 13,074-check Linux/Windows native and Linux sanitizer passes, 21 motion and 20 live failure checks, and rendered captures. [The dated record](../audits/2026-10-27-sol281-native-tree.md) preserves all source and platform limits. Reactive Wood/compound cellular coupling, dynamic demotion, Windows Rapier, independent review and full qualification remain open; #281 is not closed.
+**Later experimental implementation checkpoint (not merged production):** [native detachment runtime](../systems/solid-detachment.md) now reaches source `41dc25ca`: 520 native cells, six exact shapes/proxies, actual Linux and Windows Rapier toppling, session-reset fences, and hole-preserving Sand/Water interaction. The [initial record](../audits/2026-10-27-sol281-native-tree.md) and [compound-coupling record](../audits/2026-10-27-sol281-compound-cellular-coupling.md) preserve exact scopes. Coupling passes 32 checks per platform with quantity conservation and real contact/displacement, while cumulative unresolved interactions remain 1,094 Linux / 2,190 Windows. Reactive Wood, dynamic demotion/fracture, persistence, independent review, full qualification and release publication remain open; #281 is not closed.
 
 
 **Approved direction / implementation Planned:** native solid structures
