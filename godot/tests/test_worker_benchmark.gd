@@ -47,10 +47,19 @@ func _run() -> void:
 	expect(bool(second.get("ok", false)) and int(second.requested_workers) == 2
 		and int(second.actual_workers) == int(second.resolved_workers),
 		"two-worker request has exact bounded readback")
-	expect(bool(automatic.get("ok", false)) and int(automatic.requested_workers) == 0
-		and str(automatic.resolution_source) == "native-auto-policy"
-		and int(automatic.actual_workers) == int(automatic.auto_workers),
-		"Auto row uses the native policy and reports its actual pool")
+	var auto_ok: bool = bool(automatic.get("ok", false)) \
+		and int(automatic.requested_workers) == 0
+	if bool(automatic.get("threaded_runtime", false)):
+		auto_ok = auto_ok \
+			and str(automatic.resolution_source) == "native-auto-policy" \
+			and int(automatic.actual_workers) == int(automatic.auto_workers)
+	else:
+		auto_ok = auto_ok \
+			and str(automatic.resolution_source) == "no-thread-runtime" \
+			and int(automatic.resolved_workers) == 1 \
+			and int(automatic.actual_workers) == 1
+	expect(auto_ok,
+		"Auto row reports either native policy capacity or disclosed no-thread fallback")
 	expect(first.level_hash == second.level_hash
 		and first.level_hash == automatic.level_hash,
 		"same fixed input has equal terminal level hash across worker policies")
