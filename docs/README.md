@@ -282,8 +282,8 @@ For the shared asynchronous PLAY course, use the same guide's
 It records normal lifetimes, solver-construction/refusal regressions and native
 reference measurements separately from pending-work/failure stress, gameplay
 performance, physical-controller and human-feel qualification.
-The [prepared-construction teardown candidate](systems/player-control-playground.md#pending-prepared-construction-teardown-candidate)
-separately scopes local Windows cancellation/retirement proof and pending hosted gates.
+The [prepared-construction teardown regression](systems/player-control-playground.md#actual-host-prepared-construction-teardown-regression)
+separately records local cancellation/retirement proof and source-bound final qualification receipts.
 
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).
 

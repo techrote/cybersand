@@ -28,7 +28,7 @@
       "canonical": ["systems/player-control-playground.md"],
       "facts": [
         "LIFE003 holds native-prepared physical-ready construction before commit, observes actual Main callbacks and closes the real host after a bounded stop-fence release.",
-        "Earlier source22900486 has local Windows135/0; corrected sourcecd5f2ce5 has its own150/0 proof including contended safety release while main holds the real joined-worker mutex. Final hosted Windows/Linux qualification remains separate.",
+        "The nonblocking helper retains the actual shutdown safety budget of15000ms; a separate25ms contended arm requires release while main holds the real joined-worker mutex. Clean accepted-parent integration9782693c has local Windows150/0; PR #289 tracks separate final hosted checks, review and accepted-tree receipts.",
         "It does not hold native simulation phase jobs, inject a slow native tick or observe an OS native-thread join trace."
       ],
       "sources": ["../godot/tests/play_life003_prepared_shutdown_case.gd"]

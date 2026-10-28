@@ -15,24 +15,26 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 **Current accepted slices:** existing-host feasibility #273, five-rig and
 construction-time solver composition #267, shared controls/camera/lap/gamepad
 event slices of #268, normal lifecycle PR #284 (`8288e580`), and native
-participation/reference measurements PR #285 (`1a7f9dd5`).
+participation/reference measurements PR #285 (`1a7f9dd5`), solver reconstruction
+PR #287 (`e50a7db3`) and temporary-publisher retirement PR #288 (`37da3c6c`).
 The [player contract](../systems/player-control-playground.md#accepted-normal-desktop-lifecycle-qualification)
 owns exact source/CI/review identities and the 50-real-lifetime-per-OS result.
 The same contract records the bounded solver-construction/refusal regression
 and its 335/0 Windows and Linux Godot result, with [PR #287](https://github.com/techrote/cybersand/pull/287)
 owning the final CI/review/accepted-tree receipt.
 **Open:** #266 gameplay scheduling/performance, remaining #268 selection/device/pacing,
-#269 delayed/pending work, failure and populated stale-command stress, and #270
+#269 slow-native/outstanding-job shutdown, failure and populated stale-command stress, and #270
 desktop/manual acceptance. Configured capacity, actual task participation,
 concurrent execution, reference timing and human feel remain distinct claims.
 The accepted shared `CyberSimulationWorker` plus main-thread Rapier remains
 the implementation path; #265 is closed Not Planned and #271 stays deferred.
 
-**Pending-construction successor:** the
-[LIFE003 player-contract section](../systems/player-control-playground.md#pending-prepared-construction-teardown-candidate)
+**Prepared-construction regression:** the
+[LIFE003 player-contract section](../systems/player-control-playground.md#actual-host-prepared-construction-teardown-regression)
 records a test-only actual-host precommit shutdown fixture and its source-bound
-local Windows 135/0 result. Hosted Linux, final-head checks and independent
-review remain gates; it supplies no slow-native-job or native-thread trace claim.
+local Windows 150/0 combined-source result. PR #289 tracks final hosted checks,
+independent review and accepted-tree receipts separately; the fixture supplies
+no slow-native-job, native-thread trace or release claim.
 
 ## Trial successor correction after accepted App — 2026-10-25
 

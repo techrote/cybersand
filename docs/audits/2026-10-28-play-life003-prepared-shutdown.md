@@ -10,6 +10,46 @@ related-documents: [../systems/player-control-playground.md, ../architecture/dat
 
 # PLAY-LIFE-003 prepared reconstruction shutdown — 2026-10-28
 
+## Accepted-parent integration and clean Windows proof
+
+Non-forced merge **`9782693c0d3d45add39d4b0a26e60e6a6410b214`**, tree
+**`692b6fd4517c165d52ba6bf8889343736815b393`**, consumes accepted main
+`37da3c6cf8f7893ce4ab57baa224ab2624f4306d` after #287 and #288 passed their
+own exact-head checks, distinct final reviews and guarded merges. All six
+LIFE003 test hashes remain exact corrected implementation `cd5f2ce5`; no
+production/native/default/dependency/runtime path changes in the child.
+
+A fresh **clean committed-source** Windows cohort executes `9782693c`, with
+all 80 native inputs matching the unchanged published runtime and all six test
+working files matching their exact Git blobs. Strict import plus five rig
+processes pass **150/0**, 30 per rig; all exit 0 with no diagnostic error, skip,
+timeout or retry. Eight actual Main callbacks per rig, five ordinary stop
+fences/joins, ten Rapier graph retirements, five worker/adapter destructions and
+five contended safety releases are observed. Actual shutdown keeps its 15,000 ms
+safety bound; only the independent contention arm uses 25 ms. Import/case/
+predicate bounds remain 240 s/180 s/15,000 ms.
+
+Evidence root `C:/Users/_/.codex/tmp/play-life003-20261028/post-main-9782693c`;
+collector `C:/tmp/run_play_life003_exact.py` records its own hash and reuses the
+strict existing runner. Import takes 4.195 s; Acrobat/Buggy/Bike/Lander/Barrel
+take 3.625/3.619/3.716/3.804/3.617 s. Native/Rapier/Godot identities remain those
+recorded below. This later documentation append has no execution of its own;
+final hosted Windows/Linux, Native/Docs and distinct final source/execution
+reviews are tracked on [PR #289](https://github.com/techrote/cybersand/pull/289).
+No earlier-head or local proof substitutes for those gates.
+
+| Integrated-source evidence | SHA-256 |
+|---|---|
+| `identity.json` | `9fee5dfa550f61da6aa772c4fbb513af32212f931303780365311d607cb644f4` |
+| `timings.json` | `cfdadb6f6adc01d811e03b178cc35ed3fdaeba2c0af1660a0ff357bcb8a7d333` |
+| `results.json` | `3a370f72c10524acfa000a91eeb95c3d1fc21ad439cc9925d3e1119d328d87ba` |
+| `import.log` | `ac8d3746b742352a044ba1f2c39fc77fc3e88efe3c6cd8c6ccfbc143afa36ecc` |
+| `test_play_life003_acrobat.log` | `a093f01439a7d3db77c16dbbc421e3df31aa375727156e5cafdda874b8f9158a` |
+| `test_play_life003_stuntbuggy.log` | `aa28b94df56d9455166b942c879bbeb86fa76caf6804dfc4fd1fe5a9fe709302` |
+| `test_play_life003_trialsbike.log` | `c2c5c86f1b99b084dcf0c60a13aa5b6f2b4114477da47b9bb17da1acb18f03de` |
+| `test_play_life003_arcadelander.log` | `4a5888dad7ac50b4e5f66f333e81455667e181b6c8af96c7c2df4f94abdf415b` |
+| `test_play_life003_jetbarrel.log` | `a5b9352819922dca1e25c3cea93627d442ab565ca79345ce9426eccab7ccd287` |
+
 ## Post-review safety-helper correction
 
 A follow-up review at source `2421c5a2` found a P2 apparatus boundedness gap:

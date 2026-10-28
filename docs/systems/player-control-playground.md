@@ -200,9 +200,9 @@ the accepted-tree merge receipt are recorded on [PR #287](https://github.com/tec
 Those gates remain distinct from this Godot execution result. No solver default,
 live hot-swap, broader lifecycle or release acceptance is implied.
 
-## Pending prepared-construction teardown candidate
+## Actual-host prepared-construction teardown regression
 
-**PLAY-LIFE-003 / #269 candidate:** the
+**Current PLAY-LIFE-003 / #269 test implementation:** the
 [actual-host helper](../../godot/tests/play_life003_prepared_shutdown_case.gd)
 holds a supported reconstruction at the existing native-prepared/physical-ready
 precommit barrier. At least seven completed Main callbacks must progress before scene
@@ -217,18 +217,19 @@ on main, requires safety release without acquiring it, then always unlocks
 before joining. Only this adversarial arm uses a 25 ms helper budget; actual
 pending-construction shutdown retains 15,000 ms.
 
-The [dated local Windows proof](../audits/2026-10-28-play-life003-prepared-shutdown.md)
-binds implementation `22900486` to five real hosts, **135 assertions / zero
-failures**, five stop fences/joins, ten graph retirements and five worker/adapter
-destructions. This is pending construction cancellation, not shutdown with native
-simulation jobs outstanding, a slow native tick, an OS native-thread join trace,
-rendered pacing or human feel. Final accepted-parent integration, Windows/Linux
-hosted checks and independent review remain required; #269/#270 stay open.
-The later nonblocking safety-helper correction adds three assertions per rig.
-Clean source `cd5f2ce5` has its own local Windows **150/0** proof, preserving all
-actual-host checks and adding contended release while main retains the joined
-worker mutex. The earlier 135/0 cohort is not qualification of that revision;
-final accepted-parent integration and hosted Windows/Linux checks remain gates.
+The [dated audit](../audits/2026-10-28-play-life003-prepared-shutdown.md) preserves
+the original `22900486` local 135/0 proof, the later boundedness finding and
+corrected-source `cd5f2ce5` 150/0 proof separately. Clean non-forced integration
+`9782693c` consumes accepted #287/#288 main and receives its own local Windows
+**150 assertions / zero failures**: five real hosts, five stop fences/joins,
+ten Rapier graph retirements and five worker/adapter destructions, plus five
+contended safety releases. Earlier results are not relabeled as this source.
+Track final exact-head Windows/Linux, Native/Docs, independent review and
+accepted-tree receipts on [PR #289](https://github.com/techrote/cybersand/pull/289).
+Those gates are distinct from local proof. This covers pending construction
+cancellation; it does not hold native simulation jobs, inject a slow native
+tick, observe an OS native-thread join trace, measure rendered pacing or supply
+human feel. #269/#270 stay open.
 
 ## Open the seven-preset movement course
 
