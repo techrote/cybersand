@@ -36,10 +36,12 @@ func consume(snapshot: CyberSimulationSnapshot) -> bool:
 		return _refuse("no full baseline for changed image/generation/channels")
 	if rects.is_empty() or rects.size() % STRIDE != 0 or pixels.is_empty():
 		return _refuse("missing or misaligned patch metadata/bytes")
-	# Native full packet must replace the entire image, not just a fragment.
-	if full and (rects.size() != STRIDE or rects[0] != 0 or rects[1] != 0
+	# A retained full native packet can have subsequent dirty patches appended
+	# before ACK. Require its first rectangle to contain an exact full baseline
+	# and apply all following patches in order, matching the desktop consumer.
+	if full and (rects.size() < STRIDE or rects[0] != 0 or rects[1] != 0
 		or rects[2] != WIDTH or rects[3] != HEIGHT or rects[4] != 0
-		or rects[5] != WIDTH * count or pixels.size() != WIDTH * HEIGHT * count):
+		or rects[5] != WIDTH * count or pixels.size() < WIDTH * HEIGHT * count):
 		return _refuse("incomplete full-frame baseline")
 	var image_format: Image.Format = Image.FORMAT_RG8 if count == 2 else Image.FORMAT_R8
 	var patches: Array[Image] = []
