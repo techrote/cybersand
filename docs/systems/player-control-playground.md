@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Experimental seven-preset human movement course, shared mechanical control, bounded native Sand and Water fields, input lifetime and qualified validation
 canonical-for: [player-control-playground, player-movement-presets, player-material-field]
-last-reviewed: 2026-10-27
+last-reviewed: 2026-10-28
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
 ---
 
@@ -137,7 +137,7 @@ launcher. These scene controls accompany the movement actions below.
 | **3** / `acrobat` | **Afterimage** — momentum acrobat | A/D run and steer in air; Space jumps, then double jumps; hold Shift or S to slide; tap Shift to roll; Shift+Space or S+Space bullet jumps; C cancels/brakes and, held in air, glides. Mouse position aims bullet jumps. |
 | **4** / `arcadelander` | **Vector Rush** — arcade lander | W or Space fires the body-axis main engine; A/D or Q/E rotates; S gives reverse thrust; Shift applies a strong airbrake; tap C toggles damped flight/coast. |
 | **5** / `dryswarm` | **Dust Devil** — Sand cloud | WASD guides actual Sand; Space surges in the movement direction, or upward from neutral; Shift spreads; C gathers. Neutral admitted input keeps the cohesion/loft field active. |
-| **6** / `liquidswarm` | **Undertow** — Water blob | WASD guides actual Water; Space surges; Shift squeezes transverse to travel into a stream; C gathers. Neutral admitted input keeps the cohesion/loft field active. |
+| **6** / `liquidswarm` | **Undertow** — Water blob | WASD guides actual Water; Space surges; Shift squeezes transverse to travel into a stream; C gathers. |
 | **7** / `jetbarrel` | **Barrel Rocket** — barrel with jetpack | W or Space fires the body-axis jet; A/D or Q/E provides strong rotation; S gives reverse thrust; Shift brakes; hold C for upright assistance. |
 
 Arrow keys duplicate WASD in the dedicated scene. The lander and barrel thrust
@@ -187,6 +187,28 @@ unit-length clamping. The mouse supplies aim while inside the play view;
 otherwise movement supplies aim, with a diagonal fallback at neutral.
 Gamepad mapping is implemented; physical controller qualification is separate.
 
+**PLAY-UI-004 shared-course candidate, not yet runtime-qualified:**
+The normal desktop scene attaches a small main-thread
+[gamepad event bridge](../../godot/scripts/playable_course_gamepad_events.gd).
+When the existing course/human SetP capability gate is active, unhandled A/B/X
+press and release events from the first connected pad invoke the existing
+`publish_actor_keyboard_input` path immediately. This lets its existing bounded
+physical-session FIFO retain a short tap between physical callbacks, rather
+than relying only on the next polled state. Controls receive events first;
+other devices, unmapped buttons and non-course/specialist configurations are
+not intercepted. Focus, pause, reset, rearm, equipment and epoch authority stay
+in the original host; the bridge never steps or owns any simulation object.
+Analog stick/trim polling and standalone scene behavior are unchanged.
+
+The [focused fixture](../../godot/tests/test_play_ui004_gamepad_events.gd)
+uses genuine Viewport events and physical-session/Rapier steps, with a disclosed
+synthetic selected-device index and test host publisher. It verifies ordered
+button pairs and a matched no-event/poll-only negative control, not a physical
+controller, the complete desktop focus path or interactive feel. Full exact-head
+Windows/Linux CI and independent review remain required. The
+[dated candidate audit](../audits/2026-10-28-play-ui004-gamepad-events.md)
+records the gap, test boundaries and integration obligations.
+
 | Control | Scene operation |
 |---|---|
 | 1–7 or preset buttons | Select a preset and construct a fresh course/session |
@@ -225,9 +247,7 @@ does not promise conservation across unrelated chemistry or authoring actions.
 
 Selection is **matching material within a local radius**, not a persistent
 collection of owned particles. Nearby environmental Sand/Water can join; material
-that leaves the field is no longer controlled. The field follows the returned
-quantity-weighted material centroid with a bounded centre adjustment. WASD moves
-material rather than a remote selection cursor. The visible ring shows this
+that leaves the field is no longer controlled. The visible ring shows this
 local selection boundary.
 
 The native call scans at most 4,225 candidate positions within a radius-32
