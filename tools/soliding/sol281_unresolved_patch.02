@@ -1,0 +1,83 @@
++		"unresolved_unclassified":_coupling_unresolved_unclassified,
+ 		"impulse_applications":_coupling_impulse_applications,
+ 		"correction_applications":_coupling_correction_applications,
+ 		"stale_results":_coupling_stale_results, "last_impulse":_coupling_last_impulse,
+@@ -603,6 +630,10 @@ func close() -> void:
+ 	_coupling_contacts = 0
+ 	_coupling_displaced = 0
+ 	_coupling_unresolved = 0
++	_coupling_unresolved_immovable = 0
++	_coupling_unresolved_no_target = 0
++	_coupling_unresolved_relocation_refused = 0
++	_coupling_unresolved_unclassified = 0
+ 	_coupling_impulse_applications = 0
+ 	_coupling_correction_applications = 0
+ 	_coupling_stale_results = 0
+diff --git a/godot/tests/test_lcb_inertial_adapter.gd b/godot/tests/test_lcb_inertial_adapter.gd
+index e45a905..e6c43ed 100644
+--- a/godot/tests/test_lcb_inertial_adapter.gd
++++ b/godot/tests/test_lcb_inertial_adapter.gd
+@@ -241,9 +241,9 @@ func _resting_body_contacts() -> void:
+ 					world.prepare_rigid_body_coupling(states, false)
+ 					expect(world.simulation_tick() and world.get_scanned_last_tick() >= 4, "no-motion contact still executes material work")
+ 					var results: PackedFloat32Array = world.rigid_body_results()
+-					if not expect(results.size() == 4 * 9, "copied contact results contain all four exact body records"): return
++					if not expect(results.size() == 4 * CyberRigidBodyCoupling.RESULT_STRIDE, "copied contact results contain all four exact body records"): return
+ 					for body: int in range(origins.size()):
+-						var offset: int = body * 9
++						var offset: int = body * CyberRigidBodyCoupling.RESULT_STRIDE
+ 						if not expect(results[offset] == body + 1 and results[offset + 5] == 1
+ 							and is_equal_approx(results[offset + 1], normal.x * 1.12) and is_equal_approx(results[offset + 2], normal.y * 1.12),
+ 							"one resting target/normal reports actual Brine density-scaled signed feedback"): return
+diff --git a/godot/tests/test_liquid_pressure_rapier.gd b/godot/tests/test_liquid_pressure_rapier.gd
+index ac76374..e9a6dfc 100644
+--- a/godot/tests/test_liquid_pressure_rapier.gd
++++ b/godot/tests/test_liquid_pressure_rapier.gd
+@@ -114,8 +114,8 @@ func cohort(bridge: Variant, workers: int) -> bool:
+ 				ok = false
+ 				break
+ 			var results: PackedFloat32Array = arm.world.rigid_body_results()
+-			ok = expect(results.size() == 9, "one complete actual-body result") and ok
+-			if results.size() == 9:
++			ok = expect(results.size() == CyberRigidBodyCoupling.RESULT_STRIDE, "one complete actual-body result") and ok
++			if results.size() == CyberRigidBodyCoupling.RESULT_STRIDE:
+ 				arm.contacts += int(results[5])
+ 				arm.impulse += absf(results[1]) + absf(results[2])
+ 			ok = expect(arm.physics.apply_cellular_results(tick + 1, results) == 1
+diff --git a/godot/tests/test_solid_detachment_coupling.gd b/godot/tests/test_solid_detachment_coupling.gd
+index 3b51180..483dfec 100644
+--- a/godot/tests/test_solid_detachment_coupling.gd
++++ b/godot/tests/test_solid_detachment_coupling.gd
+@@ -118,6 +118,18 @@ func _run() -> void:
+ 		"native cellular owner returned compound proxy results")
+ 	check(int(metrics.contacts) > 0, "moving exact silhouette contacts cellular material")
+ 	check(int(metrics.displaced) > 0, "swept compound silhouette displaces cellular material")
++	var classified_unresolved: int = int(metrics.unresolved_immovable) \
++		+ int(metrics.unresolved_no_target) + int(metrics.unresolved_relocation_refused)
++	check(classified_unresolved == int(metrics.unresolved)
++		and int(metrics.unresolved_unclassified) == 0,
++		"every unresolved overlap has one explicit native cause")
++	check(int(metrics.unresolved_immovable) == 0,
++		"Sand/Water fixture reports no immovable-material refusal")
++	check(int(metrics.unresolved_relocation_refused) == 0,
++		"admitted ejection targets never fail authoritative relocation")
++	check(int(metrics.unresolved_no_target) == int(metrics.unresolved)
++		and int(metrics.unresolved_no_target) > 0,
++		"dense-bank unresolved interactions are exhausted ejection searches")
+ 	check(int(metrics.proxy_count) == int(source.shape_count), "proxy topology remains stable through rotation")
+ 	check(max_rotation > 0.5 and max_translation > 5.0, "actual Rapier body still topples while coupled")
+ 	check(final.get("aggregate_owned") == source.member_count and final.get("native_source_members") == 0,
+@@ -128,6 +140,8 @@ func _run() -> void:
+ 	check(int(final_material.get("water_mass", -1)) == 4 * 255,
+ 		"Water mass conserved through moving compound coupling")
+ 
++	var displacement_attempts: int = int(metrics.displaced) + int(metrics.unresolved)
++	var unresolved_rate: float = float(metrics.unresolved) / maxf(float(displacement_attempts), 1.0)
+ 	var report: Dictionary = {
+ 		"schema":"cybersand.sol281.compound-cellular-coupling.v1",
+ 		"checks":checks, "failures":failures, "platform":OS.get_name(),
+@@ -135,6 +149,7 @@ func _run() -> void:
+ 		"initial_body_ids":ids, "sand_average_y":sand_average_y,
+ 		"water_average_y":water_average_y, "max_rotation":max_rotation,
+ 		"max_translation":max_translation, "coupling":metrics,
++		"displacement_attempts":displacement_attempts, "unresolved_rate":unresolved_rate,
