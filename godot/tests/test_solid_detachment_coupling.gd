@@ -35,8 +35,9 @@ func _init() -> void:
 func _run() -> void:
 	var policy_args: PackedStringArray = OS.get_cmdline_user_args()
 	var ejection_policy: int = int(policy_args[1]) if policy_args.size() > 1 else 0
+	var consume_render_packets: bool = int(policy_args[2]) == 1 if policy_args.size() > 2 else false
 	session = Session.new()
-	if not await session.open(root, 4, ejection_policy, true):
+	if not await session.open(root, 4, ejection_policy, true, consume_render_packets):
 		check(false, session.last_error)
 		session.close()
 		quit(1)
@@ -222,6 +223,17 @@ func _run() -> void:
 		and int(metrics.get("render_exchange_multi_call_samples", -1)) <= int(render_refresh.get("samples", 0)),
 		"native render payload and bounded overflow-retry counters are observed")
 	check(int(metrics.get("worker_overruns", -1)) >= 0, "worker overrun counter read")
+	var consumer: Dictionary = metrics.get("render_consumer", {})
+	check(bool(consumer.get("enabled", false)) == consume_render_packets,
+		"CPU image consumption is strictly opt-in")
+	check(consume_render_packets or int(metrics.get("render_acknowledgements", -1)) == 0,
+		"original control makes no render acknowledgements")
+	check(not consume_render_packets or (int(consumer.get("consumed", 0)) > 0
+		and int(consumer.get("consumed", 0)) == int(metrics.get("render_acknowledgements", -1))),
+		"each render ACK follows completed immutable CPU image consumption")
+	check(not consume_render_packets or (int(consumer.get("refused", -1)) == 0
+		and int(consumer.get("last_serial", 0)) > 0 and int(consumer.get("bytes", 0)) > 0),
+		"consumed cohort validates all snapshot bytes without any refused packet")
 	check(frame_intervals_us.size() == 360, "all physics-frame intervals recorded")
 	var displacement_attempts: int = int(metrics.displaced) + int(metrics.unresolved)
 	var unresolved_rate: float = float(metrics.unresolved) / maxf(float(displacement_attempts), 1.0)
@@ -255,7 +267,8 @@ func _run() -> void:
 				frame_pacing.over_16667_usec += 1
 	var report: Dictionary = {
 		"schema":"cybersand.sol281.compound-cellular-coupling.v3",
-		"ejection_policy":ejection_policy, "main_thread_step_timing":timing,
+		"ejection_policy":ejection_policy, "cpu_render_consumer":consume_render_packets,
+		"main_thread_step_timing":timing,
 		"headless_physics_frame_pacing":frame_pacing, "ejection_topology":topology,
 		"checks":checks, "failures":failures, "platform":OS.get_name(),
 		"members":source.member_count, "shapes":source.shape_count,
