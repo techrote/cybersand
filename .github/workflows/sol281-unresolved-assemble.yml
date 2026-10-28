@@ -1,4 +1,5 @@
 name: SOL281 unresolved-cause assembly
+# Retry after correcting the exact staged patch chunk.
 
 on:
   push:
