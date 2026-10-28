@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Experimental seven-preset human movement course, shared mechanical control, bounded native Sand and Water fields, input lifetime and qualified validation
 canonical-for: [player-control-playground, player-movement-presets, player-material-field]
-last-reviewed: 2026-10-27
+last-reviewed: 2026-10-28
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
 ---
 
@@ -80,7 +80,16 @@ each passed 115/115 actual-host five-rig assertions, with
 and [Docs](https://github.com/techrote/cybersand/actions/runs/40515691616)
 green at exact reviewed head. No manual camera/feel claim follows.
 
-**PLAY-UI-003 / #268 candidate — source-matched qualification pending:**
+**Accepted PLAY-UI-003 / #268 lap/HUD slice:** [PR #280](https://github.com/techrote/cybersand/pull/280)
+merged on 2026-10-28 as `69e340d390e3e563833e80659aa97fddc2922310`.
+Its accepted tree `63c6612fcaecdacad26452f7d15dfb118d410d9d` matches
+reviewed head `8533876b` and tested checkout `eb84f71c`.
+[Godot/GDExtension](https://github.com/techrote/cybersand/actions/runs/40600760606),
+[Native](https://github.com/techrote/cybersand/actions/runs/40600760721),
+[Documentation](https://github.com/techrote/cybersand/actions/runs/40600760603)
+and [independent source review](https://github.com/techrote/cybersand/pull/280#issuecomment-6453690179)
+completed successfully for that source. The prior parse failures remain in the
+[retained audit](../audits/2026-10-27-play-ui003-exact-head-parse-failure.md).
 The composable course's lap/HUD uses completed **native snapshot tick deltas**
 for elapsed time and **completed main-thread Rapier steps** for the four ordered
 checkpoint visits. The same host's `_physics_process` observes actual SetP
@@ -102,13 +111,16 @@ A separate identical-host negative arm overrides only the new completed-step
 sampling hook, proving the render-only path loses the transient visit. The
 existing [five-rig integration fixture](../../godot/tests/test_play_comp002_five_rig_course.gd)
 and [50-cycle model-only lifetime fixture](../../godot/tests/test_play_ui003_lap_clock.gd)
-remain. These new-head tests and an independent review are **pending**; they
-are not proof of hardware gamepad behavior, interactive FPS, subjectively
-acceptable camera/controls, or #269 real-host soak.
+passed on both Windows and Linux: **41/0** real-cadence assertions, including
+one matched render-only negative control; **126/0** five-rig assertions; and
+**1,373/0** lap-model assertions covering 50 **model-only** lifetime cycles.
+These are parent-source results, not qualification of a later combined branch.
+They do not establish hardware gamepad behavior, interactive FPS, subjectively
+acceptable camera/controls, or #269's fifty-real-host lifecycle campaign.
 The remaining [#268](https://github.com/techrote/cybersand/issues/268)
-scope includes an integrated playable selector, four checkpoints with
-simulation-tick lap HUD, gameplay-rule options, focus and physical-gamepad
-qualification and real frame-pacing/feel validation.
+scope includes an integrated playable selector, gameplay-rule options, complete
+focus and physical-gamepad qualification and real frame-pacing/feel validation.
+The accepted four-checkpoint lap/HUD slice does not close those requirements.
 Native Auto measurements, lifecycle/stress and final desktop feel remain
 #266/#269/#270. Material swarms (#271) remain deferred in the standalone
 seven-preset experimental scene. Specialist scientific and NPC-training
@@ -216,6 +228,28 @@ The stick has a radial deadzone and is combined with keyboard input before
 unit-length clamping. The mouse supplies aim while inside the play view;
 otherwise movement supplies aim, with a diagonal fallback at neutral.
 Gamepad mapping is implemented; physical controller qualification is separate.
+
+**PLAY-UI-004 shared-course candidate, not yet runtime-qualified:**
+The normal desktop scene attaches a small main-thread
+[gamepad event bridge](../../godot/scripts/playable_course_gamepad_events.gd).
+When the existing course/human SetP capability gate is active, unhandled A/B/X
+press and release events from the first connected pad invoke the existing
+`publish_actor_keyboard_input` path immediately. This lets its existing bounded
+physical-session FIFO retain a short tap between physical callbacks, rather
+than relying only on the next polled state. Controls receive events first;
+other devices, unmapped buttons and non-course/specialist configurations are
+not intercepted. Focus, pause, reset, rearm, equipment and epoch authority stay
+in the original host; the bridge never steps or owns any simulation object.
+Analog stick/trim polling and standalone scene behavior are unchanged.
+
+The [focused fixture](../../godot/tests/test_play_ui004_gamepad_events.gd)
+uses genuine Viewport events and physical-session/Rapier steps, with a disclosed
+synthetic selected-device index and test host publisher. It verifies ordered
+button pairs and a matched no-event/poll-only negative control, not a physical
+controller, the complete desktop focus path or interactive feel. Full exact-head
+Windows/Linux CI and independent review remain required. The
+[dated candidate audit](../audits/2026-10-28-play-ui004-gamepad-events.md)
+records the gap, test boundaries and integration obligations.
 
 | Control | Scene operation |
 |---|---|
