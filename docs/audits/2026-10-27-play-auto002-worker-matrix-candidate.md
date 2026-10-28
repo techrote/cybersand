@@ -434,6 +434,13 @@ the following append preserves the original report bytes with two exact-path
 `.gitattributes` entries. The Windows report's CRLF is explicitly recognized
 as its retained line ending for whitespace checks. Canonical Git-blob SHA-256
 now equals the artifact digest for both reports; no measurement is rewritten.
+The final evidence checkpoint retains all 80 native inputs and 548 of the
+549 recorded build/test inputs exactly. The sole build-ledger difference is
+`.gitattributes`: its new rules name only these two raw evidence files and
+the Windows report's CRLF whitespace convention. Native, GDScript, fixture,
+compiler and publisher inputs are unchanged. The publication remains an
+execution of `d7e35aa3`; full final-head CI must qualify the evidence append
+and its materialization policy separately.
 All counts and both OSes preserve terminal level hashes
 `a649a5ee5282ab93658ecf0456eee4e2a8293a376c73df85b1c30f4c8a68b2c6`
 at 480 and
