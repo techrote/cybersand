@@ -16,6 +16,9 @@
 *.gdextension text eol=lf
 *.cfg text eol=lf
 *.json text eol=lf
+# Retained raw campaign reports preserve their original target-host bytes.
+docs/audits/play-auto002-2026-10-28/windows-campaign.json -text
+docs/audits/play-auto002-2026-10-28/linux-campaign.json -text
 *.md text eol=lf
 *.yml text eol=lf
 *.yaml text eol=lf
