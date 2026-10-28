@@ -22,6 +22,12 @@ owns exact source/CI/review identities and the 50-real-lifetime-per-OS result.
 The accepted shared `CyberSimulationWorker` plus main-thread Rapier remains
 the implementation path; #265 is closed Not Planned and #271 stays deferred.
 
+**Pending-construction successor:** the
+[LIFE003 player-contract section](../systems/player-control-playground.md#pending-prepared-construction-teardown-candidate)
+records a test-only actual-host precommit shutdown fixture and its source-bound
+local Windows 135/0 result. Hosted Linux, final-head checks and independent
+review remain gates; it supplies no slow-native-job or native-thread trace claim.
+
 ## Trial successor correction after accepted App — 2026-10-25
 
 App #256 is merged as main56422c05 after all four exact-dc2 required gates.

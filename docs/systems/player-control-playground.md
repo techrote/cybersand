@@ -191,6 +191,26 @@ pointer/import failure is retained separately. Final exact-head Windows/Linux
 CI, independent review and merge remain mandatory; no solver default, live
 hot-swap, broader lifecycle or release acceptance is implied.
 
+## Pending prepared-construction teardown candidate
+
+**PLAY-LIFE-003 / #269 candidate:** the
+[actual-host helper](../../godot/tests/play_life003_prepared_shutdown_case.gd)
+holds a supported reconstruction at the existing native-prepared/physical-ready
+precommit barrier. Eight completed Main callbacks must progress before scene
+exit; a bounded synchronization-only helper releases after the owner stop fence.
+The actual accepted/staged Rapier graphs retire, the exclusive GDScript owner
+joins, and only then may the test inspect the unchanged applied native receipt
+and retired preparation token. Dropping retained references must destroy both
+worker and native adapter objects, extending earlier joined-thread assertions.
+
+The [dated local Windows proof](../audits/2026-10-28-play-life003-prepared-shutdown.md)
+binds implementation `22900486` to five real hosts, **135 assertions / zero
+failures**, five stop fences/joins, ten graph retirements and five worker/adapter
+destructions. This is pending construction cancellation, not shutdown with native
+simulation jobs outstanding, a slow native tick, an OS native-thread join trace,
+rendered pacing or human feel. Final accepted-parent integration, Windows/Linux
+hosted checks and independent review remain required; #269/#270 stay open.
+
 ## Open the seven-preset movement course
 
 **Current experimental source:** choose **Player playground** in the feature

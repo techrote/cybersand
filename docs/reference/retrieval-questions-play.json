@@ -22,6 +22,17 @@
       "sources": ["../godot/tests/play_life002_solver_case.gd"]
     },
     {
+      "id": "PLAY-PENDING-01",
+      "query": "Does the PLAY prepared reconstruction shutdown test prove a slow native tick or native worker join trace?",
+      "canonical": ["systems/player-control-playground.md"],
+      "facts": [
+        "LIFE003 holds native-prepared physical-ready construction before commit, observes actual Main callbacks and closes the real host after a bounded stop-fence release.",
+        "Local Windows has 135 assertions and zero failures, accepted/staged Rapier retirement, GDScript owner joins and worker/native-adapter WeakRef destruction; final hosted Windows/Linux and independent review remain gates.",
+        "It does not hold native simulation phase jobs, inject a slow native tick or observe an OS native-thread join trace."
+      ],
+      "sources": ["../godot/tests/play_life003_prepared_shutdown_case.gd"]
+    },
+    {
       "id": "PLAY-INPUT-01",
       "query": "Does the shared course gamepad event bridge prove physical controller and complete desktop focus qualification?",
       "canonical": ["systems/player-control-playground.md"],
