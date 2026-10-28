@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-28
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -14,11 +14,17 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 **Current accepted slices:** existing-host feasibility #273, five-rig and
 construction-time solver composition #267, shared controls/camera/lap/gamepad
-event slices of #268, and normal lifecycle PR #284 (`8288e580`).
+event slices of #268, normal lifecycle PR #284 (`8288e580`), and native
+participation/reference measurements PR #285 (`1a7f9dd5`).
 The [player contract](../systems/player-control-playground.md#accepted-normal-desktop-lifecycle-qualification)
 owns exact source/CI/review identities and the 50-real-lifetime-per-OS result.
-**Open:** #266 participation/performance, remaining #268 selection/device/pacing,
-#269 adversarial/reconstruction stress and #270 desktop/manual acceptance.
+The same contract records the bounded solver-construction/refusal regression
+and its 335/0 Windows and Linux Godot result, with [PR #287](https://github.com/techrote/cybersand/pull/287)
+owning the final CI/review/accepted-tree receipt.
+**Open:** #266 gameplay scheduling/performance, remaining #268 selection/device/pacing,
+#269 delayed/pending work, failure and populated stale-command stress, and #270
+desktop/manual acceptance. Configured capacity, actual task participation,
+concurrent execution, reference timing and human feel remain distinct claims.
 The accepted shared `CyberSimulationWorker` plus main-thread Rapier remains
 the implementation path; #265 is closed Not Planned and #271 stays deferred.
 

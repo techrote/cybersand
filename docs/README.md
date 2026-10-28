@@ -279,7 +279,8 @@ For seven human movement presets, use the [player control playground](systems/pl
 
 For the shared asynchronous PLAY course, use the same guide's
 [accepted lifecycle and remaining desktop gates](systems/player-control-playground.md#accepted-normal-desktop-lifecycle-qualification).
-It separates accepted normal lifetimes from solver/failure stress, native worker
+It records normal lifetimes, solver-construction/refusal regressions and native
+reference measurements separately from pending-work/failure stress, gameplay
 performance, physical-controller and human-feel qualification.
 The [prepared-construction teardown candidate](systems/player-control-playground.md#pending-prepared-construction-teardown-candidate)
 separately scopes local Windows cancellation/retirement proof and pending hosted gates.

@@ -839,15 +839,32 @@ integration, published source-matched runtimes, Linux and actual Web gates.
 
 ### Branch-scoped runtime publishers
 
-The temporary [PLAY-AUTO-002 workflow](../../.github/workflows/play-auto002-runtime-publication.yml)
-is restricted to `play-266-worker-matrix-20261027` and its own explicit request.
-It builds both desktop libraries, requires six worker/observation/real-host/
-liquid-policy fixtures on each actual target OS, then runs the
-[repeated reference campaign](../../tools/play/run_auto_campaign.py).
-The [dated audit](../audits/2026-10-27-play-auto002-worker-matrix-candidate.md)
-records preparation separately from runtime acceptance. Without a committed
-request no build is armed. Preserve each workflow attempt's artifacts; final
-ready-head CI/review remain separate, and retire this publisher after merge.
+**Retired after accepted PR #285, 2026-10-28:** the temporary PLAY-AUTO-002
+workflow, scoped profile/guard test and sequence-1 request are removed. Their
+[implementation remains in Git](https://github.com/techrote/cybersand/tree/d7e35aa3897ffa0bde422ece98226c551588040e).
+They published both desktop libraries only after six focused fixtures and the
+repeated reference campaign passed on each actual target OS. The
+[dated audit and byte-identical raw reports](../audits/2026-10-27-play-auto002-worker-matrix-candidate.md#actual-windowslinux-publication-and-repeated-results--2026-10-28)
+retain that source and its exact acceptance gates. Existing historical
+publishers/requests are unchanged; future native inputs need a newly scoped
+publisher and request.
+
+The [standalone repeated campaign](../../tools/play/run_auto_campaign.py),
+its adversarial tests, benchmark and published runtime/provenance files remain
+available. To repeat against the matching retained platform runtime, use a
+fresh output directory:
+
+```text
+python tools/play/run_auto_campaign.py --godot <pinned-godot-executable> --output <new-directory>
+```
+
+Choose a fresh output path outside the source checkout or beneath its ignored
+`build/` directory so retained JSON evidence does not appear as an untracked
+implementation input in the strict source check.
+The normal standalone path verifies retained runtime/source bytes before
+executing. It preserves 50 fresh processes, 60 warm-up and 120 measured ticks
+per row and immutable failure evidence. Do not pass the publisher-only fresh
+build assertion as a substitute for building and binding new native inputs.
 
 Source-matched Linux and Windows runtimes have been published by **temporary,
 branch-scoped publisher workflows**. Each workflow:
