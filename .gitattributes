@@ -19,6 +19,7 @@
 # Retained raw campaign reports preserve their original target-host bytes.
 docs/audits/play-auto002-2026-10-28/windows-campaign.json -text whitespace=cr-at-eol
 docs/audits/play-auto002-2026-10-28/linux-campaign.json -text
+docs/audits/play-auto003-2026-10-28/windows-local6-campaign.json -text whitespace=cr-at-eol
 *.md text eol=lf
 *.yml text eol=lf
 *.yaml text eol=lf
