@@ -204,3 +204,125 @@ reported separately. No causal speedup, per-worker utilization, desktop
 frame-pacing, hardware gamepad, human-feel or release claim follows.
 Equivalent composable-course native/publication/presentation measurements and
 fair timing comparisons remain required under #266 and #270.
+
+## Source integration and publication preparation — 2026-10-28
+
+This appendix preserves the preceding unexecuted candidate registration. The
+ready-state checks of earlier candidate source correctly refused its retained
+native runtimes: [Documentation 40604596617](https://github.com/techrote/cybersand/actions/runs/40604596617)
+reported source-input drift, and [Windows 40604596596](https://github.com/techrote/cybersand/actions/runs/40604596596)
+stopped before test execution. Adding the copied statistics field changes
+`godot/native_extension/cyber_observation_values.hpp`; older runtime/provenance
+manifests do not qualify that native source. Draft skips and earlier no-findings
+reviews are not execution results for this successor.
+
+The isolated worktree is
+`C:/Users/_/.codex/worktrees/play-auto-20261028/khybersand`, tracking the existing
+`play-266-worker-matrix-20261027` branch from `61ac8930c5195deb72546df133fe9515a072f546`.
+Two ordinary non-forced integration commits consume accepted main: `3aff269471ac95b24aa3961ece0198b7730a71c4`
+consumes `e076819e086abb762796303b830314e330f87234` (#286), and
+`cf371e8e29699ae445699b1ef60291d216cfe764` consumes
+`8288e580df90620640bd1f0b6aa774802f055d61` (#284). The dirty primary material
+checkout and other worktrees are outside this preparation. Historical #284
+lifecycle evidence keeps its original source identity.
+
+### Temporary PLAY publisher and mandatory repeated campaign
+
+The canonical [branch-scoped publisher procedure](../operations/local-build-and-validation.md#branch-scoped-runtime-publishers)
+is applied through the new `.github/workflows/play-auto002-runtime-publication.yml`
+and `tools/ci/play_auto002_runtime_publication.py`. The PLAY profile loads the
+existing shared byte/source/lease engine in isolation; no historical LCB profile,
+request, case list or runtime is repurposed or rewritten.
+
+The workflow is restricted to this exact feature branch and an explicit
+committed `tools/ci/play_auto002_publish_request.json`. **The request is absent
+at this preparation checkpoint.** Lightweight guards may execute; native builds,
+target-OS execution and publication remain disabled until the independently
+reviewed combined source is explicitly armed. The request must use the profile's
+exact `REQUEST_VALUE` plus positive integer `request_sequence`; publication binds
+the actual push SHA/tree and complete native/build/test input ledgers. A branch
+lease refuses a changed remote tip before expensive or writable operations.
+
+Each target OS must execute import plus all six focused cases with zero
+diagnostics, skips, launch errors or failing assertions:
+
+| Case | Required retained evidence |
+|---|---|
+| `test_worker_benchmark` | Complete ten-row policy matrix, exact request/count identities, unchanged setting, fixed-input parity and actual task-claiming multiworker participation on a supported host |
+| `test_microscenario_native_observation` | Copied native statistics compatibility, read-only observations and failed-World quarantine |
+| `test_play_auto001_shared_course` | Real existing asynchronous course/SetP/main-thread Rapier, progressing native/physical ticks and terrain acknowledgement; configured capacity only |
+| `test_play_comp002_five_rig_course` | All five actual SetP movement receipts, construction-time Water pressure policy/reset/F5 retention and explicit unsupported-route refusal |
+| `test_liquid_solver_policy` | Complete native per-material validation/default/refusal/parity helper sections |
+| `test_liquid_policy_worker` | Complete real threaded-owner policy/default/refusal/receipt-isolation/reconstruction sections |
+
+Every focused test retains its ordinary **180-second** bound; import retains
+the existing **240-second** preflight bound. Slower historical publisher bounds
+are not inherited. Exact case ordering, positive assertion summaries, typed JSON
+values, native generations/hashes, log digests and the actual target OS/runtime
+identity are verified again before staging.
+
+After the focused cases, each target OS must also execute the separate repeat
+campaign from `tools/play/run_auto_campaign.py`: five repeats × two fixed sizes
+× five requested policies, cyclic count ordering, at least 60 warm-up ticks and
+120 measured ticks per fresh reference World. Each row is a separate bounded
+process with the established strict diagnostics; the campaign retains raw
+per-tick timings, full rows, logs, hashes, native/Rapier/source identity and
+available machine/scheduling metadata. A failure or negative scaling observation
+is retained. No positive speedup is required to make the apparatus pass.
+
+The profile binds `campaign/campaign.json` and its SHA-256 into each runtime
+manifest, verifies the campaign's native input map and runtime bytes against the
+same build, and repeats complete campaign-directory validation in the publication
+job. A focused-test pass alone leaves publication unavailable. A campaign failure
+writes `campaign-failed`, preserving the result instead of labelling the runtime
+validated. Only two validated target-OS bundles can stage the four allowed
+runtime/provenance paths. The final bot commit has exactly the built source as
+its sole parent; the expected-tip lease makes its update an append and refuses
+concurrent branch changes. Retire the temporary workflow/profile/request after
+the bounded implementation is accepted, retaining its evidence in Git history.
+
+### Count and timing terminology
+
+`get_worker_threads()` is configured native capacity readback. A successfully
+constructed persistent pool creates its configured threads or throws and joins
+the started prefix, but this getter is not an independent empirical count of
+threads created. `worker_threads_observed` counts distinct workers that actually
+claim tasks in a completed dispatch; the serial path reports one execution
+participant. Multiple participants do not prove overlapping execution,
+utilization, CPU occupancy or speedup. Native timing excludes copied statistics
+and terminal serialization; test wall/frame timing includes headless scheduling.
+Reference-World measurements do not qualify actual course frame pacing or human
+feel. The existing ownership, main-thread Rapier, bounded queues and solver
+defaults remain unchanged.
+
+### Preparation checks and documentation mapping
+
+Local checks on Windows/Python 3.12 at this source preparation passed:
+`python tools/ci/test_play_auto002_runtime_publication.py` (19 tests), the unchanged
+shared publication engine suite (30 tests), active CI-provider policy, historical
+M11 integrity (18 records/28 source hashes), and documentation structure (115
+documents/228 claims). The first bare-worktree documentation run reported six
+missing companion references. Five exact companion files were then staged
+outside the source worktree from the same pinned commit
+`6a58311982941b75f46e22109a0829e5acb83c7e` used by Documentation CI; no checker,
+retrieval question or historical hash was changed to make that check pass.
+
+`python tools/ci/check_repository.py` still reports the two expected native
+source mismatches (one per retained OS manifest) for the observation header.
+LFS runtime payloads in this preparation worktree remain pointers; materialized
+runtime acceptance is deferred to the actual publisher and final ready-head
+checks. No local engine execution or native build is claimed by this appendix.
+The initial retrieval output command also failed because its ignored `build/`
+directory was absent; after creating the directory, frozen retrieval passed
+32/32 at top five (19 top-one), and supplementary challenges passed 151/152 at
+top five (120 top-one), retaining the known `LCB03` miss. These are route metrics,
+not runtime or answer-sufficiency acceptance. `git diff --check` passed.
+
+Documentation mapping: the existing local-build publisher section already owns
+this operational mechanism; this appendix records only the PLAY branch profile
+and evidence gates. Scheduling/ownership/interfaces/invariants and per-material
+configuration semantics are unaffected. Player controls, roadmap/release
+qualification and independent review remain owned by the parent PLAY integration
+checkpoint. No canonical ownership, corpus entry or frozen retrieval question is
+reassigned. Full source-matched Windows/Linux runtime execution, final exact-head
+review/CI, gameplay scheduling/performance and #270 manual-feel gates remain open.
