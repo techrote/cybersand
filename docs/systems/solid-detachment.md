@@ -41,6 +41,34 @@ This demonstrates the primary mechanical direction, not general reactive Wood,
 bark/leaf cohesion or unrestricted terrain dynamics. No ordinary gameplay mode
 or material policy automatically enables the feature.
 
+## CPU render-consumption ACK control — source 55aa72e5 (runtime qualification pending)
+
+**Current on this draft implementation branch, not production or proven desktop
+render throughput.** The opt-in, headless CPU Image consumer
+(`godot/scripts/solid_detachment_render_consumer.gd`) validates copied,
+immutable render packets on the main-thread session side and acknowledges
+a strictly newer serial **only after** all patch bytes have been applied.
+It refuses invalid offsets, pitches, bounds, stale serials, missing first
+full-world baseline, and generation/channel changes without a replacement
+baseline; refused packets trigger the existing full-refresh request and
+never receive an ACK. Retained full packets with appended dirty patches
+are consumed in order, as in the normal desktop patch reader. Native
+World ownership, worker cadence, Rapier objects and liquid/material
+construction policies remain untouched.
+
+The default standalone compound fixture is still deliberately
+**unacknowledged**. A new opt-in A=81 CPU-consumed cohort is run alongside
+this original control, the existing diagnostic-only B=289 cohort and
+17 scripted valid/malformed payload checks, on the existing actual
+Linux/Windows scoped workflow. A CPU `Image` is **not** a completed GPU
+texture upload: no interactive 60 FPS or full-worker pacing admission
+is implied. The [dated control audit](../audits/2026-10-28-sol281-render-ack-consumer-control.md)
+and [source/status receipt](../audits/sol281-2026-10-28/render-ack-control-receipt.json)
+identify exact source and qualification status. The earlier
+[unacknowledged microstage audit](../audits/2026-10-28-sol281-render-exchange-microstages.md)
+remains historical evidence. No physical search-policy promotion;
+B remains NO-GO; #281 open and #283 draft.
+
 ## Newer experimental render microstage attribution — source d441a8a5
 
 The opt-in diagnostic branch has a source-matched [render exchange and

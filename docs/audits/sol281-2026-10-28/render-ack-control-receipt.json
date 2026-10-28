@@ -1,0 +1,41 @@
+{
+  "schema": "cybersand.sol281.render-ack-control.v1",
+  "date": "2026-10-28",
+  "source_sha": "55aa72e5db6b23731a2ccdccbca91ccfd80bfe90",
+  "source_tree_sha": "165643fdd94a3e68aac28cf073745a37b127033b",
+  "previous_head": "1884eb1e38a32a29fd1a3f9e817a718999929411",
+  "preregistration": "https://github.com/techrote/cybersand/pull/283#issuecomment-6478381684",
+  "implementation_branch": "work/sol281-native-detachment-20261027",
+  "qualification": {
+    "status": "pending_source_matched_host_readback",
+    "scoped_workflow": "https://github.com/techrote/cybersand/actions/runs/40754382057",
+    "expected_direct_cpu_checks": 17,
+    "expected_compound_checks_per_arm": 59,
+    "old_source_1414_assertions_per_os_not_transferable": true,
+    "artifact_hashes_verified": false,
+    "host_results": null
+  },
+  "controls": {
+    "unacknowledged_A_candidates": 81,
+    "cpu_consumed_A_candidates": 81,
+    "unacknowledged_B_candidates": 289,
+    "B_physical_policy": "NO-GO"
+  },
+  "unchanged": [
+    "native authoritative-cell ownership",
+    "520 exact aggregate members",
+    "six hole-preserving Rapier and native coupling proxies",
+    "Sand 104 and Water mass 1020 conservation",
+    "12-field result ABI",
+    "main-thread Rapier and native worker separation",
+    "liquid/material construction policy"
+  ],
+  "open_gates": [
+    "source-matched Linux and Windows host execution and artifacts",
+    "acknowledgement-versus-unacknowledged performance comparison",
+    "production GPU/render pacing",
+    "bounded conservative physically admissible material relocation",
+    "reactive Wood/fracture/desoliding and persistence",
+    "independent review and ready-PR CI"
+  ]
+}

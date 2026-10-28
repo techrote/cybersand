@@ -10,6 +10,22 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## SOL281 current diagnostic implementation — no production admission
+
+On draft PR #283, exact source `55aa72e5db6b23731a2ccdccbca91ccfd80bfe90`
+adds a headless opt-in *CPU-image-consumed* render ACK cohort alongside
+the existing deliberately unacknowledged benchmark. It changes only
+scoped GDScript session/presentation tests and CI; native World,
+Rapier geometry, immutable render packet producer, liquid policies,
+and 81-probe default are unchanged. See
+[dated source/audit](../audits/2026-10-28-sol281-render-ack-consumer-control.md).
+Source-matched actual Linux/Windows qualification, representative GPU
+render/complete-worker frame pacing and physically admissible bounded
+conservative relocation remain **open**. The 289-probe B search remains
+NO-GO; reactive Wood, fracture/desoliding, multiple bodies, persistence,
+normal gameplay, independent review and ready-PR matrices remain open.
+Issue #281 open, PR #283 draft/unmerged, stacked on draft #282.
+
 ## Trial successor correction after accepted App — 2026-10-25
 
 App #256 is merged as main56422c05 after all four exact-dc2 required gates.

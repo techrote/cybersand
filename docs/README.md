@@ -10,6 +10,17 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## SOL281 CPU render-consumption diagnostic, not a gameplay admission
+
+The branch-local opt-in [source-and-qualification audit](audits/2026-10-28-sol281-render-ack-consumer-control.md)
+and [canonical runtime contract](systems/solid-detachment.md#cpu-render-consumption-ack-control--source-55aa72e5-runtime-qualification-pending)
+explain the validated CPU-image ACK path versus the deliberately
+unacknowledged headless reference, exact-source CI status, immutable
+snapshot ownership and non-production limits. Draft PR #283 and issue
+#281 remain open. The previous two-call native exchange observation
+still applies to its separate unacknowledged evidence, not an accepted
+desktop optimization.
+
 ## Trial successor correction after accepted App — 2026-10-25
 
 App #256 is merged as main56422c05 after all four exact-dc2 required gates.
