@@ -84,5 +84,63 @@
     },
     "status": "predecessor_linux_only_not_final_source",
     "finding": "CPU image consumption and 109 correct ACKs did not prevent any of 108 sampled double-call render refreshes; do not attribute double native calls solely to missing ACK, infer 60 FPS or promote B."
+  },
+  "preliminary_source_windows": {
+    "source_sha": "80c775056cbe4e0b0e65ad901843cb7fe4ce3de7",
+    "workflow_id": 40754078838,
+    "job": "windows-rapier",
+    "conclusion": "success",
+    "execution_artifact_id": 12846040819,
+    "execution_artifact_sha256": "dd7e2c1c94e43fbd06e0c6ffad46030c8fa609425cf3d32c74eab5bd6ee9bcff",
+    "build_artifact_id": 12843824807,
+    "build_artifact_sha256": "f6f137f5d3b730460573b5d6b1804bd709129cabf87a04288a7e88c634d31f97",
+    "archive_crc_ok": true,
+    "manifest_git_input_count": 551,
+    "runtime_dll_sha256": "9ae8b8608a60aded3da6da8af5202c073513d546f9c51aa328cbd39e9ce3153d",
+    "build_execution_dll_match": true,
+    "execution_log_hashes_verified": 10,
+    "direct_cpu_checks": 15,
+    "compound_checks_per_arm": 59,
+    "control_A": {
+      "samples": 268,
+      "refreshes": 145,
+      "double_calls": 145,
+      "exchange_p95_ms": 23.392,
+      "render_p95_ms": 23.868,
+      "overruns": 32,
+      "acks": 0
+    },
+    "consumed_A": {
+      "samples": 312,
+      "refreshes": 135,
+      "double_calls": 104,
+      "exchange_p95_ms": 23.802,
+      "render_p95_ms": 24.257,
+      "overruns": 27,
+      "acks": 136,
+      "consumed": 136,
+      "refused": 0,
+      "bytes": 220202438
+    },
+    "control_B": {
+      "samples": 285,
+      "refreshes": 169,
+      "double_calls": 169,
+      "exchange_p95_ms": 23.678,
+      "render_p95_ms": 24.168,
+      "overruns": 37,
+      "acks": 0
+    },
+    "status": "predecessor_windows_only_not_final_source",
+    "finding": "ACK reduced Windows double native calls to 104/135 versus unacknowledged145/145; no p95 render-stage improvement, 77% still doubled. Linux unchanged at all doubled."
+  },
+  "preliminary_source_cross_platform": {
+    "source_sha": "80c775056cbe4e0b0e65ad901843cb7fe4ce3de7",
+    "scope": "both actual Linux and Windows hosted scoped qualification",
+    "workflow": 40754078838,
+    "all_four_jobs": "success",
+    "original_15_unit_expected": true,
+    "corrected_17_unit_final_source_still_pending": true,
+    "negative": "Post-consumption ACK is insufficient to eliminate native double-call render-stage behavior, and cannot be claimed as proven performance optimization."
   }
 }

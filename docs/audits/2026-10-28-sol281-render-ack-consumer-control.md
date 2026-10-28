@@ -144,6 +144,50 @@ by representative rendering/total-loop pacing, is needed before
 optimizing. The final executable SHA and actual Windows host results
 are separately pending. B=289 remains physical-efficacy NO-GO.
 
+## First controlled Windows observation — same exact predecessor source 80c77505
+
+The actual Windows-Godot 4.7/Rapier2D v0.35.2 execution job of
+[run 40754078838](https://github.com/techrote/cybersand/actions/runs/40754078838)
+also completed successfully. Its three 59/59-assertion compound arms and
+15/15-assertion CPU payload unit suite reported zero failures.
+The Windows execution ZIP independently passed ZIP CRC validation and
+matched its Actions SHA-256
+`dd7e2c1c94e43fbd06e0c6ffad46030c8fa609425cf3d32c74eab5bd6ee9bcff`.
+The corresponding Windows-build ZIP matched SHA-256
+`f6f137f5d3b730460573b5d6b1804bd709129cabf87a04288a7e88c634d31f97`.
+Its 551 Git-input source manifest entries were verified by the hosted
+source check; the independently compared build DLL bytes matched the
+execution runtime SHA-256
+`9ae8b8608a60aded3da6da8af5202c073513d546f9c51aa328cbd39e9ce3153d`.
+Ten Windows execution log hashes matched the archived report.
+
+| Actual Windows predecessor mode | Latest-only samples | Active refreshes | Two-call native refreshes | Native exchange p95 | Render p95 | Worker overruns | Successful CPU ACKs |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| A=81, no ACK | 268 | 145 | **145/145** | 23.392 ms | 23.868 ms | 32 | 0 |
+| A=81, CPU consumed | 312 | 135 | **104/135** | 23.802 ms | 24.257 ms | 27 | **136** |
+| B=289, no ACK | 285 | 169 | **169/169** | 23.678 ms | 24.168 ms | 37 | 0 |
+
+Windows' CPU-consumed A cohort successfully processed/ACKed **136** immutable
+CPU packets containing **220,202,438 bytes** in total; refused
+**zero**. Its two-call prevalence fell from 100% in the unacknowledged
+control to about **77%** of sampled refreshes, whereas Linux
+remained at 100% with or without ACK. Neither host demonstrated
+a meaningful p95 render-stage improvement from ACK alone, and the
+observed Windows CPU-consuming main-thread physics-step p95 rose from
+0.403 ms (no ACK) to 2.727 ms. These are independent trajectories,
+not a causal speed-up/slow-down trial for GPU presentation. The
+**platform divergence** means missing render ACK can influence
+some Windows refreshes but cannot be the sole cause of double
+exchange or long render-stage p95 on either OS. Next attribution
+must record per-call native `status`/`cells` byte counts,
+pending-buffer size before/after accumulation and why the existing
+overflow path requests a second full exchange.
+
+**All four scoped jobs passed on source `80c77505`, not on the later
+`55aa72e5` retained-full-plus-dirty correction.** The new final-source
+Linux/Windows run and exact-head documentation consistency are
+separate required gates, not inherited from these predecessor results.
+
 ## Retained negative evidence and outstanding gates
 
 The previous extended B=289 ejection search **remains NO-GO** under
