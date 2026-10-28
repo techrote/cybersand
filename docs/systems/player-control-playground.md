@@ -215,8 +215,11 @@ destructions. This is pending construction cancellation, not shutdown with nativ
 simulation jobs outstanding, a slow native tick, an OS native-thread join trace,
 rendered pacing or human feel. Final accepted-parent integration, Windows/Linux
 hosted checks and independent review remain required; #269/#270 stay open.
-The later safety-helper correction adds three assertions per rig and requires
-fresh execution; the earlier 135/0 cohort is not qualification of that revision.
+The later nonblocking safety-helper correction adds three assertions per rig.
+Clean source `cd5f2ce5` has its own local Windows **150/0** proof, preserving all
+actual-host checks and adding contended release while main retains the joined
+worker mutex. The earlier 135/0 cohort is not qualification of that revision;
+final accepted-parent integration and hosted Windows/Linux checks remain gates.
 
 ## Open the seven-preset movement course
 

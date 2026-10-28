@@ -34,8 +34,53 @@ is still held with `deadline_expired=true` / `stop_observed=false`. It always
 unlocks before joining, even after the existing 15,000 ms predicate fails.
 The actual pending-construction shutdown retains its 15,000 ms safety budget;
 process/import bounds are unchanged. This adds three assertions per rig.
-Fresh source-bound actual-host execution and renewed independent review remain
-required; the API probe and earlier cohort are not relabeled as that proof.
+Fresh local proof below supplies the corrected source's Windows execution;
+renewed independent review and final hosted qualification remain required. The
+API probe and earlier cohort are not relabeled as the corrected source's proof.
+
+## Fresh Windows proof of the nonblocking safety revision
+
+Clean committed source `cd5f2ce57b4676520dc69e8bf9ab2312d0aea77c` passed
+strict import plus all five real hosts: **150 assertions / zero failures**,
+30 per rig. The original actual-host stop/receipt/graph/WeakRef checks are
+unchanged; each rig adds three contended-helper checks. All five show eight
+Main callbacks, one ordinary stop fence/join, two graph retirements and worker/
+adapter destruction. Each contended arm releases while main retains the mutex,
+reports deadline expiration without observing the protected flag, and uses the
+25 ms test budget. Observed arm times are 31/30/25/25/25 ms in
+Acrobat/Buggy/Bike/Lander/Barrel order; no exact upper-time assertion is made.
+
+The collector `C:/tmp/run_play_life003_exact.py` calls the same strict runner,
+records a clean source/tree and all six exact Git-blob hashes, verifies all
+80 native inputs and the unchanged runtime pins, and validates the raw result
+markers. Evidence directory:
+`C:/Users/_/.codex/tmp/play-life003-20261028/nonblocking-safety-cd5`.
+Import takes 4.484 s; rig processes take 4.021/3.923/3.632/3.621/4.266 s.
+All six processes exit 0, with no diagnostic error, skip, timeout or retry.
+Import/case/predicate/ordinary-safety limits remain 240 s/180 s/15,000 ms/15,000 ms.
+
+Only the shared helper's source hash changes:
+`4e6c266008737a09b2718be9cc69d37fe066ea64432a9691225d39b9027ad526`;
+the five wrapper hashes remain those in the original source table below.
+
+| Corrected-source evidence | SHA-256 |
+|---|---|
+| `identity.json` | `69c71d7f386ad4620bf448e5f5bd9a632c37d20795f7826863e1470f533432db` |
+| `timings.json` | `8d41387ada15e38608b26d6dab7f94493c24400f4bba42751dce745cbfb94359` |
+| `results.json` | `3f4920b852b7e92a6a8ed0df7c564592bf9cab587a1d0581b6ac2291ba38f998` |
+| `import.log` | `29e5c3ca9853eb98bd45e339fc2316fccbf942790019414161a53a21c2fb2d89` |
+| `test_play_life003_acrobat.log` | `b5460f0d5748eaa499523089e9348bd473ff3f3439baaf67c33a92b170e1ac2d` |
+| `test_play_life003_stuntbuggy.log` | `165a1a8737e4e6054e6cc851746294d8265c2f71e83b8a14f6a4ed43b717b0b7` |
+| `test_play_life003_trialsbike.log` | `0d16daeb31d509d74fe6f97cbaa8e6fa6cebe84ad4a6f1109172239a77be60ec` |
+| `test_play_life003_arcadelander.log` | `3901adbe125cb2f92adcdcb850271f34f20323bb79f425289d139b5ee0766b33` |
+| `test_play_life003_jetbarrel.log` | `b736c65d7e7e0bc2ef9d0446025bf46b6de1d543f718ad76538ad63a872dba07` |
+
+This is execution of clean `cd5f2ce5`, not a later documentation append or
+accepted-parent integration. Generated import/UID files were cleaned after
+execution; original evidence directories remain untouched. Linux and final
+exact-head hosted checks/review are still required.
+
+## Original candidate and retained local cohort
 
 This bounded #269 successor adds tests while #287/#288 await final hosted
 acceptance. It does not change production source, native workers, solvers,
