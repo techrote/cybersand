@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <atomic>
+#include <chrono>
 #include <cmath>
 #include <cstdint>
 #include <exception>
@@ -1845,6 +1846,154 @@ void test_rgba_copy_and_c_api() {
     invalid_config.abi_version = 999;
     require(cybersand_world_create_v2(&invalid_config) == nullptr,
             "versioned C API accepted an incompatible ABI version");
+}
+
+// Identity oracle only: the per-cell World::copy_render_cells loop that the
+// per-run copy replaced (three hashed chunk lookups per cell).
+void copy_render_cells_per_cell_oracle(const World& world, cybersand::RectI64 region,
+                                       std::vector<std::uint8_t>& destination,
+                                       std::size_t stride_bytes) {
+    for (std::int64_t row = 0; row < region.height; ++row) {
+        auto* output = destination.data() + static_cast<std::size_t>(row) * stride_bytes;
+        for (std::int64_t column = 0; column < region.width; ++column) {
+            const auto world_x = region.x + column;
+            const auto world_y = region.y + row;
+            const auto offset = static_cast<std::size_t>(column) * 2U;
+            const auto material = world.stored_material(world_x, world_y);
+            output[offset] = static_cast<std::uint8_t>(material);
+            output[offset + 1U] = cybersand::project_visual_state(
+                material, world.stored_state_a(world_x, world_y),
+                world.stored_state_b(world_x, world_y), world.config().water_experiment_policy);
+        }
+    }
+}
+
+// Deterministic mixed materials with explicit states. Out-of-domain states
+// throw from set_cell_state and fall back to the material's default state.
+void fill_render_identity_pattern(World& world, cybersand::RectI64 region) {
+    static constexpr Material palette[] = {
+        Material::Empty, Material::Water, Material::Water, Material::Smoke, Material::Fire,
+        Material::Lava, Material::Steam, Material::Sand, Material::Oil, Material::OakTimber,
+        Material::Thatch, Material::NeonCyan, Material::Wall};
+    const auto water_maximum = world.config().water_experiment_policy.maximum();
+    for (auto y = region.y; y < region.y + region.height; ++y) {
+        for (auto x = region.x; x < region.x + region.width; ++x) {
+            auto mix = static_cast<std::uint64_t>(x * 7919 + y * 104729) * 0x9e3779b97f4a7c15ULL;
+            mix ^= mix >> 29;
+            const auto material = palette[mix % std::size(palette)];
+            const auto state_a = static_cast<std::uint16_t>(
+                (mix & 0x100U) != 0U ? (mix >> 12) % (water_maximum + 1U) : (mix >> 12) % 65521U);
+            const auto state_b = static_cast<std::uint8_t>((mix >> 40) % 251U);
+            bool accepted = false;
+            try {
+                accepted = world.set_cell_state(x, y, material, state_a, state_b);
+            } catch (const std::exception&) {
+                accepted = false;
+            }
+            if (!accepted) world.set(x, y, material);
+        }
+    }
+}
+
+void test_render_copy_per_run_identity() {
+    struct Variant {
+        std::int32_t chunk_size;
+        WaterExperimentPolicy water;
+    };
+    const Variant variants[] = {{128, WaterExperimentPolicy{}},
+                                {32, WaterExperimentPolicy(5U, 12U)}};
+    const cybersand::RectI64 filled{-200, -64, 400, 300};
+    const cybersand::RectI64 regions[] = {
+        filled,                  // every resident chunk across signed seams
+        {-300, -150, 600, 500},  // surrounding non-resident chunks
+        {-129, -1, 3, 2},        // tiny region straddling both negative seams
+        {127, 127, 2, 2},        // positive seam corner
+        {-1, -1, 2, 2},          // origin seam corner
+        {-128, -128, 1, 1},      // single cell
+        {-257, 0, 1, 5},         // single non-resident column
+        {-130, 10, 260, 7},      // mid-chunk start and end
+        {5, 5, 0, 3},            // zero width
+    };
+    for (const auto& variant : variants) {
+        WorldConfig config{};
+        config.chunk_size = variant.chunk_size;
+        config.scheduling_core_size = std::min(variant.chunk_size, config.scheduling_core_size);
+        config.water_experiment_policy = variant.water;
+        World world(config);
+        world.reserve_region(filled);
+        fill_render_identity_pattern(world, filled);
+
+        std::size_t fractional_water = 0;
+        std::vector<bool> seen(65536U, false);
+        std::size_t distinct = 0;
+        std::vector<std::uint8_t> whole(static_cast<std::size_t>(filled.width * filled.height) * 2U);
+        copy_render_cells_per_cell_oracle(world, filled, whole,
+                                          static_cast<std::size_t>(filled.width) * 2U);
+        for (std::size_t index = 0; index < whole.size(); index += 2U) {
+            const auto key = static_cast<std::size_t>(whole[index]) << 8U |
+                             static_cast<std::size_t>(whole[index + 1U]);
+            if (!seen[key]) {
+                seen[key] = true;
+                ++distinct;
+            }
+            if (whole[index] == static_cast<std::uint8_t>(Material::Water) &&
+                whole[index + 1U] != 0U && whole[index + 1U] != 255U) {
+                ++fractional_water;
+            }
+        }
+        require(fractional_water > 0U, "render identity fixture has no fractional Water state");
+        require(distinct > 32U, "render identity fixture has too few material/state pairs");
+
+        for (const auto& region : regions) {
+            const auto row_bytes = static_cast<std::size_t>(region.width) * 2U;
+            for (const auto padding : {std::size_t{0}, std::size_t{6}}) {
+                const auto stride = row_bytes + padding;
+                const auto bytes = stride * static_cast<std::size_t>(region.height);
+                std::vector<std::uint8_t> expected(bytes, 0xABU);
+                std::vector<std::uint8_t> actual(bytes, 0xABU);
+                copy_render_cells_per_cell_oracle(world, region, expected, stride);
+                world.copy_render_cells(region, actual, stride);
+                require(actual == expected, "per-run render copy differs from per-cell oracle");
+                for (std::int64_t row = 0; row < region.height; ++row) {
+                    for (std::size_t pad = 0; pad < padding; ++pad) {
+                        require(actual[static_cast<std::size_t>(row) * stride + row_bytes + pad] ==
+                                    0xABU,
+                                "per-run render copy wrote stride padding");
+                    }
+                }
+            }
+        }
+    }
+
+    // Full 1024x1024 frame; a quarter of it is non-resident. Timings are
+    // reported for the record and are not asserted.
+    WorldConfig config{};
+    World full(config);
+    const cybersand::RectI64 frame{-512, -512, 1024, 1024};
+    full.reserve_region({-512, -512, 1024, 768});
+    fill_render_identity_pattern(full, {-512, -512, 1024, 768});
+    const auto frame_bytes = static_cast<std::size_t>(frame.width * frame.height) * 2U;
+    std::vector<std::uint8_t> expected(frame_bytes, 0xABU);
+    std::vector<std::uint8_t> actual(frame_bytes, 0xABU);
+    const auto median_ms = [](auto&& copy) {
+        double samples[5];
+        for (auto& sample : samples) {
+            const auto start = std::chrono::steady_clock::now();
+            copy();
+            sample = std::chrono::duration<double, std::milli>(
+                         std::chrono::steady_clock::now() - start)
+                         .count();
+        }
+        std::sort(std::begin(samples), std::end(samples));
+        return samples[2];
+    };
+    const auto stride = static_cast<std::size_t>(frame.width) * 2U;
+    const auto per_cell_ms =
+        median_ms([&] { copy_render_cells_per_cell_oracle(full, frame, expected, stride); });
+    const auto per_run_ms = median_ms([&] { full.copy_render_cells(frame, actual, stride); });
+    require(actual == expected, "per-run full-frame render copy differs from per-cell oracle");
+    std::cout << "RENDER_COPY_TIMING {\"frame\":\"1024x1024\",\"per_cell_median_ms\":"
+              << per_cell_ms << ",\"per_run_median_ms\":" << per_run_ms << "}\n";
 }
 
 void test_extended_material_families() {
@@ -3886,6 +4035,7 @@ int main(int argc, char** argv) {
         {"immutable render snapshots", test_immutable_render_snapshot_exchange},
         {"concurrent render leases", test_render_snapshot_concurrent_leases},
         {"C API and RGBA", test_rgba_copy_and_c_api},
+        {"render copy per-run identity", test_render_copy_per_run_identity},
         {"extended material families", test_extended_material_families},
         {"Sandspiel material catalog", test_sandspiel_material_catalog},
         {"themed static material catalog", test_themed_static_material_catalog},

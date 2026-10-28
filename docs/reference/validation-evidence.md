@@ -4,11 +4,23 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-28
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md, ../audits/2026-10-25-lcb002-pressure-variants.md]
 ---
 
 # Validation evidence ledger
+
+## Per-run full-frame render copy — 2026-10-28
+
+The [render copy identity record](../audits/2026-10-28-render-copy-per-run.md)
+covers a stateless native refactor of `World::copy_render_cells` on base `main`
+`91778603`. A test-only oracle that keeps the replaced per-cell loop matches the
+new copy byte for byte, padding included. Coverage spans signed seams,
+non-resident chunks, tiny seam regions, padded strides, two chunk sizes and Water
+policies, and a full 1024×1024 frame. The local Windows MSVC suite, a pinned
+LLVM-MinGW GDExtension build and both Godot render regressions pass. Local timings
+are reported, not asserted. Linux GCC, sanitizer and hosted gates are still
+required, and runtime binaries were not republished.
 
 ## Qualified Water sequence2 publication — 2026-10-25
 
