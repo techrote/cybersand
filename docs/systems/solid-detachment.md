@@ -321,3 +321,32 @@ Rapier motion, source/contact fences, inactive rollback and session replacement.
 Numerical pass is not owner feel approval. No independent review or full release
 gate is claimed by this page; consult the source-qualified receipts before using
 any result. #281 and parent #12 remain open.
+
+## Observational topology census at executed source dabe2b30
+
+The [separately preregistered no-target topology census](../audits/2026-10-28-sol281-ejection-topology-census.md)
+is an **opt-in, native-owner diagnostic** on draft PR #283, not a new ejection
+policy. Fresh diagnostic construction accepts the boolean
+`{"ejection_topology":true}`, default false, with a strict 17×17 local
+stored-Empty/unmasked scan after a bounded ejection search has already
+failed. Only the first 16 failed searches per owner preparation are
+classified; later events remain explicit capacity skips. Ordinary demo reset
+disables the probe; 12-float result records and the original 81-candidate
+default stay unchanged.
+
+On exact source `dabe2b30966e952ebadb84ab7f482d49ca500bb9`, the scoped
+Linux/Windows actual-host tests each pass 943 checks. Of 7,257 cumulative
+failed native-owner ejection attempts across four A/B runs, **7,256** had a
+nearby empty/unmasked void reachable under the **permissive** existing
+straight-path test, and one had only blocked direct paths. There were no
+capacity skips and no local no-void cases. Such a path can cross movable
+material or head **behind** the outward normal: this proves neither
+physical admissibility nor a viable new displacement strategy.
+
+The [source and cadence audit](../audits/2026-10-28-sol281-ejection-topology-census.md)
+records 549/549 matched build-input hashes, actual native/Rapier conservation
+and hole tests, and sampled worker costs. Linux snapshot-publication copy
+p95 was approximately 51 ms and worker overrun counters 88/111 in this
+headless fixture, an unresolved full-loop performance gate. **B remains
+NO-GO** under its prior preregistered efficacy criterion; neither this
+census nor passing scoped tests promotes production soliding.

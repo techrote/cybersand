@@ -1,0 +1,151 @@
+{
+  "schema": "cybersand.sol281.ejection-topology-census-receipt.v1",
+  "date": "2026-10-28",
+  "source_commit": "dabe2b30966e952ebadb84ab7f482d49ca500bb9",
+  "source_tree": "a9db6ff6136e06ac133063f3cfd4620f0216e38b",
+  "preregistration": "https://github.com/techrote/cybersand/pull/283#issuecomment-6463108213",
+  "actual_host_run": "https://github.com/techrote/cybersand/actions/runs/40649752504",
+  "source_docs_run": "https://github.com/techrote/cybersand/actions/runs/40649759523",
+  "artifacts": {
+    "source": {
+      "id": 12798757997,
+      "zip_sha256": "595dbf8e2ca27be30494091c81594f258384751767964eb09a71c1241cc86bde",
+      "tar_sha256": "9bdfa7f01c40524dee5615aeb4195d8982f6c457abbd86d641bf48f58ba98b94"
+    },
+    "linux_execution": {
+      "id": 12799516966,
+      "zip_sha256": "d28c716499db64c685c0995bb4827bba0b9a3b99849b1113e84cb6dc20e8769d",
+      "native_so_sha256": "9937b96f1e9fc6496cd64ab03b2c44f65540e863bf50328252917859a9848b6e"
+    },
+    "windows_build": {
+      "id": 12799571492,
+      "zip_sha256": "777f2d970c5c43173071e32af02f4589316f4b91c008283b5bd397037bd47daf",
+      "dll_sha256": "7712af9322ac2e4da20e8bfea1a307ec121eb010fd52a9c6f6ff0ad51dc087cd"
+    },
+    "windows_execution": {
+      "id": 12798879065,
+      "zip_sha256": "6b23fa214e34d189af11cf6ef9e77345e4629346011a85ebb0e7468f22ad9c82"
+    }
+  },
+  "independent_artifact_rehash": {
+    "archive_git_blob_checks": 8,
+    "archive_git_blob_mismatches": 0,
+    "windows_manifest_input_checks": 549,
+    "windows_manifest_source_mismatches": 0,
+    "windows_checkout_eol_only_restored": 92,
+    "other_checkout_drift_allowed": false,
+    "windows_runtime_sha256_match": true,
+    "zip_crc_checks": "all 4"
+  },
+  "hosts": {
+    "Linux": {
+      "check_counts": {
+        "motion": 21,
+        "failure_paths": 20,
+        "lifecycle": 296,
+        "diagnostics": 43,
+        "policy": 473,
+        "compound_A": 45,
+        "compound_B": 45,
+        "total": 943
+      },
+      "A": {
+        "no_target_events": 2307,
+        "classified": 2307,
+        "off_axis_direct_path": 2307,
+        "nearby_void_path_blocked": 0,
+        "no_nearby_unmasked_void": 0,
+        "skipped_capacity": 0,
+        "worker_samples": 207,
+        "worker_p95_ms": 0.699,
+        "native_tick_p95_ms": 0.283527,
+        "snapshot_copy_p95_ms": 51.218,
+        "main_rapier_p95_usec": 217,
+        "headless_frame_p95_usec": 20719,
+        "headless_frame_gt_16667_count": 149,
+        "worker_overruns": 88,
+        "accepted_unresolved": 2112,
+        "accepted_displaced": 24
+      },
+      "B": {
+        "no_target_events": 619,
+        "classified": 619,
+        "off_axis_direct_path": 619,
+        "nearby_void_path_blocked": 0,
+        "no_nearby_unmasked_void": 0,
+        "skipped_capacity": 0,
+        "worker_samples": 114,
+        "worker_p95_ms": 0.926,
+        "native_tick_p95_ms": 0.244035,
+        "snapshot_copy_p95_ms": 51.542,
+        "main_rapier_p95_usec": 219,
+        "headless_frame_p95_usec": 20708,
+        "headless_frame_gt_16667_count": 150,
+        "worker_overruns": 111,
+        "accepted_unresolved": 610,
+        "accepted_displaced": 32
+      }
+    },
+    "Windows": {
+      "check_counts": {
+        "motion": 21,
+        "failure_paths": 20,
+        "lifecycle": 296,
+        "diagnostics": 43,
+        "policy": 473,
+        "compound_A": 45,
+        "compound_B": 45,
+        "total": 943
+      },
+      "A": {
+        "no_target_events": 3125,
+        "classified": 3125,
+        "off_axis_direct_path": 3125,
+        "nearby_void_path_blocked": 0,
+        "no_nearby_unmasked_void": 0,
+        "skipped_capacity": 0,
+        "worker_samples": 232,
+        "worker_p95_ms": 0.312,
+        "native_tick_p95_ms": 0.0988,
+        "snapshot_copy_p95_ms": 17.549,
+        "main_rapier_p95_usec": 262,
+        "headless_frame_p95_usec": 20709,
+        "headless_frame_gt_16667_count": 150,
+        "worker_overruns": 1,
+        "accepted_unresolved": 2089,
+        "accepted_displaced": 19
+      },
+      "B": {
+        "no_target_events": 1206,
+        "classified": 1206,
+        "off_axis_direct_path": 1205,
+        "nearby_void_path_blocked": 1,
+        "no_nearby_unmasked_void": 0,
+        "skipped_capacity": 0,
+        "worker_samples": 296,
+        "worker_p95_ms": 0.396,
+        "native_tick_p95_ms": 0.1001,
+        "snapshot_copy_p95_ms": 17.893,
+        "main_rapier_p95_usec": 295,
+        "headless_frame_p95_usec": 20712,
+        "headless_frame_gt_16667_count": 149,
+        "worker_overruns": 0,
+        "accepted_unresolved": 1030,
+        "accepted_displaced": 35
+      }
+    }
+  },
+  "identities": [
+    "no_target_events = classified + skipped_capacity",
+    "classified = off_axis_direct_path + nearby_void_path_blocked + no_nearby_unmasked_void"
+  ],
+  "limitations": [
+    "off_axis_direct_path uses the preexisting straight-path predicate and may cross movable Sand or Water; not an admissible relocation",
+    "owner attempts and accepted asynchronous result samples are not interchangeable",
+    "headless frame intervals do not imply interactive FPS",
+    "published p95 worker timings are latest-only samples, and worker_step_ms excludes publication-copy cost",
+    "first 16 no-target events are selected in owner raster order if cap is hit",
+    "no full native matrix, independent review, reactive Wood, fracture, persistence or production approval"
+  ],
+  "policy_decision": "B remains NO-GO under earlier source-2d623e10 efficacy preregistration; no new physical policy"
+}
