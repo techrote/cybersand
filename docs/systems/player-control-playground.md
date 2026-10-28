@@ -200,6 +200,37 @@ the accepted-tree merge receipt are recorded on [PR #287](https://github.com/tec
 Those gates remain distinct from this Godot execution result. No solver default,
 live hot-swap, broader lifecycle or release acceptance is implied.
 
+## Actual-host prepared-construction teardown regression
+
+**Current PLAY-LIFE-003 / #269 test implementation:** the
+[actual-host helper](../../godot/tests/play_life003_prepared_shutdown_case.gd)
+holds a supported reconstruction at the existing native-prepared/physical-ready
+precommit barrier. At least seven completed Main callbacks must progress before scene
+exit; a bounded synchronization-only helper releases after the owner stop fence.
+The actual accepted/staged Rapier graphs retire, the exclusive GDScript owner
+joins, and only then may the test inspect the unchanged applied native receipt
+and retired preparation token. Dropping retained references must destroy both
+worker and native adapter objects, extending earlier joined-thread assertions.
+The helper uses nonblocking Boolean `Mutex.try_lock()` so contention cannot
+prevent deadline checks. A separate post-join arm holds the real worker mutex
+on main, requires safety release without acquiring it, then always unlocks
+before joining. Only this adversarial arm uses a 25 ms helper budget; actual
+pending-construction shutdown retains 15,000 ms.
+
+The [dated audit](../audits/2026-10-28-play-life003-prepared-shutdown.md) preserves
+the original `22900486` local 135/0 proof, the later boundedness finding and
+corrected-source `cd5f2ce5` 150/0 proof separately. Clean non-forced integration
+`9782693c` consumes accepted #287/#288 main and receives its own local Windows
+**150 assertions / zero failures**: five real hosts, five stop fences/joins,
+ten Rapier graph retirements and five worker/adapter destructions, plus five
+contended safety releases. Earlier results are not relabeled as this source.
+Track final exact-head Windows/Linux, Native/Docs, independent review and
+accepted-tree receipts on [PR #289](https://github.com/techrote/cybersand/pull/289).
+Those gates are distinct from local proof. This covers pending construction
+cancellation; it does not hold native simulation jobs, inject a slow native
+tick, observe an OS native-thread join trace, measure rendered pacing or supply
+human feel. #269/#270 stay open.
+
 ## Open the seven-preset movement course
 
 **Current experimental source:** choose **Player playground** in the feature
