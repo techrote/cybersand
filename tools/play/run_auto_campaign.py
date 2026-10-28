@@ -90,6 +90,12 @@ def stats(values: list[float]) -> dict:
             "p99": ordered[math.ceil(len(values) * .99) - 1], "max": ordered[-1]}
 
 
+def native_auto_workers(logical_processors: int) -> int:
+    # CyberNativeCellWorld::auto_worker_threads, cyber_native_cell_world.cpp.
+    # Auto deliberately has no logical-count clamp; explicit requests do.
+    return 2 if logical_processors < 4 else 4 if logical_processors < 12 else 6
+
+
 def plan(config: dict) -> list[dict]:
     """Every count occupies every order position once in each five-repeat block."""
     result = []
@@ -165,6 +171,8 @@ def verify_row(row: dict, expected: dict, config: dict) -> None:
             and value.get("concurrent_execution_measured") is False,
             "Invalid configured worker-capacity readback")
     requested = expected["requested_workers"]
+    require(value["auto_workers"] == native_auto_workers(row["logical_processors"]),
+            "Auto readback disagrees with production native policy")
     require(capacity == (value["auto_workers"] if requested == 0
                          else min(requested, row["logical_processors"], 32)),
             "Worker resolution disagrees with host policy")
@@ -181,6 +189,9 @@ def verify_row(row: dict, expected: dict, config: dict) -> None:
             and number(value.get("measured_wall_ms"), .000001)
             and number(value.get("completed_hz"), .000001)
             and number(value.get("terminal_export_hash_ms")), "Missing native work/timing/hash")
+    require(math.isclose(value["completed_hz"], config["ticks"] * 1000.0 / value["measured_wall_ms"],
+                         rel_tol=1e-6, abs_tol=1e-6),
+            "Completed throughput differs from measured ticks/wall interval")
     samples = value.get("tick_samples", {})
     require(isinstance(samples, dict) and set(samples) == {
         "native_ms", "test_frame_interval_ms", "workers_observed", "parallel_phases"},
@@ -194,6 +205,13 @@ def verify_row(row: dict, expected: dict, config: dict) -> None:
     require(all(integer(v, 1) and v <= capacity for v in samples["workers_observed"])
             and all(integer(v) and v <= 4 for v in samples["parallel_phases"]),
             "Participant/phase samples exceed actual capacity")
+    require(all(workers <= 1 or phases > 0 for workers, phases in
+                zip(samples["workers_observed"], samples["parallel_phases"])),
+            "Multiple task participants require a parallel dispatch in the same tick")
+    if capacity == 1:
+        require(all(workers == 1 and phases == 0 for workers, phases in
+                    zip(samples["workers_observed"], samples["parallel_phases"])),
+                "Serial capacity cannot report parallel dispatch or multiple participants")
     for key, raw in (("native_ms", "native_ms"), ("frame_interval_ms", "test_frame_interval_ms")):
         expected_stats = stats(samples[raw])
         require(isinstance(value.get(key), dict)
@@ -201,12 +219,21 @@ def verify_row(row: dict, expected: dict, config: dict) -> None:
                         for k, v in expected_stats.items()), "Timing reduction differs from raw samples")
     observed = max(samples["workers_observed"])
     participating_ticks = sum(v > 1 for v in samples["workers_observed"])
-    require(value.get("maximum_workers_observed") == observed
-            and value.get("worker_participation_ticks") == participating_ticks
+    parallel_ticks = sum(v > 0 for v in samples["parallel_phases"])
+    parallel_phases = sum(samples["parallel_phases"])
+    require(integer(value.get("maximum_workers_observed"), 1)
+            and value["maximum_workers_observed"] == observed
+            and integer(value.get("worker_participation_ticks"))
+            and value["worker_participation_ticks"] == participating_ticks
             and value.get("parallel_participation") is (observed > 1)
-            and value.get("parallel_phase_ticks") == sum(v > 0 for v in samples["parallel_phases"])
-            and value.get("parallel_phases") == sum(samples["parallel_phases"]),
+            and integer(value.get("parallel_phase_ticks"))
+            and value["parallel_phase_ticks"] == parallel_ticks
+            and integer(value.get("parallel_phases")) and value["parallel_phases"] == parallel_phases,
             "Participant/phase summary differs from raw samples")
+    require((parallel_ticks == 0 or value["maximum_scheduler_jobs"] > 1)
+            and value.get("parallel_dispatch_observed") is
+                (parallel_ticks > 0 and value["maximum_scheduler_jobs"] > 1),
+            "Parallel dispatch counters disagree with scheduler work")
     require(row.get("process", {}).get("timeout_seconds") == 180, "Wrong row process bound")
     verify_process(row["process"])
 

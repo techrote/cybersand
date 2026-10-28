@@ -16,14 +16,15 @@ def process(name="row", timeout=180):
             "log": name + ".log"}
 
 
-def report():
+def report(logical_processors=4):
     config = {"requested_counts": campaign.COUNTS, "sizes": campaign.SIZES,
               "repetitions": 5, "warmup_ticks": 60, "ticks": 120,
               "process_timeout_seconds": 180, "order": "cyclic-per-repeat"}
     rows = []
     for identity in campaign.plan(config):
         requested = identity["requested_workers"]
-        capacity = 4 if requested == 0 else min(requested, 4)
+        automatic = campaign.native_auto_workers(logical_processors)
+        capacity = automatic if requested == 0 else min(requested, logical_processors)
         # Intentionally slower multiworker rows must remain valid counterexamples.
         native_times = [2.0 if capacity == 1 else 3.0] * config["ticks"]
         frame_times = [16.0] * config["ticks"]
@@ -33,7 +34,7 @@ def report():
                  "ticks": config["ticks"], "warmup_ticks": config["warmup_ticks"],
                  "configured_worker_capacity": capacity, "actual_workers": capacity,
                  "resolved_workers": capacity, "workers": capacity,
-                 "readback_consistent": True, "logical_threads": 4, "auto_workers": 4,
+                 "readback_consistent": True, "logical_threads": logical_processors, "auto_workers": automatic,
                  "threaded_runtime": True, "worker_capacity_readback_kind": "adapter-configured-count",
                  "workers_created_count_measured": False, "concurrent_execution_measured": False,
                  "resolution_source": "native-auto-policy" if requested == 0 else "explicit-request-clamped-to-host",
@@ -45,13 +46,14 @@ def report():
                  "maximum_workers_observed": observed,
                  "worker_participation_ticks": config["ticks"] if observed > 1 else 0,
                  "parallel_participation": observed > 1,
+                 "parallel_dispatch_observed": phases > 0,
                  "parallel_phase_ticks": config["ticks"] if phases else 0,
                  "parallel_phases": phases * config["ticks"],
                  "tick_samples": {"native_ms": native_times, "test_frame_interval_ms": frame_times,
                                   "workers_observed": [observed] * config["ticks"],
                                   "parallel_phases": [phases] * config["ticks"]}}
         rows.append({**identity, "schema": "play-auto-campaign-row-v1", "cpu_name": "Synthetic model CPU",
-                     "logical_processors": 4, "os": "Linux", "os_version": "model-only",
+                     "logical_processors": logical_processors, "os": "Linux", "os_version": "model-only",
                      "godot": {"major": 4, "minor": 7, "patch": 0, "status": "stable",
                                "build": "official", "hash": "5b4e0cb0f"},
                      "result": value, "process": process(identity["id"]),
@@ -91,6 +93,53 @@ class CampaignEvidenceTests(unittest.TestCase):
     def test_nearest_rank_timing_percentiles(self):
         value = campaign.stats([1., 2., 3., 4.])
         self.assertEqual(value, {"count": 4, "mean": 2.5, "p50": 2., "p95": 4., "p99": 4., "max": 4.})
+
+    def test_production_auto_thresholds_include_unclamped_low_core_policy(self):
+        for logical, expected in ((1, 2), (2, 2), (3, 2), (4, 4), (11, 4), (12, 6), (64, 6)):
+            with self.subTest(logical=logical):
+                self.assertEqual(campaign.native_auto_workers(logical), expected)
+                campaign.verify_report(report(logical))
+
+    def test_invented_auto_capacity_refuses_even_when_aliases_are_consistent(self):
+        data = report()
+        for row in data["rows"]:
+            value = row["result"]
+            value["auto_workers"] = 3
+            if row["requested_workers"] == 0:
+                for key in ("configured_worker_capacity", "actual_workers", "resolved_workers", "workers"):
+                    value[key] = 3
+        data["summaries"] = campaign.reduction(data["rows"])
+        with self.assertRaisesRegex(RuntimeError, "production native policy"):
+            campaign.verify_report(data)
+
+    def test_completed_throughput_is_derived_from_measured_ticks_and_wall(self):
+        self.reject(lambda d: d["rows"][0]["result"].__setitem__("completed_hz", 1e99), "throughput differs")
+        self.reject(lambda d: d["rows"][0]["result"].__setitem__("measured_wall_ms", 1e99), "throughput differs")
+
+    def test_participants_cannot_exist_without_same_tick_parallel_dispatch(self):
+        data = report()
+        for row in data["rows"]:
+            value = row["result"]
+            value["tick_samples"]["parallel_phases"] = [0] * 120
+            value["parallel_phases"] = 0
+            value["parallel_phase_ticks"] = 0
+            value["parallel_dispatch_observed"] = False
+        data["summaries"] = campaign.reduction(data["rows"])
+        with self.assertRaisesRegex(RuntimeError, "same tick"):
+            campaign.verify_report(data)
+
+    def test_serial_capacity_and_parallel_summary_are_mutually_consistent(self):
+        def serial_parallel(data):
+            value = data["rows"][0]["result"]
+            value["tick_samples"]["parallel_phases"] = [1] * 120
+            value["parallel_phases"] = 120
+            value["parallel_phase_ticks"] = 120
+            value["parallel_dispatch_observed"] = True
+        self.reject(serial_parallel, "Serial capacity")
+        self.reject(lambda d: d["rows"][2]["result"].__setitem__("maximum_scheduler_jobs", 1),
+                    "dispatch counters")
+        self.reject(lambda d: d["rows"][2]["result"].__setitem__("parallel_dispatch_observed", False),
+                    "dispatch counters")
 
     def reject(self, mutate, message=None):
         data = report()
