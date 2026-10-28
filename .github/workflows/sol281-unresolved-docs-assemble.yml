@@ -1,0 +1,48 @@
+name: SOL281 unresolved-cause documentation assembly
+
+on:
+  push:
+    branches: [work/sol281-native-detachment-20261027]
+    paths: ['.github/workflows/sol281-unresolved-docs-assemble.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  assemble:
+    if: github.repository == 'techrote/cybersand'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: true
+      - name: Apply and validate exact qualification record
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor 756ae4882d346a1439244189c76eda8496070229 HEAD
+          git diff --quiet 756ae4882d346a1439244189c76eda8496070229 -- \
+            godot native .github/workflows/sol281-targeted.yml
+          sha256sum -c <<'EOF'
+          78193645d72fab5ad8ecfef895ee4b88347550c64dea9fd3b77a2229c98395e8  tools/soliding/sol281_unresolved_docs_patch.00
+          70e585b398474bb53cc002a3eb97e1c7cf0effddeb89772780c62c4d87a51d22  tools/soliding/sol281_unresolved_docs_patch.01
+          d969f8778800d979205b702d090e38ec1dd1a1f989e6565932ea83efbb1c2cc6  tools/soliding/sol281_unresolved_docs_patch.02
+          3c4f6a2e44e9164c8c5f3e01ef8ed9e4b0dc7eee419ab943206958b6d82e58f5  tools/soliding/sol281_unresolved_docs_patch.03
+          EOF
+          cat tools/soliding/sol281_unresolved_docs_patch.0* > /tmp/sol281-unresolved-docs.patch
+          echo '27bdbbe142fc000e7fd5148755169160c123b0c179b3e629574022e07a2fa04f  /tmp/sol281-unresolved-docs.patch' | sha256sum -c -
+          git apply --check /tmp/sol281-unresolved-docs.patch
+          git apply /tmp/sol281-unresolved-docs.patch
+          python3 -m json.tool docs/audits/sol281-2026-10-28/unresolved-cause-receipt.json >/dev/null
+          python3 -m json.tool docs/reference/retrieval-corpus.json >/dev/null
+          python3 tools/ci/check_docs.py
+          git diff --check
+          git rm tools/soliding/sol281_unresolved_docs_patch.0*
+          git add docs
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'docs(sol281): record unresolved coupling cause qualification'
+          git push origin HEAD:refs/heads/work/sol281-native-detachment-20261027
