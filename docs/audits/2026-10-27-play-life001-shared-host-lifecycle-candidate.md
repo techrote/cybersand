@@ -159,3 +159,36 @@ Godot parse, import, native build or runtime pass is claimed. New exact-head
 source review and the full execution gates above remain required after parent
 acceptance. The original failed parent CI and earlier lifecycle drafts remain
 preserved; no result is relabeled as a pass for the new source.
+
+## Accepted parent and content-identical lifecycle integration — 2026-10-28
+
+PR #280 is now **merged**, not pending: accepted main merge
+`69e340d390e3e563833e80659aa97fddc2922310` has tree
+`63c6612fcaecdacad26452f7d15dfb118d410d9d`, identical to reviewed
+UI-003 source `8533876b1a4df74cdf8a16c54f8f2201f66cb9de`.
+Its exact-head [Godot Windows/Linux 40600760606](https://github.com/techrote/cybersand/actions/runs/40600760606),
+[Native 40600760721](https://github.com/techrote/cybersand/actions/runs/40600760721)
+and [Documentation 40600760603](https://github.com/techrote/cybersand/actions/runs/40600760603)
+all completed successfully. The Native run's head is exactly `8533876b`;
+its 2026-10-28 01:27 UTC conclusion and prior failed revisions are retained.
+The source-matched positive and render-only negative cadence results and the
+model-only 50-lifetime result remain **parent-only** evidence, not proof of this
+new real-host campaign.
+
+This branch normally integrated accepted main with a **non-forced two-parent
+merge commit** `f026e4c9075cc4fc26b916e0fc125a1aa26874af`, parents
+`16934e59f201be2b7eec343cb192c04f16c39d14` (lifecycle work) and
+`69e340d390e3e563833e80659aa97fddc2922310` (accepted main). The
+merge retains the lifecycle tree `fa0f6ac17649203b4c3861c451a5e630797f3746`
+without source modifications. The main-to-lifecycle file comparison is exactly
+seven additive lifecycle paths: one audit, one shared test harness, five rig
+wrappers; no production, solver, specialist fixture or workflow path changes.
+PR #284 is retargeted from the old UI branch to `main`.
+
+**Current classification:** ready candidate for independent exact-head review
+and full qualified Windows/Linux actual-host execution; not accepted. Until
+fresh `PLAY_LIFE001_RESULT` receipts establish ten of ten joined/retired
+cycles for each of five rigs on each OS, no real-host fifty-cycle claim exists.
+Separate slow/pending/fault and supported per-material policy-rebuild/refusal
+stress remains open under #269. No timeout increase, retry, skip, source or
+historical evidence rewrite is allowed.
