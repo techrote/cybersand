@@ -1,0 +1,105 @@
+diff --git a/godot/native_extension/cyber_native_cell_world.cpp b/godot/native_extension/cyber_native_cell_world.cpp
+index ef985da..38d57d4 100644
+--- a/godot/native_extension/cyber_native_cell_world.cpp
++++ b/godot/native_extension/cyber_native_cell_world.cpp
+@@ -614,12 +614,22 @@ void CyberNativeCellWorld::reconcile_overlap(std::int32_t cell_index,
+     }
+     if (!cybersand::MaterialRules::descriptor(material).movable) {
+         ++observation.unresolved;
++        ++observation.unresolved_immovable;
+         return;
+     }
+ 
+     const auto target = find_ejection_target(x, y, body_id, outward, penetration);
+-    if (target.x < 0 || !world_->relocate_stored_cell(x, y, target.x, target.y)) {
++    if (target.x < 0) {
+         ++observation.unresolved;
++        ++observation.unresolved_no_target;
++        const auto impulse = -outward * displacement_gain_;
++        if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
++        record_impulse(body_id, impulse);
++        return;
++    }
++    if (!world_->relocate_stored_cell(x, y, target.x, target.y)) {
++        ++observation.unresolved;
++        ++observation.unresolved_relocation_refused;
+         const auto impulse = -outward * displacement_gain_;
+         if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
+         record_impulse(body_id, impulse);
+@@ -854,6 +864,9 @@ PackedFloat32Array CyberNativeCellWorld::rigid_body_results() const {
+         results.append(static_cast<float>(observation.displaced));
+         results.append(static_cast<float>(observation.unresolved));
+         results.append(static_cast<float>(body.sample_serial));
++        results.append(static_cast<float>(observation.unresolved_immovable));
++        results.append(static_cast<float>(observation.unresolved_no_target));
++        results.append(static_cast<float>(observation.unresolved_relocation_refused));
+     }
+     return results;
+ }
+@@ -2084,6 +2097,9 @@ Array CyberNativeCellWorld::diagnostic_body_metrics() const {
+         row.append(faces);
+         row.append(d.bearing.x); row.append(d.bearing.y);
+         row.append(static_cast<std::int64_t>(d.support_samples));
++        row.append(static_cast<std::int64_t>(o.unresolved_immovable));
++        row.append(static_cast<std::int64_t>(o.unresolved_no_target));
++        row.append(static_cast<std::int64_t>(o.unresolved_relocation_refused));
+         result.append(row);
+     }
+     return result;
+diff --git a/godot/native_extension/cyber_native_cell_world.hpp b/godot/native_extension/cyber_native_cell_world.hpp
+index ae0e46a..30fb593 100644
+--- a/godot/native_extension/cyber_native_cell_world.hpp
++++ b/godot/native_extension/cyber_native_cell_world.hpp
+@@ -29,7 +29,7 @@ public:
+     static constexpr std::int32_t kWorldHeight = 1024;
+     static constexpr std::int32_t kProtectedCurrentRuleRadius = 2;
+     static constexpr std::int32_t kInputStride = 11;
+-    static constexpr std::int32_t kResultStride = 9;
++    static constexpr std::int32_t kResultStride = 12;
+     CyberNativeCellWorld();
+     ~CyberNativeCellWorld() override;
+ 
+@@ -177,6 +177,9 @@ private:
+         std::uint64_t contacts = 0;
+         std::uint64_t displaced = 0;
+         std::uint64_t unresolved = 0;
++        std::uint64_t unresolved_immovable = 0;
++        std::uint64_t unresolved_no_target = 0;
++        std::uint64_t unresolved_relocation_refused = 0;
+     };
+     struct BodyDiagnostic {
+         Vector2 displacement{};
+diff --git a/godot/scripts/cell_world.gd b/godot/scripts/cell_world.gd
+index ea8da8c..f3deb40 100644
+--- a/godot/scripts/cell_world.gd
++++ b/godot/scripts/cell_world.gd
+@@ -313,6 +313,9 @@ var rigid_body_correction_y: PackedFloat32Array = PackedFloat32Array()
+ var rigid_body_contact_counts: PackedInt32Array = PackedInt32Array()
+ var rigid_body_displaced_counts: PackedInt32Array = PackedInt32Array()
+ var rigid_body_unresolved_counts: PackedInt32Array = PackedInt32Array()
++var rigid_body_unresolved_immovable_counts: PackedInt32Array = PackedInt32Array()
++var rigid_body_unresolved_no_target_counts: PackedInt32Array = PackedInt32Array()
++var rigid_body_unresolved_relocation_refused_counts: PackedInt32Array = PackedInt32Array()
+ var rigid_body_support_counts: PackedInt32Array = PackedInt32Array()
+ 
+ var tick_index: int = 0
+@@ -372,6 +375,9 @@ func _init() -> void:
+ 	rigid_body_contact_counts.resize(body_slot_count)
+ 	rigid_body_displaced_counts.resize(body_slot_count)
+ 	rigid_body_unresolved_counts.resize(body_slot_count)
++	rigid_body_unresolved_immovable_counts.resize(body_slot_count)
++	rigid_body_unresolved_no_target_counts.resize(body_slot_count)
++	rigid_body_unresolved_relocation_refused_counts.resize(body_slot_count)
+ 	rigid_body_support_counts.resize(body_slot_count)
+ 	reset_demo_world()
+ 
+@@ -577,6 +583,9 @@ func rigid_body_results() -> PackedFloat32Array:
+ 				state_offset + CyberRigidBodyCoupling.INPUT_SAMPLE_SERIAL
+ 			]
+ 		)
++		results.append(float(rigid_body_unresolved_immovable_counts[body_id]))
++		results.append(float(rigid_body_unresolved_no_target_counts[body_id]))
++		results.append(float(rigid_body_unresolved_relocation_refused_counts[body_id]))
+ 	return results
+ 
+ 
