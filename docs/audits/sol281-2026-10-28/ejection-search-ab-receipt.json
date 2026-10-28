@@ -1,0 +1,137 @@
+{
+  "schema": "cybersand.sol281.ejection-search-ab-evidence.v1",
+  "qualification": "scoped negative candidate result; default A retained; no production or full PR acceptance",
+  "date": "2026-10-28",
+  "preregistration_commit": "e9edddee33e91b5380d6c752fe265ae7c66621d0",
+  "executed_source": "2d623e1034075f26b5443997781a267f16eeee85",
+  "executed_tree": "cfbbc0cfe385a5905886dfc44b94ada463565ac3",
+  "action_run": "https://github.com/techrote/cybersand/actions/runs/40632031064",
+  "run_conclusion": "success",
+  "source_artifact": {
+    "artifact_id": 12791614053,
+    "zip_sha256": "1c0fb486dcfa395f40c71acc7abd33b07b9cdf726488f2dd40f0456a5e441c53",
+    "git_archive_sha256": "b528a567f86571e583d4e21fe857a60abb7ebf2110a0c4c26d18689d2874f751"
+  },
+  "windows_build": {
+    "artifact_id": 12792395728,
+    "zip_sha256": "ab36a83dff5e35328cb02ff8f8dbed65ba64637aebb3cd4695a62aa6c78c0ab3",
+    "verified_git_archive_source_inputs": 549,
+    "source_mismatches": 0,
+    "checkout_eol_restored": 92,
+    "manifest_dll_matches_executed": true
+  },
+  "experiment": {
+    "A": "default original 81-candidate search",
+    "B": "diagnostic-only 208-candidate tail after unchanged A prefix; maximum 289",
+    "required_reduction_percentage_points_each_platform": 20,
+    "maximum_main_p95_ratio": 2,
+    "maximum_main_p95_usec": 2000
+  },
+  "platforms": {
+    "Linux": {
+      "A": {
+        "displaced": 31,
+        "no_target": 712,
+        "attempts": 743,
+        "p95_usec": 207,
+        "main_samples": 360,
+        "rotation": 1.14265704154968,
+        "translation": 32.5173530578613,
+        "no_target_rate": 0.9582772543741588
+      },
+      "B": {
+        "displaced": 33,
+        "no_target": 684,
+        "attempts": 717,
+        "p95_usec": 209,
+        "main_samples": 360,
+        "rotation": 1.03202772140503,
+        "translation": 31.5865230560303,
+        "no_target_rate": 0.9539748953974896
+      },
+      "report_zip_sha256": "a55ea59246137cd3edb694688093318c051c77932f4e33249ee8f78e26a8756e",
+      "runtime_sha256": "af47683036a32e58ae049c836b323bfb715d7c86f5c8a8b29747c376669d53be",
+      "artifact_id": 12792007599,
+      "reduction_percentage_points": 0.4302358976669196,
+      "main_p95_ratio": 1.0096618357487923,
+      "controlled_cases": 40,
+      "controlled_checks": 470,
+      "controlled_failures": 0,
+      "compound_checks_per_arm": 36,
+      "compound_failures_per_arm": 0,
+      "motion_checks": 21,
+      "failure_checks": 20,
+      "lifecycle_checks": 296,
+      "lifecycle_cycles": 18,
+      "unresolved_non_no_target": 0,
+      "holes": [
+        2,
+        0,
+        0,
+        6
+      ],
+      "aggregate_members": 520,
+      "proxies": 6,
+      "sand_cells": 104,
+      "water_mass": 1020,
+      "stale_results": 0
+    },
+    "Windows": {
+      "A": {
+        "displaced": 34,
+        "no_target": 2404,
+        "attempts": 2438,
+        "p95_usec": 254,
+        "main_samples": 360,
+        "rotation": 1.06577432155609,
+        "translation": 31.6894569396973,
+        "no_target_rate": 0.9860541427399507
+      },
+      "B": {
+        "displaced": 31,
+        "no_target": 1514,
+        "attempts": 1545,
+        "p95_usec": 279,
+        "main_samples": 360,
+        "rotation": 1.00047659873962,
+        "translation": 31.5895175933838,
+        "no_target_rate": 0.9799352750809062
+      },
+      "report_zip_sha256": "764305a6c30429787726927eef098add9739878a5dc8e3679888e9c8d201fe4b",
+      "runtime_sha256": "287095fa7e235471a7ad63c20acf58a0b41688974b2274b3c3da84cc731b86a7",
+      "artifact_id": 12792615804,
+      "reduction_percentage_points": 0.6118867659044569,
+      "main_p95_ratio": 1.0984251968503937,
+      "controlled_cases": 40,
+      "controlled_checks": 470,
+      "controlled_failures": 0,
+      "compound_checks_per_arm": 36,
+      "compound_failures_per_arm": 0,
+      "motion_checks": 21,
+      "failure_checks": 20,
+      "lifecycle_checks": 296,
+      "lifecycle_cycles": 18,
+      "unresolved_non_no_target": 0,
+      "holes": [
+        2,
+        0,
+        0,
+        6
+      ],
+      "aggregate_members": 520,
+      "proxies": 6,
+      "sand_cells": 104,
+      "water_mass": 1020,
+      "stale_results": 0
+    }
+  },
+  "decision": {
+    "selected": "A",
+    "B_admission": "NO_GO",
+    "reason": "A/B no-target reduction below preregistered 20 percentage-point minimum on both platforms",
+    "fully_qualified": false,
+    "independent_external_review": false,
+    "worker_coupling_cost_qualified": false,
+    "production_runtime_published": false
+  }
+}

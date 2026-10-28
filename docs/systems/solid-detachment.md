@@ -5,7 +5,7 @@ document-kind: contract
 scope: Branch-local dry inert one-aggregate handoff, exact compound cellular coupling, session lifetime fences and scoped Linux/Windows Rapier proof; not production soliding
 canonical-for: [solid-detachment-runtime, solid-detachment-lab]
 last-reviewed: 2026-10-28
-related-documents: [../operations/soliding-structural-detachment-programme.md, ../architecture/soliding-lifecycle.md, ../architecture/rigid-body-and-cellular-coupling.md, ../architecture/simulation-tick-and-threading.md, ../audits/2026-10-27-sol281-native-tree.md, ../audits/2026-10-27-sol281-compound-cellular-coupling.md, ../audits/2026-10-28-sol281-unresolved-cause-characterisation.md, ../audits/2026-10-28-sol281-ejection-search-preregistration.md]
+related-documents: [../operations/soliding-structural-detachment-programme.md, ../architecture/soliding-lifecycle.md, ../architecture/rigid-body-and-cellular-coupling.md, ../architecture/simulation-tick-and-threading.md, ../audits/2026-10-27-sol281-native-tree.md, ../audits/2026-10-27-sol281-compound-cellular-coupling.md, ../audits/2026-10-28-sol281-unresolved-cause-characterisation.md, ../audits/2026-10-28-sol281-ejection-search-preregistration.md, ../audits/2026-10-28-sol281-ejection-search-ab-result.md]
 ---
 
 # Experimental native solid detachment
@@ -97,9 +97,13 @@ The native `get_ejection_policy()` returns the applied selector, and
 the fallback diagnostic value is `body_ejection_policy`. The ordinary
 demo-world reset selects 0. This is not a live config, regular-gameplay
 setting, inherited liquid parameter, persisted aggregate schema or permission
-to alter authoritative cell ownership. Source code for this candidate has
-not yet obtained exact-head native/Linux/Windows engine qualification or
-independent review; its no-target reduction and frame cost are **unknown**.
+to alter authoritative cell ownership. Actual scoped [Linux/Windows source-matched A/B evidence](../audits/2026-10-28-sol281-ejection-search-ab-result.md)
+at `2d623e1034075f26b5443997781a267f16eeee85` passed test integrity
+but **failed the preregistered 20 percentage-point reduction threshold**:
+only 0.4302 pp on Linux and 0.6119 pp on Windows. Policy B is a negative,
+unpromoted diagnostic candidate. The measured p95 main-thread step alone
+does not qualify native worker cost or frame pacing; independent review
+and full ordinary CI remain open.
 
 The opt-in experiment uses the same empty-target, hole/foreign-mask
 and hard-contact path checks, and it preserves the same exact relocation
