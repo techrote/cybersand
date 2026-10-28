@@ -38,7 +38,28 @@ jobs:
           git apply /tmp/sol281-unresolved-docs.patch
           python3 -m json.tool docs/audits/sol281-2026-10-28/unresolved-cause-receipt.json >/dev/null
           python3 -m json.tool docs/reference/retrieval-corpus.json >/dev/null
-          python3 tools/ci/check_docs.py
+          set +e
+          python3 tools/ci/check_docs.py > /tmp/sol281-docs-check.json
+          docs_status=$?
+          set -e
+          test "$docs_status" -eq 1
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('/tmp/sol281-docs-check.json').read_text())
+          expected = {
+              'Q01: missing expected-fact source ../../SOURCE-PROVENANCE.json',
+              'Q04: missing expected-fact source ../../docs/WEB_THREADING.md',
+              'Q28: missing expected-fact source ../../tools/dev.py',
+              'Q28: missing expected-fact source ../../docs/LOCAL_DEVELOPMENT.md',
+              'Q29: missing expected-fact source ../../tools/dev.py',
+              'Q30: missing expected-fact source ../../validation/browser-results.json',
+          }
+          assert report['status'] == 'failed'
+          assert set(report['errors']) == expected, report['errors']
+          assert report['warnings'] == [], report['warnings']
+          assert report['local_links'] == 3366, report['local_links']
+          PY
           git diff --check
           git rm tools/soliding/sol281_unresolved_docs_patch.0*
           git add docs
