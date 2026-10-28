@@ -1,0 +1,29 @@
++			check(int(metrics[0][20]) == immovable and int(metrics[0][21]) == no_target
++				and int(metrics[0][22]) == relocation,
++				label + " native inspection agrees with copied result record")
++	return {"label":label, "mode":mode, "native":native, "displaced":displaced,
++		"unresolved":unresolved, "immovable":immovable, "no_target":no_target,
++		"relocation_refused":relocation}
++
++func _run() -> void:
++	check(Coupling.RESULT_SAMPLE_SERIAL == 8 and Coupling.RESULT_STRIDE == 12,
++		"appended diagnostics retain the stable v1 offsets")
++	var cases: Array[Dictionary] = []
++	var serial: int = 40
++	for native: bool in [false, true]:
++		var implementation: String = "native" if native else "fallback"
++		for mode: String in ["displaced", "immovable", "no_target"]:
++			serial += 1
++			cases.append(_exercise_case(implementation + "/" + mode, native, mode, serial))
++	var report: Dictionary = {"schema":"cybersand.sol281.unresolved-causes.v1",
++		"platform":OS.get_name(), "checks":checks, "failures":failures,
++		"result_stride":Coupling.RESULT_STRIDE, "cases":cases,
++		"scope":"diagnostic partition only; no movement, ejection or material-law change"}
++	var args: PackedStringArray = OS.get_cmdline_user_args()
++	if not args.is_empty():
++		var file := FileAccess.open(args[0], FileAccess.WRITE)
++		if file != null:
++			file.store_string(JSON.stringify(report, "\t"))
++			file.close()
++	print("SOL281_UNRESOLVED_DIAGNOSTICS ", JSON.stringify(report))
++	quit(0 if failures.is_empty() else 1)
