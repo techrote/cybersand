@@ -12,13 +12,16 @@ const SAMPLE_TIMEOUT_MS: int = 120000
 
 static func statistics(values: Array[float]) -> Dictionary:
 	if values.is_empty():
-		return {"mean": 0.0, "p95": 0.0, "max": 0.0}
+		return {"count": 0, "mean": 0.0, "p50": 0.0, "p95": 0.0, "p99": 0.0, "max": 0.0}
 	var ordered: Array[float] = values.duplicate()
 	ordered.sort()
 	var total: float = 0.0
 	for value: float in values:
 		total += value
-	return {"mean": total / values.size(), "p95": ordered[ceili(values.size() * 0.95) - 1], "max": ordered[-1]}
+	return {"count": values.size(), "mean": total / values.size(),
+		"p50": ordered[ceili(values.size() * 0.50) - 1],
+		"p95": ordered[ceili(values.size() * 0.95) - 1],
+		"p99": ordered[ceili(values.size() * 0.99) - 1], "max": ordered[-1]}
 
 
 static func worker_resolution(requested: int) -> Dictionary:
@@ -60,9 +63,11 @@ static func fixture(side: int) -> PackedInt32Array:
 
 
 static func sample(tree: SceneTree, requested_workers: int, side: int, ticks: int,
-		progress: Callable, cancelled: Callable) -> Dictionary:
+		progress: Callable, cancelled: Callable, warmup_ticks: int = WARMUP_TICKS,
+		retain_tick_samples: bool = false) -> Dictionary:
 	var resolution: Dictionary = worker_resolution(requested_workers)
-	if not bool(resolution.get("ok", false)) or side < 64 or side > 1024 or ticks < 1:
+	if (not bool(resolution.get("ok", false)) or side < 64 or side > 1024
+		or ticks < 1 or ticks > 10000 or warmup_ticks < 1 or warmup_ticks > 10000):
 		return {"ok": false, "error": str(resolution.get("error", "Invalid benchmark dimensions")),
 			"requested_workers": requested_workers, "side": side, "ticks": ticks}
 	var global_setting_before: int = int(ProjectSettings.get_setting(
@@ -93,6 +98,8 @@ static func sample(tree: SceneTree, requested_workers: int, side: int, ticks: in
 
 	var native_times: Array[float] = []
 	var frame_times: Array[float] = []
+	var observed_workers_by_tick: Array[int] = []
+	var parallel_phases_by_tick: Array[int] = []
 	var moves: int = 0
 	var parallel_phases: int = 0
 	var parallel_phase_ticks: int = 0
@@ -106,7 +113,7 @@ static func sample(tree: SceneTree, requested_workers: int, side: int, ticks: in
 	var last_frame_usec: int = 0
 	var measured_started_usec: int = -1
 	var started_msec: int = Time.get_ticks_msec()
-	for tick: int in range(ticks + WARMUP_TICKS):
+	for tick: int in range(ticks + warmup_ticks):
 		await tree.process_frame
 		if cancelled.call() or Time.get_ticks_msec() - started_msec > SAMPLE_TIMEOUT_MS:
 			return {"ok": false, "cancelled": true,
@@ -125,7 +132,7 @@ static func sample(tree: SceneTree, requested_workers: int, side: int, ticks: in
 				"requested_workers": requested_workers,
 				"resolved_workers": int(resolution.resolved_workers),
 				"side": side, "ticks": ticks}
-		if tick >= WARMUP_TICKS:
+		if tick >= warmup_ticks:
 			if measured_started_usec < 0:
 				measured_started_usec = now_usec
 			native_times.append(float(world.get_simulation_time_ms()))
@@ -154,12 +161,15 @@ static func sample(tree: SceneTree, requested_workers: int, side: int, ticks: in
 				"worker_threads_observed", 0))
 			maximum_workers_observed = maxi(maximum_workers_observed, observed)
 			worker_participation_ticks += int(observed > 1)
+			if retain_tick_samples:
+				observed_workers_by_tick.append(observed)
+				parallel_phases_by_tick.append(phases)
 		last_frame_usec = now_usec
 		if tick % 15 == 0:
 			var label: String = "Auto" if requested_workers == 0 else str(requested_workers)
 			progress.call("%s→%d requested/resolved · %d actual · %d×%d · %d/%d ticks" % [
 				label, int(resolution.resolved_workers), int(world.get_worker_threads()),
-				side, side, maxi(0, tick - WARMUP_TICKS + 1), ticks])
+				side, side, maxi(0, tick - warmup_ticks + 1), ticks])
 
 	# End the measured tick/scheduling interval before terminal serialization or
 	# SHA-256. Export cost is recorded separately and never enters completed_hz.
@@ -180,6 +190,10 @@ static func sample(tree: SceneTree, requested_workers: int, side: int, ticks: in
 		"requested_workers": requested_workers,
 		"resolved_workers": int(resolution.resolved_workers),
 		"actual_workers": actual_workers,
+		"configured_worker_capacity": actual_workers,
+		"worker_capacity_readback_kind": "adapter-configured-count",
+		"workers_created_count_measured": false,
+		"concurrent_execution_measured": false,
 		# Compatibility alias for the existing benchmark presentation.
 		"workers": actual_workers,
 		"logical_threads": int(resolution.logical_threads),
@@ -193,7 +207,7 @@ static func sample(tree: SceneTree, requested_workers: int, side: int, ticks: in
 		"global_setting_unchanged": global_setting_after == global_setting_before,
 		"side": side,
 		"ticks": ticks,
-		"warmup_ticks": WARMUP_TICKS,
+		"warmup_ticks": warmup_ticks,
 		"native_ms": statistics(native_times),
 		"frame_interval_ms": statistics(frame_times),
 		"measured_wall_ms": measured_wall_ms,
@@ -214,6 +228,11 @@ static func sample(tree: SceneTree, requested_workers: int, side: int, ticks: in
 		"backend": str(world.get_backend_name()),
 		"level_hash": hash.finish().hex_encode()
 	}
+	if retain_tick_samples:
+		result["tick_samples"] = {"native_ms": native_times,
+			"test_frame_interval_ms": frame_times,
+			"workers_observed": observed_workers_by_tick,
+			"parallel_phases": parallel_phases_by_tick}
 	# Drop the only references before the next row. The native persistent pool
 	# belongs to this World and is destroyed between requested-count samples.
 	world = null

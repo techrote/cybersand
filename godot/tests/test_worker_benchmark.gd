@@ -32,11 +32,13 @@ func _run() -> void:
 	var cancel: Callable = func() -> bool: return false
 	var progress: Callable = func(_text: String) -> void: pass
 	var first: Dictionary = await CyberWorkerBenchmark.sample(
-		self, 1, 480, 8, progress, cancel)
+		self, 1, 480, 8, progress, cancel, 10, true)
 	var second: Dictionary = await CyberWorkerBenchmark.sample(
 		self, 2, 480, 8, progress, cancel)
 	var automatic: Dictionary = await CyberWorkerBenchmark.sample(
 		self, 0, 480, 8, progress, cancel)
+	var longer_warmup: Dictionary = await CyberWorkerBenchmark.sample(
+		self, 1, 480, 8, progress, cancel, 12, true)
 	var cancelled: Dictionary = await CyberWorkerBenchmark.sample(
 		self, 1, 480, 8, progress, func() -> bool: return true)
 	var stats: Dictionary = CyberWorkerBenchmark.statistics([1.0, 2.0, 3.0, 4.0])
@@ -63,6 +65,16 @@ func _run() -> void:
 	expect(first.level_hash == second.level_hash
 		and first.level_hash == automatic.level_hash,
 		"same fixed input has equal terminal level hash across worker policies")
+	expect(bool(longer_warmup.get("ok", false)) and int(longer_warmup.warmup_ticks) == 12
+		and longer_warmup.tick_samples.native_ms.size() == 8
+		and longer_warmup.tick_samples.test_frame_interval_ms.size() == 8
+		and longer_warmup.tick_samples.workers_observed.size() == 8
+		and longer_warmup.tick_samples.parallel_phases.size() == 8,
+		"explicit warmup and raw samples preserve exactly the measured tick window")
+	expect(int(first.configured_worker_capacity) == int(first.actual_workers)
+		and not first.workers_created_count_measured
+		and not first.concurrent_execution_measured,
+		"capacity readback cannot claim measured pool creation or concurrent execution")
 	expect(int(first.moves) > 0 and float(first.native_ms.mean) > 0.0
 		and float(first.frame_interval_ms.p95) > 0.0
 		and float(first.completed_hz) > 0.0,
@@ -75,7 +87,8 @@ func _run() -> void:
 	expect(bool(cancelled.get("cancelled", false))
 		and bool(cancelled.get("global_setting_unchanged", false)),
 		"bounded cancellation returns without changing process configuration")
-	expect(float(stats.mean) == 2.5 and float(stats.p95) == 4.0,
+	expect(int(stats.count) == 4 and float(stats.mean) == 2.5
+		and float(stats.p50) == 2.0 and float(stats.p95) == 4.0 and float(stats.p99) == 4.0,
 		"timing reducer remains deterministic")
 	expect(int(ProjectSettings.get_setting("cybersand/native_worker_threads", 0)) == setting_before,
 		"individual samples never mutate the process-wide worker setting")
@@ -104,6 +117,7 @@ func _run() -> void:
 	var participating_row: Dictionary = {}
 	var multiworker_rows: int = 0
 	for row: Dictionary in rows:
+		print("PLAY_AUTO002_ROW ", JSON.stringify(row))
 		requests[int(row.requested_workers)] = true
 		sizes[int(row.side)] = true
 		if hashes.has(int(row.side)):
