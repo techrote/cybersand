@@ -277,6 +277,11 @@ source/runtime identity.
 
 For seven human movement presets, use the [player control playground](systems/player-control-playground.md): buggy, trials bike, momentum acrobat, arcade lander, native Sand cloud, native Water blob and jetpack barrel. The guide owns keyboard/gamepad controls, acrobat chains, reset/focus rules and bounded material-field ownership. The five mechanical presets also appear in F5 SetP.
 
+For the shared asynchronous PLAY course, use the same guide's
+[accepted lifecycle and remaining desktop gates](systems/player-control-playground.md#accepted-normal-desktop-lifecycle-qualification).
+It separates accepted normal lifetimes from solver/failure stress, native worker
+performance, physical-controller and human-feel qualification.
+
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).
 
 For **Deepworks**, start with the [exhibition guide](operations/deepworks-exhibition.md):

@@ -133,6 +133,64 @@ Sources: [course geometry and mechanical origins](../../godot/scripts/player_pla
 [existing-host feasibility test](../../godot/tests/test_play_comp001_existing_host_spike.gd),
 and [current five-rig/solver test](../../godot/tests/test_play_comp002_five_rig_course.gd).
 
+## Accepted normal desktop lifecycle qualification
+
+[PLAY-LIFE-001 PR #284](https://github.com/techrote/cybersand/pull/284) merged
+on 2026-10-28 as `8288e580df90620640bd1f0b6aa774802f055d61`. Its accepted
+tree `aa44de54df44a2640a437a5a10359615c50c28fe` exactly matches reviewed
+head `d191dca5` and tested checkout `33babe9e`.
+[Godot/GDExtension](https://github.com/techrote/cybersand/actions/runs/40634055217),
+[Native](https://github.com/techrote/cybersand/actions/runs/40634055249),
+[Documentation/provenance](https://github.com/techrote/cybersand/actions/runs/40634055172)
+and a distinct [source/artifact review](https://github.com/techrote/cybersand/pull/284#pullrequestreview-5679054535)
+passed. Both Windows and Linux completed **50 real host lifetimes and
+1,165 assertions, zero failures**: ten lifetimes per SetP rig, with every
+exclusive worker joined and final main-thread Rapier session retired.
+
+The [actual-host helper](../../godot/tests/play_life001_shared_host_case.gd)
+checks course/actor/terrain acknowledgment, native and Rapier clocks, real
+keyboard button edges, focus cancellation/rearm, pause/resume, fresh reset
+identities, immutable earlier snapshots and final retirement. Earlier
+`294122c0` results retain their historical source identity; this combined
+source received its own execution. This is bounded normal-lifecycle evidence,
+with zero solver-reconstruction cycles and no slow-native injection.
+
+**Open qualification:** #266 still requires source-bound native participation
+and repeated performance evidence; #268 retains integrated selection and
+complete device/focus/pacing requirements; #269 retains adversarial pending
+work, delayed completion, failure recovery and solver-reconstruction stress.
+#270 joins those gates with actual desktop frame/snapshot timing and human
+gameplay feel. Headless lifecycle success does not establish any of those
+remaining outcomes. Main-thread Rapier, per-material construction-time solver
+selection/refusal and specialist-fixture isolation remain unchanged.
+
+## Solver reconstruction stress candidate
+
+**PLAY-LIFE-002 / #269 candidate; hosted acceptance pending:** the
+[actual-host helper](../../godot/tests/play_life002_solver_case.gd) extends
+the accepted lifecycle apparatus with five separate real SetP/main-host cases.
+Each rebuilds Water to `pressure_flow_v1/reference`, resets that policy,
+rebuilds to Current defaults (`freemass_v1` Water), then resets again.
+Requested/applied native envelopes, policy and construction receipts, authored
+recipe, newer actor/World/session identities and terrain acknowledgment are
+checked, together with old Rapier retirement and retained immutable snapshots.
+
+Each policy cohort also refuses the controlled actor-free route and submits an
+unsupported Oil/pressure request through the public host API to the actual
+worker/native transaction. Refusal closes the separately staged graph and
+retains the accepted actor/World/receipt; the native and physical clocks and
+primary input work afterward. These checks do not seed an outstanding old
+command/lap immediately before replacement, inject delayed native work or test
+failure recovery.
+
+The [dated source/evidence audit](../audits/2026-10-28-play-life002-solver-reconstruction.md)
+binds implementation `d2f91798` to **335 assertions / zero failures** in
+five actual local Windows processes: ten policy changes, ten retaining resets,
+twenty explicit refusals and five final joins/retirements. The initial LFS
+pointer/import failure is retained separately. Final exact-head Windows/Linux
+CI, independent review and merge remain mandatory; no solver default, live
+hot-swap, broader lifecycle or release acceptance is implied.
+
 ## Open the seven-preset movement course
 
 **Current experimental source:** choose **Player playground** in the feature
@@ -229,7 +287,7 @@ unit-length clamping. The mouse supplies aim while inside the play view;
 otherwise movement supplies aim, with a diagonal fallback at neutral.
 Gamepad mapping is implemented; physical controller qualification is separate.
 
-**PLAY-UI-004 shared-course candidate, not yet runtime-qualified:**
+**Accepted PLAY-UI-004 shared-course event slice:**
 The normal desktop scene attaches a small main-thread
 [gamepad event bridge](../../godot/scripts/playable_course_gamepad_events.gd).
 When the existing course/human SetP capability gate is active, unhandled A/B/X
@@ -246,8 +304,11 @@ The [focused fixture](../../godot/tests/test_play_ui004_gamepad_events.gd)
 uses genuine Viewport events and physical-session/Rapier steps, with a disclosed
 synthetic selected-device index and test host publisher. It verifies ordered
 button pairs and a matched no-event/poll-only negative control, not a physical
-controller, the complete desktop focus path or interactive feel. Full exact-head
-Windows/Linux CI and independent review remain required. The
+controller, the complete desktop focus path or interactive feel.
+[PR #286](https://github.com/techrote/cybersand/pull/286) merged as
+`e076819e086abb762796303b830314e330f87234`; its source-matched Windows/Linux
+fixture passed **32 assertions per OS**. The later combined #284 suite
+preserves that fixture. The
 [dated candidate audit](../audits/2026-10-28-play-ui004-gamepad-events.md)
 records the gap, test boundaries and integration obligations.
 

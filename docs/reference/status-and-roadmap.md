@@ -10,6 +10,18 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## PLAY composable desktop checkpoint — 2026-10-28
+
+**Current accepted slices:** existing-host feasibility #273, five-rig and
+construction-time solver composition #267, shared controls/camera/lap/gamepad
+event slices of #268, and normal lifecycle PR #284 (`8288e580`).
+The [player contract](../systems/player-control-playground.md#accepted-normal-desktop-lifecycle-qualification)
+owns exact source/CI/review identities and the 50-real-lifetime-per-OS result.
+**Open:** #266 participation/performance, remaining #268 selection/device/pacing,
+#269 adversarial/reconstruction stress and #270 desktop/manual acceptance.
+The accepted shared `CyberSimulationWorker` plus main-thread Rapier remains
+the implementation path; #265 is closed Not Planned and #271 stays deferred.
+
 ## Trial successor correction after accepted App — 2026-10-25
 
 App #256 is merged as main56422c05 after all four exact-dc2 required gates.
