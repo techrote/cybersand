@@ -99,7 +99,6 @@ index 9e2256e..beb26c6 100644
  	if correction_weight > 0.0:
  		correction = (correction / correction_weight).limit_length(COUPLING_CORRECTION_CAP)
 @@ -545,6 +568,10 @@ func coupling_metrics() -> Dictionary:
- 	return {"proxy_count":_coupling_local_centers.size(), "proxy_mass":_coupling_total_mass,
  		"state_publications":_coupling_state_publications, "result_snapshots":_coupling_result_snapshots,
  		"result_records":_coupling_result_records, "contacts":_coupling_contacts,
  		"displaced":_coupling_displaced, "unresolved":_coupling_unresolved,
