@@ -24,7 +24,8 @@ const DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC: int = 16667
 const HARD_SURFACE_SNAPSHOT_INTERVAL_USEC: int = 250000
 const RENDER_PATCH_METADATA_STRIDE: int = 6
 const MAX_PENDING_RENDER_PATCHES: int = 256
-# SOL281 diagnostic only. Bounds are 64 rectangles and 64 KiB dirty input.
+# SOL281 diagnostic only. Bounds are 64 rectangles, 64 KiB dirty input and
+# 64 KiB total overlay writes (rectangles may alias source bytes).
 const SOL281_COALESCE_MAX_DIRTY_RECTANGLES: int = 64
 const SOL281_COALESCE_MAX_DIRTY_BYTES: int = 65536
 const MAX_BRUSH_FOOTPRINT_CELLS: int = 4096
@@ -816,6 +817,13 @@ var _snapshot_world_revision: int = -1
 var _world_generation: int = 1
 var _pending_render_world_generation: int = 0
 var _experimental_render_full_coalescing: bool = false # default: unchanged
+# SOL281 diagnostic census. Monotonic worker-lifetime totals, written only by
+# the exclusive native owner, so latest-only snapshot readers count, not sample.
+var _render_refresh_total: int = 0
+var _render_dirty_onto_full_total: int = 0
+var _render_coalesced_total: int = 0
+var _render_forced_full_retry_total: int = 0
+var _render_ack_clear_total: int = 0
 var _last_render_snapshot_usec: int = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 var _pending_render_snapshot_serial: int = 0
 var _pending_render_channels: int = 1
@@ -1897,6 +1905,10 @@ func _publish_snapshot(
 		_pending_render_snapshot_serial > 0
 		and acknowledged_render_serial >= _pending_render_snapshot_serial
 	):
+		# The ACK stays >= the unchanged serial, so this repeats every publication
+		# until a new packet; count only clears that released retained bytes.
+		if not _pending_render_patch_cells.is_empty() or not _pending_render_patch_rectangles.is_empty():
+			_render_ack_clear_total += 1
 		_clear_pending_render_patches()
 		render_ack_cleared = true
 	if (
@@ -1917,6 +1929,7 @@ func _publish_snapshot(
 			)
 			render_exchange_usec += Time.get_ticks_usec() - exchange_start_usec
 			render_exchange_calls += 1
+			_render_refresh_total += 1
 			var packet_cells: PackedByteArray = render_packet.get("cells", PackedByteArray())
 			render_first_status = int(render_packet.get("status", -1))
 			render_first_full = bool(render_packet.get("full_refresh", false))
@@ -1925,6 +1938,10 @@ func _publish_snapshot(
 			var accumulation_start_usec: int = Time.get_ticks_usec()
 			render_coalesced = _append_native_render_packet(render_packet)
 			render_accumulation_usec += Time.get_ticks_usec() - accumulation_start_usec
+			if render_pending_full_before and not render_first_full and render_first_bytes > 0:
+				_render_dirty_onto_full_total += 1
+			if render_coalesced:
+				_render_coalesced_total += 1
 			render_pending_bytes_after_first = _pending_render_patch_cells.size()
 			render_pending_rectangles_after_first = _pending_render_patch_rectangles.size()
 			if (render_pending_bytes_after_first
@@ -1934,6 +1951,7 @@ func _publish_snapshot(
 				> MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE):
 				render_overflow_flags |= 2
 			if render_overflow_flags != 0:
+				_render_forced_full_retry_total += 1
 				exchange_start_usec = Time.get_ticks_usec()
 				var overflow_packet: Dictionary = _world.take_render_snapshot(true)
 				render_exchange_usec += Time.get_ticks_usec() - exchange_start_usec
@@ -2133,6 +2151,11 @@ func _publish_snapshot(
 	snapshot.snapshot_render_pending_bytes_after_first = render_pending_bytes_after_first
 	snapshot.snapshot_render_pending_rectangles_before = render_pending_rectangles_before
 	snapshot.snapshot_render_pending_rectangles_after_first = render_pending_rectangles_after_first
+	snapshot.snapshot_render_refresh_total = _render_refresh_total
+	snapshot.snapshot_render_dirty_onto_full_total = _render_dirty_onto_full_total
+	snapshot.snapshot_render_coalesced_total = _render_coalesced_total
+	snapshot.snapshot_render_forced_full_retry_total = _render_forced_full_retry_total
+	snapshot.snapshot_render_ack_clear_total = _render_ack_clear_total
 	snapshot.worker_overruns = _worker_overruns
 	if _world.has_method(&"get_tick_failure_count"):
 		snapshot.tick_failure_count = int(_world.get_tick_failure_count())
@@ -2321,6 +2344,9 @@ func _try_coalesce_native_render_dirty(
 		or rects.is_empty() or rects.size() % RENDER_PATCH_METADATA_STRIDE != 0
 		or rects.size() > SOL281_COALESCE_MAX_DIRTY_RECTANGLES * RENDER_PATCH_METADATA_STRIDE):
 		return false
+	# Each rectangle is bounded by the input, but rectangles may alias the same
+	# source bytes; bound their SUM so admitted overlay writes stay <= 64 KiB.
+	var overlay_bytes: int = 0
 	for i: int in range(0, rects.size(), RENDER_PATCH_METADATA_STRIDE):
 		var x: int = rects[i]
 		var y: int = rects[i+1]
@@ -2333,6 +2359,12 @@ func _try_coalesce_native_render_dirty(
 			or offset > cells.size() or pitch > cells.size()
 			or offset + (h - 1) * pitch + w * channels > cells.size()):
 			return false
+		overlay_bytes += w * channels * h
+		if overlay_bytes > SOL281_COALESCE_MAX_DIRTY_BYTES:
+			return false
+	# Not the publication boundary (_refresh_published_render_payload copies):
+	# the retained frame may alias the native packet array or, on the fallback
+	# path, the published snapshot cells, so never overlay it in place.
 	var output: PackedByteArray = _pending_render_patch_cells.duplicate()
 	for i: int in range(0, rects.size(), RENDER_PATCH_METADATA_STRIDE):
 		var x: int = rects[i]

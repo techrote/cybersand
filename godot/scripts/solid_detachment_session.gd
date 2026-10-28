@@ -105,7 +105,12 @@ var _worker_sample_overflow: int = 0
 var _render_consumer_enabled: bool = false
 var _render_consumer: RefCounted
 var _render_acknowledgements: int = 0
-var _render_coalesced_packets: int = 0
+var _render_coalesced_packets: int = 0 # sampled snapshots, not a count
+var _render_worker_refreshes: int = 0
+var _render_worker_dirty_onto_full: int = 0
+var _render_worker_coalesced: int = 0
+var _render_worker_retries: int = 0
+var _render_worker_ack_clears: int = 0
 
 func open(parent: Node, workers: int = 4, ejection_policy: int = 0,
 		ejection_topology: bool = false, consume_render_packets: bool = false,
@@ -462,6 +467,13 @@ func _consume_compound_results() -> void:
 		return
 	_coupling_snapshot_serial = snapshot.serial
 	_coupling_last_native_tick = snapshot.tick_index
+	# Monotonic worker totals: the latest observed snapshot carries every
+	# earlier publication, including ones this latest-only reader skipped.
+	_render_worker_refreshes = snapshot.snapshot_render_refresh_total
+	_render_worker_dirty_onto_full = snapshot.snapshot_render_dirty_onto_full_total
+	_render_worker_coalesced = snapshot.snapshot_render_coalesced_total
+	_render_worker_retries = snapshot.snapshot_render_forced_full_retry_total
+	_render_worker_ack_clears = snapshot.snapshot_render_ack_clear_total
 	if snapshot.rigid_body_epoch != physics_epoch:
 		return
 	# The optional CPU presentation consumer ACKs only after applying all
@@ -775,6 +787,11 @@ func coupling_metrics() -> Dictionary:
 		"snapshot_render_refresh_exchange_timing":_timing_summary_ms(_snapshot_render_refresh_exchange_samples_ms),
 		"render_native_exchange_calls":_render_native_exchange_calls,
 		"render_coalesced_packets":_render_coalesced_packets,
+		"render_worker_census":{"refreshes":_render_worker_refreshes,
+			"dirty_onto_full":_render_worker_dirty_onto_full,
+			"coalesced":_render_worker_coalesced,
+			"forced_full_retries":_render_worker_retries,
+			"ack_clears":_render_worker_ack_clears},
 		"render_exchanged_payload_bytes":_render_exchanged_payload_bytes,
 		"render_exchange_multi_call_samples":_render_exchange_multi_call_samples,
 		"render_single_call_samples":_render_single_call_samples,
@@ -901,6 +918,11 @@ func close() -> void:
 	_render_consumer = null
 	_render_acknowledgements = 0
 	_render_coalesced_packets = 0
+	_render_worker_refreshes = 0
+	_render_worker_dirty_onto_full = 0
+	_render_worker_coalesced = 0
+	_render_worker_retries = 0
+	_render_worker_ack_clears = 0
 	status = "closed"
 
 func _destroy_physics() -> void:

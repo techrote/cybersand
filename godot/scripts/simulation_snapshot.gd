@@ -129,6 +129,14 @@ var snapshot_render_pending_bytes_before: int = 0
 var snapshot_render_pending_bytes_after_first: int = 0
 var snapshot_render_pending_rectangles_before: int = 0
 var snapshot_render_pending_rectangles_after_first: int = 0
+# Monotonic worker-lifetime totals (never reset or sampled): native refreshes,
+# dirty packets that landed on a retained full frame, coalesced packets,
+# forced-full retries and ACK clears that released retained bytes.
+var snapshot_render_refresh_total: int = 0
+var snapshot_render_dirty_onto_full_total: int = 0
+var snapshot_render_coalesced_total: int = 0
+var snapshot_render_forced_full_retry_total: int = 0
+var snapshot_render_ack_clear_total: int = 0
 # Portion after the existing render/terrain preparation interval and before
 # the mutex-protected immutable snapshot publication. Excludes the handoff.
 var snapshot_assembly_time_ms: float = 0.0

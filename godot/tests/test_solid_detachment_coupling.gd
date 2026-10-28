@@ -251,10 +251,22 @@ func _run() -> void:
 		and int(metrics.get("render_pending_full_before_samples", -1)) <= sampled_refreshes,
 		"ACK clearing and retained pending-full observations are bounded")
 	check(int(metrics.get("worker_overruns", -1)) >= 0, "worker overrun counter read")
-	check(coalesce_render_packets or int(metrics.get("render_coalesced_packets", -1)) == 0,
-		"default worker leaves full/dirty coalescing disabled")
-	check(not coalesce_render_packets or int(metrics.get("render_coalesced_packets", 0)) > 0,
-		"opt-in live native stream coalesces an actual full-plus-dirty packet")
+	# Counts, not samples: monotonic worker totals cover every publication,
+	# including those the latest-only reader skipped or that preceded sampling.
+	var census: Dictionary = metrics.get("render_worker_census", {})
+	var onto_full: int = int(census.get("dirty_onto_full", -1))
+	var coalesced: int = int(census.get("coalesced", -1))
+	var retries: int = int(census.get("forced_full_retries", -1))
+	check(int(census.get("refreshes", 0)) > 0 and coalesced >= 0 and coalesced <= onto_full
+		and (coalesce_render_packets or coalesced == 0)
+		and (consume_render_packets or (onto_full > 0 and retries == onto_full - coalesced)),
+		"worker census: opt-out never coalesces; each unacknowledged uncoalesced dirty packet forces one full retry")
+	# Deterministic opt-in gate. Without ACK the full frame stays retained, so
+	# every later dirty packet must coalesce and no forced-full retry remains.
+	# With ACK, entering that state is timing-dependent and only observed.
+	check(consume_render_packets or not coalesce_render_packets
+		or (coalesced > 0 and coalesced == onto_full and retries == 0),
+		"unacknowledged opt-in stream coalesces every dirty packet onto its retained full frame")
 	var consumer: Dictionary = metrics.get("render_consumer", {})
 	check(bool(consumer.get("enabled", false)) == consume_render_packets,
 		"CPU image consumption is strictly opt-in")
