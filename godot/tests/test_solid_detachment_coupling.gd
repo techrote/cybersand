@@ -222,6 +222,33 @@ func _run() -> void:
 		and int(metrics.get("render_exchange_multi_call_samples", -1)) >= 0
 		and int(metrics.get("render_exchange_multi_call_samples", -1)) <= int(render_refresh.get("samples", 0)),
 		"native render payload and bounded overflow-retry counters are observed")
+	var first_statuses: PackedInt32Array = metrics.get("render_first_status_counts", PackedInt32Array())
+	var status_sum: int = 0
+	for item: int in first_statuses:
+		status_sum += item
+	var sampled_refreshes: int = int(render_refresh.get("samples", -1))
+	var sampled_retries: int = int(metrics.get("render_exchange_multi_call_samples", -1))
+	check(first_statuses.size() == 4 and status_sum == sampled_refreshes,
+		"first native packet status partitions every sampled render refresh")
+	check(int(metrics.get("render_single_call_samples", -1)) + sampled_retries == sampled_refreshes,
+		"native one-call and forced-retry refreshes exhaust sampled render calls")
+	check(int(metrics.get("render_overflow_bytes_only", -1))
+		+ int(metrics.get("render_overflow_rectangles_only", -1))
+		+ int(metrics.get("render_overflow_both", -1)) == sampled_retries,
+		"exact byte/rectangle overflow predicates partition every retry")
+	check(int(metrics.get("render_retry_full_packets", -1)) == sampled_retries,
+		"each overflow retry returns one native forced-full render packet")
+	check(int(metrics.get("render_first_payload_bytes", -1))
+		+ int(metrics.get("render_retry_payload_bytes", -1))
+		== int(metrics.get("render_exchanged_payload_bytes", -2)),
+		"native first and retry packet bytes reconcile with total exchanged bytes")
+	check(int(metrics.get("render_first_full_packets", -1))
+		+ int(metrics.get("render_first_dirty_packets", -1))
+		+ int(metrics.get("render_first_empty_packets", -1)) == sampled_refreshes,
+		"first full/dirty/empty packet classification is complete")
+	check(int(metrics.get("render_ack_cleared_samples", -1)) <= sampled_refreshes
+		and int(metrics.get("render_pending_full_before_samples", -1)) <= sampled_refreshes,
+		"ACK clearing and retained pending-full observations are bounded")
 	check(int(metrics.get("worker_overruns", -1)) >= 0, "worker overrun counter read")
 	var consumer: Dictionary = metrics.get("render_consumer", {})
 	check(bool(consumer.get("enabled", false)) == consume_render_packets,

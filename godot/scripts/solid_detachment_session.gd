@@ -78,6 +78,23 @@ var _snapshot_render_refresh_exchange_samples_ms: Array[float] = []
 var _render_native_exchange_calls: int = 0
 var _render_exchanged_payload_bytes: int = 0
 var _render_exchange_multi_call_samples: int = 0
+# First native packet and exact pending-buffer overflow census; sampled only
+# from the existing latest-only <=512 immutable worker snapshot stream.
+var _render_first_status_counts: PackedInt32Array = PackedInt32Array([0, 0, 0, 0])
+var _render_first_full_packets: int = 0
+var _render_first_dirty_packets: int = 0
+var _render_first_empty_packets: int = 0
+var _render_first_payload_bytes: int = 0
+var _render_retry_payload_bytes: int = 0
+var _render_retry_full_packets: int = 0
+var _render_overflow_bytes_only: int = 0
+var _render_overflow_rectangles_only: int = 0
+var _render_overflow_both: int = 0
+var _render_single_call_samples: int = 0
+var _render_pending_full_before_samples: int = 0
+var _render_ack_cleared_samples: int = 0
+var _render_pending_bytes_before_max: int = 0
+var _render_pending_bytes_after_first_max: int = 0
 var _snapshot_render_refresh_samples_ms: Array[float] = []
 var _snapshot_terrain_refresh_samples_ms: Array[float] = []
 var _snapshot_assembly_samples_ms: Array[float] = []
@@ -470,6 +487,14 @@ func _consume_compound_results() -> void:
 			var residual_ms: float = float(snapshot.snapshot_render_residual_time_ms)
 			var exchange_calls: int = int(snapshot.snapshot_render_exchange_calls)
 			var payload_bytes: int = int(snapshot.snapshot_render_exchanged_payload_bytes)
+			var first_status: int = int(snapshot.snapshot_render_first_status)
+			var first_bytes: int = int(snapshot.snapshot_render_first_bytes)
+			var retry_bytes: int = int(snapshot.snapshot_render_retry_bytes)
+			var overflow_flags: int = int(snapshot.snapshot_render_overflow_flags)
+			var before_bytes: int = int(snapshot.snapshot_render_pending_bytes_before)
+			var after_bytes: int = int(snapshot.snapshot_render_pending_bytes_after_first)
+			var before_rects: int = int(snapshot.snapshot_render_pending_rectangles_before)
+			var after_rects: int = int(snapshot.snapshot_render_pending_rectangles_after_first)
 			var assembly_ms: float = float(snapshot.snapshot_assembly_time_ms)
 			var publish_ms: float = float(snapshot.snapshot_publish_total_time_ms)
 			_snapshot_copy_samples_ms.append(copy_ms)
@@ -482,6 +507,22 @@ func _consume_compound_results() -> void:
 				or exchange_ms < 0.0 or accumulation_ms < 0.0
 				or full_copy_ms < 0.0 or residual_ms < 0.0
 				or exchange_calls < 0 or exchange_calls > 2 or payload_bytes < 0
+				or first_bytes < 0 or retry_bytes < 0 or before_bytes < 0 or after_bytes < 0
+				or before_rects < 0 or after_rects < 0
+				or payload_bytes != first_bytes + retry_bytes
+				or (exchange_calls == 0 and (first_status != -1 or first_bytes != 0
+					or retry_bytes != 0 or overflow_flags != 0))
+				or (exchange_calls > 0 and (first_status < 0 or first_status > 3))
+				or (exchange_calls == 1 and (overflow_flags != 0 or retry_bytes != 0
+					or snapshot.snapshot_render_retry_full))
+				or (exchange_calls == 2 and (overflow_flags == 0 or overflow_flags > 3
+					or not snapshot.snapshot_render_retry_full))
+				or (exchange_calls > 0 and overflow_flags != (
+					(1 if after_bytes > CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * 2 else 0)
+					+ (2 if after_rects > CyberSimulationWorker.MAX_PENDING_RENDER_PATCHES
+						* CyberSimulationWorker.RENDER_PATCH_METADATA_STRIDE else 0)))
+				or (snapshot.snapshot_render_ack_cleared and
+					(before_bytes != 0 or before_rects != 0))
 				or (not snapshot.snapshot_render_stage_active
 					and (exchange_calls != 0 or payload_bytes != 0))
 				or publish_ms < copy_ms or publish_ms < assembly_ms
@@ -500,6 +541,33 @@ func _consume_compound_results() -> void:
 				_render_exchanged_payload_bytes += payload_bytes
 				if exchange_calls == 2:
 					_render_exchange_multi_call_samples += 1
+					_render_retry_payload_bytes += retry_bytes
+					if snapshot.snapshot_render_retry_full:
+						_render_retry_full_packets += 1
+					match overflow_flags:
+						1:
+							_render_overflow_bytes_only += 1
+						2:
+							_render_overflow_rectangles_only += 1
+						3:
+							_render_overflow_both += 1
+				elif exchange_calls == 1:
+					_render_single_call_samples += 1
+				if exchange_calls > 0:
+					_render_first_status_counts[first_status] += 1
+					_render_first_payload_bytes += first_bytes
+					if snapshot.snapshot_render_first_full:
+						_render_first_full_packets += 1
+					elif first_bytes == 0:
+						_render_first_empty_packets += 1
+					else:
+						_render_first_dirty_packets += 1
+					if snapshot.snapshot_render_pending_full_before:
+						_render_pending_full_before_samples += 1
+					if snapshot.snapshot_render_ack_cleared:
+						_render_ack_cleared_samples += 1
+					_render_pending_bytes_before_max = maxi(_render_pending_bytes_before_max, before_bytes)
+					_render_pending_bytes_after_first_max = maxi(_render_pending_bytes_after_first_max, after_bytes)
 				if snapshot.snapshot_render_stage_active:
 					_snapshot_render_refresh_samples_ms.append(render_ms)
 					_snapshot_render_refresh_exchange_samples_ms.append(exchange_ms)
@@ -699,6 +767,21 @@ func coupling_metrics() -> Dictionary:
 		"render_native_exchange_calls":_render_native_exchange_calls,
 		"render_exchanged_payload_bytes":_render_exchanged_payload_bytes,
 		"render_exchange_multi_call_samples":_render_exchange_multi_call_samples,
+		"render_single_call_samples":_render_single_call_samples,
+		"render_first_status_counts":_render_first_status_counts.duplicate(),
+		"render_first_full_packets":_render_first_full_packets,
+		"render_first_dirty_packets":_render_first_dirty_packets,
+		"render_first_empty_packets":_render_first_empty_packets,
+		"render_first_payload_bytes":_render_first_payload_bytes,
+		"render_retry_payload_bytes":_render_retry_payload_bytes,
+		"render_retry_full_packets":_render_retry_full_packets,
+		"render_overflow_bytes_only":_render_overflow_bytes_only,
+		"render_overflow_rectangles_only":_render_overflow_rectangles_only,
+		"render_overflow_both":_render_overflow_both,
+		"render_pending_full_before_samples":_render_pending_full_before_samples,
+		"render_ack_cleared_samples":_render_ack_cleared_samples,
+		"render_pending_bytes_before_max":_render_pending_bytes_before_max,
+		"render_pending_bytes_after_first_max":_render_pending_bytes_after_first_max,
 		"snapshot_render_refresh_timing":_timing_summary_ms(_snapshot_render_refresh_samples_ms),
 		"snapshot_terrain_refresh_timing":_timing_summary_ms(_snapshot_terrain_refresh_samples_ms),
 		"snapshot_assembly_timing":_timing_summary_ms(_snapshot_assembly_samples_ms),
@@ -782,6 +865,21 @@ func close() -> void:
 	_render_native_exchange_calls = 0
 	_render_exchanged_payload_bytes = 0
 	_render_exchange_multi_call_samples = 0
+	_render_first_status_counts = PackedInt32Array([0, 0, 0, 0])
+	_render_first_full_packets = 0
+	_render_first_dirty_packets = 0
+	_render_first_empty_packets = 0
+	_render_first_payload_bytes = 0
+	_render_retry_payload_bytes = 0
+	_render_retry_full_packets = 0
+	_render_overflow_bytes_only = 0
+	_render_overflow_rectangles_only = 0
+	_render_overflow_both = 0
+	_render_single_call_samples = 0
+	_render_pending_full_before_samples = 0
+	_render_ack_cleared_samples = 0
+	_render_pending_bytes_before_max = 0
+	_render_pending_bytes_after_first_max = 0
 	_snapshot_render_refresh_samples_ms.clear()
 	_snapshot_terrain_refresh_samples_ms.clear()
 	_snapshot_assembly_samples_ms.clear()

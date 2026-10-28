@@ -110,6 +110,23 @@ var snapshot_render_full_copy_time_ms: float = 0.0
 var snapshot_render_residual_time_ms: float = 0.0
 var snapshot_render_exchange_calls: int = 0 # 0, 1, or overflow retry 2.
 var snapshot_render_exchanged_payload_bytes: int = 0
+# SOL281 diagnostic only: one immutable set of scalar observations from the
+# first native packet and the already-existing bounded forced-full retry.
+# Overflow bits: 1=retained byte limit, 2=rectangle metadata limit.
+# Status matches native RenderPublishStatus (0=no changes, 1=published,
+# 2=backpressure, 3=capacity exceeded); -1 means no native call.
+var snapshot_render_first_status: int = -1
+var snapshot_render_first_full: bool = false
+var snapshot_render_first_bytes: int = 0
+var snapshot_render_retry_full: bool = false
+var snapshot_render_retry_bytes: int = 0
+var snapshot_render_overflow_flags: int = 0
+var snapshot_render_pending_full_before: bool = false
+var snapshot_render_ack_cleared: bool = false
+var snapshot_render_pending_bytes_before: int = 0
+var snapshot_render_pending_bytes_after_first: int = 0
+var snapshot_render_pending_rectangles_before: int = 0
+var snapshot_render_pending_rectangles_after_first: int = 0
 # Portion after the existing render/terrain preparation interval and before
 # the mutex-protected immutable snapshot publication. Excludes the handoff.
 var snapshot_assembly_time_ms: float = 0.0

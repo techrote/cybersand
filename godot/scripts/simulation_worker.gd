@@ -1861,6 +1861,19 @@ func _publish_snapshot(
 	var render_full_copy_usec: int = 0
 	var render_exchange_calls: int = 0
 	var render_exchanged_payload_bytes: int = 0
+	# Value-only causal attribution: no new native exchange or changed retry.
+	var render_first_status: int = -1
+	var render_first_full: bool = false
+	var render_first_bytes: int = 0
+	var render_retry_full: bool = false
+	var render_retry_bytes: int = 0
+	var render_overflow_flags: int = 0
+	var render_pending_full_before: bool = false
+	var render_ack_cleared: bool = false
+	var render_pending_bytes_before: int = 0
+	var render_pending_bytes_after_first: int = 0
+	var render_pending_rectangles_before: int = 0
+	var render_pending_rectangles_after_first: int = 0
 	var now_usec: int = Time.get_ticks_usec()
 	var render_serial_before: int = _pending_render_snapshot_serial
 	var render_generation_advanced: bool = false
@@ -1880,6 +1893,7 @@ func _publish_snapshot(
 		and acknowledged_render_serial >= _pending_render_snapshot_serial
 	):
 		_clear_pending_render_patches()
+		render_ack_cleared = true
 	if (
 		force_render_full_refresh
 		or (
@@ -1889,6 +1903,9 @@ func _publish_snapshot(
 	):
 		render_stage_active = true
 		if _world.has_method(&"take_render_snapshot"):
+			render_pending_full_before = _pending_render_full_refresh
+			render_pending_bytes_before = _pending_render_patch_cells.size()
+			render_pending_rectangles_before = _pending_render_patch_rectangles.size()
 			var exchange_start_usec: int = Time.get_ticks_usec()
 			var render_packet: Dictionary = _world.take_render_snapshot(
 				force_render_full_refresh
@@ -1896,21 +1913,29 @@ func _publish_snapshot(
 			render_exchange_usec += Time.get_ticks_usec() - exchange_start_usec
 			render_exchange_calls += 1
 			var packet_cells: PackedByteArray = render_packet.get("cells", PackedByteArray())
+			render_first_status = int(render_packet.get("status", -1))
+			render_first_full = bool(render_packet.get("full_refresh", false))
+			render_first_bytes = packet_cells.size()
 			render_exchanged_payload_bytes += packet_cells.size()
 			var accumulation_start_usec: int = Time.get_ticks_usec()
 			_append_native_render_packet(render_packet)
 			render_accumulation_usec += Time.get_ticks_usec() - accumulation_start_usec
-			if (
-				_pending_render_patch_cells.size()
-				> CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * 2
-				or _pending_render_patch_rectangles.size()
-				> MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE
-			):
+			render_pending_bytes_after_first = _pending_render_patch_cells.size()
+			render_pending_rectangles_after_first = _pending_render_patch_rectangles.size()
+			if (render_pending_bytes_after_first
+				> CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * 2):
+				render_overflow_flags |= 1
+			if (render_pending_rectangles_after_first
+				> MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE):
+				render_overflow_flags |= 2
+			if render_overflow_flags != 0:
 				exchange_start_usec = Time.get_ticks_usec()
 				var overflow_packet: Dictionary = _world.take_render_snapshot(true)
 				render_exchange_usec += Time.get_ticks_usec() - exchange_start_usec
 				render_exchange_calls += 1
 				packet_cells = overflow_packet.get("cells", PackedByteArray())
+				render_retry_full = bool(overflow_packet.get("full_refresh", false))
+				render_retry_bytes = packet_cells.size()
 				render_exchanged_payload_bytes += packet_cells.size()
 				accumulation_start_usec = Time.get_ticks_usec()
 				_append_native_render_packet(overflow_packet)
@@ -2090,6 +2115,18 @@ func _publish_snapshot(
 	snapshot.snapshot_render_residual_time_ms = float(render_residual_usec) / 1000.0
 	snapshot.snapshot_render_exchange_calls = render_exchange_calls
 	snapshot.snapshot_render_exchanged_payload_bytes = render_exchanged_payload_bytes
+	snapshot.snapshot_render_first_status = render_first_status
+	snapshot.snapshot_render_first_full = render_first_full
+	snapshot.snapshot_render_first_bytes = render_first_bytes
+	snapshot.snapshot_render_retry_full = render_retry_full
+	snapshot.snapshot_render_retry_bytes = render_retry_bytes
+	snapshot.snapshot_render_overflow_flags = render_overflow_flags
+	snapshot.snapshot_render_pending_full_before = render_pending_full_before
+	snapshot.snapshot_render_ack_cleared = render_ack_cleared
+	snapshot.snapshot_render_pending_bytes_before = render_pending_bytes_before
+	snapshot.snapshot_render_pending_bytes_after_first = render_pending_bytes_after_first
+	snapshot.snapshot_render_pending_rectangles_before = render_pending_rectangles_before
+	snapshot.snapshot_render_pending_rectangles_after_first = render_pending_rectangles_after_first
 	snapshot.worker_overruns = _worker_overruns
 	if _world.has_method(&"get_tick_failure_count"):
 		snapshot.tick_failure_count = int(_world.get_tick_failure_count())
