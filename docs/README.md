@@ -10,6 +10,18 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+## SOL281 bounded render-full coalescing candidate — experimental
+
+[Source-bound audit](audits/2026-10-28-sol281-render-coalescing-candidate.md)
+and [runtime contract](systems/solid-detachment.md#opt-in-retained-full-renderdirty-coalescing--experimental-source-7d716a5f)
+describe a disabled-by-default, copy-on-write coalescing candidate
+following the measured retained-full/dirty overflow cause. Its
+Linux/Windows Godot/Rapier qualification must be read separately from
+the previous successful packet census; no physical B=289 policy,
+GPU-FPS claim or production default is admitted. #281 remains open and
+#283 draft, stacked on draft #282.
+
+
 ## SOL281 CPU render-consumption diagnostic, not a gameplay admission
 
 The branch-local opt-in [source-and-qualification audit](audits/2026-10-28-sol281-render-ack-consumer-control.md)

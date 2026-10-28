@@ -41,6 +41,46 @@ This demonstrates the primary mechanical direction, not general reactive Wood,
 bark/leaf cohesion or unrestricted terrain dynamics. No ordinary gameplay mode
 or material policy automatically enables the feature.
 
+## Opt-in retained-full render/dirty coalescing — experimental source 7d716a5f
+
+**Current on this draft branch only; actual-host result pending.** The
+[2026-10-28 preregistered candidate](https://github.com/techrote/cybersand/pull/283#issuecomment-6479596107)
+follows the [cross-platform packet/overflow diagnosis](../audits/2026-10-28-sol281-render-ack-consumer-control.md).
+Exactly one retained full material image can already occupy 2,097,152
+bytes (1024×1024 RG8). A subsequent dirty native packet then crosses the
+original pending-byte guard and triggers a second forced-full native
+exchange. This is a headless worker-publication mechanism, **not** an
+interactive GPU performance measurement.
+
+The worker's new `_experimental_render_full_coalescing` switch is
+**false by default** and can only be selected by the SOL281 diagnostic
+session before starting its existing native worker. Only a Published,
+non-full dirty packet may be coalesced into an exactly one-rectangle full
+baseline with identical worker World generation and channel count.
+The candidate preflights all metadata, bounds, strides and byte ranges;
+input is bounded to 64 rectangles / 65,536 dirty bytes. It copies the
+retained image before applying dirty rectangles in deterministic order,
+keeps one full rectangle and advances normal serial/payload generation.
+A validation failure follows the original append/capacity/forced-full
+path, not a new implicit ACK or forced physical mutation. Already
+published immutable buffers remain untouched.
+
+The [new dated audit](../audits/2026-10-28-sol281-render-coalescing-candidate.md)
+and [machine source/status receipt](../audits/sol281-2026-10-28/render-coalescing-candidate-receipt.json)
+separate the frozen predecessor from two new implementation commits and
+their actual Linux/Windows scoped runs. Unit pixel/refusal tests and a
+fourth explicitly coalescing A=81, CPU-consumed compound cohort were
+added; ordinary unacknowledged A, consumed A and diagnostic B remain
+as controls. Source publication **does not yet qualify** the new
+mechanism or establish saved frame time; wait for exact-source Godot
+host tests, artifact/source hashes, and independent review. In all
+cases, native World/aggregate cell ownership, six non-filling Rapier
+proxies/two holes, Sand104, Water1020, 12-float body ABI, material/liquid
+policies and native-worker/main-thread Rapier ownership are invariant.
+B=289 remains physically **NO-GO**. Reactive Wood, conservative chain
+relocation, fracture/desoliding, persistence, normal gameplay and
+interactive GPU pacing remain unqualified.
+
 ## CPU render-consumption ACK control — source 55aa72e5 (runtime qualification pending)
 
 **Current on this draft implementation branch, not production or proven desktop
