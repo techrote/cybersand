@@ -3,6 +3,7 @@ extends RefCounted
 # Explicit dry/inert conformance session. One ordinary asynchronous native owner
 # and the existing main-thread Rapier bridge; no alternate physics integrator.
 const Worker = preload("res://scripts/solid_detachment_worker.gd")
+const RenderConsumer = preload("res://scripts/solid_detachment_render_consumer.gd")
 const DOMAIN := Rect2i(32, 16, 64, 64)
 const ANCHORS := Rect2i(0, 67, 128, 13)
 const CUT := Rect2i(50, 65, 4, 2)
@@ -84,10 +85,16 @@ var _snapshot_publish_total_samples_ms: Array[float] = []
 var _worker_timing_invalid_samples: int = 0
 var _worker_overruns: int = 0
 var _worker_sample_overflow: int = 0
+var _render_consumer_enabled: bool = false
+var _render_consumer: RefCounted
+var _render_acknowledgements: int = 0
 
 func open(parent: Node, workers: int = 4, ejection_policy: int = 0,
-		ejection_topology: bool = false) -> bool:
+		ejection_topology: bool = false, consume_render_packets: bool = false) -> bool:
 	close()
+	_render_consumer_enabled = consume_render_packets
+	if consume_render_packets:
+		_render_consumer = RenderConsumer.new()
 	_parent = parent
 	_tree = parent.get_tree()
 	generation += 1
@@ -437,6 +444,15 @@ func _consume_compound_results() -> void:
 	_coupling_last_native_tick = snapshot.tick_index
 	if snapshot.rigid_body_epoch != physics_epoch:
 		return
+	# The optional CPU presentation consumer ACKs only after applying all
+	# validated immutable bytes; the ordinary headless control never ACKs.
+	if _render_consumer_enabled and _render_consumer != null:
+		if snapshot.render_snapshot_serial > int(_render_consumer.last_serial):
+			if _render_consumer.consume(snapshot):
+				worker.acknowledge_render_snapshot(snapshot.render_snapshot_serial)
+				_render_acknowledgements += 1
+			else:
+				worker.request_render_full_refresh()
 	_coupling_result_snapshots += 1
 	# Observes latest-only immutable worker snapshots. This is a sampled
 	# duration distribution, not all native ticks or total frame time.
@@ -687,6 +703,8 @@ func coupling_metrics() -> Dictionary:
 		"snapshot_terrain_refresh_timing":_timing_summary_ms(_snapshot_terrain_refresh_samples_ms),
 		"snapshot_assembly_timing":_timing_summary_ms(_snapshot_assembly_samples_ms),
 		"snapshot_publish_total_timing":_timing_summary_ms(_snapshot_publish_total_samples_ms),
+		"render_acknowledgements":_render_acknowledgements,
+		"render_consumer":_render_consumer.metrics() if _render_consumer_enabled and _render_consumer != null else {"enabled":false,"consumed":0,"refused":0,"last_serial":0},
 		"worker_timing_invalid_samples":_worker_timing_invalid_samples,
 		"worker_overruns":_worker_overruns, "worker_sample_overflow":_worker_sample_overflow}
 
@@ -771,6 +789,9 @@ func close() -> void:
 	_worker_timing_invalid_samples = 0
 	_worker_overruns = 0
 	_worker_sample_overflow = 0
+	_render_consumer_enabled = false
+	_render_consumer = null
+	_render_acknowledgements = 0
 	status = "closed"
 
 func _destroy_physics() -> void:
