@@ -1854,6 +1854,13 @@ func _publish_snapshot(
 	# Stage attribution is observation only. The render interval includes the
 	# existing patch-acknowledgement/cleanup work before any refresh decision.
 	var render_stage_active: bool = false
+	# Exclusive timings inside the existing render-stage interval. No additional
+	# render exchange/copy is performed; only the original work is bracketed.
+	var render_exchange_usec: int = 0
+	var render_accumulation_usec: int = 0
+	var render_full_copy_usec: int = 0
+	var render_exchange_calls: int = 0
+	var render_exchanged_payload_bytes: int = 0
 	var now_usec: int = Time.get_ticks_usec()
 	var render_serial_before: int = _pending_render_snapshot_serial
 	var render_generation_advanced: bool = false
@@ -1882,21 +1889,41 @@ func _publish_snapshot(
 	):
 		render_stage_active = true
 		if _world.has_method(&"take_render_snapshot"):
+			var exchange_start_usec: int = Time.get_ticks_usec()
 			var render_packet: Dictionary = _world.take_render_snapshot(
 				force_render_full_refresh
 			)
+			render_exchange_usec += Time.get_ticks_usec() - exchange_start_usec
+			render_exchange_calls += 1
+			var packet_cells: PackedByteArray = render_packet.get("cells", PackedByteArray())
+			render_exchanged_payload_bytes += packet_cells.size()
+			var accumulation_start_usec: int = Time.get_ticks_usec()
 			_append_native_render_packet(render_packet)
+			render_accumulation_usec += Time.get_ticks_usec() - accumulation_start_usec
 			if (
 				_pending_render_patch_cells.size()
 				> CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * 2
 				or _pending_render_patch_rectangles.size()
 				> MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE
 			):
-				_append_native_render_packet(_world.take_render_snapshot(true))
+				exchange_start_usec = Time.get_ticks_usec()
+				var overflow_packet: Dictionary = _world.take_render_snapshot(true)
+				render_exchange_usec += Time.get_ticks_usec() - exchange_start_usec
+				render_exchange_calls += 1
+				packet_cells = overflow_packet.get("cells", PackedByteArray())
+				render_exchanged_payload_bytes += packet_cells.size()
+				accumulation_start_usec = Time.get_ticks_usec()
+				_append_native_render_packet(overflow_packet)
+				render_accumulation_usec += Time.get_ticks_usec() - accumulation_start_usec
 			if _pending_render_full_refresh:
+				var full_copy_start_usec: int = Time.get_ticks_usec()
 				_snapshot_cells = _pending_render_patch_cells.duplicate()
+				render_full_copy_usec += Time.get_ticks_usec() - full_copy_start_usec
 		else:
+			# The fallback material read and copy is one indivisible adapter call.
+			var fallback_copy_start_usec: int = Time.get_ticks_usec()
 			_snapshot_cells = PackedByteArray(_world.get_cells())
+			render_full_copy_usec += Time.get_ticks_usec() - fallback_copy_start_usec
 			_fallback_render_snapshot_serial += 1
 			_pending_render_snapshot_serial = _fallback_render_snapshot_serial
 			_pending_render_channels = 1
@@ -1926,6 +1953,12 @@ func _publish_snapshot(
 			_pending_render_worker_overruns = _worker_overruns
 			render_generation_advanced = true
 	var render_stage_end_usec: int = Time.get_ticks_usec()
+	# The residual includes patch acknowledgements, mutex/metadata and all
+	# remaining work. Subtraction is from disjoint, monotonic clock intervals.
+	var render_residual_usec: int = (
+		render_stage_end_usec - copy_start_usec - render_exchange_usec
+		- render_accumulation_usec - render_full_copy_usec
+	)
 	var terrain_stage_active: bool = false
 	var current_hard_surface_revision: int = int(_world.hard_surface_revision)
 	if (
@@ -2051,6 +2084,12 @@ func _publish_snapshot(
 	snapshot.snapshot_terrain_stage_time_ms = float(copy_end_usec - render_stage_end_usec) / 1000.0
 	snapshot.snapshot_render_stage_active = render_stage_active
 	snapshot.snapshot_terrain_stage_active = terrain_stage_active
+	snapshot.snapshot_render_exchange_time_ms = float(render_exchange_usec) / 1000.0
+	snapshot.snapshot_render_accumulation_time_ms = float(render_accumulation_usec) / 1000.0
+	snapshot.snapshot_render_full_copy_time_ms = float(render_full_copy_usec) / 1000.0
+	snapshot.snapshot_render_residual_time_ms = float(render_residual_usec) / 1000.0
+	snapshot.snapshot_render_exchange_calls = render_exchange_calls
+	snapshot.snapshot_render_exchanged_payload_bytes = render_exchanged_payload_bytes
 	snapshot.worker_overruns = _worker_overruns
 	if _world.has_method(&"get_tick_failure_count"):
 		snapshot.tick_failure_count = int(_world.get_tick_failure_count())

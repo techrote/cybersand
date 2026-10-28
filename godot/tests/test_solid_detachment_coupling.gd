@@ -181,6 +181,11 @@ func _run() -> void:
 	var terrain_stage: Dictionary = metrics.get("snapshot_terrain_stage_timing", {})
 	var render_refresh: Dictionary = metrics.get("snapshot_render_refresh_timing", {})
 	var terrain_refresh: Dictionary = metrics.get("snapshot_terrain_refresh_timing", {})
+	var render_exchange: Dictionary = metrics.get("snapshot_render_exchange_timing", {})
+	var render_accumulation: Dictionary = metrics.get("snapshot_render_accumulation_timing", {})
+	var render_full_copy: Dictionary = metrics.get("snapshot_render_full_copy_timing", {})
+	var render_residual: Dictionary = metrics.get("snapshot_render_residual_timing", {})
+	var refresh_exchange: Dictionary = metrics.get("snapshot_render_refresh_exchange_timing", {})
 	check(int(metrics.get("worker_timing_invalid_samples", -1)) == 0,
 		"publication-stage samples are finite, non-negative and monotonic")
 	check(int(publication.get("samples", -1)) > 0
@@ -201,6 +206,21 @@ func _run() -> void:
 		and int(terrain_refresh.get("samples", -1)) >= 0
 		and int(terrain_refresh.get("samples", -1)) <= int(terrain_stage.get("samples", -2)),
 		"refresh-branch counts are bounded by owner snapshot sampling")
+	check(int(render_exchange.get("samples", -1)) == int(render_stage.get("samples", -2))
+		and int(render_accumulation.get("samples", -1)) == int(render_stage.get("samples", -2))
+		and int(render_full_copy.get("samples", -1)) == int(render_stage.get("samples", -2))
+		and int(render_residual.get("samples", -1)) == int(render_stage.get("samples", -2)),
+		"all four exclusive render substages cover the identical sampled copies")
+	check(int(refresh_exchange.get("samples", -1)) == int(render_refresh.get("samples", -2))
+		and int(refresh_exchange.get("samples", -1)) > 0,
+		"native render-exchange refresh samples are observed separately")
+	check(int(metrics.get("render_native_exchange_calls", -1)) >= int(render_refresh.get("samples", 0))
+		and int(metrics.get("render_native_exchange_calls", -1)) <= 2 * int(render_refresh.get("samples", 0)),
+		"the native render exchange has one call and at most one overflow retry per refresh")
+	check(int(metrics.get("render_exchanged_payload_bytes", -1)) > 0
+		and int(metrics.get("render_exchange_multi_call_samples", -1)) >= 0
+		and int(metrics.get("render_exchange_multi_call_samples", -1)) <= int(render_refresh.get("samples", 0)),
+		"native render payload and bounded overflow-retry counters are observed")
 	check(int(metrics.get("worker_overruns", -1)) >= 0, "worker overrun counter read")
 	check(frame_intervals_us.size() == 360, "all physics-frame intervals recorded")
 	var displacement_attempts: int = int(metrics.displaced) + int(metrics.unresolved)

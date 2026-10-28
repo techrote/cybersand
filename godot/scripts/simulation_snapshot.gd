@@ -101,6 +101,15 @@ var snapshot_render_stage_time_ms: float = 0.0
 var snapshot_terrain_stage_time_ms: float = 0.0
 var snapshot_render_stage_active: bool = false
 var snapshot_terrain_stage_active: bool = false
+# Disjoint observational portions of render_stage_time_ms, read-only and
+# captured on the worker before the snapshot crosses the ownership boundary.
+# The fallback read/copy is classified with the full-material copy.
+var snapshot_render_exchange_time_ms: float = 0.0
+var snapshot_render_accumulation_time_ms: float = 0.0
+var snapshot_render_full_copy_time_ms: float = 0.0
+var snapshot_render_residual_time_ms: float = 0.0
+var snapshot_render_exchange_calls: int = 0 # 0, 1, or overflow retry 2.
+var snapshot_render_exchanged_payload_bytes: int = 0
 # Portion after the existing render/terrain preparation interval and before
 # the mutex-protected immutable snapshot publication. Excludes the handoff.
 var snapshot_assembly_time_ms: float = 0.0

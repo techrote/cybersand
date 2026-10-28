@@ -69,6 +69,14 @@ var _native_tick_samples_ms: Array[float] = []
 var _snapshot_copy_samples_ms: Array[float] = []
 var _snapshot_render_stage_samples_ms: Array[float] = []
 var _snapshot_terrain_stage_samples_ms: Array[float] = []
+var _snapshot_render_exchange_samples_ms: Array[float] = []
+var _snapshot_render_accumulation_samples_ms: Array[float] = []
+var _snapshot_render_full_copy_samples_ms: Array[float] = []
+var _snapshot_render_residual_samples_ms: Array[float] = []
+var _snapshot_render_refresh_exchange_samples_ms: Array[float] = []
+var _render_native_exchange_calls: int = 0
+var _render_exchanged_payload_bytes: int = 0
+var _render_exchange_multi_call_samples: int = 0
 var _snapshot_render_refresh_samples_ms: Array[float] = []
 var _snapshot_terrain_refresh_samples_ms: Array[float] = []
 var _snapshot_assembly_samples_ms: Array[float] = []
@@ -440,21 +448,45 @@ func _consume_compound_results() -> void:
 			var copy_ms: float = float(snapshot.snapshot_copy_time_ms)
 			var render_ms: float = float(snapshot.snapshot_render_stage_time_ms)
 			var terrain_ms: float = float(snapshot.snapshot_terrain_stage_time_ms)
+			var exchange_ms: float = float(snapshot.snapshot_render_exchange_time_ms)
+			var accumulation_ms: float = float(snapshot.snapshot_render_accumulation_time_ms)
+			var full_copy_ms: float = float(snapshot.snapshot_render_full_copy_time_ms)
+			var residual_ms: float = float(snapshot.snapshot_render_residual_time_ms)
+			var exchange_calls: int = int(snapshot.snapshot_render_exchange_calls)
+			var payload_bytes: int = int(snapshot.snapshot_render_exchanged_payload_bytes)
 			var assembly_ms: float = float(snapshot.snapshot_assembly_time_ms)
 			var publish_ms: float = float(snapshot.snapshot_publish_total_time_ms)
 			_snapshot_copy_samples_ms.append(copy_ms)
 			if (not is_finite(copy_ms) or not is_finite(assembly_ms)
 				or not is_finite(publish_ms) or not is_finite(render_ms)
-				or not is_finite(terrain_ms) or copy_ms < 0.0
+				or not is_finite(terrain_ms) or not is_finite(exchange_ms)
+				or not is_finite(accumulation_ms) or not is_finite(full_copy_ms)
+				or not is_finite(residual_ms) or copy_ms < 0.0
 				or assembly_ms < 0.0 or render_ms < 0.0 or terrain_ms < 0.0
+				or exchange_ms < 0.0 or accumulation_ms < 0.0
+				or full_copy_ms < 0.0 or residual_ms < 0.0
+				or exchange_calls < 0 or exchange_calls > 2 or payload_bytes < 0
+				or (not snapshot.snapshot_render_stage_active
+					and (exchange_calls != 0 or payload_bytes != 0))
 				or publish_ms < copy_ms or publish_ms < assembly_ms
-				or absf(copy_ms - render_ms - terrain_ms) > 0.002):
+				or absf(copy_ms - render_ms - terrain_ms) > 0.002
+				or absf(render_ms - exchange_ms - accumulation_ms
+					- full_copy_ms - residual_ms) > 0.002):
 				_worker_timing_invalid_samples += 1
 			else:
 				_snapshot_render_stage_samples_ms.append(render_ms)
 				_snapshot_terrain_stage_samples_ms.append(terrain_ms)
+				_snapshot_render_exchange_samples_ms.append(exchange_ms)
+				_snapshot_render_accumulation_samples_ms.append(accumulation_ms)
+				_snapshot_render_full_copy_samples_ms.append(full_copy_ms)
+				_snapshot_render_residual_samples_ms.append(residual_ms)
+				_render_native_exchange_calls += exchange_calls
+				_render_exchanged_payload_bytes += payload_bytes
+				if exchange_calls == 2:
+					_render_exchange_multi_call_samples += 1
 				if snapshot.snapshot_render_stage_active:
 					_snapshot_render_refresh_samples_ms.append(render_ms)
+					_snapshot_render_refresh_exchange_samples_ms.append(exchange_ms)
 				if snapshot.snapshot_terrain_stage_active:
 					_snapshot_terrain_refresh_samples_ms.append(terrain_ms)
 				_snapshot_assembly_samples_ms.append(assembly_ms)
@@ -643,6 +675,14 @@ func coupling_metrics() -> Dictionary:
 		"snapshot_copy_timing":_timing_summary_ms(_snapshot_copy_samples_ms),
 		"snapshot_render_stage_timing":_timing_summary_ms(_snapshot_render_stage_samples_ms),
 		"snapshot_terrain_stage_timing":_timing_summary_ms(_snapshot_terrain_stage_samples_ms),
+		"snapshot_render_exchange_timing":_timing_summary_ms(_snapshot_render_exchange_samples_ms),
+		"snapshot_render_accumulation_timing":_timing_summary_ms(_snapshot_render_accumulation_samples_ms),
+		"snapshot_render_full_copy_timing":_timing_summary_ms(_snapshot_render_full_copy_samples_ms),
+		"snapshot_render_residual_timing":_timing_summary_ms(_snapshot_render_residual_samples_ms),
+		"snapshot_render_refresh_exchange_timing":_timing_summary_ms(_snapshot_render_refresh_exchange_samples_ms),
+		"render_native_exchange_calls":_render_native_exchange_calls,
+		"render_exchanged_payload_bytes":_render_exchanged_payload_bytes,
+		"render_exchange_multi_call_samples":_render_exchange_multi_call_samples,
 		"snapshot_render_refresh_timing":_timing_summary_ms(_snapshot_render_refresh_samples_ms),
 		"snapshot_terrain_refresh_timing":_timing_summary_ms(_snapshot_terrain_refresh_samples_ms),
 		"snapshot_assembly_timing":_timing_summary_ms(_snapshot_assembly_samples_ms),
@@ -716,6 +756,14 @@ func close() -> void:
 	_snapshot_copy_samples_ms.clear()
 	_snapshot_render_stage_samples_ms.clear()
 	_snapshot_terrain_stage_samples_ms.clear()
+	_snapshot_render_exchange_samples_ms.clear()
+	_snapshot_render_accumulation_samples_ms.clear()
+	_snapshot_render_full_copy_samples_ms.clear()
+	_snapshot_render_residual_samples_ms.clear()
+	_snapshot_render_refresh_exchange_samples_ms.clear()
+	_render_native_exchange_calls = 0
+	_render_exchanged_payload_bytes = 0
+	_render_exchange_multi_call_samples = 0
 	_snapshot_render_refresh_samples_ms.clear()
 	_snapshot_terrain_refresh_samples_ms.clear()
 	_snapshot_assembly_samples_ms.clear()
