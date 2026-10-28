@@ -67,6 +67,10 @@ var _coupling_last_correction: Vector2 = Vector2.ZERO
 var _worker_step_samples_ms: Array[float] = []
 var _native_tick_samples_ms: Array[float] = []
 var _snapshot_copy_samples_ms: Array[float] = []
+var _snapshot_render_stage_samples_ms: Array[float] = []
+var _snapshot_terrain_stage_samples_ms: Array[float] = []
+var _snapshot_render_refresh_samples_ms: Array[float] = []
+var _snapshot_terrain_refresh_samples_ms: Array[float] = []
 var _snapshot_assembly_samples_ms: Array[float] = []
 var _snapshot_publish_total_samples_ms: Array[float] = []
 var _worker_timing_invalid_samples: int = 0
@@ -434,14 +438,25 @@ func _consume_compound_results() -> void:
 			_worker_step_samples_ms.append(float(snapshot.worker_step_time_ms))
 			_native_tick_samples_ms.append(float(snapshot.simulation_time_ms))
 			var copy_ms: float = float(snapshot.snapshot_copy_time_ms)
+			var render_ms: float = float(snapshot.snapshot_render_stage_time_ms)
+			var terrain_ms: float = float(snapshot.snapshot_terrain_stage_time_ms)
 			var assembly_ms: float = float(snapshot.snapshot_assembly_time_ms)
 			var publish_ms: float = float(snapshot.snapshot_publish_total_time_ms)
 			_snapshot_copy_samples_ms.append(copy_ms)
 			if (not is_finite(copy_ms) or not is_finite(assembly_ms)
-				or not is_finite(publish_ms) or copy_ms < 0.0 or assembly_ms < 0.0
-				or publish_ms < copy_ms or publish_ms < assembly_ms):
+				or not is_finite(publish_ms) or not is_finite(render_ms)
+				or not is_finite(terrain_ms) or copy_ms < 0.0
+				or assembly_ms < 0.0 or render_ms < 0.0 or terrain_ms < 0.0
+				or publish_ms < copy_ms or publish_ms < assembly_ms
+				or absf(copy_ms - render_ms - terrain_ms) > 0.002):
 				_worker_timing_invalid_samples += 1
 			else:
+				_snapshot_render_stage_samples_ms.append(render_ms)
+				_snapshot_terrain_stage_samples_ms.append(terrain_ms)
+				if snapshot.snapshot_render_stage_active:
+					_snapshot_render_refresh_samples_ms.append(render_ms)
+				if snapshot.snapshot_terrain_stage_active:
+					_snapshot_terrain_refresh_samples_ms.append(terrain_ms)
 				_snapshot_assembly_samples_ms.append(assembly_ms)
 				_snapshot_publish_total_samples_ms.append(publish_ms)
 		else:
@@ -626,6 +641,10 @@ func coupling_metrics() -> Dictionary:
 		"worker_step_timing":_timing_summary_ms(_worker_step_samples_ms),
 		"native_tick_timing":_timing_summary_ms(_native_tick_samples_ms),
 		"snapshot_copy_timing":_timing_summary_ms(_snapshot_copy_samples_ms),
+		"snapshot_render_stage_timing":_timing_summary_ms(_snapshot_render_stage_samples_ms),
+		"snapshot_terrain_stage_timing":_timing_summary_ms(_snapshot_terrain_stage_samples_ms),
+		"snapshot_render_refresh_timing":_timing_summary_ms(_snapshot_render_refresh_samples_ms),
+		"snapshot_terrain_refresh_timing":_timing_summary_ms(_snapshot_terrain_refresh_samples_ms),
 		"snapshot_assembly_timing":_timing_summary_ms(_snapshot_assembly_samples_ms),
 		"snapshot_publish_total_timing":_timing_summary_ms(_snapshot_publish_total_samples_ms),
 		"worker_timing_invalid_samples":_worker_timing_invalid_samples,
@@ -695,6 +714,10 @@ func close() -> void:
 	_worker_step_samples_ms.clear()
 	_native_tick_samples_ms.clear()
 	_snapshot_copy_samples_ms.clear()
+	_snapshot_render_stage_samples_ms.clear()
+	_snapshot_terrain_stage_samples_ms.clear()
+	_snapshot_render_refresh_samples_ms.clear()
+	_snapshot_terrain_refresh_samples_ms.clear()
 	_snapshot_assembly_samples_ms.clear()
 	_snapshot_publish_total_samples_ms.clear()
 	_worker_timing_invalid_samples = 0

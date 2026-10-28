@@ -177,6 +177,10 @@ func _run() -> void:
 	var publication: Dictionary = metrics.get("snapshot_publish_total_timing", {})
 	var assembly: Dictionary = metrics.get("snapshot_assembly_timing", {})
 	var preparation: Dictionary = metrics.get("snapshot_copy_timing", {})
+	var render_stage: Dictionary = metrics.get("snapshot_render_stage_timing", {})
+	var terrain_stage: Dictionary = metrics.get("snapshot_terrain_stage_timing", {})
+	var render_refresh: Dictionary = metrics.get("snapshot_render_refresh_timing", {})
+	var terrain_refresh: Dictionary = metrics.get("snapshot_terrain_refresh_timing", {})
 	check(int(metrics.get("worker_timing_invalid_samples", -1)) == 0,
 		"publication-stage samples are finite, non-negative and monotonic")
 	check(int(publication.get("samples", -1)) > 0
@@ -186,6 +190,17 @@ func _run() -> void:
 	check(float(publication.get("p95_ms", -1.0)) >= float(preparation.get("p95_ms", 0.0))
 		and float(publication.get("p95_ms", -1.0)) >= float(assembly.get("p95_ms", 0.0)),
 		"prepublication p95 includes the render/terrain and assembly stages")
+	check(int(render_stage.get("samples", -1)) == int(preparation.get("samples", -2))
+		and int(terrain_stage.get("samples", -1)) == int(preparation.get("samples", -2)),
+		"render and terrain attribution cover every valid sampled copy")
+	check(float(preparation.get("p95_ms", -1.0)) + 0.002 >= float(render_stage.get("p95_ms", 0.0))
+		and float(preparation.get("p95_ms", -1.0)) + 0.002 >= float(terrain_stage.get("p95_ms", 0.0)),
+		"both stage timing distributions are contained inside copy preparation")
+	check(int(render_refresh.get("samples", -1)) >= 0
+		and int(render_refresh.get("samples", -1)) <= int(render_stage.get("samples", -2))
+		and int(terrain_refresh.get("samples", -1)) >= 0
+		and int(terrain_refresh.get("samples", -1)) <= int(terrain_stage.get("samples", -2)),
+		"refresh-branch counts are bounded by owner snapshot sampling")
 	check(int(metrics.get("worker_overruns", -1)) >= 0, "worker overrun counter read")
 	check(frame_intervals_us.size() == 360, "all physics-frame intervals recorded")
 	var displacement_attempts: int = int(metrics.displaced) + int(metrics.unresolved)

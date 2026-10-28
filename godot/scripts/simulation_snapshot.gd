@@ -94,6 +94,13 @@ var rigid_body_unresolved_last_tick: int = 0
 var simulation_time_ms: float = 0.0
 var worker_step_time_ms: float = 0.0
 var snapshot_copy_time_ms: float = 0.0
+# Worker-owner stage split of the existing copy interval, including patch-ack
+# cleanup in the render segment. Booleans mean the refresh branch was entered,
+# not that a render patch or terrain rectangle necessarily changed.
+var snapshot_render_stage_time_ms: float = 0.0
+var snapshot_terrain_stage_time_ms: float = 0.0
+var snapshot_render_stage_active: bool = false
+var snapshot_terrain_stage_active: bool = false
 # Portion after the existing render/terrain preparation interval and before
 # the mutex-protected immutable snapshot publication. Excludes the handoff.
 var snapshot_assembly_time_ms: float = 0.0

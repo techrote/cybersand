@@ -1851,6 +1851,9 @@ func _publish_snapshot(
 		_publish_failure_snapshot()
 		return
 	var copy_start_usec: int = Time.get_ticks_usec()
+	# Stage attribution is observation only. The render interval includes the
+	# existing patch-acknowledgement/cleanup work before any refresh decision.
+	var render_stage_active: bool = false
 	var now_usec: int = Time.get_ticks_usec()
 	var render_serial_before: int = _pending_render_snapshot_serial
 	var render_generation_advanced: bool = false
@@ -1877,6 +1880,7 @@ func _publish_snapshot(
 			and now_usec - _last_render_snapshot_usec >= render_snapshot_interval_usec
 		)
 	):
+		render_stage_active = true
 		if _world.has_method(&"take_render_snapshot"):
 			var render_packet: Dictionary = _world.take_render_snapshot(
 				force_render_full_refresh
@@ -1921,6 +1925,8 @@ func _publish_snapshot(
 			_pending_render_worker_step_time_ms = worker_step_time_ms
 			_pending_render_worker_overruns = _worker_overruns
 			render_generation_advanced = true
+	var render_stage_end_usec: int = Time.get_ticks_usec()
+	var terrain_stage_active: bool = false
 	var current_hard_surface_revision: int = int(_world.hard_surface_revision)
 	if (
 		force_render_full_refresh
@@ -1929,6 +1935,7 @@ func _publish_snapshot(
 		or (current_hard_surface_revision != _snapshot_hard_surface_revision
 			and now_usec - _last_hard_surface_snapshot_usec >= HARD_SURFACE_SNAPSHOT_INTERVAL_USEC)
 	):
+		terrain_stage_active = true
 		# A new physical owner/reset cannot acknowledge a retained terrain
 		# packet from its predecessor, even inside the ordinary edit throttle.
 		if _world.has_method(&"get_hard_surface_chunk_rectangles"):
@@ -1944,7 +1951,8 @@ func _publish_snapshot(
 		_snapshot_hard_surface_revision = current_hard_surface_revision
 		_snapshot_hard_surface_epoch = rigid_body_epoch
 		_last_hard_surface_snapshot_usec = now_usec
-	var copy_time_ms: float = float(Time.get_ticks_usec() - copy_start_usec) / 1000.0
+	var copy_end_usec: int = Time.get_ticks_usec()
+	var copy_time_ms: float = float(copy_end_usec - copy_start_usec) / 1000.0
 	var assembly_start_usec: int = Time.get_ticks_usec()
 
 	var snapshot: CyberSimulationSnapshot = CyberSimulationSnapshot.new()
@@ -2037,6 +2045,12 @@ func _publish_snapshot(
 	snapshot.simulation_time_ms = _world.simulation_time_ms
 	snapshot.worker_step_time_ms = worker_step_time_ms
 	snapshot.snapshot_copy_time_ms = copy_time_ms
+	# Both durations partition the existing copy interval; the two flags
+	# distinguish actual refresh calls from cheap no-refresh snapshots.
+	snapshot.snapshot_render_stage_time_ms = float(render_stage_end_usec - copy_start_usec) / 1000.0
+	snapshot.snapshot_terrain_stage_time_ms = float(copy_end_usec - render_stage_end_usec) / 1000.0
+	snapshot.snapshot_render_stage_active = render_stage_active
+	snapshot.snapshot_terrain_stage_active = terrain_stage_active
 	snapshot.worker_overruns = _worker_overruns
 	if _world.has_method(&"get_tick_failure_count"):
 		snapshot.tick_failure_count = int(_world.get_tick_failure_count())
