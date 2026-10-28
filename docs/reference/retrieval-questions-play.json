@@ -27,7 +27,7 @@
       "canonical": ["systems/player-control-playground.md"],
       "facts": [
         "LIFE003 holds native-prepared physical-ready construction before commit, observes actual Main callbacks and closes the real host after a bounded stop-fence release.",
-        "Local Windows has 135 assertions and zero failures, accepted/staged Rapier retirement, GDScript owner joins and worker/native-adapter WeakRef destruction; final hosted Windows/Linux and independent review remain gates.",
+        "Earlier source22900486 has local Windows135/0 with Rapier retirement, GDScript joins and worker/native-adapter destruction; the later nonblocking safety-helper revision requires fresh proof before final hosted Windows/Linux acceptance.",
         "It does not hold native simulation phase jobs, inject a slow native tick or observe an OS native-thread join trace."
       ],
       "sources": ["../godot/tests/play_life003_prepared_shutdown_case.gd"]

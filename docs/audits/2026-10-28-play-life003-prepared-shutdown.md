@@ -10,6 +10,33 @@ related-documents: [../systems/player-control-playground.md, ../architecture/dat
 
 # PLAY-LIFE-003 prepared reconstruction shutdown — 2026-10-28
 
+## Post-review safety-helper correction
+
+A follow-up review at source `2421c5a2` found a P2 apparatus boundedness gap:
+blocking `_mutex.lock()` could prevent the helper from checking its deadline
+under a mutex-retention regression. The outer 180 s case guard still applied;
+the retained 135/0 successful cohort below remains valid, but does not exercise
+that failure path. No production behavior is changed by this correction.
+
+The helper now uses Boolean `Mutex.try_lock()`, reads/unlocks only on success,
+and rechecks its deadline after failed acquisition. Godot 4.7 returns Boolean,
+not `Error`: a distinct reviewer verified the
+[versioned API](https://raw.githubusercontent.com/godotengine/godot/4.7-stable/doc/classes/Mutex.xml)
+and exact pinned runtime. Its outside-checkout probe made fourteen unsuccessful
+nonblocking attempts while main retained the mutex, released at 25 ms and joined
+without acquiring it. Probe root `C:/tmp/play-life003-mutex-api-20261028`;
+script SHA-256 `e2e2656341c592710bb6c56bfcc6bbe42ae603f997ee8427131544ddbd0b4e6b`,
+log `8ad6bc356a8c854364d629e1061567b05815b03d390afd71c88c6241842c85a7`.
+
+A new adversarial arm holds the actual joined worker's mutex on main, uses a
+25 ms test-only helper budget, and requires semaphore release while that mutex
+is still held with `deadline_expired=true` / `stop_observed=false`. It always
+unlocks before joining, even after the existing 15,000 ms predicate fails.
+The actual pending-construction shutdown retains its 15,000 ms safety budget;
+process/import bounds are unchanged. This adds three assertions per rig.
+Fresh source-bound actual-host execution and renewed independent review remain
+required; the API probe and earlier cohort are not relabeled as that proof.
+
 This bounded #269 successor adds tests while #287/#288 await final hosted
 acceptance. It does not change production source, native workers, solvers,
 defaults, actors, dependencies, CI policy or any accepted fixture. #270 remains

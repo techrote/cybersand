@@ -27,17 +27,18 @@ class PreparationBarrier extends RefCounted:
 class StopFenceRelease extends RefCounted:
 	var worker: CyberSimulationWorker
 	var barrier: PreparationBarrier
+	var safety_timeout_ms: int = 15000
 
 	func wait_then_release() -> Dictionary:
 		var started: int = Time.get_ticks_msec()
-		var deadline: int = started + 15000
+		var deadline: int = started + safety_timeout_ms
 		var observed: bool = false
 		while Time.get_ticks_msec() < deadline:
-			worker._mutex.lock()
-			observed = not worker._running
-			worker._mutex.unlock()
-			if observed:
-				break
+			if worker._mutex.try_lock():
+				observed = not worker._running
+				worker._mutex.unlock()
+				if observed:
+					break
 			OS.delay_usec(1000)
 		# Always release, including on a broken stop path. The timeout remains a
 		# test failure, rather than stranding Main inside wait_to_finish().
@@ -58,6 +59,38 @@ func nodes_retired(nodes: Array) -> bool:
 		if is_instance_valid(node):
 			return false
 	return true
+
+
+func exercise_contended_safety_release(worker: CyberSimulationWorker) -> Dictionary:
+	# The real owner has joined. Hold its actual mutex on main so a blocking
+	# acquisition in the helper cannot masquerade as an unconditional deadline.
+	var safety_barrier := PreparationBarrier.new()
+	var safety_release := StopFenceRelease.new()
+	safety_release.worker = worker
+	safety_release.barrier = safety_barrier
+	safety_release.safety_timeout_ms = 25
+	var safety_helper := Thread.new()
+	worker._mutex.lock()
+	var helper_error: Error = safety_helper.start(safety_release.wait_then_release)
+	expect(helper_error == OK, "contended safety helper starts against the joined real worker mutex")
+	var released_while_held: bool = false
+	if helper_error == OK:
+		released_while_held = await wait_for(func() -> bool: return safety_barrier.resume.try_wait())
+	# Always unlock before joining, including when the predicate fails. A
+	# blocking-acquisition regression becomes a bounded failure, not a deadlock.
+	worker._mutex.unlock()
+	var result: Dictionary = safety_helper.wait_to_finish() if helper_error == OK else {}
+	expect(released_while_held,
+		"safety semaphore releases while main still holds the contended worker mutex")
+	expect(bool(result.get("deadline_expired", false))
+		and not bool(result.get("stop_observed", true)),
+		"contended helper reaches its deadline without reading the protected stop flag")
+	safety_release.worker = null
+	safety_release.barrier = null
+	return {"safety_timeout_ms":25,"released_while_mutex_held":released_while_held,
+		"deadline_expired":bool(result.get("deadline_expired", false)),
+		"stop_observed":bool(result.get("stop_observed", true)),
+		"elapsed_ms":int(result.get("elapsed_ms", -1))}
 
 
 func run() -> void:
@@ -210,6 +243,7 @@ func run() -> void:
 		and previous.lab_context.liquid_construction_receipt == applied_receipt,
 		"retained immutable snapshot survives pending teardown unchanged")
 
+	var contended_safety: Dictionary = await exercise_contended_safety_release(worker)
 	var worker_weak: WeakRef = weakref(worker)
 	var world_weak: WeakRef = weakref(world)
 	worker._controlled_liquid_prepare_barrier = Callable()
@@ -237,6 +271,7 @@ func run() -> void:
 		"workers_joined":1 if joined else 0,
 		"worker_destroyed":worker_weak.get_ref() == null,
 		"native_adapter_destroyed":world_weak.get_ref() == null,
+		"contended_safety_probe":contended_safety,
 		"prepared_token":token,"applied_session_generation":applied_generation,
 		"world_generation":world_generation,"actor_epoch":actor_epoch,
 		"retries":0,"slow_native_injection":false,"native_phase_jobs_held":false,

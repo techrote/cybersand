@@ -202,6 +202,11 @@ The actual accepted/staged Rapier graphs retire, the exclusive GDScript owner
 joins, and only then may the test inspect the unchanged applied native receipt
 and retired preparation token. Dropping retained references must destroy both
 worker and native adapter objects, extending earlier joined-thread assertions.
+The helper uses nonblocking Boolean `Mutex.try_lock()` so contention cannot
+prevent deadline checks. A separate post-join arm holds the real worker mutex
+on main, requires safety release without acquiring it, then always unlocks
+before joining. Only this adversarial arm uses a 25 ms helper budget; actual
+pending-construction shutdown retains 15,000 ms.
 
 The [dated local Windows proof](../audits/2026-10-28-play-life003-prepared-shutdown.md)
 binds implementation `22900486` to five real hosts, **135 assertions / zero
@@ -210,6 +215,8 @@ destructions. This is pending construction cancellation, not shutdown with nativ
 simulation jobs outstanding, a slow native tick, an OS native-thread join trace,
 rendered pacing or human feel. Final accepted-parent integration, Windows/Linux
 hosted checks and independent review remain required; #269/#270 stay open.
+The later safety-helper correction adds three assertions per rig and requires
+fresh execution; the earlier 135/0 cohort is not qualification of that revision.
 
 ## Open the seven-preset movement course
 
