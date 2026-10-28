@@ -1,0 +1,177 @@
+{
+  "schema": "cybersand.sol281.render-terrain-stage-qualification.v1",
+  "date": "2026-10-28",
+  "question": "Is the expensive pre-assembly worker copy interval render/patch preparation or hard-surface rectangle preparation?",
+  "pre_registered_at": "https://github.com/techrote/cybersand/pull/283#issuecomment-6469867725",
+  "executed_source": "9725885d6c3007376c7b192324514e8ca32fa880",
+  "git_tree": "cabe4c048534b6c82477a365c008e7702e3d5d1e",
+  "implementation_source": "39aa2e4d2c6f664b10a2a138989c769ccf63cce0",
+  "scope": "Scoped actual Linux and Windows Godot 4.7.stable Rapier2D v0.35.2, one dry inert 520-cell six-proxy moving aggregate and Sand104/Water1020; diagnostic 81 A versus opt-in 289 B; not full ready PR, 60 FPS, release, or physical-ejection admission",
+  "ci": {
+    "scoped_run": 40694663350,
+    "scoped_conclusion": "success",
+    "four_scoped_jobs": "success",
+    "docs_run": 40694674219,
+    "docs_conclusion": "success",
+    "intermediate_failed_run": 40694452595,
+    "intermediate_cause": "workflow expected 48 live A/B checks after three source assertions expanded each to 51; host tests themselves returned zero failures"
+  },
+  "archives": [
+    {
+      "id": 12818837466,
+      "kind": "source",
+      "sha256": "fb9a76a5c84c5919f696bbcd65b2676a609749480a5381bea955f720d03c9108",
+      "tar_gz_sha256": "a7c61d0b29522aaed1bb5b576bfab3227487255cb77c12143792a275e74914ac"
+    },
+    {
+      "id": 12818533416,
+      "kind": "linux_rapier",
+      "sha256": "55baa6bdf83e0603b6ab9ac747510b06ac726dcecb1b2824e8d1e20d777fec51",
+      "native_runtime_sha256": "244b0270f31c37135256524a5ca1d27afac32d1afbbf02c88b215e4e2fdb85bb"
+    },
+    {
+      "id": 12818588847,
+      "kind": "windows_build",
+      "sha256": "54f9bedd9f382590b7e894e8af2ddf7f7426aa50437b6c38cbe3f07425bced01",
+      "dll_sha256": "c8a23b88c5c81aaf248dc2afd46b861ac79ba35d3b6edbc223a3e1aa74fbac3e"
+    },
+    {
+      "id": 12818798900,
+      "kind": "windows_rapier",
+      "sha256": "9177fb6cfab4aa4a297617d11862be14e498d2d98d99ea43adc47168e1c9323d",
+      "dll_sha256": "c8a23b88c5c81aaf248dc2afd46b861ac79ba35d3b6edbc223a3e1aa74fbac3e"
+    }
+  ],
+  "provenance": {
+    "all_zip_crc_ok": true,
+    "source_tar_tree_equals_git": true,
+    "git_source_manifest_inputs": 549,
+    "inputs_sha256_matched": 549,
+    "windows_checkout_EOL_only_restores": 92,
+    "windows_logs_hashed_and_verified": 8,
+    "windows_logs_nonzero_exit_codes": 0,
+    "linux_native_checks": 13074,
+    "linux_native_groups": 8,
+    "existing_native_compiler_conversion_warnings": 2
+  },
+  "host_checks_per_platform": {
+    "motion": 21,
+    "failure": 20,
+    "lifecycle": 296,
+    "lifecycle_replacement_cycles": 18,
+    "unresolved_diagnostics": 43,
+    "ejection_topology": 924,
+    "compound_a": 51,
+    "compound_b": 51,
+    "total": 1406,
+    "failures": 0
+  },
+  "metrics_unit": "milliseconds except explicit counts/rate",
+  "sample_semantics": "latest-only accepted immutable worker snapshots, 512 maximum per session; active samples subset; p95 of separate distributions cannot be summed",
+  "cases": [
+    {
+      "os": "Linux",
+      "policy": "A",
+      "probe_cap": 81,
+      "samples": 273,
+      "render_stage_p95_ms": 30.751,
+      "terrain_stage_p95_ms": 0.002,
+      "render_refresh_samples": 97,
+      "terrain_refresh_samples": 0,
+      "copy_p95_ms": 30.752,
+      "assembly_p95_ms": 0.249,
+      "premutex_total_p95_ms": 30.994,
+      "worker_overruns": 52,
+      "unresolved": 2413,
+      "displaced": 32,
+      "unresolved_rate": 0.986912065439673,
+      "stale_results": 0,
+      "invalid_timing_samples": 0
+    },
+    {
+      "os": "Linux",
+      "policy": "B",
+      "probe_cap": 289,
+      "samples": 237,
+      "render_stage_p95_ms": 31.154,
+      "terrain_stage_p95_ms": 0.002,
+      "render_refresh_samples": 121,
+      "terrain_refresh_samples": 0,
+      "copy_p95_ms": 31.155,
+      "assembly_p95_ms": 0.249,
+      "premutex_total_p95_ms": 31.391,
+      "worker_overruns": 58,
+      "unresolved": 1112,
+      "displaced": 39,
+      "unresolved_rate": 0.96611642050391,
+      "stale_results": 0,
+      "invalid_timing_samples": 0
+    },
+    {
+      "os": "Windows",
+      "policy": "A",
+      "probe_cap": 81,
+      "samples": 282,
+      "render_stage_p95_ms": 24.42,
+      "terrain_stage_p95_ms": 0.001,
+      "render_refresh_samples": 104,
+      "terrain_refresh_samples": 0,
+      "copy_p95_ms": 24.421,
+      "assembly_p95_ms": 0.24,
+      "premutex_total_p95_ms": 24.646,
+      "worker_overruns": 29,
+      "unresolved": 2651,
+      "displaced": 28,
+      "unresolved_rate": 0.989548338932437,
+      "stale_results": 0,
+      "invalid_timing_samples": 0
+    },
+    {
+      "os": "Windows",
+      "policy": "B",
+      "probe_cap": 289,
+      "samples": 292,
+      "render_stage_p95_ms": 24.437,
+      "terrain_stage_p95_ms": 0.002,
+      "render_refresh_samples": 137,
+      "terrain_refresh_samples": 0,
+      "copy_p95_ms": 24.439,
+      "assembly_p95_ms": 0.244,
+      "premutex_total_p95_ms": 24.668,
+      "worker_overruns": 35,
+      "unresolved": 1471,
+      "displaced": 36,
+      "unresolved_rate": 0.976111479761115,
+      "stale_results": 0,
+      "invalid_timing_samples": 0
+    }
+  ],
+  "preserved": {
+    "native_members": 520,
+    "compound_rapier_proxies": 6,
+    "hole_indicator_body_id_prefix": [
+      2,
+      0,
+      0,
+      6
+    ],
+    "stored_sand": 104,
+    "stored_water_mass": 1020,
+    "rigid_result_stride_floats": 12,
+    "unresolved_no_target_only": true,
+    "liquid_solver_config_unchanged": true,
+    "worker_owns_native_cell_world": true,
+    "main_thread_owns_rapier": true
+  },
+  "negative": {
+    "289_probe_B_policy": "NO-GO; independent prior 20pp efficacy threshold not reached",
+    "representative_interactive_fps": "unqualified",
+    "full_worker_loop": "unqualified",
+    "physical_chain_relocation": "unqualified",
+    "reactive_wood": "unqualified",
+    "fracture_desoliding_persistence": "unqualified",
+    "independent_review": "missing",
+    "full_ready_PR_CI": "not run because draft"
+  },
+  "method": "Two immutable owner-snapshot float stage timings partition pre-assembly snapshot_copy_time_ms, two booleans reflect branch admission; no native-C++/Rapier/material policy changes."
+}
