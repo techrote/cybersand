@@ -146,6 +146,8 @@ public:
     [[nodiscard]] Dictionary diagnostic_snapshot(Vector2i origin, Vector2i size,
                                                   bool include_histogram = false) const;
     [[nodiscard]] Array diagnostic_body_metrics() const;
+    // Read-only applied diagnostic search selection; ordinary demo stays at 0.
+    [[nodiscard]] std::int64_t get_ejection_policy() const;
     [[nodiscard]] std::int64_t get_tick_failure_count() const;
 
 protected:
@@ -193,6 +195,8 @@ private:
         std::array<BodyDiagnostic, cybersand::World::kMaximumTransientBodies + 1U>;
     std::unique_ptr<BodyDiagnostics> body_diagnostics_;
     bool diagnostic_fixture_ = false;
+    // SOL281 diagnostic-only experiment. 0 is the unchanged production search.
+    std::uint8_t ejection_policy_ = 0;
     bool default_demo_recipe_active_ = false;
     double displacement_gain_ = 0.18;
     double boundary_gain_ = 0.19;

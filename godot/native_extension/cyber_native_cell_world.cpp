@@ -77,6 +77,7 @@ void CyberNativeCellWorld::_bind_methods() {
                          &CyberNativeCellWorld::diagnostic_relocate_cell);
     ClassDB::bind_method(D_METHOD("diagnostic_snapshot", "origin", "size", "include_histogram"), &CyberNativeCellWorld::diagnostic_snapshot, DEFVAL(false));
     ClassDB::bind_method(D_METHOD("diagnostic_body_metrics"), &CyberNativeCellWorld::diagnostic_body_metrics);
+    ClassDB::bind_method(D_METHOD("get_ejection_policy"), &CyberNativeCellWorld::get_ejection_policy);
     ClassDB::bind_method(D_METHOD("get_water_experiment_policy"),
                          &CyberNativeCellWorld::get_water_experiment_policy);
     ClassDB::bind_method(D_METHOD("get_liquid_solver_policy"),
@@ -338,6 +339,7 @@ Dictionary CyberNativeCellWorld::get_default_demo_identity() const {
 
 void CyberNativeCellWorld::reset_demo_coupling_parameters() noexcept {
     diagnostic_fixture_ = false;
+    ejection_policy_ = 0;
     body_diagnostics_.reset();
     displacement_gain_ = kBodyDisplacementReactionImpulse;
     boundary_gain_ = kBodyBoundaryPressureImpulse;
@@ -702,6 +704,38 @@ Vector2i CyberNativeCellWorld::find_ejection_target(std::int32_t source_x,
                                          source_body_id)) continue;
             return {x, y};
         }
+    }
+    // Optional SOL281 diagnostic continuation. The unchanged 81 baseline
+    // candidates above always win, preserving exact baseline destinations.
+    // Search near lateral slots first, then a farther forward band. Both
+    // passes retain the same hard-surface/other-owner path refusal.
+    if (diagnostic_fixture_ && ejection_policy_ == 1U) {
+        const auto extended = [&](std::int32_t from_distance,
+                                  std::int32_t to_distance,
+                                  std::int32_t first_probe) -> Vector2i {
+            for (auto distance = from_distance; distance <= to_distance; ++distance) {
+                for (std::int32_t probe = first_probe; probe < 17; ++probe) {
+                    const auto tangent_offset = symmetric_probe_offset(probe);
+                    const auto candidate = source_center + outward_normal * distance +
+                                           tangent * tangent_offset;
+                    const auto x = static_cast<std::int32_t>(std::floor(candidate.x));
+                    const auto y = static_cast<std::int32_t>(std::floor(candidate.y));
+                    if (!in_bounds(x, y) || world_->transient_obstacle_at(x, y) != 0U ||
+                        world_->stored_material(x, y) != cybersand::Material::Empty) {
+                        continue;
+                    }
+                    if (!ejection_path_reachable(source_x, source_y, x, y,
+                                                 source_body_id)) continue;
+                    return {x, y};
+                }
+            }
+            return {-1, -1};
+        };
+        const auto lateral = extended(first_distance,
+                                      first_distance + kMaximumEjectionDistance, 9);
+        if (lateral.x >= 0) return lateral;
+        return extended(first_distance + kMaximumEjectionDistance + 1,
+                        first_distance + 16, 0);
     }
     return {-1, -1};
 }
@@ -1429,6 +1463,13 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         const auto cap = gain("cap", 3.0);
         const auto density = gain("density_limit", 1.6);
         if (density < 0.05 || cap <= 0) return false;
+        // Invalid or nonintegral experiment admission cannot replace the old
+        // authoritative World. No policy survives an ordinary demo reset.
+        if (options.has("ejection_policy") &&
+            options["ejection_policy"].get_type() != Variant::INT) return false;
+        const auto ejection_policy = static_cast<std::int64_t>(
+            options.get("ejection_policy", 0));
+        if (ejection_policy < 0 || ejection_policy > 1) return false;
         cybersand::WorldConfig config;
         config.worker_threads = static_cast<std::uint32_t>(workers);
         config.maximum_chunk_count = 128;
@@ -1463,6 +1504,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         ++liquid_policy_session_generation_;
         body_diagnostics_ = std::move(diagnostics);
         diagnostic_fixture_ = true;
+        ejection_policy_ = static_cast<std::uint8_t>(ejection_policy);
         worker_threads_ = config.worker_threads;
         displacement_gain_ = displacement; boundary_gain_ = boundary;
         contact_gain_ = contact; impulse_cap_ = cap; density_limit_ = density;
@@ -2065,6 +2107,10 @@ Dictionary CyberNativeCellWorld::diagnostic_snapshot(Vector2i origin, Vector2i s
         }
     }
     return result;
+}
+
+std::int64_t CyberNativeCellWorld::get_ejection_policy() const {
+    return diagnostic_fixture_ ? static_cast<std::int64_t>(ejection_policy_) : 0;
 }
 
 Array CyberNativeCellWorld::diagnostic_body_metrics() const {

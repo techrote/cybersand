@@ -194,14 +194,26 @@ jobs:
           run('unresolved-diagnostics',['--headless','--path','godot','--script','res://tests/test_solid_detachment_unresolved_diagnostics.gd','--',str(result/'unresolved-diagnostics.json')],'SOL281_UNRESOLVED_DIAGNOSTICS')
           unresolved=json.loads((result/'unresolved-diagnostics.json').read_text())
           assert unresolved['checks']==43 and unresolved['failures']==[] and unresolved['platform']=='Windows' and unresolved['result_stride']==12
+          run('ejection-policy',['--headless','--path','godot','--script','res://tests/test_solid_detachment_ejection_policy.gd','--',str(result/'ejection-policy.json')],'SOL281_EJECTION_POLICY')
+          policy=json.loads((result/'ejection-policy.json').read_text())
+          assert policy['platform']=='Windows' and policy['failures']==[] and policy['checks']>=200
+          assert policy['baseline_candidates_max']==81 and policy['extended_candidates_max']==289 and len(policy['cases'])==40
           run('compound-coupling',['--headless','--path','godot','--script','res://tests/test_solid_detachment_coupling.gd','--',str(result/'compound-coupling.json')],'SOL281_COMPOUND_COUPLING')
           coupling=json.loads((result/'compound-coupling.json').read_text())
           assert coupling['checks']==36 and coupling['failures']==[] and coupling['platform']=='Windows'
           assert coupling['coupling']['proxy_count']==coupling['shapes'] and coupling['coupling']['contacts']>0 and coupling['coupling']['displaced']>0
           assert coupling['coupling']['unresolved']==coupling['coupling']['unresolved_no_target'] and coupling['coupling']['unresolved_immovable']==0 and coupling['coupling']['unresolved_relocation_refused']==0 and coupling['coupling']['unresolved_unclassified']==0
+          assert coupling['ejection_policy']==0 and coupling['main_thread_step_timing']['samples']==360
+          run('compound-extended',['--headless','--path','godot','--script','res://tests/test_solid_detachment_coupling.gd','--',str(result/'compound-extended.json'),'1'],'SOL281_COMPOUND_COUPLING')
+          extended=json.loads((result/'compound-extended.json').read_text())
+          assert extended['checks']==36 and extended['failures']==[] and extended['platform']=='Windows' and extended['ejection_policy']==1
+          assert extended['members']==520 and extended['shapes']==6 and extended['coupling']['proxy_count']==6
+          assert extended['coupling']['contacts']>0 and extended['coupling']['displaced']>0
+          assert extended['coupling']['unresolved']==extended['coupling']['unresolved_no_target'] and extended['coupling']['unresolved_immovable']==0 and extended['coupling']['unresolved_relocation_refused']==0 and extended['coupling']['unresolved_unclassified']==0
+          assert extended['main_thread_step_timing']['samples']==360
           for p,h in manifest['inputs'].items():
               assert hashlib.sha256((root/p).read_bytes()).hexdigest()==h, ('execution source drift',p)
-          report={'source':manifest['source'],'runtime_sha256':manifest['dll_sha256'],'platform':'Windows','cases':results,'lifecycle':lifecycle,'motion':motion,'failure_paths':failure,'unresolved_diagnostics':unresolved,'compound_coupling':coupling,'scope':'actual scoped Windows host proof including exact unresolved-cause partition and compound Sand/Water coupling; no full native or production publication claim'}
+          report={'source':manifest['source'],'runtime_sha256':manifest['dll_sha256'],'platform':'Windows','cases':results,'lifecycle':lifecycle,'motion':motion,'failure_paths':failure,'unresolved_diagnostics':unresolved,'ejection_policy_protocol':policy,'compound_coupling':coupling,'compound_extended':extended,'scope':'actual scoped Windows host A/B ejection-search experiment; baseline unchanged and B diagnostic-only, no independent review, full native matrix or production publication'}
           (result/'report.json').write_text(json.dumps(report,indent=2)+'\n')
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
@@ -259,7 +271,9 @@ jobs:
           timeout 60s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_failures.gd 2>&1 | tee build/sol281-linux/failures.txt
           timeout 180s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_lifecycle.gd 2>&1 | tee build/sol281-linux/lifecycle.txt
           timeout 60s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_unresolved_diagnostics.gd -- "$PWD/build/sol281-linux/unresolved-diagnostics.json" 2>&1 | tee build/sol281-linux/unresolved-diagnostics.txt
+          timeout 180s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_ejection_policy.gd -- "$PWD/build/sol281-linux/ejection-policy.json" 2>&1 | tee build/sol281-linux/ejection-policy.txt
           timeout 180s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_coupling.gd -- "$PWD/build/sol281-linux/compound-coupling.json" 2>&1 | tee build/sol281-linux/compound-coupling.txt
+          timeout 180s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_coupling.gd -- "$PWD/build/sol281-linux/compound-extended.json" 1 2>&1 | tee build/sol281-linux/compound-extended.txt
           python3 - <<'PY2'
           import json,re
           from pathlib import Path
@@ -272,13 +286,23 @@ jobs:
           assert lifecycle['checks']==296 and lifecycle['actual_host_replacement_cycles']==18 and lifecycle['failures']==[]
           unresolved=json.loads((root/'unresolved-diagnostics.json').read_text())
           assert unresolved['checks']==43 and unresolved['failures']==[] and unresolved['platform']=='Linux' and unresolved['result_stride']==12
+          policy=json.loads((root/'ejection-policy.json').read_text())
+          assert policy['platform']=='Linux' and policy['failures']==[] and policy['checks']>=200
+          assert policy['baseline_candidates_max']==81 and policy['extended_candidates_max']==289 and len(policy['cases'])==40
           coupling=json.loads((root/'compound-coupling.json').read_text())
           assert coupling['checks']==36 and coupling['failures']==[] and coupling['platform']=='Linux'
           assert coupling['coupling']['proxy_count']==coupling['shapes'] and coupling['coupling']['contacts']>0 and coupling['coupling']['displaced']>0
           assert coupling['coupling']['unresolved']==coupling['coupling']['unresolved_no_target'] and coupling['coupling']['unresolved_immovable']==0 and coupling['coupling']['unresolved_relocation_refused']==0 and coupling['coupling']['unresolved_unclassified']==0
-          (root/'report.json').write_text(json.dumps({'source':Path(root/'source.txt').read_text().strip(),'platform':'Linux','motion':motion,'failure_paths':failure,'lifecycle':lifecycle,'unresolved_diagnostics':unresolved,'compound_coupling':coupling,'scope':'actual current-source Linux Godot/Rapier plus exact unresolved-cause partition and compound Sand/Water coupling; no publication or full PR acceptance'},indent=2)+'\n')
+          assert coupling['ejection_policy']==0 and coupling['main_thread_step_timing']['samples']==360
+          extended=json.loads((root/'compound-extended.json').read_text())
+          assert extended['checks']==36 and extended['failures']==[] and extended['platform']=='Linux' and extended['ejection_policy']==1
+          assert extended['members']==520 and extended['shapes']==6 and extended['coupling']['proxy_count']==6
+          assert extended['coupling']['contacts']>0 and extended['coupling']['displaced']>0
+          assert extended['coupling']['unresolved']==extended['coupling']['unresolved_no_target'] and extended['coupling']['unresolved_immovable']==0 and extended['coupling']['unresolved_relocation_refused']==0 and extended['coupling']['unresolved_unclassified']==0
+          assert extended['main_thread_step_timing']['samples']==360
+          (root/'report.json').write_text(json.dumps({'source':Path(root/'source.txt').read_text().strip(),'platform':'Linux','motion':motion,'failure_paths':failure,'lifecycle':lifecycle,'unresolved_diagnostics':unresolved,'ejection_policy_protocol':policy,'compound_coupling':coupling,'compound_extended':extended,'scope':'actual current-source Linux Godot/Rapier A/B diagnostic ejection-search experiment; no publication or full PR acceptance'},indent=2)+'\n')
           PY2
-          ! grep -E 'SCRIPT ERROR:|ERROR: Failed to load|FAIL SOL281' build/sol281-linux/import.txt build/sol281-linux/motion.txt build/sol281-linux/failures.txt build/sol281-linux/lifecycle.txt build/sol281-linux/unresolved-diagnostics.txt build/sol281-linux/compound-coupling.txt
+          ! grep -E 'SCRIPT ERROR:|ERROR: Failed to load|FAIL SOL281' build/sol281-linux/import.txt build/sol281-linux/motion.txt build/sol281-linux/failures.txt build/sol281-linux/lifecycle.txt build/sol281-linux/unresolved-diagnostics.txt build/sol281-linux/ejection-policy.txt build/sol281-linux/compound-coupling.txt build/sol281-linux/compound-extended.txt
           git diff --check
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()

@@ -33,8 +33,10 @@ func _init() -> void:
 	call_deferred("_run")
 
 func _run() -> void:
+	var policy_args: PackedStringArray = OS.get_cmdline_user_args()
+	var ejection_policy: int = int(policy_args[1]) if policy_args.size() > 1 else 0
 	session = Session.new()
-	if not await session.open(root, 4):
+	if not await session.open(root, 4, ejection_policy):
 		check(false, session.last_error)
 		session.close()
 		quit(1)
@@ -103,9 +105,12 @@ func _run() -> void:
 	var initial_transform: Transform2D = session.body_transform()
 	var max_rotation: float = 0.0
 	var max_translation: float = 0.0
+	var main_step_us: Array[int] = []
 	for _tick: int in range(360):
 		await physics_frame
+		var started_us: int = Time.get_ticks_usec()
 		session.physics_step()
+		main_step_us.append(Time.get_ticks_usec() - started_us)
 		var transform: Transform2D = session.body_transform()
 		max_rotation = maxf(max_rotation, absf(transform.get_rotation()))
 		max_translation = maxf(max_translation, transform.origin.distance_to(initial_transform.origin))
@@ -128,8 +133,8 @@ func _run() -> void:
 	check(int(metrics.unresolved_relocation_refused) == 0,
 		"admitted ejection targets never fail authoritative relocation")
 	check(int(metrics.unresolved_no_target) == int(metrics.unresolved)
-		and int(metrics.unresolved_no_target) > 0,
-		"dense-bank unresolved interactions are exhausted ejection searches")
+		and (ejection_policy == 1 or int(metrics.unresolved_no_target) > 0),
+		"dense-bank unresolved interactions, if any, are exhausted ejection searches")
 	check(int(metrics.proxy_count) == int(source.shape_count), "proxy topology remains stable through rotation")
 	check(max_rotation > 0.5 and max_translation > 5.0, "actual Rapier body still topples while coupled")
 	check(final.get("aggregate_owned") == source.member_count and final.get("native_source_members") == 0,
@@ -142,8 +147,24 @@ func _run() -> void:
 
 	var displacement_attempts: int = int(metrics.displaced) + int(metrics.unresolved)
 	var unresolved_rate: float = float(metrics.unresolved) / maxf(float(displacement_attempts), 1.0)
+	main_step_us.sort()
+	var sample_count: int = main_step_us.size()
+	var timing: Dictionary = {
+		"samples":sample_count, "total_usec":0, "p50_usec":-1,
+		"p95_usec":-1, "p99_usec":-1, "max_usec":-1
+	}
+	if sample_count > 0:
+		var sum_us: int = 0
+		for value: int in main_step_us:
+			sum_us += value
+		timing.total_usec = sum_us
+		timing.p50_usec = main_step_us[int(floor(float(sample_count - 1) * 0.50))]
+		timing.p95_usec = main_step_us[int(ceil(float(sample_count - 1) * 0.95))]
+		timing.p99_usec = main_step_us[int(ceil(float(sample_count - 1) * 0.99))]
+		timing.max_usec = main_step_us[sample_count - 1]
 	var report: Dictionary = {
-		"schema":"cybersand.sol281.compound-cellular-coupling.v1",
+		"schema":"cybersand.sol281.compound-cellular-coupling.v2",
+		"ejection_policy":ejection_policy, "main_thread_step_timing":timing,
 		"checks":checks, "failures":failures, "platform":OS.get_name(),
 		"members":source.member_count, "shapes":source.shape_count,
 		"initial_body_ids":ids, "sand_average_y":sand_average_y,

@@ -64,7 +64,7 @@ var _coupling_stale_results: int = 0
 var _coupling_last_impulse: Vector2 = Vector2.ZERO
 var _coupling_last_correction: Vector2 = Vector2.ZERO
 
-func open(parent: Node, workers: int = 4) -> bool:
+func open(parent: Node, workers: int = 4, ejection_policy: int = 0) -> bool:
 	close()
 	_parent = parent
 	_tree = parent.get_tree()
@@ -78,8 +78,11 @@ func open(parent: Node, workers: int = 4) -> bool:
 	var native: Object = worker._world
 	if not native.has_method(&"solid_detachment_command") or not ClassDB.class_exists(&"RapierPhysicsServer2D"):
 		return _fail("Source-matched native detachment and Rapier runtime required; no fallback")
-	if not native.diagnostic_reset({"workers":workers,"telemetry":false}):
+	if not native.diagnostic_reset({"workers":workers,"telemetry":false,
+		"ejection_policy":ejection_policy}):
 		return _fail("Native diagnostic setup refused")
+	if native.get_ejection_policy() != ejection_policy:
+		return _fail("Native experimental search policy readback mismatch")
 	native.set_simulation_window_enabled(false)
 	for item: Array in [[0,72,128,4,WALL], [50,40,4,32,BRICK], [44,27,29,13,BRICK],
 		[54,40,11,4,BRICK], [8,45,3,27,BRICK], [60,32,1,1,0]]:

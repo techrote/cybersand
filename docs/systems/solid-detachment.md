@@ -5,7 +5,7 @@ document-kind: contract
 scope: Branch-local dry inert one-aggregate handoff, exact compound cellular coupling, session lifetime fences and scoped Linux/Windows Rapier proof; not production soliding
 canonical-for: [solid-detachment-runtime, solid-detachment-lab]
 last-reviewed: 2026-10-28
-related-documents: [../operations/soliding-structural-detachment-programme.md, ../architecture/soliding-lifecycle.md, ../architecture/rigid-body-and-cellular-coupling.md, ../architecture/simulation-tick-and-threading.md, ../audits/2026-10-27-sol281-native-tree.md, ../audits/2026-10-27-sol281-compound-cellular-coupling.md, ../audits/2026-10-28-sol281-unresolved-cause-characterisation.md]
+related-documents: [../operations/soliding-structural-detachment-programme.md, ../architecture/soliding-lifecycle.md, ../architecture/rigid-body-and-cellular-coupling.md, ../architecture/simulation-tick-and-threading.md, ../audits/2026-10-27-sol281-native-tree.md, ../audits/2026-10-27-sol281-compound-cellular-coupling.md, ../audits/2026-10-28-sol281-unresolved-cause-characterisation.md, ../audits/2026-10-28-sol281-ejection-search-preregistration.md]
 ---
 
 # Experimental native solid detachment
@@ -85,6 +85,30 @@ were 35 and 40 respectively, giving attempt-level unresolved proportions of
 not unique cells or deterministic cross-run totals. No ejection rule changed.
 The result proves cause attribution, not acceptable production resolution rate,
 performance tuning or universal material coupling.
+
+## Diagnostic-only bounded search A/B — unqualified candidate
+
+A preregistered [2026-10-28 ejection-search experiment](../audits/2026-10-28-sol281-ejection-search-preregistration.md)
+retains the baseline nine-distance by nine-tangent (81-candidate) search
+**unaltered as the default**. An explicit diagnostic construction argument
+`{"ejection_policy":1}` selects an additional deterministic bounded
+208-candidate tail **only after all baseline candidates have failed**.
+The native `get_ejection_policy()` returns the applied selector, and
+the fallback diagnostic value is `body_ejection_policy`. The ordinary
+demo-world reset selects 0. This is not a live config, regular-gameplay
+setting, inherited liquid parameter, persisted aggregate schema or permission
+to alter authoritative cell ownership. Source code for this candidate has
+not yet obtained exact-head native/Linux/Windows engine qualification or
+independent review; its no-target reduction and frame cost are **unknown**.
+
+The opt-in experiment uses the same empty-target, hole/foreign-mask
+and hard-contact path checks, and it preserves the same exact relocation
+commit/refusal, reaction impulse and copied result ABI. The controlled
+native/fallback diagnostic cases and actual paired six-proxy Rapier fixtures
+are distinct acceptance gates. Any future recorded measurements must bind
+an executed source SHA, runtime hash, platform and sample count. Unresolved
+events are counted as attempts, not unique cells. Nothing in this experiment
+admits reactive Wood, aggregate fracture or production soliding.
 
 ## Native owner, shape and transaction contract
 
