@@ -41,6 +41,19 @@ This demonstrates the primary mechanical direction, not general reactive Wood,
 bark/leaf cohesion or unrestricted terrain dynamics. No ordinary gameplay mode
 or material policy automatically enables the feature.
 
+## Newer experimental render microstage attribution — source d441a8a5
+
+The opt-in diagnostic branch has a source-matched [render exchange and
+copy attribution audit](../audits/2026-10-28-sol281-render-exchange-microstages.md)
+and [machine receipt](../audits/sol281-2026-10-28/render-exchange-microstages-receipt.json).
+The headless laboratory's unacknowledged render stream triggers two native
+exchange calls on every sampled refresh; this is a **fixture-specific cost and
+consumer-lifecycle limitation**, not accepted normal-render FPS or a change in
+native ownership, mass, holes, material laws, or async worker/Rapier partition.
+Scoped Linux and Windows hosts passed 1,414 assertions each on exact executable
+source `d441a8a593f001d944d5f0691eab63d7614023c5`. The prior 289-probe B ejection candidate remains NO-GO;
+safe material relocation and normal frame pacing are unqualified.
+
 ## Exact compound cellular coupling — source 41dc25ca
 
 **Current on the implementation branch, not accepted production main.** Source

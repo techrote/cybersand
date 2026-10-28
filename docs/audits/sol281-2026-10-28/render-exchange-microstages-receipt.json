@@ -1,0 +1,160 @@
+{
+  "schema": "cybersand.sol281.render-exchange-microstages.v1",
+  "date": "2026-10-28",
+  "source_sha": "d441a8a593f001d944d5f0691eab63d7614023c5",
+  "tree_sha": "5f5ed3d5071be0f6c917db6c69d1ee5708f54d39",
+  "predecessor": "b2f37b39f4f76a5227a0fc5bad79e51cdcbcbe25",
+  "preregistration": "https://github.com/techrote/cybersand/pull/283#issuecomment-6474373870",
+  "run": {
+    "id": 40724802526,
+    "url": "https://github.com/techrote/cybersand/actions/runs/40724802526",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs_passed": [
+      "source",
+      "linux-rapier",
+      "windows-build",
+      "windows-rapier"
+    ]
+  },
+  "executable_source_docs_run": {
+    "id": 40724811601,
+    "status": "success"
+  },
+  "artifact_sha256": {
+    "source_zip": "ddf3a91f5f3a01047f2b54a1c261628ba24a7e726ea2c8e1f45b8cd7e8af04eb",
+    "source_tar": "a18f67f39ac85f06449c996c56a91a67f747ffd00545bee671ac9080f05bcbab",
+    "linux_zip": "d7538d0960eddf7176d7c3aa81dbef7c37fbc9c88903d3f9cfc99bbc930e5aa7",
+    "linux_runtime": "244b0270f31c37135256524a5ca1d27afac32d1afbbf02c88b215e4e2fdb85bb",
+    "windows_build_zip": "83da6779f96919540a9c001b8641f0fd5f2466559a76a91b7621c1f3f8dad55e",
+    "windows_execution_zip": "b50634dd55ce4cdcc774a192a310f2aa3a7d48c36fac4464c27c3798441f35f7",
+    "windows_runtime": "40ab0b82a0d118ca027baec1a099afdea9704f46fb57a0ebc42c450007fbca8f"
+  },
+  "artifact_ids": {
+    "source": 12831777881,
+    "linux": 12832876122,
+    "windows_build": 12832826811,
+    "windows_execution": 12833400454
+  },
+  "independent_integrity": {
+    "zip_crc_checked": 4,
+    "source_tree_matched": true,
+    "windows_manifest_inputs_matched": 549,
+    "windows_manifest_mismatches": 0,
+    "windows_checkout_git_byte_eol_restorations_reported": 92,
+    "windows_build_execution_dll_sha_matched": true,
+    "windows_execution_log_hashes_matched": 8,
+    "windows_execution_log_count": 8
+  },
+  "assertions_per_os": {
+    "motion": 21,
+    "rollback": 20,
+    "lifecycle": 296,
+    "diagnostic_abi": 43,
+    "controlled_policy": 924,
+    "compound_A": 55,
+    "compound_B": 55,
+    "total": 1414,
+    "failures": 0
+  },
+  "live_guarantees": {
+    "native_tree_members": 520,
+    "compound_proxies": 6,
+    "open_holes": 2,
+    "sand_count": 104,
+    "water_mass": 1020,
+    "body_result_fields": 12,
+    "stale_results": 0
+  },
+  "observations": [
+    {
+      "platform": "Linux",
+      "policy": "A",
+      "probes": 81,
+      "samples": 165,
+      "refresh": 89,
+      "exchange_calls": 178,
+      "double_calls": 89,
+      "payload_bytes": 186722120,
+      "render_p95_ms": 51.918,
+      "exchange_p95_ms": 51.642,
+      "accumulation_p95_ms": 0.251,
+      "full_copy_p95_ms": 0.002,
+      "residual_p95_ms": 0.026,
+      "terrain_p95_ms": 0.002,
+      "publish_total_p95_ms": 52.174,
+      "worker_overruns": 100,
+      "invalid_samples": 0
+    },
+    {
+      "platform": "Linux",
+      "policy": "B",
+      "probes": 289,
+      "samples": 118,
+      "refresh": 112,
+      "exchange_calls": 224,
+      "double_calls": 112,
+      "payload_bytes": 234952628,
+      "render_p95_ms": 51.647,
+      "exchange_p95_ms": 51.392,
+      "accumulation_p95_ms": 0.239,
+      "full_copy_p95_ms": 0.002,
+      "residual_p95_ms": 0.025,
+      "terrain_p95_ms": 0.002,
+      "publish_total_p95_ms": 51.886,
+      "worker_overruns": 111,
+      "invalid_samples": 0
+    },
+    {
+      "platform": "Windows",
+      "policy": "A",
+      "probes": 81,
+      "samples": 303,
+      "refresh": 111,
+      "exchange_calls": 222,
+      "double_calls": 111,
+      "payload_bytes": 232820088,
+      "render_p95_ms": 22.207,
+      "exchange_p95_ms": 21.424,
+      "accumulation_p95_ms": 0.787,
+      "full_copy_p95_ms": 0.002,
+      "residual_p95_ms": 0.03,
+      "terrain_p95_ms": 0.002,
+      "publish_total_p95_ms": 22.508,
+      "worker_overruns": 23,
+      "invalid_samples": 0
+    },
+    {
+      "platform": "Windows",
+      "policy": "B",
+      "probes": 289,
+      "samples": 297,
+      "refresh": 164,
+      "exchange_calls": 328,
+      "double_calls": 164,
+      "payload_bytes": 343974622,
+      "render_p95_ms": 22.176,
+      "exchange_p95_ms": 21.427,
+      "accumulation_p95_ms": 0.769,
+      "full_copy_p95_ms": 0.002,
+      "residual_p95_ms": 0.028,
+      "terrain_p95_ms": 0.002,
+      "publish_total_p95_ms": 22.456,
+      "worker_overruns": 27,
+      "invalid_samples": 0
+    }
+  ],
+  "source_limitation": "The headless detachment session does not acknowledge render packets; the desktop main scene acknowledges only successful uploads. Two native exchange calls in each sampled refresh arise on this specific unacknowledged-pending/overflow path. Non-refresh samples have zero calls. Native call timing includes internal publish+cell extraction+Godot marshaling, not separated internal phases. Percentile buckets are non-additive and asynchronous A/B are unpaired.",
+  "negative_results": [
+    "289-probe policy B remains NO-GO under prior 20-percentage-point efficacy criterion",
+    "95-99% unresolved overlap attempts remain reported in these headless dense-bank histories",
+    "worker overruns and publication costs remain high",
+    "does not establish normal interactive 60 FPS or safe new relocation"
+  ],
+  "open_gates": [
+    "representative render-uploaded ACK-consumer vs deliberately unacknowledged headless comparison",
+    "physically admissible bounded conservative material relocation",
+    "reactive Wood, fracture/restoration, multiple aggregates, persistence",
+    "ready-for-review full CI, independent review and normal-gameplay/runtime publication"
+  ]
+}
