@@ -69,16 +69,58 @@ and [Docs](https://github.com/techrote/cybersand/actions/runs/40492528439)
 succeeded on the same reviewed integration tree. This does not establish
 physical gamepad or manual gameplay feel.
 
-**PLAY-UI-002 camera candidate — unqualified:** The actual shared
-mechanical course selects the original 256x128 close-follow viewport and
-offers F to view the exact authored `Rect2i(128,128,512,256)` panorama
-and return, with no World reconstruction. Other default/scientific camera
-behaviors remain unchanged. Added all-five-rig camera/F and reset assertions
-still require source-matched Windows/Linux CI and independent review.
+**Accepted PLAY-UI-002 / #268 camera slice:** [PR #279](https://github.com/techrote/cybersand/pull/279)
+merged on 2026-10-27 at `fc397c6f7ff9807610171a69e340af47f3e04f37`.
+The mechanical course now uses its authored 256x128 close-follow viewport;
+F toggles the exact `Rect2i(128,128,512,256)` panorama and back without
+rebuilding the World. Other scientific/default camera controls retain their
+original behavior. The [Windows/Linux Godot jobs](https://github.com/techrote/cybersand/actions/runs/40515691731)
+each passed 115/115 actual-host five-rig assertions, with
+[Native](https://github.com/techrote/cybersand/actions/runs/40515691552)
+and [Docs](https://github.com/techrote/cybersand/actions/runs/40515691616)
+green at exact reviewed head. No manual camera/feel claim follows.
+
+**Accepted PLAY-UI-003 / #268 lap/HUD slice:** [PR #280](https://github.com/techrote/cybersand/pull/280)
+merged on 2026-10-28 as `69e340d390e3e563833e80659aa97fddc2922310`.
+Its accepted tree `63c6612fcaecdacad26452f7d15dfb118d410d9d` matches
+reviewed head `8533876b` and tested checkout `eb84f71c`.
+[Godot/GDExtension](https://github.com/techrote/cybersand/actions/runs/40600760606),
+[Native](https://github.com/techrote/cybersand/actions/runs/40600760721),
+[Documentation](https://github.com/techrote/cybersand/actions/runs/40600760603)
+and [independent source review](https://github.com/techrote/cybersand/pull/280#issuecomment-6453690179)
+completed successfully for that source. The prior parse failures remain in the
+[retained audit](../audits/2026-10-27-play-ui003-exact-head-parse-failure.md).
+The composable course's lap/HUD uses completed **native snapshot tick deltas**
+for elapsed time and **completed main-thread Rapier steps** for the four ordered
+checkpoint visits. The same host's `_physics_process` observes actual SetP
+poses only after `physical_actor_session.complete_step()` advances its tick.
+Its independently paced `_process` updates the visible HUD and native clock
+without replacing or repeating physics-step gate credit. The native World is
+never stepped or inspected directly from the UI. Timing begins on admitted
+human input, pauses without catch-up and resets its visible session after
+actor/World generation replacement. The tracker retains monotonic lifetime
+fences to reject retired actor/World publications; per-rig bests survive
+ordinary scene resets.
+
+[Real-host cadence regression](../../godot/tests/test_play_ui003_physics_cadence.gd)
+disables both automatic render/physics callbacks, then performs explicitly
+completed **real Rapier** steps through entry and exit of an authored gate. It
+uses bridge-based **test-only whole-assembly repositioning** to force that
+short visit; this is an instrumentation fixture, not natural game travel.
+A separate identical-host negative arm overrides only the new completed-step
+sampling hook, proving the render-only path loses the transient visit. The
+existing [five-rig integration fixture](../../godot/tests/test_play_comp002_five_rig_course.gd)
+and [50-cycle model-only lifetime fixture](../../godot/tests/test_play_ui003_lap_clock.gd)
+passed on both Windows and Linux: **41/0** real-cadence assertions, including
+one matched render-only negative control; **126/0** five-rig assertions; and
+**1,373/0** lap-model assertions covering 50 **model-only** lifetime cycles.
+These are parent-source results, not qualification of a later combined branch.
+They do not establish hardware gamepad behavior, interactive FPS, subjectively
+acceptable camera/controls, or #269's fifty-real-host lifecycle campaign.
 The remaining [#268](https://github.com/techrote/cybersand/issues/268)
-scope includes an integrated playable selector, four checkpoints with
-simulation-tick lap HUD, gameplay-rule options, focus and physical-gamepad
-qualification and real frame-pacing/feel validation.
+scope includes an integrated playable selector, gameplay-rule options, complete
+focus and physical-gamepad qualification and real frame-pacing/feel validation.
+The accepted four-checkpoint lap/HUD slice does not close those requirements.
 Native Auto measurements, lifecycle/stress and final desktop feel remain
 #266/#269/#270. Material swarms (#271) remain deferred in the standalone
 seven-preset experimental scene. Specialist scientific and NPC-training

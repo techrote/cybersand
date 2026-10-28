@@ -87,6 +87,10 @@ func keyboard_contract() -> void:
 	var label := Label.new()
 	label.name = "Status"
 	layout.add_child(label)
+	var course_timing := Label.new()
+	course_timing.name = "CourseTiming"
+	course_timing.visible = false
+	layout.add_child(course_timing)
 	var bodies := Node2D.new()
 	bodies.name = "RigidBodies"
 	harness.add_child(bodies)
@@ -96,6 +100,8 @@ func keyboard_contract() -> void:
 		body.freeze = true
 		bodies.add_child(body)
 	root.add_child(harness)
+	expect(harness.course_timing_label == course_timing and not course_timing.visible,
+		"minimal physical harness binds the inactive course HUD without starting gameplay")
 	harness.physical_rig_id = &"pouncer"
 	harness.actor_producer_selection = &"human"
 	harness._physical_epoch = 1
