@@ -155,18 +155,22 @@ identities, immutable earlier snapshots and final retirement. Earlier
 source received its own execution. This is bounded normal-lifecycle evidence,
 with zero solver-reconstruction cycles and no slow-native injection.
 
-**Open qualification:** #266 still requires source-bound native participation
-and repeated performance evidence; #268 retains integrated selection and
+**Open qualification:** #266 has accepted source-bound native participation and
+repeated reference measurements through [PR #285](https://github.com/techrote/cybersand/pull/285),
+as defined by the [threading contract](../architecture/simulation-tick-and-threading.md#play-native-worker-observation-and-reference-measurements).
+The actual course control still reports max jobs one and zero parallel phases;
+reference timing does not supply gameplay pacing or concurrent-execution proof.
+#268 retains integrated selection and
 complete device/focus/pacing requirements; #269 retains adversarial pending
-work, delayed completion, failure recovery and solver-reconstruction stress.
+work, delayed completion, failure recovery and populated stale-command stress.
 #270 joins those gates with actual desktop frame/snapshot timing and human
 gameplay feel. Headless lifecycle success does not establish any of those
 remaining outcomes. Main-thread Rapier, per-material construction-time solver
 selection/refusal and specialist-fixture isolation remain unchanged.
 
-## Solver reconstruction stress candidate
+## Actual-host solver reconstruction regression
 
-**PLAY-LIFE-002 / #269 candidate; hosted acceptance pending:** the
+**PLAY-LIFE-002 / #269 bounded regression:** the
 [actual-host helper](../../godot/tests/play_life002_solver_case.gd) extends
 the accepted lifecycle apparatus with five separate real SetP/main-host cases.
 Each rebuilds Water to `pressure_flow_v1/reference`, resets that policy,
@@ -184,12 +188,17 @@ command/lap immediately before replacement, inject delayed native work or test
 failure recovery.
 
 The [dated source/evidence audit](../audits/2026-10-28-play-life002-solver-reconstruction.md)
-binds implementation `d2f91798` to **335 assertions / zero failures** in
-five actual local Windows processes: ten policy changes, ten retaining resets,
-twenty explicit refusals and five final joins/retirements. The initial LFS
-pointer/import failure is retained separately. Final exact-head Windows/Linux
-CI, independent review and merge remain mandatory; no solver default, live
-hot-swap, broader lifecycle or release acceptance is implied.
+preserves the earlier local Windows proof and initial LFS pointer/import failure.
+Fresh [Windows/Linux Godot execution 40751990374](https://github.com/techrote/cybersand/actions/runs/40751990374)
+at source `0a17fd97`, tree `6fa58f168e93a64712f36706369e1f30f31232cb`,
+passes **335 assertions / zero failures per OS** in five real processes:
+ten policy changes, ten retaining resets, twenty explicit refusals and five
+exclusive GDScript owner joins/final Rapier retirements per OS. The retained
+worker reference means this join assertion does not independently observe native
+pool destruction. Source review, final Native/Docs results, artifact readback and
+the accepted-tree merge receipt are recorded on [PR #287](https://github.com/techrote/cybersand/pull/287).
+Those gates remain distinct from this Godot execution result. No solver default,
+live hot-swap, broader lifecycle or release acceptance is implied.
 
 ## Open the seven-preset movement course
 

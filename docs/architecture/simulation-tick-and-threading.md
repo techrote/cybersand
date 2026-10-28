@@ -6,14 +6,20 @@ status: Current
 scope: Desktop, Web and native stage ordering, fixed quanta, failure behavior and permitted thread access
 keywords: [fixed tick, desktop worker, Web synchronous, Rapier order, character order, tick failure, backlog]
 related-documents: [data-ownership-and-lifetimes.md, determinism-and-boundary-transfers.md, rigid-body-and-cellular-coupling.md, ../operations/web-threading.md]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-10-28
 ---
 
 # Simulation tick and threading
 
 ## PLAY native worker observation and reference measurements
 
-**PLAY-AUTO-002 / PR #285; scoped runtime qualification:** the copied
+**Accepted PLAY-AUTO-002 / PR #285:** merge `1a7f9dd5` has tree
+`f1506058cfbb5214ee48470703943969a239d9b7`, identical to reviewed head
+`3c97b177`. Final [Godot](https://github.com/techrote/cybersand/actions/runs/40654018776),
+[Native](https://github.com/techrote/cybersand/actions/runs/40654018701),
+[Documentation/provenance](https://github.com/techrote/cybersand/actions/runs/40654018783)
+and [distinct artifact review](https://github.com/techrote/cybersand/pull/285#pullrequestreview-5688319979)
+passed. The copied
 native statistics adapter exposes `TickStats::worker_threads_observed`.
 It reports the maximum distinct task-claiming pool participants in a completed
 tick; the serial route reports one. A value above one proves that multiple
@@ -44,8 +50,8 @@ processes per OS. Both hosts observed up to four actual task-claiming workers
 and preserved the same per-size terminal level hashes. The
 [raw retained reports](../audits/2026-10-27-play-auto002-worker-matrix-candidate.md#actual-windowslinux-publication-and-repeated-results--2026-10-28)
 include every repeat and the cases where Auto was slower than explicit four
-despite equal configured capacity. Ready-head CI/review and gameplay/release
-qualification remain separately required.
+despite equal configured capacity. This accepts instrumentation and the bounded
+reference campaign; gameplay/release qualification remains separately required.
 
 ## Who advances simulation on each platform?
 
