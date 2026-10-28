@@ -29,7 +29,7 @@ public:
     static constexpr std::int32_t kWorldHeight = 1024;
     static constexpr std::int32_t kProtectedCurrentRuleRadius = 2;
     static constexpr std::int32_t kInputStride = 11;
-    static constexpr std::int32_t kResultStride = 9;
+    static constexpr std::int32_t kResultStride = 12;
     CyberNativeCellWorld();
     ~CyberNativeCellWorld() override;
 
@@ -177,6 +177,9 @@ private:
         std::uint64_t contacts = 0;
         std::uint64_t displaced = 0;
         std::uint64_t unresolved = 0;
+        std::uint64_t unresolved_immovable = 0;
+        std::uint64_t unresolved_no_target = 0;
+        std::uint64_t unresolved_relocation_refused = 0;
     };
     struct BodyDiagnostic {
         Vector2 displacement{};

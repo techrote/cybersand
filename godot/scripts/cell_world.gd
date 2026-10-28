@@ -313,6 +313,9 @@ var rigid_body_correction_y: PackedFloat32Array = PackedFloat32Array()
 var rigid_body_contact_counts: PackedInt32Array = PackedInt32Array()
 var rigid_body_displaced_counts: PackedInt32Array = PackedInt32Array()
 var rigid_body_unresolved_counts: PackedInt32Array = PackedInt32Array()
+var rigid_body_unresolved_immovable_counts: PackedInt32Array = PackedInt32Array()
+var rigid_body_unresolved_no_target_counts: PackedInt32Array = PackedInt32Array()
+var rigid_body_unresolved_relocation_refused_counts: PackedInt32Array = PackedInt32Array()
 var rigid_body_support_counts: PackedInt32Array = PackedInt32Array()
 
 var tick_index: int = 0
@@ -372,6 +375,9 @@ func _init() -> void:
 	rigid_body_contact_counts.resize(body_slot_count)
 	rigid_body_displaced_counts.resize(body_slot_count)
 	rigid_body_unresolved_counts.resize(body_slot_count)
+	rigid_body_unresolved_immovable_counts.resize(body_slot_count)
+	rigid_body_unresolved_no_target_counts.resize(body_slot_count)
+	rigid_body_unresolved_relocation_refused_counts.resize(body_slot_count)
 	rigid_body_support_counts.resize(body_slot_count)
 	reset_demo_world()
 
@@ -577,6 +583,9 @@ func rigid_body_results() -> PackedFloat32Array:
 				state_offset + CyberRigidBodyCoupling.INPUT_SAMPLE_SERIAL
 			]
 		)
+		results.append(float(rigid_body_unresolved_immovable_counts[body_id]))
+		results.append(float(rigid_body_unresolved_no_target_counts[body_id]))
+		results.append(float(rigid_body_unresolved_relocation_refused_counts[body_id]))
 	return results
 
 
@@ -589,6 +598,9 @@ func _reset_rigid_body_observations() -> void:
 	rigid_body_contact_counts.fill(0)
 	rigid_body_displaced_counts.fill(0)
 	rigid_body_unresolved_counts.fill(0)
+	rigid_body_unresolved_immovable_counts.fill(0)
+	rigid_body_unresolved_no_target_counts.fill(0)
+	rigid_body_unresolved_relocation_refused_counts.fill(0)
 	rigid_body_support_counts.fill(0)
 	rigid_body_contacts_last_tick = 0
 	rigid_body_displaced_last_tick = 0
@@ -771,6 +783,7 @@ func _reconcile_rigid_body_overlap(
 
 	if not is_movable(material_id):
 		_record_body_unresolved(body_id)
+		rigid_body_unresolved_immovable_counts[body_id] += 1
 		return
 
 	var target: Vector2i = _find_body_ejection_target(
@@ -782,6 +795,7 @@ func _reconcile_rigid_body_overlap(
 	)
 	if target.x < 0:
 		_record_body_unresolved(body_id)
+		rigid_body_unresolved_no_target_counts[body_id] += 1
 		_record_body_impulse(
 			body_id,
 			-outward_normal * BODY_DISPLACEMENT_REACTION_IMPULSE

@@ -114,8 +114,8 @@ func cohort(bridge: Variant, workers: int) -> bool:
 				ok = false
 				break
 			var results: PackedFloat32Array = arm.world.rigid_body_results()
-			ok = expect(results.size() == 9, "one complete actual-body result") and ok
-			if results.size() == 9:
+			ok = expect(results.size() == CyberRigidBodyCoupling.RESULT_STRIDE, "one complete actual-body result") and ok
+			if results.size() == CyberRigidBodyCoupling.RESULT_STRIDE:
 				arm.contacts += int(results[5])
 				arm.impulse += absf(results[1]) + absf(results[2])
 			ok = expect(arm.physics.apply_cellular_results(tick + 1, results) == 1

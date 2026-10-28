@@ -118,6 +118,18 @@ func _run() -> void:
 		"native cellular owner returned compound proxy results")
 	check(int(metrics.contacts) > 0, "moving exact silhouette contacts cellular material")
 	check(int(metrics.displaced) > 0, "swept compound silhouette displaces cellular material")
+	var classified_unresolved: int = int(metrics.unresolved_immovable) \
+		+ int(metrics.unresolved_no_target) + int(metrics.unresolved_relocation_refused)
+	check(classified_unresolved == int(metrics.unresolved)
+		and int(metrics.unresolved_unclassified) == 0,
+		"every unresolved overlap has one explicit native cause")
+	check(int(metrics.unresolved_immovable) == 0,
+		"Sand/Water fixture reports no immovable-material refusal")
+	check(int(metrics.unresolved_relocation_refused) == 0,
+		"admitted ejection targets never fail authoritative relocation")
+	check(int(metrics.unresolved_no_target) == int(metrics.unresolved)
+		and int(metrics.unresolved_no_target) > 0,
+		"dense-bank unresolved interactions are exhausted ejection searches")
 	check(int(metrics.proxy_count) == int(source.shape_count), "proxy topology remains stable through rotation")
 	check(max_rotation > 0.5 and max_translation > 5.0, "actual Rapier body still topples while coupled")
 	check(final.get("aggregate_owned") == source.member_count and final.get("native_source_members") == 0,
@@ -128,6 +140,8 @@ func _run() -> void:
 	check(int(final_material.get("water_mass", -1)) == 4 * 255,
 		"Water mass conserved through moving compound coupling")
 
+	var displacement_attempts: int = int(metrics.displaced) + int(metrics.unresolved)
+	var unresolved_rate: float = float(metrics.unresolved) / maxf(float(displacement_attempts), 1.0)
 	var report: Dictionary = {
 		"schema":"cybersand.sol281.compound-cellular-coupling.v1",
 		"checks":checks, "failures":failures, "platform":OS.get_name(),
@@ -135,6 +149,7 @@ func _run() -> void:
 		"initial_body_ids":ids, "sand_average_y":sand_average_y,
 		"water_average_y":water_average_y, "max_rotation":max_rotation,
 		"max_translation":max_translation, "coupling":metrics,
+		"displacement_attempts":displacement_attempts, "unresolved_rate":unresolved_rate,
 		"scope":"one dry homogeneous aggregate; exact compound proxy occupancy/sweep with Sand and Water; no reactive Wood or dynamic desoliding"
 	}
 	var args: PackedStringArray = OS.get_cmdline_user_args()

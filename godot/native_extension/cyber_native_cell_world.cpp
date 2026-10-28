@@ -614,12 +614,22 @@ void CyberNativeCellWorld::reconcile_overlap(std::int32_t cell_index,
     }
     if (!cybersand::MaterialRules::descriptor(material).movable) {
         ++observation.unresolved;
+        ++observation.unresolved_immovable;
         return;
     }
 
     const auto target = find_ejection_target(x, y, body_id, outward, penetration);
-    if (target.x < 0 || !world_->relocate_stored_cell(x, y, target.x, target.y)) {
+    if (target.x < 0) {
         ++observation.unresolved;
+        ++observation.unresolved_no_target;
+        const auto impulse = -outward * displacement_gain_;
+        if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
+        record_impulse(body_id, impulse);
+        return;
+    }
+    if (!world_->relocate_stored_cell(x, y, target.x, target.y)) {
+        ++observation.unresolved;
+        ++observation.unresolved_relocation_refused;
         const auto impulse = -outward * displacement_gain_;
         if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
         record_impulse(body_id, impulse);
@@ -854,6 +864,9 @@ PackedFloat32Array CyberNativeCellWorld::rigid_body_results() const {
         results.append(static_cast<float>(observation.displaced));
         results.append(static_cast<float>(observation.unresolved));
         results.append(static_cast<float>(body.sample_serial));
+        results.append(static_cast<float>(observation.unresolved_immovable));
+        results.append(static_cast<float>(observation.unresolved_no_target));
+        results.append(static_cast<float>(observation.unresolved_relocation_refused));
     }
     return results;
 }
@@ -2084,6 +2097,9 @@ Array CyberNativeCellWorld::diagnostic_body_metrics() const {
         row.append(faces);
         row.append(d.bearing.x); row.append(d.bearing.y);
         row.append(static_cast<std::int64_t>(d.support_samples));
+        row.append(static_cast<std::int64_t>(o.unresolved_immovable));
+        row.append(static_cast<std::int64_t>(o.unresolved_no_target));
+        row.append(static_cast<std::int64_t>(o.unresolved_relocation_refused));
         result.append(row);
     }
     return result;

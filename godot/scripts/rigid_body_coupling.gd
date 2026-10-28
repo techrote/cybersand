@@ -31,7 +31,13 @@ const RESULT_CONTACT_COUNT: int = 5
 const RESULT_DISPLACED_COUNT: int = 6
 const RESULT_UNRESOLVED_COUNT: int = 7
 const RESULT_SAMPLE_SERIAL: int = 8
-const RESULT_STRIDE: int = 9
+# Diagnostic-only unresolved classification appended after the stable v1 fields.
+# Existing field offsets remain unchanged; the category sum must equal the
+# aggregate unresolved count for source-matched runtimes.
+const RESULT_UNRESOLVED_IMMOVABLE_COUNT: int = 9
+const RESULT_UNRESOLVED_NO_TARGET_COUNT: int = 10
+const RESULT_UNRESOLVED_RELOCATION_REFUSED_COUNT: int = 11
+const RESULT_STRIDE: int = 12
 
 
 static func append_input(

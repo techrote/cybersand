@@ -241,9 +241,9 @@ func _resting_body_contacts() -> void:
 					world.prepare_rigid_body_coupling(states, false)
 					expect(world.simulation_tick() and world.get_scanned_last_tick() >= 4, "no-motion contact still executes material work")
 					var results: PackedFloat32Array = world.rigid_body_results()
-					if not expect(results.size() == 4 * 9, "copied contact results contain all four exact body records"): return
+					if not expect(results.size() == 4 * CyberRigidBodyCoupling.RESULT_STRIDE, "copied contact results contain all four exact body records"): return
 					for body: int in range(origins.size()):
-						var offset: int = body * 9
+						var offset: int = body * CyberRigidBodyCoupling.RESULT_STRIDE
 						if not expect(results[offset] == body + 1 and results[offset + 5] == 1
 							and is_equal_approx(results[offset + 1], normal.x * 1.12) and is_equal_approx(results[offset + 2], normal.y * 1.12),
 							"one resting target/normal reports actual Brine density-scaled signed feedback"): return
