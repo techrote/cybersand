@@ -205,9 +205,10 @@ jobs:
           assert ack_unit['checks']==39 and ack_unit['failures']==[]
           run('render-owner',['--headless','--path','godot','--script','res://tests/test_solid_detachment_render_coalescing_owner.gd'],'SOL281_RENDER_OWNER')
           owner=json.loads(re.search(r'SOL281_RENDER_OWNER (.+)',(result/'render-owner.txt').read_text(encoding='utf-8')).group(1))
-          assert owner['checks']==31 and owner['failures']==[] and owner['platform']=='Windows' and [(c['mode'],c['workers']) for c in owner['cohorts']]==[('coalescing',1),('coalescing',4),('partial_ack',1),('partial_ack',4)]
+          assert owner['checks']==41 and owner['failures']==[] and owner['platform']=='Windows' and [(c['mode'],c['workers']) for c in owner['cohorts']]==[('coalescing',1),('coalescing',4),('partial_ack',1),('partial_ack',4),('exemption_only',1),('exemption_only',4)]
           assert all(c['forced_full_retries']==0 and c['coalesced']==c['dirty_onto_full']>=3 for c in owner['cohorts'] if c['mode']=='coalescing')
           assert all(c['forced_full_retries']==0 and c['baseline_drops']>=1 for c in owner['cohorts'] if c['mode']=='partial_ack')
+          assert all(c['forced_full_retries']==0 and c['baseline_drops']==0 for c in owner['cohorts'] if c['mode']=='exemption_only')
           run('compound-coupling',['--headless','--path','godot','--script','res://tests/test_solid_detachment_coupling.gd','--',str(result/'compound-coupling.json')],'SOL281_COMPOUND_COUPLING')
           coupling=json.loads((result/'compound-coupling.json').read_text())
           assert coupling['checks']==68 and coupling['failures']==[] and coupling['platform']=='Windows'
@@ -259,7 +260,7 @@ jobs:
           # Preregistered root-cause comparison (PR #283 comment 6482124010). Correctness is
           # asserted per process; performance is recorded for the decision rule only.
           comparison={}
-          for arm,args,reps in [('L0',['0','0','0'],2),('L1',['0','1','0'],2),('C1',['0','1','1'],2),('R0',['0','0','0','1'],3),('R1',['0','1','0','1'],3),('P0',['0','0','2'],3),('P1',['0','1','2'],3)]:
+          for arm,args,reps in [('L0',['0','0','0'],2),('L1',['0','1','0'],2),('C1',['0','1','1'],2),('R0',['0','0','0','1'],3),('R1',['0','1','0','1'],3),('P0',['0','0','2'],3),('P1',['0','1','2'],3),('E0',['0','0','3'],3),('E1',['0','1','3'],3),('RP0',['0','0','2','1'],3),('RP1',['0','1','2','1'],3)]:
               for rep in range(1,reps+1):
                   name=f'compare-{arm}-{rep}'
                   run(name,['--headless','--path','godot','--script','res://tests/test_solid_detachment_coupling.gd','--',str(result/(name+'.json')),*args],'SOL281_COMPOUND_COUPLING')
@@ -268,6 +269,7 @@ jobs:
                   assert d['members']==520 and d['shapes']==6 and d['coupling']['proxy_count']==6 and d['coupling']['stale_results']==0
                   assert d['render_mode']==int(args[2]) and d['render_copy_by_run']==(len(args)>3 and args[3]=='1')
                   assert d['coupling']['render_consumer'].get('refused',0)==0
+                  assert int(args[2])!=3 or d['coupling']['render_worker_census']['baseline_drops']==0
                   comparison.setdefault(arm,[]).append({'census':d['coupling']['render_worker_census'],'census_window':d['coupling']['render_worker_census_window'],'refresh':d['coupling']['snapshot_render_refresh_timing'],'refresh_exchange':d['coupling']['snapshot_render_refresh_exchange_timing'],'publish':d['coupling']['snapshot_publish_total_timing'],'worker_overruns':d['coupling']['worker_overruns'],'acks':d['coupling']['render_acknowledgements']})
           for p,h in manifest['inputs'].items():
               assert hashlib.sha256((root/p).read_bytes()).hexdigest()==h, ('execution source drift',p)
@@ -343,6 +345,8 @@ jobs:
           compare() { for rep in $(seq 1 "$2"); do timeout 180s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_coupling.gd -- "$PWD/build/sol281-linux/compare-$1-$rep.json" "${@:3}" 2>&1 | tee "build/sol281-linux/compare-$1-$rep.txt"; done; }
           compare L0 2 0 0 0; compare L1 2 0 1 0; compare C1 2 0 1 1
           compare R0 3 0 0 0 1; compare R1 3 0 1 0 1; compare P0 3 0 0 2; compare P1 3 0 1 2
+          # Follow-up preregistration (PR #283 comment 6482976862).
+          compare E0 3 0 0 3; compare E1 3 0 1 3; compare RP0 3 0 0 2 1; compare RP1 3 0 1 2 1
           python3 - <<'PY2'
           import json,re
           from pathlib import Path
@@ -369,9 +373,10 @@ jobs:
           ack_unit=json.loads(re.search(r'SOL281_RENDER_ACK_UNIT (.+)',(root/'render-ack-unit.txt').read_text()).group(1))
           assert ack_unit['checks']==39 and ack_unit['failures']==[]
           owner=json.loads(re.search(r'SOL281_RENDER_OWNER (.+)',(root/'render-owner.txt').read_text()).group(1))
-          assert owner['checks']==31 and owner['failures']==[] and owner['platform']=='Linux' and [(c['mode'],c['workers']) for c in owner['cohorts']]==[('coalescing',1),('coalescing',4),('partial_ack',1),('partial_ack',4)]
+          assert owner['checks']==41 and owner['failures']==[] and owner['platform']=='Linux' and [(c['mode'],c['workers']) for c in owner['cohorts']]==[('coalescing',1),('coalescing',4),('partial_ack',1),('partial_ack',4),('exemption_only',1),('exemption_only',4)]
           assert all(c['forced_full_retries']==0 and c['coalesced']==c['dirty_onto_full']>=3 for c in owner['cohorts'] if c['mode']=='coalescing')
           assert all(c['forced_full_retries']==0 and c['baseline_drops']>=1 for c in owner['cohorts'] if c['mode']=='partial_ack')
+          assert all(c['forced_full_retries']==0 and c['baseline_drops']==0 for c in owner['cohorts'] if c['mode']=='exemption_only')
           acknowledged=json.loads((root/'compound-ack-consumed.json').read_text())
           assert acknowledged['checks']==68 and acknowledged['failures']==[] and acknowledged['platform']=='Linux' and acknowledged['ejection_policy']==0
           assert acknowledged['coupling']['render_acknowledgements']>0 and acknowledged['coupling']['render_consumer']['refused']==0
@@ -406,13 +411,14 @@ jobs:
           assert extended['main_thread_step_timing']['samples']==360
           assert extended['ejection_topology']['enabled'] and extended['ejection_topology']['classified']>0
           comparison={}
-          for arm,args,reps in [('L0',['0','0','0'],2),('L1',['0','1','0'],2),('C1',['0','1','1'],2),('R0',['0','0','0','1'],3),('R1',['0','1','0','1'],3),('P0',['0','0','2'],3),('P1',['0','1','2'],3)]:
+          for arm,args,reps in [('L0',['0','0','0'],2),('L1',['0','1','0'],2),('C1',['0','1','1'],2),('R0',['0','0','0','1'],3),('R1',['0','1','0','1'],3),('P0',['0','0','2'],3),('P1',['0','1','2'],3),('E0',['0','0','3'],3),('E1',['0','1','3'],3),('RP0',['0','0','2','1'],3),('RP1',['0','1','2','1'],3)]:
               for rep in range(1,reps+1):
                   d=json.loads((root/f'compare-{arm}-{rep}.json').read_text())
                   assert d['checks']==68 and d['failures']==[] and d['platform']=='Linux', (arm,rep,d['failures'])
                   assert d['members']==520 and d['shapes']==6 and d['coupling']['proxy_count']==6 and d['coupling']['stale_results']==0
                   assert d['render_mode']==int(args[2]) and d['render_copy_by_run']==(len(args)>3 and args[3]=='1')
                   assert d['coupling']['render_consumer'].get('refused',0)==0
+                  assert int(args[2])!=3 or d['coupling']['render_worker_census']['baseline_drops']==0
                   comparison.setdefault(arm,[]).append({'census':d['coupling']['render_worker_census'],'census_window':d['coupling']['render_worker_census_window'],'refresh':d['coupling']['snapshot_render_refresh_timing'],'refresh_exchange':d['coupling']['snapshot_render_refresh_exchange_timing'],'publish':d['coupling']['snapshot_publish_total_timing'],'worker_overruns':d['coupling']['worker_overruns'],'acks':d['coupling']['render_acknowledgements']})
           (root/'report.json').write_text(json.dumps({'source':Path(root/'source.txt').read_text().strip(),'platform':'Linux','motion':motion,'failure_paths':failure,'lifecycle':lifecycle,'unresolved_diagnostics':unresolved,'ejection_policy_protocol':policy,'compound_coupling':coupling,'compound_ack_consumed':acknowledged,'compound_coalesced_unacked':unacked,'compound_coalesced':coalesced,'render_ack_unit':ack_unit,'render_owner':owner,'compound_extended':extended,'render_comparison':comparison,'scope':'actual current-source Linux Godot/Rapier A/B diagnostic ejection-search experiment; no publication or full PR acceptance'},indent=2)+'\n')
           PY2

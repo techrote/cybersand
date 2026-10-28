@@ -2,8 +2,8 @@ extends SceneTree
 
 # SOL281 opt-in render coalescing through the REAL exclusive worker owner and
 # native RG8 exchange: stale/exact ACK, reset generation and the monotonic
-# census, plus candidates P (partial ACK) and R (per-run copy). Paused World,
-# so only the scripted paints change cells. No Rapier, scene-tree physics or
+# census, plus candidates P (partial ACK), E (exemption only) and R (per-run
+# copy). Paused World, so only the scripted paints change cells. No Rapier, scene-tree physics or
 # GPU upload. Configured native workers 1 and 4.
 const Consumer = preload("res://scripts/solid_detachment_render_consumer.gd")
 const PAINT_Y: int = 300
@@ -53,6 +53,8 @@ func _run() -> void:
 			await _cohort(workers)
 		for workers: int in [1, 4]:
 			await _partial_cohort(workers)
+		for workers: int in [1, 4]:
+			await _exemption_cohort(workers)
 	print("SOL281_RENDER_OWNER ", JSON.stringify({"checks":checks, "failures":failures,
 		"platform":OS.get_name(), "cohorts":cohorts}))
 	quit(0 if failures.is_empty() else 1)
@@ -194,6 +196,61 @@ func _partial_cohort(workers: int) -> void:
 		label + "patched CPU image equals a fresh native full frame byte for byte")
 	var last: CyberSimulationSnapshot = fresh if fresh != null else second
 	cohorts.append({"workers":workers, "mode":"partial_ack", "copy_by_run":copy_by_run,
+		"baseline_drops":last.snapshot_render_baseline_drop_total,
+		"forced_full_retries":last.snapshot_render_forced_full_retry_total,
+		"full_publications":last.snapshot_render_full_publication_total,
+		"refreshes":last.snapshot_render_refresh_total})
+	worker.stop_worker()
+
+# Candidate E: P's overflow exemption without the baseline drop. Patches append
+# behind the unacknowledged baseline; a baseline-only ACK changes nothing, and
+# the CPU image must still equal a fresh native full frame byte for byte.
+func _exemption_cohort(workers: int) -> void:
+	ProjectSettings.set_setting("cybersand/native_worker_threads", workers)
+	var label: String = "E workers=%d " % workers
+	var worker := CyberSimulationWorker.new()
+	worker._experimental_render_partial_ack = true
+	worker._experimental_render_baseline_drop = false
+	worker.set_frame_state(0.0, false, true, Vector2i(160, 90), Vector2i.ZERO,
+		Vector2i(320, 180), 0, 0, false, false, true)
+	check(worker.start_worker(Vector2(150, 145)) == OK, label + "worker started")
+	var image = Consumer.new()
+	var initial: CyberSimulationSnapshot = worker.take_latest_snapshot(-1)
+	check(initial != null and _single_full(initial) and image.consume(initial),
+		label + "first full frame consumed as the CPU baseline")
+	if initial == null or not _single_full(initial):
+		worker.stop_worker()
+		return
+	var first: CyberSimulationSnapshot = await _paint(worker, initial, 500)
+	check(first != null and first.render_full_refresh
+		and first.render_patch_rectangles.size() > 6
+		and first.snapshot_render_forced_full_retry_total == 0
+		and image.consume(first),
+		label + "dirty paint appends behind the baseline without a retry and is consumed")
+	if first == null:
+		worker.stop_worker()
+		return
+	worker.acknowledge_render_snapshot(initial.render_snapshot_serial)
+	var second: CyberSimulationSnapshot = await _paint(worker, first, 510)
+	check(second != null and second.render_full_refresh
+		and second.snapshot_render_baseline_drop_total == 0
+		and second.snapshot_render_forced_full_retry_total == 0
+		and image.consume(second),
+		label + "baseline-only ACK drops nothing; full frame plus patches is republished")
+	if second == null:
+		worker.stop_worker()
+		return
+	worker.acknowledge_render_snapshot(second.render_snapshot_serial)
+	worker.request_render_full_refresh()
+	var fresh: CyberSimulationSnapshot = await _wait_for(worker, second.serial,
+		func(s: CyberSimulationSnapshot) -> bool:
+			return s.render_snapshot_serial > second.render_snapshot_serial and s.render_full_refresh)
+	var oracle = Consumer.new()
+	check(fresh != null and _single_full(fresh) and oracle.consume(fresh)
+		and oracle._image.get_data() == image._image.get_data(),
+		label + "CPU image equals a fresh native full frame byte for byte")
+	var last: CyberSimulationSnapshot = fresh if fresh != null else second
+	cohorts.append({"workers":workers, "mode":"exemption_only",
 		"baseline_drops":last.snapshot_render_baseline_drop_total,
 		"forced_full_retries":last.snapshot_render_forced_full_retry_total,
 		"full_publications":last.snapshot_render_full_publication_total,

@@ -36,7 +36,7 @@ func _run() -> void:
 	var policy_args: PackedStringArray = OS.get_cmdline_user_args()
 	var ejection_policy: int = int(policy_args[1]) if policy_args.size() > 1 else 0
 	var consume_render_packets: bool = int(policy_args[2]) == 1 if policy_args.size() > 2 else false
-	# 0 original, 1 coalescing, 2 partial ACK; optional 5th arg selects copy R.
+	# 0 original, 1 coalescing, 2 partial ACK, 3 exemption only; 5th arg = copy R.
 	var render_mode: int = int(policy_args[3]) if policy_args.size() > 3 else 0
 	var coalesce_render_packets: bool = render_mode == 1
 	var copy_by_run: bool = int(policy_args[4]) == 1 if policy_args.size() > 4 else false
@@ -265,7 +265,7 @@ func _run() -> void:
 		and (coalesce_render_packets or coalesced == 0)
 		and (render_mode == 2 or drops == 0) and (consume_render_packets or drops == 0)
 		and (consume_render_packets or (onto_full > 0 and (retries == onto_full - coalesced
-			if render_mode != 2 else retries < onto_full))),
+			if render_mode < 2 else retries < onto_full))),
 		"worker census: opt-out never coalesces; each unacknowledged uncoalesced dirty packet forces one full retry")
 	# Deterministic opt-in gate. Without ACK the full frame stays retained, so
 	# every later dirty packet must coalesce and no forced-full retry remains.

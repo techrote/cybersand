@@ -132,10 +132,12 @@ func open(parent: Node, workers: int = 4, ejection_policy: int = 0,
 	_opening = true
 	last_error = ""
 	worker = Worker.new()
-	# SOL281 render experiment: 0 original, 1 coalescing, 2 partial ACK (P);
+	# SOL281 render experiment: 0 original, 1 coalescing, 2 partial ACK (P),
+	# 3 P's overflow exemption without baseline drop (E);
 	# copy_by_run selects candidate R. All are opt-in and set before start.
 	worker._experimental_render_full_coalescing = render_mode == 1
-	worker._experimental_render_partial_ack = render_mode == 2
+	worker._experimental_render_partial_ack = render_mode == 2 or render_mode == 3
+	worker._experimental_render_baseline_drop = render_mode != 3 # 3 = exemption only
 	worker._experimental_render_copy_by_run = copy_by_run
 	var owner_generation: int = generation
 	var owner_worker: CyberSimulationWorker = worker

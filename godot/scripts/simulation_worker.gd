@@ -821,6 +821,9 @@ var _experimental_render_full_coalescing: bool = false # default: unchanged
 # copy; P = partial ACK of a retained full baseline (exclusive with coalescing).
 var _experimental_render_copy_by_run: bool = false
 var _experimental_render_partial_ack: bool = false
+# With partial ACK, false keeps only the baseline overflow exemption (mode E):
+# the baseline is never dropped, so only an exact ACK clears it.
+var _experimental_render_baseline_drop: bool = true
 var _pending_render_baseline_serial: int = 0
 # SOL281 diagnostic census. Monotonic worker-lifetime totals, written only by
 # the exclusive native owner, so latest-only snapshot readers count, not sample.
@@ -1923,7 +1926,8 @@ func _publish_snapshot(
 		_clear_pending_render_patches()
 		render_ack_cleared = true
 	elif (
-		_experimental_render_partial_ack and _pending_render_baseline_serial > 0
+		_experimental_render_partial_ack and _experimental_render_baseline_drop
+		and _pending_render_baseline_serial > 0
 		and acknowledged_render_serial >= _pending_render_baseline_serial
 	):
 		# Candidate P: the consumer already holds the retained full baseline, so
