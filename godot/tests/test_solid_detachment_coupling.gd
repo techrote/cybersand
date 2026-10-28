@@ -36,8 +36,9 @@ func _run() -> void:
 	var policy_args: PackedStringArray = OS.get_cmdline_user_args()
 	var ejection_policy: int = int(policy_args[1]) if policy_args.size() > 1 else 0
 	var consume_render_packets: bool = int(policy_args[2]) == 1 if policy_args.size() > 2 else false
+	var coalesce_render_packets: bool = int(policy_args[3]) == 1 if policy_args.size() > 3 else false
 	session = Session.new()
-	if not await session.open(root, 4, ejection_policy, true, consume_render_packets):
+	if not await session.open(root, 4, ejection_policy, true, consume_render_packets, coalesce_render_packets):
 		check(false, session.last_error)
 		session.close()
 		quit(1)
@@ -250,6 +251,10 @@ func _run() -> void:
 		and int(metrics.get("render_pending_full_before_samples", -1)) <= sampled_refreshes,
 		"ACK clearing and retained pending-full observations are bounded")
 	check(int(metrics.get("worker_overruns", -1)) >= 0, "worker overrun counter read")
+	check(coalesce_render_packets or int(metrics.get("render_coalesced_packets", -1)) == 0,
+		"default worker leaves full/dirty coalescing disabled")
+	check(not coalesce_render_packets or int(metrics.get("render_coalesced_packets", 0)) > 0,
+		"opt-in live native stream coalesces an actual full-plus-dirty packet")
 	var consumer: Dictionary = metrics.get("render_consumer", {})
 	check(bool(consumer.get("enabled", false)) == consume_render_packets,
 		"CPU image consumption is strictly opt-in")
@@ -295,6 +300,7 @@ func _run() -> void:
 	var report: Dictionary = {
 		"schema":"cybersand.sol281.compound-cellular-coupling.v3",
 		"ejection_policy":ejection_policy, "cpu_render_consumer":consume_render_packets,
+		"render_full_coalescing":coalesce_render_packets,
 		"main_thread_step_timing":timing,
 		"headless_physics_frame_pacing":frame_pacing, "ejection_topology":topology,
 		"checks":checks, "failures":failures, "platform":OS.get_name(),

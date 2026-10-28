@@ -1872,6 +1872,7 @@ func _publish_snapshot(
 	var render_retry_full: bool = false
 	var render_retry_bytes: int = 0
 	var render_overflow_flags: int = 0
+	var render_coalesced: bool = false
 	var render_pending_full_before: bool = false
 	var render_ack_cleared: bool = false
 	var render_pending_bytes_before: int = 0
@@ -1922,7 +1923,7 @@ func _publish_snapshot(
 			render_first_bytes = packet_cells.size()
 			render_exchanged_payload_bytes += packet_cells.size()
 			var accumulation_start_usec: int = Time.get_ticks_usec()
-			_append_native_render_packet(render_packet)
+			render_coalesced = _append_native_render_packet(render_packet)
 			render_accumulation_usec += Time.get_ticks_usec() - accumulation_start_usec
 			render_pending_bytes_after_first = _pending_render_patch_cells.size()
 			render_pending_rectangles_after_first = _pending_render_patch_rectangles.size()
@@ -2121,6 +2122,7 @@ func _publish_snapshot(
 	snapshot.snapshot_render_exchanged_payload_bytes = render_exchanged_payload_bytes
 	snapshot.snapshot_render_first_status = render_first_status
 	snapshot.snapshot_render_first_full = render_first_full
+	snapshot.snapshot_render_coalesced = render_coalesced
 	snapshot.snapshot_render_first_bytes = render_first_bytes
 	snapshot.snapshot_render_retry_full = render_retry_full
 	snapshot.snapshot_render_retry_bytes = render_retry_bytes

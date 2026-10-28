@@ -117,6 +117,8 @@ var snapshot_render_exchanged_payload_bytes: int = 0
 # 2=backpressure, 3=capacity exceeded); -1 means no native call.
 var snapshot_render_first_status: int = -1
 var snapshot_render_first_full: bool = false
+# Worker-only diagnostic candidate; true iff one valid full+dirty merge occurred.
+var snapshot_render_coalesced: bool = false
 var snapshot_render_first_bytes: int = 0
 var snapshot_render_retry_full: bool = false
 var snapshot_render_retry_bytes: int = 0
