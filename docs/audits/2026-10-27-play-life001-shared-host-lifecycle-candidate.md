@@ -4,7 +4,7 @@ status: Planned
 document-kind: evidence
 scope: Source-only fifty-lifecycle Windows/Linux candidate for the composable desktop Player Playground host
 canonical-for: []
-last-reviewed: 2026-10-27
+last-reviewed: 2026-10-28
 related-documents: [../systems/player-control-playground.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rendering-and-gameplay-bridges.md, ../operations/local-build-and-validation.md]
 ---
 
@@ -122,3 +122,40 @@ unaccepted. After the dependency lands, the candidate requires:
 A failed or timed-out wrapper is evidence, not permission to retry, raise the
 limit, reduce cycles or claim the other rigs qualified. Later adversarial and
 slow-native slices must preserve the same source-matched discipline.
+
+## Corrected dependency and predicate preparation — 2026-10-28
+
+The earlier branch-origin statements above remain historical. Non-forced
+merge `b5a5d8e5e702d408e66089f0e25e63f0f4cde3aa` incorporates corrected
+PR #280 source `8533876b1a4df74cdf8a16c54f8f2201f66cb9de`, retaining the
+lifecycle history and changing only the seven lifecycle paths relative to that
+corrected base. The parent candidate now has an actual successful
+[Windows/Linux Godot run 40600760606](https://github.com/techrote/cybersand/actions/runs/40600760606),
+but its complete Native/merge acceptance is separate and was still outstanding
+when this source checkpoint was prepared. Parent receipts are not execution
+of these fifty new lifetimes.
+
+The independent input-edge finding was addressed in `3383599072f4d8a0a0ffe1814a3a547325aa7193`:
+the source checks an actual copied `primary=true` then `primary=false` queue
+produced by `Input.parse_input_event` and the production Viewport event handler.
+It no longer treats W/D command counts as queued button-edge evidence or uses
+extra direct submissions that could mask a broken event route. Focus refusal
+then clears the genuinely populated queue and advances its control generation.
+
+Further source inspection found the lifecycle resume predicate still contained
+the unparenthesized multiline inline-return pattern implicated in the parent's
+[retained cadence-test parse failure](2026-10-27-play-ui003-exact-head-parse-failure.md).
+This is a source finding, not an executed failure of the lifecycle candidate.
+Code checkpoint `e8bbec46cfa570e8164c4250b355365a551c2020` extracts named
+`clocks_advanced`, `physics_resumed` and `reset_installed` predicates with
+explicitly parenthesized Boolean expressions. All five asynchronous wait sites
+use named `Callable.bind` targets. The same scene, rig, tick/epoch thresholds,
+assertions, focus/input/cancel semantics, ten-cycle count, wait timeouts and
+teardown paths are retained. No production or CI file is changed.
+
+The published commit diff was inspected. Local repository cloning failed
+because the execution container could not resolve `github.com`; no local
+Godot parse, import, native build or runtime pass is claimed. New exact-head
+source review and the full execution gates above remain required after parent
+acceptance. The original failed parent CI and earlier lifecycle drafts remain
+preserved; no result is relabeled as a pass for the new source.
