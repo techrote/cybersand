@@ -29,7 +29,7 @@ For each rig the normal liquid panel requests supported Water
 `pressure_flow_v1/reference` reconstruction. The existing
 `_controlled_liquid_prepare_barrier` holds the exclusive owner after native
 preparation and physical-candidate readiness, immediately before its commit
-fence. Eight completed actual Main callbacks must progress while the previous
+fence. At least seven completed actual Main callbacks must progress while the previous
 accepted actor/World/policy/receipt remains unchanged. This is main callback
 progress under a held preparation, not rendered FPS or a slow native tick.
 

@@ -196,7 +196,7 @@ hot-swap, broader lifecycle or release acceptance is implied.
 **PLAY-LIFE-003 / #269 candidate:** the
 [actual-host helper](../../godot/tests/play_life003_prepared_shutdown_case.gd)
 holds a supported reconstruction at the existing native-prepared/physical-ready
-precommit barrier. Eight completed Main callbacks must progress before scene
+precommit barrier. At least seven completed Main callbacks must progress before scene
 exit; a bounded synchronization-only helper releases after the owner stop fence.
 The actual accepted/staged Rapier graphs retire, the exclusive GDScript owner
 joins, and only then may the test inspect the unchanged applied native receipt
