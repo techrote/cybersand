@@ -202,7 +202,7 @@ jobs:
           assert policy['baseline_candidates_max']==81 and policy['extended_candidates_max']==289 and len(policy['cases'])==40
           run('render-ack-unit',['--headless','--path','godot','--script','res://tests/test_solid_detachment_render_ack.gd'],'SOL281_RENDER_ACK_UNIT')
           ack_unit=json.loads(re.search(r'SOL281_RENDER_ACK_UNIT (.+)',(result/'render-ack-unit.txt').read_text(encoding='utf-8')).group(1))
-          assert ack_unit['checks']==17 and ack_unit['failures']==[]
+          assert ack_unit['checks']==32 and ack_unit['failures']==[]
           run('compound-coupling',['--headless','--path','godot','--script','res://tests/test_solid_detachment_coupling.gd','--',str(result/'compound-coupling.json')],'SOL281_COMPOUND_COUPLING')
           coupling=json.loads((result/'compound-coupling.json').read_text())
           assert coupling['checks']==66 and coupling['failures']==[] and coupling['platform']=='Windows'
@@ -311,7 +311,7 @@ jobs:
           assert coupling['ejection_policy']==0 and coupling['main_thread_step_timing']['samples']==360
           assert coupling['ejection_topology']['enabled'] and coupling['ejection_topology']['classified']>0
           ack_unit=json.loads(re.search(r'SOL281_RENDER_ACK_UNIT (.+)',(root/'render-ack-unit.txt').read_text()).group(1))
-          assert ack_unit['checks']==17 and ack_unit['failures']==[]
+          assert ack_unit['checks']==32 and ack_unit['failures']==[]
           acknowledged=json.loads((root/'compound-ack-consumed.json').read_text())
           assert acknowledged['checks']==66 and acknowledged['failures']==[] and acknowledged['platform']=='Linux' and acknowledged['ejection_policy']==0
           assert acknowledged['coupling']['render_acknowledgements']>0 and acknowledged['coupling']['render_consumer']['refused']==0

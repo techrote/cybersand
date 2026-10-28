@@ -67,6 +67,75 @@ func _run() -> void:
 	check(consumer.material_at(5,6) == 9 and consumer.material_at(6,6) == 8
 		and consumer.material_at(0,0) == 43,
 		"full baseline and appended dirty patch applied in order")
+	# SOL281 opt-in bounded render merger; actual RG8 byte oracle.
+	var owner := CyberSimulationWorker.new()
+	owner._experimental_render_full_coalescing = true
+	owner._pending_render_world_generation = owner._world_generation
+	var original: Dictionary = {"status":1,"serial":10,"channels":2,
+		"full_refresh":true,"rectangles":full,"cells":entire}
+	check(not owner._append_native_render_packet(original), "full baseline retained")
+	owner._refresh_published_render_payload()
+	var prior: PackedByteArray = owner._published_render_patch_cells
+	var updates := PackedByteArray([91,1,92,2,93,3,94,4,125,9])
+	var regions := PackedInt32Array([1022,1022,2,2,0,4,1023,1023,1,1,8,2])
+	var dirty: Dictionary = {"status":1,"serial":11,"channels":2,
+		"full_refresh":false,"rectangles":regions,"cells":updates}
+	check(owner._append_native_render_packet(dirty), "valid dirty bytes coalesced")
+	check(owner._pending_render_patch_cells.size() == entire.size()
+		and owner._pending_render_patch_rectangles == full,
+		"bounded result retains exactly one full-frame rectangle")
+	check(owner._pending_render_snapshot_serial == 11
+		and owner._pending_render_payload_generation == 2,
+		"normal serial and immutable payload generation advance")
+	check(prior.size() == entire.size() and prior[prior.size()-2] == 77,
+		"already-published immutable bytes never change")
+	var oracle = Consumer.new()
+	check(oracle.consume(packet(11,1,true,owner._pending_render_patch_rectangles,
+		owner._pending_render_patch_cells)), "strict consumer accepts final pixels")
+	check(oracle.material_at(1022,1022) == 91 and oracle.material_at(1023,1022) == 92
+		and oracle.material_at(1022,1023) == 93 and oracle.material_at(1023,1023) == 125
+		and oracle.material_at(0,0) == 43, "overlapping tails, edge and untouched pixels exact")
+	owner._experimental_render_full_coalescing = false
+	check(not owner._append_native_render_packet({"status":1,"serial":12,"channels":2,
+		"full_refresh":false,"rectangles":regions,"cells":updates})
+		and owner._pending_render_patch_cells.size() > entire.size(),
+		"default append/overflow remains unchanged")
+	var reject := CyberSimulationWorker.new()
+	reject._experimental_render_full_coalescing = true
+	reject._pending_render_world_generation = reject._world_generation
+	reject._append_native_render_packet(original)
+	check(not reject._append_native_render_packet({"status":2,"serial":11,"channels":2,
+		"full_refresh":false,"rectangles":regions,"cells":updates}),
+		"backpressure is never coalesced")
+	reject._append_native_render_packet(original)
+	var large := PackedByteArray()
+	large.resize(CyberSimulationWorker.SOL281_COALESCE_MAX_DIRTY_BYTES + 1)
+	check(not reject._append_native_render_packet({"status":1,"serial":12,"channels":2,
+		"full_refresh":false,"rectangles":PackedInt32Array([2,2,1,1,0,2]),"cells":large}),
+		"64-KiB cap forces original fallback")
+	reject._append_native_render_packet(original)
+	check(not reject._append_native_render_packet({"status":1,"serial":13,"channels":2,
+		"full_refresh":false,"rectangles":PackedInt32Array([1024,1,1,1,0,2]),"cells":updates}),
+		"out-of-bounds metadata refused for coalescing")
+	reject._append_native_render_packet(original)
+	check(not reject._append_native_render_packet({"status":1,"serial":14,"channels":2,
+		"full_refresh":false,"rectangles":PackedInt32Array([2,2,2,1,0,3]),"cells":updates}),
+		"bad stride refused for coalescing")
+	reject._append_native_render_packet(original)
+	reject._pending_render_world_generation += 1
+	check(not reject._append_native_render_packet(dirty), "different World never reuses pixels")
+	reject._pending_render_world_generation = reject._world_generation
+	reject._append_native_render_packet(original)
+	var metadata := PackedInt32Array()
+	for i: int in range(CyberSimulationWorker.SOL281_COALESCE_MAX_DIRTY_RECTANGLES + 1):
+		metadata.append_array(PackedInt32Array([i,1,1,1,0,2]))
+	check(not reject._append_native_render_packet({"status":1,"serial":15,"channels":2,
+		"full_refresh":false,"rectangles":metadata,"cells":updates}),
+		"64-rectangle metadata cap enforced")
+	reject._append_native_render_packet(original)
+	check(not reject._append_native_render_packet({"status":1,"serial":16,"channels":1,
+		"full_refresh":false,"rectangles":regions,"cells":updates}),
+		"RG8/R8 channel changes cannot coalesce")
 	var state: Dictionary = consumer.metrics()
 	check(int(state.consumed) == 4 and int(state.refused) == 5
 		and int(state.rectangles) == 5 and int(state.bytes) > 0,

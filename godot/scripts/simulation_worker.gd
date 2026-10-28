@@ -24,6 +24,9 @@ const DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC: int = 16667
 const HARD_SURFACE_SNAPSHOT_INTERVAL_USEC: int = 250000
 const RENDER_PATCH_METADATA_STRIDE: int = 6
 const MAX_PENDING_RENDER_PATCHES: int = 256
+# SOL281 diagnostic only. Bounds are 64 rectangles and 64 KiB dirty input.
+const SOL281_COALESCE_MAX_DIRTY_RECTANGLES: int = 64
+const SOL281_COALESCE_MAX_DIRTY_BYTES: int = 65536
 const MAX_BRUSH_FOOTPRINT_CELLS: int = 4096
 const MAX_PENDING_BRUSH_COMMANDS: int = 8
 
@@ -812,6 +815,7 @@ var _snapshot_world_revision: int = -1
 # an accepted reset/replacement; publication retains it with the render bytes.
 var _world_generation: int = 1
 var _pending_render_world_generation: int = 0
+var _experimental_render_full_coalescing: bool = false # default: unchanged
 var _last_render_snapshot_usec: int = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 var _pending_render_snapshot_serial: int = 0
 var _pending_render_channels: int = 1
@@ -2285,23 +2289,85 @@ func _refresh_published_render_payload() -> void:
 	_published_render_payload_generation = _pending_render_payload_generation
 
 
-func _append_native_render_packet(packet: Dictionary) -> void:
+# SOL281 opt-in only. Preflight before allocating; overlay a bounded dirty
+# packet into a COPY of exactly one already-retained complete full frame.
+# All invalid/oversized packets fall back to the previous append/overflow path.
+func _try_coalesce_native_render_dirty(
+	packet: Dictionary, cells: PackedByteArray, rects: PackedInt32Array
+) -> bool:
+	if not _experimental_render_full_coalescing or not _pending_render_full_refresh:
+		return false
+	if _pending_render_world_generation != _world_generation:
+		return false
+	if int(packet.get("status", -1)) != 1 or int(packet.get("serial", 0)) <= 0:
+		return false
+	if bool(packet.get("full_refresh", false)):
+		return false
+	var channels: int = int(packet.get("channels", 2))
+	if channels != _pending_render_channels or (channels != 1 and channels != 2):
+		return false
+	var width: int = CyberCellWorld.WORLD_WIDTH
+	var height: int = CyberCellWorld.WORLD_HEIGHT
+	var full_size: int = width * height * channels
+	var baseline: PackedInt32Array = _pending_render_patch_rectangles
+	if (_pending_render_patch_cells.size() != full_size or baseline.size() != 6
+		or baseline[0] != 0 or baseline[1] != 0
+		or baseline[2] != width or baseline[3] != height
+		or baseline[4] != 0 or baseline[5] != width * channels):
+		return false
+	if (cells.is_empty() or cells.size() > SOL281_COALESCE_MAX_DIRTY_BYTES
+		or rects.is_empty() or rects.size() % RENDER_PATCH_METADATA_STRIDE != 0
+		or rects.size() > SOL281_COALESCE_MAX_DIRTY_RECTANGLES * RENDER_PATCH_METADATA_STRIDE):
+		return false
+	for i: int in range(0, rects.size(), RENDER_PATCH_METADATA_STRIDE):
+		var x: int = rects[i]
+		var y: int = rects[i+1]
+		var w: int = rects[i+2]
+		var h: int = rects[i+3]
+		var offset: int = rects[i+4]
+		var pitch: int = rects[i+5]
+		if (x < 0 or y < 0 or w <= 0 or h <= 0 or x > width - w
+			or y > height - h or offset < 0 or pitch < w * channels
+			or offset > cells.size() or pitch > cells.size()
+			or offset + (h - 1) * pitch + w * channels > cells.size()):
+			return false
+	var output: PackedByteArray = _pending_render_patch_cells.duplicate()
+	for i: int in range(0, rects.size(), RENDER_PATCH_METADATA_STRIDE):
+		var x: int = rects[i]
+		var y: int = rects[i+1]
+		var w: int = rects[i+2]
+		var h: int = rects[i+3]
+		var offset: int = rects[i+4]
+		var pitch: int = rects[i+5]
+		for row: int in range(h):
+			var source: int = offset + row * pitch
+			var destination: int = ((y + row) * width + x) * channels
+			for j: int in range(w * channels):
+				output[destination + j] = cells[source + j]
+	_pending_render_patch_cells = output
+	return true
+
+
+func _append_native_render_packet(packet: Dictionary) -> bool:
 	var packet_cells: PackedByteArray = packet.get("cells", PackedByteArray())
 	var packet_rectangles: PackedInt32Array = packet.get(
 		"rectangles",
 		PackedInt32Array()
 	)
 	if packet_cells.is_empty() or packet_rectangles.is_empty():
-		return
+		return false
 
 	var packet_serial: int = int(packet.get("serial", 0))
 	var packet_channels: int = int(packet.get("channels", 2))
 	var packet_full_refresh: bool = bool(packet.get("full_refresh", false))
+	var coalesced: bool = not packet_full_refresh and _try_coalesce_native_render_dirty(
+		packet, packet_cells, packet_rectangles
+	)
 	if packet_full_refresh:
 		_pending_render_patch_rectangles = packet_rectangles
 		_pending_render_patch_cells = packet_cells
 		_pending_render_full_refresh = true
-	else:
+	elif not coalesced:
 		var data_offset_base: int = _pending_render_patch_cells.size()
 		_pending_render_patch_cells.append_array(packet_cells)
 		for metadata_offset: int in range(
@@ -2323,3 +2389,4 @@ func _append_native_render_packet(packet: Dictionary) -> void:
 	_pending_render_snapshot_serial = maxi(_pending_render_snapshot_serial+1,packet_serial)
 	_pending_render_channels = packet_channels
 	_pending_render_payload_generation += 1
+	return coalesced
