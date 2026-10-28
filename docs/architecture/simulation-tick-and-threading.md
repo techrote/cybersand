@@ -13,7 +13,7 @@ last-reviewed: 2026-10-22
 
 ## PLAY native worker observation and reference measurements
 
-**Source candidate, PR #285; runtime qualification pending:** the copied
+**PLAY-AUTO-002 / PR #285; scoped runtime qualification:** the copied
 native statistics adapter exposes `TickStats::worker_threads_observed`.
 It reports the maximum distinct task-claiming pool participants in a completed
 tick; the serial route reports one. A value above one proves that multiple
@@ -37,6 +37,15 @@ native reference measurements; the independently paced gameplay owner's
 publication latency, rendered frame pacing and human feel remain separate
 #266/#270 gates. The [source audit](../audits/2026-10-27-play-auto002-worker-matrix-candidate.md)
 owns publication identities, failures and actual platform results.
+
+The exact-source [Windows/Linux publication](https://github.com/techrote/cybersand/actions/runs/40651352334)
+at `d7e35aa3` passed 993 focused assertions plus 50 fresh measurement
+processes per OS. Both hosts observed up to four actual task-claiming workers
+and preserved the same per-size terminal level hashes. The
+[raw retained reports](../audits/2026-10-27-play-auto002-worker-matrix-candidate.md#actual-windowslinux-publication-and-repeated-results--2026-10-28)
+include every repeat and the cases where Auto was slower than explicit four
+despite equal configured capacity. Ready-head CI/review and gameplay/release
+qualification remain separately required.
 
 ## Who advances simulation on each platform?
 

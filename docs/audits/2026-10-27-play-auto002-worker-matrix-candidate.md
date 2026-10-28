@@ -366,3 +366,81 @@ to runtime acceptance. If execution fails, retain the attempt artifacts and
 diagnostics. Attempt-specific artifact names require a whole fresh attempt or
 new source request, rather than selectively rerunning a failed dependent job
 against artifacts from an earlier attempt.
+
+## Actual Windows/Linux publication and repeated results — 2026-10-28
+
+[Publication 40651352334](https://github.com/techrote/cybersand/actions/runs/40651352334)
+completed successfully at exact source
+`d7e35aa3897ffa0bde422ece98226c551588040e`, tree
+`17c21099ccef5bcf969e32ab9125bbb1baf78d6c`. Its guarded append is
+`04af32286ce73545482ffeff56d41c1d104a52ea`, with that source as its sole
+parent and exactly the two runtime LFS pointers plus two provenance manifests.
+The independent artifact reviewer checked archive digests, runtime bytes,
+80 native inputs, 549 build/test inputs, all retained log hashes and both full
+`verify_bundle` / `verify_directory` validations. The publish job uploaded
+both LFS objects before the expected-tip append. No implementation was changed
+after these executions; subsequent changes retain evidence and documentation.
+
+Each actual target OS passed import plus six focused cases:
+worker benchmark 81, native observation 100, shared-course Auto 15, five-rig
+course/solver 126, liquid policy 642, threaded policy 29 = **993 assertions,
+zero failures**. Each then completed **50 fresh processes**, five balanced
+repeats of 1/2/4/6/Auto at 480/960, 60 warm-up and 120 measured ticks per row:
+3,000 warm-up and 6,000 measured ticks per OS. Every process kept the 180-second
+bound (import 240); no source drift, diagnostic errors, retries, skips or
+timeouts occurred. Forty rows per OS observed multiple task-claiming workers;
+maximum observed participation was four. Requests resolved to 1/2/4/4/4.
+
+| Platform | Artifact | Verified archive SHA-256 | Runtime SHA-256 |
+|---|---|---|---|
+| Windows Server 2022, x86_64 | [12799673913](https://github.com/techrote/cybersand/actions/runs/40651352334/artifacts/12799673913) | `c9a6ea538cc3dade9734a3a3d53d92c64375ddd28aed10169d986bb136bf6797` | `e66b9b04b546b09cb4feea204373faf12a7248abf1701da88fc6ecf87b666ecb` |
+| Ubuntu 24.04, x86_64 | [12799828455](https://github.com/techrote/cybersand/actions/runs/40651352334/artifacts/12799828455) | `e099d4626fa95377abcb9ec5f5d7f711ad1e5552e6ec2dd6a15d47c66543f0c1` | `496bf3df06be2c6bf47b2e5e4ea525ed4d969c3a34cf1a97d71e4668cdc250e6` |
+
+Windows runtime size is 4,825,088 bytes; Linux is 4,222,304. Both hosts exposed
+four logical processors. Windows recorded AMD64 Family 25 Model 1,
+priority class 16384 and launcher affinity mask `0xf`; Linux recorded
+x86_64, niceness 0, affinity 0..3 and initial load averages
+1.3364/1.3711/0.7773. Full OS/Python conditions are in each raw report.
+External load and CPU frequency were uncontrolled, child affinity/priority
+were not directly measured, and the builds/platforms are not a controlled
+cross-OS performance comparison.
+
+| Platform | Side | Serial native mean ms | Auto native mean ms | Mean paired serial/Auto ratio |
+|---|---:|---:|---:|---:|
+| Windows | 480 | 14.855664 | 7.792671 | 1.906941 |
+| Windows | 960 | 57.750322 | 27.345043 | 2.123076 |
+| Linux | 480 | 36.735525 | 17.680861 | 2.077832 |
+| Linux | 960 | 128.168300 | 56.551856 | 2.266393 |
+
+Ratios pair each repeat with the serial control for that size; native pooled
+timing summaries contain 600 measured ticks per policy/size. No slower-than-
+serial multiworker repeat occurred in this fixed campaign. **Counterexamples
+to Auto inherently outperforming explicit four are retained:** Windows Auto
+was slower in repeats 0/1/2 at 480 and 0/2 at 960; Linux in repeat 0 at 480
+and 0/1/2/4 at 960. Those modes have the same configured capacity. Raw
+native/frame distributions, p50/p95/p99, phase/participant arrays, measured
+wall/HZ, terminal export cost and all five repeats remain available:
+
+- [Windows raw report](play-auto002-2026-10-28/windows-campaign.json),
+  SHA-256 `d2a388db387ad75fb6f78c8d3c65f337f256a5db99f61116af4681685e8ecec7`.
+- [Linux raw report](play-auto002-2026-10-28/linux-campaign.json),
+  SHA-256 `b9a979c856da54e24b870efd69ee12ee1ce3be75a17554e04f90c1d82cd89bfc`.
+
+These files are byte-identical copies of the artifact reports, retained in Git
+so the raw measurements outlive artifact expiry. Complete process logs stay in
+the original artifacts; no log or binary build directory is committed here.
+All counts and both OSes preserve terminal level hashes
+`a649a5ee5282ab93658ecf0456eee4e2a8293a376c73df85b1c30f4c8a68b2c6`
+at 480 and
+`5fa8a0f5bf67e8abcd83d470b2a624c188515973335e271369b6773a439beff3`
+at 960.
+
+**Qualification limits:** the actual shared-course Auto control still observes
+four configured slots, maximum one scheduler job and zero parallel phases.
+Participation/timing evidence above belongs to the denser reference Worlds.
+It proves neither simultaneous execution nor representative gameplay
+throughput, UI progress during slow work, rendered FPS, hardware-controller
+or human-feel acceptance. #266 and #270 remain open. Full exact ready-head
+Documentation/provenance, Native, Windows/Linux Godot and applicable scoped
+checks plus independent review are required before PR #285 merges. Earlier
+failed/unexecuted checkpoints retain their original source identities.
