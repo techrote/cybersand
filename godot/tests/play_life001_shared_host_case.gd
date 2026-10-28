@@ -66,6 +66,26 @@ func actor_ready(desktop: Control, rig: StringName) -> bool:
 		and int(desktop.latest_snapshot.rigid_body_epoch) == desktop._physical_epoch)
 
 
+# Named, bound predicates keep the asynchronous call boundary unambiguous.
+# The source thresholds/guards are unchanged from the original closures.
+func clocks_advanced(desktop: Control, rig: StringName,
+	initial_physics_tick: int, initial_native_tick: int) -> bool:
+	return (actor_ready(desktop, rig) and not desktop._actor_input_rearm
+		and desktop.physical_actor_session.tick >= initial_physics_tick + 3
+		and int(desktop.latest_snapshot.tick_index) > initial_native_tick)
+
+
+func physics_resumed(desktop: Control, paused_tick: int) -> bool:
+	return (desktop.physical_actor_session != null
+		and desktop.physical_actor_session.tick > paused_tick)
+
+
+func reset_installed(desktop: Control, rig: StringName,
+	old_epoch: int, old_world_generation: int) -> bool:
+	return (actor_ready(desktop, rig) and desktop._physical_epoch > old_epoch
+		and int(desktop.latest_snapshot.render_world_generation) > old_world_generation)
+
+
 func parse_key(code: Key, pressed: bool) -> void:
 	var event := InputEventKey.new()
 	event.keycode = code
@@ -116,7 +136,7 @@ func run_cycle(rig: StringName, cycle: int) -> bool:
 
 	expect(desktop.microscenario_launch(Catalogue.PLAYER_COURSE_ID, "Play", 0),
 		context + "authored course admitted through the normal selector")
-	var course_ok: bool = await wait_for(func() -> bool: return course_installed(desktop))
+	var course_ok: bool = await wait_for(Callable(self, "course_installed").bind(desktop))
 	expect(course_ok, context + "authored course installation acknowledged")
 	if not course_ok:
 		await close_cycle(desktop, worker, desktop.physical_actor_session, context)
@@ -125,7 +145,7 @@ func run_cycle(rig: StringName, cycle: int) -> bool:
 	expect(desktop.apply_actor_prototype_configuration(
 		StringName("rapier/" + str(rig)), &"human", false),
 		context + "F5 SetP construction admitted")
-	var actor_ok: bool = await wait_for(func() -> bool: return actor_ready(desktop, rig))
+	var actor_ok: bool = await wait_for(Callable(self, "actor_ready").bind(desktop, rig))
 	expect(actor_ok, context + "actor, native epoch and hard terrain acknowledged")
 	if not actor_ok:
 		await close_cycle(desktop, worker, desktop.physical_actor_session, context)
@@ -143,10 +163,8 @@ func run_cycle(rig: StringName, cycle: int) -> bool:
 		context + "installed host exposes bounded actor/World identities")
 
 	desktop.paused = false
-	var advanced: bool = await wait_for(func() -> bool:
-		return (actor_ready(desktop, rig) and not desktop._actor_input_rearm
-			and desktop.physical_actor_session.tick >= initial_physics_tick + 3
-			and int(desktop.latest_snapshot.tick_index) > initial_native_tick))
+	var advanced: bool = await wait_for(Callable(self, "clocks_advanced").bind(
+		desktop, rig, initial_physics_tick, initial_native_tick))
 	expect(advanced, context + "native and Rapier clocks advance independently")
 	if not advanced:
 		await close_cycle(desktop, worker, desktop.physical_actor_session, context)
@@ -196,9 +214,7 @@ func run_cycle(rig: StringName, cycle: int) -> bool:
 	expect(desktop.physical_actor_session.tick == paused_tick,
 		context + "pause prevents completed Rapier ticks")
 	desktop.paused = false
-	var resumed: bool = await wait_for(func() -> bool:
-		return desktop.physical_actor_session != null
-			and desktop.physical_actor_session.tick > paused_tick)
+	var resumed: bool = await wait_for(Callable(self, "physics_resumed").bind(desktop, paused_tick))
 	expect(resumed, context + "resume produces a fresh completed Rapier tick")
 
 	# R constructs a new native World and actor incarnation while retaining the
@@ -207,9 +223,8 @@ func run_cycle(rig: StringName, cycle: int) -> bool:
 	var old_epoch: int = desktop._physical_epoch
 	var old_world_generation: int = int(desktop.latest_snapshot.render_world_generation)
 	desktop.microscenario_reset()
-	var reset_ok: bool = await wait_for(func() -> bool:
-		return (actor_ready(desktop, rig) and desktop._physical_epoch > old_epoch
-			and int(desktop.latest_snapshot.render_world_generation) > old_world_generation))
+	var reset_ok: bool = await wait_for(Callable(self, "reset_installed").bind(
+		desktop, rig, old_epoch, old_world_generation))
 	expect(reset_ok, context + "reset advances actor and native World lifetimes")
 	var reset_epoch: int = desktop._physical_epoch if reset_ok else -1
 	var reset_world_generation: int = int(desktop.latest_snapshot.render_world_generation) if reset_ok else -1
