@@ -172,11 +172,14 @@ func _empty_connection_case(workers: int, policy: int, mode: String) -> Dictiona
 	world.set_simulation_window_enabled(false)
 	# The baseline and extended downward search slots stay fully occupied.
 	# An off-normal void above the bank is weakly reachable THROUGH Sand.
-	var base_origin := Vector2i(56, 64) if mode == "rear" else Vector2i(56, 63)
-	var base_size := Vector2i(17, 19) if mode == "rear" else Vector2i(17, 20)
+	var base_origin := Vector2i(56, 63)
+	var base_size := Vector2i(17, 20)
 	_fill(world, true, base_origin, base_size, SAND)
 	var expected_sand: int = base_size.x * base_size.y
 	match mode:
+		"rear":
+			_fill(world, true, Vector2i(64, 63), Vector2i.ONE, EMPTY)
+			expected_sand -= 1
 		"lateral", "foreign":
 			_fill(world, true, Vector2i(63, 64), Vector2i.ONE, EMPTY)
 			expected_sand -= 1
@@ -193,7 +196,7 @@ func _empty_connection_case(workers: int, policy: int, mode: String) -> Dictiona
 				Vector2i(59, 68), Vector2i(59, 69), Vector2i(59, 70)]:
 				_fill(world, true, point, Vector2i.ONE, EMPTY)
 				expected_sand -= 1
-		"soft", "rear":
+		"soft":
 			pass
 		_:
 			check(false, label + " unknown route geometry")
