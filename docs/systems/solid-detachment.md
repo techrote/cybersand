@@ -60,6 +60,13 @@ makes four changes:
 
 It **passed** source-matched scoped [run 40776168081](https://github.com/techrote/cybersand/actions/runs/40776168081) on Linux and actual Windows. In five fresh processes per OS, every dirty packet on the retained frame coalesced, with zero retries. The run and its gaps are recorded in the
 [audit addendum](../audits/2026-10-28-sol281-render-coalescing-candidate.md#addendum-failed-7d716a5f-qualification-and-deterministic-gate-correction-28-october-2026).
+**Root-cause comparison** ([`85c45720`](https://github.com/techrote/cybersand/commit/85c4572061938cce7f16ccd09703991ed0b23f05), run 40780899379): two further opt-in candidates now exist alongside coalescing.
+
+- `World::copy_render_cells_by_run`, selected through `take_render_snapshot(force_full, copy_by_run)`, is a byte-identical per-run full copy that is 11–20× faster.
+- `_experimental_render_partial_ack` is a baseline overflow exemption with baseline drop on ACK.
+
+The preregistered rule picked partial ACK; the per-run copy failed only a criterion confounded by the unacknowledged setup phase. See the [comparison](../audits/2026-10-28-sol281-render-coalescing-candidate.md#root-cause-comparison-r-p-and-c-28-october-2026). All three stay disabled by default.
+
 The original description follows. The
 [2026-10-28 preregistered candidate](https://github.com/techrote/cybersand/pull/283#issuecomment-6479596107)
 follows the [cross-platform packet/overflow diagnosis](../audits/2026-10-28-sol281-render-ack-consumer-control.md).

@@ -30,6 +30,14 @@ records the correction `819c6677`, which **passed** scoped run 40776168081 on Li
 - a deterministic unacknowledged gate;
 - a real-owner ACK/reset test.
 
+A preregistered [root-cause comparison](audits/2026-10-28-sol281-render-coalescing-candidate.md#root-cause-comparison-r-p-and-c-28-october-2026) (`85c45720`, run 40780899379) compared three opt-in candidates:
+
+- a byte-identical per-run native full copy, 11–20× faster;
+- partial ACK, which the registered pick chose;
+- coalescing.
+
+No default changed.
+
 
 ## SOL281 CPU render-consumption diagnostic, not a gameplay admission
 

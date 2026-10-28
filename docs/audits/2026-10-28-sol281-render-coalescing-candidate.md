@@ -293,3 +293,101 @@ Explicit gaps:
 
 There is no ready-PR matrix, independent human review or default change.
 B=289 remains NO-GO, and every physical gate remains open.
+
+## Root-cause comparison: R, P and C (28 October 2026)
+
+[Preregistered on #283](https://github.com/techrote/cybersand/pull/283#issuecomment-6482124010)
+before any edit. Source [`85c45720`](https://github.com/techrote/cybersand/commit/85c4572061938cce7f16ccd09703991ed0b23f05)
+(tree `47b626fc`).
+[Scoped run 40780899379](https://github.com/techrote/cybersand/actions/runs/40780899379)
+passed all four jobs on exactly that source. Identities, artifact digests and
+all medians are in the
+[comparison receipt](sol281-2026-10-28/render-root-cause-comparison-receipt.json).
+Evidence type: native and actual Godot 4.7/Rapier headless runtime, Linux and
+Windows, workers 4, policy A=81.
+
+### Candidates
+
+All three are opt-in and disabled by default:
+
+- **R:** `World::copy_render_cells_by_run`, selected through
+  `take_render_snapshot(force_full, copy_by_run)`. It is byte-identical to the
+  per-cell copy over:
+  - signed seams;
+  - non-resident chunks;
+  - a padded stride;
+  - a 1024² frame.
+- **P:** `_experimental_render_partial_ack`. It exempts a retained full
+  baseline from the overflow guard. An ACK at or above the baseline serial
+  drops the baseline and rebases the appended patches.
+- **C:** coalescing (`819c6677`), unchanged.
+
+### Hard gates passed
+
+- Every one of the 18 comparison processes and every existing cohort per OS:
+  68/68, 520 members, 6 proxies, 0 stale results, 0 consumer refusals.
+- Unit 39/39.
+- Real-owner 31/31. This includes P's oracle (patched CPU image = fresh
+  native full frame, byte for byte) with and without R.
+- Linux native 13,081 checks.
+
+### Medians of 3 processes
+
+CPU-ACK arm ("1") and never-ACK arm ("0"); "window" is coupling-window only:
+
+| arm | Linux retry/refresh (window) | Linux render p95 ms | Windows retry/refresh (window) | Windows render p95 ms |
+|---|---|---|---|---|
+| L0 original | 0.99 (1.00) | 30.4 | 0.99 (1.00) | 22.4 |
+| R0 | 0.99 (1.00) | 1.65 | 0.99 (1.00) | 2.28 |
+| P0 | 0.00 (0.00) | 0.18 | 0.00 (0.00) | 0.37 |
+| C0 | 0.00 (0.00) | 0.16 | 0.00 (0.00) | 0.40 |
+| L1 original | 0.93 (0.88) | 30.7 | 0.86 (0.76) | 23.2 |
+| R1 | 0.40 (**0.00**) | 0.045 | 0.40 (**0.00**) | 0.027 |
+| P1 | 0.00 (0.00) | 0.032 | 0.00 (0.00) | 0.027 |
+| C1 | 0.00 (0.00) | 0.056 | 0.00 (0.00) | 0.028 |
+
+R's raw effect on forced-full exchange p95 is 30.2 → 1.5 ms on Linux (20×)
+and 22.0 → 1.9 ms on Windows (11.5×). The native microbenchmark of one 1024²
+copy measured 297 → 10.3 ms on Linux at `-O0` and 19.8 → 0.98 ms locally at
+`-O2`.
+
+In the CPU-ACK arm, the full-frame publication fraction was:
+- Linux: R1 0.41, P1 0.41, C1 0.42.
+- Windows: R1 0.41, P1 0.40, C1 0.37.
+
+In the coupling window it was 0 for all three on both OSes.
+
+### Registered outcome
+
+**P is the simplest qualifying candidate on both OSes; C also qualifies; R
+fails criterion (i) only** (retry/refresh 0.40 > 0.10).
+
+### Validity notes, which do not change the registered outcome
+
+1. Whole-run counts include the setup phase before the first coupled snapshot,
+   when no consumer ACKs. R makes those retries about 11–20× cheaper but does
+   not remove them. Criterion (i) therefore penalises R for a phase with no
+   consumer. In the coupling window (post hoc), R1, P1 and C1 all have
+   **0 retries and 0 full publications**, while L1 stays locked.
+2. **P never dropped a baseline in any live process (0 of 12).** Its live
+   benefit is entirely the overflow-guard exemption: dirty patches append
+   behind the retained frame until an exact ACK clears it. The drop/rebase
+   path is exercised only by the real-owner oracle.
+3. Timings are latest-only samples within the 360-sample window; counts are
+   worker totals.
+4. Headless only. There is no main-thread upload, GPU pacing or desktop
+   measurement.
+
+### Recommendation
+
+Not an admission. There is no default change, and B=289 remains NO-GO.
+
+- R removes the root cost on the default path with no new state and
+  byte-identical output. It is the strongest candidate for a separate
+  default-on proposal; the evidence above, not this rule, supports that.
+- Among the stateful options, P is the registered pick. An exemption-only
+  variant without the drop path, and R combined with P, were not tested.
+
+Local Windows preflight (locally built DLL with the pinned godot-cpp
+`101ae380` / llvm-mingw `20260826`): all 27 processes passed and gave the
+same registered verdict.
