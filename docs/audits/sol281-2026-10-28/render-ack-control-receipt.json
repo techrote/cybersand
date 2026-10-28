@@ -13,7 +13,9 @@
     "expected_compound_checks_per_arm": 59,
     "old_source_1414_assertions_per_os_not_transferable": true,
     "artifact_hashes_verified": false,
-    "host_results": null
+    "host_results": null,
+    "docs_predecessor_head": "255abcdc55bb275261bb7fac768f2a0c6f1553a4",
+    "docs_predecessor_conclusion": "success"
   },
   "controls": {
     "unacknowledged_A_candidates": 81,
@@ -37,5 +39,50 @@
     "bounded conservative physically admissible material relocation",
     "reactive Wood/fracture/desoliding and persistence",
     "independent review and ready-PR CI"
-  ]
+  ],
+  "preliminary_source_linux": {
+    "source_sha": "80c775056cbe4e0b0e65ad901843cb7fe4ce3de7",
+    "workflow_id": 40754078838,
+    "job": "linux-rapier",
+    "conclusion": "success",
+    "artifact_id": 12844978110,
+    "artifact_sha256": "07d21882f6cedd7c2dbb880f30766fc3dc7a8f656fac2199696eeb0ef867280d",
+    "archive_crc_ok": true,
+    "source_txt_matches_report": true,
+    "direct_cpu_checks": 15,
+    "compound_checks_per_arm": 59,
+    "native_precursor_checks": 13074,
+    "control_A": {
+      "samples": 143,
+      "refreshes": 96,
+      "double_calls": 96,
+      "exchange_p95_ms": 52.499,
+      "render_p95_ms": 52.64,
+      "overruns": 103,
+      "acks": 0
+    },
+    "consumed_A": {
+      "samples": 128,
+      "refreshes": 108,
+      "double_calls": 108,
+      "exchange_p95_ms": 51.4,
+      "render_p95_ms": 51.559,
+      "overruns": 109,
+      "acks": 109,
+      "consumed": 109,
+      "refused": 0,
+      "bytes": 228589568
+    },
+    "control_B": {
+      "samples": 127,
+      "refreshes": 108,
+      "double_calls": 108,
+      "exchange_p95_ms": 51.485,
+      "render_p95_ms": 51.622,
+      "overruns": 109,
+      "acks": 0
+    },
+    "status": "predecessor_linux_only_not_final_source",
+    "finding": "CPU image consumption and 109 correct ACKs did not prevent any of 108 sampled double-call render refreshes; do not attribute double native calls solely to missing ACK, infer 60 FPS or promote B."
+  }
 }

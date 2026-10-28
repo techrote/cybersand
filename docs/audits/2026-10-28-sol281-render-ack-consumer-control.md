@@ -95,6 +95,55 @@ No new native C++ relocation, native ownership, material law, liquid
 construction policy, Rapier collision shape or asynchronous owner
 handoff is introduced in this experiment.
 
+## First controlled Linux observation — exact predecessor source 80c77505
+
+This is **not** final-source qualification of `55aa72e5`. The
+first implementation at [`80c775056cbe4e0b0e65ad901843cb7fe4ce3de7`](https://github.com/techrote/cybersand/commit/80c775056cbe4e0b0e65ad901843cb7fe4ce3de7)
+passed the actual Linux Godot/Rapier portion of
+[scoped run 40754078838](https://github.com/techrote/cybersand/actions/runs/40754078838).
+The direct CPU payload unit suite passed **15/15 checks, zero failures**;
+each of the three live compound arms passed **59/59 checks, zero failures**.
+The focused native predecessor suite passed another 13,074 checks.
+Independent download and `ZipFile.testzip` CRC verification of the
+Linux execution ZIP matched the Actions-upload SHA-256
+`07d21882f6cedd7c2dbb880f30766fc3dc7a8f656fac2199696eeb0ef867280d`.
+Both `source.txt` and `report.json` in that ZIP bind to the
+`80c77505` executable. The later `cebf`/ `cdba` / `55aa` correction
+adds valid retained-full-plus-dirty semantics and two extra unit
+checks; no older result is promoted to that corrected source.
+
+| Actual Linux predecessor mode | Accepted latest-only samples | Active render refreshes | Two-call native refreshes | Native exchange p95 | Render p95 | Worker overruns | Successful CPU ACKs |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| A=81, no ACK | 143 | 96 | **96/96** | 52.499 ms | 52.640 ms | 103 | 0 |
+| A=81, CPU consumed | 128 | 108 | **108/108** | 51.400 ms | 51.559 ms | 109 | **109** |
+| B=289, no ACK | 127 | 108 | **108/108** | 51.485 ms | 51.622 ms | 109 | 0 |
+
+The CPU-consumed A cohort accepted **109** real full CPU image
+applications and post-consumption ACKs, **zero** rejected payloads,
+and accounted for **228,589,568** accepted render bytes. It still
+made **two native calls on 108/108 sampled refreshes**, exactly
+the same two-call prevalence as the unacknowledged A and B fixtures.
+Each arm retained the 520-member native aggregate, six distinct
+compound proxies and both declared holes; report assertions still
+cover Sand104/Water1020, 12-field ABI, physical motion and source
+ownership. The A modes are **unpaired asynchronous trajectories**:
+the 1.099 ms difference in native exchange p95 is *not* a validated
+speedup. The CPU-consumed A main-thread physics-step p95 was 1.561 ms
+versus 0.216 ms in the unacknowledged A cohort, but that CPU image
+processing overhead is not GPU upload or complete-frame pacing.
+
+**Negative conclusion:** successful image consumption/ACK by itself
+does **not** remove the double native-exchange pattern in this
+fixture. The earlier suggestion that missing ACK alone explains the
+expensive native exchange must remain **unproven**. Two-call behavior
+could also arise from single-call dirty payload volume, patch-count
+limit, native publish capacity or arrival/ACK timing; none is yet
+separated by an observed first-packet status/buffer-before-after
+counter. A further preregistered status/byte/overflow census, followed
+by representative rendering/total-loop pacing, is needed before
+optimizing. The final executable SHA and actual Windows host results
+are separately pending. B=289 remains physical-efficacy NO-GO.
+
 ## Retained negative evidence and outstanding gates
 
 The previous extended B=289 ejection search **remains NO-GO** under
