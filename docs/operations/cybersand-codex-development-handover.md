@@ -4,14 +4,14 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-27
+last-reviewed: 2026-10-28
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
 ## #281 executable handover — native tree proof
 
-Branch `work/sol281-native-detachment-20261027`, executed source `41dc25ca060ecb07cef15c1640feeb9f6cce1eb4`, contains the [experimental native-tree laboratory](../systems/solid-detachment.md). [Initial motion evidence](../audits/2026-10-27-sol281-native-tree.md) and [compound Sand/Water evidence](../audits/2026-10-27-sol281-compound-cellular-coupling.md) now cover actual Linux/Windows Rapier, six exact hole-preserving proxies and session replacement. Preserve cumulative unresolved counts and do not claim production coupling. Next: reactive Wood/heterogeneous bonds, broader material cases, dynamic desoliding/fracture, persistence, cost/feel, runtime publication and independent/full review. #281 remains open.
+Branch `work/sol281-native-detachment-20261027`, executed source `756ae4882d346a1439244189c76eda8496070229`, contains the [experimental native-tree laboratory](../systems/solid-detachment.md). [Initial motion evidence](../audits/2026-10-27-sol281-native-tree.md), [compound Sand/Water evidence](../audits/2026-10-27-sol281-compound-cellular-coupling.md) and [unresolved-cause evidence](../audits/2026-10-28-sol281-unresolved-cause-characterisation.md) cover actual Linux/Windows Rapier, six exact hole-preserving proxies, session replacement and stable-prefix cause counters. Every live unresolved attempt in the dense fixture exhausted the retained bounded ejection search; raw totals are pacing-dependent and the within-run rate remains about 97–98%. Next: preregister and measure a bounded search-policy experiment, then reactive Wood/heterogeneous bonds, dynamic desoliding/fracture, persistence, cost/feel, runtime publication and independent/full review. #281 remains open.
 
 
 ## #12 native structural detachment priority — 2026-10-27

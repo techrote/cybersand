@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-10-27
+last-reviewed: 2026-10-28
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -264,7 +264,7 @@ claims. Exploratory source acceptance, merged readiness and platform acceptance 
 separate; the programme graph owns admission.
 
 ## Soliding, settled-region acceleration and coherent fracture
-- **What actually runs for #281, including compound cellular coupling?** [Experimental native solid-detachment runtime and controls](../systems/solid-detachment.md), [initial native-tree evidence](../audits/2026-10-27-sol281-native-tree.md), then [41dc25ca Linux/Windows Sand/Water coupling evidence](../audits/2026-10-27-sol281-compound-cellular-coupling.md). Distinguish exact six-proxy holes from a filled AABB, scoped coupling from reactive Wood/general desoliding, and retained unresolved counts from a production-acceptance claim.
+- **What actually runs for #281, including compound cellular coupling and unresolved causes?** [Experimental native solid-detachment runtime and controls](../systems/solid-detachment.md), [initial native-tree evidence](../audits/2026-10-27-sol281-native-tree.md), [41dc25ca Linux/Windows Sand/Water coupling evidence](../audits/2026-10-27-sol281-compound-cellular-coupling.md), then [756ae488 cause characterisation](../audits/2026-10-28-sol281-unresolved-cause-characterisation.md). Distinguish exact six-proxy holes from a filled AABB, no-target search exhaustion from immovable/write failures, cumulative attempts from unique cells, and scoped coupling from reactive Wood/general desoliding or production acceptance.
 
 
 - **Can an existing native-cell tree be cut free and physically topple/roll

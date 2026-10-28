@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-10-27
+last-reviewed: 2026-10-28
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
@@ -466,7 +466,7 @@ and routed to their real physics owner instead of being hidden in interaction ru
 
 
 ## Scalable reversible soliding
-**Experimental source checkpoint:** [real native-tree detachment laboratory](systems/solid-detachment.md) now demonstrates actual native payload transfer, Linux/Windows Rapier toppling and hole-preserving six-proxy Sand/Water coupling at source `41dc25ca`. Read the [initial proof](audits/2026-10-27-sol281-native-tree.md) and [compound-coupling evidence](audits/2026-10-27-sol281-compound-cellular-coupling.md). This dry inert one-body branch is not main/release acceptance, reactive Wood or general desoliding; #281 stays open.
+**Experimental source checkpoint:** [real native-tree detachment laboratory](systems/solid-detachment.md) now demonstrates actual native payload transfer, Linux/Windows Rapier toppling, hole-preserving six-proxy Sand/Water coupling and exact unresolved-cause attribution at source `756ae488`. Read the [initial proof](audits/2026-10-27-sol281-native-tree.md), [compound-coupling evidence](audits/2026-10-27-sol281-compound-cellular-coupling.md) and [cause characterisation](audits/2026-10-28-sol281-unresolved-cause-characterisation.md). All live unresolved attempts in the dense fixture exhausted the retained bounded search; this dry inert one-body branch is not main/release acceptance, reactive Wood or general desoliding. #281 stays open.
 
 
 **New 2026-10-27 owner priority:** native terrain solid that can

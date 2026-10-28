@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-27
+last-reviewed: 2026-10-28
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -1579,7 +1579,7 @@ from candidate until exact-head current checks and final diff/acceptance review
 complete.
 
 ## Issue #12 structural-detachment priority — 2026-10-27
-**Later experimental implementation checkpoint (not merged production):** [native detachment runtime](../systems/solid-detachment.md) now reaches source `41dc25ca`: 520 native cells, six exact shapes/proxies, actual Linux and Windows Rapier toppling, session-reset fences, and hole-preserving Sand/Water interaction. The [initial record](../audits/2026-10-27-sol281-native-tree.md) and [compound-coupling record](../audits/2026-10-27-sol281-compound-cellular-coupling.md) preserve exact scopes. Coupling passes 32 checks per platform with quantity conservation and real contact/displacement, while cumulative unresolved interactions remain 1,094 Linux / 2,190 Windows. Reactive Wood, dynamic demotion/fracture, persistence, independent review, full qualification and release publication remain open; #281 is not closed.
+**Later experimental implementation checkpoint (not merged production):** [native detachment runtime](../systems/solid-detachment.md) now reaches source `756ae488`: 520 native cells, six exact shapes/proxies, actual Linux and Windows Rapier toppling, session-reset fences, hole-preserving Sand/Water interaction and a stable-prefix unresolved-cause protocol. The [initial record](../audits/2026-10-27-sol281-native-tree.md), [compound-coupling record](../audits/2026-10-27-sol281-compound-cellular-coupling.md) and [cause characterisation](../audits/2026-10-28-sol281-unresolved-cause-characterisation.md) preserve exact scopes. Cause tests pass 43 checks and coupling 36 checks per platform. Every live unresolved attempt was a no-reachable-target search exhaustion; the attempt-level rate remains about 97–98%, so reduction and representative cost remain open. Reactive Wood, dynamic demotion/fracture, persistence, independent review, full qualification and release publication remain open; #281 is not closed.
 
 
 **Approved direction / implementation Planned:** native solid structures

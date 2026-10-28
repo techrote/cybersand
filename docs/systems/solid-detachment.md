@@ -4,8 +4,8 @@ status: Current
 document-kind: contract
 scope: Branch-local dry inert one-aggregate handoff, exact compound cellular coupling, session lifetime fences and scoped Linux/Windows Rapier proof; not production soliding
 canonical-for: [solid-detachment-runtime, solid-detachment-lab]
-last-reviewed: 2026-10-27
-related-documents: [../operations/soliding-structural-detachment-programme.md, ../architecture/soliding-lifecycle.md, ../architecture/rigid-body-and-cellular-coupling.md, ../architecture/simulation-tick-and-threading.md, ../audits/2026-10-27-sol281-native-tree.md, ../audits/2026-10-27-sol281-compound-cellular-coupling.md]
+last-reviewed: 2026-10-28
+related-documents: [../operations/soliding-structural-detachment-programme.md, ../architecture/soliding-lifecycle.md, ../architecture/rigid-body-and-cellular-coupling.md, ../architecture/simulation-tick-and-threading.md, ../audits/2026-10-27-sol281-native-tree.md, ../audits/2026-10-27-sol281-compound-cellular-coupling.md, ../audits/2026-10-28-sol281-unresolved-cause-characterisation.md]
 ---
 
 # Experimental native solid detachment
@@ -71,11 +71,20 @@ contact/displacement feedback reaches the single body. The exact-source
 [evidence record](../audits/2026-10-27-sol281-compound-cellular-coupling.md)
 contains platform counters, hashes and limitations.
 
-The dense-bank fixture also reports cumulative unresolved interactions: **1,094
-on Linux and 2,190 on Windows**. These are retained diagnostics, not hidden or
-relabelled as success. The test proves bounded hole-preserving interaction and
-conservation, not zero unresolved contact, production tuning or universal
-material coupling.
+Source `756ae4882d346a1439244189c76eda8496070229` appends three diagnostic-only cause counters after the
+original nine result fields, preserving every previous offset. Native and
+fallback protocol cases pass 43 checks per host; the compound fixture now passes
+36 checks per host. The [exact-source cause record](../audits/2026-10-28-sol281-unresolved-cause-characterisation.md)
+contains the partition, artifacts and limitations.
+
+In run 40611249935, every live unresolved attempt was an exhausted bounded ejection
+search: **1,557/1,557 on Linux and 1,501/1,501 on Windows**. Immovable,
+relocation-refused and unclassified counts were zero. Successful displacements
+were 35 and 40 respectively, giving attempt-level unresolved proportions of
+97.8015% and 97.4043%. These are cumulative repeated attempts under async pacing,
+not unique cells or deterministic cross-run totals. No ejection rule changed.
+The result proves cause attribution, not acceptable production resolution rate,
+performance tuning or universal material coupling.
 
 ## Native owner, shape and transaction contract
 
