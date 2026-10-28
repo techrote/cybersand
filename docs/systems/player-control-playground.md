@@ -137,7 +137,7 @@ launcher. These scene controls accompany the movement actions below.
 | **3** / `acrobat` | **Afterimage** — momentum acrobat | A/D run and steer in air; Space jumps, then double jumps; hold Shift or S to slide; tap Shift to roll; Shift+Space or S+Space bullet jumps; C cancels/brakes and, held in air, glides. Mouse position aims bullet jumps. |
 | **4** / `arcadelander` | **Vector Rush** — arcade lander | W or Space fires the body-axis main engine; A/D or Q/E rotates; S gives reverse thrust; Shift applies a strong airbrake; tap C toggles damped flight/coast. |
 | **5** / `dryswarm` | **Dust Devil** — Sand cloud | WASD guides actual Sand; Space surges in the movement direction, or upward from neutral; Shift spreads; C gathers. Neutral admitted input keeps the cohesion/loft field active. |
-| **6** / `liquidswarm` | **Undertow** — Water blob | WASD guides actual Water; Space surges; Shift squeezes transverse to travel into a stream; C gathers. |
+| **6** / `liquidswarm` | **Undertow** — Water blob | WASD guides actual Water; Space surges; Shift squeezes transverse to travel into a stream; C gathers. Neutral admitted input keeps the cohesion/loft field active. |
 | **7** / `jetbarrel` | **Barrel Rocket** — barrel with jetpack | W or Space fires the body-axis jet; A/D or Q/E provides strong rotation; S gives reverse thrust; Shift brakes; hold C for upright assistance. |
 
 Arrow keys duplicate WASD in the dedicated scene. The lander and barrel thrust
@@ -247,7 +247,9 @@ does not promise conservation across unrelated chemistry or authoring actions.
 
 Selection is **matching material within a local radius**, not a persistent
 collection of owned particles. Nearby environmental Sand/Water can join; material
-that leaves the field is no longer controlled. The visible ring shows this
+that leaves the field is no longer controlled. The field follows the returned
+quantity-weighted material centroid with a bounded centre adjustment. WASD moves
+material rather than a remote selection cursor. The visible ring shows this
 local selection boundary.
 
 The native call scans at most 4,225 candidate positions within a radius-32
