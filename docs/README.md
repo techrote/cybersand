@@ -36,7 +36,7 @@ A preregistered [root-cause comparison](audits/2026-10-28-sol281-render-coalesci
 - partial ACK, which the registered pick chose;
 - coalescing.
 
-No default changed.
+No default changed. A [follow-up](audits/2026-10-28-sol281-render-coalescing-candidate.md#follow-up-comparison-e-and-rp-28-october-2026) (`b924fbd2`, run 40785112538) found that the exemption-only variant is preferred over partial ACK, and that adding the per-run copy brings no both-OS gain.
 
 
 ## SOL281 CPU render-consumption diagnostic, not a gameplay admission

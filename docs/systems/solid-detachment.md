@@ -65,7 +65,7 @@ It **passed** source-matched scoped [run 40776168081](https://github.com/techrot
 - `World::copy_render_cells_by_run`, selected through `take_render_snapshot(force_full, copy_by_run)`, is a byte-identical per-run full copy that is 11–20× faster.
 - `_experimental_render_partial_ack` is a baseline overflow exemption with baseline drop on ACK.
 
-The preregistered rule picked partial ACK; the per-run copy failed only a criterion confounded by the unacknowledged setup phase. See the [comparison](../audits/2026-10-28-sol281-render-coalescing-candidate.md#root-cause-comparison-r-p-and-c-28-october-2026). All three stay disabled by default.
+The preregistered rule picked partial ACK; the per-run copy failed only a criterion confounded by the unacknowledged setup phase. See the [comparison](../audits/2026-10-28-sol281-render-coalescing-candidate.md#root-cause-comparison-r-p-and-c-28-october-2026). All three stay disabled by default. A [follow-up](../audits/2026-10-28-sol281-render-coalescing-candidate.md#follow-up-comparison-e-and-rp-28-october-2026) (`b924fbd2`, run 40785112538) found that the overflow exemption alone (`_experimental_render_baseline_drop = false`, mode E) qualifies on both OSes and is preferred over partial ACK. Adding the per-run copy to partial ACK gave no both-OS improvement. These modes are also disabled by default.
 
 The original description follows. The
 [2026-10-28 preregistered candidate](https://github.com/techrote/cybersand/pull/283#issuecomment-6479596107)

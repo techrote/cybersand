@@ -391,3 +391,88 @@ Not an admission. There is no default change, and B=289 remains NO-GO.
 Local Windows preflight (locally built DLL with the pinned godot-cpp
 `101ae380` / llvm-mingw `20260826`): all 27 processes passed and gave the
 same registered verdict.
+
+## Follow-up comparison: E and RP (28 October 2026)
+
+[Preregistered on #283](https://github.com/techrote/cybersand/pull/283#issuecomment-6482976862)
+before any edit. Source [`b924fbd2`](https://github.com/techrote/cybersand/commit/b924fbd2c05605aead21f0ddf72e95ed93cd364f)
+(tree `05271619`).
+[Scoped run 40785112538](https://github.com/techrote/cybersand/actions/runs/40785112538)
+passed all four jobs on exactly that source.
+
+Identities are in the
+[follow-up receipt](sol281-2026-10-28/render-followup-comparison-receipt.json):
+- source archive, recomputed and equal to `archive.sha256`;
+- Windows DLL `92b9f17f…`, equal to its manifest, with 552 inputs verified;
+- Linux runtime `6be68608…`;
+- all four artifact digests.
+
+Evidence type: native and actual Godot 4.7/Rapier headless runtime, Linux and
+Windows, workers 4, policy A=81. The fresh L/R/P/C arms ran in the same
+workflow run.
+
+### Arms
+
+Both are opt-in and disabled by default:
+
+- **E** (render mode 3, `_experimental_render_baseline_drop = false`): P's
+  overflow-guard exemption without the baseline drop. Only an exact ACK
+  clears the retained frame.
+- **RP**: P (mode 2) plus the per-run copy R.
+
+### Hard gates passed on both OSes
+
+- Every comparison process and cohort: 68/68, 520 members, 6 proxies,
+  0 stale results, 0 consumer refusals.
+- E reported 0 baseline drops in all 6 live processes.
+- Unit 39/39.
+- Real-owner 41/41. This includes E's oracle, with workers 1 and 4: a full
+  frame plus appended patches publishes without a retry, a baseline-only ACK
+  drops nothing, and the CPU image equals a fresh native full frame byte for
+  byte.
+- Linux native 13,081 checks.
+
+### Medians of 3, CPU-ACK arm
+
+Each cell: retry/refresh · render-refresh p95 / p99 ms · full publications per refresh.
+
+| arm | Linux | Windows |
+|---|---|---|
+| L1 original | 0.99 · 47.8 / 49.1 · 1.00 | 0.87 · 24.6 / 25.3 · 0.88 |
+| R1 | 0.40 · 0.045 / 1.79 · 0.41 | 0.41 · 0.049 / 2.53 · 0.42 |
+| P1 | 0.00 · 0.052 / 0.061 · 0.40 | 0.00 · 0.071 / 0.812 · 0.41 |
+| **E1** | 0.00 · 0.037 / 0.051 · 0.40 | 0.00 · 0.048 / 0.055 · 0.39 |
+| RP1 | 0.00 · 0.049 / 0.056 · 0.40 | 0.00 · 0.044 / 0.049 · 0.42 |
+| C1 | 0.00 · 0.051 / 0.076 · 0.40 | 0.00 · 0.048 / 0.067 · 0.41 |
+
+Never-ACK arms: E0, P0, RP0 and C0 all ran 0 retries. Render p95 was
+0.31–0.34 ms on Linux and 0.80–0.96 ms on Windows. The full-copy raw effect
+reproduced: forced-full exchange p95 L0 → R0 was 46.7 → 1.9 ms on Linux and
+23.1 → 2.0 ms on Windows.
+
+### Registered outcome
+
+- **E qualifies on both OSes, so E is preferred over P.**
+- **RP is not preferred over P.** It qualifies, and on Windows it beats P1's
+  p99 (0.049 against 0.812 ms). On Linux its p99 ratio is only 0.92, with no
+  retry or full-publication gain. The rule requires the improvement on both
+  OSes.
+
+### Validity notes
+
+1. RP's Windows advantage comes from a single P1 tail sample. P1's Windows
+   p99 is 0.812 ms while its p95 is 0.071 ms. This is consistent with noise,
+   not with a mechanism R adds on top of P.
+2. In the coupling window (post hoc), every candidate except L had 0 retries
+   and 0 full publications on both OSes.
+3. Whole-run counts include the unacknowledged setup phase. Timings are
+   latest-only samples.
+4. Headless only. There is no main-thread upload or GPU pacing measurement.
+
+### Recommendation
+
+Not an admission. There is no default change, and B=289 remains NO-GO.
+
+- Among the stateful candidates, E, the overflow exemption alone, is now the
+  registered pick. It is simpler than P because it has no drop/rebase path.
+- The default-on per-run copy R is a separate stateless proposal on `main`.
