@@ -202,14 +202,14 @@ jobs:
           assert policy['baseline_candidates_max']==81 and policy['extended_candidates_max']==289 and len(policy['cases'])==40
           run('compound-coupling',['--headless','--path','godot','--script','res://tests/test_solid_detachment_coupling.gd','--',str(result/'compound-coupling.json')],'SOL281_COMPOUND_COUPLING')
           coupling=json.loads((result/'compound-coupling.json').read_text())
-          assert coupling['checks']==48 and coupling['failures']==[] and coupling['platform']=='Windows'
+          assert coupling['checks']==51 and coupling['failures']==[] and coupling['platform']=='Windows'
           assert coupling['coupling']['proxy_count']==coupling['shapes'] and coupling['coupling']['contacts']>0 and coupling['coupling']['displaced']>0
           assert coupling['coupling']['unresolved']==coupling['coupling']['unresolved_no_target'] and coupling['coupling']['unresolved_immovable']==0 and coupling['coupling']['unresolved_relocation_refused']==0 and coupling['coupling']['unresolved_unclassified']==0
           assert coupling['ejection_policy']==0 and coupling['main_thread_step_timing']['samples']==360
           assert coupling['ejection_topology']['enabled'] and coupling['ejection_topology']['classified']>0
           run('compound-extended',['--headless','--path','godot','--script','res://tests/test_solid_detachment_coupling.gd','--',str(result/'compound-extended.json'),'1'],'SOL281_COMPOUND_COUPLING')
           extended=json.loads((result/'compound-extended.json').read_text())
-          assert extended['checks']==48 and extended['failures']==[] and extended['platform']=='Windows' and extended['ejection_policy']==1
+          assert extended['checks']==51 and extended['failures']==[] and extended['platform']=='Windows' and extended['ejection_policy']==1
           assert extended['members']==520 and extended['shapes']==6 and extended['coupling']['proxy_count']==6
           assert extended['coupling']['contacts']>0 and extended['coupling']['displaced']>0
           assert extended['coupling']['unresolved']==extended['coupling']['unresolved_no_target'] and extended['coupling']['unresolved_immovable']==0 and extended['coupling']['unresolved_relocation_refused']==0 and extended['coupling']['unresolved_unclassified']==0
@@ -294,13 +294,13 @@ jobs:
           assert policy['platform']=='Linux' and policy['failures']==[] and policy['checks']>=200
           assert policy['baseline_candidates_max']==81 and policy['extended_candidates_max']==289 and len(policy['cases'])==40
           coupling=json.loads((root/'compound-coupling.json').read_text())
-          assert coupling['checks']==48 and coupling['failures']==[] and coupling['platform']=='Linux'
+          assert coupling['checks']==51 and coupling['failures']==[] and coupling['platform']=='Linux'
           assert coupling['coupling']['proxy_count']==coupling['shapes'] and coupling['coupling']['contacts']>0 and coupling['coupling']['displaced']>0
           assert coupling['coupling']['unresolved']==coupling['coupling']['unresolved_no_target'] and coupling['coupling']['unresolved_immovable']==0 and coupling['coupling']['unresolved_relocation_refused']==0 and coupling['coupling']['unresolved_unclassified']==0
           assert coupling['ejection_policy']==0 and coupling['main_thread_step_timing']['samples']==360
           assert coupling['ejection_topology']['enabled'] and coupling['ejection_topology']['classified']>0
           extended=json.loads((root/'compound-extended.json').read_text())
-          assert extended['checks']==48 and extended['failures']==[] and extended['platform']=='Linux' and extended['ejection_policy']==1
+          assert extended['checks']==51 and extended['failures']==[] and extended['platform']=='Linux' and extended['ejection_policy']==1
           assert extended['members']==520 and extended['shapes']==6 and extended['coupling']['proxy_count']==6
           assert extended['coupling']['contacts']>0 and extended['coupling']['displaced']>0
           assert extended['coupling']['unresolved']==extended['coupling']['unresolved_no_target'] and extended['coupling']['unresolved_immovable']==0 and extended['coupling']['unresolved_relocation_refused']==0 and extended['coupling']['unresolved_unclassified']==0
