@@ -202,6 +202,13 @@ private:
         std::uint64_t nearby_void_path_blocked = 0;
         std::uint64_t no_nearby_unmasked_void = 0;
         std::uint64_t skipped_capacity = 0;
+        // Read-only, four-neighbour Empty/unmasked connectivity. A necessary
+        // topology observation, not an admissible destination or move.
+        std::uint64_t empty_connected_forward = 0;
+        std::uint64_t empty_connected_lateral = 0;
+        std::uint64_t empty_connected_rear = 0;
+        std::uint64_t empty_connected_none = 0;
+        std::uint64_t weak_direct_without_empty_route = 0;
     };
     std::unique_ptr<BodyDiagnostics> body_diagnostics_;
     bool diagnostic_fixture_ = false;
@@ -308,7 +315,8 @@ private:
                                                 std::int32_t target_y,
                                                 std::uint16_t source_body_id) const;
     void classify_ejection_failure(std::int32_t source_x, std::int32_t source_y,
-                                   std::uint16_t source_body_id);
+                                   std::uint16_t source_body_id,
+                                   Vector2 outward_normal);
     void record_impulse(std::uint16_t body_id, Vector2 impulse);
     [[nodiscard]] static std::int32_t symmetric_probe_offset(std::int32_t index);
     [[nodiscard]] static bool in_bounds(std::int64_t x, std::int64_t y);

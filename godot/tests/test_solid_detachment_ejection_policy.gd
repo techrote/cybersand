@@ -157,6 +157,97 @@ func _case(native: bool, workers: int, policy: int, mode: String, serial: int) -
 		"sand":sand_count, "digest":_digest(stored),
 		"duration_usec":duration_us}
 
+# Source-owned geometry deliberately distinguishes the permissive soft-crossing
+# line test from a connected four-neighbour Empty route. No Rapier or new motion.
+func _empty_connection_case(workers: int, policy: int, mode: String) -> Dictionary:
+	var label: String = "native/w%d/p%d/empty-%s" % [workers, policy, mode]
+	var world: Object = ClassDB.instantiate(&"CyberNativeCellWorld")
+	check(world != null, label + " native owner constructs")
+	if world == null:
+		return {}
+	if not world.diagnostic_reset({"workers":workers, "telemetry":false,
+		"ejection_policy":policy, "ejection_topology":true}):
+		check(false, label + " topology opt-in admitted")
+		return {}
+	world.set_simulation_window_enabled(false)
+	# The baseline and extended downward search slots stay fully occupied.
+	# An off-normal void above the bank is weakly reachable THROUGH Sand.
+	var base_origin := Vector2i(56, 64) if mode == "rear" else Vector2i(56, 63)
+	var base_size := Vector2i(17, 19) if mode == "rear" else Vector2i(17, 20)
+	_fill(world, true, base_origin, base_size, SAND)
+	var expected_sand: int = base_size.x * base_size.y
+	match mode:
+		"lateral", "foreign":
+			_fill(world, true, Vector2i(63, 64), Vector2i.ONE, EMPTY)
+			expected_sand -= 1
+		"hard":
+			_fill(world, true, Vector2i(63, 64), Vector2i.ONE, WALL)
+			expected_sand -= 1
+		"forward":
+			# Empty winding path: first lateral beyond the default ±4 band,
+			# then down to a forward-sector void at (59,70). B is not tested
+			# for this mode because its larger search could relocate first.
+			for point: Vector2i in [Vector2i(63, 64), Vector2i(62, 64),
+				Vector2i(61, 64), Vector2i(60, 64), Vector2i(59, 64),
+				Vector2i(59, 65), Vector2i(59, 66), Vector2i(59, 67),
+				Vector2i(59, 68), Vector2i(59, 69), Vector2i(59, 70)]:
+				_fill(world, true, point, Vector2i.ONE, EMPTY)
+				expected_sand -= 1
+		"soft", "rear":
+			pass
+		_:
+			check(false, label + " unknown route geometry")
+	var serial: int = 900 + workers * 10 + policy
+	var states := _states(serial)
+	if mode == "foreign":
+		Coupling.append_input(states, 2, Vector2(63.5, 64.5), 0.0,
+			Vector2.ONE, Vector2.ZERO, 0.0, 1.0, serial)
+	world.prepare_rigid_body_coupling(states, true)
+	var result: PackedFloat32Array = world.rigid_body_results()
+	check(result.size() == Coupling.RESULT_STRIDE * (2 if mode == "foreign" else 1),
+		label + " complete stable body result records")
+	if result.size() < Coupling.RESULT_STRIDE:
+		return {}
+	check(int(result[Coupling.RESULT_BODY_ID]) == 1
+		and int(result[Coupling.RESULT_SAMPLE_SERIAL]) == serial,
+		label + " source proxy identity and sample ABI unchanged")
+	check(int(result[Coupling.RESULT_UNRESOLVED_COUNT]) == 1
+		and int(result[Coupling.RESULT_UNRESOLVED_NO_TARGET_COUNT]) == 1
+		and int(result[Coupling.RESULT_DISPLACED_COUNT]) == 0,
+		label + " failure without source relocation")
+	var topology: Dictionary = world.diagnostic_ejection_topology()
+	var expected: String = mode if mode in ["forward", "lateral", "rear"] else "none"
+	var bins: Array[String] = ["forward", "lateral", "rear", "none"]
+	var total: int = 0
+	for sector: String in bins:
+		var count: int = int(topology.get("empty_connected_" + sector, -1))
+		total += count
+		check(count == (1 if sector == expected else 0),
+			label + " exclusive strict empty-only sector " + sector)
+	check(int(topology.get("classified", -1)) == 1
+		and int(topology.get("skipped_capacity", -1)) == 0 and total == 1,
+		label + " strict partition shares the existing cap")
+	check(int(topology.get("off_axis_direct_path", -1)) == 1,
+		label + " weaker permissive direct path exists")
+	check(int(topology.get("weak_direct_without_empty_route", -1))
+		== (1 if expected == "none" else 0),
+		label + " weak path is not a physical empty-only route")
+	var snapshot: Dictionary = world.diagnostic_snapshot(ORIGIN, SIZE, false)
+	var counts: Array = snapshot.get("counts", [])
+	check(counts.size() > SAND and int(counts[SAND]) == expected_sand,
+		label + " Sand ownership conserved exactly")
+	check(world.material_at(CENTER.x, CENTER.y) == SAND and not world.has_failed(),
+		label + " source Sand and healthy native owner unchanged")
+	if mode == "foreign":
+		check(world.rigid_body_id_at(63, 64) == 2,
+			label + " foreign transient owner blocks adjacent void")
+	if mode == "hard":
+		check(world.material_at(63, 64) == WALL,
+			label + " hard adjacent stored cell is not a route")
+	return {"workers":workers, "policy":policy, "mode":mode,
+		"source_sand":expected_sand, "topology":topology,
+		"snapshot_hash":_digest(_stored_cells(world, true))}
+
 # Owner-side saturation fixture: the 17th and later no-target event in
 # one preparation must be counted, not silently discarded. No native tick or
 # Rapier body is involved; the same immutable input is replayed for exact parity.
@@ -214,6 +305,13 @@ func _topology_budget_case(workers: int, policy: int) -> Dictionary:
 			+ int(census.get("nearby_void_path_blocked", -1))
 			+ int(census.get("no_nearby_unmasked_void", -1)),
 			label + " classified partition exact, no missed categories")
+		check(classified == int(census.get("empty_connected_forward", -1))
+			+ int(census.get("empty_connected_lateral", -1))
+			+ int(census.get("empty_connected_rear", -1))
+			+ int(census.get("empty_connected_none", -1))
+			and int(census.get("weak_direct_without_empty_route", -1))
+			<= int(census.get("empty_connected_none", -1)),
+			label + " independent strict partition uses same capacity")
 	var snapshot: Dictionary = world.diagnostic_snapshot(
 		Vector2i(32, 32), Vector2i(64, 64), false)
 	var counts: Array = snapshot.get("counts", [])
@@ -292,11 +390,43 @@ func _run() -> void:
 					"census cap parity across workers 1/4 policy " + key)
 			else:
 				budget_signatures[key] = value
+	# Contrived native-only topology controls, with identical worker 1/4
+	# outcomes. This observes destinations; it does not move any cells.
+	var empty_route_cases: Array[Dictionary] = []
+	var empty_route_signatures: Dictionary = {}
+	for policy: int in [0, 1]:
+		for workers: int in [1, 4]:
+			for mode: String in ["soft", "rear", "lateral", "hard", "foreign"]:
+				var sample: Dictionary = _empty_connection_case(workers, policy, mode)
+				empty_route_cases.append(sample)
+				if sample.is_empty():
+					continue
+				var key: String = "%d/%s" % [policy, mode]
+				var sector: String = mode if mode in ["rear", "lateral"] else "none"
+				var signature: String = "%s/%d/%d/%s" % [sector,
+					int(sample.topology.get("empty_connected_" + sector, -1)),
+					sample.source_sand, sample.snapshot_hash]
+				if empty_route_signatures.has(key):
+					check(empty_route_signatures[key] == signature,
+						"strict topology worker 1/4 parity: " + key)
+				else:
+					empty_route_signatures[key] = signature
+	for workers: int in [1, 4]:
+		var forward_sample: Dictionary = _empty_connection_case(workers, 0, "forward")
+		empty_route_cases.append(forward_sample)
+		if not forward_sample.is_empty():
+			var signature: String = str(forward_sample.snapshot_hash)
+			if empty_route_signatures.has("0/forward"):
+				check(empty_route_signatures["0/forward"] == signature,
+					"winding forward route worker 1/4 parity")
+			else:
+				empty_route_signatures["0/forward"] = signature
 	var report: Dictionary = {"schema":"cybersand.sol281.ejection-policy-protocol.v1",
 		"platform":OS.get_name(), "checks":checks, "failures":failures,
 		"baseline_candidates_max":81, "extended_candidates_max":289,
 		"cases":cases, "signature_groups":signatures,
 		"topology_budget_cases":budget_cases, "topology_budget_signatures":budget_signatures,
+		"empty_route_cases":empty_route_cases, "empty_route_signatures":empty_route_signatures,
 		"scope":"deterministic bounded diagnostic-only A/B protocol; no Rapier or release acceptance"}
 	var args: PackedStringArray = OS.get_cmdline_user_args()
 	if not args.is_empty():

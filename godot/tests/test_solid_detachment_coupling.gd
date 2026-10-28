@@ -162,8 +162,14 @@ func _run() -> void:
 		"all attempted no-targets are either classified or capped")
 	check(classified == int(topology.get("off_axis_direct_path", -1))
 		+ int(topology.get("nearby_void_path_blocked", -1))
-		+ int(topology.get("no_nearby_unmasked_void", -1)),
-		"each classified failure is assigned to one local topology bin")
+		+ int(topology.get("no_nearby_unmasked_void", -1))
+		and classified == int(topology.get("empty_connected_forward", -1))
+		+ int(topology.get("empty_connected_lateral", -1))
+		+ int(topology.get("empty_connected_rear", -1))
+		+ int(topology.get("empty_connected_none", -1))
+		and int(topology.get("weak_direct_without_empty_route", -1))
+		<= int(topology.get("empty_connected_none", -1)),
+		"weak and strict empty-route partitions remain complete and bounded")
 	check(classified > 0, "dense bank creates bounded inspected failures")
 	var worker_timing: Dictionary = metrics.get("worker_step_timing", {})
 	check(int(worker_timing.get("samples", 0)) > 0, "worker step timing observed")

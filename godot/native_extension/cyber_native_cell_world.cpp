@@ -632,7 +632,7 @@ void CyberNativeCellWorld::reconcile_overlap(std::int32_t cell_index,
     if (target.x < 0) {
         ++observation.unresolved;
         ++observation.unresolved_no_target;
-        if (ejection_topology_enabled_) classify_ejection_failure(x, y, body_id);
+        if (ejection_topology_enabled_) classify_ejection_failure(x, y, body_id, outward);
         const auto impulse = -outward * displacement_gain_;
         if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
         record_impulse(body_id, impulse);
@@ -754,7 +754,8 @@ Vector2i CyberNativeCellWorld::find_ejection_target(std::int32_t source_x,
 // *not* automatically physically admissible ejection targets.
 void CyberNativeCellWorld::classify_ejection_failure(std::int32_t source_x,
                                                      std::int32_t source_y,
-                                                     std::uint16_t source_body_id) {
+                                                     std::uint16_t source_body_id,
+                                                     Vector2 outward_normal) {
     ++ejection_topology_.no_target_events;
     if (ejection_topology_classified_this_sample_ >= kEjectionCensusPerSampleLimit) {
         ++ejection_topology_.skipped_capacity;
@@ -783,6 +784,60 @@ void CyberNativeCellWorld::classify_ejection_failure(std::int32_t source_x,
     if (direct_path) ++ejection_topology_.off_axis_direct_path;
     else if (found_void) ++ejection_topology_.nearby_void_path_blocked;
     else ++ejection_topology_.no_nearby_unmasked_void;
+
+    // Strict read-only topology: a source grain cannot pass through Sand,
+    // Water, hard terrain, or even its own body's transient mask on this
+    // four-connected Empty route. A route is only a *necessary* local
+    // condition, never a safe cell commit, collision trajectory or ejection.
+    constexpr std::int32_t side = 2 * kEjectionCensusRadius + 1;
+    constexpr std::size_t capacity = static_cast<std::size_t>(side * side);
+    std::array<std::uint8_t, capacity> visited{};
+    std::array<std::uint16_t, capacity> queue{};
+    std::size_t head = 0, tail = 0;
+    const auto admit = [&](std::int32_t dx, std::int32_t dy) {
+        if (std::abs(dx) > kEjectionCensusRadius ||
+            std::abs(dy) > kEjectionCensusRadius ||
+            (dx == 0 && dy == 0)) return;
+        const auto slot = static_cast<std::size_t>(
+            (dy + kEjectionCensusRadius) * side + dx + kEjectionCensusRadius);
+        if (visited[slot] != 0U) return;
+        visited[slot] = 1U;
+        const auto x = source_x + dx;
+        const auto y = source_y + dy;
+        if (!in_bounds(x, y) || world_->transient_obstacle_at(x, y) != 0U ||
+            world_->stored_material(x, y) != cybersand::Material::Empty) return;
+        // Every site is admitted at most once. No heap allocation or overflow.
+        queue[tail++] = static_cast<std::uint16_t>(slot);
+    };
+    admit(0, -1);
+    admit(1, 0);
+    admit(0, 1);
+    admit(-1, 0);
+    bool forward = false, lateral = false, rear = false;
+    const auto normal = normalized_or_zero(outward_normal);
+    while (head < tail) {
+        const auto slot = static_cast<std::int32_t>(queue[head++]);
+        const auto dx = slot % side - kEjectionCensusRadius;
+        const auto dy = slot / side - kEjectionCensusRadius;
+        const auto length = std::sqrt(static_cast<double>(dx * dx + dy * dy));
+        const auto projection = static_cast<double>(dx) * normal.x +
+                                static_cast<double>(dy) * normal.y;
+        if (projection >= 0.5 * length) forward = true;
+        else if (projection <= -0.5 * length) rear = true;
+        else lateral = true;
+        admit(dx, dy - 1);
+        admit(dx + 1, dy);
+        admit(dx, dy + 1);
+        admit(dx - 1, dy);
+    }
+    // Exclusive event classification: forward > lateral > rear > none.
+    if (forward) ++ejection_topology_.empty_connected_forward;
+    else if (lateral) ++ejection_topology_.empty_connected_lateral;
+    else if (rear) ++ejection_topology_.empty_connected_rear;
+    else {
+        ++ejection_topology_.empty_connected_none;
+        if (direct_path) ++ejection_topology_.weak_direct_without_empty_route;
+    }
 }
 
 bool CyberNativeCellWorld::ejection_path_reachable(std::int32_t source_x,
@@ -2172,6 +2227,11 @@ Dictionary CyberNativeCellWorld::diagnostic_ejection_topology() const {
     result["off_axis_direct_path"] = static_cast<std::int64_t>(ejection_topology_.off_axis_direct_path);
     result["nearby_void_path_blocked"] = static_cast<std::int64_t>(ejection_topology_.nearby_void_path_blocked);
     result["no_nearby_unmasked_void"] = static_cast<std::int64_t>(ejection_topology_.no_nearby_unmasked_void);
+    result["empty_connected_forward"] = static_cast<std::int64_t>(ejection_topology_.empty_connected_forward);
+    result["empty_connected_lateral"] = static_cast<std::int64_t>(ejection_topology_.empty_connected_lateral);
+    result["empty_connected_rear"] = static_cast<std::int64_t>(ejection_topology_.empty_connected_rear);
+    result["empty_connected_none"] = static_cast<std::int64_t>(ejection_topology_.empty_connected_none);
+    result["weak_direct_without_empty_route"] = static_cast<std::int64_t>(ejection_topology_.weak_direct_without_empty_route);
     return result;
 }
 
