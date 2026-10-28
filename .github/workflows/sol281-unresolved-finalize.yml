@@ -33,4 +33,7 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'ci(sol281): qualify unresolved-cause diagnostics'
+          echo "SOL281_FINAL_COMMIT=$(git rev-parse HEAD)"
+          echo "SOL281_FINAL_TREE=$(git rev-parse HEAD^{tree})"
+          echo "SOL281_TARGET_WORKFLOW_BLOB=$(git rev-parse HEAD:.github/workflows/sol281-targeted.yml)"
           git push --force origin HEAD:refs/heads/tmp/sol281-unresolved-final-20261028
