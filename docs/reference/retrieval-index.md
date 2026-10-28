@@ -10,6 +10,14 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+- [Which PLAY desktop slices are accepted, and what remains before release?](../systems/player-control-playground.md#accepted-normal-desktop-lifecycle-qualification)
+  Shared existing-host composition and normal lifetimes are qualified separately
+  from native parallel measurements, adversarial stress, physical gamepad and
+  human feel; #265 stays closed and #271 deferred.
+
+  [Supplementary PLAY questions](retrieval-questions-play.json) test those
+  qualifiers separately from the unchanged frozen retrieval evaluation.
+
 - [Desktop barrel/Ripper preparation](../audits/2026-10-25-lcb003-trial-body-constructors.md): exact retained Apply motion, fresh Restart/F5, transactional one-body admission/refusal and Windows-only proof; [canonical owner contract](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation) owns semantics.
 
 - [Actual common-Water Web functional proof](../audits/2026-10-25-lcb003-web-common-water.md): compat77/threaded76 terminal POSTs, six body-free Water/four mixed arms and source-bound native reuse; ordinary visual/manual/body-bearing browser and full scientific/host gates remain open.

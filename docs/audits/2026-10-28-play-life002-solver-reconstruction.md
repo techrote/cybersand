@@ -10,6 +10,30 @@ related-documents: [../systems/player-control-playground.md, ../architecture/liq
 
 # PLAY-LIFE-002 actual-host solver reconstruction stress — 2026-10-28
 
+## Canonical integration and independent local review
+
+Implementation `d2f91798` and audit `e925e74c` received a distinct
+read-only source/log review. The reviewer independently matched all six test
+hashes, five 67/0 receipts, process/log/identity hashes, actual native refusal
+route and retained initial import failure. No blocking finding remains in this
+bounded slice. Populated old queues/laps, delayed work and failure recovery were
+not injected and are not claimed.
+
+The canonical player contract now records accepted #284/#286 separately from
+this reconstruction candidate, with roadmap/index routes and three additive
+PLAY retrieval questions. Frozen queries remain unchanged. New-head hosted
+execution/review is still mandatory; no local proof is relabeled as final-head
+Windows/Linux acceptance.
+
+For final local structure validation the five exact companion files already
+used by the Auto worktree were copied outside this source root, into its
+isolated parent layout. They derive from pinned companion
+`6a58311982941b75f46e22109a0829e5acb83c7e`; source files, checker logic and
+historical hashes were unchanged. Documentation and repository checks now pass
+with zero errors; M11 checks 18 records/28 hashes. Frozen retrieval remains
+32/32 at five, 19/32 at one, MRR 0.7589; the separate PLAY set scores 3/3
+at one. These are structural/lexical checks, not runtime qualification.
+
 This is a **new #269 candidate**, supplementing the accepted PLAY-LIFE-001
 fifty-lifetime campaign. It does not rewrite that historical evidence or close
 #269, #266, #268, #270 or the parent #263. The new local Windows executions

@@ -1,0 +1,35 @@
+{
+  "questions": [
+    {
+      "id": "PLAY-LIFETIME-01",
+      "query": "Does the accepted PLAY fifty real desktop lifetime campaign qualify solver reconstruction, slow native work and human gameplay feel?",
+      "canonical": ["systems/player-control-playground.md"],
+      "facts": [
+        "PR #284 accepted 50 real host lifetimes and 1165 assertions per OS on its exact reviewed/tested tree.",
+        "It has zero solver reconstruction cycles and no slow-native injection; adversarial stress and manual feel remain open."
+      ],
+      "sources": ["../godot/tests/play_life001_shared_host_case.gd"]
+    },
+    {
+      "id": "PLAY-SOLVER-01",
+      "query": "How does the PLAY solver reconstruction stress distinguish accepted rebuilds from unsupported liquid policy refusals and preserve the old Rapier owner?",
+      "canonical": ["systems/player-control-playground.md"],
+      "facts": [
+        "Five real SetP hosts rebuild pressure/reference and Current defaults through construction-time native commit, with newer identities and retained recipe/receipts.",
+        "Controlled-route and native Oil-pressure refusals retain the accepted actor and World while closing the staged graph.",
+        "Local Windows evidence alone is not final Windows/Linux hosted qualification or release acceptance."
+      ],
+      "sources": ["../godot/tests/play_life002_solver_case.gd"]
+    },
+    {
+      "id": "PLAY-INPUT-01",
+      "query": "Does the shared course gamepad event bridge prove physical controller and complete desktop focus qualification?",
+      "canonical": ["systems/player-control-playground.md"],
+      "facts": [
+        "PR #286 preserves ordered A/B/X press and release through existing publisher and session FIFO.",
+        "Its synthetic device index and test host publisher do not prove hardware gamepad, complete desktop focus or human feel."
+      ],
+      "sources": ["../godot/tests/test_play_ui004_gamepad_events.gd"]
+    }
+  ]
+}
