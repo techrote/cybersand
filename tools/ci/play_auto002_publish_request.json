@@ -1,0 +1,8 @@
+{
+  "schema": "play-auto002-publish-request-v1",
+  "family": "native_worker_pool",
+  "variant": "1-2-4-6-auto",
+  "scope": "play-auto002-participation-parity-and-shared-host-policy-controls",
+  "intent": "publish-source-matched-runtimes",
+  "request_sequence": 1
+}

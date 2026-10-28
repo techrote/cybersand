@@ -349,3 +349,20 @@ must be corrected and reviewed before arming; no source review or fixture
 model pass qualifies the future rebuilt runtimes. Canonical threading and
 build guides now route the worker-count distinctions, repeated apparatus and
 its explicit gameplay/concurrency/manual-feel exclusions.
+
+## Reviewed sequence-1 arming checkpoint — 2026-10-28
+
+All five preparation findings above are corrected at `03fe3ae1`.
+Two distinct agents independently re-reviewed the publisher/provenance and
+measurement scopes: no blocking source finding remains. Publisher guards
+pass 21 tests and campaign guards pass 20. The inherited engine's 30 tests,
+documentation, M11 integrity and provider checks pass. The two retained-runtime
+native-header mismatches remain real blockers until new target builds complete.
+
+The next commit adds the explicit PLAY request at sequence 1 and is the exact
+source to build. No native/Godot campaign result is claimed at arming. Freeze
+the source branch during publication; do not transfer preparation/model results
+to runtime acceptance. If execution fails, retain the attempt artifacts and
+diagnostics. Attempt-specific artifact names require a whole fresh attempt or
+new source request, rather than selectively rerunning a failed dependent job
+against artifacts from an earlier attempt.
