@@ -157,6 +157,74 @@ func _case(native: bool, workers: int, policy: int, mode: String, serial: int) -
 		"sand":sand_count, "digest":_digest(stored),
 		"duration_usec":duration_us}
 
+# Owner-side saturation fixture: the 17th and later no-target event in
+# one preparation must be counted, not silently discarded. No native tick or
+# Rapier body is involved; the same immutable input is replayed for exact parity.
+func _topology_budget_case(workers: int, policy: int) -> Dictionary:
+	var label: String = "native/w%d/p%d/census-cap" % [workers, policy]
+	var world: Object = ClassDB.instantiate(&"CyberNativeCellWorld")
+	check(world != null, label + " constructs")
+	if world == null:
+		return {}
+	if not world.diagnostic_reset({"workers":workers, "telemetry":false,
+			"ejection_policy":policy, "ejection_topology":true}):
+		check(false, label + " explicit topology admission")
+		return {}
+	world.set_simulation_window_enabled(false)
+	check(world.diagnostic_fill_rect(Vector2i(32, 32), Vector2i(64, 64), SAND),
+		label + " dense Sand source admitted")
+	var states := PackedFloat32Array()
+	var serial: int = 800 + workers * 10 + policy
+	Coupling.append_input(states, 1, Vector2(64.5, 64.5), 0.0,
+		Vector2(8.0, 8.0), Vector2.ZERO, 0.0, 1.0, serial)
+	var per_preparation_no_target: int = -1
+	var census: Dictionary = {}
+	for cycle: int in range(2):
+		world.prepare_rigid_body_coupling(states, true)
+		var result: PackedFloat32Array = world.rigid_body_results()
+		check(result.size() == Coupling.RESULT_STRIDE,
+			label + " stable result ABI preparation " + str(cycle))
+		if result.size() != Coupling.RESULT_STRIDE:
+			return {}
+		check(int(result[Coupling.RESULT_BODY_ID]) == 1
+			and int(result[Coupling.RESULT_SAMPLE_SERIAL]) == serial,
+			label + " body identity and sample serial retained")
+		var no_target: int = int(result[Coupling.RESULT_UNRESOLVED_NO_TARGET_COUNT])
+		check(no_target > 16 and int(result[Coupling.RESULT_DISPLACED_COUNT]) == 0
+			and int(result[Coupling.RESULT_UNRESOLVED_COUNT]) == no_target,
+			label + " more than sixteen unresolved, zero hidden displacement")
+		if per_preparation_no_target < 0:
+			per_preparation_no_target = no_target
+		check(no_target == per_preparation_no_target,
+			label + " exact replay after unchanged owner preparation")
+		census = world.diagnostic_ejection_topology()
+		var classified: int = int(census.get("classified", -1))
+		var total: int = int(census.get("no_target_events", -1))
+		var skipped: int = int(census.get("skipped_capacity", -1))
+		check(bool(census.get("enabled", false))
+			and int(census.get("per_sample_capacity", -1)) == 16,
+			label + " diagnostic opt-in and capacity unchanged")
+		check(classified == 16 * (cycle + 1),
+			label + " only first sixteen inspected per preparation")
+		check(total == no_target * (cycle + 1)
+			and skipped == (no_target - 16) * (cycle + 1)
+			and total == classified + skipped,
+			label + " all excess contacts counted across preparations")
+		check(classified == int(census.get("off_axis_direct_path", -1))
+			+ int(census.get("nearby_void_path_blocked", -1))
+			+ int(census.get("no_nearby_unmasked_void", -1)),
+			label + " classified partition exact, no missed categories")
+	var snapshot: Dictionary = world.diagnostic_snapshot(
+		Vector2i(32, 32), Vector2i(64, 64), false)
+	var counts: Array = snapshot.get("counts", [])
+	var sand_count: int = int(counts[SAND]) if counts.size() > SAND else -1
+	check(sand_count == 4096 and not world.has_failed(),
+		label + " source Sand conserved and native owner healthy")
+	return {"workers":workers, "policy":policy, "source_sand":sand_count,
+		"per_preparation_no_target":per_preparation_no_target,
+		"census_after_two_preparations":census}
+
+
 func _run() -> void:
 	check(Coupling.RESULT_STRIDE == 12 and Coupling.RESULT_SAMPLE_SERIAL == 8,
 		"experimental policy does not change existing result ABI")
@@ -203,10 +271,32 @@ func _run() -> void:
 		check(admission.reset_demo_world() and admission.get_ejection_policy() == 0
 			and not bool(admission.diagnostic_ejection_topology().get("enabled", true)),
 			"ordinary demo reset returns both search and topology to baseline")
+	# Exercise the previously uncovered >16-contact census cap on native
+	# authoritative storage with one and four configured worker pools.
+	var budget_cases: Array[Dictionary] = []
+	var budget_signatures: Dictionary = {}
+	for policy: int in [0, 1]:
+		for workers: int in [1, 4]:
+			var sample: Dictionary = _topology_budget_case(workers, policy)
+			budget_cases.append(sample)
+			if sample.is_empty():
+				continue
+			var key: String = str(policy)
+			var value: String = ("%d:%d:%d:%d" % [
+				sample.per_preparation_no_target,
+				int(sample.census_after_two_preparations.get("classified", -1)),
+				int(sample.census_after_two_preparations.get("skipped_capacity", -1)),
+				sample.source_sand])
+			if budget_signatures.has(key):
+				check(budget_signatures[key] == value,
+					"census cap parity across workers 1/4 policy " + key)
+			else:
+				budget_signatures[key] = value
 	var report: Dictionary = {"schema":"cybersand.sol281.ejection-policy-protocol.v1",
 		"platform":OS.get_name(), "checks":checks, "failures":failures,
 		"baseline_candidates_max":81, "extended_candidates_max":289,
 		"cases":cases, "signature_groups":signatures,
+		"topology_budget_cases":budget_cases, "topology_budget_signatures":budget_signatures,
 		"scope":"deterministic bounded diagnostic-only A/B protocol; no Rapier or release acceptance"}
 	var args: PackedStringArray = OS.get_cmdline_user_args()
 	if not args.is_empty():
