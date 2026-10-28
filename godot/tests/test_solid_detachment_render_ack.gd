@@ -58,10 +58,19 @@ func _run() -> void:
 	check(consumer.consume(packet(7,2,true,full,entire)), "new world accepts exact full frame")
 	check(consumer.last_serial == 7 and consumer.world_generation == 2,
 		"world switch only after full consumption")
+	var retained: PackedByteArray = entire.duplicate()
+	retained.append_array(PackedByteArray([9,77,8,66]))
+	var retained_rects := PackedInt32Array([0,0,1024,1024,0,2048,
+		5,6,2,1,entire.size(),4])
+	check(consumer.consume(packet(8,2,true,retained_rects,retained)),
+		"retained full baseline plus later dirty patch is valid")
+	check(consumer.material_at(5,6) == 9 and consumer.material_at(6,6) == 8
+		and consumer.material_at(0,0) == 43,
+		"full baseline and appended dirty patch applied in order")
 	var state: Dictionary = consumer.metrics()
-	check(int(state.consumed) == 3 and int(state.refused) == 5
-		and int(state.rectangles) == 3 and int(state.bytes) > 0,
-		"three consumed and five refused packets accounted")
+	check(int(state.consumed) == 4 and int(state.refused) == 5
+		and int(state.rectangles) == 5 and int(state.bytes) > 0,
+		"four consumed and five refused packets accounted")
 	print("SOL281_RENDER_ACK_UNIT ", JSON.stringify({"checks":checks,"failures":failures,
 		"platform":OS.get_name(),"consumer":state}))
 	quit(0 if failures.is_empty() else 1)
