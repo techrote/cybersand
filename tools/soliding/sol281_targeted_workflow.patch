@@ -1,0 +1,66 @@
+diff --git a/.github/workflows/sol281-targeted.yml b/.github/workflows/sol281-targeted.yml
+index acd8d9b..9d80b9a 100644
+--- a/.github/workflows/sol281-targeted.yml
++++ b/.github/workflows/sol281-targeted.yml
+@@ -7,7 +7,14 @@ on:
+     paths:
+       - '.github/workflows/sol281-targeted.yml'
+       - 'godot/scripts/solid_detachment_*.gd'
++      - 'godot/scripts/rigid_body_coupling.gd'
++      - 'godot/scripts/cell_world.gd'
++      - 'godot/native_extension/cyber_native_cell_world.cpp'
++      - 'godot/native_extension/cyber_native_cell_world.hpp'
+       - 'godot/tests/test_solid_detachment*.gd'
++      - 'godot/tests/test_act004_body_capacity.gd'
++      - 'godot/tests/test_lcb_inertial_adapter.gd'
++      - 'godot/tests/test_liquid_pressure_rapier.gd'
+ 
+ permissions:
+   contents: read
+@@ -184,13 +191,17 @@ jobs:
+           run('lifecycle',['--headless','--path','godot','--script','res://tests/test_solid_detachment_lifecycle.gd'],'SOL281_LIFECYCLE')
+           lifecycle=json.loads(re.search(r'SOL281_LIFECYCLE (.+)',(result/'lifecycle.txt').read_text(encoding='utf-8')).group(1))
+           assert lifecycle['checks']==296 and lifecycle['actual_host_replacement_cycles']==18 and lifecycle['failures']==[]
++          run('unresolved-diagnostics',['--headless','--path','godot','--script','res://tests/test_solid_detachment_unresolved_diagnostics.gd','--',str(result/'unresolved-diagnostics.json')],'SOL281_UNRESOLVED_DIAGNOSTICS')
++          unresolved=json.loads((result/'unresolved-diagnostics.json').read_text())
++          assert unresolved['checks']==43 and unresolved['failures']==[] and unresolved['platform']=='Windows' and unresolved['result_stride']==12
+           run('compound-coupling',['--headless','--path','godot','--script','res://tests/test_solid_detachment_coupling.gd','--',str(result/'compound-coupling.json')],'SOL281_COMPOUND_COUPLING')
+           coupling=json.loads((result/'compound-coupling.json').read_text())
+-          assert coupling['checks']==32 and coupling['failures']==[] and coupling['platform']=='Windows'
++          assert coupling['checks']==36 and coupling['failures']==[] and coupling['platform']=='Windows'
+           assert coupling['coupling']['proxy_count']==coupling['shapes'] and coupling['coupling']['contacts']>0 and coupling['coupling']['displaced']>0
++          assert coupling['coupling']['unresolved']==coupling['coupling']['unresolved_no_target'] and coupling['coupling']['unresolved_immovable']==0 and coupling['coupling']['unresolved_relocation_refused']==0 and coupling['coupling']['unresolved_unclassified']==0
+           for p,h in manifest['inputs'].items():
+               assert hashlib.sha256((root/p).read_bytes()).hexdigest()==h, ('execution source drift',p)
+-          report={'source':manifest['source'],'runtime_sha256':manifest['dll_sha256'],'platform':'Windows','cases':results,'lifecycle':lifecycle,'motion':motion,'failure_paths':failure,'compound_coupling':coupling,'scope':'actual scoped Windows host proof including exact compound Sand/Water coupling; no full native or production publication claim'}
++          report={'source':manifest['source'],'runtime_sha256':manifest['dll_sha256'],'platform':'Windows','cases':results,'lifecycle':lifecycle,'motion':motion,'failure_paths':failure,'unresolved_diagnostics':unresolved,'compound_coupling':coupling,'scope':'actual scoped Windows host proof including exact unresolved-cause partition and compound Sand/Water coupling; no full native or production publication claim'}
+           (result/'report.json').write_text(json.dumps(report,indent=2)+'\n')
+       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+         if: always()
+@@ -247,6 +258,7 @@ jobs:
+           timeout 90s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment.gd -- "$PWD/build/sol281-linux/motion.json" 2>&1 | tee build/sol281-linux/motion.txt
+           timeout 60s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_failures.gd 2>&1 | tee build/sol281-linux/failures.txt
+           timeout 180s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_lifecycle.gd 2>&1 | tee build/sol281-linux/lifecycle.txt
++          timeout 60s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_unresolved_diagnostics.gd -- "$PWD/build/sol281-linux/unresolved-diagnostics.json" 2>&1 | tee build/sol281-linux/unresolved-diagnostics.txt
+           timeout 180s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_coupling.gd -- "$PWD/build/sol281-linux/compound-coupling.json" 2>&1 | tee build/sol281-linux/compound-coupling.txt
+           python3 - <<'PY2'
+           import json,re
+@@ -258,12 +270,15 @@ jobs:
+           assert failure['checks']==20 and failure['failures']==[] and failure['actual_rapier']
+           lifecycle=json.loads(re.search(r'SOL281_LIFECYCLE (.+)',(root/'lifecycle.txt').read_text()).group(1))
+           assert lifecycle['checks']==296 and lifecycle['actual_host_replacement_cycles']==18 and lifecycle['failures']==[]
++          unresolved=json.loads((root/'unresolved-diagnostics.json').read_text())
++          assert unresolved['checks']==43 and unresolved['failures']==[] and unresolved['platform']=='Linux' and unresolved['result_stride']==12
+           coupling=json.loads((root/'compound-coupling.json').read_text())
+-          assert coupling['checks']==32 and coupling['failures']==[] and coupling['platform']=='Linux'
++          assert coupling['checks']==36 and coupling['failures']==[] and coupling['platform']=='Linux'
+           assert coupling['coupling']['proxy_count']==coupling['shapes'] and coupling['coupling']['contacts']>0 and coupling['coupling']['displaced']>0
+-          (root/'report.json').write_text(json.dumps({'source':Path(root/'source.txt').read_text().strip(),'platform':'Linux','motion':motion,'failure_paths':failure,'lifecycle':lifecycle,'compound_coupling':coupling,'scope':'actual current-source Linux Godot/Rapier plus exact compound Sand/Water coupling; no publication or full PR acceptance'},indent=2)+'\n')
++          assert coupling['coupling']['unresolved']==coupling['coupling']['unresolved_no_target'] and coupling['coupling']['unresolved_immovable']==0 and coupling['coupling']['unresolved_relocation_refused']==0 and coupling['coupling']['unresolved_unclassified']==0
++          (root/'report.json').write_text(json.dumps({'source':Path(root/'source.txt').read_text().strip(),'platform':'Linux','motion':motion,'failure_paths':failure,'lifecycle':lifecycle,'unresolved_diagnostics':unresolved,'compound_coupling':coupling,'scope':'actual current-source Linux Godot/Rapier plus exact unresolved-cause partition and compound Sand/Water coupling; no publication or full PR acceptance'},indent=2)+'\n')
+           PY2
+-          ! grep -E 'SCRIPT ERROR:|ERROR: Failed to load|FAIL SOL281' build/sol281-linux/import.txt build/sol281-linux/motion.txt build/sol281-linux/failures.txt build/sol281-linux/lifecycle.txt build/sol281-linux/compound-coupling.txt
++          ! grep -E 'SCRIPT ERROR:|ERROR: Failed to load|FAIL SOL281' build/sol281-linux/import.txt build/sol281-linux/motion.txt build/sol281-linux/failures.txt build/sol281-linux/lifecycle.txt build/sol281-linux/unresolved-diagnostics.txt build/sol281-linux/compound-coupling.txt
+           git diff --check
+       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+         if: always()
