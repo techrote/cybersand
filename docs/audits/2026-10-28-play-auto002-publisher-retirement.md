@@ -29,7 +29,19 @@ LCB publication engines/requests are untouched. Removing the temporary
 workflow also removes its branch-triggered write capability; a future native
 publication requires a newly reviewed scope and request.
 
+The final documentation delta also reconciles accepted #285 and the actual
+source `0a17fd97` Godot result on both OSes: 335 solver-regression assertions
+per OS, with no failure. The player/threading/roadmap/index and three-question
+PLAY retrieval routes retain the distinction between task participation,
+concurrent execution, ordinary owner join and native pool destruction. PR #287
+owns its independent final execution review and accepted-tree receipt; this
+cleanup does not supply or pre-empt that merge gate. Earlier LIFE002 local and
+pending-gate audit entries remain historical snapshots.
+
 Local validation of the initial retirement delta passes provider policy,
-documentation structure and all 20 persistent campaign tests. Final repository,
-M11/retrieval, independent review and applicable exact-head hosted checks remain
-required. This evidence record does not declare #266, #269 or #270 complete.
+documentation structure and all 20 persistent campaign tests. The final
+documentation append is based on recoverable retirement checkpoint `4d6e5e4a`;
+final repository, M11/retrieval, independent review and applicable exact-head
+hosted checks remain required. The existing ready-scope classifier requires full
+Native/Godot checks for these CI-tool deletions. No classifier or timeout is
+changed. This evidence record does not declare #266, #269 or #270 complete.
