@@ -91,7 +91,10 @@ inline Dictionary statistics(const cybersand::World& world, const cybersand::Tic
     out["scope"] = "completed native tick counts and current storage; worker_threads_observed is maximum distinct task-claiming participants in one dispatch, not utilization";
     Array unavailable;
     unavailable.append("total heap allocations");
-    unavailable.append("per-worker utilization or time share");
+    // Preserve the established contract token. Participation count does not
+    // make per-worker utilization or time share available.
+    unavailable.append("per-worker utilization");
+    unavailable.append("per-worker time share");
     unavailable.append("pending queue occupancy/high-water");
     unavailable.append("per-cell sleeping status");
     out["unavailable"] = unavailable;
