@@ -839,6 +839,16 @@ integration, published source-matched runtimes, Linux and actual Web gates.
 
 ### Branch-scoped runtime publishers
 
+The temporary [PLAY-AUTO-002 workflow](../../.github/workflows/play-auto002-runtime-publication.yml)
+is restricted to `play-266-worker-matrix-20261027` and its own explicit request.
+It builds both desktop libraries, requires six worker/observation/real-host/
+liquid-policy fixtures on each actual target OS, then runs the
+[repeated reference campaign](../../tools/play/run_auto_campaign.py).
+The [dated audit](../audits/2026-10-27-play-auto002-worker-matrix-candidate.md)
+records preparation separately from runtime acceptance. Without a committed
+request no build is armed. Preserve each workflow attempt's artifacts; final
+ready-head CI/review remain separate, and retire this publisher after merge.
+
 Source-matched Linux and Windows runtimes have been published by **temporary,
 branch-scoped publisher workflows**. Each workflow:
 

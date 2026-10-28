@@ -326,3 +326,26 @@ qualification and independent review remain owned by the parent PLAY integration
 checkpoint. No canonical ownership, corpus entry or frozen retrieval question is
 reassigned. Full source-matched Windows/Linux runtime execution, final exact-head
 review/CI, gameplay scheduling/performance and #270 manual-feel gates remain open.
+
+## Independent preparation review corrections — 2026-10-28
+
+Distinct source reviewers inspected combined preparation `1d4a014c` before
+any publication request was armed. One found that the campaign's actual
+`TESTED` set contained `tools/ci/check_repository.py`, absent from the
+publication input ledger. A successful 50-row campaign would therefore
+have been rejected at final binding. The PLAY profile now explicitly binds
+that input; a regression exercises the real Git ledger selector against the
+complete campaign apparatus set, rather than relying only on a mocked digest.
+
+The workflow's artifact names now include both run ID and attempt number,
+with overwrites disabled. A retry cannot replace an earlier attempt's failed
+evidence. All upload/download names agree; a guard checks the preservation
+contract. The corrected publisher suite passes 21 tests. This is source/model
+validation, not native build or campaign execution.
+
+The other independent review identified derived-throughput, per-tick
+participant/dispatch and native-Auto-policy validation gaps. Those findings
+must be corrected and reviewed before arming; no source review or fixture
+model pass qualifies the future rebuilt runtimes. Canonical threading and
+build guides now route the worker-count distinctions, repeated apparatus and
+its explicit gameplay/concurrency/manual-feel exclusions.

@@ -59,6 +59,7 @@ engine.BUILD_EXACT = (set(engine.BUILD_EXACT) - {_historical_workflow, _historic
     "tools/ci/test_play_auto002_runtime_publication.py",
     "tools/play/run_auto_campaign.py",
     "tools/play/test_run_auto_campaign.py",
+    "tools/ci/check_repository.py",
 }
 _verify_base = engine.verify_case_results
 _verify_bundle = engine.verify_bundle

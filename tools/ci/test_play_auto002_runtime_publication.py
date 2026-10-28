@@ -139,6 +139,24 @@ class ProfileTests(unittest.TestCase):
         self.assertEqual(subject.context(self.source)["source_commit"], self.source)
         subject.require_publication_request(self.source)
 
+    def test_actual_campaign_inputs_are_all_bound_by_publication_ledgers(self):
+        with mock.patch.object(subject, "ROOT", REPOSITORY):
+            tested = profile.campaign_module().TESTED
+        # Exercise the real Git ledger selector with all apparatus paths,
+        # including tools/ci inputs outside the dynamic Godot/native rules.
+        native = "native/include/cybersand/fixture.hpp"
+        for relative in set(subject.BUILD_EXACT) | set(tested) | {native}:
+            path = self.root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            if not path.exists():
+                path.write_text("fixture\n", encoding="utf-8")
+        self.git("add", ".")
+        self.git("commit", "--quiet", "-m", "Complete campaign apparatus")
+        source = self.git("rev-parse", "HEAD").strip()
+        with mock.patch.object(subject.windows, "native_input_paths", return_value={native}):
+            ledgers = subject.input_ledgers(source)
+        self.assertTrue(set(tested).issubset(ledgers["source_inputs"] | ledgers["build_inputs"]))
+
     def test_other_repository_branch_workflow_event_head_or_attempt_refuse(self):
         for key, value in {"GITHUB_REPOSITORY": "other/cybersand", "GITHUB_REF": "refs/heads/main",
                            "GITHUB_WORKFLOW_REF": "techrote/cybersand/other.yml@refs/heads/" + BRANCH,
@@ -313,6 +331,15 @@ class ProfileTests(unittest.TestCase):
 
 
 class WorkflowTests(unittest.TestCase):
+    def test_attempt_artifacts_preserve_prior_failures(self):
+        text = (REPOSITORY / WORKFLOW).read_text(encoding="utf-8")
+        names = [line.strip() for line in text.splitlines()
+                 if line.strip().startswith("name: play-auto002-")]
+        self.assertEqual(len(names), 6)
+        self.assertTrue(all("${{ github.run_id }}-${{ github.run_attempt }}" in name for name in names))
+        self.assertEqual(text.count("overwrite: false"), 3)
+        self.assertNotIn("overwrite: true", text)
+
     def test_only_explicit_branch_request_can_build_and_only_four_paths_can_append(self):
         text = (REPOSITORY / WORKFLOW).read_text(encoding="utf-8")
         self.assertIn("branches: [" + BRANCH + "]", text)

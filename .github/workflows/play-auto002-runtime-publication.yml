@@ -162,10 +162,10 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: play-auto002-runtime-linux-${{ github.run_id }}
+          name: play-auto002-runtime-linux-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/play-auto002-linux/
           if-no-files-found: error
-          overwrite: true
+          overwrite: false
           retention-days: 30
 
   windows-build:
@@ -240,10 +240,10 @@ jobs:
       - name: Retain Windows build for actual Windows execution
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: play-auto002-build-windows-${{ github.run_id }}
+          name: play-auto002-build-windows-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/play-auto002-windows/
           if-no-files-found: error
-          overwrite: true
+          overwrite: false
           retention-days: 30
 
   windows-execution:
@@ -276,7 +276,7 @@ jobs:
       - name: Restore exact Windows build
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: play-auto002-build-windows-${{ github.run_id }}
+          name: play-auto002-build-windows-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/play-auto002-windows
 
       - name: Fetch pinned Windows Rapier only
@@ -296,10 +296,10 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: play-auto002-runtime-windows-${{ github.run_id }}
+          name: play-auto002-runtime-windows-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/play-auto002-windows/
           if-no-files-found: error
-          overwrite: true
+          overwrite: false
           retention-days: 30
 
   publish:
@@ -329,13 +329,13 @@ jobs:
       - name: Restore passed Linux runtime and evidence
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: play-auto002-runtime-linux-${{ github.run_id }}
+          name: play-auto002-runtime-linux-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/play-auto002-linux
 
       - name: Restore passed Windows runtime and evidence
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: play-auto002-runtime-windows-${{ github.run_id }}
+          name: play-auto002-runtime-windows-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/play-auto002-windows
 
       - name: Verify complete matching provenance and stage only the four runtime paths

@@ -11,6 +11,33 @@ last-reviewed: 2026-10-22
 
 # Simulation tick and threading
 
+## PLAY native worker observation and reference measurements
+
+**Source candidate, PR #285; runtime qualification pending:** the copied
+native statistics adapter exposes `TickStats::worker_threads_observed`.
+It reports the maximum distinct task-claiming pool participants in a completed
+tick; the serial route reports one. A value above one proves that multiple
+pool workers took tasks. It does not measure overlapping execution, worker CPU
+time or utilization. Native pool workers still call no Godot APIs.
+
+`CyberNativeCellWorld.get_worker_threads()` reads configured capacity.
+Successful persistent-pool construction creates the requested pool or throws
+and joins the started prefix, but no separate exported created-thread census
+exists. Requested policy, resolved count, configured getter and actual
+task participation must therefore be reported separately.
+
+The [reference campaign](../../tools/play/run_auto_campaign.py) reuses
+[CyberWorkerBenchmark](../../godot/scripts/worker_benchmark.gd), with a fresh
+process/World per row, fixed Sand/Water work at 480 and 960 cells per side,
+1/2/4/6/Auto, five cyclically balanced repeats, 60 warm-up and 120 measured
+ticks. It retains raw native timing/participant/phase arrays, level hashes,
+process logs, machine conditions and slower-than-serial observations.
+Each row keeps its 180-second bound; import keeps 240 seconds. These are
+native reference measurements; the independently paced gameplay owner's
+publication latency, rendered frame pacing and human feel remain separate
+#266/#270 gates. The [source audit](../audits/2026-10-27-play-auto002-worker-matrix-candidate.md)
+owns publication identities, failures and actual platform results.
+
 ## Who advances simulation on each platform?
 
 **Current:** desktop has a dedicated Godot pacing Thread. Web advances native
