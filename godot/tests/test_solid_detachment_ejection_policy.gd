@@ -241,8 +241,10 @@ func _empty_connection_case(workers: int, policy: int, mode: String) -> Dictiona
 	var counts: Array = snapshot.get("counts", [])
 	check(counts.size() > SAND and int(counts[SAND]) == expected_sand,
 		label + " Sand ownership conserved exactly")
-	check(world.material_at(CENTER.x, CENTER.y) == SAND and not world.has_failed(),
-		label + " source Sand and healthy native owner unchanged")
+	var stored: PackedByteArray = snapshot.get("cells", PackedByteArray())
+	check(stored.size() == SIZE.x * SIZE.y
+		and _at(stored, CENTER.x, CENTER.y) == SAND and not world.has_failed(),
+		label + " authoritative stored Sand and healthy native owner unchanged")
 	if mode == "foreign":
 		check(world.rigid_body_id_at(63, 64) == 2,
 			label + " foreign transient owner blocks adjacent void")
