@@ -10,6 +10,45 @@ related-documents: [../systems/player-control-playground.md, ../architecture/liq
 
 # PLAY-LIFE-002 actual-host solver reconstruction stress — 2026-10-28
 
+## Published Auto runtime integration and fresh local proof
+
+Non-forced merge `3e13a27f92a700d52fd693c9323611349a55581d`, tree
+`73f9441dbf9bdc19454347b57aa8507d1d40c46d`, consumes exact Auto candidate
+`3c97b177`. Its six LIFE002 test files are unchanged. The Auto source
+received actual Windows/Linux publication 40651352334, but PR #285's final
+ready-head acceptance remains a predecessor merge gate for this candidate.
+Compared with that parent, this branch retains exactly its twelve original
+test/evidence/documentation paths. No new implementation is introduced by
+integration.
+
+A fresh clean-checkout Windows execution at `3e13a27f` used published native
+`e66b9b04b546b09cb4feea204373faf12a7248abf1701da88fc6ecf87b666ecb`
+(4,825,088 bytes), Rapier
+`b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7`,
+and pinned Godot 4.7. All 80 native source inputs match the current Git blobs.
+The strict runner's import passed in 4.272 s; Acrobat, Stunt Buggy,
+Trials Bike, Arcade Lander and Jet Barrel passed 67/0 each in
+8.052/8.052/8.053/7.956/8.048 s respectively. Total **335/0**, all exit 0,
+zero diagnostics/skips/timeouts/retries, unchanged import 240 s and case 180 s.
+This fresh published-runtime cohort is separate from the earlier local
+development/retained-runtime proof below.
+
+Evidence directory:
+`C:/Users/_/.codex/tmp/play-life002-20261028/post-auto-3e13`.
+Identity JSON SHA-256:
+`a018a4a29a1db10611410f097293cebbcb13bde3f6c045869264ce7d9a59cc16`;
+timings JSON:
+`47ca5a4c4d3a5c9ed03bf75abdba94dc692e1af754b3bdf911c61ae0ead17528`;
+native-source comparison:
+`bb53ada855672f9be1a9a8a6084e6dd39972223862f7b3e35f711b6cbd3e4953`.
+All six executed source hashes remain exact. Only generated import/UID state
+was cleaned; source and runtime files were not changed after execution.
+
+The following final documentation append has no engine execution of its own.
+Full hosted Windows/Linux and independent exact-head review must qualify the
+combined candidate before merge, and #285 must be accepted first. No prior
+source or platform pass is silently transferred.
+
 ## Canonical integration and independent local review
 
 Implementation `d2f91798` and audit `e925e74c` received a distinct
