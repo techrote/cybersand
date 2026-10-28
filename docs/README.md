@@ -17,9 +17,18 @@ and [runtime contract](systems/solid-detachment.md#opt-in-retained-full-renderdi
 describe a disabled-by-default, copy-on-write coalescing candidate
 following the measured retained-full/dirty overflow cause. Its
 Linux/Windows Godot/Rapier qualification must be read separately from
-the previous successful packet census; no physical B=289 policy,
+the previous successful packet census. No physical B=289 policy,
 GPU-FPS claim or production default is admitted. #281 remains open and
 #283 draft, stacked on draft #282.
+
+Source `7d716a5f` **failed** that qualification (run 40762646166). The
+[dated addendum](audits/2026-10-28-sol281-render-coalescing-candidate.md#addendum-failed-7d716a5f-qualification-and-deterministic-gate-correction-28-october-2026)
+records the correction `819c6677`, which **passed** scoped run 40776168081 on Linux and actual Windows:
+
+- a summed-overlay cap;
+- monotonic worker render census;
+- a deterministic unacknowledged gate;
+- a real-owner ACK/reset test.
 
 
 ## SOL281 CPU render-consumption diagnostic, not a gameplay admission

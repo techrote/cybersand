@@ -1,0 +1,279 @@
+{
+  "schema": "cybersand.sol281.render-coalescing-gate-correction.v1",
+  "date": "2026-10-28",
+  "issue": 281,
+  "pull_request": 283,
+  "predecessor_failed_source": "7d716a5f62bfdf6a9a9a6ed90f923f4ca418539e",
+  "predecessor_failed_run": 40762646166,
+  "review": "https://github.com/techrote/cybersand/pull/283#pullrequestreview-5689919617",
+  "review_independence": "AI-generated, posted from the owner account; not independent human approval",
+  "source_sha": "819c6677e26fcdabe961097f855bd06fd5609917",
+  "source_tree_sha": "276726e015f801886622ec68386f9a83e929c41a",
+  "scoped_run": 40776168081,
+  "jobs": {
+    "source": "success",
+    "windows-build": "success",
+    "linux-rapier": "success",
+    "windows-rapier": "success"
+  },
+  "artifact_zip_sha256": {
+    "sol281-exact-source-819c6677e26fcdabe961097f855bd06fd5609917": "sha256:8589795bfa11e6881a8d1d1d791a88033c2ea8a3eab5acb373770173e6bba141",
+    "sol281-linux-rapier-819c6677e26fcdabe961097f855bd06fd5609917": "sha256:12b4add11aedf7ef0070ebfb3dc9d7e75a848f590e78941ace517b14acc51498",
+    "sol281-windows-build-819c6677e26fcdabe961097f855bd06fd5609917": "sha256:b1f7dfb1d6fb2dd81e676186e760675a88d693af802a5b42bb1451d0f4aec02f",
+    "sol281-windows-rapier-819c6677e26fcdabe961097f855bd06fd5609917": "sha256:c8fef72fc594ba6620070f5a42a0c934864d43bfaa06e2f8ba64dd0f30d7996e"
+  },
+  "windows_runtime_sha256": "bc8d51f511cec7b0727ef67d49bdb7eaa05c57c232f42a618f34010089e602fc",
+  "windows_manifest_inputs": 552,
+  "linux": {
+    "source": "819c6677e26fcdabe961097f855bd06fd5609917",
+    "render_ack_unit_checks": 39,
+    "render_owner": {
+      "checks": 17,
+      "cohorts": [
+        {
+          "ack_clears": 1,
+          "coalesced": 3,
+          "dirty_onto_full": 3,
+          "forced_full_retries": 0,
+          "refreshes": 6,
+          "workers": 1
+        },
+        {
+          "ack_clears": 1,
+          "coalesced": 3,
+          "dirty_onto_full": 3,
+          "forced_full_retries": 0,
+          "refreshes": 6,
+          "workers": 4
+        }
+      ]
+    },
+    "motion_checks": 21,
+    "failure_path_checks": 20,
+    "lifecycle_checks": 296,
+    "unresolved_checks": 43,
+    "cohorts": {
+      "default_0_0_0": {
+        "ack_clears": 0,
+        "coalesced": 0,
+        "dirty_onto_full": 216,
+        "forced_full_retries": 216,
+        "refreshes": 218
+      },
+      "cpu_ack_0_1_0": {
+        "ack_clears": 1,
+        "coalesced": 0,
+        "dirty_onto_full": 228,
+        "forced_full_retries": 228,
+        "refreshes": 230
+      },
+      "gate_0_0_1": [
+        {
+          "ack_clears": 0,
+          "coalesced": 200,
+          "dirty_onto_full": 200,
+          "forced_full_retries": 0,
+          "refreshes": 202
+        },
+        {
+          "ack_clears": 0,
+          "coalesced": 174,
+          "dirty_onto_full": 174,
+          "forced_full_retries": 0,
+          "refreshes": 176
+        },
+        {
+          "ack_clears": 0,
+          "coalesced": 204,
+          "dirty_onto_full": 204,
+          "forced_full_retries": 0,
+          "refreshes": 206
+        },
+        {
+          "ack_clears": 0,
+          "coalesced": 199,
+          "dirty_onto_full": 199,
+          "forced_full_retries": 0,
+          "refreshes": 201
+        },
+        {
+          "ack_clears": 0,
+          "coalesced": 167,
+          "dirty_onto_full": 167,
+          "forced_full_retries": 0,
+          "refreshes": 169
+        }
+      ],
+      "observed_0_1_1": {
+        "ack_clears": 102,
+        "coalesced": 75,
+        "dirty_onto_full": 75,
+        "forced_full_retries": 0,
+        "refreshes": 194
+      },
+      "b289_extended": {
+        "ack_clears": 0,
+        "coalesced": 0,
+        "dirty_onto_full": 227,
+        "forced_full_retries": 227,
+        "refreshes": 229
+      }
+    },
+    "render_refresh_p95_ms": {
+      "default_0_0_0": 40.144,
+      "gate_0_0_1": [
+        0.158,
+        0.163,
+        0.16,
+        0.155,
+        0.154
+      ],
+      "observed_0_1_1": 0.037
+    },
+    "checks_per_cohort": [
+      68
+    ]
+  },
+  "windows": {
+    "source": "819c6677e26fcdabe961097f855bd06fd5609917",
+    "render_ack_unit_checks": 39,
+    "render_owner": {
+      "checks": 17,
+      "cohorts": [
+        {
+          "ack_clears": 1,
+          "coalesced": 3,
+          "dirty_onto_full": 3,
+          "forced_full_retries": 0,
+          "refreshes": 6,
+          "workers": 1
+        },
+        {
+          "ack_clears": 1,
+          "coalesced": 3,
+          "dirty_onto_full": 3,
+          "forced_full_retries": 0,
+          "refreshes": 6,
+          "workers": 4
+        }
+      ]
+    },
+    "motion_checks": 21,
+    "failure_path_checks": 20,
+    "lifecycle_checks": 296,
+    "unresolved_checks": 43,
+    "cohorts": {
+      "default_0_0_0": {
+        "ack_clears": 0,
+        "coalesced": 0,
+        "dirty_onto_full": 225,
+        "forced_full_retries": 225,
+        "refreshes": 227
+      },
+      "cpu_ack_0_1_0": {
+        "ack_clears": 27,
+        "coalesced": 0,
+        "dirty_onto_full": 213,
+        "forced_full_retries": 213,
+        "refreshes": 241
+      },
+      "gate_0_0_1": [
+        {
+          "ack_clears": 0,
+          "coalesced": 182,
+          "dirty_onto_full": 182,
+          "forced_full_retries": 0,
+          "refreshes": 184
+        },
+        {
+          "ack_clears": 0,
+          "coalesced": 153,
+          "dirty_onto_full": 153,
+          "forced_full_retries": 0,
+          "refreshes": 155
+        },
+        {
+          "ack_clears": 0,
+          "coalesced": 181,
+          "dirty_onto_full": 181,
+          "forced_full_retries": 0,
+          "refreshes": 183
+        },
+        {
+          "ack_clears": 0,
+          "coalesced": 170,
+          "dirty_onto_full": 170,
+          "forced_full_retries": 0,
+          "refreshes": 172
+        },
+        {
+          "ack_clears": 0,
+          "coalesced": 178,
+          "dirty_onto_full": 178,
+          "forced_full_retries": 0,
+          "refreshes": 180
+        }
+      ],
+      "observed_0_1_1": {
+        "ack_clears": 125,
+        "coalesced": 70,
+        "dirty_onto_full": 70,
+        "forced_full_retries": 0,
+        "refreshes": 196
+      },
+      "b289_extended": {
+        "ack_clears": 0,
+        "coalesced": 0,
+        "dirty_onto_full": 243,
+        "forced_full_retries": 243,
+        "refreshes": 245
+      }
+    },
+    "render_refresh_p95_ms": {
+      "default_0_0_0": 23.093,
+      "gate_0_0_1": [
+        0.377,
+        0.394,
+        0.384,
+        0.385,
+        0.36
+      ],
+      "observed_0_1_1": 0.028
+    },
+    "checks_per_cohort": [
+      68
+    ]
+  },
+  "changes": [
+    "monotonic worker render census on every snapshot",
+    "summed overlay-byte cap 65536 in coalescer preflight",
+    "deterministic unacknowledged 0 0 1 gate x5 per OS; 0 1 1 observational",
+    "render-ACK unit 32 -> 39 with per-case fresh frames and differential oracle",
+    "real-owner ACK/stale-ACK/reset test, workers 1 and 4"
+  ],
+  "unchanged": [
+    "coalescing disabled by default",
+    "native C++ and GDExtension sources",
+    "material/liquid policy, ejection policy A=81, coupling geometry, 12-field ABI",
+    "native-worker/main-thread Rapier ownership"
+  ],
+  "negative_or_open": [
+    "289-probe B physical search NO-GO",
+    "interactive GPU pacing and main-thread upload cost unmeasured",
+    "root-cause alternatives (run-based copy_render_cells, partial ACK) not compared",
+    "independent human review, ready-PR full matrix"
+  ],
+  "source_archive_sha256": "4895bb21cbc57ebe2835b438a0e7e087f011f868b73c256879ec4a0669230aa6",
+  "linux_runtime_sha256": "244b0270f31c37135256524a5ca1d27afac32d1afbbf02c88b215e4e2fdb85bb",
+  "linux_native_focused_checks": 13074,
+  "windows_source_verification": {
+    "input_count": 552,
+    "eol_only_restored_git_bytes": 92,
+    "note": "all 552 manifest inputs re-hashed equal after EOL-only restoration; full list in run artifact source-verification.json"
+  },
+  "runtime_reproducibility_gap": "Windows DLL bc8d51f5... differs from 7d716a5f DLL 2068ee83... although native/extension inputs are unchanged; the build is not byte-reproducible. Local pre-push evidence used the 7d716a5f DLL; CI used its own fresh build.",
+  "qualification": {
+    "status": "scoped_linux_windows_pass",
+    "new_source_qualified_scope": "scoped SOL281 Linux + actual Windows Godot/Rapier only; not ready-PR matrix, GPU pacing or production"
+  }
+}

@@ -43,7 +43,24 @@ or material policy automatically enables the feature.
 
 ## Opt-in retained-full render/dirty coalescing — experimental source 7d716a5f
 
-**Current on this draft branch only; actual-host result pending.** The
+**Current on this draft branch only. Source `7d716a5f` failed its actual-host
+qualification**: [run 40762646166](https://github.com/techrote/cybersand/actions/runs/40762646166)
+failed on both Linux and Windows on a timing-dependent sampled assertion. On
+this branch, [`819c6677`](https://github.com/techrote/cybersand/commit/819c6677e26fcdabe961097f855bd06fd5609917)
+makes four changes:
+
+- It bounds the **summed** rectangle overlay writes at 65,536 bytes.
+- `CyberSimulationWorker` publishes monotonic worker-lifetime render totals on
+  every snapshot (`snapshot_render_*_total`), so latest-only readers count
+  rather than sample.
+- The gate becomes deterministic. An unacknowledged + coalescing stream
+  (`0 0 1`) must coalesce every dirty packet that lands on its retained full
+  frame, with zero forced-full retries. The CPU-ACK cohort is observational.
+- A real-owner test covers stale/exact ACK and reset with workers 1 and 4.
+
+It **passed** source-matched scoped [run 40776168081](https://github.com/techrote/cybersand/actions/runs/40776168081) on Linux and actual Windows. In five fresh processes per OS, every dirty packet on the retained frame coalesced, with zero retries. The run and its gaps are recorded in the
+[audit addendum](../audits/2026-10-28-sol281-render-coalescing-candidate.md#addendum-failed-7d716a5f-qualification-and-deterministic-gate-correction-28-october-2026).
+The original description follows. The
 [2026-10-28 preregistered candidate](https://github.com/techrote/cybersand/pull/283#issuecomment-6479596107)
 follows the [cross-platform packet/overflow diagnosis](../audits/2026-10-28-sol281-render-ack-consumer-control.md).
 Exactly one retained full material image can already occupy 2,097,152
