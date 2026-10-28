@@ -172,8 +172,10 @@ func _empty_connection_case(workers: int, policy: int, mode: String) -> Dictiona
 	world.set_simulation_window_enabled(false)
 	# The baseline and extended downward search slots stay fully occupied.
 	# An off-normal void above the bank is weakly reachable THROUGH Sand.
-	var base_origin := Vector2i(56, 63)
-	var base_size := Vector2i(17, 20)
+	# The rear-only case needs a Sand cap at y=62: without it the
+	# single rear void would open to lateral space and win that sector.
+	var base_origin := Vector2i(56, 62) if mode == "rear" else Vector2i(56, 63)
+	var base_size := Vector2i(17, 21) if mode == "rear" else Vector2i(17, 20)
 	_fill(world, true, base_origin, base_size, SAND)
 	var expected_sand: int = base_size.x * base_size.y
 	match mode:
