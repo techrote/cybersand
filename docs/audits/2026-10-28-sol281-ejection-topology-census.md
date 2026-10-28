@@ -63,3 +63,69 @@ Each OS passed **943 scoped checks**: actual Rapier motion 21, failure cases 20,
 ## Next gate — no new physical candidate admitted
 
 Independently preregister a **physically admissible** local-relocation or chain-displacement experiment that distinguishes empty-only connectivity from crossing occupied movable material, classifies forward/lateral/rear hemispheres relative to the outward normal, refuses penetration of hard surfaces/foreign masks, conserves exact native-cell state and limits work per owner tick. Record bounded controlled counterexamples and matched Linux/Windows efficacy, worker-publication cost and actual frame pacing. This is not candidate-C implementation or authorization. Reactive Wood/heterogeneous bonds, fracture/desoliding, multiple aggregates, persistence, normal gameplay, complete native CI, independent review and release publication remain open. Issue #281 and PR #283 remain **open/draft**.
+
+## Controlled capacity-overflow regression — source 71e93488
+
+A test-only successor at source `71e93488571a7644c155b86e11821ae9fc7aebe1`,
+tree `21efe1ea6b4ce63a91c23f57c6ef02966d9695a7`, adds an
+explicit **diagnostic-only saturated-source counterexample** to
+`godot/tests/test_solid_detachment_ejection_policy.gd`. The compare from
+the preceding docs head `929f94949f60cde84672a49cf077a5bbff37df15`
+changes **only that test file** (90 additions); no native-owner
+algorithm, Rapier object/worker split, aggregate transfer, liquid policy or
+material handling changes. This is a separate qualification from the
+four-arm moving-tree census above.
+
+The [source-matched Linux and Windows scoped run 40651847470](https://github.com/techrote/cybersand/actions/runs/40651847470)
+completed successfully in all **four** scoped jobs. Each platform passed
+**1,021 checks / 0 failures**: native-to-Rapier motion 21, failure paths
+20, 18-cycle session lifetime 296, cause/ABI 43, deterministic
+native/fallback protocol including the new saturation cases **551**, and
+moving compound A/B coupling **45 each**. The complete ordinary ready-PR
+Native/GDExtension/Water matrices are still **draft-skipped**.
+
+The controlled extra case fills a 64×64 native region with 4,096 Sand cells,
+applies one fixed 8×8-class rectangular body input twice with no native
+tick between preparations, and checks both selector values (0/1) and
+worker settings (1/4). **On each Linux and Windows case**, each preparation
+reports 81 no-target contacts. After two owner preparations the cumulative
+census is exactly **162 events = 32 classified + 130 skipped** (the
+fixed cap is 16 per preparation). All **32** classified events are
+`no_nearby_unmasked_void`, with zero in the other two bins. All 4,096
+Sand cells remain native-held and conserved, the copied body-result ABI
+remains 12 fields, and the no-target count and bounded-cap partition
+match exactly across worker configurations and selectors. These are
+**controlled diagnostic native-owner preparations**, not 162 distinct
+cells, an actual dynamic Rapier contact bank or a new efficacy result.
+The earlier moving-tree census and **B=289 NO-GO decision stand unchanged**.
+
+### Source/runtime archive identity for the overflow qualification
+
+| GitHub Actions artifact | ID | Verified ZIP SHA-256 |
+|---|---:|---|
+| Exact source | 12800205877 | `191cdabe91c9f1938d5d0875ff4c9ff53567d1db11f56d25e50df7a1bfad1233` |
+| Linux native/actual host | 12800376349 | `4c500ad76dc76dfb181845b5f157c6c54e181c5c4121039cf94a9f50a630a676` |
+| Windows pinned DLL build | 12799822554 | `7627ea98b1d8af2fb435840ecf6c82b4ab3dc98d994c08e6165caa11c9698155` |
+| Windows actual host execution | 12800266918 | `5dc009422da0b17db63b26b2a29dc788291ad51ca837c6212d9ba822e6711a98` |
+
+The source archive's tar SHA-256 is
+`ccb4dbaa8302733e58856ef4513df9a02dbc3db418440e0fc8d0a094da3f9f3b`.
+The Linux runtime reports SHA-256
+`9937b96f1e9fc6496cd64ab03b2c44f65540e863bf50328252917859a9848b6e`.
+The Windows DLL build and actual-host report both identify
+`70c3f52218e97c0aff3df5f69d245ff9aebdde6e734ba96b3e68573fb850c2a4`.
+After independently inspecting all four downloaded ZIP files, their
+CRCs, all **549** Windows build-manifest source paths against the archived
+Git source (**zero mismatches**), and all **eight** Windows execution-log
+hashes (**eight matches**), no artifact-source mismatch was found.
+The Windows runner restored 92 checkout paths only after proving
+pure EOL differences; no unrelated drift was admitted.
+
+**Disposition:** the formerly unexercised census capacity/skip branch is
+now source-matched qualified in a deliberately saturated controlled
+regression on both actual host platforms. This is *not* evidence of
+production-safe ejection, fast full worker publication, fully connected
+free-space paths or release readiness. Empty-only connectivity, normal
+orientation, deterministic chain displacement, representative frame
+pacing, reactive Wood, fracture/restoration, persistence and independent
+full review remain unqualified.
