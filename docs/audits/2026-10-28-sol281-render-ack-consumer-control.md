@@ -188,6 +188,69 @@ overflow path requests a second full exchange.
 Linux/Windows run and exact-head documentation consistency are
 separate required gates, not inherited from these predecessor results.
 
+## Final corrected-source qualification — exact `55aa72e5` (2026-10-28)
+
+This paragraph **supersedes the historical pending-source qualification
+status above** without altering the earlier `80c77505` results. The corrected
+retained-full-plus-appended-dirty source
+[`55aa72e5db6b23731a2ccdccbca91ccfd80bfe90`](https://github.com/techrote/cybersand/commit/55aa72e5db6b23731a2ccdccbca91ccfd80bfe90)
+(tree `165643fdd94a3e68aac28cf073745a37b127033b`)
+passed **all four** jobs in the
+[exact-source Linux/Windows scoped run 40754382057](https://github.com/techrote/cybersand/actions/runs/40754382057).
+Both actual Godot 4.7/Rapier2D v0.35.2 hosts passed 17/17 direct CPU
+render-consumer assertions, three 59/59 live six-proxy compound arms,
+21 motion checks, 20 rollback checks, 296 lifecycle checks across 18
+owner replacements, 43 cause/ABI checks and 924 bounded ejection-policy
+checks, totalling **1,498 per OS**, all with zero failures. The Linux
+native suite separately passed 13,074 checks. The final-head documentation
+successor [`a8fdb186`](https://github.com/techrote/cybersand/commit/a8fdb186d5dab3b7012857aa052990b1ff4a779e)
+passed [documentation/provenance run 40755560034](https://github.com/techrote/cybersand/actions/runs/40755560034).
+
+All four downloaded Actions ZIPs passed independent CRC/SHA-256 checks:
+Linux execution `62ef39f9fa225292288df58c9ad7ad5e789a8c5f24135dd636ccd057a1db8299`;
+Windows execution `e3f613e10bdde26d38ddd0338c824f0430b87530df90b7479fd33e4e8b7e9049`;
+Windows build `2c13fb3d3fb9b1325769dceec013f6533155042df017ee9be13475fc0d0e5492`;
+exact-source archive ZIP
+`8562087c4e2dfbf059c53b11eb1df6cfc07d642fd3d1517ea5e0ca89b64c7a5a`.
+The archived source and Git tree match the executed SHA, the Windows
+source manifest's **551/551 Git inputs** match the archived exact source,
+and the Windows DLL build/execution identity
+`bea97f80f4f7c3f9aa2ff1f3b24b6f3489e8168a781244b1bb87c15393d64b3e`
+plus all ten Windows execution log hashes were verified.
+
+| Source 55aa host/cohort | Active sampled refreshes | Two native calls | Render-active p95 | Worker overruns | Consumed / ACK |
+|---|---:|---:|---:|---:|---:|
+| Linux A=81, no ACK | 139 | 139 | 29.141 ms | 50 | 0 / 0 |
+| Linux A=81, CPU consumed | 99 | 87 | 29.356 ms | 41 | 99 / 99 |
+| Linux B=289, no ACK | 122 | 122 | 28.894 ms | 49 | 0 / 0 |
+| Windows A=81, no ACK | 150 | 150 | 22.620 ms | 28 | 0 / 0 |
+| Windows A=81, CPU consumed | 118 | 102 | 23.312 ms | 25 | 123 / 123 |
+| Windows B=289, no ACK | 141 | 141 | 22.852 ms | 29 | 0 / 0 |
+
+All CPU-consumed packets were accepted and ACKed after real main-thread
+CPU image application; zero refused. Distinct asynchronous trajectories
+preclude causal speedup comparisons. The large **double-call prevalence**
+persisted despite correct ACKs; therefore missing ACK alone is not the
+explanation, and no desktop/GPU throughput or 60 FPS acceptance is claimed.
+
+### Subsequent source-level diagnostic candidate (not inherited acceptance)
+
+Before editing, [the next status/overflow-census protocol](https://github.com/techrote/cybersand/pull/283#issuecomment-6478970282)
+was frozen on the above exact-source evidence. Executable candidate
+[`5531ac7d47141e040a368c0057be640cbf0e3721`](https://github.com/techrote/cybersand/commit/5531ac7d47141e040a368c0057be640cbf0e3721)
+adds only immutable scalar observations of first native packet
+status/byte/full-refresh, retained pending bytes/rectangles, ACK clearing,
+and the **actual existing** byte-limit vs rectangle-limit predicate that
+triggers the second native exchange. Its seven new live assertions per
+compound arm (59 to 66), and modified scoped CI, are separate tests.
+Native World/C++ cell ownership, Rapier bodies, ejection policy,
+material construction and render control flow are unchanged.
+[Source-matched candidate scoped CI 40758417713](https://github.com/techrote/cybersand/actions/runs/40758417713)
+was initiated; **its outcome, actual host metrics, full artifacts and
+source qualification must be read back before calling this candidate
+passed**. In particular, counters do not yet demonstrate a safe
+optimization or justify promoting B=289.
+
 ## Retained negative evidence and outstanding gates
 
 The previous extended B=289 ejection search **remains NO-GO** under
