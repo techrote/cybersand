@@ -1,0 +1,170 @@
+{
+  "schema": "cybersand.sol281.snapshot-publication-stages.v1",
+  "date": "2026-10-28",
+  "status": "source-bound scoped Linux/Windows actual Rapier conformance PASS; timing attribution only; production/frame-pacing NOT qualified",
+  "preregistration": "https://github.com/techrote/cybersand/pull/283#issuecomment-6466960679",
+  "executable_source": {
+    "revision": "9c97dc09eb15631e286ae4519075e389feb3e354",
+    "tree": "b94248b486623ce3f670f320671b940ab16bf6f6",
+    "source_archive_zip_artifact_id": 12809897121,
+    "source_archive_zip_sha256": "8a20f44a8f9f6ea9b66c56c20b0a8078e6f944f19a3f491d3487ef40eb02ece8",
+    "source_tar_gz_sha256": "40c0043e735b4b1c2f0f44fd11e4911c14662d120ff052651c281cfce273943c",
+    "independent_manifest_inputs_rehashed": 549,
+    "independent_manifest_mismatches": 0
+  },
+  "workflow": {
+    "run_id": 40675020082,
+    "url": "https://github.com/techrote/cybersand/actions/runs/40675020082",
+    "conclusion": "success",
+    "source_job": "success",
+    "linux_rapier_job": "success",
+    "windows_build_job": "success",
+    "windows_rapier_job": "success"
+  },
+  "host_checks_per_platform": {
+    "native_rapier_motion": 21,
+    "failure_rollback": 20,
+    "lifecycle": 296,
+    "actual_replacement_cycles": 18,
+    "unresolved_reason_diagnostics": 43,
+    "native_fallback_controlled_ejection_and_strict_empty_routes": 924,
+    "compound_policy_A": 48,
+    "compound_policy_B": 48,
+    "total": 1400,
+    "failures": 0
+  },
+  "timing_definition": {
+    "sample": "latest-only accepted worker snapshots, sampled during a 360-headless-physics-frame, single 520-member dry aggregate run; no causal cross-arm comparison",
+    "old_copy": "existing snapshot_copy_time_ms: from _publish_snapshot entry through render/terrain preparation, ending before CyberSimulationSnapshot construction",
+    "assembly": "snapshot_assembly_time_ms: immediately after old render/terrain segment through pre-mutex snapshot assembly endpoint",
+    "publish_total": "snapshot_publish_total_time_ms: _publish_snapshot entry to before mutex-protected publication; excludes final mutex handoff, specialized solid reply, worker loop sleep/wait, main-thread physics/render",
+    "worker_step": "existing worker_step_time_ms ends before any _publish_snapshot; not complete worker loop",
+    "sample_cap": 512,
+    "strict_positive_checks": "all four arms have zero invalid stage samples, identical per-stage sample counts, positive samples, total >= each stage"
+  },
+  "artifacts": {
+    "Linux": {
+      "artifact_id": 12811015414,
+      "zip_sha256": "ed06dc21f4e156da93d65c3af95414a9bce8c47fe93c3b918d93b7650da7e031",
+      "report_json_sha256": "e0dbf423613b639c2122a28eaeee0dd2573a18e6d9da4e28320f80159eaf8ae1",
+      "runtime_so_sha256": "244b0270f31c37135256524a5ca1d27afac32d1afbbf02c88b215e4e2fdb85bb",
+      "focused_native_checks": 13074,
+      "zip_crc": "pass"
+    },
+    "Windows_build": {
+      "artifact_id": 12810686355,
+      "zip_sha256": "cb47ee840cba42d75ae2ecba1a9dd08418c2037685d4f6bbf04b77e52b9e7724",
+      "runtime_dll_sha256": "9b78958b3f2ce4af23d40507ef24930e8399916be711f37e79ba95b5ce1557fe",
+      "manifest_inputs": 549,
+      "independently_rehashed_against_source_archive": 549,
+      "manifest_mismatches": 0,
+      "zip_crc": "pass"
+    },
+    "Windows_execution": {
+      "artifact_id": 12810506569,
+      "zip_sha256": "34975ba1c017d7d472d27deac06fe764c7446f5014f4fefa64d8a2980a5374f5",
+      "report_json_sha256": "ced8da39a29abd66e7af58747453cdb69c42a708922a8f2e3508e06fcb5da8aa",
+      "runtime_sha256": "9b78958b3f2ce4af23d40507ef24930e8399916be711f37e79ba95b5ce1557fe",
+      "source_verification_inputs": 549,
+      "accepted_pure_EOL_git_byte_restores": 92,
+      "execution_logs_sha256_and_exit_zero": 8,
+      "zip_crc": "pass"
+    }
+  },
+  "platforms": {
+    "Linux": {
+      "A": {
+        "search_policy": 0,
+        "samples": 121,
+        "worker_step_p95_ms": 0.876,
+        "old_copy_p95_ms": 52.021,
+        "assembly_p95_ms": 0.291,
+        "publish_pre_mutex_p95_ms": 52.378,
+        "worker_overruns": 108,
+        "invalid_samples": 0,
+        "no_target": 993,
+        "strict_empty_none": 993,
+        "body_displaced": 25,
+        "body_unresolved": 850
+      },
+      "B": {
+        "search_policy": 1,
+        "samples": 139,
+        "worker_step_p95_ms": 1.216,
+        "old_copy_p95_ms": 52.161,
+        "assembly_p95_ms": 0.28,
+        "publish_pre_mutex_p95_ms": 52.407,
+        "worker_overruns": 97,
+        "invalid_samples": 0,
+        "no_target": 1085,
+        "strict_empty_none": 1085,
+        "body_displaced": 28,
+        "body_unresolved": 757
+      }
+    },
+    "Windows": {
+      "A": {
+        "search_policy": 0,
+        "samples": 307,
+        "worker_step_p95_ms": 0.478,
+        "old_copy_p95_ms": 22.6,
+        "assembly_p95_ms": 0.27,
+        "publish_pre_mutex_p95_ms": 22.845,
+        "worker_overruns": 29,
+        "invalid_samples": 0,
+        "no_target": 2524,
+        "strict_empty_none": 2524,
+        "body_displaced": 30,
+        "body_unresolved": 2500
+      },
+      "B": {
+        "search_policy": 1,
+        "samples": 298,
+        "worker_step_p95_ms": 0.556,
+        "old_copy_p95_ms": 22.92,
+        "assembly_p95_ms": 0.267,
+        "publish_pre_mutex_p95_ms": 23.161,
+        "worker_overruns": 33,
+        "invalid_samples": 0,
+        "no_target": 918,
+        "strict_empty_none": 903,
+        "body_displaced": 46,
+        "body_unresolved": 913
+      }
+    }
+  },
+  "retained_invariants": {
+    "native_aggregate_members": 520,
+    "nonoverlapping_coupling_proxy_shapes": 6,
+    "initial_proxy_ids": [
+      2,
+      0,
+      0,
+      6
+    ],
+    "sand_cells": 104,
+    "water_mass": 1020,
+    "stale_results": 0,
+    "body_record_stride": 12,
+    "configured_workers_controlled": [
+      1,
+      4
+    ],
+    "liquid_solver_policy_changed": false,
+    "physical_ejection_policy_changed": false,
+    "native_rapier_thread_boundary_changed": false
+  },
+  "preserved_negative": {
+    "source": "b68074d715e04f3a2e37613239d5322fd1f3d1ee",
+    "run_id": 40671639353,
+    "reason": "initial controlled strict-route fixture errors, preserved and repaired at ecacca3e; no retroactive pass",
+    "policy_B_effect": "NO-GO; 0.4302pp Linux and 0.6119pp Windows versus registered 20pp minimum in earlier matched efficacy experiment"
+  },
+  "scope_limits": [
+    "Pre-mutex publication preparation is not full worker-loop or rendered-frame cost; publishing derived SOL reply, mutex, sleep and main-thread physics remain outside this measurement",
+    "Sampled Linux >52ms and Windows >22ms p95 remain performance concerns, not a 60 FPS validation",
+    "A/B host trajectories and sample counts are asynchronous and not matched efficacy/cost controls",
+    "No physical relocation change, no reactive Wood, fracture/desoliding, multi-aggregate, persistence, ordinary gameplay or complete ready-PR matrix",
+    "Independent source-architectural review, published runtime provenance, representative interactive frame pacing and merge authorization remain unqualified"
+  ]
+}

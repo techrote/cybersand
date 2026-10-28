@@ -1241,3 +1241,17 @@ memory/work limits. A conservative maximum local candidate charge bounds each
 raster sample. Real geometry/mask checks and canonical ordering still select
 materials. Measured index checks and local chunk durations are distinct from
 these declared logical charges.
+
+## Experimental native solid detachment
+
+The opt-in [#281 runtime](../systems/solid-detachment.md) is disabled by default and exposed to the diagnostic host only. Native `configure_solid_detachment` allocates one bounded store; maximum domain 64x64, members 1024, shapes 256 (default admission 128). Only homogeneous ambient Wall/RedBrick and non-pressure/non-inertial Worlds are admitted. The lab is `godot/solid_detachment_lab.tscn`: Space cut, P pause, R full session reset, Escape exit. Old checked-in main runtimes lack the new API; build the matching extension. No global default/control or liquid family changes.
+
+The additional SOL281 diagnostic-only boolean
+`diagnostic_reset({"ejection_topology":true})` enables the
+[read-only bounded no-target topology census](../audits/2026-10-28-sol281-ejection-topology-census.md):
+a radius-8 stored-cell/foreign-mask check, at most 16 no-target events per
+owner preparation with explicit skip accounting. The default is false;
+non-boolean admission refuses without replacing the old owner and ordinary
+demo reset clears the flag. It does **not** introduce a production setting,
+persisted field, solver family, displacement policy or live Rapier-owned
+World read. The 81-probe baseline remains selected, and 289-probe B is NO-GO.

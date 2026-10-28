@@ -24,6 +24,10 @@ const DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC: int = 16667
 const HARD_SURFACE_SNAPSHOT_INTERVAL_USEC: int = 250000
 const RENDER_PATCH_METADATA_STRIDE: int = 6
 const MAX_PENDING_RENDER_PATCHES: int = 256
+# SOL281 diagnostic only. Bounds are 64 rectangles, 64 KiB dirty input and
+# 64 KiB total overlay writes (rectangles may alias source bytes).
+const SOL281_COALESCE_MAX_DIRTY_RECTANGLES: int = 64
+const SOL281_COALESCE_MAX_DIRTY_BYTES: int = 65536
 const MAX_BRUSH_FOOTPRINT_CELLS: int = 4096
 const MAX_PENDING_BRUSH_COMMANDS: int = 8
 
@@ -153,7 +157,7 @@ func queue_lab(command: Dictionary) -> void:
 	_lab_request["_owner_request_revision"] = _lab_request_revision
 	_pending_physical_effects.clear()
 	_cancel_physical_usables_locked()
-	if command.has("step") or command.has("reset") or command.has("water_reset") or command.has("scenario_reset") or command.has("default_liquid_reset") or command.has("floor"): _paused = true
+	if command.has("solid_detachment") or command.has("step") or command.has("reset") or command.has("water_reset") or command.has("scenario_reset") or command.has("default_liquid_reset") or command.has("floor"): _paused = true
 	_mutex.unlock()
 
 static func prepared_owner_execution(definition: Dictionary, settings: Dictionary) -> Dictionary:
@@ -812,6 +816,26 @@ var _snapshot_world_revision: int = -1
 # an accepted reset/replacement; publication retains it with the render bytes.
 var _world_generation: int = 1
 var _pending_render_world_generation: int = 0
+var _experimental_render_full_coalescing: bool = false # default: unchanged
+# SOL281 root-cause candidates, both default off: R = native per-run full
+# copy; P = partial ACK of a retained full baseline (exclusive with coalescing).
+var _experimental_render_copy_by_run: bool = false
+var _experimental_render_partial_ack: bool = false
+# With partial ACK, false keeps only the baseline overflow exemption (mode E):
+# the baseline is never dropped, so only an exact ACK clears it.
+var _experimental_render_baseline_drop: bool = true
+var _pending_render_baseline_serial: int = 0
+# SOL281 diagnostic census. Monotonic worker-lifetime totals, written only by
+# the exclusive native owner, so latest-only snapshot readers count, not sample.
+var _render_refresh_total: int = 0
+var _render_dirty_onto_full_total: int = 0
+var _render_coalesced_total: int = 0
+var _render_forced_full_retry_total: int = 0
+var _render_ack_clear_total: int = 0
+var _render_baseline_drop_total: int = 0
+var _render_full_publication_total: int = 0
+var _render_published_bytes_total: int = 0
+var _render_pending_bytes_high_water: int = 0
 var _last_render_snapshot_usec: int = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 var _pending_render_snapshot_serial: int = 0
 var _pending_render_channels: int = 1
@@ -1497,6 +1521,11 @@ func request_render_full_refresh() -> void:
 	_mutex.unlock()
 
 
+func _native_representation_fenced() -> bool:
+	# Called only by the exclusive native owner, never the UI/main thread.
+	return _world.has_method(&"solid_detachment_fenced") and bool(_world.solid_detachment_fenced())
+
+
 func _worker_loop() -> void:
 	var next_tick_usec: int = Time.get_ticks_usec()
 	while true:
@@ -1544,7 +1573,8 @@ func _worker_loop() -> void:
 		local_cadence_enabled = _cadence_lod_enabled
 		local_liquid_adhesion_enabled = _liquid_surface_adhesion_enabled
 		local_render_snapshot_interval_usec = _render_snapshot_interval_usec
-		var physical_wait: bool = not _prepared_physical_publication.is_empty() \
+		var physical_wait: bool = _native_representation_fenced() or _lab_request.has("solid_detachment") \
+			or not _prepared_physical_publication.is_empty() \
 			or not _lab_request.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty()
 		local_rigid_body_states = _rigid_body_states
 		local_rigid_body_epoch = _rigid_body_epoch
@@ -1638,6 +1668,21 @@ func _worker_loop() -> void:
 			_last_render_snapshot_usec = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 		if not _pending_physical_liquid.is_empty():
 			OS.delay_usec(1000)
+			next_tick_usec = Time.get_ticks_usec()
+			continue
+		if _native_representation_fenced():
+			# Paused ordinary loops still refresh configuration and clear body
+			# masks below. A representation transaction must fence those writes
+			# as well as ticks, while continuing copied publication and commands.
+			# A staged live body cannot be discarded by an unrelated UI reset.
+			if local_reset_requested:
+				_lab_status = "Reset refused: finish/cancel the native representation transaction"
+				_actor_prototype_result_serial = local_actor_prototype_serial
+				_actor_prototype_reset_applied = false
+				_actor_prototype_status = _lab_status
+			_publish_snapshot(0.0, true, local_render_snapshot_interval_usec, false,
+				local_rigid_body_states, local_rigid_body_epoch)
+			OS.delay_usec(TICK_INTERVAL_USEC)
 			next_tick_usec = Time.get_ticks_usec()
 			continue
 		if not local_player_environment_profile.is_empty():
@@ -1830,6 +1875,32 @@ func _publish_snapshot(
 		_publish_failure_snapshot()
 		return
 	var copy_start_usec: int = Time.get_ticks_usec()
+	# Stage attribution is observation only. The render interval includes the
+	# existing patch-acknowledgement/cleanup work before any refresh decision.
+	var render_stage_active: bool = false
+	# Exclusive timings inside the existing render-stage interval. No additional
+	# render exchange/copy is performed; only the original work is bracketed.
+	var render_exchange_usec: int = 0
+	var render_accumulation_usec: int = 0
+	var render_full_copy_usec: int = 0
+	var render_exchange_calls: int = 0
+	var render_exchanged_payload_bytes: int = 0
+	# Value-only causal attribution: no new native exchange or changed retry.
+	var render_first_status: int = -1
+	var render_first_full: bool = false
+	var render_first_bytes: int = 0
+	var render_retry_full: bool = false
+	var render_retry_bytes: int = 0
+	var render_overflow_flags: int = 0
+	var render_coalesced: bool = false
+	var render_overflow_exempt_bytes: int = 0
+	var render_overflow_exempt_rectangles: int = 0
+	var render_pending_full_before: bool = false
+	var render_ack_cleared: bool = false
+	var render_pending_bytes_before: int = 0
+	var render_pending_bytes_after_first: int = 0
+	var render_pending_rectangles_before: int = 0
+	var render_pending_rectangles_after_first: int = 0
 	var now_usec: int = Time.get_ticks_usec()
 	var render_serial_before: int = _pending_render_snapshot_serial
 	var render_generation_advanced: bool = false
@@ -1848,7 +1919,21 @@ func _publish_snapshot(
 		_pending_render_snapshot_serial > 0
 		and acknowledged_render_serial >= _pending_render_snapshot_serial
 	):
+		# The ACK stays >= the unchanged serial, so this repeats every publication
+		# until a new packet; count only clears that released retained bytes.
+		if not _pending_render_patch_cells.is_empty() or not _pending_render_patch_rectangles.is_empty():
+			_render_ack_clear_total += 1
 		_clear_pending_render_patches()
+		render_ack_cleared = true
+	elif (
+		_experimental_render_partial_ack and _experimental_render_baseline_drop
+		and _pending_render_baseline_serial > 0
+		and acknowledged_render_serial >= _pending_render_baseline_serial
+	):
+		# Candidate P: the consumer already holds the retained full baseline, so
+		# only the dirty patches appended after it still need publication.
+		if _drop_pending_render_baseline():
+			_render_baseline_drop_total += 1
 	if (
 		force_render_full_refresh
 		or (
@@ -1856,22 +1941,86 @@ func _publish_snapshot(
 			and now_usec - _last_render_snapshot_usec >= render_snapshot_interval_usec
 		)
 	):
+		render_stage_active = true
 		if _world.has_method(&"take_render_snapshot"):
-			var render_packet: Dictionary = _world.take_render_snapshot(
-				force_render_full_refresh
+			render_pending_full_before = _pending_render_full_refresh
+			render_pending_bytes_before = _pending_render_patch_cells.size()
+			render_pending_rectangles_before = _pending_render_patch_rectangles.size()
+			var exchange_start_usec: int = Time.get_ticks_usec()
+			# The two-argument form exists only in SOL281 runtimes; default calls
+			# keep the original signature.
+			var render_packet: Dictionary = (
+				_world.take_render_snapshot(force_render_full_refresh, true)
+				if _experimental_render_copy_by_run
+				else _world.take_render_snapshot(force_render_full_refresh)
 			)
-			_append_native_render_packet(render_packet)
-			if (
-				_pending_render_patch_cells.size()
-				> CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * 2
-				or _pending_render_patch_rectangles.size()
-				> MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE
-			):
-				_append_native_render_packet(_world.take_render_snapshot(true))
+			render_exchange_usec += Time.get_ticks_usec() - exchange_start_usec
+			render_exchange_calls += 1
+			_render_refresh_total += 1
+			var packet_cells: PackedByteArray = render_packet.get("cells", PackedByteArray())
+			render_first_status = int(render_packet.get("status", -1))
+			render_first_full = bool(render_packet.get("full_refresh", false))
+			render_first_bytes = packet_cells.size()
+			render_exchanged_payload_bytes += packet_cells.size()
+			var accumulation_start_usec: int = Time.get_ticks_usec()
+			render_coalesced = _append_native_render_packet(render_packet)
+			render_accumulation_usec += Time.get_ticks_usec() - accumulation_start_usec
+			if render_pending_full_before and not render_first_full and render_first_bytes > 0:
+				_render_dirty_onto_full_total += 1
+			if render_coalesced:
+				_render_coalesced_total += 1
+			render_pending_bytes_after_first = _pending_render_patch_cells.size()
+			render_pending_rectangles_after_first = _pending_render_patch_rectangles.size()
+			# Candidate P exempts its retained baseline; appended patches keep the
+			# original limits, so retention is at most one frame plus that budget.
+			if (_experimental_render_partial_ack and _pending_render_full_refresh
+				and _pending_render_baseline_serial > 0):
+				render_overflow_exempt_bytes = (
+					CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * _pending_render_channels
+				)
+				render_overflow_exempt_rectangles = RENDER_PATCH_METADATA_STRIDE
+			if (render_pending_bytes_after_first - render_overflow_exempt_bytes
+				> CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * 2):
+				render_overflow_flags |= 1
+			if (render_pending_rectangles_after_first - render_overflow_exempt_rectangles
+				> MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE):
+				render_overflow_flags |= 2
+			if render_overflow_flags != 0:
+				_render_forced_full_retry_total += 1
+				exchange_start_usec = Time.get_ticks_usec()
+				var overflow_packet: Dictionary = (
+					_world.take_render_snapshot(true, true)
+					if _experimental_render_copy_by_run
+					else _world.take_render_snapshot(true)
+				)
+				render_exchange_usec += Time.get_ticks_usec() - exchange_start_usec
+				render_exchange_calls += 1
+				packet_cells = overflow_packet.get("cells", PackedByteArray())
+				render_retry_full = bool(overflow_packet.get("full_refresh", false))
+				render_retry_bytes = packet_cells.size()
+				render_exchanged_payload_bytes += packet_cells.size()
+				accumulation_start_usec = Time.get_ticks_usec()
+				_append_native_render_packet(overflow_packet)
+				render_accumulation_usec += Time.get_ticks_usec() - accumulation_start_usec
+			_render_published_bytes_total += _pending_render_patch_cells.size()
+			_render_pending_bytes_high_water = maxi(
+				_render_pending_bytes_high_water, _pending_render_patch_cells.size()
+			)
 			if _pending_render_full_refresh:
+				_render_full_publication_total += 1
+			# A P baseline with appended patches is not one image; keep the last
+			# complete frame, as the original dirty-only path already does.
+			if _pending_render_full_refresh and (not _experimental_render_partial_ack
+				or _pending_render_patch_cells.size()
+					== CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * _pending_render_channels):
+				var full_copy_start_usec: int = Time.get_ticks_usec()
 				_snapshot_cells = _pending_render_patch_cells.duplicate()
+				render_full_copy_usec += Time.get_ticks_usec() - full_copy_start_usec
 		else:
+			# The fallback material read and copy is one indivisible adapter call.
+			var fallback_copy_start_usec: int = Time.get_ticks_usec()
 			_snapshot_cells = PackedByteArray(_world.get_cells())
+			render_full_copy_usec += Time.get_ticks_usec() - fallback_copy_start_usec
 			_fallback_render_snapshot_serial += 1
 			_pending_render_snapshot_serial = _fallback_render_snapshot_serial
 			_pending_render_channels = 1
@@ -1900,6 +2049,14 @@ func _publish_snapshot(
 			_pending_render_worker_step_time_ms = worker_step_time_ms
 			_pending_render_worker_overruns = _worker_overruns
 			render_generation_advanced = true
+	var render_stage_end_usec: int = Time.get_ticks_usec()
+	# The residual includes patch acknowledgements, mutex/metadata and all
+	# remaining work. Subtraction is from disjoint, monotonic clock intervals.
+	var render_residual_usec: int = (
+		render_stage_end_usec - copy_start_usec - render_exchange_usec
+		- render_accumulation_usec - render_full_copy_usec
+	)
+	var terrain_stage_active: bool = false
 	var current_hard_surface_revision: int = int(_world.hard_surface_revision)
 	if (
 		force_render_full_refresh
@@ -1908,6 +2065,7 @@ func _publish_snapshot(
 		or (current_hard_surface_revision != _snapshot_hard_surface_revision
 			and now_usec - _last_hard_surface_snapshot_usec >= HARD_SURFACE_SNAPSHOT_INTERVAL_USEC)
 	):
+		terrain_stage_active = true
 		# A new physical owner/reset cannot acknowledge a retained terrain
 		# packet from its predecessor, even inside the ordinary edit throttle.
 		if _world.has_method(&"get_hard_surface_chunk_rectangles"):
@@ -1923,7 +2081,9 @@ func _publish_snapshot(
 		_snapshot_hard_surface_revision = current_hard_surface_revision
 		_snapshot_hard_surface_epoch = rigid_body_epoch
 		_last_hard_surface_snapshot_usec = now_usec
-	var copy_time_ms: float = float(Time.get_ticks_usec() - copy_start_usec) / 1000.0
+	var copy_end_usec: int = Time.get_ticks_usec()
+	var copy_time_ms: float = float(copy_end_usec - copy_start_usec) / 1000.0
+	var assembly_start_usec: int = Time.get_ticks_usec()
 
 	var snapshot: CyberSimulationSnapshot = CyberSimulationSnapshot.new()
 	snapshot.actor_prototypes = _actor_session.snapshot()
@@ -2015,6 +2175,42 @@ func _publish_snapshot(
 	snapshot.simulation_time_ms = _world.simulation_time_ms
 	snapshot.worker_step_time_ms = worker_step_time_ms
 	snapshot.snapshot_copy_time_ms = copy_time_ms
+	# Both durations partition the existing copy interval; the two flags
+	# distinguish actual refresh calls from cheap no-refresh snapshots.
+	snapshot.snapshot_render_stage_time_ms = float(render_stage_end_usec - copy_start_usec) / 1000.0
+	snapshot.snapshot_terrain_stage_time_ms = float(copy_end_usec - render_stage_end_usec) / 1000.0
+	snapshot.snapshot_render_stage_active = render_stage_active
+	snapshot.snapshot_terrain_stage_active = terrain_stage_active
+	snapshot.snapshot_render_exchange_time_ms = float(render_exchange_usec) / 1000.0
+	snapshot.snapshot_render_accumulation_time_ms = float(render_accumulation_usec) / 1000.0
+	snapshot.snapshot_render_full_copy_time_ms = float(render_full_copy_usec) / 1000.0
+	snapshot.snapshot_render_residual_time_ms = float(render_residual_usec) / 1000.0
+	snapshot.snapshot_render_exchange_calls = render_exchange_calls
+	snapshot.snapshot_render_exchanged_payload_bytes = render_exchanged_payload_bytes
+	snapshot.snapshot_render_first_status = render_first_status
+	snapshot.snapshot_render_first_full = render_first_full
+	snapshot.snapshot_render_coalesced = render_coalesced
+	snapshot.snapshot_render_first_bytes = render_first_bytes
+	snapshot.snapshot_render_retry_full = render_retry_full
+	snapshot.snapshot_render_retry_bytes = render_retry_bytes
+	snapshot.snapshot_render_overflow_flags = render_overflow_flags
+	snapshot.snapshot_render_pending_full_before = render_pending_full_before
+	snapshot.snapshot_render_ack_cleared = render_ack_cleared
+	snapshot.snapshot_render_pending_bytes_before = render_pending_bytes_before
+	snapshot.snapshot_render_pending_bytes_after_first = render_pending_bytes_after_first
+	snapshot.snapshot_render_pending_rectangles_before = render_pending_rectangles_before
+	snapshot.snapshot_render_pending_rectangles_after_first = render_pending_rectangles_after_first
+	snapshot.snapshot_render_refresh_total = _render_refresh_total
+	snapshot.snapshot_render_dirty_onto_full_total = _render_dirty_onto_full_total
+	snapshot.snapshot_render_coalesced_total = _render_coalesced_total
+	snapshot.snapshot_render_forced_full_retry_total = _render_forced_full_retry_total
+	snapshot.snapshot_render_ack_clear_total = _render_ack_clear_total
+	snapshot.snapshot_render_baseline_drop_total = _render_baseline_drop_total
+	snapshot.snapshot_render_full_publication_total = _render_full_publication_total
+	snapshot.snapshot_render_published_bytes_total = _render_published_bytes_total
+	snapshot.snapshot_render_pending_bytes_high_water = _render_pending_bytes_high_water
+	snapshot.snapshot_render_overflow_exempt_bytes = render_overflow_exempt_bytes
+	snapshot.snapshot_render_overflow_exempt_rectangles = render_overflow_exempt_rectangles
 	snapshot.worker_overruns = _worker_overruns
 	if _world.has_method(&"get_tick_failure_count"):
 		snapshot.tick_failure_count = int(_world.get_tick_failure_count())
@@ -2105,6 +2301,11 @@ func _publish_snapshot(
 		_freeze_capture(_pending_render_context)
 	snapshot.render_context = _pending_render_context
 
+	# Use one endpoint for both copied observations, before publication. Do not
+	# mutate these values after another thread can take the immutable snapshot.
+	var publish_ready_usec: int = Time.get_ticks_usec()
+	snapshot.snapshot_assembly_time_ms = float(publish_ready_usec - assembly_start_usec) / 1000.0
+	snapshot.snapshot_publish_total_time_ms = float(publish_ready_usec - copy_start_usec) / 1000.0
 	_mutex.lock()
 	_published_snapshot = snapshot
 	_mutex.unlock()
@@ -2152,9 +2353,35 @@ func _publish_failure_snapshot() -> void:
 
 func _clear_pending_render_patches() -> void:
 	_pending_render_full_refresh = false
+	_pending_render_baseline_serial = 0
 	_pending_render_patch_rectangles = PackedInt32Array()
 	_pending_render_patch_cells = PackedByteArray()
 	_pending_render_payload_generation += 1
+
+
+# Candidate P. Drop exactly the leading full baseline and rebase the appended
+# dirty patches. A new serial marks the changed transport payload of the same
+# image; a consumer at or after the baseline reapplies the patches in order.
+func _drop_pending_render_baseline() -> bool:
+	var full_size: int = (
+		CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * _pending_render_channels
+	)
+	var rects: PackedInt32Array = _pending_render_patch_rectangles
+	if (not _pending_render_full_refresh or rects.size() <= RENDER_PATCH_METADATA_STRIDE
+		or _pending_render_patch_cells.size() <= full_size
+		or rects[0] != 0 or rects[1] != 0 or rects[2] != CyberCellWorld.WORLD_WIDTH
+		or rects[3] != CyberCellWorld.WORLD_HEIGHT or rects[4] != 0):
+		return false
+	var later: PackedInt32Array = rects.slice(RENDER_PATCH_METADATA_STRIDE)
+	for i: int in range(4, later.size(), RENDER_PATCH_METADATA_STRIDE):
+		later[i] -= full_size
+	_pending_render_patch_rectangles = later
+	_pending_render_patch_cells = _pending_render_patch_cells.slice(full_size)
+	_pending_render_full_refresh = false
+	_pending_render_baseline_serial = 0
+	_pending_render_snapshot_serial += 1
+	_pending_render_payload_generation += 1
+	return true
 
 
 func _refresh_published_render_payload() -> void:
@@ -2168,23 +2395,94 @@ func _refresh_published_render_payload() -> void:
 	_published_render_payload_generation = _pending_render_payload_generation
 
 
-func _append_native_render_packet(packet: Dictionary) -> void:
+# SOL281 opt-in only. Preflight before allocating; overlay a bounded dirty
+# packet into a COPY of exactly one already-retained complete full frame.
+# All invalid/oversized packets fall back to the previous append/overflow path.
+func _try_coalesce_native_render_dirty(
+	packet: Dictionary, cells: PackedByteArray, rects: PackedInt32Array
+) -> bool:
+	if not _experimental_render_full_coalescing or not _pending_render_full_refresh:
+		return false
+	if _pending_render_world_generation != _world_generation:
+		return false
+	if int(packet.get("status", -1)) != 1 or int(packet.get("serial", 0)) <= 0:
+		return false
+	if bool(packet.get("full_refresh", false)):
+		return false
+	var channels: int = int(packet.get("channels", 2))
+	if channels != _pending_render_channels or (channels != 1 and channels != 2):
+		return false
+	var width: int = CyberCellWorld.WORLD_WIDTH
+	var height: int = CyberCellWorld.WORLD_HEIGHT
+	var full_size: int = width * height * channels
+	var baseline: PackedInt32Array = _pending_render_patch_rectangles
+	if (_pending_render_patch_cells.size() != full_size or baseline.size() != 6
+		or baseline[0] != 0 or baseline[1] != 0
+		or baseline[2] != width or baseline[3] != height
+		or baseline[4] != 0 or baseline[5] != width * channels):
+		return false
+	if (cells.is_empty() or cells.size() > SOL281_COALESCE_MAX_DIRTY_BYTES
+		or rects.is_empty() or rects.size() % RENDER_PATCH_METADATA_STRIDE != 0
+		or rects.size() > SOL281_COALESCE_MAX_DIRTY_RECTANGLES * RENDER_PATCH_METADATA_STRIDE):
+		return false
+	# Each rectangle is bounded by the input, but rectangles may alias the same
+	# source bytes; bound their SUM so admitted overlay writes stay <= 64 KiB.
+	var overlay_bytes: int = 0
+	for i: int in range(0, rects.size(), RENDER_PATCH_METADATA_STRIDE):
+		var x: int = rects[i]
+		var y: int = rects[i+1]
+		var w: int = rects[i+2]
+		var h: int = rects[i+3]
+		var offset: int = rects[i+4]
+		var pitch: int = rects[i+5]
+		if (x < 0 or y < 0 or w <= 0 or h <= 0 or x > width - w
+			or y > height - h or offset < 0 or pitch < w * channels
+			or offset > cells.size() or pitch > cells.size()
+			or offset + (h - 1) * pitch + w * channels > cells.size()):
+			return false
+		overlay_bytes += w * channels * h
+		if overlay_bytes > SOL281_COALESCE_MAX_DIRTY_BYTES:
+			return false
+	# Not the publication boundary (_refresh_published_render_payload copies):
+	# the retained frame may alias the native packet array or, on the fallback
+	# path, the published snapshot cells, so never overlay it in place.
+	var output: PackedByteArray = _pending_render_patch_cells.duplicate()
+	for i: int in range(0, rects.size(), RENDER_PATCH_METADATA_STRIDE):
+		var x: int = rects[i]
+		var y: int = rects[i+1]
+		var w: int = rects[i+2]
+		var h: int = rects[i+3]
+		var offset: int = rects[i+4]
+		var pitch: int = rects[i+5]
+		for row: int in range(h):
+			var source: int = offset + row * pitch
+			var destination: int = ((y + row) * width + x) * channels
+			for j: int in range(w * channels):
+				output[destination + j] = cells[source + j]
+	_pending_render_patch_cells = output
+	return true
+
+
+func _append_native_render_packet(packet: Dictionary) -> bool:
 	var packet_cells: PackedByteArray = packet.get("cells", PackedByteArray())
 	var packet_rectangles: PackedInt32Array = packet.get(
 		"rectangles",
 		PackedInt32Array()
 	)
 	if packet_cells.is_empty() or packet_rectangles.is_empty():
-		return
+		return false
 
 	var packet_serial: int = int(packet.get("serial", 0))
 	var packet_channels: int = int(packet.get("channels", 2))
 	var packet_full_refresh: bool = bool(packet.get("full_refresh", false))
+	var coalesced: bool = not packet_full_refresh and _try_coalesce_native_render_dirty(
+		packet, packet_cells, packet_rectangles
+	)
 	if packet_full_refresh:
 		_pending_render_patch_rectangles = packet_rectangles
 		_pending_render_patch_cells = packet_cells
 		_pending_render_full_refresh = true
-	else:
+	elif not coalesced:
 		var data_offset_base: int = _pending_render_patch_cells.size()
 		_pending_render_patch_cells.append_array(packet_cells)
 		for metadata_offset: int in range(
@@ -2206,3 +2504,7 @@ func _append_native_render_packet(packet: Dictionary) -> void:
 	_pending_render_snapshot_serial = maxi(_pending_render_snapshot_serial+1,packet_serial)
 	_pending_render_channels = packet_channels
 	_pending_render_payload_generation += 1
+	# A full or coalesced frame is one complete image at this serial.
+	if packet_full_refresh or coalesced:
+		_pending_render_baseline_serial = _pending_render_snapshot_serial
+	return coalesced

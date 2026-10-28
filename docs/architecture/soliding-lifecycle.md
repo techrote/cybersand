@@ -9,6 +9,8 @@ related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-cou
 ---
 
 # Scalable soliding representation lifecycle
+**Experimental runtime addition, source 741bc077:** [the actual native handoff](../systems/solid-detachment.md) now implements a one-aggregate dry Wall/RedBrick prepare/acknowledge/commit/finalize and inactive rollback path in `World`. This is distinct from the standalone model discussed below; [actual evidence](../audits/2026-10-27-sol281-native-tree.md) does not qualify arbitrary materials, dynamic demotion, general Stage-6/7 lifecycle or production release.
+
 
 ## 2026-10-27 sequencing clarification — no new runtime state
 

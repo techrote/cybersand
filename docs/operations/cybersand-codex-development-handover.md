@@ -4,11 +4,28 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-27
+last-reviewed: 2026-10-28
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+**#281 newer scoped control — implemented; fresh actual-host qualification
+not yet established.** Draft #283 executable source `55aa72e5` adds an
+opt-in main-thread CPU `Image` render-consumption/ACK cohort, an unchanged
+unacknowledged control, strict malformed-payload refusals and new targeted
+Linux/Windows tests. Read the [control audit](../audits/2026-10-28-sol281-render-ack-consumer-control.md)
+and [current receipt](../audits/sol281-2026-10-28/render-ack-control-receipt.json)
+before interpreting render-exchange p95. No GPU upload, production FPS,
+physical ejection or default material/liquid policy is admitted; B=289 NO-GO,
+#281 open, #283 draft. Historical source d441 audit below is unchanged.
+
+**Newest #281 source-matched microstage attribution (2026-10-28; still diagnostic, not optimized):** [executed `d441a8a5`](https://github.com/techrote/cybersand/commit/d441a8a593f001d944d5f0691eab63d7614023c5) passed [four-job Linux/Windows real-host CI 40724802526](https://github.com/techrote/cybersand/actions/runs/40724802526), **1,414 assertions/OS**, with four ZIP/hash checks and 549/549 Windows Git-source manifest inputs verified. [New audit](../audits/2026-10-28-sol281-render-exchange-microstages.md) and [receipt](../audits/sol281-2026-10-28/render-exchange-microstages-receipt.json) show native `take_render_snapshot` dominates the ~52ms Linux/~22ms Windows render-stage p95 in this **headless fixture**. Critically, the fixture never acknowledges uploaded render packets; all observed refreshes made **two** native calls via the existing pending-buffer/forced-full path. This is *not* normal desktop frame cost or a proven optimization opportunity. Physics and liquids unchanged; B=289 NO-GO, #281 open, #283 draft.
+**Earlier #281 checkpoint (2026-10-28):** scoped executable `9725885d` / [four-job Linux/Windows run 40694663350](https://github.com/techrote/cybersand/actions/runs/40694663350) qualifies a **diagnostic-only split of worker render/patch versus hard-surface snapshot preparation**, with **1,406 assertions per OS**; render dominates (~31ms Linux / ~24ms Windows), terrain ~0.002ms without refresh. [Dated audit](../audits/2026-10-28-sol281-render-terrain-stage-attribution.md) and [hash/ABI receipt](../audits/sol281-2026-10-28/render-terrain-stage-receipt.json) preserve initial failed count-48 harness and exact 549 archived source inputs. **Do not** interpret scoped headless timing as interactive FPS, B=289 physical admissibility, ready-PR CI or merge/release approval. The older `dabe2b30` checkpoint below is historical. Issue #281 open, PR #283 draft.
+## #281 executable handover — native tree proof
+
+Branch `work/sol281-native-detachment-20261027`, current executable source `dabe2b30966e952ebadb84ab7f482d49ca500bb9`, contains the [native tree and exact six-proxy Sand/Water coupling laboratory](../systems/solid-detachment.md). [Initial native/Rapier motion](../audits/2026-10-27-sol281-native-tree.md), [compound ownership/conservation](../audits/2026-10-27-sol281-compound-cellular-coupling.md), and [cause attribution](../audits/2026-10-28-sol281-unresolved-cause-characterisation.md) remain source-bound. The preregistered [extended-search A/B](../audits/2026-10-28-sol281-ejection-search-ab-result.md) is **NO-GO** at source `2d623e10` (0.43/0.61 pp versus required 20 pp). The newly preregistered [local topology census](../audits/2026-10-28-sol281-ejection-topology-census.md) passes the scoped Linux/Windows CI at `dabe2b30` and finds an empty/unmasked void in all 7,257 observed failed owner attempts, but inherited straight paths may cross other movable cells or point backwards, so no valid physical target is proven. Linux sampled worker-publication copy p95 around 51 ms remains a cost concern. Next: a separate physically admissible relocation/chain-movement preregistration and native-worker/full-frame cost qualification before reactive Wood/heterogeneous bonds, fracture, persistence, runtime publication and independent/full review. **#281 remains open; #283 and stacked #282 remain draft.**
+
 
 ## #12 native structural detachment priority — 2026-10-27
 

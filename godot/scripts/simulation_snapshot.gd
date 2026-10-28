@@ -94,6 +94,64 @@ var rigid_body_unresolved_last_tick: int = 0
 var simulation_time_ms: float = 0.0
 var worker_step_time_ms: float = 0.0
 var snapshot_copy_time_ms: float = 0.0
+# Worker-owner stage split of the existing copy interval, including patch-ack
+# cleanup in the render segment. Booleans mean the refresh branch was entered,
+# not that a render patch or terrain rectangle necessarily changed.
+var snapshot_render_stage_time_ms: float = 0.0
+var snapshot_terrain_stage_time_ms: float = 0.0
+var snapshot_render_stage_active: bool = false
+var snapshot_terrain_stage_active: bool = false
+# Disjoint observational portions of render_stage_time_ms, read-only and
+# captured on the worker before the snapshot crosses the ownership boundary.
+# The fallback read/copy is classified with the full-material copy.
+var snapshot_render_exchange_time_ms: float = 0.0
+var snapshot_render_accumulation_time_ms: float = 0.0
+var snapshot_render_full_copy_time_ms: float = 0.0
+var snapshot_render_residual_time_ms: float = 0.0
+var snapshot_render_exchange_calls: int = 0 # 0, 1, or overflow retry 2.
+var snapshot_render_exchanged_payload_bytes: int = 0
+# SOL281 diagnostic only: one immutable set of scalar observations from the
+# first native packet and the already-existing bounded forced-full retry.
+# Overflow bits: 1=retained byte limit, 2=rectangle metadata limit.
+# Status matches native RenderPublishStatus (0=no changes, 1=published,
+# 2=backpressure, 3=capacity exceeded); -1 means no native call.
+var snapshot_render_first_status: int = -1
+var snapshot_render_first_full: bool = false
+# Worker-only diagnostic candidate; true iff one valid full+dirty merge occurred.
+var snapshot_render_coalesced: bool = false
+var snapshot_render_first_bytes: int = 0
+var snapshot_render_retry_full: bool = false
+var snapshot_render_retry_bytes: int = 0
+var snapshot_render_overflow_flags: int = 0
+var snapshot_render_pending_full_before: bool = false
+var snapshot_render_ack_cleared: bool = false
+var snapshot_render_pending_bytes_before: int = 0
+var snapshot_render_pending_bytes_after_first: int = 0
+var snapshot_render_pending_rectangles_before: int = 0
+var snapshot_render_pending_rectangles_after_first: int = 0
+# Monotonic worker-lifetime totals (never reset or sampled): native refreshes,
+# dirty packets that landed on a retained full frame, coalesced packets,
+# forced-full retries and ACK clears that released retained bytes.
+var snapshot_render_refresh_total: int = 0
+var snapshot_render_dirty_onto_full_total: int = 0
+var snapshot_render_coalesced_total: int = 0
+var snapshot_render_forced_full_retry_total: int = 0
+var snapshot_render_ack_clear_total: int = 0
+# SOL281 root-cause candidates: candidate-P baseline drops, refreshes that
+# published a full frame, published payload bytes and the pending-byte
+# high-water, plus this snapshot's overflow-guard exemption (P baseline only).
+var snapshot_render_baseline_drop_total: int = 0
+var snapshot_render_full_publication_total: int = 0
+var snapshot_render_published_bytes_total: int = 0
+var snapshot_render_pending_bytes_high_water: int = 0
+var snapshot_render_overflow_exempt_bytes: int = 0
+var snapshot_render_overflow_exempt_rectangles: int = 0
+# Portion after the existing render/terrain preparation interval and before
+# the mutex-protected immutable snapshot publication. Excludes the handoff.
+var snapshot_assembly_time_ms: float = 0.0
+# Entry of _publish_snapshot to its pre-publication endpoint. Includes the
+# old copy segment plus assembly, not worker wait, scene/Rapier or derived reply.
+var snapshot_publish_total_time_ms: float = 0.0
 var worker_overruns: int = 0
 var tick_failure_count: int = 0
 var last_tick_error: String = ""

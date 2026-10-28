@@ -29,12 +29,16 @@ public:
     static constexpr std::int32_t kWorldHeight = 1024;
     static constexpr std::int32_t kProtectedCurrentRuleRadius = 2;
     static constexpr std::int32_t kInputStride = 11;
-    static constexpr std::int32_t kResultStride = 9;
+    static constexpr std::int32_t kResultStride = 12;
     CyberNativeCellWorld();
     ~CyberNativeCellWorld() override;
 
     [[nodiscard]] static std::int64_t auto_worker_threads(std::int64_t logical_threads);
     [[nodiscard]] static std::int64_t logical_processor_count();
+
+    // SOL281 diagnostic-only value facade. Exclusive native owner, no RIDs.
+    [[nodiscard]] bool solid_detachment_fenced() const;
+    [[nodiscard]] Dictionary solid_detachment_command(const Dictionary& command);
 
     bool reset_demo_world();
     [[nodiscard]] Dictionary get_default_demo_identity() const;
@@ -63,7 +67,7 @@ public:
     [[nodiscard]] std::int64_t character_disturb_granular(
         Vector2 origin, Vector2 size, double impact_speed);
     [[nodiscard]] PackedByteArray get_cells() const;
-    [[nodiscard]] Dictionary take_render_snapshot(bool force_full = false);
+    [[nodiscard]] Dictionary take_render_snapshot(bool force_full = false, bool copy_by_run = false);
     [[nodiscard]] PackedInt32Array get_hard_surface_rectangles() const;
     [[nodiscard]] PackedInt32Array get_hard_surface_chunk_rectangles() const;
 
@@ -142,6 +146,10 @@ public:
     [[nodiscard]] Dictionary diagnostic_snapshot(Vector2i origin, Vector2i size,
                                                   bool include_histogram = false) const;
     [[nodiscard]] Array diagnostic_body_metrics() const;
+    // Read-only applied diagnostic search selection; ordinary demo stays at 0.
+    [[nodiscard]] std::int64_t get_ejection_policy() const;
+    // Native-owner-only observational census; fixed rigid-body result ABI.
+    [[nodiscard]] Dictionary diagnostic_ejection_topology() const;
     [[nodiscard]] std::int64_t get_tick_failure_count() const;
 
 protected:
@@ -173,6 +181,9 @@ private:
         std::uint64_t contacts = 0;
         std::uint64_t displaced = 0;
         std::uint64_t unresolved = 0;
+        std::uint64_t unresolved_immovable = 0;
+        std::uint64_t unresolved_no_target = 0;
+        std::uint64_t unresolved_relocation_refused = 0;
     };
     struct BodyDiagnostic {
         Vector2 displacement{};
@@ -184,8 +195,29 @@ private:
     };
     using BodyDiagnostics =
         std::array<BodyDiagnostic, cybersand::World::kMaximumTransientBodies + 1U>;
+    struct EjectionTopologyCensus {
+        std::uint64_t no_target_events = 0;
+        std::uint64_t classified = 0;
+        std::uint64_t off_axis_direct_path = 0;
+        std::uint64_t nearby_void_path_blocked = 0;
+        std::uint64_t no_nearby_unmasked_void = 0;
+        std::uint64_t skipped_capacity = 0;
+        // Read-only, four-neighbour Empty/unmasked connectivity. A necessary
+        // topology observation, not an admissible destination or move.
+        std::uint64_t empty_connected_forward = 0;
+        std::uint64_t empty_connected_lateral = 0;
+        std::uint64_t empty_connected_rear = 0;
+        std::uint64_t empty_connected_none = 0;
+        std::uint64_t weak_direct_without_empty_route = 0;
+    };
     std::unique_ptr<BodyDiagnostics> body_diagnostics_;
     bool diagnostic_fixture_ = false;
+    // SOL281 diagnostic-only experiment. 0 is the unchanged production search.
+    std::uint8_t ejection_policy_ = 0;
+    // Admitted only by diagnostic_reset. No dynamic allocations on sweep.
+    bool ejection_topology_enabled_ = false;
+    std::uint32_t ejection_topology_classified_this_sample_ = 0;
+    EjectionTopologyCensus ejection_topology_{};
     bool default_demo_recipe_active_ = false;
     double displacement_gain_ = 0.18;
     double boundary_gain_ = 0.19;
@@ -282,6 +314,9 @@ private:
                                                 std::int32_t target_x,
                                                 std::int32_t target_y,
                                                 std::uint16_t source_body_id) const;
+    void classify_ejection_failure(std::int32_t source_x, std::int32_t source_y,
+                                   std::uint16_t source_body_id,
+                                   Vector2 outward_normal);
     void record_impulse(std::uint16_t body_id, Vector2 impulse);
     [[nodiscard]] static std::int32_t symmetric_probe_offset(std::int32_t index);
     [[nodiscard]] static bool in_bounds(std::int64_t x, std::int64_t y);

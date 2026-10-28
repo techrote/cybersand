@@ -4,11 +4,27 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-27
+last-reviewed: 2026-10-28
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## SOL281 current diagnostic implementation — no production admission
+
+On draft PR #283, exact source `55aa72e5db6b23731a2ccdccbca91ccfd80bfe90`
+adds a headless opt-in *CPU-image-consumed* render ACK cohort alongside
+the existing deliberately unacknowledged benchmark. It changes only
+scoped GDScript session/presentation tests and CI; native World,
+Rapier geometry, immutable render packet producer, liquid policies,
+and 81-probe default are unchanged. See
+[dated source/audit](../audits/2026-10-28-sol281-render-ack-consumer-control.md).
+Source-matched actual Linux/Windows qualification, representative GPU
+render/complete-worker frame pacing and physically admissible bounded
+conservative relocation remain **open**. The 289-probe B search remains
+NO-GO; reactive Wood, fracture/desoliding, multiple bodies, persistence,
+normal gameplay, independent review and ready-PR matrices remain open.
+Issue #281 open, PR #283 draft/unmerged, stacked on draft #282.
 
 ## Trial successor correction after accepted App — 2026-10-25
 
@@ -1578,7 +1594,11 @@ semantics or satisfy independent architecture gates. Final status is not upgrade
 from candidate until exact-head current checks and final diff/acceptance review
 complete.
 
-## Issue #12 structural-detachment priority — 2026-10-27
+# Issue #12 structural-detachment priority — 2026-10-27
+**Latest draft-branch #281 source-matched microstage attribution (2026-10-28; still diagnostic, not optimized):** [executed `d441a8a5`](https://github.com/techrote/cybersand/commit/d441a8a593f001d944d5f0691eab63d7614023c5) passed [four-job Linux/Windows real-host CI 40724802526](https://github.com/techrote/cybersand/actions/runs/40724802526), **1,414 assertions/OS**, with four ZIP/hash checks and 549/549 Windows Git-source manifest inputs verified. [New audit](../audits/2026-10-28-sol281-render-exchange-microstages.md) and [receipt](../audits/sol281-2026-10-28/render-exchange-microstages-receipt.json) show native `take_render_snapshot` dominates the ~52ms Linux/~22ms Windows render-stage p95 in this **headless fixture**. Critically, the fixture never acknowledges uploaded render packets; all observed refreshes made **two** native calls via the existing pending-buffer/forced-full path. This is *not* normal desktop frame cost or a proven optimization opportunity. Physics and liquids unchanged; B=289 NO-GO, #281 open, #283 draft.
+**Earlier scoped source-qualified #281 checkpoint (2026-10-28, unmerged):** [render/terrain attribution audit](../audits/2026-10-28-sol281-render-terrain-stage-attribution.md) executes on `9725885d`, **1,406 Linux and Windows Godot/Rapier assertions each**; the dominant pre-assembly ~31ms/~24ms interval is render/patch processing, not terrain rectangle updates. This is **diagnosis, not optimization or end-to-end frame qualification**. The earlier 289-probe B physics candidate remains NO-GO. PR #283 stays draft and issue #281 open; no native ownership, hole geometry, material policy or release gate is promoted.
+**Later experimental implementation checkpoint (not merged production):** [native detachment runtime](../systems/solid-detachment.md) now reaches source `756ae488`: 520 native cells, six exact shapes/proxies, actual Linux and Windows Rapier toppling, session-reset fences, hole-preserving Sand/Water interaction and a stable-prefix unresolved-cause protocol. The [initial record](../audits/2026-10-27-sol281-native-tree.md), [compound-coupling record](../audits/2026-10-27-sol281-compound-cellular-coupling.md) and [cause characterisation](../audits/2026-10-28-sol281-unresolved-cause-characterisation.md) preserve exact scopes. Cause tests pass 43 checks and coupling 36 checks per platform. Every live unresolved attempt was a no-reachable-target search exhaustion; the attempt-level rate remains about 97–98%, so reduction and representative cost remain open. Reactive Wood, dynamic demotion/fracture, persistence, independent review, full qualification and release publication remain open; #281 is not closed.
+
 
 **Approved direction / implementation Planned:** native solid structures
 should have their **actual native-cell material payload** cut free by

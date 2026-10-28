@@ -1,0 +1,478 @@
+---
+title: SOL281 bounded render-full and dirty-patch coalescing experiment
+status: Current
+document-kind: audit
+scope: Exact-source preregistered draft-only render worker candidate, qualification in progress; no physical-policy or GPU-performance acceptance
+canonical-for: [sol281-render-coalescing-candidate-evidence]
+last-reviewed: 2026-10-28
+related-documents: [../systems/solid-detachment.md, 2026-10-28-sol281-render-ack-consumer-control.md, sol281-2026-10-28/render-coalescing-candidate-receipt.json]
+---
+
+# SOL281 retained full + native dirty render coalescing (28 October 2026)
+
+## Frozen source, provenance and causal premise
+
+Issue [#281](https://github.com/techrote/cybersand/issues/281) and
+[PR #283](https://github.com/techrote/cybersand/pull/283) remain open/draft,
+stacked on still-draft #282; neither is merged or qualified for gameplay.
+
+Frozen successful predecessor executable
+[`5531ac7d47141e040a368c0057be640cbf0e3721`](https://github.com/techrote/cybersand/commit/5531ac7d47141e040a368c0057be640cbf0e3721)
+and docs-only head `88154d0e49c71e5839b94b9691596b2e63e287c9`
+passed [four-job scoped Linux and actual-Windows run 40758417713](https://github.com/techrote/cybersand/actions/runs/40758417713)
+(1,519 assertions per OS, zero failures) and
+[final-head docs run 40759938408](https://github.com/techrote/cybersand/actions/runs/40759938408).
+The [causal packet census](2026-10-28-sol281-render-ack-consumer-control.md)
+found every sampled second native call was caused by a retained 2,097,152-byte
+full RG8 snapshot plus a newly appended dirty patch crossing the existing
+worker pending-byte guard. It was not native backpressure, rectangle count
+or native packet capacity. CPU-consumed/ACKed control streams did **not**
+establish a p95 speedup or representative GPU frame pacing.
+
+Before editing the new candidate, the
+[preregistration was published](https://github.com/techrote/cybersand/pull/283#issuecomment-6479596107).
+There were two implementation commits:
+1. [`6927ace31c4a4d9acfea9f16baa744c5c6783cf1`](https://github.com/techrote/cybersand/commit/6927ace31c4a4d9acfea9f16baa744c5c6783cf1)
+   (tree `14a17c301a1ff60d20e46bfec0ebd5880af77c24`): bounded worker copy-on-write
+   candidate, 32 direct payload/assertion checks instead of 17, workflow checks.
+2. [`7d716a5f62bfdf6a9a9a6ed90f923f4ca418539e`](https://github.com/techrote/cybersand/commit/7d716a5f62bfdf6a9a9a6ed90f923f4ca418539e)
+   (tree `41b85c9e121388df9fe803211af06a176e6bd07c`): new immutable one-/two-call coalescence census,
+   opt-in session argument, actual Linux/Windows Rapier fourth cohort,
+   68 live compound assertions per arm instead of 66.
+
+**The second source is not qualified by the first source's CI.** The
+intended current-source [scoped host run 40762646166](https://github.com/techrote/cybersand/actions/runs/40762646166)
+and [documentation/provenance run 40762653884](https://github.com/techrote/cybersand/actions/runs/40762653884)
+were still executing/queued at record creation. First-source
+[scoped run 40762379333](https://github.com/techrote/cybersand/actions/runs/40762379333)
+and [docs run 40762388082](https://github.com/techrote/cybersand/actions/runs/40762388082)
+are separately source-bound; the first-source docs job passed, but that
+does not transfer to the newer source or this documentation successor.
+No assertion count, source-manifest hash or runtime identity is claimed
+as passed for the new candidate until host artifacts are inspected.
+
+## Exact algorithm and limits (experimental, disabled by default)
+
+The existing `CyberSimulationWorker` is still the sole owner of
+pending render packets. A new `_experimental_render_full_coalescing`
+bool is **false by default** and only assigned to the SOL281 worker
+before its thread starts. The worker receives exactly the same native
+packets, calls the same native World, and owns no Rapier bodies or RIDs.
+
+On a dirty native packet only, it checks status `Published`, nonzero
+serial, World generation and channel equality. A pending baseline must
+consist of precisely one full-world 1024×1024 rectangle, offset zero,
+row pitch `1024 * channels`, exactly one complete RG8/R8 frame and
+no later appended metadata. The incoming input is restricted to at
+most 64 rectangles and 65,536 dirty payload bytes, including full
+preflight of all x/y/width/height/offset/row strides. All checks finish
+before bytes are changed; then the worker duplicates the full frame
+and overlays dirty pixels in source rectangle order. The original
+full rectangle is retained and existing monotonic render serial and
+immutable payload-generation counters advance. The copy is at most
+2,097,152 RG8 bytes; because the implementation touches each admitted
+rectangle, total pixel writes require measurement and a strict
+aggregate-work cap before production promotion.
+
+When not enabled, not eligible, malformed or oversized, the old append
+and forced-full capacity behavior runs. Coalescing does not implicitly
+ACK, modify actual source materials, change `take_render_snapshot` in
+the native core, alter Water or material construction, change probe
+policy, affect collision geometry, or cross the Rapier owner boundary.
+
+## Qualification tests and observations
+
+The 32 scripted CPU-byte conformance assertions on the first implementation
+exercise overlap precedence, corner/edge pixels, old immutable publication,
+strict CPU consumer, serial and generation, disabled default, status,
+64KiB/64-rectangle limits, out-of-bounds, bad pitch and channels.
+The two additional compound assertions per arm require default-off
+to produce zero coalesced packets, or explicit opt-in to observe at
+least one live merge. The fourth controlled A=81 host cohort enables
+both CPU-image consume/ACK and coalescing. Existing three cohorts
+remain unchanged: A=81 unacknowledged, A=81 CPU-consumed, B=289
+unacknowledged. Under actual Linux and Windows Godot/Rapier, validate
+the real 520-cell native tree, six proxy rectangles and both holes,
+Sand104 and Water mass1020, deterministic finite worker bounds,
+12-field result ABI, source/epoch fences and no stale owner results.
+
+**No new measured runtime performance or successful actual-host
+acceptance is established at this audit snapshot.** The initial Linux
+and Windows source-matched workflow runs are tracked in the receipt.
+A reference stream can still require two native exchanges for other
+reasons; no faster average, tail latency or interactive 60 FPS is
+assumed. Earlier failed and negative trials remain valid and have
+not been overwritten. The 289-probe physical ejection candidate
+remains NO-GO; safe admissible mass-conserving material relocation
+and reactive Wood/fracture/desoliding/restoration/persistence are
+unresolved. Independent review, full ready-PR gates, normal gameplay
+render delivery and actual GPU pacing are also not qualified.
+
+## Go/no-go boundary
+
+Do not admit the coalescing candidate unless source-matched tests
+demonstrate correct full+dirty material bytes and refusal behavior
+on both actual OS hosts, coupled native/Rapier invariants, explicit
+allocation/work bound and no regressions. No hosted headless speed
+distribution alone can qualify interactive 60 FPS, and no render
+result promotes physical B=289. Historical source and negative
+evidence remain immutable.
+
+## Addendum: failed 7d716a5f qualification and deterministic gate correction (28 October 2026)
+
+This section adds to the snapshot above; it does not rewrite it.
+
+### Readback of 7d716a5f
+
+[Run 40762646166](https://github.com/techrote/cybersand/actions/runs/40762646166)
+on `7d716a5f` (tree `41b85c9e`) **failed** on both actual hosts. `source` and
+`windows-build` passed. `linux-rapier` and `windows-rapier` each failed the
+single assertion *opt-in live native stream coalesces an actual full-plus-dirty
+packet* in the `0 1 1` cohort, with `render_coalesced_packets: 0` and
+`render_pending_full_before_samples: 0` on both OSes. The 32/32 unit test,
+motion, failure-path, lifecycle, unresolved, ejection-policy, default and
+CPU-ACK cohorts passed before it. The B=289 `compound-extended` cohort never
+ran for that source on either OS. `7d716a5f` is therefore **not qualified**;
+[run 40762379333](https://github.com/techrote/cybersand/actions/runs/40762379333)
+qualifies only `6927ace3`.
+
+### Causes found by review
+
+An AI-generated [review of #283](https://github.com/techrote/cybersand/pull/283#pullrequestreview-5689919617),
+posted from the owner's account and **not** an independent human approval,
+reproduced the failure on Windows 11 with Godot 4.7-stable `5b4e0cb0f` and the
+CI-built `7d716a5f` DLL (SHA-256 `2068ee83bba326f7cb503eac1a3c5cfc68dedf722c9cd0d6c9666e03e83238dc`,
+equal to its manifest):
+
+1. **Racy gate.** With CPU ACK, the stream usually leaves the retained-full
+   state once the first full frame is acknowledged. Whether a *sampled*
+   snapshot is coalesced therefore depends on timing; 1 of 3 local runs failed.
+   The counter was a per-snapshot bool read through latest-only
+   `take_latest_snapshot()` in a 360-sample window, so it sampled rather than
+   counted.
+2. **Unbounded overlay work.** Preflight bounded each rectangle by the input
+   size but not their sum. 64 aliased rectangles over one 65,536-byte input
+   were admitted: 4,194,304 per-byte writes, about 106 ms median for one
+   publication.
+3. **Vacuous refusal tests.** The legacy fallback appends in place to the
+   retained array, which aliased the test's shared full frame. After the first
+   refusal, every later case was refused for the wrong reason (baseline size).
+   With the x-bound and World-generation guards deleted, the 32-check test
+   still passed 32/32.
+
+Mechanism evidence (local, headless, three processes per arm): never-ACKed +
+coalescing coalesced every sampled refresh with zero forced-full retries.
+Render-refresh p95 was 0.46–0.51 ms, against 17.9–18.9 ms for the never-ACKed
+control.
+
+### Correction source 819c6677
+
+Executable source [`819c6677e26fcdabe961097f855bd06fd5609917`](https://github.com/techrote/cybersand/commit/819c6677e26fcdabe961097f855bd06fd5609917)
+(tree `276726e015f801886622ec68386f9a83e929c41a`) changes only GDScript diagnostics, tests and the scoped
+workflow:
+
+- `CyberSimulationWorker` publishes monotonic worker-lifetime totals on every
+  snapshot: `snapshot_render_refresh_total`,
+  `snapshot_render_dirty_onto_full_total`, `snapshot_render_coalesced_total`,
+  `snapshot_render_forced_full_retry_total` and
+  `snapshot_render_ack_clear_total`. ACK clears count only clears that
+  released retained bytes.
+- `_try_coalesce_native_render_dirty` refuses when the summed rectangle
+  overlay exceeds 65,536 bytes.
+- `test_solid_detachment_coupling.gd` (still 68 checks per arm) asserts counts,
+  not samples:
+  - opt-out never coalesces;
+  - every unacknowledged, uncoalesced dirty packet onto a retained full frame
+    forces exactly one retry;
+  - the **unacknowledged opt-in arm (`0 0 1`) must coalesce every such packet
+    with zero retries**.
+  The CPU-ACK arm (`0 1 1`) is observational.
+- `test_solid_detachment_render_ack.gd` grows from 32 to 39 checks:
+  - each refusal gets a fresh retained frame and asserts the exact legacy
+    post-state;
+  - an aggregate-cap refusal;
+  - exact 64-rectangle, 65,536-byte and overlay-cap admission;
+  - a copy-not-in-place check;
+  - a three-packet differential oracle against the legacy full+append image.
+  Mutation checks: deleting the aggregate cap, the x bound, the generation
+  guard or the copy each fails at least one check.
+- New `test_solid_detachment_render_coalescing_owner.gd` (17 checks) runs a
+  real native RG8 worker on a paused World with workers 1 and 4:
+  - a stale ACK cannot clear a coalesced frame;
+  - an exact ACK restores dirty-only publication;
+  - a reset never coalesces onto the old generation.
+- The workflow gates five fresh `0 0 1` processes per OS, plus census
+  assertions for every cohort.
+
+Coalescing remains disabled by default. There is no change to native C++,
+material or liquid law, ejection policy, coupling geometry, body ABI, cell
+ownership or main-thread Rapier ownership.
+
+Local pre-push evidence, 2026-10-28 (Windows 11, Godot 4.7-stable `5b4e0cb0f`,
+headless). Evidence type: native runtime. The CI-built `7d716a5f` DLL (SHA-256
+above) is valid for this source because `native/` and
+`godot/native_extension/` are unchanged. Commands used 120 s (unit/owner) and
+240 s (cohort) timeouts. Results:
+
+- `test_solid_detachment_render_ack.gd`: 39/39.
+- `test_solid_detachment_render_coalescing_owner.gd`: 17/17. Each worker count
+  (1 and 4) reported 3 coalesced = 3 dirty-onto-full, 0 retries and 1
+  byte-releasing ACK clear.
+- `test_solid_detachment_coupling.gd`, policy A=81 unless noted, 68/68 for
+  every cohort. Census counts are worker totals:
+
+| cohort (args) | refreshes | dirty onto full | coalesced | forced-full retries | render-refresh p95 ms |
+|---|---|---|---|---|---|
+| default `0 0 0` | 226 | 224 | 0 | 224 | 22.1 |
+| CPU-ACK `0 1 0` | 196 | 118 | 0 | 118 | 19.6 |
+| gate `0 0 1` ×5 | 166–193 | = coalesced | 164, 172, 183, 190, 191 | 0 | 0.51–0.67 |
+| observed `0 1 1` | 188 | 68 | 68 | 0 | 0.047 |
+| B=289 `1` | 274 | 272 | 0 | 272 | 20.5 |
+
+  In the observed `0 1 1` cohort, the old sampled counter reported 0 coalesced
+  snapshots while the worker coalesced 68 packets.
+- `test_render_world_generation.gd` 23/23; `test_render_patch_handoff_regression.gd` passed.
+
+There is no Linux local run.
+
+### Source-matched scoped result for 819c6677
+
+[Run 40776168081](https://github.com/techrote/cybersand/actions/runs/40776168081)
+on exactly `819c6677` (tree `276726e0`) **passed all four jobs**: `source`,
+`windows-build`, `linux-rapier` and `windows-rapier`. Evidence type: native
+and actual Godot 4.7/Rapier headless runtime.
+
+Identities:
+- Source archive SHA-256 `4895bb21…0aa6` (recomputed locally).
+- Windows DLL SHA-256 `bc8d51f5…02fc`; all 552 manifest inputs re-hashed after
+  EOL-only restoration.
+- Linux runtime SHA-256 `244b0270…85bb`.
+- All four artifact ZIP digests are recorded in the
+  [successor receipt](sol281-2026-10-28/render-coalescing-gate-correction-receipt.json).
+
+Results, the same on both OSes:
+- Linux focused native: 13,074 checks.
+- Unit 39/39 and owner 17/17. Each worker count (1 and 4) reported
+  3 coalesced = 3 dirty-onto-full and 0 retries.
+- Motion 21, failure paths 20, lifecycle 296, unresolved 43.
+- Every compound cohort 68/68 with 520 members and 6 proxies.
+
+Worker census totals:
+
+| cohort | Linux dirty-onto-full / coalesced / retries | Windows dirty-onto-full / coalesced / retries |
+|---|---|---|
+| default `0 0 0` | 216 / 0 / 216 | 225 / 0 / 225 |
+| CPU-ACK `0 1 0` | 228 / 0 / 228 (1 ACK clear) | 213 / 0 / 213 (27 ACK clears) |
+| **gate `0 0 1` ×5** | **200, 174, 204, 199, 167 — all coalesced, 0 retries** | **182, 153, 181, 170, 178 — all coalesced, 0 retries** |
+| observed `0 1 1` | 75 / 75 / 0 (102 ACK clears) | 70 / 70 / 0 (125 ACK clears) |
+| B=289 `1` | 227 / 0 / 227 | 243 / 0 / 243 |
+
+Render-refresh p95 by cohort:
+
+| cohort | Linux | Windows |
+|---|---|---|
+| default `0 0 0` | 40.1 ms | 23.1 ms |
+| gate `0 0 1` | 0.15–0.16 ms | 0.36–0.39 ms |
+| observed `0 1 1` | 0.037 ms | 0.028 ms |
+
+What the counts newly establish:
+- Without coalescing, the CPU-ACK stream stays locked in the forced-full
+  retry state on Linux.
+- With coalescing, the same stream recovers to ACK-cleared dirty publication.
+  The sampled counter of `7d716a5f` could not show this.
+
+**Qualification scope:** this qualifies `819c6677` for the scoped SOL281
+Linux + actual-Windows headless matrix only.
+
+Explicit gaps:
+- The Windows build is not byte-reproducible. Unchanged native inputs produced
+  DLL `bc8d51f5…` here and `2068ee83…` for `7d716a5f`.
+- Main-thread upload cost and interactive GPU pacing are unmeasured.
+- Root-cause alternatives (run-based `copy_render_cells`, partial ACK of the
+  full baseline) have not been compared.
+
+There is no ready-PR matrix, independent human review or default change.
+B=289 remains NO-GO, and every physical gate remains open.
+
+## Root-cause comparison: R, P and C (28 October 2026)
+
+[Preregistered on #283](https://github.com/techrote/cybersand/pull/283#issuecomment-6482124010)
+before any edit. Source [`85c45720`](https://github.com/techrote/cybersand/commit/85c4572061938cce7f16ccd09703991ed0b23f05)
+(tree `47b626fc`).
+[Scoped run 40780899379](https://github.com/techrote/cybersand/actions/runs/40780899379)
+passed all four jobs on exactly that source. Identities, artifact digests and
+all medians are in the
+[comparison receipt](sol281-2026-10-28/render-root-cause-comparison-receipt.json).
+Evidence type: native and actual Godot 4.7/Rapier headless runtime, Linux and
+Windows, workers 4, policy A=81.
+
+### Candidates
+
+All three are opt-in and disabled by default:
+
+- **R:** `World::copy_render_cells_by_run`, selected through
+  `take_render_snapshot(force_full, copy_by_run)`. It is byte-identical to the
+  per-cell copy over:
+  - signed seams;
+  - non-resident chunks;
+  - a padded stride;
+  - a 1024² frame.
+- **P:** `_experimental_render_partial_ack`. It exempts a retained full
+  baseline from the overflow guard. An ACK at or above the baseline serial
+  drops the baseline and rebases the appended patches.
+- **C:** coalescing (`819c6677`), unchanged.
+
+### Hard gates passed
+
+- Every one of the 18 comparison processes and every existing cohort per OS:
+  68/68, 520 members, 6 proxies, 0 stale results, 0 consumer refusals.
+- Unit 39/39.
+- Real-owner 31/31. This includes P's oracle (patched CPU image = fresh
+  native full frame, byte for byte) with and without R.
+- Linux native 13,081 checks.
+
+### Medians of 3 processes
+
+CPU-ACK arm ("1") and never-ACK arm ("0"); "window" is coupling-window only:
+
+| arm | Linux retry/refresh (window) | Linux render p95 ms | Windows retry/refresh (window) | Windows render p95 ms |
+|---|---|---|---|---|
+| L0 original | 0.99 (1.00) | 30.4 | 0.99 (1.00) | 22.4 |
+| R0 | 0.99 (1.00) | 1.65 | 0.99 (1.00) | 2.28 |
+| P0 | 0.00 (0.00) | 0.18 | 0.00 (0.00) | 0.37 |
+| C0 | 0.00 (0.00) | 0.16 | 0.00 (0.00) | 0.40 |
+| L1 original | 0.93 (0.88) | 30.7 | 0.86 (0.76) | 23.2 |
+| R1 | 0.40 (**0.00**) | 0.045 | 0.40 (**0.00**) | 0.027 |
+| P1 | 0.00 (0.00) | 0.032 | 0.00 (0.00) | 0.027 |
+| C1 | 0.00 (0.00) | 0.056 | 0.00 (0.00) | 0.028 |
+
+R's raw effect on forced-full exchange p95 is 30.2 → 1.5 ms on Linux (20×)
+and 22.0 → 1.9 ms on Windows (11.5×). The native microbenchmark of one 1024²
+copy measured 297 → 10.3 ms on Linux at `-O0` and 19.8 → 0.98 ms locally at
+`-O2`.
+
+In the CPU-ACK arm, the full-frame publication fraction was:
+- Linux: R1 0.41, P1 0.41, C1 0.42.
+- Windows: R1 0.41, P1 0.40, C1 0.37.
+
+In the coupling window it was 0 for all three on both OSes.
+
+### Registered outcome
+
+**P is the simplest qualifying candidate on both OSes; C also qualifies; R
+fails criterion (i) only** (retry/refresh 0.40 > 0.10).
+
+### Validity notes, which do not change the registered outcome
+
+1. Whole-run counts include the setup phase before the first coupled snapshot,
+   when no consumer ACKs. R makes those retries about 11–20× cheaper but does
+   not remove them. Criterion (i) therefore penalises R for a phase with no
+   consumer. In the coupling window (post hoc), R1, P1 and C1 all have
+   **0 retries and 0 full publications**, while L1 stays locked.
+2. **P never dropped a baseline in any live process (0 of 12).** Its live
+   benefit is entirely the overflow-guard exemption: dirty patches append
+   behind the retained frame until an exact ACK clears it. The drop/rebase
+   path is exercised only by the real-owner oracle.
+3. Timings are latest-only samples within the 360-sample window; counts are
+   worker totals.
+4. Headless only. There is no main-thread upload, GPU pacing or desktop
+   measurement.
+
+### Recommendation
+
+Not an admission. There is no default change, and B=289 remains NO-GO.
+
+- R removes the root cost on the default path with no new state and
+  byte-identical output. It is the strongest candidate for a separate
+  default-on proposal; the evidence above, not this rule, supports that.
+- Among the stateful options, P is the registered pick. An exemption-only
+  variant without the drop path, and R combined with P, were not tested.
+
+Local Windows preflight (locally built DLL with the pinned godot-cpp
+`101ae380` / llvm-mingw `20260826`): all 27 processes passed and gave the
+same registered verdict.
+
+## Follow-up comparison: E and RP (28 October 2026)
+
+[Preregistered on #283](https://github.com/techrote/cybersand/pull/283#issuecomment-6482976862)
+before any edit. Source [`b924fbd2`](https://github.com/techrote/cybersand/commit/b924fbd2c05605aead21f0ddf72e95ed93cd364f)
+(tree `05271619`).
+[Scoped run 40785112538](https://github.com/techrote/cybersand/actions/runs/40785112538)
+passed all four jobs on exactly that source.
+
+Identities are in the
+[follow-up receipt](sol281-2026-10-28/render-followup-comparison-receipt.json):
+- source archive, recomputed and equal to `archive.sha256`;
+- Windows DLL `92b9f17f…`, equal to its manifest, with 552 inputs verified;
+- Linux runtime `6be68608…`;
+- all four artifact digests.
+
+Evidence type: native and actual Godot 4.7/Rapier headless runtime, Linux and
+Windows, workers 4, policy A=81. The fresh L/R/P/C arms ran in the same
+workflow run.
+
+### Arms
+
+Both are opt-in and disabled by default:
+
+- **E** (render mode 3, `_experimental_render_baseline_drop = false`): P's
+  overflow-guard exemption without the baseline drop. Only an exact ACK
+  clears the retained frame.
+- **RP**: P (mode 2) plus the per-run copy R.
+
+### Hard gates passed on both OSes
+
+- Every comparison process and cohort: 68/68, 520 members, 6 proxies,
+  0 stale results, 0 consumer refusals.
+- E reported 0 baseline drops in all 6 live processes.
+- Unit 39/39.
+- Real-owner 41/41. This includes E's oracle, with workers 1 and 4: a full
+  frame plus appended patches publishes without a retry, a baseline-only ACK
+  drops nothing, and the CPU image equals a fresh native full frame byte for
+  byte.
+- Linux native 13,081 checks.
+
+### Medians of 3, CPU-ACK arm
+
+Each cell: retry/refresh · render-refresh p95 / p99 ms · full publications per refresh.
+
+| arm | Linux | Windows |
+|---|---|---|
+| L1 original | 0.99 · 47.8 / 49.1 · 1.00 | 0.87 · 24.6 / 25.3 · 0.88 |
+| R1 | 0.40 · 0.045 / 1.79 · 0.41 | 0.41 · 0.049 / 2.53 · 0.42 |
+| P1 | 0.00 · 0.052 / 0.061 · 0.40 | 0.00 · 0.071 / 0.812 · 0.41 |
+| **E1** | 0.00 · 0.037 / 0.051 · 0.40 | 0.00 · 0.048 / 0.055 · 0.39 |
+| RP1 | 0.00 · 0.049 / 0.056 · 0.40 | 0.00 · 0.044 / 0.049 · 0.42 |
+| C1 | 0.00 · 0.051 / 0.076 · 0.40 | 0.00 · 0.048 / 0.067 · 0.41 |
+
+Never-ACK arms: E0, P0, RP0 and C0 all ran 0 retries. Render p95 was
+0.31–0.34 ms on Linux and 0.80–0.96 ms on Windows. The full-copy raw effect
+reproduced: forced-full exchange p95 L0 → R0 was 46.7 → 1.9 ms on Linux and
+23.1 → 2.0 ms on Windows.
+
+### Registered outcome
+
+- **E qualifies on both OSes, so E is preferred over P.**
+- **RP is not preferred over P.** It qualifies, and on Windows it beats P1's
+  p99 (0.049 against 0.812 ms). On Linux its p99 ratio is only 0.92, with no
+  retry or full-publication gain. The rule requires the improvement on both
+  OSes.
+
+### Validity notes
+
+1. RP's Windows advantage comes from a single P1 tail sample. P1's Windows
+   p99 is 0.812 ms while its p95 is 0.071 ms. This is consistent with noise,
+   not with a mechanism R adds on top of P.
+2. In the coupling window (post hoc), every candidate except L had 0 retries
+   and 0 full publications on both OSes.
+3. Whole-run counts include the unacknowledged setup phase. Timings are
+   latest-only samples.
+4. Headless only. There is no main-thread upload or GPU pacing measurement.
+
+### Recommendation
+
+Not an admission. There is no default change, and B=289 remains NO-GO.
+
+- Among the stateful candidates, E, the overflow exemption alone, is now the
+  registered pick. It is simpler than P because it has no drop/rebase path.
+- The default-on per-run copy R is a separate stateless proposal on `main`.

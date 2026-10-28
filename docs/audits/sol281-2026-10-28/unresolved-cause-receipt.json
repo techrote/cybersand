@@ -1,0 +1,106 @@
+{
+  "schema": "cybersand.sol281.unresolved-cause-receipt.v1",
+  "date": "2026-10-28",
+  "source": "756ae4882d346a1439244189c76eda8496070229",
+  "tree": "cf50b83207d28d63fef7b4a6562c87af99b6bb41",
+  "run": {
+    "id": 40611249935,
+    "url": "https://github.com/techrote/cybersand/actions/runs/40611249935",
+    "conclusion": "success"
+  },
+  "result_protocol": {
+    "stable_prefix_fields": 9,
+    "result_stride": 12,
+    "appended_fields": [
+      "unresolved_immovable",
+      "unresolved_no_target",
+      "unresolved_relocation_refused"
+    ],
+    "movement_semantics_changed": false
+  },
+  "controlled_characterisation": {
+    "linux_checks": 43,
+    "windows_checks": 43,
+    "failures": 0,
+    "cases": [
+      "displaced",
+      "immovable",
+      "no_target"
+    ],
+    "native_and_fallback": true,
+    "partition_exact": true
+  },
+  "linux": {
+    "compound_checks": 36,
+    "contacts": 8787,
+    "displaced": 35,
+    "unresolved": 1557,
+    "unresolved_immovable": 0,
+    "unresolved_no_target": 1557,
+    "unresolved_relocation_refused": 0,
+    "unresolved_unclassified": 0,
+    "displacement_attempts": 1592,
+    "unresolved_rate": 0.978015075376884,
+    "state_publications": 361,
+    "result_snapshots": 211,
+    "result_records": 1260,
+    "impulse_applications": 519,
+    "correction_applications": 0,
+    "stale_results": 0,
+    "max_rotation": 1.11629104614258,
+    "max_translation": 32.7574691772461,
+    "runtime_sha256": "626ca18ee6e5498692e856195d964faec43968987a6c5adf48af181ae364c236",
+    "artifact_id": 12782857748,
+    "artifact_zip_sha256": "40cd07bc1ad2d9d148b5a93855a4a5a311aa58f69e22a383272fb9abf5a4273e"
+  },
+  "windows": {
+    "compound_checks": 36,
+    "contacts": 6977,
+    "displaced": 40,
+    "unresolved": 1501,
+    "unresolved_immovable": 0,
+    "unresolved_no_target": 1501,
+    "unresolved_relocation_refused": 0,
+    "unresolved_unclassified": 0,
+    "displacement_attempts": 1541,
+    "unresolved_rate": 0.974042829331603,
+    "state_publications": 361,
+    "result_snapshots": 254,
+    "result_records": 1440,
+    "impulse_applications": 490,
+    "correction_applications": 29,
+    "stale_results": 0,
+    "max_rotation": 1.12680339813232,
+    "max_translation": 32.6759948730469,
+    "runtime_sha256": "3a1bb93cca3166ba611db2b1ad867560d7b150e90c2fe6113108e527b627bada",
+    "manifest_inputs": 548,
+    "restored_line_ending_inputs": 92,
+    "build_artifact_id": 12783142627,
+    "build_zip_sha256": "27736a44af94144665563c240f77ff23ec1c9fd6238aae05019e89858a7e0573",
+    "execution_artifact_id": 12783387800,
+    "execution_zip_sha256": "e51222022a72285758390ae78e43234069b1aeb25983ed27b890ff27833017eb"
+  },
+  "source_artifact": {
+    "id": 12783461612,
+    "zip_sha256": "6329b202eae195ff5ff7219a83c4f4ae2b2bf4ef9ef355d2a37cce7bb6e23e97",
+    "archive_sha256": "09cc0259dfa3e1578513377da969d2c5a81223ad48e942e3907621bb92800473"
+  },
+  "interpretation": {
+    "live_dominant_cause": "unresolved_no_target",
+    "all_live_unresolved_classified": true,
+    "raw_counts_cross_run_deterministic": false,
+    "counts_are_unique_cells": false
+  },
+  "preserved_failures": [
+    "run 40610603466 stopped on staged-patch checksum mismatch before source application",
+    "runs 40611067788 and 40611163555 could not push workflow changes with the Actions token"
+  ],
+  "limits": [
+    "draft branch only",
+    "diagnostic classification does not reduce unresolved attempts",
+    "one dry homogeneous aggregate",
+    "no reactive Wood or mixed-material cohesion",
+    "no dynamic desoliding/fracture/persistence",
+    "no production runtime publication or independent review"
+  ]
+}

@@ -6,6 +6,7 @@
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/classes/project_settings.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
+#include <godot_cpp/variant/rect2i.hpp>
 
 #include <algorithm>
 #include <array>
@@ -41,6 +42,8 @@ constexpr double kMaximumBodySweepDistance = 32.0;
 constexpr double kBodySweepSampleSpacing = 1.0;
 constexpr std::int32_t kMaximumBodySweepSteps = 24;
 constexpr std::int32_t kMaximumEjectionDistance = 8;
+constexpr std::int32_t kEjectionCensusRadius = 8;
+constexpr std::uint32_t kEjectionCensusPerSampleLimit = 16;
 constexpr double kBodyDisplacementReactionImpulse = 0.18;
 constexpr double kBodyBoundaryPressureImpulse = 0.19;
 constexpr double kBodyPixelContactImpulse = 0.025;
@@ -68,12 +71,17 @@ CyberNativeCellWorld::CyberNativeCellWorld() {
 CyberNativeCellWorld::~CyberNativeCellWorld() = default;
 
 void CyberNativeCellWorld::_bind_methods() {
+    ClassDB::bind_method(D_METHOD("solid_detachment_fenced"), &CyberNativeCellWorld::solid_detachment_fenced);
+    ClassDB::bind_method(D_METHOD("solid_detachment_command", "command"), &CyberNativeCellWorld::solid_detachment_command);
     ClassDB::bind_method(D_METHOD("diagnostic_reset", "options"), &CyberNativeCellWorld::diagnostic_reset);
     ClassDB::bind_method(D_METHOD("diagnostic_fill_rect", "origin", "size", "material", "state_b"), &CyberNativeCellWorld::diagnostic_fill_rect, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("diagnostic_relocate_cell", "from", "to"),
                          &CyberNativeCellWorld::diagnostic_relocate_cell);
     ClassDB::bind_method(D_METHOD("diagnostic_snapshot", "origin", "size", "include_histogram"), &CyberNativeCellWorld::diagnostic_snapshot, DEFVAL(false));
     ClassDB::bind_method(D_METHOD("diagnostic_body_metrics"), &CyberNativeCellWorld::diagnostic_body_metrics);
+    ClassDB::bind_method(D_METHOD("get_ejection_policy"), &CyberNativeCellWorld::get_ejection_policy);
+    ClassDB::bind_method(D_METHOD("diagnostic_ejection_topology"),
+                         &CyberNativeCellWorld::diagnostic_ejection_topology);
     ClassDB::bind_method(D_METHOD("get_water_experiment_policy"),
                          &CyberNativeCellWorld::get_water_experiment_policy);
     ClassDB::bind_method(D_METHOD("get_liquid_solver_policy"),
@@ -139,9 +147,9 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("character_disturb_granular", "origin", "size", "impact_speed"),
                          &CyberNativeCellWorld::character_disturb_granular);
     ClassDB::bind_method(D_METHOD("get_cells"), &CyberNativeCellWorld::get_cells);
-    ClassDB::bind_method(D_METHOD("take_render_snapshot", "force_full"),
+    ClassDB::bind_method(D_METHOD("take_render_snapshot", "force_full", "copy_by_run"),
                          &CyberNativeCellWorld::take_render_snapshot,
-                         DEFVAL(false));
+                         DEFVAL(false), DEFVAL(false));
     ClassDB::bind_method(D_METHOD("get_hard_surface_rectangles"),
                          &CyberNativeCellWorld::get_hard_surface_rectangles);
     ClassDB::bind_method(D_METHOD("get_hard_surface_chunk_rectangles"),
@@ -335,6 +343,10 @@ Dictionary CyberNativeCellWorld::get_default_demo_identity() const {
 
 void CyberNativeCellWorld::reset_demo_coupling_parameters() noexcept {
     diagnostic_fixture_ = false;
+    ejection_policy_ = 0;
+    ejection_topology_enabled_ = false;
+    ejection_topology_classified_this_sample_ = 0;
+    ejection_topology_ = {};
     body_diagnostics_.reset();
     displacement_gain_ = kBodyDisplacementReactionImpulse;
     boundary_gain_ = kBodyBoundaryPressureImpulse;
@@ -440,6 +452,7 @@ void CyberNativeCellWorld::prepare_rigid_body_coupling(
 }
 
 void CyberNativeCellWorld::clear_observations() {
+    ejection_topology_classified_this_sample_ = 0;
     observations_ = {};
     if (body_diagnostics_) *body_diagnostics_ = {};
 }
@@ -611,12 +624,23 @@ void CyberNativeCellWorld::reconcile_overlap(std::int32_t cell_index,
     }
     if (!cybersand::MaterialRules::descriptor(material).movable) {
         ++observation.unresolved;
+        ++observation.unresolved_immovable;
         return;
     }
 
     const auto target = find_ejection_target(x, y, body_id, outward, penetration);
-    if (target.x < 0 || !world_->relocate_stored_cell(x, y, target.x, target.y)) {
+    if (target.x < 0) {
         ++observation.unresolved;
+        ++observation.unresolved_no_target;
+        if (ejection_topology_enabled_) classify_ejection_failure(x, y, body_id, outward);
+        const auto impulse = -outward * displacement_gain_;
+        if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
+        record_impulse(body_id, impulse);
+        return;
+    }
+    if (!world_->relocate_stored_cell(x, y, target.x, target.y)) {
+        ++observation.unresolved;
+        ++observation.unresolved_relocation_refused;
         const auto impulse = -outward * displacement_gain_;
         if (body_diagnostics_) (*body_diagnostics_)[body_id].displacement += impulse;
         record_impulse(body_id, impulse);
@@ -690,7 +714,130 @@ Vector2i CyberNativeCellWorld::find_ejection_target(std::int32_t source_x,
             return {x, y};
         }
     }
+    // Optional SOL281 diagnostic continuation. The unchanged 81 baseline
+    // candidates above always win, preserving exact baseline destinations.
+    // Search near lateral slots first, then a farther forward band. Both
+    // passes retain the same hard-surface/other-owner path refusal.
+    if (diagnostic_fixture_ && ejection_policy_ == 1U) {
+        const auto extended = [&](std::int32_t from_distance,
+                                  std::int32_t to_distance,
+                                  std::int32_t first_probe) -> Vector2i {
+            for (auto distance = from_distance; distance <= to_distance; ++distance) {
+                for (std::int32_t probe = first_probe; probe < 17; ++probe) {
+                    const auto tangent_offset = symmetric_probe_offset(probe);
+                    const auto candidate = source_center + outward_normal * distance +
+                                           tangent * tangent_offset;
+                    const auto x = static_cast<std::int32_t>(std::floor(candidate.x));
+                    const auto y = static_cast<std::int32_t>(std::floor(candidate.y));
+                    if (!in_bounds(x, y) || world_->transient_obstacle_at(x, y) != 0U ||
+                        world_->stored_material(x, y) != cybersand::Material::Empty) {
+                        continue;
+                    }
+                    if (!ejection_path_reachable(source_x, source_y, x, y,
+                                                 source_body_id)) continue;
+                    return {x, y};
+                }
+            }
+            return {-1, -1};
+        };
+        const auto lateral = extended(first_distance,
+                                      first_distance + kMaximumEjectionDistance, 9);
+        if (lateral.x >= 0) return lateral;
+        return extended(first_distance + kMaximumEjectionDistance + 1,
+                        first_distance + 16, 0);
+    }
     return {-1, -1};
+}
+
+// Observational only: up to 16 no-target contacts per preparation, each
+// inspecting at most 17x17 cells. Empty slots with a direct clear path are
+// *not* automatically physically admissible ejection targets.
+void CyberNativeCellWorld::classify_ejection_failure(std::int32_t source_x,
+                                                     std::int32_t source_y,
+                                                     std::uint16_t source_body_id,
+                                                     Vector2 outward_normal) {
+    ++ejection_topology_.no_target_events;
+    if (ejection_topology_classified_this_sample_ >= kEjectionCensusPerSampleLimit) {
+        ++ejection_topology_.skipped_capacity;
+        return;
+    }
+    ++ejection_topology_classified_this_sample_;
+    ++ejection_topology_.classified;
+    bool found_void = false;
+    bool direct_path = false;
+    for (std::int32_t dy = -kEjectionCensusRadius;
+         dy <= kEjectionCensusRadius && !direct_path; ++dy) {
+        for (std::int32_t dx = -kEjectionCensusRadius;
+             dx <= kEjectionCensusRadius; ++dx) {
+            if (dx == 0 && dy == 0) continue;
+            const auto x = source_x + dx;
+            const auto y = source_y + dy;
+            if (!in_bounds(x, y) || world_->transient_obstacle_at(x, y) != 0U ||
+                world_->stored_material(x, y) != cybersand::Material::Empty) continue;
+            found_void = true;
+            if (ejection_path_reachable(source_x, source_y, x, y, source_body_id)) {
+                direct_path = true;
+                break;
+            }
+        }
+    }
+    if (direct_path) ++ejection_topology_.off_axis_direct_path;
+    else if (found_void) ++ejection_topology_.nearby_void_path_blocked;
+    else ++ejection_topology_.no_nearby_unmasked_void;
+
+    // Strict read-only topology: a source grain cannot pass through Sand,
+    // Water, hard terrain, or even its own body's transient mask on this
+    // four-connected Empty route. A route is only a *necessary* local
+    // condition, never a safe cell commit, collision trajectory or ejection.
+    constexpr std::int32_t side = 2 * kEjectionCensusRadius + 1;
+    constexpr std::size_t capacity = static_cast<std::size_t>(side * side);
+    std::array<std::uint8_t, capacity> visited{};
+    std::array<std::uint16_t, capacity> queue{};
+    std::size_t head = 0, tail = 0;
+    const auto admit = [&](std::int32_t dx, std::int32_t dy) {
+        if (std::abs(dx) > kEjectionCensusRadius ||
+            std::abs(dy) > kEjectionCensusRadius ||
+            (dx == 0 && dy == 0)) return;
+        const auto slot = static_cast<std::size_t>(
+            (dy + kEjectionCensusRadius) * side + dx + kEjectionCensusRadius);
+        if (visited[slot] != 0U) return;
+        visited[slot] = 1U;
+        const auto x = source_x + dx;
+        const auto y = source_y + dy;
+        if (!in_bounds(x, y) || world_->transient_obstacle_at(x, y) != 0U ||
+            world_->stored_material(x, y) != cybersand::Material::Empty) return;
+        // Every site is admitted at most once. No heap allocation or overflow.
+        queue[tail++] = static_cast<std::uint16_t>(slot);
+    };
+    admit(0, -1);
+    admit(1, 0);
+    admit(0, 1);
+    admit(-1, 0);
+    bool forward = false, lateral = false, rear = false;
+    const auto normal = normalized_or_zero(outward_normal);
+    while (head < tail) {
+        const auto slot = static_cast<std::int32_t>(queue[head++]);
+        const auto dx = slot % side - kEjectionCensusRadius;
+        const auto dy = slot / side - kEjectionCensusRadius;
+        const auto length = std::sqrt(static_cast<double>(dx * dx + dy * dy));
+        const auto projection = static_cast<double>(dx) * normal.x +
+                                static_cast<double>(dy) * normal.y;
+        if (projection >= 0.5 * length) forward = true;
+        else if (projection <= -0.5 * length) rear = true;
+        else lateral = true;
+        admit(dx, dy - 1);
+        admit(dx + 1, dy);
+        admit(dx, dy + 1);
+        admit(dx - 1, dy);
+    }
+    // Exclusive event classification: forward > lateral > rear > none.
+    if (forward) ++ejection_topology_.empty_connected_forward;
+    else if (lateral) ++ejection_topology_.empty_connected_lateral;
+    else if (rear) ++ejection_topology_.empty_connected_rear;
+    else {
+        ++ejection_topology_.empty_connected_none;
+        if (direct_path) ++ejection_topology_.weak_direct_without_empty_route;
+    }
 }
 
 bool CyberNativeCellWorld::ejection_path_reachable(std::int32_t source_x,
@@ -851,6 +998,9 @@ PackedFloat32Array CyberNativeCellWorld::rigid_body_results() const {
         results.append(static_cast<float>(observation.displaced));
         results.append(static_cast<float>(observation.unresolved));
         results.append(static_cast<float>(body.sample_serial));
+        results.append(static_cast<float>(observation.unresolved_immovable));
+        results.append(static_cast<float>(observation.unresolved_no_target));
+        results.append(static_cast<float>(observation.unresolved_relocation_refused));
     }
     return results;
 }
@@ -968,7 +1118,7 @@ PackedByteArray CyberNativeCellWorld::get_cells() const {
     return render_cells_;
 }
 
-Dictionary CyberNativeCellWorld::take_render_snapshot(bool force_full) {
+Dictionary CyberNativeCellWorld::take_render_snapshot(bool force_full, bool copy_by_run) {
     Dictionary packet;
     if (has_failed()) {
         packet["failed"] = true;
@@ -996,10 +1146,13 @@ Dictionary CyberNativeCellWorld::take_render_snapshot(bool force_full) {
             const auto width = static_cast<std::size_t>(kWorldWidth);
             const auto height = static_cast<std::size_t>(kWorldHeight);
             cells.resize(static_cast<std::int64_t>(width * height * 2U));
-            world_->copy_render_cells(
-                {0, 0, kWorldWidth, kWorldHeight},
-                std::span<std::uint8_t>{cells.ptrw(), static_cast<std::size_t>(cells.size())},
-                width * 2U);
+            // SOL281 candidate R (opt-in): byte-identical per-run copy.
+            const std::span<std::uint8_t> frame{cells.ptrw(), static_cast<std::size_t>(cells.size())};
+            if (copy_by_run) {
+                world_->copy_render_cells_by_run({0, 0, kWorldWidth, kWorldHeight}, frame, width * 2U);
+            } else {
+                world_->copy_render_cells({0, 0, kWorldWidth, kWorldHeight}, frame, width * 2U);
+            }
             rectangles.resize(6);
             auto* metadata = rectangles.ptrw();
             metadata[0] = 0;
@@ -1413,6 +1566,17 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         const auto cap = gain("cap", 3.0);
         const auto density = gain("density_limit", 1.6);
         if (density < 0.05 || cap <= 0) return false;
+        // Invalid or nonintegral experiment admission cannot replace the old
+        // authoritative World. No policy survives an ordinary demo reset.
+        if (options.has("ejection_policy") &&
+            options["ejection_policy"].get_type() != Variant::INT) return false;
+        const auto ejection_policy = static_cast<std::int64_t>(
+            options.get("ejection_policy", 0));
+        if (ejection_policy < 0 || ejection_policy > 1) return false;
+        if (options.has("ejection_topology") &&
+            options["ejection_topology"].get_type() != Variant::BOOL) return false;
+        const bool ejection_topology = static_cast<bool>(
+            options.get("ejection_topology", false));
         cybersand::WorldConfig config;
         config.worker_threads = static_cast<std::uint32_t>(workers);
         config.maximum_chunk_count = 128;
@@ -1447,6 +1611,10 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         ++liquid_policy_session_generation_;
         body_diagnostics_ = std::move(diagnostics);
         diagnostic_fixture_ = true;
+        ejection_policy_ = static_cast<std::uint8_t>(ejection_policy);
+        ejection_topology_enabled_ = ejection_topology;
+        ejection_topology_ = {};
+        ejection_topology_classified_this_sample_ = 0;
         worker_threads_ = config.worker_threads;
         displacement_gain_ = displacement; boundary_gain_ = boundary;
         contact_gain_ = contact; impulse_cap_ = cap; density_limit_ = density;
@@ -2051,6 +2219,29 @@ Dictionary CyberNativeCellWorld::diagnostic_snapshot(Vector2i origin, Vector2i s
     return result;
 }
 
+Dictionary CyberNativeCellWorld::diagnostic_ejection_topology() const {
+    Dictionary result;
+    result["enabled"] = diagnostic_fixture_ && ejection_topology_enabled_;
+    result["radius"] = kEjectionCensusRadius;
+    result["per_sample_capacity"] = static_cast<std::int64_t>(kEjectionCensusPerSampleLimit);
+    result["no_target_events"] = static_cast<std::int64_t>(ejection_topology_.no_target_events);
+    result["classified"] = static_cast<std::int64_t>(ejection_topology_.classified);
+    result["skipped_capacity"] = static_cast<std::int64_t>(ejection_topology_.skipped_capacity);
+    result["off_axis_direct_path"] = static_cast<std::int64_t>(ejection_topology_.off_axis_direct_path);
+    result["nearby_void_path_blocked"] = static_cast<std::int64_t>(ejection_topology_.nearby_void_path_blocked);
+    result["no_nearby_unmasked_void"] = static_cast<std::int64_t>(ejection_topology_.no_nearby_unmasked_void);
+    result["empty_connected_forward"] = static_cast<std::int64_t>(ejection_topology_.empty_connected_forward);
+    result["empty_connected_lateral"] = static_cast<std::int64_t>(ejection_topology_.empty_connected_lateral);
+    result["empty_connected_rear"] = static_cast<std::int64_t>(ejection_topology_.empty_connected_rear);
+    result["empty_connected_none"] = static_cast<std::int64_t>(ejection_topology_.empty_connected_none);
+    result["weak_direct_without_empty_route"] = static_cast<std::int64_t>(ejection_topology_.weak_direct_without_empty_route);
+    return result;
+}
+
+std::int64_t CyberNativeCellWorld::get_ejection_policy() const {
+    return diagnostic_fixture_ ? static_cast<std::int64_t>(ejection_policy_) : 0;
+}
+
 Array CyberNativeCellWorld::diagnostic_body_metrics() const {
     Array result;
     if (!body_diagnostics_ || has_failed()) return result;
@@ -2081,6 +2272,9 @@ Array CyberNativeCellWorld::diagnostic_body_metrics() const {
         row.append(faces);
         row.append(d.bearing.x); row.append(d.bearing.y);
         row.append(static_cast<std::int64_t>(d.support_samples));
+        row.append(static_cast<std::int64_t>(o.unresolved_immovable));
+        row.append(static_cast<std::int64_t>(o.unresolved_no_target));
+        row.append(static_cast<std::int64_t>(o.unresolved_relocation_refused));
         result.append(row);
     }
     return result;
@@ -2095,5 +2289,6 @@ std::int64_t CyberNativeCellWorld::get_tick_failure_count() const {
 }
 
 #include "pressure_optimization_inspection.inc"
+#include "solid_detachment_adapter.inc"
 
 }  // namespace godot

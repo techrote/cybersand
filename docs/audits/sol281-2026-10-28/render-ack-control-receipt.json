@@ -1,0 +1,396 @@
+{
+  "schema": "cybersand.sol281.render-ack-control.v1",
+  "date": "2026-10-28",
+  "source_sha": "55aa72e5db6b23731a2ccdccbca91ccfd80bfe90",
+  "source_tree_sha": "165643fdd94a3e68aac28cf073745a37b127033b",
+  "previous_head": "1884eb1e38a32a29fd1a3f9e817a718999929411",
+  "preregistration": "https://github.com/techrote/cybersand/pull/283#issuecomment-6478381684",
+  "implementation_branch": "work/sol281-native-detachment-20261027",
+  "qualification": {
+    "status": "scoped_source_matched_linux_windows_pass",
+    "scoped_workflow": "https://github.com/techrote/cybersand/actions/runs/40754382057",
+    "expected_direct_cpu_checks": 17,
+    "expected_compound_checks_per_arm": 59,
+    "old_source_1414_assertions_per_os_not_transferable": true,
+    "artifact_hashes_verified": true,
+    "host_results": {
+      "linux": {
+        "direct_cpu_checks": 17,
+        "compound_checks_per_arm": 59,
+        "arms": 3,
+        "failures": 0,
+        "checked_assertions_total": 1498,
+        "native_focused_checks": 13074,
+        "actual_rapier": true
+      },
+      "windows": {
+        "direct_cpu_checks": 17,
+        "compound_checks_per_arm": 59,
+        "arms": 3,
+        "failures": 0,
+        "checked_assertions_total": 1498,
+        "manifest_git_inputs_verified": 551,
+        "execution_log_hashes_verified": 10,
+        "actual_rapier": true
+      }
+    },
+    "docs_predecessor_head": "255abcdc55bb275261bb7fac768f2a0c6f1553a4",
+    "docs_predecessor_conclusion": "success",
+    "workflow_id": 40754382057,
+    "all_four_jobs": "success",
+    "archive_sha256": {
+      "source": "8562087c4e2dfbf059c53b11eb1df6cfc07d642fd3d1517ea5e0ca89b64c7a5a",
+      "linux": "62ef39f9fa225292288df58c9ad7ad5e789a8c5f24135dd636ccd057a1db8299",
+      "windows_build": "2c13fb3d3fb9b1325769dceec013f6533155042df017ee9be13475fc0d0e5492",
+      "windows_execution": "e3f613e10bdde26d38ddd0338c824f0430b87530df90b7479fd33e4e8b7e9049"
+    },
+    "windows_dll_build_execution_sha256": "bea97f80f4f7c3f9aa2ff1f3b24b6f3489e8168a781244b1bb87c15393d64b3e",
+    "source_matched_docs_successor_sha": "a8fdb186d5dab3b7012857aa052990b1ff4a779e",
+    "source_matched_docs_run": 40755560034,
+    "qualification_scope": "scoped native and actual Godot/Rapier tests only; not production GPU/interactive FPS, physical search efficacy, ready-PR CI or independent review",
+    "cpu_ack_finding": "Correct CPU ACKs do not eliminate two native calls, do not improve measured active-refresh p95; Linux 87/99 consumed two-call and Windows 102/118. A/B trajectories asynchronous; B physical policy remains NO-GO."
+  },
+  "controls": {
+    "unacknowledged_A_candidates": 81,
+    "cpu_consumed_A_candidates": 81,
+    "unacknowledged_B_candidates": 289,
+    "B_physical_policy": "NO-GO"
+  },
+  "unchanged": [
+    "native authoritative-cell ownership",
+    "520 exact aggregate members",
+    "six hole-preserving Rapier and native coupling proxies",
+    "Sand 104 and Water mass 1020 conservation",
+    "12-field result ABI",
+    "main-thread Rapier and native worker separation",
+    "liquid/material construction policy"
+  ],
+  "open_gates": [
+    "preregistered separate capacity-safe render-only coalescing/budget candidate with original full-frame/dirty correctness and ACK fences",
+    "production GPU/render pacing",
+    "bounded conservative physically admissible material relocation",
+    "reactive Wood/fracture/desoliding and persistence",
+    "independent review and ready-PR CI",
+    "explain native two-call cause before any performance optimization"
+  ],
+  "preliminary_source_linux": {
+    "source_sha": "80c775056cbe4e0b0e65ad901843cb7fe4ce3de7",
+    "workflow_id": 40754078838,
+    "job": "linux-rapier",
+    "conclusion": "success",
+    "artifact_id": 12844978110,
+    "artifact_sha256": "07d21882f6cedd7c2dbb880f30766fc3dc7a8f656fac2199696eeb0ef867280d",
+    "archive_crc_ok": true,
+    "source_txt_matches_report": true,
+    "direct_cpu_checks": 15,
+    "compound_checks_per_arm": 59,
+    "native_precursor_checks": 13074,
+    "control_A": {
+      "samples": 143,
+      "refreshes": 96,
+      "double_calls": 96,
+      "exchange_p95_ms": 52.499,
+      "render_p95_ms": 52.64,
+      "overruns": 103,
+      "acks": 0
+    },
+    "consumed_A": {
+      "samples": 128,
+      "refreshes": 108,
+      "double_calls": 108,
+      "exchange_p95_ms": 51.4,
+      "render_p95_ms": 51.559,
+      "overruns": 109,
+      "acks": 109,
+      "consumed": 109,
+      "refused": 0,
+      "bytes": 228589568
+    },
+    "control_B": {
+      "samples": 127,
+      "refreshes": 108,
+      "double_calls": 108,
+      "exchange_p95_ms": 51.485,
+      "render_p95_ms": 51.622,
+      "overruns": 109,
+      "acks": 0
+    },
+    "status": "predecessor_linux_only_not_final_source",
+    "finding": "CPU image consumption and 109 correct ACKs did not prevent any of 108 sampled double-call render refreshes; do not attribute double native calls solely to missing ACK, infer 60 FPS or promote B."
+  },
+  "preliminary_source_windows": {
+    "source_sha": "80c775056cbe4e0b0e65ad901843cb7fe4ce3de7",
+    "workflow_id": 40754078838,
+    "job": "windows-rapier",
+    "conclusion": "success",
+    "execution_artifact_id": 12846040819,
+    "execution_artifact_sha256": "dd7e2c1c94e43fbd06e0c6ffad46030c8fa609425cf3d32c74eab5bd6ee9bcff",
+    "build_artifact_id": 12843824807,
+    "build_artifact_sha256": "f6f137f5d3b730460573b5d6b1804bd709129cabf87a04288a7e88c634d31f97",
+    "archive_crc_ok": true,
+    "manifest_git_input_count": 551,
+    "runtime_dll_sha256": "9ae8b8608a60aded3da6da8af5202c073513d546f9c51aa328cbd39e9ce3153d",
+    "build_execution_dll_match": true,
+    "execution_log_hashes_verified": 10,
+    "direct_cpu_checks": 15,
+    "compound_checks_per_arm": 59,
+    "control_A": {
+      "samples": 268,
+      "refreshes": 145,
+      "double_calls": 145,
+      "exchange_p95_ms": 23.392,
+      "render_p95_ms": 23.868,
+      "overruns": 32,
+      "acks": 0
+    },
+    "consumed_A": {
+      "samples": 312,
+      "refreshes": 135,
+      "double_calls": 104,
+      "exchange_p95_ms": 23.802,
+      "render_p95_ms": 24.257,
+      "overruns": 27,
+      "acks": 136,
+      "consumed": 136,
+      "refused": 0,
+      "bytes": 220202438
+    },
+    "control_B": {
+      "samples": 285,
+      "refreshes": 169,
+      "double_calls": 169,
+      "exchange_p95_ms": 23.678,
+      "render_p95_ms": 24.168,
+      "overruns": 37,
+      "acks": 0
+    },
+    "status": "predecessor_windows_only_not_final_source",
+    "finding": "ACK reduced Windows double native calls to 104/135 versus unacknowledged145/145; no p95 render-stage improvement, 77% still doubled. Linux unchanged at all doubled."
+  },
+  "preliminary_source_cross_platform": {
+    "source_sha": "80c775056cbe4e0b0e65ad901843cb7fe4ce3de7",
+    "scope": "both actual Linux and Windows hosted scoped qualification",
+    "workflow": 40754078838,
+    "all_four_jobs": "success",
+    "original_15_unit_expected": true,
+    "corrected_17_unit_final_source_still_pending": true,
+    "negative": "Post-consumption ACK is insufficient to eliminate native double-call render-stage behavior, and cannot be claimed as proven performance optimization."
+  },
+  "qualified_corrected_source": {
+    "source_sha": "55aa72e5db6b23731a2ccdccbca91ccfd80bfe90",
+    "tree_sha": "165643fdd94a3e68aac28cf073745a37b127033b",
+    "workflow_id": 40754382057,
+    "mode": "CPU-only headless, native-motion and Rapier actual hosts; immutable latest-only snapshots",
+    "platforms": {
+      "Linux": {
+        "A_unack": {
+          "refreshes": 139,
+          "double_calls": 139,
+          "render_p95_ms": 29.141,
+          "overruns": 50,
+          "accepted_cpu": 0,
+          "acked": 0
+        },
+        "A_consumed": {
+          "refreshes": 99,
+          "double_calls": 87,
+          "render_p95_ms": 29.356,
+          "overruns": 41,
+          "accepted_cpu": 99,
+          "acked": 99,
+          "refused": 0
+        },
+        "B_unack": {
+          "refreshes": 122,
+          "double_calls": 122,
+          "render_p95_ms": 28.894,
+          "overruns": 49,
+          "accepted_cpu": 0,
+          "acked": 0
+        }
+      },
+      "Windows": {
+        "A_unack": {
+          "refreshes": 150,
+          "double_calls": 150,
+          "render_p95_ms": 22.62,
+          "overruns": 28,
+          "accepted_cpu": 0,
+          "acked": 0
+        },
+        "A_consumed": {
+          "refreshes": 118,
+          "double_calls": 102,
+          "render_p95_ms": 23.312,
+          "overruns": 25,
+          "accepted_cpu": 123,
+          "acked": 123,
+          "refused": 0
+        },
+        "B_unack": {
+          "refreshes": 141,
+          "double_calls": 141,
+          "render_p95_ms": 22.852,
+          "overruns": 29,
+          "accepted_cpu": 0,
+          "acked": 0
+        }
+      }
+    },
+    "negative": "Correct ACK insufficient to remove double native snapshot calls; no proven optimization, no GPU FPS result, B search remains NO-GO"
+  },
+  "next_source_diagnostic": {
+    "source_sha": "5531ac7d47141e040a368c0057be640cbf0e3721",
+    "preregistration": "https://github.com/techrote/cybersand/pull/283#issuecomment-6478970282",
+    "workflow_id": 40758417713,
+    "scope": "observational first native render packet and pending buffer exact retry predicate",
+    "added_live_checks_per_compound": 7,
+    "expected_live_checks_per_arm": 66,
+    "status": "source_matched_scoped_linux_windows_pass",
+    "optimization_claim": false,
+    "source_tree_sha": "309a3de937f184b030a86e5aaacd58258e3b5970",
+    "scoped_workflow": "https://github.com/techrote/cybersand/actions/runs/40758417713",
+    "all_four_jobs": "success",
+    "host_assertions_per_os": 1519,
+    "host_failures_per_os": 0,
+    "linux_native_focused_checks": 13074,
+    "archive_hashes_verified": true,
+    "archive_sha256": {
+      "linux_execution": "2dc7050d3c035bf0c396bb7c55992c4c0209ed610f383bb6a01409b079eeff2f",
+      "windows_execution": "ef1178ed653f57029f8c1e84de0ace413bee20877c04c887bc194ae8070fb915",
+      "windows_build": "5f0d45144fde2f6b08ee862fad51c42e002ce13ee799fe8f03b0a333e9968b07",
+      "exact_source": "d6c859f49ac2590688e3991166cd5343c70039d0d6144e9002acb41747aa2bd5",
+      "source_tar": "4730970b142e2ca6363f8d988907acdf970c7f423a166fc624ce162afd1ac612"
+    },
+    "windows_manifest_git_inputs_verified": 551,
+    "windows_build_execution_dll_sha256": "13108d6cf9291e43849738428483f7a016bebb53228f14ff42d84724833f429b",
+    "windows_execution_log_hashes_verified": 10,
+    "assertion_partitions": {
+      "motion": 21,
+      "rollback": 20,
+      "lifecycle": 296,
+      "causes_and_abi": 43,
+      "bounded_search_protocol": 924,
+      "CPU_consumption": 17,
+      "compound_three_arms_each": 66
+    },
+    "qualification_scope": "original native tree+six proxy/hole Sand/Water actual Windows/Linux Rapier and bounded CPU-only diagnostics; not interactive GPU/60FPS, physical B admission or ready-PR matrix",
+    "causal_finding": "For all observed two-call refreshes on both hosts, exact existing retained-full+dirty append exceeds 2MiB pending byte guard; none are rectangle overflow or native capacity/backpressure. Windows timely ACK clears align with 23 one-call samples; Linux ACKs were accepted but did not clear before sampled refreshes.",
+    "hosts": {
+      "Linux": {
+        "A_unack": {
+          "refreshes": 109,
+          "single": 0,
+          "double": 109,
+          "first_status_published": 109,
+          "byte_only_overflow": 109,
+          "rect_only_overflow": 0,
+          "both_overflow": 0,
+          "ack_cleared_samples": 0,
+          "render_active_p95_ms": 38.8,
+          "worker_overruns": 73,
+          "accepted_cpu": 0,
+          "acked": 0,
+          "pending_before_bytes_max": 2097152,
+          "pending_after_first_bytes_max": 2099896,
+          "first_packet_bytes": 63614,
+          "retry_packet_bytes": 228589568
+        },
+        "A_consumed": {
+          "refreshes": 93,
+          "single": 0,
+          "double": 93,
+          "first_status_published": 93,
+          "byte_only_overflow": 93,
+          "rect_only_overflow": 0,
+          "both_overflow": 0,
+          "ack_cleared_samples": 0,
+          "render_active_p95_ms": 38.872,
+          "worker_overruns": 67,
+          "accepted_cpu": 94,
+          "acked": 94,
+          "refused": 0,
+          "pending_before_bytes_max": 2097152,
+          "pending_after_first_bytes_max": 2099798,
+          "first_packet_bytes": 62716,
+          "retry_packet_bytes": 195035136
+        },
+        "B_unack": {
+          "refreshes": 105,
+          "single": 0,
+          "double": 105,
+          "first_status_published": 105,
+          "byte_only_overflow": 105,
+          "rect_only_overflow": 0,
+          "both_overflow": 0,
+          "ack_cleared_samples": 0,
+          "render_active_p95_ms": 40.024,
+          "worker_overruns": 72,
+          "accepted_cpu": 0,
+          "acked": 0,
+          "pending_before_bytes_max": 2097152,
+          "pending_after_first_bytes_max": 2099994,
+          "first_packet_bytes": 69846,
+          "retry_packet_bytes": 220200960
+        }
+      },
+      "Windows": {
+        "A_unack": {
+          "refreshes": 108,
+          "single": 0,
+          "double": 108,
+          "first_status_published": 108,
+          "byte_only_overflow": 108,
+          "rect_only_overflow": 0,
+          "both_overflow": 0,
+          "ack_cleared_samples": 0,
+          "render_active_p95_ms": 23.431,
+          "worker_overruns": 26,
+          "accepted_cpu": 0,
+          "acked": 0,
+          "pending_before_bytes_max": 2097152,
+          "pending_after_first_bytes_max": 2099126,
+          "first_packet_bytes": 41152,
+          "retry_packet_bytes": 226492416
+        },
+        "A_consumed": {
+          "refreshes": 124,
+          "single": 23,
+          "double": 101,
+          "first_status_published": 124,
+          "byte_only_overflow": 101,
+          "rect_only_overflow": 0,
+          "both_overflow": 0,
+          "ack_cleared_samples": 23,
+          "render_active_p95_ms": 24.643,
+          "worker_overruns": 27,
+          "accepted_cpu": 125,
+          "acked": 125,
+          "refused": 0,
+          "pending_before_bytes_max": 2097152,
+          "pending_after_first_bytes_max": 2099126,
+          "first_packet_bytes": 42888,
+          "retry_packet_bytes": 211812352
+        },
+        "B_unack": {
+          "refreshes": 140,
+          "single": 0,
+          "double": 140,
+          "first_status_published": 140,
+          "byte_only_overflow": 140,
+          "rect_only_overflow": 0,
+          "both_overflow": 0,
+          "ack_cleared_samples": 0,
+          "render_active_p95_ms": 24.123,
+          "worker_overruns": 30,
+          "accepted_cpu": 0,
+          "acked": 0,
+          "pending_before_bytes_max": 2097152,
+          "pending_after_first_bytes_max": 2099126,
+          "first_packet_bytes": 40966,
+          "retry_packet_bytes": 293601280
+        }
+      }
+    }
+  }
+}

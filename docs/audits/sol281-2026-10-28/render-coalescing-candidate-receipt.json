@@ -1,0 +1,95 @@
+{
+  "schema": "cybersand.sol281.render-coalescing-candidate.v1",
+  "date": "2026-10-28",
+  "issue": 281,
+  "pull_request": 283,
+  "predecessor_executable_sha": "5531ac7d47141e040a368c0057be640cbf0e3721",
+  "predecessor_scoped_run": 40758417713,
+  "predecessor_docs_run": 40759938408,
+  "preregistration": "https://github.com/techrote/cybersand/pull/283#issuecomment-6479596107",
+  "source_sha": "7d716a5f62bfdf6a9a9a6ed90f923f4ca418539e",
+  "source_tree_sha": "41b85c9e121388df9fe803211af06a176e6bd07c",
+  "implementation_commits": [
+    "6927ace31c4a4d9acfea9f16baa744c5c6783cf1",
+    "7d716a5f62bfdf6a9a9a6ed90f923f4ca418539e"
+  ],
+  "qualification": {
+    "status": "pending_source_matched_readback_at_audit_commit",
+    "first_source_scoped_run": 40762379333,
+    "first_source_docs_run": 40762388082,
+    "new_source_scoped_run": 40762646166,
+    "new_source_docs_run": 40762653884,
+    "new_source_qualified": false,
+    "linux_host_assertions": null,
+    "windows_host_assertions": null,
+    "unit_assertions_expected": 32,
+    "compound_per_arm_expected": 68,
+    "cohorts_per_os": 4,
+    "artifacts_verified": false,
+    "interactive_gpu_60fps_qualified": false,
+    "note": "The predecessor's 1519/OS checks do not qualify the new executable; first-source docs success does not qualify the successor."
+  },
+  "mechanism": {
+    "opt_in_default": false,
+    "world_owner": "exclusive native worker",
+    "bytes_per_full_rg8": 2097152,
+    "max_dirty_payload_bytes": 65536,
+    "max_dirty_rectangles": 64,
+    "full_copy_max_bytes": 2097152,
+    "allowed_native_status": "Published",
+    "pending_full_one_rectangle_required": true,
+    "world_generation_and_channels_match": true,
+    "immutable_old_snapshots": true,
+    "invalid_candidate_falls_back_to_old_path": true
+  },
+  "preserved": [
+    "native authoritative-cell ownership",
+    "one 520-cell aggregate",
+    "six exact Rapier and native proxies, both holes",
+    "Sand104 Water1020 conservation",
+    "12-field body-result ABI",
+    "main-thread Rapier/native-worker ownership",
+    "existing liquid/material construction",
+    "default A=81 physical ejection policy"
+  ],
+  "negative": [
+    "289-probe B physical search NO-GO",
+    "earlier CPU-ACK-only headless cohorts did not prove speedup",
+    "production GPU pacing unqualified"
+  ],
+  "open_gates": [
+    "actual Linux/Windows source-matched run results and archive/source hashes",
+    "complete constant work/memory cap including total overlay writes",
+    "representative interactive GPU/frame pacing",
+    "safe physically admissible conservative displacement",
+    "reactive Wood, fracture/desoliding, persistence, normal gameplay",
+    "independent review, ready-PR full matrix"
+  ],
+  "post_audit_readback": {
+    "date": "2026-10-28",
+    "new_source_scoped_run": 40762646166,
+    "conclusion": "failure",
+    "jobs": {
+      "source": "success",
+      "windows-build": "success",
+      "linux-rapier": "failure",
+      "windows-rapier": "failure"
+    },
+    "failed_assertion": "opt-in live native stream coalesces an actual full-plus-dirty packet (cohort 0 1 1)",
+    "observed": {
+      "linux": {
+        "render_coalesced_packets": 0,
+        "render_pending_full_before_samples": 0
+      },
+      "windows": {
+        "render_coalesced_packets": 0,
+        "render_pending_full_before_samples": 0
+      }
+    },
+    "compound_extended_executed": false,
+    "new_source_qualified": false,
+    "runtime_dll_sha256": "2068ee83bba326f7cb503eac1a3c5cfc68dedf722c9cd0d6c9666e03e83238dc",
+    "superseded_by": "819c6677e26fcdabe961097f855bd06fd5609917",
+    "successor_receipt": "render-coalescing-gate-correction-receipt.json"
+  }
+}

@@ -313,7 +313,12 @@ var rigid_body_correction_y: PackedFloat32Array = PackedFloat32Array()
 var rigid_body_contact_counts: PackedInt32Array = PackedInt32Array()
 var rigid_body_displaced_counts: PackedInt32Array = PackedInt32Array()
 var rigid_body_unresolved_counts: PackedInt32Array = PackedInt32Array()
+var rigid_body_unresolved_immovable_counts: PackedInt32Array = PackedInt32Array()
+var rigid_body_unresolved_no_target_counts: PackedInt32Array = PackedInt32Array()
+var rigid_body_unresolved_relocation_refused_counts: PackedInt32Array = PackedInt32Array()
 var rigid_body_support_counts: PackedInt32Array = PackedInt32Array()
+# SOL281 diagnostic comparison only. Default 0 preserves the ordinary ejection rule.
+var body_ejection_policy: int = 0
 
 var tick_index: int = 0
 var update_epoch: int = 1
@@ -372,6 +377,9 @@ func _init() -> void:
 	rigid_body_contact_counts.resize(body_slot_count)
 	rigid_body_displaced_counts.resize(body_slot_count)
 	rigid_body_unresolved_counts.resize(body_slot_count)
+	rigid_body_unresolved_immovable_counts.resize(body_slot_count)
+	rigid_body_unresolved_no_target_counts.resize(body_slot_count)
+	rigid_body_unresolved_relocation_refused_counts.resize(body_slot_count)
 	rigid_body_support_counts.resize(body_slot_count)
 	reset_demo_world()
 
@@ -387,6 +395,7 @@ func reset_demo_world() -> void:
 	exchange_wake_ticks.fill(0)
 	block_movable_counts.fill(0)
 	rigid_body_occupancy.fill(0)
+	body_ejection_policy = 0
 	rigid_body_occupied_indices.clear()
 	rigid_body_states.clear()
 	rigid_body_state_offsets.fill(-1)
@@ -577,6 +586,9 @@ func rigid_body_results() -> PackedFloat32Array:
 				state_offset + CyberRigidBodyCoupling.INPUT_SAMPLE_SERIAL
 			]
 		)
+		results.append(float(rigid_body_unresolved_immovable_counts[body_id]))
+		results.append(float(rigid_body_unresolved_no_target_counts[body_id]))
+		results.append(float(rigid_body_unresolved_relocation_refused_counts[body_id]))
 	return results
 
 
@@ -589,6 +601,9 @@ func _reset_rigid_body_observations() -> void:
 	rigid_body_contact_counts.fill(0)
 	rigid_body_displaced_counts.fill(0)
 	rigid_body_unresolved_counts.fill(0)
+	rigid_body_unresolved_immovable_counts.fill(0)
+	rigid_body_unresolved_no_target_counts.fill(0)
+	rigid_body_unresolved_relocation_refused_counts.fill(0)
 	rigid_body_support_counts.fill(0)
 	rigid_body_contacts_last_tick = 0
 	rigid_body_displaced_last_tick = 0
@@ -771,6 +786,7 @@ func _reconcile_rigid_body_overlap(
 
 	if not is_movable(material_id):
 		_record_body_unresolved(body_id)
+		rigid_body_unresolved_immovable_counts[body_id] += 1
 		return
 
 	var target: Vector2i = _find_body_ejection_target(
@@ -782,6 +798,7 @@ func _reconcile_rigid_body_overlap(
 	)
 	if target.x < 0:
 		_record_body_unresolved(body_id)
+		rigid_body_unresolved_no_target_counts[body_id] += 1
 		_record_body_impulse(
 			body_id,
 			-outward_normal * BODY_DISPLACEMENT_REACTION_IMPULSE
@@ -895,6 +912,39 @@ func _find_body_ejection_target(
 			):
 				continue
 			return Vector2i(candidate_x, candidate_y)
+	# Experimental continuation is evaluated only after the complete baseline
+	# 81-probe prefix. It cannot change an already-successful default target.
+	if body_ejection_policy == 1:
+		for distance: int in range(first_distance,
+			first_distance + MAX_BODY_PIXEL_EJECTION_DISTANCE + 1):
+			for tangent_probe: int in range(9, 17):
+				var tangent_offset: int = _symmetric_probe_offset(tangent_probe)
+				var candidate: Vector2 = source_center + outward_normal * float(distance) \
+					+ tangent * float(tangent_offset)
+				var x: int = floori(candidate.x)
+				var y: int = floori(candidate.y)
+				if not in_bounds(x, y):
+					continue
+				var index: int = cell_index(x, y)
+				if rigid_body_occupancy[index] != 0 or cells[index] != EMPTY:
+					continue
+				if _body_ejection_path_reachable(source_x, source_y, x, y, source_body_id):
+					return Vector2i(x, y)
+		for distance: int in range(first_distance + MAX_BODY_PIXEL_EJECTION_DISTANCE + 1,
+			first_distance + 17):
+			for tangent_probe: int in range(17):
+				var tangent_offset: int = _symmetric_probe_offset(tangent_probe)
+				var candidate: Vector2 = source_center + outward_normal * float(distance) \
+					+ tangent * float(tangent_offset)
+				var x: int = floori(candidate.x)
+				var y: int = floori(candidate.y)
+				if not in_bounds(x, y):
+					continue
+				var index: int = cell_index(x, y)
+				if rigid_body_occupancy[index] != 0 or cells[index] != EMPTY:
+					continue
+				if _body_ejection_path_reachable(source_x, source_y, x, y, source_body_id):
+					return Vector2i(x, y)
 	return Vector2i(-1, -1)
 
 

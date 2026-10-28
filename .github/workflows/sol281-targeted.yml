@@ -1,0 +1,433 @@
+name: SOL281 scoped Windows Rapier qualification
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [work/sol281-native-detachment-20261027]
+    paths:
+      - '.github/workflows/sol281-targeted.yml'
+      - 'godot/scripts/solid_detachment_*.gd'
+      - 'godot/scripts/simulation_worker.gd'
+      - 'godot/scripts/simulation_snapshot.gd'
+      - 'godot/scripts/rigid_body_coupling.gd'
+      - 'godot/scripts/cell_world.gd'
+      - 'godot/native_extension/cyber_native_cell_world.cpp'
+      - 'godot/native_extension/cyber_native_cell_world.hpp'
+      - 'godot/tests/test_solid_detachment*.gd'
+      - 'godot/tests/test_act004_body_capacity.gd'
+      - 'godot/tests/test_lcb_inertial_adapter.gd'
+      - 'godot/tests/test_liquid_pressure_rapier.gd'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: sol281-targeted-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+
+jobs:
+  source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Preserve exact source and validate provider policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/sol281-source
+          git rev-parse HEAD > build/sol281-source/source.txt
+          git rev-parse HEAD^{tree} > build/sol281-source/tree.txt
+          git -c filter.lfs.process= -c filter.lfs.smudge= -c filter.lfs.required=false archive --format=tar.gz -o build/sol281-source/source.tar.gz HEAD
+          sha256sum build/sol281-source/source.tar.gz > build/sol281-source/archive.sha256
+          python3 tools/ci/check_ci_provider_policy.py
+          git diff --check
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: sol281-exact-source-${{ github.sha }}
+          path: build/sol281-source/
+          if-no-files-found: error
+          retention-days: 30
+
+  windows-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - name: Prepare pinned compiler and bindings
+        run: |
+          set -euo pipefail
+          mkdir -p build/sol281-windows
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+          timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          test -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar" || ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+      - name: Build exact-source experimental Windows runtime
+        run: |
+          set -euo pipefail
+          export GODOT_CPP_ROOT="$RUNNER_TEMP/godot-cpp"
+          export SCONS_PYTHON="$RUNNER_TEMP/scons/bin/python" SCONS_JOBS=2
+          export LLVM_MINGW_ROOT="$RUNNER_TEMP/llvm-mingw"
+          export WINDOWS_CXX="$LLVM_MINGW_ROOT/bin/x86_64-w64-mingw32-g++"
+          export CYBERSAND_NATIVE_OUTPUT="$PWD/build/sol281-windows/cybersand_native.windows.x86_64.dll"
+          timeout 30m tools/build_pinned_godot_cpp.sh windows 2>&1 | tee build/sol281-windows/bindings-build.txt
+          timeout 15m tools/build_native_extension_windows.sh 2>&1 | tee build/sol281-windows/native-build.txt
+          "$WINDOWS_CXX" --version > build/sol281-windows/compiler.txt
+          git rev-parse HEAD > build/sol281-windows/source.txt
+          python3 - <<'PY'
+          import hashlib, json, pathlib, subprocess
+          root=pathlib.Path('.')
+          paths=subprocess.check_output(['git','ls-files','native/include','native/src','godot/native_extension','godot/scripts','godot/tests','tools/build_native_extension_windows.sh','tools/build_pinned_godot_cpp.sh'],text=True).splitlines()
+          hashes={p:hashlib.sha256((root/p).read_bytes()).hexdigest() for p in paths}
+          dll=root/'build/sol281-windows/cybersand_native.windows.x86_64.dll'
+          record={'schema':'cybersand.sol281.targeted-runtime.v1','source':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),'inputs':hashes,'dll_sha256':hashlib.sha256(dll.read_bytes()).hexdigest(),'scope':'experimental scoped qualification only; not runtime publication or full PR acceptance'}
+          (dll.parent/'manifest.json').write_text(json.dumps(record,indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sol281-windows-build-${{ github.sha }}
+          path: build/sol281-windows/
+          if-no-files-found: error
+          retention-days: 30
+
+  windows-rapier:
+    needs: windows-build
+    runs-on: windows-2022
+    timeout-minutes: 30
+    env:
+      PYTHONUTF8: '1'
+      GODOT_SILENCE_ROOT_WARNING: '1'
+    steps:
+      - shell: bash
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: sol281-windows-build-${{ github.sha }}
+          path: build/sol281-windows
+      - name: Materialize pinned Rapier and download pinned Godot
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 --output build/sol281-windows/godot.zip https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+      - name: Verify inputs and execute actual Windows engine cases
+        shell: python
+        run: |
+          import hashlib, json, os, pathlib, re, shutil, subprocess, zipfile
+          root=pathlib.Path.cwd(); out=root/'build/sol281-windows'; result=out/'execution'; result.mkdir()
+          (result/'attempt.json').write_text(json.dumps({'source':os.environ['GITHUB_SHA'],'phase':'source verification'}))
+          manifest=json.loads((out/'manifest.json').read_text())
+          assert manifest['source']==os.environ['GITHUB_SHA']
+          restored=[]
+          for p,h in manifest['inputs'].items():
+              canonical=subprocess.check_output(['git','show','HEAD:'+p])
+              assert hashlib.sha256(canonical).hexdigest()==h, ('build differs from Git',p)
+              actual=(root/p).read_bytes()
+              if actual!=canonical:
+                  assert actual.replace(b'\r\n',b'\n')==canonical.replace(b'\r\n',b'\n'), ('non-EOL source drift',p)
+                  restored.append({'path':p,'checkout_sha256':hashlib.sha256(actual).hexdigest(),'git_sha256':h})
+                  (root/p).write_bytes(canonical)
+              assert hashlib.sha256((root/p).read_bytes()).hexdigest()==h, p
+          (result/'source-verification.json').write_text(json.dumps({'input_count':len(manifest['inputs']),'restored_git_bytes':restored},indent=2)+'\n')
+          dll=out/'cybersand_native.windows.x86_64.dll'
+          assert hashlib.sha256(dll.read_bytes()).hexdigest()==manifest['dll_sha256']
+          rapier=root/'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
+          assert hashlib.sha256(rapier.read_bytes()).hexdigest()=='b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7'
+          engine=out/'godot.zip'
+          assert hashlib.sha512(engine.read_bytes()).hexdigest()=='41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9'
+          zipfile.ZipFile(engine).extractall(out/'engine')
+          exe=out/'engine/Godot_v4.7-stable_win64_console.exe'
+          shutil.copy2(dll,root/'godot/addons/cybersand_native/bin'/dll.name)
+          results=[]
+          def run(name,args,footer=None):
+              cmd=[str(exe),*args]
+              try:
+                  p=subprocess.run(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,timeout=180)
+                  data=p.stdout
+              except subprocess.TimeoutExpired as exc:
+                  (result/(name+'.txt')).write_bytes(exc.stdout or b'')
+                  raise
+              (result/(name+'.txt')).write_bytes(data)
+              text=data.decode('utf-8','replace')
+              assert p.returncode==0,(name,p.returncode,text[-4000:])
+              assert not re.search(r'(SCRIPT ERROR:|ERROR:|FAIL SOL281)',text),(name,text[-4000:])
+              if footer: assert footer in text,(name,'missing footer')
+              results.append({'name':name,'returncode':p.returncode,'log_sha256':hashlib.sha256(data).hexdigest()})
+          run('import',['--headless','--path','godot','--editor','--import','--quit'])
+          run('motion',['--headless','--path','godot','--script','res://tests/test_solid_detachment.gd','--',str(result/'motion.json')],'SOL281_ACTUAL_RAPIER')
+          motion=json.loads((result/'motion.json').read_text()); assert motion['checks']==21 and motion['failures']==[] and motion['platform']=='Windows'
+          run('failure-paths',['--headless','--path','godot','--script','res://tests/test_solid_detachment_failures.gd'],'SOL281')
+          failure=json.loads(re.search(r'SOL281_HOST_FAILURES (.+)',(result/'failure-paths.txt').read_text(encoding='utf-8')).group(1))
+          assert failure['checks']==20 and failure['failures']==[] and failure['actual_rapier']
+          run('lifecycle',['--headless','--path','godot','--script','res://tests/test_solid_detachment_lifecycle.gd'],'SOL281_LIFECYCLE')
+          lifecycle=json.loads(re.search(r'SOL281_LIFECYCLE (.+)',(result/'lifecycle.txt').read_text(encoding='utf-8')).group(1))
+          assert lifecycle['checks']==296 and lifecycle['actual_host_replacement_cycles']==18 and lifecycle['failures']==[]
+          run('unresolved-diagnostics',['--headless','--path','godot','--script','res://tests/test_solid_detachment_unresolved_diagnostics.gd','--',str(result/'unresolved-diagnostics.json')],'SOL281_UNRESOLVED_DIAGNOSTICS')
+          unresolved=json.loads((result/'unresolved-diagnostics.json').read_text())
+          assert unresolved['checks']==43 and unresolved['failures']==[] and unresolved['platform']=='Windows' and unresolved['result_stride']==12
+          run('ejection-policy',['--headless','--path','godot','--script','res://tests/test_solid_detachment_ejection_policy.gd','--',str(result/'ejection-policy.json')],'SOL281_EJECTION_POLICY')
+          policy=json.loads((result/'ejection-policy.json').read_text())
+          assert policy['platform']=='Windows' and policy['failures']==[] and policy['checks']>=200
+          assert policy['baseline_candidates_max']==81 and policy['extended_candidates_max']==289 and len(policy['cases'])==40
+          run('render-ack-unit',['--headless','--path','godot','--script','res://tests/test_solid_detachment_render_ack.gd'],'SOL281_RENDER_ACK_UNIT')
+          ack_unit=json.loads(re.search(r'SOL281_RENDER_ACK_UNIT (.+)',(result/'render-ack-unit.txt').read_text(encoding='utf-8')).group(1))
+          assert ack_unit['checks']==39 and ack_unit['failures']==[]
+          run('render-owner',['--headless','--path','godot','--script','res://tests/test_solid_detachment_render_coalescing_owner.gd'],'SOL281_RENDER_OWNER')
+          owner=json.loads(re.search(r'SOL281_RENDER_OWNER (.+)',(result/'render-owner.txt').read_text(encoding='utf-8')).group(1))
+          assert owner['checks']==41 and owner['failures']==[] and owner['platform']=='Windows' and [(c['mode'],c['workers']) for c in owner['cohorts']]==[('coalescing',1),('coalescing',4),('partial_ack',1),('partial_ack',4),('exemption_only',1),('exemption_only',4)]
+          assert all(c['forced_full_retries']==0 and c['coalesced']==c['dirty_onto_full']>=3 for c in owner['cohorts'] if c['mode']=='coalescing')
+          assert all(c['forced_full_retries']==0 and c['baseline_drops']>=1 for c in owner['cohorts'] if c['mode']=='partial_ack')
+          assert all(c['forced_full_retries']==0 and c['baseline_drops']==0 for c in owner['cohorts'] if c['mode']=='exemption_only')
+          run('compound-coupling',['--headless','--path','godot','--script','res://tests/test_solid_detachment_coupling.gd','--',str(result/'compound-coupling.json')],'SOL281_COMPOUND_COUPLING')
+          coupling=json.loads((result/'compound-coupling.json').read_text())
+          assert coupling['checks']==68 and coupling['failures']==[] and coupling['platform']=='Windows'
+          census=coupling['coupling']['render_worker_census']
+          assert census['coalesced']==0 and census['forced_full_retries']==census['dirty_onto_full']>0
+          assert coupling['coupling']['proxy_count']==coupling['shapes'] and coupling['coupling']['contacts']>0 and coupling['coupling']['displaced']>0
+          assert coupling['coupling']['unresolved']==coupling['coupling']['unresolved_no_target'] and coupling['coupling']['unresolved_immovable']==0 and coupling['coupling']['unresolved_relocation_refused']==0 and coupling['coupling']['unresolved_unclassified']==0
+          assert coupling['ejection_policy']==0 and coupling['main_thread_step_timing']['samples']==360
+          assert coupling['ejection_topology']['enabled'] and coupling['ejection_topology']['classified']>0
+          run('compound-ack-consumed',['--headless','--path','godot','--script','res://tests/test_solid_detachment_coupling.gd','--',str(result/'compound-ack-consumed.json'),'0','1'],'SOL281_COMPOUND_COUPLING')
+          acknowledged=json.loads((result/'compound-ack-consumed.json').read_text())
+          assert acknowledged['checks']==68 and acknowledged['failures']==[] and acknowledged['platform']=='Windows' and acknowledged['ejection_policy']==0
+          assert acknowledged['coupling']['render_acknowledgements']>0 and acknowledged['coupling']['render_consumer']['refused']==0
+          assert acknowledged['members']==520 and acknowledged['shapes']==6 and acknowledged['coupling']['proxy_count']==6
+          assert acknowledged['coupling']['unresolved']==acknowledged['coupling']['unresolved_no_target'] and acknowledged['coupling']['unresolved_unclassified']==0
+          assert acknowledged['coupling']['render_worker_census']['coalesced']==0
+          # Deterministic coalescing gate: never ACKed, so the full frame stays
+          # retained and every later dirty packet must coalesce (5 processes).
+          unacked=[]
+          for rep in range(1,6):
+              name=f'compound-coalesced-unacked-{rep}'
+              run(name,['--headless','--path','godot','--script','res://tests/test_solid_detachment_coupling.gd','--',str(result/(name+'.json')),'0','0','1'],'SOL281_COMPOUND_COUPLING')
+              arm=json.loads((result/(name+'.json')).read_text())
+              assert arm['checks']==68 and arm['failures']==[] and arm['platform']=='Windows'
+              assert arm['render_full_coalescing'] and not arm['cpu_render_consumer']
+              assert arm['members']==520 and arm['shapes']==6 and arm['coupling']['proxy_count']==6
+              census=arm['coupling']['render_worker_census']
+              assert census['coalesced']>0 and census['coalesced']==census['dirty_onto_full'] and census['forced_full_retries']==0
+              assert arm['coupling']['render_acknowledgements']==0 and arm['coupling']['stale_results']==0
+              unacked.append(arm)
+          # Observational only: with CPU ACK, entering retained-full is timing-dependent.
+          run('compound-coalesced',['--headless','--path','godot','--script','res://tests/test_solid_detachment_coupling.gd','--',str(result/'compound-coalesced.json'),'0','1','1'],'SOL281_COMPOUND_COUPLING')
+          coalesced=json.loads((result/'compound-coalesced.json').read_text())
+          assert coalesced['checks']==68 and coalesced['failures']==[] and coalesced['platform']=='Windows'
+          assert coalesced['render_full_coalescing'] and coalesced['cpu_render_consumer']
+          assert coalesced['members']==520 and coalesced['shapes']==6 and coalesced['coupling']['proxy_count']==6
+          assert coalesced['coupling']['render_worker_census']['coalesced']<=coalesced['coupling']['render_worker_census']['dirty_onto_full']
+          assert coalesced['coupling']['render_consumer']['refused']==0
+          assert coalesced['coupling']['render_acknowledgements']>0 and coalesced['coupling']['stale_results']==0
+          run('compound-extended',['--headless','--path','godot','--script','res://tests/test_solid_detachment_coupling.gd','--',str(result/'compound-extended.json'),'1'],'SOL281_COMPOUND_COUPLING')
+          extended=json.loads((result/'compound-extended.json').read_text())
+          assert extended['checks']==68 and extended['failures']==[] and extended['platform']=='Windows' and extended['ejection_policy']==1
+          assert extended['members']==520 and extended['shapes']==6 and extended['coupling']['proxy_count']==6
+          assert extended['coupling']['render_worker_census']['coalesced']==0
+          assert extended['coupling']['contacts']>0 and extended['coupling']['displaced']>0
+          assert extended['coupling']['unresolved']==extended['coupling']['unresolved_no_target'] and extended['coupling']['unresolved_immovable']==0 and extended['coupling']['unresolved_relocation_refused']==0 and extended['coupling']['unresolved_unclassified']==0
+          assert extended['main_thread_step_timing']['samples']==360
+          assert extended['ejection_topology']['enabled'] and extended['ejection_topology']['classified']>0
+          # Preregistered root-cause comparison (PR #283 comment 6482124010). Correctness is
+          # asserted per process; performance is recorded for the decision rule only.
+          comparison={}
+          for arm,args,reps in [('L0',['0','0','0'],2),('L1',['0','1','0'],2),('C1',['0','1','1'],2),('R0',['0','0','0','1'],3),('R1',['0','1','0','1'],3),('P0',['0','0','2'],3),('P1',['0','1','2'],3),('E0',['0','0','3'],3),('E1',['0','1','3'],3),('RP0',['0','0','2','1'],3),('RP1',['0','1','2','1'],3)]:
+              for rep in range(1,reps+1):
+                  name=f'compare-{arm}-{rep}'
+                  run(name,['--headless','--path','godot','--script','res://tests/test_solid_detachment_coupling.gd','--',str(result/(name+'.json')),*args],'SOL281_COMPOUND_COUPLING')
+                  d=json.loads((result/(name+'.json')).read_text())
+                  assert d['checks']==68 and d['failures']==[] and d['platform']=='Windows', (name,d['failures'])
+                  assert d['members']==520 and d['shapes']==6 and d['coupling']['proxy_count']==6 and d['coupling']['stale_results']==0
+                  assert d['render_mode']==int(args[2]) and d['render_copy_by_run']==(len(args)>3 and args[3]=='1')
+                  assert d['coupling']['render_consumer'].get('refused',0)==0
+                  assert int(args[2])!=3 or d['coupling']['render_worker_census']['baseline_drops']==0
+                  comparison.setdefault(arm,[]).append({'census':d['coupling']['render_worker_census'],'census_window':d['coupling']['render_worker_census_window'],'refresh':d['coupling']['snapshot_render_refresh_timing'],'refresh_exchange':d['coupling']['snapshot_render_refresh_exchange_timing'],'publish':d['coupling']['snapshot_publish_total_timing'],'worker_overruns':d['coupling']['worker_overruns'],'acks':d['coupling']['render_acknowledgements']})
+          for p,h in manifest['inputs'].items():
+              assert hashlib.sha256((root/p).read_bytes()).hexdigest()==h, ('execution source drift',p)
+          report={'source':manifest['source'],'runtime_sha256':manifest['dll_sha256'],'platform':'Windows','cases':results,'lifecycle':lifecycle,'motion':motion,'failure_paths':failure,'unresolved_diagnostics':unresolved,'ejection_policy_protocol':policy,'compound_coupling':coupling,'compound_ack_consumed':acknowledged,'compound_coalesced_unacked':unacked,'compound_coalesced':coalesced,'render_ack_unit':ack_unit,'render_owner':owner,'compound_extended':extended,'render_comparison':comparison,'scope':'actual scoped Windows host A/B ejection-search experiment; baseline unchanged and B diagnostic-only, no independent review, full native matrix or production publication'}
+          (result/'report.json').write_text(json.dumps(report,indent=2)+'\n')
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sol281-windows-rapier-${{ github.sha }}
+          path: build/sol281-windows/execution/
+          if-no-files-found: error
+          retention-days: 30
+
+
+  linux-rapier:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GODOT_SILENCE_ROOT_WARNING: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: true
+          persist-credentials: false
+      - name: Load hash-verified pinned Godot toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          export GODOT_CPP_ROOT="$RUNNER_TEMP/sol281-tools/godot-cpp"
+          echo "GODOT_CPP_ROOT=$GODOT_CPP_ROOT" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/sol281-tools" build/sol281-linux
+          gh api repos/techrote/cybersand/actions/artifacts/12773321343/zip > "$RUNNER_TEMP/toolchain.zip"
+          echo 'b88ff56fe4b9dc2c4837312f06eb6e12c231042fe8746c8a8aa2281fdfa544c8  '"$RUNNER_TEMP/toolchain.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/toolchain.zip" -d "$RUNNER_TEMP/sol281-tools"
+          tar -xzf "$RUNNER_TEMP/sol281-tools/godot-cpp.tar.gz" -C "$RUNNER_TEMP/sol281-tools"
+          unzip -q "$RUNNER_TEMP/sol281-tools/godot-linux.zip" -d "$RUNNER_TEMP/sol281-tools"
+          chmod +x "$RUNNER_TEMP/sol281-tools/Godot_v4.7-stable_linux.x86_64"
+          git config --global --add safe.directory "$GODOT_CPP_ROOT"
+          test "$(git -C "$GODOT_CPP_ROOT" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+          git rev-parse HEAD > build/sol281-linux/source.txt
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Build exact-source native kernel and GDExtension
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 10m make CXX=g++-13 solid-detachment-test 2>&1 | tee build/sol281-linux/native.txt
+          timeout 15m tools/build_native_extension.sh 2>&1 | tee build/sol281-linux/build.txt
+          sha256sum godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so > build/sol281-linux/runtime.sha256
+      - name: Execute actual Linux Rapier and compound cellular coupling
+        shell: bash
+        run: |
+          set -euo pipefail
+          GODOT="$RUNNER_TEMP/sol281-tools/Godot_v4.7-stable_linux.x86_64"
+          timeout 60s "$GODOT" --headless --path godot --editor --import --quit > build/sol281-linux/import.txt 2>&1
+          timeout 90s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment.gd -- "$PWD/build/sol281-linux/motion.json" 2>&1 | tee build/sol281-linux/motion.txt
+          timeout 60s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_failures.gd 2>&1 | tee build/sol281-linux/failures.txt
+          timeout 180s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_lifecycle.gd 2>&1 | tee build/sol281-linux/lifecycle.txt
+          timeout 60s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_unresolved_diagnostics.gd -- "$PWD/build/sol281-linux/unresolved-diagnostics.json" 2>&1 | tee build/sol281-linux/unresolved-diagnostics.txt
+          timeout 180s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_ejection_policy.gd -- "$PWD/build/sol281-linux/ejection-policy.json" 2>&1 | tee build/sol281-linux/ejection-policy.txt
+          timeout 60s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_render_ack.gd 2>&1 | tee build/sol281-linux/render-ack-unit.txt
+          timeout 60s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_render_coalescing_owner.gd 2>&1 | tee build/sol281-linux/render-owner.txt
+          timeout 180s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_coupling.gd -- "$PWD/build/sol281-linux/compound-coupling.json" 2>&1 | tee build/sol281-linux/compound-coupling.txt
+          timeout 180s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_coupling.gd -- "$PWD/build/sol281-linux/compound-ack-consumed.json" 0 1 2>&1 | tee build/sol281-linux/compound-ack-consumed.txt
+          for rep in 1 2 3 4 5; do
+            timeout 180s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_coupling.gd -- "$PWD/build/sol281-linux/compound-coalesced-unacked-$rep.json" 0 0 1 2>&1 | tee "build/sol281-linux/compound-coalesced-unacked-$rep.txt"
+          done
+          timeout 180s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_coupling.gd -- "$PWD/build/sol281-linux/compound-coalesced.json" 0 1 1 2>&1 | tee build/sol281-linux/compound-coalesced.txt
+          timeout 180s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_coupling.gd -- "$PWD/build/sol281-linux/compound-extended.json" 1 2>&1 | tee build/sol281-linux/compound-extended.txt
+          # Preregistered root-cause comparison (PR #283 comment 6482124010).
+          compare() { for rep in $(seq 1 "$2"); do timeout 180s "$GODOT" --headless --path godot --script res://tests/test_solid_detachment_coupling.gd -- "$PWD/build/sol281-linux/compare-$1-$rep.json" "${@:3}" 2>&1 | tee "build/sol281-linux/compare-$1-$rep.txt"; done; }
+          compare L0 2 0 0 0; compare L1 2 0 1 0; compare C1 2 0 1 1
+          compare R0 3 0 0 0 1; compare R1 3 0 1 0 1; compare P0 3 0 0 2; compare P1 3 0 1 2
+          # Follow-up preregistration (PR #283 comment 6482976862).
+          compare E0 3 0 0 3; compare E1 3 0 1 3; compare RP0 3 0 0 2 1; compare RP1 3 0 1 2 1
+          python3 - <<'PY2'
+          import json,re
+          from pathlib import Path
+          root=Path('build/sol281-linux')
+          motion=json.loads((root/'motion.json').read_text())
+          assert motion['checks']==21 and motion['failures']==[] and motion['platform']=='Linux'
+          failure=json.loads(re.search(r'SOL281_HOST_FAILURES (.+)',(root/'failures.txt').read_text()).group(1))
+          assert failure['checks']==20 and failure['failures']==[] and failure['actual_rapier']
+          lifecycle=json.loads(re.search(r'SOL281_LIFECYCLE (.+)',(root/'lifecycle.txt').read_text()).group(1))
+          assert lifecycle['checks']==296 and lifecycle['actual_host_replacement_cycles']==18 and lifecycle['failures']==[]
+          unresolved=json.loads((root/'unresolved-diagnostics.json').read_text())
+          assert unresolved['checks']==43 and unresolved['failures']==[] and unresolved['platform']=='Linux' and unresolved['result_stride']==12
+          policy=json.loads((root/'ejection-policy.json').read_text())
+          assert policy['platform']=='Linux' and policy['failures']==[] and policy['checks']>=200
+          assert policy['baseline_candidates_max']==81 and policy['extended_candidates_max']==289 and len(policy['cases'])==40
+          coupling=json.loads((root/'compound-coupling.json').read_text())
+          assert coupling['checks']==68 and coupling['failures']==[] and coupling['platform']=='Linux'
+          census=coupling['coupling']['render_worker_census']
+          assert census['coalesced']==0 and census['forced_full_retries']==census['dirty_onto_full']>0
+          assert coupling['coupling']['proxy_count']==coupling['shapes'] and coupling['coupling']['contacts']>0 and coupling['coupling']['displaced']>0
+          assert coupling['coupling']['unresolved']==coupling['coupling']['unresolved_no_target'] and coupling['coupling']['unresolved_immovable']==0 and coupling['coupling']['unresolved_relocation_refused']==0 and coupling['coupling']['unresolved_unclassified']==0
+          assert coupling['ejection_policy']==0 and coupling['main_thread_step_timing']['samples']==360
+          assert coupling['ejection_topology']['enabled'] and coupling['ejection_topology']['classified']>0
+          ack_unit=json.loads(re.search(r'SOL281_RENDER_ACK_UNIT (.+)',(root/'render-ack-unit.txt').read_text()).group(1))
+          assert ack_unit['checks']==39 and ack_unit['failures']==[]
+          owner=json.loads(re.search(r'SOL281_RENDER_OWNER (.+)',(root/'render-owner.txt').read_text()).group(1))
+          assert owner['checks']==41 and owner['failures']==[] and owner['platform']=='Linux' and [(c['mode'],c['workers']) for c in owner['cohorts']]==[('coalescing',1),('coalescing',4),('partial_ack',1),('partial_ack',4),('exemption_only',1),('exemption_only',4)]
+          assert all(c['forced_full_retries']==0 and c['coalesced']==c['dirty_onto_full']>=3 for c in owner['cohorts'] if c['mode']=='coalescing')
+          assert all(c['forced_full_retries']==0 and c['baseline_drops']>=1 for c in owner['cohorts'] if c['mode']=='partial_ack')
+          assert all(c['forced_full_retries']==0 and c['baseline_drops']==0 for c in owner['cohorts'] if c['mode']=='exemption_only')
+          acknowledged=json.loads((root/'compound-ack-consumed.json').read_text())
+          assert acknowledged['checks']==68 and acknowledged['failures']==[] and acknowledged['platform']=='Linux' and acknowledged['ejection_policy']==0
+          assert acknowledged['coupling']['render_acknowledgements']>0 and acknowledged['coupling']['render_consumer']['refused']==0
+          assert acknowledged['members']==520 and acknowledged['shapes']==6 and acknowledged['coupling']['proxy_count']==6
+          assert acknowledged['coupling']['unresolved']==acknowledged['coupling']['unresolved_no_target'] and acknowledged['coupling']['unresolved_unclassified']==0
+          assert acknowledged['coupling']['render_worker_census']['coalesced']==0
+          # Deterministic coalescing gate: never ACKed, 5 fresh processes.
+          unacked=[]
+          for rep in range(1,6):
+              arm=json.loads((root/f'compound-coalesced-unacked-{rep}.json').read_text())
+              assert arm['checks']==68 and arm['failures']==[] and arm['platform']=='Linux'
+              assert arm['render_full_coalescing'] and not arm['cpu_render_consumer']
+              assert arm['members']==520 and arm['shapes']==6 and arm['coupling']['proxy_count']==6
+              census=arm['coupling']['render_worker_census']
+              assert census['coalesced']>0 and census['coalesced']==census['dirty_onto_full'] and census['forced_full_retries']==0
+              assert arm['coupling']['render_acknowledgements']==0 and arm['coupling']['stale_results']==0
+              unacked.append(arm)
+          # Observational only: with CPU ACK, entering retained-full is timing-dependent.
+          coalesced=json.loads((root/'compound-coalesced.json').read_text())
+          assert coalesced['checks']==68 and coalesced['failures']==[] and coalesced['platform']=='Linux'
+          assert coalesced['render_full_coalescing'] and coalesced['cpu_render_consumer']
+          assert coalesced['members']==520 and coalesced['shapes']==6 and coalesced['coupling']['proxy_count']==6
+          assert coalesced['coupling']['render_worker_census']['coalesced']<=coalesced['coupling']['render_worker_census']['dirty_onto_full']
+          assert coalesced['coupling']['render_consumer']['refused']==0
+          assert coalesced['coupling']['render_acknowledgements']>0 and coalesced['coupling']['stale_results']==0
+          extended=json.loads((root/'compound-extended.json').read_text())
+          assert extended['checks']==68 and extended['failures']==[] and extended['platform']=='Linux' and extended['ejection_policy']==1
+          assert extended['members']==520 and extended['shapes']==6 and extended['coupling']['proxy_count']==6
+          assert extended['coupling']['render_worker_census']['coalesced']==0
+          assert extended['coupling']['contacts']>0 and extended['coupling']['displaced']>0
+          assert extended['coupling']['unresolved']==extended['coupling']['unresolved_no_target'] and extended['coupling']['unresolved_immovable']==0 and extended['coupling']['unresolved_relocation_refused']==0 and extended['coupling']['unresolved_unclassified']==0
+          assert extended['main_thread_step_timing']['samples']==360
+          assert extended['ejection_topology']['enabled'] and extended['ejection_topology']['classified']>0
+          comparison={}
+          for arm,args,reps in [('L0',['0','0','0'],2),('L1',['0','1','0'],2),('C1',['0','1','1'],2),('R0',['0','0','0','1'],3),('R1',['0','1','0','1'],3),('P0',['0','0','2'],3),('P1',['0','1','2'],3),('E0',['0','0','3'],3),('E1',['0','1','3'],3),('RP0',['0','0','2','1'],3),('RP1',['0','1','2','1'],3)]:
+              for rep in range(1,reps+1):
+                  d=json.loads((root/f'compare-{arm}-{rep}.json').read_text())
+                  assert d['checks']==68 and d['failures']==[] and d['platform']=='Linux', (arm,rep,d['failures'])
+                  assert d['members']==520 and d['shapes']==6 and d['coupling']['proxy_count']==6 and d['coupling']['stale_results']==0
+                  assert d['render_mode']==int(args[2]) and d['render_copy_by_run']==(len(args)>3 and args[3]=='1')
+                  assert d['coupling']['render_consumer'].get('refused',0)==0
+                  assert int(args[2])!=3 or d['coupling']['render_worker_census']['baseline_drops']==0
+                  comparison.setdefault(arm,[]).append({'census':d['coupling']['render_worker_census'],'census_window':d['coupling']['render_worker_census_window'],'refresh':d['coupling']['snapshot_render_refresh_timing'],'refresh_exchange':d['coupling']['snapshot_render_refresh_exchange_timing'],'publish':d['coupling']['snapshot_publish_total_timing'],'worker_overruns':d['coupling']['worker_overruns'],'acks':d['coupling']['render_acknowledgements']})
+          (root/'report.json').write_text(json.dumps({'source':Path(root/'source.txt').read_text().strip(),'platform':'Linux','motion':motion,'failure_paths':failure,'lifecycle':lifecycle,'unresolved_diagnostics':unresolved,'ejection_policy_protocol':policy,'compound_coupling':coupling,'compound_ack_consumed':acknowledged,'compound_coalesced_unacked':unacked,'compound_coalesced':coalesced,'render_ack_unit':ack_unit,'render_owner':owner,'compound_extended':extended,'render_comparison':comparison,'scope':'actual current-source Linux Godot/Rapier A/B diagnostic ejection-search experiment; no publication or full PR acceptance'},indent=2)+'\n')
+          PY2
+          ! grep -E 'SCRIPT ERROR:|ERROR: Failed to load|FAIL SOL281' build/sol281-linux/import.txt build/sol281-linux/motion.txt build/sol281-linux/failures.txt build/sol281-linux/lifecycle.txt build/sol281-linux/unresolved-diagnostics.txt build/sol281-linux/ejection-policy.txt build/sol281-linux/render-ack-unit.txt build/sol281-linux/render-owner.txt build/sol281-linux/compound-coupling.txt build/sol281-linux/compound-ack-consumed.txt build/sol281-linux/compound-coalesced-unacked-*.txt build/sol281-linux/compound-coalesced.txt build/sol281-linux/compound-extended.txt build/sol281-linux/compare-*.txt
+          git diff --check
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: sol281-linux-rapier-${{ github.sha }}
+          path: build/sol281-linux/
+          if-no-files-found: error
+          retention-days: 30

@@ -4,11 +4,51 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-10-27
+last-reviewed: 2026-10-28
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+## SOL281 bounded render-full coalescing candidate — experimental
+
+[Source-bound audit](audits/2026-10-28-sol281-render-coalescing-candidate.md)
+and [runtime contract](systems/solid-detachment.md#opt-in-retained-full-renderdirty-coalescing--experimental-source-7d716a5f)
+describe a disabled-by-default, copy-on-write coalescing candidate
+following the measured retained-full/dirty overflow cause. Its
+Linux/Windows Godot/Rapier qualification must be read separately from
+the previous successful packet census. No physical B=289 policy,
+GPU-FPS claim or production default is admitted. #281 remains open and
+#283 draft, stacked on draft #282.
+
+Source `7d716a5f` **failed** that qualification (run 40762646166). The
+[dated addendum](audits/2026-10-28-sol281-render-coalescing-candidate.md#addendum-failed-7d716a5f-qualification-and-deterministic-gate-correction-28-october-2026)
+records the correction `819c6677`, which **passed** scoped run 40776168081 on Linux and actual Windows:
+
+- a summed-overlay cap;
+- monotonic worker render census;
+- a deterministic unacknowledged gate;
+- a real-owner ACK/reset test.
+
+A preregistered [root-cause comparison](audits/2026-10-28-sol281-render-coalescing-candidate.md#root-cause-comparison-r-p-and-c-28-october-2026) (`85c45720`, run 40780899379) compared three opt-in candidates:
+
+- a byte-identical per-run native full copy, 11–20× faster;
+- partial ACK, which the registered pick chose;
+- coalescing.
+
+No default changed. A [follow-up](audits/2026-10-28-sol281-render-coalescing-candidate.md#follow-up-comparison-e-and-rp-28-october-2026) (`b924fbd2`, run 40785112538) found that the exemption-only variant is preferred over partial ACK, and that adding the per-run copy brings no both-OS gain.
+
+
+## SOL281 CPU render-consumption diagnostic, not a gameplay admission
+
+The branch-local opt-in [source-and-qualification audit](audits/2026-10-28-sol281-render-ack-consumer-control.md)
+and [canonical runtime contract](systems/solid-detachment.md#cpu-render-consumption-ack-control--source-55aa72e5-runtime-qualification-pending)
+explain the validated CPU-image ACK path versus the deliberately
+unacknowledged headless reference, exact-source CI status, immutable
+snapshot ownership and non-production limits. Draft PR #283 and issue
+#281 remain open. The previous two-call native exchange observation
+still applies to its separate unacknowledged evidence, not an accepted
+desktop optimization.
 
 ## Trial successor correction after accepted App — 2026-10-25
 
@@ -466,6 +506,11 @@ and routed to their real physics owner instead of being hidden in interaction ru
 
 
 ## Scalable reversible soliding
+**Newest #281 source-matched microstage attribution (2026-10-28; still diagnostic, not optimized):** [executed `d441a8a5`](https://github.com/techrote/cybersand/commit/d441a8a593f001d944d5f0691eab63d7614023c5) passed [four-job Linux/Windows real-host CI 40724802526](https://github.com/techrote/cybersand/actions/runs/40724802526), **1,414 assertions/OS**, with four ZIP/hash checks and 549/549 Windows Git-source manifest inputs verified. [New audit](audits/2026-10-28-sol281-render-exchange-microstages.md) and [receipt](audits/sol281-2026-10-28/render-exchange-microstages-receipt.json) show native `take_render_snapshot` dominates the ~52ms Linux/~22ms Windows render-stage p95 in this **headless fixture**. Critically, the fixture never acknowledges uploaded render packets; all observed refreshes made **two** native calls via the existing pending-buffer/forced-full path. This is *not* normal desktop frame cost or a proven optimization opportunity. Physics and liquids unchanged; B=289 NO-GO, #281 open, #283 draft.
+**Previous bounded snapshot attribution (no optimization):** [exact `9725885d` Linux/Windows render-versus-terrain stage audit](audits/2026-10-28-sol281-render-terrain-stage-attribution.md) passes **1,406 scoped Godot/Rapier assertions per OS**, source/Windows build identity and four ZIP integrity checks. The previously expensive ~31ms Linux / ~24ms Windows pre-assembly interval is the **render snapshot/patch stage** in the latest fixture; the hard-surface stage is ~0.002ms with no refresh branch observed. [Machine receipt](audits/sol281-2026-10-28/render-terrain-stage-receipt.json) preserves counts and first failed CI harness before repair. Neither result admits 60 FPS, physical ejection B=289 (still NO-GO), reactive Wood, persistence or release; #281 open and #283 draft.
+**Latest source-bound performance qualification:** [preregistered pre-mutex snapshot-stage readback](audits/2026-10-28-sol281-ejection-topology-census.md#addendum--preregistered-snapshot-publication-stage-attribution-source-9c97dc09-2026-10-28) at `9c97dc09` passes 1,400 actual Linux/Windows Rapier checks each but measures publication preparation p95 **52.4ms Linux / 22.8–23.2ms Windows**. [Machine receipt](audits/sol281-2026-10-28/snapshot-publication-stages-receipt.json) preserves four verified ZIPs and 549 exact-source manifest inputs. This is **not** full worker-loop or interactive-frame acceptance; B=289 remains NO-GO and #281/PR #283 open/draft.
+**Experimental source checkpoint:** [real native-tree detachment laboratory](systems/solid-detachment.md) now demonstrates actual native payload transfer, Linux/Windows Rapier toppling, hole-preserving six-proxy Sand/Water coupling and exact unresolved-cause attribution at source `756ae488`. Read the [initial proof](audits/2026-10-27-sol281-native-tree.md), [compound-coupling evidence](audits/2026-10-27-sol281-compound-cellular-coupling.md) and [cause characterisation](audits/2026-10-28-sol281-unresolved-cause-characterisation.md). All live unresolved attempts in the dense fixture exhausted the retained bounded search; this dry inert one-body branch is not main/release acceptance, reactive Wood or general desoliding. #281 stays open. A [2026-10-28 frozen diagnostic ejection-search A/B protocol](audits/2026-10-28-sol281-ejection-search-preregistration.md) now specifies an unchanged default and a bounded opt-in tail; the [scoped source-2d623e10 actual Linux/Windows comparison](audits/2026-10-28-sol281-ejection-search-ab-result.md) confirms **no-go** on B (0.43/0.61 percentage-point reductions against a 20-point threshold), with unchanged default A and conserved cells/holes. The [preregistered follow-up topology census](audits/2026-10-28-sol281-ejection-topology-census.md) passes source-matched scoped Linux/Windows Rapier checks at `dabe2b30`, but its permissive off-axis paths do not authorize a physical relocation; whole-worker and production qualification remain open.
+
 
 **New 2026-10-27 owner priority:** native terrain solid that can
 be cut free and actually topple/roll under Rapier is Track A's first

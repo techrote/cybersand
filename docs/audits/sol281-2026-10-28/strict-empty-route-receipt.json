@@ -1,0 +1,194 @@
+{
+  "schema": "cybersand.sol281.strict-empty-route-qualification.v1",
+  "date": "2026-10-28",
+  "status": "source-matched scoped Linux/Windows Godot/Rapier qualification PASS; no production policy admission",
+  "preregistration": "https://github.com/techrote/cybersand/pull/283#issuecomment-6466395909",
+  "source": {
+    "revision": "ecacca3e701489d58a13793c038968d36f16bb03",
+    "tree": "94842a127df278655eb049383c52b7e61036a5b1",
+    "strict_census_first_revision": "b68074d715e04f3a2e37613239d5322fd1f3d1ee",
+    "source_archive_artifact_id": 12809730349,
+    "source_archive_zip_sha256": "ca629964833279317268b37358b30e86ddf7128b6597279eafb2174f1007f8a0",
+    "source_tar_gz_sha256": "329ba8f0b019e8b5436cf7a3317bdbc0cc87a217144dcf0728529cdbba889167",
+    "independently_rehashed_manifest_inputs": 549,
+    "independently_rehashed_manifest_mismatches": 0
+  },
+  "workflow": {
+    "run_id": 40672040365,
+    "url": "https://github.com/techrote/cybersand/actions/runs/40672040365",
+    "conclusion": "success",
+    "source_job": "success",
+    "linux_rapier_job": "success",
+    "windows_build_job": "success",
+    "windows_rapier_job": "success"
+  },
+  "controlled_protocol": {
+    "checks_per_platform": 924,
+    "failures_per_platform": 0,
+    "baseline_comparator_cases_per_platform": 40,
+    "strict_route_cases_per_platform": 22,
+    "strict_route_worker_counts": [
+      1,
+      4
+    ],
+    "ejection_policies": [
+      0,
+      1
+    ],
+    "strict_route_signatures_cross_platform_equal": true,
+    "saturated_census_per_preparation_no_target": 81,
+    "saturated_census_classified_after_two_preparations": 32,
+    "saturated_census_skipped_after_two_preparations": 130,
+    "result_record_stride": 12
+  },
+  "host_checks_per_platform": {
+    "actual_rapier_motion": 21,
+    "failure_paths": 20,
+    "lifecycle": 296,
+    "lifecycle_replacement_cycles": 18,
+    "unresolved_reason_diagnostics": 43,
+    "controlled_ejection_and_topology": 924,
+    "compound_A": 45,
+    "compound_B": 45,
+    "total": 1394,
+    "failures": 0
+  },
+  "platforms": {
+    "Linux": {
+      "execution_artifact_id": 12809586323,
+      "execution_artifact_zip_sha256": "7f91ac5ad840121c613f8cb98d5a6474484819b45e326253add108d00fee50e4",
+      "report_json_sha256": "4a3297a3f670cc2947a2e7898194b950c9c458892edb6cf944794c0af39c5f20",
+      "runtime_so_sha256": "244b0270f31c37135256524a5ca1d27afac32d1afbbf02c88b215e4e2fdb85bb",
+      "artifact_zip_crc": "pass",
+      "baseline_A": {
+        "no_target_events": 2247,
+        "classified": 2247,
+        "skipped_capacity": 0,
+        "weak_direct": 2247,
+        "weak_path_blocked": 0,
+        "empty_forward": 0,
+        "empty_lateral": 0,
+        "empty_rear": 0,
+        "empty_none": 2247,
+        "weak_direct_without_empty_route": 2247,
+        "accepted_contact_count": 10138,
+        "accepted_displaced": 28,
+        "accepted_unresolved": 2221,
+        "worker_step_p95_ms": 0.458,
+        "native_tick_p95_ms": 0.182681,
+        "render_terrain_copy_p95_ms": 40.161,
+        "worker_overruns": 66,
+        "main_thread_step_p95_us": 206,
+        "headless_physics_frame_p95_us": 20712
+      },
+      "experimental_B": {
+        "no_target_events": 773,
+        "classified": 773,
+        "skipped_capacity": 0,
+        "weak_direct": 773,
+        "weak_path_blocked": 0,
+        "empty_forward": 0,
+        "empty_lateral": 1,
+        "empty_rear": 0,
+        "empty_none": 772,
+        "weak_direct_without_empty_route": 772,
+        "accepted_contact_count": 6557,
+        "accepted_displaced": 40,
+        "accepted_unresolved": 761,
+        "worker_step_p95_ms": 0.639,
+        "native_tick_p95_ms": 0.187928,
+        "render_terrain_copy_p95_ms": 40.255,
+        "worker_overruns": 73,
+        "main_thread_step_p95_us": 205,
+        "headless_physics_frame_p95_us": 20714
+      }
+    },
+    "Windows": {
+      "build_artifact_id": 12809885207,
+      "build_artifact_zip_sha256": "fab906c0a49cd98a3af116fc43bb80fd934527e8a38a91105f1b4cc0b610cf6d",
+      "execution_artifact_id": 12809910654,
+      "execution_artifact_zip_sha256": "28a5826e32558cb3eb689cfb8411511e8ca5cfd9355fae6f7f02ad1d77c09320",
+      "manifest_sha256": "59e12d15a4583c51134a352533c88fd917b1d0cf8c34e1c3856248efdda3001d",
+      "report_json_sha256": "50b4432c66da75895d5dbddc8020ed7bb72794e51b9d58c0cd432ec4821ddaa0",
+      "runtime_dll_sha256": "424d3e24d52a14450ac8e11072d635a4def86fadd6fea36717cb2c92d07ac2c2",
+      "build_dll_sha256_equals_manifest_and_execution": true,
+      "source_verification_inputs": 549,
+      "source_verification_restored_exact_git_bytes": 92,
+      "execution_logs_verified_sha256_and_exit_zero": 8,
+      "artifact_zip_crc": "pass",
+      "baseline_A": {
+        "no_target_events": 3486,
+        "classified": 3486,
+        "skipped_capacity": 0,
+        "weak_direct": 3485,
+        "weak_path_blocked": 1,
+        "empty_forward": 1,
+        "empty_lateral": 0,
+        "empty_rear": 189,
+        "empty_none": 3296,
+        "weak_direct_without_empty_route": 3295,
+        "accepted_contact_count": 12336,
+        "accepted_displaced": 20,
+        "accepted_unresolved": 3377,
+        "worker_step_p95_ms": 0.389,
+        "native_tick_p95_ms": 0.1506,
+        "render_terrain_copy_p95_ms": 13.913,
+        "worker_overruns": 0,
+        "main_thread_step_p95_us": 261,
+        "headless_physics_frame_p95_us": 20711
+      },
+      "experimental_B": {
+        "no_target_events": 1578,
+        "classified": 1578,
+        "skipped_capacity": 0,
+        "weak_direct": 1578,
+        "weak_path_blocked": 0,
+        "empty_forward": 0,
+        "empty_lateral": 0,
+        "empty_rear": 1,
+        "empty_none": 1577,
+        "weak_direct_without_empty_route": 1577,
+        "accepted_contact_count": 9868,
+        "accepted_displaced": 26,
+        "accepted_unresolved": 1428,
+        "worker_step_p95_ms": 0.429,
+        "native_tick_p95_ms": 0.1282,
+        "render_terrain_copy_p95_ms": 13.933,
+        "worker_overruns": 0,
+        "main_thread_step_p95_us": 257,
+        "headless_physics_frame_p95_us": 20708
+      }
+    }
+  },
+  "descriptive_across_four_async_host_arms": {
+    "cumulative_native_owner_no_target_events": 8084,
+    "cumulative_strict_no_empty_route": 7892,
+    "cumulative_weak_direct_path": 8083,
+    "cumulative_weak_direct_without_strict_empty_route": 7891,
+    "note": "Pure descriptive sum; async sample counts differ, not a matched causal A/B effect estimate"
+  },
+  "preserved_negative": {
+    "run_id": 40671639353,
+    "source": "b68074d715e04f3a2e37613239d5322fd1f3d1ee",
+    "linux_scoped_conclusion": "failure",
+    "observed_causes": [
+      "masked public material_at() was wrongly asserted as stored source Sand",
+      "rear void had a lateral reachable path"
+    ],
+    "repair_revisions": [
+      "a37df69ff51e761f5529b8635c95e00e82b5c944",
+      "e09c497bc998545458a508db5852696eede4df59",
+      "ecacca3e701489d58a13793c038968d36f16bb03"
+    ],
+    "retained_url": "https://github.com/techrote/cybersand/actions/runs/40671639353"
+  },
+  "preserved_acceptance_limits": [
+    "The strict Empty/unmasked 4-connected route is only a condition of the deliberately restricted path definition, not necessary for all physical displacement and never sufficient for collision-safe relocation",
+    "A/B host events are not matched trials; no efficacy or cross-OS deterministic timing conclusion follows from count differences",
+    "The measured snapshot_copy_time_ms covers the worker render/terrain preparation interval before complete snapshot assembly; not total end-to-end publication",
+    "Existing policy B=289 remains NO-GO against its preregistered >=20pp efficacy gate; controlled strict census adds no physical ejection",
+    "The 520-member six-proxy inert dry compound is not reactive Wood, arbitrary fracture, body-to-cells desoliding, general material-swarm support, persistence, or normal gameplay",
+    "Sampled headless CPU timing and frame intervals are not representative interactive frame-pacing acceptance",
+    "No independent review, full ready-PR CI, official runtime publication or release approval"
+  ]
+}
