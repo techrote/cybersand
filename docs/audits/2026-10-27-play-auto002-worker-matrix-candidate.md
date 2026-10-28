@@ -429,6 +429,11 @@ wall/HZ, terminal export cost and all five repeats remain available:
 These files are byte-identical copies of the artifact reports, retained in Git
 so the raw measurements outlive artifact expiry. Complete process logs stay in
 the original artifacts; no log or binary build directory is committed here.
+The first evidence commit encountered Git's ordinary JSON LF normalization;
+the following append preserves the original report bytes with two exact-path
+`.gitattributes` entries. The Windows report's CRLF is explicitly recognized
+as its retained line ending for whitespace checks. Canonical Git-blob SHA-256
+now equals the artifact digest for both reports; no measurement is rewritten.
 All counts and both OSes preserve terminal level hashes
 `a649a5ee5282ab93658ecf0456eee4e2a8293a376c73df85b1c30f4c8a68b2c6`
 at 480 and
