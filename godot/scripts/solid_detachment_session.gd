@@ -67,6 +67,9 @@ var _coupling_last_correction: Vector2 = Vector2.ZERO
 var _worker_step_samples_ms: Array[float] = []
 var _native_tick_samples_ms: Array[float] = []
 var _snapshot_copy_samples_ms: Array[float] = []
+var _snapshot_assembly_samples_ms: Array[float] = []
+var _snapshot_publish_total_samples_ms: Array[float] = []
+var _worker_timing_invalid_samples: int = 0
 var _worker_overruns: int = 0
 var _worker_sample_overflow: int = 0
 
@@ -430,7 +433,17 @@ func _consume_compound_results() -> void:
 		if _worker_step_samples_ms.size() < MAX_WORKER_TIMING_SAMPLES:
 			_worker_step_samples_ms.append(float(snapshot.worker_step_time_ms))
 			_native_tick_samples_ms.append(float(snapshot.simulation_time_ms))
-			_snapshot_copy_samples_ms.append(float(snapshot.snapshot_copy_time_ms))
+			var copy_ms: float = float(snapshot.snapshot_copy_time_ms)
+			var assembly_ms: float = float(snapshot.snapshot_assembly_time_ms)
+			var publish_ms: float = float(snapshot.snapshot_publish_total_time_ms)
+			_snapshot_copy_samples_ms.append(copy_ms)
+			if (not is_finite(copy_ms) or not is_finite(assembly_ms)
+				or not is_finite(publish_ms) or copy_ms < 0.0 or assembly_ms < 0.0
+				or publish_ms < copy_ms or publish_ms < assembly_ms):
+				_worker_timing_invalid_samples += 1
+			else:
+				_snapshot_assembly_samples_ms.append(assembly_ms)
+				_snapshot_publish_total_samples_ms.append(publish_ms)
 		else:
 			_worker_sample_overflow += 1
 	var results: PackedFloat32Array = snapshot.rigid_body_results
@@ -613,6 +626,9 @@ func coupling_metrics() -> Dictionary:
 		"worker_step_timing":_timing_summary_ms(_worker_step_samples_ms),
 		"native_tick_timing":_timing_summary_ms(_native_tick_samples_ms),
 		"snapshot_copy_timing":_timing_summary_ms(_snapshot_copy_samples_ms),
+		"snapshot_assembly_timing":_timing_summary_ms(_snapshot_assembly_samples_ms),
+		"snapshot_publish_total_timing":_timing_summary_ms(_snapshot_publish_total_samples_ms),
+		"worker_timing_invalid_samples":_worker_timing_invalid_samples,
 		"worker_overruns":_worker_overruns, "worker_sample_overflow":_worker_sample_overflow}
 
 func body_transform() -> Transform2D:
@@ -679,6 +695,9 @@ func close() -> void:
 	_worker_step_samples_ms.clear()
 	_native_tick_samples_ms.clear()
 	_snapshot_copy_samples_ms.clear()
+	_snapshot_assembly_samples_ms.clear()
+	_snapshot_publish_total_samples_ms.clear()
+	_worker_timing_invalid_samples = 0
 	_worker_overruns = 0
 	_worker_sample_overflow = 0
 	status = "closed"

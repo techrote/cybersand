@@ -1945,6 +1945,7 @@ func _publish_snapshot(
 		_snapshot_hard_surface_epoch = rigid_body_epoch
 		_last_hard_surface_snapshot_usec = now_usec
 	var copy_time_ms: float = float(Time.get_ticks_usec() - copy_start_usec) / 1000.0
+	var assembly_start_usec: int = Time.get_ticks_usec()
 
 	var snapshot: CyberSimulationSnapshot = CyberSimulationSnapshot.new()
 	snapshot.actor_prototypes = _actor_session.snapshot()
@@ -2126,6 +2127,11 @@ func _publish_snapshot(
 		_freeze_capture(_pending_render_context)
 	snapshot.render_context = _pending_render_context
 
+	# Use one endpoint for both copied observations, before publication. Do not
+	# mutate these values after another thread can take the immutable snapshot.
+	var publish_ready_usec: int = Time.get_ticks_usec()
+	snapshot.snapshot_assembly_time_ms = float(publish_ready_usec - assembly_start_usec) / 1000.0
+	snapshot.snapshot_publish_total_time_ms = float(publish_ready_usec - copy_start_usec) / 1000.0
 	_mutex.lock()
 	_published_snapshot = snapshot
 	_mutex.unlock()

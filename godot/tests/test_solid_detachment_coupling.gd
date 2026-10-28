@@ -174,6 +174,18 @@ func _run() -> void:
 	var worker_timing: Dictionary = metrics.get("worker_step_timing", {})
 	check(int(worker_timing.get("samples", 0)) > 0, "worker step timing observed")
 	check(float(worker_timing.get("p95_ms", -1.0)) >= 0.0, "worker p95 observed")
+	var publication: Dictionary = metrics.get("snapshot_publish_total_timing", {})
+	var assembly: Dictionary = metrics.get("snapshot_assembly_timing", {})
+	var preparation: Dictionary = metrics.get("snapshot_copy_timing", {})
+	check(int(metrics.get("worker_timing_invalid_samples", -1)) == 0,
+		"publication-stage samples are finite, non-negative and monotonic")
+	check(int(publication.get("samples", -1)) > 0
+		and int(publication.get("samples", -1)) == int(assembly.get("samples", -2))
+		and int(publication.get("samples", -1)) == int(preparation.get("samples", -3)),
+		"preparation, assembly and publication share an immutable sample set")
+	check(float(publication.get("p95_ms", -1.0)) >= float(preparation.get("p95_ms", 0.0))
+		and float(publication.get("p95_ms", -1.0)) >= float(assembly.get("p95_ms", 0.0)),
+		"prepublication p95 includes the render/terrain and assembly stages")
 	check(int(metrics.get("worker_overruns", -1)) >= 0, "worker overrun counter read")
 	check(frame_intervals_us.size() == 360, "all physics-frame intervals recorded")
 	var displacement_attempts: int = int(metrics.displaced) + int(metrics.unresolved)
