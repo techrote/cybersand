@@ -53,6 +53,8 @@ func _apply_lab(command: Dictionary) -> bool:
 				snapshot_origin, snapshot_size, false)
 		if bool(input.get("include_body_metrics", false)):
 			_solid_pending_reply["body_metrics"] = _world.diagnostic_body_metrics()
+		if bool(input.get("include_ejection_topology", false)) and _world.has_method(&"diagnostic_ejection_topology"):
+			_solid_pending_reply["ejection_topology"] = _world.diagnostic_ejection_topology()
 	_solid_pending_reply["request_id"] = _solid_last_request
 	_lab_status = "Solid detachment: " + str(_solid_pending_reply.get("outcome", "Invalid"))
 	# Prevent the sampled character from adding unrelated material mutations in

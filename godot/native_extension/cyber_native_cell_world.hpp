@@ -148,6 +148,8 @@ public:
     [[nodiscard]] Array diagnostic_body_metrics() const;
     // Read-only applied diagnostic search selection; ordinary demo stays at 0.
     [[nodiscard]] std::int64_t get_ejection_policy() const;
+    // Native-owner-only observational census; fixed rigid-body result ABI.
+    [[nodiscard]] Dictionary diagnostic_ejection_topology() const;
     [[nodiscard]] std::int64_t get_tick_failure_count() const;
 
 protected:
@@ -193,10 +195,22 @@ private:
     };
     using BodyDiagnostics =
         std::array<BodyDiagnostic, cybersand::World::kMaximumTransientBodies + 1U>;
+    struct EjectionTopologyCensus {
+        std::uint64_t no_target_events = 0;
+        std::uint64_t classified = 0;
+        std::uint64_t off_axis_direct_path = 0;
+        std::uint64_t nearby_void_path_blocked = 0;
+        std::uint64_t no_nearby_unmasked_void = 0;
+        std::uint64_t skipped_capacity = 0;
+    };
     std::unique_ptr<BodyDiagnostics> body_diagnostics_;
     bool diagnostic_fixture_ = false;
     // SOL281 diagnostic-only experiment. 0 is the unchanged production search.
     std::uint8_t ejection_policy_ = 0;
+    // Admitted only by diagnostic_reset. No dynamic allocations on sweep.
+    bool ejection_topology_enabled_ = false;
+    std::uint32_t ejection_topology_classified_this_sample_ = 0;
+    EjectionTopologyCensus ejection_topology_{};
     bool default_demo_recipe_active_ = false;
     double displacement_gain_ = 0.18;
     double boundary_gain_ = 0.19;
@@ -293,6 +307,8 @@ private:
                                                 std::int32_t target_x,
                                                 std::int32_t target_y,
                                                 std::uint16_t source_body_id) const;
+    void classify_ejection_failure(std::int32_t source_x, std::int32_t source_y,
+                                   std::uint16_t source_body_id);
     void record_impulse(std::uint16_t body_id, Vector2 impulse);
     [[nodiscard]] static std::int32_t symmetric_probe_offset(std::int32_t index);
     [[nodiscard]] static bool in_bounds(std::int64_t x, std::int64_t y);

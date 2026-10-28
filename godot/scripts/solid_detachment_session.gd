@@ -12,6 +12,7 @@ const BRICK: int = 43
 const SAND: int = 2
 const WATER: int = 3
 const COUPLING_SAMPLE_LIMIT: int = 1000000
+const MAX_WORKER_TIMING_SAMPLES: int = 512
 const COUPLING_RESULT_AGE_LIMIT: int = 8
 const COUPLING_POSITION_AGE_LIMIT: int = 2
 const COUPLING_IMPULSE_CAP: float = 3.0
@@ -63,8 +64,14 @@ var _coupling_correction_applications: int = 0
 var _coupling_stale_results: int = 0
 var _coupling_last_impulse: Vector2 = Vector2.ZERO
 var _coupling_last_correction: Vector2 = Vector2.ZERO
+var _worker_step_samples_ms: Array[float] = []
+var _native_tick_samples_ms: Array[float] = []
+var _snapshot_copy_samples_ms: Array[float] = []
+var _worker_overruns: int = 0
+var _worker_sample_overflow: int = 0
 
-func open(parent: Node, workers: int = 4, ejection_policy: int = 0) -> bool:
+func open(parent: Node, workers: int = 4, ejection_policy: int = 0,
+		ejection_topology: bool = false) -> bool:
 	close()
 	_parent = parent
 	_tree = parent.get_tree()
@@ -79,7 +86,7 @@ func open(parent: Node, workers: int = 4, ejection_policy: int = 0) -> bool:
 	if not native.has_method(&"solid_detachment_command") or not ClassDB.class_exists(&"RapierPhysicsServer2D"):
 		return _fail("Source-matched native detachment and Rapier runtime required; no fallback")
 	if not native.diagnostic_reset({"workers":workers,"telemetry":false,
-		"ejection_policy":ejection_policy}):
+		"ejection_policy":ejection_policy, "ejection_topology":ejection_topology}):
 		return _fail("Native diagnostic setup refused")
 	if native.get_ejection_policy() != ejection_policy:
 		return _fail("Native experimental search policy readback mismatch")
@@ -416,6 +423,16 @@ func _consume_compound_results() -> void:
 	if snapshot.rigid_body_epoch != physics_epoch:
 		return
 	_coupling_result_snapshots += 1
+	# Observes latest-only immutable worker snapshots. This is a sampled
+	# duration distribution, not all native ticks or total frame time.
+	if not snapshot.paused:
+		_worker_overruns = maxi(_worker_overruns, int(snapshot.worker_overruns))
+		if _worker_step_samples_ms.size() < MAX_WORKER_TIMING_SAMPLES:
+			_worker_step_samples_ms.append(float(snapshot.worker_step_time_ms))
+			_native_tick_samples_ms.append(float(snapshot.simulation_time_ms))
+			_snapshot_copy_samples_ms.append(float(snapshot.snapshot_copy_time_ms))
+		else:
+			_worker_sample_overflow += 1
 	var results: PackedFloat32Array = snapshot.rigid_body_results
 	var record_count: int = CyberRigidBodyCoupling.result_body_count(results)
 	if record_count == 0:
@@ -558,12 +575,25 @@ func inspect_coupling(points: PackedInt32Array = PackedInt32Array(),
 	set_paused(true)
 	var request: Dictionary = {"action":"inspect", "probe_points":points,
 		"snapshot_origin":region.position, "snapshot_size":region.size,
-		"include_body_metrics":true}
+		"include_body_metrics":true, "include_ejection_topology":true}
 	var result: Dictionary = await command(request)
 	if not _owns(owner_generation, owner_worker):
 		return {"ok":false,"outcome":"SessionRetired"}
 	if result.get("ok", false):
 		set_paused(was_paused)
+	return result
+
+func _timing_summary_ms(samples: Array[float]) -> Dictionary:
+	var result: Dictionary = {"samples":samples.size(), "p50_ms":-1.0,
+		"p95_ms":-1.0, "p99_ms":-1.0, "max_ms":-1.0}
+	if samples.is_empty():
+		return result
+	var ordered: Array[float] = samples.duplicate()
+	ordered.sort()
+	result.p50_ms = ordered[int(floor(float(ordered.size() - 1) * 0.50))]
+	result.p95_ms = ordered[int(ceil(float(ordered.size() - 1) * 0.95))]
+	result.p99_ms = ordered[int(ceil(float(ordered.size() - 1) * 0.99))]
+	result.max_ms = ordered.back()
 	return result
 
 func coupling_metrics() -> Dictionary:
@@ -579,7 +609,11 @@ func coupling_metrics() -> Dictionary:
 		"correction_applications":_coupling_correction_applications,
 		"stale_results":_coupling_stale_results, "last_impulse":_coupling_last_impulse,
 		"last_correction":_coupling_last_correction, "native_tick":_coupling_last_native_tick,
-		"sample_serial":_coupling_sample_serial}
+		"sample_serial":_coupling_sample_serial,
+		"worker_step_timing":_timing_summary_ms(_worker_step_samples_ms),
+		"native_tick_timing":_timing_summary_ms(_native_tick_samples_ms),
+		"snapshot_copy_timing":_timing_summary_ms(_snapshot_copy_samples_ms),
+		"worker_overruns":_worker_overruns, "worker_sample_overflow":_worker_sample_overflow}
 
 func body_transform() -> Transform2D:
 	return bridge.body_transform(0) if bridge != null else Transform2D(0.0,source_center)
@@ -642,6 +676,11 @@ func close() -> void:
 	_coupling_stale_results = 0
 	_coupling_last_impulse = Vector2.ZERO
 	_coupling_last_correction = Vector2.ZERO
+	_worker_step_samples_ms.clear()
+	_native_tick_samples_ms.clear()
+	_snapshot_copy_samples_ms.clear()
+	_worker_overruns = 0
+	_worker_sample_overflow = 0
 	status = "closed"
 
 func _destroy_physics() -> void:

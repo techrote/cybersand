@@ -126,3 +126,18 @@ Reactive Wood/bark, heterogeneous bonds, multiple aggregates, general
 desoliding/fracture, persistence/residency, normal-app integration,
 published runtime and independent/full review all remain open. No
 native-cell material policy or per-liquid construction policy changed.
+
+## Follow-up observational registration — not an efficacy retry
+
+A [frozen PR #283 registration](https://github.com/techrote/cybersand/pull/283#issuecomment-6463108213)
+made **after the negative A/B result but before new instrumentation** sets up
+a bounded native-owner topology census of no-target contacts. It distinguishes
+directly accessible unused voids, voids with a blocked straight path, and the
+absence of a nearby unmasked void within a 17×17 square. The census is
+observational only, opt-in and capped at the first 16 contacts per owner
+preparation; skipped contacts remain explicitly counted.
+
+At the time this source-change plan was registered, no new actual-host
+outcome was available. A separate dated exact-source evidence record is
+required for the result. The original A/B no-go and input/runtime hashes
+above are unchanged.

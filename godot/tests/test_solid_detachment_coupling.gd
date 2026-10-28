@@ -36,7 +36,7 @@ func _run() -> void:
 	var policy_args: PackedStringArray = OS.get_cmdline_user_args()
 	var ejection_policy: int = int(policy_args[1]) if policy_args.size() > 1 else 0
 	session = Session.new()
-	if not await session.open(root, 4, ejection_policy):
+	if not await session.open(root, 4, ejection_policy, true):
 		check(false, session.last_error)
 		session.close()
 		quit(1)
@@ -106,9 +106,13 @@ func _run() -> void:
 	var max_rotation: float = 0.0
 	var max_translation: float = 0.0
 	var main_step_us: Array[int] = []
+	var frame_intervals_us: Array[int] = []
+	var previous_frame_us: int = Time.get_ticks_usec()
 	for _tick: int in range(360):
 		await physics_frame
 		var started_us: int = Time.get_ticks_usec()
+		frame_intervals_us.append(started_us - previous_frame_us)
+		previous_frame_us = started_us
 		session.physics_step()
 		main_step_us.append(Time.get_ticks_usec() - started_us)
 		var transform: Transform2D = session.body_transform()
@@ -145,6 +149,27 @@ func _run() -> void:
 	check(int(final_material.get("water_mass", -1)) == 4 * 255,
 		"Water mass conserved through moving compound coupling")
 
+	# Native owner census sees all failed searches, but the latest-only
+	# snapshots below observe only accepted asynchronous result records.
+	var topology: Dictionary = final.get("ejection_topology", {})
+	check(bool(topology.get("enabled", false)), "explicit topology census enabled")
+	check(int(topology.get("radius", -1)) == 8
+		and int(topology.get("per_sample_capacity", -1)) == 16,
+		"bounded local square and per-owner preparation scan limit")
+	var classified: int = int(topology.get("classified", -1))
+	var no_target_events: int = int(topology.get("no_target_events", -1))
+	check(no_target_events == classified + int(topology.get("skipped_capacity", -1)),
+		"all attempted no-targets are either classified or capped")
+	check(classified == int(topology.get("off_axis_direct_path", -1))
+		+ int(topology.get("nearby_void_path_blocked", -1))
+		+ int(topology.get("no_nearby_unmasked_void", -1)),
+		"each classified failure is assigned to one local topology bin")
+	check(classified > 0, "dense bank creates bounded inspected failures")
+	var worker_timing: Dictionary = metrics.get("worker_step_timing", {})
+	check(int(worker_timing.get("samples", 0)) > 0, "worker step timing observed")
+	check(float(worker_timing.get("p95_ms", -1.0)) >= 0.0, "worker p95 observed")
+	check(int(metrics.get("worker_overruns", -1)) >= 0, "worker overrun counter read")
+	check(frame_intervals_us.size() == 360, "all physics-frame intervals recorded")
 	var displacement_attempts: int = int(metrics.displaced) + int(metrics.unresolved)
 	var unresolved_rate: float = float(metrics.unresolved) / maxf(float(displacement_attempts), 1.0)
 	main_step_us.sort()
@@ -162,9 +187,23 @@ func _run() -> void:
 		timing.p95_usec = main_step_us[int(ceil(float(sample_count - 1) * 0.95))]
 		timing.p99_usec = main_step_us[int(ceil(float(sample_count - 1) * 0.99))]
 		timing.max_usec = main_step_us[sample_count - 1]
+	frame_intervals_us.sort()
+	var frame_pacing: Dictionary = {"samples":frame_intervals_us.size(),
+		"p50_usec":-1, "p95_usec":-1, "p99_usec":-1, "max_usec":-1,
+		"over_16667_usec":0}
+	if not frame_intervals_us.is_empty():
+		var count: int = frame_intervals_us.size()
+		frame_pacing.p50_usec = frame_intervals_us[int(floor(float(count - 1) * 0.50))]
+		frame_pacing.p95_usec = frame_intervals_us[int(ceil(float(count - 1) * 0.95))]
+		frame_pacing.p99_usec = frame_intervals_us[int(ceil(float(count - 1) * 0.99))]
+		frame_pacing.max_usec = frame_intervals_us.back()
+		for interval_us: int in frame_intervals_us:
+			if interval_us > 16667:
+				frame_pacing.over_16667_usec += 1
 	var report: Dictionary = {
-		"schema":"cybersand.sol281.compound-cellular-coupling.v2",
+		"schema":"cybersand.sol281.compound-cellular-coupling.v3",
 		"ejection_policy":ejection_policy, "main_thread_step_timing":timing,
+		"headless_physics_frame_pacing":frame_pacing, "ejection_topology":topology,
 		"checks":checks, "failures":failures, "platform":OS.get_name(),
 		"members":source.member_count, "shapes":source.shape_count,
 		"initial_body_ids":ids, "sand_average_y":sand_average_y,

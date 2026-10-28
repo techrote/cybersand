@@ -193,8 +193,16 @@ func _run() -> void:
 		var retained: PackedByteArray = _stored_cells(admission, true)
 		check(retained.size() == SIZE.x * SIZE.y and _at(retained, 64, 64) == SAND,
 			"invalid policy retains old authoritative source cell")
-		check(admission.reset_demo_world() and admission.get_ejection_policy() == 0,
-			"ordinary demo reset returns the search policy to baseline")
+		check(not admission.diagnostic_reset({"workers":1, "ejection_topology":1}),
+			"nonboolean topology option refused before replacing owner")
+		check(not bool(admission.diagnostic_ejection_topology().get("enabled", true)),
+			"topology census opt-in disabled by default")
+		check(admission.diagnostic_reset({"workers":1, "ejection_topology":true})
+			and bool(admission.diagnostic_ejection_topology().get("enabled", false)),
+			"explicit topology census admitted only with fresh diagnostic world")
+		check(admission.reset_demo_world() and admission.get_ejection_policy() == 0
+			and not bool(admission.diagnostic_ejection_topology().get("enabled", true)),
+			"ordinary demo reset returns both search and topology to baseline")
 	var report: Dictionary = {"schema":"cybersand.sol281.ejection-policy-protocol.v1",
 		"platform":OS.get_name(), "checks":checks, "failures":failures,
 		"baseline_candidates_max":81, "extended_candidates_max":289,
