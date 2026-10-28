@@ -137,6 +137,15 @@ var snapshot_render_dirty_onto_full_total: int = 0
 var snapshot_render_coalesced_total: int = 0
 var snapshot_render_forced_full_retry_total: int = 0
 var snapshot_render_ack_clear_total: int = 0
+# SOL281 root-cause candidates: candidate-P baseline drops, refreshes that
+# published a full frame, published payload bytes and the pending-byte
+# high-water, plus this snapshot's overflow-guard exemption (P baseline only).
+var snapshot_render_baseline_drop_total: int = 0
+var snapshot_render_full_publication_total: int = 0
+var snapshot_render_published_bytes_total: int = 0
+var snapshot_render_pending_bytes_high_water: int = 0
+var snapshot_render_overflow_exempt_bytes: int = 0
+var snapshot_render_overflow_exempt_rectangles: int = 0
 # Portion after the existing render/terrain preparation interval and before
 # the mutex-protected immutable snapshot publication. Excludes the handoff.
 var snapshot_assembly_time_ms: float = 0.0

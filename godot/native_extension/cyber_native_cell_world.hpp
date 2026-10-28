@@ -67,7 +67,7 @@ public:
     [[nodiscard]] std::int64_t character_disturb_granular(
         Vector2 origin, Vector2 size, double impact_speed);
     [[nodiscard]] PackedByteArray get_cells() const;
-    [[nodiscard]] Dictionary take_render_snapshot(bool force_full = false);
+    [[nodiscard]] Dictionary take_render_snapshot(bool force_full = false, bool copy_by_run = false);
     [[nodiscard]] PackedInt32Array get_hard_surface_rectangles() const;
     [[nodiscard]] PackedInt32Array get_hard_surface_chunk_rectangles() const;
 

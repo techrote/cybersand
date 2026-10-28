@@ -2,8 +2,10 @@ extends SceneTree
 
 # SOL281 opt-in render coalescing through the REAL exclusive worker owner and
 # native RG8 exchange: stale/exact ACK, reset generation and the monotonic
-# census. Paused World, so only the scripted paints change cells. No Rapier,
-# scene-tree physics or GPU upload. Configured native workers 1 and 4.
+# census, plus candidates P (partial ACK) and R (per-run copy). Paused World,
+# so only the scripted paints change cells. No Rapier, scene-tree physics or
+# GPU upload. Configured native workers 1 and 4.
+const Consumer = preload("res://scripts/solid_detachment_render_consumer.gd")
 const PAINT_Y: int = 300
 var checks: int = 0
 var failures: Array[String] = []
@@ -49,6 +51,8 @@ func _run() -> void:
 	if ClassDB.class_exists(&"CyberNativeCellWorld"):
 		for workers: int in [1, 4]:
 			await _cohort(workers)
+		for workers: int in [1, 4]:
+			await _partial_cohort(workers)
 	print("SOL281_RENDER_OWNER ", JSON.stringify({"checks":checks, "failures":failures,
 		"platform":OS.get_name(), "cohorts":cohorts}))
 	quit(0 if failures.is_empty() else 1)
@@ -123,10 +127,75 @@ func _cohort(workers: int) -> void:
 		and _material(after_reset, 500) == _material(reset, 500),
 		label + "post-reset paint coalesces only onto the new generation's frame")
 	var last: CyberSimulationSnapshot = after_reset if after_reset != null else reset
-	cohorts.append({"workers":workers,
+	cohorts.append({"workers":workers, "mode":"coalescing",
 		"refreshes":last.snapshot_render_refresh_total,
 		"dirty_onto_full":last.snapshot_render_dirty_onto_full_total,
 		"coalesced":last.snapshot_render_coalesced_total,
 		"forced_full_retries":last.snapshot_render_forced_full_retry_total,
 		"ack_clears":last.snapshot_render_ack_clear_total})
+	worker.stop_worker()
+
+# Candidate P (partial ACK), workers 1 without and 4 WITH candidate R. The
+# CPU image built from the full baseline plus rebased patches must equal a
+# fresh native full frame byte for byte.
+func _partial_cohort(workers: int) -> void:
+	ProjectSettings.set_setting("cybersand/native_worker_threads", workers)
+	var copy_by_run: bool = workers == 4
+	var label: String = "P workers=%d copy_by_run=%s " % [workers, copy_by_run]
+	var worker := CyberSimulationWorker.new()
+	worker._experimental_render_partial_ack = true
+	worker._experimental_render_copy_by_run = copy_by_run
+	worker.set_frame_state(0.0, false, true, Vector2i(160, 90), Vector2i.ZERO,
+		Vector2i(320, 180), 0, 0, false, false, true)
+	check(worker.start_worker(Vector2(150, 145)) == OK, label + "worker started")
+	var image = Consumer.new()
+	var initial: CyberSimulationSnapshot = worker.take_latest_snapshot(-1)
+	check(initial != null and _single_full(initial) and image.consume(initial),
+		label + "first full frame consumed as the CPU baseline")
+	if initial == null or not _single_full(initial):
+		worker.stop_worker()
+		return
+	var first: CyberSimulationSnapshot = await _paint(worker, initial, 500)
+	check(first != null and first.render_full_refresh
+		and first.render_patch_rectangles.size() > 6
+		and first.render_patch_cells.size() > CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * 2
+		and first.snapshot_render_forced_full_retry_total == 0
+		and first.snapshot_render_coalesced_total == 0,
+		label + "dirty paint appends behind the unacknowledged baseline without a retry")
+	if first == null:
+		worker.stop_worker()
+		return
+	worker.acknowledge_render_snapshot(initial.render_snapshot_serial)
+	var dropped: CyberSimulationSnapshot = await _wait_for(worker, first.serial,
+		func(s: CyberSimulationSnapshot) -> bool:
+			return s.render_snapshot_serial > first.render_snapshot_serial)
+	check(dropped != null and not dropped.render_full_refresh
+		and dropped.render_patch_cells.size() < CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * 2
+		and dropped.snapshot_render_baseline_drop_total > first.snapshot_render_baseline_drop_total,
+		label + "baseline ACK drops the full frame and republishes only appended patches")
+	if dropped == null:
+		worker.stop_worker()
+		return
+	check(image.consume(dropped), label + "strict consumer applies the rebased patches onto its baseline")
+	var second: CyberSimulationSnapshot = await _paint(worker, dropped, 510)
+	check(second != null and not second.render_full_refresh and image.consume(second),
+		label + "a later dirty paint publishes and applies patches only")
+	if second == null:
+		worker.stop_worker()
+		return
+	worker.acknowledge_render_snapshot(second.render_snapshot_serial)
+	worker.request_render_full_refresh()
+	var fresh: CyberSimulationSnapshot = await _wait_for(worker, second.serial,
+		func(s: CyberSimulationSnapshot) -> bool:
+			return s.render_snapshot_serial > second.render_snapshot_serial and s.render_full_refresh)
+	var oracle = Consumer.new()
+	check(fresh != null and _single_full(fresh) and oracle.consume(fresh)
+		and oracle._image.get_data() == image._image.get_data(),
+		label + "patched CPU image equals a fresh native full frame byte for byte")
+	var last: CyberSimulationSnapshot = fresh if fresh != null else second
+	cohorts.append({"workers":workers, "mode":"partial_ack", "copy_by_run":copy_by_run,
+		"baseline_drops":last.snapshot_render_baseline_drop_total,
+		"forced_full_retries":last.snapshot_render_forced_full_retry_total,
+		"full_publications":last.snapshot_render_full_publication_total,
+		"refreshes":last.snapshot_render_refresh_total})
 	worker.stop_worker()

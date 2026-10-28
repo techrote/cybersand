@@ -147,9 +147,9 @@ void CyberNativeCellWorld::_bind_methods() {
     ClassDB::bind_method(D_METHOD("character_disturb_granular", "origin", "size", "impact_speed"),
                          &CyberNativeCellWorld::character_disturb_granular);
     ClassDB::bind_method(D_METHOD("get_cells"), &CyberNativeCellWorld::get_cells);
-    ClassDB::bind_method(D_METHOD("take_render_snapshot", "force_full"),
+    ClassDB::bind_method(D_METHOD("take_render_snapshot", "force_full", "copy_by_run"),
                          &CyberNativeCellWorld::take_render_snapshot,
-                         DEFVAL(false));
+                         DEFVAL(false), DEFVAL(false));
     ClassDB::bind_method(D_METHOD("get_hard_surface_rectangles"),
                          &CyberNativeCellWorld::get_hard_surface_rectangles);
     ClassDB::bind_method(D_METHOD("get_hard_surface_chunk_rectangles"),
@@ -1118,7 +1118,7 @@ PackedByteArray CyberNativeCellWorld::get_cells() const {
     return render_cells_;
 }
 
-Dictionary CyberNativeCellWorld::take_render_snapshot(bool force_full) {
+Dictionary CyberNativeCellWorld::take_render_snapshot(bool force_full, bool copy_by_run) {
     Dictionary packet;
     if (has_failed()) {
         packet["failed"] = true;
@@ -1146,10 +1146,13 @@ Dictionary CyberNativeCellWorld::take_render_snapshot(bool force_full) {
             const auto width = static_cast<std::size_t>(kWorldWidth);
             const auto height = static_cast<std::size_t>(kWorldHeight);
             cells.resize(static_cast<std::int64_t>(width * height * 2U));
-            world_->copy_render_cells(
-                {0, 0, kWorldWidth, kWorldHeight},
-                std::span<std::uint8_t>{cells.ptrw(), static_cast<std::size_t>(cells.size())},
-                width * 2U);
+            // SOL281 candidate R (opt-in): byte-identical per-run copy.
+            const std::span<std::uint8_t> frame{cells.ptrw(), static_cast<std::size_t>(cells.size())};
+            if (copy_by_run) {
+                world_->copy_render_cells_by_run({0, 0, kWorldWidth, kWorldHeight}, frame, width * 2U);
+            } else {
+                world_->copy_render_cells({0, 0, kWorldWidth, kWorldHeight}, frame, width * 2U);
+            }
             rectangles.resize(6);
             auto* metadata = rectangles.ptrw();
             metadata[0] = 0;

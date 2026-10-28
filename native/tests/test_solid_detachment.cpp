@@ -1,5 +1,7 @@
 #include "cybersand/world.hpp"
+#include <algorithm>
 #include <atomic>
+#include <chrono>
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
@@ -302,6 +304,69 @@ void generation_and_failed_world_safety() {
     expect(failed.world.inspect_solid_detachment().aggregate_owned_count == owned, "failure retains aggregate-owned material");
 }
 
+// SOL281 render candidate R: the per-run copy must equal the per-cell copy
+// byte for byte, including padding, non-resident chunks and signed seams.
+void render_copy_by_run_identity() {
+    World world(config(1));
+    world.reserve_region({-200, -64, 400, 300});
+    const Material palette[] = {Material::Empty, Material::Water, Material::Fire, Material::Lava,
+                                Material::Steam, Material::RedBrick, Material::Wall};
+    std::uint32_t accepted = 0;
+    for (std::int64_t y = -64; y < 236; ++y) {
+        for (std::int64_t x = -200; x < 200; ++x) {
+            const auto mix = static_cast<std::uint64_t>((x + 1000) * 7919 + (y + 1000) * 104729);
+            const auto material = palette[mix % std::size(palette)];
+            bool explicit_state = false;
+            try {
+                explicit_state = world.set_cell_state(x, y, material,
+                                                      static_cast<std::uint16_t>(mix % 65521U),
+                                                      static_cast<std::uint8_t>(mix % 251U));
+            } catch (const std::exception&) {
+                explicit_state = false; // out-of-domain state for this material
+            }
+            if (explicit_state) ++accepted;
+            else world.set(x, y, material);
+        }
+    }
+    expect(accepted > 0, "fixture accepted explicit per-cell states");
+    const RectI64 regions[] = {
+        {-200, -64, 400, 300},   // whole reserved area across signed chunk seams
+        {-300, -150, 600, 500},  // includes non-resident chunks
+        {-129, -1, 3, 2},        // tiny region straddling negative seams
+        {127, 127, 2, 2},        // positive seam corner
+        {-130, 10, 260, 7},      // compared below with a padded stride
+    };
+    for (const auto& region : regions) {
+        const auto stride = static_cast<std::size_t>(region.width) * 2U + 6U;
+        const auto bytes = stride * static_cast<std::size_t>(region.height);
+        std::vector<std::uint8_t> per_cell(bytes, 0xABU), per_run(bytes, 0xABU);
+        world.copy_render_cells(region, per_cell, stride);
+        world.copy_render_cells_by_run(region, per_run, stride);
+        expect(per_cell == per_run, "run-based render copy equals per-cell copy and padding");
+    }
+    // Reported, not asserted: 1024x1024 full-frame cost of both copies.
+    World full(config(1));
+    full.reserve_region({0, 0, 1024, 1024});
+    for (std::int64_t y = 0; y < 1024; y += 3)
+        for (std::int64_t x = 0; x < 1024; x += 5) full.set(x, y, palette[(x + y) % 7]);
+    std::vector<std::uint8_t> frame_a(1024U * 1024U * 2U), frame_b(frame_a.size());
+    const auto median_ms = [&](auto copy) {
+        std::vector<double> samples;
+        for (int i = 0; i < 5; ++i) {
+            const auto start = std::chrono::steady_clock::now();
+            copy();
+            samples.push_back(std::chrono::duration<double, std::milli>(
+                std::chrono::steady_clock::now() - start).count());
+        }
+        std::sort(samples.begin(), samples.end());
+        return samples[2];
+    };
+    const auto cell_ms = median_ms([&] { full.copy_render_cells({0, 0, 1024, 1024}, frame_a, 2048U); });
+    const auto run_ms = median_ms([&] { full.copy_render_cells_by_run({0, 0, 1024, 1024}, frame_b, 2048U); });
+    expect(frame_a == frame_b, "full 1024x1024 frames identical");
+    std::cout << "SOL281_RENDER_COPY {\"per_cell_ms\":" << cell_ms << ",\"per_run_ms\":" << run_ms << "}\n";
+}
+
 int main() {
     try {
         const auto run = [](const char* name, auto test) { test(); ++cases; std::cout << "PASS " << name << '\n'; };
@@ -313,6 +378,7 @@ int main() {
         run("allocation-free prepare/commit/rollback", no_heap_allocation_during_handoff);
         run("signed chunk seams/configured workers1/4 parity", signed_seams_and_worker_configuration_parity);
         run("revision exhaustion/rollback headroom/failed World", generation_and_failed_world_safety);
+        run("render copy by run equals per-cell copy", render_copy_by_run_identity);
         std::cout << "SOL-DETACH-001 A1 native precursor: " << cases << " groups, " << checks << " checks passed.\n"
                   << "Actual native World exercised; bridge receipts are synthetic. Rapier motion and async host NOT qualified.\n";
         return 0;

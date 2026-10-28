@@ -392,6 +392,10 @@ public:
     [[nodiscard]] std::vector<DirtyChunk> take_dirty_chunks();
     void copy_render_cells(RectI64 region, std::span<std::uint8_t> destination,
                            std::size_t stride_bytes) const;
+    // SOL281 experimental: byte-identical to copy_render_cells, but resolves
+    // each chunk once per row run instead of three hashed lookups per cell.
+    void copy_render_cells_by_run(RectI64 region, std::span<std::uint8_t> destination,
+                                  std::size_t stride_bytes) const;
     // One display material byte per cell. Fractional Water uses stable
     // render-only coverage dithering; authoritative mass is never mutated.
     void copy_material_cells(RectI64 region, std::span<std::uint8_t> destination,

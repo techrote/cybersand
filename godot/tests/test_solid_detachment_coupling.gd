@@ -36,9 +36,12 @@ func _run() -> void:
 	var policy_args: PackedStringArray = OS.get_cmdline_user_args()
 	var ejection_policy: int = int(policy_args[1]) if policy_args.size() > 1 else 0
 	var consume_render_packets: bool = int(policy_args[2]) == 1 if policy_args.size() > 2 else false
-	var coalesce_render_packets: bool = int(policy_args[3]) == 1 if policy_args.size() > 3 else false
+	# 0 original, 1 coalescing, 2 partial ACK; optional 5th arg selects copy R.
+	var render_mode: int = int(policy_args[3]) if policy_args.size() > 3 else 0
+	var coalesce_render_packets: bool = render_mode == 1
+	var copy_by_run: bool = int(policy_args[4]) == 1 if policy_args.size() > 4 else false
 	session = Session.new()
-	if not await session.open(root, 4, ejection_policy, true, consume_render_packets, coalesce_render_packets):
+	if not await session.open(root, 4, ejection_policy, true, consume_render_packets, render_mode, copy_by_run):
 		check(false, session.last_error)
 		session.close()
 		quit(1)
@@ -257,9 +260,12 @@ func _run() -> void:
 	var onto_full: int = int(census.get("dirty_onto_full", -1))
 	var coalesced: int = int(census.get("coalesced", -1))
 	var retries: int = int(census.get("forced_full_retries", -1))
+	var drops: int = int(census.get("baseline_drops", -1))
 	check(int(census.get("refreshes", 0)) > 0 and coalesced >= 0 and coalesced <= onto_full
 		and (coalesce_render_packets or coalesced == 0)
-		and (consume_render_packets or (onto_full > 0 and retries == onto_full - coalesced)),
+		and (render_mode == 2 or drops == 0) and (consume_render_packets or drops == 0)
+		and (consume_render_packets or (onto_full > 0 and (retries == onto_full - coalesced
+			if render_mode != 2 else retries < onto_full))),
 		"worker census: opt-out never coalesces; each unacknowledged uncoalesced dirty packet forces one full retry")
 	# Deterministic opt-in gate. Without ACK the full frame stays retained, so
 	# every later dirty packet must coalesce and no forced-full retry remains.
@@ -313,6 +319,7 @@ func _run() -> void:
 		"schema":"cybersand.sol281.compound-cellular-coupling.v3",
 		"ejection_policy":ejection_policy, "cpu_render_consumer":consume_render_packets,
 		"render_full_coalescing":coalesce_render_packets,
+		"render_mode":render_mode, "render_copy_by_run":copy_by_run,
 		"main_thread_step_timing":timing,
 		"headless_physics_frame_pacing":frame_pacing, "ejection_topology":topology,
 		"checks":checks, "failures":failures, "platform":OS.get_name(),

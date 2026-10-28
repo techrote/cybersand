@@ -111,10 +111,17 @@ var _render_worker_dirty_onto_full: int = 0
 var _render_worker_coalesced: int = 0
 var _render_worker_retries: int = 0
 var _render_worker_ack_clears: int = 0
+var _render_worker_baseline_drops: int = 0
+var _render_worker_full_publications: int = 0
+var _render_worker_published_bytes: int = 0
+var _render_worker_pending_high_water: int = 0
+# Totals at the first coupled (epoch-matched) snapshot. Before it no consumer
+# can ACK, so whole-run totals also count an unacknowledged setup phase.
+var _render_census_window_start: Dictionary = {}
 
 func open(parent: Node, workers: int = 4, ejection_policy: int = 0,
 		ejection_topology: bool = false, consume_render_packets: bool = false,
-		coalesce_render_packets: bool = false) -> bool:
+		render_mode: int = 0, copy_by_run: bool = false) -> bool:
 	close()
 	_render_consumer_enabled = consume_render_packets
 	if consume_render_packets:
@@ -125,7 +132,11 @@ func open(parent: Node, workers: int = 4, ejection_policy: int = 0,
 	_opening = true
 	last_error = ""
 	worker = Worker.new()
-	worker._experimental_render_full_coalescing = coalesce_render_packets
+	# SOL281 render experiment: 0 original, 1 coalescing, 2 partial ACK (P);
+	# copy_by_run selects candidate R. All are opt-in and set before start.
+	worker._experimental_render_full_coalescing = render_mode == 1
+	worker._experimental_render_partial_ack = render_mode == 2
+	worker._experimental_render_copy_by_run = copy_by_run
 	var owner_generation: int = generation
 	var owner_worker: CyberSimulationWorker = worker
 	# Before start_worker(), this thread is the exclusive native owner.
@@ -474,8 +485,14 @@ func _consume_compound_results() -> void:
 	_render_worker_coalesced = snapshot.snapshot_render_coalesced_total
 	_render_worker_retries = snapshot.snapshot_render_forced_full_retry_total
 	_render_worker_ack_clears = snapshot.snapshot_render_ack_clear_total
+	_render_worker_baseline_drops = snapshot.snapshot_render_baseline_drop_total
+	_render_worker_full_publications = snapshot.snapshot_render_full_publication_total
+	_render_worker_published_bytes = snapshot.snapshot_render_published_bytes_total
+	_render_worker_pending_high_water = snapshot.snapshot_render_pending_bytes_high_water
 	if snapshot.rigid_body_epoch != physics_epoch:
 		return
+	if _render_census_window_start.is_empty():
+		_render_census_window_start = _render_census()
 	# The optional CPU presentation consumer ACKs only after applying all
 	# validated immutable bytes; the ordinary headless control never ACKs.
 	if _render_consumer_enabled and _render_consumer != null:
@@ -537,8 +554,10 @@ func _consume_compound_results() -> void:
 					or overflow_flags != 0 or not snapshot.snapshot_render_pending_full_before
 					or after_bytes != before_bytes or after_rects != before_rects))
 				or (exchange_calls > 0 and overflow_flags != (
-					(1 if after_bytes > CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * 2 else 0)
-					+ (2 if after_rects > CyberSimulationWorker.MAX_PENDING_RENDER_PATCHES
+					(1 if after_bytes - int(snapshot.snapshot_render_overflow_exempt_bytes)
+						> CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * 2 else 0)
+					+ (2 if after_rects - int(snapshot.snapshot_render_overflow_exempt_rectangles)
+						> CyberSimulationWorker.MAX_PENDING_RENDER_PATCHES
 						* CyberSimulationWorker.RENDER_PATCH_METADATA_STRIDE else 0)))
 				or (snapshot.snapshot_render_ack_cleared and
 					(before_bytes != 0 or before_rects != 0))
@@ -761,6 +780,24 @@ func _timing_summary_ms(samples: Array[float]) -> Dictionary:
 	result.max_ms = ordered.back()
 	return result
 
+func _render_census() -> Dictionary:
+	return {"refreshes":_render_worker_refreshes,
+		"dirty_onto_full":_render_worker_dirty_onto_full,
+		"coalesced":_render_worker_coalesced,
+		"forced_full_retries":_render_worker_retries,
+		"ack_clears":_render_worker_ack_clears,
+		"baseline_drops":_render_worker_baseline_drops,
+		"full_publications":_render_worker_full_publications,
+		"published_bytes":_render_worker_published_bytes}
+
+# Monotonic totals since the first coupled snapshot (latest minus start).
+func _render_census_window() -> Dictionary:
+	var latest: Dictionary = _render_census()
+	var window: Dictionary = {}
+	for key: String in latest:
+		window[key] = int(latest[key]) - int(_render_census_window_start.get(key, latest[key]))
+	return window
+
 func coupling_metrics() -> Dictionary:
 	return {"proxy_count":_coupling_local_centers.size(), "proxy_mass":_coupling_total_mass,
 		"state_publications":_coupling_state_publications, "result_snapshots":_coupling_result_snapshots,
@@ -791,7 +828,12 @@ func coupling_metrics() -> Dictionary:
 			"dirty_onto_full":_render_worker_dirty_onto_full,
 			"coalesced":_render_worker_coalesced,
 			"forced_full_retries":_render_worker_retries,
-			"ack_clears":_render_worker_ack_clears},
+			"ack_clears":_render_worker_ack_clears,
+			"baseline_drops":_render_worker_baseline_drops,
+			"full_publications":_render_worker_full_publications,
+			"published_bytes":_render_worker_published_bytes,
+			"pending_bytes_high_water":_render_worker_pending_high_water},
+		"render_worker_census_window":_render_census_window(),
 		"render_exchanged_payload_bytes":_render_exchanged_payload_bytes,
 		"render_exchange_multi_call_samples":_render_exchange_multi_call_samples,
 		"render_single_call_samples":_render_single_call_samples,
@@ -923,6 +965,11 @@ func close() -> void:
 	_render_worker_coalesced = 0
 	_render_worker_retries = 0
 	_render_worker_ack_clears = 0
+	_render_worker_baseline_drops = 0
+	_render_worker_full_publications = 0
+	_render_worker_published_bytes = 0
+	_render_worker_pending_high_water = 0
+	_render_census_window_start = {}
 	status = "closed"
 
 func _destroy_physics() -> void:

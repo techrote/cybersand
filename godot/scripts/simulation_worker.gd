@@ -817,6 +817,11 @@ var _snapshot_world_revision: int = -1
 var _world_generation: int = 1
 var _pending_render_world_generation: int = 0
 var _experimental_render_full_coalescing: bool = false # default: unchanged
+# SOL281 root-cause candidates, both default off: R = native per-run full
+# copy; P = partial ACK of a retained full baseline (exclusive with coalescing).
+var _experimental_render_copy_by_run: bool = false
+var _experimental_render_partial_ack: bool = false
+var _pending_render_baseline_serial: int = 0
 # SOL281 diagnostic census. Monotonic worker-lifetime totals, written only by
 # the exclusive native owner, so latest-only snapshot readers count, not sample.
 var _render_refresh_total: int = 0
@@ -824,6 +829,10 @@ var _render_dirty_onto_full_total: int = 0
 var _render_coalesced_total: int = 0
 var _render_forced_full_retry_total: int = 0
 var _render_ack_clear_total: int = 0
+var _render_baseline_drop_total: int = 0
+var _render_full_publication_total: int = 0
+var _render_published_bytes_total: int = 0
+var _render_pending_bytes_high_water: int = 0
 var _last_render_snapshot_usec: int = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
 var _pending_render_snapshot_serial: int = 0
 var _pending_render_channels: int = 1
@@ -1881,6 +1890,8 @@ func _publish_snapshot(
 	var render_retry_bytes: int = 0
 	var render_overflow_flags: int = 0
 	var render_coalesced: bool = false
+	var render_overflow_exempt_bytes: int = 0
+	var render_overflow_exempt_rectangles: int = 0
 	var render_pending_full_before: bool = false
 	var render_ack_cleared: bool = false
 	var render_pending_bytes_before: int = 0
@@ -1911,6 +1922,14 @@ func _publish_snapshot(
 			_render_ack_clear_total += 1
 		_clear_pending_render_patches()
 		render_ack_cleared = true
+	elif (
+		_experimental_render_partial_ack and _pending_render_baseline_serial > 0
+		and acknowledged_render_serial >= _pending_render_baseline_serial
+	):
+		# Candidate P: the consumer already holds the retained full baseline, so
+		# only the dirty patches appended after it still need publication.
+		if _drop_pending_render_baseline():
+			_render_baseline_drop_total += 1
 	if (
 		force_render_full_refresh
 		or (
@@ -1924,8 +1943,12 @@ func _publish_snapshot(
 			render_pending_bytes_before = _pending_render_patch_cells.size()
 			render_pending_rectangles_before = _pending_render_patch_rectangles.size()
 			var exchange_start_usec: int = Time.get_ticks_usec()
-			var render_packet: Dictionary = _world.take_render_snapshot(
-				force_render_full_refresh
+			# The two-argument form exists only in SOL281 runtimes; default calls
+			# keep the original signature.
+			var render_packet: Dictionary = (
+				_world.take_render_snapshot(force_render_full_refresh, true)
+				if _experimental_render_copy_by_run
+				else _world.take_render_snapshot(force_render_full_refresh)
 			)
 			render_exchange_usec += Time.get_ticks_usec() - exchange_start_usec
 			render_exchange_calls += 1
@@ -1944,16 +1967,28 @@ func _publish_snapshot(
 				_render_coalesced_total += 1
 			render_pending_bytes_after_first = _pending_render_patch_cells.size()
 			render_pending_rectangles_after_first = _pending_render_patch_rectangles.size()
-			if (render_pending_bytes_after_first
+			# Candidate P exempts its retained baseline; appended patches keep the
+			# original limits, so retention is at most one frame plus that budget.
+			if (_experimental_render_partial_ack and _pending_render_full_refresh
+				and _pending_render_baseline_serial > 0):
+				render_overflow_exempt_bytes = (
+					CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * _pending_render_channels
+				)
+				render_overflow_exempt_rectangles = RENDER_PATCH_METADATA_STRIDE
+			if (render_pending_bytes_after_first - render_overflow_exempt_bytes
 				> CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * 2):
 				render_overflow_flags |= 1
-			if (render_pending_rectangles_after_first
+			if (render_pending_rectangles_after_first - render_overflow_exempt_rectangles
 				> MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE):
 				render_overflow_flags |= 2
 			if render_overflow_flags != 0:
 				_render_forced_full_retry_total += 1
 				exchange_start_usec = Time.get_ticks_usec()
-				var overflow_packet: Dictionary = _world.take_render_snapshot(true)
+				var overflow_packet: Dictionary = (
+					_world.take_render_snapshot(true, true)
+					if _experimental_render_copy_by_run
+					else _world.take_render_snapshot(true)
+				)
 				render_exchange_usec += Time.get_ticks_usec() - exchange_start_usec
 				render_exchange_calls += 1
 				packet_cells = overflow_packet.get("cells", PackedByteArray())
@@ -1963,7 +1998,17 @@ func _publish_snapshot(
 				accumulation_start_usec = Time.get_ticks_usec()
 				_append_native_render_packet(overflow_packet)
 				render_accumulation_usec += Time.get_ticks_usec() - accumulation_start_usec
+			_render_published_bytes_total += _pending_render_patch_cells.size()
+			_render_pending_bytes_high_water = maxi(
+				_render_pending_bytes_high_water, _pending_render_patch_cells.size()
+			)
 			if _pending_render_full_refresh:
+				_render_full_publication_total += 1
+			# A P baseline with appended patches is not one image; keep the last
+			# complete frame, as the original dirty-only path already does.
+			if _pending_render_full_refresh and (not _experimental_render_partial_ack
+				or _pending_render_patch_cells.size()
+					== CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * _pending_render_channels):
 				var full_copy_start_usec: int = Time.get_ticks_usec()
 				_snapshot_cells = _pending_render_patch_cells.duplicate()
 				render_full_copy_usec += Time.get_ticks_usec() - full_copy_start_usec
@@ -2156,6 +2201,12 @@ func _publish_snapshot(
 	snapshot.snapshot_render_coalesced_total = _render_coalesced_total
 	snapshot.snapshot_render_forced_full_retry_total = _render_forced_full_retry_total
 	snapshot.snapshot_render_ack_clear_total = _render_ack_clear_total
+	snapshot.snapshot_render_baseline_drop_total = _render_baseline_drop_total
+	snapshot.snapshot_render_full_publication_total = _render_full_publication_total
+	snapshot.snapshot_render_published_bytes_total = _render_published_bytes_total
+	snapshot.snapshot_render_pending_bytes_high_water = _render_pending_bytes_high_water
+	snapshot.snapshot_render_overflow_exempt_bytes = render_overflow_exempt_bytes
+	snapshot.snapshot_render_overflow_exempt_rectangles = render_overflow_exempt_rectangles
 	snapshot.worker_overruns = _worker_overruns
 	if _world.has_method(&"get_tick_failure_count"):
 		snapshot.tick_failure_count = int(_world.get_tick_failure_count())
@@ -2298,9 +2349,35 @@ func _publish_failure_snapshot() -> void:
 
 func _clear_pending_render_patches() -> void:
 	_pending_render_full_refresh = false
+	_pending_render_baseline_serial = 0
 	_pending_render_patch_rectangles = PackedInt32Array()
 	_pending_render_patch_cells = PackedByteArray()
 	_pending_render_payload_generation += 1
+
+
+# Candidate P. Drop exactly the leading full baseline and rebase the appended
+# dirty patches. A new serial marks the changed transport payload of the same
+# image; a consumer at or after the baseline reapplies the patches in order.
+func _drop_pending_render_baseline() -> bool:
+	var full_size: int = (
+		CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * _pending_render_channels
+	)
+	var rects: PackedInt32Array = _pending_render_patch_rectangles
+	if (not _pending_render_full_refresh or rects.size() <= RENDER_PATCH_METADATA_STRIDE
+		or _pending_render_patch_cells.size() <= full_size
+		or rects[0] != 0 or rects[1] != 0 or rects[2] != CyberCellWorld.WORLD_WIDTH
+		or rects[3] != CyberCellWorld.WORLD_HEIGHT or rects[4] != 0):
+		return false
+	var later: PackedInt32Array = rects.slice(RENDER_PATCH_METADATA_STRIDE)
+	for i: int in range(4, later.size(), RENDER_PATCH_METADATA_STRIDE):
+		later[i] -= full_size
+	_pending_render_patch_rectangles = later
+	_pending_render_patch_cells = _pending_render_patch_cells.slice(full_size)
+	_pending_render_full_refresh = false
+	_pending_render_baseline_serial = 0
+	_pending_render_snapshot_serial += 1
+	_pending_render_payload_generation += 1
+	return true
 
 
 func _refresh_published_render_payload() -> void:
@@ -2423,4 +2500,7 @@ func _append_native_render_packet(packet: Dictionary) -> bool:
 	_pending_render_snapshot_serial = maxi(_pending_render_snapshot_serial+1,packet_serial)
 	_pending_render_channels = packet_channels
 	_pending_render_payload_generation += 1
+	# A full or coalesced frame is one complete image at this serial.
+	if packet_full_refresh or coalesced:
+		_pending_render_baseline_serial = _pending_render_snapshot_serial
 	return coalesced

@@ -4887,6 +4887,42 @@ void World::copy_render_cells(RectI64 region, std::span<std::uint8_t> destinatio
     }
 }
 
+void World::copy_render_cells_by_run(RectI64 region, std::span<std::uint8_t> destination,
+                                     std::size_t stride_bytes) const {
+    (void)validate_copy_layout(region, 2U, stride_bytes, destination.size());
+    const auto end_x = region.x + region.width;
+    const auto empty_state = project_visual_state(Material::Empty, 0, 0,
+                                                  config_.water_experiment_policy);
+    for (std::int64_t row = 0; row < region.height; ++row) {
+        auto* output = destination.data() + static_cast<std::size_t>(row) * stride_bytes;
+        const auto world_y = region.y + row;
+        auto world_x = region.x;
+        while (world_x < end_x) {
+            const auto first = address(world_x, world_y);
+            const auto* chunk = find_chunk(first.chunk);
+            const auto run = std::min<std::int64_t>(
+                end_x - world_x,
+                static_cast<std::int64_t>(config_.chunk_size - first.local_x));
+            auto* out = output + static_cast<std::size_t>(world_x - region.x) * 2U;
+            for (std::int64_t offset = 0; offset < run; ++offset) {
+                const auto byte = static_cast<std::size_t>(offset) * 2U;
+                if (chunk == nullptr) {
+                    out[byte] = static_cast<std::uint8_t>(Material::Empty);
+                    out[byte + 1U] = empty_state;
+                    continue;
+                }
+                const auto& cell = chunk->cells[first.index + static_cast<std::size_t>(offset)];
+                const auto material = cell.material_value();
+                out[byte] = static_cast<std::uint8_t>(material);
+                out[byte + 1U] = project_visual_state(material, cell.state_a_value(),
+                                                      cell.state_b_value(),
+                                                      config_.water_experiment_policy);
+            }
+            world_x += run;
+        }
+    }
+}
+
 void World::copy_material_cells(RectI64 region, std::span<std::uint8_t> destination,
                                 std::size_t stride_bytes) const {
     (void)validate_copy_layout(region, 1U, stride_bytes, destination.size());
