@@ -858,6 +858,9 @@ fresh output directory:
 python tools/play/run_auto_campaign.py --godot <pinned-godot-executable> --output <new-directory>
 ```
 
+Choose a fresh output path outside the source checkout or beneath its ignored
+`build/` directory so retained JSON evidence does not appear as an untracked
+implementation input in the strict source check.
 The normal standalone path verifies retained runtime/source bytes before
 executing. It preserves 50 fresh processes, 60 warm-up and 120 measured ticks
 per row and immutable failure evidence. Do not pass the publisher-only fresh
