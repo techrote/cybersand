@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_main"]
 [ext_resource type="Shader" path="res://shaders/material_palette.gdshader" id="2_palette"]
+[ext_resource type="Script" path="res://scripts/playable_course_gamepad_events.gd" id="3_course_gamepad"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_world"]
 shader = ExtResource("2_palette")
@@ -23,6 +24,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_main")
+
+[node name="CourseGamepadEvents" type="Node" parent="."]
+script = ExtResource("3_course_gamepad")
 
 [node name="Background" type="ColorRect" parent="."]
 layout_mode = 1
@@ -107,6 +111,13 @@ custom_minimum_size = Vector2(0, 44)
 layout_mode = 2
 text = "Starting simulation…"
 autowrap_mode = 2
+
+[node name="CourseTiming" type="Label" parent="Layout"]
+visible = false
+layout_mode = 2
+modulate = Color(0.68, 0.92, 0.96, 1)
+theme_override_font_sizes/font_size = 17
+text = "GATES 0 / 4    00.00 s"
 
 [node name="Help" type="Label" parent="Layout"]
 visible = false

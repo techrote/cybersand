@@ -276,6 +276,10 @@ func _keyboard_controls_and_rearm() -> void:
 	var label := Label.new()
 	label.name = "Status"
 	layout.add_child(label)
+	var course_timing := Label.new()
+	course_timing.name = "CourseTiming"
+	course_timing.visible = false
+	layout.add_child(course_timing)
 	var bodies := Node2D.new()
 	bodies.name = "RigidBodies"
 	desktop.add_child(bodies)
@@ -285,6 +289,8 @@ func _keyboard_controls_and_rearm() -> void:
 		body.freeze = true
 		bodies.add_child(body)
 	root.add_child(desktop)
+	_expect(desktop.course_timing_label == course_timing and not course_timing.visible,
+		"minimal keyboard harness binds the inactive course HUD without starting gameplay")
 	desktop.publish_actor_keyboard_input()
 	_expect(not desktop._actor_input_rearm and sink.packets.size() == 1 and sink.legacy_packets == 0,
 		"released extended controls did not arm only the v2 path")

@@ -153,6 +153,9 @@ func run() -> void:
 			"authored mechanical course enables actor-follow instead of generic MicroScenario overview: " + str(model_id))
 		expect(desktop.character_centre().distance_to(Vector2(first.get("position",Vector2.INF))) < 0.01,
 			"shared desktop course camera centre observes actual Rapier SetP pose: " + str(model_id))
+		await process_frame
+		expect(desktop.course_timing_label.visible and desktop.course_timing_label.text.begins_with("GATES 0 / 4"),
+			"shared course exposes native-tick HUD for selected human SetP rig: " + str(model_id))
 		expect(desktop.current_view_size == Vector2i(256,128),
 			"the selected mechanical course defaults to source-authored 256x128 close follow: " + str(model_id))
 		key(KEY_F,true)
@@ -190,6 +193,8 @@ func run() -> void:
 		var after: Dictionary = session.observation(0)
 		key(input_key, false)
 		expect(advanced, "real Rapier physics advances with native World live: " + str(model_id))
+		expect(desktop._playable_course_progress.started and desktop._playable_course_progress.elapsed_ticks > 0,
+			"actual accepted movement starts completed-native-tick lap clock: " + str(model_id))
 		if advanced:
 			var action: Dictionary = after.get("action", {})
 			var move: Vector2 = action.get("move", Vector2.ZERO)
@@ -227,6 +232,9 @@ func run() -> void:
 	var reset_ok: bool = await wait_for(Callable(self, "actor_installed"))
 	expect(reset_ok and desktop.microscenario_definition.rectangles == checked.definition.rectangles,
 		"existing owner resets while retaining course and selected rig")
+	await process_frame
+	expect(reset_ok and not desktop._playable_course_progress.started and desktop._playable_course_progress.elapsed_ticks == 0,
+		"native World and actor reset cannot retain a previous epoch lap")
 	expect(reset_ok and desktop.camera_follow_enabled and desktop.current_view_size == Vector2i(256,128),
 		"R reset restores default close-follow camera, not a stale previous epoch view")
 	# PLAY-COMP-002 follow-on: re-use the shipped native per-material solver
