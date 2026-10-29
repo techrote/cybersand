@@ -1,0 +1,42 @@
+name: Render-copy290 UNARMED owner/source/four-path publication gate
+
+# Refusal-only preparation. NEVER requests publication and NEVER writes LFS.
+on:
+  push:
+    branches: [prep/render-copy290-lfs-publish-gate-20261029]
+    paths:
+      - '.github/workflows/render-copy290-publication-gate.yml'
+      - 'tools/ci/render_copy290_publication_gate.py'
+      - 'tools/ci/test_render_copy290_publication_gate.py'
+      - 'docs/audits/2026-10-29-render-copy290-publication-gate.md'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: render-copy290-unarmed-owner-gate-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  unarmed-contract:
+    name: prove absent request, fixed source and refusal contracts
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/prep/render-copy290-lfs-publish-gate-20261029'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Exercise adversarial authorization and four-path refusal tests
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_render_copy290_publication_gate.py
+      - name: Reverify exact stack/source, old pointers, no request and provider policy
+        run: |
+          set -euo pipefail
+          python3 tools/ci/render_copy290_publication_gate.py check-unarmed
+          python3 tools/ci/check_ci_provider_policy.py
+          git diff --check
