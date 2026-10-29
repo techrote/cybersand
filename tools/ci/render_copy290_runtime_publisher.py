@@ -352,6 +352,53 @@ def staged_preview(host, ledgers):
     return staged, manifests, trusted
 
 
+
+def verify_originals(source_sha, output):
+    """Exercise real producer/artifact/provenance reconstruction without authority or writes."""
+    context(source_sha)
+    state = source_shape(source_sha)
+    run, jobs, artifacts, raw = artifact_set()
+    host = {platform: host_bundle(raw[platform + "-host"], platform)
+            for platform in ("linux", "windows")}
+    ledgers, committed = full_ledgers()
+    builds, selected = verify_build_archives(raw, committed)
+    staged, manifests, trusted = staged_preview(host, ledgers)
+    receipt = {
+        "schema": "cybersand.render-copy290-writer-real-artifact-dry-run.v1",
+        "writer_or_request_head": source_sha,
+        "request_present": state["armed_candidate"],
+        "producer_run_id": gate.RUN_ID,
+        "producer_run_attempt": gate.ATTEMPT,
+        "producer_head": gate.BASE,
+        "producer_tree": gate.TREE,
+        "producer_jobs": sorted(job["name"] for job in jobs),
+        "original_artifacts": {
+            role: {"id": custody.ORIGINAL_ARTIFACT_IDS[role],
+                   "zip_sha256": custody.ORIGINAL_ARTIFACT_DIGESTS[role]}
+            for role in sorted(custody.ORIGINAL_ARTIFACT_IDS)
+        },
+        "runtime_sha256": trusted,
+        "full_git_blob_count": len(committed),
+        "native_source_inputs": len(ledgers["source_inputs"]),
+        "conservative_build_remainder_inputs": len(ledgers["build_inputs"]),
+        "selected_materialized_build_inputs": len(selected),
+        "external_pins": EXTERNAL_PINS,
+        "prospective_pointer_sha256": {
+            platform: sha(staged[gate.RUNTIME[platform]]["blob"])
+            for platform in ("linux", "windows")
+        },
+        "prospective_manifest_sha256": {
+            platform: sha(staged[gate.MANIFEST[platform]]["blob"])
+            for platform in ("linux", "windows")
+        },
+        "publication_paths": sorted(PUBLICATION_PATHS),
+        "qualified_scope": "read-only real-artifact reconstruction and four-path preview; NO OWNER AUTHORITY OR LFS WRITE",
+    }
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_bytes(canonical_json(receipt))
+    print("RENDER_COPY290_PUBLISHER REAL-ARTIFACT DRY-RUN PASS -- NO PUBLICATION")
+    return receipt
+
 def materialize(source_sha, output):
     context(source_sha)
     state, comment = authorization(source_sha, required=True)
@@ -506,10 +553,10 @@ def guard(source_sha):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
-    for name in ("guard", "admission", "materialize", "check-index", "post-push"):
+    for name in ("guard", "admission", "verify-originals", "materialize", "check-index", "post-push"):
         cmd = sub.add_parser(name)
         cmd.add_argument("--source-sha", required=True)
-        if name in ("materialize",):
+        if name in ("verify-originals", "materialize"):
             cmd.add_argument("--output", type=Path, required=True)
         if name == "check-index":
             cmd.add_argument("--bundle", type=Path, required=True)
@@ -522,6 +569,8 @@ def main():
         guard(args.source_sha)
     elif args.command == "admission":
         admission(args.source_sha)
+    elif args.command == "verify-originals":
+        verify_originals(args.source_sha, args.output)
     elif args.command == "materialize":
         materialize(args.source_sha, args.output)
     elif args.command == "check-index":

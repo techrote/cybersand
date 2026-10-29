@@ -44,6 +44,33 @@ jobs:
           python3 tools/ci/render_copy290_runtime_publisher.py guard --source-sha "$GITHUB_SHA"
           git diff --check
 
+  original-evidence-dry-run:
+    name: verify actual original producer bytes without publication authority
+    needs: writer-guards
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/prep/render-copy290-runtime-writer-20261029'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Re-fetch and verify the real source-frozen producer evidence
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 tools/ci/render_copy290_runtime_publisher.py verify-originals --source-sha "$GITHUB_SHA" --output build/render-copy290-writer-dry-run/receipt.json
+      - name: Retain writer dry-run custody receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: render-copy290-writer-real-artifact-dry-run-${{ github.sha }}
+          path: build/render-copy290-writer-dry-run/
+          if-no-files-found: error
+          retention-days: 30
+
   admission:
     name: require exact committed request plus unedited owner authorization
     needs: writer-guards
@@ -69,7 +96,7 @@ jobs:
 
   prepare:
     name: independently reconstruct publishable original dual-host bundle
-    needs: admission
+    needs: [admission, original-evidence-dry-run]
     if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/prep/render-copy290-runtime-writer-20261029' && needs.admission.outputs.armed == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
@@ -126,7 +153,6 @@ jobs:
           cp build/render-copy290-publication-live/runtime-provenance.json godot/addons/cybersand_native/runtime-provenance.json
           git add --             godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so             godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll             godot/addons/cybersand_native/runtime-provenance.linux.json             godot/addons/cybersand_native/runtime-provenance.json
           python3 tools/ci/render_copy290_runtime_publisher.py check-index --source-sha "$GITHUB_SHA" --bundle build/render-copy290-publication-live
-          git lfs fsck --objects
       - name: Commit and lease-protected push only the authorized request branch
         env:
           GITHUB_TOKEN: ${{ github.token }}

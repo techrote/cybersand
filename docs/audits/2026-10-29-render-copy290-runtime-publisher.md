@@ -121,3 +121,26 @@ constant for the branch-separation test and explicitly checks
 `native/src/world.cpp` against `gate.WORLD_BLOB` plus
 `native/tests/test_world.cpp` against `gate.TEST_BLOB`. This is a writer
 qualification repair only; production source and runtime bytes remain unchanged.
+
+
+## Real-artifact writer dry run and LFS-scope correction
+
+After the repaired unarmed guard passed, the writer still had one important
+qualification gap: its actual producer ZIP/ledger/manifest reconstruction only
+executed inside jobs gated by future owner authorization. A new read-only
+`original-evidence-dry-run` job now executes on the writer preparation itself.
+It re-fetches the authenticated producer run/jobs and all four original ZIPs,
+rechecks strict members/CRC, both real target-host runtimes/logs, 1,723 raw Git
+objects, 80 native inputs, the conservative tracked remainder, the original 86
+materialized build inputs/post-build checks and pinned external identities, then
+runs the same four-path manifest/pointer preview verifier. It retains only a
+custody/preview receipt and has no write permission.
+
+The prospective write job also no longer invokes broad
+`git lfs fsck --objects` on a checkout that deliberately leaves unrelated
+historical LFS payloads unmaterialized. That command could create a false
+publication failure unrelated to the two newly staged runtime objects. Exact
+new-runtime bytes are instead proved by original Actions ZIP custody, the staged
+canonical LFS pointer OIDs/sizes, actual index verification and the ordinary Git
+LFS pre-push hook on the lease-protected branch push. No LFS operation runs in
+the current unarmed writer checkpoint.

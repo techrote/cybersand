@@ -154,10 +154,17 @@ class WorkflowTests(unittest.TestCase):
             "check-index",
             "--force-with-lease",
             "post-push",
-            "git lfs fsck",
+            "git lfs install --local",
         ):
             with self.subTest(token=token):
                 self.assertIn(token, publish)
+
+    def test_real_artifact_dry_run_is_read_only_and_always_exercised(self):
+        before_publish = self.text.split("\n  publish:\n", 1)[0]
+        self.assertIn("original-evidence-dry-run:", before_publish)
+        self.assertIn("verify-originals", before_publish)
+        self.assertIn("persist-credentials: false", before_publish)
+        self.assertNotIn("contents: write", before_publish)
 
     def test_no_main_branch_or_merge_operation(self):
         self.assertNotIn("refs/heads/main", self.text)
