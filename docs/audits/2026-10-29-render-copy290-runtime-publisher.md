@@ -102,3 +102,22 @@ performance remains manual. The original 18-minute sanitizer timeout
 `40792599185` stays FAILED; the later one-process 165/165 sanitizer pass retains
 its own exact-source scope. Issue #292's sibling material/RGBA INT64 defect is
 separate. Issue #281 / draft #283 B=289 physical ejection remains NO-GO.
+
+
+## Initial writer-guard failure and correction
+
+The first exact-head push run [40964846493](https://github.com/techrote/cybersand/actions/runs/40964846493)
+**FAILED in the writer's own synthetic test suite before admission**. Thirteen of
+fourteen tests passed; the sole failure compared the publisher branch against the
+imported gate's mutable branch after the writer had intentionally retargeted that
+gate, so it compared the value to itself. The admission, prepare and publish jobs
+were all skipped. No request, owner authorization, runtime staging or write job
+ran.
+
+Review of that failure also found the writer's intended frozen native/oracle blob
+check was guarded by a nonexistent convenience mapping and therefore executed no
+iterations. The correction preserves the gate's original branch in a dedicated
+constant for the branch-separation test and explicitly checks
+`native/src/world.cpp` against `gate.WORLD_BLOB` plus
+`native/tests/test_world.cpp` against `gate.TEST_BLOB`. This is a writer
+qualification repair only; production source and runtime bytes remain unchanged.

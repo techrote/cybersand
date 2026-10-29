@@ -38,6 +38,7 @@ PUBLICATION_PATHS = frozenset(set(gate.RUNTIME.values()) | set(gate.MANIFEST.val
 SUFFIX = frozenset({".c", ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx",
                     ".inc", ".inl", ".tpp"})
 HEX40 = re.compile(r"[0-9a-f]{40}\Z")
+GATE_BRANCH = gate.BRANCH
 EXTERNAL_PINS = {
     "godot_linux_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
     "godot_windows_sha512": "41645a908eb3181d6f2d1201ed7b6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
@@ -83,7 +84,10 @@ def writer_shape(writer_sha):
     require(names_between(BASE, writer_sha) == WRITER_FILES,
             "Reviewed writer must differ from gate base by exactly four writer-preparation files")
     require(REQUEST not in tracked_paths(writer_sha), "Reviewed writer unexpectedly contains a request")
-    for path, expected in gate.EXPECTED_BLOBS.items() if hasattr(gate, "EXPECTED_BLOBS") else ():
+    for path, expected in (
+        ("native/src/world.cpp", gate.WORLD_BLOB),
+        ("native/tests/test_world.cpp", gate.TEST_BLOB),
+    ):
         require(git("rev-parse", writer_sha + ":" + path, text=True).strip() == expected,
                 "Writer changed frozen source: " + path)
     return True

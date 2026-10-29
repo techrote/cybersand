@@ -35,7 +35,7 @@ class RequestTests(unittest.TestCase):
     def test_constants_preserve_separate_writer_branch_and_request_absence(self):
         self.assertEqual(publisher.BASE,
                          "d249435d041fd27e0508701e69fd6e7a29a8610a")
-        self.assertNotEqual(publisher.BRANCH, gate.BRANCH)
+        self.assertNotEqual(publisher.BRANCH, publisher.GATE_BRANCH)
         self.assertNotIn(publisher.REQUEST, publisher.WRITER_FILES)
         self.assertEqual(len(publisher.WRITER_FILES), 4)
         self.assertEqual(len(publisher.PUBLICATION_PATHS), 4)
