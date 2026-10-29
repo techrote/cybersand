@@ -58,6 +58,10 @@ def check_source() -> dict:
     allowed = {
         ".github/workflows/render-copy-290-sanitizer-shards.yml",
         "tools/ci/render_copy_290_sanitizer_shard.py",
+        # The frozen PR-head successor carries source-matched evidence only.
+        "docs/audits/2026-10-28-render-copy-per-run.md",
+        "docs/audits/2026-10-29-render-copy-int64-qualification-receipt.json",
+        "docs/reference/validation-evidence.md",
     }
     if set(files) != allowed:
         raise RuntimeError("Non-harness delta against source: " + repr(files))
