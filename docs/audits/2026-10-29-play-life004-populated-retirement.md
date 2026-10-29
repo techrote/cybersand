@@ -1,14 +1,53 @@
 ---
 title: PLAY-LIFE-004 populated command and lap retirement
-status: Planned
+status: Current
 document-kind: evidence
-scope: Actual five-rig host regression for populated input and lap retirement through construction-time policy replacement and reset; source-bound platform qualification pending
+scope: Accepted Windows/Linux five-rig populated input and lap retirement through construction-time policy replacement and reset; broader stress and release gates remain open
 canonical-for: []
 last-reviewed: 2026-10-29
 related-documents: [../systems/player-control-playground.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/liquid-prepared-setup-and-receipts.md, ../operations/local-build-and-validation.md, 2026-10-28-play-life002-solver-reconstruction.md, 2026-10-28-play-life003-prepared-shutdown.md]
 ---
 
 # PLAY-LIFE-004 populated retirement — 2026-10-29
+
+## Accepted source and exact-head hosted qualification
+
+[PR #291](https://github.com/techrote/cybersand/pull/291) accepted source
+`d3ad406dea57b51ad3d05b7487fdfd5dec65bde9` through guarded non-forced merge
+`5374a34347c189c3d1edb483d3f0e8eb716e4f41`, parents91778603+d3ad406d.
+Remote main and tree `7172a4babc60cd2759f301774e8f28a44748809f` were verified
+identical to the reviewed head and actual CI checkout
+`50bc3c40a59733ed5acf9ecc2fbb889744e58102`. All attempt1 exact-head
+[Docs40797616477](https://github.com/techrote/cybersand/actions/runs/40797616477),
+[Native40797616487](https://github.com/techrote/cybersand/actions/runs/40797616487),
+[Windows/Linux Godot40797616577](https://github.com/techrote/cybersand/actions/runs/40797616577),
+[source/local review](https://github.com/techrote/cybersand/pull/291#pullrequestreview-5691613354)
+and [final independent execution review](https://github.com/techrote/cybersand/pull/291#pullrequestreview-5692179547)
+passed before merge. No unresolved review thread or requested change remained.
+
+Windows184 applicable cases plus import/185 log hashes and Linux196 unique
+cases plus four imports/200 logs pass, including12 Linux display cases. The12
+declared graphical cases outside the Windows lane are not reported as passes.
+Each OS completes **335 LIFE004 assertions / zero failures**, ten genuinely
+populated transactions and ten exact stale-command refusals. Retained
+LIFE003150/LIFE002335/LIFE00150 real lifetimes and1,165 assertions, plus
+matrix81/Auto15/course126/gamepad32, also pass on this source.
+
+Native164 tests pass in ordinary, TSan and ASan/UBSan variants; all21 native
+steps and154 CLI invocations/308 stream hashes pass. No sanitizer diagnostic
+appears in covered cases; ASan leak detection is disabled, so there is no
+general leak or global absence-of-UB claim. All eight ZIP digests match GitHub,
+and all80 native/737 Windows tested inputs match the exact source. Bounds,
+arguments and no-error/skip/timeout/retry outcomes were independently checked.
+
+The [acceptance checkpoint](https://github.com/techrote/cybersand/issues/269#issuecomment-6486418842)
+records artifact identities and scope. Final combined ledger SHA-256
+`8c0962c40c95bc56029e1094a177734a4306f841cd7f44b1d87e40c08451a494`;
+all1,288 retained CI-readback files are hash-verified in
+`C:/Users/_/.codex/artifacts/play-life004-ci-2026-10-29`.
+Historical candidate/pending statements below retain their original source
+scope. This documentation-only acceptance append is not another runtime run.
+#269/#270 remain open for the broader gates already listed.
 
 ## Clean committed-source Windows qualification
 

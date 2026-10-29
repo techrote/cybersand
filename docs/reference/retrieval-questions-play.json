@@ -40,7 +40,8 @@
       "facts": [
         "LIFE004 requires real pending keyboard edges, an old-session-admitted observed human command, positive completed native lap ticks and a completed Rapier gate visit before construction and reset across all five rigs.",
         "The new unsuspended human session must reject the captured command specifically for run_or_epoch and require neutral release before fresh input; old lap and edges are retired.",
-        "Whole-assembly gate placement and reinjection of a retained actual snapshot into Main are test-only instrumentation; source-matched platform qualification and distinct review remain required.",
+        "Source d3ad passes Windows/Linux335/0, exact-head CI and distinct source/execution reviews before accepted merge5374; earlier local probes retain their own source identities.",
+        "Whole-assembly gate placement and reinjection of a retained actual snapshot into Main are test-only instrumentation, not natural traversal or a native delivery race.",
         "It does not qualify native-busy shutdown, all stale-message paths, gameplay performance or human feel."
       ],
       "sources": ["../godot/tests/play_life004_populated_retirement_case.gd"]
@@ -52,7 +53,7 @@
       "facts": [
         "LIFE005 proves a healthy real Main/reference-Rapier session before two public queued Sand points trigger an actual native capacity failure; no fake World failure is supplied.",
         "Main callbacks continue while Rapier freezes after the observed failure fence, emission requests refuse and ordinary public R/reset creates a healthy newer native World using the same reference-body nodes and epoch zero.",
-        "The stronger source checks the whole stored material image only after the exclusive owner joins; earlier working-overlay probes and final-source platform/CI/review are separate evidence.",
+        "Source385 passes Windows/Linux30/0, exact-head CI and distinct reviews before accepted merge4b6c; the whole stored image is inspected only after owner join. Earlier27/29 probes retain their own source identities.",
         "Prepared construction still requires a healthy World. This does not qualify five SetP course rigs, native-busy shutdown, arbitrary cancellation races, gameplay performance or human feel."
       ],
       "sources": ["../godot/tests/test_play_life005_failure_recovery.gd"]
