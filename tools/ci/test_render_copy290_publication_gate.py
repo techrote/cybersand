@@ -120,7 +120,6 @@ class AuthorizationTests(unittest.TestCase):
             "artifact_ids": copy.deepcopy(gate.ARTIFACT_IDS),
             "artifact_sha256": copy.deepcopy(gate.ARTIFACT_DIGESTS),
             "reviewed_writer_sha": self.writer,
-            "owner_comment_id": 9876543210,
             "destination_branch": gate.BRANCH,
         }
         self.comment = {
@@ -160,6 +159,28 @@ class AuthorizationTests(unittest.TestCase):
             "request_commit_sha: " + "e" * 40)
         self.assert_refused(comment=edited)
 
+    def test_comment_id_is_external_to_committed_request(self):
+        # GitHub cannot assign a comment ID before the request commit
+        # whose SHA the owner must authorize. Both comments can be
+        # authenticated AFTER commit creation, never by editing a placeholder.
+        assert "owner_comment_id" not in self.request
+        altered = copy.deepcopy(self.comment)
+        altered["id"] = 9876543211
+        altered["html_url"] = (
+            "https://github.com/techrote/cybersand/pull/290#issuecomment-9876543211")
+        self.assertEqual(self.good(comment=altered)["producer_run_id"], gate.RUN_ID)
+        for bad in (0, -1, True, "9876543211", None):
+            wrong = copy.deepcopy(altered)
+            wrong["id"] = bad
+            with self.subTest(comment_id=bad):
+                self.assert_refused(comment=wrong)
+        wrong_url = copy.deepcopy(altered)
+        wrong_url["html_url"] = self.comment["html_url"]
+        self.assert_refused(comment=wrong_url)
+        bad_request = copy.deepcopy(self.request)
+        bad_request["owner_comment_id"] = 9876543210
+        self.assert_refused(request=bad_request)
+
     def test_untrusted_author_and_edited_owner_message(self):
         for key, value in (("login", "attacker"), ("login", "Techrote")):
             with self.subTest(key=key, value=value):
@@ -189,7 +210,6 @@ class AuthorizationTests(unittest.TestCase):
             "artifact_ids": {"linux": 12928489443, "windows": 1},
             "artifact_sha256": {"linux": "0" * 64, "windows": gate.ARTIFACT_DIGESTS["windows"]},
             "reviewed_writer_sha": "a" * 40,
-            "owner_comment_id": 9876543209,
             "destination_branch": "main",
         }
         for name, altered in changes.items():
@@ -216,7 +236,7 @@ class AuthorizationTests(unittest.TestCase):
                                             self.request_commit)
 
     def test_integer_bool_and_bad_writer_reference_refusals(self):
-        for name in ("producer_run_id", "producer_run_attempt", "owner_comment_id"):
+        for name in ("producer_run_id", "producer_run_attempt"):
             r = copy.deepcopy(self.request)
             r[name] = True
             with self.subTest(name=name):

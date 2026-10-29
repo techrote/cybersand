@@ -53,7 +53,7 @@ ALLOWED_DELTA = frozenset({
 REQUEST_KEYS = frozenset({
     "schema", "intent", "producer_source_sha", "producer_source_tree",
     "producer_run_id", "producer_run_attempt", "artifact_ids",
-    "artifact_sha256", "reviewed_writer_sha", "owner_comment_id",
+    "artifact_sha256", "reviewed_writer_sha",
     "destination_branch",
 })
 MANIFEST_KEYS = frozenset({
@@ -126,7 +126,8 @@ def verify_owner_authorization(request_bytes: bytes, comment: dict,
     """Check externally REST-fetched, *unedited* owner comment plus exact request.
 
     The caller must authenticate the exact request-only Git commit (a direct
-    child of the reviewed writer), fetch its owner comment freshly and enforce
+    child of the reviewed writer), independently fetch the owner comment by
+    its GitHub-assigned ID after that commit exists, then enforce
     that same commit as the remote branch-head lease before publication. Pure
     refusal rule, not a network call or authorization by the AI executing it.
     """
@@ -151,16 +152,18 @@ def verify_owner_authorization(request_bytes: bytes, comment: dict,
     require(type(request_commit_sha) is str and HEX40.fullmatch(request_commit_sha)
             and request_commit_sha != reviewed_writer_sha,
             "Missing distinct exact request commit SHA")
-    comment_id = request.get("owner_comment_id")
-    require(type(comment_id) is int and comment_id > 0, "Missing owner comment ID")
+    # The owner comment is created only AFTER the request SHA exists.
+    # Its GitHub-assigned ID must NOT be embedded in the request commit:
+    # doing so would make the unedited source-bound authorization impossible.
+    # The caller must independently fetch this original comment by REST ID.
     require(type(comment) is dict and type(comment.get("user")) is dict
             and comment["user"].get("login") == OWNER
             and comment.get("author_association") == "OWNER"
-            and type(comment.get("id")) is int and comment["id"] == comment_id
+            and type(comment.get("id")) is int and comment["id"] > 0
             and comment.get("issue_url") ==
                 "https://api.github.com/repos/" + REPO + "/issues/290"
             and comment.get("html_url") ==
-                "https://github.com/" + REPO + "/pull/290#issuecomment-" + str(comment_id),
+                "https://github.com/" + REPO + "/pull/290#issuecomment-" + str(comment["id"]),
             "Owner identity or PR #290 comment custody differs")
     require(type(comment.get("created_at")) is str
             and re.fullmatch(r"20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z",
