@@ -1,0 +1,149 @@
+name: RENDER-COPY-290 request-gated runtime publisher
+
+# Writer implementation only. The request path is intentionally absent at this
+# checkpoint. A future request-only child can start an admission run, but cannot
+# arm publication until an unedited OWNER comment signs that exact request SHA.
+on:
+  push:
+    branches: [prep/render-copy290-runtime-writer-20261029]
+    paths:
+      - '.github/workflows/render-copy290-runtime-publisher.yml'
+      - 'tools/ci/render_copy290_runtime_publisher.py'
+      - 'tools/ci/test_render_copy290_runtime_publisher.py'
+      - 'docs/audits/2026-10-29-render-copy290-runtime-publisher.md'
+      - 'tools/ci/render_copy290_publish_request.json'
+
+permissions:
+  contents: read
+  actions: read
+  issues: read
+
+concurrency:
+  group: render-copy290-runtime-publisher-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  writer-guards:
+    name: verify unarmed writer/request shape
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/prep/render-copy290-runtime-writer-20261029'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Exercise writer and inherited gate refusal tests
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_render_copy290_runtime_publisher.py
+          python3 tools/ci/test_render_copy290_publication_gate.py
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/render_copy290_runtime_publisher.py guard --source-sha "$GITHUB_SHA"
+          git diff --check
+
+  admission:
+    name: require exact committed request plus unedited owner authorization
+    needs: writer-guards
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/prep/render-copy290-runtime-writer-20261029'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      armed: ${{ steps.gate.outputs.armed }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Evaluate request/owner/remote-lease admission
+        id: gate
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 tools/ci/render_copy290_runtime_publisher.py admission --source-sha "$GITHUB_SHA"
+
+  prepare:
+    name: independently reconstruct publishable original dual-host bundle
+    needs: admission
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/prep/render-copy290-runtime-writer-20261029' && needs.admission.outputs.armed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Freshly authenticate producer REST, four original ZIPs and exact request
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 tools/ci/render_copy290_runtime_publisher.py materialize --source-sha "$GITHUB_SHA" --output build/render-copy290-publication-prepared
+      - name: Retain independently reconstructed prepublication bundle
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: render-copy290-publication-prepared-${{ github.sha }}
+          path: build/render-copy290-publication-prepared/
+          if-no-files-found: error
+          retention-days: 30
+
+  publish:
+    name: append exactly four validated LFS runtime/provenance paths
+    needs: [admission, prepare]
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/prep/render-copy290-runtime-writer-20261029' && needs.admission.outputs.armed == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: read
+      issues: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Freshly re-fetch owner authorization and original Actions bytes
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 tools/ci/render_copy290_runtime_publisher.py materialize --source-sha "$GITHUB_SHA" --output build/render-copy290-publication-live
+      - name: Stage the exact tested binaries through Git LFS and two manifests
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          cp build/render-copy290-publication-live/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          cp build/render-copy290-publication-live/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll
+          cp build/render-copy290-publication-live/runtime-provenance.linux.json godot/addons/cybersand_native/runtime-provenance.linux.json
+          cp build/render-copy290-publication-live/runtime-provenance.json godot/addons/cybersand_native/runtime-provenance.json
+          git add --             godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so             godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll             godot/addons/cybersand_native/runtime-provenance.linux.json             godot/addons/cybersand_native/runtime-provenance.json
+          python3 tools/ci/render_copy290_runtime_publisher.py check-index --source-sha "$GITHUB_SHA" --bundle build/render-copy290-publication-live
+          git lfs fsck --objects
+      - name: Commit and lease-protected push only the authorized request branch
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 tools/ci/render_copy290_runtime_publisher.py check-index --source-sha "$GITHUB_SHA" --bundle build/render-copy290-publication-live
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'build(render-copy290): publish source-matched Linux and Windows runtimes'
+          PUBLISHED_SHA="$(git rev-parse HEAD)"
+          test "$(git rev-list --parents -n 1 HEAD)" = "$PUBLISHED_SHA $GITHUB_SHA"
+          git push --force-with-lease="refs/heads/prep/render-copy290-runtime-writer-20261029:$GITHUB_SHA" origin HEAD:refs/heads/prep/render-copy290-runtime-writer-20261029
+          python3 tools/ci/render_copy290_runtime_publisher.py post-push --source-sha "$GITHUB_SHA" --published-sha "$PUBLISHED_SHA" --bundle build/render-copy290-publication-live --output build/render-copy290-publication-final/receipt.json
+      - name: Retain post-push publication receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: render-copy290-publication-final-${{ github.sha }}
+          path: build/render-copy290-publication-final/
+          if-no-files-found: error
+          retention-days: 30
