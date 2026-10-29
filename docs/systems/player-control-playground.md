@@ -2,9 +2,9 @@
 title: Player control playground
 status: Current
 document-kind: contract
-scope: Experimental seven-preset human movement course, shared mechanical control, bounded native Sand and Water fields, input lifetime and qualified validation
+scope: Experimental movement controls and shared asynchronous desktop composition, input and lap lifetime, lifecycle and bounded native failure validation; isolated Sand and Water player fields
 canonical-for: [player-control-playground, player-movement-presets, player-material-field]
-last-reviewed: 2026-10-28
+last-reviewed: 2026-10-29
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
 ---
 
@@ -161,8 +161,10 @@ as defined by the [threading contract](../architecture/simulation-tick-and-threa
 The actual course control still reports max jobs one and zero parallel phases;
 reference timing does not supply gameplay pacing or concurrent-execution proof.
 #268 retains integrated selection and
-complete device/focus/pacing requirements; #269 retains adversarial pending
-work, delayed completion, failure recovery and populated stale-command stress.
+complete device/focus/pacing requirements; #269 retains adversarial outstanding
+work, delayed completion, broader course failure/recovery and stale-delivery/effect
+stress. Its bounded populated-control and reference-body fault slices are
+qualified separately below.
 #270 joins those gates with actual desktop frame/snapshot timing and human
 gameplay feel. Headless lifecycle success does not establish any of those
 remaining outcomes. Main-thread Rapier, per-material construction-time solver
@@ -224,12 +226,93 @@ corrected-source `cd5f2ce5` 150/0 proof separately. Clean non-forced integration
 **150 assertions / zero failures**: five real hosts, five stop fences/joins,
 ten Rapier graph retirements and five worker/adapter destructions, plus five
 contended safety releases. Earlier results are not relabeled as this source.
-Track final exact-head Windows/Linux, Native/Docs, independent review and
-accepted-tree receipts on [PR #289](https://github.com/techrote/cybersand/pull/289).
-Those gates are distinct from local proof. This covers pending construction
+Final source `92e0bcca` passed exact-head Windows/Linux150/0, Native/Docs and
+distinct source/execution review before [PR #289](https://github.com/techrote/cybersand/pull/289)
+merged as `91778603`, tree `3e513ab8b38a5d1d8076b5a4156d234f8d8a068f`.
+The [accepted audit](../audits/2026-10-28-play-life003-prepared-shutdown.md#accepted-source-and-subsequent-main-verification--2026-10-29)
+binds hosted artifacts and the separate passing main push runs. Earlier local
+results retain their original source identities. This covers pending construction
 cancellation; it does not hold native simulation jobs, inject a slow native
 tick, observe an OS native-thread join trace, measure rendered pacing or supply
 human feel. #269/#270 stay open.
+
+## Populated command and lap retirement regression
+
+**Current PLAY-LIFE-004 test implementation:** the
+[actual-host helper](../../godot/tests/play_life004_populated_retirement_case.gd)
+extends LIFE002's real Main/worker/Rapier apparatus across all five SetP rigs.
+Before both supported pressure/reference reconstruction and policy-retaining
+reset it starts a lap through admitted human input, observes positive completed
+native elapsed ticks and visits the first authored gate through a completed
+Rapier step. Test-only whole-assembly placement through the bridge forces that
+visit; it is not natural traversal or a handling assessment.
+
+An observed-identity human command must be admitted by the old session, and real
+keyboard events must leave two ordered unconsumed primary edges plus held
+movement immediately before replacement. The new active, unsuspended session
+must reject that retained command specifically for `run_or_epoch`, preserve its
+fresh control state and withhold held input until neutral rearm. Fresh input then
+starts only the new lap. New actor/World/session identities, requested/applied
+pressure policy/receipts, retained recipe, old graph retirement and immutable
+prior snapshots remain checked. Test-only reinjection of a retained actual
+snapshot into Main's copied presentation slot exercises its old-epoch lap fence;
+it does not simulate a native delivery race or certify all rendering paths.
+
+The [source/evidence record](../audits/2026-10-29-play-life004-populated-retirement.md)
+records clean source `fc3143fa` passing local Windows **335 assertions / zero
+failures**, ten populated transactions and ten old-command refusals, with all80
+native and737 scoped tested inputs verified. Final source `d3ad406d` has
+source-tree-matched hosted Windows/Linux **335/0 per OS** in
+[Godot40797616577](https://github.com/techrote/cybersand/actions/runs/40797616577),
+with184 applicable Windows cases and196 unique Linux cases passing.
+[PR #291](https://github.com/techrote/cybersand/pull/291) accepted that source
+as `5374a343`, tree `7172a4babc60cd2759f301774e8f28a44748809f`, after its
+exact-head Docs/Native/Godot and distinct source/execution reviews passed.
+The audit's [accepted receipt](../audits/2026-10-29-play-life004-populated-retirement.md#accepted-source-and-exact-head-hosted-qualification)
+binds the source/CI/artifact identities, with earlier local probes kept separate. Existing
+UI003 already covers one populated Jet Barrel reset; this adds populated command
+retirement and all-five-rig construction/reset coverage. It does not establish
+native-busy shutdown, failure recovery, equipment-effect replay, broad race/leak
+freedom, physical devices, gameplay pacing or human feel. #269/#270 remain open.
+
+## Actual Main native failure and ordinary recovery regression
+
+**Current PLAY-LIFE-005 test implementation:** the
+[actual-host regression](../../godot/tests/test_play_life005_failure_recovery.gd)
+constructs real Main with the existing test-only active scheduling capacity1,
+restores the setting before entering the tree, and proves healthy native and
+three-reference-body Rapier steps first. Two public queued Sand emissions are
+presented and acknowledged while paused; the next native attempt must raise the
+actual capacity exception. The failed publication retains valid copied data and
+the presented material image, pauses Main and refuses further emissions.
+
+At least eight actual Main and physics callbacks must progress with no further
+Rapier step/pose change after the **observed failure fence**. Resume/view changes
+cannot unlatch the failed World; the exclusive owner stays available for ordinary
+public R/reset. Reset advances native generation, clears diagnostics and resumes
+healthy native/Rapier steps using the same three reference-body nodes/epoch0.
+The whole stored material image is inspected only after owner join, checking
+that the fixture's known Sand emissions are absent throughout the recovered
+World, including outside interest and beneath masks.
+
+The [source/evidence record](../audits/2026-10-29-play-life005-native-failure-recovery.md)
+separates the working-overlay27/0 and29/0 probes from the final stronger
+source's own execution, CI and review gates. Clean source79574a24 passes local
+Windows30/0, including the complete stored-image check after join, with all80
+native and738 tested inputs verified. Exact source `385e0307` subsequently passes
+its own hosted qualification and distinct reviews: **30/0 on each Windows
+and Linux OS**, with185 applicable Windows/197 Linux cases. [PR #293](https://github.com/techrote/cybersand/pull/293)
+accepted that source as `4b6ca055`, tree `81bd8f5e1e083d4211a6aa9fe53d06979b015ccb`,
+after all applicable exact-head Docs/Native/Godot and distinct reviews passed.
+The [accepted receipt](../audits/2026-10-29-play-life005-native-failure-recovery.md#accepted-source-and-exact-head-hosted-qualification)
+preserves original CI-checkout ancestry and all source-specific cohorts.
+This exercises actual Main failure
+and ordinary default-policy recovery, not the five SetP course rigs. Prepared
+liquid construction still requires a healthy World; no prepared recovery or live
+solver replacement is admitted. Source/platform qualification is separate from
+slow-native/outstanding-job shutdown, arbitrary cancellation races, general
+leak/race freedom, gameplay performance, physical devices and human feel.
+#269/#270 remain open.
 
 ## Open the seven-preset movement course
 

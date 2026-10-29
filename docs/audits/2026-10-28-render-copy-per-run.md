@@ -533,3 +533,65 @@ requires an explicit frozen request, complete dual-host execution,
 new accurate source/build ledgers and guarded four-path LFS
 append before the final exact-head acceptance matrix. No
 request was armed and no binary or provenance file was changed.
+
+## Source-frozen single-process sanitizer lifetime result — 2026-10-29
+
+The earlier [18-minute full-suite timeout
+40792599185](https://github.com/techrote/cybersand/actions/runs/40792599185)
+remains a **failed historical run** on superseded executable source
+`f041aac3`. The 165/165 isolated-process shards at
+[40800942455](https://github.com/techrote/cybersand/actions/runs/40800942455)
+remain independently valid but do not by themselves test a complete
+single-process test lifetime. A new read-only verification-only workflow
+commit [`f08ca759d897802c97ec44b280e8ae704ae8a265`](https://github.com/techrote/cybersand/commit/f08ca759d897802c97ec44b280e8ae704ae8a265)
+is a descendant of this PR's previous docs head `f551e806`, with **only**
+`.github/workflows/render-copy290-monolithic-sanitizer.yml` changed.
+
+**Result: [one-process run 40844936801](https://github.com/techrote/cybersand/actions/runs/40844936801)
+completed SUCCESS, attempt 1, 2026-10-29 09:09 UTC.** One Ubuntu
+24.04 hosted job restored the **same original** GCC13 combined ASan+UBSan
+110,637,016-byte binary (SHA-256
+`8d50798344cc6bdb058cabb7e7ea78da9a2b96959058eaba711aaf9d4a5af1dc`),
+checked the corrected source's `world.cpp` and `test_world.cpp` Git
+blobs and raw SHA-256 hashes, verified the immutable test registry
+(165 unique names, registry SHA-256
+`2f48aa7ecb97054395a2893f1c282fe127e7d278dd2bf5e0c8a9ee222b2cad85`),
+and invoked the binary **once without a test-name selector**, under a
+2,700-second hard deadline. Original stdout and exit status were retained.
+The archived stdout contains **165 distinct `[pass]` lines in the exact
+registration order**, ends with `165 tests passed`, has **exit code 0**,
+and contains no `[fail]`, ASan, UBSan or `runtime error:` diagnostic.
+ASan was configured with `detect_leaks=0`: this does **not** qualify
+leak detection or TSan.
+
+The original 7,072-byte [Actions evidence ZIP
+12885756056](https://github.com/techrote/cybersand/actions/runs/40844936801)
+was independently downloaded and byte-checked against GitHub's published
+SHA-256 metadata: `d8856d6c8d69d76dc2706d91dd3d0cdadf3646fcf05fdacc1759b057cc16ca3f`.
+All six original ZIP member CRCs pass; the unaltered `stdout.log`
+is 12,494 bytes, SHA-256
+`0a469e92a004b22a9e3df36871816b7589e125034bcafc35d83ddff28da36a3e`.
+The archived `result.json`, source/head identity files,
+`registry.json` and zero exit-code file agree with the raw log.
+The [machine receipt](2026-10-29-render-copy-one-process-sanitizer-receipt.json)
+preserves original member hashes/CRCs and evidence scope. The binary's
+**original build ZIP** hash is inherited from the earlier audited
+40800942455 record; this readback independently verifies the new output ZIP,
+not another download of the 110-MB original binary archive.
+
+**Disposition:** the corrected executable source
+[`60915dc86631271ea8661377a3458149adda9361`](https://github.com/techrote/cybersand/commit/60915dc86631271ea8661377a3458149adda9361)
+now has successful source-frozen **all-165 single-process ASan+UBSan**
+execution, in addition to the independently audited isolated shards and
+prior Linux/Windows native/Godot scoped passes. This closes the
+specific *corrected-source same-process execution* coverage gap, **not**
+any final release/merge gate. The previous failed attempt remains in
+history. Native/Godot/full-scoped **exact-final-head ready-PR CI**,
+source-matched Linux/Windows LFS GDExtension builds and authenticated
+publication, strict current-source runtime provenance, distinct review,
+TSan as applicable and actual interactive/Web/render performance still
+need independent qualification. No runtime, manifest, C++/GDScript,
+material/liquid policy, snapshot ACK, Rapier or physical ejection policy
+changed. [Draft #295](https://github.com/techrote/cybersand/pull/295)
+is preparation only and remains unarmed; [draft #283](https://github.com/techrote/cybersand/pull/283)
+B=289 remains **NO-GO**.

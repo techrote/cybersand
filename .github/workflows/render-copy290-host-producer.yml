@@ -49,9 +49,9 @@ jobs:
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           test "$(git rev-parse HEAD:native/src/world.cpp)" = "a6afd8cad4264ac2eca0362d14711158e3606760"
           test "$(git rev-parse HEAD:native/tests/test_world.cpp)" = "5613d2166c71fa49fd2b8f65e8caa93857b5d65f"
-          test "$(git diff --name-only 39782c80486e2e841bb38d554d0bf73af3dd79ca HEAD)" = ".github/workflows/render-copy290-host-producer.yml"
+          test "$(git diff --name-only 6f57b584fba3104287dcaa4ba96e3dded7a32b90 HEAD)" = ".github/workflows/render-copy290-host-producer.yml"
           test ! -e tools/ci/render_copy290_publish_request.json
-          git diff --check 39782c80486e2e841bb38d554d0bf73af3dd79ca HEAD
+          git diff --check 6f57b584fba3104287dcaa4ba96e3dded7a32b90 HEAD
           if [ "$RUNNER_OS" != "Windows" ]; then
             python3 tools/ci/check_ci_provider_policy.py
           fi
@@ -238,9 +238,9 @@ jobs:
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           test "$(git rev-parse HEAD:native/src/world.cpp)" = "a6afd8cad4264ac2eca0362d14711158e3606760"
           test "$(git rev-parse HEAD:native/tests/test_world.cpp)" = "5613d2166c71fa49fd2b8f65e8caa93857b5d65f"
-          test "$(git diff --name-only 39782c80486e2e841bb38d554d0bf73af3dd79ca HEAD)" = ".github/workflows/render-copy290-host-producer.yml"
+          test "$(git diff --name-only 6f57b584fba3104287dcaa4ba96e3dded7a32b90 HEAD)" = ".github/workflows/render-copy290-host-producer.yml"
           test ! -e tools/ci/render_copy290_publish_request.json
-          git diff --check 39782c80486e2e841bb38d554d0bf73af3dd79ca HEAD
+          git diff --check 6f57b584fba3104287dcaa4ba96e3dded7a32b90 HEAD
           if [ "$RUNNER_OS" != "Windows" ]; then
             python3 tools/ci/check_ci_provider_policy.py
           fi
@@ -351,9 +351,9 @@ jobs:
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           test "$(git rev-parse HEAD:native/src/world.cpp)" = "a6afd8cad4264ac2eca0362d14711158e3606760"
           test "$(git rev-parse HEAD:native/tests/test_world.cpp)" = "5613d2166c71fa49fd2b8f65e8caa93857b5d65f"
-          test "$(git diff --name-only 39782c80486e2e841bb38d554d0bf73af3dd79ca HEAD)" = ".github/workflows/render-copy290-host-producer.yml"
+          test "$(git diff --name-only 6f57b584fba3104287dcaa4ba96e3dded7a32b90 HEAD)" = ".github/workflows/render-copy290-host-producer.yml"
           test ! -e tools/ci/render_copy290_publish_request.json
-          git diff --check 39782c80486e2e841bb38d554d0bf73af3dd79ca HEAD
+          git diff --check 6f57b584fba3104287dcaa4ba96e3dded7a32b90 HEAD
           if [ "$RUNNER_OS" != "Windows" ]; then
             python3 tools/ci/check_ci_provider_policy.py
           fi

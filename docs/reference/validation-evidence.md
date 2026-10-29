@@ -75,6 +75,21 @@ semantics remain a **separate failed gate**. The
 and [machine receipt](../audits/2026-10-29-render-copy-sanitizer-matrix-receipt.json)
 preserve source, tools, raw evidence and limits.
 
+**Single-process lifetime successor (2026-10-29):** The
+[full 165-case one-process ASan+UBSan readback](../audits/2026-10-28-render-copy-per-run.md#source-frozen-single-process-sanitizer-lifetime-result--2026-10-29)
+is now **SUCCESS** on the *corrected* native executable
+`60915dc86631271ea8661377a3458149adda9361`:
+[run 40844936801](https://github.com/techrote/cybersand/actions/runs/40844936801)
+restored the identical frozen binary used by the 165-process shards,
+executed all 165 tests in one process in registry order, and retained
+exit 0 and the exact stdout. Independent ZIP SHA-256/CRC and full
+165-label/readback verification found no sanitizer diagnostics.
+The [original ZIP/member hash receipt](../audits/2026-10-29-render-copy-one-process-sanitizer-receipt.json)
+records the evidence. The previous old-source 18-minute monolithic
+timeout remains **failed**; no TSan or leak-detection claim follows.
+Strict current-source LFS publication and complete exact-final-head
+ready-PR CI/review remain blocked.
+
 Both current Linux/Windows runtime manifests still have **1 of 80
 native source inputs** changed and **6 of 549** historic build-input
 entries drifted/missing (including four retired PLAY-AUTO-002 publisher
