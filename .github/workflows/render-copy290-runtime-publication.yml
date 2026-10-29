@@ -12,6 +12,7 @@ on:
 permissions:
   contents: read
   actions: read
+  issues: read
 
 concurrency:
   group: render-copy290-host-producer-${{ github.ref }}
@@ -614,6 +615,7 @@ jobs:
     permissions:
       contents: write
       actions: read
+      issues: read
     steps:
       - name: Check out exact authorized source for atomically leased LFS push
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
