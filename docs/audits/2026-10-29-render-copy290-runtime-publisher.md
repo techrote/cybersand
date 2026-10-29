@@ -144,3 +144,20 @@ new-runtime bytes are instead proved by original Actions ZIP custody, the staged
 canonical LFS pointer OIDs/sizes, actual index verification and the ordinary Git
 LFS pre-push hook on the lease-protected branch push. No LFS operation runs in
 the current unarmed writer checkpoint.
+
+
+## Real-artifact dry-run checksum negative and repair
+
+Read-only writer run [40965376560](https://github.com/techrote/cybersand/actions/runs/40965376560)
+**FAILED before any publication-capable job**. Writer guards and absent-request
+admission passed; the real-artifact dry run refused because the writer's copied
+Windows Godot SHA-512 pin omitted the two hex characters `d6` in the middle of
+the digest. The original producer workflow at `c6accb68` contains the full
+128-hex value
+`41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9`, so this was a writer-preparation transcription error, not changed
+producer evidence. Prepare and publish remained skipped.
+
+The constant now matches the exact producer workflow, and a synthetic regression
+requires 128 hexadecimal characters for the Windows Godot SHA-512 plus 64 for
+each SHA-256 external pin. This negative remains part of the writer evidence
+history.

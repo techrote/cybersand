@@ -40,6 +40,18 @@ class RequestTests(unittest.TestCase):
         self.assertEqual(len(publisher.WRITER_FILES), 4)
         self.assertEqual(len(publisher.PUBLICATION_PATHS), 4)
 
+    def test_external_pin_shapes_and_windows_godot_digest(self):
+        self.assertEqual(len(publisher.EXTERNAL_PINS["godot_windows_sha512"]), 128)
+        for key in ("godot_linux_sha256", "rapier_linux_sha256",
+                    "rapier_windows_sha256", "llvm_mingw_sha256"):
+            with self.subTest(key=key):
+                self.assertEqual(len(publisher.EXTERNAL_PINS[key]), 64)
+                int(publisher.EXTERNAL_PINS[key], 16)
+        int(publisher.EXTERNAL_PINS["godot_windows_sha512"], 16)
+        self.assertEqual(
+            publisher.EXTERNAL_PINS["godot_windows_sha512"],
+            "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9")
+
     def test_request_shape_exact_values(self):
         self.assertEqual(set(self.request), gate.REQUEST_KEYS)
         self.assertEqual(self.request["destination_branch"], publisher.BRANCH)
