@@ -4,7 +4,7 @@ status: Current
 document-kind: evidence
 scope: Stateless native refactor of World::copy_render_cells to one chunk lookup per row run, with byte-identity proof against the replaced per-cell loop and reported (not asserted) local Windows timings; hosted Linux/sanitizer gates and end-to-end exchange latency remain separate
 canonical-for: []
-last-reviewed: 2026-10-28
+last-reviewed: 2026-10-29
 related-documents: [../architecture/rendering-and-gameplay-bridges.md, ../operations/profiling-observability-and-performance.md, ../reference/validation-evidence.md, ../operations/local-build-and-validation.md]
 ---
 
@@ -130,3 +130,113 @@ without runtime publication.
   publication. Until then the runtime source-input check stays stale for
   `native/src/world.cpp`, which blocks merge.
 - Web was not built or run.
+
+## Hosted source-matched qualification — 2026-10-29
+
+**Execution identity and scope.** The review candidate [PR #290](https://github.com/techrote/cybersand/pull/290)
+has executable head `f041aac3f2574e5524b807f8c2efdc27bee241e0`
+on base `main` `91778603db950a817b82fc6a4f75efee201f5044`.
+The two independent scoped CI lanes forked that head without changing
+**any** executable file, test, or existing build configuration:
+
+- `verify/render-copy-per-run-20261029`, commit
+  `e743aa664cdf91eabcc19bd394454ccd263ccc67`,
+  adds only `.github/workflows/render-copy-290-targeted.yml`.
+  [Run 40792599185](https://github.com/techrote/cybersand/actions/runs/40792599185)
+  preserves the exact Git archive, executes Linux GCC13 native and
+  ASan/UBSan suites, and Windows Server 2022 MSVC native test/build.
+- `verify/render-copy-per-run-godot-20261029`, commit
+  `e64f20a8cfce415edf10b9b258940d5f07640f03`,
+  differs from the PR head only in
+  `.github/workflows/render-copy-290-godot.yml`.
+  [Run 40793815067](https://github.com/techrote/cybersand/actions/runs/40793815067)
+  **passed its three jobs**: Linux source-matched GDExtension
+  build and actual Godot 4.7/Rapier 0.35.2 execution; pinned
+  LLVM-MinGW Windows GDExtension build; actual Windows Server 2022
+  Godot 4.7/Rapier execution with the newly built Windows DLL.
+
+The Linux and Windows actual-host cases each pass
+`test_render_world_generation.gd` (**23 assertions, zero failures**) and
+`test_render_patch_handoff_regression.gd` (pass).
+Both Linux and Windows import logs were inspected, with no
+`SCRIPT ERROR` or failed extension-load diagnostics.
+The tests exercise render publication and reset/ACK handoff under the
+existing native-owner architecture, not interactive GPU pacing or
+physics motion for the structural-detachment experiment.
+
+The separate Windows MSVC hosted native build/test job in run 40792599185
+also **passed 165 tests**, including `render copy per-run identity`,
+and built the ordinary native shared library and benchmark. Its
+hosted MSVC version is 19.44.35229; its `/Od` timings are not
+directly comparable to the original local `/O2` benchmark.
+The Linux GCC13 native suite has passed its ordinary test step,
+but its separate sanitizer step is **still in progress at the
+time of this checkpoint**. A green native pipeline or sanitizer result
+must not be inferred until the job and artifacts complete.
+
+### Current verified artifact identities
+
+| Artifact from exact workflow | GitHub artifact ID | ZIP SHA-256 |
+|---|---:|---|
+| Native lane Git source archive | `12862088140` | `66ab0ad9ea87e86b8ab837de72a17631427269b54bef7f7a39a2e88a7a2b6b3c` |
+| Windows Server 2022 MSVC native build/tests | `12863135825` | `da5b5b943765f13522f4c62e39165f3ebc03cc5fc8f7955141f4e318b23f5e26` |
+| Linux actual Godot/GDExtension execution | `12862947234` | `d54cf5d09d39e618f1bdcd58692ab4a168cdd7d4784155262274e846f8e5e46a` |
+| Windows pinned LLVM-MinGW DLL build | `12862583002` | `f5741f997eff16718a1209a85eaa3b3ad721f3789aa4685bb4d3404533bf48f6` |
+| Windows actual Godot/GDExtension execution | `12862887663` | `25a96228c323749386dec25669a12854dc530fa544ea54c6fe9aa0369924e260` |
+
+All five downloaded ZIP hashes and ZIP CRC checks pass. The
+source archive has Git tree
+`366615ccf206a37475976ada75cf2a94cf4a26c2`,
+and its Git blobs for `native/src/world.cpp`
+(`185d00a677fc61f4c12803a83abab221a95101bb`) and
+`native/tests/test_world.cpp`
+(`78ae6db2e3c10389706c48c66d9b448fa69def91`)
+match those fetched from the PR branch exactly.
+The source archive contains both source files with SHA-256
+`122c5e43002953add091baa431aca19688c6d384e721993dc6b9af6e8f686177`
+and
+`f7327425f415d4c33aeb4b5eb1afa0203f208b621a3795c7a93033f3ee2ba959`.
+
+Linux GDExtension SHA-256:
+`1e28831c3782647202dabb49b9b0e3356fa68320cb15373b6bcf0fefb63c6a50`;
+Windows build DLL SHA-256:
+`b5b9161eff985eca4f0d2fa270a57c6a037698924d03813acc815181b53ec57e`.
+The Windows execution job verifies that exact DLL digest and the
+pinned Rapier runtime. Neither DLL is a published LFS runtime.
+
+### Retained qualification-harness negatives
+
+The first isolated Godot workflow (run `40793006181`) and the
+subsequent reductions (`40793601940`, `40793628314`) were rejected by
+Actions validation **before launching jobs**, due use of
+an unavailable job-level `runner.temp` expression. Run
+`40793754926` launched, but the Windows build failed before
+compilation because the configured SCons executable differed from
+the newly created venv location. Those are test-harness setup
+failures, **not** passing runtime work or demonstrated native-code
+failures. The corrected workflow and source-matched
+run `40793815067` remain separately identified.
+
+### Remaining publication and acceptance gates
+
+- **No production/runtime publication.** The checked-in Linux and
+  Windows CyberSand LFS GDExtension objects and their
+  `runtime-provenance*.json` source-input manifests still describe
+  the previous `native/src/world.cpp`. The strict repository
+  provenance checker must continue to reject publication until
+  corresponding source-matched binaries, manifest hashes and
+  required host evidence are published through the repository's
+  reviewed runtime process. Do not hand-edit historical hashes.
+- Draft-PR Native/GDExtension ready-for-review full matrices remain
+  intentionally skipped, not passes. The narrow workflow jobs
+  above are additive qualification evidence, not a waiver of
+  full exact-final-head checks, independent review, release or Web.
+- The resident/nonresident byte-identity suite does not measure
+  full real desktop GPU upload, worker backpressure, interactive
+  FPS or broad production pacing. Earlier local performance
+  measurements retain their original single-host scope.
+- This is a **stateless copy optimization**; it does not alter
+  cell contents, physics interaction, liquid construction policy,
+  full/dirty snapshot exchange or main-thread Rapier ownership.
+  It does not qualify PR #283's separate stateful render/physics
+  experiments, reactive Wood, fracture, desoliding or #281 completion.
