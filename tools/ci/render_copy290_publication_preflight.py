@@ -134,13 +134,18 @@ def _unique_evidence(pairs):
 def _host_binary(data, platform):
     require(type(data) is bytes and len(data) >= 4096, "Missing or truncated host runtime")
     if platform == "linux":
-        require(data[:6] == b"\x7fELF\x02\x01" and data[18:20] == b"\x3e\x00",
-                "Not a Linux ELF64 x86_64 runtime")
+        require(data[:6] == b"\x7fELF\x02\x01"
+                and data[16:18] == b"\x03\x00"  # ET_DYN, not ET_EXEC
+                and data[18:20] == b"\x3e\x00",
+                "Not a Linux ELF64 x86_64 shared object")
     else:
         offset = int.from_bytes(data[60:64], "little")
-        require(data[:2] == b"MZ" and 64 <= offset <= len(data) - 6
-                and data[offset:offset + 6] == b"PE\x00\x00\x64\x86",
-                "Not a Windows PE x86_64 runtime")
+        require(data[:2] == b"MZ" and 64 <= offset <= len(data) - 26
+                and data[offset:offset + 6] == b"PE\x00\x00\x64\x86"
+                and data[offset + 24:offset + 26] == b"\x0b\x02"  # PE32+
+                and int.from_bytes(data[offset + 22:offset + 24], "little")
+                & 0x2000 != 0,  # IMAGE_FILE_DLL
+                "Not a Windows PE32+ x86_64 DLL")
 
 
 def verify_host_receipts(bundles, source, tree, expected_run_id, expected_run_attempt):

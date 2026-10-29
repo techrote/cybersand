@@ -189,10 +189,13 @@ class HostReceipts(unittest.TestCase):
         for platform, (runner, toolchain) in HOST_TARGETS.items():
             binary = bytearray(4096)
             if platform == "linux":
-                binary[:6], binary[18:20] = b"\x7fELF\x02\x01", b"\x3e\x00"
+                binary[:6] = b"\x7fELF\x02\x01"
+                binary[16:18], binary[18:20] = b"\x03\x00", b"\x3e\x00"
             else:
                 binary[:2], binary[60:64] = b"MZ", (128).to_bytes(4, "little")
                 binary[128:134] = b"PE\x00\x00\x64\x86"
+                binary[150:152] = (0x2000).to_bytes(2, "little")  # IMAGE_FILE_DLL
+                binary[152:154] = b"\x0b\x02"  # PE32+
             binary = bytes(binary)
             record = {
                 "schema": "render-copy290-host-evidence-v1",
@@ -245,6 +248,29 @@ class HostReceipts(unittest.TestCase):
         self.bundles["linux"]["runtime"] = self.bundles["windows"]["runtime"]
         with self.assertRaises(RuntimeError):
             self.verify()
+
+    def test_rejects_executable_as_extension_even_with_rehashed_receipt(self):
+        # A machine-compatible executable is not a loadable GDExtension DLL/SO.
+        # Recompute the receipt hash to isolate the binary-kind validation.
+        for platform, offset, bad in (
+            ("linux", 16, b"\x02\x00"),     # ET_EXEC instead of ET_DYN
+            ("windows", 150, b"\x00\x00"),  # no IMAGE_FILE_DLL
+            ("windows", 152, b"\x0b\x01"),  # PE32 instead of PE32+
+        ):
+            with self.subTest(platform=platform, offset=offset):
+                saved = self.bundles[platform]
+                forged = bytearray(saved["runtime"])
+                forged[offset:offset + len(bad)] = bad
+                forged = bytes(forged)
+                receipt = json.loads(saved["report"])
+                receipt["runtime_sha256"] = digest(forged)
+                self.bundles[platform] = dict(
+                    saved, runtime=forged, report=self.encode(receipt))
+                try:
+                    with self.assertRaises(RuntimeError):
+                        self.verify()
+                finally:
+                    self.bundles[platform] = saved
 
     def test_false_report(self):
         for change in ({"cases": []}, {"platform": "windows"}, {"run_id": True},

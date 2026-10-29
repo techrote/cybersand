@@ -216,3 +216,28 @@ independent Actions artifact/run/job custody, genuine Linux+Windows builds,
 actual Godot host execution, full source/build manifests, explicit
 source-bound owner authority, atomic four-path LFS publication and final
 acceptance gates. No old ZIP, failed job, manifest or binary was replaced.
+
+## Native shared-library kind refusal — 2026-10-29
+
+Independent read-only preflight review found that the proposed paired-host
+receipt verifier accepted a same-architecture **executable** as a purported
+GDExtension runtime if its bytes and receipt hash were recomputed: the original
+Linux header guard checked ELF class/endian/machine but not `ET_DYN`, while
+the Windows guard checked PE x86_64 without requiring `PE32+` or
+`IMAGE_FILE_DLL`. These are *publication-verifier admission gaps*, not
+observed faults in existing native binaries or Godot tests.
+
+The pure verifier now also requires Linux ELF64 `ET_DYN` and Windows PE32+
+with the DLL characteristic. A new adversarial test probes Linux `ET_EXEC`,
+Windows non-DLL PE and PE32 by recomputing the forged payload's receipt
+SHA-256; all must be rejected while the positive synthetic pair stays valid.
+This is one additional test method (three negative subcases), increasing the
+adversarial suite from 52 to **53 tests** if confirmed by hosted execution.
+This guards binary *type*, not linker correctness, loadability, actual
+provenance, trusted Actions job custody or real host execution.
+
+No production/native source, frozen #290 oracle, GDExtension runtime,
+manifest, original artifact or publication authority changed. PRs #290/#295
+stay draft; #283 B=289 stays NO-GO. The earlier historical runs remain
+unchanged. Exact-head preflight CI must qualify this edit before its
+53-test result can be claimed.
