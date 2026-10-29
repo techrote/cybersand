@@ -10,6 +10,48 @@ related-documents: [../systems/player-control-playground.md, ../architecture/dat
 
 # PLAY-LIFE-004 populated retirement — 2026-10-29
 
+## Clean committed-source Windows qualification
+
+Source **`fc3143fa4796b3a02463f9cd8e86387adb0947b6`** executes strict import
+plus all five rigs, **335 assertions / zero failures**, 67 per rig. All six
+processes exit0 without diagnostic error, skip, timeout or retry. Ten independently
+populated transactions complete: five supported pressure/reference rebuilds,
+five retaining resets and ten exact `run_or_epoch` refusals. Every old lap has
+one credited gate and positive completed native elapsed ticks, with exactly two
+pending primary edges and held movement. Every final host joins its owner and
+retires its actual Rapier session.
+
+Collector `C:/tmp/run_play_life004_exact.py` starts only from clean exact HEAD,
+verifies all six Git/working test hashes, all80 native input hashes and retained
+native/Rapier payloads, reuses the strict existing `run_case`, checks every result
+row and requires all737 scoped tested inputs unchanged after execution.
+This later evidence append does not change the six executed test files; its
+final CI/review remains separately required.
+
+```text
+python C:/tmp/run_play_life004_exact.py --root C:/Users/_/.codex/worktrees/play-pending-prepare-20261028/khybersand --source fc3143fa4796b3a02463f9cd8e86387adb0947b6 --output C:/Users/_/.codex/tmp/play-life004-20261029/exact-fc3143fa
+```
+
+Platform Windows x86_64; pinned Godot `4.7.stable.official.5b4e0cb0f`;
+native DLL `e66b9b04b546b09cb4feea204373faf12a7248abf1701da88fc6ecf87b666ecb`
+and Rapier DLL `b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7`.
+Native build/source remains `d7e35aa3897ffa0bde422ece98226c551588040e`;
+all80 current native inputs match, without a rebuild claim. Import/case/predicate
+limits remain240s/180s/15,000ms. Import takes4.289s;
+Acrobat/Buggy/Bike/Lander/Barrel take5.474/5.280/5.190/5.188/5.391s.
+These are strict process durations, not gameplay or performance measurements.
+
+| Retained local evidence | SHA-256 |
+|---|---|
+| `identity.json` | `84a1cd736ea020c6eca127d6095a31f9628575183d6af1f5010bd29b338b2251` |
+| `timings.json` | `cca97bfcce5be774a0151b7c4a4818577217f16d261f616b4956e28372ecc20d` |
+| `results.json` | `6666ee966bc5c02a8a1e09215721db3dc23258ade6f0d11842557004d5a7dd41` |
+
+Raw logs and all737 input hashes remain in the named output directory. No
+previous-head proof is promoted to a later source. Hosted Windows/Linux,
+final independent source/execution review and accepted-tree verification remain
+pending; #269/#270 are open.
+
 ## Source and dependency boundary
 
 Branch `codex/play-life004-populated-retirement` starts at accepted main

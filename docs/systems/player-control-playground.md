@@ -257,7 +257,10 @@ snapshot into Main's copied presentation slot exercises its old-epoch lap fence;
 it does not simulate a native delivery race or certify all rendering paths.
 
 The [source/evidence record](../audits/2026-10-29-play-life004-populated-retirement.md)
-tracks this child's own local/hosted qualification and distinct review. Existing
+records clean source `fc3143fa` passing local Windows **335 assertions / zero
+failures**, ten populated transactions and ten old-command refusals, with all80
+native and737 scoped tested inputs verified. Hosted Windows/Linux and final
+distinct review remain required. Existing
 UI003 already covers one populated Jet Barrel reset; this adds populated command
 retirement and all-five-rig construction/reset coverage. It does not establish
 native-busy shutdown, failure recovery, equipment-effect replay, broad race/leak
