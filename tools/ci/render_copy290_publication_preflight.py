@@ -291,6 +291,119 @@ def verify_host_artifact_archives(archives, expected_digests, source, tree,
                                 expected_run_id, expected_run_attempt)
 
 
+
+# Pure GitHub Actions metadata custody boundary for a FUTURE, owner-authorized
+# read-only producer. The caller must fetch this data independently from GitHub's
+# REST API, not from the candidate ZIP or a build-generated receipt.
+ACTIONS_HOST_JOBS = {
+    "linux-host": ("Build exact-source Linux GDExtension",
+                   "Execute exact-source Godot 4.7 render tests"),
+    "windows-build": ("Build and stage exact Windows GDExtension",),
+    "windows-host": ("Execute actual Windows Godot native render tests",),
+}
+ACTIONS_ARTIFACT_PREFIX = "render-copy290-host-evidence-"
+REPOSITORY_ID = 1350077435
+
+
+def verify_actions_custody(run, jobs, artifacts, source_sha, run_id, attempt,
+                           branch, workflow_path):
+    """Bind independently obtained REST metadata to the future paired ZIPs.
+
+    This returns external artifact digests ONLY. No build, download or publish
+    happens here, and self-supplied REST-looking JSON is not authenticated.
+    """
+    require(type(source_sha) is str and
+            re.fullmatch(r"[0-9a-f]{40}", source_sha) is not None
+            and type(run_id) is int and run_id > 0
+            and type(attempt) is int and attempt > 0
+            and type(branch) is str and bool(branch)
+            and type(workflow_path) is str
+            and workflow_path.startswith(".github/workflows/")
+            and workflow_path.endswith(".yml"),
+            "Malformed externally pinned Actions source/run/branch/workflow")
+    require(type(run) is dict and type(jobs) is list and
+            type(artifacts) is list, "Malformed Actions metadata")
+    repo, head_repo = run.get("repository"), run.get("head_repository")
+    require(type(repo) is dict and type(head_repo) is dict
+            and repo.get("full_name") == REPO and head_repo.get("full_name") == REPO
+            and type(repo.get("id")) is int and repo["id"] == REPOSITORY_ID
+            and type(head_repo.get("id")) is int
+            and head_repo["id"] == REPOSITORY_ID,
+            "Actions run belongs to another repository or fork")
+    require(type(run.get("id")) is int and run["id"] == run_id
+            and type(run.get("run_attempt")) is int
+            and run["run_attempt"] == attempt
+            and run.get("head_sha") == source_sha
+            and run.get("head_branch") == branch
+            and run.get("path") == workflow_path
+            and run.get("event") == "push"
+            and run.get("status") == "completed"
+            and run.get("conclusion") == "success",
+            "Actions run source, identity, workflow or final outcome differs")
+    require(len(jobs) == len(ACTIONS_HOST_JOBS)
+            and {j.get("name") for j in jobs if type(j) is dict}
+            == set(ACTIONS_HOST_JOBS), "Incomplete or duplicate host jobs")
+    job_ids = set()
+    for job in jobs:
+        name = job["name"]
+        require(type(job.get("id")) is int and job["id"] > 0
+                and job["id"] not in job_ids
+                and type(job.get("run_id")) is int and job["run_id"] == run_id
+                and job.get("status") == "completed"
+                and job.get("conclusion") == "success"
+                and type(job.get("steps")) is list,
+                "Host job identity or outcome differs: " + name)
+        job_ids.add(job["id"])
+        if "run_attempt" in job:
+            require(type(job["run_attempt"]) is int
+                    and job["run_attempt"] == attempt,
+                    "Mixed Actions job attempts: " + name)
+        steps = job["steps"]
+        for required_step in ACTIONS_HOST_JOBS[name]:
+            matches = [s for s in steps if type(s) is dict
+                       and s.get("name") == required_step]
+            require(len(matches) == 1 and
+                    matches[0].get("status") == "completed" and
+                    matches[0].get("conclusion") == "success",
+                    "Missing or nonpassing source/host step: " + required_step)
+        require(all(type(s) is dict and s.get("conclusion") == "success"
+                    for s in steps),
+                "Host job includes a failed, skipped or cancelled step: " + name)
+    expected_names = {
+        p: ACTIONS_ARTIFACT_PREFIX + p + "-" + str(run_id)
+        for p in HOST_TARGETS
+    }
+    found = {}
+    for artifact in artifacts:
+        require(type(artifact) is dict, "Malformed Actions artifact")
+        name = artifact.get("name")
+        if not isinstance(name, str) or not name.startswith(ACTIONS_ARTIFACT_PREFIX):
+            continue  # Unrelated build-transfer artifacts are not publisher inputs.
+        require(name in expected_names.values()
+                and name not in found, "Unexpected or duplicate host artifact")
+        arun = artifact.get("workflow_run")
+        require(type(arun) is dict
+                and type(artifact.get("id")) is int and artifact["id"] > 0
+                and type(artifact.get("size_in_bytes")) is int
+                and 0 < artifact["size_in_bytes"] <= 96 * 1024 * 1024
+                and artifact.get("expired") is False
+                and type(artifact.get("digest")) is str
+                and re.fullmatch(r"sha256:[0-9a-f]{64}",
+                                 artifact["digest"]) is not None
+                and arun.get("id") == run_id
+                and arun.get("head_sha") == source_sha
+                and arun.get("head_branch") == branch
+                and type(arun.get("repository_id")) is int
+                and arun["repository_id"] == REPOSITORY_ID
+                and type(arun.get("head_repository_id")) is int
+                and arun["head_repository_id"] == REPOSITORY_ID,
+                "Host artifact metadata does not bind to the pinned run")
+        found[name] = artifact["digest"]
+    require(set(found) == set(expected_names.values()),
+            "Both original, unexpired host artifacts are required")
+    return {p: found[name] for p, name in expected_names.items()}
+
+
 def check():
     context(dict(os.environ))
     head = git("rev-parse", "HEAD").decode().strip()

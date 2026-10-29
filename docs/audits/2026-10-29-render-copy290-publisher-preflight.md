@@ -272,3 +272,35 @@ source/build provenance, owner authorization, an atomic four-path LFS
 append or final ready-head acceptance. PR #290 remains draft; #283's
 B=289 ejection policy remains NO-GO. The original sanitizer timeout and
 older negative CI evidence are preserved.
+
+
+## Independent GitHub Actions custody preflight — 2026-10-29
+
+A further **pure, nonpublishing** guard models the trust boundary missing
+between two self-reported host ZIPs and GitHub's authoritative Actions run,
+job and artifact records. The new \`verify_actions_custody\` function requires
+the fixed repository ID and same-repository head; exact externally pinned
+source SHA, run ID/attempt, authorized branch/workflow, successful completed
+**push** run; three distinct successful Linux-build/host, Windows-build and
+real-Windows-host jobs; their named build/host steps without skipped or failed
+steps; and two distinct unexpired artifacts with trusted Actions
+\`sha256:\` digests, names, size and matching run/source/repository metadata.
+It returns the externally supplied paired artifact digests to feed the
+already-existing byte/CRC/receipt verifier, **not a publication decision**.
+
+The six synthetic test methods include negative source, fork, replayed
+run/attempt, workflow/event, job/step failure, artifact substitution,
+duplicate, expiry, forged size/digest and boolean-ID cases. Their success
+would validate this narrow metadata shape only. **No live future producer
+exists yet** and synthetic REST-like objects are not authenticated.
+The eventual publisher must retrieve metadata independently from GitHub's
+Actions API, authenticate its API transport and checked-out source, lock
+the actual producer job/step vocabulary through separate review, download
+and verify the original ZIP bytes, prove full source/build-input integrity,
+and obtain a separately approved source-bound write request. A green
+read-only preflight cannot supply these steps.
+
+This change preserves the existing read-only workflow, historical
+LFS binaries and manifests, the original failed sanitizer timeout, and
+draft separation from #283 (B=289 remains NO-GO). It is not a source-matched
+runtime publication or an independent human release approval.

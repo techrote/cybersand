@@ -485,5 +485,130 @@ class HostArtifactArchives(unittest.TestCase):
             self.verify(run=True)
 
 
+
+class ActionsMetadataCustody(unittest.TestCase):
+    """Synthetic REST envelopes only; no authenticated live producer."""
+    def setUp(self):
+        self.source = "a" * 40
+        self.run_id = 40900000001
+        self.attempt = 1
+        self.branch = FEATURE
+        self.workflow = ".github/workflows/render-copy290-runtime-publication.yml"
+        repo = {"id": REPOSITORY_ID, "full_name": REPO}
+        self.run = {
+            "id": self.run_id, "run_attempt": self.attempt,
+            "head_sha": self.source, "head_branch": self.branch,
+            "path": self.workflow, "event": "push",
+            "status": "completed", "conclusion": "success",
+            "repository": dict(repo), "head_repository": dict(repo),
+        }
+        self.jobs = [
+            {"id": n + 1, "run_id": self.run_id, "run_attempt": self.attempt,
+             "name": name, "status": "completed", "conclusion": "success",
+             "steps": [{"name": label, "status": "completed",
+                        "conclusion": "success"} for label in required]}
+            for n, (name, required) in enumerate(ACTIONS_HOST_JOBS.items())
+        ]
+        self.artifacts = [
+            {"id": n + 101, "name": ACTIONS_ARTIFACT_PREFIX + platform +
+             "-" + str(self.run_id), "digest": "sha256:" + str(n + 1) * 64,
+             "size_in_bytes": 2048, "expired": False,
+             "workflow_run": {"id": self.run_id, "head_sha": self.source,
+                              "head_branch": self.branch,
+                              "repository_id": REPOSITORY_ID,
+                              "head_repository_id": REPOSITORY_ID}}
+            for n, platform in enumerate(HOST_TARGETS)
+        ]
+
+    def verify(self):
+        return verify_actions_custody(
+            self.run, self.jobs, self.artifacts, self.source, self.run_id,
+            self.attempt, self.branch, self.workflow)
+
+    def test_synthetic_positive(self):
+        self.assertEqual(set(self.verify()), set(HOST_TARGETS))
+
+    def test_reject_wrong_run_metadata(self):
+        for key, bad in (("id", self.run_id + 1),
+                         ("run_attempt", 2), ("head_sha", "b" * 40),
+                         ("head_branch", "untrusted"),
+                         ("path", "unexpected.yml"), ("event", "pull_request"),
+                         ("status", "in_progress"), ("conclusion", "failure")):
+            with self.subTest(key=key):
+                saved = self.run[key]
+                self.run[key] = bad
+                try:
+                    with self.assertRaises(RuntimeError):
+                        self.verify()
+                finally:
+                    self.run[key] = saved
+
+    def test_reject_foreign_repository_and_fork(self):
+        for key in ("repository", "head_repository"):
+            for field, bad in (("id", 1), ("full_name", "fork/cybersand")):
+                with self.subTest(key=key, field=field):
+                    saved = self.run[key][field]
+                    self.run[key][field] = bad
+                    try:
+                        with self.assertRaises(RuntimeError):
+                            self.verify()
+                    finally:
+                        self.run[key][field] = saved
+
+    def test_reject_missing_duplicate_or_nonpassing_jobs(self):
+        saved = self.jobs
+        variants = [
+            saved[:2], saved + [dict(saved[0])],
+            [dict(saved[0], run_id=self.run_id + 1), *saved[1:]],
+            [dict(saved[0], run_attempt=2), *saved[1:]],
+            [dict(saved[0], conclusion="failure"), *saved[1:]],
+            [dict(saved[0], steps=[]), *saved[1:]],
+            [dict(saved[0], steps=[dict(saved[0]["steps"][0],
+                                         conclusion="skipped"),
+                                    *saved[0]["steps"][1:]]), *saved[1:]],
+        ]
+        for variant in variants:
+            with self.subTest(variant=variant):
+                self.jobs = variant
+                with self.assertRaises(RuntimeError):
+                    self.verify()
+        self.jobs = saved
+
+    def test_reject_replayed_or_fake_artifacts(self):
+        saved = self.artifacts
+        cases = [
+            saved[:1], saved + [dict(saved[0])],
+            [dict(saved[0], expired=True), saved[1]],
+            [dict(saved[0], digest="sha256:" + "x" * 64), saved[1]],
+            [dict(saved[0], name="render-copy290-host-evidence-linux-old"),
+             saved[1]],
+            [dict(saved[0], workflow_run=dict(saved[0]["workflow_run"],
+                                              id=self.run_id + 1)),
+             saved[1]],
+            [dict(saved[0], workflow_run=dict(saved[0]["workflow_run"],
+                                              head_repository_id=1)),
+             saved[1]],
+        ]
+        for case in cases:
+            with self.subTest(case=case):
+                self.artifacts = case
+                with self.assertRaises(RuntimeError):
+                    self.verify()
+        self.artifacts = saved
+
+    def test_no_boolean_identity_or_size(self):
+        with self.assertRaises(RuntimeError):
+            verify_actions_custody(self.run, self.jobs, self.artifacts,
+                                   self.source, True, 1, self.branch, self.workflow)
+        saved = self.artifacts[0]["size_in_bytes"]
+        self.artifacts[0]["size_in_bytes"] = True
+        try:
+            with self.assertRaises(RuntimeError):
+                self.verify()
+        finally:
+            self.artifacts[0]["size_in_bytes"] = saved
+
+
+
 if __name__ == "__main__":
     unittest.main()
