@@ -291,6 +291,7 @@ The [actual Main failure/recovery regression](systems/player-control-playground.
 separately records Windows/Linux30/0 and accepted merge4b6c for a real capacity
 fault and ordinary reset with reference Rapier bodies; it is not five-rig or
 native-busy shutdown qualification.
+The [PLAY-WAIT-001 snapshot handoff probe](audits/2026-10-29-play-wait001-main-snapshot-mutex.md) is a **Planned, unexecuted** five-rig test-only candidate measuring the isolated Main snapshot mutex wait. It does not replace native-busy shutdown, full Main wait attribution, physical-device or feel qualification.
 
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).
 
