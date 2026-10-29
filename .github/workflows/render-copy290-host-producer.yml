@@ -103,7 +103,7 @@ jobs:
         shell: bash
         env:
           EVIDENCE_PLATFORM: linux
-          EVIDENCE_RUNNER: ubuntu-24.04
+          EVIDENCE_HOST_LABEL: ubuntu-24.04
           EVIDENCE_TOOLCHAIN: gcc-13
           EVIDENCE_LOG_DIR: build/qual290/linux-host
           EVIDENCE_RUNTIME: godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
@@ -138,7 +138,7 @@ jobs:
                      "source_sha": git("HEAD"), "source_tree": git("HEAD^{tree}"),
                      "run_id": int(os.environ["GITHUB_RUN_ID"]),
                      "run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
-                     "runner": os.environ["EVIDENCE_RUNNER"],
+                     "runner": os.environ["EVIDENCE_HOST_LABEL"],
                      "toolchain": os.environ["EVIDENCE_TOOLCHAIN"],
                      "godot_version": "4.7.stable.official.5b4e0cb0f",
                      "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
@@ -324,7 +324,7 @@ jobs:
         shell: bash
         env:
           EVIDENCE_PLATFORM: windows
-          EVIDENCE_RUNNER: windows-2022
+          EVIDENCE_HOST_LABEL: windows-2022
           EVIDENCE_TOOLCHAIN: llvm-mingw-20260826-ucrt
           EVIDENCE_LOG_DIR: build/qual290/windows-host
           EVIDENCE_RUNTIME: build/qual290/windows-dll/cybersand_native.windows.x86_64.dll
@@ -359,7 +359,7 @@ jobs:
                      "source_sha": git("HEAD"), "source_tree": git("HEAD^{tree}"),
                      "run_id": int(os.environ["GITHUB_RUN_ID"]),
                      "run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
-                     "runner": os.environ["EVIDENCE_RUNNER"],
+                     "runner": os.environ["EVIDENCE_HOST_LABEL"],
                      "toolchain": os.environ["EVIDENCE_TOOLCHAIN"],
                      "godot_version": "4.7.stable.official.5b4e0cb0f",
                      "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
