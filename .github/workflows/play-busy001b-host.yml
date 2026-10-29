@@ -195,7 +195,8 @@ jobs:
           WINDOWS_CXX="$RUNNER_TEMP/play-busy-windows-cxx"             CYBERSAND_NATIVE_OUTPUT="$PWD/build/play-busy001b/windows-build/cybersand_native.windows.x86_64.dll"             timeout 20m tools/build_native_extension_windows.sh
           file build/play-busy001b/windows-build/cybersand_native.windows.x86_64.dll             | tee build/play-busy001b/windows-build/runtime-file.txt
           grep -q 'PE32+ executable (DLL).*x86-64' build/play-busy001b/windows-build/runtime-file.txt
-          sha256sum build/play-busy001b/windows-build/cybersand_native.windows.x86_64.dll             > build/play-busy001b/windows-build/runtime.sha256
+          (cd build/play-busy001b/windows-build && \
+            sha256sum cybersand_native.windows.x86_64.dll > runtime.sha256)
 
       - name: Publish exact Windows test runtime for same-run execution
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

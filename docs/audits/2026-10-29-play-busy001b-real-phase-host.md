@@ -114,9 +114,21 @@ The dedicated runtime is **not published** to LFS or reused as a release
 runtime. The branch must also retain ordinary project validation separately;
 draft-skipped ordinary workflows are not passes.
 
-At publication time this protocol/source is **unexecuted**. No Windows/Linux
-host result is assumed in advance. Any compile, import, test, deadline or
-readback failure is retained and is a blocker for this candidate.
+At initial publication this protocol/source was unexecuted. The first corrected-
+ownership exact-head attempt, run 40972930181 on source
+`90e350b6e9889d476c0a480bbc5a8ee2aefa6204`, built the special Windows DLL
+successfully but the Windows execution job stopped before Rapier/Godot setup:
+`runtime.sha256` had been created from the build job with a path prefixed by
+`build/play-busy001b/windows-build/`, while the artifact was intentionally
+restored under `build/play-busy001b/windows/`. `sha256sum --check` therefore
+reported the old path as missing. This is a provenance-harness path defect, not
+a runtime/test pass or engine failure. The failed run and its six-file evidence
+artifact remain retained; no execution result is transferred. The successor
+writes the seal from inside the artifact root so it is location-independent.
+
+No Windows/Linux host result is assumed in advance for the successor. Any
+compile, import, test, deadline or readback failure is retained and is a blocker
+for this candidate.
 
 ## Explicit non-claims
 
