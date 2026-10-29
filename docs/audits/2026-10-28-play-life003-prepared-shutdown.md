@@ -1,14 +1,51 @@
 ---
 title: PLAY-LIFE-003 actual-host prepared reconstruction shutdown
-status: Planned
+status: Current
 document-kind: evidence
-scope: Source-bound local Windows cancellation, Main/Rapier retirement and owner destruction at the prepared precommit boundary; hosted Linux and final acceptance pending
+scope: Accepted source-bound Windows/Linux prepared-construction cancellation, Main/Rapier retirement and owner destruction; slow native jobs and release acceptance remain open
 canonical-for: []
-last-reviewed: 2026-10-28
+last-reviewed: 2026-10-29
 related-documents: [../systems/player-control-playground.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/liquid-prepared-setup-and-receipts.md, ../operations/local-build-and-validation.md, 2026-10-28-play-life002-solver-reconstruction.md]
 ---
 
 # PLAY-LIFE-003 prepared reconstruction shutdown — 2026-10-28
+
+## Accepted source and subsequent main verification — 2026-10-29
+
+[PR #289](https://github.com/techrote/cybersand/pull/289) accepted source
+`92e0bccaa5b491c4dd7ec2cfbb4fa6ef88edaea6` through guarded non-forced merge
+`91778603db950a817b82fc6a4f75efee201f5044`. Its tree
+`3e513ab8b38a5d1d8076b5a4156d234f8d8a068f` equals the reviewed source and
+actual CI checkout `57ae8ef4b8facef4d793cbf0724bbd3c80392a0f`.
+Exact-head attempt1 [Documentation](https://github.com/techrote/cybersand/actions/runs/40770376178),
+[Native](https://github.com/techrote/cybersand/actions/runs/40770376210),
+[Windows/Linux Godot](https://github.com/techrote/cybersand/actions/runs/40770376408)
+and [distinct final source/execution review](https://github.com/techrote/cybersand/pull/289#pullrequestreview-5690658119)
+passed before merge. Subsequent main push runs
+[Docs40781959329](https://github.com/techrote/cybersand/actions/runs/40781959329),
+[Native40781959243](https://github.com/techrote/cybersand/actions/runs/40781959243)
+and [Godot40781959458](https://github.com/techrote/cybersand/actions/runs/40781959458)
+also pass on that merge commit. Optional skipped jobs are not execution results.
+
+The final ready-head Godot matrix passes Windows179 applicable cases plus
+import and Linux191 unique cases plus four imports. Each OS observes
+**150 LIFE003 assertions / zero failures**, eight completed Main callbacks
+per rig, five stop fences/owner joins, ten graph retirements and five worker/
+native-adapter destructions. Retained LIFE002335/0 and LIFE00150 real lifetimes/
+1,165 assertions also pass. All eight retained ZIP digests were independently
+verified, including Native164 tests in ordinary/TSan/ASan-UBSan variants.
+Native ASan leak detection is disabled, so this supplies no general leak claim.
+
+The [acceptance ledger](https://github.com/techrote/cybersand/issues/269#issuecomment-6482610414)
+records artifact identities, source inputs and bounded limits. All847 CI
+readback files are hash-verified in
+`C:/Users/_/.codex/artifacts/play-life003-ci-2026-10-28`; combined ledger
+SHA-256 `49f12baa901697adf151f9141ec2271f3e9b52514abb4da919ed5ff1297d63ad`.
+Local proof/probe cohorts remain separately backed up in
+`C:/Users/_/.codex/artifacts/play-life003-local-2026-10-28`.
+Historical candidate/pending statements below retain their original source
+scope. No slow native phase-job, OS thread-join trace, rendered pacing,
+physical-device or human-feel qualification follows; #269/#270 remain open.
 
 ## Accepted-parent integration and clean Windows proof
 

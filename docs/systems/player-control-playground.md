@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Experimental seven-preset human movement course, shared mechanical control, bounded native Sand and Water fields, input lifetime and qualified validation
 canonical-for: [player-control-playground, player-movement-presets, player-material-field]
-last-reviewed: 2026-10-28
+last-reviewed: 2026-10-29
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
 ---
 
@@ -224,12 +224,47 @@ corrected-source `cd5f2ce5` 150/0 proof separately. Clean non-forced integration
 **150 assertions / zero failures**: five real hosts, five stop fences/joins,
 ten Rapier graph retirements and five worker/adapter destructions, plus five
 contended safety releases. Earlier results are not relabeled as this source.
-Track final exact-head Windows/Linux, Native/Docs, independent review and
-accepted-tree receipts on [PR #289](https://github.com/techrote/cybersand/pull/289).
-Those gates are distinct from local proof. This covers pending construction
+Final source `92e0bcca` passed exact-head Windows/Linux150/0, Native/Docs and
+distinct source/execution review before [PR #289](https://github.com/techrote/cybersand/pull/289)
+merged as `91778603`, tree `3e513ab8b38a5d1d8076b5a4156d234f8d8a068f`.
+The [accepted audit](../audits/2026-10-28-play-life003-prepared-shutdown.md#accepted-source-and-subsequent-main-verification--2026-10-29)
+binds hosted artifacts and the separate passing main push runs. Earlier local
+results retain their original source identities. This covers pending construction
 cancellation; it does not hold native simulation jobs, inject a slow native
 tick, observe an OS native-thread join trace, measure rendered pacing or supply
 human feel. #269/#270 stay open.
+
+## Populated command and lap retirement regression
+
+**Current PLAY-LIFE-004 test implementation; qualification pending:** the
+[actual-host helper](../../godot/tests/play_life004_populated_retirement_case.gd)
+extends LIFE002's real Main/worker/Rapier apparatus across all five SetP rigs.
+Before both supported pressure/reference reconstruction and policy-retaining
+reset it starts a lap through admitted human input, observes positive completed
+native elapsed ticks and visits the first authored gate through a completed
+Rapier step. Test-only whole-assembly placement through the bridge forces that
+visit; it is not natural traversal or a handling assessment.
+
+An observed-identity human command must be admitted by the old session, and real
+keyboard events must leave two ordered unconsumed primary edges plus held
+movement immediately before replacement. The new active, unsuspended session
+must reject that retained command specifically for `run_or_epoch`, preserve its
+fresh control state and withhold held input until neutral rearm. Fresh input then
+starts only the new lap. New actor/World/session identities, requested/applied
+pressure policy/receipts, retained recipe, old graph retirement and immutable
+prior snapshots remain checked. Test-only reinjection of a retained actual
+snapshot into Main's copied presentation slot exercises its old-epoch lap fence;
+it does not simulate a native delivery race or certify all rendering paths.
+
+The [source/evidence record](../audits/2026-10-29-play-life004-populated-retirement.md)
+records clean source `fc3143fa` passing local Windows **335 assertions / zero
+failures**, ten populated transactions and ten old-command refusals, with all80
+native and737 scoped tested inputs verified. Hosted Windows/Linux and final
+distinct review remain required. Existing
+UI003 already covers one populated Jet Barrel reset; this adds populated command
+retirement and all-five-rig construction/reset coverage. It does not establish
+native-busy shutdown, failure recovery, equipment-effect replay, broad race/leak
+freedom, physical devices, gameplay pacing or human feel. #269/#270 remain open.
 
 ## Open the seven-preset movement course
 

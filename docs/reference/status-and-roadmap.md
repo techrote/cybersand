@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-28
+last-reviewed: 2026-10-29
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -16,7 +16,8 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 construction-time solver composition #267, shared controls/camera/lap/gamepad
 event slices of #268, normal lifecycle PR #284 (`8288e580`), and native
 participation/reference measurements PR #285 (`1a7f9dd5`), solver reconstruction
-PR #287 (`e50a7db3`) and temporary-publisher retirement PR #288 (`37da3c6c`).
+PR #287 (`e50a7db3`), temporary-publisher retirement PR #288 (`37da3c6c`),
+and prepared-construction shutdown PR #289 (`91778603`).
 The [player contract](../systems/player-control-playground.md#accepted-normal-desktop-lifecycle-qualification)
 owns exact source/CI/review identities and the 50-real-lifetime-per-OS result.
 The same contract records the bounded solver-construction/refusal regression
@@ -32,9 +33,17 @@ the implementation path; #265 is closed Not Planned and #271 stays deferred.
 **Prepared-construction regression:** the
 [LIFE003 player-contract section](../systems/player-control-playground.md#actual-host-prepared-construction-teardown-regression)
 records a test-only actual-host precommit shutdown fixture and its source-bound
-local Windows 150/0 combined-source result. PR #289 tracks final hosted checks,
-independent review and accepted-tree receipts separately; the fixture supplies
+local Windows 150/0 combined-source result. PR #289 subsequently accepted final
+source92e0 after exact-head Windows/Linux150/0, Native/Docs and distinct review;
+main91778603 has separate passing push runs. The linked audit preserves all
+source-specific receipts and original failures; the fixture supplies
 no slow-native-job, native-thread trace or release claim.
+
+**Populated retirement successor:** the
+[LIFE004 contract](../systems/player-control-playground.md#populated-command-and-lap-retirement-regression)
+adds all-five-rig actual-host queued-input/lap reconstruction and reset checks.
+Its own source-matched platform checks and distinct review remain required;
+broader stale-message, native-busy, failure and release gates remain open.
 
 ## Trial successor correction after accepted App — 2026-10-25
 
