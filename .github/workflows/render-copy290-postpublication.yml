@@ -40,7 +40,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD^)" = '0bd4c82d3208cfc8083cecbe959ee61727092c62'
+          test "$(git merge-base HEAD 0bd4c82d3208cfc8083cecbe959ee61727092c62)" = '0bd4c82d3208cfc8083cecbe959ee61727092c62'
+          test "$(git diff --name-only 0bd4c82d3208cfc8083cecbe959ee61727092c62 HEAD)" = '.github/workflows/render-copy290-postpublication.yml'
           test "$(git rev-parse HEAD:native/src/world.cpp)" = 'a6afd8cad4264ac2eca0362d14711158e3606760'
           test "$(git rev-parse HEAD:native/tests/test_world.cpp)" = '5613d2166c71fa49fd2b8f65e8caa93857b5d65f'
           git diff --check
@@ -63,7 +64,8 @@ jobs:
             'godot/addons/cybersand_native/runtime-provenance.linux.json',
             'godot/addons/cybersand_native/runtime-provenance.json'}
           git=lambda *a: subprocess.check_output(['git', *a],timeout=90)
-          assert git('rev-parse', 'HEAD^').decode().strip()==published
+          assert git('merge-base', 'HEAD', published).decode().strip()==published
+          assert git('diff', '--name-only', published, 'HEAD').decode().splitlines()==['.github/workflows/render-copy290-postpublication.yml']
           assert git('rev-parse', published+'^').decode().strip()==request
           delta=set(git('diff-tree','--no-commit-id','--name-only','-r',published).decode().splitlines())
           assert delta==files,(delta,files)
