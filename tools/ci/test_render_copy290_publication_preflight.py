@@ -3,14 +3,15 @@
 import unittest
 from render_copy290_publication_preflight import (
     BUILD_DRIFT, FEATURE, NEW, PREP, RETAINED, context, drift_ok,
-    no_request, paths_ok, pointer_ok,
+    no_request, paths_ok, pointer_ok, source_lease,
 )
 
 
 class Context(unittest.TestCase):
     def setUp(self):
         self.env = {"GITHUB_REPOSITORY": "techrote/cybersand",
-                    "GITHUB_EVENT_NAME": "push", "GITHUB_REF": "refs/heads/" + PREP}
+                    "GITHUB_EVENT_NAME": "push", "GITHUB_REF": "refs/heads/" + PREP,
+                    "RENDER_COPY290_HEAD_REPO": "techrote/cybersand"}
 
     def test_correct_push(self):
         context(self.env)
@@ -27,6 +28,20 @@ class Context(unittest.TestCase):
         with self.assertRaises(RuntimeError):
             context(dict(self.env, GITHUB_REF="refs/heads/main"))
 
+
+    def test_fork_head_refused(self):
+        with self.assertRaises(RuntimeError):
+            context(dict(self.env, GITHUB_EVENT_NAME="pull_request",
+                         GITHUB_HEAD_REF=PREP, GITHUB_BASE_REF=FEATURE,
+                         RENDER_COPY290_HEAD_REPO="outsider/cybersand"))
+
+    def test_missing_pr_origin_refused(self):
+        env = dict(self.env, GITHUB_EVENT_NAME="pull_request",
+                   GITHUB_HEAD_REF=PREP, GITHUB_BASE_REF=FEATURE)
+        env.pop("RENDER_COPY290_HEAD_REPO")
+        with self.assertRaises(RuntimeError):
+            context(env)
+
     def test_wrong_pr_base(self):
         with self.assertRaises(RuntimeError):
             context(dict(self.env, GITHUB_EVENT_NAME="pull_request",
@@ -40,6 +55,24 @@ class Context(unittest.TestCase):
     def test_unapproved_dispatch(self):
         with self.assertRaises(RuntimeError):
             context(dict(self.env, GITHUB_EVENT_NAME="workflow_dispatch"))
+
+
+
+class EventSourceLease(unittest.TestCase):
+    def test_matching_source_sha(self):
+        source_lease({"RENDER_COPY290_EVENT_SHA": "a" * 40}, "a" * 40)
+
+    def test_changed_head_refused(self):
+        with self.assertRaises(RuntimeError):
+            source_lease({"RENDER_COPY290_EVENT_SHA": "a" * 40}, "b" * 40)
+
+    def test_missing_sha_refused(self):
+        with self.assertRaises(RuntimeError):
+            source_lease({}, "a" * 40)
+
+    def test_malformed_sha_refused(self):
+        with self.assertRaises(RuntimeError):
+            source_lease({"RENDER_COPY290_EVENT_SHA": "a" * 39}, "a" * 39)
 
 
 class Preparation(unittest.TestCase):
