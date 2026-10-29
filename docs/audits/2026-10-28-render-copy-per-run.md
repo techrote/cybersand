@@ -240,3 +240,130 @@ run `40793815067` remain separately identified.
   full/dirty snapshot exchange or main-thread Rapier ownership.
   It does not qualify PR #283's separate stateful render/physics
   experiments, reactive Wood, fracture, desoliding or #281 completion.
+
+## Review-driven INT64 endpoint correction — 2026-10-29
+
+The [independent code review](https://github.com/techrote/cybersand/pull/290#pullrequestreview-5691486464)
+reproduced a **P2 byte-identity regression** in executable source `f041aac3`:
+`World::copy_render_cells` formed `region.x + region.width` as an
+exclusive signed endpoint, overflowing when a valid region's last
+*included* cell was at `INT64_MAX`. The original per-cell
+implementation copied `{INT64_MAX, 0, 1, 1}` successfully; the
+per-run implementation overflowed and, with recovering UBSan, left
+the destination's sentinel bytes unchanged. Related 128-cell and
+zero-height probes also failed. This review is filed through the
+author's GitHub account and is **not independent human approval**.
+
+### Corrected executable source and test
+
+- [Source fix `1769d6f77011ac51f6e47f0f60cd0be4e1cac307`](https://github.com/techrote/cybersand/commit/1769d6f77011ac51f6e47f0f60cd0be4e1cac307):
+  after existing layout preflight, zero extents return without
+  computing absolute coordinates; nonempty regions validate
+  representability of their *last included* x/y; the traversal
+  uses `processed < region.width` and advances only the remaining
+  cell **count**, never a potentially unrepresentable exclusive x.
+  Invalid positive extents throw `std::overflow_error` before
+  modifying destination bytes.
+- [Executable+test source `60915dc86631271ea8661377a3458149adda9361`](https://github.com/techrote/cybersand/commit/60915dc86631271ea8661377a3458149adda9361):
+  the existing byte-exact per-cell oracle additionally compares
+  twelve positive/negative 64-bit boundary and zero-extent
+  rectangles, twice per region (tight and +6-byte padded stride)
+  and on chunk sizes 128 and 32. Two unrepresentable x/y endpoint
+  regions must refuse by `overflow_error` **without modifying
+  destination sentinels**.
+
+These changes touch only `native/src/world.cpp` and
+`native/tests/test_world.cpp`. No liquid/material policy, World
+mutation, render-exchange protocol, native-worker/Godot ownership,
+ABI, Rapier or published runtime files were changed.
+
+### Retained failed sanitizer attempt
+
+[Earlier full-sanitizer run `40792599185`](https://github.com/techrote/cybersand/actions/runs/40792599185)
+**FAILED** against older executable `f041aac3`, not the corrected
+source. The ordinary Linux GCC13 native suite first passed
+**165/165** and the full ASan/UBSan binary built successfully;
+the all-test sanitizer execution then exhausted its explicitly
+bounded **18-minute** command window, exit status **124**.
+The original archived
+[Linux artifact](https://github.com/techrote/cybersand/actions/runs/40792599185)
+has ID `12863827441`, ZIP SHA-256
+`4ea00fee1f03231843c32459035388350de4e89b5adf475fdb9b105ca5c25f42`
+and valid CRCs. Its `sanitized.txt` contains **146 `[pass]`**
+test lines, zero explicit UBSan/ASan reports, then stops in
+LCB-002 basin diagnostics. It is a timeout, **not a completed
+sanitizer green** and **not evidence that the INT64 bug is absent**.
+Earlier Windows/host successes retain their original source.
+
+### Archived corrected-source identities and supplementary probe
+
+The new [source archive from run `40796751009`](https://github.com/techrote/cybersand/actions/runs/40796751009)
+was independently materialized and verified:
+ZIP artifact `12863903343` SHA-256
+`e31cbc9fb7afac6e3af4fd563405cb4ff18902bf4b53cb1755e57a5551ac8e45`,
+ZIP CRC pass, inner Git tar SHA-256
+`fa62e4e47e7bf6f42533acef31fe8884d8b676ab00135b9fb951b40ba328ad61`.
+The native `world.cpp` Git blob
+`a6afd8cad4264ac2eca0362d14711158e3606760` and
+`test_world.cpp` Git blob
+`5613d2166c71fa49fd2b8f65e8caa93857b5d65f`
+match the corresponding PR source.
+Their file SHA-256 values are respectively
+`b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1`
+and
+`cfb54f5cc58388f1581bd367d3a19a7ff3d260583028980606c6b0e6fda7a69d`.
+
+An additional **independent local native source** probe compiled
+these exact archived files with Debian GCC 14.2.0,
+`-O0 -g1 -fsanitize=undefined -fno-omit-frame-pointer`, and
+`UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1`.
+All twelve valid rectangles × two padding modes × two chunk sizes
+and two explicit invalid-region refusal checks per chunk passed
+with no reported UBSan errors. This scratch probe has SHA-256
+`9abe54bb70b71ec1fd4294510f4ab01de77931e9edcd54fe195ca91504f6f3a6`;
+it is supplemental to, **not** a replacement for, hosted CI.
+
+### Corrected-source host validation and remaining gates
+
+[Linux/Windows source-matched Godot run `40796772252`](https://github.com/techrote/cybersand/actions/runs/40796772252)
+**passed all three jobs** (Linux native GDExtension build/host,
+pinned Windows GDExtension build, Windows Server 2022 actual
+Godot/Rapier host). Both hosts reported
+`test_render_world_generation.gd` **23/0** and
+`test_render_patch_handoff_regression.gd` **pass**, using Godot
+`4.7.stable.official.5b4e0cb0f` and Rapier2D `0.35.2`.
+
+The three independently rehashed artifacts, all with valid ZIP CRCs:
+- Linux host artifact `12864820692`, ZIP SHA-256
+  `9038b29ff81292c233b90d50e7df8d5886d8da87982277795a987c8459d3157f`;
+  recorded Linux GDExtension SHA-256
+  `0f60213c7fc3f9a1b1d7ad5143fdb22d453a452cddefd3fe4d7a7cb4d7b6cf45`
+  (the binary itself is **not retained** in this host ZIP).
+- Windows build artifact `12864098143`, ZIP SHA-256
+  `776e3730026be74b44224e0c680952320f9c505072f1840e5712416486f29f22`;
+  retained compiled DLL SHA-256
+  `6b044fb6bba96d5053251c98125e5f4f0391e0e55ddb66da93e91f4495a89cdd`,
+  equal to its manifest.
+- Windows execution artifact `12864666382`, ZIP SHA-256
+  `6205ed1c5ff9e52bd07db5b93e2b04186aacbb106eaf58373133f0c896e2c3c1`.
+  The host verifies the exact built DLL before executing tests.
+
+The separate corrected-source Linux GCC13 ordinary suite,
+focused ASan/UBSan tests and Windows MSVC native suite are
+[run `40796751009`](https://github.com/techrote/cybersand/actions/runs/40796751009);
+**their final results remain pending in this dated checkpoint**,
+not inferred from the older source. That workflow tests the
+affected render and C API paths with focused sanitizer processes;
+it does **not** relabel or substitute for the separate full native
+ready-PR matrix. The original end-to-end runtime publication
+and Web/interactive frame-rate remain outside this scope.
+
+**Merge still blocked:** original Linux/Windows committed LFS
+GDExtension binaries and runtime source-input manifests remain
+stale for `native/src/world.cpp`. No binary was promoted and
+none of the original runtime provenance hashes was rewritten.
+The PR remains draft pending exact-head complete native/full
+sanitizer, reviewed runtime publication, formal final-head
+GDExtension/Godot/Docs and applicable controls, and independent
+acceptance review. This patch does not address PR #283's
+independent physical-ejection B=289 NO-GO.
