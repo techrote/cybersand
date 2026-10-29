@@ -1,0 +1,115 @@
+name: RENDER-COPY-290 materialized postpublication qualification
+
+on:
+  push:
+    branches: [verify/render-copy290-postpublication-20261029]
+    paths:
+      - '.github/workflows/render-copy290-postpublication.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: render-copy290-postpublish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  materialized-provenance:
+    name: Verify published four-path LFS bytes and complete source/build provenance
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: true
+          persist-credentials: false
+      - name: Require immutable reviewed publication commit and original source blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = '0bd4c82d3208cfc8083cecbe959ee61727092c62'
+          test "$(git rev-parse HEAD:native/src/world.cpp)" = 'a6afd8cad4264ac2eca0362d14711158e3606760'
+          test "$(git rev-parse HEAD:native/tests/test_world.cpp)" = '5613d2166c71fa49fd2b8f65e8caa93857b5d65f'
+          git diff --check
+          python3 tools/ci/check_ci_provider_policy.py
+          git lfs install --local
+          git lfs pull
+      - name: Source/build ledger, exact four-path commit and LFS payload recheck
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/render-copy290-postpublication
+          python3 - <<'PY'
+          import hashlib, json, pathlib, subprocess
+          root=pathlib.Path('.').resolve()
+          published='0bd4c82d3208cfc8083cecbe959ee61727092c62'
+          request='dc72f37555d9fcef08553f3b5679e9638b023dee'
+          files={
+            'godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so',
+            'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll',
+            'godot/addons/cybersand_native/runtime-provenance.linux.json',
+            'godot/addons/cybersand_native/runtime-provenance.json'}
+          git=lambda *a: subprocess.check_output(['git', *a],timeout=90)
+          assert git('rev-parse', 'HEAD^').decode().strip()==published
+          assert git('rev-parse', published+'^').decode().strip()==request
+          delta=set(git('diff-tree','--no-commit-id','--name-only','-r',published).decode().splitlines())
+          assert delta==files,(delta,files)
+          assert git('rev-list','--parents','-n','1',published).decode().split()==[published,request]
+          hash_data=lambda d:hashlib.sha256(d).hexdigest()
+          out={}
+          for plat,binpath,mpath in (
+            ('linux','godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so','godot/addons/cybersand_native/runtime-provenance.linux.json'),
+            ('windows','godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll','godot/addons/cybersand_native/runtime-provenance.json')):
+            manifest=json.loads((root/mpath).read_text(encoding='utf-8'))
+            blob=(root/binpath).read_bytes()
+            pointer=git('show','HEAD:'+binpath)
+            want=(f'version https://git-lfs.github.com/spec/v1\noid sha256:{manifest["sha256"]}\nsize {manifest["size"]}\n').encode()
+            assert pointer==want,plat
+            assert len(blob)==manifest['size'] and hash_data(blob)==manifest['sha256'],plat
+            assert len(blob)>4096 and not blob.startswith(b'version https://git-lfs.github.com/spec/v1')
+            assert manifest['source_commit']==request and manifest['build_commit']==request
+            assert manifest['authorized_pre_request_parent']=='f53ac63e22a4e0d635e0594be45d370e55ec2c98'
+            assert manifest['publication_request_sequence']==1
+            assert manifest['owner_authorization_comment'].endswith('#issuecomment-6508864864')
+            assert len(manifest['source_inputs'])==80 and len(manifest['build_inputs'])==558
+            for typ in ('source_inputs','build_inputs'):
+              for path,expected in manifest[typ].items():
+                actual=root/path
+                assert actual.is_file() and not actual.is_symlink(),(plat,typ,path)
+                current=hash_data(actual.read_bytes().replace(b'\r\n',b'\n'))
+                assert current==expected,(plat,typ,path,expected,current)
+            out[plat]={'binary_sha256':hash_data(blob),'bytes':len(blob),
+                       'native_source_inputs':len(manifest['source_inputs']),
+                       'build_inputs':len(manifest['build_inputs']),
+                       'source_commit':manifest['source_commit'],
+                       'manifest_sha256':hash_data((root/mpath).read_bytes())}
+            print('PUBLISHED_LFS_AND_FULL_INPUT_LEDGER_OK',plat,out[plat]['binary_sha256'],
+                  len(manifest['source_inputs']),len(manifest['build_inputs']))
+          path=root/'build/render-copy290-postpublication/source-and-runtime-receipt.json'
+          path.write_text(json.dumps({'schema':'render-copy290-materialized-four-path-postpublication-v1',
+              'published':published,'request':request,'sources':out},sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Run strict current repository and materialized LFS identity checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 12m python3 tools/ci/check_repository.py --require-materialized --json build/render-copy290-postpublication/check-repository.json | tee build/render-copy290-postpublication/check-repository.txt
+          python3 - <<'PY'
+          import json
+          p='build/render-copy290-postpublication/check-repository.json'
+          v=json.load(open(p,encoding='utf-8'))
+          assert v['status']=='passed',v['errors']
+          assert not v['errors']
+          print('STRICT_MATERIALIZED_REPOSITORY_PROVENANCE_PASS')
+          PY
+          timeout 7m git lfs fsck | tee build/render-copy290-postpublication/lfs-fsck.txt
+          git diff --check
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: render-copy290-postpublication-${{ github.sha }}
+          path: build/render-copy290-postpublication/
+          if-no-files-found: warn
+          retention-days: 30
