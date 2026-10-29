@@ -11,8 +11,9 @@ const SAMPLE_TIMEOUT_MS: int = 30000
 
 
 class PacingHarness:
-	extends DesktopHarness
+	extends "res://scripts/main.gd"
 
+	var test_input_allowed: bool = true
 	var measurement_active: bool = false
 	var process_intervals_ms: Array[float] = []
 	var physics_intervals_ms: Array[float] = []
@@ -35,6 +36,11 @@ class PacingHarness:
 	var _last_snapshot_serial: int = 0
 	var _last_native_tick: int = 0
 	var _last_render_serial: int = 0
+
+	func actor_keyboard_allowed() -> bool:
+		return (test_input_allowed and not paused and actor_prototypes_allowed()
+			and _physical_terrain_ready and _actor_reset_receipt == 0
+			and not actor_prototype_panel.visible)
 
 	func begin_measurement() -> void:
 		process_intervals_ms.clear()
