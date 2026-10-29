@@ -62,6 +62,26 @@ The earlier full 18-minute ASan/UBSan timeout at old source
 convert it to an all-test sanitizer qualification. Original
 LFS runtime provenance and final ready-PR admission remain blocked.
 
+**Extended all-function sanitizer coverage, 2026-10-29:**
+[run 40800942455](https://github.com/techrote/cybersand/actions/runs/40800942455)
+passes the source-locked GCC13 ASan+UBSan build, four test-index
+shards and strict aggregate reducer: **165/165 registered native
+test functions succeed** using one binary digest, with all six
+ZIP SHA-256/CRC checks and all 165 stdout hashes independently
+verified. Each test runs in its *own process*; the prior monolithic
+single-process suite timeout and its unqualified lifetime/order
+semantics remain a **separate failed gate**. The
+[dated audit](../audits/2026-10-28-render-copy-per-run.md#independent-all-165-case-sanitizer-coverage--2026-10-29)
+and [machine receipt](../audits/2026-10-29-render-copy-sanitizer-matrix-receipt.json)
+preserve source, tools, raw evidence and limits.
+
+Both current Linux/Windows runtime manifests still have **1 of 80
+native source inputs** changed and **6 of 549** historic build-input
+entries drifted/missing (including four retired PLAY-AUTO-002 publisher
+paths). A new, guarded branch-scoped publisher and source-matched
+Windows/Linux LFS objects/manifests are still prerequisites to
+exact-final-head ready-PR admission; no runtime publication is claimed.
+
 ## Qualified Water sequence2 publication — 2026-10-25
 
 PR #254's [actual sequence2 publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25) qualifies source
