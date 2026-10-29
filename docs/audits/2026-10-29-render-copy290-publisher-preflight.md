@@ -161,3 +161,33 @@ is now named `target`, preserving a positional Windows selection while permittin
 `platform` as an independently mutated receipt field. These earlier CI failures
 remain historical test-harness failures, not engine regressions. Fresh exact-head
 CI remains required; this amendment does not assert any unobserved pass.
+
+
+## Original Actions ZIP and independently pinned run-identity admission — 2026-10-29
+
+A further read-only hardening checkpoint adds a proposed paired original ZIP
+verifier, not a publisher. The previous synthetic receipt checker compared the
+Linux/Windows run IDs with each other but did not require an independently
+observed Actions run/attempt. It also did not read original ZIP bytes or validate
+their externally published SHA-256 digests and internal CRCs.
+
+The updated verify_host_receipts now REQUIRES a separately pinned positive
+integer Actions run ID and attempt, rejecting both mixed and consistently
+replayed receipts. New verify_host_artifact_archives requires exactly one original
+ZIP and independently authenticated sha256 digest per platform. It refuses
+missing, extra, duplicate or unsafe entries; oversized/encrypted/unsupported
+members; invalid ZIP structures; CRC failures and swapped host payloads.
+The proposed fixed archive layout contains one JSON receipt, one OS-specific
+runtime and three bounded raw host logs, all submitted to the existing
+strict runtime/host-case verifier under the external run/attempt identity.
+
+TRUST LIMIT: The future caller must independently authenticate the expected
+digests, source/tree, run ID and attempt from GitHub Actions and verified Git.
+Passing self-asserted metadata is not evidence custody. The fixed ZIP layout
+is a proposed producer contract, not a deployed producer. All new tests use
+synthetic archives and do not establish real Linux/Windows execution, LFS
+publication, or production acceptance. The workflow remains read-only and
+without a publication request. Historical LFS payloads/manifests remain intact.
+Ready-head Native/Godot/documentation/scoped CI, separate review and explicit
+source-bound owner authorization are still required.
+

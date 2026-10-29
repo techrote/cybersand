@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """Adversarial read-only checks for render-copy #290 unarmed publisher prep."""
 import unittest
+import io
 import json
+import zipfile
 from render_copy290_publication_preflight import (
     BUILD_DRIFT, FEATURE, NEW, PREP, RETAINED, context, drift_ok,
     no_request, paths_ok, pointer_ok, source_lease, HOST_CASES, HOST_TARGETS,
-    verify_host_receipts, digest,
+    verify_host_receipts, verify_host_artifact_archives,
+    HOST_ARCHIVE_RUNTIME, digest,
 )
 
 
@@ -208,7 +211,8 @@ class HostReceipts(unittest.TestCase):
                                       "runtime": binary, "logs": dict(logs)}
 
     def verify(self):
-        return verify_host_receipts(self.bundles, self.source, self.tree)
+        return verify_host_receipts(self.bundles, self.source, self.tree,
+                                    40900000001, 1)
 
     def mutate(self, target="linux", **changes):
         record = json.loads(self.bundles[target]["report"])
@@ -290,6 +294,115 @@ class HostReceipts(unittest.TestCase):
                 with self.assertRaises(RuntimeError):
                     self.verify()
                 self.bundles["windows"]["report"] = saved
+
+
+
+class HostArtifactArchives(unittest.TestCase):
+    """Synthetic ZIPs test refusal semantics, not authentic host execution."""
+
+    def setUp(self):
+        self.sample = HostReceipts()
+        self.sample.setUp()
+        self.archives = {p: self.make_zip(p) for p in HOST_TARGETS}
+        self.digests = {p: "sha256:" + digest(raw)
+                        for p, raw in self.archives.items()}
+
+    def make_zip(self, platform, remove=None, add=None, duplicate=False):
+        bundle = self.sample.bundles[platform]
+        entries = {"host-evidence.json": bundle["report"],
+                   HOST_ARCHIVE_RUNTIME[platform]: bundle["runtime"]}
+        entries.update({"logs/" + name + ".log": bundle["logs"][name]
+                        for name in HOST_CASES})
+        if remove:
+            entries.pop(remove)
+        if add:
+            entries.update(add)
+        out = io.BytesIO()
+        with zipfile.ZipFile(out, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+            for name, raw in sorted(entries.items()):
+                archive.writestr(name, raw)
+            if duplicate:
+                with __import__("warnings").catch_warnings():
+                    __import__("warnings").simplefilter("ignore", UserWarning)
+                    archive.writestr("host-evidence.json", bundle["report"])
+        return out.getvalue()
+
+    def repin(self, platform):
+        # Synthetic fixtures may repin. Real callers must authenticate
+        # expected ZIP digests independently from Actions metadata.
+        self.digests[platform] = "sha256:" + digest(self.archives[platform])
+
+    def verify(self, run=40900000001, attempt=1):
+        return verify_host_artifact_archives(self.archives, self.digests,
+                                             self.sample.source, self.sample.tree,
+                                             run, attempt)
+
+    def test_positive_original_zip_pair(self):
+        self.assertTrue(self.verify())
+
+    def test_rejects_unknown_external_digest(self):
+        self.digests["windows"] = "sha256:" + "a" * 64
+        with self.assertRaises(RuntimeError):
+            self.verify()
+
+    def test_rejects_missing_metadata(self):
+        del self.digests["windows"]
+        with self.assertRaises(RuntimeError):
+            self.verify()
+
+    def test_rejects_modified_zip_even_when_rehashed(self):
+        self.archives["linux"] = self.make_zip(
+            "linux", add={"../../unexpected.log": b"extra"})
+        self.repin("linux")
+        with self.assertRaises(RuntimeError):
+            self.verify()
+
+    def test_rejects_missing_member(self):
+        self.archives["windows"] = self.make_zip(
+            "windows", remove="logs/godot_import.log")
+        self.repin("windows")
+        with self.assertRaises(RuntimeError):
+            self.verify()
+
+    def test_rejects_duplicate_member(self):
+        self.archives["linux"] = self.make_zip("linux", duplicate=True)
+        self.repin("linux")
+        with self.assertRaises(RuntimeError):
+            self.verify()
+
+    def test_rejects_corrupt_crc_even_if_outer_hash_recomputed(self):
+        original = bytearray(self.archives["linux"])
+        offset = original.find(b"PK\x01\x02")
+        self.assertNotEqual(offset, -1)
+        original[offset + 16] ^= 0x01  # Central directory CRC.
+        self.archives["linux"] = bytes(original)
+        self.repin("linux")
+        with self.assertRaises(RuntimeError):
+            self.verify()
+
+    def test_rejects_cross_platform_archive(self):
+        self.archives["linux"] = self.archives["windows"]
+        self.repin("linux")
+        with self.assertRaises(RuntimeError):
+            self.verify()
+
+    def test_rejects_truncated_zip_even_if_rehashed(self):
+        self.archives["windows"] = self.archives["windows"][:30]
+        self.repin("windows")
+        with self.assertRaises(RuntimeError):
+            self.verify()
+
+    def test_rejects_replayed_run_under_new_external_run(self):
+        with self.assertRaises(RuntimeError):
+            self.verify(run=40900000002)
+
+    def test_rejects_replayed_attempt_under_new_external_attempt(self):
+        with self.assertRaises(RuntimeError):
+            self.verify(attempt=2)
+
+    def test_rejects_boolean_external_run(self):
+        with self.assertRaises(RuntimeError):
+            self.verify(run=True)
 
 
 if __name__ == "__main__":

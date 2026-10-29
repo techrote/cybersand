@@ -2,11 +2,14 @@
 """Read-only, UNARMED Git/LFS preflight for draft Cybersand PR #290."""
 import argparse
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
 import re
 import subprocess
+import zipfile
+import zlib
 
 ROOT = Path(__file__).resolve().parents[2]
 REPO = "techrote/cybersand"
@@ -140,12 +143,15 @@ def _host_binary(data, platform):
                 "Not a Windows PE x86_64 runtime")
 
 
-def verify_host_receipts(bundles, source, tree):
+def verify_host_receipts(bundles, source, tree, expected_run_id, expected_run_attempt):
     """Verify original byte evidence from BOTH target hosts, never publish."""
     require(type(bundles) is dict and set(bundles) == set(HOST_TARGETS),
             "Both distinct Linux and Windows receipts are mandatory")
     require(all(type(x) is str and re.fullmatch(r"[0-9a-f]{40}", x)
                 for x in (source, tree)), "Untrusted or malformed source/tree identity")
+    require(type(expected_run_id) is int and expected_run_id > 0
+            and type(expected_run_attempt) is int and expected_run_attempt > 0,
+            "Missing trusted Actions run/attempt identity")
     run = None
     for platform, (runner, toolchain) in HOST_TARGETS.items():
         bundle = bundles[platform]
@@ -177,6 +183,8 @@ def verify_host_receipts(bundles, source, tree):
                 and type(report["run_attempt"]) is int and report["run_attempt"] > 0,
                 "Bad Actions run identity")
         identity = (report["run_id"], report["run_attempt"])
+        require(identity == (expected_run_id, expected_run_attempt),
+                "Host receipt does not match independently pinned Actions run/attempt")
         require(run is None or run == identity, "Mixed host runs or attempts")
         run = identity
         binary = bundle["runtime"]
@@ -208,6 +216,66 @@ def verify_host_receipts(bundles, source, tree):
                                   output) is None,
                     "Missing positive marker or hidden error/skip: " + name)
     return True
+
+
+
+# Proposed read-only future-publisher contract. Authenticate expected_digests,
+# source/tree, run ID and attempt independently from GitHub. Merely passing
+# self-asserted metadata is not provenance or authority to publish.
+HOST_ARCHIVE_RUNTIME = {
+    "linux": "runtime/libcybersand_native.linux.x86_64.so",
+    "windows": "runtime/cybersand_native.windows.x86_64.dll",
+}
+
+
+def verify_host_artifact_archives(archives, expected_digests, source, tree,
+                                  expected_run_id, expected_run_attempt):
+    """Read exact paired ZIP bytes and verify their external digests and contents."""
+    require(type(archives) is dict and set(archives) == set(HOST_TARGETS)
+            and type(expected_digests) is dict
+            and set(expected_digests) == set(HOST_TARGETS),
+            "Two distinct platform archives and external digests are required")
+    bundles = {}
+    for platform in HOST_TARGETS:
+        raw, expected = archives[platform], expected_digests[platform]
+        require(type(raw) is bytes and 0 < len(raw) <= 96 * 1024 * 1024,
+                "Missing or oversized original Actions archive: " + platform)
+        require(type(expected) is str and
+                re.fullmatch(r"sha256:[0-9a-f]{64}", expected) is not None
+                and digest(raw) == expected[7:],
+                "Original Actions ZIP does not match external artifact digest: " + platform)
+        names = {"host-evidence.json", HOST_ARCHIVE_RUNTIME[platform]}
+        names.update("logs/" + case + ".log" for case in HOST_CASES)
+        bounds = {"host-evidence.json": 65536,
+                  HOST_ARCHIVE_RUNTIME[platform]: 64 * 1024 * 1024}
+        bounds.update({"logs/" + case + ".log": 8_000_000 for case in HOST_CASES})
+        try:
+            with zipfile.ZipFile(io.BytesIO(raw), "r") as archive:
+                infos = archive.infolist()
+                actual_names = [info.filename for info in infos]
+                require(len(actual_names) == len(names) and
+                        set(actual_names) == names,
+                        "ZIP has missing, duplicate, extra or unsafe paths: " + platform)
+                require(all(info.file_size > 0 and
+                            info.file_size <= bounds[info.filename] and
+                            info.compress_type in (zipfile.ZIP_STORED, zipfile.ZIP_DEFLATED)
+                            and not (info.flag_bits & 1) and
+                            ((info.external_attr >> 16) & 0o170000)
+                            in (0, 0o100000) for info in infos),
+                        "Unsafe or oversized ZIP member: " + platform)
+                parts = {info.filename: archive.read(info) for info in infos}
+                require(all((zlib.crc32(parts[info.filename]) & 0xffffffff) == info.CRC
+                            for info in infos), "ZIP member CRC mismatch: " + platform)
+        except (zipfile.BadZipFile, zipfile.LargeZipFile, EOFError,
+                OSError, ValueError, zlib.error) as exc:
+            raise RuntimeError("Unreadable original Actions ZIP: " + platform) from exc
+        bundles[platform] = {
+            "report": parts["host-evidence.json"],
+            "runtime": parts[HOST_ARCHIVE_RUNTIME[platform]],
+            "logs": {case: parts["logs/" + case + ".log"] for case in HOST_CASES},
+        }
+    return verify_host_receipts(bundles, source, tree,
+                                expected_run_id, expected_run_attempt)
 
 
 def check():
