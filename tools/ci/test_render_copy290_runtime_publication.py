@@ -255,5 +255,131 @@ class ArtifactAuth(unittest.TestCase):
                 subject.check_index("c" * 40)
 
 
+def make_zip(members):
+    result = io.BytesIO()
+    with zipfile.ZipFile(result, "w", compression=zipfile.ZIP_DEFLATED) as z:
+        for path, value in members.items():
+            z.writestr(path, value)
+    return result.getvalue()
+
+
+class StagingContract(unittest.TestCase):
+    """Exercise the real stage() assembly without a live owner request or git add."""
+
+    def fixture(self, *, corrupt_windows=False, missing_windows=False):
+        source = "c" * 40
+        tree = "d" * 40
+        linux = sample_elf()
+        windows = sample_dll()
+        selected = {f"native/tests/case{i}.gd": "a" * 64 for i in range(86)}
+        selected_text = "".join(v + "  " + k + "\n" for k, v in selected.items()).encode()
+        checked = "".join(k + ": OK\n" for k in selected).encode()
+        tracked = json.dumps({"schema": "fixture",
+                              "source_sha": source, "source_tree": tree,
+                              "input_count": len(selected), "inputs": selected}).encode()
+        def build(runtime, platform):
+            props = {
+                "source.txt": (source + "\n").encode(),
+                "tree.txt": (tree + "\n").encode(),
+                "tracked-git-inputs.json": tracked,
+                "selected-build-inputs.sha256": selected_text,
+                "post-build-input-check.txt": checked,
+                "runtime.sha256": (digest(runtime) + "  runtime\n").encode(),
+                "compiler-version.txt": b"pinned compiler\n",
+                "scons-version.txt": b"4.10.1\n",
+                "godot-cpp-commit.txt": (subject.GODOT_CPP + "\n").encode(),
+                "native-build.txt": b"native build passed\n",
+                "godot-cpp-build.txt": b"godot-cpp build passed\n",
+            }
+            if platform == "linux":
+                props["post-host-input-check.txt"] = checked
+            else:
+                props["cybersand_native.windows.x86_64.dll"] = runtime
+            return make_zip(props)
+        def host(runtime, platform):
+            payload = {"source_sha": source, "source_tree": tree,
+                       "runtime_sha256": digest(runtime), "runtime_size": len(runtime),
+                       "toolchain": "gcc-13" if platform == "linux"
+                       else "llvm-mingw-20260826-ucrt"}
+            return make_zip({
+                "host-evidence.json": json.dumps(payload).encode(),
+                "runtime/" + Path(subject.OUTPUT[platform]).name: runtime,
+                "logs/godot_import.log": b"Godot Engine v4.7\n",
+                "logs/test_render_world_generation.log":
+                    b"RENDER_WORLD_GENERATION: 23 assertions, 0 failures\n",
+                "logs/test_render_patch_handoff_regression.log":
+                    b"Render patch handoff regression passed\n",
+            })
+        if corrupt_windows:
+            windows = bytes([windows[0] ^ 1]) + windows[1:]
+        artifacts = {
+            "linux-build": build(linux, "linux"),
+            "windows-build": build(sample_dll(), "windows"),
+            "linux-host": host(linux, "linux"),
+            "windows-host": host(windows, "windows"),
+        }
+        if missing_windows:
+            artifacts.pop("windows-host")
+        digest_map = {k: "sha256:" + digest(v) for k, v in artifacts.items()}
+        return source, tree, artifacts, digest_map
+
+    def run_stage(self, *, corrupt_windows=False, missing_windows=False):
+        source, tree, artifacts, digests = self.fixture(
+            corrupt_windows=corrupt_windows, missing_windows=missing_windows)
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            for path in subject.FOUR:
+                (root / path).parent.mkdir(parents=True, exist_ok=True)
+            def fake_git(*args):
+                if args == ("rev-parse", source + "^{tree}"):
+                    return tree.encode()
+                if args[0] == "diff":
+                    return b""
+                raise AssertionError("Unexpected git: " + repr(args))
+            with mock.patch.object(subject, "ROOT", root), \
+                 mock.patch.object(subject, "request_status", return_value={"request": "fixture"}), \
+                 mock.patch.object(subject, "authenticated_producer_artifacts",
+                                   return_value=(artifacts, digests)), \
+                 mock.patch.object(subject, "source_ledgers",
+                                   return_value={"source_inputs": {}, "build_inputs": {}}), \
+                 mock.patch.object(subject, "repo_identity",
+                                   return_value={"source_commit": source,
+                                                 "source_tree": tree,
+                                                 "build_commit": source,
+                                                 "workflow_run": "fixture",
+                                                 "workflow_attempt": "1"}), \
+                 mock.patch.object(subject, "git", side_effect=fake_git), \
+                 mock.patch.object(subject, "check_index", return_value=True), \
+                 mock.patch.object(subject.subprocess, "run") as add, \
+                 mock.patch.dict(subject.os.environ,
+                                 {"GITHUB_RUN_ID": "123", "GITHUB_RUN_ATTEMPT": "1"}):
+                if corrupt_windows or missing_windows:
+                    with self.assertRaises((RuntimeError, KeyError)):
+                        subject.stage(source)
+                    add.assert_not_called()
+                    self.assertFalse(any((root / name).exists()
+                                         for name in subject.FOUR))
+                else:
+                    subject.stage(source)
+                    add.assert_called_once()
+                    for platform in subject.HOST_TARGETS:
+                        identity = json.loads((root / subject.MANIFEST[platform]).read_text())
+                        data = (root / subject.OUTPUT[platform]).read_bytes()
+                        self.assertEqual(identity["source_commit"], source)
+                        self.assertEqual(identity["source_tree"], tree)
+                        self.assertEqual(identity["sha256"], digest(data))
+                        self.assertEqual(identity["size"], len(data))
+                        self.assertEqual(identity["status"], "validated-development-runtime")
+
+    def test_stages_exactly_both_binaries_and_manifests(self):
+        self.run_stage()
+
+    def test_refuses_mismatched_build_host_binary_without_any_stage(self):
+        self.run_stage(corrupt_windows=True)
+
+    def test_refuses_missing_host_before_stage(self):
+        self.run_stage(missing_windows=True)
+
+
 if __name__ == "__main__":
     unittest.main()
