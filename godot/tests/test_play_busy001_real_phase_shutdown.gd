@@ -12,11 +12,18 @@ var desktop: Control
 var result: Dictionary = {}
 
 
+class LifecycleProbe extends RefCounted:
+	var setp_rapier_retired_while_worker_running: bool = false
+	var retirement_callbacks: int = 0
+
+
 class ProgressHarness:
 	extends DesktopHarness
 	var completed_main_callbacks: int = 0
 	var completed_physics_callbacks: int = 0
 	var completed_input_callbacks: int = 0
+	var play_busy_lifecycle_probe: LifecycleProbe
+	var play_busy_tracked_setp_bridge: CyberRapierPhysicsBridge
 
 	func _process(delta: float) -> void:
 		super._process(delta)
@@ -31,56 +38,45 @@ class ProgressHarness:
 		if event is InputEventKey and not event.echo:
 			completed_input_callbacks += 1
 
-
-class StopObserver extends RefCounted:
-	var gate: Variant
-	var generation: int = 0
-	var worker: CyberSimulationWorker
-	var rapier: CyberRapierPhysicsBridge
-	var requested := Semaphore.new()
-	var stages: Array[String] = []
-	var stop_marked: bool = false
-	var requested_thread_started: bool = false
-	var joined_thread_started: bool = true
-	var rapier_at_requested: bool = false
-	var rapier_at_joined: bool = false
-	var requested_status: Dictionary = {}
-	var joined_status: Dictionary = {}
-
-	func observe(stage: StringName) -> void:
-		stages.append(str(stage))
-		if stage == &"requested":
-			requested_thread_started = worker._thread.is_started()
-			rapier_at_requested = rapier.is_initialized()
-			stop_marked = bool(gate.mark_stop(generation))
-			requested_status = gate.status()
-			requested.post()
-		elif stage == &"joined":
-			joined_thread_started = worker._thread.is_started()
-			rapier_at_joined = rapier.is_initialized()
-			joined_status = gate.status()
+	func _close_physical_actors() -> void:
+		var retiring: CyberRapierPhysicsBridge = rapier_bridge
+		super._close_physical_actors()
+		if (play_busy_lifecycle_probe != null
+			and play_busy_tracked_setp_bridge != null
+			and retiring == play_busy_tracked_setp_bridge):
+			simulation_worker._mutex.lock()
+			var worker_still_running: bool = simulation_worker._running
+			simulation_worker._mutex.unlock()
+			play_busy_lifecycle_probe.retirement_callbacks += 1
+			play_busy_lifecycle_probe.setp_rapier_retired_while_worker_running = (
+				worker_still_running and not play_busy_tracked_setp_bridge.is_initialized())
 
 
 class ReleaseHelper extends RefCounted:
 	var gate: Variant
 	var generation: int = 0
-	var requested: Semaphore
+	var worker: CyberSimulationWorker
 	var timeout_ms: int = HELPER_TIMEOUT_MS
 
 	func wait_then_release() -> Dictionary:
 		var started: int = Time.get_ticks_msec()
 		var deadline: int = started + timeout_ms
 		var stop_observed: bool = false
+		var stop_marked: bool = false
 		while Time.get_ticks_msec() < deadline:
-			if requested.try_wait():
-				stop_observed = true
-				break
+			if worker._mutex.try_lock():
+				stop_observed = not worker._running
+				worker._mutex.unlock()
+				if stop_observed:
+					stop_marked = bool(gate.mark_stop(generation))
+					break
 			OS.delay_usec(1000)
 		# Always attempt release so a broken stop path becomes a bounded failure,
 		# not a permanently stranded engine process.
 		var released: bool = bool(gate.release(generation))
 		return {
 			"stop_observed": stop_observed,
+			"stop_marked": stop_marked,
 			"released": released,
 			"deadline_expired": not stop_observed,
 			"elapsed_ms": Time.get_ticks_msec() - started,
@@ -238,17 +234,14 @@ func run() -> void:
 	var session: CyberPhysicalActorSession = desktop.physical_actor_session
 	var bodies: Array = session.bodies()
 	var rapier: CyberRapierPhysicsBridge = desktop.rapier_bridge
-	var observer := StopObserver.new()
-	observer.gate = gate
-	observer.generation = generation
-	observer.worker = worker
-	observer.rapier = rapier
-	worker._play_busy_stop_observer = observer.observe
+	var lifecycle_probe := LifecycleProbe.new()
+	desktop.play_busy_lifecycle_probe = lifecycle_probe
+	desktop.play_busy_tracked_setp_bridge = rapier
 
 	var release := ReleaseHelper.new()
 	release.gate = gate
 	release.generation = generation
-	release.requested = observer.requested
+	release.worker = worker
 	var helper := Thread.new()
 	var helper_error: Error = helper.start(release.wait_then_release)
 	expect(helper_error == OK, "bounded release helper starts before the production stop fence")
@@ -262,18 +255,16 @@ func run() -> void:
 	var release_result: Dictionary = helper.wait_to_finish() if helper_error == OK else {}
 	var final_status: Dictionary = gate.status()
 
-	expect(bool(observer.stop_marked)
-		and observer.stages.size() == 2
-		and observer.stages[0] == "requested" and observer.stages[1] == "joined",
-		"actual stop_worker fence records requested then joined around wait_to_finish")
 	expect(bool(release_result.get("stop_observed", false))
+		and bool(release_result.get("stop_marked", false))
 		and bool(release_result.get("released", false))
 		and not bool(release_result.get("deadline_expired", true)),
-		"helper releases held native jobs only after the production stop request, without safety timeout")
-	expect(observer.requested_thread_started and not observer.joined_thread_started,
-		"simulation Thread is live at the stop request and stopped at the joined observation")
-	expect(not observer.rapier_at_requested and not observer.rapier_at_joined,
-		"accepted SetP Rapier owner is already retired before the simulation-worker stop fence")
+		"helper observes the real _running=false stop fence, marks held jobs, then releases without safety timeout")
+	expect(not worker._thread.is_started(),
+		"production stop_worker wait_to_finish completed before scene exit returned")
+	expect(lifecycle_probe.retirement_callbacks == 1
+		and lifecycle_probe.setp_rapier_retired_while_worker_running,
+		"accepted SetP Rapier owner retires while the simulation worker is still running, before its stop fence")
 	expect(not rapier.is_initialized(),
 		"retained accepted SetP bridge stays shut down across worker stop and join")
 	expect(not worker._thread.is_started(),
@@ -293,34 +284,32 @@ func run() -> void:
 		and int(final_status.release_sequence) < int(final_status.drained_sequence)
 		and int(final_status.drained_sequence) < int(final_status.dispatch_return_sequence),
 		"native receipt orders dispatch, claimed jobs, production stop, release, drain and pool return")
-	expect(int(observer.requested_status.stop_waiting) >= 2
-		and int(observer.requested_status.stop_active) >= 2
-		and int(observer.requested_status.dispatch_return_sequence) == 0,
-		"production stop request is observed while multiple real native jobs remain outstanding")
-	expect(int(observer.joined_status.dispatch_return_sequence) > 0
-		and int(observer.joined_status.completed) == int(observer.joined_status.expected_tasks),
-		"joined observation occurs only after selected phase drained and real dispatch returned")
+	expect(int(final_status.stop_waiting) >= 2
+		and int(final_status.stop_active) >= 2
+		and int(final_status.stop_sequence) > 0,
+		"production stop flag is observed and recorded while multiple real native jobs remain outstanding")
+	expect(int(final_status.dispatch_return_sequence) > 0
+		and int(final_status.completed) == int(final_status.expected_tasks),
+		"production worker join can complete only after selected phase drained and real dispatch returned")
 
 	# Only after join is Main/test allowed to inspect the worker-owned adapter.
 	var world: Variant = worker._world
 	var world_weak: WeakRef = weakref(world)
 	expect(world != null and not worker.has_failed(),
 		"joined exclusive owner leaves the accepted native adapter healthy")
-	var stop_fence_observed: bool = observer.stop_marked \
-		and observer.stages == ["requested", "joined"]
+	var stop_fence_observed: bool = bool(release_result.get("stop_observed", false)) \
+		and bool(release_result.get("stop_marked", false))
 	var setp_rapier_retired_before_worker_stop: bool = \
-		not observer.rapier_at_requested and not observer.rapier_at_joined \
+		lifecycle_probe.retirement_callbacks == 1 \
+		and lifecycle_probe.setp_rapier_retired_while_worker_running \
 		and not rapier.is_initialized()
 	var worker_weak: WeakRef = weakref(worker)
-	worker._play_busy_stop_observer = Callable()
-	observer.worker = null
-	observer.rapier = null
 	world = null
 	worker = null
 	desktop = null
 	session = null
-	observer = null
 	release = null
+	lifecycle_probe = null
 	helper = null
 	gate = null
 	for _frame: int in range(3):

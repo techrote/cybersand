@@ -47,11 +47,14 @@ status, arm, stop-marker and release operations. Main never receives or calls
 the live native World while its worker owns it. Native pool callbacks call no
 Godot APIs.
 
-The GDScript worker gains one empty-by-default qualification observer. When
-installed by the test it receives `requested` immediately after the real
-`_running=false` plus request-revision fence and `joined` immediately after
-`Thread.wait_to_finish()`. The ordinary path has an invalid Callable and no
-observer action. The observer never receives the World.
+No production worker observer is added. The fixture reuses the accepted
+LIFE003 external stop-fence pattern: a bounded helper polls the existing
+worker mutex until it observes the production `_running=false` state, then
+records the native gate stop marker and releases the held phase. A test-only
+Main subclass overrides `_close_physical_actors()`, calls the production
+implementation first, and records that the tracked SetP Rapier bridge is
+already shut down while the simulation worker is still running. Neither test
+observer receives or calls the live World.
 
 ## Actual-host protocol
 
@@ -73,12 +76,14 @@ For shutdown, a bounded helper is started before `queue_free()`. The actual Main
 `_close_physical_actors()`. That session owns the live Rapier bridge and calls
 `bridge.shutdown()`; only copied body state was ever supplied to the native
 worker, so there is no cross-thread live-Rapier dependency to preserve. The
-test retains the old bridge only as an observation handle and requires it to be
-already uninitialized when the production `stop_worker()` observer records the
-`requested` fence, while the copied native gate still reports multiple jobs
-outstanding. Only then may the helper release the native gate. All selected
-tasks must run their real `scan_rect`, drain, and return from the production
-pool dispatch. `wait_to_finish()` must then produce the `joined` observation;
+test-only Main subclass calls that production method and requires the tracked
+bridge to be uninitialized while the worker's existing `_running` flag is
+still true. The bounded helper then observes the later production
+`_running=false` stop fence through the existing worker mutex while the copied
+native gate still reports multiple jobs outstanding. It records the gate stop
+marker and only then releases the native gate. All selected tasks must run
+their real `scan_rect`, drain, and return from the production pool dispatch.
+The real `Thread.wait_to_finish()` must complete before scene exit returns;
 the retained SetP bridge must remain shut down. Main subsequently executes its
 existing final `rapier_bridge.shutdown()` on the replacement bridge. Only
 after join is the test permitted to inspect the worker-owned adapter, and
