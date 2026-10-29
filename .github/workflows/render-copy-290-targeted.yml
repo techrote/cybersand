@@ -1,0 +1,120 @@
+name: RENDER-COPY-290 isolated qualification
+
+on:
+  push:
+    branches: [verify/render-copy-per-run-20261029]
+    paths:
+      - '.github/workflows/render-copy-290-targeted.yml'
+      - 'native/src/world.cpp'
+      - 'native/tests/test_world.cpp'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: render-copy-290-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Verify exact source identity and CI policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/render-copy-290/source
+          git rev-parse HEAD > build/render-copy-290/source/commit.txt
+          git rev-parse HEAD^{tree} > build/render-copy-290/source/tree.txt
+          git hash-object native/src/world.cpp native/tests/test_world.cpp > build/render-copy-290/source/blobs.txt
+          sha256sum native/src/world.cpp native/tests/test_world.cpp > build/render-copy-290/source/files.sha256
+          git -c filter.lfs.process= -c filter.lfs.smudge= -c filter.lfs.required=false archive --format=tar.gz -o build/render-copy-290/source/source.tar.gz HEAD
+          sha256sum build/render-copy-290/source/source.tar.gz > build/render-copy-290/source/archive.sha256
+          python3 tools/ci/check_ci_provider_policy.py
+          git diff --check
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: render-copy-290-source-${{ github.sha }}
+          path: build/render-copy-290/source/
+          if-no-files-found: error
+          retention-days: 30
+
+  linux-native:
+    name: Linux GCC13 native and ASan-UBSan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          persist-credentials: false
+      - name: Compile and run native suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/render-copy-290/linux
+          git rev-parse HEAD > build/render-copy-290/linux/source.txt
+          g++-13 --version | head -1 | tee build/render-copy-290/linux/compiler.txt
+          timeout 18m make CXX=g++-13 CC=gcc-13 build/tests 2>&1 | tee build/render-copy-290/linux/build.txt
+          timeout 18m ./build/tests 2>&1 | tee build/render-copy-290/linux/tests.txt
+          grep -F 'render copy per-run identity' build/render-copy-290/linux/tests.txt
+      - name: Compile and run ASan plus UBSan
+        shell: bash
+        env:
+          ASAN_OPTIONS: detect_leaks=0:strict_string_checks=1
+          UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+        run: |
+          set -euo pipefail
+          timeout 20m make CXX=g++-13 CC=gcc-13 build/tests_sanitized 2>&1 | tee build/render-copy-290/linux/build-sanitized.txt
+          timeout 18m ./build/tests_sanitized 2>&1 | tee build/render-copy-290/linux/sanitized.txt
+          grep -F 'render copy per-run identity' build/render-copy-290/linux/sanitized.txt
+          git diff --check
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: render-copy-290-linux-${{ github.sha }}
+          path: build/render-copy-290/linux/
+          if-no-files-found: warn
+          retention-days: 30
+
+  windows-native:
+    name: Windows Server 2022 MSVC native suite
+    runs-on: windows-2022
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          persist-credentials: false
+      - name: Source-matched Windows native build and tests
+        shell: cmd
+        run: |
+          if not exist build\render-copy-290\windows mkdir build\render-copy-290\windows
+          git rev-parse HEAD > build\render-copy-290\windows\source.txt
+          for /f "usebackq delims=" %%I in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -property installationPath`) do @set "VSROOT=%%I"
+          if not defined VSROOT exit /b 2
+          call "%VSROOT%\Common7\Tools\VsDevCmd.bat" -arch=amd64 -host_arch=amd64
+          if errorlevel 1 exit /b 3
+          cl /Bv > build\render-copy-290\windows\compiler.txt 2>&1
+          call build_windows_msvc.bat > build\render-copy-290\windows\build-and-tests.txt 2>&1
+          if errorlevel 1 (type build\render-copy-290\windows\build-and-tests.txt & exit /b 1)
+          findstr /C:"render copy per-run identity" build\render-copy-290\windows\build-and-tests.txt
+          if errorlevel 1 exit /b 4
+          type build\render-copy-290\windows\build-and-tests.txt
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: render-copy-290-windows-${{ github.sha }}
+          path: build/render-copy-290/windows/
+          if-no-files-found: warn
+          retention-days: 30
