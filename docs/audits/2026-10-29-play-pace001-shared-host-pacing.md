@@ -179,6 +179,47 @@ lifecycle slice still needs source-bound slow-native progress and resource
 retirement during directly observed outstanding native phase jobs, coordinated
 with current native-source ownership.
 
+## Corrected-head data readback and portable policy identity — 2026-10-29
+
+The previous corrected candidate `6373b4eb33f32fcef5998c8b7c7a7d35cb05dd52`
+completed attempt-1 [Documentation 40847434093](https://github.com/techrote/cybersand/actions/runs/40847434093),
+[Native 40847434095](https://github.com/techrote/cybersand/actions/runs/40847434095)
+and [Windows/Linux Godot 40847434392](https://github.com/techrote/cybersand/actions/runs/40847434392)
+as **SUCCESS**. Direct Windows/four Linux shard job-log reduction found all ten
+PLAY_PACE001_RESULT records: five SetP rigs per OS, **18 assertions / zero
+failures each**, at least 120 native and 120 Rapier steps, successful owner join
+and Rapier retirement. The independent [exact-head Windows/Linux raw reduction
+review](https://github.com/techrote/cybersand/pull/296#pullrequestreview-5696828293)
+recomputed 110 complete raw timing distributions without percentile/count
+discrepancies. Linux native completion was 59.73–59.96 Hz, Windows
+59.50–59.90 Hz; Windows retained Main-visible snapshot age p95 was
+17.33–18.45 ms, Linux 16.70–17.17 ms. These are hosted, headless, short,
+non-interactive baselines, not rendered desktop FPS. The associated artifact
+ZIPs exist, but their original bytes/digests have not been independently
+verified in that review; old-head results remain bound to their exact source.
+
+The entire native liquid receipt is **platform-qualified**:
+`godot/native_extension/cyber_native_cell_world.cpp` includes the literal
+`platform=windows/linux` in `liquid_policy_receipt()`. The original
+`liquid_policy_sha256 = SHA256(JSON.stringify(policy))` therefore differs
+across the two OSes (Windows `053bcbaf…`, Linux `c0f59d3f…`) without proving
+a different material policy. The current bounded test change **retains** that
+platform-qualified JSON digest and exports the source-native `policy_hash`,
+platform, admission, catalogue digest and capability-matrix digest as separate
+readback fields. A new assertion requires the three 64-hex-character native
+identity/digest fields to be present. This permits later same-source,
+cross-OS matching on the actual native policy identity rather than a complete
+platform-qualified JSON serialization. It does **not** promote any solver,
+change defaults or prove policy reconstruction. All ten preceding records
+have the SHA256 of `{}` as their typed construction receipt, so a positive
+per-material admission/rebuild gate still requires its own actual fixture.
+
+**Source boundary:** this new additive metadata/assertion change has not
+executed at its new Git head. The successful `6373b4eb` workflows and the
+18-assertion runs are historical now; this new head expects 19 assertions
+per rig and requires fresh Windows/Linux/Native/Documentation qualification
+and final independent source/artifact review before any merge.
+
 ## Required qualification
 
 Before any acceptance or merge claim:

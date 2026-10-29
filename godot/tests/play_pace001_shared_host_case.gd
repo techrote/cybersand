@@ -311,6 +311,10 @@ func run() -> void:
 	expect(final_snapshot.lab_context.get("liquid_solver_policy", {}) == policy
 		and final_snapshot.lab_context.get("liquid_construction_receipt", {}) == receipt,
 		"measurement retains the applied per-material policy and receipt")
+	expect(str(policy.get("policy_hash", "")).length() == 64
+		and str(policy.get("catalogue_digest", "")).length() == 64
+		and str(policy.get("capability_matrix_digest", "")).length() == 64,
+		"native policy, catalogue and capability digests are copied into the snapshot")
 	expect(not worker.has_failed(), "worker remains outside failure quarantine")
 
 	var result: Dictionary = {
@@ -331,7 +335,14 @@ func run() -> void:
 		"course_recipe_hash": course_hash,
 		"actor_epoch": actor_epoch,
 		"world_generation": world_generation,
+		# JSON receipt includes native platform; preserve it, but also emit the
+		# native policy hash for platform-independent applied-policy comparison.
 		"liquid_policy_sha256": JSON.stringify(policy).sha256_text(),
+		"liquid_policy_native_hash": str(policy.get("policy_hash", "")),
+		"liquid_policy_native_platform": str(policy.get("platform", "")),
+		"liquid_policy_native_admission": str(policy.get("admission", "")),
+		"liquid_policy_catalogue_digest": str(policy.get("catalogue_digest", "")),
+		"liquid_policy_capability_digest": str(policy.get("capability_matrix_digest", "")),
 		"liquid_receipt_sha256": JSON.stringify(receipt).sha256_text(),
 		"sample_target_native_ticks": SAMPLE_NATIVE_TICKS,
 		"completed_native_ticks": native_ticks,
