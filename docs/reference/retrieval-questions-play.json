@@ -46,6 +46,18 @@
       "sources": ["../godot/tests/play_life004_populated_retirement_case.gd"]
     },
     {
+      "id": "PLAY-FAILURE-01",
+      "query": "How does the actual Main native failure recovery test stop Rapier and recover through reset, and does it qualify five SetP rigs or prepared liquid recovery?",
+      "canonical": ["systems/player-control-playground.md"],
+      "facts": [
+        "LIFE005 proves a healthy real Main/reference-Rapier session before two public queued Sand points trigger an actual native capacity failure; no fake World failure is supplied.",
+        "Main callbacks continue while Rapier freezes after the observed failure fence, emission requests refuse and ordinary public R/reset creates a healthy newer native World using the same reference-body nodes and epoch zero.",
+        "The stronger source checks the whole stored material image only after the exclusive owner joins; earlier working-overlay probes and final-source platform/CI/review are separate evidence.",
+        "Prepared construction still requires a healthy World. This does not qualify five SetP course rigs, native-busy shutdown, arbitrary cancellation races, gameplay performance or human feel."
+      ],
+      "sources": ["../godot/tests/test_play_life005_failure_recovery.gd"]
+    },
+    {
       "id": "PLAY-INPUT-01",
       "query": "Does the shared course gamepad event bridge prove physical controller and complete desktop focus qualification?",
       "canonical": ["systems/player-control-playground.md"],
