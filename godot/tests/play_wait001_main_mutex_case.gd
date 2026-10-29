@@ -36,7 +36,9 @@ class WaitHarness:
 	func begin_sample() -> void:
 		main_callback_usec.clear()
 		main_interval_usec.clear()
-		previous_process_usec = Time.get_ticks_usec()
+		# First measured callback has no predecessor inside the sample window.
+		# Do not report begin_sample-to-first-callback as an inter-callback interval.
+		previous_process_usec = 0
 		var probe: Probe = simulation_worker as Probe
 		probe.begin_sample()
 		sampling = true
@@ -164,8 +166,8 @@ func run() -> void:
 		"actual Main process callbacks continue through the measured window")
 	expect(sample_count == callback_count
 		and probe.mutex_critical_section_usec.size() == callback_count
-		and desktop.main_interval_usec.size() == callback_count,
-		"one instrumented snapshot-lock wait per Main process callback")
+		and desktop.main_interval_usec.size() == maxi(callback_count - 1, 0),
+		"one handoff per Main callback and one fewer complete inter-callback interval")
 	expect(probe.returned_new_snapshots > 0 and probe.returned_no_new_snapshot > 0
 		and probe.returned_new_snapshots + probe.returned_no_new_snapshot == sample_count,
 		"both new and retained/no-new immutable snapshot paths are sampled")

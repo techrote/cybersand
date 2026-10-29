@@ -40,9 +40,17 @@ identity, 120 completed native and Rapier ticks (as an assertion, not an
 assumed result), actual Main callback counts, sampled new/retained snapshot
 returns, raw mutex wait/critical-section timing, full Main process
 interval/callback distributions, joined worker and retired Rapier session.
+The first callback in a sampling window has no preceding measured callback;
+its start-to-first-callback fragment is excluded from the interval sample.
+Consequently `main_process_interval_usec.count == main_callbacks - 1`,
+while mutex wait, critical-section and callback-duration sample counts
+all equal `main_callbacks`. Sub-microsecond lock waits quantize to zero
+at the microsecond clock resolution; a zero median is not proof of zero
+contention.
 No timing threshold is introduced. The reducer uses nearest-rank
-p50/p95/p99, plus mean and maximum. Equal sample counts link the
-Main process callbacks to the instrumented snapshot acquisition.
+p50/p95/p99, plus mean and maximum. Equal wait/critical-section/callback counts link each Main process callback
+to one instrumented snapshot acquisition; complete process intervals have
+one fewer sample by construction.
 
 `snapshot_mutex_acquire_wait_usec` measures **only the short
 `take_latest_snapshot` handoff lock**, not other Main accessors,
@@ -80,3 +88,29 @@ This is a normal-load **isolated snapshot-lock-wait baseline** preparing
 for the separate #269 controlled native-phase barrier and #270 integrated
 longer-duration, input/focus and manual feel qualifications. It cannot
 close #266, #268, #269, #270 or #263.
+
+## Preserved pre-correction Linux diagnostic (source `6e2e98f9`)
+
+The first candidate source `6e2e98f91573cd9c168e34dd0e013cb0e481804d`
+was executed on hosted Linux in Godot workflow
+[40890602677](https://github.com/techrote/cybersand/actions/runs/40890602677),
+shards `123527397073`, `123527397156`, `123527397272`, and
+`123527397348`. All five mechanical rigs emitted 16 assertions, zero
+failures, 120 completed native plus 120 Rapier ticks, successful worker
+join and Rapier retirement, 290–291 callbacks and exactly as many
+snapshot-handoff lock acquisitions. An independent raw-array reduction of
+20 distributions across the five records found no aggregate discrepancies.
+The observed isolated mutex-acquire wait p95 was 1 microsecond for each
+rig; p99 ranged 26–168 microseconds. These are normal-load, hosted
+headless numbers from **that earlier head only**.
+
+Source review found the first `main_process_interval_usec` entry actually
+measured from `begin_sample()` to the first callback rather than from one
+callback to the next. Thus the earlier mean/low-tail interval statistics
+must not be relabeled as strictly inter-callback measurements. This
+source correction deliberately excludes that partial first interval and
+asserts `callbacks - 1` interval samples. The earlier full CI matrix,
+including Windows, was not complete at the first diagnostic readback.
+A fresh full exact-head matrix and independent raw reduction are required
+before accepting the corrected measurements. No gameplay FPS, native-job
+barrier, solver admission or manual feel claim follows from this diagnostic.
