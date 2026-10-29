@@ -304,3 +304,18 @@ This change preserves the existing read-only workflow, historical
 LFS binaries and manifests, the original failed sanitizer timeout, and
 draft separation from #283 (B=289 remains NO-GO). It is not a source-matched
 runtime publication or an independent human release approval.
+
+
+### Actual REST job identity/host-label refinement
+
+Read back the original GitHub Actions REST run/job envelope for
+[source-matched host run 40796772252](https://github.com/techrote/cybersand/actions/runs/40796772252).
+The raw jobs endpoint provides explicit run_attempt, head_sha, head_branch,
+labels, runner_group_name, runner_id and runner_name. Unlike the truncated
+normalized connector view, those are directly available to an authenticated
+future consumer. The proposed custody guard now **requires** matching
+attempt/source/branch, GitHub Actions hosted runner group/name and the exact
+approved ubuntu-24.04 or windows-2022 label for all three jobs. It refuses
+missing identity fields, self-hosted runners or swapped OS labels. Original
+successful host history is schema reference only; those older ZIPs are not
+the new five-member publication artifacts, nor current runtime provenance.

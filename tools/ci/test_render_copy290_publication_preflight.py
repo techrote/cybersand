@@ -9,7 +9,8 @@ from render_copy290_publication_preflight import (
     no_request, paths_ok, pointer_ok, source_lease, HOST_CASES, HOST_TARGETS,
     verify_host_receipts, verify_host_artifact_archives,
     HOST_ARCHIVE_RUNTIME, digest, verify_actions_custody,
-    ACTIONS_HOST_JOBS, ACTIONS_ARTIFACT_PREFIX, REPOSITORY_ID, REPO,
+    ACTIONS_HOST_JOBS, ACTIONS_ARTIFACT_PREFIX, ACTIONS_RUNNER_LABELS,
+    REPOSITORY_ID, REPO,
 )
 
 
@@ -505,7 +506,11 @@ class ActionsMetadataCustody(unittest.TestCase):
         }
         self.jobs = [
             {"id": n + 1, "run_id": self.run_id, "run_attempt": self.attempt,
-             "name": name, "status": "completed", "conclusion": "success",
+             "name": name, "head_sha": self.source, "head_branch": self.branch,
+             "labels": ACTIONS_RUNNER_LABELS[name],
+             "runner_group_name": "GitHub Actions",
+             "runner_id": 1000 + n, "runner_name": "GitHub Actions " + str(1000 + n),
+             "status": "completed", "conclusion": "success",
              "steps": [{"name": label, "status": "completed",
                         "conclusion": "success"} for label in required]}
             for n, (name, required) in enumerate(ACTIONS_HOST_JOBS.items())
@@ -562,6 +567,13 @@ class ActionsMetadataCustody(unittest.TestCase):
             saved[:2], saved + [dict(saved[0])],
             [dict(saved[0], run_id=self.run_id + 1), *saved[1:]],
             [dict(saved[0], run_attempt=2), *saved[1:]],
+            [dict(saved[0], run_attempt=None), *saved[1:]],
+            [dict(saved[0], head_sha="b" * 40), *saved[1:]],
+            [dict(saved[0], labels=["self-hosted"]), *saved[1:]],
+            [dict(saved[0], labels=["windows-2022"]), *saved[1:]],
+            [dict(saved[0], runner_group_name="Custom"), *saved[1:]],
+            [dict(saved[0], runner_name="self-hosted"), *saved[1:]],
+            [dict(saved[0], runner_id=0), *saved[1:]],
             [dict(saved[0], conclusion="failure"), *saved[1:]],
             [dict(saved[0], steps=[]), *saved[1:]],
             [dict(saved[0], steps=[dict(saved[0]["steps"][0],

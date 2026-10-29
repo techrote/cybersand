@@ -302,6 +302,9 @@ ACTIONS_HOST_JOBS = {
     "windows-host": ("Execute actual Windows Godot native render tests",),
 }
 ACTIONS_ARTIFACT_PREFIX = "render-copy290-host-evidence-"
+ACTIONS_RUNNER_LABELS = {"linux-host": ["ubuntu-24.04"],
+                         "windows-build": ["ubuntu-24.04"],
+                         "windows-host": ["windows-2022"]}
 REPOSITORY_ID = 1350077435
 
 
@@ -349,15 +352,20 @@ def verify_actions_custody(run, jobs, artifacts, source_sha, run_id, attempt,
         require(type(job.get("id")) is int and job["id"] > 0
                 and job["id"] not in job_ids
                 and type(job.get("run_id")) is int and job["run_id"] == run_id
+                and type(job.get("run_attempt")) is int
+                and job["run_attempt"] == attempt
+                and job.get("head_sha") == source_sha
+                and job.get("head_branch") == branch
+                and job.get("labels") == ACTIONS_RUNNER_LABELS[name]
+                and job.get("runner_group_name") == "GitHub Actions"
+                and type(job.get("runner_id")) is int and job["runner_id"] > 0
+                and type(job.get("runner_name")) is str
+                and job["runner_name"].startswith("GitHub Actions ")
                 and job.get("status") == "completed"
                 and job.get("conclusion") == "success"
                 and type(job.get("steps")) is list,
                 "Host job identity or outcome differs: " + name)
         job_ids.add(job["id"])
-        if "run_attempt" in job:
-            require(type(job["run_attempt"]) is int
-                    and job["run_attempt"] == attempt,
-                    "Mixed Actions job attempts: " + name)
         steps = job["steps"]
         for required_step in ACTIONS_HOST_JOBS[name]:
             matches = [s for s in steps if type(s) is dict
