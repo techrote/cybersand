@@ -287,6 +287,9 @@ separately records accepted Windows/Linux cancellation/retirement proof and
 source-bound qualification receipts. The [populated retirement successor](audits/2026-10-29-play-life004-populated-retirement.md)
 tracks construction/reset coverage with queued controls and a started lap;
 its own source-matched qualification remains required.
+The [actual Main failure/recovery regression](systems/player-control-playground.md#actual-main-native-failure-and-ordinary-recovery-regression)
+separately covers a real capacity fault and ordinary reset with reference Rapier
+bodies; it is not five-rig or native-busy shutdown qualification.
 
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).
 

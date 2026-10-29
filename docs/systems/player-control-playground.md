@@ -236,7 +236,7 @@ human feel. #269/#270 stay open.
 
 ## Populated command and lap retirement regression
 
-**Current PLAY-LIFE-004 test implementation; qualification pending:** the
+**Current PLAY-LIFE-004 test implementation:** the
 [actual-host helper](../../godot/tests/play_life004_populated_retirement_case.gd)
 extends LIFE002's real Main/worker/Rapier apparatus across all five SetP rigs.
 Before both supported pressure/reference reconstruction and policy-retaining
@@ -259,12 +259,49 @@ it does not simulate a native delivery race or certify all rendering paths.
 The [source/evidence record](../audits/2026-10-29-play-life004-populated-retirement.md)
 records clean source `fc3143fa` passing local Windows **335 assertions / zero
 failures**, ten populated transactions and ten old-command refusals, with all80
-native and737 scoped tested inputs verified. Hosted Windows/Linux and final
-distinct review remain required. Existing
+native and737 scoped tested inputs verified. Final candidate `d3ad406d` has
+source-tree-matched hosted Windows/Linux **335/0 per OS** in
+[Godot40797616577](https://github.com/techrote/cybersand/actions/runs/40797616577),
+with184 applicable Windows cases and196 unique Linux cases passing. Final
+Native/Docs, distinct review and accepted-tree receipts remain separately owned
+by [PR #291](https://github.com/techrote/cybersand/pull/291). Existing
 UI003 already covers one populated Jet Barrel reset; this adds populated command
 retirement and all-five-rig construction/reset coverage. It does not establish
 native-busy shutdown, failure recovery, equipment-effect replay, broad race/leak
 freedom, physical devices, gameplay pacing or human feel. #269/#270 remain open.
+
+## Actual Main native failure and ordinary recovery regression
+
+**Current PLAY-LIFE-005 test implementation:** the
+[actual-host regression](../../godot/tests/test_play_life005_failure_recovery.gd)
+constructs real Main with the existing test-only active scheduling capacity1,
+restores the setting before entering the tree, and proves healthy native and
+three-reference-body Rapier steps first. Two public queued Sand emissions are
+presented and acknowledged while paused; the next native attempt must raise the
+actual capacity exception. The failed publication retains valid copied data and
+the presented material image, pauses Main and refuses further emissions.
+
+At least eight actual Main and physics callbacks must progress with no further
+Rapier step/pose change after the **observed failure fence**. Resume/view changes
+cannot unlatch the failed World; the exclusive owner stays available for ordinary
+public R/reset. Reset advances native generation, clears diagnostics and resumes
+healthy native/Rapier steps using the same three reference-body nodes/epoch0.
+The whole stored material image is inspected only after owner join, checking
+that the fixture's known Sand emissions are absent throughout the recovered
+World, including outside interest and beneath masks.
+
+The [source/evidence record](../audits/2026-10-29-play-life005-native-failure-recovery.md)
+separates the working-overlay27/0 and29/0 probes from the final stronger
+source's own execution, CI and review gates. Clean source79574a24 passes local
+Windows30/0, including the complete stored-image check after join, with all80
+native and738 tested inputs verified. Final hosted qualification and distinct
+review remain tracked separately. This exercises actual Main failure
+and ordinary default-policy recovery, not the five SetP course rigs. Prepared
+liquid construction still requires a healthy World; no prepared recovery or live
+solver replacement is admitted. Source/platform qualification is separate from
+slow-native/outstanding-job shutdown, arbitrary cancellation races, general
+leak/race freedom, gameplay performance, physical devices and human feel.
+#269/#270 remain open.
 
 ## Open the seven-preset movement course
 

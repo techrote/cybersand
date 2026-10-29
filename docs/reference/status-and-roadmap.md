@@ -45,6 +45,12 @@ adds all-five-rig actual-host queued-input/lap reconstruction and reset checks.
 Its own source-matched platform checks and distinct review remain required;
 broader stale-message, native-busy, failure and release gates remain open.
 
+**Failure/recovery successor:** the
+[LIFE005 contract](../systems/player-control-playground.md#actual-main-native-failure-and-ordinary-recovery-regression)
+adds an actual Main/reference-Rapier native capacity-fault and ordinary reset
+regression. Its own source/platform qualification remains required; this does
+not qualify SetP course recovery, prepared liquid recovery or native-busy shutdown.
+
 ## Trial successor correction after accepted App — 2026-10-25
 
 App #256 is merged as main56422c05 after all four exact-dc2 required gates.
