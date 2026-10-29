@@ -22,6 +22,9 @@ class PacingHarness:
 	var snapshot_consume_callback_ms: Array[float] = []
 	var snapshot_age_ms: Array[float] = []
 	var render_snapshot_age_ms: Array[float] = []
+	var retained_snapshot_age_ms: Array[float] = []
+	var retained_render_age_ms: Array[float] = []
+	var retained_callbacks_without_new_publication: int = 0
 	var worker_step_ms: Array[float] = []
 	var snapshot_copy_ms: Array[float] = []
 	var native_tick_deltas: Array[int] = []
@@ -50,6 +53,9 @@ class PacingHarness:
 		snapshot_consume_callback_ms.clear()
 		snapshot_age_ms.clear()
 		render_snapshot_age_ms.clear()
+		retained_snapshot_age_ms.clear()
+		retained_render_age_ms.clear()
+		retained_callbacks_without_new_publication = 0
 		worker_step_ms.clear()
 		snapshot_copy_ms.clear()
 		native_tick_deltas.clear()
@@ -101,7 +107,21 @@ class PacingHarness:
 			)
 
 	func _sample_snapshot(now_usec: int) -> void:
-		if latest_snapshot == null or latest_snapshot.serial == _last_snapshot_serial:
+		if latest_snapshot == null:
+			return
+		# Sample the retained Main-visible presentation on EVERY process callback,
+		# including callbacks with no new worker publication. A static render
+		# packet may legitimately grow old; this is age, not a refresh failure.
+		if latest_snapshot.published_usec > 0:
+			retained_snapshot_age_ms.append(maxf(
+				0.0, float(now_usec - latest_snapshot.published_usec) / 1000.0
+			))
+		if latest_snapshot.render_generated_usec > 0:
+			retained_render_age_ms.append(maxf(
+				0.0, float(now_usec - latest_snapshot.render_generated_usec) / 1000.0
+			))
+		if latest_snapshot.serial == _last_snapshot_serial:
+			retained_callbacks_without_new_publication += 1
 			return
 		snapshot_serial_deltas.append(int(latest_snapshot.serial - _last_snapshot_serial))
 		native_tick_deltas.append(int(latest_snapshot.tick_index - _last_native_tick))
@@ -277,7 +297,12 @@ func run() -> void:
 	expect(not desktop.snapshot_age_ms.is_empty()
 		and not desktop.worker_step_ms.is_empty()
 		and not desktop.snapshot_consume_callback_ms.is_empty(),
-		"copied snapshot age, worker-step and Main consume distributions are populated")
+		"first-observed worker publication, worker-step and Main consume samples are populated")
+	expect(desktop.retained_snapshot_age_ms.size() == desktop.process_callback_ms.size()
+		and desktop.retained_render_age_ms.size() == desktop.process_callback_ms.size(),
+		"each measured Main process callback has a timestamped retained snapshot/render sample")
+	expect(desktop.retained_callbacks_without_new_publication > 0,
+		"retained age samples include Main callbacks without a new worker publication")
 	expect(desktop._physical_epoch == actor_epoch
 		and int(final_snapshot.render_world_generation) == world_generation
 		and desktop.physical_rig_id == rig
@@ -315,7 +340,9 @@ func run() -> void:
 		"completed_native_hz": float(native_ticks) * 1000.0 / elapsed_ms,
 		"completed_rapier_hz": float(rapier_ticks) * 1000.0 / elapsed_ms,
 		"process_steps": process_steps,
-		"snapshot_publications": desktop.snapshot_age_ms.size(),
+		"snapshot_publications": desktop.snapshot_serial_deltas.size(),
+		"retained_callbacks_without_new_publication":
+			desktop.retained_callbacks_without_new_publication,
 		"render_publications": desktop.render_serials.size(),
 		"coalesced_native_ticks": count_positive_skips(desktop.native_tick_deltas),
 		"maximum_scheduler_jobs": desktop.maximum_scheduler_jobs,
@@ -330,6 +357,8 @@ func run() -> void:
 		),
 		"snapshot_age_ms": statistics(desktop.snapshot_age_ms),
 		"render_snapshot_age_ms": statistics(desktop.render_snapshot_age_ms),
+		"retained_snapshot_age_ms": statistics(desktop.retained_snapshot_age_ms),
+		"retained_render_age_ms": statistics(desktop.retained_render_age_ms),
 		"worker_step_ms": statistics(desktop.worker_step_ms),
 		"snapshot_copy_ms": statistics(desktop.snapshot_copy_ms),
 		"native_tick_delta": integer_statistics(desktop.native_tick_deltas),
@@ -343,6 +372,8 @@ func run() -> void:
 				desktop.snapshot_consume_callback_ms.duplicate(),
 			"snapshot_age_ms": desktop.snapshot_age_ms.duplicate(),
 			"render_snapshot_age_ms": desktop.render_snapshot_age_ms.duplicate(),
+			"retained_snapshot_age_ms": desktop.retained_snapshot_age_ms.duplicate(),
+			"retained_render_age_ms": desktop.retained_render_age_ms.duplicate(),
 			"worker_step_ms": desktop.worker_step_ms.duplicate(),
 			"snapshot_copy_ms": desktop.snapshot_copy_ms.duplicate(),
 			"native_tick_deltas": desktop.native_tick_deltas.duplicate(),
@@ -359,6 +390,10 @@ func run() -> void:
 			"native_busy_shutdown_qualified": false,
 			"snapshot_consume_callback":
 				"full Main consume callback, not isolated mutex wait",
+			"snapshot_age_ms": "first-observed new publication only",
+			"render_snapshot_age_ms": "first-observed new publication only",
+			"retained_snapshot_age_ms": "every measured Main process callback",
+			"retained_render_age_ms": "every measured Main process callback; static packets may age",
 		},
 		"assertions": assertions,
 		"failures": failures,
