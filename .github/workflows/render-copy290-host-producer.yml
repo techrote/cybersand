@@ -84,6 +84,8 @@ jobs:
           git ls-files -z native/include native/src godot/native_extension tools/build_native_extension.sh tools/build_native_extension_windows.sh tools/build_pinned_godot_cpp.sh tools/requirements-build.txt .github/workflows/render-copy290-host-producer.yml | xargs -0 sha256sum > build/qual290/linux-host/selected-build-inputs.sha256
           timeout 35m tools/build_pinned_godot_cpp.sh linux > build/qual290/linux-host/godot-cpp-build.txt 2>&1
           timeout 20m tools/build_native_extension.sh > build/qual290/linux-host/native-build.txt 2>&1
+          # Verify actual build input bytes stayed fixed through compilation.
+          sha256sum --check --strict build/qual290/linux-host/selected-build-inputs.sha256 > build/qual290/linux-host/post-build-input-check.txt
           sha256sum godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so > build/qual290/linux-host/runtime.sha256
           export LEDGER_DIR=build/qual290/linux-host
           # Source-custody inventory: committed Git object bytes only. LFS entries
@@ -133,12 +135,15 @@ jobs:
           test -n "$GODOT_BIN"
           chmod +x "$GODOT_BIN"
           test "$("$GODOT_BIN" --version)" = '4.7.stable.official.5b4e0cb0f'
+          git diff --exit-code HEAD -- godot/scripts godot/tests godot/native_extension
           timeout 120s "$GODOT_BIN" --headless --path godot --editor --import --quit > build/qual290/linux-host/import.txt 2>&1
           timeout 150s "$GODOT_BIN" --headless --path godot --script res://tests/test_render_world_generation.gd > build/qual290/linux-host/render-world.txt 2>&1
           grep -F '23 assertions, 0 failures' build/qual290/linux-host/render-world.txt
           timeout 150s "$GODOT_BIN" --headless --path godot --script res://tests/test_render_patch_handoff_regression.gd > build/qual290/linux-host/render-patches.txt 2>&1
           ! grep -E 'SCRIPT ERROR:|ERROR: Failed to load|FAIL' build/qual290/linux-host/import.txt build/qual290/linux-host/render-world.txt build/qual290/linux-host/render-patches.txt
           sha256sum --check --strict build/qual290/linux-host/runtime.sha256
+          git diff --exit-code HEAD -- godot/scripts godot/tests godot/native_extension
+          sha256sum --check --strict build/qual290/linux-host/selected-build-inputs.sha256 > build/qual290/linux-host/post-host-input-check.txt
       - name: Assemble linux original-byte host evidence (no publication)
         shell: bash
         env:
@@ -269,6 +274,8 @@ jobs:
           git ls-files -z native/include native/src godot/native_extension tools/build_native_extension.sh tools/build_native_extension_windows.sh tools/build_pinned_godot_cpp.sh tools/requirements-build.txt .github/workflows/render-copy290-host-producer.yml | xargs -0 sha256sum > build/qual290/windows-dll/selected-build-inputs.sha256
           timeout 35m tools/build_pinned_godot_cpp.sh windows > build/qual290/windows-dll/godot-cpp-build.txt 2>&1
           timeout 20m tools/build_native_extension_windows.sh > build/qual290/windows-dll/native-build.txt 2>&1
+          # Verify actual build input bytes stayed fixed through compilation.
+          sha256sum --check --strict build/qual290/windows-dll/selected-build-inputs.sha256 > build/qual290/windows-dll/post-build-input-check.txt
           (cd build/qual290/windows-dll && sha256sum cybersand_native.windows.x86_64.dll > runtime.sha256)
           export LEDGER_DIR=build/qual290/windows-dll
           # Source-custody inventory: committed Git object bytes only. LFS entries
@@ -467,6 +474,7 @@ jobs:
               if name=="render-world":
                   assert "23 assertions, 0 failures" in data,data[-3000:]
           PY
+          git diff --exit-code HEAD -- godot/scripts godot/tests godot/native_extension
       - name: Assemble windows original-byte host evidence (no publication)
         shell: bash
         env:
