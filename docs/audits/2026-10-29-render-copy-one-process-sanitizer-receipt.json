@@ -1,0 +1,113 @@
+{
+  "schema": "cybersand.render-copy290.one-process-independent-readback.v1",
+  "date_utc": "2026-10-29",
+  "repository": "techrote/cybersand",
+  "pr": 290,
+  "executed_source_sha": "60915dc86631271ea8661377a3458149adda9361",
+  "source_tree_sha": "dc370ee4e957ce34e752ff665afef0ed9e325326",
+  "verification_only_head": "f08ca759d897802c97ec44b280e8ae704ae8a265",
+  "verification_parent_pr_head": "f551e8064a7d01ceb554774afb5c61e71e715c63",
+  "verification_only_delta": [
+    ".github/workflows/render-copy290-monolithic-sanitizer.yml"
+  ],
+  "source_freeze": {
+    "native/src/world.cpp": {
+      "git_blob": "a6afd8cad4264ac2eca0362d14711158e3606760",
+      "sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1"
+    },
+    "native/tests/test_world.cpp": {
+      "git_blob": "5613d2166c71fa49fd2b8f65e8caa93857b5d65f",
+      "sha256": "cfb54f5cc58388f1581bd367d3a19a7ff3d260583028980606c6b0e6fda7a69d"
+    }
+  },
+  "run": {
+    "id": 40844936801,
+    "attempt": 1,
+    "workflow_head": "f08ca759d897802c97ec44b280e8ae704ae8a265",
+    "host": "ubuntu-24.04.5",
+    "job_id": 123350002844,
+    "status": "completed",
+    "conclusion": "success",
+    "completed_at": "2026-10-29T09:09:44Z"
+  },
+  "restored_binary": {
+    "from_run_id": 40800942455,
+    "artifact_id": 12866531004,
+    "original_build_zip_sha256_recorded": "578506185855ce4b861e0684e12dc41a79e96eed2e8fdfd980fc1b9599de8dd2",
+    "sha256": "8d50798344cc6bdb058cabb7e7ea78da9a2b96959058eaba711aaf9d4a5af1dc",
+    "bytes": 110637016,
+    "original_zip_redownloaded_this_readback": false
+  },
+  "execution": {
+    "command": "timeout --signal=TERM --kill-after=30s 2700s <original>/tests_sanitized",
+    "asan_options": "detect_leaks=0:strict_string_checks=1:halt_on_error=1",
+    "ubsan_options": "halt_on_error=1:print_stacktrace=1",
+    "process_count": 1,
+    "selector": null,
+    "registered": 165,
+    "observed_pass_lines": 165,
+    "observed_unique": 165,
+    "registered_names_sha256": "2f48aa7ecb97054395a2893f1c282fe127e7d278dd2bf5e0c8a9ee222b2cad85",
+    "observed_exact_registered_order": true,
+    "exit_code": 0,
+    "detected_sanitizer_diagnostics": false,
+    "stdout_tail": "165 tests passed",
+    "timeout_seconds": 2700
+  },
+  "independently_downloaded_output_artifact": {
+    "artifact_id": 12885756056,
+    "name": "render-copy290-monolithic-source-frozen",
+    "zip_sha256": "d8856d6c8d69d76dc2706d91dd3d0cdadf3646fcf05fdacc1759b057cc16ca3f",
+    "zip_bytes": 7072,
+    "github_artifact_metadata_digest_matched": true,
+    "zip_crc_all_members_valid": true,
+    "members": {
+      "verification-head.txt": {
+        "bytes": 41,
+        "crc32": "471b7a41",
+        "sha256": "d3ae8f57f4940e63dc5f0eb4d558aa0f92d85f6473f85e0e779498d169f28f39"
+      },
+      "executable-source.txt": {
+        "bytes": 41,
+        "crc32": "aa4bbcf2",
+        "sha256": "8a9eaa895c30027768db0f4f03b149660be40cb95777da889a390457fdc9191c"
+      },
+      "registry.json": {
+        "bytes": 7411,
+        "crc32": "0ffc2399",
+        "sha256": "fbb32d0bdb4702349b776a2e635ac37c332c5a2cb7e9259a7a8aa52d1821c8ef"
+      },
+      "exit-code.txt": {
+        "bytes": 2,
+        "crc32": "7e4acd12",
+        "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+      },
+      "stdout.log": {
+        "bytes": 12494,
+        "crc32": "f8550241",
+        "sha256": "0a469e92a004b22a9e3df36871816b7589e125034bcafc35d83ddff28da36a3e"
+      },
+      "result.json": {
+        "bytes": 819,
+        "crc32": "282ebf32",
+        "sha256": "3e7b26746deec476c94424568ef4631b98622ba7384164e20b46e501662bc223"
+      }
+    }
+  },
+  "retained_negative": {
+    "source": "f041aac3f2574e5524b807f8c2efdc27bee241e0",
+    "run_id": 40792599185,
+    "conclusion": "timeout/failure",
+    "exit_code": 124,
+    "deadline_minutes": 18
+  },
+  "not_qualified": [
+    "leak detection (ASAN detect_leaks=0)",
+    "TSan",
+    "final-head native/Godot/documentation/scoped matrices",
+    "published Linux/Windows LFS source-matched GDExtension runtimes and manifests",
+    "distinct acceptance review",
+    "representative Web/interactive performance",
+    "SOL281 #283 physical ejection (B=289 NO-GO)"
+  ]
+}
