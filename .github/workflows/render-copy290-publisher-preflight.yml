@@ -22,15 +22,18 @@ permissions:
   contents: read
 
 concurrency:
-  group: render-copy290-unarmed-preflight
+  group: render-copy290-unarmed-preflight-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   preflight:
     name: require frozen source, historical LFS and absent request
-    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/prep/render-copy290-publisher-20261029') || (github.event_name == 'pull_request' && github.head_ref == 'prep/render-copy290-publisher-20261029' && github.base_ref == 'claude/render-copy-per-run'))
+    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/prep/render-copy290-publisher-20261029') || (github.event_name == 'pull_request' && github.head_ref == 'prep/render-copy290-publisher-20261029' && github.base_ref == 'claude/render-copy-per-run' && github.event.pull_request.head.repo.full_name == github.repository))
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    env:
+      RENDER_COPY290_EVENT_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+      RENDER_COPY290_HEAD_REPO: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name || github.repository }}
     steps:
       - name: Check out exact preparation source, without materializing LFS
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
