@@ -1,14 +1,60 @@
 ---
 title: PLAY-LIFE-005 actual Main native failure and ordinary recovery
-status: Planned
+status: Current
 document-kind: evidence
-scope: Bounded real native capacity failure, Main/reference-Rapier quarantine and ordinary reset regression; clean final-source and hosted qualification pending
+scope: Accepted Windows/Linux bounded real native capacity failure, Main/reference-Rapier quarantine and ordinary reset; broader course/native-busy/release qualification remains open
 canonical-for: []
 last-reviewed: 2026-10-29
 related-documents: [../systems/player-control-playground.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/liquid-prepared-setup-and-receipts.md, 2026-10-29-play-life004-populated-retirement.md]
 ---
 
 # PLAY-LIFE-005 actual Main failure and recovery — 2026-10-29
+
+## Accepted source and exact-head hosted qualification
+
+[PR #293](https://github.com/techrote/cybersand/pull/293) accepted source
+`385e030776ca15302f4fe5c97908e1c281b010ae` through guarded non-forced merge
+`4b6ca055c1f9a46f3dc88fdf7aa2a97252550a48`, parents5374a343+385e0307.
+Remote main and accepted tree `81bd8f5e1e083d4211a6aa9fe53d06979b015ccb`
+were verified identical to reviewed head385 and actual CI checkout
+`fca4eee826b516d30acd30d27ec0c9abfa5601f9`. That checkout retains original
+parentsd3ad+385; source-tree-equivalent accepted parent5374 was verified before
+the metadata-only main retarget. No source/ancestry premise is relabeled.
+
+All exact-head attempt1
+[Docs40803888498](https://github.com/techrote/cybersand/actions/runs/40803888498),
+[Native40803888519](https://github.com/techrote/cybersand/actions/runs/40803888519),
+[Windows/Linux Godot40803888527](https://github.com/techrote/cybersand/actions/runs/40803888527),
+[source/local review](https://github.com/techrote/cybersand/pull/293#pullrequestreview-5691970531)
+and [final independent execution review](https://github.com/techrote/cybersand/pull/293#pullrequestreview-5692331108)
+passed before merge, with zero unresolved review threads/requested changes.
+
+Windows185 applicable cases plus import/186 log hashes and Linux197 unique
+cases plus four imports/201 logs pass, including12 Linux display cases. The12
+declared graphical exclusions in Windows are not counted as successful runs.
+LIFE005 passes **30 assertions / zero failures per OS**: healthy execution,
+actual capacity fault/count1, retained copied data/image, eighteen Main/eight
+physics callbacks with Rapier frozen after the observed failure fence, ordinary
+reset to a healthy newer World, same three reference nodes/epoch0, joined exit
+and complete1,048,576-byte stored image with Sand0. Status serials differ by OS;
+the oracle requires monotonic ordering, not fixed absolute clocks.
+
+Inherited LIFE004335/LIFE003150/LIFE002335/LIFE00150 actual lifetimes and1,165
+assertions, plus81/15/126/32 controls, also pass. Native164 tests in three
+variants/all21 steps/154 CLI invocations/308 stream hashes pass. All eight ZIP
+digests and80 native/738 Windows inputs were verified, with original bounds
+and no diagnostic error, skip, timeout or retry. ASan leak detection is disabled;
+these covered cases do not establish general leak/race freedom or absence of
+other Native defects, including separately registered issue292.
+
+Final combined ledger SHA-256
+`041530bb0f366ba161d23cd41b8606baf348be1245e0f6204f0b332fdf20ddf6`;
+all1,313 CI-readback files are hash-verified in
+`C:/Users/_/.codex/artifacts/play-life005-ci-2026-10-29`.
+Historical working-overlay/candidate statements below retain their original
+source scope. This later documentation-only receipt does not rerun runtime
+tests or promote #270. Five-SetP recovery, prepared-liquid recovery, native-busy
+shutdown and the other stated release gates remain unqualified.
 
 ## Clean committed-source Windows proof
 

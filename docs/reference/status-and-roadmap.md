@@ -10,21 +10,24 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
-## PLAY composable desktop checkpoint — 2026-10-28
+## PLAY composable desktop checkpoint — 2026-10-29
 
 **Current accepted slices:** existing-host feasibility #273, five-rig and
 construction-time solver composition #267, shared controls/camera/lap/gamepad
 event slices of #268, normal lifecycle PR #284 (`8288e580`), and native
 participation/reference measurements PR #285 (`1a7f9dd5`), solver reconstruction
 PR #287 (`e50a7db3`), temporary-publisher retirement PR #288 (`37da3c6c`),
-and prepared-construction shutdown PR #289 (`91778603`).
+prepared-construction shutdown PR #289 (`91778603`), populated control/lap
+retirement PR #291 (`5374a343`) and actual Main/reference-Rapier native failure
+and ordinary recovery PR #293 (`4b6ca055`).
 The [player contract](../systems/player-control-playground.md#accepted-normal-desktop-lifecycle-qualification)
 owns exact source/CI/review identities and the 50-real-lifetime-per-OS result.
 The same contract records the bounded solver-construction/refusal regression
 and its 335/0 Windows and Linux Godot result, with [PR #287](https://github.com/techrote/cybersand/pull/287)
 owning the final CI/review/accepted-tree receipt.
 **Open:** #266 gameplay scheduling/performance, remaining #268 selection/device/pacing,
-#269 slow-native/outstanding-job shutdown, failure and populated stale-command stress, and #270
+#269 slow-native/outstanding-job shutdown, broader course/failure/stale-delivery
+and effect stress, and #270
 desktop/manual acceptance. Configured capacity, actual task participation,
 concurrent execution, reference timing and human feel remain distinct claims.
 The accepted shared `CyberSimulationWorker` plus main-thread Rapier remains
@@ -39,17 +42,22 @@ main91778603 has separate passing push runs. The linked audit preserves all
 source-specific receipts and original failures; the fixture supplies
 no slow-native-job, native-thread trace or release claim.
 
-**Populated retirement successor:** the
+**Accepted populated retirement:** the
 [LIFE004 contract](../systems/player-control-playground.md#populated-command-and-lap-retirement-regression)
 adds all-five-rig actual-host queued-input/lap reconstruction and reset checks.
-Its own source-matched platform checks and distinct review remain required;
-broader stale-message, native-busy, failure and release gates remain open.
+Source d3ad passed its own exact-head checks and distinct source/execution
+reviews before merge5374. Windows/Linux335/0 is bounded to those populated
+construction/reset cases; broader stale delivery/effect, native-busy, failure
+and release gates remain open.
 
-**Failure/recovery successor:** the
+**Accepted bounded failure/recovery:** the
 [LIFE005 contract](../systems/player-control-playground.md#actual-main-native-failure-and-ordinary-recovery-regression)
 adds an actual Main/reference-Rapier native capacity-fault and ordinary reset
-regression. Its own source/platform qualification remains required; this does
-not qualify SetP course recovery, prepared liquid recovery or native-busy shutdown.
+regression. Source385 passed exact-head Windows/Linux30/0, Native/Docs and
+distinct reviews before merge4b6c. This qualifies the three-reference-body
+ordinary reset boundary; it does not qualify SetP course recovery, prepared
+liquid recovery or native-busy shutdown. #270 also retains representative
+gameplay/frame/snapshot timing, device/focus and human-feel gates.
 
 ## Trial successor correction after accepted App — 2026-10-25
 

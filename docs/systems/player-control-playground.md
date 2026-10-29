@@ -2,7 +2,7 @@
 title: Player control playground
 status: Current
 document-kind: contract
-scope: Experimental seven-preset human movement course, shared mechanical control, bounded native Sand and Water fields, input lifetime and qualified validation
+scope: Experimental movement controls and shared asynchronous desktop composition, input and lap lifetime, lifecycle and bounded native failure validation; isolated Sand and Water player fields
 canonical-for: [player-control-playground, player-movement-presets, player-material-field]
 last-reviewed: 2026-10-29
 related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-20-player-control-playground.md]
@@ -161,8 +161,10 @@ as defined by the [threading contract](../architecture/simulation-tick-and-threa
 The actual course control still reports max jobs one and zero parallel phases;
 reference timing does not supply gameplay pacing or concurrent-execution proof.
 #268 retains integrated selection and
-complete device/focus/pacing requirements; #269 retains adversarial pending
-work, delayed completion, failure recovery and populated stale-command stress.
+complete device/focus/pacing requirements; #269 retains adversarial outstanding
+work, delayed completion, broader course failure/recovery and stale-delivery/effect
+stress. Its bounded populated-control and reference-body fault slices are
+qualified separately below.
 #270 joins those gates with actual desktop frame/snapshot timing and human
 gameplay feel. Headless lifecycle success does not establish any of those
 remaining outcomes. Main-thread Rapier, per-material construction-time solver
@@ -259,12 +261,15 @@ it does not simulate a native delivery race or certify all rendering paths.
 The [source/evidence record](../audits/2026-10-29-play-life004-populated-retirement.md)
 records clean source `fc3143fa` passing local Windows **335 assertions / zero
 failures**, ten populated transactions and ten old-command refusals, with all80
-native and737 scoped tested inputs verified. Final candidate `d3ad406d` has
+native and737 scoped tested inputs verified. Final source `d3ad406d` has
 source-tree-matched hosted Windows/Linux **335/0 per OS** in
 [Godot40797616577](https://github.com/techrote/cybersand/actions/runs/40797616577),
-with184 applicable Windows cases and196 unique Linux cases passing. Final
-Native/Docs, distinct review and accepted-tree receipts remain separately owned
-by [PR #291](https://github.com/techrote/cybersand/pull/291). Existing
+with184 applicable Windows cases and196 unique Linux cases passing.
+[PR #291](https://github.com/techrote/cybersand/pull/291) accepted that source
+as `5374a343`, tree `7172a4babc60cd2759f301774e8f28a44748809f`, after its
+exact-head Docs/Native/Godot and distinct source/execution reviews passed.
+The audit's [accepted receipt](../audits/2026-10-29-play-life004-populated-retirement.md#accepted-source-and-exact-head-hosted-qualification)
+binds the source/CI/artifact identities, with earlier local probes kept separate. Existing
 UI003 already covers one populated Jet Barrel reset; this adds populated command
 retirement and all-five-rig construction/reset coverage. It does not establish
 native-busy shutdown, failure recovery, equipment-effect replay, broad race/leak
@@ -294,8 +299,14 @@ The [source/evidence record](../audits/2026-10-29-play-life005-native-failure-re
 separates the working-overlay27/0 and29/0 probes from the final stronger
 source's own execution, CI and review gates. Clean source79574a24 passes local
 Windows30/0, including the complete stored-image check after join, with all80
-native and738 tested inputs verified. Final hosted qualification and distinct
-review remain tracked separately. This exercises actual Main failure
+native and738 tested inputs verified. Exact source `385e0307` subsequently passes
+its own hosted qualification and distinct reviews: **30/0 on each Windows
+and Linux OS**, with185 applicable Windows/197 Linux cases. [PR #293](https://github.com/techrote/cybersand/pull/293)
+accepted that source as `4b6ca055`, tree `81bd8f5e1e083d4211a6aa9fe53d06979b015ccb`,
+after all applicable exact-head Docs/Native/Godot and distinct reviews passed.
+The [accepted receipt](../audits/2026-10-29-play-life005-native-failure-recovery.md#accepted-source-and-exact-head-hosted-qualification)
+preserves original CI-checkout ancestry and all source-specific cohorts.
+This exercises actual Main failure
 and ordinary default-policy recovery, not the five SetP course rigs. Prepared
 liquid construction still requires a healthy World; no prepared recovery or live
 solver replacement is admitted. Source/platform qualification is separate from
