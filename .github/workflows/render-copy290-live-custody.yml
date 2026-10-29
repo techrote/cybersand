@@ -1,0 +1,59 @@
+name: RENDER-COPY-290 externally authenticated host custody
+
+on:
+  push:
+    branches: [verify/render-copy290-live-custody-20261029]
+    paths:
+      - '.github/workflows/render-copy290-live-custody.yml'
+      - 'tools/ci/render_copy290_live_custody.py'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: render-copy290-live-custody-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  verify-original-actions:
+    name: Verify independently fetched original producer archives
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Check out exact frozen source and read-only verifier
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Check active CI provider policy
+        run: |
+          set -euo pipefail
+          python3 tools/ci/check_ci_provider_policy.py
+          git diff --check
+      - name: Fetch authoritative GitHub Actions REST, original ZIPs and verify source
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 tools/ci/render_copy290_live_custody.py \
+            --output build/render-copy290-live-custody/receipt.json
+          test -s build/render-copy290-live-custody/receipt.json
+          python3 - <<'PY'
+          import json
+          p="build/render-copy290-live-custody/receipt.json"
+          x=json.load(open(p,encoding="utf-8"))
+          assert x["producer_run"]["conclusion"]=="success"
+          assert x["source_map"]["git_blob_sha256_count"]==1713
+          assert x["selected_materialized"]["files"]==86
+          print("AUTHENTICATED ORIGINAL GITHUB RUN/ZIP/GIT CUSTODY VALID — NO PUBLICATION")
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: render-copy290-live-custody-${{ github.sha }}
+          path: build/render-copy290-live-custody/
+          if-no-files-found: warn
+          retention-days: 30
