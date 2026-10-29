@@ -78,6 +78,10 @@ jobs:
           mkdir -p build/qual290/linux-host
           git rev-parse HEAD > build/qual290/linux-host/source.txt
           git rev-parse HEAD^{tree} > build/qual290/linux-host/tree.txt
+          "$CYBERSAND_REAL_CXX" --version > build/qual290/linux-host/compiler-version.txt
+          "$SCONS_PYTHON" -c 'import SCons; print(SCons.__version__)' > build/qual290/linux-host/scons-version.txt
+          git -C "$GODOT_CPP_ROOT" rev-parse HEAD > build/qual290/linux-host/godot-cpp-commit.txt
+          git ls-files -z native/include native/src godot/native_extension tools/build_native_extension.sh tools/build_native_extension_windows.sh tools/build_pinned_godot_cpp.sh tools/requirements-build.txt .github/workflows/render-copy290-host-producer.yml | xargs -0 sha256sum > build/qual290/linux-host/selected-build-inputs.sha256
           timeout 35m tools/build_pinned_godot_cpp.sh linux > build/qual290/linux-host/godot-cpp-build.txt 2>&1
           timeout 20m tools/build_native_extension.sh > build/qual290/linux-host/native-build.txt 2>&1
           sha256sum godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so > build/qual290/linux-host/runtime.sha256
@@ -156,6 +160,14 @@ jobs:
           path: build/qual290/host-evidence-linux/
           if-no-files-found: warn
           retention-days: 30
+      - name: Retain exact Linux compiler/build logs and selected input hashes (no publication)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: render-copy290-linux-build-${{ github.sha }}
+          path: build/qual290/linux-host/
+          if-no-files-found: warn
+          retention-days: 30
 
   windows-build:
     name: windows-build
@@ -215,6 +227,10 @@ jobs:
           mkdir -p build/qual290/windows-dll
           git rev-parse HEAD > build/qual290/windows-dll/source.txt
           git rev-parse HEAD^{tree} > build/qual290/windows-dll/tree.txt
+          "$WINDOWS_CXX" --version > build/qual290/windows-dll/compiler-version.txt
+          "$SCONS_PYTHON" -c 'import SCons; print(SCons.__version__)' > build/qual290/windows-dll/scons-version.txt
+          git -C "$GODOT_CPP_ROOT" rev-parse HEAD > build/qual290/windows-dll/godot-cpp-commit.txt
+          git ls-files -z native/include native/src godot/native_extension tools/build_native_extension.sh tools/build_native_extension_windows.sh tools/build_pinned_godot_cpp.sh tools/requirements-build.txt .github/workflows/render-copy290-host-producer.yml | xargs -0 sha256sum > build/qual290/windows-dll/selected-build-inputs.sha256
           timeout 35m tools/build_pinned_godot_cpp.sh windows > build/qual290/windows-dll/godot-cpp-build.txt 2>&1
           timeout 20m tools/build_native_extension_windows.sh > build/qual290/windows-dll/native-build.txt 2>&1
           (cd build/qual290/windows-dll && sha256sum cybersand_native.windows.x86_64.dll > runtime.sha256)
