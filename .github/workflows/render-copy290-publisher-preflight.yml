@@ -1,0 +1,46 @@
+name: Render-copy290 unarmed publisher preflight
+
+# Preparation only. No publish request, build, LFS upload or write permission.
+on:
+  push:
+    branches: [prep/render-copy290-publisher-20261029]
+    paths:
+      - '.github/workflows/render-copy290-publisher-preflight.yml'
+      - 'tools/ci/render_copy290_publication_preflight.py'
+      - 'tools/ci/test_render_copy290_publication_preflight.py'
+      - 'docs/audits/2026-10-29-render-copy290-publisher-preflight.md'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [claude/render-copy-per-run]
+    paths:
+      - '.github/workflows/render-copy290-publisher-preflight.yml'
+      - 'tools/ci/render_copy290_publication_preflight.py'
+      - 'tools/ci/test_render_copy290_publication_preflight.py'
+      - 'docs/audits/2026-10-29-render-copy290-publisher-preflight.md'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: render-copy290-unarmed-preflight
+  cancel-in-progress: true
+
+jobs:
+  preflight:
+    name: require frozen source, historical LFS and absent request
+    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/prep/render-copy290-publisher-20261029') || (github.event_name == 'pull_request' && github.head_ref == 'prep/render-copy290-publisher-20261029' && github.base_ref == 'claude/render-copy-per-run'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact preparation source, without materializing LFS
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Run adversarial guards and CI-provider policy
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_render_copy290_publication_preflight.py
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/render_copy290_publication_preflight.py check-unarmed
