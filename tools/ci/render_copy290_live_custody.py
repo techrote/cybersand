@@ -63,6 +63,7 @@ BUILD_FILES = {
         "post-build-input-check.txt", "post-host-input-check.txt",
         "runtime.sha256", "compiler-version.txt", "scons-version.txt",
         "godot-cpp-commit.txt", "native-build.txt", "godot-cpp-build.txt",
+        "import.txt", "render-world.txt", "render-patches.txt",
     },
     "windows-build": {
         "source.txt", "tree.txt", "tracked-git-inputs.json", "selected-build-inputs.sha256",
