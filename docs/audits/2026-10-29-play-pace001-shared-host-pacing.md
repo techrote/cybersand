@@ -1,6 +1,6 @@
 ---
 title: PLAY-PACE-001 shared-host pacing candidate
-status: Experimental
+status: Planned
 document-kind: evidence
 scope: Unexecuted source candidate for fixed-configuration pacing measurements on the accepted composable desktop gameplay host
 canonical-for: []
