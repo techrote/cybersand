@@ -101,8 +101,10 @@ def repo_identity(source):
     require(os.getenv("GITHUB_REPOSITORY") == REPO and
             os.getenv("GITHUB_EVENT_NAME") == "push" and
             os.getenv("GITHUB_REF") == "refs/heads/" + BRANCH and
-            os.getenv("GITHUB_SHA") == source,
-            "Invalid Actions repository/branch/event/source")
+            os.getenv("GITHUB_SHA") == source and
+            os.getenv("GITHUB_WORKFLOW_REF") ==
+                REPO + "/" + WF + "@refs/heads/" + BRANCH,
+            "Invalid Actions repository/branch/workflow/event/source")
     require(git("merge-base", BASE, source).decode() == BASE,
             "Source not descendant of reviewed host-producer base")
     for path, blob in (("native/src/world.cpp", WORLD_BLOB),
