@@ -1,0 +1,66 @@
+name: PLAY-BUSY-001A source-pinned pool apparatus
+on:
+  push:
+    branches: [codex/play-busy001a-pool-20261029]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: play-busy001a-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        sanitize: [none, address-undefined, thread]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          persist-credentials: false
+      - name: Check exact source extraction and refusals
+        run: python3 tools/ci/test_play_busy001_extraction.py
+      - name: Exercise literal pool and bounded gate
+        run: >-
+          python3 tools/ci/run_play_busy001_pool.py --compiler g++-13
+          --sanitize '${{ matrix.sanitize }}' --expected-source '${{ github.sha }}'
+          --output 'build/play-busy001a/${{ matrix.sanitize }}'
+      - name: Retain original source, toolchain, executable and logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: play-busy001a-linux-${{ matrix.sanitize }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/play-busy001a/
+          if-no-files-found: error
+          retention-days: 30
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          persist-credentials: false
+      - name: Check exact source extraction and refusals
+        run: python tools/ci/test_play_busy001_extraction.py
+      - name: Exercise literal pool with actual Windows MSVC
+        shell: cmd
+        run: |
+          for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do set "VSROOT=%%i"
+          if not defined VSROOT exit /b 1
+          call "%VSROOT%\Common7\Tools\VsDevCmd.bat" -arch=x64 -host_arch=x64
+          if errorlevel 1 exit /b 1
+          python tools/ci/run_play_busy001_pool.py --compiler cl --expected-source "%GITHUB_SHA%" --output build/play-busy001a/windows
+      - name: Retain original Windows source, toolchain, executable and logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: play-busy001a-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/play-busy001a/
+          if-no-files-found: error
+          retention-days: 30
