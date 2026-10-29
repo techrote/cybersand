@@ -68,8 +68,18 @@ def context(env):
     elif event == "pull_request":
         require(env.get("GITHUB_HEAD_REF") == PREP and
                 env.get("GITHUB_BASE_REF") == FEATURE, "Wrong PR head/base")
+        require(env.get("RENDER_COPY290_HEAD_REPO") == REPO,
+                "PR head must originate in the authorized repository")
     else:
         raise RuntimeError("Unapproved workflow event")
+
+
+
+def source_lease(env, head):
+    """Reject event/check-out identity drift before inspecting any source or LFS."""
+    expected = env.get("RENDER_COPY290_EVENT_SHA", "")
+    require(re.fullmatch(r"[0-9a-f]{40}", expected) is not None
+            and head == expected, "Checked-out head does not match the event source SHA")
 
 
 def paths_ok(paths):
@@ -100,6 +110,7 @@ def drift_ok(native, source, build, actual):
 def check():
     context(dict(os.environ))
     head = git("rev-parse", "HEAD").decode().strip()
+    source_lease(os.environ, head)
     subprocess.run(["git", "-C", str(ROOT), "merge-base", "--is-ancestor",
                     FROZEN_HEAD, head], check=True, timeout=30)
     paths_ok(set(git("diff", "--name-only", FROZEN_HEAD, "HEAD").decode().splitlines()))
