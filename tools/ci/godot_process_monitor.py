@@ -106,36 +106,59 @@ def wait(child: subprocess.Popen, name: str, timeout: float, started: float,
     capture = None
     capture_error = None
     timed_out, timeout_kind = False, None
+    timeout_notified = False
     factory = capture_factory or _Capture
+
+    def notify_timeout(now: float) -> None:
+        nonlocal timeout_notified
+        if on_timeout is not None and not timeout_notified:
+            # Publish the hard-limit decision before starting or closing any
+            # diagnostic process. Diagnostics must never move the timeout.
+            timeout_notified = True
+            on_timeout(now)
+
+    def begin_capture(now: float, output: str) -> None:
+        nonlocal captured, capture, capture_error
+        if captured:
+            return
+        if not output:
+            output = _output_tail(log_path)
+        context = {"case": name, "pid": child.pid, "elapsed_seconds": now - started,
+                   "captured_unix_seconds": time.time(), "last_progress": diagnostics.last_progress(output)}
+        print(f"{name}: elapsed={now - started:.3f}s pid={child.pid} "
+              f"last_progress={context['last_progress']}\n" + output[-8192:], flush=True)
+        try:
+            capture = factory(child.pid, diagnostic_path, context)
+        except Exception as error:
+            capture_error = f"{type(error).__name__}: {error}"
+            print(f"Diagnostic capture failed for {name}: {capture_error}", flush=True)
+        captured = True
+
     try:
         while child.poll() is None:
             now = time.perf_counter()
             output = _output_tail(log_path) if watchdog.enabled else ""
             watchdog.observe(output, now)
             # Decide limits independently of any diagnostic process or debugger.
+            # If host scheduling jumps over the pre-deadline capture point, record
+            # the timeout first and then make one best-effort diagnostic attempt
+            # while the child is still alive.
             if now >= deadline:
                 timed_out, timeout_kind = True, "case_deadline"
+                notify_timeout(now)
+                begin_capture(now, output)
                 break
             if watchdog.expired(now):
                 print(f"{name}: progress watchdog expired after {watchdog.idle_seconds(now):.3f}s "
                       f"without a new marker; last_progress={watchdog.marker}", flush=True)
                 timed_out, timeout_kind = True, "progress_watchdog"
+                notify_timeout(now)
+                begin_capture(now, output)
                 break
             if capture is not None:
                 capture.poll(now)
             if not captured and (now >= capture_at or watchdog.capture_due(now)):
-                if not output:
-                    output = _output_tail(log_path)
-                context = {"case": name, "pid": child.pid, "elapsed_seconds": now - started,
-                           "captured_unix_seconds": time.time(), "last_progress": diagnostics.last_progress(output)}
-                print(f"{name}: elapsed={now - started:.3f}s pid={child.pid} "
-                      f"last_progress={context['last_progress']}\n" + output[-8192:], flush=True)
-                try:
-                    capture = factory(child.pid, diagnostic_path, context)
-                except Exception as error:
-                    capture_error = f"{type(error).__name__}: {error}"
-                    print(f"Diagnostic capture failed for {name}: {capture_error}", flush=True)
-                captured = True
+                begin_capture(now, output)
             interval = min(POLL_SECONDS, max(0.001, deadline - now))
             if not captured:
                 interval = min(interval, max(0.001, capture_at - now))
@@ -144,8 +167,8 @@ def wait(child: subprocess.Popen, name: str, timeout: float, started: float,
             except subprocess.TimeoutExpired:
                 pass
     finally:
-        if timed_out and on_timeout is not None:
-            on_timeout(time.perf_counter())
+        if timed_out and not timeout_notified:
+            notify_timeout(time.perf_counter())
         if capture is not None:
             try:
                 capture.close("engine timeout reached before diagnostic capture completed" if timed_out else None)
