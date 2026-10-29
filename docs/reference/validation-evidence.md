@@ -30,6 +30,24 @@ not runtime publication, full ready-PR CI or representative interactive
 rendering. The checked-in Linux/Windows LFS runtimes and their source-input
 manifests remain stale and are **not** release-qualified.
 
+**Correction successor (2026-10-29):** A separate GitHub review reproduced
+an `INT64_MAX` signed overflow in the original run-loop refactor
+`f041aac3`. It is a real P2 correctness failure, not a performance-only
+finding. Corrected source `60915dc86631271ea8661377a3458149adda9361`
+replaces the exclusive signed endpoint with a processed-cell count,
+validates last-included x/y, and adds 12 extreme/zero-extent oracle
+regions plus explicit refusal/nonmutation tests across both chunk sizes.
+The [source-matched correction addendum](../audits/2026-10-28-render-copy-per-run.md#review-driven-int64-endpoint-correction--2026-10-29)
+records the failed historical sanitizer run (exit 124 after 18 minutes,
+not a pass), the independent GCC14 UBSan boundary probe, exact Git
+source archive and newly passing actual Linux/Windows Godot 4.7
+`render_world_generation` 23/0 and render-patch handoff controls
+(run 40796772252). Windows hosted native 165/0 also passed on
+corrected-source run 40796751009; Linux GCC13/focused sanitizer
+completion was **still pending** at this dated checkpoint.
+No LFS runtime publication, full acceptance matrix, independent
+human approval or interactive FPS claim follows.
+
 ## Qualified Water sequence2 publication — 2026-10-25
 
 PR #254's [actual sequence2 publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25) qualifies source
