@@ -258,7 +258,7 @@ def source_ledgers(source, *, armed=True):
         end = blob_bytes.index(b"\n", offset)
         name, kind, size_raw = blob_bytes[offset:end].split()
         size = int(size_raw)
-        blob = blob_bytes[end + 1:end + size]
+        blob = blob_bytes[end + 1:end + 1 + size]
         require(name == oid and kind == b"blob" and len(blob) == size,
                 "Corrupted Git batch blob: " + path + " expected=" + repr(oid) +
                 " got=" + repr(name) + " kind=" + repr(kind) +
