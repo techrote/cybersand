@@ -73,7 +73,7 @@ the unexecuted source proposal, not a completed run.
 - Independently recompute raw distributions and sample correspondence;
   inspect Godot parser output and distinguish native-source runtime
   identity from GDScript-only test revision.
-- Obtain distinct-person source and final execution-data review before
+- Obtain independently performed source and final execution-data reviews, with the actual reviewer method and source receipts recorded, before
   considering merge. Never count draft path-filter skips as executed CI.
 
 This is a normal-load **isolated snapshot-lock-wait baseline** preparing
