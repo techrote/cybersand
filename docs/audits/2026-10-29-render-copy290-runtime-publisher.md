@@ -96,3 +96,91 @@ the corrected-source [one-process ASan/UBSan 165/165 run](https://github.com/tec
 is source-matched but leaves leak detection/TSan distinct.
 No Web/browser, representative desktop GPU pacing or physical
 SOL281 detachment/ejection admission is implied; #283 B=289 stays NO-GO.
+
+## Unarmed implementation and original hosted qualification — 2026-10-29
+
+**Current implementation checkpoint:** native executable and oracle remain
+`60915dc86631271ea8661377a3458149adda9361` and their exact pinned
+Git blobs. Temporary publisher is [draft PR #301](https://github.com/techrote/cybersand/pull/301),
+stacked on read-only #298. The four preparation paths are the only delta
+from producer `c6accb68370405a4b0f30302e0f9d18a911b090b`.
+There is **no** tracked `tools/ci/render_copy290_publish_request.json`,
+and none has been staged, committed or armed.
+
+### Source, tests and branch-gate evidence
+
+[Source-frozen unarmed Actions 40957125837](https://github.com/techrote/cybersand/actions/runs/40957125837)
+at implementation source `61128ac61cbc2320baf5f21a100a3a27adbd046a`
+**SUCCESS**. The original GitHub-hosted request-gate job log reports:
+
+- `Ran 40 tests`, `OK`; direct positive and refusal cases exercise
+  the owner request/comment/schema/hash, wrong request sequence/branch,
+  unsafe/duplicate ZIP, original Windows PE32+ and Linux ELF64 ET_DYN,
+  exact LFS pointer/index, a fully simulated two-platform manifest
+  and four-path stage, nonmutating failure for missing/mismatched
+  host evidence, in-progress GitHub Actions run/job/artifact custody,
+  and rejection of fork/replay/failed host jobs.
+- Provider policy reports `errors: []`. The actual current
+  canonical source-input ledger is **80 native + 557 build inputs**.
+  Each selected checkout file was compared byte-for-byte with its
+  committed Git blob, not the previous stale runtime manifest.
+- `RENDER_COPY290_PUBLISHER UNARMED PASS`; all **four downstream jobs**
+  (`linux-host`, `windows-build`, `windows-host`, and the
+  `contents:write` four-path LFS append) were **SKIPPED**.
+  No compiler, host runtime, LFS write or request was invoked.
+- The producer's previous [real integrated run 40945893162](https://github.com/techrote/cybersand/actions/runs/40945893162)
+  and independently authenticated [run 40947701426](https://github.com/techrote/cybersand/actions/runs/40947701426)
+  remain separate, original-byte evidence for source
+  `c6accb68`. They do **not** execute this new write-capable
+  source or authorize its request.
+
+The write workflow is deliberately **not fully executed**:
+its request gate requires a frozen single-parent, request-only
+authorization commit and an owner-authored GitHub issue #290
+comment, fetched with `issues:read`; build and host jobs then
+recheck the source/branch lease before compiling. The only job with
+`contents:write` must authenticate original current-run job/artifact
+metadata, validate real Linux/Windows build-and-execution bytes,
+regenerate complete runtime input manifests and stage exactly four
+LFS paths. After a leased push it independently fetches both
+new remote LFS payloads into a **fresh Git object store** and
+checks SHA-256/size/new-world-source before claiming published-object
+custody. This post-push validation is a release gate, not a promise
+of publication.
+
+### Retained preparation failures
+
+The historical unarmed run [40954761887](https://github.com/techrote/cybersand/actions/runs/40954761887)
+first **PASSED 26/26 tests**, but did not exercise the full build
+input inventory. Source-ledger hardening subsequently revealed a
+one-byte-off raw `git cat-file --batch` slice and produced failed
+verification runs [40954960368](https://github.com/techrote/cybersand/actions/runs/40954960368)
+and [40955102901](https://github.com/techrote/cybersand/actions/runs/40955102901).
+The parser was repaired and [40955298520](https://github.com/techrote/cybersand/actions/runs/40955298520)
+**PASSED** 80/557 source/build inventory.
+Synthetic stage and pointer/index guards subsequently passed 29 and
+32 tests; newly added test fixtures initially omitted two actual REST
+fields, resulting in [40956188977](https://github.com/techrote/cybersand/actions/runs/40956188977)
+**FAILED (synthetic fixture; zero runtime jobs)**. It was corrected
+before the positive 40-test gate. A later
+[40957063640](https://github.com/techrote/cybersand/actions/runs/40957063640)
+fixture had stale mocked owner fields after the source-bound provenance
+extension and also **FAILED before building**. Its successor
+[40957125837](https://github.com/techrote/cybersand/actions/runs/40957125837)
+is the 40-test source-bound green. None of these errors is relabeled
+as a Cybersand native-engine regression or as positive release evidence.
+
+### Unresolved acceptance boundaries
+
+This staged write-capable implementation **has not demonstrated**
+a real owner-authorized request, current-request source matched
+Linux/Windows rebuilt runtime, complete actual publisher manifest,
+remote LFS materialization, strict source-sensitive repository
+checker pass or postpublication final-head native/Godot/TSan/Docs
+matrix. The old published binaries and manifests are intentionally
+unchanged and source-stale; no temporary verified producer DLL
+is reinterpreted as a published object. The historical monolithic
+ASan/UBSan timeout stays failed alongside the later corrected-source
+165/165 positive run. Leak detection, TSan, real desktop/Web rendered
+pacing and #281 structural-detachment/physical relocation remain
+separate gates; #283's B=289 search stays **NO-GO**.
