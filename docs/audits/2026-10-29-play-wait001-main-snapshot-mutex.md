@@ -2,6 +2,8 @@
 title: PLAY-WAIT-001 source proposal for isolated Main snapshot mutex wait
 status: Planned
 document-kind: audit
+canonical-for: []
+last-reviewed: 2026-10-29
 scope: Test-only Windows/Linux Godot pacing and snapshot-handoff attribution
 related-documents: [../systems/player-control-playground.md, ../reference/validation-evidence.md, ../reference/status-and-roadmap.md, 2026-10-29-play-life005-native-failure-recovery.md]
 ---
