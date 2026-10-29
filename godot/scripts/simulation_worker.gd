@@ -112,6 +112,10 @@ var _prepared_usable_factory: Callable = Callable()
 # Optional deterministic test barrier, called by the exclusive owner after
 # native preparation and before the queue-mutex commit fence. No scene objects.
 var _controlled_liquid_prepare_barrier: Callable = Callable()
+# PLAY-BUSY-001B qualification seam. Empty in production. The callback receives
+# only stop-fence stage names; it never receives the live World. The requested
+# stage is after _running=false and the request revision fence, before join.
+var _play_busy_stop_observer: Callable = Callable()
 var _lab_active: bool = false
 var _lab_floor: int = 0
 var _lab_status: String = ""
@@ -919,7 +923,11 @@ func stop_worker() -> void:
 	_running = false
 	_lab_request_revision += 1
 	_mutex.unlock()
+	if _play_busy_stop_observer.is_valid():
+		_play_busy_stop_observer.call(&"requested")
 	_thread.wait_to_finish()
+	if _play_busy_stop_observer.is_valid():
+		_play_busy_stop_observer.call(&"joined")
 	_actor_session.set_suspended(true)
 
 
