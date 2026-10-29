@@ -4,26 +4,30 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-28
+last-reviewed: 2026-10-29
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
 
-## PLAY composable desktop checkpoint — 2026-10-28
+## PLAY composable desktop checkpoint — 2026-10-29
 
 **Current accepted slices:** existing-host feasibility #273, five-rig and
 construction-time solver composition #267, shared controls/camera/lap/gamepad
 event slices of #268, normal lifecycle PR #284 (`8288e580`), and native
 participation/reference measurements PR #285 (`1a7f9dd5`), solver reconstruction
-PR #287 (`e50a7db3`) and temporary-publisher retirement PR #288 (`37da3c6c`).
+PR #287 (`e50a7db3`), temporary-publisher retirement PR #288 (`37da3c6c`),
+prepared-construction shutdown PR #289 (`91778603`), populated control/lap
+retirement PR #291 (`5374a343`) and actual Main/reference-Rapier native failure
+and ordinary recovery PR #293 (`4b6ca055`).
 The [player contract](../systems/player-control-playground.md#accepted-normal-desktop-lifecycle-qualification)
 owns exact source/CI/review identities and the 50-real-lifetime-per-OS result.
 The same contract records the bounded solver-construction/refusal regression
 and its 335/0 Windows and Linux Godot result, with [PR #287](https://github.com/techrote/cybersand/pull/287)
 owning the final CI/review/accepted-tree receipt.
 **Open:** #266 gameplay scheduling/performance, remaining #268 selection/device/pacing,
-#269 slow-native/outstanding-job shutdown, failure and populated stale-command stress, and #270
+#269 slow-native/outstanding-job shutdown, broader course/failure/stale-delivery
+and effect stress, and #270
 desktop/manual acceptance. Configured capacity, actual task participation,
 concurrent execution, reference timing and human feel remain distinct claims.
 The accepted shared `CyberSimulationWorker` plus main-thread Rapier remains
@@ -32,9 +36,28 @@ the implementation path; #265 is closed Not Planned and #271 stays deferred.
 **Prepared-construction regression:** the
 [LIFE003 player-contract section](../systems/player-control-playground.md#actual-host-prepared-construction-teardown-regression)
 records a test-only actual-host precommit shutdown fixture and its source-bound
-local Windows 150/0 combined-source result. PR #289 tracks final hosted checks,
-independent review and accepted-tree receipts separately; the fixture supplies
+local Windows 150/0 combined-source result. PR #289 subsequently accepted final
+source92e0 after exact-head Windows/Linux150/0, Native/Docs and distinct review;
+main91778603 has separate passing push runs. The linked audit preserves all
+source-specific receipts and original failures; the fixture supplies
 no slow-native-job, native-thread trace or release claim.
+
+**Accepted populated retirement:** the
+[LIFE004 contract](../systems/player-control-playground.md#populated-command-and-lap-retirement-regression)
+adds all-five-rig actual-host queued-input/lap reconstruction and reset checks.
+Source d3ad passed its own exact-head checks and distinct source/execution
+reviews before merge5374. Windows/Linux335/0 is bounded to those populated
+construction/reset cases; broader stale delivery/effect, native-busy, failure
+and release gates remain open.
+
+**Accepted bounded failure/recovery:** the
+[LIFE005 contract](../systems/player-control-playground.md#actual-main-native-failure-and-ordinary-recovery-regression)
+adds an actual Main/reference-Rapier native capacity-fault and ordinary reset
+regression. Source385 passed exact-head Windows/Linux30/0, Native/Docs and
+distinct reviews before merge4b6c. This qualifies the three-reference-body
+ordinary reset boundary; it does not qualify SetP course recovery, prepared
+liquid recovery or native-busy shutdown. #270 also retains representative
+gameplay/frame/snapshot timing, device/focus and human-feel gates.
 
 ## Trial successor correction after accepted App — 2026-10-25
 

@@ -319,3 +319,10 @@ approved ubuntu-24.04 or windows-2022 label for all three jobs. It refuses
 missing identity fields, self-hosted runners or swapped OS labels. Original
 successful host history is schema reference only; those older ZIPs are not
 the new five-member publication artifacts, nor current runtime provenance.
+
+
+## Integration onto current feature/main source — 29 October 2026
+
+The authoritative draft #290 branch merged accepted `main` `aac0feb65e2268b74975892ce1df81e04e1a7e40` into its docs-only successor `b43217af`, producing `ddf812f34c533f654f1488b9115eb0256305a288`. The merge retained the PLAY lifecycle/docs changes and per-run rendering docs rows; the qualified corrected `native/src/world.cpp` and original test-oracle Git blobs are unchanged.
+
+This preparation now consumes that **exact** #290 merge commit as the frozen ancestor instead of the previous `f551e806`, with a two-parent merge into #295 that preserves every prior preparation commit and all 17 intervening source/doc paths. The checker continues to permit *only* its original four preparation files as a change against the updated frozen feature parent. It continues to verify the original, unchanged LFS pointers/manifests and source/test Git blobs. No request, write permission, native/Godot implementation change or LFS publication is introduced. The original 60-case synthetic qualification belongs to the previous preparation head: **fresh post-integration CI is required and not assumed**. The current main lifecycle tests are not thereby accepted as new #290 production release gates.

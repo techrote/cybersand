@@ -283,7 +283,14 @@ It records normal lifetimes, solver-construction/refusal regressions and native
 reference measurements separately from pending-work/failure stress, gameplay
 performance, physical-controller and human-feel qualification.
 The [prepared-construction teardown regression](systems/player-control-playground.md#actual-host-prepared-construction-teardown-regression)
-separately records local cancellation/retirement proof and source-bound final qualification receipts.
+separately records accepted Windows/Linux cancellation/retirement proof and
+source-bound qualification receipts. The [accepted populated retirement](audits/2026-10-29-play-life004-populated-retirement.md)
+records Windows/Linux335/0 construction/reset coverage with queued controls and
+a started lap, exact-head CI/reviews and accepted merge5374.
+The [actual Main failure/recovery regression](systems/player-control-playground.md#actual-main-native-failure-and-ordinary-recovery-regression)
+separately records Windows/Linux30/0 and accepted merge4b6c for a real capacity
+fault and ordinary reset with reference Rapier bodies; it is not five-rig or
+native-busy shutdown qualification.
 
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).
 
