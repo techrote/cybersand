@@ -241,3 +241,34 @@ manifest, original artifact or publication authority changed. PRs #290/#295
 stay draft; #283 B=289 stays NO-GO. The earlier historical runs remain
 unchanged. Exact-head preflight CI must qualify this edit before its
 53-test result can be claimed.
+
+## Noncolon host-failure marker refusal — 2026-10-29
+
+A new source-bounded, read-only admission review found that the proposed
+paired-host verifier could accept a host log with a valid success marker
+followed by `[fail]`, `FAILED:`, `Failure:`, `Segmentation fault`,
+`Aborted (core dumped)`, or `PANIC:` if its self-reported log hash
+was recomputed. The old forbidden-diagnostic expression covered `ERROR:`,
+`FATAL:`, skips, and timeouts, but none of those noncolon forms.
+This is a synthetic evidence-verifier gap; **no Cybersand production crash
+or host test failure is inferred**.
+
+The updated expression refuses those six forms anywhere in the original log,
+including after positive markers, without rejecting the normal
+`23 assertions, 0 failures` success line. A new six-arm adversarial test
+rehashes the forged bytes and requires refusal, raising the expected test
+method count from **53 to 54**, subject to fresh exact-head CI. The previous
+53-test [push run 40867724298](https://github.com/techrote/cybersand/actions/runs/40867724298)
+and [PR run 40867733597](https://github.com/techrote/cybersand/actions/runs/40867733597)
+were independently rechecked as successful on exact source
+`3d469a0fdfb9b1c5c099c3f79aa006cb7de1fc81`.
+
+This change is limited to the existing checker, synthetic tests, and dated
+audit. The preparation workflow remains **read-only and unarmed**, with no
+runtime or manifest publication and no source/ACK/material/Rapier change.
+A clean synthetic verifier cannot attest to authentic GitHub runner/job
+custody, real dual-platform builds, Godot extension loadability, full
+source/build provenance, owner authorization, an atomic four-path LFS
+append or final ready-head acceptance. PR #290 remains draft; #283's
+B=289 ejection policy remains NO-GO. The original sanitizer timeout and
+older negative CI evidence are preserved.

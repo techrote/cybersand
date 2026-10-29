@@ -220,7 +220,10 @@ def verify_host_receipts(bundles, source, tree, expected_run_id, expected_run_at
             forbidden = re.search(
                 r"(?i)(?:SCRIPT ERROR:|ERROR:|SKIP(?:PED)?\b|"
                 r"TIMEOUT\b|LAUNCH ERROR:|REGRESSION_WATCHDOG\b|"
-                r"Traceback \(most recent call last\)|FATAL:)",
+                r"Traceback \(most recent call last\)|FATAL:|"
+                r"\[fail\]|\bFAIL(?:ED|URE)?\b|"
+                r"\bSegmentation fault\b|\bAborted \(core dumped\)|"
+                r"\bPANIC:)",
                 output)
             require(re.search(HOST_MARKERS[name], output) is not None
                     and forbidden is None,

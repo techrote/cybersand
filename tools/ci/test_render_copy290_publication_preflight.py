@@ -336,6 +336,33 @@ class HostReceipts(unittest.TestCase):
                     self.bundles["linux"]["logs"][name] = original_log
                     self.bundles["linux"]["report"] = original_report
 
+    def test_rehashed_post_success_noncolon_failure_indicators(self):
+        # An internally consistent receipt must not admit a later test failure,
+        # crash or panic lacking the ERROR:/FATAL: colon-based diagnostic form.
+        name = "test_render_patch_handoff_regression"
+        for suffix in (
+            b"[fail] late native assertion\n",
+            b"  FAILED: GDExtension check\n",
+            b"Failure: host fixture diverged\n",
+            b"Segmentation fault (core dumped)\n",
+            b"Aborted (core dumped)\n",
+            b"PANIC: renderer crashed\n",
+        ):
+            with self.subTest(suffix=suffix):
+                original_log = self.bundles["linux"]["logs"][name]
+                original_report = self.bundles["linux"]["report"]
+                forged = original_log + suffix
+                self.bundles["linux"]["logs"][name] = forged
+                record = json.loads(original_report)
+                record["cases"][2]["log_sha256"] = digest(forged)
+                self.bundles["linux"]["report"] = self.encode(record)
+                try:
+                    with self.assertRaises(RuntimeError):
+                        self.verify()
+                finally:
+                    self.bundles["linux"]["logs"][name] = original_log
+                    self.bundles["linux"]["report"] = original_report
+
     def test_case_exit_or_timeout(self):
         for change in ({"exit_code": 1}, {"exit_code": True},
                        {"timed_out": True}, {"status": "skipped"}):
