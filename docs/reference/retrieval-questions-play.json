@@ -28,10 +28,22 @@
       "canonical": ["systems/player-control-playground.md"],
       "facts": [
         "LIFE003 holds native-prepared physical-ready construction before commit, observes actual Main callbacks and closes the real host after a bounded stop-fence release.",
-        "The nonblocking helper retains the actual shutdown safety budget of15000ms; a separate25ms contended arm requires release while main holds the real joined-worker mutex. Clean accepted-parent integration9782693c has local Windows150/0; PR #289 tracks separate final hosted checks, review and accepted-tree receipts.",
+        "The nonblocking helper retains the actual shutdown safety budget of15000ms; a separate25ms contended arm requires release while main holds the real joined-worker mutex. PR #289 accepted source92e0 as main91778603 after Windows/Linux150/0, exact-head CI and distinct review; earlier local proofs retain their source identities.",
         "It does not hold native simulation phase jobs, inject a slow native tick or observe an OS native-thread join trace."
       ],
       "sources": ["../godot/tests/play_life003_prepared_shutdown_case.gd"]
+    },
+    {
+      "id": "PLAY-POPULATED-01",
+      "query": "How does the populated PLAY reconstruction and reset test prove old queued human commands and lap progress cannot become the new session's input?",
+      "canonical": ["systems/player-control-playground.md"],
+      "facts": [
+        "LIFE004 requires real pending keyboard edges, an old-session-admitted observed human command, positive completed native lap ticks and a completed Rapier gate visit before construction and reset across all five rigs.",
+        "The new unsuspended human session must reject the captured command specifically for run_or_epoch and require neutral release before fresh input; old lap and edges are retired.",
+        "Whole-assembly gate placement and reinjection of a retained actual snapshot into Main are test-only instrumentation; source-matched platform qualification and distinct review remain required.",
+        "It does not qualify native-busy shutdown, all stale-message paths, gameplay performance or human feel."
+      ],
+      "sources": ["../godot/tests/play_life004_populated_retirement_case.gd"]
     },
     {
       "id": "PLAY-INPUT-01",

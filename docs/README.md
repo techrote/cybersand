@@ -283,7 +283,10 @@ It records normal lifetimes, solver-construction/refusal regressions and native
 reference measurements separately from pending-work/failure stress, gameplay
 performance, physical-controller and human-feel qualification.
 The [prepared-construction teardown regression](systems/player-control-playground.md#actual-host-prepared-construction-teardown-regression)
-separately records local cancellation/retirement proof and source-bound final qualification receipts.
+separately records accepted Windows/Linux cancellation/retirement proof and
+source-bound qualification receipts. The [populated retirement successor](audits/2026-10-29-play-life004-populated-retirement.md)
+tracks construction/reset coverage with queued controls and a started lap;
+its own source-matched qualification remains required.
 
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).
 
