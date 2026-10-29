@@ -1,0 +1,78 @@
+---
+title: Render-copy #290 runtime publisher preparation — UNARMED
+status: Current
+document-kind: evidence
+scope: Isolated read-only source and historical LFS identity preflight, not runtime publication
+canonical-for: []
+last-reviewed: 2026-10-29
+related-documents: [2026-10-28-render-copy-per-run.md, ../operations/local-build-and-validation.md, ../operations/github-development-and-release.md]
+---
+
+# PR #290 — unarmed publisher preparation (29 October 2026)
+
+This separate preparation branch is based on draft PR #290 head
+`f551e8064a7d01ceb554774afb5c61e71e715c63`. The last
+qualified native source is `60915dc86631271ea8661377a3458149adda9361`,
+with `native/src/world.cpp` blob `a6afd8cad4264ac2eca0362d14711158e3606760`
+and `native/tests/test_world.cpp` blob `5613d2166c71fa49fd2b8f65e8caa93857b5d65f`.
+
+**No runtime publication occurs.** The preparation changes only one
+read-only GitHub-hosted workflow, one preflight checker, its adversarial
+unit tests and this dated record. It adds **no publication request** and
+does not change any native source, Git LFS runtime, manifest, material
+policy, snapshot/ACK path or Rapier/thread ownership.
+
+## Exact preflight
+
+The checker requires the authorized repository and preparation branch
+(or a PR from that branch into `claude/render-copy-per-run`). It verifies
+the frozen PR head is an ancestor, the only additions are these four
+files, both corrected source/test Git blobs and SHA-256 match their
+qualified bytes, and no tracked or untracked publication request exists.
+
+For **each actual checked-in Windows/Linux manifest**, it authenticates
+the manifest Git blob, original build source, runtime SHA-256/size and
+canonical Git LFS pointer. All 80 historical native-source input
+digests are compared to current Git blob bytes and must differ only at
+`native/src/world.cpp`. All 549 historical build-input entries must have
+the previously documented **six** specific changes/absences (two
+modified retained files and four removed PLAY-AUTO publisher files).
+This retains historical evidence without treating 79/80 as an accepted
+source-matched release.
+
+The unit tests challenge wrong repo/branch/base/event, unauthorized
+file changes, missing preparation evidence, request presence, swapped,
+sized-wrong or malformed pointers and extra/missing native/build drift.
+The workflow uses `contents: read`, adds no write-capable jobs, and
+runs the repository's GitHub-hosted provider-policy check.
+
+## Still required before arming
+
+This is **preparation only**, not the final branch-specific publisher.
+A distinct reviewer must approve the future bounded profile, request
+schema and sequence, exact-source/lease and adversarial bundle checks,
+pinned dual-platform builder, complete source- and build-input manifests,
+actual Linux and Windows Godot 4.7 import/render-generation/patch-handoff
+and chosen retained controls, raw logs/hashes, four-path LFS append, and
+atomic source-lease checks. The owner must separately authorize a
+source-bound request *after* that review. No build or publication is
+enabled by this checkpoint.
+
+Final-head Documentation, Native including applicable sanitizer/TSan,
+Linux/Windows GDExtension, scoped CI, independent acceptance review and
+manual performance acceptance remain distinct. Earlier monolithic
+sanitizer timeout is retained as a failed run; the successful 165-case
+isolated sanitizer evidence is source-matched but not a same-process
+lifetime test. PR #283's B=289 ejection search remains NO-GO.
+
+## Reproduction
+
+```sh
+python3 tools/ci/test_render_copy290_publication_preflight.py
+python3 tools/ci/check_ci_provider_policy.py
+python3 tools/ci/render_copy290_publication_preflight.py check-unarmed
+```
+
+The third command is context-bound and requires a clean actual
+GitHub-hosted checkout. Execution/CI results must be recorded only
+after the run completes; this document does not predeclare success.
