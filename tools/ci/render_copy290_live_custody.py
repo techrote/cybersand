@@ -183,39 +183,52 @@ def post_check(raw, paths, role):
     return len(lines)
 
 
-def git_archive_sha_map(commit):
-    # Hash authoritative Git archive *blob bytes*, including LFS pointers,
-    # without materializing or rewriting the checked-out repository.
-    process = subprocess.Popen(["git", "-C", str(ROOT), "archive", "--format=tar", commit],
-                               stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+def git_blob_sha_map(commit):
+    """Rehash exact committed Git blob objects, not export-subst archive bytes.
+
+    git archive can apply working-tree/export attributes. The producer records
+    SHA-256 of raw committed blobs (including literal Git LFS pointers).
+    This independent reader enumerates the tree and retrieves each blob from
+    one persistent, bounded git cat-file --batch process.
+    """
+    tree = subprocess.check_output(
+        ["git", "-C", str(ROOT), "ls-tree", "-r", "-z", commit])
+    records = []
+    for entry in tree.split(b"\0"):
+        if not entry:
+            continue
+        metadata, name = entry.split(b"\t", 1)
+        mode, kind, oid = metadata.split(b" ")
+        require(kind == b"blob", "Unexpected nonblob Git tree object")
+        path = name.decode("utf-8", "surrogateescape")
+        require(path not in {p for p, _ in records}, "Duplicate tree path")
+        records.append((path, oid))
+    require(len(records) == 1713, "Unexpected frozen committed-object inventory")
+    proc = subprocess.Popen(["git", "-C", str(ROOT), "cat-file", "--batch"],
+                            stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE)
     result = {}
     try:
-        with tarfile.open(fileobj=process.stdout, mode="r|") as archive:
-            for member in archive:
-                # git archive emits directory headers as well as regular blobs.
-                # Do not hash directories or admit symlinks and special files.
-                if member.isdir():
-                    continue
-                require(member.isfile(), "Unexpected non-file Git archive member")
-                # GitHub's individual Git-blob limit is 100 MiB; allow
-                # large historical evidence blobs without relaxing the
-                # complete expected 1,713-path and SHA-256 equality gates.
-                require(member.size <= 128 * 1024 * 1024,
-                        "Oversized Git archive member: " + member.name +
-                        " (" + str(member.size) + " bytes)")
-                file = archive.extractfile(member)
-                require(file is not None, "Missing tracked archive data")
-                require(member.name not in result, "Duplicate Git archive path")
-                result[member.name] = sha(file.read())
-        errors = process.stderr.read()
-        code = process.wait(timeout=60)
-        require(code == 0, "git archive failed: " + errors.decode("utf-8", "replace"))
+        for path, oid in records:
+            proc.stdin.write(oid + b"\n")
+            proc.stdin.flush()
+            header = proc.stdout.readline().rstrip(b"\n").split(b" ")
+            require(len(header) == 3 and header[0] == oid and header[1] == b"blob",
+                    "Git cat-file returned unexpected object: " + path)
+            size = int(header[2])
+            require(0 <= size <= 128 * 1024 * 1024,
+                    "Oversized raw Git blob: " + path + " (" + str(size) + " bytes)")
+            data = proc.stdout.read(size)
+            require(len(data) == size and proc.stdout.read(1) == b"\n",
+                    "Git cat-file delivered partial blob: " + path)
+            result[path] = sha(data)
+        proc.stdin.close()
+        require(proc.wait(timeout=90) == 0, "Git cat-file batch failed")
     finally:
-        if process.poll() is None:
-            process.kill()
-            process.wait()
+        if proc.poll() is None:
+            proc.kill()
+            proc.wait()
     return result
-
 
 def main():
     parser = argparse.ArgumentParser()
@@ -275,9 +288,9 @@ def main():
             and tracked["hash_kind"] == "sha256-of-committed-git-blob (LFS-pointer-not-payload)"
             and tracked["input_count"] == 1713 and len(tracked["inputs"]) == 1713,
             "Malformed or non-source-bound Git custody inventory")
-    exact_committed = git_archive_sha_map(PARENT)
+    exact_committed = git_blob_sha_map(PARENT)
     require(exact_committed == tracked["inputs"],
-            "Full 1713-file committed-object SHA-256 inventory differs from actual Git archive")
+            "Full 1713-file committed-object SHA-256 inventory differs from raw Git blob objects")
 
     selected = [parse_selected(linux["selected-build-inputs.sha256"]),
                 parse_selected(windows["selected-build-inputs.sha256"])]
@@ -326,7 +339,7 @@ def main():
         "zip_artifacts": zip_receipts,
         "source_map": {"git_blob_sha256_count": len(exact_committed),
                        "cross_host_maps_equal": True,
-                       "authoritative_git_archive_match": True},
+                       "authoritative_raw_git_blobs_match": True},
         "selected_materialized": {
             "files": len(selected[0]), "matching_both_hosts_and_git": True,
             "post_check_counts": checks,
