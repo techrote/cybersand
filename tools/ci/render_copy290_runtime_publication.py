@@ -86,7 +86,13 @@ def sha(data):
 
 
 def git(*args):
+    # Textual command identity helper; Git's trailing line feed is not data.
     return subprocess.check_output(["git", "-C", str(ROOT), *args], timeout=90).strip()
+
+
+def git_raw(*args):
+    # Committed manifests and LFS pointer payloads require byte-exact newlines.
+    return subprocess.check_output(["git", "-C", str(ROOT), *args], timeout=90)
 
 
 def repo_identity(source):
@@ -211,7 +217,7 @@ def request_status(source, *, require_armed=False, remote=True):
     parent = parent_line[1]
     require(git("diff", "--name-only", parent, source).decode().splitlines() == [REQUEST],
             "Request must be the sole changed file in authorization commit")
-    require(git("show", source + ":" + REQUEST) ==
+    require(git_raw("show", source + ":" + REQUEST) ==
             (ROOT / REQUEST).read_bytes().replace(b"\r\n", b"\n"),
             "Request on disk differs from checked-out committed source")
     data = json.loads((ROOT / REQUEST).read_bytes(), object_pairs_hook=unique_object)
@@ -321,7 +327,7 @@ def check_index(source):
         require(manifest["source_commit"] == source and
                 manifest["status"] == "validated-development-runtime" and
                 manifest["artifact"] == path, "Staged runtime manifest is stale")
-        staged_pointer = git("show", ":" + path)
+        staged_pointer = git_raw("show", ":" + path)
         expect = ("version https://git-lfs.github.com/spec/v1\n" +
                   "oid sha256:" + manifest["sha256"] + "\n" +
                   "size " + str(manifest["size"]) + "\n").encode()
@@ -329,7 +335,7 @@ def check_index(source):
         require(sha((ROOT / path).read_bytes()) == manifest["sha256"] and
                 (ROOT / path).stat().st_size == manifest["size"],
                 "Materialized runtime differs from staged pointer")
-        require(git("show", ":" + manifest_path) == (ROOT / manifest_path).read_bytes(),
+        require(git_raw("show", ":" + manifest_path) == (ROOT / manifest_path).read_bytes(),
                 "Staged provenance differs from working file")
         for rel in (path, manifest_path):
             entry = git("ls-files", "--stage", "--", rel).decode().splitlines()
