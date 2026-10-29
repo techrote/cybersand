@@ -298,8 +298,15 @@ def runtime_kind(data, platform):
                 "Expected PE32+ x86_64 DLL")
 
 
-def manifest(platform, source, runtime_bytes, report, ledgers, zip_digest):
+def manifest(platform, source, runtime_bytes, report, ledgers, zip_digest,
+             build=None, authorization=None):
     runtime_kind(runtime_bytes, platform)
+    # Preserve *actual* archived compiler/build-input identities, not only a
+    # self-described toolchain string in the host JSON.
+    build = build or {}
+    compiler = build.get("compiler-version.txt", b"synthetic qualification").decode(
+        "utf-8", "replace").splitlines()[0].strip()
+    require(0 < len(compiler) <= 256, "Invalid retained compiler identity")
     result = dict(repo_identity(source), **ledgers)
     result.update({"schema_version": 1, "platform": platform,
                    "source_input_hash_kind":
@@ -309,12 +316,26 @@ def manifest(platform, source, runtime_bytes, report, ledgers, zip_digest):
                    "build_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
                    "validated_platform": platform.title() +
                        " x86_64 Godot 4.7 actual GitHub-hosted headless execution",
-                   "evidence": AUDIT, "toolchain": report["toolchain"],
+                   "evidence": AUDIT,
+                   "toolchain": report["toolchain"] + "; compiler=" + compiler +
+                       "; godot-cpp=" + GODOT_CPP + "; SCons=4.10.1",
                    "validation_output": "Actions " + os.environ["GITHUB_RUN_ID"] +
                        "/render-copy290-host-evidence-" + platform,
                    "validation_sha256": zip_digest,
                    "acceptance": "Source-matched import and 23/23 render-world + render-patch-handoff passed; full ready-PR/TSan/Web and manual acceptance separate",
                    "other_platforms": "Only Linux/Windows headless rendering was tested; not browser/desktop GPU FPS"})
+    for key, evidence in (("build_log_sha256", "native-build.txt"),
+                          ("godot_cpp_build_log_sha256", "godot-cpp-build.txt"),
+                          ("selected_materialized_input_sha256",
+                           "selected-build-inputs.sha256")):
+        if evidence in build:
+            result[key] = sha(build[evidence])
+    if authorization is not None:
+        result.update({"owner_authorization_comment": authorization["comment"],
+                       "publication_request_sequence":
+                           authorization["request"]["request_sequence"],
+                       "authorized_pre_request_parent":
+                           authorization["request"]["authorized_parent_sha"]})
     return result
 
 
@@ -460,7 +481,7 @@ def authenticated_producer_artifacts(source):
 
 
 def stage(source):
-    request_status(source, require_armed=True)
+    authorization = request_status(source, require_armed=True)
     raw, outer_digests = authenticated_producer_artifacts(source)
     require(set(outer_digests) == {"linux-host", "windows-host",
                                  "linux-build", "windows-build"},
@@ -553,7 +574,8 @@ def stage(source):
         target.write_bytes(report[platform]["runtime"])
         record = manifest(platform, source, report[platform]["runtime"],
                           report[platform]["receipt"], ledgers,
-                          outer_digests[platform + "-host"][7:])
+                          outer_digests[platform + "-host"][7:],
+                          builds[platform], authorization)
         original = ROOT / MANIFEST[platform]
         require(not original.is_symlink(), "Manifest destination is symlink")
         original.write_text(_json.dumps(record, indent=2, sort_keys=True) + "\n",
