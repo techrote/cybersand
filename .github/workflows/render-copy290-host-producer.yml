@@ -85,6 +85,42 @@ jobs:
           timeout 35m tools/build_pinned_godot_cpp.sh linux > build/qual290/linux-host/godot-cpp-build.txt 2>&1
           timeout 20m tools/build_native_extension.sh > build/qual290/linux-host/native-build.txt 2>&1
           sha256sum godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so > build/qual290/linux-host/runtime.sha256
+          export LEDGER_DIR=build/qual290/linux-host
+          # Source-custody inventory: committed Git object bytes only. LFS entries
+          # are Git pointers, NOT materialized third-party/runtime payloads.
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          root = pathlib.Path(os.environ["LEDGER_DIR"])
+          git = lambda *args: subprocess.check_output(["git", *args], timeout=120)
+          paths = [p.decode("utf-8") for p in git("ls-files", "-z").split(b"\0") if p]
+          assert len(paths) == len(set(paths)) and len(paths) >= 549
+          inputs = {}
+          for path in paths:
+              data = git("show", "HEAD:" + path)
+              inputs[path] = hashlib.sha256(data).hexdigest()
+          for manifest in ("godot/addons/cybersand_native/runtime-provenance.json",
+                           "godot/addons/cybersand_native/runtime-provenance.linux.json"):
+              old = json.loads(git("show", "HEAD:" + manifest))
+              assert len(old["source_inputs"]) == 80
+              assert len(old["build_inputs"]) == 549
+              assert set(old["source_inputs"]).issubset(inputs)
+              missing = set(old["build_inputs"]) - set(inputs)
+              assert missing == {
+                  ".github/workflows/play-auto002-runtime-publication.yml",
+                  "tools/ci/play_auto002_publish_request.json",
+                  "tools/ci/play_auto002_runtime_publication.py",
+                  "tools/ci/test_play_auto002_runtime_publication.py"}, missing
+          receipt = {"schema": "render-copy290-tracked-git-inputs-v1",
+                     "source_sha": git("rev-parse", "HEAD").decode().strip(),
+                     "source_tree": git("rev-parse", "HEAD^{tree}").decode().strip(),
+                     "hash_kind": "sha256-of-committed-git-blob (LFS-pointer-not-payload)",
+                     "input_count": len(inputs), "inputs": inputs}
+          assert receipt["source_sha"] == os.environ["GITHUB_SHA"]
+          (root / "tracked-git-inputs.json").write_text(
+              json.dumps(receipt, sort_keys=True, separators=(",", ":")) + "\n",
+              encoding="utf-8")
+          print("READ-ONLY TRACKED GIT LEDGER", len(inputs), receipt["source_sha"])
+          PY
       - name: Execute exact-source Godot 4.7 render tests
         shell: bash
         run: |
@@ -234,6 +270,42 @@ jobs:
           timeout 35m tools/build_pinned_godot_cpp.sh windows > build/qual290/windows-dll/godot-cpp-build.txt 2>&1
           timeout 20m tools/build_native_extension_windows.sh > build/qual290/windows-dll/native-build.txt 2>&1
           (cd build/qual290/windows-dll && sha256sum cybersand_native.windows.x86_64.dll > runtime.sha256)
+          export LEDGER_DIR=build/qual290/windows-dll
+          # Source-custody inventory: committed Git object bytes only. LFS entries
+          # are Git pointers, NOT materialized third-party/runtime payloads.
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          root = pathlib.Path(os.environ["LEDGER_DIR"])
+          git = lambda *args: subprocess.check_output(["git", *args], timeout=120)
+          paths = [p.decode("utf-8") for p in git("ls-files", "-z").split(b"\0") if p]
+          assert len(paths) == len(set(paths)) and len(paths) >= 549
+          inputs = {}
+          for path in paths:
+              data = git("show", "HEAD:" + path)
+              inputs[path] = hashlib.sha256(data).hexdigest()
+          for manifest in ("godot/addons/cybersand_native/runtime-provenance.json",
+                           "godot/addons/cybersand_native/runtime-provenance.linux.json"):
+              old = json.loads(git("show", "HEAD:" + manifest))
+              assert len(old["source_inputs"]) == 80
+              assert len(old["build_inputs"]) == 549
+              assert set(old["source_inputs"]).issubset(inputs)
+              missing = set(old["build_inputs"]) - set(inputs)
+              assert missing == {
+                  ".github/workflows/play-auto002-runtime-publication.yml",
+                  "tools/ci/play_auto002_publish_request.json",
+                  "tools/ci/play_auto002_runtime_publication.py",
+                  "tools/ci/test_play_auto002_runtime_publication.py"}, missing
+          receipt = {"schema": "render-copy290-tracked-git-inputs-v1",
+                     "source_sha": git("rev-parse", "HEAD").decode().strip(),
+                     "source_tree": git("rev-parse", "HEAD^{tree}").decode().strip(),
+                     "hash_kind": "sha256-of-committed-git-blob (LFS-pointer-not-payload)",
+                     "input_count": len(inputs), "inputs": inputs}
+          assert receipt["source_sha"] == os.environ["GITHUB_SHA"]
+          (root / "tracked-git-inputs.json").write_text(
+              json.dumps(receipt, sort_keys=True, separators=(",", ":")) + "\n",
+              encoding="utf-8")
+          print("READ-ONLY TRACKED GIT LEDGER", len(inputs), receipt["source_sha"])
+          PY
           file "$CYBERSAND_NATIVE_OUTPUT"
           git diff --check
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -290,6 +362,26 @@ jobs:
         with:
           name: render-copy290-host-evidence-linux-${{ github.run_id }}
           path: build/qual290/host-evidence-linux/
+      - name: Recover Linux tracked-Git source custody ledger
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: render-copy290-linux-build-${{ github.sha }}
+          path: build/qual290/linux-build-attestation/
+      - name: Compare independent complete tracked-Git inventories
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, pathlib, subprocess, os
+          linux = json.loads(pathlib.Path("build/qual290/linux-build-attestation/tracked-git-inputs.json").read_bytes())
+          windows = json.loads(pathlib.Path("build/qual290/windows-dll/tracked-git-inputs.json").read_bytes())
+          assert linux == windows, "Linux and Windows committed-input ledgers differ"
+          assert linux["source_sha"] == os.environ["GITHUB_SHA"]
+          assert linux["source_tree"] == subprocess.check_output(
+              ["git", "rev-parse", "HEAD^{tree}"], text=True).strip()
+          assert linux["input_count"] == len(linux["inputs"]) >= 549
+          print("MATCHED CROSS-HOST TRACKED-GIT SOURCE LEDGERS", linux["input_count"])
+          PY
       - name: Materialize source-matched DLL, pinned Rapier, official Godot
         shell: bash
         run: |
