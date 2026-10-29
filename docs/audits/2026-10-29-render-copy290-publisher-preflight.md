@@ -145,3 +145,19 @@ verify original ZIP SHA-256/CRC, complete build/source input hashes, actual host
 execution, atomic branch lease, four-path staging and materializable LFS objects.
 Historical published manifests and binaries remain unchanged. Draft #290 and
 separate #283 admission fences remain in force.
+
+
+### Synthetic fixture argument-name correction — 2026-10-29
+
+The first implementation of the 39-test contract at `7dc163d5a933f493a0f1d635322a07027251c806`
+failed two source-matched hosted preflight runs: [push #40831213422](https://github.com/techrote/cybersand/actions/runs/40831213422)
+and [PR #40831218359](https://github.com/techrote/cybersand/actions/runs/40831218359).
+The raw job logs both show **39 tests, one failure**, specifically
+`HostReceipts.test_false_report(change={'platform': 'windows'})`.
+The synthetic test helper's argument `platform` accidentally selected a bundle
+instead of changing that receipt's platform field; consequently the test made no
+malformed receipt and expected a false-positive rejection. The helper's selector
+is now named `target`, preserving a positional Windows selection while permitting
+`platform` as an independently mutated receipt field. These earlier CI failures
+remain historical test-harness failures, not engine regressions. Fresh exact-head
+CI remains required; this amendment does not assert any unobserved pass.

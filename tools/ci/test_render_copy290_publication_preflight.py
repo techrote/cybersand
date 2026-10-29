@@ -210,10 +210,10 @@ class HostReceipts(unittest.TestCase):
     def verify(self):
         return verify_host_receipts(self.bundles, self.source, self.tree)
 
-    def mutate(self, platform="linux", **changes):
-        record = json.loads(self.bundles[platform]["report"])
+    def mutate(self, target="linux", **changes):
+        record = json.loads(self.bundles[target]["report"])
         record.update(changes)
-        self.bundles[platform]["report"] = self.encode(record)
+        self.bundles[target]["report"] = self.encode(record)
 
     def test_positive_synthetic_pair(self):
         self.assertTrue(self.verify())
