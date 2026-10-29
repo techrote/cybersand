@@ -1,0 +1,146 @@
+name: RENDER-COPY-290 all-test sanitizer coverage
+
+on:
+  push:
+    branches: [verify/render-copy290-sanitizer-shards-20261029]
+    paths:
+      - '.github/workflows/render-copy-290-sanitizer-shards.yml'
+      - 'tools/ci/render_copy_290_sanitizer_shard.py'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: render-copy-290-all-sanitizer-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build frozen corrected-source ASan+UBSan binary
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      CC: gcc-13
+      CXX: g++-13
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Verify exact source and all 165 registry entries
+        run: |
+          set -euo pipefail
+          mkdir -p build/render-copy290-sanitizer/build
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/render_copy_290_sanitizer_shard.py registry --output build/render-copy290-sanitizer/build/registry.json
+          git diff --check
+          g++-13 --version | head -n1 | tee build/render-copy290-sanitizer/build/compiler.txt
+      - name: Compile GCC13 combined ASan and UBSan binary
+        run: |
+          set -euo pipefail
+          timeout 25m make CC=gcc-13 CXX=g++-13 build/tests_sanitized > build/render-copy290-sanitizer/build/compile.txt 2>&1
+          test -x build/tests_sanitized
+          cp build/tests_sanitized build/render-copy290-sanitizer/build/tests_sanitized
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib
+          out=pathlib.Path("build/render-copy290-sanitizer/build")
+          binary=(out/"tests_sanitized").read_bytes()
+          manifest={"schema":"cybersand.render-copy290-sanitizer-build.v1",
+                    "source":"60915dc86631271ea8661377a3458149adda9361",
+                    "verification_head":os.environ["GITHUB_SHA"],
+                    "binary_sha256":hashlib.sha256(binary).hexdigest(),
+                    "binary_size":len(binary)}
+          (out/"manifest.json").write_text(json.dumps(manifest,indent=2,sort_keys=True)+"\n",encoding="utf-8")
+          print(json.dumps(manifest))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: render-copy290-sanitizer-binary-${{ github.sha }}
+          path: build/render-copy290-sanitizer/build/
+          if-no-files-found: warn
+          retention-days: 30
+
+  shards:
+    name: Sanitizer shard ${{ matrix.shard }} of 4
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+    env:
+      ASAN_OPTIONS: 'detect_leaks=0:strict_string_checks=1:halt_on_error=1'
+      UBSAN_OPTIONS: 'halt_on_error=1:print_stacktrace=1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: render-copy290-sanitizer-binary-${{ github.sha }}
+          path: build/render-copy290-sanitizer/build/
+      - name: Check immutable source and downloaded binary identity
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          chmod +x build/render-copy290-sanitizer/build/tests_sanitized
+          python3 tools/ci/render_copy_290_sanitizer_shard.py registry --output build/render-copy290-sanitizer/registry-${{ matrix.shard }}.json
+      - name: Execute every registered test in this shard under ASan and UBSan
+        run: |
+          set -euo pipefail
+          python3 tools/ci/render_copy_290_sanitizer_shard.py run \
+            --shard ${{ matrix.shard }} \
+            --binary build/render-copy290-sanitizer/build/tests_sanitized \
+            --build-manifest build/render-copy290-sanitizer/build/manifest.json \
+            --output build/render-copy290-sanitizer/shard-${{ matrix.shard }} \
+            --per-test-timeout 480
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: render-copy290-sanitizer-shard-${{ matrix.shard }}-${{ github.sha }}
+          path: build/render-copy290-sanitizer/shard-${{ matrix.shard }}/
+          if-no-files-found: warn
+          retention-days: 30
+
+  reduce:
+    name: Reduce and verify complete 165-case coverage
+    needs: [build, shards]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Restore all four immutable shard reports and raw logs
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: render-copy290-sanitizer-shard-*
+          path: build/render-copy290-sanitizer/reduced
+          merge-multiple: false
+      - name: Verify complete exact-source coverage and one binary SHA-256
+        run: |
+          set -euo pipefail
+          mkdir -p build/render-copy290-sanitizer/all-shards
+          for n in 0 1 2 3; do
+            mv "build/render-copy290-sanitizer/reduced/render-copy290-sanitizer-shard-$n-${{ github.sha }}" "build/render-copy290-sanitizer/all-shards/shard-$n"
+          done
+          python3 tools/ci/render_copy_290_sanitizer_shard.py aggregate \
+            --input build/render-copy290-sanitizer/all-shards \
+            --output build/render-copy290-sanitizer/final/coverage.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: render-copy290-sanitizer-coverage-${{ github.sha }}
+          path: build/render-copy290-sanitizer/final/
+          if-no-files-found: warn
+          retention-days: 30
