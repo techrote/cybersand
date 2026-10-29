@@ -109,6 +109,7 @@ def make_stage():
 class AuthorizationTests(unittest.TestCase):
     def setUp(self):
         self.writer = "c" * 40
+        self.request_commit = "d" * 40
         self.request = {
             "schema": "render-copy290-publish-request-v1",
             "intent": gate.INTENT,
@@ -130,21 +131,34 @@ class AuthorizationTests(unittest.TestCase):
             "html_url": "https://github.com/techrote/cybersand/pull/290#issuecomment-9876543210",
             "created_at": "2026-10-29T21:00:00Z",
             "updated_at": "2026-10-29T21:00:00Z",
-            "body": gate.request_text(self.request),
+            "body": gate.request_text(self.request, self.request_commit),
         }
 
-    def good(self, request=None, comment=None, writer=None):
+    def good(self, request=None, comment=None, writer=None, request_commit=None):
         return gate.verify_owner_authorization(
             raw(self.request if request is None else request),
             self.comment if comment is None else comment,
-            self.writer if writer is None else writer)
+            self.writer if writer is None else writer,
+            self.request_commit if request_commit is None else request_commit)
 
-    def assert_refused(self, request=None, comment=None, writer=None):
+    def assert_refused(self, request=None, comment=None, writer=None,
+                       request_commit=None):
         with self.assertRaises(RuntimeError):
-            self.good(request, comment, writer)
+            self.good(request, comment, writer, request_commit)
 
     def test_valid_synthetic_owner_comment_not_real_authority(self):
         self.assertEqual(self.good()["reviewed_writer_sha"], self.writer)
+
+    def test_authority_is_bound_to_exact_committed_request(self):
+        # Reusing byte-identical request JSON on another commit never transfers consent.
+        for wrong in ("e" * 40, "", "not-a-sha", "D" * 40, True, self.writer):
+            with self.subTest(request_commit=wrong):
+                self.assert_refused(request_commit=wrong)
+        edited = copy.deepcopy(self.comment)
+        edited["body"] = edited["body"].replace(
+            "request_commit_sha: " + self.request_commit,
+            "request_commit_sha: " + "e" * 40)
+        self.assert_refused(comment=edited)
 
     def test_untrusted_author_and_edited_owner_message(self):
         for key, value in (("login", "attacker"), ("login", "Techrote")):
@@ -195,9 +209,11 @@ class AuthorizationTests(unittest.TestCase):
         self.assert_refused(request=r)
         duplicate = raw(self.request).rstrip()[:-1] + b',"schema":"render-copy290-publish-request-v1"}'
         with self.assertRaises(RuntimeError):
-            gate.verify_owner_authorization(duplicate, self.comment, self.writer)
+            gate.verify_owner_authorization(duplicate, self.comment, self.writer,
+                                            self.request_commit)
         with self.assertRaises(RuntimeError):
-            gate.verify_owner_authorization(b'{"missing": NaN}', self.comment, self.writer)
+            gate.verify_owner_authorization(b'{"missing": NaN}', self.comment, self.writer,
+                                            self.request_commit)
 
     def test_integer_bool_and_bad_writer_reference_refusals(self):
         for name in ("producer_run_id", "producer_run_attempt", "owner_comment_id"):

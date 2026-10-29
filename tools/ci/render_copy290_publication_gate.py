@@ -102,10 +102,11 @@ def json_object(raw: bytes, *, bound: int = 1_500_000) -> dict:
     return value
 
 
-def request_text(request: dict) -> str:
+def request_text(request: dict, request_commit_sha: str) -> str:
     """Exact one-purpose owner comment; no free-form 'approval' inference."""
     return (
         "AUTHORIZE Cybersand RENDER-COPY-290 LFS runtime publication\n"
+        "request_commit_sha: " + request_commit_sha + "\n"
         "producer_source_sha: " + request["producer_source_sha"] + "\n"
         "producer_source_tree: " + request["producer_source_tree"] + "\n"
         "producer_run_id: " + str(request["producer_run_id"]) + "\n"
@@ -120,11 +121,13 @@ def request_text(request: dict) -> str:
 
 
 def verify_owner_authorization(request_bytes: bytes, comment: dict,
-                               reviewed_writer_sha: str) -> dict:
+                               reviewed_writer_sha: str,
+                               request_commit_sha: str) -> dict:
     """Check externally REST-fetched, *unedited* owner comment plus exact request.
 
-    The caller must fetch this comment independently, freshly before final push,
-    authenticate GitHub REST and enforce a branch-head lease. This is a pure
+    The caller must authenticate the exact request-only Git commit (a direct
+    child of the reviewed writer), fetch its owner comment freshly and enforce
+    that same commit as the remote branch-head lease before publication. Pure
     refusal rule, not a network call or authorization by the AI executing it.
     """
     request = json_object(request_bytes, bound=16384)
@@ -145,6 +148,9 @@ def verify_owner_authorization(request_bytes: bytes, comment: dict,
             and type(request.get("reviewed_writer_sha")) is str
             and request["reviewed_writer_sha"] == reviewed_writer_sha,
             "Request not bound to separately reviewed writer code SHA")
+    require(type(request_commit_sha) is str and HEX40.fullmatch(request_commit_sha)
+            and request_commit_sha != reviewed_writer_sha,
+            "Missing distinct exact request commit SHA")
     comment_id = request.get("owner_comment_id")
     require(type(comment_id) is int and comment_id > 0, "Missing owner comment ID")
     require(type(comment) is dict and type(comment.get("user")) is dict
@@ -161,8 +167,8 @@ def verify_owner_authorization(request_bytes: bytes, comment: dict,
                              comment["created_at"]) is not None
             and comment.get("updated_at") == comment["created_at"],
             "Owner comment is edited or lacks immutable timestamp")
-    require(comment.get("body") == request_text(request),
-            "Owner did not explicitly authorize the exact source/run/ZIPs/writer/branch")
+    require(comment.get("body") == request_text(request, request_commit_sha),
+            "Owner did not explicitly authorize exact request commit/source/run/ZIPs/writer/branch")
     return request
 
 

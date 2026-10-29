@@ -147,3 +147,9 @@ as historical; accept **new** exact-head results and retained receipt
 only after the live gate run actually completes successfully. Failure
 is a new evidence-custody failure, not proof of native simulation
 regression. This extra verifier has no LFS or repository write token.
+
+## Follow-up: authorization must name the actual request commit
+
+The pure owner-consent checker now requires an explicit exact 40-hex `request_commit_sha` in the unedited owner comment on #290, in addition to the original source, Actions run/ZIPs, reviewed writer and destination branch. Consent for one committed request cannot be replayed on a later commit with identical JSON. Adversarial cases reject substituted, malformed, wrong-case, writer-equal and edited-comment values.
+
+**Not an authorization or release:** a future separately reviewed publisher must independently authenticate the GitHub request commit, prove it is a single request-only child of the reviewed writer, verify the same commit is still the remote destination head at admission and immediately before an atomic four-path append, and check the actual Git index, Git LFS payloads and post-push commit. The pure helper cannot authenticate REST, Git refs or payloads by itself. The request file is absent and the workflow remains read-only.
