@@ -48,6 +48,20 @@ completion was **still pending** at this dated checkpoint.
 No LFS runtime publication, full acceptance matrix, independent
 human approval or interactive FPS claim follows.
 
+**Final scoped readback:** corrected-source native
+[run 40796751009](https://github.com/techrote/cybersand/actions/runs/40796751009)
+completed all three jobs successfully: Linux GCC13 **165/165**,
+ASan+UBSan focused render **3/3** and C API/RGBA **1/1**
+without reported sanitizer errors, Windows Server 2022 MSVC
+**165/165**. [Godot run 40796772252](https://github.com/techrote/cybersand/actions/runs/40796772252)
+passed all Linux/Windows build and host jobs.
+The [machine-readable source and artifact receipt](../audits/2026-10-29-render-copy-int64-qualification-receipt.json)
+pins six corrected-source ZIPs, hashes, and retained failures.
+The earlier full 18-minute ASan/UBSan timeout at old source
+`f041aac3` remains **failed**; this focused pass does not
+convert it to an all-test sanitizer qualification. Original
+LFS runtime provenance and final ready-PR admission remain blocked.
+
 ## Qualified Water sequence2 publication — 2026-10-25
 
 PR #254's [actual sequence2 publication](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25) qualifies source
