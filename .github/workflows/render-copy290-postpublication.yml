@@ -18,10 +18,21 @@ jobs:
     name: Verify published four-path LFS bytes and complete source/build provenance
     runs-on: ubuntu-24.04
     timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: workspace/source
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Check out pinned documentation companion workspace
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
+          path: workspace
+          persist-credentials: false
+      - name: Check out exact postpublished source with materialized LFS
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           ref: ${{ github.sha }}
+          path: workspace/source
           fetch-depth: 0
           lfs: true
           persist-credentials: false
@@ -110,6 +121,6 @@ jobs:
         if: always()
         with:
           name: render-copy290-postpublication-${{ github.sha }}
-          path: build/render-copy290-postpublication/
+          path: workspace/source/build/render-copy290-postpublication/
           if-no-files-found: warn
           retention-days: 30
