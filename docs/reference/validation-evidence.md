@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-10-28
+last-reviewed: 2026-10-29
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md, ../audits/2026-10-25-lcb002-pressure-variants.md]
 ---
 
@@ -19,8 +19,16 @@ new copy byte for byte, padding included. Coverage spans signed seams,
 non-resident chunks, tiny seam regions, padded strides, two chunk sizes and Water
 policies, and a full 1024×1024 frame. The local Windows MSVC suite, a pinned
 LLVM-MinGW GDExtension build and both Godot render regressions pass. Local timings
-are reported, not asserted. Linux GCC, sanitizer and hosted gates are still
-required, and runtime binaries were not republished.
+are reported, not asserted. The 2026-10-29 [hosted qualification
+addendum](../audits/2026-10-28-render-copy-per-run.md#hosted-source-matched-qualification--2026-10-29)
+adds source-preserved Windows Server 2022 MSVC native 165/0 plus real
+Linux/Windows pinned Godot 4.7 GDExtension render-generation 23/0 and
+render-patch handoff passes (isolated runs 40792599185 and 40793815067).
+The Linux GCC13 ordinary native step passed, while its ASan/UBSan step
+was still running at this dated checkpoint. Hosted proof is additive,
+not runtime publication, full ready-PR CI or representative interactive
+rendering. The checked-in Linux/Windows LFS runtimes and their source-input
+manifests remain stale and are **not** release-qualified.
 
 ## Qualified Water sequence2 publication — 2026-10-25
 
