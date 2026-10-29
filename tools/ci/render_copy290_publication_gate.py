@@ -47,6 +47,7 @@ ALLOWED_DELTA = frozenset({
     ".github/workflows/render-copy290-publication-gate.yml",
     "tools/ci/render_copy290_publication_gate.py",
     "tools/ci/test_render_copy290_publication_gate.py",
+    "tools/ci/render_copy290_live_custody.py",
     "docs/audits/2026-10-29-render-copy290-publication-gate.md",
 })
 REQUEST_KEYS = frozenset({
@@ -269,7 +270,8 @@ def check_unarmed() -> None:
     require(changed == ALLOWED_DELTA, "Unarmed gate changed extra/missing files: "
             + repr(sorted(changed ^ ALLOWED_DELTA)))
     require(REQUEST not in set(git("ls-tree", "-r", "--name-only", "HEAD").decode().splitlines())
-            and not (ROOT / REQUEST).exists(), "No publication request is authorized")
+            and not (ROOT / REQUEST).exists()
+            and not (ROOT / REQUEST).is_symlink(), "No publication request is authorized")
     for path, expected in (("native/src/world.cpp", WORLD_BLOB),
                            ("native/tests/test_world.cpp", TEST_BLOB)):
         require(git("rev-parse", "HEAD:" + path).decode().strip() == expected,

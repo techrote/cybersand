@@ -10,7 +10,7 @@ related-documents: [2026-10-29-render-copy290-publisher-preflight.md, 2026-10-28
 
 # Render-copy #290 — owner and four-path publisher refusal gate
 
-**29 October 2026; draft, unarmed, not a runtime release.** This safety-only
+**29 October 2026; draft, unarmed, not a runtime release.** This safety-only, five-path
 stack sits above [draft #298](https://github.com/techrote/cybersand/pull/298)
 (producer source `c6accb68370405a4b0f30302e0f9d18a911b090b`, tree
 `1131600fe9c84ba3b9876784e9ab119bd6ee6b50`), which itself consumes
@@ -79,8 +79,8 @@ remains FAILED. None of this is a new execution by the gate.
    the original ZIP itself or authenticate GitHub/REST/independent input
    ledgers; a future caller must invoke #295's full archive/Actions gates
    and the #298 readback methodology before staging.
-3. `check-unarmed` only confirms this branch is the four-path
-   workflow/checker/test/audit delta over #298; its exact native/test Git
+3. `check-unarmed` only confirms this branch is the five-path
+   workflow/checker/test/live-custody/audit delta over #298; its exact native/test Git
    blobs and **historical** manifest/pointer bytes are unchanged and the
    publisher request file is neither committed nor present.
 
@@ -119,9 +119,31 @@ physical ejection policy B=289 is NO-GO.
 - `python3 tools/ci/test_render_copy290_publication_gate.py`
 - `python3 tools/ci/render_copy290_publication_gate.py check-unarmed` (in
   GitHub Actions' exact authorized branch context)
+- `python3 tools/ci/render_copy290_live_custody.py --output build/render-copy290-gate-custody/receipt.json` (authenticated read-only GitHub Actions token in the exact gate workflow; re-fetch the same 4 original ZIPs and fresh REST run/jobs/artifact records)
 - `python3 tools/ci/check_ci_provider_policy.py`
 - `python3 tools/ci/check_docs.py`
 - `python3 tools/ci/check_repository.py` is **expected to fail source-sensitive
   current-runtime provenance** until publication; never waive it to get a green.
 - Exact-head documentation workflow + separate unarmed gate push workflow,
   original output and any negative failures, before reviewing further.
+
+## Integrated live custody at the unarmed gate head
+
+This gate also imports the read-only, previously source-qualified
+`render_copy290_live_custody.py` into the actual #290/#295/#298 **stack**.
+The helper is pinned to the original source `c6accb68` and four original
+artifact IDs/SHA-256 digests; it requires authenticated GitHub REST run,
+3 hosted jobs and 4 artifacts, original ZIP SHA/CRC/strict memberships,
+6 raw case logs and both original tested ELF/PE bytes. Its independent
+raw Git object scan expects exactly 1,723 source objects, and the 86
+selected actual on-disk build inputs must match Git and both build hosts
+including their post-build and Linux post-host receipts. An Actions
+`actions: read` token is supplied only to the verification step, with
+cross-host blob redirects stripping authorization headers.
+
+This re-execution is read-only and does not install or upload a release
+runtime. Treat the original custody success at [40947701426](https://github.com/techrote/cybersand/actions/runs/40947701426)
+as historical; accept **new** exact-head results and retained receipt
+only after the live gate run actually completes successfully. Failure
+is a new evidence-custody failure, not proof of native simulation
+regression. This extra verifier has no LFS or repository write token.

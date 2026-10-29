@@ -8,10 +8,12 @@ on:
       - '.github/workflows/render-copy290-publication-gate.yml'
       - 'tools/ci/render_copy290_publication_gate.py'
       - 'tools/ci/test_render_copy290_publication_gate.py'
+      - 'tools/ci/render_copy290_live_custody.py'
       - 'docs/audits/2026-10-29-render-copy290-publication-gate.md'
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: render-copy290-unarmed-owner-gate-${{ github.ref }}
@@ -40,3 +42,29 @@ jobs:
           python3 tools/ci/render_copy290_publication_gate.py check-unarmed
           python3 tools/ci/check_ci_provider_policy.py
           git diff --check
+
+      - name: Independently re-fetch original producer GitHub REST and four archive ZIPs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 tools/ci/render_copy290_live_custody.py --output build/render-copy290-gate-custody/receipt.json
+          python3 - <<'PY'
+          import json
+          with open("build/render-copy290-gate-custody/receipt.json", encoding="utf-8") as handle:
+              receipt = json.load(handle)
+          assert receipt["producer_run"]["head_sha"] == "c6accb68370405a4b0f30302e0f9d18a911b090b"
+          assert receipt["producer_run"]["conclusion"] == "success"
+          assert receipt["source_map"]["git_blob_sha256_count"] == 1723
+          assert receipt["selected_materialized"]["files"] == 86
+          assert len(receipt["zip_artifacts"]) == 4
+          print("RENDER_COPY290_GATE ORIGINAL ARCHIVE/REST READBACK PASS -- UNARMED")
+          PY
+      - name: Retain fresh unarmed original-byte verification receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: render-copy290-unarmed-gate-custody-${{ github.sha }}
+          path: build/render-copy290-gate-custody/
+          if-no-files-found: warn
+          retention-days: 30
