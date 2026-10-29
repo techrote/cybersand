@@ -197,7 +197,12 @@ def git_archive_sha_map(commit):
                 if member.isdir():
                     continue
                 require(member.isfile(), "Unexpected non-file Git archive member")
-                require(member.size <= 64 * 1024 * 1024, "Oversized tracked input")
+                # GitHub's individual Git-blob limit is 100 MiB; allow
+                # large historical evidence blobs without relaxing the
+                # complete expected 1,713-path and SHA-256 equality gates.
+                require(member.size <= 128 * 1024 * 1024,
+                        "Oversized Git archive member: " + member.name +
+                        " (" + str(member.size) + " bytes)")
                 file = archive.extractfile(member)
                 require(file is not None, "Missing tracked archive data")
                 require(member.name not in result, "Duplicate Git archive path")
