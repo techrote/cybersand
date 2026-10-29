@@ -19,6 +19,7 @@ import subprocess
 import sys
 import tarfile
 import urllib.request
+import urllib.parse
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -104,6 +105,27 @@ def preflight():
     }
 
 
+class ArtifactRedirect(urllib.request.HTTPRedirectHandler):
+    """Never send the GitHub API token to the signed artifact-storage host."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        old_host = urllib.parse.urlparse(req.full_url).hostname or ""
+        parsed = urllib.parse.urlparse(newurl)
+        require(parsed.scheme == "https", "Refusing non-HTTPS artifact redirect")
+        if parsed.hostname != old_host:
+            host = parsed.hostname or ""
+            require(host.endswith(".blob.core.windows.net")
+                    or host.endswith(".actions.githubusercontent.com")
+                    or host.endswith(".githubusercontent.com"),
+                    "Unexpected external artifact-storage redirect host")
+        redirected = super().redirect_request(req, fp, code, msg, headers, newurl)
+        if redirected is not None and parsed.hostname != old_host:
+            for key in list(redirected.headers):
+                if key.lower() in ("authorization", "proxy-authorization"):
+                    redirected.remove_header(key)
+        return redirected
+
+
 def rest(path, *, binary=False):
     token = os.getenv("GITHUB_TOKEN", "")
     require(bool(token), "Missing authenticated GitHub Actions token")
@@ -114,7 +136,11 @@ def rest(path, *, binary=False):
         "X-GitHub-Api-Version": "2022-11-28",
         "User-Agent": "cybersand-render-copy290-readonly-custody",
     }
-    with urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=120) as reply:
+    # Authenticated API metadata is fetched from api.github.com. The GitHub
+    # artifact endpoint redirects to a signed, *unauthenticated* blob URL;
+    # never forward credentials to that cross-host redirect.
+    opener = urllib.request.build_opener(ArtifactRedirect())
+    with opener.open(urllib.request.Request(url, headers=headers), timeout=120) as reply:
         data = reply.read(120 * 1024 * 1024 + 1)
         require(len(data) <= 120 * 1024 * 1024, "API response exceeded hard byte cap")
     return data if binary else json.loads(data)
