@@ -222,7 +222,7 @@ def request_status(source, *, require_armed=False, remote=True):
     return {"source": meta, "request": data, "comment": comment["html_url"]}
 
 
-def source_ledgers(source):
+def source_ledgers(source, *, armed=True):
     # Pin both exact committed Git bytes and source-sensitive build inputs.
     native = set(native_input_paths(ROOT))
     objects = {}
@@ -247,7 +247,8 @@ def source_ledgers(source):
                     "Unexpected Git input mode/type: " + path)
             objects[path] = oid
     require(native == tracked and len(native) == 80 and
-            BUILD_REQUIRED.issubset(objects), "Incomplete native/build source inventory")
+            (BUILD_REQUIRED if armed else BUILD_REQUIRED - {REQUEST}).issubset(objects),
+            "Incomplete native/build source inventory")
     blob_bytes = subprocess.check_output(["git", "-C", str(ROOT), "cat-file", "--batch"],
                                          input=b"".join(oid + b"\n" for oid in objects.values()),
                                          timeout=120)
@@ -559,6 +560,9 @@ def main():
     args = p.parse_args()
     if args.command == "check-unarmed":
         require(request_status(args.source_sha) is None, "Publisher unexpectedly armed")
+        ledgers = source_ledgers(args.source_sha, armed=False)
+        print("RENDER_COPY290_UNARMED_LEDGER", len(ledgers["source_inputs"]),
+              len(ledgers["build_inputs"]))
         print("RENDER_COPY290_PUBLISHER UNARMED PASS")
     elif args.command == "check-source":
         require(request_status(args.source_sha, require_armed=True) is not None,
