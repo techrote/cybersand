@@ -283,6 +283,33 @@ class HostReceipts(unittest.TestCase):
                 with self.assertRaises(RuntimeError):
                     self.verify()
 
+    def test_post_success_diagnostics_with_indentation_or_prefix(self):
+        # A forged success receipt with a recomputed log digest must not
+        # conceal diagnostics after the expected positive marker.
+        name = "test_render_patch_handoff_regression"
+        for suffix in (
+            b"  ERROR: extension failed to initialize\n",
+            b"[2026-10-29T10:45:00Z] ERROR: failed after marker\n",
+            b"\tSKIPPED: native case not executed\n",
+            b"prefix: TIMEOUT while loading library\n",
+            b"Traceback (most recent call last):\n",
+            b"FATAL: aborted after test output\n",
+        ):
+            with self.subTest(suffix=suffix):
+                original_log = self.bundles["linux"]["logs"][name]
+                original_report = self.bundles["linux"]["report"]
+                mutated = original_log + suffix
+                self.bundles["linux"]["logs"][name] = mutated
+                record = json.loads(original_report)
+                record["cases"][2]["log_sha256"] = digest(mutated)
+                self.bundles["linux"]["report"] = self.encode(record)
+                try:
+                    with self.assertRaises(RuntimeError):
+                        self.verify()
+                finally:
+                    self.bundles["linux"]["logs"][name] = original_log
+                    self.bundles["linux"]["report"] = original_report
+
     def test_case_exit_or_timeout(self):
         for change in ({"exit_code": 1}, {"exit_code": True},
                        {"timed_out": True}, {"status": "skipped"}):

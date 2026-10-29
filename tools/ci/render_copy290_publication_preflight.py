@@ -210,10 +210,15 @@ def verify_host_receipts(bundles, source, tree, expected_run_id, expected_run_at
                 output = log.decode("utf-8").replace("\r\n", "\n")
             except UnicodeError as exc:
                 raise RuntimeError("Non-UTF8 case log") from exc
+            # Runtime diagnostics may be indented, timestamped or appear after
+            # a positive marker. Never anchor the failure scan to column zero.
+            forbidden = re.search(
+                r"(?i)(?:SCRIPT ERROR:|ERROR:|SKIP(?:PED)?\b|"
+                r"TIMEOUT\b|LAUNCH ERROR:|REGRESSION_WATCHDOG\b|"
+                r"Traceback \(most recent call last\)|FATAL:)",
+                output)
             require(re.search(HOST_MARKERS[name], output) is not None
-                    and re.search(r"(?mi)^(?:SCRIPT ERROR:|ERROR:|SKIP(?:PED)?\b|"
-                                  r"TIMEOUT\b|LAUNCH ERROR:|REGRESSION_WATCHDOG\b)",
-                                  output) is None,
+                    and forbidden is None,
                     "Missing positive marker or hidden error/skip: " + name)
     return True
 

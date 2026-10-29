@@ -191,3 +191,28 @@ without a publication request. Historical LFS payloads/manifests remain intact.
 Ready-head Native/Godot/documentation/scoped CI, separate review and explicit
 source-bound owner authorization are still required.
 
+
+## Adversarial log-prefix refusal — 2026-10-29
+
+A fresh bounded review of the **read-only, synthetic** host-receipt verifier
+identified a fail-open case: the previous negative-diagnostic expression was
+anchored at column zero, so a log containing a valid pass marker **followed by**
+`  ERROR:`, a timestamp-prefixed `ERROR:`, or an indented `SKIPPED:`
+could pass if the self-reported log hash and receipt were recomputed. This is
+a checker admission defect, not a reproduced engine/Godot defect and not new
+runtime evidence.
+
+The checker now searches the **whole original log** for explicit error/skip,
+timeout, watchdog, fatal and Python traceback diagnostics, including indented
+or prefixed lines. A new adversarial unit test recomputes the forged receipt
+hash for six such suffixes and requires refusal in every case. This changes
+only the two preflight Python files and this addendum, not any runtime,
+publisher authority, source/oracle or historical receipt. The prior 51-test
+checkpoint remains historical; **52-test exact-head CI is pending** until
+the new workflow runs complete.
+
+Publication is still **UNARMED**. The future live publisher still needs
+independent Actions artifact/run/job custody, genuine Linux+Windows builds,
+actual Godot host execution, full source/build manifests, explicit
+source-bound owner authority, atomic four-path LFS publication and final
+acceptance gates. No old ZIP, failed job, manifest or binary was replaced.
