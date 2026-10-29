@@ -65,8 +65,10 @@ class PacingHarness:
 		maximum_scheduler_jobs = 0
 		maximum_parallel_phases = 0
 		maximum_worker_overruns = 0
-		_last_process_usec = Time.get_ticks_usec()
-		_last_physics_usec = _last_process_usec
+		# Discard the partial begin-to-first-callback interval; only pairs of
+		# fully observed callbacks belong in the cadence distributions.
+		_last_process_usec = 0
+		_last_physics_usec = 0
 		_last_snapshot_serial = latest_snapshot.serial if latest_snapshot != null else 0
 		_last_native_tick = latest_snapshot.tick_index if latest_snapshot != null else 0
 		_last_render_serial = latest_snapshot.render_snapshot_serial if latest_snapshot != null else 0
@@ -294,6 +296,9 @@ func run() -> void:
 	expect(desktop.process_intervals_ms.size() >= MIN_PROCESS_SAMPLES
 		and desktop.physics_intervals_ms.size() >= MIN_PROCESS_SAMPLES,
 		"actual Main process and physics callbacks produce reportable samples")
+	expect(desktop.process_intervals_ms.size() == maxi(desktop.process_callback_ms.size() - 1, 0)
+		and desktop.physics_intervals_ms.size() == maxi(desktop.physics_callback_ms.size() - 1, 0),
+		"only complete consecutive Main process/physics callback intervals are sampled")
 	expect(not desktop.snapshot_age_ms.is_empty()
 		and not desktop.worker_step_ms.is_empty()
 		and not desktop.snapshot_consume_callback_ms.is_empty(),
