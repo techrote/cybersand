@@ -338,7 +338,11 @@ class StagingContract(unittest.TestCase):
                     return b""
                 raise AssertionError("Unexpected git: " + repr(args))
             with mock.patch.object(subject, "ROOT", root), \
-                 mock.patch.object(subject, "request_status", return_value={"request": "fixture"}), \
+                 mock.patch.object(subject, "request_status",
+                                   return_value={"request": {
+                                       "request_sequence": 1,
+                                       "authorized_parent_sha": "a" * 40},
+                                       "comment": "https://github.com/techrote/cybersand/pull/290#issuecomment-1234"}), \
                  mock.patch.object(subject, "authenticated_producer_artifacts",
                                    return_value=(artifacts, digests)), \
                  mock.patch.object(subject, "source_ledgers",
