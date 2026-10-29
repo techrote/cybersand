@@ -382,6 +382,45 @@ jobs:
           assert linux["input_count"] == len(linux["inputs"]) >= 549
           print("MATCHED CROSS-HOST TRACKED-GIT SOURCE LEDGERS", linux["input_count"])
           PY
+      - name: Reconcile actual selected build-input bytes against Git custody ledger
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, pathlib, re, os
+
+          # These are sha256sum reads of actual workspace files at build time,
+          # not git-show reads of committed objects. The independent Git ledger
+          # was already compared cross-host in the preceding step.
+          root = pathlib.Path("build/qual290")
+          linux_dir = root / "linux-build-attestation"
+          windows_dir = root / "windows-dll"
+          ledger = json.loads((linux_dir / "tracked-git-inputs.json").read_bytes())
+          assert ledger == json.loads((windows_dir / "tracked-git-inputs.json").read_bytes())
+          assert ledger["source_sha"] == os.environ["GITHUB_SHA"]
+          pattern = re.compile(r"([0-9a-f]{64})  (.+)")
+
+          def read_selected(directory):
+              lines = (directory / "selected-build-inputs.sha256").read_text(
+                  encoding="utf-8").splitlines()
+              assert len(lines) == 86, (directory, len(lines))
+              result = {}
+              for line in lines:
+                  match = pattern.fullmatch(line)
+                  assert match, (directory, line)
+                  digest, path = match.groups()
+                  assert path not in result, (directory, path)
+                  assert path in ledger["inputs"], (directory, path)
+                  assert digest == ledger["inputs"][path], (
+                      directory, path, digest, ledger["inputs"][path])
+                  result[path] = digest
+              return result
+
+          linux = read_selected(linux_dir)
+          windows = read_selected(windows_dir)
+          assert linux == windows, "Linux/Windows on-disk build-input bytes differ"
+          print("MATCHED 86/86 MATERIALIZED BUILD INPUTS TO BOTH HOSTS AND GIT BLOBS")
+          PY
       - name: Materialize source-matched DLL, pinned Rapier, official Godot
         shell: bash
         run: |
