@@ -1,0 +1,659 @@
+name: RENDER-COPY-290 explicit-request four-path LFS runtime publisher
+on:
+  push:
+    branches: [publish/render-copy290-runtime-20261029]
+    paths:
+      - '.github/workflows/render-copy290-runtime-publication.yml'
+      - 'tools/ci/render_copy290_runtime_publication.py'
+      - 'tools/ci/test_render_copy290_runtime_publication.py'
+      - 'docs/audits/2026-10-29-render-copy290-runtime-publisher.md'
+      - 'tools/ci/render_copy290_publish_request.json'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: render-copy290-host-producer-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  GODOT_URL: 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+  GODOT_SILENCE_ROOT_WARNING: '1'
+
+jobs:
+  request-gate:
+    name: request-gate
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/publish/render-copy290-runtime-20261029'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    outputs:
+      armed: ${{ steps.inspect.outputs.armed }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Run adversarial request/lease/index tests and provider policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/test_render_copy290_runtime_publication.py
+          git diff --check
+      - name: Reject all builds unless owner-authorized request is committed
+        id: inspect
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if test -e tools/ci/render_copy290_publish_request.json; then
+            python3 tools/ci/render_copy290_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+            echo 'armed=true' >> "$GITHUB_OUTPUT"
+            echo 'AUTHENTICATED REQUEST: guarded source-matched builds may begin' >> "$GITHUB_STEP_SUMMARY"
+          else
+            python3 tools/ci/render_copy290_runtime_publication.py check-unarmed --source-sha "$GITHUB_SHA"
+            echo 'armed=false' >> "$GITHUB_OUTPUT"
+            echo 'UNARMED: no native builds, no LFS publication' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  linux-host:
+    name: linux-host
+    needs: [request-gate]
+    if: needs.request-gate.outputs.armed == 'true' && github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/publish/render-copy290-runtime-20261029'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      GODOT_CPP_ROOT: ${{ github.workspace }}/../qual290-godot-cpp
+      SCONS_PYTHON: ${{ github.workspace }}/../qual290-scons/bin/python
+      SCONS_JOBS: '2'
+      CYBERSAND_REAL_CXX: /usr/bin/g++-13
+      LINUX_CXX: /usr/bin/g++-13
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Enforce requested source, lease and guarded builder
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = "techrote/cybersand"
+          test "$GITHUB_REF" = "refs/heads/publish/render-copy290-runtime-20261029"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git rev-parse HEAD:native/src/world.cpp)" = "a6afd8cad4264ac2eca0362d14711158e3606760"
+          test "$(git rev-parse HEAD:native/tests/test_world.cpp)" = "5613d2166c71fa49fd2b8f65e8caa93857b5d65f"
+          test "$(git diff --name-only c6accb68370405a4b0f30302e0f9d18a911b090b HEAD | LC_ALL=C sort)" = "$(printf '%s\n' .github/workflows/render-copy290-runtime-publication.yml docs/audits/2026-10-29-render-copy290-runtime-publisher.md tools/ci/render_copy290_publish_request.json tools/ci/render_copy290_runtime_publication.py tools/ci/test_render_copy290_runtime_publication.py | LC_ALL=C sort)"
+          test -f tools/ci/render_copy290_publish_request.json
+          git diff --check c6accb68370405a4b0f30302e0f9d18a911b090b HEAD
+          python3 tools/ci/render_copy290_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          if [ "$RUNNER_OS" != "Windows" ]; then
+            python3 tools/ci/check_ci_provider_policy.py
+          fi
+      - name: Restore pinned Rapier, SCons and godot-cpp
+        shell: bash
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum --check --strict
+          python3 -m venv "$(dirname "$(dirname "$SCONS_PYTHON")")"
+          "$SCONS_PYTHON" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$SCONS_PYTHON" -c 'import SCons; assert SCons.__version__=="4.10.1"'
+          mkdir "$GODOT_CPP_ROOT"
+          git -C "$GODOT_CPP_ROOT" init
+          git -C "$GODOT_CPP_ROOT" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$GODOT_CPP_ROOT" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$GODOT_CPP_ROOT" checkout --detach FETCH_HEAD
+          test "$(git -C "$GODOT_CPP_ROOT" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+      - name: Build exact-source Linux GDExtension
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/qual290/linux-host
+          git rev-parse HEAD > build/qual290/linux-host/source.txt
+          git rev-parse HEAD^{tree} > build/qual290/linux-host/tree.txt
+          "$CYBERSAND_REAL_CXX" --version > build/qual290/linux-host/compiler-version.txt
+          "$SCONS_PYTHON" -c 'import SCons; print(SCons.__version__)' > build/qual290/linux-host/scons-version.txt
+          git -C "$GODOT_CPP_ROOT" rev-parse HEAD > build/qual290/linux-host/godot-cpp-commit.txt
+          git ls-files -z native/include native/src godot/native_extension tools/build_native_extension.sh tools/build_native_extension_windows.sh tools/build_pinned_godot_cpp.sh tools/requirements-build.txt .github/workflows/render-copy290-host-producer.yml | xargs -0 sha256sum > build/qual290/linux-host/selected-build-inputs.sha256
+          timeout 35m tools/build_pinned_godot_cpp.sh linux > build/qual290/linux-host/godot-cpp-build.txt 2>&1
+          timeout 20m tools/build_native_extension.sh > build/qual290/linux-host/native-build.txt 2>&1
+          # Verify actual build input bytes stayed fixed through compilation.
+          sha256sum --check --strict build/qual290/linux-host/selected-build-inputs.sha256 > build/qual290/linux-host/post-build-input-check.txt
+          sha256sum godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so > build/qual290/linux-host/runtime.sha256
+          export LEDGER_DIR=build/qual290/linux-host
+          # Source-custody inventory: committed Git object bytes only. LFS entries
+          # are Git pointers, NOT materialized third-party/runtime payloads.
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          root = pathlib.Path(os.environ["LEDGER_DIR"])
+          git = lambda *args: subprocess.check_output(["git", *args], timeout=120)
+          paths = [p.decode("utf-8") for p in git("ls-files", "-z").split(b"\0") if p]
+          assert len(paths) == len(set(paths)) and len(paths) >= 549
+          inputs = {}
+          for path in paths:
+              data = git("show", "HEAD:" + path)
+              inputs[path] = hashlib.sha256(data).hexdigest()
+          for manifest in ("godot/addons/cybersand_native/runtime-provenance.json",
+                           "godot/addons/cybersand_native/runtime-provenance.linux.json"):
+              old = json.loads(git("show", "HEAD:" + manifest))
+              assert len(old["source_inputs"]) == 80
+              assert len(old["build_inputs"]) == 549
+              assert set(old["source_inputs"]).issubset(inputs)
+              missing = set(old["build_inputs"]) - set(inputs)
+              assert missing == {
+                  ".github/workflows/play-auto002-runtime-publication.yml",
+                  "tools/ci/play_auto002_publish_request.json",
+                  "tools/ci/play_auto002_runtime_publication.py",
+                  "tools/ci/test_play_auto002_runtime_publication.py"}, missing
+          receipt = {"schema": "render-copy290-tracked-git-inputs-v1",
+                     "source_sha": git("rev-parse", "HEAD").decode().strip(),
+                     "source_tree": git("rev-parse", "HEAD^{tree}").decode().strip(),
+                     "hash_kind": "sha256-of-committed-git-blob (LFS-pointer-not-payload)",
+                     "input_count": len(inputs), "inputs": inputs}
+          assert receipt["source_sha"] == os.environ["GITHUB_SHA"]
+          (root / "tracked-git-inputs.json").write_text(
+              json.dumps(receipt, sort_keys=True, separators=(",", ":")) + "\n",
+              encoding="utf-8")
+          print("READ-ONLY TRACKED GIT LEDGER", len(inputs), receipt["source_sha"])
+          PY
+      - name: Execute exact-source Godot 4.7 render tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/godot"
+          timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$GODOT_BIN"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = '4.7.stable.official.5b4e0cb0f'
+          git diff --exit-code HEAD -- godot/scripts godot/tests godot/native_extension
+          timeout 120s "$GODOT_BIN" --headless --path godot --editor --import --quit > build/qual290/linux-host/import.txt 2>&1
+          timeout 150s "$GODOT_BIN" --headless --path godot --script res://tests/test_render_world_generation.gd > build/qual290/linux-host/render-world.txt 2>&1
+          grep -F '23 assertions, 0 failures' build/qual290/linux-host/render-world.txt
+          timeout 150s "$GODOT_BIN" --headless --path godot --script res://tests/test_render_patch_handoff_regression.gd > build/qual290/linux-host/render-patches.txt 2>&1
+          ! grep -E 'SCRIPT ERROR:|ERROR: Failed to load|FAIL' build/qual290/linux-host/import.txt build/qual290/linux-host/render-world.txt build/qual290/linux-host/render-patches.txt
+          sha256sum --check --strict build/qual290/linux-host/runtime.sha256
+          git diff --exit-code HEAD -- godot/scripts godot/tests godot/native_extension
+          sha256sum --check --strict build/qual290/linux-host/selected-build-inputs.sha256 > build/qual290/linux-host/post-host-input-check.txt
+      - name: Assemble linux original-byte host evidence (no publication)
+        shell: bash
+        env:
+          EVIDENCE_PLATFORM: linux
+          EVIDENCE_HOST_LABEL: ubuntu-24.04
+          EVIDENCE_TOOLCHAIN: gcc-13
+          EVIDENCE_LOG_DIR: build/qual290/linux-host
+          EVIDENCE_RUNTIME: godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          EVIDENCE_RUNTIME_NAME: libcybersand_native.linux.x86_64.so
+          EVIDENCE_DEST: build/qual290/host-evidence-linux
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          src = pathlib.Path(os.environ["EVIDENCE_LOG_DIR"])
+          dest = pathlib.Path(os.environ["EVIDENCE_DEST"])
+          (dest / "runtime").mkdir(parents=True, exist_ok=True)
+          (dest / "logs").mkdir(parents=True, exist_ok=True)
+          original = pathlib.Path(os.environ["EVIDENCE_RUNTIME"])
+          assert original.is_file() and original.stat().st_size >= 4096, original
+          raw = original.read_bytes()
+          (dest / "runtime" / os.environ["EVIDENCE_RUNTIME_NAME"]).write_bytes(raw)
+          sha = lambda value: hashlib.sha256(value).hexdigest()
+          cases = []
+          for name, basename in (("godot_import", "import.txt"),
+                                 ("test_render_world_generation", "render-world.txt"),
+                                 ("test_render_patch_handoff_regression", "render-patches.txt")):
+              data = (src / basename).read_bytes()
+              assert 0 < len(data) <= 8_000_000, (name, len(data))
+              (dest / "logs" / (name + ".log")).write_bytes(data)
+              cases.append({"name": name, "status": "passed", "exit_code": 0,
+                            "timed_out": False, "log_sha256": sha(data)})
+          git = lambda expr: subprocess.check_output(["git", "rev-parse", expr], text=True).strip()
+          assert git("HEAD") == os.environ["GITHUB_SHA"]
+          receipt = {"schema": "render-copy290-host-evidence-v1",
+                     "platform": os.environ["EVIDENCE_PLATFORM"],
+                     "source_sha": git("HEAD"), "source_tree": git("HEAD^{tree}"),
+                     "run_id": int(os.environ["GITHUB_RUN_ID"]),
+                     "run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
+                     "runner": os.environ["EVIDENCE_HOST_LABEL"],
+                     "toolchain": os.environ["EVIDENCE_TOOLCHAIN"],
+                     "godot_version": "4.7.stable.official.5b4e0cb0f",
+                     "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+                     "scons_version": "4.10.1", "runtime_size": len(raw),
+                     "runtime_sha256": sha(raw), "cases": cases}
+          (dest / "host-evidence.json").write_bytes((json.dumps(receipt,
+              sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8"))
+          print("STAGED READ-ONLY ORIGINAL HOST EVIDENCE", receipt["platform"],
+                receipt["source_sha"], receipt["runtime_sha256"])
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: render-copy290-host-evidence-linux-${{ github.run_id }}
+          path: build/qual290/host-evidence-linux/
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Retain exact Linux compiler/build logs and selected input hashes (no publication)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: render-copy290-linux-build-${{ github.sha }}
+          path: build/qual290/linux-host/
+          if-no-files-found: warn
+          retention-days: 30
+
+  windows-build:
+    name: windows-build
+    needs: [request-gate]
+    if: needs.request-gate.outputs.armed == 'true' && github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/publish/render-copy290-runtime-20261029'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+      GODOT_CPP_ROOT: ${{ github.workspace }}/../qual290-godot-cpp
+      SCONS_PYTHON: ${{ github.workspace }}/../qual290-scons/bin/python
+      SCONS_JOBS: '2'
+      LLVM_MINGW_ROOT: ${{ github.workspace }}/../qual290-llvm-mingw
+      WINDOWS_CXX: ${{ github.workspace }}/../qual290-llvm-mingw/bin/x86_64-w64-mingw32-g++
+      CYBERSAND_NATIVE_OUTPUT: ${{ github.workspace }}/build/qual290/windows-dll/cybersand_native.windows.x86_64.dll
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Enforce requested source, lease and guarded builder
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = "techrote/cybersand"
+          test "$GITHUB_REF" = "refs/heads/publish/render-copy290-runtime-20261029"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git rev-parse HEAD:native/src/world.cpp)" = "a6afd8cad4264ac2eca0362d14711158e3606760"
+          test "$(git rev-parse HEAD:native/tests/test_world.cpp)" = "5613d2166c71fa49fd2b8f65e8caa93857b5d65f"
+          test "$(git diff --name-only c6accb68370405a4b0f30302e0f9d18a911b090b HEAD | LC_ALL=C sort)" = "$(printf '%s\n' .github/workflows/render-copy290-runtime-publication.yml docs/audits/2026-10-29-render-copy290-runtime-publisher.md tools/ci/render_copy290_publish_request.json tools/ci/render_copy290_runtime_publication.py tools/ci/test_render_copy290_runtime_publication.py | LC_ALL=C sort)"
+          test -f tools/ci/render_copy290_publish_request.json
+          git diff --check c6accb68370405a4b0f30302e0f9d18a911b090b HEAD
+          python3 tools/ci/render_copy290_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          if [ "$RUNNER_OS" != "Windows" ]; then
+            python3 tools/ci/check_ci_provider_policy.py
+          fi
+      - name: Prepare pinned godot-cpp and LLVM-MinGW
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m venv "$(dirname "$(dirname "$SCONS_PYTHON")")"
+          "$SCONS_PYTHON" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$SCONS_PYTHON" -c 'import SCons; assert SCons.__version__=="4.10.1"'
+          mkdir "$GODOT_CPP_ROOT" "$LLVM_MINGW_ROOT"
+          git -C "$GODOT_CPP_ROOT" init
+          git -C "$GODOT_CPP_ROOT" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$GODOT_CPP_ROOT" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$GODOT_CPP_ROOT" checkout --detach FETCH_HEAD
+          test "$(git -C "$GODOT_CPP_ROOT" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+          timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$LLVM_MINGW_ROOT" --strip-components=1
+          if test ! -e "$LLVM_MINGW_ROOT/bin/x86_64-w64-mingw32-gcc-ar"; then ln -s llvm-ar "$LLVM_MINGW_ROOT/bin/x86_64-w64-mingw32-gcc-ar"; fi
+      - name: Build and stage exact Windows GDExtension
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/qual290/windows-dll
+          git rev-parse HEAD > build/qual290/windows-dll/source.txt
+          git rev-parse HEAD^{tree} > build/qual290/windows-dll/tree.txt
+          "$WINDOWS_CXX" --version > build/qual290/windows-dll/compiler-version.txt
+          "$SCONS_PYTHON" -c 'import SCons; print(SCons.__version__)' > build/qual290/windows-dll/scons-version.txt
+          git -C "$GODOT_CPP_ROOT" rev-parse HEAD > build/qual290/windows-dll/godot-cpp-commit.txt
+          git ls-files -z native/include native/src godot/native_extension tools/build_native_extension.sh tools/build_native_extension_windows.sh tools/build_pinned_godot_cpp.sh tools/requirements-build.txt .github/workflows/render-copy290-host-producer.yml | xargs -0 sha256sum > build/qual290/windows-dll/selected-build-inputs.sha256
+          timeout 35m tools/build_pinned_godot_cpp.sh windows > build/qual290/windows-dll/godot-cpp-build.txt 2>&1
+          timeout 20m tools/build_native_extension_windows.sh > build/qual290/windows-dll/native-build.txt 2>&1
+          # Verify actual build input bytes stayed fixed through compilation.
+          sha256sum --check --strict build/qual290/windows-dll/selected-build-inputs.sha256 > build/qual290/windows-dll/post-build-input-check.txt
+          (cd build/qual290/windows-dll && sha256sum cybersand_native.windows.x86_64.dll > runtime.sha256)
+          export LEDGER_DIR=build/qual290/windows-dll
+          # Source-custody inventory: committed Git object bytes only. LFS entries
+          # are Git pointers, NOT materialized third-party/runtime payloads.
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          root = pathlib.Path(os.environ["LEDGER_DIR"])
+          git = lambda *args: subprocess.check_output(["git", *args], timeout=120)
+          paths = [p.decode("utf-8") for p in git("ls-files", "-z").split(b"\0") if p]
+          assert len(paths) == len(set(paths)) and len(paths) >= 549
+          inputs = {}
+          for path in paths:
+              data = git("show", "HEAD:" + path)
+              inputs[path] = hashlib.sha256(data).hexdigest()
+          for manifest in ("godot/addons/cybersand_native/runtime-provenance.json",
+                           "godot/addons/cybersand_native/runtime-provenance.linux.json"):
+              old = json.loads(git("show", "HEAD:" + manifest))
+              assert len(old["source_inputs"]) == 80
+              assert len(old["build_inputs"]) == 549
+              assert set(old["source_inputs"]).issubset(inputs)
+              missing = set(old["build_inputs"]) - set(inputs)
+              assert missing == {
+                  ".github/workflows/play-auto002-runtime-publication.yml",
+                  "tools/ci/play_auto002_publish_request.json",
+                  "tools/ci/play_auto002_runtime_publication.py",
+                  "tools/ci/test_play_auto002_runtime_publication.py"}, missing
+          receipt = {"schema": "render-copy290-tracked-git-inputs-v1",
+                     "source_sha": git("rev-parse", "HEAD").decode().strip(),
+                     "source_tree": git("rev-parse", "HEAD^{tree}").decode().strip(),
+                     "hash_kind": "sha256-of-committed-git-blob (LFS-pointer-not-payload)",
+                     "input_count": len(inputs), "inputs": inputs}
+          assert receipt["source_sha"] == os.environ["GITHUB_SHA"]
+          (root / "tracked-git-inputs.json").write_text(
+              json.dumps(receipt, sort_keys=True, separators=(",", ":")) + "\n",
+              encoding="utf-8")
+          print("READ-ONLY TRACKED GIT LEDGER", len(inputs), receipt["source_sha"])
+          PY
+          file "$CYBERSAND_NATIVE_OUTPUT"
+          git diff --check
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: render-copy-290-windows-dll-${{ github.sha }}
+          path: build/qual290/windows-dll/
+          if-no-files-found: warn
+          retention-days: 30
+
+  windows-host:
+    name: windows-host
+    needs: [request-gate, windows-build, linux-host]
+    if: needs.request-gate.outputs.armed == 'true' && github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/publish/render-copy290-runtime-20261029'
+    runs-on: windows-2022
+    timeout-minutes: 35
+    defaults:
+      run:
+        shell: bash
+    env:
+      GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+      GODOT_SHA512: 41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Enforce requested source, lease and guarded builder
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = "techrote/cybersand"
+          test "$GITHUB_REF" = "refs/heads/publish/render-copy290-runtime-20261029"
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git rev-parse HEAD:native/src/world.cpp)" = "a6afd8cad4264ac2eca0362d14711158e3606760"
+          test "$(git rev-parse HEAD:native/tests/test_world.cpp)" = "5613d2166c71fa49fd2b8f65e8caa93857b5d65f"
+          test "$(git diff --name-only c6accb68370405a4b0f30302e0f9d18a911b090b HEAD | LC_ALL=C sort)" = "$(printf '%s\n' .github/workflows/render-copy290-runtime-publication.yml docs/audits/2026-10-29-render-copy290-runtime-publisher.md tools/ci/render_copy290_publish_request.json tools/ci/render_copy290_runtime_publication.py tools/ci/test_render_copy290_runtime_publication.py | LC_ALL=C sort)"
+          test -f tools/ci/render_copy290_publish_request.json
+          git diff --check c6accb68370405a4b0f30302e0f9d18a911b090b HEAD
+          if [ "$RUNNER_OS" != "Windows" ]; then
+            python3 tools/ci/check_ci_provider_policy.py
+          fi
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: render-copy-290-windows-dll-${{ github.sha }}
+          path: build/qual290/windows-dll/
+      - name: Recover independently built Linux actual-host evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: render-copy290-host-evidence-linux-${{ github.run_id }}
+          path: build/qual290/host-evidence-linux/
+      - name: Recover Linux tracked-Git source custody ledger
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: render-copy290-linux-build-${{ github.sha }}
+          path: build/qual290/linux-build-attestation/
+      - name: Compare independent complete tracked-Git inventories
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, pathlib, subprocess, os
+          linux = json.loads(pathlib.Path("build/qual290/linux-build-attestation/tracked-git-inputs.json").read_bytes())
+          windows = json.loads(pathlib.Path("build/qual290/windows-dll/tracked-git-inputs.json").read_bytes())
+          assert linux == windows, "Linux and Windows committed-input ledgers differ"
+          assert linux["source_sha"] == os.environ["GITHUB_SHA"]
+          assert linux["source_tree"] == subprocess.check_output(
+              ["git", "rev-parse", "HEAD^{tree}"], text=True).strip()
+          assert linux["input_count"] == len(linux["inputs"]) >= 549
+          print("MATCHED CROSS-HOST TRACKED-GIT SOURCE LEDGERS", linux["input_count"])
+          PY
+      - name: Reconcile actual selected build-input bytes against Git custody ledger
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, pathlib, re, os
+
+          # These are sha256sum reads of actual workspace files at build time,
+          # not git-show reads of committed objects. The independent Git ledger
+          # was already compared cross-host in the preceding step.
+          root = pathlib.Path("build/qual290")
+          linux_dir = root / "linux-build-attestation"
+          windows_dir = root / "windows-dll"
+          ledger = json.loads((linux_dir / "tracked-git-inputs.json").read_bytes())
+          assert ledger == json.loads((windows_dir / "tracked-git-inputs.json").read_bytes())
+          assert ledger["source_sha"] == os.environ["GITHUB_SHA"]
+          pattern = re.compile(r"([0-9a-f]{64})  (.+)")
+
+          def read_selected(directory):
+              lines = (directory / "selected-build-inputs.sha256").read_text(
+                  encoding="utf-8").splitlines()
+              assert len(lines) == 86, (directory, len(lines))
+              result = {}
+              for line in lines:
+                  match = pattern.fullmatch(line)
+                  assert match, (directory, line)
+                  digest, path = match.groups()
+                  assert path not in result, (directory, path)
+                  assert path in ledger["inputs"], (directory, path)
+                  assert digest == ledger["inputs"][path], (
+                      directory, path, digest, ledger["inputs"][path])
+                  result[path] = digest
+              return result
+
+          linux = read_selected(linux_dir)
+          windows = read_selected(windows_dir)
+          assert linux == windows, "Linux/Windows on-disk build-input bytes differ"
+          print("MATCHED 86/86 MATERIALIZED BUILD INPUTS TO BOTH HOSTS AND GIT BLOBS")
+          PY
+      - name: Materialize source-matched DLL, pinned Rapier, official Godot
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rev-parse HEAD > build/qual290/windows-dll/execution-source.txt
+          test "$(cat build/qual290/windows-dll/source.txt)" = "$(git rev-parse HEAD)"
+          (cd build/qual290/windows-dll && sha256sum --check --strict runtime.sha256)
+          cp build/qual290/windows-dll/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          echo 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' | sha256sum --check --strict
+          curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+          python - <<'PY'
+          import hashlib,os,zipfile
+          p=os.environ["RUNNER_TEMP"]+"/godot-windows.zip"
+          assert hashlib.sha512(open(p,"rb").read()).hexdigest()==os.environ["GODOT_SHA512"]
+          with zipfile.ZipFile(p) as z:
+              assert z.testzip() is None
+              z.extractall(os.environ["RUNNER_TEMP"]+"/godot-windows")
+          PY
+      - name: Execute actual Windows Godot native render tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/qual290/windows-host
+          git rev-parse HEAD > build/qual290/windows-host/source.txt
+          python - <<'PY'
+          import os, pathlib, subprocess
+          root=pathlib.Path.cwd()
+          exe=pathlib.Path(os.environ["RUNNER_TEMP"])/"godot-windows"/"Godot_v4.7-stable_win64_console.exe"
+          assert exe.is_file(),exe
+          assert subprocess.check_output([str(exe),"--version"],text=True).strip()=="4.7.stable.official.5b4e0cb0f"
+          out=root/"build"/"qual290"/"windows-host"
+          scripts=[
+            ("import",["--headless","--path","godot","--editor","--import","--quit"],120),
+            ("render-world",["--headless","--path","godot","--script","res://tests/test_render_world_generation.gd"],150),
+            ("render-patches",["--headless","--path","godot","--script","res://tests/test_render_patch_handoff_regression.gd"],150)]
+          for name,args,timeout in scripts:
+              with (out/(name+".txt")).open("w",encoding="utf-8") as f:
+                  p=subprocess.run([str(exe),*args],cwd=root,stdout=f,stderr=subprocess.STDOUT,timeout=timeout)
+              data=(out/(name+".txt")).read_text(encoding="utf-8",errors="replace")
+              assert p.returncode==0,(name,p.returncode,data[-3000:])
+              assert "SCRIPT ERROR:" not in data and "ERROR: Failed to load" not in data,(name,data[-3000:])
+              if name=="render-world":
+                  assert "23 assertions, 0 failures" in data,data[-3000:]
+          PY
+          git diff --exit-code HEAD -- godot/scripts godot/tests godot/native_extension
+      - name: Assemble windows original-byte host evidence (no publication)
+        shell: bash
+        env:
+          EVIDENCE_PLATFORM: windows
+          EVIDENCE_HOST_LABEL: windows-2022
+          EVIDENCE_TOOLCHAIN: llvm-mingw-20260826-ucrt
+          EVIDENCE_LOG_DIR: build/qual290/windows-host
+          EVIDENCE_RUNTIME: build/qual290/windows-dll/cybersand_native.windows.x86_64.dll
+          EVIDENCE_RUNTIME_NAME: cybersand_native.windows.x86_64.dll
+          EVIDENCE_DEST: build/qual290/host-evidence-windows
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          src = pathlib.Path(os.environ["EVIDENCE_LOG_DIR"])
+          dest = pathlib.Path(os.environ["EVIDENCE_DEST"])
+          (dest / "runtime").mkdir(parents=True, exist_ok=True)
+          (dest / "logs").mkdir(parents=True, exist_ok=True)
+          original = pathlib.Path(os.environ["EVIDENCE_RUNTIME"])
+          assert original.is_file() and original.stat().st_size >= 4096, original
+          raw = original.read_bytes()
+          (dest / "runtime" / os.environ["EVIDENCE_RUNTIME_NAME"]).write_bytes(raw)
+          sha = lambda value: hashlib.sha256(value).hexdigest()
+          cases = []
+          for name, basename in (("godot_import", "import.txt"),
+                                 ("test_render_world_generation", "render-world.txt"),
+                                 ("test_render_patch_handoff_regression", "render-patches.txt")):
+              data = (src / basename).read_bytes()
+              assert 0 < len(data) <= 8_000_000, (name, len(data))
+              (dest / "logs" / (name + ".log")).write_bytes(data)
+              cases.append({"name": name, "status": "passed", "exit_code": 0,
+                            "timed_out": False, "log_sha256": sha(data)})
+          git = lambda expr: subprocess.check_output(["git", "rev-parse", expr], text=True).strip()
+          assert git("HEAD") == os.environ["GITHUB_SHA"]
+          receipt = {"schema": "render-copy290-host-evidence-v1",
+                     "platform": os.environ["EVIDENCE_PLATFORM"],
+                     "source_sha": git("HEAD"), "source_tree": git("HEAD^{tree}"),
+                     "run_id": int(os.environ["GITHUB_RUN_ID"]),
+                     "run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
+                     "runner": os.environ["EVIDENCE_HOST_LABEL"],
+                     "toolchain": os.environ["EVIDENCE_TOOLCHAIN"],
+                     "godot_version": "4.7.stable.official.5b4e0cb0f",
+                     "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+                     "scons_version": "4.10.1", "runtime_size": len(raw),
+                     "runtime_sha256": sha(raw), "cases": cases}
+          (dest / "host-evidence.json").write_bytes((json.dumps(receipt,
+              sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8"))
+          print("STAGED READ-ONLY ORIGINAL HOST EVIDENCE", receipt["platform"],
+                receipt["source_sha"], receipt["runtime_sha256"])
+          PY
+      - name: Verify both real-host byte receipts before publication is even considered
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os, pathlib, subprocess, sys
+          sys.path.insert(0, "tools/ci")
+          from render_copy290_publication_preflight import (HOST_CASES,
+              HOST_ARCHIVE_RUNTIME, verify_host_receipts)
+          source = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+          tree = subprocess.check_output(["git", "rev-parse", "HEAD^{tree}"], text=True).strip()
+          bundles = {}
+          for platform in ("linux", "windows"):
+              path = pathlib.Path("build/qual290/host-evidence-" + platform)
+              bundles[platform] = {
+                  "report": (path / "host-evidence.json").read_bytes(),
+                  "runtime": (path / HOST_ARCHIVE_RUNTIME[platform]).read_bytes(),
+                  "logs": {case: (path / "logs" / (case + ".log")).read_bytes()
+                           for case in HOST_CASES}}
+          assert verify_host_receipts(bundles, source, tree,
+                                      int(os.environ["GITHUB_RUN_ID"]),
+                                      int(os.environ["GITHUB_RUN_ATTEMPT"]))
+          print("PAIRED ORIGINAL HOST BYTES PASS — STAGING ONLY AFTER OWNER AUTHORIZATION")
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: render-copy290-host-evidence-windows-${{ github.run_id }}
+          path: build/qual290/host-evidence-windows/
+          if-no-files-found: warn
+          retention-days: 30
+
+  publish:
+    name: exact-source leased four-path LFS append
+    needs: [request-gate, linux-host, windows-build, windows-host]
+    if: needs.request-gate.outputs.armed == 'true' && github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/publish/render-copy290-runtime-20261029'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - name: Check out exact authorized source for atomically leased LFS push
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: true
+      - name: Reverify owner authorization, built-source lease and clean index
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          python3 tools/ci/render_copy290_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          test -z "$(git diff --cached --name-only)"
+          test -z "$(git diff --name-only)"
+      - name: Authenticate original same-run host/build ZIPs and stage exactly four LFS paths
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 tools/ci/render_copy290_runtime_publication.py stage --source-sha "$GITHUB_SHA"
+          python3 tools/ci/render_copy290_runtime_publication.py check-index --source-sha "$GITHUB_SHA"
+          git diff --cached --check
+          git diff --exit-code
+      - name: Single-parent source-frozen commit and force-with-lease LFS push
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 tools/ci/render_copy290_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          python3 tools/ci/render_copy290_runtime_publication.py check-index --source-sha "$GITHUB_SHA"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'build(render-copy290): publish source-matched Linux/Windows LFS runtimes'
+          test "$(git rev-list --parents -n 1 HEAD)" = "$(git rev-parse HEAD) $GITHUB_SHA"
+          git push --force-with-lease="refs/heads/publish/render-copy290-runtime-20261029:$GITHUB_SHA" origin HEAD:refs/heads/publish/render-copy290-runtime-20261029
+          test "$(git ls-remote --exit-code origin refs/heads/publish/render-copy290-runtime-20261029 | cut -f1)" = "$(git rev-parse HEAD)"
+          echo "Runtime-append commit $(git rev-parse HEAD) — independent LFS fetch and final-head acceptance still required" >> "$GITHUB_STEP_SUMMARY"
