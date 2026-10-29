@@ -8,7 +8,8 @@ from render_copy290_publication_preflight import (
     BUILD_DRIFT, FEATURE, NEW, PREP, RETAINED, context, drift_ok,
     no_request, paths_ok, pointer_ok, source_lease, HOST_CASES, HOST_TARGETS,
     verify_host_receipts, verify_host_artifact_archives,
-    HOST_ARCHIVE_RUNTIME, digest,
+    HOST_ARCHIVE_RUNTIME, digest, verify_actions_custody,
+    ACTIONS_HOST_JOBS, ACTIONS_ARTIFACT_PREFIX, REPOSITORY_ID, REPO,
 )
 
 
