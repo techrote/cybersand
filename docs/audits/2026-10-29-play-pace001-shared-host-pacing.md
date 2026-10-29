@@ -214,11 +214,43 @@ change defaults or prove policy reconstruction. All ten preceding records
 have the SHA256 of `{}` as their typed construction receipt, so a positive
 per-material admission/rebuild gate still requires its own actual fixture.
 
-**Source boundary:** this new additive metadata/assertion change has not
-executed at its new Git head. The successful `6373b4eb` workflows and the
-18-assertion runs are historical now; this new head expects 19 assertions
-per rig and requires fresh Windows/Linux/Native/Documentation qualification
-and final independent source/artifact review before any merge.
+**Historical source boundary at the portable-policy correction:** the additive
+metadata/assertion change originally required 19 assertions per rig. Subsequent
+exact-head `60d4cb3acf88c6992da6813eb0778bda04da0fd9` CI and independent
+archive review completed successfully, but a later source review found the
+Main callback-interval boundary defect described below. The 19-assertion source
+must not qualify the successor's 20-assertion cadence correction.
+
+## Second measurement-correctness correction: complete callback intervals — 2026-10-29
+
+A new source inspection of `60d4cb3acf88c6992da6813eb0778bda04da0fd9`
+found that `PacingHarness.begin_measurement()` initialized
+`_last_process_usec` and `_last_physics_usec` to the **sample-start** time.
+The first later `_process` / `_physics_process` callback consequently
+appended a **partial start-to-first-callback gap** to each corresponding
+inter-callback distribution. This is not the time between two measured Main
+callbacks. The original raw distributions and exact-head successful CI remain
+valid historical evidence for that source, with this sampling limitation now
+explicit; previously recorded p95/p99 are **not recomputed or promoted** to
+corrected-source results.
+
+Test-only correction [`1b6a447a33a72487e3cf6272fad0f6818c8875cd`](https://github.com/techrote/cybersand/commit/1b6a447a33a72487e3cf6272fad0f6818c8875cd)
+initializes both prior-callback timestamps to zero at measurement start, keeping
+first callback duration samples while only admitting intervals between fully
+observed callback pairs. The new explicit assertion requires
+`process_intervals == process_callbacks - 1` and
+`physics_intervals == physics_callbacks - 1` (bounded at zero). It increases
+the fixture's expected assertion count from **19 to 20 per rig**, without
+changing the other distributions, native or Rapier code, runtime build, solver
+configuration, default, test scheduler, protected fixtures or ownership.
+
+**Disposition:** corrected-head Windows/Linux Godot execution, exact-source
+Native/Docs applicability and independent raw-data/retained-artifact review are
+required before considering this successor accepted. Prior green source
+`60d4cb3` cannot be used as the execution receipt for the correction; the
+previous failure/methodology archive must remain intact. This is still a
+brief headless fixed-policy pacing baseline, not a slow-native, non-default
+per-material, physical-device or human-feel acceptance.
 
 ## Required qualification
 
