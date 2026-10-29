@@ -53,10 +53,12 @@ Godot process/World, uses60 warm-up ticks and120 measured ticks, and retains its
 measured ticks. Import keeps240s; no failed row is retried, skipped or discarded.
 
 The campaign runs UTC00:59:21.859841–01:03:29.721825. Its import takes2.862s;
-the separate initial strict preflight import takes5.032s. All51 campaign logs,
-raw markers, summary reductions, per-size level hashes, source ledgers and runtime
-bytes pass the unmodified `verify_directory`, with zero errors, skips, timeouts,
-retries or source/runtime drift.
+the separate initial strict preflight import takes5.032s. The unmodified
+`verify_directory` validates all51 campaign log hashes, raw markers, summary
+reductions and per-size level hashes. Separately, campaign preflight/final
+source checks and direct evidence-collector readback verify the94 input hashes
+and runtime payload bytes. There are zero errors, skips, timeouts, retries or
+source/runtime drift.
 
 Launcher affinity is logical CPUs0–11, nice0; sampled initial load averages
 0.0757/0.1377/0.0679. Child affinity/priority and CPU frequency/residency are
