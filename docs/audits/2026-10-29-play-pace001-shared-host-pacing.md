@@ -2,7 +2,7 @@
 title: PLAY-PACE-001 shared-host pacing candidate
 status: Planned
 document-kind: evidence
-scope: Unexecuted source candidate for fixed-configuration pacing measurements on the accepted composable desktop gameplay host
+scope: Corrected source candidate for fixed-configuration pacing; previous exact-source hosted evidence preserved without promotion
 canonical-for: []
 last-reviewed: 2026-10-29
 related-documents: [../systems/player-control-playground.md, ../architecture/simulation-tick-and-threading.md, ../PERFORMANCE.md, ../operations/local-build-and-validation.md]
@@ -12,8 +12,11 @@ related-documents: [../systems/player-control-playground.md, ../architecture/sim
 
 ## Status and source identity
 
-This is an **unexecuted candidate**, not performance evidence and not a release
-acceptance. It starts from accepted `main`
+This is a **corrected source candidate**, not accepted performance evidence or
+release qualification. The previous measurement implementation executed on
+both hosted OSes, but its per-publication ages must not be described as
+continuous retained-frame ages. The corrected source requires fresh exact-head
+CI and independent artifact review. This branch starts from accepted `main`
 `aac0feb65e2268b74975892ce1df81e04e1a7e40`, tree
 `a2ddee9e54a570d56e6e9b68285281c1921b8f0f`.
 
@@ -22,6 +25,46 @@ rig wrappers. It changes no native source, GDExtension runtime, material law,
 solver-family admission/default, gameplay owner, Rapier ownership, CI policy or
 specialist fixture. This avoids overlapping the separate source-sensitive native
 copy work in PRs #290/#295.
+
+## Historical hosted execution and bounded correction — 2026-10-29
+
+The original exact source `cf0affeb32815bb9d70d6a25a69c9ad7c5a6caf3`
+completed attempt-1 [Documentation 40835649578](https://github.com/techrote/cybersand/actions/runs/40835649578),
+[Native 40835649569](https://github.com/techrote/cybersand/actions/runs/40835649569)
+and [Windows/Linux Godot 40835649611](https://github.com/techrote/cybersand/actions/runs/40835649611),
+all **SUCCESS**. Direct job-log parsing found five real `PLAY_PACE001_RESULT`
+records for each OS, each **16 assertions / zero failures**, with at least
+120 completed native ticks, at least 120 completed Rapier steps, joined owner
+and retired physical session. Hosted Linux completed native rates were
+**59.71–59.96 Hz**, Windows **59.48–59.91 Hz**; the runs are headless,
+brief (~2-second measurement windows) and not rendered or interactive FPS.
+The workflow retains Windows and four Linux shard artifacts; these original
+artifacts and results belong solely to that exact source and have not been
+claimed as a fully hash-audited independent acceptance package here.
+
+[Independent source/data finding](https://github.com/techrote/cybersand/pull/296#pullrequestreview-5694646247):
+original `_sample_snapshot()` returned when the publication serial stayed
+unchanged. As a result its `snapshot_age_ms` and `render_snapshot_age_ms`
+arrays cover only **120–121 first-observed worker publications per rig**,
+whereas Main executed **290–292 process callbacks** per rig. The former
+are valid *first-observed publication ages*, but not continuous ages of the
+retained last-committed presentation. Their reported render age p95 of
+approximately **1.80–1.83 seconds** is not, by itself, a render defect:
+an unchanged static packet may legitimately age.
+
+The corrected helper (first committed at `24000c3122e0ad786584c1e6ccd55dc855c63390`)
+preserves old publication samples and adds two new frame-corresponding
+retained-age series, sampled on **every** measured Main `_process` callback,
+including when no new worker publication arrives. Missing timestamps cannot
+silently contribute fabricated zero ages: the test checks that both series
+have one valid sample for each measured Main callback, and checks that
+callbacks with no new publication were actually observed. Raw series and
+percentiles are emitted separately. These checks are **not passed evidence**
+until the corrected source executes on Windows and Linux.
+
+No baseline result or later correction here establishes attributed mutex wait,
+interactive device responsiveness, slow-native phase-job progress, native-busy
+shutdown or human feel; issue #270 stays open.
 
 ## Question
 
@@ -74,10 +117,18 @@ simulation worker or native pool.
 - **Process/physics interval:** wall time between successive actual callback
   entries while measurement is active.
 - **Callback duration:** wall time around the unchanged inherited callback.
-- **Snapshot age:** callback completion time minus the copied snapshot's
-  `published_usec`.
-- **Render snapshot age:** callback completion time minus the immutable retained
-  render packet's `render_generated_usec`.
+- **First-observed snapshot age (`snapshot_age_ms`):** callback completion time
+  minus the copied snapshot's `published_usec`, sampled only when a new worker
+  publication serial is first observed on Main.
+- **First-observed render age (`render_snapshot_age_ms`):** callback completion
+  time minus the immutable render packet's `render_generated_usec`, on those
+  same newly observed worker publications.
+- **Retained snapshot age (`retained_snapshot_age_ms`):** callback completion
+  time minus the current copied snapshot's `published_usec`, **every measured
+  Main process callback**, even without a new publication.
+- **Retained render age (`retained_render_age_ms`):** callback completion time
+  minus the last-committed render packet's `render_generated_usec`, **every
+  measured Main process callback**. Static packets can legitimately age.
 - **Snapshot consume callback:** total inherited
   `consume_worker_snapshot()` duration, including its ordinary presentation
   work. It is **not** an isolated mutex-wait measurement.
@@ -95,8 +146,11 @@ concurrent execution or causal speedup.
 The candidate asserts only fixture integrity and bounded completion:
 
 - both native and Rapier clocks reach the 120-tick target;
-- process, physics, snapshot-age, worker-step and consume distributions are
-  populated;
+- process, physics, first-observed snapshot-age, worker-step and consume
+  distributions are populated;
+- retained snapshot/render ages have one valid timestamped sample per measured
+  Main callback, including a directly observed callback without a new worker
+  publication;
 - actor epoch, World generation, selected rig, authored map, liquid policy and
   construction receipt remain unchanged;
 - the worker does not enter failure quarantine;
@@ -139,5 +193,7 @@ Before any acceptance or merge claim:
 5. reconcile the result into #266/#270 and canonical performance/player docs
    only at its actual evidence scope.
 
-No local Godot, native build, documentation checker or hosted execution is
-claimed by this source publication.
+No local Godot, native build or documentation checker is claimed for the
+correction. The original hosted source execution above remains historical
+and does not qualify this new helper/head. New exact-head hosted execution,
+raw-artifact reduction and independent acceptance review are still required.
