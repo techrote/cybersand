@@ -76,3 +76,48 @@ python3 tools/ci/render_copy290_publication_preflight.py check-unarmed
 The third command is context-bound and requires a clean actual
 GitHub-hosted checkout. Execution/CI results must be recorded only
 after the run completes; this document does not predeclare success.
+
+
+## Same-repository and source-event lease hardening — 2026-10-29
+
+A new bounded safety review identified two provenance boundaries that were
+implicit in the first read-only preparation: a same-named fork PR could satisfy
+the branch-name predicate, and the checker did not independently compare the
+checked-out Git HEAD with the triggering event's source SHA. Neither was an
+observed production defect or a permission to publish. Both are now enforced:
+
+- Workflow admission requires a **same-repository PR head** as well as its
+  exact branch and base. The Python checker repeats the origin check using a
+  workflow-provided repository identity. A fork with the authorized branch
+  name is refused before the preflight job can execute.
+- The event's source commit SHA is forwarded to the checker, which requires
+  exact equality with `git rev-parse HEAD`; missing, malformed or different
+  identities are refused. The checkout was already pinned to the source event
+  SHA, but is now checked independently instead of relying on checkout alone.
+- Push and PR workflow events have distinct concurrency groups. This removes
+  cross-event cancellation while retaining same-event supersession.
+- Six new negative/positive unit cases cover fork origin, missing origin, equal
+  source SHA, divergent HEAD and missing/malformed event SHA. The full
+  adversarial suite now contains **29 tests**.
+
+**Source-locked execution before this documentation amendment:** feature
+`f551e8064a7d01ceb554774afb5c61e71e715c63`; preparation
+`bd2509ccf0fca624c5c6034abc877fb9f38faf2f`.
+[Push preflight 40825298317](https://github.com/techrote/cybersand/actions/runs/40825298317)
+and [PR preflight 40825301860](https://github.com/techrote/cybersand/actions/runs/40825301860)
+both report success on that source. The downloaded PR job log states
+`Ran 29 tests`, `OK`, provider-policy errors `[]` and
+`RENDER_COPY290_PREFLIGHT PASS`. Read-only manifest/LFS identity and
+the absent publication request remain mandatory.
+
+The intermediate [40825277534](https://github.com/techrote/cybersand/actions/runs/40825277534)
+failed while the checker and tests had been updated but the workflow had not yet
+supplied its event variables. It is retained as a transient incomplete-checkpoint
+failure, **not** a runtime, sanitizer, or render-cell regression. Earlier cancelled
+intermediate workflow runs are also not counted as passing evidence.
+
+**Review and admission limits:** the same authenticated account authored these
+guards. This record does not supply an independent reviewer, a live dual-host
+publisher, any owner-authorized publication request, final release CI, new LFS
+objects, runtime provenance, or readiness to merge. All pre-existing #290,
+#281 and #283 restrictions remain in effect.
