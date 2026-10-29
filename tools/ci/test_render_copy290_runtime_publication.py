@@ -381,5 +381,62 @@ class StagingContract(unittest.TestCase):
         self.run_stage(missing_windows=True)
 
 
+class StagedIndexIdentity(unittest.TestCase):
+    def make_stage(self, corrupt_pointer=False):
+        source = "e" * 40
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            pointers = {}
+            staged = {}
+            for platform in subject.HOST_TARGETS:
+                blob = sample_elf() if platform == "linux" else sample_dll()
+                target = subject.OUTPUT[platform]
+                manifest_path = subject.MANIFEST[platform]
+                (root / target).parent.mkdir(parents=True, exist_ok=True)
+                (root / target).write_bytes(blob)
+                data = {"source_commit": source, "status": "validated-development-runtime",
+                        "artifact": target, "sha256": digest(blob), "size": len(blob)}
+                raw_manifest = (json.dumps(data, sort_keys=True) + "\n").encode()
+                (root / manifest_path).write_bytes(raw_manifest)
+                pointer = ("version https://git-lfs.github.com/spec/v1\n" +
+                           "oid sha256:" + digest(blob) + "\n" +
+                           "size " + str(len(blob)) + "\n").encode()
+                if corrupt_pointer and platform == "windows":
+                    pointer = pointer.replace(digest(blob).encode(), ("f" * 64).encode())
+                pointers[target] = pointer
+                staged[manifest_path] = raw_manifest
+            def fake_git(*args):
+                if args[:3] == ("diff", "--cached", "--name-only"):
+                    return ("\0".join(sorted(subject.FOUR)) + "\0").encode()
+                if args[:2] == ("ls-files", "--stage"):
+                    path = args[-1]
+                    return ("100644 " + "a" * 40 + " 0\t" + path + "\n").encode()
+                raise AssertionError("unexpected textual Git query " + repr(args))
+            def fake_raw(*args):
+                path = args[-1][1:]
+                return pointers[path] if path in pointers else staged[path]
+            with mock.patch.object(subject, "ROOT", root), \
+                 mock.patch.object(subject, "repo_identity", return_value={}), \
+                 mock.patch.object(subject, "git", side_effect=fake_git), \
+                 mock.patch.object(subject, "git_raw", side_effect=fake_raw):
+                if corrupt_pointer:
+                    with self.assertRaises(RuntimeError):
+                        subject.check_index(source)
+                else:
+                    self.assertTrue(subject.check_index(source))
+
+    def test_four_path_positive_staged_pointer_and_manifest(self):
+        self.make_stage()
+
+    def test_mismatched_pointer_refuses(self):
+        self.make_stage(corrupt_pointer=True)
+
+    def test_different_git_show_modes_keep_newlines(self):
+        raw = b"version https://git-lfs.github.com/spec/v1\n" + b"size 12\n"
+        with mock.patch.object(subject.subprocess, "check_output", return_value=raw):
+            self.assertEqual(subject.git_raw("show", ":file"), raw)
+            self.assertNotEqual(subject.git("show", ":file"), raw)
+
+
 if __name__ == "__main__":
     unittest.main()
