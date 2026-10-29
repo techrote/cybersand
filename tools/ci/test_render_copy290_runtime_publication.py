@@ -438,5 +438,159 @@ class StagedIndexIdentity(unittest.TestCase):
             self.assertNotEqual(subject.git("show", ":file"), raw)
 
 
+class CommittedAuthorizationFlow(unittest.TestCase):
+    def simulate(self, *, changed_files=None, owner=None, remote=True):
+        req, comment, parent = owner_request()
+        source = "b" * 40
+        if changed_files is None:
+            changed_files = {subject.REQUEST}
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            p = root / subject.REQUEST
+            p.parent.mkdir(parents=True)
+            raw = (json.dumps(req, sort_keys=True) + "\n").encode()
+            p.write_bytes(raw)
+            def git_response(*args):
+                if args[:2] == ("diff", "--name-only") and args[2] == subject.BASE:
+                    return ("\n".join(sorted(subject.PREP_DELTA |
+                                               {subject.REQUEST})) + "\n").encode()
+                if args[:2] == ("diff", "--name-only") and args[2] == parent:
+                    return ("\n".join(sorted(changed_files)) + "\n").encode()
+                if args[:3] == ("rev-list", "--parents", "-n"):
+                    return (source + " " + parent).encode()
+                raise AssertionError("Unexpected Git request: " + repr(args))
+            with mock.patch.object(subject, "ROOT", root), \
+                 mock.patch.object(subject, "repo_identity", return_value={}), \
+                 mock.patch.object(subject, "git", side_effect=git_response), \
+                 mock.patch.object(subject, "git_raw", return_value=raw), \
+                 mock.patch.object(subject, "rest", return_value=owner or comment), \
+                 mock.patch.object(subject, "lease") as lease:
+                if changed_files != {subject.REQUEST} or owner == {"body": "forged"}:
+                    with self.assertRaises((RuntimeError, AttributeError)):
+                        subject.request_status(source, remote=remote)
+                    lease.assert_not_called()
+                else:
+                    result = subject.request_status(source, remote=remote)
+                    self.assertEqual(result["request"]["authorized_parent_sha"], parent)
+                    self.assertEqual(lease.call_count, 1 if remote else 0)
+
+    def test_positive_valid_committed_owner_request_is_accepted(self):
+        self.simulate()
+
+    def test_no_lease_check_when_source_test_only(self):
+        self.simulate(remote=False)
+
+    def test_extra_changes_in_request_commit_are_refused(self):
+        self.simulate(changed_files={subject.REQUEST, "native/src/world.cpp"})
+
+    def test_forged_comment_fails_before_lease(self):
+        self.simulate(owner={"body": "forged"})
+
+
+class OriginalProducerActionsCustody(unittest.TestCase):
+    def fixture(self):
+        source = "a" * 40
+        source_tree = "b" * 40
+        run_id = 404040
+        attempt = 1
+        jobs = []
+        for index, (name, label) in enumerate([
+            ("request-gate", "ubuntu-24.04"),
+            ("linux-host", "ubuntu-24.04"),
+            ("windows-build", "ubuntu-24.04"),
+            ("windows-host", "windows-2022"),
+        ]):
+            jobs.append({"id": 99 + index, "name": name, "run_id": run_id,
+                         "run_attempt": attempt, "head_sha": source,
+                         "head_branch": subject.BRANCH, "labels": [label],
+                         "runner_group_name": "GitHub Actions",
+                         "runner_name": "GitHub Actions 100",
+                         "status": "completed", "conclusion": "success",
+                         "steps": [{"conclusion": "success"}]})
+        jobs.append({"id": 200, "name": "exact-source leased four-path LFS append",
+                     "status": "in_progress"})
+        run = {"head_sha": source, "head_branch": subject.BRANCH,
+               "repository": {"full_name": subject.REPO},
+               "head_repository": {"full_name": subject.REPO},
+               "run_attempt": attempt, "event": "push", "path": subject.WF,
+               "status": "in_progress"}
+        artifacts = []
+        for index, name in enumerate([
+            "render-copy290-host-evidence-linux-" + str(run_id),
+            "render-copy290-host-evidence-windows-" + str(run_id),
+            "render-copy290-linux-build-" + source,
+            "render-copy-290-windows-dll-" + source,
+        ]):
+            data = make_zip({"proof.txt": str(index).encode()})
+            artifacts.append({
+                "id": 100 + index, "name": name, "expired": False,
+                "size_in_bytes": len(data), "digest": "sha256:" + digest(data),
+                "workflow_run": {"id": run_id, "head_sha": source,
+                                 "head_branch": subject.BRANCH},
+            })
+        return source, source_tree, run_id, jobs, run, artifacts
+
+    def exercise(self, *, mutate_run=None, mutate_jobs=None,
+                 mutate_artifacts=None):
+        source, tree, run_id, jobs, run, artifacts = self.fixture()
+        if mutate_run: run.update(mutate_run)
+        if mutate_jobs: mutate_jobs(jobs)
+        if mutate_artifacts: mutate_artifacts(artifacts)
+        blobs = [make_zip({"proof.txt": str(i).encode()}) for i in range(4)]
+        def fake_rest(path, binary=False):
+            if path.startswith("actions/runs/" + str(run_id) + "/jobs"):
+                return {"jobs": jobs}
+            if path.startswith("actions/runs/" + str(run_id) + "/artifacts"):
+                return {"artifacts": artifacts}
+            if path == "actions/runs/" + str(run_id):
+                return run
+            if path.startswith("actions/artifacts/"):
+                return blobs[int(path.split("/")[-2]) - 100]
+            raise AssertionError("Unexpected REST: " + path)
+        with mock.patch.dict(subject.os.environ, {"GITHUB_RUN_ID": str(run_id),
+                                                   "GITHUB_RUN_ATTEMPT": "1"}), \
+             mock.patch.object(subject, "rest", side_effect=fake_rest), \
+             mock.patch.object(subject, "verify_host_artifact_archives",
+                               return_value=True), \
+             mock.patch.object(subject, "git",
+                               return_value=tree.encode()):
+            return subject.authenticated_producer_artifacts(source)
+
+    def test_positive_live_in_progress_run_with_all_host_jobs(self):
+        archives, digests = self.exercise()
+        self.assertEqual(len(archives), 4)
+        self.assertEqual(len(digests), 4)
+
+    def test_incomplete_or_failed_host_job_rejected(self):
+        for edit in [
+            lambda jobs: jobs.__delitem__(2),
+            lambda jobs: jobs[3].update(conclusion="failure"),
+            lambda jobs: jobs[1]["steps"].append({"conclusion": "skipped"}),
+            lambda jobs: jobs[2].update(labels=["self-hosted"]),
+        ]:
+            with self.subTest(edit=edit):
+                with self.assertRaises(RuntimeError):
+                    self.exercise(mutate_jobs=edit)
+
+    def test_invalid_run_or_replay_rejected(self):
+        for change in [{"event": "pull_request"}, {"status": "completed"},
+                       {"run_attempt": 2}, {"head_sha": "0" * 40},
+                       {"head_branch": "main"}, {"path": "wrong.yml"}]:
+            with self.subTest(change=change):
+                with self.assertRaises(RuntimeError):
+                    self.exercise(mutate_run=change)
+
+    def test_artifact_substitution_or_expiry_rejected(self):
+        for edit in [
+            lambda a: a[0].update(expired=True),
+            lambda a: a[0].update(digest="sha256:" + "f" * 64),
+            lambda a: a.pop(),
+            lambda a: a[1].update(workflow_run={"id": 0}),
+        ]:
+            with self.subTest(edit=edit):
+                with self.assertRaises(RuntimeError):
+                    self.exercise(mutate_artifacts=edit)
+
+
 if __name__ == "__main__":
     unittest.main()
