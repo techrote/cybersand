@@ -367,3 +367,73 @@ sanitizer, reviewed runtime publication, formal final-head
 GDExtension/Godot/Docs and applicable controls, and independent
 acceptance review. This patch does not address PR #283's
 independent physical-ejection B=289 NO-GO.
+
+## Final corrected-source scoped results — 2026-10-29
+
+The earlier in-progress statements above retain their exact readback times.
+The corrected-source [native run `40796751009`](https://github.com/techrote/cybersand/actions/runs/40796751009)
+subsequently **completed with all three jobs SUCCESS**:
+source archive/integrity, Linux GCC13 native plus focused sanitizer,
+and Windows Server 2022 MSVC native.
+
+| Scope on corrected executable `60915dc` | Observed result |
+|---|---|
+| Linux GCC13 ordinary native | **165/165** tests pass |
+| Linux GCC13 ASan+UBSan `render` filter | **3/3** tests pass; `render copy per-run identity` included |
+| Linux GCC13 ASan+UBSan `C API and RGBA` | **1/1** test passes |
+| Windows Server 2022 MSVC ordinary native | **165/165** tests pass and benchmark/shared DLL builds finish |
+| Linux + Windows exact Godot 4.7 native render hosts | **23/23 render-generation assertions**, patch-handoff pass per OS, three jobs success |
+| Full all-test ASan/UBSan | **Not qualified**; old run `40792599185` timed out at 18 minutes |
+
+The real Linux sanitizer job compiled against the **corrected source**
+with `-O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined`
+and the pinned GCC13 compiler. Its focused `render` and
+`C API and RGBA` executions exit successfully with **no
+ASan/UBSan error reports**. There is no inference that all
+165 tests have been executed under sanitizers. The separate
+unsanitized Linux suite does run all 165.
+
+The new independently materialized Linux native artifact
+`12864787443` has ZIP SHA-256
+`9e4c581e0a82b9b8dd263ed9f175f04b648b87c60708dce036edbcd9c73e41f6`
+and passes ZIP CRC inspection. Its `tests.txt` ends
+`165 tests passed`; `sanitized-render.txt` ends
+`3 tests passed`; `sanitized-capi.txt` ends
+`1 tests passed`. The Windows native artifact
+`12865140333` has ZIP SHA-256
+`ff428f371ff59ac68a3a76ca0a78a96aa889f264c94353d78d4d0e762f7c4841`,
+passes CRC inspection, and its MSVC test/build log contains
+165 passing test groups and successful final library build.
+Its **debug** 1024×1024 fixture reports
+290.923 ms per-cell oracle versus 22.9137 ms per-run,
+which is **not** a production `/O2` or interactive GPU
+performance acceptance number. The sanitizer render test's
+per-cell timing is dominated by instrumentation.
+
+An additional isolated GCC14 UBSan probe against the same
+archived native source exercised the public C ABI in addition
+to the boundary World tests: `cybersand_world_copy_render_cells`
+successfully copied the valid `INT64_MAX` last-cell request
+and refused unrepresentable x and y requests with zero buffer
+mutation. Its expanded source SHA-256 is
+`f6c8162445422ea472f41d020342ceb8894ddd459aff0aaaf9573a622cc6a0f0`
+and output SHA-256 is
+`5f838940140456287687d0fe396e744d59f9a22e0980f14a539da2a4c290b9b2`.
+This is scratch supplemental proof, not a committed CI fixture.
+
+The [machine-readable final receipt](2026-10-29-render-copy-int64-qualification-receipt.json)
+records each executed-source SHA, both workflow-only verification
+heads, ZIP digests, scope, reviewed original failure and
+not-qualified gates. The test/production-source delta from
+`60915dc` to this documentation update remains documentation
+and evidence only.
+
+**Disposition:** the reproduced `INT64_MAX` source regression has
+a corrected implementation with source-matched Linux/Windows
+runtime and focused sanitizer evidence. It is **not a merge
+admission**. The PR remains draft; checked-in LFS GDExtension
+objects and manifests still describe the pre-PR native source,
+the all-test sanitizer/ready-PR matrices and independent
+acceptance review are open, and no Web/interactive frame
+performance is claimed. PR #283's B=289 physical ejection
+candidate remains NO-GO.
