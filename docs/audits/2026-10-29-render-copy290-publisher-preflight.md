@@ -121,3 +121,27 @@ guards. This record does not supply an independent reviewer, a live dual-host
 publisher, any owner-authorized publication request, final release CI, new LFS
 objects, runtime provenance, or readiness to merge. All pre-existing #290,
 #281 and #283 restrictions remain in effect.
+
+
+## Pure paired-host acceptance contract — 29 October 2026
+
+Implemented a side-effect-free future-publisher receipt verifier in the existing
+Python preflight and synthetic adversarial unit tests. The verifier requires both
+platforms, same immutable source/tree and Actions run/attempt, pinned Godot
+4.7/godot-cpp/SCons identity, expected physical host runner and compiler,
+Linux ELF64/Windows PE x86_64 bytes, matching SHA-256 and lengths, and original
+logs for import, render-generation (23 assertions, 0 failures), and patch handoff.
+It refuses missing/swapped host bundles, cross-run evidence, duplicate/invalid
+JSON, changed logs, malformed case inventories, nonzero exits, timeouts, hidden
+errors and skips.
+
+These test fixtures contain synthetic binaries and logs ONLY. Passing their
+tests does not establish a newly built or exercised runtime. This module is
+not invoked by an armed workflow, adds no request, does not upload LFS and does
+not grant publication authority. Its three cases are a proposed minimum; the
+complete native/current-app controls and exact deadlines remain for independent
+review before any request can be authorized. The subsequent publisher must also
+verify original ZIP SHA-256/CRC, complete build/source input hashes, actual host
+execution, atomic branch lease, four-path staging and materializable LFS objects.
+Historical published manifests and binaries remain unchanged. Draft #290 and
+separate #283 admission fences remain in force.

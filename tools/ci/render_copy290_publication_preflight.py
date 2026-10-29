@@ -107,6 +107,109 @@ def drift_ok(native, source, build, actual):
             "Unexpected historical build-input drift")
 
 
+
+# Pure, UNARMED future-publisher receipt contract. No write path uses this.
+HOST_CASES = ("godot_import", "test_render_world_generation",
+              "test_render_patch_handoff_regression")
+HOST_TARGETS = {"linux": ("ubuntu-24.04", "gcc-13"),
+                "windows": ("windows-2022", "llvm-mingw-20260826-ucrt")}
+HOST_MARKERS = {
+    "godot_import": r"Godot Engine v4\.7\.",
+    "test_render_world_generation": r"(?m)^RENDER_WORLD_GENERATION: 23 assertions, 0 failures$",
+    "test_render_patch_handoff_regression": r"(?m)^Render patch handoff regression passed$",
+}
+
+
+def _unique_evidence(pairs):
+    result = {}
+    for key, value in pairs:
+        require(key not in result, "Duplicate JSON evidence field: " + key)
+        result[key] = value
+    return result
+
+
+def _host_binary(data, platform):
+    require(type(data) is bytes and len(data) >= 4096, "Missing or truncated host runtime")
+    if platform == "linux":
+        require(data[:6] == b"\x7fELF\x02\x01" and data[18:20] == b"\x3e\x00",
+                "Not a Linux ELF64 x86_64 runtime")
+    else:
+        offset = int.from_bytes(data[60:64], "little")
+        require(data[:2] == b"MZ" and 64 <= offset <= len(data) - 6
+                and data[offset:offset + 6] == b"PE\x00\x00\x64\x86",
+                "Not a Windows PE x86_64 runtime")
+
+
+def verify_host_receipts(bundles, source, tree):
+    """Verify original byte evidence from BOTH target hosts, never publish."""
+    require(type(bundles) is dict and set(bundles) == set(HOST_TARGETS),
+            "Both distinct Linux and Windows receipts are mandatory")
+    require(all(type(x) is str and re.fullmatch(r"[0-9a-f]{40}", x)
+                for x in (source, tree)), "Untrusted or malformed source/tree identity")
+    run = None
+    for platform, (runner, toolchain) in HOST_TARGETS.items():
+        bundle = bundles[platform]
+        require(type(bundle) is dict and set(bundle) == {"report", "runtime", "logs"},
+                "Malformed host evidence bundle")
+        raw = bundle["report"]
+        require(type(raw) is bytes and 0 < len(raw) <= 65536, "Invalid raw JSON receipt")
+        try:
+            report = json.loads(raw.decode("utf-8"), object_pairs_hook=_unique_evidence,
+                                parse_constant=lambda v: (_ for _ in ()).throw(
+                                    RuntimeError("Nonfinite JSON evidence: " + v)))
+        except (ValueError, UnicodeError, TypeError) as exc:
+            raise RuntimeError("Malformed host JSON") from exc
+        keys = {"schema", "platform", "source_sha", "source_tree", "run_id",
+                "run_attempt", "runner", "toolchain", "godot_version",
+                "godot_cpp_commit", "scons_version", "runtime_sha256",
+                "runtime_size", "cases"}
+        require(type(report) is dict and set(report) == keys,
+                "Host receipt has missing or extra fields")
+        require(report["schema"] == "render-copy290-host-evidence-v1"
+                and report["platform"] == platform
+                and report["source_sha"] == source and report["source_tree"] == tree
+                and report["runner"] == runner and report["toolchain"] == toolchain
+                and report["godot_version"] == "4.7.stable.official.5b4e0cb0f"
+                and report["godot_cpp_commit"] == "101ae38034304346a46ea9ea84ae156d3e860496"
+                and report["scons_version"] == "4.10.1",
+                "Host platform, source or pinned toolchain differs")
+        require(type(report["run_id"]) is int and report["run_id"] > 0
+                and type(report["run_attempt"]) is int and report["run_attempt"] > 0,
+                "Bad Actions run identity")
+        identity = (report["run_id"], report["run_attempt"])
+        require(run is None or run == identity, "Mixed host runs or attempts")
+        run = identity
+        binary = bundle["runtime"]
+        _host_binary(binary, platform)
+        require(type(report["runtime_size"]) is int and len(binary) == report["runtime_size"]
+                and digest(binary) == report["runtime_sha256"],
+                "Runtime original bytes do not match receipt")
+        logs, cases = bundle["logs"], report["cases"]
+        require(type(logs) is dict and set(logs) == set(HOST_CASES)
+                and type(cases) is list and len(cases) == len(HOST_CASES),
+                "Incomplete host case/log inventory")
+        for name, row in zip(HOST_CASES, cases):
+            require(type(row) is dict and set(row) ==
+                    {"name", "status", "exit_code", "timed_out", "log_sha256"},
+                    "Host case row is malformed")
+            log = logs[name]
+            require(type(log) is bytes and 0 < len(log) <= 8_000_000
+                    and row["name"] == name and row["status"] == "passed"
+                    and type(row["exit_code"]) is int and row["exit_code"] == 0
+                    and row["timed_out"] is False and digest(log) == row["log_sha256"],
+                    "Case failed or original log bytes differ: " + name)
+            try:
+                output = log.decode("utf-8").replace("\r\n", "\n")
+            except UnicodeError as exc:
+                raise RuntimeError("Non-UTF8 case log") from exc
+            require(re.search(HOST_MARKERS[name], output) is not None
+                    and re.search(r"(?mi)^(?:SCRIPT ERROR:|ERROR:|SKIP(?:PED)?\b|"
+                                  r"TIMEOUT\b|LAUNCH ERROR:|REGRESSION_WATCHDOG\b)",
+                                  output) is None,
+                    "Missing positive marker or hidden error/skip: " + name)
+    return True
+
+
 def check():
     context(dict(os.environ))
     head = git("rev-parse", "HEAD").decode().strip()
