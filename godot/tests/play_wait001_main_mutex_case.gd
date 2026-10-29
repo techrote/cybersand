@@ -56,6 +56,10 @@ class WaitHarness:
 			main_callback_usec.append(float(Time.get_ticks_usec() - entered_usec))
 
 
+func controls_rearmed(desktop: Control, rig: StringName) -> bool:
+	return actor_ready(desktop, rig) and not desktop._actor_input_rearm
+
+
 func summarize(values: Array[float]) -> Dictionary:
 	if values.is_empty():
 		return {"count":0,"mean":0.0,"p50":0.0,"p95":0.0,"p99":0.0,"max":0.0}
@@ -111,8 +115,8 @@ func run() -> void:
 	desktop.paused = false
 	release_controls()
 	desktop.publish_actor_keyboard_input()
-	var rearmed: bool = await wait_for(func() -> bool:
-		return actor_ready(desktop, rig) and not desktop._actor_input_rearm)
+	var rearmed: bool = await wait_for(
+		Callable(self, "controls_rearmed").bind(desktop, rig))
 	expect(rearmed, "neutral controls rearm the admitted human actor")
 	if not rearmed:
 		await close_cycle(desktop, worker, desktop.physical_actor_session,
