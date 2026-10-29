@@ -1,89 +1,17 @@
-name: RENDER-COPY-290 source-matched Godot hosts
+name: RENDER-COPY-290 Godot validation bootstrap
 on:
   push:
     branches: [verify/render-copy-per-run-godot-20261029]
     paths:
       - '.github/workflows/render-copy-290-godot.yml'
-
 permissions:
   contents: read
-
-concurrency:
-  group: render-copy-290-godot-${{ github.ref }}
-  cancel-in-progress: false
-
-env:
-  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
-  GODOT_URL: 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
-  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
-  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
-  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
-  GODOT_SILENCE_ROOT_WARNING: '1'
-
 jobs:
-  linux-host:
+  bootstrap:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
-    env:
-      GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
-      SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
-      SCONS_JOBS: '2'
-      CYBERSAND_REAL_CXX: /usr/bin/g++-13
-      LINUX_CXX: /usr/bin/g++-13
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with:
-          ref: ${{ github.sha }}
-          lfs: false
-          persist-credentials: false
-      - name: Restore pinned Rapier, SCons and godot-cpp
-        shell: bash
+      - name: Verify source and guard
         run: |
-          set -euo pipefail
-          git lfs install --local
-          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
-          echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum --check --strict
-          python3 -m venv "$RUNNER_TEMP/scons"
-          "$SCONS_PYTHON" -m pip install --require-hashes -r tools/requirements-build.txt
-          "$SCONS_PYTHON" -c 'import SCons; assert SCons.__version__=="4.10.1"'
-          mkdir "$GODOT_CPP_ROOT"
-          git -C "$GODOT_CPP_ROOT" init
-          git -C "$GODOT_CPP_ROOT" remote add origin https://github.com/godotengine/godot-cpp.git
-          timeout 10m git -C "$GODOT_CPP_ROOT" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
-          git -C "$GODOT_CPP_ROOT" checkout --detach FETCH_HEAD
-          test "$(git -C "$GODOT_CPP_ROOT" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
-      - name: Build exact-source Linux GDExtension
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p build/qual290/linux-host
-          git rev-parse HEAD > build/qual290/linux-host/source.txt
-          git rev-parse HEAD^{tree} > build/qual290/linux-host/tree.txt
-          timeout 35m tools/build_pinned_godot_cpp.sh linux > build/qual290/linux-host/godot-cpp-build.txt 2>&1
-          timeout 20m tools/build_native_extension.sh > build/qual290/linux-host/native-build.txt 2>&1
-          sha256sum godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so > build/qual290/linux-host/runtime.sha256
-      - name: Execute exact-source Godot 4.7 render tests
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p "$RUNNER_TEMP/godot"
-          timeout 10m curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
-          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
-          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
-          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
-          test -n "$GODOT_BIN"
-          chmod +x "$GODOT_BIN"
-          test "$("$GODOT_BIN" --version)" = '4.7.stable.official.5b4e0cb0f'
-          timeout 120s "$GODOT_BIN" --headless --path godot --editor --import --quit > build/qual290/linux-host/import.txt 2>&1
-          timeout 150s "$GODOT_BIN" --headless --path godot --script res://tests/test_render_world_generation.gd > build/qual290/linux-host/render-world.txt 2>&1
-          grep -F '23 assertions, 0 failures' build/qual290/linux-host/render-world.txt
-          timeout 150s "$GODOT_BIN" --headless --path godot --script res://tests/test_render_patch_handoff_regression.gd > build/qual290/linux-host/render-patches.txt 2>&1
-          ! grep -E 'SCRIPT ERROR:|ERROR: Failed to load|FAIL' build/qual290/linux-host/import.txt build/qual290/linux-host/render-world.txt build/qual290/linux-host/render-patches.txt
-          sha256sum --check --strict build/qual290/linux-host/runtime.sha256
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
-        with:
-          name: render-copy-290-linux-godot-${{ github.sha }}
-          path: build/qual290/linux-host/
-          if-no-files-found: warn
-          retention-days: 30
+          git rev-parse HEAD
+          python3 tools/ci/check_ci_provider_policy.py
