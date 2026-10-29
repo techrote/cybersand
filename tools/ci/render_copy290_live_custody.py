@@ -138,7 +138,7 @@ def artifact_members(raw, expected, role):
 def parse_selected(raw):
     entries = {}
     for line in raw.decode("utf-8").splitlines():
-        match = re.fullmatch(r"([0-9a-f]{64})  ([^\\r\\n]+)", line)
+        match = re.fullmatch(r"([0-9a-f]{64})  (.+)", line)
         require(match is not None, "Malformed materialized input-hash row")
         digest, path = match.groups()
         require(path not in entries and not path.startswith("/") and
