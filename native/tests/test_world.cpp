@@ -1913,6 +1913,20 @@ void test_render_copy_per_run_identity() {
         {-257, 0, 1, 5},         // single non-resident column
         {-130, 10, 260, 7},      // mid-chunk start and end
         {5, 5, 0, 3},            // zero width
+        // Boundary regression: the last included x/y may be INT64_MAX.
+        // No exclusive endpoint or final run advance may overflow.
+        {std::numeric_limits<std::int64_t>::max() - 1, 0, 1, 1},
+        {std::numeric_limits<std::int64_t>::max(), 0, 1, 1},
+        {std::numeric_limits<std::int64_t>::max() - 127, 0, 128, 1},
+        {std::numeric_limits<std::int64_t>::max() - 128, 0, 129, 1},
+        {std::numeric_limits<std::int64_t>::min(), 0, 1, 1},
+        {std::numeric_limits<std::int64_t>::min(), 0, 129, 1},
+        {std::numeric_limits<std::int64_t>::max(), std::numeric_limits<std::int64_t>::max(), 1, 1},
+        {0, std::numeric_limits<std::int64_t>::max() - 1, 1, 2},
+        {0, std::numeric_limits<std::int64_t>::min(), 1, 2},
+        {std::numeric_limits<std::int64_t>::max(), 0, 1, 0},
+        {std::numeric_limits<std::int64_t>::max(), std::numeric_limits<std::int64_t>::max(), 0, 1},
+        {std::numeric_limits<std::int64_t>::max(), std::numeric_limits<std::int64_t>::max(), 0, 0},
     };
     for (const auto& variant : variants) {
         WorldConfig config{};
@@ -1962,6 +1976,29 @@ void test_render_copy_per_run_identity() {
                     }
                 }
             }
+        }
+
+        // Previously the run loop formed x + width even if the last
+        // included coordinate was valid. Invalid beyond-INT64_MAX rectangles
+        // must now refuse explicitly rather than overflowing silently.
+        const cybersand::RectI64 invalid[] = {
+            {std::numeric_limits<std::int64_t>::max(), 0, 2, 1},
+            {0, std::numeric_limits<std::int64_t>::max(), 1, 2},
+        };
+        for (const auto& region : invalid) {
+            std::vector<std::uint8_t> bytes(
+                static_cast<std::size_t>(region.width * region.height) * 2U, 0xABU);
+            bool refused = false;
+            try {
+                world.copy_render_cells(
+                    region, bytes, static_cast<std::size_t>(region.width) * 2U);
+            } catch (const std::overflow_error&) {
+                refused = true;
+            }
+            require(refused, "render copy accepted unrepresentable final coordinate");
+            require(std::all_of(bytes.begin(), bytes.end(),
+                                [](std::uint8_t value) { return value == 0xABU; }),
+                    "render copy modified output before coordinate validation");
         }
     }
 
