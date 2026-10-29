@@ -314,6 +314,10 @@ slow-native/outstanding-job shutdown, arbitrary cancellation races, general
 leak/race freedom, gameplay performance, physical devices and human feel.
 #269/#270 remain open.
 
+### Proposed snapshot-handoff lock wait baseline (PLAY-WAIT-001)
+
+A separate **Planned, unexecuted** five-rig [test-only probe](../audits/2026-10-29-play-wait001-main-snapshot-mutex.md) reuses the actual Main/CyberSimulationWorker/main-thread-Rapier course, with an instrumented test-equivalent `take_latest_snapshot` mutex acquisition. Its recorded Main callback and raw lock-wait samples would isolate only this handoff lock under normal native ticking, not other Main waits, a slow native phase, physical rendered FPS or human feel. No production source, native runtime or defaults change in this proposal. #268/#269/#270 remain open.
+
 ## Open the seven-preset movement course
 
 **Current experimental source:** choose **Player playground** in the feature
