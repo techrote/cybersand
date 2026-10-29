@@ -135,3 +135,44 @@ native phase jobs or prove busy-shutdown resource ordering, slow-native UI
 responsiveness, all Main wait attribution, integrated rules selection, physical
 devices/focus or human feel. The existing native-copy/runtime publication lane
 #290/#295/#298 is untouched. #263/#266/#268/#269/#270 remain open.
+
+## Original Windows whole-suite timeout and bounded sharding repair — 29 October 2026
+
+**Retained failed execution:** candidate `9803d3a1f2bd217b3f4cbb4a841bf0c49a64193b`
+was run in [Godot #40942029061](https://github.com/techrote/cybersand/actions/runs/40942029061),
+Windows job `123687604076`. Its fixed **40-minute whole Windows regression
+step** timed out at `test_worker_benchmark`. All five new PACE002 rig cases
+had already emitted real `PLAY_PACE002_RESULT` records: **98 assertions,
+zero failures and four completed 10-second constructed-policy windows per rig**.
+However, the overall Windows CI is **FAILED**; remaining cases were not
+recorded complete. Four Linux regression shards succeeded, including all
+five PACE002 rig cases (**490 assertions / zero failures, 20 windows**).
+The original Windows failure, logs and artifacts remain historical evidence.
+
+**Corrective code proposed; no new execution yet:** use the maintained
+`run_godot_regressions.build_shard_plan` to partition all Windows headless-applicable
+tests into two deterministic weighted shards. Each uses actual Windows Server
+2022, the same source-checked retained native DLL, pinned Rapier and Godot
+4.7, a new import preflight and every assigned test exactly once. Graphical
+exclusions remain explicit and Linux-owned. A separate Ubuntu GitHub-hosted
+coverage job independently downloads both original Windows shard artifacts
+and requires complete per-shard pass results, exact source/tree and
+native/Rapier/Godot/runner identities, authenticated raw log SHA-256s, unique
+shard indexes and an exact-once union of **all applicable** cases. It
+rejects missing/duplicate/failing/unsealed outputs; success badges alone
+are not the coverage evidence.
+
+The pre-existing **180-second per-test**, **40-minute Windows execution step**
+and **45-minute job** limits are retained unchanged. The original full-length
+10-second gameplay measurement windows and every assertion remain intact;
+no xfail, silent skip, retry masking, performance threshold relaxation or
+new native runtime is introduced. Sharding adds Windows hosted CI workload
+and changes test-only orchestration, not production ownership, materials,
+solver families/defaults, Rapier or the protected specialist fixtures.
+
+The repaired head must independently pass new Documentation/provenance,
+native, both Windows shards, strict Windows union/byte-seal reducer, all
+four Linux shards and timing reducer. Review the original ZIPs, execute
+all 20 windows per platform, retain failures and independently reduce raw
+statistics before any PR acceptance. This record describes a candidate,
+not a verified execution of the repaired head.
