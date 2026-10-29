@@ -4855,21 +4855,28 @@ std::vector<DirtyChunk> World::take_dirty_chunks() {
 void World::copy_render_cells(RectI64 region, std::span<std::uint8_t> destination,
                               std::size_t stride_bytes) const {
     (void)validate_copy_layout(region, 2U, stride_bytes, destination.size());
+    if (region.width == 0 || region.height == 0) return;
+    // The last *included* coordinate must be representable, but the
+    // exclusive endpoint need not be (e.g. {INT64_MAX, 0, 1, 1}).
+    if (region.x > std::numeric_limits<std::int64_t>::max() - (region.width - 1) ||
+        region.y > std::numeric_limits<std::int64_t>::max() - (region.height - 1)) {
+        throw std::overflow_error("render region exceeds signed coordinate range");
+    }
     // One chunk lookup per row run; a non-resident chunk reads as Empty with zero state.
-    const auto end_x = region.x + region.width;
     const auto empty_state =
         project_visual_state(Material::Empty, 0, 0, config_.water_experiment_policy);
     for (std::int64_t row = 0; row < region.height; ++row) {
         auto* output = destination.data() + static_cast<std::size_t>(row) * stride_bytes;
         const auto world_y = region.y + row;
-        auto world_x = region.x;
-        while (world_x < end_x) {
+        std::int64_t processed = 0;
+        while (processed < region.width) {
+            const auto world_x = region.x + processed;
             const auto first = address(world_x, world_y);
             const auto* chunk = find_chunk(first.chunk);
             const auto run = std::min<std::int64_t>(
-                end_x - world_x,
+                region.width - processed,
                 static_cast<std::int64_t>(config_.chunk_size - first.local_x));
-            auto* out = output + static_cast<std::size_t>(world_x - region.x) * 2U;
+            auto* out = output + static_cast<std::size_t>(processed) * 2U;
             for (std::int64_t offset = 0; offset < run; ++offset) {
                 const auto byte = static_cast<std::size_t>(offset) * 2U;
                 if (chunk == nullptr) {
@@ -4884,7 +4891,7 @@ void World::copy_render_cells(RectI64 region, std::span<std::uint8_t> destinatio
                                                       cell.state_b_value(),
                                                       config_.water_experiment_policy);
             }
-            world_x += run;
+            processed += run;
         }
     }
 }
