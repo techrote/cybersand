@@ -32,7 +32,8 @@ def owner_request():
            "outputs": sorted(subject.FOUR)}
     comment = {"user": {"login": "techrote"}, "author_association": "OWNER",
                "issue_url": "https://api.github.com/repos/techrote/cybersand/issues/290",
-               "body": body, "id": 1234}
+               "body": body, "id": 1234,
+               "html_url": "https://github.com/techrote/cybersand/pull/290#issuecomment-1234"}
     return req, comment, parent
 
 
@@ -541,7 +542,7 @@ class OriginalProducerActionsCustody(unittest.TestCase):
             if path.startswith("actions/runs/" + str(run_id) + "/jobs"):
                 return {"jobs": jobs}
             if path.startswith("actions/runs/" + str(run_id) + "/artifacts"):
-                return {"artifacts": artifacts}
+                return {"artifacts": artifacts, "total_count": len(artifacts)}
             if path == "actions/runs/" + str(run_id):
                 return run
             if path.startswith("actions/artifacts/"):
