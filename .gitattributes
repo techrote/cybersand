@@ -31,3 +31,6 @@ docs/audits/play-auto002-2026-10-28/linux-campaign.json -text
 *.dylib filter=lfs diff=lfs merge=lfs -text
 *.wasm filter=lfs diff=lfs merge=lfs -text
 godot/addons/godot-rapier2d/bin/*.framework/libgodot_rapier.* filter=lfs diff=lfs merge=lfs -text
+
+# Preserve the source-bound supplementary WSL measurement report byte for byte.
+docs/audits/play-auto004-2026-10-29/linux-wsl6-campaign.json -text
