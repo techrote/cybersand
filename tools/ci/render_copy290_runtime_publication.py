@@ -260,7 +260,9 @@ def source_ledgers(source, *, armed=True):
         size = int(size_raw)
         blob = blob_bytes[end + 1:end + size]
         require(name == oid and kind == b"blob" and len(blob) == size,
-                "Corrupted Git batch blob: " + path)
+                "Corrupted Git batch blob: " + path + " expected=" + repr(oid) +
+                " got=" + repr(name) + " kind=" + repr(kind) +
+                " declared=" + str(size) + " received=" + str(len(blob)))
         offset = end + size + 2
         present = ROOT / path
         require(present.is_file() and not present.is_symlink() and
