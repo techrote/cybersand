@@ -1,0 +1,149 @@
+name: RENDER-COPY-290 independent one-process sanitizer lifetime qualification
+
+# Verification-only successor to the source-matched 165 isolated-test shard run.
+# One old-source 18-minute monolithic invocation timed out: preserve that negative.
+# No LFS runtime build, publication request, write token, source change, or promotion.
+on:
+  push:
+    branches: [verify/render-copy290-monolithic-sanitizer-20261029]
+    paths:
+      - '.github/workflows/render-copy290-monolithic-sanitizer.yml'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: render-copy290-monolithic-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  one-process:
+    name: execute all 165 native tests in one original sanitized process
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/verify/render-copy290-monolithic-sanitizer-20261029'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 53
+    env:
+      ASAN_OPTIONS: 'detect_leaks=0:strict_string_checks=1:halt_on_error=1'
+      UBSAN_OPTIONS: 'halt_on_error=1:print_stacktrace=1'
+    steps:
+      - name: Checkout exact workflow-only descendant of qualified render-copy source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+
+      - name: Assert frozen implementation, oracle, source HEAD and provider policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = 'techrote/cybersand'
+          test "$GITHUB_REF" = 'refs/heads/verify/render-copy290-monolithic-sanitizer-20261029'
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor f551e8064a7d01ceb554774afb5c61e71e715c63 HEAD
+          test "$(git diff --name-only f551e8064a7d01ceb554774afb5c61e71e715c63 HEAD)" = '.github/workflows/render-copy290-monolithic-sanitizer.yml'
+          test "$(git rev-parse HEAD:native/src/world.cpp)" = 'a6afd8cad4264ac2eca0362d14711158e3606760'
+          test "$(git rev-parse HEAD:native/tests/test_world.cpp)" = '5613d2166c71fa49fd2b8f65e8caa93857b5d65f'
+          echo 'b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1  native/src/world.cpp' | sha256sum --check --strict
+          echo 'cfb54f5cc58388f1581bd367d3a19a7ff3d260583028980606c6b0e6fda7a69d  native/tests/test_world.cpp' | sha256sum --check --strict
+          python3 tools/ci/check_ci_provider_policy.py
+          git diff --check
+          mkdir -p build/render-copy290-monolithic
+          printf '%s\n' "$GITHUB_SHA" > build/render-copy290-monolithic/verification-head.txt
+          printf '%s\n' '60915dc86631271ea8661377a3458149adda9361' > build/render-copy290-monolithic/executable-source.txt
+
+      - name: Restore pinned original combined ASan+UBSan binary from successful run 40800942455
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          run-id: 40800942455
+          name: render-copy290-sanitizer-binary-1e39d8833588298f051ff820fd16a5c3f1af6f33
+          path: build/render-copy290-monolithic/original
+          github-token: ${{ github.token }}
+
+      - name: Verify restored binary, original artifact manifest and frozen registry
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum build/render-copy290-monolithic/original/tests_sanitized
+          echo '8d50798344cc6bdb058cabb7e7ea78da9a2b96959058eaba711aaf9d4a5af1dc  build/render-copy290-monolithic/original/tests_sanitized' | sha256sum --check --strict
+          test "$(wc -c < build/render-copy290-monolithic/original/tests_sanitized)" = '110637016'
+          python3 - <<'PY'
+          import hashlib, json, pathlib, re
+          base=pathlib.Path("build/render-copy290-monolithic/original")
+          m=json.loads((base/"manifest.json").read_text(encoding="utf-8"))
+          assert m["source"] == "60915dc86631271ea8661377a3458149adda9361"
+          assert m["verification_head"] == "1e39d8833588298f051ff820fd16a5c3f1af6f33"
+          assert m["binary_sha256"] == "8d50798344cc6bdb058cabb7e7ea78da9a2b96959058eaba711aaf9d4a5af1dc"
+          assert m["binary_size"] == 110637016
+          t=pathlib.Path("native/tests/test_world.cpp").read_text(encoding="utf-8")
+          block=re.search(r"const Test tests\[\]\s*=\s*\{(.*?)^\s*\};",t,re.S|re.M)
+          assert block is not None, "Native registry missing"
+          names=re.findall(r'\{\s*"([^"]+)"\s*,\s*[A-Za-z_][A-Za-z_0-9]*\s*\}',block[1])
+          assert len(names)==len(set(names))==165
+          assert hashlib.sha256("\n".join(names).encode()).hexdigest()=="2f48aa7ecb97054395a2893f1c282fe127e7d278dd2bf5e0c8a9ee222b2cad85"
+          (base.parent/"registry.json").write_text(json.dumps({"count":165,"names":names},indent=2)+"\n",encoding="utf-8")
+          print("FROZEN_SANITIZER_BINARY_AND_REGISTRY_OK 165/165")
+          PY
+          chmod +x build/render-copy290-monolithic/original/tests_sanitized
+
+      - name: Execute the single complete process (45-minute hard deadline; preserve failures)
+        shell: bash
+        run: |
+          set -uo pipefail
+          out=build/render-copy290-monolithic
+          set +e
+          timeout --signal=TERM --kill-after=30s 2700s "$out/original/tests_sanitized" > "$out/stdout.log" 2>&1
+          code=$?
+          set -e
+          printf '%s\n' "$code" > "$out/exit-code.txt"
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,re,sys
+          p=pathlib.Path("build/render-copy290-monolithic")
+          raw=(p/"stdout.log").read_bytes()
+          text=raw.decode("utf-8",errors="replace").replace("\r\n","\n")
+          expected=json.loads((p/"registry.json").read_text(encoding="utf-8"))["names"]
+          observed=re.findall(r"^\[pass\] (.+)$",text,flags=re.M)
+          bad=re.search(r"(?mi)^\[fail\]|runtime error:|AddressSanitizer:|UndefinedBehaviorSanitizer",text)
+          code=int((p/"exit-code.txt").read_text())
+          passed=(code==0 and bad is None and len(observed)==165
+                  and len(set(observed))==165 and set(observed)==set(expected))
+          receipt={
+             "schema":"cybersand.render-copy290-monolithic-sanitizer.v1",
+             "verified_source":"60915dc86631271ea8661377a3458149adda9361",
+             "verification_head":os.environ["GITHUB_SHA"],
+             "original_binary_run":40800942455,
+             "original_binary_artifact_id":12866531004,
+             "original_binary_zip_sha256":"578506185855ce4b861e0684e12dc41a79e96eed2e8fdfd980fc1b9599de8dd2",
+             "binary_sha256":"8d50798344cc6bdb058cabb7e7ea78da9a2b96959058eaba711aaf9d4a5af1dc",
+             "registered":len(expected),
+             "observed_pass_lines":len(observed),
+             "observed_unique":len(set(observed)),
+             "first_missing":[x for x in expected if x not in observed][:12],
+             "first_extra":[x for x in observed if x not in expected][:12],
+             "exit_code":code,
+             "timeout_seconds":2700,
+             "sanitizer_diagnostic":bool(bad),
+             "stdout_sha256":hashlib.sha256(raw).hexdigest(),
+             "stdout_bytes":len(raw),
+             "one_process_all_165_passed":passed,
+          }
+          (p/"result.json").write_text(json.dumps(receipt,sort_keys=True,indent=2)+"\n",encoding="utf-8")
+          print(json.dumps(receipt,sort_keys=True),flush=True)
+          if not passed: sys.exit(1)
+          PY
+
+      - name: Retain original one-process stdout, receipts and failed/timeout evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: render-copy290-monolithic-source-frozen
+          path: |
+            build/render-copy290-monolithic/verification-head.txt
+            build/render-copy290-monolithic/executable-source.txt
+            build/render-copy290-monolithic/registry.json
+            build/render-copy290-monolithic/exit-code.txt
+            build/render-copy290-monolithic/stdout.log
+            build/render-copy290-monolithic/result.json
+          if-no-files-found: warn
+          retention-days: 30
