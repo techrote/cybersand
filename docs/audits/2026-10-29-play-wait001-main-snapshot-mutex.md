@@ -1,6 +1,6 @@
 ---
-title: PLAY-WAIT-001 source proposal for isolated Main snapshot mutex wait
-status: Planned
+title: PLAY-WAIT-001 source-bound Windows/Linux snapshot mutex qualification
+status: Current
 document-kind: audit
 canonical-for: []
 last-reviewed: 2026-10-29
@@ -8,7 +8,7 @@ scope: Test-only Windows/Linux Godot pacing and snapshot-handoff attribution
 related-documents: [../systems/player-control-playground.md, ../reference/validation-evidence.md, ../reference/status-and-roadmap.md, 2026-10-29-play-life005-native-failure-recovery.md]
 ---
 
-# PLAY-WAIT-001 — snapshot-handoff lock-wait source proposal (29 October 2026)
+# PLAY-WAIT-001 — snapshot-handoff lock-wait source and execution record (29 October 2026)
 
 ## Purpose and ownership
 
@@ -70,8 +70,9 @@ hash is represented as a positive policy admission here.
 ## Exact-head acceptance plan
 
 Baseline source: accepted main
-`aac0feb65e2268b74975892ce1df81e04e1a7e40`; this record describes
-the unexecuted source proposal, not a completed run.
+`aac0feb65e2268b74975892ce1df81e04e1a7e40`; the first version of this record described
+the unexecuted source proposal. The dated qualification addendum below
+supersedes that execution status while preserving the source history.
 
 - Require repository documentation/provenance and applicable Native plus
   Windows/Linux Godot on the **final literal candidate head**. Preserve
@@ -114,3 +115,14 @@ including Windows, was not complete at the first diagnostic readback.
 A fresh full exact-head matrix and independent raw reduction are required
 before accepting the corrected measurements. No gameplay FPS, native-job
 barrier, solver admission or manual feel claim follows from this diagnostic.
+
+## Corrected-head Windows/Linux execution and retained Native failure — 2026-10-29
+
+**Literal executed GDScript head:** `35af6e84f5ef4ae9486b2607b2a6aca044ee762f`, based on accepted `main=aac0feb65e2268b74975892ce1df81e04e1a7e40`. The present addendum is **documentation only** and cannot be cited as a fresh runtime invocation on this successor commit. No native/C++ source, Git-LFS binaries, worker/Main production source, solver admission/refusal/default or Rapier owner changed.
+
+- [Documentation/provenance #40899843194](https://github.com/techrote/cybersand/actions/runs/40899843194) **SUCCESS**, attempt 1; [Windows/Linux Godot #40899843252](https://github.com/techrote/cybersand/actions/runs/40899843252) **SUCCESS**, attempt 1, five SetP rigs on each platform.
+- All ten original `PLAY_WAIT001_RESULT` records: **16 assertions / 0 failures**, 120 native + 120 Rapier completed ticks per rig, 290 Main callbacks, **289 actual complete callback intervals**, 290 snapshot-mutex acquisitions, 120 new + 170 no-new snapshot returns; worker joined and Rapier session retired. Course source SHA-256 `9aa78894270cf4b2086315b5d7418a762900d6fe44249b95135749286481d474`; reported native worker capacity 4. This is a short hosted-headless measurement, not interactive rendered FPS.
+- Isolated snapshot-lock acquisition **p95 1 μs** for all ten; p99 **44–173 μs Windows**, **31–188 μs Linux**. The independent source/log review [#5701053276](https://github.com/techrote/cybersand/pull/297#pullrequestreview-5701053276) recalculated **40/40 distributions**. The [original artifact-byte readback](https://github.com/techrote/cybersand/pull/297#issuecomment-6502043772) verified five Windows/Linux ZIP archives, **524 members**, zero CRC/duplicate-path errors, full original ZIP SHA-256 ledger, and ten archived log records with independently matching reductions.
+- [Native #40899843210 attempt 1](https://github.com/techrote/cybersand/actions/runs/40899843210/attempts/1) **FAILED**: existing 15-minute TSan command timed out with exit **124** after the W-CY material-hooks pass. The following workers/persistence result and subsequent steps were not recorded passing on attempt 1; the failure remains permanent negative evidence. The [unchanged-source diagnostic rerun, attempt 2](https://github.com/techrote/cybersand/actions/runs/40899843210/attempts/2) **SUCCESS**: TSan, ordinary native, ASan+UBSan and applicable validation steps completed, with the original native log reporting 164 tests passed for each of the three primary variants. Existing timeout policy was not relaxed, no assertion skipped and no runtime implementation altered. The [differential throughput diagnosis](https://github.com/techrote/cybersand/pull/297#issuecomment-6503399581) makes slowdown plausible, **not proven causal**, and does not erase the first failure.
+
+**Disposition:** corrected normal-load snapshot mutex timing is supported by source-matched execution and original log/ZIP checks. PR #297 remains unmerged pending documentation-head applicability and final acceptance; this record does not release/close the epic. The probe is an instrumented test-equivalent getter, not the exact production getter; no all-Main-wait attribution, native-phase active-job proof, slow-native UI progress, shutdown under held phase jobs, positive non-default per-material construction in representative gameplay, physical keyboard/gamepad/focus, sustained rendered session, or recorded human-feel pass is established. #266/#268/#269/#270/#263 remain open. Preserve the original failure and source identities alongside the successful diagnostic rerun.

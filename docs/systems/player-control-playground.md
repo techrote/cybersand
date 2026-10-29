@@ -314,9 +314,9 @@ slow-native/outstanding-job shutdown, arbitrary cancellation races, general
 leak/race freedom, gameplay performance, physical devices and human feel.
 #269/#270 remain open.
 
-### Proposed snapshot-handoff lock wait baseline (PLAY-WAIT-001)
+### Executed normal-load snapshot-handoff lock wait baseline (PLAY-WAIT-001)
 
-A separate **Planned, unexecuted** five-rig [test-only probe](../audits/2026-10-29-play-wait001-main-snapshot-mutex.md) reuses the actual Main/CyberSimulationWorker/main-thread-Rapier course, with an instrumented test-equivalent `take_latest_snapshot` mutex acquisition. Its recorded Main callback and raw lock-wait samples would isolate only this handoff lock under normal native ticking, not other Main waits, a slow native phase, physical rendered FPS or human feel. No production source, native runtime or defaults change in this proposal. #268/#269/#270 remain open.
+The **unmerged, source-qualified** five-rig [test-only probe](../audits/2026-10-29-play-wait001-main-snapshot-mutex.md) uses actual Main/CyberSimulationWorker/main-thread-Rapier course execution with an instrumented, semantically equivalent `take_latest_snapshot` mutex acquisition. Windows/Linux [Godot run 40899843252](https://github.com/techrote/cybersand/actions/runs/40899843252) passes 16 assertions per rig, with 120 real native and Rapier ticks per rig, 290 Main callbacks and 289 complete callback intervals. Normal-load mutex-acquire p95 was 1 microsecond per rig. The same-source [Native run 40899843210](https://github.com/techrote/cybersand/actions/runs/40899843210) failed its first TSan 15-minute timeout but passed on explicitly diagnosed attempt 2; both attempts remain evidence. This measures only that handoff lock, **not** other Main waits, sustained rendered FPS, native jobs actually held, physical device/focus or human feel. No production, native runtime or solver default is altered. #268/#269/#270 remain open.
 
 ## Open the seven-preset movement course
 
