@@ -437,3 +437,99 @@ the all-test sanitizer/ready-PR matrices and independent
 acceptance review are open, and no Web/interactive frame
 performance is claimed. PR #283's B=289 physical ejection
 candidate remains NO-GO.
+
+## Independent all-165-case sanitizer coverage — 2026-10-29
+
+The previous [full single-process sanitizer attempt
+40792599185](https://github.com/techrote/cybersand/actions/runs/40792599185)
+**remains failed** (18-minute timeout after 146 passing groups).
+The corrected-source [focused 3+1 sanitizer pass
+40796751009](https://github.com/techrote/cybersand/actions/runs/40796751009)
+is unaffected. To address the unexecuted 165-case coverage without
+silently extending the repository's normal release timeouts, a
+**separate, source-frozen verification-only** implementation was
+built on branch `verify/render-copy290-sanitizer-shards-20261029`.
+It adds only `.github/workflows/render-copy-290-sanitizer-shards.yml`
+and `tools/ci/render_copy_290_sanitizer_shard.py` relative to the
+existing documentation head `16087b2a`. The executable source remains
+`60915dc86631271ea8661377a3458149adda9361` (tree
+`dc370ee4e957ce34e752ff665afef0ed9e325326`) with
+unchanged `world.cpp` and `test_world.cpp` Git blobs.
+
+### Execution and evidence
+
+[All-test run 40800942455](https://github.com/techrote/cybersand/actions/runs/40800942455)
+on verification head `1e39d8833588298f051ff820fd16a5c3f1af6f33`
+**passed all six jobs**: compiled the pinned Ubuntu 24.04 GCC13
+combined ASan+UBSan binary once; ran four deterministic index
+shards on that **identical binary SHA-256
+`8d50798344cc6bdb058cabb7e7ea78da9a2b96959058eaba711aaf9d4a5af1dc`**;
+and independently reduced all shards against the registered
+165-test C++ table. The test registry has 165 unique labels,
+SHA-256 `2f48aa7ecb97054395a2893f1c282fe127e7d278dd2bf5e0c8a9ee222b2cad85`.
+
+| Shard | Separate test processes | Successful tests | Sum of test wall times |
+|---|---:|---:|---:|
+| 0 | 42 | 42 | 76.855 s |
+| 1 | 41 | 41 | 292.973 s |
+| 2 | 41 | 41 | 313.056 s |
+| 3 | 41 | 41 | 198.879 s |
+| **Total** | **165** | **165** | **881.762 s** |
+
+Every requested registered label passed, with no sanitizer report in
+the retained raw outputs. These runs use `ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1:halt_on_error=1`
+and `UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1`.
+The source, binary and all test-output hashes were compared
+independently: **6/6 ZIP SHA-256 and ZIP CRC checks pass; 165/165
+raw stdout SHA-256 values match their records; all four shard
+manifests refer to the same compiled binary**. The build ZIP
+contains that 110,637,016-byte binary. The separately archived
+test logs and a reproducible source/coverage reducer are retained
+by Actions for 30 days.
+
+[Machine-readable receipt](2026-10-29-render-copy-sanitizer-matrix-receipt.json)
+binds the six artifact IDs and complete SHA-256 values, frozen
+source/tree/blobs, original negative, and exact coverage limits.
+The initial [verification run
+40800824035](https://github.com/techrote/cybersand/actions/runs/40800824035)
+failed **before compiling**, because the initial guard allowed
+only the two new verifier files but overlooked the three
+already inherited documentation/evidence files. This was corrected
+to an exact, five-file allowlist; the failed attempt remains
+an explicit test-harness negative.
+
+**Scope:** All 165 test *functions* were executed successfully
+under combined ASan/UBSan in **individually isolated processes**,
+not one original suite process. This does **not** establish that
+the original 165-test single-process order or lifetime/cross-test
+interactions pass; the normal full Native, TSan, entire Godot,
+source-matched LFS publication and ready-PR gates are still open.
+No code, ABI, material/liquid policy, snapshot ACK, native-worker
+authority, Rapier ownership or default changed in the verifier.
+
+### Publication input delta — independent source-archive comparison
+
+Both committed Windows and Linux `runtime-provenance*.json` records
+were compared **file by file** against the exact previously archived
+corrected-source Git tar (ZIP `e31cbc9f...`, inner tar
+`fa62e4e4...`). The two platforms agree:
+
+- Of **80** native `source_inputs`, exactly **one** differs:
+  `native/src/world.cpp`, recorded
+  `b4ab1dbf2277eb3213d827f00ddd1dbb3e1294b27e312062cb877b83ee083728`,
+  current
+  `b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1`.
+- Of **549** historical `build_inputs`, **six** no longer match
+  the current source archive: `.gitattributes`,
+  `native/tests/test_world.cpp`, and four deliberately retired
+  PLAY-AUTO-002 publisher paths (workflow, request, publisher
+  script, test script). The old ledger is **historical**, not
+  a template to silently reuse or edit in place.
+
+The current platform binaries and manifests remain **unpublished
+and source-stale**. The [unarmed, review-only new-publisher
+admission protocol](https://github.com/techrote/cybersand/pull/290#issuecomment-6485477234)
+requires an explicit frozen request, complete dual-host execution,
+new accurate source/build ledgers and guarded four-path LFS
+append before the final exact-head acceptance matrix. No
+request was armed and no binary or provenance file was changed.
