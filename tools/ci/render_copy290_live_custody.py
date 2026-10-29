@@ -192,6 +192,10 @@ def git_archive_sha_map(commit):
     try:
         with tarfile.open(fileobj=process.stdout, mode="r|") as archive:
             for member in archive:
+                # git archive emits directory headers as well as regular blobs.
+                # Do not hash directories or admit symlinks and special files.
+                if member.isdir():
+                    continue
                 require(member.isfile(), "Unexpected non-file Git archive member")
                 require(member.size <= 64 * 1024 * 1024, "Oversized tracked input")
                 file = archive.extractfile(member)
