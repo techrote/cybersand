@@ -10,6 +10,46 @@ related-documents: [../systems/player-control-playground.md, ../architecture/dat
 
 # PLAY-LIFE-005 actual Main failure and recovery — 2026-10-29
 
+## Clean committed-source Windows proof
+
+Exact clean source **`79574a243daa45600471c56ecfeb5e58caaca6e3`**, tree
+`a2b2a8772be458cc7785eb4399c42ba2b28306be`, passes strict import plus the
+actual-host case, **30 assertions / zero failures**. All80 native inputs match
+the retained source/payload and all738 scoped tested inputs remain unchanged
+after execution. The test's working bytes match its exact Git blob.
+
+```text
+python C:/tmp/run_play_life005_exact.py --root C:/Users/_/.codex/worktrees/play-integration-20261028/khybersand --source 79574a243daa45600471c56ecfeb5e58caaca6e3 --output C:/Users/_/.codex/tmp/play-life005-20261029/exact-79574a24
+```
+
+The raw result reports healthy completed native tick3, failure attempt4/count1
+with the exact capacity reason, unchanged World generation2 and newer status
+serial16→17. Eighteen actual Main and eight physics callbacks complete while
+Rapier stays at observed step3. Ordinary reset produces generation3, failure
+count0, native tick3 and Rapier step7; the same reference nodes/epoch0 remain.
+Final Main exit joins the owner and retires all three bodies. Only afterward,
+the complete1,048,576-byte stored-material image contains **zero Sand cells**.
+No inference depends on material queries masked by the live body graph or on
+Sand remaining inside the64x64 interest region.
+
+This clean cohort is separate from the27/29-assertion working-overlay probes
+below. No diagnostic error, skip, timeout or retry occurred. The external
+collector records its own hash, pinned runtime identities, all source inputs,
+raw logs, exact bounds and result checks. Later documentation-only appends do
+not change the executed test; final hosted Windows/Linux/Native/Docs and
+distinct review remain their own gates.
+
+Import takes4.388s under240s; the case2.598s under180s; predicate bounds stay
+15,000ms. These are process durations, not frame-rate or gameplay latency
+measurements. Test source SHA-256
+`4b606239d28478082e43939023316ba5ab264728b36362cb6c5588d0ea9cfe4d`.
+
+| Clean-source evidence | SHA-256 |
+|---|---|
+| `identity.json` | `010799b66fdc14b6af7a7f1e16fb5d3e5e64eaa35a6a0715e6cbc858f877bc57` |
+| `timings.json` | `8f6fa849242227d6b1d7a77e6b2219c01ec0fb75ff1e69790698809e72e9e083` |
+| `results.json` | `06efffffe95ea3f6c9cb6a0d910246b377ffc0d0e0c0f9df3b5bbea044f9c454` |
+
 ## Source and dependency boundary
 
 The isolated branch `codex/play-life005-failure-recovery`, source root
@@ -105,7 +145,7 @@ latest source binds acknowledgement to the same emitted World/revision/render
 identity and completed tick, retaining the complete payload comparison. Review
 also replaces selected-region masked queries after join with the whole stored
 material image, avoiding gravity/interest/body-mask blind spots. This corrected
-source requires its own fresh clean committed-source execution; the prior27/29
+source receives the fresh clean committed-source execution above; the prior27/29
 cohorts are not relabeled as that proof.
 
 ## Documentation map and remaining gates

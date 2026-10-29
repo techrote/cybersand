@@ -292,7 +292,10 @@ World, including outside interest and beneath masks.
 
 The [source/evidence record](../audits/2026-10-29-play-life005-native-failure-recovery.md)
 separates the working-overlay27/0 and29/0 probes from the final stronger
-source's own execution, CI and review gates. This exercises actual Main failure
+source's own execution, CI and review gates. Clean source79574a24 passes local
+Windows30/0, including the complete stored-image check after join, with all80
+native and738 tested inputs verified. Final hosted qualification and distinct
+review remain tracked separately. This exercises actual Main failure
 and ordinary default-policy recovery, not the five SetP course rigs. Prepared
 liquid construction still requires a healthy World; no prepared recovery or live
 solver replacement is admitted. Source/platform qualification is separate from
