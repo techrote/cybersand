@@ -69,22 +69,32 @@ is held, the fixture requires all of the following without releasing the gate:
 4. the exact last committed immutable snapshot serial/tick/World generation to
    remain unchanged, proving no partial native publication.
 
-For shutdown, a bounded helper is started before `queue_free()`. The actual
-`stop_worker()` observer records the `requested` fence while the copied gate
-still reports multiple jobs outstanding and Rapier remains initialized. Only
-then may the helper release the native gate. All selected tasks must run their
-real `scan_rect`, drain, and return from the production pool dispatch.
-`wait_to_finish()` must then produce the `joined` observation while Rapier is
-still initialized. Main subsequently executes its existing
-`rapier_bridge.shutdown()`; the retained bridge must report uninitialized.
-Only after join is the test permitted to inspect the worker-owned adapter, and
+For shutdown, a bounded helper is started before `queue_free()`. The actual Main exit path first retires its accepted SetP session in
+`_close_physical_actors()`. That session owns the live Rapier bridge and calls
+`bridge.shutdown()`; only copied body state was ever supplied to the native
+worker, so there is no cross-thread live-Rapier dependency to preserve. The
+test retains the old bridge only as an observation handle and requires it to be
+already uninitialized when the production `stop_worker()` observer records the
+`requested` fence, while the copied native gate still reports multiple jobs
+outstanding. Only then may the helper release the native gate. All selected
+tasks must run their real `scan_rect`, drain, and return from the production
+pool dispatch. `wait_to_finish()` must then produce the `joined` observation;
+the retained SetP bridge must remain shut down. Main subsequently executes its
+existing final `rapier_bridge.shutdown()` on the replacement bridge. Only
+after join is the test permitted to inspect the worker-owned adapter, and
 dropping retained owner references must destroy that adapter.
 
 The expected sequence is therefore:
 
-`dispatch start < first actual claim < production stop request < manual release
-< all selected tasks drained < pool dispatch return < worker joined < Rapier
-shutdown < retained native adapter destruction`.
+`dispatch start < first actual claim < accepted SetP/Rapier retirement
+< production worker-stop request < manual release < all selected tasks drained
+< pool dispatch return < worker joined < final Main bridge shutdown
+< retained native adapter destruction`.
+
+This ordering intentionally matches current ownership: the Main-owned SetP
+Rapier graph can retire before worker join because the worker holds only copied
+body packets; the worker-owned World cannot be destroyed until its thread has
+joined.
 
 The retained worker reference deliberately delays the last object destruction
 so premature destruction is observable; it does not change the production stop

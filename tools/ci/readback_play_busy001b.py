@@ -39,7 +39,7 @@ def main() -> int:
     required_true = (
         "production_stop_fence_observed",
         "native_adapter_destroyed",
-        "rapier_shutdown_observed",
+        "setp_rapier_retired_before_worker_stop",
         "test_only_controlled_native_phase_hold",
     )
     failures = []
@@ -99,7 +99,7 @@ def main() -> int:
             "real_world_phase_jobs": True,
             "actual_main_callbacks": True,
             "actual_production_stop_worker_fence": True,
-            "actual_main_rapier_shutdown_order": True,
+            "actual_setp_rapier_retirement_before_worker_stop": True,
             "test_only_native_hold": True,
             "rendered_fps": False,
             "physical_device_focus": False,

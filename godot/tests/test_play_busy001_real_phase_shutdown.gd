@@ -272,10 +272,10 @@ func run() -> void:
 		"helper releases held native jobs only after the production stop request, without safety timeout")
 	expect(observer.requested_thread_started and not observer.joined_thread_started,
 		"simulation Thread is live at the stop request and stopped at the joined observation")
-	expect(observer.rapier_at_requested and observer.rapier_at_joined,
-		"Main-owned Rapier remains initialized through worker stop and join")
+	expect(not observer.rapier_at_requested and not observer.rapier_at_joined,
+		"accepted SetP Rapier owner is already retired before the simulation-worker stop fence")
 	expect(not rapier.is_initialized(),
-		"production Main exit shuts Rapier down only after stop_worker returns")
+		"retained accepted SetP bridge stays shut down across worker stop and join")
 	expect(not worker._thread.is_started(),
 		"production scene exit joined the exclusive simulation owner")
 	expect(not is_instance_valid(session) and nodes_retired(bodies),
@@ -308,7 +308,9 @@ func run() -> void:
 		"joined exclusive owner leaves the accepted native adapter healthy")
 	var stop_fence_observed: bool = observer.stop_marked \
 		and observer.stages == ["requested", "joined"]
-	var rapier_shutdown_observed: bool = not rapier.is_initialized()
+	var setp_rapier_retired_before_worker_stop: bool = \
+		not observer.rapier_at_requested and not observer.rapier_at_joined \
+		and not rapier.is_initialized()
 	var worker_weak: WeakRef = weakref(worker)
 	worker._play_busy_stop_observer = Callable()
 	observer.worker = null
@@ -345,7 +347,7 @@ func run() -> void:
 		"production_stop_fence_observed": stop_fence_observed,
 		"workers_joined": 1 if worker_weak.get_ref() == null else 0,
 		"native_adapter_destroyed": world_weak.get_ref() == null,
-		"rapier_shutdown_observed": rapier_shutdown_observed,
+		"setp_rapier_retired_before_worker_stop": setp_rapier_retired_before_worker_stop,
 		"gate_receipt": final_status,
 		"retries": 0,
 		"test_only_controlled_native_phase_hold": true,
