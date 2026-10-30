@@ -8,6 +8,11 @@ const HOLD_TIMEOUT_MS: int = 12000
 const PHYSICS_FRAMES_UNDER_HOLD: int = 30
 const SETUP_WAIT_TIMEOUT_MS: int = 30000
 const FRAME_DRAW_TIMEOUT_MS: int = 2500
+# The runner's --resolution changes its real window, not Godot's original
+# 1920x1080 canvas content scale. Keep the rendered fixture's logical and
+# physical 16:9 target identical without changing the production project.
+const RENDER_CONTENT_SIZE: Vector2i = Vector2i(960, 540)
+const COURSE_DIAGNOSTIC_SAMPLE_MS: int = 5000
 
 var desktop: Control
 var frame_post_draw_seen: bool = false
@@ -72,6 +77,43 @@ func render_host_values() -> Dictionary:
 		"main_callbacks": desktop.completed_main_callbacks,
 		"physics_callbacks": desktop.completed_physics_callbacks,
 	}
+
+
+# Diagnostic *copies* only: no live World/native adapter read, no new owner.
+# These records are NOT progress-watchdog stages, so repeated samples cannot
+# hide a genuinely stalled graphical course installation.
+func rendered_course_setup_values() -> Dictionary:
+	var snapshot: CyberSimulationSnapshot = desktop.latest_snapshot
+	return {
+		"pending_apply": not desktop.pending_microscenario_apply.is_empty(),
+		"pending_serial": int(desktop.pending_microscenario_apply.get("serial", 0)),
+		"worker_running": desktop.simulation_worker._thread.is_started(),
+		"worker_failed": desktop.simulation_worker.has_failed(),
+		"snapshot_present": snapshot != null,
+		"snapshot_serial": int(snapshot.serial) if snapshot != null else -1,
+		"native_tick": int(snapshot.tick_index) if snapshot != null else -1,
+		"tower_micro_active": bool(desktop.tower_context.get("micro_active", false)),
+		"ack_serial": int(desktop.tower_context.get("scenario_request_serial", 0)),
+		"ack_applied": bool(desktop.tower_context.get("scenario_request_applied", false)),
+		"main_callbacks": desktop.completed_main_callbacks,
+		"physics_callbacks": desktop.completed_physics_callbacks,
+	}
+
+
+func wait_for_rendered_course() -> bool:
+	var deadline: int = Time.get_ticks_msec() + SETUP_WAIT_TIMEOUT_MS
+	var next_sample: int = Time.get_ticks_msec() + COURSE_DIAGNOSTIC_SAMPLE_MS
+	while Time.get_ticks_msec() < deadline:
+		if course_installed(desktop):
+			return true
+		if Time.get_ticks_msec() >= next_sample:
+			print("PLAY_BUSY001C_COURSE_SAMPLE ",
+				JSON.stringify(rendered_course_setup_values()))
+			next_sample += COURSE_DIAGNOSTIC_SAMPLE_MS
+		await process_frame
+	print("PLAY_BUSY001C_COURSE_TIMEOUT ",
+		JSON.stringify(rendered_course_setup_values()))
+	return false
 
 
 func gate_held(gate: Variant, generation: int) -> bool:
@@ -223,9 +265,17 @@ func run() -> void:
 		quit(1)
 		return
 
+	var initial_content_scale: Vector2i = root.content_scale_size
+	root.content_scale_size = RENDER_CONTENT_SIZE
+	expect(root.content_scale_size == RENDER_CONTENT_SIZE,
+		"real window uses explicitly requested 960x540 canvas content scale")
+	if root.content_scale_size != RENDER_CONTENT_SIZE:
+		quit(1)
+		return
 	progress("display_ready", {"display_server":DisplayServer.get_name(),
 		"driver":RenderingServer.get_current_rendering_driver_name(),
 		"window_pixels":[DisplayServer.window_get_size().x, DisplayServer.window_get_size().y],
+		"original_content_scale_pixels":[initial_content_scale.x, initial_content_scale.y],
 		"content_scale_pixels":[root.content_scale_size.x, root.content_scale_size.y]})
 	release_controls()
 	desktop = load("res://main.tscn").instantiate()
@@ -244,8 +294,7 @@ func run() -> void:
 	expect(desktop.microscenario_launch(Catalogue.PLAYER_COURSE_ID, "Play", 0),
 		"authored Player Playground admits through normal Main route")
 	progress("course_queued")
-	var ready: bool = await wait_for(
-		Callable(self, "course_installed").bind(desktop), SETUP_WAIT_TIMEOUT_MS)
+	var ready: bool = await wait_for_rendered_course()
 	expect(ready, "native worker acknowledges authored course within graphical setup budget")
 	if ready:
 		progress("course_installed", {"native_tick":int(desktop.latest_snapshot.tick_index)})

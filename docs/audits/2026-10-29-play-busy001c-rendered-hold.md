@@ -335,3 +335,69 @@ Neither this reduction nor the previous failures qualifies a 1920×1080
 graphical performance target, sustained FPS, physical controller/focus or
 manual human feel. Require fresh exact-head Linux/Windows original logs,
 framebuffer dimensions, PNGs and independent custody before acceptance.
+
+## Fifth graphical refusal at 87825aa8 and real canvas-scale diagnostic — 2026-10-30
+
+Source `87825aa831f03196674965226931b565204b38f3`,
+[host run 41007034245](https://github.com/techrote/cybersand/actions/runs/41007034245)
+is terminal **FAILED** on both graphical 001C jobs.
+[Documentation 41007038086](https://github.com/techrote/cybersand/actions/runs/41007038086)
+passed; normal Native/Godot PR checks were **draft-skipped**.
+
+Independently downloaded the two **original** 001B/001C run artifacts:
+
+- Linux artifact `12956217694`, ZIP SHA-256
+  `899539d7ffc48965958b6152b17a4b4807ea344fb3edfb78ba782df3bf20454a`;
+  **68** CRC-clean, unique, safe members. Raw graphical log SHA-256
+  `64a19597cae0a147123515c843aebb280954adf61d1a8ee37e2ed6121d87d3ce`.
+- Windows artifact `12955434434`, ZIP SHA-256
+  `5a6cfefe860471164a1ac5975d84e23933c938b8a8a30bfcbfc8410516ab1fe3`;
+  **22** CRC-clean, unique, safe members. Raw graphical log SHA-256
+  `a7734225eb049149dbf51cae8cefa70396af74de6e046d788d5eeb505211f3b4`.
+
+Both source-matched 001B real-phase hold/stop controls still pass **34
+assertions/zero failures** on this exact source. Raw 001B machine rows match
+the archived receipts exactly. Runtime SHA-256 seals, log hashes, identical
+source-input manifest SHA-256
+`f3795bba4b0c87b10ccfbdcc626a1a654801a3cb86a008137f2fbcc27679f37c`,
+and recorded native/Rapier provenance match across each original archive.
+
+The 001C script logs reveal why the earlier **window** size experiment was
+insufficient: on BOTH Linux and Windows, the real outer window is
+**960x540** while Godot's **canvas content scale remains 1920x1080**.
+The former comes from `--resolution`; the latter from
+`godot/project.godot`'s viewport configuration. Thus the earlier
+assumption that a smaller window request also reduced the logical
+rendered course canvas was incorrect.
+
+- Linux: real X11/OpenGL3 Mesa llvmpipe, `course_queued` at 4,692ms;
+  after the existing 30s course-setup bound, the authored course is not
+  acknowledged. Retained thread snapshot shows the Godot main thread
+  running and native pool workers waiting in futex; this does **not**
+  determine the main-thread source location.
+- Windows: real ANGLE/Microsoft Basic Render Driver, `course_queued`
+  at 7,718ms; the unchanged 45s *stage-idle* watchdog fails before
+  course acknowledgment. Two raw diagnostic dumps are retained but not
+  symbolized. One graphical child thread consumes substantial CPU time;
+  CPU occupancy is not proof of a deadlock or a completed scenario.
+
+Neither platform reaches actor/native gate arm, `frame_post_draw` capture,
+or a positive 001C machine result. There are **zero raw PNG** artifacts.
+The 001B successes cannot be substituted for missing 001C graphics results.
+
+**Narrow successor experiment:** the explicit-only graphical test now sets
+`SceneTree.root.content_scale_size` to **960x540 before Main scene
+instantiation**, checks the actual value, and logs original/observed canvas
+sizes. This changes no production project setting, native worker, Rapier
+ownership, solver policy or published LFS runtime. It additionally records
+read-only copied course/setup observations at five-second intervals during
+the existing **30-second** course wait. These samples do **not** reset
+`CYBERSAND_PROGRESS`, hide the stage-idle watchdog or extend any
+deadline. The real >=640x360 raw PNG/pixel-change oracles, two submitted
+frames, >=2 simultaneously held real native callbacks, 12s safety gate,
+30 under-hold physics steps, 2.5s frame signal and 120s absolute process
+bounds remain unchanged.
+
+This is a candidate for fresh source-matched execution, not acceptance.
+Even a successful 960x540 hosted run would not qualify production 1920x1080
+rendering, sustained FPS, physical focus/gamepad or manual human feel.
