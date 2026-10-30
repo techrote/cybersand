@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: native-parallel-candidate-${{ github.ref }
+  group: native-parallel-candidate-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -30,7 +30,7 @@ jobs:
           python3 tools/ci/test_ci_provider_policy.py
 
   native-shards:
-    name: native candidate / ${{ matrix.suite }
+    name: native candidate / ${{ matrix.suite }}
     runs-on: ubuntu-24.04
     timeout-minutes: 65
     strategy:
@@ -60,7 +60,7 @@ jobs:
         id: execute
         shell: bash
         env:
-          SUITE: ${{ matrix.suite }
+          SUITE: ${{ matrix.suite }}
         run: |
           set -euo pipefail
           mkdir -p "build/native-parallel/$SUITE"
@@ -124,8 +124,8 @@ jobs:
       - name: Record original exact-head evidence and failure outcome
         if: always()
         env:
-          SUITE: ${{ matrix.suite }
-          SUITE_OUTCOME: ${{ steps.execute.outcome }
+          SUITE: ${{ matrix.suite }}
+          SUITE_OUTCOME: ${{ steps.execute.outcome }}
         run: |
           python3 - <<'PY'
           import hashlib
@@ -173,7 +173,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: native-parallel-${{ matrix.suite }-${{ github.run_id }-${{ github.run_attempt }
+          name: native-parallel-${{ matrix.suite }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             build/native-parallel/
             build/physics-cli-validation/
@@ -195,14 +195,14 @@ jobs:
         if: always()
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          pattern: native-parallel-*-${{ github.run_id }-${{ github.run_attempt }
+          pattern: native-parallel-*-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/native-parallel-evidence
 
       - name: Independently verify full family coverage, identity and log hashes
         if: always()
         env:
-          POLICY_RESULT: ${{ needs.policy.result }
-          SHARD_RESULT: ${{ needs.native-shards.result }
+          POLICY_RESULT: ${{ needs.policy.result }}
+          SHARD_RESULT: ${{ needs.native-shards.result }}
         run: |
           set -euo pipefail
           python3 - <<'PY'
@@ -277,7 +277,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: native-parallel-aggregate-${{ github.run_id }-${{ github.run_attempt }
+          name: native-parallel-aggregate-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/native-parallel-qualification/
           if-no-files-found: warn
           retention-days: 90
