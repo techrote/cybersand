@@ -49,15 +49,17 @@ func _button(row: Node, text: String, action: Callable) -> Button:
 	row.add_child(button)
 	return button
 
-func setup(controller: Control) -> void:
+func setup(controller: Control, selection_only: bool = false) -> void:
 	host = controller
 	name = "LiquidComparisonControls"
 	var heading := Label.new()
-	heading.text = "Liquid comparison • experimental"
+	heading.text = "Liquid solvers" if selection_only else "Liquid comparison • experimental"
 	heading.add_theme_font_size_override("font_size", 20)
 	add_child(heading)
 	var explanation := Label.new()
 	explanation.text = "Choose a solver policy, then rebuild the active scenario. Exploratory mode stages sampled or articulated actors in supported maps. Use the existing pause and step controls to run."
+	if selection_only:
+		explanation.text = "Choose Current defaults or an experimental family for each material. Selections take effect when you build the session. Unavailable combinations show the native refusal reason."
 	explanation.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(explanation)
 	var presets := HFlowContainer.new()
@@ -121,6 +123,15 @@ func setup(controller: Control) -> void:
 	status = Label.new()
 	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(status)
+	if selection_only:
+		# Reuse the native-backed editor, without exposing its separate
+		# comparison/import transactions inside the playable-session surface.
+		setup_picker.hide()
+		session_picker.hide()
+		session_picker.select(1)
+		actions.hide()
+		receipt_label.hide()
+		status.hide()
 	if ClassDB.class_exists(&"CyberDemoBridge"):
 		bridge = ClassDB.instantiate(&"CyberDemoBridge")
 	if bridge == null or not bridge.has_method(&"liquid_policy_assignment_choices"):

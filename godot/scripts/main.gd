@@ -8,6 +8,10 @@ const PhysicalLoadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const PhysicalEquipment = preload("res://scripts/physical_usable_equipment.gd")
 const PlayerCourse = preload("res://scripts/player_playground_course.gd")
 const PlayableCourseLap = preload("res://scripts/playable_course_lap.gd")
+const PlayableSessionPanel = preload("res://scripts/playable_session_panel.gd")
+const DEFAULT_PLAYABLE_OPTIONS: Dictionary = {"controls":"keyboard_gamepad", "rules":"lap", "camera":"follow"}
+var playable_session_panel: PopupPanel
+var playable_session_options: Dictionary = DEFAULT_PLAYABLE_OPTIONS.duplicate()
 const PreparedPhysical = preload("res://scripts/prepared_physical_session.gd")
 const PreparedReferenceBody = preload("res://scripts/prepared_reference_body_session.gd")
 const PreparedTrialBody = preload("res://scripts/prepared_trial_body_session.gd")
@@ -578,6 +582,43 @@ func microscenario_supports_prepared_physical_liquid(definition: Dictionary) -> 
 	return (physical_rig_id != &"" or physical_trial_arm in ["barrel","ripper"]) and microscenario_mode != "Benchmark" \
 		and CyberMicroScenarioCatalogue.exploratory_actor_map(definition)
 
+
+func playable_session_unavailable_reason() -> String:
+	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty():
+		return "A session rebuild is still pending."
+	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty() \
+		or not actor_prototypes_allowed():
+		return "Leave the protected experiment before starting a playable session."
+	if simulation_worker.has_failed():
+		return "Reset the failed World through its original recovery route first."
+	return ""
+
+
+# One composed request, through the existing prepared native/physical transaction.
+# Options remain candidate data until the matching worker acknowledgement.
+func apply_playable_session(selection: Dictionary, policy: PackedInt32Array,
+		normalize_water: bool = false, maximum_rule_radius: int = 2) -> bool:
+	microscenario_error = playable_session_unavailable_reason()
+	if not microscenario_error.is_empty(): return false
+	var rig := StringName(str(selection.get("actor", "")))
+	if selection.get("map", "") != CyberMicroScenarioCatalogue.PLAYER_COURSE_ID \
+		or rig not in PlayerCourse.MECHANICAL_PRESETS \
+		or selection.get("controls", "") not in ["keyboard_gamepad", "keyboard"] \
+		or selection.get("rules", "") not in ["lap", "freeplay"] \
+		or selection.get("camera", "") not in ["follow", "overview"]:
+		microscenario_error = "Unsupported playable-session selection; current session retained."
+		return false
+	var configuration: Dictionary = {"representation":"barrel-rapier", "runtime_recovery_enabled":false,
+		"experimental":true, "physical_trial":"", "physical_rig":str(rig),
+		"actor_model":"", "actor_producer":"human", "actor_demo_npcs":false, "actor_definitions":[]}
+	var definition: Dictionary = CyberMicroScenarioCatalogue.definition(CyberMicroScenarioCatalogue.PLAYER_COURSE_ID, 0)
+	if not microscenario_apply_exploratory_liquid(definition, policy, normalize_water, "Play",
+		configuration, maximum_rule_radius):
+		return false
+	pending_microscenario_apply.playable_options = {"controls":str(selection.controls),
+		"rules":str(selection.rules), "camera":str(selection.camera)}
+	return true
+
 func _apply_microscenario_definition(definition: Dictionary, mode: String, actor_configuration: Dictionary = {},
 		liquid_policy: Variant = null, controlled_setup: Dictionary = {}, retain_trial_motion: bool = false) -> bool:
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return false
@@ -715,9 +756,17 @@ func _microscenario_installed(definition: Dictionary) -> void:
 	# optional 512x256 overview. Other MicroScenarios keep their 480x270 view.
 	var mechanical_course_view: bool = (str(definition.get("id","")) == CyberMicroScenarioCatalogue.PLAYER_COURSE_ID
 		and StringName(str(player_configuration.get("physical_rig",""))) in PlayerCourse.MECHANICAL_PRESETS)
+	if mechanical_course_view:
+		playable_session_options = pending_microscenario_apply.get("playable_options", playable_session_options).duplicate(true)
+	else:
+		playable_session_options = DEFAULT_PLAYABLE_OPTIONS.duplicate()
 	current_view_size = Vector2i(256,128) if mechanical_course_view else Vector2i(480,270)
 	camera_follow_enabled = mechanical_course_view
 	camera_origin = Vector2(definition.camera_origin[0], definition.camera_origin[1])
+	if mechanical_course_view and playable_session_options.camera == "overview":
+		current_view_size = PlayerCourse.VIEW.size
+		camera_follow_enabled = false
+		camera_origin = Vector2(PlayerCourse.VIEW.position)
 	character_position = Vector2(definition.player_start[0], definition.player_start[1])
 	if _pending_physical_candidate != null:
 		_adopt_prepared_physical_candidate()
@@ -1470,6 +1519,7 @@ func _ready() -> void:
 	setup_player_environment_tuning()
 	setup_depth_lab_launcher()
 	setup_actor_prototypes()
+	setup_playable_session_panel()
 	setup_flight_lab_launcher()
 	var tower_button: Button = Button.new()
 	tower_button.name = "ExperimentTowerLauncher"
@@ -1581,6 +1631,8 @@ func _ready() -> void:
 		toggle_actor_prototypes.call_deferred()
 	elif feature == "liquid_comparison":
 		microscenario_panel.open_liquids.call_deferred(true)
+	elif feature == "play_session":
+		playable_session_panel.show_selection.call_deferred()
 	elif feature.is_empty() and "--blacksite-nine" in OS.get_cmdline_user_args():
 		blacksite_nine_presentation.launch.call_deferred()
 	elif feature.is_empty() and "--showcase" in OS.get_cmdline_user_args():
@@ -2749,6 +2801,19 @@ func setup_actor_prototypes() -> void:
 	$Layout/World.add_child(physical_actor_overlay)
 
 
+func setup_playable_session_panel() -> void:
+	playable_session_panel = PlayableSessionPanel.new()
+	playable_session_panel.name = "PlayableSessionPanel"
+	add_child(playable_session_panel)
+	playable_session_panel.setup(self)
+	var launcher := Button.new()
+	launcher.name = "PlayableSessionLauncher"
+	launcher.text = "Play session"
+	launcher.focus_mode = Control.FOCUS_NONE
+	launcher.pressed.connect(playable_session_panel.show_selection)
+	$Layout.add_child(launcher)
+
+
 func actor_prototypes_allowed() -> bool:
 	var exploratory: bool = (tower_context.get("micro_active", false)
 		and CyberMicroScenarioCatalogue.exploratory_actor_map(microscenario_definition)
@@ -2993,7 +3058,7 @@ func _on_physical_actor_input_cancelled(actor_id: int, actor_epoch: int) -> void
 # Native source-tick and main-thread actor-epoch fence for the course HUD.
 # A stale pre-rebuild worker packet can never advance a newly selected actor.
 func _playable_course_progress_identity() -> bool:
-	return (_playable_course_controls_active() and _physical_terrain_ready
+	return (_playable_course_controls_active() and playable_session_options.rules == "lap" and _physical_terrain_ready
 		and _actor_reset_receipt == 0 and pending_microscenario_apply.is_empty()
 		and latest_snapshot != null and not latest_snapshot.simulation_failed
 		and int(latest_snapshot.rigid_body_epoch) == _physical_epoch
@@ -3046,6 +3111,17 @@ func _playable_course_controls_active() -> bool:
 		and actor_producer_selection == &"human")
 
 
+func _playable_course_gamepad_active() -> bool:
+	return _playable_course_controls_active() and playable_session_options.controls == "keyboard_gamepad"
+
+
+func cancel_playable_course_input() -> void:
+	if not _playable_course_controls_active(): return
+	_actor_input_rearm = true
+	_actor_usable_pointer_rearm = true
+	physical_actor_session.cancel_input(0, _physical_epoch, &"human")
+
+
 func _publish_physical_keyboard_input(trigger_override: Variant = null, alternate_override: Variant = null) -> void:
 	if actor_producer_selection != &"human":
 		return
@@ -3058,7 +3134,8 @@ func _publish_physical_keyboard_input(trigger_override: Variant = null, alternat
 	# an ordinary copied action and keeps its existing edge, epoch and lease
 	# authority; the cellular worker never sees Input or a gamepad object.
 	var playable: bool = _playable_course_controls_active()
-	var playable_action: Dictionary = CyberPlayerPlaygroundInput.sample(true) if playable else {}
+	var playable_action: Dictionary = CyberPlayerPlaygroundInput.sample(true,
+		_playable_course_gamepad_active()) if playable else {}
 	if _actor_input_rearm:
 		for key: int in ACTOR_CONTROL_KEYS + PHYSICAL_TOOL_KEYS:
 			if Input.is_key_pressed(key):
@@ -3371,12 +3448,18 @@ func _reconcile_actor_prototype_reset() -> void:
 		actor_prototype_button.tooltip_text = latest_snapshot.actor_prototype_status
 
 
+func _actor_window_has_focus() -> bool:
+	return get_window().has_focus()
+
+
 func actor_keyboard_allowed() -> bool:
-	if paused or not get_window().has_focus() or not actor_prototypes_allowed():
+	if paused or not _actor_window_has_focus() or not actor_prototypes_allowed():
 		return false
 	if physical_actor_session != null and not _physical_terrain_ready:
 		return false
 	if actor_prototype_panel.visible or player_environment_panel.visible:
+		return false
+	if playable_session_panel != null and playable_session_panel.visible:
 		return false
 	if tower_profile_panel != null and tower_profile_panel.visible:
 		return false

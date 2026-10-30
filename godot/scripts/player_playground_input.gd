@@ -14,7 +14,7 @@ static func deadzone(value: Vector2) -> Vector2:
 	return value.normalized() * clampf((value.length() - DEADZONE) / (1.0 - DEADZONE), 0.0, 1.0)
 
 
-static func sample(include_logical_keys: bool = false) -> Dictionary:
+static func sample(include_logical_keys: bool = false, include_gamepad: bool = true) -> Dictionary:
 	var keys: Dictionary = {}
 	for key: Key in KEYS:
 		# Standalone keeps its physical-key mapping; shared desktop can also
@@ -25,7 +25,7 @@ static func sample(include_logical_keys: bool = false) -> Dictionary:
 	var buttons := Vector3i.ZERO
 	var lean: float = 0.0
 	var pads: Array[int] = Input.get_connected_joypads()
-	if not pads.is_empty():
+	if include_gamepad and not pads.is_empty():
 		var pad: int = pads[0]
 		stick = deadzone(Vector2(Input.get_joy_axis(pad, JOY_AXIS_LEFT_X), Input.get_joy_axis(pad, JOY_AXIS_LEFT_Y)))
 		buttons = Vector3i(int(Input.is_joy_button_pressed(pad, JOY_BUTTON_A)),
