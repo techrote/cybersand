@@ -291,6 +291,7 @@ The [actual Main failure/recovery regression](systems/player-control-playground.
 separately records Windows/Linux30/0 and accepted merge4b6c for a real capacity
 fault and ordinary reset with reference Rapier bodies; it is not five-rig or
 native-busy shutdown qualification.
+The [PLAY-WAIT-001 snapshot handoff probe](audits/2026-10-29-play-wait001-main-snapshot-mutex.md) has **source-matched Windows/Linux execution evidence** for five real SetP rigs on its corrected test-only source (`35af6e84`): isolated normal-load Main snapshot mutex acquisition, 120 native/Rapier ticks per rig, and worker/Rapier retirement. The first Native TSan run timed out; a manually diagnosed unchanged-head rerun passed, with the failure retained. This unmerged candidate does **not** qualify native-busy shutdown, full Main wait attribution, physical-device or human-feel acceptance.
 
 Layering, quantized relief and Strata Theatre: [depth prototype contract](systems/depth-layers-and-parallax.md).
 
