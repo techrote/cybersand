@@ -88,7 +88,7 @@ jobs:
                 ;;
               worldgen)
                 mkdir -p build/physics-cli-validation
-                timeout 5m make physics-characterisation-sanitize 2>&1 | tee build/physics-cli-validation/validation.log
+                timeout 5m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 make physics-characterisation-sanitize 2>&1 | tee build/physics-cli-validation/validation.log
                 timeout 5m make worldgen-test
                 timeout 10m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make worldgen-sanitize
                 ;;
