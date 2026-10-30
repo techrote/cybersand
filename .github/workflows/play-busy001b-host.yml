@@ -1,0 +1,299 @@
+name: PLAY-BUSY-001B real native phase host
+
+on:
+  push:
+    branches: [codex/play-busy001a-pool-20261029]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: play-busy001b-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  GODOT_LINUX_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  GODOT_LINUX_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+  GODOT_WINDOWS_SHA512: 41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+
+jobs:
+  linux-real-host:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Check out exact qualification source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          persist-credentials: false
+
+      - name: Verify CI provider policy and exact source
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          python3 tools/ci/check_ci_provider_policy.py
+          mkdir -p build/play-busy001b/linux
+          git rev-parse HEAD > build/play-busy001b/linux/source-sha.txt
+          sha256sum             native/src/world.cpp             native/tests/support/play_busy_world_gate.hpp             native/tests/support/cyber_play_busy_test_gate.hpp             godot/native_extension/register_types.cpp             godot/scripts/simulation_worker.gd             godot/tests/play_busy001_real_phase_shutdown.gd             tools/ci/readback_play_busy001b.py             tools/ci/play_busy001b_instrumentation.patch             > build/play-busy001b/linux/source-inputs.sha256
+
+      - name: Materialize pinned Linux Rapier only
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
+
+      - name: Install pinned SCons
+        run: |
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+
+      - name: Check out exact godot-cpp
+        run: |
+          set -euo pipefail
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Build exact Linux test runtime
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: "2"
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+        run: |
+          set -euo pipefail
+          timeout 35m tools/build_pinned_godot_cpp.sh linux
+          cat > "$RUNNER_TEMP/play-busy-cxx" <<'SH'
+          #!/usr/bin/env bash
+          exec /usr/bin/g++-13 -DCYBERSAND_PLAY_BUSY_TEST_HOOK=1 "$@"
+          SH
+          chmod +x "$RUNNER_TEMP/play-busy-cxx"
+          "$RUNNER_TEMP/play-busy-cxx" --version > build/play-busy001b/linux/compiler.txt
+          git apply --check tools/ci/play_busy001b_instrumentation.patch
+          git apply tools/ci/play_busy001b_instrumentation.patch
+          sha256sum native/src/world.cpp godot/native_extension/register_types.cpp > build/play-busy001b/linux/instrumented-source.sha256
+          LINUX_CXX="$RUNNER_TEMP/play-busy-cxx"             CYBERSAND_NATIVE_OUTPUT="$PWD/build/play-busy001b/linux/libcybersand_native.linux.x86_64.so"             timeout 20m tools/build_native_extension.sh
+          git checkout -- native/src/world.cpp godot/native_extension/register_types.cpp
+          git diff --exit-code -- native/src/world.cpp godot/native_extension/register_types.cpp
+          cp build/play-busy001b/linux/libcybersand_native.linux.x86_64.so             godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          file build/play-busy001b/linux/libcybersand_native.linux.x86_64.so             | tee build/play-busy001b/linux/runtime-file.txt
+          grep -q 'ELF 64-bit.*x86-64' build/play-busy001b/linux/runtime-file.txt
+
+      - name: Prepare pinned Godot
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --output "$RUNNER_TEMP/godot.zip" "$GODOT_LINUX_URL"
+          echo "$GODOT_LINUX_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot" -maxdepth 1 -type f -name 'Godot*' -print -quit)"
+          test -n "$GODOT_BIN"
+          chmod +x "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+
+      - name: Import and run actual Main/World-phase shutdown fixture
+        env:
+          GODOT_SILENCE_ROOT_WARNING: "1"
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os, pathlib, subprocess
+          out = pathlib.Path("build/play-busy001b/linux")
+          commands = [
+              ("import.log", [os.environ["GODOT_BIN"], "--headless", "--path", "godot", "--editor", "--quit"], 120),
+              ("execution.log", [os.environ["GODOT_BIN"], "--headless", "--path", "godot", "--script", "res://tests/play_busy001_real_phase_shutdown.gd"], 120),
+          ]
+          for name, command, timeout in commands:
+              with (out / name).open("w", encoding="utf-8") as log:
+                  try:
+                      result = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, timeout=timeout)
+                  except subprocess.TimeoutExpired:
+                      log.write(f"\nAPPARATUS TIMEOUT after {timeout}s; no retry\n")
+                      raise
+              if result.returncode:
+                  raise SystemExit(f"{name} exit={result.returncode}")
+          PY
+          python3 tools/ci/readback_play_busy001b.py             --log build/play-busy001b/linux/execution.log             --source-sha "$GITHUB_SHA"             --runtime build/play-busy001b/linux/libcybersand_native.linux.x86_64.so             --rapier godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so             --godot-version "$GODOT_VERSION" --platform linux             --instrumentation-patch tools/ci/play_busy001b_instrumentation.patch             --source-inputs build/play-busy001b/linux/source-inputs.sha256             --instrumented-source build/play-busy001b/linux/instrumented-source.sha256             --output build/play-busy001b/linux/receipt.json
+          git diff --exit-code -- .             ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'             ':!godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'             ':!godot/.godot'
+
+      - name: Retain exact Linux evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: play-busy001b-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/play-busy001b/linux/
+          if-no-files-found: error
+          retention-days: 30
+
+  windows-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Check out exact qualification source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          persist-credentials: false
+
+      - name: Verify CI provider policy
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          python3 tools/ci/check_ci_provider_policy.py
+          mkdir -p build/play-busy001b/windows-build
+          git rev-parse HEAD > build/play-busy001b/windows-build/source-sha.txt
+          sha256sum             native/src/world.cpp             native/tests/support/play_busy_world_gate.hpp             native/tests/support/cyber_play_busy_test_gate.hpp             godot/native_extension/register_types.cpp             godot/scripts/simulation_worker.gd             godot/tests/play_busy001_real_phase_shutdown.gd             tools/ci/readback_play_busy001b.py             tools/ci/play_busy001b_instrumentation.patch             > build/play-busy001b/windows-build/source-inputs.sha256
+
+      - name: Install pinned SCons
+        run: |
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+
+      - name: Check out exact godot-cpp
+        run: |
+          set -euo pipefail
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+
+      - name: Prepare exact LLVM-MinGW
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then
+            ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+          fi
+
+      - name: Build exact Windows test runtime
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: "2"
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+        run: |
+          set -euo pipefail
+          timeout 35m tools/build_pinned_godot_cpp.sh windows
+          REAL_CXX="$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-g++"
+          printf '#!/usr/bin/env bash\nexec "%s" -DCYBERSAND_PLAY_BUSY_TEST_HOOK=1 "$@"\n' "$REAL_CXX" > "$RUNNER_TEMP/play-busy-windows-cxx"
+          chmod +x "$RUNNER_TEMP/play-busy-windows-cxx"
+          "$RUNNER_TEMP/play-busy-windows-cxx" --version > build/play-busy001b/windows-build/compiler.txt
+          git apply --check tools/ci/play_busy001b_instrumentation.patch
+          git apply tools/ci/play_busy001b_instrumentation.patch
+          sha256sum native/src/world.cpp godot/native_extension/register_types.cpp > build/play-busy001b/windows-build/instrumented-source.sha256
+          WINDOWS_CXX="$RUNNER_TEMP/play-busy-windows-cxx"             CYBERSAND_NATIVE_OUTPUT="$PWD/build/play-busy001b/windows-build/cybersand_native.windows.x86_64.dll"             timeout 20m tools/build_native_extension_windows.sh
+          git checkout -- native/src/world.cpp godot/native_extension/register_types.cpp
+          git diff --exit-code -- native/src/world.cpp godot/native_extension/register_types.cpp
+          file build/play-busy001b/windows-build/cybersand_native.windows.x86_64.dll             | tee build/play-busy001b/windows-build/runtime-file.txt
+          grep -q 'PE32+ executable (DLL).*x86-64' build/play-busy001b/windows-build/runtime-file.txt
+          (cd build/play-busy001b/windows-build && \
+            sha256sum cybersand_native.windows.x86_64.dll > runtime.sha256)
+
+      - name: Publish exact Windows test runtime for same-run execution
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: play-busy001b-windows-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/play-busy001b/windows-build/
+          if-no-files-found: error
+          retention-days: 1
+
+  windows-real-host:
+    needs: windows-build
+    runs-on: windows-2022
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out exact qualification source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          persist-credentials: false
+
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+
+      - name: Restore exact special Windows runtime
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: play-busy001b-windows-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/play-busy001b/windows
+
+      - name: Verify runtime/source and materialize pinned Rapier
+        run: |
+          set -euo pipefail
+          test "$(cat build/play-busy001b/windows/source-sha.txt)" = "$GITHUB_SHA"
+          (cd build/play-busy001b/windows && sha256sum --check --strict runtime.sha256)
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          echo "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" | sha256sum --check --strict
+          cp build/play-busy001b/windows/cybersand_native.windows.x86_64.dll             godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll
+
+      - name: Prepare pinned Windows Godot
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600             --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+          echo "$GODOT_WINDOWS_SHA512  $RUNNER_TEMP/godot-windows.zip" | sha512sum --check --strict
+          mkdir -p "$RUNNER_TEMP/godot-windows"
+          unzip -q "$RUNNER_TEMP/godot-windows.zip" -d "$RUNNER_TEMP/godot-windows"
+          GODOT_BIN="$(find "$RUNNER_TEMP/godot-windows" -maxdepth 1 -type f -name '*console.exe' -print -quit)"
+          test -n "$GODOT_BIN"
+          test "$("$GODOT_BIN" --version)" = "$GODOT_VERSION"
+          echo "GODOT_BIN=$GODOT_BIN" >> "$GITHUB_ENV"
+
+      - name: Import and run actual Windows Main/World-phase shutdown fixture
+        env:
+          GODOT_SILENCE_ROOT_WARNING: "1"
+          PYTHONUTF8: "1"
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os, pathlib, subprocess
+          out = pathlib.Path("build/play-busy001b/windows")
+          commands = [
+              ("import.log", [os.environ["GODOT_BIN"], "--headless", "--path", "godot", "--editor", "--quit"], 120),
+              ("execution.log", [os.environ["GODOT_BIN"], "--headless", "--path", "godot", "--script", "res://tests/play_busy001_real_phase_shutdown.gd"], 120),
+          ]
+          for name, command, timeout in commands:
+              with (out / name).open("w", encoding="utf-8") as log:
+                  try:
+                      result = subprocess.run(command, stdout=log, stderr=subprocess.STDOUT, timeout=timeout)
+                  except subprocess.TimeoutExpired:
+                      log.write(f"\nAPPARATUS TIMEOUT after {timeout}s; no retry\n")
+                      raise
+              if result.returncode:
+                  raise SystemExit(f"{name} exit={result.returncode}")
+          PY
+          python tools/ci/readback_play_busy001b.py             --log build/play-busy001b/windows/execution.log             --source-sha "$GITHUB_SHA"             --runtime build/play-busy001b/windows/cybersand_native.windows.x86_64.dll             --rapier godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll             --godot-version "$GODOT_VERSION" --platform windows             --instrumentation-patch tools/ci/play_busy001b_instrumentation.patch             --source-inputs build/play-busy001b/windows/source-inputs.sha256             --instrumented-source build/play-busy001b/windows/instrumented-source.sha256             --output build/play-busy001b/windows/receipt.json
+
+      - name: Retain exact Windows execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: play-busy001b-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/play-busy001b/windows/
+          if-no-files-found: error
+          retention-days: 30
