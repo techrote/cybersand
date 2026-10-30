@@ -1,0 +1,103 @@
+# Branch-only, non-authoritative Native source-scope study.
+# NEVER skip, replace, or relax any existing required CI check from this workflow.
+name: Native source-scope advisory (non-required)
+
+on:
+  push:
+    branches: [ci/native-scope-advisory-20261030]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+concurrency:
+  group: native-scope-advisory-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  classification:
+    name: exact-head advisory and adversarial source-scope proof
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out complete exact source history for immutable baseline comparison
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - name: Preserve provider and runner policy
+        run: |
+          set -euo pipefail
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/test_ci_provider_policy.py
+      - name: Prove conservative negative and positive classifications
+        run: python3 tools/ci/native_scope_classifier.py --self-test
+      - name: Audit actual exact-head branch delta with fail-closed rules
+        run: |
+          set -euo pipefail
+          python3 tools/ci/native_scope_classifier.py \
+            --base-sha b55ce690f9a3d2ca3026674a2e9c6a7635966f59 \
+            --head-sha "$GITHUB_SHA" \
+            --output build/native-scope/candidate-advisory.json
+      - name: Compare historical real PR scopes without authorizing a skip
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          import urllib.request
+          from tools.ci.native_scope_classifier import classify
+
+          repository = os.environ["GITHUB_REPOSITORY"]
+          headers = {
+              "Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+              "Accept": "application/vnd.github+json",
+              "X-GitHub-Api-Version": "2022-11-28",
+          }
+
+          def fetch_json(path):
+              req = urllib.request.Request(
+                  f"https://api.github.com/repos/{repository}/{path}", headers=headers
+              )
+              with urllib.request.urlopen(req, timeout=40) as response:
+                  return json.load(response)
+
+          receipts = {}
+          for number, expected_needed in ((307, False), (302, True), (308, True)):
+              first = fetch_json(f"pulls/{number}")["head"]["sha"]
+              files = []
+              page = 1
+              while True:
+                  batch = fetch_json(f"pulls/{number}/files?per_page=100&page={page}")
+                  files += [item["filename"] for item in batch]
+                  if len(batch) < 100:
+                      break
+                  page += 1
+              second = fetch_json(f"pulls/{number}")["head"]["sha"]
+              if second != first:
+                  raise SystemExit(f"PR {number} moved during classification")
+              result = classify(files)
+              if result["candidate_native_execution_needed"] is not expected_needed:
+                  raise SystemExit(f"PR {number}: unexpected classification: {result}")
+              result["historical_pr_head_sha"] = first
+              result["pr_number"] = number
+              receipts[str(number)] = result
+          folder = Path("build/native-scope")
+          folder.mkdir(parents=True, exist_ok=True)
+          (folder / "historical-pr-receipts.json").write_text(
+              json.dumps(receipts, sort_keys=True, indent=2) + "\n", encoding="utf-8"
+          )
+          print("PASS: real source-matched historical PR classification; existing gates intact")
+          PY
+      - name: Retain source-bound decisions and negative coverage
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-scope-advisory-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/native-scope/
+          if-no-files-found: warn
+          retention-days: 90
