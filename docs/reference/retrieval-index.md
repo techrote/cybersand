@@ -316,3 +316,11 @@ executed results belong to the [dated Deepworks audit](../audits/2026-10-20-deep
 ## Semantic four-plane generation and authoring
 
 GEN-005 projection, typed link, fixture lifecycle, atomic admission and frozen-background questions route to the [semantic-plane contract](../systems/procedural-semantic-planes.md). Refinery/cavern JSON, source programmes, controls, actor placements, actual captures and provenance inspection route to the [authoring guide](../operations/semantic-depth-authoring.md).
+
+## LCB controlled session recovery and native manual testing
+
+For the dated accepted main, exact successor PR heads, independent gate results,
+parked work, external CI and a prebuilt-library desktop testing guide, read the
+[2026-10-26 session handover](../audits/2026-10-26-lcb-controlled-session-handover.md).
+This is an operational snapshot; canonical subsystem contracts still own solver
+semantics and the roadmap owns remaining #202/#203 acceptance.
