@@ -67,6 +67,56 @@
         "Its synthetic device index and test host publisher do not prove hardware gamepad, complete desktop focus or human feel."
       ],
       "sources": ["../godot/tests/test_play_ui004_gamepad_events.gd"]
+    },
+    {
+      "id": "PLAY-BOUNDARY-01",
+      "query": "Must PR 304 prove a changing framebuffer before PLAY can close its native busy lifecycle gate or epic?",
+      "canonical": [
+        "systems/player-control-playground.md",
+        "reference/product-intent-and-priorities.md"
+      ],
+      "facts": [
+        "The 2026-10-30 owner decision accepts merged PR 302 for mandatory real-native-busy responsiveness, outstanding-job shutdown and resource ordering.",
+        "PR 304 is optional and non-blocking; run41046902349 remains a failure and nonqualifying diagnostics remain nonqualifying.",
+        "The critical path is 268 integrated product, 269 remaining stress and 270 physical devices, human feel and promotion; no automated counter substitutes for manual qualification."
+      ],
+      "sources": [
+        "../godot/tests/play_busy001_real_phase_shutdown.gd"
+      ]
+    },
+    {
+      "id": "PLAY-SELECTOR-01",
+      "query": "How does the Play session selector combine a course, five SetP rigs, control profile, rules, solver and camera without replacing the asynchronous host?",
+      "canonical": [
+        "systems/player-control-playground.md"
+      ],
+      "facts": [
+        "The selector calls the existing prepared reconstruction transaction once and commits options only on the matching acknowledgement.",
+        "Previous applied actor, World, options and receipts remain authoritative while pending or refused; reset retains accepted configuration.",
+        "Keyboard-only excludes gamepads, free play suppresses the lap HUD and solver choices are construction-time native-backed selections, not live swaps.",
+        "Focused Main/native/Rapier tests use synthetic focus and device enumeration and do not qualify physical devices or human feel."
+      ],
+      "sources": [
+        "../godot/scripts/playable_session_panel.gd",
+        "../godot/scripts/main.gd",
+        "../godot/tests/test_play_ui005_session_selection.gd"
+      ]
+    },
+    {
+      "id": "PLAY-DEVICE-01",
+      "query": "What happens to queued player actions when the selected gamepad disconnects or changes, and has physical reconnect been qualified?",
+      "canonical": [
+        "systems/player-control-playground.md"
+      ],
+      "facts": [
+        "The course bridge observes joy_connection_changed, cancels through the original physical/native-effect route and requires neutral rearm when the selected first controller changes.",
+        "Unselected secondary-pad events and gamepad events during keyboard-only sessions do not revoke current keyboard authority.",
+        "The automated fixture substitutes device enumeration and OS focus; physical controller, focus delivery, natural traversal and actual human feel remain unexecuted manual gates."
+      ],
+      "sources": [
+        "../godot/scripts/playable_course_gamepad_events.gd",
+        "../godot/tests/test_play_ui005_session_selection.gd"
+      ]
     }
   ]
 }

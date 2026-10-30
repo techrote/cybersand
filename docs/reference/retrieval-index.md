@@ -4,16 +4,22 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-30
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
 
-- [Which PLAY desktop slices are accepted, and what remains before release?](../systems/player-control-playground.md#accepted-normal-desktop-lifecycle-qualification)
-  Shared existing-host composition and normal lifetimes are qualified separately
-  from native parallel measurements, adversarial stress, physical gamepad and
-  human feel; #265 stays closed and #271 deferred.
+- [Which PLAY desktop slices are accepted, and what remains before release?](../systems/player-control-playground.md#current-play-acceptance-boundary--2026-10-30)
+  #302 satisfies mandatory native-busy lifecycle qualification; #304 is optional
+  and retains its failed evidence. Remaining #268/#269/#270 product, stress,
+  physical-device and human-feel gates still apply; #265 stays closed and #271 deferred.
+
+- [How do I build one shared playable session with a map, rig, controls, rules, solver and camera?](../systems/player-control-playground.md#integrated-playable-session-selection-and-device-rearm)
+  The composed selector uses the existing prepared transaction, reports actual
+  applied state and requires neutral rearm after selected-device changes. The
+  [manual walkthrough](../operations/local-build-and-validation.md#shared-play-session-and-owner-qualification)
+  distinguishes synthetic focus/device regression from physical/human acceptance.
 
   [Supplementary PLAY questions](retrieval-questions-play.json) test those
   qualifiers separately from the unchanged frozen retrieval evaluation.

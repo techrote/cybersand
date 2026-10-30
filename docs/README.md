@@ -4,11 +4,23 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-30
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+## PLAY current route — 2026-10-30
+
+The [player contract](systems/player-control-playground.md#current-play-acceptance-boundary--2026-10-30)
+records the owner's accepted #302 native-busy boundary and optional, non-blocking
+#304 diagnostic. The [integrated Play session selector](systems/player-control-playground.md#integrated-playable-session-selection-and-device-rearm)
+composes the authored course, five mechanical players, controls, rules, solver
+policy and camera through the original asynchronous desktop host. Its
+[source-bound audit](audits/2026-10-30-play-ui005-integrated-session.md) separates
+automated execution from pending exact-head hosted and physical/human gates.
+Use the [owner walkthrough](operations/local-build-and-validation.md#shared-play-session-and-owner-qualification)
+for the shortest reproducible route into #270. PLAY is not release-qualified.
 
 ## Trial successor correction after accepted App — 2026-10-25
 
