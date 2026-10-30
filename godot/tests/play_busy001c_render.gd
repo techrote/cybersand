@@ -577,7 +577,13 @@ func run() -> void:
 		and desktop.latest_snapshot.serial == retained_serial
 		and desktop.latest_snapshot.tick_index == retained_tick
 		and desktop.latest_snapshot.render_world_generation == retained_world_generation)
-	var framebuffer: Array[int] = [second.get_width(), second.get_height()] if second != null else [0, 0]
+	# A conditional expression yields an untyped Array in GDScript, which
+	# cannot be assigned to Array[int] at runtime even when both branches
+	# contain ints. Keep the result typed and fill its elements explicitly.
+	var framebuffer: Array[int] = [0, 0]
+	if second != null:
+		framebuffer[0] = second.get_width()
+		framebuffer[1] = second.get_height()
 	var first_buckets: int = sampled_colour_buckets(first)
 	var second_buckets: int = sampled_colour_buckets(second)
 	await finish(worker, session)
