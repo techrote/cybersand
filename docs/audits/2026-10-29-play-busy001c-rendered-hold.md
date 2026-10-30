@@ -401,3 +401,53 @@ bounds remain unchanged.
 This is a candidate for fresh source-matched execution, not acceptance.
 Even a successful 960x540 hosted run would not qualify production 1920x1080
 rendering, sustained FPS, physical focus/gamepad or manual human feel.
+
+
+## Exact d68ea65f failure readback and bounded Main callback trace — 2026-10-30
+
+At literal head `d68ea65f442263fced617b5fa569470a942c16a3`,
+[run 41012912026](https://github.com/techrote/cybersand/actions/runs/41012912026)
+is terminal **FAILURE** for both graphical 001C steps, while both 001B
+actual-host controls pass **34 assertions/zero failures**, holding four
+distinct real worker callbacks and correctly draining and joining.
+
+Downloaded the *original* retained execution archives and independently
+checked SHA-256 against the Actions digests, ZIP CRC, unique/safe members,
+`source-sha.txt`, 001B result-row/receipt equality and original log SHA:
+- Linux archive `12958657576`: ZIP SHA-256
+  `0bb6510105b0a78b8d1a477ec3221a94fa00290099623df989c0eab082af49e4`,
+  68 members, render log SHA-256
+  `37eea6f49f8e42cdb2c68346323dbaae6ba8c434ea2b7f9b340992e1a882aa09`.
+- Windows archive `12959045194`: ZIP SHA-256
+  `14783efa9edfb620955c1482b17949d1c2a5b332286b78f472c80547be350945`,
+  22 members, render log SHA-256
+  `ceb642e501b3a72d9439475558359f8b648b8e3493b4074da6ce6cdda8f1094b`.
+
+Both exact-001B manifests have identical digest
+`08148e4e3a3bea8d3b9a10f8356c8e97c8912ed636a5b6944f52864e1ee69274`.
+The 960x540 **logical** canvas setting took effect on both platforms but did
+not unlock graphical course installation. Linux logged one completed Main
+`_process` callback, 15 `_physics_process` callbacks, native tick 3,
+pending course serial 1 and no acknowledgement at its 30-second setup bound.
+Windows reached `course_queued` (4324ms), then the existing progress
+watchdog captured a heavily CPU-consuming Godot process without a new stage.
+The Linux thread snapshot showed the main OS thread runnable, not an
+independently identified source stack; `gdb` was absent and kernel stack
+reads were denied. Two Windows minidumps were collected, but not symbolized.
+There are **zero 001C machine success rows and zero held-frame PNG files**.
+
+The next source-only diagnostic instruments the first three post-course
+actual Main `_process` and `_physics_process` callbacks and brackets
+the normal Main methods they call, recording monotonic microsecond stamps
+and entry/exit edges as `PLAY_BUSY001C_MAIN_TRACE`. Every bracket delegates
+to the production implementation via `super`; there is no mocked
+World/Rapier owner or changed worker/solver/runtime source. The bounded
+markers **never** use `CYBERSAND_PROGRESS`, so they cannot advance the
+independent 45-second stage-idle watchdog. They are diagnosis, not a
+liveness oracle, and any stage where execution stops is a hypothesis for
+further investigation, not a confirmed stack without a real trace.
+
+The same graphical gate still requires real unmodified rendered pixels,
+>=2 held phase callbacks, copied snapshot invariance, Viewport input/Rapier
+progress, manual release/drain and successful real shutdown, with exactly the
+same timeouts and no retries. The old failed artifacts remain immutable.

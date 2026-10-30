@@ -19,24 +19,128 @@ var frame_post_draw_seen: bool = false
 var progress_serial: int = 0
 
 
+# Test-only, bounded course-stage source probing. These markers are NOT
+# CYBERSAND_PROGRESS and cannot reset the external 45s idle watchdog.
+const COURSE_MAIN_TRACE_LIMIT: int = 3
+const COURSE_PHYSICS_TRACE_LIMIT: int = 3
+
 class RenderHarness:
 	extends DesktopHarness
 	var completed_main_callbacks: int = 0
 	var completed_physics_callbacks: int = 0
 	var completed_input_callbacks: int = 0
+	var course_trace_enabled: bool = false
+	var course_main_entered: int = 0
+	var course_physics_entered: int = 0
+
+	func trace_course(edge: String, physics: bool = false) -> void:
+		if not course_trace_enabled:
+			return
+		if physics:
+			if course_physics_entered > COURSE_PHYSICS_TRACE_LIMIT:
+				return
+		elif course_main_entered > COURSE_MAIN_TRACE_LIMIT:
+			return
+		print("PLAY_BUSY001C_MAIN_TRACE ", JSON.stringify({
+			"edge":edge,
+			"clock_usec":Time.get_ticks_usec(),
+			"main_entered":course_main_entered,
+			"main_completed":completed_main_callbacks,
+			"physics_entered":course_physics_entered,
+			"physics_completed":completed_physics_callbacks,
+		}))
 
 	func _process(delta: float) -> void:
+		if course_trace_enabled:
+			course_main_entered += 1
+		trace_course("_process.enter")
 		super._process(delta)
 		completed_main_callbacks += 1
+		trace_course("_process.exit")
 
 	func _physics_process(delta: float) -> void:
+		if course_trace_enabled:
+			course_physics_entered += 1
+		trace_course("_physics_process.enter", true)
 		super._physics_process(delta)
 		completed_physics_callbacks += 1
+		trace_course("_physics_process.exit", true)
 
 	func _unhandled_key_input(event: InputEvent) -> void:
 		super._unhandled_key_input(event)
 		if event is InputEventKey and not event.echo:
 			completed_input_callbacks += 1
+
+	func _refresh_microscenario_controls() -> void:
+		trace_course("_refresh_microscenario_controls.enter")
+		super._refresh_microscenario_controls()
+		trace_course("_refresh_microscenario_controls.exit")
+
+	func consume_worker_snapshot() -> void:
+		trace_course("consume_worker_snapshot.enter")
+		super.consume_worker_snapshot()
+		trace_course("consume_worker_snapshot.exit")
+
+	func _advance_prepared_physical_candidate() -> void:
+		trace_course("_advance_prepared_physical_candidate.enter")
+		super._advance_prepared_physical_candidate()
+		trace_course("_advance_prepared_physical_candidate.exit")
+
+	func refresh_actor_usables() -> void:
+		trace_course("refresh_actor_usables.enter")
+		super.refresh_actor_usables()
+		trace_course("refresh_actor_usables.exit")
+
+	func sync_player_presentation_position() -> void:
+		trace_course("sync_player_presentation_position.enter")
+		super.sync_player_presentation_position()
+		trace_course("sync_player_presentation_position.exit")
+
+	func _update_playable_course_progress() -> void:
+		trace_course("_update_playable_course_progress.enter")
+		super._update_playable_course_progress()
+		trace_course("_update_playable_course_progress.exit")
+
+	func sync_hard_surface_colliders() -> void:
+		trace_course("sync_hard_surface_colliders.enter")
+		super.sync_hard_surface_colliders()
+		trace_course("sync_hard_surface_colliders.exit")
+
+	func _update_physical_terrain_ready() -> void:
+		trace_course("_update_physical_terrain_ready.enter")
+		super._update_physical_terrain_ready()
+		trace_course("_update_physical_terrain_ready.exit")
+
+	func update_brush_preview() -> void:
+		trace_course("update_brush_preview.enter")
+		super.update_brush_preview()
+		trace_course("update_brush_preview.exit")
+
+	func handle_painting() -> void:
+		trace_course("handle_painting.enter")
+		super.handle_painting()
+		trace_course("handle_painting.exit")
+
+	func update_camera(delta: float) -> void:
+		trace_course("update_camera.enter")
+		super.update_camera(delta)
+		trace_course("update_camera.exit")
+
+	func update_worker_frame_state() -> void:
+		trace_course("update_worker_frame_state.enter")
+		super.update_worker_frame_state()
+		trace_course("update_worker_frame_state.exit")
+
+	func update_shader_parameters() -> void:
+		trace_course("update_shader_parameters.enter")
+		super.update_shader_parameters()
+		trace_course("update_shader_parameters.exit")
+
+	func update_status() -> void:
+		trace_course("update_status.enter")
+		super.update_status()
+		trace_course("update_status.exit")
+
 
 
 func expect(value: bool, message: String) -> void:
@@ -293,6 +397,9 @@ func run() -> void:
 	progress("worker_started")
 	expect(desktop.microscenario_launch(Catalogue.PLAYER_COURSE_ID, "Play", 0),
 		"authored Player Playground admits through normal Main route")
+	# Enable trace *after* admission, so it brackets the next real graphical
+	# Main callbacks and the unmodified production method bodies on this host.
+	desktop.course_trace_enabled = true
 	progress("course_queued")
 	var ready: bool = await wait_for_rendered_course()
 	expect(ready, "native worker acknowledges authored course within graphical setup budget")
