@@ -1,0 +1,171 @@
+name: PLAY-PACE-003 NONQUALIFYING Windows compiler paths
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'tools/play/pace003_shader_variants.py'
+      - 'tools/play/run_pace003_shader_diagnostic.py'
+      - 'tools/play/d3d_compiler_trace/**'
+      - '.github/workflows/play-pace003-windows-paths.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: play-pace003-windows-paths-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  DIAGNOSTIC_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  EVIDENCE_DIR: build/play-pace003-windows-paths
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+
+# Temporary source-matched diagnosis on the registered manual sub-branch.
+# Excluded visuals and unqualified candidates can NEVER report a PACE pass.
+# Aggregate time covers five independent180s cold cases and at most one labelled warm copy; case/import bounds stay fixed.
+jobs:
+  windows:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.ref == 'codex/play-pace003-windows-diagnosis-20261030'
+    name: Windows NONQUALIFYING palette compiler path experiments
+    runs-on: windows-2022
+    timeout-minutes: 35
+    defaults:
+      run:
+        shell: bash
+    env:
+      GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+    steps:
+      - name: Check out exact diagnostic head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.DIAGNOSTIC_SHA }}
+          lfs: false
+          persist-credentials: false
+
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Record source and diagnostic scope
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          git rev-parse HEAD > "$EVIDENCE_DIR/source-sha.txt"
+          git rev-parse 'HEAD^{tree}' > "$EVIDENCE_DIR/source-tree.txt"
+          test "$(git rev-parse HEAD)" = "$DIAGNOSTIC_SHA"
+          git fetch --no-tags --depth=1 origin 2443a78378d649df588efeac9db7c54084473329
+          git show '2443a78378d649df588efeac9db7c54084473329:godot/shaders/material_palette.gdshader' > "$EVIDENCE_DIR/frozen-baseline.gdshader"
+          echo 'NONQUALIFYING isolated shader diagnosis; original Main/PACE003 acceptance is separate.' > "$EVIDENCE_DIR/SCOPE.txt"
+          python tools/ci/check_ci_provider_policy.py | tee "$EVIDENCE_DIR/provider-policy.json"
+          python tools/play/run_pace003_shader_diagnostic.py --self-test 2>&1 | tee "$EVIDENCE_DIR/apparatus-tests.log"
+          python tools/play/d3d_compiler_trace/test_helpers.py 2>&1 | tee "$EVIDENCE_DIR/d3d-apparatus-tests.log"
+          python -O tools/play/d3d_compiler_trace/test_helpers.py 2>&1 | tee "$EVIDENCE_DIR/d3d-apparatus-optimized-tests.log"
+
+      - name: Record original Windows CPU and graphics adapter
+        shell: pwsh
+        run: |
+          $identity = @{
+            Cpu = @(Get-CimInstance Win32_Processor | Select-Object Name, NumberOfCores, NumberOfLogicalProcessors)
+            Graphics = @(Get-CimInstance Win32_VideoController | Select-Object Name, DriverVersion, VideoProcessor)
+            OperatingSystem = @(Get-CimInstance Win32_OperatingSystem | Select-Object Caption, Version, BuildNumber, TotalVisibleMemorySize)
+          }
+          $identity | ConvertTo-Json -Depth 5 | Set-Content -Encoding utf8 "$env:EVIDENCE_DIR/host.json"
+
+      - name: Install pinned diagnostic analysis dependencies
+        timeout-minutes: 3
+        run: |
+          set -euo pipefail
+          python -m pip install numpy==2.3.4 Pillow==12.0.0 psutil==7.1.3 2>&1 | tee "$EVIDENCE_DIR/python-dependencies.log"
+          python -m pip freeze > "$EVIDENCE_DIR/python-environment.txt"
+          python -O tools/play/compare_pace003_palette_atlas.py --self-test 2>&1 | tee "$EVIDENCE_DIR/comparator-tests.log"
+
+      - name: Materialize original retained Windows runtimes
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude="" 2>&1 | tee "$EVIDENCE_DIR/lfs.log"
+
+      - name: Prepare identical pinned Windows Godot
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          curl --fail --location --connect-timeout 20 --max-time 240 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+          python - <<'PY' 2>&1 | tee "$EVIDENCE_DIR/godot-prepare.log"
+          import json, os, pathlib, sys
+          sys.path.insert(0, "tools/ci")
+          import run_windows_godot_regressions as windows
+          binary, identity = windows.prepare_godot(pathlib.Path(os.environ["RUNNER_TEMP"], "godot-windows.zip").resolve())
+          pathlib.Path(os.environ["EVIDENCE_DIR"], "godot-identity.json").write_text(json.dumps(identity, indent=2) + "\n")
+          with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as output:
+              output.write("GODOT_BIN=" + str(binary) + "\n")
+          print(json.dumps(identity, indent=2))
+          PY
+
+      - name: Build source-matched NONQUALIFYING compiler proxy
+        timeout-minutes: 6
+        shell: cmd
+        run: |
+          @echo off
+          for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do set "PACE003_VS_ROOT=%%i"
+          if not defined PACE003_VS_ROOT exit /b 1
+          call "%PACE003_VS_ROOT%\Common7\Tools\VsDevCmd.bat" -arch=x64 -host_arch=x64 > "%EVIDENCE_DIR%\msvc-environment.log" 2>&1
+          if errorlevel 1 exit /b 1
+          python tools/play/d3d_compiler_trace/build_proxy.py --output "%CD%\%EVIDENCE_DIR%\d3d-compiler" > "%EVIDENCE_DIR%\d3d-build.log" 2>&1
+          if errorlevel 1 exit /b 1
+
+      - name: Verify original compiler forwarding before isolated engine use
+        timeout-minutes: 3
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json, os, pathlib, shutil, subprocess
+          build = pathlib.Path(os.environ["EVIDENCE_DIR"], "d3d-compiler").resolve()
+          trace = build / "preflight-trace"
+          trace.mkdir(exist_ok=False)
+          env = os.environ.copy()
+          env["PACE003_D3D_TRACE_DIR"] = str(trace)
+          # Tiny compiler passthrough only: no Godot, display, palette or shared cache.
+          with (build / "preflight-result.json").open("wb") as output:
+              result = subprocess.run([str(build / "proxy_preflight.exe")], env=env,
+                  stdout=output, stderr=subprocess.STDOUT, timeout=60, check=False)
+          if result.returncode != 0:
+              raise RuntimeError("Original proxy preflight failed; retain its output")
+          result = json.loads((build / "preflight-result.json").read_text())
+          if result.get("passed") is not True:
+              raise RuntimeError("Proxy preflight did not report success")
+          subprocess.run(["python", "tools/play/d3d_compiler_trace/readback.py", "--directory", str(trace),
+              "--manifest", str(build / "build-receipt.json"), "--output", str(build / "preflight-readback.json"),
+              "--preflight"], check=True, timeout=60)
+          destination = pathlib.Path(os.environ["GODOT_BIN"]).resolve().parent / "d3dcompiler_47.dll"
+          if destination.exists():
+              raise RuntimeError("Refuse to overwrite an existing engine-directory compiler")
+          shutil.copyfile(build / "d3dcompiler_47.dll", destination)
+          print("Authentic compiler forwarding preflight passed; diagnostic-only proxy installed beside isolated Godot")
+          PY
+
+      - name: Run bounded compiler path experiments and retain every original failure
+          # Five first-attempt processes each retain the original180s cap.
+          # Visual exclusions never qualify. Any failed control remains red.
+        timeout-minutes: 25
+        run: |
+          set -euo pipefail
+          python tools/play/run_pace003_shader_diagnostic.py --godot "$GODOT_BIN" \
+            --output "$EVIDENCE_DIR/campaign" --expected-source-sha "$DIAGNOSTIC_SHA" \
+            --rendering-driver opengl3_angle --experiment windows-paths \
+            --d3d-proxy-manifest "$EVIDENCE_DIR/d3d-compiler/build-receipt.json" \
+            2>&1 | tee "$EVIDENCE_DIR/execution.log"
+
+      - name: Retain all original Windows diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: play-pace003-windows-paths-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/play-pace003-shader-diagnostic/
+          if-no-files-found: error
+          retention-days: 30
