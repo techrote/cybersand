@@ -11,6 +11,7 @@ const FRAME_DRAW_TIMEOUT_MS: int = 2500
 
 var desktop: Control
 var frame_post_draw_seen: bool = false
+var progress_serial: int = 0
 
 
 class RenderHarness:
@@ -73,10 +74,14 @@ func gate_returned(gate: Variant, generation: int) -> bool:
 
 
 func progress(stage: String, extra: Dictionary = {}) -> void:
+	progress_serial += 1
 	var row: Dictionary = {"stage":stage, "elapsed_ms":Time.get_ticks_msec()}
 	for key: Variant in extra:
 		row[key] = extra[key]
 	print("PLAY_BUSY001C_PROGRESS ", JSON.stringify(row))
+	var marker: Dictionary = {"case":"play_busy001c_render", "phase":stage,
+		"sequence":progress_serial, "elapsed_ms":Time.get_ticks_msec()}
+	print("CYBERSAND_PROGRESS ", JSON.stringify(marker))
 
 
 func _frame_post_draw_seen() -> void:

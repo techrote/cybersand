@@ -71,10 +71,62 @@ class MonitorTests(unittest.TestCase):
         self.assertEqual(result[:2], (False, None))
         self.assertEqual(snapshots, [])
 
+    def test_play_busy_render_stall_is_independently_watched(self):
+        result, snapshots = self.run_child(
+            'import time; print(\'CYBERSAND_PROGRESS {"case":"play_busy001c_render","phase":"course_queued","sequence":1}\'); time.sleep(10)',
+            name="play_busy001c_render")
+        self.assertEqual(result[:2], (True, "progress_watchdog"))
+        self.assertTrue(snapshots)
+        self.assertIsNone(snapshots[0][1])
+
     def test_progress_cannot_extend_original_case_deadline(self):
         result, snapshots = self.run_child('import json,time\nfor i in range(100):\n print("CYBERSAND_PROGRESS "+json.dumps({"phase":"step","steps":i})); time.sleep(0.01)', timeout=0.3)
         self.assertEqual(result[:2], (True, "case_deadline"))
         self.assertTrue(snapshots)
+        self.assertIsNone(snapshots[0][1])
+
+    def test_scheduler_overshoot_records_deadline_before_fallback_capture(self):
+        class NeverExits:
+            pid = 4242
+
+            def poll(self):
+                return None
+
+            def wait(self, timeout):
+                raise subprocess.TimeoutExpired("fixture", timeout)
+
+        events = []
+        contexts = []
+
+        class Capture:
+            error = None
+
+            def __init__(self, _pid, _path, context):
+                events.append(("capture", context["elapsed_seconds"]))
+                contexts.append(context)
+
+            def poll(self, _now):
+                pass
+
+            def close(self, _reason=None):
+                pass
+
+        with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
+            output = Path(directory)
+            log_path = output / "child.log"
+            log_path.write_text("", encoding="utf-8")
+            with mock.patch.object(monitor.time, "perf_counter", return_value=10.31):
+                result = monitor.wait(
+                    NeverExits(), "unrelated_case", 0.3, 10.0, log_path,
+                    output / "diagnostics", capture_factory=Capture,
+                    on_timeout=lambda when: events.append(("timeout", when)),
+                )
+
+        self.assertEqual(result[:2], (True, "case_deadline"))
+        self.assertEqual([event[0] for event in events], ["timeout", "capture"])
+        self.assertEqual(events[0][1], 10.31)
+        self.assertEqual(len(contexts), 1)
+        self.assertAlmostEqual(contexts[0]["elapsed_seconds"], 0.31, places=6)
 
     def test_capture_failure_is_recorded_without_losing_timeout_result(self):
         result, _ = self.run_child('import time; time.sleep(10)', capture_raises=True)

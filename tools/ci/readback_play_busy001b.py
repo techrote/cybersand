@@ -25,6 +25,9 @@ def main() -> int:
     parser.add_argument("--rapier", type=Path, required=True)
     parser.add_argument("--godot-version", required=True)
     parser.add_argument("--platform", required=True)
+    parser.add_argument("--instrumentation-patch", type=Path, required=True)
+    parser.add_argument("--source-inputs", type=Path, required=True)
+    parser.add_argument("--instrumented-source", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
@@ -92,6 +95,11 @@ def main() -> int:
         "godot_version": args.godot_version,
         "runtime": {"path": str(args.runtime), "sha256": sha256(args.runtime), "size": args.runtime.stat().st_size},
         "rapier": {"path": str(args.rapier), "sha256": sha256(args.rapier), "size": args.rapier.stat().st_size},
+        "instrumentation": {
+            "patch": {"path": str(args.instrumentation_patch), "sha256": sha256(args.instrumentation_patch), "size": args.instrumentation_patch.stat().st_size},
+            "source_inputs": {"path": str(args.source_inputs), "sha256": sha256(args.source_inputs), "size": args.source_inputs.stat().st_size},
+            "instrumented_source": {"path": str(args.instrumented_source), "sha256": sha256(args.instrumented_source), "size": args.instrumented_source.stat().st_size},
+        },
         "log": {"path": str(args.log), "sha256": sha256(args.log), "size": args.log.stat().st_size},
         "result": row,
         "errors": failures,

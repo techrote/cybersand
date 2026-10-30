@@ -284,7 +284,7 @@ jobs:
           sha256sum "$CYBERSAND_NATIVE_OUTPUT"
 
   windows-regression:
-    name: windows headless regression
+    name: windows headless regression shard ${{ matrix.shard }}
     needs: [ready_scope]
     if: >-
       always() && inputs.physical_actor_stress != true &&
@@ -294,6 +294,10 @@ jobs:
          needs.ready_scope.outputs.required == 'true')))
     runs-on: windows-2022
     timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1]
     defaults:
       run:
         shell: bash
@@ -343,7 +347,7 @@ jobs:
         timeout-minutes: 40
         run: |
           set -euo pipefail
-          python tools/ci/run_windows_godot_regressions.py --godot-archive "$RUNNER_TEMP/godot-windows.zip" --expected-source-sha "$GITHUB_SHA" --output build/godot-regressions/windows
+          python tools/ci/run_windows_godot_regressions.py --godot-archive "$RUNNER_TEMP/godot-windows.zip" --expected-source-sha "$GITHUB_SHA" --output "build/godot-regressions/windows-${{ matrix.shard }}" --shard-count 2 --shard-index ${{ matrix.shard }}
 
       - name: Prove internal watchdog observes a synchronously blocked Windows main thread
         timeout-minutes: 2
@@ -355,9 +359,45 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: windows-godot-headless-${{ github.run_id }}
-          path: build/godot-regressions/windows/
+          name: windows-godot-headless-${{ matrix.shard }}-${{ github.run_id }}
+          path: build/godot-regressions/windows-${{ matrix.shard }}/
           if-no-files-found: error
+          retention-days: 30
+
+  windows-coverage:
+    name: windows sharded execution coverage
+    needs: windows-regression
+    if: always() && needs.windows-regression.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact verification source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+      - name: Download both original Windows shard artifacts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: windows-godot-headless-*-${{ github.run_id }}
+          path: build/windows-coverage-input
+      - name: Independently verify complete, unique Windows case execution
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_verify_windows_godot_shards.py
+          python3 tools/ci/verify_windows_godot_shards.py \
+            --root build/windows-coverage-input \
+            --source-sha "${{ github.sha }}" \
+            --run-id "${{ github.run_id }}" \
+            --attempt "${{ github.run_attempt }}" \
+            --shard-count 2 \
+            --output build/windows-coverage.json
+      - name: Retain Windows exact-coverage receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: windows-coverage-${{ github.run_id }}
+          path: build/windows-coverage.json
+          if-no-files-found: warn
           retention-days: 30
 
   linux-regression:

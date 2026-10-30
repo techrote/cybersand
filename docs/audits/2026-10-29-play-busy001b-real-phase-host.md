@@ -142,3 +142,63 @@ focus, sustained play performance or human feel. It does not qualify unrelated
 solver laws/defaults or authorize runtime publication. It does not close
 #263/#269/#270 on its own. The source-sensitive render-copy/publication work in
 #290/#295/#298 is not rebased, edited, armed or published by this branch.
+
+
+## Ready-matrix provenance refusal and test-only source-patch correction — 2026-10-30
+
+After #299 merged, this branch consumed accepted main `b768fc8901e9a400e1075923ecf5b9be6e0ec036`
+and transitioned ready at `dd3205685d77d85a739996469476a7c675c9d7fa`.
+The ordinary Windows regression shards in run
+[40986491203](https://github.com/techrote/cybersand/actions/runs/40986491203)
+correctly **FAILED before executing any Godot case** with
+`Runtime provenance must cover every current native source/header exactly`.
+That is a real source-sensitive runtime gate, not a gameplay failure.
+
+Cause: the first 001B integration placed dormant `#if CYBERSAND_PLAY_BUSY_TEST_HOOK`
+code in `native/src/world.cpp`, changed `godot/native_extension/register_types.cpp`,
+and added a header under `godot/native_extension`. Those paths are all in the
+ordinary retained-runtime provenance domain. Even though normal release builds
+did not define the test macro, changing those source bytes legitimately made the
+accepted main DLL manifest stale. Publishing a competing PLAY runtime while the
+separate #290/#295/#298/#301 render-copy publication stack is active would violate
+the intended source/runtime ownership separation.
+
+The successor therefore restores production `world.cpp` and
+`register_types.cpp` **byte-for-byte to current main** and removes the test
+adapter from `godot/native_extension`. The adapter lives only under
+`native/tests/support`. The dedicated PLAY workflow records the exact Git
+source inputs, verifies and applies versioned
+`tools/ci/play_busy001b_instrumentation.patch` to those two production files
+in the ephemeral Actions checkout, records the resulting instrumented hashes,
+builds the special runtime with `CYBERSAND_PLAY_BUSY_TEST_HOOK=1`, then restores
+both files and requires a clean diff before running Godot. The receipt retains
+the patch, baseline-input and instrumented-source sidecar hashes.
+
+This changes the evidence description from “dormant hook committed in production
+build inputs” to **“exact production source plus a versioned, test-only temporary
+instrumentation patch”**. The actual selected dispatch/task callbacks, Main host,
+production `stop_worker()` fence and ownership oracle are unchanged. The
+instrumented runtime remains qualification-only and is never written to LFS or
+treated as a release artifact.
+
+The original c0ecc13 Windows/Linux PASS and the dd320 Windows provenance failures
+remain historical. Fresh scoped 001B execution is required after this correction;
+then the branch must return to ready-for-review and pass the ordinary source-matched
+Docs/Native/Godot gates using unchanged accepted main runtime provenance.
+
+
+## Special-runtime fixture discovery boundary — 2026-10-30
+
+The first provenance-safe draft still named the actual-host script
+`test_play_busy001_real_phase_shutdown.gd`. Repository-wide Godot discovery
+intentionally glob-matches every `godot/tests/test_*.gd`; therefore a future
+ready run would execute that fixture against the **ordinary retained runtime**,
+where `CyberPlayBusyTestGate` must not exist. That would be an invalid
+qualification premise, not a native-host regression.
+
+The script is renamed to `play_busy001_real_phase_shutdown.gd`. Its bytes and
+assertions are unchanged. Only the dedicated PLAY-BUSY workflow invokes it
+explicitly after building the source-pinned instrumented runtime. Standard
+Godot discovery remains complete for normal-runtime cases without silently
+skipping or xfail-ing an ordinary test: this file is a scoped apparatus input,
+not an ordinary-runtime regression.

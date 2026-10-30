@@ -144,3 +144,47 @@ main-thread redraw of all viewports. The test still requires the real
 `frame_post_draw` signal and actual viewport pixels; force-draw is not a
 mock framebuffer. Fresh source-matched Linux/Windows execution and original
 PNG/log review remain mandatory.
+
+
+## Third hosted failure and current-base diagnostic reconciliation — 2026-10-30
+
+Exact head `01e3eac244cb01363b31a28b829f3eb1be5008ca` still failed
+001C on both target OSes in scoped run
+[40987311800](https://github.com/techrote/cybersand/actions/runs/40987311800).
+The new stage receipts make the failure boundary explicit:
+
+- Linux original artifact `12948460161`, Actions ZIP SHA-256
+  `87c5840cbadf0471da8ca66d30abfe2bab25fd5b32191ce37f5d82eb4c622a16`,
+  reaches X11/OpenGL3 software rendering, starts the worker, prints
+  `course_queued`, then the explicit 30-second graphical setup budget expires
+  before course acknowledgement. The actor and native hold are never armed.
+- Windows original artifact `12948375107`, Actions ZIP SHA-256
+  `e09c9c2c1b45c4c68e12500ce614eeb3dcc3c4f24babd11ed9f4188ef00b380f`,
+  reaches ANGLE/OpenGL3 on Microsoft Basic Render Driver, starts the worker and
+  prints `course_queued`, then emits no further stage receipt before the
+  unchanged 120-second outer apparatus deadline. The actor/native hold and
+  framebuffer captures are never reached.
+
+Therefore no prior 001C run proves or disproves framebuffer liveness while
+native jobs are held. The current failure is **graphical authored-course
+installation**, before the hold.
+
+This successor is reconciled onto #302 exact head
+`102f6b5da74bffcf3da0063ca335ba6e8c22ce94`, whose real-phase special runtime
+is provenance-safe: ordinary production runtime-source paths remain exact main,
+and the phase hook is applied only in the scoped build. The 001C script is
+renamed `play_busy001c_render.gd` so ordinary `test_*.gd` discovery cannot
+invoke a special-runtime fixture against the retained release DLL.
+
+The graphical script now emits standard `CYBERSAND_PROGRESS` stage markers in
+addition to its retained 001C records. The existing external process monitor is
+extended only for this explicit apparatus case. It captures diagnostics after
+30 seconds without a new stage and fails after 45 seconds idle, while retaining
+the absolute 120-second case deadline. A new runner owns process termination and
+retains diagnostic state/logs; no extra retry is introduced. The internal
+30-second course/actor setup bound, 12-second native gate bound, 30 under-hold
+physics frames, 2.5-second real `frame_post_draw` bound and pixel oracles are
+unchanged.
+
+This diagnostic change does not convert the current failure into a pass and does
+not substitute sandbox rendering for the required authored Player-course host.
