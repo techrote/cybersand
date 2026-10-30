@@ -159,17 +159,27 @@ def tested_inputs(root: Path) -> dict[str, str]:
     }
 
 
-def execute_cases(godot: str, output: Path, report: dict, cases: list[runner.Case]) -> None:
+def execute_cases(godot: str, output: Path, report: dict, cases: list[runner.Case],
+                  *, shard_count: int = 1, shard_index: int = 0) -> None:
+    if shard_count < 1 or not 0 <= shard_index < shard_count:
+        raise ValueError("Windows shard index/count must describe one valid shard")
     selected = [case for case in cases if not case.requires_display]
     excluded = [case for case in cases if case.requires_display]
     if not selected or any(count != 1 for count in Counter(case.name for case in cases).values()):
         raise RuntimeError("Windows discovery must contain unique, applicable cases")
+    shards, weights = runner.build_shard_plan(selected, shard_count)
+    assigned = shards[shard_index]
+    if not assigned:
+        raise RuntimeError("Windows shard must have at least one applicable case")
     report.update({
         "scope": "Actual Windows headless tests, profiles and scene startup; Linux shards own rendered pixel cases",
         "all_discovered_case_count": len(cases), "applicable_case_count": len(selected),
         "out_of_scope_graphical_cases": [case.name for case in excluded],
-        "assigned_cases": [case.name for case in selected],
-        "case_plan": [runner.case_dict(case) for case in selected],
+        "applicable_cases": [case.name for case in selected],
+        "shard_count": shard_count, "shard_index": shard_index,
+        "shard_estimated_seconds": weights[shard_index],
+        "assigned_cases": [case.name for case in assigned],
+        "case_plan": [runner.case_dict(case) for case in assigned],
     })
 
     def run(case: runner.Case, role: str) -> bool:
@@ -187,10 +197,10 @@ def execute_cases(godot: str, output: Path, report: dict, cases: list[runner.Cas
         return
     # Always finish the applicable scope after a case fails, preserving each
     # original timeout and strict error/skip semantics from the shared runner.
-    for case in selected:
+    for case in assigned:
         run(case, "case")
     actual = Counter(item["name"] for item in report["results"] if item["role"] == "case")
-    if actual != Counter(case.name for case in selected):
+    if actual != Counter(case.name for case in assigned):
         raise RuntimeError("Windows cases were not executed exactly once")
     report["completed"] = True
 
@@ -200,7 +210,11 @@ def main() -> int:
     parser.add_argument("--godot-archive", required=True, type=Path)
     parser.add_argument("--expected-source-sha", required=True)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--shard-count", type=int, default=1)
+    parser.add_argument("--shard-index", type=int, default=0)
     args = parser.parse_args()
+    if args.shard_count < 1 or not 0 <= args.shard_index < args.shard_count:
+        parser.error("--shard-index must be within the positive --shard-count")
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
     report = {
@@ -224,7 +238,8 @@ def main() -> int:
         godot, report["godot_identity"] = prepare_godot(args.godot_archive.resolve())
         report["godot_version"] = report["godot_identity"]["version"]
         os.environ["CYBERSAND_SOURCE_REVISION"] = source
-        execute_cases(str(godot), output, report, runner.discover_cases())
+        execute_cases(str(godot), output, report, runner.discover_cases(),
+                      shard_count=args.shard_count, shard_index=args.shard_index)
         after = tested_inputs(ROOT)
         report["source_drift"] = sorted(
             relative for relative in report["tested_inputs"].keys() | after.keys()
@@ -242,7 +257,8 @@ def main() -> int:
     report["seconds"] = round(time.monotonic() - started, 3)
     runner.write_json(output / "windows-execution.json", report)
     print("Windows execution:", report["status"], "executed", report["executed_case_count"],
-          "/", report.get("applicable_case_count", 0), "applicable cases", flush=True)
+          "/", len(report.get("assigned_cases", [])), "assigned shard cases of",
+          report.get("applicable_case_count", 0), "total applicable", flush=True)
     for error in report["errors"]:
         print("ERROR:", error, flush=True)
     return int(report["status"] != "passed")
