@@ -35,7 +35,8 @@ COMPARATOR_PATH = "tools/play/compare_pace003_palette_atlas.py"
 GL_TRACE_SOURCE_PATH = "tools/play/gl_startup_trace.c"
 EXTRA_INPUTS = (ATLAS_PATH, COMPARATOR_PATH, "tools/play/run_pace003_shader_diagnostic.py",
                 ".github/workflows/play-pace003-shader-diagnostic.yml", GL_TRACE_SOURCE_PATH,
-                "tools/play/pace003_shader_variants.py", ".github/workflows/play-pace003-windows-paths.yml")
+                "tools/play/pace003_shader_variants.py", "tools/play/pace003_single_exit_variants.py",
+                ".github/workflows/play-pace003-windows-paths.yml")
 EXTRA_INPUTS += tuple("tools/play/d3d_compiler_trace/" + name for name in (
     "build_proxy.py", "d3dcompiler_trace.cpp", "proxy_preflight.cpp", "readback.py", "test_helpers.py"))
 CASE_SECONDS = 180
@@ -512,6 +513,46 @@ def self_test() -> int:
             with self.assertRaisesRegex(RuntimeError, "exact retained hoist"):
                 variants.bucket_variants(b"different")
 
+        def test_single_exit_variants_preserve_reparsed_evaluation_trees(self):
+            import pace003_shader_variants as variants
+            original = campaign.windows.git(ROOT, "show", "HEAD:" + SHADER_PATH)
+            definitions = variants.single_exit_variants(original)
+            self.assertEqual([row["name"] for row in definitions], [
+                "hoist-control-cold", "single-exit-catalogues-cold",
+                "single-exit-warning-helpers-cold", "unified-single-exit-warning-helpers-cold"])
+            self.assertEqual(definitions[0]["shader"], original)
+            self.assertFalse(definitions[0]["full_visual_candidate"])
+            for row in definitions[1:]:
+                self.assertFalse(row["qualification_passed"])
+                self.assertTrue(row["full_visual_candidate"])
+                self.assertNotIn(b"palette_passes", row["shader"])
+                self.assertNotIn(b"switch (", row["shader"])
+                for checked in row["source_checks"]:
+                    self.assertTrue(checked["canonical_evaluation_tree_equal"])
+                    self.assertTrue(checked["independent_emitted_source_tree_equal"])
+                    self.assertTrue(checked["unchanged_statement_and_condition_tokens"])
+                    self.assertEqual(checked["candidate_return_count"], 1)
+                    self.assertGreater(checked["original_return_count"], 1)
+            with self.assertRaisesRegex(RuntimeError, "exact retained hoist"):
+                variants.single_exit_variants(original + b"\n")
+
+        def test_single_exit_renderer_corruption_is_independently_rejected(self):
+            import pace003_single_exit_variants as single_exit
+            source = "vec4 sample(vec4 colour, int id) { if (id == 1) { colour.rgb *= 2.0; return colour; } return colour; }"
+            render = single_exit.render_sequence
+            for before, after in (("2.0", "3.0"), ("} else", "}")):
+                def corrupt(*args, **kwargs):
+                    return render(*args, **kwargs).replace(before, after)
+                with self.subTest(change=after), patch.object(single_exit, "render_sequence", side_effect=corrupt):
+                    with self.assertRaises(RuntimeError):
+                        single_exit.single_exit_function(source, "sample")
+
+        def test_single_exit_unsupported_return_loops_are_refused(self):
+            import pace003_single_exit_variants as single_exit
+            source = "vec4 sample(vec4 colour) { for (int i=0; i<2; i++) { return colour; } return colour; }"
+            with self.assertRaisesRegex(RuntimeError, "Return inside a loop"):
+                single_exit.single_exit_function(source, "sample")
+
         def test_frozen_source_mismatch_refused(self):
             with patch.object(campaign.windows, "git", return_value=b"wrong baseline"):
                 with self.assertRaisesRegex(RuntimeError, "baseline shader hash"):
@@ -677,7 +718,7 @@ def main() -> int:
     parser.add_argument("--rendering-driver", choices=("opengl3", "opengl3_angle"))
     parser.add_argument("--gl-trace-library", type=Path,
                         help="Linux-only ELF audit helper, injected into graphical Godot children only")
-    parser.add_argument("--experiment", choices=("original-pair", "windows-paths", "windows-buckets"), default="original-pair")
+    parser.add_argument("--experiment", choices=("original-pair", "windows-paths", "windows-buckets", "windows-single-exit"), default="original-pair")
     parser.add_argument("--d3d-proxy-manifest", type=Path)
     args = parser.parse_args()
     if args.self_test:
@@ -721,11 +762,13 @@ def main() -> int:
         report["godot_version"] = version
         baseline, candidate = shader_inputs()
         variants_to_run = [("baseline-cold", baseline), ("candidate-cold", candidate)]
-        if args.experiment in ("windows-paths", "windows-buckets"):
+        if args.experiment in ("windows-paths", "windows-buckets", "windows-single-exit"):
             campaign.require(sys.platform == "win32", "Windows path experiments require the actual target OS")
             import pace003_shader_variants as variants
-            definitions = (variants.variants(candidate) if args.experiment == "windows-paths"
-                           else variants.bucket_variants(candidate))
+            generators = {"windows-paths": variants.variants,
+                          "windows-buckets": variants.bucket_variants,
+                          "windows-single-exit": variants.single_exit_variants}
+            definitions = generators[args.experiment](candidate)
             report["variant_definitions"] = [
                 {key: value for key, value in row.items() if key != "shader"} for row in definitions]
             variants_to_run = [(row["name"], row["shader"]) for row in definitions]
@@ -749,7 +792,7 @@ def main() -> int:
             campaign.require(not failed, "Fresh headless import failed")
             execute_variants(variants_to_run,
                 lambda name, shader: run_variant(name, shader, args, report, transcript), report, report_path)
-            if args.experiment in ("windows-paths", "windows-buckets"):
+            if args.experiment in ("windows-paths", "windows-buckets", "windows-single-exit"):
                 eligible_names = {item["name"] for item in definitions if item.get("full_visual_candidate") is True}
                 eligible = [row for row in report["rows"] if row["status"] == "diagnostic_completed"
                             and row["name"] in eligible_names]
@@ -767,7 +810,7 @@ def main() -> int:
                 else:
                     report["warm_execution"] = "Unavailable: no full-visual candidate completed within180s"
         completed = all(row["status"] == "diagnostic_completed" for row in report["rows"])
-        if args.experiment in ("windows-paths", "windows-buckets"):
+        if args.experiment in ("windows-paths", "windows-buckets", "windows-single-exit"):
             report["comparison"] = {"status": "not-applicable",
                 "reason": "Explicitly nonqualifying experiments; all candidates need separate preservation proof"}
             if not completed:

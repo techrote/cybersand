@@ -246,6 +246,15 @@ def bucket_variants(data: bytes) -> list[dict]:
             for name, shader, checks in cases]
 
 
+def single_exit_variants(data: bytes) -> list[dict]:
+    """Third bounded phase: exclusive dispatch with one initialized result."""
+    import pace003_single_exit_variants as single_exit
+    if hashlib.sha256(data).hexdigest() != FROZEN_HOIST_SHA256:
+        raise RuntimeError("Windows single-exit experiment requires the exact retained hoist shader")
+    unified = folded_view(unified_dispatch(data.decode("utf-8"))).encode("utf-8")
+    return single_exit.single_exit_variants(data, unified)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", required=True, type=Path)

@@ -5,6 +5,7 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - 'tools/play/pace003_shader_variants.py'
+      - 'tools/play/pace003_single_exit_variants.py'
       - 'tools/play/run_pace003_shader_diagnostic.py'
       - 'tools/play/d3d_compiler_trace/**'
       - '.github/workflows/play-pace003-windows-paths.yml'
@@ -27,7 +28,7 @@ env:
 
 # Temporary source-matched diagnosis on the registered manual sub-branch.
 # Excluded visuals and unqualified candidates can NEVER report a PACE pass.
-# Aggregate time covers five independent180s cold cases and at most one labelled warm copy; case/import bounds stay fixed.
+# Aggregate time covers the bounded independent180s cold cases and at most one labelled warm copy; case/import bounds stay fixed.
 jobs:
   windows:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.ref == 'codex/play-pace003-windows-diagnosis-20261030'
@@ -68,16 +69,21 @@ jobs:
           root.mkdir(exist_ok=False)
           files = [pathlib.Path(".github/workflows/play-pace003-windows-paths.yml"),
               pathlib.Path("tools/play/pace003_shader_variants.py"),
+              pathlib.Path("tools/play/pace003_single_exit_variants.py"),
               pathlib.Path("tools/play/run_pace003_shader_diagnostic.py")]
           files += sorted(path for path in pathlib.Path("tools/play/d3d_compiler_trace").iterdir()
               if path.is_file() and path.suffix in (".py", ".cpp", ".md"))
           records = []
           for path in files:
-              destination = root / path
+              # upload-artifact excludes hidden directories by default. Keep the
+              # exact workflow bytes under an explicit non-hidden artifact path;
+              # never enable broad hidden-file uploads or reconstruct old runs.
+              artifact_path = pathlib.Path("workflow-source", path.name) if path.parts[0] == ".github" else path
+              destination = root / artifact_path
               destination.parent.mkdir(parents=True, exist_ok=True)
               shutil.copyfile(path, destination)
               data = destination.read_bytes()
-              records.append({"path": path.as_posix(), "bytes": len(data),
+              records.append({"path": path.as_posix(), "artifact_path": artifact_path.as_posix(), "bytes": len(data),
                   "sha256": hashlib.sha256(data).hexdigest()})
           (root / "receipt.json").write_text(json.dumps(records, indent=2) + "\n")
           PY_SOURCE
@@ -170,14 +176,14 @@ jobs:
           PY
 
       - name: Run bounded compiler path experiments and retain every original failure
-          # Five first-attempt processes each retain the original180s cap.
+          # Every first-attempt process retains the original180s cap.
           # All structural candidates are unqualified. Any failed control remains red.
         timeout-minutes: 25
         run: |
           set -euo pipefail
           python tools/play/run_pace003_shader_diagnostic.py --godot "$GODOT_BIN" \
             --output "$EVIDENCE_DIR/campaign" --expected-source-sha "$DIAGNOSTIC_SHA" \
-            --rendering-driver opengl3_angle --experiment windows-buckets \
+            --rendering-driver opengl3_angle --experiment windows-single-exit \
             --d3d-proxy-manifest "$EVIDENCE_DIR/d3d-compiler/build-receipt.json" \
             2>&1 | tee "$EVIDENCE_DIR/execution.log"
 
