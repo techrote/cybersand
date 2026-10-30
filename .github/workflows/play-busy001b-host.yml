@@ -130,6 +130,9 @@ jobs:
           python3 tools/ci/readback_play_busy001b.py             --log build/play-busy001b/linux/execution.log             --source-sha "$GITHUB_SHA"             --runtime build/play-busy001b/linux/libcybersand_native.linux.x86_64.so             --rapier godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so             --godot-version "$GODOT_VERSION" --platform linux             --instrumentation-patch tools/ci/play_busy001b_instrumentation.patch             --source-inputs build/play-busy001b/linux/source-inputs.sha256             --instrumented-source build/play-busy001b/linux/instrumented-source.sha256             --output build/play-busy001b/linux/receipt.json
           git diff --exit-code -- .             ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'             ':!godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'             ':!godot/.godot'
 
+      - name: Verify graphical-child process-group isolation
+        run: python3 tools/ci/test_play_busy001c_runner_session.py
+
       - name: Install Linux software rendering display for 001C
         if: github.ref_name == 'codex/play-busy001c-rendered-20261029'
         run: |
@@ -148,7 +151,10 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/play-busy001b/linux/render
-          xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -nolisten tcp" \
+          # The 120s test deadline remains authoritative. The outer 150s
+          # boundary also covers xvfb-run cleanup if the graphical child stalls.
+          timeout --signal=TERM --kill-after=5s 150s \
+            xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -nolisten tcp" \
             python3 tools/ci/run_play_busy001c_render.py \
               --godot "$GODOT_BIN" \
               --platform linux \

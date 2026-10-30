@@ -491,3 +491,52 @@ frame-time benchmark or an 001C pass. The original Linux/Windows qualification
 steps, renderer, 30-second setup bound, 45-second progress watchdog,
 120-second absolute deadline, 12-second native hold, pixel/PNG requirements,
 Main/Rapier ownership and every production source remain unchanged.
+
+## Current 56adff7c failed-run and POSIX process-group repair — 2026-10-30
+
+Current exact head `56adff7c42f555ed250f45239cc20d634666f403` has
+terminal **failed** dedicated run
+[41026061055](https://github.com/techrote/cybersand/actions/runs/41026061055).
+The source-matched Windows 001B real-phase/shutdown positive control passed
+**34 assertions, zero failures**. The Windows 001C graphical host still
+reaches `course_queued`, then returns no new progress stage and trips the
+existing **45-second idle watchdog**. Its original retained Windows
+execution artifact `12963842135` has GitHub ZIP SHA-256
+`7a2159a11aa2e7a788021d080096c7b566b08db1a50b7f32257bb0f94240eaa7`;
+the original ZIP passed CRC checking, contains 22 members, the exact
+`source-sha.txt`, 001B receipt, raw graphical trace and two native minidumps.
+The special unpublished Windows runtime SHA-256 is
+`22952e98c3d6d748ba4f22c66cc6c8b07821dce3f191733ef076aa5b0814f5be`.
+The original graphical log has **no held native phase, frame submission or
+qualifying PNG**. This is not rendered-liveness acceptance.
+
+The same run's Linux job concluded **cancelled** with the graphical step
+recorded as in progress; no original Linux ZIP/GDB transcript was uploaded
+and no Linux graphical result can be inferred. Source inspection identified
+a concrete process-ownership hazard in the Linux diagnostic runner:
+`run_play_busy001c_render.py` launched Godot without a separate process
+group, whereas its existing `godot_timeout_diagnostics.stop_process_tree`
+uses `os.killpg(os.getpgid(child.pid), SIGKILL)`. On POSIX a child without
+`start_new_session` ordinarily inherits the runner/xvfb-run process group;
+at timeout this cleanup can kill the **watchdog runner itself** instead of
+returning a recorded failure and allowing artifact upload. That is a
+source-level defect. The missing Linux run log prevents a definitive claim
+that it alone caused this run's cancellation.
+
+The narrow successor makes the **test-only** Godot child a new POSIX
+session before launch, leaving Windows cleanup unchanged. A real-child
+regression checks distinct session/process-group identity and exercises the
+actual `stop_process_tree` cleanup without killing its supervising test
+process. The Linux workflow runs this regression and additionally bounds
+the whole Xvfb wrapper to **150 seconds** as a separate fail-closed cleanup
+ceiling; the original 001C **120-second absolute** and **45-second progress**
+watchdogs, 30-second graphical setup, 12-second native hold, >=2 actually
+held callbacks, framebuffer/PNG, input/Rapier, immutable snapshot and
+manual release/drain/join gates are **not changed**. The outer 150s bound
+is not additional test execution time and cannot convert failure to pass.
+
+Require fresh exact-head Documentation and dedicated Linux/Windows runs,
+original retained Linux ZIP and GDB/MI transcript (or explicit refusal),
+and independent source/runtime/artifact reduction before accepting
+anything. Main remains unchanged; no native solver, release runtime,
+physical-device/focus, sustained FPS or manual human-feel gate is promoted.

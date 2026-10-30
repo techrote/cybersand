@@ -15,6 +15,20 @@ CASE = "play_busy001c_render"
 ABSOLUTE_TIMEOUT_SECONDS = 120
 
 
+def _spawn_render_child(command: list[str], log):
+    """Give a potentially stalled Godot child its own POSIX process group.
+
+    The existing diagnostics.stop_process_tree() uses killpg on Linux. Without
+    start_new_session, that would signal this runner (and potentially xvfb-run)
+    together with the child, preventing failure artifacts/GDB from being saved.
+    Windows retains its unchanged taskkill-based process-tree cleanup.
+    """
+    return subprocess.Popen(
+        command, stdout=log, stderr=subprocess.STDOUT,
+        env=os.environ.copy(), start_new_session=(sys.platform != "win32"),
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--godot", required=True)
@@ -45,10 +59,7 @@ def main() -> int:
     started = time.perf_counter()
     timeout_events: list[float] = []
     with log_path.open("w", encoding="utf-8") as log:
-        child = subprocess.Popen(
-            command, stdout=log, stderr=subprocess.STDOUT,
-            env=os.environ.copy(),
-        )
+        child = _spawn_render_child(command, log)
         try:
             timed_out, timeout_kind, capture_error = monitor.wait(
                 child, CASE, ABSOLUTE_TIMEOUT_SECONDS, started,
