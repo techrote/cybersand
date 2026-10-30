@@ -162,6 +162,77 @@ def inventory(path: Path) -> dict:
     return {"path": str(path), "exists": path.exists(), "file_count": len(files), "files": files}
 
 
+def copy_warm_cache_inputs(source_caches: Path, source_project: Path,
+                          caches: Path, project_cache: Path) -> tuple[dict, dict]:
+    user_before = inventory(source_caches)
+    project_before = inventory(source_project)
+    campaign.require(user_before["exists"], "Retained cold user caches are missing")
+    shutil.copytree(source_caches, caches, dirs_exist_ok=True)
+    campaign.require(inventory(caches)["files"] == user_before["files"], "Warm user cache copy differs")
+    if project_before["exists"]:
+        shutil.copytree(source_project, project_cache)
+    project_copy = inventory(project_cache)
+    campaign.require(project_copy["exists"] == project_before["exists"]
+                     and project_copy["files"] == project_before["files"], "Warm project shader cache copy differs")
+    return user_before, project_before
+
+
+def verify_warm_cache_sources(source_caches: Path, source_project: Path,
+                             user_before: dict, project_before: dict) -> None:
+    campaign.require(inventory(source_caches) == user_before,
+                     "Original cold user caches changed during warm-copy comparison")
+    campaign.require(inventory(source_project) == project_before,
+                     "Original cold project shader cache changed during warm-copy comparison")
+
+
+def read_d3d_trace(directory: Path, manifest: dict, warm: bool) -> dict:
+    """A warm cache may avoid compilation; any observed proxy identity still must match."""
+    readback = importlib.import_module("d3d_compiler_trace.readback")
+    traces = []
+    for path in sorted(directory.glob("*.jsonl")):
+        raw = path.read_bytes()
+        campaign.require(raw.endswith(b"\n"), "Partial original D3D trace line")
+        events = [campaign.load_json(line) for line in raw.decode("utf-8").splitlines()]
+        traces.append((path, events))
+    if not warm or any(event.get("event") == "compile_begin" for _, events in traces for event in events):
+        return readback.inspect(directory, manifest)
+    identities = []
+    normalize = lambda value: value.replace("/", "\\").casefold()
+    for path, events in traces:
+        campaign.require(bool(events) and events[0].get("event") == "identity", "Warm D3D trace lacks its original identity")
+        identity = events[0]
+        pid = identity["pid"]
+        campaign.require(path.name == f"d3d-trace-{pid}.jsonl" and all(event["pid"] == pid for event in events),
+                         "Warm D3D PID/file mismatch")
+        indices = [event["event_index"] for event in events]
+        campaign.require(len(set(indices)) == len(indices) and set(indices) == set(range(1, len(indices) + 1)),
+                         "Warm D3D event indices are incomplete or duplicated")
+        campaign.require(identity["system_sha256"] == identity["expected_system_sha256"]
+                         == manifest["system_original"]["sha256"], "Warm D3D original System32 SHA mismatch")
+        campaign.require(identity["proxy_sha256"] == manifest["proxy"]["sha256"], "Warm D3D loaded proxy SHA mismatch")
+        campaign.require(normalize(identity["system_module"]) == normalize(manifest["system_original"]["path"])
+                         and normalize(identity["system_module"]) != normalize(identity["proxy_module"]),
+                         "Warm D3D original/proxy module paths differ from the manifest")
+        campaign.require(identity["exports_forwarded"] == len(manifest["system_original"]["exports"]),
+                         "Warm D3D forwarded export count differs")
+        base = identity["system_module_base"]
+        for name in ("d3dcompile_address", "d3dcompile2_address"):
+            campaign.require(base <= identity[name] < base + manifest["system_original"]["image_size"],
+                             "Warm D3D compiler pointer is outside the authentic System32 image")
+        for event in events[1:]:
+            campaign.require(event.get("event") == "forward_export_first_use",
+                             "Warm D3D trace contains an incomplete call or capture failure")
+            name = event["name"]
+            campaign.require(not name.startswith("D3DCompile") and name != "D3DAssemble",
+                             "Warm D3D trace observed an unwrapped compiler API")
+        identities.append({"path": path.name, "sha256": runner.sha256(path),
+                           "event_count": len(events), "identity": identity})
+    return {"instrumentation_valid": None, "observed_compile_calls": 0,
+            "proxy_identity_valid": True if identities else None, "trace_identities": identities,
+            "scope": "Warm copied-cache process; no compiler interception, so no compiler-time attribution",
+            "original_files": inventory(directory)}
+
+
 class CpuSampler:
     """Bounded read-only samples of this runner's Godot descendants only.
 
@@ -272,16 +343,14 @@ def run_variant(name: str, shader: bytes, args, report: dict, transcript, warm_f
         path.mkdir()
         child_env[key] = str(path)
     warm_source = None
+    warm_project_source = None
     if warm_from is not None:
         campaign.require(any(row.get("name") == warm_from and row.get("status") == "diagnostic_completed"
                              for row in report["rows"]), "Warm comparison requires a completed retained cold candidate")
         source_caches = args.output / warm_from / "isolated-caches"
-        warm_source = inventory(source_caches)
-        shutil.copytree(source_caches, caches, dirs_exist_ok=True)
-        campaign.require(inventory(caches)["files"] == warm_source["files"], "Warm cache copy differs")
         source_project = args.output / warm_from / "result-project-shader-cache"
-        if source_project.exists():
-            shutil.copytree(source_project, project_cache)
+        warm_source, warm_project_source = copy_warm_cache_inputs(
+            source_caches, source_project, caches, project_cache)
     child_env.update({"CYBERSAND_SOURCE_REVISION": report["source_sha"],
                       "CYBERSAND_ATLAS_SHADER": str(shader_file), "CYBERSAND_ATLAS_OUTPUT": str(atlas)})
     trace_dir = None
@@ -301,6 +370,7 @@ def run_variant(name: str, shader: bytes, args, report: dict, transcript, warm_f
                "fresh_process": True, "project_cache_before_relocation": before,
                "temperature": "warm-copy" if warm_from else "cold",
                "copied_from_row": warm_from, "warm_source_before": warm_source,
+               "warm_project_source_before": warm_project_source,
                "project_cache_at_launch": inventory(project_cache),
                "explicit_cache_environment": {key: child_env[key] for key in cache_variables},
                "explicit_caches_at_launch": inventory(caches),
@@ -360,16 +430,8 @@ def run_variant(name: str, shader: bytes, args, report: dict, transcript, warm_f
                 row["errors"].append("GL trace readback: " + type(error).__name__ + ": " + str(error))
         if d3d_dir is not None:
             try:
-                readback = importlib.import_module("d3d_compiler_trace.readback")
                 manifest = report["d3d_trace"]["manifest"]
-                events = [campaign.load_json(line) for path in d3d_dir.glob("*.jsonl")
-                          for line in path.read_text(encoding="utf-8").splitlines() if line]
-                if warm_from and not any(event.get("event") == "compile_begin" for event in events):
-                    value = {"instrumentation_valid": None, "observed_compile_calls": 0,
-                             "scope": "Warm copied-cache process; no compiler interception, so no compiler-time attribution",
-                             "original_files": inventory(d3d_dir)}
-                else:
-                    value = readback.inspect(d3d_dir, manifest)
+                value = read_d3d_trace(d3d_dir, manifest, warm_from is not None)
                 save(folder / "d3d-readback.json", value)
                 row["d3d_trace"]["readback_sha256"] = runner.sha256(folder / "d3d-readback.json")
                 row["d3d_trace"]["instrumentation_valid"] = value["instrumentation_valid"]
@@ -382,9 +444,11 @@ def run_variant(name: str, shader: bytes, args, report: dict, transcript, warm_f
                 row["errors"].append("D3D trace readback: " + type(error).__name__ + ": " + str(error))
         if warm_from is not None:
             try:
-                campaign.require(inventory(args.output / warm_from / "isolated-caches") == warm_source,
-                                 "Original cold caches changed during warm-copy comparison")
+                verify_warm_cache_sources(args.output / warm_from / "isolated-caches",
+                                          args.output / warm_from / "result-project-shader-cache",
+                                          warm_source, warm_project_source)
                 row["cache_state"]["original_cold_caches_unchanged"] = True
+                row["cache_state"]["original_cold_project_shader_cache_unchanged"] = True
             except Exception as error:
                 row["status"] = "failed"
                 row["errors"].append("Warm source custody: " + str(error))
@@ -484,6 +548,99 @@ def self_test() -> int:
             self.assertEqual((ROOT / SHADER_PATH).read_bytes(), frozen)
             with self.assertRaisesRegex(RuntimeError, "exact retained hoist"):
                 variants.variants(frozen + b"\n")
+
+        def test_warm_user_and_project_cache_copies_are_verified(self):
+            with tempfile.TemporaryDirectory() as folder:
+                root = Path(folder)
+                user, project, copy_user, copy_project = [root / name for name in ("cold-user", "cold-project", "warm-user", "warm-project")]
+                user.mkdir()
+                project.mkdir()
+                (user / "user.bin").write_bytes(b"original user cache")
+                (project / "shader.bin").write_bytes(b"original project cache")
+                original_user, original_project = copy_warm_cache_inputs(user, project, copy_user, copy_project)
+                self.assertEqual(inventory(copy_project)["files"], original_project["files"])
+                verify_warm_cache_sources(user, project, original_user, original_project)
+                (project / "shader.bin").write_bytes(b"changed retained source")
+                with self.assertRaisesRegex(RuntimeError, "Original cold project shader cache changed"):
+                    verify_warm_cache_sources(user, project, original_user, original_project)
+
+        def test_broken_project_cache_copy_is_refused(self):
+            with tempfile.TemporaryDirectory() as folder:
+                root = Path(folder)
+                user, project, copy_user, copy_project = [root / name for name in ("cold-user", "cold-project", "warm-user", "warm-project")]
+                user.mkdir()
+                project.mkdir()
+                (project / "shader.bin").write_bytes(b"original project cache")
+                original_copy = shutil.copytree
+                def incomplete_copy(source, destination, **kwargs):
+                    result = original_copy(source, destination, **kwargs)
+                    if Path(destination) == copy_project:
+                        (copy_project / "shader.bin").write_bytes(b"wrong copied bytes")
+                    return result
+                with patch.object(shutil, "copytree", side_effect=incomplete_copy):
+                    with self.assertRaisesRegex(RuntimeError, "Warm project shader cache copy differs"):
+                        copy_warm_cache_inputs(user, project, copy_user, copy_project)
+
+        def test_absent_cold_project_cache_stays_explicitly_absent(self):
+            with tempfile.TemporaryDirectory() as folder:
+                root = Path(folder)
+                user, project, copy_user, copy_project = [root / name for name in ("cold-user", "cold-project", "warm-user", "warm-project")]
+                user.mkdir()
+                original_user, original_project = copy_warm_cache_inputs(user, project, copy_user, copy_project)
+                self.assertFalse(original_project["exists"])
+                self.assertFalse(copy_project.exists())
+                verify_warm_cache_sources(user, project, original_user, original_project)
+
+        def _warm_identity_fixture(self, directory: Path):
+            manifest = {"system_original": {"path": "C:\\Windows\\System32\\d3dcompiler_47.dll",
+                                           "sha256": "a" * 64, "image_size": 4096, "exports": [{}, {}, {}]},
+                        "proxy": {"sha256": "b" * 64}}
+            identity = {"event_index": 1, "event": "identity", "pid": 17, "tid": 18,
+                        "system_sha256": "a" * 64, "expected_system_sha256": "a" * 64,
+                        "proxy_sha256": "b" * 64, "system_module": manifest["system_original"]["path"],
+                        "proxy_module": "D:\\diagnostic\\d3dcompiler_47.dll", "exports_forwarded": 3,
+                        "system_module_base": 10000, "d3dcompile_address": 10001, "d3dcompile2_address": 10002}
+            path = directory / "d3d-trace-17.jsonl"
+            path.write_text(json.dumps(identity) + "\n")
+            return manifest, identity, path
+
+        def test_warm_no_compiler_call_has_no_compiler_attribution(self):
+            with tempfile.TemporaryDirectory() as folder:
+                directory = Path(folder)
+                absent = read_d3d_trace(directory, {}, True)
+                self.assertIsNone(absent["instrumentation_valid"])
+                self.assertIsNone(absent["proxy_identity_valid"])
+                self.assertEqual(absent["observed_compile_calls"], 0)
+                with self.assertRaisesRegex(ValueError, "no original trace"):
+                    read_d3d_trace(directory, {}, False)
+                manifest, _, _ = self._warm_identity_fixture(directory)
+                observed = read_d3d_trace(directory, manifest, True)
+                self.assertIsNone(observed["instrumentation_valid"])
+                self.assertTrue(observed["proxy_identity_valid"])
+                self.assertEqual(observed["observed_compile_calls"], 0)
+
+        def test_warm_no_begin_does_not_bypass_proxy_identity_checks(self):
+            for field, replacement in (("proxy_sha256", "wrong"), ("system_sha256", "wrong"),
+                                       ("d3dcompile_address", 9999), ("exports_forwarded", 0)):
+                with self.subTest(field=field), tempfile.TemporaryDirectory() as folder:
+                    directory = Path(folder)
+                    manifest, identity, path = self._warm_identity_fixture(directory)
+                    identity[field] = replacement
+                    path.write_text(json.dumps(identity) + "\n")
+                    with self.assertRaises(RuntimeError):
+                        read_d3d_trace(directory, manifest, True)
+
+        def test_warm_incomplete_event_cannot_masquerade_as_cache_hit(self):
+            with tempfile.TemporaryDirectory() as folder:
+                directory = Path(folder)
+                manifest, identity, path = self._warm_identity_fixture(directory)
+                bad = {"event_index": 2, "event": "compile_end", "pid": 17, "tid": 18, "call": 1}
+                path.write_text(json.dumps(identity) + "\n" + json.dumps(bad) + "\n")
+                with self.assertRaisesRegex(RuntimeError, "incomplete call or capture failure"):
+                    read_d3d_trace(directory, manifest, True)
+                path.write_text(json.dumps(identity))
+                with self.assertRaisesRegex(RuntimeError, "Partial original D3D trace"):
+                    read_d3d_trace(directory, manifest, True)
 
     result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(Controls))
     return 0 if result.wasSuccessful() else 1

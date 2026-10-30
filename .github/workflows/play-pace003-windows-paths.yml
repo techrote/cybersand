@@ -61,6 +61,25 @@ jobs:
           git fetch --no-tags --depth=1 origin 2443a78378d649df588efeac9db7c54084473329
           git show '2443a78378d649df588efeac9db7c54084473329:godot/shaders/material_palette.gdshader' > "$EVIDENCE_DIR/frozen-baseline.gdshader"
           echo 'NONQUALIFYING isolated shader diagnosis; original Main/PACE003 acceptance is separate.' > "$EVIDENCE_DIR/SCOPE.txt"
+          python - <<'PY_SOURCE'
+          import hashlib, json, os, pathlib, shutil
+          root = pathlib.Path(os.environ["EVIDENCE_DIR"], "retained-diagnostic-source")
+          root.mkdir(exist_ok=False)
+          files = [pathlib.Path(".github/workflows/play-pace003-windows-paths.yml"),
+              pathlib.Path("tools/play/pace003_shader_variants.py"),
+              pathlib.Path("tools/play/run_pace003_shader_diagnostic.py")]
+          files += sorted(path for path in pathlib.Path("tools/play/d3d_compiler_trace").iterdir()
+              if path.is_file() and path.suffix in (".py", ".cpp", ".md"))
+          records = []
+          for path in files:
+              destination = root / path
+              destination.parent.mkdir(parents=True, exist_ok=True)
+              shutil.copyfile(path, destination)
+              data = destination.read_bytes()
+              records.append({"path": path.as_posix(), "bytes": len(data),
+                  "sha256": hashlib.sha256(data).hexdigest()})
+          (root / "receipt.json").write_text(json.dumps(records, indent=2) + "\n")
+          PY_SOURCE
           python tools/ci/check_ci_provider_policy.py | tee "$EVIDENCE_DIR/provider-policy.json"
           python tools/play/run_pace003_shader_diagnostic.py --self-test 2>&1 | tee "$EVIDENCE_DIR/apparatus-tests.log"
           python tools/play/d3d_compiler_trace/test_helpers.py 2>&1 | tee "$EVIDENCE_DIR/d3d-apparatus-tests.log"
