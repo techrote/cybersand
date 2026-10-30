@@ -25,8 +25,13 @@ def main() -> int:
     args.output.mkdir(parents=True, exist_ok=True)
     log_path = args.output / "render-execution.log"
     diagnostic_path = args.output / "render-diagnostics"
+    # The repository default is 1920x1080; GitHub's ANGLE/Mesa software
+    # renderer can spend the entire bounded setup window rasterizing it.
+    # Request a real, >=640x360 framebuffer at half linear resolution. The
+    # test itself verifies the actual submitted image size, pixels and hold.
     command = [
         args.godot,
+        "--windowed", "--resolution", "960x540",
         "--rendering-method", "gl_compatibility",
         "--audio-driver", "Dummy",
     ]

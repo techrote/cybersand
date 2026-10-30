@@ -191,6 +191,21 @@ func finish(worker: CyberSimulationWorker, session: Variant) -> void:
 	expect(not is_instance_valid(desktop), "actual Main scene owner is freed")
 
 
+# A missing software-renderer frame must fail WITHOUT leaving test-held native
+# callbacks parked until the 12-second safety timer. This does not manufacture
+# a valid frame or turn a renderer refusal into a positive machine result.
+func refuse_held_capture(
+		worker: CyberSimulationWorker, session: Variant,
+		gate: Variant, generation: int, reason: String) -> void:
+	progress("held_capture_refused", {"reason":reason, "gate":gate.status()})
+	expect(bool(gate.release(generation)),
+		"failed render capture still manually releases the real phase gate")
+	var returned: bool = await wait_for(
+		Callable(self, "gate_returned").bind(gate, generation), 5000)
+	expect(returned, "failed render capture still drains the real phase dispatch")
+	await finish(worker, session)
+
+
 func run() -> void:
 	var started_ms: int = Time.get_ticks_msec()
 	if DisplayServer.get_name() == "headless":
@@ -209,7 +224,9 @@ func run() -> void:
 		return
 
 	progress("display_ready", {"display_server":DisplayServer.get_name(),
-		"driver":RenderingServer.get_current_rendering_driver_name()})
+		"driver":RenderingServer.get_current_rendering_driver_name(),
+		"window_pixels":[DisplayServer.window_get_size().x, DisplayServer.window_get_size().y],
+		"content_scale_pixels":[root.content_scale_size.x, root.content_scale_size.y]})
 	release_controls()
 	desktop = load("res://main.tscn").instantiate()
 	desktop.set_script(RenderHarness)
@@ -325,6 +342,10 @@ func run() -> void:
 	progress("first_capture_end", {"ok":first != null and not first.is_empty()})
 	expect(first != null and first.get_width() >= 640 and first.get_height() >= 360,
 		"frame_post_draw yields a sizable actual gameplay framebuffer while native jobs are held")
+	if first == null or first.is_empty():
+		await refuse_held_capture(worker, session, gate, generation, "first_frame_missing")
+		quit(1)
+		return
 	expect(sampled_colour_buckets(first) >= 6,
 		"first held framebuffer contains nonblank gameplay pixels")
 	expect(int(first_gate.waiting) >= 2 and not bool(first_gate.released)
@@ -352,6 +373,10 @@ func run() -> void:
 
 	expect(second != null and second.get_size() == first.get_size(),
 		"second held frame uses the same real viewport")
+	if second == null or second.is_empty():
+		await refuse_held_capture(worker, session, gate, generation, "second_frame_missing")
+		quit(1)
+		return
 	expect(sampled_colour_buckets(second) >= 6,
 		"second held framebuffer contains nonblank gameplay pixels")
 	expect(changed > 20,

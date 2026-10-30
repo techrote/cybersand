@@ -273,3 +273,65 @@ and Windows special-runtime builds, execution and original artifact readback
 pass. The prior Linux/Windows graphical failures remain negative evidence;
 Windows software-renderer course-installation cost is separately unresolved.
 No physical gamepad, focus, sustained FPS, subjective feel or release claim.
+
+## Fourth graphical failure, original Windows readback and bounded raster-size successor — 2026-10-30
+
+Exact source `5af7a73273d0f7aaa6fc2d0ccf45fb7e04c52062`,
+[scoped run 41001702056](https://github.com/techrote/cybersand/actions/runs/41001702056),
+ended **FAILED**. Draft Documentation
+[41001707304](https://github.com/techrote/cybersand/actions/runs/41001707304)
+passed; standard Native/Godot were draft-skipped, not green.
+The real 001B native-hold/shutdown control in the Windows job **passed** at
+this same source: 34 assertions/zero failures, five tasks, four distinct
+claimed native callbacks, real stop/release/drain/join, original receipt status
+`passed`. This is **not** a graphical 001C pass.
+
+Independent readback of original Windows artifact `12953574712` verified
+GitHub Actions ZIP SHA-256
+`9b266bad33246ac32c1486564dc378f310ef942c287728d95cebfde5f1043028`,
+22 CRC-clean, unique and safe ZIP paths, original raw `execution.log`,
+`receipt.json`, `render-execution.log`, runtime and instrumented-source
+manifests plus retained diagnostic minidumps. The source-matched *special,
+unpublished* Windows DLL SHA-256 is
+`2d9ed285a4f4c09b7796f282810f78cfcdaab9c524cfef0bc49cbd4a1ca75a66`;
+the pinned Rapier SHA-256 is
+`b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7`.
+
+**Windows 001C failure:** actual Godot 4.7 compatibility rendering used
+ANGLE/Microsoft Basic Render Driver. Markers reached `display_ready` at
+3159 ms, `worker_started` at 3359 ms and `course_queued` at 3509 ms.
+There was no later course acknowledgement, actor, native gate or framebuffer
+marker. An independent process snapshot captured the GUI child with one
+actively running thread (33.39 CPU-seconds at capture), many waiting threads,
+and two successful minidump files, but no symbolized stacks. The existing
+45-second stage-idle watchdog failed before the unmodified 120-second absolute
+deadline. **Do not classify CPU use as proven native deadlock or progress.**
+
+**Linux:** its 001B source-matched ordinary real-host control completed, and
+the graphical step was still marked `in_progress` when the job concluded
+`cancelled`. No complete archived Linux 001C render artifact was published
+for this head. This is a missing/negative qualification, not a pass and not
+proof of a particular gameplay defect.
+
+**New narrow diagnostic successor:** the project's original
+`godot/project.godot` requests a 1920×1080 window and viewport. In CI this
+runs on software-rendered ANGLE or Mesa, which plausibly burdens the
+graphical-setup stage. The explicit-only 001C runner now requests a
+**windowed 960×540 actual framebuffer** using Godot's CLI, preserving the
+already-required real non-headless DisplayServer, actual
+`RenderingServer.frame_post_draw` signal, raw PNG capture and immutable
+native-hold/pixel-difference gates. The script records observed window/content
+scale pixels, rather than assuming the CLI request succeeded. A frame smaller
+than the existing 640×360 requirement still fails. No production project
+configuration, material, owner, native runtime, release artifact, timeout or
+retry policy changes.
+
+The same successor additionally releases/drains the selected real native
+phase before ordinary scene teardown if either framebuffer capture is missing.
+This is a fail-safe refusal: it still returns failure and cannot fabricate a
+positive `PLAY_BUSY001C_RENDER_RESULT` or conceal a stalled renderer. The
+strict 12-second native safety hold and 120-second outer deadline remain.
+Neither this reduction nor the previous failures qualifies a 1920×1080
+graphical performance target, sustained FPS, physical controller/focus or
+manual human feel. Require fresh exact-head Linux/Windows original logs,
+framebuffer dimensions, PNGs and independent custody before acceptance.
