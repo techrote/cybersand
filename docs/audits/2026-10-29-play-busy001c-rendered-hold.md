@@ -102,3 +102,45 @@ not change the hold duration, gate, rendering method, input route, pixel
 thresholds, native runtime, Rapier ownership, timeout, retry policy or reducer.
 Fresh exact-head Linux/Windows 001B+001C execution and artifact review are
 required; the failed run is not reclassified as partial 001C success.
+
+
+## Second hosted failure and bounded graphical-stage correction — 2026-10-30
+
+Successor `dd3d4d7da35f8f4d2822f039dadf0aae78cb8b7c` fixed the
+inherited-counter parse error but did **not** qualify 001C.
+
+Linux original artifact `12947820490` has Actions ZIP SHA-256
+`e67bd00fdad5de1dd85148f3f84807c4ae75e4db1edf06b6386e01db85b8a4f3`.
+Its render log reaches a real X11 compatibility context using Mesa llvmpipe,
+then fails the inherited 15-second wait for authored-course acknowledgement.
+The native phase gate had not yet been armed, so this is graphical fixture
+startup failure, not a slow-native responsiveness result.
+
+Windows original artifact `12946639914` has Actions ZIP SHA-256
+`05345655569ecb99e5a8ce1190981e94cce8d04b7872f597817d07ee6c3d2114`.
+It reaches an actual ANGLE/Microsoft Basic Render Driver compatibility context
+but emits no machine result before the unchanged outer 120-second apparatus
+deadline. The old script had no stage receipts and an unbounded direct
+`await RenderingServer.frame_post_draw`, so the exact internal stage is not
+recoverable from that failed log. Do not infer a native hold, framebuffer or
+Rapier result from it.
+
+The next source keeps the 12-second native hold, 30 under-hold physics frames,
+pixel-change/nonblank oracles and 120-second process cap unchanged. It makes
+three fixture-only corrections:
+
+- explicit 30-second waits for course and actor **setup** instead of inheriting
+  LIFE001's 15-second non-rendering lifecycle setup bound; this is not a
+  gameplay-frame or native-hold performance threshold;
+- stage JSON receipts before/after course, actor, held phase, each capture,
+  manual release and dispatch return;
+- each framebuffer capture connects to the real `frame_post_draw` signal,
+  calls main-thread `RenderingServer.force_draw()`, and requires the signal
+  within 2.5 seconds. A missing draw returns a normal test failure instead of
+  consuming the outer process deadline.
+
+The Godot 4.7 RenderingServer contract documents `force_draw()` as a
+main-thread redraw of all viewports. The test still requires the real
+`frame_post_draw` signal and actual viewport pixels; force-draw is not a
+mock framebuffer. Fresh source-matched Linux/Windows execution and original
+PNG/log review remain mandatory.

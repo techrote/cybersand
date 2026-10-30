@@ -6,8 +6,11 @@ extends "res://tests/play_life001_shared_host_case.gd"
 const RIG: StringName = &"jetbarrel"
 const HOLD_TIMEOUT_MS: int = 12000
 const PHYSICS_FRAMES_UNDER_HOLD: int = 30
+const SETUP_WAIT_TIMEOUT_MS: int = 30000
+const FRAME_DRAW_TIMEOUT_MS: int = 2500
 
 var desktop: Control
+var frame_post_draw_seen: bool = false
 
 
 class RenderHarness:
@@ -69,9 +72,35 @@ func gate_returned(gate: Variant, generation: int) -> bool:
 		and int(status.get("waiting", -1)) == 0)
 
 
+func progress(stage: String, extra: Dictionary = {}) -> void:
+	var row: Dictionary = {"stage":stage, "elapsed_ms":Time.get_ticks_msec()}
+	for key: Variant in extra:
+		row[key] = extra[key]
+	print("PLAY_BUSY001C_PROGRESS ", JSON.stringify(row))
+
+
+func _frame_post_draw_seen() -> void:
+	frame_post_draw_seen = true
+
+
 func captured() -> Image:
-	await process_frame
-	await RenderingServer.frame_post_draw
+	frame_post_draw_seen = false
+	var callback := Callable(self, "_frame_post_draw_seen")
+	if RenderingServer.frame_post_draw.is_connected(callback):
+		RenderingServer.frame_post_draw.disconnect(callback)
+	RenderingServer.frame_post_draw.connect(callback)
+	# force_draw is main-thread only and still produces the ordinary
+	# RenderingServer frame_post_draw signal. The bounded loop prevents a
+	# graphical-driver stall from consuming the 120 s outer process deadline.
+	RenderingServer.force_draw()
+	var deadline: int = Time.get_ticks_msec() + FRAME_DRAW_TIMEOUT_MS
+	while not frame_post_draw_seen and Time.get_ticks_msec() < deadline:
+		await process_frame
+	if RenderingServer.frame_post_draw.is_connected(callback):
+		RenderingServer.frame_post_draw.disconnect(callback)
+	if not frame_post_draw_seen:
+		progress("frame_post_draw_timeout", {"timeout_ms":FRAME_DRAW_TIMEOUT_MS})
+		return null
 	var image: Image = desktop.get_viewport().get_texture().get_image()
 	if image != null:
 		image.convert(Image.FORMAT_RGBA8)
@@ -151,6 +180,8 @@ func run() -> void:
 		quit(1)
 		return
 
+	progress("display_ready", {"display_server":DisplayServer.get_name(),
+		"driver":RenderingServer.get_current_rendering_driver_name()})
 	release_controls()
 	desktop = load("res://main.tscn").instantiate()
 	desktop.set_script(RenderHarness)
@@ -164,16 +195,23 @@ func run() -> void:
 		quit(1)
 		return
 
+	progress("worker_started")
 	expect(desktop.microscenario_launch(Catalogue.PLAYER_COURSE_ID, "Play", 0),
 		"authored Player Playground admits through normal Main route")
-	var ready: bool = await wait_for(Callable(self, "course_installed").bind(desktop))
-	expect(ready, "native worker acknowledges authored course")
+	progress("course_queued")
+	var ready: bool = await wait_for(
+		Callable(self, "course_installed").bind(desktop), SETUP_WAIT_TIMEOUT_MS)
+	expect(ready, "native worker acknowledges authored course within graphical setup budget")
 	if ready:
+		progress("course_installed", {"native_tick":int(desktop.latest_snapshot.tick_index)})
 		expect(desktop.apply_actor_prototype_configuration(
 			StringName("rapier/" + str(RIG)), &"human", false),
 			"ordinary SetP route constructs the real Jet Barrel")
-		ready = await wait_for(Callable(self, "actor_ready").bind(desktop, RIG))
-		expect(ready, "actual actor, native epoch and hard terrain are ready")
+		ready = await wait_for(
+			Callable(self, "actor_ready").bind(desktop, RIG), SETUP_WAIT_TIMEOUT_MS)
+		expect(ready, "actual actor, native epoch and hard terrain are ready within graphical setup budget")
+	if ready:
+		progress("actor_ready", {"actor_epoch":desktop._physical_epoch})
 	if not ready:
 		await finish(worker, desktop.physical_actor_session)
 		quit(1)
@@ -182,6 +220,10 @@ func run() -> void:
 	desktop.paused = false
 	ready = await wait_for(Callable(self, "render_host_ready"), 30000)
 	expect(ready, "real native/Rapier host reaches parallel rendered gameplay")
+	if ready:
+		progress("parallel_render_host_ready", {
+			"native_tick":int(desktop.latest_snapshot.tick_index),
+			"rapier_tick":desktop.physical_actor_session.tick})
 	if not ready:
 		await finish(worker, desktop.physical_actor_session)
 		quit(1)
@@ -203,6 +245,8 @@ func run() -> void:
 
 	var held: bool = await wait_for(Callable(self, "gate_held").bind(gate, generation), 5000)
 	expect(held, "at least two distinct real World phase jobs are held before rendering")
+	if held:
+		progress("native_phase_held", gate.status())
 	if not held:
 		gate.release(generation)
 		await finish(worker, desktop.physical_actor_session)
@@ -222,8 +266,10 @@ func run() -> void:
 	var rapier_before: int = desktop.rapier_bridge.manual_step_count()
 	var command_before: int = session.accepted_commands
 
+	progress("first_capture_begin")
 	var first: Image = await captured()
 	var first_gate: Dictionary = gate.status()
+	progress("first_capture_end", {"ok":first != null and not first.is_empty()})
 	expect(first != null and first.get_width() >= 640 and first.get_height() >= 360,
 		"frame_post_draw yields a sizable actual gameplay framebuffer while native jobs are held")
 	expect(sampled_colour_buckets(first) >= 6,
@@ -239,8 +285,10 @@ func run() -> void:
 	for _step: int in range(3):
 		await physics_frame
 
+	progress("second_capture_begin")
 	var second: Image = await captured()
 	var second_gate: Dictionary = gate.status()
+	progress("second_capture_end", {"ok":second != null and not second.is_empty()})
 	var actor_after: Vector2 = Vector2(session.observation(0).get("position", Vector2.ZERO))
 	var changed: int = changed_samples(first, second)
 	var main_delta: int = desktop.completed_main_callbacks - main_before
@@ -279,10 +327,12 @@ func run() -> void:
 		expect(save_capture(first, first_path), "first raw held-frame PNG persists")
 		expect(save_capture(second, second_path), "second raw held-frame PNG persists")
 
+	progress("manual_gate_release_begin")
 	var released: bool = bool(gate.release(generation))
 	expect(released, "manual render-test release succeeds before the safety deadline")
 	var returned: bool = await wait_for(Callable(self, "gate_returned").bind(gate, generation), 5000)
 	expect(returned, "all selected real phase jobs drain and production dispatch returns")
+	progress("native_dispatch_returned", gate.status())
 	var final_gate: Dictionary = gate.status()
 	expect(not bool(final_gate.timed_out)
 		and int(final_gate.completed) == int(final_gate.expected_tasks)
