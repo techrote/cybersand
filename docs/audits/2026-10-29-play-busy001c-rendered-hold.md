@@ -540,3 +540,62 @@ original retained Linux ZIP and GDB/MI transcript (or explicit refusal),
 and independent source/runtime/artifact reduction before accepting
 anything. Main remains unchanged; no native solver, release runtime,
 physical-device/focus, sustained FPS or manual human-feel gate is promoted.
+
+
+## Exact 86ca28d6 original artifacts and debugger-inferior exit classification — 2026-10-30
+
+At source `86ca28d6fd7102bf3d2a4cd931b7a40c900d2f1b`,
+[run 41039371507](https://github.com/techrote/cybersand/actions/runs/41039371507)
+is terminal **FAILED**: both original 001C graphical steps fail **before**
+the native gate; both independently source-matched 001B real native-phase
+stop controls pass **34 assertions / zero failures each**. Exact-head
+[Documentation 41039379311](https://github.com/techrote/cybersand/actions/runs/41039379311)
+passes; standard Native/Godot are **draft-skipped**, not qualification.
+
+Original downloaded GitHub Actions ZIPs independently match published digests:
+- Linux execution `12969517952`, SHA-256
+  `1fc6255b6010b1bb383243f432387c05862cc1e0f8e567547f85fabebaafded5`,
+  73 unique safe, CRC-clean members; original 001C log SHA-256
+  `66292135b7cfdd0c851d0d7e4c302e8454f3307627a45316bc0522728ba1a6ac`.
+- Windows execution `12969268954`, SHA-256
+  `5ccb1ed2a6c63ef17e827d01a4dc2c4fb1f46f60b33bd2ca87f916e281f78f72`,
+  22 unique safe, CRC-clean members; original 001C log SHA-256
+  `7802a462fd8c43c1b98cb3f7bb7ce6bc5712942bf12bab85e19e33e90955584c`.
+- Windows source-matched build `12970256399`, SHA-256
+  `d74bddd15156d4e74d49964b9ebe6ae7f0de0ff97d17fc0fa1221814b639ceb0`,
+  seven unique safe, CRC-clean members. Both 001B receipts identify the
+  literal `86ca28d6` source; native runtime hashes are Linux
+  `988e3efec285f2940d298e02feac9f12c172cec34643ec4ab26848f469c165b4`
+  and Windows
+  `a111945758e67d9bc21044594b1be2b51ad937fd966a4c338c8c52deff82074b`.
+
+The unchanged authoritative Linux 001C test reaches `course_queued` at
+3155ms, then refuses after the 30s course-acknowledgement wait
+(`pending_apply=true`, no actor/gate). Windows reaches `course_queued`
+at 5683ms and fails the unchanged 45s stage-idle watchdog. No original
+001C run PNGs or `PLAY_BUSY001C_RENDER_RESULT` exist.
+
+The **separate, nonqualifying** GDB child does complete the actual Linux
+under-hold sequence: its literal transcript includes a 32/0 machine result,
+four distinct real worker callbacks held with zero completion, two real
+960×540 framebuffer PNGs, 32 Rapier steps, input and actor progress
+(20.779px), immutable snapshot, manual gate release, all five task completions
+and actual dispatch return. The two original diagnostic PNG SHA-256s are
+`b08dc753aeb5e814b37543ee2acabdc2e3abd09682befa35bcbb8bb2f82184bc`
+and
+`5d39616861a504ada993efe52d47af7168969586fd655177a03e0be705ce81ec`;
+168,399 of 518,400 pixels differ. This is useful repeat-process evidence,
+**not** a qualifying first-run result, throughput benchmark, rendered FPS,
+physical device/focus test or manual human-feel gate.
+
+A source-level diagnostic defect is also established: the retained original
+GDB/MI transcript explicitly records `=thread-group-exited` with exit-code
+zero and `*stopped,reason="exited-normally"`, but the old diagnostic JSON
+reported `interrupt_refused_or_timed_out` because it attempted to interrupt
+an inferior that had already exited. No stack was collected. A narrowly scoped
+diagnostic successor classifies the inferior-exit event before asking for
+stacks and adds a synthetic normal-exit/refusal regression. It retains
+`qualification=false`, `backtrace_completed=false` and refusal to claim
+an interrupt stack, and does **not** modify the authoritative 001C test or
+its deadlines, 001B control, production worker, native runtime or renderer.
+New exact-head CI and any original execution artifacts remain required.

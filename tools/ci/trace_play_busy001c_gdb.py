@@ -20,6 +20,16 @@ SCHEMA = "play-busy001c-gdb-diagnostic-v1"
 MAX_TRANSCRIPT_BYTES = 2 * 1024 * 1024
 
 
+def _inferior_exit_kind(transcript: bytes | bytearray) -> str | None:
+    """Classify the MI inferior termination event, not a debugger signal stop."""
+    for line in transcript.splitlines():
+        if line.startswith(b'*stopped,reason="exited-normally"'):
+            return "normal"
+        if line.startswith(b'*stopped,reason="exited"'):
+            return "abnormal"
+    return None
+
+
 def capture(gdb: str, godot: str, output: Path, hold_seconds: float,
             extra_args: list[str]) -> dict:
     output.mkdir(parents=True, exist_ok=True)
@@ -32,6 +42,7 @@ def capture(gdb: str, godot: str, output: Path, hold_seconds: float,
         "elapsed_seconds": None,
         "interrupt_stopped": False,
         "backtrace_completed": False,
+        "inferior_exit": None,
         "timeout_seconds_before_interrupt": hold_seconds,
         "transcript": "gdb-mi.log",
         "reason": "unstarted",
@@ -81,16 +92,27 @@ def capture(gdb: str, godot: str, output: Path, hold_seconds: float,
         command_mi(102, "-gdb-set disable-randomization off")
         command_mi(103, "-gdb-set mi-async on")
         command_mi(104, "-exec-run")
-        collect(started + hold_seconds)
-        if process.poll() is not None:
+        # An inferior may finish normally before the requested interrupt.
+        # The GDB parent remains alive in MI mode; this is not a ptrace refusal.
+        collect(started + hold_seconds,
+                lambda b: _inferior_exit_kind(b) is not None)
+        exit_kind = _inferior_exit_kind(parts)
+        if exit_kind is not None:
+            result["inferior_exit"] = exit_kind
+            result["reason"] = f"inferior_exited_{exit_kind}_before_interrupt"
+        elif process.poll() is not None:
             result["reason"] = "debugger_exited_before_interrupt"
         else:
             command_mi(105, "-exec-interrupt --all")
             previous = len(parts)
             stopped = collect(time.monotonic() + 6.,
                               lambda b: b"*stopped," in b[previous:])
-            result["interrupt_stopped"] = stopped
-            if stopped:
+            exit_kind = _inferior_exit_kind(parts)
+            result["interrupt_stopped"] = stopped and exit_kind is None
+            if exit_kind is not None:
+                result["inferior_exit"] = exit_kind
+                result["reason"] = f"inferior_exited_{exit_kind}_during_interrupt"
+            elif stopped:
                 # Preserve all thread stacks in the uploaded original transcript.
                 command_mi(106, '-interpreter-exec console "thread apply all bt 16"')
                 result["backtrace_completed"] = collect(
