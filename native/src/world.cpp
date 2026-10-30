@@ -8,10 +8,6 @@
 
 #include "render_snapshot_internal.hpp"
 
-#if defined(CYBERSAND_PLAY_BUSY_TEST_HOOK)
-#include "../tests/support/play_busy_world_gate.hpp"
-#endif
-
 #include <algorithm>
 #include <array>
 #include <atomic>
@@ -4593,49 +4589,20 @@ TickStats World::tick_phased() {
         struct DispatchContext {
             World* world;
             ParallelState* parallel;
-#if defined(CYBERSAND_PLAY_BUSY_TEST_HOOK)
-            std::uint64_t play_busy_generation = 0;
-            std::uint64_t play_busy_tick = 0;
-            std::uint32_t play_busy_phase = 0;
-#endif
-        } context{this, parallel_.get()
-#if defined(CYBERSAND_PLAY_BUSY_TEST_HOOK)
-            , 0, tick_index_, phase
-#endif
-        };
+        } context{this, parallel_.get()};
         const auto execute_task = +[](void* raw_context, std::size_t task_index) noexcept {
             auto& dispatch = *static_cast<DispatchContext*>(raw_context);
-#if defined(CYBERSAND_PLAY_BUSY_TEST_HOOK)
-            const bool play_busy_claim = cybersand::play_busy_test::world_phase_gate().arrive_and_wait(
-                dispatch.play_busy_generation, dispatch.play_busy_tick,
-                dispatch.play_busy_phase, task_index);
-#endif
             const auto core_index = dispatch.parallel->phase_job_indices[task_index];
             auto& result = dispatch.parallel->results[core_index];
             dispatch.world->scan_rect(
                 dispatch.world->scheduler_geometry_.core_rect(
                     dispatch.world->active_core_scratch_[core_index]),
                 result.stats, &result.effects);
-#if defined(CYBERSAND_PLAY_BUSY_TEST_HOOK)
-            if (play_busy_claim)
-                cybersand::play_busy_test::world_phase_gate().complete(
-                    dispatch.play_busy_generation, dispatch.play_busy_tick,
-                    dispatch.play_busy_phase, task_index);
-#endif
         };
 
         if (parallel_->pool != nullptr &&
             parallel_->phase_job_indices.size() >= config_.parallel_job_threshold) {
-#if defined(CYBERSAND_PLAY_BUSY_TEST_HOOK)
-            context.play_busy_generation =
-                cybersand::play_busy_test::world_phase_gate().begin_dispatch(
-                    tick_index_, phase, parallel_->phase_job_indices.size());
-#endif
             parallel_->pool->dispatch(parallel_->phase_job_indices.size(), &context, execute_task);
-#if defined(CYBERSAND_PLAY_BUSY_TEST_HOOK)
-            cybersand::play_busy_test::world_phase_gate().end_dispatch(
-                context.play_busy_generation, tick_index_, phase);
-#endif
             stats.worker_threads_observed=std::max(stats.worker_threads_observed,parallel_->pool->participating_workers());
         } else {
             if (!parallel_->phase_job_indices.empty()) stats.worker_threads_observed=std::max(stats.worker_threads_observed,1U);

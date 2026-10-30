@@ -41,7 +41,7 @@ jobs:
           python3 tools/ci/check_ci_provider_policy.py
           mkdir -p build/play-busy001b/linux
           git rev-parse HEAD > build/play-busy001b/linux/source-sha.txt
-          sha256sum             native/src/world.cpp             native/tests/support/play_busy_world_gate.hpp             godot/native_extension/cyber_play_busy_test_gate.hpp             godot/native_extension/register_types.cpp             godot/scripts/simulation_worker.gd             godot/tests/test_play_busy001_real_phase_shutdown.gd             tools/ci/readback_play_busy001b.py             > build/play-busy001b/linux/source-inputs.sha256
+          sha256sum             native/src/world.cpp             native/tests/support/play_busy_world_gate.hpp             native/tests/support/cyber_play_busy_test_gate.hpp             godot/native_extension/register_types.cpp             godot/scripts/simulation_worker.gd             godot/tests/test_play_busy001_real_phase_shutdown.gd             tools/ci/readback_play_busy001b.py             tools/ci/play_busy001b_instrumentation.patch             > build/play-busy001b/linux/source-inputs.sha256
 
       - name: Materialize pinned Linux Rapier only
         run: |
@@ -81,7 +81,12 @@ jobs:
           SH
           chmod +x "$RUNNER_TEMP/play-busy-cxx"
           "$RUNNER_TEMP/play-busy-cxx" --version > build/play-busy001b/linux/compiler.txt
+          git apply --check tools/ci/play_busy001b_instrumentation.patch
+          git apply tools/ci/play_busy001b_instrumentation.patch
+          sha256sum native/src/world.cpp godot/native_extension/register_types.cpp > build/play-busy001b/linux/instrumented-source.sha256
           LINUX_CXX="$RUNNER_TEMP/play-busy-cxx"             CYBERSAND_NATIVE_OUTPUT="$PWD/build/play-busy001b/linux/libcybersand_native.linux.x86_64.so"             timeout 20m tools/build_native_extension.sh
+          git checkout -- native/src/world.cpp godot/native_extension/register_types.cpp
+          git diff --exit-code -- native/src/world.cpp godot/native_extension/register_types.cpp
           cp build/play-busy001b/linux/libcybersand_native.linux.x86_64.so             godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
           file build/play-busy001b/linux/libcybersand_native.linux.x86_64.so             | tee build/play-busy001b/linux/runtime-file.txt
           grep -q 'ELF 64-bit.*x86-64' build/play-busy001b/linux/runtime-file.txt
@@ -120,7 +125,7 @@ jobs:
               if result.returncode:
                   raise SystemExit(f"{name} exit={result.returncode}")
           PY
-          python3 tools/ci/readback_play_busy001b.py             --log build/play-busy001b/linux/execution.log             --source-sha "$GITHUB_SHA"             --runtime build/play-busy001b/linux/libcybersand_native.linux.x86_64.so             --rapier godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so             --godot-version "$GODOT_VERSION" --platform linux             --output build/play-busy001b/linux/receipt.json
+          python3 tools/ci/readback_play_busy001b.py             --log build/play-busy001b/linux/execution.log             --source-sha "$GITHUB_SHA"             --runtime build/play-busy001b/linux/libcybersand_native.linux.x86_64.so             --rapier godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so             --godot-version "$GODOT_VERSION" --platform linux             --instrumentation-patch tools/ci/play_busy001b_instrumentation.patch             --source-inputs build/play-busy001b/linux/source-inputs.sha256             --instrumented-source build/play-busy001b/linux/instrumented-source.sha256             --output build/play-busy001b/linux/receipt.json
           git diff --exit-code -- .             ':!godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so'             ':!godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'             ':!godot/.godot'
 
       - name: Retain exact Linux evidence
@@ -150,7 +155,7 @@ jobs:
           python3 tools/ci/check_ci_provider_policy.py
           mkdir -p build/play-busy001b/windows-build
           git rev-parse HEAD > build/play-busy001b/windows-build/source-sha.txt
-          sha256sum             native/src/world.cpp             native/tests/support/play_busy_world_gate.hpp             godot/native_extension/cyber_play_busy_test_gate.hpp             godot/native_extension/register_types.cpp             godot/scripts/simulation_worker.gd             godot/tests/test_play_busy001_real_phase_shutdown.gd             tools/ci/readback_play_busy001b.py             > build/play-busy001b/windows-build/source-inputs.sha256
+          sha256sum             native/src/world.cpp             native/tests/support/play_busy_world_gate.hpp             native/tests/support/cyber_play_busy_test_gate.hpp             godot/native_extension/register_types.cpp             godot/scripts/simulation_worker.gd             godot/tests/test_play_busy001_real_phase_shutdown.gd             tools/ci/readback_play_busy001b.py             tools/ci/play_busy001b_instrumentation.patch             > build/play-busy001b/windows-build/source-inputs.sha256
 
       - name: Install pinned SCons
         run: |
@@ -192,7 +197,12 @@ jobs:
           printf '#!/usr/bin/env bash\nexec "%s" -DCYBERSAND_PLAY_BUSY_TEST_HOOK=1 "$@"\n' "$REAL_CXX" > "$RUNNER_TEMP/play-busy-windows-cxx"
           chmod +x "$RUNNER_TEMP/play-busy-windows-cxx"
           "$RUNNER_TEMP/play-busy-windows-cxx" --version > build/play-busy001b/windows-build/compiler.txt
+          git apply --check tools/ci/play_busy001b_instrumentation.patch
+          git apply tools/ci/play_busy001b_instrumentation.patch
+          sha256sum native/src/world.cpp godot/native_extension/register_types.cpp > build/play-busy001b/windows-build/instrumented-source.sha256
           WINDOWS_CXX="$RUNNER_TEMP/play-busy-windows-cxx"             CYBERSAND_NATIVE_OUTPUT="$PWD/build/play-busy001b/windows-build/cybersand_native.windows.x86_64.dll"             timeout 20m tools/build_native_extension_windows.sh
+          git checkout -- native/src/world.cpp godot/native_extension/register_types.cpp
+          git diff --exit-code -- native/src/world.cpp godot/native_extension/register_types.cpp
           file build/play-busy001b/windows-build/cybersand_native.windows.x86_64.dll             | tee build/play-busy001b/windows-build/runtime-file.txt
           grep -q 'PE32+ executable (DLL).*x86-64' build/play-busy001b/windows-build/runtime-file.txt
           (cd build/play-busy001b/windows-build && \
@@ -277,7 +287,7 @@ jobs:
               if result.returncode:
                   raise SystemExit(f"{name} exit={result.returncode}")
           PY
-          python tools/ci/readback_play_busy001b.py             --log build/play-busy001b/windows/execution.log             --source-sha "$GITHUB_SHA"             --runtime build/play-busy001b/windows/cybersand_native.windows.x86_64.dll             --rapier godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll             --godot-version "$GODOT_VERSION" --platform windows             --output build/play-busy001b/windows/receipt.json
+          python tools/ci/readback_play_busy001b.py             --log build/play-busy001b/windows/execution.log             --source-sha "$GITHUB_SHA"             --runtime build/play-busy001b/windows/cybersand_native.windows.x86_64.dll             --rapier godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll             --godot-version "$GODOT_VERSION" --platform windows             --instrumentation-patch tools/ci/play_busy001b_instrumentation.patch             --source-inputs build/play-busy001b/windows/source-inputs.sha256             --instrumented-source build/play-busy001b/windows/instrumented-source.sha256             --output build/play-busy001b/windows/receipt.json
 
       - name: Retain exact Windows execution evidence
         if: always()

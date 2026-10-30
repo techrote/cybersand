@@ -4,7 +4,7 @@
 #error "CyberPlayBusyTestGate is test-only and requires CYBERSAND_PLAY_BUSY_TEST_HOOK"
 #endif
 
-#include "../../native/tests/support/play_busy_world_gate.hpp"
+#include "play_busy_world_gate.hpp"
 
 #include <godot_cpp/classes/ref_counted.hpp>
 #include <godot_cpp/core/class_db.hpp>
