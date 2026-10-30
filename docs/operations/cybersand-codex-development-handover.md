@@ -33,6 +33,11 @@ historical evidence and outstanding exact-head CI/manual gates. The
 [manual entry instructions](local-build-and-validation.md#shared-play-session-and-owner-qualification)
 lead directly to the existing #270 checklist. Physical devices and actual human
 feel are unexecuted; passing automated counters do not complete them.
+The first ready head `64bbd818` failed ordinary Windows/Linux CI because its
+extra launcher row displaced the Experiment Tower mouse target. The correction
+shares the existing wrapping action bar; the original 55-assertion controller
+test passes unchanged and the integrated fixture adds real mouse entry (90/0
+locally). Preserve run41074846660 as failed and require fresh corrected-head CI.
 
 Perform substantive source/evidence review in the active engineering session.
 An owner-account COMMENT review is legitimate engineering work and is not a

@@ -245,6 +245,20 @@ func run() -> void:
 	var worker: CyberSimulationWorker = desktop.simulation_worker
 	var ready: bool = desktop.worker_start_error == OK and worker._thread.is_started()
 	expect(ready, "actual existing desktop worker starts")
+	var launcher: Button = desktop.microscenario_panel.launch_button.get_parent().get_node("PlayableSessionLauncher")
+	expect(root.get_visible_rect().encloses(launcher.get_global_rect()),
+		"shared Play launcher remains inside the actual host viewport")
+	for pressed: bool in [true, false]:
+		var mouse := InputEventMouseButton.new()
+		mouse.position = launcher.get_global_rect().get_center()
+		mouse.global_position = mouse.position
+		mouse.button_index = MOUSE_BUTTON_LEFT
+		mouse.pressed = pressed
+		root.push_input(mouse, true)
+		await process_frame
+	expect(desktop.playable_session_panel.visible,
+		"real viewport mouse entry opens the integrated selector")
+	desktop.playable_session_panel.hide()
 	for index: int in Course.MECHANICAL_PRESETS.size():
 		if not ready: break
 		ready = await exercise_selection(index, worker)

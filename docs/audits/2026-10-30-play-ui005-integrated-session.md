@@ -110,7 +110,7 @@ Initial functional execution returned 83/0; added movement-deadline assertions
 returned 88/0. Existing course composition returned 126/0, gamepad event bridge
 32/0, liquid editor 116/0 and real physics-cadence lap sampling 41/0 on their
 recorded local inputs. These remain separate iterations, not final-head hosted
-passes. Final executable-source results are:
+passes. Results before the subsequent launcher correction are:
 
 | Test / evidence file | Assertions / failures | Log SHA-256 |
 |---|---|---|
@@ -157,7 +157,65 @@ default XDG paths; the first test exited134 before script execution because its
 user log path was unwritable. Subsequent runs used writable XDG directories.
 The first graphical run reported unavailable audio and fell back to Dummy;
 the next layout command selects Dummy explicitly. None is silently reclassified.
-No ASan/TSan campaign ran; no general race/leak/UB absence is asserted.
+No local ASan/TSan campaign ran; no general race/leak/UB absence is asserted.
+
+## First ready CI failure and launcher correction
+
+The first ready head `64bbd818fb4b1da4c2ac5b4067f204dadca1a35b`, tree
+`a1c3372159aa38595aabdf85df070990eecf45c4`, reached ordinary hosted execution in
+[run41074846660](https://github.com/techrote/cybersand/actions/runs/41074846660).
+Its actual merge checkout `178cfa9ccf2753231db3e2bc59ca4e2c106f0f41` has exactly
+that tree and parents main8d2dd843/head64bbd818. UI005 itself returned 88/0 on
+both Windows and Linux, but the full matrix **failed**: the unchanged
+`test_microscenario_controllers.gd` returned 55 assertions / 3 failures on both
+platforms. Its real mouse click could no longer enter Experiment Tower; the
+following count assertions therefore also failed. Every assigned case executed:
+Windows 201 and Linux 213, with this one failing case per platform. Windows
+coverage was skipped and the Linux aggregate failed; neither is a pass.
+
+The original eight run artifacts, including both failed shards, are retained
+unchanged with provider digests, sizes, full member hashes and safe-path/CRC
+checks. Root inspected raw results and all assigned-case outcomes, checked the
+Linux runtime bytes, and matched Windows' 80 canonical native inputs. Of its
+760 actual checkout input hashes, 634 match Git blob bytes directly, 124 match
+exact LF-to-CRLF checkout conversion, and two match their LFS object IDs, sizes
+and materialized runtime bytes. Both the initial raw-byte comparison and the
+explicit checkout-transform reconciliation are retained; no unexplained
+source mismatch was waived.
+
+The same failure reproduced locally on head64bbd818 in 4.842 seconds, exit1,
+55/3, log SHA-256
+`e6607eba97a4ff9c594ab434de0bd6e1b4c8c0f900a0c2f684adb6f27c0d0397`.
+The product correction places Play session in the existing wrapping action bar
+instead of adding a full vertical launcher row. It also follows that bar's HUD
+visibility. The original controller test and its real-click assertions are
+unchanged. UI005 adds two assertions for the visible Play button and actual
+viewport mouse entry into the selector.
+
+Corrected local source hashes:
+
+| File | SHA-256 |
+|---|---|
+| `godot/scripts/main.gd` | `b46a77049e4323f64a1dd9547b0171c13956d77fd69113dd59e47fd692b67596` |
+| `godot/tests/test_play_ui005_session_selection.gd` | `5b3f4c108cd678f88cf0716bdcf2779548f88629260db3ecf60cf191c92f7266` |
+
+| Corrected local execution | Result | Seconds | Log SHA-256 |
+|---|---|---:|---|
+| Original MicroScenario controllers, headless / 180s bound | 55/0 | 5.668 | `7c4c327a2f1af017dc1def0a35a4de4f23e0414ec79f2ef09cb60e7b2ff21061` |
+| UI005 actual host, headless / 180s bound | 90/0 | 14.512 | `3449b8a5b72030923f46da79f79e9a0e868e4bb720c670da8056cd55323f4872` |
+| Normal X11/OpenGL Main, actual mouse entry and Acrobat construction / 100s bound | Exit0 and root visual inspection | 7.257 | `b8e5718b99c25369c14d342375d380433d51597d1ce28f36d49ee08dca792513` |
+
+The last capture uses the same Godot/native/Rapier pins, Xvfb and llvmpipe,
+without a native hold or substitute World view. The virtual viewport is
+1920×1080, captured at 1280×720 by the project's existing stretch settings; the
+popup remains 680×740 in UI coordinates with actions ending at y720. The Play
+button is within the viewport and actual mouse events open it. Screenshots,
+probe script and original warnings are retained. This is bounded layout and
+construction evidence, not physical input, human feel or representative pacing.
+
+No earlier execution is transferred over these source changes. The corrected
+publication must record its exact head/tree and run new ordinary required CI;
+the first ready failure remains failed. PR #307 owns that final execution record.
 
 ## Original #302 and #304 evidence custody
 

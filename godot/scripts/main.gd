@@ -2811,7 +2811,11 @@ func setup_playable_session_panel() -> void:
 	launcher.text = "Play session"
 	launcher.focus_mode = Control.FOCUS_NONE
 	launcher.pressed.connect(playable_session_panel.show_selection)
-	$Layout.add_child(launcher)
+	# Reuse the wrapping action bar: another full-height launcher row pushes
+	# existing controls below the viewport and breaks real mouse entry.
+	var controls_row: HFlowContainer = microscenario_panel.launch_button.get_parent()
+	controls_row.add_child(launcher)
+	controls_row.move_child(launcher, 0)
 
 
 func actor_prototypes_allowed() -> bool:

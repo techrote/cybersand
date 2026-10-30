@@ -49,6 +49,8 @@ Choose the original Player Playground course, any of the five mechanical SetP
 rigs, keyboard plus standard gamepad or keyboard only, four-checkpoint lap or
 free play, construction-time per-material solver policy and close-follow or
 overview starting camera. No alternative simulation owner is introduced.
+The in-host Play button shares the existing wrapping MicroScenario action bar,
+so it does not add a vertical launcher row or displace the older mouse targets.
 
 [`main.gd::apply_playable_session`](../../godot/scripts/main.gd) validates the
 copied selection and calls the existing prepared native/physical reconstruction.
@@ -87,6 +89,8 @@ native receipts, original map, newer identities, prior Rapier retirement,
 camera/rule/control selection, running native/Rapier clocks and policy-retaining
 reset. It also exercises native Oil/pressure refusal, protected-fixture and
 deferred-swarm refusal, selected/unselected device signals and focus rearm.
+It also sends viewport mouse events to the visible in-host Play button. The
+existing Experiment Tower mouse/Space/F9 regression remains unchanged.
 Only the OS-focus predicate and device enumeration are synthetic; they do not
 qualify real hardware, OS focus delivery, natural course traversal or human feel.
 The [dated audit](../audits/2026-10-30-play-ui005-integrated-session.md) owns local
