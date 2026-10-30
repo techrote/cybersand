@@ -21,11 +21,10 @@ var progress_serial: int = 0
 
 # Test-only, bounded course-stage source probing. These markers are NOT
 # CYBERSAND_PROGRESS and cannot reset the external 45s idle watchdog.
-const COURSE_MAIN_TRACE_LIMIT: int = 3
-const COURSE_PHYSICS_TRACE_LIMIT: int = 3
-
 class RenderHarness:
 	extends DesktopHarness
+	const COURSE_MAIN_TRACE_LIMIT: int = 3
+	const COURSE_PHYSICS_TRACE_LIMIT: int = 3
 	var completed_main_callbacks: int = 0
 	var completed_physics_callbacks: int = 0
 	var completed_input_callbacks: int = 0
