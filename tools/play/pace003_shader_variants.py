@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 
 FROZEN_HOIST_SHA256 = "426c2b8a829d6ca216659b73f7663ba6c7f6dddd300726b81ed1eec85bbd3e1d"
@@ -121,6 +122,78 @@ def bounded_temporal_loop(source: str) -> str:
 """ + source[end:]
 
 
+def _block_end(text: str, start: int) -> int:
+    depth = 0
+    index = start
+    while index < len(text):
+        if text.startswith("//", index):
+            index = text.index("\n", index)
+        elif text.startswith("/*", index):
+            index = text.index("*/", index) + 2
+            continue
+        elif text[index] == "{":
+            depth += 1
+        elif text[index] == "}":
+            depth -= 1
+            if depth == 0:
+                return index + 1
+        index += 1
+    raise RuntimeError("Unclosed frozen block")
+
+
+def grouped_dispatch(text: str, function: str, selector: str, expected_values: set[int]) -> tuple[str, dict]:
+    marker = "vec4 " + function + "("
+    if text.count(marker) != 1:
+        raise RuntimeError("Function anchor mismatch")
+    start = text.index(marker)
+    end = text.index("\n}", start) + 2
+    body = text[start:end]
+    pattern = re.compile(r"^\tif \((" + selector + r" == \d+(?: \|\| " + selector + r" == \d+)*)\) \{", re.M)
+    matches = list(pattern.finditer(body))
+    values = [int(value) for match in matches for value in re.findall(r"== (\d+)", match.group(1))]
+    if len(values) != len(set(values)) or set(values) != expected_values:
+        raise RuntimeError("Case coverage mismatch")
+    groups: dict[int, list[str]] = {}
+    receipts = []
+    previous_end = matches[0].start()
+    for match in matches:
+        ids = [int(value) for value in re.findall(r"== (\d+)", match.group(1))]
+        buckets = {value // 16 for value in ids}
+        if len(buckets) != 1:
+            raise RuntimeError("Original combined branch crosses a dispatch boundary")
+        finish = _block_end(body, match.end() - 1)
+        gap = body[previous_end:match.start()]
+        # Between the exclusive branches only whitespace and comments may move.
+        if re.sub(r"//[^\n]*|/\*.*?\*/|\s+", "", gap, flags=re.S):
+            raise RuntimeError("Unexpected statement between dispatch branches")
+        original = body[match.start():finish]
+        bucket = next(iter(buckets))
+        groups.setdefault(bucket, []).append(gap + original)
+        receipts.append({"values": ids, "group": bucket, "original_branch_sha256": hashlib.sha256(original.encode()).hexdigest()})
+        previous_end = finish
+    tail = body[previous_end:]
+    if tail.strip() != "return colour;\n}":
+        raise RuntimeError("Fallback differs")
+    result = body[:matches[0].start()]
+    result += "\t// NONQUALIFYING: bounded exclusive ranges; every branch body is unchanged.\n"
+    ordered = sorted(groups)
+    for index, bucket in enumerate(ordered):
+        if index == 0:
+            guard = f"\tif ({selector} < {(bucket + 1) * 16}) {{\n"
+        elif index == len(ordered) - 1:
+            guard = "\telse {\n"
+        else:
+            guard = f"\telse if ({selector} < {(bucket + 1) * 16}) {{\n"
+        result += guard + "\n".join(groups[bucket]) + "\n\t}\n"
+    result += tail
+    for match in matches:
+        original = body[match.start():_block_end(body, match.end() - 1)]
+        if result.count(original) != 1:
+            raise RuntimeError("Original branch bytes lost or duplicated")
+    return text[:start] + result + text[end:], {"function": function, "selector": selector, "groups": ordered, "branches": receipts}
+
+
+
 def variants(data: bytes) -> list[dict]:
     if hashlib.sha256(data).hexdigest() != FROZEN_HOIST_SHA256:
         raise RuntimeError("Windows experiment requires the exact retained hoist shader")
@@ -142,9 +215,35 @@ def variants(data: bytes) -> list[dict]:
         ("bounded-temporal-loop-cold", "unqualified control-flow candidate", bounded_temporal_loop(unified)),
     ]
     return [{"name": name, "scope": scope, "qualification_passed": False,
+             "full_visual_candidate": name in ("unified-flair-view-cold", "bounded-temporal-loop-cold"),
              "shader": shader.encode("utf-8"),
              "sha256": hashlib.sha256(shader.encode("utf-8")).hexdigest()}
             for name, scope, shader in cases]
+
+
+
+def bucket_variants(data: bytes) -> list[dict]:
+    """Second bounded phase: smaller range guards on the production hoist first."""
+    if hashlib.sha256(data).hexdigest() != FROZEN_HOIST_SHA256:
+        raise RuntimeError("Windows grouping experiment requires the exact retained hoist shader")
+    original = data.decode("utf-8")
+    flair, flair_receipt = grouped_dispatch(original, "apply_material_flair", "flair", set(range(1, 51)) - {46})
+    building, building_receipt = grouped_dispatch(original, "apply_building_finish", "id", set(range(81, 132)))
+    both, _ = grouped_dispatch(flair, "apply_building_finish", "id", set(range(81, 132)))
+    unified = folded_view(unified_dispatch(original))
+    combined, _ = grouped_dispatch(unified, "apply_material_flair", "flair", set(range(1, 51)) - {46})
+    combined, _ = grouped_dispatch(combined, "apply_building_finish", "id", set(range(81, 132)))
+    cases = [
+        ("hoist-control-cold", original, []),
+        ("bucket-flair-cold", flair, [flair_receipt]),
+        ("bucket-building-cold", building, [building_receipt]),
+        ("bucket-both-cold", both, [flair_receipt, building_receipt]),
+        ("unified-bucket-both-cold", combined, [flair_receipt, building_receipt]),
+    ]
+    return [{"name": name, "scope": "unchanged retained control" if not checks else "unqualified full-visual range-dispatch candidate",
+             "qualification_passed": False, "full_visual_candidate": bool(checks), "source_checks": checks,
+             "shader": shader.encode("utf-8"), "sha256": hashlib.sha256(shader.encode("utf-8")).hexdigest()}
+            for name, shader, checks in cases]
 
 
 def main() -> int:

@@ -490,6 +490,28 @@ def self_test() -> int:
                 self.assertEqual(report["rows"][1]["status"], "diagnostic_completed")
                 self.assertFalse(report["qualification_passed"])
 
+        def test_bucket_variants_keep_all_original_branches_and_bounds(self):
+            import pace003_shader_variants as variants
+            original = campaign.windows.git(ROOT, "show", "HEAD:" + SHADER_PATH)
+            definitions = variants.bucket_variants(original)
+            self.assertEqual(len(definitions), 5)
+            self.assertEqual(definitions[0]["shader"], original)
+            self.assertFalse(definitions[0]["full_visual_candidate"])
+            for row in definitions[1:]:
+                self.assertFalse(row["qualification_passed"])
+                self.assertTrue(row["full_visual_candidate"])
+                self.assertNotIn(b"palette_passes", row["shader"])
+                self.assertNotIn(b"switch (", row["shader"])
+                for checked in row["source_checks"]:
+                    values = [value for branch in checked["branches"] for value in branch["values"]]
+                    expected = (set(range(1, 51)) - {46} if checked["selector"] == "flair" else set(range(81, 132)))
+                    self.assertEqual(set(values), expected)
+                    self.assertEqual(len(values), len(set(values)))
+                    for branch in checked["branches"]:
+                        self.assertEqual({value // 16 for value in branch["values"]}, {branch["group"]})
+            with self.assertRaisesRegex(RuntimeError, "exact retained hoist"):
+                variants.bucket_variants(b"different")
+
         def test_frozen_source_mismatch_refused(self):
             with patch.object(campaign.windows, "git", return_value=b"wrong baseline"):
                 with self.assertRaisesRegex(RuntimeError, "baseline shader hash"):
@@ -655,7 +677,7 @@ def main() -> int:
     parser.add_argument("--rendering-driver", choices=("opengl3", "opengl3_angle"))
     parser.add_argument("--gl-trace-library", type=Path,
                         help="Linux-only ELF audit helper, injected into graphical Godot children only")
-    parser.add_argument("--experiment", choices=("original-pair", "windows-paths"), default="original-pair")
+    parser.add_argument("--experiment", choices=("original-pair", "windows-paths", "windows-buckets"), default="original-pair")
     parser.add_argument("--d3d-proxy-manifest", type=Path)
     args = parser.parse_args()
     if args.self_test:
@@ -699,17 +721,18 @@ def main() -> int:
         report["godot_version"] = version
         baseline, candidate = shader_inputs()
         variants_to_run = [("baseline-cold", baseline), ("candidate-cold", candidate)]
-        if args.experiment == "windows-paths":
+        if args.experiment in ("windows-paths", "windows-buckets"):
             campaign.require(sys.platform == "win32", "Windows path experiments require the actual target OS")
             import pace003_shader_variants as variants
-            definitions = variants.variants(candidate)
+            definitions = (variants.variants(candidate) if args.experiment == "windows-paths"
+                           else variants.bucket_variants(candidate))
             report["variant_definitions"] = [
                 {key: value for key, value in row.items() if key != "shader"} for row in definitions]
             variants_to_run = [(row["name"], row["shader"]) for row in definitions]
             report["cold_order"] = [row[0] for row in variants_to_run]
             report["comparison_limit"] = (
-                "NONQUALIFYING path exclusions and unqualified control-flow candidates; "
-                "excluded visuals cannot qualify and no cross-variant visual parity is claimed")
+                "NONQUALIFYING bounded compiler experiments and unqualified control-flow candidates; "
+                "any visual exclusion cannot qualify and no cross-variant visual parity is claimed")
         report["candidate_shader_sha256"] = digest(candidate)
         _, report["candidate_shader_text_identity"] = canonical_text_identity((ROOT / SHADER_PATH).read_bytes(),
             campaign.windows.git(ROOT, "show", "HEAD:" + SHADER_PATH), SHADER_PATH)
@@ -726,9 +749,10 @@ def main() -> int:
             campaign.require(not failed, "Fresh headless import failed")
             execute_variants(variants_to_run,
                 lambda name, shader: run_variant(name, shader, args, report, transcript), report, report_path)
-            if args.experiment == "windows-paths":
+            if args.experiment in ("windows-paths", "windows-buckets"):
+                eligible_names = {item["name"] for item in definitions if item.get("full_visual_candidate") is True}
                 eligible = [row for row in report["rows"] if row["status"] == "diagnostic_completed"
-                            and row["name"] in ("unified-flair-view-cold", "bounded-temporal-loop-cold")]
+                            and row["name"] in eligible_names]
                 if eligible:
                     selected = min(eligible, key=lambda row: row["atlas"]["first_capture_usec"])
                     cold_name = selected["name"]
@@ -741,11 +765,11 @@ def main() -> int:
                         lambda name, data: run_variant(name, data, args, report, transcript, warm_from=cold_name),
                         report, report_path)
                 else:
-                    report["warm_execution"] = "Unavailable: neither full-visual candidate completed within180s"
+                    report["warm_execution"] = "Unavailable: no full-visual candidate completed within180s"
         completed = all(row["status"] == "diagnostic_completed" for row in report["rows"])
-        if args.experiment == "windows-paths":
+        if args.experiment in ("windows-paths", "windows-buckets"):
             report["comparison"] = {"status": "not-applicable",
-                "reason": "Explicitly nonqualifying visual exclusions; candidates need separate preservation proof"}
+                "reason": "Explicitly nonqualifying experiments; all candidates need separate preservation proof"}
             if not completed:
                 report["errors"].append("At least one original diagnostic process failed; all first attempts retained")
         elif completed:

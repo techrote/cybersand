@@ -14,7 +14,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: play-pace003-windows-paths-${{ github.ref }}
+  group: play-pace003-windows-paths-${{ github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}
+  # Separate exact heads run on independent hosts; original attempts keep running.
   cancel-in-progress: false
 
 env:
@@ -170,13 +171,13 @@ jobs:
 
       - name: Run bounded compiler path experiments and retain every original failure
           # Five first-attempt processes each retain the original180s cap.
-          # Visual exclusions never qualify. Any failed control remains red.
+          # All structural candidates are unqualified. Any failed control remains red.
         timeout-minutes: 25
         run: |
           set -euo pipefail
           python tools/play/run_pace003_shader_diagnostic.py --godot "$GODOT_BIN" \
             --output "$EVIDENCE_DIR/campaign" --expected-source-sha "$DIAGNOSTIC_SHA" \
-            --rendering-driver opengl3_angle --experiment windows-paths \
+            --rendering-driver opengl3_angle --experiment windows-buckets \
             --d3d-proxy-manifest "$EVIDENCE_DIR/d3d-compiler/build-receipt.json" \
             2>&1 | tee "$EVIDENCE_DIR/execution.log"
 
