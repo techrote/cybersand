@@ -1,0 +1,283 @@
+# Experimental non-required full Native validation, isolated to one qualification branch.
+# This file MUST NOT replace native.yml or become a required merge gate without
+# a separate owner-authorized promotion and exact-head qualification.
+name: Native parallel candidate (non-required)
+
+on:
+  push:
+    branches: [ci/native-parallel-isolated-20261030]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: native-parallel-candidate-${{ github.ref }
+  cancel-in-progress: true
+
+jobs:
+  policy:
+    name: candidate runner and workflow policy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Check out exact candidate source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Enforce existing provider policy and regression tests
+        run: |
+          set -euo pipefail
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/test_ci_provider_policy.py
+
+  native-shards:
+    name: native candidate / ${{ matrix.suite }
+    runs-on: ubuntu-24.04
+    timeout-minutes: 65
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        suite: [tsan, native-normal, asan-ubsan, worldgen, soliding-normal, soliding-asan]
+    env:
+      CC: gcc-13
+      CXX: g++-13
+    steps:
+      - name: Check out exact candidate source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          lfs: false
+
+      - name: Record native compiler identity
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          gcc-13 --version | head -n 1
+          g++-13 --version | head -n 1
+          ld --version | head -n 1
+          make --version | head -n 1
+
+      - name: Execute complete unchanged test family on independent runner
+        id: execute
+        shell: bash
+        env:
+          SUITE: ${{ matrix.suite }
+        run: |
+          set -euo pipefail
+          mkdir -p "build/native-parallel/$SUITE"
+          (
+            set -euo pipefail
+            echo "source_sha=$GITHUB_SHA suite=$SUITE run=$GITHUB_RUN_ID attempt=$GITHUB_RUN_ATTEMPT"
+            echo "compiler=$(g++-13 --version | head -n 1)"
+            case "$SUITE" in
+              tsan)
+                # Previous 15m TSan process limit has timed out during active tests.
+                timeout 20m make build/tests_tsan
+                timeout 25m env TSAN_OPTIONS=halt_on_error=1 ./build/tests_tsan
+                ;;
+              native-normal)
+                timeout 5m make c-header-check
+                timeout 15m make build/tests
+                timeout 15m ./build/tests
+                timeout 15m make shared
+                timeout 15m make build/benchmark
+                timeout 10m ./build/benchmark
+                ;;
+              asan-ubsan)
+                timeout 20m make build/tests_sanitized
+                timeout 25m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 ./build/tests_sanitized
+                ;;
+              worldgen)
+                mkdir -p build/physics-cli-validation
+                timeout 5m make physics-characterisation-sanitize 2>&1 | tee build/physics-cli-validation/validation.log
+                timeout 5m make worldgen-test
+                timeout 10m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make worldgen-sanitize
+                ;;
+              soliding-normal)
+                timeout 5m make soliding-test
+                timeout 2m make soliding-benchmark-smoke
+                timeout 3m make soliding-stage3b-validation-apparatus-test
+                timeout 3m make soliding-stage3-cost-smoke
+                ;;
+              soliding-asan)
+                # Preserve the original resource-characterised settled-region build,
+                # followed by the full eight-binary sanitizer contract suite.
+                timeout 20m /usr/bin/time -v make build/test_settled_regions_sanitized
+                timeout 25m make \
+                  build/test_soliding_lifecycle_sanitized \
+                  build/test_settled_discovery_sanitized \
+                  build/test_settled_regions_sanitized \
+                  build/test_settled_world_discovery_sanitized \
+                  build/test_stage3b_runtime_storage_sanitized \
+                  build/test_stage3b_bounded_spatial_index_sanitized \
+                  build/test_stage3b_sparse_mutation_witness_sanitized \
+                  build/test_stage3b_sparse_activity_deadline_sanitized
+                timeout 10m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make soliding-sanitize
+                ;;
+              *)
+                echo "Unknown suite: $SUITE" >&2
+                exit 2
+                ;;
+            esac
+            echo "Native parallel candidate suite passed: $SUITE"
+          ) 2>&1 | tee "build/native-parallel/$SUITE/run.log"
+
+      - name: Record original exact-head evidence and failure outcome
+        if: always()
+        env:
+          SUITE: ${{ matrix.suite }
+          SUITE_OUTCOME: ${{ steps.execute.outcome }
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+
+          suite = os.environ["SUITE"]
+          folder = Path("build/native-parallel") / suite
+          folder.mkdir(parents=True, exist_ok=True)
+          logfile = folder / "run.log"
+          source = subprocess.run(
+              ["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=True
+          ).stdout.strip()
+          receipt = {
+              "schema": "cybersand-native-parallel-candidate-v1",
+              "suite": suite,
+              "source_sha": source,
+              "event_sha": os.environ["GITHUB_SHA"],
+              "run_id": int(os.environ["GITHUB_RUN_ID"]),
+              "run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
+              "job_outcome": os.environ["SUITE_OUTCOME"],
+              "log_present": logfile.is_file(),
+              "log_sha256": hashlib.sha256(logfile.read_bytes()).hexdigest()
+              if logfile.is_file() else None,
+              "runner_os": os.environ.get("RUNNER_OS", ""),
+              "workflow_sha256": hashlib.sha256(
+                  Path(".github/workflows/native-parallel-qualification.yml").read_bytes()
+              ).hexdigest(),
+              "makefile_sha256": hashlib.sha256(Path("Makefile").read_bytes()).hexdigest(),
+              "native_baseline_workflow_sha256": hashlib.sha256(
+                  Path(".github/workflows/native.yml").read_bytes()
+              ).hexdigest(),
+          }
+          (folder / "receipt.json").write_text(
+              json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+          )
+          print(json.dumps(receipt, sort_keys=True))
+          if source != os.environ["GITHUB_SHA"]:
+              raise SystemExit("Source checkout differs from workflow event SHA")
+          PY
+
+      - name: Preserve original suite logs and scientific output
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-parallel-${{ matrix.suite }-${{ github.run_id }-${{ github.run_attempt }
+          path: |
+            build/native-parallel/
+            build/physics-cli-validation/
+            build/stage3b-validation-*.json
+          if-no-files-found: warn
+          retention-days: 90
+
+  qualification:
+    name: native parallel candidate aggregate (non-required)
+    needs: [policy, native-shards]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact candidate source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Download all original per-runner evidence
+        if: always()
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: native-parallel-*-${{ github.run_id }-${{ github.run_attempt }
+          path: build/native-parallel-evidence
+
+      - name: Independently verify full family coverage, identity and log hashes
+        if: always()
+        env:
+          POLICY_RESULT: ${{ needs.policy.result }
+          SHARD_RESULT: ${{ needs.native-shards.result }
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+
+          expected = {
+              "tsan", "native-normal", "asan-ubsan",
+              "worldgen", "soliding-normal", "soliding-asan"
+          }
+          root = Path("build/native-parallel-evidence")
+          paths = sorted(root.rglob("receipt.json"))
+          errors = []
+          seen = {}
+          for path in paths:
+              try:
+                  r = json.loads(path.read_text(encoding="utf-8"))
+                  suite = r["suite"]
+                  if suite in seen:
+                      errors.append(f"Duplicate suite receipt: {suite}")
+                  seen[suite] = r
+                  if suite not in expected:
+                      errors.append(f"Unexpected suite: {suite}")
+                  if r["source_sha"] != os.environ["GITHUB_SHA"] or r["event_sha"] != os.environ["GITHUB_SHA"]:
+                      errors.append(f"{suite}: source SHA mismatch")
+                  if r["run_id"] != int(os.environ["GITHUB_RUN_ID"]) or r["run_attempt"] != int(os.environ["GITHUB_RUN_ATTEMPT"]):
+                      errors.append(f"{suite}: run/attempt mismatch")
+                  if r["schema"] != "cybersand-native-parallel-candidate-v1":
+                      errors.append(f"{suite}: unknown schema")
+                  if r["job_outcome"] != "success":
+                      errors.append(f"{suite}: job outcome {r['job_outcome']}")
+                  log = path.parent / "run.log"
+                  if not log.is_file() or hashlib.sha256(log.read_bytes()).hexdigest() != r["log_sha256"]:
+                      errors.append(f"{suite}: absent or mismatched original log")
+              except Exception as exc:
+                  errors.append(f"{path}: {exc}")
+          if set(seen) != expected:
+              errors.append(f"Wrong suite coverage: missing={sorted(expected-set(seen))}, unexpected={sorted(set(seen)-expected)}")
+          if os.environ["POLICY_RESULT"] != "success":
+              errors.append(f"Provider policy {os.environ['POLICY_RESULT']}")
+          if os.environ["SHARD_RESULT"] != "success":
+              errors.append(f"Native matrix {os.environ['SHARD_RESULT']}")
+          report = {
+              "schema": "cybersand-native-parallel-aggregate-v1",
+              "source_sha": os.environ["GITHUB_SHA"],
+              "run_id": int(os.environ["GITHUB_RUN_ID"]),
+              "run_attempt": int(os.environ["GITHUB_RUN_ATTEMPT"]),
+              "expected_suites": sorted(expected),
+              "received_suites": sorted(seen),
+              "outcomes": {k: r.get("job_outcome") for k, r in sorted(seen.items())},
+              "policy_result": os.environ["POLICY_RESULT"],
+              "matrix_result": os.environ["SHARD_RESULT"],
+              "errors": errors,
+              "status": "passed" if not errors else "failed",
+          }
+          folder = Path("build/native-parallel-qualification")
+          folder.mkdir(parents=True, exist_ok=True)
+          (folder / "aggregate.json").write_text(
+              json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+          )
+          print(json.dumps(report, indent=2, sort_keys=True))
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as f:
+              f.write(f"Native candidate: **{report['status']}**. Exact source: {report['source_sha']}\n")
+              f.write(f"Families received: {len(seen)}/{len(expected)}. Original logs: SHA-256-verified.\n")
+          if errors:
+              raise SystemExit(1)
+          PY
+
+      - name: Retain original aggregate proof (including negative results)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-parallel-aggregate-${{ github.run_id }-${{ github.run_attempt }
+          path: build/native-parallel-qualification/
+          if-no-files-found: warn
+          retention-days: 90
