@@ -185,3 +185,20 @@ The original c0ecc13 Windows/Linux PASS and the dd320 Windows provenance failure
 remain historical. Fresh scoped 001B execution is required after this correction;
 then the branch must return to ready-for-review and pass the ordinary source-matched
 Docs/Native/Godot gates using unchanged accepted main runtime provenance.
+
+
+## Special-runtime fixture discovery boundary — 2026-10-30
+
+The first provenance-safe draft still named the actual-host script
+`test_play_busy001_real_phase_shutdown.gd`. Repository-wide Godot discovery
+intentionally glob-matches every `godot/tests/test_*.gd`; therefore a future
+ready run would execute that fixture against the **ordinary retained runtime**,
+where `CyberPlayBusyTestGate` must not exist. That would be an invalid
+qualification premise, not a native-host regression.
+
+The script is renamed to `play_busy001_real_phase_shutdown.gd`. Its bytes and
+assertions are unchanged. Only the dedicated PLAY-BUSY workflow invokes it
+explicitly after building the source-pinned instrumented runtime. Standard
+Godot discovery remains complete for normal-runtime cases without silently
+skipping or xfail-ing an ordinary test: this file is a scoped apparatus input,
+not an ordinary-runtime regression.

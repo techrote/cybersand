@@ -41,7 +41,7 @@ jobs:
           python3 tools/ci/check_ci_provider_policy.py
           mkdir -p build/play-busy001b/linux
           git rev-parse HEAD > build/play-busy001b/linux/source-sha.txt
-          sha256sum             native/src/world.cpp             native/tests/support/play_busy_world_gate.hpp             native/tests/support/cyber_play_busy_test_gate.hpp             godot/native_extension/register_types.cpp             godot/scripts/simulation_worker.gd             godot/tests/test_play_busy001_real_phase_shutdown.gd             tools/ci/readback_play_busy001b.py             tools/ci/play_busy001b_instrumentation.patch             > build/play-busy001b/linux/source-inputs.sha256
+          sha256sum             native/src/world.cpp             native/tests/support/play_busy_world_gate.hpp             native/tests/support/cyber_play_busy_test_gate.hpp             godot/native_extension/register_types.cpp             godot/scripts/simulation_worker.gd             godot/tests/play_busy001_real_phase_shutdown.gd             tools/ci/readback_play_busy001b.py             tools/ci/play_busy001b_instrumentation.patch             > build/play-busy001b/linux/source-inputs.sha256
 
       - name: Materialize pinned Linux Rapier only
         run: |
@@ -113,7 +113,7 @@ jobs:
           out = pathlib.Path("build/play-busy001b/linux")
           commands = [
               ("import.log", [os.environ["GODOT_BIN"], "--headless", "--path", "godot", "--editor", "--quit"], 120),
-              ("execution.log", [os.environ["GODOT_BIN"], "--headless", "--path", "godot", "--script", "res://tests/test_play_busy001_real_phase_shutdown.gd"], 120),
+              ("execution.log", [os.environ["GODOT_BIN"], "--headless", "--path", "godot", "--script", "res://tests/play_busy001_real_phase_shutdown.gd"], 120),
           ]
           for name, command, timeout in commands:
               with (out / name).open("w", encoding="utf-8") as log:
@@ -155,7 +155,7 @@ jobs:
           python3 tools/ci/check_ci_provider_policy.py
           mkdir -p build/play-busy001b/windows-build
           git rev-parse HEAD > build/play-busy001b/windows-build/source-sha.txt
-          sha256sum             native/src/world.cpp             native/tests/support/play_busy_world_gate.hpp             native/tests/support/cyber_play_busy_test_gate.hpp             godot/native_extension/register_types.cpp             godot/scripts/simulation_worker.gd             godot/tests/test_play_busy001_real_phase_shutdown.gd             tools/ci/readback_play_busy001b.py             tools/ci/play_busy001b_instrumentation.patch             > build/play-busy001b/windows-build/source-inputs.sha256
+          sha256sum             native/src/world.cpp             native/tests/support/play_busy_world_gate.hpp             native/tests/support/cyber_play_busy_test_gate.hpp             godot/native_extension/register_types.cpp             godot/scripts/simulation_worker.gd             godot/tests/play_busy001_real_phase_shutdown.gd             tools/ci/readback_play_busy001b.py             tools/ci/play_busy001b_instrumentation.patch             > build/play-busy001b/windows-build/source-inputs.sha256
 
       - name: Install pinned SCons
         run: |
@@ -275,7 +275,7 @@ jobs:
           out = pathlib.Path("build/play-busy001b/windows")
           commands = [
               ("import.log", [os.environ["GODOT_BIN"], "--headless", "--path", "godot", "--editor", "--quit"], 120),
-              ("execution.log", [os.environ["GODOT_BIN"], "--headless", "--path", "godot", "--script", "res://tests/test_play_busy001_real_phase_shutdown.gd"], 120),
+              ("execution.log", [os.environ["GODOT_BIN"], "--headless", "--path", "godot", "--script", "res://tests/play_busy001_real_phase_shutdown.gd"], 120),
           ]
           for name, command, timeout in commands:
               with (out / name).open("w", encoding="utf-8") as log:
