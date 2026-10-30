@@ -70,6 +70,17 @@ live stale-delivery/effect, exact-source gates and #270 device/OS-focus/human
 qualification must retain their explicit dispositions. #268/#269/#270/#263
 are not closed by this checkpoint.
 
+The bounded manual [#309 cold-start successor](../audits/2026-10-30-play-pace003-cold-startup.md)
+branches from #308 at `2443a78378d649df588efeac9db7c54084473329` as
+`codex/play-pace003-cold-start-20261030`. Its local Linux trace identifies
+CPU-heavy palette program linking; a guarded structured-flair hoist reduces
+that cost with exact all-material atlas pixels. Windows diagnosis, clean hosted
+cold Main acceptance, focused graphical recovery and exact-head gates still
+require their own receipts. The original native full-suite TSan exit 124 is
+independent and remains a mandatory blocker. Preserve #308's branch/reviews,
+all first failures and the actual cache-state labels. No #308-to-main merge or
+#309 closure follows from the local proof; #269/#270/#263 remain open.
+
 Perform substantive source/evidence review in the active engineering session.
 An owner-account COMMENT review is legitimate engineering work and is not a
 separate-account approval. The historical dated checkpoints below retain their

@@ -1283,6 +1283,30 @@ Synthetic focus is explicit. This measures frame submissions, native work and
 one snapshot-lock wait; it cannot replace physical display/controller/OS-focus
 or human-feel qualification. It does not hold native jobs or execute #304.
 
+The [cold-start diagnosis and correction](../audits/2026-10-30-play-pace003-cold-startup.md)
+adds per-process user-data/cache custody, actual attached-shader identities and
+scene-stage markers. Both worker rows are attempted once even after an earlier
+failure; any failed row leaves the campaign failed. Preserve all generated cache
+bytes and receipts, including the engine's actual user-data location. A warm
+comparison is separate evidence and cannot qualify the first cold attempt.
+
+For the explicitly NONQUALIFYING original/candidate palette experiment, first
+fetch the recorded original commit, install the pinned dependencies in the
+diagnostic workflow, and use a clean committed candidate checkout:
+
+```text
+python3 tools/play/run_pace003_shader_diagnostic.py --self-test
+python3 tools/play/run_pace003_shader_diagnostic.py --godot /absolute/path/to/godot --output /new/diagnostic/directory --expected-source-sha <exact-head> --rendering-driver opengl3
+```
+
+Windows uses `opengl3_angle`. The
+[draft-eligible diagnostic workflow](../../.github/workflows/play-pace003-shader-diagnostic.yml)
+retains both original first attempts, fixed 180-second caps, PNG/raw-framebuffer
+atlases and bounded process/thread CPU observations. Linux may additionally use
+the source-matched `gl_startup_trace.c` helper via `--gl-trace-library`; this
+instrumentation is absent from qualifying Main runs. Atlas output cannot replace
+Main acknowledgement, native participation or gameplay/lifecycle checks.
+
 ### ACT-004 articulated actors and physical Thunderbowl v2
 
 The physical catalogue, real Rapier fixtures, native effects/capacity, common

@@ -2099,7 +2099,6 @@ vec4 apply_detail_edges(
 	bool exposed,
 	float condition
 ) {
-	colour = apply_material_flair(colour, material_id, flair, pixel, condition);
 	if (material_id == 43 || material_id == 57) { // soldier course and corner quoins
 		if (extent.x < 3.5 && extent.x > 0.5) {
 			float header = 1.0 - step(0.6, mod(pixel.x, 2.0));
@@ -2148,6 +2147,20 @@ vec4 apply_structured_fill(
 	float across_world = horizontal ? pixel.y : pixel.x;
 	float edge = min(min(extent.x, extent.y), min(extent.z, extent.w));
 	bool exposed = edge < 0.5;
+
+	// Each structured branch either replaces the ordinary finish or starts
+	// with that same finish before adding its detail. Keep the latter at one
+	// dispatch site so driver inlining does not duplicate the full catalogue
+	// at seven mutually exclusive call sites. Wrought iron uses the ordinary
+	// finish only for a wide plate; its thin baluster path replaces it.
+	bool uses_ordinary_flair = material_id != 5 && material_id != 7
+		&& material_id != 46 && material_id != 55 && material_id != 64
+		&& material_id != 68 && material_id != 69 && material_id != 73
+		&& material_id != 74 && material_id != 75 && material_id != 76
+		&& material_id != 80 && (material_id != 50 || across_span > 3.5);
+	if (uses_ordinary_flair) {
+		colour = apply_material_flair(colour, material_id, flair, pixel, condition);
+	}
 
 	if (material_id == 68 || material_id == 69) { // pipes
 		float cylinder = sqrt(max(0.0, 1.0 - pow(across_u * 2.0 - 1.0, 2.0)));
@@ -2278,7 +2291,6 @@ vec4 apply_structured_fill(
 	}
 
 	if (material_id >= 77 && material_id <= 79) { // neon tube core along the run
-		colour = apply_material_flair(colour, material_id, flair, pixel, condition);
 		vec3 hue = colour.rgb / max(max(colour.r, max(colour.g, colour.b)), 0.001);
 		float core = 1.0 - abs(across_u * 2.0 - 1.0);
 		float plasma = value_noise(vec2(along / 3.0 - t * 5.0, across_world * 0.7));
@@ -2356,7 +2368,6 @@ vec4 apply_structured_fill(
 	}
 
 	if (material_id == 9) { // Ice: frosted top, icicles hanging from open undersides
-		colour = apply_material_flair(colour, material_id, flair, pixel, condition);
 		if (top_open) colour.rgb = mix(colour.rgb, vec3(0.92, 0.97, 1.0), 0.55);
 		if (extent.y < 2.5 && bottom_open || extent.y < 2.5 && is_open_cell(sampled_material_id(pixel + vec2(0.0, extent.y + 1.0), false))) {
 			float icicle = cheap_hash(vec2(pixel.x, 71.0));
@@ -2368,7 +2379,6 @@ vec4 apply_structured_fill(
 	}
 
 	if (material_id == 35 || material_id == 72) { // windows: frames, mullions, reflections
-		colour = apply_material_flair(colour, material_id, flair, pixel, condition);
 		float mullion = (1.0 - step(0.6, mod(pixel.x, 10.0))) + (1.0 - step(0.6, mod(pixel.y, 12.0)));
 		vec3 frame = vec3(0.16, 0.17, 0.19);
 		if (material_id == 72) { // dark glass: faint lit windows of a reflected city
@@ -2383,7 +2393,6 @@ vec4 apply_structured_fill(
 	}
 
 	if (material_id == 71) { // chemical tank: fill line, rising bubbles, frame
-		colour = apply_material_flair(colour, material_id, flair, pixel, condition);
 		float fill_top = 2.0 + floor(cheap_hash(floor(pixel / 24.0)) * 3.0);
 		if (up >= fill_top) {
 			colour.rgb = mix(colour.rgb, vec3(0.20, 0.85, 0.55), 0.45);
@@ -2403,7 +2412,6 @@ vec4 apply_structured_fill(
 			colour.rgb = mix(colour.rgb, colour.rgb * 1.6 + vec3(0.04), collar);
 			if (top_open && !horizontal) colour.rgb = vec3(0.55, 0.50, 0.32);
 		} else {
-			colour = apply_material_flair(colour, material_id, flair, pixel, condition);
 			float rivet = step(0.5, 1.0 - step(0.5, edge - 0.5)) * step(0.5, mod(along, 3.0));
 			colour.rgb += vec3(0.16) * rivet * float(edge > 0.5 && edge < 1.5);
 		}
@@ -2411,7 +2419,6 @@ vec4 apply_structured_fill(
 	}
 
 	// The remaining static materials keep their finish and gain region detail.
-	colour = apply_material_flair(colour, material_id, flair, pixel, condition);
 	if (material_id == 1 || material_id == 31 || material_id == 28) { // blocks, formwork, machined edges
 		vec2 block = mod(pixel, material_id == 31 ? vec2(12.0, 8.0) : vec2(8.0, 4.0));
 		float seam = (1.0 - step(0.6, block.x)) + (1.0 - step(0.6, block.y));

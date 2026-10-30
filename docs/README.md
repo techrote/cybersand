@@ -27,6 +27,9 @@ Use [LIFE006–008/PACE003 commands](operations/local-build-and-validation.md#in
 for reproducible automated qualification; physical/human gates remain separate.
 Use the [owner walkthrough](operations/local-build-and-validation.md#shared-play-session-and-owner-qualification)
 for the shortest reproducible route into #270. PLAY is not release-qualified.
+The [#309 cold-start audit](audits/2026-10-30-play-pace003-cold-startup.md)
+records the isolated palette compiler correction, actual cold-cache boundaries,
+original failures and pending hosted acceptance; it does not waive #308's gates.
 
 ## Trial successor correction after accepted App — 2026-10-25
 

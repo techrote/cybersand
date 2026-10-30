@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [material-visual-projection, palette-program-appearance, render-upload-cost]
 status: Current
 scope: Native RG8 presentation, palette/program LUTs, shader flair, temporal smoothing, glow, and current GPU upload limitation
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-30
 related-documents: [material-visual-pattern-library.md, ../reference/material-effects-register.md, themed-construction-materials.md, materials-and-rule-kernels.md, ../architecture/rendering-and-gameplay-bridges.md, ../architecture/item-authored-material-programs.md]
 ---
 
@@ -21,6 +21,22 @@ This page owns appearance and cost semantics at the
 The [render bridge](../architecture/rendering-and-gameplay-bridges.md) owns payload
 lifetimes; the [evidence ledger](../reference/validation-evidence.md) distinguishes
 headless checks, browser observations, and absent representative GPU profiling.
+
+## Cold compilation and structured finishes
+
+The palette shader evaluates the ordinary material finish once before the
+mutually exclusive structured-detail branches that use it. Replacement finishes
+retain their original exclusions, including the thin wrought-iron path; building
+IDs 81–131 and nonstructured dispatch are unchanged. This reduces repeated
+driver expansion of the same large helper without changing appearance math,
+textures, physics, camera or material availability.
+
+The [#309 cold-start record](../audits/2026-10-30-play-pace003-cold-startup.md)
+contains the source-matched Linux link/first-draw timings and exact 16-frame
+all-material visual comparison. This is a measured local Linux correction;
+Windows-specific diagnosis and both clean hosted Main gates remain required at
+that implementation checkpoint. A successful isolated atlas is not gameplay
+acceptance or a representative GPU performance claim.
 
 ## Current visual projection
 

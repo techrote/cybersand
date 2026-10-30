@@ -63,6 +63,33 @@ describes local/hosted commands. Keep software-renderer, focus-injection and
 physical-device/human limitations with every result. Do not infer stable FPS
 from the worker's existence or hide long frames and negative scaling.
 
+### Cold graphical startup and compiler attribution
+
+The [#309 record](../audits/2026-10-30-play-pace003-cold-startup.md) separates
+scene load/instantiation, Main readiness/callbacks, native candidate readiness,
+actual accepted terrain/actor, shader linking and first draw. A long callback
+gap alone establishes neither a deadlock nor a shader identity. Original
+Windows module snapshots and Linux driver-call traces retain their different
+attribution limits. CPU time and wall time must be reported together where
+observed, with sampled lower bounds distinguished from exact calling-thread
+accounting.
+
+Each PACE003 process now isolates project and actual Godot user shader caches.
+Linux uses private XDG cache/config/data and Mesa directories; Windows uses
+private AppData/LocalAppData. The engine-reported user-data path is bound to
+that row's retained empty-at-launch inventory. Driver caches outside these
+named controls remain uncontrolled. A first failure cannot be replaced by a
+warm run, retry, a successful later worker row or an isolated shader result.
+The first historical passing local Auto process shared a user cache and is
+explicitly excluded from independently empty-user-cache cold acceptance.
+
+Attached shader resource/code/file hashes authenticate the real visual route.
+Keep the pre-Build 30-second acknowledgement, 180-second case and 240-second
+import bounds. The separate NONQUALIFYING shader diagnostic uses original and
+candidate bytes, real draws and retained CPU/thread samples; it never reports
+a PACE003 pass. Its original timeout remains a failed diagnostic job even if
+the candidate finishes.
+
 ### Existing measurement surfaces
 
 | Observation/source | What it measures | What it does not establish |

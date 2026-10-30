@@ -50,6 +50,11 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 - [Prepared Water Feel reference bodies](../architecture/liquid-prepared-setup-and-receipts.md#prepared-water-feel-reference-bodies): actual frozen masks, permanent-space adoption/refusal and normal unpaused feedback; preserve local-source limits, actual Web and host-mask continuation gaps.
 
+- [How are cold graphical startup, palette compiler work and warm-cache results distinguished?](../operations/profiling-observability-and-performance.md#cold-graphical-startup-and-compiler-attribution)
+  The [appearance contract](../systems/material-appearance-and-rendering.md#cold-compilation-and-structured-finishes)
+  describes the semantics-preserving dispatch; the [dated #309 record](../audits/2026-10-30-play-pace003-cold-startup.md)
+  retains exact source/platform timings and incomplete acceptance boundaries.
+
 ## Generation Workbench 2 and procedural quality
 
 - [Workbench inspection and transactions](../systems/generation-workbench-2.md): accepted native identities, bounded deterministic replay, actual stage meanings, invalid-edit preservation, graph/hierarchy/plane editing, undo/redo, seeds and comparison.

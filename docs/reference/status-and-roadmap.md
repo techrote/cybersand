@@ -48,6 +48,15 @@ that apparatus correction does not waive startup or current-head CI failures.
 The dated audit retains both original platform artifacts. Keep #269 open and
 the combined implementation unmerged while its applicable scoped gate fails.
 
+**Bounded #309 successor:** the
+[cold-start audit](../audits/2026-10-30-play-pace003-cold-startup.md) owns fresh
+2443a783 failure readback, the local Linux palette-link causal experiment and
+pixel-preserving structured-flair correction. Source-bound hosted Windows/Linux
+Main acceptance and full exact-head gates remain required; this checkpoint does
+not promote #308 or close the independent Native TSan timeout. Cold-cache v2
+receipts isolate the actual Godot user shader cache per worker row and retain
+the earlier shared-cache Auto result under its original scope.
+
 **Current accepted slices:** existing-host feasibility #273, five-rig and
 construction-time solver composition #267, shared controls/camera/lap/gamepad
 event slices of #268, normal lifecycle PR #284 (`8288e580`), and native

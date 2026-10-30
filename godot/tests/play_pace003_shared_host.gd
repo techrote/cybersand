@@ -15,6 +15,7 @@ var sample_seconds: int = 15
 var requested_rig: StringName = &"jetbarrel"
 var requested_policy: int = 0
 var result: Dictionary = {}
+var scene_startup: Dictionary = {}
 
 
 class MeasurementHost:
@@ -54,10 +55,14 @@ class MeasurementHost:
 
 	func _ready() -> void:
 		setup_started_usec = Time.get_ticks_usec()
+		print("CYBERSAND_PROGRESS ", JSON.stringify({"case":"play_pace003", "stage":"main_ready_started",
+			"monotonic_usec":setup_started_usec}))
 		# Replace the default-created, UNSTARTED worker only. No second live owner.
 		simulation_worker = WorkerProbe.new()
 		super._ready()
 		setup_ready_usec = Time.get_ticks_usec()
+		print("CYBERSAND_PROGRESS ", JSON.stringify({"case":"play_pace003", "stage":"main_ready_completed",
+			"monotonic_usec":setup_ready_usec}))
 		RenderingServer.frame_post_draw.connect(_record_render)
 
 	func _exit_tree() -> void:
@@ -220,6 +225,38 @@ func emit_stage(stage: String) -> void:
 		"monotonic_usec":Time.get_ticks_usec()}))
 
 
+func mark_scene_startup(stage: String) -> void:
+	var now: int = Time.get_ticks_usec()
+	scene_startup[stage + "_usec"] = now
+	print("CYBERSAND_PROGRESS ", JSON.stringify({"case":"play_pace003", "stage":stage,
+		"monotonic_usec":now}))
+
+
+func presentation_shader_identity(desktop: Control) -> Array[Dictionary]:
+	# Read after the timed window (or after a setup failure). Identify the actual
+	# attached resources, so a diagnostic replacement cannot pass from a nonblank UI.
+	var identities: Array[Dictionary] = []
+	var materials: Array[ShaderMaterial] = [desktop.world_shader,
+		desktop.glow_source_shader, desktop.glow_composite_shader]
+	materials.append_array(desktop.vapour_trail_shaders)
+	for material: ShaderMaterial in materials:
+		if material == null or material.shader == null:
+			identities.append({"missing":true})
+			continue
+		var shader: Shader = material.shader
+		identities.append({"resource_path":shader.resource_path,
+			"file_sha256":FileAccess.get_sha256(shader.resource_path),
+			"loaded_code_sha256":shader.code.sha256_text()})
+	return identities
+
+
+func cache_paths() -> Dictionary:
+	# Compatibility stores generated shaders under user://, not only .godot/.
+	# The runner must bind these actual engine paths to this process's private root.
+	var user_data: String = OS.get_user_data_dir()
+	return {"user_data_dir":user_data, "shader_cache_dir":user_data.path_join("shader_cache")}
+
+
 func new_actor(desktop: Control, rig: StringName, epoch: int) -> bool:
 	return actor_ready(desktop, rig) and desktop._physical_epoch > epoch
 
@@ -273,6 +310,9 @@ func emit_setup_failure(desktop: Control, stage: String, construction_started: i
 		"stage":stage, "requested_rig":str(requested_rig), "requested_workers":requested_workers,
 		"installation_limit_ms":SETUP_TIMEOUT_MS,
 		"construction_elapsed_usec":Time.get_ticks_usec() - construction_started,
+		"scene_startup":scene_startup.duplicate(true),
+		"presentation_shaders":presentation_shader_identity(desktop),
+		"cache_paths":cache_paths(),
 		"display_server":DisplayServer.get_name(), "graphical_scanout_measured":false,
 		"observation":desktop.setup_observation(), "acknowledgement":desktop.setup_acknowledgement(),
 		"engine_physics_frames":Engine.get_physics_frames(),
@@ -315,9 +355,16 @@ func run() -> void:
 	root.size = Vector2i(960,540)
 	root.content_scale_size = Vector2i(960,540)
 	release_controls()
-	var desktop: Control = load("res://main.tscn").instantiate()
+	mark_scene_startup("scene_load_started")
+	var packed_scene: PackedScene = load("res://main.tscn")
+	mark_scene_startup("scene_load_completed")
+	mark_scene_startup("scene_instantiate_started")
+	var desktop: Control = packed_scene.instantiate()
+	mark_scene_startup("scene_instantiate_completed")
 	desktop.set_script(MeasurementHost)
+	mark_scene_startup("scene_add_child_started")
 	root.add_child(desktop)
+	mark_scene_startup("scene_add_child_completed")
 	await process_frame
 	var worker: Probe = desktop.simulation_worker as Probe
 	var ready: bool = worker != null and desktop.worker_start_error == OK and worker._thread.is_started()
@@ -407,6 +454,9 @@ func run() -> void:
 		"native_hz_observed_by_main":float(native_delta) * 1000000.0 / float(ended - started),
 		"rapier_hz":float(physics_delta) * 1000000.0 / float(ended - started),
 		"construction_usec":construction_usec, "course_recipe_hash":recipe_hash,
+		"scene_startup":scene_startup.duplicate(true),
+		"presentation_shaders":presentation_shader_identity(desktop),
+		"cache_paths":cache_paths(),
 		"setup_observation":desktop.setup_observation(), "setup_acknowledgement":desktop.setup_acknowledgement(),
 		"policy":policy, "receipt":receipt, "platform":OS.get_name(), "os_version":OS.get_version(),
 		"cpu_name":OS.get_processor_name(), "logical_processors":OS.get_processor_count(),
