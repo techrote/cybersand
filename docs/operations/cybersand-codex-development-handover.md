@@ -4,11 +4,45 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-30
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## PLAY convergence checkpoint — 2026-10-30
+
+Start each continuation with fresh main/branch heads, instructions, #263 and
+children, open PLAY PRs, exact-head jobs/artifacts, source/runtime/LFS identity,
+reviews/unresolved threads and relevant historical failures. This checkpoint
+was based on main `8d2dd843dfe457d34f32ebd015a924cf58b3c1ce`; reverify it.
+
+The [owner decision](https://github.com/techrote/cybersand/issues/263#issuecomment-6522029843)
+accepts merged #302 for mandatory real-native-busy lifecycle qualification.
+Do not put optional #304 back on the critical path or rewrite its failures as
+passes. #266/#267/#273 are closed, #265 Not Planned, #271 deferred and #272 is
+historical/conditional fallback. Work through #268 → #269 → #270 → #263 using
+the existing asynchronous desktop owner and main-thread Rapier.
+
+The current [PLAY-UI-005 implementation](../systems/player-control-playground.md#integrated-playable-session-selection-and-device-rearm)
+composes map, five rigs, controls, lap/free-play, solver policy and camera in the
+real host and cancels/rearms input when the selected controller changes. The
+[audit](../audits/2026-10-30-play-ui005-integrated-session.md) records the branch,
+source identity, focused execution, original environmental failures, raw
+historical evidence and outstanding exact-head CI/manual gates. The
+[manual entry instructions](local-build-and-validation.md#shared-play-session-and-owner-qualification)
+lead directly to the existing #270 checklist. Physical devices and actual human
+feel are unexecuted; passing automated counters do not complete them.
+The first ready head `64bbd818` failed ordinary Windows/Linux CI because its
+extra launcher row displaced the Experiment Tower mouse target. The correction
+shares the existing wrapping action bar; the original 55-assertion controller
+test passes unchanged and the integrated fixture adds real mouse entry (90/0
+locally). Preserve run41074846660 as failed and require fresh corrected-head CI.
+
+Perform substantive source/evidence review in the active engineering session.
+An owner-account COMMENT review is legitimate engineering work and is not a
+separate-account approval. The historical dated checkpoints below retain their
+original source and validation scope.
 
 ## Trial successor correction after accepted App — 2026-10-25
 

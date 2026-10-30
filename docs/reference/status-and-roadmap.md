@@ -4,13 +4,28 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-29
+last-reviewed: 2026-10-30
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
 
-## PLAY composable desktop checkpoint — 2026-10-29
+## PLAY composable desktop checkpoint — 2026-10-30
+
+**Current owner boundary:** [decision 6522029843](https://github.com/techrote/cybersand/issues/263#issuecomment-6522029843)
+accepts merged #302 (`8d2dd843`) for the mandatory native-busy responsiveness,
+outstanding-job shutdown and resource-ordering gate. Optional #304 remains
+non-blocking and its failed run41046902349 remains failed. The critical path is
+#268 integrated product → #269 remaining meaningful stress/measurement → #270
+physical-device/human-feel/promotion → #263. #266, #267 and #273 were reverified
+closed; #265 remains Not Planned, #271 deferred and #272 conditional fallback.
+
+**Current implementation candidate:** [PLAY-UI-005](../systems/player-control-playground.md#integrated-playable-session-selection-and-device-rearm)
+adds one real shared-host selector for course, five rigs, controls, lap/free-play,
+solver policy and camera, plus selected-controller-change cancellation/rearm.
+The [dated record](../audits/2026-10-30-play-ui005-integrated-session.md) separates
+focused local evidence from required exact-head hosted CI and unexecuted manual
+gates. It changes no native solver/default or simulation owner.
 
 **Current accepted slices:** existing-host feasibility #273, five-rig and
 construction-time solver composition #267, shared controls/camera/lap/gamepad
@@ -25,10 +40,10 @@ owns exact source/CI/review identities and the 50-real-lifetime-per-OS result.
 The same contract records the bounded solver-construction/refusal regression
 and its 335/0 Windows and Linux Godot result, with [PR #287](https://github.com/techrote/cybersand/pull/287)
 owning the final CI/review/accepted-tree receipt.
-**Open:** #266 gameplay scheduling/performance, remaining #268 selection/device/pacing,
-#269 slow-native/outstanding-job shutdown, broader course/failure/stale-delivery
-and effect stress, and #270
-desktop/manual acceptance. Configured capacity, actual task participation,
+**Open:** final #268 integrated selection/device/pacing qualification,
+#269 broader course/failure/stale-delivery and effect stress where not already
+covered, and #270 representative rendered pacing and desktop/manual acceptance.
+The mandatory native-busy requirement is satisfied by #302. Configured capacity, actual task participation,
 concurrent execution, reference timing and human feel remain distinct claims.
 The accepted shared `CyberSimulationWorker` plus main-thread Rapier remains
 the implementation path; #265 is closed Not Planned and #271 stays deferred.

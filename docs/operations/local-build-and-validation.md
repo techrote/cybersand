@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-30
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
@@ -1185,6 +1185,54 @@ Controls and manual course entry are in the
 [player guide](../systems/player-control-playground.md).
 
 ## Actor control prototype checks
+
+### Shared Play session and owner qualification
+
+Use the exact candidate checkout named by its PR, Godot
+`4.7.stable.official.5b4e0cb0f` and the repository-pinned native/Rapier LFS bytes.
+Record `git rev-parse HEAD`, `git rev-parse HEAD^{tree}`, `git status --short`,
+Godot version, OS/GPU/CPU and physical controller model/mapping. Materialize
+LFS and run the current provenance gate before interpreting gameplay evidence:
+
+```text
+git lfs pull
+git lfs fsck
+python3 tools/ci/check_repository.py --require-materialized
+godot --headless --path godot --editor --quit
+godot --path godot
+```
+
+Select **Play session** at the launcher. Choose the Player Playground map,
+one of the five mechanical rigs, controls, lap/free-play, solver policy and
+starting camera. Click **Build selected session**, wait for the actual applied
+actor/policy, release movement controls and click **Play / resume**. P pauses,
+R restarts the applied session, F changes camera and F2 returns to the launcher.
+The in-host **Play session** button reopens selection. Build changes configuration;
+Restart ignores unsubmitted choices and retains the accepted configuration.
+
+Execute the existing [concrete #270 checklist](https://github.com/techrote/cybersand/issues/270#issuecomment-6485284121)
+on the physical target machine: each rig's natural movement/camera/lap, pause and
+focus loss/regain, held-control neutral rearm, supported policy rebuild/refusal,
+physical stick/A/B/X/shoulder behavior, keyboard/controller handover, selected
+controller unplug/replug, repeated reset/exit and actual responsiveness/feel.
+Also try keyboard-only and free-play selections and record requested/applied
+receipts. Record each item as pass, fail or not tested with exact source/runtime
+identity and representative tick/frame/snapshot/wait measurements. A successful
+headless run or software-rendered layout inspection does not execute this gate.
+
+The focused automated command is:
+
+```text
+godot --headless --path godot --script res://tests/test_play_ui005_session_selection.gd
+```
+
+This test runs actual Main/native worker/Rapier reconstruction for all five rigs,
+with synthetic OS focus and connected-device enumeration. It is automatically
+discovered by ordinary Windows/Linux Godot CI; no dedicated workflow is needed.
+Its [audit](../audits/2026-10-30-play-ui005-integrated-session.md) keeps local,
+hosted, rendered-layout and unexecuted physical/human evidence separate. On
+restricted Linux environments, set writable XDG config/data/cache directories
+before importing or running; preserve any earlier failed invocation.
 
 ### ACT-004 articulated actors and physical Thunderbowl v2
 
