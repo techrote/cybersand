@@ -133,6 +133,15 @@ exclusive asynchronous worker, native phased pool, immutable packets and
 main-thread Rapier remain the owners. No native source, runtime, solver default,
 thread policy, scientific fixture or release gate is changed.
 
+Further source review found that an unsuccessful SceneTree reload's specific
+error could be hidden by the generic stopped message. A dedicated recovery-error
+value now takes precedence and clears only when the next explicit recovery
+starts. LIFE007 adds one explicitly synthetic reload-error presentation state
+after a real native fault: the precise error stays visible, Build/Resume remain
+disabled, Restart remains available, and the real subsequent recovery clears
+the error. This checks presentation and admission state; it does not claim an
+injected engine-loader failure or relax the engine-error scanner.
+
 ## New fixtures, bounds and local development evidence
 
 LIFE006 uses actual `main.tscn`, launcher button signals, F2 input, the original
@@ -181,13 +190,21 @@ regression batch passed LIFE007147/0, UI00590/0 and LIFE006 Stuntbuggy403/0,
 also with a complete unchanged-input fence. These are distinct local source
 slices, not claimed Windows or final hosted executions.
 
-| Final recovery input | SHA-256 |
+| First-published recovery input | SHA-256 |
 |---|---|
 | Main | `6b4bedb5dbc48dc6562e4d5599196194cf0bcb7254c9d4c6447456e7d497ba34` |
 | Session panel | `104fe4dd52bc4e4eaecd14eaadb0737662f71e42e9150379db4ddc59c083e086` |
 | Feature navigation | `fb8357f636d918762852fa804df55275046c2d38f47bd52888a6d77cda68694c` |
 | LIFE007 | `f5df4e4c7eee4b85bb39bd1912148f8878bdf886843267619f241ce908e3df6d` |
 | LIFE008 | `8210c58df1756d9c8138380f0993fbc0275289bd589e6db5e8817f6139cd7bfd` |
+
+The later recovery-error presentation correction passed LIFE007 **151/0 in
+17.604 seconds** on the recorded `ad1c55a1` plus four execution-file deltas.
+All 773 execution inputs and runtimes remained unchanged across the process.
+Its five actual recoveries took 1.356–1.501 seconds; the one new error-display
+case is explicitly synthetic. The original receipt SHA-256 is
+`b82b3acaf99811de344b69c7fdd2dc0dc40b53d4830390a6ff67be1cd12fad1a`.
+This is a new source slice, not a relabeling of the earlier 150/0 run.
 
 Retained development negatives include the original production reproduction;
 a first LIFE007 31-assertion/three-failure run caused by two wrong test oracles
@@ -273,6 +290,77 @@ That is a recorded condition, not grounds to discard the failure. Its cause
 is unresolved; do not label it a proven native hang, renderer defect or stable
 frame-rate result. The first exact-head hosted graphical runs are required
 new platform evidence, not reruns that replace this local negative.
+
+### First published head and retained hosted failures
+
+PR [#308](https://github.com/techrote/cybersand/pull/308) first published
+`ad1c55a1c24bcdd57c2b41f491b9cddfc4ce36a3`, tree
+`bf62159ee4291cf10100b74a0460a28777844a1b`. All 773 execution inputs in the
+final local LIFE007 and two initial pacing campaigns match that commit byte
+for byte. Their original reports retain the actual baseline-plus-delta source
+identity; this comparison does not relabel the historical executions.
+
+Its exact-head [Documentation run 41115077737](https://github.com/techrote/cybersand/actions/runs/41115077737)
+passed. Original artifact `13004074581` is 1,362,528 bytes, SHA-256
+`fc23508b342fd6a2a7a82b7e3a77118863b5fd3300a4c0aaed58f43423c8bf95`;
+its digest, ZIP CRC and member paths were verified.
+
+The first [PACE003 run 41115078041](https://github.com/techrote/cybersand/actions/runs/41115078041)
+failed on both platforms, attempt 1:
+
+| Platform | Demonstrated failure | Original artifact / SHA-256 |
+|---|---|---|
+| Windows | An apparatus unit's synthetic row hard-coded Linux. The verifier rejected its platform identity before reaching the deliberately injected final-verifier error. Godot and retained-runtime validation did not execute. | `13004563417`, 1,375 bytes; `8fb5192c20ae916da88cf1117a55351d67fb907bdac2fc1daf0867ddb369913b` |
+| Linux | Real graphical Godot failed the unchanged 30-second course/SetP/terrain installation assertion. The process exited 1 after 35.921 seconds, before any measurement window or PNG. | `13006350493`, 122,546 bytes; `f27aed02116cab9eb43d909d81d6ddcd3dc2992d239d74e45582458063e6a6c1` |
+
+Both original archives passed provider digest/size, safe-member and CRC checks.
+Linux's 773 input identities, source head/tree, retained native/Rapier manifests,
+executed LFS payloads and original log seals were independently read back.
+Its failure was not the external 180-second process timeout. Auto graphical
+was unexecuted after the first row failed; neither platform supplied passing
+frame evidence. The Linux failure's cause remains unresolved at this checkpoint.
+
+The follow-up corrects only the unit's platform mock and adds bounded startup
+diagnostics. The unit now exercises both Linux and Windows branches, requires
+both synthetic row summaries, and verifies that the injected final verifier
+is called exactly once and that its exact error is retained. All 16 unit tests
+pass locally. The graphical apparatus retains at most 8,192 samples per startup
+series: actual Main/physics callback entry times and durations, plus actual
+`frame_post_draw` timestamps. Failure diagnostics copy Main-owned candidate,
+terrain, accepted/pending identity and immutable snapshot receipt/error fields;
+they do not read a live native World or worker-owned completion arrays.
+These observations distinguish readiness refusal from callback/render delay
+on the next source. The installation assertion, 30-second bound, 180-second
+process maximum and fail-fast behavior are unchanged. No failed result is
+discarded and no same-source rerun is used to seek green.
+
+### Focused native sanitizer execution
+
+On the first published `ad1c55a1` head, the unchanged Makefile target
+`make CXX=g++-13 CC=gcc-13 build/tests_tsan` built with GCC 13.3.0 in
+92.485 seconds. Six selected cases then passed in separate first-attempt
+processes, each limited to 240 seconds with `TSAN_OPTIONS=halt_on_error=1`:
+
+| Selected native case | Seconds |
+|---|---:|
+| `issue #1 failed tick stop/reset` | 0.165 |
+| `issue #1 late failure and publication` | 0.318 |
+| `issue #1 C API failure/recovery` | 0.032 |
+| `concurrent render leases` | 0.165 |
+| `worker activity publication and observer independence` | 11.854 |
+| `LCB-001 W-CY workers, persistence and transport` | 88.109 |
+
+There were no TSan diagnostics, retries, native changes or limit increases.
+All 121 native/Makefile input hashes and HEAD were unchanged before/after.
+The tested executable SHA-256 is
+`17cbc9b10e56e4cf08538ee95632d25bef816ca8a82cb794e591d671ebe28503`;
+the source/execution report is
+`c2d4cdcf9a95e8951cf5911b7f4c1d7aa4b139a204f73e5ac588a8ba4ffe7089`.
+The retained original bundle is 13,398,896 bytes, SHA-256
+`7fcc0f349c01a7c5664f093ced224ceac43f55d80a14ca8c993a3f53995b79ee`.
+The isolated W-CY pass bounds that exact case on this host. It does not identify
+the interrupted state of main's full-suite timeout, replace that failed result,
+or substitute for the final exact-head hosted Native gate.
 
 ## Runtime custody, review and acceptance gate
 

@@ -15,6 +15,7 @@ var playable_session_panel: PopupPanel
 var playable_session_options: Dictionary = DEFAULT_PLAYABLE_OPTIONS.duplicate()
 var _playable_recovery_queued: bool = false
 var _playable_recovery_cancelled: bool = false
+var _playable_recovery_error: String = ""
 const PreparedPhysical = preload("res://scripts/prepared_physical_session.gd")
 const PreparedReferenceBody = preload("res://scripts/prepared_reference_body_session.gd")
 const PreparedTrialBody = preload("res://scripts/prepared_trial_body_session.gd")
@@ -589,6 +590,8 @@ func microscenario_supports_prepared_physical_liquid(definition: Dictionary) -> 
 func playable_session_unavailable_reason() -> String:
 	if _playable_recovery_queued:
 		return "Rebuilding the applied session from its initial state."
+	if not _playable_recovery_error.is_empty():
+		return _playable_recovery_error
 	if simulation_worker.has_failed():
 		return ("World stopped. Restart the applied session to rebuild it from its initial state."
 			if playable_session_can_recover() else "World stopped. Return to the launcher with F2 to start a fresh session.")
@@ -633,6 +636,7 @@ func _queue_failed_playable_restart() -> void:
 			"render_snapshot_hz_index":render_snapshot_hz_index, "render_snapshot_hz":render_snapshot_hz,
 			"player_environment_profile":active_player_environment_profile.duplicate(true)}}
 	_playable_recovery_queued = true
+	_playable_recovery_error = ""
 	paused = true
 	cancel_playable_course_input()
 	_reload_failed_playable_scene.call_deferred(request)
@@ -658,7 +662,8 @@ func _reload_failed_playable_scene(request: Dictionary) -> void:
 	if error != OK:
 		tree.remove_meta(PLAYABLE_RECOVERY_META)
 		_playable_recovery_queued = false
-		microscenario_error = "Fresh session restart failed (%d); return to the launcher with F2." % error
+		_playable_recovery_error = "Fresh session restart failed (%d); return to the launcher with F2." % error
+		microscenario_error = _playable_recovery_error
 
 
 func _restore_failed_playable_selection(request: Dictionary) -> void:

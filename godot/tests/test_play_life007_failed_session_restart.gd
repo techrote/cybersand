@@ -138,11 +138,23 @@ func exercise(index: int) -> bool:
 	expect(not panel.reset_button.disabled and panel.resume_button.disabled and panel.build_button.disabled
 		and panel.status_label.text.contains("World stopped.")
 		and panel.status_label.text.contains("initial state"), str(rig) + ": stopped UI offers explicit recovery, not a pending build")
+	if index == 0:
+		# Synthetic SceneTree-error PRESENTATION state only. The preceding
+		# native capacity fault and the following whole-scene recovery are real.
+		# Do not force an engine loader error or suppress runner diagnostics.
+		var reload_error: String = "Fresh session restart failed (%d); return to the launcher with F2." % ERR_CANT_OPEN
+		desktop._playable_recovery_error = reload_error
+		panel.refresh()
+		expect(desktop.playable_session_unavailable_reason() == reload_error
+			and panel.status_label.text == reload_error and not panel.reset_button.disabled
+			and panel.resume_button.disabled and panel.build_button.disabled,
+			"synthetic reload-error presentation stays visible without reopening stopped-world admission")
 	var old_id: int = desktop.get_instance_id()
 	var recovery_started: int = Time.get_ticks_usec()
 	panel.restart_applied()
 	panel.restart_applied()
-	expect(desktop._playable_recovery_queued, str(rig) + ": repeated Restart latches one replacement")
+	expect(desktop._playable_recovery_queued and desktop._playable_recovery_error.is_empty(),
+		str(rig) + ": repeated Restart latches one replacement and clears prior reload error")
 	ready = await wait_for(Callable(self, "replacement_ready").bind(old_id, rig))
 	expect(ready, str(rig) + ": fresh Main rebuilds matching actor and terrain")
 	if not ready:
@@ -222,5 +234,6 @@ func run() -> void:
 		"rows":recovery_rows,"real_native_failure":true,"native_active_core_capacity_injected":1,
 		"injected_setting_restored_before_first_ready":true,"recovery":"whole-scene reload; accepted values only",
 		"native_healthy_guard_changed":false,"synthesized_failure":false,"physical_input_qualified":false,
+		"synthetic_reload_error_presentation_cases":1,"engine_reload_refusal_injected":false,
 		"internal_budget_ms":150000,"retries":0}))
 	quit(0 if failures==0 else 1)

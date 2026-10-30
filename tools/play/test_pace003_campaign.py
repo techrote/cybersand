@@ -253,37 +253,49 @@ class ReadbackTests(unittest.TestCase):
                             campaign.runtime_identity()
 
     def test_unexpected_final_verifier_error_is_retained_as_failure(self):
-        with tempfile.TemporaryDirectory() as temp:
-            directory = Path(temp)
-            godot = directory / "godot-synthetic"
-            godot.write_text("synthetic parser test only")
-            output = directory / "output"
-            calls = 0
+        # Exercise both host branches even when these unit tests run on only
+        # one OS. Synthetic rows must match that branch to reach the injected
+        # final verifier error rather than fail an unrelated identity check.
+        for host_platform, platform_label in (("linux", "Linux"), ("win32", "Windows")):
+            with self.subTest(platform=host_platform), tempfile.TemporaryDirectory() as temp:
+                directory = Path(temp)
+                godot = directory / "godot-synthetic"
+                godot.write_text("synthetic parser test only")
+                output = directory / "output"
+                calls = 0
 
-            def fake_process(_godot, case, target, _role, **_kwargs):
-                nonlocal calls
-                process = process_record(case.name, case.timeout)
-                text = "Synthetic importer\n"
-                if case.name != "import":
-                    value, _ = example(False)
-                    value["requested_workers"] = 1 if calls == 1 else 0
-                    text = campaign.MARKER + json.dumps(value) + "\n"
-                (target / process["log"]).write_text(text)
-                calls += 1
-                return process, False
+                def fake_process(_godot, case, target, _role, **_kwargs):
+                    nonlocal calls
+                    process = process_record(case.name, case.timeout)
+                    text = "Synthetic importer\n"
+                    if case.name != "import":
+                        value, _ = example(False)
+                        value["platform"] = platform_label
+                        value["requested_workers"] = 1 if calls == 1 else 0
+                        text = campaign.MARKER + json.dumps(value) + "\n"
+                    (target / process["log"]).write_text(text)
+                    calls += 1
+                    return process, False
 
-            with patch("sys.argv", ["run_pace003_campaign.py", "--godot", str(godot), "--output", str(output),
-                                    "--headless", "--repetitions", "1"]), \
-                 patch.object(campaign, "source_identity", return_value={"source_sha": "a" * 40}), \
-                 patch.object(campaign, "runtime_identity", return_value={}), \
-                 patch.object(campaign.subprocess, "check_output", return_value=campaign.GODOT_VERSION), \
-                 patch.object(campaign.runner, "run_case", side_effect=fake_process), \
-                 patch.object(campaign, "verify_directory", side_effect=NameError("synthetic verifier failure")), \
-                 contextlib.redirect_stdout(io.StringIO()):
-                self.assertEqual(campaign.main(), 1)
-            report = json.loads((output / "campaign.json").read_text())
-            self.assertEqual(report["status"], "failed")
-            self.assertIn("NameError: synthetic verifier failure", report["errors"])
+                with patch("sys.argv", ["run_pace003_campaign.py", "--godot", str(godot), "--output", str(output),
+                                        "--headless", "--repetitions", "1"]), \
+                     patch.object(campaign.sys, "platform", host_platform), \
+                     patch.object(campaign.platform, "platform", return_value="synthetic " + platform_label), \
+                     patch.object(campaign, "source_identity", return_value={"source_sha": "a" * 40}), \
+                     patch.object(campaign, "runtime_identity", return_value={}), \
+                     patch.object(campaign.subprocess, "check_output", return_value=campaign.GODOT_VERSION), \
+                     patch.object(campaign.runner, "run_case", side_effect=fake_process), \
+                     patch.object(campaign, "verify_directory", side_effect=NameError("synthetic verifier failure")) as verifier, \
+                     contextlib.redirect_stdout(io.StringIO()):
+                    self.assertEqual(campaign.main(), 1)
+                    verifier.assert_called_once_with(output)
+                report = json.loads((output / "campaign.json").read_text())
+                self.assertEqual(calls, 3)
+                self.assertEqual(report["platform"], platform_label)
+                self.assertEqual(report["status"], "failed")
+                self.assertEqual(report["errors"], ["NameError: synthetic verifier failure"])
+                self.assertEqual(len(report["rows"]), 2)
+                self.assertTrue(all("summary" in row for row in report["rows"]))
 
 
 if __name__ == "__main__":
