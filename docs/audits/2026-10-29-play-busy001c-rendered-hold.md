@@ -238,3 +238,38 @@ phases, Rapier tick, overlay visibility and Main/physics callback counts).
 No setup/hold/render timeout, native gate, pixel criterion or production path is
 changed. Windows graphical course installation remains a separate unresolved
 failure even if this Linux readiness correction succeeds.
+
+## New-eligible-phase wake, not a relaxed hold oracle — 2026-10-30
+
+Fresh source-level diagnosis consumes the original failed 001C evidence at
+[40990299227](https://github.com/techrote/cybersand/actions/runs/40990299227):
+Linux finished course/actor setup but observed `scheduler_parallel_phases_last_tick=0`
+in its *most recent* snapshot even though four worker threads were configured.
+A zero in the most recent snapshot does not imply the next dispatch cannot
+execute a real parallel phase, and waiting for a historical phase is not the
+requested under-hold proof.
+
+This successor changes only the **explicit-only 001C script and this audit**.
+It retains actor/course/terrain/rearm/overlay/native-capacity readiness but
+does not demand `scheduler_parallel_phases_last_tick>0` in the last packet.
+Instead, **after arming** the unchanged copied-value native gate, it submits
+four bounded Water brush discs at authored-camera coordinates
+(176,188), (240,188), (304,188), (368,188), radius8,
+through `Main.queue_brush_mutation`. These are *ordinary admitted* cellular
+commands on the production worker ownership route; the test requires all
+four admissions and records counts and native tick before waiting for the gate.
+
+The existing gate **must still** observe at least two distinct *actual*
+`World::tick_phased` callback workers simultaneously waiting/active, zero
+selected-task completion, no safety timeout/release/dispatch return, with the
+same real dispatch held across two real frame submissions. All existing
+native gate timing, framebuffer, pixel, Rapier/input, immutable-snapshot,
+manual-release/drain/join and strict source-matched runtime oracles remain
+unchanged. A graphical host that never starts a real eligible pool dispatch
+still fails (no synthetic task, no injected thread, no fake pass).
+
+This is a diagnostic/source candidate only until fresh exact-head Linux
+and Windows special-runtime builds, execution and original artifact readback
+pass. The prior Linux/Windows graphical failures remain negative evidence;
+Windows software-renderer course-installation cost is separately unresolved.
+No physical gamepad, focus, sustained FPS, subjective feel or release claim.

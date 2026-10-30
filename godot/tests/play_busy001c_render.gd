@@ -46,7 +46,9 @@ func render_host_ready() -> bool:
 		and not desktop._actor_input_rearm
 		and desktop.latest_snapshot != null
 		and int(desktop.latest_snapshot.scheduler_thread_capacity_hint) >= 2
-		and int(desktop.latest_snapshot.scheduler_parallel_phases_last_tick) > 0
+		# A completed parallel phase in the *latest* snapshot is transient:
+		# after the course settles it may be zero. The actual qualification is
+		# the copied phase gate below, which must hold >=2 real claimed tasks.
 		and desktop.physical_actor_session.tick >= 3
 		and desktop.physical_actor_overlay.visible)
 
@@ -274,6 +276,25 @@ func run() -> void:
 		await finish(worker, desktop.physical_actor_session)
 		quit(1)
 		return
+
+	# The authored course may settle while a software-rendered graphical host
+	# completes slow actor setup. Request genuinely new cellular work through
+	# the same public Main brush admission that players use, *after* arming
+	# the next-dispatch gate. Never synthesize pool tasks or read the live World.
+	# Separate small Water patches span multiple 32px worker tiles inside the
+	# authored camera/interest region, clear of the initial Jet Barrel.
+	var paint_sites: Array[Vector2i] = [
+		Vector2i(176, 188), Vector2i(240, 188),
+		Vector2i(304, 188), Vector2i(368, 188)]
+	var paint_admitted: int = 0
+	for site: Vector2i in paint_sites:
+		if desktop.queue_brush_mutation(site.x, site.y, 8, CyberCellWorld.WATER):
+			paint_admitted += 1
+	progress("native_phase_wake_queued", {
+		"paint_admitted":paint_admitted, "paint_requested":paint_sites.size(),
+		"native_tick":int(desktop.latest_snapshot.tick_index)})
+	expect(paint_admitted == paint_sites.size(),
+		"ordinary authored-course brush route admits all four bounded Water wake commands")
 
 	var held: bool = await wait_for(Callable(self, "gate_held").bind(gate, generation), 5000)
 	expect(held, "at least two distinct real World phase jobs are held before rendering")
