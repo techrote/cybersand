@@ -40,6 +40,13 @@ The [player contract](../systems/player-control-playground.md#integrated-churn-a
 and dated audit distinguish local input-bound execution, new hosted receipts,
 synthetic input seams and remaining live-delivery/effect qualification.
 No native solver/default, protected fixture or simulation owner model changes.
+PR #308's diagnostic head `c8acc928` has genuine graphical startup negatives:
+large Linux gaps outside measured Main callbacks and a Windows 180-second
+timeout with dominant captured D3D shader-compiler activity. The readiness
+observer must distinguish actual Main acknowledgement from a later poll;
+that apparatus correction does not waive startup or current-head CI failures.
+The dated audit retains both original platform artifacts. Keep #269 open and
+the combined implementation unmerged while its applicable scoped gate fails.
 
 **Current accepted slices:** existing-host feasibility #273, five-rig and
 construction-time solver composition #267, shared controls/camera/lap/gamepad

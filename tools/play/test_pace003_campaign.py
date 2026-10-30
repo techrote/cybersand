@@ -29,11 +29,22 @@ def example(graphical=True):
              "scope": {"frame_submissions_measured": graphical, "physical_scanout_measured": False,
                        "human_feel": False, "native_jobs_held": False}, "course_recipe_hash": "b" * 64,
              "policy": {"policy_hash": "c" * 64}, "receipt": {"kind": "applied_run", "policy_hash": "c" * 64},
-             "construction_usec": 100, "reset_usec": 100, "scene_retirement_usec": 100, "stop_join_usec": 100,
+             "construction_usec": 485_000, "reset_usec": 100, "scene_retirement_usec": 100, "stop_join_usec": 100,
              "generation": 2, "actor_epoch": 1, "native_hz_observed_by_main": 2 / 15, "rapier_hz": 2 / 15,
              "native_ticks_observed_by_main": 2, "native_completion_count": 2, "native_vs_main_boundary_difference": 0,
              "initial_main_native_tick": 19, "final_main_native_tick": 21,
              "initial_rapier_tick": 19, "final_rapier_tick": 21, "rapier_ticks": 2,
+             "setup_acknowledgement": {"predicate": "actor_ready", "observer": "after_actual_Main_process",
+                 "form_started_usec": 115_000, "request_started_usec": 120_000, "deadline_usec": 30_120_000,
+                 "acknowledged_usec": 500_000, "polled_usec": 600_000, "poll_elapsed_usec": 480_000,
+                 "identity": {"rig": "jetbarrel", "actor_epoch": 1, "generation": 2}},
+             "setup_observation": {"started_usec": 100_000, "ready_completed_usec": 110_000,
+                 "ended_usec": 610_000, "max_samples_per_series": 8192,
+                 "main_calls": 2, "physics_calls": 2, "render_submissions": 2 if graphical else 0,
+                 "main_samples_truncated": False, "physics_samples_truncated": False, "render_samples_truncated": False,
+                 "main_started_usec": [150_000, 490_000], "main_callback_usec": [100, 10_000],
+                 "physics_started_usec": [155_000, 495_000], "physics_callback_usec": [20, 30],
+                 "rendered_usec": [151_000, 510_000] if graphical else []},
              "framebuffer": {"captured": True, "width": 960, "height": 540, "captured_after_sample": True,
                              "different_from_top_left_rgb": 50, "png_sha256": "a" * 64}
                             if graphical else {"captured": False, "reason": "headless"},
@@ -95,6 +106,49 @@ def retained_graphical_campaign(directory):
 
 
 class ReadbackTests(unittest.TestCase):
+    def test_late_poll_requires_retained_in_deadline_main_acknowledgement(self):
+        value, _ = example()
+        acknowledgement, observation = value["setup_acknowledgement"], value["setup_observation"]
+        # Simulate a long render after Main already accepted. The request's
+        # original deadline is fixed, while observation resumes later.
+        value["started_usec"] = 40_000_000
+        observation["ended_usec"] = 35_000_000
+        acknowledgement["polled_usec"] = 34_000_000
+        acknowledgement["poll_elapsed_usec"] = acknowledgement["polled_usec"] - acknowledgement["request_started_usec"]
+        value["construction_usec"] = acknowledgement["polled_usec"] - acknowledgement["form_started_usec"]
+        campaign.verify_setup(value, True)
+        self.assertGreater(acknowledgement["polled_usec"], acknowledgement["deadline_usec"])
+        # Making the actual Main completion late cannot be rescued by the poll.
+        acknowledgement["acknowledged_usec"] = acknowledgement["deadline_usec"] + 1
+        observation["main_started_usec"][-1] = acknowledgement["acknowledged_usec"] - observation["main_callback_usec"][-1]
+        with self.assertRaisesRegex(RuntimeError, "late or backward"):
+            campaign.verify_setup(value, True)
+
+    def test_absent_backward_or_unrecorded_main_acknowledgement_refuses(self):
+        for key, replacement in (("acknowledged_usec", 0), ("acknowledged_usec", 119_999),
+                                 ("acknowledged_usec", 499_999), ("polled_usec", 499_999),
+                                 ("request_started_usec", 500_001), ("deadline_usec", 30_120_001),
+                                 ("poll_elapsed_usec", 480_001)):
+            with self.subTest(key=key, replacement=replacement):
+                value, _ = example()
+                value["setup_acknowledgement"][key] = replacement
+                with self.assertRaises(RuntimeError): campaign.verify_setup(value, True)
+        value, _ = example()
+        del value["setup_acknowledgement"]["acknowledged_usec"]
+        with self.assertRaises(RuntimeError): campaign.verify_setup(value, True)
+
+    def test_setup_identity_and_cold_start_arrays_cannot_be_discarded(self):
+        for key, replacement in (("actor_epoch", 2), ("generation", 3), ("rig", "acrobat")):
+            value, _ = example()
+            value["setup_acknowledgement"]["identity"][key] = replacement
+            with self.assertRaises(RuntimeError): campaign.verify_setup(value, True)
+        for key, replacement in (("main_started_usec", []), ("main_samples_truncated", True),
+                                 ("ended_usec", 599_999), ("rendered_usec", []),
+                                 ("max_samples_per_series", 16384)):
+            value, _ = example()
+            value["setup_observation"][key] = replacement
+            with self.assertRaises(RuntimeError): campaign.verify_setup(value, True)
+
     def test_valid_graphical_and_headless_remain_distinct(self):
         for graphical in (True, False):
             value, expected = example(graphical)

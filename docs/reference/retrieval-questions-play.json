@@ -188,6 +188,7 @@
         "Graphical frame_post_draw submissions, headless Main callbacks and physical display scanout are distinct; no stable FPS or human acceptance follows.",
         "Owner-only consecutive native completion records are read after join; probe cost is measured and included in wall pacing, excluded from native timer.",
         "Snapshot-lock wait is narrow and deadline overruns do not identify all waits or queue depth.",
+        "Actual Main acknowledgement must meet the original Build deadline even if polling is delayed; cold-start frame gaps and polling delay remain in successful reports and are not hidden by the later measurement window.",
         "One-worker and Auto use the same authored workload and intended Rapier-tick tape but async admission skew remains; one-worker is asynchronous and no synchronous composed-host comparator is claimed."
       ],
       "sources": [

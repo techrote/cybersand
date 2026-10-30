@@ -36,6 +36,17 @@ and construction/reset/stop-join latencies. Raw owner rows transfer to Main
 only after join. The test-only copied-statistics cost is separately measured
 and included in observed wall pacing.
 
+Construction acknowledgement and the test's later polling time are separate
+observations. The apparatus latches the unchanged course/actor/terrain
+predicate after an actual Main callback and checks that timestamp against the
+original 30-second request deadline. A late poll cannot excuse a late or absent
+acknowledgement. Bounded startup Main/physics/render timestamps remain in each
+row, including successful rows; long first-frame and subsequent rendering gaps
+are reported separately from the fixed measurement window. Build is not moved
+after a hidden graphical warm-up, and the whole process remains bounded at
+180 seconds. Timing inside Main callbacks does not attribute time spent in
+engine rendering, driver compilation, scheduling or other uninstrumented work.
+
 Graphical submissions are not physical scanout. Headless callbacks are never
 rendered FPS. The WAIT001-derived lock probe measures only snapshot acquisition,
 not all Main waits. Deadline overruns do not reveal an unmeasured queue depth.

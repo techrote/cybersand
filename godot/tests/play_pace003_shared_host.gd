@@ -33,6 +33,13 @@ class MeasurementHost:
 	var setup_physics_started_usec: Array[int] = []
 	var setup_physics_callback_usec: Array[int] = []
 	var setup_rendered_usec: Array[int] = []
+	var setup_readiness_predicate: Callable
+	var setup_form_started_usec: int = 0
+	var setup_request_started_usec: int = 0
+	var setup_deadline_usec: int = 0
+	var setup_acknowledged_usec: int = 0
+	var setup_acknowledged_identity: Dictionary = {}
+	var setup_observed_poll_usec: int = 0
 	var sampling: bool = false
 	var main_started_usec: Array[int] = []
 	var main_callback_usec: Array[float] = []
@@ -64,6 +71,21 @@ class MeasurementHost:
 	func end_setup_observation() -> void:
 		setup_sampling = false
 		setup_ended_usec = Time.get_ticks_usec()
+		setup_readiness_predicate = Callable()
+
+	func arm_setup_readiness(predicate: Callable, form_started: int, request_started: int) -> void:
+		setup_readiness_predicate = predicate
+		setup_form_started_usec = form_started
+		setup_request_started_usec = request_started
+		setup_deadline_usec = request_started + SETUP_TIMEOUT_MS * 1000
+
+	func setup_acknowledgement() -> Dictionary:
+		return {"predicate":"actor_ready", "observer":"after_actual_Main_process",
+			"form_started_usec":setup_form_started_usec,
+			"request_started_usec":setup_request_started_usec, "deadline_usec":setup_deadline_usec,
+			"acknowledged_usec":setup_acknowledged_usec, "polled_usec":setup_observed_poll_usec,
+			"poll_elapsed_usec":setup_observed_poll_usec - setup_request_started_usec,
+			"identity":setup_acknowledged_identity.duplicate(true)}
 
 	func setup_observation() -> Dictionary:
 		return {"started_usec":setup_started_usec, "ended_usec":setup_ended_usec,
@@ -118,7 +140,20 @@ class MeasurementHost:
 	func _process(delta: float) -> void:
 		var started: int = Time.get_ticks_usec()
 		super._process(delta)
+		# SceneTree.process_frame runs before Main._process. Retain when the exact
+		# existing predicate first becomes true, so a later slow render cannot
+		# turn an in-deadline acknowledgement into a polling-order false negative.
+		# A late acknowledgement is still recorded and MUST fail the deadline.
+		var acknowledged_now: bool = setup_sampling and setup_acknowledged_usec == 0 \
+			and setup_readiness_predicate.is_valid() and setup_readiness_predicate.call()
 		var ended: int = Time.get_ticks_usec()
+		if acknowledged_now:
+			setup_acknowledged_usec = ended
+			setup_acknowledged_identity = {"rig":str(physical_rig_id), "actor_epoch":_physical_epoch,
+				"generation":latest_snapshot.render_world_generation}
+			print("CYBERSAND_PROGRESS ", JSON.stringify({"case":"play_pace003", "stage":"main_acknowledged",
+				"monotonic_usec":ended, "request_deadline_usec":setup_deadline_usec,
+				"within_deadline":ended <= setup_deadline_usec}))
 		if setup_sampling:
 			setup_main_calls += 1
 			if setup_main_started_usec.size() < MAX_SETUP_SAMPLES:
@@ -189,6 +224,20 @@ func new_actor(desktop: Control, rig: StringName, epoch: int) -> bool:
 	return actor_ready(desktop, rig) and desktop._physical_epoch > epoch
 
 
+func wait_for_setup_acknowledgement(desktop: Control) -> bool:
+	# The deadline was fixed BEFORE Build. Polling can return later because a
+	# graphical frame blocks this coroutine. Only a retained actual Main-side
+	# acknowledgement at/before that original deadline permits success.
+	while Time.get_ticks_usec() < desktop.setup_deadline_usec:
+		if desktop.setup_acknowledged_usec > 0:
+			break
+		await process_frame
+	desktop.setup_observed_poll_usec = Time.get_ticks_usec()
+	return desktop.setup_acknowledged_usec >= desktop.setup_request_started_usec \
+		and desktop.setup_acknowledged_usec <= desktop.setup_deadline_usec \
+		and desktop.setup_acknowledged_usec > 0 and actor_ready(desktop, requested_rig)
+
+
 func emit_setup_failure(desktop: Control, stage: String, construction_started: int) -> void:
 	# Main-owned candidate fields and immutable copied publications only. Never
 	# inspect the live native World or the worker-owned completion arrays here.
@@ -225,7 +274,8 @@ func emit_setup_failure(desktop: Control, stage: String, construction_started: i
 		"installation_limit_ms":SETUP_TIMEOUT_MS,
 		"construction_elapsed_usec":Time.get_ticks_usec() - construction_started,
 		"display_server":DisplayServer.get_name(), "graphical_scanout_measured":false,
-		"observation":desktop.setup_observation(), "engine_physics_frames":Engine.get_physics_frames(),
+		"observation":desktop.setup_observation(), "acknowledgement":desktop.setup_acknowledgement(),
+		"engine_physics_frames":Engine.get_physics_frames(),
 		"tree_paused":paused, "host_can_process":desktop.can_process(), "host_paused":desktop.paused,
 		"worker_start_error":desktop.worker_start_error, "course_installed":course_installed(desktop),
 		"actor_ready":actor_ready(desktop, requested_rig), "accepted_rig":str(desktop.physical_rig_id),
@@ -284,13 +334,18 @@ func run() -> void:
 		panel.rule_choice.select(1)
 		panel.camera_choice.select(1)
 		panel.policy_editor.select_preset(requested_policy)
+		emit_stage("selection_form_ready")
+		desktop.arm_setup_readiness(Callable(self, "actor_ready").bind(desktop, requested_rig),
+			construction_started, Time.get_ticks_usec())
 		ready = panel.build_selected()
 		expect(ready, "integrated selector admits actual native-backed composed session")
 		if ready:
+			emit_stage("selector_admitted")
 			setup_stage = "course_actor_terrain_acknowledgement"
-			ready = await wait_for(Callable(self, "actor_ready").bind(desktop, requested_rig), SETUP_TIMEOUT_MS)
+			ready = await wait_for_setup_acknowledgement(desktop)
 		expect(ready, "actual authored course/SetP actor/terrain acknowledged within 30 seconds")
-	var construction_usec: int = Time.get_ticks_usec() - construction_started
+	var construction_usec: int = desktop.setup_observed_poll_usec - construction_started \
+		if desktop.setup_observed_poll_usec > 0 else Time.get_ticks_usec() - construction_started
 	if ready:
 		setup_stage = "neutral_rearm_and_completed_clocks"
 		emit_stage("session_installed")
@@ -352,6 +407,7 @@ func run() -> void:
 		"native_hz_observed_by_main":float(native_delta) * 1000000.0 / float(ended - started),
 		"rapier_hz":float(physics_delta) * 1000000.0 / float(ended - started),
 		"construction_usec":construction_usec, "course_recipe_hash":recipe_hash,
+		"setup_observation":desktop.setup_observation(), "setup_acknowledgement":desktop.setup_acknowledgement(),
 		"policy":policy, "receipt":receipt, "platform":OS.get_name(), "os_version":OS.get_version(),
 		"cpu_name":OS.get_processor_name(), "logical_processors":OS.get_processor_count(),
 		"godot":Engine.get_version_info(), "display_server":DisplayServer.get_name(),

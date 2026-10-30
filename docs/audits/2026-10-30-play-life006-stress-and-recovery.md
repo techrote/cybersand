@@ -334,6 +334,92 @@ on the next source. The installation assertion, 30-second bound, 180-second
 process maximum and fail-fast behavior are unchanged. No failed result is
 discarded and no same-source rerun is used to seek green.
 
+### Diagnostic head: observed startup stalls and Windows shader compilation
+
+The first correction published `c8acc9285a3f7dd92d5519f2439ad68138f8db61`,
+tree `58a8da23a7afbedf068fdd12d7f8162b2f3ce239`. Its
+[Documentation run 41116762160](https://github.com/techrote/cybersand/actions/runs/41116762160)
+passed; original artifact `13006940883` is 1,362,529 bytes, SHA-256
+`637d4d83020a04d86e43330aff2c0e7cc001df1805a13b572edde2f099cb290c`.
+The [PACE003 run 41116761883](https://github.com/techrote/cybersand/actions/runs/41116761883)
+remains failed on both operating systems, attempt 1. These are separate
+ordinary shared-host measurements, with no held-native work or #304 execution.
+
+Linux's bounded diagnostic shows 19 completed Main callbacks, 70 physics
+callbacks and 19 actual graphical submissions. The first two Main entries are
+28.431 seconds apart; the first `frame_post_draw` arrives 28.511 seconds after
+Main's `_ready` completed. A later submitted-frame interval is 4.818 seconds.
+All measured Main callbacks together consume 22.910 ms, maximum 3.584 ms;
+physics callbacks total 1.625 ms. Those observations place the large gaps
+outside the instrumented callbacks, but do not identify a Linux driver,
+shader compiler, scheduler or GPU cause by themselves.
+
+At the final observation, the actual course/actor/terrain predicate is true,
+epoch 1/generation 2 is accepted, no candidate remains pending, and native tick
+zero is healthy and paused. The original inherited wait checks its wall
+deadline before polling the predicate after a frame. A long rendering gap can
+therefore miss a condition established by Main before the deadline. This
+source/trace finding warrants recording the actual Main acknowledgement time;
+it does not retroactively pass the failed run or justify accepting a condition
+first observed after the deadline. The original Linux archive is artifact
+`13005029065`, 128,547 bytes, SHA-256
+`ce661cf80a86c3e3d6342b6ba79d1fd645f708ab95a0bf5b98f268ed7f0a8413`.
+
+Windows passed the corrected units and retained-runtime checks, initialized
+ANGLE 2.1.1 / OpenGL ES 3.0 on Microsoft Basic Render Driver / Direct3D 11,
+then reached the unchanged **180-second case deadline** before a measurement
+window. Original process snapshots and AMD64 minidumps are retained. The hot
+engine thread accumulated 173.375 seconds of CPU time by the deadline; its
+captured instruction pointer maps to `d3dcompiler_47.dll + 0x9a1cf`. Main's
+captured thread was waiting in `ntdll`, with 2.656 seconds of CPU time.
+This is module-level evidence of dominant shader-compilation activity, without
+symbols or a fully unwound call stack. It does not identify the exact shader,
+prove a native World hang, or exclude every other blocked thread.
+The engine dump SHA-256 is
+`bd42bcec9850a99773a3b79ce1ddd73c0e9ab45859258d1c8186e4a31e20dc91`.
+Original Windows artifact `13006791672` is 159,498 bytes, SHA-256
+`9d34990f49bfa91fb581cfe086f48b8b3aa36b2d1432341b9c2fd6007c0ec631`.
+
+Both platform failures remain merge-blocking scoped qualification. The next
+apparatus correction keeps the original Build submission order and 30-second
+limit, latches the exact existing readiness predicate after actual Main
+callbacks, and accepts late polling only when a retained acknowledgement
+timestamp meets that fixed deadline. The new deadline starts immediately
+before Build, including synchronous admission; the old polling helper started
+after Build returned. This strengthens the interval rather than extending it.
+Late/absent acknowledgement still fails. Startup intervals and the later polling time remain available on
+successful rows as well as failures; a steady-state window must not hide these
+startup negatives. No first-frame warm-up is moved ahead of Build, no renderer
+or native default is changed, and the external 180-second bound is unchanged.
+The Windows shader-startup limit remains a separate unresolved blocker.
+
+The observer correction passed 19 apparatus unit tests, including rejected
+late/absent/backward/unrecorded acknowledgements and discarded startup arrays.
+Its first local headless pair passed 15/0 assertions per row, original-log
+readback and all 773 before/after execution-input and retained-runtime fences.
+The original report names `c8acc928` plus exactly the three apparatus-file
+deltas; its SHA-256 is
+`684ac1b108f1a51f0832161ba2ba801248f71b75a5f6fcdec2bcbc6eda188989`.
+
+| Observer-corrected headless result | One worker | Auto |
+|---|---:|---:|
+| Native samples / completed ticks per second | 900 / 59.9914 | 901 / 60.0422 |
+| Native p50 / p95 / p99, ms | 0.057888 / 0.199822 / 0.569450 | 0.056385 / 0.160583 / 0.328205 |
+| Main acknowledgement / later poll, seconds | 1.237093 / 1.238611 | 1.110441 / 1.113501 |
+| Startup Main calls / maximum callback, ms | 170 / 5.254 | 154 / 4.619 |
+| Snapshot age p99, ms / snapshot-lock wait p99, microseconds | 19.002 / 162 | 18.090 / 89 |
+| Reset, seconds / worker join, ms | 1.013955 / 10.330 | 1.114494 / 8.881 |
+| Complete scene retirement, ms | 56.282 | 55.671 |
+
+Both rows observed zero coalesced publication serials and deadline-reset
+overruns. Auto still allocated four workers but observed one participant and
+no parallel phases. Its owner completion count exceeded Main's last observed
+tick delta by one, within the explicitly recorded publication boundary; the
+one-worker difference was zero. There are no headless frame submissions and no
+scaling or FPS claim. The new reader requires the added setup fields; earlier
+reports must be checked with their exact historical source verifier, not
+silently reinterpreted using the later implementation.
+
 ### Focused native sanitizer execution
 
 On the first published `ad1c55a1` head, the unchanged Makefile target

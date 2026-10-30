@@ -249,6 +249,8 @@ Unsubmitted selections remain unsubmitted; no retry/default conversion occurs.
 F2 cancels the request and its one-shot envelope, including the pending-scene
 interval. Protected fixtures and ordinary reference-body recovery keep their
 own routes; the native healthy-World guard is unchanged.
+An explicit scene-reload refusal stays visible while the World is stopped;
+the next explicit Restart clears that recovery error before its single attempt.
 
 [LIFE007](../../godot/tests/test_play_life007_failed_session_restart.gd) covers all
 five real capacity-failed SetP sessions, pending-candidate retirement, actual

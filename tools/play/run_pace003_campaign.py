@@ -82,6 +82,57 @@ def intervals(values: list) -> list:
     return result
 
 
+def verify_setup(value: dict, graphical: bool) -> None:
+    """Bind the actual Main acknowledgement to the original pre-Build deadline."""
+    observation = value.get("setup_observation", {})
+    acknowledgement = value.get("setup_acknowledgement", {})
+    require(acknowledgement.get("predicate") == "actor_ready"
+            and acknowledgement.get("observer") == "after_actual_Main_process",
+            "Setup must observe the exact existing predicate after actual Main")
+    keys = ("form_started_usec", "request_started_usec", "deadline_usec", "acknowledged_usec", "polled_usec", "poll_elapsed_usec")
+    require(all(type(acknowledgement.get(key)) is int and acknowledgement[key] >= 0 for key in keys),
+            "Missing/nonmonotonic setup acknowledgement timestamps")
+    form, request, deadline, acknowledged, polled, elapsed = (acknowledgement[key] for key in keys)
+    require(0 < form <= request <= acknowledged <= deadline and deadline - request == 30_000_000
+            and acknowledged <= polled and elapsed == polled - request
+            and value.get("construction_usec") == polled - form,
+            "Absent, late or backward setup acknowledgement, changed deadline or poll latency")
+    require(acknowledgement.get("identity") == {"rig": value["rig"], "actor_epoch": value["actor_epoch"],
+                                               "generation": value["generation"]},
+            "Setup acknowledgement belongs to another accepted session")
+    require(all(type(observation.get(key)) is int for key in ("started_usec", "ready_completed_usec", "ended_usec"))
+            and 0 < observation["started_usec"] <= observation["ready_completed_usec"] <= form
+            and polled <= observation["ended_usec"] <= value["started_usec"]
+            and observation.get("max_samples_per_series") == 8192,
+            "Missing/backward/unbounded setup observation")
+    for kind, count_key, time_key, duration_key in (
+        ("main", "main_calls", "main_started_usec", "main_callback_usec"),
+        ("physics", "physics_calls", "physics_started_usec", "physics_callback_usec"),
+        ("render", "render_submissions", "rendered_usec", None),
+    ):
+        count, timestamps = observation.get(count_key), observation.get(time_key, [])
+        require(type(count) is int and count >= 0 and len(timestamps) == min(count, 8192)
+                and observation.get(kind + "_samples_truncated") is (count > 8192),
+                "Missing or mislabelled bounded setup samples: " + kind)
+        intervals(timestamps)
+        require(all(observation["ready_completed_usec"] <= timestamp <= observation["ended_usec"]
+                    for timestamp in timestamps), "Setup sample lies outside observed window")
+        if duration_key:
+            durations = observation.get(duration_key, [])
+            require(count > 0 and len(durations) == len(timestamps)
+                    and all(type(duration) is int and duration >= 0 for duration in durations),
+                    "Missing actual setup callback durations: " + kind)
+            require(all(timestamp + duration <= observation["ended_usec"]
+                        for timestamp, duration in zip(timestamps, durations)), "Setup callback ends after observation")
+    require((observation["render_submissions"] > 0) if graphical else observation["render_submissions"] == 0,
+            "Setup graphical submissions missing or falsely claimed for headless")
+    # The first true predicate is latched at the end of an actually recorded
+    # Main callback. A caller cannot substitute a later poll's wall time.
+    require(acknowledged in [timestamp + duration for timestamp, duration in zip(
+        observation["main_started_usec"], observation["main_callback_usec"])],
+        "Setup acknowledgement is not an actual retained Main callback completion")
+
+
 def verify_row(value: dict, expected: dict) -> dict:
     require(isinstance(value, dict) and value.get("schema") == "play-pace003-shared-host-v1",
             "Missing apparatus row")
@@ -123,6 +174,7 @@ def verify_row(value: dict, expected: dict) -> dict:
             and value["scope"].get("human_feel") is False
             and value["scope"].get("native_jobs_held") is False,
             "Incorrect rendering/qualification classification")
+    verify_setup(value, graphical)
     framebuffer = value.get("framebuffer", {})
     if graphical:
         require(framebuffer.get("captured") is True and framebuffer.get("width") == 960
@@ -197,6 +249,7 @@ def verify_row(value: dict, expected: dict) -> dict:
 
 def reduce_row(value: dict) -> dict:
     raw = value["raw"]
+    setup, acknowledgement = value["setup_observation"], value["setup_acknowledgement"]
     native, snapshots = raw["native_rows"], raw["snapshot_rows"]
     frame_intervals = intervals(raw["rendered_usec"])
     serials = [sample["serial"] for sample in snapshots]
@@ -204,7 +257,17 @@ def reduce_row(value: dict) -> dict:
     observed_age = [sample["observed_usec"] - sample["published_usec"] for sample in snapshots]
     render_age = [sample["observed_usec"] - sample["render_generated_usec"] for sample in snapshots
                   if sample["render_generated_usec"] > 0]
-    return {"native_tick_ms": stats([sample["native_ms"] for sample in native]),
+    return {"setup_acknowledgement_latency_usec": acknowledgement["acknowledged_usec"] - acknowledgement["request_started_usec"],
+            "setup_poll_elapsed_usec": acknowledgement["poll_elapsed_usec"],
+            "setup_acknowledgement_to_poll_usec": acknowledgement["polled_usec"] - acknowledgement["acknowledged_usec"],
+            "setup_first_render_from_ready_usec": setup["rendered_usec"][0] - setup["ready_completed_usec"]
+            if setup["rendered_usec"] else None,
+            "setup_main_callback_usec": stats(setup["main_callback_usec"]),
+            "setup_main_callback_interval_usec": stats(intervals(setup["main_started_usec"])),
+            "setup_physics_callback_usec": stats(setup["physics_callback_usec"]),
+            "setup_render_submission_interval_usec": stats(intervals(setup["rendered_usec"])),
+            "setup_note": "Original cold/setup samples retained, including delays outside Main callbacks; late polling is accepted only with a recorded acknowledgement within the original pre-Build 30-second deadline",
+            "native_tick_ms": stats([sample["native_ms"] for sample in native]),
             "native_completed_per_second": len(native) * 1_000_000 / value["elapsed_usec"],
             "native_observed_by_main_per_second": value["native_hz_observed_by_main"],
             "rapier_completed_per_second": value["rapier_hz"],

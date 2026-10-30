@@ -1269,6 +1269,14 @@ inputs are compared before and after, and offline readback verifies logs,
 reductions, PNG hashes and dimensions. Preserve any failed output directory;
 the runner refuses to overwrite it.
 
+The 30-second installation assertion uses a retained actual Main-acknowledgement
+timestamp, with the request clock started before Build. Readback rejects late
+or absent acknowledgements even if a later poll finds the actor ready. Startup
+frame/callback records and polling delay are retained on passing rows too.
+An initial shader/driver stall therefore remains visible and the 180-second
+external watchdog still fails the case. Do not move Build after a warm-up or
+extend either bound to erase a failed cold-start result.
+
 The fixed960×540 viewport, jetbarrel/Current default and intended input script
 make the workloads comparable without pretending asynchronous ticks align.
 Synthetic focus is explicit. This measures frame submissions, native work and

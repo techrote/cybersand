@@ -54,6 +54,16 @@ input for prepared replacement. Explicit Restart now uses fresh Main after old
 candidate/Rapier retirement and worker join, carrying only accepted recipe,
 policy/options/profile/settings and remaining paused. F2 fences queued recovery.
 Do not change the native healthy-World guard or import optional #304 work.
+PR [#308](https://github.com/techrote/cybersand/pull/308) retains its first
+graphical negatives. At diagnostic head `c8acc928`, Linux shows a 28.4-second
+startup callback gap and a later 4.8-second rendered-frame gap; the actual
+course is installed when the delayed test poll returns. Windows reaches the
+180-second bound with a hot captured thread in `d3dcompiler_47.dll`. These
+results do not pass graphical qualification or establish stable FPS. Keep the
+timely Main-acknowledgement check separate from late polling and retain cold
+startup observations in successful reports. The original artifacts and exact
+source identities are in the dated audit; do not increase limits or waive the
+scoped gate to merge this combined slice.
 Consult the dated audit and final PR/#269 source-matched receipts for actual
 execution, source deltas, failures and merge readiness. Remaining broader
 live stale-delivery/effect, exact-source gates and #270 device/OS-focus/human
