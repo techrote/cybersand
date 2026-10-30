@@ -451,3 +451,43 @@ The same graphical gate still requires real unmodified rendered pixels,
 >=2 held phase callbacks, copied snapshot invariance, Viewport input/Rapier
 progress, manual release/drain and successful real shutdown, with exactly the
 same timeouts and no retries. The old failed artifacts remain immutable.
+
+## Exact efcef38d failure and GDB/MI parent-process diagnostic — 2026-10-30
+
+Current draft source `efcef38d46c12381f2b576d0a650253b51edf137`
+failed the dedicated graphical 001C step on both Linux and Windows in
+[run 41021089742](https://github.com/techrote/cybersand/actions/runs/41021089742).
+The same run's actual 001B real-phase hold/shutdown source-matched controls
+**passed 34 assertions/zero failures on each OS**. Documentation
+[41021095251](https://github.com/techrote/cybersand/actions/runs/41021095251)
+passed; standard Native/Godot were draft-skipped.
+
+I independently fetched and CRC-checked both original 001C execution
+archives: Linux artifact `12961448740` (ZIP SHA-256
+`6dea31cdb70b2de14a2aae5d6c7fe89cecd3c82b5771e0bff90e7f1e1b66287e`,
+68 safe unique members) and Windows artifact `12962130833` (ZIP SHA-256
+`ffd22ff59a501539f023f913e6fd891b9df705f66f3f97c6bd4a354cc3021d44`,
+22 safe unique members). Both 001C graphical logs stop after a fully
+completed first `Main._process` invocation, with source probes showing no
+long-running production GDScript method. Linux logs a ~31.6-second gap
+until its next Main/physics callbacks and its course-setup timeout; Windows
+logs no second callback before the unchanged stage-idle watchdog.
+The Windows minidump remains unsymbolized; CPU use and the lack of callback
+cannot prove the renderer's exact source stack. Neither produced a successful
+rendered-hold result, held-frame PNG, or native gate arm.
+
+**Next bounded forensic step:** if and only if the original Linux graphical
+001C step fails, run a *separate* source-matched compatibility-renderer process
+under hosted Linux GDB/MI, with GDB the parent of Godot so the diagnostic
+does not depend on attaching through restrictive ptrace permissions. Interrupt
+that second process after 22 seconds, request bounded all-thread native stacks,
+retain the full original GDB/MI transcript, its SHA-256, status/refusal receipt
+and source hashes in the same failed run artifact. A 3-minute diagnostic step
+cap and a bounded process-group teardown prevent leaving a debugger or Godot
+running. A refused or unsymbolized stack is explicitly a diagnostic refusal.
+
+This debugger run is **not** a retry, a success fallback, a representative
+frame-time benchmark or an 001C pass. The original Linux/Windows qualification
+steps, renderer, 30-second setup bound, 45-second progress watchdog,
+120-second absolute deadline, 12-second native hold, pixel/PNG requirements,
+Main/Rapier ownership and every production source remain unchanged.

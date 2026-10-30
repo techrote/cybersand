@@ -137,6 +137,7 @@ jobs:
           sudo apt-get install --no-install-recommends --yes xvfb xauth libgl1-mesa-dri mesa-utils
 
       - name: Render actual framebuffer while real native phase jobs are held
+        id: render001c
         if: github.ref_name == 'codex/play-busy001c-rendered-20261029'
         env:
           GODOT_SILENCE_ROOT_WARNING: "1"
@@ -161,6 +162,28 @@ jobs:
             --godot-version "$GODOT_VERSION" \
             --platform linux \
             --output build/play-busy001b/linux/render-receipt.json
+
+      - name: Retain nonqualifying Linux GDB stack after graphical refusal
+        if: ${{ failure() && steps.render001c.outcome == 'failure' && github.ref_name == 'codex/play-busy001c-rendered-20261029' }}
+        timeout-minutes: 3
+        env:
+          GODOT_SILENCE_ROOT_WARNING: "1"
+          LIBGL_ALWAYS_SOFTWARE: "1"
+          LP_NUM_THREADS: "2"
+          GALLIVM_PERF: "nopt"
+          CYBERSAND_PLAY_BUSY_RENDER_EVIDENCE: ${{ github.workspace }}/build/play-busy001b/linux/gdb-diagnostic/render
+        run: |
+          # Diagnostic-only second process after failure. Never reclassify the
+          # original 001C result or count this as under-hold qualification.
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes gdb
+          python3 tools/ci/test_play_busy001c_gdb.py
+          sha256sum tools/ci/trace_play_busy001c_gdb.py tools/ci/test_play_busy001c_gdb.py \\
+            > build/play-busy001b/linux/gdb-diagnostic-sources.sha256
+          xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -nolisten tcp" \\
+            python3 tools/ci/trace_play_busy001c_gdb.py \\
+              --godot "$GODOT_BIN" --hold-seconds 22 \\
+              --output build/play-busy001b/linux/gdb-diagnostic
 
       - name: Retain exact Linux evidence
         if: always()
