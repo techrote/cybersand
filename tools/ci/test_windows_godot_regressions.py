@@ -2,6 +2,7 @@
 """Regression checks for the retained-runtime Windows execution gate."""
 
 from contextlib import redirect_stdout
+from collections import Counter
 import hashlib
 import io
 import json
@@ -203,7 +204,8 @@ class RetainedRuntimeTests(unittest.TestCase):
 
 
 class ExecutionTests(unittest.TestCase):
-    def execute_fixture(self, import_message: str = "imported") -> dict:
+    def execute_fixture(self, import_message: str = "imported",
+                        *, shard_count: int = 1, shard_index: int = 0) -> dict:
         cases = [
             subject.runner.Case("zero_exit_error", (), 5, 1),
             subject.runner.Case("new_visual_render", (), 5, 1, True),
@@ -216,7 +218,8 @@ class ExecutionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
             output = Path(directory)
             with mock.patch.object(subject.runner, "case_command", side_effect=lambda _godot, case: [sys.executable, "-c", f"print({messages[case.name]!r})"]):
-                subject.execute_cases("fixture", output, report, cases)
+                subject.execute_cases("fixture", output, report, cases,
+                                      shard_count=shard_count, shard_index=shard_index)
             for record in report["results"]:
                 self.assertEqual(report["log_sha256"][record["log"]], digest((output / record["log"]).read_bytes()))
                 self.assertEqual(record["command"][0], sys.executable)
@@ -239,6 +242,31 @@ class ExecutionTests(unittest.TestCase):
         self.assertEqual(report["status"], "failed")
         self.assertEqual([item["name"] for item in report["results"]], ["import"])
         self.assertEqual(report["executed_case_count"], 0)
+
+    def test_two_windows_shards_partition_all_applicable_cases_once(self):
+        a = self.execute_fixture(shard_count=2, shard_index=0)
+        b = self.execute_fixture(shard_count=2, shard_index=1)
+        for i, report in enumerate((a, b)):
+            self.assertEqual((report["shard_count"], report["shard_index"]), (2, i))
+            self.assertEqual(report["applicable_case_count"], 3)
+            self.assertEqual(report["applicable_cases"],
+                             ["zero_exit_error", "zero_exit_skip", "later_case"])
+            self.assertEqual(report["out_of_scope_graphical_cases"], ["new_visual_render"])
+            self.assertEqual(report["executed_case_count"], len(report["assigned_cases"]))
+            self.assertTrue(report["completed"])
+        combined = a["assigned_cases"] + b["assigned_cases"]
+        self.assertEqual(Counter(combined), Counter(a["applicable_cases"]))
+        self.assertEqual(len(set(combined)), len(combined))
+
+    def test_invalid_windows_shards_refuse_before_import_or_test(self):
+        cases = [subject.runner.Case("ordinary", (), 5, 1)]
+        for count, index in ((0, 0), (1, -1), (1, 1), (2, 2)):
+            with self.subTest(shard_count=count, shard_index=index):
+                with tempfile.TemporaryDirectory() as directory:
+                    with self.assertRaisesRegex(ValueError, "shard index/count"):
+                        subject.execute_cases("unused", Path(directory),
+                                              {"results": [], "log_sha256": {}},
+                                              cases, shard_count=count, shard_index=index)
 
     def test_bad_archive_is_rejected_before_execution(self):
         with tempfile.TemporaryDirectory() as directory:
