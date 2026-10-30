@@ -17,8 +17,14 @@ records the owner's accepted #302 native-busy boundary and optional, non-blockin
 #304 diagnostic. The [integrated Play session selector](systems/player-control-playground.md#integrated-playable-session-selection-and-device-rearm)
 composes the authored course, five mechanical players, controls, rules, solver
 policy and camera through the original asynchronous desktop host. Its
-[source-bound audit](audits/2026-10-30-play-ui005-integrated-session.md) separates
-automated execution from pending exact-head hosted and physical/human gates.
+[source-bound audit](audits/2026-10-30-play-ui005-integrated-session.md) retains
+the original source gates. #307 is merged at b55ce690; its post-merge Docs/Godot
+passed and Native TSan timed out. The
+[new lifecycle/recovery audit](audits/2026-10-30-play-life006-stress-and-recovery.md)
+reconciles those artifacts, fifty integrated lifetimes, real five-rig native
+failure recovery, F2 races and separately classified graphical pacing.
+Use [LIFE006–008/PACE003 commands](operations/local-build-and-validation.md#integrated-play-lifecycle-and-pacing)
+for reproducible automated qualification; physical/human gates remain separate.
 Use the [owner walkthrough](operations/local-build-and-validation.md#shared-play-session-and-owner-qualification)
 for the shortest reproducible route into #270. PLAY is not release-qualified.
 

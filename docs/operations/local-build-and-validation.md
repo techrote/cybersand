@@ -1234,6 +1234,55 @@ hosted, rendered-layout and unexecuted physical/human evidence separate. On
 restricted Linux environments, set writable XDG config/data/cache directories
 before importing or running; preserve any earlier failed invocation.
 
+### Integrated PLAY lifecycle and pacing
+
+The [LIFE006–008/PACE003 audit](../audits/2026-10-30-play-life006-stress-and-recovery.md)
+separates historical accepted cases, new actual-host tests, synthetic events
+and physical/human gates. Run all five `test_play_life006_<rig>.gd` wrappers
+(stuntbuggy, trialsbike, acrobat, arcadelander, jetbarrel), then:
+
+```text
+godot --headless --path godot --script res://tests/test_play_life007_failed_session_restart.gd
+godot --headless --path godot --script res://tests/test_play_life008_recovery_navigation.gd
+python3 tools/play/test_pace003_campaign.py
+python3 tools/play/run_pace003_campaign.py --godot /absolute/path/to/godot --output /new/evidence/directory --repetitions 1 --seconds 15 --headless
+```
+
+Ordinary hosted Windows/Linux regression discovery includes LIFE006–008 with
+180-second process limits. LIFE006's five wrappers each run ten real scene
+lifetimes (fifty per OS); no reduced target or retry is authorized. LIFE007
+injects real construction capacity then removes it before scene entry, checks
+failure quarantine and explicit fresh-scene recovery, and never changes the
+native healthy-World rule. LIFE008 checks navigation wins over queued recovery.
+For a stopped applied course, Restart rebuilds accepted initial state paused;
+F2 abandons recovery and returns to normal launcher selection.
+
+For actual graphical measurements omit `--headless`; use an available Linux
+display/Xvfb with `--rendering-driver opengl3`, or the hosted Windows
+`--rendering-driver opengl3_angle` path. Record the actual engine/adapter log,
+not just the requested option. The
+[hosted workflow](../../.github/workflows/play-pace003-host.yml) executes one
+15-second one-worker/Auto pair on each OS and retains original logs, raw
+metrics, identity manifests and normal post-window PNGs even on failure.
+Every row has180 seconds and import240 seconds, without retries. Source/runtime
+inputs are compared before and after, and offline readback verifies logs,
+reductions, PNG hashes and dimensions. Preserve any failed output directory;
+the runner refuses to overwrite it.
+
+The 30-second installation assertion uses a retained actual Main-acknowledgement
+timestamp, with the request clock started before Build. Readback rejects late
+or absent acknowledgements even if a later poll finds the actor ready. Startup
+frame/callback records and polling delay are retained on passing rows too.
+An initial shader/driver stall therefore remains visible and the 180-second
+external watchdog still fails the case. Do not move Build after a warm-up or
+extend either bound to erase a failed cold-start result.
+
+The fixed960×540 viewport, jetbarrel/Current default and intended input script
+make the workloads comparable without pretending asynchronous ticks align.
+Synthetic focus is explicit. This measures frame submissions, native work and
+one snapshot-lock wait; it cannot replace physical display/controller/OS-focus
+or human-feel qualification. It does not hold native jobs or execute #304.
+
 ### ACT-004 articulated actors and physical Thunderbowl v2
 
 The physical catalogue, real Rapier fixtures, native effects/capacity, common
