@@ -76,3 +76,29 @@ or #290/#295/#298 publication work.
 
 The 001C branch is separate so failures or later graphical refinements do not
 invalidate 001B's exact-head shutdown evidence.
+
+
+## Retained first hosted failure and source-only correction — 2026-10-30
+
+Exact-head scoped run
+[40975126632](https://github.com/techrote/cybersand/actions/runs/40975126632)
+is **FAILED** on both target OS render steps. The preceding 001B real-phase
+shutdown fixture passed on both OSes at the same source and special runtime.
+The new 001C script did not execute: Godot rejected it at parse time because
+the subclass redeclared `assertions` and `failures`, which already exist in
+`play_life001_shared_host_case.gd`.
+
+Original Linux artifact `12943030911` (ZIP SHA-256
+`efbc8f028aa1cbad64ec42f251821669b9ea89694de6fb7eadd2682b92365b78`)
+and Windows artifact `12942850859` (ZIP SHA-256
+`af1536114ca74d233e08d48cc152aaf686849f8ea7ffe58c02b58a0f67d67202`)
+retain the raw parse logs. Linux reached Xvfb/Mesa llvmpipe compatibility
+render setup before parse; Windows reached ANGLE/Microsoft Basic Render Driver
+before the same parse refusal. No framebuffer, Main-under-hold, Rapier-under-hold
+or PNG result exists for this failed source.
+
+The successor removes only those two redundant member declarations. It does
+not change the hold duration, gate, rendering method, input route, pixel
+thresholds, native runtime, Rapier ownership, timeout, retry policy or reducer.
+Fresh exact-head Linux/Windows 001B+001C execution and artifact review are
+required; the failed run is not reclassified as partial 001C success.

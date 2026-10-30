@@ -8,8 +8,6 @@ const HOLD_TIMEOUT_MS: int = 12000
 const PHYSICS_FRAMES_UNDER_HOLD: int = 30
 
 var desktop: Control
-var assertions: int = 0
-var failures: int = 0
 
 
 class RenderHarness:
