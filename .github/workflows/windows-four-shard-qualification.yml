@@ -1,0 +1,132 @@
+# Isolated, experimental four-runner Windows headless qualification.
+# The existing gdextension.yml workflow and required Linux/Windows gates are unchanged.
+name: Windows four-way headless candidate (non-required)
+
+on:
+  push:
+    branches: [ci/windows-four-shard-isolated-20261030]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-four-candidate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  four-way:
+    name: source-matched Windows shard ${{ matrix.shard }} / 4
+    runs-on: windows-2022
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        shard: [0, 1, 2, 3]
+    defaults:
+      run:
+        shell: bash
+    env:
+      GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+      GODOT_SILENCE_ROOT_WARNING: '1'
+      PYTHONUTF8: '1'
+    steps:
+      - name: Check out exact tested source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize retained source-matched Windows Native and pinned Rapier runtimes
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+      - name: Validate Windows execution, process and shard harness
+        run: |
+          set -euo pipefail
+          python tools/ci/test_godot_regression_sharding.py
+          python tools/ci/test_windows_godot_regressions.py
+          python tools/ci/test_godot_timeout_diagnostics.py
+          python tools/ci/test_godot_process_monitor.py
+          python tools/ci/test_physical_progress_watchdog.py
+          python tools/ci/test_physical_stress.py
+          python tools/ci/test_rapier_candidate_identity.py
+          python tools/ci/test_rapier_pair.py
+          python tools/ci/test_rapier_same_host.py
+      - name: Download pinned official Windows Godot archive
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 20 --max-time 600 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+      - name: Execute every assigned actual Windows case under four-way partition
+        timeout-minutes: 40
+        run: |
+          set -euo pipefail
+          python tools/ci/run_windows_godot_regressions.py \
+            --godot-archive "$RUNNER_TEMP/godot-windows.zip" \
+            --expected-source-sha "$GITHUB_SHA" \
+            --output "build/godot-regressions/windows-four-${{ matrix.shard }}" \
+            --shard-count 4 --shard-index ${{ matrix.shard }}
+      - name: Preserve internal main-thread watchdog coverage
+        timeout-minutes: 2
+        run: |
+          set -euo pipefail
+          python tools/ci/test_physical_internal_watchdog.py --godot "$RUNNER_TEMP/godot-windows/Godot_v4.7-stable_win64_console.exe"
+      - name: Retain original source-bound Windows case logs including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: windows-four-shard-${{ matrix.shard }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/godot-regressions/windows-four-${{ matrix.shard }}/
+          if-no-files-found: warn
+          retention-days: 90
+
+  coverage:
+    name: independent four-way exact-head source and case coverage proof
+    needs: [four-way]
+    if: always()
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact verification source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - name: Retrieve all four original Windows shard artifacts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: windows-four-shard-*-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/windows-four-coverage-input
+      - name: Verify original independent Windows shard-verifier tests
+        if: always()
+        run: python3 tools/ci/test_verify_windows_godot_shards.py
+      - name: Require complete, unique, source-matched execution across four runners
+        if: always()
+        env:
+          SHARD_RESULT: ${{ needs.four-way.result }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/windows-four-evidence
+          python3 tools/ci/verify_windows_godot_shards.py \
+            --root build/windows-four-coverage-input \
+            --source-sha "$GITHUB_SHA" \
+            --run-id "$GITHUB_RUN_ID" \
+            --attempt "$GITHUB_RUN_ATTEMPT" \
+            --shard-count 4 \
+            --output build/windows-four-evidence/exact-coverage.json 2>&1 | tee build/windows-four-evidence/verification.log
+          test "$SHARD_RESULT" = "success"
+      - name: Retain independent verifier results including negative evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: windows-four-coverage-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/windows-four-evidence/
+          if-no-files-found: warn
+          retention-days: 90
