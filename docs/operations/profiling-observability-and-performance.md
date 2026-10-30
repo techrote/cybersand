@@ -4,7 +4,7 @@ document-kind: runbook
 canonical-for: [performance-measurement, metric-interpretation]
 status: Current
 scope: Current native/Godot observations, benchmark procedure, metric boundaries, and unimplemented production telemetry
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-28
 related-documents: [configuration-and-capacity-budgets.md, web-threading.md, testing-validation-and-replay.md, ../reference/validation-evidence.md, ../audits/2026-09-08-performance-history.md]
 ---
 
@@ -55,6 +55,11 @@ churn/forced-head intervals, rather than implying a universal improvement.
 `TickStats` chunk/temperature allocation counters
 also do not count all ordinary heap allocations; explicit probes and source
 inspection have their own recorded boundary.
+
+The [per-run render copy record](../audits/2026-10-28-render-copy-per-run.md)
+times `World::copy_render_cells` alone on one 1024×1024 fixture, before and after
+the change, with the same test binary source. Those single-host medians are
+not desktop exchange latency, GPU upload cost or a forced-full p95 result.
 
 ## Current benchmark entry points
 

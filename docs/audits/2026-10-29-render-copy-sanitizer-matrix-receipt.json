@@ -1,0 +1,158 @@
+{
+  "schema": "cybersand.render-copy290-full-sanitizer-matrix.v1",
+  "date": "2026-10-29",
+  "pr": 290,
+  "issue": 281,
+  "source": {
+    "reviewed_executable": "60915dc86631271ea8661377a3458149adda9361",
+    "tree": "dc370ee4e957ce34e752ff665afef0ed9e325326",
+    "changed_blobs": {
+      "native/src/world.cpp": "a6afd8cad4264ac2eca0362d14711158e3606760",
+      "native/tests/test_world.cpp": "5613d2166c71fa49fd2b8f65e8caa93857b5d65f"
+    }
+  },
+  "verification": {
+    "branch": "verify/render-copy290-sanitizer-shards-20261029",
+    "head": "1e39d8833588298f051ff820fd16a5c3f1af6f33",
+    "run": 40800942455,
+    "conclusion": "success",
+    "jobs": 6,
+    "only_verifier_files": [
+      ".github/workflows/render-copy-290-sanitizer-shards.yml",
+      "tools/ci/render_copy_290_sanitizer_shard.py"
+    ],
+    "inherited_docs_delta": [
+      "docs/audits/2026-10-28-render-copy-per-run.md",
+      "docs/audits/2026-10-29-render-copy-int64-qualification-receipt.json",
+      "docs/reference/validation-evidence.md"
+    ],
+    "first_attempt": {
+      "run": 40800824035,
+      "conclusion": "failure",
+      "reason": "over-restrictive source-freeze guard rejected already-inherited documentation; no binary compiled or tests run",
+      "corrected_at": "1e39d8833588298f051ff820fd16a5c3f1af6f33"
+    }
+  },
+  "binary": {
+    "toolchain": "Ubuntu 24.04; GCC 13, -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined",
+    "sha256": "8d50798344cc6bdb058cabb7e7ea78da9a2b96959058eaba711aaf9d4a5af1dc",
+    "bytes": 110637016,
+    "artifact": {
+      "id": 12866531004,
+      "zip_sha256": "578506185855ce4b861e0684e12dc41a79e96eed2e8fdfd980fc1b9599de8dd2"
+    }
+  },
+  "coverage": {
+    "registered_test_names": 165,
+    "unique_requested": 165,
+    "unique_passed": 165,
+    "stdout_log_hashes_checked": 165,
+    "all_tests_covered": true,
+    "registry_sha256": "2f48aa7ecb97054395a2893f1c282fe127e7d278dd2bf5e0c8a9ee222b2cad85",
+    "whole_run_elapsed_ms_sum": 881762.353,
+    "execution_type": "four disjoint index shards; 165 separate native test processes; existing substring filter, each exact requested label verified; no single-process intertest-state qualification",
+    "sanitizer_options": "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1:halt_on_error=1; UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1",
+    "shard_results": [
+      {
+        "shard": 0,
+        "cases": 42,
+        "passed": 42,
+        "elapsed_ms_sum": 76855.169,
+        "max_case_ms": 19884.568,
+        "artifact": {
+          "id": 12866252015,
+          "zip_sha256": "de277b5e0a85a46ce515059a28793153c7a3da90c5b4a6e3e73f3abe9d70d771"
+        }
+      },
+      {
+        "shard": 1,
+        "cases": 41,
+        "passed": 41,
+        "elapsed_ms_sum": 292972.708,
+        "max_case_ms": 265689.74,
+        "artifact": {
+          "id": 12865883468,
+          "zip_sha256": "b7247399fccb34dae8551407bcaf496b6e78fd904821b416713e1cf7afcaec7b"
+        }
+      },
+      {
+        "shard": 2,
+        "cases": 41,
+        "passed": 41,
+        "elapsed_ms_sum": 313055.544,
+        "max_case_ms": 95035.283,
+        "artifact": {
+          "id": 12865803869,
+          "zip_sha256": "fd5e7dd27f002e78c7bea3e5a054636ca9a853ed5fff83b6739f67395218ec7c"
+        }
+      },
+      {
+        "shard": 3,
+        "cases": 41,
+        "passed": 41,
+        "elapsed_ms_sum": 198878.932,
+        "max_case_ms": 114806.691,
+        "artifact": {
+          "id": 12865709259,
+          "zip_sha256": "5eeaef4ed3f5d05ad31e63241352d64fe5b64f9ab61a711dc8172a25fc634f5d"
+        }
+      }
+    ],
+    "reducer_artifact": {
+      "id": 12866108125,
+      "zip_sha256": "7c40e6335888ae53739a00ffff150c7985a4c8f73c05d71a0ef0f6ae7be0caa1"
+    }
+  },
+  "archive_verification": {
+    "all_6_zip_sha256_equal_action_digests": true,
+    "all_6_zip_crc_pass": true,
+    "all_165_raw_stdout_sha256_equal_report": true,
+    "all_shards_identical_binary_sha256": true,
+    "build_binary_sha256_equal_manifest": true
+  },
+  "native_publication_readiness": {
+    "source_archive_reference": {
+      "run": 40796751009,
+      "artifact_id": 12863903343,
+      "source_tar_sha256": "fa62e4e47e7bf6f42533acef31fe8884d8b676ab00135b9fb951b40ba328ad61"
+    },
+    "manifest_analysis": {
+      "linux_and_windows_same": true,
+      "source_input_count_per_os": 80,
+      "source_input_drift_count_per_os": 1,
+      "changed_native_input": "native/src/world.cpp",
+      "old_world_sha256": "b4ab1dbf2277eb3213d827f00ddd1dbb3e1294b27e312062cb877b83ee083728",
+      "current_world_sha256": "b7a129f44eccc7c33dbd2f0d84802ab096140dcaa9b5b3a83d45dd3bf85fbad1",
+      "build_inputs_recorded_per_os": 549,
+      "build_input_mismatch_count_per_os": 6,
+      "missing_historical_build_inputs": 4,
+      "changed_retained_build_inputs": [
+        ".gitattributes",
+        "native/tests/test_world.cpp"
+      ],
+      "retired_paths": [
+        ".github/workflows/play-auto002-runtime-publication.yml",
+        "tools/ci/play_auto002_publish_request.json",
+        "tools/ci/play_auto002_runtime_publication.py",
+        "tools/ci/test_play_auto002_runtime_publication.py"
+      ]
+    },
+    "publication_request": "not-created; preregistered unarmed on https://github.com/techrote/cybersand/pull/290#issuecomment-6485477234",
+    "published_lfs_binaries": false,
+    "source_sensitive_runtime_provenance_qualified": false
+  },
+  "historical_negative": {
+    "run": 40792599185,
+    "executed_old_source": "f041aac3f2574e5524b807f8c2efdc27bee241e0",
+    "conclusion": "failure",
+    "cause": "full single-process ASan/UBSan suite hit 18m timeout exit 124 after 146 passing groups; no sanitizer errors in retained log",
+    "not_superseded_as_single_process": true
+  },
+  "acceptance_limits": [
+    "All 165 separately executed ASan/UBSan cases pass, but single-process full-suite memory/lifetime order is unqualified",
+    "Native/GDExtension full ready-PR matrix remains draft-skipped",
+    "Source-matched Windows/Linux LFS runtime publication absent; old source/build manifests stale",
+    "Independent human review and merge authorization absent",
+    "No end-to-end GPU/display FPS, Web or SOL281 physical ejection-policy admission; B=289 remains NO-GO"
+  ]
+}

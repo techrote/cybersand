@@ -6,7 +6,7 @@ status: Current
 scope: Native publication outcomes, Godot render consumption and current gameplay commands; resource lifetime and wire layouts are linked
 keywords: [RenderBridge, GameplayBridge, RG8, immutable snapshot, full texture upload, backpressure, emission queue]
 related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../systems/material-appearance-and-rendering.md]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-28
 ---
 
 # Rendering and gameplay bridges
@@ -63,6 +63,15 @@ explicit full refresh when accumulation exceeds its patch/byte thresholds.
 The historical handoff race is guarded by
 [test_render_patch_handoff_regression](../../godot/tests/test_render_patch_handoff_regression.gd).
 Do not reuse pending buffers while a published generation remains observable.
+
+**Current full-refresh copy:** the native packet's full-image path calls
+[World::copy_render_cells](../../native/src/world.cpp) for the whole
+1024×1024 RG8 window. It resolves one chunk per chunk-aligned row run, not three
+hashed lookups per cell, and emits the same bytes as the former per-cell loop:
+non-resident chunks read as Empty with `project_visual_state(Empty, 0, 0, policy)`.
+The [2026-10-28 identity record](../audits/2026-10-28-render-copy-per-run.md)
+holds the byte-identity test and the local timings, which are reported but not
+asserted. It does not change exchange semantics, ACK policy or published runtimes.
 
 **Current desktop reset identity:** the exclusive GDScript owner advances a
 World generation only after an accepted World reset or scenario replacement.

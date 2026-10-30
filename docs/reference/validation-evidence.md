@@ -4,11 +4,98 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-29
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md, ../audits/2026-10-25-lcb002-pressure-variants.md]
 ---
 
 # Validation evidence ledger
+
+## Per-run full-frame render copy — 2026-10-28
+
+The [render copy identity record](../audits/2026-10-28-render-copy-per-run.md)
+covers a stateless native refactor of `World::copy_render_cells` on base `main`
+`91778603`. A test-only oracle that keeps the replaced per-cell loop matches the
+new copy byte for byte, padding included. Coverage spans signed seams,
+non-resident chunks, tiny seam regions, padded strides, two chunk sizes and Water
+policies, and a full 1024×1024 frame. The local Windows MSVC suite, a pinned
+LLVM-MinGW GDExtension build and both Godot render regressions pass. Local timings
+are reported, not asserted. The 2026-10-29 [hosted qualification
+addendum](../audits/2026-10-28-render-copy-per-run.md#hosted-source-matched-qualification--2026-10-29)
+adds source-preserved Windows Server 2022 MSVC native 165/0 plus real
+Linux/Windows pinned Godot 4.7 GDExtension render-generation 23/0 and
+render-patch handoff passes (isolated runs 40792599185 and 40793815067).
+The Linux GCC13 ordinary native step passed, while its ASan/UBSan step
+was still running at this dated checkpoint. Hosted proof is additive,
+not runtime publication, full ready-PR CI or representative interactive
+rendering. The checked-in Linux/Windows LFS runtimes and their source-input
+manifests remain stale and are **not** release-qualified.
+
+**Correction successor (2026-10-29):** A separate GitHub review reproduced
+an `INT64_MAX` signed overflow in the original run-loop refactor
+`f041aac3`. It is a real P2 correctness failure, not a performance-only
+finding. Corrected source `60915dc86631271ea8661377a3458149adda9361`
+replaces the exclusive signed endpoint with a processed-cell count,
+validates last-included x/y, and adds 12 extreme/zero-extent oracle
+regions plus explicit refusal/nonmutation tests across both chunk sizes.
+The [source-matched correction addendum](../audits/2026-10-28-render-copy-per-run.md#review-driven-int64-endpoint-correction--2026-10-29)
+records the failed historical sanitizer run (exit 124 after 18 minutes,
+not a pass), the independent GCC14 UBSan boundary probe, exact Git
+source archive and newly passing actual Linux/Windows Godot 4.7
+`render_world_generation` 23/0 and render-patch handoff controls
+(run 40796772252). Windows hosted native 165/0 also passed on
+corrected-source run 40796751009; Linux GCC13/focused sanitizer
+completion was **still pending** at this dated checkpoint.
+No LFS runtime publication, full acceptance matrix, independent
+human approval or interactive FPS claim follows.
+
+**Final scoped readback:** corrected-source native
+[run 40796751009](https://github.com/techrote/cybersand/actions/runs/40796751009)
+completed all three jobs successfully: Linux GCC13 **165/165**,
+ASan+UBSan focused render **3/3** and C API/RGBA **1/1**
+without reported sanitizer errors, Windows Server 2022 MSVC
+**165/165**. [Godot run 40796772252](https://github.com/techrote/cybersand/actions/runs/40796772252)
+passed all Linux/Windows build and host jobs.
+The [machine-readable source and artifact receipt](../audits/2026-10-29-render-copy-int64-qualification-receipt.json)
+pins six corrected-source ZIPs, hashes, and retained failures.
+The earlier full 18-minute ASan/UBSan timeout at old source
+`f041aac3` remains **failed**; this focused pass does not
+convert it to an all-test sanitizer qualification. Original
+LFS runtime provenance and final ready-PR admission remain blocked.
+
+**Extended all-function sanitizer coverage, 2026-10-29:**
+[run 40800942455](https://github.com/techrote/cybersand/actions/runs/40800942455)
+passes the source-locked GCC13 ASan+UBSan build, four test-index
+shards and strict aggregate reducer: **165/165 registered native
+test functions succeed** using one binary digest, with all six
+ZIP SHA-256/CRC checks and all 165 stdout hashes independently
+verified. Each test runs in its *own process*; the prior monolithic
+single-process suite timeout and its unqualified lifetime/order
+semantics remain a **separate failed gate**. The
+[dated audit](../audits/2026-10-28-render-copy-per-run.md#independent-all-165-case-sanitizer-coverage--2026-10-29)
+and [machine receipt](../audits/2026-10-29-render-copy-sanitizer-matrix-receipt.json)
+preserve source, tools, raw evidence and limits.
+
+**Single-process lifetime successor (2026-10-29):** The
+[full 165-case one-process ASan+UBSan readback](../audits/2026-10-28-render-copy-per-run.md#source-frozen-single-process-sanitizer-lifetime-result--2026-10-29)
+is now **SUCCESS** on the *corrected* native executable
+`60915dc86631271ea8661377a3458149adda9361`:
+[run 40844936801](https://github.com/techrote/cybersand/actions/runs/40844936801)
+restored the identical frozen binary used by the 165-process shards,
+executed all 165 tests in one process in registry order, and retained
+exit 0 and the exact stdout. Independent ZIP SHA-256/CRC and full
+165-label/readback verification found no sanitizer diagnostics.
+The [original ZIP/member hash receipt](../audits/2026-10-29-render-copy-one-process-sanitizer-receipt.json)
+records the evidence. The previous old-source 18-minute monolithic
+timeout remains **failed**; no TSan or leak-detection claim follows.
+Strict current-source LFS publication and complete exact-final-head
+ready-PR CI/review remain blocked.
+
+Both current Linux/Windows runtime manifests still have **1 of 80
+native source inputs** changed and **6 of 549** historic build-input
+entries drifted/missing (including four retired PLAY-AUTO-002 publisher
+paths). A new, guarded branch-scoped publisher and source-matched
+Windows/Linux LFS objects/manifests are still prerequisites to
+exact-final-head ready-PR admission; no runtime publication is claimed.
 
 ## Qualified Water sequence2 publication — 2026-10-25
 
