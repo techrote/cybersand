@@ -6,10 +6,26 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-30
 ---
 
 # Data ownership and lifetimes
+
+## Failed composed PLAY scene retirement
+
+The [shared PLAY recovery contract](../systems/player-control-playground.md#integrated-churn-and-stopped-session-recovery)
+uses explicit whole-scene replacement after a native failure. Main copies only
+the accepted recipe, setup, policy, options and host settings into a one-shot
+SceneTree envelope. Old Main closes pending and accepted physical candidates,
+retires Rapier resources and joins its worker in `_exit_tree`; only then does
+new Main start a live worker in `_ready`. Fresh construction is paused and
+uses the existing native admission/receipt route. The native requirement that
+prepared replacement start from a healthy retained World is unchanged.
+No failed native payload, commands, lap state, nodes, RIDs or native pointers
+cross this lifetime. A fresh run identity rejects old commands even where local
+epoch counters restart. F2 invalidates deferred recovery and removes the
+envelope before an unrelated launch. This implements ADR-010's explicit
+replacement choice, with no automatic retry or new simulation owner model.
 
 The bounded [desktop single-trial-body owner](liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 retains one dynamic barrel/Ripper in an automatically inactive permanent private

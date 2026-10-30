@@ -10,8 +10,11 @@ const PlayerCourse = preload("res://scripts/player_playground_course.gd")
 const PlayableCourseLap = preload("res://scripts/playable_course_lap.gd")
 const PlayableSessionPanel = preload("res://scripts/playable_session_panel.gd")
 const DEFAULT_PLAYABLE_OPTIONS: Dictionary = {"controls":"keyboard_gamepad", "rules":"lap", "camera":"follow"}
+const PLAYABLE_RECOVERY_META: StringName = &"cybersand_playable_recovery"
 var playable_session_panel: PopupPanel
 var playable_session_options: Dictionary = DEFAULT_PLAYABLE_OPTIONS.duplicate()
+var _playable_recovery_queued: bool = false
+var _playable_recovery_cancelled: bool = false
 const PreparedPhysical = preload("res://scripts/prepared_physical_session.gd")
 const PreparedReferenceBody = preload("res://scripts/prepared_reference_body_session.gd")
 const PreparedTrialBody = preload("res://scripts/prepared_trial_body_session.gd")
@@ -584,14 +587,95 @@ func microscenario_supports_prepared_physical_liquid(definition: Dictionary) -> 
 
 
 func playable_session_unavailable_reason() -> String:
+	if _playable_recovery_queued:
+		return "Rebuilding the applied session from its initial state."
+	if simulation_worker.has_failed():
+		return ("World stopped. Restart the applied session to rebuild it from its initial state."
+			if playable_session_can_recover() else "World stopped. Return to the launcher with F2 to start a fresh session.")
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty():
 		return "A session rebuild is still pending."
 	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty() \
 		or not actor_prototypes_allowed():
 		return "Leave the protected experiment before starting a playable session."
-	if simulation_worker.has_failed():
-		return "Reset the failed World through its original recovery route first."
 	return ""
+
+
+func playable_session_can_recover() -> bool:
+	# A failed prepared World cannot be the retained input to another native
+	# preparation. Explicit recovery retires the WHOLE scene before its new
+	# owner starts. Pending candidates belong to that retiring scene as well.
+	return (not _playable_recovery_queued and not _playable_recovery_cancelled and is_inside_tree()
+		and get_tree().current_scene == self and simulation_worker.has_failed()
+		and _playable_course_controls_active() and water_blind_set.is_empty()
+		and water_active_blind_label.is_empty()
+		and microscenario_liquid_setup.get("intent", "") == "exploratory"
+		and microscenario_liquid_policy is PackedInt32Array)
+
+
+func _queue_failed_playable_restart() -> void:
+	if not playable_session_can_recover(): return
+	# Carry values from the accepted owner, never unsubmitted panel choices,
+	# partial failed cells, commands, snapshots, nodes, RIDs or native pointers.
+	var selection: Dictionary = playable_session_options.duplicate(true)
+	selection.map = CyberMicroScenarioCatalogue.PLAYER_COURSE_ID
+	selection.actor = str(physical_rig_id)
+	var request: Dictionary = {"selection":selection,
+		"policy":microscenario_liquid_policy.duplicate(),
+		"definition":microscenario_definition.duplicate(true),
+		# microscenario_mode can already describe an unaccepted pending request.
+		# The completed worker context retains the accepted execution mode.
+		"mode":str(tower_context.microscenario.mode),
+		"setup":microscenario_liquid_setup.duplicate(true),
+		"settings":{"simulation_window_enabled":simulation_window_enabled,
+			"cadence_lod_enabled":cadence_lod_enabled,
+			"liquid_surface_adhesion_enabled":liquid_surface_adhesion_enabled,
+			"simulation_margin_index":simulation_margin_index, "simulation_margin":simulation_margin,
+			"render_snapshot_hz_index":render_snapshot_hz_index, "render_snapshot_hz":render_snapshot_hz,
+			"player_environment_profile":active_player_environment_profile.duplicate(true)}}
+	_playable_recovery_queued = true
+	paused = true
+	cancel_playable_course_input()
+	_reload_failed_playable_scene.call_deferred(request)
+
+
+func cancel_playable_session_recovery() -> void:
+	# Navigation owns the user's latest intent. Fence a still-deferred restart
+	# and discard an envelope whose pending replacement has not entered yet.
+	_playable_recovery_cancelled = true
+	_playable_recovery_queued = false
+	if is_inside_tree() and get_tree().has_meta(PLAYABLE_RECOVERY_META):
+		get_tree().remove_meta(PLAYABLE_RECOVERY_META)
+
+
+func _reload_failed_playable_scene(request: Dictionary) -> void:
+	# F2/another scene transition can win before this deferred request. Never
+	# leave a recovery envelope for an unrelated future launch in that case.
+	if _playable_recovery_cancelled or not _playable_recovery_queued \
+		or not is_inside_tree() or get_tree().current_scene != self: return
+	var tree: SceneTree = get_tree()
+	tree.set_meta(PLAYABLE_RECOVERY_META, request.duplicate(true))
+	var error: Error = tree.reload_current_scene()
+	if error != OK:
+		tree.remove_meta(PLAYABLE_RECOVERY_META)
+		_playable_recovery_queued = false
+		microscenario_error = "Fresh session restart failed (%d); return to the launcher with F2." % error
+
+
+func _restore_failed_playable_selection(request: Dictionary) -> void:
+	# One attempt through the normal admission/receipt path. Failure stays
+	# visible and paused; do not retry, coerce policy or resume automatically.
+	var selection: Dictionary = request.selection
+	if _apply_microscenario_definition(request.definition, request.mode,
+		_playable_actor_configuration(StringName(str(selection.actor))), request.policy, request.setup):
+		pending_microscenario_apply.playable_options = {"controls":str(selection.controls),
+			"rules":str(selection.rules), "camera":str(selection.camera)}
+	playable_session_panel.show_selection()
+
+
+func _playable_actor_configuration(rig: StringName) -> Dictionary:
+	return {"representation":"barrel-rapier", "runtime_recovery_enabled":false,
+		"experimental":true, "physical_trial":"", "physical_rig":str(rig),
+		"actor_model":"", "actor_producer":"human", "actor_demo_npcs":false, "actor_definitions":[]}
 
 
 # One composed request, through the existing prepared native/physical transaction.
@@ -608,9 +692,7 @@ func apply_playable_session(selection: Dictionary, policy: PackedInt32Array,
 		or selection.get("camera", "") not in ["follow", "overview"]:
 		microscenario_error = "Unsupported playable-session selection; current session retained."
 		return false
-	var configuration: Dictionary = {"representation":"barrel-rapier", "runtime_recovery_enabled":false,
-		"experimental":true, "physical_trial":"", "physical_rig":str(rig),
-		"actor_model":"", "actor_producer":"human", "actor_demo_npcs":false, "actor_definitions":[]}
+	var configuration: Dictionary = _playable_actor_configuration(rig)
 	var definition: Dictionary = CyberMicroScenarioCatalogue.definition(CyberMicroScenarioCatalogue.PLAYER_COURSE_ID, 0)
 	if not microscenario_apply_exploratory_liquid(definition, policy, normalize_water, "Play",
 		configuration, maximum_rule_radius):
@@ -785,6 +867,10 @@ func _microscenario_installed(definition: Dictionary) -> void:
 		simulation_worker.acknowledge_prepared_liquid_configuration(int(pending_microscenario_apply.get("serial",0)))
 
 func microscenario_reset() -> void:
+	if playable_session_can_recover():
+		_queue_failed_playable_restart()
+		return
+	if _playable_recovery_queued or _playable_recovery_cancelled: return
 	if not pending_microscenario_apply.is_empty() or not pending_water_apply.is_empty(): return
 	if tower_context.get("micro_active", false):
 		if not microscenario_liquid_setup.is_empty() and microscenario_liquid_policy != null:
@@ -1509,6 +1595,12 @@ func apply_player_environment_profile(candidate: Dictionary) -> void:
 
 
 func _ready() -> void:
+	# Consume before any early return, so a later unrelated scene cannot inherit
+	# an abandoned recovery. SceneTree retires old Main/_exit_tree before this
+	# fresh scene's _ready starts its worker. The envelope contains copied values.
+	var recovery: Dictionary = get_tree().get_meta(PLAYABLE_RECOVERY_META, {})
+	if get_tree().has_meta(PLAYABLE_RECOVERY_META): get_tree().remove_meta(PLAYABLE_RECOVERY_META)
+	if not recovery.is_empty(): paused = true
 	if OS.get_cmdline_user_args().has("--depth-lab") and not get_tree().has_meta("cybersand_depth_lab_visited"):
 		set_process(false)
 		call_deferred("open_depth_lab")
@@ -1517,6 +1609,18 @@ func _ready() -> void:
 	setup_brush_preview()
 	setup_player_representation_button()
 	setup_player_environment_tuning()
+	if not recovery.is_empty():
+		var settings: Dictionary = recovery.settings
+		simulation_window_enabled = bool(settings.simulation_window_enabled)
+		cadence_lod_enabled = bool(settings.cadence_lod_enabled)
+		liquid_surface_adhesion_enabled = bool(settings.liquid_surface_adhesion_enabled)
+		simulation_margin_index = int(settings.simulation_margin_index)
+		simulation_margin = settings.simulation_margin
+		render_snapshot_hz_index = int(settings.render_snapshot_hz_index)
+		render_snapshot_hz = int(settings.render_snapshot_hz)
+		active_player_environment_profile = settings.player_environment_profile.duplicate(true)
+		simulation_worker.queue_player_environment_profile(active_player_environment_profile)
+		player_environment_panel.set_active(active_player_environment_profile)
 	setup_depth_lab_launcher()
 	setup_actor_prototypes()
 	setup_playable_session_panel()
@@ -1620,6 +1724,9 @@ func _ready() -> void:
 		reject_render_snapshot(latest_snapshot)
 	update_shader_parameters()
 	update_status()
+	if not recovery.is_empty():
+		_restore_failed_playable_selection.call_deferred(recovery)
+		return
 	var feature: String = str(get_tree().get_meta("cybersand_feature", ""))
 	if PhysicalTrial.contains(feature):
 		microscenario_launch.call_deferred(feature, "Play", 0)

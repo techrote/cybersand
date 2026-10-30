@@ -15,7 +15,8 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 Start each continuation with fresh main/branch heads, instructions, #263 and
 children, open PLAY PRs, exact-head jobs/artifacts, source/runtime/LFS identity,
 reviews/unresolved threads and relevant historical failures. This checkpoint
-was based on main `8d2dd843dfe457d34f32ebd015a924cf58b3c1ce`; reverify it.
+was freshly reconciled at main `b55ce690f9a3d2ca3026674a2e9c6a7635966f59`
+(PR #307); reverify it. Scheduswarm is paused and automatic dispatch remains false.
 
 The [owner decision](https://github.com/techrote/cybersand/issues/263#issuecomment-6522029843)
 accepts merged #302 for mandatory real-native-busy lifecycle qualification.
@@ -24,12 +25,17 @@ passes. #266/#267/#273 are closed, #265 Not Planned, #271 deferred and #272 is
 historical/conditional fallback. Work through #268 → #269 → #270 → #263 using
 the existing asynchronous desktop owner and main-thread Rapier.
 
-The current [PLAY-UI-005 implementation](../systems/player-control-playground.md#integrated-playable-session-selection-and-device-rearm)
+The accepted [PLAY-UI-005 implementation](../systems/player-control-playground.md#integrated-playable-session-selection-and-device-rearm)
 composes map, five rigs, controls, lap/free-play, solver policy and camera in the
 real host and cancels/rearms input when the selected controller changes. The
 [audit](../audits/2026-10-30-play-ui005-integrated-session.md) records the branch,
 source identity, focused execution, original environmental failures, raw
-historical evidence and outstanding exact-head CI/manual gates. The
+historical evidence and manual gates. Corrected-head PR #307 passed Docs/Native/
+Windows+Linux Godot; exact-main Docs41103287221 and Godot41103287549 passed,
+but Native41103287295 failed its unchanged15-minute TSan suite bound after153
+successful cases. Original logs/artifacts and source/runtime reconciliation
+are in the [new lifecycle audit](../audits/2026-10-30-play-life006-stress-and-recovery.md).
+Do not retry, extend budgets or assume the post-merge Native result passed. The
 [manual entry instructions](local-build-and-validation.md#shared-play-session-and-owner-qualification)
 lead directly to the existing #270 checklist. Physical devices and actual human
 feel are unexecuted; passing automated counters do not complete them.
@@ -37,7 +43,22 @@ The first ready head `64bbd818` failed ordinary Windows/Linux CI because its
 extra launcher row displaced the Experiment Tower mouse target. The correction
 shares the existing wrapping action bar; the original 55-assertion controller
 test passes unchanged and the integrated fixture adds real mouse entry (90/0
-locally). Preserve run41074846660 as failed and require fresh corrected-head CI.
+locally). Preserve run41074846660 as failed; corrected-head and main Godot
+results now exist, without completing physical/human acceptance.
+
+The manual #269 branch `codex/play-life006-integrated-stress-20261030` adds
+LIFE006 fifty integrated lifetimes, LIFE007 actual five-rig failed-session
+recovery, LIFE008 navigation cancellation and PACE003 ordinary graphical
+one-worker/Auto metrics. A stopped composed World cannot be the healthy retained
+input for prepared replacement. Explicit Restart now uses fresh Main after old
+candidate/Rapier retirement and worker join, carrying only accepted recipe,
+policy/options/profile/settings and remaining paused. F2 fences queued recovery.
+Do not change the native healthy-World guard or import optional #304 work.
+Consult the dated audit and final PR/#269 source-matched receipts for actual
+execution, source deltas, failures and merge readiness. Remaining broader
+live stale-delivery/effect, exact-source gates and #270 device/OS-focus/human
+qualification must retain their explicit dispositions. #268/#269/#270/#263
+are not closed by this checkpoint.
 
 Perform substantive source/evidence review in the active engineering session.
 An owner-account COMMENT review is legitimate engineering work and is not a

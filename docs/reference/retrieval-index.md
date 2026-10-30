@@ -24,6 +24,16 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
   [Supplementary PLAY questions](retrieval-questions-play.json) test those
   qualifiers separately from the unchanged frozen retrieval evaluation.
 
+- [How can a native-failed composed Play session restart without reusing the failed World or leaking a pending F2 recovery?](../systems/player-control-playground.md#integrated-churn-and-stopped-session-recovery)
+  Explicit fresh-scene replacement carries accepted values only, retires old
+  graphs and joins the worker before fresh live ownership. F2 cancels recovery;
+  capacity injection, synthetic events and hosted source gates remain explicit.
+
+- [Do measured Play frame intervals, snapshot ages and worker participation prove stable FPS or human responsiveness?](../operations/profiling-observability-and-performance.md#shared-play-host-pacing-campaign)
+  PACE003 distinguishes graphical submissions from headless callbacks/scanout,
+  observes consecutive native completions and the narrow snapshot-lock wait,
+  and preserves raw samples, long frames and source/runtime identity.
+
 - [Desktop barrel/Ripper preparation](../audits/2026-10-25-lcb003-trial-body-constructors.md): exact retained Apply motion, fresh Restart/F5, transactional one-body admission/refusal and Windows-only proof; [canonical owner contract](../architecture/liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation) owns semantics.
 
 - [Actual common-Water Web functional proof](../audits/2026-10-25-lcb003-web-common-water.md): compat77/threaded76 terminal POSTs, six body-free Water/four mixed arms and source-bound native reuse; ordinary visual/manual/body-bearing browser and full scientific/host gates remain open.

@@ -43,7 +43,7 @@ PLAY promotion, physical-controller compatibility or human responsiveness.
 
 ## Integrated playable-session selection and device rearm
 
-**Current implementation, candidate qualification:** the feature launcher now
+**Accepted implementation in PR #307**, main `b55ce690`: the feature launcher now
 offers **Play session**, opening the shared `main.tscn` host's composed selector.
 Choose the original Player Playground course, any of the five mechanical SetP
 rigs, keyboard plus standard gamepad or keyboard only, four-checkpoint lap or
@@ -221,6 +221,55 @@ and [current five-rig/solver test](../../godot/tests/test_play_comp002_five_rig_
 
 ## Accepted normal desktop lifecycle qualification
 
+### Integrated churn and stopped-session recovery
+
+The [30 October lifecycle audit](../audits/2026-10-30-play-life006-stress-and-recovery.md)
+reconciles exact-b55 post-merge Docs/Godot passes and the genuine Native TSan
+timeout. UI005 proves integrated native/Rapier selection at that source;
+physical controller, OS focus, natural traversal and human feel remain #270.
+Neither #268 nor #269 is closed by the selector's merge.
+
+**Current implementation:** [LIFE006](../../godot/tests/play_life006_selector_churn_case.gd)
+adds fifty actual integrated Main scene lifetimes, partitioned into ten per
+rig. Each includes two Builds, Reset, alternate accepted control/rule/camera
+and Current/pressure policies, duplicate-button refusal, F2 exit/re-entry,
+immutable retained packets and graph/worker/native-adapter retirement checks.
+This retains the original fifty-lifetime-per-OS acceptance target. Initial
+Linux local execution passed2015/0 on its recorded b55-plus-test source;
+new combined-source Windows/Linux execution has its own PR receipt.
+
+An actual native fault exposed a gap beyond LIFE005's reference bodies:
+ordinary prepared Reset requires a healthy old World and left a failed
+composed session unable to recover. [Main's explicit failed-course restart](../../godot/scripts/main.gd)
+now retires the entire old scene and joins its worker before starting a fresh
+live owner. It reconstructs the exact accepted recipe/setup/policy/options and
+environment/quality values through the existing prepared constructor, paused.
+It carries no cells from a failed tick, commands, lap history or live resources.
+Unsubmitted selections remain unsubmitted; no retry/default conversion occurs.
+F2 cancels the request and its one-shot envelope, including the pending-scene
+interval. Protected fixtures and ordinary reference-body recovery keep their
+own routes; the native healthy-World guard is unchanged.
+
+[LIFE007](../../godot/tests/test_play_life007_failed_session_restart.gd) covers all
+five real capacity-failed SetP sessions, pending-candidate retirement, actual
+Main callbacks during quarantine and fresh run/epoch rejection of old commands.
+Its capacity injection is restored before initial Main enters, so recovery
+tests removal of a construction-only fault, not cure of an unchanged bad limit.
+[LIFE008](../../godot/tests/test_play_life008_recovery_navigation.gd) covers
+same-frame Restart/F2 ordering and re-entry without leaked recovery intent.
+Test-only callback counting and synthetic input events are not physical-device
+evidence. The dated audit retains development failures and actual source gates.
+
+[PACE003](../operations/profiling-observability-and-performance.md#shared-play-host-pacing-campaign)
+adds separately classified graphical submission/native/packet/wait observations
+for one-worker and Auto. It does not claim physical scanout, stable FPS,
+all Main waits, exact replay equivalence or a synchronous composed-host control.
+All new regression processes retain180-second limits; import is at most240.
+Broader adversarial live delivery/effects and reviewed #269 acceptance remain
+explicitly bounded by the audit's matrix.
+
+### Original accepted normal-host campaign
+
 [PLAY-LIFE-001 PR #284](https://github.com/techrote/cybersand/pull/284) merged
 on 2026-10-28 as `8288e580df90620640bd1f0b6aa774802f055d61`. Its accepted
 tree `aa44de54df44a2640a437a5a10359615c50c28fe` exactly matches reviewed
@@ -241,16 +290,18 @@ identities, immutable earlier snapshots and final retirement. Earlier
 source received its own execution. This is bounded normal-lifecycle evidence,
 with zero solver-reconstruction cycles and no slow-native injection.
 
-**Open qualification:** #266 has accepted source-bound native participation and
+**Historical campaign limits and current follow-up:** #266 has accepted source-bound native participation and
 repeated reference measurements through [PR #285](https://github.com/techrote/cybersand/pull/285),
 as defined by the [threading contract](../architecture/simulation-tick-and-threading.md#play-native-worker-observation-and-reference-measurements).
-The actual course control still reports max jobs one and zero parallel phases;
+That original course control reported max jobs one and zero parallel phases;
 reference timing does not supply gameplay pacing or concurrent-execution proof.
-#268 retains integrated selection and
-complete device/focus/pacing requirements; #269 retains adversarial outstanding
-work, delayed completion, broader course failure/recovery and stale-delivery/effect
-stress. Its bounded populated-control and reference-body fault slices are
-qualified separately below.
+#307 subsequently accepted integrated selection and #302 satisfied the mandatory
+native-busy/outstanding-job boundary. #268 retains status/display and device/focus
+qualification; #269's current remaining scope is the
+[integrated churn/recovery matrix](#integrated-churn-and-stopped-session-recovery),
+including broader stale-delivery/effect disposition and source-matched gates.
+The original bounded populated-control and reference-body fault slices are
+qualified separately below; their limits do not reopen accepted #302 work.
 #270 joins those gates with actual desktop frame/snapshot timing and human
 gameplay feel. Headless lifecycle success does not establish any of those
 remaining outcomes. Main-thread Rapier, per-material construction-time solver

@@ -4,7 +4,7 @@ document-kind: runbook
 canonical-for: [performance-measurement, metric-interpretation]
 status: Current
 scope: Current native/Godot observations, benchmark procedure, metric boundaries, and unimplemented production telemetry
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-30
 related-documents: [configuration-and-capacity-budgets.md, web-threading.md, testing-validation-and-replay.md, ../reference/validation-evidence.md, ../audits/2026-09-08-performance-history.md]
 ---
 
@@ -23,6 +23,36 @@ the [validation ledger](../reference/validation-evidence.md). Original hosted
 excluded from ordinary Current-behavior retrieval.
 
 ## Current observations and their limits
+
+### Shared PLAY host pacing campaign
+
+[`tools/play/run_pace003_campaign.py`](../../tools/play/run_pace003_campaign.py)
+measures the actual integrated Main/native-worker/Rapier course in fresh
+one-worker/Auto processes. Each fixed15–30-second window preserves consecutive
+owner-side native completion timings, observed task participation/phases,
+actual graphical `frame_post_draw` intervals, Main/physics callback costs,
+snapshot/render age, serial coalescing, deadline overruns, snapshot-lock wait
+and construction/reset/stop-join latencies. Raw owner rows transfer to Main
+only after join. The test-only copied-statistics cost is separately measured
+and included in observed wall pacing.
+
+Graphical submissions are not physical scanout. Headless callbacks are never
+rendered FPS. The WAIT001-derived lock probe measures only snapshot acquisition,
+not all Main waits. Deadline overruns do not reveal an unmeasured queue depth.
+Identical authored geometry/policy/viewport and intended Rapier-tick input
+script do not fix asynchronous native/Rapier admission skew; ratios are not
+deterministic replay or causal worker-speedup proof. One worker still uses the
+asynchronous owner. Existing synchronous native reference measurements retain
+their original workloads; no equivalent synchronous composed host is claimed.
+
+The [dated audit](../audits/2026-10-30-play-life006-stress-and-recovery.md)
+owns source/runtime/platform outcomes and failures. The
+[invocation guide](local-build-and-validation.md#integrated-play-lifecycle-and-pacing)
+describes local/hosted commands. Keep software-renderer, focus-injection and
+physical-device/human limitations with every result. Do not infer stable FPS
+from the worker's existence or hide long frames and negative scaling.
+
+### Existing measurement surfaces
 
 | Observation/source | What it measures | What it does not establish |
 |---|---|---|

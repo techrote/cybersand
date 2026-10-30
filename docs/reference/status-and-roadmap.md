@@ -20,12 +20,26 @@ non-blocking and its failed run41046902349 remains failed. The critical path is
 physical-device/human-feel/promotion → #263. #266, #267 and #273 were reverified
 closed; #265 remains Not Planned, #271 deferred and #272 conditional fallback.
 
-**Current implementation candidate:** [PLAY-UI-005](../systems/player-control-playground.md#integrated-playable-session-selection-and-device-rearm)
+**Accepted #307 implementation, main b55ce690:** [PLAY-UI-005](../systems/player-control-playground.md#integrated-playable-session-selection-and-device-rearm)
 adds one real shared-host selector for course, five rigs, controls, lap/free-play,
 solver policy and camera, plus selected-controller-change cancellation/rearm.
-The [dated record](../audits/2026-10-30-play-ui005-integrated-session.md) separates
-focused local evidence from required exact-head hosted CI and unexecuted manual
-gates. It changes no native solver/default or simulation owner.
+Its corrected-head Documentation/Native/Windows+Linux Godot gates passed.
+Fresh b55 post-merge Docs41103287221 and Godot41103287549 passed; Native41103287295
+failed at the original15-minute TSan execution limit. Preserve that failure,
+not a presumed all-green main. The [lifecycle reconciliation](../audits/2026-10-30-play-life006-stress-and-recovery.md)
+records original artifacts, source/runtime hashes and #268's remaining boundary.
+
+**Current #269 engineering slice:** LIFE006 retains the50-real-lifetime target
+per OS through integrated Build/replacement/Reset/F2 and all five rigs. A real
+failed composed World exposed an unusable prepared Reset; explicit fresh-scene
+recovery now retires/joins the old owner and reconstructs accepted settings
+paused. LIFE007 tests actual five-rig native failure/recovery; LIFE008 tests
+Restart/F2 cancellation. PACE003 adds separate graphical/headless, native,
+snapshot and narrow Main-wait measurements with one-worker/Auto controls.
+The [player contract](../systems/player-control-playground.md#integrated-churn-and-stopped-session-recovery)
+and dated audit distinguish local input-bound execution, new hosted receipts,
+synthetic input seams and remaining live-delivery/effect qualification.
+No native solver/default, protected fixture or simulation owner model changes.
 
 **Current accepted slices:** existing-host feasibility #273, five-rig and
 construction-time solver composition #267, shared controls/camera/lap/gamepad
@@ -40,7 +54,7 @@ owns exact source/CI/review identities and the 50-real-lifetime-per-OS result.
 The same contract records the bounded solver-construction/refusal regression
 and its 335/0 Windows and Linux Godot result, with [PR #287](https://github.com/techrote/cybersand/pull/287)
 owning the final CI/review/accepted-tree receipt.
-**Open:** final #268 integrated selection/device/pacing qualification,
+**Open:** final #268 status/display/device/focus qualification,
 #269 broader course/failure/stale-delivery and effect stress where not already
 covered, and #270 representative rendered pacing and desktop/manual acceptance.
 The mandatory native-busy requirement is satisfied by #302. Configured capacity, actual task participation,
