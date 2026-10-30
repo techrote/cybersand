@@ -188,3 +188,53 @@ unchanged.
 
 This diagnostic change does not convert the current failure into a pass and does
 not substitute sandbox rendering for the required authored Player-course host.
+
+
+## Reconciled diagnostic run and readiness correction — 2026-10-30
+
+Exact head `78881740d7e5701fd716f68cd396cd3008961d63`, scoped run
+[40989029439](https://github.com/techrote/cybersand/actions/runs/40989029439),
+again **FAILED** 001C on both OSes while the same jobs' 001B controls passed.
+
+Original evidence integrity:
+- Linux artifact `12948681559`: ZIP SHA-256
+  `f81dddfc1a7153536caf5271763921103ac99c8d7b54a526100db3798a483738`,
+  66 CRC-clean unique safe members.
+- Windows execution artifact `12947979772`: ZIP SHA-256
+  `2a27449393b42b65aa9d0b1a29e0e33dbabeb4be35c23fce8be3a03ab6b347e9`,
+  22 CRC-clean unique safe members.
+- Windows special-runtime artifact `12948602079` is separately retained by
+  Actions. No runtime is published to LFS.
+
+**Windows:** actual ANGLE/Microsoft Basic Render Driver starts; progress reaches
+`display_ready` at5264ms, `worker_started`5594ms and `course_queued`5847ms.
+At35.983s the external monitor captures the live process with
+`course_queued` still the last progress marker; at45.030s stage-idle the
+watchdog fails the apparatus, still well inside the unchanged120s absolute
+deadline. Diagnostic capture completes successfully and retains two minidumps.
+The GUI Godot child had44.39 CPU-seconds at capture; one thread was Running
+with33.56 CPU-seconds while most other threads waited. This shows active CPU
+work, not a proved lock sleep, but the retained minidump has not been symbolized;
+do not invent a source stack from CPU counters. The authored course is not
+acknowledged and the native hold is never armed.
+
+**Linux:** X11/llvmpipe reaches `course_installed` at32867ms and
+`actor_ready` at40032ms. The next30-second wait fails the stricter
+`render_host_ready` predicate before any native gate arm or framebuffer
+capture. External diagnostic capture at70.168s retains `actor_ready` as the
+last marker. Linux proc stacks are permission-refused and gdb is unavailable in
+the hosted image; wait channels are retained rather than represented as
+symbolized backtraces.
+
+Comparison with passing 001B found one fixture discrepancy before the readiness
+wait: 001B explicitly releases controls and calls
+`desktop.publish_actor_keyboard_input()` after unpausing, whereas 001C relied
+on later physics callbacks while also requiring `_actor_input_rearm == false`.
+The successor adopts the exact qualified 001B neutral-rearm sequence. It also
+prints every readiness subcondition on timeout (actor/terrain, pause/rearm,
+worker failure, snapshot/native tick, configured workers, completed parallel
+phases, Rapier tick, overlay visibility and Main/physics callback counts).
+
+No setup/hold/render timeout, native gate, pixel criterion or production path is
+changed. Windows graphical course installation remains a separate unresolved
+failure even if this Linux readiness correction succeeds.

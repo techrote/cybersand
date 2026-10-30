@@ -51,6 +51,27 @@ func render_host_ready() -> bool:
 		and desktop.physical_actor_overlay.visible)
 
 
+func render_host_values() -> Dictionary:
+	var snapshot: CyberSimulationSnapshot = desktop.latest_snapshot
+	var session: Variant = desktop.physical_actor_session
+	return {
+		"actor_ready": actor_ready(desktop, RIG),
+		"paused": desktop.paused,
+		"input_rearm": desktop._actor_input_rearm,
+		"physical_terrain_ready": desktop._physical_terrain_ready,
+		"worker_failed": desktop.simulation_worker.has_failed(),
+		"has_snapshot": snapshot != null,
+		"native_tick": int(snapshot.tick_index) if snapshot != null else -1,
+		"scheduler_threads": int(snapshot.scheduler_thread_capacity_hint) if snapshot != null else -1,
+		"parallel_phases": int(snapshot.scheduler_parallel_phases_last_tick) if snapshot != null else -1,
+		"session_valid": session != null and is_instance_valid(session),
+		"rapier_tick": int(session.tick) if session != null and is_instance_valid(session) else -1,
+		"overlay_visible": desktop.physical_actor_overlay.visible,
+		"main_callbacks": desktop.completed_main_callbacks,
+		"physics_callbacks": desktop.completed_physics_callbacks,
+	}
+
+
 func gate_held(gate: Variant, generation: int) -> bool:
 	var status: Dictionary = gate.status()
 	return (int(status.get("generation", 0)) == generation
@@ -223,7 +244,13 @@ func run() -> void:
 		return
 
 	desktop.paused = false
+	# Match the already-qualified 001B neutral rearm before demanding input-ready
+	# graphical gameplay. This uses the same production Main/session path.
+	release_controls()
+	desktop.publish_actor_keyboard_input()
 	ready = await wait_for(Callable(self, "render_host_ready"), 30000)
+	if not ready:
+		progress("parallel_render_host_timeout", render_host_values())
 	expect(ready, "real native/Rapier host reaches parallel rendered gameplay")
 	if ready:
 		progress("parallel_render_host_ready", {
