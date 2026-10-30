@@ -166,6 +166,6 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: play-pace003-windows-paths-${{ github.run_id }}-${{ github.run_attempt }}
-          path: build/play-pace003-shader-diagnostic/
+          path: build/play-pace003-windows-paths/
           if-no-files-found: error
           retention-days: 30
