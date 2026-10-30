@@ -1307,6 +1307,19 @@ the source-matched `gl_startup_trace.c` helper via `--gl-trace-library`; this
 instrumentation is absent from qualifying Main runs. Atlas output cannot replace
 Main acknowledgement, native participation or gameplay/lifecycle checks.
 
+After a committed-source graphical PACE campaign has finished, run the existing
+seven focused graphics/lifecycle fixtures with the same engine and renderer:
+
+```text
+python3 tools/play/run_pace003_graphical_regressions.py --godot /absolute/path/to/godot --output /new/graphical-regressions --preceding-campaign /original/pace-campaign --rendering-driver opengl3
+```
+
+The hosted Main workflow performs this step automatically after PACE, including
+after a PACE failure. It preserves the prior campaign byte for byte, runs every
+required first attempt once with its original 180-second cap, and retains
+material PNGs, vapour EXRs, logs and timeout captures. These are correctness
+fixtures, not extra pacing samples or retry substitutes.
+
 ### ACT-004 articulated actors and physical Thunderbowl v2
 
 The physical catalogue, real Rapier fixtures, native effects/capacity, common

@@ -234,20 +234,91 @@ func mark_scene_startup(stage: String) -> void:
 
 func presentation_shader_identity(desktop: Control) -> Array[Dictionary]:
 	# Read after the timed window (or after a setup failure). Identify the actual
-	# attached resources, so a diagnostic replacement cannot pass from a nonblank UI.
+	# CanvasItem attachments, not only the owner's cached ShaderMaterial fields.
+	# A hidden/detached World must not qualify from nonblank surrounding UI.
 	var identities: Array[Dictionary] = []
-	var materials: Array[ShaderMaterial] = [desktop.world_shader,
+	var paths: Array[String] = ["Layout/World", "MaterialGlowViewport/MaterialEmissionSource",
+		"Layout/World/MaterialGlow", "MaterialVapourTrail0/VapourTrailSource",
+		"MaterialVapourTrail1/VapourTrailSource"]
+	var owner_materials: Array[ShaderMaterial] = [desktop.world_shader,
 		desktop.glow_source_shader, desktop.glow_composite_shader]
-	materials.append_array(desktop.vapour_trail_shaders)
-	for material: ShaderMaterial in materials:
+	var owner_nodes: Array[Control] = [desktop.world_view, desktop.glow_source, desktop.glow_overlay]
+	var owner_viewports: Array[Viewport] = [desktop.get_viewport(), desktop.glow_viewport, desktop.get_viewport()]
+	for index: int in range(2):
+		var viewport: SubViewport = desktop.vapour_trail_viewports[index] \
+			if index < desktop.vapour_trail_viewports.size() else null
+		owner_viewports.append(viewport)
+		owner_nodes.append(viewport.get_child(0) as Control if viewport != null and viewport.get_child_count() > 0 else null)
+		owner_materials.append(desktop.vapour_trail_shaders[index] if index < desktop.vapour_trail_shaders.size() else null)
+	for index: int in range(paths.size()):
+		var consumer: Control = desktop.get_node_or_null(NodePath(paths[index])) as Control
+		if consumer == null:
+			identities.append({"consumer_path":paths[index], "missing":true})
+			continue
+		var material: ShaderMaterial = consumer.material as ShaderMaterial
+		var viewport: Viewport = consumer.get_viewport()
+		var alpha: float = consumer.self_modulate.a
+		var ancestor: Node = consumer
+		while ancestor != null:
+			if ancestor is CanvasItem:
+				alpha *= (ancestor as CanvasItem).modulate.a
+			ancestor = ancestor.get_parent()
+		var identity: Dictionary = {"consumer_path":paths[index],
+			"owner_node_matches":consumer == owner_nodes[index],
+			"owner_material_matches":material != null and material == owner_materials[index],
+			"inside_tree":consumer.is_inside_tree(), "visible_in_tree":consumer.is_visible_in_tree(),
+			"use_parent_material":consumer.use_parent_material, "effective_alpha":alpha,
+			"size":[consumer.size.x,consumer.size.y],
+			"viewport_matches_owner":viewport != null and viewport == owner_viewports[index]}
+		if viewport != null:
+			identity.merge({"viewport_inside_tree":viewport.is_inside_tree(),
+				"viewport_hdr_2d":viewport.use_hdr_2d,
+				"viewport_size":[viewport.get_visible_rect().size.x,viewport.get_visible_rect().size.y],
+				"intersects_viewport":consumer.get_global_rect().intersects(viewport.get_visible_rect()),
+				"viewport_update_mode":int((viewport as SubViewport).render_target_update_mode) if viewport is SubViewport else -1})
 		if material == null or material.shader == null:
-			identities.append({"missing":true})
+			identity["missing"] = true
+			identities.append(identity)
 			continue
 		var shader: Shader = material.shader
-		identities.append({"resource_path":shader.resource_path,
+		identity.merge({"resource_path":shader.resource_path,
 			"file_sha256":FileAccess.get_sha256(shader.resource_path),
 			"loaded_code_sha256":shader.code.sha256_text()})
+		identities.append(identity)
 	return identities
+
+
+func presentation_pipeline_identity(desktop: Control) -> Dictionary:
+	var world: TextureRect = desktop.get_node_or_null("Layout/World") as TextureRect
+	var glow_source: ColorRect = desktop.get_node_or_null("MaterialGlowViewport/MaterialEmissionSource") as ColorRect
+	var glow_overlay: TextureRect = desktop.get_node_or_null("Layout/World/MaterialGlow") as TextureRect
+	var glow_viewport: SubViewport = desktop.get_node_or_null("MaterialGlowViewport") as SubViewport
+	var world_material: ShaderMaterial = world.material as ShaderMaterial if world != null else null
+	var glow_material: ShaderMaterial = glow_source.material as ShaderMaterial if glow_source != null else null
+	var trails: Array[SubViewport] = [desktop.get_node_or_null("MaterialVapourTrail0") as SubViewport,
+		desktop.get_node_or_null("MaterialVapourTrail1") as SubViewport]
+	var history_links: Array[bool] = []
+	for index: int in range(2):
+		var source: ColorRect = desktop.get_node_or_null("MaterialVapourTrail%d/VapourTrailSource" % index) as ColorRect
+		var material: ShaderMaterial = source.material as ShaderMaterial if source != null else null
+		history_links.append(material != null and trails[1 - index] != null \
+			and material.get_shader_parameter("history_texture") == trails[1 - index].get_texture())
+	var latest: int = desktop.vapour_trail_latest
+	return {"view_size":[desktop.current_view_size.x,desktop.current_view_size.y],
+		"world_texture_matches_owner":world != null and world.texture != null and world.texture == desktop.texture,
+		"world_current_texture_matches":world_material != null and world_material.get_shader_parameter("current_world_texture") == desktop.texture,
+		"world_previous_texture_matches":world_material != null and world_material.get_shader_parameter("previous_world_texture") == desktop.previous_texture,
+		"world_palette_lut_matches":world_material != null and world_material.get_shader_parameter("material_lut") == desktop.material_appearance_lut,
+		"world_program_lut_matches":world_material != null and world_material.get_shader_parameter("material_program_lut") == desktop.material_appearance_program,
+		"glow_enabled":desktop.glow_enabled,
+		"glow_world_texture_matches":glow_material != null and glow_material.get_shader_parameter("world_texture") == desktop.texture,
+		"glow_output_texture_matches":glow_overlay != null and glow_viewport != null \
+			and glow_overlay.texture == glow_viewport.get_texture(),
+		"vapour_trail_enabled":desktop.vapour_trail_enabled, "vapour_trail_latest":latest,
+		"vapour_trail_updated_usec":desktop.vapour_trail_usec, "vapour_history_links":history_links,
+		"vapour_output_texture_matches":world_material != null and latest >= 0 and latest < trails.size() \
+			and trails[latest] != null and world_material.get_shader_parameter("vapour_trail_texture") == trails[latest].get_texture(),
+		"vapour_trail_strength":float(world_material.get_shader_parameter("vapour_trail_strength")) if world_material != null else 0.0}
 
 
 func cache_paths() -> Dictionary:
@@ -312,6 +383,7 @@ func emit_setup_failure(desktop: Control, stage: String, construction_started: i
 		"construction_elapsed_usec":Time.get_ticks_usec() - construction_started,
 		"scene_startup":scene_startup.duplicate(true),
 		"presentation_shaders":presentation_shader_identity(desktop),
+		"presentation_pipeline":presentation_pipeline_identity(desktop),
 		"cache_paths":cache_paths(),
 		"display_server":DisplayServer.get_name(), "graphical_scanout_measured":false,
 		"observation":desktop.setup_observation(), "acknowledgement":desktop.setup_acknowledgement(),
@@ -456,6 +528,7 @@ func run() -> void:
 		"construction_usec":construction_usec, "course_recipe_hash":recipe_hash,
 		"scene_startup":scene_startup.duplicate(true),
 		"presentation_shaders":presentation_shader_identity(desktop),
+		"presentation_pipeline":presentation_pipeline_identity(desktop),
 		"cache_paths":cache_paths(),
 		"setup_observation":desktop.setup_observation(), "setup_acknowledgement":desktop.setup_acknowledgement(),
 		"policy":policy, "receipt":receipt, "platform":OS.get_name(), "os_version":OS.get_version(),

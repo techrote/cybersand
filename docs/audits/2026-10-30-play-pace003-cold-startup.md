@@ -203,6 +203,35 @@ separate graphical acceptance route. Driver instrumentation is absent there.
 
 ## Continuation receipts and safe integration
 
+The first published checkpoint is draft stacked [PR #310](https://github.com/techrote/cybersand/pull/310),
+head `7d26f54d1ec856f40a1ac464ed7a42de23f6d423`, tree
+`21007709ed7179491186543b73d3f6419607ff8f`, parent exactly #308 above.
+Its original/candidate hosted diagnostic is attempt 1
+[41135828311](https://github.com/techrote/cybersand/actions/runs/41135828311).
+Draft-skipped Native, Godot and Main jobs are not passes. No #308 ref changed.
+
+Substantive source review found and corrected three evidence weaknesses before
+the next qualifying run: cached material references did not prove attachment
+to the actual visible CanvasItems; identical clipped PNGs could hide blank or
+different/nonfinite HDR output; adjacent-frame quantiles omitted silence at
+the measurement-window boundaries. The successor reads real material/node,
+viewport and texture-chain custody, requires finite exact native framebuffer
+bytes plus distributed material-pixel sentinels, and reports leading/trailing
+gaps and full-window event rates alongside unchanged adjacent quantiles. A
+review also caught an initial verifier assumption of sandbox dimensions; the
+required authored Course overview remains 512×256, glow 256×128. Production
+geometry and all timing limits are unchanged.
+
+The [post-PACE graphical runner](../../tools/play/run_pace003_graphical_regressions.py)
+executes seven existing fixtures on both OSes: all-five LIFE007, three-order
+LIFE008, all-five UI005, UI003 physics/pause/stale-epoch, material132 pixel,
+vapour-history pixel and Water-coverage pixel tests. Every first attempt retains
+its original 180-second cap and runs after the original PACE measurement.
+Failures remain red while later independent cases still execute. The aggregate
+job budget accommodates those additional cases; no case/Build/import deadline
+is extended. These automated checks do not replace #270's physical devices,
+actual OS-focus transitions or human feel.
+
 This implementation checkpoint establishes the local Linux mechanism and
 pixel-preserving candidate. Windows-specific source-matched diagnosis, clean
 hosted Windows/Linux cold Main qualification, focused graphical/lifecycle

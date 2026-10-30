@@ -14,6 +14,10 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
+RAW_RGBA_FORMATS = {5: np.dtype("u1"), 11: np.dtype("<f4"), 15: np.dtype("<f2")}
+MATERIAL_COVERAGE_IDS = (1, 20, 50, 81, 110, 131)
+MIN_COVERED_PIXELS = 72
+
 
 def require(condition: bool, message: str) -> None:
     if not condition:
@@ -22,6 +26,41 @@ def require(condition: bool, message: str) -> None:
 
 def digest(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def verify_frame_pixels(folder: Path, frame: dict) -> None:
+    # Pinned Godot Image formats: RGBA8=5, RGBAF=11, RGBAH=15. Both target
+    # platforms are little-endian; unknown layouts cannot establish parity.
+    raw_format = frame["raw_format"]
+    require(type(raw_format) is int and raw_format in RAW_RGBA_FORMATS,
+            "Unsupported native atlas framebuffer format")
+    dtype = RAW_RGBA_FORMATS[raw_format]
+    data = (folder / frame["raw_filename"]).read_bytes()
+    require(len(data) == 640 * 360 * 4 * dtype.itemsize,
+            "Native atlas framebuffer raw byte count differs from its format/size")
+    native = np.frombuffer(data, dtype=dtype).reshape((360, 640, 4))
+    require(bool(np.isfinite(native).all()), "Native atlas framebuffer contains nonfinite channels")
+    native = native.astype(np.float32)
+    if raw_format == 5:
+        native /= 255.0
+    with Image.open(folder / frame["filename"]) as image:
+        pixels = np.array(image.convert("RGBA"), dtype=np.int16)
+    require(pixels.shape == (360, 640, 4), "Retained PNG dimensions differ")
+    # Each atlas tile has a broad authored square at (2,2)-(18,18), and an
+    # empty moat at (20,38). Sample its interior, avoiding edge algorithms.
+    # These distributed ordinary/structured/building IDs all had 144/144
+    # contrasting pixels in every original 16-frame atlas. Require half that
+    # coverage in BOTH retained representations; an empty/fallback viewport
+    # cannot prove parity just because baseline and candidate are equally blank.
+    # Alpha participates so the intentional smoke-previous blend=0 remains valid.
+    for material_id in MATERIAL_COVERAGE_IDS:
+        x, y = material_id % 16 * 40, material_id // 16 * 40
+        for label, values, tolerance in (("PNG", pixels, 2), ("native", native, 2 / 255)):
+            interior = values[y + 4:y + 16, x + 4:x + 16]
+            moat = values[y + 38, x + 20]
+            covered = np.any(np.abs(interior - moat) > tolerance, axis=2)
+            require(int(covered.sum()) >= MIN_COVERED_PIXELS,
+                    f"Atlas {label} material coverage absent for ID {material_id}, frame {frame['index']}")
 
 
 def load(folder: Path) -> dict:
@@ -43,6 +82,7 @@ def load(folder: Path) -> dict:
             path = folder / frame[filename]
             require(path.parent == folder and digest(path) == frame[sha],
                     "Retained atlas image path or SHA-256 differs: " + filename)
+        verify_frame_pixels(folder, frame)
     return value
 
 
@@ -62,6 +102,10 @@ def compare(baseline: Path, candidate: Path) -> dict:
               "candidate_report_sha256": digest(candidate / "atlas.json"),
               "rgba_tolerance_byte_units": 2, "tolerance_basis": "Existing same-backend material presentation tolerance, fixed before run; alpha included",
               "native_framebuffer_requirement": "byte-exact; this candidate changes dispatch only, not shader arithmetic",
+              "raw_framebuffer_validity": "RGBA8/RGBAF/RGBAH, exact byte count, finite channels",
+              "material_coverage_requirement": {"material_ids": list(MATERIAL_COVERAGE_IDS),
+                  "minimum_interior_pixels_per_tile": MIN_COVERED_PIXELS, "sampled_interior_pixels": 144,
+                  "difference_from_empty_moat": "greater than 2/255 in any RGBA channel, PNG and native"},
               "frames": [], "passed": True}
     for a, b in zip(left["frames"], right["frames"]):
         require({k: a[k] for k in compare_keys} == {k: b[k] for k in compare_keys},
@@ -110,10 +154,18 @@ def self_test() -> int:
 
     def pair(root: Path) -> tuple[Path, Path]:
         baseline, candidate = root / "baseline", root / "candidate"
-        raw = struct.pack("<eeee", 2.0, 2.0, 2.0, 1.0) * (640 * 360)
+        native = np.zeros((360, 640, 4), dtype="<f2")
+        native[..., 3] = 1.0
+        pixels = np.zeros((360, 640, 4), dtype=np.uint8)
+        pixels[..., 3] = 255
+        for material_id in MATERIAL_COVERAGE_IDS:
+            x, y = material_id % 16 * 40, material_id // 16 * 40
+            native[y + 2:y + 18, x + 2:x + 18] = [2.0, 2.0, 2.0, 1.0]
+            pixels[y + 2:y + 18, x + 2:x + 18] = [255, 255, 255, 255]
+        raw = native.tobytes()
         for folder, shader in ((baseline, "a" * 64), (candidate, "b" * 64)):
             folder.mkdir()
-            Image.new("RGBA", (640, 360), (255, 255, 255, 255)).save(folder / "image.png")
+            Image.fromarray(pixels).save(folder / "image.png")
             (folder / "image.raw").write_bytes(raw)
             frame = {"size": [640, 360], "filename": "image.png", "raw_filename": "image.raw",
                      "png_sha256": digest(folder / "image.png"), "raw_sha256": digest(folder / "image.raw"),
@@ -131,6 +183,13 @@ def self_test() -> int:
             (folder / "atlas.json").write_text(json.dumps(record))
         return baseline, candidate
 
+    def update_hashes(folder: Path) -> None:
+        record = json.loads((folder / "atlas.json").read_text())
+        for frame in record["frames"]:
+            frame["png_sha256"] = digest(folder / "image.png")
+            frame["raw_sha256"] = digest(folder / "image.raw")
+        (folder / "atlas.json").write_text(json.dumps(record))
+
     class Controls(unittest.TestCase):
         def test_exact_raw_and_png_accept(self):
             with tempfile.TemporaryDirectory() as folder:
@@ -143,7 +202,8 @@ def self_test() -> int:
                 baseline, candidate = pair(Path(folder))
                 raw = bytearray((candidate / "image.raw").read_bytes())
                 # 2.0 and 3.0 both clip to 255 in the retained PNG's red channel.
-                raw[:2] = struct.pack("<e", 3.0)
+                offset = (4 * 640 + 44) * 4 * 2
+                raw[offset:offset + 2] = struct.pack("<e", 3.0)
                 (candidate / "image.raw").write_bytes(raw)
                 record = json.loads((candidate / "atlas.json").read_text())
                 for frame in record["frames"]:
@@ -169,6 +229,64 @@ def self_test() -> int:
                 (candidate / "image.raw").write_bytes(b"unrecorded change")
                 with self.assertRaisesRegex(RuntimeError, "SHA-256"):
                     compare(baseline, candidate)
+
+        def test_identical_blank_atlases_cannot_pass(self):
+            for colour in ((0, 0, 0, 0), (0, 0, 0, 255), (255, 255, 255, 255)):
+                with self.subTest(colour=colour), tempfile.TemporaryDirectory() as folder:
+                    baseline, candidate = pair(Path(folder))
+                    for target in (baseline, candidate):
+                        Image.new("RGBA", (640, 360), colour).save(target / "image.png")
+                        pixel = np.array(colour, dtype="<f2") / 255.0
+                        (target / "image.raw").write_bytes(np.tile(pixel, (360, 640, 1)).tobytes())
+                        update_hashes(target)
+                    with self.assertRaisesRegex(RuntimeError, "material coverage absent"):
+                        compare(baseline, candidate)
+
+        def test_partial_atlas_or_blank_native_data_cannot_pass(self):
+            for missing in ("one-material", "native-only"):
+                with self.subTest(missing=missing), tempfile.TemporaryDirectory() as folder:
+                    baseline, candidate = pair(Path(folder))
+                    native = np.frombuffer((candidate / "image.raw").read_bytes(), dtype="<f2").copy().reshape(360, 640, 4)
+                    if missing == "one-material":
+                        material_id = MATERIAL_COVERAGE_IDS[-1]
+                        x, y = material_id % 16 * 40, material_id // 16 * 40
+                        native[y:y + 40, x:x + 40] = [0, 0, 0, 1]
+                        with Image.open(candidate / "image.png") as image:
+                            pixels = np.array(image)
+                        pixels[y:y + 40, x:x + 40] = [0, 0, 0, 255]
+                        Image.fromarray(pixels).save(candidate / "image.png")
+                    else:
+                        native[:] = [0, 0, 0, 1]
+                    (candidate / "image.raw").write_bytes(native.tobytes())
+                    update_hashes(candidate)
+                    with self.assertRaisesRegex(RuntimeError, "material coverage absent"):
+                        compare(baseline, candidate)
+
+        def test_nonfinite_native_channels_refuse_even_if_png_is_valid(self):
+            for invalid in (float("nan"), float("inf"), -float("inf")):
+                with self.subTest(invalid=invalid), tempfile.TemporaryDirectory() as folder:
+                    baseline, candidate = pair(Path(folder))
+                    raw = bytearray((candidate / "image.raw").read_bytes())
+                    raw[:2] = struct.pack("<e", invalid)
+                    (candidate / "image.raw").write_bytes(raw)
+                    update_hashes(candidate)
+                    with self.assertRaisesRegex(RuntimeError, "nonfinite"):
+                        compare(baseline, candidate)
+
+        def test_unknown_raw_format_and_wrong_byte_count_refuse(self):
+            for invalid in ("format", "size"):
+                with self.subTest(invalid=invalid), tempfile.TemporaryDirectory() as folder:
+                    baseline, candidate = pair(Path(folder))
+                    if invalid == "format":
+                        record = json.loads((candidate / "atlas.json").read_text())
+                        for frame in record["frames"]:
+                            frame["raw_format"] = 999
+                        (candidate / "atlas.json").write_text(json.dumps(record))
+                    else:
+                        (candidate / "image.raw").write_bytes((candidate / "image.raw").read_bytes()[:-8])
+                        update_hashes(candidate)
+                    with self.assertRaisesRegex(RuntimeError, "format|byte count"):
+                        compare(baseline, candidate)
 
     result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(Controls))
     return 0 if result.wasSuccessful() else 1

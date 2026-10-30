@@ -90,6 +90,13 @@ candidate bytes, real draws and retained CPU/thread samples; it never reports
 a PACE003 pass. Its original timeout remains a failed diagnostic job even if
 the candidate finishes.
 
+Adjacent-frame quantiles describe only intervals between observed events.
+The additional window-cadence fields retain leading and trailing silence,
+maximum gaps including those boundaries, and event count divided by the entire
+measured duration. A boundary gap is a lower bound on a possible crossing stall.
+Report these together so two early frames followed by a frozen window cannot
+appear smooth; headless graphical event rates remain null.
+
 ### Existing measurement surfaces
 
 | Observation/source | What it measures | What it does not establish |

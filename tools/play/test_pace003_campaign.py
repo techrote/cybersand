@@ -33,8 +33,22 @@ def example(graphical=True):
              "source_revision": expected["source_sha"], "failures": 0, "assertions": 17 if graphical else 15,
              "requested_rendering_driver": "engine-default",
              "presentation_shaders": [{"resource_path": "res://" + path,
-                 "file_sha256": "e" * 64, "loaded_code_sha256": "e" * 64}
-                 for path in campaign.PRESENTATION_SHADERS],
+                 "file_sha256": "e" * 64, "loaded_code_sha256": "e" * 64,
+                 "consumer_path": campaign.PRESENTATION_CONSUMERS[index],
+                 "owner_node_matches": True, "owner_material_matches": True,
+                 "inside_tree": True, "visible_in_tree": True, "use_parent_material": False,
+                 "effective_alpha": 1.0, "size": [320, 180], "viewport_matches_owner": True,
+                 "viewport_inside_tree": True, "viewport_hdr_2d": True, "intersects_viewport": True,
+                 "viewport_size": [256, 128] if index == 1 else [512, 256] if index >= 3 else [960, 540],
+                 "viewport_update_mode": 0 if index >= 3 else 4 if index == 1 else -1}
+                 for index, path in enumerate(campaign.PRESENTATION_SHADERS)],
+             "presentation_pipeline": {"view_size": [512, 256], "world_texture_matches_owner": True,
+                 "world_current_texture_matches": True, "world_previous_texture_matches": True,
+                 "world_palette_lut_matches": True, "world_program_lut_matches": True,
+                 "glow_enabled": True, "glow_world_texture_matches": True, "glow_output_texture_matches": True,
+                 "vapour_trail_enabled": True, "vapour_trail_latest": 1, "vapour_history_links": [True, True],
+                 "vapour_output_texture_matches": True, "vapour_trail_strength": 1.0,
+                 "vapour_trail_updated_usec": 1_080_100},
              "workers_joined": 1, "rapier_sessions_retired": 1, "retries": 0, "native_rows_overflow": False,
              "started_usec": 1_000_000, "ended_usec": 16_000_000, "elapsed_usec": 15_000_000,
              "viewport": [960, 540], "canvas": [960, 540], "platform": "Linux", "cpu_name": "synthetic",
@@ -210,6 +224,47 @@ class ReadbackTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, "shader resources"):
             campaign.verify_row(value, expected)
 
+    def test_nonblank_ui_cannot_qualify_hidden_detached_or_replaced_canvas_consumers(self):
+        for index in range(5):
+            for key, replacement in (("owner_node_matches", False), ("owner_material_matches", False),
+                                     ("inside_tree", False), ("visible_in_tree", False),
+                                     ("use_parent_material", True), ("effective_alpha", 0.0),
+                                     ("viewport_matches_owner", False), ("viewport_inside_tree", False),
+                                     ("intersects_viewport", False), ("size", [0, 180])):
+                with self.subTest(index=index, field=key):
+                    value, expected = example()
+                    value["presentation_shaders"][index][key] = replacement
+                    with self.assertRaisesRegex(RuntimeError, "presentation consumer"):
+                        campaign.verify_row(value, expected)
+
+    def test_glow_and_vapour_connections_and_update_modes_remain_real(self):
+        for key, replacement in (("world_current_texture_matches", False), ("world_texture_matches_owner", False),
+                                 ("glow_enabled", False), ("glow_output_texture_matches", False),
+                                 ("vapour_trail_enabled", False), ("vapour_history_links", [True, False]),
+                                 ("vapour_output_texture_matches", False), ("vapour_trail_strength", 0.0),
+                                 ("vapour_trail_latest", -1), ("vapour_trail_updated_usec", 1),
+                                 ("view_size", [320, 180])):
+            with self.subTest(field=key):
+                value, expected = example()
+                value["presentation_pipeline"][key] = replacement
+                with self.assertRaisesRegex(RuntimeError, "presentation dependencies"):
+                    campaign.verify_row(value, expected)
+        value, expected = example()
+        value["presentation_shaders"][1]["viewport_update_mode"] = 0
+        with self.assertRaisesRegex(RuntimeError, "update mode"):
+            campaign.verify_row(value, expected)
+        # Both buffers may be disabled after drawing, or one is armed ONCE.
+        # Requiring both ALWAYS would incorrectly reject the real ping-pong path.
+        for modes in ((0, 0), (0, 1), (1, 0)):
+            value, expected = example()
+            for index, mode in enumerate(modes, 3):
+                value["presentation_shaders"][index]["viewport_update_mode"] = mode
+            campaign.verify_row(value, expected)
+        value, expected = example()
+        value["presentation_shaders"][4]["viewport_update_mode"] = 4
+        with self.assertRaisesRegex(RuntimeError, "update mode"):
+            campaign.verify_row(value, expected)
+
     def test_valid_graphical_and_headless_remain_distinct(self):
         for graphical in (True, False):
             value, expected = example(graphical)
@@ -218,6 +273,7 @@ class ReadbackTests(unittest.TestCase):
             self.assertEqual(reduced["render_submission_interval_usec"]["count"], int(graphical))
             if not graphical:
                 self.assertIsNone(reduced["render_submission_interval_usec"]["p95"])
+                self.assertIsNone(reduced["render_submission_window"])
 
     def test_exact_reduction_and_long_interval(self):
         value, expected = example()
@@ -227,6 +283,43 @@ class ReadbackTests(unittest.TestCase):
         self.assertEqual(reduced["snapshot_serials_coalesced_between_Main_reads"], 2)
         self.assertEqual(reduced["render_submission_long_intervals"]["50000"]["count"], 1)
         self.assertEqual(reduced["render_submission_long_intervals"]["100000"]["count"], 0)
+
+    def test_full_window_gaps_expose_trailing_freeze_without_inventing_fps_gate(self):
+        value, expected = example()
+        raw = value["raw"]
+        raw["main_started_usec"] = [1_010_000, 1_011_000]
+        raw["rendered_usec"] = [1_010_500, 1_012_000]
+        for index, sample in enumerate(raw["snapshot_rows"]):
+            sample["observed_usec"] = raw["main_started_usec"][index] + raw["main_callback_usec"][index]
+            sample["published_usec"] = raw["main_started_usec"][index] - 100
+            sample["render_generated_usec"] = sample["published_usec"] - 100
+        raw["native_rows"][1]["completed_usec"] = 1_010_500
+        value["presentation_pipeline"]["vapour_trail_updated_usec"] = 1_011_100
+        # Data custody is valid. No previously agreed FPS threshold exists;
+        # the reduction must expose this freeze instead of reporting only 1 ms.
+        campaign.verify_row(value, expected)
+        reduced = campaign.reduce_row(value)
+        self.assertEqual(reduced["main_callback_interval_usec"]["max"], 1000)
+        self.assertEqual(reduced["render_submission_interval_usec"]["max"], 1500)
+        for key, leading, trailing in (("main_callback_window", 10000, 14989000),
+                                       ("render_submission_window", 10500, 14988000)):
+            window = reduced[key]
+            self.assertEqual(window["observed_events"], 2)
+            self.assertEqual(window["events_per_second"], 2 / 15)
+            self.assertEqual(window["leading_gap_usec"], leading)
+            self.assertEqual(window["trailing_gap_usec"], trailing)
+            self.assertEqual(window["max_gap_including_boundaries_usec"], trailing)
+            self.assertEqual(window["long_gap_counts_including_boundaries"]["1000000"], 1)
+
+    def test_full_window_cadence_retains_leading_and_completely_absent_events(self):
+        window = campaign.window_cadence([14_999_000, 14_999_500], 0, 15_000_000)
+        self.assertEqual(window["max_gap_including_boundaries_usec"], 14_999_000)
+        self.assertEqual(window["leading_gap_usec"], 14_999_000)
+        self.assertEqual(window["trailing_gap_usec"], 500)
+        absent = campaign.window_cadence([], 0, 15_000_000)
+        self.assertEqual(absent["events_per_second"], 0)
+        self.assertEqual(absent["max_gap_including_boundaries_usec"], 15_000_000)
+        self.assertEqual(absent["long_gap_counts_including_boundaries"]["1000000"], 1)
 
     def test_missing_duplicate_and_out_of_order_native_ticks_refuse(self):
         for tick in (20, 19, 22):

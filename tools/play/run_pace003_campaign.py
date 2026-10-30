@@ -42,6 +42,13 @@ PRESENTATION_SHADERS = (
     "shaders/glow_composite.gdshader", "shaders/material_vapour_trail.gdshader",
     "shaders/material_vapour_trail.gdshader",
 )
+PRESENTATION_CONSUMERS = (
+    "Layout/World", "MaterialGlowViewport/MaterialEmissionSource", "Layout/World/MaterialGlow",
+    "MaterialVapourTrail0/VapourTrailSource", "MaterialVapourTrail1/VapourTrailSource",
+)
+# shared_host selects the mechanical course's overview camera before Build.
+# PlayerCourse.VIEW is 512x256; the initial sandbox's 320x180 is not this workload.
+COURSE_VIEW_SIZE = [512, 256]
 APPARATUS = (
     "godot/tests/play_pace003_shared_host.gd", "godot/tests/play_pace003_worker_probe.gd",
     "godot/tests/play_wait001_snapshot_probe.gd", "tools/play/run_pace003_campaign.py",
@@ -93,6 +100,25 @@ def intervals(values: list) -> list:
     result = [after - before for before, after in zip(values, values[1:])]
     require(all(value > 0 for value in result), "Timestamps must strictly increase")
     return result
+
+
+def window_cadence(timestamps: list, started: int, ended: int) -> dict:
+    """Expose unsampled window edges without inventing event times outside it."""
+    adjacent = intervals(timestamps)
+    require(type(started) is int and type(ended) is int and ended > started
+            and all(started <= timestamp < ended for timestamp in timestamps),
+            "Cadence events must lie inside their complete measurement window")
+    leading = timestamps[0] - started if timestamps else ended - started
+    trailing = ended - timestamps[-1] if timestamps else ended - started
+    gaps = [leading, *adjacent, trailing] if timestamps else [ended - started]
+    return {"observed_events": len(timestamps), "elapsed_usec": ended - started,
+            "events_per_second": len(timestamps) * 1_000_000 / (ended - started),
+            "leading_gap_usec": leading, "trailing_gap_usec": trailing,
+            "max_gap_including_boundaries_usec": max(gaps),
+            "long_gap_counts_including_boundaries": {
+                str(threshold): sum(gap > threshold for gap in gaps)
+                for threshold in (16667, 33333, 50000, 100000, 250000, 1000000)},
+            "scope": "Count over the entire measured window; boundary gaps are observed lower bounds, not complete adjacent-event intervals or proof of waiting"}
 
 
 def cache_inventory(directory: Path) -> dict:
@@ -304,13 +330,42 @@ def verify_row(value: dict, expected: dict) -> dict:
             "Requested rendering driver differs")
     shader_rows = value.get("presentation_shaders", [])
     require(len(shader_rows) == len(PRESENTATION_SHADERS), "Production shader resources are missing")
-    for shader, relative in zip(shader_rows, PRESENTATION_SHADERS):
+    for index, (shader, relative, consumer) in enumerate(zip(
+            shader_rows, PRESENTATION_SHADERS, PRESENTATION_CONSUMERS)):
         digest = expected.get("execution_inputs", {}).get("godot/" + relative)
         require(re.fullmatch(r"[0-9a-f]{64}", digest or "") is not None
                 and shader.get("resource_path") == "res://" + relative
                 and shader.get("file_sha256") == digest
                 and shader.get("loaded_code_sha256") == digest,
                 "Actual attached shader differs from recorded production source: " + relative)
+        require(shader.get("consumer_path") == consumer
+                and all(shader.get(key) is True for key in (
+                    "owner_node_matches", "owner_material_matches", "inside_tree", "visible_in_tree",
+                    "viewport_matches_owner", "viewport_inside_tree", "viewport_hdr_2d", "intersects_viewport"))
+                and shader.get("use_parent_material") is False
+                and shader.get("effective_alpha") == 1.0
+                and len(shader.get("size", [])) == 2 and all(numeric(side, .001) for side in shader["size"]),
+                "Actual presentation consumer is hidden, detached, replaced or not using its owned shader: " + consumer)
+        viewport_size = [256, 128] if index == 1 else COURSE_VIEW_SIZE if index >= 3 else [960, 540]
+        # UPDATE_ONCE becomes UPDATE_DISABLED after submission. Both are valid
+        # for the two alternating trail buffers; the glow source stays ALWAYS.
+        allowed_modes = (0, 1) if index >= 3 else (4,) if index == 1 else (-1,)
+        require(shader.get("viewport_size") == viewport_size
+                and type(shader.get("viewport_update_mode")) is int
+                and shader["viewport_update_mode"] in allowed_modes,
+                "Presentation viewport size or update mode differs: " + consumer)
+    pipeline = value.get("presentation_pipeline", {})
+    require(pipeline.get("view_size") == COURSE_VIEW_SIZE
+            and all(pipeline.get(key) is True for key in (
+                "world_texture_matches_owner", "world_current_texture_matches", "world_previous_texture_matches",
+                "world_palette_lut_matches", "world_program_lut_matches", "glow_enabled", "glow_world_texture_matches",
+                "glow_output_texture_matches", "vapour_trail_enabled", "vapour_output_texture_matches"))
+            and pipeline.get("vapour_history_links") == [True, True]
+            and type(pipeline.get("vapour_trail_latest")) is int and pipeline["vapour_trail_latest"] in (0, 1)
+            and pipeline.get("vapour_trail_strength") == 1.0
+            and type(pipeline.get("vapour_trail_updated_usec")) is int
+            and value["started_usec"] <= pipeline["vapour_trail_updated_usec"] <= value["ended_usec"],
+            "Actual World/glow/vapour inputs or live presentation dependencies differ")
     require(value.get("failures") == 0 and type(value.get("assertions")) is int
             and value["assertions"] == (15 if expected["headless"] else 17)
             and value.get("workers_joined") == 1 and value.get("rapier_sessions_retired") == 1
@@ -453,12 +508,16 @@ def reduce_row(value: dict) -> dict:
             "rapier_completed_per_second": value["rapier_hz"],
             "worker_step_ms": stats([sample["worker_step_ms"] for sample in native]),
             "native_probe_usec": stats([sample["probe_usec"] for sample in native]),
+            "main_callback_window": window_cadence(raw["main_started_usec"], value["started_usec"], value["ended_usec"]),
             "main_callback_interval_usec": stats(intervals(raw["main_started_usec"])),
             "main_callback_usec": stats(raw["main_callback_usec"]),
             "physics_callback_usec": stats(raw["physics_callback_usec"]),
             "snapshot_mutex_wait_usec": stats(raw["snapshot_mutex_wait_usec"]),
             "snapshot_mutex_critical_usec": stats(raw["snapshot_mutex_critical_usec"]),
             "render_submission_interval_usec": stats(frame_intervals),
+            "render_submission_window": window_cadence(raw["rendered_usec"], value["started_usec"], value["ended_usec"])
+            if value["scope"]["frame_submissions_measured"] else None,
+            "render_rate_scope": "Submission event count over the complete measured window; physical scanout is unmeasured; headless has no graphical rate",
             "render_submission_long_intervals": {
                 str(threshold): {"count": sum(value > threshold for value in frame_intervals),
                                 "fraction": sum(value > threshold for value in frame_intervals) / len(frame_intervals)

@@ -104,7 +104,9 @@ jobs:
         (github.event.action != 'ready_for_review' ||
          needs.ready_scope.outputs.required == 'true')))
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    # Original PACE measurement plus seven separate 180 s correctness cases.
+    # No individual process or Main acknowledgement deadline is extended.
+    timeout-minutes: 45
     defaults:
       run:
         shell: bash
@@ -152,6 +154,8 @@ jobs:
           cat /etc/os-release > "$EVIDENCE_DIR/os-release.txt"
           python tools/ci/check_ci_provider_policy.py | tee "$EVIDENCE_DIR/provider-policy.json"
           python tools/play/test_pace003_campaign.py 2>&1 | tee "$EVIDENCE_DIR/apparatus-tests.log"
+          python tools/play/test_pace003_graphical_regressions.py 2>&1 | tee "$EVIDENCE_DIR/graphical-apparatus-tests.log"
+          python -O tools/play/test_pace003_graphical_regressions.py 2>&1 | tee "$EVIDENCE_DIR/graphical-apparatus-optimized-tests.log"
 
       - name: Materialize retained Linux runtimes
         timeout-minutes: 5
@@ -200,6 +204,7 @@ jobs:
           sudo apt-get install --no-install-recommends --yes xvfb xauth libgl1-mesa-dri mesa-utils 2>&1 | tee "$EVIDENCE_DIR/apt-install.log"
 
       - name: Measure actual shared-host graphical 1-worker and Auto pair
+        id: pace_measure
         # The runner enforces 240 s fresh import and 180 s per measurement
         # process. This aggregate step budget is not a per-test extension.
         timeout-minutes: 12
@@ -231,6 +236,21 @@ jobs:
           print("Original logs, reductions, PNGs and exact-head source/runtime binding verified")
           PY
 
+      - name: Qualify graphical lifecycle input and pixel regressions after PACE
+        # Preserve the original PACE result, including failure. This independent
+        # correctness suite cannot turn an earlier failed measurement green.
+        if: ${{ !cancelled() && (steps.pace_measure.outcome == 'success' || steps.pace_measure.outcome == 'failure') }}
+        timeout-minutes: 25
+        run: |
+          set -euo pipefail
+          xvfb-run --auto-servernum --server-args="-screen 0 1920x1080x24 -nolisten tcp" bash -c '
+            set -euo pipefail
+            glxinfo -B > "$EVIDENCE_DIR/graphical-regressions-graphics.txt"
+            python tools/play/run_pace003_graphical_regressions.py --godot "$GODOT_BIN" \
+              --output "$EVIDENCE_DIR/graphical-regressions" \
+              --preceding-campaign "$EVIDENCE_DIR/campaign" --rendering-driver opengl3
+          ' 2>&1 | tee "$EVIDENCE_DIR/graphical-regressions-execution.log"
+
       - name: Retain original Linux success or failure evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -250,7 +270,8 @@ jobs:
         (github.event.action != 'ready_for_review' ||
          needs.ready_scope.outputs.required == 'true')))
     runs-on: windows-2022
-    timeout-minutes: 20
+    # Aggregate budget only; every correctness case remains capped at 180 s.
+    timeout-minutes: 45
     defaults:
       run:
         shell: bash
@@ -291,6 +312,8 @@ jobs:
           PY
           python tools/ci/check_ci_provider_policy.py | tee "$EVIDENCE_DIR/provider-policy.json"
           python tools/play/test_pace003_campaign.py 2>&1 | tee "$EVIDENCE_DIR/apparatus-tests.log"
+          python tools/play/test_pace003_graphical_regressions.py 2>&1 | tee "$EVIDENCE_DIR/graphical-apparatus-tests.log"
+          python -O tools/play/test_pace003_graphical_regressions.py 2>&1 | tee "$EVIDENCE_DIR/graphical-apparatus-optimized-tests.log"
 
       - name: Record Windows CPU and graphics adapter
         shell: pwsh
@@ -347,6 +370,7 @@ jobs:
           PY
 
       - name: Measure actual shared-host graphical 1-worker and Auto pair
+        id: pace_measure
         # ANGLE selects the hosted Windows graphics path; original engine logs
         # remain authoritative about the actual adapter. This is no device gate.
         # Fresh import is <=240 s and each measurement process is <=180 s.
@@ -375,6 +399,16 @@ jobs:
                            "Campaign differs from preflight exact source/runtime")
           print("Original logs, reductions, PNGs and exact-head source/runtime binding verified")
           PY
+
+      - name: Qualify graphical lifecycle input and pixel regressions after PACE
+        if: ${{ !cancelled() && (steps.pace_measure.outcome == 'success' || steps.pace_measure.outcome == 'failure') }}
+        timeout-minutes: 25
+        run: |
+          set -euo pipefail
+          python tools/play/run_pace003_graphical_regressions.py --godot "$GODOT_BIN" \
+            --output "$EVIDENCE_DIR/graphical-regressions" \
+            --preceding-campaign "$EVIDENCE_DIR/campaign" --rendering-driver opengl3_angle \
+            2>&1 | tee "$EVIDENCE_DIR/graphical-regressions-execution.log"
 
       - name: Retain original Windows success or failure evidence
         if: always()
