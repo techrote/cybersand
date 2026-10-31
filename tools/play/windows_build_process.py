@@ -149,7 +149,7 @@ class WindowsJob:
                      and '\0' not in name + value, 'Invalid sanitized environment')
             block = '\0'.join(name+'='+environment[name] for name in sorted(environment,key=str.upper))+'\0\0'
             command_buffer, environment_buffer = C.create_unicode_buffer(line),C.create_unicode_buffer(block)
-            flags = 0x08000000 | 0x4 | 0x80000 | 0x400  # NO_WINDOW, SUSPENDED, EXTENDED_STARTUPINFO, UNICODE_ENVIRONMENT.
+            flags = 0x8 | 0x4 | 0x80000 | 0x400  # DETACHED_PROCESS, SUSPENDED, EXTENDED_STARTUPINFO, UNICODE_ENVIRONMENT.
             self.check(self.api.CreateProcessW(command[0],command_buffer,None,None,True,flags,
                 environment_buffer,str(cwd),C.byref(startup),C.byref(info)), 'CreateProcessW')
             self.root_pid, self.thread = info.pid,info.thread

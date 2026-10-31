@@ -47,7 +47,8 @@ def build_control_command(python: str, mode: str) -> list[str]:
         script='import sys; print("OWNED_NONZERO", flush=True); sys.exit(19)'
     else:
         child='import os,time; print("OWNED_CHILD " + str(os.getpid()), flush=True); time.sleep('+('20' if mode=='orphan-hang' else '0.4')+')'
-        script=('import subprocess,sys,time; p=subprocess.Popen([sys.executable,"-c",'+repr(child)+'],creationflags=subprocess.CREATE_NO_WINDOW); '
+        script=('import subprocess,sys,time; p=subprocess.Popen([sys.executable,"-c",'+repr(child)+'],creationflags=subprocess.DETACHED_PROCESS, '
+                'stdin=sys.stdin,stdout=sys.stdout,stderr=sys.stderr,close_fds=True); '
                 'print("OWNED_PARENT_CHILD " + str(p.pid), flush=True); '+
                 ('time.sleep(0.2)' if mode=='orphan-hang' else 'sys.exit(p.wait())'))
     return [python,'-c',script]
@@ -64,9 +65,13 @@ def verify_build_control(mode: str, result: dict, log: str) -> None:
     pids=re.findall(r'^OWNED_PARENT_CHILD ([0-9]+)$',log,re.M)
     require(len(pids)==1,'Build child PID control output missing')
     child=int(pids[0]);last=result['samples'][-1]
-    require(child!=result['root_pid'] and last['total_processes']==2
+    require(last['total_processes']==2,'Build ownership control requires exactly two processes')
+    require(child!=result['root_pid']
             and any(child in [row['pid'] for row in sample['active_observed']] for sample in result['samples']),
             'Build child was not observed inside its owned job')
+    executed=re.findall(r'^OWNED_CHILD ([0-9]+)$',log,re.M)
+    require(len(executed)==1,'Build child execution marker missing or duplicated')
+    require(int(executed[0])==child,'Build child execution marker PID mismatch')
     exits={row['pid']:row['exit_code'] for row in last['exited_observed']}
     require(result['root_exit']==0 and exits.get(child)==(124 if mode=='orphan-hang' else 0),
             'Build child actual termination code mismatch')

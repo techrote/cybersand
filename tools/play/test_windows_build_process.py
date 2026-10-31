@@ -7,6 +7,7 @@ import hashlib
 import io
 import json
 from pathlib import Path
+import sys
 import tempfile
 import unittest
 from unittest import mock
@@ -177,16 +178,63 @@ class OwnedBuildTests(unittest.TestCase):
             self.assertEqual(owned.verify(directory,command,self.identity,cwd=self.cwd),result)
             campaign.verify_build_control(mode,result,(directory/'process.log').read_text())
 
-    def test_child_control_explicitly_avoids_an_extra_console_process(self):
+    def test_root_detaches_console_without_changing_owned_job_or_standard_handles(self):
+        # Exercise the real launch assembly against a mocked Win32 API. This
+        # proves construction only; the actual Windows inventory is mandatory.
+        api, observed = mock.Mock(), {}
+        api.CreateJobObjectW.return_value = 11
+        api.CreateFileW.side_effect = [22,23]
+        api.ResumeThread.return_value = 1
+        def limits(_job,kind,pointer,_size):
+            value = ctypes.cast(pointer,ctypes.POINTER(owned.ExtendedLimits)).contents
+            observed['limits'] = (kind,value.basic.flags,value.basic.active_process_limit)
+            return True
+        def initialize(attributes,count,_flags,size):
+            ctypes.cast(size,ctypes.POINTER(owned.U)).contents.value = 64
+            observed.setdefault('attribute_counts',[]).append(count)
+            return attributes is not None
+        def attribute(_attributes,_flags,kind,value,_size,_previous,_returned):
+            observed[kind] = tuple(value)
+            return True
+        def create(_application,_command,_process_security,_thread_security,inherit,flags,
+                   _environment,_cwd,startup_pointer,info_pointer):
+            startup = ctypes.cast(startup_pointer,ctypes.POINTER(owned.StartupEx)).contents
+            observed['creation'] = (inherit,flags,startup.startup.flags,startup.startup.stdin,
+                                    startup.startup.stdout,startup.startup.stderr)
+            observed['attributes_before_create'] = (observed[0x2000D],observed[0x20002])
+            info = ctypes.cast(info_pointer,ctypes.POINTER(owned.ProcessInfo)).contents
+            info.process,info.thread,info.pid,info.tid = 101,102,10,20
+            return True
+        api.SetInformationJobObject.side_effect = limits
+        api.InitializeProcThreadAttributeList.side_effect = initialize
+        api.UpdateProcThreadAttribute.side_effect = attribute
+        api.CreateProcessW.side_effect = create
+        with mock.patch.object(owned.sys,'platform','win32'), \
+             mock.patch.object(owned.C,'WinDLL',return_value=api,create=True):
+            job = owned.WindowsJob()
+            job.start(self.command,self.cwd,{'CONTROL':'owned'},self.root/'root.log')
+        self.assertEqual(observed['creation'],(True,0x8 | 0x4 | 0x80000 | 0x400,0x100,23,22,22))
+        self.assertEqual(observed['limits'],(9,0x2000 | 0x8,owned.MAX_PROCESSES))
+        self.assertEqual(observed['attribute_counts'],[2,2])
+        self.assertEqual(observed['attributes_before_create'],((11,),(23,22)))
+        calls = [call[0] for call in api.method_calls]
+        self.assertLess(calls.index('CreateProcessW'),calls.index('ResumeThread'))
+        self.assertTrue(job.creation_job_assigned)
+        self.assertEqual((job.root_pid,job.handles),(10,{10:101}))
+        self.assertEqual(api.CloseHandle.call_args_list,[mock.call(102),mock.call(23),mock.call(22)])
+
+    def test_child_control_explicitly_detaches_console_and_redirects_standard_streams(self):
         # Portable command-construction proof only; real Windows must still
         # establish the unchanged exact two-process inventory and join.
         for mode in ('normal-child','orphan-hang'):
             child = mock.Mock(pid=11)
             child.wait.return_value = 0
             command = campaign.build_control_command('C:\\python.exe',mode)
+            output = io.StringIO()
             with mock.patch('subprocess.Popen',return_value=child) as launch, \
+                 mock.patch('subprocess.DETACHED_PROCESS',0x8,create=True), \
                  mock.patch('subprocess.CREATE_NO_WINDOW',0x08000000,create=True), \
-                 mock.patch('time.sleep'), contextlib.redirect_stdout(io.StringIO()):
+                 mock.patch('time.sleep'), contextlib.redirect_stdout(output):
                 if mode == 'normal-child':
                     with self.assertRaises(SystemExit) as exited:
                         exec(compile(command[2],'<owned-control>','exec'),{})
@@ -194,15 +242,41 @@ class OwnedBuildTests(unittest.TestCase):
                 else:
                     exec(compile(command[2],'<owned-control>','exec'),{})
             self.assertEqual(launch.call_count,1)
-            self.assertEqual(launch.call_args.kwargs,{'creationflags':0x08000000})
+            self.assertEqual(launch.call_args.kwargs,{'creationflags':0x8,'stdin':sys.stdin,
+                             'stdout':output,'stderr':sys.stderr,'close_fds':True})
+            self.assertEqual(launch.call_args.args[0][:2],[sys.executable,'-c'])
+            self.assertIn('print("OWNED_CHILD " + str(os.getpid()), flush=True)',launch.call_args.args[0][2])
+            self.assertIn('time.sleep('+('20' if mode=='orphan-hang' else '0.4')+')',launch.call_args.args[0][2])
             self.assertEqual(child.wait.call_count,1 if mode == 'normal-child' else 0)
 
     def test_extra_process_still_fails_the_exact_control_inventory(self):
         self.fixture('normal-child')
-        self.result['samples'][-1]['total_processes'] = 3
-        with self.assertRaisesRegex(ValueError,'Build child was not observed inside its owned job'):
+        for total in (3,4):
+            with self.subTest(total=total):
+                self.result['samples'][-1]['total_processes'] = total
+                with self.assertRaisesRegex(ValueError,'Build ownership control requires exactly two processes'):
+                    campaign.verify_build_control('normal-child',self.result,
+                                                  (self.directory/'process.log').read_text())
+
+    def test_missing_child_execution_marker_is_refused(self):
+        self.fixture('normal-child')
+        with self.assertRaisesRegex(ValueError,'Build child execution marker missing or duplicated'):
+            campaign.verify_build_control('normal-child',self.result,'OWNED_PARENT_CHILD 11\n')
+
+    def test_duplicate_child_execution_marker_is_refused(self):
+        self.fixture('normal-child')
+        with self.assertRaisesRegex(ValueError,'Build child execution marker missing or duplicated'):
             campaign.verify_build_control('normal-child',self.result,
-                                          (self.directory/'process.log').read_text())
+                                          'OWNED_PARENT_CHILD 11\nOWNED_CHILD 11\nOWNED_CHILD 11\n')
+
+    def test_mismatched_child_execution_marker_is_refused(self):
+        self.fixture('normal-child')
+        with self.assertRaisesRegex(ValueError,'Build child execution marker PID mismatch'):
+            campaign.verify_build_control('normal-child',self.result,'OWNED_PARENT_CHILD 11\nOWNED_CHILD 12\n')
+
+    def test_child_execution_marker_may_precede_parent_marker(self):
+        self.fixture('normal-child')
+        campaign.verify_build_control('normal-child',self.result,'OWNED_CHILD 11\nOWNED_PARENT_CHILD 11\n')
 
     def test_nonzero_child_cannot_hide_behind_zero_root(self):
         self.fixture('normal-child')

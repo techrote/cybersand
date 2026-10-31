@@ -357,6 +357,79 @@ Windows ownership, compiler, exception and fixture evidence is still required.
 The original v3 campaign and every preceding failed source remain unchanged;
 no earlier result is relabelled and no deadline is extended.
 
+## Retained four-process refusal and detached-console correction
+
+[Run 41193933850 attempt 1](https://github.com/techrote/cybersand/actions/runs/41193933850)
+executed diagnostic head `400105c16e6ede0dd13b3ec0418ab4379f82824f`, tree
+`1dd52cf2e1319cc3a83fda08f83a850f50286ad9`. Local source
+`3c9219947e59a0b36e3c2b2b062a2980514eb7f8` has that same tree. The explicit
+child `CREATE_NO_WINDOW` correction above did not satisfy the actual Windows
+inventory. The first ownership control again failed before SDK compilation,
+exception controls, import or the unchanged gameplay fixture.
+
+The original samples contain root Python PID 6996, console host PID 7680,
+child Python PID 7068 and console host PID 6712. All four were observed and
+exited zero. The operation completed in 0.809659 seconds, with an empty-job
+sample at 0.809508 seconds. Thus creation-time containment and complete join
+were observed, but the exact two-process control failed. The generic operation
+receipt's `status: passed` is not a successful campaign result. The original
+25-byte process log contains only `OWNED_PARENT_CHILD 7068`; the child execution
+marker is absent. No native access-violation cause is inferred from this
+apparatus failure.
+
+The retained original ZIP contains 2,255,973 bytes, SHA-256
+`85d68f3979e5381f07fbb4b61aa87d7fb2e22d16d19fd1bf2b93f2c1093fc399`.
+Independent readback authenticated its CRC, the unchanged launch/log/sample/
+result bytes and the original strict refusal. The read-only classification
+receipt has SHA-256
+`dbc2d53f5b6487d73f126e9f71eb320425ff0c05c080f7941c49390c6398d2e6`.
+The failed campaign, earlier three-process failure and all earlier original
+sources remain retained with their original status.
+
+Microsoft's [console creation contract](https://learn.microsoft.com/en-us/windows/console/creation-of-a-console)
+distinguishes a detached process with no attached console from merely hiding
+a window. Its [terminal implementation description](https://github.com/microsoft/terminal/blob/main/doc/specs/%23492%20-%20Default%20Terminal/spec.md)
+explicitly describes a windowless console host under `CREATE_NO_WINDOW`.
+The bounded correction therefore replaces that flag with `DETACHED_PROCESS`
+for both the owned root and deliberately spawned Python child. It preserves
+the root's suspended creation, Unicode environment, extended startup,
+creation-time Job list, restricted inherited-handle list and explicit standard
+handles. [Job inheritance](https://learn.microsoft.com/en-us/windows/win32/procthread/job-objects)
+remains unchanged; no breakaway or new-console flag is added.
+
+The child now explicitly redirects stdin, stdout and stderr to its parent's
+already selected handles with `close_fds=True`, following the
+[Python standard-handle contract](https://docs.python.org/3.12/library/subprocess.html).
+Both child controls require one matching `OWNED_CHILD` marker as well as one
+parent-reported PID, the actual observed child, exact two-process accounting,
+expected exit and complete join. Either marker may appear first. Missing,
+duplicate or mismatched child markers fail; an extra process now reports the
+precise inventory failure before marker checks. No console-host process is
+filtered out of accounting.
+
+The root creation policy is shared with this opt-in diagnostic's SDK compiler
+commands. Their next actual Windows qualification must therefore consume the
+same corrected helper. The C/C++ debugger and control sources, workflow,
+production host, native/runtime inputs and ordinary validation gates are
+unchanged. The original 15-second build/normal-control and 3-second orphan
+operation bounds, cleanup reserve, 10 Hz sampling, 160-sample and 32-process
+caps, child delays and failure propagation remain intact. No engine launch,
+compiler invocation or actual Windows run occurred during this local correction.
+
+The new portable regressions were first run against the original implementation
+plus only the test delta: 21 methods produced seven expected assertion failures
+across six methods. These expose both old launch flags, three missing marker
+checks and the old combined error for three/four-process inventories. That
+failed log is retained with SHA-256
+`04051d26ff532de653952a15038355a41deb8f528a73bdbe2b6d2670a252df3a`.
+The corrected executable bytes pass all 54 crash/campaign and 21 owned-build
+methods normally and under `python -O`. The root launch test executes the real
+assembly against a mocked Win32 API to inspect the Job/handle/flag contract;
+the child test executes the generated command against a mocked subprocess.
+These are portable construction/reducer results, not proof of a two-process
+Windows execution. Fresh resulting-head hosted controls, SDK builds, exception
+controls and the single unchanged fixture attempt remain required.
+
 ## Platform basis and limitations
 
 Microsoft documents that [debug events suspend target threads until continued](https://learn.microsoft.com/en-us/windows/win32/debug/debugging-events)
