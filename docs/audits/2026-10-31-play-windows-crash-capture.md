@@ -10,11 +10,11 @@ related-documents: [../operations/local-build-and-validation.md, ../operations/g
 
 # Windows exception capture — 2026-10-31
 
-The [v5 LLVM successor](#diagnostic-only-clang-cl-and-lld-successor--v5)
-below supersedes the compiler configuration of the retained v4 attempt.
-Its first hosted attempt exposed an incorrect compiler pin; the
+The [v6 dump-reader correction](#bounded-dbghelp-output-reader--v6)
+follows the retained v5 LLVM attempts. The
 [source-pin correction](#llvm-source-pin-correction--toolchain-identity-v2)
-records the failed attempt and independently verifies the complete official bytes.
+verified the complete official compiler bytes; the next hosted run compiled
+both diagnostic tools and exposed a minidump format interpretation error.
 It preserves the original production/fixture source and every prior failure.
 Local portable controls are complete; resulting-source Windows execution is
 still required. No successful new engine execution or crash repair is asserted.
@@ -802,3 +802,84 @@ checks pass; runtime libraries remain unmaterialized local pointers.
 Retrieval remains 32/32 canonical top-five hits, 19 top-one hits and
 MRR 0.7536, with answer sufficiency still a separate review. The protected
 production scopes remain byte-identical to the original failing source.
+
+## Bounded DbgHelp output reader — v6
+
+[Run41241255117, attempt1](https://github.com/techrote/cybersand/actions/runs/41241255117),
+job124655448204, remains a failed v5 campaign at source
+`7a5f6029be1018715fb6a411e5b0232b1e9bd0de`, tree
+`b580dc264005864c8b319d3f3b92475d9d5a4f58`.
+Artifact13058045489 is 7,015,149 bytes with SHA-256
+`697a2690a2cabd4177595ba423c55a1a7f66231d57d9f55c8494227fb2ed21c3`.
+Its 79 ZIP members pass CRC checks; independent original-source readback
+verifies 71 sealed campaign entries, 795 canonical inputs, all 15 retained
+Python helper identities, runtime provenance and all five actual build
+ownership controls. Both installed LLVM tools match the corrected official
+pins. Both version probes and all four compile/link operations pass: each
+has exactly one observed process, exit zero and natural empty-job completion.
+The two tool builds retain their objects, executables and PDB identities.
+
+The normal debugger control passed. The handled first-chance access-violation
+control captured its dump, forwarded the exception and exited zero in 63 ms,
+but the original reader rejected its header with
+`Dump flags differ from bounded MiniDumpNormal/ThreadInfo contract`.
+The campaign stopped there with zero fixture attempts; unhandled/child/hang
+and dump-timeout debugger controls, import and the game fixture were not run.
+The original source reader still rejects this campaign as incomplete.
+
+The dump `fault-6704-2376-6.dmp` is 146,124 bytes, SHA-256
+`b38fef4665c71edfb36b4d845665d2c8f06eb88b4afc08dbd0e96e48b7000bae`.
+Its flags are `0x201000`: requested `MiniDumpWithThreadInfo` (`0x1000`) plus
+`MiniDumpWithAvxXStateContext` (`0x200000`). Microsoft documents the latter
+as AVX register-context information in
+[MINIDUMP_TYPE](https://learn.microsoft.com/en-us/windows/win32/api/minidumpapiset/ne-minidumpapiset-minidump_type).
+The unchanged, source-verified C++ producer requested only
+`MiniDumpNormal | MiniDumpWithThreadInfo`; this records the actual output
+of that hosted invocation, not a universal DbgHelp default or a newly pinned
+DbgHelp DLL identity.
+
+There are 13 directory slots: nine meaningful, unique streams and four
+all-zero slots. Microsoft identifies stream type zero as the reserved
+`UnusedStream` value in
+[MINIDUMP_STREAM_TYPE](https://learn.microsoft.com/en-us/windows/win32/api/minidumpapiset/ne-minidumpapiset-minidump_stream_type).
+The old reader would also reject those repeated zero slots as duplicates.
+The actual dump retains one thread, four modules, a 133,856-byte fault stack
+and 3,263-byte exception and thread contexts. The existing stopped raw
+context remains 1,232 bytes. After recognizing only the observed header and
+zero-slot forms, exception identity/parameters, RIP/RSP/RBP, stack bounds
+and loaded-module identities crossjoin with the retained raw evidence.
+This partial forensic readback does not change the original failed result.
+
+Campaign v6 declares source-bound minidump format `play-windows-minidump-v2`.
+It accepts only exact output flags `0x1000` or `0x201000`, counts and records
+only exact `(type=0, size=0, RVA=0)` unused slots, and preserves uniqueness
+and bounds checks for every meaningful stream. The existing 64 MiB dump
+ceiling remains; extended exception contexts now have an explicit 64 KiB
+ceiling and must contain the full 1,232-byte x64 context. Full-memory stream
+type nine is refused even if a header omits its full-memory bit; Microsoft
+identifies [MINIDUMP_MEMORY64_LIST](https://learn.microsoft.com/en-us/windows/win32/api/minidumpapiset/ns-minidumpapiset-minidump_memory64_list)
+as the full-memory representation. Unknown flags, missing requested flags,
+nonempty unused slots, duplicate meaningful streams, out-of-file data and
+fault/context/module mismatches remain failures. A receipt cannot enlarge
+the source-declared format, and a resealed v5 campaign cannot become v6.
+
+The four-file correction changes only the reader, campaign format, existing
+contract tests and this audit. The C++ producer, compiler commands, workflow,
+watchdogs, ownership controls and original production/fixture source remain
+unchanged. Portable controls cover the observed AVX/zero-slot form and its
+adverse variations. The exact v6 source still needs its own first hosted
+attempt through every debugger control, import and one original fixture.
+The original run41175131563 `0xC0000005` remains unexplained and blocking.
+
+Local validation used parent `7a5f6029be1018715fb6a411e5b0232b1e9bd0de`
+plus this four-file delta on `codex/play-windows-minidump-reader-20261031`.
+All 73 crash/artifact and 33 ownership/build tests pass normally and with
+Python assertions disabled. Original normal-control evidence and the handled
+control's raw dump/context/event/module evidence independently crossjoin
+under the successor reader; the full original campaign remains rejected.
+Documentation, repository identity, historical M11, provider and whitespace
+checks pass. Retrieval remains 32/32 canonical top-five hits, 19 top-one
+hits and MRR 0.7536, without implying answer correctness. Protected production
+scopes still match the original failed source byte for byte; local runtime
+libraries remain unmaterialized pointers, so no new Windows execution is
+claimed by these portable checks.

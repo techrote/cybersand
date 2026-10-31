@@ -42,6 +42,15 @@ def synthetic_dump(code=CODE,tid=7,address=0x140001234,module_name='C:\\syntheti
     struct.pack_into('<I',raw_exception,0,code);struct.pack_into('<Q',raw_exception,16,address)
     return bytes(data),bytes(data[context_at:context_at+1232]),bytes(raw_exception)
 
+def with_extra_dump_streams(data, extra):
+    """Move the directory without disturbing any original stream/context RVA."""
+    data=bytearray(data);count,directory=struct.unpack_from('<II',data,8)
+    rows=bytes(data[directory:directory+12*count]);new_directory=len(data)
+    data.extend(rows)
+    for row in extra:data.extend(struct.pack('<III',*row))
+    struct.pack_into('<II',data,8,count+len(extra),new_directory)
+    return data
+
 def synthetic_load_hash(root,event,identity):
     """Synthetic file-ID receipt; never a Windows load observation."""
     sequence=0
@@ -310,6 +319,52 @@ class CaptureTests(unittest.TestCase):
         self.fixture();data=bytearray((self.root/'fault-2.dmp').read_bytes());struct.pack_into('<Q',data,24,0x1002)
         with self.assertRaisesRegex(ValueError,'bounded MiniDump'):contract.dump_identity(data)
 
+    def test_observed_avx_context_and_zero_unused_slots_keep_fault_crossjoins(self):
+        self.fixture('handled');path=self.root/'fault-2.dmp';data=bytearray(path.read_bytes())
+        context=bytes(data[400:1632])+b'\0'*(3263-1232);context_at=len(data);data.extend(context)
+        struct.pack_into('<II',data,68+160,len(context),context_at)
+        struct.pack_into('<Q',data,24,0x201000)
+        path.write_bytes(with_extra_dump_streams(data,[(0,0,0)]*4))
+        result=contract.verify_capture(self.root,self.events,self.receipt);contract.verify_control('handled',result)
+        identity=result['captures'][0]['identity']
+        self.assertEqual(identity['dump_format_schema'],'play-windows-minidump-v2')
+        self.assertEqual(identity['dump_flags'],0x201000)
+        self.assertEqual(identity['exception_context_bytes'],3263)
+        self.assertEqual(identity['unused_stream_slots'],4)
+        self.assertEqual(identity['stream_types'],[3,4,6])
+
+    def test_every_unregistered_header_bit_and_missing_requested_bit_is_refused(self):
+        data,_,_=synthetic_dump()
+        values=[0,0x200000]+[0x1000|(1<<bit) for bit in range(64) if bit not in (12,21)]
+        for flags in values:
+            changed=bytearray(data);struct.pack_into('<Q',changed,24,flags)
+            with self.subTest(flags=hex(flags)),self.assertRaisesRegex(ValueError,'bounded MiniDump'):
+                contract.dump_identity(changed)
+
+    def test_unused_slots_cannot_hide_payload_or_nonzero_location(self):
+        data,_,_=synthetic_dump()
+        for row in ((0,1,0),(0,0,1),(0,1,len(data)-1)):
+            with self.subTest(row=row),self.assertRaisesRegex(ValueError,'Nonempty unused'):
+                contract.dump_identity(with_extra_dump_streams(data,[row]))
+
+    def test_unused_slots_do_not_hide_duplicate_meaningful_streams(self):
+        data,_,_=synthetic_dump()
+        with self.assertRaisesRegex(ValueError,'Duplicate/truncated'):
+            contract.dump_identity(with_extra_dump_streams(data,[(0,0,0),(3,52,236)]))
+
+    def test_full_memory_stream_is_refused_even_with_forged_normal_header(self):
+        data,_,_=synthetic_dump()
+        with self.assertRaisesRegex(ValueError,'Full-memory minidump stream'):
+            contract.dump_identity(with_extra_dump_streams(data,[(9,0,0)]))
+
+    def test_extended_exception_context_has_an_explicit_capacity(self):
+        data,_,_=synthetic_dump();data=bytearray(data);at=len(data)
+        size=contract.DUMP_FORMAT['max_exception_context_bytes']+1
+        data.extend(b'\0'*size);struct.pack_into('<II',data,68+160,size,at)
+        struct.pack_into('<Q',data,24,0x201000)
+        with self.assertRaisesRegex(ValueError,'oversized exception'):
+            contract.dump_identity(data)
+
     def test_exception_parameters_crossjoin_raw_record(self):
         self.fixture();data=bytearray((self.root/'fault-2.exception').read_bytes())
         struct.pack_into('<I',data,24,1);struct.pack_into('<Q',data,32,123)
@@ -383,7 +438,7 @@ class ManifestTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'inventory mismatch'):campaign.verify_manifest(self.root)
 
     def test_incomplete_campaign_is_not_an_offline_pass(self):
-        campaign.write(self.root/'campaign.json',{'schema':'play-windows-crash-campaign-v5','completed':False})
+        campaign.write(self.root/'campaign.json',{'schema':'play-windows-crash-campaign-v6','completed':False})
         campaign.write(self.root/'MANIFEST.json',{path.name:{'sha256':contract.sha(path),'bytes':path.stat().st_size}
             for path in self.root.iterdir() if path.name!='MANIFEST.json'})
         with self.assertRaisesRegex(ValueError,'campaign is incomplete'):campaign.verify_directory(self.root,'a'*40)
@@ -400,8 +455,9 @@ class OfflineCompositionTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name)
         self.head='a'*40;self.canonical={}
-        report=self.report={'schema':'play-windows-crash-campaign-v5','completed':True,'errors':[],'fixture_attempts':1,
+        report=self.report={'schema':'play-windows-crash-campaign-v6','completed':True,'errors':[],'fixture_attempts':1,
             'watchdog_policy':campaign.policy.POLICY,
+            'dump_format':copy.deepcopy(campaign.DUMP_FORMAT),
             'original_failed_run':41175131563,'original_failed_source':campaign.BASE,'original_failure_still_blocking':True,
             'paths':{'source':'C:\\source','output':'C:\\evidence'},'source':{'commit':self.head,'tree':'b'*40,'inputs':{}},
             'runtime':{},'controls':{},'tools':{},
@@ -595,6 +651,17 @@ class OfflineCompositionTests(unittest.TestCase):
     def test_historical_v4_campaign_is_not_relabelled_as_llvm_evidence(self):
         self.report['schema']='play-windows-crash-campaign-v4';campaign.seal(self.root,self.report)
         with self.assertRaisesRegex(ValueError,'campaign is incomplete'):
+            campaign.verify_directory(self.root,self.head)
+
+    def test_historical_v5_campaign_is_not_relabelled_as_new_dump_evidence(self):
+        self.report['schema']='play-windows-crash-campaign-v5';campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'campaign is incomplete'):
+            campaign.verify_directory(self.root,self.head)
+
+    def test_receipt_cannot_expand_source_declared_dump_format(self):
+        self.report['dump_format']['allowed_output_flags'].append(0x1002)
+        campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'dump format differs from source'):
             campaign.verify_directory(self.root,self.head)
 
     def test_resealed_wrong_actual_fixture_command_is_refused(self):

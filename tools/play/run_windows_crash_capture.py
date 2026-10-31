@@ -17,7 +17,7 @@ import zipfile
 import windows_build_process as owned_build
 import windows_crash_policy as policy
 
-from windows_crash_contract import (child_environment, read_events, read_json, read_load_identities, require, safe_file, sha,
+from windows_crash_contract import (DUMP_FORMAT, child_environment, read_events, read_json, read_load_identities, require, safe_file, sha,
                                    verify_capture, verify_control, verify_dump_timeout_control, verify_module_bindings)
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -511,11 +511,12 @@ def verify_directory(output: Path, expected: str) -> dict:
     """Read original artifacts offline, preserving failure as failure."""
     verify_manifest(output)
     report=read_json(output/'campaign.json')
-    require(report['schema']=='play-windows-crash-campaign-v5' and report['completed'] is True
+    require(report['schema']=='play-windows-crash-campaign-v6' and report['completed'] is True
             and report['errors']==[] and report['fixture_attempts']==1,'Diagnostic campaign is incomplete')
     require(report['original_failed_run']==41175131563 and report['original_failed_source']==BASE
             and report['original_failure_still_blocking'] is True,'Original failure provenance was rewritten')
     require(report['watchdog_policy']==policy.POLICY,'Diagnostic watchdog policy differs from source')
+    require(report.get('dump_format')==DUMP_FORMAT,'Diagnostic dump format differs from source')
     canonical=verify_source_pack(output,report['source'],expected)
     runtime_proof(report['source'],canonical,report['runtime'])
     controls=report['build_ownership_controls']
@@ -594,8 +595,9 @@ def main() -> int:
     require(os.environ.get('GITHUB_RUN_ATTEMPT','1')=='1','Automatic reruns are not authorized by this one-attempt diagnostic')
     output=args.output.resolve(); require(not output.exists(),'Retain earlier evidence; output already exists')
     output.mkdir(parents=True)
-    report={'schema':'play-windows-crash-campaign-v5','status':'incomplete','completed':False,'errors':[],
+    report={'schema':'play-windows-crash-campaign-v6','status':'incomplete','completed':False,'errors':[],
             'watchdog_policy':policy.POLICY,
+            'dump_format':DUMP_FORMAT,
             'original_failed_run':41175131563,'original_failed_source':BASE,'original_failure_still_blocking':True,
             'scope':'Opt-in debugger evidence only; one prescribed unchanged-fixture attempt, no automatic retries or integration approval. Build Job accounting establishes containment and final empty-job state; LLVM qualification additionally requires the total process count to equal all distinct observed exits.',
             'run_id':os.environ.get('GITHUB_RUN_ID'),'run_attempt':os.environ.get('GITHUB_RUN_ATTEMPT'),
