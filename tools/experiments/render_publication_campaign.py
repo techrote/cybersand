@@ -44,6 +44,17 @@ def reduce_trace(data):
         if data["candidate"]=="E" and data["pending_high_water"] > 4194304:
             raise ValueError("candidate pending bound exceeded")
     def select(kind): return [e for e in events if e["event"] == kind]
+    tail_summary={}
+    if "tail_drained" in data:
+        starts=select("tail_begin")
+        ends=select("tail_caught_up")
+        if (not data["tail_drained"] or len(starts)!=1 or len(ends)!=1
+                or ends[0]["owner_count"]-starts[0]["owner_count"]<2
+                or ends[0]["generation"]!=2 or ends[0]["revision"]!=ends[0]["simulation_revision"]):
+            raise ValueError("ordinary publication tail did not catch up")
+        tail_summary={"duration_usec":data["tail_elapsed_usec"],
+            "counts":dict(Counter(e["event"] for e in events if e["usec"]>=starts[0]["usec"])),
+            "frame_intervals_exclude_tail":True}
     calls = select("native_end")
     begins = select("native_begin")
     call_keys=[(e["refresh"],e["call"]) for e in calls]
@@ -105,7 +116,7 @@ def reduce_trace(data):
             raise ValueError("ACK before successful upload")
     if data["arm"] == "W" and (select("ack_issue") or clears): raise ValueError("withheld control acknowledged")
     if data["arm"] == "N" and not select("ack_issue"): raise ValueError("normal arm has no ACK")
-    return {"counts": counts, "retry_causes": retry_causes, "native_stages": native_stage_summary,
+    return {"counts": counts, "retry_causes": retry_causes, "native_stages": native_stage_summary, "tail":tail_summary,
         "native_exchange_usec": percentiles([e["duration_usec"] for e in calls]),
         "native_first_usec": percentiles([e["duration_usec"] for e in calls if e["call"] == 1]),
         "native_retry_usec": percentiles([e["duration_usec"] for e in calls if e["call"] == 2]),

@@ -26,3 +26,9 @@ func result() -> Dictionary:
 	var copied := {"events": events.duplicate(true), "counts": counts.duplicate(), "dropped": dropped}
 	mutex.unlock()
 	return copied
+
+func total(kind: String) -> int:
+	mutex.lock()
+	var value: int = int(counts.get(kind, 0))
+	mutex.unlock()
+	return value

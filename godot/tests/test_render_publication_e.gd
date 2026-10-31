@@ -47,8 +47,26 @@ func _run() -> void:
 	_expect(ClassDB.class_exists(&"CyberNativeCellWorld"), "native E oracle requires actual native owner")
 	if ClassDB.class_exists(&"CyberNativeCellWorld"):
 		_test_real_native_owner()
+		_test_publication_cadence()
 	print("RENDER_PUBLICATION_E: %d assertions, %d failures" % [assertions, failures])
 	quit(failures)
+
+func _test_publication_cadence() -> void:
+	var worker = EWorker.new()
+	worker.withhold_ack = true
+	worker._publish_snapshot(0.0, true, 1000000, true)
+	var refreshes: int = _count(worker, "refresh")
+	worker._world.emit_disc(400, 250, 0, CyberCellWorld.WATER)
+	worker._last_render_snapshot_usec = Time.get_ticks_usec()
+	worker._publish_snapshot(0.0, true, 1000000)
+	_expect(_count(worker, "refresh") == refreshes and worker._published_snapshot.world_revision != worker._published_snapshot.simulation_world_revision,
+		"deferred publication cadence did not retain an older render revision")
+	worker._last_render_snapshot_usec -= 1000001
+	worker._publish_snapshot(0.0, true, 1000000)
+	_expect(_count(worker, "refresh") == refreshes + 1 and worker._published_snapshot.world_revision == worker._published_snapshot.simulation_world_revision,
+		"ordinary elapsed cadence did not publish the deferred dirty edit")
+	_expect(_count(worker, "forced_retry") == 0 and _count(worker, "ack_issue") == 0,
+		"cadence catch-up introduced a forced full or artificial ACK")
 
 func _test_baseline_and_byte_budget() -> void:
 	var worker = _synthetic()

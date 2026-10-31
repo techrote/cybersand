@@ -57,6 +57,27 @@ func _run() -> void:
 		var now := Time.get_ticks_usec()
 		frame_usec.append(now - previous)
 		previous = now
+	# A join is not a render flush. Drain through normal cadence with no new
+	# emissions; two completions cover an iteration already in flight at entry.
+	var tail_start: int = Time.get_ticks_usec()
+	var owner_start: int = worker.trace.total("owner_end")
+	worker.trace.record("tail_begin", {"owner_count": owner_start})
+	var tail_drained: bool = false
+	var tail_deadline: int = Time.get_ticks_msec() + 300000
+	while Time.get_ticks_msec() < tail_deadline:
+		await process_frame
+		var completed: int = worker.trace.total("owner_end")
+		var candidate_snapshot: CyberSimulationSnapshot = worker.take_latest_snapshot(-1)
+		if (completed >= owner_start + 2 and candidate_snapshot != null
+			and candidate_snapshot.render_world_generation == 2
+			and candidate_snapshot.world_revision == candidate_snapshot.simulation_world_revision):
+			tail_drained = true
+			worker.trace.record("tail_caught_up", {"owner_count": completed,
+				"generation": candidate_snapshot.render_world_generation,
+				"revision": candidate_snapshot.world_revision, "simulation_revision": candidate_snapshot.simulation_world_revision})
+			break
+	_expect(tail_drained, "ordinary publication did not drain before final comparison")
+	var tail_elapsed: int = Time.get_ticks_usec() - tail_start
 	# Join the owner before the final independent native oracle. No mutable
 	# native access crosses the live ownership boundary. Consume its final
 	# immutable publication through the same production upload/ACK function.
@@ -85,6 +106,7 @@ func _run() -> void:
 	_expect(int(result.counts.get("reject", 0)) == 0, "render upload rejected")
 	_expect(png_error == OK and not witness.is_empty(), "framebuffer witness unavailable")
 	result.merge({"arm": arm, "candidate": candidate, "owner_script": worker.get_script().resource_path,
+		"tail_drained": tail_drained, "tail_elapsed_usec": tail_elapsed,
 		"frame_usec": frame_usec, "pending_high_water": worker.pending_high_water,
 		"final_cpu_native_equal": cpu_equal, "final_texture_image_equal": texture_equal,
 		"display": DisplayServer.get_name(), "renderer": RenderingServer.get_current_rendering_method(),
