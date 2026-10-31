@@ -8,6 +8,7 @@ from __future__ import annotations
 import ctypes as C
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import ntpath
@@ -16,11 +17,21 @@ import subprocess
 import sys
 import time
 from windows_crash_contract import read_json
+from windows_crash_policy import CLEANUP_SECONDS, OPERATION_SECONDS
 
-SCHEMA = 'play-owned-build-v1'
+SCHEMA = 'play-owned-build-v2'
 MAX_PROCESSES = 32
-MAX_SAMPLES = 160
 POLL_SECONDS = .1
+
+
+def sample_limit(timeout):
+    """Storage headroom must not become an earlier execution watchdog."""
+    need(type(timeout) in (int,float) and math.isfinite(timeout)
+         and 0 < timeout <= OPERATION_SECONDS, 'Invalid owned operation watchdog')
+    return math.ceil(timeout / POLL_SECONDS) + 4
+
+
+MAX_SAMPLES = math.ceil(OPERATION_SECONDS / POLL_SECONDS) + 4
 
 
 def need(value, reason):
@@ -233,12 +244,13 @@ class WindowsJob:
 
 def monitor(job, started, timeout, emit, *, clock=time.perf_counter, pause=time.sleep):
     """Bounded deadline reducer; the OS backend supplies all process facts."""
-    reserve = min(1.5,timeout / 4)
+    maximum_samples = sample_limit(timeout)
+    reserve = min(CLEANUP_SECONDS,timeout / 4)
     deadline, work_end = started + timeout, started + timeout - reserve
     samples, timed_out, terminated, joined, error = [],False,False,False,None
     termination_started = None
     try:
-        while len(samples) < MAX_SAMPLES:
+        while len(samples) < maximum_samples:
             now = clock()
             if now >= deadline:
                 break
@@ -271,7 +283,7 @@ def monitor(job, started, timeout, emit, *, clock=time.perf_counter, pause=time.
                 terminated = True
             except OSError as cleanup:
                 error += '; cleanup: ' + str(cleanup)
-        while not joined and clock() < deadline and len(samples) < MAX_SAMPLES:
+        while not joined and clock() < deadline and len(samples) < maximum_samples:
             try:
                 row = job.snapshot() | {'seconds':clock()-started}
                 samples.append(row)
@@ -295,8 +307,8 @@ def monitor(job, started, timeout, emit, *, clock=time.perf_counter, pause=time.
             'error':error,'samples':samples,'creation_job_assigned':job.creation_job_assigned}
 
 
-def run(command, cwd, environment, directory, identity, *, timeout=15, backend=WindowsJob):
-    need(0 < timeout <= 15, 'Owned build operation exceeds its original 15-second bound')
+def run(command, cwd, environment, directory, identity, *, timeout=OPERATION_SECONDS, backend=WindowsJob):
+    sample_limit(timeout)
     directory.mkdir(exist_ok=False)
     started = time.perf_counter()
     launch = {'schema':SCHEMA,'command':command,'cwd':str(cwd),'timeout_seconds':timeout,'identity':identity}
@@ -315,7 +327,7 @@ def run(command, cwd, environment, directory, identity, *, timeout=15, backend=W
                   'error':str(error),'job_joined':False,'root_pid':getattr(job,'root_pid',None),
                   'root_exit':None,'creation_job_assigned':False,'samples':[],
                   'termination_requested':False,'termination_started_seconds':None,
-                  'timed_out':False,'cleanup_reserve_seconds':min(1.5,timeout/4)}
+                  'timed_out':False,'cleanup_reserve_seconds':min(CLEANUP_SECONDS,timeout/4)}
         if job is not None and job.root_pid is not None:
             try:
                 job.terminate(74)
@@ -348,8 +360,8 @@ def verify(directory, command, identity, *, cwd):
     need(ntpath.normcase(ntpath.normpath(launch['cwd'])) == ntpath.normcase(ntpath.normpath(cwd)), 'Owned build working directory')
     need(result['launch_sha256'] == digest(directory/'launch.json') and result['log_sha256'] == digest(directory/'process.log'), 'Owned build original digest')
     samples = [json.loads(line) for line in (directory/'samples.jsonl').read_text().splitlines()]
-    need(samples == result['samples'] and 1 <= len(samples) <= MAX_SAMPLES, 'Owned build sample inventory')
-    need(launch['timeout_seconds'] == result['timeout_seconds'] and 0 < result['timeout_seconds'] <= 15 and result['seconds'] <= result['timeout_seconds'], 'Owned build operation deadline')
+    need(samples == result['samples'] and 1 <= len(samples) <= sample_limit(result['timeout_seconds']), 'Owned build sample inventory')
+    need(launch['timeout_seconds'] == result['timeout_seconds'] and 0 <= result['seconds'] <= result['timeout_seconds'], 'Owned build operation deadline')
     need(result['creation_job_assigned'] is True and result['job_joined'] is True and result['error'] is None, 'Owned build ownership/cleanup incomplete')
     previous = (-1,0,0,0,0)
     exited, images, creation_times = {},{},{}
@@ -373,7 +385,7 @@ def verify(directory, command, identity, *, cwd):
     need(last['job_empty'] is True and last['active_processes'] == 0 and not last['active_observed'], 'Owned build missing final job join')
     need(result['root_pid'] in exited and result['root_exit'] == exited[result['root_pid']]['exit_code'], 'Owned build root exit mismatch')
     need(ntpath.normcase(ntpath.normpath(images[result['root_pid']])) == ntpath.normcase(ntpath.normpath(command[0])), 'Owned build actual executable differs')
-    need(result['cleanup_reserve_seconds'] == min(1.5,result['timeout_seconds']/4), 'Owned build cleanup reserve changed')
+    need(result['cleanup_reserve_seconds'] == min(CLEANUP_SECONDS,result['timeout_seconds']/4), 'Owned build cleanup reserve changed')
     if result['timed_out']:
         need(result['termination_requested'] is True and result['termination_started_seconds'] is not None
              and result['timeout_seconds']-result['cleanup_reserve_seconds'] <= result['termination_started_seconds'] <= result['seconds'], 'Owned build timeout/termination ordering')

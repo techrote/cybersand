@@ -24,7 +24,8 @@ env:
 jobs:
   windows-diagnostic:
     runs-on: windows-2022
-    timeout-minutes: 20
+    # 45m dependency preparation + 150m diagnostic + setup/upload headroom.
+    timeout-minutes: 240
     defaults:
       run:
         shell: pwsh
@@ -64,17 +65,17 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Materialize accepted selected runtimes and pinned engine archive
         working-directory: source
-        timeout-minutes: 6
+        timeout-minutes: 45
         run: |
           git lfs install --local
-          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
+          python -c "import subprocess; subprocess.run(['git', 'lfs', 'pull', '--include=godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'], check=True, timeout=1200)"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          curl.exe --fail --location --connect-timeout 20 --max-time 240 --output "$env:RUNNER_TEMP/crash-godot.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          curl.exe --fail --location --connect-timeout 60 --max-time 1200 --output "$env:RUNNER_TEMP/crash-godot.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Compile controls and diagnose the unchanged fixture once
         working-directory: source
         shell: cmd
-        timeout-minutes: 12
+        timeout-minutes: 150
         run: |
           for /f "usebackq tokens=*" %%i in (`"%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`) do set "CYBERSAND_CAPTURE_VS=%%i"
           if not defined CYBERSAND_CAPTURE_VS exit /b 1

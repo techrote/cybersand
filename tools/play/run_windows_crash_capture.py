@@ -16,6 +16,7 @@ import tempfile
 import time
 import zipfile
 import windows_build_process as owned_build
+import windows_crash_policy as policy
 
 from windows_crash_contract import (child_environment, read_events, read_json, read_load_identities, require, safe_file, sha,
                                    verify_capture, verify_control, verify_dump_timeout_control, verify_module_bindings)
@@ -28,7 +29,8 @@ BASE='aa74448bad7ec77e5f152d9179a417ce76430009'
 EXTRA=('tools/play/windows_crash_debugger.cpp','tools/play/windows_crash_control.c',
        'tools/play/windows_crash_contract.py','tools/play/run_windows_crash_capture.py',
        'tools/play/test_windows_crash_contract.py','tools/play/windows_build_process.py',
-       'tools/play/test_windows_build_process.py','.github/workflows/play-windows-crash-capture.yml',
+       'tools/play/test_windows_build_process.py','tools/play/windows_crash_policy.py',
+       '.github/workflows/play-windows-crash-capture.yml',
        'docs/audits/2026-10-31-play-windows-crash-capture.md','.gitattributes',
        'tools/ci/check_repository.py','tools/ci/check_docs.py','tools/ci/check_ci_provider_policy.py')
 SCOPES=(*windows.INPUT_SCOPES,*EXTRA)
@@ -40,13 +42,17 @@ ENGINE_FILES={
 }
 ENGINE_ARCHIVE_BYTES=83764371
 CONTROL_MODES=('normal','handled','crash','child-crash','hang')
-BUILD_CONTROL_MODES=('normal-child','nonzero','orphan-hang')
+BUILD_CONTROL_MODES=('normal-child','nonzero','orphan-hang','slow-child','late-child-failure')
+SLOW_CONTROL_SECONDS=20
 
 def build_control_command(python: str, mode: str) -> list[str]:
+    require(mode in BUILD_CONTROL_MODES,'Unknown build ownership control')
     if mode=='nonzero':
         script='import sys; print("OWNED_NONZERO", flush=True); sys.exit(19)'
     else:
-        child='import os,time; print("OWNED_CHILD " + str(os.getpid()), flush=True); time.sleep('+('20' if mode=='orphan-hang' else '0.4')+')'
+        delay=SLOW_CONTROL_SECONDS if mode in ('orphan-hang','slow-child','late-child-failure') else .4
+        child=('import os,sys,time; print("OWNED_CHILD " + str(os.getpid()), flush=True); '
+               'time.sleep('+str(delay)+'); sys.exit('+('19' if mode=='late-child-failure' else '0')+')')
         script=('import subprocess,sys,time; p=subprocess.Popen([sys.executable,"-c",'+repr(child)+'],creationflags=subprocess.DETACHED_PROCESS, '
                 'stdin=sys.stdin,stdout=sys.stdout,stderr=sys.stderr,close_fds=True); '
                 'print("OWNED_PARENT_CHILD " + str(p.pid), flush=True); '+
@@ -57,6 +63,9 @@ def build_control_identity(python: dict, mode: str) -> dict:
     return {'kind':'actual-windows-owned-process-control','mode':mode,'python':python}
 
 def verify_build_control(mode: str, result: dict, log: str) -> None:
+    require(mode in BUILD_CONTROL_MODES,'Unknown build ownership control')
+    require(result['timeout_seconds']==(policy.ORPHAN_CONTROL_SECONDS if mode=='orphan-hang' else policy.OPERATION_SECONDS),
+            'Build ownership control watchdog differs from policy')
     require(result['job_joined'] is True and result['error'] is None,'Build ownership control did not join')
     if mode=='nonzero':
         require(result['status']=='failed' and result['root_exit']==19 and not result['timed_out']
@@ -73,10 +82,17 @@ def verify_build_control(mode: str, result: dict, log: str) -> None:
     require(len(executed)==1,'Build child execution marker missing or duplicated')
     require(int(executed[0])==child,'Build child execution marker PID mismatch')
     exits={row['pid']:row['exit_code'] for row in last['exited_observed']}
-    require(result['root_exit']==0 and exits.get(child)==(124 if mode=='orphan-hang' else 0),
+    root_exit=19 if mode=='late-child-failure' else 0
+    child_exit=124 if mode=='orphan-hang' else root_exit
+    require(result['root_exit']==root_exit and exits.get(child)==child_exit,
             'Build child actual termination code mismatch')
     require(result['timed_out']==(mode=='orphan-hang') and result['termination_requested']==(mode=='orphan-hang')
-            and result['status']==('failed' if mode=='orphan-hang' else 'passed'),'Build child-hang timeout control failed')
+            and result['status']==('failed' if mode in ('orphan-hang','late-child-failure') else 'passed'),
+            'Build child-hang or late-exit control failed')
+    if mode in ('slow-child','late-child-failure'):
+        require(result['seconds']>=SLOW_CONTROL_SECONDS and last['seconds']>=SLOW_CONTROL_SECONDS
+                and result['timeout_seconds']==policy.OPERATION_SECONDS,
+                'Slow build control did not execute beyond the former watchdog')
 
 def run_build_controls(output: Path, environment: dict) -> dict:
     python={'path':str(Path(sys.executable).resolve()),'sha256':sha(Path(sys.executable)),
@@ -88,7 +104,8 @@ def run_build_controls(output: Path, environment: dict) -> dict:
         command=build_control_command(python['path'],mode)
         directory=output/('build-control-'+mode)
         identity=build_control_identity(python,mode)
-        actual=owned_build.run(command,ROOT,environment,directory,identity,timeout=3 if mode=='orphan-hang' else 15)
+        actual=owned_build.run(command,ROOT,environment,directory,identity,
+                               timeout=policy.ORPHAN_CONTROL_SECONDS if mode=='orphan-hang' else policy.OPERATION_SECONDS)
         results[mode]=actual
         write(output/'build-ownership-controls.json',receipt)
         reduced=owned_build.verify(directory,command,identity,cwd=str(ROOT))
@@ -101,7 +118,7 @@ def write(path: Path, value) -> None:
 
 def git(root: Path,*args: str,input: bytes|None=None) -> bytes:
     return subprocess.run(['git','-C',str(root),*args],input=input,stdout=subprocess.PIPE,stderr=subprocess.PIPE,
-                          timeout=15,check=True).stdout
+                          timeout=policy.OPERATION_SECONDS,check=True).stdout
 
 def in_scope(path: str) -> bool:
     # Same portable import-bootstrap exclusion as the ordinary Windows runner.
@@ -184,7 +201,7 @@ def source_archive(output: Path, expected: str) -> dict:
     with pending.open('xb') as stream:
         subprocess.run(['git','-C',str(ROOT),'pack-objects','--stdout','--no-reuse-delta','--no-reuse-object'],
                        input=''.join(oid+'\n' for oid in sorted(objects)).encode(),stdout=stream,stderr=subprocess.PIPE,
-                       timeout=15,check=True)
+                       timeout=policy.OPERATION_SECONDS,check=True)
         stream.flush();os.fsync(stream.fileno())
     pending.replace(output/'source.pack')
     source={'commit':expected,'tree':tree,'unchanged_runtime_base':BASE,'scopes':list(SCOPES),'inputs':inputs,
@@ -208,11 +225,11 @@ def execute(broker: Path, command: list[str], output: Path, timeout_ms: int, env
     with (output/'broker.log').open('wb') as log:
         process=subprocess.Popen(broker_command,cwd=ROOT,env=environment,stdout=log,stderr=subprocess.STDOUT,
                                  creationflags=subprocess.CREATE_NEW_PROCESS_GROUP)
-        try: process.wait(timeout=timeout_ms/1000+3)
+        try: process.wait(timeout=timeout_ms/1000+policy.CLEANUP_SECONDS)
         except subprocess.TimeoutExpired:
             outer_timeout=True
             # Broker debug ownership kills its remaining debuggees on exit.
-            process.kill();process.wait(timeout=2)
+            process.kill();process.wait(timeout=policy.CLEANUP_SECONDS)
     receipt={'broker_command':broker_command,'debuggee_command':command,'broker_pid':process.pid,
              'returncode':process.returncode,'timeout_ms':timeout_ms,'outer_timeout':outer_timeout,
              'wall_seconds':time.perf_counter()-started}
@@ -286,7 +303,7 @@ def engine(archive: Path, output: Path, environment: dict) -> tuple[Path,dict]:
     require(binaries==ENGINE_FILES,'Extracted official engine identity mismatch')
     console=directory/members[1]
     version=subprocess.run([str(console),'--version'],stdout=subprocess.PIPE,stderr=subprocess.STDOUT,
-                           env=environment,timeout=15,check=True).stdout
+                           env=environment,timeout=policy.OPERATION_SECONDS,check=True).stdout
     (output/'version.log').write_bytes(version)
     require(version.decode().strip()==windows.GODOT_VERSION,'Actual engine version mismatch')
     return console,{'version':windows.GODOT_VERSION,'archive_sha512':windows.GODOT_SHA512,
@@ -295,7 +312,10 @@ def engine(archive: Path, output: Path, environment: dict) -> tuple[Path,dict]:
 def sdk_command(compiler: str, source: str, binary: str, obj: str, pdb: str, extension: str) -> list[str]:
     command=[compiler,'/nologo','/Bv','/showIncludes','/Od','/W4','/WX','/Z7','/MT',source,
              '/Fe:'+binary,'/Fo:'+obj]
-    if extension=='cpp':command+=['/std:c++17','/EHsc']
+    if extension=='cpp':
+        command+=['/std:c++17','/EHsc',
+                  '/DCYBERSAND_CRASH_CAPTURE_LIMIT_MS='+str(policy.CAPTURE_MS),
+                  '/DCYBERSAND_CRASH_MAX_CASE_MS='+str(policy.FIXTURE_MS)]
     command+=['/link','/DEBUG:FULL','/PDB:'+pdb]
     if extension=='cpp':command+=['Dbghelp.lib','Bcrypt.lib']
     return command
@@ -350,10 +370,11 @@ def verify_directory(output: Path, expected: str) -> dict:
     """Read original artifacts offline, preserving failure as failure."""
     verify_manifest(output)
     report=read_json(output/'campaign.json')
-    require(report['schema']=='play-windows-crash-campaign-v3' and report['completed'] is True
+    require(report['schema']=='play-windows-crash-campaign-v4' and report['completed'] is True
             and report['errors']==[] and report['fixture_attempts']==1,'Diagnostic campaign is incomplete')
     require(report['original_failed_run']==41175131563 and report['original_failed_source']==BASE
             and report['original_failure_still_blocking'] is True,'Original failure provenance was rewritten')
+    require(report['watchdog_policy']==policy.POLICY,'Diagnostic watchdog policy differs from source')
     canonical=verify_source_pack(output,report['source'],expected)
     runtime_proof(report['source'],canonical,report['runtime'])
     controls=report['build_ownership_controls']
@@ -376,7 +397,7 @@ def verify_directory(output: Path, expected: str) -> dict:
                 'Retained diagnostic executable differs from original tool receipt')
         extension='cpp' if role=='broker' else 'c';source_path='tools/play/'+name+'.'+extension
         rows=[row for row in report['build']['builds'] if row['source']==source_path]
-        require(len(rows)==1 and rows[0]['returncode']==0 and rows[0]['seconds']<=15
+        require(len(rows)==1 and rows[0]['returncode']==0 and rows[0]['seconds']<=policy.OPERATION_SECONDS
                 and rows[0]['source_sha256']==hashlib.sha256(canonical[source_path]).hexdigest()
                 and rows[0]['binary_sha256']==tool['sha256'] and rows[0]['binary_bytes']==tool['bytes'],
                 'MSVC build does not bind the retained tool to exact source')
@@ -391,14 +412,14 @@ def verify_directory(output: Path, expected: str) -> dict:
         require(row['operation']==operation_name and row['command']==command and row['identity']==expected_identity,
                 'Original build command/source identity mismatch')
         reduced=owned_build.verify(output/'tools'/operation_name,command,expected_identity,cwd=tools_path)
-        require(reduced==row['result'] and reduced['status']=='passed' and reduced['timeout_seconds']==15,
+        require(reduced==row['result'] and reduced['status']=='passed' and reduced['timeout_seconds']==policy.OPERATION_SECONDS,
                 'Original build ownership/deadline reduction mismatch')
     require(set(report['controls'])==set(CONTROL_MODES)|{'dump-writer-timeout'},'Complete diagnostic control inventory mismatch')
     results={}
     for name in (*('control-'+mode for mode in CONTROL_MODES),'control-dump-writer-timeout','import',FIXTURE):
         directory=output/name;receipt=read_json(directory/'process.json');events=read_events(directory/'events.jsonl')
         control=name.startswith('control-');mode=name.removeprefix('control-')
-        limit=500 if name=='control-hang' else 15000 if control else 240000 if name=='import' else 180000
+        limit=policy.case_limit_ms(name,FIXTURE)
         command=([report['tools']['control']['path'],'crash' if mode=='dump-writer-timeout' else mode] if control else
                  [ntpath.join(report['paths']['output'],'engine','Godot_v4.7-stable_win64_console.exe'),
                   '--headless','--path',ntpath.join(report['paths']['source'],'godot'),
@@ -456,7 +477,8 @@ def main() -> int:
     require(os.environ.get('GITHUB_RUN_ATTEMPT','1')=='1','Automatic reruns are not authorized by this one-attempt diagnostic')
     output=args.output.resolve(); require(not output.exists(),'Retain earlier evidence; output already exists')
     output.mkdir(parents=True)
-    report={'schema':'play-windows-crash-campaign-v3','status':'incomplete','completed':False,'errors':[],
+    report={'schema':'play-windows-crash-campaign-v4','status':'incomplete','completed':False,'errors':[],
+            'watchdog_policy':policy.POLICY,
             'original_failed_run':41175131563,'original_failed_source':BASE,'original_failure_still_blocking':True,
             'scope':'Opt-in debugger evidence only; one prescribed unchanged-fixture attempt, no automatic retries or integration approval. Build Job accounting establishes containment and final empty-job state; 10 Hz sampling records only observed child identities and exits, not every short-lived child.',
             'run_id':os.environ.get('GITHUB_RUN_ID'),'run_attempt':os.environ.get('GITHUB_RUN_ATTEMPT'),
@@ -475,22 +497,22 @@ def main() -> int:
                          for name,path in [('broker',broker),('control',control)]}
         for mode in CONTROL_MODES:
             result=execute(broker,[str(control),mode],output/('control-'+mode),
-                           500 if mode=='hang' else 15000,environment,*bindings(report,controls=True))
+                           policy.case_limit_ms('control-'+mode,FIXTURE),environment,*bindings(report,controls=True))
             verify_control(mode,result);report['controls'][mode]=result
             write(output/'campaign.json',report)
         report['controls']['dump-writer-timeout']=execute(broker,[str(control),'crash'],output/'control-dump-writer-timeout',
-            15000,environment|{'CYBERSAND_CRASH_DUMP_TIMEOUT_CONTROL':'1'},*bindings(report,controls=True),dump_timeout_control=True)
+            policy.DUMP_TIMEOUT_CONTROL_MS,environment|{'CYBERSAND_CRASH_DUMP_TIMEOUT_CONTROL':'1'},*bindings(report,controls=True),dump_timeout_control=True)
         binary,report['engine']=engine(args.godot_archive.resolve(),output,environment)
         imported=execute(broker,[str(binary),'--headless','--path',str(ROOT/'godot'),'--editor','--quit'],
-                         output/'import',240000,environment,*bindings(report))
+                         output/'import',policy.IMPORT_MS,environment,*bindings(report))
         report['import']=imported
-        require(imported['effective_exit']==0 and not imported['timed_out'],'Import did not pass its original 240-second bound')
+        require(imported['effective_exit']==0 and not imported['timed_out'],'Import did not finish under its execution watchdog')
         require(not re.search(r'SCRIPT ERROR:|ERROR:|\bskipped\b|^\s*SKIP\b',(output/'import/engine.log').read_text(errors='replace'),re.M|re.I),
                 'Import strict diagnostics did not pass')
         source_unchanged(report['source'])
         report['fixture_attempts']=1;write(output/'campaign.json',report)
         result=execute(broker,[str(binary),'--headless','--path',str(ROOT/'godot'),'--script','res://tests/'+FIXTURE+'.gd'],
-                       output/FIXTURE,180000,environment,*bindings(report))
+                       output/FIXTURE,policy.FIXTURE_MS,environment,*bindings(report))
         report['fixture']=result
         log=(output/FIXTURE/'engine.log').read_text(errors='replace')
         report['assertion_footer_present']='LIQUID_DESKTOP_DEFAULT_HOST: 86 assertions; 0 failures' in log

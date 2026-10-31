@@ -10,6 +10,12 @@ related-documents: [../operations/local-build-and-validation.md, ../operations/g
 
 # Windows exception capture — 2026-10-31
 
+The [v4 continuation](#owner-authorized-watchdogs-and-retained-compiler-failure--v4)
+below supersedes the short apparatus watchdogs in the historical sections.
+It preserves the original production/fixture source and every prior failure.
+Local portable controls are complete; resulting-source Windows execution is
+still required. No successful new engine execution or crash repair is asserted.
+
 ## Original blocking result and narrow purpose
 
 PR #319 source `aa74448bad7ec77e5f152d9179a417ce76430009`, tree
@@ -464,3 +470,115 @@ debugger attempt did not observe a process failure; it is not a repair,
 ordinary Windows qualification, graphical test, hardware test or human-play
 acceptance. Symbol availability may limit stack naming even when raw registers,
 stack bytes and module identities are retained.
+
+## Owner-authorized watchdogs and retained compiler failure — v4
+
+The 31 October 2026 owner handoff explicitly replaces obsolete short execution
+budgets with generous watchdogs. This successor starts from original #321 head
+`b890069877c7b197cf21ddf96cd00128ccbf09ad`, tree
+`40ba7d568d3991f3e5394a1a2ab5da4b8649cd50`. Its diagnostic source is separate
+from current-main timeout/shader integration: `godot`, `native`, `third_party`,
+`tools/ci` and the ordinary Godot workflow remain byte-identical to original
+failed source `aa74448bad7ec77e5f152d9179a417ce76430009`. Importing current main
+would invalidate that original-source equality check. The historical fixture's
+two internal 20-second waits also remain exact; current-main qualification owns
+their independent modernization. This explicit reproduction exception must not
+be mistaken for the current production CI policy.
+
+### Original compiler refusal, independently read back
+
+[Run 41196344488, attempt 1](https://github.com/techrote/cybersand/actions/runs/41196344488)
+ran the above b890 source. Artifact `13041371268` contains 6,378,256 bytes with
+SHA-256 `553f66d9d5c5f611d31a827d51a71c923da65843c538f0fef3d0ac541215a503`.
+The ZIP CRC, all 25 sealed campaign entries, original owned-build receipts and
+original ownership controls were independently checked with the **b890 readers**.
+The actual normal parent/child, nonzero-exit and orphan-hang controls passed
+their respective positive/negative oracles. Their observed wall times were
+0.507788, 0.104820 and 2.419895 seconds; all three jobs were joined.
+
+The diagnostic compiler was MSVC `14.44.35207`, `HostX64/x64/cl.exe`, 677,776
+bytes, SHA-256 `fe251ef50a1545b1b0835ee17b1e785459712b38d79e45b5c1d3d28970a36619`.
+The raw compiler job recorded four processes. `cl.exe`, `link.exe` and the
+observed console host exited zero. `vctip.exe` remained alive until the owner
+requested job termination at 13.590305 seconds, retaining its observed exit124.
+The complete job was joined at 13.691117 seconds. The 15-second operation
+reserved its last 1.5 seconds for cleanup, so the compiler operation correctly
+remained failed even though its root exited zero. The game fixture was never
+reached: `fixture_attempts` is zero.
+
+Microsoft's [BuildXL MSVC tool definition](https://github.com/microsoft/BuildXL/blob/main/Public/Sdk/Experimental/Msvc/VisualCpp/visualCpp.dsc)
+identifies VCTIP as a possible surviving compiler child used for telemetry.
+That does not prove this particular child would finish naturally after 15
+seconds. This successor allows the actual contained job to demonstrate its
+result. It does not ignore, detach, rename or globally terminate a process,
+modify compiler binaries, or infer a successful join from the root's exit.
+No undocumented telemetry environment key is assumed to prevent child creation.
+
+### Versioned execution policy and unchanged ownership
+
+[`windows_crash_policy.py`](../../tools/play/windows_crash_policy.py) is the
+single policy source for this original-source apparatus. Both execution and
+offline reduction import it. The exact policy is retained in `campaign.json`;
+compiler `/D` arguments select the same capture/case bounds in the C++ broker,
+whose source refuses compilation without those explicit definitions. The
+campaign, broker and owned-build schemas advance to v4, v3 and v2 respectively.
+Older evidence continues to require its original source readers.
+
+| Operation | v4 watchdog |
+|---|---:|
+| Owned SDK compilation, Git evidence operations, engine version probe | 300 seconds |
+| Each ordinary exception-control process | 300 seconds |
+| Required module hash and dump helper | 300 seconds, capped by remaining parent time |
+| Godot import | 1,200 seconds |
+| Original standalone complex fixture process | 3,600 seconds |
+| Hosted job / diagnostic stage | 180 / 150 minutes |
+| Owned-operation cleanup reserve | Up to 10 seconds within its existing watchdog |
+| Outer broker cleanup observation | 10 seconds, then bounded termination/join observation |
+
+The deliberately hung ownership, debuggee and dump-writer controls retain
+their separate 3-second, 500-millisecond and 1-second injected boundaries.
+The dump-writer control's parent stays 15 seconds. These are explicit adverse
+controls, not implicit normal-workload limits. The materialization stage gets
+20 minutes; the whole-job ceiling covers it plus the sequential diagnostic
+stage and artifact collection. No elapsed performance target is introduced.
+
+The former fixed 160-sample cap would still cut off a 300-second operation
+near 16 seconds. Sample capacity now derives from the prescribed watchdog and
+10-Hz interval with four samples of headroom; portable verification derives
+the same bound. Every raw sample, observed process image, creation time, CPU
+time, exit code, log size and final empty-job state remains retained. The
+32-process limit, creation-time Job/handle membership, no-breakaway policy,
+nonzero-exit propagation and strict observed join requirements are unchanged.
+An unjoined process, late exit or watchdog termination cannot pass.
+
+### Qualification of the successor
+
+The Windows campaign adds an actual 20-second child that exits zero and an
+actual 20-second child that exits19. Each requires the child execution marker,
+exact two-process accounting, observed child identity, full natural join and
+wall time beyond the former 15-second limit; the latter must retain both
+nonzero exits and its failed operation status while satisfying the negative
+control oracle. Existing normal/nonzero/orphan controls remain mandatory.
+
+Local portable qualification passes **27 owned-build tests and 57
+crash/artifact tests**, normally and under `python -O`. The additions exercise
+30-second successful and late-failing modeled operations beyond both old
+limits, a full 300-second modeled hang with observed termination/join,
+invalid/nonfinite bounds, slow command execution/exit propagation, false
+fast-execution receipts, late-child failure, capture/hash completion beyond
+15 seconds, unjoined hash refusal and resealed policy substitution.
+These virtual-clock and mock-Win32 controls do not claim actual Windows
+execution. The provider-policy check and whitespace check also pass.
+Historical M11 integrity passes. Local documentation/repository checks retain
+the same six absent companion-workspace expected-fact inputs (source provenance,
+Web threading, development wrapper/guide and browser results); these are
+reported as failures, not dismissed as successful checks. No protected source
+or runtime/provenance manifest was changed to address them.
+
+Fresh exact-source hosted ownership controls, SDK builds, debugger controls,
+import and the one original fixture attempt remain required. If VCTIP still
+does not leave its owned job before the generous watchdog, that attempt must
+retain the complete partial evidence and remain failed; no basename exception
+is authorized. A later successful diagnostic will mean only that one exact
+debugger attempt observed no process failure. It cannot establish the cause
+or repair of original access violation `0xC0000005` in run41175131563.

@@ -50,7 +50,7 @@ def synthetic_load_hash(root,event,identity):
     file_id=bytes.fromhex('12'*16)
     original={'volume':123,'file_id':file_id.hex(),'bytes':identity['bytes']}
     (root/name).write_bytes(struct.pack('<Q16sQ32s',123,file_id,identity['bytes'],bytes.fromhex(identity['sha256'])))
-    event['load_hash']={'valid':True,'record':name,'milliseconds':1,'limit_ms':15000,'helper_pid':101,
+    event['load_hash']={'valid':True,'record':name,'milliseconds':1,'limit_ms':contract.CAPTURE_MS,'helper_pid':101,
                        'helper_exit':0,'helper_joined':True,'helper_terminated':False,'timed_out':False,
                        'original_file':original,'file':original|{'sha256':identity['sha256']}}
 
@@ -78,7 +78,7 @@ class CaptureTests(unittest.TestCase):
                  'code':CODE,'address':0x140001234,'loader_breakpoint':False,'continued_as':contract.NOT_HANDLED},
                 {'type':'capture','event_id':index,'pid':pid,'tid':tid,'prefix':prefix,'capture_exit':0,
                  'capture_ms':10,'timed_out':False,'context_bytes':1232,'exception_bytes':152,
-                 'helper_pid':91,'helper_joined':True,'helper_terminated':False,'helper_control':False,'capture_limit_ms':15000}])
+                 'helper_pid':91,'helper_joined':True,'helper_terminated':False,'helper_control':False,'capture_limit_ms':contract.CAPTURE_MS}])
         code=CODE if mode in ('crash','child-crash') else 124 if mode=='hang' else 0
         if mode!='hang':
             self.events.append({'type':'exit','pid':pid,'tid':tid,'code':code})
@@ -152,8 +152,29 @@ class CaptureTests(unittest.TestCase):
         self.reject('disguised')
 
     def test_capture_deadline_is_strict(self):
-        self.fixture();next(e for e in self.events if e['type']=='capture')['capture_ms']=15001
+        self.fixture();next(e for e in self.events if e['type']=='capture')['capture_ms']=contract.CAPTURE_MS+1
         self.reject('Failed/late')
+
+    def test_capture_after_former_limit_retains_fault_identity(self):
+        self.fixture()
+        for event in self.events:
+            if event['type']=='capture':event['capture_ms']=20000
+        self.events[0]['timeout_ms']=self.receipt['timeout_ms']=campaign.policy.CONTROL_MS
+        self.events[-1]['elapsed_ms']=40040
+        result=contract.verify_capture(self.root,self.events,self.receipt)
+        self.assertEqual(result['effective_exit'],CODE)
+        self.assertEqual(len(result['captures']),2)
+
+    def test_load_hash_after_former_limit_keeps_join_and_file_identity(self):
+        self.fixture('normal')
+        event=next(e for e in self.events if e['type']=='process')
+        synthetic_load_hash(self.root,event,{'sha256':'1'*64,'bytes':1234})
+        event['load_hash']['milliseconds']=20000
+        result=contract.read_load_identities(self.root,self.events)
+        self.assertEqual(result[event['image']],{'sha256':'1'*64,'bytes':1234})
+        event['load_hash']['helper_joined']=False
+        with self.assertRaisesRegex(ValueError,'joined ownership'):
+            contract.read_load_identities(self.root,self.events)
 
     def test_process_deadline_is_strict(self):
         self.fixture('normal');self.events[-1]['elapsed_ms']=15001
@@ -333,7 +354,7 @@ class CaptureTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'debug event handle file identity'):self.bind()
 
     def test_load_hash_deadline_and_join_are_enforced(self):
-        for field,value in (('milliseconds',15001),('helper_joined',False),('helper_exit',124)):
+        for field,value in (('milliseconds',contract.CAPTURE_MS+1),('helper_joined',False),('helper_exit',124)):
             self.bound_fixture('normal');event=next(e for e in self.events if e['type']=='process')
             event['load_hash'][field]=value
             with self.subTest(field=field),self.assertRaisesRegex(ValueError,'load-time hash failed'):self.bind()
@@ -362,7 +383,7 @@ class ManifestTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'inventory mismatch'):campaign.verify_manifest(self.root)
 
     def test_incomplete_campaign_is_not_an_offline_pass(self):
-        campaign.write(self.root/'campaign.json',{'schema':'play-windows-crash-campaign-v3','completed':False})
+        campaign.write(self.root/'campaign.json',{'schema':'play-windows-crash-campaign-v4','completed':False})
         campaign.write(self.root/'MANIFEST.json',{path.name:{'sha256':contract.sha(path),'bytes':path.stat().st_size}
             for path in self.root.iterdir() if path.name!='MANIFEST.json'})
         with self.assertRaisesRegex(ValueError,'campaign is incomplete'):campaign.verify_directory(self.root,'a'*40)
@@ -379,7 +400,8 @@ class OfflineCompositionTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup);self.root=Path(self.temp.name)
         self.head='a'*40;self.canonical={}
-        report=self.report={'schema':'play-windows-crash-campaign-v3','completed':True,'errors':[],'fixture_attempts':1,
+        report=self.report={'schema':'play-windows-crash-campaign-v4','completed':True,'errors':[],'fixture_attempts':1,
+            'watchdog_policy':campaign.policy.POLICY,
             'original_failed_run':41175131563,'original_failed_source':campaign.BASE,'original_failure_still_blocking':True,
             'paths':{'source':'C:\\source','output':'C:\\evidence'},'source':{'commit':self.head,'tree':'b'*40,'inputs':{}},
             'runtime':{},'controls':{},'tools':{},
@@ -396,7 +418,7 @@ class OfflineCompositionTests(unittest.TestCase):
             identity=campaign.build_control_identity(python,mode)
             report['build_ownership_controls']['results'][mode]=synthetic_operation(
                 self.root/('build-control-'+mode),command,identity,report['paths']['source'],
-                mode=mode,timeout=3 if mode=='orphan-hang' else 15)
+                mode=mode,timeout=campaign.policy.ORPHAN_CONTROL_SECONDS if mode=='orphan-hang' else campaign.policy.OPERATION_SECONDS)
         campaign.write(self.root/'build-ownership-controls.json',report['build_ownership_controls'])
         for role,name,extension in (('broker','windows_crash_debugger','cpp'),('control','windows_crash_control','c')):
             binary=self.root/'tools'/f'{name}.exe';binary.write_bytes(b'MZsynthetic-'+role.encode())
@@ -425,7 +447,7 @@ class OfflineCompositionTests(unittest.TestCase):
         case=CaptureTests();case.root=directory;case.control_image=self.report['tools']['control']['path']
         case.fixture('handled' if mode=='dump-writer-timeout' else mode if control else 'normal')
         events=case.events;receipt=case.receipt;images,runtimes=campaign.bindings(self.report,controls=control)
-        limit=500 if mode=='hang' else 15000 if control else 240000 if name=='import' else 180000
+        limit=campaign.policy.case_limit_ms(name,campaign.FIXTURE)
         receipt['timeout_ms']=events[0]['timeout_ms']=limit
         if mode=='hang':events[-1]['elapsed_ms']=limit
         if mode=='dump-writer-timeout':
@@ -471,6 +493,12 @@ class OfflineCompositionTests(unittest.TestCase):
 
     def test_full_offline_composition_reads_every_original_case(self):
         self.assertEqual(campaign.verify_directory(self.root,self.head)['status'],'no_process_failure_observed')
+
+    def test_resealed_watchdog_policy_substitution_is_refused(self):
+        self.report['watchdog_policy']=dict(self.report['watchdog_policy'],operation_seconds=99999)
+        campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'watchdog policy'):
+            campaign.verify_directory(self.root,self.head)
 
     def test_resealed_missing_owned_build_control_is_refused(self):
         del self.report['build_ownership_controls']['results']['orphan-hang']
