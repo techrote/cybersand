@@ -56,6 +56,9 @@ func _button(parent: Node, text: String, action: Callable) -> Button:
 
 func setup(controller: Control) -> void:
 	host = controller
+	# PopupPanel is its own input viewport. Its F2 shortcut must reach the
+	# same navigation/cancellation owner as ordinary root-window input.
+	window_input.connect(_on_window_input)
 	# Autowrapped labels have no useful width before their first layout.
 	# Keep the popup bounded; only the selection form scrolls.
 	wrap_controls = false
@@ -107,6 +110,10 @@ func setup(controller: Control) -> void:
 	_button(actions, "Close", hide)
 	_refresh_controls()
 	refresh()
+
+
+func _on_window_input(event: InputEvent) -> void:
+	get_node("/root/FeatureNavigation").handle_navigation_input(event, self)
 
 
 func _refresh_controls() -> void:
@@ -185,8 +192,11 @@ func refresh() -> void:
 	var pending: bool = not host.pending_microscenario_apply.is_empty()
 	var active: bool = host._playable_course_controls_active()
 	resume_button.disabled = not active or pending or host.simulation_worker.has_failed() or not host._physical_terrain_ready
-	reset_button.disabled = not active or not reason.is_empty()
-	if pending:
+	var recovering: bool = host.playable_session_can_recover()
+	reset_button.disabled = not active or (not reason.is_empty() and not recovering)
+	if host.simulation_worker.has_failed():
+		status_label.text = reason
+	elif pending:
 		status_label.text = "Building selected session… The previous session remains applied until the rebuild is accepted."
 	elif not host.microscenario_error.is_empty():
 		status_label.text = "Refused: " + str(host.microscenario_error)
