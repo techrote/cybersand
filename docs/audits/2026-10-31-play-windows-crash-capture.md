@@ -10,6 +10,12 @@ related-documents: [../operations/local-build-and-validation.md, ../operations/g
 
 # Windows exception capture — 2026-10-31
 
+The [v5 LLVM successor](#diagnostic-only-clang-cl-and-lld-successor--v5)
+below supersedes the compiler configuration of the retained v4 attempt.
+It preserves the original production/fixture source and every prior failure.
+Local portable controls are complete; resulting-source Windows execution is
+still required. No successful new engine execution or crash repair is asserted.
+
 ## Original blocking result and narrow purpose
 
 PR #319 source `aa74448bad7ec77e5f152d9179a417ce76430009`, tree
@@ -464,3 +470,253 @@ debugger attempt did not observe a process failure; it is not a repair,
 ordinary Windows qualification, graphical test, hardware test or human-play
 acceptance. Symbol availability may limit stack naming even when raw registers,
 stack bytes and module identities are retained.
+
+## Owner-authorized watchdogs and retained compiler failure — v4
+
+The 31 October 2026 owner handoff explicitly replaces obsolete short execution
+budgets with generous watchdogs. This successor starts from original #321 head
+`b890069877c7b197cf21ddf96cd00128ccbf09ad`, tree
+`40ba7d568d3991f3e5394a1a2ab5da4b8649cd50`. Its diagnostic source is separate
+from current-main timeout/shader integration: `godot`, `native`, `third_party`,
+`tools/ci` and the ordinary Godot workflow remain byte-identical to original
+failed source `aa74448bad7ec77e5f152d9179a417ce76430009`. Importing current main
+would invalidate that original-source equality check. The historical fixture's
+two internal 20-second waits also remain exact; current-main qualification owns
+their independent modernization. This explicit reproduction exception must not
+be mistaken for the current production CI policy.
+
+### Original compiler refusal, independently read back
+
+[Run 41196344488, attempt 1](https://github.com/techrote/cybersand/actions/runs/41196344488)
+ran the above b890 source. Artifact `13041371268` contains 6,378,256 bytes with
+SHA-256 `553f66d9d5c5f611d31a827d51a71c923da65843c538f0fef3d0ac541215a503`.
+The ZIP CRC, all 25 sealed campaign entries, original owned-build receipts and
+original ownership controls were independently checked with the **b890 readers**.
+The actual normal parent/child, nonzero-exit and orphan-hang controls passed
+their respective positive/negative oracles. Their observed wall times were
+0.507788, 0.104820 and 2.419895 seconds; all three jobs were joined.
+
+The diagnostic compiler was MSVC `14.44.35207`, `HostX64/x64/cl.exe`, 677,776
+bytes, SHA-256 `fe251ef50a1545b1b0835ee17b1e785459712b38d79e45b5c1d3d28970a36619`.
+The raw compiler job recorded four processes. `cl.exe`, `link.exe` and the
+observed console host exited zero. `vctip.exe` remained alive until the owner
+requested job termination at 13.590305 seconds, retaining its observed exit124.
+The complete job was joined at 13.691117 seconds. The 15-second operation
+reserved its last 1.5 seconds for cleanup, so the compiler operation correctly
+remained failed even though its root exited zero. The game fixture was never
+reached: `fixture_attempts` is zero.
+
+Microsoft's [BuildXL MSVC tool definition](https://github.com/microsoft/BuildXL/blob/main/Public/Sdk/Experimental/Msvc/VisualCpp/visualCpp.dsc)
+identifies VCTIP as a possible surviving compiler child used for telemetry.
+That does not prove this particular child would finish naturally after 15
+seconds. This successor allows the actual contained job to demonstrate its
+result. It does not ignore, detach, rename or globally terminate a process,
+modify compiler binaries, or infer a successful join from the root's exit.
+No undocumented telemetry environment key is assumed to prevent child creation.
+
+### Versioned execution policy and unchanged ownership
+
+[`windows_crash_policy.py`](../../tools/play/windows_crash_policy.py) is the
+single policy source for this original-source apparatus. Both execution and
+offline reduction import it. The exact policy is retained in `campaign.json`;
+compiler `/D` arguments select the same capture/case bounds in the C++ broker,
+whose source refuses compilation without those explicit definitions. The
+campaign, broker and owned-build schemas advance to v4, v3 and v2 respectively.
+Older evidence continues to require its original source readers.
+
+| Operation | v4 watchdog |
+|---|---:|
+| Owned SDK compilation, Git evidence operations, engine version probe | 300 seconds |
+| Each ordinary exception-control process | 300 seconds |
+| Required module hash and dump helper | 300 seconds, capped by remaining parent time |
+| Godot import | 1,200 seconds |
+| Original standalone complex fixture process | 3,600 seconds |
+| Hosted job / diagnostic stage | 180 / 150 minutes |
+| Owned-operation cleanup reserve | Up to 10 seconds within its existing watchdog |
+| Outer broker cleanup observation | 10 seconds, then bounded termination/join observation |
+
+The deliberately hung ownership, debuggee and dump-writer controls retain
+their separate 3-second, 500-millisecond and 1-second injected boundaries.
+The dump-writer control's parent stays 15 seconds. These are explicit adverse
+controls, not implicit normal-workload limits. The materialization stage gets
+20 minutes; the whole-job ceiling covers it plus the sequential diagnostic
+stage and artifact collection. No elapsed performance target is introduced.
+
+The former fixed 160-sample cap would still cut off a 300-second operation
+near 16 seconds. Sample capacity now derives from the prescribed watchdog and
+10-Hz interval with four samples of headroom; portable verification derives
+the same bound. Every raw sample, observed process image, creation time, CPU
+time, exit code, log size and final empty-job state remains retained. The
+32-process limit, creation-time Job/handle membership, no-breakaway policy,
+nonzero-exit propagation and strict observed join requirements are unchanged.
+An unjoined process, late exit or watchdog termination cannot pass.
+
+### Qualification of the successor
+
+The Windows campaign adds an actual 20-second child that exits zero and an
+actual 20-second child that exits19. Each requires the child execution marker,
+exact two-process accounting, observed child identity, full natural join and
+wall time beyond the former 15-second limit; the latter must retain both
+nonzero exits and its failed operation status while satisfying the negative
+control oracle. Existing normal/nonzero/orphan controls remain mandatory.
+
+Local portable qualification passes **27 owned-build tests and 57
+crash/artifact tests**, normally and under `python -O`. The additions exercise
+30-second successful and late-failing modeled operations beyond both old
+limits, a full 300-second modeled hang with observed termination/join,
+invalid/nonfinite bounds, slow command execution/exit propagation, false
+fast-execution receipts, late-child failure, capture/hash completion beyond
+15 seconds, unjoined hash refusal and resealed policy substitution.
+These virtual-clock and mock-Win32 controls do not claim actual Windows
+execution. The provider-policy check and whitespace check also pass.
+Historical M11 integrity passes. Local documentation/repository checks retain
+the same six absent companion-workspace expected-fact inputs (source provenance,
+Web threading, development wrapper/guide and browser results); these are
+reported as failures, not dismissed as successful checks. No protected source
+or runtime/provenance manifest was changed to address them.
+
+Fresh exact-source hosted ownership controls, SDK builds, debugger controls,
+import and the one original fixture attempt remain required. If VCTIP still
+does not leave its owned job before the generous watchdog, that attempt must
+retain the complete partial evidence and remain failed; no basename exception
+is authorized. A later successful diagnostic will mean only that one exact
+debugger attempt observed no process failure. It cannot establish the cause
+or repair of original access violation `0xC0000005` in run41175131563.
+
+## Diagnostic-only clang-cl and lld successor — v5
+
+The owner authorized a change to the diagnostic toolchain after the generous
+MSVC attempt still failed before reaching the game. This successor starts at
+#329 head 2be6d0a388d1c4dfb607df04ac59dca7a9879ac6, tree
+e24efbbb1bd4888f7011e36f2cfed92d635706fe. The original production, native,
+runtime, fixture and ordinary-CI source fence remains unchanged. The C++ broker
+and C exception-control source also remain byte-identical to that v4 attempt.
+Only their compiler/linker configuration, custody readers, tests, policy
+envelope and dedicated workflow change.
+
+### Preserved 300-second MSVC failure
+
+[Run 41235058997, attempt 1](https://github.com/techrote/cybersand/actions/runs/41235058997),
+job 124636953307, retained artifact 13055585103: 6,604,663 bytes, SHA-256
+6473233612d17000653554eca5c8b5b3551adfcedb8853fd7d1a407ba2faf95f.
+Independent readback verified the ZIP CRC, all 33 sealed entries, 795 scoped
+source inputs, all 15 source-matched Python reader files, native/Rapier
+provenance, all five actual ownership controls and the original failed build
+reduction. The full v4 campaign reader correctly rejects the incomplete
+campaign. No old receipt, process status, timeout or manifest was rewritten.
+
+The same pinned MSVC binary recorded cl.exe PID 724, link.exe PID 4396 and
+conhost.exe PID 6364 exiting zero by 7.446344 seconds. Its vctip.exe descendant,
+PID 2080 with creation identity 134379491098269622, was first observed at
+3.019958 seconds and remained the only live owned process after compilation.
+The owner requested termination at 290.001062 seconds, reserving the last
+10 seconds of the existing 300-second operation. VCTIP exited 124 and the job
+was joined at 290.102039 seconds. The completed executable/PDB do not turn
+this operation into a pass. The retained fixture-attempt count is zero.
+
+Normal child and nonzero controls completed in 0.508659 and 0.104513 seconds.
+The deliberate orphan was terminated and joined in 2.415143 seconds.
+The 20-second natural-success and late-exit-19 controls completed in
+20.092628 and 20.102585 seconds, with their exact positive/negative outcomes.
+These actual observations validate the enlarged ownership-control path;
+they provide no game, import or debugger exception-capture result.
+
+Microsoft documents [VSCEIP registry opt-out](https://learn.microsoft.com/en-us/visualstudio/ide/visual-studio-experience-improvement-program)
+for optional diagnostic data, without promising zero helper creation or a
+bounded VCTIP lifetime. Its [BuildXL implementation](https://github.com/microsoft/BuildXL/blob/aab9f814e31aa8a05607bbc4f051e44eb6e2afc7/Public/Src/FrontEnd/Ninja/NinjaPipConstructor.cs)
+also recognizes the long-lived compiler child. Neither source establishes an
+invocation-local switch satisfying this apparatus's strict natural-join
+contract. The owner selected a separately declared LLVM diagnostic build;
+no registry opt-out, hidden compiler flag, process-name exception, tool
+deletion, prewarmed helper or global process termination is introduced.
+
+### Exact LLVM identity and build custody
+
+GitHub's [Windows-2022 inventory](https://github.com/actions/runner-images/blob/4da2307112a0fad2fd2ecaca8ba7d08683b8c581/images/windows/Windows2022-Readme.md)
+lists LLVM 20.1.8. The source selects the existing fixed paths under
+C:\Program Files\LLVM\bin and refuses a missing or different installation.
+It does not search PATH or silently switch compiler families. The pins below
+were derived by extracting only the two executable members from the
+[official LLVM 20.1.8 installer](https://github.com/llvm/llvm-project/releases/tag/llvmorg-20.1.8),
+after checking its published release-asset size and SHA-256. The installer
+was inspected locally, not executed or committed.
+
+| Official file | Bytes | SHA-256 |
+|---|---:|---|
+| LLVM-20.1.8-win64.exe | 385,658,654 | 3197846a2b19063687dd56e93e34cd941e3548d907f23a6131571321bdf9fe7b |
+| bin/clang-cl.exe | 101,879,296 | 51ace51d190c6f09af277bb8d6354b3fb2fd8495cae3d80dcb1c36c2d1a816d4 |
+| bin/lld-link.exe | 67,509,760 | 6590ac0122cd5e11fcd05cc9cd5b7ad01cb89961487b9b81c4330fb59abcb5d9 |
+
+The existing x64 developer-shell setup supplies Windows SDK and static CRT
+headers/libraries. Their selected environment paths and versions are retained
+as context; they are not claimed to be a newly content-pinned SDK distribution.
+The two LLVM executables are size/hash checked before work and after each
+owned operation; observed identities, including a mismatch, are retained.
+Separate version probes must report release 20.1.8 and the
+compiler's x86_64-pc-windows-msvc target. Their original logs, identities,
+process samples and observed exits are retained.
+
+Each tool is compiled to a retained object with clang-cl /c, then linked by an
+explicit lld-link invocation in its own owned job. There is no driver-selected
+MSVC linker fallback. Compiler warnings remain errors, optimization stays
+disabled, /Z7 CodeView and /MT static CRT stay explicit, and lld emits full
+PDBs with warnings treated as errors. LLVM documents the
+[clang-cl interface](https://clang.llvm.org/docs/UsersManual.html#clang-cl)
+and [Windows lld/PDB support](https://lld.llvm.org/windows_support.html).
+The new compiler disables automatic default config files and removes only
+compiler-flag/config override environment names from its private build
+environment; the original game environment is preserved.
+
+Build schema v2 binds each compile phase to its canonical source and pinned
+toolchain, and each link phase to the exact retained object bytes as well.
+The object, executable and PDB identities are independently checked offline.
+Campaign schema v5 requires both owned version probes and both compile/link
+phases for each of the two diagnostic tools. All original debugger controls
+remain mandatory, including normal exit, handled access violation, unhandled
+fault, child fault, hung target and hung dump writer. Their real Windows
+execution must qualify the new compiler before the original game is attempted.
+
+The unchanged owned-build v2 format retains its honest 10-Hz observation
+scope. New LLVM phase/version acceptance adds a stricter cross-check:
+the final Job total-process count must equal the number of distinct observed
+exits. A short-lived unobserved child therefore fails the LLVM phase even if
+the generic historical reducer can establish an empty job. Every observed
+exit must be zero, every job must join naturally, and any timeout, termination,
+late exit, nonzero child or missing final ownership observation still fails.
+The MSVC failures keep their original readers and original failed status.
+
+### Watchdogs and qualification limits
+
+Every owned operation remains bounded by 300 seconds, including its existing
+cleanup reserve. The additional two LLVM version probes and explicit separate
+compile/link phases require a larger sequential envelope, not a larger
+per-operation limit. Policy v2 records a 180-minute diagnostic stage and
+270-minute hosted job; the workflow includes 45 minutes for sequential
+dependency materialization and headroom for source/readback/artifact work.
+Import, original fixture, dump/hash work and all injected adverse-control
+deadlines remain unchanged from v4.
+The executed v4 workflow had a 240-minute job and 45-minute materialization
+stage; its policy still declared a 180-minute job and its older narrative
+retained a 20-minute materialization stage.
+Those original records remain intact; v5 aligns its policy and workflow.
+
+Portable validation passes 32 ownership/build tests and 64 crash/artifact
+tests, normally and with Python assertions disabled. Provider, documentation,
+current repository identity, historical M11 and whitespace checks pass.
+Retrieval keeps 32/32 canonical top-five hits, 19 top-one hits and MRR 0.7536;
+these lexical scores do not establish answer correctness. The repository
+identity check explicitly reports unmaterialized runtime pointers here.
+Added controls reject same-size compiler/linker substitution, wrong
+release/target, ambient compiler-flag overrides, version-probe failure,
+unobserved short-lived child exits, MSVC linker fallback, missing link phase,
+failed linker after compiler success, altered objects/PDBs and historical
+v4 receipts presented as v5. These are reducer, filesystem and mock-operation
+checks; they are not Windows compilation or runtime evidence.
+
+The exact resulting source must still pass its first hosted Windows attempt:
+all ownership controls, pinned LLVM probes/builds, debugger controls, import
+and one original fixture execution. Any compilation incompatibility or
+different installed LLVM identity remains a visible failure with preserved
+partial evidence. A later successful diagnostic cannot identify the cause
+of the original 0xC0000005 by itself, repair it, or qualify current-main
+gameplay/shader integration.

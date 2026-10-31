@@ -16,11 +16,12 @@ import windows_build_process as owned
 import run_windows_crash_capture as campaign
 
 
-def synthetic_operation(directory, command, identity, cwd, *, mode='build', timeout=15):
+def synthetic_operation(directory, command, identity, cwd, *, mode='build', timeout=campaign.policy.OPERATION_SECONDS):
     """Synthetic Windows facts for reducer tests, never an OS qualification."""
     directory.mkdir()
-    child = mode in ('normal-child','orphan-hang')
-    nonzero = mode == 'nonzero'
+    child = mode in ('normal-child','orphan-hang','slow-child','late-child-failure')
+    nonzero = mode in ('nonzero','late-child-failure')
+    slow = mode in ('slow-child','late-child-failure')
     timed_out = mode == 'orphan-hang'
     root = {'pid':10,'image':command[0],'created_100ns':1,'user_100ns':10,'kernel_100ns':20}
     secondary = root | {'pid':11,'created_100ns':2}
@@ -29,18 +30,18 @@ def synthetic_operation(directory, command, identity, cwd, *, mode='build', time
              'exited_observed':[],'job_empty':False,'log_bytes':0,'seconds':.1}
     exits = [root | {'exit_code':19 if nonzero else 0,'exit_observed':True}]
     if child:
-        exits.append(secondary | {'exit_code':124 if timed_out else 0,'exit_observed':True})
+        exits.append(secondary | {'exit_code':124 if timed_out else 19 if nonzero else 0,'exit_observed':True})
     last = first | {'active_processes':0,'active_observed':[],'exited_observed':exits,'job_empty':True,
-                    'seconds':2.4 if timed_out else .2,'log_bytes':40}
+                    'seconds':2.4 if timed_out else campaign.SLOW_CONTROL_SECONDS+.2 if slow else .2,'log_bytes':40}
     launch = {'schema':owned.SCHEMA,'command':command,'cwd':cwd,'timeout_seconds':timeout,'identity':identity}
     owned.write_new(directory/'launch.json',launch)
-    log = 'OWNED_NONZERO\n' if nonzero else 'OWNED_PARENT_CHILD 11\nOWNED_CHILD 11\n' if child else 'compiler control\n'
+    log = 'OWNED_PARENT_CHILD 11\nOWNED_CHILD 11\n' if child else 'OWNED_NONZERO\n' if nonzero else 'compiler control\n'
     (directory/'process.log').write_bytes(log.encode())
     samples = [first,last]
     (directory/'samples.jsonl').write_bytes(('\n'.join(json.dumps(r) for r in samples)+'\n').encode())
     result = {'schema':owned.SCHEMA,'status':'failed' if nonzero or timed_out else 'passed',
-              'timeout_seconds':timeout,'cleanup_reserve_seconds':min(1.5,timeout/4),
-              'seconds':2.5 if timed_out else .3,'root_pid':10,'root_exit':19 if nonzero else 0,
+              'timeout_seconds':timeout,'cleanup_reserve_seconds':min(campaign.policy.CLEANUP_SECONDS,timeout/4),
+              'seconds':2.5 if timed_out else campaign.SLOW_CONTROL_SECONDS+.3 if slow else .3,'root_pid':10,'root_exit':19 if nonzero else 0,
               'job_joined':True,'termination_requested':timed_out,'timed_out':timed_out,
               'termination_started_seconds':2.3 if timed_out else None,
               'error':None,'samples':samples,'creation_job_assigned':True,
@@ -90,7 +91,7 @@ class OwnedBuildTests(unittest.TestCase):
     def fixture(self,mode='build'):
         self.directory = self.root/'operation'
         self.result = synthetic_operation(self.directory,self.command,self.identity,self.cwd,
-                                          mode=mode,timeout=3 if mode=='orphan-hang' else 15)
+                                          mode=mode,timeout=campaign.policy.ORPHAN_CONTROL_SECONDS if mode=='orphan-hang' else campaign.policy.OPERATION_SECONDS)
 
     def rewrite_result(self):
         (self.directory/'result.json').write_text(json.dumps(self.result))
@@ -111,6 +112,40 @@ class OwnedBuildTests(unittest.TestCase):
             result = owned.monitor(ModelJob(code=code),0,15,lambda row:None,clock=clock.now,pause=clock.pause)
             self.assertEqual(result['root_exit'],code)
             self.assertEqual(result['status'],'passed' if code == 0 else 'failed')
+
+    def test_slow_success_and_late_failure_survive_old_deadline_and_sample_cap(self):
+        for code in (0,19):
+            with self.subTest(code=code):
+                clock = Clock()
+                class DelayedJob(ModelJob):
+                    def snapshot(self):
+                        self.hang = clock.value < 30
+                        return super().snapshot()
+                job = DelayedJob(code=code)
+                result = owned.monitor(job,0,campaign.policy.OPERATION_SECONDS,lambda row:None,
+                                       clock=clock.now,pause=clock.pause)
+                self.assertGreaterEqual(result['seconds'],30)
+                self.assertGreater(len(result['samples']),160)
+                self.assertEqual(result['status'],'passed' if code == 0 else 'failed')
+                self.assertEqual(result['root_exit'],code)
+                self.assertFalse(result['timed_out'] or result['termination_requested'])
+                self.assertTrue(result['job_joined'])
+
+    def test_full_watchdog_hang_terminates_and_joins_without_sample_cutoff(self):
+        clock, job = Clock(),ModelJob(hang=True)
+        result = owned.monitor(job,0,campaign.policy.OPERATION_SECONDS,lambda row:None,
+                               clock=clock.now,pause=clock.pause)
+        self.assertTrue(result['timed_out'] and result['job_joined'])
+        self.assertEqual(result['status'],'failed')
+        self.assertGreaterEqual(result['termination_started_seconds'],
+                                campaign.policy.OPERATION_SECONDS-campaign.policy.CLEANUP_SECONDS)
+        self.assertGreater(len(result['samples']),160)
+        self.assertLessEqual(result['seconds'],campaign.policy.OPERATION_SECONDS)
+
+    def test_invalid_watchdog_cannot_create_an_unbounded_operation(self):
+        for timeout in (0,-1,float('nan'),float('inf'),True,campaign.policy.OPERATION_SECONDS+1):
+            with self.subTest(timeout=timeout), self.assertRaisesRegex(ValueError,'watchdog'):
+                owned.sample_limit(timeout)
 
     def test_deadline_reserves_cleanup_and_observes_join(self):
         clock, job = Clock(),ModelJob(hang=True)
@@ -154,29 +189,111 @@ class OwnedBuildTests(unittest.TestCase):
         self.assertTrue((directory/'result.json').is_file())
 
     def test_build_timeout_keeps_compiler_and_source_receipt(self):
-        compiler = self.root/'cl.exe'
-        compiler.write_bytes(b'synthetic compiler identity')
         failure = {'status':'failed','timed_out':True,'root_exit':124,'job_joined':True}
-        with mock.patch.object(campaign.shutil,'which',return_value=str(compiler)), \
+        with mock.patch.object(campaign,'verify_tool_files'), \
+             mock.patch.object(campaign,'probe_toolchain'), \
              mock.patch.object(campaign.owned_build,'run',return_value=failure):
-            with self.assertRaisesRegex(ValueError,'build failed or timed out'):
+            with self.assertRaisesRegex(ValueError,'compile failed or timed out'):
                 campaign.build_tools(self.root,{})
         record = json.loads((self.root/'tools/build.json').read_bytes())
-        self.assertEqual(record['compiler']['sha256'],hashlib.sha256(compiler.read_bytes()).hexdigest())
-        row = record['builds'][0]
+        self.assertEqual(record['toolchain'],campaign.TOOLCHAIN)
+        row = record['builds'][0]['phases'][0]
         self.assertEqual(row['result'],failure)
+        self.assertEqual(row['status'],'failed')
         self.assertEqual(row['identity']['source_sha256'],owned.digest(campaign.ROOT/row['identity']['source']))
         self.assertIn('/showIncludes',row['command'])
         self.assertIn('/WX',row['command'])
+        self.assertIn('/DCYBERSAND_CRASH_CAPTURE_LIMIT_MS='+str(campaign.policy.CAPTURE_MS),row['command'])
+        self.assertIn('/DCYBERSAND_CRASH_MAX_CASE_MS='+str(campaign.policy.FIXTURE_MS),row['command'])
+
+    def test_tool_version_timeout_is_retained_before_any_compilation(self):
+        failure = {'status':'failed','timed_out':True,'root_exit':124,'job_joined':True}
+        with mock.patch.object(campaign,'verify_tool_files'), \
+             mock.patch.object(campaign.owned_build,'run',return_value=failure):
+            with self.assertRaisesRegex(ValueError,'version failed or timed out'):
+                campaign.build_tools(self.root,{})
+        record=json.loads((self.root/'tools/build.json').read_bytes())
+        self.assertEqual(record['builds'],[])
+        self.assertEqual(record['probes'][0]['result'],failure)
+        self.assertEqual(record['probes'][0]['status'],'failed')
+
+    def test_short_unobserved_child_cannot_qualify_new_llvm_operation(self):
+        self.fixture()
+        self.result['samples'][-1]['total_processes']=2
+        self.rewrite_samples()
+        # Historical v2 promises containment plus observed exits only.
+        self.assertEqual(self.verify()['status'],'passed')
+        with self.assertRaisesRegex(ValueError,'unobserved process exit'):
+            campaign.verify_complete_tool_exits(self.result)
+
+    def test_compiler_overrides_are_removed_only_from_build_environment(self):
+        original={'INCLUDE':'sdk includes','LIB':'sdk libraries','PATH':'sdk tools','CL':'/DUNDECLARED',
+                  '_cl_':'/DUNDECLARED_TOO','CCC_OVERRIDE_OPTIONS':'^--config=unknown.cfg',
+                  'CLANG_CONFIG_FILE_USER_DIR':'untrusted configs','LINK':'/FORCE'}
+        clean,removed=campaign.build_environment(original)
+        self.assertEqual(clean,{'INCLUDE':'sdk includes','LIB':'sdk libraries','PATH':'sdk tools'})
+        self.assertEqual(set(removed),set(original)-set(clean))
+        self.assertIn('CL',original)
+
+    def test_pinned_tool_files_reject_same_size_substitution(self):
+        pins=copy.deepcopy(campaign.TOOLCHAIN)
+        for role in ('compiler','linker'):
+            path=self.root/(role+'.exe');path.write_bytes(role.encode())
+            pins[role]={'path':str(path),'bytes':path.stat().st_size,'sha256':owned.digest(path)}
+        with mock.patch.object(campaign,'TOOLCHAIN',pins):
+            campaign.verify_tool_files()
+            Path(pins['linker']['path']).write_bytes(b'X'*pins['linker']['bytes'])
+            observed={}
+            with self.assertRaisesRegex(ValueError,'Pinned LLVM linker executable'):
+                campaign.verify_tool_files(observed)
+            self.assertEqual(observed['linker']['sha256'],owned.digest(Path(pins['linker']['path'])))
+
+    def test_versions_require_both_exact_release_and_x64_msvc_target(self):
+        campaign.verify_tool_version('compiler','clang version 20.1.8\nTarget: x86_64-pc-windows-msvc\n')
+        campaign.verify_tool_version('linker','LLD 20.1.8\n')
+        for role,log in (('compiler','clang version 20.1.7\nTarget: x86_64-pc-windows-msvc\n'),
+                         ('compiler','clang version 20.1.8\nTarget: i686-pc-windows-msvc\n'),
+                         ('linker','LLD 20.1.9\n')):
+            with self.subTest(role=role,log=log),self.assertRaisesRegex(ValueError,'version differs|target differs'):
+                campaign.verify_tool_version(role,log)
 
     def test_original_synthetic_positive_and_negative_controls_reduce(self):
         for mode in campaign.BUILD_CONTROL_MODES:
             directory = self.root/mode
             command = campaign.build_control_command('C:\\python.exe',mode)
             result = synthetic_operation(directory,command,self.identity,self.cwd,mode=mode,
-                                         timeout=3 if mode=='orphan-hang' else 15)
+                                         timeout=campaign.policy.ORPHAN_CONTROL_SECONDS if mode=='orphan-hang' else campaign.policy.OPERATION_SECONDS)
             self.assertEqual(owned.verify(directory,command,self.identity,cwd=self.cwd),result)
             campaign.verify_build_control(mode,result,(directory/'process.log').read_text())
+
+    def test_slow_commands_wait_then_propagate_actual_child_exit(self):
+        for mode,code in (('slow-child',0),('late-child-failure',19)):
+            child=mock.Mock(pid=11);child.wait.return_value=code
+            command=campaign.build_control_command('C:\\python.exe',mode)
+            with mock.patch('subprocess.Popen',return_value=child) as launch, \
+                 mock.patch('subprocess.DETACHED_PROCESS',0x8,create=True), \
+                 contextlib.redirect_stdout(io.StringIO()), self.assertRaises(SystemExit) as exited:
+                exec(compile(command[2],'<slow-control>','exec'),{})
+            self.assertEqual(exited.exception.code,code)
+            child_script=launch.call_args.args[0][2]
+            with mock.patch('time.sleep') as delay, contextlib.redirect_stdout(io.StringIO()), \
+                 self.assertRaises(SystemExit) as child_exit:
+                exec(compile(child_script,'<slow-child>','exec'),{})
+            delay.assert_called_once_with(campaign.SLOW_CONTROL_SECONDS)
+            self.assertEqual(child_exit.exception.code,code)
+
+    def test_slow_control_receipt_cannot_relabel_fast_execution(self):
+        self.fixture('slow-child')
+        self.result['seconds']=1
+        self.result['samples'][-1]['seconds']=.9
+        with self.assertRaisesRegex(ValueError,'former watchdog'):
+            campaign.verify_build_control('slow-child',self.result,(self.directory/'process.log').read_text())
+
+    def test_late_child_failure_cannot_hide_behind_successful_parent(self):
+        self.fixture('late-child-failure')
+        self.result['root_exit']=0
+        with self.assertRaisesRegex(ValueError,'termination code'):
+            campaign.verify_build_control('late-child-failure',self.result,(self.directory/'process.log').read_text())
 
     def test_root_detaches_console_without_changing_owned_job_or_standard_handles(self):
         # Exercise the real launch assembly against a mocked Win32 API. This

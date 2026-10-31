@@ -20,7 +20,12 @@
 #include <vector>
 
 static_assert(sizeof(void *) == 8, "Only the pinned x86_64 target is supported");
-static constexpr DWORD CAPTURE_LIMIT_MS = 15000;
+#if !defined(CYBERSAND_CRASH_CAPTURE_LIMIT_MS) || !defined(CYBERSAND_CRASH_MAX_CASE_MS)
+#error Compile through the source-bound diagnostic runner to select watchdog policy
+#endif
+static constexpr DWORD CAPTURE_LIMIT_MS = CYBERSAND_CRASH_CAPTURE_LIMIT_MS;
+static constexpr DWORD MAX_CASE_MS = CYBERSAND_CRASH_MAX_CASE_MS;
+static_assert(CAPTURE_LIMIT_MS > 0 && MAX_CASE_MS >= CAPTURE_LIMIT_MS, "Invalid diagnostic watchdog policy");
 static constexpr unsigned MAX_CAPTURES = 8;
 static constexpr unsigned MAX_EVENTS = 20000;
 static FILE *events = nullptr;
@@ -94,7 +99,7 @@ static bool write_bytes(const std::wstring &path, const void *data, DWORD size) 
 }
 
 // Separate process: DbgHelp can block, so the debugger imposes an independent
-// 15-second/remaining-case bound without releasing the stopped exception event.
+// policy-selected/remaining-case bound without releasing the stopped exception event.
 static std::wstring hex_record(const EXCEPTION_RECORD &record) {
     const auto *bytes = reinterpret_cast<const unsigned char *>(&record);
     std::wstring result;
@@ -287,7 +292,7 @@ int wmain(int argc, wchar_t **argv) {
     if (argc < 7 || wcscmp(argv[1], L"--output") || wcscmp(argv[3], L"--timeout-ms") || wcscmp(argv[5], L"--")) return 64;
     const std::wstring output = argv[2];
     const DWORD limit = wcstoul(argv[4], nullptr, 10);
-    if (limit == 0 || limit > 240000) return 64;
+    if (limit == 0 || limit > MAX_CASE_MS) return 64;
     std::vector<std::wstring> arguments(argv + 6, argv + argc);
     std::wstring line = command(arguments);
     if (line.size() >= 32767) return 64;
@@ -305,7 +310,7 @@ int wmain(int argc, wchar_t **argv) {
         if (dump_job) CloseHandle(dump_job); fclose(events); return 74;
     }
     began = GetTickCount64();
-    emit("{\"type\":\"start\",\"schema\":\"play-windows-crash-v2\",\"broker_pid\":" + number(GetCurrentProcessId()) +
+    emit("{\"type\":\"start\",\"schema\":\"play-windows-crash-v3\",\"broker_pid\":" + number(GetCurrentProcessId()) +
          ",\"timeout_ms\":" + number(limit) + ",\"command_line\":" + json(line) + "}");
     SECURITY_ATTRIBUTES attributes{sizeof(attributes), nullptr, TRUE};
     HANDLE log = CreateFileW((output + L"\\engine.log").c_str(), GENERIC_WRITE, FILE_SHARE_READ, &attributes, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, nullptr);

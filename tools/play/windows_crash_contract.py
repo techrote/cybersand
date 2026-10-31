@@ -7,8 +7,9 @@ from pathlib import Path
 import re
 import struct
 from urllib.parse import urlsplit
+from windows_crash_policy import CAPTURE_MS, DUMP_TIMEOUT_CONTROL_MS
 
-SCHEMA = 'play-windows-crash-v2'
+SCHEMA = 'play-windows-crash-v3'
 ACCESS_VIOLATION = 0xC0000005
 NOT_HANDLED = 0x80010001
 MAX_DUMP_BYTES = 64 * 1024 * 1024
@@ -65,7 +66,7 @@ def read_load_identities(root: Path, events: list[dict]) -> dict:
         if capture is None:
             identity={'hash_status':'not_requested'}
         else:
-            require(capture['valid'] is True and capture['limit_ms']==15000 and 0<=capture['milliseconds']<=15000
+            require(capture['valid'] is True and capture['limit_ms']==CAPTURE_MS and 0<=capture['milliseconds']<=CAPTURE_MS
                     and capture['helper_pid']>0 and capture['helper_exit']==0 and capture['helper_joined'] is True
                     and capture['helper_terminated'] is False and capture['timed_out'] is False,
                     'Required load-time hash failed, exceeded its bound or lacked joined ownership')
@@ -298,7 +299,7 @@ def verify_capture(root: Path, events: list[dict], receipt: dict) -> dict:
     for capture in captures:
         event=next(e for e in required if e['event_id']==capture['event_id'])
         require(capture['pid']==event['pid'] and capture['tid']==event['tid'] and capture['capture_exit']==0
-                and not capture['timed_out'] and 0<=capture['capture_ms']<=15000 and capture['capture_limit_ms']==15000
+                and not capture['timed_out'] and 0<=capture['capture_ms']<=CAPTURE_MS and capture['capture_limit_ms']==CAPTURE_MS
                 and capture['helper_pid']>0 and capture['helper_joined'] and not capture['helper_terminated']
                 and not capture['helper_control'], 'Failed/late/wrong-owner dump capture')
         prefix=capture['prefix']
@@ -326,7 +327,7 @@ def verify_dump_timeout_control(events: list[dict], receipt: dict) -> dict:
     require(len(captures)==1 and events[0]['schema']==SCHEMA and events[-1]['type']=='end', 'Missing hung-writer control receipt')
     capture=captures[0];end=events[-1]
     start=events[0]
-    require(start['broker_pid']==receipt['broker_pid'] and start['timeout_ms']==receipt['timeout_ms']==15000
+    require(start['broker_pid']==receipt['broker_pid'] and start['timeout_ms']==receipt['timeout_ms']==DUMP_TIMEOUT_CONTROL_MS
             and start['command_line']==' '.join(windows_quote(value) for value in receipt['debuggee_command']),
             'Hung-writer process/source command receipt mismatch')
     require(capture['helper_control'] and capture['capture_limit_ms']==1000 and capture['timed_out']
