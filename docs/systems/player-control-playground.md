@@ -68,10 +68,43 @@ and follow camera; existing entry points retain their defaults.
 Requested and applied policy are displayed separately for the selected material;
 the applied native policy and construction-receipt hashes are available in the
 policy tooltip. The panel blocks gameplay input while open. P/Escape and selected-gamepad Start pause, R restarts,
-F toggles the course camera and F2 returns to the launcher. Keyboard-only mode
+F toggles the course camera. **Return to launcher** in the Play session panel
+uses the existing scene-navigation teardown; F2 remains an optional shortcut. Keyboard-only mode
 excludes gamepad polling and button forwarding. Free play suppresses the lap
 tracker/HUD. Protected scientific/blind fixtures refuse the new reconstruction
 route; the standalone material swarms and specialist/NPC paths remain separate.
+
+### Course target visibility and optional worker details
+
+The shared course now reuses the authored checkpoint drawing: the next gate is
+accented, future gates are faint and completed gates are marked. The overlay
+receives copied lap identity and the same camera/content transform as the actor.
+It neither queries a native World nor awards checkpoints. Invalid/retired actor
+or World identity, pending reconstruction, fault, free play and clean-view mode
+clear the targets. Completed native ticks and actual main-thread Rapier
+observations still own timing and visits; visual rings are not traversal proof.
+
+F3 expanded details in a running Play course request an optional owner-side
+statistics sample at most four times per second. Main only receives the frozen
+copy. The display separates the constructor's requested worker setting, capacity,
+observed **task participants**, source native tick and sample age. Participants
+mean the maximum distinct task-claiming workers in one phase dispatch of that
+tick; an inline nonempty phase counts the owner as one. This does not measure
+simultaneous execution or utilization. Sampling defaults off, stops when details
+close, and Main sends a request only when that choice changes.
+
+Owner-publication serial gaps count snapshots coalesced before Main consumed
+them. They are separate from native tick deltas, rejected serials and rejected
+render payloads. An unavailable sample is labelled unavailable, not replaced
+by the configured capacity. No production shader, default solver, mechanical
+tuning or additional simulation owner is introduced.
+
+The [UI007 audit](../audits/2026-10-31-play-ui007-desktop-readiness.md) retains
+the original missing-overlay negative, five actual-host headless regressions,
+separate overlay-only pixel tests and failed shared-Main graphical startup.
+The [manual packet](../operations/play-desktop-manual-qualification.md) binds
+all five rig entry points and physical checks to a reviewed source/runtime;
+generating it proves identity only and leaves every human row untested.
 
 The [course event bridge](../../godot/scripts/playable_course_gamepad_events.gd)
 observes `Input.joy_connection_changed`. Loss, replacement or addition of the

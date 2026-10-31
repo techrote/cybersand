@@ -343,6 +343,12 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
     timeout_diagnostic_error = None
     capture_error = None
     timeout_kind = None
+    # Let graphical fixtures retain their raw captures beside the process log.
+    # This is per-process test evidence, never production-frame instrumentation.
+    process_env = dict(os.environ if env is None else env)
+    process_env["CYBERSAND_TEST_ARTIFACT_DIR"] = str(
+        (output_dir / (case.name + "-artifacts")).resolve()
+    )
     with log_path.open("w", encoding="utf-8") as log:
         try:
             options = (
@@ -350,7 +356,7 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
                 if sys.platform == "win32" else {"start_new_session": True}
             )
             process = subprocess.Popen(
-                command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, env=env, **options,
+                command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, env=process_env, **options,
             )
             pid = process.pid
             def observe_timeout(now):
@@ -468,6 +474,7 @@ def main() -> int:
         raise RuntimeError(f"Missing Rapier runtime: {rapier}")
 
     source_sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    os.environ["CYBERSAND_SOURCE_REVISION"] = source_sha
     godot_version = subprocess.check_output([args.godot, "--version"], text=True).strip()
     identity = {
         "source_sha": source_sha,

@@ -39,6 +39,7 @@
     "operations/github-development-and-release.md",
     "operations/gameplay-recording.md",
     "operations/local-build-and-validation.md",
+    "operations/play-desktop-manual-qualification.md",
     "operations/physics-characterisation-plan.md",
     "operations/physics-characterisation.md",
     "operations/profiling-observability-and-performance.md",

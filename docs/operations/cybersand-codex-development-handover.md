@@ -10,6 +10,34 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Active manual PLAY continuation — 2026-10-31
+
+Fresh reconciliation began from accepted main
+`0bf28d5760aed989a79386de03ef4fc6171fef42`. PR #317's original scoped 515/0
+per-OS result was not full integration qualification. Independent review found
+and corrected an offline parser-negative false pass; corrected head
+`ca426a63d14f7b604799c7fa5cba1197240caa55` has a stricter v2 contract and bounded
+teardown. Its dedicated run41173057126 records Linux520/0 and Windows523/0;
+ordinary full gates and final merge/post-merge status belong to the live PR.
+Original source1686, run41171088500, cancelled ordinary attempts and all raw
+artifacts retain their original status and identities.
+
+PR #318 at `12380a590d1bc301a9700ec4af78cbc72ca027e0` adds the independently
+reproduced immediate-pause cancellation correction. The
+[UI007 desktop package](../audits/2026-10-31-play-ui007-desktop-readiness.md)
+adds authored target visibility, optional sampled task participation, publication
+accounting and visible launcher return. The [manual packet](play-desktop-manual-qualification.md)
+prepares exact-source launch/checklist files without executing Godot or claiming
+physical qualification. Consult the live PR and #305 ledgers for guarded merge
+and post-merge receipts; these source descriptions are not green-gate claims.
+
+Continue #268 → #269 → #270 → #263 without another gameplay owner. Keep native
+World exclusive to the existing worker, immutable publications and main-thread
+Rapier. Preserve 50 actual lifetimes per platform and unchanged deadlines.
+Keep #308/#310 held, #312/#316 frozen, all shader/cache/decomposition work
+deferred, and Scheduswarm paused. No physical device or human feel pass exists
+in this automated continuation; failed cold graphical attempts remain failed.
+
 ## CI parallel integration checkpoint — 2026-10-31
 
 The owner requested production integration of #311/#313/#314 in the active

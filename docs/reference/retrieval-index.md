@@ -22,6 +22,10 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
   [manual walkthrough](../operations/local-build-and-validation.md#shared-play-session-and-owner-qualification)
   distinguishes synthetic focus/device regression from physical/human acceptance.
 
+- [How do I prepare a source-pinned physical desktop checklist without claiming a device pass?](../operations/play-desktop-manual-qualification.md)
+  The generator authenticates the selected source, runtime and official engine,
+  emits an untested result sheet and rechecks identity before user launch.
+
   [Supplementary PLAY questions](retrieval-questions-play.json) test those
   qualifiers separately from the unchanged frozen retrieval evaluation.
 
@@ -324,3 +328,8 @@ executed results belong to the [dated Deepworks audit](../audits/2026-10-20-deep
 ## Semantic four-plane generation and authoring
 
 GEN-005 projection, typed link, fixture lifecycle, atomic admission and frozen-background questions route to the [semantic-plane contract](../systems/procedural-semantic-planes.md). Refinery/cavern JSON, source programmes, controls, actor placements, actual captures and provenance inspection route to the [authoring guide](../operations/semantic-depth-authoring.md).
+
+### Shared course targets and worker details
+
+For authored checkpoint visibility, Return to launcher, sampled task participants and
+coalesced publication counts, use the [player-control contract](../systems/player-control-playground.md#course-target-visibility-and-optional-worker-details).

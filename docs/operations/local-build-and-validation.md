@@ -1196,6 +1196,10 @@ Controls and manual course entry are in the
 
 ### Shared Play session and owner qualification
 
+The [executable manual packet](play-desktop-manual-qualification.md) prepares
+a source/runtime-pinned checklist and initially untested result sheet. Its
+generator performs no engine or physical execution and cannot grant acceptance.
+
 Use the exact candidate checkout named by its PR, Godot
 `4.7.stable.official.5b4e0cb0f` and the repository-pinned native/Rapier LFS bytes.
 Record `git rev-parse HEAD`, `git rev-parse HEAD^{tree}`, `git status --short`,

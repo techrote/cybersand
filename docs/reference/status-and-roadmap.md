@@ -10,6 +10,30 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## PLAY desktop continuation — 2026-10-31
+
+The [INPUT010 correction](../audits/2026-10-31-play-input010-pause-transitions.md)
+revokes queued input immediately at pause transitions and supplies shared
+P/Escape/selected-pad Start parity. [UI007](../audits/2026-10-31-play-ui007-desktop-readiness.md)
+adds authored checkpoint targets, source-bound optional worker participation
+details and a visible Return to launcher route. The
+[manual packet](../operations/play-desktop-manual-qualification.md) authenticates
+source, all retained runtime objects and the official engine before preparing
+51 untested physical/display/human rows. These are implementation capabilities;
+the respective PR ledgers own exact-head CI, review and merged-state claims.
+
+Preserve the accepted 50-real-lifetimes-per-platform baseline and original
+failures. The separate 40-event PACE004 successor remains a qualification lane,
+not a release claim. First cold Linux shared-Main graphical attempts exceeded
+the existing 30-second acknowledgement bound; headless native/Rapier results
+and overlay-only pixels do not erase those failures. #268/#269/#270/#263 remain
+open until their actual remaining contracts are reviewed. Physical devices,
+real OS focus, actual display pacing and human feel remain unqualified.
+
+Owner holds remain: no shader compilation/cache/decomposition work; #308/#310
+held, #312/#316 frozen and unmerged; Scheduswarm paused. Follow the current
+#305 manual ownership ledger before assigning successor source owners.
+
 ## Production CI parallelism — 2026-10-31
 
 **Implemented in this integration source; resulting-head qualification remains
