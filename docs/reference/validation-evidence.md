@@ -952,3 +952,13 @@ runtime hashes, failed corpus-quota variants and the JSON comparison correction
 remain explicit. Copied-state oracle evidence and final-head checks are separately
 recorded there; no production solver promotion, full trajectory replay or human
 body/granular acceptance follows.
+
+The [A2 follow-up](../audits/2026-10-31-physical-detachment-a2.md) retains the
+reviewed#336head and freezes B/C implementation blobs. A complete1,301-event
+Windows acquisition has zero loss and1,301/1,301native/fallback replay matches.
+Per-frame stream/legacy equality and original80production hashes prove diagnostic
+neutrality for that fixture. Source/runtime receipts preserve two minor direct
+mask-clearing recoveries, strong finite-cohort multi-parcel NO-GO, independent
+hash/sampling/oracle checks and the planned causal successor. Final-head checks
+and platform limits are separately recorded; no ready-for-review publication or
+production bearing change is inferred.

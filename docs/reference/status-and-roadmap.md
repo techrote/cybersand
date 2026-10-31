@@ -1745,3 +1745,18 @@ zero of64 failures under either nonrear directional policy. This is a NO-GO for
 promoting that tiny primitive on this cohort; the dated report recommends a
 bounded saturated-contact/bearing experiment and broader fixture coverage.
 It does not establish global jamming or authorize a production solver change.
+
+## Physical detachment A2 disposition — 2026-10-31
+
+**Measured:** [A2](../audits/2026-10-31-physical-detachment-a2.md) resolves the
+production-hash sampling ambiguity using a complete1,231-failure finite history,
+with231of299production classes splitting structurally. Frozen≤4-chain policies
+recover only two single-parcel cases; lengths2–4 add nothing and no predeclared
+high-value subgroup appears. Bounded local push-chain rearrangement is rejected
+as the primary solution for this measured Sand/rectangle family. Wider search,
+longer speculative chains and broad compaction are not selected.
+
+**Planned:** the [bearing/pre-overlap causal experiment](../operations/granular-bearing-pre-overlap-investigation.md)
+measures entry momentum, support/cap/yield terms and applied response. A2 observed
+bearing before first ejection, exact age-zero delivery and no global bearing-cap
+saturation. No response-law change or broad granular acceptance follows.

@@ -1434,3 +1434,11 @@ values; no mutable World pointer or live Rapier object crosses this boundary.
 Raw carrier bits use hexadecimal strings to survive JSON number precision.
 Instance/reset/tick/revision identify provenance; offline replay never installs
 historic state into a live owner. Ordinary body input/result packets are unchanged.
+
+A2 diagnostic-only `diagnostic_ejection_stream()` enables bounded event capture
+before production-hash deduplication; `diagnostic_take_ejection_events()` returns
+a deeply owned corpus/counter value and clears pending capsules. Reset clears
+mode, queue and counters; incarnation checks remain the same. The unchanged
+`diagnostic_replay_ejection()` still verifies original target/order/reasons/hash.
+The [A2 identity and sampling scope](../architecture/rigid-body-and-cellular-coupling.md#a2-topology-diversity-and-upstream-response)
+is an offline consumer contract, not an additional simulation authority.

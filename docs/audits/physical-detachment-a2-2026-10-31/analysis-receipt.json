@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "qualified_acquisition_commit": "7a6e99e52ebef26693072f930d7f3c9a8e570c72",
+  "analysis_source_parent": "7e04e8fde1496c5f32d3f83099ec2a6bfb6bb7d6",
+  "analysis_local_delta_sha256": {
+    "tools/experiments/analyze_ejection_a2.py": "dfebd26293e77db58b0ae3c3184543e44a1260c1691c01972fffc702a0d8735f",
+    "tools/experiments/test_ejection_a2_analysis.py": "6406d7e7b66f274578c66fb8e46f7c3256ba029c95278fef8ed0d9b17811df74"
+  },
+  "frozen_B_C_blobs": {
+    "tools/experiments/ejection_topology.py": "07af1cf155aaa092ea2c0f6a234a733e13830802",
+    "tools/experiments/ejection_push_chain.py": "8c33e49e698642c05b69e4aeca91c9d1107249c8",
+    "tools/experiments/test_ejection_topology.py": "4a1143c765f341c8b3dded427624f267f6a3b3b3",
+    "tools/experiments/test_ejection_push_chain.py": "e3576f25a2c258ad967b2eff91fbccd5ee827606"
+  },
+  "commands": [
+    "python tools/experiments/analyze_ejection_a2.py --population <population.json> --sample <corpus.json> --replay <replay-population.json> --acquisition <acquisition.json> --trace <trajectory.json> --legacy-trace <legacy-trajectory.json> --output-directory <local>",
+    "python tools/experiments/ejection_push_chain.py --input <population.json> --output <local-oracle.json> --native-cases <local.txt>",
+    "unchanged source-matched test_ejection_chain_world <local.txt>"
+  ],
+  "native_world_windows": {
+    "self_controls": 21,
+    "imported_legal_chains": 166,
+    "conservation_failures": 0,
+    "barrier_violations": 0,
+    "overlap_reduction_failures": 0,
+    "qualification": "copied World semantic tuple/temperature/Water quantity; raw epoch/spare import excluded"
+  },
+  "native_world_linux": "21controls plus166exported applications passed, same unchanged source inputs as parent",
+  "standalone_native_source_identity": "git diff parent..HEAD -- native/src native/include native/tests/test_ejection_chain_world.cpp is empty; reused source-matched parent binaries",
+  "invariants": {
+    "copied_applications": 132,
+    "conservation_failures": 0,
+    "barrier_violations": 0,
+    "new_body_overlaps": 0
+  },
+  "decision": {
+    "disposition": "strong NO-GO for bounded local push-chain as primary solution in this finite cohort",
+    "high_value_predeclared_subgroups": [],
+    "maximum_additional_fraction": 0.0016246953696181965
+  },
+  "reports_sha256": {
+    "bearing-observations.json": "f5c2bb1061b2b35d0fd5dcb8c18cebb664579c1f27192f25332cf654abd7c179",
+    "comparison.json": "b81b8fca79475d311279ef9cbbe8fe27c17ffeb492ef6e90ac74809ae674639e",
+    "replay-population.json": "7980b59fd762223bd0455b0323746318dbce5a4f218490a1bb7d8c3f9a4c5596",
+    "stage-b-population.json": "8d627de4a6d511b67f4a97dfa30d7638b42c24c03291fcc11b19f16c12ab1e87",
+    "stage-b-sample.json": "044e1e8b6be3c12fb50924d539ab9fb69e6fa077f5420b8d0b6472ddb18cf819",
+    "stage-c-population.json": "19030c4c65253f4ccd2ecf55d00081332463e3474e0985df981e3811d6e44303",
+    "stage-c-sample.json": "a14ed2f2ff2a2f87b106c843bec981399e5a4b329d304375001a14898e41293e",
+    "subgroups.json": "80a4db94c68bd4ada8b637557e6098c865ca9ff48681ddca56803af30f20162d"
+  },
+  "independent_algorithms": {
+    "hash_sampler": "1301scientific+structural identities,36stratum bottom-k sets and16positivecontrols agree",
+    "topology": "separate stdlib-only code matches1231per-contact costs/sectors/void counts",
+    "oracle": "separate enumeration finds same2one-parcel recoveries; all182cap4legal path applications preserve raw fullcarrier/state/temp,quantity,masks,sourcevacancy andbarriers",
+    "review_status": "AI analysis, not human approval"
+  },
+  "interpretation": "Scientific-state and event multiplicities all1 and therefore rates identical here. Structural robustness2/1188. Retained sample1/144, not unbiased.",
+  "analysis_tests": 8,
+  "original_A_regression": "80/80 plus15negativecontrols and zero mutations passes against A2 rebuilt DLL",
+  "source_hash_EOL_note": {
+    "path": "tools/experiments/ejection_a2.py",
+    "actual_capture_input_sha256": "393ed77fedba02e66dcec3c6ce3199abb4d9db0dbf6529ec76ee70ec450f5432",
+    "canonical_git_LF_sha256": "c58fdedbdb2e6d7d5ecc638781b0550365dece551531a90b31212d71a7f05c06",
+    "scope": "Recorded actual file hash in acquisition-receipt is Windows CRLF; canonical Git source is LF. Difference is exclusively line endings; preserve both identities."
+  },
+  "analysis_canonical_LF_sha256": {
+    "tools/experiments/analyze_ejection_a2.py": "87bfd57120b3ecb28b546ef686c4a6d91cc87a22552be42c667052d69f07731e",
+    "tools/experiments/test_ejection_a2_analysis.py": "ea53764511499badea5576abb9709de110b5c22ded1cc33091b587e860e21f45"
+  },
+  "identity_sampling_tests_final": 16,
+  "published_population_sha256": "d3c8bfeb19355e7bf20518bb7d6afd4b03e1f3790644a09414c4d8ea0955d33c",
+  "canonicalization": "Original acquisition working-file hashes are preserved. Published LF bytes now have hash-bound native/fallback replay; see canonicalization-receipt.json. No historical hash was relabelled.",
+  "published_replay": {
+    "ok": true,
+    "capsules": 1301,
+    "failed_unique": 1231,
+    "success_unique": 70,
+    "candidate_reasons": {
+      "non_empty": 100182,
+      "accepted": 70,
+      "source_body": 22
+    },
+    "native_fallback_target_trace_matches": 1301,
+    "mutation_failures": 0,
+    "malformed_refusal_controls": 15,
+    "serialization": "Godot JSON full_precision=true, parsed before replay",
+    "input_sha256": "d3c8bfeb19355e7bf20518bb7d6afd4b03e1f3790644a09414c4d8ea0955d33c",
+    "source_revision": "7a6e99e52ebef26693072f930d7f3c9a8e570c72+canonicalization-local-delta"
+  }
+}

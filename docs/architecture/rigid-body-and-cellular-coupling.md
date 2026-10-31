@@ -242,3 +242,27 @@ separately. Decision parity covers this controlled native/fallback corpus;
 fallback material laws and payload storage remain different. Neither capsules
 nor copied-state rearrangement provide full coupled trajectory replay or select
 production displacement behavior.
+
+### A2 topology diversity and upstream response
+
+**Current diagnostic evidence, 2026-10-31:** [A2](../audits/2026-10-31-physical-detachment-a2.md)
+preserves the production-search identity and adds a full scientific-input
+identity plus a coarser discrete structural signature. The opt-in stream keeps
+up to256pending events and8192lifetime events, with owned drain values and
+explicit pending/total losses. Owner/reset fencing remains unchanged. Any loss
+or replay mismatch blocks complete-population interpretation.
+
+The unchanged600-tick fixture supplies1,231no-target states and70successes.
+A stratified bottom-k sample has144failures/16controls; the complete population
+is evaluated without sampling extrapolation.231of299production failure classes
+split into multiple scientific and structural classes. The complete unchanged
+oracle recovers only2/1,231failures, both single-parcel adjacent-endpoint cases;
+lengths2–4 add zero. This meets the preregistered finite-cohort NO-GO for a tiny
+chain as the primary solution. It does not establish continuous clearance for
+the two mask-clearing cases or a universal all-material rejection.
+
+The [planned bearing/pre-overlap investigation](../operations/granular-bearing-pre-overlap-investigation.md)
+now targets high-speed entry under the existing bounded yielding response. A2
+measured accepted bearing before the first ejection, age zero throughout and no
+global20-cap saturation. No bearing, normal, search, material or rendering policy
+is changed by A2; live efficacy evidence remains the single Sand rectangle family.

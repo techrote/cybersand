@@ -1,0 +1,100 @@
+[
+  {
+    "headRefName": "codex/physical-detachment-abc-20261031",
+    "headRefOid": "7e04e8fde1496c5f32d3f83099ec2a6bfb6bb7d6",
+    "isDraft": true,
+    "number": 336,
+    "title": "[DRAFT] Diagnose rigid/cellular displacement: replay, topology and push-chain NO-GO"
+  },
+  {
+    "headRefName": "codex/render-publication-abc-20261031",
+    "headRefOid": "6b19d33a778f604f38150d14a6a3484dbf520a32",
+    "isDraft": true,
+    "number": 335,
+    "title": "[DRAFT / NO MERGE] Render publication: frozen-main reproduction, test-only E and native R isolation"
+  },
+  {
+    "headRefName": "codex/play-pace004-qualified-20261031",
+    "headRefOid": "4f3decc242633fb621d76b7529ef87b420dbd87a",
+    "isDraft": false,
+    "number": 334,
+    "title": "test(play): qualify complete source-bound PACE004 pacing inventory"
+  },
+  {
+    "headRefName": "prepass/render-copy290-play-integration-20261031",
+    "headRefOid": "21d44e43e071d2d5777c2ed46a92f59675639599",
+    "isDraft": true,
+    "number": 333,
+    "title": "[DRAFT / NO MERGE] Reconcile PR #290 published render-copy stack with PLAY main"
+  },
+  {
+    "headRefName": "claude/palette-fxc-cost",
+    "headRefOid": "1afe20c0b2abbffaf3e41ac1e1588b862274c52c",
+    "isDraft": true,
+    "number": 326,
+    "title": "[DRAFT] PLAY-PACE-003: bound the ANGLE palette compile and remove the X8000 trigger (#309)"
+  },
+  {
+    "headRefName": "claude/render-copy-per-run",
+    "headRefOid": "ddf812f34c533f654f1488b9115eb0256305a288",
+    "isDraft": true,
+    "number": 290,
+    "title": "perf(native): copy full-frame render cells per chunk run"
+  },
+  {
+    "headRefName": "work/sol281-native-detachment-20261027",
+    "headRefOid": "254235ec4c3d58782bba44b478caca86bf57c856",
+    "isDraft": true,
+    "number": 283,
+    "title": "[FROZEN EVIDENCE ARCHIVE] SOL-DETACH-001: native tree detachment, compound coupling and cause qualification"
+  },
+  {
+    "headRefName": "docs/sol-structural-detachment-primary-20261027",
+    "headRefOid": "c087ca8569f1df394d67cdc4dbe1c6b46c2bcfb2",
+    "isDraft": true,
+    "number": 282,
+    "title": "SOL-DETACH-000: prioritize real native solid-tree detachment ahead of Stage 3B optimization"
+  },
+  {
+    "headRefName": "codex/play-async-001-architecture",
+    "headRefOid": "00c76b338f65f15d01d7b8c2cba8ebc1a5b23753",
+    "isDraft": true,
+    "number": 272,
+    "title": "PLAY-ASYNC-001: dedicated async player World owner architecture, protocol and desktop baseline"
+  },
+  {
+    "headRefName": "codex/player-playground-maps",
+    "headRefOid": "70ec119381a2cb9abab5d40ed3314fb07c9b1736",
+    "isDraft": false,
+    "number": 262,
+    "title": "feat(playground): 22 distinct maps, agile players and live NPC tools"
+  },
+  {
+    "headRefName": "codex/lcb003-actor-host",
+    "headRefOid": "86f95617d2966f9071e9fe8bdd334ea3888fa5cd",
+    "isDraft": true,
+    "number": 260,
+    "title": "LCB-003: retain single actors during native-default solver changes"
+  },
+  {
+    "headRefName": "codex/lcb004-observer",
+    "headRefOid": "fec2c73a33e146c63398849a1d128cf45c0ba59b",
+    "isDraft": false,
+    "number": 258,
+    "title": "LCB: expose copied inertial ledgers and actual worker participation"
+  },
+  {
+    "headRefName": "mat/phase-quantity-quench",
+    "headRefOid": "19f7ff43ecc494185226d1fff07dc21ef4a220fb",
+    "isDraft": false,
+    "number": 162,
+    "title": "WAT-002: conserve Water phase quantity and scale hot-material quenching-archive"
+  },
+  {
+    "headRefName": "codex/issue-12-soliding",
+    "headRefOid": "0b96ce2a2fd5f68560575d4c4db8b0ea2f3b3758",
+    "isDraft": true,
+    "number": 23,
+    "title": "Prototype bounded near-rest reversible soliding"
+  }
+]

@@ -1251,3 +1251,11 @@ per-attempt bounds do not qualify tick-time overhead. The current search constan
 8 is an inclusive extension after the penetration-derived first distance, giving
 nine distances and nine tangent probes (81 attempts). No runtime radius or
 ordinary worker/render policy is changed by the diagnostic oracle.
+
+A2 adds an independent diagnostic event-stream mode:256pending and8192total
+emitted capsules, separately counted pending/total drops, drain after each
+prepare. The original64/16search-equivalence capture remains available. Its
+predeclared offline retention has36phase/depth/cardinal-normal strata with24
+scientific classes each, plus16positive controls (at most880retained globally
+before cross-stratum union deduplication). Empty strata are reported. See the
+[coupling scope](../architecture/rigid-body-and-cellular-coupling.md#a2-topology-diversity-and-upstream-response).

@@ -26,6 +26,15 @@ func _stream_controls() -> void:
 	_check(int(batch.get("stream_total_limit",-1)) == 8192 and batch.has("capture_instance_id"), "A2 stream runtime version mismatch")
 	_check(batch.capsules.size() == 256, "stream overflow did not retain bounded256")
 	_check(int(batch.dropped_capacity) > 0, "stream overflow not explicit")
+	# The captured outer ring is never consulted by production. Mutating its
+	# topology must preserve the ORIGINAL native search hash/order/outcome.
+	var unread_change: Dictionary = batch.capsules[0].duplicate(true)
+	unread_change.cells[0] = [1,0,0,200,0,true,false,0,"0000000000000001"]
+	var unread_replay: Dictionary = world.diagnostic_replay_ejection(unread_change)
+	_check(bool(unread_replay.get("valid",false)) and unread_replay.replay_hash == unread_change.replay_hash,
+		"unconsulted topology changed original production hash")
+	_check(_same_target(unread_replay.target,unread_change.target) and _same_trace(unread_replay.trace,unread_change.trace),
+		"unconsulted topology changed production decision")
 	_check(int(batch.attempts) == int(batch.stream_emitted) + int(batch.dropped), "stream accounting")
 	batch.capsules[0].cells[0][0] = -123
 	_check_immutable(world.get_physical_state_hash() == physical, "drained values alias World")
@@ -33,6 +42,19 @@ func _stream_controls() -> void:
 	_check(world.diagnostic_reset({"workers":1}), "stream reset")
 	var empty: Dictionary = world.diagnostic_ejection_corpus()
 	_check(not empty.stream_mode and empty.capsules.is_empty() and int(empty.attempts) == 0, "reset retained stream incarnation")
+	# Independently exercise the producer lifetime limit without pending loss.
+	_check(world.diagnostic_ejection_stream(), "total-limit enable")
+	var total: Dictionary = {}
+	for index: int in range(33):
+		_watchdog.publish("stream lifetime control=%d" % index)
+		world.prepare_rigid_body_coupling(PackedFloat32Array(), false)
+		_check(world.diagnostic_fill_rect(Vector2i(100,100),Vector2i(16,16),CyberCellWorld.SAND), "lifetime control fill")
+		world.prepare_rigid_body_coupling(PackedFloat32Array([1,108,108,0,16,16,0,0,0,1,index+1]), true)
+		total = world.diagnostic_take_ejection_events()
+	_check(int(total.stream_emitted) == 8192 and int(total.stream_total_drops) > 0, "lifetime stream bound not explicit")
+	_check(int(total.stream_pending_drops) == 0, "lifetime test unexpectedly lost pending events")
+	_check(int(total.attempts) == int(total.stream_emitted) + int(total.dropped), "lifetime accounting")
+	_check(world.diagnostic_reset({"workers":1}), "lifetime reset")
 	_check(world.diagnostic_ejection_stream(), "stream reenable")
 	_check(world.diagnostic_ejection_capture(64,16), "legacy enable")
 	_check(not world.diagnostic_ejection_corpus().stream_mode, "legacy policy changed by prior stream")
@@ -224,10 +246,18 @@ func _run() -> void:
 	_watchdog = WATCHDOG.new()
 	_check(_watchdog.start("ejection-a2", 120000) == OK, "watchdog start")
 	var mode: String = _argument("--mode=")
+	if mode.is_empty() or mode == "controls":
+		_stream_controls()
+		print("A2_STREAM_CONTROLS ", JSON.stringify({"ok":not _failed,"pending_limit":256,"total_limit":8192}))
+		_check(_watchdog.stop(), "watchdog stop")
+		quit(1 if _failed else 0)
+		return
 	var world: Object = _new_world()
 	if mode == "replay":
 		var corpus: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(_argument("--capsule-input=")))
 		var report: Dictionary = _replay_a2(world, corpus)
+		report["input_sha256"] = FileAccess.get_sha256(_argument("--capsule-input="))
+		report["source_revision"] = OS.get_environment("CYBERSAND_SOURCE_REVISION")
 		_controls(world, corpus)
 		report["malformed_refusal_controls"] = _refusal_controls
 		report["mutation_failures"] = _mutation_failures

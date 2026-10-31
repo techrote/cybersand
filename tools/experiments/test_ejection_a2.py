@@ -64,7 +64,12 @@ class A2Tests(unittest.TestCase):
         self.assertNotEqual(a2.topology_hash(c), a2.topology_hash(self.c))
         for field in (1,2,3):
             altered = copy.deepcopy(c)
-            altered["cells"][source][field] += 1
+            changed=altered["cells"][source]
+            changed[field] += 1
+            if field in (1,2):
+                changed[7]=changed[1]
+                changed[8]=f"{3 | (changed[1] << 16) | (changed[2] << 32):016x}"
+            self.assertEqual(a2.production_identity(altered)[0],self.c["replay_hash"])
             self.assertNotEqual(a2.topology_hash(c), a2.topology_hash(altered))
         altered = copy.deepcopy(c)
         altered["cells"][source][8] = f"{int(row[8],16) ^ (1 << 40):016x}"
@@ -210,6 +215,13 @@ class A2Tests(unittest.TestCase):
                 self.assertEqual((source.read_bytes(),receipt.read_bytes()),originals)
                 self.assertFalse((outputs/"corpus.json").exists())
                 alias.unlink()
+
+    def test_machine_artifacts_have_git_stable_lf_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path=Path(directory)/"artifact.json"
+            a2.write_json(path,{"value":1})
+            self.assertTrue(path.read_bytes().endswith(b"\n"))
+            self.assertNotIn(b"\r\n",path.read_bytes())
 
     def test_incomplete_stream_blocks_interpretation(self):
         with self.assertRaises(ValueError):

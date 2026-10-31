@@ -1812,3 +1812,25 @@ scripts and `ejection_push_chain.py --input <frozen-corpus> --output <local.json
 `build/test_ejection_chain_world`. Native qualification compares semantic
 material/state/temperature/Water quantity; Python copies additionally preserve
 captured raw epoch/spare bits. Neither path mutates the real simulation World.
+
+## A2 topology-diverse recapture
+
+`make ejection-a2-test` runs new identity/sampling and aggregation/decision tests
+alongside the unchanged focused oracle aggregate. With a rebuilt source-matched
+GDExtension, `res://tests/test_ejection_topology_capture.gd` without arguments
+checks pending/total capacity, drain ownership, reset and legacy-mode isolation.
+It retains the120-second internal watchdog. Explicit `--mode=acquire` takes
+`--events=<absolute.jsonl> --acquisition=<absolute.json> --trace=<absolute.json>`;
+`--mode=legacy` takes separate acquisition/trace outputs for neutrality. The
+fixture, packing count and physics order match#336.
+
+Run `tools/experiments/ejection_a2.py --events <jsonl> --acquisition <json>
+--output-directory <local>` for scientific identities, exact population weights
+and seeded strata. Replay `population.json` with the Godot script's
+`--mode=replay --capsule-input=<absolute> --replay-report=<absolute>`; this
+checks uniqueness by A2 identity while retaining original production hash parity.
+`analyze_ejection_a2.py` then consumes the population/sample, bound replay report,
+acquisition and separate stream/legacy trajectories. It refuses unqualified
+inputs and verifies inherited B/C Git blobs against the reviewed parent. All
+outputs must be separate from frozen inputs. See the
+[A2 command/runtime receipts](../audits/2026-10-31-physical-detachment-a2.md).
