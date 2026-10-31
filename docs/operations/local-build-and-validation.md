@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-30
+last-reviewed: 2026-10-31
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
@@ -391,7 +391,9 @@ Windows cross-builds use `build_pinned_godot_cpp.sh windows` and
 with `LLVM_MINGW_ROOT`/`WINDOWS_CXX`. PE/import inspection alone cannot prove a
 Windows runtime launch.
 
-The GitHub-hosted Native job has a 90-minute overall allowance. Its individual
+Each GitHub-hosted Native family job retains a 90-minute overall allowance;
+the separate policy job has 5 minutes and the `native` evidence aggregate has
+10 minutes. The original individual
 build, test and benchmark commands retain their separate deadlines; increasing
 the job allowance does not skip cases or relax sanitizer failures. The
 [pressure-reference acceptance](../audits/2026-10-24-lcb001-pressure-reference-publication.md#exact-head-acceptance-and-merge)
@@ -543,8 +545,8 @@ and raw logs even if the Actions run badge is green or red. The
 [dated audit](../audits/2026-10-24-issue-233-physical-regression-timeouts.md) records
 executions and remaining uncertainties separately from workflow availability.
 
-**Current:** the GDExtension workflow also executes the retained Windows DLL on a
-GitHub-hosted `windows-2022` runner. This lane is separate from the Windows
+**Current:** the GDExtension workflow executes the retained Windows DLL on four
+independent GitHub-hosted `windows-2022` runners. This lane is separate from the Windows
 cross-build job. The
 [Windows execution helper](../../tools/ci/run_windows_godot_regressions.py)
 requires an exact workflow checkout, committed LFS bytes, matching runtime
@@ -563,9 +565,15 @@ After the ACT-005 integration, the source inventory is 97 Windows headless
 cases and 103 Linux cases, with import counted separately. These counts describe
 discovery, not an executed pass.
 
-The job retains `windows-execution.json`, source/runtime/tool identities,
-commands, individual logs and their SHA-256 hashes under the
-`windows-godot-headless-<run-id>` artifact even when execution fails. The report
+Each shard uses `--shard-count 4 --shard-index 0..3` and retains
+`windows-execution.json`, source/runtime/tool identities, commands, individual
+logs and their SHA-256 hashes under its
+`windows-godot-headless-<shard>-<run-id>` artifact even when execution fails.
+The independent coverage reducer requires all four assignments and original
+logs, and cannot pass an admitted failed/missing matrix. The
+[production CI audit](../audits/2026-10-31-ci-parallel-production-integration.md)
+records source-qualified predecessor counts and timings; discover the actual
+current inventory rather than reusing the older ACT-005 count above. The report
 records incomplete import, failed cases, source drift and final completion
 explicitly. Only the four declared Rapier texture `.import` descriptors normalize
 CRLF to LF for content comparison: the hosted checkout and Godot's re-save can

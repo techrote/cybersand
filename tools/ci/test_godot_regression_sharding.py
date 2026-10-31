@@ -181,9 +181,12 @@ class ResultTests(unittest.TestCase):
             processes = []
             kill_tree = subject._kill_process_tree
 
-            def kill_and_observe(process):
+            def kill_and_observe(process, *, owned_pgid=None):
                 processes.append(process)
-                kill_tree(process)
+                try:
+                    self.assertEqual(owned_pgid, None if sys.platform == "win32" else process.pid)
+                finally:
+                    kill_tree(process, owned_pgid=owned_pgid)
 
             with (
                 mock.patch.object(subject, "case_command", return_value=[sys.executable, "-c", "import time;time.sleep(30)"]),
@@ -208,10 +211,13 @@ class ResultTests(unittest.TestCase):
                 events.append(("snapshot", pid))
                 path.write_text("snapshot while alive")
 
-            def kill_and_observe(process):
-                self.assertIsNone(process.poll())
-                events.append(("kill", process.pid))
-                kill_tree(process)
+            def kill_and_observe(process, *, owned_pgid=None):
+                try:
+                    self.assertIsNone(process.poll())
+                    self.assertEqual(owned_pgid, None if sys.platform == "win32" else process.pid)
+                    events.append(("kill", process.pid))
+                finally:
+                    kill_tree(process, owned_pgid=owned_pgid)
 
             with (
                 mock.patch.object(subject, "case_command", return_value=[sys.executable, "-c", "import time;time.sleep(30)"]),

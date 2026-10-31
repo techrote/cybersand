@@ -10,6 +10,46 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## PLAY-PACE-003 current correction boundary — 2026-10-31
+
+After the retained281 Linux LIFE008 initial-readiness failure, a bounded paired
+full-resolution cold diagnostic identifies additional palette link/first-draw
+cost. The exact small10ed shader variant completes the original62-assertion
+lifecycle fixture with full source/runtime/cache custody; control426c fails.
+The [dated audit](../audits/2026-10-30-play-pace003-cold-startup.md#full-resolution-readiness-correction-and-current-qualification-boundary--2026-10-31)
+records actual GL program identity, CPU/wall timings, preserved v1 custody failure,
+32 exact visual pairs and all limitations. Production shader62a41329ce96 differs
+from tested10ed only in two comments, with all31,917 lexical tokens equal.
+It consolidates ordinary finish and eliminates overwritten outside-view colour
+work, retaining all visual/gameplay/native/runtime contracts and fixed deadlines.
+
+The [resulting-head ledger](https://github.com/techrote/cybersand/pull/310#issuecomment-6536644006)
+owns exact source/tree, original gates/artifacts and review. The unchanged15s
+LIFE008,30s Main and180s process limits remain mandatory; local diagnostic passes
+do not replace fresh hosted Windows/Linux evidence. Windows remains uncorrected.
+The owner has separately authorized [CI production integration](https://github.com/techrote/cybersand/issues/305#issuecomment-6537154140)
+from #311/#313/#314, preserving all original Native limits and coverage with no
+scope-based skip authorization. Its branch is separate from #309/#308; do not
+erase the completed original281 Native attempt or overwrite the #308 owner. No #308 merge,
+#309 closure, broader PLAY closure or Scheduswarm restart follows from these steps.
+
+## CI parallel integration checkpoint — 2026-10-31
+
+The owner requested production integration of #311/#313/#314 in the active
+#309 run. The separate branch `ci/parallel-production-integration-20261031`
+starts at main `b55ce690f9a3d2ca3026674a2e9c6a7635966f59`; the original draft
+trial branches remain intact. Read the [dated CI audit](../audits/2026-10-31-ci-parallel-production-integration.md)
+and [source/qualification ledger](https://github.com/techrote/cybersand/issues/305#issuecomment-6537154140)
+for the exact resulting head, first-attempt gate results, review and integration
+lease. The source port uses six Native families with the stable `native` gate,
+four complete Windows Godot shards, unchanged Linux coverage and all original
+command deadlines. Five expanded #311 trial bounds are deliberately not promoted.
+Scope advice cannot authorize Native skips. The three predecessor trials passed
+their own scoped checks; they do not qualify this new source or prove an
+under-30-minute full production cycle. Preserve prior failed experiments and
+TSan exit124. CI integration does not merge #308, close PLAY issues, change any
+native/runtime/training input or restart Scheduswarm.
+
 ## PLAY convergence checkpoint — 2026-10-30
 
 Start each continuation with fresh main/branch heads, instructions, #263 and
@@ -155,12 +195,30 @@ or internal-pass defect. No Windows correction or fundamental renderer
 incapability is established. Retain the bounded exact-input reproduction for
 an owner/upstream compiler decision rather than adopt diagnostic flags.
 
+The separate automatic matrix at 5de,
+[41149030614](https://github.com/techrote/cybersand/actions/runs/41149030614),
+retains three cold 180s timeouts and one late isolated-atlas completion in
+artifact 13021809621. Unified candidate `cbad4e5b...` completes in 175.903s,
+first submission 172.361599s. Its exact previously timed-out HLSL returns from
+palette call 44 at original O2 flags `0xc000`, HRESULT 0, after 170.0066407s
+wall / 169.984375s thread CPU, retaining 1,213,964-byte DXBC. Call 45 is geometry,
+not fallback. A copied-cache fresh process takes 4.160s; all 16 cold/warm PNG
+and native framebuffer pairs are byte-exact. No original Windows baseline frames
+exist, so this is same-candidate parity only. The identical source-512 candidate's
+first timeout remains failed. This late atlas result does not execute Main or
+satisfy its 30s acknowledgement deadline, and no candidate is adopted.
+Keep it distinct from the two compiler-only hoist-input failures above.
+The complete #312 index through 5de retains 37 original runs, 112 jobs,
+22 executed logs and 21 ZIPs, SHA-256
+`3152fe21fe64a3573db8d1e14964834848efd5b0eed74ada772b03279dcdf50b`.
+The audit binds all original ZIP/report/CPU/pixel receipts and cache limits.
+
 The prepared successor now includes the reviewed explicit
 `offline_archive_readback=True` option for ZIP-omitted generated directories
 only when the expected file inventory is exactly empty. Its candidate-preview
 checks retain strict default and at-launch behavior; no evidence is
-reconstructed, and Windows failures remain rejected. This pending checkpoint
-has not deployed or accepted the change and does not alter tested 62d evidence
+reconstructed, and Windows failures remain rejected. This unaccepted checkpoint
+does not alter tested 62d evidence
 or supply a new runtime pass.
 
 The prepared successor also rejects an already-exited zero-status process whose
@@ -176,6 +234,24 @@ Independent final caller review has no actionable findings; receipt
 `a7e628e659f10db29841daefeca3bcae4cda202a62e22b5ff083bfd88efbfc0e`. This is
 unqualified successor apparatus work, not retroactive 62d evidence or a Windows
 startup repair. The separately executed phase-4 diagnostic checkout is untouched.
+
+Original281's five-workflow matrix is terminal: Docs/provenance and Native pass;
+ordinary Godot, PACE and the generic diagnostic fail. Native [41150430747](https://github.com/techrote/cybersand/actions/runs/41150430747)
+completes all original-bound gates in 66m13s, including 164 ordered cases in each
+of TSan, ordinary and ASan+UBSan. All original logs/artifacts are retained; the
+earlier #308 TSan timeout remains failed and unexplained. Its completion allows
+the next source publication without cancellation or replacing original evidence.
+
+The initial published successor is
+`28192d146d7b3d7475a92c1703d52bc94d155dd2` / tree
+`2f7884e656bce936862aaa64125517ce23d4919a`, parent 62d. Its ordinary Godot
+[41150430766](https://github.com/techrote/cybersand/actions/runs/41150430766)
+fails before engine-suite execution: two old sharding-test cleanup observers
+reject `owned_pgid`. Retain these original failed logs. The bounded correction
+changes only those two test callbacks to accept/forward/assert the captured
+group and always clean up in `finally`, preserving existing assertions.
+Corrected-head gates remain pending; no shader, runtime or deadline changes,
+retroactive 62d acceptance, or Windows startup correction follow from this fix.
 
 For a future resulting-head responsiveness claim, the exact-62d review identifies
 two bounded additions: require/validate PACE's existing `raw.input_tape` and

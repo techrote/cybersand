@@ -4,11 +4,20 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-10-30
+last-reviewed: 2026-10-31
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+## CI parallel production integration — 2026-10-31
+
+The [production CI record](audits/2026-10-31-ci-parallel-production-integration.md)
+reconciles the six-family Native, four-way Windows and report-only scope trials.
+The [CI contract](operations/github-development-and-release.md#parallel-validation-and-source-scope-advice--2026-10-31)
+preserves every original command deadline, scientific fixture and complete
+Windows/Linux gate. Predecessor trial timing is distinct from resulting-head
+qualification and does not remove the separate PLAY graphical hold.
 
 ## PLAY current route — 2026-10-30
 

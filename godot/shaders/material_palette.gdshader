@@ -2121,6 +2121,25 @@ vec4 apply_detail_edges(
 	return colour;
 }
 
+// Preserve the original structured dispatch before the shared ordinary finish.
+bool structured_ordinary_flair(int material_id, vec4 extent) {
+	bool ordinary = material_id != 5 && material_id != 7
+		&& material_id != 46 && material_id != 55 && material_id != 64
+		&& material_id != 68 && material_id != 69 && material_id != 73
+		&& material_id != 74 && material_id != 75 && material_id != 76
+		&& material_id != 80;
+	if (!ordinary || material_id != 50) return ordinary;
+	// The original orientation rule, including the capped long-run probes.
+	float span_x = extent.z + extent.w + 1.0;
+	float span_y = extent.x + extent.y + 1.0;
+	float long_x = (extent.z >= 8.0 || extent.w >= 8.0) ? 99.0 : span_x;
+	float long_y = (extent.x >= 8.0 || extent.y >= 8.0) ? 99.0 : span_y;
+	bool large = long_x > 50.0 && long_y > 50.0;
+	bool horizontal = large ? material_id != 64 : long_x >= long_y;
+	float across_span = horizontal ? span_y : span_x;
+	return across_span > 3.5;
+}
+
 vec4 apply_structured_fill(
 	vec4 colour,
 	int material_id,
@@ -2148,19 +2167,6 @@ vec4 apply_structured_fill(
 	float edge = min(min(extent.x, extent.y), min(extent.z, extent.w));
 	bool exposed = edge < 0.5;
 
-	// Each structured branch either replaces the ordinary finish or starts
-	// with that same finish before adding its detail. Keep the latter at one
-	// dispatch site so driver inlining does not duplicate the full catalogue
-	// at seven mutually exclusive call sites. Wrought iron uses the ordinary
-	// finish only for a wide plate; its thin baluster path replaces it.
-	bool uses_ordinary_flair = material_id != 5 && material_id != 7
-		&& material_id != 46 && material_id != 55 && material_id != 64
-		&& material_id != 68 && material_id != 69 && material_id != 73
-		&& material_id != 74 && material_id != 75 && material_id != 76
-		&& material_id != 80 && (material_id != 50 || across_span > 3.5);
-	if (uses_ordinary_flair) {
-		colour = apply_material_flair(colour, material_id, flair, pixel, condition);
-	}
 
 	if (material_id == 68 || material_id == 69) { // pipes
 		float cylinder = sqrt(max(0.0, 1.0 - pow(across_u * 2.0 - 1.0, 2.0)));
@@ -2559,22 +2565,25 @@ vec4 material_colour(
 		sampled_material_id(world_pixel + vec2(-1.0, 0.0), previous_snapshot),
 		sampled_material_id(world_pixel + vec2(1.0, 0.0), previous_snapshot)
 	);
-	if (material_id >= 81 && material_id <= LAST_MATERIAL_ID) {
-		// Keep the catalogue at a single dispatch site. Putting it inside the
-		// shared flair helper duplicates this large branch at every ordinary
-		// structured finish call when GPU drivers inline shader functions.
+	// Gather extent once and keep the ordinary finish at one dispatch site.
+	bool structured = uses_structured_fill(material_id);
+	bool building = material_id >= 81 && material_id <= LAST_MATERIAL_ID;
+	vec4 extent = vec4(0.0);
+	if (structured) {
+		extent = region_extent(world_pixel, material_id, neighbours, previous_snapshot);
+	}
+	if (!building && (!structured || structured_ordinary_flair(material_id, extent))) {
+		colour = apply_material_flair(colour, material_id, flair, world_pixel, condition);
+	}
+	if (building) {
 		BuildGeometry geometry = default_build_geometry(world_pixel);
-		if (uses_structured_fill(material_id)) {
-			geometry = probed_build_geometry(world_pixel, neighbours,
-				region_extent(world_pixel, material_id, neighbours, previous_snapshot));
+		if (structured) {
+			geometry = probed_build_geometry(world_pixel, neighbours, extent);
 		}
 		colour = apply_building_finish(colour, material_id, world_pixel, geometry, condition);
-	} else if (uses_structured_fill(material_id)) {
-		vec4 extent = region_extent(world_pixel, material_id, neighbours, previous_snapshot);
+	} else if (structured) {
 		colour = apply_structured_fill(
 			colour, material_id, flair, world_pixel, neighbours, extent, condition);
-	} else {
-		colour = apply_material_flair(colour, material_id, flair, world_pixel, condition);
 	}
 	colour = apply_volume_and_contact(
 		colour, material_id, world_pixel, neighbours, previous_snapshot, condition);
@@ -2616,9 +2625,10 @@ void fragment() {
 		cell_fraction,
 		true
 	);
-	vec4 colour = material_colour(material_id, condition, world_pixel, false);
+	vec4 colour = material_colour(inside_view ? material_id : 0,
+		inside_view ? condition : 0.0, world_pixel, false);
 	if (
-		previous_material_id != material_id
+		inside_view && previous_material_id != material_id
 		&& (
 			is_temporally_smoothed_material(material_id)
 			|| is_temporally_smoothed_material(previous_material_id)
@@ -2639,7 +2649,7 @@ void fragment() {
 		&& world_pixel.y >= player_origin_px.y
 		&& world_pixel.x < player_max.x
 		&& world_pixel.y < player_max.y;
-	if (inside_player) {
+	if (inside_view && inside_player) {
 		colour = player_colour;
 	}
 
@@ -2656,11 +2666,8 @@ void fragment() {
 		rigid_body_data_2,
 		rigid_body_rotation_2
 	);
-	if (inside_test_body) {
+	if (inside_view && inside_test_body) {
 		colour = rigid_body_colour;
-	}
-	if (!inside_view) {
-		colour = material_colour(0, 0.0, world_pixel, false);
 	}
 
 	COLOR = colour;

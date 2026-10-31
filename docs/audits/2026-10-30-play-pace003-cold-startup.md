@@ -21,6 +21,203 @@ owns only `codex/play-pace003-cold-start-20261030`, stacked from
 Scheduswarm remains paused; no task, dispatch or successor was created.
 The broader #154/#156 investigation and optional #304 are not taken over.
 
+## Full-resolution readiness correction and current qualification boundary — 2026-10-31
+
+The prepared successor to281 retains the original30-second pre-Build Main
+acknowledgement,180-second process and240-second import limits. A second bounded
+shader correction is now selected from actual full-resolution Linux evidence:
+ordinary-flair dispatch is consolidated once across structured/nonstructured
+materials, and the final outside-view background evaluation is folded into the
+initial material-colour call. Only colour work that the original final assignment
+unconditionally overwrote is suppressed outside the view. This changes no visual
+formula, catalogue, uniform, texture, renderer, scene, actor, physics, worker,
+liquid policy, scientific fixture or runtime identity.
+
+The tested retained variant is SHA-256
+`10edc6410eeed27a4883e7452abe5d5a47f213b256886c89daa0b88dbd33600f`.
+The production file is124,010bytes, SHA-256
+`62a41329ce9693081173d5f8b2f969e08544d46a25efd8fb0c955ed82a7c0b11`.
+Only two diagnostic comment lines were changed after the experiment: all31,917
+lexical shader tokens are equal, and reversing those two comment substitutions
+recovers the exact tested bytes. Actual emitted GLSL identity still requires
+fresh resulting-head diagnostic verification. This is the small phase-1 variant,
+not the much larger phase-3 single-exit candidate `cbad4e5b...`.
+
+Existing independent original-versus-10ed visual evidence has32 finite native
+RGBAF and PNG frame pairs, all byte-exact: standard16 plus extended16 including
+thin/wide structured geometry, all132material slots, temporal directions/blends,
+conditions/times, letterboxing/camera offset, player rectangle and rotated body.
+The original parity receipt is
+`c0ee9d6127452d740967163c6be709b051653f17faf4391bc1f51b55cfcbde6d`.
+This finite same-backend evidence and pure-control-flow review do not establish
+Windows baseline parity or exhaustive equivalence over every possible input.
+The combined change does not isolate the benefit of either transformation alone.
+
+### Preserved281 Main and lifecycle results
+
+Original attempt1 PACE
+[41150430770](https://github.com/techrote/cybersand/actions/runs/41150430770)
+is aggregateFAIL. Both Linux Main rows pass: acknowledgement14.187659/13.840698s
+for explicit one/Auto, first submission12.638556/12.540800s, actual course/actor
+PNGs, and full-window submission rates11.603205/11.563550s^-1. Adjacent frame
+interval p50/p95/p99 is85.412/91.609/96.147ms and85.652/92.756/105.848ms.
+Native completions are60.005145/60.010838ticks/s, with actual maximum task
+participation1 in both rows despite allocated capacities1/4; there is no observed
+parallel dispatch or scaling claim. Physical scan-out and per-input displacement
+latency are not inferred from these counters.
+
+Linux LIFE008 separately fails its original15-second initial actor-readiness
+operation: exit1 after20.466s,7assertions/2failures, no navigation row or exercised
+native-failure recovery. Cleanup passes with maximum observed owner count1.
+The other six graphical fixtures pass. The hosted log lacks the predicate-component
+timing needed to assign that failure's internal cause directly. Its1920x1080
+fixture is not the960x540 Main measurement. Different hosted CPU models and
+uncontrolled background load also prevent interpreting the62d/281 difference
+as a controlled shader comparison; the shader bytes are identical in those heads.
+Linux original artifact13023165632 has SHA-256
+`513efb3b9fa460df8abbfee13023c420225be466adcff8604a8c6394040ed756`.
+
+Windows281 still times out both Main rows at180.000/180.001s, with no qualifying
+acknowledgement or PNG. Six graphical fixtures also time out; vapour alone passes.
+The original selector markers are3.795079/3.370589s and deadline hot-thread CPU
+is175.015625/176.984375s. The earlier approximately150-second captures map to
+`d3dcompiler_47.dll+0x494a4` and `+0xcbc45`; those are separate observations from
+the later CPU samples, not fully symbolized continuous stacks. Original
+artifact13023278960 has SHA-256
+`3ce1c5cafbac340ea4b7ba8f3257c2f316594df7540650f04ba2781d34686766`.
+The same-head generic Windows diagnostic also fails; its hoist capture is in
+`ucrtbase`, which must not be relabelled a direct compiler instruction.
+
+### Complete original281 matrix
+
+The original five-workflow matrix is now terminal. Docs/provenance
+[41150430740](https://github.com/techrote/cybersand/actions/runs/41150430740)
+and Native [41150430747](https://github.com/techrote/cybersand/actions/runs/41150430747) pass; ordinary Godot, PACE and the
+nonqualifying generic shader diagnostic fail. Across 19 jobs, four succeed,
+eight fail and seven are skipped. Twelve original decoded job logs and seven
+original artifact ZIPs are retained and independently rehashed. The complete
+ledger SHA-256 is
+`7d34d9a13a2ceaade3e5fe7acc29718d4ce1d58352998ba64cec7f2695643bc7`.
+
+The original serial Native job completes in 66m13s, with all 21 steps successful.
+Its unchanged-bound TSan build and complete suite finish in 13m10s; TSan,
+ordinary and ASan+UBSan each contain the exact ordered 164 source-derived tests.
+All later physics, world-generation, soliding and sanitizer gates also execute.
+The physics evidence has 154 invocations, 308 original stream hashes and all
+310 original ZIP members verified. Artifact 13022934348 is 94,636 bytes,
+SHA-256 `1b744ec2faa243f598e0e06d4b5ad1d76284a9ff3237a1c61f34e9a6395c3a11`;
+the full 234,274-byte original decoded log has SHA-256
+`2f35f094f45f4fa0f0a5b15427e286e3211c69892ae5b05b4f92c91b570fce03`.
+The terminal readback receipt is
+`4fd14691e429fd335c0a7dd6538ada0555948c239ded6840c1b7b39c8a3b8e6c`.
+This new pass does not diagnose or erase #308's earlier TSan exit 124, and no
+result is inherited by a changed source tree.
+
+### Bounded source-matched Linux contrast
+
+The first observation-only v1 probe remains a failed original. It records the
+readiness failure and palette-link/first-draw cost, then fails its final runtime
+file fence when the path contains an LFS pointer. Its missing process receipt,
+empty CPU sampler and incomplete postflight are not reconstructed or qualified.
+The cause of that runtime-file transition remains unestablished.
+
+The separate reviewed v2 helper fixes evidence retention: it writes the actual
+engine-return record before sampler/cache/postflight work, preserves each later
+error independently, and never turns a zero exit into a custody pass. It admits
+only clean source281/tree2f788 with control426c, or that exact source with the
+sole palette delta10ed. Seventeen adverse controls pass normal and optimized
+Python. Original348script and4shader generated UID sidecars were individually
+retained and removed before execution; no broad ignore or dirty-source exemption
+was added. Both actual runs preserve the unchanged15s operation,150s fixture and
+180s process budgets at1920x1080/Xvfb/llvmpipe/OpenGL Compatibility.
+
+| Actual first cold v2 boundary | Control426c | Unified10ed |
+|---|---:|---:|
+| Palette fragment compilation, wall / calling-thread CPU |0.041376/0.041376s|0.043132/0.043132s|
+| Palette program link, wall / calling-thread CPU |10.751588/10.745499s|4.810929/4.810577s|
+| First palette draw, wall / calling-thread CPU |3.164314/3.164092s|1.864057/1.863636s|
+| First frame_post_draw after observed Main ready |14.968119s|7.687879s|
+| Largest separate post-Main observer gap |14.853025s|7.571841s|
+| Initial actor_ready predicate |false; deadline exhausted|true11.518824s after wait began|
+| Complete fixture process |18.037s,exit1|32.377s,exit0|
+| Lifecycle assertions / failures |7/2|62/0|
+| Actual native-failure waits / navigation rows |0/0|3/3|
+| Source/runtime/cache custody |complete|complete|
+
+Both actual Godot processes bind fragment72 and vertex71 to palette program70.
+All50 captured actual-PID GLSL sources are retained; only the palette fragment
+changes, while the other49 are byte-identical. Control GLSL is179,986bytes /
+SHA-256 `2468ded1532a822423ce41f6a5c1a061c3a15cd03d8acdee5537578aba081e50`;
+unified is180,519bytes /
+`2759568dfa78456c193a99d6c99788d504edeceb33059396ed0f73f2467c86ac`.
+The same-thread CPU closely follows wall time in the measured link and first
+palette draw. This attributes the observed cost to public driver work on that
+specific program, not to a named Mesa optimizer/JIT pass or native deadlock.
+
+The unified run accepts real terrain/course/actor and exercises three real
+capacity-fault recovery/navigation orderings. All six hosts retire correctly,
+with old adapter/worker destruction, join and at most one observed owner. This
+is still a local NONQUALIFYING instrumented diagnostic; only its first ordering
+starts cold, and it does not replace any hosted Main/graphical case. Neither
+variant supplies an independent /proc thread sample: both retain zero samples
+and explicit FileNotFound errors. Per-driver-call CPU and broader reaped-child
+CPU have distinct scopes. Raw/monotonic clock endpoint brackets, observer I/O,
+one actual-PID resolver bypass, foreign anchor-child rows and censored250ms
+runtime-path observations remain explicit limitations. Path hashes alone do not
+prove continuous loaded-module identity.
+
+Independent readback rehashes all137control and148unified retained files, all
+782 execution inputs per variant and the complete generated-cache inventories.
+Only the declared shader source differs. Receipt SHA-256 is
+`d9ee75d386b4bb00cf7a27dbcfc7a6b135607fd6a3fef5bc50615041e341fb5e`.
+Original process receipts are
+`f45883f7602e95424f04d3e94848ce5a42d48cd0073cbcf28a47f71b8dd0d76d`
+and `ed13f997470c7d13718613a717cf96e5dd9489e0869a3169022bcfd426649198`.
+The hosted281 LIFE008 negative and original v1 failure remain failed.
+
+### Resulting-head qualification and separate CI integration
+
+The prepared source also includes the focused sharding-test callback interface
+correction described below. All required resulting-head Docs/provenance,
+Native, ordinary Windows/Linux Godot, both Main worker configurations and all
+focused graphical cases must run again. The exact resulting commit/tree,
+original attempts, original artifact receipts and final dispositions are tracked
+in the [qualification ledger](https://github.com/techrote/cybersand/pull/310#issuecomment-6536644006).
+The32-frame visual proof and local contrast alone do not authorize integration.
+
+The owner separately requested production CI promotion from #311/#313/#314.
+Its [registered CI write set](https://github.com/techrote/cybersand/issues/305#issuecomment-6537154140)
+uses a separate branch from main, retains all original deadlines/scientific
+coverage, and grants no Native skip exemption. Its qualified source may be
+consumed without writing the #308 owner branch. The implementation now consumes the exact seven CI source files from ready
+[PR #315](https://github.com/techrote/cybersand/pull/315), head
+`de40fe177dcbaa45d2c99ec7dc93c0599ca27072`, tree
+`b9f8b6425812b3cd5230127f1ab81c74f15e6e40`, plus its reconciled documentation.
+The #310 successor records two parents: original281 first and source315 second.
+Its own gates must execute; #315 results cannot qualify this different tree.
+The original281 Native first attempt completed before any #310 ref move. Faster CI is
+not a repair for the historical TSan timeout or Windows shader compilation.
+Windows remains uncorrected; no #308 merge, #309 closure or broader PLAY closure
+is justified while the complete acceptance matrix is red. Scheduswarm stays paused.
+
+## Published successor and preserved apparatus failure — 2026-10-31
+
+PR #310 successor `28192d146d7b3d7475a92c1703d52bc94d155dd2`, tree
+`2f7884e656bce936862aaa64125517ce23d4919a`, has parent exactly 62d. It retains
+the same `426c2b8a...` guarded-hoist shader, gameplay/native ownership, runtime
+pins and 30/180/240-second bounds. Its ordinary Godot
+[41150430766](https://github.com/techrote/cybersand/actions/runs/41150430766)
+is **FAIL**: two existing sharding-test cleanup observers reject the new
+`owned_pgid` keyword before the engine suite executes. Original failing logs
+remain retained; this apparatus failure is neither an engine result nor a pass.
+
+The bounded correction changes only those two callbacks in
+`tools/ci/test_godot_regression_sharding.py`: accept, assert and forward the
+captured process-group identity, and always clean up in `finally`. Existing
+assertions remain. The corrected successor's exact-head gates are pending;
+neither it nor 281 inherits 62d's completed ordinary results. This does not
+change a shader, runtime, deadline or the separate Windows startup disposition.
+
 ## Frozen failures and fresh terminal readback
 
 All four runs below are original attempt 1 at PR #308's recorded head.
@@ -82,7 +279,7 @@ texture, renderer setting, native code or resource-ownership transition changes.
 Building IDs 81–131 and nonstructured dispatch remain separate and unchanged.
 The guard preserves the original no-flair paths for IDs
 5, 7, 46, 55, 64, 68, 69, 73, 74, 75, 76 and 80, and thin ID 50 when
-`across_span <= 3.5`. No outside-view or temporal-path optimization is included.
+`across_span <= 3.5`. No outside-view or temporal-path optimization was included in that initial426c correction; the later source-matched10ed/62a correction is recorded above.
 
 | Shader input | Bytes | SHA-256 |
 |---|---:|---|
@@ -392,7 +589,7 @@ on Windows and supplies no Windows execution claim. The final caller execution
 receipt is `63c35fe1a5a3b3b61666965eee212932bfe02d052617c5808ae1e82bf5edccfb`;
 independent final review has no actionable findings, receipt
 `a7e628e659f10db29841daefeca3bcae4cda202a62e22b5ff083bfd88efbfc0e`.
-These four source/test paths belong to a prepared successor on 62d, awaiting
+These four source/test paths were prepared on62d and published in281; their original review awaited
 its own exact-head qualification. They neither change a deadline, renderer,
 runtime, gameplay/native path nor reinterpret any original 62d result. The
 separate phase-4 diagnostic checkout is unchanged.
@@ -412,6 +609,7 @@ change #308 or qualify a production shader. No Scheduswarm dispatch was started.
 | Phase 2, bounded exclusive dispatch ranges | `f20ae3ab40d8f4d8f2081fdeeafa8ceab04876e8` / `6d5cf3c7680579ba81decdc9d5487086d2040892` | [41141840826](https://github.com/techrote/cybersand/actions/runs/41141840826), attempt 1 FAIL; final readback confirms all five cold processes timeout at 180s |
 | Phase 3, single-exit control flow | `512dbb9e139bc18c6b034f803b95b43a08d888da` / `4fb6655e53eac4942402b38dac6754d7c2d07725` | [41144657058](https://github.com/techrote/cybersand/actions/runs/41144657058), attempt 1 FAIL; all four first cold processes timeout at 180s; original job ended 2026-10-30 23:56:35 UTC |
 | Phase 4, exact captured HLSL compiler-only contrast | `5de468478c37c8ae9e2d446ba348d4e3ecf54bd6` / `8957ae44174226758069a534f8a4c03edce79e51` | [41149030607](https://github.com/techrote/cybersand/actions/runs/41149030607), attempt 1 FAIL; both full-HLSL processes timeout at the unchanged 180s cap; original job ended 2026-10-31 00:20:39 UTC |
+| Phase 4, automatic single-exit matrix | Same 5de source/tree; candidate bytes unchanged from phase 3 | [41149030614](https://github.com/techrote/cybersand/actions/runs/41149030614), attempt 1 FAIL; three cold timeouts and one late completed isolated atlas, followed by a labelled warm process; no Main acceptance |
 
 The retained 23:43:44 UTC API snapshot advances the earlier queue observation:
 generic Windows job 124366820691 started at 23:43:07 and matrix job
@@ -772,8 +970,59 @@ accepted. Fundamental renderer incapability is not established.
 
 Windows remains the unresolved correction gate. Retain the exact captured
 input, compiler identity, failed variants and standalone reproduction alongside
-the Linux-validated hoist and prepared evidence/monitor fixes. The following is
-a concrete continuation proposal, not an implemented or qualified architecture.
+the Linux-validated hoist and evidence/monitor fixes. The separate automatic
+matrix below adds a genuine late completion without completing that gate.
+
+### Phase 4 automatic matrix: retained late completion
+
+Original [run 41149030614](https://github.com/techrote/cybersand/actions/runs/41149030614)
+at the same 5de source/tree retains artifact **13021809621**, 21,909,183 bytes,
+SHA-256 `be79727df88f84eaeb9a53a72afc2fa60ecc54ed262e900d29bb1971a802a259`.
+The hoist control, catalogue-only and warning-helper cold cases still time out
+at 180 seconds. The fourth, unified warning-helper candidate, completes its
+isolated cold atlas in **175.903 seconds**, with 16 frames and first graphical
+submission at **172.361599 seconds**. The aggregate stays `diagnostic_failed`;
+the earlier source-512 first cold timeout of this identical candidate remains
+failed. Neither source's result replaces the other.
+
+The completed shader is
+`cbad4e5b0a4916b9dee2fafb4c890003ae3c2191651bcd49f56380efff4e5ea1`.
+Actual palette `D3DCompile` call 44 receives the same 179,152-byte HLSL as the
+source-512 timeout, SHA-256
+`b06e3a36c7901a4f0bffa1ab5187fae67f220faa0f680a3f8b12b92a4b2a74f7`, with
+unchanged `main` / `ps_5_0`, macro inputs and original O2 flags `0xc000`.
+It returns **HRESULT 0**, taking **170.0066407 seconds wall /
+169.984375 seconds same-thread CPU**, and retains 1,213,964 bytes of actual
+DXBC, SHA-256 `7eb0557ecfa6ee5ead8994727190e32a4ef8d5ecf6f9a1c35b0bc1d7a1ebfd30`.
+The following call 45 is a small `gs_5_0` geometry compile, not a palette
+fallback. All 43 preceding compiler-input multisets match the retained controls;
+asynchronous call ordering is not assumed identical.
+
+A subsequent fresh process uses copied retained caches and completes in
+**4.160 seconds**, with first submission at **0.604374 seconds**. All 16
+cold/warm PNG and native floating-point framebuffer pairs are byte-exact,
+finite and satisfy the retained material-coverage checks. This is same-candidate
+cache/visual evidence. There are no completed original-shader Windows baseline
+frames, so it does **not** establish original-versus-candidate Windows parity.
+Private application caches are isolated; Windows OS/driver caches remain
+uncontrolled. The warm process does not replace cold acceptance.
+
+The original report SHA-256 is
+`43a381669552cd76996fee46988a25e38ebf319cf11ad2dcb6d624b49cdeed58`.
+Independent custody, CPU, compiler-input and cold/warm pixel receipts respectively
+have SHA-256 `c82e4efcdff3750fc564b770d96801b9dca9cc60197793d22d2d6d460e8d1307`,
+`3b73c5b8443ebdf189f9fb4714560de2b6c713b5272ca9fcc4ae49ae67dcffb0`,
+`9cc0791029b8af708cd0a1a71e973f12b5755da69a857683351d4f4e4b63696e` and
+`c85e66667f1efcd88c9c2e23f8ea09630a3d197b825683bd66b52f97bae5cf3d`.
+
+This observed completion is distinct from the two compiler-only timeouts above,
+which use the different 175,942-byte hoist-control HLSL. It demonstrates that
+the unified input can complete on this pinned hosted configuration; it does
+not establish reliable cold startup, an internal-pass diagnosis or fundamental
+incapability. A first isolated submission after 172 seconds supplies no valid
+Main acknowledgement within 30 seconds, and no Main route is executed here.
+No single-exit candidate or diagnostic compiler flag is adopted into #310.
+The following remains a concrete owner proposal, not a qualified architecture.
 
 ### Proposed bounded owner decision and continuation
 
@@ -852,6 +1101,7 @@ ordinary-gate originals manifest above binds each full original job log as well.
 | 13020549731, Windows diagnostic phase 3 | 41144657058 | 2,860,062 | `e419f33c5a5e85a86a0209e7b847ed5e6a395100564472fc71aafc11c72443b4` |
 | 13020810883, source-512 Docs | 41144657170 | 1,364,790 | `8053fef81a1008ca9872f510eb12234c3af60261521c0210b3acfe80f9fb9778` |
 | 13022287635, exact-HLSL compiler-only phase 4 | 41149030607 | 3,026,839 | `8cb709913ebc99b425dbc76888e6c5b0750e7e2ecc5044908b624aa4870dbd3d` |
+| 13021809621, Windows automatic matrix at 5de | 41149030614 | 21,909,183 | `be79727df88f84eaeb9a53a72afc2fa60ecc54ed262e900d29bb1971a802a259` |
 
 The phase 1 original job 124354789522 log is 51,019 bytes, SHA-256
 `ba876049ed192a4e429608153894516447bc19eacb7bf216b41ada08e6a18875`. The phase 2
@@ -879,6 +1129,15 @@ passes at merge checkout `53acec81ceaa792bcb0771cc2b5c18322f50ea6d`, whose tree
 and exact base/head parents match 512. Its dependency-pins/published-runtime
 provenance step was skipped. Native 41144657184, ordinary Godot 41144657289 and
 PACE qualification 41144657239 are draft-skipped, not resulting-head greens.
+
+The terminal #312 index through 5de extends, rather than overwrites, those
+source-512 totals: **37 original attempt-1 runs, 112 jobs, 22 executed-job logs
+and 21 original ZIPs**, covering six source heads and 192,658,188 ZIP bytes.
+Its SHA-256 is
+`3152fe21fe64a3573db8d1e14964834848efd5b0eed74ada772b03279dcdf50b`.
+It retains the late automatic-matrix completion, all earlier identical-input
+failures, the separate compiler-only negatives and every skipped/cancelled
+disposition. It supplies no successful mandatory graphical gate for #310.
 
 The original decoded source-512 logs are: Docs job 124366820753, 97,728 bytes /
 SHA-256 `f08e093689d1edb306e9b6e4e32e23f1a9f46c8b0acd08d86ec45f4d3bf115b2`;

@@ -10,6 +10,40 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## PLAY-PACE-003 full-resolution correction — 2026-10-31
+
+The [current cold-start audit](../audits/2026-10-30-play-pace003-cold-startup.md#full-resolution-readiness-correction-and-current-qualification-boundary--2026-10-31)
+preserves281's Linux Main passes and separate LIFE008 failure, Windows timeouts,
+and a complete source-matched local control/unified contrast. At the actual
+palette program, link plus first-draw wall time falls13.915902→6.674986s;
+initial actor readiness changes from deadline failure to11.518824s within the
+unchanged15-second operation. The unified process completes62assertions/0failures,
+three real fault/navigation orderings and six hosts, with full source/runtime/cache
+custody. Its32 original-versus-candidate native/PNG pairs remain exact. The local
+probe stays NONQUALIFYING, with zero /proc samples and retained clock/observer/
+resolver limits. The original v1 runtime-custody failure is not erased.
+
+Production shader62a41329ce96 is token-identical to tested10ed except two comments;
+its resulting-head hosted graphical/ordinary/Native/Docs matrix and actual emitted
+GLSL remain required in the [qualification ledger](https://github.com/techrote/cybersand/pull/310#issuecomment-6536644006).
+Windows is still uncorrected. Native/renderer/runtime/training semantics and
+30/180-second Main/case limits stay fixed. The separately authorized
+[CI parallelism integration](https://github.com/techrote/cybersand/issues/305#issuecomment-6537154140)
+preserves coverage and all original command bounds; it cannot waive these gates
+or authorize #308/#309/PLAY completion.
+
+## Production CI parallelism — 2026-10-31
+
+**Implemented in this integration source; resulting-head qualification remains
+separate:** six independent Native families with original command limits and a
+complete `native` aggregate; four Windows Godot shards with independent coverage
+that fails on an admitted failed/missing matrix; unchanged Linux and scientific
+coverage. The conservative Native scope report authorizes no skips. The
+[dated audit](../audits/2026-10-31-ci-parallel-production-integration.md) preserves
+the actual predecessor timing, five rejected deadline expansions, adverse tests
+and exact [qualification/integration ledger](https://github.com/techrote/cybersand/issues/305#issuecomment-6537154140).
+Faster CI cannot satisfy the separately red #309/#308 graphical contract.
+
 ## PLAY composable desktop checkpoint — 2026-10-30
 
 **Current owner boundary:** [decision 6522029843](https://github.com/techrote/cybersand/issues/263#issuecomment-6522029843)
@@ -80,7 +114,7 @@ candidate or Main. Earlier queue time is separate from measured case timeouts.
 The audit's ledgers retain all 30 original attempt-1 runs, 92 jobs, 17 executed
 logs and 16 ZIPs through 512; 75 skipped jobs are not passes.
 
-**Current bounded diagnosis, terminal negative:** #312 head
+**Compiler-only diagnosis, terminal negative:** #312 head
 `5de468478c37c8ae9e2d446ba348d4e3ecf54bd6` / tree
 `8957ae44174226758069a534f8a4c03edce79e51`, parent 512, fails
 [41149030607](https://github.com/techrote/cybersand/actions/runs/41149030607)
@@ -97,11 +131,27 @@ contrast establishes a Windows correction, production shader selection or
 fundamental renderer incapability. The prepared successor still
 includes explicit offline empty-directory readback with
 candidate-preview validation, preserving strict defaults and all Windows
-failures; it has not been deployed or accepted by this checkpoint. Neither
+failures; it has not been accepted by this checkpoint. Neither
 diagnostic work nor Linux/ordinary-gate success promotes #308 or closes #309.
 Resolve the demonstrated Windows compiler blocker, qualify the resulting exact head and reconcile
 existing ownership before guarded stack integration; #269/#270/#263 and
 physical/human acceptance remain open.
+
+**Separate late diagnostic completion at 5de:** automatic matrix
+[41149030614](https://github.com/techrote/cybersand/actions/runs/41149030614),
+artifact 13021809621, retains three cold 180s timeouts and unified `cbad4e5b...`
+completing its isolated atlas in 175.903s, with first submission at 172.361599s.
+Its actual palette call 44 returns HRESULT 0 at original O2 flags `0xc000`,
+after 170.0066407s wall / 169.984375s same-thread CPU, with 1,213,964-byte DXBC.
+The next geometry call is not fallback. A copied-cache fresh process completes
+in 4.160s with 16 byte-exact PNG/native-framebuffer pairs against its cold
+candidate. No original Windows baseline frames exist, so original/candidate
+Windows parity remains unproved. Preserve the identical candidate's earlier
+source-512 timeout. This is separate from the two hoist-HLSL compiler-only
+failures above; it does not execute Main, satisfy its 30s deadline or authorize
+candidate adoption. The #312 index through 5de retains 37 runs, 112 jobs,
+22 executed logs and 21 ZIPs, SHA-256
+`3152fe21fe64a3573db8d1e14964834848efd5b0eed74ada772b03279dcdf50b`.
 
 **Proposed owner decision, not an implemented architecture:** retain the
 Linux-validated hoist, then separately register either a bounded palette-program
@@ -128,6 +178,16 @@ Windows skip for the Linux-only group fixture; independent final review has no
 actionable findings. This supplies no Windows execution result. The
 successor still needs exact-head qualification; no original62d result, deadline,
 runtime or production shader is changed by these source/test edits.
+
+**Published successor failure preserved:** #310 head
+`28192d146d7b3d7475a92c1703d52bc94d155dd2` / tree
+`2f7884e656bce936862aaa64125517ce23d4919a`, parent 62d, fails ordinary Godot
+[41150430766](https://github.com/techrote/cybersand/actions/runs/41150430766)
+before engine-suite execution because two sharding-test cleanup observers
+reject `owned_pgid`. Original logs remain retained. The bounded test-only fix
+accepts/forwards/asserts PGID and always cleans up in `finally`, preserving all
+existing assertions. Corrected-head gates are pending; no shader, runtime,
+deadline or historical result changes, and no Windows startup repair is claimed.
 
 **Precise responsiveness continuation:** retain the existing cold pair and all
 seven graphical fixtures, including five-rig acceptance, input admission/rearm,

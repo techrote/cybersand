@@ -22,6 +22,28 @@ the [validation ledger](../reference/validation-evidence.md). Original hosted
 [historical performance archive](../audits/2026-09-08-performance-history.md),
 excluded from ordinary Current-behavior retrieval.
 
+## PLAY-PACE-003 full-resolution correction — 2026-10-31
+
+The [current cold-start audit](../audits/2026-10-30-play-pace003-cold-startup.md#full-resolution-readiness-correction-and-current-qualification-boundary--2026-10-31)
+preserves281's Linux Main passes and separate LIFE008 failure, Windows timeouts,
+and a complete source-matched local control/unified contrast. At the actual
+palette program, link plus first-draw wall time falls13.915902→6.674986s;
+initial actor readiness changes from deadline failure to11.518824s within the
+unchanged15-second operation. The unified process completes62assertions/0failures,
+three real fault/navigation orderings and six hosts, with full source/runtime/cache
+custody. Its32 original-versus-candidate native/PNG pairs remain exact. The local
+probe stays NONQUALIFYING, with zero /proc samples and retained clock/observer/
+resolver limits. The original v1 runtime-custody failure is not erased.
+
+Production shader62a41329ce96 is token-identical to tested10ed except two comments;
+its resulting-head hosted graphical/ordinary/Native/Docs matrix and actual emitted
+GLSL remain required in the [qualification ledger](https://github.com/techrote/cybersand/pull/310#issuecomment-6536644006).
+Windows is still uncorrected. Native/renderer/runtime/training semantics and
+30/180-second Main/case limits stay fixed. The separately authorized
+[CI parallelism integration](https://github.com/techrote/cybersand/issues/305#issuecomment-6537154140)
+preserves coverage and all original command bounds; it cannot waive these gates
+or authorize #308/#309/PLAY completion.
+
 ## Current observations and their limits
 
 ### Shared PLAY host pacing campaign
@@ -221,6 +243,37 @@ ranking. Preserve the bounded reproduction for an owner/upstream compiler
 decision; no tested variant or replay establishes fundamental renderer
 incapability, visual correctness, Main acceptance or permission to change flags.
 
+#### Separate automatic-matrix completion at the same source
+
+Source-5de automatic matrix
+[41149030614](https://github.com/techrote/cybersand/actions/runs/41149030614)
+retains three cold timeouts and a late unified `cbad4e5b...` atlas completion in
+artifact 13021809621. Actual palette call 44 receives the exact 179,152-byte
+HLSL from the source-512 candidate that previously timed out, and returns
+HRESULT 0 at original O2 flags `0xc000`: 170.0066407s wall / 169.984375s
+same-thread CPU, with 1,213,964-byte DXBC. Call 45 is a small `gs_5_0` geometry
+compile, not a palette fallback. The cold process completes in 175.903s;
+its first submission is at 172.361599s. Preserve both original outcomes.
+
+The subsequent copied-cache fresh process takes 4.160s, first submission
+0.604374s, and all 16 PNG/native-framebuffer pairs exactly match its cold
+candidate with finite channels and material coverage. Original Windows shader
+frames remain unavailable, so this does not prove original-versus-candidate
+Windows parity. Private application caches are isolated; OS/driver caches are
+uncontrolled. These atlas timings are not Main acknowledgement, steady-state
+FPS or native throughput; neither late cold submission nor warmed execution
+satisfies the original 30s Main gate. No candidate/flag is adopted. The two
+compiler-only failures above use the different 175,942-byte hoist-control HLSL.
+
+The original ZIP SHA-256 is
+`be79727df88f84eaeb9a53a72afc2fa60ecc54ed262e900d29bb1971a802a259`;
+independent matrix/pixel receipts are
+`c82e4efcdff3750fc564b770d96801b9dca9cc60197793d22d2d6d460e8d1307` and
+`c85e66667f1efcd88c9c2e23f8ea09630a3d197b825683bd66b52f97bae5cf3d`.
+The complete #312 ledger through 5de retains 37 runs, 112 jobs, 22 executed
+logs and 21 ZIPs, index SHA-256
+`3152fe21fe64a3573db8d1e14964834848efd5b0eed74ada772b03279dcdf50b`.
+
 The [proposed owner continuation](../audits/2026-10-30-play-pace003-cold-startup.md#proposed-bounded-owner-decision-and-continuation)
 keeps the Linux-validated hoist and offers separately registered palette-program
 decomposition with exact HDR/PNG/compositing preservation, or an upstream
@@ -242,7 +295,17 @@ remain mandatory. Preserve the frozen verifier's original rejection, create no
 replacement directories, and label successor readback separately from process
 execution. Original Linux bytes pass that narrow readback; Windows still fails
 on its actual timeout. This implementation has candidate-preview validation,
-has not been deployed or accepted here, and is not part of tested 62d.
+has not been accepted here, and is not part of tested 62d.
+
+Published successor 28192d146d7b3d7475a92c1703d52bc94d155dd2 / tree
+2f7884e656bce936862aaa64125517ce23d4919a fails ordinary Godot
+[41150430766](https://github.com/techrote/cybersand/actions/runs/41150430766)
+before engine-suite execution: two old sharding-test cleanup observers reject
+the `owned_pgid` keyword. Retain that first failed log. The bounded correction
+updates only those two test callbacks to accept/forward/assert the captured
+group and clean up through `finally`, preserving existing assertions.
+Corrected-head gates remain pending; no runtime, shader, deadline or graphical
+measurement is changed or retroactively qualified by this apparatus correction.
 
 #### Prepared completion-observation boundary
 
