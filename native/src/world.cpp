@@ -4870,6 +4870,108 @@ void World::copy_render_cells(RectI64 region, std::span<std::uint8_t> destinatio
     }
 }
 
+#ifdef CYBERSAND_RENDER_COPY_EXPERIMENT
+void World::copy_render_cells_by_run(RectI64 region, std::span<std::uint8_t> destination,
+    std::size_t stride_bytes, RenderCopyExperimentMetrics* metrics) const {
+    (void)validate_copy_layout(region, 2U, stride_bytes, destination.size());
+    const auto started = metrics ? std::chrono::steady_clock::now()
+                                 : std::chrono::steady_clock::time_point{};
+    if (metrics) *metrics = {};
+    for (std::int64_t row = 0; row < region.height; ++row) {
+        auto* output = destination.data() + static_cast<std::size_t>(row) * stride_bytes;
+        const auto world_y = region.y + row;
+        // Count columns, rather than forming x + width or advancing past the
+        // last run: a valid region may contain INT64_MAX as its final cell.
+        std::int64_t column = 0;
+        while (column < region.width) {
+            const auto first = address(region.x + column, world_y);
+            const auto* chunk = find_chunk(first.chunk);
+            const auto run = std::min<std::int64_t>(region.width - column,
+                static_cast<std::int64_t>(config_.chunk_size - first.local_x));
+            if (metrics) {
+                ++metrics->address_calculations;
+                ++metrics->chunk_lookups;
+                metrics->cells += static_cast<std::uint64_t>(run);
+                if (chunk == nullptr) {
+                    ++metrics->absent_chunk_lookups;
+                    metrics->absent_cells += static_cast<std::uint64_t>(run);
+                } else {
+                    metrics->material_reads += static_cast<std::uint64_t>(run);
+                    metrics->state_reads += 2U * static_cast<std::uint64_t>(run);
+                    metrics->visual_projections += static_cast<std::uint64_t>(run);
+                }
+            }
+            if (chunk == nullptr) {
+                // Empty material and its visual projection are both zero.
+                static_assert(static_cast<std::uint8_t>(Material::Empty) == 0U);
+                static_assert(project_visual_state(Material::Empty, 0U, 0U) == 0U);
+                std::fill_n(output + static_cast<std::size_t>(column) * 2U,
+                            static_cast<std::size_t>(run) * 2U, std::uint8_t{0});
+            } else {
+                for (std::int64_t offset = 0; offset < run; ++offset) {
+                    const auto& cell = chunk->cells[first.index + static_cast<std::size_t>(offset)];
+                    const auto material = cell.material_value();
+                    const auto index = static_cast<std::size_t>(column + offset) * 2U;
+                    output[index] = static_cast<std::uint8_t>(material);
+                    output[index + 1U] = project_visual_state(material, cell.state_a_value(),
+                        cell.state_b_value(), config_.water_experiment_policy);
+                }
+            }
+            column += run;
+        }
+    }
+    if (metrics) metrics->elapsed_ns = static_cast<std::uint64_t>(
+        std::chrono::duration_cast<std::chrono::nanoseconds>(
+            std::chrono::steady_clock::now() - started).count());
+}
+
+void World::profile_render_cells_original(RectI64 region, std::span<std::uint8_t> destination,
+    std::size_t stride_bytes, RenderCopyExperimentMetrics& metrics) const {
+    (void)validate_copy_layout(region, 2U, stride_bytes, destination.size());
+    const auto started = std::chrono::steady_clock::now();
+    metrics = {};
+    for (std::int64_t row = 0; row < region.height; ++row) {
+        auto* output = destination.data() + static_cast<std::size_t>(row) * stride_bytes;
+        for (std::int64_t column = 0; column < region.width; ++column) {
+            const auto world_x = region.x + column;
+            const auto world_y = region.y + row;
+            // Keep three independent address/find operations, exactly as the
+            // original stored_material/stored_state_a/stored_state_b accessors.
+            const auto material_address = address(world_x, world_y);
+            const auto* material_chunk = find_chunk(material_address.chunk);
+            const auto material = material_chunk == nullptr ? Material::Empty
+                : material_chunk->cells[material_address.index].material_value();
+            const auto state_a_address = address(world_x, world_y);
+            const auto* state_a_chunk = find_chunk(state_a_address.chunk);
+            const auto state_a_value = state_a_chunk == nullptr ? std::uint16_t{0}
+                : state_a_chunk->cells[state_a_address.index].state_a_value();
+            const auto state_b_address = address(world_x, world_y);
+            const auto* state_b_chunk = find_chunk(state_b_address.chunk);
+            const auto state_b_value = state_b_chunk == nullptr ? std::uint8_t{0}
+                : state_b_chunk->cells[state_b_address.index].state_b_value();
+            ++metrics.cells;
+            metrics.address_calculations += 3U;
+            metrics.chunk_lookups += 3U;
+            metrics.absent_chunk_lookups += static_cast<std::uint64_t>(material_chunk == nullptr)
+                + static_cast<std::uint64_t>(state_a_chunk == nullptr)
+                + static_cast<std::uint64_t>(state_b_chunk == nullptr);
+            metrics.absent_cells += static_cast<std::uint64_t>(material_chunk == nullptr);
+            metrics.material_reads += static_cast<std::uint64_t>(material_chunk != nullptr);
+            metrics.state_reads += static_cast<std::uint64_t>(state_a_chunk != nullptr)
+                + static_cast<std::uint64_t>(state_b_chunk != nullptr);
+            ++metrics.visual_projections;
+            const auto index = static_cast<std::size_t>(column) * 2U;
+            output[index] = static_cast<std::uint8_t>(material);
+            output[index + 1U] = project_visual_state(material, state_a_value, state_b_value,
+                config_.water_experiment_policy);
+        }
+    }
+    metrics.elapsed_ns = static_cast<std::uint64_t>(
+        std::chrono::duration_cast<std::chrono::nanoseconds>(
+            std::chrono::steady_clock::now() - started).count());
+}
+#endif
+
 void World::copy_material_cells(RectI64 region, std::span<std::uint8_t> destination,
                                 std::size_t stride_bytes) const {
     (void)validate_copy_layout(region, 1U, stride_bytes, destination.size());

@@ -220,4 +220,78 @@ control mutations for control-N and16 for E-W, including ACK-before-upload,
 missing overflow cause, malformed call/publication, parity failure and capacity.
 All raw original logs, intermediate B/B2 attempts and hashes remain outside Git.
 
-Stage C and final exact-head handover remain pending at the Stage-B checkpoint.
+Stage B checkpoint: `8b8fc3dac4a3fb8d1375ae402bd1fa0d3c1b25a8`, tree
+`75826aaecde04d37d1a091e5c2241e3670a879b1`.
+
+## Stage C independent native extraction
+
+**Current test-build APIs only:** `CYBERSAND_RENDER_COPY_EXPERIMENT` compiles
+`World::copy_render_cells_by_run` and a separate counted original counterpart.
+Ordinary `copy_render_cells` and every native adapter/exchange call remain on the
+original path. R resolves one address/chunk per contiguous row run, reads stored
+tuples directly and uses the same `project_visual_state` and actual Water policy.
+Absent runs fill exact Empty/zero projection bytes. Width-counted traversal
+supports valid inclusive INT64 endpoints without exclusive-end overflow. This
+does not extend the API to coordinate ranges whose addressed cells overflow.
+
+The [Stage-C receipt](render-publication-2026-10-31/stage-c.json) binds current
+HEAD8b8 plus the exact native local delta, compiler versions, command argv,
+executables and all logs. Parent decisively executed the strengthened oracle in
+five builds: Windows LLVM23.1.4 debug/release, Linux GCC13.3 debug/release, and
+Linux ASan+UBSan. **All pass10,225,432 assertions across265 regions.** Neither
+implementation changes revision, material/state/quantity hashes, exact dirty
+bounds, activity, chunk allocation or subsequent deterministic simulation twins.
+Tuple setters are verified rather than silently accepting setup refusal.
+
+Coverage includes complete1024² RG8 frames, small/large/padded/crossing regions,
+sparse/dense/absent storage, negative offsets, valid INT64 endpoints, zero-sized
+axes, invalid layout/buffer refusals, all practical material IDs with byte-state
+edges and each byte-lane value, every Water mass for bits3..8 and coherence0..12,
+and three seeded random-state Worlds plus random regions. The non-Water256² state
+Cartesian product is not exhaustively enumerated. R is byte-identical throughout.
+
+Benchmarks use repository-supported `-O0 -g3` and `-O3 -DNDEBUG -flto` modes;
+Windows LLVM additionally needs `-fuse-ld=lld`. Each case has three warmups and31
+paired samples with alternating order, outside worker/ACK/upload machinery.
+Complete arrays and p50/p95/max for full frames and representative dirty regions
+are in the receipt. These are paired warm distributions, not cold-start or31
+fresh-process measurements. All four benchmark processes pass byte/nonmutation
+checks. Parent ran them sequentially, without overlapping builds on this branch.
+
+Full-frame p50 (milliseconds):
+
+| Host / mode | Sparse original → R | Dense original → R | Dense speedup |
+|---|---:|---:|---:|
+| Windows debug | 144.720 → 2.219 | 183.181 → 12.174 | 15.05× |
+| Windows release | 8.582 → .202 | 14.088 → 1.049 | 13.43× |
+| Linux debug | 230.594 → 2.449 | 378.250 → 12.765 | 29.63× |
+| Linux release | 16.057 → .206 | 23.300 → .976 | 23.88× |
+
+Source-level logical address calculations/chunk lookups fall from3,145,728 to
+8,192 per full frame (128-cell chunks), a384× reduction. Resident material/state
+reads and visual projections are recorded separately; absent-run fill skips
+projections. These are logical counts from a separate diagnostic implementation,
+not hardware counters; an optimizing compiler may combine ordinary operations.
+Speedup includes locality, direct reads and absent fill, so it does not quantify
+the fraction of wall time solely spent in hash lookup.
+
+R is independently useful for initial/reset/full-recovery extraction even when
+E removes feedback retries. Its implementation is small and differential evidence
+supports later production review, but existing #290 owns that integration. No
+ordinary render call is changed here. R does not fix ACK retention/overflow.
+
+Preserved C failures: the early worker's first oracle reached8,395,040 checks and
+160 matching regions before its16-cell-chunk simulation fixture exhausted touched
+capacity with a64-cell scheduling core; matching fixture geometry corrected it.
+The early Windows LTO build required explicit LLD selection. Prior8,462,697/162
+passes belong to the earlier oracle, not the strengthened current one. All
+original outputs remain under the raw root and ignored build directory.
+
+Example standalone commands (1200s per compile/test/benchmark process):
+
+```text
+python tools/experiments/render_copy_isolation_campaign.py --compiler "C:/Program Files/LLVM/bin/clang++.exe" --mode release --output <fresh-directory>
+wsl --cd <worktree-linux-path> python3 tools/experiments/render_copy_isolation_campaign.py --compiler /usr/bin/g++ --mode debug --output <fresh-directory>
+```
+
+Final exact-head qualification and handover remain pending at the Stage-C checkpoint.

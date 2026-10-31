@@ -97,6 +97,22 @@ struct RectI64 {
     std::int64_t height = 0;
 };
 
+#ifdef CYBERSAND_RENDER_COPY_EXPERIMENT
+// Standalone Stage-C test/benchmark build only. Counters are explicit returned
+// values, never permanent per-cell instrumentation in the ordinary renderer.
+struct RenderCopyExperimentMetrics {
+    std::uint64_t cells = 0;
+    std::uint64_t address_calculations = 0;
+    std::uint64_t chunk_lookups = 0;
+    std::uint64_t absent_chunk_lookups = 0;
+    std::uint64_t absent_cells = 0;
+    std::uint64_t material_reads = 0;
+    std::uint64_t state_reads = 0;
+    std::uint64_t visual_projections = 0;
+    std::uint64_t elapsed_ns = 0;
+};
+#endif
+
 // Inclusive scheduling-core coordinates. Null coverage means unrestricted;
 // requested coverage is immediate, while applied coverage latches at tick entry.
 struct SimulationCoreRange {
@@ -373,6 +389,15 @@ public:
     [[nodiscard]] std::vector<DirtyChunk> take_dirty_chunks();
     void copy_render_cells(RectI64 region, std::span<std::uint8_t> destination,
                            std::size_t stride_bytes) const;
+#ifdef CYBERSAND_RENDER_COPY_EXPERIMENT
+    // Independent differential candidate; never selected by native publication.
+    void copy_render_cells_by_run(RectI64 region, std::span<std::uint8_t> destination,
+        std::size_t stride_bytes, RenderCopyExperimentMetrics* metrics = nullptr) const;
+    // Counted counterpart of the original three-accessor loop. Compare its bytes
+    // with copy_render_cells; compare uninstrumented timings separately.
+    void profile_render_cells_original(RectI64 region, std::span<std::uint8_t> destination,
+        std::size_t stride_bytes, RenderCopyExperimentMetrics& metrics) const;
+#endif
     // One display material byte per cell. Fractional Water uses stable
     // render-only coverage dithering; authoritative mass is never mutated.
     void copy_material_cells(RectI64 region, std::span<std::uint8_t> destination,

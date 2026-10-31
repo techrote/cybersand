@@ -113,6 +113,12 @@ before an append can exceed one baseline plus that budget. No baseline drop,
 rebase, implicit ACK or default policy change is selected. Legacy complete-frame
 cache retention and exact full-plus-dirty reconstruction are tested separately.
 
+**Experimental R:** `CYBERSAND_RENDER_COPY_EXPERIMENT` exposes an independent
+native chunk-run copy and structural metrics to standalone tests/benchmarks.
+The normal native render path continues to call the original copy method.
+R byte parity and extraction timings do not select E, alter ACK policy or prove
+GPU/frame pacing. Existing production proposal #290 remains separate ownership.
+
 Godot `Time.get_ticks_usec()` is common to these two Godot threads. Publication
 visibility is bracketed by the snapshot's `published_usec` and owner-method
 return; it is not timestamped atomically at the pointer exchange. Native adapter
