@@ -248,6 +248,8 @@ func run() -> void:
 	var launcher: Button = desktop.microscenario_panel.launch_button.get_parent().get_node("PlayableSessionLauncher")
 	expect(root.get_visible_rect().encloses(launcher.get_global_rect()),
 		"shared Play launcher remains inside the actual host viewport")
+	# Click and assert within one frame. The next frame can hold for the cold shader
+	# compile, and real desktop input during that wait must not decide this check.
 	for pressed: bool in [true, false]:
 		var mouse := InputEventMouseButton.new()
 		mouse.position = launcher.get_global_rect().get_center()
@@ -255,9 +257,9 @@ func run() -> void:
 		mouse.button_index = MOUSE_BUTTON_LEFT
 		mouse.pressed = pressed
 		root.push_input(mouse, true)
-		await process_frame
 	expect(desktop.playable_session_panel.visible,
 		"real viewport mouse entry opens the integrated selector")
+	await process_frame
 	desktop.playable_session_panel.hide()
 	for index: int in Course.MECHANICAL_PRESETS.size():
 		if not ready: break
