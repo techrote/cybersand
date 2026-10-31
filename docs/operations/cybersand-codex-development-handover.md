@@ -25,8 +25,9 @@ work, retaining all visual/gameplay/native/runtime contracts and fixed deadlines
 
 The [resulting-head ledger](https://github.com/techrote/cybersand/pull/310#issuecomment-6536644006)
 owns exact source/tree, original gates/artifacts and review. The unchanged15s
-LIFE008 and180s process limits remain mandatory; the Main setup allowance is 60s
-by owner disposition (2026-10-31). Local passes do not replace fresh hosted
+LIFE008 per-operation and180s process limits remain mandatory, except that the
+first install wait in LIFE007, LIFE008 and UI003 shares the 60s Main setup allowance
+(owner disposition, 2026-10-31). Local passes do not replace fresh hosted
 Windows/Linux evidence. The Windows correction on `claude/palette-fxc-cost` is
 locally validated and awaits hosted runs; see the
 [cold-startup audit](../audits/2026-10-30-play-pace003-cold-startup.md#windows-fxc-correction-2026-10-31).

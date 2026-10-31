@@ -79,6 +79,10 @@ func _run() -> void:
 		"ANGLE must select the bounded palette")
 	_expect(CyberPaletteShader.palette_for_driver(palette, "opengl3_angle") == bounded,
 		"ANGLE consumers must share one compiled palette")
+	_expect(CyberPaletteShader.palette_for_driver(bounded, "opengl3_angle") == bounded,
+		"reselecting the ANGLE palette must not stack a second define")
+	_expect(CyberPaletteShader.palette_for_driver(bounded, "opengl3") == palette,
+		"native OpenGL must resolve a selected palette back to its source")
 
 	if _failures == 0:
 		print("PALETTE_COMPILE_BOUNDS: PASS")

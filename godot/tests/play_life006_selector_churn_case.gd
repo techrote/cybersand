@@ -22,6 +22,9 @@ func expect(value: bool, message: String) -> void:
 		push_error("PLAY_LIFE006: " + message)
 
 
+# First draw can hold the frame for the cold palette compile (ANGLE: tens of seconds).
+const SETUP_ALLOWANCE_MS: int = 60000
+
 func wait_for(predicate: Callable, timeout_ms: int = OPERATION_BUDGET_MS) -> bool:
 	var end_ms: int = mini(deadline_ms, Time.get_ticks_msec() + timeout_ms)
 	while Time.get_ticks_msec() < end_ms:

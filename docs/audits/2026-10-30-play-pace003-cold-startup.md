@@ -1227,7 +1227,20 @@ totalled 3.47 s. Its HLSL and 1,208,768-byte DXBC are byte-identical to this sec
 re-measured on an idle machine. Internal FXC routines remain unnamed (`+0xCD5B8`, no
 symbols); the size and copy-count cause rests on the controlled variants above.
 
-Known gaps: no hosted Windows, WARP or Linux run; no GPU frame-cost comparison; no
+Hosted Windows, [run 41197266302](https://github.com/techrote/cybersand/actions/runs/41197266302)
+at `0d3a3519`, Microsoft Basic Render Driver, first attempt: both Main rows PASS,
+acknowledged 46.74 s and 46.97 s, 106 and 107 rendered intervals. Linux job PASS. The
+Windows job failed afterwards on three fixtures: `test_play_life007`, `test_play_life008`
+and `test_play_ui003` each timed out on a 15 s or 30 s first-install wait while the frame
+was held by the compile. Those first waits now use the 60 s allowance.
+
+The same investigation exposed a selector defect at `0d3a3519`: Main's shared scene
+material passed the already-selected variant back after a recreated Main, stacking a second
+`#define`, so the palette became an empty shader with `shader type  not supported`.
+Life007's assertions still passed, so they do not detect a blank palette after recovery.
+Selection now resolves from the source and the guard test covers it.
+
+Known gaps: no hosted run of this revision yet; no GPU frame-cost comparison; no
 Web check. The acknowledgement allowance moved from 30 to 60 seconds by owner
 disposition in chat on 2026-10-31. Lab tools and raw outputs are outside the
 repository in `C:\khybersand-fxc-lab`.

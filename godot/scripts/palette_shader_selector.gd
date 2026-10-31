@@ -23,13 +23,16 @@ static func for_current_renderer(palette: Shader) -> Shader:
 
 
 static func palette_for_driver(palette: Shader, driver_name: String) -> Shader:
+	# Main's scene material is shared across instances, so a recreated Main can
+	# pass in the variant it already selected. Always resolve from the source.
+	var source: Shader = palette.get_meta(SOURCE_META, palette) as Shader
 	if not uses_bounded_crossfade(driver_name):
-		return palette
+		return source
 	# One shared Shader per source keeps every consumer on one compiled program.
-	var bounded: Shader = _bounded_by_source.get(palette.code) as Shader
+	var bounded: Shader = _bounded_by_source.get(source.code) as Shader
 	if bounded == null:
 		bounded = Shader.new()
-		bounded.code = BOUNDED_CROSSFADE_DEFINE + palette.code
-		bounded.set_meta(SOURCE_META, palette)
-		_bounded_by_source[palette.code] = bounded
+		bounded.code = BOUNDED_CROSSFADE_DEFINE + source.code
+		bounded.set_meta(SOURCE_META, source)
+		_bounded_by_source[source.code] = bounded
 	return bounded
