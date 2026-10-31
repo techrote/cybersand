@@ -1,0 +1,775 @@
+{
+  "cases": [
+    {
+      "actual_participants": {
+        "count": 901,
+        "max": 1,
+        "mean": 1.0,
+        "p50": 1,
+        "p95": 1,
+        "p99": 1
+      },
+      "assertions": 120,
+      "capture_overflow": false,
+      "case_log_sha256": "61895b4a28edb8fac1a9be063ddf08c8387c0710960bbfed70301f4e6108c531",
+      "cleanup": {
+        "checked_unix_seconds": 1793485785.272658,
+        "engine_and_wrapper_pids_present": true,
+        "natural_completion": true,
+        "processes": [
+          {
+            "pid": 77350,
+            "state": "absent"
+          }
+        ],
+        "safe_to_continue": true,
+        "schema": "play-pace004-cleanup-v1",
+        "scope": "fixture owner retirement and observed engine/wrapper exit; no invented descendant inventory",
+        "sessions_retired": 1,
+        "source_bound_footer": true,
+        "worker_joined": true
+      },
+      "cohort": {
+        "cpu_name": "AMD EPYC 9V74 80-Core Processor",
+        "display_server": "X11",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "logical_processors": 9,
+        "platform": "Linux",
+        "rendering_driver": "opengl3",
+        "rendering_method": "gl_compatibility",
+        "video_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)"
+      },
+      "configured_capacity": [
+        1
+      ],
+      "displayed_fps": null,
+      "draw_submission_interval_p95_usec": 94052,
+      "event_outcomes": {
+        "applied": 29,
+        "cancelled": 6,
+        "refused": 5
+      },
+      "events": 40,
+      "failures": 0,
+      "input_latency_p95_usec": 79723,
+      "measurement_window_usec": 15014004,
+      "name": "pace004-acrobat-workers1-policy0",
+      "native_completed_hz": 60.01064073247883,
+      "native_overflow": false,
+      "palette_shader": {
+        "source_bound": true,
+        "source_file_bound": true,
+        "source_file_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+        "source_path": "res://shaders/material_palette.gdshader",
+        "source_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+        "variant": "full_crossfade",
+        "variant_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+      },
+      "policy": 0,
+      "pressed_by_key": {
+        "auxiliary": 2,
+        "back": 1,
+        "forward": 7,
+        "primary": 6,
+        "secondary": 2,
+        "trim_left": 1,
+        "trim_right": 1
+      },
+      "pressed_events": 20,
+      "process_seconds": 31.126,
+      "rapier_completed_hz": 60.01064073247883,
+      "requested_workers": 1,
+      "rig": "acrobat",
+      "visual": {
+        "actor_pixels": 1300,
+        "actor_removed_changed": 1300,
+        "executed": true,
+        "qualification": "actual rendered actor/terrain controls; software submissions, not physical scanout or human feel",
+        "restored_actor_noise": 0,
+        "terrain_removed_changed": 7618,
+        "unchanged_actor_noise": 0,
+        "unchanged_terrain_noise": 1
+      }
+    },
+    {
+      "actual_participants": {
+        "count": 902,
+        "max": 2,
+        "mean": 1.001108647450111,
+        "p50": 1,
+        "p95": 1,
+        "p99": 1
+      },
+      "assertions": 120,
+      "capture_overflow": false,
+      "case_log_sha256": "be32789efba39e99e4caa014e2337c90030b28e9837b083ae14c1caeae69750d",
+      "cleanup": {
+        "checked_unix_seconds": 1793485816.7525344,
+        "engine_and_wrapper_pids_present": true,
+        "natural_completion": true,
+        "processes": [
+          {
+            "pid": 77616,
+            "state": "absent"
+          }
+        ],
+        "safe_to_continue": true,
+        "schema": "play-pace004-cleanup-v1",
+        "scope": "fixture owner retirement and observed engine/wrapper exit; no invented descendant inventory",
+        "sessions_retired": 1,
+        "source_bound_footer": true,
+        "worker_joined": true
+      },
+      "cohort": {
+        "cpu_name": "AMD EPYC 9V74 80-Core Processor",
+        "display_server": "X11",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "logical_processors": 9,
+        "platform": "Linux",
+        "rendering_driver": "opengl3",
+        "rendering_method": "gl_compatibility",
+        "video_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)"
+      },
+      "configured_capacity": [
+        4
+      ],
+      "displayed_fps": null,
+      "draw_submission_interval_p95_usec": 101850,
+      "event_outcomes": {
+        "applied": 29,
+        "cancelled": 6,
+        "refused": 5
+      },
+      "events": 40,
+      "failures": 0,
+      "input_latency_p95_usec": 85414,
+      "measurement_window_usec": 15034283,
+      "name": "pace004-jetbarrel-workers0-policy0",
+      "native_completed_hz": 59.99620999551492,
+      "native_overflow": false,
+      "palette_shader": {
+        "source_bound": true,
+        "source_file_bound": true,
+        "source_file_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+        "source_path": "res://shaders/material_palette.gdshader",
+        "source_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+        "variant": "full_crossfade",
+        "variant_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+      },
+      "policy": 0,
+      "pressed_by_key": {
+        "auxiliary": 2,
+        "back": 1,
+        "forward": 7,
+        "primary": 6,
+        "secondary": 2,
+        "trim_left": 1,
+        "trim_right": 1
+      },
+      "pressed_events": 20,
+      "process_seconds": 28.536,
+      "rapier_completed_hz": 60.06272464074276,
+      "requested_workers": 0,
+      "rig": "jetbarrel",
+      "visual": {
+        "actor_pixels": 1570,
+        "actor_removed_changed": 1570,
+        "executed": true,
+        "qualification": "actual rendered actor/terrain controls; software submissions, not physical scanout or human feel",
+        "restored_actor_noise": 0,
+        "terrain_removed_changed": 2789,
+        "unchanged_actor_noise": 0,
+        "unchanged_terrain_noise": 0
+      }
+    },
+    {
+      "actual_participants": {
+        "count": 902,
+        "max": 2,
+        "mean": 1.0022172949002217,
+        "p50": 1,
+        "p95": 1,
+        "p99": 1
+      },
+      "assertions": 120,
+      "capture_overflow": false,
+      "case_log_sha256": "e5ce740f85f33cd4aff5f1cced0c118f94189ebabc5965b08bf9f165b42e7f57",
+      "cleanup": {
+        "checked_unix_seconds": 1793486271.771218,
+        "engine_and_wrapper_pids_present": true,
+        "natural_completion": true,
+        "processes": [
+          {
+            "pid": 79567,
+            "state": "absent"
+          }
+        ],
+        "safe_to_continue": true,
+        "schema": "play-pace004-cleanup-v1",
+        "scope": "fixture owner retirement and observed engine/wrapper exit; no invented descendant inventory",
+        "sessions_retired": 1,
+        "source_bound_footer": true,
+        "worker_joined": true
+      },
+      "cohort": {
+        "cpu_name": "AMD EPYC 9V74 80-Core Processor",
+        "display_server": "X11",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "logical_processors": 9,
+        "platform": "Linux",
+        "rendering_driver": "opengl3",
+        "rendering_method": "gl_compatibility",
+        "video_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)"
+      },
+      "configured_capacity": [
+        4
+      ],
+      "displayed_fps": null,
+      "draw_submission_interval_p95_usec": 80089,
+      "event_outcomes": {
+        "applied": 29,
+        "cancelled": 6,
+        "refused": 5
+      },
+      "events": 40,
+      "failures": 0,
+      "input_latency_p95_usec": 65495,
+      "measurement_window_usec": 15043294,
+      "name": "pace004-acrobat-workers0-policy0",
+      "native_completed_hz": 59.96027199893853,
+      "native_overflow": false,
+      "palette_shader": {
+        "source_bound": true,
+        "source_file_bound": true,
+        "source_file_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+        "source_path": "res://shaders/material_palette.gdshader",
+        "source_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+        "variant": "full_crossfade",
+        "variant_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+      },
+      "policy": 0,
+      "pressed_by_key": {
+        "auxiliary": 2,
+        "back": 1,
+        "forward": 7,
+        "primary": 6,
+        "secondary": 2,
+        "trim_left": 1,
+        "trim_right": 1
+      },
+      "pressed_events": 20,
+      "process_seconds": 31.059,
+      "rapier_completed_hz": 59.96027199893853,
+      "requested_workers": 0,
+      "rig": "acrobat",
+      "visual": {
+        "actor_pixels": 1300,
+        "actor_removed_changed": 1300,
+        "executed": true,
+        "qualification": "actual rendered actor/terrain controls; software submissions, not physical scanout or human feel",
+        "restored_actor_noise": 0,
+        "terrain_removed_changed": 7694,
+        "unchanged_actor_noise": 0,
+        "unchanged_terrain_noise": 3
+      }
+    },
+    {
+      "actual_participants": {
+        "count": 796,
+        "max": 1,
+        "mean": 1.0,
+        "p50": 1,
+        "p95": 1,
+        "p99": 1
+      },
+      "assertions": 120,
+      "capture_overflow": false,
+      "case_log_sha256": "5a6372fc6503960ee546d912098eb649937096d42a88a6a38cb97a3b71ebe6e7",
+      "cleanup": {
+        "checked_unix_seconds": 1793486302.7857962,
+        "engine_and_wrapper_pids_present": true,
+        "natural_completion": true,
+        "processes": [
+          {
+            "pid": 79752,
+            "state": "absent"
+          }
+        ],
+        "safe_to_continue": true,
+        "schema": "play-pace004-cleanup-v1",
+        "scope": "fixture owner retirement and observed engine/wrapper exit; no invented descendant inventory",
+        "sessions_retired": 1,
+        "source_bound_footer": true,
+        "worker_joined": true
+      },
+      "cohort": {
+        "cpu_name": "AMD EPYC 9V74 80-Core Processor",
+        "display_server": "X11",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "logical_processors": 9,
+        "platform": "Linux",
+        "rendering_driver": "opengl3",
+        "rendering_method": "gl_compatibility",
+        "video_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)"
+      },
+      "configured_capacity": [
+        1
+      ],
+      "displayed_fps": null,
+      "draw_submission_interval_p95_usec": 90892,
+      "event_outcomes": {
+        "applied": 29,
+        "cancelled": 6,
+        "refused": 5
+      },
+      "events": 40,
+      "failures": 0,
+      "input_latency_p95_usec": 76510,
+      "measurement_window_usec": 15054965,
+      "name": "pace004-jetbarrel-workers1-policy2",
+      "native_completed_hz": 52.87292265375575,
+      "native_overflow": false,
+      "palette_shader": {
+        "source_bound": true,
+        "source_file_bound": true,
+        "source_file_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+        "source_path": "res://shaders/material_palette.gdshader",
+        "source_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+        "variant": "full_crossfade",
+        "variant_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+      },
+      "policy": 2,
+      "pressed_by_key": {
+        "auxiliary": 2,
+        "back": 1,
+        "forward": 7,
+        "primary": 6,
+        "secondary": 2,
+        "trim_left": 1,
+        "trim_right": 1
+      },
+      "pressed_events": 20,
+      "process_seconds": 27.947,
+      "rapier_completed_hz": 59.91378923830112,
+      "requested_workers": 1,
+      "rig": "jetbarrel",
+      "visual": {
+        "actor_pixels": 1570,
+        "actor_removed_changed": 1570,
+        "executed": true,
+        "qualification": "actual rendered actor/terrain controls; software submissions, not physical scanout or human feel",
+        "restored_actor_noise": 0,
+        "terrain_removed_changed": 2789,
+        "unchanged_actor_noise": 0,
+        "unchanged_terrain_noise": 0
+      }
+    },
+    {
+      "actual_participants": {
+        "count": 902,
+        "max": 1,
+        "mean": 1.0,
+        "p50": 1,
+        "p95": 1,
+        "p99": 1
+      },
+      "assertions": 120,
+      "capture_overflow": false,
+      "case_log_sha256": "a6183f0327f0dde54c98f1235378b3b16faf5902128851a46bbc2c71b7599baa",
+      "cleanup": {
+        "checked_unix_seconds": 1793486542.165765,
+        "engine_and_wrapper_pids_present": true,
+        "natural_completion": true,
+        "processes": [
+          {
+            "pid": 80724,
+            "state": "absent"
+          }
+        ],
+        "safe_to_continue": true,
+        "schema": "play-pace004-cleanup-v1",
+        "scope": "fixture owner retirement and observed engine/wrapper exit; no invented descendant inventory",
+        "sessions_retired": 1,
+        "source_bound_footer": true,
+        "worker_joined": true
+      },
+      "cohort": {
+        "cpu_name": "AMD EPYC 9V74 80-Core Processor",
+        "display_server": "X11",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "logical_processors": 9,
+        "platform": "Linux",
+        "rendering_driver": "opengl3",
+        "rendering_method": "gl_compatibility",
+        "video_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)"
+      },
+      "configured_capacity": [
+        1
+      ],
+      "displayed_fps": null,
+      "draw_submission_interval_p95_usec": 87198,
+      "event_outcomes": {
+        "applied": 29,
+        "cancelled": 6,
+        "refused": 5
+      },
+      "events": 40,
+      "failures": 0,
+      "input_latency_p95_usec": 76297,
+      "measurement_window_usec": 15040041,
+      "name": "pace004-jetbarrel-workers1-policy0",
+      "native_completed_hz": 59.973240764436746,
+      "native_overflow": false,
+      "palette_shader": {
+        "source_bound": true,
+        "source_file_bound": true,
+        "source_file_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+        "source_path": "res://shaders/material_palette.gdshader",
+        "source_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+        "variant": "full_crossfade",
+        "variant_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+      },
+      "policy": 0,
+      "pressed_by_key": {
+        "auxiliary": 2,
+        "back": 1,
+        "forward": 7,
+        "primary": 6,
+        "secondary": 2,
+        "trim_left": 1,
+        "trim_right": 1
+      },
+      "pressed_events": 20,
+      "process_seconds": 33.189,
+      "rapier_completed_hz": 59.64079486219486,
+      "requested_workers": 1,
+      "rig": "jetbarrel",
+      "visual": {
+        "actor_pixels": 1538,
+        "actor_removed_changed": 1538,
+        "executed": true,
+        "qualification": "actual rendered actor/terrain controls; software submissions, not physical scanout or human feel",
+        "restored_actor_noise": 0,
+        "terrain_removed_changed": 2887,
+        "unchanged_actor_noise": 0,
+        "unchanged_terrain_noise": 2
+      }
+    },
+    {
+      "actual_participants": {
+        "count": 696,
+        "max": 3,
+        "mean": 1.0100574712643677,
+        "p50": 1,
+        "p95": 1,
+        "p99": 1
+      },
+      "assertions": 120,
+      "capture_overflow": false,
+      "case_log_sha256": "3469b92f3d77142eeab757151f454efdd335b370a9c355b82c06201887c2eafd",
+      "cleanup": {
+        "checked_unix_seconds": 1793486573.4860694,
+        "engine_and_wrapper_pids_present": true,
+        "natural_completion": true,
+        "processes": [
+          {
+            "pid": 81066,
+            "state": "absent"
+          }
+        ],
+        "safe_to_continue": true,
+        "schema": "play-pace004-cleanup-v1",
+        "scope": "fixture owner retirement and observed engine/wrapper exit; no invented descendant inventory",
+        "sessions_retired": 1,
+        "source_bound_footer": true,
+        "worker_joined": true
+      },
+      "cohort": {
+        "cpu_name": "AMD EPYC 9V74 80-Core Processor",
+        "display_server": "X11",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "logical_processors": 9,
+        "platform": "Linux",
+        "rendering_driver": "opengl3",
+        "rendering_method": "gl_compatibility",
+        "video_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)"
+      },
+      "configured_capacity": [
+        4
+      ],
+      "displayed_fps": null,
+      "draw_submission_interval_p95_usec": 96103,
+      "event_outcomes": {
+        "applied": 29,
+        "cancelled": 6,
+        "refused": 5
+      },
+      "events": 40,
+      "failures": 0,
+      "input_latency_p95_usec": 80475,
+      "measurement_window_usec": 15021648,
+      "name": "pace004-jetbarrel-workers0-policy2",
+      "native_completed_hz": 46.33313202386316,
+      "native_overflow": false,
+      "palette_shader": {
+        "source_bound": true,
+        "source_file_bound": true,
+        "source_file_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+        "source_path": "res://shaders/material_palette.gdshader",
+        "source_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+        "variant": "full_crossfade",
+        "variant_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+      },
+      "policy": 2,
+      "pressed_by_key": {
+        "auxiliary": 2,
+        "back": 1,
+        "forward": 7,
+        "primary": 6,
+        "secondary": 2,
+        "trim_left": 1,
+        "trim_right": 1
+      },
+      "pressed_events": 20,
+      "process_seconds": 28.306,
+      "rapier_completed_hz": 60.046673973454844,
+      "requested_workers": 0,
+      "rig": "jetbarrel",
+      "visual": {
+        "actor_pixels": 1570,
+        "actor_removed_changed": 1570,
+        "executed": true,
+        "qualification": "actual rendered actor/terrain controls; software submissions, not physical scanout or human feel",
+        "restored_actor_noise": 0,
+        "terrain_removed_changed": 2789,
+        "unchanged_actor_noise": 0,
+        "unchanged_terrain_noise": 0
+      }
+    }
+  ],
+  "created_utc": "2026-10-31T22:48:25.495948+00:00",
+  "limits": [
+    "Shared local Linux/Xvfb/llvmpipe execution; not GitHub-hosted and not independently identified as Avrea.",
+    "Fresh exact-head checkouts and private XDG directories; operating-system cache and other shared-host activity remain uncontrolled.",
+    "Current policy2 pressure timing is advisory; no performance improvement claim versus historical source, another host or b94 composition.",
+    "Actual rendered actor/terrain controls and software draw submissions; no physical input devices, scanout/displayed FPS, human feel or independent palette shader qualification."
+  ],
+  "preparation_refusal_engine_attempts": 0,
+  "preserved_preparation_refusal": "/workspace/scratch/6b493f7c3827/pace004-composition-evidence/d08e6101-linux-graphical/local-d08e6101-linux-graphical-shard0-attempt1/preparation-failure.json",
+  "protected_baseline": "02454f3aa6a6130d375727d1aa28113772f658e4",
+  "schema": "pace004-local-graphical-composition-readback-v1",
+  "shards": [
+    {
+      "attempt_directory": "/workspace/scratch/6b493f7c3827/pace004-composition-evidence/d08e6101-linux-graphical/local-d08e6101-linux-graphical-shard0-attempt2",
+      "execution_returncode": 0,
+      "execution_seconds": 78.56910205700115,
+      "generated_untracked_import_files_preserved": true,
+      "identity": {
+        "campaign/campaign.json": {
+          "bytes": 17240755,
+          "sha256": "954ef850f1575d4db46be75a6ab7a780dcf9eb645da5e28969ba8c0750484ee8"
+        },
+        "campaign/manifest.json": {
+          "bytes": 4577,
+          "sha256": "3556fe70a178a0cc6dcd462972f04b7e2091995a32226e21145b5fc582822ec9"
+        },
+        "execution-result.json": {
+          "bytes": 20714,
+          "sha256": "925a870113f107181a8c05fc2cde43d9d4524ee5efaed83a9b77f4716569081d"
+        },
+        "execution.log": {
+          "bytes": 276,
+          "sha256": "841696f70e22ffbf7232030577318fd6bbd482126f73c6e248e632196f138cc6"
+        },
+        "invocation.json": {
+          "bytes": 2413,
+          "sha256": "eaf7e19da83d857ac4b94f2c56efafee5c65bb9e1bf721ed938640002c4bfc69"
+        },
+        "offline-readback.json": {
+          "bytes": 5393,
+          "sha256": "28c78e1944ffdb03c03e69899602374790838feddfd7ea0560be28bdac052227"
+        },
+        "offline-readback.log": {
+          "bytes": 2380,
+          "sha256": "d9c3588850cb758a4aee6e0d81eff9cf94cdf3255d4ae72c7df62e59960bb8b5"
+        }
+      },
+      "independent_readback_returncode": 0,
+      "independent_readback_seconds": 4.217470849001984,
+      "original_file_count": 29,
+      "original_files_unchanged": true,
+      "shard": {
+        "count": 3,
+        "index": 0
+      },
+      "tracked_source_unchanged_after": true
+    },
+    {
+      "attempt_directory": "/workspace/scratch/6b493f7c3827/pace004-composition-evidence/d08e6101-linux-graphical/local-d08e6101-linux-graphical-shard1-attempt1",
+      "execution_returncode": 0,
+      "execution_seconds": 78.9651217770006,
+      "generated_untracked_import_files_preserved": true,
+      "identity": {
+        "campaign/campaign.json": {
+          "bytes": 17113517,
+          "sha256": "54bb6d9985c200d1cc3654eed0272dc86d86f2b61071b9c055387fc60f230f17"
+        },
+        "campaign/manifest.json": {
+          "bytes": 4577,
+          "sha256": "45adfefcdbc87dad29f5c57a1e83846ae55b698572f965db03a534ed71b5f396"
+        },
+        "execution-result.json": {
+          "bytes": 20713,
+          "sha256": "1e87e2472544488dacbbcefc32573e323ac3378b6b09000152b19b4fd86a918d"
+        },
+        "execution.log": {
+          "bytes": 276,
+          "sha256": "773b06d827de297905fa7c1c33e236b7ddc106d289260b9032aa9cb2f8a0f356"
+        },
+        "invocation.json": {
+          "bytes": 2375,
+          "sha256": "81fa27df16c4a8e306c33c3187394f30a2e37a29d46c579b56a87cc26e64bdd6"
+        },
+        "offline-readback.json": {
+          "bytes": 5394,
+          "sha256": "a3f803e49b50d8a344ae111d23b33496c4b77ae8e57bf7cd12af11a60f7de9c7"
+        },
+        "offline-readback.log": {
+          "bytes": 2380,
+          "sha256": "3129e02ed20c996b631be147072d76528954e39a56926bf3ab858471907bf541"
+        }
+      },
+      "independent_readback_returncode": 0,
+      "independent_readback_seconds": 3.9703046520007774,
+      "original_file_count": 29,
+      "original_files_unchanged": true,
+      "shard": {
+        "count": 3,
+        "index": 1
+      },
+      "tracked_source_unchanged_after": true
+    },
+    {
+      "attempt_directory": "/workspace/scratch/6b493f7c3827/pace004-composition-evidence/d08e6101-linux-graphical/local-d08e6101-linux-graphical-shard2-attempt1",
+      "execution_returncode": 0,
+      "execution_seconds": 82.15192418199877,
+      "generated_untracked_import_files_preserved": true,
+      "identity": {
+        "campaign/campaign.json": {
+          "bytes": 16999105,
+          "sha256": "00a9875fba4261cdf010b07063a4a0733462b27f1f5f020bf9142989a9faa417"
+        },
+        "campaign/manifest.json": {
+          "bytes": 4596,
+          "sha256": "14762829812c947c8310d1bf8c581502169a682ce3833f7b5c1f2d9b41410460"
+        },
+        "execution-result.json": {
+          "bytes": 20808,
+          "sha256": "591dc312bfb55069a177b862e27fe22026a57802059422e7a986726acc180d2f"
+        },
+        "execution.log": {
+          "bytes": 278,
+          "sha256": "46e70b88497e6df8d91b578a9982031f81bbcd41fb720587b6d906732e8337be"
+        },
+        "invocation.json": {
+          "bytes": 2375,
+          "sha256": "1ee0c143f1ff2479b6d6bdf9e3a6426bb3a09286d0c001fe55ffd801b3c7e320"
+        },
+        "offline-readback.json": {
+          "bytes": 5412,
+          "sha256": "283114b37d17ebcf9e3e0c3fd5cc772e0d0a5e299079536e9a85aed5654ec316"
+        },
+        "offline-readback.log": {
+          "bytes": 2380,
+          "sha256": "1cf37d0489864927c74d3c96a41eb2dc2361138a8e5dc66f4c07d20fc760b4d8"
+        }
+      },
+      "independent_readback_returncode": 0,
+      "independent_readback_seconds": 3.9546810059982818,
+      "original_file_count": 29,
+      "original_files_unchanged": true,
+      "shard": {
+        "count": 3,
+        "index": 2
+      },
+      "tracked_source_unchanged_after": true
+    }
+  ],
+  "source_commit": "d08e61013c2fefbf6238d50174b81655e80f1eb8",
+  "source_tree": "9b95e643d756f531db045e28272fa86bdeb97665",
+  "totals": {
+    "assertions": 720,
+    "cases": 6,
+    "events": 240,
+    "failures": 0,
+    "independently_verified_shards": 3,
+    "original_files_unchanged": 87,
+    "pressed_events": 120
+  }
+}

@@ -1,0 +1,378 @@
+name: PLAY PACE004 source-bound pacing
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'godot/tests/*pace004*.gd'
+      - 'tools/play/*pace004*.py'
+      - 'godot/tests/support/ci_execution_policy.*'
+      - 'tools/ci/execution_policy.py'
+      - 'tools/ci/play_execution_contract.py'
+      - '.github/workflows/play-pace004.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'godot/tests/*pace004*.gd'
+      - 'tools/play/*pace004*.py'
+      - '.github/workflows/play-pace004.yml'
+  workflow_dispatch:
+    inputs:
+      baseline_source:
+        description: Exact accepted timeout and shader commit; an ancestor with identical protected source
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: play-pace004-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+
+env:
+  PACE004_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  PACE004_BASE: ${{ inputs.baseline_source || github.event.pull_request.base.sha || github.event.before }}
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+
+jobs:
+  plan:
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    outputs:
+      linux_matrix: ${{ steps.plan.outputs.linux_matrix }}
+      windows_matrix: ${{ steps.plan.outputs.windows_matrix }}
+      inventory_job_minutes: ${{ steps.plan.outputs.inventory_job_minutes }}
+      inventory_readback_minutes: ${{ steps.plan.outputs.inventory_readback_minutes }}
+    steps:
+      - name: Check out exact source and accepted ancestry
+        timeout-minutes: 5
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.PACE004_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Select Python
+        timeout-minutes: 5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Validate source, adverse controls and complete registered inventory
+        timeout-minutes: 30
+        id: plan
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/play-pace004-plan
+          test "$(git rev-parse HEAD)" = "$PACE004_SHA"
+          test "${#PACE004_BASE}" = 40
+          git merge-base --is-ancestor "$PACE004_BASE" "$PACE004_SHA"
+          python tools/ci/check_ci_provider_policy.py | tee build/play-pace004-plan/provider.json
+          for file in tools/play/test_pace004_contract.py tools/play/test_pace004_load_contract.py tools/play/test_pace004_execution.py; do
+            name="$(basename "$file" .py)"
+            python "$file" 2>&1 | tee "build/play-pace004-plan/$name.log"
+            python -O "$file" 2>&1 | tee "build/play-pace004-plan/$name-optimized.log"
+          done
+          python tools/play/run_pace004_campaign.py --plan-json > build/play-pace004-plan/plan.json
+          python - <<'PYTHON'
+          import json, os
+          from pathlib import Path
+          plan = json.loads(Path('build/play-pace004-plan/plan.json').read_text())
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as handle:
+              for name, platform in [('linux', 'linux'), ('windows', 'win32')]:
+                  matrix = {'include': [row for row in plan['include'] if row['platform'] == platform]}
+                  handle.write(name + '_matrix=' + json.dumps(matrix, separators=(',', ':')) + '\n')
+              for key in ('job_minutes', 'readback_minutes'):
+                  handle.write('inventory_' + key + '=' + str(plan['inventory'][key]) + '\n')
+          PYTHON
+      - name: Preserve planning controls and failures
+        timeout-minutes: 10
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pace004-plan-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/play-pace004-plan/
+          if-no-files-found: error
+          retention-days: 90
+
+  linux:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: ${{ matrix.job_minutes }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.linux_matrix) }}
+    defaults:
+      run:
+        shell: bash
+    env:
+      EVIDENCE_DIR: build/play-pace004-linux-${{ matrix.mode }}-${{ matrix.shard_index }}
+      PACE004_MODE: ${{ matrix.mode }}
+      PACE004_INDEX: ${{ matrix.shard_index }}
+      PACE004_COUNT: ${{ matrix.shard_count }}
+    steps:
+      - name: Check out exact source
+        timeout-minutes: 5
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.PACE004_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Select Python
+        timeout-minutes: 5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize pinned runtime dependencies within independent allowances
+        timeout-minutes: ${{ matrix.dependency_minutes }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          test "$(git rev-parse HEAD)" = "$PACE004_SHA"
+          python - <<'PYTHON' 2>&1 | tee "$EVIDENCE_DIR/dependencies.log"
+          import json, os, shutil, subprocess, sys, time
+          from pathlib import Path
+          sys.path[:0] = ['tools/ci', 'tools/play']
+          import execution_policy as policy
+          import run_pace004_campaign as campaign
+          output = Path(os.environ['EVIDENCE_DIR'])
+          campaign.write(output / 'dependency-policy.json', policy.identity())
+          setup_deadline = time.monotonic() + policy.watchdog_seconds('operation_seconds')
+          def setup(args):
+              remaining = setup_deadline - time.monotonic()
+              if remaining <= 0:
+                  raise TimeoutError('PACE004 dependency setup allowance exhausted')
+              subprocess.run(args, check=True, timeout=remaining)
+          setup(['git', 'lfs', 'install', '--local'])
+          if sys.platform == 'linux':
+              # ubuntu-24.04 supplies Xvfb/Mesa. Check the actual image instead
+              # of adding unbudgeted package installation before the campaign.
+              if os.environ['PACE004_MODE'] == 'graphical':
+                  for program in ('xvfb-run', 'Xvfb', 'xauth'):
+                      if shutil.which(program) is None:
+                          raise RuntimeError('Missing hosted graphical prerequisite: ' + program)
+                  setup(['dpkg-query', '-W', 'xvfb', 'xauth', 'libgl1-mesa-dri', 'libglx-mesa0'])
+              url = json.loads(Path('third_party/godot-runtime.lock.json').read_text())['editor']['origin_url']
+          else:
+              url = 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          paths = ','.join(sorted(campaign.selected_runtimes(sys.platform)))
+          subprocess.run(['git', 'lfs', 'pull', '--include=' + paths, '--exclude='], check=True,
+                         timeout=policy.watchdog_seconds('dependency_prepare_seconds'))
+          seconds = policy.watchdog_seconds('dependency_prepare_seconds')
+          subprocess.run(['curl', '--fail', '--location', '--connect-timeout', '60', '--max-time', str(seconds),
+                          '--output', str(Path(os.environ['RUNNER_TEMP']) / 'pace004-godot.zip'), url],
+                         check=True, timeout=seconds + policy.watchdog_seconds('terminate_grace_seconds'))
+          PYTHON
+      - name: Execute the registered two-case source-bound shard
+        timeout-minutes: ${{ matrix.suite_minutes }}
+        run: |
+          set -euo pipefail
+          args=()
+          display=()
+          if [[ "$PACE004_MODE" == 'active' ]]; then args+=(--active-workload); fi
+          if [[ "$PACE004_MODE" == 'graphical' ]]; then
+            args+=(--graphical)
+            if [[ "$RUNNER_OS" == 'Linux' ]]; then
+              display=(xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp')
+            fi
+          fi
+          "${display[@]}" python tools/play/run_pace004_campaign.py "${args[@]}" \
+            --godot-archive "$RUNNER_TEMP/pace004-godot.zip" --expected-source-sha "$PACE004_SHA" \
+            --baseline-source "$PACE004_BASE" --shard-index "$PACE004_INDEX" --shard-count "$PACE004_COUNT" \
+            --output "$EVIDENCE_DIR/campaign" 2>&1 | tee "$EVIDENCE_DIR/execution.log"
+      - name: Independently verify retained logs, pixels and source custody
+        timeout-minutes: ${{ matrix.readback_minutes }}
+        if: always()
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          python tools/play/run_pace004_campaign.py --verify-only --expected-source-sha "$PACE004_SHA" \
+            --baseline-source "$PACE004_BASE" --output "$EVIDENCE_DIR/campaign" \
+            2>&1 | tee "$EVIDENCE_DIR/offline-readback.log"
+      - name: Preserve original positive, failed and incomplete evidence
+        timeout-minutes: 10
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pace004-shard-linux-${{ matrix.mode }}-${{ matrix.shard_index }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.EVIDENCE_DIR }}/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows:
+    needs: plan
+    runs-on: windows-2022
+    timeout-minutes: ${{ matrix.job_minutes }}
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.windows_matrix) }}
+    defaults:
+      run:
+        shell: bash
+    env:
+      EVIDENCE_DIR: build/play-pace004-windows-${{ matrix.mode }}-${{ matrix.shard_index }}
+      PACE004_MODE: ${{ matrix.mode }}
+      PACE004_INDEX: ${{ matrix.shard_index }}
+      PACE004_COUNT: ${{ matrix.shard_count }}
+    steps:
+      - name: Keep implicit checkout text conversions disabled
+        timeout-minutes: 5
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - name: Check out exact source
+        timeout-minutes: 5
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.PACE004_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Select Python
+        timeout-minutes: 5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize pinned runtime dependencies within independent allowances
+        timeout-minutes: ${{ matrix.dependency_minutes }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          test "$(git rev-parse HEAD)" = "$PACE004_SHA"
+          python - <<'PYTHON' 2>&1 | tee "$EVIDENCE_DIR/dependencies.log"
+          import json, os, shutil, subprocess, sys, time
+          from pathlib import Path
+          sys.path[:0] = ['tools/ci', 'tools/play']
+          import execution_policy as policy
+          import run_pace004_campaign as campaign
+          output = Path(os.environ['EVIDENCE_DIR'])
+          campaign.write(output / 'dependency-policy.json', policy.identity())
+          setup_deadline = time.monotonic() + policy.watchdog_seconds('operation_seconds')
+          def setup(args):
+              remaining = setup_deadline - time.monotonic()
+              if remaining <= 0:
+                  raise TimeoutError('PACE004 dependency setup allowance exhausted')
+              subprocess.run(args, check=True, timeout=remaining)
+          setup(['git', 'lfs', 'install', '--local'])
+          if sys.platform == 'linux':
+              # ubuntu-24.04 supplies Xvfb/Mesa. Check the actual image instead
+              # of adding unbudgeted package installation before the campaign.
+              if os.environ['PACE004_MODE'] == 'graphical':
+                  for program in ('xvfb-run', 'Xvfb', 'xauth'):
+                      if shutil.which(program) is None:
+                          raise RuntimeError('Missing hosted graphical prerequisite: ' + program)
+                  setup(['dpkg-query', '-W', 'xvfb', 'xauth', 'libgl1-mesa-dri', 'libglx-mesa0'])
+              url = json.loads(Path('third_party/godot-runtime.lock.json').read_text())['editor']['origin_url']
+          else:
+              url = 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          paths = ','.join(sorted(campaign.selected_runtimes(sys.platform)))
+          subprocess.run(['git', 'lfs', 'pull', '--include=' + paths, '--exclude='], check=True,
+                         timeout=policy.watchdog_seconds('dependency_prepare_seconds'))
+          seconds = policy.watchdog_seconds('dependency_prepare_seconds')
+          subprocess.run(['curl', '--fail', '--location', '--connect-timeout', '60', '--max-time', str(seconds),
+                          '--output', str(Path(os.environ['RUNNER_TEMP']) / 'pace004-godot.zip'), url],
+                         check=True, timeout=seconds + policy.watchdog_seconds('terminate_grace_seconds'))
+          PYTHON
+      - name: Execute the registered two-case source-bound shard
+        timeout-minutes: ${{ matrix.suite_minutes }}
+        run: |
+          set -euo pipefail
+          args=()
+          display=()
+          if [[ "$PACE004_MODE" == 'active' ]]; then args+=(--active-workload); fi
+          if [[ "$PACE004_MODE" == 'graphical' ]]; then
+            args+=(--graphical)
+            if [[ "$RUNNER_OS" == 'Linux' ]]; then
+              display=(xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp')
+            fi
+          fi
+          "${display[@]}" python tools/play/run_pace004_campaign.py "${args[@]}" \
+            --godot-archive "$RUNNER_TEMP/pace004-godot.zip" --expected-source-sha "$PACE004_SHA" \
+            --baseline-source "$PACE004_BASE" --shard-index "$PACE004_INDEX" --shard-count "$PACE004_COUNT" \
+            --output "$EVIDENCE_DIR/campaign" 2>&1 | tee "$EVIDENCE_DIR/execution.log"
+      - name: Independently verify retained logs, pixels and source custody
+        timeout-minutes: ${{ matrix.readback_minutes }}
+        if: always()
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          python tools/play/run_pace004_campaign.py --verify-only --expected-source-sha "$PACE004_SHA" \
+            --baseline-source "$PACE004_BASE" --output "$EVIDENCE_DIR/campaign" \
+            2>&1 | tee "$EVIDENCE_DIR/offline-readback.log"
+      - name: Preserve original positive, failed and incomplete evidence
+        timeout-minutes: 10
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pace004-shard-windows-${{ matrix.mode }}-${{ matrix.shard_index }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.EVIDENCE_DIR }}/
+          if-no-files-found: error
+          retention-days: 90
+
+  complete_inventory:
+    if: always() && (github.event_name != 'pull_request' || !github.event.pull_request.draft)
+    needs: [plan, linux, windows]
+    runs-on: ubuntu-24.04
+    timeout-minutes: ${{ fromJSON(needs.plan.outputs.inventory_job_minutes || '360') }}
+    steps:
+      - name: Check out the independent reader at the executed source
+        timeout-minutes: 5
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.PACE004_SHA }}
+          lfs: false
+          persist-credentials: false
+      - name: Select Python
+        timeout-minutes: 5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Retrieve every original shard without combining their directories
+        timeout-minutes: 60
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: pace004-shard-*-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/play-pace004-suite/originals
+      - name: Require the exact sixty headless and twelve graphical cases
+        timeout-minutes: ${{ fromJSON(needs.plan.outputs.inventory_readback_minutes || '270') }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/play-pace004-suite
+          python tools/play/run_pace004_campaign.py --verify-suite --expected-source-sha "$PACE004_SHA" \
+            --baseline-source "$PACE004_BASE" --output build/play-pace004-suite/originals \
+            2>&1 | tee build/play-pace004-suite/complete-inventory.log
+      - name: Require every admitted job result
+        if: always()
+        timeout-minutes: 5
+        shell: bash
+        env:
+          PLAN_RESULT: ${{ needs.plan.result }}
+          LINUX_RESULT: ${{ needs.linux.result }}
+          WINDOWS_RESULT: ${{ needs.windows.result }}
+        run: |
+          python - <<'PYTHON'
+          import json, os
+          from pathlib import Path
+          output = Path('build/play-pace004-suite')
+          output.mkdir(parents=True, exist_ok=True)
+          results = {name: os.environ[name.upper() + '_RESULT'] for name in ('plan', 'linux', 'windows')}
+          (output / 'required-jobs.json').write_text(json.dumps(results, indent=2) + '\n')
+          if any(value != 'success' for value in results.values()):
+              raise SystemExit('A mandatory PACE004 job failed or did not execute: ' + json.dumps(results))
+          PYTHON
+      - name: Preserve the complete inventory verdict
+        timeout-minutes: 10
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pace004-complete-inventory-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/play-pace004-suite/complete-inventory.log
+            build/play-pace004-suite/required-jobs.json
+          if-no-files-found: error
+          retention-days: 90
