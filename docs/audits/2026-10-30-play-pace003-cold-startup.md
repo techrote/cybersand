@@ -248,3 +248,66 @@ green. #269/#270/#263 remain open for their separate lifecycle, physical-device,
 OS-focus and human-feel requirements. Training/scientific fixtures, native
 ownership, Rapier threading, liquid policies and runtime/LFS provenance remain
 unchanged.
+
+## 31 October follow-up: bounded compiler-only diagnosis
+
+The source-62d implementation (`62d3f6cf12340a2124773695b98915dda5f16907`, tree
+`9d7a2727a4ca33487a13815da673e5a704509649`) has independently read-back hosted
+Docs, Native and applicable Windows/Linux Godot passes. Native run
+[41136597982](https://github.com/techrote/cybersand/actions/runs/41136597982)
+passed the unchanged full-suite TSan bound; native code, Makefile and mandatory
+workflow are unchanged. This does not explain or erase the original TSan exit
+124. PACE run
+[41136597969](https://github.com/techrote/cybersand/actions/runs/41136597969)
+passed Linux and failed Windows. Neither this later Native result nor the
+separate owner-held draft #311 authorizes merging #308.
+
+Three successive Windows source-control experiments in diagnostic #312 failed
+within the original 180-second case bound. The final single-exit experiment is
+[41144657058](https://github.com/techrote/cybersand/actions/runs/41144657058),
+attempt 1, source `512dbb9e139bc18c6b034f803b95b43a08d888da`, tree
+`4fb6655e53eac4942402b38dac6754d7c2d07725`. Its four first cold rows—unchanged
+hoist control, single-exit catalogues, single-exit warning helpers and unified
+single-exit helpers—each completed 43 compiler calls and remained inside palette
+call 44, `D3DCompile(main, ps_5_0)`, at the deadline. No row produced an atlas,
+PNG or eligible warm run. Captured HLSL proves the intended return counts and
+call-site reductions reached the compiler, so their failure is not attributed
+to an unapplied shader variant.
+
+Original artifact 13020549731 is 2,860,062 bytes, SHA-256
+`e419f33c5a5e85a86a0209e7b847ed5e6a395100564472fc71aafc11c72443b4`; original
+job 124366820371 log is 52,637 bytes, SHA-256
+`9325478d7fd5c84fe4d6398b3a49940e93d38e25e4a69585443697d35dd76e47`.
+All 791 execution inputs, runtime/LFS identities, original HLSL, private cold
+caches, terminal report and all ten copied diagnostic source files verify.
+The visible workflow-copy correction succeeds; earlier omitted-copy failures
+remain retained. Same-thread CPU accumulated after call44 began was
+175.796875 / 175.953125 / 175.984375 / 176.093750 seconds at the final samples
+at or before the deadline. These are censored observations, not completed
+compiler durations or full unwound stacks. The all-runs-through-512 ledger
+retains 30 original attempt-1 runs, 92 jobs, 17 executed-job logs and 16 original
+ZIPs; 75 skipped jobs are not passes.
+
+The next diagnostic is the
+[exact HLSL replay](../../tools/diagnostics/replay_pace003_hlsl.py), run by the
+[isolated Windows workflow](../../.github/workflows/play-pace003-hlsl-replay.yml).
+It authenticates original phase-1 artifact 13020405751 and reuses the exact
+175,942-byte hoist-control call44 input, SHA-256
+`192c1a086d5124ce4b22cb172bd90876212779e4d6c67447f9278493ba3ff03c`.
+The source filename, entry, profile, macro list, null include pointer and flags2
+remain identical. One fresh process uses original flags `0xc000`; a second
+uses `0xc004`, adding only `D3DCOMPILE_SKIP_OPTIMIZATION`. Validation remains
+enabled. Each original process has a 180-second cap. Tiny API preflights use a
+separate shader and process; no Godot, graphics device, palette warm-up, native
+World or production runtime is installed or changed. Authentic System32 DLL
+identity must match the captured original before execution.
+
+This experiment is pending at this source checkpoint. A quick successful
+skip-optimization call against a CPU-busy original would support an
+optimization-controlled compiler cost, without identifying an internal pass.
+A quick compiler error is a changed failure mode, and a quick original replay
+would mean the in-engine context was not reproduced. No result can establish
+visual correctness, gameplay readiness, renderer performance or permission to
+change the pinned runtime. An original timeout keeps the workflow red even if
+the contrast completes. No retry, automatic compiler fallback or acceptance
+deadline change is introduced. #309 and #269/#270/#263 remain open.
