@@ -1,8 +1,8 @@
 ---
 title: PLAY-LIFE-009 automatic same-owner pause and input qualification
-status: Planned
+status: Current
 document-kind: audit
-scope: Bounded headless native and Rapier behavior, not graphical startup or physical-device acceptance
+scope: Candidate headless native and Rapier behavior, not graphical startup, physical-device acceptance or accepted main
 canonical-for: []
 last-reviewed: 2026-10-31
 related-documents: [../systems/player-control-playground.md, ../operations/cybersand-codex-development-handover.md, ../reference/status-and-roadmap.md]
@@ -18,11 +18,11 @@ shader reworks and requested continued PLAY engineering. The
 and [shader deferral](https://github.com/techrote/cybersand/issues/309#issuecomment-6538949034)
 preserve all existing failures, acceptance contracts and merge holds.
 
-This branch begins directly at accepted main
-`0bf28d5760aed989a79386de03ef4fc6171fef42`, not at held #308 or #310. It changes
-no production scene, shader, native code, physics/solver default, runtime pin,
-scientific fixture or training input. #312 stays frozen, #316 remains draft,
-and Scheduswarm remains paused. No existing mandatory workflow is changed.
+[Draft PR #317](https://github.com/techrote/cybersand/pull/317) begins directly at
+accepted main `0bf28d5760aed989a79386de03ef4fc6171fef42`, not held #308/#310. It
+changes no production scene, shader, native code, physics/solver default, runtime
+pin, scientific fixture or training input. #312 stays frozen, #316 remains draft,
+and Scheduswarm remains paused. No mandatory production workflow is changed.
 
 ## Registered behavior contract
 
@@ -54,37 +54,134 @@ the actor session and join the worker.
 Each operation is bounded at 15 seconds, each fixture at 150 seconds, each
 external case at the existing 180 seconds, and import at 240 seconds. All five
 first attempts are retained, even after a case fails. No automatic retry or
-skipped-row success is permitted. The capture has a 512-observation maximum.
+skipped-row success is permitted. Capture is bounded at 512 observations.
 
 ## Source and evidence contracts
 
 The scoped [workflow](../../.github/workflows/play-life009.yml) executes actual
-GitHub-hosted Windows Server 2022 and Ubuntu 24.04. It checks out the exact PR
-head, uses the pinned official Godot 4.7 archive and authentic LFS native/Rapier
-runtimes, and rejects production-path drift from its registered base. Full
-execution-input hashes and runtime identities are checked before and after.
-The original process result is written before JSON parsing and postflight.
-Original logs, reports, source archive and SHA-256 file inventory are retained.
-The original source archive contains only `git archive HEAD`, never credentials,
-`.git` state, generated cache files or rewritten evidence.
+GitHub-hosted Windows Server 2022 and Ubuntu 24.04 on literal runner labels. It
+checks out the exact PR head, uses the pinned official Godot
+`4.7.stable.official.5b4e0cb0f` and authentic selected LFS native/Rapier runtimes,
+and rejects production-path drift from its registered base. Full execution-input
+hashes and runtime identities are checked before and after. Actual observations
+must report `native-phased`, `Rapier2D` and the headless display server; fallback
+or unmeasured graphical/physical qualification claims are refused.
+
+The original process result is written before parsing and postflight. Original
+logs, reports, source archive and SHA-256 inventory are retained. Source archive
+creation disables LFS smudging; selected materialized runtime identities remain
+separate. The earlier 584b archive performed LFS smudging and is preserved as-is,
+not silently replaced with a smaller archive. No credentials, .git state or
+generated cache contents are staged as repository source.
 
 The [strict reducer](../../tools/play/life009_contract.py) recomputes identity,
 clock, input, pause and teardown checks from original observations. Its
 [adverse tests](../../tools/play/test_life009_contract.py) cover missing/duplicate
 rigs and markers, silent input loss, false clock-only success, owner replacement,
 paused drift, invalid old authority, held input, capture overflow, late deadlines,
-failed cleanup and unsupported graphical qualification claims. Synthetic unit
-fixtures are explicitly not engine evidence.
+failed cleanup and unsupported graphical qualification. Synthetic unit fixtures
+are explicitly not engine evidence. Direct 30-second check-only parser controls
+retain the original malformed helper and require the current helper to parse;
+these controls do not execute gameplay or count toward five-rig coverage.
 
-## Current checkpoint
+## Preserved first attempts and corrections
 
-**Implemented but awaiting actual hosted execution:** fixture, verifier, original
-process retention and branch-scoped workflow. Eight local verifier test methods,
-including multiple adverse subcases, pass normally and with Python optimization.
-This does not establish a Godot parser pass, native/Rapier execution, Windows or
-Linux runtime acceptance. Exact-head first results, any corrections, artifact
-identities and residual limitations must be recorded before claiming completion.
+### Initial workflow policy failure
 
-This slice does not close #268/#269/#270/#263, the complete PACE input-tape gap,
-physical devices or human feel. The deferred Windows startup gate remains red;
-no accepted outcome here authorizes merging #308/#310.
+Source `5369c61efe06d4e0f062bc1d7186c680f68f6bbb`, tree
+`a8fc6c6b9de8e7aa4b3f2f2d3f42f0ccf1ac8323`,
+[run 41169533038](https://github.com/techrote/cybersand/actions/runs/41169533038),
+attempt 1 failed the repository CI-provider policy before any engine execution.
+The runner matrix was not permitted. Linux artifact 13029904722 is 1,321 bytes,
+SHA-256 `0790fdb2b5688bad15a3d844ee88ad543c8a506737eeb5380af74d192cdd7a3d`;
+Windows artifact 13029769957 is 1,334 bytes,
+SHA-256 `8446543ab226499ee768b33389e0d9ac4d07e9c52a030d342964364121225f41`.
+Source `584b9c35085e45a0ab911730965b3cc30474dfd0` replaced only that new workflow's
+matrix routing with explicit Ubuntu and Windows jobs. The policy checker and
+all behavior/timeout requirements remained unchanged.
+
+### GDScript fixture parse failure
+
+At source `584b9c35085e45a0ab911730965b3cc30474dfd0`,
+[run 41169705947](https://github.com/techrote/cybersand/actions/runs/41169705947),
+attempt 1 passed platform policy, verifier units, runtime authentication and
+ordinary import, then all five wrappers failed to resolve the malformed shared
+helper. No gameplay success is credited. Original artifacts are:
+
+| OS | Artifact | Bytes | SHA-256 |
+|---|---:|---:|---|
+| Linux | 13031095186 | 146553524 | `91277e3c7b179252dc86f652a86399f775f65153dfd5628129ce16afe0722cfa` |
+| Windows | 13030910521 | 146562433 | `81293ac0108060152f7692962b8705519bbee67e1bca313237fabc9047e20b8c` |
+
+The correction uses named, bound predicates instead of ambiguous multiline
+inline predicates. The next run's actual check-only negative control reports
+`Expected closing ")" after call arguments` at original helper line 205; its
+current helper parses successfully. This is an apparatus source correction,
+not a production game fix.
+
+### Actual engine success, original reducer rejection
+
+Source `78d48b2a92650f139fc77c243f8df4edffc39643`, tree
+`f8b5446c55e805913b2c31862ffeb12b1e51d488`,
+[run 41170489097](https://github.com/techrote/cybersand/actions/runs/41170489097),
+attempt 1 is still an original aggregate failure. Both parser controls behave
+as expected and all five actual engine processes exit zero on each OS. However,
+the Python reducer incorrectly assumed positive object identifiers and rejected
+the genuine RefCounted worker/bridge identities. Godot's pinned
+[ObjectID definition](https://github.com/godotengine/godot/blob/5b4e0cb0f/core/object/object_id.h)
+reserves bit 63 for reference-counted objects and exposes signed int64 values to
+Variant. A negative value is therefore not evidence of a replaced or invalid
+owner. Current reduction preserves exact nonzero signed 64-bit identities;
+it does not take absolute values or round through floating-point numbers.
+A new adverse test accepts genuine large signed identities and rejects adjacent
+identity substitution, zero, booleans, floats, strings and out-of-range values.
+
+| OS | Actual assertions by rig order above | Engine process seconds | Original aggregate |
+|---|---|---|---|
+| Linux | 104, 104, 103, 103, 103; zero failures | 3.438–3.538 | FAIL, signed-ID verifier defect |
+| Windows | 104, 103, 103, 103, 103; zero failures | 4.194–4.207 | FAIL, signed-ID verifier defect |
+
+Each actual run records 21 paused callbacks, four completed steps in each of the
+dropped-input, active, held-resume and fresh-input phases, same owner identities,
+350ms or more of quiescence, fresh native progress, and successful teardown.
+A corrected local reduction of these original engine records passes, but that
+is explicitly derived readback, not a rewritten original campaign or a green
+result attributed to 78d4.
+
+Linux original artifact 13030767341 is 76,693,966 bytes, SHA-256
+`5be903b60ccb4ee9a3dfcb5961f37a4d5d2205a995eeacb5dd63abb7fb186e37`.
+Windows original artifact 13031081597 is 76,698,715 bytes, SHA-256
+`b7af49b7ec8a39a6f3ebe5a0fa7d8864513dec04c5c7fa1840c78890fa1c3d02`.
+Both archives, original report errors, parser logs and all fixture/process logs
+remain byte-preserved. Source and runtime postflight fences passed.
+
+## Current candidate and integration boundary
+
+The signed-ID correction changes only the reducer and its tests; the actual
+GDScript behavior fixture is byte-identical to source 78d4. Nine focused methods
+with adversarial subcases pass locally in normal and optimized Python. The
+[PR's source-pinned qualification ledger](https://github.com/techrote/cybersand/pull/317)
+records the corrected head's new original Windows/Linux outcome, artifact
+identities and remaining gates. No runtime result is attributed to a commit
+that has not executed it.
+
+This is a candidate-only validation slice. The accepted-main player guide,
+architecture, ownership/physics APIs and ADRs do not change because production
+behavior and acceptance are unchanged. This dated audit and the repository
+front-door link provide the new candidate route; canonical accepted-state
+handover/roadmap promotion remains part of guarded integration, not inferred
+from a draft scoped workflow. The dependency order #268 → #269 → #270 → #263
+is unchanged. #309 is deferred by the owner, not declared fixed or waived.
+
+Before merging #317, obtain substantive review and every applicable exact-head
+ordinary Native, Windows/Linux Godot and materialized-provenance gate required by
+repository policy. Draft-skipped jobs are not successful executions. Preserve
+these controls and run the original five-rig suite against any resulting tree.
+
+This fixture does not close the complete graphical PACE input-tape requirement,
+prove every actuator force or nonzero lap traversal, measure graphical FPS,
+exercise physical controller disconnects or qualify actual OS focus/human feel.
+The stopped GDScript worker-owner thread is observed; no independent OS trace
+of every native pool thread is claimed. No #268/#269/#270/#263 closure or
+#308/#310 integration follows from this candidate. Shader investigations remain
+deferred and Scheduswarm remains paused.

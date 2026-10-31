@@ -100,8 +100,13 @@ def verify_result(result: dict, rig: str, source: str) -> dict:
     reference = row.get("identity", {})
     require(all(k in reference for k in OWNERS), "Incomplete owner identity")
     require(isinstance(reference["run_id"], str) and bool(reference["run_id"]), "Empty run identity")
-    for key in ("worker", "session", "bridge", "epoch"):
-        require(number(reference[key], key) > 0, "Invalid owner identifier")
+    # ObjectID reserves bit63 for RefCounted; Variant exposes signed int64.
+    # Preserve exact signed identities, never abs(), floats or a positivity test.
+    for key in ("worker", "session", "bridge"):
+        value = reference[key]
+        require(type(value) is int and -(1 << 63) <= value < (1 << 63) and value != 0,
+                "Invalid signed object identity: " + key)
+    require(number(reference["epoch"], "epoch") > 0, "Invalid actor epoch")
     require(isinstance(row.get("recipe_hash"), str) and bool(row["recipe_hash"]), "No course identity")
     require(number(row.get("worker_capacity"), "worker_capacity") >= 1, "No native capacity")
     move = [1, 0] if rig == "acrobat" else [0, -1]

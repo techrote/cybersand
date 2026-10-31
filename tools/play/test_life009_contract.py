@@ -141,6 +141,22 @@ class Controls(unittest.TestCase):
         for rigs in ([], list(RIGS)[:-1], list(RIGS)+[RIGS[0]]):
             with self.assertRaises(ValueError): verify_inventory(rigs)
 
+    def test_exact_signed_object_ids(self):
+        value = fixture()
+        row = value["row"]
+        states = [row[name] for name in ("identity", "pre_pause", "pause_ack", "pause_end", "final")]
+        states += [r[side] for r in row["records"] for side in ("before", "after")]
+        for state in states:
+            state["worker"] = -9223371966273026388
+            state["bridge"] = -9223371883074809094
+        self.assertTrue(verify_result(value, "jetbarrel", SOURCE)["same_owner"])
+        # Adjacent large identities must not collapse through float rounding.
+        row["records"][-1]["after"]["worker"] += 1
+        with self.assertRaises(ValueError):
+            verify_result(value, "jetbarrel", SOURCE)
+        for invalid in (0, True, 1.5, float("nan"), 1 << 63, -(1 << 63) - 1, "11"):
+            self.reject(lambda v, x=invalid: v["row"]["identity"].update(worker=x))
+
     def test_process_skips_and_late_exit_cannot_pass(self):
         valid = dict(status="passed", returncode=0, timeout_seconds=180, seconds=10,
                      skip_messages=[], diagnostic_error=False, launch_error=None, capture_error=None)
