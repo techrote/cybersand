@@ -44,7 +44,7 @@ CONTROL_MODES=('normal','handled','crash','child-crash','hang')
 BUILD_CONTROL_MODES=('normal-child','nonzero','orphan-hang','slow-child','late-child-failure')
 SLOW_CONTROL_SECONDS=20
 TOOLCHAIN={
-    'schema':'play-windows-clang-lld-v1',
+    'schema':'play-windows-clang-lld-v2',
     'family':'clang-cl/lld-link',
     'version':'20.1.8',
     'official_installer':{
@@ -52,7 +52,7 @@ TOOLCHAIN={
         'bytes':385658654,
         'sha256':'3197846a2b19063687dd56e93e34cd941e3548d907f23a6131571321bdf9fe7b'},
     'compiler':{'path':r'C:\Program Files\LLVM\bin\clang-cl.exe','bytes':101879296,
-                'sha256':'51ace51d190c6f09af277bb8d6354b3fb2fd8495cae3d80dcb1c36c2d1a816d4'},
+                'sha256':'57e32b1ea2456f12f97bf802453171bbff12d56b2c486b4eca0c75343c0cda2c'},
     'linker':{'path':r'C:\Program Files\LLVM\bin\lld-link.exe','bytes':67509760,
               'sha256':'6590ac0122cd5e11fcd05cc9cd5b7ad01cb89961487b9b81c4330fb59abcb5d9'},
 }

@@ -12,6 +12,9 @@ related-documents: [../operations/local-build-and-validation.md, ../operations/g
 
 The [v5 LLVM successor](#diagnostic-only-clang-cl-and-lld-successor--v5)
 below supersedes the compiler configuration of the retained v4 attempt.
+Its first hosted attempt exposed an incorrect compiler pin; the
+[source-pin correction](#llvm-source-pin-correction--toolchain-identity-v2)
+records the failed attempt and independently verifies the complete official bytes.
 It preserves the original production/fixture source and every prior failure.
 Local portable controls are complete; resulting-source Windows execution is
 still required. No successful new engine execution or crash repair is asserted.
@@ -641,6 +644,10 @@ were derived by extracting only the two executable members from the
 after checking its published release-asset size and SHA-256. The installer
 was inspected locally, not executed or committed.
 
+This table preserves the initial declaration. The compiler digest was derived
+from an incomplete alias extraction, as established after the first hosted
+attempt and corrected in the toolchain identity v2 section below.
+
 | Official file | Bytes | SHA-256 |
 |---|---:|---|
 | LLVM-20.1.8-win64.exe | 385,658,654 | 3197846a2b19063687dd56e93e34cd941e3548d907f23a6131571321bdf9fe7b |
@@ -720,3 +727,78 @@ different installed LLVM identity remains a visible failure with preserved
 partial evidence. A later successful diagnostic cannot identify the cause
 of the original 0xC0000005 by itself, repair it, or qualify current-main
 gameplay/shader integration.
+
+## LLVM source-pin correction — toolchain identity v2
+
+The first v5 hosted execution is retained as a failed attempt:
+[run41237817139, attempt1](https://github.com/techrote/cybersand/actions/runs/41237817139),
+job124645182793, at source `ae884cbec3f80ef50e9f1d24b355696118e337e8`,
+tree `df51b62ddcd36ee940194ffedfef133de869ca90`.
+Artifact13056233530 is 2,310,109 bytes with SHA-256
+`52157861890fdc7fff45915e198a86533f1c09113848a183510fb2e139bef7af`.
+Independent readback verified the ZIP CRC, all 25 sealed entries, 795
+canonical inputs, 15 retained Python helper identities, the runtime proof,
+and all five actual ownership controls using the original source readers.
+The normal, nonzero, orphan, slow-child and late-child-failure observations
+retained their required outcomes and joined their owned jobs.
+
+The campaign stopped at `Pinned LLVM compiler executable differs or is missing`.
+The installed `C:\Program Files\LLVM\bin\clang-cl.exe` was 101,879,296 bytes,
+SHA-256 `57e32b1ea2456f12f97bf802453171bbff12d56b2c486b4eca0c75343c0cda2c`.
+No compiler/linker version probe, compilation, debugger control, import or
+original fixture ran; `fixture_attempts` remained zero. The mismatch check
+preceded the linker check, so that run does not establish its installed linker
+identity. The original v5 full-campaign reader correctly rejects the incomplete
+campaign. Its records are not rerun or relabelled as successful evidence.
+
+The initial pin derivation paired the archive-declared compiler size with a
+digest of an incomplete local extraction. The local `clang-cl.exe` file with
+digest `51ace51d190c6f09af277bb8d6354b3fb2fd8495cae3d80dcb1c36c2d1a816d4`
+is only 85,983,232 bytes. That digest cannot identify the declared
+101,879,296-byte executable. This was an apparatus provenance error.
+
+The same official installer was checked again against the published size and
+SHA-256 above. A completed stream extraction with 7-Zip 23.01 on Linux
+(`7zz x -so LLVM-20.1.8-win64.exe bin/clang-cl.exe`, then the equivalent
+`bin/lld-link.exe` command) exited zero for each member. Actual byte counts
+and SHA-256 digests were measured together only after each process exited.
+Separate completed extractions of `bin/clang.exe` and `bin/lld.exe` match
+their respective aliases. The NSIS listing records the compiler names at
+the same data offset, and likewise the linker names. The extraction's
+`7zz` executable was 2,763,304 bytes, SHA-256
+`c7f8769e2bc8df6bcbfba34571ee0340670a52dec824dbac844dd3b5bd1a69e1`.
+These are archive byte checks, not Windows execution evidence.
+
+| Complete official member | Observed bytes | SHA-256 |
+|---|---:|---|
+| bin/clang-cl.exe and bin/clang.exe | 101,879,296 | 57e32b1ea2456f12f97bf802453171bbff12d56b2c486b4eca0c75343c0cda2c |
+| bin/lld-link.exe and bin/lld.exe | 67,509,760 | 6590ac0122cd5e11fcd05cc9cd5b7ad01cb89961487b9b81c4330fb59abcb5d9 |
+
+Toolchain identity `play-windows-clang-lld-v2` corrects only the compiler
+digest; its fixed path, actual size, version/target probes and linker pin
+remain unchanged. Campaign v5 and build v2 retain their structural formats
+and bind to the exact source-declared toolchain identity. A resealed old
+toolchain-v1 receipt is rejected by the successor reader. The workflow,
+budgets, original debugger/control source, process containment and production
+source fence are unchanged. No installation or additional child-process
+exception is introduced.
+
+Focused portable controls additionally exercise both sides of the erroneous
+size/hash pairing: a full file whose digest differs and a truncated file
+whose size differs. Both preserve the actual observation and declaration,
+refuse every launch, and leave build/probe inventories empty. The corrected
+toolchain still requires its own first hosted execution, including all
+version, compilation, debugger, import and fixture gates. The original
+`aa74448bad7ec77e5f152d9179a417ce76430009` / run41175131563
+`0xC0000005` remains unexplained and blocking.
+
+This correction was checked on parent `ae884cbec3f80ef50e9f1d24b355696118e337e8`
+plus the four tracked files in branch
+`codex/play-windows-llvm-materialization-20261031`: this audit, the campaign
+runner and its two existing focused test files. All 33 ownership/build and
+65 crash/artifact tests pass normally and with Python assertions disabled.
+Documentation, repository identity, historical M11, provider and whitespace
+checks pass; runtime libraries remain unmaterialized local pointers.
+Retrieval remains 32/32 canonical top-five hits, 19 top-one hits and
+MRR 0.7536, with answer sufficiency still a separate review. The protected
+production scopes remain byte-identical to the original failing source.

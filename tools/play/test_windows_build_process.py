@@ -248,6 +248,28 @@ class OwnedBuildTests(unittest.TestCase):
                 campaign.verify_tool_files(observed)
             self.assertEqual(observed['linker']['sha256'],owned.digest(Path(pins['linker']['path'])))
 
+    def test_inconsistent_size_and_hash_pin_retains_observation_without_launch(self):
+        # The first LLVM pin accidentally paired an archive-declared full size
+        # with a truncated extraction's digest. Neither the full file nor the
+        # truncated file may qualify against that inconsistent declaration.
+        complete=b'complete official executable';truncated=complete[:-7]
+        compiler=self.root/'compiler.exe';compiler.write_bytes(truncated)
+        pins=copy.deepcopy(campaign.TOOLCHAIN)
+        pins['compiler']={'path':str(compiler),'bytes':len(complete),'sha256':owned.digest(compiler)}
+        for label,contents in (('complete',complete),('truncated',truncated)):
+            output=self.root/label;output.mkdir();compiler.write_bytes(contents)
+            with self.subTest(label=label),mock.patch.object(campaign,'TOOLCHAIN',pins), \
+                 mock.patch.object(campaign.owned_build,'run') as launch:
+                with self.assertRaisesRegex(ValueError,'Pinned LLVM compiler executable'):
+                    campaign.build_tools(output,{})
+                launch.assert_not_called()
+            record=json.loads((output/'tools/build.json').read_bytes())
+            self.assertEqual(record['toolchain'],pins)
+            self.assertEqual(record['observed_tools'],{'compiler':{
+                'path':str(compiler),'bytes':len(contents),'sha256':owned.digest(compiler)}})
+            self.assertEqual(record['probes'],[])
+            self.assertEqual(record['builds'],[])
+
     def test_versions_require_both_exact_release_and_x64_msvc_target(self):
         campaign.verify_tool_version('compiler','clang version 20.1.8\nTarget: x86_64-pc-windows-msvc\n')
         campaign.verify_tool_version('linker','LLD 20.1.8\n')

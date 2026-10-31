@@ -545,6 +545,14 @@ class OfflineCompositionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'toolchain receipt differs'):
             campaign.verify_directory(self.root,self.head)
 
+    def test_resealed_superseded_llvm_pin_is_refused(self):
+        toolchain=self.report['build']['toolchain']
+        toolchain['schema']='play-windows-clang-lld-v1'
+        toolchain['compiler']['sha256']='51ace51d190c6f09af277bb8d6354b3fb2fd8495cae3d80dcb1c36c2d1a816d4'
+        campaign.write(self.root/'tools/build.json',self.report['build']);campaign.seal(self.root,self.report)
+        with self.assertRaisesRegex(ValueError,'toolchain receipt differs'):
+            campaign.verify_directory(self.root,self.head)
+
     def test_resealed_msvc_linker_fallback_is_refused(self):
         row=self.report['build']['builds'][0]['phases'][1]
         row['command'][0]=r'C:\compiler\link.exe'
