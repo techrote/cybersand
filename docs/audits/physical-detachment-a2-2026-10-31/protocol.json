@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "status": "preregistered before acquisition",
+  "source_parent": "7e04e8fde1496c5f32d3f83099ec2a6bfb6bb7d6",
+  "source_parent_tree": "15d1a2be1c344fcb430332a08ae18f117204d3c5",
+  "main_observed_only": "15b3a4012b9d5998e808fb371792dd7a71398507",
+  "branch": "codex/physical-detachment-a2-20261031",
+  "fixture": "Exactly the #336 real Rapier rectangle8x14 / Sand32x48,600ticks,initialrotation0.08,initialangularvelocity1,workers1; no duration/motion/material/solver changes",
+  "capture_bounds": {
+    "pending_events": 256,
+    "total_emitted_events": 8192,
+    "ticks": 600,
+    "failure_policy": "any producerloss, incomplete ticks, mixed incarnation, nonzero relocationrefusal or native/fallback mismatch blocks B/C interpretation"
+  },
+  "identity": {
+    "production": "original tagged consulted-read/candidate SHA256 unchanged",
+    "scientific": "all copied interior+ring state/classes, source/world/search bounds, exact normal/body inputs consumed by frozen B reporting; nonempty raw carrier excluding epoch, persistenttemperature/quantity; ambient+storagepolicy",
+    "excluded": "owner/reset/revision/tick/serial, unused mass/angularvelocity, empty payload/temp and schedulingepoch; rawcapsules still preserved and conservationchecks unchanged",
+    "structural": "separate translation-invariant discrete layout+material/mask and directional-decision signature, exact relativecandidateorder, endpointsector+dot-sign andcardinalhop signs; not exact continuousgeometry/conservation equivalence",
+    "integrity_hashes": "B/C whole-capsule integrity/after hashes include metadata and are outside scientific-equivalence claim"
+  },
+  "sampling": {
+    "method": "seeded bottom-k unique scientific identities perstratum",
+    "seed": "cybersand-physical-detachment-a2-v1",
+    "slots_per_stratum": 24,
+    "phase": {
+      "early": [
+        0,
+        199
+      ],
+      "middle": [
+        200,
+        399
+      ],
+      "late": [
+        400,
+        599
+      ]
+    },
+    "penetration": {
+      "shallow": "0.5 <= p < 1.5",
+      "moderate": "1.5 <= p < 3",
+      "deep": "p >= 3"
+    },
+    "normal": "4cardinal90degree sectors centred right/down/left/up",
+    "maximum_strata": 36,
+    "maximum_retained_failures": 864,
+    "maximum_retained_positivecontrols": 16,
+    "cross_stratum": "eachstratum independent; global union deduplicated onlyforstorage; perstratum counts retained",
+    "interpretation": "reservoirunion is not an unbiasedprobabilitysample; bounded complete population supplies exact finitecohort class/event-weighted summaries"
+  },
+  "analysis": {
+    "stage_b": "frozen source and definitions unchanged",
+    "stage_c": "frozen source/policycaps1,2,3,4 unchanged; no improvedoracle",
+    "weights": "additional recoveries amongno-target classes/events, separately frombaselinepositivecontrols; censusallscientificclasses if completeboundedstream; detailed retainedsample reportedseparately",
+    "predeclared_subgroups": [
+      "phase",
+      "penetration",
+      "normal sector"
+    ],
+    "minimum_subgroup_unique_classes": 20,
+    "structural_counts": "report alongside complete identities to expose pose-only fragmentation"
+  },
+  "decision_rule": {
+    "strong_no_go": "additional <=4 recovery <=1% for BOTH fullunique-scientificclass andliveevent-weighted failedpopulation, with no predeclared subgroup(n>=20uniqueclasses) reaching10% state OR event recovery",
+    "conditional_subgroup": "aggregate below10%, but predeclared physical subgroup n>=20 has>=10% recovery; report separately, no globalruntimepolicy",
+    "unexpected_go_signal": "aggregate >=10% state OR event additionalfailedrecovery; stop before production and independently audit suppression/oracle",
+    "intermediate": "between1%and10% withoutcoherent subgroup: inconclusive evidence requiring review, not speculativechainextension",
+    "scope": "finitefixturecohort, no populationconfidenceinterval or universal all-material rejection; everyGO is evidence for futureexperiment only"
+  },
+  "frozen_blob_ids": {
+    "tools/experiments/ejection_topology.py": "07af1cf155aaa092ea2c0f6a234a733e13830802",
+    "tools/experiments/test_ejection_topology.py": "4a1143c765f341c8b3dded427624f267f6a3b3b3",
+    "tools/experiments/ejection_push_chain.py": "8c33e49e698642c05b69e4aeca91c9d1107249c8",
+    "tools/experiments/test_ejection_push_chain.py": "e3576f25a2c258ad967b2eff91fbccd5ee827606",
+    "native/include/cybersand/ejection_search.hpp": "500a4c7d5a7be69aa690514ce751c1ace51574c1",
+    "godot/scripts/cell_world.gd": "ea8da8c902f5bb6f68a2c92231b104d9fb26d229"
+  },
+  "predata_checks": {
+    "new_hash_sampling_tests": 15,
+    "unchanged_B_tests": 10,
+    "unchanged_C_tests": 15,
+    "reviews": "read-only AI/source and sampling audits; no human approval implied"
+  },
+  "neutrality": "run stream and originalfirst64 modes with identicalfixture andperstepread-onlycontext; exactperframe bodyinputs/results/metrics/materialphysicalhash andfinalstate mustagree"
+}

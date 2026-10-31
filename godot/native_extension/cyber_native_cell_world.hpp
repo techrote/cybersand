@@ -145,6 +145,9 @@ public:
     // Explicit opt-in bounded investigation, called only by the exclusive owner.
     bool diagnostic_ejection_capture(std::int64_t maximum_failed, std::int64_t maximum_success);
     [[nodiscard]] Dictionary diagnostic_ejection_corpus() const;
+    // A2 diagnostic stream: no search-hash deduplication; fixed 256-event drain.
+    bool diagnostic_ejection_stream();
+    [[nodiscard]] Dictionary diagnostic_take_ejection_events();
     [[nodiscard]] Dictionary diagnostic_replay_ejection(const Dictionary& capsule) const;
     [[nodiscard]] std::int64_t get_tick_failure_count() const;
 
@@ -199,6 +202,9 @@ private:
     std::int64_t ejection_capture_stale_drops_ = 0, ejection_capture_replay_disagreements_ = 0;
     std::uint64_t ejection_capture_generation_ = 0;
     Array ejection_capsules_;
+    bool ejection_capture_stream_ = false;
+    std::int64_t ejection_capture_stream_emitted_ = 0;
+    std::int64_t ejection_capture_pending_drops_ = 0, ejection_capture_total_drops_ = 0;
     void capture_ejection(std::int32_t x, std::int32_t y, std::uint16_t body_id,
                           Vector2 outward, double penetration, Vector2i target);
     void clear_ejection_capture();
