@@ -13,20 +13,30 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 ## Current owner policy and accepted baseline — 2026-10-31
 
 The owner supersedes the earlier shader deferral and short immutable deadline
-restrictions below. Integrate and qualify #326 on accepted main `adaaa37`; use the
+restrictions below. Continue qualification of #326 using the
 [shared execution watchdog and advisory performance policy](../operations/ci-execution-and-performance.md).
-Its original attempt-1 post-merge Docs41204873388, scope41204873081,
-Native41204873121 and Godot41204873192 all passed. #269 is closed;
+[PR #330](https://github.com/techrote/cybersand/pull/330) is accepted at main
+`15b3a4012b9d5998e808fb371792dd7a71398507`, tree
+`d93c91e1f5a6b2c4fa66a151f23731e29b72323f`, after full source-matched
+Native and Windows/Linux Godot qualification and independent artifact review.
+Its post-merge checks are tracked separately in the live ledger. #269 is closed;
 #268/#270/#263 still require their remaining actual acceptance evidence.
 #324/#325 were already included and are administratively closed.
 
-The focused timeout/telemetry source requires fresh full CI and independent
-review. Shader integration and the source-preserving Windows crash diagnostic
-remain separate work packages. Historical failures keep their original status.
+Shader integration, stopped-session recovery, PACE004 and the source-preserving
+Windows crash diagnostic remain separately qualified work packages. Historical
+failures keep their original status; pending checks are not accepted results.
 The physical/human packet still has 51 untested rows. Scheduswarm stays paused;
 [#305](https://github.com/techrote/cybersand/issues/305) owns current coordination.
 Earlier dated checkpoints below describe their original restrictions and source,
 not today's superseding owner decision.
+
+The current integration also routes [stopped composed-session recovery](../systems/player-control-playground.md#stopped-composed-session-recovery),
+[the complete PACE004 source-bound campaign](../systems/player-control-playground.md#source-bound-pace004-campaign),
+and [renderer-specific palette variants](../systems/material-appearance-and-rendering.md#renderer-specific-palette-variants--2026-10-31)
+through their canonical contracts. PRs #331/#332/#334 and the live ledger own
+current-head qualification and guarded acceptance. Local graphical measurements,
+full hosted results and physical/human testing retain distinct scopes.
 
 
 ## PLAY desktop continuation — 2026-10-31

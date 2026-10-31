@@ -10,6 +10,103 @@ related-documents: [physical-actor-rigs.md, ../architecture/data-ownership-and-l
 
 # Player control playground
 
+## Current integration and acceptance scope — 2026-10-31
+
+The owner's [execution and performance policy](../operations/ci-execution-and-performance.md)
+supersedes earlier short immutable watchdogs and shader deferral. The accepted
+main is `15b3a4012b9d5998e808fb371792dd7a71398507` after #330; #269 is closed,
+while #268/#270/#263 retain their remaining product and physical/human gates.
+The source changes below are integration candidates until their exact reviewed
+trees, complete applicable hosted matrices and guarded merge receipts are
+recorded in [the live coordination ledger](https://github.com/techrote/cybersand/issues/305).
+Historical source-specific results retain their original scope. All 51 entries
+in the [manual packet](../operations/play-desktop-manual-qualification.md)
+remain untested by this automated work.
+
+### Stopped composed-session recovery
+
+An explicit **Restart applied session** can recover an accepted composed
+mechanical session after native failure. The panel copies the accepted recipe,
+mode, rig, control/rule/camera options, solver setup and owner quality settings
+into a one-use recovery envelope. Unsubmitted form edits and unaccepted pending
+requests do not replace that accepted configuration. Repeated Restart signals
+latch one deferred scene reload.
+
+Reload joins the old exclusive `CyberSimulationWorker` and retires both accepted
+and pending Rapier graphs. Fresh Main consumes the envelope once, admits the
+copied session through normal construction and begins paused at tick zero.
+Old command, button and lap state do not cross into the new owner. The native
+healthy-World guard remains unchanged; rebuilding does not cure a persistently
+invalid capacity setting. Ordinary healthy reconstruction keeps its original
+prepared transaction.
+
+F2 and **Return to launcher** cancel recovery through the shared navigation
+owner, including the interval after old Main exits but before its replacement
+enters the tree. The selector's popup forwards F2 from its own input viewport.
+A failed scene reload presents a specific error and permits an explicit retry.
+
+The [stopped-session audit](../audits/2026-10-31-play-stopped-session-recovery.md)
+records the reproduced disabled-Restart/pending-candidate defect, its preserved
+failure, the focused production correction and original actual-engine evidence.
+LIFE007 uses real native capacity failures across all five rigs; LIFE008 covers
+three return/reload orderings, including the actual pending replacement window.
+Fresh exact-source Linux at `ef9611de00ed4a8defec32226919e773b0fabb86`
+passes 151/0 and 62/0 assertions respectively. One error-message arm sets the
+reload-error presentation state synthetically; it does not inject an actual
+engine loader failure. Automated Viewport events do not qualify a physical
+keyboard, OS focus or human feel. [PR #332](https://github.com/techrote/cybersand/pull/332)
+owns current full-platform and acceptance status.
+
+### Source-bound PACE004 campaign
+
+The [PACE004 successor](../audits/2026-10-31-play-pace004-policy-successor.md)
+retains the original 40-event input tape, 15-second observation window,
+three-second holds and 150 by 100-millisecond active-load pulses. Its complete
+registered Windows/Linux inventory is **60 headless plus 12 graphical cases**
+in 36 two-case jobs. The original #320 result is 60 headless cases, 6,244
+assertions, 2,400 events and 840 admitted nonneutral presses **across both
+platforms together**, rather than those totals on each platform.
+
+Input admission, refusal, cancellation and application are joined to actual
+completed native/Rapier steps and session identity. Capacity, actual task
+participation, native throughput, physics callbacks, snapshot coalescing/age,
+draw submissions and physical display cadence remain separate measurements.
+The active versus no-load controls require their registered real material work;
+no synchronous-reference arm is invented.
+
+Every shard records the exact source/ancestor baseline, original complete
+commands, runtime/palette identities and process/owner retirement. The complete
+source-matched suite reducer refuses missing, repeated, failed or skipped
+required shards. The generous shared watchdog permits execution to finish;
+measured slowness remains visible. It does not establish acceptable gameplay
+latency or frame pacing.
+
+The first local corrected actor/terrain control at source `b94a9439` passes two
+Linux graphical cases and a fresh sealed independent readback. It uses an older
+protected integration baseline and is not complete current-head or Windows
+qualification. The failed `57d3fa72` control remains failed: alpha modulation
+did not remove shader-authored terrain. The corrected control temporarily clears
+and restores only the World texture, retaining the visible actor, original
+pixel oracle and thresholds.
+
+On that Xvfb/llvmpipe cohort, native and Rapier completion were about 60 Hz,
+while median draw submission intervals were 74.957/70.575 ms and input-to-applied-
+step p95 was 81.131/82.285 ms. Roughly 13–14 software submissions per second
+are an observed pacing limitation. `displayed_fps` is null; no physical scanout,
+controller or human responsiveness result follows. Full current-source hosted
+qualification and the manual packet remain separate gates.
+
+The later sealed local campaign at `d08e6101`, tree
+`9b95e643d756f531db045e28272fa86bdeb97665`, covers all six Linux graphical
+cases with 720 assertions, zero failures and 240 accounted input events. All
+three independent readers preserve the 87 original campaign files. On its
+separate shared Xvfb/llvmpipe cohort, Current policy completes about 60 native
+ticks per second; pressure policy records 52.873 Hz with one worker and
+46.333 Hz with Auto. Rapier completion remains about 60 Hz, and
+`displayed_fps` remains null. These measured pressure and software-rendering
+limitations stay visible. This older source does not qualify a later composed
+head, a physical display, or the complete Windows/Linux hosted union.
+
 ## Current PLAY acceptance boundary — 2026-10-30
 
 The [authoritative owner decision](https://github.com/techrote/cybersand/issues/263#issuecomment-6522029843)
