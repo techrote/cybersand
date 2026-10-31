@@ -10,6 +10,27 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## PLAY LIFE010 raw-evidence gate — 2026-10-31
+
+The five `test_play_life010_<rig>.gd` wrappers are discovered by the unchanged
+ordinary Windows/Linux shard planner. Each actual engine process retains its
+180-second bound; import240s, fixture150s, operations/teardown15s and initial
+Main acknowledgement30s remain unchanged. A passing engine summary alone is
+insufficient: the common runner retains the original engine receipt, then runs
+`tools/ci/verify_play_life010.py --self-test` against the exact source, raw log,
+result and packet files under a separate15-second readback bound. Missing,
+failed, late or incomplete readback fails the case while preserving the actual
+engine exit and original log. An existing readback directory is refused instead
+of overwriting its original receipt.
+
+The [dated LIFE010 record](../audits/2026-10-31-play-life010-live-delivery.md)
+separates actual-host and source-bound local evidence from future hosted gates.
+Standalone independent readback accepts ordinary receipts with explicit status;
+the original local five-field receipt format requires the deliberately named
+`--local-process-receipt` option. This compatibility path does not authorize a
+missing status in hosted evidence. The independent reader checks both positive
+native/physical effects and21 reason-specific corrupt-evidence controls.
+
 ## Trial successor correction after accepted App — 2026-10-25
 
 App #256 is merged as main56422c05 after all four exact-dc2 required gates.

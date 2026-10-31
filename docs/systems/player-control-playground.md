@@ -153,6 +153,29 @@ automatic Main/native/Rapier regressions, original local environmental failures
 and required exact-head hosted results. Injected focus/device enumeration is
 explicitly synthetic; this is not physical-controller or OS-focus acceptance.
 
+## Live adversarial delivery qualification
+
+[LIFE010](../audits/2026-10-31-play-life010-live-delivery.md) supplements the
+accepted50-real-lifetimes-per-platform baseline with two sequential actual
+Main/native/Rapier lifetimes per rig. An inherited worker probe retains authentic
+immutable packets and deliberately delivers duplicates, delayed/out-of-order
+values and an old actor/World packet while the sole publisher stays live. A
+separate real-host serial-guard bypass must fail specifically for serial
+regression. No artificial production transport queue or second worker loop is
+introduced.
+
+Actual quick equipment presses reach the inherited worker's extracted-request
+boundary. A bounded test gate outside the production mutex allows Main and
+Rapier to continue. Valid-lease pause cancellation must prevent the native effect;
+fresh authority must recover. Positive native receipts require a subsequent
+completed Rapier step on the same run/epoch/control generation. These checks
+preserve actual body/terrain/render/lap fences through reconstruction and complete
+join. The common Windows/Linux runner independently reduces retained raw packets,
+process receipts and logs, including21 reason-specific adverse controls, before
+accepting each LIFE010 case. This is synthetic scheduling on the actual host,
+not physical-device, graphical or human-feel qualification. Exact resulting-head
+hosted execution remains in the PR ledger.
+
 ## PLAY composable existing-host route — accepted course and five-rig slice
 
 [PLAY-COMP-001 #273](https://github.com/techrote/cybersand/issues/273) was

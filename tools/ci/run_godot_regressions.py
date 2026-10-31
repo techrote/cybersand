@@ -328,6 +328,86 @@ def _kill_process_tree(process: subprocess.Popen, *, wait_seconds: int = 10) -> 
             print(f"Timed-out Godot PID {process.pid} did not exit after SIGKILL", flush=True)
 
 
+def life010_verifier_identity(source: str) -> dict:
+    """Bind the invoked verifier's bytes to the declared engine source commit."""
+    if not re.fullmatch(r"[0-9a-f]{40}", source):
+        raise ValueError("LIFE010 verifier requires an exact source commit")
+    relative = "tools/ci/verify_play_life010.py"
+    actual = (ROOT / relative).read_bytes()
+    canonical = subprocess.check_output(["git", "show", source + ":" + relative], cwd=ROOT, timeout=5)
+    # Git's canonical text is LF; a Windows checkout may use CRLF. Keep both
+    # identities so permitted checkout conversion never erases actual bytes.
+    if actual.replace(b"\r\n", b"\n") != canonical:
+        raise ValueError("LIFE010 verifier differs from its source commit")
+    return {"path": relative, "source_revision": source,
+            "actual_sha256": hashlib.sha256(actual).hexdigest(),
+            "canonical_sha256": hashlib.sha256(canonical).hexdigest()}
+
+
+def verify_life010_case(case: Case, record: dict, output_dir: Path, source: str) -> dict:
+    """Reduce LIFE010's original engine receipt without changing its exit/log."""
+    started = time.perf_counter()
+    result = {"status": "failed", "timeout_seconds": 15, "returncode": None,
+              "seconds": 0.0, "error": None}
+    try:
+        directory = output_dir / (case.name + "-readback")
+        directory.mkdir(exist_ok=False)
+        receipt = directory / "engine-process.json"
+        write_json(receipt, record)
+        reduced = directory / "verified.json"
+        rig = case.name.removeprefix("test_play_life010_")
+        inputs = {"process": receipt, "log": output_dir / record["log"],
+                  "result": output_dir / (case.name + "-artifacts") / (rig + "-life010.json")}
+        expected_hashes = {name: sha256(path) for name, path in inputs.items()}
+        result["input_sha256"] = expected_hashes
+        result["verifier_identity"] = life010_verifier_identity(source)
+        command = [sys.executable, str(ROOT / "tools/ci/verify_play_life010.py"),
+                   "--result", str(inputs["result"].resolve()),
+                   "--log", str(inputs["log"].resolve()),
+                   "--process-json", str(receipt.resolve()), "--source", source,
+                   "--self-test", "--output", str(reduced.resolve())]
+        result["command"] = command
+        result["receipt"] = receipt.relative_to(output_dir).as_posix()
+        result["receipt_sha256"] = sha256(receipt)
+        result["output"] = reduced.relative_to(output_dir).as_posix()
+        with (directory / "verifier-output.txt").open("w", encoding="utf-8") as log:
+            remaining = 15 - (time.perf_counter() - started)
+            if remaining <= 0:
+                raise ValueError("LIFE010 readback exhausted its 15-second bound before execution")
+            process = subprocess.run(command, cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, timeout=remaining)
+        result["returncode"] = process.returncode
+        if process.returncode != 0:
+            raise ValueError("LIFE010 raw-evidence verifier failed")
+        evidence = json.loads(reduced.read_text(encoding="utf-8"))
+        if not isinstance(evidence, dict):
+            raise ValueError("LIFE010 independent result is not an object")
+        if any(evidence.get(name + "_sha256") != digest for name, digest in expected_hashes.items()):
+            raise ValueError("LIFE010 independent input digest mismatch")
+        if any(sha256(inputs[name]) != digest for name, digest in expected_hashes.items()):
+            raise ValueError("LIFE010 original input changed during readback")
+        if sha256(ROOT / "tools/ci/verify_play_life010.py") != result["verifier_identity"]["actual_sha256"]:
+            raise ValueError("LIFE010 verifier changed during readback")
+        controls = evidence.get("adverse_controls", [])
+        if not isinstance(controls, list) or not all(isinstance(row, dict) for row in controls):
+            raise ValueError("LIFE010 independent control inventory is malformed")
+        if not (evidence.get("source_revision") == source and evidence.get("rig") == rig
+                and evidence.get("failures") == 0 and evidence.get("real_lifetimes") == 2
+                and evidence.get("rejected_deliveries") == 5 and evidence.get("native_commits") == 2
+                and evidence.get("lease_valid_cancellations") == 1 and len(controls) == 21
+                and len({row["name"] for row in controls}) == 21
+                and all(row.get("rejected_for") for row in controls)):
+            raise ValueError("LIFE010 independent result/control inventory is incomplete")
+        result["output_sha256"] = sha256(reduced)
+        result["status"] = "passed"
+    except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError) as error:
+        result["error"] = f"{type(error).__name__}: {error}"
+    result["seconds"] = round(time.perf_counter() - started, 6)
+    if result["seconds"] > 15:
+        result["status"] = "failed"
+        result["error"] = result["error"] or "LIFE010 readback exceeded its 15-second bound"
+    return result
+
+
 def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
              env: dict[str, str] | None = None) -> tuple[dict, bool]:
     log_path = output_dir / (case.name + ".log")
@@ -438,6 +518,15 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
         "last_heartbeat": diagnostics.last_progress(output),
         "diagnostics": case.name + "-diagnostics" if (output_dir / (case.name + "-diagnostics")).exists() else None,
     }
+    if not failed and case.name.startswith("test_play_life010_"):
+        # The engine footer is necessary but insufficient for this adversarial
+        # fixture. Preserve its original receipt, then require independent raw
+        # packet/owner/deadline validation and all reason-specific controls.
+        record["independent_evidence"] = verify_life010_case(
+            case, dict(record), output_dir, process_env.get("CYBERSAND_SOURCE_REVISION", ""))
+        if record["independent_evidence"]["status"] != "passed":
+            failed = True
+            status = record["status"] = "failed"
     if failed:
         print(
             f"{case.name} {status}; elapsed={record['seconds']:.3f}s; exit={returncode}; "
