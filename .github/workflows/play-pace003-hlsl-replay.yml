@@ -1,0 +1,105 @@
+name: PLAY-PACE-003 NONQUALIFYING exact HLSL compiler replay
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'tools/diagnostics/replay_pace003_hlsl.py'
+      - 'tools/diagnostics/test_replay_pace003_hlsl.py'
+      - '.github/workflows/play-pace003-hlsl-replay.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: play-pace003-hlsl-replay-${{ github.ref }}-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+
+env:
+  DIAGNOSTIC_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  EVIDENCE_DIR: build/play-pace003-hlsl-replay
+  PYTHONUTF8: '1'
+
+# Source-matched compiler experiment only. No Godot is installed or launched;
+# native World, renderer, shader assets and all production flags stay unchanged.
+jobs:
+  windows:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.ref == 'codex/play-pace003-windows-diagnosis-20261030'
+    name: Windows NONQUALIFYING original O2 versus one-bit compiler contrast
+    runs-on: windows-2022
+    timeout-minutes: 16
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out exact diagnostic head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.DIAGNOSTIC_SHA }}
+          lfs: false
+          persist-credentials: false
+
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Record exact source and offline guard checks
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR/input"
+          git rev-parse HEAD > "$EVIDENCE_DIR/source-sha.txt"
+          git rev-parse 'HEAD^{tree}' > "$EVIDENCE_DIR/source-tree.txt"
+          test "$(git rev-parse HEAD)" = "$DIAGNOSTIC_SHA"
+          echo 'NONQUALIFYING exact HLSL compiler replay. No Godot/device/runtime changes or graphical acceptance.' > "$EVIDENCE_DIR/SCOPE.txt"
+          python tools/ci/check_ci_provider_policy.py | tee "$EVIDENCE_DIR/provider-policy.json"
+          python tools/diagnostics/test_replay_pace003_hlsl.py 2>&1 | tee "$EVIDENCE_DIR/apparatus-tests.log"
+          python -O tools/diagnostics/test_replay_pace003_hlsl.py 2>&1 | tee "$EVIDENCE_DIR/apparatus-optimized-tests.log"
+
+      - name: Record original Windows host
+        shell: pwsh
+        run: |
+          $identity = @{
+            Cpu = @(Get-CimInstance Win32_Processor | Select-Object Name, NumberOfCores, NumberOfLogicalProcessors)
+            Graphics = @(Get-CimInstance Win32_VideoController | Select-Object Name, DriverVersion, VideoProcessor)
+            OperatingSystem = @(Get-CimInstance Win32_OperatingSystem | Select-Object Caption, Version, BuildNumber, TotalVisibleMemorySize)
+          }
+          $identity | ConvertTo-Json -Depth 5 | Set-Content -Encoding utf8 "$env:EVIDENCE_DIR/host.json"
+
+      - name: Install pinned process snapshot dependency
+        timeout-minutes: 3
+        run: |
+          set -euo pipefail
+          python -m pip install psutil==7.1.3 2>&1 | tee "$EVIDENCE_DIR/python-dependencies.log"
+          python -m pip freeze > "$EVIDENCE_DIR/python-environment.txt"
+
+      - name: Retain and authenticate original captured compiler input
+        timeout-minutes: 3
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh --version > "$EVIDENCE_DIR/input/gh-version.txt"
+          gh api repos/techrote/cybersand/actions/artifacts/13020405751 > "$EVIDENCE_DIR/input/artifact-metadata.json"
+          gh api repos/techrote/cybersand/actions/artifacts/13020405751/zip > "$EVIDENCE_DIR/input/original-13020405751.zip"
+
+      - name: Execute two independent bounded first-attempt compiler processes
+        timeout-minutes: 8
+        run: |
+          set -euo pipefail
+          python -B tools/diagnostics/replay_pace003_hlsl.py \
+            --archive "$EVIDENCE_DIR/input/original-13020405751.zip" \
+            --metadata "$EVIDENCE_DIR/input/artifact-metadata.json" \
+            --output "$EVIDENCE_DIR/campaign" --expected-source-sha "$DIAGNOSTIC_SHA" \
+            2>&1 | tee "$EVIDENCE_DIR/execution.log"
+
+      - name: Retain every original compiler result and failure capture
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: play-pace003-hlsl-replay-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/play-pace003-hlsl-replay/
+          if-no-files-found: error
+          retention-days: 30
