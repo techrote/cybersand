@@ -21,6 +21,15 @@ before interpreting any compiler GO as product acceptance. Original flags,
 compiler, case limits, negative evidence, #308's graphical hold and Scheduswarm
 pause remain unchanged. Results belong to their actual executed head.
 
+The exact `4982e767` first compiler run completed with valid controls and
+independent readback, but both tested families are **NO-GO**: 60.329724 and
+57.652248 seconds of serial compiler time. Ordinary shading alone takes
+42.474788 seconds. The [result addition](../audits/2026-10-31-play-pace003-palette-decomposition.md#actual-windows-results-and-decision--2026-10-31)
+retains all inputs, outputs, warnings and the original failed apparatus run.
+Do not implement these renderer splits as the startup remedy. Any next
+ordinary-program decomposition or compiler minimization is a separately
+registered diagnostic; no production correction or PLAY promotion occurred.
+
 ## CI parallel integration checkpoint — 2026-10-31
 
 The owner requested production integration of #311/#313/#314 in the active

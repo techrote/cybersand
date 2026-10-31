@@ -1,14 +1,9 @@
 name: PLAY-PACE-003 NONQUALIFYING palette decomposition feasibility
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
-    paths:
-      - 'tools/diagnostics/run_pace003_decomposition.py'
-      - 'tools/diagnostics/test_run_pace003_decomposition.py'
-      - 'tools/diagnostics/pace003_decomposition_variants.py'
-      - 'tools/diagnostics/test_pace003_decomposition_variants.py'
-      - '.github/workflows/play-pace003-palette-decomposition.yml'
+  # The bounded first campaign is complete: run41165819892 at4982e767 is
+  # retained as NO-GO. Do not repeat it on later PR documentation updates.
+  # Deliberate reproduction remains manual and is a new, separately retained run.
   workflow_dispatch:
 
 permissions:
@@ -24,7 +19,7 @@ env:
   EVIDENCE_DIR: build/play-pace003-decomposition
   PYTHONUTF8: '1'
 
-# Explicit branch-scoped experiment, including draft PRs. No Godot or renderer
+# Manual reproduction of the completed isolated experiment. No Godot or renderer
 # installation/execution; no production gate, runtime, shader or deadline change.
 jobs:
   windows:

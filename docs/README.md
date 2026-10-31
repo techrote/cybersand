@@ -16,6 +16,9 @@ The [bounded compiler experiment](audits/2026-10-31-play-pace003-palette-decompo
 owns exact inputs, controls, results and the prototype decision. The
 [test contract](operations/testing-validation-and-replay.md#windows-palette-decomposition-feasibility)
 explains why compiler success cannot clear Windows graphical startup or #308.
+The source-bound result is **NO-GO for both tested families**: the ordinary
+program alone takes 42.474788 seconds. The original first attempts and warnings
+are preserved; no production shader changed.
 
 ## CI parallel production integration — 2026-10-31
 

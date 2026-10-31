@@ -6,7 +6,8 @@
       "canonical": ["operations/testing-validation-and-replay.md"],
       "facts": [
         "GO requires a complete program family inside both twenty-second serial compiler and whole-process observation budgets, with authenticated controls and original evidence.",
-        "It proposes a separately qualified renderer prototype and supplies no pixel, device, real Main or gameplay acceptance; broken apparatus is INCONCLUSIVE, not NO-GO for the shader."
+        "It proposes a separately qualified renderer prototype and supplies no pixel, device, real Main or gameplay acceptance; broken apparatus is INCONCLUSIVE, not NO-GO for the shader.",
+        "Actual source4982e767 produced a valid NO-GO for both families:60.329724 and57.652248 seconds; ordinary shading alone took42.474788 seconds."
       ],
       "sources": ["../tools/diagnostics/run_pace003_decomposition.py"]
     },

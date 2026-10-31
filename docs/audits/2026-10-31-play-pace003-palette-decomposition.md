@@ -1,8 +1,8 @@
 ---
 title: Windows palette decomposition compiler feasibility
-status: Planned
+status: Current
 document-kind: evidence
-scope: Preregistered source-pinned compiler-only decomposition experiment for PLAY-PACE-003; no graphical or production acceptance
+scope: Source-pinned Windows compiler measurements and NO-GO for two registered palette decomposition families; no graphical or production acceptance
 canonical-for: [play-pace003-palette-decomposition-feasibility]
 last-reviewed: 2026-10-31
 related-documents: [../operations/testing-validation-and-replay.md, ../operations/github-development-and-release.md, ../reference/validation-evidence.md, ../reference/invariants.md]
@@ -10,13 +10,19 @@ related-documents: [../operations/testing-validation-and-replay.md, ../operation
 
 # Windows palette decomposition compiler feasibility
 
-**Preregistered experiment; execution results are not yet available.** The owner
-requested completion of an isolated feasibility PR for
-[#309](https://github.com/techrote/cybersand/issues/309), with original compiler
-measurements, negative controls and a bounded go/no-go conclusion. This record
-defines that experiment before its Windows execution. It does not claim that
-decomposition works, that any generated program draws correctly, or that the
-unchanged 30-second Main acknowledgement requirement is satisfied.
+**Final measured decision: NO-GO for both registered decomposition families.**
+The corrected first compiler campaign at `4982e767` completed every registered
+case with valid controls and authenticated readback. All seven split programs
+compiled, but the coarse family required 60.329724 seconds and the fine-building
+family 57.652248 seconds of serial compiler wall time. The shared ordinary
+program alone took 42.474788 seconds. These results fail the preregistered
+20-second screen and exceed the complete 30-second Main allowance on this host.
+
+The owner requested completion of an isolated feasibility PR for
+[#309](https://github.com/techrote/cybersand/issues/309). The preregistration,
+including its original pending-results table, is retained below. The dated
+result addition identifies the actual source, first attempts and decision;
+it does not establish rendered equivalence or a production correction.
 
 The manual branch is `codex/play-pace003-palette-decomposition-20261031`, based
 on accepted main `0bf28d5760aed989a79386de03ef4fc6171fef42`, tree
@@ -236,7 +242,7 @@ must be separately identified rather than replacing a failed row in this one.
 ## Evidence retention and result checkpoint
 
 The resulting evidence must bind the exact tested commit/tree, checkout and
-workflow bytes; generator/harness/test/monitor sources; original archive/API
+workflow bytes; complete generator, compiler harness and test sources; original archive/API
 metadata; input and transformation receipts; host, Python and dependency
 identities; compiler bytes and loaded path; all generated HLSL; every original
 process log and compile-return record; retained bytecode/messages/disassembly;
@@ -259,6 +265,141 @@ The final source-bound run, original artifact/log digests, independent review
 and measured decision belong in the new PR's qualification ledger and a dated
 result addition to this record. This placeholder must not be rewritten as if
 measurements existed at preregistration.
+
+## Actual Windows results and decision — 2026-10-31
+
+[PR #316](https://github.com/techrote/cybersand/pull/316) contains the isolated
+apparatus. Actual executed head:
+`4982e767317c3348d5c6c5ea735fb931e0a86eb3`; tree:
+`9d19becd3eb672e7e6c87cb05437b4a5762fae4c`. The original
+[run 41165819892](https://github.com/techrote/cybersand/actions/runs/41165819892)
+attempt 1 used job `124433039153`. Later result documentation does not relabel
+these measurements as another executed commit.
+
+The final publication checkpoint adds the result and retires this diagnostic's
+automatic `pull_request` trigger after completion. The `workflow_dispatch`
+declaration is retained; manual dispatch of this unmerged checkpoint has not
+been exercised. All four executable Python
+files are byte-identical to the measured head; the workflow difference removes
+automatic admission only. Its executed version is retained in the original
+artifact. Mandatory production workflows and gates are unchanged. There is no
+claim that the final publication commit itself ran another compiler campaign.
+
+The recorded host is Windows Server 2022 Datacenter, build 20348, with an AMD
+EPYC 7763 CPU model and two cores/four logical processors exposed to the runner.
+Python was 3.12.10 x64; process sampling used pinned psutil 7.1.3. The actual
+System32 DLL matches the registered compiler hash. No Godot, graphics device,
+native World or renderer workload was created.
+
+### Completed compiler calls
+
+Times below are seconds. Compiler wall and thread CPU cover the actual
+`D3DCompile` call. Process observation includes interpreter setup, source
+regeneration, DLL authentication, compilation, disassembly and parent polling.
+The program inputs and outputs retain their exact hashes in the artifact.
+
+| Program | HLSL bytes | Compiler wall | Compiler thread CPU | Process observation | Result |
+|---|---:|---:|---:|---:|---|
+| Tiny valid API control | 80 | 0.001700 | 0.000000 | 0.152580 | Successful HRESULT, DXBC and disassembly |
+| Invalid-source API control | 175,989 | 0.000324 | 0.000000 | 0.101893 | Explicit failed HRESULT and expected diagnostic; no bytecode |
+| Original monolith | 175,942 | Not completed | Not available as call delta | 180.000132 | Timeout; no API-return receipt or output |
+| Compositor | 38,990 | 0.903171 | 0.890625 | 1.109565 | Compiled |
+| Ordinary: 0-80 and 132-255 | 118,589 | **42.474788** | **42.468750** | **42.813890** | Compiled |
+| Complete building: 81-131 | 83,798 | 16.951766 | 16.953125 | 17.237772 | Compiled |
+| Building: 81-93 | 56,207 | 4.955004 | 4.937500 | 5.192217 | Compiled |
+| Building: 94-106 | 53,258 | 3.729313 | 3.734375 | 3.931112 | Compiled |
+| Building: 107-119 | 53,262 | 3.342562 | 3.343750 | 3.578969 | Compiled |
+| Building: 120-131 | 50,059 | 2.247411 | 2.250000 | 2.471985 | Compiled |
+
+The original monolith's timeout snapshot recorded process CPU
+`179.828125 + 0.140625 = 179.968750` seconds. Its only observed thread had the
+same total. These are parent samples including process setup and possible
+deadline overshoot, not an invented completed-call duration. Tiny-call CPU
+values of zero reflect the granularity of the retained Windows CPU counters.
+Small CPU-versus-wall differences in other rows have the same counter/timing
+limitations and are not altered to make them equal.
+
+All seven split shaders returned successful HRESULTs and retained valid DXBC
+containers and disassembly. All six material programs also retained **X4000
+potential-uninitialized warnings**: ordinary names structured-fill and
+neighbour-relief helpers; complete building and its first three leaves name
+building-finish and neighbour-relief helpers; the last leaf names
+neighbour-relief. The compositor produced no retained warning blob. These
+warnings remain unadjudicated. The original monolith never returned, so there
+is no baseline diagnostic result establishing whether it would emit the same
+warnings. No warning-free or visually correct shader claim follows.
+
+### Complete-family adjudication
+
+| Registered family | Required programs | Serial compiler wall | Serial process observation | Decision |
+|---|---:|---:|---:|---|
+| Coarse | 3 | **60.329724 s** | **61.161226 s** | **NO-GO** |
+| Fine building | 6 | **57.652248 s** | **59.097738 s** | **NO-GO** |
+
+Both API controls passed their distinct contracts. All rows and source/output
+custody are complete. This is a valid **negative feasibility result**, not an
+apparatus failure. The execution step deliberately exited 1 for NO-GO, so the
+workflow remains red. The subsequent strict evidence readback passed and
+artifact upload passed; neither converts that feasibility result into a pass.
+
+The four building leaves total 14.274289 seconds, compared with 16.951766 for
+the complete building program. Their reduction is only **2.677476 seconds**, or
+about **4.44% of the complete coarse family**. The unchanged ordinary program
+alone exceeds 30 seconds. Further building-only subdivision therefore does not
+address this observed critical cost. CPU time closely follows ordinary-call
+wall time; the evidence does not identify a particular internal compiler pass.
+
+The original's actual completion time is censored by its timeout. No precise
+original-to-split speedup ratio is claimed. The seven successful split calls
+establish bounded compiler tractability, but neither family meets the startup
+feasibility target. This single source/host cohort is not a statistical timing
+guarantee or proof that every equivalent decomposition is impossible.
+
+### Original custody and review
+
+Original artifact `13028433030`, named
+`play-pace003-decomposition-41165819892-1`, contains **122 files** in a
+**6,887,531-byte ZIP**, SHA-256:
+
+```text
+d719b6a0c8207c02d73126e1e8acde38baf071234dcbc34073c66d4ff1921bca
+```
+
+Root readback authenticated the original ZIP/CRC, all retained inputs and
+outputs, complete executed source against the immutable commit/tree, original
+archive/API receipt, reversible patches, exact row order, CPU counters,
+deadlines and recomputed family decisions. Separate reviewers independently
+read original archive bytes and adjudicated the result; their detailed receipts
+and owner-account COMMENT reviews are linked from #316's qualification ledger.
+The earlier failed artifact `13029097591` remains retained separately.
+
+All **18 generator and 31 harness tests** passed on Windows under normal and
+optimized Python with the authentic source and no skips. Corrected-head
+[Documentation and provenance 41165819891](https://github.com/techrote/cybersand/actions/runs/41165819891)
+and [scope advisory 41165819896](https://github.com/techrote/cybersand/actions/runs/41165819896)
+passed. Draft Native and GDExtension/Godot runs were intentionally skipped;
+they are not runtime qualification. The draft Documentation workflow skips its
+ready-only materialized-runtime provenance step while still checking docs,
+historical integrity and LFS objects. Local repository identity checks used
+pointer mode. No production or real graphical acceptance is claimed.
+
+### Bounded continuation decision
+
+**Do not implement either tested decomposition as the proposed startup remedy
+on this evidence.** A useful separately registered next diagnostic would focus
+on the ordinary program: further semantically complete partitioning or a
+compiler-source minimization using its exact retained HLSL and warnings. That
+work is not performed or silently admitted by this PR. Preserve the original
+compiler, original flags, all material/fallback/snapshot/Empty paths and the
+same complete-family accounting if another experiment is authorized.
+
+The proposed renderer designs would add six or twelve draws and three RGBA32F
+surfaces. Their raw texel payload alone is 23.730469 MiB at 960x540, or
+94.921875 MiB at 1920x1080, excluding alignment, existing targets and in-flight
+duplication. These are calculated resource requirements, not measured GPU
+costs. Compilation success does not establish acceptable steady-state rendering.
+All pixel, derivative/LOD, alpha/HDR, snapshot and ownership requirements above
+would still apply to a future prototype that first passes its compiler screen.
 
 ## Documentation impact and continuation limits
 

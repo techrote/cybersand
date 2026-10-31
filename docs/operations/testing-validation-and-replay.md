@@ -30,6 +30,14 @@ from retained originals. Its result does not qualify pixels, device creation,
 cold Main startup or gameplay. #310's Linux candidate and frozen #312 remain
 separate; #308's Windows graphical hold and Scheduswarm pause remain in force.
 
+**Measured result, 2026-10-31:** exact `4982e767` Windows run `41165819892`
+completed with valid controls and readback, but **both families are NO-GO**:
+60.329724/57.652248 seconds of serial compiler wall time, respectively. Ordinary
+material shading alone took 42.474788 seconds. Successful compilation does not
+clear the budget or establish pixels; retained potential-uninitialized warnings
+remain unadjudicated. The [result record](../audits/2026-10-31-play-pace003-palette-decomposition.md#actual-windows-results-and-decision--2026-10-31)
+keeps the earlier apparatus failure and exact original artifact separate.
+
 ## Earlier application qualification
 
 The [completed local35-case plus import run](../audits/2026-10-25-lcb003-final-integration.md#complete-local-host-matrix-and-actual-web-result)
