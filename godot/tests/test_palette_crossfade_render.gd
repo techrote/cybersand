@@ -52,7 +52,9 @@ func _base_colour(material_id: int, condition: int) -> Color:
 
 func _textures() -> void:
 	var lut := Image.create_empty(64, 256, false, Image.FORMAT_RGBA8)
-	var commands := CyberMaterialAppearanceLut.create_program_texture().get_image()
+	# Edit the canonical CPU image before upload. ANGLE's texture readback
+	# clamps HDR flair tags, even when the returned Image format is RGBAH.
+	var commands := CyberMaterialAppearanceLut.create_program_image()
 	for material_id: int in range(256):
 		for x: int in range(64):
 			lut.set_pixel(x, material_id, COLOURS[material_id % COLOURS.size()])
