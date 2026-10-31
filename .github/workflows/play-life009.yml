@@ -1,0 +1,96 @@
+name: PLAY-LIFE-009 automatic pause and input qualification
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - 'godot/tests/play_life009_same_owner_case.gd'
+      - 'godot/tests/test_play_life009_*.gd'
+      - 'tools/play/*life009*.py'
+      - '.github/workflows/play-life009.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: play-life009-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+
+env:
+  LIFE009_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  EVIDENCE_DIR: build/play-life009
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+
+jobs:
+  behavior:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.ref == 'codex/play-life009-pause-resume-20261031'
+    name: Actual headless Main and Rapier (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Check out exact manual-lane head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.LIFE009_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Select Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Record source and validate evidence contracts
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          test "$(git rev-parse HEAD)" = "$LIFE009_SHA"
+          git rev-parse HEAD > "$EVIDENCE_DIR/source-sha.txt"
+          git rev-parse 'HEAD^{tree}' > "$EVIDENCE_DIR/source-tree.txt"
+          python tools/ci/check_ci_provider_policy.py | tee "$EVIDENCE_DIR/provider.json"
+          python tools/play/test_life009_contract.py 2>&1 | tee "$EVIDENCE_DIR/contracts.log"
+          python -O tools/play/test_life009_contract.py 2>&1 | tee "$EVIDENCE_DIR/contracts-optimized.log"
+          python -m pip freeze > "$EVIDENCE_DIR/python-environment.txt"
+      - name: Materialize authentic selected runtimes and engine archive
+        timeout-minutes: 6
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          if [[ "$RUNNER_OS" == 'Windows' ]]; then
+            paths='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
+            url='https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          else
+            paths='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
+            url='https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          fi
+          git lfs pull --include="$paths" --exclude='' 2>&1 | tee "$EVIDENCE_DIR/lfs.log"
+          curl --fail --location --connect-timeout 20 --max-time 240 --output "$RUNNER_TEMP/life009-godot.zip" "$url"
+      - name: Run all five first-attempt automatic-callback fixtures
+        timeout-minutes: 21
+        run: |
+          set -euo pipefail
+          python tools/play/run_life009_campaign.py --godot-archive "$RUNNER_TEMP/life009-godot.zip" \
+            --expected-source-sha "$LIFE009_SHA" --output "$EVIDENCE_DIR/campaign" \
+            2>&1 | tee "$EVIDENCE_DIR/execution.log"
+      - name: Independently reduce original process logs
+        if: always()
+        run: |
+          set -euo pipefail
+          python tools/play/run_life009_campaign.py --output "$EVIDENCE_DIR/campaign" --verify-only \
+            2>&1 | tee "$EVIDENCE_DIR/offline-readback.log"
+      - name: Preserve original successes and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: play-life009-${{ matrix.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/play-life009/
+          if-no-files-found: error
+          retention-days: 30
