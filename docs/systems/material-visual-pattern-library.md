@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Design and algorithm reference for presentation-only material patterns — primitives, pipeline stages, recipes, per-material specifications, authoring and procedural-development workflow, and lessons learned
 canonical-for: [material-visual-patterns, procedural-material-algorithms, material-pattern-authoring-workflow]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-10-31
 related-documents: [material-appearance-and-rendering.md, themed-construction-materials.md, ../reference/material-effects-register.md, ../reference/product-intent-and-priorities.md, ../audits/2026-10-18-material-readability-pass.md]
 ---
 
@@ -74,7 +74,10 @@ is multiplied accordingly. Budget reads before arithmetic.
    - liquid lips;
    - contact shadow and ambient occlusion in Empty cells.
 6. **Temporal crossfade.** Only changed displayed IDs where either side is
-   temporally smoothed. Each side uses its own snapshot.
+   temporally smoothed. Each side uses its own snapshot. The
+   [renderer-specific variant](material-appearance-and-rendering.md#renderer-specific-palette-variants--2026-10-31)
+   retains full finishes on both sides for native OpenGL; the bounded ANGLE
+   policy uses the previous base colour and complete incoming finish.
 7. **Ambient particles** (`apply_ambient_particles`), in Empty cells only:
    - embers above hot or burning cells;
    - fumes above Acid and Toxic Sludge;
@@ -296,7 +299,8 @@ grid; a jittered cell field reads as foliage.
   width must suit the cell size.
 - **Noise as fire:** small-scale crack thresholds read as glitter. Larger veins
   over a char base read as burning wood.
-- **Old-neighbourhood relief:** the old side of a crossfade must sample its own
-  snapshot.
+- **Old-neighbourhood relief:** a fully finished old crossfade side must sample
+  its own snapshot. The explicitly bounded ANGLE policy instead uses that
+  snapshot's base colour; it does not claim an equivalent outgoing finish.
 - **Claims of identity:** state pixel identity only for captured samples on the
   tested GPU.

@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [material-visual-projection, palette-program-appearance, render-upload-cost]
 status: Current
 scope: Native RG8 presentation, palette/program LUTs, shader flair, temporal smoothing, glow, and current GPU upload limitation
-last-reviewed: 2026-10-19
+last-reviewed: 2026-10-31
 related-documents: [material-visual-pattern-library.md, ../reference/material-effects-register.md, themed-construction-materials.md, materials-and-rule-kernels.md, ../architecture/rendering-and-gameplay-bridges.md, ../architecture/item-authored-material-programs.md]
 ---
 
@@ -84,6 +84,71 @@ builds a 64×256 RGBA8 palette and a 4×256 RGBA16F program texture at startup.
 Palette rows follow material IDs; variants derive from stable coordinates.
 The program describes tint/blend, condition range, value, alpha, emission
 response/color, and an integer flair selector in texel 3 alpha.
+
+`create_program_image()` retains those original CPU instructions;
+`create_program_texture()` uploads the same bytes. Fixtures that edit HDR
+instructions use the CPU Image directly. The pinned GLES/ANGLE texture readback
+passes through RGBA8 before converting back to the declared format, so a returned
+RGBAH format alone does not prove that flair values above one survived readback.
+The source-bound qualification audit retains the original clipped-input failure.
+
+### Renderer-specific palette variants — 2026-10-31
+
+The owner-authorized [shader integration](../audits/2026-10-31-palette-shader-integration.md)
+reconciles Claude's #326 flow/finish transformation with the needed #310
+compiler changes. Current candidate source uses
+[`CyberPaletteShader`](../../godot/scripts/palette_shader_selector.gd) to select
+the variant from the actual renderer. Native OpenGL retains the full previous
+and current finish. Actual `opengl3_angle` selects
+`CYBER_BOUNDED_CROSSFADE`: the outgoing side uses the previous base colour and
+the incoming side retains the complete current finish. This is an intentional
+presentation difference, including at blend zero, not pixel equivalence between
+the full and bounded variants. Blend one retains the current finished material.
+The selected side still uses its own snapshot and world coordinates.
+
+Selection caches a derived Shader by the original resource and exact source.
+An edited source or derived variant invalidates the cached program; repeated
+Main construction does not stack define prefixes or silently reuse stale code.
+Runtime provenance records source path, file/full/variant hashes and selected
+policy. Qualification observes the material and texture actually bound to the
+visible World, rather than merely constructing an unused shader object.
+
+The [qualification registration](../audits/2026-10-31-palette-shader-qualification-registration.md)
+owns the six actual Linux/Windows cohorts: material/oracle and camera captures,
+palette/vapour/water regressions, and cold/warm shared-Main lifetimes. The
+[v3 semantic registration](../audits/2026-10-31-palette-shader-semantic-v3-registration.md)
+retains the original 24 captures, all 132 material slots, conditions 0/128/255,
+blends 0/0.5/1, presentation time and camera translation. It requires all 4,096
+GPU-sampled scalars from the program texture actually bound during the production
+draws to match the registered edited program reconstructed from the independently
+pinned canonical image. A separate actual
+render using a deliberately clamped texture must match the registered clamped
+recipe and fail that same positive comparator, including the Sand and Water
+flair anchors. Coherent but wrong rendered endpoints alone cannot satisfy it.
+
+Hard gates retain the CPU outgoing-base oracle, cross-backend outgoing-base
+comparison at 2/255, each backend's midpoint/full-current/camera relationships,
+and exact native baseline/candidate atlas parity. Cross-backend complete-finish
+images remain an explicit `finished_image_diagnostic`, with the original 2/255
+threshold, observed passed/failed status, differing-pixel count and maximum
+error retained.
+The source's procedural hash promises stability on one GPU; thresholded powder
+details can amplify small cross-GPU arithmetic differences. The corrected v2
+campaign's 11/2,304 differing powder pixels and failed terminal reduction remain
+failed. V3 adds independent semantic evidence and requires fresh execution;
+it neither widens the pixel threshold nor retrospectively qualifies v2.
+
+Native baseline/candidate, semantic and complete-finish diagnostic results keep
+their separate scopes. Compiler identity is only claimed where observed in the
+actual engine process; a whole-process time is not a compiler-only measurement.
+Claude's original local Windows 25–37-second report remains a separate
+historical cohort.
+
+[PR #331](https://github.com/techrote/cybersand/pull/331) owns current exact-head
+qualification and guarded acceptance. Original failed source/readback attempts
+are retained. Full source-matched regression, all rendered semantic gates and
+the explicit complete-finish diagnostic are required; neither an isolated CPU
+oracle nor one faster process closes #309 or the physical/human PLAY gates.
 
 The [material palette shader](../../godot/shaders/material_palette.gdshader)
 implements 50 non-neutral flair classes through bounded analytic branches.
