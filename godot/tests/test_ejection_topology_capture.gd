@@ -23,6 +23,7 @@ func _stream_controls() -> void:
 	world.prepare_rigid_body_coupling(PackedFloat32Array([1,116,116,0,32,32,0,0,0,1,1]), true)
 	var physical: String = world.get_physical_state_hash()
 	var batch: Dictionary = world.diagnostic_take_ejection_events()
+	_check(int(batch.get("stream_total_limit",-1)) == 8192 and batch.has("capture_instance_id"), "A2 stream runtime version mismatch")
 	_check(batch.capsules.size() == 256, "stream overflow did not retain bounded256")
 	_check(int(batch.dropped_capacity) > 0, "stream overflow not explicit")
 	_check(int(batch.attempts) == int(batch.stream_emitted) + int(batch.dropped), "stream accounting")
