@@ -138,4 +138,86 @@ Baseline lexical evaluation: hit@1 19/32, hit@5 32/32, MRR .7536; semantic answe
 sufficiency still needs source review. The bounded trace control passed5 checks.
 Stage-specific and final-head evidence are recorded separately as work proceeds.
 
-Stage B, Stage C and final draft handover are pending at the Stage-A checkpoint.
+Stage A checkpoint: `6b19d33a778f604f38150d14a6a3484dbf520a32`, tree
+`fbc4457af28e99559018940971a3228cb7ea80f0`. The continuing investigation is
+[draft PR335](https://github.com/techrote/cybersand/pull/335), left unmerged.
+
+## Stage B strict E experiment
+
+**Current test-only candidate:** E is selected only with `--candidate=E` by the
+diagnostic harness. Ordinary worker construction and limits are unchanged.
+An exact full-world frame qualifies only with matching owner/render generation,
+channels1/2, exactly one complete tightly packed full rectangle and exact byte
+extent. A tag preserves its original baseline serial. Dirty data is independently
+validated, contiguous and charged against the original 2,097,152-byte/256-record
+budget after subtracting exactly that baseline and its single metadata record.
+Malformed/failed/unknown envelopes and generation/channel mismatches receive no
+exemption. All known native full-copy statuses remain valid: a complete forced
+copy can accompany NoChanges, Backpressure or CapacityExceeded, including native
+serial0; worker serials remain positive and monotonic.
+
+To enforce the requested **transient** pending bound, a dirty preflight retains
+the existing data unchanged when an append would exceed its budget, and latches
+the ordinary second forced-full recovery. Only a valid replacement full packet
+replaces the retained buffer; no baseline drop, rebase or coalescing is used.
+Ordinary valid ACK remains the only non-recovery clear. The legacy `cells` cache
+keeps its last complete frame, as in ordinary dirty transport; rendering applies
+`render_patch_*`. Native hard-surface snapshots remain the collider source.
+
+Parent executed the exact native E oracle on Windows and Linux: **62 assertions,
+zero failures each**. It covers exact/one-over bytes and rectangles, retained
+baseline/immutable publication, stale/latest/previous-generation ACKs, accepted
+reset, malformed metadata/payload/envelopes, channel denial, actual production
+rejected-upload/no-ACK/full-request behavior, real native reconstruction parity,
+existing full recovery and pending bound. Earlier scratch54/0 and initial
+mutable-pending oracle failure remain retained. Independent review added failed
+envelope negatives; the first B-E-Windows graphical run predates that correction
+and is supplementary, not the final candidate qualification.
+
+The [Stage-B receipt](render-publication-2026-10-31/stage-b.json) binds **24 fresh
+graphical processes** (three N and three W per candidate/platform). B3 campaigns
+ran sequentially on the same machine, keeping the same narrow workload and exact
+source. All final CPU Images match a fresh native full snapshot after worker
+join; all final texture readbacks match those CPU bytes. No rejection, trace
+truncation, failed owner or generation/reset failure occurred. Source manifests
+and all80 inherited native inputs match before and after each campaign.
+
+| Platform / arm | Control retries/refreshes | E retries/refreshes | Control full publications/refreshes | E full publications/refreshes |
+|---|---:|---:|---:|---:|
+| Windows N | 7/363 | 0/363 | 13/363 | 6/363 |
+| Windows W | 357/363 | 0/363 | 363/363 | 6/363 |
+| Linux N | 79/242 | 0/341 | 85/242 | 6/341 |
+| Linux W | 166/172 | 0/325 | 172/172 | 6/325 |
+
+The differing Linux denominators reflect owner service/packet batching under a
+fixed process-frame emission schedule; they are not matched tick trajectories.
+All E W runs retain actual dirty-on-full events. Maximum E pending retention is
+2,097,272 bytes, below the 4,194,304-byte RG8 bound; exact budget tests exercise
+the bound itself. Control's transient overflow is retained in its high-water.
+
+Median of three per-process p95 values (milliseconds; these are not pooled p95s):
+
+| Platform / arm / mode | Combined native call | Worker publication | Main CPU patch excluding validation | Texture.update CPU call | Frame interval |
+|---|---:|---:|---:|---:|---:|
+| Windows N control / E | .018 / .019 | .437 / .444 | .026 / .026 | .308 / .335 | 16.777 / 16.794 |
+| Windows W control / E | 16.861 / .019 | 19.934 / .993 | 1.535 / 1.615 | .396 / .378 | 16.765 / 16.795 |
+| Linux N control / E | 57.139 / .063 | 62.415 / .825 | 1.082 / .027 | .730 / .802 | 16.195 / 16.249 |
+| Linux W control / E | 69.862 / .049 | 77.511 / 1.689 | 1.221 / 1.356 | .651 / .681 | 17.436 / 17.612 |
+
+E removes the measured feedback loop without transferring equivalent CPU cost to
+the consumer in this fixture. W still replays its retained full image plus an
+increasing dirty suffix: the modest patch-cost increase is retained, and whole
+backing texture uploads continue. Initial/reset full copies remain in tail
+latencies. Windows N's low baseline incidence leaves little p95 change. Frame
+intervals show no demonstrated improvement; GPU execution/fence timing and
+representative active PLAY remain unmeasured. Do not infer universal prevalence,
+production acceptance or an FPS gain.
+
+The reader now checks both directions of event/counter agreement, native call
+pairs/durations, exact operation identities, generation replacement, candidate
+selection, final parity and E capacity. Actual retained traces pass17 adverse
+control mutations for control-N and16 for E-W, including ACK-before-upload,
+missing overflow cause, malformed call/publication, parity failure and capacity.
+All raw original logs, intermediate B/B2 attempts and hashes remain outside Git.
+
+Stage C and final exact-head handover remain pending at the Stage-B checkpoint.

@@ -4140,7 +4140,7 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	var old_current_texture: ImageTexture = texture
 	texture = previous_texture
 	previous_texture = old_current_texture
-	texture.update(image)
+	update_render_texture()
 	world_view.texture = texture
 	world_shader.set_shader_parameter("current_world_texture", texture)
 	world_shader.set_shader_parameter("previous_world_texture", previous_texture)
@@ -4149,6 +4149,10 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	snapshot_blend_start_usec = Time.get_ticks_usec()
 	last_uploaded_revision = world_revision
 	upload_time_ms = float(Time.get_ticks_usec() - start_usec) / 1000.0
+
+
+func update_render_texture() -> void:
+	texture.update(image)
 
 
 func update_shader_parameters() -> void:

@@ -106,6 +106,13 @@ application policy is unchanged. The [dated investigation](../audits/2026-10-31-
 owns source identities, graphical observations, historical #283 qualifications,
 candidate gates and failures.
 
+**Experimental E:** the explicit diagnostic subclass exempts only a verified
+complete current-generation/channel baseline from overflow accounting. Its dirty
+suffix retains the original budgets; preflight invokes existing full recovery
+before an append can exceed one baseline plus that budget. No baseline drop,
+rebase, implicit ACK or default policy change is selected. Legacy complete-frame
+cache retention and exact full-plus-dirty reconstruction are tested separately.
+
 Godot `Time.get_ticks_usec()` is common to these two Godot threads. Publication
 visibility is bracketed by the snapshot's `published_usec` and owner-method
 return; it is not timestamped atomically at the pointer exchange. Native adapter

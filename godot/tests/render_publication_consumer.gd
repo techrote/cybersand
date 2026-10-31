@@ -39,6 +39,11 @@ func finish_texture_upload(revision: int, start: int) -> void:
 	super.finish_texture_upload(revision, start)
 	trace.record("texture_success", _render_identity)
 
+func update_render_texture() -> void:
+	trace.record("texture_update_begin", _render_identity)
+	super.update_render_texture()
+	trace.record("texture_update_end", _render_identity)
+
 func reject_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 	var event := _render_identity.duplicate()
 	event["reason"] = last_render_patch_validation_error

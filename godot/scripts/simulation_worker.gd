@@ -1924,15 +1924,10 @@ func _publish_snapshot(
 				force_render_full_refresh
 			)
 			_append_native_render_packet(render_packet)
-			if (
-				_pending_render_patch_cells.size()
-				> CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * 2
-				or _pending_render_patch_rectangles.size()
-				> MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE
-			):
+			if _pending_render_exceeds_budget():
 				_append_native_render_packet(_take_native_render_snapshot(true))
 			if _pending_render_full_refresh:
-				_snapshot_cells = _pending_render_patch_cells.duplicate()
+				_retain_full_render_cells()
 		else:
 			_snapshot_cells = PackedByteArray(_world.get_cells())
 			_fallback_render_snapshot_serial += 1
@@ -2218,6 +2213,15 @@ func _publish_failure_snapshot() -> void:
 func _take_native_render_snapshot(force_full: bool) -> Dictionary:
 	# A value-only seam for bounded diagnostic subclasses; ordinary policy is unchanged.
 	return _world.take_render_snapshot(force_full)
+
+
+func _pending_render_exceeds_budget() -> bool:
+	return (_pending_render_patch_cells.size() > CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * 2
+		or _pending_render_patch_rectangles.size() > MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE)
+
+
+func _retain_full_render_cells() -> void:
+	_snapshot_cells = _pending_render_patch_cells.duplicate()
 
 
 func _observe_render_acknowledgement(_serial: int) -> void:

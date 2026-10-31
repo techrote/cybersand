@@ -1,6 +1,7 @@
 """Fresh-process rendered publication investigation; retain failures and raw traces."""
 from __future__ import annotations
 import argparse
+from collections import Counter
 import hashlib
 import json
 import math
@@ -33,11 +34,26 @@ def reduce_trace(data):
     if data["dropped"] or data["failures"]:
         raise ValueError("failed/truncated graphical trace")
     counts = data["counts"]
-    for kind, count in counts.items():
-        if sum(e["event"] == kind for e in events) != count:
-            raise ValueError("event/counter mismatch: " + kind)
+    if Counter(e["event"] for e in events) != counts:
+        raise ValueError("event/counter mismatch")
+    if "candidate" in data:
+        if not data["final_cpu_native_equal"] or not data["final_texture_image_equal"]:
+            raise ValueError("final CPU/native/texture parity failed")
+        expected_script="res://tests/render_publication_e.gd" if data["candidate"]=="E" else "res://tests/render_publication_worker.gd"
+        if data.get("owner_script",expected_script) != expected_script: raise ValueError("wrong candidate owner")
+        if data["candidate"]=="E" and data["pending_high_water"] > 4194304:
+            raise ValueError("candidate pending bound exceeded")
     def select(kind): return [e for e in events if e["event"] == kind]
     calls = select("native_end")
+    begins = select("native_begin")
+    call_keys=[(e["refresh"],e["call"]) for e in calls]
+    if (len(call_keys)!=len(set(call_keys)) or sorted(call_keys)!=sorted((e["refresh"],e["call"]) for e in begins)
+            or any(e["call"] not in [1,2] or e["duration_usec"]<0 or e["end_usec"]-e["start_usec"]!=e["duration_usec"] for e in calls)):
+        raise ValueError("invalid native call pairing or duration")
+    owner_ends=select("owner_end")
+    for refresh in {e["refresh"] for e in calls}:
+        if sum(e["refresh"]==refresh for e in owner_ends)!=1:
+            raise ValueError("missing/duplicate owner publication")
     retry_causes = []
     for retry in [e for e in calls if e["call"] == 2]:
         first = [e for e in events if e["event"] == "dirty_onto_full" and e["refresh"] == retry["refresh"]]
@@ -49,6 +65,7 @@ def reduce_trace(data):
     durations = {}
     for begin, end, name in [("validation_begin", "validation_end", "validation_usec"),
             ("patch_begin", "patch_end", "patch_including_validation_usec"),
+            ("texture_update_begin", "texture_update_end", "texture_update_call_usec"),
             ("texture_begin", "texture_success", "texture_submission_usec")]:
         starts = select(begin)
         ends = select(end)
@@ -56,6 +73,9 @@ def reduce_trace(data):
         if any(a.get("serial") != b.get("serial") or a.get("generation") != b.get("generation") for a,b in zip(starts,ends)):
             raise ValueError("consumer identity changed inside operation")
         durations[name] = percentiles([b["usec"]-a["usec"] for a,b in zip(starts, ends)])
+    # CPU image work excludes the nested complete-payload validation interval.
+    durations["cpu_patch_usec"] = percentiles([(b["usec"]-a["usec"])-(d["usec"]-c["usec"])
+        for a,b,c,d in zip(select("patch_begin"),select("patch_end"),select("validation_begin"),select("validation_end"))])
     clears = select("ack_clear")
     ack_latency = []
     for clear in clears:
@@ -139,7 +159,10 @@ def main():
             if receipt.exists():
                 row["raw_sha256"]=digest(receipt)
                 row["png_sha256"]=digest(str(receipt)+".png")
-                try: row["summary"]=reduce_trace(json.loads(receipt.read_text()))
+                try:
+                    raw=json.loads(receipt.read_text())
+                    if raw["arm"]!=arm or raw["candidate"]!=a.candidate: raise ValueError("launched arm/candidate mismatch")
+                    row["summary"]=reduce_trace(raw)
                 except (ValueError,KeyError) as e: row["reader_failure"]=str(e)
             results.append(row)
             (a.output/"processes.json").write_text(json.dumps(results,indent=2))
