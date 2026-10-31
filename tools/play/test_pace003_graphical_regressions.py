@@ -121,6 +121,26 @@ class GraphicalEvidenceTests(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 graphical.check_pixels("test_material_presentation_render", root)
 
+    def test_offline_readback_allows_only_known_empty_pixel_directories(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for name, _marker, _assertions in graphical.CASES:
+                missing = root / name
+                with self.assertRaises(RuntimeError):
+                    graphical.check_pixels(name, missing)
+                if name in ("test_material_presentation_render", "test_material_vapour_pipeline_render"):
+                    with self.assertRaises(RuntimeError):
+                        graphical.check_pixels(name, missing, offline_archive_readback=True)
+                else:
+                    self.assertEqual(graphical.check_pixels(name, missing, offline_archive_readback=True), {})
+                self.assertFalse(missing.exists())
+            with self.assertRaises(RuntimeError):
+                graphical.check_pixels("unknown-fixture", root / "unknown", offline_archive_readback=True)
+            wrong_type = root / "regular-file"
+            wrong_type.write_bytes(b"")
+            with self.assertRaises(RuntimeError):
+                graphical.check_pixels(graphical.CASES[0][0], wrong_type, offline_archive_readback=True)
+
     def test_windows_readback_does_not_depend_on_current_os_or_checkout(self):
         name = graphical.CASES[0][0]
         command = graphical.runner.case_command("D:\\godot\\Godot.exe", graphical.case_for(name, "opengl3_angle"), "win32")

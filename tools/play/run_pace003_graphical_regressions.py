@@ -149,7 +149,7 @@ def check_process(process: dict, raw: str, name: str, driver: str,
             "Original engine log lacks an actual OpenGL Compatibility device")
 
 
-def check_cache(row: dict, directory: Path, platform_name: str) -> None:
+def check_cache(row: dict, directory: Path, platform_name: str, *, offline_archive_readback: bool = False) -> None:
     # Existing fixtures do not expose OS.get_user_data_dir; do not fabricate an
     # engine-observed path. The retained process environment and inventories
     # establish private directories, and this limitation remains in the report.
@@ -165,19 +165,27 @@ def check_cache(row: dict, directory: Path, platform_name: str) -> None:
     root = directory / "cache" / name
     require(campaign.load_json((root / "receipt.json").read_text(encoding="utf-8")) == receipt,
             "Cache receipt differs from retained original")
-    require(campaign.cache_inventory(root / "generated-project-cache") == receipt["generated_project"],
-            "Generated project cache differs")
+    campaign.verify_retained_cache_inventory(root / "generated-project-cache", receipt["generated_project"],
+        allow_missing_empty_cache_directories=offline_archive_readback)
     for key, folder in keys:
-        require(row["environment"].get(key) == receipt["private_paths"].get(key)
-                and campaign.cache_inventory(root / folder) == receipt["generated_private"][key],
-                "Private environment/cache differs")
+        require(row["environment"].get(key) == receipt["private_paths"].get(key), "Private environment differs")
+        campaign.verify_retained_cache_inventory(root / folder, receipt["generated_private"][key],
+            allow_missing_empty_cache_directories=offline_archive_readback)
 
 
-def check_pixels(name: str, directory: Path) -> dict:
+def check_pixels(name: str, directory: Path, *, offline_archive_readback: bool = False) -> dict:
+    require(name in {case[0] for case in CASES}, "Unknown graphical pixel fixture")
     expected = ("material-id-slots-000-131.png",) if name == "test_material_presentation_render" else (
         "vapour-seeded.exr", "vapour-decayed.exr", "vapour-reset.exr"
     ) if name == "test_material_vapour_pipeline_render" else ()
-    files = inventory(directory)
+    # upload-artifact omits empty directories. Permit that absence only during
+    # explicit offline readback of a known fixture with no expected pixel files.
+    # Actual execution keeps requiring its created directory, and a missing
+    # material PNG or vapour EXR can never take this path. Do not create files.
+    if offline_archive_readback and expected == () and not directory.exists() and not directory.is_symlink():
+        files = {}
+    else:
+        files = inventory(directory)
     require(set(files) == set(expected), "Missing/unexpected retained pixel evidence: " + name)
     for filename in expected:
         data = (directory / filename).read_bytes()
@@ -189,7 +197,8 @@ def check_pixels(name: str, directory: Path) -> dict:
     return files
 
 
-def verify_directory(directory: Path, preceding_campaign: Path | None = None) -> dict:
+def verify_directory(directory: Path, preceding_campaign: Path | None = None, *,
+                     offline_archive_readback: bool = False) -> dict:
     report = campaign.load_json((directory / "regressions.json").read_text(encoding="utf-8"))
     require(report.get("schema") == SCHEMA and report.get("status") == "passed"
             and report.get("errors") == [] and report.get("retries") == 0
@@ -211,8 +220,9 @@ def verify_directory(directory: Path, preceding_campaign: Path | None = None) ->
         check_process(row["process"], raw, row["name"], report["rendering_driver"],
                       report["platform"], report["checkout_root"])
         require(check_result(row["name"], raw) == row["result"], "Result differs from original marker")
-        check_cache(row, directory, report["platform"])
-        require(check_pixels(row["name"], directory / "pixels" / row["name"]) == row["pixels"],
+        check_cache(row, directory, report["platform"], offline_archive_readback=offline_archive_readback)
+        require(check_pixels(row["name"], directory / "pixels" / row["name"],
+                             offline_archive_readback=offline_archive_readback) == row["pixels"],
                 "Original pixel evidence differs")
     require(inventory(directory / "preceding-campaign") == report["preceding_campaign_receipt_files"],
             "Retained preceding-campaign manifest changed")

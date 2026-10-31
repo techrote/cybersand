@@ -125,6 +125,59 @@ class MonitorTests(unittest.TestCase):
         self.assertEqual(result[:2], (True, "progress_watchdog"))
         self.assertIn("diagnostic fixture unavailable", result[2])
 
+    def test_completed_child_first_observed_after_deadline_cannot_pass(self):
+        child = mock.Mock(pid=4242)
+        child.poll.return_value = 0
+        capture = mock.Mock()
+        observed = []
+        with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()) as output:
+            path = Path(directory)
+            with mock.patch.object(monitor.time, "perf_counter", return_value=10.31):
+                result = monitor.wait(child, "unrelated_case", 0.3, 10.0, path / "child.log",
+                                      path / "diagnostics", capture_factory=capture,
+                                      on_timeout=observed.append)
+        self.assertEqual(result, (True, "case_deadline", None))
+        self.assertEqual(observed, [10.31])
+        capture.assert_not_called()
+        child.wait.assert_not_called()
+        self.assertIn("exact exit time unproven", output.getvalue())
+
+    def test_completed_child_observed_within_deadline_still_passes(self):
+        for observed_at in (10.29, 10.3):
+            with self.subTest(observed_at=observed_at), tempfile.TemporaryDirectory() as directory:
+                child = mock.Mock(pid=4242)
+                child.poll.return_value = 0
+                capture, on_timeout = mock.Mock(), mock.Mock()
+                path = Path(directory)
+                with mock.patch.object(monitor.time, "perf_counter", return_value=observed_at):
+                    result = monitor.wait(child, "unrelated_case", 0.3, 10.0, path / "child.log",
+                                          path / "diagnostics", capture_factory=capture,
+                                          on_timeout=on_timeout)
+                self.assertEqual(result, (False, None, None))
+                capture.assert_not_called()
+                on_timeout.assert_not_called()
+                child.wait.assert_not_called()
+
+    def test_in_bound_completion_is_not_retimed_after_capture_cleanup(self):
+        child = mock.Mock(pid=4242)
+        child.poll.side_effect = [None, 0]
+        child.wait.return_value = 0
+        cleanup_observations = []
+        capture = mock.Mock(error=None)
+        capture.close.side_effect = lambda _reason: cleanup_observations.append(monitor.time.perf_counter())
+        factory, on_timeout = mock.Mock(return_value=capture), mock.Mock()
+        with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
+            path = Path(directory)
+            with mock.patch.object(monitor.time, "perf_counter", side_effect=[10.25, 10.29, 10.4]):
+                result = monitor.wait(child, "unrelated_case", 0.3, 10.0, path / "child.log",
+                                      path / "diagnostics", capture_factory=factory,
+                                      on_timeout=on_timeout)
+        self.assertEqual(result, (False, None, None))
+        self.assertEqual(cleanup_observations, [10.4])
+        factory.assert_called_once()
+        capture.close.assert_called_once_with(None)
+        on_timeout.assert_not_called()
+
     def test_hung_diagnostic_process_cannot_hold_progress_watchdog(self):
         with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
             output = Path(directory)

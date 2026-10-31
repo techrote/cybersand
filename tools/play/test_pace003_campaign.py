@@ -496,6 +496,59 @@ class ReadbackTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "retained inventory"):
                 campaign.verify_cold_cache(row, "Linux", directory)
 
+    def test_offline_artifact_readback_allows_only_omitted_empty_generated_directories(self):
+        with tempfile.TemporaryDirectory() as temp:
+            directory = Path(temp)
+            report = retained_graphical_campaign(directory)
+            originals = {path: path.read_bytes() for path in directory.rglob("*") if path.is_file()}
+            missing = []
+            for row in report["rows"]:
+                for _key, folder in campaign.PRIVATE_CACHE_DIRECTORIES["Linux"]:
+                    path = directory / "cache" / row["process"]["name"] / folder
+                    path.rmdir()  # Model upload-artifact omitting an empty directory.
+                    missing.append(path)
+            with self.assertRaisesRegex(RuntimeError, "retained inventory"):
+                campaign.verify_directory(directory)
+            self.assertEqual(campaign.verify_directory(directory,
+                offline_archive_readback=True), report)
+            self.assertTrue(all(not path.exists() for path in missing))
+            self.assertEqual({path: path.read_bytes() for path in directory.rglob("*") if path.is_file()}, originals)
+
+    def test_offline_empty_directory_option_rejects_missing_bytes_extras_and_warm_launch(self):
+        with tempfile.TemporaryDirectory() as temp:
+            directory = Path(temp)
+            report = retained_graphical_campaign(directory)
+            row = report["rows"][0]
+            root = directory / "cache" / row["process"]["name"]
+            data = root / "xdg-data"
+            cached = data / "shader.bin"
+            cached.write_bytes(b"original generated shader bytes")
+            row["cold_cache"]["generated_private"]["XDG_DATA_HOME"] = campaign.cache_inventory(data)
+            campaign.runner.write_json(root / "receipt.json", row["cold_cache"])
+            cached.unlink()
+            data.rmdir()
+            with self.assertRaisesRegex(RuntimeError, "retained inventory"):
+                campaign.verify_cold_cache(row, "Linux", directory,
+                    allow_missing_empty_cache_directories=True)
+            data.mkdir()
+            cached.write_bytes(b"original generated shader bytes")
+            extra = root / "xdg-cache/unrecorded.bin"
+            extra.write_bytes(b"unrecorded")
+            with self.assertRaisesRegex(RuntimeError, "retained inventory"):
+                campaign.verify_cold_cache(row, "Linux", directory,
+                    allow_missing_empty_cache_directories=True)
+            extra.unlink()
+            changed = copy.deepcopy(row)
+            changed["cold_cache"]["private_at_launch"]["XDG_CACHE_HOME"]["files"] = {"warm.bin": {}}
+            with self.assertRaisesRegex(RuntimeError, "not empty"):
+                campaign.verify_cold_cache(changed, "Linux", directory,
+                    allow_missing_empty_cache_directories=True)
+            # A missing retained receipt is never replaced by an inventory option.
+            (root / "receipt.json").unlink()
+            with self.assertRaises(FileNotFoundError):
+                campaign.verify_cold_cache(row, "Linux", directory,
+                    allow_missing_empty_cache_directories=True)
+
     def test_new_play_tools_and_untracked_shader_includes_remain_source_inputs(self):
         with tempfile.TemporaryDirectory() as temp:
             root = Path(temp)

@@ -136,6 +136,19 @@ def cache_inventory(directory: Path) -> dict:
     return {"present": True, "files": files}
 
 
+def verify_retained_cache_inventory(directory: Path, expected: dict, *,
+                                    allow_missing_empty_cache_directories: bool = False) -> None:
+    actual = cache_inventory(directory)
+    # upload-artifact ZIPs preserve files, but may omit empty directories.
+    # This explicit OFFLINE readback option applies only to the retained
+    # post-process inventory. It cannot weaken launch/path/receipt checks,
+    # forgive any missing recorded byte, or create evidence on disk.
+    omitted_empty = (actual == {"present": False, "files": {}}
+                     and expected == {"present": True, "files": {}})
+    require(actual == expected or (allow_missing_empty_cache_directories and omitted_empty),
+            "Generated cache differs from retained inventory")
+
+
 @contextlib.contextmanager
 def cold_cache_environment(output: Path, name: str, environment: dict):
     """Isolate each new process without deleting the caller's existing cache.
@@ -198,7 +211,8 @@ def cold_cache_environment(output: Path, name: str, environment: dict):
         require(receipt["project_restored"], "Pre-existing project shader cache was not restored")
 
 
-def verify_cold_cache(row: dict, platform_name: str, directory: Path) -> None:
+def verify_cold_cache(row: dict, platform_name: str, directory: Path, *,
+                      allow_missing_empty_cache_directories: bool = False) -> None:
     receipt = row.get("cold_cache", {})
     name = row["process"]["name"]
     require(type(name) is str and name not in ("", ".", "..") and "/" not in name and "\\" not in name,
@@ -250,11 +264,11 @@ def verify_cold_cache(row: dict, platform_name: str, directory: Path) -> None:
     root = directory / "cache" / name
     require(load_json((root / "receipt.json").read_text(encoding="utf-8")) == receipt,
             "Cold-cache receipt differs from retained original")
-    require(cache_inventory(root / "generated-project-cache") == receipt.get("generated_project"),
-            "Generated project cache differs from retained inventory")
+    verify_retained_cache_inventory(root / "generated-project-cache", receipt.get("generated_project"),
+        allow_missing_empty_cache_directories=allow_missing_empty_cache_directories)
     for key, folder in expected_directories:
-        require(cache_inventory(root / folder) == receipt["generated_private"][key],
-                "Generated private cache differs from retained inventory")
+        verify_retained_cache_inventory(root / folder, receipt["generated_private"][key],
+            allow_missing_empty_cache_directories=allow_missing_empty_cache_directories)
 
 
 def verify_setup(value: dict, graphical: bool) -> None:
@@ -592,7 +606,7 @@ def runtime_identity() -> dict:
     return result
 
 
-def verify_directory(directory: Path) -> dict:
+def verify_directory(directory: Path, *, offline_archive_readback: bool = False) -> dict:
     report = load_json((directory / "campaign.json").read_text(encoding="utf-8"))
     require(report.get("schema") == SCHEMA and report.get("status") == "passed"
             and report.get("errors") == [] and report.get("retries") == 0, "Campaign did not pass")
@@ -618,7 +632,8 @@ def verify_directory(directory: Path) -> dict:
                 and row["requested_workers"] == ([1, 0] if repeat % 2 == 0 else [0, 1])[order]
                 and row.get("attempt") == 1 and row.get("errors") == []
                 and row["process"]["timeout_seconds"] == 180, "Invalid row order or timeout")
-        verify_cold_cache(row, report["platform"], directory)
+        verify_cold_cache(row, report["platform"], directory,
+            allow_missing_empty_cache_directories=offline_archive_readback)
         expected = {**report["config"], **row, "source_sha": report["source_sha"], "platform": report["platform"],
                     "execution_inputs": report["execution_inputs"]}
         verify_row(row["result"], expected)

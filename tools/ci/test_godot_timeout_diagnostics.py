@@ -4,9 +4,12 @@ from contextlib import redirect_stdout
 import io
 import json
 from pathlib import Path
+import os
+import signal
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 from unittest import mock
 
@@ -82,6 +85,89 @@ class DiagnosticsTests(unittest.TestCase):
             self.assertLess(time.perf_counter() - began, 8)
             self.assertIn("TimeoutExpired", result["error"])
             self.assertIn("before native timeout", (output / "stuck.txt").read_text())
+
+    def test_late_exited_child_remains_failed_without_live_pid_capture(self):
+        child = mock.Mock(pid=4242, returncode=0)
+        child.poll.return_value = 0
+
+        def late_completion(_child, _name, timeout, started, *_paths, **options):
+            options["on_timeout"](started + timeout + 0.01)
+            return True, "case_deadline", None
+
+        with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
+            output = Path(directory)
+            with (mock.patch.object(runner.subprocess, "Popen", return_value=child),
+                  mock.patch.object(monitor, "wait", side_effect=late_completion),
+                  mock.patch.object(runner, "_capture_timeout_snapshot") as capture,
+                  mock.patch.object(runner.os, "killpg", create=True) as kill_group,
+                  mock.patch.object(runner.time, "perf_counter", side_effect=[10.0, 10.32])):
+                result, failed = runner.run_case("unused", runner.Case("late_exit", (), 0.3, 0), output, "case")
+            capture.assert_not_called()
+            if sys.platform != "win32":
+                kill_group.assert_called_once_with(4242, signal.SIGKILL)
+            child.kill.assert_not_called()
+            child.wait.assert_not_called()
+            self.assertTrue(failed)
+            self.assertEqual(result["status"], "timeout")
+            self.assertEqual(result["timeout_kind"], "case_deadline")
+            self.assertIsNone(result["returncode"])
+            self.assertEqual(result["timeout_observed_returncode"], 0)
+            self.assertIn("already exited", result["timeout_diagnostic_skipped"])
+            self.assertIn("SNAPSHOT NOT ATTEMPTED", (output / result["timeout_diagnostics"]).read_text())
+
+    def test_termination_never_targets_an_already_exited_windows_pid(self):
+        child = mock.Mock(pid=4242, returncode=0)
+        child.poll.return_value = 0
+        with (mock.patch.object(runner.sys, "platform", "win32"),
+              mock.patch.object(runner.subprocess, "Popen") as launch):
+            runner._kill_process_tree(child)
+        launch.assert_not_called()
+        child.kill.assert_not_called()
+        child.wait.assert_not_called()
+
+    @unittest.skipUnless(sys.platform.startswith("linux"), "Linux process-group ownership regression")
+    def test_owned_group_cleanup_survives_reaped_session_leader(self):
+        with tempfile.TemporaryDirectory() as directory:
+            child_file = Path(directory) / "child-pid.txt"
+            program = ("import subprocess,sys,pathlib;"
+                       "p=subprocess.Popen([sys.executable,'-c','import time;time.sleep(30)']);"
+                       "pathlib.Path(sys.argv[1]).write_text(str(p.pid))")
+            leader = subprocess.Popen([sys.executable, "-c", program, str(child_file)], start_new_session=True)
+            owned_pgid = leader.pid
+            child_pid = None
+            try:
+                leader.wait(timeout=5)
+                self.assertEqual(leader.returncode, 0)
+                child_pid = int(child_file.read_text())
+                self.assertEqual(os.getpgid(child_pid), owned_pgid)
+                with mock.patch.object(runner.os, "getpgid", side_effect=AssertionError("retired PID lookup")):
+                    runner._kill_process_tree(leader, owned_pgid=owned_pgid)
+                deadline = time.monotonic() + 2
+                alive = True
+                while time.monotonic() < deadline:
+                    status = Path(f"/proc/{child_pid}/stat")
+                    if not status.exists():
+                        alive = False
+                        break
+                    # A zombie has stopped executing and awaits its new parent's reap.
+                    try:
+                        child_state = status.read_text().rsplit(")", 1)[1].split()[0]
+                    except FileNotFoundError:
+                        alive = False
+                        break
+                    if child_state == "Z":
+                        alive = False
+                        break
+                    time.sleep(0.01)
+                self.assertFalse(alive, "owned descendant survived session-leader cleanup")
+            finally:
+                try:
+                    os.killpg(owned_pgid, signal.SIGKILL)
+                except ProcessLookupError:
+                    pass
+                if leader.poll() is None:
+                    leader.kill()
+                leader.wait(timeout=5)
 
     def test_native_command_output_is_bounded(self):
         with tempfile.TemporaryDirectory() as directory:

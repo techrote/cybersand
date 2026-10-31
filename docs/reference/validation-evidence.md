@@ -4,11 +4,161 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-31
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md, ../audits/2026-10-25-lcb002-pressure-variants.md]
 ---
 
 # Validation evidence ledger
+
+## PLAY-PACE-003 hosted checkpoint — 2026-10-30
+
+The [cold-start audit](../audits/2026-10-30-play-pace003-cold-startup.md) binds
+PR #310 head `62d3f6cf12340a2124773695b98915dda5f16907` / tree
+`9d7a2727a4ca33487a13815da673e5a704509649` to its first-attempt results.
+Ordinary CI checkout `b6a1f4cf7d525a7323bfe7886e1678aaa697882a` has that exact
+tree; the PACE workflow explicitly checks out qualification head 62d.
+
+| Gate | Original run | Result |
+|---|---|---|
+| Docs/provenance | [41136597980](https://github.com/techrote/cybersand/actions/runs/41136597980) | PASS |
+| Native | [41136597982](https://github.com/techrote/cybersand/actions/runs/41136597982) | PASS, actual 164-case TSan/normal/ASan+UBSan and all later gates |
+| Ordinary Godot | [41136597999](https://github.com/techrote/cybersand/actions/runs/41136597999) | PASS, 220 Linux/208 Windows applicable cases |
+| Main PACE003 and graphical fixtures | [41136597969](https://github.com/techrote/cybersand/actions/runs/41136597969) | Linux PASS; Windows FAIL; aggregate FAIL |
+
+The historical #308 TSan exit 124 remains retained. Native code, Makefile and
+the required Native workflow did not change; the new pass does not diagnose the
+earlier timeout. Ordinary Windows Godot is headless and cannot replace Windows
+graphical qualification. Both first Windows Main rows timed out at 180s, while
+Linux acknowledged within 30s and retained actual terrain/actor PNGs and joins.
+The audit retains original artifact IDs, every ZIP/hash and cancelled/skipped
+draft outcomes. The complete ordinary-gate originals manifest is SHA-256
+`1db5477294ea05e68eee7447186a912212bcf37abb9409e0de1e661da43167c7`.
+
+The pending successor implementation includes the reviewed explicit offline
+empty-directory accommodation with candidate-preview validation; it has not
+been deployed or accepted here. Default verification remains strict, original
+artifacts are unmodified, and Windows failures are still rejected. Diagnostic
+PR #312 remains separate and nonqualifying: phase 1 identifies actual palette
+compiler inputs but all five cold variants time out, with source-copy omissions
+retained; phase 2's final receipt also confirms all five first cold cases time
+out with no atlas
+or completed candidate. No successor tree inherits 62d gates, and
+#309/#269/#270/#263 closure or #308 promotion is not established.
+
+The prepared shared-monitor successor closes a separate late-exit false-success
+seam: zero-exit completion first observed after the unchanged case cap is
+conservatively failed; in-bound/exact-bound observations retain their outcome
+before diagnostic cleanup. Eleven normal/optimized monitor tests pass, and the
+same new adverse case fails against the original monitor. Receipt SHA-256 is
+`592cedf0ceeafe860195fbe52b4e2610bbcdd5b3af740f53e5e9a2af3b2f5c77`.
+Outer-runner guards avoid dead-leader live capture and Windows dead-wrapper
+`taskkill`, while preserving POSIX descendant cleanup through groups captured
+at launch. Ten local Linux timeout tests pass normally/optimized, with explicit
+Windows skip of the Linux-only group fixture. Final execution receipt is
+`63c35fe1a5a3b3b61666965eee212932bfe02d052617c5808ae1e82bf5edccfb`;
+independent final review has no actionable findings. These are
+prepared source/test corrections awaiting resulting-head gates, not new engine
+execution or retroactive acceptance of 62d.
+
+Phase-3 diagnostic source `512dbb9e139bc18c6b034f803b95b43a08d888da` / tree
+`4fb6655e53eac4942402b38dac6754d7c2d07725` has owner-account COMMENT review
+[5719765260](https://github.com/techrote/cybersand/pull/312#pullrequestreview-5719765260)
+and 96 exact local Linux atlas comparisons of three frozen single-exit shaders.
+These comparisons use the 62d project and retained original references. Separate
+actual Main previews use 62d plus five recorded local paths: two candidate
+pairs have intact final custody, while the catalogue pair's terminal/report
+mismatch remains rejected; all six raw rows separately verify. The local
+previews do not directly assert pause/recovery, physical input/focus or
+per-input displacement, and no production shader is selected. Hosted Linux
+artifact 13021010697 at source 512 verifies a separate original/hoist diagnostic,
+not the single-exit candidates or Main. Windows 41144657058 is now terminal
+FAIL: all four first cold rows reach the original 180s limit, each with 43
+successful compiler calls and open palette call 44. Artifact 13020549731 is
+2,860,062 bytes / SHA-256
+`e419f33c5a5e85a86a0209e7b847ed5e6a395100564472fc71aafc11c72443b4`; job
+124366820371's original decoded log is 52,637 bytes /
+`9325478d7fd5c84fe4d6398b3a49940e93d38e25e4a69585443697d35dd76e47`.
+The original HLSL proves the actual 50/51/3/19→1 helper returns and reduced
+unified flair call sites reached FXC, but there is no palette return, fallback,
+bytecode, atlas or eligible warm run. All 791 inputs and ten retained source
+copies verify; earlier 3b/f20 workflow-copy omissions remain negative. The
+independent causal receipt is
+`2da984a4c52580cc7a1b0021ceb5e614f3cf24104881a1e8dd9105e5538f5383`.
+
+Generic Windows original/hoist job 124366820691 in 41144657056 also fails both
+cold rows. Its original artifact 13020508845 is 830,545 bytes / SHA-256
+`e4cb52741ddad0a6943bcf2e03e6b1dcade1b7b80d53bbfda3620d6f6712097d`; decoded
+log is 42,966 bytes /
+`f08a82a0416089039de6942c9f426bacc726cd7642838af7c855838ed6d296e1`. This
+generic diagnostic does not execute the single-exit candidates. Its Linux pass
+does not change the failed aggregate. The preceding CI queue remains separate
+from these original measured process failures.
+
+The 49b-through-f20 and source-512 ledgers together retain 30 original attempt-1
+runs, 92 jobs, 17 executed-job logs and 16 ZIPs. Their SHA-256 identities are
+`18c037e1ce20bdb805db2ff17b661aa99911c9b032f4f947b411a1e7e9f20da1` and
+`b6c7ac4b493f5ff2ca1c0fd218424903bac74f61b0af5bf95421679b5846ae1f`.
+Seventy-five skipped jobs are not passes. Source-512 Docs 41144657170 succeeds
+at a proven equal merge tree, with its dependency/runtime-provenance step
+skipped; Native 41144657184, Godot 41144657289 and PACE 41144657239 remain
+draft-skipped. The audit preserves every source-specific conclusion, cancelled
+run, first failure, original log/artifact identity and local custody anomaly.
+
+**Terminal on 2026-10-31:** diagnostic head
+`5de468478c37c8ae9e2d446ba348d4e3ecf54bd6`, tree
+`8957ae44174226758069a534f8a4c03edce79e51`, parent 512, fails compiler-only
+[41149030607](https://github.com/techrote/cybersand/actions/runs/41149030607).
+It compares the exact original HLSL/arguments at flags `0xc000`/`0xc004` in two
+fresh 180s processes, with authentic System32 compiler identity and validation
+enabled. Immediate API-return evidence is separate from blob/disassembly
+completion. Both tiny preflights succeed; both full-HLSL cases time out without
+an API-return/final record or bytecode. Original artifact 13022287635 is
+3,026,839 bytes / SHA-256
+`8cb709913ebc99b425dbc76888e6c5b0750e7e2ecc5044908b624aa4870dbd3d`; final
+report SHA-256 is
+`bbc8385cdbebf857a9ef765a74d0f5108183f9b43abfca937c4e894e66093194`.
+Independent custody receipt
+`defad456c71c3a07a233600b34848994d365ab9379b47a7934674b7597eafd07`
+verifies 64 original files, nested input evidence, six raw-exact source copies,
+preflights and actual stage records. Matching compiler PID/TID minidumps near
+150s and total CPU snapshots at timeout remain separately timed observations.
+Its `experiment_completed` means the planned rows were recorded; their statuses
+and the workflow remain failed. No Godot/device, production renderer setting or
+graphical acceptance cache changed. The bounded CPU-heavy failure reproduces
+without engine/native ownership, but skip optimization did not make the input
+complete. This does not identify an O2-only/internal-pass defect, establish a
+Windows correction or prove fundamental renderer incapability. The audit owns
+the original CPU/time boundaries and bounded owner/upstream continuation.
+
+The [continuation proposal](../audits/2026-10-30-play-pace003-cold-startup.md#proposed-bounded-owner-decision-and-continuation)
+retains the Linux-validated hoist and asks the existing manual owner to register
+either exact-semantics palette-program decomposition or upstream compiler/runtime
+investigation; a changed engine requires an explicit authenticated pin and
+provenance scope before acceptance. Neither is implemented or qualified.
+Godot shader/presentation/apparatus/docs are the proposed code boundary;
+native/training stay excluded. Original cold Main, native-HDR/PNG/compositing,
+one-worker/Auto and all existing graphical/lifecycle gates remain required at
+the resulting head, with unchanged 30/180/240s limits and no hidden prewarming,
+hardware/provider/renderer-flag substitution or optional O0 expansion.
+
+The frozen-62d requirements review preserves five-rig, input admission/rearm,
+failed-World recovery, stale-epoch, join/leakage and graphical pixel coverage.
+Its precise continuation gaps are that PACE readback does not validate its
+existing `raw.input_tape`, and the measured route lacks a healthy same-owner
+pause/acknowledge/resume observation through automatic callbacks. Require that
+tape and a non-neutral admitted-command/completed-Rapier witness, then one
+post-window live pause/resume probe before claiming the requested direct
+responsiveness on a new head. Retain existing fixtures/bounds and physical-device
+limits; this does not erase UI003's manual pause, LIFE007's actual failure
+recovery or LIFE001's separate healthy Rapier pause/resume evidence.
+
+Read-only #311 reconciliation at 2026-10-30 23:50 UTC retains draft
+`3ed088cfa3d289dd18b6e40bf1d7e810a6785ea5` / tree
+`34dbadbc4ecfd1a9e832090f4d5f458d764eeff2`, based on b55ce690, as disjoint,
+non-required and owner-held DO NOT MERGE. Experimental 41139999997 success
+metadata has not been independently qualified from original logs/artifacts;
+its differing sanitizer bounds cannot replace mandatory Native results. No
+diagnostic or owner-held experiment promotes #308 or closes #309/#269/#270/#263.
 
 ## Qualified Water sequence2 publication — 2026-10-25
 

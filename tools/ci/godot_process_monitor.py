@@ -135,8 +135,21 @@ def wait(child: subprocess.Popen, name: str, timeout: float, started: float,
         captured = True
 
     try:
-        while child.poll() is None:
+        while True:
+            returncode = child.poll()
             now = time.perf_counter()
+            if returncode is not None:
+                # Polling may first observe completion after the hard deadline.
+                # The exit time is unknown: a zero exit cannot prove it was in
+                # bounds. Record the conservative timeout without trying to
+                # capture a process that has already exited. Capture cleanup
+                # below remains outside this completion observation.
+                if now > deadline:
+                    timed_out, timeout_kind = True, "case_deadline"
+                    notify_timeout(now)
+                    print(f"{name}: completion first observed at {now - started:.3f}s "
+                          f"after case limit {timeout}s; exact exit time unproven", flush=True)
+                break
             output = _output_tail(log_path) if watchdog.enabled else ""
             watchdog.observe(output, now)
             # Decide limits independently of any diagnostic process or debugger.
