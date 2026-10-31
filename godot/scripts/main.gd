@@ -1462,6 +1462,8 @@ func setup_player_environment_tuning() -> void:
 func toggle_player_environment_tuning() -> void:
 	if player_environment_panel == null:
 		return
+	if not player_environment_panel.visible:
+		cancel_playable_course_input()
 	player_environment_panel.visible = not player_environment_panel.visible
 
 
@@ -1526,6 +1528,7 @@ func _ready() -> void:
 	setup_depth_lab_launcher()
 	setup_actor_prototypes()
 	setup_playable_session_panel()
+	get_viewport().gui_focus_changed.connect(_on_playable_course_gui_focus_changed)
 	setup_flight_lab_launcher()
 	var tower_button: Button = Button.new()
 	tower_button.name = "ExperimentTowerLauncher"
@@ -1644,6 +1647,12 @@ func _ready() -> void:
 		blacksite_nine_presentation.launch.call_deferred()
 	elif feature.is_empty() and "--showcase" in OS.get_cmdline_user_args():
 		showcase_presentation.launch.call_deferred()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
+		# A loss/regain between physics callbacks must still retire old edges.
+		cancel_playable_course_input()
 
 
 func _exit_tree() -> void:
@@ -2853,6 +2862,7 @@ func toggle_actor_prototypes() -> void:
 	if actor_prototype_panel.visible:
 		actor_prototype_panel.hide()
 		return
+	cancel_playable_course_input()
 	_actor_input_rearm = true
 	var selected_model: StringName = StringName("physical/" + physical_trial_arm) if not physical_trial_arm.is_empty() else actor_model_selection
 	if physical_rig_id != &"": selected_model = StringName("rapier/" + str(physical_rig_id))
@@ -3161,6 +3171,12 @@ func _playable_course_controls_active() -> bool:
 
 func _playable_course_gamepad_active() -> bool:
 	return _playable_course_controls_active() and playable_session_options.controls == "keyboard_gamepad"
+
+
+func _on_playable_course_gui_focus_changed(control: Control) -> void:
+	if control != null:
+		# Context polling alone can miss a brief UI focus owner.
+		cancel_playable_course_input()
 
 
 func cancel_playable_course_input() -> void:

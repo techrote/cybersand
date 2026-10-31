@@ -147,11 +147,69 @@ The panel's explicit Play / resume button uses the same cancellation path.
 Resume refuses failed native work, pending reconstruction/reset or unready terrain.
 Controls outside the composed course retain their previous behavior.
 
+Ordinary actor-picker and environment-tuning opening, GUI focus acquisition and
+window-focus-loss notification also revoke course authority immediately. The
+visible MicroScenario Pause / resume button calls the central pause setter as
+an explicit UI action, including while its Seed field retains text focus. The
+keyboard/gamepad toggle remains context-gated. Every successful transition still
+requires neutral controls before fresh physical input can rearm.
+
 The [INPUT010 audit](../audits/2026-10-31-play-input010-pause-transitions.md)
 records an actual failing-before callback-gap reproduction, all-five-rig
 automatic Main/native/Rapier regressions, original local environmental failures
 and required exact-head hosted results. Injected focus/device enumeration is
 explicitly synthetic; this is not physical-controller or OS-focus acceptance.
+The [INPUT011 audit](../audits/2026-10-31-play-input011-authority-transitions.md)
+preserves the rapid modal/focus failure and the separately reproduced focused
+button refusal. Its v2 five-rig cases include both explicit-button success and
+keyboard-toggle refusal with retained text focus, actual later neutral/fresh
+Rapier steps, and the matched stale-input negative. The ordinary parent runner
+requires source-bound raw-evidence readback before accepting each rig case;
+synthetic window notifications do not establish real OS-focus delivery.
+
+## Live adversarial delivery qualification
+
+[LIFE010](../audits/2026-10-31-play-life010-live-delivery.md) supplements the
+accepted50-real-lifetimes-per-platform baseline with two sequential actual
+Main/native/Rapier lifetimes per rig. An inherited worker probe retains authentic
+immutable packets and deliberately delivers duplicates, delayed/out-of-order
+values and an old actor/World packet while the sole publisher stays live. A
+separate real-host serial-guard bypass must fail specifically for serial
+regression. No artificial production transport queue or second worker loop is
+introduced.
+
+Actual quick equipment presses reach the inherited worker's extracted-request
+boundary. A bounded test gate outside the production mutex allows Main and
+Rapier to continue. Valid-lease pause cancellation must prevent the native effect;
+fresh authority must recover. Positive native receipts require a subsequent
+completed Rapier step on the same run/epoch/control generation. These checks
+preserve actual body/terrain/render/lap fences through reconstruction and complete
+join. The common Windows/Linux runner independently reduces retained raw packets,
+process receipts and logs, including21 reason-specific adverse controls, before
+accepting each LIFE010 case. This is synthetic scheduling on the actual host,
+not physical-device, graphical or human-feel qualification. Exact resulting-head
+hosted execution remains in the PR ledger.
+
+## Eight-policy composed-session qualification
+
+[LIFE011](../audits/2026-10-31-play-life011-composed-solver-matrix.md) exercises
+all eight liquid-selector presets on every mechanical rig through ordinary
+shared-Main construction and retained-policy reset. Each rig requires eight
+builds, eight resets and 72 samples of completed nonneutral Rapier progress
+alongside native progress. The existing transaction must refuse eight Oil/pressure requests and
+three radius-two inertial requests while preserving the current World, actor,
+applied policy and receipt. Any inertial solver requires explicit radius three;
+this does not change the default geometry or solver assignments.
+
+Old-run and still-valid-lease old-control observations are separately refused;
+fresh observations recover. Retained publications remain immutable and all
+replaced graphs and the final worker retire. The ordinary Windows/Linux runner
+requires the independent policy/receipt verifier and its 37 reason-specific
+adverse controls under the same 15-second readback budget. The verifier and
+policy dependencies are bound to the declared source before and after reduction.
+This actual-host headless contract supplements the 50-lifetime baseline. Exact
+integrated hosted evidence, graphical output, physical devices and human play
+remain separate qualification requirements.
 
 ## PLAY composable existing-host route — accepted course and five-rig slice
 

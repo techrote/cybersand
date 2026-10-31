@@ -113,6 +113,7 @@ jobs:
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/test_ci_provider_policy.py
           python3 tools/ci/test_native_shards.py
+          python3 tools/ci/test_worldgen_build_inventory.py
 
   native-shards:
     name: Native family / ${{ matrix.suite }}
@@ -181,10 +182,16 @@ jobs:
                 timeout 15m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 ./build/tests_sanitized
                 ;;
               worldgen)
+                python3 tools/ci/check_worldgen_build_inventory.py --output build/native-parallel/worldgen/build-inventory.json
+                # Read-only host context; no compilation or test prebuild.
+                nproc
+                awk '/^MemTotal:/ { print }' /proc/meminfo
                 mkdir -p build/physics-cli-validation
                 timeout 5m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 make physics-characterisation-sanitize 2>&1 | tee build/physics-cli-validation/validation.log
-                timeout 5m make worldgen-test
-                timeout 10m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make worldgen-sanitize
+                # Two prerequisite jobs; the nine test recipe lines remain serial.
+                # time reports max-child RSS, not concurrent aggregate RSS.
+                timeout 5m /usr/bin/time -v make -j2 worldgen-test
+                timeout 10m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 /usr/bin/time -v make -j2 worldgen-sanitize
                 ;;
               soliding-normal)
                 timeout 5m make soliding-test
