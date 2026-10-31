@@ -201,3 +201,63 @@ preserves failed/incomplete originals and includes only its owned evidence
 directory when uploading hidden cache files. No local Windows execution,
 hosted success, physical-device behavior or merge acceptance is claimed by this
 registration.
+
+
+## Hosted HDR program-input readback failure and focused repair
+
+Original published source `8d38284340a6ad1263f9631b8f18f2a48519701e`
+ran all six actual cohorts in hosted run `41242820430`, attempt 1. Both native
+Linux and Windows ANGLE visual0 cohorts pass their own registered CPU oracle,
+but independent cross-backend image reduction finds a substantive incoming-
+finish difference: maximum error about 0.563 at blend one. Blend-zero outgoing
+base frames agree within 0.001961. This is a retained qualification failure;
+individual successful cohort jobs do not override the final paired-image gate.
+The original source, raw images, logs and artifacts remain unchanged.
+
+The fixture obtained the program Image with
+`create_program_texture().get_image()`. Godot 4.7's official
+[`TextureStorage::texture_2d_get`](https://github.com/godotengine/godot/blob/4.7-stable/drivers/gles3/storage/texture_storage.cpp)
+uses the original texture format for native OpenGL `glGetTexImage`. Its GLES
+path renders through an RGBA8 temporary framebuffer and reads unsigned bytes,
+then converts back to the declared Image format. Consequently an Image reported
+as RGBAH can already have clipped its encoded flair alpha values. The fixture's
+Sand powder and Water instructions use values greater than one; the observed
+Windows output instead resembles the clipped masonry instruction. A diagnostic
+Linux counterfactual that clips only those alpha instructions reproduces 2,300
+of 2,304 current pixels within the original 2/255 tolerance. The remaining four
+counterfactual pixels are not evidence that corrected canonical inputs pass or
+fail; they do not authorize a tolerance change.
+
+The focused correction at local source
+`b0eda514e3f1b393b68887b67d5b8990b9c8a720`, tree
+`04afd9b151c19b655747bfdc409814de0b256d8b`, extracts the existing CPU builder
+as `CyberMaterialAppearanceLut.create_program_image()`. The existing production
+`create_program_texture()` still uploads that same Image. The fixture now
+modifies the original CPU instructions before upload. Its LUT regression also
+checks the HDR format and exact powder/Water flair tags before testing the
+complete program inventory. This changes three files by 16 additions and three
+removals. Production shader source, source-bound selector, material inventory,
+all 24 captures, condition/blend/camera inputs, reducer and 2/255 threshold are
+unchanged.
+
+Focused local evidence is retained in
+`shader-qualification-evidence/hosted-41242820430/diagnostic-alpha-clamp/`.
+Canonical program bytes before/after are exactly 8,192 bytes with SHA-256
+`6ab9c18f2f2993eda7c552b86a28d639a70fb03e0ffdfb2ae070da5c587bb60d`.
+The corrected actual Linux oracle completes 1,216 assertions without a failure,
+and fresh independent reduction finds all 24 raw images and all 24 PNGs
+byte-identical to the original published-source Linux proof. The comprehensive
+LUT fixture naturally passes its 132 ID slots, 256 palette/program rows,
+50 flair classes, native catalogue controls and new HDR/tag checks.
+
+| Focused evidence | SHA-256 |
+|---|---|
+| `factory-fix-local-receipt.json` | `08e39946618df038aface80da8a099206454a28d42cbdf3ea307a4895df6e92c` |
+| `corrected-native-equivalence.json` | `aea0f271515319d3e81348b97a79be530fdbd472606b524d4a94bb00fae3ab5f` |
+| `corrected-run.log` | `31e4857ff4eb5aa0d5cfacfe046c49e65b5e0ca8f1b8ff5ac7503afb9a6f9a35` |
+| `material-lut-corrected.log` | `22a55066a6fa8809aab5e866d2f8d94853d2b89c5f23f2f35238ee1e2d1ca3f0` |
+
+These are focused diagnostic-checkout probes, not a substitute for the clean
+published-source campaign. Fresh actual Windows and Linux cohorts, their
+unchanged cross-backend gate and full relevant source-matched regression remain
+required after publication. No physical display or human acceptance follows.

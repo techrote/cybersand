@@ -49,11 +49,16 @@ func _run() -> void:
 		"expanded solid texture contrast is too small"
 	)
 
-	var programs: Image = CyberMaterialAppearanceLut.create_program_texture().get_image()
+	var programs: Image = CyberMaterialAppearanceLut.create_program_image()
 	_expect(
 		programs.get_width() == 4 and programs.get_height() == 256,
 		"appearance program dimensions changed"
 	)
+	_expect(programs.get_format() == Image.FORMAT_RGBAH,
+		"CPU appearance instructions lost their HDR storage")
+	_expect(programs.get_pixel(3, CyberCellWorld.SAND).a == float(CyberMaterialAppearanceLut.FLAIR_POWDER)
+		and programs.get_pixel(3, CyberCellWorld.WATER).a == float(CyberMaterialAppearanceLut.FLAIR_WATER),
+		"CPU appearance instructions clamped the crossfade fixture's powder/water flair tags")
 	# Exercise the complete byte address space. An unassigned catalogue row
 	# must be explicit magenta, with a neutral, finite, non-emitting program;
 	# every defined ID must have a usable row, not just the selected examples.
