@@ -111,8 +111,8 @@ func _refresh_controls() -> void:
 	if controls_label == null: return
 	controls_label.text = Course.controls(Course.MECHANICAL_PRESETS[actor_choice.selected]) + "\nArrows also move."
 	if CONTROLS[control_choice.selected] == "keyboard_gamepad":
-		controls_label.text += " Gamepad: left stick, A primary, B secondary, X auxiliary, shoulders trim."
-	controls_label.text += "\nP pauses · R restarts · F changes camera · F2 returns to the launcher."
+		controls_label.text += " Gamepad: left stick, A primary, B secondary, X auxiliary, shoulders trim, Start pauses."
+	controls_label.text += "\nP / Escape pauses · R restarts · F changes camera · F2 returns to the launcher."
 
 
 func show_selection() -> void:
@@ -150,9 +150,8 @@ func resume_play() -> void:
 		or host.simulation_worker.has_failed() or not host._physical_terrain_ready:
 		return
 	host.cancel_playable_course_input()
-	hide()
-	host.paused = false
-	host.update_worker_frame_state()
+	if host.set_playable_course_paused(false):
+		hide()
 
 
 func restart_applied() -> void:

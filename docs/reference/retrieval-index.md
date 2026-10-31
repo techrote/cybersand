@@ -16,6 +16,7 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
   physical-device and human-feel gates still apply; #265 stays closed and #271 deferred.
 
 - [How do I build one shared playable session with a map, rig, controls, rules, solver and camera?](../systems/player-control-playground.md#integrated-playable-session-selection-and-device-rearm)
+- [How do rapid pause/resume, Escape and selected-gamepad Start revoke shared-course input?](../systems/player-control-playground.md#immediate-shared-course-pause-transitions)
   The composed selector uses the existing prepared transaction, reports actual
   applied state and requires neutral rearm after selected-device changes. The
   [manual walkthrough](../operations/local-build-and-validation.md#shared-play-session-and-owner-qualification)
