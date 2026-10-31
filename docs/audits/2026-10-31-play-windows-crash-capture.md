@@ -2,7 +2,7 @@
 title: PLAY Windows post-summary exception capture apparatus
 status: Current
 document-kind: audit
-scope: Opt-in unchanged-fixture Windows debugger diagnostic, retained original failure, exact source and process evidence, and unexecuted hosted qualification
+scope: Opt-in unchanged-fixture Windows debugger diagnostic, reproduced original access violation, exact-image forensic evidence and unresolved source cause
 canonical-for: []
 last-reviewed: 2026-10-31
 related-documents: [../operations/local-build-and-validation.md, ../operations/github-development-and-release.md, ../operations/current-and-historical-validation.md, 2026-10-31-play-ui007-desktop-readiness.md, 2026-10-25-lcb003-desktop-native-default-host.md]
@@ -10,15 +10,17 @@ related-documents: [../operations/local-build-and-validation.md, ../operations/g
 
 # Windows exception capture — 2026-10-31
 
-The [v7 import-environment correction](#scoped-editor-import-environment--v7)
-follows a hosted v6 attempt that passed all debugger controls, then refused
-unregistered Java signing-tool children during editor import. The
+The [first hosted v7 attempt](#original-fixture-reached--v7-hosted-observation)
+reached the unchanged original fixture, retained its 86-assertion/zero-failure
+footer, and reproduced the process-ending `0xC0000005`. Exact-image
+disassembly and a bounded offline frame derivation identify a script-finalization
+lead that matches a known upstream Godot lifetime bug; the original allocation
+history and a causal counterfactual remain unavailable. No crash repair is
+asserted. The [v7 import-environment correction](#scoped-editor-import-environment--v7),
 [v6 dump-reader correction](#bounded-dbghelp-output-reader--v6) and
 [LLVM source-pin correction](#llvm-source-pin-correction--toolchain-identity-v2)
 remain separately versioned. Original production/fixture source and every
-prior failure are preserved. The v7 source requires its own first hosted
-execution. The original game fixture has not yet been reached by this
-diagnostic, and no crash repair is asserted.
+prior failure are preserved.
 
 ## Original blocking result and narrow purpose
 
@@ -991,3 +993,156 @@ historical M11, provider and whitespace checks pass. Retrieval remains
 sufficiency separate. Protected production scopes still match the original
 failed source byte for byte; local runtime libraries remain unmaterialized
 pointers.
+
+## Original fixture reached — v7 hosted observation
+
+[Run41247373741, attempt1](https://github.com/techrote/cybersand/actions/runs/41247373741),
+job124673495567, executed diagnostic source
+`319d507a7d974ef3b5a1913366b0d1b7152d204c`, tree
+`368a9455f35dc028fac7b3032557fe70e63abb4a`. This is the published equivalent
+of reviewed local v7 commit `0a1938ed57025292cefcecc2cf0a66ee3d4e0285`.
+The protected production and original fixture remain at
+`aa74448bad7ec77e5f152d9179a417ce76430009`.
+
+[Artifact13060835779](https://github.com/techrote/cybersand/actions/runs/41247373741/artifacts/13060835779)
+is 7,131,522 bytes, SHA-256
+`e153c6c74920926cebdc8b11f0310e3d71303ebcb5dc1d333a8a66ae9dc7ac0e`.
+All 152 ZIP members pass CRC checks. An independent readback using the
+15 source-matched Python readers authenticates 144 sealed entries and 795
+canonical inputs, including the LLVM identities, ownership controls, all
+six intended debugger controls, import environment custody and runtime
+provenance. All 145 retained campaign files remain unchanged. The full
+original reducer accepts the evidence as `observed_process_failure`, with
+`completed=true`, `errors=[]` and `original_failure_still_blocking=true`.
+Accepting a complete diagnostic record does not make the game process pass.
+
+The one original fixture attempt printed
+`LIQUID_DESKTOP_DEFAULT_HOST: 86 assertions; 0 failures`, then exited
+`3221225477` (`0xC0000005`) after 66,797 ms, without timing out. The actual
+engine was PID8016, and its initial main thread TID2632 produced two
+first-chance and one second-chance capture at the same instruction. All
+three exceptions were forwarded as not handled. Each dump is 76,235 bytes;
+each contains 14 threads and a 4,064-byte fault-thread stack. Both selected
+native runtime modules were still loaded; no module-unload event appears
+in this fixture capture. These observations do not assign blame to an
+extension, an engine subsystem or a particular project object.
+
+The versioned [forensic receipt](2026-10-31-play-windows-crash-forensics.json)
+binds the original artifact, three dump/context/exception identities, all
+general registers, exact executable, source comparison, disassembly hashes
+and supplemental analysis records. This documentation checkpoint adds no
+runtime execution and changes no debugger, game, fixture or engine input.
+
+### Exact executable and bounded frame derivation
+
+The official Windows archive is 83,764,371 bytes, SHA-256
+`02a5312236f4e0209c78bcb2f52135b1963e6b8888c873c9cee81459e60bcd71`.
+It matches both the release asset digest and the source-pinned SHA-512.
+Its GUI executable is 178,485,256 bytes, SHA-256
+`b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8`,
+equal to the actual engine's load-stop file identity. Static inspection
+does not execute that downloaded binary.
+
+The exact PE image has zero COFF symbols and an empty debug directory, so
+there is no CodeView/PDB GUID to match. The official 4.7 release assets
+provide no Windows symbol package. Godot's
+[4.7 build documentation](https://docs.godotengine.org/en/4.7/engine_details/development/compiling/introduction_to_the_buildsystem.html#debugging-symbols)
+also explains that official binaries omit debugging symbols. Symbols from
+a different custom build cannot be assigned to this original image.
+
+The captured RIP is `0x7ff7338be7c1`, engine RVA `0x03e1e7c1`.
+At that RVA the authenticated instruction bytes are `8b 02`,
+`mov eax,DWORD PTR [rdx]`. The preceding instruction computes
+`rdx = rcx + 0x120`. Actual RCX/RBX/R12 are
+`0xfeeefeeefeeefeee`, and RDX is `0xfeeefeeefeef000e`.
+The Windows exception record reports a read with address
+`0xffffffffffffffff`. The repeated fill-like value is a lifetime/corruption
+clue, not an allocation history or proof of the first invalid write.
+
+The restricted offline derivation follows Microsoft's
+[x64 unwind metadata](https://learn.microsoft.com/en-us/cpp/build/exception-handling-x64)
+using the exact image's `.pdata`, raw context and captured stack bytes.
+It accepts only the supported complete-prolog operations, requires one
+matching function extent for every used control address, and checks the
+disassembled prolog stack effects. All three retained captures yield the
+same sequence:
+
+| Frame | Engine RVA | Return-address slot from original RSP | Source-correlated role, not a symbol result |
+| --- | --- | --- | --- |
+| 0 | `0x3e1e7c1` | 56 bytes | `RefCounted::reference` |
+| 1 | `0x3e1e8dd` | 120 bytes | `RefCounted::init_ref` |
+| 2 | `0x54730b` | 280 bytes | `GDScriptLanguage::finish` |
+| 3 | `0x3e2d108` | 488 bytes | `ScriptServer::finish_languages` |
+| 4 | `0x5fed1` | 632 bytes | `Main::cleanup` |
+| 5 | `0x5249f` | 1,624 bytes | Unassigned |
+| 6 | `0x5253e` | 1,704 bytes | Unassigned |
+| 7 | `0x10c9` | 1,864 bytes | Unassigned |
+
+The next handler-bearing entry at lookup RVA `0x13f5` is outside this
+restricted derivation and stops it explicitly. The startup caller's
+intermediate target `0x65cafc0` restores its stack then tail-jumps to
+`0x52510`, consistent with the recovered caller. Other module-looking words
+in the raw stack are not promoted to frames. This is not a WinDbg-symbolized
+stack or source-line attribution.
+
+The role inference uses separately authenticated Godot commit
+`5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88`, including
+[RefCounted](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/core/object/ref_counted.cpp),
+[GDScript finalization](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/modules/gdscript/gdscript.cpp),
+[SelfList](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/core/templates/self_list.h),
+[ScriptServer](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/core/object/script_language.cpp)
+and [Main cleanup](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/main/main.cpp).
+The inferred finalizer loads the poisoned value from `[r13+8]` before calling
+the inferred initializer. R13 is `0x16ac1eb1058`; the source's `SelfList::_self`
+is its second pointer member. The bounded dump does not contain that list
+node, the corresponding heap allocation or its free history.
+
+### Upstream corroboration and project comparison
+
+Upstream [Godot issue117975](https://github.com/godotengine/godot/issues/117975)
+records a sanitizer-confirmed script-finalization use-after-free with the
+same source-level sequence. Its explanation is that releasing the current
+script can also release a base script already selected as the next list
+element. [PR117991](https://github.com/godotengine/godot/pull/117991) merged
+on 2026-06-18 as `0dd6299f7146362d36b130ac1dc42406cfb3ede6` and adds five
+lines to clear `base_cache` and `base` within `GDScript::clear()`. Those lines
+are absent from the authenticated pinned 4.7 source. This is strong
+corroboration of a specific hypothesis; the original CyberSand dump does
+not establish the same allocation/free sequence, and no engine-fix
+counterfactual has run.
+
+Static reconciliation compares original `aa74448bad7ec77e5f152d9179a417ce76430009`,
+accepted complete-execution source `15b3a4012b9d5998e808fb371792dd7a71398507`
+and reviewed recovery candidate `02454f3aa6a6130d375727d1aa28113772f658e4`.
+All three retain identical native source and addon trees, the complete LCB
+helper-fixture directory, project/main scene, Prepared owner, Rapier bridge,
+coupling and snapshot files. Main's exit/candidate-retirement bodies,
+`SimulationWorker.stop_worker()` with its thread join, and Rapier shutdown
+are also identical. The failing fixture changes only by adding the shared
+watchdog preload and replacing two 20-second waits with source-policy waits.
+Its five inherited helper scripts and gameplay/assertion/retirement sequence
+remain unchanged. The examined production/fixture/helper scopes contain no
+explicit dynamic script-source construction, reload or script replacement
+matching the recorded scan. This is a bounded static comparison, not proof
+that the newer script graph fixes or reproduces the old crash.
+
+The smallest proposed isolation is a **separate** diagnostic pair on the
+unchanged original project and pinned engine: an empty loader control and
+a loader that opens the original fixture GDScript plus Main PackedScene as
+resources, never instantiates gameplay, then exits normally under the same
+strict debugger. A same-instruction failure would narrow the problem to
+resource/base-reference teardown before gameplay; a clean result would not
+clear an intermittent original failure. Extensions remain loaded in both
+cases. A later causal counterfactual would require separately identified
+custom pinned-engine builds with and without only the upstream fix, and
+reproduction in the custom baseline before interpreting a patched result.
+Neither proposal is executed by this evidence checkpoint. The original
+official-engine campaign and its failed disposition remain unchanged.
+
+This evidence-only checkpoint passes documentation and repository identity
+checks, retained M11 integrity, and whitespace review. Frozen retrieval
+remains 32/32 canonical top-five hits, 19 top-one hits and MRR 0.7536; answer
+sufficiency remains separate. The forensic derivation preserves all 145
+original campaign files and crosschecks all three raw contexts against
+their dump registers. These checks neither constitute a new Windows run
+nor resolve the original failing process.
