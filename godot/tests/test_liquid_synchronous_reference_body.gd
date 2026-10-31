@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 const Prepared = preload("res://scripts/prepared_reference_body_session.gd")
 const Coupling = preload("res://scripts/rigid_body_coupling.gd")
 const PLAY_TICKS: int = 240 # Four authored seconds: initial y90 bodies reach tank contents.
@@ -42,7 +44,7 @@ func start(preset: int = 2) -> bool:
 	return owner._pending_web_reference!=null
 
 func complete() -> bool:
-	var deadline: int = Time.get_ticks_msec()+20000
+	var deadline: int = Time.get_ticks_msec()+Watchdogs.milliseconds("operation_seconds")
 	while owner._pending_web_reference!=null and Time.get_ticks_msec()<deadline:
 		await physics_frame
 		owner._advance_web_reference()

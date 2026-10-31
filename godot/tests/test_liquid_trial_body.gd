@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 const Trial=preload("res://scripts/prepared_trial_body_session.gd")
 const Held=preload("res://tests/fixtures/lcb/trial_body_held_owner.gd")
 const Refusal=preload("res://tests/fixtures/lcb/trial_body_terrain_refusal.gd")
@@ -16,7 +18,7 @@ func expect(value: bool, message: String) -> void:
 	assertions+=1
 	if not value: failures+=1;push_error("LIQUID_TRIAL_BODY: "+message)
 func wait_for(predicate: Callable) -> bool:
-	var deadline: int=Time.get_ticks_msec()+20000
+	var deadline: int=Time.get_ticks_msec()+Watchdogs.milliseconds("operation_seconds")
 	while Time.get_ticks_msec()<deadline:
 		await process_frame
 		if predicate.call(): return true
@@ -245,7 +247,7 @@ func play_cohort(bridge: Variant, variant: String) -> void:
 	var applications: int=0;var contacts: int=0;var last_serial: int=-1
 	var impulse:=Vector2.ZERO
 	var invalid_age: int=0
-	var deadline: int=Time.get_ticks_msec()+20000
+	var deadline: int=Time.get_ticks_msec()+Watchdogs.milliseconds("operation_seconds")
 	desktop.paused=false
 	while Time.get_ticks_msec()<deadline:
 		await physics_frame

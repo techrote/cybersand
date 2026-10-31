@@ -12,9 +12,14 @@ import argparse
 from copy import deepcopy
 import hashlib
 import json
+import math
+import subprocess
 from pathlib import Path
 import re
 import sys
+
+from execution_policy import case_seconds, watchdog_microseconds
+from play_execution_contract import policy_matches, process_policy_matches, verify_log_policy
 
 ROOT = Path(__file__).resolve().parents[2]
 RIGS = {"stuntbuggy", "trialsbike", "acrobat", "arcadelander", "jetbarrel"}
@@ -50,6 +55,8 @@ def matching_receipts(gate: dict, request: dict) -> list[dict]:
 
 def validate(record: dict, directory: Path, source: str,
              fixture_hash: str, worker_hash: str) -> dict:
+    need("execution_policy" not in record or policy_matches(record["execution_policy"]),
+         "execution_policy_mismatch")
     need(record["schema"] == "play-life010-v1" and record["rig"] in RIGS, "schema_or_rig")
     need(record["source_revision"] == source and bool(re.fullmatch(r"[0-9a-f]{40}", source)),
          "source_identity")
@@ -59,15 +66,15 @@ def validate(record: dict, directory: Path, source: str,
          and record["negative_control_passed"] is True
          and record["positive_controls_passed"] is True, "reported_failure")
     need(record["graphical_qualification"] is False, "graphical_claim")
-    need(record["operation_limit_usec"] == 15_000_000
-         and record["fixture_limit_usec"] == 150_000_000
-         and 0 < record["elapsed_usec"] <= 150_000_000, "fixture_deadline")
-    need(record["first_main_ack_limit_usec"] == 30_000_000
+    need(record["operation_limit_usec"] == watchdog_microseconds("operation_seconds")
+         and record["fixture_limit_usec"] == watchdog_microseconds("complex_fixture_seconds")
+         and 0 < record["elapsed_usec"] <= watchdog_microseconds("complex_fixture_seconds"), "fixture_deadline")
+    need(record["first_main_ack_limit_usec"] == watchdog_microseconds("main_ack_seconds")
          and len(record["first_main_acks"]) == 2, "first_main_inventory")
     for ack in record["first_main_acks"]:
         need(ack["origin"] == "before-main-scene-load"
              and ack["event"] == "first-inherited-Main-process-return"
-             and ack["passed"] is True and ack["deadline_usec"] - ack["origin_usec"] == 30_000_000
+             and ack["passed"] is True and ack["deadline_usec"] - ack["origin_usec"] == watchdog_microseconds("main_ack_seconds")
              and ack["origin_usec"] < ack["acknowledged_usec"] <= ack["deadline_usec"]
              and ack["acknowledged_usec"] <= ack["observed_usec"], "first_main_deadline")
     waits = record["waits"]
@@ -76,7 +83,7 @@ def validate(record: dict, directory: Path, source: str,
     for wait in waits:
         need(wait["passed"] is True
              and wait["started_usec"] <= wait["ended_usec"] <= wait["deadline_usec"]
-             and 0 < wait["deadline_usec"] - wait["started_usec"] <= 15_000_000,
+             and 0 < wait["deadline_usec"] - wait["started_usec"] <= watchdog_microseconds("operation_seconds"),
              "operation_deadline")
     lifetimes = record["lifetimes"]
     need([value["name"] for value in lifetimes] == ["negative", "guarded"], "lifetime_inventory")
@@ -96,7 +103,7 @@ def validate(record: dict, directory: Path, source: str,
     packet_count = 0
     for life in lifetimes:
         need(life["worker_joined"] is True and life["session_retired"] is True
-             and life["host_freed"] is True and 0 < life["teardown_usec"] <= 15_000_000,
+             and life["host_freed"] is True and 0 < life["teardown_usec"] <= watchdog_microseconds("operation_seconds"),
              "incomplete_teardown")
         need(life["normal_handoffs"] > len(life["packets"]), "no_normal_live_delivery")
         for index, packet in enumerate(life["packets"]):
@@ -179,7 +186,7 @@ def validate(record: dict, directory: Path, source: str,
              and gate["timed_out"] is False and gate["release_from_stop"] is False,
              "gate_not_completed")
         need(gate["extracted_usec"] <= gate["released_usec"] <= gate["returned_usec"]
-             and gate["returned_usec"] - gate["extracted_usec"] <= 15_000_000, "gate_deadline")
+             and gate["returned_usec"] - gate["extracted_usec"] <= watchdog_microseconds("operation_seconds"), "gate_deadline")
         need(control["lease_valid"] is True and control["lease_frame_tick"] < control["lease_deadline"]
              and control["lease_frame_tick"] < control["extracted_lease_deadline"],
              "cancel_lease_expired")
@@ -323,6 +330,30 @@ def adverse_controls(record: dict, directory: Path, source: str,
     return outcomes
 
 
+def check_process(process: dict, rig: str, local_process_receipt: bool = False) -> None:
+    if local_process_receipt:
+        need(set(process) == {"command", "timeout_seconds", "returncode", "timed_out", "elapsed_seconds",
+                              "execution_policy", "natural_completion"}
+             and isinstance(process["timed_out"], bool), "local_process_schema")
+    else:
+        need("status" in process, "ordinary_process_status_missing")
+        need(process["status"] == "passed", "process_failed_or_incomplete")
+    need(type(process["returncode"]) is int and process["returncode"] == 0
+         and process["timeout_seconds"] == case_seconds("test_play_life010_" + rig)
+         and process_policy_matches(process)
+         and not process.get("timed_out", False) and not process.get("timeout_kind")
+         and not process.get("diagnostic_error") and not process.get("launch_error")
+         and not process.get("capture_error") and not process.get("skip_messages")
+         and not process.get("timeout_diagnostic_error"),
+         "process_failed_or_incomplete")
+    elapsed = process.get("seconds", process.get("elapsed_seconds"))
+    need(type(elapsed) in (int, float) and math.isfinite(elapsed)
+         and 0 < elapsed <= case_seconds("test_play_life010_" + rig), "process_deadline")
+    command = process["command"]
+    need(isinstance(command, list) and all(isinstance(value, str) for value in command)
+         and "res://tests/test_play_life010_" + rig + ".gd" in command, "process_case_mismatch")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--result", type=Path, required=True)
@@ -330,8 +361,8 @@ def main() -> int:
     parser.add_argument("--process-json", type=Path, required=True)
     parser.add_argument("--source", required=True)
     parser.add_argument("--local-process-receipt", action="store_true", help=(
-        "Explicit local v1 receipt schema: exactly command, timeout_seconds, "
-        "returncode, timed_out and elapsed_seconds. Ordinary receipts require status."))
+        "Explicit local v2 receipt schema: exactly command, timeout_seconds, "
+        "returncode, timed_out, elapsed_seconds, execution_policy and natural_completion. Ordinary receipts require status."))
     parser.add_argument("--fixture", type=Path,
                         default=ROOT / "godot/tests/play_life010_live_delivery_case.gd")
     parser.add_argument("--worker", type=Path,
@@ -342,28 +373,16 @@ def main() -> int:
     try:
         record = json.loads(args.result.read_text(encoding="utf-8"))
         process = json.loads(args.process_json.read_text(encoding="utf-8"))
+        need(process.get("source_revision", args.source) == args.source, "process_source_mismatch")
+        need("execution_policy" not in process or policy_matches(process["execution_policy"]), "execution_policy_mismatch")
         if "results" in process: # Unmodified ordinary Linux/Windows timing receipt.
             rows = [row for row in process["results"] if row["name"] == "test_play_life010_" + record["rig"]]
             need(len(rows) == 1, "process_inventory")
             process = rows[0]
-        if args.local_process_receipt:
-            need(set(process) == {"command", "timeout_seconds", "returncode", "timed_out", "elapsed_seconds"}
-                 and isinstance(process["timed_out"], bool), "local_process_schema")
-        else:
-            need("status" in process, "ordinary_process_status_missing")
-            need(process["status"] == "passed", "process_failed_or_incomplete")
-        need(type(process["returncode"]) is int and process["returncode"] == 0
-             and process["timeout_seconds"] == 180
-             and not process.get("timed_out", False) and not process.get("timeout_kind")
-             and not process.get("diagnostic_error") and not process.get("launch_error")
-             and not process.get("capture_error") and not process.get("skip_messages"),
-             "process_failed_or_incomplete")
-        elapsed = process.get("seconds", process.get("elapsed_seconds"))
-        need(isinstance(elapsed, (int, float)) and 0 < elapsed <= 180, "process_deadline")
-        command = process["command"]
-        need(isinstance(command, list) and all(isinstance(value, str) for value in command)
-             and "res://tests/test_play_life010_" + record["rig"] + ".gd" in command, "process_case_mismatch")
+        need(process.get("source_revision", args.source) == args.source, "process_source_mismatch")
+        check_process(process, record["rig"], args.local_process_receipt)
         log = args.log.read_text(encoding="utf-8")
+        executed_policy = verify_log_policy(log, args.source)
         need("SCRIPT ERROR:" not in log and "ERROR:" not in log
              and not re.search(r"\bskipped\b|^\s*SKIP\b", log, re.IGNORECASE | re.MULTILINE),
              "log_failed_or_skipped")
@@ -377,14 +396,15 @@ def main() -> int:
         if args.self_test:
             reduced["adverse_controls"] = adverse_controls(record, args.result.parent, args.source,
                                                            fixture_hash, worker_hash)
-        reduced.update(source_revision=args.source, result_sha256=sha256(args.result),
+        reduced.update(execution_policy=executed_policy, source_revision=args.source, result_sha256=sha256(args.result),
                        process_sha256=sha256(args.process_json), log_sha256=sha256(args.log),
                        fixture_sha256=fixture_hash, worker_sha256=worker_hash)
         if args.output:
+            need(not args.output.exists(), "output_already_exists")
             args.output.write_text(json.dumps(reduced, indent=2) + "\n", encoding="utf-8")
         print(json.dumps(reduced, sort_keys=True))
         return 0
-    except (EvidenceError, KeyError, TypeError, ValueError, OSError) as error:
+    except (EvidenceError, KeyError, TypeError, ValueError, OSError, subprocess.SubprocessError) as error:
         print(f"PLAY_LIFE010_VERIFICATION_FAILED: {error}", file=sys.stderr)
         return 1
 

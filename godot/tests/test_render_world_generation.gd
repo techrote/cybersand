@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 # Real exclusive-owner reset/publication checks. R8 fallback sends full images
 # on ordinary paints, while native transport can request a full resync of the
 # same World. Neither operation is a World replacement.
@@ -21,7 +23,7 @@ func _expect(value: bool, message: String) -> void:
 
 
 func _wait_for(worker: CyberSimulationWorker, after: int, predicate: Callable) -> CyberSimulationSnapshot:
-	var deadline: int = Time.get_ticks_msec() + 10000
+	var deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("operation_seconds")
 	while Time.get_ticks_msec() < deadline:
 		var snapshot: CyberSimulationSnapshot = worker.take_latest_snapshot(after)
 		if snapshot != null and predicate.call(snapshot):

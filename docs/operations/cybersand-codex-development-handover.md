@@ -10,6 +10,25 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## Current owner policy and accepted baseline — 2026-10-31
+
+The owner supersedes the earlier shader deferral and short immutable deadline
+restrictions below. Integrate and qualify #326 on accepted main `adaaa37`; use the
+[shared execution watchdog and advisory performance policy](ci-execution-and-performance.md).
+Its original attempt-1 post-merge Docs41204873388, scope41204873081,
+Native41204873121 and Godot41204873192 all passed. #269 is closed;
+#268/#270/#263 still require their remaining actual acceptance evidence.
+#324/#325 were already included and are administratively closed.
+
+The focused timeout/telemetry source requires fresh full CI and independent
+review. Shader integration and the source-preserving Windows crash diagnostic
+remain separate work packages. Historical failures keep their original status.
+The physical/human packet still has 51 untested rows. Scheduswarm stays paused;
+[#305](https://github.com/techrote/cybersand/issues/305) owns current coordination.
+Earlier dated checkpoints below describe their original restrictions and source,
+not today's superseding owner decision.
+
+
 ## Active manual PLAY continuation — 2026-10-31
 
 Fresh reconciliation began from accepted main

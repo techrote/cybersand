@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 # Live-controller wiring capture (apparatus, not a regression). Loads the real
 # desktop main.tscn or Web web_main.tscn controller, installs the Materials
 # Laboratory, runs it unpaused for a wall-clock window, pauses, hides the HUD
@@ -47,7 +49,7 @@ func _run() -> void:
 		scene.focused = true
 		scene.ui.close_menu()
 	var installed: bool = scene.microscenario_apply_definition(Pack.definition(scenario, 0), "Inspect")
-	var deadline: int = Time.get_ticks_msec() + 10000
+	var deadline: int = Time.get_ticks_msec() + Watchdogs.milliseconds("operation_seconds")
 	while Time.get_ticks_msec() < deadline and not scene.tower_context.get("micro_active", false):
 		await process_frame
 	scene.paused = false

@@ -5,9 +5,9 @@ extends "res://tests/play_life001_shared_host_case.gd"
 const Session = preload("res://scripts/physical_actor_session.gd")
 const LiquidEditor = preload("res://scripts/liquid_comparison_panel.gd")
 const MATERIALS: Array[int] = [3,8,12,16,20,21,24,30,32,33,36]
-const TOTAL_USEC: int = 150000000
-const OPERATION_USEC: int = 15000000
-const FIRST_MAIN_USEC: int = 30000000
+var TOTAL_USEC: int = Watchdogs.microseconds("complex_fixture_seconds")
+var OPERATION_USEC: int = Watchdogs.microseconds("operation_seconds")
+var FIRST_MAIN_USEC: int = Watchdogs.microseconds("main_ack_seconds")
 var desktop: Control
 var started_usec: int = 0
 var waits: Array[Dictionary] = []
@@ -383,7 +383,7 @@ func run() -> void:
 	var acknowledged: bool = first_main_ack.acknowledged_usec > main_origin \
 		and first_main_ack.acknowledged_usec <= main_deadline and first_main_ack.observed_usec <= main_deadline
 	first_main_ack.passed = acknowledged
-	expect(acknowledged, "first actual Main callback acknowledged within unchanged30-second bound")
+	expect(acknowledged, "first actual Main callback acknowledged within configured Main acknowledgement watchdog")
 	var worker: CyberSimulationWorker = desktop.simulation_worker
 	var ready: bool = acknowledged and desktop.worker_start_error == OK and worker._thread.is_started()
 	expect(ready and target_rig() in Course.MECHANICAL_PRESETS, "real exclusive worker and registered mechanical wrapper")
@@ -414,8 +414,8 @@ func run() -> void:
 		adapter_destroyed = adapter_weak.get_ref() == null
 	var close_ended: int = Time.get_ticks_usec()
 	expect(joined and destroyed and adapter_destroyed, "joined exclusive owner and native adapter are destroyed")
-	expect(close_ended - close_started <= OPERATION_USEC, "teardown within unchanged15-second operation bound")
-	expect(close_ended - started_usec <= TOTAL_USEC, "whole fixture within unchanged150-second bound")
+	expect(close_ended - close_started <= OPERATION_USEC, "teardown within configured operation watchdog")
+	expect(close_ended - started_usec <= TOTAL_USEC, "whole fixture within configured fixture watchdog")
 	var artifact_dir: String = OS.get_environment("CYBERSAND_TEST_ARTIFACT_DIR")
 	expect(not artifact_dir.is_empty(), "runner supplies original raw artifact directory")
 	var result: Dictionary = {"schema":"play-life011-v1", "source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),

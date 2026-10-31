@@ -18,6 +18,8 @@ import time
 
 import godot_timeout_diagnostics as diagnostics
 import godot_process_monitor as process_monitor
+import execution_policy
+import execution_telemetry
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_UNKNOWN_WEIGHT_SECONDS = 5.0
@@ -90,13 +92,8 @@ def discover_cases(root: Path = ROOT) -> list[Case]:
         Case(
             p.stem,
             ("--script", "res://tests/" + p.name),
-            # Scored native/Rapier development cases can consume tens of
-            # thousands of real 60 Hz ticks. Keep their CI budget finite
-            # without falsely classifying slower Windows hosts as faults.
-            420 if p.stem in {
-                "test_physical_flight_teacher_dev_free",
-                "test_physical_flight_teacher_dev_obstacle",
-            } else 180,
+            execution_policy.case_seconds(p.stem, p.stem.endswith("_render"),
+                complex_fixture="support/ci_execution_policy.gd" in p.read_text(encoding="utf-8")),
             _weight(p.stem),
             # Actual-pixel fixtures use this suffix so newly added render tests
             # cannot silently inherit the headless server's no-frame shortcut.
@@ -108,12 +105,12 @@ def discover_cases(root: Path = ROOT) -> list[Case]:
         Case(
             name,
             ("--script", "res://tests/" + name + ".gd"),
-            1200,
+            execution_policy.case_seconds(name),
             _weight(name),
         )
         for name in ("profile_native_world", "profile_scheduler")
     ]
-    cases.append(Case("scene", ("--quit-after", "180"), 180, _weight("scene")))
+    cases.append(Case("scene", ("--quit-after", "180"), execution_policy.watchdog_seconds("graphical_case_seconds"), _weight("scene")))
     names = [case.name for case in cases]
     if len(names) != len(set(names)):
         duplicates = sorted(name for name, count in Counter(names).items() if count > 1)
@@ -130,13 +127,19 @@ def build_shard_plan(cases: list[Case], shard_count: int) -> tuple[list[list[Cas
     canonical_order = {case.name: index for index, case in enumerate(cases)}
     shards: list[list[Case]] = [[] for _ in range(shard_count)]
     totals = [0.0] * shard_count
+    allowances = [0.0] * shard_count
+    policy = execution_policy.identity()["watchdogs"]
+    per_case_reserve = sum(policy[key] for key in (
+        "operation_seconds", "diagnostic_capture_seconds", "terminate_grace_seconds"))
 
-    # Longest-processing-time scheduling gives deterministic, reasonably balanced
-    # shards while retaining each case's original relative order within its shard.
+    # Assign historically expensive cases first, but balance complete execution
+    # allowances before advisory weights. Otherwise many fast-weighted cases
+    # could silently exhaust one parent's sequential watchdog budget.
     for case in sorted(cases, key=lambda item: (-item.weight, item.name)):
-        index = min(range(shard_count), key=lambda i: (totals[i], i))
+        index = min(range(shard_count), key=lambda i: (allowances[i], totals[i], i))
         shards[index].append(case)
         totals[index] += case.weight
+        allowances[index] += case.timeout + per_case_reserve
 
     for shard in shards:
         shard.sort(key=lambda case: canonical_order[case.name])
@@ -347,11 +350,18 @@ class ReadbackContract:
     verifier_digest_field: str = ""
 
 
+POLICY_READBACK_INPUTS = (
+    "tools/ci/execution_policy.py", "tools/ci/play_execution_contract.py",
+    "godot/tests/support/ci_execution_policy.json", "godot/tests/support/ci_execution_policy.gd",
+)
+
+
 LIFE010_READBACK = ReadbackContract(
     "LIFE010", "test_play_life010_", "tools/ci/verify_play_life010.py", "life010",
     (("failures", 0), ("real_lifetimes", 2), ("rejected_deliveries", 5),
      ("native_commits", 2), ("lease_valid_cancellations", 1)),
     (("adverse_controls", 21),),
+    source_inputs=POLICY_READBACK_INPUTS,
 )
 INPUT011_READBACK = ReadbackContract(
     "INPUT011", "test_play_input011_", "tools/ci/verify_play_input011.py", "input011",
@@ -363,7 +373,7 @@ INPUT011_READBACK = ReadbackContract(
     result_digest_field="raw_result_sha256",
     source_inputs=("godot/tests/play_input011_authority_case.gd", "godot/scripts/main.gd",
                    "godot/scripts/microscenario_panel.gd", "godot/tests/test_play_input011_{rig}.gd",
-                   "godot/tests/play_life001_shared_host_case.gd"),
+                   "godot/tests/play_life001_shared_host_case.gd") + POLICY_READBACK_INPUTS,
     consumed_source_fields=(("fixture_sha256", "godot/tests/play_input011_authority_case.gd"),
                             ("main_sha256", "godot/scripts/main.gd"),
                             ("panel_sha256", "godot/scripts/microscenario_panel.gd")),
@@ -385,7 +395,7 @@ LIFE011_READBACK = ReadbackContract(
                    "tools/lcb/policy_contract.py", "tools/lcb/inertial_parameter_contract.py",
                    "docs/reference/liquid-solver-capability-matrix.json",
                    "native/include/cybersand/material.hpp",
-                   "native/include/cybersand/interaction_rules.hpp"),
+                   "native/include/cybersand/interaction_rules.hpp") + POLICY_READBACK_INPUTS,
 )
 READBACK_RIGS = ("stuntbuggy", "trialsbike", "acrobat", "arcadelander", "jetbarrel")
 # A subsequent fixture adds one contract and its explicit source dependencies;
@@ -402,10 +412,11 @@ def case_readback_contract(case: Case) -> ReadbackContract | None:
     return LIFE010_READBACK if case.name.startswith(LIFE010_READBACK.prefix) else None
 
 
-def readback_source_identity(source: str, relative: str, label: str, timeout: float = 5) -> dict:
+def readback_source_identity(source: str, relative: str, label: str, timeout: float | None = None) -> dict:
     """Bind actual and canonical source bytes without erasing CRLF identity."""
     if not re.fullmatch(r"[0-9a-f]{40}", source):
         raise ValueError(label + " verifier requires an exact source commit")
+    timeout = execution_policy.watchdog_seconds("operation_seconds") if timeout is None else timeout
     actual = (ROOT / relative).read_bytes()
     canonical = subprocess.check_output(["git", "show", source + ":" + relative], cwd=ROOT, timeout=timeout)
     # Git's canonical text is LF; a Windows checkout may use CRLF. Keep both
@@ -424,14 +435,15 @@ def life010_verifier_identity(source: str) -> dict:
 
 def verify_case_evidence(case: Case, record: dict, output_dir: Path, source: str,
                          contract: ReadbackContract, *, verifier_identity=None) -> dict:
-    """Reduce original evidence under one unchanged 15-second overall bound."""
+    """Reduce original evidence within its independently recorded watchdog."""
     started = time.perf_counter()
-    result = {"status": "failed", "timeout_seconds": 15, "returncode": None,
+    allowance = execution_policy.watchdog_seconds("operation_seconds")
+    result = {"status": "failed", "timeout_seconds": allowance, "returncode": None,
               "seconds": 0.0, "error": None}
     def remaining() -> float:
-        available = 15 - (time.perf_counter() - started)
+        available = allowance - (time.perf_counter() - started)
         if available <= 0:
-            raise ValueError(contract.label + " readback exhausted its 15-second bound before execution")
+            raise ValueError(contract.label + " readback exhausted its execution allowance before execution")
         return available
 
     verifier_log = None
@@ -458,9 +470,9 @@ def verify_case_evidence(case: Case, record: dict, output_dir: Path, source: str
         expected_hashes = {name: sha256(path) for name, path in inputs.items()}
         result["input_sha256"] = expected_hashes
         result["verifier_identity"] = (verifier_identity(source) if verifier_identity else
-            readback_source_identity(source, contract.verifier, contract.label, min(5, remaining())))
+            readback_source_identity(source, contract.verifier, contract.label, remaining()))
         source_inputs = {path.format(rig=rig): readback_source_identity(
-            source, path.format(rig=rig), contract.label, min(5, remaining())) for path in contract.source_inputs}
+            source, path.format(rig=rig), contract.label, remaining()) for path in contract.source_inputs}
         if source_inputs:
             result["source_input_identity"] = source_inputs
         command = [sys.executable, str(ROOT / contract.verifier),
@@ -523,9 +535,9 @@ def verify_case_evidence(case: Case, record: dict, output_dir: Path, source: str
         result["status"] = "failed"
         result["error"] = result["error"] or f"{type(error).__name__}: {error}"
     result["seconds"] = round(time.perf_counter() - started, 6)
-    if result["seconds"] > 15:
+    if result["seconds"] > allowance:
         result["status"] = "failed"
-        result["error"] = result["error"] or contract.label + " readback exceeded its 15-second bound"
+        result["error"] = result["error"] or contract.label + " readback exceeded its execution allowance"
     return result
 
 
@@ -550,6 +562,12 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
     timeout_diagnostic_error = None
     capture_error = None
     timeout_kind = None
+    resources = {"available": False, "scope": "direct_process_only"}
+    def observe_resources(observed_pid):
+        nonlocal resources
+        observation = execution_telemetry.observe_process(observed_pid)
+        if observation["available"]:
+            resources = observation
     # Let graphical fixtures retain their raw captures beside the process log.
     # This is per-process test evidence, never production-frame instrumentation.
     process_env = dict(os.environ if env is None else env)
@@ -574,7 +592,7 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
                 timed_out, timeout_kind, capture_error = process_monitor.wait(
                     process, case.name, case.timeout, started, log_path,
                     output_dir / (case.name + "-diagnostics"),
-                    on_timeout=observe_timeout,
+                    on_timeout=observe_timeout, on_sample=observe_resources,
                 )
                 if timed_out:
                     # Snapshot overhead is recorded separately from the time at
@@ -621,6 +639,9 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
         status = "passed"
     record = {
         "name": case.name,
+        "execution_policy": execution_policy.identity(),
+        "natural_completion": not timed_out and returncode is not None,
+        "resources": resources,
         "role": role,
         "status": status,
         "seconds": round(timeout_observed if timeout_observed is not None else elapsed, 3),
@@ -635,6 +656,7 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
         "requires_display": case.requires_display,
         "command": command,
         "log": log_path.name,
+        "log_sha256": sha256(log_path),
         "pid": pid,
         "timeout_diagnostics": snapshot_path.name if timed_out and snapshot_path.exists() else None,
         "timeout_diagnostic_error": timeout_diagnostic_error,
@@ -664,6 +686,7 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
         )
         if timed_out:
             print("Last 60 log lines:\n" + _tail(log_path), flush=True)
+    execution_telemetry.record_case(output_dir, record, output, root=ROOT)
     return record, failed
 
 
@@ -691,12 +714,23 @@ def main() -> int:
     if not rapier.is_file():
         raise RuntimeError(f"Missing Rapier runtime: {rapier}")
 
-    source_sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip()
+    metadata_deadline = time.monotonic() + execution_policy.watchdog_seconds("operation_seconds")
+    def metadata_remaining():
+        remaining = metadata_deadline - time.monotonic()
+        if remaining <= 0:
+            raise RuntimeError("Source/runtime metadata exhausted its shared operation allowance")
+        return remaining
+
+    source_sha = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True, timeout=metadata_remaining()).strip()
     os.environ["CYBERSAND_SOURCE_REVISION"] = source_sha
-    godot_version = subprocess.check_output([args.godot, "--version"], text=True).strip()
+    godot_version = subprocess.check_output([args.godot, "--version"], text=True, timeout=metadata_remaining()).strip()
     identity = {
         "source_sha": source_sha,
+        "source_tree": subprocess.check_output(["git", "rev-parse", "HEAD^{tree}"], cwd=ROOT, text=True, timeout=metadata_remaining()).strip(),
+        "execution_policy": execution_policy.identity(),
         "godot_version": godot_version,
+        "run_id": os.environ.get("GITHUB_RUN_ID", "local"),
+        "run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT", "local"),
         "cybersand_runtime": {
             "path": str(runtime.relative_to(ROOT)),
             "sha256": sha256(runtime),
@@ -708,6 +742,7 @@ def main() -> int:
         "shard_count": args.shard_count,
         "shard_index": args.shard_index,
     }
+    metadata_remaining()
     write_json(args.output / "identity.json", identity)
     (args.output / "identity.txt").write_text(
         source_sha + "\n"
@@ -757,7 +792,7 @@ def main() -> int:
 
     # Every isolated shard performs a clean import preflight. In unsharded mode
     # this is the same single import that the legacy runner performed.
-    import_case = Case("import", ("--editor", "--quit"), 240, 3.0)
+    import_case = Case("import", ("--editor", "--quit"), execution_policy.watchdog_seconds("godot_import_seconds"), 3.0)
     record, failed = run_case(args.godot, import_case, args.output, "preflight")
     results.append(record)
     write_json(args.output / "timings.json", timing)

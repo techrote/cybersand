@@ -15,10 +15,15 @@ import argparse
 from copy import deepcopy
 import hashlib
 import json
+import math
+import subprocess
 from pathlib import Path
 import re
 import struct
 import sys
+
+from execution_policy import case_seconds, watchdog_microseconds
+from play_execution_contract import policy_matches, process_policy_matches, verify_log_policy
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tools/lcb"))
@@ -299,6 +304,8 @@ def check_rejection(value: dict, reason: str) -> None:
 
 
 def validate(record: dict, source: str, fixture_hash: str, preset_hash: str, platform: str) -> dict:
+    need("execution_policy" not in record or policy_matches(record["execution_policy"]),
+         "execution_policy_mismatch")
     need(record["schema"] == "play-life011-v1" and record["rig"] in RIG_BODIES, "schema_or_rig")
     rig = record["rig"]
     need(bool(re.fullmatch(r"[0-9a-f]{40}", source)) and record["source_revision"] == source, "source_identity")
@@ -316,16 +323,16 @@ def validate(record: dict, source: str, fixture_hash: str, preset_hash: str, pla
          and record["real_host"] is record["automatic_callbacks"] is record["focus_seam"] is True
          and record["physical_devices_qualified"] is record["rendered_fps_measured"] is False
          and record["host"] == "main.tscn+CyberSimulationWorker+main-thread-Rapier", "scope_or_failure")
-    need(record["operation_limit_usec"] == 15_000_000 and record["fixture_limit_usec"] == 150_000_000
-         and record["first_main_ack_limit_usec"] == 30_000_000
-         and 0 < record["elapsed_usec"] == record["ended_usec"] - record["started_usec"] <= 150_000_000,
+    need(record["operation_limit_usec"] == watchdog_microseconds("operation_seconds") and record["fixture_limit_usec"] == watchdog_microseconds("complex_fixture_seconds")
+         and record["first_main_ack_limit_usec"] == watchdog_microseconds("main_ack_seconds")
+         and 0 < record["elapsed_usec"] == record["ended_usec"] - record["started_usec"] <= watchdog_microseconds("complex_fixture_seconds"),
          "fixture_deadline")
     ack = record["first_main_ack"]
     need(ack["passed"] is True and ack["origin"] == "before-main-scene-load"
          and ack["event"] == "first-inherited-Main-process-return"
          and record["started_usec"] <= ack["origin_usec"] < ack["acknowledged_usec"]
          <= ack["observed_usec"] <= ack["deadline_usec"]
-         and ack["deadline_usec"] - ack["origin_usec"] == 30_000_000, "first_main_deadline")
+         and ack["deadline_usec"] - ack["origin_usec"] == watchdog_microseconds("main_ack_seconds"), "first_main_deadline")
     labels = []
     for preset in range(8):
         for phase in ("build", "reset"):
@@ -340,7 +347,7 @@ def validate(record: dict, source: str, fixture_hash: str, preset_hash: str, pla
     previous_time = ack["observed_usec"]
     for wait in record["waits"]:
         need(wait["passed"] is True and previous_time <= wait["begun"] <= wait["ended"] <= wait["deadline"]
-             and wait["deadline"] == min(wait["begun"] + 15_000_000, record["started_usec"] + 150_000_000),
+             and wait["deadline"] == min(wait["begun"] + watchdog_microseconds("operation_seconds"), record["started_usec"] + watchdog_microseconds("complex_fixture_seconds")),
              "operation_deadline")
         previous_time = wait["ended"]
     cohorts = record["cohorts"]
@@ -430,7 +437,7 @@ def validate(record: dict, source: str, fixture_hash: str, preset_hash: str, pla
          "incomplete_worker_teardown")
     check_retirement(teardown["retirement"], rig)
     need(record["final_state"]["time_usec"] <= teardown["started_usec"] <= teardown["ended_usec"]
-         == record["ended_usec"] and 0 < teardown["ended_usec"] - teardown["started_usec"] <= 15_000_000,
+         == record["ended_usec"] and 0 < teardown["ended_usec"] - teardown["started_usec"] <= watchdog_microseconds("operation_seconds"),
          "teardown_deadline")
     return {"rig": rig, "source_revision": source, "platform": platform,
             "assertions": record["assertions"], "failures": 0, "presets": 8,
@@ -463,7 +470,7 @@ def adverse_controls(record: dict, source: str, fixture_hash: str, preset_hash: 
         ("wrong_engine", "engine_identity", lambda r: r["godot"].update(hash="0" * 40)),
         ("late_main_ack", "first_main_deadline", lambda r: r["first_main_ack"].update(
             acknowledged_usec=r["first_main_ack"]["deadline_usec"] + 1)),
-        ("late_fixture", "fixture_deadline", lambda r: r.update(elapsed_usec=150_000_001)),
+        ("late_fixture", "fixture_deadline", lambda r: r.update(elapsed_usec=watchdog_microseconds("complex_fixture_seconds") + 1)),
         ("missing_wait", "wait_inventory", lambda r: r["waits"].pop()),
         ("timed_out_wait", "operation_deadline", lambda r: r["waits"][0].update(passed=False)),
         ("missing_preset", "preset_inventory", lambda r: r["cohorts"].pop()),
@@ -510,28 +517,38 @@ def adverse_controls(record: dict, source: str, fixture_hash: str, preset_hash: 
     return outcomes
 
 
+def check_process(process: dict, name: str) -> None:
+    need(process["name"] == name and process["status"] == "passed" and process["returncode"] == 0
+         and type(process["returncode"]) is int
+         and process["timeout_seconds"] == case_seconds(name) and process_policy_matches(process)
+         and type(process["seconds"]) in (int, float) and math.isfinite(process["seconds"])
+         and 0 < process["seconds"] <= case_seconds(name)
+         and process["requires_display"] is False and not process.get("timed_out", False)
+         and not process.get("timeout_kind") and not process.get("launch_error")
+         and not process.get("capture_error") and not process.get("diagnostic_error")
+         and not process.get("skip_messages") and not process.get("timeout_diagnostic_error"),
+         "process_failed_or_incomplete")
+    command = process["command"]
+    need(isinstance(command, list) and all(isinstance(item, str) for item in command)
+         and command[1:] == ["--headless", "--path", command[3], "--script", "res://tests/" + name + ".gd"],
+         "process_case_mismatch")
+
+
 def verify_files(result_path: Path, log_path: Path, process_path: Path, source: str,
                  platform: str, fixture: Path, preset_source: Path, self_test: bool) -> dict:
     record = json.loads(result_path.read_text(encoding="utf-8"))
     process = json.loads(process_path.read_text(encoding="utf-8"))
     need(process.get("source_revision", source) == source, "process_source_mismatch")
     name = "test_play_life011_" + record["rig"]
+    need("execution_policy" not in process or policy_matches(process["execution_policy"]), "execution_policy_mismatch")
     if "results" in process:
         rows = [row for row in process["results"] if row["name"] == name]
         need(len(rows) == 1, "process_inventory")
         process = rows[0]
     need(process.get("source_revision", source) == source, "process_source_mismatch")
-    need(process["name"] == name and process["status"] == "passed" and process["returncode"] == 0
-         and process["timeout_seconds"] == 180 and 0 < process["seconds"] <= 180
-         and process["requires_display"] is False and not process.get("timed_out", False)
-         and not process.get("timeout_kind") and not process.get("launch_error")
-         and not process.get("capture_error") and not process.get("diagnostic_error")
-         and not process.get("skip_messages"), "process_failed_or_incomplete")
-    command = process["command"]
-    need(isinstance(command, list) and all(isinstance(item, str) for item in command)
-         and command[1:] == ["--headless", "--path", command[3], "--script", "res://tests/" + name + ".gd"],
-         "process_case_mismatch")
+    check_process(process, name)
     log = log_path.read_text(encoding="utf-8")
+    executed_policy = verify_log_policy(log, source)
     need("SCRIPT ERROR:" not in log and "ERROR:" not in log
          and not re.search(r"\bskipped\b|^\s*SKIP\b", log, re.I | re.M), "log_failed_or_skipped")
     markers = [json.loads(line.removeprefix("PLAY_LIFE011_RESULT ")) for line in log.splitlines()
@@ -546,7 +563,7 @@ def verify_files(result_path: Path, log_path: Path, process_path: Path, source: 
     reduced = validate(record, source, fixture_hash, preset_hash, platform)
     if self_test:
         reduced["adverse_controls"] = adverse_controls(record, source, fixture_hash, preset_hash, platform)
-    reduced.update(result_sha256=sha256(result_path), log_sha256=sha256(log_path),
+    reduced.update(execution_policy=executed_policy, result_sha256=sha256(result_path), log_sha256=sha256(log_path),
                    process_sha256=sha256(process_path), fixture_sha256=fixture_hash, preset_source_sha256=preset_hash)
     return reduced
 
@@ -571,7 +588,7 @@ def main() -> int:
             args.output.write_text(json.dumps(reduced, indent=2) + "\n", encoding="utf-8")
         print(json.dumps(reduced, sort_keys=True))
         return 0
-    except (EvidenceError, KeyError, IndexError, TypeError, ValueError, OSError, struct.error) as error:
+    except (EvidenceError, KeyError, IndexError, TypeError, ValueError, OSError, struct.error, subprocess.SubprocessError) as error:
         print(f"PLAY_LIFE011_VERIFICATION_FAILED: {error}", file=sys.stderr)
         return 1
 

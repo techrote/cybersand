@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 const Observer = preload("res://tests/interaction_async_worker.gd")
 
 func _init() -> void:
@@ -21,7 +23,7 @@ func _run() -> void:
 		if owner.start_worker(Vector2(100,72)) != OK:
 			quit(1)
 			return
-		var deadline: int = Time.get_ticks_msec()+20000
+		var deadline: int = Time.get_ticks_msec()+Watchdogs.milliseconds("operation_seconds")
 		var snapshot: CyberSimulationSnapshot
 		while true:
 			await process_frame

@@ -35,7 +35,7 @@ func expect(value: bool, message: String) -> void:
 
 func bounded(predicate: Callable, message: String) -> bool:
 	var start: int = Time.get_ticks_usec()
-	var deadline: int = mini(start + WAIT_TIMEOUT_MS * 1000, fixture_started_usec + 150000000)
+	var deadline: int = mini(start + WAIT_TIMEOUT_MS * 1000, fixture_started_usec + Watchdogs.microseconds("complex_fixture_seconds"))
 	var ok: bool = false
 	while Time.get_ticks_usec() < deadline:
 		if predicate.call():
@@ -330,11 +330,13 @@ func run() -> void:
 	desktop.set_script(PresentationMain)
 	root.add_child(desktop)
 	current_scene = desktop
-	while desktop.main_callbacks == 0 and Time.get_ticks_usec() < fixture_started_usec + 30000000:
+	var main_allowance_usec: int = Watchdogs.microseconds("main_ack_seconds")
+	var main_deadline_usec: int = fixture_started_usec + main_allowance_usec
+	while desktop.main_callbacks == 0 and Time.get_ticks_usec() < main_deadline_usec:
 		await process_frame
 	row.main_ack_usec = Time.get_ticks_usec() - fixture_started_usec
-	var main_acknowledged: bool = desktop.main_callbacks > 0 and row.main_ack_usec <= 30000000
-	expect(main_acknowledged, "actual Main callback acknowledges within the unchanged 30-second limit")
+	var main_acknowledged: bool = desktop.main_callbacks > 0 and row.main_ack_usec <= main_allowance_usec
+	expect(main_acknowledged, "actual Main callback acknowledges within the configured Main acknowledgement watchdog")
 	var worker: CyberSimulationWorker = desktop.simulation_worker
 	var worker_started: bool = worker != null and desktop.worker_start_error == OK and worker._thread.is_started()
 	expect(worker_started, "the existing native worker starts")
@@ -369,8 +371,8 @@ func run() -> void:
 			"ordinary scene replacement actually destroys the shared Main owner")
 	await close_cycle(desktop if is_instance_valid(desktop) else null, worker, session, "UI007: ")
 	var teardown_usec: int = Time.get_ticks_usec()-teardown_started
-	expect(teardown_usec <= WAIT_TIMEOUT_MS*1000, "complete navigation/teardown respects 15-second operation limit")
-	expect(Time.get_ticks_usec()-fixture_started_usec <= 150000000, "complete fixture respects its 150-second limit")
+	expect(teardown_usec <= WAIT_TIMEOUT_MS*1000, "complete navigation/teardown respects configured operation watchdog")
+	expect(Time.get_ticks_usec()-fixture_started_usec <= Watchdogs.microseconds("complex_fixture_seconds"), "complete fixture respects its configured fixture watchdog")
 	row.completed = success and failures == 0
 	print("PLAY_UI007_RESULT ",JSON.stringify({"schema":"play-ui007-v1",
 		"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),"rig":str(rig),

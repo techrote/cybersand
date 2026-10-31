@@ -1,10 +1,13 @@
 extends RefCounted
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 # Fixture-only observer. No SceneTree/World/Rapier access or self-termination:
-# the independent Python 45s idle guard/180s outer deadline captures before kill.
-const LIMIT_MS: int = 120000
+# the independent Python process watchdog captures diagnostics before kill.
+# This fixture guard never treats an old performance baseline as a deadline.
+var LIMIT_MS: int = Watchdogs.milliseconds("complex_fixture_seconds")
 const POLL_MS: int = 10
-const JOIN_MS: int = 1000
+var JOIN_MS: int = Watchdogs.milliseconds("operation_seconds")
 var _thread: Thread = Thread.new()
 var _mutex: Mutex = Mutex.new()
 var _case: String = ""
@@ -15,7 +18,9 @@ var _stop_requested: bool = false
 var _expired: bool = false
 var _joined: bool = false
 
-func start(name: String, limit_ms: int = LIMIT_MS) -> Error:
+func start(name: String, limit_ms: int = -1) -> Error:
+	if limit_ms < 0:
+		limit_ms = LIMIT_MS
 	if name.is_empty() or limit_ms < 1 or limit_ms > LIMIT_MS or _thread.is_started():
 		return ERR_INVALID_PARAMETER
 	_case = name

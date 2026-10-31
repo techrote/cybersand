@@ -4,9 +4,11 @@ import json
 import math
 import re
 
+from execution_policy import watchdog_seconds
+
 CASES = frozenset({"test_physical_actor_arena", "test_physical_actor_rigs", "test_physical_usable_course"})
-SNAPSHOT_IDLE_SECONDS = 30.0
-FAIL_IDLE_SECONDS = 45.0
+SNAPSHOT_IDLE_SECONDS = watchdog_seconds("operation_seconds")
+FAIL_IDLE_SECONDS = watchdog_seconds("complex_fixture_seconds")
 
 
 class ProgressWatchdog:

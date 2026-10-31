@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 const CyberWaterExperimentProfiles=preload("res://scripts/water_experiment_profiles.gd")
 
 var failures: int=0
@@ -13,7 +15,7 @@ func _expect(condition: bool, message: String) -> void:
 	push_error(message)
 
 func _wait_applied(controller: Control, expected_hash: String) -> bool:
-	var deadline: int=Time.get_ticks_msec()+15_000
+	var deadline: int=Time.get_ticks_msec()+Watchdogs.milliseconds("operation_seconds")
 	while Time.get_ticks_msec()<deadline:
 		await process_frame
 		if (controller.pending_water_apply.is_empty()
@@ -22,7 +24,7 @@ func _wait_applied(controller: Control, expected_hash: String) -> bool:
 	return false
 
 func _wait_ordinary(controller: Control) -> bool:
-	var deadline: int=Time.get_ticks_msec()+15_000
+	var deadline: int=Time.get_ticks_msec()+Watchdogs.milliseconds("operation_seconds")
 	while Time.get_ticks_msec()<deadline:
 		await process_frame
 		if (controller.pending_water_apply.is_empty()
@@ -137,7 +139,7 @@ func _run() -> void:
 	controller.paused=true
 	controller.tower_command({"water_reset":true,"water_policy":{"mass_bits":2},
 		"water_policy_hash":"forced-invalid"})
-	var rejection_deadline: int=Time.get_ticks_msec()+15_000
+	var rejection_deadline: int=Time.get_ticks_msec()+Watchdogs.milliseconds("operation_seconds")
 	while Time.get_ticks_msec()<rejection_deadline and not controller.pending_water_apply.is_empty():
 		await process_frame
 	_expect(controller.pending_water_apply.is_empty(),"rejected Water reset remained pending")
@@ -226,7 +228,7 @@ func _run() -> void:
 		CyberTransportProfiles.preset(0))
 	controller.tower_apply_profile({"ok":false})
 	var rejected_exit_serial: int=int(controller.pending_water_exit.get("request_serial",0))
-	var exit_rejection_deadline: int=Time.get_ticks_msec()+15_000
+	var exit_rejection_deadline: int=Time.get_ticks_msec()+Watchdogs.milliseconds("operation_seconds")
 	while Time.get_ticks_msec()<exit_rejection_deadline and not controller.pending_water_exit.is_empty():
 		await process_frame
 	_expect(controller.pending_water_exit.is_empty()

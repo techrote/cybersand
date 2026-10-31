@@ -9,10 +9,11 @@ import sys
 import time
 
 import godot_timeout_diagnostics as diagnostics
+import execution_policy
 from physical_progress_watchdog import ProgressWatchdog
 
 POLL_SECONDS = 0.1
-CAPTURE_SECONDS = 30.0
+CAPTURE_SECONDS = execution_policy.watchdog_seconds("diagnostic_capture_seconds")
 LOG_TAIL_BYTES = 256 * 1024
 
 
@@ -98,10 +99,10 @@ class _Capture:
 
 def wait(child: subprocess.Popen, name: str, timeout: float, started: float,
          log_path: Path, diagnostic_path: Path, *, capture_factory=None,
-         on_timeout=None) -> tuple[bool, str | None, str | None]:
+         on_timeout=None, on_sample=None) -> tuple[bool, str | None, str | None]:
     watchdog = ProgressWatchdog(name, started)
     deadline = started + timeout
-    capture_at = deadline - min(30.0, timeout * 0.2)
+    capture_at = deadline - min(CAPTURE_SECONDS, timeout * 0.2)
     captured = False
     capture = None
     capture_error = None
@@ -137,6 +138,8 @@ def wait(child: subprocess.Popen, name: str, timeout: float, started: float,
     try:
         while child.poll() is None:
             now = time.perf_counter()
+            if on_sample is not None:
+                on_sample(child.pid)
             output = _output_tail(log_path) if watchdog.enabled else ""
             watchdog.observe(output, now)
             # Decide limits independently of any diagnostic process or debugger.

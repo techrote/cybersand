@@ -7,6 +7,12 @@ import math
 import re
 from collections import Counter
 from typing import Any
+from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "tools/ci"))
+from execution_policy import watchdog_microseconds
+from play_execution_contract import policy_matches, process_policy_matches
 
 RIGS = ("stuntbuggy", "trialsbike", "acrobat", "arcadelander", "jetbarrel")
 MARKER = "PLAY_LIFE009_RESULT "
@@ -70,15 +76,18 @@ def extract(log: str) -> dict:
 
 def verify_process(process: dict, limit: int) -> None:
     require(process.get("status") == "passed" and type(process.get("returncode")) is int
-            and process["returncode"] == 0, "Process did not pass")
+            and process["returncode"] == 0 and process_policy_matches(process), "Process did not pass")
     require(process.get("timeout_seconds") == limit, "Process deadline changed")
     require(number(process.get("seconds"), "process.seconds") <= limit, "Late process exit")
-    require(not process.get("skip_messages") and not process.get("diagnostic_error")
+    require(not process.get("timed_out", False) and not process.get("timeout_kind")
+            and not process.get("timeout_diagnostic_error") and not process.get("skip_messages") and not process.get("diagnostic_error")
             and not process.get("launch_error") and not process.get("capture_error"),
             "Process evidence contains an error")
 
 
 def verify_result(result: dict, rig: str, source: str) -> dict:
+    require("execution_policy" not in result or policy_matches(result["execution_policy"]),
+            "Execution policy changed")
     require(rig in RIGS and result.get("rig") == rig, "Wrong rig")
     require(result.get("schema") == "play-life009-v2" and result.get("source_revision") == source,
             "Wrong schema/source")
@@ -93,8 +102,8 @@ def verify_result(result: dict, rig: str, source: str) -> dict:
     require(result.get("failures") == 0 and number(result.get("assertions"), "assertions") > 0,
             "Fixture assertions failed")
     require(result.get("manual_physics_calls") == 0 and result.get("retries") == 0, "Manual step/retry")
-    require(number(result.get("elapsed_usec"), "elapsed_usec") <= 150_000_000, "Fixture exceeded 150s")
-    require(number(result.get("teardown_usec"), "teardown_usec") <= 15_000_000, "Teardown exceeded 15s")
+    require(number(result.get("elapsed_usec"), "elapsed_usec") <= watchdog_microseconds("complex_fixture_seconds"), "Fixture exceeded watchdog")
+    require(number(result.get("teardown_usec"), "teardown_usec") <= watchdog_microseconds("operation_seconds"), "Teardown exceeded watchdog")
     row = result.get("row", {})
     require(row.get("rig") == rig and row.get("completed") is True
             and row.get("capture_overflow") is False, "Incomplete bounded fixture")
@@ -118,7 +127,7 @@ def verify_result(result: dict, rig: str, source: str) -> dict:
         start, end, deadline = (number(wait.get(k), k) for k in
                                 ("started_usec", "ended_usec", "deadline_usec"))
         require(wait.get("passed") is True and start <= end <= deadline
-                and 0 < deadline - start <= 15_000_000, "Late/absent operation")
+                and 0 < deadline - start <= watchdog_microseconds("operation_seconds"), "Late/absent operation")
     records = row.get("records", [])
     require(20 <= len(records) <= 512, "Invalid observation count")
     grouped: dict[str, list] = {p: [] for p in PHASES}

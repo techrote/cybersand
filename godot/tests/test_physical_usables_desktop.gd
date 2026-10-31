@@ -1,5 +1,7 @@
 extends SceneTree
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 # Production desktop, actual asynchronous native owner and actual Rapier body
 # owner. The harness supplies window focus and a fixed human aiming direction;
 # equipment commands, receipt admission, reset and physics remain production.
@@ -31,7 +33,9 @@ func expect(value: bool, message: String) -> void:
 		push_error("PHYSICAL_USABLE_DESKTOP: " + message)
 
 
-func wait_for(predicate: Callable, timeout_ms: int = 15000) -> bool:
+func wait_for(predicate: Callable, timeout_ms: int = -1) -> bool:
+	if timeout_ms < 0:
+		timeout_ms = Watchdogs.milliseconds("operation_seconds")
 	var deadline: int = Time.get_ticks_msec() + timeout_ms
 	while Time.get_ticks_msec() < deadline:
 		await process_frame

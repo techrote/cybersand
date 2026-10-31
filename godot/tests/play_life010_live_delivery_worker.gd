@@ -1,11 +1,13 @@
 extends "res://scripts/simulation_worker.gd"
 
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+
 # Test-only delivery/scheduling seams around the existing live owner. This is
 # NOT a second simulation loop or a naturally queued network transport. The
 # production latest-slot handoff cannot itself return an old serial.
 const MAX_PACKETS: int = 8
 const MAX_GATES: int = 4
-const GATE_TIMEOUT_USEC: int = 15000000
+var GATE_TIMEOUT_USEC: int = Watchdogs.microseconds("operation_seconds")
 var packets: Array[Dictionary] = [] # Main-thread retained immutable publications.
 var deliveries: Array[Dictionary] = []
 var capture_name: String = ""

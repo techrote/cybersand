@@ -260,9 +260,10 @@ class ResultTests(unittest.TestCase):
             with (
                 mock.patch.object(subject, "ROOT", root),
                 mock.patch.object(subject, "runtime_paths", return_value=(native, rapier)),
+                mock.patch.object(subject.execution_telemetry, "source_identity", return_value={"commit":"a" * 40, "tree":"b" * 40}),
                 mock.patch.object(subject, "discover_cases", return_value=cases),
                 mock.patch.object(subject, "case_command", side_effect=child_command),
-                mock.patch.object(subject.subprocess, "check_output", side_effect=["a" * 40, "fixture-godot"]),
+                mock.patch.object(subject.subprocess, "check_output", side_effect=["a" * 40, "fixture-godot", "b" * 40]),
                 mock.patch.object(sys, "argv", ["runner", "--godot", "fixture-godot", "--output", str(output), "--keep-going"]),
             ):
                 status = subject.main()
@@ -374,11 +375,18 @@ class Life010ReadbackTests(unittest.TestCase):
         identity.start()
         self.addCleanup(identity.stop)
 
+        source_identity = mock.patch.object(subject, "readback_source_identity",
+            side_effect=lambda source, relative, label, timeout=None: {
+                "source_revision": source, "path": relative,
+                "actual_sha256": subject.sha256(subject.ROOT / relative)})
+        source_identity.start()
+        self.addCleanup(source_identity.stop)
+
     def successful_verifier(self, command, **kwargs):
         self.assertIn("--self-test", command)
         self.assertEqual(command[command.index("--source") + 1], self.source)
         self.assertGreater(kwargs["timeout"], 0)
-        self.assertLessEqual(kwargs["timeout"], 15)
+        self.assertLessEqual(kwargs["timeout"], subject.execution_policy.watchdog_seconds("operation_seconds"))
         result = {"source_revision": self.source, "rig": "acrobat", "failures": 0,
                   "real_lifetimes": 2, "rejected_deliveries": 5, "native_commits": 2,
                   "lease_valid_cancellations": 1,
@@ -524,7 +532,7 @@ class Life010VerifierIdentityTests(unittest.TestCase):
                  mock.patch.object(subject.subprocess, "check_output", return_value=canonical) as git:
                 result = subject.life010_verifier_identity("1" * 40)
             git.assert_called_once_with(["git", "show", "1" * 40 + ":tools/ci/verify_play_life010.py"],
-                                        cwd=root, timeout=5)
+                                        cwd=root, timeout=subject.execution_policy.watchdog_seconds("operation_seconds"))
         return result
 
     def test_exact_source_bytes_are_identified(self):
@@ -575,7 +583,7 @@ class Input011ReadbackTests(unittest.TestCase):
         self.assertEqual(command[:2], ["git", "show"])
         self.assertEqual(cwd, self.root)
         self.assertGreater(timeout, 0)
-        self.assertLessEqual(timeout, 5)
+        self.assertLessEqual(timeout, subject.execution_policy.watchdog_seconds("operation_seconds"))
         source, path = command[2].split(":", 1)
         self.assertEqual(source, self.source)
         return self.source_bytes[path]
@@ -585,7 +593,7 @@ class Input011ReadbackTests(unittest.TestCase):
         self.assertEqual(command[command.index("--rig") + 1], "acrobat")
         self.assertEqual(command[command.index("--source") + 1], self.source)
         self.assertGreater(kwargs["timeout"], 0)
-        self.assertLessEqual(kwargs["timeout"], 15)
+        self.assertLessEqual(kwargs["timeout"], subject.execution_policy.watchdog_seconds("operation_seconds"))
         result = dict(self.contract.required_values, source_revision=self.source, rig="acrobat")
         result.update(self.contract.minimum_values)
         for field, count in self.contract.control_counts:
@@ -620,7 +628,7 @@ class Input011ReadbackTests(unittest.TestCase):
         self.assertEqual((self.output / result["raw_result"]).read_bytes(), self.raw)
         self.assertEqual((self.output / self.record["log"]).read_bytes(), self.original_log)
         self.assertEqual(json.loads((self.output / result["receipt"]).read_text()), self.record)
-        self.assertEqual(len(result["source_input_identity"]), 5)
+        self.assertEqual(len(result["source_input_identity"]), 9)
         self.assertEqual(subject.sha256(self.output / result["output"]), result["output_sha256"])
         self.assertEqual(subject.sha256(self.output / result["verifier_log"]), result["verifier_log_sha256"])
 
@@ -763,28 +771,29 @@ class Input011ReadbackTests(unittest.TestCase):
         self.assertEqual(result["status"], "failed")
         self.assertEqual(receipt.read_bytes(), b"retained original attempt\n")
 
-    def test_identity_checks_share_the_overall_fifteen_second_budget(self):
-        with mock.patch.object(subject.time, "perf_counter", side_effect=[0, 16, 16]), \
+    def test_identity_checks_share_the_overall_operation_budget(self):
+        with mock.patch.object(subject.time, "perf_counter", side_effect=[0, 301, 301]), \
              mock.patch.object(subject.subprocess, "run") as execute:
             result = subject.verify_case_evidence(self.case, self.record, self.output, self.source, self.contract)
         execute.assert_not_called()
         self.assertEqual(result["status"], "failed")
-        self.assertIn("15-second bound", result["error"])
+        self.assertIn("execution allowance", result["error"])
 
     def test_success_after_overall_deadline_is_failed(self):
         now = [0.0]
         def late(command, **kwargs):
             result = self.successful_verifier(command, **kwargs)
-            now[0] = 16.0
+            now[0] = 301.0
             return result
         with mock.patch.object(subject.time, "perf_counter", side_effect=lambda: now[0]):
             result = self.verify(late)
         self.assertEqual(result["status"], "failed")
-        self.assertIn("exceeded its 15-second bound", result["error"])
+        self.assertIn("exceeded its execution allowance", result["error"])
 
     def test_parent_does_not_promote_zero_exit_after_failed_readback(self):
         with mock.patch.object(subject, "case_command", return_value=[sys.executable, "-c", "print('engine control')"]), \
              mock.patch.object(subject, "verify_case_evidence", return_value={"status": "failed", "error": "controlled refusal"}), \
+             mock.patch.object(subject.execution_telemetry, "source_identity", return_value={"commit":self.source}), \
              redirect_stdout(io.StringIO()):
             record, failed = subject.run_case(sys.executable, self.case, self.output, "case")
         self.assertTrue(failed)
@@ -824,7 +833,7 @@ class Life011ReadbackTests(unittest.TestCase):
         self.assertEqual(command[:2], ["git", "show"])
         self.assertEqual(cwd, self.root)
         self.assertGreater(timeout, 0)
-        self.assertLessEqual(timeout, 5)
+        self.assertLessEqual(timeout, subject.execution_policy.watchdog_seconds("operation_seconds"))
         source, path = command[2].split(":", 1)
         self.assertEqual(source, self.source)
         self.queried.append(path)
@@ -836,7 +845,7 @@ class Life011ReadbackTests(unittest.TestCase):
         self.assertEqual(command[command.index("--platform") + 1],
                          "Windows" if sys.platform == "win32" else "Linux")
         self.assertGreater(kwargs["timeout"], 0)
-        self.assertLessEqual(kwargs["timeout"], 15)
+        self.assertLessEqual(kwargs["timeout"], subject.execution_policy.watchdog_seconds("operation_seconds"))
         result = dict(self.contract.required_values, source_revision=self.source, rig="acrobat")
         result["adverse_controls"] = [{"name": str(i), "rejected_for": "controlled"} for i in range(37)]
         for field, argument in (("process_sha256", "--process-json"), ("log_sha256", "--log"),
@@ -868,11 +877,11 @@ class Life011ReadbackTests(unittest.TestCase):
             return completed
         return self.verify(altered)
 
-    def test_external_result_and_all_nine_dependencies_are_bound(self):
+    def test_external_result_and_all_policy_and_fixture_dependencies_are_bound(self):
         result = self.verify()
         self.assertEqual(result["status"], "passed")
         self.assertCountEqual(self.queried, self.source_bytes)
-        self.assertEqual(len(result["source_input_identity"]), 9)
+        self.assertEqual(len(result["source_input_identity"]), 13)
         self.assertEqual(json.loads((self.output / result["receipt"]).read_text()), self.record)
         self.assertEqual(result["input_sha256"]["result"], subject.hashlib.sha256(self.raw).hexdigest())
         self.assertEqual(subject.sha256(self.output / result["output"]), result["output_sha256"])
@@ -938,11 +947,11 @@ class Life011ReadbackTests(unittest.TestCase):
         self.assertEqual(result["status"], "failed")
         self.assertIn("original input changed", result["error"])
 
-    def test_all_dependencies_share_one_fifteen_second_budget(self):
+    def test_all_dependencies_share_one_operation_budget(self):
         now = [0.0]
         def slow_identity(command, **kwargs):
             data = self.canonical_source(command, **kwargs)
-            now[0] += 2.0
+            now[0] += 40.0
             return data
         execute = mock.Mock(side_effect=self.successful_verifier)
         with mock.patch.object(subject.time, "perf_counter", side_effect=lambda: now[0]), \
@@ -950,7 +959,7 @@ class Life011ReadbackTests(unittest.TestCase):
             result = self.verify(execute)
         execute.assert_not_called()
         self.assertEqual(result["status"], "failed")
-        self.assertIn("15-second bound", result["error"])
+        self.assertIn("execution allowance", result["error"])
 
 
 class ReadbackRegistrationTests(unittest.TestCase):

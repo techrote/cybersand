@@ -7,7 +7,7 @@ extends "res://tests/play_life001_shared_host_case.gd"
 # latency, native-job shutdown ordering, or human feel.
 const SAMPLE_NATIVE_TICKS: int = 120
 const MIN_PROCESS_SAMPLES: int = 30
-const SAMPLE_TIMEOUT_MS: int = 30000
+var SAMPLE_TIMEOUT_MS: int = Watchdogs.milliseconds("operation_seconds")
 
 
 class PacingHarness:
