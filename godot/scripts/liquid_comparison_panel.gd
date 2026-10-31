@@ -77,7 +77,7 @@ func setup(controller: Control, selection_only: bool = false) -> void:
 	geometry_picker = OptionButton.new()
 	geometry_picker.add_item("Original Current geometry (radius 2)",2)
 	geometry_picker.add_item("Matched IN geometry (radius 3)",3)
-	geometry_picker.tooltip_text = "IN Brine requires explicit radius three. Use the same geometry for its Current comparator. Original Current control always restores radius two."
+	geometry_picker.tooltip_text = "Any inertial solver requires explicit radius three. Use the same geometry for its Current comparator. Original Current control always restores radius two."
 	geometry_picker.item_selected.connect(func(_index: int) -> void: _dirty = true;_refusal = "")
 	presets.add_child(geometry_picker)
 	preset_picker = OptionButton.new()

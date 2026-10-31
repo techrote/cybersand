@@ -369,10 +369,28 @@ INPUT011_READBACK = ReadbackContract(
                             ("panel_sha256", "godot/scripts/microscenario_panel.gd")),
     verifier_digest_field="verifier_sha256",
 )
+LIFE011_READBACK = ReadbackContract(
+    "LIFE011", "test_play_life011_", "tools/ci/verify_play_life011.py", "life011",
+    (("failures", 0), ("presets", 8), ("constructions", 8), ("resets", 8),
+     ("retired_graphs", 16), ("nonneutral_completed_physical_samples", 72),
+     ("old_owner_refusals", 8), ("old_generation_refusals", 8),
+     ("fresh_observation_admissions", 8), ("unsupported_oil_refusals", 8),
+     ("inertial_radius_refusals", 3), ("waits", 75),
+     ("graphical_qualification", False), ("physical_device_qualification", False)),
+    (("adverse_controls", 37),), arguments=("--platform", "{platform}"),
+    source_inputs=("godot/tests/play_life011_solver_case.gd",
+                   "godot/scripts/liquid_comparison_panel.gd",
+                   "godot/tests/test_play_life011_{rig}.gd",
+                   "godot/tests/play_life001_shared_host_case.gd",
+                   "tools/lcb/policy_contract.py", "tools/lcb/inertial_parameter_contract.py",
+                   "docs/reference/liquid-solver-capability-matrix.json",
+                   "native/include/cybersand/material.hpp",
+                   "native/include/cybersand/interaction_rules.hpp"),
+)
 READBACK_RIGS = ("stuntbuggy", "trialsbike", "acrobat", "arcadelander", "jetbarrel")
 # A subsequent fixture adds one contract and its explicit source dependencies;
 # it does not implement another process runner or weaken the current contracts.
-READBACK_CONTRACTS = (LIFE010_READBACK, INPUT011_READBACK)
+READBACK_CONTRACTS = (LIFE010_READBACK, INPUT011_READBACK, LIFE011_READBACK)
 
 
 def case_readback_contract(case: Case) -> ReadbackContract | None:

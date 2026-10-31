@@ -793,6 +793,166 @@ class Input011ReadbackTests(unittest.TestCase):
         self.assertEqual(record["independent_evidence"]["error"], "controlled refusal")
 
 
+class Life011ReadbackTests(unittest.TestCase):
+    """Contract insertion controls only; the real solver trace has its own verifier."""
+
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name)
+        self.contract = subject.LIFE011_READBACK
+        self.case = fake("test_play_life011_acrobat", 5)
+        self.source = "2" * 40
+        self.raw = b'{"scope":"synthetic parent contract control only"}\n'
+        self.source_bytes = {
+            path.format(rig="acrobat"): (path + "\n").encode()
+            for path in (self.contract.verifier, *self.contract.source_inputs)}
+        for name, data in self.source_bytes.items():
+            path = self.root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(data)
+        self.queried = []
+        self.attempt = 0
+        root_patch = mock.patch.object(subject, "ROOT", self.root)
+        root_patch.start()
+        self.addCleanup(root_patch.stop)
+        git_patch = mock.patch.object(subject.subprocess, "check_output", side_effect=self.canonical_source)
+        git_patch.start()
+        self.addCleanup(git_patch.stop)
+
+    def canonical_source(self, command, *, cwd, timeout):
+        self.assertEqual(command[:2], ["git", "show"])
+        self.assertEqual(cwd, self.root)
+        self.assertGreater(timeout, 0)
+        self.assertLessEqual(timeout, 5)
+        source, path = command[2].split(":", 1)
+        self.assertEqual(source, self.source)
+        self.queried.append(path)
+        return self.source_bytes[path]
+
+    def successful_verifier(self, command, **kwargs):
+        self.assertIn("--self-test", command)
+        self.assertEqual(command[command.index("--source") + 1], self.source)
+        self.assertEqual(command[command.index("--platform") + 1],
+                         "Windows" if sys.platform == "win32" else "Linux")
+        self.assertGreater(kwargs["timeout"], 0)
+        self.assertLessEqual(kwargs["timeout"], 15)
+        result = dict(self.contract.required_values, source_revision=self.source, rig="acrobat")
+        result["adverse_controls"] = [{"name": str(i), "rejected_for": "controlled"} for i in range(37)]
+        for field, argument in (("process_sha256", "--process-json"), ("log_sha256", "--log"),
+                                ("result_sha256", "--result")):
+            result[field] = subject.sha256(Path(command[command.index(argument) + 1]))
+        subject.write_json(Path(command[command.index("--output") + 1]), result)
+        return subject.subprocess.CompletedProcess(command, 0)
+
+    def verify(self, execute=None):
+        self.output = self.root / ("attempt-" + str(self.attempt))
+        self.attempt += 1
+        self.output.mkdir()
+        self.record = {"name": self.case.name, "status": "passed", "returncode": 0,
+                       "log": self.case.name + ".log", "seconds": 1.0, "timeout_seconds": 180}
+        (self.output / self.record["log"]).write_text("retained engine control\n", encoding="utf-8")
+        raw_dir = self.output / (self.case.name + "-artifacts")
+        raw_dir.mkdir()
+        (raw_dir / "acrobat-life011.json").write_bytes(self.raw)
+        with mock.patch.object(subject.subprocess, "run", side_effect=execute or self.successful_verifier):
+            return subject.verify_case_evidence(self.case, self.record, self.output, self.source, self.contract)
+
+    def alter_evidence(self, change):
+        def altered(command, **kwargs):
+            completed = self.successful_verifier(command, **kwargs)
+            path = Path(command[command.index("--output") + 1])
+            value = json.loads(path.read_text())
+            change(value)
+            subject.write_json(path, value)
+            return completed
+        return self.verify(altered)
+
+    def test_external_result_and_all_nine_dependencies_are_bound(self):
+        result = self.verify()
+        self.assertEqual(result["status"], "passed")
+        self.assertCountEqual(self.queried, self.source_bytes)
+        self.assertEqual(len(result["source_input_identity"]), 9)
+        self.assertEqual(json.loads((self.output / result["receipt"]).read_text()), self.record)
+        self.assertEqual(result["input_sha256"]["result"], subject.hashlib.sha256(self.raw).hexdigest())
+        self.assertEqual(subject.sha256(self.output / result["output"]), result["output_sha256"])
+        self.assertEqual(subject.sha256(self.output / result["verifier_log"]), result["verifier_log_sha256"])
+
+    def test_windows_platform_is_explicit(self):
+        with mock.patch.object(subject.sys, "platform", "win32"):
+            self.assertEqual(self.verify()["status"], "passed")
+
+    def test_incomplete_policy_physics_refusal_or_retirement_inventory_is_refused(self):
+        for field, expected in self.contract.required_values:
+            if type(expected) is not int or expected == 0:
+                continue
+            with self.subTest(field=field):
+                result = self.alter_evidence(lambda value: value.update({field: expected - 1}))
+                self.assertEqual(result["status"], "failed")
+                self.assertIn("result/control inventory", result["error"])
+
+    def test_missing_or_duplicate_adverse_control_is_refused(self):
+        for mutate in (lambda value: value["adverse_controls"].pop(),
+                       lambda value: value["adverse_controls"].__setitem__(1, value["adverse_controls"][0])):
+            with self.subTest(mutation=mutate):
+                result = self.alter_evidence(mutate)
+                self.assertEqual(result["status"], "failed")
+                self.assertIn("result/control inventory", result["error"])
+
+    def test_wrong_source_or_rig_is_refused(self):
+        for field, value in (("source_revision", "3" * 40), ("rig", "jetbarrel")):
+            with self.subTest(field=field):
+                self.assertEqual(self.alter_evidence(lambda item: item.update({field: value}))["status"], "failed")
+
+    def test_policy_dependency_substitution_is_refused_before_execution(self):
+        for name in ("tools/lcb/policy_contract.py", "tools/lcb/inertial_parameter_contract.py",
+                     "docs/reference/liquid-solver-capability-matrix.json"):
+            with self.subTest(path=name):
+                (self.root / name).write_bytes(b"substituted policy input\n")
+                execute = mock.Mock(side_effect=self.successful_verifier)
+                result = self.verify(execute)
+                execute.assert_not_called()
+                self.assertEqual(result["status"], "failed")
+                self.assertIn("differs from its source commit", result["error"])
+                (self.root / name).write_bytes(self.source_bytes[name])
+
+    def test_policy_dependency_changes_during_readback_are_refused(self):
+        for name in ("tools/lcb/policy_contract.py", "tools/lcb/inertial_parameter_contract.py",
+                     "docs/reference/liquid-solver-capability-matrix.json"):
+            with self.subTest(path=name):
+                def changed(command, **kwargs):
+                    completed = self.successful_verifier(command, **kwargs)
+                    (self.root / name).write_bytes(b"changed after reduction\n")
+                    return completed
+                result = self.verify(changed)
+                self.assertEqual(result["status"], "failed")
+                self.assertIn("source input changed", result["error"])
+                (self.root / name).write_bytes(self.source_bytes[name])
+
+    def test_external_result_mutation_is_refused(self):
+        def changed(command, **kwargs):
+            completed = self.successful_verifier(command, **kwargs)
+            Path(command[command.index("--result") + 1]).write_bytes(b"changed original\n")
+            return completed
+        result = self.verify(changed)
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("original input changed", result["error"])
+
+    def test_all_dependencies_share_one_fifteen_second_budget(self):
+        now = [0.0]
+        def slow_identity(command, **kwargs):
+            data = self.canonical_source(command, **kwargs)
+            now[0] += 2.0
+            return data
+        execute = mock.Mock(side_effect=self.successful_verifier)
+        with mock.patch.object(subject.time, "perf_counter", side_effect=lambda: now[0]), \
+             mock.patch.object(subject.subprocess, "check_output", side_effect=slow_identity):
+            result = self.verify(execute)
+        execute.assert_not_called()
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("15-second bound", result["error"])
+
+
 class ReadbackRegistrationTests(unittest.TestCase):
     def test_exact_five_input011_cases_require_readback(self):
         for rig in subject.READBACK_RIGS:
@@ -809,6 +969,19 @@ class ReadbackRegistrationTests(unittest.TestCase):
         import run_windows_godot_regressions as windows
         self.assertIn(subject.LIFE010_READBACK.verifier, windows.INPUT_SCOPES)
         self.assertIn(subject.INPUT011_READBACK.verifier, windows.INPUT_SCOPES)
+
+    def test_exact_five_life011_cases_require_readback(self):
+        for rig in subject.READBACK_RIGS:
+            self.assertIs(subject.case_readback_contract(fake("test_play_life011_" + rig, 5)), subject.LIFE011_READBACK)
+        self.assertIsNone(subject.case_readback_contract(fake("test_play_life011_unknown", 5)))
+
+    def test_windows_custody_includes_life011_policy_dependencies(self):
+        import run_windows_godot_regressions as windows
+        for path in (subject.LIFE011_READBACK.verifier, "tools/lcb/policy_contract.py",
+                     "tools/lcb/inertial_parameter_contract.py",
+                     "docs/reference/liquid-solver-capability-matrix.json"):
+            self.assertIn(path, windows.INPUT_SCOPES)
+        self.assertIn("native/include", windows.INPUT_SCOPES)
 
 
 if __name__ == "__main__":

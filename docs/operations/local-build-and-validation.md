@@ -60,6 +60,31 @@ The [dated INPUT011 record](../audits/2026-10-31-play-input011-authority-transit
 separates original v1 evidence, the v2 focused-button failure, the correction
 and resulting-head qualification still required in hosted CI.
 
+## PLAY LIFE011 composed-policy raw-evidence gate — 2026-10-31
+
+The five `test_play_life011_<rig>.gd` cases add an explicit contract to the same
+ordinary parent hook. Their original external JSON result, log and engine
+receipt are retained and passed to `tools/ci/verify_play_life011.py --platform
+Linux|Windows --self-test` with the exact source. Each rig must retain eight
+presets, eight builds, eight resets, 72 nonneutral completed physical samples,
+eight old-owner and eight old-generation refusals, eleven actual native policy
+refusals, sixteen retired graphs and all 37 reason-specific adverse controls.
+
+One 15-second overall readback budget includes source checks, reduction and
+result validation. Canonical and actual before/after hashes cover the verifier,
+fixture, preset script, rig wrapper, shared-host helper, two policy-contract
+Python dependencies, capability matrix and two native catalogue headers.
+Windows execution custody includes the exact Python and JSON dependency paths;
+its existing native-header scope is preserved. Original process/log/result
+digests, the reduced result and verifier log remain independently checkable.
+The engine180s, import240s, fixture150s, operation/teardown15s and first-Main30s
+bounds are unchanged. A late, partial or failed readback fails its parent case.
+
+The [dated LIFE011 record](../audits/2026-10-31-play-life011-composed-solver-matrix.md)
+separates the original frozen 704de34 local campaign from this integration.
+Headless native/Rapier results do not establish graphical or physical-device
+qualification, and a cherry-pick does not qualify the resulting source.
+
 ## Trial successor correction after accepted App — 2026-10-25
 
 App #256 is merged as main56422c05 after all four exact-dc2 required gates.

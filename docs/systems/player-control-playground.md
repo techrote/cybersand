@@ -190,6 +190,27 @@ accepting each LIFE010 case. This is synthetic scheduling on the actual host,
 not physical-device, graphical or human-feel qualification. Exact resulting-head
 hosted execution remains in the PR ledger.
 
+## Eight-policy composed-session qualification
+
+[LIFE011](../audits/2026-10-31-play-life011-composed-solver-matrix.md) exercises
+all eight liquid-selector presets on every mechanical rig through ordinary
+shared-Main construction and retained-policy reset. Each rig requires eight
+builds, eight resets and 72 samples of completed nonneutral Rapier progress
+alongside native progress. The existing transaction must refuse eight Oil/pressure requests and
+three radius-two inertial requests while preserving the current World, actor,
+applied policy and receipt. Any inertial solver requires explicit radius three;
+this does not change the default geometry or solver assignments.
+
+Old-run and still-valid-lease old-control observations are separately refused;
+fresh observations recover. Retained publications remain immutable and all
+replaced graphs and the final worker retire. The ordinary Windows/Linux runner
+requires the independent policy/receipt verifier and its 37 reason-specific
+adverse controls under the same 15-second readback budget. The verifier and
+policy dependencies are bound to the declared source before and after reduction.
+This actual-host headless contract supplements the 50-lifetime baseline. Exact
+integrated hosted evidence, graphical output, physical devices and human play
+remain separate qualification requirements.
+
 ## PLAY composable existing-host route — accepted course and five-rig slice
 
 [PLAY-COMP-001 #273](https://github.com/techrote/cybersand/issues/273) was
