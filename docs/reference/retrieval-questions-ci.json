@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "frozen_date": "2026-10-31",
+  "purpose": "Bounded CI production-integration development retrieval; separate from the frozen historical development set and held-outs.",
+  "questions": [
+    {
+      "id": "CI001",
+      "query": "How does production Native CI use six parallel families without weakening scientific coverage or the TSan deadline?",
+      "canonical": [
+        "operations/github-development-and-release.md",
+        "operations/testing-validation-and-replay.md"
+      ],
+      "facts": [
+        "The six families preserve all original commands, fixtures, assertions, scoped environments and original per-command limits, including the15-minute TSan suite.",
+        "The stable native aggregate requires complete source/run/attempt-bound successful original evidence; missing or failed shards cannot pass.",
+        "The five expanded experimental311 bounds are not production policy; historical exit124 remains retained."
+      ],
+      "sources": [
+        "../.github/workflows/native.yml",
+        "../tools/ci/verify_native_shards.py",
+        "audits/2026-10-31-ci-parallel-production-integration.md"
+      ]
+    },
+    {
+      "id": "CI002",
+      "query": "Does four-way Windows Godot sharding change test coverage or replace Linux graphical qualification?",
+      "canonical": [
+        "operations/testing-validation-and-replay.md",
+        "operations/local-build-and-validation.md"
+      ],
+      "facts": [
+        "Four Windows shards execute every current applicable headless case exactly once and retain separate imports and original logs.",
+        "The independent coverage reducer runs after admitted failed/cancelled matrices and requires source/runtime/log completeness and upstream success.",
+        "All Linux graphical/build/sharded gates and per-case deadlines remain; old201-case timing does not qualify a later208-case head."
+      ],
+      "sources": [
+        "../.github/workflows/gdextension.yml",
+        "../tools/ci/verify_windows_godot_shards.py",
+        "audits/2026-10-31-ci-parallel-production-integration.md"
+      ]
+    },
+    {
+      "id": "CI003",
+      "query": "Can the Native source-scope advisory authorize skipping required tests for presentation-only changes?",
+      "canonical": [
+        "operations/github-development-and-release.md",
+        "operations/testing-validation-and-replay.md"
+      ],
+      "facts": [
+        "No: native_skip_authorized=false remains unconditional and no Native/Godot required job consumes an exemption.",
+        "The report authenticates immutable base/executed-head commits and classifier bytes, uses NUL-delimited no-renames Git diff, and conservatively handles invalid/unknown paths.",
+        "An actual skip policy needs a separate owner decision and dependency audit; the advisory claims no runtime saving."
+      ],
+      "sources": [
+        "../tools/ci/native_scope_classifier.py",
+        "../.github/workflows/native-scope-advisory.yml"
+      ]
+    }
+  ]
+}

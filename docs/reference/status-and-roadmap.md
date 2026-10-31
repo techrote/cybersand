@@ -4,11 +4,23 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-10-30
+last-reviewed: 2026-10-31
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## Production CI parallelism — 2026-10-31
+
+**Implemented in this integration source; resulting-head qualification remains
+separate:** six independent Native families with original command limits and a
+complete `native` aggregate; four Windows Godot shards with independent coverage
+that fails on an admitted failed/missing matrix; unchanged Linux and scientific
+coverage. The conservative Native scope report authorizes no skips. The
+[dated audit](../audits/2026-10-31-ci-parallel-production-integration.md) preserves
+the actual predecessor timing, five rejected deadline expansions, adverse tests
+and exact [qualification/integration ledger](https://github.com/techrote/cybersand/issues/305#issuecomment-6537154140).
+Faster CI cannot satisfy the separately red #309/#308 graphical contract.
 
 ## PLAY composable desktop checkpoint — 2026-10-30
 

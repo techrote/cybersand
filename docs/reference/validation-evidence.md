@@ -4,11 +4,26 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-10-31
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md, ../audits/2026-10-25-lcb002-pressure-variants.md]
 ---
 
 # Validation evidence ledger
+
+## CI parallelism evidence boundary — 2026-10-31
+
+The [dated production CI audit](../audits/2026-10-31-ci-parallel-production-integration.md)
+binds #311 source3ed/run41139999997 (six Native families, 23m41s workflow elapsed),
+#313 source730/run41147668752 (report-only classification), and #314
+sourced1e/run41147691386 (four Windows shards, 11m43s first-shard-to-coverage
+span). The Windows comparison verifies the same201 cases/760inputs against the
+24m22s two-way baseline; later #310 requires its own208-case qualification.
+All original logs/ZIPs and independent SHA-256 receipts are retained. #311's
+five larger trial deadlines are not accepted as equivalent to mandatory bounds;
+production restores the originals. Draft skips and skipped runtime-provenance
+steps remain explicit. The [live resulting-head ledger](https://github.com/techrote/cybersand/issues/305#issuecomment-6537154140)
+records fresh production gates, substantive review and any guarded integration.
+No historical trial pass substitutes for those results or a Windows PACE pass.
 
 ## Qualified Water sequence2 publication — 2026-10-25
 

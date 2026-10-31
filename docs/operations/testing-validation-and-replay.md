@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Executable test selection and future gates; dated results and save format live in separate references
 canonical-for: [test-inventory, test-selection, future-validation-gates]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-10-31
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md, ../reference/level-saves-and-replay.md]
 ---
 
@@ -110,6 +110,25 @@ identities, commands, log hashes and drift/completion checks. The
 [Windows execution procedure](local-build-and-validation.md#windows-retained-runtime-execution)
 owns the job bounds and artifact route. This actual execution gate and the
 separate Windows cross-build check must retain their distinct evidence scopes.
+
+### Parallel Native and four-way Windows admission
+
+The2026-10-31 [production CI integration](../audits/2026-10-31-ci-parallel-production-integration.md)
+keeps the Native test/scientific command set intact while executing its six
+families concurrently. Its stable `native` reducer rejects any failed, missing,
+duplicate or foreign source/run/attempt evidence, and all original command
+budgets remain in force. In particular, historical TSan exit124 is not repaired
+by rescheduling or a larger time limit.
+
+Windows now uses `--shard-count 4 --shard-index 0..3`; the independent coverage
+verifier also requires four. Every current applicable case executes exactly
+once, with one separate authentic import per shard. An admitted failed
+or cancelled matrix cannot suppress coverage verification or be mistaken for
+success. The original Windows runner, timeout diagnostics, LFS/provenance checks
+and all Linux graphical coverage remain authoritative. The source-scope report
+is advisory only and grants no Native exemption. Fresh resulting-head execution,
+including any additional PLAY cases on that head, is mandatory; predecessor
+201-case timing is not a newer208-case pass.
 
 ## Physical regression timeout diagnostics
 

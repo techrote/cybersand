@@ -93,7 +93,8 @@ jobs:
           print("\n".join(files))
           PY
 
-  native:
+  policy:
+    name: Native evidence and provider policy
     needs: [ready_scope]
     if: >-
       always() &&
@@ -102,99 +103,186 @@ jobs:
         (github.event.action != 'ready_for_review' ||
          needs.ready_scope.outputs.required == 'true')))
     runs-on: ubuntu-24.04
-    # The combined sanitizer builds can consume more than 40 minutes before
-    # the final shared-library/benchmark gate begins. Keep their existing
-    # per-command bounds and allow the full required job to finish.
+    timeout-minutes: 5
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Check hosted provider and evidence failure controls
+        run: |
+          set -euo pipefail
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/test_ci_provider_policy.py
+          python3 tools/ci/test_native_shards.py
+
+  native-shards:
+    name: Native family / ${{ matrix.suite }}
+    needs: [ready_scope]
+    if: >-
+      always() &&
+      (github.event_name != 'pull_request' ||
+       (github.event.pull_request.draft == false &&
+        (github.event.action != 'ready_for_review' ||
+         needs.ready_scope.outputs.required == 'true')))
+    runs-on: ubuntu-24.04
+    # Each command keeps its original bound; the existing 90 minute job ceiling is
+    # retained for each independent family, with no retry or test filtering.
     timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        suite: [tsan, native-normal, asan-ubsan, worldgen, soliding-normal, soliding-asan]
     env:
       CC: gcc-13
       CXX: g++-13
     steps:
       - name: Check out source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-
-      - name: Record compiler and linker identity
+      - name: Record compiler, linker and exact source identity
         run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           gcc-13 --version
           g++-13 --version
           ld --version
           make --version
 
-      # Check shared-worker ownership before the longer independent sanitizer builds.
-      - name: Compile and run TSan
-        run: |
-          timeout 15m make build/tests_tsan
-          timeout 15m env TSAN_OPTIONS=halt_on_error=1 ./build/tests_tsan
-
-      - name: Compile C API and native tests
-        run: |
-          timeout 5m make c-header-check
-          timeout 15m make build/tests
-
-      - name: Run native behavioral and integration suite
-        run: timeout 15m ./build/tests
-
-      - name: Sanitize physics CLI material admission and sampled accounting
+      - name: Execute complete original test family on independent runner
+        id: execute
+        shell: bash
         env:
-          ASAN_OPTIONS: detect_leaks=0:strict_string_checks=1
-          UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+          SUITE: ${{ matrix.suite }}
         run: |
           set -euo pipefail
-          mkdir -p build/physics-cli-validation
-          timeout 5m make physics-characterisation-sanitize 2>&1 | tee build/physics-cli-validation/validation.log
+          mkdir -p "build/native-parallel/$SUITE"
+          # Preserve the original first failing command's exit, including 124.
+          # The inner shell still stops at that command; no retry is introduced.
+          set +e
+          (
+            set -euo pipefail
+            echo "source_sha=$GITHUB_SHA suite=$SUITE run=$GITHUB_RUN_ID attempt=$GITHUB_RUN_ATTEMPT"
+            echo "compiler=$(g++-13 --version | head -n 1)"
+            case "$SUITE" in
+              tsan)
+                # Preserve the original TSan build and execution deadlines.
+                timeout 15m make build/tests_tsan
+                timeout 15m env TSAN_OPTIONS=halt_on_error=1 ./build/tests_tsan
+                ;;
+              native-normal)
+                timeout 5m make c-header-check
+                timeout 15m make build/tests
+                timeout 15m ./build/tests
+                timeout 15m make shared
+                timeout 15m make build/benchmark
+                timeout 10m ./build/benchmark
+                ;;
+              asan-ubsan)
+                timeout 15m make build/tests_sanitized
+                timeout 15m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 ./build/tests_sanitized
+                ;;
+              worldgen)
+                mkdir -p build/physics-cli-validation
+                timeout 5m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 make physics-characterisation-sanitize 2>&1 | tee build/physics-cli-validation/validation.log
+                timeout 5m make worldgen-test
+                timeout 10m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make worldgen-sanitize
+                ;;
+              soliding-normal)
+                timeout 5m make soliding-test
+                timeout 2m make soliding-benchmark-smoke
+                timeout 3m make soliding-stage3b-validation-apparatus-test
+                timeout 3m make soliding-stage3-cost-smoke
+                ;;
+              soliding-asan)
+                # Preserve the original resource-characterised settled-region build,
+                # followed by the full eight-binary sanitizer contract suite.
+                timeout 20m /usr/bin/time -v make build/test_settled_regions_sanitized
+                timeout 20m make \
+                  build/test_soliding_lifecycle_sanitized \
+                  build/test_settled_discovery_sanitized \
+                  build/test_settled_regions_sanitized \
+                  build/test_settled_world_discovery_sanitized \
+                  build/test_stage3b_runtime_storage_sanitized \
+                  build/test_stage3b_bounded_spatial_index_sanitized \
+                  build/test_stage3b_sparse_mutation_witness_sanitized \
+                  build/test_stage3b_sparse_activity_deadline_sanitized
+                timeout 10m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make soliding-sanitize
+                ;;
+              *)
+                echo "Unknown suite: $SUITE" >&2
+                exit 2
+                ;;
+            esac
+            echo "Native family passed: $SUITE"
+          ) 2>&1 | tee "build/native-parallel/$SUITE/run.log"
+          original_status=("${PIPESTATUS[@]}")
+          set -e
+          printf '%s\n' "${original_status[0]}" > "build/native-parallel/$SUITE/family-exit-code.txt"
+          printf '%s\n' "${original_status[1]}" > "build/native-parallel/$SUITE/log-capture-exit-code.txt"
+          if [ "${original_status[0]}" -ne 0 ]; then
+            exit "${original_status[0]}"
+          fi
+          exit "${original_status[1]}"
 
-      - name: Retain physics CLI results and sanitizer logs
+      - name: Retain original family outcome and source fingerprints
+        if: always()
+        env:
+          SUITE: ${{ matrix.suite }}
+          SUITE_OUTCOME: ${{ steps.execute.outcome }}
+        run: |
+          python3 tools/ci/verify_native_shards.py record \
+            --suite "$SUITE" --outcome "$SUITE_OUTCOME" \
+            --source-sha "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" \
+            --run-attempt "$GITHUB_RUN_ATTEMPT" --output build/native-parallel
+
+      - name: Preserve original family logs and scientific outputs
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: native-physics-cli-${{ github.run_id }}-${{ github.run_attempt }}
-          path: build/physics-cli-validation/
-          if-no-files-found: warn
-          retention-days: 30
+          name: native-shard-${{ matrix.suite }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/native-parallel/
+            build/physics-cli-validation/
+            build/stage3b-validation-*.json
+          if-no-files-found: error
+          retention-days: 90
 
-      - name: Validate procedural generation candidates and fresh chunk admission
-        run: timeout 5m make worldgen-test
-
-      - name: Sanitize procedural generation and chunk admission
-        run: timeout 10m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make worldgen-sanitize
-
-      - name: Run soliding contract regressions
-        run: timeout 5m make soliding-test
-
-      - name: Smoke-test isolated discovery characterization
-        run: timeout 2m make soliding-benchmark-smoke
-
-      - name: Validate Stage-3B preregistration apparatus
-        run: timeout 3m make soliding-stage3b-validation-apparatus-test
-
-      - name: Smoke-test retained Stage-3 benchmark lineage
-        run: timeout 3m make soliding-stage3-cost-smoke
-
-      - name: Compile and run ASan plus UBSan
+  native:
+    name: native
+    needs: [ready_scope, policy, native-shards]
+    if: >-
+      always() &&
+      (github.event_name != 'pull_request' ||
+       (github.event.pull_request.draft == false &&
+        (github.event.action != 'ready_for_review' ||
+         needs.ready_scope.outputs.required == 'true')))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact verifier source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Download all original family evidence
+        if: always()
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: native-shard-*-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/native-evidence
+      - name: Verify complete exact-source Native qualification
+        if: always()
+        env:
+          POLICY_RESULT: ${{ needs.policy.result }}
+          MATRIX_RESULT: ${{ needs.native-shards.result }}
         run: |
-          timeout 15m make build/tests_sanitized
-          timeout 15m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 ./build/tests_sanitized
-
-      - name: Build and characterize sanitized settled-regions regression
-        run: timeout 20m /usr/bin/time -v make build/test_settled_regions_sanitized
-
-      - name: Compile soliding contract sanitizer executables
-        run: |
-          timeout 20m make \
-            build/test_soliding_lifecycle_sanitized \
-            build/test_settled_discovery_sanitized \
-            build/test_settled_regions_sanitized \
-            build/test_settled_world_discovery_sanitized \
-            build/test_stage3b_runtime_storage_sanitized \
-            build/test_stage3b_bounded_spatial_index_sanitized \
-            build/test_stage3b_sparse_mutation_witness_sanitized \
-            build/test_stage3b_sparse_activity_deadline_sanitized
-
-      - name: Sanitize soliding contract regressions
-        run: timeout 10m env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make soliding-sanitize
-
-      - name: Compile shared library and benchmark
-        run: |
-          timeout 15m make shared
-          timeout 15m make build/benchmark
-          timeout 10m ./build/benchmark
+          python3 tools/ci/verify_native_shards.py verify \
+            --directory build/native-evidence \
+            --source-sha "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" \
+            --run-attempt "$GITHUB_RUN_ATTEMPT" \
+            --policy-result "$POLICY_RESULT" --matrix-result "$MATRIX_RESULT" \
+            --output build/native-qualification/aggregate.json
+      - name: Retain Native aggregate proof and failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-qualification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/native-qualification/
+          if-no-files-found: error
+          retention-days: 90

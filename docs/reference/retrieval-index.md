@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-10-30
+last-reviewed: 2026-10-31
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -163,6 +163,7 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | API versions, packed samples/results | [Interfaces](interfaces-and-message-contracts.md) |
 | Invariants and incomplete enforcement | [Invariants](invariants.md) |
 | Exact tools, separate native/Web bindings | [Build guide](../operations/local-build-and-validation.md) |
+| How do six Native families and four Windows shards preserve CI coverage and deadlines, and may scope advice skip Native? | [Parallel validation contract](../operations/github-development-and-release.md#parallel-validation-and-source-scope-advice--2026-10-31), [exact coverage](../operations/testing-validation-and-replay.md#parallel-native-and-four-way-windows-admission), and [source-bound integration audit](../audits/2026-10-31-ci-parallel-production-integration.md). Scope advice grants no exemption; predecessor timing is not resulting-head qualification. |
 | CI drift, base-only build identity, release readiness | [Repository/release](../operations/github-development-and-release.md) |
 | What is the current CI provider/recovery state, and is main protected? | [Repository/release](../operations/github-development-and-release.md), then the [2026-09-24 recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md) for incident evidence |
 | Is Stage-3B #65 complete and what is the next dependency-ready package? | [Stage-3B production plan](../operations/soliding-stage3b-production-plan.md), [roadmap](status-and-roadmap.md); use the [recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md) for #65 recovery evidence |
