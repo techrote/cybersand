@@ -1,0 +1,240 @@
+name: PLAY-PACE-004 input custody and gameplay measurement
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - 'godot/tests/play_pace004_*.gd'
+      - 'tools/play/*pace004*.py'
+      - '.github/workflows/play-pace004.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'godot/tests/play_pace004_*.gd'
+      - 'tools/play/*pace004*.py'
+      - '.github/workflows/play-pace004.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: play-pace004-${{ github.event.pull_request.head.sha || github.sha }}
+  cancel-in-progress: false
+
+env:
+  PACE004_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+
+jobs:
+  linux_headless:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    defaults:
+      run:
+        shell: bash
+    env:
+      EVIDENCE_DIR: build/play-pace004-linux_headless
+    steps:
+      - name: Check out exact result head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.PACE004_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Select Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Validate exact source and adverse controls
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          test "$(git rev-parse HEAD)" = "$PACE004_SHA"
+          git rev-parse HEAD > "$EVIDENCE_DIR/source-sha.txt"
+          git rev-parse 'HEAD^{tree}' > "$EVIDENCE_DIR/source-tree.txt"
+          python tools/ci/check_ci_provider_policy.py | tee "$EVIDENCE_DIR/provider.json"
+          python tools/play/test_pace004_contract.py 2>&1 | tee "$EVIDENCE_DIR/contracts.log"
+          python -O tools/play/test_pace004_contract.py 2>&1 | tee "$EVIDENCE_DIR/contracts-optimized.log"
+          python -m pip freeze > "$EVIDENCE_DIR/python-environment.txt"
+      - name: Materialize authentic pinned runtimes and Godot
+        timeout-minutes: 6
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          if [[ "$RUNNER_OS" == 'Windows' ]]; then
+            paths='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
+            url='https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          else
+            paths='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
+            url='https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          fi
+          git lfs pull --include="$paths" --exclude='' 2>&1 | tee "$EVIDENCE_DIR/lfs.log"
+          curl --fail --location --connect-timeout 20 --max-time 240 --output "$RUNNER_TEMP/pace004-godot.zip" "$url"
+      - name: Execute original headless Windows/Linux campaign
+        timeout-minutes: 25
+        run: |
+          set -euo pipefail
+          python tools/play/run_pace004_campaign.py \
+            --godot-archive "$RUNNER_TEMP/pace004-godot.zip" --expected-source-sha "$PACE004_SHA" \
+            --output "$EVIDENCE_DIR/campaign" 2>&1 | tee "$EVIDENCE_DIR/execution.log"
+      - name: Independently reduce original logs and pixels
+        if: always()
+        run: |
+          set -euo pipefail
+          python tools/play/run_pace004_campaign.py --output "$EVIDENCE_DIR/campaign" --verify-only --expected-source-sha "$PACE004_SHA" \
+            2>&1 | tee "$EVIDENCE_DIR/offline-readback.log"
+      - name: Preserve original positive and negative evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: play-pace004-linux_headless-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/play-pace004-linux_headless/
+          if-no-files-found: error
+          retention-days: 30
+
+  windows_headless:
+    runs-on: windows-2022
+    timeout-minutes: 35
+    defaults:
+      run:
+        shell: bash
+    env:
+      EVIDENCE_DIR: build/play-pace004-windows_headless
+    steps:
+      - name: Keep implicit checkout text conversions disabled
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - name: Check out exact result head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.PACE004_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Select Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Validate exact source and adverse controls
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          test "$(git rev-parse HEAD)" = "$PACE004_SHA"
+          git rev-parse HEAD > "$EVIDENCE_DIR/source-sha.txt"
+          git rev-parse 'HEAD^{tree}' > "$EVIDENCE_DIR/source-tree.txt"
+          python tools/ci/check_ci_provider_policy.py | tee "$EVIDENCE_DIR/provider.json"
+          python tools/play/test_pace004_contract.py 2>&1 | tee "$EVIDENCE_DIR/contracts.log"
+          python -O tools/play/test_pace004_contract.py 2>&1 | tee "$EVIDENCE_DIR/contracts-optimized.log"
+          python -m pip freeze > "$EVIDENCE_DIR/python-environment.txt"
+      - name: Materialize authentic pinned runtimes and Godot
+        timeout-minutes: 6
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          if [[ "$RUNNER_OS" == 'Windows' ]]; then
+            paths='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
+            url='https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          else
+            paths='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
+            url='https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          fi
+          git lfs pull --include="$paths" --exclude='' 2>&1 | tee "$EVIDENCE_DIR/lfs.log"
+          curl --fail --location --connect-timeout 20 --max-time 240 --output "$RUNNER_TEMP/pace004-godot.zip" "$url"
+      - name: Execute original headless Windows/Linux campaign
+        timeout-minutes: 25
+        run: |
+          set -euo pipefail
+          python tools/play/run_pace004_campaign.py \
+            --godot-archive "$RUNNER_TEMP/pace004-godot.zip" --expected-source-sha "$PACE004_SHA" \
+            --output "$EVIDENCE_DIR/campaign" 2>&1 | tee "$EVIDENCE_DIR/execution.log"
+      - name: Independently reduce original logs and pixels
+        if: always()
+        run: |
+          set -euo pipefail
+          python tools/play/run_pace004_campaign.py --output "$EVIDENCE_DIR/campaign" --verify-only --expected-source-sha "$PACE004_SHA" \
+            2>&1 | tee "$EVIDENCE_DIR/offline-readback.log"
+      - name: Preserve original positive and negative evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: play-pace004-windows_headless-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/play-pace004-windows_headless/
+          if-no-files-found: error
+          retention-days: 30
+
+  linux_graphical:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    defaults:
+      run:
+        shell: bash
+    env:
+      EVIDENCE_DIR: build/play-pace004-linux_graphical
+    steps:
+      - name: Check out exact result head
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.PACE004_SHA }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Select Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Validate exact source and adverse controls
+        run: |
+          set -euo pipefail
+          mkdir -p "$EVIDENCE_DIR"
+          test "$(git rev-parse HEAD)" = "$PACE004_SHA"
+          git rev-parse HEAD > "$EVIDENCE_DIR/source-sha.txt"
+          git rev-parse 'HEAD^{tree}' > "$EVIDENCE_DIR/source-tree.txt"
+          python tools/ci/check_ci_provider_policy.py | tee "$EVIDENCE_DIR/provider.json"
+          python tools/play/test_pace004_contract.py 2>&1 | tee "$EVIDENCE_DIR/contracts.log"
+          python -O tools/play/test_pace004_contract.py 2>&1 | tee "$EVIDENCE_DIR/contracts-optimized.log"
+          python -m pip freeze > "$EVIDENCE_DIR/python-environment.txt"
+      - name: Materialize authentic pinned runtimes and Godot
+        timeout-minutes: 6
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          if [[ "$RUNNER_OS" == 'Windows' ]]; then
+            paths='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
+            url='https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          else
+            paths='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
+            url='https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          fi
+          git lfs pull --include="$paths" --exclude='' 2>&1 | tee "$EVIDENCE_DIR/lfs.log"
+          curl --fail --location --connect-timeout 20 --max-time 240 --output "$RUNNER_TEMP/pace004-godot.zip" "$url"
+      - name: Prepare ordinary Linux graphical display
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y xvfb libgl1-mesa-dri libglx-mesa0
+      - name: Execute original Linux graphical campaign
+        timeout-minutes: 25
+        run: |
+          set -euo pipefail
+          xvfb-run -a python tools/play/run_pace004_campaign.py --graphical \
+            --godot-archive "$RUNNER_TEMP/pace004-godot.zip" --expected-source-sha "$PACE004_SHA" \
+            --output "$EVIDENCE_DIR/campaign" 2>&1 | tee "$EVIDENCE_DIR/execution.log"
+      - name: Independently reduce original logs and pixels
+        if: always()
+        run: |
+          set -euo pipefail
+          python tools/play/run_pace004_campaign.py --output "$EVIDENCE_DIR/campaign" --verify-only --expected-source-sha "$PACE004_SHA" \
+            2>&1 | tee "$EVIDENCE_DIR/offline-readback.log"
+      - name: Preserve original positive and negative evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: play-pace004-linux_graphical-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/play-pace004-linux_graphical/
+          if-no-files-found: error
+          retention-days: 30
