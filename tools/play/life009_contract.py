@@ -80,7 +80,7 @@ def verify_process(process: dict, limit: int) -> None:
 
 def verify_result(result: dict, rig: str, source: str) -> dict:
     require(rig in RIGS and result.get("rig") == rig, "Wrong rig")
-    require(result.get("schema") == "play-life009-v1" and result.get("source_revision") == source,
+    require(result.get("schema") == "play-life009-v2" and result.get("source_revision") == source,
             "Wrong schema/source")
     require(result.get("display_server") == "headless" and result.get("physics_engine") == "Rapier2D",
             "Wrong display or physics engine")
@@ -94,6 +94,7 @@ def verify_result(result: dict, rig: str, source: str) -> dict:
             "Fixture assertions failed")
     require(result.get("manual_physics_calls") == 0 and result.get("retries") == 0, "Manual step/retry")
     require(number(result.get("elapsed_usec"), "elapsed_usec") <= 150_000_000, "Fixture exceeded 150s")
+    require(number(result.get("teardown_usec"), "teardown_usec") <= 15_000_000, "Teardown exceeded 15s")
     row = result.get("row", {})
     require(row.get("rig") == rig and row.get("completed") is True
             and row.get("capture_overflow") is False, "Incomplete bounded fixture")

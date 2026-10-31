@@ -13,12 +13,13 @@ import sys
 import time
 import zipfile
 
-from life009_contract import RIGS, extract, require, verify_inventory, verify_process, verify_result
+from life009_contract import RIGS, extract, number, require, verify_inventory, verify_process, verify_result
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = "0bf28d5760aed989a79386de03ef4fc6171fef42"
 VERSION = "4.7.stable.official.5b4e0cb0f"
 WORKFLOW = ".github/workflows/play-life009.yml"
+ORIGINAL_PARSER_SHA256 = "eb5cd7163f2672bcd8d9a41c063d9e102d71185713b3ab3f31185e5123f29191"
 PROTECTED = ("native", "godot/scripts", "godot/shaders", "godot/addons", "godot/main.tscn",
              "godot/project.godot", "third_party", ".github/workflows/native.yml",
              ".github/workflows/gdextension.yml")
@@ -46,6 +47,41 @@ def safe_child(root: Path, name: str) -> Path:
     return p
 
 
+def verify_parser_controls(output: Path, records: dict) -> None:
+    """Authenticate the registered parser failure, not merely an exit or log hash."""
+    require(records.get("original_source_sha256") == ORIGINAL_PARSER_SHA256
+            and sha(safe_child(output, "original-584b-helper.gd")) == ORIGINAL_PARSER_SHA256,
+            "Frozen parser source changed")
+    logs = {}
+    for label in ("original", "current"):
+        item = records[label]
+        process = item["process"]
+        require(process.get("name") == "parser-" + label
+                and process.get("log") == "parser-" + label + ".log", "Wrong parser process identity")
+        receipt = json.loads(safe_child(output, "parser-" + label + ".process.json").read_text(encoding="utf-8"))
+        require(receipt == process, "Parser process receipt changed")
+        log = safe_child(output, process["log"])
+        require(sha(log) == item["log_sha256"], "Parser original log changed")
+        logs[label] = log.read_text(encoding="utf-8")
+        require(not process.get("timeout_kind") and not process.get("timeout_diagnostic_error")
+                and not process.get("launch_error") and not process.get("capture_error")
+                and not process.get("skip_messages"), "Parser control was interrupted or skipped")
+    old = records["original"]["process"]
+    require(old.get("status") == "failed" and type(old.get("returncode")) is int
+            and old["returncode"] == 1 and old.get("diagnostic_error") is True
+            and old.get("timeout_seconds") == 30
+            and number(old.get("seconds"), "parser.seconds") <= 30,
+            "Original parser negative control did not fail as expected")
+    expected = (r'SCRIPT ERROR: Parse Error: Expected closing "\)" after call arguments\.\n'
+                r'\s+at: GDScript::reload \([^\r\n]*original-584b-helper\.gd:205\)')
+    require(len(re.findall(r"SCRIPT ERROR:", logs["original"])) == 1
+            and re.search(expected, logs["original"]) is not None,
+            "Original parser failed for a different reason")
+    verify_process(records["current"]["process"], 30)
+    require(not re.search(r"SCRIPT ERROR:|ERROR:|\bskipped\b|^\s*SKIP\b", logs["current"], re.M | re.I),
+            "Current parser log contains a failure or skip")
+
+
 def parser_checks(binary: str, output: Path, runner, environment: dict) -> dict:
     """The frozen malformed predecessor must fail; current helper must parse."""
     original = git("show", "584b9c35085e45a0ab911730965b3cc30474dfd0:godot/tests/play_life009_same_owner_case.gd")
@@ -61,11 +97,7 @@ def parser_checks(binary: str, output: Path, runner, environment: dict) -> dict:
         records[label] = {"process": record, "log_sha256": sha(output / record["log"])}
     records["original_source_sha256"] = hashlib.sha256(original).hexdigest()
     write(output / "parser-controls.json", records)
-    old = records["original"]["process"]
-    text = (output / old["log"]).read_text(encoding="utf-8")
-    require(old["returncode"] == 1 and old["seconds"] <= 30 and "Parse Error:" in text,
-            "Original parser negative control did not fail as expected")
-    verify_process(records["current"]["process"], 30)
+    verify_parser_controls(output, records)
     return records
 
 
@@ -80,10 +112,7 @@ def verify_directory(output: Path) -> dict:
     require(report.get("godot_identity", {}).get("version") == VERSION, "Wrong Godot version")
     parser_controls = json.loads(safe_child(output, "parser-controls.json").read_text())
     require(parser_controls == report.get("parser_controls"), "Parser controls changed")
-    verify_process(parser_controls["current"]["process"], 30)
-    for item in (parser_controls["original"], parser_controls["current"]):
-        require(sha(safe_child(output, item["process"]["log"])) == item["log_sha256"],
-                "Parser original log changed")
+    verify_parser_controls(output, parser_controls)
     verify_process(report["import"], 240)
     require(sha(safe_child(output, report["import"]["log"])) == report["import_log_sha256"],
             "Import log changed")

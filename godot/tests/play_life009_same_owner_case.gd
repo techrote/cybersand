@@ -304,12 +304,16 @@ func run() -> void:
 	row.completed = success and failures == 0
 	desktop.phase = "setup"
 	var session: Variant = desktop.physical_actor_session
+	var teardown_started_usec: int = Time.get_ticks_usec()
 	await close_cycle(desktop, worker, session, "LIFE009: ")
-	print("PLAY_LIFE009_RESULT ", JSON.stringify({"schema":"play-life009-v1",
+	var teardown_usec: int = Time.get_ticks_usec() - teardown_started_usec
+	expect(teardown_usec <= WAIT_TIMEOUT_MS * 1000, "session retirement and worker join complete within 15 seconds")
+	print("PLAY_LIFE009_RESULT ", JSON.stringify({"schema":"play-life009-v2",
 		"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"display_server":DisplayServer.get_name(), "physics_engine":ProjectSettings.get_setting("physics/2d/physics_engine"),
 		"assertions":assertions, "failures":failures, "rig":str(rig), "row":row,
 		"elapsed_usec":Time.get_ticks_usec()-fixture_started_usec,
+		"teardown_usec":teardown_usec,
 		"worker_joined":joined_workers == 1, "session_retired":retired_sessions == 1,
 		"real_host":true, "automatic_callbacks":true, "headless_focus_seam":true,
 		"input_suppression_is_negative_control":true, "manual_physics_calls":0,

@@ -157,8 +157,56 @@ remain byte-preserved. Source and runtime postflight fences passed.
 
 ## Current candidate and integration boundary
 
-The signed-ID correction changes only the reducer and its tests; the actual
-GDScript behavior fixture is byte-identical to source 78d4. Nine focused methods
+### Independent review correction before full qualification
+
+The continuation independently reviewed all twelve files at source
+`1686d449d979a47e0b6520c5f048716a128cf700`, the production input/physics/pause
+paths and both original run41171088500 archives. ZIP sizes, SHA-256 and CRCs
+match the original [PR qualification ledger](https://github.com/techrote/cybersand/pull/317):
+
+| OS | Artifact | Bytes | SHA-256 |
+|---|---:|---:|---|
+| Linux | 13031426009 | 76699130 | `c580906f72daec6fe0d835ab6c73ebeda93829f2277934da4c7b9911547b49ef` |
+| Windows | 13030558984 | 76702621 | `74956ea2080190ced05e6d6368e1afd66ac4c77f786b4af452641f6cfce96ca9` |
+
+Original v1 readback passes at its own
+source. The original parser logs on both hosts contain the registered failure
+at line205, with exit1 and no timeout.
+
+The reviewer nevertheless reproduced a real verifier false pass: offline
+readback accepted an internally consistent original-parser exit0/no-error
+record because it checked only current-parser success and log hashes. Execution
+also accepted an unrelated generic parse error. The correction uses one shared
+execution/readback verifier, authenticates the exact frozen source and both
+process receipts/logs, and requires the precise expected diagnostic at line205,
+exit1/failed status, the original30s deadline and no timeout/launch/capture/skip
+failure. Current-parser success remains a separate positive control.
+
+Fifteen focused methods, including the complete offline unexpected-success
+counterexample, pass in normal and optimized Python. Controls also reject a
+different diagnostic/location, extra script failures, late/interrupted runs,
+changed source/receipts and a current-parser error hidden by a passing receipt.
+The actual fixture now records and checks teardown against its own15s operation
+limit. Result schema v2 requires that duration; historical v1 evidence remains
+unchanged and is reduced with its original source. The150s fixture,180s process
+and240s import limits are unchanged. These changes require new exact-head
+execution; none of the historical515/0 results are relabelled as v2 runs.
+
+Local Linux v2 smoke at1686 plus this explicit source delta passed104 assertions,
+zero failures,1.770464s fixture and35,159us teardown on the pinned4.7 engine and
+retained source-matched native/Rapier libraries. The first local launch failed
+before gameplay because sandbox `user://` logging was unwritable; the corrected
+launch uses an explicit writable `--log-file`. Its original crash remains failed,
+and editor socket/config-location diagnostics are environmental evidence, not
+clean import qualification. New hosted first attempts remain required. Current
+documentation, all18 materialized runtime identities,15 verifier methods in
+normal/-O Python, provider policy and whitespace checks pass locally; hosted
+gates remain the integration authority.
+
+### Historical signed-ID candidate boundary
+
+At original source1686, the signed-ID correction changed only the reducer and
+its tests; its GDScript behavior fixture was byte-identical to source78d4. Nine focused methods
 with adversarial subcases pass locally in normal and optimized Python. The
 [PR's source-pinned qualification ledger](https://github.com/techrote/cybersand/pull/317)
 records the corrected head's new original Windows/Linux outcome, artifact
